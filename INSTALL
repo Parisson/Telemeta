@@ -1,0 +1,40 @@
+INSTALL
+=======
+
+Telemeta is written in python. So it doesn't require any compilation step but the installation of some other programs.
+
+* On debian or Ubuntu just add these lines to your /etc/apt/sources-list:
+
+	deb http://yomix.org/debian/ binary/
+	deb-src http://yomix.org/debian/ source/
+
+	Then,
+
+	sudo apt-get update
+	sudo apt-get install telemeta
+
+	All the depending packages will be installed.
+
+* On other platforms, the first thing to do is then to install python for your system with your favorite package manager (Linux based distribution) or download and install it (Windows, MacOS) from http://www.python.org/download/.
+
+	To access the full power of telemeta's useful features, compile and/or install by the same way (you may find them in your package manager) the following programs :
+
+	- python (http://www.python.org)
+	- python-xml
+	- python-mutagen
+	- oggenc (http://www.vorbis.com/)
+	- sox (http://sox.sourceforge.net/)
+	- flac (http://flac.sourceforge.net/)
+	- lame (http://lame.sourceforge.net/)
+	- ecasound (http://eca.cx/ecasound/)
+	- wavbreaker (http://huli.org/wavbreaker/)
+	- festival (http://www.cstr.ed.ac.uk/projects/festival/)
+	- par2
+
+	Now, open a shell (console, terminal, etc..), go to the uncompressed directory and type AS ROOT :
+
+	python install.py
+
+
+type telemeta --help for more informations.
+

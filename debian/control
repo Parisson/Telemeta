@@ -1,0 +1,27 @@
+Source: telemeta
+Section: sound
+Priority: optional
+Maintainer: Guillaume Pellerin <pellerin@parisson.com>
+Uploaders: Paul Brossier <piem@debian.org>
+Build-Depends: debhelper (>= 5.0.0), docbook-to-man, python (>= 2.3.5-7), python-dev (>= 2.3.5-7), python-central (>= 0.5)
+Standards-Version: 3.7.2
+XS-Python-Version: >= 2.3
+
+Package: telemeta
+Architecture: any
+Depends: python (>= 2.3.5-7), python-xml, python-central (>= 0.5), python-mutagen, sox, vorbis-tools, flac, lame, normalize-audio, ecasound, festival, par2
+XB-Python-Version: ${python:Versions}
+Description: backups, transcodes, tags and marks any audio content with metadata
+ Telemeta is an audio tool which creates audio transcoded databases fast from
+ fresh mastered files. It can be useful to backup digitalized audio media from
+ vinyls, old tapes or whatever.
+ Telemeta first creates a simple structure where original sounds will be
+ backuped. The files can be transcoded to WAV, FLAC, MP3 and OGG including
+ the corresponding tags.
+ Here are some cool functions:
+  - XML generation for metadata tags of backuped WAV
+  - Audio marking from a given file or from tags thanks to the Festival speech
+    systhesis tool
+  - File corruption security with par2 recovery files
+  - Database synchronizing to remote servers (ssh+rsync)
+  - Modify metadata from XML or interactive shell
