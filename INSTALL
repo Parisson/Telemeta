@@ -30,8 +30,12 @@ Telemeta is written in python. So it doesn't require any compilation step but th
 	- wavbreaker (http://huli.org/wavbreaker/)
 	- festival (http://www.cstr.ed.ac.uk/projects/festival/)
 	- par2
+	
+	Get the lastest version with :
 
-	Now, open a shell (console, terminal, etc..), go to the uncompressed directory and type AS ROOT :
+	svn co http://svn.yomix.org/svn/telemeta/trunk
+
+	Now, open a shell (console, terminal, etc..), go to the main Telemeta directory and type AS ROOT :
 
 	python install.py
 
