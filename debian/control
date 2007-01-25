@@ -1,7 +1,7 @@
 Source: telemeta
 Section: sound
 Priority: optional
-Maintainer: Guillaume Pellerin <pellerin@parisson.com>
+Maintainer: Guillaume Pellerin <yomguy@altern.org>
 Uploaders: Paul Brossier <piem@debian.org>
 Build-Depends: debhelper (>= 5.0.0), docbook-to-man, python (>= 2.3.5-7), python-dev (>= 2.3.5-7), python-central (>= 0.5)
 Standards-Version: 3.7.2

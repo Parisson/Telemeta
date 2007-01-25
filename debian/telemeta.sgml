@@ -24,7 +24,7 @@ manpage.1: manpage.sgml
   <!-- SECTION should be 1-8, maybe w/ subsection other parameters are
        allowed: see man(7), man(1). -->
   <!ENTITY dhsection   "<manvolnum>1</manvolnum>">
-  <!ENTITY dhemail     "<email>pellerin@parisson.com</email>">
+  <!ENTITY dhemail     "<email>yomguy@altern.org</email>">
   <!ENTITY dhusername  "Guillaume Pellerin">
   <!ENTITY dhucpackage "<refentrytitle>telemeta</refentrytitle>">
   <!ENTITY dhpackage   "telemeta">
@@ -217,6 +217,9 @@ manpage.1: manpage.sgml
 	  <para><command>python install.py</command></para>
 	  
 	  <para>See README and INSTALL file for more informations.</para>
+	  <para>You can also get the lastest version of Telemeta with subversion (just type 'enter' for the password:</para>
+	  <para>svn co http://svn.yomix.org/svn/telemeta/trunk telemeta --username=anonymous</para>
+
   </refsect1>
 
   <refsect1>
@@ -228,7 +231,7 @@ manpage.1: manpage.sgml
   <refsect1>
     <title>SEE ALSO</title>
     
-    <para>The program is documented fully by Guillaume Pellerin. More info at <citetitle><ulink url="http://yomix.org/telemeta/">http://yomix.org/telemeta/</ulink></citetitle>.</para>
+    <para>The program is documented fully by Guillaume Pellerin. More info at <citetitle><ulink url="http://svn.yomix.org/telemeta/">http://svn.yomix.org/telemeta/</ulink></citetitle>.</para>
   </refsect1>
  
   <refsect1>

@@ -47,10 +47,24 @@ Then,
 	sudo apt-get update
 	sudo apt-get install telemeta
 
-On other linux platforms, uncompress the archive, go into the created
-directory and just type this with your favorite shell :
+On other linux platforms, get the lastest version on :
+
+	http://yomix.org/telemeta/download
+
+and uncompress the archive.
+You can also get the lastest develoment version with subversion:
+
+	svn co http://svn.yomix.org/svn/telemeta/trunk telemeta
+
+Then go into the created directory and just type this with your favorite shell :
 
 	python install.py
+
+To get the lastest development version, type :
+
+	svn co http://svn.yomix.org/svn/telemeta/trunk telemeta --username=anonymous
+
+Just press 'enter' for the password.
 
 See INSTALL file for more informations.
 
@@ -94,7 +108,7 @@ Other options:
 	--par2         forces par2 file creation
 	--all-default  chooses default argument for all question
 	--recover      check an repair the backuped media with the previously 
-                   created "par2" security key
+                       created "par2" security key
 	--rsync        synchronizes database to a remote server (ssh+rsync)
 	--erase-media  erases the media (flac, ogg, mp3) database
 	--help         gives help page
@@ -120,11 +134,12 @@ Other options:
 
 Please give me some feedback. Tell me if Telemeta suits you or if you
 would need some other interesting features.  You are welcome to mail me
-at <pellerin@parisson>
+at <yomguy@altern.org>
 
 # 8. Contact
 # ==========
 
-Home page : http://yomix.org/telemeta
+Home page : http://svn.yomix.org/telemeta
 
-Guillaume Pellerin <pellerin@parisson.com>
+Guillaume Pellerin <yomguy@altern.org>
+
