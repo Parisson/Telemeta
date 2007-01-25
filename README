@@ -7,14 +7,19 @@ Telemeta: backups, transcodes, tags and marks any audio content with metadata
 # 1. Introduction
 # ===============
 
-Telemeta is an audio tool which creates audio transcoded databases fast from fresh mastered files. It can be useful to backup digitalized audio media from vinyls, old tapes or whatever.
+Telemeta is an audio tool which creates audio transcoded databases fast
+from fresh mastered files. It can be useful to backup digitalized audio
+media from vinyls, old tapes or whatever.
 
-Telemeta first creates a simple structure where original sounds will be backuped. The files can be transcoded to WAV, FLAC, MP3 and OGG including the corresponding tags.
+Telemeta first creates a simple structure where original sounds will be
+backuped. The files can be transcoded to WAV, FLAC, MP3 and OGG including
+the corresponding tags.
 
 Here are some cool functions:
 
   - XML generation for metadata tags of backuped WAV
-  - Audio marking from a given file or from tags thanks to the Festival speech systhesis tool
+  - Audio marking from a given file or from tags thanks to the Festival 
+    speech systhesis tool
   - File corruption security with par2 recovery files
   - Database synchronizing to remote servers (ssh+rsync)
   - Modify metadata from XML or interactive shell
@@ -23,7 +28,8 @@ Here are some cool functions:
 # 2. Requirements
 # ===============
 
-python (>= 2.3.5-7), python-xml, python-central (>= 0.5), python-mutagen, sox, vorbis-tools, flac, lame, normalize-audio, ecasound, festival, par2
+python (>= 2.3.5-7), python-xml, python-central (>= 0.5), python-mutagen,
+sox, vorbis-tools, flac, lame, normalize-audio, ecasound, festival, par2
 
 
 # 3. Installation
@@ -41,7 +47,8 @@ Then,
 	sudo apt-get update
 	sudo apt-get install telemeta
 
-On other linux platforms, uncompress the archive, go into the created directory and just type this with your favorite shell :
+On other linux platforms, uncompress the archive, go into the created
+directory and just type this with your favorite shell :
 
 	python install.py
 
@@ -51,23 +58,34 @@ See INSTALL file for more informations.
 # 4. Usage
 # ========
 
-In order to backup all original or transcoded files into a collection, telemeta needs first to create his repository. Let's type :
+In order to backup all original or transcoded files into a collection,
+telemeta needs first to create his repository. Let's type :
 
 	telemeta --create COLLECTION
 
-Replacing COLLECTION with the name of your collection. Answer to the questions. A target directory is then created. All answers are saved into YOUR_HOME/.telemeta/default_database.xml and YOUR_HOME/.telemeta/COLLECTION.xml
+Replacing COLLECTION with the name of your collection. Answer to
+the questions. A target directory is then created. All answers
+are saved into YOUR_HOME/.telemeta/default_database.xml and
+YOUR_HOME/.telemeta/COLLECTION.xml
 
 To backup a wav file, type :
 
 	telemeta --backup COLLECTION FILE.WAV
 
-where you have to replace FILE.WAV by the local file of your choice you want to add in the database. Then, answer to the questions. All answers are saved into YOUR_HOME/.telemeta/default_tags.xml and will be use for the next execution. The program will automatically transcode the wav (or aiff) file to the types you have defined (for example FLAC, MP3 and/or OGG) and place them into each directory of the repository (for example flac/, mp3/ and/or ogg/).
+where you have to replace FILE.WAV by the local file of your choice you
+want to add in the database. Then, answer to the questions. All answers
+are saved into YOUR_HOME/.telemeta/default_tags.xml and will be use for
+the next execution. The program will automatically transcode the wav (or
+aiff) file to the types you have defined (for example FLAC, MP3 and/or OGG)
+and place them into each directory of the repository (for example flac/,
+mp3/ and/or ogg/).
 
 To backup an entire directory, type :
 
 	telemeta --backup COLLECTION --album DIRECTORY
 
-where you have to replace DIRECTORY by the local directory containing all the audio files you want to add in the database.
+where you have to replace DIRECTORY by the local directory containing all
+the audio files you want to add in the database.
 
 Other options:
 
@@ -75,7 +93,8 @@ Other options:
 	--force        forces file conversion (no audio test)
 	--par2         forces par2 file creation
 	--all-default  chooses default argument for all question
-	--recover      check an repair the backuped media with the previously created "par2" security key
+	--recover      check an repair the backuped media with the previously 
+                   created "par2" security key
 	--rsync        synchronizes database to a remote server (ssh+rsync)
 	--erase-media  erases the media (flac, ogg, mp3) database
 	--help         gives help page
@@ -99,8 +118,9 @@ Other options:
 # 7. Feedback
 # ===========
 
-Please give me some feedback. Tell me if Telemeta suits you or if you would need some other interesting features.
-You are welcome to mail me at <pellerin@parisson>
+Please give me some feedback. Tell me if Telemeta suits you or if you
+would need some other interesting features.  You are welcome to mail me
+at <pellerin@parisson>
 
 # 8. Contact
 # ==========
