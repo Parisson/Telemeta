@@ -1,7 +1,8 @@
 INSTALL
 =======
 
-Telemeta is written in python. So it doesn't require any compilation step but the installation of some other programs.
+Telemeta is written in python. So it doesn't require any compilation step
+but the installation of some other programs.
 
 * On debian or Ubuntu just add these lines to your /etc/apt/sources-list:
 
@@ -15,9 +16,14 @@ Telemeta is written in python. So it doesn't require any compilation step but th
 
 	All the depending packages will be installed.
 
-* On other platforms, the first thing to do is then to install python for your system with your favorite package manager (Linux based distribution) or download and install it (Windows, MacOS) from http://www.python.org/download/.
+* On other platforms, the first thing to do is then to install
+python for your system with your favorite package manager (Linux
+based distribution) or download and install it (Windows, MacOS) from
+http://www.python.org/download/.
 
-	To access the full power of telemeta's useful features, compile and/or install by the same way (you may find them in your package manager) the following programs :
+	To access the full power of telemeta's useful features, compile
+	and/or install by the same way (you may find them in your package
+	manager) the following programs :
 
 	- python (http://www.python.org)
 	- python-xml
@@ -35,7 +41,8 @@ Telemeta is written in python. So it doesn't require any compilation step but th
 
 	svn co http://svn.yomix.org/svn/telemeta/trunk
 
-	Now, open a shell (console, terminal, etc..), go to the main Telemeta directory and type AS ROOT :
+	Now, open a shell (console, terminal, etc..), go to the main
+	Telemeta directory and type AS ROOT :
 
 	python install.py
 
