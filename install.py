@@ -17,7 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
 
-# ONLY FO LINUX
+# ONLY FOR LINUX
 
 import os, sys
 
@@ -27,8 +27,6 @@ elif len(sys.argv) > 2:
 	sys.exit('Give just one directory to install Telemeta, or none.')
 else:
 	install_dir = sys.argv[1]
-
-
 
 if not os.path.exists(install_dir):
 	os.mkdir(install_dir)
