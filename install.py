@@ -17,25 +17,25 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
 
+# ONLY FO LINUX
+
 import os, sys
 
 if len(sys.argv) == 1:
-	install_dir = '/usr/'
+	install_dir = '/usr/share/telemeta/'
 else:
 	install_dir = sys.argv[1]
 
 if not os.path.exists(install_dir):
 	os.mkdir(install_dir)
-if not os.path.exists(install_dir+'/share/'):
-	os.mkdir(install_dir+'/share/')
-if not os.path.exists(install_dir+'/share/telemeta/'):
-	os.mkdir(install_dir+'/telemeta/')
 
-os.system('cp -ra ./* '+install_dir+'/share/telemeta/')
-os.system('rm -rf '+install_dir+'debian')
+os.system('cp -ra ./* '+install_dir+os.sep)
+os.system('rm -rf '+install_dir+os.sep+'debian')
 
-if not os.path.exists(install_dir+'/bin/telemeta'):
-	os.system('ln -s '+install_dir+'/share/telemeta/telemeta.py '+install_dir+'/bin/telemeta')
+if os.path.exists('/usr/bin/telemeta'):
+	os.system('rm -r /usr/bin/telemeta')
+
+os.system('ln -s '+install_dir+os.sep+'telemeta.py '+'/usr/bin/telemeta')
 
 print "Installation successfull ! Type 'telemeta' now..."
 

@@ -3,7 +3,7 @@
 """
    telemeta
 
-   Copyright (c) 2006-2007 Guillaume Pellerin <pellerin@parisson.com>
+   Copyright (c) 2006-2007 Guillaume Pellerin <yomguy@altern.org>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -42,7 +42,7 @@ from audio_tools import *
 # Info, error
 # ===========
 if len(sys.argv) == 1 :
-	print "telemeta v"+str(version)+" (c) 2006 Guillaume Pellerin <pellerin@parisson.com>"
+	print "telemeta v"+str(version)+" (c) 2006 Guillaume Pellerin <yomguy@altern.org>>"
 	print "version: "+str(version)
 	print "depends: python, python-xml, python-mutagen, sox, oggenc, flac, lame, normalize-audio, ecasound, wavbreaker, festival"
 	print "distributed under the terms of the GNU Public License v2.\n"
@@ -60,7 +60,7 @@ elif sys.argv[1] == '--help':
 	print "DEPENDS:"
 	print "         python, python-xml, python-mutagen, sox, oggenc, flac, lame, normalize-audio, ecasound, wavbreaker, festival\n"
 	print "COPYRIGHT:"
-	print "         Copyright (c) 2006 Guillaume Pellerin <pellerin@parisson.com>\n"
+	print "         Copyright (c) 2006 Guillaume Pellerin <yomguy@altern.org>\n"
 	print "LICENSE:"
 	print "         distributed under the terms of the GNU Public License v2.\n"
 	print "USAGE:"
@@ -92,7 +92,7 @@ elif sys.argv[1] == '--help':
 	print "         telemeta --backup my_collection --album --par2 --rsync /path/to/directory/"
 	print "         telemeta --backup my_collection --album --par2 --rsync --force /path/to/directory/\n"
 	print "AUTHOR:"
-	print "         Guillaume Pellerin <pellerin@parisson.com>\n"
+	print "         Guillaume Pellerin <yomguy@altern.org>\n"
 	print "URL:"
 	print "         http://yomix.org/telemeta\n"
 	print 'IMPORTANT:'
@@ -102,14 +102,14 @@ elif sys.argv[1] == '--help':
 	print "         Tags between [] are optional main tags.\n"
 	print "FOR MORE INFORMATIONS :"
 	print "         - read the README file"
-	print "         - go to http://yomix.org/telemeta"
+	print "         - go to http://svn.yomix.org/telemeta"
 	sys.exit('         - email me !\n')
 
 elif sys.argv[1] == '--version':
 	sys.exit('Version: '+str(version))
 
 else :
-	print "telemeta v"+str(version)+" (c) 2006 Guillaume Pellerin <pellerin@parisson.com>"
+	print "telemeta v"+str(version)+" (c) 2006 Guillaume Pellerin <yomguy@altern.org>"
 	print """   This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
