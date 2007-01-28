@@ -23,8 +23,12 @@ import os, sys
 
 if len(sys.argv) == 1:
 	install_dir = '/usr/share/telemeta/'
+elif len(sys.argv) > 2:
+	sys.exit('Give just one directory to install Telemeta, or none.')
 else:
 	install_dir = sys.argv[1]
+
+
 
 if not os.path.exists(install_dir):
 	os.mkdir(install_dir)
