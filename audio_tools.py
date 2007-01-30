@@ -27,7 +27,7 @@ def encode(enc_type,dir_in,file_in,dir_out,file_out):
 
 	if enc_type == 'flac' :
 		quality = tag_tools.get_opt_value(enc_type+'_quality')
-		os.system('flac -V -q '+quality+' -o "'+media_out+'" "'+media_in+'"')
+		os.system('flac -f -V -q '+quality+' -o "'+media_out+'" "'+media_in+'"')
 
 	if enc_type == 'ogg':
 		bitrate = tag_tools.get_opt_value(enc_type+'_bitrate')
@@ -62,6 +62,44 @@ def decode(media_in,file_ext):
 def normalize(media_in):
 	os.system('normalize-audio "'+media_in+'"')
 
+def create_md5_key(dir_in,file_in):
+	media_in = dir_in+file_in
+	os.system('md5sum -b "'+media_in+'" "'+media_in+'.md5"')
+
+def check_md5_key(dir_in,file_in):
+	media_in = dir_in+file_in
+	md5_log = os.popen4('md5sum -c "'+media_in+'" "'+media_in+'.md5"')
+	if 'OK' in md5_log.split(':'):
+		return True
+	else:
+		return False
+
+def compare_md5_key(file_in,file_out):
+	media_in = file_in
+	media_out = file_out
+	if not os.path.exists(media_in):
+		return False
+	else:
+		print 'Checking md5sums...'
+		file_in_in, file_in_out = os.popen4('md5sum -b "'+media_in+'"')
+		file_out_in, file_out_out = os.popen4('md5sum -b "'+media_out+'"')
+		for line in file_in_out.readlines():
+			line = line.split('*')
+			line = line[0]
+			#print line
+			for file_out_out_line in file_out_out.readlines():
+				file_out_out_line= file_out_out_line.split('*')
+				file_out_out_line= file_out_out_line[0]
+				#print file_out_out_line	
+				if line == file_out_out_line:
+					print 'Files are equal...\n'
+					return True
+					exit
+				else:
+					print 'Files are different...\n'
+					return False
+					exit
+		
 def create_par_key(dir_in,file_in):
 	media_in = dir_in+file_in
 	os.system('par2 c -n1 "'+media_in+'"')

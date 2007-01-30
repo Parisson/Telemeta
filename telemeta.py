@@ -225,7 +225,7 @@ if mode_create :
 		if not os.path.exists(collection_dir):
 			os.mkdir(collection_dir)
 		else :
-			sys.exit('ERROR: the collection '+collection_name+' already exists')
+				sys.exit('ERROR: the collection '+collection_name+' already exists')
 		tag_tools.write_collection_consts(default_collection_xml)
 		tag_tools.write_collection_consts(collection_dir+os.sep+collection_name+'.xml')
 		# Parses collection data
@@ -312,9 +312,12 @@ for file in file_master_list :
 			album_dir = collection_dir+os.sep+'src'+os.sep+album_dir_tmp+os.sep
 			if not os.path.exists(album_dir) :
 				os.mkdir(album_dir)
-			print 'Copying files into: '+album_dir+'\n'
-			if isaudio(master_dir+file) and ( not os.path.exists(album_dir+file) or mode_force ) :
+			if isaudio(master_dir+file) and ( not audio_tools.compare_md5_key(master_dir+file,album_dir+file) or mode_force ) :
+				print 'Copying files into: '+album_dir+''
 				os.system('cp -ra "'+master_dir+file+'" '+album_dir)
+				print 'OK\n'
+			#else:
+			#	sys.exit(master_dir+file+' is not an audio file...')
 			src_dir = album_dir
 			dir_in = src_dir
 		else :
