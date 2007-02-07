@@ -54,15 +54,11 @@ On other linux platforms, get the lastest version on :
 and uncompress the archive.
 You can also get the lastest develoment version with subversion:
 
-	svn co http://svn.yomix.org/svn/telemeta/trunk telemeta
+	svn co http://svn.parisson.org/svn/telemeta/trunk telemeta --username=anonymous
 
 Then go into the created directory and just type this with your favorite shell :
 
 	python install.py
-
-To get the lastest development version, type :
-
-	svn co http://svn.yomix.org/svn/telemeta/trunk telemeta --username=anonymous
 
 Just press 'enter' for the password.
 
@@ -110,7 +106,7 @@ Other options:
 	--recover      check an repair the backuped media with the previously 
                        created "par2" security key
 	--rsync        synchronizes database to a remote server (ssh+rsync)
-	--erase-media  erases the media (flac, ogg, mp3) database
+	--erase        erases a collection (FLAC, OGG, MP3 only, never WAV !)
 	--help         gives help page
 
 # 5. EXAMPLES
@@ -139,6 +135,6 @@ at <yomguy@altern.org>
 # 8. Contact
 # ==========
 
-Home page : http://svn.yomix.org/telemeta
+Home page : http://svn.parisson.org/telemeta
 E-mail    : Guillaume Pellerin <yomguy@altern.org>
 

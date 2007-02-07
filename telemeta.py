@@ -22,7 +22,7 @@
 
 # Version
 # =======
-version = '0.2.5'
+version = '0.2.7'
 
 # Modules and error routines
 # ==========================
@@ -94,7 +94,7 @@ elif sys.argv[1] == '--help':
 	print "AUTHOR:"
 	print "         Guillaume Pellerin <yomguy@altern.org>\n"
 	print "URL:"
-	print "         http://yomix.org/telemeta\n"
+	print "         http://svn.parisson.org/telemeta\n"
 	print 'IMPORTANT:'
 	print "         With the '--album' option, it supposed that all your wav files in the directory are named respectively to this scheme :"
 	print "            artist-title[-album-date-genre-description][.wav]"
@@ -102,7 +102,7 @@ elif sys.argv[1] == '--help':
 	print "         Tags between [] are optional main tags.\n"
 	print "FOR MORE INFORMATIONS :"
 	print "         - read the README file"
-	print "         - go to http://svn.yomix.org/telemeta"
+	print "         - go to http://svn.parisson.org/telemeta"
 	sys.exit('         - email me !\n')
 
 elif sys.argv[1] == '--version':

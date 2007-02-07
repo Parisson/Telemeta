@@ -1,13 +1,13 @@
-This package was debianized by Guillaume Pellerin <pellerin@parisson.com> on
+This package was debianized by Guillaume Pellerin <yomguy@altern.org> on
 Thu, 17 Aug 2006 22:42:14 +0200.
 
-It was downloaded from http://yomix.org/telemeta/
+It was downloaded from http://svn.parisson.org/telemeta/
 
 Upstream Author: Guillaume Pellerin <pellerin@parisson.com>
 
 Copyright:
 
-	Copyright (C) 2006 Guillaume Pellerin <pellerin@parisson.com>
+	Copyright (C) 2006-2007 Guillaume Pellerin <yomguy@altern.org>
 
 License:
 
@@ -19,7 +19,7 @@ License:
 
  The GPL may be found in /usr/share/common-licenses/GPL-2 on a Debian system.
 
-The Debian packaging is (C) 2006, Guillaume Pellerin <pellerin@parisson.com> and
+The Debian packaging is (C) 2006, Guillaume Pellerin <yomguy@altern.org> and
 is licensed under the GPL, see `/usr/share/common-licenses/GPL-2'.
 
 # Please also look if there are files or directories which have a

@@ -39,7 +39,7 @@ http://www.python.org/download/.
 	
 	Get the lastest version with :
 
-	svn co http://svn.yomix.org/svn/telemeta/trunk
+	svn co http://svn.parisson.org/svn/telemeta/trunk telemeta --username=anonymous
 
 	Now, open a shell (console, terminal, etc..), go to the main
 	Telemeta directory and type AS ROOT :
