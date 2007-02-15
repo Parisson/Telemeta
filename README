@@ -39,17 +39,17 @@ Telemeta is written in python. So it doesn't require any compilation step.
 
 On debian or Ubuntu just add these lines to your /etc/apt/sources-list:
 
-	deb http://yomix.org/debian/ binary/
-	deb-src http://yomix.org/debian/ source/
+	deb http://debian.parisson.org/ binary/
+	deb-src http://ydebian.parisson.org/ source/
 
 Then,
 
 	sudo apt-get update
 	sudo apt-get install telemeta
 
-On other linux platforms, get the lastest version on :
+On other linux platforms, get the lastest tar.gz version on :
 
-	http://yomix.org/telemeta/download
+	http://debian.parisson.org/
 
 and uncompress the archive.
 You can also get the lastest develoment version with subversion:

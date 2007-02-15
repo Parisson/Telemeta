@@ -204,21 +204,21 @@ manpage.1: manpage.sgml
 	  <para>Telemeta is written in python. So it doesn't require any compilation step.</para>  
 	  <para>On Debian or Ubuntu just add these lines to your /etc/apt/sources-list:</para>
 	  
-	  <para><command>deb http://yomix.org/debian/ binary/</command></para>
-	  <para><command>deb-src http://yomix.org/debian/ source/</command></para>
+	  <para><command>deb http://debian.parisson.org/ binary/</command></para>
+	  <para><command>deb-src http://debian.parisson.org/ source/</command></para>
   
 	  <para>Then,</para>
 	  
 	  <para><command>sudo apt-get update</command></para>
 	  <para><command>sudo apt-get install telemeta</command></para>
 	  
-	  <para>On other linux platforms, <ulink url="http://yomix.org/telemeta/download/">download</ulink> the lastest .tar.gz archive, uncompress it, go into the created directory and just type this with your favorite shell :</para>
+	  <para>On other linux platforms, <ulink url="http://debian.parisson.org/">download</ulink> the lastest tar.gz archive, uncompress it, go into the created directory and just type this with your favorite shell :</para>
 	  
 	  <para><command>python install.py</command></para>
 	  
 	  <para>See README and INSTALL file for more informations.</para>
 	  <para>You can also get the lastest version of Telemeta with subversion (just type 'enter' for the password:</para>
-	  <para>svn co http://svn.yomix.org/svn/telemeta/trunk telemeta --username=anonymous</para>
+	  <para>svn co http://svn.parisson.org/svn/telemeta/trunk telemeta --username=anonymous</para>
 
   </refsect1>
 
@@ -231,7 +231,7 @@ manpage.1: manpage.sgml
   <refsect1>
     <title>SEE ALSO</title>
     
-    <para>The program is documented fully by Guillaume Pellerin. More info at <citetitle><ulink url="http://svn.yomix.org/telemeta/">http://svn.yomix.org/telemeta/</ulink></citetitle>.</para>
+    <para>The program is documented fully by Guillaume Pellerin. More info at <citetitle><ulink url="http://svn.parisson.org/telemeta/">http://svn.parisson.org/telemeta/</ulink></citetitle>.</para>
   </refsect1>
  
   <refsect1>

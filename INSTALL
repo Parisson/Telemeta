@@ -6,8 +6,8 @@ but the installation of some other programs.
 
 * On debian or Ubuntu just add these lines to your /etc/apt/sources-list:
 
-	deb http://yomix.org/debian/ binary/
-	deb-src http://yomix.org/debian/ source/
+	deb http://debian.parisson.org/ binary/
+	deb-src http://debian.parisson.org/ source/
 
 	Then,
 

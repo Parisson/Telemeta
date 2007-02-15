@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # *coding: utf-8*
 #
-# Copyright (c) 2006 Guillaume Pellerin <yomguy@altern.org>
+# Copyright (c) 2006-2007 Guillaume Pellerin <yomguy@altern.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

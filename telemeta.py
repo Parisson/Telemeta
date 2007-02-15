@@ -42,7 +42,7 @@ from audio_tools import *
 # Info, error
 # ===========
 if len(sys.argv) == 1 :
-	print "telemeta v"+str(version)+" (c) 2006 Guillaume Pellerin <yomguy@altern.org>>"
+	print "telemeta v"+str(version)+" (c) 2006-2007 Guillaume Pellerin <yomguy@altern.org>>"
 	print "version: "+str(version)
 	print "depends: python, python-xml, python-mutagen, sox, oggenc, flac, lame, normalize-audio, ecasound, wavbreaker, festival"
 	print "distributed under the terms of the GNU Public License v2.\n"
@@ -60,7 +60,7 @@ elif sys.argv[1] == '--help':
 	print "DEPENDS:"
 	print "         python, python-xml, python-mutagen, sox, oggenc, flac, lame, normalize-audio, ecasound, wavbreaker, festival\n"
 	print "COPYRIGHT:"
-	print "         Copyright (c) 2006 Guillaume Pellerin <yomguy@altern.org>\n"
+	print "         Copyright (c) 2006-2007 Guillaume Pellerin <yomguy@altern.org>\n"
 	print "LICENSE:"
 	print "         distributed under the terms of the GNU Public License v2.\n"
 	print "USAGE:"
@@ -109,7 +109,7 @@ elif sys.argv[1] == '--version':
 	sys.exit('Version: '+str(version))
 
 else :
-	print "telemeta v"+str(version)+" (c) 2006 Guillaume Pellerin <yomguy@altern.org>"
+	print "telemeta v"+str(version)+" (c) 2006-2007 Guillaume Pellerin <yomguy@altern.org>"
 	print """   This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
