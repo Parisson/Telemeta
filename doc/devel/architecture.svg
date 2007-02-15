@@ -32,7 +32,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="1.6081777"
      inkscape:cx="373.30355"
-     inkscape:cy="817.84144"
+     inkscape:cy="802.18075"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -90,21 +90,26 @@
       <rect
          y="162.40588"
          x="110"
-         height="29.999998"
+         height="39.999996"
          width="190"
          id="rect3055"
          style="fill:#c4a000;fill-rule:evenodd;stroke:none;stroke-width:1.93383527px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
       <text
          sodipodi:linespacing="125%"
          id="text3057"
-         y="182.23596"
-         x="207.48438"
-         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;fill:#eeeeec;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         y="181.52307"
+         x="120.66016"
+         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#eeeeec;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
          xml:space="preserve"><tspan
-           y="182.23596"
-           x="207.48438"
+           y="181.52307"
+           x="120.66016"
            sodipodi:role="line"
-           id="tspan3083">Audio content</tspan></text>
+           id="tspan3083">File system</tspan><tspan
+           y="192.53607"
+           x="120.66016"
+           sodipodi:role="line"
+           id="tspan3344"
+           style="font-size:8px;font-weight:normal">Stores audio source WAV Files</tspan></text>
     </g>
     <g
        transform="translate(290,159.9563)"
@@ -113,20 +118,25 @@
          style="fill:#c4a000;fill-rule:evenodd;stroke:none;stroke-width:1.93383527px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          id="rect3069"
          width="200"
-         height="29.999998"
+         height="40"
          x="30"
          y="162.40588" />
       <text
          xml:space="preserve"
-         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;fill:#eeeeec;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
-         x="132.25"
-         y="182.40588"
+         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#eeeeec;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         x="43.980469"
+         y="181.52307"
          id="text3071"
          sodipodi:linespacing="125%"><tspan
            sodipodi:role="line"
-           x="132.25"
-           y="182.40588"
-           id="tspan3079">Metadata</tspan></text>
+           x="43.980469"
+           y="181.52307"
+           id="tspan3079">Relational Database</tspan><tspan
+           sodipodi:role="line"
+           x="43.980469"
+           y="192.53607"
+           id="tspan3346"
+           style="font-size:8px;font-weight:normal">Stores metadata</tspan></text>
     </g>
     <g
        id="g3335">
