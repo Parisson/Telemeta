@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://web.resource.org/cc/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.44.1"
+   sodipodi:docname="architecture.svg"
+   sodipodi:docbase="/home/olivier/dev/telemeta/doc/devel"
+   inkscape:export-filename="/home/olivier/dev/telemeta/doc/devel/architecture.png"
+   inkscape:export-xdpi="144"
+   inkscape:export-ydpi="144">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     gridtolerance="10000"
+     guidetolerance="10"
+     objecttolerance="10"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.6081777"
+     inkscape:cx="373.30355"
+     inkscape:cy="817.84144"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     gridspacingx="10px"
+     gridspacingy="10px"
+     inkscape:grid-points="true"
+     inkscape:window-width="1016"
+     inkscape:window-height="677"
+     inkscape:window-x="0"
+     inkscape:window-y="31" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g3137"
+       transform="translate(230,109.9563)">
+      <rect
+         y="152.40588"
+         x="-110"
+         height="49.956299"
+         width="400"
+         id="rect2160"
+         style="fill:#4e9a06;fill-rule:evenodd;stroke:none;stroke-width:1.93383527px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <flowRoot
+         xml:space="preserve"
+         id="flowRoot3021"
+         transform="translate(-618.8906,-61.10662)"
+         style="fill:#eeeeec"><flowRegion
+           id="flowRegion3023"><rect
+             id="rect3025"
+             width="299.50085"
+             height="41.732269"
+             x="520.49915"
+             y="220.62991"
+             style="fill:#eeeeec" /></flowRegion><flowPara
+           id="flowPara3027"
+           style="font-size:12px;font-weight:bold;fill:#eeeeec">Model</flowPara><flowPara
+           style="font-size:8px;fill:#eeeeec"
+           id="flowPara3035">The Model provides a complete data abstraction layer, through a well designed API, for both audio content and metadata.</flowPara></flowRoot>    </g>
+    <g
+       id="g3053"
+       transform="translate(10,159.9563)">
+      <rect
+         y="162.40588"
+         x="110"
+         height="29.999998"
+         width="190"
+         id="rect3055"
+         style="fill:#c4a000;fill-rule:evenodd;stroke:none;stroke-width:1.93383527px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3057"
+         y="182.23596"
+         x="207.48438"
+         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;fill:#eeeeec;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           y="182.23596"
+           x="207.48438"
+           sodipodi:role="line"
+           id="tspan3083">Audio content</tspan></text>
+    </g>
+    <g
+       transform="translate(290,159.9563)"
+       id="g3067">
+      <rect
+         style="fill:#c4a000;fill-rule:evenodd;stroke:none;stroke-width:1.93383527px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         id="rect3069"
+         width="200"
+         height="29.999998"
+         x="30"
+         y="162.40588" />
+      <text
+         xml:space="preserve"
+         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;fill:#eeeeec;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         x="132.25"
+         y="182.40588"
+         id="text3071"
+         sodipodi:linespacing="125%"><tspan
+           sodipodi:role="line"
+           x="132.25"
+           y="182.40588"
+           id="tspan3079">Metadata</tspan></text>
+    </g>
+    <g
+       id="g3335">
+      <g
+         id="g3142"
+         transform="translate(20,19.9563)">
+        <rect
+           y="122.40588"
+           x="100"
+           height="109.9563"
+           width="160"
+           id="rect3144"
+           style="fill:#204a87;fill-rule:evenodd;stroke:none;stroke-width:1.93383527px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      </g>
+      <flowRoot
+         style="fill:#eeeeec"
+         transform="translate(-390.4766,-71.10662)"
+         id="flowRoot3091"
+         xml:space="preserve"
+         inkscape:export-xdpi="144"
+         inkscape:export-ydpi="144"
+         inkscape:export-filename="/home/olivier/dev/telemeta/doc/devel/architecture.png"><flowRegion
+           id="flowRegion3093"><rect
+             style="fill:#eeeeec"
+             y="220.62991"
+             x="520.49915"
+             height="81.732269"
+             width="139.50085"
+             id="rect3095" /></flowRegion><flowPara
+           style="font-size:12px;font-weight:bold;fill:#eeeeec"
+           id="flowPara3097">Controller</flowPara><flowPara
+           id="flowPara3101"
+           style="font-size:8px;fill:#eeeeec">The Controller receives requests from users, administrators, or remote systems, usually via HTTP, and routes them to the proper View(s) and Model calls.</flowPara></flowRoot>    </g>
+    <g
+       id="g3107"
+       transform="matrix(1,0,0,0.583181,169.9999,144.3046)">
+      <rect
+         y="82.405945"
+         x="120"
+         height="102.88401"
+         width="230.00011"
+         id="rect3109"
+         style="fill:#a40000;fill-rule:evenodd;stroke:none;stroke-width:1.93383527px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    </g>
+    <g
+       id="g3117"
+       transform="translate(320,49.9563)">
+      <rect
+         y="92.405884"
+         x="150"
+         height="40"
+         width="50"
+         id="rect3119"
+         style="fill:#ad7fa8;fill-rule:evenodd;stroke:none;stroke-width:1.93383527px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3121"
+         y="112.40588"
+         x="178.57129"
+         style="font-size:9px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;fill:#eeeeec;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           id="tspan3125"
+           y="112.40588"
+           x="178.57129"
+           sodipodi:role="line">Backup</tspan></text>
+    </g>
+    <g
+       transform="translate(170,9.912599)"
+       id="g3127">
+      <rect
+         style="fill:#ad7fa8;fill-rule:evenodd;stroke:none;stroke-width:1.93383527px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         id="rect3129"
+         width="50"
+         height="39.956299"
+         x="120"
+         y="132.44958" />
+      <text
+         xml:space="preserve"
+         style="font-size:9px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;fill:#eeeeec;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         x="144.18555"
+         y="152.40588"
+         id="text3131"
+         sodipodi:linespacing="125%"><tspan
+           sodipodi:role="line"
+           x="144.18555"
+           y="152.40588"
+           id="tspan3135">HTML</tspan></text>
+    </g>
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot3141"
+       transform="translate(-220.4766,-21.10662)"
+       style="fill:#eeeeec"><flowRegion
+         id="flowRegion3143"><rect
+           id="rect3145"
+           width="209.50085"
+           height="51.732269"
+           x="520.49915"
+           y="220.62991"
+           style="fill:#eeeeec" /></flowRegion><flowPara
+         id="flowPara3147"
+         style="font-size:12px;font-weight:bold;fill:#eeeeec">View</flowPara><flowPara
+         style="font-size:8px;fill:#eeeeec"
+         id="flowPara3149">There are several Views, for generating HTML, XML based backups, OGG/MP3 exports, etc.. out of the Model, as required by the Controller.</flowPara></flowRoot>    <g
+       id="g3153"
+       transform="translate(290,-20.0437)">
+      <rect
+         y="162.40588"
+         x="120"
+         height="39.956299"
+         width="50"
+         id="rect3155"
+         style="fill:#ad7fa8;fill-rule:evenodd;stroke:none;stroke-width:1.93383527px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3157"
+         y="182.36218"
+         x="146.67285"
+         style="font-size:9px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;fill:#eeeeec;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           id="tspan3161"
+           y="182.36218"
+           x="146.67285"
+           sodipodi:role="line">Export</tspan></text>
+    </g>
+    <g
+       id="g3165"
+       transform="translate(230,9.912599)">
+      <rect
+         y="132.44958"
+         x="120"
+         height="39.956299"
+         width="50"
+         id="rect3167"
+         style="fill:#ad7fa8;fill-rule:evenodd;stroke:none;stroke-width:1.93383527px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3169"
+         y="152.44958"
+         x="145.76172"
+         style="font-size:9px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;fill:#eeeeec;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           id="tspan3171"
+           y="152.44958"
+           x="145.76172"
+           sodipodi:role="line">Dublin</tspan><tspan
+           y="163.69958"
+           x="145.76172"
+           sodipodi:role="line"
+           id="tspan3175">Core</tspan></text>
+    </g>
+  </g>
+</svg>
