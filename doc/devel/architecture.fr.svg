@@ -15,9 +15,9 @@
    inkscape:version="0.44.1"
    sodipodi:docname="architecture.fr.svg"
    sodipodi:docbase="/home/olivier/dev/telemeta/doc/devel"
-   inkscape:export-filename="/home/olivier/dev/telemeta/doc/devel/architecture.png"
-   inkscape:export-xdpi="144"
-   inkscape:export-ydpi="144">
+   inkscape:export-filename="/home/olivier/dev/telemeta/doc/devel/architecture.fr.png"
+   inkscape:export-xdpi="300"
+   inkscape:export-ydpi="300">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -32,7 +32,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="1.6081777"
      inkscape:cx="373.30355"
-     inkscape:cy="780.00212"
+     inkscape:cy="835.63412"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -145,7 +145,9 @@
            style="font-size:8px;font-weight:normal">Stocke les méta données</tspan></text>
     </g>
     <g
-       id="g3335">
+       id="g3335"
+       inkscape:export-xdpi="600"
+       inkscape:export-ydpi="600">
       <g
          id="g3142"
          transform="translate(20,19.9563)">
