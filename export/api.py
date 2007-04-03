@@ -1,5 +1,5 @@
 
-class IExporter():
+class IExporter:
     """Export driver interface"""
 
     # Remark: the method prototypes do not include any self or cls argument 
@@ -32,7 +32,7 @@ class IExporter():
         temporary directory should be used if that's not the case.
         """
 
-    def process(item_id, source, metadata)
+    def process(item_id, source, metadata):
         """Perform the exporting process and return the absolute path 
         to the resulting file.
 
