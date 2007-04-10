@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h3>Media items</h3>
+{% if object_list %}
+    <ul>
+    {% for p in object_list %}
+        <li><b>{{ p.author }}</b> - {{ p.title }}
+            <a href="{{ p.id }}">View</a>
+            <a href="#">Edit</a>
+            </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No pieces are available.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,12 @@
+<pre>{% debug %}</pre>
+
+<h3>Pieces</h3>
+{% if pieces %}
+    <ul>
+    {% for p in pieces %}
+        <li><b>{{ p.author }}</b> - {{ p.title }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No pieces are available.</p>
+{% endif %}

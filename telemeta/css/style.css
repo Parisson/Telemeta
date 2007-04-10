@@ -1,0 +1,19 @@
+body {
+    font-family: Verdana;
+}
+
+#header {
+    font-size: 16px;
+    border-bottom: solid 1px black;
+    font-weight: bold;
+}
+
+label {
+    width: 20ex;
+    display: block;
+    float: left;
+}
+
+input {
+    margin-bottom: 4px;
+}
