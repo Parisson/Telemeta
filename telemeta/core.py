@@ -1,27 +1,25 @@
 # -*- coding: utf-8 -*-
 #
+# Copyright (C) 2007 Samalyse
 # Copyright (C) 2003-2005 Edgewall Software
 # Copyright (C) 2003-2004 Jonas Borgström <jonas@edgewall.com>
 # Copyright (C) 2004-2005 Christopher Lenz <cmlenz@gmx.de>
 # All rights reserved.
 #
 # This software is licensed as described in the file COPYING, which
-# you should have received as part of this distribution. The terms
-# are also available at http://trac.edgewall.org/wiki/TracLicense.
-#
-# This software consists of voluntary contributions made by many
-# individuals. For the exact contribution history, see the revision
-# history and logs, available at http://trac.edgewall.org/log/.
+# you should have received as part of this distribution. 
 #
 # Author: Jonas Borgström <jonas@edgewall.com>
 #         Christopher Lenz <cmlenz@gmx.de>
+#         Olivier Guilyardi <olivier@samalyse.com>
 
 __all__ = ['Component', 'ExtensionPoint', 'implements', 'Interface',
-           'TracError']
+           'TelemetaError']
 
 
-class TracError(Exception):
-    """Exception base class for errors in Trac."""
+class TelemetaError(Exception):
+    """Exception base class for errors in Telemeta."""
+    # FIXME: is this redundant with Django's error handling ?
 
     def __init__(self, message, title=None, show_traceback=False):
         Exception.__init__(self, message)
@@ -174,11 +172,11 @@ class ComponentManager(object):
         component = self.components.get(cls)
         if not component:
             if cls not in ComponentMeta._components:
-                raise TracError, 'Component "%s" not registered' % cls.__name__
+                raise TelemetaError, 'Component "%s" not registered' % cls.__name__
             try:
                 component = cls(self)
             except TypeError, e:
-                raise TracError, 'Unable to instantiate component %r (%s)' \
+                raise TelemetaError, 'Unable to instantiate component %r (%s)' \
                                  % (cls, e)
         return component
 
