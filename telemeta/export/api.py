@@ -1,3 +1,16 @@
+# -*- coding: utf-8 -*-
+#
+# Copyright (C) 2007 Parisson SARL
+# Copyright (c) 2007 Olivier Guilyardi <olivier@samalyse.com>
+# Copyright (c) 2007 Guillaume Pellerin <pellerin@parisson.com>
+# All rights reserved.
+#
+# This software is licensed as described in the file COPYING, which
+# you should have received as part of this distribution. The terms
+# are also available at http://svn.parisson.org/telemeta/TelemetaLicense.
+#
+# Author: Olivier Guilyardi <olivier@samalyse.com>
+#		  Guillaume Pellerin <pellerin@parisson.com>
 
 class IExporter:
     """Export driver interface"""
@@ -24,7 +37,7 @@ class IExporter:
     def get_mime_type():
         """Return the mime type corresponding to this export format"""
 
-    def set_cache_directory(path):
+    def set_cache_dir(path):
         """Set the directory where cached files should be stored. Does nothing
         if the exporter doesn't support caching. 
        
@@ -39,18 +52,17 @@ class IExporter:
         item_id is the media item id that uniquely identifies this audio/video
         resource
 
-        source is the audio/video source file absolute path. For audio that should
-        be a WAV file
+        source is the audio/video source file absolute path. For audio that
+		should be a WAV file
 
         metadata is a dictionary
 
         The returned file path is not meant to be permanent in any way, it 
         should be considered temporary/volatile by the caller.
 
-        It is highly recommended that export drivers implement some sort of cache
-        instead of re-encoding each time process() is called. 
+        It is highly recommended that export drivers implement some sort of
+		cache instead of re-encoding each time process() is called.
 
-        It should be possible to make subsequent calls to process() with different
-        items, using the same driver instance.
+        It should be possible to make subsequent calls to process() with
+		different items, using the same driver instance.
         """
-
