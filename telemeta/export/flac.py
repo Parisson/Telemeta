@@ -84,21 +84,39 @@ class FlacExporter(ExporterCore):
 		self.source = source
 		self.metadata = metadata
 
-		if self.metadata['flac_quality'] != '':
+		if 'flac_quality' in self.metadata and \
+		   self.metadata['flac_quality'] != '':
 			args = '-f -V -'+self.metadata['flac_quality']
 		else:
 			args = '-f -s 	-V -'+self.quality_default
 
-		if self.metadata['verbose'] == '0':
+		if not 'verbose' in self.metadata or self.metadata['verbose'] == '0':
 			args = args+' -s'
 	
 		try:
+			# Pre-proccessing (core)
+			self.ext = self.get_file_extension()
+			self.dest = self.pre_process(self.item_id,
+										 self.source,
+										 self.metadata,
+										 self.ext,
+										 self.cache_dir)
+			
 			# Encoding
 			os.system('flac '+args+' -o "'+self.dest+'" "'+ \
 					  self.source+'" > /dev/null')
-			# Write tags
+
+			# Pre-proccessing (self)
 			self.write_tags()
+			self.post_process(self.item_id,
+						 self.source,
+						 self.metadata,
+						 self.ext,
+						 self.cache_dir)
+
+			# Output
 			return self.dest
+
 		except IOError:
 			return 'ExporterError [3]: source file does not exist.'
 

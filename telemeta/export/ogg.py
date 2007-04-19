@@ -72,29 +72,46 @@ class OggExporter(ExporterCore):
 		self.item_id = item_id
 		self.source = source
 		self.metadata = metadata
-		self.quality = self.metadata['ogg_quality']
-		self.bitrate = self.metadata['ogg_bitrate']
+		#self.quality = self.metadata['ogg_quality']
+		#self.bitrate = self.metadata['ogg_bitrate']
 
-		if self.bitrate != '':
-			args = '-b '+self.bitrate
-		elif self.quality != '':
-			args = '-q '+self.quality
+		if 'ogg_bitrate' in self.metadata:
+			args = '-b '+self.metadata['ogg_bitrate']
+		elif 'ogg_quality' in self.metadata:
+			args = '-q '+self.metadata['ogg_quality']
 		else:
 			args = '-b '+self.bitrate_default
 
-		if self.metadata['verbose'] == '0':
-			args = args+' -Q'
-
+		if not 'verbose' in self.metadata or self.metadata['verbose'] == '0':
+			args = args + ' -Q'
+		
 		if os.path.exists(self.source) and not iswav16(self.source):
 			self.source = self.decode()
 			
 		try:
+			# Pre-proccessing (core)
+			self.ext = self.get_file_extension()
+			self.dest = self.pre_process(self.item_id,
+										 self.source,
+										 self.metadata,
+										 self.ext,
+										 self.cache_dir)
+			
 			# Encoding
 			os.system('oggenc '+args+' -o "'+self.dest+
 					  '" "'+self.source+'"')
-			# Write tags
+			
+			# Pre-proccessing (self)
 			self.write_tags()
+			self.post_process(self.item_id,
+						 self.source,
+						 self.metadata,
+						 self.ext,
+						 self.cache_dir)
+						
+			# Output
 			return self.dest
+
 		except IOError:
 			return 'ExporterError [3]: source file does not exist.'
 

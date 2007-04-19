@@ -49,13 +49,6 @@ class ExporterCore:
 		except IOError:
 			return 'Exporter error: Cannot normalize, path does not exist.'
 
-			
-	def create_md5_key(self):
-		""" Create the md5 keys of the dest """
-		try:
-			os.system('md5sum -b "'+self.dest+'" >"'+self.dest+'.md5"')
-		except IOError:
-			return 'Exporter error: Cannot create the md5 key...'
 
 	def check_md5_key(self):
 		""" Check if the md5 key is OK and return a boolean """
@@ -66,16 +59,6 @@ class ExporterCore:
 		except IOError:
 			return 'Exporter error: Cannot check the md5 key...'
 	
-	def create_par_key(self):
-		""" Create the par2 keys of the dest """
-		args = 'c -n1 '
-		if self.verbose == '0':
-			args = args + '-q -q '
-		try:
-			os.system('par2 '+args+' "'+self.dest+'"')
-		except IOError:
-			return 'Exporter error: Cannot create the par2 key...'
-
 	def get_file_info(self):
 		""" Return the list of informations of the dest """
 		return self.export.get_file_info()
@@ -116,73 +99,58 @@ class ExporterCore:
 		xml.dom.ext.PrettyPrint(doc, xml_file)
 		xml_file.close()
 
-	def process(self, item_id, source, metadata):
-		""" Export the source """
+
+	def pre_process(self, item_id, source, metadata, ext, cache_dir):
+		""" Pre processing of the core. Prepare the export path and
+		return it"""
 		self.item_id = item_id
 		self.source = source
 		file_name = get_file_name(self.source)
 		file_name_wo_ext, file_ext = split_file_name(file_name)
+		self.cache_dir = cache_dir
 
 		self.metadata = metadata
 		self.collection = self.metadata['Collection']
 		self.artist = self.metadata['Artist']
 		self.title = self.metadata['Title']
-		self.verbose = self.metadata['verbose']
 
-		# The Loop
-		for format in self.metadata['export_formats']:
+		# Decode the source if needed
+		if os.path.exists(self.source) and not iswav16(self.source):
+			# TO FIX !
+			self.source = self.export.decode()
 
-			# Implement the exporter object with the given format
-			if format == 'OGG':
-				self.export = telemeta.export.ogg.OggExporter()
-			if format == 'FLAC':
-				self.export = telemeta.export.FlacExporter()
-			if format == 'WAV':
-				self.export = telemeta.export.WavExporter()
+		# Normalize if demanded
+		if 'normalize' in self.metadata and self.metadata['normalize']:
+			self.normalize()
 
-			# Decode the source if needed
-			if os.path.exists(self.source) and not iswav16(self.source):
-				# TO FIX ! 
-				self.source = self.export.decode()
+		# Define the cache directory
+		self.ext = self.get_file_extension()
 
-			# Normalize if demanded
-			if 'normalize' in self.metadata and self.metadata['normalize']:
-				self.normalize()
+		# Define and create the destination path
+		# At the moment, the target directory is built with this scheme in
+		# the cache directory : ./%Format/%Collection/%Artist/
+		self.dest = self.cache_dir
+		export_dir = os.path.join(self.ext,self.collection,self.artist)
 
-			# Define the cache directory
-			self.export.set_cache_dir(self.cache_dir)
-			self.ext = self.export.get_file_extension()
-			
-			# Define and create the destination path
-			# At the moment, the target directory is built with this scheme in
-			# the cache directory : ./%Format/%Collection/%Artist/
-			self.dest = self.cache_dir
-			export_dir = os.path.join(self.ext,self.collection,self.artist)
+		if not os.path.exists(os.path.join(self.dest,export_dir)):
+			for _dir in export_dir.split(os.sep):
+				self.dest = os.path.join(self.dest,_dir)
+				if not os.path.exists(self.dest):
+					os.mkdir(self.dest)
+		else:
+			self.dest = os.path.join(self.dest,export_dir)
 
-			if not os.path.exists(os.path.join(self.dest,export_dir)):
-				for _dir in export_dir.split(os.sep):
-					self.dest = os.path.join(self.dest,_dir)
-					if not os.path.exists(self.dest):
-						os.mkdir(self.dest)
-			else:
-				self.dest = os.path.join(self.dest,export_dir)
+		# Set the target file
+		target_file = file_name_wo_ext+'.'+self.ext
+		self.dest = os.path.join(self.dest,target_file)
+		return self.dest
 
-			# Set the target file
-			target_file = file_name_wo_ext+'.'+self.ext
-			self.dest = os.path.join(self.dest,target_file)
-			self.export.dest = self.dest
-			
-			# Process
-			try:
-				self.export.process(self.item_id,
-								    self.source,
-									self.metadata)
-			except IOError:
-				return 'Encoding failed !'
 
-			if self.verbose != '0':
-				print self.dest
-				print self.export.get_file_info()
+	def post_process(self, item_id, source, metadata, ext, cache_dir):
+		""" Post processing of the Core. Print infos, etc..."""
+		if 'verbose' in self.metadata and self.verbose != '0':
+			print self.dest
+			print self.get_file_info()
 
 
 # External functions
