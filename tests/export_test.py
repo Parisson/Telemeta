@@ -14,6 +14,8 @@
 import os
 
 from telemeta.export import *
+from telemeta.core import *
+from telemeta.core import ComponentManager
 
 cache_dir = 'cache/'
 source = 'samples/wav/Cellar - Show Me - 02.wav'
@@ -23,17 +25,22 @@ metadata = {'Collection': 'Test',
 		 'Artist': 'Cellar',
 		 'Encoder': 'Telemeta',
 		 }
+options = {'verbose': '1'}
 
-media1 = OggExporter()
-media1.set_cache_dir(cache_dir)
-media1.process(item_id,source,metadata)
 
-media2 = FlacExporter()
-media2.set_cache_dir(cache_dir)
-media2.process(item_id,source,metadata)
+class ExportTest(Component):
+	exporters = ExtensionPoint(IExporter)
 
-media3 = WavExporter()
-media3.set_cache_dir(cache_dir)
-media3.process(item_id,source,metadata)
+	def run(self):
+		for exporter in self.exporters:
+			format = exporter.get_format()
+			print "+------------------------------------------"
+			print '| Testing exporter format: ' + format
+			print "+------------------------------------------"
+			exporter.set_cache_dir(cache_dir)
+			exporter.process(item_id,source,metadata,options)
 
+compmgr = ComponentManager()
+test = ExportTest(compmgr)
+test.run()
 

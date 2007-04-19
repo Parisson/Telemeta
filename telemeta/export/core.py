@@ -5,7 +5,7 @@
 # All rights reserved.
 #
 # This software is licensed as described in the file COPYING, which
-# you should have received as part of this distribution. The terms
+# yo"u should have received as part of this distribution. The terms
 # are also available at http://svn.parisson.org/telemeta/TelemetaLicense.
 #
 # Author: Guillaume Pellerin <pellerin@parisson.com>
@@ -16,16 +16,14 @@ import string
 
 import telemeta.export
 from telemeta.export import *
-from telemeta.export.api import IExporter
+from telemeta.core import *
 from telemeta.export.default import Tags, Options, Collection
 import xml.dom.minidom
 import xml.dom.ext
 
-class ExporterCore:
+class ExporterCore(Component):
 	"""Defines the main parts of the exporting tools :
 	paths, formats, metadata..."""
-
-	#implements(IExporter) ?
 
 	def __init__(self):
 		self.source = ''
@@ -48,7 +46,6 @@ class ExporterCore:
 			return self.source
 		except IOError:
 			return 'Exporter error: Cannot normalize, path does not exist.'
-
 
 	def check_md5_key(self):
 		""" Check if the md5 key is OK and return a boolean """
@@ -100,7 +97,7 @@ class ExporterCore:
 		xml_file.close()
 
 
-	def pre_process(self, item_id, source, metadata, ext, cache_dir):
+	def pre_process(self, item_id, source, metadata, ext, cache_dir, options):
 		""" Pre processing of the core. Prepare the export path and
 		return it"""
 		self.item_id = item_id
@@ -108,6 +105,7 @@ class ExporterCore:
 		file_name = get_file_name(self.source)
 		file_name_wo_ext, file_ext = split_file_name(file_name)
 		self.cache_dir = cache_dir
+		self.options = options
 
 		self.metadata = metadata
 		self.collection = self.metadata['Collection']
@@ -146,7 +144,7 @@ class ExporterCore:
 		return self.dest
 
 
-	def post_process(self, item_id, source, metadata, ext, cache_dir):
+	def post_process(self, item_id, source, metadata, ext, cache_dir, options):
 		""" Post processing of the Core. Print infos, etc..."""
 		if 'verbose' in self.metadata and self.verbose != '0':
 			print self.dest

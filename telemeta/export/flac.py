@@ -14,11 +14,14 @@ import os
 import string
 
 from telemeta.export.core import *
+from telemeta.export.api import IExporter
 from mutagen.flac import FLAC
 
 class FlacExporter(ExporterCore):
 	"""Defines methods to export to OGG Vorbis"""
 
+	implements(IExporter)
+	
 	def __init__(self):
 		self.item_id = ''
 		self.metadata = []
@@ -79,10 +82,11 @@ class FlacExporter(ExporterCore):
 				media[tag] = str(self.metadata[tag])
 		media.save()
 		
-	def process(self, item_id, source, metadata):
+	def process(self, item_id, source, metadata, options):
 		self.item_id = item_id
 		self.source = source
 		self.metadata = metadata
+		self.options = options
 
 		if 'flac_quality' in self.metadata and \
 		   self.metadata['flac_quality'] != '':
@@ -100,7 +104,8 @@ class FlacExporter(ExporterCore):
 										 self.source,
 										 self.metadata,
 										 self.ext,
-										 self.cache_dir)
+										 self.cache_dir,
+										 self.options)
 			
 			# Encoding
 			os.system('flac '+args+' -o "'+self.dest+'" "'+ \
@@ -112,7 +117,8 @@ class FlacExporter(ExporterCore):
 						 self.source,
 						 self.metadata,
 						 self.ext,
-						 self.cache_dir)
+						 self.cache_dir,
+						 self.options)
 
 			# Output
 			return self.dest

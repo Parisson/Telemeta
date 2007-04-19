@@ -14,11 +14,14 @@ import os
 import string
 
 from telemeta.export.core import *
+from telemeta.export.api import IExporter
 from mutagen.oggvorbis import OggVorbis
 
 class OggExporter(ExporterCore):
 	"""Defines methods to export to OGG Vorbis"""
 
+	implements(IExporter)
+	
 	def __init__(self):
 		self.item_id = ''
 		self.metadata = []
@@ -68,12 +71,11 @@ class OggExporter(ExporterCore):
 			media[tag] = str(self.metadata[tag])
 		media.save()
 		
-	def process(self, item_id, source, metadata):
+	def process(self, item_id, source, metadata, options):
 		self.item_id = item_id
 		self.source = source
 		self.metadata = metadata
-		#self.quality = self.metadata['ogg_quality']
-		#self.bitrate = self.metadata['ogg_bitrate']
+		self.options = options
 
 		if 'ogg_bitrate' in self.metadata:
 			args = '-b '+self.metadata['ogg_bitrate']
@@ -95,7 +97,8 @@ class OggExporter(ExporterCore):
 										 self.source,
 										 self.metadata,
 										 self.ext,
-										 self.cache_dir)
+										 self.cache_dir,
+										 self.options)
 			
 			# Encoding
 			os.system('oggenc '+args+' -o "'+self.dest+
@@ -107,7 +110,8 @@ class OggExporter(ExporterCore):
 						 self.source,
 						 self.metadata,
 						 self.ext,
-						 self.cache_dir)
+						 self.cache_dir,
+						 self.options)
 						
 			# Output
 			return self.dest

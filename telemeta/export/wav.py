@@ -14,10 +14,13 @@ import os
 import string
 
 from telemeta.export.core import *
+from telemeta.export.api import IExporter
 
 class WavExporter(ExporterCore):
 	"""Defines methods to export to OGG Vorbis"""
 
+	implements(IExporter)
+	
 	def __init__(self):
 		self.item_id = ''
 		self.metadata = []
@@ -91,10 +94,11 @@ class WavExporter(ExporterCore):
 		except IOError:
 			return 'Exporter error: Cannot create the par2 key...'
 
-	def process(self, item_id, source, metadata):
+	def process(self, item_id, source, metadata, options):
 		self.item_id = item_id
 		self.source = source
 		self.metadata = metadata
+		self.options = options
 
 		try:
 			# Pre-proccessing (core)
@@ -103,7 +107,8 @@ class WavExporter(ExporterCore):
 										 self.source,
 										 self.metadata,
 										 self.ext,
-										 self.cache_dir)
+										 self.cache_dir,
+										 self.options)
 
 			#if self.compare_md5_key():
 			os.system('cp -a "'+self.source+'" "'+ self.dest+'"')
@@ -115,7 +120,8 @@ class WavExporter(ExporterCore):
 						 self.source,
 						 self.metadata,
 						 self.ext,
-						 self.cache_dir)
+						 self.cache_dir,
+						 self.options)
 
 			# Special post process
 			# Create the md5 key
