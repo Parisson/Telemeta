@@ -146,7 +146,7 @@ class ExporterCore(Component):
 
 	def post_process(self, item_id, source, metadata, ext, cache_dir, options):
 		""" Post processing of the Core. Print infos, etc..."""
-		if 'verbose' in self.metadata and self.verbose != '0':
+		if 'verbose' in self.options and self.options['verbose'] != '0':
 			print self.dest
 			print self.get_file_info()
 

@@ -23,12 +23,12 @@ class WavExporter(ExporterCore):
 	
 	def __init__(self):
 		self.item_id = ''
-		self.metadata = []
+		self.metadata = {}
 		self.description = ''
 		self.info = []
 		self.source = ''
 		self.dest = ''
-		
+		self.options = {}
 		
 	def get_format(self):
 		return 'WAV'
@@ -87,7 +87,7 @@ class WavExporter(ExporterCore):
 	def create_par_key(self):
 		""" Create the par2 keys of the dest """
 		args = 'c -n1 '
-		if not 'verbose' in self.metadata or self.metadata['verbose'] == '0':
+		if 'verbose' in self.options and self.options['verbose'] == '0':
 			args = args + '-q -q '
 		try:
 			os.system('par2 '+args+' "'+self.dest+'"')
@@ -116,14 +116,7 @@ class WavExporter(ExporterCore):
 			
 			# Pre-proccessing (self)
 			self.write_tags()
-			self.post_process(self.item_id,
-						 self.source,
-						 self.metadata,
-						 self.ext,
-						 self.cache_dir,
-						 self.options)
 
-			# Special post process
 			# Create the md5 key
 			#if 'md5' in self.metadata and self.metadata['md5']:
 			self.create_md5_key()
@@ -131,6 +124,13 @@ class WavExporter(ExporterCore):
 			# Create the par2 key
 			#if 'par2' in self.metadata and self.metadata['par2']:
 			self.create_par_key()
+
+			self.post_process(self.item_id,
+						 self.source,
+						 self.metadata,
+						 self.ext,
+						 self.cache_dir,
+						 self.options)
 
 			# Output				
 			return self.dest

@@ -10,7 +10,6 @@
 #
 # Author: Guillaume Pellerin <pellerin@parisson.com>
 
-
 import os
 
 from telemeta.export import *
@@ -25,7 +24,7 @@ metadata = {'Collection': 'Test',
 		 'Artist': 'Cellar',
 		 'Encoder': 'Telemeta',
 		 }
-options = {'verbose': '1'}
+options = {'verbose': '0'}
 
 
 class ExportTest(Component):
@@ -34,11 +33,13 @@ class ExportTest(Component):
 	def run(self):
 		for exporter in self.exporters:
 			format = exporter.get_format()
-			print "+------------------------------------------"
-			print '| Testing exporter format: ' + format
-			print "+------------------------------------------"
+			if 'verbose' in options and options['verbose'] != '0':
+				print "+------------------------------------------"
+				print '| Testing exporter format: ' + format
+				print "+------------------------------------------"
 			exporter.set_cache_dir(cache_dir)
 			exporter.process(item_id,source,metadata,options)
+
 
 compmgr = ComponentManager()
 test = ExportTest(compmgr)

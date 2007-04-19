@@ -24,11 +24,12 @@ class OggExporter(ExporterCore):
 	
 	def __init__(self):
 		self.item_id = ''
-		self.metadata = []
+		self.metadata = {}
 		self.description = ''
 		self.info = []
 		self.source = ''
 		self.dest = ''
+		self.options = {}
 		self.bitrate_default = '192'
 
 	def get_format(self):
@@ -77,14 +78,14 @@ class OggExporter(ExporterCore):
 		self.metadata = metadata
 		self.options = options
 
-		if 'ogg_bitrate' in self.metadata:
-			args = '-b '+self.metadata['ogg_bitrate']
-		elif 'ogg_quality' in self.metadata:
-			args = '-q '+self.metadata['ogg_quality']
+		if 'ogg_bitrate' in self.options:
+			args = '-b '+self.options['ogg_bitrate']
+		elif 'ogg_quality' in self.options:
+			args = '-q '+self.options['ogg_quality']
 		else:
 			args = '-b '+self.bitrate_default
 
-		if not 'verbose' in self.metadata or self.metadata['verbose'] == '0':
+		if 'verbose' in self.options and self.options['verbose'] == '0':
 			args = args + ' -Q'
 		
 		if os.path.exists(self.source) and not iswav16(self.source):

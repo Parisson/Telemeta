@@ -24,12 +24,13 @@ class FlacExporter(ExporterCore):
 	
 	def __init__(self):
 		self.item_id = ''
-		self.metadata = []
-		self.description = ''
-		self.info = []
 		self.source = ''
+		self.metadata = {}
+		self.options = {}
+		self.description = ''
 		self.dest = ''
 		self.quality_default = '5'
+		self.info = []
 		
 	def get_format(self):
 		return 'FLAC'
@@ -88,13 +89,13 @@ class FlacExporter(ExporterCore):
 		self.metadata = metadata
 		self.options = options
 
-		if 'flac_quality' in self.metadata and \
-		   self.metadata['flac_quality'] != '':
-			args = '-f -V -'+self.metadata['flac_quality']
+		if 'flac_quality' in self.options and \
+		   self.options['flac_quality'] != '':
+			args = '-f -V -'+self.options['flac_quality']
 		else:
-			args = '-f -s 	-V -'+self.quality_default
+			args = '-f -V -'+self.quality_default
 
-		if not 'verbose' in self.metadata or self.metadata['verbose'] == '0':
+		if 'verbose' in self.options and self.options['verbose'] == '0':
 			args = args+' -s'
 	
 		try:
