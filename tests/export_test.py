@@ -24,7 +24,7 @@ metadata = {'Collection': 'Test',
 		 'Artist': 'Cellar',
 		 'Encoder': 'Telemeta',
 		 }
-options = {'verbose': '0'}
+options = {'verbose': '1'}
 
 
 class ExportTest(Component):

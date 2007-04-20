@@ -17,7 +17,6 @@ import string
 import telemeta.export
 from telemeta.export import *
 from telemeta.core import *
-from telemeta.export.default import Tags, Options, Collection
 import xml.dom.minidom
 import xml.dom.ext
 
