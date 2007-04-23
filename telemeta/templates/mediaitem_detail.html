@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if item %}
+    <h3>Item: {{ item.title }}</h3>
+    <ul>
+    {% for field in item.list %}
+        {% ifnotequal field.name "id" %}
+        {% ifnotequal field.name "title" %}
+        {% ifnotequal field.name "file" %}
+
+        <li><b>{{ field.name }}</b> : 
+            {% ifequal field.name "collection" %}
+            <a href="/collections/{{ field.value.id }}">{{ field.value }}</a>
+            {% else %}
+            {{ field.value }}
+            {% endifequal %}
+            </li>
+
+        {% endifnotequal %}
+        {% endifnotequal %}
+        {% endifnotequal %}
+    {% endfor %}
+    </ul>
+    Download:
+    {% for format in export_formats %}
+        <a href="/items/{{ item.id }}/download/{{ format }}">{{ format }}</a>
+    {% endfor %}
+{% else %}
+    <p>No such item</p>
+{% endif %}
+{% endblock %}

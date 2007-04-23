@@ -1,5 +1,6 @@
 body {
     font-family: Verdana;
+    font-size: 11px;
 }
 
 #header {
@@ -16,4 +17,22 @@ label {
 
 input {
     margin-bottom: 4px;
+}
+
+#menu {
+    text-align: right;
+}
+
+#menu a:link, #menu a:visited {
+    border-bottom:1px dotted #BBBBBB;
+    color:#BB0000;
+    text-decoration:none;
+}
+
+#menu a:link:hover, #menu a:visited:hover {
+    background-color:#EEEEEE;
+    color:#555555;
+}
+
+#menu a {
 }

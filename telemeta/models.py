@@ -1,112 +1,115 @@
 import telemeta
 from django.db import models
-from django.core import validators
+from telemeta.core import *
 
-class Collection(models.Model):
+class MediaModel(Component):
+    pass
+
+class MediaCore:
+    def list(self):
+        fields_list = []
+        for field in self._meta.fields:
+            fields_list.append({'name': field.name, 'value': getattr(self, field.name)})
+        return fields_list
+
+    def to_dict(self):        
+        fields_dict = {}
+        for field in self._meta.fields:
+            fields_dict[field.name] = getattr(self, field.name)
+        return fields_dict
+
+class MediaCollection(models.Model, MediaCore):
     "Group related media items"
 
-    name = models.CharField(maxlength=250)
-
-    def __str__(self):
-        return self.name
-
-    class Admin:
-        pass
-
-class MediaItem(models.Model):
-    "Describe an audio/video item with metadata" 
-
-    collection = models.ForeignKey(Collection)
     title = models.CharField(maxlength=250)
-    author = models.CharField(maxlength=250)
-
-
-
-    def get_dynamic_properties(self):
-        "Retrieve dynamic properties associated with a given media item"
-
-        definitions = MediaItemPropertyDefinition.objects.all()
-        assigned = MediaItemProperty.objects.filter(media_item=self)
-        assigned_dict = {}
-        for p in assigned:
-            assigned_dict[p.definition.id] = p
-
-        properties = []
-        for d in definitions:
-            enumeration = MediaItemPropertyEnumerationItem.objects.filter(definition=d)
-
-            if d.id in assigned_dict:
-                if d.type == "text":
-                    value = assigned_dict[d.id].value
-                else:
-                    value = assigned_dict[d.id].enum_item
-
-                properties.append({
-                    "id": d.id, "name": d.name, "value": value,
-                    "type" : d.type, "enumeration" : enumeration})
-            else:
-                properties.append({"id": d.id, "name": d.name, "value": "", 
-                    "type" : d.type, "enumeration" : enumeration})
-
-        return properties
+    date = models.DateField()
+    contributor = models.CharField(maxlength=250, blank=True)
+    coverage = models.CharField(maxlength=250, blank=True)
+    creator = models.CharField(maxlength=250, blank=True)
+    description = models.CharField(maxlength=250, blank=True)
+    format = models.CharField(maxlength=250, blank=True)
+    identifier = models.CharField(maxlength=250, blank=True)
+    language = models.CharField(maxlength=250, blank=True)
+    publisher = models.CharField(maxlength=250, blank=True)
+    rights = models.CharField(maxlength=250, blank=True)
+    source = models.CharField(maxlength=250, blank=True)
+    subject = models.CharField(maxlength=250, blank=True)
 
     def __str__(self):
-        return self.author + " - " + self.title
+        return self.title
 
     class Meta:
-        pass
+        ordering = ['title']
+        db_table = 'telemeta_collection'
 
     class Admin:
         pass
 
-class MediaItemPropertyDefinition(models.Model):
-    "Define a media item dynamic property"
 
-    TYPE_CHOICES = (
-        ('text', 'Text'),
-        ('enumeration', 'Enumeration'),
-    ) 
 
-    name = models.CharField(maxlength=64)
-    type = models.CharField(maxlength=64, choices = TYPE_CHOICES)
+class MediaItem(models.Model, MediaCore):
+    "Describe a item with metadata" 
+
+    collection = models.ForeignKey(MediaCollection, related_name="items")
+    collection.dublin_core = 'relation'
+    identifier = models.CharField(maxlength=250)
+    title = models.CharField(maxlength=250)
+    creator = models.CharField(maxlength=250)
+    date = models.DateField()
+    file = models.FileField(upload_to='items/%Y/%m/%d')
+    subject = models.CharField(maxlength=250, blank=True)
+    description = models.TextField(maxlength=250, blank=True)
+    contributor = models.CharField(maxlength=250, blank=True)
+    coverage = models.CharField(maxlength=250, blank=True)
+    format = models.CharField(maxlength=25, blank=True)
+    language = models.CharField(maxlength=250, blank=True)
+    publisher = models.CharField(maxlength=250, blank=True)
+    rights = models.CharField(maxlength=250, blank=True)
+    source = models.CharField(maxlength=250, blank=True)
+    duration = models.FloatField(max_digits=11, decimal_places=3, null=True, blank=True)
 
     def __str__(self):
-        return self.name
+        return self.title
 
     class Admin:
         pass
-
-class MediaItemPropertyEnumerationItem(models.Model):
-    "Define a possible value for media item dynamic enumeration properties"
-
-    definition = models.ForeignKey(MediaItemPropertyDefinition, core=True)
-    name = models.CharField(maxlength=250)
-
-    def __str__(self):
-        return self.definition.name + " / " + self.name
-
-    class Admin:
-        pass
-    
-class MediaItemProperty(models.Model):
-    "Associate a value to a media item dynamic property"
-
-    definition = models.ForeignKey(MediaItemPropertyDefinition, core=True)
-    media_item = models.ForeignKey(MediaItem)
-    value = models.CharField(maxlength=250)
-    enum_item = models.ForeignKey(MediaItemPropertyEnumerationItem, null=True)
-
-    def __str__(self):
-        return str(self.media_item) + " / " + str(self.definition)
 
     class Meta:
-        unique_together = (("media_item", "definition"),)
+        ordering = ['title']
+        db_table = 'telemeta_item'
 
-    class Admin:
-        pass
-  
 
-class Part:
+class MediaPart(models.Model, MediaCore):
+    "Describe the part of a media item"
+
+    contributor = models.CharField(maxlength=250)
+    coverage = models.CharField(maxlength=250)
+    creator = models.CharField(maxlength=250)
+    date = models.DateField()
+    description = models.CharField(maxlength=250)
+    format = models.CharField(maxlength=250)
+    identifier = models.CharField(maxlength=250)
+    language = models.CharField(maxlength=250)
+    publisher = models.CharField(maxlength=250)
+    rights = models.CharField(maxlength=250)
+    source = models.CharField(maxlength=250)
+    subject = models.CharField(maxlength=250)
+    title = models.CharField(maxlength=250)
     media_item = models.ForeignKey(MediaItem)
+    media_item.dublin_core = 'relation'
     parent = models.ForeignKey('self', null=True, related_name='children')
-    name = models.CharField(maxlength=250)
+    media_item.dublin_core = 'relation'
+    start = models.FloatField(max_digits=11, decimal_places=3)
+    end = models.FloatField(max_digits=11, decimal_places=3)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        ordering = ['title']
+        db_table = 'telemeta_part'
+
+    class Admin:
+        pass
+
+

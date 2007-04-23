@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if object %}
+    <h3>Collection: {{ object.title }}</h3>
+    <ul>
+    {% for field in object.list %}
+        {% ifnotequal field.name "id" %}
+        {% ifnotequal field.name "title" %}
+
+        <li><b>{{ field.name }}</b> : {{ field.value }}</li>
+
+        {% endifnotequal %}
+        {% endifnotequal %}
+    {% endfor %}
+    </ul>
+    <hr>
+    <h4>Items</h4>
+    <ul>
+    {% for item in object.items.all %}
+        <li><b>{{ item.creator }}</b> - {{ items.title }}
+            <a href="/items/{{ item.id }}">View</a>
+            <a href="#">Edit</a>
+            </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No such collection</p>
+{% endif %}
+{% endblock %}

@@ -2,12 +2,15 @@
 import telemeta
 from django.template import Context, loader
 from django.http import HttpResponse
+from django.http import Http404
 from telemeta.models import MediaItem
-from telemeta.models import MediaItemPropertyDefinition
-from telemeta.models import MediaItemPropertyEnumerationItem
-from telemeta.models import MediaItemProperty
 from django.shortcuts import render_to_response
 import re
+from telemeta.core import *
+from telemeta.core import ComponentManager
+from telemeta.export import *
+from django.conf import settings
+import os
 
 def index(request):
     "Render the homepage"
@@ -18,6 +21,58 @@ def index(request):
         'media_items' : media_items,
     })
     return HttpResponse(template.render(context))
+
+class WebView(Component):
+
+    exporters = ExtensionPoint(IExporter)
+
+    def item_detail(self, request, item_id):
+        item = MediaItem.objects.get(pk=item_id)
+        formats = []
+        for exporter in self.exporters:
+            formats.append(exporter.get_format())
+        return render_to_response('mediaitem_detail.html', 
+                    {'item': item, 'export_formats': formats})
+
+    def file_stream(self, filepath):
+        buffer_size = 0xFFFF
+        f = open(filepath, 'rb')
+        chunk = f.read(buffer_size)
+        yield chunk
+        while chunk:
+            chunk = f.read(buffer_size)
+            yield chunk
+        f.close()            
+
+    def item_export(self, request, item_id, format):                    
+        for exporter in self.exporters:
+            if exporter.get_format() == format:
+                break
+
+        if exporter.get_format() != format:
+            raise Http404
+
+        mime_type = exporter.get_mime_type()
+
+        exporter.set_cache_dir(settings.TELEMETA_EXPORT_CACHE_DIR)
+
+        item = MediaItem.objects.get(pk=item_id)
+
+        infile = settings.MEDIA_ROOT + "/" + item.file
+        metadata = item.to_dict()
+        metadata['collection'] = str(metadata['collection'])
+        metadata['Collection'] = metadata['collection']
+        metadata['Artist'] = metadata['creator']
+        metadata['Title'] = metadata['title']
+
+        outfile = exporter.process(item.id, infile, metadata, [])
+
+        return HttpResponse(self.file_stream(outfile), mimetype = mime_type)
+
+comp_mgr = ComponentManager()
+view = WebView(comp_mgr)
+item_detail = view.item_detail
+item_export = view.item_export
 
 def media_item_edit(request, media_item_id):
     "Provide MediaItem object edition"
