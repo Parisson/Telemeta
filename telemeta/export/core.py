@@ -95,11 +95,10 @@ class ExporterCore(Component):
 		xml.dom.ext.PrettyPrint(doc, xml_file)
 		xml_file.close()
 
-
 	def pre_process(self, item_id, source, metadata, ext, cache_dir, options):
 		""" Pre processing of the core. Prepare the export path and
 		return it"""
-		self.item_id = item_id
+		self.item_id = str(item_id)
 		self.source = source
 		file_name = get_file_name(self.source)
 		file_name_wo_ext, file_ext = split_file_name(file_name)
@@ -107,9 +106,9 @@ class ExporterCore(Component):
 		self.options = options
 
 		self.metadata = metadata
-		self.collection = self.metadata['Collection']
-		self.artist = self.metadata['Artist']
-		self.title = self.metadata['Title']
+		#self.collection = self.metadata['Collection']
+		#self.artist = self.metadata['Artist']
+		#self.title = self.metadata['Title']
 
 		# Decode the source if needed
 		if os.path.exists(self.source) and not iswav16(self.source):
@@ -127,8 +126,9 @@ class ExporterCore(Component):
 		# At the moment, the target directory is built with this scheme in
 		# the cache directory : ./%Format/%Collection/%Artist/
 		self.dest = self.cache_dir
-		export_dir = os.path.join(self.ext,self.collection,self.artist)
 
+		#export_dir = os.path.join(self.ext,self.collection,self.artist)
+		export_dir = self.ext
 		if not os.path.exists(os.path.join(self.dest,export_dir)):
 			for _dir in export_dir.split(os.sep):
 				self.dest = os.path.join(self.dest,_dir)
@@ -138,7 +138,8 @@ class ExporterCore(Component):
 			self.dest = os.path.join(self.dest,export_dir)
 
 		# Set the target file
-		target_file = file_name_wo_ext+'.'+self.ext
+		#target_file = file_name_wo_ext+'.'+self.ext
+		target_file = self.item_id+'.'+self.ext
 		self.dest = os.path.join(self.dest,target_file)
 		return self.dest
 
@@ -245,3 +246,4 @@ def get_consts_value(self, data):
 	value = self.collection.__dict__[data]
 	value_type = getType(value)
 	return value, value_type
+

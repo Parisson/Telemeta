@@ -87,8 +87,11 @@ class WavExporter(ExporterCore):
 	def create_par_key(self):
 		""" Create the par2 keys of the dest """
 		args = 'c -n1 '
-		if 'verbose' in self.options and self.options['verbose'] == '0':
+		if 'verbose' in self.options and self.options['verbose'] != '0':
+			args = args
+		else:
 			args = args + '-q -q '
+
 		try:
 			os.system('par2 '+args+' "'+self.dest+'"')
 		except IOError:

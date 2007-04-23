@@ -95,7 +95,9 @@ class FlacExporter(ExporterCore):
 		else:
 			args = '-f -V -'+self.quality_default
 
-		if 'verbose' in self.options and self.options['verbose'] == '0':
+		if 'verbose' in self.options and self.options['verbose'] != '0':
+			args = args
+		else:
 			args = args+' -s'
 	
 		try:
