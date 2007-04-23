@@ -4,6 +4,7 @@ from django.template import Context, loader
 from django.http import HttpResponse
 from django.http import Http404
 from telemeta.models import MediaItem
+from telemeta.models import MediaCollection
 from django.shortcuts import render_to_response
 import re
 from telemeta.core import *
@@ -67,12 +68,26 @@ class WebView(Component):
 
         outfile = exporter.process(item.id, infile, metadata, [])
 
-        return HttpResponse(self.file_stream(outfile), mimetype = mime_type)
+        response = HttpResponse(self.file_stream(outfile), mimetype = mime_type)
+        response['Content-Disposition'] = 'attachment; filename="download.' + \
+                    exporter.get_file_extension() + '"'
+        return response
+
+    def quick_search(self, request):
+        pattern = request.REQUEST["pattern"]
+        collections = MediaCollection.objects.quick_search(pattern)
+        items = MediaItem.objects.quick_search(pattern)
+        return render_to_response('search_results.html', 
+                    {'pattern': pattern, 'collections': collections, 
+                     'items': items})
+
+        
 
 comp_mgr = ComponentManager()
 view = WebView(comp_mgr)
 item_detail = view.item_detail
 item_export = view.item_export
+quick_search = view.quick_search
 
 def media_item_edit(request, media_item_id):
     "Provide MediaItem object edition"

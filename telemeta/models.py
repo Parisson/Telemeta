@@ -1,5 +1,6 @@
 import telemeta
 from django.db import models
+from django.db.models import Q
 from telemeta.core import *
 
 class MediaModel(Component):
@@ -18,6 +19,13 @@ class MediaCore:
             fields_dict[field.name] = getattr(self, field.name)
         return fields_dict
 
+class MediaCollectionManager(models.Manager):
+    def quick_search(self, pattern):
+        return super(MediaCollectionManager, self).get_query_set().filter(
+            Q(title__icontains=pattern) |
+            Q(description__icontains=pattern)
+        )
+
 class MediaCollection(models.Model, MediaCore):
     "Group related media items"
 
@@ -35,6 +43,8 @@ class MediaCollection(models.Model, MediaCore):
     source = models.CharField(maxlength=250, blank=True)
     subject = models.CharField(maxlength=250, blank=True)
 
+    objects = MediaCollectionManager()
+
     def __str__(self):
         return self.title
 
@@ -45,7 +55,14 @@ class MediaCollection(models.Model, MediaCore):
     class Admin:
         pass
 
-
+class MediaItemManager(models.Manager):
+    def quick_search(self, pattern):
+        return super(MediaItemManager, self).get_query_set().filter(
+            Q(title__icontains=pattern) |
+            Q(creator__icontains=pattern) |
+            Q(identifier__icontains=pattern) |
+            Q(description__icontains=pattern) 
+        )
 
 class MediaItem(models.Model, MediaCore):
     "Describe a item with metadata" 
@@ -67,6 +84,8 @@ class MediaItem(models.Model, MediaCore):
     rights = models.CharField(maxlength=250, blank=True)
     source = models.CharField(maxlength=250, blank=True)
     duration = models.FloatField(max_digits=11, decimal_places=3, null=True, blank=True)
+
+    objects = MediaItemManager()
 
     def __str__(self):
         return self.title

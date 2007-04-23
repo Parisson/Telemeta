@@ -25,6 +25,9 @@ urlpatterns = patterns('',
         'django.views.generic.list_detail.object_detail',
         dict(all_collections, template_name="collection_detail.html")),
 
+    (r'^search/$', 
+        'telemeta.views.web.quick_search'),
+
 
     # CSS (FIXME: for developement only)
     (r'^css/(?P<path>.*)$', 'django.views.static.serve', {'document_root': './telemeta/css'}),
