@@ -46,13 +46,14 @@ input {
 }
 
 #quick_search {
-    float: right;
-    font-size: 80%;
+    position: absolute;
+    top: 2em;
+    right: 1em;
 }
 
 #quick_search input {
     vertical-align: middle;
-    font-size: 80%;
+    font-size: 90%;
 }
 
 #quick_search_pattern {

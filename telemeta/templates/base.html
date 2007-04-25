@@ -1,21 +1,25 @@
 <html>
 <link rel="stylesheet" href="/css/style.css" />
 <body>
+
 <div id="header">
 <a href="/">Telemeta Web Interface</a>
-    <div id="quick_search">
-    <form action="/search" method="GET">
-    <label for="quick_search_pattern">Search : </label>
-        <input id="quick_search_pattern" name="pattern" />
-        <input type="submit" value="OK" />
-    </form>        
-    </div>
 </div>
+
+<div id="quick_search">
+<form action="/search" method="GET">
+<input id="quick_search_pattern" name="pattern" />
+<input type="submit" value="Search" />
+</form>        
+</div>
+
 <div id="menu">
 <a href="/collections">Collections</a> |
 <a href="/items">Items</a> |
 <a href="/admin">Admin</a>
 </div>
+
 {% block content %}{% endblock %}
+
 </body>
 </html>
