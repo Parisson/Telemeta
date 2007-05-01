@@ -80,19 +80,21 @@ class OggExporter(ExporterCore):
 		
 		if not options is None:
 			self.options = options
+			
 			if 'verbose' in self.options and self.options['verbose'] != '0':
 				args = args
 			else:
 				args = args + ' -Q '
+			
 			if 'ogg_bitrate' in self.options:
-				args = '-b '+self.options['ogg_bitrate']
+				args = args + '-b '+self.options['ogg_bitrate']
 			elif 'ogg_quality' in self.options:
-				args = '-q '+self.options['ogg_quality']
+				args = args + '-q '+self.options['ogg_quality']
 			else:
-				args = '-b '+self.bitrate_default
+				args = args + '-b '+self.bitrate_default
 
 		else:
-			args = '-Q -b '+self.bitrate_default
+			args = ' -Q -b '+self.bitrate_default
 
 		if os.path.exists(self.source) and not iswav16(self.source):
 			self.source = self.decode()
