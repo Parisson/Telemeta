@@ -43,7 +43,7 @@ urlpatterns = patterns('',
     # administration        
     (r'^admin/$', web_view.admin_index),        
 
-    # dictionaries administrations
+    # dictionaries administration
     (r'^admin/dictionaries/(?P<dictionary_id>[0-9a-z]+)/$', web_view.edit_dictionary),        
     (r'^admin/dictionaries/(?P<dictionary_id>[0-9a-z]+)/add/$', web_view.add_to_dictionary),        
     (r'^admin/dictionaries/(?P<dictionary_id>[0-9a-z]+)/update/$', web_view.update_dictionary),        
