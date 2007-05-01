@@ -97,12 +97,12 @@ class WavExporter(ExporterCore):
 		except IOError:
 			return 'Exporter error: Cannot create the par2 key...'
 
-	def process(self, item_id, source, metadata, options):
+	def process(self, item_id, source, metadata, options=None):
 		self.item_id = item_id
 		self.source = source
 		self.metadata = metadata
-		self.options = options
-
+		if not options is None:
+			self.options = options
 		try:
 			# Pre-proccessing (core)
 			self.ext = self.get_file_extension()

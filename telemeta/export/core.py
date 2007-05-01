@@ -96,7 +96,8 @@ class ExporterCore(Component):
 		xml.dom.ext.PrettyPrint(doc, xml_file)
 		xml_file.close()
 
-	def pre_process(self, item_id, source, metadata, ext, cache_dir, options):
+	def pre_process(self, item_id, source, metadata, ext, 
+					cache_dir, options=None):
 		""" Pre processing of the core. Prepare the export path and
 		return it"""
 		self.item_id = str(item_id)
@@ -104,7 +105,6 @@ class ExporterCore(Component):
 		file_name = get_file_name(self.source)
 		file_name_wo_ext, file_ext = split_file_name(file_name)
 		self.cache_dir = cache_dir
-		self.options = options
 
 		self.metadata = metadata
 		#self.collection = self.metadata['Collection']
@@ -145,11 +145,13 @@ class ExporterCore(Component):
 		return self.dest
 
 
-	def post_process(self, item_id, source, metadata, ext, cache_dir, options):
+	def post_process(self, item_id, source, metadata, ext, 
+					 cache_dir, options=None):
 		""" Post processing of the Core. Print infos, etc..."""
-		if 'verbose' in self.options and self.options['verbose'] != '0':
-			print self.dest
-			print self.get_file_info()
+		if not options is None:
+			if 'verbose' in self.options and self.options['verbose'] != '0':
+				print self.dest
+				print self.get_file_info()
 
 
 # External functions

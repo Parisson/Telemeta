@@ -83,22 +83,25 @@ class FlacExporter(ExporterCore):
 				media[tag] = str(self.metadata[tag])
 		media.save()
 		
-	def process(self, item_id, source, metadata, options):
+	def process(self, item_id, source, metadata, options=None):
 		self.item_id = item_id
 		self.source = source
 		self.metadata = metadata
-		self.options = options
-
-		if 'flac_quality' in self.options and \
-		   self.options['flac_quality'] != '':
-			args = '-f -V -'+self.options['flac_quality']
+		args = ''
+		
+		if not options is None:
+			self.options = options
+			if 'verbose' in self.options and self.options['verbose'] != '0':
+				args = args
+			else:
+				args = args + ' -s '
+				
+			if 'flac_quality' in self.options:
+				args = args+' -f -V -'+self.options['flac_quality']
+			else:
+				args = args+' -f -V -'+self.quality_default
 		else:
-			args = '-f -V -'+self.quality_default
-
-		if 'verbose' in self.options and self.options['verbose'] != '0':
-			args = args
-		else:
-			args = args+' -s '
+			args = args+' -s -f -V -'+self.quality_default
 	
 		try:
 			# Pre-proccessing (core)

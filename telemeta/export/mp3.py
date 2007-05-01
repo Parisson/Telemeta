@@ -88,23 +88,29 @@ class Mp3Exporter(ExporterCore):
 				id3.add(frame)
 		id3.save()
 		
-	def process(self, item_id, source, metadata, options):
+	def process(self, item_id, source, metadata, options=None):
 		self.item_id = item_id
 		self.source = source
 		self.metadata = metadata
-		self.options = options
-
-		if 'mp3_bitrate' in self.options:
-			args = '-b '+self.options['mp3_bitrate']
-		else:
-			args = '-b '+self.bitrate_default
+		args = ''
+		
+		if not options is None:
+			self.options = options
 			
-		args = args + '-c -o '
-
-		if 'verbose' in self.options and self.options['verbose'] != '0':
-			args = args
+			if 'verbose' in self.options and self.options['verbose'] != '0':
+				args = args
+			else:
+				args= args + '-S '	
+			
+			if 'mp3_bitrate' in self.options:
+				args = args+'-b '+self.options['mp3_bitrate']
+			else:
+				args = args+'-b '+self.bitrate_default
+				
+				#Copyrights, etc..
+			args = args + ' -c -o '
 		else:
-			args = args + '-S '
+			args = args + ' -S -c -o '
 		
 		if os.path.exists(self.source) and not iswav16(self.source):
 			self.source = self.decode()

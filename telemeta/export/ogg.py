@@ -72,24 +72,28 @@ class OggExporter(ExporterCore):
 			media[tag] = str(self.metadata[tag])
 		media.save()
 		
-	def process(self, item_id, source, metadata, options):
+	def process(self, item_id, source, metadata, options=None):
 		self.item_id = item_id
 		self.source = source
 		self.metadata = metadata
-		self.options = options
-
-		if 'ogg_bitrate' in self.options:
-			args = '-b '+self.options['ogg_bitrate']
-		elif 'ogg_quality' in self.options:
-			args = '-q '+self.options['ogg_quality']
-		else:
-			args = '-b '+self.bitrate_default
-
-		if 'verbose' in self.options and self.options['verbose'] != '0':
-			args = args
-		else:
-			args = args + ' -Q '
+		args = ''
 		
+		if not options is None:
+			self.options = options
+			if 'verbose' in self.options and self.options['verbose'] != '0':
+				args = args
+			else:
+				args = args + ' -Q '
+			if 'ogg_bitrate' in self.options:
+				args = '-b '+self.options['ogg_bitrate']
+			elif 'ogg_quality' in self.options:
+				args = '-q '+self.options['ogg_quality']
+			else:
+				args = '-b '+self.bitrate_default
+
+		else:
+			args = '-Q -b '+self.bitrate_default
+
 		if os.path.exists(self.source) and not iswav16(self.source):
 			self.source = self.decode()
 			

@@ -33,14 +33,16 @@ class ExportTest(Component):
 	exporters = ExtensionPoint(IExporter)
 
 	def run(self):
+		verbose = '1'
 		for exporter in self.exporters:
 			format = exporter.get_format()
-			if 'verbose' in options and options['verbose'] != '0':
+			if verbose != '0':
 				print "\n+------------------------------------------"
 				print '| Testing exporter format: ' + format
 				print "+------------------------------------------"
 			exporter.set_cache_dir(cache_dir)
 			exporter.process(item_id,source,metadata,options)
+			#exporter.process(item_id,source,metadata)
 
 
 compmgr = ComponentManager()
