@@ -42,7 +42,7 @@ class FlacExporter(ExporterCore):
 		return 'application/flac'
 
 	def get_description(self):
-		return """S00N"""
+		return 'FIXME'
 
 	def get_file_info(self):
 		try:
@@ -98,7 +98,7 @@ class FlacExporter(ExporterCore):
 		if 'verbose' in self.options and self.options['verbose'] != '0':
 			args = args
 		else:
-			args = args+' -s'
+			args = args+' -s '
 	
 		try:
 			# Pre-proccessing (core)

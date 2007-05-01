@@ -19,10 +19,12 @@ from telemeta.core import ComponentManager
 cache_dir = 'cache/'
 source = 'samples/wav/Cellar - Show Me - 02.wav'
 item_id = '1'
-metadata = {'Collection': 'Test',
-		 'Title': 'Show Me',
-		 'Artist': 'Cellar',
-		 'Encoder': 'Telemeta',
+metadata = {'identifier': 'Test',  #collection
+		 'title': 'Show Me',
+		 'creator': 'Cellar',
+		 'type': 'House',
+		 'date': '2004',
+		 'publisher': 'PArISs0n',
 		 }
 options = {'verbose': '1'}
 
@@ -34,7 +36,7 @@ class ExportTest(Component):
 		for exporter in self.exporters:
 			format = exporter.get_format()
 			if 'verbose' in options and options['verbose'] != '0':
-				print "+------------------------------------------"
+				print "\n+------------------------------------------"
 				print '| Testing exporter format: ' + format
 				print "+------------------------------------------"
 			exporter.set_cache_dir(cache_dir)

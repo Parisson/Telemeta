@@ -40,7 +40,7 @@ class WavExporter(ExporterCore):
 		return 'audio/x-wav'
 
 	def get_description(self):
-		return """S00N"""
+		return 'FIXME'
 
 	def get_file_info(self):
 		try:

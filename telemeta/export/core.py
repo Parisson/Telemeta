@@ -13,6 +13,7 @@
 import os
 import re
 import string
+import mutagen
 
 import telemeta.export
 from telemeta.export import *

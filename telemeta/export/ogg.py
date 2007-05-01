@@ -42,7 +42,7 @@ class OggExporter(ExporterCore):
 		return 'application/ogg'
 
 	def get_description(self):
-		return """S00N"""
+		return 'FIXME'
 
 	def get_file_info(self):
 		try:
@@ -88,7 +88,7 @@ class OggExporter(ExporterCore):
 		if 'verbose' in self.options and self.options['verbose'] != '0':
 			args = args
 		else:
-			args = args + ' -Q'
+			args = args + ' -Q '
 		
 		if os.path.exists(self.source) and not iswav16(self.source):
 			self.source = self.decode()
@@ -97,11 +97,11 @@ class OggExporter(ExporterCore):
 			# Pre-proccessing (core)
 			self.ext = self.get_file_extension()
 			self.dest = self.pre_process(self.item_id,
-										 self.source,
-										 self.metadata,
-										 self.ext,
-										 self.cache_dir,
-										 self.options)
+							self.source,
+							self.metadata,
+							self.ext,
+							self.cache_dir,
+							self.options)
 			
 			# Encoding
 			os.system('oggenc '+args+' -o "'+self.dest+
