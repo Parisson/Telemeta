@@ -33,14 +33,14 @@ class Mp3Exporter(ExporterCore):
 		self.options = {}
 		self.bitrate_default = '192'
 		self.dub2id3_dict = {'title': 'TIT2', #title2
-							 'creator': 'TCOM', #composer
-							 'creator': 'TPE1', #lead
-							 'identifier': 'UFID', #unique...
-							 'identifier': 'TALB', #album
-							 'date': 'TYER', #year
-							 'type': 'TCON', #genre
-							 'publisher': 'TPUB', #comment
-							 }
+	   	                     'creator': 'TCOM', #composer
+				     'creator': 'TPE1', #lead
+				     'identifier': 'UFID', #Unique ID...
+				     'identifier': 'TALB', #album
+				     'date': 'TYER', #year
+				     'type': 'TCON', #genre
+				     'publisher': 'TPUB', #comment
+				     }
 
 	def get_format(self):
 		return 'MP3'
