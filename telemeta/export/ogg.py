@@ -76,6 +76,7 @@ class OggExporter(ExporterCore):
 		self.item_id = item_id
 		self.source = source
 		self.metadata = metadata
+		self.options = {}
 		args = ''
 		
 		if not options is None:
@@ -95,7 +96,7 @@ class OggExporter(ExporterCore):
 
 		else:
 			args = ' -Q -b '+self.bitrate_default
-
+			
 		if os.path.exists(self.source) and not iswav16(self.source):
 			self.source = self.decode()
 			

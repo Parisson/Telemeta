@@ -101,6 +101,8 @@ class WavExporter(ExporterCore):
 		self.item_id = item_id
 		self.source = source
 		self.metadata = metadata
+		self.options = {}
+		
 		if not options is None:
 			self.options = options
 		try:

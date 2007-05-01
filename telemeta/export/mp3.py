@@ -37,7 +37,7 @@ class Mp3Exporter(ExporterCore):
 				     'creator': 'TPE1', #lead
 				     'identifier': 'UFID', #Unique ID...
 				     'identifier': 'TALB', #album
-				     'date': 'TYER', #year
+				     #'date': 'TYER', #year
 				     'type': 'TCON', #genre
 				     'publisher': 'TPUB', #comment
 				     }
@@ -92,6 +92,7 @@ class Mp3Exporter(ExporterCore):
 		self.item_id = item_id
 		self.source = source
 		self.metadata = metadata
+		self.options = {}
 		args = ''
 		
 		if not options is None:

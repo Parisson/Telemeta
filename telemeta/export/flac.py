@@ -87,6 +87,7 @@ class FlacExporter(ExporterCore):
 		self.item_id = item_id
 		self.source = source
 		self.metadata = metadata
+		self.options = {}
 		args = ''
 		
 		if not options is None:
