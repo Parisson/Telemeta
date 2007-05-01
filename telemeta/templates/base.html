@@ -1,9 +1,19 @@
-<html>
-<link rel="stylesheet" href="/css/style.css" />
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="{{ LANGUAGE_CODE }}" xml:lang="{{ LANGUAGE_CODE }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
+<head>
+<title>Telemeta</title>
+<link rel="stylesheet" type="text/css" href="/css/telemeta.css" />
+{% block extra_style %}{% endblock %}
+</head>
+{% load i18n %}
 <body>
-
+<!--
+{% if user.is_authenticated and user.is_staff %}
+<div id="user-tools">{% trans 'Welcome,' %} <strong>{% if user.first_name %}{{ user.first_name|escape }}{% else %}{{ user.username }}{% endif %}</strong>. {% block userlinks %}<a href="doc/">{% trans 'Documentation' %}</a> / <a href="password_change/">{% trans 'Change password' %}</a> / <a href="logout/">{% trans 'Log out' %}</a>{% endblock %}</div>
+{% endif %}
+-->
 <div id="header">
-<a href="/">Telemeta Web Interface</a>
+<a href="/"><img src="/images/logo.png"></a>
 </div>
 
 <div id="quick_search">
@@ -19,7 +29,9 @@
 <a href="/admin">Admin</a>
 </div>
 
+<div id="content">
 {% block content %}{% endblock %}
+</div>
 
 </body>
 </html>

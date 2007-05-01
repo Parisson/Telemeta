@@ -19,12 +19,21 @@ class MediaCore:
             fields_dict[field.name] = getattr(self, field.name)
         return fields_dict
 
+class PhysicalFormat(models.Model):
+    value = models.CharField(maxlength=250)
+    is_dictionary = True
+    def __str__(self):
+        return self.value
+    class Meta:
+        ordering = ['value']
+        
 class MediaCollectionManager(models.Manager):
     def quick_search(self, pattern):
         return super(MediaCollectionManager, self).get_query_set().filter(
             Q(title__icontains=pattern) |
             Q(description__icontains=pattern)
         )
+
 
 class MediaCollection(models.Model, MediaCore):
     "Group related media items"
@@ -42,6 +51,7 @@ class MediaCollection(models.Model, MediaCore):
     rights = models.CharField(maxlength=250, blank=True)
     source = models.CharField(maxlength=250, blank=True)
     subject = models.CharField(maxlength=250, blank=True)
+    physical_format = models.ForeignKey(PhysicalFormat, null=True, blank=True)
 
     objects = MediaCollectionManager()
 
@@ -130,5 +140,4 @@ class MediaPart(models.Model, MediaCore):
 
     class Admin:
         pass
-
 

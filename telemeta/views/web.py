@@ -8,26 +8,24 @@ from telemeta.models import MediaCollection
 from django.shortcuts import render_to_response
 import re
 from telemeta.core import *
-from telemeta.core import ComponentManager
 from telemeta.export import *
 from django.conf import settings
 import os
 
-def index(request):
-    "Render the homepage"
-
-    media_items = MediaItem.objects.all()
-    template = loader.get_template('index.html')
-    context = Context({
-        'media_items' : media_items,
-    })
-    return HttpResponse(template.render(context))
-
 class WebView(Component):
+    """Provide web UI methods"""
 
     exporters = ExtensionPoint(IExporter)
 
+    def index(self, request):
+        """Render the homepage"""
+
+        template = loader.get_template('index.html')
+        context = Context({})
+        return HttpResponse(template.render(context))
+
     def item_detail(self, request, item_id):
+        """Show the details of a given item"""
         item = MediaItem.objects.get(pk=item_id)
         formats = []
         for exporter in self.exporters:
@@ -35,7 +33,12 @@ class WebView(Component):
         return render_to_response('mediaitem_detail.html', 
                     {'item': item, 'export_formats': formats})
 
-    def file_stream(self, filepath):
+    def __file_stream(self, filepath):
+        """Generator for streaming a file from the disk. 
+        
+        This method shouldn't be needed anymore when bug #8 get fixed
+        """
+
         buffer_size = 0xFFFF
         f = open(filepath, 'rb')
         chunk = f.read(buffer_size)
@@ -46,6 +49,7 @@ class WebView(Component):
         f.close()            
 
     def item_export(self, request, item_id, format):                    
+        """Export a given media item in the specified format (OGG, FLAC, ...)"""
         for exporter in self.exporters:
             if exporter.get_format() == format:
                 break
@@ -68,12 +72,13 @@ class WebView(Component):
 
         outfile = exporter.process(item.id, infile, metadata, [])
 
-        response = HttpResponse(self.file_stream(outfile), mimetype = mime_type)
+        response = HttpResponse(self.__file_stream(outfile), mimetype = mime_type)
         response['Content-Disposition'] = 'attachment; filename="download.' + \
                     exporter.get_file_extension() + '"'
         return response
 
     def quick_search(self, request):
+        """Perform a simple search through collections and items core metadata"""
         pattern = request.REQUEST["pattern"]
         collections = MediaCollection.objects.quick_search(pattern)
         items = MediaItem.objects.quick_search(pattern)
@@ -81,14 +86,98 @@ class WebView(Component):
                     {'pattern': pattern, 'collections': collections, 
                      'items': items})
 
+    def __get_dictionary_list(self):
+        from django.db.models import get_models
+        models = get_models(telemeta.models)
+
+        dictionaries = []
+        for model in models:
+            if getattr(model, "is_dictionary", False):
+                dictionaries.append({"name": model._meta.verbose_name_plural, 
+                    "id": model._meta.module_name})
+        return dictionaries                    
+    
+    def __get_admin_context_vars(self):
+        return {"dictionaries": self.__get_dictionary_list()}
+
+    def admin_index(self, request):
+        return render_to_response('admin.html', self. __get_admin_context_vars())
+
+    def __get_dictionary(self, id):
+        from django.db.models import get_models
+        models = get_models(telemeta.models)
+        for model in models:
+            if model._meta.module_name == id:
+                break
+
+        if model._meta.module_name != id:
+            return None
+
+        return model
         
 
-comp_mgr = ComponentManager()
-view = WebView(comp_mgr)
-item_detail = view.item_detail
-item_export = view.item_export
-quick_search = view.quick_search
+    def edit_dictionary(self, request, dictionary_id):        
 
+        dictionary  = self.__get_dictionary(dictionary_id)
+        if dictionary == None:
+            raise Http404
+
+        vars = self.__get_admin_context_vars()
+        vars["dictionary_id"] = dictionary._meta.module_name
+        vars["dictionary_name"] = dictionary._meta.verbose_name            
+        vars["dictionary_name_plural"] = dictionary._meta.verbose_name_plural
+        vars["dictionary_values"] = dictionary.objects.all()
+        return render_to_response('dictionary_edit.html', vars)
+
+    def add_to_dictionary(self, request, dictionary_id):        
+
+        dictionary  = self.__get_dictionary(dictionary_id)
+        if dictionary == None:
+            raise Http404
+
+        dictionary_value = dictionary(value=request.POST['value'])
+        dictionary_value.save()
+
+        return self.edit_dictionary(request, dictionary_id)
+
+    def update_dictionary(self, request, dictionary_id):        
+        
+        dictionary  = self.__get_dictionary(dictionary_id)
+        if dictionary == None:
+            raise Http404
+
+        if request.POST.has_key("remove"):
+            dictionary.objects.filter(id__in=request.POST['sel']).delete()
+
+        return self.edit_dictionary(request, dictionary_id)
+
+    def edit_dictionary_value(self, request, dictionary_id, value_id):        
+
+        dictionary  = self.__get_dictionary(dictionary_id)
+        if dictionary == None:
+            raise Http404
+        
+        vars = self.__get_admin_context_vars()
+        vars["dictionary_id"] = dictionary._meta.module_name
+        vars["dictionary_name"] = dictionary._meta.verbose_name            
+        vars["dictionary_name_plural"] = dictionary._meta.verbose_name_plural
+        vars["dictionary_record"] = dictionary.objects.get(id__exact=value_id)
+        return render_to_response('dictionary_edit_value.html', vars)
+
+    def update_dictionary_value(self, request, dictionary_id, value_id):        
+
+        if request.POST.has_key("save"):
+            dictionary  = self.__get_dictionary(dictionary_id)
+            if dictionary == None:
+                raise Http404
+       
+            record = dictionary.objects.get(id__exact=value_id)
+            record.value = request.POST["value"]
+            record.save()
+
+        return self.edit_dictionary(request, dictionary_id)
+
+        
 def media_item_edit(request, media_item_id):
     "Provide MediaItem object edition"
 

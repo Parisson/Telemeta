@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h3>Dictionaries</h3>
+{% if dictionaries %}
+    <ul>
+    {% for d in dictionaries %}
+        <li><a href="/dictionaries/{{ d.id }}">{{ d.name|capfirst }}</a> </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No dictionary.</p>
+{% endif %}
+{% endblock %}
