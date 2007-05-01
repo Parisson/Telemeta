@@ -26,17 +26,16 @@ metadata = {'identifier': 'Test',  #collection
 		 'date': '2004',
 		 'publisher': 'PArISs0n',
 		 }
-options = {'verbose': '1'}
+options = {'verbose': '0'}
 
 
 class ExportTest(Component):
 	exporters = ExtensionPoint(IExporter)
 
 	def run(self):
-		verbose = '1'
 		for exporter in self.exporters:
 			format = exporter.get_format()
-			if verbose != '0':
+			if options['verbose'] != '0':
 				print "\n+------------------------------------------"
 				print '| Testing exporter format: ' + format
 				print "+------------------------------------------"
