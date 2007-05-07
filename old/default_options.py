@@ -19,15 +19,15 @@
 
 class Options :
 
-	def __init__(self) :
-		self.collection = 'Unknown'
-		self.enc_types = 'flac, ogg, mp3'
-		self.ogg_bitrate ='192'
-		self.mp3_bitrate = '192'
-		self.flac_quality = '5'
-		self.audio_marking = False
-		self.auto_audio_marking = True
-		self.audio_marking_file = '/path/to/file'
-		self.audio_marking_timeline = 'b, m, e'
-		self.par_key = True
-		self.normalize = False
+    def __init__(self) :
+        self.collection = 'Unknown'
+        self.enc_types = 'flac, ogg, mp3'
+        self.ogg_bitrate ='192'
+        self.mp3_bitrate = '192'
+        self.flac_quality = '5'
+        self.audio_marking = False
+        self.auto_audio_marking = True
+        self.audio_marking_file = '/path/to/file'
+        self.audio_marking_timeline = 'b, m, e'
+        self.par_key = True
+        self.normalize = False

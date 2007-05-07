@@ -22,20 +22,20 @@
 import os, sys
 
 if len(sys.argv) == 1:
-	install_dir = '/usr/share/telemeta/'
+    install_dir = '/usr/share/telemeta/'
 elif len(sys.argv) > 2:
-	sys.exit('Give just one directory to install Telemeta, or none.')
+    sys.exit('Give just one directory to install Telemeta, or none.')
 else:
-	install_dir = sys.argv[1]
+    install_dir = sys.argv[1]
 
 if not os.path.exists(install_dir):
-	os.mkdir(install_dir)
+    os.mkdir(install_dir)
 
 os.system('cp -ra ./* '+install_dir+os.sep)
 os.system('rm -rf '+install_dir+os.sep+'debian')
 
 if os.path.exists('/usr/bin/telemeta'):
-	os.system('rm -r /usr/bin/telemeta')
+    os.system('rm -r /usr/bin/telemeta')
 
 os.system('ln -s '+install_dir+os.sep+'telemeta.py '+'/usr/bin/telemeta')
 

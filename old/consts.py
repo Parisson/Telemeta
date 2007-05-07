@@ -21,16 +21,16 @@ import os, string
 
 class Collection :
 
-	def __init__(self) :
-		self.collection_name = 'telemeta_default'
-		self.collection_dir = '/home/'+os.environ["USER"]+'/telemeta_default/'
-		self.user_dir = '/home/'+os.environ["USER"]+'/.telemeta/'
-		self.default_tag_xml = '/home/'+os.environ["USER"]+'/.telemeta/default_tags.xml'
-		self.default_collection_xml = '/home/'+os.environ["USER"]+'/.telemeta/default_collection.xml'
-		self.tag_table = 'ARTIST,TITLE,ALBUM,DATE,GENRE,SOURCE,ENCODER,COMMENT'
-		self.type_list = 'mp3,ogg,flac,wav,aiff'
-		self.net_backup_host = 'domain.com'
-		self.net_backup_dir = '/home/'+os.environ["USER"]+'/telemeta/'
+    def __init__(self) :
+        self.collection_name = 'telemeta_default'
+        self.collection_dir = '/home/'+os.environ["USER"]+'/telemeta_default/'
+        self.user_dir = '/home/'+os.environ["USER"]+'/.telemeta/'
+        self.default_tag_xml = '/home/'+os.environ["USER"]+'/.telemeta/default_tags.xml'
+        self.default_collection_xml = '/home/'+os.environ["USER"]+'/.telemeta/default_collection.xml'
+        self.tag_table = 'ARTIST,TITLE,ALBUM,DATE,GENRE,SOURCE,ENCODER,COMMENT'
+        self.type_list = 'mp3,ogg,flac,wav,aiff'
+        self.net_backup_host = 'domain.com'
+        self.net_backup_dir = '/home/'+os.environ["USER"]+'/telemeta/'
 
 #option_table=['enc_types','flac_bitrate','ogg_bitrate','mp3_bitrate','audio_marking','auto_audio_marking','audio_marking_file','audio_marking_timeline']
 

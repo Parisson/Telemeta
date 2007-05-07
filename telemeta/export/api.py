@@ -10,7 +10,7 @@
 # are also available at http://svn.parisson.org/telemeta/TelemetaLicense.
 #
 # Author: Olivier Guilyardi <olivier@samalyse.com>
-#		  Guillaume Pellerin <pellerin@parisson.com>
+#         Guillaume Pellerin <pellerin@parisson.com>
 
 from telemeta.core import *
 
@@ -55,7 +55,7 @@ class IExporter(Interface):
         resource
 
         source is the audio/video source file absolute path. For audio that
-		should be a WAV file
+        should be a WAV file
 
         metadata is a dictionary
 
@@ -63,8 +63,8 @@ class IExporter(Interface):
         should be considered temporary/volatile by the caller.
 
         It is highly recommended that export drivers implement some sort of
-		cache instead of re-encoding each time process() is called.
+        cache instead of re-encoding each time process() is called.
 
         It should be possible to make subsequent calls to process() with
-		different items, using the same driver instance.
+        different items, using the same driver instance.
         """

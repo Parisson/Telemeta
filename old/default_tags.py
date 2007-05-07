@@ -19,15 +19,15 @@
 
 class Tags :
 
-	def __init__(self) :
-		self.COLLECTION = 'Unknown'
-		self.ARTIST = 'Unknown'
-		self.TITLE = 'Unknown'
-		self.ALBUM = 'Unknown'
-		self.GENRE = 'Other'
-		self.DATE = '1900'
-		self.SOURCE = 'Here'
-		self.ENCODER = 'me@domain.com'
-		self.COMMENT = 'No comment'
-		self.ORIGINAL_MEDIA = '1/4" tape'
+    def __init__(self) :
+        self.COLLECTION = 'Unknown'
+        self.ARTIST = 'Unknown'
+        self.TITLE = 'Unknown'
+        self.ALBUM = 'Unknown'
+        self.GENRE = 'Other'
+        self.DATE = '1900'
+        self.SOURCE = 'Here'
+        self.ENCODER = 'me@domain.com'
+        self.COMMENT = 'No comment'
+        self.ORIGINAL_MEDIA = '1/4" tape'
 
