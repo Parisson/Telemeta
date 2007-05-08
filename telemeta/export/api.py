@@ -47,7 +47,7 @@ class IExporter(Interface):
         temporary directory should be used if that's not the case.
         """
 
-    def process(item_id, source, metadata, options):
+    def process(item_id, source, metadata, options=None):
         """Perform the exporting process and return the absolute path 
         to the resulting file.
 
