@@ -62,6 +62,19 @@ a:link:hover, a:visited:hover {
 #quick_search_pattern {
 }
 
+.item_visualization {
+  float: right;
+  padding: 1ex;
+}
+.item_visualization select {
+  width: 200px;
+}
+
+.item_visualization img {
+  width: 300px;
+  border: solid 1px black;
+}
+
 
 /* Styles for tabular listings (stolen from trac) */
 table.listing {

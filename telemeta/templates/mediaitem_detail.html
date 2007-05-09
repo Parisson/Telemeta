@@ -3,6 +3,18 @@
 {% block content %}
 {% if item %}
     <h3>Item: {{ item.title }}</h3>
+    <div class="item_visualization">
+      <img src="visualize/{{visualizer_id}}">
+      <form method="GET">
+        <select name="visualizer_id" onchange="this.form.submit()">
+          {% for v in visualizers %}
+            <option value="{{ v.id }}" {% ifequal v.id visualizer_id %} selected {% endifequal %}>
+              {{v.name}}</option>
+          {% endfor %}
+        </select>
+        <input type="submit" value="OK">
+      </form>
+    </div>
     <ul>
     {% for field in item.list %}
         {% ifnotequal field.name "id" %}
@@ -30,3 +42,4 @@
     <p>No such item</p>
 {% endif %}
 {% endblock %}
+

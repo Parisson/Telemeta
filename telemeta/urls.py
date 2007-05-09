@@ -29,6 +29,8 @@ urlpatterns = patterns('',
     (r'^items/(?P<item_id>[0-9]+)/$', web_view.item_detail),
     (r'^items/(?P<item_id>[0-9]+)/download/(?P<format>[0-9A-Z]+)/$', 
         web_view.item_export),
+    (r'^items/(?P<item_id>[0-9]+)/visualize/(?P<visualizer_id>[0-9a-z]+)/$', 
+        web_view.item_visualize),
 
     # collections
     (r'^collections/$', 'django.views.generic.list_detail.object_list',

@@ -17,6 +17,7 @@ from django.shortcuts import render_to_response
 import re
 from telemeta.core import *
 from telemeta.export import *
+from telemeta.visualization import *
 from django.conf import settings
 import os
 
@@ -24,6 +25,7 @@ class WebView(Component):
     """Provide web UI methods"""
 
     exporters = ExtensionPoint(IExporter)
+    visualizers = ExtensionPoint(IMediaItemVisualizer)
 
     def index(self, request):
         """Render the homepage"""
@@ -38,8 +40,32 @@ class WebView(Component):
         formats = []
         for exporter in self.exporters:
             formats.append(exporter.get_format())
+        visualizers = []
+        for visualizer in self.visualizers:
+            visualizers.append({'name':visualizer.get_name(), 'id': 
+                visualizer.get_id()})
+        if request.REQUEST.has_key('visualizer_id'):
+            visualizer_id = request.REQUEST['visualizer_id']
+        else:
+            visualizer_id = 'waveform'
         return render_to_response('mediaitem_detail.html', 
-                    {'item': item, 'export_formats': formats})
+                    {'item': item, 'export_formats': formats, 
+                    'visualizers': visualizers, 'visualizer_id': visualizer_id})
+                    
+    def item_visualize(self, request, item_id, visualizer_id):
+        for visualizer in self.visualizers:
+            if visualizer.get_id() == visualizer_id:
+                break
+
+        if visualizer.get_id() != visualizer_id:
+            raise Http404
+        
+        item = MediaItem.objects.get(pk=item_id)
+
+        stream = visualizer.render(item)
+        response = HttpResponse(stream, mimetype = 'image/png')
+        return response
+
 
     def __file_stream(self, filepath):
         """Generator for streaming a file from the disk. 
