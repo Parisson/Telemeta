@@ -2,7 +2,6 @@
 
 {% block content %}
 {% if item %}
-    <h3>Item: {{ item.title }}</h3>
     <div class="item_visualization">
       <img src="visualize/{{visualizer_id}}">
       <form method="GET">
@@ -15,6 +14,7 @@
         <input type="submit" value="OK">
       </form>
     </div>
+    <h3>Item: {{ item.title }}</h3>
     <ul>
     {% for field in item.list %}
         {% ifnotequal field.name "id" %}
