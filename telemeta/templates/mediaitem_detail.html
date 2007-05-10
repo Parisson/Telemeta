@@ -3,7 +3,7 @@
 {% block content %}
 {% if item %}
     <div class="item_visualization">
-      <img src="{% url telemeta-item-visualize item.id|urlencode,visualizer_id %}">
+      <img src="{% url telemeta-item-visualize item.id,visualizer_id %}">
       <form method="GET">
         <select name="visualizer_id" onchange="this.form.submit()">
           {% for v in visualizers %}

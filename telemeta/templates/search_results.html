@@ -4,13 +4,20 @@
 <h3>Search: {{ pattern }}</h3>
 {% if collections %}
     <h4>Collections</h4>
-    <ul>
+    <table class="resources-list">
     {% for c in collections %}
-        <li><b>{{ c.title }}</b>
-            <a href="{% url telemeta-collection-detail c.id %}">View</a>
-            <a href="#">Edit</a>
-            </li>
+        <tr>
+            <td>
+            <a href="{% url telemeta-collection-detail c.id %}">
+            {{ c.title }}
+            </a>
+            </td>
+            <td>
+                [{{c.id}}]
+            </td>
+        </tr>
     {% endfor %}
+    </table>
     </ul>
 {% endif %}
 {% if items %}

@@ -7,7 +7,7 @@
     {% for field in object.list %}
         {% ifnotequal field.name "title" %}
 
-        <li><b>{{ field.name }}</b> : {{ field.value }}</li>
+        <li><b>{{ field.name|capfirst }}</b> : {{ field.value }}</li>
 
         {% endifnotequal %}
     {% endfor %}
