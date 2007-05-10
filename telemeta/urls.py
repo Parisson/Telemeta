@@ -25,14 +25,14 @@ urlpatterns = patterns('',
 
     # items
     url(r'^items/$', 'django.views.generic.list_detail.object_list', 
-        dict(all_items, paginate_by=10, template_name="mediaitem_list.html"),
+        dict(all_items, paginate_by=20, template_name="mediaitem_list.html"),
         name="telemeta-items"),
-    url(r'^items/(?P<item_id>[0-9]+)/$', web_view.item_detail, 
+    url(r'^items/(?P<item_id>[0-9A-Z._:-]+)/$', web_view.item_detail, 
         name="telemeta-item-detail"),
-    url(r'^items/(?P<item_id>[0-9]+)/download/(?P<format>[0-9A-Z]+)/$', 
+    url(r'^items/(?P<item_id>[0-9A-Z._:-]+)/download/(?P<format>[0-9A-Z]+)/$', 
         web_view.item_export,
         name="telemeta-item-export"),
-    url(r'^items/(?P<item_id>[0-9]+)/visualize/(?P<visualizer_id>[0-9a-z]+)/$', 
+    url(r'^items/(?P<item_id>[0-9A-Z._:-]+)/visualize/(?P<visualizer_id>[0-9a-z]+)/$', 
         web_view.item_visualize,
         name="telemeta-item-visualize"),
 
