@@ -17,7 +17,7 @@
         {%ifequal d.id dictionary_id %}
             <li class="active">{{ d.name|capfirst }}</li>
         {%else%}
-            <li><a href="/admin/dictionaries/{{ d.id }}">{{ d.name|capfirst }}</a></li>
+            <li><a href="{% url telemeta-dictionary-edit d.id %}">{{ d.name|capfirst }}</a></li>
         {%endifequal%}
     {% endfor %}
     </ul>

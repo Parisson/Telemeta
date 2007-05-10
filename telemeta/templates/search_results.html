@@ -7,7 +7,7 @@
     <ul>
     {% for c in collections %}
         <li><b>{{ c.title }}</b>
-            <a href="/collections/{{ c.id }}">View</a>
+            <a href="{% url telemeta-collection-detail c.id %}">View</a>
             <a href="#">Edit</a>
             </li>
     {% endfor %}
@@ -18,7 +18,7 @@
     <ul>
     {% for i in items %}
         <li><b>{{ i.title }}</b>
-            <a href="/items/{{ i.id }}">View</a>
+            <a href="{% url telemeta-item-detail i.id %}">View</a>
             <a href="#">Edit</a>
             </li>
     {% endfor %}

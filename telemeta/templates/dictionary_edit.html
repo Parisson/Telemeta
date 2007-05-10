@@ -6,7 +6,7 @@
 
 
  <form class="addnew" id="addenum" method="post"
-        action="/admin/dictionaries/{{dictionary_id}}/add/">
+        action="{% url telemeta-dictionary-add dictionary_id %}">
   <fieldset>
    <legend>Add {{ dictionary_name|capfirst }}</legend>
    <div class="field">
@@ -19,7 +19,7 @@
   </fieldset>
  </form>
  {% if dictionary_values %}
- <form method="POST" action="/admin/dictionaries/{{dictionary_id}}/update/">
+ <form method="POST" action="{% url telemeta-dictionary-update dictionary_id %}">
   <table class="listing">
    <thead>
     <tr><th class="sel">&nbsp;</th><th>Value</th>
@@ -29,7 +29,7 @@
     {% for record in dictionary_values %}
     <tr>
      <td><input type="checkbox" name="sel" value="{{record.id}}" /></td>
-     <td><a href="/admin/dictionaries/{{dictionary_id}}/{{record.id}}">
+     <td><a href="{% url telemeta-dictionary-record-edit dictionary_id,record.id %}">
         {{record.value}}</a></td>
     </tr>
     {% endfor %}

@@ -17,16 +17,16 @@
 </div>
 
 <div id="quick_search">
-<form action="/search" method="GET">
+<form action="{% url telemeta-quicksearch %}" method="GET">
 <input id="quick_search_pattern" name="pattern" />
 <input type="submit" value="Search" />
 </form>        
 </div>
 
 <div id="menu">
-<a href="/collections">Collections</a> |
-<a href="/items">Items</a> |
-<a href="/admin">Admin</a>
+<a href="{% url telemeta-collections %}">Collections</a> |
+<a href="{% url telemeta-items %}">Items</a> |
+<a href="{% url telemeta-admin %}">Admin</a>
 </div>
 
 <div id="content">

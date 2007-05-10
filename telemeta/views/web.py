@@ -9,6 +9,7 @@
 
 import telemeta
 from django.template import Context, loader
+from django import template
 from django.http import HttpResponse
 from django.http import Http404
 from telemeta.models import MediaItem

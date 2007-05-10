@@ -6,7 +6,7 @@
     <ul>
     {% for p in object_list %}
         <li><b>{{ p.creator }}</b> - {{ p.title }}
-            <a href="{{ p.id }}">View</a>
+            <a href="{% url telemeta-item-detail p.id %}">View</a>
             <a href="#">Edit</a>
             </li>
     {% endfor %}

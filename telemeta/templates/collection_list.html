@@ -1,13 +1,16 @@
 {% extends "base.html" %}
-
+{% load telemeta_utils %}
 {% block content %}
 <h3>Collections</h3>
 {% if object_list %}
+    <p>Records {{ first_on_page }} to {{ last_on_page }} on {{ hits }} 
+    &nbsp;&nbsp;
+    {% if has_previous %} <a href="?page={{ previous }}">&lt;&lt;</a> {% endif %}
+    {% if has_next %} <a href="?page={{ next }}">&gt;&gt;</a> {% endif %}
+    </p>
     <ul>
     {% for p in object_list %}
-        <li><b>{{ p.title }}</b>
-            <a href="{{ p.id }}">View</a>
-            <a href="#">Edit</a>
+        <li><a href="{% url telemeta-collection-detail p.id|urlencode %}">{{ p.title }}</a>
             </li>
     {% endfor %}
     </ul>
