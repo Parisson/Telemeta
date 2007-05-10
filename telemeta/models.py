@@ -11,6 +11,7 @@ import telemeta
 from django.db import models
 from django.db.models import Q
 from telemeta.core import *
+from django.core.exceptions import ObjectDoesNotExist
 
 class MediaModel(Component):
     pass
@@ -19,7 +20,7 @@ class MediaCore:
     def list(self):
         fields_list = []
         for field in self._meta.fields:
-            fields_list.append({'name': field.name, 'value': getattr(self, field.name)})
+            fields_list.append({'name': field.verbose_name, 'value': getattr(self, field.name)})
         return fields_list
 
     def to_dict(self):        
@@ -39,6 +40,7 @@ class PhysicalFormat(models.Model):
 class MediaCollectionManager(models.Manager):
     def quick_search(self, pattern):
         return super(MediaCollectionManager, self).get_query_set().filter(
+            Q(id__icontains=pattern) |
             Q(title__icontains=pattern) |
             Q(creator__icontains=pattern)
         )
@@ -49,18 +51,19 @@ class MediaCollection(models.Model, MediaCore):
 
     publisher_reference = models.CharField(maxlength=250, blank=True)
     physical_format = models.CharField(maxlength=250, blank=True)
-    id = models.CharField(maxlength=250, primary_key=True)
+    id = models.CharField(maxlength=250, primary_key=True, 
+        verbose_name='identifier')
     id.dc_element = 'identifier'
     title = models.CharField(maxlength=250)
     title.dc_element = 'title'
     native_title = models.CharField(maxlength=250, blank=True)
     native_title.dc_element = 'title'
-    physical_items_num = models.IntegerField(blank=True) 
+    physical_items_num = models.CharField(maxlength=250, blank=True) 
     publishing_status = models.CharField(maxlength=250, blank=True)
     is_original = models.CharField(maxlength=250)
     is_full_copy = models.CharField(maxlength=250)
-    copied_from = models.ForeignKey('self', null=True),
-    copied_from[0].dc_element = 'relation'
+    copied_from = models.ForeignKey('self', null=True)
+    #copied_from[0].dc_element = 'relation'
     creator = models.CharField(maxlength=250)
     creator.dc_element = 'creator'
     booklet_writer = models.CharField(maxlength=250, blank=True)
@@ -70,27 +73,27 @@ class MediaCollection(models.Model, MediaCore):
     collector.dc_element = 'contributor'
     publisher = models.CharField(maxlength=250, blank=True)
     publisher.dc_element = 'publisher'
-    date_published = models.IntegerField(blank=True)
+    date_published = models.CharField(maxlength=250, blank=True)
     date_published.dc_element = 'date'
     publisher_collection = models.CharField(maxlength=250, blank=True)
-    publisher_serial_id = models.IntegerField(blank=True)
-    ref_biblio = models.CharField(maxlength=250, blank=True)
+    publisher_serial_id = models.CharField(maxlength=250, blank=True)
+    ref_biblio = models.TextField(blank=True)
     acquisition_mode = models.CharField(maxlength=250, blank=True)
     comment = models.TextField(blank=True)
     record_author = models.CharField(maxlength=250, blank=True)
     record_writer = models.CharField(maxlength=250, blank=True)
     rights = models.CharField(maxlength=250, blank=True)
     rights.dc_element = 'rights'
-    annee_enr = models.IntegerField(blank=True)
+    annee_enr = models.CharField(maxlength=250, blank=True)
     annee_enr.dc_element = 'date'
     terrain_ou_autre = models.CharField(maxlength=250, blank=True)
     duree_approx = models.CharField(maxlength=250, blank=True)
-    tri_dibm = models.IntegerField(blank=True)
+    tri_dibm = models.CharField(maxlength=250, blank=True)
     travail = models.CharField(maxlength=250, blank=True)
-    compil_face_plage = models.CharField(maxlength=250, blank=True)
+    compil_face_plage = models.TextField(blank=True)
     deposant_cnrs = models.CharField(maxlength=250, blank=True)
     fiches = models.CharField(maxlength=250, blank=True)
-    a_informer = models.IntegerField(blank=True)
+    a_informer = models.CharField(maxlength=250, blank=True)
     numerisation = models.CharField(maxlength=250, blank=True)
     champ36 = models.CharField(maxlength=250, blank=True)
      
@@ -123,34 +126,77 @@ class MediaCollection(models.Model, MediaCore):
 class MediaItemManager(models.Manager):
     def quick_search(self, pattern):
         return super(MediaItemManager, self).get_query_set().filter(
-            Q(title__icontains=pattern) |
-            Q(creator__icontains=pattern) |
-            Q(identifier__icontains=pattern) |
-            Q(description__icontains=pattern) 
+            Q(id__icontains=pattern) |
+            Q(_title__icontains=pattern) 
         )
 
 class MediaItem(models.Model, MediaCore):
     "Describe a item with metadata" 
 
+    ref = models.CharField(maxlength=250, blank=True)
+    format = models.CharField(maxlength=250, blank=True)
     collection = models.ForeignKey(MediaCollection, related_name="items")
-    collection.dublin_core = 'relation'
-    identifier = models.CharField(maxlength=250)
-    title = models.CharField(maxlength=250)
-    creator = models.CharField(maxlength=250)
-    date = models.DateField()
+    face_plage = models.CharField(maxlength=250, blank=True)
+    id = models.CharField(maxlength=250, primary_key=True, 
+        verbose_name='identifier')
+    duree = models.CharField(maxlength=250, blank=True)
+    dates_enregistr = models.CharField(maxlength=250, blank=True)
+    etat = models.CharField(maxlength=250, blank=True)
+    region_village = models.CharField(maxlength=250, blank=True)
+    ethnie_grsocial = models.CharField(maxlength=250, blank=True)
+    titre_support = models.CharField(maxlength=250, blank=True)
+    _title = models.CharField(maxlength=250, db_column='title', blank=True)
+    transcrip_trad = models.CharField(maxlength=250, blank=True)
+    auteur = models.CharField(maxlength=250, blank=True)
+    form_genr_style = models.CharField(maxlength=250, blank=True)
+    struct_modale = models.CharField(maxlength=250, blank=True)
+    struct_rythm = models.CharField(maxlength=250, blank=True)
+    comm_fonctusage = models.TextField(blank=True)
+    documentation = models.TextField(maxlength=250, blank=True)
+    remarques = models.TextField(maxlength=250, blank=True)
+    moda_execut = models.CharField(maxlength=250, blank=True)
+    copie_de = models.CharField(maxlength=250, blank=True)
+    enregistre_par = models.CharField(maxlength=250, blank=True)
+    aire_geo_cult = models.CharField(maxlength=250, blank=True)
+    annee_enreg = models.CharField(maxlength=250, blank=True)
+    formstyl_generi = models.CharField(maxlength=250, blank=True)
+    choixcollecteur = models.CharField(maxlength=250, blank=True)
+    repere_bande = models.CharField(maxlength=250, blank=True)
+    nroband_nropiec = models.CharField(maxlength=250, blank=True)
+    continent = models.CharField(maxlength=250, blank=True)
     file = models.FileField(upload_to='items/%Y/%m/%d')
-    subject = models.CharField(maxlength=250, blank=True)
-    description = models.TextField(maxlength=250, blank=True)
-    contributor = models.CharField(maxlength=250, blank=True)
-    coverage = models.CharField(maxlength=250, blank=True)
-    format = models.CharField(maxlength=25, blank=True)
-    language = models.CharField(maxlength=250, blank=True)
-    publisher = models.CharField(maxlength=250, blank=True)
-    rights = models.CharField(maxlength=250, blank=True)
-    source = models.CharField(maxlength=250, blank=True)
-    duration = models.FloatField(max_digits=11, decimal_places=3, null=True, blank=True)
 
+#    collection.dublin_core = 'relation'
+#    identifier = models.CharField(maxlength=250)
+#    title = models.CharField(maxlength=250)
+#    creator = models.CharField(maxlength=250)
+#    date = models.DateField()
+#    file = models.FileField(upload_to='items/%Y/%m/%d')
+#    subject = models.CharField(maxlength=250, blank=True)
+#    description = models.TextField(maxlength=250, blank=True)
+#    contributor = models.CharField(maxlength=250, blank=True)
+#    coverage = models.CharField(maxlength=250, blank=True)
+#    format = models.CharField(maxlength=25, blank=True)
+#    language = models.CharField(maxlength=250, blank=True)
+#    publisher = models.CharField(maxlength=250, blank=True)
+#    rights = models.CharField(maxlength=250, blank=True)
+#    source = models.CharField(maxlength=250, blank=True)
+#    duration = models.FloatField(max_digits=11, decimal_places=3, null=True, blank=True)
+#
     objects = MediaItemManager()
+
+    def _get_title(self):
+        if self._title == "":
+            try:
+                title = self.collection.title + " - Face/Plage: " \
+                    + self.face_plage
+            except ObjectDoesNotExist:
+                title = self.id
+        else:
+            title = self._title
+
+        return title
+    title = property(_get_title)        
 
     def __str__(self):
         return self.title
@@ -159,7 +205,7 @@ class MediaItem(models.Model, MediaCore):
         pass
 
     class Meta:
-        ordering = ['title']
+        ordering = ['_title']
         db_table = 'telemeta_item'
 
 
