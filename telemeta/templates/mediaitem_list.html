@@ -3,12 +3,14 @@
 {% block content %}
 <h3>Media items</h3>
 {% if object_list %}
+    <p>Records {{ first_on_page }} to {{ last_on_page }} on {{ hits }} 
+    &nbsp;&nbsp;
+    {% if has_previous %} <a href="?page={{ previous }}">&lt;&lt;</a> {% endif %}
+    {% if has_next %} <a href="?page={{ next }}">&gt;&gt;</a> {% endif %}
+    </p>
     <ul>
     {% for p in object_list %}
-        <li><b>{{ p.creator }}</b> - {{ p.title }}
-            <a href="{% url telemeta-item-detail p.id %}">View</a>
-            <a href="#">Edit</a>
-            </li>
+        <li><a href="{% url telemeta-item-detail p.id %}">{{ p.title }}</a></li>
     {% endfor %}
     </ul>
 {% else %}
