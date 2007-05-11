@@ -96,7 +96,7 @@ class ExporterCore(Component):
         xml.dom.ext.PrettyPrint(doc, xml_file)
         xml_file.close()
 
-    def pre_process(self, item_id, source, metadata, ext, 
+    def pre_process(self, item_id, source, metadata, ext, \
                     cache_dir, options=None):
         """ Pre processing of the core. Prepare the export path and
         return it"""

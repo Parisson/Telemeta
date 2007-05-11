@@ -80,5 +80,3 @@ urlpatterns = patterns('',
     (r'^images/(?P<path>.*)$', 'django.views.static.serve', 
         {'document_root': './telemeta/htdocs/images'}),
 )
-
-

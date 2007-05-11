@@ -92,6 +92,7 @@ class FlacExporter(ExporterCore):
         
         if not options is None:
             self.options = options
+            
             if 'verbose' in self.options and self.options['verbose'] != '0':
                 args = args
             else:
@@ -118,7 +119,7 @@ class FlacExporter(ExporterCore):
             os.system('flac '+args+' -o "'+self.dest+'" "'+ \
                       self.source+'" > /dev/null')
 
-            # Pre-proccessing (self)
+            # Post-proccessing (self)
             self.write_tags()
             self.post_process(self.item_id,
                          self.source,

@@ -12,6 +12,7 @@
 
 import os
 import string
+import subprocess
 
 from telemeta.export.core import *
 from telemeta.export.api import IExporter
@@ -32,6 +33,7 @@ class Mp3Exporter(ExporterCore):
         self.dest = ''
         self.options = {}
         self.bitrate_default = '192'
+        self.buffer_size = 0xFFFF
         self.dub2id3_dict = {'title': 'TIT2', #title2
                              'creator': 'TCOM', #composer
                      'creator': 'TPE1', #lead
@@ -95,7 +97,7 @@ class Mp3Exporter(ExporterCore):
         self.options = {}
         args = ''
         
-        if not options is None:
+        if not options is None: 
             self.options = options
             
             if 'verbose' in self.options and self.options['verbose'] != '0':
@@ -106,9 +108,8 @@ class Mp3Exporter(ExporterCore):
             if 'mp3_bitrate' in self.options:
                 args = args+'-b '+self.options['mp3_bitrate']
             else:
-                args = args+'-b '+self.bitrate_default
-                
-                #Copyrights, etc..
+                args = args+'-b '+self.bitrate_default    
+            #Copyrights, etc..
             args = args + ' -c -o '
         else:
             args = args + ' -S -c -o '
@@ -126,11 +127,38 @@ class Mp3Exporter(ExporterCore):
                             self.cache_dir,
                             self.options)
             
-            # Encoding
-            os.system('lame '+args+' --tc "default" "'+self.source+
-                                    '" "'+self.dest+'"')
+            # Initializing
+            chunk = 0
+            file_out = open(self.dest,'w')
             
-            # Pre-proccessing (self)
+            proc = subprocess.Popen( \
+                    #'sox "'+self.source+'" -w -r 44100 -t wav -c2 - '+ 
+                    #'| lame '+args+' --tc "default" -',
+                    'lame '+args+' --tc "default" "'+self.source+'" -',
+                    shell=True,
+                    bufsize=self.buffer_size,
+                    stdin=subprocess.PIPE,
+                    stdout=subprocess.PIPE,
+                    close_fds=True)
+                
+            chunk = proc.stdout.read(self.buffer_size)
+            yield chunk
+            file_out.write(chunk)
+           
+            # Processing
+            while chunk:
+                chunk = proc.stdout.read(self.buffer_size)
+                yield chunk
+                file_out.write(chunk)           
+            
+            #file_in.close()
+            file_out.close()
+            
+            # Encoding
+            # os.system('lame '+args+' --tc "default" "'+self.source+
+            #                        '" "'+self.dest+'"')
+            
+            # Post-proccessing (self)
             self.write_tags()
             self.post_process(self.item_id,
                          self.source,
@@ -140,8 +168,8 @@ class Mp3Exporter(ExporterCore):
                          self.options)
                         
             # Output
-            return self.dest
+            # return self.dest
 
         except IOError:
-            return 'ExporterError [3]: source file does not exist.'
+            yield 'ExporterError [3]: source file does not exist.'
 

@@ -17,8 +17,9 @@ from telemeta.core import *
 from telemeta.core import ComponentManager
 
 cache_dir = 'cache/'
-source = 'samples/wav/Cellar - Show Me - 02.wav'
-item_id = '1'
+source = 'samples/wav/The Chicken-James Brown.wav'
+#source = 'samples/wav/Cellar - Show Me - 02.wav'
+item_id = '10'
 metadata = {'identifier': 'Test',  #collection
          'title': 'Show Me',
          'creator': 'Cellar',
@@ -26,10 +27,10 @@ metadata = {'identifier': 'Test',  #collection
          'date': '2004',
          'publisher': 'PArISs0n',
          }
-options = {'verbose': '0'}
-
+options = {'verbose': '1'}
 
 class ExportTest(Component):
+    
     exporters = ExtensionPoint(IExporter)
 
     def run(self):
@@ -40,10 +41,11 @@ class ExportTest(Component):
                 print '| Testing exporter format: ' + format
                 print "+------------------------------------------"
             exporter.set_cache_dir(cache_dir)
-            exporter.process(item_id,source,metadata,options)
-            #exporter.process(item_id,source,metadata)
+            stream = exporter.process(item_id,source,metadata,options)
 
-
+            for chunk in stream:
+                pass
+            
 compmgr = ComponentManager()
 test = ExportTest(compmgr)
 test.run()

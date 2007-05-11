@@ -12,6 +12,7 @@
 
 import os
 import string
+import subprocess
 
 from telemeta.export.core import *
 from telemeta.export.api import IExporter
@@ -31,7 +32,8 @@ class OggExporter(ExporterCore):
         self.dest = ''
         self.options = {}
         self.bitrate_default = '192'
-
+        self.buffer_size = 0xFFFF
+        
     def get_format(self):
         return 'OGG'
     
@@ -71,7 +73,8 @@ class OggExporter(ExporterCore):
         for tag in self.metadata.keys():
             media[tag] = str(self.metadata[tag])
         media.save()
-        
+
+
     def process(self, item_id, source, metadata, options=None):
         self.item_id = item_id
         self.source = source
@@ -97,35 +100,56 @@ class OggExporter(ExporterCore):
         else:
             args = ' -Q -b '+self.bitrate_default
             
-        if os.path.exists(self.source) and not iswav16(self.source):
-            self.source = self.decode()
-            
+        #if os.path.exists(self.source) and not iswav16(self.source):
+        #    self.source = self.decode()
+        
+        # Pre-processing
+        self.ext = self.get_file_extension()
+        self.dest = self.pre_process(self.item_id,
+                                     self.source,
+                                     self.metadata,
+                                     self.ext,
+                                     self.cache_dir,
+                                     self.options)
+       
         try:
-            # Pre-proccessing (core)
-            self.ext = self.get_file_extension()
-            self.dest = self.pre_process(self.item_id,
+            # Initializing
+            chunk = 0
+            file_out = open(self.dest,'w')
+            
+            proc = subprocess.Popen( \
+                    'sox "'+self.source+'" -w -r 44100 -t wav -c2 - '+
+                    '| oggenc '+args+' -',
+                    shell=True,
+                    bufsize=self.buffer_size,
+                    stdin=subprocess.PIPE,
+                    stdout=subprocess.PIPE,
+                    close_fds=True)
+
+            chunk = proc.stdout.read(self.buffer_size)
+            yield chunk
+            file_out.write(chunk)
+           
+            # Processing
+            while chunk:
+                chunk = proc.stdout.read(self.buffer_size)
+                yield chunk
+                file_out.write(chunk)           
+            
+            #file_in.close()
+            file_out.close()
+                
+            # Post-proccessing
+            #os.system('sox "'+self.source+'" -w -r 44100 -t wav -c2 - \
+            #      | oggenc '+args+' -o "'+self.dest+'" -')
+  
+            self.write_tags()
+            self.post_process(self.item_id,
                             self.source,
                             self.metadata,
                             self.ext,
                             self.cache_dir,
                             self.options)
-            
-            # Encoding
-            os.system('oggenc '+args+' -o "'+self.dest+
-                      '" "'+self.source+'"')
-            
-            # Pre-proccessing (self)
-            self.write_tags()
-            self.post_process(self.item_id,
-                         self.source,
-                         self.metadata,
-                         self.ext,
-                         self.cache_dir,
-                         self.options)
-                        
-            # Output
-            return self.dest
-
+               
         except IOError:
-            return 'ExporterError [3]: source file does not exist.'
-
+            yield 'ExporterError [3]: source file does not exist.'
