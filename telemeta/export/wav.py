@@ -29,6 +29,7 @@ class WavExporter(ExporterCore):
         self.source = ''
         self.dest = ''
         self.options = {}
+        self.buffer_size = 0xFFFF
         
     def get_format(self):
         return 'WAV'
@@ -115,8 +116,26 @@ class WavExporter(ExporterCore):
                                          self.cache_dir,
                                          self.options)
 
+            # Initializing
+            chunk = 0
+            file_in = open(self.source,'rb')
+            file_out = open(self.dest,'w')
+        
+            chunk = file_in.read(self.buffer_size)
+            yield chunk
+            file_out.write(chunk)
+           
+            # Processing
+            while chunk:
+                chunk = file_in.read(self.buffer_size)
+                yield chunk
+                file_out.write(chunk)           
+
+            file_in.close()
+            file_out.close()
+
             #if self.compare_md5_key():
-            os.system('cp -a "'+self.source+'" "'+ self.dest+'"')
+            #os.system('cp -a "'+self.source+'" "'+ self.dest+'"')
             #print 'COPIED'
             
             # Pre-proccessing (self)
@@ -138,8 +157,8 @@ class WavExporter(ExporterCore):
                          self.options)
 
             # Output                
-            return self.dest
+            #return self.dest
 
         except IOError:
-            return 'ExporterError [3]: source file does not exist.'
+            yield 'ExporterError [3]: source file does not exist.'
 

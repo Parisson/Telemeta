@@ -12,6 +12,7 @@
 
 import os
 import string
+import subprocess
 
 from telemeta.export.core import *
 from telemeta.export.api import IExporter
@@ -31,6 +32,7 @@ class FlacExporter(ExporterCore):
         self.dest = ''
         self.quality_default = '5'
         self.info = []
+        self.buffer_size = 0xFFFF
         
     def get_format(self):
         return 'FLAC'
@@ -115,9 +117,35 @@ class FlacExporter(ExporterCore):
                                          self.cache_dir,
                                          self.options)
 
+            # Initializing
+            chunk = 0
+            file_out = open(self.dest,'w')
+            
+            proc = subprocess.Popen( \
+                    'sox "'+self.source+'" -w -r 44100 -t wav -c2 - '+
+                    '| flac '+args+' -c -',
+                    shell=True,
+                    bufsize=self.buffer_size,
+                    stdin=subprocess.PIPE,
+                    stdout=subprocess.PIPE,
+                    close_fds=True)
+                
+            chunk = proc.stdout.read(self.buffer_size)
+            yield chunk
+            file_out.write(chunk)
+           
+            # Processing
+            while chunk:
+                chunk = proc.stdout.read(self.buffer_size)
+                yield chunk
+                file_out.write(chunk)           
+           
+            file_out.close()
+            
+
             # Encoding
-            os.system('flac '+args+' -o "'+self.dest+'" "'+ \
-                      self.source+'" > /dev/null')
+            #os.system('flac '+args+' -o "'+self.dest+'" "'+ \
+            #          self.source+'" > /dev/null')
 
             # Post-proccessing (self)
             self.write_tags()
@@ -129,8 +157,8 @@ class FlacExporter(ExporterCore):
                          self.options)
 
             # Output
-            return self.dest
+            #return self.dest
 
         except IOError:
-            return 'ExporterError [3]: source file does not exist.'
+            yield 'ExporterError [3]: source file does not exist.'
 

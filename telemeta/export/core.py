@@ -32,6 +32,7 @@ class ExporterCore(Component):
         self.dest = ''
         self.metadata = []
         self.cache_dir = 'cache'
+        self.buffer_size = 0xFFFF
 
     def set_cache_dir(self,path):
         self.cache_dir = path

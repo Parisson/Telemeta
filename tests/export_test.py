@@ -17,8 +17,8 @@ from telemeta.core import *
 from telemeta.core import ComponentManager
 
 cache_dir = 'cache/'
-source = 'samples/wav/The Chicken-James Brown.wav'
-#source = 'samples/wav/Cellar - Show Me - 02.wav'
+#source = 'samples/wav/The Chicken-James Brown.wav'
+source = 'samples/wav/Cellar - Show Me - 02.wav'
 item_id = '10'
 metadata = {'identifier': 'Test',  #collection
          'title': 'Show Me',
