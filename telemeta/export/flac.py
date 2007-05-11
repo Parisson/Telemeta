@@ -114,7 +114,7 @@ class FlacExporter(ExporterCore):
                                          self.ext,
                                          self.cache_dir,
                                          self.options)
-            
+
             # Encoding
             os.system('flac '+args+' -o "'+self.dest+'" "'+ \
                       self.source+'" > /dev/null')

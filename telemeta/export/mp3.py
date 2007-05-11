@@ -89,7 +89,7 @@ class Mp3Exporter(ExporterCore):
                 frame = mutagen.id3.Frames[frame_text](3,value)
                 id3.add(frame)
         id3.save()
-        
+
     def process(self, item_id, source, metadata, options=None):
         self.item_id = item_id
         self.source = source
@@ -150,12 +150,11 @@ class Mp3Exporter(ExporterCore):
                 chunk = proc.stdout.read(self.buffer_size)
                 yield chunk
                 file_out.write(chunk)           
-            
-            #file_in.close()
+           
             file_out.close()
             
             # Encoding
-            # os.system('lame '+args+' --tc "default" "'+self.source+
+            # os.system('lame '+args+' --tc "default" "'+self.source+
             #                        '" "'+self.dest+'"')
             
             # Post-proccessing (self)
