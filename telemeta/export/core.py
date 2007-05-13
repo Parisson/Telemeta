@@ -13,6 +13,7 @@
 import os
 import re
 import string
+import subprocess
 import mutagen
 
 import telemeta.export
@@ -113,13 +114,16 @@ class ExporterCore(Component):
         #self.title = self.metadata['Title']
 
         # Decode the source if needed
-        if os.path.exists(self.source) and not iswav16(self.source):
+        #if os.path.exists(self.source) and not iswav16(self.source):
             # TO FIX !
-            self.source = self.export.decode()
+        #    self.source = self.export.decode()
 
         # Normalize if demanded
-        if 'normalize' in self.metadata and self.metadata['normalize']:
-            self.normalize()
+        if not options is None:
+            self.options = options
+            if 'normalize' in self.options and \
+                self.options['normalize'] == True:
+                self.normalize()
 
         # Define the cache directory
         self.ext = self.get_file_extension()
@@ -145,6 +149,17 @@ class ExporterCore(Component):
         self.dest = os.path.join(self.dest,target_file)
         return self.dest
 
+    def stream(self,command):
+        """Streams encoded audio data through a generator"""
+        proc = subprocess.Popen(command,
+                shell=True,
+                bufsize=self.buffer_size,
+                stdin=subprocess.PIPE,
+                stdout=subprocess.PIPE,
+                close_fds=True)
+                
+        chunk = proc.stdout.read(self.buffer_size)
+        return chunk
 
     def post_process(self, item_id, source, metadata, ext, 
                      cache_dir, options=None):

@@ -132,7 +132,7 @@ class Mp3Exporter(ExporterCore):
             file_out = open(self.dest,'w')
             
             proc = subprocess.Popen( \
-                    'sox "'+self.source+'" -w -r 44100 -t wav -c2 - '+
+                    'sox "'+self.source+'" -q -w -r 44100 -t wav -c2 - '+
                     '| lame '+args+' --tc "default" - -',
                     shell=True,
                     bufsize=self.buffer_size,

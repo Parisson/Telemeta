@@ -101,11 +101,11 @@ class FlacExporter(ExporterCore):
                 args = args + ' -s '
                 
             if 'flac_quality' in self.options:
-                args = args+' -f -V -'+self.options['flac_quality']
+                args = args+' -f -'+self.options['flac_quality']
             else:
-                args = args+' -f -V -'+self.quality_default
+                args = args+' -f -'+self.quality_default
         else:
-            args = args+' -s -f -V -'+self.quality_default
+            args = args+' -s -f -'+self.quality_default
     
         try:
             # Pre-proccessing (core)
@@ -116,32 +116,32 @@ class FlacExporter(ExporterCore):
                                          self.ext,
                                          self.cache_dir,
                                          self.options)
-
+                                         
             # Initializing
             chunk = 0
             file_out = open(self.dest,'w')
             
             proc = subprocess.Popen( \
-                    'sox "'+self.source+'" -w -r 44100 -t wav -c2 - '+
+                    'sox "'+self.source+'" -q -w -r 44100 -t wav -c2 - '+
                     '| flac '+args+' -c -',
                     shell=True,
                     bufsize=self.buffer_size,
                     stdin=subprocess.PIPE,
                     stdout=subprocess.PIPE,
                     close_fds=True)
-                
+
             chunk = proc.stdout.read(self.buffer_size)
             yield chunk
             file_out.write(chunk)
-           
+
             # Processing
             while chunk:
                 chunk = proc.stdout.read(self.buffer_size)
                 yield chunk
                 file_out.write(chunk)           
-           
-            file_out.close()
             
+            #file_in.close()
+            file_out.close()
 
             # Encoding
             #os.system('flac '+args+' -o "'+self.dest+'" "'+ \

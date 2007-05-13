@@ -25,9 +25,9 @@ metadata = {'identifier': 'Test',  #collection
          'creator': 'Cellar',
          'type': 'House',
          'date': '2004',
-         'publisher': 'PArISs0n',
+         'publisher': 'Parisson',
          }
-options = {'verbose': '1'}
+options = {'verbose': '0'}
 
 class ExportTest(Component):
     

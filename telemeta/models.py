@@ -62,7 +62,7 @@ class MediaCollection(models.Model, MediaCore):
     publishing_status = models.CharField(maxlength=250, blank=True)
     is_original = models.CharField(maxlength=250)
     is_full_copy = models.CharField(maxlength=250)
-    copied_from = models.ForeignKey('self', null=True)
+    copied_from = models.ForeignKey('self', blank=True)
     #copied_from[0].dc_element = 'relation'
     creator = models.CharField(maxlength=250)
     creator.dc_element = 'creator'

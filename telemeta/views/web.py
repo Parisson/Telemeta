@@ -105,9 +105,10 @@ class WebView(Component):
         metadata['Artist'] = metadata['creator']
         metadata['Title'] = metadata['title']
 
-        outfile = exporter.process(item.id, infile, metadata, [])
+        stream = exporter.process(item.id, infile, metadata, [])
 
-        response = HttpResponse(self.__file_stream(outfile), mimetype = mime_type)
+        #response = HttpResponse(self.__file_stream(outfile),mimetype=mime_type)
+        response = HttpResponse(stream, mimetype = mime_type)
         response['Content-Disposition'] = 'attachment; filename="download.' + \
                     exporter.get_file_extension() + '"'
         return response

@@ -118,7 +118,7 @@ class OggExporter(ExporterCore):
             file_out = open(self.dest,'w')
             
             proc = subprocess.Popen( \
-                    'sox "'+self.source+'" -w -r 44100 -t wav -c2 - '+
+                    'sox "'+self.source+'" -q -w -r 44100 -t wav -c2 - '+
                     '| oggenc '+args+' -',
                     shell=True,
                     bufsize=self.buffer_size,
@@ -129,7 +129,7 @@ class OggExporter(ExporterCore):
             chunk = proc.stdout.read(self.buffer_size)
             yield chunk
             file_out.write(chunk)
-           
+
             # Processing
             while chunk:
                 chunk = proc.stdout.read(self.buffer_size)
