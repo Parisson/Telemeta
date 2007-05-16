@@ -8,9 +8,10 @@
 # Author: Olivier Guilyardi <olivier@samalyse.com>
 
 class Resource(object):
+    "Represent a Dublin Core resource"
+
     elements = []
 
-    "Represent a Dublin Core resource"
     def __init__(self, *args):
         self.elements = args  
 
@@ -31,6 +32,7 @@ class Resource(object):
 
 class Element(object):
     "Represent a Dublin Core element"
+
     def __init__(self, name, field=None, value=None, refinement=None):
         self.name = name
         self.value = value
