@@ -56,8 +56,10 @@ a:link:hover, a:visited:hover {
 }
 
 .item_visualization {
+  clear: right;
   float: right;
   padding: 1ex;
+  margin-top: 1em;
 }
 .item_visualization select {
   width: 200px;
