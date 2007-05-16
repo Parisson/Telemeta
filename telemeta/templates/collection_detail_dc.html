@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load telemeta_utils %}
+
+{% block submenu %}
+    <a href="{% url telemeta-collection-detail object.id|urlencode %}">
+        Normal View</a>
+{% endblock %}
+
+{% block content %}
+{% if object %}
+    <h3>Collection: {{ object.title }}</h3>
+    <table class="dublincore listing">
+    <caption>Dublin Core Expression</caption>
+    <thead>
+        <tr><th>Element</th><th>Refinement</th><th>Value</th></tr>
+    </thead>
+    <tbody>
+        {% for element in object.to_dublincore.elements %}
+            {% if element.value %}
+            <tr><th>{{ element.name }}</th>
+            <td>{{ element.refinement|default:"&nbsp;" }}</td>
+            <td>{{ element.value }}</td>
+            {% endif %}
+        {% endfor %}
+        {% for item in object.items.all %}
+            <tr><th>relation</th><td>hasPart</td><td>
+            <a href="{% url telemeta-item-dublincore item.id|urlencode %}">
+                {{ item.id }}</a>
+            </td>
+        {% endfor %}
+    </tbody>
+    </table>
+{% else %}
+    <p>No such collection</p>
+{% endif %}
+{% endblock %}

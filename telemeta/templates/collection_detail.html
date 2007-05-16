@@ -1,10 +1,16 @@
 {% extends "base.html" %}
+{% load telemeta_utils %}
+
+{% block submenu %}
+    <a href="{% url telemeta-collection-dublincore object.id|urlencode %}">
+        Dublin Core</a>
+{% endblock %}
 
 {% block content %}
 {% if object %}
     <h3>Collection: {{ object.title }}</h3>
     <ul>
-    {% for field in object.list %}
+    {% for field in object.to_dict|tolist %}
         {% ifnotequal field.name "title" %}
 
         <li><b>{{ field.name|capfirst }}</b> : {{ field.value }}</li>
@@ -17,7 +23,7 @@
     <ul>
     {% for item in object.items.all %}
         <li><b>{{ item.creator }}</b> - {{ item.title }}
-            <a href="{% url telemeta-item-detail item.id %}">View</a>
+            <a href="{% url telemeta-item-detail item.id|urlencode %}">View</a>
             <a href="#">Edit</a>
             </li>
     {% endfor %}

@@ -35,7 +35,7 @@ class WebView(Component):
         context = Context({})
         return HttpResponse(template.render(context))
 
-    def item_detail(self, request, item_id):
+    def item_detail(self, request, item_id, template='mediaitem_detail.html'):
         """Show the details of a given item"""
         item = MediaItem.objects.get(pk=item_id)
         formats = []
@@ -49,7 +49,8 @@ class WebView(Component):
             visualizer_id = request.REQUEST['visualizer_id']
         else:
             visualizer_id = 'waveform'
-        return render_to_response('mediaitem_detail.html', 
+
+        return render_to_response(template, 
                     {'item': item, 'export_formats': formats, 
                     'visualizers': visualizers, 'visualizer_id': visualizer_id})
                     
@@ -67,22 +68,6 @@ class WebView(Component):
         response = HttpResponse(stream, mimetype = 'image/png')
         return response
 
-
-    def __file_stream(self, filepath):
-        """Generator for streaming a file from the disk. 
-        
-        This method shouldn't be needed anymore when bug #8 get fixed
-        """
-
-        buffer_size = 0xFFFF
-        f = open(filepath, 'rb')
-        chunk = f.read(buffer_size)
-        yield chunk
-        while chunk:
-            chunk = f.read(buffer_size)
-            yield chunk
-        f.close()            
-
     def item_export(self, request, item_id, format):                    
         """Export a given media item in the specified format (OGG, FLAC, ...)"""
         for exporter in self.exporters:
@@ -99,16 +84,10 @@ class WebView(Component):
         item = MediaItem.objects.get(pk=item_id)
 
         infile = settings.MEDIA_ROOT + "/" + item.file
-        metadata = item.to_dict()
-        metadata['collection'] = str(metadata['collection'])
-        metadata['Collection'] = metadata['collection']
-        metadata['Artist'] = metadata['creator']
-        metadata['Title'] = metadata['title']
+        metadata = item.to_dublincore().flatten()
+        stream = exporter.process(item.id, infile, metadata)
 
-        stream = exporter.process(item.id, infile, metadata, [])
-
-        response = HttpResponse(self.__file_stream(outfile),mimetype=mime_type)
-        #response = HttpResponse(stream, mimetype = mime_type)
+        response = HttpResponse(stream, mimetype = mime_type)
         response['Content-Disposition'] = 'attachment; filename="download.' + \
                     exporter.get_file_extension() + '"'
         return response

@@ -14,7 +14,6 @@
 -->
 <div id="header">
 <a href="/"><img src="/images/logo.png"></a>
-</div>
 
 <div id="quick_search">
 <form action="{% url telemeta-quicksearch %}" method="GET">
@@ -27,6 +26,10 @@
 <a href="{% url telemeta-collections %}">Collections</a> |
 <a href="{% url telemeta-items %}">Items</a> |
 <a href="{% url telemeta-admin %}">Admin</a>
+</div>
+</div>
+<div id="submenu">
+{% block submenu %}{% endblock %}
 </div>
 
 <div id="content">

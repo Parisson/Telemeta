@@ -12,22 +12,32 @@ from django.db import models
 from django.db.models import Q
 from telemeta.core import *
 from django.core.exceptions import ObjectDoesNotExist
+from telemeta import dublincore as dc
 
 class MediaModel(Component):
     pass
 
 class MediaCore:
-    def list(self):
-        fields_list = []
-        for field in self._meta.fields:
-            fields_list.append({'name': field.verbose_name, 'value': getattr(self, field.name)})
-        return fields_list
-
-    def to_dict(self):        
+    def to_dict(self):  
+        "Return model fields as a dict of name/value pairs"
         fields_dict = {}
         for field in self._meta.fields:
             fields_dict[field.name] = getattr(self, field.name)
         return fields_dict
+
+#    def dc_elements(self):        
+#        """Return model fields mapped to Dublin Core elements, as a dict of 
+#        the form: {dc_element_name: [value1, value2, ....], ...}
+#        """
+#        fields_dict = {}
+#        for field in self._meta.fields:
+#            if (hasattr(field, 'dc_element')):
+#                if fields_dict.has_key(field.dc_element):
+#                    fields_dict[field.dc_element].append(getattr(self, field.name))
+#                else:
+#                    fields_dict[field.dc_element] = [getattr(self, field.name)]
+#                    
+#        return fields_dict
 
 class PhysicalFormat(models.Model):
     value = models.CharField(maxlength=250)
@@ -53,28 +63,19 @@ class MediaCollection(models.Model, MediaCore):
     physical_format = models.CharField(maxlength=250, blank=True)
     id = models.CharField(maxlength=250, primary_key=True, 
         verbose_name='identifier')
-    id.dc_element = 'identifier'
     title = models.CharField(maxlength=250)
-    title.dc_element = 'title'
     native_title = models.CharField(maxlength=250, blank=True)
-    native_title.dc_element = 'title'
     physical_items_num = models.CharField(maxlength=250, blank=True) 
     publishing_status = models.CharField(maxlength=250, blank=True)
     is_original = models.CharField(maxlength=250)
     is_full_copy = models.CharField(maxlength=250)
-    copied_from = models.ForeignKey('self', blank=True)
-    #copied_from[0].dc_element = 'relation'
+    copied_from = models.ForeignKey('self', null=True, blank=True)
     creator = models.CharField(maxlength=250)
-    creator.dc_element = 'creator'
     booklet_writer = models.CharField(maxlength=250, blank=True)
-    booklet_writer.dc_element = 'contributor'
     booklet_description = models.TextField(blank=True)
     collector = models.CharField(maxlength=250, blank=True)
-    collector.dc_element = 'contributor'
     publisher = models.CharField(maxlength=250, blank=True)
-    publisher.dc_element = 'publisher'
     date_published = models.CharField(maxlength=250, blank=True)
-    date_published.dc_element = 'date'
     publisher_collection = models.CharField(maxlength=250, blank=True)
     publisher_serial_id = models.CharField(maxlength=250, blank=True)
     ref_biblio = models.TextField(blank=True)
@@ -83,9 +84,7 @@ class MediaCollection(models.Model, MediaCore):
     record_author = models.CharField(maxlength=250, blank=True)
     record_writer = models.CharField(maxlength=250, blank=True)
     rights = models.CharField(maxlength=250, blank=True)
-    rights.dc_element = 'rights'
     annee_enr = models.CharField(maxlength=250, blank=True)
-    annee_enr.dc_element = 'date'
     terrain_ou_autre = models.CharField(maxlength=250, blank=True)
     duree_approx = models.CharField(maxlength=250, blank=True)
     tri_dibm = models.CharField(maxlength=250, blank=True)
@@ -97,24 +96,38 @@ class MediaCollection(models.Model, MediaCore):
     numerisation = models.CharField(maxlength=250, blank=True)
     champ36 = models.CharField(maxlength=250, blank=True)
      
-#    date = models.DateField()
-#    contributor = models.CharField(maxlength=250, blank=True)
-#    coverage = models.CharField(maxlength=250, blank=True)
-#    creator = models.CharField(maxlength=250, blank=True)
-#    description = models.CharField(maxlength=250, blank=True)
-#    format = models.CharField(maxlength=250, blank=True)
-#    identifier = models.CharField(maxlength=250, blank=True)
-#    language = models.CharField(maxlength=250, blank=True)
-#    publisher = models.CharField(maxlength=250, blank=True)
-#    rights = models.CharField(maxlength=250, blank=True)
-#    source = models.CharField(maxlength=250, blank=True)
-#    subject = models.CharField(maxlength=250, blank=True)
-#    physical_format = models.ForeignKey(PhysicalFormat, null=True, blank=True)
-
     objects = MediaCollectionManager()
 
+    def to_dublincore(self):
+        if (self.date_published):
+            date = self.date_published
+        else:
+            date = self.annee_enr
+
+        if (self.copied_from):
+            copied_from = self.copied_from.id
+        else:
+            copied_from = ''
+
+        resource = dc.Resource(
+            dc.Element('identifier','id', self.id),
+            dc.Element('type', value='Collection'),
+            dc.Element('title', 'title', self.title),
+            dc.Element('title', 'native_title', self.native_title),
+            dc.Element('creator', 'creator', self.creator),
+            dc.Element('relation', 'copied_from', copied_from, 
+                'isVersionOf'),
+            dc.Element('contributor', 'booklet_writer', self.booklet_writer),
+            dc.Element('contributor', 'collector', self.collector),
+            dc.Element('publisher', 'publisher', self.publisher),
+            dc.Element('date', value=date),
+            dc.Element('rights', 'rights', self.rights),
+        )
+        return resource
+
     def __str__(self):
-        return self.title
+        #return self.title
+        return self.id
 
     class Meta:
         ordering = ['title']
@@ -145,7 +158,7 @@ class MediaItem(models.Model, MediaCore):
     region_village = models.CharField(maxlength=250, blank=True)
     ethnie_grsocial = models.CharField(maxlength=250, blank=True)
     titre_support = models.CharField(maxlength=250, blank=True)
-    _title = models.CharField(maxlength=250, db_column='title', blank=True)
+    _title = models.CharField(maxlength=250, db_column='title')
     transcrip_trad = models.CharField(maxlength=250, blank=True)
     auteur = models.CharField(maxlength=250, blank=True)
     form_genr_style = models.CharField(maxlength=250, blank=True)
@@ -164,25 +177,8 @@ class MediaItem(models.Model, MediaCore):
     repere_bande = models.CharField(maxlength=250, blank=True)
     nroband_nropiec = models.CharField(maxlength=250, blank=True)
     continent = models.CharField(maxlength=250, blank=True)
-    file = models.FileField(upload_to='items/%Y/%m/%d')
+    file = models.FileField(upload_to='items/%Y/%m/%d', blank=True)
 
-#    collection.dublin_core = 'relation'
-#    identifier = models.CharField(maxlength=250)
-#    title = models.CharField(maxlength=250)
-#    creator = models.CharField(maxlength=250)
-#    date = models.DateField()
-#    file = models.FileField(upload_to='items/%Y/%m/%d')
-#    subject = models.CharField(maxlength=250, blank=True)
-#    description = models.TextField(maxlength=250, blank=True)
-#    contributor = models.CharField(maxlength=250, blank=True)
-#    coverage = models.CharField(maxlength=250, blank=True)
-#    format = models.CharField(maxlength=25, blank=True)
-#    language = models.CharField(maxlength=250, blank=True)
-#    publisher = models.CharField(maxlength=250, blank=True)
-#    rights = models.CharField(maxlength=250, blank=True)
-#    source = models.CharField(maxlength=250, blank=True)
-#    duration = models.FloatField(max_digits=11, decimal_places=3, null=True, blank=True)
-#
     objects = MediaItemManager()
 
     def _get_title(self):
@@ -197,6 +193,22 @@ class MediaItem(models.Model, MediaCore):
 
         return title
     title = property(_get_title)        
+
+    def to_dublincore(self):
+        if self.auteur:
+            creator = self.auteur
+        else: 
+            creator = self.collection.creator
+
+        resource = dc.Resource(
+            dc.Element('identifier','id', self.id),
+            dc.Element('type', value='Sound'),
+            dc.Element('relation', 'collection', self.collection.id, 'isPartOf'),
+            dc.Element('title', 'title', self.title),
+            dc.Element('creator', value=creator),
+            dc.Element('publisher', value=self.collection.publisher),
+        )
+        return resource
 
     def __str__(self):
         return self.title
