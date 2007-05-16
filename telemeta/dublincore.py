@@ -8,6 +8,8 @@
 # Author: Olivier Guilyardi <olivier@samalyse.com>
 
 class Resource(object):
+    elements = []
+
     "Represent a Dublin Core resource"
     def __init__(self, *args):
         self.elements = args  
