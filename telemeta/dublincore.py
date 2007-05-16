@@ -27,7 +27,7 @@ class Resource(object):
         result = {}
         for element in self.elements:
             if not result.has_key(element.name):
-                result[element.name] = element.value
+                result[element.name] = str(element.value)
         return result
 
 class Element(object):
