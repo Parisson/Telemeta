@@ -1,0 +1,13 @@
+{% extends "base_xspf.xml" %}
+{% load telemeta_utils %}
+
+{% block tracklist %}
+    <track>
+      <title>{{ item.title }}</title>
+      <meta rel="type">mp3</meta>
+      <location>http://{{ host }}{% url telemeta-item-export item.id|urlencode,"MP3" %}</location>
+      <duration>{{ item.get_duration|mul:1000 }}</duration>
+      <info>http://{{ host }}{% url telemeta-item-detail item.id|urlencode %}</info>
+    </track>
+{% endblock %}
+

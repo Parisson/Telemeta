@@ -36,15 +36,15 @@ a img { border: none; }
 
 #quick_search_pattern { }
 
-.item_visualization {
+.item_visualization, #collection_player {
   clear: right;
   float: right;
   padding: 1ex;
   margin-top: 1em;
+  margin-left: 1em;
 }
 .item_visualization select { width: 200px; }
 .item_visualization img { width: 300px; border: solid 1px black; }
-
 
 /* Styles for tabular listings (stolen from trac) */
 table.listing {

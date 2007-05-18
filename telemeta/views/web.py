@@ -190,6 +190,24 @@ class WebView(Component):
             record.save()
 
         return self.edit_enumeration(request, enumeration_id)
+  
+    def collection_playlist(self, request, collection_id, template, mimetype):
+        collection = MediaCollection.objects.get(id__exact=collection_id)
+        if not collection:
+            raise Http404
+
+        template = loader.get_template(template)
+        context = Context({'collection': collection, 'host': request.META['HTTP_HOST']})
+        return HttpResponse(template.render(context), mimetype=mimetype)
+
+    def item_playlist(self, request, item_id, template, mimetype):
+        item = MediaItem.objects.get(id__exact=item_id)
+        if not item:
+            raise Http404
+
+        template = loader.get_template(template)
+        context = Context({'item': item, 'host': request.META['HTTP_HOST']})
+        return HttpResponse(template.render(context), mimetype=mimetype)
 
         
     

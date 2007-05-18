@@ -16,4 +16,9 @@ def tolist(dict):
         list.append({'name': k, 'value': v})
     return list        
 
+@register.filter
+def mul(value, arg):
+    "Multiply a numeric value"
+    return value * arg        
+
 

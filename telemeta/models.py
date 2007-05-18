@@ -11,6 +11,7 @@ from django.db import models
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 from django.core import validators
+from django.conf import settings
 
 import telemeta
 from telemeta.core import *
@@ -127,6 +128,14 @@ class MediaCollection(models.Model, MediaCore):
         )
         return resource
 
+    def has_mediafile(self):
+        "Tell wether this collection has any media files attached to its items"
+        items = self.items.all()
+        for item in items:
+            if item.file:
+                return True
+        return False
+
     def __str__(self):
         #return self.title
         return self.id
@@ -214,6 +223,17 @@ class MediaItem(models.Model, MediaCore):
             dc.Element('publisher', value=self.collection.publisher),
         )
         return resource
+
+    def get_duration(self):
+        if self.file:
+            import wave
+            media = wave.open(settings.MEDIA_ROOT + "/" + self.file, "rb")
+            duration = media.getnframes() / media.getframerate()
+            media.close()
+        else:
+            duration = 0
+
+        return duration
 
     def __str__(self):
         return self.title
