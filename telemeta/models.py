@@ -7,12 +7,17 @@
 #
 # Author: Olivier Guilyardi <olivier@samalyse.com>
 
-import telemeta
 from django.db import models
 from django.db.models import Q
-from telemeta.core import *
 from django.core.exceptions import ObjectDoesNotExist
+from django.core import validators
+
+import telemeta
+from telemeta.core import *
 from telemeta import dublincore as dc
+
+# Regular (sub) expression for matching/validating media objects IDs
+media_id_regex = r'[0-9A-Za-z._:%?-]+'
 
 class MediaModel(Component):
     pass
@@ -25,27 +30,22 @@ class MediaCore:
             fields_dict[field.name] = getattr(self, field.name)
         return fields_dict
 
-#    def dc_elements(self):        
-#        """Return model fields mapped to Dublin Core elements, as a dict of 
-#        the form: {dc_element_name: [value1, value2, ....], ...}
-#        """
-#        fields_dict = {}
-#        for field in self._meta.fields:
-#            if (hasattr(field, 'dc_element')):
-#                if fields_dict.has_key(field.dc_element):
-#                    fields_dict[field.dc_element].append(getattr(self, field.name))
-#                else:
-#                    fields_dict[field.dc_element] = [getattr(self, field.name)]
-#                    
-#        return fields_dict
-
 class PhysicalFormat(models.Model):
     value = models.CharField(maxlength=250)
-    is_dictionary = True
+    is_enumeration = True
     def __str__(self):
         return self.value
     class Meta:
         ordering = ['value']
+        
+class PublishingStatus(models.Model):
+    value = models.CharField(maxlength=250)
+    is_enumeration = True
+    def __str__(self):
+        return self.value
+    class Meta:
+        ordering = ['value']
+        verbose_name_plural = "Publishing status"
         
 class MediaCollectionManager(models.Manager):
     def quick_search(self, pattern):
@@ -55,20 +55,22 @@ class MediaCollectionManager(models.Manager):
             Q(creator__icontains=pattern)
         )
 
-
 class MediaCollection(models.Model, MediaCore):
     "Group related media items"
+
+    id_regex = media_id_regex
+    id_validator = validators.MatchesRegularExpression('^' + id_regex + '$')
 
     publisher_reference = models.CharField(maxlength=250, blank=True)
     physical_format = models.CharField(maxlength=250, blank=True)
     id = models.CharField(maxlength=250, primary_key=True, 
-        verbose_name='identifier')
+        verbose_name='identifier', validator_list=[id_validator])
     title = models.CharField(maxlength=250)
     native_title = models.CharField(maxlength=250, blank=True)
     physical_items_num = models.CharField(maxlength=250, blank=True) 
     publishing_status = models.CharField(maxlength=250, blank=True)
-    is_original = models.CharField(maxlength=250)
-    is_full_copy = models.CharField(maxlength=250)
+    is_original = models.CharField(maxlength=250, blank=True)
+    is_full_copy = models.CharField(maxlength=250, blank=True)
     copied_from = models.ForeignKey('self', null=True, blank=True)
     creator = models.CharField(maxlength=250)
     booklet_writer = models.CharField(maxlength=250, blank=True)
@@ -146,12 +148,15 @@ class MediaItemManager(models.Manager):
 class MediaItem(models.Model, MediaCore):
     "Describe a item with metadata" 
 
+    id_regex = media_id_regex
+    id_validator = validators.MatchesRegularExpression('^' + id_regex + '$')
+
     ref = models.CharField(maxlength=250, blank=True)
     format = models.CharField(maxlength=250, blank=True)
     collection = models.ForeignKey(MediaCollection, related_name="items")
     face_plage = models.CharField(maxlength=250, blank=True)
     id = models.CharField(maxlength=250, primary_key=True, 
-        verbose_name='identifier')
+        verbose_name='identifier', validator_list=[id_validator])
     duree = models.CharField(maxlength=250, blank=True)
     dates_enregistr = models.CharField(maxlength=250, blank=True)
     etat = models.CharField(maxlength=250, blank=True)

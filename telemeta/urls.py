@@ -20,25 +20,29 @@ web_view = WebView(comp_mgr)
 all_items = { 'queryset': MediaItem.objects.all(), }
 all_collections = { 'queryset': MediaCollection.objects.all(), }
 
+# ID's regular expressions
+i_ex = MediaItem.id_regex
+c_ex = MediaCollection.id_regex
+
 urlpatterns = patterns('',
-    (r'^$', web_view.index),
+    url(r'^$', web_view.index, name="telemeta-home"),
 
     # items
     url(r'^items/$', 'django.views.generic.list_detail.object_list', 
         dict(all_items, paginate_by=20, template_name="mediaitem_list.html"),
         name="telemeta-items"),
-    url(r'^items/(?P<item_id>[0-9A-Z._:%?-]+)/$', web_view.item_detail, 
+    url(r'^items/(?P<item_id>' + i_ex + ')/$', web_view.item_detail, 
         name="telemeta-item-detail"),
-    url(r'^items/(?P<item_id>[0-9A-Z._:%?-]+)/dc/$', web_view.item_detail, 
+    url(r'^items/(?P<item_id>' + i_ex + ')/dc/$', web_view.item_detail, 
         {'template': 'mediaitem_detail_dc.html'},
         name="telemeta-item-dublincore"),
-    url(r'^items/(?P<item_id>[0-9A-Z._:%?-]+)/dc/xml/$', web_view.item_detail, 
+    url(r'^items/(?P<item_id>' + i_ex + ')/dc/xml/$', web_view.item_detail, 
         {'format': 'dublin_core_xml'},
         name="telemeta-item-dublincore-xml"),
-    url(r'^items/(?P<item_id>[0-9A-Z._:%?-]+)/download/(?P<format>[0-9A-Z]+)/$', 
+    url(r'^items/(?P<item_id>' + i_ex + ')/download/(?P<format>[0-9A-Z]+)/$', 
         web_view.item_export,
         name="telemeta-item-export"),
-    url(r'^items/(?P<item_id>[0-9A-Z._:%?-]+)/visualize/(?P<visualizer_id>[0-9a-z]+)/$', 
+    url(r'^items/(?P<item_id>' + i_ex + ')/visualize/(?P<visualizer_id>[0-9a-z]+)/$', 
         web_view.item_visualize,
         name="telemeta-item-visualize"),
 
@@ -50,11 +54,11 @@ urlpatterns = patterns('',
     url(r'^collections/?page=(?P<page>[0-9]+)$', 
         'django.views.generic.list_detail.object_list',
         dict(all_collections, paginate_by=20)),
-    url(r'^collections/(?P<object_id>[0-9A-Z._%?-]+)/$', 
+    url(r'^collections/(?P<object_id>' + c_ex + ')/$', 
         'django.views.generic.list_detail.object_detail',
         dict(all_collections, template_name="collection_detail.html"),
         name="telemeta-collection-detail"),
-    url(r'^collections/(?P<object_id>[0-9A-Z._%?-]+)/dc/$', 
+    url(r'^collections/(?P<object_id>' + c_ex + ')/dc/$', 
         'django.views.generic.list_detail.object_detail',
         dict(all_collections, template_name="collection_detail_dc.html"),
         name="telemeta-collection-dublincore"),
@@ -65,24 +69,24 @@ urlpatterns = patterns('',
     # administration        
     url(r'^admin/$', web_view.admin_index, name="telemeta-admin"),        
 
-    # dictionaries administration
-    url(r'^admin/dictionaries/(?P<dictionary_id>[0-9a-z]+)/$', 
-        web_view.edit_dictionary ,
-        name="telemeta-dictionary-edit"),        
-    url(r'^admin/dictionaries/(?P<dictionary_id>[0-9a-z]+)/add/$', 
-        web_view.add_to_dictionary,
-        name="telemeta-dictionary-add"),        
-    url(r'^admin/dictionaries/(?P<dictionary_id>[0-9a-z]+)/update/$', 
-        web_view.update_dictionary,
-        name="telemeta-dictionary-update"),        
-    url(r'^admin/dictionaries/(?P<dictionary_id>[0-9a-z]+)/(?P<value_id>[0-9]+)/$',
-        web_view.edit_dictionary_value,
-        name="telemeta-dictionary-record-edit"),   
-
-    url(r'^admin/dictionaries/(?P<dictionary_id>[0-9a-z]+)/(?P<value_id>[0-9]+)/update/$',
-        web_view.update_dictionary_value, 
-        name="telemeta-dictionary-record-update"),   
-
+    # enumerations administration
+    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/$', 
+        web_view.edit_enumeration ,
+        name="telemeta-enumeration-edit"),        
+    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/add/$', 
+        web_view.add_to_enumeration,
+        name="telemeta-enumeration-add"),        
+    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/update/$', 
+        web_view.update_enumeration,
+        name="telemeta-enumeration-update"),        
+    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/'
+        + r'(?P<value_id>[0-9]+)/$',
+        web_view.edit_enumeration_value,
+        name="telemeta-enumeration-record-edit"),   
+    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/'
+        + r'(?P<value_id>[0-9]+)/update/$',
+        web_view.update_enumeration_value, 
+        name="telemeta-enumeration-record-update"),   
 
     # CSS+Images (FIXME: for developement only)
     (r'^css/(?P<path>.*)$', 'django.views.static.serve', 

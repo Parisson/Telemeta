@@ -1,7 +1,4 @@
-body {
-    font-family: Verdana;
-    font-size: 80%;
-}
+body { font-family: Verdana; font-size: 80%; }
 
 a:link, a:visited {
     border-bottom:1px dotted #BBBBBB;
@@ -9,51 +6,35 @@ a:link, a:visited {
     text-decoration:none;
 }
 
-a:link:hover, a:visited:hover {
-    background-color:#EEEEEE;
-    color:#555555;
-}
+a:link:hover, a:visited:hover { background-color:#EEEEEE; color:#555555; }
+a img { border: none; }
 
 #header {
-    border-bottom: solid 1px black;
     padding-bottom: 0.2em;
     padding-top: 0.2em;
 }
-#header a {
-    text-decoration: none;
-}
-#header a img {
-    border: none;
-}
 
+#logo { padding-top: 1ex; }
+#logo a, #logo a:hover { border: none; background: transparent; }
 
-#menu {
-    text-align: right;
-    clear: right;
+#menu a, #menu a:hover { border: none;}
+#menu { 
+    text-align: right; 
+    clear: right; 
+    background: #DDDDDD; 
+    padding: 1px;
+    border-bottom: solid 1px black;
 }
+#submenu { clear: right; float: right; padding-top: 1em; }
+#submenu a { color: #000066; }
 
-#submenu {
-    clear: right;
-    float: right;
-    padding-top: 1em;
-}
-#submenu a {
-    color: #000066;
-}
-
-#quick_search {
-    position: absolute;
-    top: 2em;
-    right: 1em;
-}
-
+#quick_search { position: absolute; top: 2em; right: 1em; }
 #quick_search input {
     vertical-align: middle;
     font-size: 90%;
 }
 
-#quick_search_pattern {
-}
+#quick_search_pattern { }
 
 .item_visualization {
   clear: right;
@@ -61,14 +42,8 @@ a:link:hover, a:visited:hover {
   padding: 1ex;
   margin-top: 1em;
 }
-.item_visualization select {
-  width: 200px;
-}
-
-.item_visualization img {
-  width: 300px;
-  border: solid 1px black;
-}
+.item_visualization select { width: 200px; }
+.item_visualization img { width: 300px; border: solid 1px black; }
 
 
 /* Styles for tabular listings (stolen from trac) */
@@ -163,6 +138,4 @@ label.disabled { color: #d7d7d7 }
 
 /* HTML dublin core display */
 
-table.dublincore {
-    width: auto;
-}
+table.dublincore { width: auto; }

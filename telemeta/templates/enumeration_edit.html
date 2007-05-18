@@ -1,14 +1,14 @@
 {% extends "admin.html" %}
 
 {% block tabcontents %}
-    <h4>Manage {{ dictionary_name_plural|capfirst }}</h4>
+    <h4>Manage {{ enumeration_name_plural|capfirst }}</h4>
 
 
 
  <form class="addnew" id="addenum" method="post"
-        action="{% url telemeta-dictionary-add dictionary_id %}">
+        action="{% url telemeta-enumeration-add enumeration_id %}">
   <fieldset>
-   <legend>Add {{ dictionary_name|capfirst }}</legend>
+   <legend>Add {{ enumeration_name|capfirst }}</legend>
    <div class="field">
     <label>Value: <input type="text" name="value"></label>
 
@@ -18,18 +18,18 @@
    </div>
   </fieldset>
  </form>
- {% if dictionary_values %}
- <form method="POST" action="{% url telemeta-dictionary-update dictionary_id %}">
+ {% if enumeration_values %}
+ <form method="POST" action="{% url telemeta-enumeration-update enumeration_id %}">
   <table class="listing">
    <thead>
     <tr><th class="sel">&nbsp;</th><th>Value</th>
 
     </tr>
    </thead><tbody>
-    {% for record in dictionary_values %}
+    {% for record in enumeration_values %}
     <tr>
      <td><input type="checkbox" name="sel" value="{{record.id}}" /></td>
-     <td><a href="{% url telemeta-dictionary-record-edit dictionary_id,record.id %}">
+     <td><a href="{% url telemeta-enumeration-record-edit enumeration_id,record.id %}">
         {{record.value}}</a></td>
     </tr>
     {% endfor %}
@@ -40,9 +40,8 @@
   </div>
  </form>
  {% else %}
-    <p class="help">This dictionary is empty.</p>
+    <p class="help">This enumeration is empty.</p>
  {% endif %}
 
   <br style="clear: right"/>
-
 {% endblock %}

@@ -13,7 +13,9 @@
 {% endif %}
 -->
 <div id="header">
-<a href="/"><img src="/images/logo.png"></a>
+<div id="logo">
+<a href="{% url telemeta-home %}"><img src="/images/logo.png"></a>
+</div>
 
 <div id="quick_search">
 <form action="{% url telemeta-quicksearch %}" method="GET">

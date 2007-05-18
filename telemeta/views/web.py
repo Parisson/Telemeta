@@ -101,24 +101,24 @@ class WebView(Component):
                     {'pattern': pattern, 'collections': collections, 
                      'items': items})
 
-    def __get_dictionary_list(self):
+    def __get_enumerations_list(self):
         from django.db.models import get_models
         models = get_models(telemeta.models)
 
-        dictionaries = []
+        enumerations = []
         for model in models:
-            if getattr(model, "is_dictionary", False):
-                dictionaries.append({"name": model._meta.verbose_name_plural, 
+            if getattr(model, "is_enumeration", False):
+                enumerations.append({"name": model._meta.verbose_name_plural, 
                     "id": model._meta.module_name})
-        return dictionaries                    
+        return enumerations                    
     
     def __get_admin_context_vars(self):
-        return {"dictionaries": self.__get_dictionary_list()}
+        return {"enumerations": self.__get_enumerations_list()}
 
     def admin_index(self, request):
         return render_to_response('admin.html', self. __get_admin_context_vars())
 
-    def __get_dictionary(self, id):
+    def __get_enumeration(self, id):
         from django.db.models import get_models
         models = get_models(telemeta.models)
         for model in models:
@@ -129,113 +129,69 @@ class WebView(Component):
             return None
 
         return model
-        
 
-    def edit_dictionary(self, request, dictionary_id):        
+    def edit_enumeration(self, request, enumeration_id):        
 
-        dictionary  = self.__get_dictionary(dictionary_id)
-        if dictionary == None:
+        enumeration  = self.__get_enumeration(enumeration_id)
+        if enumeration == None:
             raise Http404
 
         vars = self.__get_admin_context_vars()
-        vars["dictionary_id"] = dictionary._meta.module_name
-        vars["dictionary_name"] = dictionary._meta.verbose_name            
-        vars["dictionary_name_plural"] = dictionary._meta.verbose_name_plural
-        vars["dictionary_values"] = dictionary.objects.all()
-        return render_to_response('dictionary_edit.html', vars)
+        vars["enumeration_id"] = enumeration._meta.module_name
+        vars["enumeration_name"] = enumeration._meta.verbose_name            
+        vars["enumeration_name_plural"] = enumeration._meta.verbose_name_plural
+        vars["enumeration_values"] = enumeration.objects.all()
+        return render_to_response('enumeration_edit.html', vars)
 
-    def add_to_dictionary(self, request, dictionary_id):        
+    def add_to_enumeration(self, request, enumeration_id):        
 
-        dictionary  = self.__get_dictionary(dictionary_id)
-        if dictionary == None:
+        enumeration  = self.__get_enumeration(enumeration_id)
+        if enumeration == None:
             raise Http404
 
-        dictionary_value = dictionary(value=request.POST['value'])
-        dictionary_value.save()
+        enumeration_value = enumeration(value=request.POST['value'])
+        enumeration_value.save()
 
-        return self.edit_dictionary(request, dictionary_id)
+        return self.edit_enumeration(request, enumeration_id)
 
-    def update_dictionary(self, request, dictionary_id):        
+    def update_enumeration(self, request, enumeration_id):        
         
-        dictionary  = self.__get_dictionary(dictionary_id)
-        if dictionary == None:
+        enumeration  = self.__get_enumeration(enumeration_id)
+        if enumeration == None:
             raise Http404
 
         if request.POST.has_key("remove"):
-            dictionary.objects.filter(id__in=request.POST['sel']).delete()
+            enumeration.objects.filter(id__in=request.POST.getlist('sel')).delete()
 
-        return self.edit_dictionary(request, dictionary_id)
+        return self.edit_enumeration(request, enumeration_id)
 
-    def edit_dictionary_value(self, request, dictionary_id, value_id):        
+    def edit_enumeration_value(self, request, enumeration_id, value_id):        
 
-        dictionary  = self.__get_dictionary(dictionary_id)
-        if dictionary == None:
+        enumeration  = self.__get_enumeration(enumeration_id)
+        if enumeration == None:
             raise Http404
         
         vars = self.__get_admin_context_vars()
-        vars["dictionary_id"] = dictionary._meta.module_name
-        vars["dictionary_name"] = dictionary._meta.verbose_name            
-        vars["dictionary_name_plural"] = dictionary._meta.verbose_name_plural
-        vars["dictionary_record"] = dictionary.objects.get(id__exact=value_id)
-        return render_to_response('dictionary_edit_value.html', vars)
+        vars["enumeration_id"] = enumeration._meta.module_name
+        vars["enumeration_name"] = enumeration._meta.verbose_name            
+        vars["enumeration_name_plural"] = enumeration._meta.verbose_name_plural
+        vars["enumeration_record"] = enumeration.objects.get(id__exact=value_id)
+        return render_to_response('enumeration_edit_value.html', vars)
 
-    def update_dictionary_value(self, request, dictionary_id, value_id):        
+    def update_enumeration_value(self, request, enumeration_id, value_id):        
 
         if request.POST.has_key("save"):
-            dictionary  = self.__get_dictionary(dictionary_id)
-            if dictionary == None:
+            enumeration  = self.__get_enumeration(enumeration_id)
+            if enumeration == None:
                 raise Http404
        
-            record = dictionary.objects.get(id__exact=value_id)
+            record = enumeration.objects.get(id__exact=value_id)
             record.value = request.POST["value"]
             record.save()
 
-        return self.edit_dictionary(request, dictionary_id)
+        return self.edit_enumeration(request, enumeration_id)
 
         
-def media_item_edit(request, media_item_id):
-    "Provide MediaItem object edition"
-
-    media_item = MediaItem.objects.get(pk=media_item_id)
-    dynprops = media_item.get_dynamic_properties()
-    return render_to_response('media_item.html', {'media_item': media_item, 'dynprops' : dynprops})
-
-def media_item_update(request, media_item_id):
-    "Handle MediaItem object edition form submission"
-
-    media_item = MediaItem.objects.get(pk=media_item_id)
-    media_item.author = request.POST['author']
-    media_item.title = request.POST['title']
-    media_item.save()
-
-    pattern = re.compile(r'^dynprop_(\d+)$')
-    for name, value in request.POST.items():
-        match = pattern.search(name)
-        if match:
-            prop_id = match.groups()[0]
-            prop = MediaItemPropertyDefinition.objects.get(pk=prop_id)
-            telemeta.logger.debug("prop_id: " + prop_id + " ; " + "media_item_id: " + 
-                                    media_item_id + " ; value: " + value + 
-                                    " ; type:" + prop.type)
-            media_item = MediaItem.objects.get(pk=media_item_id)
-            property, created = MediaItemProperty.objects.get_or_create(
-                                    media_item=media_item, definition=prop)
-
-            if prop.type == 'text':
-                property.value = value
-            else:
-                value = int(value)
-
-                if value > 0:
-                    enum_item = MediaItemPropertyEnumerationItem.objects.get(pk=value)
-                    property.enum_item = enum_item
-                else:
-                    property.enum_item = 0
-
-            property.save()
-
-    return media_item_edit(request, media_item_id)
-    
     
     
 

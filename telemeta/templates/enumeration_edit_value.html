@@ -1,14 +1,14 @@
 {% extends "admin.html" %}
 
 {% block tabcontents %}
-    <h4>Manage {{ dictionary_name_plural|capfirst }}</h4>
+    <h4>Manage {{ enumeration_name_plural|capfirst }}</h4>
 
  <form class="mod" id="addenum" method="post"
-        action="{% url telemeta-dictionary-record-update dictionary_id,dictionary_record.id %}">
+    action="{% url telemeta-enumeration-record-update enumeration_id,enumeration_record.id %}">
   <fieldset>
-   <legend>Modify {{ dictionary_name|capfirst }}</legend>
+   <legend>Modify {{ enumeration_name|capfirst }}</legend>
    <div class="field">
-    <label>Value: <input type="text" name="value" value="{{dictionary_record.value}}" /></label>
+    <label>Value: <input type="text" name="value" value="{{enumeration_record.value}}" /></label>
 
    </div>
    <div class="buttons">

@@ -10,14 +10,15 @@
 <ul>
 <li>Users</li>
 
-{% if dictionaries %}
-    <li>Dictionaries
+{% if enumerations %}
+    <li>Enumerations
     <ul>
-    {% for d in dictionaries %}
-        {%ifequal d.id dictionary_id %}
-            <li class="active">{{ d.name|capfirst }}</li>
+    {% for enum in enumerations %}
+        {%ifequal enum.id enumeration_id %}
+            <li class="active">{{ enum.name|capfirst }}</li>
         {%else%}
-            <li><a href="{% url telemeta-dictionary-edit d.id %}">{{ d.name|capfirst }}</a></li>
+            <li><a href="{% url telemeta-enumeration-edit enum.id %}">
+                {{ enum.name|capfirst }}</a></li>
         {%endifequal%}
     {% endfor %}
     </ul>
@@ -27,11 +28,6 @@
 </div>
 <div class="tabcontents">
     {% block tabcontents %}
-    
-    
-    
-    
-    
     {% endblock %}
 </div>
 {% endblock %}
