@@ -56,6 +56,36 @@ class MediaCollectionManager(models.Manager):
             Q(creator__icontains=pattern)
         )
 
+    def by_country(self, country):
+        qs = super(MediaCollectionManager, self).get_query_set()
+        return qs.extra(where = ["id IN (SELECT collection_id "
+            "FROM telemeta_item WHERE etat = %s)"],
+            params=[country]);
+
+    def stat_continents(self):            
+        from django.db import connection
+        cursor = connection.cursor()
+        cursor.execute("SELECT continent, etat, count(*) AS items_num "
+            "FROM telemeta_collection INNER JOIN telemeta_item "
+            "ON telemeta_collection.id = telemeta_item.collection_id "
+            "WHERE (continent IN "
+            "  ('EUROPE', 'OCEANIE', 'ASIE', 'AMERIQUE', 'AFRIQUE')) "
+            "AND etat <> '' "
+            "GROUP BY etat ORDER BY continent, items_num desc;")
+        result_set = cursor.fetchall()
+        stat = {}
+        for continent, country, count in result_set:
+            if stat.has_key(continent):
+                stat[continent].append({'name':country, 'count':count})
+            else:
+                stat[continent] = [{'name':country, 'count':count}]
+
+        keys = stat.keys()
+        keys.sort()
+        ordered = [{'name': k, 'countries': stat[k]} for k in keys]
+        return ordered
+
+
 class MediaCollection(models.Model, MediaCore):
     "Group related media items"
 
@@ -221,6 +251,7 @@ class MediaItem(models.Model, MediaCore):
             dc.Element('title', 'title', self.title),
             dc.Element('creator', value=creator),
             dc.Element('publisher', value=self.collection.publisher),
+            dc.Element('coverage', value=self.etat),
         )
         return resource
 

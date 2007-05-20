@@ -4,32 +4,11 @@
 <h3>Search: {{ pattern }}</h3>
 {% if collections %}
     <h4>Collections</h4>
-    <table class="resources-list">
-    {% for c in collections %}
-        <tr>
-            <td>
-            <a href="{% url telemeta-collection-detail c.id %}">
-            {{ c.title }}
-            </a>
-            </td>
-            <td>
-                [{{c.id}}]
-            </td>
-        </tr>
-    {% endfor %}
-    </table>
-    </ul>
+    {% include "inc/collection_list.html" %}
 {% endif %}
 {% if items %}
     <h4>Items</h4>
-    <ul>
-    {% for i in items %}
-        <li><b>{{ i.title }}</b>
-            <a href="{% url telemeta-item-detail i.id %}">View</a>
-            <a href="#">Edit</a>
-            </li>
-    {% endfor %}
-    </ul>
+    {% include "inc/mediaitem_list.html" %}
 {% endif %}
 {% if not collections and not items %}
 No result

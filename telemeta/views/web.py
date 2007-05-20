@@ -7,20 +7,23 @@
 #
 # Author: Olivier Guilyardi <olivier@samalyse.com>
 
-import telemeta
+import re
+import os
+
 from django.template import Context, loader
 from django import template
 from django.http import HttpResponse
 from django.http import Http404
+from django.shortcuts import render_to_response
+from django.views.generic import list_detail
+from django.conf import settings
+
+import telemeta
 from telemeta.models import MediaItem
 from telemeta.models import MediaCollection
-from django.shortcuts import render_to_response
-import re
 from telemeta.core import *
 from telemeta.export import *
 from telemeta.visualization import *
-from django.conf import settings
-import os
 
 class WebView(Component):
     """Provide web UI methods"""
@@ -208,6 +211,29 @@ class WebView(Component):
         template = loader.get_template(template)
         context = Context({'item': item, 'host': request.META['HTTP_HOST']})
         return HttpResponse(template.render(context), mimetype=mimetype)
+
+    def list_continents(self, request):
+        continents = MediaCollection.objects.stat_continents()
+        return render_to_response('geo_continents.html', 
+                    {'continents': continents })
+
+    def list_countries(self, request, continent):                    
+        continents = MediaCollection.objects.stat_continents()
+        for c in continents:
+            if c["name"] == continent:
+                break
+        if c["name"] != continent:
+            raise Http404
+
+        return render_to_response('geo_countries.html', {'continent': c })
+
+    def list_country_collections(self, request, continent, country):
+        objects = MediaCollection.objects.by_country(country)
+        return list_detail.object_list(request, objects, 
+            template_name='geo_country_collections.html', paginate_by=20,
+            extra_context={'country': country, 'continent': continent})
+
+        
 
         
     

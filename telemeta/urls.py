@@ -100,6 +100,14 @@ urlpatterns = patterns('',
         web_view.update_enumeration_value, 
         name="telemeta-enumeration-record-update"),   
 
+    # Geographic browsing
+    url(r'geo/$', web_view.list_continents, name="telemeta-geo-continents"),
+    url(r'geo/(?P<continent>[A-Za-z]+)/$', web_view.list_countries, 
+        name="telemeta-geo-countries"),
+    url('geo/(?P<continent>[A-Za-z]+)/(?P<country>[-A-Za-z0-9%;.,"& \']+)/$', 
+        web_view.list_country_collections, 
+        name="telemeta-geo-country-collections"),
+
     # CSS+Images (FIXME: for developement only)
     (r'^css/(?P<path>.*)$', 'django.views.static.serve', 
         {'document_root': './telemeta/htdocs/css'}),

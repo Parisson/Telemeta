@@ -46,6 +46,14 @@ a img { border: none; }
 .item_visualization select { width: 200px; }
 .item_visualization img { width: 300px; border: solid 1px black; }
 
+/* Geographic navigator */
+ul.continents, ul.continents ul { list-style: none; margin: 0; padding: 0;}
+ul.continents { margin: 1em 1em; }
+ul.continents ul {margin-left: 0; margin-bottom: 0.9em; padding: 0 1em 1em 0;}
+ul.continents li.name { width: 480px; float: left;}
+ul.continents li.name b { font-size: 120%; font-weight: bold; }
+ul.continents ul li { display: inline; padding-right: 1ex;}
+
 /* Styles for tabular listings (stolen from trac) */
 table.listing {
  clear: both;
