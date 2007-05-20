@@ -24,6 +24,8 @@ all_collections = { 'queryset': MediaCollection.objects.all(), }
 i_ex = MediaItem.id_regex
 c_ex = MediaCollection.id_regex
 
+htdocs='./telemeta/htdocs'
+
 urlpatterns = patterns('',
     url(r'^$', web_view.index, name="telemeta-home"),
 
@@ -109,12 +111,16 @@ urlpatterns = patterns('',
         name="telemeta-geo-country-collections"),
 
     # CSS+Images (FIXME: for developement only)
-    (r'^css/(?P<path>.*)$', 'django.views.static.serve', 
-        {'document_root': './telemeta/htdocs/css'}),
-    (r'^images/(?P<path>.*)$', 'django.views.static.serve', 
-        {'document_root': './telemeta/htdocs/images'}),
-    (r'^js/(?P<path>.*)$', 'django.views.static.serve', 
-        {'document_root': './telemeta/htdocs/js'}),
-    (r'^swf/(?P<path>.*)$', 'django.views.static.serve', 
-        {'document_root': './telemeta/htdocs/swf'}),
+    url(r'css/(?P<path>.*)$', 'django.views.static.serve', 
+        {'document_root': './telemeta/htdocs/css'},
+        name="telemeta-css"),
+    url(r'images/(?P<path>.*)$', 'django.views.static.serve', 
+        {'document_root': './telemeta/htdocs/images'},
+        name="telemeta-images"),
+    url(r'js/(?P<path>.*)$', 'django.views.static.serve', 
+        {'document_root': './telemeta/htdocs/js'},
+        name="telemeta-js"),
+    url(r'swf/(?P<path>.*)$', 'django.views.static.serve', 
+        {'document_root': './telemeta/htdocs/swf'},
+        name="telemeta-swf"),
 )

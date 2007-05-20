@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="{{ LANGUAGE_CODE }}" xml:lang="{{ LANGUAGE_CODE }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
 <head>
 <title>Telemeta</title>
-<link rel="stylesheet" type="text/css" href="/css/telemeta.css" />
+<link rel="stylesheet" type="text/css" href="{% url telemeta-css "telemeta.css" %}" />
 {% block extra_style %}{% endblock %}
 {% block extra_javascript %}{% endblock %}
 </head>
@@ -15,7 +15,7 @@
 -->
 <div id="header">
 <div id="logo">
-<a href="{% url telemeta-home %}"><img src="/images/logo.png"></a>
+<a href="{% url telemeta-home %}"><img src="{% url telemeta-images "logo.png" %}"></a>
 </div>
 
 <div id="quick_search">

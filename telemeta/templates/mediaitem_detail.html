@@ -2,7 +2,7 @@
 {% load telemeta_utils %}
 
 {% block extra_javascript %}
-<script src="/js/swfobject.js" type="text/javascript"></script>
+<script src="{% url telemeta-js "swfobject.js" %}" type="text/javascript"></script>
 {% endblock %}
 
 {% block submenu %}
@@ -18,9 +18,9 @@
         <!-- This is the XSPF Web Music Player, under the BSD license, 
           from: http://musicplayer.sourceforge.net/-->
         <object type="application/x-shockwave-flash" width="300" height="20"
-          data="/swf/xspf_player_slim.swf?playlist_url={% url telemeta-item-xspf item.id|urlencode %}">
+          data="{% url telemeta-swf "xspf_player.swf" %}?playlist_url={% url telemeta-item-xspf item.id|urlencode %}">
           <param name="movie" 
-            value="/swf/xspf_player_slim.swf?playlist_url={% url telemeta-item-xspf item.id|urlencode %}" />
+            value="{% url telemeta-swf "xspf_player.swf" %}?playlist_url={% url telemeta-item-xspf item.id|urlencode %}" />
         </object><br/>
       {% else %}      
         <!-- This is Jeroen Wijering's Flash MP3 Player, 
@@ -30,7 +30,7 @@
           <a href="http://www.macromedia.com/go/getflashplayer">Get Flash</a> to see this player.
         </p>
         <script type="text/javascript">
-          var so = new SWFObject('/swf/mp3player.swf','line','300','20','7');
+          var so = new SWFObject('{% url telemeta-swf "mp3player.swf" %}','line','300','20','7');
           so.addVariable("file","{% url telemeta-item-export item.id|urlencode,"MP3" %}");
           so.addVariable("type","mp3");
           so.write('item_player_c');
