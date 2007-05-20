@@ -85,80 +85,64 @@ class FlacExporter(ExporterCore):
                 media[tag] = str(self.metadata[tag])
         media.save()
         
-    def process(self, item_id, source, metadata, options=None):
-        self.item_id = item_id
-        self.source = source
-        self.metadata = metadata
-        self.options = {}
+    def get_args(self,options=None):
+        """Get process options and return arguments for the encoder"""
         args = ''
-        
         if not options is None:
             self.options = options
-            
-            if 'verbose' in self.options and self.options['verbose'] != '0':
-                args = args
-            else:
+            if not ('verbose' in self.options and self.options['verbose'] != '0'):
                 args = args + ' -s '
-                
+
             if 'flac_quality' in self.options:
                 args = args+' -f -'+self.options['flac_quality']
             else:
                 args = args+' -f -'+self.quality_default
         else:
             args = args+' -s -f -'+self.quality_default
-    
+        return args
+        
+    def process(self, item_id, source, metadata, options=None):
+        self.item_id = item_id
+        self.source = source
+        self.metadata = metadata
+        #self.options = {}
+        self.args = self.get_args(options)
+        self.ext = self.get_file_extension()
+        self.command = 'sox "'+self.source+'" -q -w -r 44100 -t wav -c2 - '+ \
+                       '| flac '+self.args+' -c -'
+
+        # Pre-proccessing
         try:
-            # Pre-proccessing (core)
-            self.ext = self.get_file_extension()
             self.dest = self.pre_process(self.item_id,
                                          self.source,
                                          self.metadata,
                                          self.ext,
                                          self.cache_dir,
                                          self.options)
-                                         
-            # Initializing
-            chunk = 0
-            file_out = open(self.dest,'w')
-            
-            proc = subprocess.Popen( \
-                    'sox "'+self.source+'" -q -w -r 44100 -t wav -c2 - '+
-                    '| flac '+args+' -c -',
-                    shell=True,
-                    bufsize=self.buffer_size,
-                    stdin=subprocess.PIPE,
-                    stdout=subprocess.PIPE,
-                    close_fds=True)
+        except:
+            yield 'ExporterError [3]: pre_process'
 
-            chunk = proc.stdout.read(self.buffer_size)
-            yield chunk
-            file_out.write(chunk)
-
-            # Processing
-            while chunk:
-                chunk = proc.stdout.read(self.buffer_size)
+        # Processing (streaming + cache writing)
+        try:
+            stream = self.core_process(self.command,self.buffer_size,self.dest)
+            for chunk in stream:
                 yield chunk
-                file_out.write(chunk)           
-            
-            #file_in.close()
-            file_out.close()
+        except:
+            yield 'ExporterError: core_process'
 
-            # Encoding
-            #os.system('flac '+args+' -o "'+self.dest+'" "'+ \
-            #          self.source+'" > /dev/null')
-
-            # Post-proccessing (self)
-            self.write_tags()
+        # Post-proccessing
+        try:
+            self.write_tags()        
             self.post_process(self.item_id,
                          self.source,
                          self.metadata,
                          self.ext,
                          self.cache_dir,
                          self.options)
+        except:
+            yield 'ExporterError: post_process'
 
-            # Output
-            #return self.dest
 
-        except IOError:
-            yield 'ExporterError [3]: source file does not exist.'
-
+        # Encoding
+            #os.system('flac '+args+' -o "'+self.dest+'" "'+ \
+            #          self.source+'" > /dev/null')

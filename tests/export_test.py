@@ -27,7 +27,7 @@ metadata = {'identifier': 'Test',  #collection
          'date': '2004',
          'publisher': 'Parisson',
          }
-options = {'verbose': '0'}
+options = {'verbose': '1'}
 
 class ExportTest(Component):
     
@@ -45,6 +45,7 @@ class ExportTest(Component):
 
             for chunk in stream:
                 pass
+                #print chunk
             
 compmgr = ComponentManager()
 test = ExportTest(compmgr)

@@ -149,17 +149,31 @@ class ExporterCore(Component):
         self.dest = os.path.join(self.dest,target_file)
         return self.dest
 
-    def stream(self,command):
+    def core_process(self,command,buffer_size,dest):
         """Streams encoded audio data through a generator"""
+        
+        __chunk = 0
+        file_out = open(dest,'w')
+
         proc = subprocess.Popen(command,
-                shell=True,
-                bufsize=self.buffer_size,
-                stdin=subprocess.PIPE,
-                stdout=subprocess.PIPE,
-                close_fds=True)
-                
-        chunk = proc.stdout.read(self.buffer_size)
-        return chunk
+                shell = True,
+                bufsize = buffer_size,
+                stdin = subprocess.PIPE,
+                stdout = subprocess.PIPE,
+                close_fds = True)
+
+        __chunk = proc.stdout.read(buffer_size)
+        yield __chunk
+        file_out.write(__chunk)
+
+        # Processing
+        while __chunk:
+            __chunk = proc.stdout.read(buffer_size)
+            yield __chunk
+            file_out.write(__chunk)
+
+        #file_in.close()
+        file_out.close()
 
     def post_process(self, item_id, source, metadata, ext, 
                      cache_dir, options=None):

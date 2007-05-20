@@ -120,7 +120,7 @@ class WavExporter(ExporterCore):
             chunk = 0
             file_in = open(self.source,'rb')
             file_out = open(self.dest,'w')
-        
+
             chunk = file_in.read(self.buffer_size)
             yield chunk
             file_out.write(chunk)
@@ -133,12 +133,6 @@ class WavExporter(ExporterCore):
 
             file_in.close()
             file_out.close()
-
-            #if self.compare_md5_key():
-            #os.system('cp -a "'+self.source+'" "'+ self.dest+'"')
-            #print 'COPIED'
-            
-            # Pre-proccessing (self)
             self.write_tags()
 
             # Create the md5 key
@@ -156,9 +150,12 @@ class WavExporter(ExporterCore):
                          self.cache_dir,
                          self.options)
 
-            # Output                
-            #return self.dest
-
         except IOError:
             yield 'ExporterError [3]: source file does not exist.'
 
+
+
+            #if self.compare_md5_key():
+            #os.system('cp -a "'+self.source+'" "'+ self.dest+'"')
+            #print 'COPIED'
+            

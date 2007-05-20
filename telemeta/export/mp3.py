@@ -90,13 +90,9 @@ class Mp3Exporter(ExporterCore):
                 id3.add(frame)
         id3.save()
 
-    def process(self, item_id, source, metadata, options=None):
-        self.item_id = item_id
-        self.source = source
-        self.metadata = metadata
-        self.options = {}
+    def get_args(self,options=None):
+        """Get process options and return arguments for the encoder"""
         args = ''
-        
         if not options is None: 
             self.options = options
             
@@ -113,61 +109,51 @@ class Mp3Exporter(ExporterCore):
             args = args + ' -c -o '
         else:
             args = args + ' -S -c -o '
-        
-        if os.path.exists(self.source) and not iswav16(self.source):
-            self.source = self.decode()
+
+        return args
+
+    def process(self, item_id, source, metadata, options=None):
+        self.item_id = item_id
+        self.source = source
+        self.metadata = metadata
+        #self.options = {}
+        self.args = self.get_args(options)
+        self.ext = self.get_file_extension()
+        self.command = 'sox "'+self.source+'" -q -w -r 44100 -t wav -c2 - '+ \
+                       '| lame '+self.args+' --tc "default" - -'
             
+        # Pre-proccessing
         try:
-            # Pre-proccessing (core)
-            self.ext = self.get_file_extension()
             self.dest = self.pre_process(self.item_id,
-                            self.source,
-                            self.metadata,
-                            self.ext,
-                            self.cache_dir,
-                            self.options)
-            
-            # Initializing
-            chunk = 0
-            file_out = open(self.dest,'w')
-            
-            proc = subprocess.Popen( \
-                    'sox "'+self.source+'" -q -w -r 44100 -t wav -c2 - '+
-                    '| lame '+args+' --tc "default" - -',
-                    shell=True,
-                    bufsize=self.buffer_size,
-                    stdin=subprocess.PIPE,
-                    stdout=subprocess.PIPE,
-                    close_fds=True)
-                
-            chunk = proc.stdout.read(self.buffer_size)
-            yield chunk
-            file_out.write(chunk)
-           
-            # Processing
-            while chunk:
-                chunk = proc.stdout.read(self.buffer_size)
+                                         self.source,
+                                         self.metadata,
+                                         self.ext,
+                                         self.cache_dir,
+                                         self.options)
+        except:
+            yield 'ExporterError [3]: pre_process'
+
+        # Processing (streaming + cache writing)
+        try:
+            stream = self.core_process(self.command,self.buffer_size,self.dest)
+            for chunk in stream:
                 yield chunk
-                file_out.write(chunk)           
-           
-            file_out.close()
-            
-            # Encoding
-            # os.system('lame '+args+' --tc "default" "'+self.source+
-            #                        '" "'+self.dest+'"')
-            
-            # Post-proccessing (self)
-            self.write_tags()
+        except:
+            yield 'ExporterError: core_process'
+
+        # Post-proccessing
+        try:
+            self.write_tags()        
             self.post_process(self.item_id,
                          self.source,
                          self.metadata,
                          self.ext,
                          self.cache_dir,
                          self.options)
-                        
-            # Output
-            # return self.dest
-
-        except IOError:
-            yield 'ExporterError [3]: source file does not exist.'
-
+        except:
+            yield 'ExporterError: post_process'
+    
+        # Encoding
+        # os.system('lame '+args+' --tc "default" "'+self.source+
+        #                        '" "'+self.dest+'"')
+            
