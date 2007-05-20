@@ -10,7 +10,7 @@
 from django.conf.urls.defaults import *
 from telemeta.models import MediaItem, MediaCollection
 from telemeta.core import ComponentManager
-from telemeta.views.web import WebView
+from telemeta.web import WebView
 
 # initialization
 comp_mgr = ComponentManager()
