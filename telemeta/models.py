@@ -16,6 +16,7 @@ from django.conf import settings
 import telemeta
 from telemeta.core import *
 from telemeta import dublincore as dc
+from xml.dom import getDOMImplementation
 
 # Regular (sub) expression for matching/validating media objects IDs
 media_id_regex = r'[0-9A-Za-z._:%?-]+'
@@ -30,6 +31,21 @@ class MediaCore:
         for field in self._meta.fields:
             fields_dict[field.name] = getattr(self, field.name)
         return fields_dict
+
+    def to_dom(self):
+        "Return the DOM representation of this media object"
+        impl = getDOMImplementation()
+        clsname = self.__class__.__name__
+        root = clsname[0].lower() + clsname[1:]
+        doc = impl.createDocument(None, root, None)
+        top = doc.documentElement
+        top.setAttribute("pk", self.id)
+        fields = self.to_dict()
+        for name, value in fields.iteritems():
+            element = doc.createElement(name)
+            element.appendChild(doc.createTextNode(str(value)))
+            top.appendChild(element)
+        return doc
 
 class PhysicalFormat(models.Model):
     value = models.CharField(maxlength=250)
