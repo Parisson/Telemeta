@@ -24,7 +24,7 @@ media_id_regex = r'[0-9A-Za-z._:%?-]+'
 class MediaModel(Component):
     pass
 
-class MediaCore:
+class MediaCore(object):
     def to_dict(self):  
         "Return model fields as a dict of name/value pairs"
         fields_dict = {}
@@ -32,18 +32,23 @@ class MediaCore:
             fields_dict[field.name] = getattr(self, field.name)
         return fields_dict
 
+    def get_dom_element_name(cls):
+        clsname = cls.__name__
+        return clsname[0].lower() + clsname[1:]
+    get_dom_element_name = classmethod(get_dom_element_name)
+
     def to_dom(self):
         "Return the DOM representation of this media object"
         impl = getDOMImplementation()
-        clsname = self.__class__.__name__
-        root = clsname[0].lower() + clsname[1:]
+        root = self.get_dom_element_name()
         doc = impl.createDocument(None, root, None)
         top = doc.documentElement
-        top.setAttribute("pk", self.id)
+        top.setAttribute("id", self.id)
         fields = self.to_dict()
         for name, value in fields.iteritems():
             element = doc.createElement(name)
-            element.appendChild(doc.createTextNode(str(value)))
+            value = unicode(str(value), "utf-8")
+            element.appendChild(doc.createTextNode(value))
             top.appendChild(element)
         return doc
 
