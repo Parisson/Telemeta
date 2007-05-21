@@ -119,16 +119,52 @@ class FlacExporter(ExporterCore):
                                          self.ext,
                                          self.cache_dir,
                                          self.options)
+<<<<<<< .mine
+
+            # Initializing
+
+            command = 'sox "'+self.source+'" -q -w -r 44100 -t wav -c2 - '+
+                      '| flac '+args+' -c -'
+
+            chunk = 0
+            file_out = open(self.dest,'w')
+
+            # Processing
+			proc = subprocess.Popen(command,
+                    shell=True,
+                    bufsize=self.buffer_size,
+                    stdin=subprocess.PIPE,
+                    stdout=subprocess.PIPE,
+                    close_fds=True)
+=======
         except:
             yield 'ExporterError [3]: pre_process'
+>>>>>>> .r109
 
+<<<<<<< .mine
+            chunk = proc.stdout.read(self.buffer_size)
+            yield chunk
+            file_out.write(chunk)
+
+            # Streaming
+            while chunk:
+                chunk = proc.stdout.read(self.buffer_size)
+=======
         # Processing (streaming + cache writing)
         try:
             stream = self.core_process(self.command,self.buffer_size,self.dest)
             for chunk in stream:
+>>>>>>> .r109
                 yield chunk
+<<<<<<< .mine
+                file_out.write(chunk)
+
+            #file_in.close()
+            file_out.close()
+=======
         except:
             yield 'ExporterError: core_process'
+>>>>>>> .r109
 
         # Post-proccessing
         try:
