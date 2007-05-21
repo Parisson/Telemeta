@@ -36,14 +36,20 @@ class Mp3Exporter(ExporterCore):
         self.buffer_size = 0xFFFF
         self.dub2id3_dict = {'title': 'TIT2', #title2
                              'creator': 'TCOM', #composer
-                     'creator': 'TPE1', #lead
-                     'identifier': 'UFID', #Unique ID...
-                     'identifier': 'TALB', #album
-                     #'date': 'TYER', #year
-                     'type': 'TCON', #genre
-                     'publisher': 'TPUB', #comment
-                     }
-
+                             'creator': 'TPE1', #lead
+                             'identifier': 'UFID', #Unique ID...
+                             'identifier': 'TALB', #album
+                             'type': 'TCON', #genre
+                             'publisher': 'TPUB', #comment
+                             #'date': 'TYER', #year
+                             }
+        self.dub2args_dict = {'title': 'tt', #title2
+                             'creator': 'ta', #composer
+                             'identifier': 'tl', #album
+                             #'type': 'tg', #genre
+                             'publisher': 'tc', #comment
+                             'date': 'ty', #year
+                             }
     def get_format(self):
         return 'MP3'
     
@@ -78,8 +84,7 @@ class Mp3Exporter(ExporterCore):
     def write_tags(self):
         """Write all ID3v2.4 tags by mapping dub2id3_dict dictionnary with the
             respect of mutagen classes and methods"""
-        from mutagen import id3
-        
+        from mutagen import id3  
         id3 = id3.ID3(self.dest)
         for tag in self.metadata.keys():
             if tag in self.dub2id3_dict.keys():
@@ -90,7 +95,7 @@ class Mp3Exporter(ExporterCore):
                 id3.add(frame)
         id3.save()
 
-    def get_args(self,options=None):
+    def get_args(self, metadata, options=None):
         """Get process options and return arguments for the encoder"""
         args = ''
         if not options is None: 
@@ -110,6 +115,12 @@ class Mp3Exporter(ExporterCore):
         else:
             args = args + ' -S -c -o '
 
+        for tag in self.metadata.keys():
+            if tag in self.dub2args_dict.keys():
+                arg = self.dub2args_dict[tag]
+                value = self.metadata[tag]
+                args = args + ' --' + arg + ' "' +value +'" '
+
         return args
 
     def process(self, item_id, source, metadata, options=None):
@@ -117,10 +128,10 @@ class Mp3Exporter(ExporterCore):
         self.source = source
         self.metadata = metadata
         #self.options = {}
-        self.args = self.get_args(options)
+        self.args = self.get_args(self.metadata,options)
         self.ext = self.get_file_extension()
         self.command = 'sox "'+self.source+'" -q -w -r 44100 -t wav -c2 - '+ \
-                       '| lame '+self.args+' --tc "default" - -'
+                       '| lame '+self.args+' - -'
             
         # Pre-proccessing
         try:
@@ -142,8 +153,7 @@ class Mp3Exporter(ExporterCore):
             yield 'ExporterError: core_process'
 
         # Post-proccessing
-        try:
-            self.write_tags()        
+        try:       
             self.post_process(self.item_id,
                          self.source,
                          self.metadata,

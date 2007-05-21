@@ -127,7 +127,6 @@ class OggExporter(ExporterCore):
 
         # Post-proccessing
         try:
-            self.write_tags()        
             self.post_process(self.item_id,
                          self.source,
                          self.metadata,

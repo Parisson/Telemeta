@@ -19,7 +19,7 @@ from telemeta.export.api import IExporter
 from mutagen.flac import FLAC
 
 class FlacExporter(ExporterCore):
-    """Defines methods to export to OGG Vorbis"""
+    """Defines methods to export to FLAC"""
 
     implements(IExporter)
     
@@ -132,7 +132,6 @@ class FlacExporter(ExporterCore):
 
         # Post-proccessing
         try:
-            self.write_tags()        
             self.post_process(self.item_id,
                          self.source,
                          self.metadata,

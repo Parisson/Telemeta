@@ -17,7 +17,7 @@ from telemeta.export.core import *
 from telemeta.export.api import IExporter
 
 class WavExporter(ExporterCore):
-    """Defines methods to export to OGG Vorbis"""
+    """Defines methods to export to WAV"""
 
     implements(IExporter)
     
@@ -107,7 +107,7 @@ class WavExporter(ExporterCore):
         if not options is None:
             self.options = options
         try:
-            # Pre-proccessing (core)
+            # Pre-proccessing
             self.ext = self.get_file_extension()
             self.dest = self.pre_process(self.item_id,
                                          self.source,
@@ -125,7 +125,7 @@ class WavExporter(ExporterCore):
             yield chunk
             file_out.write(chunk)
            
-            # Processing
+            # Core Processing
             while chunk:
                 chunk = file_in.read(self.buffer_size)
                 yield chunk
@@ -133,7 +133,6 @@ class WavExporter(ExporterCore):
 
             file_in.close()
             file_out.close()
-            self.write_tags()
 
             # Create the md5 key
             #if 'md5' in self.metadata and self.metadata['md5']:
@@ -143,6 +142,7 @@ class WavExporter(ExporterCore):
             #if 'par2' in self.metadata and self.metadata['par2']:
             self.create_par_key()
 
+            # Pre-proccessing
             self.post_process(self.item_id,
                          self.source,
                          self.metadata,
