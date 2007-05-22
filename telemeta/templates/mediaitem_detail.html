@@ -53,7 +53,6 @@
   <h3>Item: {{ item.title }}</h3>
   <ul>
   {% for field in item.to_dict|tolist %}
-      {% ifnotequal field.name "id" %}
       {% ifnotequal field.name "title" %}
       {% ifnotequal field.name "file" %}
 
@@ -66,7 +65,6 @@
           {% endifequal %}
           </li>
 
-      {% endifnotequal %}
       {% endifnotequal %}
       {% endifnotequal %}
   {% endfor %}
