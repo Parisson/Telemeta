@@ -318,8 +318,8 @@ class MediaPart(models.Model, MediaCore):
     media_item.dublin_core = 'relation'
     parent = models.ForeignKey('self', null=True, related_name='children')
     media_item.dublin_core = 'relation'
-    start = models.FloatField(max_digits=11, decimal_places=3)
-    end = models.FloatField(max_digits=11, decimal_places=3)
+    start = models.DecimalField(max_digits=11, decimal_places=3)
+    end = models.DecimalField(max_digits=11, decimal_places=3)
 
     def __str__(self):
         return self.title
