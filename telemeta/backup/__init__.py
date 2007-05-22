@@ -1,1 +1,1 @@
-from telemeta.backup.core import BackupBuilder
+from telemeta.backup.core import CollectionSerializer

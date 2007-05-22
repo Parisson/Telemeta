@@ -31,9 +31,7 @@ def write_readme(dest_dir, coll_num):
 
 def backup(dest_dir):
     from telemeta.models import MediaCollection
-    from telemeta.backup import BackupBuilder
-
-    builder = BackupBuilder()
+    from telemeta.backup import CollectionSerializer
 
     collections = MediaCollection.objects.order_by('id')
     count = collections.count()
@@ -51,7 +49,8 @@ def backup(dest_dir):
         print "Processing collection %d/%d (%d%%) with id: %s.. " \
             % (i, count, i*100/count, collection.id),
         sys.stdout.flush()
-        builder.store_collection(collection, set_dir)
+        serializer = CollectionSerializer(collection)
+        serializer.store(set_dir)
         print "Done"
 
 def run():

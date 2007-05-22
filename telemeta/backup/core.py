@@ -11,47 +11,49 @@
 
 import os
 import libxml2
-from xml.dom import getDOMImplementation, Node
+from xml.dom.minidom import getDOMImplementation, Node
 import shutil
 import md5
 from django.conf import settings
 from telemeta.models import MediaItem
 
-class BackupBuilder(object):
+class CollectionSerializer(object):
     """Provide backup-related features"""
+
+    def __init__(self, collection):
+        self.collection = collection
 
     def __get_file_md5(self, path):
         "Compute the MD5 hash of a file (Python version of md5sum)"
         file = open(path, "rb")
         hash = md5.new()
         while True:
-            buffer = file.read(0x100000)
+            buffer = file.read(0x10000)
             if len(buffer) == 0:
                 break
             hash.update(buffer)
-
         file.close()            
         return hash.hexdigest()
 
     def __get_media_filename(self, item):
         return item.id + ".wav"
 
-    def store_collection(self, collection, dest_dir):
-        """Serialize and store a collection with related items and media 
+    def store(self, dest_dir):
+        """Serialize and store the collection with related items and media 
         files into a subdirectory of the provided directory
         """
-        coll_dir = dest_dir + "/" + collection.id
+        coll_dir = dest_dir + "/" + self.collection.id
         os.mkdir(coll_dir)
 
-        xml = self.collection_to_xml(collection)
+        xml = self.get_xml()
         file = open(coll_dir + "/collection.xml", "wb")
         file.write(xml.encode("utf-8"))
         file.close()
 
-        if collection.has_mediafile():
+        if self.collection.has_mediafile():
             md5_file = open(coll_dir + "/MD5SUM", "wb")
 
-            items = collection.items.all()
+            items = self.collection.items.all()
             for item in items:
                 if item.file:
                     dst_basename = self.__get_media_filename(item)
@@ -62,28 +64,34 @@ class BackupBuilder(object):
 
             md5_file.close()
 
-    def collection_to_xml(self, collection):
-        """Return a string containing the XML representation of a collection 
+    def get_xml(self):
+        """Return a string containing the XML representation of the collection 
         and related items
         """
         impl = getDOMImplementation()
         doc = impl.createDocument(None, "telemeta", None)
-        coll_node = collection.to_dom().documentElement
-        doc.documentElement.appendChild(coll_node)
+        coll_doc = self.collection.to_dom()
+        coll_node = doc.documentElement.appendChild(coll_doc.documentElement)
+        coll_doc.unlink()
         items_node_name = MediaItem.get_dom_element_name() + "List"
         items_node = doc.createElement(items_node_name)
         coll_node.appendChild(items_node)
 
-        items = collection.items.all()
+        items = self.collection.items.all()
         for item in items:
             if item.file:
                 item.file = self.__get_media_filename(item)
-            items_node.appendChild(item.to_dom().documentElement)
+            item_doc = item.to_dom()
+            items_node.appendChild(item_doc.documentElement)
+            item_doc.unlink()
         doc.normalize()
 
         # libxml2 has prettier output than xml.dom:
         tree = libxml2.parseDoc(doc.toxml(encoding="utf-8"))
-        return unicode(tree.serialize(encoding="utf-8", format=1), "utf-8")
+        doc.unlink()
+        xml = unicode(tree.serialize(encoding="utf-8", format=1), "utf-8")
+        tree.free()
 
+        return xml
         
 
