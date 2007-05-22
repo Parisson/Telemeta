@@ -16,7 +16,7 @@ from django.conf import settings
 import telemeta
 from telemeta.core import *
 from telemeta import dublincore as dc
-from xml.dom import getDOMImplementation
+from xml.dom.minidom import getDOMImplementation
 
 # Regular (sub) expression for matching/validating media objects IDs
 media_id_regex = r'[0-9A-Za-z._:%?-]+'
@@ -204,6 +204,12 @@ class MediaItemManager(models.Manager):
             Q(id__icontains=pattern) |
             Q(_title__icontains=pattern) 
         )
+
+    def without_collection(self):        
+        "Find items which do not belong to any collection"
+        qs = super(MediaItemManager, self).get_query_set()
+        return qs.extra(
+            where = ["collection_id NOT IN (SELECT id FROM telemeta_collection)"]);
 
 class MediaItem(models.Model, MediaCore):
     "Describe a item with metadata" 
