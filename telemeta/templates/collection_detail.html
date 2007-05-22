@@ -56,18 +56,7 @@
     <hr>
     <h4>Items</h4>
     {% with object.items.all as items %}
-    {% if items %}
-      <ul>
-      {% for item in items %}
-          <li><b>{{ item.creator }}</b> - {{ item.title }}
-              <a href="{% url telemeta-item-detail item.id|urlencode %}">View</a>
-              <a href="#">Edit</a>
-              </li>
-      {% endfor %}
-      </ul>
-    {% else %}
-      <p>No items</p>
-    {% endif %}
+        {% include "inc/mediaitem_list.html" %}
     {% endwith %}
 {% else %}
     <p>No such collection</p>
