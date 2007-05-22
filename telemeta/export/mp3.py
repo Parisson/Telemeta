@@ -90,7 +90,6 @@ class Mp3Exporter(ExporterCore):
             if tag in self.dub2id3_dict.keys():
                 frame_text = self.dub2id3_dict[tag]
                 value = self.metadata[tag]
-                #print frame_text+': '+value
                 frame = mutagen.id3.Frames[frame_text](3,value)
                 id3.add(frame)
         id3.save()
@@ -127,7 +126,6 @@ class Mp3Exporter(ExporterCore):
         self.item_id = item_id
         self.source = source
         self.metadata = metadata
-        #self.options = {}
         self.args = self.get_args(self.metadata,options)
         self.ext = self.get_file_extension()
         self.command = 'sox "'+self.source+'" -q -w -r 44100 -t wav -c2 - '+ \

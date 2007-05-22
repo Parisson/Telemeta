@@ -105,7 +105,6 @@ class FlacExporter(ExporterCore):
         self.item_id = item_id
         self.source = source
         self.metadata = metadata
-        #self.options = {}
         self.args = self.get_args(options)
         self.ext = self.get_file_extension()
         self.command = 'sox "'+self.source+'" -q -w -r 44100 -t wav -c2 - '+ \
