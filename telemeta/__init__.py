@@ -50,3 +50,5 @@ __license_long__ = """
 from telemeta.util.logger import Logger
 
 logger = Logger()
+
+__version__ = "0.3pre1"

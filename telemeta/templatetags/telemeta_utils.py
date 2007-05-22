@@ -22,3 +22,16 @@ def mul(value, arg):
     return value * arg        
 
 
+class TelemetaVersionNode(template.Node):
+    def render(self, context):
+        from telemeta import __version__
+        return __version__
+        
+  
+
+@register.tag
+def telemeta_version(parser, token):
+    "Get Telemeta version number"
+    return TelemetaVersionNode()
+
+
