@@ -11,7 +11,7 @@ U{http://svn.parisson.org/telemeta}
 """
 
 __docformat__ = 'epytext en'
-__version__ = '0.2.8'
+__version__ = '0.3pre1'
 __url__ = 'http://svn.parisson.org/telemeta'
 __copyright__ = '(C) 2007 Parisson'
 __license__ = 'BSD'
@@ -46,9 +46,3 @@ __license_long__ = """
  IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  """
 
-
-from telemeta.util.logger import Logger
-
-logger = Logger()
-
-__version__ = "0.3pre1"

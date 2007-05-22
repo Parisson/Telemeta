@@ -42,15 +42,15 @@
 
 <div id="footer">
  <hr />
- <a id="telemeta_powered" href="http://svn.parisson.org/telemeta"><img src="{% url telemeta-images "logo_mini.png" %}" height="30" width="93"
+ <a id="telemeta_powered" href="{% telemeta_url %}"><img src="{% url telemeta-images "logo_mini.png" %}" height="30" width="93"
    alt="Telemeta Powered"/></a>
  <p class="left">
-  Powered by <a href="http://svn.parisson.org/telemeta"><strong>Telemeta {% telemeta_version %}</strong></a><br />
+  Powered by <a href="{% telemeta_url %}"><strong>Telemeta {% telemeta_version %}</strong></a><br />
   By <a href="http://www.parisson.com/">Parisson</a> &amp; <a href="http://www.samalyse.com/">Samalyse</a>.
  </p>
 
  <p class="right">
-  Visit the Telemeta open source project at<br /><a href="http://svn.parisson.org/telemeta">http://svn.parisson.org/telemeta</a>
+  Visit the Telemeta open source project at<br /><a href="{% telemeta_url %}">{% telemeta_url %}</a>
  </p>
 </div>
 

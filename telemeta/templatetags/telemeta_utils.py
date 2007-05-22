@@ -21,17 +21,24 @@ def mul(value, arg):
     "Multiply a numeric value"
     return value * arg        
 
-
 class TelemetaVersionNode(template.Node):
     def render(self, context):
         from telemeta import __version__
         return __version__
-        
-  
 
 @register.tag
 def telemeta_version(parser, token):
     "Get Telemeta version number"
     return TelemetaVersionNode()
+
+class TelemetaUrlNode(template.Node):
+    def render(self, context):
+        from telemeta import __url__
+        return __url__
+
+@register.tag
+def telemeta_url(parser, token):
+    "Get Telemeta project homepage URL"
+    return TelemetaUrlNode()
 
 
