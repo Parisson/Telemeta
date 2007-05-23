@@ -389,7 +389,7 @@ ColorVector getColorValues(std::string filename, float samplesPerPixel, long wid
 						if(values[k] < 0.f)
 							values[k] = 0.f;
 
-						float scaledValue = sqrt(values[k]) / sqrt(11025);
+						float scaledValue = sqrt(values[k]) / sqrt((double)11025);
 						
 						colors.push_back(float2color(scaledValue,image));
 					}
@@ -403,7 +403,7 @@ ColorVector getColorValues(std::string filename, float samplesPerPixel, long wid
 						if(values[k] < 0.f)
 							values[k] = 0.f;
 
-						float scaledValue = log(values[k]+1) / log(512+1);
+						float scaledValue = log(values[k]+1) / log((double)(512+1));
 						
 						colors.push_back(float2color(scaledValue,image));
 					}
