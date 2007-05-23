@@ -185,7 +185,7 @@ class ExporterCore(Component):
     def post_process(self, item_id, source, metadata, ext, 
                      cache_dir, options=None):
         """ Post processing : write tags, print infos, etc..."""
-        #self.write_tags()
+        self.write_tags()
         if not options is None:
             if 'verbose' in self.options and self.options['verbose'] != '0':
                 print self.dest

@@ -74,13 +74,14 @@ class ExportProcessError(TelemetaError):
 
     def __init__(self, message, command, subprocess):
         self.message = message
-        self.command = command
+        self.command = str(command)
         self.subprocess = subprocess
 
     def __str__(self):
-        error = self.subprocess.stderr.read()
+        if self.subprocess.stderr != None:
+            error = self.subprocess.stderr.read()
+        else:
+            error = ''
         return "%s ; command: %s; error: %s" % (self.message,
                                                 self.command,
                                                 error)
-
-    

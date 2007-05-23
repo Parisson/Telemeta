@@ -106,7 +106,6 @@ class OggExporter(ExporterCore):
                        '| oggenc '+self.args+' -'
 
         # Pre-proccessing
-
         self.dest = self.pre_process(self.item_id,
                                         self.source,
                                         self.metadata,
@@ -128,7 +127,3 @@ class OggExporter(ExporterCore):
                         self.cache_dir,
                         self.options)
 
-        # Post-proccessing
-        #os.system('sox "'+self.source+'" -w -r 44100 -t wav -c2 - \
-        #      | oggenc '+args+' -o "'+self.dest+'" -')
-  

@@ -107,8 +107,7 @@ class FlacExporter(ExporterCore):
         self.metadata = metadata
         self.args = self.get_args(options)
         self.ext = self.get_file_extension()
-        self.command = 'sox "'+self.source+'" -q -w -r 44100 -t wav -c2 - '+ \
-                       '| flac '+self.args+' -c -'
+        self.command = 'flac '+self.args+' "'+self.source+'" -c -'
 
         # Pre-proccessing
         self.dest = self.pre_process(self.item_id,
@@ -119,7 +118,7 @@ class FlacExporter(ExporterCore):
                                          self.options)
 
         # Processing (streaming + cache writing)
-        stream = self.core_process(self.command,self.buffer_size,self.dest)
+        stream = self.core_process(self.command, self.buffer_size, self.dest)
         for chunk in stream:
             yield chunk
 
@@ -130,8 +129,4 @@ class FlacExporter(ExporterCore):
                          self.ext,
                          self.cache_dir,
                          self.options)
-
-        # Encoding
-            #os.system('flac '+args+' -o "'+self.dest+'" "'+ \
-            #          self.source+'" > /dev/null')
 

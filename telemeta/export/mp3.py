@@ -132,7 +132,7 @@ class Mp3Exporter(ExporterCore):
         self.args = self.get_args(self.metadata,options)
         self.ext = self.get_file_extension()
         self.command = 'sox "'+self.source+'" -q -w -r 44100 -t wav -c2 - '+ \
-                       '| lame '+self.args+' - '
+                       '| lame '+self.args+' --tc "default" - '
             
         # Pre-proccessing
         self.dest = self.pre_process(self.item_id,
@@ -148,7 +148,7 @@ class Mp3Exporter(ExporterCore):
         for chunk in stream:
             yield chunk
 
-        # Post-proccessing     
+        # Post-proccessing
         self.post_process(self.item_id,
                          self.source,
                          self.metadata,
@@ -156,7 +156,3 @@ class Mp3Exporter(ExporterCore):
                          self.cache_dir,
                          self.options)
 
-        # Encoding
-        # os.system('lame '+args+' --tc "default" "'+self.source+
-        #                        '" "'+self.dest+'"')
-            
