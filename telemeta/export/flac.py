@@ -111,35 +111,25 @@ class FlacExporter(ExporterCore):
                        '| flac '+self.args+' -c -'
 
         # Pre-proccessing
-        #try:
         self.dest = self.pre_process(self.item_id,
                                          self.source,
                                          self.metadata,
                                          self.ext,
                                          self.cache_dir,
                                          self.options)
-        #except:
-            #raise 'ExporterError [3]: pre_process'
 
         # Processing (streaming + cache writing)
-        try:
-            stream = self.core_process(self.command,self.buffer_size,self.dest)
-            for chunk in stream:
-                yield chunk
-        except:
-            raise 'ExporterError: core_process'
+        stream = self.core_process(self.command,self.buffer_size,self.dest)
+        for chunk in stream:
+            yield chunk
 
         # Post-proccessing
-        try:
-            self.post_process(self.item_id,
+        self.post_process(self.item_id,
                          self.source,
                          self.metadata,
                          self.ext,
                          self.cache_dir,
                          self.options)
-        except:
-            raise 'ExporterError: post_process'
-
 
         # Encoding
             #os.system('flac '+args+' -o "'+self.dest+'" "'+ \

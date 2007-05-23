@@ -62,6 +62,9 @@ class Mp3Exporter(ExporterCore):
     def get_description(self):
         return "FIXME"
 
+    def set_cache_dir(self,path):
+       self.cache_dir = path
+
     def get_file_info(self):
         try:
             file_out1, file_out2 = os.popen4('mp3info "'+self.dest+'"')
@@ -118,7 +121,7 @@ class Mp3Exporter(ExporterCore):
             #if tag in self.dub2args_dict.keys():
                 #arg = self.dub2args_dict[tag]
                 #value = clean_word(self.metadata[tag])
-                #args = args + ' --' + arg + ' "' +value +'" '
+                #args = args.append(' --' + arg + ' "' +value +'" '
 
         return args
 
@@ -129,38 +132,30 @@ class Mp3Exporter(ExporterCore):
         self.args = self.get_args(self.metadata,options)
         self.ext = self.get_file_extension()
         self.command = 'sox "'+self.source+'" -q -w -r 44100 -t wav -c2 - '+ \
-                       '| lame '+self.args+' - -'
+                       '| lame '+self.args+' - '
             
         # Pre-proccessing
-        try:
-            self.dest = self.pre_process(self.item_id,
+        self.dest = self.pre_process(self.item_id,
                                          self.source,
                                          self.metadata,
                                          self.ext,
                                          self.cache_dir,
                                          self.options)
-        except:
-            raise 'ExporterError [3]: pre_process'
 
         # Processing (streaming + cache writing)
-        try:
-            stream = self.core_process(self.command,self.buffer_size,self.dest)
-            for chunk in stream:
-                yield chunk
-        except:
-            raise 'ExporterError: core_process'
+        # FIXME return stream
+        stream = self.core_process(self.command,self.buffer_size,self.dest)
+        for chunk in stream:
+            yield chunk
 
-        # Post-proccessing
-        try:       
-            self.post_process(self.item_id,
+        # Post-proccessing     
+        self.post_process(self.item_id,
                          self.source,
                          self.metadata,
                          self.ext,
                          self.cache_dir,
                          self.options)
-        except:
-            raise 'ExporterError: post_process'
-    
+
         # Encoding
         # os.system('lame '+args+' --tc "default" "'+self.source+
         #                        '" "'+self.dest+'"')

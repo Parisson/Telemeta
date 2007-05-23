@@ -12,7 +12,8 @@
 # Author: Olivier Guilyardi <olivier@samalyse.com>
 #         Guillaume Pellerin <pellerin@parisson.com>
 
-from telemeta.core import *
+from telemeta.core import Interface, TelemetaError
+
 
 class IExporter(Interface):
     """Export driver interface"""
@@ -68,3 +69,18 @@ class IExporter(Interface):
         It should be possible to make subsequent calls to process() with
         different items, using the same driver instance.
         """
+
+class ExportProcessError(TelemetaError):
+
+    def __init__(self, message, command, subprocess):
+        self.message = message
+        self.command = command
+        self.subprocess = subprocess
+
+    def __str__(self):
+        error = self.subprocess.stderr.read()
+        return "%s ; command: %s; error: %s" % (self.message,
+                                                self.command,
+                                                error)
+
+    

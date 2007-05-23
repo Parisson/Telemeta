@@ -55,12 +55,6 @@ class WavExporter(ExporterCore):
             return 'Exporter error [1]: file does not exist.'
 
     def set_cache_dir(self,path):
-        """Set the directory where cached files should be stored. Does nothing
-        if the exporter doesn't support caching. 
-       
-        The driver shouldn't assume that this method will always get called. A
-        temporary directory should be used if that's not the case.
-        """
         self.cache_dir = path
 
     def decode(self):
@@ -106,52 +100,49 @@ class WavExporter(ExporterCore):
         
         if not options is None:
             self.options = options
-        try:
-            # Pre-proccessing
-            self.ext = self.get_file_extension()
-            self.dest = self.pre_process(self.item_id,
-                                         self.source,
-                                         self.metadata,
-                                         self.ext,
-                                         self.cache_dir,
-                                         self.options)
+            
+        # Pre-proccessing
+        self.ext = self.get_file_extension()
+        self.dest = self.pre_process(self.item_id,
+                                        self.source,
+                                        self.metadata,
+                                        self.ext,
+                                        self.cache_dir,
+                                        self.options)
 
-            # Initializing
-            chunk = 0
-            file_in = open(self.source,'rb')
-            file_out = open(self.dest,'w')
+        # Initializing
+        chunk = 0
+        file_in = open(self.source,'rb')
+        file_out = open(self.dest,'w')
 
+        chunk = file_in.read(self.buffer_size)
+        yield chunk
+        file_out.write(chunk)
+
+        # Core Processing
+        while chunk:
             chunk = file_in.read(self.buffer_size)
             yield chunk
             file_out.write(chunk)
-           
-            # Core Processing
-            while chunk:
-                chunk = file_in.read(self.buffer_size)
-                yield chunk
-                file_out.write(chunk)           
 
-            file_in.close()
-            file_out.close()
+        file_in.close()
+        file_out.close()
 
-            # Create the md5 key
-            #if 'md5' in self.metadata and self.metadata['md5']:
-            self.create_md5_key()
+        # Create the md5 key
+        #if 'md5' in self.metadata and self.metadata['md5']:
+        self.create_md5_key()
 
-            # Create the par2 key
-            #if 'par2' in self.metadata and self.metadata['par2']:
-            self.create_par_key()
+        # Create the par2 key
+        #if 'par2' in self.metadata and self.metadata['par2']:
+        self.create_par_key()
 
-            # Pre-proccessing
-            self.post_process(self.item_id,
-                         self.source,
-                         self.metadata,
-                         self.ext,
-                         self.cache_dir,
-                         self.options)
-
-        except IOError:
-            raise 'ExporterError [3]: source file does not exist.'
+        # Pre-proccessing
+        self.post_process(self.item_id,
+                        self.source,
+                        self.metadata,
+                        self.ext,
+                        self.cache_dir,
+                        self.options)
 
 
 

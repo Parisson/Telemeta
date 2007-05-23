@@ -57,8 +57,8 @@ class OggExporter(ExporterCore):
         except IOError:
             return 'Exporter error [1]: file does not exist.'
 
-    #def set_cache_dir(self,path):
-    #   self.cache_dir = path
+    def set_cache_dir(self,path):
+       self.cache_dir = path
 
     def decode(self):
         try:
@@ -106,36 +106,27 @@ class OggExporter(ExporterCore):
                        '| oggenc '+self.args+' -'
 
         # Pre-proccessing
-        try:
-            self.dest = self.pre_process(self.item_id,
-                                         self.source,
-                                         self.metadata,
-                                         self.ext,
-                                         self.cache_dir,
-                                         self.options)
-        except:
-            raise 'ExporterError [3]: pre_process'
+
+        self.dest = self.pre_process(self.item_id,
+                                        self.source,
+                                        self.metadata,
+                                        self.ext,
+                                        self.cache_dir,
+                                        self.options)
 
         # Processing (streaming + cache writing)
-        try:
-            stream = self.core_process(self.command,self.buffer_size,self.dest)
-            for chunk in stream:
-                yield chunk
-        except:
-            raise 'ExporterError: core_process'
+        stream = self.core_process(self.command,self.buffer_size,self.dest)
+        for chunk in stream:
+            yield chunk
 
         # Post-proccessing
-        try:
-            self.post_process(self.item_id,
-                         self.source,
-                         self.metadata,
-                         self.ext,
-                         self.cache_dir,
-                         self.options)
-        except:
-            raise 'ExporterError: post_process'
 
-
+        self.post_process(self.item_id,
+                        self.source,
+                        self.metadata,
+                        self.ext,
+                        self.cache_dir,
+                        self.options)
 
         # Post-proccessing
         #os.system('sox "'+self.source+'" -w -r 44100 -t wav -c2 - \

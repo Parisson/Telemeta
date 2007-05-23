@@ -107,7 +107,6 @@ class ExporterCore(Component):
         file_name = get_file_name(self.source)
         file_name_wo_ext, file_ext = split_file_name(file_name)
         self.cache_dir = cache_dir
-
         self.metadata = metadata
         #self.collection = self.metadata['Collection']
         #self.artist = self.metadata['Artist']
@@ -131,47 +130,52 @@ class ExporterCore(Component):
         # Define and create the destination path
         # At the moment, the target directory is built with this scheme in
         # the cache directory : ./%Format/%Collection/%Artist/
-        self.cache_dir = os.path.join(self.cache_dir,'cache')
+        #self.cache_dir = os.path.join(self.cache_dir,'cache')
 
         #export_dir = os.path.join(self.ext,self.collection,self.artist)
         export_dir = os.path.join(self.cache_dir,self.ext)
 
         if not os.path.exists(export_dir):
             export_dir_split = export_dir.split(os.sep)
-            path = export_dir_split[0]
+            path = os.sep + export_dir_split[0]
             for _dir in export_dir_split[1:]:
                 path = os.path.join(path,_dir)
                 if not os.path.exists(path):
                     os.mkdir(path)
         else:
-            self.dest = export_dir
+            path = export_dir
 
         # Set the target file
         #target_file = file_name_wo_ext+'.'+self.ext
         target_file = self.item_id+'.'+self.ext
-        self.dest = os.path.join(self.dest,target_file)
-        return self.dest
+        dest = os.path.join(path,target_file)
+        return dest
 
-    def core_process(self,command,buffer_size,dest):
+    def core_process(self, command, buffer_size, dest):
         """Streams encoded audio data through a generator"""
         
         __chunk = 0
         file_out = open(dest,'w')
 
-        proc = subprocess.Popen(command,
-                shell = True,
-                bufsize = buffer_size,
-                stdin = subprocess.PIPE,
-                stdout = subprocess.PIPE,
-                close_fds = True)
-
-        __chunk = proc.stdout.read(buffer_size)
-        yield __chunk
-        file_out.write(__chunk)
+        try:
+            proc = subprocess.Popen(command,
+                    shell = True,
+                    bufsize = buffer_size,
+                    stdin = subprocess.PIPE,
+                    stdout = subprocess.PIPE,
+                    close_fds = True)
+        except:
+            raise ExportProcessError('Command failure:', command, proc)
+            
 
         # Processing
-        while __chunk:
+        while True:
             __chunk = proc.stdout.read(buffer_size)
+            status = proc.poll()
+            if status != None and status != 0:
+                raise ExportProcessError('Command failure:', command, proc)
+            if len(__chunk) == 0:
+                break
             yield __chunk
             file_out.write(__chunk)
 
@@ -181,7 +185,7 @@ class ExporterCore(Component):
     def post_process(self, item_id, source, metadata, ext, 
                      cache_dir, options=None):
         """ Post processing : write tags, print infos, etc..."""
-        self.write_tags()
+        #self.write_tags()
         if not options is None:
             if 'verbose' in self.options and self.options['verbose'] != '0':
                 print self.dest
