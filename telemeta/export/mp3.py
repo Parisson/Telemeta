@@ -114,11 +114,11 @@ class Mp3Exporter(ExporterCore):
         else:
             args = args + ' -S -c -o '
 
-        for tag in self.metadata.keys():
-            if tag in self.dub2args_dict.keys():
-                arg = self.dub2args_dict[tag]
-                value = self.metadata[tag]
-                args = args + ' --' + arg + ' "' +value +'" '
+        #for tag in self.metadata.keys():
+            #if tag in self.dub2args_dict.keys():
+                #arg = self.dub2args_dict[tag]
+                #value = clean_word(self.metadata[tag])
+                #args = args + ' --' + arg + ' "' +value +'" '
 
         return args
 
@@ -140,7 +140,7 @@ class Mp3Exporter(ExporterCore):
                                          self.cache_dir,
                                          self.options)
         except:
-            yield 'ExporterError [3]: pre_process'
+            raise 'ExporterError [3]: pre_process'
 
         # Processing (streaming + cache writing)
         try:
@@ -148,7 +148,7 @@ class Mp3Exporter(ExporterCore):
             for chunk in stream:
                 yield chunk
         except:
-            yield 'ExporterError: core_process'
+            raise 'ExporterError: core_process'
 
         # Post-proccessing
         try:       
@@ -159,7 +159,7 @@ class Mp3Exporter(ExporterCore):
                          self.cache_dir,
                          self.options)
         except:
-            yield 'ExporterError: post_process'
+            raise 'ExporterError: post_process'
     
         # Encoding
         # os.system('lame '+args+' --tc "default" "'+self.source+

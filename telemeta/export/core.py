@@ -131,17 +131,20 @@ class ExporterCore(Component):
         # Define and create the destination path
         # At the moment, the target directory is built with this scheme in
         # the cache directory : ./%Format/%Collection/%Artist/
-        self.dest = self.cache_dir
+        self.cache_dir = os.path.join(self.cache_dir,'cache')
 
         #export_dir = os.path.join(self.ext,self.collection,self.artist)
-        export_dir = self.ext
-        if not os.path.exists(os.path.join(self.dest,export_dir)):
-            for _dir in export_dir.split(os.sep):
-                self.dest = os.path.join(self.dest,_dir)
-                if not os.path.exists(self.dest):
-                    os.mkdir(self.dest)
+        export_dir = os.path.join(self.cache_dir,self.ext)
+
+        if not os.path.exists(export_dir):
+            export_dir_split = export_dir.split(os.sep)
+            path = export_dir_split[0]
+            for _dir in export_dir_split[1:]:
+                path = os.path.join(path,_dir)
+                if not os.path.exists(path):
+                    os.mkdir(path)
         else:
-            self.dest = os.path.join(self.dest,export_dir)
+            self.dest = export_dir
 
         # Set the target file
         #target_file = file_name_wo_ext+'.'+self.ext
@@ -259,13 +262,17 @@ def split_file_name(file):
         return 'Exporter error [1]: path does not exist.'
 
 def clean_word(word) :
-    """ Return the word without excessive blank spaces and underscores """
+    """ Return the word without excessive blank spaces, underscores and
+    characters causing problem to exporters"""
     word = re.sub("^[^\w]+","",word)    #trim the beginning
     word = re.sub("[^\w]+$","",word)    #trim the end
-    #word = string.replace(word,' ','_')
     word = re.sub("_+","_",word)        #squeeze continuous _ to one _
     word = re.sub("^[^\w]+","",word)    #trim the beginning _
+    #word = string.replace(word,' ','_')
     #word = string.capitalize(word)
+    dict = '&[];"*'
+    for letter in dict:
+        word = string.replace(word,letter,'_')
     return word
 
 def recover_par_key(path):

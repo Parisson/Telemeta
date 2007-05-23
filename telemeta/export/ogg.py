@@ -114,7 +114,7 @@ class OggExporter(ExporterCore):
                                          self.cache_dir,
                                          self.options)
         except:
-            yield 'ExporterError [3]: pre_process'
+            raise 'ExporterError [3]: pre_process'
 
         # Processing (streaming + cache writing)
         try:
@@ -122,7 +122,7 @@ class OggExporter(ExporterCore):
             for chunk in stream:
                 yield chunk
         except:
-            yield 'ExporterError: core_process'
+            raise 'ExporterError: core_process'
 
         # Post-proccessing
         try:
@@ -133,7 +133,7 @@ class OggExporter(ExporterCore):
                          self.cache_dir,
                          self.options)
         except:
-            yield 'ExporterError: post_process'
+            raise 'ExporterError: post_process'
 
 
 

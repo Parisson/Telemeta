@@ -151,7 +151,7 @@ class WavExporter(ExporterCore):
                          self.options)
 
         except IOError:
-            yield 'ExporterError [3]: source file does not exist.'
+            raise 'ExporterError [3]: source file does not exist.'
 
 
 
