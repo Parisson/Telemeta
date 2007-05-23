@@ -11,6 +11,7 @@ from django.conf.urls.defaults import *
 from telemeta.models import MediaItem, MediaCollection
 from telemeta.core import ComponentManager
 from telemeta.web import WebView
+import os.path
 
 # initialization
 comp_mgr = ComponentManager()
@@ -24,7 +25,7 @@ all_collections = { 'queryset': MediaCollection.objects.all(), }
 i_ex = MediaItem.id_regex
 c_ex = MediaCollection.id_regex
 
-htdocs='./telemeta/htdocs'
+htdocs = os.path.dirname(__file__) + '/htdocs'
 
 urlpatterns = patterns('',
     url(r'^$', web_view.index, name="telemeta-home"),
