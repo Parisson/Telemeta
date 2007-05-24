@@ -21,7 +21,7 @@ from django.conf import settings
 import telemeta
 from telemeta.models import MediaItem
 from telemeta.models import MediaCollection
-from telemeta.core import *
+from telemeta.core import Component, ExtensionPoint
 from telemeta.export import *
 from telemeta.visualization import *
 
@@ -43,7 +43,7 @@ class WebView(Component):
         item = MediaItem.objects.get(pk=item_id)
         formats = []
         for exporter in self.exporters:
-            formats.append(exporter.get_format())
+            formats.append({'name': exporter.get_format(), 'extension': exporter.get_file_extension()})
         visualizers = []
         for visualizer in self.visualizers:
             visualizers.append({'name':visualizer.get_name(), 'id': 
@@ -71,14 +71,21 @@ class WebView(Component):
         response = HttpResponse(stream, mimetype = 'image/png')
         return response
 
-    def item_export(self, request, item_id, format):                    
+    def list_export_extensions(self):
+        "Return the recognized item export file extensions, as a list"
+        list = []
+        for exporter in self.exporters:
+            list.append(exporter.get_file_extension())
+        return list
+
+    def item_export(self, request, item_id, extension):                    
         """Export a given media item in the specified format (OGG, FLAC, ...)"""
         for exporter in self.exporters:
-            if exporter.get_format() == format:
+            if exporter.get_file_extension() == extension:
                 break
 
-        if exporter.get_format() != format:
-            raise Http404
+        if exporter.get_file_extension() != extension:
+            raise Http404('Unknown export file extension: %s' % extension)
 
         mime_type = exporter.get_mime_type()
 
@@ -91,8 +98,7 @@ class WebView(Component):
         stream = exporter.process(item.id, infile, metadata)
 
         response = HttpResponse(stream, mimetype = mime_type)
-        response['Content-Disposition'] = 'attachment; filename="download.' + \
-                    exporter.get_file_extension() + '"'
+        response['Content-Disposition'] = 'attachment'
         return response
 
     def quick_search(self, request):

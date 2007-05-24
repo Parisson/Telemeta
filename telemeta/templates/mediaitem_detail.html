@@ -31,7 +31,7 @@
         </p>
         <script type="text/javascript">
           var so = new SWFObject('{% url telemeta-swf "mp3player.swf" %}','line','300','20','7');
-          so.addVariable("file","{% url telemeta-item-export item.id|urlencode,"MP3" %}");
+          so.addVariable("file","{% url telemeta-item-export item.id|urlencode,"mp3" %}");
           so.addVariable("type","mp3");
           so.write('item_player_c');
         </script>
@@ -71,7 +71,7 @@
   </ul>
   Download:
   {% for format in export_formats %}
-      <a href="{% url telemeta-item-export item.id|urlencode,format %}">{{ format }}</a>
+      <a href="{% url telemeta-item-export item.id|urlencode,format.extension %}">{{ format.name }}</a>
   {% endfor %}
 {% else %}
     <p>No such item</p>

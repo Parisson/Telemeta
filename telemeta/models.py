@@ -19,7 +19,7 @@ from telemeta import dublincore as dc
 from xml.dom.minidom import getDOMImplementation
 
 # Regular (sub) expression for matching/validating media objects IDs
-media_id_regex = r'[0-9A-Za-z._:%?-]+'
+media_id_regex = r'[0-9A-Za-z._-]+'
 
 class MediaModel(Component):
     pass

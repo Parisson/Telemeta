@@ -24,6 +24,7 @@ all_collections = { 'queryset': MediaCollection.objects.all(), }
 # ID's regular expressions
 i_ex = MediaItem.id_regex
 c_ex = MediaCollection.id_regex
+export_extensions = "|".join(web_view.list_export_extensions())
 
 htdocs = os.path.dirname(__file__) + '/htdocs'
 
@@ -42,7 +43,8 @@ urlpatterns = patterns('',
     url(r'^items/(?P<item_id>' + i_ex + ')/dc/xml/$', web_view.item_detail, 
         {'format': 'dublin_core_xml'},
         name="telemeta-item-dublincore-xml"),
-    url(r'^items/(?P<item_id>' + i_ex + ')/download.(?P<format>[0-9A-Z]+)$', 
+    url(r'^items/download/(?P<item_id>' + i_ex + ').(?P<extension>' 
+            + export_extensions + ')$', 
         web_view.item_export,
         name="telemeta-item-export"),
     url(r'^items/(?P<item_id>' + i_ex + ')/visualize/(?P<visualizer_id>[0-9a-z]+)/$', 
