@@ -26,7 +26,7 @@ class SpectrogramVisualizer2(OctaveCoreVisualizer):
         return "spectrogram2"
 
     def get_name(self):
-        return "Spectrogram2 (< 10s)"
+        return "Spectrogram2"
     
     def render(self, media_item, options=None):
         """Generator that streams the spectral view as a PNG image"""
