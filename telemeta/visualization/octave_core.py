@@ -55,8 +55,9 @@ class OctaveCoreVisualizer(Component):
         proc.wait()
         
         # Convert
-        os.system('convert ' + self.ppmFile.name + ' -scale 300x300 ' + self.pngFile.name)
-
+        os.system('convert ' + self.ppmFile.name + ' -scale x250 ' + self.pngFile.name)
+        #
+        
         # Stream
         while True  :
             buffer = self.pngFile.read(self.buffer_size)

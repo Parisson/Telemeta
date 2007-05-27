@@ -37,7 +37,8 @@
         </script>
       {% endif %}
 
-      <img src="{% url telemeta-item-visualize item.id|urlencode,visualizer_id %}">
+      <iframe src="{% url telemeta-item-visualize item.id|urlencode,visualizer_id %}" width="300" height="285">
+      </iframe>
       <form method="GET">
         <select name="visualizer_id" onchange="this.form.submit()">
           {% for v in visualizers %}
