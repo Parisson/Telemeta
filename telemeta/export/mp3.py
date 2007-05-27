@@ -45,7 +45,7 @@ class Mp3Exporter(ExporterCore):
                              }
         self.dub2args_dict = {'title': 'tt', #title2
                              'creator': 'ta', #composer
-                             'identifier': 'tl', #album
+                             'relation': 'tl', #album
                              #'type': 'tg', #genre
                              'publisher': 'tc', #comment
                              'date': 'ty', #year
@@ -99,29 +99,29 @@ class Mp3Exporter(ExporterCore):
 
     def get_args(self, metadata, options=None):
         """Get process options and return arguments for the encoder"""
-        args = ''
+        args = []
         if not options is None: 
             self.options = options
-            
-            if 'verbose' in self.options and self.options['verbose'] != '0':
-                args = args
-            else:
-                args= args + '-S '  
-            
+            if not ( 'verbose' in self.options and self.options['verbose'] != '0' ):
+                args.append('-S')
             if 'mp3_bitrate' in self.options:
-                args = args+'-b '+self.options['mp3_bitrate']
+                args.append('-b ' + self.options['mp3_bitrate'])
             else:
-                args = args+'-b '+self.bitrate_default    
+                args.append('-b '+self.bitrate_default)
             #Copyrights, etc..
-            args = args + ' -c -o '
+            args.append('-c -o')
         else:
-            args = args + ' -S -c -o '
+            args.append('-S -c -o')
 
-        #for tag in self.metadata.keys():
-            #if tag in self.dub2args_dict.keys():
-                #arg = self.dub2args_dict[tag]
-                #value = clean_word(self.metadata[tag])
-                #args = args.append(' --' + arg + ' "' +value +'" '
+        for tag in self.metadata.keys():
+            print tag
+            if tag in self.dub2args_dict.keys():
+                arg = self.dub2args_dict[tag]
+                print arg
+                value = clean_word(self.metadata[tag])
+                print value
+                args.append('--' + arg)
+                args.append('"' + value + '"')
 
         return args
 
@@ -131,9 +131,10 @@ class Mp3Exporter(ExporterCore):
         self.metadata = metadata
         self.args = self.get_args(self.metadata,options)
         self.ext = self.get_file_extension()
-        self.command = 'sox "'+self.source+'" -q -w -r 44100 -t wav -c2 - '+ \
-                       '| lame '+self.args+' --tc "default" - '
-            
+        self.args = ' '.join(self.args)
+        self.command = 'sox "%s" -q -w -r 44100 -t wav -c2 - | lame %s -' \
+                       % (self.source,self.args)
+        
         # Pre-proccessing
         self.dest = self.pre_process(self.item_id,
                                          self.source,
@@ -143,11 +144,9 @@ class Mp3Exporter(ExporterCore):
                                          self.options)
 
         # Processing (streaming + cache writing)
-        # FIXME return stream
         stream = self.core_process(self.command,self.buffer_size,self.dest)
-        for chunk in stream:
-            yield chunk
-
+        return stream
+    
         # Post-proccessing
         self.post_process(self.item_id,
                          self.source,

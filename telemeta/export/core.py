@@ -260,7 +260,7 @@ def clean_word(word) :
     word = re.sub("^[^\w]+","",word)    #trim the beginning _
     #word = string.replace(word,' ','_')
     #word = string.capitalize(word)
-    dict = '&[];"*'
+    dict = '&[];"*:,'
     for letter in dict:
         word = string.replace(word,letter,'_')
     return word

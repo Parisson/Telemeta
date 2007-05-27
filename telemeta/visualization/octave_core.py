@@ -51,12 +51,12 @@ class OctaveCoreVisualizer(Component):
         mFile_tmp.close()
 
         # Compute
-        proc = subprocess.Popen(command)               
+        proc = subprocess.Popen(command, stdout = subprocess.PIPE)               
         proc.wait()
         
         # Convert
-        os.system('convert ' + self.ppmFile.name + ' -scale x250 ' + self.pngFile.name)
-        #
+        os.system('convert ' + self.ppmFile.name + \
+                  ' -scale x250 ' + self.pngFile.name)
         
         # Stream
         while True  :

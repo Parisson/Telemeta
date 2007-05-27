@@ -115,11 +115,9 @@ class OggExporter(ExporterCore):
 
         # Processing (streaming + cache writing)
         stream = self.core_process(self.command,self.buffer_size,self.dest)
-        for chunk in stream:
-            yield chunk
-
+        return stream
+    
         # Post-proccessing
-
         self.post_process(self.item_id,
                         self.source,
                         self.metadata,
