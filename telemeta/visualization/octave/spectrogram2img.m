@@ -33,7 +33,7 @@ lim_x_length = 10; % (s)
 x = x(:,1);  % mono
 lim_x_samples = Fs.*lim_x_length;
 if length(x) > lim_x_samples;
- x = x(1:lim_x_samples)
+ x = x(1:lim_x_samples);
 end
 
 %fftn = 2^nextpow2(window); % next highest power of 2
@@ -50,8 +50,7 @@ S = flipud(20*log10(S));
 cmap = colormap(jet(ncmap));
 
 img = imagesc(t, f, S);
-%stdin(imagesc(t, f, S));
 saveimage(dest_image, img, 'ppm', cmap);
-%print([img_dir wav_file '.eps'], '-depsc');
 
-quit
+quit;
+

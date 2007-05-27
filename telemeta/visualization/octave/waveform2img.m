@@ -35,12 +35,14 @@ lx = length(x);
 lim_x_samples = Fs.*lim_x_length;
 
 if lx > lim_x_samples;
- x = x(1:lim_x_samples)
+ x = x(1:lim_x_samples);
 end
 
-t = [1:1:lx]./Fs;
+lx = length(x);
+t = [0:1:lx-1]./Fs;
 
 img = plot(t,x);
-print(dest_image, '-dpng')
+print(dest_image, '-dpng');
 
-quit
+quit;
+

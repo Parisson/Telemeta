@@ -20,13 +20,13 @@ class WaveformVisualizer2(OctaveCoreVisualizer):
     def __init__(self):
         self.set_m_file('waveform2img.m')
         self.buffer_size = 0xFFFF
-        self.dest_type = 'png'
+        self.trans_type = 'png'
         
     def get_id(self):
         return "waveform2"
 
     def get_name(self):
-        return "Waveform2"
+        return "Waveform2 (< 10s)"
     
     def render(self, media_item, options=None):
         """Generator that streams the temporal view as a PNG image"""
