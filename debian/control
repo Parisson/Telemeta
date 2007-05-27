@@ -11,7 +11,7 @@ Package: telemeta
 Architecture: any
 Depends: python (>= 2.3.5-7), python-xml, python-central (>= 0.5),
 python-mutagen, python-django, sox, vorbis-tools, flac, lame, normalize-audio,
-ecasound, festival, par2, python-mysqldb, sqlite3 | mysql-server
+ecasound, festival, par2, python-mysqldb, sqlite3 | mysql-server, octave2.9
 XB-Python-Version: ${python:Versions}
 Description: backups, transcodes, tags and marks any audio content with metadata
  Telemeta is an audio tool which creates audio transcoded databases fast from
