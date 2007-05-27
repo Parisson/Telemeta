@@ -27,15 +27,18 @@ step = 6;   % spectral slice period (ms)
 % step_length = fix(5*Fs/1000);
 window = 30;   % filter window (ms)
 % window = fix(40*Fs/1000);
-lim_x_length = 10; % (s)
+time_limit = 30; % length limit of the displayed sample (s)
 
 [x, Fs] = wavread(wav_file);
 x = x(:,1);  % mono
-lim_x_samples = Fs.*lim_x_length;
-if length(x) > lim_x_samples;
- x = x(1:lim_x_samples);
-end
+lx = length(x);
 
+% LIMITING time
+lx_lim = Fs.*time_limit;
+if lx > lx_lim;
+ x = x(1:lx_lim);
+end
+    
 %fftn = 2^nextpow2(window); % next highest power of 2
 [S, f, t] = spectrogram(x, Fs, window, step, 4000, 'hanning', -30);
 S = flipud(20*log10(S));
