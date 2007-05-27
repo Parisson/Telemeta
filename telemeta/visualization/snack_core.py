@@ -44,3 +44,4 @@ class SnackCoreVisualizer(Component):
     def cleanup(self): 
         self.snd.destroy()
         self.tk_root.destroy()
+

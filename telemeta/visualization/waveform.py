@@ -49,11 +49,4 @@ class WaveFormVisualizer(Component):
             buffer = pngFile.read(0xFFFF)
 
         pngFile.close()            
-        
 
-
-
-
-        
-
-            

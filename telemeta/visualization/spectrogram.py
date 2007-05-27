@@ -34,7 +34,6 @@ class SpectrogramVisualizer(SnackCoreVisualizer):
         canvas.create_spectrogram(0, 10, sound=snd, height=180, width=300 ,
             windowtype="hamming", fftlength=1024, topfrequency=5000, channel="all", winlength=64)
 
-
         stream = self.canvas_to_png_stream(canvas)
 
         return stream

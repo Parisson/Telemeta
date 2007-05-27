@@ -112,11 +112,6 @@ class ExporterCore(Component):
         #self.artist = self.metadata['Artist']
         #self.title = self.metadata['Title']
 
-        # Decode the source if needed
-        #if os.path.exists(self.source) and not iswav16(self.source):
-            # TO FIX !
-        #    self.source = self.export.decode()
-
         # Normalize if demanded
         if not options is None:
             self.options = options
@@ -124,15 +119,8 @@ class ExporterCore(Component):
                 self.options['normalize'] == True:
                 self.normalize()
 
-        # Define the cache directory
+        # Define the export directory
         self.ext = self.get_file_extension()
-
-        # Define and create the destination path
-        # At the moment, the target directory is built with this scheme in
-        # the cache directory : ./%Format/%Collection/%Artist/
-        #self.cache_dir = os.path.join(self.cache_dir,'cache')
-
-        #export_dir = os.path.join(self.ext,self.collection,self.artist)
         export_dir = os.path.join(self.cache_dir,self.ext)
 
         if not os.path.exists(export_dir):
@@ -146,7 +134,6 @@ class ExporterCore(Component):
             path = export_dir
 
         # Set the target file
-        #target_file = file_name_wo_ext+'.'+self.ext
         target_file = self.item_id+'.'+self.ext
         dest = os.path.join(path,target_file)
         return dest
@@ -179,7 +166,6 @@ class ExporterCore(Component):
             yield __chunk
             file_out.write(__chunk)
 
-        #file_in.close()
         file_out.close()
 
     def post_process(self, item_id, source, metadata, ext, 
