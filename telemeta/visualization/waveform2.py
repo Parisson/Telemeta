@@ -26,7 +26,7 @@ class WaveformVisualizer2(OctaveCoreVisualizer):
         return "waveform2"
 
     def get_name(self):
-        return "Waveform2 (< 30s)"
+        return "Waveform2 (< 300s)"
     
     def render(self, media_item, options=None):
         """Generator that streams the temporal view as a PNG image"""
