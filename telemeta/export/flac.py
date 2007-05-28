@@ -87,18 +87,25 @@ class FlacExporter(ExporterCore):
         
     def get_args(self,options=None):
         """Get process options and return arguments for the encoder"""
-        args = ''
+        args = []
         if not options is None:
             self.options = options
             if not ('verbose' in self.options and self.options['verbose'] != '0'):
-                args = args + ' -s '
-
+                args.append('-s')
             if 'flac_quality' in self.options:
-                args = args+' -f -'+self.options['flac_quality']
+                args.append('-f -' + self.options['flac_quality'])
             else:
-                args = args+' -f -'+self.quality_default
+                args.append('-f -' + self.quality_default)
         else:
-            args = args+' -s -f -'+self.quality_default
+            args.append('-s -f -' + self.quality_default)
+
+        #for tag in self.metadata.keys():
+            #value = clean_word(self.metadata[tag])
+            #args.append('-c %s="%s"' % (tag, value))
+            #if tag in self.dub2args_dict.keys():
+                #arg = self.dub2args_dict[tag]
+                #args.append('-c %s="%s"' % (arg, value))
+
         return args
         
     def process(self, item_id, source, metadata, options=None):
@@ -107,7 +114,9 @@ class FlacExporter(ExporterCore):
         self.metadata = metadata
         self.args = self.get_args(options)
         self.ext = self.get_file_extension()
-        self.command = 'flac '+self.args+' "'+self.source+'" -c -'
+        self.args = ' '.join(self.args)
+        self.command = 'flac %s "%s" -c -' \
+                       % (self.args, self.source)
 
         # Pre-proccessing
         self.dest = self.pre_process(self.item_id,

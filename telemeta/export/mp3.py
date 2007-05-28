@@ -97,7 +97,7 @@ class Mp3Exporter(ExporterCore):
                 id3.add(frame)
         id3.save()
 
-    def get_args(self, metadata, options=None):
+    def get_args(self, options=None):
         """Get process options and return arguments for the encoder"""
         args = []
         if not options is None: 
@@ -114,12 +114,9 @@ class Mp3Exporter(ExporterCore):
             args.append('-S -c -o')
 
         for tag in self.metadata.keys():
-            print tag
             if tag in self.dub2args_dict.keys():
                 arg = self.dub2args_dict[tag]
-                print arg
                 value = clean_word(self.metadata[tag])
-                print value
                 args.append('--' + arg)
                 args.append('"' + value + '"')
 
@@ -129,7 +126,7 @@ class Mp3Exporter(ExporterCore):
         self.item_id = item_id
         self.source = source
         self.metadata = metadata
-        self.args = self.get_args(self.metadata,options)
+        self.args = self.get_args(options)
         self.ext = self.get_file_extension()
         self.args = ' '.join(self.args)
         self.command = 'sox "%s" -q -w -r 44100 -t wav -c2 - | lame %s -' \

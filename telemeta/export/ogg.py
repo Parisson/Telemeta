@@ -33,6 +33,9 @@ class OggExporter(ExporterCore):
         self.options = {}
         self.bitrate_default = '192'
         self.buffer_size = 0xFFFF
+        self.dub2args_dict = {'creator': 'artist',
+                             'relation': 'album'
+                             }
         
     def get_format(self):
         return 'OGG'
@@ -76,35 +79,39 @@ class OggExporter(ExporterCore):
 
     def get_args(self,options=None):
         """Get process options and return arguments for the encoder"""
-        args = ''
+        args = []
         if not options is None:
             self.options = options
-            
-            if 'verbose' in self.options and self.options['verbose'] != '0':
-                args = args
-            else:
-                args = args + ' -Q '
-            
+            if not ('verbose' in self.options and self.options['verbose'] != '0'):
+                args.append('-Q ')
             if 'ogg_bitrate' in self.options:
-                args = args + '-b '+self.options['ogg_bitrate']
+                args.append('-b '+self.options['ogg_bitrate'])
             elif 'ogg_quality' in self.options:
-                args = args + '-q '+self.options['ogg_quality']
+                args.append('-q '+self.options['ogg_quality'])
             else:
-                args = args + '-b '+self.bitrate_default
+                args.append('-b '+self.bitrate_default)
         else:
-            args = ' -Q -b '+self.bitrate_default
+            args.append('-Q -b '+self.bitrate_default)
+
+        for tag in self.metadata.keys():
+            value = clean_word(self.metadata[tag])
+            args.append('-c %s="%s"' % (tag, value))
+            if tag in self.dub2args_dict.keys():
+                arg = self.dub2args_dict[tag]
+                args.append('-c %s="%s"' % (arg, value))
+
         return args
             
-
     def process(self, item_id, source, metadata, options=None):        
         self.item_id = item_id
         self.source = source
         self.metadata = metadata
         self.args = self.get_args(options)
         self.ext = self.get_file_extension()
-        self.command = 'sox "'+self.source+'" -q -w -r 44100 -t wav -c2 - '+ \
-                       '| oggenc '+self.args+' -'
-
+        self.args = ' '.join(self.args)
+        self.command = 'sox "%s" -q -w -r 44100 -t wav -c2 - | oggenc %s -' \
+                       % (self.source,self.args)
+        
         # Pre-proccessing
         self.dest = self.pre_process(self.item_id,
                                         self.source,
