@@ -32,6 +32,13 @@ class MediaCore(object):
             fields_dict[field.name] = getattr(self, field.name)
         return fields_dict
 
+    def to_list(self):  
+        "Return model fields as a list"
+        fields_list = []
+        for field in self._meta.fields:
+            fields_list.append({'name': field.name, 'value': getattr(self, field.name)})
+        return fields_list
+
     def get_dom_element_name(cls):
         clsname = cls.__name__
         return clsname[0].lower() + clsname[1:]
@@ -229,7 +236,7 @@ class MediaItem(models.Model, MediaCore):
     region_village = models.CharField(maxlength=250, blank=True)
     ethnie_grsocial = models.CharField(maxlength=250, blank=True)
     titre_support = models.CharField(maxlength=250, blank=True)
-    _title = models.CharField(maxlength=250, db_column='title')
+    _title = models.CharField(maxlength=250, db_column='title', blank=True)
     transcrip_trad = models.CharField(maxlength=250, blank=True)
     auteur = models.CharField(maxlength=250, blank=True)
     form_genr_style = models.CharField(maxlength=250, blank=True)

@@ -44,7 +44,7 @@
 
     <h3>Collection: {{ object.title }}</h3>
     <ul>
-    {% for field in object.to_dict|tolist %}
+    {% for field in object.to_list %}
         {% ifnotequal field.name "title" %}
 
         <li><b>{{ field.name|capfirst }}</b> : {{ field.value }}</li>
