@@ -17,8 +17,6 @@ interfaces and plugin' style audio processing.
 
 Here are the main features of Telemeta: 
 
-Here are some cool functions:
-
     * Secure media editing and archiving over networks.
     * Easy transcoding
     * Full tagging and marking methods
@@ -77,6 +75,7 @@ octave2.9-forge, python-tk
     $ mkdir media cache
 
     You might want to place these somewhere else
+
 6 - Configure Django (settings.py):
 
     Modifiy the following variables:
@@ -122,6 +121,7 @@ See INSTALL and http://svn.parisson.org/telemeta for more informations.
 Please give me some feedback. Tell me if Telemeta suits you or if you
 would need some other interesting features.  You are welcome to mail me
 at <yomguy@altern.org>
+
 
 # 5. Contact
 # ==========

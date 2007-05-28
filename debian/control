@@ -17,18 +17,29 @@ octave2.9-forge, python-tk
 Suggests: lame
 XB-Python-Version: ${python:Versions}
 Description: backups, transcodes, tags and marks any audio content with metadata
- Telemeta is an audio tool which creates audio transcoded databases fast from
- fresh mastered files. It can be useful to backup digitalized audio media from
- vinyls, old tapes or whatever.
- Telemeta first creates a simple structure where original sounds will be
- backuped. The files can be transcoded to WAV, FLAC, MP3 and OGG including
- the corresponding tags.
- Here are some cool functions:
-  - XML generation for metadata tags of backuped WAV.
-  - Audio marking from a given file or from tags thanks to the Festival speech
-    systhesis tool
-  - File corruption security with par2 recovery files.
-  - Database synchronizing to remote servers (ssh+rsync).
-  - Modify metadata from XML or interactive shell.
+Telemeta is a global audio archiving program which introduces useful and secure
+indexing methods to backup digitalized audio files and metadata dictionnaries.
+It is dedicated to backup any digitized and documented sound from collections of
+vinyls, magnetic tapes or audio CD over a strong database in accordance with
+many standards. Export functions also encapsulate edited metadata into
+compressed file. The object style architecture will soon provide user-friendly
+interfaces and plugin' style audio processing.
 
- See http://svn.parisson.org/telemeta/ for more informations.
+Here are the main features of Telemeta: 
+
+    * Secure media editing and archiving over networks.
+    * Easy transcoding
+    * Full tagging and marking methods
+    * XML metadata backup
+    * Web interface introducing WorkFlow.
+    * SQL backend (still in dev from march 2007).
+    * Data anti-corruption security with par2 recovery keys
+    * Data synchronizing over remote servers (rsync)
+    * Auto AudioMarking? from metadata (thanks to Festival and Ecasound) 
+
+The Telemeta concept is based on collections. A collection includes original
+sounds - or albums containing sounds - which will be backuped in a secure way
+with a view of transcoded 'public' formats (WAV, FLAC, MP3, OGG and many more
+soon...) including metadata editing and publishing tools.
+
+See http://svn.parisson.org/telemeta/ for more informations.

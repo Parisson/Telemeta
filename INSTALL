@@ -1,5 +1,6 @@
-INSTALL
-=======
+# INSTALL
+# =======
+
 
 # 1. Requirements
 # ===============
@@ -37,7 +38,4 @@ octave2.9-forge, python-tk
 
 
 See README and http://svn.parisson.org/telemeta for more informations.
-
-
-
 
