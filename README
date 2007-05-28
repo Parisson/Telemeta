@@ -7,132 +7,123 @@ Telemeta: backups, transcodes, tags and marks any audio content with metadata
 # 1. Introduction
 # ===============
 
-Telemeta is an audio tool which creates audio transcoded databases fast
-from fresh mastered files. It can be useful to backup digitalized audio
-media from vinyls, old tapes or whatever.
+Telemeta is a global audio archiving program which introduces useful and secure
+indexing methods to backup digitalized audio files and metadata dictionnaries.
+It is dedicated to backup any digitized and documented sound from collections of
+vinyls, magnetic tapes or audio CD over a strong database in accordance with
+many standards. Export functions also encapsulate edited metadata into
+compressed file. The object style architecture will soon provide user-friendly
+interfaces and plugin' style audio processing.
 
-Telemeta first creates a simple structure where original sounds will be
-backuped. The files can be transcoded to WAV, FLAC, MP3 and OGG including
-the corresponding tags.
+Here are the main features of Telemeta: 
 
 Here are some cool functions:
 
-  - XML generation for metadata tags of backuped WAV
-  - Audio marking from a given file or from tags thanks to the Festival 
-    speech systhesis tool
-  - File corruption security with par2 recovery files
-  - Database synchronizing to remote servers (ssh+rsync)
-  - Modify metadata from XML or interactive shell
+    * Secure media editing and archiving over networks.
+    * Easy transcoding
+    * Full tagging and marking methods
+    * XML metadata backup
+    * Web interface introducing WorkFlow.
+    * SQL backend (still in dev from march 2007).
+    * Data anti-corruption security with par2 recovery keys
+    * Data synchronizing over remote servers (rsync)
+    * Auto AudioMarking? from metadata (thanks to Festival and Ecasound) 
+
+The Telemeta concept is based on collections. A collection includes original
+sounds - or albums containing sounds - which will be backuped in a secure way
+with a view of transcoded 'public' formats (WAV, FLAC, MP3, OGG and many more
+soon...) including metadata editing and publishing tools.
 
 
 # 2. Requirements
 # ===============
 
-python (>= 2.3.5-7), python-xml, python-central (>= 0.5), python-mutagen,
-sox, vorbis-tools, flac, lame, normalize-audio, ecasound, festival, par2
+python (>= 2.3.5-7), python-xml, python-central (>= 0.5),
+python-mutagen, python-django, sox, vorbis-tools, flac, normalize-audio,
+ecasound, festival, par2, python-mysqldb, sqlite3 | mysql-server, octave2.9,
+octave2.9-forge, python-tk
 
 
-# 3. Installation
-# ===============
+# 3. Installation and usage
+# =========================
 
-Telemeta is written in python. So it doesn't require any compilation step.
+1 - Checkout Telemeta:
 
-On debian or Ubuntu just add these lines to your /etc/apt/sources-list:
+    $ cd ~/my_apps
+    $ svn co http://svn.yomix.org/svn/telemeta/trunk telemeta 
 
-	deb http://debian.parisson.org/ binary/
-	deb-src http://debian.parisson.org/ source/
+    Compile wav2png in telemeta/telemeta/visualization/wav2png (you will need
+    libgd and libsndfile for that)
 
-Then,
+2 - Install the development version of the Django framework:
 
-	sudo apt-get update
-	sudo apt-get install telemeta
+    Warning: last know revision that works with Telemeta: 5313
+    See http://www.djangoproject.com
 
-On other linux platforms, get the lastest tar.gz version on :
+3 - Create a Django project if you haven't already done it:
 
-	http://debian.parisson.org/
+    $ cd ~/my_projects
+    $ django-admin startproject mysite
 
-and uncompress the archive.
-You can also get the lastest develoment version with subversion:
+4 - Put a link to telemeta into your Django project:
 
-	svn co http://svn.parisson.org/svn/telemeta/trunk telemeta --username=anonymous
+    $ ln -s ~/my_apps/telemeta/telemeta ~/my_projects/mysite/telemeta
 
-Then go into the created directory and just type this with your favorite shell :
+    OR: add the telemeta path to PYTHONPATH
 
-	python install.py
+5 - Create the media and cache directories:
 
-Just press 'enter' for the password.
+    $ cd mysite
+    $ mkdir media cache
 
-See INSTALL file for more informations.
+    You might want to place these somewhere else
+6 - Configure Django (settings.py):
+
+    Modifiy the following variables:
+
+    DATABASE_*: your database settings (don't forget to create the database if needed)
+    MEDIA_ROOT: absolute path to the media directory you just created
+    INSTALLED_APPS: add 'mysite.telemeta'
+
+    Add the following variables:
+
+    TELEMETA_CACHE_DIR: absolute path to the cache directory you just created
+
+    Just paste the two lines below:
+    TELEMETA_EXPORT_CACHE_DIR = TELEMETA_CACHE_DIR + "/export"
+    CACHE_BACKEND = "file://" + TELEMETA_CACHE_DIR + "/data"
+
+7 - Initialize the database:
+
+    $ python manage.py syncdb
+
+8 - Configure your urls:
+
+    The simplest case is to have telemeta running at public root. To do so, add 
+    this url in urls.py :
+
+    (r'^', include('telemeta.urls')),
+
+9 - Start the project:
+
+    $ python manage.py runserver 
+
+10 - Go the web page:
+
+    http://localhost:8000
 
 
-# 4. Usage
-# ========
+See INSTALL and http://svn.parisson.org/telemeta for more informations.
 
-In order to backup all original or transcoded files into a collection,
-telemeta needs first to create his repository. Let's type :
 
-	telemeta --create COLLECTION
-
-Replacing COLLECTION with the name of your collection. Answer to
-the questions. A target directory is then created. All answers
-are saved into YOUR_HOME/.telemeta/default_database.xml and
-YOUR_HOME/.telemeta/COLLECTION.xml
-
-To backup a wav file, type :
-
-	telemeta --backup COLLECTION FILE.WAV
-
-where you have to replace FILE.WAV by the local file of your choice you
-want to add in the database. Then, answer to the questions. All answers
-are saved into YOUR_HOME/.telemeta/default_tags.xml and will be use for
-the next execution. The program will automatically transcode the wav (or
-aiff) file to the types you have defined (for example FLAC, MP3 and/or OGG)
-and place them into each directory of the repository (for example flac/,
-mp3/ and/or ogg/).
-
-To backup an entire directory, type :
-
-	telemeta --backup COLLECTION --album DIRECTORY
-
-where you have to replace DIRECTORY by the local directory containing all
-the audio files you want to add in the database.
-
-Other options:
-
-	--from-xml     takes tags and opts in original xml source
-	--force        forces file conversion (no audio test)
-	--par2         forces par2 file creation
-	--all-default  chooses default argument for all question
-	--recover      check an repair the backuped media with the previously 
-                       created "par2" security key
-	--rsync        synchronizes database to a remote server (ssh+rsync)
-	--erase        erases a collection (FLAC, OGG, MP3 only, never WAV !)
-	--help         gives help page
-
-# 5. EXAMPLES
-# ===========
-
-	telemeta --create my_collection
-	telemeta --backup my_collection file.wav
-	telemeta --backup my_collection --album ./
-	telemeta --backup my_collection --album --par2 --rsync ./
-	telemeta --backup my_collection --album --par2 --rsync --force ./ \n
-
-# 6. TODO
-# =======
-
-- HTTP web interface (metadata adding, editing, uploading, searching)
-- debug id3 editing
-- add media types
-
-# 7. Feedback
+# 4. Feedback
 # ===========
 
 Please give me some feedback. Tell me if Telemeta suits you or if you
 would need some other interesting features.  You are welcome to mail me
 at <yomguy@altern.org>
 
-# 8. Contact
+# 5. Contact
 # ==========
 
 Home page : http://svn.parisson.org/telemeta

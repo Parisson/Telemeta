@@ -1,51 +1,43 @@
 INSTALL
 =======
 
-Telemeta is written in python. So it doesn't require any compilation step
-but the installation of some other programs.
+# 1. Requirements
+# ===============
 
-* On debian or Ubuntu just add these lines to your /etc/apt/sources-list:
-
-	deb http://debian.parisson.org/ binary/
-	deb-src http://debian.parisson.org/ source/
-
-	Then,
-
-	sudo apt-get update
-	sudo apt-get install telemeta
-
-	All the depending packages will be installed.
-
-* On other platforms, the first thing to do is then to install
-python for your system with your favorite package manager (Linux
-based distribution) or download and install it (Windows, MacOS) from
-http://www.python.org/download/.
-
-	To access the full power of telemeta's useful features, compile
-	and/or install by the same way (you may find them in your package
-	manager) the following programs :
-
-	- python (http://www.python.org)
-	- python-xml
-	- python-mutagen
-	- oggenc (http://www.vorbis.com/)
-	- sox (http://sox.sourceforge.net/)
-	- flac (http://flac.sourceforge.net/)
-	- lame (http://lame.sourceforge.net/)
-	- ecasound (http://eca.cx/ecasound/)
-	- wavbreaker (http://huli.org/wavbreaker/)
-	- festival (http://www.cstr.ed.ac.uk/projects/festival/)
-	- par2
-	
-	Get the lastest version with :
-
-	svn co http://svn.parisson.org/svn/telemeta/trunk telemeta --username=anonymous
-
-	Now, open a shell (console, terminal, etc..), go to the main
-	Telemeta directory and type AS ROOT :
-
-	python install.py
+python (>= 2.3.5-7), python-xml, python-central (>= 0.5),
+python-mutagen, python-django, sox, vorbis-tools, flac, normalize-audio,
+ecasound, festival, par2, python-mysqldb, sqlite3 | mysql-server, octave2.9,
+octave2.9-forge, python-tk
 
 
-type telemeta --help for more informations.
+# 2. Donwload
+# ===============
+
+ * On debian or Ubuntu just add these lines to your /etc/apt/sources-list:
+
+    deb http://debian.parisson.org/ binary/
+    deb-src http://debian.parisson.org/ source/
+    deb http://www.debian-multimedia.org etch main
+
+    Then,
+
+    sudo apt-get update
+    sudo apt-get install telemeta
+
+ * On other linux platforms, install all dependencies and get the lastest tar.gz
+   version on :
+
+    http://debian.parisson.org/
+
+    Uncompress the archive.
+
+ * You can also get the lastest develoment version with subversion:
+
+    svn co http://svn.parisson.org/svn/telemeta/trunk telemeta
+
+
+See README and http://svn.parisson.org/telemeta for more informations.
+
+
+
 

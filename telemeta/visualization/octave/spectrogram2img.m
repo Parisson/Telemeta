@@ -12,7 +12,7 @@
 #
 # SpectrogramVisualizer2.m
 #
-# Depends: octave2.9, spectrogram.m, xloadimage, imagemagick
+# Depends: octave2.9, octave2.9-forge, spectrogram.m, xloadimage, imagemagick
 
 clear all;
 close all;

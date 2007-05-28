@@ -3,15 +3,18 @@ Section: sound
 Priority: optional
 Maintainer: Guillaume Pellerin <yomguy@altern.org>
 Uploaders: Paul Brossier <piem@debian.org>
-Build-Depends: debhelper (>= 5.0.0), docbook-to-man, python (>= 2.3.5-7), python-dev (>= 2.3.5-7), python-central (>= 0.5)
+Build-Depends: debhelper (>= 5.0.0), docbook-to-man, python (>= 2.3.5-7),
+python-dev (>= 2.3.5-7), python-central (>= 0.5)
 Standards-Version: 3.7.2
 XS-Python-Version: >= 2.3
 
 Package: telemeta
 Architecture: any
 Depends: python (>= 2.3.5-7), python-xml, python-central (>= 0.5),
-python-mutagen, python-django, sox, vorbis-tools, flac, lame, normalize-audio,
-ecasound, festival, par2, python-mysqldb, sqlite3 | mysql-server, octave2.9
+python-mutagen, python-django, sox, vorbis-tools, flac, normalize-audio,
+ecasound, festival, par2, python-mysqldb, sqlite3 | mysql-server, octave2.9,
+octave2.9-forge, python-tk
+Suggests: lame
 XB-Python-Version: ${python:Versions}
 Description: backups, transcodes, tags and marks any audio content with metadata
  Telemeta is an audio tool which creates audio transcoded databases fast from

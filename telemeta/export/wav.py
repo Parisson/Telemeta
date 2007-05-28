@@ -111,17 +111,14 @@ class WavExporter(ExporterCore):
                                         self.options)
 
         # Initializing
-        chunk = 0
         file_in = open(self.source,'rb')
         file_out = open(self.dest,'w')
 
-        chunk = file_in.read(self.buffer_size)
-        yield chunk
-        file_out.write(chunk)
-
         # Core Processing
-        while chunk:
+        while True:
             chunk = file_in.read(self.buffer_size)
+            if len(chunk) == 0:
+                break
             yield chunk
             file_out.write(chunk)
 

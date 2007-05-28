@@ -128,7 +128,8 @@ class FlacExporter(ExporterCore):
 
         # Processing (streaming + cache writing)
         stream = self.core_process(self.command, self.buffer_size, self.dest)
-        return stream
+        for chunk in stream:
+            yield chunk
     
         # Post-proccessing
         self.post_process(self.item_id,
