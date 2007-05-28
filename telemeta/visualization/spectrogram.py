@@ -23,7 +23,7 @@ class SpectrogramVisualizer(SnackCoreVisualizer):
         return "spectrogram"
 
     def get_name(self):
-        return "Spectrogram"
+        return "Spectrogram 1"
     
     def render(self, media_item, options=None):
         """Generator that streams the spectral view as a PNG image"""
