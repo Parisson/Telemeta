@@ -46,7 +46,7 @@ a img { border: none; }
   margin-left: 1em;
 }
 .item_visualization select { width: 200px; }
-.item_visualization img { width: 300px; border: solid 1px black; }
+.item_visualization .viewport { width: 305px; border: solid 1px black; overflow: auto; }
 
 /* Geographic navigator */
 ul.continents, ul.continents ul { list-style: none; margin: 0; padding: 0;}
