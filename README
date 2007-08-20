@@ -48,7 +48,7 @@ octave2.9-forge, python-tk
 1 - Checkout Telemeta:
 
     $ cd ~/my_apps
-    $ svn co http://svn.yomix.org/svn/telemeta/trunk telemeta 
+    $ svn co http://svn.parisson.org/svn/telemeta/trunk telemeta
 
     Compile wav2png in telemeta/telemeta/visualization/wav2png (you will need
     libgd and libsndfile for that)
@@ -127,5 +127,6 @@ at <yomguy@altern.org>
 # ==========
 
 Home page : http://svn.parisson.org/telemeta
-E-mail    : Guillaume Pellerin <yomguy@altern.org>
-
+E-mails    : Guillaume Pellerin <yomguy@altern.org>
+             Olivier Guilyardi <olivier@samalyse.com>
+             

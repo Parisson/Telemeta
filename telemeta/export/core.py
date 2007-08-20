@@ -100,8 +100,7 @@ class ExporterCore(Component):
 
     def pre_process(self, item_id, source, metadata, ext,
                     cache_dir, options=None):
-        """ Pre processing of the core. Prepare the export path and
-        return it"""
+        """ Pre processing : prepare the export path and return it"""
         self.item_id = str(item_id)
         self.source = source
         file_name = get_file_name(self.source)
@@ -139,7 +138,7 @@ class ExporterCore(Component):
         return dest
 
     def core_process(self, command, buffer_size, dest):
-        """Streams encoded audio data through a generator"""
+        """Encode and stream audio data through a generator"""
         
         __chunk = 0
         file_out = open(dest,'w')
@@ -155,7 +154,7 @@ class ExporterCore(Component):
             raise ExportProcessError('Command failure:', command, proc)
             
 
-        # Processing
+        # Core processing
         while True:
             __chunk = proc.stdout.read(buffer_size)
             status = proc.poll()

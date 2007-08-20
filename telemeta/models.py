@@ -314,25 +314,26 @@ class MediaItem(models.Model, MediaCore):
 class MediaPart(models.Model, MediaCore):
     "Describe the part of a media item"
 
-    contributor = models.CharField(maxlength=250)
-    coverage = models.CharField(maxlength=250)
-    creator = models.CharField(maxlength=250)
+    contributor = models.CharField(maxlength=250, blank=True)
+    coverage = models.CharField(maxlength=250, blank=True)
+    creator = models.CharField(maxlength=250, blank=True)
     date = models.DateField()
-    description = models.CharField(maxlength=250)
-    format = models.CharField(maxlength=250)
-    identifier = models.CharField(maxlength=250)
-    language = models.CharField(maxlength=250)
-    publisher = models.CharField(maxlength=250)
-    rights = models.CharField(maxlength=250)
-    source = models.CharField(maxlength=250)
-    subject = models.CharField(maxlength=250)
-    title = models.CharField(maxlength=250)
+    description = models.CharField(maxlength=250, blank=True)
+    format = models.CharField(maxlength=250, blank=True)
+    identifier = models.CharField(maxlength=250, blank=True)
+    language = models.CharField(maxlength=250, blank=True)
+    publisher = models.CharField(maxlength=250, blank=True)
+    rights = models.CharField(maxlength=250, blank=True)
+    source = models.CharField(maxlength=250, blank=True)
+    subject = models.CharField(maxlength=250, blank=True)
+    title = models.CharField(maxlength=250, blank=True)
     media_item = models.ForeignKey(MediaItem)
     media_item.dublin_core = 'relation'
     parent = models.ForeignKey('self', null=True, related_name='children')
     media_item.dublin_core = 'relation'
     start = models.DecimalField(max_digits=11, decimal_places=3)
     end = models.DecimalField(max_digits=11, decimal_places=3)
+    #comment = models.TextField(blank=True)
 
     def __str__(self):
         return self.title

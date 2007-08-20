@@ -50,33 +50,47 @@
         <input type="submit" value="OK">
       </form>
     </div>
-  {% endif %}    
+    
+    <div class="exporter">
+    Download:
+    {% for format in export_formats %}
+      <a href="{% url telemeta-item-export item.id|urlencode,format.extension %}">{{ format.name }}</a>
+    {% endfor %}
+    </div>  
 
+  {% endif %}
+  
   <h3>Item: {{ item.title }}</h3>
-  <ul>
-  {% for field in item.to_list %}
+
+  <div id="item_elements">
+   <table class="dublincore listing">
+    <thead>
+        <tr><th>Element</th><th>Value</th></tr>
+    </thead>
+    <tbody>
+     {% for field in item.to_list %}
       {% ifnotequal field.name "title" %}
       {% ifnotequal field.name "file" %}
 
-      <li><b>{{ field.name }}</b> : 
+      <tr><th><b>{{ field.name }}</b></th>
           {% ifequal field.name "collection" %}
-          <a href="{% url telemeta-collection-detail field.value.id|urlencode %}">
-              {{ field.value }}</a>
+          <td><a href="{% url telemeta-collection-detail field.value.id|urlencode %}">
+              {{ field.value }}</a></td>
           {% else %}
-          {{ field.value }}
+          <td>{{ field.value }}</td>
           {% endifequal %}
           </li>
 
       {% endifnotequal %}
       {% endifnotequal %}
-  {% endfor %}
-  </ul>
-  Download:
-  {% for format in export_formats %}
-      <a href="{% url telemeta-item-export item.id|urlencode,format.extension %}">{{ format.name }}</a>
-  {% endfor %}
+    {% endfor %}
+    </tbody>
+   </table>
+  <div>
+
 {% else %}
     <p>No such item</p>
 {% endif %}
 {% endblock %}
 
+    

@@ -19,14 +19,14 @@
             {% if element.value %}
             <tr><th>{{ element.name }}</th>
             <td>{{ element.refinement|default:"&nbsp;" }}</td>
-            <td>{{ element.value }}</td>
+            <td>{{ element.value }}</td></tr>
             {% endif %}
         {% endfor %}
         {% for item in object.items.all %}
             <tr><th>relation</th><td>hasPart</td><td>
             <a href="{% url telemeta-item-dublincore item.id|urlencode %}">
                 {{ item.id }}</a>
-            </td>
+            </td></tr>
         {% endfor %}
     </tbody>
     </table>

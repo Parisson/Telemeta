@@ -21,7 +21,6 @@ build-stamp:
 	dh_testdir
 	touch build-stamp
 
-
 build: build-stamp
 	docbook-to-man debian/telemeta.sgml > debian/telemeta.1
 	db2html -o doc/html debian/telemeta.sgml
@@ -50,10 +49,8 @@ binary-indep: build install
 	#dh_installexamples
 	dh_installman
 	#dh_installmenu -i
-	dh_link usr/share/telemeta/telemeta.py /usr/bin/telemeta
 	dh_compress
 	dh_fixperms
-	chmod +x debian/telemeta/usr/share/telemeta/*.py
 	dh_pycentral
 	#dh_python usr/share/telemeta
 	dh_installdeb

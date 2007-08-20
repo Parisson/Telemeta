@@ -1,3 +1,126 @@
+telemeta (0.3.0-1) unstable; urgency=low
+
+  * Changed README and INSTALL
+  * fix spectrograms names
+  * accept underscore in viz id
+  * setting version to 'SVN' on trunk
+  * fix items and collections fields display ordering + make item title
+  * optional for django admin
+  * use css overflow instead of iframe for visualization scrolling
+  * Added metadata to OGG stream
+  * Tuned max sample lengths to reasonable values
+  * Tuned max sample lengths to reasonable values
+  * Changed time_limit to 300 (5mn) for Octave
+  * Added main tags to streamed mp3. Closes: #9
+  * Made Octave quiet
+  * Downsampling data for waveform2
+  * Add an iframe to scroll on visualizers
+  * Cleaned OctaveCoreVisualizer to avoid wrong subprocess calls
+  * Fix the maximum displayed length to 10s max for Octave visualizers
+  * Added octave2.9 dependency
+  * Added Waveform2 and Spectrogram2 visualization components
+  * Clean up
+  * Removed old/
+  * fix #28: use item id from export filename. WARNING: require crem data r3
+  * make htdocs variable dynamic and add draft for 0.3 INSTALL
+  * Fixed ExportProcessError
+  * Remove sox piping for FLAC
+  * simplify !TelemetaError
+  * Create ExportProcessError class in export.api
+  * cast double literals (breaks on Debian Sarge)
+  * remove extra space in M3U playlist (failed with Amarok)
+  * Fixed #26 partially for downloading but not for flash playing
+  * remove unused logger instance and duplicated telemeta version
+  * variable, use telemeta url variable + new telemeta_url template tag
+  * soften footer logo
+  * decrease homepage links size
+  * tracify menu bar, add footer, homepage links and fix items list in
+  * collection detail
+  * add version in __init__.py and telemeta_version template tag
+  * optimize and rename BackupBuilder to CollectionSerializer
+  * add method to retrieve items that do not belong to any collection
+  * display id on item detail
+  * rename !FloatField to !DecimalField for django svn !r5302
+  * Cleaned mp3 exporter
+  * Fixed syntax problem
+  * Restore Jeroen Wijering's Flash MP3 Player
+  * add backup core and command line tool
+  * consolidate MediaCore.to_dom() and fix encoding
+  * Adds main id3 tags during MP3 streaming
+  * Moved audio generator to ExporterCore.core_process
+  * add variable for static files root
+  * use named urls for static files
+  * add to_dom() to models
+  * renaming views to web
+  * renaming web.py to base.py
+  * add geographic navigator, coverage dc mapping to collection + other fixes
+  * added collection playlists in m3u and xspf formats
+  * embedded flash mp3 player in both collection and item displays.
+  * Remark: there are two players available, you can switch them in the templates
+  * media objects IDs are now validated at model level
+  * experimenting new logo by Julia
+  * trying some new layout + cleaned css
+  * renamed &#34;dictionaries&#34; to &#34;enumerations&#34;
+  * new PublishingStatus enumerations model (you simply need to syncdb)
+  * Telemeta logos v1
+  * convert DC elements values to strings
+  * fix doblock and spacing
+  * add default empty elements attribute for code clarity
+  * fix css issue between visualization and submenu
+  * add dublin core modelization and new to_dublincore() model methods
+  * improved dublin core mapping
+  * add dublin core HTML-based views of collections and items
+  * fixed URL handling with non aplhanumeric record IDs
+  * fix #21: the web view now properly handle export streams
+  * turn the model list() method into the tolist template filter
+  * new submenu template block + css fixes
+  * Tried new stream function in web.py, but....
+  * Partially fixes #19 by changing MediaCollection.copied_from properties.
+  * Made all exporters generators. Closes: #8 . Input audio raw data is
+  * now passed into sox while encoding (no decoding needed anymore...)
+  * Clean some stings
+  * Made Mp3Exporter a generator. The exported file is still written in the cache.
+  * misc template fixes
+  * fix items urls
+  * add LEM item fields + other fixes
+  * add paging and simplify layout
+  * bundle snack python bindings
+  * svn:ignore .pyc and .swp files
+  * add templatetags
+  * use named urls, add paging to collection, and others
+  * add LEM collection fields
+  * change visualization layout and waveform color
+  * add visualization to web item detail view
+  * add visualization components (waveform, spectrogram)
+  * ticket #10: mark IExporter.process() options argument as optional
+  * Replaced all tabs by spaces in export. Closes: #18
+  * typo
+  * added license headers + cleanup
+  * Temporary fixed mp3 date in urls.py
+  * created htdocs dir, images subdir and moved the css dir
+  * renamed the core css stylesheet
+  * updated css, new stylesheet for the admin
+  * Fixed indent pb
+  * Fixed ogg verbose
+  * Made options optional. Closes: #10
+  * Added Mp3Exporter with (very) partial mapping of DublinCore fields.
+  * fixed quick search form css/layout on Firefox
+  * No metadata in caching path (just ext/item_id.ext). No verbose by default
+  * web interface: added quick search and fixed export download
+  * Added Samalyse to COPYING
+  * coupled the web interface with the export layer
+  * improved collections and items browsing
+  * minor CSS improvements
+  * now using Django typical models instead of &#34;dynamic&#34; ones
+  * made simple models based on Dublin Core elements
+  * Fixed Default call and verbose
+  * Move default.py to old/
+  * Fixed export verbose mode in option dict (see export_test)
+  * Added Trac Components links. Added options dict to exporter arguments
+  * Add pre and post process in CoreExporter. Main calls to OggExporter
+
+ -- Guillaume Pellerin <yomguy@altern.org>  Wed, 28 May 2007 22:28:42 +0200
+
 telemeta (0.2.5-2) unstable; urgency=low
 
   * Fixed --help page

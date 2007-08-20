@@ -43,15 +43,22 @@
     {% endif %}
 
     <h3>Collection: {{ object.title }}</h3>
-    <ul>
-    {% for field in object.to_list %}
-        {% ifnotequal field.name "title" %}
-
-        <li><b>{{ field.name|capfirst }}</b> : {{ field.value }}</li>
-
-        {% endifnotequal %}
-    {% endfor %}
-    </ul>
+    
+    <div id="collection_elements">
+    <table class="dublincore listing">
+    <thead>
+        <tr><th>Element</th><th>Value</th></tr>
+    </thead>
+    <tbody>
+        {% for field in object.to_list %}
+            {% ifnotequal field.name "title" %}
+            <tr><th>{{ field.name|capfirst }}</th>
+            <td>{{ field.value }}</td></tr>
+            {% endifnotequal %}
+        {% endfor %}
+    </tbody>
+    </table>
+    <div>
 
     <hr>
     <h4>Items</h4>
