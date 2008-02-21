@@ -5,15 +5,18 @@
 # 1. Requirements
 # ===============
 
-python, (python-central ?), python-xml, shout-python, libshout3, icecast2
+python (>= 2.3.5-7), python-xml, python-central (>= 0.5),
+python-mutagen, python-django (>= 0.96.1), sox, vorbis-tools, flac, normalize-audio,
+ecasound, festival, par2, python-mysqldb, sqlite3 | mysql-server, octave2.9,
+octave2.9-forge, python-tk, libgd2-noxpm, libsndfile
 
-Note that shout-python is included in this release and is installed together with d-fuzz
 
+# 2. Install
+# ==========
 
-# 2. Donwload
-# ===============
+2.1. Install Telemeta:
 
- * On debian or Ubuntu just add these lines to your /etc/apt/sources-list:
+* On debian or Ubuntu just add these lines to your /etc/apt/sources-list:
 
     deb http://debian.parisson.org/ binary/
     deb-src http://debian.parisson.org/ source/
@@ -21,27 +24,72 @@ Note that shout-python is included in this release and is installed together wit
 
     Then,
 
-    sudo apt-get update
-    sudo apt-get install d-fuzz
+    $ sudo apt-get update
+    $ sudo apt-get install telemeta
 
- * On other linux platforms, install all dependencies and get the lastest tar.gz
-   version on :
+* On other linux platforms, install all dependencies listed in §1.
+  and get the lastest tar.gz version of telemeta at http://debian.parisson.org/
+  Uncompress the archive, go to the main folder of telemeta and run this command
+  in a shell as root:
 
-    http://debian.parisson.org/
+    $ python setup.py install
 
-    Uncompress the archive.
+* Compile wav2png in telemeta/telemeta/visualization/wav2png
 
- * You can also get the lastest develoment version with subversion:
+2.2. Create a Django project if you haven't already done it:
 
-    svn co http://svn.parisson.org/svn/telemeta/trunk telemeta
+    $ cd ~/my_projects
+    $ django-admin startproject mysite
 
-# 3. Installation
-# ===============
+2.3. Put a link to telemeta into your Django project:
 
-run this command in a shell as root :
+    $ ln -s ~/my_apps/telemeta/telemeta ~/my_projects/mysite/telemeta
 
-    python setup.py install
+    OR: add the telemeta path to PYTHONPATH
+
+2.4. Create the media and cache directories:
+
+    $ cd mysite
+    $ mkdir media cache
+
+    You might want to place these somewhere else
+
+2.5. Configure Django (settings.py):
+
+    Modifiy the following variables:
+
+    DATABASE_*: your database settings (don't forget to create the database if needed)
+    MEDIA_ROOT: absolute path to the media directory you just created
+    INSTALLED_APPS: add 'mysite.telemeta'
+
+    Add the following variables:
+
+    TELEMETA_CACHE_DIR: absolute path to the cache directory you just created
+
+    Just paste the two lines below:
+    TELEMETA_EXPORT_CACHE_DIR = TELEMETA_CACHE_DIR + "/export"
+    CACHE_BACKEND = "file://" + TELEMETA_CACHE_DIR + "/data"
+
+2.6. Initialize the database:
+
+    $ python manage.py syncdb
+
+2.7. Configure your urls:
+
+    The simplest case is to have telemeta running at public root. To do so, add
+    this url in urls.py :
+
+    (r'^', include('telemeta.urls')),
+
+2.8. Start the project:
+
+    $ python manage.py runserver
+
+2.9. Go the web page:
+
+    http://localhost:8000
 
 
-See README and http://parisson.com/d-fuzz/ for more informations.
+
+See README and http://svn.parisson.org/telemeta/ for more informations.
 

@@ -16,7 +16,7 @@ ecasound, festival, par2, python-mysqldb, sqlite3 | mysql-server, octave2.9,
 octave2.9-forge, python-tk
 Suggests: lame
 XB-Python-Version: ${python:Versions}
-Description: backups, transcodes, tags and marks any audio content with metadata
+Description: web frontend to backup, transcode and tag any audio content with metadata
 Telemeta is a global audio archiving program which introduces useful and secure
 indexing methods to backup digitalized audio files and metadata dictionnaries.
 It is dedicated to backup any digitized and documented sound from collections of

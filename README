@@ -1,7 +1,7 @@
 # README
 # ======
 
-Telemeta: backups, transcodes, tags and marks any audio content with metadata
+Telemeta: web frontend to backup, transcode and tag any audio content with metadata
 
 
 # 1. Introduction
@@ -45,88 +45,35 @@ octave2.9-forge, python-tk
 # 3. Installation and usage
 # =========================
 
-1 - Checkout Telemeta:
-
-    $ cd ~/my_apps
-    $ svn co http://svn.parisson.org/svn/telemeta/trunk telemeta
-
-    Compile wav2png in telemeta/telemeta/visualization/wav2png (you will need
-    libgd and libsndfile for that)
-
-2 - Install the development version of the Django framework:
-
-    Warning: last know revision that works with Telemeta: 5313
-    See http://www.djangoproject.com
-
-3 - Create a Django project if you haven't already done it:
-
-    $ cd ~/my_projects
-    $ django-admin startproject mysite
-
-4 - Put a link to telemeta into your Django project:
-
-    $ ln -s ~/my_apps/telemeta/telemeta ~/my_projects/mysite/telemeta
-
-    OR: add the telemeta path to PYTHONPATH
-
-5 - Create the media and cache directories:
-
-    $ cd mysite
-    $ mkdir media cache
-
-    You might want to place these somewhere else
-
-6 - Configure Django (settings.py):
-
-    Modifiy the following variables:
-
-    DATABASE_*: your database settings (don't forget to create the database if needed)
-    MEDIA_ROOT: absolute path to the media directory you just created
-    INSTALLED_APPS: add 'mysite.telemeta'
-
-    Add the following variables:
-
-    TELEMETA_CACHE_DIR: absolute path to the cache directory you just created
-
-    Just paste the two lines below:
-    TELEMETA_EXPORT_CACHE_DIR = TELEMETA_CACHE_DIR + "/export"
-    CACHE_BACKEND = "file://" + TELEMETA_CACHE_DIR + "/data"
-
-7 - Initialize the database:
-
-    $ python manage.py syncdb
-
-8 - Configure your urls:
-
-    The simplest case is to have telemeta running at public root. To do so, add 
-    this url in urls.py :
-
-    (r'^', include('telemeta.urls')),
-
-9 - Start the project:
-
-    $ python manage.py runserver 
-
-10 - Go the web page:
-
-    http://localhost:8000
-
-
 See INSTALL and http://svn.parisson.org/telemeta for more informations.
 
 
-# 4. Feedback
-# ===========
+# 4. Development
+# ===============
 
-Please give me some feedback. Tell me if Telemeta suits you or if you
-would need some other interesting features.  You are welcome to mail me
-at <yomguy@altern.org>
+To participate to the development of telemeta, you will need a login/password couple.
+You're welcome to email us to get one and commit your great ideas ;) (see §6.).
+
+To get the lastest development version, you need subversion and run :
+
+    $ svn co http://svn.parisson.org/svn/telemeta/trunk telemeta
 
 
-# 5. Contact
+# 5. Bugs and feedback
+# ====================
+
+If you find some bugs, please leave a ticket on this page:
+
+    http://svn.parisson.org/telemeta/newticket
+    
+You can also leave a ticket to request some new interesting features for the next versions.
+And even if Telemeta suits you, please give us some feedback (see §6.) !
+
+
+# 6. Contact
 # ==========
 
-Home page : http://svn.parisson.org/telemeta
-E-mails    : Guillaume Pellerin <yomguy@altern.org>
-             Olivier Guilyardi <olivier@samalyse.com>
+Homepage:   http://svn.parisson.org/telemeta
+Emails:     Guillaume Pellerin <pellerin@parisson.com>
+            Olivier Guilyardi <olivier@samalyse.com>
              
