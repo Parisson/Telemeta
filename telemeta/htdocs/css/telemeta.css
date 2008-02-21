@@ -74,6 +74,7 @@ ul.continents ul li { display: inline; padding-right: 1ex;}
   margin-top: 1em;
   margin-left: 1em;
   position: absolute;
+  width: 800px;
 }
 
 /* Item table */
@@ -84,6 +85,7 @@ ul.continents ul li { display: inline; padding-right: 1ex;}
   margin-top: 1em;
   margin-left: 1em;
   position: absolute;
+  width: 800px;
 }
 
 /* Styles for tabular listings (stolen from trac) */
