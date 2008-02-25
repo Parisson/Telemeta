@@ -1,12 +1,12 @@
-body { font-family: Verdana; font-size: 80%; }
+* {margin: 0; padding: 0;}
+body {font: 0.8125em Verdana, sans-serif; line-height: 1; color: #333; background: #FFF;}
 
 a:link, a:visited {
-    border-bottom:1px dotted #BBBBBB;
+    border-bottom:1px dotted #BBB;
     color:#BB0000;
     text-decoration:none;
 }
-
-a:link:hover, a:visited:hover { background-color:#EEEEEE; color:#555555; }
+a:link:hover, a:visited:hover { background-color:#EEE; color:#555; }
 a img { border: none; }
 
 #header {
@@ -100,8 +100,8 @@ table.listing {
 table.listing th { text-align: left; padding: 0 1em .1em 0; font-size: 12px }
 table.listing thead { background: #f7f7f0 }
 table.listing thead th {
- border: 1px solid #d7d7d7;
- border-bottom-color: #999;
+ /*border: 1px solid #d7d7d7;*/
+ border-bottom: 3px solid #FFF;
  font-size: 11px;
  font-weight: bold;
  padding: 2px .5em;
