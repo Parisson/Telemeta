@@ -8,8 +8,10 @@
 python (>= 2.3.5-7), python-xml, python-central (>= 0.5),
 python-mutagen, python-django (>= 0.96.1), sox, vorbis-tools, flac, normalize-audio,
 ecasound, festival, par2, python-mysqldb, sqlite3 | mysql-server, octave2.9,
-octave2.9-forge, python-tk, libgd2-noxpm, libsndfile
+octave2.9-forge, python-tk, libgd2-xpm, libsndfile1
 
+optional:
+lame
 
 # 2. Install
 # ==========
@@ -52,7 +54,7 @@ octave2.9-forge, python-tk, libgd2-noxpm, libsndfile
     $ cd mysite
     $ mkdir media cache
 
-    You might want to place these somewhere else
+    You might want to place these somewhere else...
 
 2.5. Configure Django (settings.py):
 
