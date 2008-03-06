@@ -81,7 +81,8 @@ urlpatterns = patterns('',
         name="telemeta-collection-m3u"),
 
     # search
-    url(r'^search/$', web_view.quick_search, name="telemeta-quicksearch"),
+    url(r'^search/$', web_view.search, name="telemeta-search"),
+    url(r'^search/criteria/$', web_view.edit_search, name="telemeta-search-criteria"),
 
     # administration        
     url(r'^admin/$', web_view.admin_index, name="telemeta-admin"),        
@@ -112,6 +113,7 @@ urlpatterns = patterns('',
     url('geo/(?P<continent>[A-Za-z]+)/(?P<country>[-A-Za-z0-9%;.,"& \']+)/$', 
         web_view.list_country_collections, 
         name="telemeta-geo-country-collections"),
+    url(r'dynjs/continents.js$', web_view.get_continents_js, name="telemeta-continents-js"),
 
     # CSS+Images (FIXME: for developement only)
     url(r'css/(?P<path>.*)$', 'django.views.static.serve', 

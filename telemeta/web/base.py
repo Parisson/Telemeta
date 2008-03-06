@@ -101,14 +101,55 @@ class WebView(Component):
         response['Content-Disposition'] = 'attachment'
         return response
 
-    def quick_search(self, request):
-        """Perform a simple search through collections and items core metadata"""
-        pattern = request.REQUEST["pattern"]
-        collections = MediaCollection.objects.quick_search(pattern)
-        items = MediaItem.objects.quick_search(pattern)
+    def edit_search(self, request):
+        continents = MediaCollection.objects.list_continents()
+        countries = MediaCollection.objects.list_countries()
+        ethnic_groups = MediaItem.objects.list_ethnic_groups()
+        return render_to_response('search_criteria.html', 
+            {'continents': continents, 'countries': countries, 
+            'ethnic_groups': ethnic_groups})
+
+    def search(self, request):
+        """Perform a search through collections and items metadata"""
+        collections = MediaCollection.objects
+        items = MediaItem.objects
+        input = request.REQUEST
+
+        if input.has_key('pattern') and input['pattern']:
+            collections = collections.quick_search(input['pattern'])
+            items = items.quick_search(input['pattern'])
+
+        if input.has_key('country') and input['country']:
+            collections = collections.by_country(input['country'])
+            items = items.filter(etat = input['country'])
+        elif input.has_key('continent') and input['continent']:
+            collections = collections.by_continent(input['continent'])
+            items = items.filter(continent = input['continent'])
+      
+        if (input.has_key('ethnic_group') and input['ethnic_group']):
+            collections = collections.none()
+            items = items.filter(ethnie_grsocial = input['ethnic_group'])
+
+        if (input.has_key('creator') and input['creator']):
+            collections = collections.filter(creator__icontains=input['creator'])
+            items = items.filter(auteur__icontains=input['creator'])
+
+        if (input.has_key('creator') and input['creator']):
+            collections = collections.filter(creator__icontains=input['creator'])
+            items = items.filter(auteur__icontains=input['creator'])
+
+        if (input.has_key('rec_date') and input['rec_date']):
+            collections = collections.by_recording_date(input['rec_date'])
+            items = items.by_recording_date(input['rec_date'])
+
+        if (input.has_key('pub_date') and input['pub_date']):
+            collections = collections.by_publish_date(input['pub_date'])
+            items = items.none()
+
         return render_to_response('search_results.html', 
-                    {'pattern': pattern, 'collections': collections, 
-                     'items': items})
+                    {'criteria': input, 
+                    'collections': collections[:50], 'more_collections': collections.count() > 50,
+                     'items': items[:50], 'more_items': items.count() > 50})
 
     def __get_enumerations_list(self):
         from django.db.models import get_models
@@ -123,6 +164,13 @@ class WebView(Component):
     
     def __get_admin_context_vars(self):
         return {"enumerations": self.__get_enumerations_list()}
+
+    def __continents_to_countries(self, tree):
+        countries = []
+        for continent in tree:
+            countries += continent['countries']
+        #countries.sort()
+        return countries
 
     def admin_index(self, request):
         return render_to_response('admin.html', self. __get_admin_context_vars())
@@ -222,6 +270,11 @@ class WebView(Component):
         continents = MediaCollection.objects.stat_continents()
         return render_to_response('geo_continents.html', 
                     {'continents': continents })
+
+    def get_continents_js(self, request):
+        countries = MediaCollection.objects.list_countries()
+        return render_to_response('geo_continents.js', 
+                    {'countries': countries})
 
     def list_countries(self, request, continent):                    
         continents = MediaCollection.objects.stat_continents()

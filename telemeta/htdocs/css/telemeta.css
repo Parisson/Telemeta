@@ -30,7 +30,8 @@ a img { border: none; }
 #submenu { clear: right; float: right; padding-top: 1em; }
 #submenu a { color: #000066; }
 
-#quick_search { position: absolute; top: 2em; right: 1em; }
+#quick_search { position: absolute; top: 2em; right: 1em; text-align: right;}
+#quick_search a { font-size: 80%; }    
 #quick_search input {
     vertical-align: middle;
     font-size: 90%;

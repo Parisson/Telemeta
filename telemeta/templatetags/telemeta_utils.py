@@ -41,4 +41,23 @@ def telemeta_url(parser, token):
     "Get Telemeta project homepage URL"
     return TelemetaUrlNode()
 
+_js_escapes = (
+    ('\\', '\\\\'),
+    ('"', '\\"'),
+    ("'", "\\'"),
+    ('\n', '\\n'),
+    ('\r', '\\r'),
+    ('\b', '\\b'),
+    ('\f', '\\f'),
+    ('\t', '\\t'),
+    ('\v', '\\v'),
+    ('</', '<\\/'),
+)
+@register.filter
+def escapejs(value):
+    """Backslash-escapes characters for use in JavaScript strings."""
+    for bad, good in _js_escapes:
+        value = value.replace(bad, good)
+    return value
+
 

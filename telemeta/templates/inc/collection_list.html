@@ -11,6 +11,7 @@
         <li><a href="{% url telemeta-collection-detail p.id|urlencode %}">{{ p.title }}</a>
             </li>
     {% endfor %}
+    {% if more_collections %} <li>[...]</li> {% endif %}
     </ul>
 {% else %}
     <p>No collection</p>
