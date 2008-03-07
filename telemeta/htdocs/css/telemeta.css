@@ -31,6 +31,7 @@ h3 {
 #content ul, #content ol {
     padding: 5px;
     padding-left: 15px;
+    font-size: 0.9em;
 }
 #content li {
     padding: 3px;
@@ -188,11 +189,12 @@ table.listing tbody tr.even { background-color: #fcfcfc }
 table.listing tbody tr.odd { background-color: #f7f7f7 }
 table.listing tbody tr:hover { background: #f7f8fa !important }
 
-/*
+
 #content {
     position: relative;
+    margin-bottom: 2em;
 } 
-*/
+
 /* Forms */
 input, textarea, select { margin: 2px }
 input, select { vertical-align: middle }
@@ -238,7 +240,7 @@ label.disabled { color: #d7d7d7 }
 /* HTML dublin core display */
 
 table.dublincore { width: auto; }
-table.dublincore caption {
+h4.dublincore {
     text-align: left;
     padding: 5px 0 10px;
     font-weight: bold;
@@ -343,7 +345,7 @@ div.extraInfos .nett {
     height: 0;
     margin-bottom: -5px;
 }
-dl.listing {
+dl {
     position: relative;
     margin: 0;
     margin-bottom: .5em;
@@ -351,7 +353,7 @@ dl.listing {
 /* ie5 mac \*/
 dt { clear: both; }
 /* end hack */
-dl.listing dt, dl.listing dd {
+dl dt, dl dd {
     position: relative;
     float: left;
     margin: 0;
@@ -371,6 +373,48 @@ dl.listing dt {
 dl.listing dd {
     width: 70%;
     font-weight: bold;
+}
+dl.dublincore dt {
+    margin-right: .8em;
+    width: 28em !important;
+    font-style: italic;
+}
+dl.dublincore dd {
+    width: 50em;
+    font-weight: bold;
+}
+dl.dublincore dt span {
+    width: 18em;
+    display: block;
+    float: left;
+    font-style: normal;
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    border-right: 3px solid #ddd;
+    padding-left: .3em;
+    margin-right: 1.2em;
+    color: #444; 
+}
+dl.dublincore .caption {
+    background-color: #B8B7C1;
+    margin: .5em 0;
+    border-bottom: 1px dotted #666;
+    padding-top: .4em;
+    padding-bottom: .4em;
+    padding-left: .3em;
+    color: #fff;
+    font-weight: bold;
+    border-right: 1px solid #fff;
+}
+dl.dublincore dt.caption span {
+    background-color: #B8B7C1;
+    border: none;
+    border-right: 1px solid #fff;
+    color: #fff;
+}
+dl.dublincore dd.caption {
+    padding-bottom: .4em;
+    padding-left: .4em;
 }
 .extraInfos h4 {
     /*background: #B8B7C1 url(extra_bg.gif) no-repeat right top;*/

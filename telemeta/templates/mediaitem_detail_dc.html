@@ -1,39 +1,25 @@
 {% extends "base.html" %}
 {% load telemeta_utils %}
 
+{% if item %}
 {% block submenu %}
-    <a href="{% url telemeta-item-detail item.id|urlencode %}">
-        Normal View</a>
+    <h3>Item: {{ item.title }}</h3>
+    <div><a href="{% url telemeta-item-detail item.id|urlencode %}">Normal View</a></div>
 {% endblock %}
 
 {% block content %}
-{% if item %}
-    <h3>Item: {{ item.title }}</h3>
-    <table class="dublincore listing">
-    <caption>Dublin Core Expression</caption>
-    <thead>
-        <tr><th>Element</th><th>Refinement</th><th>Value</th></tr>
-    </thead>
-    <tbody>
+    <h4 class="dublincore">Dublin Core Expression</h4>
+    <dl class="dublincore">
+        <dt class="caption"><span>Element</span>Refinement</dt><dd class="caption">Value</dd>
         {% for element in item.to_dublincore.elements %}
-            {% if element.value %}
-                <tr><th>{{ element.name }}</th>
-                <td>{{ element.refinement|default:"&nbsp;" }}</td>
-                <td>
-                {% ifequal element.field "collection" %}
-                    <a href="{% url telemeta-collection-dublincore item.collection.id|urlencode %}">
-                        {{ element.value }}</a>
-                {% else %}
-                    {{ element.value }}
-                {% endifequal %}
-                </td>
-                </tr>
-            {% endif %}
+        {% if element.value %}
+        <dt><span>{{ element.name }}</span>{{ element.refinement|default:"&nbsp;" }}</dt><dd>{% ifequal element.field "collection" %}<a href="{% url telemeta-collection-dublincore item.collection.id|urlencode %}">{{ element.value }}</a>{% else %}{{ element.value }}{% endifequal %}</dd>
+        {% endif %}
         {% endfor %}
-    </tbody>
-    </table>
+    </dl>
+{% endblock %}
 {% else %}
     <p>No such item</p>
 {% endif %}
-{% endblock %}
+
 
