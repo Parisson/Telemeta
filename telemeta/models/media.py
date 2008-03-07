@@ -155,6 +155,22 @@ class MediaCollection(Model, MediaCore):
     def ordered_items(self):
         return self.items.order_by('id', '_title')
 
+    def get_countries(self):
+        countries = []
+        items = self.items.order_by('etat')
+        for item in items:
+            if not item.etat in countries and item.etat:
+                countries.append(item.etat)
+        return countries
+
+    def get_ethnic_groups(self):
+        groups = []
+        items = self.items.order_by('ethnie_grsocial')
+        for item in items:
+            if not item.ethnie_grsocial in groups and item.ethnie_grsocial:
+                groups.append(item.ethnie_grsocial)
+        return groups
+
     def __str__(self):
         #return self.title
         return self.id

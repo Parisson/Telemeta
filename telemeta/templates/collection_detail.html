@@ -68,8 +68,8 @@
             <h4 class="on"><a href="#">Données ethnographiques</a></h4>
             <div>
                 <dl class="listing">
-                <dt>État / Nation</dt><dd>{% for item in object.items.all %}{% if item.etat %}{{item.etat}}{% if not forloop.last %}, {% endif %}{% endif %}{% endfor %}</dd>
-                <dt>Ethnie / Groupe social</dt><dd>{% for item in object.items.all %}{% if item.ethnie_grsocial %}{{item.ethnie_grsocial}}{% if not forloop.last %}, {% endif %}{% endif %}{% endfor %}</dd>
+                <dt>État / Nation</dt><dd>{{object.get_countries|join:", "}}</dd>
+                <dt>Ethnie / Groupe social</dt><dd>{{ object.get_ethnic_groups|join:", " }}</dd>
                 <dt>Contexte de l’enregistrement</dt><dd>{{ object.terrain_ou_autre }}</dd>
                 </dl>
             </div>
