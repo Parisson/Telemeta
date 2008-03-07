@@ -131,7 +131,8 @@ class MediaItemQuerySet(CoreQuerySet):
         "Perform a quick search on id and title"
         return self.filter(
             Q(id__icontains=pattern) |
-            Q(_title__icontains=pattern) 
+            Q(_title__icontains=pattern) |
+            Q(auteur__icontains=pattern) 
         )
 
     def without_collection(self):        
