@@ -5,92 +5,76 @@
 <script src="{% url telemeta-js "swfobject.js" %}" type="text/javascript"></script>
 {% endblock %}
 
+
+{% if item %}
 {% block submenu %}
-    <a href="{% url telemeta-item-dublincore item.id|urlencode %}">
-        Dublin Core</a>
+    <h3>Item: {{ item.title }}</h3>
+    <div><a href="{% url telemeta-item-dublincore item.id|urlencode %}">Dublin Core</a></div>
 {% endblock %}
 
 {% block content %}
-{% if item %}
-  {% if item.file %}  
+
+{% if item.file %}
+<div id="rightcol">
     <div class="item_visualization">
-      {% if 0 %} {# Use 1/0 for alternate player #}
-        <!-- This is the XSPF Web Music Player, under the BSD license, 
-          from: http://musicplayer.sourceforge.net/-->
-        <object type="application/x-shockwave-flash" width="300" height="20"
-          data="{% url telemeta-swf "xspf_player.swf" %}?playlist_url={% url telemeta-item-xspf item.id|urlencode %}">
-          <param name="movie" 
-            value="{% url telemeta-swf "xspf_player.swf" %}?playlist_url={% url telemeta-item-xspf item.id|urlencode %}" />
+        {% if 0 %} {# Use 1/0 for alternate player #}
+        <!-- This is the XSPF Web Music Player, under the BSD license, from: http://musicplayer.sourceforge.net/-->
+        <object type="application/x-shockwave-flash" width="300" height="20" data="{% url telemeta-swf "xspf_player.swf" %}?playlist_url={% url telemeta-item-xspf item.id|urlencode %}">
+        <param name="movie" value="{% url telemeta-swf "xspf_player.swf" %}?playlist_url={% url telemeta-item-xspf item.id|urlencode %}" />
         </object><br/>
-      {% else %}      
-        <!-- This is Jeroen Wijering's Flash MP3 Player, 
-          under CC Attribution-NonCommercial-ShareAlike 2.0 license
-          from: http://www.jeroenwijering.com/?item=Flash_MP3_Player-->
-        <p id="item_player_c">
-          <a href="http://www.macromedia.com/go/getflashplayer">Get Flash</a> to see this player.
-        </p>
-        <script type="text/javascript">
-          var so = new SWFObject('{% url telemeta-swf "mp3player.swf" %}','line','300','20','7');
-          so.addVariable("file","{% url telemeta-item-export item.id|urlencode,"mp3" %}");
-          so.addVariable("type","mp3");
-          so.write('item_player_c');
-        </script>
-      {% endif %}
-
-      <div class="viewport">
-        <img src="{% url telemeta-item-visualize item.id|urlencode,visualizer_id %}">
-      </div>        
-      <form method="GET">
-        <select name="visualizer_id" onchange="this.form.submit()">
-          {% for v in visualizers %}
-            <option value="{{ v.id }}" {% ifequal v.id visualizer_id %} selected {% endifequal %}>
-              {{v.name}}</option>
-          {% endfor %}
-        </select>
-        <input type="submit" value="OK">
-      </form>
+        {% else %}      
+        <!-- This is Jeroen Wijering's Flash MP3 Player, under CC Attribution-NonCommercial-ShareAlike 2.0 license from: http://www.jeroenwijering.com/?item=Flash_MP3_Player-->
+        <p id="item_player_c"><a href="http://www.macromedia.com/go/getflashplayer">Get Flash</a> to see this player.</p>
+            <script type="text/javascript">
+              var so = new SWFObject('{% url telemeta-swf "mp3player.swf" %}','line','300','20','7');
+              so.addVariable("file","{% url telemeta-item-export item.id|urlencode,"mp3" %}");
+              so.addVariable("type","mp3");
+              so.write('item_player_c');
+            </script>
+        {% endif %}
+        <div class="viewport">
+            <img src="{% url telemeta-item-visualize item.id|urlencode,visualizer_id %}" alt="" />
+        </div>        
+        <form method="get" action="#">
+            <select name="visualizer_id" onchange="this.form.submit()">
+                {% for v in visualizers %}
+                <option value="{{ v.id }}" {% ifequal v.id visualizer_id %} selected="selected" {% endifequal %}>
+                {{v.name}}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="OK" />
+        </form>
     </div>
-    
     <div class="exporter">
-    Download:
-    {% for format in export_formats %}
-      <a href="{% url telemeta-item-export item.id|urlencode,format.extension %}">{{ format.name }}</a>
-    {% endfor %}
-    </div>  
-
-  {% endif %}
-  
-  <h3>Item: {{ item.title }}</h3>
-
-  <div id="item_elements">
-   <table class="dublincore listing">
-    <thead>
-        <tr><th>Element</th><th>Value</th></tr>
-    </thead>
-    <tbody>
-     {% for field in item.to_list %}
-      {% ifnotequal field.name "title" %}
-      {% ifnotequal field.name "file" %}
-
-      <tr><th><b>{{ field.name }}</b></th>
-          {% ifequal field.name "collection" %}
-          <td><a href="{% url telemeta-collection-detail field.value.id|urlencode %}">
-              {{ field.value }}</a></td>
-          {% else %}
-          <td>{{ field.value }}</td>
-          {% endifequal %}
-          </li>
-
-      {% endifnotequal %}
-      {% endifnotequal %}
-    {% endfor %}
-    </tbody>
-   </table>
-  <div>
-
+        Download:
+        {% for format in export_formats %}
+        <a href="{% url telemeta-item-export item.id|urlencode,format.extension %}">{{ format.name }}</a>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+<div id="leftcol">
+    <div class="item_block">
+        <dl class="listing">
+            <!-- <dt class="head">Element</dt>
+            <dd class="head">Value</dd> -->
+            {% for field in item.to_list %}
+            {% ifnotequal field.name "title" %}
+            {% ifnotequal field.name "file" %}
+            <dt>{{ field.name }}</dt>
+            {% ifequal field.name "collection" %}
+            <dd><a href="{% url telemeta-collection-detail field.value.id|urlencode %}">{{ field.value }}</a></dd>
+            {% else %}
+            <dd>{{ field.value }}</dd>
+            {% endifequal %}
+            {% endifnotequal %}
+            {% endifnotequal %}
+            {% endfor %}
+        </dl>
+        <div class="nett"></div>
+    </div>
+</div>
+{% endblock %}
 {% else %}
     <p>No such item</p>
 {% endif %}
-{% endblock %}
-
-    

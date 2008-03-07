@@ -2,70 +2,129 @@
 {% load telemeta_utils %}
 
 {% block extra_javascript %}
+<script src="{% url telemeta-js "prototype-1.6.0.2.js" %}" type="text/javascript"></script>
+<script src="{% url telemeta-js "application.js" %}" type="text/javascript"></script>
 <script src="{% url telemeta-js "swfobject.js" %}" type="text/javascript"></script>
 {% endblock %}
 
+{% if object %}
+
 {% block submenu %}
-    <a href="{% url telemeta-collection-dublincore object.id|urlencode %}">
-        Dublin Core</a>
+    <h3>Collection: {{ object.title }}</h3>
+    <div><a href="{% url telemeta-collection-dublincore object.id|urlencode %}">Dublin Core</a></div>
 {% endblock %}
 
 {% block content %}
-{% if object %}
     {% if object.has_mediafile %}
-    <div id="collection_player">
-      <p><b>Listen to this collection</b>
-      (<a href="{% url telemeta-collection-m3u object.id|urlencode %}">M3U</a>,
-      <a href="{% url telemeta-collection-xspf object.id|urlencode %}">XSPF</a>)</p>
-      {% if 0 %} {# Use 1/0 for alternate player #}
-        <!-- This is the XSPF Web Music Player, under the BSD license, 
-          from: http://musicplayer.sourceforge.net/-->
-        <object type="application/x-shockwave-flash" width="300" height="200"
-          data="{% url telemeta-swf "xspf_player.swf" %}?playlist_url={% url telemeta-collection-xspf object.id|urlencode %}">
-          <param name="movie" 
-            value="{% url telemeta-swf "xspf_player.swf" %}?playlist_url={% url telemeta-collection-xspf object.id|urlencode %}" />
-        </object>
-      {% else %}
-        <!-- This is Jeroen Wijering's Flash MP3 Player, 
-          under CC Attribution-NonCommercial-ShareAlike 2.0 license
-          from: http://www.jeroenwijering.com/?item=Flash_MP3_Player-->
-        <p id="collection_player_c">
-          <a href="http://www.macromedia.com/go/getflashplayer">Get Flash</a> to see this player.
-        </p>
-        <script type="text/javascript">
-          var so = new SWFObject('{% url telemeta-swf "mp3player.swf" %}','playlist','300','200','7');
-          so.addVariable("file","{% url telemeta-collection-xspf object.id|urlencode %}");
-          so.addVariable("displayheight","0");
-          so.write('collection_player_c');
-        </script> 
-      {% endif %}
-    </div>      
+    <div id="rightcol">
+        <div id="collection_player">
+          <p><b>Listen to this collection</b>
+          (<a href="{% url telemeta-collection-m3u object.id|urlencode %}">M3U</a>,
+          <a href="{% url telemeta-collection-xspf object.id|urlencode %}">XSPF</a>)</p>
+          {% if 0 %} {# Use 1/0 for alternate player #}
+            <!-- This is the XSPF Web Music Player, under the BSD license, 
+              from: http://musicplayer.sourceforge.net/-->
+            <object type="application/x-shockwave-flash" width="300" height="200"
+              data="{% url telemeta-swf "xspf_player.swf" %}?playlist_url={% url telemeta-collection-xspf object.id|urlencode %}">
+              <param name="movie" 
+                value="{% url telemeta-swf "xspf_player.swf" %}?playlist_url={% url telemeta-collection-xspf object.id|urlencode %}" />
+            </object>
+          {% else %}
+            <!-- This is Jeroen Wijering's Flash MP3 Player, 
+              under CC Attribution-NonCommercial-ShareAlike 2.0 license
+              from: http://www.jeroenwijering.com/?item=Flash_MP3_Player-->
+            <p id="collection_player_c">
+              <a href="http://www.macromedia.com/go/getflashplayer">Get Flash</a> to see this player.
+            </p>
+            <script type="text/javascript">
+              var so = new SWFObject('{% url telemeta-swf "mp3player.swf" %}','playlist','300','200','7');
+              so.addVariable("file","{% url telemeta-collection-xspf object.id|urlencode %}");
+              so.addVariable("displayheight","0");
+              so.write('collection_player_c');
+            </script> 
+          {% endif %}
+        </div>
+    </div>
     {% endif %}
-
-    <h3>Collection: {{ object.title }}</h3>
-    
-    <div id="collection_elements">
-    <table class="dublincore listing">
-    <thead>
-        <tr><th>Element</th><th>Value</th></tr>
-    </thead>
-    <tbody>
-        {% for field in object.to_list %}
-            {% ifnotequal field.name "title" %}
-            <tr><th>{{ field.name|capfirst }}</th>
-            <td>{{ field.value }}</td></tr>
-            {% endifnotequal %}
-        {% endfor %}
-    </tbody>
-    </table>
-    <div>
-
-    <hr>
-    <h4>Items</h4>
-    {% with object.ordered_items as items %}
-        {% include "inc/mediaitem_list.html" %}
-    {% endwith %}
+    <div id="leftcol">
+        <div class="intro">
+            <span>{{ object.physical_items_num }} {% ifequal object.physical_items_num '1' %}item{% else %}items{% endifequal %}</span>
+        </div>
+        <div class="infos">
+            <dl class="listing">
+                <dt>Auteur</dt><dd>{{ object.creator }}</dd>
+                <dt>Date</dt><dd>{% if object.is_published %}{{ object.date_published }}{% else %}{{ object.annee_enr }}{% endif %}</dd>
+                <dt>Titre</dt><dd>{{ object.title }}</dd><!-- native_title ? -->
+                {% if object.native_title %}<dt>Traduction du titre</dt><dd>{{ object.native_title }}</dd>{% endif %}
+                <dt>Durée</dt><dd>{{ object.duree_approx }}</dd>
+                {% if object.is_published %}
+                <dt>Éditeur</dt><dd>{{ object.publisher }}</dd>
+                <dt>Référence</dt><dd>{{ object.publisher_reference }}</dd>
+                {% endif %}
+            </dl>
+            <div class="nett"></div>
+        </div>
+        <div class="extraInfos">
+            <h4 class="on"><a href="#">Données ethnographiques</a></h4>
+            <div>
+                <dl class="listing">
+                <dt>État / Nation</dt><dd>{% for item in object.items.all %}{{item.etat}}{% if not forloop.last %},{% endif %}{% endfor %}</dd>
+                <dt>Ethnie / Groupe social</dt><dd>{% for item in object.items.all %}{{item.ethnie_grsocial}}{% if not forloop.last %},{% endif %}{% endfor %}</dd>
+                <dt>Contexte de l’enregistrement</dt><dd>{{ object.terrain_ou_autre }}</dd>
+                </dl>
+            </div>
+            <div class="nett"></div>
+        </div>
+        {% if object.is_published %}
+        <div class="extraInfos">
+            <h4 class="on"><a href="#">Détails du document édité</a></h4>
+            <div>
+                <dl class="listing">
+                <dt>Réédition</dt><dd>{{ object.publishing_status }}</dd>
+                <dt>Auteur Notice</dt><dd>{{ object.booklet_writer }}</dd>
+                <dt>Notice</dt><dd>{{ object.booklet_description }}</dd>
+                </dl>
+            </div>
+            <div class="nett"></div>
+        </div>
+        {% endif %}
+        <div class="extraInfos">
+            <h4 class="on"><a href="#">Identification du document</a></h4>
+            <div>
+                <dl class="listing">
+                <dt>Cote</dt><dd>{{ object.id }}</dd>
+                <dt>Format de l'original</dt><dd>{{ object.physical_format }}</dd>
+                </dl>
+            </div>
+            <div class="nett"></div>
+        </div>
+        <div class="extraInfos">
+            <h4 class="on"><a href="#">Informations documentaires</a></h4>
+            <div>
+                <dl class="listing">
+                <dt>a informer</dt><dd>{{ object.a_informer }}</dd>
+                <dt>acquisition mode</dt><dd>{{ object.acquisition_mode }}</dd>
+                <dt>champ36</dt><dd>{{ object.champ36 }}</dd>
+                <dt>collector</dt><dd>{{ object.collector }}</dd>
+                <dt>comment</dt><dd>{{ object.comment }}</dd>
+                <dt>compil face plage</dt><dd>{{ object.compil_face_plage }}</dd>
+                <dt>deposant cnrs</dt><dd>{{ object.deposant_cnrs }}</dd>
+                <dt>fiches</dt><dd>{{ object.fiches }}</dd>
+                </dl>
+            </div>
+            <div class="nett"></div>
+        </div>
+        </div>
+        <h4>Items</h4>
+        {% with object.ordered_items as items %}
+            {% include "inc/mediaitem_list.html" %}
+        {% endwith %}
+    </div>
+    <script type="text/javascript">
+        ployBlocks();
+    </script>
+{% endblock %}
 {% else %}
     <p>No such collection</p>
 {% endif %}
-{% endblock %}
+

@@ -3,6 +3,12 @@
 <head>
 <title>Telemeta</title>
 <link rel="stylesheet" type="text/css" href="{% url telemeta-css "telemeta.css" %}" />
+<!--[if IE]>
+<link rel="stylesheet" type="text/css" href="{% url telemeta-css "telemeta_ie.css" %}" />
+<![endif]-->
+<!--[if lte IE 6]>
+<link rel="stylesheet"type="text/css" href="{% url telemeta-css "telemeta_ie6.css" %}" />
+<![endif]-->
 {% block extra_style %}{% endblock %}
 {% block extra_javascript %}{% endblock %}
 </head>
@@ -16,7 +22,7 @@
 -->
 <div id="header">
 <div id="logo">
-<a href="{% url telemeta-home %}"><img src="{% url telemeta-images "logo.png" %}"></a>
+<a href="{% url telemeta-home %}"><img src="{% url telemeta-images "logo.png" %}" alt="" /></a>
 </div>
 
 <div id="quick_search">
@@ -31,6 +37,7 @@
 <ul>
 {# spaces between li and a elements breaks layout #}
 <li class="first"><a href="{% url telemeta-geo-continents %}">Geo Navigator</a></li><li><a href="{% url telemeta-collections %}">All Collections</a></li><li><a href="{% url telemeta-items %}">All Items</a></li><li class="last"><a href="{% url telemeta-admin %}">Admin</a></li>
+</ul>
 </div>
 </div>
 <div id="submenu">

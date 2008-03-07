@@ -1,37 +1,69 @@
 * {margin: 0; padding: 0;}
-body {font: 0.8125em Verdana, sans-serif; line-height: 1; color: #333; background: #FFF;}
+a {text-decoration: none; color: #969696;}
+a img {border: none;}
+html, input, select, textarea, h1, h2, h3, h4, h5, h6 {
+    font-size: 100%;
+}
+body {
+    font: 0.8125em/1em Verdana, sans-serif;
+    line-height: 1.3em;
+    color: #333;
+    background: #FFF;
+    margin: 1.3em;
+}
 
 a:link, a:visited {
     border-bottom:1px dotted #BBB;
     color:#BB0000;
     text-decoration:none;
 }
-a:link:hover, a:visited:hover { background-color:#EEE; color:#555; }
+a:link:hover, a:visited:hover {
+    background-color:#EEE;
+    color:#555;
+}
 a img { border: none; }
 
-#header {
-    padding-bottom: 0.2em;
-    padding-top: 0.2em;
+h3 {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #353535;
+}
+#content ul, #content ol {
+    padding: 5px;
+    padding-left: 15px;
+}
+#content li {
+    padding: 3px;
 }
 
-#logo { padding-top: 1ex; }
+#header {
+    padding: 0.2em 0;
+    margin-bottom: .9em;
+}
+
 #logo a, #logo a:hover { border: none; background: transparent; }
 
-/*
-#menu a, #menu a:hover { border: none;}
-#menu { 
-    text-align: right; 
-    clear: right; 
-    background: #DDDDDD; 
-    padding: 1px;
-    border-bottom: solid 1px black;
+#submenu {
+    position: relative;
+    margin: 5px 0 0;
 }
-*/
-#submenu { clear: right; float: right; padding-top: 1em; }
-#submenu a { color: #000066; }
+#submenu h3, #submenu div {
+    height: 1.6em;
+}
+#submenu div {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+#submenu a {
+    height: 1.6em;
+    color: #4d508a;
+    font-size: 0.9em;
+    font-weight: bold;
+}
 
-#quick_search { position: absolute; top: 2em; right: 1em; text-align: right;}
-#quick_search a { font-size: 80%; }    
+#quick_search { position: absolute; top: 2.5em; right: 1.1em; }
+#quick_search a { font-size: 80%; }
 #quick_search input {
     vertical-align: middle;
     font-size: 90%;
@@ -39,9 +71,22 @@ a img { border: none; }
 
 #quick_search_pattern { }
 
-.item_visualization, #collection_player {
-  clear: right;
-  float: right;
+#leftcol {
+    position: relative;
+    margin-right: 340px;
+}
+#rightcol {
+    clear: both;
+    position: absolute;
+    right: 1.3em;
+    width: 320px;
+    border-left: 1px solid #ddd;
+}
+#rightcol {
+    margin-top: 10px;
+}
+
+/*.item_visualization, #collection_player {
   padding: 1ex;
   margin-top: 1em;
   margin-left: 1em;
@@ -51,13 +96,11 @@ a img { border: none; }
 
 .exporter {
     width: 295px;
-    clear: right;
-    float: right;
     border: solid 1px black;
     padding: 0.5em;
     margin: 5px;
     overflow: auto;
-}
+}*/
 
 /* Geographic navigator */
 ul.continents, ul.continents ul { list-style: none; margin: 0; padding: 0;}
@@ -67,51 +110,58 @@ ul.continents li.name { width: 480px; float: left;}
 ul.continents li.name b { font-size: 120%; font-weight: bold; }
 ul.continents ul li { display: inline; padding-right: 1ex;}
 
-/* Collection table */
-#collection_elements {
-  clear: left;
-  float: left;
-  padding: 1ex;
-  margin-top: 1em;
-  margin-left: 1em;
-  position: absolute;
-  width: 800px;
+/* Collection */
+#leftcol .intro {
+    font-size: 1em;
+    font-weight: bold;
+    color: #444;
+    margin: 5px 0;
+    padding-left: 13px;
+    font-size: 0.8em;
+    background: #FFF url(indent.png) no-repeat 0 1px;
+}
+#leftcol .intro span {
+    padding: 3px;
+
 }
 
 /* Item table */
 #item_elements {
-  clear: left;
-  float: left;
-  padding: 1ex;
-  margin-top: 1em;
-  margin-left: 1em;
-  position: absolute;
-  width: 800px;
+}
+#item_elements .item_block {
+    width: 100%;
+    padding: .5em 1.5em 0;
+    border: 1px solid #ddd;
+    margin-bottom: 15px;
 }
 
 /* Styles for tabular listings (stolen from trac) */
 table.listing {
- clear: both;
- border-bottom: 1px solid #d7d7d7;
- border-collapse: collapse;
- border-spacing: 0;
- margin-top: 1em;
- width: 100%;
+    clear: both;
+    border-spacing: 0;
+    width: 100%;
 }
-table.listing th { text-align: left; padding: 0 1em .1em 0; font-size: 12px }
-table.listing thead { background: #f7f7f0 }
+table.listing th {
+    text-align: left;
+    padding: 0 14em .1em 0;
+    font-size: 1em;
+}
+table.listing th, table.listing td {
+    font-size: 0.8em;
+    border-bottom: 1px solid #dfdfdf;
+}
+table.listing thead { background: #e8eaf0 }
 table.listing thead th {
- /*border: 1px solid #d7d7d7;*/
- border-bottom: 3px solid #FFF;
- font-size: 11px;
- font-weight: bold;
- padding: 2px .5em;
- vertical-align: bottom;
+    font-size: 0.9em;
+    padding: 3px .5em 3px;
 }
 table.listing thead th :link:hover, table.listing thead th :visited:hover {
- background-color: transparent;
+    background-color: transparent;
 }
-table.listing thead th a { border: none; padding-right: 12px }
+table.listing thead th a {
+    border: none;
+    padding-right: 12px;
+}
 table.listing th.asc a, table.listing th.desc a { font-weight: bold }
 table.listing th.asc a, table.listing th.desc a {
  background-position: 100% 50%;
@@ -120,9 +170,15 @@ table.listing th.asc a, table.listing th.desc a {
 table.listing th.asc a { background-image: url(../images/asc.png) }
 table.listing th.desc a { background-image: url(../images/desc.png) }
 table.listing tbody td, table.listing tbody th {
- border: 1px dotted #ddd;
- padding: .33em .5em;
- vertical-align: top;
+    padding: .33em .5em;
+    vertical-align: top;
+    font-weight: normal;
+}
+table.listing tbody td {
+    font-weight: bold;
+}
+table.listing tbody td.tmp {
+    width: 100%;
 }
 table.listing tbody td a:hover, table.listing tbody th a:hover {
  background-color: transparent;
@@ -130,7 +186,7 @@ table.listing tbody td a:hover, table.listing tbody th a:hover {
 table.listing tbody tr { border-top: 1px solid #ddd }
 table.listing tbody tr.even { background-color: #fcfcfc }
 table.listing tbody tr.odd { background-color: #f7f7f7 }
-table.listing tbody tr:hover { background: #eed !important }
+table.listing tbody tr:hover { background: #f7f8fa !important }
 
 /*
 #content {
@@ -257,3 +313,86 @@ table.dublincore { width: auto; }
 /* Homepage */
 
 .homelinks a { font-size: 120%;}
+
+
+/* Definition list */
+.nett {
+    clear: both;
+    height: 5px;
+}
+div.infos, div.extraInfos {
+    margin-bottom: 15px;
+}
+div.extraInfos {
+    border-top: 1px solid #949494;
+    border-left: 1px solid #949494;
+    border-right: 1px solid #949494;
+}
+div.extraInfos div {
+    padding: 0 5px;
+}
+div.extraInfos .nett {
+    border-bottom: 1px solid #949494;
+    position: relative;
+    height: 0;
+    margin-bottom: -5px;
+}
+dl.listing {
+    position: relative;
+    margin: 0;
+    margin-bottom: .5em;
+}
+/* ie5 mac \*/
+dt { clear: both; }
+/* end hack */
+dl.listing dt, dl.listing dd {
+    position: relative;
+    float: left;
+    margin: 0;
+    margin-bottom: .5em;
+    padding: 0;
+    font-size: 0.8em;
+}
+dl.listing dt {
+    width: 18em;
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    border-right: 3px solid #ddd;
+    padding-left: .3em;
+    margin-right: .8em;
+    color: #444;
+}
+dl.listing dd {
+
+    font-weight: bold;
+}
+.extraInfos h4 {
+    /*background: #B8B7C1 url(extra_bg.gif) no-repeat right top;*/
+    background-color: #B8B7C1;
+    clear: both;
+    font-size: 0.9em;
+    line-height: 1.4em;
+}
+.extraInfos h4 a {
+    display: block;
+    color: #FFF;
+    text-decoration: none;
+    margin: 0;
+    background: transparent url(more.gif) no-repeat left top;
+    padding-bottom: 2px;
+    padding-left: 20px;
+    border-bottom: none;
+    outline: none;
+}
+.extraInfos h4 a:hover {
+    background-color: transparent;
+    border-bottom: none;
+    color: #EFEFEF;
+}
+.extraInfos h4.on a {
+    color: #EFEFEF;
+    background-position: 0 -17px;
+}
+.extraInfos h4.on a:hover {
+
+}
