@@ -48,7 +48,7 @@
     {% endif %}
     <div id="leftcol">
         <div class="intro">
-            <span>{% if object.items.count %}{{ object.items.count }} {% ifequal object.items.count 1 %}item{% else %}items{% endifequal %}{% else %}No item{% endif %}</span>
+            <span>{% if object.items.count %}{{ object.items.count }} {% ifequal object.items.count '1' %}item{% else %}items{% endifequal %}{% else %}No item{% endif %}</span>
         </div>
         <div class="infos">
             <dl class="listing">

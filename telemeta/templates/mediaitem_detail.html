@@ -48,10 +48,10 @@
         </form>
     </div>
     <div class="exporter">
-        Download:
+        <p>Download:
         {% for format in export_formats %}
         <a href="{% url telemeta-item-export item.id|urlencode,format.extension %}">{{ format.name }}</a>
-        {% endfor %}
+        {% endfor %}</p>
     </div>
 </div>
 {% endif %}

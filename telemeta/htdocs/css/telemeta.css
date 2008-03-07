@@ -29,14 +29,18 @@ h3 {
     color: #353535;
 }
 #content ul, #content ol {
-    padding: 5px;
-    padding-left: 15px;
-    font-size: 0.9em;
+    list-style: square;
+    padding: .7em;
+    padding-left: 2em;
+    font-size: 0.8em;
 }
 #content li {
-    padding: 3px;
+    padding: .2em;
+    padding-left: 0;
 }
-
+#content li a {
+    padding: .1em 0;
+}
 #header {
     padding: 0.2em 0;
     margin-bottom: .9em;
@@ -74,34 +78,50 @@ h3 {
 
 #leftcol {
     position: relative;
-    margin-right: 340px;
+    margin-right: 345px;
+    min-height: 450px;
 }
 #rightcol {
     clear: both;
     position: absolute;
-    right: 1.3em;
-    width: 320px;
-    border-left: 1px solid #ddd;
-}
-#rightcol {
+    right: .3em;
+    width: 308px;
+    text-align: right;
     margin-top: 10px;
+    border: 1px dotted #999;
+    padding: 6px;
+    background-color: #eee;
 }
-
-/*.item_visualization, #collection_player {
-  padding: 1ex;
-  margin-top: 1em;
-  margin-left: 1em;
+#rightcol div {
+    text-align: left;
+    position: relative;
 }
-.item_visualization select { width: 200px; }
-.item_visualization .viewport { width: 305px; border: solid 1px black; overflow: auto; }
+#rightcol form {
+    width: 305px;
+    margin-top: 5px;
+    background-color: #fff;
+    border: 1px solid #adadad;
+}
+#item_player_c {
+    width: 305px;
+    padding: 2px 0 0;
+    border: 1px solid #adadad;
+    text-align: center;
+}
+.item_visualization select { width: 210px; }
+.item_visualization .viewport { width: 305px; border: 1px solid #adadad; overflow: auto; margin-top: 5px; background-color: #fff;}
 
 .exporter {
-    width: 295px;
-    border: solid 1px black;
-    padding: 0.5em;
-    margin: 5px;
+    background-color: #fff;
+    color: #555;
+    border: 1px solid #adadad;
+    width: 301px;
+    padding: 2px;
+    height: 17px;
+    margin: 5px 0 0;
     overflow: auto;
-}*/
+    font-size: 1em;
+}
 
 /* Geographic navigator */
 ul.continents, ul.continents ul { list-style: none; margin: 0; padding: 0;}
