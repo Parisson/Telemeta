@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block tracklist %}
-{% for item in collection.items.all %}
+{% for item in collection.ordered_items %}
     <track>
       <title>{{ item.title }}</title>
       <meta rel="type">mp3</meta>

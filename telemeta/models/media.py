@@ -152,6 +152,9 @@ class MediaCollection(Model, MediaCore):
           return False
         return True
 
+    def ordered_items(self):
+        return self.items.order_by('id', '_title')
+
     def __str__(self):
         #return self.title
         return self.id

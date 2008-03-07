@@ -165,13 +165,6 @@ class WebView(Component):
     def __get_admin_context_vars(self):
         return {"enumerations": self.__get_enumerations_list()}
 
-    def __continents_to_countries(self, tree):
-        countries = []
-        for continent in tree:
-            countries += continent['countries']
-        #countries.sort()
-        return countries
-
     def admin_index(self, request):
         return render_to_response('admin.html', self. __get_admin_context_vars())
 

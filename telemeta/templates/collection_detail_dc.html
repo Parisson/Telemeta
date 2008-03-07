@@ -22,7 +22,7 @@
             <td>{{ element.value }}</td></tr>
             {% endif %}
         {% endfor %}
-        {% for item in object.items.all %}
+        {% for item in object.ordered_items %}
             <tr><th>relation</th><td>hasPart</td><td>
             <a href="{% url telemeta-item-dublincore item.id|urlencode %}">
                 {{ item.id }}</a>

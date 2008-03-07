@@ -62,7 +62,7 @@
 
     <hr>
     <h4>Items</h4>
-    {% with object.items.all as items %}
+    {% with object.ordered_items as items %}
         {% include "inc/mediaitem_list.html" %}
     {% endwith %}
 {% else %}

@@ -140,6 +140,7 @@ class MediaItemQuerySet(CoreQuerySet):
             where = ["collection_id NOT IN (SELECT id FROM telemeta_collection)"]);
 
     def by_recording_date(self, pattern):
+        "Find items by recording date"
         return self.filter(Q(dates_enregistr__icontains=pattern) 
             | Q(annee_enreg__icontains=pattern))
 
