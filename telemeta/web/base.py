@@ -111,8 +111,8 @@ class WebView(Component):
 
     def search(self, request, type = 'items'):
         """Perform a search through collections and items metadata"""
-        collections = MediaCollection.objects
-        items = MediaItem.objects
+        collections = MediaCollection.objects.all()
+        items = MediaItem.objects.all()
         input = request.REQUEST
         criteria = {}
 
@@ -120,6 +120,9 @@ class WebView(Component):
             'pattern': lambda value: ( 
                 collections.quick_search(value), 
                 items.quick_search(value)),
+            'title': lambda value: (
+                collections.filter(title__icontains=value), 
+                items.by_title(value)),
             'country': lambda value: (
                 collections.by_country(value), 
                 items.filter(etat = value)),

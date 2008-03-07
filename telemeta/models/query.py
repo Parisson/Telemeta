@@ -145,6 +145,10 @@ class MediaItemQuerySet(CoreQuerySet):
         return self.filter(Q(dates_enregistr__icontains=pattern) 
             | Q(annee_enreg__icontains=pattern))
 
+    def by_title(self, pattern):
+        return self.filter(Q(_title__icontains=pattern) 
+          | Q(collection__title__icontains=pattern))
+            
 class MediaItemManager(CoreManager):
     "Manage media items queries"
 
@@ -159,6 +163,9 @@ class MediaItemManager(CoreManager):
 
     def by_recording_date(self, *args, **kwargs):
         return self.get_query_set().by_recording_date(*args, **kwargs)
+
+    def by_title(self, *args, **kwargs):
+        return self.get_query_set().by_title(*args, **kwargs)
 
     def list_ethnic_groups(self):
         "Return a list of all ethnic groups"
