@@ -48,13 +48,13 @@
     {% endif %}
     <div id="leftcol">
         <div class="intro">
-            <span>{{ object.physical_items_num }} {% ifequal object.physical_items_num '1' %}item{% else %}items{% endifequal %}</span>
+            <span>{% if object.items.count %}{{ object.items.count }} {% ifequal object.items.count '1' %}item{% else %}items{% endifequal %}{% else %}No item{% endif %}</span>
         </div>
         <div class="infos">
             <dl class="listing">
-                <dt>Auteur</dt><dd>{{ object.creator }}</dd>
+                <dt>Auteur / Cédant</dt><dd>{{ object.creator }}</dd>
                 <dt>Date</dt><dd>{% if object.is_published %}{{ object.date_published }}{% else %}{{ object.annee_enr }}{% endif %}</dd>
-                <dt>Titre</dt><dd>{{ object.title }}</dd><!-- native_title ? -->
+                <dt>Titre</dt><dd>{{ object.title }}</dd>
                 {% if object.native_title %}<dt>Traduction du titre</dt><dd>{{ object.native_title }}</dd>{% endif %}
                 <dt>Durée</dt><dd>{{ object.duree_approx }}</dd>
                 {% if object.is_published %}
@@ -110,6 +110,18 @@
                 <dt>compil face plage</dt><dd>{{ object.compil_face_plage }}</dd>
                 <dt>deposant cnrs</dt><dd>{{ object.deposant_cnrs }}</dd>
                 <dt>fiches</dt><dd>{{ object.fiches }}</dd>
+                <dt>is full copy</dt><dd>{{ object.is_full_copy }}</dd>
+                <dt>is original</dt><dd>{{ object.is_original }}</dd>
+                <dt>numerisation</dt><dd>{{ object.numerisation }}</dd>
+                <dt>physical items num</dt><dd>{{ object.physical_items_num }}</dd>
+                <dt>publisher collection</dt><dd>{{ object.publisher_collection }}</dd>
+                <dt>publisher serial id</dt><dd>{{ object.publisher_serial_id }}</dd>
+                <dt>record author</dt><dd>{{ object.record_author }}</dd>
+                <dt>record writer</dt><dd>{{ object.record_writer }}</dd>
+                <dt>ref biblio</dt><dd>{{ object.ref_biblio }}</dd>
+                <dt>rights</dt><dd>{{ object.rights }}</dd>
+                <dt>travail</dt><dd>{{ object.travail }}</dd>
+                <dt>tri dibm</dt><dd>{{ object.tri_dibm }}</dd>
                 </dl>
             </div>
             <div class="nett"></div>
