@@ -2,6 +2,8 @@
 {% load telemeta_utils %}
 
 {% block extra_javascript %}
+<script src="{% url telemeta-js "prototype-1.6.0.2.js" %}" type="text/javascript"></script>
+<script src="{% url telemeta-js "application.js" %}" type="text/javascript"></script>
 <script src="{% url telemeta-js "swfobject.js" %}" type="text/javascript"></script>
 {% endblock %}
 
@@ -53,27 +55,85 @@
     </div>
 </div>
 {% endif %}
-<div id="leftcol">
-    <div class="item_block">
-        <dl class="listing">
-            <!-- <dt class="head">Element</dt>
-            <dd class="head">Value</dd> -->
-            {% for field in item.to_list %}
-            {% ifnotequal field.name "title" %}
-            {% ifnotequal field.name "file" %}
-            <dt>{{ field.name }}</dt>
-            {% ifequal field.name "collection" %}
-            <dd><a href="{% url telemeta-collection-detail field.value.id|urlencode %}">{{ field.value }}</a></dd>
-            {% else %}
-            <dd>{{ field.value }}</dd>
-            {% endifequal %}
-            {% endifnotequal %}
-            {% endifnotequal %}
-            {% endfor %}
-        </dl>
-        <div class="nett"></div>
+    <div id="leftcol">
+        <div class="infos">
+            <dl class="listing">
+                <dt>Auteur</dt><dd>{{ item.auteur }}</dd>
+                <dt>Année d'enregistrement</dt><dd>{{ item.annee_enr }}</dd>
+                <dt>Date d'enregistrement</dt><dd>{{ item.dates_enregistr }}</dd>
+                <dt>Titre</dt><dd>{{ item.title }}</dd>
+                <dt>Traduction du titre</dt><dd>{{ item.transcrip_trad }}</dd>
+                <dt>Collection</dt><dd><a href="{% url telemeta-collection-detail item.collection.id|urlencode %}">{{ item.collection.title }}</a></dd>
+                <dt>Durée</dt><dd>{{ item.duree }}</dd>
+                {% if item.collection.ispublished %}
+                <dt>Ref</dt><dd>{{ item.Ref }}</dd>
+                {% endif %}
+            </dl>
+            <div class="nett"></div>
+        </div>
+        <div class="extraInfos">
+            <h4 class="on"><a href="#">Informations géographiques et ethnographiques</a></h4>
+            <div>
+                <dl class="listing">
+                <dt>Continent</dt><dd>{{ item.continent }}</dd>
+                <dt>État / Nation</dt><dd>{{ item.etat }}</dd>
+                <dt>Région / Village</dt><dd>{{ item.region_village }}</dd>
+                <dt>Ethnie/ Groupe social</dt><dd>{{ item.ethnie_grsocial }}</dd>
+                <dt>Aire culturelle</dt><dd>{{ item.aire_geo_cult }}</dd>
+                <dt>Contexte ethnographique</dt><dd>?</dd>
+                <dt>Mots clés</dt><dd>{{ item.fonction_usage }}</dd>
+                <dt>Commentaires</dt><dd>{{ item.comm_fonctusage }}</dd>
+                </dl>
+            </div>
+            <div class="nett"></div>
+        </div>
+        <div class="extraInfos">
+            <h4 class="on"><a href="#">Formation musicale</a></h4>
+            <div>
+                <dl class="listing">
+                <dt>Forme / genre vernaculaire</dt><dd>{{ item.form_genr_style }}</dd>
+                <dt>Forme / genre générique</dt><dd>{{ item.formstyl_generi }}</dd>
+                </dl>
+                + bloc 4 col
+            </div>
+            <div class="nett"></div>
+        </div>
+        <div class="extraInfos">
+            <h4 class="on"><a href="#">Identification du document</a></h4>
+            <div>
+                <dl class="listing">
+                <dt>Format</dt><dd>{{ item.format }}</dd>
+                <dt>Cote item</dt><dd>{{ item.id }}</dd>
+                <dt>N° de l'item</dt><dd>{{ item.face_plage }}</dd>
+                </dl>
+            </div>
+            <div class="nett"></div>
+        </div>
+        <div class="extraInfos">
+            <h4 class="on"><a href="#">Informations documentaires</a></h4>
+            <div>
+                <dl class="listing">
+                <dt>choixcollecteur</dt><dd>{{ item.choixcollecteur }}</dd>
+                <dt>comm fonctusage</dt><dd>{{ item.comm_fonctusage }}</dd>
+                <dt>Copie de</dt><dd>{{ item.copie_de }}</dd>
+                <dt>Enregistré par</dt><dd>{{ item.enregistre_par }}</dd>
+                <dt>File</dt><dd>{{ item.file }}</dd>
+                <dt>get duration</dt><dd>{{ item.get_duration }}</dd>
+                <dt>moda execut</dt><dd>{{ item.moda_execut }}</dd>
+                <dt>nroband nropiec</dt><dd>{{ item.nroband_nropiec }}</dd>
+                <dt>Remarques</dt><dd>{{ item.remarques }}</dd>
+                <dt>Repère bande</dt><dd>{{ item.repere_bande }}</dd>
+                <dt>Struct modale</dt><dd>{{ item.struct_modale }}</dd>
+                <dt>Struct rythm</dt><dd>{{ item.struct_rythm }}</dd>
+                <dt>Titre support</dt><dd>{{ item.titre_support }}</dd>
+                </dl>
+            </div>
+            <div class="nett"></div>
+        </div>
     </div>
-</div>
+    <script type="text/javascript">
+        ployBlocks();
+    </script>
 {% endblock %}
 {% else %}
     <p>No such item</p>

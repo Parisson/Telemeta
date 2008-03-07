@@ -11,6 +11,7 @@ function ployBlocks() {
 		extraInfos[i].onclick = function() {
 			this.parentNode.getElementsByTagName("div")[0].toggle();
 			this.toggleClassName('on');
+			return false;
 		}
 	}
 }

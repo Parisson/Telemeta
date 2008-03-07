@@ -369,7 +369,7 @@ dl.listing dt {
     color: #444;
 }
 dl.listing dd {
-
+    width: 70%;
     font-weight: bold;
 }
 .extraInfos h4 {
@@ -396,7 +396,7 @@ dl.listing dd {
     color: #EFEFEF;
 }
 .extraInfos h4.on a {
-    color: #EFEFEF;
+    color: #FFF;
     background-position: 0 -17px;
 }
 .extraInfos h4.on a:hover {
