@@ -55,14 +55,16 @@ def escapejs(value):
     return value
 
 @register.filter
-def build_query_string(dict):
+def build_query_string(args):
     """Build an HTTP query string out of a dict"""
-    import urllib
-    args = []
-    for k, v in dict.iteritems():
-        if not isinstance(v, basestring):
-            v = str(v)
-        args.append(urllib.quote(k) + '=' + urllib.quote(v))
+    if type(args) == dict:
+      import urllib
+      args = []
+      for k, v in args.iteritems():
+          if not isinstance(v, basestring):
+              v = str(v)
+          args.append(urllib.quote(k) + '=' + urllib.quote(v))
 
-    return "&amp;".join(args)
+      return "&amp;".join(args)
+    return ''
 
