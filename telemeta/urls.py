@@ -82,6 +82,10 @@ urlpatterns = patterns('',
 
     # search
     url(r'^search/$', web_view.search, name="telemeta-search"),
+    url(r'^search/collections/$', web_view.search, {'type': 'collections'}, 
+        name="telemeta-search-collections"),
+    url(r'^search/items/$', web_view.search, {'type': 'items'}, 
+        name="telemeta-search-items"),
     url(r'^search/criteria/$', web_view.edit_search, name="telemeta-search-criteria"),
 
     # administration        

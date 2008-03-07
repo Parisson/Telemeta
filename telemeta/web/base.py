@@ -109,47 +109,54 @@ class WebView(Component):
             {'continents': continents, 'countries': countries, 
             'ethnic_groups': ethnic_groups})
 
-    def search(self, request):
+    def search(self, request, type = 'items'):
         """Perform a search through collections and items metadata"""
         collections = MediaCollection.objects
         items = MediaItem.objects
         input = request.REQUEST
+        criteria = {}
 
-        if input.has_key('pattern') and input['pattern']:
-            collections = collections.quick_search(input['pattern'])
-            items = items.quick_search(input['pattern'])
+        switch = {
+            'pattern': lambda value: ( 
+                collections.quick_search(value), 
+                items.quick_search(value)),
+            'country': lambda value: (
+                collections.by_country(value), 
+                items.filter(etat = value)),
+            'continent': lambda value: (
+                collections.by_continent(value), 
+                items.filter(continent = value)),
+            'ethnic_group': lambda value: (
+                collections.none(), 
+                items.filter(ethnie_grsocial = value)),
+            'creator': lambda value: (
+                collections.filter(creator__icontains=value),
+                items.filter(auteur__icontains=value)),
+            'rec_date': lambda value: (
+                collections.by_recording_date(value), 
+                items.by_recording_date(value)),
+            'pud_date': lambda value: (
+                collections.by_publish_date(value), 
+                items.none())
+        }
+        
+        for key, value in input.items():
+            if key == 'continent' and input.get('country'):
+                continue
+            func = switch.get(key)
+            if func and value:
+                collections, items = func(value)
+                criteria[key] = value
 
-        if input.has_key('country') and input['country']:
-            collections = collections.by_country(input['country'])
-            items = items.filter(etat = input['country'])
-        elif input.has_key('continent') and input['continent']:
-            collections = collections.by_continent(input['continent'])
-            items = items.filter(continent = input['continent'])
-      
-        if (input.has_key('ethnic_group') and input['ethnic_group']):
-            collections = collections.none()
-            items = items.filter(ethnie_grsocial = input['ethnic_group'])
+        if type == 'items':
+            objects = items
+        else:
+            objects = collections
 
-        if (input.has_key('creator') and input['creator']):
-            collections = collections.filter(creator__icontains=input['creator'])
-            items = items.filter(auteur__icontains=input['creator'])
-
-        if (input.has_key('creator') and input['creator']):
-            collections = collections.filter(creator__icontains=input['creator'])
-            items = items.filter(auteur__icontains=input['creator'])
-
-        if (input.has_key('rec_date') and input['rec_date']):
-            collections = collections.by_recording_date(input['rec_date'])
-            items = items.by_recording_date(input['rec_date'])
-
-        if (input.has_key('pub_date') and input['pub_date']):
-            collections = collections.by_publish_date(input['pub_date'])
-            items = items.none()
-
-        return render_to_response('search_results.html', 
-                    {'criteria': input, 
-                    'collections': collections[:50], 'more_collections': collections.count() > 50,
-                     'items': items[:50], 'more_items': items.count() > 50})
+        return list_detail.object_list(request, objects, 
+            template_name='search_results.html', paginate_by=20,
+            extra_context={'criteria': criteria, 'collections_num': collections.count(), 
+                'items_num': items.count(), 'type' : type})
 
     def __get_enumerations_list(self):
         from django.db.models import get_models

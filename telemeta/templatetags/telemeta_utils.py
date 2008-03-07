@@ -54,4 +54,15 @@ def escapejs(value):
         value = value.replace(bad, good)
     return value
 
+@register.filter
+def build_query_string(dict):
+    """Build an HTTP query string out of a dict"""
+    import urllib
+    args = []
+    for k, v in dict.iteritems():
+        if not isinstance(v, basestring):
+            v = str(v)
+        args.append(urllib.quote(k) + '=' + urllib.quote(v))
+
+    return "&amp;".join(args)
 
