@@ -238,6 +238,12 @@ label.disabled { color: #d7d7d7 }
 /* HTML dublin core display */
 
 table.dublincore { width: auto; }
+table.dublincore caption {
+    text-align: left;
+    padding: 5px 0 10px;
+    font-weight: bold;
+    color: #666;
+}
 
 /* Navigation (borrowed from Trac) */
 .nav h2, .nav hr { display: none }

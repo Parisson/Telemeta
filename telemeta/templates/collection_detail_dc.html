@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 {% load telemeta_utils %}
 
+{% if object %}
 {% block submenu %}
-    <a href="{% url telemeta-collection-detail object.id|urlencode %}">
-        Normal View</a>
+    <h3>Collection: {{ object.title }}</h3>
+    <div><a href="{% url telemeta-collection-detail object.id|urlencode %}">Normal View</a></div>
 {% endblock %}
 
 {% block content %}
-{% if object %}
-    <h3>Collection: {{ object.title }}</h3>
+    
     <table class="dublincore listing">
     <caption>Dublin Core Expression</caption>
     <thead>
@@ -30,7 +30,7 @@
         {% endfor %}
     </tbody>
     </table>
+{% endblock %}
 {% else %}
     <p>No such collection</p>
 {% endif %}
-{% endblock %}
