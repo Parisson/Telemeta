@@ -209,6 +209,7 @@ class MediaItem(Model, MediaCore):
     objects = MediaItemManager()
 
     def _get_title(self):
+        # to (sort of) sync with models.query.MediaItemQuerySet.by_title()
         if self._title == "":
             try:
                 title = self.collection.title + " - Face/Plage: " \

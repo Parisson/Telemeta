@@ -51,6 +51,9 @@ class MediaCollectionQuerySet(CoreQuerySet):
     def by_publish_date(self, pattern):
         return self.filter(date_published__icontains=pattern) 
 
+    def by_ethnic_group(self, group):
+        return self.filter(items__ethnie_grsocial=group).distinct()
+
 class MediaCollectionManager(CoreManager):
     "Manage collection queries"
 
@@ -71,6 +74,9 @@ class MediaCollectionManager(CoreManager):
 
     def by_publish_date(self, *args, **kwargs):
         return self.get_query_set().by_publish_date(*args, **kwargs)
+
+    def by_ethnic_group(self, *args, **kwargs):
+        return self.get_query_set().by_ethnic_group(*args, **kwargs)
 
     def stat_continents(self, order_by='num'):      
         "Return the number of collections by continents and countries as a tree"
@@ -146,8 +152,12 @@ class MediaItemQuerySet(CoreQuerySet):
             | Q(annee_enreg__icontains=pattern))
 
     def by_title(self, pattern):
+        # to (sort of) sync with models.media.MediaItem.get_title()
         return self.filter(Q(_title__icontains=pattern) 
           | Q(collection__title__icontains=pattern))
+
+    def by_publish_date(self, pattern):
+        return self.filter(collection__date_published__icontains=pattern) 
             
 class MediaItemManager(CoreManager):
     "Manage media items queries"
@@ -166,6 +176,9 @@ class MediaItemManager(CoreManager):
 
     def by_title(self, *args, **kwargs):
         return self.get_query_set().by_title(*args, **kwargs)
+
+    def by_publish_date(self, *args, **kwargs):
+        return self.get_query_set().by_publish_date(*args, **kwargs)
 
     def list_ethnic_groups(self):
         "Return a list of all ethnic groups"

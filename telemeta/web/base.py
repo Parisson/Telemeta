@@ -9,6 +9,7 @@
 
 import re
 import os
+import sys
 
 from django.template import Context, loader
 from django import template
@@ -130,7 +131,7 @@ class WebView(Component):
                 collections.by_continent(value), 
                 items.filter(continent = value)),
             'ethnic_group': lambda value: (
-                collections.none(), 
+                collections.by_ethnic_group(value), 
                 items.filter(ethnie_grsocial = value)),
             'creator': lambda value: (
                 collections.filter(creator__icontains=value),
@@ -138,11 +139,11 @@ class WebView(Component):
             'rec_date': lambda value: (
                 collections.by_recording_date(value), 
                 items.by_recording_date(value)),
-            'pud_date': lambda value: (
+            'pub_date': lambda value: (
                 collections.by_publish_date(value), 
-                items.none())
+                items.by_publish_date(value))
         }
-        
+       
         for key, value in input.items():
             if key == 'continent' and input.get('country'):
                 continue
