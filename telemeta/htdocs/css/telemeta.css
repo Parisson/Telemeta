@@ -28,6 +28,10 @@ h3 {
     font-weight: bold;
     color: #353535;
 }
+.nett {
+    clear: both;
+    height: 5px;
+}
 #content ul, #content ol {
     list-style: square;
     padding: .7em;
@@ -219,13 +223,16 @@ table.listing tbody tr:hover { background: #f7f8fa !important }
 input, textarea, select { margin: 2px }
 input, select { vertical-align: middle }
 input[type=button], input[type=submit], input[type=reset] {
- background: #eee;
- color: #222;
- border: 1px outset #ccc;
+ background: #f2f2f2;
+ color: #444;
+ border: 3px double #ccc;
  padding: .1em .5em;
+ font-weight: bold;
+ cursor: pointer;
 }
 input[type=button]:hover, input[type=submit]:hover, input[type=reset]:hover {
- background: #ccb;
+ background: #8D8C94;
+ color: #fff;
 }
 input[type=button][disabled], input[type=submit][disabled],
 input[type=reset][disabled] {
@@ -236,9 +243,9 @@ input[type=reset][disabled] {
 input[type=text], input.textwidget, textarea { border: 1px solid #d7d7d7 }
 input[type=text], input.textwidget { padding: .25em .5em }
 input[type=text]:focus, input.textwidget:focus, textarea:focus {
- border: 1px solid #886;
+   border-color: #bb0000;
 }
-option { border-bottom: 1px dotted #d7d7d7 }
+option { border-bottom: 1px dotted #d7d7d7; }
 fieldset { border: 1px solid #d7d7d7; padding: .5em; margin: 0 }
 fieldset.iefix { background: transparent; border: none; padding: 0; margin: 0 }
 * html fieldset.iefix { width: 98% }
@@ -257,14 +264,48 @@ label.disabled { color: #d7d7d7 }
  background: none;
 }
 
-/* HTML dublin core display */
+/* searchform */
 
-table.dublincore { width: auto; }
-h4.dublincore {
-    text-align: left;
-    padding: 5px 0 10px;
+#searchform {
+    margin: 15px 0;
+}
+#searchform fieldset {
+    padding: 0;
+    padding: .5em;
+    width: 450px;
+    border: none;
+    border: 1px dotted #888;
+    margin-bottom: 1em;
+}
+#searchform p {
+    background-color: #fff;
+    padding: .5em 0;
+}
+#searchform label {
+    font-size: 0.8em;
+    display: block;
+    float: left;
+    width: 30%;
+    margin-left: 15px;
+    margin-top: .2em;
+    line-height: 1.8em;
     font-weight: bold;
-    color: #666;
+    color: #333;
+    text-transform: uppercase;
+}
+#searchform select {
+    width: 59%;
+}
+#searchform fieldset input {
+    width: 56%;
+}
+#searchform select, #searchform fieldset input {
+    font-size: 0.8em;
+}
+#searchform .submit {
+    padding: 0;
+    clear: both;
+    width: 450px;
 }
 
 /* Navigation (borrowed from Trac) */
@@ -344,10 +385,6 @@ h4.dublincore {
 
 
 /* Definition list */
-.nett {
-    clear: both;
-    height: 5px;
-}
 div.infos, div.extraInfos {
     margin-bottom: 15px;
 }
@@ -394,6 +431,14 @@ dl.listing dd {
     width: 70%;
     font-weight: bold;
 }
+
+/* dublin core display */
+h4.dublincore {
+    text-align: left;
+    padding: 5px 0 10px;
+    font-weight: bold;
+    color: #666;
+}
 dl.dublincore dt {
     margin-right: .8em;
     width: 28em !important;
@@ -436,8 +481,9 @@ dl.dublincore dd.caption {
     padding-bottom: .4em;
     padding-left: .4em;
 }
+
+/* extraInfos item/collection */
 .extraInfos h4 {
-    /*background: #B8B7C1 url(extra_bg.gif) no-repeat right top;*/
     background-color: #B8B7C1;
     clear: both;
     font-size: 0.9em;
@@ -462,7 +508,4 @@ dl.dublincore dd.caption {
 .extraInfos h4.on a {
     color: #FFF;
     background-position: 0 -17px;
-}
-.extraInfos h4.on a:hover {
-
 }

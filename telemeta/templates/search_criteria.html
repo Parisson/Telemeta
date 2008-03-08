@@ -8,62 +8,62 @@
 {% block content %}
 <h3>Advanced search</h3>
 
-<form action="{% url telemeta-search %}">
+<form action="{% url telemeta-search %}" id="searchform">
 
-<p>
-<label for="continent">Continent:</label>
-<select id="continent" name="continent" onchange="update_countries(this, document.getElementById('country'));">
-    <option value="">All continents</option>
-{% for continent in continents %}
-    <option value="{{continent|escape}}">{{continent|escape}}</option>
-{% endfor %}
-</select>
+<fieldset>
+    <p>
+    <label for="continent">Continent</label>
+    <select id="continent" name="continent" onchange="update_countries(this, document.getElementById('country'));">
+        <option value="">All continents</option>
+    {% for continent in continents %}
+        <option value="{{continent|escape}}">{{continent|escape}}</option>
+    {% endfor %}
+    </select>
+    </p>
+    <p>
+    <label for="country">Country</label>
+    <select name="country" id="country">
+        <option value="">All countries</option>
+    {% for country in countries %}
+        <option value="{{country.1|escape}}">{{country.1|escape}}</option>
+    {% endfor %}
+    </select>
+    </p>
+
+    <p>
+    <label for="ethnic_group">Ethnic group</label>
+    <select id="ethnic_group" name="ethnic_group">
+        <option value="">All ethnic groups</option>
+    {% for group in ethnic_groups %}
+        <option value="{{group|escape}}">{{group|escape}}</option>
+    {% endfor %}
+    </select>
+    </p>
+</fieldset>
+<fieldset>
+    <p>
+    <label for="creator">Creator</label>
+    <input type="text" id="creator" name="creator" />
+    </p>
+
+    <p>
+    <label for="title">Title</label>
+    <input type="text" id="title" name="title" />
+    </p>
+
+    <p>
+    <label for="rec_date">Recording date</label>
+    <input type="text" id="rec_date" name="rec_date" />
+    </p>
+
+    <p>
+    <label for="pub_date">Publishing date</label>
+    <input type="text" id="pub_date" name="pub_date" />
+    </p>
+</fieldset>
+<p class="submit">
+<input type="submit" value="Search &gt;&gt;" />
 </p>
-
-<p>
-<label for="country">Country:</label>
-<select name="country" id="country">
-    <option value="">All countries</option>
-{% for country in countries %}
-    <option value="{{country.1|escape}}">{{country.1|escape}}</option>
-{% endfor %}
-</select>
-</p>
-
-<p>
-<label for="ethnic_group">Ethnic group:</label>
-<select id="ethnic_group" name="ethnic_group">
-    <option value="">All ethnic groups</option>
-{% for group in ethnic_groups %}
-    <option value="{{group|escape}}">{{group|escape}}</option>
-{% endfor %}
-</select>
-</p>
-
-<p>
-<label for="creator">Creator:</label>
-<input id="creator" name="creator" />
-</p>
-
-<p>
-<label for="title">Title:</label>
-<input id="title" name="title" />
-</p>
-
-<p>
-<label for="rec_date">Recording date:</label>
-<input id="rec_date" name="rec_date" />
-</p>
-
-<p>
-<label for="pub_date">Publishing date:</label>
-<input id="pub_date" name="pub_date" />
-</p>
-
-<p>
-<input type="submit" value="Search" />
-</p>
-
 </form>
 <!--
 {% if continents %}
