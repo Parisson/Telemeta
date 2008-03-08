@@ -16,6 +16,9 @@
         <dt><span>{{ element.name }}</span>{{ element.refinement|default:"&nbsp;" }}</dt><dd>{% ifequal element.field "collection" %}<a href="{% url telemeta-collection-dublincore item.collection.id|urlencode %}">{{ element.value }}</a>{% else %}{{ element.value }}{% endifequal %}</dd>
         {% endif %}
         {% endfor %}
+        {% for item in object.ordered_items %}
+        <dt><span>relation</span>hasPart</dt><dd><a href="{% url telemeta-item-dublincore item.id|urlencode %}">{{ item.id }}</a></dd>
+        {% endfor %}
     </dl>
 {% endblock %}
 {% else %}
