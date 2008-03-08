@@ -32,11 +32,20 @@ h3 {
     clear: both;
     height: 5px;
 }
-#content ul, #content ol {
+#content {
+    position: relative;
+    margin-bottom: 2em;
+} 
+#content ul, #content ul ul, #content ol {
     list-style: square;
     padding: .7em;
     padding-left: 2em;
     font-size: 0.8em;
+    clear: both;
+}
+#content ul ul {
+    font-size: 1.1em;
+    padding-left: 0;
 }
 #content li {
     padding: .2em;
@@ -70,16 +79,6 @@ h3 {
     font-size: 0.9em;
     font-weight: bold;
 }
-
-#quick_search { position: absolute; top: 2.5em; right: 1.1em; }
-#quick_search a { font-size: 80%; }
-#quick_search input {
-    vertical-align: middle;
-    font-size: 90%;
-}
-
-#quick_search_pattern { }
-
 #leftcol {
     position: relative;
     margin-right: 345px;
@@ -129,11 +128,12 @@ h3 {
 
 /* Geographic navigator */
 ul.continents, ul.continents ul { list-style: none; margin: 0; padding: 0;}
-ul.continents { margin: 1em 1em; }
+ul.continents { margin: 1em 0; }
 ul.continents ul {margin-left: 0; margin-bottom: 0.9em; padding: 0 1em 1em 0;}
-ul.continents li.name { width: 480px; float: left;}
+ul.continents li.name { width: 460px; float: left; margin-right: 30px;}
 ul.continents li.name b { font-size: 120%; font-weight: bold; }
-ul.continents ul li { display: inline; padding-right: 1ex;}
+ul.continents ul li { display: inline; padding-right: 2em;}
+ul.continents ul li a { line-height: 1.8em; }
 
 /* Collection */
 #leftcol .intro {
@@ -149,75 +149,6 @@ ul.continents ul li { display: inline; padding-right: 1ex;}
     padding: 3px;
 
 }
-
-/* Item table */
-#item_elements {
-}
-#item_elements .item_block {
-    width: 100%;
-    padding: .5em 1.5em 0;
-    border: 1px solid #ddd;
-    margin-bottom: 15px;
-}
-
-/* Styles for tabular listings (stolen from trac) */
-table.listing {
-    clear: both;
-    border-spacing: 0;
-    width: 100%;
-}
-table.listing th {
-    text-align: left;
-    padding: 0 14em .1em 0;
-    font-size: 1em;
-}
-table.listing th, table.listing td {
-    font-size: 0.8em;
-    border-bottom: 1px solid #dfdfdf;
-}
-table.listing thead { background: #e8eaf0 }
-table.listing thead th {
-    font-size: 0.9em;
-    padding: 3px .5em 3px;
-}
-table.listing thead th :link:hover, table.listing thead th :visited:hover {
-    background-color: transparent;
-}
-table.listing thead th a {
-    border: none;
-    padding-right: 12px;
-}
-table.listing th.asc a, table.listing th.desc a { font-weight: bold }
-table.listing th.asc a, table.listing th.desc a {
- background-position: 100% 50%;
- background-repeat: no-repeat;
-}
-table.listing th.asc a { background-image: url(../images/asc.png) }
-table.listing th.desc a { background-image: url(../images/desc.png) }
-table.listing tbody td, table.listing tbody th {
-    padding: .33em .5em;
-    vertical-align: top;
-    font-weight: normal;
-}
-table.listing tbody td {
-    font-weight: bold;
-}
-table.listing tbody td.tmp {
-    width: 100%;
-}
-table.listing tbody td a:hover, table.listing tbody th a:hover {
- background-color: transparent;
-}
-table.listing tbody tr { border-top: 1px solid #ddd }
-table.listing tbody tr.even { background-color: #fcfcfc }
-table.listing tbody tr.odd { background-color: #f7f7f7 }
-table.listing tbody tr:hover { background: #f7f8fa !important }
-
-
-#content {
-    position: relative;
-    margin-bottom: 2em;
-} 
 
 /* Forms */
 input, textarea, select { margin: 2px }
@@ -240,10 +171,10 @@ input[type=reset][disabled] {
  border-style: solid;
  color: #999;
 }
-input[type=text], input.textwidget, textarea { border: 1px solid #d7d7d7 }
-input[type=text], input.textwidget { padding: .25em .5em }
+input[type=text], input.textwidget, textarea { border: 1px solid #ccc; }
+input[type=text], input.textwidget { padding: .25em .1em }
 input[type=text]:focus, input.textwidget:focus, textarea:focus {
-   border-color: #bb0000;
+   border-color: #aaa;
 }
 option { border-bottom: 1px dotted #d7d7d7; }
 fieldset { border: 1px solid #d7d7d7; padding: .5em; margin: 0 }
@@ -264,8 +195,38 @@ label.disabled { color: #d7d7d7 }
  background: none;
 }
 
-/* searchform */
+/* Quick search */
+#quick_search {
+    position: absolute;
+    top: 2.5em;
+    right: 1.1em;
+}
+#quick_search form {
+    float: left;
+    margin-right: 12px;
+}
+#quick_search p {
+    margin-top: .3em;
+}
+#quick_search a {
+    font-size: .8em;
+    font-weight: bold;
+}
+#quick_search input {
+    vertical-align: middle;
+    font-size: .8em;
+    margin-right: 0;
+}
+#quick_search_pattern {
+    background: #FFF url(search_bg.png) no-repeat;
+    padding: .4em .1em;
+    padding-left: 25px;
+    width: 150px;
+    color: #555;
+    font-weight: bold;
+}
 
+/* Search form */
 #searchform {
     margin: 15px 0;
 }
@@ -380,7 +341,6 @@ label.disabled { color: #d7d7d7 }
 }
 
 /* Homepage */
-
 .homelinks a { font-size: 120%;}
 
 
@@ -509,3 +469,77 @@ dl.dublincore dd.caption {
     color: #FFF;
     background-position: 0 -17px;
 }
+
+/* Pagination */
+.pagination {
+    margin-top: .7em;
+    margin-bottom: .3em;
+    padding: .3em;
+    padding-left: .5em;
+    float: left;
+    font-size: .9em;
+    background-color: #333;
+    color: #fff;
+    font-weight: bold;
+}
+.pagination a {
+    background-color: #eee;
+    border-bottom: none;
+    font-size: .9em;
+    padding: .3em;
+}
+
+
+
+/* Styles for tabular listings (stolen from trac) */
+table.listing {
+    clear: both;
+    border-spacing: 0;
+    width: 100%;
+}
+table.listing th {
+    text-align: left;
+    padding: 0 14em .1em 0;
+    font-size: 1em;
+}
+table.listing th, table.listing td {
+    font-size: 0.8em;
+    border-bottom: 1px solid #dfdfdf;
+}
+table.listing thead { background: #e8eaf0 }
+table.listing thead th {
+    font-size: 0.9em;
+    padding: 3px .5em 3px;
+}
+table.listing thead th :link:hover, table.listing thead th :visited:hover {
+    background-color: transparent;
+}
+table.listing thead th a {
+    border: none;
+    padding-right: 12px;
+}
+table.listing th.asc a, table.listing th.desc a { font-weight: bold }
+table.listing th.asc a, table.listing th.desc a {
+ background-position: 100% 50%;
+ background-repeat: no-repeat;
+}
+table.listing th.asc a { background-image: url(../images/asc.png) }
+table.listing th.desc a { background-image: url(../images/desc.png) }
+table.listing tbody td, table.listing tbody th {
+    padding: .33em .5em;
+    vertical-align: top;
+    font-weight: normal;
+}
+table.listing tbody td {
+    font-weight: bold;
+}
+table.listing tbody td.tmp {
+    width: 100%;
+}
+table.listing tbody td a:hover, table.listing tbody th a:hover {
+ background-color: transparent;
+}
+table.listing tbody tr { border-top: 1px solid #ddd }
+table.listing tbody tr.even { background-color: #fcfcfc }
+table.listing tbody tr.odd { background-color: #f7f7f7 }
+table.listing tbody tr:hover { background: #f7f8fa !important }

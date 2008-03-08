@@ -9,8 +9,8 @@
 <h3>Advanced search</h3>
 
 <form action="{% url telemeta-search %}" id="searchform">
-
 <fieldset>
+
     <p>
     <label for="continent">Continent</label>
     <select id="continent" name="continent" onchange="update_countries(this, document.getElementById('country'));">
@@ -20,6 +20,7 @@
     {% endfor %}
     </select>
     </p>
+
     <p>
     <label for="country">Country</label>
     <select name="country" id="country">
@@ -39,8 +40,10 @@
     {% endfor %}
     </select>
     </p>
+
 </fieldset>
 <fieldset>
+
     <p>
     <label for="creator">Creator</label>
     <input type="text" id="creator" name="creator" />
@@ -60,10 +63,13 @@
     <label for="pub_date">Publishing date</label>
     <input type="text" id="pub_date" name="pub_date" />
     </p>
+
 </fieldset>
-<p class="submit">
-<input type="submit" value="Search &gt;&gt;" />
+
+<p class="input">
+<input type="submit" value="Search" />
 </p>
+
 </form>
 <!--
 {% if continents %}

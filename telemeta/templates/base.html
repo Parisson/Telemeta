@@ -27,10 +27,10 @@
 
 <div id="quick_search">
 <form action="{% url telemeta-search %}" method="GET">
-<input id="quick_search_pattern" name="pattern" />
+<input type="text" id="quick_search_pattern" name="pattern" />
 <input type="submit" value="Search" />
 </form>        
-<a href="{% url telemeta-search-criteria %}">Advanced search</a>
+<p><a href="{% url telemeta-search-criteria %}">Advanced search</a></p>
 </div>
 
 <div id="menu" class="nav">
