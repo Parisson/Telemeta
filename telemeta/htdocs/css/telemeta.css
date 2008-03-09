@@ -345,23 +345,6 @@ label.disabled { color: #d7d7d7 }
 
 
 /* Definition list */
-div.infos, div.extraInfos {
-    margin-bottom: 15px;
-}
-div.extraInfos {
-    border-top: 1px solid #949494;
-    border-left: 1px solid #949494;
-    border-right: 1px solid #949494;
-}
-div.extraInfos div {
-    padding: 0 5px;
-}
-div.extraInfos .nett {
-    border-bottom: 1px solid #949494;
-    position: relative;
-    height: 0;
-    margin-bottom: -5px;
-}
 dl {
     position: relative;
     margin: 0;
@@ -442,31 +425,45 @@ dl.dublincore dd.caption {
     padding-left: .4em;
 }
 
-/* extraInfos item/collection */
+/* infos item/collection */
+.infos, .extraInfos {
+    margin-bottom: 15px;
+}
+.extraInfos div {
+    padding: 0 5px;
+}
+.extraInfos .nett {
+    position: relative;
+    height: 0;
+    margin-bottom: -5px;
+}
 .extraInfos h4 {
-    background-color: #B8B7C1;
     clear: both;
     font-size: 0.9em;
     line-height: 1.4em;
 }
 .extraInfos h4 a {
     display: block;
-    color: #FFF;
+    color: #333;
     text-decoration: none;
     margin: 0;
-    background: transparent url(more.gif) no-repeat left top;
+    background: #fff url(more.gif) no-repeat left top;
     padding-bottom: 2px;
-    padding-left: 20px;
+    padding-left: 16px;
     border-bottom: none;
     outline: none;
 }
 .extraInfos h4 a:hover {
     background-color: transparent;
     border-bottom: none;
-    color: #EFEFEF;
+    color: #555;
+}
+.extraInfos h4.on {
+    border-bottom: 1px dotted #aaa;
+    margin-right: 15px;
 }
 .extraInfos h4.on a {
-    color: #FFF;
+    color: #333;
     background-position: 0 -17px;
 }
 
