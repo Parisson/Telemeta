@@ -35,15 +35,11 @@ class MediaCollectionQuerySet(CoreQuerySet):
 
     def by_country(self, country):
         "Find collections by country"
-        return self.extra(where = ["id IN (SELECT collection_id "
-            "FROM telemeta_item WHERE etat = %s)"],
-            params=[country]);
+        return self.filter(items__etat=country).distinct()
     
     def by_continent(self, continent):
         "Find collections by continent"
-        return self.extra(where = ["id IN (SELECT collection_id "
-            "FROM telemeta_item WHERE continent = %s)"],
-            params=[continent]);
+        return self.filter(items__continent=continent).distinct()
 
     def by_recording_date(self, pattern):
         return self.filter(annee_enr__icontains=pattern)
