@@ -110,7 +110,7 @@ class WebView(Component):
             {'continents': continents, 'countries': countries, 
             'ethnic_groups': ethnic_groups})
 
-    def search(self, request, type = 'items'):
+    def search(self, request, type = None):
         """Perform a search through collections and items metadata"""
         collections = MediaCollection.objects.all()
         items = MediaItem.objects.all()
@@ -151,6 +151,12 @@ class WebView(Component):
             if func and value:
                 collections, items = func(value)
                 criteria[key] = value
+
+        if type is None:
+            if collections.count() and not items.count():
+                type = 'collections'
+            else:
+                type = 'items'
 
         if type == 'items':
             objects = items
