@@ -32,6 +32,11 @@ h3 {
     clear: both;
     height: 5px;
 }
+/* Min-width */
+#content, #header, #submenu {
+    min-width: 740px;
+}
+
 #content {
     position: relative;
     margin-bottom: 2em;
@@ -66,7 +71,10 @@ h3 {
     margin: 5px 0 0;
 }
 #submenu h3, #submenu div {
-    height: 1.6em;
+    min-height: 1.6em;
+}
+#submenu h3 {
+    margin-right: 80px;
 }
 #submenu div {
     position: absolute;
@@ -83,6 +91,7 @@ h3 {
     position: relative;
     margin-right: 345px;
     min-height: 450px;
+    min-width: 400px;
 }
 #rightcol {
     clear: both;
@@ -347,21 +356,24 @@ label.disabled { color: #d7d7d7 }
 /* Definition list */
 dl {
     position: relative;
-    margin: 0;
-    margin-bottom: .5em;
+    margin: .5em 0;
 }
 /* ie5 mac \*/
 dt { clear: both; }
 /* end hack */
 dl dt, dl dd {
     position: relative;
-    float: left;
     margin: 0;
     margin-bottom: .5em;
     padding: 0;
     font-size: 0.8em;
+    line-height: 1.4em;
+    min-height: 1.4em;
 }
 dl.listing dt {
+    clear: both;
+    border: 1px solid transparent;
+    float: left;
     width: 18em;
     background-color: #f9f9f9;
     border: 1px solid #eee;
@@ -371,8 +383,9 @@ dl.listing dt {
     color: #444;
 }
 dl.listing dd {
-    width: 70%;
+    margin-left: 19.4em;
     font-weight: bold;
+    border: 1px solid transparent;
 }
 
 /* dublin core display */

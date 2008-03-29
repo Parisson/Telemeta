@@ -1,0 +1,11 @@
+/* Min-width */
+#leftcol {
+    height: 450px;
+    width: 400px;
+}
+#content, #header, #submenu {
+    width: 740px;
+}
+#submenu h3, #submenu div {
+    height: 1.6em;
+}
