@@ -514,7 +514,30 @@ dl.dublincore dd.caption {
     padding: .3em;
 }
 
-
+/* Item instruments */
+div.instruments {
+    position: relative;
+    margin-left: -.7em;
+    margin-right: .5em;
+}
+table.instruments {
+    border: none;
+    border-collapse: separate;
+    width: 100%;
+    border-spacing: .7em;
+}
+table.instruments td {
+    font-size: .8em;
+    padding: 0 .2em;
+}
+table.instruments thead td {
+    background-color: #F9F9F9;
+    border: .1em solid #E1E1E1;
+    border-bottom: .3em solid #E1E1E1;
+}
+table.instruments tbody td {
+    border-bottom: .1em solid #E1E1E1;
+}
 
 /* Styles for tabular listings (stolen from trac) */
 table.listing {
