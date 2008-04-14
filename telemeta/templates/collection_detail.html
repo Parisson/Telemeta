@@ -52,15 +52,23 @@
         </div>
         <div class="infos">
             <dl class="listing">
-                <dt>Auteur / Cédant</dt><dd>{{ object.creator }}</dd>
-                <dt>Date</dt><dd>{% if object.is_published %}{{ object.date_published }}{% else %}{{ object.annee_enr }}{% endif %}</dd>
-                <dt>Titre</dt><dd>{{ object.title }}</dd>
-                {% if object.native_title %}<dt>Traduction du titre</dt><dd>{{ object.native_title }}</dd>{% endif %}
-                <dt>Durée</dt><dd>{{ object.duree_approx }}</dd>
+                {% if object.creator %}<dt>Auteur / Cédant</dt><dd>{{ object.creator }}</dd>{% endif %}
+
                 {% if object.is_published %}
-                <dt>Éditeur</dt><dd>{{ object.publisher }}</dd>
-                <dt>Référence</dt><dd>{{ object.publisher_reference }}</dd>
+                {% if object.date_published %}<dt>Date</dt><dd>{{ object.date_published }}</dd>{% endif %}
+                {% else %}
+                {% if object.annee_enr %}<dt>Date</dt><dd>{{ object.annee_enr }}</dd>{% endif %}
                 {% endif %}
+
+                {% if object.title %}<dt>Titre</dt><dd>{{ object.title }}</dd>{% endif %}
+                {% if object.native_title %}<dt>Traduction du titre</dt><dd>{{ object.native_title }}</dd>{% endif %}
+                {% if object.duree_approx %}<dt>Durée</dt><dd>{{ object.duree_approx }}</dd>{% endif %}
+
+                {% if object.is_published %}
+                {% if object.publisher %}<dt>Éditeur</dt><dd>{{ object.publisher }}</dd>{% endif %}
+                {% if object.publisher_reference %}<dt>Référence</dt><dd>{{ object.publisher_reference }}</dd>{% endif %}
+                {% endif %}
+
             </dl>
             <div class="nett"></div>
         </div>
@@ -68,9 +76,17 @@
             <h4 class="on"><a href="#">Données ethnographiques</a></h4>
             <div>
                 <dl class="listing">
+
+                {% if object.get_countries %}
                 <dt>État / Nation</dt><dd>{{object.get_countries|join:", "}}</dd>
+                {% endif %}
+
+                {% if object.get_ethnic_groups %}
                 <dt>Ethnie / Groupe social</dt><dd>{{ object.get_ethnic_groups|join:", " }}</dd>
-                <dt>Contexte de l’enregistrement</dt><dd>{{ object.terrain_ou_autre }}</dd>
+                {% endif %}
+
+                {% if object.terrain_ou_autre %}<dt>Contexte de l’enregistrement</dt><dd>{{ object.terrain_ou_autre }}</dd>{% endif %}
+
                 </dl>
             </div>
             <div class="nett"></div>
@@ -78,11 +94,11 @@
         {% if object.is_published %}
         <div class="extraInfos">
             <h4 class="on"><a href="#">Détails du document édité</a></h4>
-            <div>
+            <div class="closed">
                 <dl class="listing">
-                <dt>Réédition</dt><dd>{{ object.publishing_status }}</dd>
-                <dt>Auteur Notice</dt><dd>{{ object.booklet_writer }}</dd>
-                <dt>Notice</dt><dd>{{ object.booklet_description }}</dd>
+                {% if object.publishing_status %}<dt>Réédition</dt><dd>{{ object.publishing_status }}</dd>{% endif %}
+                {% if object.booklet_writer %}<dt>Auteur Notice</dt><dd>{{ object.booklet_writer }}</dd>{% endif %}
+                {% if object.booklet_description %}<dt>Notice</dt><dd>{{ object.booklet_description }}</dd>{% endif %}
                 </dl>
             </div>
             <div class="nett"></div>
@@ -90,40 +106,40 @@
         {% endif %}
         <div class="extraInfos">
             <h4 class="on"><a href="#">Identification du document</a></h4>
-            <div>
+            <div class="closed">
                 <dl class="listing">
-                <dt>Cote</dt><dd>{{ object.id }}</dd>
-                <dt>Format de l'original</dt><dd>{{ object.physical_format }}</dd>
+                {% if object.id %}<dt>Cote</dt><dd>{{ object.id }}</dd>{% endif %}
+                {% if object.physical_format %}<dt>Format de l'original</dt><dd>{{ object.physical_format }}</dd>{% endif %}
                 </dl>
             </div>
             <div class="nett"></div>
         </div>
         <div class="extraInfos">
             <h4 class="on"><a href="#">Informations documentaires</a></h4>
-            <div>
+            <div class="closed">
                 <dl class="listing">
-                <dt>a informer</dt><dd>{{ object.a_informer }}</dd>
-                <dt>acquisition mode</dt><dd>{{ object.acquisition_mode }}</dd>
-                <dt>champ36</dt><dd>{{ object.champ36 }}</dd>
-                <dt>collector</dt><dd>{{ object.collector }}</dd>
-                <dt>comment</dt><dd>{{ object.comment }}</dd>
+                {% if object.a_informer %}<dt>a informer</dt><dd>{{ object.a_informer }}</dd>{% endif %}
+                {% if object.acquisition_mode %}<dt>acquisition mode</dt><dd>{{ object.acquisition_mode }}</dd>{% endif %}
+                {% if object.champ36 %}<dt>champ36</dt><dd>{{ object.champ36 }}</dd>{% endif %}
+                {% if object.collector %}<dt>collector</dt><dd>{{ object.collector }}</dd>{% endif %}
+                {% if object.comment %}<dt>comment</dt><dd>{{ object.comment }}</dd>{% endif %}
                 <!--
                 <dt>compil face plage</dt><dd>{{ object.compil_face_plage }}</dd>
                 -->
-                <dt>deposant cnrs</dt><dd>{{ object.deposant_cnrs }}</dd>
-                <dt>fiches</dt><dd>{{ object.fiches }}</dd>
-                <dt>is full copy</dt><dd>{{ object.is_full_copy }}</dd>
-                <dt>is original</dt><dd>{{ object.is_original }}</dd>
-                <dt>numerisation</dt><dd>{{ object.numerisation }}</dd>
-                <dt>physical items num</dt><dd>{{ object.physical_items_num }}</dd>
-                <dt>publisher collection</dt><dd>{{ object.publisher_collection }}</dd>
-                <dt>publisher serial id</dt><dd>{{ object.publisher_serial_id }}</dd>
-                <dt>record author</dt><dd>{{ object.record_author }}</dd>
-                <dt>record writer</dt><dd>{{ object.record_writer }}</dd>
-                <dt>ref biblio</dt><dd>{{ object.ref_biblio }}</dd>
-                <dt>rights</dt><dd>{{ object.rights }}</dd>
-                <dt>travail</dt><dd>{{ object.travail }}</dd>
-                <dt>tri dibm</dt><dd>{{ object.tri_dibm }}</dd>
+                {% if object.deposant_cnrs %}<dt>deposant cnrs</dt><dd>{{ object.deposant_cnrs }}</dd>{% endif %}
+                {% if object.fiches %}<dt>fiches</dt><dd>{{ object.fiches }}</dd>{% endif %}
+                {% if object.is_full_copy %}<dt>is full copy</dt><dd>{{ object.is_full_copy }}</dd>{% endif %}
+                {% if object.is_original %}<dt>is original</dt><dd>{{ object.is_original }}</dd>{% endif %}
+                {% if object.numerisation %}<dt>numerisation</dt><dd>{{ object.numerisation }}</dd>{% endif %}
+                {% if object.physical_items_num %}<dt>physical items num</dt><dd>{{ object.physical_items_num }}</dd>{% endif %}
+                {% if object.publisher_collection %}<dt>publisher collection</dt><dd>{{ object.publisher_collection }}</dd>{% endif %}
+                {% if object.publisher_serial_id %}<dt>publisher serial id</dt><dd>{{ object.publisher_serial_id }}</dd>{% endif %}
+                {% if object.record_author %}<dt>record author</dt><dd>{{ object.record_author }}</dd>{% endif %}
+                {% if object.record_writer %}<dt>record writer</dt><dd>{{ object.record_writer }}</dd>{% endif %}
+                {% if object.ref_biblio %}<dt>ref biblio</dt><dd>{{ object.ref_biblio }}</dd>{% endif %}
+                {% if object.rights %}<dt>rights</dt><dd>{{ object.rights }}</dd>{% endif %}
+                {% if object.travail %}<dt>travail</dt><dd>{{ object.travail }}</dd>{% endif %}
+                {% if object.tri_dibm %}<dt>tri dibm</dt><dd>{{ object.tri_dibm }}</dd>{% endif %}
                 </dl>
             </div>
             <div class="nett"></div>

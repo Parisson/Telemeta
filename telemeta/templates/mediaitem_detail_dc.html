@@ -8,6 +8,7 @@
 {% endblock %}
 
 {% block content %}
+    <div id="leftcol">
     <h4 class="dublincore">Dublin Core Expression</h4>
     <dl class="dublincore">
         <dt class="caption"><span>Element</span>Refinement</dt><dd class="caption">Value</dd>
@@ -17,6 +18,7 @@
         {% endif %}
         {% endfor %}
     </dl>
+    </div>
 {% endblock %}
 {% else %}
     <p>No such item</p>

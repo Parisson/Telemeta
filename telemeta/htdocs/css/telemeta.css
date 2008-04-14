@@ -358,9 +358,6 @@ dl {
     position: relative;
     margin: .5em 0;
 }
-/* ie5 mac \*/
-dt { clear: both; }
-/* end hack */
 dl dt, dl dd {
     position: relative;
     margin: 0;
@@ -370,22 +367,37 @@ dl dt, dl dd {
     line-height: 1.4em;
     min-height: 1.4em;
 }
-dl.listing dt {
-    clear: both;
+dl dd {
     border: 1px solid transparent;
+}
+dl dt {
+    clear: both;
     float: left;
+}
+/* ie5 mac \*/
+dt { clear: both;}
+/* end hack */
+
+dl.listing dt {
     width: 18em;
     background-color: #f9f9f9;
-    border: 1px solid #eee;
-    border-right: 3px solid #ddd;
+    border: .1em solid #eee;
+    border-right: .3em solid #ddd;
     padding-left: .3em;
     margin-right: .8em;
     color: #444;
 }
+dl.listing dt.group {
+    float: none;
+    margin-top: .9em;
+    background-color: #DDDDDD;
+    border-color: #ccc;
+    border-right: .1em solid #ccc;
+    width: 18.2em;
+}
 dl.listing dd {
     margin-left: 19.4em;
     font-weight: bold;
-    border: 1px solid transparent;
 }
 
 /* dublin core display */
@@ -397,15 +409,15 @@ h4.dublincore {
 }
 dl.dublincore dt {
     margin-right: .8em;
-    width: 28em !important;
+    width: 23em !important;
     font-style: italic;
 }
 dl.dublincore dd {
-    width: 50em;
+    margin-left: 23.4em;
     font-weight: bold;
 }
 dl.dublincore dt span {
-    width: 18em;
+    width: 13em;
     display: block;
     float: left;
     font-style: normal;
@@ -419,6 +431,7 @@ dl.dublincore dt span {
 dl.dublincore .caption {
     background-color: #B8B7C1;
     margin: .5em 0;
+    margin-top: 0;
     border-bottom: 1px dotted #666;
     padding-top: .4em;
     padding-bottom: .4em;
@@ -434,8 +447,9 @@ dl.dublincore dt.caption span {
     color: #fff;
 }
 dl.dublincore dd.caption {
-    padding-bottom: .4em;
+    padding-top: .3em;
     padding-left: .4em;
+    margin-left: 23.4em;
 }
 
 /* infos item/collection */
@@ -443,7 +457,8 @@ dl.dublincore dd.caption {
     margin-bottom: 15px;
 }
 .extraInfos div {
-    padding: 0 5px;
+    padding: 0;
+    margin-bottom: 5px;
 }
 .extraInfos .nett {
     position: relative;

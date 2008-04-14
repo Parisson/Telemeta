@@ -4,5 +4,10 @@ dl.listing {
 }
 dl.listing dd {
     margin-top: .2em;
+}
+dl dd {
     border-color: #fff;
+}
+dl.dublincore dd.caption {
+    margin-top: -.1em;
 }
