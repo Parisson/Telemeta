@@ -1,4 +1,10 @@
 function ployBlocks() {
+	var extraInfos = $$('.extraInfos div');
+	for (i = 0; i <extraInfos.length; i++ ) {
+		if(!extraInfos[i].hasClassName('nett')) {
+			extraInfos[i].style.display = 'block';
+		}
+	}
 	var blocks = $$('.closed');
 	for (i = 0; i <blocks.length; i++ ) {
 		blocks[i].style.display = 'none';

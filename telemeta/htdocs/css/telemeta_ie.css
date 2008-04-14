@@ -11,3 +11,7 @@ dl dd {
 dl.dublincore dd.caption {
     margin-top: -.1em;
 }
+div.instruments {
+    margin-left: -.1em;
+    margin-right: .9em;
+}
