@@ -41,11 +41,7 @@ for dirpath, dirnames, filenames in os.walk(telemeta_dir):
         data_files.append([dirpath, [os.path.join(dirpath, f) for f in filenames]])
 
 # Dynamically calculate the version based on telemeta.VERSION.
-version_tuple = __import__('telemeta').__version__
-if version_tuple[2] is not None:
-    version = "%d.%d_%s" % version_tuple
-else:
-    version = "%d.%d" % version_tuple[:2]
+version = __import__('telemeta').__version__
 
 setup(
   name = "telemeta",
@@ -53,7 +49,7 @@ setup(
   description = "web frontend to backup, transcode and tag any audio content with metadata",
   author = ["Guillaume Pellerin, Olivier Guilyardi"],
   author_email = ["pellerin@parisson.com"],
-  version = "0.3.1",
+  version = version,
   packages = packages,
   data_files = data_files,
   long_description = """
