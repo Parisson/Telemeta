@@ -48,7 +48,7 @@ class OctaveCoreVisualizer(Component):
 
         for line in self.get_mFile_line():
             mFile_tmp.write(line)
-        #mFile_tmp.close()
+        mFile_tmp.close()
 
         # Compute
         proc = subprocess.Popen(command, stdout = subprocess.PIPE)               
