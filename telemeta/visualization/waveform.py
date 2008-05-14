@@ -36,7 +36,7 @@ class WaveFormVisualizer(Component):
         args  = "-i " + settings.MEDIA_ROOT + '/' + media_item.file + " "
         args += "-o " + pngFile.name + " "
         args += "-b ffffff "
-        args += "-l 888888 "
+        args += "-l 000088 "
         args += "-z 990000 "
         args += "-w 300 "
         args += "-h 151 "
