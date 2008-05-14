@@ -27,15 +27,15 @@ interfaces and plugin' style audio processing.
 
 Here are the main features of Telemeta: 
 
-    * Secure media editing and archiving over networks.
+    * Secure media editing and archiving over networks
     * Easy transcoding
     * Full tagging and marking methods
     * XML metadata backup
-    * Web interface introducing WorkFlow.
-    * SQL backend (still in dev from march 2007).
+    * Web interface introducing WorkFlow
+    * SQL backend
     * Data anti-corruption security with par2 recovery keys
     * Data synchronizing over remote servers (rsync)
-    * Auto AudioMarking? from metadata (thanks to Festival and Ecasound) 
+    * Auto AudioMarking from metadata (thanks to Festival and Ecasound)
 
 The Telemeta concept is based on collections. A collection includes original
 sounds - or albums containing sounds - which will be backuped in a secure way

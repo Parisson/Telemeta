@@ -16,6 +16,14 @@ lame
 # 2. Install
 # ==========
 
+2.0. Install Django
+     Warning: last know revision that works with Telemeta: 5313
+     Then, please use subversion to install it :
+     
+     $ svn co -r5313 http://code.djangoproject.com/svn/django/trunk/ django
+     $ cd django
+     $ sudo python setup.py install
+
 2.1. Install Telemeta:
 
 * On debian or Ubuntu just add these lines to your /etc/apt/sources-list:
@@ -29,7 +37,7 @@ lame
     $ sudo apt-get update
     $ sudo apt-get install telemeta
 
-* On other linux platforms, install all dependencies listed in §1.
+* On other linux platforms, install all dependencies listed at 1.
   and get the lastest tar.gz version of telemeta at http://debian.parisson.org/
   Uncompress the archive, go to the main folder of telemeta and run this command
   in a shell as root:
