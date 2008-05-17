@@ -272,8 +272,4 @@ def verify_par_key(path):
     """ Verify a par2 key """
     os.system('par2 v "'+path+'.par2"')
 
-def get_consts_value(self, data):
-    value = self.collection.__dict__[data]
-    value_type = getType(value)
-    return value, value_type
 
