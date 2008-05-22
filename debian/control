@@ -3,30 +3,25 @@ Section: sound
 Priority: optional
 Maintainer: Guillaume Pellerin <yomguy@altern.org>
 Uploaders: Paul Brossier <piem@debian.org>
-Build-Depends: debhelper (>= 5.0.0), docbook-to-man, python (>= 2.3.5-7),
-python-dev (>= 2.3.5-7), python-central (>= 0.5)
+Build-Depends: debhelper (>= 5.0.0), docbook-to-man, python (>= 2.3.5-7), cdbs (>= 0.4.42), python-setuptools (>= 0.6b3), python-support (>= 0.3), python-dev (>= 2.3.5-7)
 Standards-Version: 3.7.2
 XS-Python-Version: >= 2.3
 
 Package: telemeta
 Architecture: any
-Depends: python (>= 2.3.5-7), python-xml, python-central (>= 0.5),
-python-mutagen, python-django, sox, vorbis-tools, flac, normalize-audio,
-ecasound, festival, par2, python-mysqldb, sqlite3 | mysql-server, octave2.9,
-octave2.9-forge, python-tk
-Suggests: lame
+Depends: ${python:Depends}, python-xml, python-mutagen, python-django (>= 0.96.2), sox, vorbis-tools, flac, normalize-audio, python-mysqldb, sqlite3 | mysql-server, octave2.9, octave2.9-forge, python-tk, libgd2-xpm, libsndfile1
+Recommends: lame
+Suggests: ecasound, festival, par2
 XB-Python-Version: ${python:Versions}
 Description: web frontend to backup, transcode and tag any audio content with metadata
-Telemeta is a global audio archiving program which introduces useful and secure
-indexing methods to backup digitalized audio files and metadata dictionnaries.
-It is dedicated to backup any digitized and documented sound from collections of
-vinyls, magnetic tapes or audio CD over a strong database in accordance with
-many standards. Export functions also encapsulate edited metadata into
-compressed file. The object style architecture will soon provide user-friendly
-interfaces and plugin' style audio processing.
-
-Here are the main features of Telemeta: 
-
+ Telemeta is a global audio archiving program which introduces useful and secure
+ indexing methods to backup digitalized audio files and metadata dictionnaries.
+ It is dedicated to backup any digitized and documented sound from collections of
+ vinyls, magnetic tapes or audio CD over a strong database in accordance with
+ many standards. Export functions also encapsulate edited metadata into
+ compressed file. The object style architecture will soon provide user-friendly
+ interfaces and plugin' style audio processing.
+ Here are the main features of Telemeta:
     * Secure media editing and archiving over networks
     * Easy transcoding
     * Full tagging and marking methods
@@ -36,10 +31,8 @@ Here are the main features of Telemeta:
     * Data anti-corruption security with par2 recovery keys
     * Data synchronizing over remote servers (rsync)
     * Auto AudioMarking from metadata (thanks to Festival and Ecasound)
-
-The Telemeta concept is based on collections. A collection includes original
-sounds - or albums containing sounds - which will be backuped in a secure way
-with a view of transcoded 'public' formats (WAV, FLAC, MP3, OGG and many more
-soon...) including metadata editing and publishing tools.
-
-See http://svn.parisson.org/telemeta/ for more informations.
+ The Telemeta concept is based on collections. A collection includes original
+ sounds - or albums containing sounds - which will be backuped in a secure way
+ with a view of transcoded 'public' formats (WAV, FLAC, MP3, OGG and many more
+ soon...) including metadata editing and publishing tools.
+ See http://svn.parisson.org/telemeta/ for more informations.

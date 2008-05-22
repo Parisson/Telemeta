@@ -1,3 +1,51 @@
+telemeta (0.3.1) unstable; urgency=low
+
+  * Clear some install features
+  * Change waveform color
+  * Change menu order
+  * Change link order at home
+  * Fix spectrogram
+  * Fix tuple bug for version
+  * Modify setup method (distutils)
+  * 2nd layout v0.4 item/view + item/edit
+  * Item instruments prototype display
+  * Hide empty fields on collection and item detail display
+  * Layout breaks under 1024x768 : fixbug
+  * image search, css pagination
+  * search results: display collection tab by default if there's no item
+  * fix search combining country/continent and ethnic group
+  * layout v0.4 item/view + item/edit
+  * advanced search form/results + fix wrong revert
+  * advanced seach css formulaire
+  * fix urls
+  * affichage mediafile, overflow pour spectrogram
+  * hide 4D internal field compil_face_plage
+  * do not print duplicate countries and ethnic groups on collection detail
+  * item/collection dublincore + fixbug css
+  * write item and not items with a single result
+  * enable searching items by publish date and collections by ethnic group
+  * fix advanced search by title; fix empty search
+  * affichage item v1 + bug largeur liste definition list
+  * (re) fix build_query_string filter
+  * collection dublin core
+  * collections avec tous les champs
+  * fix build_query_string filter
+  * item quick search now also searches the creator (auteur) field
+  * improved search; search results are now paginated, displaying either
+  * items or collections, with a tab view
+  * affichage collections + modifs css
+  * sort related items by id on collection detail
+  * advanced search: add missing templates
+  * model modularization ; add is_published() method for collections
+  * model modularization
+  * add advanced search
+  * models: code cleanup and new docstrings
+  * Rewrite README and INSTALL
+  * Show a table for 'normal' data view
+  * Logo Telemeta FINAL v2
+
+ -- Guillaume Pellerin <yomguy@altern.org>  Thu, 22 May 2008 14:42:35 +0200
+
 telemeta (0.3.0-1) unstable; urgency=low
 
   * Changed README and INSTALL
