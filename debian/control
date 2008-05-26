@@ -3,12 +3,12 @@ Section: sound
 Priority: optional
 Maintainer: Guillaume Pellerin <yomguy@altern.org>
 Uploaders: Paul Brossier <piem@debian.org>
-Build-Depends: debhelper (>= 5.0.0), docbook-to-man, python (>= 2.3.5-7), cdbs (>= 0.4.42), python-setuptools (>= 0.6b3), python-support (>= 0.3), python-dev (>= 2.3.5-7)
+Build-Depends: debhelper (>= 5.0.0), docbook-to-man, python (>= 2.4), cdbs (>= 0.4.42), python-setuptools (>= 0.6b3), python-support (>= 0.3), python-dev (>= 2.4)
 Standards-Version: 3.7.3
 
 Package: telemeta
 Architecture: any
-Depends: ${python:Depends}, python-xml, python-mutagen, python-django (>= 0.96.2), sox, vorbis-tools, flac, normalize-audio, python-mysqldb, sqlite3 | mysql-server, octave2.9, octave2.9-forge, python-tk, libgd2-xpm, libsndfile1
+Depends: ${python:Depends}, python-xml, python-mutagen, python-django (>= 0.96.2), sox, vorbis-tools, flac, normalize-audio, python-mysqldb, mysql-server, octave2.9, octave2.9-forge, python-tk, libgd2-xpm, libsndfile1
 Recommends: lame
 Suggests: ecasound, festival, par2
 Description: web frontend to backup, transcode and tag any audio content with metadata
