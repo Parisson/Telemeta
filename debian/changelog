@@ -1,4 +1,4 @@
-telemeta (0.3.1) unstable; urgency=low
+telemeta (0.3.1-1beta) unstable; urgency=low
 
   * Clear some install features
   * Change waveform color

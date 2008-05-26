@@ -1,12 +1,12 @@
 # INSTALL
-# =======
+# =======
 
 
 # 1. Requirements
 # ===============
 
 python (>= 2.3.5-7), python-xml, python-central (>= 0.5),
-python-mutagen, python-django (>= 0.96.1), sox, vorbis-tools, flac, normalize-audio,
+python-mutagen, python-django (>= 0.96.2), sox, vorbis-tools, flac, normalize-audio,
 python-mysqldb, sqlite3 | mysql-server, octave2.9,
 octave2.9-forge, python-tk, libgd2-xpm, libsndfile1
 
