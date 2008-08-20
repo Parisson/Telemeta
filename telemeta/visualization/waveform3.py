@@ -25,7 +25,7 @@ class WaveFormVisualizer(Component):
         return "waveform3"
 
     def get_name(self):
-        return "Waveform3"
+        return "Waveform (audiolab)"
     
     def render(self, media_item, options=None):
         """Generator that streams the waveform as a PNG image with a python method"""
@@ -34,7 +34,7 @@ class WaveFormVisualizer(Component):
         pngFile_w = NamedTemporaryFile(suffix='.png')
         pngFile_s = NamedTemporaryFile(suffix='.png')
         image_width = 300
-        image_height = 150
+        image_height = 152
         fft_size = 2048
         args = (wav_file, pngFile_w.name, pngFile_s.name, image_width, image_height, fft_size)
         create_png(*args)

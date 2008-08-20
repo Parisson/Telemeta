@@ -19,14 +19,12 @@ class SpectrogramVisualizer2(OctaveCoreVisualizer):
 
     def __init__(self):
         self.set_m_file('spectrogram2img.m')
-        self.buffer_size = 0xFFFF
-        self.trans_type = 'ppm'
         
     def get_id(self):
         return "spectrogram2"
 
     def get_name(self):
-        return "Spectrogram 2 (< 30s)"
+        return "Spectrogram (octave)"
     
     def render(self, media_item, options=None):
         """Generator that streams the spectral view as a PNG image"""

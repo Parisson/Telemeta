@@ -25,7 +25,7 @@ class SpectrogramVisualizer3(Component):
         return "spectrogram3"
 
     def get_name(self):
-        return "Spectrogram3"
+        return "Spectrogram (audiolab)"
     
     def render(self, media_item, options=None):
         """Generator that streams the spectrogram as a PNG image with a python method"""

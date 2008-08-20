@@ -36,16 +36,19 @@ class OctaveCoreVisualizer(Component):
         self.wavFile_path = settings.MEDIA_ROOT + '/' + media_item.file
         
     def octave_to_png_stream(self, media_item):
-
-        self.ppmFile = NamedTemporaryFile(suffix='.ppm')
+        self.buffer_size = 0xFFFF
+        self.trans_type = 'ppm'
+        self.mat_type = 'm'
+        self.ppmFile = NamedTemporaryFile(suffix='.'+self.trans_type)
         self.wavFile = self.get_wav_path(media_item)
-        mFile_tmp = NamedTemporaryFile(suffix='.m')
+        mFile_tmp = NamedTemporaryFile(suffix='.'+self.mat_type)
         mFile_name = mFile_tmp.name
         mFile_tmp.close()
         mFile_tmp = open(mFile_name,'w')
         self.pngFile = NamedTemporaryFile(suffix='.png')
-        command = ['octave2.9', mFile_name]
+        command = ['octave', mFile_name]
         print command
+        print self.pngFile.name
 
         for line in self.get_mFile_line():
             mFile_tmp.write(line)
@@ -68,6 +71,6 @@ class OctaveCoreVisualizer(Component):
 
         self.ppmFile.close()
         self.pngFile.close()
-        os.remove(mFile_name)
+        #os.remove(mFile_name)
         
         
