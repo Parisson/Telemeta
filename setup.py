@@ -48,7 +48,7 @@ setup(
   url = "/http://svn.parisson.org/telemeta",
   description = "web frontend to backup, transcode and tag any audio content with metadata",
   author = ["Guillaume Pellerin, Olivier Guilyardi"],
-  author_email = ["pellerin@parisson.com"],
+  author_email = ["pellerin@parisson.com","olivier@samalyse.com"],
   version = version,
   packages = packages,
   data_files = data_files,
@@ -81,4 +81,8 @@ soon...) including metadata editing and publishing tools.
 See http://svn.parisson.org/telemeta/ for more informations.
 """
 )
+
+# Install audiolab
+os.chdir('telemeta/util/audiolab/')
+os.system('python setup.py install')
 

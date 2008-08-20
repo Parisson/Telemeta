@@ -18,9 +18,6 @@ class WaveFormVisualizer(Component):
 
     implements(IMediaItemVisualizer)
 
-    def __init__(self):
-        pass
-    
     def get_id(self):
         return "waveform3"
 
@@ -46,6 +43,4 @@ class WaveFormVisualizer(Component):
 
         pngFile_w.close()
         pngFile_s.close()
-
-
 

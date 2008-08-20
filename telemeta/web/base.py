@@ -47,12 +47,12 @@ class WebView(Component):
             formats.append({'name': exporter.get_format(), 'extension': exporter.get_file_extension()})
         visualizers = []
         for visualizer in self.visualizers:
-            visualizers.append({'name':visualizer.get_name(), 'id': 
+            visualizers.append({'name':visualizer.get_name(), 'id':
                 visualizer.get_id()})
         if request.REQUEST.has_key('visualizer_id'):
             visualizer_id = request.REQUEST['visualizer_id']
         else:
-            visualizer_id = 'waveform'
+            visualizer_id = 'waveform3'
 
         return render_to_response(template, 
                     {'item': item, 'export_formats': formats, 
@@ -302,10 +302,3 @@ class WebView(Component):
             template_name='geo_country_collections.html', paginate_by=20,
             extra_context={'country': country, 'continent': continent})
 
-        
-
-        
-    
-    
-
-    

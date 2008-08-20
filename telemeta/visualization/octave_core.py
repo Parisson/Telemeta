@@ -47,8 +47,6 @@ class OctaveCoreVisualizer(Component):
         mFile_tmp = open(mFile_name,'w')
         self.pngFile = NamedTemporaryFile(suffix='.png')
         command = ['octave', mFile_name]
-        print command
-        print self.pngFile.name
 
         for line in self.get_mFile_line():
             mFile_tmp.write(line)
@@ -71,6 +69,6 @@ class OctaveCoreVisualizer(Component):
 
         self.ppmFile.close()
         self.pngFile.close()
-        #os.remove(mFile_name)
+        os.remove(mFile_name)
         
         

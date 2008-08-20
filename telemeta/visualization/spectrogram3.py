@@ -18,9 +18,6 @@ class SpectrogramVisualizer3(Component):
 
     implements(IMediaItemVisualizer)
 
-    def __init__(self):
-        pass
-    
     def get_id(self):
         return "spectrogram3"
 
