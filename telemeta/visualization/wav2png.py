@@ -51,7 +51,10 @@ class TestAudioFile(object):
             raise IOError()
 
         num_frames_left = self.num_frames - self.seekpoint
-        #will_read = num_frames_left if num_frames_left < frames_to_read else frames_to_read
+        if num_frames_left < frames_to_read:
+            will_read = num_frames_left
+        else:
+            will_read = frames_to_read
         self.seekpoint += will_read
         return numpy.random.random(will_read)*2 - 1 
 
@@ -82,7 +85,10 @@ class AudioProcessor(object):
         if start < 0:
             # the first FFT window starts centered around zero
             if size + start <= 0:
-                return numpy.zeros(size) if resize_if_less else numpy.array([])
+                if resize_if_less:
+                    return numpy.zeros(size)
+                else:
+                    return numpy.array([])
             else:
                 self.audio_file.seek(0)
 
@@ -104,7 +110,10 @@ class AudioProcessor(object):
             samples = self.audio_file.read_frames(to_read)
         except IOError:
             # this can happen for wave files with broken headers...
-            return numpy.zeros(size) if resize_if_less else numpy.zeros(2)
+            if resize_if_less:
+                return numpy.zeros(size)
+            else:
+                return numpy.zeros(2)
 
         # convert to mono by selecting left channel only
         if self.channels > 1:
@@ -194,8 +203,11 @@ class AudioProcessor(object):
             if local_min_value < min_value:
                 min_value = local_min_value
                 min_index = local_min_index
-    
-        return (min_value, max_value) if min_index < max_index else (max_value, min_value)
+
+        if min_index < max_index:
+            return (min_value, max_value)
+        else:
+            return (max_value, min_value)
 
 
 def interpolate_colors(colors, flat=False, num_colors=256):
