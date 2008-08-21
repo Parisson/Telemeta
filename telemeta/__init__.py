@@ -11,12 +11,12 @@ U{http://svn.parisson.org/telemeta}
 """
 
 __docformat__ = 'epytext en'
-__version__ = '0.3.1'
+__version__ = '0.3.2'
 __url__ = 'http://svn.parisson.org/telemeta'
-__copyright__ = '(C) 2007 Parisson'
+__copyright__ = '(C) 2007-2008 Parisson SARL'
 __license__ = 'BSD'
 __license_long__ = """
- Copyright (C) 2007 Parisson
+ Copyright (C) 2007 Parisson SARL
  All rights reserved.
  
  Redistribution and use in source and binary forms, with or without
