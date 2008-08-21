@@ -52,7 +52,7 @@ class AudioProcessor(Component):
             samples = samples[:,0]
         return samples    
         
-def read(self, start, size, resize_if_less=False):
+    def read(self, start, size, resize_if_less=False):
         """ read size samples starting at start, if resize_if_less is True and less than size
         samples are read, resize the array to size and fill with zeros """
         
