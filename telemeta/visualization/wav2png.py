@@ -51,7 +51,7 @@ class TestAudioFile(object):
             raise IOError()
 
         num_frames_left = self.num_frames - self.seekpoint
-        will_read = num_frames_left if num_frames_left < frames_to_read else frames_to_read
+        #will_read = num_frames_left if num_frames_left < frames_to_read else frames_to_read
         self.seekpoint += will_read
         return numpy.random.random(will_read)*2 - 1 
 
