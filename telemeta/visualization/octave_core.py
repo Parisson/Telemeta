@@ -1,7 +1,6 @@
 
 from telemeta.core import *
-from telemeta.export import *
-from telemeta.visualization.api import IMediaItemVisualizer
+#from telemeta.visualization.api import IMediaItemVisualizer
 from django.conf import settings
 from tempfile import NamedTemporaryFile
 import os

@@ -135,6 +135,17 @@ h3 {
     font-size: 1em;
 }
 
+.analyser {
+    background-color: #fff;
+    color: #555;
+    border: 1px solid #adadad;
+    width: 301px;
+    padding: 2px;
+    margin: 5px 0 0;
+    overflow: auto;
+    font-size: 1em;
+}
+
 /* Geographic navigator */
 ul.continents, ul.continents ul { list-style: none; margin: 0; padding: 0;}
 ul.continents { margin: 1em 0; }

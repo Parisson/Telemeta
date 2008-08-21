@@ -53,6 +53,25 @@
         <a href="{% url telemeta-item-export item.id|urlencode,format.extension %}">{{ format.name }}</a>
         {% endfor %}</p>
     </div>
+    <div class="analyser">
+        <p>Analysis:</p>
+        <br>
+        <table>
+        {% for analyser in analysers %}
+         <tr>
+          <td>
+            {{ analyser.name }}
+          </td>
+          <td> =
+            {{ analyser.value }}
+          </td>
+          <td>
+            {{ analyser.unit }}
+          </td>
+        </tr>
+        {% endfor %}
+       </table>
+    </div>
 </div>
 {% endif %}
     <div id="leftcol">

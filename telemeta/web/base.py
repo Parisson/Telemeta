@@ -25,12 +25,14 @@ from telemeta.models import MediaCollection
 from telemeta.core import Component, ExtensionPoint
 from telemeta.export import *
 from telemeta.visualization import *
+from telemeta.analysis import *
 
 class WebView(Component):
     """Provide web UI methods"""
 
     exporters = ExtensionPoint(IExporter)
     visualizers = ExtensionPoint(IMediaItemVisualizer)
+    analyzers = ExtensionPoint(IMediaItemAnalyzer)
 
     def index(self, request):
         """Render the homepage"""
@@ -42,9 +44,11 @@ class WebView(Component):
     def item_detail(self, request, item_id, template='mediaitem_detail.html'):
         """Show the details of a given item"""
         item = MediaItem.objects.get(pk=item_id)
+        
         formats = []
         for exporter in self.exporters:
             formats.append({'name': exporter.get_format(), 'extension': exporter.get_file_extension()})
+
         visualizers = []
         for visualizer in self.visualizers:
             visualizers.append({'name':visualizer.get_name(), 'id':
@@ -54,9 +58,18 @@ class WebView(Component):
         else:
             visualizer_id = 'waveform3'
 
+        analyzers = []
+        for analyzer in self.analyzers:
+            value = analyzer.render(item)
+            analyzers.append({'name':analyzer.get_name(),
+                              'id':analyzer.get_id(),
+                              'unit':analyzer.get_unit(),
+                              'value':str(value)})
+          
         return render_to_response(template, 
                     {'item': item, 'export_formats': formats, 
-                    'visualizers': visualizers, 'visualizer_id': visualizer_id})
+                    'visualizers': visualizers, 'visualizer_id': visualizer_id,
+                    'analysers': analyzers})
                     
     def item_visualize(self, request, item_id, visualizer_id):
         for visualizer in self.visualizers:

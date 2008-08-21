@@ -30,7 +30,7 @@ class SpectrogramVisualizer3(Component):
         wav_file = settings.MEDIA_ROOT + '/' + media_item.file
         pngFile_w = NamedTemporaryFile(suffix='.png')
         pngFile_s = NamedTemporaryFile(suffix='.png')
-        image_width = 1800
+        image_width = 305
         image_height = 150
         fft_size = 2048
         args = (wav_file, pngFile_w.name, pngFile_s.name, image_width, image_height, fft_size)
