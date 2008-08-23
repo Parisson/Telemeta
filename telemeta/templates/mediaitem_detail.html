@@ -47,22 +47,19 @@
             <input type="submit" value="OK" />
         </form>
     </div>
-    <div class="exporter">
-        <p>Download:
-        {% for format in export_formats %}
-        <a href="{% url telemeta-item-export item.id|urlencode,format.extension %}">{{ format.name }}</a>
-        {% endfor %}</p>
-    </div>
-    <div class="analyser">
-        <p>Analysis:</p>
-        <br>
-        <table>
+    <div class="analyzer">
+        <table width="100%">
+         <tr>
+          <td>Parameter</td>
+          <td>Value</td>
+          <td>Unit</td>
+         <tr>
         {% for analyser in analysers %}
          <tr>
           <td>
             {{ analyser.name }}
           </td>
-          <td> =
+          <td> 
             {{ analyser.value }}
           </td>
           <td>
@@ -72,6 +69,13 @@
         {% endfor %}
        </table>
     </div>
+    <div class="exporter">
+        <p>Download:
+        {% for format in export_formats %}
+        <a href="{% url telemeta-item-export item.id|urlencode,format.extension %}">{{ format.name }}</a>
+        {% endfor %}</p>
+    </div>
+
 </div>
 {% endif %}
     <div id="leftcol">

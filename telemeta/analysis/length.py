@@ -16,11 +16,6 @@ class LengthAnalyzer(AudioProcessor):
 
     implements(IMediaItemAnalyzer)
 
-    def __init__(self):
-        self.fft_size = 2048
-        self.window_function = numpy.hanning
-        self.window = self.window_function(self.fft_size)
-        
     def get_id(self):
         return "length"
 
@@ -32,4 +27,4 @@ class LengthAnalyzer(AudioProcessor):
 
     def render(self, media_item, options=None):
         self.pre_process(media_item)
-        return numpy.round(numpy.divide(self.frames, self.samplerate),2)
+        return numpy.round(float(self.frames)/float(self.samplerate),2)

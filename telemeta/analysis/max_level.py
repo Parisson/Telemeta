@@ -16,22 +16,16 @@ class MaxLevelAnalyzer(AudioProcessor):
 
     implements(IMediaItemAnalyzer)
 
-    def __init__(self):
-        self.fft_size = 2048
-        self.window_function = numpy.hanning
-        self.window = self.window_function(self.fft_size)
-        
     def get_id(self):
         return "max_level"
 
     def get_name(self):
-        return "Maximum level"
+        return "Maximum peak level"
 
     def get_unit(self):
         return "dB"
 
     def render(self, media_item, options=None):
         self.pre_process(media_item)
-        samples = self.get_mono_samples()
-        print str(numpy.max(samples))
+        samples = self.get_samples()
         return numpy.round(20*numpy.log10(numpy.max(samples)),2)

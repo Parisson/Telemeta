@@ -50,7 +50,11 @@ class AudioProcessor(Component):
         # convert to mono by selecting left channel only
         if self.channels > 1:
             samples = samples[:,0]
-        return samples    
+        return samples
+
+    def get_samples(self):
+        samples = self.audio_file.read_frames(self.frames)
+        return samples  
         
     def read(self, start, size, resize_if_less=False):
         """ read size samples starting at start, if resize_if_less is True and less than size

@@ -294,7 +294,7 @@ class WaveformImage(object):
         
         if alpha > 0.0 and alpha < 1.0 and y_max_int + 1 < self.image_height:
             current_pix = self.pix[x, y_max_int + 1]
-                
+            
             r = int((1-alpha)*current_pix[0] + alpha*color[0])
             g = int((1-alpha)*current_pix[1] + alpha*color[1])
             b = int((1-alpha)*current_pix[2] + alpha*color[2])

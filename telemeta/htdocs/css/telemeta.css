@@ -120,7 +120,7 @@ h3 {
     border: 1px solid #adadad;
     text-align: center;
 }
-.item_visualization select { width: 210px; }
+.item_visualization select { width: 240px; }
 .item_visualization .viewport { width: 305px; border: 1px solid #adadad; overflow: auto; margin-top: 5px; background-color: #fff;}
 
 .exporter {
@@ -131,18 +131,18 @@ h3 {
     padding: 2px;
     height: 17px;
     margin: 5px 0 0;
-    overflow: auto;
+    /* overflow: auto; */
     font-size: 1em;
 }
 
-.analyser {
+.analyzer {
     background-color: #fff;
     color: #555;
     border: 1px solid #adadad;
     width: 301px;
     padding: 2px;
     margin: 5px 0 0;
-    overflow: auto;
+    /* overflow: auto; */
     font-size: 1em;
 }
 
