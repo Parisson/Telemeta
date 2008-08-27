@@ -26,6 +26,7 @@ from telemeta.core import Component, ExtensionPoint
 from telemeta.export import *
 from telemeta.visualization import *
 from telemeta.analysis import *
+from telemeta.analysis.vamp import *
 
 class WebView(Component):
     """Provide web UI methods"""
@@ -65,11 +66,17 @@ class WebView(Component):
                               'id':analyzer.get_id(),
                               'unit':analyzer.get_unit(),
                               'value':str(value)})
+
+        vamp = VampCoreAnalyzer()
+        vamp_plugins = vamp.get_plugins_list()
+        vamp_plugin_list = []
+        for plugin in vamp_plugins:
+            vamp_plugin_list.append(':'.join(plugin[1:]))
           
         return render_to_response(template, 
                     {'item': item, 'export_formats': formats, 
                     'visualizers': visualizers, 'visualizer_id': visualizer_id,
-                    'analysers': analyzers})
+                    'analysers': analyzers, 'vamp_plugins': vamp_plugin_list})
                     
     def item_visualize(self, request, item_id, visualizer_id):
         for visualizer in self.visualizers:

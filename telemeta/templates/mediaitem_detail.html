@@ -44,10 +44,10 @@
                 {{v.name}}</option>
                 {% endfor %}
             </select>
-            <input type="submit" value="OK" />
+            <input type="submit" value="Set" />
         </form>
-    </div>
-    <div class="analyzer">
+
+      <div class="analyzer">
         <table width="100%">
          <tr>
           <td>Parameter</td>
@@ -68,13 +68,28 @@
         </tr>
         {% endfor %}
        </table>
+     </div>
+
+    <form method="get" action="#">
+        <p>&nbsp;Vamp plugin analysis</p>
+        <select name="vamp_id">
+        {% for plugin in vamp_plugins %}
+        <option value="{{ plugin }}" {% ifequal plugin vamp_id %} selected="selected" {% endifequal %}>
+        {{ plugin }}</option>
+        {% endfor %}
+        </select>
+        <input type="submit" value="Get" />
+    </form>
+    
     </div>
+
     <div class="exporter">
         <p>Download:
         {% for format in export_formats %}
         <a href="{% url telemeta-item-export item.id|urlencode,format.extension %}">{{ format.name }}</a>
         {% endfor %}</p>
     </div>
+    
 
 </div>
 {% endif %}

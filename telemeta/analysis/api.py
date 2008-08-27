@@ -25,5 +25,5 @@ class IMediaItemAnalyzer(Interface):
         """
     
     def render(media_item, options=None):
-        """Return a list containing data results of the process"""
+        """Return the result data of the process"""
             
