@@ -1,3 +1,12 @@
+telemeta (0.3.2) unstable; urgency=low
+
+  * Add analysis plugin component and views
+  * Add wav2png.py objects and views
+  * Add audiolab python library
+  * Modify dependencies
+
+ -- Guillaume Pellerin <yomguy@altern.org>  Thu, 28 Aug 2008 01:13:14 +0200
+
 telemeta (0.3.1-1beta) unstable; urgency=low
 
   * Clear some install features
@@ -44,7 +53,7 @@ telemeta (0.3.1-1beta) unstable; urgency=low
   * Show a table for 'normal' data view
   * Logo Telemeta FINAL v2
 
- -- Guillaume Pellerin <yomguy@altern.org>  Thu, 22 May 2008 14:42:35 +0200
+ -- Guillaume Pellerin <yomguy@altern.org>  Thu, 28 Aug 2008 01:11:19 +0200
 
 telemeta (0.3.0-1) unstable; urgency=low
 
