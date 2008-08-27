@@ -8,7 +8,7 @@ Standards-Version: 3.7.3
 
 Package: telemeta
 Architecture: any
-Depends: ${python:Depends}, python-xml, python-mutagen, python-django (>= 0.96.2), sox, vorbis-tools, flac, normalize-audio, python-mysqldb, mysql-server, octave2.9, python-tk, libgd2-xpm, libsndfile1, python-numpy, python-ctypes (>= 1.0.1), vamp-examples
+Depends: ${python:Depends}, python-xml, python-mutagen, python-django (>= 0.96.2), sox, vorbis-tools, flac, normalize-audio, python-mysqldb, mysql-server, octave2.9, python-tk, libgd2-xpm, libsndfile1 (>= 1.0.17), python-numpy, python-ctypes (>= 1.0.1), vamp-examples
 Recommends: lame
 Suggests: ecasound, festival, par2
 Description: web frontend to backup, transcode and tag any audio content with metadata

@@ -9,7 +9,7 @@ import subprocess
 import signal
 import time
 
-class VampCoreAnalyzer():
+class VampCoreAnalyzer:
     """Parent class for Vamp plugin drivers"""
 
     def __init__(self):
