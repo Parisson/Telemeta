@@ -39,7 +39,7 @@ soon...) including metadata editing and publishing tools.
 python (>= 2.3.5-7), python-xml, python-central (>= 0.5),
 python-mutagen, python-django, sox, vorbis-tools, flac, normalize-audio,
 ecasound, festival, par2, python-mysqldb, sqlite3 | mysql-server, octave2.9,
-octave2.9-forge, python-tk
+octave2.9-forge, python-tk, python-numpy, python-audiolab, libsndfile1
 
 
 # 3. Installation and usage

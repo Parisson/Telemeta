@@ -8,7 +8,7 @@
 python (>= 2.3.5-7), python-xml, python-central (>= 0.5),
 python-mutagen, python-django (>= 0.96.2), sox, vorbis-tools, flac, normalize-audio,
 python-mysqldb, sqlite3 | mysql-server, octave2.9,
-octave2.9-forge, python-tk, libgd2-xpm, libsndfile1
+octave2.9-forge, python-tk, libgd2-xpm, libsndfile1, python-audiolab
 
 optional:
 lame, ecasound, par2
@@ -18,7 +18,9 @@ lame, ecasound, par2
 
 2.0. Install Telemeta:
 
-* On Debian or Ubuntu just add these lines to your /etc/apt/sources-list:
+* On Debian or Ubuntu :
+
+    Just add these lines to your /etc/apt/sources-list:
 
     deb http://debian.parisson.org/ binary/
     deb-src http://debian.parisson.org/ source/
@@ -29,22 +31,37 @@ lame, ecasound, par2
     $ sudo apt-get update
     $ sudo apt-get install telemeta
 
-* On other linux platforms, install all dependencies listed at 1.
-  and get the lastest tar.gz version of telemeta at http://svn.parisson.org/telemeta/
-  Uncompress the archive, go to the main folder of telemeta and run this command
-  in a shell as root:
+    This method provides the installation of all needed packages
+    thanks to the Debian dependency system.
+
+    Go to 2.2.
+
+* On other linux platforms
+
+    Install all dependencies listed at 1.
+
+    Download the lastest release of telemeta at
+
+    http://svn.parisson.org/telemeta/
+
+    Uncompress the archive like :
+
+    $ tar xzvf telemeta_0.3.2.tar.gz
+    
+    Go to the main folder of telemeta and run this command
+    in a shell as root:
 
     $ sudo python setup.py install
 
-2.1. Compile wav2png
+2.1. Install audiolab
 
-    In order to get the wavforms of the audio files, wav2png have to be compiled in telemeta :
-    
-    $ cd $DIR/telemeta/visualization/wav2png/
-    
-    where $DIR is the directory where telemeta  installed (e.g. /usr/lib/python2.5/site-packages/)
+    This is ONLY needed if you did NOT install telemeta with Debian's apt-get.
 
-    $ make
+    In order to get the wavforms of the audio files,
+    python-audiolab have to be installed in telemeta :
+    
+    $ cd telemeta/util/audiolab/
+    $ sudo python setup.py install
     
 2.2. Create a Django project if you haven't already done it:
 
