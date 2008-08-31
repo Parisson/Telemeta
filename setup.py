@@ -83,6 +83,6 @@ See http://svn.parisson.org/telemeta/ for more informations.
 )
 
 # Install audiolab
-os.chdir('telemeta/util/audiolab/')
-os.system('python setup.py install')
+#os.chdir('telemeta/util/audiolab/')
+#os.system('python setup.py install')
 
