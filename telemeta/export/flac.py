@@ -115,8 +115,7 @@ class FlacExporter(ExporterCore):
         self.args = self.get_args(options)
         self.ext = self.get_file_extension()
         self.args = ' '.join(self.args)
-        self.command = 'flac %s "%s" -c -' \
-                       % (self.args, self.source)
+        self.command = 'flac %s "%s" -c -' % (self.args, self.source)
 
         # Pre-proccessing
         self.dest = self.pre_process(self.item_id,

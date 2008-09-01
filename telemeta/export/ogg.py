@@ -109,8 +109,7 @@ class OggExporter(ExporterCore):
         self.args = self.get_args(options)
         self.ext = self.get_file_extension()
         self.args = ' '.join(self.args)
-        self.command = 'sox "%s" -q -w -r 44100 -t wav -c2 - | oggenc %s -' \
-                       % (self.source,self.args)
+        self.command = 'oggenc %s "%s" -' % (self.args, self.source)
         
         # Pre-proccessing
         self.dest = self.pre_process(self.item_id,
