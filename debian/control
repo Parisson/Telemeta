@@ -3,7 +3,7 @@ Section: sound
 Priority: optional
 Maintainer: Guillaume Pellerin <yomguy@altern.org>
 Uploaders: Paul Brossier <piem@debian.org>
-Build-Depends: debhelper (>= 5.0.0), docbook-to-man, python (>= 2.4), cdbs (>= 0.4.42), python-setuptools (>= 0.6b3), python-support (>= 0.3), python-all-dev (>= 2.3.5-11)
+Build-Depends: debhelper (>= 5.0.0), docbook-to-man, cdbs (>= 0.4.42), python-setuptools (>= 0.6b3), python-support (>= 0.3), python-all-dev (>= 2.3.5-11)
 Standards-Version: 3.8.0
 
 Package: telemeta
