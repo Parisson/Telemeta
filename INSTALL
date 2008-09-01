@@ -18,7 +18,7 @@ lame, ecasound, par2
 
 2.0. Install Telemeta:
 
-* On Debian or Ubuntu :
+    * On Debian (Testing recommended) or Ubuntu Hoary :
 
     Just add these lines to your /etc/apt/sources-list:
 
@@ -36,7 +36,7 @@ lame, ecasound, par2
 
     Go to 2.2.
 
-* On other linux platforms
+    * On other linux platforms
 
     Install all dependencies listed at 1.
 
@@ -53,16 +53,26 @@ lame, ecasound, par2
 
     $ sudo python setup.py install
 
-2.1. Install audiolab
+2.1.1. Install audiolab
 
     This is ONLY needed if you did NOT install telemeta with Debian's apt-get.
 
     In order to get the wavforms of the audio files,
     python-audiolab have to be installed in telemeta :
     
-    $ cd telemeta/util/audiolab/
+    $ svn export http://svn.scipy.org/svn/scikits/trunk/audiolab
+    $ cd audiolab/
+    $ sudo python setup.py install
+
+2.1.2. Install the development version of the Django framework:
+
+    $ svn co -r5313 http://code.djangoproject.com/svn/django/trunk/ django/
+    $ cd django
     $ sudo python setup.py install
     
+    WARNING: last know revision that works with Telemeta: 5313
+    See http://www.djangoproject.com
+
 2.2. Create a Django project if you haven't already done it:
 
     $ cd ~/my_projects
@@ -114,7 +124,8 @@ lame, ecasound, par2
 2.8. Go the web page:
 
     http://localhost:8000
-
+    or
+    http://localhost:9000
 
 See README and http://svn.parisson.org/telemeta/ for more informations.
 
