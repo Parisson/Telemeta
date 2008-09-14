@@ -73,7 +73,7 @@ class MediaCollection(Model, MediaCore):
 
     publisher_reference = CharField(maxlength=250, blank=True)
     physical_format     = CharField(maxlength=250, blank=True)
-    id                  = CharField(maxlength=250, primary_key=True, 
+    id                  = CharField(maxlength=250, primary_key=True,
                         verbose_name='identifier', validator_list=[id_validator])
     title               = CharField(maxlength=250)
     native_title        = CharField(maxlength=250, blank=True)

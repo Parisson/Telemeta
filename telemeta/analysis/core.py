@@ -41,6 +41,8 @@ class AudioProcessor(Component):
         self.frames = self.audio_file.get_nframes()
         self.samplerate = self.audio_file.get_samplerate()
         self.channels = self.audio_file.get_channels()
+        self.format = self.audio_file.get_file_format()
+        self.encoding = self.audio_file.get_encoding()
 
     def post_process(self, audio_file):
         pass
