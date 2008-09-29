@@ -1,3 +1,10 @@
+telemeta (0.3.3) unstable; urgency=low
+
+  * Add django 1.0 compatibility (no backward compatibility in most cases)
+  * Modify dependencies and manuals 
+
+ -- Guillaume Pellerin <yomguy@altern.org>  Tue, 30 Sep 2008 02:34:57 +0200
+
 telemeta (0.3.2) unstable; urgency=low
 
   * Add analysis plugin component and views

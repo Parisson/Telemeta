@@ -5,10 +5,12 @@
 # 1. Requirements
 # ===============
 
-python (>= 2.3.5-7), python-xml, python-central (>= 0.5),
-python-mutagen, python-django (>= 0.97-pre), sox, vorbis-tools, flac,
-normalize-audio, python-mysqldb, sqlite3 | mysql-server, octave2.9,
-octave2.9-forge, python-tk, libgd2-xpm, libsndfile1, python-audiolab
+python (>= 2.3.5-7), python-xml, python-mutagen, python-django (>= 1.0-1),
+python-imaging (>= 1.1.6), sox, vorbis-tools, flac, normalize-audio,
+python-mysqldb, mysql-server, octave2.9, python-tk, libgd2-xpm,
+libsndfile1 (>= 1.0.17), python-numpy, python-ctypes (>= 1.0.1),
+python-scikits-audiolab (>= 0.7), python-setuptools (>= 0.6b3),
+python-support (>= 0.3),
 
 optional:
 lame, ecasound, par2
@@ -16,44 +18,45 @@ lame, ecasound, par2
 # 2. Install
 # ==========
 
-2.0. Install Telemeta:
+2.1.1 Install Telemeta:
 
     * On Debian (Testing recommended) or Ubuntu Hoary :
 
-    Just add these lines to your /etc/apt/sources-list:
+        Just add these lines to your /etc/apt/sources-list:
 
-    deb http://debian.parisson.org/ binary/
-    deb-src http://debian.parisson.org/ source/
-    deb http://www.debian-multimedia.org etch main
+        deb http://debian.parisson.org/ binary/
+        deb-src http://debian.parisson.org/ source/
+        deb http://www.debian-multimedia.org etch main
 
-    Then,
+        Then,
 
-    $ sudo apt-get update
-    $ sudo apt-get install telemeta
+        $ sudo apt-get update
+        $ sudo apt-get install telemeta
 
-    This method provides the installation of all needed packages
-    thanks to the Debian dependency system.
+        This method provides the installation of all needed packages
+        thanks to the Debian dependency system.
 
-    Go to 2.2.
+        Go to 2.2.
 
     * On other linux platforms
 
-    Install all dependencies listed at 1.
+        Install all dependencies listed at 1.
 
-    Download the lastest release of telemeta at
+        Download the lastest release of telemeta at
 
-    http://svn.parisson.org/telemeta/
+        http://svn.parisson.org/telemeta/
 
-    Uncompress the archive like :
+        Uncompress the archive like :
 
-    $ tar xzvf telemeta_0.3.2.tar.gz
-    
-    Go to the main folder of telemeta and run this command
-    in a shell as root:
+        $ tar xzvf telemeta_0.3.2.tar.gz
+        
+        Go to the main folder of telemeta and run this command
+        in a shell as root:
 
-    $ sudo python setup.py install
+        $ sudo python setup.py install
 
-2.1.1. Install audiolab
+
+2.1.2. Install audiolab
 
     This is ONLY needed if you did NOT install telemeta with Debian's apt-get.
 
@@ -64,19 +67,23 @@ lame, ecasound, par2
     $ cd audiolab/
     $ sudo python setup.py install
 
-2.1.2. Install the development version of the Django framework:
 
-    $ svn co -r5313 http://code.djangoproject.com/svn/django/trunk/ django/
-    $ cd django
-    $ sudo python setup.py install
-    
-    WARNING: last know revision that works with Telemeta: 5313
-    See http://www.djangoproject.com
+2.1.3. Install the Django framework version 1.0:
+
+    * On Debian (Testing recommended) or Ubuntu Hoary :
+
+        $ sudo apt-get install python-django
+
+    * On other linux platforms, download and install from:
+
+        http://www.djangoproject.com/download/
+        
 
 2.2. Create a Django project if you haven't already done it:
 
     $ cd ~/my_projects
     $ django-admin startproject mysite
+
 
 2.3. Create the media and cache directories:
 
@@ -84,6 +91,7 @@ lame, ecasound, par2
     $ mkdir media cache
 
     You might want to place these somewhere else...
+
 
 2.4. Configure Django (settings.py):
 
@@ -101,9 +109,11 @@ lame, ecasound, par2
     TELEMETA_EXPORT_CACHE_DIR = TELEMETA_CACHE_DIR + "/export"
     CACHE_BACKEND = "file://" + TELEMETA_CACHE_DIR + "/data"
 
+
 2.5. Initialize the database:
 
     $ python manage.py syncdb
+
 
 2.6. Configure your urls:
 
@@ -111,6 +121,7 @@ lame, ecasound, par2
     this url in urls.py :
 
     (r'^', include('telemeta.urls')),
+
 
 2.7. Start the project:
 
@@ -121,11 +132,13 @@ lame, ecasound, par2
 
     $ python manage.py runserver 9000
     
+
 2.8. Go the web page:
 
     http://localhost:8000
     or
     http://localhost:9000
+
 
 See README and http://svn.parisson.org/telemeta/ for more informations.
 
