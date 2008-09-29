@@ -12,9 +12,9 @@ from django.db.models import Model, CharField
 class PhysicalFormat(Model):
     "Physical support of media items"
 
-    value = CharField(maxlength=250)
+    value = CharField(max_length=250)
     is_enumeration = True
-    def __str__(self):
+    def __unicode__(self):
         return self.value
     class Meta:
         app_label = 'telemeta'
@@ -23,9 +23,9 @@ class PhysicalFormat(Model):
         
 class PublishingStatus(Model):
     "Publishing status of media items"
-    value = CharField(maxlength=250)
+    value = CharField(max_length=250)
     is_enumeration = True
-    def __str__(self):
+    def __unicode__(self):
         return self.value
     class Meta:
         app_label = 'telemeta'

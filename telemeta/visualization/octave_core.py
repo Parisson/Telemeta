@@ -32,7 +32,7 @@ class OctaveCoreVisualizer(Component):
         self.mFile = mFile
 
     def get_wav_path(self, media_item):
-        self.wavFile_path = settings.MEDIA_ROOT + '/' + media_item.file
+        self.wavFile_path = media_item.file.path
         
     def octave_to_png_stream(self, media_item):
         self.buffer_size = 0xFFFF

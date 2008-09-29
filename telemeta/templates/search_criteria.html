@@ -2,7 +2,7 @@
 {% load telemeta_utils %}
 
 {% block extra_javascript %}
-<script src="{% url telemeta-continents-js "swfobject.js" %}" type="text/javascript"></script>
+<script src="{% url telemeta-continents-js %}" type="text/javascript"></script>
 {% endblock %}
 
 {% block content %}
@@ -71,26 +71,4 @@
 </p>
 
 </form>
-<!--
-{% if continents %}
-<ul class="continents">
-{% for continent in continents %}
-  <li class="name"><b><a href="{% url telemeta-geo-countries continent.name|urlencode %}">{{ continent.name }}</a></b>
-    <ul>
-    {% for country in continent.countries|slice:":10" %}
-      <li class="country_name">
-        <a href="{% url telemeta-geo-country-collections continent.name,country.name|urlencode %}">
-          {{ country.name|lower|capfirst }}</a></li>
-    {% endfor %}
-    {% if continent.countries.10 %}
-    <li><a href="{% url telemeta-geo-countries continent.name|urlencode %}">More..</a></li>
-    {% endif %}
-    </ul>
-  </li>
-{% endfor %}
-</ul>
-{% else %}
-<p>No data</p>
-{% endif %}
--->
 {% endblock %}

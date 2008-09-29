@@ -22,7 +22,7 @@ class SnackCoreVisualizer(Component):
 
     def get_snack_sound(self, media_item):        
         self.snd = tkSnack.Sound()
-        self.snd.read(settings.MEDIA_ROOT + '/' + media_item.file)
+        self.snd.read(media_item.file.path)
         return self.snd
         
     def canvas_to_png_stream(self, canvas):

@@ -27,7 +27,7 @@ class Resource(object):
         result = {}
         for element in self.elements:
             if not result.has_key(element.name):
-                result[element.name] = str(element.value)
+                result[element.name] = unicode(element.value)
         return result
 
 class Element(object):

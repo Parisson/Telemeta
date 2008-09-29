@@ -1,4 +1,5 @@
 from django import template
+from django.utils.http import urlquote
 
 register = template.Library()
 
@@ -62,8 +63,8 @@ def build_query_string(vars):
       args = []
       for k, v in vars.iteritems():
           if not isinstance(v, basestring):
-              v = str(v)
-          args.append(urllib.quote(k) + '=' + urllib.quote(v))
+              v = unicode(v)
+          args.append(urlquote(k) + '=' + urlquote(v))
 
       return "&amp;".join(args)
     return ''

@@ -36,7 +36,7 @@ class AudioProcessor(Component):
         self.clip = lambda val, low, high: min(high, max(low, val))
 
     def pre_process(self, media_item):
-        wav_file = settings.MEDIA_ROOT + '/' + media_item.file
+        wav_file = media_item.file.path
         self.audio_file = audiolab.sndfile(wav_file, 'read')
         self.frames = self.audio_file.get_nframes()
         self.samplerate = self.audio_file.get_samplerate()

@@ -114,7 +114,7 @@ class WebView(Component):
 
         item = MediaItem.objects.get(pk=item_id)
 
-        infile = settings.MEDIA_ROOT + "/" + item.file
+        infile = item.file.path
         metadata = item.to_dublincore().flatten()
         stream = exporter.process(item.id, infile, metadata)
 

@@ -43,7 +43,7 @@ urlpatterns = patterns('',
     url(r'^items/(?P<item_id>' + i_ex + ')/dc/xml/$', web_view.item_detail, 
         {'format': 'dublin_core_xml'},
         name="telemeta-item-dublincore-xml"),
-    url(r'^items/download/(?P<item_id>' + i_ex + ').(?P<extension>' 
+    url(r'^items/download/(?P<item_id>' + i_ex + ')\.(?P<extension>' 
             + export_extensions + ')$', 
         web_view.item_export,
         name="telemeta-item-export"),

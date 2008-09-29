@@ -27,7 +27,7 @@ class WaveFormVisualizer(Component):
     def render(self, media_item, options=None):
         """Generator that streams the waveform as a PNG image with a python method"""
 
-        wav_file = settings.MEDIA_ROOT + '/' + media_item.file
+        wav_file = media_item.file.path
         pngFile_w = NamedTemporaryFile(suffix='.png')
         pngFile_s = NamedTemporaryFile(suffix='.png')
         image_width = 305

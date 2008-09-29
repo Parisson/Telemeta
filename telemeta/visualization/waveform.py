@@ -33,7 +33,7 @@ class WaveFormVisualizer(Component):
 
         pngFile = NamedTemporaryFile(suffix='.png')
         wav2png = os.path.dirname(__file__) + '/wav2png/wav2png'
-        args  = "-i " + settings.MEDIA_ROOT + '/' + media_item.file + " "
+        args  = "-i " + media_item.file.path + " "
         args += "-o " + pngFile.name + " "
         args += "-b ffffff "
         args += "-l 000088 "
