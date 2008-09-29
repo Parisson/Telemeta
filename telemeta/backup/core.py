@@ -58,7 +58,7 @@ class CollectionSerializer(object):
                 if item.file:
                     dst_basename = self.__get_media_filename(item)
                     dst = coll_dir + "/" + dst_basename
-                    shutil.copyfile(settings.MEDIA_ROOT + "/" + item.file, dst)
+                    shutil.copyfile(item.file.path, dst)
                     hash = self.__get_file_md5(dst)
                     md5_file.write(hash + "  " + dst_basename + "\n")
 

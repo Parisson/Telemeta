@@ -61,7 +61,7 @@ class MediaCore(object):
         fields = self.to_dict()
         for name, value in fields.iteritems():
             element = doc.createElement(name)
-            value = unicode(str(value), "utf-8")
+            value = unicode(value)
             element.appendChild(doc.createTextNode(value))
             top.appendChild(element)
         return doc
