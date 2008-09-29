@@ -1,11 +1,29 @@
-telemeta (0.3.3) unstable; urgency=low
+telemeta (0.3.3-1) unstable; urgency=low
 
   * Add django 1.0 compatibility (no backward compatibility in most cases)
-  * Modify dependencies and manuals 
+  * Modify dependencies and manuals
 
- -- Guillaume Pellerin <yomguy@altern.org>  Tue, 30 Sep 2008 02:34:57 +0200
+ -- Guillaume Pellerin <yomguy@altern.org>  Tue, 30 Sep 2008 02:45:36 +0200
 
-telemeta (0.3.2) unstable; urgency=low
+telemeta (0.3.2-4) unstable; urgency=low
+
+  * Change license from BSD to CeCILL
+
+ -- Guillaume Pellerin <yomguy@altern.org>  Fri, 19 Sep 2008 15:38:48 +0200
+
+telemeta (0.3.2-3) unstable; urgency=low
+
+  * Fix max_digits 
+
+ -- Guillaume Pellerin <yomguy@altern.org>  Mon, 15 Sep 2008 13:46:11 +0200
+
+telemeta (0.3.2-2) unstable; urgency=low
+
+  * Add analyzers 
+
+ -- Guillaume Pellerin <yomguy@altern.org>  Mon, 15 Sep 2008 11:40:06 +0200
+
+telemeta (0.3.2-1) unstable; urgency=low
 
   * Add analysis plugin component and views
   * Add wav2png.py objects and views
