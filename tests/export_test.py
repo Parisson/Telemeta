@@ -17,14 +17,13 @@ from telemeta.core import *
 from telemeta.core import ComponentManager
 
 cache_dir = 'cache/'
-#source = 'samples/wav/The Chicken-James Brown.wav'
-source = 'samples/wav/Cellar - Show Me - 02.wav'
+source = 'samples/wav/sweep.wav'
 item_id = '10'
 metadata = {'identifier': 'Test',  #collection
-         'title': 'Show Me',
-         'creator': 'Cellar',
-         'type': 'House',
-         'date': '2004',
+         'title': 'Sweep',
+         'creator': 'YomGuy',
+         'type': 'Techno',
+         'date': '2008',
          'publisher': 'Parisson',
          }
 options = {'verbose': '1'}
