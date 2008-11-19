@@ -10,25 +10,30 @@
 from telemeta.analysis.core import *
 from telemeta.analysis.api import IMediaItemAnalyzer
 import numpy
-import datetime
 
-class LengthAnalyzer(AudioProcessor):
+class ResolutionAnalyser(AudioProcessor):
     """Media item analyzer driver interface"""
 
     implements(IMediaItemAnalyzer)
 
     def get_id(self):
-        return "length"
+        return "resolution"
 
     def get_name(self):
-        return "Length"
+        return "Resolution"
 
     def get_unit(self):
-        return "h:m:s"
+        return "bits"
 
     def render(self, media_item, options=None):
         self.pre_process(media_item)
-        media_time = numpy.round(float(self.frames)/(float(self.samplerate)*float(self.channels)),0)
-        #return str(media_time)
-        return datetime.timedelta(0,media_time)
-        
+        if '8' in self.encoding:
+            return 8
+        if '16' in self.encoding:
+            return 16
+        if '24' in self.encoding:
+            return 24
+        if '32' in self.encoding:
+            return 32
+        else:
+            return ''

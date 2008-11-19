@@ -20,11 +20,16 @@ class ChannelAnalyser(AudioProcessor):
         return "nb_channels"
 
     def get_name(self):
-        return "Number of channels"
+        return "Channels"
 
     def get_unit(self):
         return ""
 
     def render(self, media_item, options=None):
         self.pre_process(media_item)
-        return self.channels
+        if self.channels == 1:
+            return 'mono'
+        if self.channels == 2:
+            return 'stereo'
+        else:
+            return self.channels

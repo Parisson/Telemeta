@@ -11,7 +11,7 @@ Architecture: any
 Depends: ${python:Depends}, python-xml, python-mutagen, python-django (>= 1.0-1), python-imaging (>= 1.1.6), sox, vorbis-tools, flac, normalize-audio, python-mysqldb, mysql-server, octave2.9, python-tk, libgd2-xpm, libsndfile1 (>= 1.0.17), python-numpy, python-ctypes (>= 1.0.1), python-scikits-audiolab (>= 0.7)
 Recommends: lame, vamp-examples
 Suggests: ecasound, festival, par2
-Description: web frontend to backup, transcode and tag any audio content with metadata
+Description: web frontend to backup, transcode and publish any audio content with metadata
  Telemeta is a global audio archiving program which introduces useful and 
  secure indexing methods to backup digitalized audio files and metadata 
  dictionnaries. It is dedicated to backup any digitized and documented sound 
