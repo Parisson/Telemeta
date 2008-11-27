@@ -49,13 +49,13 @@
 
       <div class="analyzer">
         <table width="100%">
-         <tr>
-          <td>Parameter</td>
+         <tr class="analyzer_title">
+          <td>Property</td>
           <td>Value</td>
           <td>Unit</td>
          <tr>
         {% for analyser in analysers %}
-         <tr>
+         <tr class="analyzer_line">
           <td>
             {{ analyser.name }}
           </td>

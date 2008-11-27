@@ -16,10 +16,9 @@ class IMediaItemVisualizer(Interface):
         """Return a short id alphanumeric, lower-case string."""
 
     def get_name():
-        """Return the visualization name, such as "Waveform", "Spectral view", 
-        etc.. 
+        """Return the visualization name, such as "Waveform", "Spectral view",
+        etc..
         """
-    
-    def render(media_item, options=None):
+
+    def render(media_item, width=None, height=None, options=None):
         """Generator that streams the visualization output as a PNG image"""
-            
