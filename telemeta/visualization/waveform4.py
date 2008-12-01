@@ -28,8 +28,7 @@ class WaveFormVisualizer(Component):
         """Generator that streams the waveform as a PNG image with a python method"""
 
         wav_file = media_item.file.path
-        pngFile_w = NamedTemporaryFile(suffix='.png')
-        pngFile_s = NamedTemporaryFile(suffix='.png')
+        pngFile = NamedTemporaryFile(suffix='.png')
 
         if not width == None:
             image_width = width
@@ -41,14 +40,13 @@ class WaveFormVisualizer(Component):
             image_height = 300
 
         fft_size = 2048
-        args = (wav_file, pngFile_w.name, pngFile_s.name, image_width, image_height, fft_size)
-        create_png(*args)
+        args = (wav_file, pngFile.name, image_width, image_height, fft_size)
+        create_wavform_png(*args)
 
-        buffer = pngFile_w.read(0xFFFF)
+        buffer = pngFile.read(0xFFFF)
         while buffer:
             yield buffer
-            buffer = pngFile_w.read(0xFFFF)
+            buffer = pngFile.read(0xFFFF)
 
-        pngFile_w.close()
-        pngFile_s.close()
+        pngFile.close()
 

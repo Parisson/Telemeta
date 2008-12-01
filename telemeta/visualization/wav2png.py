@@ -19,6 +19,9 @@
 #
 # Authors:
 #   Bram de Jong <bram.dejong at domain.com where domain in gmail>
+# Contributors:
+#   Guillaume Pellerin <pellerin@parisson.com>
+
 
 import optparse, math, sys
 import ImageFilter, ImageChops, Image, ImageDraw, ImageColor
@@ -375,16 +378,13 @@ class SpectrogramImage(object):
         self.image.transpose(Image.ROTATE_90).save(filename)
 
 
-def create_png(input_filename, output_filename_w, output_filename_s, image_width, image_height, fft_size):
-    print "processing file %s:\n\t" % input_file,
-    
+def create_wavform_png(input_filename, output_filename_w, image_width, image_height, fft_size):
     audio_file = audiolab.sndfile(input_filename, 'read')
 
     samples_per_pixel = audio_file.get_nframes() / float(image_width)
     processor = AudioProcessor(audio_file, fft_size, numpy.hanning)
     
     waveform = WaveformImage(image_width, image_height)
-    spectrogram = SpectrogramImage(image_width, image_height, fft_size)
     
     for x in range(image_width):
         
@@ -399,38 +399,30 @@ def create_png(input_filename, output_filename_w, output_filename_s, image_width
         peaks = processor.peaks(seek_point, next_seek_point)
         
         waveform.draw_peaks(x, peaks, spectral_centroid)
-        spectrogram.draw_spectrum(x, db_spectrum)
     
     waveform.save(output_filename_w)
-    spectrogram.save(output_filename_s)
     
     print " done"
 
-def create_png(input_filename, output_filename_w, output_filename_s, image_width, image_height, fft_size):
+def create_spectrogram_png(input_filename, output_filename_s, image_width, image_height, fft_size):
     audio_file = audiolab.sndfile(input_filename, 'read')
 
     samples_per_pixel = audio_file.get_nframes() / float(image_width)
     processor = AudioProcessor(audio_file, fft_size, numpy.hanning)
     
-    waveform = WaveformImage(image_width, image_height)
     spectrogram = SpectrogramImage(image_width, image_height, fft_size)
     
     for x in range(image_width):
-        
+   
         if x % (image_width/10) == 0:
             sys.stdout.write('.')
             sys.stdout.flush()
             
         seek_point = int(x * samples_per_pixel)
-        next_seek_point = int((x + 1) * samples_per_pixel)
-        
-        (spectral_centroid, db_spectrum) = processor.spectral_centroid(seek_point)
-        peaks = processor.peaks(seek_point, next_seek_point)
-        
-        waveform.draw_peaks(x, peaks, spectral_centroid)
+        next_seek_point = int((x + 1) * samples_per_pixel)  
+        (spectral_centroid, db_spectrum) = processor.spectral_centroid(seek_point) 
         spectrogram.draw_spectrum(x, db_spectrum)
     
-    waveform.save(output_filename_w)
     spectrogram.save(output_filename_s)
     
     print " done"

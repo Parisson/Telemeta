@@ -24,22 +24,28 @@ class SpectrogramVisualizer3(Component):
     def get_name(self):
         return "Spectrogram (audiolab large)"
     
-    def render(self, media_item, options=None):
+    def render(self, media_item, width=None, height=None, options=None):
         """Generator that streams the spectrogram as a PNG image with a python method"""
 
         wav_file = media_item.file.path
-        pngFile_w = NamedTemporaryFile(suffix='.png')
-        pngFile_s = NamedTemporaryFile(suffix='.png')
-        image_width = 1800
-        image_height = 300
-        fft_size = 2048
-        args = (wav_file, pngFile_w.name, pngFile_s.name, image_width, image_height, fft_size)
-        create_png(*args)
+        pngFile = NamedTemporaryFile(suffix='.png')
 
-        buffer = pngFile_s.read(0xFFFF)
+        if not width == None:
+            image_width = width
+        else:
+            image_width = 1800
+        if not height == None:
+            image_height = height
+        else:
+            image_height = 300
+            
+        fft_size = 2048
+        args = (wav_file, pngFile.name, image_width, image_height, fft_size)
+        create_spectrogram_png(*args)
+
+        buffer = pngFile.read(0xFFFF)
         while buffer:
             yield buffer
-            buffer = pngFile_s.read(0xFFFF)
+            buffer = pngFile.read(0xFFFF)
 
-        pngFile_w.close()
-        pngFile_s.close()
+        pngFile.close()
