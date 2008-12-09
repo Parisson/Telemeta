@@ -93,11 +93,11 @@ class FlacExporter(ExporterCore):
             if not ('verbose' in self.options and self.options['verbose'] != '0'):
                 args.append('-s')
             if 'flac_quality' in self.options:
-                args.append('-f -' + self.options['flac_quality'])
+                args.append('-f ' + self.options['flac_quality'])
             else:
-                args.append('-f -' + self.quality_default)
+                args.append('-f ' + self.quality_default)
         else:
-            args.append('-s -f -' + self.quality_default)
+            args.append('-s -f ' + self.quality_default)
 
         #for tag in self.metadata.keys():
             #value = clean_word(self.metadata[tag])
@@ -115,7 +115,7 @@ class FlacExporter(ExporterCore):
         self.args = self.get_args(options)
         self.ext = self.get_file_extension()
         self.args = ' '.join(self.args)
-        self.command = 'flac %s "%s" -c -' % (self.args, self.source)
+        self.command = 'sox "%s" -q -w -r 44100 -t wav -c2 - | flac %s -c -' % (self.source, self.args)
 
         # Pre-proccessing
         self.dest = self.pre_process(self.item_id,

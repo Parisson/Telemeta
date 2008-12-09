@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2007 Parisson SARL
+# Copyright (C) 2008 Parisson SARL
 # Copyright (c) 2006-2007 Guillaume Pellerin <pellerin@parisson.com>
 # All rights reserved.
 #
@@ -24,7 +24,7 @@ import xml.dom.ext
 
 class ExporterCore(Component):
     """Defines the main parts of the exporting tools :
-    paths, formats, metadata..."""
+    paths, metadata parsing, data streaming thru system command"""
 
     def __init__(self):
         self.source = ''

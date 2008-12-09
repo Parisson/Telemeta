@@ -44,7 +44,7 @@ class Mp3Exporter(ExporterCore):
                              #'date': 'TYER', #year
                              }
         self.dub2args_dict = {'title': 'tt', #title2
-                             'creator': 'ta', #composer
+                             'creator': 'ta', #composerS
                              'relation': 'tl', #album
                              #'type': 'tg', #genre
                              'publisher': 'tc', #comment
@@ -129,8 +129,8 @@ class Mp3Exporter(ExporterCore):
         self.args = self.get_args(options)
         self.ext = self.get_file_extension()
         self.args = ' '.join(self.args)
-        #self.command = 'sox "%s" -q -w -r 44100 -t wav -c2 - | lame %s -' \
-        self.command = 'lame %s "%s" -' % (self.args, self.source)
+        self.command = 'sox "%s" -q -w -r 44100 -t wav -c2 - | lame %s -' % (self.source, self.args)
+        #self.command = 'lame %s "%s" -' % (self.args, self.source)
         
         # Pre-proccessing
         self.dest = self.pre_process(self.item_id,
@@ -141,7 +141,7 @@ class Mp3Exporter(ExporterCore):
                                          self.options)
 
         # Processing (streaming + cache writing)
-        stream = self.core_process(self.command,self.buffer_size,self.dest)
+        stream = self.core_process(self.command, self.buffer_size, self.dest)
         for chunk in stream:
             yield chunk
     
