@@ -270,7 +270,7 @@ class MediaItem(Model, MediaCore):
         "Tell the length in seconds of this item media data"
         if self.file:
             import wave
-            media = wave.open(settings.MEDIA_ROOT + "/" + self.file, "rb")
+            media = wave.open(self.file.path, "rb")
             duration = media.getnframes() / media.getframerate()
             media.close()
         else:
