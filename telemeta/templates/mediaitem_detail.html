@@ -32,8 +32,7 @@ TimeSide.load(function() {});
 soundManager.onload = function() {
     sound = soundManager.createSound({
         id: 'sound',
-        url: '{% url telemeta-item-export item.id|urlencode,"mp3" %}',
-        autoLoad: true
+        url: '{% url telemeta-item-export item.id|urlencode,"mp3" %}'
     });
 
     TimeSide.load(function() {
@@ -49,6 +48,7 @@ soundManager.onload = function() {
             soundProvider: provider, 
             map: map
         });
+        sound.load();
     });
 }        
 
