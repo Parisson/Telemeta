@@ -132,4 +132,7 @@ urlpatterns = patterns('',
     url(r'^swf/(?P<path>.*)$', 'django.views.static.serve', 
         {'document_root': htdocs+'/swf'},
         name="telemeta-swf"),
+    url(r'^timeside/(?P<path>.*)$', 'django.views.static.serve', 
+        {'document_root': htdocs+'/timeside'},
+        name="telemeta-timeside"),
 )

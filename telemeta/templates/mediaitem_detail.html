@@ -1,10 +1,59 @@
 {% extends "base.html" %}
 {% load telemeta_utils %}
 
+{% block extra_style %}
+<link rel="stylesheet" type="text/css" href="{% url telemeta-timeside "css/timeside.css" %}" />
+{% endblock %}
 {% block extra_javascript %}
-<script src="{% url telemeta-js "prototype-1.6.0.2.js" %}" type="text/javascript"></script>
+
+<script src="{% url telemeta-js "jquery.js" %}" type="text/javascript"></script>
 <script src="{% url telemeta-js "application.js" %}" type="text/javascript"></script>
+<!--
 <script src="{% url telemeta-js "swfobject.js" %}" type="text/javascript"></script>
+-->
+<script src="{% url telemeta-js "wz_jsgraphics.js" %}" type="text/javascript"></script>
+<script src="{% url telemeta-timeside "src/timeside.js" %}" type="text/javascript"></script>
+
+<script src="{% url telemeta-js "soundmanager2.js" %}" type="text/javascript"></script>
+<script type="text/javascript">
+soundManager.url = '{% url telemeta-swf "./" %}';
+soundManager.flashVersion = 9;
+soundManager.consoleOnly = true;
+</script>
+
+<script type="text/javascript">
+var sound;
+var map;
+var provider;
+var player;
+
+TimeSide.load(function() {});
+
+soundManager.onload = function() {
+    sound = soundManager.createSound({
+        id: 'sound',
+        url: '{% url telemeta-item-export item.id|urlencode,"mp3" %}',
+        autoLoad: true
+    });
+
+    TimeSide.load(function() {
+        map = new TimeSide.MarkerMap();
+        provider = new TimeSide.SoundProvider(sound);
+        provider.forceDuration({{ item.get_duration }});
+        player = new TimeSide.Player({
+            container: $('#player').get(0), 
+            image: '{% url telemeta-item-visualize item.id|urlencode,visualizer_id %}'
+        });
+        controller = new TimeSide.Controller({
+            player: player,
+            soundProvider: provider, 
+            map: map
+        });
+    });
+}        
+
+</script>
+
 {% endblock %}
 
 
@@ -18,29 +67,31 @@
 
 {% if item.file %}
 <div id="rightcol">
+    
+    <div id="player" class="timeside-player">
+        <div class="viewer">
+            <div class="wave">
+                <div class="image-container">
+                    <img class="image" src="{% url telemeta-item-visualize item.id|urlencode,visualizer_id %}" 
+                      style="width: 334px; height: 200px;" alt="" />
+                </div>
+            </div>  
+        </div>
+    </div>
+
     <div class="item_visualization">
-        {% if 0 %} {# Use 1/0 for alternate player #}
-        <!-- This is the XSPF Web Music Player, under the BSD license, from: http://musicplayer.sourceforge.net/-->
-        <object type="application/x-shockwave-flash" width="300" height="20" data="{% url telemeta-swf "xspf_player.swf" %}?playlist_url={% url telemeta-item-xspf item.id|urlencode %}">
-        <param name="movie" value="{% url telemeta-swf "xspf_player.swf" %}?playlist_url={% url telemeta-item-xspf item.id|urlencode %}" />
-        </object><br/>
-        {% else %}      
-        <!-- This is Jeroen Wijering's Flash MP3 Player, under CC Attribution-NonCommercial-ShareAlike 2.0 license from: http://www.jeroenwijering.com/?item=Flash_MP3_Player-->
-        <p id="item_player_c"><a href="http://www.macromedia.com/go/getflashplayer">Get Flash</a> to see this player.</p>
-            <script type="text/javascript">
-              var so = new SWFObject('{% url telemeta-swf "mp3player.swf" %}','line','300','20','7');
-              so.addVariable("file","{% url telemeta-item-export item.id|urlencode,"mp3" %}");
-              so.addVariable("type","mp3");
-              so.write('item_player_c');
-            </script>
-        {% endif %}
-        <div class="viewport">
-            <img src="{% url telemeta-item-visualize item.id|urlencode,visualizer_id %}" alt="" />
-        </div>        
-        <form method="get" action="#">
+        <form method="get" action="#" onsubmit="player.setImage(this.visualizer_id.value); return false;">
+            <!--
             <select name="visualizer_id" onchange="this.form.submit()">
                 {% for v in visualizers %}
                 <option value="{{ v.id }}" {% ifequal v.id visualizer_id %} selected="selected" {% endifequal %}>
+                {{v.name}}</option>
+                {% endfor %}
+            </select>
+            -->
+            <select name="visualizer_id" onchange="player.setImage(this.value);">
+                {% for v in visualizers %}
+                <option value="{% url telemeta-item-visualize item.id|urlencode,v.id %}">
                 {{v.name}}</option>
                 {% endfor %}
             </select>

@@ -89,6 +89,7 @@ h3 {
 }
 #leftcol {
     position: relative;
+    z-index: -1;
     margin-right: 345px;
     min-height: 450px;
     min-width: 400px;
@@ -97,23 +98,27 @@ h3 {
     clear: both;
     position: absolute;
     right: .3em;
-    width: 308px;
-    text-align: right;
+    width: 362px;
     margin-top: 10px;
     border: 1px dotted #999;
     padding: 6px;
     background-color: #eee;
 }
-#rightcol div {
+#rightcol .analyzer {
+    text-align: right;
+}
+
+#rightcol .analyzer, #rightcol .exporter {
     text-align: left;
     position: relative;
 }
 #rightcol form {
-    width: 305px;
+    width: 360px;
     margin-top: 5px;
     background-color: #fff;
     border: 1px solid #adadad;
 }
+/*
 #item_player_c {
     width: 305px;
     padding: 2px 0 0;
@@ -122,6 +127,8 @@ h3 {
 }
 .item_visualization select { width: 240px; }
 .item_visualization .viewport { width: 305px; border: 1px solid #adadad; overflow: auto; margin-top: 5px; background-color: #fff;}
+*/
+
 
 .exporter {
     background-color: #fff;
@@ -139,7 +146,7 @@ h3 {
     background-color: #fff;
     color: #000;
     border: 1px solid #adadad;
-    width: 301px;
+    width: 356px;
     padding: 2px;
     margin: 5px 0 0;
     /* overflow: auto; */

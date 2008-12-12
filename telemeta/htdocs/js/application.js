@@ -1,4 +1,15 @@
 function ployBlocks() {
+ 
+  $('.extraInfos div.nett').css('display', 'block');
+  $('.closed').css('display', 'none');
+	$('.extraInfos h4').toggleClass('on').click(function() {
+      $(this)
+          .toggleClass('on')
+          .parent().find('div').eq(0).toggle();
+      return false;
+  });
+
+  /*
 	var extraInfos = $$('.extraInfos div');
 	for (i = 0; i <extraInfos.length; i++ ) {
 		if(!extraInfos[i].hasClassName('nett')) {
@@ -18,4 +29,5 @@ function ployBlocks() {
 			return false;
 		}
 	}
+  */
 }
