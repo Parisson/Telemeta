@@ -61,7 +61,7 @@ class WavExporter(ExporterCore):
         try:
             file_name, ext = get_file_name(self.source)
             dest = self.cache_dir+os.sep+file_name+'.wav'
-            os.system('sox "'+self.source+'" -w -r 44100 -t wav -c2 "'+ \
+            os.system('sox "'+self.source+'" -s -r 44100 -t wav -c2 "'+ \
                       dest+'.wav"')
             self.source = dest
             return dest
@@ -131,7 +131,7 @@ class WavExporter(ExporterCore):
 
         # Create the par2 key
         #if 'par2' in self.metadata and self.metadata['par2']:
-        self.create_par_key()
+        #self.create_par_key()
 
         # Pre-proccessing
         self.post_process(self.item_id,

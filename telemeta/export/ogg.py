@@ -109,7 +109,7 @@ class OggExporter(ExporterCore):
         self.args = self.get_args(options)
         self.ext = self.get_file_extension()
         self.args = ' '.join(self.args)
-        self.command = 'sox "%s" -q -w -r 44100 -t wav -c2 - | oggenc %s -' % (self.source, self.args)
+        self.command = 'sox "%s" -s -q -r 44100 -t wav -c2 - | oggenc %s -' % (self.source, self.args)
         
         # Pre-proccessing
         self.dest = self.pre_process(self.item_id,
@@ -125,10 +125,10 @@ class OggExporter(ExporterCore):
             yield chunk
     
         # Post-proccessing
-        self.post_process(self.item_id,
-                        self.source,
-                        self.metadata,
-                        self.ext,
-                        self.cache_dir,
-                        self.options)
+        #self.post_process(self.item_id,
+                        #self.source,
+                        #self.metadata,
+                        #self.ext,
+                        #self.cache_dir,
+                        #self.options)
 

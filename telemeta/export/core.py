@@ -12,6 +12,7 @@
 
 import os
 import re
+import md5
 import string
 import subprocess
 import mutagen
@@ -74,15 +75,11 @@ class ExporterCore(Component):
         except IOError:
             return 'Exporter error: Cannot get the wav length...'
 
-    def compare_md5_key(self):
-        """ Compare 2 files wih md5 method """
-        in1, in2 = os.popen4('md5sum -b "'+self.source+'"')
-        out1, out2 = os.popen4('md5sum -b "'+self.dest+'"')
-        for line in in2.readlines():
-            line1 = line.split('*')[0]
-        for line in out2.readlines():
-            line2 = line.split('*')[0]
-        return line1 == line2
+    def compare_md5_key(self, source, dest):
+        """ Compare source and dest files wih md5 method """
+        f_source = open(source).read()
+        f_dest = open(dest).read()
+        return md5.new(f_source).digest() == md5.new(f_dest).digest()
 
     def write_metadata_xml(self,path):
         doc = xml.dom.minidom.Document()
@@ -170,7 +167,7 @@ class ExporterCore(Component):
     def post_process(self, item_id, source, metadata, ext, 
                      cache_dir, options=None):
         """ Post processing : write tags, print infos, etc..."""
-        self.write_tags()
+        #self.write_tags()
         if not options is None:
             if 'verbose' in self.options and self.options['verbose'] != '0':
                 print self.dest

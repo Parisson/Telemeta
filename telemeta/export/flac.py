@@ -17,6 +17,7 @@ import subprocess
 from telemeta.export.core import *
 from telemeta.export.api import IExporter
 from mutagen.flac import FLAC
+from tempfile import NamedTemporaryFile
 
 class FlacExporter(ExporterCore):
     """Defines methods to export to FLAC"""
@@ -33,7 +34,7 @@ class FlacExporter(ExporterCore):
         self.quality_default = '5'
         self.info = []
         self.buffer_size = 0xFFFF
-        
+
     def get_format(self):
         return 'FLAC'
     
@@ -76,8 +77,8 @@ class FlacExporter(ExporterCore):
         except IOError:
             return 'ExporterError [2]: decoder not compatible.'
 
-    def write_tags(self):
-        media = FLAC(self.dest)
+    def write_tags(self, file):
+        media = FLAC(file)
         for tag in self.metadata.keys():
             if tag == 'COMMENT':
                 media['DESCRIPTION'] = str(self.metadata[tag])
@@ -115,8 +116,10 @@ class FlacExporter(ExporterCore):
         self.args = self.get_args(options)
         self.ext = self.get_file_extension()
         self.args = ' '.join(self.args)
-        self.command = 'sox "%s" -q -w -r 44100 -t wav -c2 - | flac %s -c -' % (self.source, self.args)
-
+        self.command = 'sox "%s" -s -q -r 44100 -t wav -c2 - | flac %s -c -' % (self.source, self.args)
+        tmp_file_name = NamedTemporaryFile(suffix = '.' + self.ext).name
+        tmp_file = open(tmp_file_name, 'w')
+        
         # Pre-proccessing
         self.dest = self.pre_process(self.item_id,
                                          self.source,
@@ -128,13 +131,25 @@ class FlacExporter(ExporterCore):
         # Processing (streaming + cache writing)
         stream = self.core_process(self.command, self.buffer_size, self.dest)
         for chunk in stream:
+            tmp_file.write(chunk)
+            
+        tmp_file.close()
+        self.write_tags(tmp_file)
+        tmp_file = open(tmp_file_name.name, 'r')
+
+        while True:
+            chunk = tmp_file.read(self.buffer_size)
+            if len(chunk) == 0:
+                break
             yield chunk
-    
+
+        tmp_file.close()
+
         # Post-proccessing
-        self.post_process(self.item_id,
-                         self.source,
-                         self.metadata,
-                         self.ext,
-                         self.cache_dir,
-                         self.options)
+        #self.post_process(self.item_id,
+                         #self.source,
+                         #self.metadata,
+                         #self.ext,
+                         #self.cache_dir,
+                         #self.options)
 

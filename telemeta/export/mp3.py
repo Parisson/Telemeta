@@ -78,7 +78,7 @@ class Mp3Exporter(ExporterCore):
 
     def decode(self):
         try:
-            os.system('sox "'+self.source+'" -w -r 44100 -t wav "' \
+            os.system('sox "'+self.source+'" -s -q -r 44100 -t wav "' \
                         +self.cache_dir+os.sep+self.item_id+'"')
             return self.cache_dir+os.sep+self.item_id+'.wav'
         except IOError:
@@ -129,7 +129,7 @@ class Mp3Exporter(ExporterCore):
         self.args = self.get_args(options)
         self.ext = self.get_file_extension()
         self.args = ' '.join(self.args)
-        self.command = 'sox "%s" -q -w -r 44100 -t wav -c2 - | lame %s -' % (self.source, self.args)
+        self.command = 'sox "%s" -s -q -r 44100 -t wav -c2 - | lame %s -' % (self.source, self.args)
         #self.command = 'lame %s "%s" -' % (self.args, self.source)
         
         # Pre-proccessing
@@ -146,10 +146,10 @@ class Mp3Exporter(ExporterCore):
             yield chunk
     
         # Post-proccessing
-        self.post_process(self.item_id,
-                         self.source,
-                         self.metadata,
-                         self.ext,
-                         self.cache_dir,
-                         self.options)
+        #self.post_process(self.item_id,
+                         #self.source,
+                         #self.metadata,
+                         #self.ext,
+                         #self.cache_dir,
+                         #self.options)
 
