@@ -11,7 +11,7 @@ U{http://svn.parisson.org/telemeta}
 """
 
 __docformat__ = 'epytext en'
-__version__ = '0.3.3'
+__version__ = '0.3.4'
 __url__ = 'http://svn.parisson.org/telemeta'
 __copyright__ = '(C) 2007-2008 Parisson SARL and Samalyse SARL'
 __license__ = 'CeCILL'
