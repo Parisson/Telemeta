@@ -31,7 +31,7 @@ class FlacExporter(ExporterCore):
         self.options = {}
         self.description = ''
         self.dest = ''
-        self.quality_default = '5'
+        self.quality_default = '-5'
         self.info = []
         self.buffer_size = 0xFFFF
 
@@ -116,9 +116,8 @@ class FlacExporter(ExporterCore):
         self.args = self.get_args(options)
         self.ext = self.get_file_extension()
         self.args = ' '.join(self.args)
-        self.command = 'sox "%s" -s -q -r 44100 -t wav -c2 - | flac %s -c -' % (self.source, self.args)
-        tmp_file_name = NamedTemporaryFile(suffix = '.' + self.ext).name
-        tmp_file = open(tmp_file_name, 'w')
+        self.command = 'sox "%s" -s -q -r 44100 -t wav -c2 - | flac -c %s - ' \
+                        % (self.source, self.args)
         
         # Pre-proccessing
         self.dest = self.pre_process(self.item_id,
@@ -130,20 +129,20 @@ class FlacExporter(ExporterCore):
 
         # Processing (streaming + cache writing)
         stream = self.core_process(self.command, self.buffer_size, self.dest)
-        for chunk in stream:
-            tmp_file.write(chunk)
-            
-        tmp_file.close()
-        self.write_tags(tmp_file)
-        tmp_file = open(tmp_file_name.name, 'r')
 
+        for chunk in stream:
+            pass
+
+        self.write_tags(self.dest)
+        file = open(self.dest,'r')
+        
         while True:
-            chunk = tmp_file.read(self.buffer_size)
+            chunk = file.read(self.buffer_size)
             if len(chunk) == 0:
                 break
             yield chunk
 
-        tmp_file.close()
+        file.close()
 
         # Post-proccessing
         #self.post_process(self.item_id,

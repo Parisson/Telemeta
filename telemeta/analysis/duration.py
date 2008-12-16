@@ -12,16 +12,16 @@ from telemeta.analysis.api import IMediaItemAnalyzer
 import numpy
 import datetime
 
-class LengthAnalyzer(AudioProcessor):
+class DurationAnalyzer(AudioProcessor):
     """Media item analyzer driver interface"""
 
     implements(IMediaItemAnalyzer)
 
     def get_id(self):
-        return "length"
+        return "duration"
 
     def get_name(self):
-        return "Length"
+        return "Duration"
 
     def get_unit(self):
         return "h:m:s"
@@ -29,6 +29,4 @@ class LengthAnalyzer(AudioProcessor):
     def render(self, media_item, options=None):
         self.pre_process(media_item)
         media_time = numpy.round(float(self.frames)/(float(self.samplerate)*float(self.channels)),0)
-        #return str(media_time)
         return datetime.timedelta(0,media_time)
-        
