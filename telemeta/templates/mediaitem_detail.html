@@ -62,16 +62,17 @@ soundManager.onload = function() {
 
 {% if item.file %}
 <div id="rightcol">
-    
-    <div id="player" class="timeside-player">
-        <div class="viewer">
-            <div class="wave">
-                <div class="image-container">
-                    <img class="image" src="{% url telemeta-item-visualize item.id|urlencode,visualizer_id %}" 
+    <div class="ts-skin-lab">
+    <div id="player" class="ts-player">
+        <div class="ts-viewer">
+            <div class="ts-wave">
+                <div class="ts-image-container">
+                    <img class="ts-image" src="{% url telemeta-item-visualize item.id|urlencode,visualizer_id %}" 
                       style="width: 334px; height: 200px;" alt="" />
                 </div>
             </div>  
         </div>
+    </div>
     </div>
 
     <div class="item_visualization">
