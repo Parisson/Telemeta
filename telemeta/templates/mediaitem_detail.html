@@ -20,6 +20,18 @@ var map;
 var provider;
 var player;
 
+TimeSide.load(function() {
+    map = new TimeSide.MarkerMap();
+    provider = new TimeSide.SoundProvider({
+        duration: {{ item.get_duration }}
+    });
+    controller = new TimeSide.Controller({
+        player: '#player',
+        soundProvider: provider, 
+        map: map
+    });
+});
+
 soundManager.url = '{% url telemeta-swf "./" %}';
 soundManager.flashVersion = 9;
 soundManager.consoleOnly = true;
@@ -29,22 +41,11 @@ soundManager.onload = function() {
         id: 'sound',
         url: '{% url telemeta-item-export item.id|urlencode,"mp3" %}'
     });
-
+    
     TimeSide.load(function() {
-        map = new TimeSide.MarkerMap();
-        provider = new TimeSide.SoundProvider(sound);
-        provider.forceDuration({{ item.get_duration }});
-        player = new TimeSide.Player({
-            container: $('#player').get(0), 
-            image: '{% url telemeta-item-visualize item.id|urlencode,visualizer_id %}'
-        });
-        controller = new TimeSide.Controller({
-            player: player,
-            soundProvider: provider, 
-            map: map
-        });
-        sound.load();
+        provider.setSource(sound);
     });
+    //sound.load(); // Auto-loading overloads the Django test server
 }        
 
 </script>
@@ -68,7 +69,7 @@ soundManager.onload = function() {
             <div class="ts-wave">
                 <div class="ts-image-container">
                     <img class="ts-image" src="{% url telemeta-item-visualize item.id|urlencode,visualizer_id %}" 
-                      style="width: 334px; height: 200px;" alt="" />
+                      alt="" />
                 </div>
             </div>  
         </div>

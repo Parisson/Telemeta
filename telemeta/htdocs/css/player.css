@@ -1,3 +1,7 @@
 .ts-player {
     padding-bottom: 0;
 }
+
+.ts-player .ts-wave {
+    height: 200px;
+}
