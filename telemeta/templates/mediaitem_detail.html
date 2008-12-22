@@ -13,41 +13,13 @@
 <script src="{% url telemeta-js "wz_jsgraphics.js" %}" type="text/javascript"></script>
 <script src="{% url telemeta-js "soundmanager2.js" %}" type="text/javascript"></script>
 <script src="{% url telemeta-timeside "src/timeside.js" %}" type="text/javascript"></script>
+<script src="{% url telemeta-js "player.js" %}" type="text/javascript"></script>
 
 <script type="text/javascript">
-var sound;
-var map;
-var provider;
-var player;
-
-TimeSide.load(function() {
-    map = new TimeSide.MarkerMap();
-    provider = new TimeSide.SoundProvider({
-        duration: {{ item.get_duration }}
-    });
-    controller = new TimeSide.Controller({
-        player: '#player',
-        soundProvider: provider, 
-        map: map
-    });
-});
-
 soundManager.url = '{% url telemeta-swf "./" %}';
 soundManager.flashVersion = 9;
 soundManager.consoleOnly = true;
-
-soundManager.onload = function() {
-    sound = soundManager.createSound({
-        id: 'sound',
-        url: '{% url telemeta-item-export item.id|urlencode,"mp3" %}'
-    });
-    
-    TimeSide.load(function() {
-        provider.setSource(sound);
-    });
-    //sound.load(); // Auto-loading overloads the Django test server
-}        
-
+load_player({{ item.get_duration }});
 </script>
 
 {% endblock %}
@@ -62,14 +34,19 @@ soundManager.onload = function() {
 {% block content %}
 
 {% if item.file %}
+<div id="player_maximized" class="ts-skin-lab">
+    <button>Minimize</button>
+</div>
 <div id="rightcol">
-    <div class="ts-skin-lab">
+    <div id="player_minimized" class="ts-skin-lab">
+    <button>Maximize</button>
     <div id="player" class="ts-player">
         <div class="ts-viewer">
             <div class="ts-wave">
                 <div class="ts-image-container">
+                    <a href="{% url telemeta-item-export item.id|urlencode,"mp3" %}">
                     <img class="ts-image" src="{% url telemeta-item-visualize item.id|urlencode,visualizer_id %}" 
-                      alt="" />
+                      alt="" /></a>
                 </div>
             </div>  
         </div>

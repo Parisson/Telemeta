@@ -1,7 +1,37 @@
 .ts-player {
     padding-bottom: 0;
+    clear: both;
+    padding-top: 16px !important;
 }
 
 .ts-player .ts-wave {
     height: 200px;
+}
+.ts-player .ts-image {
+    width: 334px;
+    height: 200px;
+}
+
+#player_maximized, #player_minimized {
+    position: relative;
+}
+
+
+#player_maximized button, #player_minimized button {
+    position: absolute;
+    right: 12px;
+    top: 2px;
+    font-size: 10px;
+    padding: 2px;
+    margin: 1px;
+    background: transparent;
+    color: transparent;
+    width: 20px;
+    height: 10px;
+    border: solid 1px white;
+    border-top: solid 2px white;
+}
+#player_maximized {
+    margin: 10px 0 15px 0;
+    display: none;
 }

@@ -88,7 +88,7 @@ class WebView(Component):
         
         item = MediaItem.objects.get(pk=item_id)
 
-        stream = visualizer.render(item)
+        stream = visualizer.render(item, width=1500, height=200)
         response = HttpResponse(stream, mimetype = 'image/png')
         return response
 
