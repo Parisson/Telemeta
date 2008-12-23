@@ -17,19 +17,19 @@
 }
 
 
-#player_maximized button, #player_minimized button {
+#player_maximized .toggle, #player_minimized .toggle {
+    display: block;
+    overflow: hidden;
     position: absolute;
     right: 12px;
-    top: 2px;
-    font-size: 10px;
-    padding: 2px;
-    margin: 2px 1px 1px 1px;
-    background: transparent;
-    color: transparent;
-    width: 20px;
-    height: 10px;
-    border: solid 1px white;
-    border-top: solid 2px white;
+    top: 4px;
+    width: 18px;
+    padding: 10px 0 0 0;
+    height: 0px !important; 
+    height /**/:10px; /* for IE5/Win only */
+    background-image: url('../images/maximize.gif');
+    text-decoration: none;
+    border: 0;
 }
 #player_maximized {
     margin: 10px 0 15px 0;

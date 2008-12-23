@@ -8,7 +8,6 @@ var player;
 function togglePlayerMaximization() {
     var view = $('#player');
     $('#player_maximized, #player_minimized').css('display', 'none');
-    var button;
     var ctr;
     if (view.parents('#player_maximized').length) {
         ctr = $('#player_minimized').append(view);
@@ -17,7 +16,7 @@ function togglePlayerMaximization() {
     }
     ctr.css({opacity: 0, display: 'block'});
     player.resize();
-    ctr.animate({opacity: 1}, 200, null);
+    ctr.animate({opacity: 1}, 100, null);
 }
 
 function load_sound() {
@@ -52,7 +51,7 @@ function load_player(duration) {
             });
         });
 
-        $('#player_maximized button, #player_minimized button').click(function() {
+        $('#player_maximized .toggle, #player_minimized .toggle').click(function() {
             togglePlayerMaximization();
             this.blur();
             return false;
