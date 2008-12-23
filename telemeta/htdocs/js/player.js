@@ -7,7 +7,7 @@ var player;
 
 function togglePlayerMaximization() {
     var view = $('#player');
-    $('#player_maximized #player_minimized').css('display', 'none');
+    $('#player_maximized, #player_minimized').css('display', 'none');
     var button;
     var ctr;
     if (view.parents('#player_maximized').length) {
