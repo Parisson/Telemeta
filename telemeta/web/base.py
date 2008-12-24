@@ -88,6 +88,7 @@ class WebView(Component):
         
         item = MediaItem.objects.get(pk=item_id)
 
+        visualizer.set_colors((255,255,255), 'purple')
         stream = visualizer.render(item, width=1500, height=200)
         response = HttpResponse(stream, mimetype = 'image/png')
         return response

@@ -1,15 +1,65 @@
-.ts-player {
-    padding-bottom: 0;
+.ts-skin-lab .ts-player {
+    padding: 0;
     clear: both;
-    padding-top: 16px !important;
+    background: white;
+    border: solid 1px #ADADAD;
+    margin-top: 10px;
 }
 
-.ts-player .ts-wave {
+.ts-skin-lab .ts-player .ts-wave {
     height: 200px;
 }
-.ts-player .ts-image {
-    width: 334px;
+.ts-skin-lab .ts-player .ts-image {
+    width: 360px;
     height: 200px;
+}
+
+.ts-skin-lab .ts-player .ts-viewer {
+    margin: 0;
+    border: 0;
+}
+.ts-skin-lab .ts-player .ts-viewer a.ts-marker, .ts-skin-lab .ts-player .ts-viewer a.ts-pointer {
+    line-height: 12px;
+    margin-bottom: 1px;
+}
+.ts-skin-lab .ts-player .ts-viewer .ts-pointer {
+    background: #BB0000;
+    color: #DDD;
+}
+.ts-skin-lab .ts-player .ts-viewer a.ts-pointer {
+    color: #BB0000;
+    /*background: transparent;*/
+    background: white;
+
+}
+
+.ts-skin-lab .ts-player .ts-viewer .ts-marker {
+    background: #0C1A70;
+    color: #DDD;
+}
+.ts-skin-lab .ts-player .ts-ruler .ts-section .ts-label {
+    background: white;
+    color: #555;
+}
+
+.ts-skin-lab .ts-player .ts-ruler .ts-section .ts-lines {
+    background: #F2F2F2;
+    color: #ADADAD;
+    border-bottom: #adadad;
+}
+
+.ts-skin-lab .ts-player .ts-control {
+    background: url('../images/player_controlbg.png');
+}
+
+.ts-skin-lab .ts-player .ts-control .ts-playback a {
+    padding: 20px 0 0 0;
+    height /**/:20px; /* for IE5/Win only */
+    margin-right: 4px;
+}
+
+.ts-skin-lab .ts-player .ts-control .ts-layout {
+    margin-left: 3px;
 }
 
 #player_maximized, #player_minimized {
@@ -21,8 +71,8 @@
     display: block;
     overflow: hidden;
     position: absolute;
-    right: 12px;
-    top: 4px;
+    right: 0px;
+    top: -12px;
     width: 18px;
     padding: 10px 0 0 0;
     height: 0px !important; 
@@ -31,6 +81,10 @@
     text-decoration: none;
     border: 0;
 }
+#player_maximized .toggle:hover, #player_minimized .toggle:hover {
+    background-position: 0 -10px;
+}
+
 #player_maximized {
     margin: 10px 0 15px 0;
     display: none;
