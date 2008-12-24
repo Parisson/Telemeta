@@ -18,10 +18,6 @@
     margin: 0;
     border: 0;
 }
-.ts-skin-lab .ts-player .ts-viewer a.ts-marker, .ts-skin-lab .ts-player .ts-viewer a.ts-pointer {
-    line-height: 12px;
-    margin-bottom: 1px;
-}
 .ts-skin-lab .ts-player .ts-viewer .ts-pointer {
     background: #BB0000;
     color: #DDD;
