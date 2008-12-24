@@ -28,6 +28,19 @@ import ImageFilter, ImageChops, Image, ImageDraw, ImageColor
 import numpy
 import scikits.audiolab as audiolab
 
+color_schemes = {
+    'default': {
+        'waveform': [(50,0,200), (0,220,80), (255,224,0), (255,0,0)],
+        'spectrogram': [(0, 0, 0), (58/4,68/4,65/4), (80/2,100/2,153/2), (90,180,100),
+                      (224,224,44), (255,60,30), (255,255,255)]
+    },
+    'purple': {
+        'waveform': [(173,173,173), (147,149,196), (77,80,138), (108,66,0)],
+        'spectrogram': [(0, 0, 0), (58/4,68/4,65/4), (80/2,100/2,153/2), (90,180,100),
+                      (224,224,44), (255,60,30), (255,255,255)]
+    }
+}
+
 class TestAudioFile(object):
     """A class that mimics audiolab.sndfile but generates noise instead of reading
     a wave file. Additionally it can be told to have a "broken" header and thus crashing
@@ -244,8 +257,13 @@ def interpolate_colors(colors, flat=False, num_colors=256):
     
 
 class WaveformImage(object):
-    def __init__(self, image_width, image_height):
-        self.image = Image.new("RGB", (image_width, image_height))
+    def __init__(self, image_width, image_height, bg_color = None, color_scheme = None):
+        if not bg_color:
+            bg_color = (0,0,0)
+        if not color_scheme: 
+            color_scheme = 'default'
+
+        self.image = Image.new("RGB", (image_width, image_height), bg_color)
         
         self.image_width = image_width
         self.image_height = image_height
@@ -253,12 +271,7 @@ class WaveformImage(object):
         self.draw = ImageDraw.Draw(self.image)
         self.previous_x, self.previous_y = None, None
         
-        colors = [
-                    (50,0,200),
-                    (0,220,80),
-                    (255,224,0),
-                    (255,0,0),
-                 ]
+        colors = color_schemes[color_scheme]['waveform']
         
         # this line gets the old "screaming" colors back...
         # colors = [self.color_from_value(value/29.0) for value in range(0,30)]
@@ -327,22 +340,20 @@ class WaveformImage(object):
         
         
 class SpectrogramImage(object):
-    def __init__(self, image_width, image_height, fft_size):
+    def __init__(self, image_width, image_height, fft_size, bg_color = None, color_scheme = None):
+
+        #FIXME: bg_color is ignored
+
+        if not color_scheme: 
+            color_scheme = 'default'
+
         self.image = Image.new("P", (image_height, image_width))
         
         self.image_width = image_width
         self.image_height = image_height
         self.fft_size = fft_size
         
-        colors = [
-                    (0, 0, 0),
-                    (58/4,68/4,65/4),
-                    (80/2,100/2,153/2),
-                    (90,180,100),
-                    (224,224,44),
-                    (255,60,30),
-                    (255,255,255)
-                 ]
+        colors = color_schemes[color_scheme]['spectrogram']
         
         self.image.putpalette(interpolate_colors(colors, True))
 
@@ -378,13 +389,14 @@ class SpectrogramImage(object):
         self.image.transpose(Image.ROTATE_90).save(filename)
 
 
-def create_wavform_png(input_filename, output_filename_w, image_width, image_height, fft_size):
+def create_wavform_png(input_filename, output_filename_w, image_width, image_height, fft_size,
+                       bg_color = None, color_scheme = None):
     audio_file = audiolab.sndfile(input_filename, 'read')
 
     samples_per_pixel = audio_file.get_nframes() / float(image_width)
     processor = AudioProcessor(audio_file, fft_size, numpy.hanning)
     
-    waveform = WaveformImage(image_width, image_height)
+    waveform = WaveformImage(image_width, image_height, bg_color, color_scheme)
     
     for x in range(image_width):
         
@@ -404,13 +416,14 @@ def create_wavform_png(input_filename, output_filename_w, image_width, image_hei
     
     print " done"
 
-def create_spectrogram_png(input_filename, output_filename_s, image_width, image_height, fft_size):
+def create_spectrogram_png(input_filename, output_filename_s, image_width, image_height, fft_size,
+                           bg_color = None, color_scheme = None):
     audio_file = audiolab.sndfile(input_filename, 'read')
 
     samples_per_pixel = audio_file.get_nframes() / float(image_width)
     processor = AudioProcessor(audio_file, fft_size, numpy.hanning)
     
-    spectrogram = SpectrogramImage(image_width, image_height, fft_size)
+    spectrogram = SpectrogramImage(image_width, image_height, fft_size, bg_color, color_scheme)
     
     for x in range(image_width):
    

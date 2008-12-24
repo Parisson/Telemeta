@@ -28,6 +28,9 @@ class WaveFormVisualizer(Component):
     def get_name(self):
         return "Waveform"
     
+    def set_colors(self, background=None, scheme=None):
+        pass
+
     def render(self, media_item, options=None):
         """Generator that streams the waveform as a PNG image"""
 

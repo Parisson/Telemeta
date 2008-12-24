@@ -28,6 +28,9 @@ class WaveformVisualizer2(OctaveCoreVisualizer):
     def get_name(self):
         return "Waveform (octave)"
     
+    def set_colors(self, background=None, scheme=None):
+        pass
+
     def render(self, media_item, options=None):
         """Generator that streams the temporal view as a PNG image"""
 

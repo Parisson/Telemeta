@@ -18,12 +18,19 @@ class SpectrogramVisualizer3(Component):
 
     implements(IMediaItemVisualizer)
 
+    bg_color = None
+    color_scheme = None
+
     def get_id(self):
         return "spectrogram3"
 
     def get_name(self):
         return "Spectrogram (audiolab)"
     
+    def set_colors(self, background=None, scheme=None):
+        self.bg_color = background
+        self.color_scheme = scheme
+
     def render(self, media_item, width=None, height=None, options=None):
         """Generator that streams the spectrogram as a PNG image with a python method"""
 
@@ -40,7 +47,8 @@ class SpectrogramVisualizer3(Component):
             image_height = 150
             
         fft_size = 2048
-        args = (wav_file, pngFile.name, image_width, image_height, fft_size)
+        args = (wav_file, pngFile.name, image_width, image_height, fft_size, 
+                self.bg_color, self.color_scheme)
         create_spectrogram_png(*args)
 
         buffer = pngFile.read(0xFFFF)

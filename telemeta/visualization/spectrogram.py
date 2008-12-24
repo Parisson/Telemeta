@@ -25,6 +25,9 @@ class SpectrogramVisualizer(SnackCoreVisualizer):
     def get_name(self):
         return "Spectrogram 1"
     
+    def set_colors(self, background=None, scheme=None):
+        pass
+
     def render(self, media_item, options=None):
         """Generator that streams the spectral view as a PNG image"""
 

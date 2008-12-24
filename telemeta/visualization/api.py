@@ -20,5 +20,10 @@ class IMediaItemVisualizer(Interface):
         etc..
         """
 
+    def set_colors(self, background=None, scheme=None):
+        """Set the colors used for image generation. background is a RGB tuple, 
+        and scheme a a predefined color theme name"""
+        pass
+
     def render(media_item, width=None, height=None, options=None):
         """Generator that streams the visualization output as a PNG image"""
