@@ -10,23 +10,22 @@
 from telemeta.analysis.core import *
 from telemeta.analysis.api import IMediaItemAnalyzer
 import numpy
-import datetime
 
-class DurationAnalyzer(AudioProcessor):
+class MeanDCShiftAnalyser(AudioProcessor):
     """Media item analyzer driver interface"""
 
     implements(IMediaItemAnalyzer)
 
     def get_id(self):
-        return "duration"
+        return "dc"
 
     def get_name(self):
-        return "Duration"
+        return "Mean DC shift"
 
     def get_unit(self):
-        return "h:m:s"
+        return "%"
 
     def render(self, media_item, options=None):
         self.pre_process(media_item)
-        media_time = numpy.round(float(self.frames)/float(self.samplerate),0)
-        return datetime.timedelta(0,media_time)
+        samples = self.get_mono_samples()
+        return numpy.round(100*numpy.mean(samples),4)

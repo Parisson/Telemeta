@@ -28,5 +28,4 @@ class MeanLevelAnalyser(AudioProcessor):
     def render(self, media_item, options=None):
         self.pre_process(media_item)
         samples = self.get_mono_samples()
-        size = numpy.size(samples)
         return numpy.round(20*numpy.log10(numpy.mean(numpy.sqrt(numpy.square(samples)))),2)

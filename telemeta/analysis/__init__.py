@@ -8,5 +8,6 @@ from telemeta.analysis.samplerate import *
 from telemeta.analysis.duration import *
 from telemeta.analysis.max_level import *
 from telemeta.analysis.mean_level import *
+from telemeta.analysis.dc import *
 
 
