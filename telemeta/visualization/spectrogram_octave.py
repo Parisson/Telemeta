@@ -21,7 +21,7 @@ class SpectrogramVisualizer2(OctaveCoreVisualizer):
         self.set_m_file('spectrogram2img.m')
         
     def get_id(self):
-        return "spectrogram2"
+        return "spectrogram_octave"
 
     def get_name(self):
         return "Spectrogram (octave)"
@@ -33,5 +33,6 @@ class SpectrogramVisualizer2(OctaveCoreVisualizer):
         """Generator that streams the spectral view as a PNG image"""
 
         stream = self.octave_to_png_stream(media_item)
-        return stream
-        
+        for chunk in stream:
+            yield chunk
+

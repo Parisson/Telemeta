@@ -23,10 +23,10 @@ class WaveFormVisualizer(Component):
     # http://jokosher.python-hosting.com/file/jokosher-extra/Waveform.py
 
     def get_id(self):
-        return "waveform"
+        return "waveform_first"
 
     def get_name(self):
-        return "Waveform"
+        return "Waveform (wav2png.c)"
     
     def set_colors(self, background=None, scheme=None):
         pass

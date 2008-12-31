@@ -57,7 +57,7 @@ class WebView(Component):
         if request.REQUEST.has_key('visualizer_id'):
             visualizer_id = request.REQUEST['visualizer_id']
         else:
-            visualizer_id = 'waveform3'
+            visualizer_id = 'waveform_audiolab'
 
         analyzers = []
         for analyzer in self.analyzers:

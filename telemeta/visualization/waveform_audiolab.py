@@ -13,8 +13,8 @@ from django.conf import settings
 from tempfile import NamedTemporaryFile
 from telemeta.visualization.wav2png import *
 
-class SpectrogramVisualizer3(Component):
-    """Spectrogram visualization driver (python style)"""
+class WaveFormVisualizer(Component):
+    """WaveForm visualization driver (python style thanks to wav2png.py and scikits.audiolab)"""
 
     implements(IMediaItemVisualizer)
 
@@ -22,17 +22,17 @@ class SpectrogramVisualizer3(Component):
     color_scheme = None
 
     def get_id(self):
-        return "spectrogram4"
+        return "waveform_audiolab"
 
     def get_name(self):
-        return "Spectrogram (audiolab large)"
-    
+        return "Waveform (audiolab)"
+
     def set_colors(self, background=None, scheme=None):
         self.bg_color = background
         self.color_scheme = scheme
 
     def render(self, media_item, width=None, height=None, options=None):
-        """Generator that streams the spectrogram as a PNG image with a python method"""
+        """Generator that streams the waveform as a PNG image with a python method"""
 
         wav_file = media_item.file.path
         pngFile = NamedTemporaryFile(suffix='.png')
@@ -40,16 +40,16 @@ class SpectrogramVisualizer3(Component):
         if not width == None:
             image_width = width
         else:
-            image_width = 1800
+            image_width = 1500
         if not height == None:
             image_height = height
         else:
-            image_height = 300
-            
+            image_height = 200
+
         fft_size = 2048
         args = (wav_file, pngFile.name, image_width, image_height, fft_size, 
                 self.bg_color, self.color_scheme)
-        create_spectrogram_png(*args)
+        create_wavform_png(*args)
 
         buffer = pngFile.read(0xFFFF)
         while buffer:
@@ -57,3 +57,4 @@ class SpectrogramVisualizer3(Component):
             buffer = pngFile.read(0xFFFF)
 
         pngFile.close()
+

@@ -23,7 +23,7 @@ class WaveformVisualizer2(OctaveCoreVisualizer):
         self.trans_type = 'png'
         
     def get_id(self):
-        return "waveform2"
+        return "waveform_octave"
 
     def get_name(self):
         return "Waveform (octave)"
@@ -35,5 +35,7 @@ class WaveformVisualizer2(OctaveCoreVisualizer):
         """Generator that streams the temporal view as a PNG image"""
 
         stream = self.octave_to_png_stream(media_item)
-        return stream
+        for chunk in stream:
+            yield chunk
+            
         

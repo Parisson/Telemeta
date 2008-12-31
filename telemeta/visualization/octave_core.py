@@ -60,7 +60,7 @@ class OctaveCoreVisualizer(Component):
                   ' -scale x250 ' + self.pngFile.name)
         
         # Stream
-        while True  :
+        while True:
             buffer = self.pngFile.read(self.buffer_size)
             if len(buffer) == 0:
                 break
