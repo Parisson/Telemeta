@@ -1,4 +1,4 @@
-dl.listing {
+dl.listing, #rightcol {
     margin-top: .4em;
 }
 dl.listing dd {
@@ -14,3 +14,4 @@ div.instruments {
     margin-left: -.1em;
     margin-right: .9em;
 }
+
