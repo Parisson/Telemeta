@@ -103,10 +103,6 @@ h3 {
     padding: 6px;
     background-color: #eee;
 }
-#rightcol .analyzer {
-    text-align: right;
-}
-
 #rightcol .analyzer, #rightcol .exporter {
     text-align: left;
     position: relative;
@@ -139,13 +135,13 @@ h3 {
     font-size: 1em;
 }
 
-.analyzer_title {
+.analyzer-title {
     background-color: #f2f2f2;
     color: #000;
     padding: 2px;
 }
 
-.analyzer_line {
+.analyzer-line {
     background-color: #fdfdfd;
     color: #000;
     padding: 4px;
