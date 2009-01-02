@@ -9,9 +9,10 @@
 .ts-skin-lab .ts-player .ts-wave {
     height: 130px;
 }
-.ts-skin-lab .ts-player .ts-image {
+.ts-skin-lab .ts-player .ts-wave .ts-image {
     width: 360px;
     height: 130px;
+    background: transparent;
 }
 
 #player_maximized .ts-player .ts-wave,  #player_maximized .ts-player .ts-image {
