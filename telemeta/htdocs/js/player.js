@@ -15,8 +15,9 @@ function togglePlayerMaximization() {
         ctr = $('#player_maximized').append(view);
     }
     ctr.css({opacity: 0, display: 'block'});
-    player.resize();
-    ctr.animate({opacity: 1}, 100, null);
+    if (player)
+        player.resize();
+    ctr.animate({opacity: 1}, 100);
 }
 
 function load_sound() {

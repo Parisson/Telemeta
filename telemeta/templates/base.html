@@ -20,6 +20,7 @@
 <div id="user-tools">{% trans 'Welcome,' %} <strong>{% if user.first_name %}{{ user.first_name|escape }}{% else %}{{ user.username }}{% endif %}</strong>. {% block userlinks %}<a href="doc/">{% trans 'Documentation' %}</a> / <a href="password_change/">{% trans 'Change password' %}</a> / <a href="logout/">{% trans 'Log out' %}</a>{% endblock %}</div>
 {% endif %}
 -->
+<div id="layout">
 <div id="header">
 <div id="logo">
 <a href="{% url telemeta-home %}"><img src="{% url telemeta-images "logo.png" %}" alt="" /></a>
@@ -62,6 +63,6 @@
   Visit the Telemeta open source project at<br /><a href="{% telemeta_url %}">{% telemeta_url %}</a>
  </p>
 </div>
-
+</div>
 </body>
 </html>

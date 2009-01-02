@@ -3,7 +3,7 @@
     clear: both;
     background: white;
     border: solid 1px #ADADAD;
-    margin-top: 10px;
+    margin-top: 2px;
 }
 
 .ts-skin-lab .ts-player .ts-wave {
@@ -24,7 +24,6 @@
 }
 .ts-skin-lab .ts-player .ts-viewer a.ts-pointer {
     color: #BB0000;
-    /*background: transparent;*/
     background: white;
 
 }
@@ -66,9 +65,7 @@
 #player_maximized .toggle, #player_minimized .toggle {
     display: block;
     overflow: hidden;
-    position: absolute;
-    right: 0px;
-    top: -12px;
+    float: right;
     width: 18px;
     padding: 10px 0 0 0;
     height: 0px !important; 

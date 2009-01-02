@@ -33,7 +33,7 @@ h3 {
     height: 5px;
 }
 /* Min-width */
-#content, #header, #submenu {
+#layout {
     min-width: 740px;
 }
 
@@ -87,17 +87,11 @@ h3 {
     font-size: 0.9em;
     font-weight: bold;
 }
-#leftcol {
-    position: relative;
-    margin-right: 399px;
-    min-height: 450px;
-    min-width: 400px;
-}
+
 #rightcol {
-    clear: both;
-    position: absolute;
+    position: relative;
     z-index: 1;
-    right: .3em;
+    float: right;
     width: 362px;
     margin-top: 10px;
     border: 1px dotted #999;
@@ -118,17 +112,6 @@ h3 {
     background-color: #fff;
     border: 1px solid #adadad;
 }
-/*
-#item_player_c {
-    width: 305px;
-    padding: 2px 0 0;
-    border: 1px solid #adadad;
-    text-align: center;
-}
-.item_visualization select { width: 240px; }
-.item_visualization .viewport { width: 305px; border: 1px solid #adadad; overflow: auto; margin-top: 5px; background-color: #fff;}
-*/
-
 
 .exporter {
     background-color: #fff;
@@ -138,7 +121,6 @@ h3 {
     padding: 2px;
     height: 17px;
     margin: 5px 0 0;
-    /* overflow: auto; */
     font-size: 1em;
 }
 
@@ -149,7 +131,6 @@ h3 {
     width: 356px;
     padding: 2px;
     margin: 5px 0 0;
-    /* overflow: auto; */
     font-size: 1em;
 }
 
@@ -175,7 +156,7 @@ ul.continents ul li { display: inline; padding-right: 2em;}
 ul.continents ul li a { line-height: 1.8em; }
 
 /* Collection */
-#leftcol .intro {
+#content .intro {
     font-size: 1em;
     font-weight: bold;
     color: #444;
@@ -184,7 +165,7 @@ ul.continents ul li a { line-height: 1.8em; }
     font-size: 0.8em;
     background: #FFF url(indent.png) no-repeat 0 1px;
 }
-#leftcol .intro span {
+#content .intro span {
     padding: 3px;
 
 }
@@ -401,12 +382,8 @@ dl dd {
     border: 1px solid transparent;
 }
 dl dt {
-    clear: both;
     float: left;
 }
-/* ie5 mac \*/
-dt { clear: both;}
-/* end hack */
 
 dl.listing dt {
     width: 18em;
@@ -486,6 +463,11 @@ dl.dublincore dd.caption {
 .infos, .extraInfos {
     margin-bottom: 15px;
 }
+
+.extraInfos dl, .extraInfos table {
+    position: relative;
+}
+
 .extraInfos div {
     padding: 0;
     margin-bottom: 5px;
@@ -496,33 +478,37 @@ dl.dublincore dd.caption {
     margin-bottom: -5px;
 }
 .extraInfos h4 {
-    clear: both;
+    /* clear: both; */
     font-size: 0.9em;
     line-height: 1.4em;
+    border-bottom: 1px dotted #aaa;
 }
+.with-rightcol .extraInfos h4 {
+    margin-right: 395px;
+}
+
 .extraInfos h4 a {
     display: block;
-    color: #333;
+    color: #333 !important;
     text-decoration: none;
     margin: 0;
     background: #fff url(more.gif) no-repeat left top;
+    background-position: 0 -17px;
     padding-bottom: 2px;
     padding-left: 16px;
-    border-bottom: none;
+    border-bottom: none !important;
     outline: none;
 }
 .extraInfos h4 a:hover {
     background-color: transparent;
     border-bottom: none;
-    color: #555;
+    color: #555 !important;
 }
-.extraInfos h4.on {
-    border-bottom: 1px dotted #aaa;
-    margin-right: 15px;
+.extraInfos .folded h4 {
+    border-bottom: none;
 }
-.extraInfos h4.on a {
-    color: #333;
-    background-position: 0 -17px;
+.extraInfos .folded h4 a {
+    background-position: 0 0px;
 }
 
 /* Pagination */
@@ -553,7 +539,7 @@ div.instruments {
 table.instruments {
     border: none;
     border-collapse: separate;
-    width: 100%;
+    /* width: 100%; */
     border-spacing: .7em;
 }
 table.instruments td {
