@@ -7,11 +7,15 @@
 }
 
 .ts-skin-lab .ts-player .ts-wave {
-    height: 200px;
+    height: 130px;
 }
 .ts-skin-lab .ts-player .ts-image {
     width: 360px;
-    height: 200px;
+    height: 130px;
+}
+
+#player_maximized .ts-player .ts-wave,  #player_maximized .ts-player .ts-image {
+    height: 170px;
 }
 
 .ts-skin-lab .ts-player .ts-viewer {
@@ -40,7 +44,7 @@
 .ts-skin-lab .ts-player .ts-ruler .ts-section .ts-lines {
     background: #F2F2F2;
     color: #ADADAD;
-    border-bottom: #adadad;
+    border-bottom: solid 1px #adadad;
 }
 
 .ts-skin-lab .ts-player .ts-control {
