@@ -63,6 +63,7 @@
 
 
 #player_maximized .toggle, #player_minimized .toggle {
+    position: relative;
     display: block;
     overflow: hidden;
     float: right;
@@ -72,10 +73,11 @@
     height /**/:10px; /* for IE5/Win only */
     background-image: url('../images/maximize.gif');
     text-decoration: none;
-    border: 0;
+    border: none;
 }
+
 #player_maximized .toggle:hover, #player_minimized .toggle:hover {
-    background-position: 0 -10px;
+    background-position: 0px -10px;
 }
 
 #player_maximized {

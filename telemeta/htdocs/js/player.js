@@ -4,6 +4,7 @@ var soundEngineReady = false;
 var map;
 var provider;
 var player;
+var player_image_url = null;
 
 function togglePlayerMaximization() {
     var view = $('#player');
@@ -34,6 +35,13 @@ function load_sound() {
     }
 }
 
+function change_visualizer() {
+    set_player_image_url($('#visualizer_id').get(0).value);
+    if (player)
+        player.refreshImage();
+    return false;
+}
+
 function load_player(duration) {
     $(document).ready(function () {
         soundUrl = $('.ts-wave a').attr('href');
@@ -44,13 +52,20 @@ function load_player(duration) {
         TimeSide.load(function() {
             map = new TimeSide.MarkerMap();
             provider = new TimeSide.SoundProvider({duration: duration});
-            player = new TimeSide.Player('#player');
+            player = new TimeSide.Player('#player', {
+                image: get_player_image_src
+            });
             controller = new TimeSide.Controller({
                 player: player,
                 soundProvider: provider, 
                 map: map
             });
+            change_visualizer();
+            player.resize();
         });
+
+        $('#visualizer_id').change(change_visualizer);
+        $('#visualizer_id_form').submit(change_visualizer);
 
         $('#player_maximized .toggle, #player_minimized .toggle').click(function() {
             togglePlayerMaximization();
@@ -68,6 +83,17 @@ function load_player(duration) {
 
 }
 
+function set_player_image_url(str) {
+    player_image_url = str;
+}
+
+function get_player_image_src(width, height) {
+    var src = null;
+    if (player_image_url && (width || height)) {
+        src = player_image_url.replace('WIDTH', width + '').replace('HEIGHT', height + '');
+    }
+    return src;
+}
 
 
 

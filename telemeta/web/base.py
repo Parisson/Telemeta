@@ -78,7 +78,7 @@ class WebView(Component):
                     'visualizers': visualizers, 'visualizer_id': visualizer_id,
                     'analysers': analyzers, 'vamp_plugins': vamp_plugin_list})
                     
-    def item_visualize(self, request, item_id, visualizer_id):
+    def item_visualize(self, request, item_id, visualizer_id, width, height):
         for visualizer in self.visualizers:
             if visualizer.get_id() == visualizer_id:
                 break
@@ -89,7 +89,7 @@ class WebView(Component):
         item = MediaItem.objects.get(pk=item_id)
 
         visualizer.set_colors((255,255,255), 'purple')
-        stream = visualizer.render(item, width=1500, height=200)
+        stream = visualizer.render(item, width=int(width), height=int(height))
         response = HttpResponse(stream, mimetype = 'image/png')
         return response
 
