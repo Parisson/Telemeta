@@ -13,7 +13,7 @@ from django.conf import settings
 from tempfile import NamedTemporaryFile
 from telemeta.visualization.wav2png import *
 
-class WaveFormVisualizer(Component):
+class WaveFormVisualizerAudiolab(Component):
     """WaveForm visualization driver (python style thanks to wav2png.py and scikits.audiolab)"""
 
     implements(IMediaItemVisualizer)

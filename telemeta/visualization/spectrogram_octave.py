@@ -12,7 +12,7 @@ from telemeta.core import *
 from telemeta.visualization.api import IMediaItemVisualizer
 from telemeta.visualization.octave_core import OctaveCoreVisualizer
 
-class SpectrogramVisualizer2(OctaveCoreVisualizer):
+class SpectrogramVisualizerOctave(OctaveCoreVisualizer):
     """Octave spectral view visualization driver"""
     
     implements(IMediaItemVisualizer)

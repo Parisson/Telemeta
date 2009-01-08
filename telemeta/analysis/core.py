@@ -44,20 +44,18 @@ class AudioProcessor(Component):
         self.format = self.audio_file.get_file_format()
         self.encoding = self.audio_file.get_encoding()
 
-    def post_process(self, audio_file):
-        pass
-
-    def get_mono_samples(self):
-        samples = self.audio_file.read_frames(self.frames)
-        # convert to mono by selecting left channel only
-        if self.channels > 1:
-            samples = samples[:,0]
-        return samples
-
     def get_samples(self):
         samples = self.audio_file.read_frames(self.frames)
-        return samples  
+        return samples
         
+    def get_mono_samples(self):
+        # convert to mono by selecting left channel only
+        samples = self.get_samples()
+        if self.channels > 1:
+            return samples[:,0]
+        else:
+            return samples
+
     def read(self, start, size, resize_if_less=False):
         """ read size samples starting at start, if resize_if_less is True and less than size
         samples are read, resize the array to size and fill with zeros """
