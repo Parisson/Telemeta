@@ -51,6 +51,7 @@
             <span>{% if object.items.count %}{{ object.items.count }} {% ifequal object.items.count 1 %}item{% else %}items{% endifequal %}{% else %}No item{% endif %}</span>
         </div>
         <div class="infos">
+        {% block general_info %}
             <dl class="listing">
                 {% if object.creator %}<dt>Auteur / Cédant</dt><dd>{{ object.creator }}</dd>{% endif %}
 
@@ -70,8 +71,10 @@
                 {% endif %}
 
             </dl>
+        {% endblock general_info %}
         </div>
         <div class="extraInfos">
+        {% block geoethnic_data %}
             <div>
                 <h4><a href="#">Données ethnographiques</a></h4>
                 <div>
@@ -90,9 +93,11 @@
                     </dl>
                 </div>
             </div>
+        {% endblock geoethnic_data %}
         </div>
         {% if object.is_published %}
         <div class="extraInfos">
+        {% block publication_data %}
             <div class="folded">
                 <h4><a href="#">Détails du document édité</a></h4>
                 <div>
@@ -104,9 +109,11 @@
                 </div>
             </div>
             <div class="nett"></div>
+        {% endblock publication_data %}
         </div>
         {% endif %}
         <div class="extraInfos">
+        {% block document_identification %}
             <div class="folded">
                 <h4><a href="#">Identification du document</a></h4>
                 <div>
@@ -116,8 +123,10 @@
                     </dl>
                 </div>
             </div>
+        {% endblock document_identification %}
         </div>
         <div class="extraInfos">
+        {% block document_data %}
             <div class="folded">
                 <h4><a href="#">Informations documentaires</a></h4>
                 <div>
@@ -147,6 +156,7 @@
                     </dl>
                 </div>
             </div>
+        {% endblock document_data %}
         </div>
         <h4>Items</h4>
         {% with object.ordered_items as items %}
