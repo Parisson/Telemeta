@@ -23,7 +23,9 @@
 <div id="layout">
 <div id="header">
 <div id="logo">
+{% block logo %}
 <a href="{% url telemeta-home %}"><img src="{% url telemeta-images "logo.png" %}" alt="" /></a>
+{% endblock %)
 </div>
 
 <div id="quick_search">
