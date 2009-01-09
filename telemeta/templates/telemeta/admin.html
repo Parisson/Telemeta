@@ -1,6 +1,7 @@
 {% extends "telemeta/base.html" %}
 
-{% block extra_style %}
+{% block stylesheets %}
+{{ block.super }}
 <link rel="stylesheet" type="text/css" href="{% url telemeta-css "admin.css" %}" />
 {% endblock %}
 
