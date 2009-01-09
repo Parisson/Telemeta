@@ -1,11 +1,12 @@
-# README
-# ======
+=================
+Telemeta - README
+=================
 
 Telemeta: web frontend to backup, transcode and tag any audio content with metadata
 
 
-# 1. Introduction
-# ===============
+Introduction
+============
 
 Telemeta is a global audio archiving program which introduces useful and secure
 indexing methods to backup digitalized audio files and metadata dictionnaries.
@@ -33,8 +34,8 @@ with a view of transcoded 'public' formats (WAV, FLAC, MP3, OGG and many more
 soon...) including metadata editing and publishing tools.
 
 
-# 2. Requirements
-# ===============
+Requirements
+============
 
 python (>= 2.3.5-7), python-xml, python-central (>= 0.5),
 python-mutagen, python-django, sox, vorbis-tools, flac, normalize-audio,
@@ -42,25 +43,25 @@ ecasound, festival, par2, python-mysqldb, sqlite3 | mysql-server, octave2.9,
 octave2.9-forge, python-tk, python-numpy, python-audiolab, libsndfile1
 
 
-# 3. Installation and usage
-# =========================
+Installation and usage
+======================
 
 See INSTALL and http://svn.parisson.org/telemeta for more informations.
 
 
-# 4. Development
-# ===============
+Development
+===========
 
 To participate to the development of telemeta, you will need a login/password couple.
 You're welcome to email us to get one and commit your great ideas ;) (see §6.).
 
-To get the lastest development version, you need subversion and run :
+To get the lastest development version, you need subversion and run::
 
     $ svn co http://svn.parisson.org/svn/telemeta/trunk telemeta
 
 
-# 5. Bugs and feedback
-# ====================
+Bugs and feedback
+=================
 
 If you find some bugs, please leave a ticket on this page:
 
@@ -70,10 +71,13 @@ You can also leave a ticket to request some new interesting features for the nex
 And even if Telemeta suits you, please give us some feedback (see §6.) !
 
 
-# 6. Contact
-# ==========
+Contact
+=======
 
-Homepage:   http://svn.parisson.org/telemeta
-Emails:     Guillaume Pellerin <pellerin@parisson.com>
-            Olivier Guilyardi <olivier@samalyse.com>
+Homepage: 
+    http://svn.parisson.org/telemeta
+
+Emails: 
+    Guillaume Pellerin <pellerin@parisson.com>, 
+    Olivier Guilyardi <olivier@samalyse.com>
 
