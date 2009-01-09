@@ -54,6 +54,7 @@
 </div>
 
 <div id="footer">
+{% block footer %}
  <hr />
  <a id="telemeta_powered" href="{% telemeta_url %}"><img src="{% url telemeta-images "logo_mini.png" %}" height="30" width="93"
    alt="Telemeta Powered"/></a>
@@ -65,6 +66,7 @@
  <p class="right">
   Visit the Telemeta open source project at<br /><a href="{% telemeta_url %}">{% telemeta_url %}</a>
  </p>
+{% endblock %}
 </div>
 </div>
 </body>
