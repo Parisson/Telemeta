@@ -489,6 +489,7 @@ dl.dublincore dd.caption {
 }
 
 .extraInfos h4 a {
+    position: relative;
     display: block;
     color: #333 !important;
     text-decoration: none;
