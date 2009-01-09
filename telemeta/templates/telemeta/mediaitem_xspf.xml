@@ -1,4 +1,4 @@
-{% extends "base_xspf.xml" %}
+{% extends "telemeta/base_xspf.xml" %}
 {% load telemeta_utils %}
 
 {% block tracklist %}

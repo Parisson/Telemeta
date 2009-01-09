@@ -38,11 +38,11 @@ class WebView(Component):
     def index(self, request):
         """Render the homepage"""
 
-        template = loader.get_template('index.html')
+        template = loader.get_template('telemeta/index.html')
         context = Context({})
         return HttpResponse(template.render(context))
 
-    def item_detail(self, request, item_id, template='mediaitem_detail.html'):
+    def item_detail(self, request, item_id, template='telemeta/mediaitem_detail.html'):
         """Show the details of a given item"""
         item = MediaItem.objects.get(pk=item_id)
         
@@ -127,7 +127,7 @@ class WebView(Component):
         continents = MediaCollection.objects.list_continents()
         countries = MediaCollection.objects.list_countries()
         ethnic_groups = MediaItem.objects.list_ethnic_groups()
-        return render_to_response('search_criteria.html', 
+        return render_to_response('telemeta/search_criteria.html', 
             {'continents': continents, 'countries': countries, 
             'ethnic_groups': ethnic_groups})
 
@@ -185,7 +185,7 @@ class WebView(Component):
             objects = collections
 
         return list_detail.object_list(request, objects, 
-            template_name='search_results.html', paginate_by=20,
+            template_name='telemeta/search_results.html', paginate_by=20,
             extra_context={'criteria': criteria, 'collections_num': collections.count(), 
                 'items_num': items.count(), 'type' : type})
 
@@ -204,7 +204,7 @@ class WebView(Component):
         return {"enumerations": self.__get_enumerations_list()}
 
     def admin_index(self, request):
-        return render_to_response('admin.html', self. __get_admin_context_vars())
+        return render_to_response('telemeta/admin.html', self. __get_admin_context_vars())
 
     def __get_enumeration(self, id):
         from django.db.models import get_models
@@ -229,7 +229,7 @@ class WebView(Component):
         vars["enumeration_name"] = enumeration._meta.verbose_name            
         vars["enumeration_name_plural"] = enumeration._meta.verbose_name_plural
         vars["enumeration_values"] = enumeration.objects.all()
-        return render_to_response('enumeration_edit.html', vars)
+        return render_to_response('telemeta/enumeration_edit.html', vars)
 
     def add_to_enumeration(self, request, enumeration_id):        
 
@@ -264,7 +264,7 @@ class WebView(Component):
         vars["enumeration_name"] = enumeration._meta.verbose_name            
         vars["enumeration_name_plural"] = enumeration._meta.verbose_name_plural
         vars["enumeration_record"] = enumeration.objects.get(id__exact=value_id)
-        return render_to_response('enumeration_edit_value.html', vars)
+        return render_to_response('telemeta/enumeration_edit_value.html', vars)
 
     def update_enumeration_value(self, request, enumeration_id, value_id):        
 
@@ -299,12 +299,12 @@ class WebView(Component):
 
     def list_continents(self, request):
         continents = MediaCollection.objects.stat_continents()
-        return render_to_response('geo_continents.html', 
+        return render_to_response('telemeta/geo_continents.html', 
                     {'continents': continents })
 
     def get_continents_js(self, request):
         countries = MediaCollection.objects.list_countries()
-        return render_to_response('geo_continents.js', 
+        return render_to_response('telemeta/geo_continents.js', 
                     {'countries': countries})
 
     def list_countries(self, request, continent):                    
@@ -315,11 +315,11 @@ class WebView(Component):
         if c["name"] != continent:
             raise Http404
 
-        return render_to_response('geo_countries.html', {'continent': c })
+        return render_to_response('telemeta/geo_countries.html', {'continent': c })
 
     def list_country_collections(self, request, continent, country):
         objects = MediaCollection.objects.by_country(country)
         return list_detail.object_list(request, objects, 
-            template_name='geo_country_collections.html', paginate_by=20,
+            template_name='telemeta/geo_country_collections.html', paginate_by=20,
             extra_context={'country': country, 'continent': continent})
 

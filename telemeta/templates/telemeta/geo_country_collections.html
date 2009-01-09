@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "telemeta/base.html" %}
 {% load telemeta_utils %}
 
 {% block content %}
@@ -7,7 +7,7 @@
   / {{ country }}</h3>
 
 {% with object_list as collections %}
-{% include "inc/collection_list.html" %}
+{% include "telemeta/inc/collection_list.html" %}
 {% endwith %}
 
 {% endblock %}

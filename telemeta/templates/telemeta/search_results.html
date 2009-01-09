@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "telemeta/base.html" %}
 {% load telemeta_utils %}
 
 {% block content %}
@@ -40,7 +40,7 @@
     Collections ({{collections_num}})</a></p>
 
   {% with object_list as items %}
-      {% include "inc/mediaitem_list.html" %}
+      {% include "telemeta/inc/mediaitem_list.html" %}
   {% endwith %}    
 
 {% else %}
@@ -50,7 +50,7 @@
   <b>Collections ({{collections_num}})</b></p>
 
   {% with object_list as collections %}
-      {% include "inc/collection_list.html" %}
+      {% include "telemeta/inc/collection_list.html" %}
   {% endwith %}
 
 {% endifequal %}

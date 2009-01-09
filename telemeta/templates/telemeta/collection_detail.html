@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "telemeta/base.html" %}
 {% load telemeta_utils %}
 
 {% block extra_javascript %}
@@ -150,7 +150,7 @@
         </div>
         <h4>Items</h4>
         {% with object.ordered_items as items %}
-            {% include "inc/mediaitem_list.html" %}
+            {% include "telemeta/inc/mediaitem_list.html" %}
         {% endwith %}
         </div>
     </div>
