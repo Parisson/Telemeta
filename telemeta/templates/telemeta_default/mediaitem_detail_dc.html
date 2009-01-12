@@ -1,0 +1,25 @@
+{% extends "telemeta/base.html" %}
+{% load telemeta_utils %}
+
+{% if item %}
+{% block submenu %}
+    <h3>Item: {{ item.title }}</h3>
+    <div><a href="{% url telemeta-item-detail item.id|urlencode %}">Normal View</a></div>
+{% endblock %}
+
+{% block content %}
+    <h4 class="dublincore">Dublin Core Expression</h4>
+    <dl class="dublincore">
+        <dt class="caption"><span>Element</span>Refinement</dt><dd class="caption">Value</dd>
+        {% for element in item.to_dublincore.elements %}
+        {% if element.value %}
+        <dt><span>{{ element.name }}</span>{{ element.refinement|default:"&nbsp;" }}</dt><dd>{% ifequal element.field "collection" %}<a href="{% url telemeta-collection-dublincore item.collection.id|urlencode %}">{{ element.value }}</a>{% else %}{{ element.value }}{% endifequal %}</dd>
+        {% endif %}
+        {% endfor %}
+    </dl>
+{% endblock %}
+{% else %}
+    <p>No such item</p>
+{% endif %}
+
+

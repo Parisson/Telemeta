@@ -1,0 +1,8 @@
+{% extends "telemeta/base.html" %}
+
+{% block content %}
+<h3>Media items</h3>
+{% with object_list as items %}
+{% include "telemeta/inc/mediaitem_list.html" %}
+{% endwith %}
+{% endblock %}

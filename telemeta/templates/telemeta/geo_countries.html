@@ -1,13 +1,1 @@
-{% extends "telemeta/base_site.html" %}
-{% load telemeta_utils %}
-
-{% block content %}
-<h3><a href="{% url telemeta-geo-continents %}">WORLD</a> /
-  {{ continent.name }}</h3>
-<ul>
-{% for country in continent.countries %}
-  <li><a href="{% url telemeta-geo-country-collections continent.name,country.name|urlencode %}">
-    {{ country.name|lower|capfirst }} ({{ country.count }})</a></li>
-{% endfor %}
-</ul>
-{% endblock %}
+{% extends "telemeta_default/geo_countries.html" %}

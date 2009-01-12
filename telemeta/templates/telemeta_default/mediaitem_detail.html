@@ -1,0 +1,233 @@
+{% extends "telemeta/base.html" %}
+{% load telemeta_utils %}
+
+{% block stylesheets %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% url telemeta-timeside "css/timeside.css" %}" />
+<link rel="stylesheet" type="text/css" href="{% url telemeta-timeside "skins/lab/style.css" %}" />
+<link rel="stylesheet" type="text/css" href="{% url telemeta-css "player.css" %}" />
+{% endblock %}
+{% block extra_javascript %}
+
+<script src="{% url telemeta-js "jquery.js" %}" type="text/javascript"></script>
+<script src="{% url telemeta-js "application.js" %}" type="text/javascript"></script>
+<script src="{% url telemeta-js "wz_jsgraphics.js" %}" type="text/javascript"></script>
+<script src="{% url telemeta-js "soundmanager2.js" %}" type="text/javascript"></script>
+<script src="{% url telemeta-timeside "src/timeside.js" %}" type="text/javascript"></script>
+<script src="{% url telemeta-js "player.js" %}" type="text/javascript"></script>
+
+<script type="text/javascript">
+soundManager.url = '{% url telemeta-swf "./" %}';
+soundManager.flashVersion = 9;
+soundManager.debugMode = false;
+set_player_image_url('{% url telemeta-item-visualize item.id|urlencode,visualizer_id,"WIDTH","HEIGHT" %}');
+load_player({{ item.get_duration }});
+</script>
+
+{% endblock %}
+
+
+{% if item %}
+{% block submenu %}
+    <h3>Item: {{ item.title }}</h3>
+    <div><a href="{% url telemeta-item-dublincore item.id|urlencode %}">Dublin Core</a></div>
+{% endblock %}
+
+{% block content %}
+
+<div class="{% if item.file %}with-rightcol{% endif %}">
+
+{% if item.file %}
+    <div id="player_maximized" class="ts-skin-lab">
+        <a href="#" class="toggle">Minimize</a>
+        <div class="wazing"></div>
+    </div>
+    <div id="rightcol">
+        <div id="player_minimized" class="ts-skin-lab">
+        <a href="#" class="toggle">Maximize</a>
+        <div class="wazing"></div>
+        <div id="player" class="ts-player">
+            <div class="ts-viewer">
+                <div class="ts-wave">
+                    <div class="ts-image-container">
+                        <a href="{% url telemeta-item-export item.id|urlencode,"mp3" %}">
+                        <img class="ts-image" src="{% url telemeta-item-visualize item.id|urlencode,visualizer_id,360,130 %}" 
+                          alt="" /></a>
+                    </div>
+                </div>  
+            </div>
+        </div>
+        </div>
+
+        <div class="item_visualization">
+            <form id="visualizer_id_form" method="get" action="#">
+                <!--
+                <select name="visualizer_id" onchange="this.form.submit()">
+                    {% for v in visualizers %}
+                    <option value="{{ v.id }}" {% ifequal v.id visualizer_id %} selected="selected" {% endifequal %}>
+                    {{v.name}}</option>
+                    {% endfor %}
+                </select>
+                -->
+                <select id="visualizer_id" name="visualizer_id">
+                    {% for v in visualizers %}
+                    <option value="{% url telemeta-item-visualize item.id|urlencode,v.id,"WIDTH","HEIGHT" %}">
+                    {{v.name}}</option>
+                    {% endfor %}
+                </select>
+                <input type="submit" value="Set" />
+            </form>
+
+          <div class="analyzer">
+            <table width="100%">
+             <tr class="analyzer-title">
+              <td>Property</td>
+              <td>Value</td>
+              <td>Unit</td>
+             <tr>
+            {% for analyser in analysers %}
+             <tr class="analyzer-line">
+              <td>
+                {{ analyser.name }}
+              </td>
+              <td> 
+                {{ analyser.value }}
+              </td>
+              <td>
+                {{ analyser.unit }}
+              </td>
+            </tr>
+            {% endfor %}
+           </table>
+         </div>
+
+        <form method="get" action="#">
+            <p>&nbsp;Vamp plugin analysis</p>
+            <select name="vamp_id">
+            {% for plugin in vamp_plugins %}
+            <option value="{{ plugin }}" {% ifequal plugin vamp_id %} selected="selected" {% endifequal %}>
+            {{ plugin }}</option>
+            {% endfor %}
+            </select>
+            <input type="submit" value="Get" />
+        </form>
+        
+        </div>
+
+        <div class="exporter">
+            <p>Download:
+            {% for format in export_formats %}
+            <a href="{% url telemeta-item-export item.id|urlencode,format.extension %}">{{ format.name }}</a>
+            {% endfor %}</p>
+        </div>
+
+    </div>
+{% endif %}
+
+    <div class="infos">
+    {% block general_info %}
+        <dl class="listing">
+            {% if item.auteur %}<dt>Auteur</dt><dd>{{ item.auteur }}</dd>{% endif %}
+            {% if item.annee_enr %}<dt>Année d'enregistrement</dt><dd>{{ item.annee_enr }}</dd>{% endif %}
+            {% if item.dates_enregistr %}<dt>Date d'enregistrement</dt><dd>{{ item.dates_enregistr }}</dd>{% endif %}
+            {% if item.title %}<dt>Titre</dt><dd>{{ item.title }}</dd>{% endif %}
+            {% if item.transcrip_trad %}<dt>Traduction du titre</dt><dd>{{ item.transcrip_trad }}</dd>{% endif %}
+            <dt>Collection</dt><dd><a href="{% url telemeta-collection-detail item.collection.id|urlencode %}">{{ item.collection.title }}</a></dd>
+            {% if item.duree %}<dt>Durée</dt><dd>{{ item.duree }}</dd>{% endif %}
+            {% if item.collection.ispublished and item.Ref %}
+            <dt>Ref</dt><dd>{{ item.Ref }}</dd>
+            {% endif %}
+        </dl>
+    {% endblock general_info %}
+    </div>
+    <div class="extraInfos">
+    {% block geoethnic_data %}
+        <div>
+            <h4><a href="#">Informations géographiques et ethnographiques</a></h4>
+            <dl class="listing">
+            {% if item.continent %}<dt>Continent</dt><dd>{{ item.continent }}</dd>{% endif %}
+            {% if item.etat %}<dt>État / Nation</dt><dd>{{ item.etat }}</dd>{% endif %}
+            {% if item.region_village %}<dt>Région / Village</dt><dd>{{ item.region_village }}</dd>{% endif %}
+            {% if item.ethnie_grsocial %}<dt>Ethnie/ Groupe social</dt><dd>{{ item.ethnie_grsocial }}</dd>{% endif %}
+            {% if item.aire_geo_cult %}<dt>Aire culturelle</dt><dd>{{ item.aire_geo_cult }}</dd>{% endif %}
+            {% if item.fonction_usage and item.comm_fonctusage %}
+            <dt class="group">Contexte ethnographique</dt>
+            {% if item.fonction_usage %}<dt class="sub">Mots clés</dt><dd>{{ item.fonction_usage }}</dd>{% endif %}
+            {% if item.comm_fonctusage %}<dt class="sub">Commentaires</dt><dd>{{ item.comm_fonctusage }}</dd>{% endif %}
+            {% endif %}
+            </dl>
+        </div>
+    {% endblock geoethnic_data %}
+    </div>
+    <div class="extraInfos">
+    {% block musical_performances %}
+        <div class="folded">
+            <h4><a href="#">Formation musicale</a></h4>
+            <dl class="listing">
+            {% if item.form_genr_style %}<dt>Forme / genre vernaculaire</dt><dd>{{ item.form_genr_style }}</dd>{% endif %}
+            {% if item.formstyl_generi %}<dt>Forme / genre générique</dt><dd>{{ item.formstyl_generi }}</dd>{% endif %}
+            </dl>
+            <div class="instruments">
+                <table class="instruments">
+                <thead>
+                    <tr>
+                        <td>Nombre</td>
+                        <td>Nom générique</td>
+                        <td>Nom vernaculaire</td>
+                        <td>Interprète </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                </tbody>
+                </table>
+            </div>
+        </div>
+    {% endblock musical_performances %}
+    </div>
+    <div class="extraInfos">
+    {% block document_identification %}
+        <div class="folded">
+            <h4><a href="#">Identification du document</a></h4>
+            <dl class="listing">
+            {% if item.format %}<dt>Format</dt><dd>{{ item.format }}</dd>{% endif %}
+            {% if item.id %}<dt>Cote item</dt><dd>{{ item.id }}</dd>{% endif %}
+            {% if item.face_plage %}<dt>N° de l'item</dt><dd>{{ item.face_plage }}</dd>{% endif %}
+            </dl>
+        </div>
+    {% endblock document_identification %}
+    </div>
+    <div class="extraInfos">
+    {% block document_data %}
+        <div class="folded">
+            <h4><a href="#">Informations documentaires</a></h4>
+            <dl class="listing">
+            {% if item.choixcollecteur %}<dt>choixcollecteur</dt><dd>{{ item.choixcollecteur }}</dd>{% endif %}
+            {% if item.comm_fonctusage %}<dt>comm fonctusage</dt><dd>{{ item.comm_fonctusage }}</dd>{% endif %}
+            {% if item.copie_de %}<dt>Copie de</dt><dd>{{ item.copie_de }}</dd>{% endif %}
+            {% if item.enregistre_par %}<dt>Enregistré par</dt><dd>{{ item.enregistre_par }}</dd>{% endif %}
+            {% if item.file %}<dt>File</dt><dd>{{ item.file }}</dd>{% endif %}
+            {% if item.get_duration %}<dt>get duration</dt><dd>{{ item.get_duration }}</dd>{% endif %}
+            {% if item.moda_execut %}<dt>moda execut</dt><dd>{{ item.moda_execut }}</dd>{% endif %}
+            {% if item.nroband_nropiec %}<dt>nroband nropiec</dt><dd>{{ item.nroband_nropiec }}</dd>{% endif %}
+            {% if item.remarques %}<dt>Remarques</dt><dd>{{ item.remarques }}</dd>{% endif %}
+            {% if item.repere_bande %}<dt>Repère bande</dt><dd>{{ item.repere_bande }}</dd>{% endif %}
+            {% if item.struct_modale %}<dt>Struct modale</dt><dd>{{ item.struct_modale }}</dd>{% endif %}
+            {% if item.struct_rythm %}<dt>Struct rythm</dt><dd>{{ item.struct_rythm }}</dd>{% endif %}
+            {% if item.titre_support %}<dt>Titre support</dt><dd>{{ item.titre_support }}</dd>{% endif %}
+            </dl>
+        </div>
+    {% endblock document_data %}
+    </div>
+
+</div> <!-- with-rightcol -->
+
+{% endblock %}
+{% else %}
+    <p>No such item</p>
+{% endif %}

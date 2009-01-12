@@ -1,3 +1,1 @@
-#EXTM3U{% load telemeta_utils %}{% for item in collection.items.all %}
-#EXTINF:{{ item.get_duration }},{{ item.title }}
-http://{{ host }}{% url telemeta-item-export item.id|urlencode,"mp3" %}{% endfor %}
+{% extends "telemeta_default/collection.m3u" %}
