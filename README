@@ -46,7 +46,7 @@ octave2.9-forge, python-tk, python-numpy, python-audiolab, libsndfile1
 Installation and usage
 ======================
 
-See INSTALL and http://svn.parisson.org/telemeta for more informations.
+See INSTALL and http://telemeta.org for more informations.
 
 
 Development
@@ -65,7 +65,7 @@ Bugs and feedback
 
 If you find some bugs, please leave a ticket on this page:
 
-    http://svn.parisson.org/telemeta/newticket
+    http://telemeta.org/newticket
     
 You can also leave a ticket to request some new interesting features for the next versions.
 And even if Telemeta suits you, please give us some feedback (see §6.) !
@@ -75,7 +75,7 @@ Contact
 =======
 
 Homepage: 
-    http://svn.parisson.org/telemeta
+    http://telemeta.org
 
 Emails: 
     Guillaume Pellerin <pellerin@parisson.com>, 

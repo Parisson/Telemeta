@@ -4,17 +4,17 @@
 Telemeta
 Parisson SARL
 
-U{http://svn.parisson.org/telemeta}
+U{http://telemeta.org}
 
 @author: Guillaume Pellerin <pellerin@parisson.com>
 @author: Olivier Guilyardi <olivier@samalyse.com>
 """
 
 __docformat__ = 'epytext en'
-__version__ = '0.3.4'
-__url__ = 'http://svn.parisson.org/telemeta'
-__copyright__ = '(C) 2007-2008 Parisson SARL and Samalyse SARL'
-__license__ = 'CeCILL'
+__version__ = '0.4.0'
+__url__ = 'http://telemeta.org'
+__copyright__ = '(C) 2007-2009 Parisson SARL and Samalyse SARL'
+__license__ = 'CeCILL2'
 __license_long__ = """
 CeCILL FREE SOFTWARE LICENSE AGREEMENT
 
