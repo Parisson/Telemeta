@@ -143,7 +143,7 @@ class WebView(Component):
                 collections.quick_search(value), 
                 items.quick_search(value)),
             'title': lambda value: (
-                collections.filter(title__icontains=value), 
+                collections.word_search('title', value), 
                 items.by_title(value)),
             'country': lambda value: (
                 collections.by_country(value), 
@@ -155,8 +155,8 @@ class WebView(Component):
                 collections.by_ethnic_group(value), 
                 items.filter(ethnie_grsocial = value)),
             'creator': lambda value: (
-                collections.filter(creator__icontains=value),
-                items.filter(auteur__icontains=value)),
+                collections.word_search('creator', value),
+                items.word_search('auteur', value)),
             'rec_date': lambda value: (
                 collections.by_recording_date(value), 
                 items.by_recording_date(value)),

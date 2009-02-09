@@ -17,6 +17,19 @@ class CoreQuerySet(QuerySet):
         "Return an empty result set"
         return self.extra(where = ["0 = 1"])
 
+    def pattern_to_regex(self, pattern):
+        regex = pattern;
+        regex = regex.replace('*', '.*')
+        regex = regex.replace('.', '.*')
+        regex = regex.replace('-', '.*')
+        regex = regex.replace(' ', '.*')
+        return regex
+
+    def word_search(self, field, pattern):
+        regex = self.pattern_to_regex(pattern)
+        kwargs = {field + '__iregex': regex}
+        return self.filter(**kwargs)
+
 class CoreManager(Manager):
     "Base class for all models managers"
 
@@ -27,10 +40,11 @@ class MediaCollectionQuerySet(CoreQuerySet):
 
     def quick_search(self, pattern):
         "Perform a quick search on id, title and creator name"
+        regex = self.pattern_to_regex(pattern)
         return self.filter(
-            Q(id__icontains=pattern) |
-            Q(title__icontains=pattern) |
-            Q(creator__icontains=pattern)
+            Q(id__iregex=regex) |
+            Q(title__iregex=regex) |
+            Q(creator__iregex=regex)
         )
 
     def by_country(self, country):
@@ -131,10 +145,11 @@ class MediaItemQuerySet(CoreQuerySet):
     
     def quick_search(self, pattern):
         "Perform a quick search on id and title"
+        regex = self.pattern_to_regex(pattern)
         return self.filter(
-            Q(id__icontains=pattern) |
-            Q(_title__icontains=pattern) |
-            Q(auteur__icontains=pattern) 
+            Q(id__iregex=regex) |
+            Q(_title__iregex=regex) |
+            Q(auteur__iregex=regex) 
         )
 
     def without_collection(self):        
@@ -149,8 +164,9 @@ class MediaItemQuerySet(CoreQuerySet):
 
     def by_title(self, pattern):
         # to (sort of) sync with models.media.MediaItem.get_title()
-        return self.filter(Q(_title__icontains=pattern) 
-          | Q(collection__title__icontains=pattern))
+        regex = self.pattern_to_regex(pattern)
+        return self.filter(Q(_title__iregex=regex) 
+          | Q(collection__title__iregex=regex))
 
     def by_publish_date(self, pattern):
         return self.filter(collection__date_published__icontains=pattern) 
