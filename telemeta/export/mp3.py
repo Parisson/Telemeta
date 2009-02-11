@@ -73,16 +73,16 @@ class Mp3Exporter(ExporterCore):
                 info.append(clean_word(line[:-1]))
             self.info = info
             return self.info
-        except IOError:
-            return 'Exporter error [1]: file does not exist.'
+        except:
+            raise IOError('ExporterError: file does not exist.')
 
     def decode(self):
         try:
             os.system('sox "'+self.source+'" -s -q -r 44100 -t wav "' \
                         +self.cache_dir+os.sep+self.item_id+'"')
             return self.cache_dir+os.sep+self.item_id+'.wav'
-        except IOError:
-            return 'ExporterError [2]: decoder not compatible.'
+        except:
+            raise IOError('ExporterError: decoder is not compatible.')
 
     def write_tags(self):
         """Write all ID3v2.4 tags by mapping dub2id3_dict dictionnary with the
@@ -94,8 +94,14 @@ class Mp3Exporter(ExporterCore):
                 frame_text = self.dub2id3_dict[tag]
                 value = self.metadata[tag]
                 frame = mutagen.id3.Frames[frame_text](3,value)
-                id3.add(frame)
-        id3.save()
+                try:
+                    id3.add(frame)
+                except:
+                    raise IOError('ExporterError: cannot tag "'+tag+'"')
+        try:
+            id3.save()
+        except:
+            raise IOError('ExporterError: cannot write tags')
 
     def get_args(self, options=None):
         """Get process options and return arguments for the encoder"""

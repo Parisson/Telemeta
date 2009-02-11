@@ -30,7 +30,7 @@ class WavExporter(ExporterCore):
         self.dest = ''
         self.options = {}
         self.buffer_size = 0xFFFF
-        
+
     def get_format(self):
         return 'WAV'
     
@@ -51,8 +51,8 @@ class WavExporter(ExporterCore):
                 info.append(clean_word(line[:-1]))
             self.info = info
             return self.info
-        except IOError:
-            return 'Exporter error [1]: file does not exist.'
+        except:
+            raise IOError('ExporterError: wavinfo id not installed or file does not exist.')
 
     def set_cache_dir(self,path):
         self.cache_dir = path
@@ -65,8 +65,8 @@ class WavExporter(ExporterCore):
                       dest+'.wav"')
             self.source = dest
             return dest
-        except IOError:
-            return 'ExporterError [2]: decoder not compatible.'
+        except:
+            raise IOError('ExporterError: decoder is not compatible.')
 
     def write_tags(self):
         # Create metadata XML file !
@@ -76,8 +76,8 @@ class WavExporter(ExporterCore):
         """ Create the md5 keys of the dest """
         try:
             os.system('md5sum -b "'+self.dest+'" >"'+self.dest+'.md5"')
-        except IOError:
-            return 'Exporter error: Cannot create the md5 key...'
+        except:
+            raise IOError('ExporterError: cannot create the md5 key.')
     
     def create_par_key(self):
         """ Create the par2 keys of the dest """
@@ -89,18 +89,18 @@ class WavExporter(ExporterCore):
 
         try:
             os.system('par2 '+args+' "'+self.dest+'"')
-        except IOError:
-            return 'Exporter error: Cannot create the par2 key...'
+        except:
+            raise IOError('ExporterError: cannot create the par2 key.')
 
     def process(self, item_id, source, metadata, options=None):
         self.item_id = item_id
         self.source = source
         self.metadata = metadata
         self.options = {}
-        
+
         if not options is None:
             self.options = options
-            
+
         # Pre-proccessing
         self.ext = self.get_file_extension()
         self.dest = self.pre_process(self.item_id,
@@ -146,4 +146,4 @@ class WavExporter(ExporterCore):
             #if self.compare_md5_key():
             #os.system('cp -a "'+self.source+'" "'+ self.dest+'"')
             #print 'COPIED'
-            
+

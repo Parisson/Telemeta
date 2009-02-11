@@ -29,7 +29,7 @@ load_player({{ item.get_duration }});
 
 {% if item %}
 {% block submenu %}
-    <h3>Item: {{ item.title }}</h3>
+    <h3>Item : {{ item.title }}</h3>
     <div><a href="{% url telemeta-item-dublincore item.id|urlencode %}">Dublin Core</a></div>
 {% endblock %}
 
@@ -161,7 +161,7 @@ load_player({{ item.get_duration }});
     </div>
     <div class="extraInfos">
     {% block musical_performances %}
-        <div class="folded">
+        <div>
             <h4><a href="#">Formation musicale</a></h4>
             <dl class="listing">
             {% if item.form_genr_style %}<dt>Forme / genre vernaculaire</dt><dd>{{ item.form_genr_style }}</dd>{% endif %}
@@ -192,7 +192,7 @@ load_player({{ item.get_duration }});
     </div>
     <div class="extraInfos">
     {% block document_identification %}
-        <div class="folded">
+        <div>
             <h4><a href="#">Identification du document</a></h4>
             <dl class="listing">
             {% if item.format %}<dt>Format</dt><dd>{{ item.format }}</dd>{% endif %}
@@ -204,7 +204,7 @@ load_player({{ item.get_duration }});
     </div>
     <div class="extraInfos">
     {% block document_data %}
-        <div class="folded">
+        <div>
             <h4><a href="#">Informations documentaires</a></h4>
             <dl class="listing">
             {% if item.choixcollecteur %}<dt>choixcollecteur</dt><dd>{{ item.choixcollecteur }}</dd>{% endif %}

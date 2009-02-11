@@ -24,7 +24,7 @@ a:link:hover, a:visited:hover {
 a img { border: none; }
 
 h3 {
-    font-size: 1.1em;
+    font-size: 1.2em;
     font-weight: bold;
     color: #353535;
 }
@@ -292,14 +292,14 @@ label.disabled { color: #d7d7d7 }
 
 /* Navigation (borrowed from Trac) */
 .nav h2, .nav hr { display: none }
-.nav ul { font-size: 10px; list-style: none; margin: 0; text-align: right }
+.nav ul { font-size: 10px; list-style: none; margin: 0; text-align: left }
 .nav li {
  border-right: 1px solid #d7d7d7;
  display: inline;
  padding: 0 .75em;
  white-space: nowrap;
 }
-.nav li.last { border-right: none }
+.nav li.last { border-right: 1px solid #000000; }
 
 /* Main navigation bar  (borrowed from Trac) */
 #menu {
@@ -310,6 +310,7 @@ label.disabled { color: #d7d7d7 }
  padding: .2em 0;
 }
 #menu li { border-right: none; padding: .25em 0 }
+#menu li.last { border-right: 1px solid #000 }
 #menu :link, #menu :visited {
  background: url(../images/dots.gif) 0 0 no-repeat;
  border-right: 1px solid #fff;

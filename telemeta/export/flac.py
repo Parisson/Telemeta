@@ -55,8 +55,9 @@ class FlacExporter(ExporterCore):
                 info.append(clean_word(line[:-1]))
             self.info = info
             return self.info
-        except IOError:
-            return 'Exporter error [1]: file does not exist.'
+        except:
+            raise IOError('ExporterError: metaflac is not installed or ' + \
+                           'file does not exist.')
 
     def set_cache_dir(self,path):
         """Set the directory where cached files should be stored. Does nothing
@@ -74,8 +75,8 @@ class FlacExporter(ExporterCore):
             os.system('flac -d -o "'+dest+'" "'+self.source+'"')
             self.source = dest
             return dest
-        except IOError:
-            return 'ExporterError [2]: decoder not compatible.'
+        except:
+            raise IOError('ExporterError: decoder is not compatible.')
 
     def write_tags(self, file):
         media = FLAC(file)
@@ -84,8 +85,11 @@ class FlacExporter(ExporterCore):
                 media['DESCRIPTION'] = str(self.metadata[tag])
             else:
                 media[tag] = str(self.metadata[tag])
-        media.save()
-        
+        try:
+            media.save()
+        except:
+            raise IOError('ExporterError: cannot write tags.')
+
     def get_args(self,options=None):
         """Get process options and return arguments for the encoder"""
         args = []
@@ -108,7 +112,7 @@ class FlacExporter(ExporterCore):
                 #args.append('-c %s="%s"' % (arg, value))
 
         return args
-        
+
     def process(self, item_id, source, metadata, options=None):
         self.item_id = item_id
         self.source = source
@@ -116,9 +120,8 @@ class FlacExporter(ExporterCore):
         self.args = self.get_args(options)
         self.ext = self.get_file_extension()
         self.args = ' '.join(self.args)
-        self.command = 'sox "%s" -s -q -r 44100 -t wav -c2 - | flac -c %s - ' \
-                        % (self.source, self.args)
-        
+        self.command = 'sox "%s" -s -q -r 44100 -t wav -c2 - | flac -c %s - ' % (self.source, self.args)
+
         # Pre-proccessing
         self.dest = self.pre_process(self.item_id,
                                          self.source,

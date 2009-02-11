@@ -57,8 +57,8 @@ class OggExporter(ExporterCore):
                 info.append(clean_word(line[:-1]))
             self.info = info
             return self.info
-        except IOError:
-            return 'Exporter error [1]: file does not exist.'
+        except:
+            raise IOError('ExporterError: file does not exist.')
 
     def set_cache_dir(self,path):
        self.cache_dir = path
@@ -68,8 +68,8 @@ class OggExporter(ExporterCore):
             os.system('oggdec -o "'+self.cache_dir+os.sep+self.item_id+
                       '.wav" "'+self.source+'"')
             return self.cache_dir+os.sep+self.item_id+'.wav'
-        except IOError:
-            return 'ExporterError [2]: decoder not compatible.'
+        except:
+            raise IOError('ExporterError: decoder is not compatible.')
 
     def write_tags(self):
         media = OggVorbis(self.dest)
@@ -101,8 +101,8 @@ class OggExporter(ExporterCore):
                 args.append('-c %s="%s"' % (arg, value))
 
         return args
-            
-    def process(self, item_id, source, metadata, options=None):        
+
+    def process(self, item_id, source, metadata, options=None):
         self.item_id = item_id
         self.source = source
         self.metadata = metadata
@@ -110,7 +110,7 @@ class OggExporter(ExporterCore):
         self.ext = self.get_file_extension()
         self.args = ' '.join(self.args)
         self.command = 'sox "%s" -s -q -r 44100 -t wav -c2 - | oggenc %s -' % (self.source, self.args)
-        
+
         # Pre-proccessing
         self.dest = self.pre_process(self.item_id,
                                         self.source,
@@ -120,7 +120,7 @@ class OggExporter(ExporterCore):
                                         self.options)
 
         # Processing (streaming + cache writing)
-        stream = self.core_process(self.command,self.buffer_size,self.dest)
+        stream = self.core_process(self.command, self.buffer_size, self.dest)
         for chunk in stream:
             yield chunk
     

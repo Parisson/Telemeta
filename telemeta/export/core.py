@@ -47,8 +47,8 @@ class ExporterCore(Component):
         try:
             os.system('normalize-audio '+args+' "'+self.source+'"')
             return self.source
-        except IOError:
-            return 'Exporter error: Cannot normalize, path does not exist.'
+        except:
+            raise IOError('ExporterError: cannot normalize, path does not exist.')
 
     def check_md5_key(self):
         """ Check if the md5 key is OK and return a boolean """
@@ -57,7 +57,7 @@ class ExporterCore(Component):
                                 '" "'+self.dest+'.md5"')
             return 'OK' in md5_log.split(':')
         except IOError:
-            return 'Exporter error: Cannot check the md5 key...'
+            raise IOError('ExporterError: cannot check the md5 key.')
     
     def get_file_info(self):
         """ Return the list of informations of the dest """
@@ -72,8 +72,8 @@ class ExporterCore(Component):
                 line_split = line.split(':')
                 value = int(int(line_split[1])/(4*44100))
                 return value
-        except IOError:
-            return 'Exporter error: Cannot get the wav length...'
+        except:
+            raise IOError('ExporterError: cannot get the wav length.')
 
     def compare_md5_key(self, source, dest):
         """ Compare source and dest files wih md5 method """
@@ -149,7 +149,6 @@ class ExporterCore(Component):
                     close_fds = True)
         except:
             raise ExportProcessError('Command failure:', command, proc)
-            
 
         # Core processing
         while True:
@@ -184,7 +183,7 @@ def get_type(value):
     for type in types.keys():
         if isinstance(value, type) :
             return types[type]
-    raise TypeError, str(value) + ' has an unsupported type'
+    raise TypeError(str(value) + ' has an unsupported type')
 
 def get_cast(value, type) :
     """ Return value, casted into type """
@@ -196,7 +195,7 @@ def get_cast(value, type) :
         return int(value)
     elif type == 'str' :
         return str(value)
-    raise TypeError, type + ' is an unsupported type'
+    raise TypeError(type + ' is an unsupported type')
 
 def get_file_mime_type(path):
     """ Return the mime type of a file """
@@ -206,8 +205,8 @@ def get_file_mime_type(path):
             line_split = line.split(': ')
             mime = line_split[len(line_split)-1]
             return mime[:len(mime)-1]
-    except IOError:
-        return 'Exporter error [1]: path does not exist.'
+    except:
+        raise IOError('ExporterError: path does not exist.')
 
 def get_file_type_desc(path):
     """ Return the type of a file given by the 'file' command """
@@ -217,24 +216,24 @@ def get_file_type_desc(path):
             description = line.split(': ')
             description = description[1].split(', ')
             return description
-    except IOError:
-        return 'Exporter error [1]: path does not exist.'
+    except:
+        raise IOError('ExporterError: path does not exist.')
 
 def iswav(path):
     """ Tell if path is a WAV """
     try:
         mime = get_file_mime_type(path)
         return mime == 'audio/x-wav'
-    except IOError:
-        return 'Exporter error [1]: path does not exist.'
+    except:
+        raise IOError('ExporterError: path does not exist.')
 
 def iswav16(path):
     """ Tell if path is a 16 bit WAV """
     try:
         file_type_desc = get_file_type_desc(path)
         return iswav(path) and '16 bit' in file_type_desc
-    except IOError:
-        return 'Exporter error [1]: path does not exist.'
+    except:
+        raise IOError('ExporterError: path does not exist.')
 
 def get_file_name(path):
     """ Return the file name targeted in the path """
@@ -244,8 +243,8 @@ def split_file_name(file):
     """ Return main file name and its extension """
     try:
         return os.path.splitext(file)
-    except IOError:
-        return 'Exporter error [1]: path does not exist.'
+    except:
+        raise IOError('ExporterError: path does not exist.')
 
 def clean_word(word) :
     """ Return the word without excessive blank spaces, underscores and
