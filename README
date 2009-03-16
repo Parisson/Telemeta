@@ -1,41 +1,40 @@
-=================
-Telemeta - README
-=================
+# =================
+# Telemeta - README
+# =================
 
-Telemeta: web frontend to backup, transcode and tag any audio content with metadata
+Telemeta: web frontend to backup, analyse, transcode and stream any audio content with metadata
 
 
-Introduction
-============
+# Introduction
+# ============
 
-Telemeta is a global audio archiving program which introduces useful and secure
-indexing methods to backup digitalized audio files and metadata dictionnaries.
-It is dedicated to backup any digitized and documented sound from collections of
-vinyls, magnetic tapes or audio CD over a strong database in accordance with
-many standards. Export functions also encapsulate edited metadata into
-compressed file. The object style architecture will soon provide user-friendly
-interfaces and plugin' style audio processing.
+Telemeta is a web audio archiving program which introduces useful and secure methods to
+backup, index, transcode, analyse and publish any digitalized audio file with its metadata.
+It is dedicated to professionnals who wants to easily backup and publish documented sounds
+from collections of vinyls, magnetic tapes or audio CDs over a strong database, in accordance
+with open standards.
 
 Here are the main features of Telemeta: 
 
-    * Secure media editing and archiving over networks.
-    * Easy transcoding
-    * Full tagging and marking methods
+    * Secure archiving, editing and publishing of audio files over internet.
+    * "On the fly" transcoding and metadata encapsulating (FLAC, OGG, MP3, WAV, etc..)
+    * User friendly web frontend including workflows and high level search methods
+    * Smart dynamical and skinable audio player (thanks to Timeside)
+    * "On the fly" complex audio analyzers based on an easy plugin architecture
+    * Strong SQL backend
     * XML metadata backup
-    * Web interface introducing WorkFlow.
-    * SQL backend (still in dev from march 2007).
-    * Data anti-corruption security with par2 recovery keys
-    * Data synchronizing over remote servers (rsync)
-    * Auto AudioMarking? from metadata (thanks to Festival and Ecasound) 
+    * Auto audio-marking with synthetized voices reading metadata (optional)
+    * Anti-corruption data security management with par2 recovery keys
+    * Data synchronizing over remote servers (rsync + ssh methods)
 
-The Telemeta concept is based on collections. A collection includes original
-sounds - or albums containing sounds - which will be backuped in a secure way
-with a view of transcoded 'public' formats (WAV, FLAC, MP3, OGG and many more
-soon...) including metadata editing and publishing tools.
+The Telemeta data model is based on 'collections' and 'items'. A collection is described
+by its metadata and includes original audio items (sounds) and its own metadata. This
+existing model has been designed to fit the one of the French Centre of Etnomusicology (CREM)
+but could be easily adapted/overrided to sue other data stuctures.
 
 
-Requirements
-============
+# Requirements
+# ============
 
 python (>= 2.3.5-7), python-xml, python-central (>= 0.5),
 python-mutagen, python-django, sox, vorbis-tools, flac, normalize-audio,
@@ -43,36 +42,43 @@ ecasound, festival, par2, python-mysqldb, sqlite3 | mysql-server, octave2.9,
 octave2.9-forge, python-tk, python-numpy, python-audiolab, libsndfile1
 
 
-Installation and usage
-======================
+# Installation and usage
+# ======================
 
 See INSTALL and http://telemeta.org for more informations.
 
 
-Development
-===========
+# Development
+# ===========
 
 To participate to the development of telemeta, you will need a login/password couple.
-You're welcome to email us to get one and commit your great ideas ;) (see §6.).
+You're welcome to email us to join and commit your great ideas ;)
 
-To get the lastest development version, you need subversion and run::
+To get the lastest development version, you need subversion and run:
 
     $ svn co http://svn.parisson.org/svn/telemeta/trunk telemeta
 
 
-Bugs and feedback
-=================
+# Licence
+# =======
 
-If you find some bugs, please leave a ticket on this page:
+CeCILL v2 (see COPYING)
+
+
+# Bugs and feedback
+# =================
+
+You are welcome to freely use this application in accordance to its licence.
+If you find some bugs, PLEASE leave a ticket on this page:
 
     http://telemeta.org/newticket
-    
+
 You can also leave a ticket to request some new interesting features for the next versions.
 And even if Telemeta suits you, please give us some feedback (see §6.) !
 
 
-Contact
-=======
+# Contact
+# =======
 
 Homepage: 
     http://telemeta.org
