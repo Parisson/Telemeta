@@ -10,27 +10,29 @@ Package: telemeta
 Architecture: any
 Depends: ${python:Depends}, python-xml, python-mutagen, python-django (>= 1.0-1), python-imaging (>= 1.1.6), sox (>= 14.2.0-1), vorbis-tools, flac, normalize-audio, python-mysqldb, mysql-server, octave2.9, python-tk, libgd2-xpm, libsndfile1 (>= 1.0.17), python-numpy, python-ctypes (>= 1.0.1), python-scikits-audiolab (>= 0.7)
 Recommends: lame, vamp-examples
+Homepage: http://telemeta.org
 Suggests: ecasound, festival, par2
-Description: web frontend to backup, transcode and publish any audio content with metadata
- Telemeta is a global audio archiving program which introduces useful and 
- secure indexing methods to backup digitalized audio files and metadata 
- dictionnaries. It is dedicated to backup any digitized and documented sound 
- from collections of vinyls, magnetic tapes or audio CD over a strong database
- in accordance with many standards. Export functions also encapsulate edited 
- metadata into compressed file. The object style architecture will soon provide
- user-friendly interfaces and plugin' style audio processing.
- Here are the main features of Telemeta:
-    * Secure media editing and archiving over networks
-    * Easy transcoding
-    * Full tagging and marking methods
-    * XML metadata backup
-    * Web interface introducing WorkFlow
-    * SQL backend
-    * Data anti-corruption security with par2 recovery keys
-    * Data synchronizing over remote servers (rsync)
-    * Auto AudioMarking from metadata (thanks to Festival and Ecasound)
- The Telemeta concept is based on collections. A collection includes original
- sounds - or albums containing sounds - which will be backuped in a secure way
- with a view of transcoded 'public' formats (WAV, FLAC, MP3, OGG and many more
- soon...) including metadata editing and publishing tools.
- See http://svn.parisson.org/telemeta/ for more informations.
+Description: web frontend to backup, analyse, transcode and stream any audio content with its metadata
+Telemeta is a web audio archiving program which introduces useful and secure methods to
+backup, index, transcode, analyse and publish any digitalized audio file with its metadata.
+It is dedicated to professionnals who wants to easily backup and publish documented sounds
+from collections of vinyls, magnetic tapes or audio CDs over a strong database, in accordance
+with open standards.
+
+Here are the main features of Telemeta:
+ * Secure archiving, editing and publishing of audio files over internet.
+ * "On the fly" transcoding and metadata encapsulating (FLAC, OGG, MP3, WAV, etc..)
+ * User friendly web frontend including workflows and high level search methods
+ * Smart dynamical and skinnable audio player (thanks to Timeside and soundmanager2)
+ * "On the fly" complex audio analyzers based on an easy plugin architecture
+ * Strong SQL backend
+ * XML metadata backup
+ * Auto audio-marking with synthetized voices reading metadata (optional)
+ * Anti-corruption data security management with par2 recovery keys
+ * Data synchronizing over remote servers (rsync + ssh methods)
+
+The Telemeta data model is based on 'collections' and 'items'. A collection is described
+by its metadata and includes original audio items (sounds) and its own metadata. This
+existing model has been designed to fit the one of the French Centre of Etnomusicology (CREM)
+but could be easily adapted/overrided to sue other data stuctures.
+

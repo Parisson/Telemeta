@@ -1,3 +1,10 @@
+telemeta (0.4-1) unstable; urgency=low
+
+  * New upstream release
+  * See http://telemeta.org/log/ for the entire changelog 
+
+ -- Guillaume Pellerin <yomguy@altern.org>  Tue, 17 Mar 2009 01:46:51 +0100
+
 telemeta (0.3.3-1) unstable; urgency=low
 
   * Add django 1.0 compatibility (no backward compatibility in most cases)
