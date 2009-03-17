@@ -76,7 +76,7 @@ Here are the main features of Telemeta:
 The Telemeta data model is based on 'collections' and 'items'. A collection is described
 by its metadata and includes original audio items (sounds) and its own metadata. This
 existing model has been designed to fit the one of the French Centre of Etnomusicology (CREM)
-but could be easily adapted/overrided to sue other data stuctures.
+but could be easily adapted/overrided to sue other data structures.
 
 See http://telemeta.org for more informations.
 """
