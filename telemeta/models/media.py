@@ -16,7 +16,7 @@ import re
 
 import telemeta
 from telemeta.core import *
-from telemeta import dublincore as dc
+from telemeta.models import dublincore as dc
 from telemeta.models.query import MediaItemManager, MediaItemQuerySet, \
   MediaCollectionManager, MediaCollectionQuerySet
 
