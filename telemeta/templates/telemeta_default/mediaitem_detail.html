@@ -150,7 +150,7 @@ load_player({{ item.get_duration }});
             {% if item.region_village %}<dt>Région / Village</dt><dd>{{ item.region_village }}</dd>{% endif %}
             {% if item.ethnie_grsocial %}<dt>Ethnie/ Groupe social</dt><dd>{{ item.ethnie_grsocial }}</dd>{% endif %}
             {% if item.aire_geo_cult %}<dt>Aire culturelle</dt><dd>{{ item.aire_geo_cult }}</dd>{% endif %}
-            {% if item.fonction_usage and item.comm_fonctusage %}
+            {% if item.fonction_usage or item.comm_fonctusage %}
             <dt class="group">Contexte ethnographique</dt>
             {% if item.fonction_usage %}<dt class="sub">Mots clés</dt><dd>{{ item.fonction_usage }}</dd>{% endif %}
             {% if item.comm_fonctusage %}<dt class="sub">Commentaires</dt><dd>{{ item.comm_fonctusage }}</dd>{% endif %}
@@ -208,7 +208,6 @@ load_player({{ item.get_duration }});
             <h4><a href="#">Informations documentaires</a></h4>
             <dl class="listing">
             {% if item.choixcollecteur %}<dt>choixcollecteur</dt><dd>{{ item.choixcollecteur }}</dd>{% endif %}
-            {% if item.comm_fonctusage %}<dt>comm fonctusage</dt><dd>{{ item.comm_fonctusage }}</dd>{% endif %}
             {% if item.copie_de %}<dt>Copie de</dt><dd>{{ item.copie_de }}</dd>{% endif %}
             {% if item.enregistre_par %}<dt>Enregistré par</dt><dd>{{ item.enregistre_par }}</dd>{% endif %}
             {% if item.file %}<dt>File</dt><dd>{{ item.file }}</dd>{% endif %}
