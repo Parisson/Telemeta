@@ -16,6 +16,18 @@ class IDataSource(object):
            or None if the record doesn't exist"""
         pass
 
+    def count_records(self, from_time = None, until_time = None):
+        """Must return the number of record identifiers between (optional) from and 
+           until change time."""
+        pass
+
+    def list_identifiers(self, offset, limit, from_time = None, until_time = None):
+        """Must return the list of record identifiers between (optional) from and 
+           until change time, starting from record at offset, with a maximum of limit
+           entries. Each entry of the list must be a tuple containing the identifier and
+           the change time. If no record matches, should return an empty list."""
+        pass
+
 class ArgumentValidator(object):
     """OAI-PMH request argument validator"""
 
@@ -66,6 +78,9 @@ class ArgumentValidator(object):
         for k in self.request:
             try:
                 all_args.index(k)
+                if (k == 'set'):
+                    self.response.error('noSetHierarchy')
+                    return False
             except ValueError:
                 self.response.error('badArgument', 'Invalid argument: %s' % k)
                 return False
@@ -100,6 +115,8 @@ class ArgumentValidator(object):
 class DataProvider(object):
     """OAI-PMH Data Provider"""
 
+    max_records_per_response = 500
+
     def __init__(self, repository_name, base_url, admin_email):
         self.identity = {
             'repositoryName':   repository_name,
@@ -114,10 +131,23 @@ class DataProvider(object):
         """Parse an ISO8601 date string into a datetime object"""
         return datetime.strptime(str, '%Y-%m-%dT%H-%M-%SZ')
 
+    def parse_time_range(self, args):
+        if args.get('from'):
+            from_time = self.parse_time(args['from'])
+        else:
+            from_time = None
+        if args.get('until'):
+            until_time = self.parse_time(args['until'])
+        else:
+            until_time = None
+
+        return from_time, until_time
+        
     def handle(self, args, datasource):
         """Handle a request and return the response as a DOM document"""
 
         response = Response(self.identity, datasource)
+        response.max_records_per_response = self.max_records_per_response
 
         validator = ArgumentValidator(args, response)
         validator.accept_format('oai_dc')
@@ -132,6 +162,12 @@ class DataProvider(object):
             elif verb == 'GetRecord':
                 validator.require('identifier', 'metadataPrefix')
                 validator.validate() and response.get_record(args['identifier'])
+            elif verb == 'ListIdentifiers':
+                validator.require('metadataPrefix')
+                validator.optional('from', 'until', 'set', 'resumptionToken')
+                from_time, until_time = self.parse_time_range(args)
+                token = args.get('resumptionToken')
+                validator.validate() and response.list_identifiers(from_time, until_time, token)
 
         doc = libxml2.parseDoc(response.doc.toxml(encoding="utf-8"))
         response.free()
@@ -141,6 +177,8 @@ class DataProvider(object):
 
 class Response(object):
     """OAI-PMH response generation"""
+
+    max_records_per_response = 500
 
     def __init__(self, identity, datasource):
         self.identity = identity
@@ -251,6 +289,33 @@ class Response(object):
             self.set_attributes(self.request, {'identifier': id, 'metadataPrefix': 'oai_dc'})
             container = self.root.appendChild(self.doc.createElement(self.verb))
             container.appendChild(self.make_record(id, dc, ctime))
+
+    def list_identifiers(self, from_time, until_time, token = None):
+        """Append ListIdentifiers result"""
+        offset = 0
+        if token:
+            try:
+                offset = int(token)
+            except ValueError:
+                self.error('badArgument', 'Incorrect resumption token')
+                return
+
+        count = self.datasource.count_records(from_time, until_time)
+        data = self.datasource.list_identifiers(offset, self.max_records_per_response, from_time, until_time)
+        if (len(data) > self.max_records_per_response):
+            raise Exception("DataSource.list_identifiers() returned too many records")
+
+        container = self.root.appendChild(self.doc.createElement(self.verb))
+        for item in data:
+            id, ctime = item
+            container.appendChild(self.make_record_header(id, ctime))
+        if count - offset > self.max_records_per_response:
+            token = self.root.appendChild(self.doc.createElement('resumptionToken'))
+            token.setAttribute('completeListSize', str(count))
+            token.appendChild(self.doc.createTextNode(str(offset + len(data))))
+        elif offset:
+            token = self.root.appendChild(self.doc.createElement('resumptionToken'))
+            token.setAttribute('completeListSize', str(count))
             
     def free(self):
         """Free the resources used by this response"""
