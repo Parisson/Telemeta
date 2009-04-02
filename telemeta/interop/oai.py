@@ -30,12 +30,16 @@ class DataProvider(object):
         }
 
     def require_argument(self, response, args, required):
+        """Return True if the required argument is present in args, False otherwise, setting
+           an error into the response"""
         if not args.has_key(required):
             response.error("badArgument", msg="Missing required argument '%s'" % required)
             return False
         return True
 
     def validate_format(self, response, args):
+        """Return True if the metadataPrefix argument is present in args and a supported format,
+           False otherwise, setting an error into the response"""
         arg = args.get('metadataPrefix')
         if not self.require_argument(response, args, 'metadataPrefix'):
             return False
@@ -105,6 +109,8 @@ class Response(object):
         return element
 
     def set_verb(self, verb):
+        """Set the verb of the response. Should be called before any 'real' method such
+           as identify(), get_record(), etc..."""
         self.verb = verb
         self.request.setAttribute('verb', self.verb)
 
@@ -126,7 +132,7 @@ class Response(object):
 
 
     def error(self, code, msg = None):
-        """Add error tag"""
+        """Add error tag using code. If msg is not provided, use a default error message."""
 
         msgs = {
             'badArgument':              'Incorrect arguments',
@@ -145,11 +151,13 @@ class Response(object):
         err.appendChild(self.doc.createTextNode(msg))
 
     def make_record_header(self, id, ctime):
+        """Build and return a record header"""
         header = self.doc.createElement('header')
         self.append_elements(header, {'identifier': id, 'dateStamp': self.make_time(ctime)})
         return header
 
     def make_record(self, id, dc, ctime):
+        """Build and return a record"""
         record = self.doc.createElement('record')
         header = record.appendChild(self.make_record_header(id, ctime))
         metadata = record.appendChild(self.doc.createElement('metadata'))
@@ -165,7 +173,7 @@ class Response(object):
         return record
 
     def get_record(self, id):
-
+        """Append GetRecord result"""
         record = self.datasource.get_record(id)
         if not record:
             self.error('idDoesNotExist')
@@ -174,9 +182,9 @@ class Response(object):
             self.set_attributes(self.request, {'identifier': id, 'metadataPrefix': 'oai_dc'})
             container = self.root.appendChild(self.doc.createElement(self.verb))
             container.appendChild(self.make_record(id, dc, ctime))
-
             
     def free(self):
+        """Free the resources used by this response"""
         self.doc.unlink()
 
 
