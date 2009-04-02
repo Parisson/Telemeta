@@ -247,6 +247,7 @@ class Response(object):
             'noSetHierarchy':           'This repository does not support sets.',
             'idDoesNotExist':           'No such record',
             'cannotDisseminateFormat':  'Unsupported metadata format',
+            'noRecordsMatch':           'The request returned an empty record set'
         }
 
         if not msg:
@@ -300,22 +301,32 @@ class Response(object):
                 self.error('badArgument', 'Incorrect resumption token')
                 return
 
+        if from_time:
+            self.request.setAttribute('from', self.make_time(from_time))
+        if until_time:
+            self.request.setAttribute('until', self.make_time(until_time))
+        if token:
+            self.request.setAttribute('resumptionToken', token)
+
         count = self.datasource.count_records(from_time, until_time)
         data = self.datasource.list_identifiers(offset, self.max_records_per_response, from_time, until_time)
         if (len(data) > self.max_records_per_response):
             raise Exception("DataSource.list_identifiers() returned too many records")
 
-        container = self.root.appendChild(self.doc.createElement(self.verb))
-        for item in data:
-            id, ctime = item
-            container.appendChild(self.make_record_header(id, ctime))
-        if count - offset > self.max_records_per_response:
-            token = self.root.appendChild(self.doc.createElement('resumptionToken'))
-            token.setAttribute('completeListSize', str(count))
-            token.appendChild(self.doc.createTextNode(str(offset + len(data))))
-        elif offset:
-            token = self.root.appendChild(self.doc.createElement('resumptionToken'))
-            token.setAttribute('completeListSize', str(count))
+        if len(data):
+            container = self.root.appendChild(self.doc.createElement(self.verb))
+            for item in data:
+                id, ctime = item
+                container.appendChild(self.make_record_header(id, ctime))
+            if count - offset > self.max_records_per_response:
+                token = self.root.appendChild(self.doc.createElement('resumptionToken'))
+                token.setAttribute('completeListSize', str(count))
+                token.appendChild(self.doc.createTextNode(str(offset + len(data))))
+            elif offset:
+                token = self.root.appendChild(self.doc.createElement('resumptionToken'))
+                token.setAttribute('completeListSize', str(count))
+        else:
+            self.error("noRecordsMatch")
             
     def free(self):
         """Free the resources used by this response"""
