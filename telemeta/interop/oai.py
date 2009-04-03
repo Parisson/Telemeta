@@ -29,14 +29,17 @@
 # The fact that you are presently reading this means that you have had
 # knowledge of the CeCILL license and that you accept its terms.
 
-from xml.dom.minidom import getDOMImplementation
 from datetime import datetime
 import time
 try:
-    import libxml2
+  import libxml2dom as dom
 except ImportError:
-    # dangerous: minidom output formatting isn't very good, libxml2 is much better
-    pass
+    import xml.dom.minidom as dom
+    try:
+        import libxml2
+    except ImportError:
+        # dangerous: minidom output formatting isn't very good, libxml2 is much better
+        pass
 
 class IDataSource(object):
     """Interface for OAI datasource adapters"""
@@ -71,17 +74,31 @@ def iso_time(date_time = None):
     """Encode a datetime object using ISO8601 format"""
     if not date_time:
         date_time = datetime.now()
-    return date_time.strftime('%Y-%m-%dT%H-%M-%SZ')
+    return date_time.strftime('%Y-%m-%dT%H:%M:%SZ')
 
 def parse_iso_time(str):
     """Parse an ISO8601 time string into a datetime object, or return None on failure"""
     # Avoid datetime.strptime() for compatibility with python < 2.5
     try:
-        s = time.strptime(str, '%Y-%m-%dT%H-%M-%SZ')
+        s = time.strptime(str, '%Y-%m-%dT%H:%M:%SZ')
+        return datetime(s.tm_year, s.tm_mon, s.tm_mday, s.tm_hour, s.tm_min, s.tm_sec)
     except ValueError:
-        return None
+        try:
+            s = time.strptime(str, '%Y-%m-%d')
+            return datetime(s.tm_year, s.tm_mon, s.tm_mday)
+        except ValueError:
+            return None
 
-    return datetime(s.tm_year, s.tm_mon, s.tm_mday, s.tm_hour, s.tm_min, s.tm_sec)
+def doc_to_string(doc):
+    if dom.__name__ == 'libxml2dom':
+        return doc.toString(encoding='utf-8', prettyprint=True).decode('utf-8')
+    try:
+        doc2 = libxml2.parseDoc(doc.toxml(encoding="utf-8"))
+        xml = unicode(doc2.serialize(encoding="utf-8", format=1), "utf-8")
+        doc2.free()
+        return xml
+    except NameError:
+        return doc.toprettyxml(encoding="utf-8")
 
 class ArgumentValidator(object):
     """OAI-PMH request argument validator"""
@@ -165,20 +182,22 @@ class ArgumentValidator(object):
 
         return True         
 
+
 class DataProvider(object):
     """OAI-PMH Data Provider"""
 
     max_records_per_response = 500
 
-    def __init__(self, repository_name, base_url, admin_email):
-        self.identity = {
-            'repositoryName':   repository_name,
-            'baseURL':          base_url,
-            'adminEmail':       admin_email,
-            'protocolVersion':  '2.0',
-            'deletedRecord':    'no',
-            'granularity':      'YYYY-MM-DDThh:mm:ssZ'
-        }
+    def __init__(self, datasource, repository_name, base_url, admin_email):
+        self.datasource = datasource
+        self.identity = [
+            ('repositoryName',   repository_name),
+            ('baseURL',          base_url),
+            ('protocolVersion',  '2.0'),
+            ('adminEmail',       admin_email),
+            ('deletedRecord',    'no'),
+            ('granularity',      'YYYY-MM-DDThh:mm:ssZ')
+        ]
 
     def parse_time_range(self, args):
         if args.get('from'):
@@ -192,10 +211,10 @@ class DataProvider(object):
 
         return from_time, until_time
         
-    def handle(self, args, datasource):
+    def handle(self, args):
         """Handle a request and return the response as a DOM document"""
 
-        response = Response(self.identity, datasource)
+        response = Response(self.identity, self.datasource)
         response.max_records_per_response = self.max_records_per_response
 
         validator = ArgumentValidator(args, response)
@@ -212,8 +231,7 @@ class DataProvider(object):
                 validator.require('identifier', 'metadataPrefix')
                 validator.validate() and response.get_record(args['identifier'])
             elif verb == 'ListIdentifiers' or verb == 'ListRecords':
-                validator.require('metadataPrefix')
-                validator.optional('from', 'until', 'set', 'resumptionToken')
+                validator.optional('metadataPrefix', 'from', 'until', 'set', 'resumptionToken')
                 from_time, until_time = self.parse_time_range(args)
                 token = args.get('resumptionToken')
                 if validator.validate():
@@ -225,14 +243,9 @@ class DataProvider(object):
                 validator.optional('identifier')
                 validator.validate() and response.list_formats(args.get('identifier'))
 
-        try:
-            doc = libxml2.parseDoc(response.doc.toxml(encoding="utf-8"))
-            response.free()
-            xml = unicode(doc.serialize(encoding="utf-8", format=1), "utf-8")
-            doc.free()
-            return xml
-        except NameError:
-            return response.doc.toprettyxml(encoding="utf-8")
+        xml = doc_to_string(response.doc)
+        response.free()
+        return xml
 
 class Response(object):
     """OAI-PMH response generation"""
@@ -243,7 +256,7 @@ class Response(object):
         self.identity = identity
         self.datasource = datasource
 
-        impl = getDOMImplementation()
+        impl = dom.getDOMImplementation()
         self.doc = impl.createDocument(None, 'OAI-PMH', None)
         self.root = self.doc.firstChild
         self.root.setAttribute('xmlns', 'http://www.openarchives.org/OAI/2.0/')
@@ -252,27 +265,41 @@ class Response(object):
                                                      'http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd')
         self.append_elements(self.root, {'responseDate': iso_time()})
         self.request = self.root.appendChild(self.doc.createElement('request'))
-        self.request.appendChild(self.doc.createTextNode(self.identity['baseURL']))
+        for k, v in self.identity:
+            if k == 'baseURL':
+                url = v
+                break
+        self.request.appendChild(self.doc.createTextNode(url))
 
-    def append_elements(self, parent, dict, prefix=None):
-        """Append several elements to parent use dict key as tag names and values as text nodes.
-           Return the parent."""
-        for k in dict:
-            if prefix:
-                tag = prefix + ':' + k
+    def append_elements(self, parent, elements, prefix=None):
+        """Append several elements to parent. elements must either be a tag:value dict or 
+           an ordered list of (tag, value) tuples."""
+        for item in elements:
+            if isinstance(item, tuple):
+                tag, value = item
             else:
-                tag = k
+                tag = item
+                value = elements[tag]
+            if prefix:
+                tag = prefix + ':' + tag
             e = parent.appendChild(self.doc.createElement(tag))
-            e.appendChild(self.doc.createTextNode(dict[k]))
+            e.appendChild(self.doc.createTextNode(value))
         return parent
 
-    def set_attributes(self, element, dict):
-        """Set several attributes on element, from dict. If element is a string, then create
-           an element with than name. Return (possibly created) element."""
+    def set_attributes(self, element, attributes):
+        """Set several attributes on element, from dict. attributes must either be an
+           attr:value dict or an ordered list of (attr, value) tuples. If element is a 
+           string, then create an element with than name. Return (possibly created) 
+           element."""
         if isinstance(element, basestring):
             element = self.doc.createElement(element)
-        for k in dict:
-            element.setAttribute(k, dict[k])
+        for item in attributes:
+            if isinstance(item, tuple):
+                attr, value = item
+            else:
+                attr = item
+                value = attributes[item]
+            element.setAttribute(attr, value)
         return element
 
     def set_verb(self, verb):
@@ -284,9 +311,10 @@ class Response(object):
     def identify(self):
         """Append Identify tag and child nodes"""
 
-        identity = self.identity.copy()
+        identity = []
+        identity[:] = self.identity[:]
         earliest = self.datasource.get_earliest_time()
-        identity['earliestDatestamp'] = iso_time(earliest)
+        identity.insert(4, ('earliestDatestamp', iso_time(earliest)))
 
         group = self.root.appendChild(self.doc.createElement('Identify'))
         self.append_elements(group, identity)
@@ -296,6 +324,7 @@ class Response(object):
 
         msgs = {
             'badArgument':              'Incorrect arguments',
+            'badResumptionToken':       'Invalid resumption token',
             'badVerb':                  'Illegal OAI verb',
             'noSetHierarchy':           'This repository does not support sets.',
             'idDoesNotExist':           'No such record',
@@ -314,7 +343,7 @@ class Response(object):
     def make_record_header(self, id, ctime):
         """Build and return a record header"""
         header = self.doc.createElement('header')
-        self.append_elements(header, {'identifier': id, 'dateStamp': iso_time(ctime)})
+        self.append_elements(header, [('identifier', id), ('datestamp', iso_time(ctime))])
         return header
 
     def make_record(self, id, dc, ctime):
@@ -322,14 +351,14 @@ class Response(object):
         record = self.doc.createElement('record')
         header = record.appendChild(self.make_record_header(id, ctime))
         metadata = record.appendChild(self.doc.createElement('metadata'))
-        container = metadata.appendChild(self.doc.createElement('oai_dc'))
-        self.set_attributes(container, {
-          'xmlns:oai_dc':       "http://www.openarchives.org/OAI/2.0/oai_dc/",
-          'xmlns:dc':           "http://purl.org/dc/elements/1.1/",
-          'xmlns:xsi':          "http://www.w3.org/2001/XMLSchema-instance",
-          'xsi:schemaLocation': "http://www.openarchives.org/OAI/2.0/oai_dc/ "
-                                "http://www.openarchives.org/OAI/2.0/oai_dc.xsd"
-        })
+        container = metadata.appendChild(self.doc.createElement('oai_dc:dc'))
+        self.set_attributes(container, [
+          ('xmlns:oai_dc',       "http://www.openarchives.org/OAI/2.0/oai_dc/"),
+          ('xmlns:dc',           "http://purl.org/dc/elements/1.1/"),
+          ('xmlns:xsi',          "http://www.w3.org/2001/XMLSchema-instance"),
+          ('xsi:schemaLocation', "http://www.openarchives.org/OAI/2.0/oai_dc/ "
+                                 "http://www.openarchives.org/OAI/2.0/oai_dc.xsd")
+        ])
         self.append_elements(container, dc, prefix='dc')
         return record
 
@@ -354,18 +383,39 @@ class Response(object):
         """Append ListIdentifiers or ListRecords result"""
         offset = 0
         if token:
+            self.request.setAttribute('resumptionToken', token)
             try:
-                offset = int(token)
+                from_time, until_time, offset = token.split(',')
             except ValueError:
-                self.error('badArgument', 'Incorrect resumption token')
+                self.error('badResumptionToken')
                 return
 
-        if from_time:
-            self.request.setAttribute('from', iso_time(from_time))
-        if until_time:
-            self.request.setAttribute('until', iso_time(until_time))
-        if token:
-            self.request.setAttribute('resumptionToken', token)
+            if len(from_time):
+                from_time = parse_iso_time(from_time)
+                if not from_time:
+                    self.error('badResumptionToken')
+                    return
+            else:
+                from_time = None
+
+            if len(until_time):
+                until_time = parse_iso_time(until_time)
+                if not until_time:
+                    self.error('badResumptionToken')
+                    return
+            else:
+                until_time = None
+
+            try:
+                offset = int(offset)
+            except ValueError:
+                self.error('badResumptionToken')
+                return
+        else:                
+            if from_time:
+                self.request.setAttribute('from', iso_time(from_time))
+            if until_time:
+                self.request.setAttribute('until', iso_time(until_time))
 
         count = self.datasource.count_records(from_time, until_time)
         data = self.datasource.list_records(offset, self.max_records_per_response, from_time, until_time)
@@ -386,11 +436,23 @@ class Response(object):
                     container.appendChild(self.make_record(id, dc, ctime))
                     
             if count - offset > self.max_records_per_response:
-                token = self.root.appendChild(self.doc.createElement('resumptionToken'))
+                token = container.appendChild(self.doc.createElement('resumptionToken'))
                 token.setAttribute('completeListSize', str(count))
-                token.appendChild(self.doc.createTextNode(str(offset + len(data))))
+
+                if from_time:
+                    from_time = iso_time(from_time)
+                else:
+                    from_time = ''
+
+                if until_time:
+                    until_time = iso_time(until_time)
+                else:
+                    until_time = ''
+
+                token_str = "%s,%s,%d" % (from_time, until_time, offset + len(data))
+                token.appendChild(self.doc.createTextNode(token_str))
             elif offset:
-                token = self.root.appendChild(self.doc.createElement('resumptionToken'))
+                token = container.appendChild(self.doc.createElement('resumptionToken'))
                 token.setAttribute('completeListSize', str(count))
         else:
             self.error("noRecordsMatch")
@@ -406,15 +468,19 @@ class Response(object):
 
         container = self.root.appendChild(self.doc.createElement(self.verb))
         format = container.appendChild(self.doc.createElement('metadataFormat'))
-        self.append_elements(format, {
-            'metadataPrefix':       'oai_dc',
-            'schema':               'http://www.openarchives.org/OAI/2.0/oai_dc.xsd',
-            'metadataNamespace':    'http://www.openarchives.org/OAI/2.0/oai_dc/'
-        })
+        self.append_elements(format, [
+            ('metadataPrefix',       'oai_dc'),
+            ('schema',               'http://www.openarchives.org/OAI/2.0/oai_dc.xsd'),
+            ('metadataNamespace',    'http://www.openarchives.org/OAI/2.0/oai_dc/')
+        ])
             
     def free(self):
         """Free the resources used by this response"""
-        self.doc.unlink()
+        try:
+            self.doc.unlink()
+        except AttributeError:
+            # Apparently no free/unlink method in libxml2dom
+            pass
 
 
 
