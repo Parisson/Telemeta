@@ -49,7 +49,11 @@ class IDataSource(object):
         pass
 
     def get_record(self, id):
-        """Must return a tuple of the form (dublin core dict, change time)
+        """Must return a tuple of the form:
+              (
+                [(dublin core element, element value), ...],
+                change time
+              )
            or None if the record doesn't exist.
            
            The dublin core data must contain an 'identifier' element, which is the same
@@ -63,8 +67,8 @@ class IDataSource(object):
     def list_records(self, offset, limit, from_time = None, until_time = None):
         """Must return the list of records between (optional) from and 
            until change time, starting from record at offset, with a maximum of limit
-           entries. Each entry of the list must be a tuple of the form:
-           (dublin core dict, change time)
+           entries. Each entry of the list must be a tuple of the same form as returned
+           by getRecord().
 
            If no record matches, should return an empty list. The dublin core data must
            contain an 'identifier' element, which can be used as a parameter to get_record()."""
@@ -362,6 +366,26 @@ class Response(object):
         self.append_elements(container, dc, prefix='dc')
         return record
 
+    def parse_dc(self, data):
+        valid = ['title', 'creator', 'subject', 'description', 'publisher', 'contributor',
+                 'date', 'type', 'format', 'identifier', 'source', 'language', 'relation',
+                 'coverage', 'rights']
+
+        print data
+        parsed = []
+        id = None
+        for k, v in data:
+            try:
+                valid.index(k)
+                parsed.append((k, v))
+                if k == 'identifier':
+                    id = v
+            except ValueError:
+                pass
+
+        return id, parsed                
+            
+
     def get_record(self, id):
         """Append GetRecord result"""
         record = self.datasource.get_record(id)
@@ -369,9 +393,10 @@ class Response(object):
             self.error('idDoesNotExist')
         else:
             dc, ctime = record
-            if not dc.get('identifier'):
+            dc_id, dc = self.parse_dc(dc)
+            if dc_id == None:
                 raise Exception("DataSource.get_record() didn't provide an 'identifier' dublin core element")
-            elif dc["identifier"] != id:
+            elif dc_id != id:
                 raise Exception("DataSource.get_record() returned an 'identifier' dublin core element "
                                 "which is different from the requested identifier")
                 
@@ -426,10 +451,10 @@ class Response(object):
             container = self.root.appendChild(self.doc.createElement(self.verb))
             for item in data:
                 dc, ctime = item
-                if not dc.get('identifier'):
+                id, dc = self.parse_dc(dc)
+                if id == None:
                     raise Exception("DataSource.list_records() didn't provide an 'identifier' dublin core element")
 
-                id = dc['identifier']    
                 if ids_only:
                     container.appendChild(self.make_record_header(id, ctime))
                 else:

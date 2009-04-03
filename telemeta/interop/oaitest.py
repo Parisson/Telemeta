@@ -10,9 +10,9 @@ class DataSource(object):
         self.oldest = datetime(1988, 1, 1)
 
         self.data = {
-            '10': ({'title': 'Roger Rabbit', 'creator': 'Bugs Bunny'}, self.oldest),
-            '20': ({'title': 'Pulp Fiction', 'creator': 'Quentin Tarantino'}, datetime(1994, 10, 14)),
-            '30': ({'title': 'Children of Men', 'creator': u'Alfonso Cuarón'}, datetime(2006, 10, 18))
+            '10': ([('title', 'Roger Rabbit'), ('title', 'Roger Le Lapin'), ('creator', 'Bugs Bunny')], self.oldest),
+            '20': ([('title', 'Pulp Fiction'), ('creator', 'Quentin Tarantino')], datetime(1994, 10, 14)),
+            '30': ([('title', 'Children of Men'), ('creator', u'Alfonso Cuarón')], datetime(2006, 10, 18))
         }
 
 
@@ -22,7 +22,10 @@ class DataSource(object):
     def get_record(self, id):
         record = self.data.get(id)
         if record:
-            record[0]['identifier'] = id
+            dc = []
+            dc[:] = record[0][:]
+            dc.insert(0, ('identifier', id))
+            record = (dc, record[1])
         return record
 
     def count_records(self, from_time = None, until_time = None):        
@@ -39,8 +42,10 @@ class DataSource(object):
         i = 0
         n = 0
         for k in self.data:
-            dc, ctime = self.data[k]
-            dc['identifier'] = k
+            dc = []
+            _dc, ctime = self.data[k]
+            dc[:] = _dc[:]
+            dc.insert(0, ('identifier', k))
             if ((not from_time) or ctime >= from_time) and ((not until_time) or ctime <= until_time):
                 if (i >= offset) and (n < limit):
                     result.append((dc, ctime))
