@@ -1,20 +1,20 @@
 # Generic OAI-PMH Data Provider module
-# 
-# Copyright (C) 2009 Samalyse SARL 
+#
+# Copyright (C) 2009 Samalyse SARL
 # Author: Olivier Guilyardi <olivier samalyse com>
-# 
+#
 # This software is governed by the CeCILL license under French law and
-# abiding by the rules of distribution of free software.  You can  use, 
+# abiding by the rules of distribution of free software.  You can  use,
 # modify and/ or redistribute the software under the terms of the CeCILL
 # license as circulated by CEA, CNRS and INRIA at the following URL
-# "http://www.cecill.info". 
-# 
+# "http://www.cecill.info".
+#
 # As a counterpart to the access to the source code and  rights to copy,
 # modify and redistribute granted by the license, users are provided only
 # with a limited warranty  and the software's author,  the holder of the
 # economic rights,  and the successive licensors  have only  limited
-# liability. 
-# 
+# liability.
+#
 # In this respect, the user's attention is drawn to the risks associated
 # with loading,  using,  modifying and/or developing or reproducing the
 # software by the user in light of its specific status of free software,
@@ -22,10 +22,10 @@
 # therefore means  that it is reserved for developers  and  experienced
 # professionals having in-depth computer knowledge. Users are therefore
 # encouraged to load and test the software's suitability as regards their
-# requirements in conditions enabling the security of their systems and/or 
-# data to be ensured and,  more generally, to use and operate it in the 
-# same conditions as regards security. 
-# 
+# requirements in conditions enabling the security of their systems and/or
+# data to be ensured and,  more generally, to use and operate it in the
+# same conditions as regards security.
+#
 # The fact that you are presently reading this means that you have had
 # knowledge of the CeCILL license and that you accept its terms.
 
@@ -55,7 +55,7 @@ class IDataSource(object):
                 change time
               )
            or None if the record doesn't exist.
-           
+
            The dublin core data must contain an 'identifier' element, which is the same
            as the id parameter."""
         pass
@@ -65,7 +65,7 @@ class IDataSource(object):
         pass
 
     def list_records(self, offset, limit, from_time = None, until_time = None):
-        """Must return the list of records between (optional) from and 
+        """Must return the list of records between (optional) from and
            until change time, starting from record at offset, with a maximum of limit
            entries. Each entry of the list must be a tuple of the same form as returned
            by getRecord().
@@ -127,7 +127,7 @@ class ArgumentValidator(object):
         self.format = format
 
     def has_verb(self):
-        """Check if the request includes a valid Verb, return True if it does, False otherwise, 
+        """Check if the request includes a valid Verb, return True if it does, False otherwise,
            setting an error into the response"""
 
         valid = ['GetRecord', 'Identify', 'ListIdentifiers', 'ListMetadataFormats', 'ListRecords', 'ListSets']
@@ -184,8 +184,7 @@ class ArgumentValidator(object):
                     self.response.error('badArgument', "Invalid ISO8601 time format in '%s' argument" % k)
                     return False
 
-        return True         
-
+        return True
 
 class DataProvider(object):
     """OAI-PMH Data Provider"""
@@ -214,7 +213,7 @@ class DataProvider(object):
             until_time = None
 
         return from_time, until_time
-        
+
     def handle(self, args):
         """Handle a request and return the response as a DOM document"""
 
@@ -276,7 +275,7 @@ class Response(object):
         self.request.appendChild(self.doc.createTextNode(url))
 
     def append_elements(self, parent, elements, prefix=None):
-        """Append several elements to parent. elements must either be a tag:value dict or 
+        """Append several elements to parent. elements must either be a tag:value dict or
            an ordered list of (tag, value) tuples."""
         for item in elements:
             if isinstance(item, tuple):
@@ -292,8 +291,8 @@ class Response(object):
 
     def set_attributes(self, element, attributes):
         """Set several attributes on element, from dict. attributes must either be an
-           attr:value dict or an ordered list of (attr, value) tuples. If element is a 
-           string, then create an element with than name. Return (possibly created) 
+           attr:value dict or an ordered list of (attr, value) tuples. If element is a
+           string, then create an element with than name. Return (possibly created)
            element."""
         if isinstance(element, basestring):
             element = self.doc.createElement(element)
@@ -383,8 +382,8 @@ class Response(object):
             except ValueError:
                 pass
 
-        return id, parsed                
-            
+        return id, parsed
+
 
     def get_record(self, id):
         """Append GetRecord result"""
@@ -399,7 +398,7 @@ class Response(object):
             elif dc_id != id:
                 raise Exception("DataSource.get_record() returned an 'identifier' dublin core element "
                                 "which is different from the requested identifier")
-                
+
             self.set_attributes(self.request, {'identifier': id, 'metadataPrefix': 'oai_dc'})
             container = self.root.appendChild(self.doc.createElement(self.verb))
             container.appendChild(self.make_record(id, dc, ctime))
@@ -436,7 +435,7 @@ class Response(object):
             except ValueError:
                 self.error('badResumptionToken')
                 return
-        else:                
+        else:
             if from_time:
                 self.request.setAttribute('from', iso_time(from_time))
             if until_time:
@@ -459,7 +458,7 @@ class Response(object):
                     container.appendChild(self.make_record_header(id, ctime))
                 else:
                     container.appendChild(self.make_record(id, dc, ctime))
-                    
+
             if count - offset > self.max_records_per_response:
                 token = container.appendChild(self.doc.createElement('resumptionToken'))
                 token.setAttribute('completeListSize', str(count))
@@ -498,7 +497,7 @@ class Response(object):
             ('schema',               'http://www.openarchives.org/OAI/2.0/oai_dc.xsd'),
             ('metadataNamespace',    'http://www.openarchives.org/OAI/2.0/oai_dc/')
         ])
-            
+
     def free(self):
         """Free the resources used by this response"""
         try:
@@ -506,9 +505,3 @@ class Response(object):
         except AttributeError:
             # Apparently no free/unlink method in libxml2dom
             pass
-
-
-
-
-
-
