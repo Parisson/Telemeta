@@ -28,7 +28,7 @@ class DataSource(object):
             record = (dc, record[1])
         return record
 
-    def count_records(self, from_time = None, until_time = None):        
+    def count_records(self, from_time = None, until_time = None):
         result = 0
         for k in self.data:
             dc, ctime = self.data[k]
@@ -36,8 +36,8 @@ class DataSource(object):
                 result += 1
                 #result.push((k, ctime))
         return result
-                
-    def list_records(self, offset, limit, from_time = None, until_time = None):        
+
+    def list_records(self, offset, limit, from_time = None, until_time = None):
         result = []
         i = 0
         n = 0
@@ -93,5 +93,5 @@ if runserver:
         cherrypy.config.update({'server.socket_port': int(port)})
 
     cherrypy.quickstart(OAIServer(provider))
-else:    
+else:
     sys.stdout.write(provider.handle(args).encode('UTF-8'))
