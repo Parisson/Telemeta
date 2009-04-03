@@ -185,6 +185,12 @@ class DataProvider(object):
                 token = args.get('resumptionToken')
                 if validator.validate():
                     response.list_records(from_time, until_time, token, ids_only = (verb == 'ListIdentifiers'))
+            elif verb == 'ListSets':
+                validator.optional('resumptionToken')
+                validator.validate() and response.error('noSetHierarchy')
+            elif verb == 'ListMetadataFormats':
+                validator.optional('identifier')
+                validator.validate() and response.list_formats(args.get('identifier'))
 
         try:
             doc = libxml2.parseDoc(response.doc.toxml(encoding="utf-8"))
@@ -345,6 +351,23 @@ class Response(object):
                 token.setAttribute('completeListSize', str(count))
         else:
             self.error("noRecordsMatch")
+
+    def list_formats(self, id = None):
+        """Append ListMetadataFormats result"""
+        if id:
+            record = self.datasource.get_record(id)
+            if not record:
+                self.error('idDoesNotExist')
+                return
+            self.request.setAttribute('identifier', id)
+
+        container = self.root.appendChild(self.doc.createElement(self.verb))
+        format = container.appendChild(self.doc.createElement('metadataFormat'))
+        self.append_elements(format, {
+            'metadataPrefix':       'oai_dc',
+            'schema':               'http://www.openarchives.org/OAI/2.0/oai_dc.xsd',
+            'metadataNamespace':    'http://www.openarchives.org/OAI/2.0/oai_dc/'
+        })
             
     def free(self):
         """Free the resources used by this response"""
