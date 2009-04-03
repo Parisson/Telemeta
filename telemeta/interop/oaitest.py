@@ -30,7 +30,7 @@ class DataSource(object):
                 #result.push((k, ctime))
         return result
                 
-    def list_identifiers(self, offset, limit, from_time = None, until_time = None):        
+    def list_records(self, offset, limit, from_time = None, until_time = None):        
         result = []
         i = 0
         n = 0
@@ -38,7 +38,7 @@ class DataSource(object):
             dc, ctime = self.data[k]
             if ((not from_time) or ctime >= from_time) and ((not until_time) or ctime <= until_time):
                 if (i >= offset) and (n < limit):
-                    result.append((k, ctime))
+                    result.append((k, dc, ctime))
                     n += 1
                 i += 1
         return result

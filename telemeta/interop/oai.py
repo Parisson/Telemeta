@@ -1,6 +1,11 @@
 from xml.dom.minidom import getDOMImplementation
 from datetime import datetime
-import libxml2
+import time
+try:
+    import libxml2
+except ImportError:
+    # dangerous: minidom output formatting isn't very good, libxml2 is much better
+    pass
 
 class IDataSource(object):
     """Interface for OAI datasource adapters"""
@@ -21,12 +26,29 @@ class IDataSource(object):
            until change time."""
         pass
 
-    def list_identifiers(self, offset, limit, from_time = None, until_time = None):
-        """Must return the list of record identifiers between (optional) from and 
+    def list_records(self, offset, limit, from_time = None, until_time = None):
+        """Must return the list of records between (optional) from and 
            until change time, starting from record at offset, with a maximum of limit
-           entries. Each entry of the list must be a tuple containing the identifier and
-           the change time. If no record matches, should return an empty list."""
+           entries. Each entry of the list must be a tuple containing the identifier, a dict
+           containing dublin core data, and the change time. If no record matches, should return
+           an empty list."""
         pass
+
+def iso_time(date_time = None):
+    """Encode a datetime object using ISO8601 format"""
+    if not date_time:
+        date_time = datetime.now()
+    return date_time.strftime('%Y-%m-%dT%H-%M-%SZ')
+
+def parse_iso_time(str):
+    """Parse an ISO8601 time string into a datetime object, or return None on failure"""
+    # Avoid datetime.strptime() for compatibility with python < 2.5
+    try:
+        s = time.strptime(str, '%Y-%m-%dT%H-%M-%SZ')
+    except ValueError:
+        return None
+
+    return datetime(s.tm_year, s.tm_mon, s.tm_mday, s.tm_hour, s.tm_min, s.tm_sec)
 
 class ArgumentValidator(object):
     """OAI-PMH request argument validator"""
@@ -104,9 +126,7 @@ class ArgumentValidator(object):
                 else:
                     raise Exception('Can\'t validate metadataPrefix argument: supported format isn\'t defined')
             elif (k == 'from') or (k == 'until'):
-                try:
-                    datetime.strptime(self.request[k], '%Y-%m-%dT%H-%M-%SZ')
-                except ValueError:
+                if not parse_iso_time(self.request[k]):
                     self.response.error('badArgument', "Invalid ISO8601 time format in '%s' argument" % k)
                     return False
 
@@ -127,17 +147,13 @@ class DataProvider(object):
             'granularity':      'YYYY-MM-DDThh:mm:ssZ'
         }
 
-    def parse_time(self, str):
-        """Parse an ISO8601 date string into a datetime object"""
-        return datetime.strptime(str, '%Y-%m-%dT%H-%M-%SZ')
-
     def parse_time_range(self, args):
         if args.get('from'):
-            from_time = self.parse_time(args['from'])
+            from_time = parse_iso_time(args['from'])
         else:
             from_time = None
         if args.get('until'):
-            until_time = self.parse_time(args['until'])
+            until_time = parse_iso_time(args['until'])
         else:
             until_time = None
 
@@ -162,18 +178,22 @@ class DataProvider(object):
             elif verb == 'GetRecord':
                 validator.require('identifier', 'metadataPrefix')
                 validator.validate() and response.get_record(args['identifier'])
-            elif verb == 'ListIdentifiers':
+            elif verb == 'ListIdentifiers' or verb == 'ListRecords':
                 validator.require('metadataPrefix')
                 validator.optional('from', 'until', 'set', 'resumptionToken')
                 from_time, until_time = self.parse_time_range(args)
                 token = args.get('resumptionToken')
-                validator.validate() and response.list_identifiers(from_time, until_time, token)
+                if validator.validate():
+                    response.list_records(from_time, until_time, token, ids_only = (verb == 'ListIdentifiers'))
 
-        doc = libxml2.parseDoc(response.doc.toxml(encoding="utf-8"))
-        response.free()
-        xml = unicode(doc.serialize(encoding="utf-8", format=1), "utf-8")
-        doc.free()
-        return xml
+        try:
+            doc = libxml2.parseDoc(response.doc.toxml(encoding="utf-8"))
+            response.free()
+            xml = unicode(doc.serialize(encoding="utf-8", format=1), "utf-8")
+            doc.free()
+            return xml
+        except NameError:
+            return response.doc.toprettyxml(encoding="utf-8")
 
 class Response(object):
     """OAI-PMH response generation"""
@@ -191,7 +211,7 @@ class Response(object):
         self.root.setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
         self.root.setAttribute('xsi:schemaLocation', 'http://www.openarchives.org/OAI/2.0/ '
                                                      'http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd')
-        self.append_elements(self.root, {'responseDate': self.make_time()})
+        self.append_elements(self.root, {'responseDate': iso_time()})
         self.request = self.root.appendChild(self.doc.createElement('request'))
         self.request.appendChild(self.doc.createTextNode(self.identity['baseURL']))
 
@@ -227,16 +247,10 @@ class Response(object):
 
         identity = self.identity.copy()
         earliest = self.datasource.get_earliest_time()
-        identity['earliestDatestamp'] = self.make_time(earliest)
+        identity['earliestDatestamp'] = iso_time(earliest)
 
         group = self.root.appendChild(self.doc.createElement('Identify'))
         self.append_elements(group, identity)
-
-    def make_time(self, date_time = None):
-        """Encode a datetime object using ISO8601 format"""
-        if not date_time:
-            date_time = datetime.now()
-        return date_time.strftime('%Y-%m-%dT%H-%M-%SZ')
 
     def error(self, code, msg = None):
         """Add error tag using code. If msg is not provided, use a default error message."""
@@ -261,7 +275,7 @@ class Response(object):
     def make_record_header(self, id, ctime):
         """Build and return a record header"""
         header = self.doc.createElement('header')
-        self.append_elements(header, {'identifier': id, 'dateStamp': self.make_time(ctime)})
+        self.append_elements(header, {'identifier': id, 'dateStamp': iso_time(ctime)})
         return header
 
     def make_record(self, id, dc, ctime):
@@ -291,8 +305,8 @@ class Response(object):
             container = self.root.appendChild(self.doc.createElement(self.verb))
             container.appendChild(self.make_record(id, dc, ctime))
 
-    def list_identifiers(self, from_time, until_time, token = None):
-        """Append ListIdentifiers result"""
+    def list_records(self, from_time, until_time, token = None, ids_only = False):
+        """Append ListIdentifiers or ListRecords result"""
         offset = 0
         if token:
             try:
@@ -302,22 +316,26 @@ class Response(object):
                 return
 
         if from_time:
-            self.request.setAttribute('from', self.make_time(from_time))
+            self.request.setAttribute('from', iso_time(from_time))
         if until_time:
-            self.request.setAttribute('until', self.make_time(until_time))
+            self.request.setAttribute('until', iso_time(until_time))
         if token:
             self.request.setAttribute('resumptionToken', token)
 
         count = self.datasource.count_records(from_time, until_time)
-        data = self.datasource.list_identifiers(offset, self.max_records_per_response, from_time, until_time)
+        data = self.datasource.list_records(offset, self.max_records_per_response, from_time, until_time)
         if (len(data) > self.max_records_per_response):
-            raise Exception("DataSource.list_identifiers() returned too many records")
+            raise Exception("DataSource.list_records() returned too many records")
 
         if len(data):
             container = self.root.appendChild(self.doc.createElement(self.verb))
             for item in data:
-                id, ctime = item
-                container.appendChild(self.make_record_header(id, ctime))
+                id, dc, ctime = item
+                if ids_only:
+                    container.appendChild(self.make_record_header(id, ctime))
+                else:
+                    container.appendChild(self.make_record(id, dc, ctime))
+                    
             if count - offset > self.max_records_per_response:
                 token = self.root.appendChild(self.doc.createElement('resumptionToken'))
                 token.setAttribute('completeListSize', str(count))
