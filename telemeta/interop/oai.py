@@ -46,23 +46,25 @@ class IDataSource(object):
         pass
 
     def get_record(self, id):
-        """Must return a tuple with :
-             - record as (dict,timestamp) of Dublin Core elements
-             - last changetime as a datetime object
-           or None if the record doesn't exist"""
+        """Must return a tuple of the form (dublin core dict, change time)
+           or None if the record doesn't exist.
+           
+           The dublin core data must contain an 'identifier' element, which is the same
+           as the id parameter."""
         pass
 
     def count_records(self, from_time = None, until_time = None):
-        """Must return the number of record identifiers between (optional) from and 
-           until change time."""
+        """Must return the number of records between (optional) from and until change time."""
         pass
 
     def list_records(self, offset, limit, from_time = None, until_time = None):
         """Must return the list of records between (optional) from and 
            until change time, starting from record at offset, with a maximum of limit
-           entries. Each entry of the list must be a tuple containing the identifier, a dict
-           containing dublin core data, and the change time. If no record matches, should return
-           an empty list."""
+           entries. Each entry of the list must be a tuple of the form:
+           (dublin core dict, change time)
+
+           If no record matches, should return an empty list. The dublin core data must
+           contain an 'identifier' element, which can be used as a parameter to get_record()."""
         pass
 
 def iso_time(date_time = None):
@@ -338,6 +340,12 @@ class Response(object):
             self.error('idDoesNotExist')
         else:
             dc, ctime = record
+            if not dc.get('identifier'):
+                raise Exception("DataSource.get_record() didn't provide an 'identifier' dublin core element")
+            elif dc["identifier"] != id:
+                raise Exception("DataSource.get_record() returned an 'identifier' dublin core element "
+                                "which is different from the requested identifier")
+                
             self.set_attributes(self.request, {'identifier': id, 'metadataPrefix': 'oai_dc'})
             container = self.root.appendChild(self.doc.createElement(self.verb))
             container.appendChild(self.make_record(id, dc, ctime))
@@ -367,7 +375,11 @@ class Response(object):
         if len(data):
             container = self.root.appendChild(self.doc.createElement(self.verb))
             for item in data:
-                id, dc, ctime = item
+                dc, ctime = item
+                if not dc.get('identifier'):
+                    raise Exception("DataSource.list_records() didn't provide an 'identifier' dublin core element")
+
+                id = dc['identifier']    
                 if ids_only:
                     container.appendChild(self.make_record_header(id, ctime))
                 else:

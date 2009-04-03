@@ -19,7 +19,10 @@ class DataSource(object):
         return self.oldest
 
     def get_record(self, id):
-        return self.data.get(id)
+        record = self.data.get(id)
+        if record:
+            record['identifier'] = id
+        return record
 
     def count_records(self, from_time = None, until_time = None):        
         result = 0
@@ -36,9 +39,10 @@ class DataSource(object):
         n = 0
         for k in self.data:
             dc, ctime = self.data[k]
+            dc['identifier'] = k
             if ((not from_time) or ctime >= from_time) and ((not until_time) or ctime <= until_time):
                 if (i >= offset) and (n < limit):
-                    result.append((k, dc, ctime))
+                    result.append((dc, ctime))
                     n += 1
                 i += 1
         return result
