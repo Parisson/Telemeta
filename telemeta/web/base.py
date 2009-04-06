@@ -328,7 +328,8 @@ class WebView(Component):
     def handle_oai_request(self, request):
         url = request.META['HTTP_HOST'] + request.path
         datasource  = TelemetaOAIDataSource()
-        provider    = oai.DataProvider(datasource, "Telemeta", url, "admin@telemeta.org")
+        admin = settings.ADMINS[0][1]
+        provider    = oai.DataProvider(datasource, "Telemeta", url, admin)
         args = request.GET.copy()
         args.update(request.POST)
         return HttpResponse(provider.handle(args), mimetype='text/xml')

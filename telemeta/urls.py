@@ -12,6 +12,9 @@ from telemeta.models import MediaItem, MediaCollection
 from telemeta.core import ComponentManager
 from telemeta.web import WebView
 import os.path
+import telemeta.config
+
+telemeta.config.check()
 
 # initialization
 comp_mgr = ComponentManager()
