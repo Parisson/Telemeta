@@ -7,6 +7,6 @@
 #
 # Author: Olivier Guilyardi <olivier@samalyse.com>
 
-from telemeta.models.media import MediaCollection, MediaItem, MediaPart, MediaCore
+from telemeta.models.media import MediaCollection, MediaItem, MediaPart, MediaCore, Revision
 from telemeta.models.enum import PhysicalFormat, PublishingStatus
 

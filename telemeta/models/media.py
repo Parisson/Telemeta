@@ -8,7 +8,8 @@
 # Author: Olivier Guilyardi <olivier@samalyse.com>
 
 from django.db.models import Model, CharField, FileField, \
-    TextField, DecimalField, ForeignKey, DateField
+    TextField, DecimalField, ForeignKey, DateField, AutoField, \
+    DateTimeField
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 from xml.dom.minidom import getDOMImplementation
@@ -187,7 +188,8 @@ class MediaCollection(Model, MediaCore):
     def save(self, force_insert=False, force_update=False):
         if not MediaCore.is_well_formed_id(self.id):
             raise MediaInvalidIdError()
-        return super(MediaCollection, self).save(force_insert, force_update)
+        super(MediaCollection, self).save(force_insert, force_update)
+        Revision(element_type='collection', element_id=self.id).touch()
         
     class Meta:
         app_label = 'telemeta'
@@ -284,7 +286,8 @@ class MediaItem(Model, MediaCore):
     def save(self, force_insert=False, force_update=False):
         if not MediaCore.is_well_formed_id(self.id):
             raise MediaInvalidIdError()
-        return super(MediaItem, self).save(force_insert, force_update)
+        super(MediaItem, self).save(force_insert, force_update)
+        Revision(element_type='item', element_id=self.id).touch()
         
     class Meta:
         app_label = 'telemeta'
@@ -319,10 +322,38 @@ class MediaPart(Model, MediaCore):
     def __unicode__(self):
         return self.title
 
+    def save(self, force_insert=False, force_update=False):
+        super(MediaPart, self).save(force_insert, force_update)
+        Revision(element_type='part', element_id=self.id).touch()
+
     class Meta:
         app_label = 'telemeta'
         ordering = ['title']
         db_table = 'telemeta_part'
+
+class Revision(Model):
+    id              = AutoField(primary_key=True)
+    element_type    = CharField(max_length=16, choices=(('collection', 'collection'),
+                                                        ('item', 'item'),
+                                                        ('part', 'part')))
+    element_id      = CharField(max_length=250)
+    change_type     = CharField(max_length=8, choices= (('create', 'create'),
+                                                        ('update', 'update'),
+                                                        ('delete', 'delete')))
+    time            = DateTimeField(auto_now_add=True)
+
+
+    def touch(self):
+        q = Revision.objects.filter(element_type=self.element_type, element_id=self.element_id) 
+        if q.count():
+            self.change_type = 'update'
+        else:
+            self.change_type = 'create'
+        self.save()
+
+    class Meta:
+        app_label = 'telemeta'
+        db_table = 'telemeta_revision'
 
 class MediaInvalidIdError(Exception):
     pass
