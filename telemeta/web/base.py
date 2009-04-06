@@ -27,6 +27,8 @@ from telemeta.export import *
 from telemeta.visualization import *
 from telemeta.analysis import *
 from telemeta.analysis.vamp import *
+import telemeta.interop.oai as oai
+from telemeta.interop.oaidatasource import TelemetaOAIDataSource
 
 class WebView(Component):
     """Provide web UI methods"""
@@ -322,4 +324,13 @@ class WebView(Component):
         return list_detail.object_list(request, objects, 
             template_name='telemeta/geo_country_collections.html', paginate_by=20,
             extra_context={'country': country, 'continent': continent})
+
+    def handle_oai_request(self, request):
+        url = request.META['HTTP_HOST'] + request.path
+        datasource  = TelemetaOAIDataSource()
+        provider    = oai.DataProvider(datasource, "Telemeta", url, "admin@telemeta.org")
+        args = request.GET.copy()
+        args.update(request.POST)
+        return HttpResponse(provider.handle(args), mimetype='text/xml')
+        
 

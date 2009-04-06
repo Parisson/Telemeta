@@ -191,6 +191,9 @@ class MediaCollection(Model, MediaCore):
         super(MediaCollection, self).save(force_insert, force_update)
         Revision(element_type='collection', element_id=self.id).touch()
         
+    def get_revision(self):
+        return Revision.objects.filter(element_type='collection', element_id=self.id).order_by('-time')[0]
+
     class Meta:
         app_label = 'telemeta'
         ordering = ['title']
@@ -280,6 +283,9 @@ class MediaItem(Model, MediaCore):
 
         return duration
 
+    def get_revision(self):
+        return Revision.objects.filter(element_type='item', element_id=self.id).order_by('-time')[0]
+
     def __unicode__(self):
         return self.title
 
@@ -326,6 +332,9 @@ class MediaPart(Model, MediaCore):
         super(MediaPart, self).save(force_insert, force_update)
         Revision(element_type='part', element_id=self.id).touch()
 
+    def get_revision(self):
+        return Revision.objects.filter(element_type='part', element_id=self.id).order_by('-time')[0]
+
     class Meta:
         app_label = 'telemeta'
         ordering = ['title']
@@ -336,8 +345,9 @@ class Revision(Model):
     element_type    = CharField(max_length=16, choices=(('collection', 'collection'),
                                                         ('item', 'item'),
                                                         ('part', 'part')))
-    element_id      = CharField(max_length=250)
-    change_type     = CharField(max_length=8, choices= (('create', 'create'),
+    element_id      = CharField(max_length=250, db_index=True)
+    change_type     = CharField(max_length=8, choices= (('import', 'import'),
+                                                        ('create', 'create'),
                                                         ('update', 'update'),
                                                         ('delete', 'delete')))
     time            = DateTimeField(auto_now_add=True)

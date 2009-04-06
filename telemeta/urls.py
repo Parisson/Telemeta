@@ -135,4 +135,7 @@ urlpatterns = patterns('',
     url(r'^timeside/(?P<path>.*)$', 'django.views.static.serve', 
         {'document_root': htdocs+'/timeside'},
         name="telemeta-timeside"),
+
+    # OAI-PMH Data Provider
+    url(r'^oai/.*$', web_view.handle_oai_request, name="telemeta-oai")
 )

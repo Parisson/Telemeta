@@ -30,6 +30,14 @@ class Resource(object):
                 result[element.name] = unicode(element.value)
         return result
 
+    def to_list(self):
+        """Convert the resource to unqualified dublin core, as a list of the form:
+           [(key, value), ...]"""
+        result = []
+        for element in self.elements:
+            result.append((element.name, unicode(element.value)))
+        return result
+
 class Element(object):
     "Represent a Dublin Core element"
 

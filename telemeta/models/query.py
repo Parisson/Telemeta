@@ -30,6 +30,15 @@ class CoreQuerySet(QuerySet):
         kwargs = {field + '__iregex': regex}
         return self.filter(**kwargs)
 
+    def _by_change_time(self, type, from_time = None, until_time = None):
+        where = ["element_type = '%s'" % type]
+        if from_time:
+            where.append("time >= '%s'" % from_time.strftime('%Y-%m-%d %H:%M:%S'))
+        if until_time:
+            where.append("time <= '%s'" % until_time.strftime('%Y-%m-%d %H:%M:%S'))
+        return self.extra(
+            where = ["id IN (SELECT DISTINCT element_id FROM telemeta_revision WHERE %s)" % " AND ".join(where)]);
+
 class CoreManager(Manager):
     "Base class for all models managers"
 
@@ -64,6 +73,9 @@ class MediaCollectionQuerySet(CoreQuerySet):
     def by_ethnic_group(self, group):
         return self.filter(items__ethnie_grsocial=group).distinct()
 
+    def by_change_time(self, from_time = None, until_time = None):
+        return self._by_change_time('collection', from_time, until_time)
+
 class MediaCollectionManager(CoreManager):
     "Manage collection queries"
 
@@ -87,6 +99,9 @@ class MediaCollectionManager(CoreManager):
 
     def by_ethnic_group(self, *args, **kwargs):
         return self.get_query_set().by_ethnic_group(*args, **kwargs)
+
+    def by_change_time(self, *args, **kwargs):
+        return self.get_query_set().by_change_time(*args, **kwargs)
 
     def stat_continents(self, order_by='num'):      
         "Return the number of collections by continents and countries as a tree"
@@ -170,6 +185,9 @@ class MediaItemQuerySet(CoreQuerySet):
 
     def by_publish_date(self, pattern):
         return self.filter(collection__date_published__icontains=pattern) 
+
+    def by_change_time(self, from_time = None, until_time = None):
+        return self._by_change_time('item', from_time, until_time)
             
 class MediaItemManager(CoreManager):
     "Manage media items queries"
@@ -191,6 +209,9 @@ class MediaItemManager(CoreManager):
 
     def by_publish_date(self, *args, **kwargs):
         return self.get_query_set().by_publish_date(*args, **kwargs)
+
+    def by_change_time(self, *args, **kwargs):
+        return self.get_query_set().by_change_time(*args, **kwargs)
 
     def list_ethnic_groups(self):
         "Return a list of all ethnic groups"
