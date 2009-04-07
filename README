@@ -11,8 +11,8 @@ Telemeta: web frontend to backup, analyse, transcode and stream any audio conten
 Telemeta is a web audio archiving program which introduces useful and secure methods to
 backup, index, transcode, analyse and publish any digitalized audio file with its metadata.
 It is dedicated to professionnals who wants to easily backup and publish documented sounds
-from collections of vinyls, magnetic tapes or audio CDs over a strong database, in accordance
-with open standards.
+from collections of vinyls, magnetic tapes or audio CDs over a strong database,
+in accordance with open standards.
 
 Here are the main features of Telemeta: 
 
@@ -92,3 +92,24 @@ Emails:
     Guillaume Pellerin <pellerin@parisson.com>, 
     Olivier Guilyardi <olivier@samalyse.com>
 
+# Support
+# =======
+
+The Telemeta project is developed by Parisson and Samalyse.
+
+It is supported and financed by :
+
+- CNRS : Centre National de la Recherche Scientifique
+    (the french Natianal Research and Scientific Center)
+    http://cnrs.fr
+- CREM : Centre de Recherche en Ethnomusicology
+    (the french Ethnomusicology Research Center)
+    http://www.crem-cnrs.fr
+- LAM : Equipe Lutherie, Acoustique et Musique de l'Université Pierre et Marie Curie de Paris
+    (Instrument design, Acoustic and Music team of the Pierre & Marie Curie University)
+    http://www.lam.jussieu.fr/
+- MuCEM : Musée des Civilisations de l'Europe et de la Méditerranée
+    http://www.musee-europemediterranee.org
+- MMSH : Maison Méditerranéenne des Sciences de l'Homme
+    http://www.mmsh.univ-aix.fr/
+- The Antropponet Project
