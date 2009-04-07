@@ -38,24 +38,37 @@ import os
 import sys
 import shutil
 import datetime
-import StringIO
+import string
 from django.core.management import setup_environ
 from django.core.files import File
 
 tool_name = "media_import.py"
+authorized_extensions = ['wav', 'aif', 'aiff', 'mp3', 'ogg', 'flac']
+print map(string.swapcase, authorized_extensions)
 
 class TelemetaMediaImportError(Exception):
     pass
 
 class TelemetaMediaImport:
 
-    def __init__(self, settings, source_dir, source_file=None):
+    def __init__(self, settings, source_dir):
         self.source_dir = source_dir
-        self.source_file = source_file
         self.source_files = os.listdir(self.source_dir)
+        self.media_filter()
+        print self.source_files
         self.item_media_root_dir = settings.MEDIA_ROOT
         self.item_media_full_dir = self.item_media_root_dir + os.sep + 'items'
         self.collection_id = self.get_collection()
+
+    def media_filter(self):
+        files = []
+        for media_file in self.source_files:
+            ext = get_media_extension(media_file)
+            if ext in authorized_extensions or \
+                ext in map(string.swapcase, authorized_extensions) or \
+                ext in map(string.capitalize, authorized_extensions) :
+                files.append(media_file)
+        self.source_files = files
 
     def get_collection(self):
         from telemeta.models import MediaItem
@@ -64,39 +77,35 @@ class TelemetaMediaImport:
         self.item_list = MediaItem.objects.filter(id__startswith=id_string)
         return self.item_list[0].collection_id
 
-    def copy_files(self):
-        if not os.path.exists(self.dest_dir):
-            os.makedirs(self.dest_dir)
-        for file in self.source_files:
-            if not os.path.exists(self.dest_dir + os.sep + file):
-                shutil.copy(self.source_dir + os.sep + file, self.dest_dir)
-
-    def media_import_copy(self):
+    def media_import(self):
         from telemeta.models import MediaItem
-        if not self.source_file:
-            self.files = os.listdir(self.source_dir)
-            self.files.sort()
-        else:
-            self.files = [self.source_file]
-        id_list = map(get_media_name, self.files)
+        id_list = map(get_media_name, self.source_files)
 
         print "Working on collection_id : " + self.collection_id
         for item_id in id_list:
             print "item_id : " + item_id
             it = MediaItem.objects.get(id=item_id)
             source_full_path = self.source_dir + os.sep + get_item_in_list(self.source_files, item_id)
-            media = open(source_full_path, 'r')
-            f = File(media)
-            print "Adding : " + source_full_path
-            it.file.save(f.name, f, save=True)
-            media.close()
+            if os.path.exists(source_full_path):
+                media = open(source_full_path, 'r')
+                f = File(media)
+                print "Adding : " + source_full_path
+                try:
+                    it.file.save(f.name, f, save=True)
+                except:
+                    raise TelemetaMediaImportError("Could not include this item: " + item_id)
+                media.close()
 
     def main(self):
-        self.media_import_copy()
+        self.media_import()
 
 def get_media_name(media):
     name = media.split('.')[:-1]
     return '.'.join(name)
+
+def get_media_extension(media):
+    ext = media.split('.')[-1]
+    return ext
 
 def get_item_in_list(item_list, string):
     for item in item_list:
@@ -109,7 +118,6 @@ def print_usage():
 
  project_dir: the directory of the Django project which hosts Telemeta
  source_dir: the directory containing all media files to include
- source_file: the media file to include (optional, if only one file)
 
  IMPORTANT: each file name without its extension has to correspond at least to one existing item id in the database. All media files have also to correspond to only one Collection."
  """ % tool_name
@@ -122,14 +130,11 @@ def run():
     else:
         project_dir = sys.argv[1]
         source_dir = sys.argv[2]
-        source_file = None
-        if l == 4:
-            source_file = sys.argv[l-1]
         sys.path.append(project_dir)
         #from django.conf import settings
         import settings
         setup_environ(settings)
-        t = TelemetaMediaImport(settings, source_dir, source_file)
+        t = TelemetaMediaImport(settings, source_dir)
         t.main()
 
 if __name__ == '__main__':
