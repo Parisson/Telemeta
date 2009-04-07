@@ -44,7 +44,6 @@ from django.core.files import File
 
 tool_name = "media_import.py"
 authorized_extensions = ['wav', 'aif', 'aiff', 'mp3', 'ogg', 'flac']
-print map(string.swapcase, authorized_extensions)
 
 class TelemetaMediaImportError(Exception):
     pass
