@@ -54,10 +54,9 @@ class TelemetaMediaImport:
         self.source_dir = source_dir
         self.source_files = os.listdir(self.source_dir)
         self.media_filter()
-        print self.source_files
+        #print self.source_files
         self.item_media_root_dir = settings.MEDIA_ROOT
         self.item_media_full_dir = self.item_media_root_dir + os.sep + 'items'
-        self.collection_id = self.get_collection()
 
     def media_filter(self):
         files = []
@@ -69,19 +68,13 @@ class TelemetaMediaImport:
                 files.append(media_file)
         self.source_files = files
 
-    def get_collection(self):
-        from telemeta.models import MediaItem
-        file_0 = self.source_files[0]
-        id_string = get_media_name(file_0)
-        self.item_list = MediaItem.objects.filter(id__startswith=id_string)
-        return self.item_list[0].collection_id
-
     def media_import(self):
         from telemeta.models import MediaItem
         id_list = map(get_media_name, self.source_files)
-
-        print "Working on collection_id : " + self.collection_id
+        #print id_list
+        
         for item_id in id_list:
+            item_id = item_id.strip()
             print "item_id : " + item_id
             it = MediaItem.objects.get(id=item_id)
             source_full_path = self.source_dir + os.sep + get_item_in_list(self.source_files, item_id)
@@ -89,10 +82,7 @@ class TelemetaMediaImport:
                 media = open(source_full_path, 'r')
                 f = File(media)
                 print "Adding : " + source_full_path
-                try:
-                    it.file.save(f.name, f, save=True)
-                except:
-                    raise TelemetaMediaImportError("Could not include this item: " + item_id)
+                it.file.save(f.name, f, save=True)
                 media.close()
 
     def main(self):
@@ -118,7 +108,7 @@ def print_usage():
  project_dir: the directory of the Django project which hosts Telemeta
  source_dir: the directory containing all media files to include
 
- IMPORTANT: each file name without its extension has to correspond at least to one existing item id in the database. All media files have also to correspond to only one Collection."
+ IMPORTANT: each file name without its extension has to correspond at least to one existing item id in the database."
  """ % tool_name
 
 def run():

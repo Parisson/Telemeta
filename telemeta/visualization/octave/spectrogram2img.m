@@ -40,7 +40,7 @@ if lx > lx_lim;
 end
     
 %fftn = 2^nextpow2(window); % next highest power of 2
-[S, f, t] = spectrogram(x, Fs, window, step, 4000, 'hanning', -30);
+[S, f, t] = spectrogram(x, Fs, window, step, 8000, 'hanning', -30);
 S = flipud(20*log10(S));
 %  
 %  cmap = [0:1:ncmap-1];

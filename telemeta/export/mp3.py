@@ -135,7 +135,7 @@ class Mp3Exporter(ExporterCore):
         self.args = self.get_args(options)
         self.ext = self.get_file_extension()
         self.args = ' '.join(self.args)
-        self.command = 'sox "%s" -s -q -r 44100 -t wav -c2 - | lame %s -' % (self.source, self.args)
+        self.command = 'sox "%s" -s -q -b 16 -r 44100 -t wav -c2 - | lame %s -' % (self.source, self.args)
         #self.command = 'lame %s "%s" -' % (self.args, self.source)
         
         # Pre-proccessing

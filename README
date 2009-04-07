@@ -37,7 +37,7 @@ but could be easily adapted/overrided to sue other data structures.
 # ============
 
 python (>= 2.3.5-7), python-xml, python-mutagen, python-django (>= 1.0-1),
-python-imaging (>= 1.1.6), sox, vorbis-tools, flac, normalize-audio,
+python-imaging (>= 1.1.6), sox (>= 14.2), vorbis-tools, flac, normalize-audio,
 python-mysqldb, mysql-server, octave2.9, python-tk, libgd2-xpm,
 libsndfile1 (>= 1.0.17), python-numpy, python-ctypes (>= 1.0.1),
 python-scikits-audiolab (>= 0.7), python-setuptools (>= 0.6b3),
