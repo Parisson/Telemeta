@@ -28,7 +28,8 @@ class eZTelemetaItemType extends eZDataType
     
     function validateObjectAttributeHTTPInput($http, $base, $attribute)
     {
-        $idvar = "{$base}_itemid_{$attribute->id}";
+        $idvar = "{$base}_itemid_" . $attribute->attribute('id');
+        touch("/tmp/$idvar");
         if ($http->hasPostVariable($idvar)) {
             $itemId = $http->postVariable($idvar);
             $classAttribute = $attribute->contentClassAttribute();
@@ -52,27 +53,27 @@ class eZTelemetaItemType extends eZDataType
 
     function fetchObjectAttributeHTTPInput($http, $base, $attribute)
     {
-        $idvar = "{$base}_itemid_{$attribute->id}";
+        $idvar = "{$base}_itemid_" . $attribute->attribute('id');
         if ($http->hasPostVariable($idvar)) {
             $itemId = $http->postVariable($idvar);
-            $attribute->setAttribute("itemid", $itemId);
+            $attribute->setAttribute("data_text", $itemId);
         }
         return true;
     }
 
     function objectAttributeContent($attribute)
     {
-        return $attribute->attribute("itemid");
+        return $attribute->attribute("data_text");
     }
 
     function metaData($attribute)
     {
-        return $attribute->attribute("itemid");
+        return $attribute->attribute("data_text");
     }
 
     function title($attribute, $name = null)
     {
-        return "Telemeta Item id " . $attribute->attribute("itemid");
+        return "Telemeta Item id " . $attribute->attribute("data_text");
     }
 
     function isIndexable()
