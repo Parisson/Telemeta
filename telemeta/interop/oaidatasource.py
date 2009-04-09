@@ -56,7 +56,11 @@ class TelemetaOAIDataSource(object):
 
     def get_record(self, id):
         """Return a specific record"""
-        type, id = id.split(':')
+        try:
+            type, id = id.split(':')
+        except ValueError:
+            return None
+            
         if (type == 'collection'):
             try:
                 record  = MediaCollection.objects.get(id=id)
@@ -68,7 +72,7 @@ class TelemetaOAIDataSource(object):
             except MediaItem.DoesNotExist:
                 return None
         else:
-            raise Exception("No such record type: %s" % type)
+            return None
 
         return self.prepare_record(type, record)
 
