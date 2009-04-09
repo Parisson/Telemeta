@@ -17,7 +17,7 @@
  * @copyright   2009 Samalyse
  * @license     CeCILL Free Software License Agreement
  */
-class telemetaItem
+class TelemetaItem
 {
     private $cacheTimeout = 3600;
 

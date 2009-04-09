@@ -17,7 +17,7 @@
  * @copyright   2009 Samalyse
  * @license     CeCILL Free Software License Agreement
  */
-class telemetaInvalidParamsError extends ezcBaseException
+class TelemetaInvalidParamsError extends ezcBaseException
 {
     public function __construct($msg)
     {
