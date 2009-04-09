@@ -1,4 +1,4 @@
 [DataTypeSettings]
 ExtensionDirectories[]=eztelemeta
-AvailableDataTypes[]=telemetaitem
+AvailableDataTypes[]=eztelemetaitem
 
