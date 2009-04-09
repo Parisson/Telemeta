@@ -1,0 +1,5 @@
+[embed_telemetaitem]
+Source=content/view/embed.tpl
+MatchFile=embed/eztelemetaitem.tpl
+Subdir=templates
+Match[class_identifier]=telemetaitem
