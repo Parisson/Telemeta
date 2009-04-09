@@ -1,2 +1,5 @@
 [ExtensionSettings]
 DesignExtensions[]=eztelemeta
+
+[StylesheetSettings]
+CSSFileList[]=eztelemeta.css
