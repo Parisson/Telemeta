@@ -3,3 +3,9 @@ DesignExtensions[]=eztelemeta
 
 [StylesheetSettings]
 CSSFileList[]=eztelemeta.css
+CSSFileList[]=page-player.css
+
+[JavaScriptSettings]
+JavaScriptList[]=init.js
+JavaScriptList[]=soundmanager2-nodebug-jsmin.js
+JavaScriptList[]=page-player.js

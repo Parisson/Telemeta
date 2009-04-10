@@ -8,7 +8,6 @@
  * @license     CeCILL Free Software License Agreement
  */
 
-
 /**
  * Class definining the Telemeta Item datatype
  *
@@ -31,8 +30,8 @@ class eZTelemetaItemType extends eZDataType
         $idvar   = "{$base}_itemid_" . $attribute->attribute('id');
         $urlvar  = "{$base}_url_" . $attribute->attribute('id');
         if ($http->hasPostVariable($idvar)) {
-            $itemId = trim($http->postVariable($idvar));
-            $url    = trim($http->postVariable($urlvar));
+            $itemId         = trim($http->postVariable($idvar));
+            $url            = trim($http->postVariable($urlvar));
             $classAttribute = $attribute->contentClassAttribute();
             if ($classAttribute->attribute("is_required")) {
                 if (!$itemId) {
@@ -151,9 +150,9 @@ class eZTelemetaItemType extends eZDataType
     function metaData($attribute)
     {
         $data = unserialize($attribute->attribute("data_text"));
-        $words = array();
-        $src = $data['title'] . ' ' . $data['description'];
-        $cut = split('[ =+()[{}_,.:;\\/"\'*#%!?&-]+', $src);
+        $words  = array();
+        $src    = $data['title'] . ' ' . $data['description'];
+        $cut    = split('[ =+()[{}_,.:;\\/"\'*#%!?&-]+', $src);
         foreach ($cut as $w) {
             if (strlen($w) >= 3) {
                 $words[] = $w;
