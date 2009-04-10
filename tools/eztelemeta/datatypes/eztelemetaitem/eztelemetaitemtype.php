@@ -82,8 +82,8 @@ class eZTelemetaItemType extends eZDataType
         $request    = "$url/oai/?verb=GetRecord&identifier=$id&metadataPrefix=oai_dc";
 
         $doc = new DOMDocument();
-        if (!$doc->load($request)) {
-            throw new ezTelemetaError("The Telemeta server couldn't be reached or returned malformed XML (request: $request)");
+        if (!@$doc->load($request)) {
+            throw new eZTelemetaError("The Telemeta server couldn't be reached or returned malformed XML (request: $request)");
         }
 
         $root = $doc->getElementsByTagName('OAI-PMH');
@@ -151,7 +151,17 @@ class eZTelemetaItemType extends eZDataType
     function metaData($attribute)
     {
         $data = unserialize($attribute->attribute("data_text"));
-        return array('title' => $data['title'], 'description' => $data['description']);
+        $words = array();
+        $src = $data['title'] . ' ' . $data['description'];
+        $cut = split('[ =+()[{}_,.:;\\/"\'*#%!?&-]+', $src);
+        foreach ($cut as $w) {
+            if (strlen($w) >= 3) {
+                $words[] = $w;
+            }
+        }
+        $words = join(" ", $words);
+        file_put_contents("/tmp/c{$data['id']}", $words);
+        return $words;
     }
 
     function title($attribute, $name = null)
