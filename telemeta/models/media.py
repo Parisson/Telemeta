@@ -260,6 +260,9 @@ class MediaItem(Model, MediaCore):
         else: 
             creator = self.collection.creator
 
+        duration = self.get_duration()
+        duration = "%02d:%02d:%02d" % (duration / 3600, duration % 3600 / 60, duration % 3600 % 60)
+
         resource = dc.Resource(
             dc.Element('identifier','id', self.id),
             dc.Element('type', value='Sound'),
@@ -268,6 +271,7 @@ class MediaItem(Model, MediaCore):
             dc.Element('creator', value=creator),
             dc.Element('publisher', value=self.collection.publisher),
             dc.Element('coverage', value=self.etat),
+            dc.Element('format', value=duration, refinement="extent"),
         )
         return resource
 
