@@ -66,7 +66,8 @@ class eZTelemetaItemType extends eZDataType
             'title'         => '',
             'creator'       => '',
             'description'   => '',
-            'rights'        => ''
+            'rights'        => '',
+            'mp3'           => ''
         );
     }
 
@@ -76,9 +77,9 @@ class eZTelemetaItemType extends eZDataType
         if (!ereg('^http://', $url)) {
             $url = "http://$url";
         }
-        $url = ereg_replace('/*$', '', $url);
-        $id = urlencode('item:' . $item['id']);
-        $request    = "$url/oai/?verb=GetRecord&identifier=$id&metadataPrefix=oai_dc";
+        $url        = ereg_replace('/*$', '', $url);
+        $encodedId  = urlencode($item['id']);
+        $request    = "$url/oai/?verb=GetRecord&identifier=item:$encodedId&metadataPrefix=oai_dc";
 
         $doc = new DOMDocument();
         if (!@$doc->load($request)) {
@@ -115,6 +116,8 @@ class eZTelemetaItemType extends eZDataType
         if (!$result['title']) {
             throw new eZTelemetaError("The retrieved item has no title");
         }
+
+        $result['mp3'] = "$url/items/download/$encodedId.mp3";
 
         return array_merge($item, $result);
     }

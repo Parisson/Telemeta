@@ -23,7 +23,7 @@ function PagePlayer(oConfigOverride) {
   var isOpera = navigator.userAgent.match(/opera/i);
   var isFirefox = navigator.userAgent.match(/firefox/i);
 
-  sm.url = '../../swf/'; // path to directory containing SM2 SWF
+  // sm.url = '../../swf/'; // path to directory containing SM2 SWF
 
   this.config = {
     flashVersion: 8,        // version of Flash to tell SoundManager to use - either 8 or 9. Flash 9 required for peak / spectrum data.
@@ -40,7 +40,7 @@ function PagePlayer(oConfigOverride) {
     useFavIcon: false       // try to show peakData in address bar (Firefox + Opera)
   }
 
-  sm.debugMode = (window.location.href.toString().match(/debug=1/i)?true:false); // enable with #debug=1 for example
+  //sm.debugMode = (window.location.href.toString().match(/debug=1/i)?true:false); // enable with #debug=1 for example
 
   this._mergeObjects = function(oMain,oAdd) {
     // non-destructive merge
@@ -455,7 +455,7 @@ function PagePlayer(oConfigOverride) {
       return true;
     }
     var sURL = o.getAttribute('href');
-    if (!o.href || (!sm.canPlayURL(o.href) && !self.hasClass(o,'playable')) || self.hasClass(o,'exclude')) {
+    if (!o.href || (!sm.canPlayURL(o.href) || !self.hasClass(o,'playable')) || self.hasClass(o,'exclude')) {
       if (isIE && o.onclick) {
         return false; // IE will run this handler before .onclick(), everyone else is cool?
       }
@@ -853,7 +853,7 @@ function PagePlayer(oConfigOverride) {
     // grab all links, look for .mp3
     var foundItems = 0;
     for (var i=0; i<oLinks.length; i++) {
-      if ((sm.canPlayURL(oLinks[i].href) || self.hasClass(oLinks[i],'playable')) && !self.hasClass(oLinks[i],'exclude')) {
+      if ((sm.canPlayURL(oLinks[i].href) && self.hasClass(oLinks[i],'playable')) && !self.hasClass(oLinks[i],'exclude')) {
         oLinks[i].rel = 'pagePlayerMP3Sound'+i;
         self.links[self.links.length] = oLinks[i];
         self.addClass(oLinks[i],self.css.sDefault); // add default CSS decoration
