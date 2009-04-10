@@ -67,7 +67,8 @@ class eZTelemetaItemType extends eZDataType
             'creator'       => '',
             'description'   => '',
             'rights'        => '',
-            'mp3'           => ''
+            'mp3'           => '',
+            'duration'      => 0
         );
     }
 
@@ -106,15 +107,24 @@ class eZTelemetaItemType extends eZDataType
         $result = $this->initItem($item['url'], $item['id']);
         foreach ($dc->childNodes as $element) {
             if ($element->nodeType == XML_ELEMENT_NODE) {
-                $tag = str_replace('dc:', '', $element->tagName);
+                $tag    = str_replace('dc:', '', $element->tagName);
+                $value  = trim($element->firstChild->nodeValue);
+                if ($tag == 'format' and ereg('^([0-9]{2}):([0-9]{2}):([0-9]{2})$', $value, $regs)) {
+                    $tag    = 'duration';
+                    $value  = $regs[1] * 3600 + $regs[2] * 60 + $regs[3];
+                }
                 if (array_key_exists($tag, $result) and empty($result[$tag])) {
-                    $result[$tag] = trim($element->firstChild->nodeValue);
+                    $result[$tag] = $value;
                 }
             }
         }
 
         if (!$result['title']) {
             throw new eZTelemetaError("The retrieved item has no title");
+        }
+
+        if (!$result['duration']) {
+            throw new eZTelemetaError("The retrieved item has no duration (no sound file?)");
         }
 
         $result['mp3'] = "$url/items/download/$encodedId.mp3";
