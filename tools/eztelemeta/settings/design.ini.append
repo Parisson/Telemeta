@@ -1,11 +1,3 @@
 [ExtensionSettings]
 DesignExtensions[]=eztelemeta
 
-[StylesheetSettings]
-CSSFileList[]=eztelemeta.css
-CSSFileList[]=page-player.css
-
-[JavaScriptSettings]
-JavaScriptList[]=soundmanager2.js
-JavaScriptList[]=init.js
-JavaScriptList[]=page-player.js

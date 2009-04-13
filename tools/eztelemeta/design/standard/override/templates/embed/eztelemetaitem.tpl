@@ -1,6 +1,4 @@
-<script language="javascript">
-soundManager.url = {'swf/'|ezdesign};
-</script>
+{eztelemetadata_set('eztelemeta_player', true)}
 <div class="view-embed">
     <div class="content-media">
     {let attribute=$object.data_map.item}
