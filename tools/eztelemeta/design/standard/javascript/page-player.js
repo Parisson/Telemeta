@@ -61,10 +61,9 @@ function TelemetaPlayer(oConfigOverride) {
   }
 
   this.css = {             // CSS class names appended to link during various states
-    sDefault: 'ezt-sm2_link',  // default state
-    sLoading: 'ezt-sm2_loading',
-    sPlaying: 'ezt-sm2_playing',
-    sPaused: 'ezt-sm2_paused'
+    sDefault: 'ezt-link',  // default state
+    sPlaying: 'ezt-playing',
+    sPaused: 'ezt-paused'
   }
 
   // apply externally-defined override, if applicable

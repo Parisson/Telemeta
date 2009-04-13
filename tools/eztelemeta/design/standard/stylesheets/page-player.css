@@ -69,7 +69,7 @@
  display:none;
 }
 
-ul.ezt-use-spectrum li.ezt-sm2_playing .ezt-spectrum-container {
+ul.ezt-use-spectrum li.ezt-playing .ezt-spectrum-container {
  position:absolute;
  left:0px;
  top:0px;
@@ -139,9 +139,9 @@ ul.ezt-playlist li a {
  text-shadow: 0 0 0 #fff; /* stupid Safari "fat" font rendering tweak */
 }
 
-ul.ezt-playlist li.ezt-sm2_playing,
-ul.ezt-playlist li.ezt-sm2_paused,
-ul.ezt-playlist li.ezt-sm2_playing a {
+ul.ezt-playlist li.ezt-playing,
+ul.ezt-playlist li.ezt-paused,
+ul.ezt-playlist li.ezt-playing a {
  color:#fff;
  border-radius:3px;
  -webkit-border-radius:3px;
@@ -156,17 +156,17 @@ ul.ezt-playlist li:hover a {
  color:#333;
 }
 
-ul.ezt-playlist li.ezt-sm2_playing,
-ul.ezt-playlist li.ezt-sm2_playing:hover {
+ul.ezt-playlist li.ezt-playing,
+ul.ezt-playlist li.ezt-playing:hover {
  background-color:#6699cc;
 }
 
-ul.ezt-playlist li.ezt-sm2_paused {
+ul.ezt-playlist li.ezt-paused {
  background-color:#999;
 }
 
-ul.ezt-playlist li.ezt-sm2_playing:hover a,
-ul.ezt-playlist li.ezt-sm2_paused a {
+ul.ezt-playlist li.ezt-playing:hover a,
+ul.ezt-playlist li.ezt-paused a {
  color:#fff;
 }
 
@@ -182,14 +182,14 @@ ul.ezt-playlist.ezt-use-peak li .ezt-peak {
  right:0.5em;
 }
 
-ul.ezt-playlist li.ezt-sm2_playing .ezt-controls,
-ul.ezt-playlist li.ezt-sm2_paused .ezt-controls {
+ul.ezt-playlist li.ezt-playing .ezt-controls,
+ul.ezt-playlist li.ezt-paused .ezt-controls {
  position:relative;
  display:block;
 }
 
-ul.ezt-playlist.ezt-use-peak li.ezt-sm2_playing .ezt-peak,
-ul.ezt-playlist.ezt-use-peak li.ezt-sm2_paused .ezt-peak {
+ul.ezt-playlist.ezt-use-peak li.ezt-playing .ezt-peak,
+ul.ezt-playlist.ezt-use-peak li.ezt-paused .ezt-peak {
  display:inline;
  display:inline-block;
 }
@@ -198,7 +198,7 @@ ul.ezt-playlist.ezt-use-peak li .ezt-peak {
  display:none; /* IE 7 */
 }
 
-ul.ezt-playlist li.ezt-sm2_paused .ezt-controls {
+ul.ezt-playlist li.ezt-paused .ezt-controls {
  background-color:#666;
 }
 
@@ -209,7 +209,7 @@ ul.ezt-playlist li:hover .ezt-controls .ezt-statusbar {
  cursor:grab;
 }
 
-ul.ezt-playlist li.ezt-sm2_paused .ezt-controls .ezt-statusbar {
+ul.ezt-playlist li.ezt-paused .ezt-controls .ezt-statusbar {
  background-color:#ccc;
 }
 
@@ -255,7 +255,7 @@ ul.ezt-playlist li .ezt-controls .ezt-statusbar .ezt-position {
  -webkit-border-radius:3px;
 }
 
-ul.ezt-playlist li.ezt-sm2_paused .ezt-controls .ezt-statusbar .ezt-position {
+ul.ezt-playlist li.ezt-paused .ezt-controls .ezt-statusbar .ezt-position {
  background-color:#666;
  border-color:#666;
 }
@@ -269,8 +269,8 @@ ul.ezt-playlist li .ezt-controls .ezt-statusbar .ezt-loading {
  width:0px;
 }
 
-ul.ezt-playlist li.ezt-sm2_playing a.ezt-sm2_link,
-ul.ezt-playlist li.ezt-sm2_paused a.ezt-sm2_link {
+ul.ezt-playlist li.ezt-playing a.ezt-link,
+ul.ezt-playlist li.ezt-paused a.ezt-link {
  margin-right:4.5em; /* room for timing stuff */
 }
 
@@ -313,17 +313,17 @@ ul.ezt-playlist li .ezt-timing div.ezt-sm2_timing {
  text-shadow: 0 0 0 #fff; /* stupid Safari "fat" font rendering tweak */
 }
 
-ul.ezt-playlist li.ezt-sm2_playing .ezt-timing,
-ul.ezt-playlist li.ezt-sm2_paused .ezt-timing {
+ul.ezt-playlist li.ezt-playing .ezt-timing,
+ul.ezt-playlist li.ezt-paused .ezt-timing {
  display:block;
 }
 
-ul.ezt-playlist li.ezt-sm2_paused .ezt-timing .ezt-sm2_position {
+ul.ezt-playlist li.ezt-paused .ezt-timing .ezt-sm2_position {
  text-decoration:blink; /* hee hee. first actual appropriate use? :D */
 }
 
-ul.ezt-playlist li.ezt-sm2_paused .ezt-timing,
-ul.ezt-playlist.ezt-use-peak li.ezt-sm2_paused .ezt-peak {
+ul.ezt-playlist li.ezt-paused .ezt-timing,
+ul.ezt-playlist.ezt-use-peak li.ezt-paused .ezt-peak {
  background-color:#888;
  border-color:#ccc;
 }
@@ -386,12 +386,12 @@ ul.ezt-playlist li .ezt-peak .ezt-r {
  ------------------------------------------
 */
 
-ul.ezt-playlist li a.ezt-sm2_link .ezt-metadata {
+ul.ezt-playlist li a.ezt-link .ezt-metadata {
  display:none; /* hide by default */
 }
 
-ul.ezt-playlist li.ezt-sm2_paused a.ezt-sm2_link .ezt-metadata,
-ul.ezt-playlist li.ezt-sm2_playing a.ezt-sm2_link .ezt-metadata {
+ul.ezt-playlist li.ezt-paused a.ezt-link .ezt-metadata,
+ul.ezt-playlist li.ezt-playing a.ezt-link .ezt-metadata {
  display:inline;
 }
 
@@ -428,19 +428,19 @@ ul.ezt-playlist li ul li:hover {
  color:#666;
 }
 
-ul.ezt-playlist li.ezt-sm2_playing ul li,
-ul.ezt-playlist li.ezt-sm2_paused ul li {
+ul.ezt-playlist li.ezt-playing ul li,
+ul.ezt-playlist li.ezt-paused ul li {
  color:#fff;
 }
 
-ul.ezt-playlist li.ezt-sm2_playing ul li:hover {
+ul.ezt-playlist li.ezt-playing ul li:hover {
  background-color:#fff;
  color:#5588bb;
  border-color:#336699;
  opacity:0.9;
 }
 
-ul.ezt-playlist li.ezt-sm2_paused ul li:hover {
+ul.ezt-playlist li.ezt-paused ul li:hover {
  background-color:#888;
 }
 
@@ -556,34 +556,34 @@ ul.ezt-playlist li .ezt-sm2_metadata {
  ---------------------------------
 */
 
-ul.ezt-playlist.ezt-dark li.ezt-sm2_playing a {
+ul.ezt-playlist.ezt-dark li.ezt-playing a {
  color:#fff;
 }
 
-ul.ezt-playlist.ezt-dark li.ezt-sm2_playing .ezt-timing,
-ul.ezt-playlist.ezt-use-peak.ezt-dark li.ezt-sm2_playing .ezt-peak {
+ul.ezt-playlist.ezt-dark li.ezt-playing .ezt-timing,
+ul.ezt-playlist.ezt-use-peak.ezt-dark li.ezt-playing .ezt-peak {
  color:#999;
 }
 
-ul.ezt-playlist.ezt-use-spectrum.ezt-dark li.ezt-sm2_playing .ezt-spectrum-container {
+ul.ezt-playlist.ezt-use-spectrum.ezt-dark li.ezt-playing .ezt-spectrum-container {
  background-color:#222;
  border-color:#444;
 }
 
-ul.ezt-playlist.ezt-use-spectrum.ezt-dark li.ezt-sm2_playing .ezt-spectrum-container .ezt-spectrum {
+ul.ezt-playlist.ezt-use-spectrum.ezt-dark li.ezt-playing .ezt-spectrum-container .ezt-spectrum {
  background-color:#999;
 }
 
-ul.ezt-playlist.ezt-dark li.ezt-sm2_paused {
+ul.ezt-playlist.ezt-dark li.ezt-paused {
  background-color:#333;
 }
 
-ul.ezt-playlist.ezt-dark li.ezt-sm2_paused a {
+ul.ezt-playlist.ezt-dark li.ezt-paused a {
  color:#999;
 }
 
-ul.ezt-playlist.ezt-dark li.ezt-sm2_playing,
-ul.ezt-playlist.ezt-dark li.ezt-sm2_playing:hover {
+ul.ezt-playlist.ezt-dark li.ezt-playing,
+ul.ezt-playlist.ezt-dark li.ezt-playing:hover {
  background-color:#333;
 }
 
@@ -627,12 +627,12 @@ ul.ezt-playlist.ezt-dark.ezt-use-peak li .ezt-peak .ezt-r {
 
 /* gold theme */
 
-ul.ezt-playlist.ezt-gold li.ezt-sm2_paused {
+ul.ezt-playlist.ezt-gold li.ezt-paused {
  background-color:#996600;
 }
 
-ul.ezt-playlist.ezt-gold li.ezt-sm2_playing,
-ul.ezt-playlist.ezt-gold li.ezt-sm2_playing:hover {
+ul.ezt-playlist.ezt-gold li.ezt-playing,
+ul.ezt-playlist.ezt-gold li.ezt-playing:hover {
  background-color:#cc9900;
 }
 
@@ -663,12 +663,12 @@ ul.ezt-playlist.ezt-use-peak.ezt-gold li .ezt-peak {
  border-color:#ffcc33;
 }
 
-ul.ezt-playlist.ezt-use-spectrum.ezt-gold li.ezt-sm2_playing .ezt-spectrum-container {
+ul.ezt-playlist.ezt-use-spectrum.ezt-gold li.ezt-playing .ezt-spectrum-container {
  background-color:#cc9900;
  border-color:#ffcc33;
 }
 
-ul.ezt-playlist.ezt-use-spectrum.ezt-gold li.ezt-sm2_playing .ezt-spectrum-container .ezt-spectrum {
+ul.ezt-playlist.ezt-use-spectrum.ezt-gold li.ezt-playing .ezt-spectrum-container .ezt-spectrum {
  background-color:#fff;
 }
 
@@ -685,15 +685,15 @@ ul.ezt-playlist.ezt-bubblegum li a {
  font-family:"comic sans ms",verdana,arial,tahoma,"sans serif"; /* heh */
 }
 
-ul.ezt-playlist.ezt-bubblegum li.ezt-sm2_paused,
-ul.ezt-playlist.ezt-bubblegum li.ezt-sm2_paused:hover {
+ul.ezt-playlist.ezt-bubblegum li.ezt-paused,
+ul.ezt-playlist.ezt-bubblegum li.ezt-paused:hover {
  background-color:#ffccee;
 }
 
-ul.ezt-playlist.ezt-bubblegum li.ezt-sm2_paused a,
-ul.ezt-playlist.ezt-bubblegum li.ezt-sm2_paused:hover a,
-ul.ezt-playlist.ezt-bubblegum li.ezt-sm2_paused .ezt-timing,
-ul.ezt-playlist.ezt-use-peak.ezt-bubblegum li.ezt-sm2_paused .ezt-peak {
+ul.ezt-playlist.ezt-bubblegum li.ezt-paused a,
+ul.ezt-playlist.ezt-bubblegum li.ezt-paused:hover a,
+ul.ezt-playlist.ezt-bubblegum li.ezt-paused .ezt-timing,
+ul.ezt-playlist.ezt-use-peak.ezt-bubblegum li.ezt-paused .ezt-peak {
  color:#ff6699;
 }
 
@@ -701,8 +701,8 @@ ul.ezt-playlist.ezt-bubblegum li:hover {
  background-color:#ffddee;
 }
 
-ul.ezt-playlist.ezt-bubblegum li.ezt-sm2_playing,
-ul.ezt-playlist.ezt-bubblegum li.ezt-sm2_playing:hover {
+ul.ezt-playlist.ezt-bubblegum li.ezt-playing,
+ul.ezt-playlist.ezt-bubblegum li.ezt-playing:hover {
  background-color:#ff7799;
 }
 
@@ -733,12 +733,12 @@ ul.ezt-playlist.ezt-use-peak.ezt-bubblegum li .ezt-peak {
  border-color:#ffccee;
 }
 
-ul.ezt-playlist.ezt-use-spectrum.ezt-bubblegum li.ezt-sm2_playing .ezt-spectrum-container {
+ul.ezt-playlist.ezt-use-spectrum.ezt-bubblegum li.ezt-playing .ezt-spectrum-container {
  background-color:#ffaacc;
  border-color:#ffccee;
 }
 
-ul.ezt-playlist.ezt-use-spectrum.ezt-bubblegum li.ezt-sm2_playing .ezt-spectrum-container .ezt-spectrum {
+ul.ezt-playlist.ezt-use-spectrum.ezt-bubblegum li.ezt-playing .ezt-spectrum-container .ezt-spectrum {
  background-color:#fff;
 }
 
@@ -749,8 +749,8 @@ ul.ezt-playlist.ezt-bubblegum.ezt-use-peak li .ezt-peak .ezt-r {
 }
 
 
-ul.ezt-playlist.ezt-shiny li.ezt-sm2_paused,
-ul.ezt-playlist.ezt-shiny li.ezt-sm2_playing {
+ul.ezt-playlist.ezt-shiny li.ezt-paused,
+ul.ezt-playlist.ezt-shiny li.ezt-playing {
  background-image:url(../image/top-highlight.ezt-png);
  background-repeat:repeat-x;
  background-position:0px -1px;
