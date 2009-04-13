@@ -14,7 +14,7 @@
 
 */
 
-function PagePlayer(oConfigOverride) {
+function TelemetaPlayer(oConfigOverride) {
   var self = this;
   var pl = this;
   var sm = soundManager; // soundManager instance
@@ -487,7 +487,7 @@ function PagePlayer(oConfigOverride) {
     } else {
       // create sound
       thisSound = sm.createSound({
-        id:'pagePlayerMP3Sound'+(self.soundCount++),
+        id:'telemetaPlayerMP3Sound'+(self.soundCount++),
         url:soundURL,
         onplay:self.events.play,
         onstop:self.events.stop,
@@ -848,13 +848,13 @@ function PagePlayer(oConfigOverride) {
   }
 
   this.init = function() {
-    sm._writeDebug('pagePlayer.init()');
+    sm._writeDebug('TelemetaPlayer.init()');
     var oLinks = document.getElementsByTagName('a');
     // grab all links, look for .mp3
     var foundItems = 0;
     for (var i=0; i<oLinks.length; i++) {
       if ((sm.canPlayURL(oLinks[i].href) && self.hasClass(oLinks[i],'ezt-playable')) && !self.hasClass(oLinks[i],'ezt-exclude')) {
-        oLinks[i].rel = 'pagePlayerMP3Sound'+i;
+        oLinks[i].rel = 'telemetaPlayerMP3Sound'+i;
         self.links[self.links.length] = oLinks[i];
         self.addClass(oLinks[i],self.css.sDefault); // add default CSS decoration
         foundItems++;
@@ -871,7 +871,7 @@ function PagePlayer(oConfigOverride) {
       self.addEventHandler(window,'unload',function(){}); // force page reload when returning here via back button (Opera tries to remember old state, etc.)
     }
     console.log('TestTest');
-    sm._writeDebug('pagePlayer.init(): Found '+foundItems+' relevant items.');
+    sm._writeDebug('TelemetaPlayer.init(): Found '+foundItems+' relevant items.');
     if (self.config.autoStart) {
       pl.handleClick({target:pl.links[0]});
     }
@@ -1007,9 +1007,3 @@ var Metadata = function(oSound) {
 
 }
 
-var pagePlayer = new PagePlayer(typeof PP_CONFIG != 'undefined'?PP_CONFIG:null);
-
-soundManager.onload = function() {
-  // soundManager.createSound() etc. may now be called
-  pagePlayer.initDOM();
-}

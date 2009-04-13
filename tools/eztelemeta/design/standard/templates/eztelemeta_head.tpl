@@ -4,23 +4,27 @@
   @import url({"stylesheets/page-player.css"|ezdesign});
 </style>
   <script language="JavaScript" type="text/javascript" src={"javascript/soundmanager2.js"|ezdesign}></script>
+  <script language="JavaScript" type="text/javascript" src={"javascript/page-player.js"|ezdesign}></script>
   <script language="JavaScript" type="text/javascript">
     /* SoundManager2 configuration */
     soundManager.debugMode = true;
     soundManager.url = {'swf/'|ezdesign};
 
-    /* SoundManager2 Page Player configuration */
+    /* Player configuration and instantiation */
     {literal}
-    var PP_CONFIG = {
-      flashVersion:     9,
-      usePeakData:      true,
-      useWaveformData:  false,
-      useEQData:        false,
-      useFavIcon:       false,
-      useMovieStar:     false,
-      updatePageTitle:  false
+    var telemetaPlayer = new TelemetaPlayer({
+        flashVersion:     9,
+        usePeakData:      true,
+        useWaveformData:  false,
+        useEQData:        false,
+        useFavIcon:       false,
+        useMovieStar:     false,
+        updatePageTitle:  false
+    });
+
+    soundManager.onload = function() {
+        telemetaPlayer.initDOM();
     }
     {/literal}
   </script>
-  <script language="JavaScript" type="text/javascript" src={"javascript/page-player.js"|ezdesign}></script>
 {/if}
