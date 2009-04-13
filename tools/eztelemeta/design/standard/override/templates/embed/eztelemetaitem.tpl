@@ -9,7 +9,13 @@
         <dt>Title:</dt><dd>{$attribute.content.title|wash}</dd>
         </dl>
         <ul class="ezt-playlist">
-        <li><a class="ezt-playable" href="{$attribute.content.mp3}">{$attribute.content.title|wash}</a></li>
+        <li>
+            <a class="ezt-playable" href="{$attribute.content.mp3}">{$attribute.content.title|wash}</a>
+            <div class="ezt-metadata">
+                <div class="ezt-duration">{$attribute.content.duration_str}</div>
+                <ul></ul>
+            </div>
+         </li>
         </ul>
     {/let}
     </div>

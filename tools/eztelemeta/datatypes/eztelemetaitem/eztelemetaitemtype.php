@@ -68,7 +68,8 @@ class eZTelemetaItemType extends eZDataType
             'description'   => '',
             'rights'        => '',
             'mp3'           => '',
-            'duration'      => 0
+            'duration'      => 0,
+            'duration_str'  => ''
         );
     }
 
@@ -123,7 +124,10 @@ class eZTelemetaItemType extends eZDataType
             throw new eZTelemetaError("The retrieved item has no title");
         }
 
-        if (!$result['duration']) {
+        if ($result['duration']) {
+            $d = $result['duration'];
+            $result['duration_str'] = sprintf("%02d:%02d:%02d", $d / 3600, $d % 3600 / 60, $d % 3600 % 60);
+        } else {
             throw new eZTelemetaError("The retrieved item has no duration (no sound file?)");
         }
 

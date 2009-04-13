@@ -130,13 +130,19 @@ ul.ezt-playlist li {
 ul.ezt-playlist li a {
  display:block;
  text-decoration:none;
- font-weight:normal;
+ font-weight:bold;
  color:#000;
- font-size:120%;
+ font-size:60%;
  outline:none;
  position:relative;
  z-index:2;
  text-shadow: 0 0 0 #fff; /* stupid Safari "fat" font rendering tweak */
+ padding-left: 38px;
+ background: url(../images/play.png) no-repeat left;
+}
+
+ul.ezt-playlist li.ezt-playing a {
+ background: url(../images/pause.png) no-repeat left;
 }
 
 ul.ezt-playlist li.ezt-playing,
@@ -271,7 +277,7 @@ ul.ezt-playlist li .ezt-controls .ezt-statusbar .ezt-loading {
 
 ul.ezt-playlist li.ezt-playing a.ezt-link,
 ul.ezt-playlist li.ezt-paused a.ezt-link {
- margin-right:4.5em; /* room for timing stuff */
+ margin-right:8.5em; /* room for timing stuff */
 }
 
 ul.ezt-playlist li .ezt-timing {

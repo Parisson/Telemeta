@@ -918,6 +918,7 @@ var Metadata = function(oSound) {
     }
   }
   var oDuration = pl.getElementsByClassName('ezt-duration','div',oLI);
+  console.log(oDuration);
   this.data.givenDuration = (oDuration.length?self.strToTime(oDuration[0].innerHTML)*1000:0);
   for (i=0; i<this.data.length; i++) {
     this.data[i].duration = parseInt(this.data[i+1]?this.data[i+1].startSeconds:(self.data.givenDuration?self.data.givenDuration:oSound.durationEstimate)/1000)-this.data[i].startSeconds;
