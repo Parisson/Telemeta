@@ -8,57 +8,57 @@
  appended to the LI parent, which are used to highlight the
  current play state and so on.
 
- Class names are applied in addition to "sm2_link" base.
+ Class names are applied in addition to "ezt-link" base.
 
  Default:
 
- sm2_link
+ ezt-link
 
  Additional states:
 
- sm2_playing
- sm2_paused
+ ezt-playing
+ ezt-paused
 
  eg.
 
  <!-- default -->
- <li class="sm2_link"><a href="some.mp3">some.mp3</a></li>
+ <li class="ezt-link"><a href="some.mp3">some.mp3</a></li>
 
  <!-- playing -->
- <li class="sm2_link sm2_playing"><a href="some.mp3">some.mp3</a></li>
+ <li class="ezt-link ezt-playing"><a href="some.mp3">some.mp3</a></li>
 
  The script also injects an HTML template containing control bar
  and timing elements, which can also be targeted with CSS.
 
 
  Note you don't necessarily require ul.playlist for your use
- if only using one style on a page. You can just use .sm2_link
+ if only using one style on a page. You can just use .ezt-link
  and so on, but isolate the CSS you want.
 
  Side note: Would do multiple class definitions eg.
 
- li.sm2_default.sm2_playing{}
+ li.ezt-default.ezt-playing{}
 
  .. except IE 6 has a parsing bug which may break behaviour,
- applying sm2_playing {} even when the class is set to sm2_default.
+ applying ezt-playing {} even when the class is set to ezt-default.
 
 
  If you want to make your own UI from scratch, here is the base:
 
  Default + hover state, "click to play":
 
- li.sm2_link {}
- li.sm2_link:hover {}
+ li.ezt-link {}
+ li.ezt-link:hover {}
 
  Playing + hover state, "click to pause":
 
- li.sm2_playing {}
- li.sm2_playing:hover {}
+ li.ezt-playing {}
+ li.ezt-playing:hover {}
 
  Paused + hover state, "click to resume":
 
- li.sm2_paused {}
- li.sm2_paused:hover {}
+ li.ezt-paused {}
+ li.ezt-paused:hover {}
 
 */
 
