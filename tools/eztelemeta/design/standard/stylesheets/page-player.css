@@ -65,11 +65,11 @@
 
 /* background-image-based CSS3 example */
 
-.spectrum-container {
+.ezt-spectrum-container {
  display:none;
 }
 
-ul.use-spectrum li.sm2_playing .spectrum-container {
+ul.ezt-use-spectrum li.ezt-sm2_playing .ezt-spectrum-container {
  position:absolute;
  left:0px;
  top:0px;
@@ -83,7 +83,7 @@ ul.use-spectrum li.sm2_playing .spectrum-container {
  border-radius:4px;
 }
 
-ul.use-spectrum .spectrum-box {
+ul.ezt-use-spectrum .ezt-spectrum-box {
  position:relative;
  width:255px;
  font-size:1em;
@@ -92,7 +92,7 @@ ul.use-spectrum .spectrum-box {
  overflow:hidden;
 }
 
-ul.use-spectrum .spectrum-box .spectrum {
+ul.ezt-use-spectrum .ezt-spectrum-box .ezt-spectrum {
  position:absolute;
  left:0px;
  top:-2px;
@@ -105,14 +105,14 @@ ul.use-spectrum .spectrum-box .spectrum {
  background-color:#fff;
 }
 
-ul.playlist {
+ul.ezt-playlist {
  list-style-type:none;
  margin:0px;
  padding:0px;
 
 }
 
-ul.playlist li {
+ul.ezt-playlist li {
  /* assume all items will be sounds rather than wait for onload etc. in this example.. may differ for your uses. */
  position:relative;
  display:block;
@@ -127,7 +127,7 @@ ul.playlist li {
  -webkit-transition: background-color 0.15s ease-in-out;
 }
 
-ul.playlist li a {
+ul.ezt-playlist li a {
  display:block;
  text-decoration:none;
  font-weight:normal;
@@ -139,88 +139,88 @@ ul.playlist li a {
  text-shadow: 0 0 0 #fff; /* stupid Safari "fat" font rendering tweak */
 }
 
-ul.playlist li.sm2_playing,
-ul.playlist li.sm2_paused,
-ul.playlist li.sm2_playing a {
+ul.ezt-playlist li.ezt-sm2_playing,
+ul.ezt-playlist li.ezt-sm2_paused,
+ul.ezt-playlist li.ezt-sm2_playing a {
  color:#fff;
  border-radius:3px;
  -webkit-border-radius:3px;
  -moz-border-radius:3px;
 }
 
-ul.playlist li:hover {
+ul.ezt-playlist li:hover {
  background-color:#eee;
 }
 
-ul.playlist li:hover a {
+ul.ezt-playlist li:hover a {
  color:#333;
 }
 
-ul.playlist li.sm2_playing,
-ul.playlist li.sm2_playing:hover {
+ul.ezt-playlist li.ezt-sm2_playing,
+ul.ezt-playlist li.ezt-sm2_playing:hover {
  background-color:#6699cc;
 }
 
-ul.playlist li.sm2_paused {
+ul.ezt-playlist li.ezt-sm2_paused {
  background-color:#999;
 }
 
-ul.playlist li.sm2_playing:hover a,
-ul.playlist li.sm2_paused a {
+ul.ezt-playlist li.ezt-sm2_playing:hover a,
+ul.ezt-playlist li.ezt-sm2_paused a {
  color:#fff;
 }
 
-ul.playlist li .controls {
+ul.ezt-playlist li .ezt-controls {
  display:none;
 }
 
-ul.playlist li .peak,
-ul.playlist.use-peak li .peak {
+ul.ezt-playlist li .ezt-peak,
+ul.ezt-playlist.ezt-use-peak li .ezt-peak {
  display:none;
  position:absolute;
  top:0.55em;
  right:0.5em;
 }
 
-ul.playlist li.sm2_playing .controls,
-ul.playlist li.sm2_paused .controls {
+ul.ezt-playlist li.ezt-sm2_playing .ezt-controls,
+ul.ezt-playlist li.ezt-sm2_paused .ezt-controls {
  position:relative;
  display:block;
 }
 
-ul.playlist.use-peak li.sm2_playing .peak,
-ul.playlist.use-peak li.sm2_paused .peak {
+ul.ezt-playlist.ezt-use-peak li.ezt-sm2_playing .ezt-peak,
+ul.ezt-playlist.ezt-use-peak li.ezt-sm2_paused .ezt-peak {
  display:inline;
  display:inline-block;
 }
 
-ul.playlist.use-peak li .peak {
+ul.ezt-playlist.ezt-use-peak li .ezt-peak {
  display:none; /* IE 7 */
 }
 
-ul.playlist li.sm2_paused .controls {
+ul.ezt-playlist li.ezt-sm2_paused .ezt-controls {
  background-color:#666;
 }
 
-ul.playlist li:hover .controls .statusbar {
+ul.ezt-playlist li:hover .ezt-controls .ezt-statusbar {
  position:relative;
  cursor:ew-resize;
  cursor:-moz-grab;
  cursor:grab;
 }
 
-ul.playlist li.sm2_paused .controls .statusbar {
+ul.ezt-playlist li.ezt-sm2_paused .ezt-controls .ezt-statusbar {
  background-color:#ccc;
 }
 
-ul.playlist li .controls {
+ul.ezt-playlist li .ezt-controls {
  position:relative;
  margin-top:0.25em;
  margin-bottom:0.25em;
  background-color:#99ccff;
 }
 
-ul.playlist li .controls .statusbar {
+ul.ezt-playlist li .ezt-controls .ezt-statusbar {
  position:relative;
  height:0.5em;
  background-color:#ccddff;
@@ -233,21 +233,21 @@ ul.playlist li .controls .statusbar {
  cursor:grab;
 }
 
-ul.playlist li .controls.dragging .statusbar {
+ul.ezt-playlist li .ezt-controls.ezt-dragging .ezt-statusbar {
  cursor:-moz-grabbing;
  cursor:grabbing;
 }
 
-ul.playlist li .controls .statusbar .position,
-ul.playlist li .controls .statusbar .loading,
-ul.playlist li .controls .statusbar .annotation {
+ul.ezt-playlist li .ezt-controls .ezt-statusbar .ezt-position,
+ul.ezt-playlist li .ezt-controls .ezt-statusbar .ezt-loading,
+ul.ezt-playlist li .ezt-controls .ezt-statusbar .ezt-annotation {
  position:absolute;
  left:0px;
  top:0px;
  height:0.5em;
 }
 
-ul.playlist li .controls .statusbar .position {
+ul.ezt-playlist li .ezt-controls .ezt-statusbar .ezt-position {
  background-color:#336699;
  border-right:3px solid #336699;
  border-radius:3px;
@@ -255,26 +255,26 @@ ul.playlist li .controls .statusbar .position {
  -webkit-border-radius:3px;
 }
 
-ul.playlist li.sm2_paused .controls .statusbar .position {
+ul.ezt-playlist li.ezt-sm2_paused .ezt-controls .ezt-statusbar .ezt-position {
  background-color:#666;
  border-color:#666;
 }
 
-ul.playlist li .controls .statusbar .loading {
+ul.ezt-playlist li .ezt-controls .ezt-statusbar .ezt-loading {
  background-color:#eee;
 }
 
-ul.playlist li .controls .statusbar .position,
-ul.playlist li .controls .statusbar .loading {
+ul.ezt-playlist li .ezt-controls .ezt-statusbar .ezt-position,
+ul.ezt-playlist li .ezt-controls .ezt-statusbar .ezt-loading {
  width:0px;
 }
 
-ul.playlist li.sm2_playing a.sm2_link,
-ul.playlist li.sm2_paused a.sm2_link {
+ul.ezt-playlist li.ezt-sm2_playing a.ezt-sm2_link,
+ul.ezt-playlist li.ezt-sm2_paused a.ezt-sm2_link {
  margin-right:4.5em; /* room for timing stuff */
 }
 
-ul.playlist li .timing {
+ul.ezt-playlist li .ezt-timing {
  position:absolute;
  display:none;
  text-align:right;
@@ -298,41 +298,41 @@ ul.playlist li .timing {
  vertical-align:middle;
 }
 
-ul.playlist.use-peak li .timing {
+ul.ezt-playlist.ezt-use-peak li .ezt-timing {
  right:4.25em;
 }
 
-ul.playlist li:hover .timing {
+ul.ezt-playlist li:hover .ezt-timing {
  z-index:2;
 }
 
-ul.playlist li .timing div.sm2_timing {
+ul.ezt-playlist li .ezt-timing div.ezt-sm2_timing {
  margin:0px;
  padding:0px;
  margin-top:-1em;
  text-shadow: 0 0 0 #fff; /* stupid Safari "fat" font rendering tweak */
 }
 
-ul.playlist li.sm2_playing .timing,
-ul.playlist li.sm2_paused .timing {
+ul.ezt-playlist li.ezt-sm2_playing .ezt-timing,
+ul.ezt-playlist li.ezt-sm2_paused .ezt-timing {
  display:block;
 }
 
-ul.playlist li.sm2_paused .timing .sm2_position {
+ul.ezt-playlist li.ezt-sm2_paused .ezt-timing .ezt-sm2_position {
  text-decoration:blink; /* hee hee. first actual appropriate use? :D */
 }
 
-ul.playlist li.sm2_paused .timing,
-ul.playlist.use-peak li.sm2_paused .peak {
+ul.ezt-playlist li.ezt-sm2_paused .ezt-timing,
+ul.ezt-playlist.ezt-use-peak li.ezt-sm2_paused .ezt-peak {
  background-color:#888;
  border-color:#ccc;
 }
 
 /* peak data */
 
-/* ul.playlist ... */
+/* ul.ezt-playlist ... */
 
-ul.playlist.use-peak li .peak {
+ul.ezt-playlist.ezt-use-peak li .ezt-peak {
  display:none;
  zoom:1;
  border:1px solid #99ccff;
@@ -347,15 +347,15 @@ ul.playlist.use-peak li .peak {
  margin-top:-3px;
 }
 
-ul.playlist.use-peak li .peak-box {
+ul.ezt-playlist.ezt-use-peak li .ezt-peak-box {
  position:relative;
  width:100%;
  height:0.55em;
  overflow:hidden;
 }
 
-ul.playlist li .peak .l,
-ul.playlist li .peak .r {
+ul.ezt-playlist li .ezt-peak .ezt-l,
+ul.ezt-playlist li .ezt-peak .ezt-r {
  position:absolute;
  left:0px;
  top:0px;
@@ -368,11 +368,11 @@ ul.playlist li .peak .r {
  margin-top:1em;
 }
 
-ul.playlist li .peak .l {
+ul.ezt-playlist li .ezt-peak .ezt-l {
  margin-right:1px;
 }
 
-ul.playlist li .peak .r {
+ul.ezt-playlist li .ezt-peak .ezt-r {
  left:10px;
 }
 
@@ -386,16 +386,16 @@ ul.playlist li .peak .r {
  ------------------------------------------
 */
 
-ul.playlist li a.sm2_link .metadata {
+ul.ezt-playlist li a.ezt-sm2_link .ezt-metadata {
  display:none; /* hide by default */
 }
 
-ul.playlist li.sm2_paused a.sm2_link .metadata,
-ul.playlist li.sm2_playing a.sm2_link .metadata {
+ul.ezt-playlist li.ezt-sm2_paused a.ezt-sm2_link .ezt-metadata,
+ul.ezt-playlist li.ezt-sm2_playing a.ezt-sm2_link .ezt-metadata {
  display:inline;
 }
 
-ul.playlist li ul {
+ul.ezt-playlist li ul {
  list-style-type:none;
  margin:0px;
  padding:0px;
@@ -404,7 +404,7 @@ ul.playlist li ul {
  display:none;
 }
 
-ul.playlist li ul li {
+ul.ezt-playlist li ul li {
  position:relative;
  margin:0px;
  padding:2px 3px;
@@ -421,46 +421,46 @@ ul.playlist li ul li {
  opacity:0.66;
 }
 
-ul.playlist li ul li:hover {
+ul.ezt-playlist li ul li:hover {
  opacity:1;
  background-color:#fff;
  border-color:#ccc;
  color:#666;
 }
 
-ul.playlist li.sm2_playing ul li,
-ul.playlist li.sm2_paused ul li {
+ul.ezt-playlist li.ezt-sm2_playing ul li,
+ul.ezt-playlist li.ezt-sm2_paused ul li {
  color:#fff;
 }
 
-ul.playlist li.sm2_playing ul li:hover {
+ul.ezt-playlist li.ezt-sm2_playing ul li:hover {
  background-color:#fff;
  color:#5588bb;
  border-color:#336699;
  opacity:0.9;
 }
 
-ul.playlist li.sm2_paused ul li:hover {
+ul.ezt-playlist li.ezt-sm2_paused ul li:hover {
  background-color:#888;
 }
 
 /* metadata */
 
-ul.playlist li .metadata .duration {
+ul.ezt-playlist li .ezt-metadata .ezt-duration {
  /* optional timing data */
  display:none;
 }
 
-ul.playlist li .metadata ul li p {
+ul.ezt-playlist li .ezt-metadata ul li p {
  margin:0px;
  padding:0px;
 }
 
-ul.playlist li .metadata ul li span {
+ul.ezt-playlist li .ezt-metadata ul li span {
  display:none;
 }
 
-ul.playlist li .controls .statusbar .annotation {
+ul.ezt-playlist li .ezt-controls .ezt-statusbar .ezt-annotation {
  position:absolute;
  background-color:transparent;
  top:0px;
@@ -470,11 +470,11 @@ ul.playlist li .controls .statusbar .annotation {
  height:0.5em;
 }
 
-ul.playlist li .controls .statusbar .annotation:hover {
+ul.ezt-playlist li .ezt-controls .ezt-statusbar .ezt-annotation:hover {
  z-index:12; /* sit on top of note */
 }
 
-ul.playlist li .controls .statusbar .annotation span.bubble {
+ul.ezt-playlist li .ezt-controls .ezt-statusbar .ezt-annotation span.ezt-bubble {
  /* using &middot; */
  display:inline-block;
  background-color:#fff;
@@ -484,34 +484,34 @@ ul.playlist li .controls .statusbar .annotation span.bubble {
  -webkit-border-radius:6px;
 }
 
-ul.playlist li .controls .statusbar .annotation span {
+ul.ezt-playlist li .ezt-controls .ezt-statusbar .ezt-annotation span {
  display:block;
- background:transparent url(../image/divot.png) no-repeat 50% 0px;
+ background:transparent url(../image/divot.ezt-png) no-repeat 50% 0px;
  width:15px;
  margin-left:-15px;
  height:12px;
  text-align:center;
 }
 
-ul.playlist li .controls .statusbar .annotation.alt {
+ul.ezt-playlist li .ezt-controls .ezt-statusbar .ezt-annotation.ezt-alt {
  top:auto;
  bottom:0px;
 }
 
-ul.playlist li .controls .statusbar .annotation span:hover {
+ul.ezt-playlist li .ezt-controls .ezt-statusbar .ezt-annotation span:hover {
  cursor:none; /* Fx3 rules. */
  margin-top:0.1em;
 }
 
-ul.playlist li .controls .statusbar .annotation.alt span:hover {
+ul.ezt-playlist li .ezt-controls .ezt-statusbar .ezt-annotation.ezt-alt span:hover {
  margin-top:-0.1em;
 }
 
-ul.playlist li .controls .statusbar .annotation.alt span {
- background:transparent url(../image/divot-bottom.png) no-repeat 50% bottom;
+ul.ezt-playlist li .ezt-controls .ezt-statusbar .ezt-annotation.ezt-alt span {
+ background:transparent url(../image/divot-bottom.ezt-png) no-repeat 50% bottom;
 }
 
-ul.playlist li .note {
+ul.ezt-playlist li .ezt-note {
  position:absolute;
  display:none;
  left:0px;
@@ -533,19 +533,19 @@ ul.playlist li .note {
  margin-top:1.1em;
 }
 
-ul.playlist li .note.alt {
+ul.ezt-playlist li .ezt-note.ezt-alt {
  margin-top:-1.32em;
 }
 
-ul.playlist li .note:hover {
+ul.ezt-playlist li .ezt-note:hover {
  display:block !important;
 }
 
-ul.playlist li .sm2_divider {
+ul.ezt-playlist li .ezt-sm2_divider {
  font-size:0.75em;
 }
 
-ul.playlist li .sm2_metadata {
+ul.ezt-playlist li .ezt-sm2_metadata {
  font-size:0.65em;
 }
 
@@ -556,51 +556,51 @@ ul.playlist li .sm2_metadata {
  ---------------------------------
 */
 
-ul.playlist.dark li.sm2_playing a {
+ul.ezt-playlist.ezt-dark li.ezt-sm2_playing a {
  color:#fff;
 }
 
-ul.playlist.dark li.sm2_playing .timing,
-ul.playlist.use-peak.dark li.sm2_playing .peak {
+ul.ezt-playlist.ezt-dark li.ezt-sm2_playing .ezt-timing,
+ul.ezt-playlist.ezt-use-peak.ezt-dark li.ezt-sm2_playing .ezt-peak {
  color:#999;
 }
 
-ul.playlist.use-spectrum.dark li.sm2_playing .spectrum-container {
+ul.ezt-playlist.ezt-use-spectrum.ezt-dark li.ezt-sm2_playing .ezt-spectrum-container {
  background-color:#222;
  border-color:#444;
 }
 
-ul.playlist.use-spectrum.dark li.sm2_playing .spectrum-container .spectrum {
+ul.ezt-playlist.ezt-use-spectrum.ezt-dark li.ezt-sm2_playing .ezt-spectrum-container .ezt-spectrum {
  background-color:#999;
 }
 
-ul.playlist.dark li.sm2_paused {
+ul.ezt-playlist.ezt-dark li.ezt-sm2_paused {
  background-color:#333;
 }
 
-ul.playlist.dark li.sm2_paused a {
+ul.ezt-playlist.ezt-dark li.ezt-sm2_paused a {
  color:#999;
 }
 
-ul.playlist.dark li.sm2_playing,
-ul.playlist.dark li.sm2_playing:hover {
+ul.ezt-playlist.ezt-dark li.ezt-sm2_playing,
+ul.ezt-playlist.ezt-dark li.ezt-sm2_playing:hover {
  background-color:#333;
 }
 
-ul.playlist.dark li:hover .controls .statusbar {
+ul.ezt-playlist.ezt-dark li:hover .ezt-controls .ezt-statusbar {
  background-color:#666;
 }
 
-ul.playlist.dark li .controls {
+ul.ezt-playlist.ezt-dark li .ezt-controls {
  background-color:#333;
 }
 
-ul.playlist.dark li .controls .statusbar {
+ul.ezt-playlist.ezt-dark li .ezt-controls .ezt-statusbar {
  background-color:#666;
  border-color:#444;
 }
 
-ul.playlist.dark li .controls .statusbar .position {
+ul.ezt-playlist.ezt-dark li .ezt-controls .ezt-statusbar .ezt-position {
  background-color:#111;
  border-right:3px solid #111;
  border-radius:3px;
@@ -608,18 +608,18 @@ ul.playlist.dark li .controls .statusbar .position {
  -webkit-border-radius:3px;
 }
 
-ul.playlist.dark li .controls .statusbar .loading {
+ul.ezt-playlist.ezt-dark li .ezt-controls .ezt-statusbar .ezt-loading {
  background-color:#444;
 }
 
-ul.playlist.dark li .timing,
-ul.playlist.use-peak.dark li .peak {
+ul.ezt-playlist.ezt-dark li .ezt-timing,
+ul.ezt-playlist.ezt-use-peak.ezt-dark li .ezt-peak {
  background-color:#222;
  border-color:#444;
 }
 
-ul.playlist.dark.use-peak li .peak .l,
-ul.playlist.dark.use-peak li .peak .r {
+ul.ezt-playlist.ezt-dark.ezt-use-peak li .ezt-peak .ezt-l,
+ul.ezt-playlist.ezt-dark.ezt-use-peak li .ezt-peak .ezt-r {
  border-color:#444;
  background-color:#999;
 }
@@ -627,25 +627,25 @@ ul.playlist.dark.use-peak li .peak .r {
 
 /* gold theme */
 
-ul.playlist.gold li.sm2_paused {
+ul.ezt-playlist.ezt-gold li.ezt-sm2_paused {
  background-color:#996600;
 }
 
-ul.playlist.gold li.sm2_playing,
-ul.playlist.gold li.sm2_playing:hover {
+ul.ezt-playlist.ezt-gold li.ezt-sm2_playing,
+ul.ezt-playlist.ezt-gold li.ezt-sm2_playing:hover {
  background-color:#cc9900;
 }
 
-ul.playlist.gold li .controls {
+ul.ezt-playlist.ezt-gold li .ezt-controls {
  background-color:transparent;
 }
 
-ul.playlist.gold li .controls .statusbar {
+ul.ezt-playlist.ezt-gold li .ezt-controls .ezt-statusbar {
  background-color:#fff;
  border-color:#fff;
 }
 
-ul.playlist.gold li .controls .statusbar .position {
+ul.ezt-playlist.ezt-gold li .ezt-controls .ezt-statusbar .ezt-position {
  background-color:#996600;
  border-right:3px solid #996600;
  border-radius:3px;
@@ -653,27 +653,27 @@ ul.playlist.gold li .controls .statusbar .position {
  -webkit-border-radius:3px;
 }
 
-ul.playlist.gold li .controls .statusbar .loading {
+ul.ezt-playlist.ezt-gold li .ezt-controls .ezt-statusbar .ezt-loading {
  background-color:#ffeedd;
 }
 
-ul.playlist.gold li .timing,
-ul.playlist.use-peak.gold li .peak {
+ul.ezt-playlist.ezt-gold li .ezt-timing,
+ul.ezt-playlist.ezt-use-peak.ezt-gold li .ezt-peak {
  background-color:#CC9900;
  border-color:#ffcc33;
 }
 
-ul.playlist.use-spectrum.gold li.sm2_playing .spectrum-container {
+ul.ezt-playlist.ezt-use-spectrum.ezt-gold li.ezt-sm2_playing .ezt-spectrum-container {
  background-color:#cc9900;
  border-color:#ffcc33;
 }
 
-ul.playlist.use-spectrum.gold li.sm2_playing .spectrum-container .spectrum {
+ul.ezt-playlist.ezt-use-spectrum.ezt-gold li.ezt-sm2_playing .ezt-spectrum-container .ezt-spectrum {
  background-color:#fff;
 }
 
-ul.playlist.gold.use-peak li .peak .l,
-ul.playlist.gold.use-peak li .peak .r {
+ul.ezt-playlist.ezt-gold.ezt-use-peak li .ezt-peak .ezt-l,
+ul.ezt-playlist.ezt-gold.ezt-use-peak li .ezt-peak .ezt-r {
  border-color:#fff;
  background-color:#fff;
 }
@@ -681,41 +681,41 @@ ul.playlist.gold.use-peak li .peak .r {
 
 /* ZOMG PONIES!!!ONEONEONE */
 
-ul.playlist.bubblegum li a {
+ul.ezt-playlist.ezt-bubblegum li a {
  font-family:"comic sans ms",verdana,arial,tahoma,"sans serif"; /* heh */
 }
 
-ul.playlist.bubblegum li.sm2_paused,
-ul.playlist.bubblegum li.sm2_paused:hover {
+ul.ezt-playlist.ezt-bubblegum li.ezt-sm2_paused,
+ul.ezt-playlist.ezt-bubblegum li.ezt-sm2_paused:hover {
  background-color:#ffccee;
 }
 
-ul.playlist.bubblegum li.sm2_paused a,
-ul.playlist.bubblegum li.sm2_paused:hover a,
-ul.playlist.bubblegum li.sm2_paused .timing,
-ul.playlist.use-peak.bubblegum li.sm2_paused .peak {
+ul.ezt-playlist.ezt-bubblegum li.ezt-sm2_paused a,
+ul.ezt-playlist.ezt-bubblegum li.ezt-sm2_paused:hover a,
+ul.ezt-playlist.ezt-bubblegum li.ezt-sm2_paused .ezt-timing,
+ul.ezt-playlist.ezt-use-peak.ezt-bubblegum li.ezt-sm2_paused .ezt-peak {
  color:#ff6699;
 }
 
-ul.playlist.bubblegum li:hover {
+ul.ezt-playlist.ezt-bubblegum li:hover {
  background-color:#ffddee;
 }
 
-ul.playlist.bubblegum li.sm2_playing,
-ul.playlist.bubblegum li.sm2_playing:hover {
+ul.ezt-playlist.ezt-bubblegum li.ezt-sm2_playing,
+ul.ezt-playlist.ezt-bubblegum li.ezt-sm2_playing:hover {
  background-color:#ff7799;
 }
 
-ul.playlist.bubblegum li .controls {
+ul.ezt-playlist.ezt-bubblegum li .ezt-controls {
  background-color:transparent;
 }
 
-ul.playlist.bubblegum li .controls .statusbar {
+ul.ezt-playlist.ezt-bubblegum li .ezt-controls .ezt-statusbar {
  background-color:#fff;
  border-color:#fff;
 }
 
-ul.playlist.bubblegum li .controls .statusbar .position {
+ul.ezt-playlist.ezt-bubblegum li .ezt-controls .ezt-statusbar .ezt-position {
  background-color:#ffaacc;
  border-right:3px solid #ffaacc;
  border-radius:3px;
@@ -723,35 +723,35 @@ ul.playlist.bubblegum li .controls .statusbar .position {
  -webkit-border-radius:3px;
 }
 
-ul.playlist.bubblegum li .controls .statusbar .loading {
+ul.ezt-playlist.ezt-bubblegum li .ezt-controls .ezt-statusbar .ezt-loading {
  background-color:#ffeedd;
 }
 
-ul.playlist.bubblegum li .timing,
-ul.playlist.use-peak.bubblegum li .peak {
+ul.ezt-playlist.ezt-bubblegum li .ezt-timing,
+ul.ezt-playlist.ezt-use-peak.ezt-bubblegum li .ezt-peak {
  background-color:#ffaacc;
  border-color:#ffccee;
 }
 
-ul.playlist.use-spectrum.bubblegum li.sm2_playing .spectrum-container {
+ul.ezt-playlist.ezt-use-spectrum.ezt-bubblegum li.ezt-sm2_playing .ezt-spectrum-container {
  background-color:#ffaacc;
  border-color:#ffccee;
 }
 
-ul.playlist.use-spectrum.bubblegum li.sm2_playing .spectrum-container .spectrum {
+ul.ezt-playlist.ezt-use-spectrum.ezt-bubblegum li.ezt-sm2_playing .ezt-spectrum-container .ezt-spectrum {
  background-color:#fff;
 }
 
-ul.playlist.bubblegum.use-peak li .peak .l,
-ul.playlist.bubblegum.use-peak li .peak .r {
+ul.ezt-playlist.ezt-bubblegum.ezt-use-peak li .ezt-peak .ezt-l,
+ul.ezt-playlist.ezt-bubblegum.ezt-use-peak li .ezt-peak .ezt-r {
  border-color:#fff;
  background-color:#fff;
 }
 
 
-ul.playlist.shiny li.sm2_paused,
-ul.playlist.shiny li.sm2_playing {
- background-image:url(../image/top-highlight.png);
+ul.ezt-playlist.ezt-shiny li.ezt-sm2_paused,
+ul.ezt-playlist.ezt-shiny li.ezt-sm2_playing {
+ background-image:url(../image/top-highlight.ezt-png);
  background-repeat:repeat-x;
  background-position:0px -1px;
  _background-image:none; /* can't be bothered with IE 6. */

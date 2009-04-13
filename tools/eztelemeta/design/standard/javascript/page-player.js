@@ -61,16 +61,16 @@ function PagePlayer(oConfigOverride) {
   }
 
   this.css = {             // CSS class names appended to link during various states
-    sDefault: 'sm2_link',  // default state
-    sLoading: 'sm2_loading',
-    sPlaying: 'sm2_playing',
-    sPaused: 'sm2_paused'
+    sDefault: 'ezt-sm2_link',  // default state
+    sLoading: 'ezt-sm2_loading',
+    sPlaying: 'ezt-sm2_playing',
+    sPaused: 'ezt-sm2_paused'
   }
 
   // apply externally-defined override, if applicable
   this.cssBase = []; // optional features added to ul.playlist
-  if (this.config.usePeakData) this.cssBase.push('use-peak');
-  if (this.config.useWaveformData || this.config.useEQData) this.cssBase.push('use-spectrum');
+  if (this.config.usePeakData) this.cssBase.push('ezt-use-peak');
+  if (this.config.useWaveformData || this.config.useEQData) this.cssBase.push('ezt-use-spectrum');
   this.cssBase = this.cssBase.join(' ');
 
   // apply some items to SM2
@@ -415,7 +415,7 @@ function PagePlayer(oConfigOverride) {
     }
     if (index != metadata.currentItem) {
       // update
-      oSound._data.oLink.innerHTML = metadata.mainTitle+' <span class="metadata"><span class="sm2_divider"> | </span><span class="sm2_metadata">'+metadata[index].title+'</span></span>';
+      oSound._data.oLink.innerHTML = metadata.mainTitle+' <span class="ezt-metadata"><span class="ezt-sm2_divider"> | </span><span class="ezt-sm2_metadata">'+metadata[index].title+'</span></span>';
       self.setPageTitle(metadata[index].title+' | '+metadata.mainTitle);
       metadata.currentItem = index;
     }
@@ -432,7 +432,7 @@ function PagePlayer(oConfigOverride) {
   }
   
   this.withinStatusBar = function(o) {
-    return (self.isChildOfClass(o,'controls'));
+    return (self.isChildOfClass(o,'ezt-controls'));
   }
 
   this.handleClick = function(e) {
@@ -455,7 +455,7 @@ function PagePlayer(oConfigOverride) {
       return true;
     }
     var sURL = o.getAttribute('href');
-    if (!o.href || (!sm.canPlayURL(o.href) || !self.hasClass(o,'playable')) || self.hasClass(o,'exclude')) {
+    if (!o.href || (!sm.canPlayURL(o.href) || !self.hasClass(o,'ezt-playable')) || self.hasClass(o,'ezt-exclude')) {
       if (isIE && o.onclick) {
         return false; // IE will run this handler before .onclick(), everyone else is cool?
       }
@@ -481,7 +481,7 @@ function PagePlayer(oConfigOverride) {
       } else {
         // ..different sound
         if (self.lastSound) self.stopSound(self.lastSound);
-        thisSound._data.oTimingBox.appendChild(document.getElementById('spectrum-container'));
+        thisSound._data.oTimingBox.appendChild(document.getElementById('ezt-spectrum-container'));
         thisSound.togglePause(); // start playing current
       }
     } else {
@@ -502,26 +502,26 @@ function PagePlayer(oConfigOverride) {
       // append control template
       var oControls = self.oControls.cloneNode(true);
       o.parentNode.appendChild(oControls);
-      o.parentNode.appendChild(document.getElementById('spectrum-container'));
+      o.parentNode.appendChild(document.getElementById('ezt-spectrum-container'));
       self.soundsByObject[o.rel] = thisSound;
       // tack on some custom data
       thisSound._data = {
         oLink: o, // DOM reference within SM2 object event handlers
         oLI: o.parentNode,
-        oControls: self.getElementsByClassName('controls','div',o.parentNode)[0],
-        oStatus: self.getElementsByClassName('statusbar','div',o.parentNode)[0],
-        oLoading: self.getElementsByClassName('loading','div',o.parentNode)[0],
-        oPosition: self.getElementsByClassName('position','div',o.parentNode)[0],
-        oTimingBox: self.getElementsByClassName('timing','div',o.parentNode)[0],
-        oTiming: self.getElementsByClassName('timing','div',o.parentNode)[0].getElementsByTagName('div')[0],
-        oPeak: self.getElementsByClassName('peak','div',o.parentNode)[0],
-        oGraph: self.getElementsByClassName('spectrum-box','div',o.parentNode)[0],
+        oControls: self.getElementsByClassName('ezt-controls','div',o.parentNode)[0],
+        oStatus: self.getElementsByClassName('ezt-statusbar','div',o.parentNode)[0],
+        oLoading: self.getElementsByClassName('ezt-loading','div',o.parentNode)[0],
+        oPosition: self.getElementsByClassName('ezt-position','div',o.parentNode)[0],
+        oTimingBox: self.getElementsByClassName('ezt-timing','div',o.parentNode)[0],
+        oTiming: self.getElementsByClassName('ezt-timing','div',o.parentNode)[0].getElementsByTagName('div')[0],
+        oPeak: self.getElementsByClassName('ezt-peak','div',o.parentNode)[0],
+        oGraph: self.getElementsByClassName('ezt-spectrum-box','div',o.parentNode)[0],
         nIndex: self.getSoundIndex(o),
         className: self.css.sPlaying,
         originalTitle: o.innerHTML,
         metadata: null
       };
-      thisSound._data.oTimingBox.appendChild(document.getElementById('spectrum-container'));
+      thisSound._data.oTimingBox.appendChild(document.getElementById('ezt-spectrum-container'));
       // "Metadata"
       if (thisSound._data.oLI.getElementsByTagName('ul').length) {
         thisSound._data.metadata = new Metadata(thisSound);
@@ -551,7 +551,7 @@ function PagePlayer(oConfigOverride) {
     self.lastSound.pause();
     self.setPosition(e);
     self.addEventHandler(document,'mousemove',self.handleMouseMove);
-    self.addClass(self.lastSound._data.oControls,'dragging');
+    self.addClass(self.lastSound._data.oControls,'ezt-dragging');
     self.stopEvent(e);
     return false;
   }
@@ -581,7 +581,7 @@ function PagePlayer(oConfigOverride) {
   
   this.stopDrag = function(e) {
     if (self.dragActive) {
-      self.removeClass(self.lastSound._data.oControls,'dragging');
+      self.removeClass(self.lastSound._data.oControls,'ezt-dragging');
       self.removeEventHandler(document,'mousemove',self.handleMouseMove);
       // self.removeEventHandler(document,'mouseup',self.stopDrag);
       if (!pl.hasClass(self.lastSound._data.oLI,self.css.sPaused)) {
@@ -612,7 +612,7 @@ function PagePlayer(oConfigOverride) {
     // called from slider control
     var oThis = self.getTheDamnTarget(e);
     var oControl = oThis;
-    while (!self.hasClass(oControl,'controls') && oControl.parentNode) {
+    while (!self.hasClass(oControl,'ezt-controls') && oControl.parentNode) {
       oControl = oControl.parentNode;
     }
     var oSound = self.lastSound;
@@ -853,7 +853,7 @@ function PagePlayer(oConfigOverride) {
     // grab all links, look for .mp3
     var foundItems = 0;
     for (var i=0; i<oLinks.length; i++) {
-      if ((sm.canPlayURL(oLinks[i].href) && self.hasClass(oLinks[i],'playable')) && !self.hasClass(oLinks[i],'exclude')) {
+      if ((sm.canPlayURL(oLinks[i].href) && self.hasClass(oLinks[i],'ezt-playable')) && !self.hasClass(oLinks[i],'ezt-exclude')) {
         oLinks[i].rel = 'pagePlayerMP3Sound'+i;
         self.links[self.links.length] = oLinks[i];
         self.addClass(oLinks[i],self.css.sDefault); // add default CSS decoration
@@ -861,7 +861,7 @@ function PagePlayer(oConfigOverride) {
       }
     }
     if (foundItems>0) {
-      var oTiming = document.getElementById('sm2_timing');
+      var oTiming = document.getElementById('ezt-sm2_timing');
       self.strings['timing'] = oTiming.innerHTML;
       oTiming.innerHTML = '';
       oTiming.id = '';
@@ -870,6 +870,7 @@ function PagePlayer(oConfigOverride) {
       self.addEventHandler(document,'mouseup',self.stopDrag);
       self.addEventHandler(window,'unload',function(){}); // force page reload when returning here via back button (Opera tries to remember old state, etc.)
     }
+    console.log('TestTest');
     sm._writeDebug('pagePlayer.init(): Found '+foundItems+' relevant items.');
     if (self.config.autoStart) {
       pl.handleClick({target:pl.links[0]});
@@ -883,13 +884,13 @@ var Metadata = function(oSound) {
   var oItems = o.getElementsByTagName('li');
   var oTemplate = document.createElement('div');
   oTemplate.innerHTML = '<span>&nbsp;</span>';
-  oTemplate.className = 'annotation';
+  oTemplate.className = 'ezt-annotation';
   var oTemplate2 = document.createElement('div');
   oTemplate2.innerHTML = '<span>&nbsp;</span>';
-  oTemplate2.className = 'annotation alt';
+  oTemplate2.className = 'ezt-annotation ezt-alt';
 
   var oTemplate3 = document.createElement('div');
-  oTemplate3.className = 'note';
+  oTemplate3.className = 'ezt-note';
 
   this.totalTime = 0;
   this.strToTime = function(sTime) {
@@ -917,7 +918,7 @@ var Metadata = function(oSound) {
       oNote: null
     }
   }
-  var oDuration = pl.getElementsByClassName('duration','div',oLI);
+  var oDuration = pl.getElementsByClassName('ezt-duration','div',oLI);
   this.data.givenDuration = (oDuration.length?self.strToTime(oDuration[0].innerHTML)*1000:0);
   for (i=0; i<this.data.length; i++) {
     this.data[i].duration = parseInt(this.data[i+1]?this.data[i+1].startSeconds:(self.data.givenDuration?self.data.givenDuration:oSound.durationEstimate)/1000)-this.data[i].startSeconds;
@@ -938,7 +939,7 @@ var Metadata = function(oSound) {
       oNode.rel = i;
       self.data[i].o = oNode;
       oNode2 = oTemplate3.cloneNode(true);
-      if (i%2==0) oNode2.className = 'note alt';
+      if (i%2==0) oNode2.className = 'ezt-note ezt-alt';
       oNode2.innerHTML = this.data[i].title;
       // evil old-skool event handlers, css:hover-only ideally would be nice excluding IE 6
       oNode.onmouseover = self.mouseover;
@@ -985,9 +986,9 @@ var Metadata = function(oSound) {
 
   this.initDOM = function() {
     // set up graph box stuffs
-    var sb = self.getElementsByClassName('spectrum-box','div',document.documentElement)[0];
+    var sb = self.getElementsByClassName('ezt-spectrum-box','div',document.documentElement)[0];
     if (sm.flashVersion >= 9) {
-      self.addClass(self.getElementsByClassName('playlist','ul',document.documentElement)[0],self.cssBase);
+      self.addClass(self.getElementsByClassName('ezt-playlist','ul',document.documentElement)[0],self.cssBase);
       var sbC = sb.getElementsByTagName('div')[0];
       var oF = document.createDocumentFragment();
       var oClone = null;
@@ -999,7 +1000,7 @@ var Metadata = function(oSound) {
       sb.removeChild(sbC);
       sb.appendChild(oF);
     }
-    this.oControls = document.getElementById('control-template').cloneNode(true);
+    this.oControls = document.getElementById('ezt-control-template').cloneNode(true);
     this.oControls.id = '';
     this.init();
   }
