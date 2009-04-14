@@ -1,7 +1,7 @@
 
-===================================
-eZTelemeta - Mise en place et usage
-===================================
+=============================================
+eZTelemeta |version| - Mise en place et usage
+=============================================
 
 Olivier Guilyardi <olivier samalyse com> - |today|
 
@@ -11,9 +11,9 @@ I - Introduction
 ~~~~~~~~~~~~~~~~
 
 Le présent document décrit les procédures de mise en place et d'usage
-de l'extension eZPublish eZTelemeta. Cette extension a pour but de
-permettre l'intégration dynamique d'éléments sonore en provenance du
-logiciel Telemeta.
+de l'extension eZPublish eZTelemeta |version|. Cette extension a pour but
+de permettre l'intégration dynamique d'éléments sonore en provenance
+du logiciel Telemeta.
 
 II - Pré-requis
 ~~~~~~~~~~~~~~~
@@ -30,13 +30,13 @@ III - Mise en place
 III.1 - Installation de l'extension
 -----------------------------------
 
-eZTelemeta est distribuée sous la forme d'une archive .zip, contenant le
-répertoire ``eztelemeta``, à placer dans le répertoire ``extension``
-de l'installation eZPublish.
+eZTelemeta |version| est distribuée sous la forme d'une archive .tar.gz,
+contenant le répertoire ``eztelemeta``, à placer dans le répertoire
+``extension`` de l'installation eZPublish.
 
-Puis activer l'extension dans l'administration, onglet Setup/Extensions, et
-régénerer les données de chargement automatique (``Regenerate autoload 
-arrays for extensions``)
+Puis activer l'extension dans l'administration, onglet Setup/Extensions,
+et régénerer les données de chargement automatique (``Regenerate
+autoload arrays for extensions``)
 
 III.2 - Création de la classe principale
 ----------------------------------------
@@ -44,10 +44,10 @@ III.2 - Création de la classe principale
 eZTelemeta définit un nouveau type de données, appelé ``Telemeta
 Item``. Les utilisateur avancés de eZPublish peuvent envisager
 différents scénarios d'utilisation de ce type de données. La procédure
-décrite ici consiste à créer une classe qui ne contiendra qu'un seul
-attribut, de type ``Telemeta Item``. Il est fortement recommandé de 
-procéder ainsi lors d'une première mise en place, notamment pour intégrer
-facilement le lecteur audio aux pages publiques.
+décrite ici consiste à créer une classe qui ne contiendra qu'un
+seul attribut, de type ``Telemeta Item``. Il est fortement recommandé
+de procéder ainsi lors d'une première mise en place, notamment pour
+intégrer facilement le lecteur audio aux pages publiques.
 
 Dans l'administration, dans Setup/Classes, dans le groupe Media, créer
 une classe avec les paramètres suivants::
@@ -82,11 +82,12 @@ pour paramètres::
 
 Puis enregistrer les modifications (``Send for publishing``). 
 
-**Remarque**: au moment de l'enregistrement, eZTelemeta établit une connexion
-avec l'installation Telemeta distante, en utilisant le protocole OAI-PMH via HTTP. 
-Si la cote de l'item est invalide, ou si la connexion HTTP ne peut-être établi
-à cause d'un mauvais URL, l'item ne sera pas enregistré, et une erreur s'affichera.
-Dans ce cas vérifiez bien votre saisie.
+**Remarque**: au moment de l'enregistrement, eZTelemeta établit
+une connexion avec l'installation Telemeta distante, en utilisant le
+protocole OAI-PMH via HTTP.  Si la cote de l'item est invalide, ou
+si la connexion HTTP ne peut-être établi à cause d'un mauvais URL,
+l'item ne sera pas enregistré, et une erreur s'affichera.  Dans ce cas
+vérifiez bien votre saisie.
 
 III.4 - Intégration de l'objet de contenu dans un article
 ---------------------------------------------------------
@@ -96,19 +97,20 @@ de l'intégrer à un article. Pour ce faire, lors de l'édition d'un article:
 
 1. Cliquer sur l'icône représentant un *trombone* (``Insérer/modifier un objet``)
 2. Une fenêtre DHTML doit s'ouvrir, cliquer sur Parcourir, Media puis sur Multimedia
-3. Seléctionner l'item Telemeta à insérer, un aperçu (lien, titre, etc...) doit s'afficher
+3. Sélectionner l'item Telemeta à insérer, un aperçu (lien, titre, etc...) doit s'afficher
 4. Cliquer sur OK
 
-L'item doit maintenant être intégré au corps de l'article, sous la forme d'une liste de 
-définition HTML (``<dl>...</dl>``), affichant le titre de l'item sous la forme d'un lien vers 
-le fichier son hébergé sur le serveur Telemeta, la durée (HH:MM:SS) de l'item, et suivant les
-informations qui sont disponibles, un ou plusieurs éléments parmi les suivants: Auteur/Collecteur,
-Description, Droits d'usage.
+L'item doit maintenant être intégré au corps de l'article, sous la
+forme d'une liste de définition HTML (``<dl>...</dl>``), affichant le
+titre de l'item sous la forme d'un lien vers le fichier son hébergé
+sur le serveur Telemeta, la durée (HH:MM:SS) de l'item, et suivant les
+informations qui sont disponibles, un ou plusieurs éléments parmi les
+suivants: Auteur/Collecteur, Description, Droits d'usage.
 
 L'intégration sous la forme d'une liste de définition HTML a plusieurs avantages:
 
 - en terme de contenu, c'est la construction HTML la plus adaptée à une liste de méta-données
-- la présentation est facilement personalisable avec des feuilles de styles CSS.
+- la présentation est facilement personnalisable avec des feuilles de styles CSS.
 - elle est accessible, facilitant la consultation à l'aide de périphériques de type lecteur
   d'écran destinés aux aveugles.
 
@@ -126,7 +128,7 @@ Player, iTunes, VLC, etc...).
 
 Cependant, la plupart des utilisateurs pourront profiter du lecteur audio
 permettant la lecture interactive du son sans quitter la page en cours,
-et nottamment sous:
+et notamment sous:
 
 - Internet Explorer 6 et 7 
 - Firefox 2 et 3 
@@ -135,7 +137,7 @@ et nottamment sous:
 
 Dans le respect des règles de l'art du web actuel, les routines
 javascript sont séparées de façon stricte du contenu HTML. L'affichage
-interactif du lecteur est entièrement personalisable via CSS et/ou
+interactif du lecteur est entièrement personnalisable via CSS et/ou
 modification des templates eZPublish. Flash est utilisé de façon
 invisible, via la librairie SoundManager2, offrant une API javascript
 dédiée au son.
@@ -156,7 +158,7 @@ IV.2 - Mise en place du lecteur audio
 Le lecteur possède des dépendances CSS et Javascript qui doivent êtres
 chargées dans la section ``<head/>`` des pages du site. Pour ce faire
 eZTelemeta contient un template qui doit être inclu dans cette section,
-en personalisant le template ``pagelayout.tpl``.  Ce template est utilisé
+en personnalisant le template ``pagelayout.tpl``.  Ce template est utilisé
 par eZPublish pour construire toutes les pages.
 
 Pour ce faire, se rendre dans l'onglet Design de l'espace
@@ -173,12 +175,13 @@ le template d'initialisation en plaçant l'expression suivante dans la section
 
 Enfin, vider le cache eZPublish. Le lecteur audio doit maintenant être actif
 à la fois sur les pages publiques intégrant un item Telemeta, et lors de la 
-prévisualisation d'un article dans l'espace administratif.
+pré-visualisation d'un article dans l'espace administratif.
 
 **Remarque**: le fait d'inclure le template ``eztelemeta_head.tpl`` dans toutes
-les pages du site via la personalisation de ``pagelayout.tpl``, n'alourdit pas
-inutilement le chargement des pages. Les dépendences CSS, JS et Flash ne sont
+les pages du site via la personnalisation de ``pagelayout.tpl``, n'alourdit pas
+inutilement le chargement des pages. Les dépendances CSS, JS et Flash ne sont
 chargées que si la page en cours contient effectivement un item Telemeta.
 
+.. |version| replace:: EZTVERSION
 .. |today| date::
 .. vim: set ft=rst:
