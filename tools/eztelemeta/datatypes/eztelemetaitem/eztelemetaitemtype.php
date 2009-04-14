@@ -109,7 +109,7 @@ class eZTelemetaItemType extends eZDataType
         foreach ($dc->childNodes as $element) {
             if ($element->nodeType == XML_ELEMENT_NODE) {
                 $tag    = str_replace('dc:', '', $element->tagName);
-                $value  = trim($element->firstChild->nodeValue);
+                $value  = $element->childNodes->length ? trim($element->firstChild->nodeValue) : '';
                 if ($tag == 'format' and ereg('^([0-9]{2}):([0-9]{2}):([0-9]{2})$', $value, $regs)) {
                     $tag    = 'duration';
                     $value  = $regs[1] * 3600 + $regs[2] * 60 + $regs[3];
