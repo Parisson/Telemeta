@@ -140,6 +140,12 @@ modification des templates eZPublish. Flash est utilisé de façon
 invisible, via la librairie SoundManager2, offrant une API javascript
 dédiée au son.
 
+Plusieurs items peuvent être placés arbitrairement dans la page,
+s'intégrant bien au flux du contenu HTML. Lorsqu'on clique sur
+l'un deux, si la lecture d'un autre item est déjà en cours, elle
+s'interrompt, de façon à éviter la lecture accidentelle simultanée
+de plusieurs sons.
+
 **Remarque :** Pour simplifier la mise en place du lecteur, il est
 recommandé d'utiliser une classe de contenu eZPublish dont l'identifiant
 est ``telemetaitem`` comme indiqué en III.2.
