@@ -137,7 +137,7 @@ ul.ezt-playlist li a {
  position:relative;
  z-index:2;
  text-shadow: 0 0 0 #fff; /* stupid Safari "fat" font rendering tweak */
- padding-left: 38px;
+ padding-left: 30px;
  background: url(../images/play.png) no-repeat left;
 }
 
