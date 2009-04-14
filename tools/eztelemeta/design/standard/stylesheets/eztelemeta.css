@@ -1,0 +1,25 @@
+
+.telemeta-item .telemeta-sound a {
+    display: block;
+    background: url('../images/play.png') no-repeat left;
+    padding-left: 27px;
+    padding-top: 6px;
+    height: 22px;
+}
+
+.telemeta-playing .telemeta-sound a, .telemeta-loading .telemeta-sound a {
+    background-image: url('../images/stop.png');
+}
+
+.telemeta-item .telemeta-position, .telemeta-item .telemeta-separator {
+    display: none;
+}
+
+.telemeta-playing .telemeta-position, .telemeta-playing .telemeta-separator,
+.telemeta-loading .telemeta-position, .telemeta-loading .telemeta-separator {
+    display: inline;
+}
+
+.telemeta-loading .telemeta-position {
+    text-decoration: blink;
+}
