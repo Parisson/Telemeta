@@ -1,7 +1,7 @@
 PACKAGE = eztelemeta
-VERSION := $(shell cat VERSION)
+VERSION = 0.1
 
-DOCS = VERSION doc/README.fr doc/README.fr.html doc/doc.css 
+DOCS = VERSION ChangeLog doc/README.fr doc/README.fr.html doc/doc.css 
 
 SETTINGS = \
 	settings/content.ini.append \
@@ -41,11 +41,15 @@ $(DISTPKG): doc $(DISTFILES)
 	tar -czf $@ --transform 's|^|eztelemeta/|' $(DISTFILES)
 
 .PHONY: doc
-doc:
+doc: VERSION
 	$(MAKE) -C doc
 
 .PHONY: clean
 clean:
 	$(MAKE) -C doc clean
+	rm VERSION
+
+VERSION:
+	echo $(VERSION) > $@
 
 # vim: set noexpandtab: ts=2: sw=2:

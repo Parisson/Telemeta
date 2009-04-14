@@ -7,7 +7,7 @@ README.fr.html: README.fr doc.css
 	rst2html --stylesheet=doc.css --link-stylesheet README.fr $@
 
 README.fr: README.fr.in ../VERSION
-	cat $^ | sed "s/EZTVERSION/$(VERSION)/g" > $@
+	cat README.fr.in | sed "s/EZTVERSION/$(VERSION)/g" > $@
 
 clean:  
 	rm $(DOCS)
