@@ -13,17 +13,17 @@
 
     {if $item.description }
     <dt class="telemeta-description">{'Description'|i18n('eztelemeta')} :</dt>
-    <dd class="telemeta-description">{$item.description}</dd>
+    <dd class="telemeta-description">{$item.description|wash}</dd>
     {/if}
 
     {if $item.creator }
     <dt class="telemeta-creator">{'Creator'|i18n('eztelemeta')} :</dt>
-    <dd class="telemeta-creator">{$item.creator}</dd>
+    <dd class="telemeta-creator">{$item.creator|wash}</dd>
     {/if}
 
     {if $item.rights }
     <dt class="telemeta-rights">{'Legal rights'|i18n('eztelemeta')} :</dt>
-    <dd class="telemeta-rights">{$item.rights}</dd>
+    <dd class="telemeta-rights">{$item.rights|wash}</dd>
     {/if}
 </dl>
 {undef}
