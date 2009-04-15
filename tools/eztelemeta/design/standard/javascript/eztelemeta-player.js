@@ -7,9 +7,12 @@ function TelemetaPlayer(cfg)
    
     this.init = function() {
         var sounds = this.byClass(document, 'dd', 'telemeta-sound');
+        var i;
         for (i in sounds) {
-            link = sounds[i].getElementsByTagName('a')[0];
-            link.onclick = this.togglePlayback;
+            if (typeof(sounds[i].getElementsByTagName) != 'undefined') {
+                link = sounds[i].getElementsByTagName('a')[0];
+                link.onclick = this.togglePlayback;
+            }
         }
     }
 

@@ -10,10 +10,10 @@
 
 .telemeta-item .telemeta-sound a {
     display: block;
-    background: url('../images/play.gif') no-repeat left;
+    background: url('../images/play.gif') no-repeat left top;
     padding-left: 29px;
     height: 22px;
-    padding-top: 0.8ex;
+    padding-top: 0.5ex;
 }
 
 .telemeta-item .telemeta-position, .telemeta-item .telemeta-separator { display: none; }
@@ -46,6 +46,7 @@
     font-weight: bold;
     color: #000066;
     outline: none;
+    padding-bottom: 0.6ex;
 }
 
 .telemeta-item dd.telemeta-duration {
