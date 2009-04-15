@@ -58,7 +58,8 @@ une classe avec les paramètres suivants::
     - Identifier:           telemetaitem
     - Object name pattern:  <item>
 
-Ajouter un attribut de type ``Telemeta Item``, avec pour paramètres::
+Ajouter un attribut de type ``Telemeta Item``, avec pour paramètres (*respecter
+la casse*)::
 
     - Name:                 Item
     - Identifier:           item
