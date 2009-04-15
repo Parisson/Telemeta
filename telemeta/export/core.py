@@ -159,19 +159,16 @@ class ExporterCore(Component):
 
     def core_process(self, command, buffer_size, dest):
         """Encode and stream audio data through a generator"""
-        
+
         __chunk = 0
         file_out = open(dest,'w')
 
-        try:
-            proc = subprocess.Popen(command,
+        proc = subprocess.Popen(command.encode('utf-8'),
                     shell = True,
                     bufsize = buffer_size,
                     stdin = subprocess.PIPE,
                     stdout = subprocess.PIPE,
                     close_fds = True)
-        except:
-            raise ExportProcessError('Command failure:', command, proc)
 
         # Core processing
         while True:
