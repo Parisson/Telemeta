@@ -1,11 +1,13 @@
-
 =============================================
 eZTelemeta |version| - Mise en place et usage
 =============================================
 
-Olivier Guilyardi <olivier samalyse com> - |today|
+:Auteur: Olivier Guilyardi <olivier samalyse com>
+:Date: |today|
 
 .. contents:: **Table des matières**
+
+----
 
 I - Introduction
 ~~~~~~~~~~~~~~~~
@@ -143,7 +145,7 @@ invisible, via la librairie SoundManager2, offrant une API javascript
 dédiée au son.
 
 Plusieurs items peuvent être placés arbitrairement dans la page,
-s'intégrant bien au flux du contenu HTML. Lorsqu'on clique sur
+s'intégrant bien au flot du contenu HTML. Lorsqu'on clique sur
 l'un deux, si la lecture d'un autre item est déjà en cours, elle
 s'interrompt, de façon à éviter la lecture accidentelle simultanée
 de plusieurs sons.

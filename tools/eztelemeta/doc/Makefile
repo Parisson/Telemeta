@@ -1,10 +1,18 @@
 VERSION := $(shell cat ../VERSION)
-DOCS=README.fr.html README.fr
+DOCS=README.fr.html README.fr.pdf README.fr README.fr.latex
 
 doc: $(DOCS)
 
 README.fr.html: README.fr doc.css
-	rst2html --stylesheet=doc.css --link-stylesheet README.fr $@
+	rst2html -lfr --stylesheet=doc.css --link-stylesheet README.fr $@
+
+README.fr.pdf: README.fr.latex
+	pdflatex $^
+	pdflatex $^
+	rm README.fr.aux README.fr.out README.fr.log
+
+README.fr.latex: README.fr
+	rst2latex -lfr $^ $@
 
 README.fr: README.fr.in ../VERSION
 	cat README.fr.in | sed "s/EZTVERSION/$(VERSION)/g" > $@
