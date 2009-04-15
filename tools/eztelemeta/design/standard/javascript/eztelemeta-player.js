@@ -27,7 +27,7 @@ function TelemetaPlayer(cfg)
 
     this.setStateStyle = function(link, state) {
         var container = this.findContainer(link);
-        if (state == 'stopped' || state == 'loading') {
+        if (state == 'stopped') {
             if (this.hasClass(container, 'telemeta-playing'))
                 container.className = container.className.replace('telemeta-playing', '');
         }
@@ -37,13 +37,14 @@ function TelemetaPlayer(cfg)
                 container.className = container.className.replace('telemeta-loading', '');
         }
 
-        if (state == 'playing') {
+        if (state == 'playing' || state == 'loading') {
             if (!this.hasClass(container, 'telemeta-playing'))
                 container.className += ' telemeta-playing';
-        } else if (state == 'loading') {
-            if (!this.hasClass(container, 'telemeta-loading'))
-                container.className += ' telemeta-loading';
-        }
+            if (state == 'loading') {
+                if (!this.hasClass(container, 'telemeta-loading'))
+                    container.className += ' telemeta-loading';
+            }
+        } 
     }
 
     this.togglePlayback = function() {

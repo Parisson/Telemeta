@@ -8,7 +8,7 @@ README.fr.html: README.fr doc.css
 
 README.fr.pdf: README.fr.latex
 	pdflatex $^
-	pdflatex $^
+	pdflatex $^ # Double run is sometimes needed
 
 README.fr.latex: README.fr
 	rst2latex -lfr $^ $@
