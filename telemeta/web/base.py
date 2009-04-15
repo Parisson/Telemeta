@@ -326,11 +326,11 @@ class WebView(Component):
             extra_context={'country': country, 'continent': continent})
 
     def handle_oai_request(self, request):
-        url = request.META['HTTP_HOST'] + request.path
+        url         = 'http://' + request.META['HTTP_HOST'] + request.path
         datasource  = TelemetaOAIDataSource()
-        admin = settings.ADMINS[0][1]
+        admin       = settings.ADMINS[0][1]
         provider    = oai.DataProvider(datasource, "Telemeta", url, admin)
-        args = request.GET.copy()
+        args        = request.GET.copy()
         args.update(request.POST)
         return HttpResponse(provider.handle(args), mimetype='text/xml')
         

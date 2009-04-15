@@ -269,9 +269,11 @@ class MediaItem(Model, MediaCore):
             dc.Element('relation', 'collection', self.collection.id, 'isPartOf'),
             dc.Element('title', 'title', self.title),
             dc.Element('creator', value=creator),
+            dc.Element('description', value=self.comm_fonctusage),
             dc.Element('publisher', value=self.collection.publisher),
             dc.Element('coverage', value=self.etat),
             dc.Element('format', value=duration, refinement="extent"),
+            dc.Element('rights', value=self.collection.rights)
         )
         return resource
 
