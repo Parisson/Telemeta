@@ -13,7 +13,8 @@ TEMPLATES = \
 	design/standard/templates/content/datatype/view/eztelemetaitem.tpl \
 	design/standard/templates/content/datatype/edit/eztelemetaitem.tpl \
 	design/standard/templates/eztelemeta_head.tpl \
-	design/standard/override/templates/embed/eztelemetaitem.tpl
+	design/standard/override/templates/embed/eztelemetaitem.tpl \
+	design/standard/override/templates/full/eztelemetaitem.tpl
 
 HTDOCS = \
 	design/standard/stylesheets/eztelemeta.css \
