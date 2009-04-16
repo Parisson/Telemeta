@@ -54,4 +54,19 @@ clean:
 VERSION:
 	echo $(VERSION) > $@
 
+.PHONY: list
+list: doc $(DISTFILES)
+	@echo "------------------"
+	@echo "Distributed files:"
+	@echo "------------------"
+	@echo $(DISTFILES) | tr ' ' '\n' > cmp.tmp
+	@cat cmp.tmp
+	@echo
+	@echo "--------------------"
+	@echo "Undistributed files:"
+	@echo "--------------------"
+	@find -type f | grep -v svn | grep -v 'swp$$' | sed 's/^\.\///' >> cmp.tmp
+	@cat cmp.tmp | sort | uniq -u | grep -v 'cmp.tmp'
+	@rm cmp.tmp
+
 # vim: set noexpandtab: ts=2: sw=2:
