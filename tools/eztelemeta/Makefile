@@ -23,8 +23,8 @@ HTDOCS = \
 	design/standard/javascript/eztelemeta-player.js \
 	design/standard/swf/soundmanager2_flash9.swf \
 	design/standard/swf/soundmanager2.swf \
-	design/standard/images/play.png \
-	design/standard/images/stop.png
+	design/standard/images/play.gif \
+	design/standard/images/stop.gif
 
 PHP = datatypes/eztelemetaitem/eztelemetaitemtype.php \
 	autoloads/eztelemetadata.php \

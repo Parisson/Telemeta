@@ -182,10 +182,10 @@ class eZTelemetaItemType extends eZDataType
 
     function title($attribute, $name = null)
     {
-        $data = unserialize($attribute->attribute("data_text"));
-        if (!$data['title'])
+        $item = $this->objectAttributeContent($attribute);
+        if (!$item['title'])
             return 'untitled';
-        return $data['title'];
+        return $item['title'];
     }
 
     function isIndexable()
