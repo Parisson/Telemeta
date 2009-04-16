@@ -69,6 +69,21 @@ la casse*)::
 
 Cliquer sur OK pour enregistrer la nouvelle classe.
 
+Réglage des permissions
+-----------------------
+
+Pour pouvoir afficher les items sur les pages publiques, il faut autoriser
+leur accès aux utilisateurs *anonymes*.
+
+Dans l'espace d'administration, onglet Setup, dans Roles and policies:
+
+1. Éditer le rôle ``Anonymous``
+2. Cliquer sur ``New policy``
+3. Choisir le module ``content`` puis cliquer sur ``Grant access to one function``
+4. Choisir la fonction ``read`` puis cliquer sur ``Grant limited access``
+5. Choisir la classe ``Telemeta Audio Item`` puis cliquer en bas de page sur OK
+6. De retour sur le role, cliquer à nouveau sur OK
+
 Création d'un objet de contenu
 ------------------------------
 
@@ -139,6 +154,11 @@ activé, sous:
 - Firefox 2 et 3 
 - Safari 3 
 - Opera 9
+
+Voici un aperçu du lecteur :
+
+.. image:: player.png
+    :scale: 75
 
 Dans le respect des règles de l'art du web actuel, les routines
 javascript sont séparées de façon stricte du contenu HTML. L'affichage

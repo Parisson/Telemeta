@@ -15,6 +15,8 @@
  * - position hiding when stopped
  */
 
+.telemeta-item { text-align: left; }
+
 .telemeta-item .telemeta-sound a {
     display: block;
     background: url('../images/play.gif') no-repeat left top;
@@ -22,7 +24,6 @@
     height: 22px;
     padding-top: 0.5ex;
 }
-
 .telemeta-item .telemeta-position, .telemeta-item .telemeta-separator { display: none; }
 .telemeta-playing .telemeta-sound a { background-image: url('../images/stop.gif'); }
 .telemeta-playing .telemeta-position, .telemeta-playing .telemeta-separator { display: inline; }

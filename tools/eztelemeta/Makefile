@@ -1,7 +1,8 @@
 PACKAGE = eztelemeta
 VERSION = 0.1
 
-DOCS = VERSION ChangeLog doc/README.fr doc/README.fr.html doc/doc.css doc/README.fr.latex doc/README.fr.pdf
+DOCS = VERSION ChangeLog doc/README.fr doc/README.fr.html doc/doc.css doc/README.fr.latex \
+	doc/README.fr.pdf doc/player.png LICENCE LICENCE.fr
 
 SETTINGS = \
 	settings/content.ini.append \
