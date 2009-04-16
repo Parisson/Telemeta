@@ -3,7 +3,7 @@
  * Definition of the Telemeta Item datatype
  *
  * @package     eztelemeta
- * @author      Olivier Guilyardi
+ * @author      Olivier Guilyardi <olivier samalyse com>
  * @copyright   2009 Samalyse
  * @license     CeCILL Free Software License Agreement
  */

@@ -1,3 +1,11 @@
+/*
+ * eZTelemeta web audio player
+ *
+ * Copyright (c) 2009 Samalyse
+ * Author: Olivier Guilyardi <olivier samalyse com>
+ * License: CeCILL Free Software License Agreement
+ */
+
 function TelemetaPlayer(cfg)
 {
     var that            = this;

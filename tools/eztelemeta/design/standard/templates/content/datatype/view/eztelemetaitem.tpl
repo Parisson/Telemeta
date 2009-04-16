@@ -1,4 +1,3 @@
-{set-block scope=global variable=cache_ttl}{ezini('TelemetaSettings', 'ItemViewCacheTTL', 'eztelemeta.ini')}{/set-block}
 {eztelemetadata_set('eztelemeta_player', true)}
 {def $item=$attribute.content}
 <div class="telemeta-item">
