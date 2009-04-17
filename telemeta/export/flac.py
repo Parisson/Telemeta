@@ -105,9 +105,9 @@ class FlacExporter(ExporterCore):
         media = FLAC(file)
         for tag in self.metadata.keys():
             if tag == 'COMMENT':
-                media['DESCRIPTION'] = str(self.metadata[tag])
+                media['DESCRIPTION'] = unicode(self.metadata[tag])
             else:
-                media[tag] = str(self.metadata[tag])
+                media[tag] = unicode(self.metadata[tag])
         try:
             media.save()
         except:
