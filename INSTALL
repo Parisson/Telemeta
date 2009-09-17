@@ -12,11 +12,13 @@ python (>= 2.3.5-7), python-xml, python-mutagen, python-django (>= 1.0-1),
 python-imaging (>= 1.1.6), sox (>= 14.2), vorbis-tools, flac, normalize-audio,
 python-mysqldb, mysql-server, octave2.9, python-tk, libgd2-xpm,
 libsndfile1 (>= 1.0.17), python-numpy, python-ctypes (>= 1.0.1),
-python-scikits-audiolab (>= 0.7), python-setuptools (>= 0.6b3),
-python-support (>= 0.3),
+python-scikits-audiolab (>= 0.10), python-setuptools (>= 0.6b3),
+python-support (>= 0.3), python-scipy, lame (>= 3.98.2)
 
 optional:
-lame, ecasound, festival, par2
+ecasound, festival, par2
+
+Here, package names are taken from the Debian OS and could be different on other platforms
 
 
 # 2. Install
@@ -67,9 +69,9 @@ lame, ecasound, festival, par2
     This is ONLY needed if you did NOT install telemeta with Debian's apt-get.
 
     In order to get the wavforms of the audio files,
-    python-audiolab have to be installed in telemeta :
+    python-audiolab have to be installed with the help of git :
 
-    $ svn export http://svn.scipy.org/svn/scikits/trunk/audiolab
+    $ git clone git://github.com/cournape/audiolab.git
     $ cd audiolab/
     $ sudo python setup.py install
 
