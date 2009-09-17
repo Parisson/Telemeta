@@ -44,31 +44,31 @@ class MediaCollection(models.Model):
     public_access           = models.Charfield(choices = PUBLIC_ACCESS_CHOICES) 
 
 class MediaItem(models.Model):
-    collection_id       = models.ForeignKey('MediaCollection')
-    track               = models.CharField()
-    old_code            = models.CharField(unique = True)
-    code                = models.CharField(unique = True)
-    approx_duration     = models.TimeField()
-    recorded_from_date  = models.DateField()
-    recorded_to_date    = models.DateField()
-    location_name       = models.ForeignKey('Location')
-    location_comment    = models.CharField()
-    ethnic_group_id     = models.ForeignKey('EthnicGroup')
-    title               = models.CharField()
-    alt_title           = models.CharField()
-    author              = models.CharField()
-    vernacular_style_id = models.ForeignKey('VernacularStyle')
-    context_comment     = models.TextField()
-    external_references = models.TextField()
-    moda_execut         = models.CharField()
-    copied_from_item_id = models.ForeignKey('self')
-    collector           = models.CharField()
-    cultural_area       = models.CharField()
-    generic_style_id    = models.ForeignKey('GenericStyle')
-    collector_selection = models.CharField()
-    creator_reference   = models.CharField()
-    comment             = models.TextField()
-    filename            = models.CharField()
+    collection_id           = models.ForeignKey('MediaCollection')
+    track                   = models.CharField()
+    old_code                = models.CharField(unique = True)
+    code                    = models.CharField(unique = True)
+    approx_duration         = models.TimeField()
+    recorded_from_date      = models.DateField()
+    recorded_to_date        = models.DateField()
+    location_name           = models.ForeignKey('Location')
+    location_comment        = models.CharField()
+    ethnic_group_id         = models.ForeignKey('EthnicGroup')
+    title                   = models.CharField()
+    alt_title               = models.CharField()
+    author                  = models.CharField()
+    vernacular_style_id     = models.ForeignKey('VernacularStyle')
+    context_comment         = models.TextField()
+    external_references     = models.TextField()
+    moda_execut             = models.CharField()
+    copied_from_item_id     = models.ForeignKey('self')
+    collector               = models.CharField()
+    cultural_area           = models.CharField()
+    generic_style_id        = models.ForeignKey('GenericStyle')
+    collector_selection     = models.CharField()
+    creator_reference       = models.CharField()
+    comment                 = models.TextField()
+    filename                = models.CharField()
     PUBLIC_ACCESS_CHOICES   = (
         ('none'),
         ('metadata'),
@@ -83,28 +83,41 @@ class MediaPart(models.Model):
     end     = models.FloatField()
 
 class PhysicalFormat(models.Model):
+    value = models.CharField()
 
 class PublishingStatus(models.Model):
+    value = models.CharField()
 
 class PublisherCollection(models.Model):
+    value = models.CharField()
 
 class AcquisitionMode(models.Model):
+    value = models.CharField()
 
 class MetadataAuthor(models.Model):
+    value = models.CharField()
 
 class MetadataWriter(models.Model):  
+    value = models.CharField()
 
 class LegalRight(models.Model): 
+    value = models.CharField()
 
 class RecordingContext(models.Model):
+    value = models.CharField()
 
 class AdConversion(models.Model):
+    value = models.CharField()
 
 class EthnicGroup(models.Model):
+    value = models.CharField()
    
+    value = models.CharField()
 class VernacularStyle(models.Model):
+    value = models.CharField()
 
 class GenericStyle(models.Model):
+    value = models.CharField()
 
 class Instrument(models.Model):
     name = models.CharField()
@@ -145,13 +158,13 @@ class Playlist(models.Model):
     name           = models.CharField()
 
 class PlaylistResource(models.Model):
-    playlist_id   = models.ForeignKey('Playlist')
+    playlist_id           = models.ForeignKey('Playlist')
     RESOURCE_TYPE_CHOICES = (
     ('item'),
     ('collection'),
     )
-    resource_type = models.CharField(choices = RESOURCE_TYPE_CHOICES)
-    resource_id   = models.ForeignKey('Playlist')
+    resource_type         = models.CharField(choices = RESOURCE_TYPE_CHOICES)
+    resource_id           = models.ForeignKey('Playlist')
 
 class Location(models.Model):
     name             = models.CharField(primary_key = True)
@@ -160,7 +173,7 @@ class Location(models.Model):
     ('continent'),
     ('other'),
     )
-    type = models.CharField(choices = TYPE_CHOICES)
+    type             = models.CharField(choices = TYPE_CHOICES)
     complet_type_id  = models.ForeignKey('LocationType')
     current_name     = models.ForeignKey('self') 
     is_authoritative = models.BooleanField()
@@ -193,16 +206,16 @@ class PublisherCollection(models.Model):
     value        = models.CharField()
 
 class Revision(models.Model):
-    element_type = models.CharField()
-    element_id   = models.ForeignKey('User')
+    element_type       = models.CharField()
+    element_id         = models.ForeignKey('User')
     CHANGE_TYPE_CHOICE = (
     ('create'),
     ('update'),
     ('delete'),
     )
-    change_type  = models.CharField(choices = CHANGE_TYPE_CHOICES)
-    time         = models.DateTimeField()
-    username     = models.ForeignKey('User')
+    change_type        = models.CharField(choices = CHANGE_TYPE_CHOICES)
+    time               = models.DateTimeField()
+    username           = models.ForeignKey('User')
     
 class EthnicGroup(models.Model):
     name = models.CharField()
