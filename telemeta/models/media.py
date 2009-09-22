@@ -93,6 +93,7 @@ class MediaCore(object):
         return doc
     
     def is_well_formed_id(cls, value):
+        "Check if the media id is well formed"
         regex = re.compile(r"^" + media_id_regex + r"$")
         if regex.match(value):
             return True 
@@ -181,6 +182,7 @@ class MediaCollection(Model, MediaCore):
         return False
 
     def is_published(self):
+        "Tell if this collection is published"
         if len(self.publisher_reference) < 3:
           return True
         if self.publisher_reference[:3] == 'BM.':
@@ -188,9 +190,11 @@ class MediaCollection(Model, MediaCore):
         return True
 
     def ordered_items(self):
+        "Order this item by id and title"
         return self.items.order_by('id', '_title')
 
     def get_countries(self):
+        "Return the country from this item"
         countries = []
         items = self.items.order_by('etat')
         for item in items:
@@ -199,6 +203,7 @@ class MediaCollection(Model, MediaCore):
         return countries
 
     def get_ethnic_groups(self):
+        "Return the ethnic groups of the items"
         groups = []
         items = self.items.order_by('ethnie_grsocial')
         for item in items:
@@ -211,6 +216,7 @@ class MediaCollection(Model, MediaCore):
         return self.id
 
     def save(self, force_insert=False, force_update=False):
+        "Do a save of the item and a revision of it"
         if not MediaCore.is_well_formed_id(self.id):
             raise MediaInvalidIdError()
         super(MediaCollection, self).save(force_insert, force_update)
@@ -265,6 +271,7 @@ class MediaItem(Model, MediaCore):
     objects = MediaItemManager()
 
     def _get_title(self):
+        "Get the title of the item"
         # to (sort of) sync with models.query.MediaItemQuerySet.by_title()
         if self._title == "":
             try:
@@ -315,12 +322,14 @@ class MediaItem(Model, MediaCore):
         return duration
 
     def get_revision(self):
+        "Query the revisions of the item ordered by date"
         return Revision.objects.filter(element_type='item', element_id=self.id).order_by('-time')[0]
 
     def __unicode__(self):
         return self.title
 
     def save(self, force_insert=False, force_update=False):
+        "Do a save of the item and a revision"
         if not MediaCore.is_well_formed_id(self.id):
             raise MediaInvalidIdError()
         super(MediaItem, self).save(force_insert, force_update)
@@ -360,6 +369,7 @@ class MediaPart(Model, MediaCore):
         return self.title
 
     def save(self, force_insert=False, force_update=False):
+        "Do a save of the item and a revision"
         super(MediaPart, self).save(force_insert, force_update)
         Revision(element_type='part', element_id=self.id).touch()
 
@@ -372,6 +382,7 @@ class MediaPart(Model, MediaCore):
         db_table = 'telemeta_part'
 
 class Revision(Model):
+    "Describe a revision"
     id              = AutoField(primary_key=True)
     element_type    = CharField(max_length=16, choices=(('collection', 'collection'),
                                                         ('item', 'item'),
@@ -385,6 +396,7 @@ class Revision(Model):
 
 
     def touch(self):
+        "Create or update a revision"
         q = Revision.objects.filter(element_type=self.element_type, element_id=self.element_id) 
         if q.count():
             self.change_type = 'update'

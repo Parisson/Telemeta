@@ -43,6 +43,7 @@ class CoreQuerySet(QuerySet):
         return self.extra(where = ["0 = 1"])
 
     def pattern_to_regex(self, pattern):
+        "Cast a pattern into a regex"
         regex = pattern;
         regex = regex.replace('*', '.*')
         regex = regex.replace('.', '.*')
@@ -51,11 +52,13 @@ class CoreQuerySet(QuerySet):
         return regex
 
     def word_search(self, field, pattern):
+        "Search a word from a regex"
         regex = self.pattern_to_regex(pattern)
         kwargs = {field + '__iregex': regex}
         return self.filter(**kwargs)
 
     def _by_change_time(self, type, from_time = None, until_time = None):
+        "Search between two dates"
         where = ["element_type = '%s'" % type]
         if from_time:
             where.append("time >= '%s'" % from_time.strftime('%Y-%m-%d %H:%M:%S'))
@@ -68,6 +71,7 @@ class CoreManager(Manager):
     "Base class for all models managers"
 
     def none(self, *args, **kwargs):
+        ""
         return self.get_query_set().none(*args, **kwargs)
 
 class MediaCollectionQuerySet(CoreQuerySet):
@@ -90,43 +94,55 @@ class MediaCollectionQuerySet(CoreQuerySet):
         return self.filter(items__continent=continent).distinct()
 
     def by_recording_date(self, pattern):
+        "Find collections by recording date"
         return self.filter(annee_enr__icontains=pattern)
 
     def by_publish_date(self, pattern):
+        "Find collections by publishing date"
         return self.filter(date_published__icontains=pattern) 
 
     def by_ethnic_group(self, group):
+        "Find collections by ethnic group"
         return self.filter(items__ethnie_grsocial=group).distinct()
 
     def by_change_time(self, from_time = None, until_time = None):
+        "Find collections between two dates"
         return self._by_change_time('collection', from_time, until_time)
 
 class MediaCollectionManager(CoreManager):
     "Manage collection queries"
 
     def get_query_set(self):
+        "Return the collection query"
         return MediaCollectionQuerySet(self.model)
 
     def quick_search(self, *args, **kwargs):
         return self.get_query_set().quick_search(*args, **kwargs)
+    quick_search.__doc__ = MediaCollectionQuerySet.quick_search.__doc__
 
     def by_country(self, *args, **kwargs):
         return self.get_query_set().by_country(*args, **kwargs)
+    by_country.__doc__ = MediaCollectionQuerySet.by_country.__doc__
 
     def by_continent(self, *args, **kwargs):
         return self.get_query_set().by_continent(*args, **kwargs)
+    by_continent.__doc__ = MediaCollectionQuerySet.by_continent.__doc__
 
     def by_recording_date(self, *args, **kwargs):
         return self.get_query_set().by_recording_date(*args, **kwargs)
+    by_recording_date.__doc__ = MediaCollectionQuerySet.by_recording_date.__doc__
 
     def by_publish_date(self, *args, **kwargs):
         return self.get_query_set().by_publish_date(*args, **kwargs)
+    by_publish_date.__doc__ = MediaCollectionQuerySet.by_publish_date.__doc__
 
     def by_ethnic_group(self, *args, **kwargs):
         return self.get_query_set().by_ethnic_group(*args, **kwargs)
+    by_ethnic_group.__doc__ = MediaCollectionQuerySet.by_ethnic_group.__doc__
 
     def by_change_time(self, *args, **kwargs):
         return self.get_query_set().by_change_time(*args, **kwargs)
+    by_change_time.__doc__ = MediaCollectionQuerySet.by_change_time.__doc__
 
     def stat_continents(self, order_by='num'):      
         "Return the number of collections by continents and countries as a tree"
@@ -182,6 +198,7 @@ class MediaCollectionManager(CoreManager):
         return result
 
 class MediaItemQuerySet(CoreQuerySet):
+    "Base class for all media item query sets"
     
     def quick_search(self, pattern):
         "Perform a quick search on id and title"
@@ -203,40 +220,50 @@ class MediaItemQuerySet(CoreQuerySet):
             | Q(annee_enreg__icontains=pattern))
 
     def by_title(self, pattern):
+        "Find items by title"
         # to (sort of) sync with models.media.MediaItem.get_title()
         regex = self.pattern_to_regex(pattern)
         return self.filter(Q(_title__iregex=regex) 
           | Q(collection__title__iregex=regex))
 
     def by_publish_date(self, pattern):
+        "Find items by publishing date"
         return self.filter(collection__date_published__icontains=pattern) 
 
     def by_change_time(self, from_time = None, until_time = None):
+        "Find items by last change time"  
         return self._by_change_time('item', from_time, until_time)
             
 class MediaItemManager(CoreManager):
     "Manage media items queries"
 
     def get_query_set(self):
+        "Return media query sets"
         return MediaItemQuerySet(self.model)
 
     def quick_search(self, *args, **kwargs):
         return self.get_query_set().quick_search(*args, **kwargs)
+    quick_search.__doc__ = MediaItemQuerySet.quick_search.__doc__
 
     def without_collection(self, *args, **kwargs):
         return self.get_query_set().without_collection(*args, **kwargs)
+    without_collection.__doc__ = MediaItemQuerySet.without_collection.__doc__   
 
     def by_recording_date(self, *args, **kwargs):
         return self.get_query_set().by_recording_date(*args, **kwargs)
+    by_recording_date.__doc__ = MediaItemQuerySet.by_recording_date.__doc__
 
     def by_title(self, *args, **kwargs):
         return self.get_query_set().by_title(*args, **kwargs)
+    by_title.__doc__ = MediaItemQuerySet.by_title.__doc__
 
     def by_publish_date(self, *args, **kwargs):
         return self.get_query_set().by_publish_date(*args, **kwargs)
+    by_publish_date.__doc__ = MediaItemQuerySet.by_publish_date.__doc__
 
     def by_change_time(self, *args, **kwargs):
         return self.get_query_set().by_change_time(*args, **kwargs)
+    by_change_time.__doc__ = MediaItemQuerySet.by_change_time.__doc__    
 
     def list_ethnic_groups(self):
         "Return a list of all ethnic groups"
