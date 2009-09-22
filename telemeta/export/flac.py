@@ -103,11 +103,13 @@ class FlacExporter(ExporterCore):
 
     def write_tags(self, file):
         media = FLAC(file)
-        for tag in self.metadata.keys():
-            if tag == 'COMMENT':
-                media['DESCRIPTION'] = unicode(self.metadata[tag])
+        for tag in self.metadata:
+            name = tag[0]
+            value = clean_word(tag[1])
+            if name == 'COMMENT':
+                media['DESCRIPTION'] = unicode(value)
             else:
-                media[tag] = unicode(self.metadata[tag])
+                media[name] = unicode(value)
         try:
             media.save()
         except:

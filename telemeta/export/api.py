@@ -79,7 +79,9 @@ class IExporter(Interface):
         source is the audio/video source file absolute path. For audio that
         should be a WAV file
 
-        metadata is a dictionary
+        metadata is a tuple containing tuples for each descriptor return by
+        the dc.Ressource of the item, in the model order :
+        ((name1, value1),(name2, value2),(name1, value3), ...)
 
         The returned file path is not meant to be permanent in any way, it 
         should be considered temporary/volatile by the caller.

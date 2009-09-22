@@ -141,13 +141,12 @@ class Mp3Exporter(ExporterCore):
         else:
             args.append('-S -c -o')
 
-        for tag in self.metadata.keys():
-            if tag in self.dub2args_dict.keys():
-                arg = self.dub2args_dict[tag]
-                value = clean_word(self.metadata[tag])
-                args.append('--' + arg)
-                args.append('"' + value + '"')
-
+        for tag in self.metadata:
+            name = tag[0]
+            value = clean_word(tag[1])
+            if name in self.dub2args_dict.keys():
+                arg = self.dub2args_dict[name]
+                args.append('--' + arg + ' "' + value + '"')
         return args
 
     def process(self, item_id, source, metadata, options=None):

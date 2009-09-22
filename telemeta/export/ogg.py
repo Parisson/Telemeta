@@ -115,13 +115,13 @@ class OggExporter(ExporterCore):
         else:
             args.append('-Q -b '+self.bitrate_default)
 
-        for tag in self.metadata.keys():
-            value = clean_word(self.metadata[tag])
-            args.append('-c %s="%s"' % (tag, value))
-            if tag in self.dub2args_dict.keys():
-                arg = self.dub2args_dict[tag]
+        for tag in self.metadata:
+            name = tag[0]
+            value = clean_word(tag[1])
+            args.append('-c %s="%s"' % (name, value))
+            if name in self.dub2args_dict.keys():
+                arg = self.dub2args_dict[name]
                 args.append('-c %s="%s"' % (arg, value))
-
         return args
 
     def process(self, item_id, source, metadata, options=None):
