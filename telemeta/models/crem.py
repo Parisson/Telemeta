@@ -16,7 +16,7 @@ class MediaCollection(models.Model):
     booklet_description   = models.TextField()
     collector             = models.CharField(max_length=250)
     collector_is_creator  = models.BooleanField()
-    publisher_id          = models.IntegerField()
+    publisher_id          = models.ForeignKey('Publishers', related_name="collections")
     year_published        = models.IntegerField()
     publisher_collection  = models.ForeignKey('PublisherCollection', related_name="collections")
     publisher_serial      = models.CharField(max_length=250)
@@ -103,9 +103,6 @@ class RecordingContext(models.Model):
 class AdConversion(models.Model):
     value = models.CharField(max_length=250)
 
-class EthnicGroup(models.Model):
-    value = models.CharField(max_length=250)
-   
 class VernacularStyle(models.Model):
     value = models.CharField(max_length=250)
 
@@ -186,7 +183,7 @@ class Revision(models.Model):
     CHANGE_TYPE_CHOICES = (('0', 'create'), ('1', 'update'), ('2','delete'))
 
     element_type        = models.CharField(max_length=250)
-    element             = models.ForeignKey('User', related_name="elements")
+    element_id          = models.IntegerField()
     change_type         = models.CharField(choices=CHANGE_TYPE_CHOICES, max_length=250)
     time                = models.DateTimeField()
     username            = models.ForeignKey('User', related_name="usernames")
