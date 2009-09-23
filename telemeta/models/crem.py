@@ -1,6 +1,7 @@
 from django.db import models
 
 class MediaCollection(models.Model):
+    "Describe a collection of items"
     PUBLIC_ACCESS_CHOICES = (('0', 'none'), ('1', 'metadata'), ('2', 'full'))
 
     reference             = models.CharField(unique=True, max_length=250)
@@ -16,7 +17,7 @@ class MediaCollection(models.Model):
     booklet_description   = models.TextField()
     collector             = models.CharField(max_length=250)
     collector_is_creator  = models.BooleanField()
-    publisher_id          = models.ForeignKey('Publishers', related_name="collections")
+    publisher_id          = models.ForeignKey('Publisher', related_name="collections")
     year_published        = models.IntegerField()
     publisher_collection  = models.ForeignKey('PublisherCollection', related_name="collections")
     publisher_serial      = models.CharField(max_length=250)
@@ -41,6 +42,7 @@ class MediaCollection(models.Model):
     public_access         = models.CharField(choices=PUBLIC_ACCESS_CHOICES, max_length=250)
 
 class MediaItem(models.Model):
+    "Describe an item"
     PUBLIC_ACCESS_CHOICES = (('0', 'none'), ('1', 'metadata'), ('2', 'full'))
 
     collection            = models.ForeignKey('MediaCollection', related_name="items")
@@ -71,51 +73,76 @@ class MediaItem(models.Model):
     public_access         = models.CharField(choices=PUBLIC_ACCESS_CHOICES, max_length=250)
 
 class MediaPart(models.Model):
+    "Describe an item part"
     item  = models.ForeignKey('MediaItem', related_name="parts")
     title = models.CharField(max_length=250)
     start = models.FloatField()
     end   = models.FloatField()
 
 class PhysicalFormat(models.Model):
+    "Collection physical format"
     value = models.CharField(max_length=250)
 
 class PublishingStatus(models.Model):
+    "Collection publishing status"
     value = models.CharField(max_length=250)
 
 class PublisherCollection(models.Model):
+    "Publisher collection"
     value = models.CharField(max_length=250)
 
 class AcquisitionMode(models.Model):
+    "Mode of acquisition of the collection"
     value = models.CharField(max_length=250)
 
 class MetadataAuthor(models.Model):
+    "Collection metadata author"
     value = models.CharField(max_length=250)
 
 class MetadataWriter(models.Model):  
+    "Collection metadata writer"
     value = models.CharField(max_length=250)
 
-class LegalRight(models.Model): 
+class LegalRight(models.Model):
+    "Collection legal rights" 
     value = models.CharField(max_length=250)
 
 class RecordingContext(models.Model):
+    "Collection recording context"
     value = models.CharField(max_length=250)
 
 class AdConversion(models.Model):
+    "Collection digital to analog conversion status"
     value = models.CharField(max_length=250)
 
 class VernacularStyle(models.Model):
+    "Item vernacular style"
     value = models.CharField(max_length=250)
 
 class GenericStyle(models.Model):
+    "Item generic style"
     value = models.CharField(max_length=250)
 
 class Instrument(models.Model):
+    "Instrument used in the item"
     name    = models.CharField(max_length=250)
 
 class InstrumentAlias(models.Model):
+    "Instrument other name"
     name = models.CharField(max_length=250)
 
+class InstrumentRelation(models.Model):
+    "Instrument family"
+    instrument        = models.ForeignKey('Instrument', related_name="parent_relation")
+    parent_instrument = models.ForeignKey('Instrument', related_name="child_relation")
+
+class InstrumentAliasRelation(models.Model):
+    "Instrument family other name"
+    alias      = models.ForeignKey('InstrumentAlias', related_name="other_name")
+    instrument = models.ForeignKey('InstrumentAlias', related_name="relation")
+
 class MediaItemPerformance(models.Model):
+    "Item performance"
     media_item      = models.ForeignKey('MediaItem', related_name="performances")
     instrument      = models.ForeignKey('Instrument', related_name="performances")
     alias           = models.ForeignKey('InstrumentAlias', related_name="performances")
@@ -123,6 +150,7 @@ class MediaItemPerformance(models.Model):
     musicians       = models.CharField(max_length=250)
 
 class User(models.Model):
+    "Telemeta user"
     LEVEL_CHOICES = (('0', 'user'), ('1', 'maintainer'), ('2', 'admin'))    
 
     username   = models.CharField(primary_key=True, max_length=250)
@@ -133,10 +161,12 @@ class User(models.Model):
     email      = models.CharField(max_length=250)
 
 class Playlist(models.Model):
+    "Item or collection playlist"
     owner_username = models.ForeignKey('User', related_name="playlists") 
     name           = models.CharField(max_length=250)
 
 class PlaylistResource(models.Model):
+    "Playlist components"
     RESOURCE_TYPE_CHOICES = (('0', 'item'), ('1', 'collection'))
 
     playlist              = models.ForeignKey('Playlist', related_name="resources")
@@ -144,6 +174,7 @@ class PlaylistResource(models.Model):
     resource              = models.IntegerField()
 
 class Location(models.Model):
+    "Item location"
     TYPE_CHOICES     = (('0', 'country'), ('1', 'continent'), ('2', 'other'))
 
     name             = models.CharField(primary_key=True, max_length=250)
@@ -153,33 +184,41 @@ class Location(models.Model):
     is_authoritative = models.BooleanField()
 
 class LocationType(models.Model):
+    "Location type of an item location"
     type = models.CharField(max_length=250)
 
 class LocationAlias(models.Model):
+    "Location other name"
     location_name    = models.ForeignKey('Location', related_name="aliases")
     alias            = models.CharField(max_length=250)
     is_authoritative = models.BooleanField()
     
 class LocationRelation(models.Model):
+    "Location family"
     location_name        = models.ForeignKey('Location', related_name="parent_relations")
     parent_location_name = models.ForeignKey('Location', related_name="child_relations")
     is_authoritative     = models.BooleanField()
     
 class ContextKeyword(models.Model):
+    "Keyword"
     value = models.CharField(max_length=250)
 
 class MediaItemKeyword(models.Model):
+    "Item keyword"
     item    = models.ForeignKey('MediaItem', related_name="items")
     keyword = models.ForeignKey('ContextKeyword', related_name="keywords")
 
 class Publisher(models.Model): 
+    "Collection publisher"
     value = models.CharField(max_length=250)
 
 class PublisherCollection(models.Model):
+    "Collection which belongs to publisher"
     publisher = models.ForeignKey('Publisher', related_name="collections")
     value     = models.CharField(max_length=250)
 
 class Revision(models.Model):
+    "Revision made by user"
     CHANGE_TYPE_CHOICES = (('0', 'create'), ('1', 'update'), ('2','delete'))
 
     element_type        = models.CharField(max_length=250)
@@ -189,8 +228,10 @@ class Revision(models.Model):
     username            = models.ForeignKey('User', related_name="usernames")
     
 class EthnicGroup(models.Model):
+    "Item ethnic group"
     name = models.CharField(max_length=250)
 
 class EthnicGroupAlias(models.Model):
+    "Item ethnic group other name" 
     ethnic_group = models.ForeignKey('EthnicGroup', related_name="aliases")
     name         = models.CharField(max_length=250)
