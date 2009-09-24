@@ -17,7 +17,7 @@ class MediaCollection(models.Model):
     booklet_description   = models.TextField()
     collector             = models.CharField(max_length=250)
     collector_is_creator  = models.BooleanField()
-    publisher_id          = models.ForeignKey('Publisher', related_name="collections")
+    publisher             = models.ForeignKey('Publisher', related_name="collections")
     year_published        = models.IntegerField()
     publisher_collection  = models.ForeignKey('PublisherCollection', related_name="collections")
     publisher_serial      = models.CharField(max_length=250)
@@ -41,6 +41,9 @@ class MediaCollection(models.Model):
     ad_conversion         = models.ForeignKey('AdConversion', related_name='collections')
     public_access         = models.CharField(choices=PUBLIC_ACCESS_CHOICES, max_length=250)
 
+    class Meta:
+        db_table = 'media_collections'
+
 class MediaItem(models.Model):
     "Describe an item"
     PUBLIC_ACCESS_CHOICES = (('0', 'none'), ('1', 'metadata'), ('2', 'full'))
@@ -48,11 +51,12 @@ class MediaItem(models.Model):
     collection            = models.ForeignKey('MediaCollection', related_name="items")
     track                 = models.CharField(max_length=250)
     old_code              = models.CharField(unique=True, max_length=250)
-    code                  = models.CharField(unique=True, max_length=250)
+    code                  = models.CharField(unique=True, max_length=250, null=True)
     approx_duration       = models.TimeField()
     recorded_from_date    = models.DateField()
     recorded_to_date      = models.DateField()
-    location_name         = models.ForeignKey('Location', related_name="items")
+    location_name         = models.ForeignKey('Location', related_name="items",
+                                              db_column='location_name')
     location_comment      = models.CharField(max_length=250)
     ethnic_group          = models.ForeignKey('EthnicGroup', related_name="items")
     title                 = models.CharField(max_length=250)
@@ -72,6 +76,9 @@ class MediaItem(models.Model):
     filename              = models.CharField(max_length=250)
     public_access         = models.CharField(choices=PUBLIC_ACCESS_CHOICES, max_length=250)
 
+    class Meta:
+        db_table = 'media_items'
+
 class MediaPart(models.Model):
     "Describe an item part"
     item  = models.ForeignKey('MediaItem', related_name="parts")
@@ -79,75 +86,121 @@ class MediaPart(models.Model):
     start = models.FloatField()
     end   = models.FloatField()
 
+    class Meta:
+        db_table = 'media_parts'
+
 class PhysicalFormat(models.Model):
     "Collection physical format"
     value = models.CharField(max_length=250)
+    
+    class Meta:
+        db_table = 'physical_formats'
 
 class PublishingStatus(models.Model):
     "Collection publishing status"
     value = models.CharField(max_length=250)
 
-class PublisherCollection(models.Model):
-    "Publisher collection"
-    value = models.CharField(max_length=250)
+    class Meta:
+        db_table = 'publishing_status'
 
 class AcquisitionMode(models.Model):
     "Mode of acquisition of the collection"
     value = models.CharField(max_length=250)
 
+    class Meta:
+        db_table = 'acquisition_modes'
+
 class MetadataAuthor(models.Model):
     "Collection metadata author"
     value = models.CharField(max_length=250)
+
+    class Meta:
+        db_table = 'metadata_authors'
 
 class MetadataWriter(models.Model):  
     "Collection metadata writer"
     value = models.CharField(max_length=250)
 
+    class Meta:
+        db_table = 'metadata_writers'
+
 class LegalRight(models.Model):
     "Collection legal rights" 
     value = models.CharField(max_length=250)
+
+    class Meta:
+        db_table = 'legal_rights'
 
 class RecordingContext(models.Model):
     "Collection recording context"
     value = models.CharField(max_length=250)
 
+    class Meta:
+        db_table = 'recording_contexts'
+
 class AdConversion(models.Model):
     "Collection digital to analog conversion status"
     value = models.CharField(max_length=250)
+
+    class Meta:
+        db_table = 'ad_conversions'
 
 class VernacularStyle(models.Model):
     "Item vernacular style"
     value = models.CharField(max_length=250)
 
+    class Meta:
+        db_table = 'vernacular_styles'
+
 class GenericStyle(models.Model):
     "Item generic style"
     value = models.CharField(max_length=250)
+
+    class Meta:
+        db_table = 'generic_styles'
 
 class Instrument(models.Model):
     "Instrument used in the item"
     name    = models.CharField(max_length=250)
 
+    class Meta:
+        db_table = 'instruments'
+
 class InstrumentAlias(models.Model):
     "Instrument other name"
     name = models.CharField(max_length=250)
+
+    class Meta:
+        db_table = 'instrument_aliases'
 
 class InstrumentRelation(models.Model):
     "Instrument family"
     instrument        = models.ForeignKey('Instrument', related_name="parent_relation")
     parent_instrument = models.ForeignKey('Instrument', related_name="child_relation")
 
+    class Meta:
+        db_table = 'instrument_relations'
+
 class InstrumentAliasRelation(models.Model):
     "Instrument family other name"
     alias      = models.ForeignKey('InstrumentAlias', related_name="other_name")
     instrument = models.ForeignKey('InstrumentAlias', related_name="relation")
 
+    class Meta:
+        db_table = 'instrument_alias_relations'
+
 class MediaItemPerformance(models.Model):
     "Item performance"
     media_item      = models.ForeignKey('MediaItem', related_name="performances")
-    instrument      = models.ForeignKey('Instrument', related_name="performances")
-    alias           = models.ForeignKey('InstrumentAlias', related_name="performances")
+    instrument      = models.ForeignKey('Instrument', related_name="performances",
+                                        null=True)
+    alias           = models.ForeignKey('InstrumentAlias', related_name="performances",
+                                        null=True)
     instruments_num = models.CharField(max_length=250)
     musicians       = models.CharField(max_length=250)
+
+    class Meta:
+        db_table = 'media_item_performances'
 
 class User(models.Model):
     "Telemeta user"
@@ -160,10 +213,16 @@ class User(models.Model):
     phone      = models.CharField(max_length=250)
     email      = models.CharField(max_length=250)
 
+    class Meta:
+        db_table = 'users'
+
 class Playlist(models.Model):
     "Item or collection playlist"
     owner_username = models.ForeignKey('User', related_name="playlists") 
     name           = models.CharField(max_length=250)
+
+    class Meta:
+        db_table = 'playlists'
 
 class PlaylistResource(models.Model):
     "Playlist components"
@@ -173,49 +232,81 @@ class PlaylistResource(models.Model):
     resource_type         = models.CharField(choices=RESOURCE_TYPE_CHOICES, max_length=250)
     resource              = models.IntegerField()
 
+    class Meta:
+        db_table = 'playlist_resources'
+
 class Location(models.Model):
     "Item location"
     TYPE_CHOICES     = (('0', 'country'), ('1', 'continent'), ('2', 'other'))
 
     name             = models.CharField(primary_key=True, max_length=250)
     type             = models.CharField(choices=TYPE_CHOICES, max_length=250)
-    complet_type     = models.ForeignKey('LocationType', related_name="types")
-    current_name     = models.ForeignKey('self', related_name="past_names") 
+    complete_type    = models.ForeignKey('LocationType', related_name="types")
+    current_name     = models.ForeignKey('self', related_name="past_names", 
+                                         db_column="current_name") 
     is_authoritative = models.BooleanField()
+
+    class Meta:
+        db_table = 'locations'
 
 class LocationType(models.Model):
     "Location type of an item location"
-    type = models.CharField(max_length=250)
+    id   = models.CharField(max_length=250, primary_key=True)
+    name = models.CharField(max_length=250)
+
+    class Meta:
+        db_table = 'location_types'
 
 class LocationAlias(models.Model):
     "Location other name"
-    location_name    = models.ForeignKey('Location', related_name="aliases")
+    location_name    = models.ForeignKey('Location', related_name="aliases",
+                                          db_column="location_name")
     alias            = models.CharField(max_length=250)
     is_authoritative = models.BooleanField()
+
+    class Meta:
+        db_table = 'location_aliases'
     
 class LocationRelation(models.Model):
     "Location family"
-    location_name        = models.ForeignKey('Location', related_name="parent_relations")
-    parent_location_name = models.ForeignKey('Location', related_name="child_relations")
+    location_name        = models.ForeignKey('Location', related_name="parent_relations",
+                                              db_column="location_name")
+    parent_location_name = models.ForeignKey('Location', related_name="child_relations",
+                                              db_column="parent_location_name")
     is_authoritative     = models.BooleanField()
+
+    class Meta:
+        db_table = 'location_relations'
     
 class ContextKeyword(models.Model):
     "Keyword"
     value = models.CharField(max_length=250)
+
+    class Meta:
+        db_table = 'context_keywords'
 
 class MediaItemKeyword(models.Model):
     "Item keyword"
     item    = models.ForeignKey('MediaItem', related_name="items")
     keyword = models.ForeignKey('ContextKeyword', related_name="keywords")
 
+    class Meta:
+        db_table = 'media_item_keywords'
+
 class Publisher(models.Model): 
     "Collection publisher"
     value = models.CharField(max_length=250)
 
+    class Meta:
+        db_table = 'publishers'
+
 class PublisherCollection(models.Model):
     "Collection which belongs to publisher"
-    publisher = models.ForeignKey('Publisher', related_name="collections")
+    publisher = models.ForeignKey('Publisher', related_name="publisher_collections")
     value     = models.CharField(max_length=250)
+
+    class Meta:
+        db_table = 'publisher_collections'
 
 class Revision(models.Model):
     "Revision made by user"
@@ -226,12 +317,21 @@ class Revision(models.Model):
     change_type         = models.CharField(choices=CHANGE_TYPE_CHOICES, max_length=250)
     time                = models.DateTimeField()
     username            = models.ForeignKey('User', related_name="usernames")
+
+    class Meta:
+        db_table = 'revisions'
     
 class EthnicGroup(models.Model):
     "Item ethnic group"
     name = models.CharField(max_length=250)
 
+    class Meta:
+        db_table = 'ethnic_groups'
+
 class EthnicGroupAlias(models.Model):
     "Item ethnic group other name" 
     ethnic_group = models.ForeignKey('EthnicGroup', related_name="aliases")
     name         = models.CharField(max_length=250)
+
+    class Meta:
+        db_table = 'ethnic_group_aliases'        
