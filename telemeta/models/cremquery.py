@@ -96,8 +96,10 @@ class MediaCollectionQuerySet(CoreQuerySet):
     def by_recording_year(self, from_year, to_year=None):
         "Find collections by recording year"
         if to_year is None:
-            to_year = from_year
-        return (self.filter(Q(recorded_from_year__range=(from_year, to_year)) | Q(recorded_to_year__range=(from_year, to_year))))
+            return (self.filter(recorded_from_year__lte=from_year, recorded_to_year__gte=from_year))
+        else:
+            return (self.filter(Q(recorded_from_year__range=(from_year, to_year)) | 
+                    Q(recorded_to_year__range=(from_year, to_year))))
 
     def by_publish_year(self, from_year, to_year=None):
         "Find collections by publishing year"
@@ -107,7 +109,7 @@ class MediaCollectionQuerySet(CoreQuerySet):
 
     def by_ethnic_group(self, group):
         "Find collections by ethnic group"
-        return self.filter(items__ethnic_group=group).distinct()
+        return self.filter(items__ethnic_group__name=group).distinct()
 
     def by_change_time(self, from_time=None, until_time=None):
         "Find collections between two dates"
@@ -209,8 +211,8 @@ class MediaItemQuerySet(CoreQuerySet):
         regex = self.pattern_to_regex(pattern)
         return self.filter(
             Q(id__iregex=regex) |
-            Q(_title__iregex=regex) |
-            Q(auteur__iregex=regex) 
+            Q(title__iregex=regex) |
+            Q(author__iregex=regex) 
         )
 
     def without_collection(self):        
@@ -221,8 +223,10 @@ class MediaItemQuerySet(CoreQuerySet):
     def by_recording_date(self, from_date, to_date = None):
         "Find items by recording date"
         if to_date is None:
-            to_date = from_date
-        return (self.filter(Q(recorded_from_date__range=(from_date, to_date)) | Q(recorded_to_date__range=(from_date, to_date))))
+            return (self.filter(recorded_from_date__lte=from_date, recorded_to_date__gte=from_date))
+        else :
+            return (self.filter(Q(recorded_from_date__range=(from_date, to_date)) 
+                                | Q(recorded_to_date__range=(from_date, to_date))))
 
     def by_title(self, pattern):
         "Find items by title"
