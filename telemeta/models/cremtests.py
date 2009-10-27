@@ -143,25 +143,24 @@ class CollectionItemTestCase(unittest.TestCase):
 
     def testQuickSearchOnItems(self):
         "Test quick_search property of MediaItem class"
-        result = self.items.quick_search("item 1")
-        self.assertEquals(result[0], self.item_1)
-        result = self.items.quick_search("item 2")
-        self.assertEquals(result[0], self.item_2)
-        result = self.items.quick_search("item 3")
+        result = self.items.quick_search("item")
         self.assertEquals(result[0], self.item_3)
-        result = self.items.quick_search("item 4")
-        self.assertEquals(result[0], self.item_4)
-        result = self.items.quick_search("item 5")
-        self.assertEquals(result[0], self.item_5)
-        result = self.items.quick_search("item 6")
-        self.assertEquals(result[0], self.item_6)
+        self.assertEquals(result[1], self.item_4)
+        self.assertEquals(result[2], self.item_5)
+        self.assertEquals(result[3], self.item_6)
+        self.assertEquals(result[4], self.item_2)
+        self.assertEquals(result[5], self.item_1)
 
     def testWordSearch(self):
         "Test quick_search property of MediaCollection class, specificly quick_search on collection title"
         result = self.collections.quick_search("volonté puissance")
         self.assertEquals(result[0], self.volonte)
         result = self.collections.quick_search("puissance volonté")
-        #self.assertEquals(result[0], self.volonte)
+        self.assertEquals(result[0], self.volonte)
+        result = self.collections.quick_search("volonte puissance")
+        self.assertEquals(result[0], self.volonte)
+        result = self.collections.quick_search("puissance volonte")
+        self.assertEquals(result[0], self.volonte)
         
     def testLocationSearch(self):
         "Test by_country and by_continent properties of MediaCollection class"
@@ -202,7 +201,13 @@ class CollectionItemTestCase(unittest.TestCase):
 
     def testTitle(self):
         "Test by_title property of MediaItem class"
-        self.assertEquals(self.items.by_title("item 1")[0], self.item_1)
+        result = self.items.by_title("item")
+        self.assertEquals(result[0], self.item_3)
+        self.assertEquals(result[1], self.item_4)
+        self.assertEquals(result[2], self.item_5)
+        self.assertEquals(result[3], self.item_6)
+        self.assertEquals(result[4], self.item_1)
+        self.assertEquals(result[5], self.item_2)
         result = self.items.by_title("volonté")
         self.assertEquals(result[0], self.item_5)
         self.assertEquals(result[1], self.item_2)
