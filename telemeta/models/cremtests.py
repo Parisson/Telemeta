@@ -2,6 +2,7 @@
 
 import unittest
 from models import MediaCollection, MediaItem, Location, EthnicGroup, LocationType
+from datetime import datetime, timedelta
 
 class CollectionItemTestCase(unittest.TestCase):
     def setUp(self):
@@ -237,8 +238,12 @@ class CollectionItemTestCase(unittest.TestCase):
     
     def testByChangeTimeOnCollection(self):
         "Test by_change_time property of MediaCollection class"
-        self.assertEquals(self.collection.by_change_time("1999-01-01", "2000-12-12"), self.persepolis)
+        now = datetime.now()
+        result = self.collections.by_change_time(now - timedelta(hours=1), datetime.now()).order_by("title")
+        self.assertEquals(result[0], self.persepolis)
 
     def testByChangeTimeOnItem(self):
         "Test by_change_time property of MediaItem class"
-        self.assertEquals(self.collection.by_change_time("1999-01-01", "2000-12-12"), self.item_1)
+        now = datetime.now()
+        result = self.items.by_change_time(now - timedelta(hours=1), datetime.now()).order_by("title")
+        self.assertEquals(result[0], self.item_1)
