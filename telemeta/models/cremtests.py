@@ -143,13 +143,13 @@ class CollectionItemTestCase(unittest.TestCase):
 
     def testQuickSearchOnItems(self):
         "Test quick_search property of MediaItem class"
-        result = self.items.quick_search("item")
-        self.assertEquals(result[0], self.item_3)
-        self.assertEquals(result[1], self.item_4)
-        self.assertEquals(result[2], self.item_5)
-        self.assertEquals(result[3], self.item_6)
-        self.assertEquals(result[4], self.item_2)
-        self.assertEquals(result[5], self.item_1)
+        result = self.items.quick_search("item").order_by("title")
+        self.assertEquals(result[0], self.item_1)
+        self.assertEquals(result[1], self.item_2)
+        self.assertEquals(result[2], self.item_3)
+        self.assertEquals(result[3], self.item_4)
+        self.assertEquals(result[4], self.item_5)
+        self.assertEquals(result[5], self.item_6)
 
     def testWordSearch(self):
         "Test quick_search property of MediaCollection class, specificly quick_search on collection title"
@@ -166,54 +166,79 @@ class CollectionItemTestCase(unittest.TestCase):
         "Test by_country and by_continent properties of MediaCollection class"
         self.assertEquals(self.collections.by_country("France")[0], self.persepolis)
         self.assertEquals(self.collections.by_continent("Europe")[0], self.persepolis)
-        self.assertEquals(self.collections.by_country("Belgique")[0], self.volonte)
-        self.assertEquals(self.collections.by_country("Belgique")[1], self.nicolas)
+        self.assertEquals(self.collections.by_country("Belgique").order_by("title")[0], self.nicolas)
+        self.assertEquals(self.collections.by_country("Belgique").order_by("title")[1], self.volonte)
 
     def testRecordingYear(self): 
         "Test by_recording_year property of MediaCollection class"
         self.assertEquals(self.collections.by_recording_year(1970, 1980)[0], self.persepolis)
-        result = self.collections.by_recording_year(1975)
-        self.assertEquals(result[1], self.persepolis)
-        self.assertEquals(result[0], self.volonte)
+        result = self.collections.by_recording_year(1975).order_by("title")
+        self.assertEquals(result[0], self.persepolis)
+        self.assertEquals(result[1], self.volonte)
     
     def testPublishYearOnCollection(self):
         "Test by_publish_year property of MediaCollection class"
-        result=self.collections.by_publish_year(1999)
+        result=self.collections.by_publish_year(1999).order_by("title")
         self.assertEquals(result[0], self.nicolas)
         self.assertEquals(result[1], self.volonte)
         
     def testEthnicGroup(self):
         "Test by_ethnic_group property of MediaCollection class"
-        result=self.collections.by_ethnic_group("a")
+        result=self.collections.by_ethnic_group("a").order_by("title")
         self.assertEquals(result[0], self.persepolis)
         self.assertEquals(result[1], self.volonte)
 
     def testRecordingDate(self):
         "Test by_recording_date property of MediaItem class"
-        result = self.items.by_recording_date("1968-01-01", "1972-12-12")
-        self.assertEquals(result[0], self.item_3)
-        self.assertEquals(result[1], self.item_4)
-        self.assertEquals(result[2], self.item_6)
-        self.assertEquals(result[3], self.item_1)
-        result = self.items.by_recording_date("1968-02-06")
+        result = self.items.by_recording_date("1968-01-01", "1972-12-12").order_by("title")
+        self.assertEquals(result[0], self.item_1)
+        self.assertEquals(result[1], self.item_3)
+        self.assertEquals(result[2], self.item_4)
+        self.assertEquals(result[3], self.item_6)
+        result = self.items.by_recording_date("1968-02-06").order_by("title")
         self.assertEquals(result[0], self.item_3)
         self.assertEquals(result[1], self.item_6)
 
     def testTitle(self):
         "Test by_title property of MediaItem class"
-        result = self.items.by_title("item")
-        self.assertEquals(result[0], self.item_3)
-        self.assertEquals(result[1], self.item_4)
-        self.assertEquals(result[2], self.item_5)
-        self.assertEquals(result[3], self.item_6)
-        self.assertEquals(result[4], self.item_1)
-        self.assertEquals(result[5], self.item_2)
-        result = self.items.by_title("volonté")
-        self.assertEquals(result[0], self.item_5)
+        result = self.items.by_title("item").order_by("title")
+        self.assertEquals(result[0], self.item_1)
         self.assertEquals(result[1], self.item_2)
+        self.assertEquals(result[2], self.item_3)
+        self.assertEquals(result[3], self.item_4)
+        self.assertEquals(result[4], self.item_5)
+        self.assertEquals(result[5], self.item_6)
+        result = self.items.by_title("volonté").order_by("title")
+        self.assertEquals(result[0], self.item_2)
+        self.assertEquals(result[1], self.item_5)
+        result = self.items.by_title("puissance volonté").order_by("title")
+        self.assertEquals(result[0], self.item_2)
+        self.assertEquals(result[1], self.item_5)
 
     def testPublishYearOnItem(self):
         "Test by_publish_year property of MediaItem class"
-        self.assertEquals(self.items.by_publish_year(1999)[0], self.item_3)
-        self.assertEquals(self.items.by_publish_year(1999)[1], self.item_5)
-        self.assertEquals(self.items.by_publish_year(1999)[2], self.item_2)
+        result = self.items.by_publish_year(1999).order_by("title")
+        self.assertEquals(result[0], self.item_2)
+        self.assertEquals(result[1], self.item_3)
+        self.assertEquals(result[2], self.item_5)
+    
+    def testWordSearchCore(self):
+        "Test word_search property of CoreQuerySet class"
+        self.assertEquals(self.collections.word_search("title", "volonté")[0], self.volonte)
+        self.assertEquals(self.collections.word_search("code", "100")[0], self.persepolis)
+        self.assertEquals(self.items.word_search("code", "1010")[0], self.item_1)
+        result = self.items.word_search("comment", "comment").order_by("title")
+        self.assertEquals(result[0], self.item_1)
+        self.assertEquals(result[1], self.item_2)
+        self.assertEquals(result[2], self.item_3)
+        self.assertEquals(result[3], self.item_4)
+        self.assertEquals(result[4], self.item_5)
+        self.assertEquals(result[5], self.item_6)
+    
+    def testByChangeTimeOnCollection(self):
+        "Test by_change_time property of MediaCollection class"
+        self.assertEquals(self.collection.by_change_time("1999-01-01", "2000-12-12"), self.persepolis)
+
+    def testByChangeTimeOnItem(self):
+        "Test by_change_time property of MediaItem class"
+        self.assertEquals(self.collection.by_change_time("1999-01-01", "2000-12-12"), self.item_1)
