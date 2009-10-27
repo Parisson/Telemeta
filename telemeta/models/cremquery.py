@@ -34,6 +34,7 @@
 
 from django.db.models import Manager, Q
 from django.db.models.query import QuerySet
+import re
 
 class CoreQuerySet(QuerySet):
     "Base class for all query sets"
@@ -42,21 +43,19 @@ class CoreQuerySet(QuerySet):
         "Return an empty result set"
         return self.extra(where = ["0 = 1"])
 
-    def pattern_to_regex(self, pattern):
-        "Cast a pattern into a regex with wildcards between words"
-        regex = pattern;
-        regex = regex.replace('*', '.*')
-        regex = regex.replace('.', '.*')
-        regex = regex.replace('-', '.*')
-        regex = regex.replace(' ', '.*')
-        return regex
+    def word_search_q(self, field, pattern):
+        words = re.split("[ .*-]+", pattern)
+        q = Q()
+        for w in words:
+            if len(w) >= 3:
+                kwargs = {field + '__icontains': w}
+                q &= Q(**kwargs)
+
+        return q
 
     def word_search(self, field, pattern):
-        "Look for words contained in the pattern in a specific field"
-        regex = self.pattern_to_regex(pattern)
-        kwargs = {field + '__iregex': regex}
-        return self.filter(**kwargs)
-
+        return self.filter(self.word_search_q(field, pattern))
+        
     def _by_change_time(self, type, from_time = None, until_time = None):
         "Search between two revision dates"
         where = ["element_type = '%s'" % type]
@@ -78,11 +77,10 @@ class MediaCollectionQuerySet(CoreQuerySet):
 
     def quick_search(self, pattern):
         "Perform a quick search on id, title and creator name"
-        regex = self.pattern_to_regex(pattern)
         return self.filter(
-            Q(id__iregex=regex) |
-            Q(title__iregex=regex) |
-            Q(creator__iregex=regex)
+            self.word_search_q('id', pattern) |
+            self.word_search_q('title', pattern) |  
+            self.word_search_q('creator', pattern)   
         )
 
     def by_country(self, country):
@@ -208,11 +206,10 @@ class MediaItemQuerySet(CoreQuerySet):
     
     def quick_search(self, pattern):
         "Perform a quick search on id and title"
-        regex = self.pattern_to_regex(pattern)
         return self.filter(
-            Q(id__iregex=regex) |
-            Q(title__iregex=regex) |
-            Q(author__iregex=regex) 
+            self.word_search_q('id', pattern) |
+            self.word_search_q('title', pattern) |  
+            self.word_search_q('author', pattern)   
         )
 
     def without_collection(self):        
@@ -231,9 +228,7 @@ class MediaItemQuerySet(CoreQuerySet):
     def by_title(self, pattern):
         "Find items by title"
         # to (sort of) sync with models.media.MediaItem.get_title()
-        regex = self.pattern_to_regex(pattern)
-        return self.filter(Q(title__iregex=regex) 
-          | Q(collection__title__iregex=regex))
+        return self.filter(self.word_search_q("title", pattern) | self.word_search_q("collection__title", pattern))
 
     def by_publish_year(self, from_year, to_year = None):
         "Find items by publishing year"
