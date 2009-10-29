@@ -64,7 +64,7 @@ class CoreQuerySet(QuerySet):
         if until_time:
             where.append("time <= '%s'" % until_time.strftime('%Y-%m-%d %H:%M:%S'))
         return self.extra(
-            where = ["id IN (SELECT DISTINCT element_id FROM telemeta_revision WHERE %s)" % " AND ".join(where)]);
+            where = ["id IN (SELECT DISTINCT element_id FROM revisions WHERE %s)" % " AND ".join(where)]);
 
 class CoreManager(Manager):
     "Base class for all models managers"
@@ -182,7 +182,7 @@ class MediaCollectionManager(CoreManager):
         from django.db import connection
         cursor = connection.cursor()
 
-        cursor.execute("SELECT continent, etat FROM telemeta_item "
+        cursor.execute("SELECT continent, etat FROM media_items "
             "GROUP BY continent, etat ORDER BY REPLACE(etat, '\"', '')");
         return cursor.fetchall()
 
