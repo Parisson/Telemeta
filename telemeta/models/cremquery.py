@@ -30,7 +30,8 @@
 # The fact that you are presently reading this means that you have had
 # knowledge of the CeCILL license and that you accept its terms.
 #
-# Author: Olivier Guilyardi <olivier@samalyse.com>
+# Authors: Olivier Guilyardi <olivier@samalyse.com>
+#          David LIPSZYC <davidlipszyc@gmail.com>
 
 from django.db.models import Manager, Q
 from django.db.models.query import QuerySet
