@@ -1,3 +1,38 @@
+# -*- coding: utf-8 -*-
+# Copyright (C) 2007 Samalyse SARL
+
+# This software is a computer program whose purpose is to backup, analyse,
+# transcode and stream any audio content with its metadata over a web frontend.
+
+# This software is governed by the CeCILL  license under French law and
+# abiding by the rules of distribution of free software.  You can  use,
+# modify and/ or redistribute the software under the terms of the CeCILL
+# license as circulated by CEA, CNRS and INRIA at the following URL
+# "http://www.cecill.info".
+
+# As a counterpart to the access to the source code and  rights to copy,
+# modify and redistribute granted by the license, users are provided only
+# with a limited warranty  and the software's author,  the holder of the
+# economic rights,  and the successive licensors  have only  limited
+# liability.
+
+# In this respect, the user's attention is drawn to the risks associated
+# with loading,  using,  modifying and/or developing or reproducing the
+# software by the user in light of its specific status of free software,
+# that may mean  that it is complicated to manipulate,  and  that  also
+# therefore means  that it is reserved for developers  and  experienced
+# professionals having in-depth computer knowledge. Users are therefore
+# encouraged to load and test the software's suitability as regards their
+# requirements in conditions enabling the security of their systems and/or
+# data to be ensured and,  more generally, to use and operate it in the
+# same conditions as regards security.
+
+# The fact that you are presently reading this means that you have had
+# knowledge of the CeCILL license and that you accept its terms.
+#
+# Authors: Olivier Guilyardi <olivier@samalyse.com>
+#          David LIPSZYC <davidlipszyc@gmail.com>
+
 from django.db import models
 import query
 
@@ -58,6 +93,14 @@ class MediaCollection(models.Model):
     def __unicode__(self):
         return self.code
 
+    def save(self, force_insert=False, force_update=False):
+        raise MissingUserError("save() method disabled, use save_by_user()")
+
+    def save_by_user(self, user, force_insert=False, force_update=False):
+        "Save a collection and add a revision"
+        super(MediaCollection, self).save(force_insert, force_update)
+        Revision(element_type='collection', element_id=self.id, user=user).touch()    
+
     class Meta:
         db_table = 'media_collections'
 
@@ -108,13 +151,21 @@ class MediaItem(models.Model):
             return self.code
         return self.old_code
 
+    def save(self, force_insert=False, force_update=False):
+        raise MissingUserError("save() method disabled, use save_by_user()")
+
+    def save_by_user(self, user, force_insert=False, force_update=False):
+        "Save an item and add a revision"
+        super(MediaItem, self).save(force_insert, force_update)
+        Revision(element_type='item', element_id=self.id, user=user).touch()    
+
 class MediaPart(models.Model):
     "Describe an item part"
     item  = models.ForeignKey('MediaItem', related_name="parts")
     title = models.CharField(max_length=250)
     start = models.FloatField()
     end   = models.FloatField()
-
+    
     class Meta:
         db_table = 'media_parts'
 
@@ -236,7 +287,7 @@ class MediaItemPerformance(models.Model):
 
 class User(models.Model):
     "Telemeta user"
-    LEVEL_CHOICES = (('user', 'user'), ('maintainer', 'maintainer'), ('admn', 'admin'))    
+    LEVEL_CHOICES = (('user', 'user'), ('maintainer', 'maintainer'), ('admin', 'admin'))    
 
     username   = models.CharField(primary_key=True, max_length=250)
     level      = models.CharField(choices=LEVEL_CHOICES, max_length=250)
@@ -345,13 +396,23 @@ class PublisherCollection(models.Model):
 
 class Revision(models.Model):
     "Revision made by user"
-    CHANGE_TYPE_CHOICES = (('create', 'create'), ('update', 'update'), ('delete','delete'))
+    ELEMENT_TYPE_CHOICES = (('collection', 'collection'), ('item', 'item'), ('part', 'part'))
+    CHANGE_TYPE_CHOICES  = (('import', 'import'), ('create', 'create'), ('update', 'update'), ('delete','delete'))
 
-    element_type        = models.CharField(max_length=250)
-    element_id          = models.IntegerField()
-    change_type         = models.CharField(choices=CHANGE_TYPE_CHOICES, max_length=250)
-    time                = models.DateTimeField()
-    username            = models.ForeignKey('User', related_name="usernames")
+    element_type         = models.CharField(choices=ELEMENT_TYPE_CHOICES, max_length=250)
+    element_id           = models.IntegerField()
+    change_type          = models.CharField(choices=CHANGE_TYPE_CHOICES, max_length=250)
+    time                 = models.DateTimeField(auto_now_add=True)
+    user                 = models.ForeignKey('User', db_column='username', related_name="revisions")
+    
+    def touch(self):    
+        "Create or update a revision"
+        q = Revision.objects.filter(element_type=self.element_type, element_id=self.element_id)
+        if q.count():
+            self.change_type = 'update'
+        else:
+            self.change_type = 'create'
+        self.save()
 
     class Meta:
         db_table = 'revisions'
@@ -372,4 +433,8 @@ class EthnicGroupAlias(models.Model):
     name         = models.CharField(max_length=250)
 
     class Meta:
-        db_table = 'ethnic_group_aliases'        
+        db_table = 'ethnic_group_aliases'
+
+
+class MissingUserError(Exception):
+    pass
