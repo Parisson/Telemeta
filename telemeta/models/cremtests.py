@@ -1,12 +1,51 @@
 # -*- coding: utf-8 -*-
+# Copyright (C) 2007 Samalyse SARL
+
+# This software is a computer program whose purpose is to backup, analyse,
+# transcode and stream any audio content with its metadata over a web frontend.
+
+# This software is governed by the CeCILL  license under French law and
+# abiding by the rules of distribution of free software.  You can  use,
+# modify and/ or redistribute the software under the terms of the CeCILL
+# license as circulated by CEA, CNRS and INRIA at the following URL
+# "http://www.cecill.info".
+
+# As a counterpart to the access to the source code and  rights to copy,
+# modify and redistribute granted by the license, users are provided only
+# with a limited warranty  and the software's author,  the holder of the
+# economic rights,  and the successive licensors  have only  limited
+# liability.
+
+# In this respect, the user's attention is drawn to the risks associated
+# with loading,  using,  modifying and/or developing or reproducing the
+# software by the user in light of its specific status of free software,
+# that may mean  that it is complicated to manipulate,  and  that  also
+# therefore means  that it is reserved for developers  and  experienced
+# professionals having in-depth computer knowledge. Users are therefore
+# encouraged to load and test the software's suitability as regards their
+# requirements in conditions enabling the security of their systems and/or
+# data to be ensured and,  more generally, to use and operate it in the
+# same conditions as regards security.
+
+# The fact that you are presently reading this means that you have had
+# knowledge of the CeCILL license and that you accept its terms.
+#
+# Authors: Olivier Guilyardi <olivier@samalyse.com>
+#          David LIPSZYC <davidlipszyc@gmail.com>
 
 import unittest
-from models import MediaCollection, MediaItem, Location, EthnicGroup, LocationType
+from models import MediaCollection, MediaItem, Location, EthnicGroup, LocationType, User, Revision
 from datetime import datetime, timedelta
 
 class CollectionItemTestCase(unittest.TestCase):
     def setUp(self):
         "Create a test database based on objects created in Django"
+   
+        User.objects.all().delete() 
+        self.david   = User.objects.create(username="david", level="user", first_name="david", last_name="aaa", phone="0156565656",
+                       email="david@a.com")
+        self.olivier = User.objects.create(username="olivier", level="admin", first_name="olivier", last_name="bbb", 
+                       phone="0155555555", email="olivier@a.com")    
 
         LocationType.objects.all().delete()
         self.country = LocationType.objects.create(id="country", name="country")
@@ -26,109 +65,128 @@ class CollectionItemTestCase(unittest.TestCase):
         self.d = EthnicGroup.objects.create(name="d")
 
         MediaCollection.objects.all().delete()
-        self.persepolis = MediaCollection.objects.create(id=1, reference="A1", physical_format_id=1111, old_code="10", code="100",                                                          title="persepolis", alt_title="bjr", creator="Abraham LINCOLN", 
-                                                         booklet_author="Maria BALTHAZAR", 
-                                                         booklet_description="compilation de mots français", 
-                                                         collector="Friedrich HEINZ", collector_is_creator=0, publisher_id=1442, 
-                                                         year_published=2009, publisher_collection_id=1234, 
-                                                         publisher_serial="123456", external_references="Larousse", 
-                                                         acquisition_mode_id=1, comment="chants", metadata_author_id=1, 
-                                                         metadata_writer_id=1, legal_rights_id=1, alt_ids="89", 
-                                                         recorded_from_year=1970, recorded_to_year=1980, recording_context_id=1, 
-                                                         approx_duration="5:00:00", doctype_code=1357, travail="travail", 
-                                                         state="etat", cnrs_contributor="Jean PETIT", items_done="fiches", 
-                                                         a_informer_07_03="a informer", ad_conversion_id=9, public_access="full")
+        self.persepolis = MediaCollection(id=1, reference="A1", physical_format_id=1111, old_code="10", code="100",                                                          title="persepolis", alt_title="bjr", creator="Abraham LINCOLN", 
+                                          booklet_author="Maria BALTHAZAR", 
+                                          booklet_description="compilation de mots français", 
+                                          collector="Friedrich HEINZ", collector_is_creator=0, publisher_id=1442, 
+                                          year_published=2009, publisher_collection_id=1234, 
+                                          publisher_serial="123456", external_references="Larousse", 
+                                          acquisition_mode_id=1, comment="chants", metadata_author_id=1, 
+                                          metadata_writer_id=1, legal_rights_id=1, alt_ids="89", 
+                                          recorded_from_year=1970, recorded_to_year=1980, recording_context_id=1, 
+                                          approx_duration="5:00:00", doctype_code=1357, travail="travail", 
+                                          state="etat", cnrs_contributor="Jean PETIT", items_done="fiches", 
+                                          a_informer_07_03="a informer", ad_conversion_id=9, public_access="full")
+        
+        self.persepolis.save_by_user(self.david)
 
-        self.volonte = MediaCollection.objects.create(id=2, reference="A2", physical_format_id=222, old_code="20", code="200", 
-                                                      title="Volonté de puissance", alt_title="ar", creator="Friedrich NIETZSCHE", 
-                                                      booklet_author="George POMPIDOU", booklet_description="notice numero 2", 
-                                                      collector="Jean AMORA", collector_is_creator=0, publisher_id=2884, 
-                                                      year_published=1999, publisher_collection_id=2345, 
-                                                      publisher_serial="234567", external_references="dico", 
-                                                      acquisition_mode_id=2, comment="commentaire 2", metadata_author_id=2, 
-                                                      metadata_writer_id=2, legal_rights_id=2, alt_ids="78", 
-                                                      recorded_from_year=1960, recorded_to_year=2000, recording_context_id=2, 
-                                                      approx_duration="1:00:00", doctype_code=2468, travail="travail 2", 
-                                                      state="etat 2", cnrs_contributor="Richard LIONHEART", items_done="fiches 2", 
-                                                      a_informer_07_03="a informer 2", ad_conversion_id=8, 
-                                                      public_access="metadata")
+        self.volonte = MediaCollection(id=2, reference="A2", physical_format_id=222, old_code="20", code="200", 
+                                       title="Volonté de puissance", alt_title="ar", creator="Friedrich NIETZSCHE", 
+                                       booklet_author="George POMPIDOU", booklet_description="notice numero 2", 
+                                       collector="Jean AMORA", collector_is_creator=0, publisher_id=2884, 
+                                       year_published=1999, publisher_collection_id=2345, 
+                                       publisher_serial="234567", external_references="dico", 
+                                       acquisition_mode_id=2, comment="commentaire 2", metadata_author_id=2, 
+                                       metadata_writer_id=2, legal_rights_id=2, alt_ids="78", 
+                                       recorded_from_year=1960, recorded_to_year=2000, recording_context_id=2, 
+                                       approx_duration="1:00:00", doctype_code=2468, travail="travail 2", 
+                                       state="etat 2", cnrs_contributor="Richard LIONHEART", items_done="fiches 2", 
+                                       a_informer_07_03="a informer 2", ad_conversion_id=8, 
+                                       public_access="metadata")
 
-        self.nicolas = MediaCollection.objects.create(id=3, reference="A3", physical_format_id=333, old_code="30", code="300", 
-                                                      title="petit nicolas", alt_title="slt", creator="Georgette McKenic", 
-                                                      booklet_author="Francesca DICORTO", booklet_description="notice 3", 
-                                                      collector="Paul MAILLE", collector_is_creator=0, publisher_id=3773, 
-                                                      year_published=1999, publisher_collection_id=7890, publisher_serial="8764", 
-                                                      external_references="ref externes", acquisition_mode_id=3, 
-                                                      comment="commentaire 3", metadata_author_id=3, metadata_writer_id=3, 
-                                                      legal_rights_id=3, alt_ids="56", recorded_from_year=1967, 
-                                                      recorded_to_year=1968, recording_context_id=3, approx_duration="0:00:00", 
-                                                      doctype_code=5790, travail="travail 3", state="etat 3", 
-                                                      cnrs_contributor="Gerard MICKAEL", items_done="fiches 3", 
-                                                      a_informer_07_03="a informer 3", ad_conversion_id=8, public_access="none")
-                                        
+        self.volonte.save_by_user(self.olivier)
+
+        self.nicolas = MediaCollection(id=3, reference="A3", physical_format_id=333, old_code="30", code="300", 
+                                       title="petit nicolas", alt_title="slt", creator="Georgette McKenic", 
+                                       booklet_author="Francesca DICORTO", booklet_description="notice 3", 
+                                       collector="Paul MAILLE", collector_is_creator=0, publisher_id=3773, 
+                                       year_published=1999, publisher_collection_id=7890, publisher_serial="8764", 
+                                       external_references="ref externes", acquisition_mode_id=3, 
+                                       comment="commentaire 3", metadata_author_id=3, metadata_writer_id=3, 
+                                       legal_rights_id=3, alt_ids="56", recorded_from_year=1967, 
+                                       recorded_to_year=1968, recording_context_id=3, approx_duration="0:00:00", 
+                                       doctype_code=5790, travail="travail 3", state="etat 3", 
+                                       cnrs_contributor="Gerard MICKAEL", items_done="fiches 3", 
+                                       a_informer_07_03="a informer 3", ad_conversion_id=8, public_access="none")
+                                   
+        self.nicolas.save_by_user(self.olivier)
+     
         MediaItem.objects.all().delete()        
-        self.item_1 = MediaItem.objects.create(id=1, collection=self.persepolis, track="1111", old_code="101", code="1010", 
-                                               approx_duration="00:01:00", recorded_from_date="1971-01-12", 
-                                               recorded_to_date="1971-02-24", location_name=self.paris, 
-                                               location_comment="capital de la France", ethnic_group=self.a, 
-                                               title="item 1", alt_title="I1", author="Mickael SHEPHERD", 
-                                               context_comment="contexte ethno 1", external_references="ext ref 1", 
-                                               moda_execut="moda exec 1",copied_from_item_id=99, 
-                                               collector="Charles PREMIER", cultural_area="Ile de France", generic_style_id=1, 
-                                               collector_selection="collec sel 1", creator_reference="ref du deposant 1", 
-                                               comment="comment 1", filename="item 1.item", public_access="full") 
+        self.item_1 = MediaItem(id=1, collection=self.persepolis, track="1111", old_code="101", code="1010", 
+                                approx_duration="00:01:00", recorded_from_date="1971-01-12", 
+                                recorded_to_date="1971-02-24", location_name=self.paris, 
+                                location_comment="capital de la France", ethnic_group=self.a, 
+                                title="item 1", alt_title="I1", author="Mickael SHEPHERD", 
+                                context_comment="contexte ethno 1", external_references="ext ref 1", 
+                                moda_execut="moda exec 1",copied_from_item_id=99, 
+                                collector="Charles PREMIER", cultural_area="Ile de France", generic_style_id=1, 
+                                collector_selection="collec sel 1", creator_reference="ref du deposant 1", 
+                                comment="comment 1", filename="item 1.item", public_access="full") 
 
-        self.item_2 = MediaItem.objects.create(id=2, collection=self.volonte, track="2222", old_code="202", code="2020", 
-                                               approx_duration="00:02:00", recorded_from_date="1981-01-12", 
-                                               recorded_to_date="1991-02-24", location_name=self.france, 
-                                               location_comment="loc comment 2", ethnic_group=self.a, title="item 2",                                                             alt_title="I2", author="Rick ROLL", context_comment="contexte ethno 2", 
-                                               external_references="ext ref 2", moda_execut="moda exec 2", 
-                                               copied_from_item_id=98, collector="Gerard LENORMAND", 
-                                               cultural_area="Nord de la France", generic_style_id=1,
-                                               collector_selection="collec sel 2", creator_reference="ref du deposant 2", 
-                                               comment="comment 2", filename="item 2.item", public_access="metadata") 
+        self.item_1.save_by_user(self.david)
 
-        self.item_3 = MediaItem.objects.create(id=3, collection=self.nicolas, track="3333", old_code="303", code="3030", 
-                                               approx_duration="00:03:00", recorded_from_date="1968-01-12", 
-                                               recorded_to_date="1968-02-24", location_name=self.belgique, 
-                                               location_comment="en Europe", ethnic_group=self.b, title="item 3", 
-                                               alt_title="I3", author="John SMITH", context_comment="contexte ethno 3", 
-                                               external_references="ext ref 3", moda_execut="moda exec 3", copied_from_item_id=97, 
-                                               collector="Paul CARLOS", cultural_area="Europe occidentale", generic_style_id=1,
-                                               collector_selection="collec sel 3", creator_reference="ref du deposant 3", 
-                                               comment="comment 3", filename="item 3.item", public_access="none")
+        self.item_2 = MediaItem(id=2, collection=self.volonte, track="2222", old_code="202", code="2020", 
+                                approx_duration="00:02:00", recorded_from_date="1981-01-12", 
+                                recorded_to_date="1991-02-24", location_name=self.france, 
+                                location_comment="loc comment 2", ethnic_group=self.a, title="item 2",
+                                alt_title="I2", author="Rick ROLL", context_comment="contexte ethno 2", 
+                                external_references="ext ref 2", moda_execut="moda exec 2", 
+                                copied_from_item_id=98, collector="Gerard LENORMAND", 
+                                cultural_area="Nord de la France", generic_style_id=1,
+                                collector_selection="collec sel 2", creator_reference="ref du deposant 2", 
+                                comment="comment 2", filename="item 2.item", public_access="metadata") 
 
-        self.item_4 = MediaItem.objects.create(id=4, collection=self.persepolis, track="4444", old_code="404", code="4040", 
-                                               approx_duration="00:04:00", recorded_from_date="1972-01-12", 
-                                               recorded_to_date="1972-02-24", location_name=self.europe, 
-                                               location_comment="loc comm 4", ethnic_group=self.a, title="item 4", 
-                                               alt_title="I4", author="Keanu REAVES", context_comment="contexte ethno 4", 
-                                               external_references="ext ref 4", moda_execut="moda exec 4", copied_from_item_id=96, 
-                                               collector="Christina BARCELONA", cultural_area="aire culturelle 4", 
-                                               generic_style_id=1, collector_selection="collec sel 4", 
-                                               creator_reference="ref du deposant 4", comment="comment 4", filename="item 4.item",
-                                               public_access="none")
+        self.item_2.save_by_user(self.david)
 
-        self.item_5 = MediaItem.objects.create(id=5, collection=self.volonte, track="5555", old_code="505", code="5050", 
-                                               approx_duration="00:05:00", recorded_from_date="1978-01-12", 
-                                               recorded_to_date="1978-02-24", location_name=self.belgique, 
-                                               location_comment="loc comm 5", ethnic_group=self.a, title="item 5", 
-                                               alt_title="I5", author="Simon PAUL", context_comment="contexte ethno 5", 
-                                               external_references="ext ref 5", moda_execut="moda exec 5", copied_from_item_id=95, 
-                                               collector="Javier BARDEM", cultural_area="aire culturelle 5", generic_style_id=1,
-                                               collector_selection="collec sel 5", creator_reference="ref du deposant 5", 
-                                               comment="comment 5", filename="item 5.item", public_access="metadata")
+        self.item_3 = MediaItem(id=3, collection=self.nicolas, track="3333", old_code="303", code="3030", 
+                                approx_duration="00:03:00", recorded_from_date="1968-01-12", 
+                                recorded_to_date="1968-02-24", location_name=self.belgique, 
+                                location_comment="en Europe", ethnic_group=self.b, title="item 3", 
+                                alt_title="I3", author="John SMITH", context_comment="contexte ethno 3", 
+                                external_references="ext ref 3", moda_execut="moda exec 3", copied_from_item_id=97, 
+                                collector="Paul CARLOS", cultural_area="Europe occidentale", generic_style_id=1,
+                                collector_selection="collec sel 3", creator_reference="ref du deposant 3", 
+                                comment="comment 3", filename="item 3.item", public_access="none")
 
-        self.item_6 = MediaItem.objects.create(id=6, collection=self.persepolis, track="10000", old_code="1111111", 
-                                               code="6060", approx_duration="10:03:00", recorded_from_date="1968-01-12", 
-                                               recorded_to_date="1968-02-11", location_name=self.france, 
-                                               location_comment="loc comment 10000", ethnic_group=self.b, 
-                                               title="item 6", alt_title="I10000", author="Paul ANDERSON", 
-                                               context_comment="contexte ethno 10000", external_references="ext ref 10000", 
-                                               moda_execut="moda exec 10000", copied_from_item_id=11111, collector="Jim CARLSON", 
-                                               cultural_area="cul area 10000", generic_style_id=1, 
-                                               collector_selection="collec sel 10000", creator_reference="ref du deposant 10000", 
-                                               comment="comment 10000", filename="item 10000.item", public_access="none")
+        self.item_3.save_by_user(self.olivier)
+
+        self.item_4 = MediaItem(id=4, collection=self.persepolis, track="4444", old_code="404", code="4040", 
+                                approx_duration="00:04:00", recorded_from_date="1972-01-12", 
+                                recorded_to_date="1972-02-24", location_name=self.europe, 
+                                location_comment="loc comm 4", ethnic_group=self.a, title="item 4", 
+                                alt_title="I4", author="Keanu REAVES", context_comment="contexte ethno 4", 
+                                external_references="ext ref 4", moda_execut="moda exec 4", copied_from_item_id=96, 
+                                collector="Christina BARCELONA", cultural_area="aire culturelle 4", 
+                                generic_style_id=1, collector_selection="collec sel 4", 
+                                creator_reference="ref du deposant 4", comment="comment 4", filename="item 4.item",
+                                public_access="none")
+
+        self.item_4.save_by_user(self.olivier)
+
+        self.item_5 = MediaItem(id=5, collection=self.volonte, track="5555", old_code="505", code="5050", 
+                                approx_duration="00:05:00", recorded_from_date="1978-01-12", 
+                                recorded_to_date="1978-02-24", location_name=self.belgique, 
+                                location_comment="loc comm 5", ethnic_group=self.a, title="item 5", 
+                                alt_title="I5", author="Simon PAUL", context_comment="contexte ethno 5", 
+                                external_references="ext ref 5", moda_execut="moda exec 5", copied_from_item_id=95, 
+                                collector="Javier BARDEM", cultural_area="aire culturelle 5", generic_style_id=1,
+                                collector_selection="collec sel 5", creator_reference="ref du deposant 5", 
+                                comment="comment 5", filename="item 5.item", public_access="metadata")
+
+        self.item_5.save_by_user(self.olivier)
+
+        self.item_6 = MediaItem(id=6, collection=self.persepolis, track="10000", old_code="1111111", 
+                                code="6060", approx_duration="10:03:00", recorded_from_date="1968-01-12", 
+                                recorded_to_date="1968-02-11", location_name=self.france, 
+                                location_comment="loc comment 10000", ethnic_group=self.b, 
+                                title="item 6", alt_title="I10000", author="Paul ANDERSON", 
+                                context_comment="contexte ethno 10000", external_references="ext ref 10000", 
+                                moda_execut="moda exec 10000", copied_from_item_id=11111, collector="Jim CARLSON", 
+                                cultural_area="cul area 10000", generic_style_id=1, 
+                                collector_selection="collec sel 10000", creator_reference="ref du deposant 10000", 
+                                comment="comment 10000", filename="item 10000.item", public_access="none")
+        
+        self.item_6.save_by_user(self.david)
 
         self.collections = MediaCollection.objects.all()
         self.items       = MediaItem.objects.all()
@@ -247,3 +305,7 @@ class CollectionItemTestCase(unittest.TestCase):
         now = datetime.now()
         result = self.items.by_change_time(now - timedelta(hours=1), now).order_by("title")
         self.assertEquals(result[0], self.item_1)
+
+    def testWithoutCollection(self):
+        "Test without_collection property of MediaItem class"
+        self.assertEquals(self.items.without_collection().count(), 0)
