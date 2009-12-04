@@ -3,6 +3,10 @@
 Telemeta - Widgets
 ==================
 
+:id: $Id$
+
+.. contents:: Table des matières
+
 Introduction
 ============
 
