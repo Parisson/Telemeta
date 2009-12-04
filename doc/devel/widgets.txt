@@ -20,12 +20,14 @@ qui ont pour seul but d'illustrer les premières.
 Définitions
 ===========
 
- * Ressources: les ressources sont les structures de données centrales dans
-   Telemeta, telles que les collection ou les items.
+Ressources : 
+    les ressources sont les structures de données centrales dans Telemeta,
+    telles que les collection ou les items.
 
- * Données CREM prioritaires : certaines données ont été identifiées
-   comme prioritaire. Au niveau graphique elles peuvent être celles qui sont
-   assorties d'un petit icône. Il s'agit de :
+Données CREM prioritaires :
+   certaines données ont été identifiées comme prioritaire. Au niveau
+   graphique elles peuvent être celles qui sont assorties d'un petit
+   icône. Il s'agit de :
 
     - la cote (code alpha-numérique identifiant une ressource)
     - le titre
@@ -42,8 +44,8 @@ Widgets
 Tableau de ressources
 ~~~~~~~~~~~~~~~~~~~~~
 
-classe: resource-table
-ref: http://crem.telemeta.org/items
+:classe: resource-table 
+:ref: http://crem.telemeta.org/items
 
 Les tableaux de ressources listent des collections ou des items, soit leur
 totalité, soit un résultat de recherche, etc...
@@ -71,7 +73,7 @@ règles CSS print spécifiques.
 Liste de ressources
 ~~~~~~~~~~~~~~~~~~~
 
-classe: resource-list
+:classe: resource-list
 
 Les listes de ressources présentent le même type d'information que les
 tableaux de ressources mais avec possiblement plus de détails. Elles
@@ -90,8 +92,8 @@ méthode de tri.
 Menu principal
 ~~~~~~~~~~~~~~
 
-classe: main-menu
-ref: http://telemeta.org/browser/trunk/design/maquette_v0.4_item_view_2.png
+:classe: main-menu
+:ref: http://telemeta.org/browser/trunk/design/maquette_v0.4_item_view_2.png
 
 Le menu principal est horizontal et contient un certain nombre d'items
 texte cliquable. Il n'y a pas de listes déroulantes.
@@ -101,8 +103,8 @@ Un champ de recherche rapide est intégré dans ce menu, sur la gauche.
 Sous-menu
 ~~~~~~~~~
 
-classe: sub-menu
-ref: http://telemeta.org/browser/trunk/design/maquette_v0.4_item_view_2.png
+:classe: sub-menu
+:ref: http://telemeta.org/browser/trunk/design/maquette_v0.4_item_view_2.png
 
 Le sous-menu est horizontal et apparaît à droite. Il permet notamment
 de changer le mode d'affichage, par exemple de passer d'un tableau de
@@ -115,8 +117,8 @@ Il peut contenir d'une part des liens texte simples, et d'autre part
 Titre de page
 ~~~~~~~~~~~~~
 
-classe: main-title
-ref: http://crem.telemeta.org/items/BM.000.003.001--04__01-01/
+:classe: main-title
+:ref: http://crem.telemeta.org/items/BM.000.003.001--04__01-01/
 
 Le titre de page est par exemple le titre de collection lors de la
 visualisation d'une collection, ou encore "Geographic Navigator" lors
@@ -129,9 +131,9 @@ suivant le type de page, prévoir un maximum de 10 icônes.
 Bloc de propriétés
 ~~~~~~~~~~~~~~~~~~
 
-classe: property-block
-ref: http://crem.telemeta.org/items/BM.000.010.001__01-ii
-     http://telemeta.org/browser/trunk/design/maquette_v0.4_item_edit_2.png
+:classe: property-block
+:ref: http://crem.telemeta.org/items/BM.000.010.001__01-ii
+:ref: http://telemeta.org/browser/trunk/design/maquette_v0.4_item_edit_2.png
 
 Sur la page d'une ressource, apparaissent un certain nombre de blocs
 groupant des propriétés. A l'exception du premier bloc, ces blocs
@@ -160,8 +162,8 @@ règles CSS print spécifiques.
 Formulaire de propriétés
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-classe: property-form
-ref: http://telemeta.org/browser/trunk/design/maquette_v0.4_item_edit_2.png
+:classe: property-form
+:ref: http://telemeta.org/browser/trunk/design/maquette_v0.4_item_edit_2.png
 
 Ce widget pouvant être utilisé pour l'édition comme pour la recherche
 contient un certain nombre de blocs de propriétés. Les champs d'entrée
@@ -195,7 +197,7 @@ cas, il doit être possible d'ajouter et supprimer des lignes.
 Historique de modifications
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-classe: history
+:classe: history
 
 Telemeta conserve un historique des modifications de chaque ressource. Une
 liste affichant cette historique est donc prévue avec pour chaque entrée :
@@ -212,7 +214,7 @@ Cet historique est destiné à s'afficher en pleine page.
 News
 ~~~~
 
-classe: news
+:classe: news
 
 Les news dans Telemeta sont généralement des historiques de modifications
 compacts, destinés à occuper un espace restreint sur la page. C'est une
@@ -226,8 +228,8 @@ un (ou des) icône(s) spécifiques.
 Enumeration
 ~~~~~~~~~~~
 
-classe: enumeration
-ref: http://crem.telemeta.org/admin/enumerations/physicalformat/
+:classe: enumeration
+:ref: http://crem.telemeta.org/admin/enumerations/physicalformat/
 
 Ce widget composite est principalement destinée à la partie administration
 du site. Dans Telemeta il y a un certain nombre d'énumérations, c'est
@@ -257,8 +259,8 @@ figurant un champ texte simple (+ label et barre de titre de popup).
 Pagination
 ~~~~~~~~~~
 
-classe: pager
-ref: http://crem.telemeta.org/items/
+:classe: pager
+:ref: http://crem.telemeta.org/items/
 
 Un certain nombre de listes peuvent nécessiter une pagination (listes et
 tableaux de ressources, énumérations, etc...)
@@ -273,8 +275,8 @@ Il peut apparaître au dessus et/ou en dessous des listes.
 Informations de connexion
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-classe: login-info
-ref: http://telemeta.org/browser/trunk/design/maquette_v0.4_item_view_2.png
+:classe: login-info
+:ref: http://telemeta.org/browser/trunk/design/maquette_v0.4_item_view_2.png
 
 Ce petit widget apparaît en haut à droite et permet de se connecter. Il
 figure donc un bouton "Se connecter", puis une fois connecté : "Connecté
@@ -284,9 +286,9 @@ apparaît également.
 Pied de page
 ~~~~~~~~~~~~
 
-classe: footer
-ref: http://telemeta.org/browser/trunk/design/maquette_v0.4_item_view_2.png
-     http://crem.telemeta.org/
+:classe: footer
+:ref: http://telemeta.org/browser/trunk/design/maquette_v0.4_item_view_2.png
+:ref: http://crem.telemeta.org/
 
 Le pied de page figure le logo Telemeta, des informations concernant les auteurs
 et sponsors, ainsi qu'un lien vers la page officielle du projet Telemeta.
@@ -294,7 +296,7 @@ et sponsors, ainsi qu'un lien vers la page officielle du projet Telemeta.
 Lecteur multimédia
 ~~~~~~~~~~~~~~~~~~
 
-classe: media-player
+:classe: media-player
 
 Ce widget complexe et principalement destiné à l'audio dans un premier
 temps est en cours de développement dans le projet externe TimeSide.
@@ -313,6 +315,7 @@ http://telemeta.org/browser/trunk/telemeta/htdocs/css/player.css
 Outre la visualisation de la forme d'onde, l'affichage de marqueurs sous
 forme de lignes verticales ainsi que les boutons de contrôles de la lecture,
 sont aussi prévus :
+
  * un mode playlist, pour pouvoir écouter chaque item, depuis une page de
    collection.  Ceci est actuellement implémenté à l'aide d'un lecteur
    alternatif qui a vocation a être remplacé par Timeside. Voir:
@@ -325,4 +328,3 @@ jpeg simple, qui sera ensuite répercuté au cours du développement. Il
 n'est pas à priori pas nécessaire de faire figurer ce widget dans la
 galerie de widgets.
 
-#vim: ft=rst:
