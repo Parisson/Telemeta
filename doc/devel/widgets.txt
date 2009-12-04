@@ -27,7 +27,7 @@ Ressources :
     telles que les collection ou les items.
 
 Données CREM prioritaires :
-   certaines données ont été identifiées comme prioritaire. Au niveau
+   certaines données ont été identifiées comme prioritaires. Au niveau
    graphique elles peuvent être celles qui sont assorties d'un petit
    icône. Il s'agit de :
 
