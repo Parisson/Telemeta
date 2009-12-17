@@ -40,10 +40,10 @@ Ce que nous avons prévu en page d'accueil :
    * Un petit lecteur multimédia TimeSide pour la sélection musicale du mois
 
 
-Page intérieur   
---------------
+Page intérieure
+---------------
 
-Pour la page intérieur, il suffit de décliner le formulaire d'édition
+Pour la page intérieure, il suffit de décliner le formulaire d'édition
 d'item avec une nouvelle charte graphique. La structure de la page
 apparaît bien sur la maquette suivante :
 
