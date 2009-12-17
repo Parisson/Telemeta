@@ -1,0 +1,76 @@
+====================
+Telemeta - Maquettes
+====================
+
+En prévision de Telemeta 1.0, deux maquettes graphiques (bitmaps) sont
+nécessaires pour présenter l'orientation visuelle et la faire valider
+par client final.
+
+Dans le cas où une première proposition ne conviendrait pas au client
+il peut être nécessaire d'avoir à en faire une seconde. Il faut donc
+prévoir deux propositions graphiques (2 x 2 maquettes).
+
+Page d'accueil
+--------------
+
+Dans le prototype, Telemeta 0.4, il n'y a pas encore de page d'accueil,
+car on s'est concentré sur des détails fonctionnels dans un premier
+temps.
+
+Cependant, avec la mise en production, la page d'accueil devient
+importante, même si Telemeta n'est pas un site internet, il faut que
+son interface soit attractive au premier abord.
+
+Ce que nous avons prévu en page d'accueil :
+
+ * La page est charpentée de façon similaire à Telemeta 0.4 : logo, menu
+   horizontal (avec champ de recherche intégré au menu et à gauche), 
+   pied de page
+
+ * Le corps de la page contient :
+   
+   * un texte d'introduction avec une (ou éventuellement) plusieurs photos, 
+     éditables par les administrateurs
+
+   * Une petite mappemonde google map, qui est un lien vers l'affichage du 
+     navigateur géographique
+
+   * Un bloc de news reprenant les dernière modifications de la base de données
+
+   * Un petit lecteur multimédia TimeSide pour la sélection musicale du mois
+
+
+Page intérieur   
+--------------
+
+Pour la page intérieur, il suffit de décliner le formulaire d'édition
+d'item avec une nouvelle charte graphique. La structure de la page
+apparaît bien sur la maquette suivante :
+
+http://telemeta.org/browser/trunk/design/maquette_v0.4_item_edit_2.png
+
+La charte graphique doit cependant évoluer. Par ailleurs, sur cette
+page de formulaire, il faut faire apparaître le lecteur multimédia
+TimeSide avec marqueurs, comme vu ici :
+
+http://telemeta.org/browser/trunk/design/maquette_v0.4_item_view_2.png
+
+
+
+
+
+
+
+
+
+ 
+ 
+
+
+
+
+
+
+
+
+
