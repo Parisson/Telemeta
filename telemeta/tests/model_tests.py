@@ -34,7 +34,7 @@
 #          David LIPSZYC <davidlipszyc@gmail.com>
 
 import unittest
-from models import MediaCollection, MediaItem, Location, EthnicGroup, LocationType, User, Revision
+from telemeta.models import MediaCollection, MediaItem, Location, EthnicGroup, LocationType, User, Revision
 from datetime import datetime, timedelta
 
 class CollectionItemTestCase(unittest.TestCase):
