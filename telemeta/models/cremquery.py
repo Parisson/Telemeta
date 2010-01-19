@@ -86,11 +86,11 @@ class MediaCollectionQuerySet(CoreQuerySet):
 
     def by_country(self, country):
         "Find collections by country"
-        return self.filter(items__location_name__type="country", items__location_name=country).distinct()
+        return self.filter(items__location__type="country", items__location=country).distinct()
     
     def by_continent(self, continent):
         "Find collections by continent"
-        return self.filter(items__location_name__type="continent", items__location_name=continent).distinct()
+        return self.filter(items__location__type="continent", items__location=continent).distinct()
 
     def by_recording_year(self, from_year, to_year=None):
         "Find collections by recording year"

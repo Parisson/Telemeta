@@ -36,7 +36,28 @@
 from django.db import models
 import cremquery as query
 
-class MediaCore(object):
+class ModelCore(models.Model):
+
+    @classmethod
+    def required_fields(cls):
+        required = []
+        for field in cls._meta.fields:
+            if (field != cls._meta.pk and field.default == models.fields.NOT_PROVIDED and
+                    not field.null and not getattr(field, 'auto_now_add', False)):
+                required.append(field)
+        return required
+
+    def save(self, force_insert=False, force_update=False, using=None):
+        required = self.required_fields()
+        for field in required:
+            if not getattr(self, field.name):
+                raise RequiredFieldError(self, field)
+        super(ModelCore, self).save(force_insert, force_update, using)
+
+    class Meta:
+        abstract = True
+
+class MediaCore(ModelCore):
     "Base class of all media objects"
 
     def to_dict(self):  
@@ -83,18 +104,21 @@ class MediaCore(object):
             return False
     is_well_formed_id = classmethod(is_well_formed_id)
 
+    class Meta:
+        abstract = True
+
 class MetaCore:
     app_label = 'telemeta'
 
-class MediaCollection(models.Model):
+class MediaCollection(MediaCore):
     "Describe a collection of items"
     PUBLIC_ACCESS_CHOICES = (('none', 'none'), ('metadata', 'metadata'), ('metadata', 'full'))
 
     reference             = models.CharField(unique=True, max_length=250,
                                              null=True)
     physical_format       = models.ForeignKey('PhysicalFormat', related_name="collections", 
-                                              null=True)
-    old_code              = models.CharField(unique=True, max_length=250)
+                                              null=True, default=None)
+    old_code              = models.CharField(unique=True, max_length=250, null=True)
     code                  = models.CharField(unique=True, max_length=250)
     title                 = models.CharField(max_length=250)
     alt_title             = models.CharField(max_length=250, default="")
@@ -127,7 +151,7 @@ class MediaCollection(models.Model):
     recorded_to_year      = models.IntegerField(default=0)
     recording_context     = models.ForeignKey('RecordingContext', related_name="collections",
                                               null=True)
-    approx_duration       = models.TimeField(default=0)
+    approx_duration       = models.TimeField(default='00:00')
     doctype_code          = models.IntegerField(default=0)
     travail               = models.CharField(max_length=250, default="")
     state                 = models.TextField(default="")
@@ -143,29 +167,29 @@ class MediaCollection(models.Model):
     def __unicode__(self):
         return self.code
 
-    def save(self, force_insert=False, force_update=False):
+    def save(self, force_insert=False, force_update=False, using=None):
         raise MissingUserError("save() method disabled, use save_by_user()")
 
-    def save_by_user(self, user, force_insert=False, force_update=False):
+    def save_by_user(self, user, force_insert=False, force_update=False, using=None):
         "Save a collection and add a revision"
-        super(MediaCollection, self).save(force_insert, force_update)
+        super(MediaCollection, self).save(force_insert, force_update, using)
         Revision(element_type='collection', element_id=self.id, user=user).touch()    
 
     class Meta(MetaCore):
         db_table = 'media_collections'
 
-class MediaItem(models.Model):
+class MediaItem(MediaCore):
     "Describe an item"
     PUBLIC_ACCESS_CHOICES = (('none', 'none'), ('metadata', 'metadata'), ('full', 'full'))
 
     collection            = models.ForeignKey('MediaCollection', related_name="items")
     track                 = models.CharField(max_length=250, default="")
-    old_code              = models.CharField(unique=True, max_length=250)
+    old_code              = models.CharField(unique=True, max_length=250, null=True)
     code                  = models.CharField(unique=True, max_length=250, null=True)
-    approx_duration       = models.TimeField(default=0)
+    approx_duration       = models.TimeField(default='00:00')
     recorded_from_date    = models.DateField(default=0)
     recorded_to_date      = models.DateField(default=0)
-    location_name         = models.ForeignKey('Location', related_name="items",
+    location              = models.ForeignKey('Location', related_name="items",
                                               db_column='location_name', null=True, default="")
     location_comment      = models.CharField(max_length=250, default="")
     ethnic_group          = models.ForeignKey('EthnicGroup', related_name="items",
@@ -209,7 +233,7 @@ class MediaItem(models.Model):
         super(MediaItem, self).save(force_insert, force_update)
         Revision(element_type='item', element_id=self.id, user=user).touch()    
 
-class MediaPart(models.Model):
+class MediaPart(MediaCore):
     "Describe an item part"
     item  = models.ForeignKey('MediaItem', related_name="parts")
     title = models.CharField(max_length=250)
@@ -222,91 +246,91 @@ class MediaPart(models.Model):
     def __unicode__(self):
         return self.title
 
-class PhysicalFormat(models.Model):
+class PhysicalFormat(ModelCore):
     "Collection physical format"
     value = models.CharField(max_length=250, unique=True)
     
     class Meta(MetaCore):
         db_table = 'physical_formats'
 
-class PublishingStatus(models.Model):
+class PublishingStatus(ModelCore):
     "Collection publishing status"
     value = models.CharField(max_length=250, unique=True)
 
     class Meta(MetaCore):
         db_table = 'publishing_status'
 
-class AcquisitionMode(models.Model):
+class AcquisitionMode(ModelCore):
     "Mode of acquisition of the collection"
     value = models.CharField(max_length=250, unique=True)
 
     class Meta(MetaCore):
         db_table = 'acquisition_modes'
 
-class MetadataAuthor(models.Model):
+class MetadataAuthor(ModelCore):
     "Collection metadata author"
     value = models.CharField(max_length=250, unique=True)
 
     class Meta(MetaCore):
         db_table = 'metadata_authors'
 
-class MetadataWriter(models.Model):  
+class MetadataWriter(ModelCore):  
     "Collection metadata writer"
     value = models.CharField(max_length=250, unique=True)
 
     class Meta(MetaCore):
         db_table = 'metadata_writers'
 
-class LegalRight(models.Model):
+class LegalRight(ModelCore):
     "Collection legal rights" 
     value = models.CharField(max_length=250, unique=True)
 
     class Meta(MetaCore):
         db_table = 'legal_rights'
 
-class RecordingContext(models.Model):
+class RecordingContext(ModelCore):
     "Collection recording context"
     value = models.CharField(max_length=250, unique=True)
 
     class Meta(MetaCore):
         db_table = 'recording_contexts'
 
-class AdConversion(models.Model):
+class AdConversion(ModelCore):
     "Collection digital to analog conversion status"
     value = models.CharField(max_length=250, unique=True)
 
     class Meta(MetaCore):
         db_table = 'ad_conversions'
 
-class VernacularStyle(models.Model):
+class VernacularStyle(ModelCore):
     "Item vernacular style"
     value = models.CharField(max_length=250, unique=True)
 
     class Meta(MetaCore):
         db_table = 'vernacular_styles'
 
-class GenericStyle(models.Model):
+class GenericStyle(ModelCore):
     "Item generic style"
     value = models.CharField(max_length=250, unique=True)
 
     class Meta(MetaCore):
         db_table = 'generic_styles'
 
-class Instrument(models.Model):
+class Instrument(ModelCore):
     "Instrument used in the item"
     name    = models.CharField(max_length=250)
 
     class Meta(MetaCore):
         db_table = 'instruments'
 
-class InstrumentAlias(models.Model):
+class InstrumentAlias(ModelCore):
     "Instrument other name"
     name = models.CharField(max_length=250)
 
     class Meta(MetaCore):
         db_table = 'instrument_aliases'
 
-class InstrumentRelation(models.Model):
+class InstrumentRelation(ModelCore):
     "Instrument family"
     instrument        = models.ForeignKey('Instrument', related_name="parent_relation")
     parent_instrument = models.ForeignKey('Instrument', related_name="child_relation")
@@ -315,7 +339,7 @@ class InstrumentRelation(models.Model):
         db_table = 'instrument_relations'
         unique_together = (('instrument', 'parent_instrument'),)
 
-class InstrumentAliasRelation(models.Model):
+class InstrumentAliasRelation(ModelCore):
     "Instrument family other name"
     alias      = models.ForeignKey('InstrumentAlias', related_name="other_name")
     instrument = models.ForeignKey('InstrumentAlias', related_name="relation")
@@ -324,7 +348,7 @@ class InstrumentAliasRelation(models.Model):
         db_table = 'instrument_alias_relations'
         unique_together = (('alias', 'instrument'),)
 
-class MediaItemPerformance(models.Model):
+class MediaItemPerformance(ModelCore):
     "Item performance"
     media_item      = models.ForeignKey('MediaItem', related_name="performances")
     instrument      = models.ForeignKey('Instrument', related_name="performances",
@@ -337,7 +361,7 @@ class MediaItemPerformance(models.Model):
     class Meta(MetaCore):
         db_table = 'media_item_performances'
 
-class User(models.Model):
+class User(ModelCore):
     "Telemeta user"
     LEVEL_CHOICES = (('user', 'user'), ('maintainer', 'maintainer'), ('admin', 'admin'))    
 
@@ -351,7 +375,7 @@ class User(models.Model):
     class Meta(MetaCore):
         db_table = 'users'
 
-class Playlist(models.Model):
+class Playlist(ModelCore):
     "Item or collection playlist"
     owner_username = models.ForeignKey('User', related_name="playlists", db_column="owner_username") 
     name           = models.CharField(max_length=250)
@@ -359,7 +383,7 @@ class Playlist(models.Model):
     class Meta(MetaCore):
         db_table = 'playlists'
 
-class PlaylistResource(models.Model):
+class PlaylistResource(ModelCore):
     "Playlist components"
     RESOURCE_TYPE_CHOICES = (('item', 'item'), ('collection', 'collection'))
 
@@ -370,7 +394,7 @@ class PlaylistResource(models.Model):
     class Meta(MetaCore):
         db_table = 'playlist_resources'
 
-class Location(models.Model):
+class Location(ModelCore):
     "Item location"
     TYPE_CHOICES     = (('country', 'country'), ('continent', 'continent'), ('other', 'other'))
 
@@ -387,7 +411,7 @@ class Location(models.Model):
     def __unicode__(self):
         return self.name
 
-class LocationType(models.Model):
+class LocationType(ModelCore):
     "Location type of an item location"
     id   = models.CharField(max_length=64, primary_key=True)
     name = models.CharField(max_length=150)
@@ -395,7 +419,7 @@ class LocationType(models.Model):
     class Meta(MetaCore):
         db_table = 'location_types'
 
-class LocationAlias(models.Model):
+class LocationAlias(ModelCore):
     "Location other name"
     location_name    = models.ForeignKey('Location', related_name="aliases",
                                           db_column="location_name", max_length=150)
@@ -406,7 +430,7 @@ class LocationAlias(models.Model):
         db_table = 'location_aliases'
         unique_together = (('location_name', 'alias'),)
     
-class LocationRelation(models.Model):
+class LocationRelation(ModelCore):
     "Location family"
     location_name        = models.ForeignKey('Location', related_name="parent_relations",
                                               db_column="location_name", max_length=150)
@@ -417,14 +441,14 @@ class LocationRelation(models.Model):
     class Meta(MetaCore):
         db_table = 'location_relations'
     
-class ContextKeyword(models.Model):
+class ContextKeyword(ModelCore):
     "Keyword"
     value = models.CharField(max_length=250)
 
     class Meta(MetaCore):
         db_table = 'context_keywords'
 
-class MediaItemKeyword(models.Model):
+class MediaItemKeyword(ModelCore):
     "Item keyword"
     item    = models.ForeignKey('MediaItem')
     keyword = models.ForeignKey('ContextKeyword')
@@ -433,14 +457,14 @@ class MediaItemKeyword(models.Model):
         db_table = 'media_item_keywords'
         unique_together = (('item', 'keyword'),)
 
-class Publisher(models.Model): 
+class Publisher(ModelCore): 
     "Collection publisher"
     value = models.CharField(max_length=250, unique=True)
 
     class Meta(MetaCore):
         db_table = 'publishers'
 
-class PublisherCollection(models.Model):
+class PublisherCollection(ModelCore):
     "Collection which belongs to publisher"
     publisher = models.ForeignKey('Publisher', related_name="publisher_collections")
     value     = models.CharField(max_length=250)
@@ -448,7 +472,7 @@ class PublisherCollection(models.Model):
     class Meta(MetaCore):
         db_table = 'publisher_collections'
 
-class Revision(models.Model):
+class Revision(ModelCore):
     "Revision made by user"
     ELEMENT_TYPE_CHOICES = (('collection', 'collection'), ('item', 'item'), ('part', 'part'))
     CHANGE_TYPE_CHOICES  = (('import', 'import'), ('create', 'create'), ('update', 'update'), ('delete','delete'))
@@ -471,7 +495,7 @@ class Revision(models.Model):
     class Meta(MetaCore):
         db_table = 'revisions'
     
-class EthnicGroup(models.Model):
+class EthnicGroup(ModelCore):
     "Item ethnic group"
     name = models.CharField(max_length=250)
 
@@ -481,7 +505,7 @@ class EthnicGroup(models.Model):
     def __unicode__(self):
         return self.name
 
-class EthnicGroupAlias(models.Model):
+class EthnicGroupAlias(ModelCore):
     "Item ethnic group other name" 
     ethnic_group = models.ForeignKey('EthnicGroup', related_name="aliases")
     name         = models.CharField(max_length=250)
@@ -492,3 +516,9 @@ class EthnicGroupAlias(models.Model):
 
 class MissingUserError(Exception):
     pass
+
+class RequiredFieldError(Exception):
+    def __init__(self, model, field):
+        self.model = model
+        self.field = field
+        super(Exception, self).__init__('%s.%s is required' % (model._meta.object_name, field.name))
