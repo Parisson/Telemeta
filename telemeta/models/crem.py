@@ -129,7 +129,7 @@ class MediaCollection(MediaCore):
     reference             = models.CharField(unique=True, max_length=250,
                                              null=True)
     physical_format       = models.ForeignKey('PhysicalFormat', related_name="collections", 
-                                              null=True, default=None)
+                                              null=True)
     old_code              = models.CharField(unique=True, max_length=250, null=True)
     code                  = models.CharField(unique=True, max_length=250)
     title                 = models.CharField(max_length=250)
@@ -188,6 +188,14 @@ class MediaCollection(MediaCore):
         super(MediaCollection, self).save(force_insert, force_update, using)
         Revision(element_type='collection', element_id=self.id, user=user).touch()    
 
+    def has_mediafile(self):
+        "Tell wether this collection has any media files attached to its items"
+        items = self.items.all()
+        for item in items:
+            if item.file:
+                return True
+        return False
+
     class Meta(MetaCore):
         db_table = 'media_collections'
 
@@ -224,7 +232,7 @@ class MediaItem(MediaCore):
     collector_selection   = models.CharField(max_length=250, default="")
     creator_reference     = models.CharField(max_length=250, default="")
     comment               = models.TextField(default="")
-    filename              = models.CharField(max_length=250, default="")
+    file                  = models.FileField(upload_to='items/%Y/%m/%d', db_column="filename", default='')
     public_access         = models.CharField(choices=PUBLIC_ACCESS_CHOICES, 
                                              max_length=16, default="metadata")
 
