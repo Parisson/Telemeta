@@ -35,6 +35,7 @@
 
 from django.db import models
 import cremquery as query
+from xml.dom.minidom import getDOMImplementation
 
 class ModelCore(models.Model):
 
@@ -74,22 +75,33 @@ class MediaCore(ModelCore):
             fields_list.append({'name': field.name, 'value': getattr(self, field.name)})
         return fields_list
 
-    def get_dom_element_name(cls):
+    @classmethod
+    def get_dom_name(cls):
         "Convert the class name to a DOM element name"
         clsname = cls.__name__
         return clsname[0].lower() + clsname[1:]
-    get_dom_element_name = classmethod(get_dom_element_name)
+
+    @staticmethod
+    def get_dom_field_name(field_name):
+        "Convert the class name to a DOM element name"
+        tokens = field_name.split('_')
+        name = tokens[0]
+        for t in tokens[1:]:
+            name += t[0].upper() + t[1:]
+        return name
 
     def to_dom(self):
         "Return the DOM representation of this media object"
         impl = getDOMImplementation()
-        root = self.get_dom_element_name()
+        root = self.get_dom_name()
         doc = impl.createDocument(None, root, None)
         top = doc.documentElement
-        top.setAttribute("id", self.id)
+        top.setAttribute("id", str(self.id))
         fields = self.to_dict()
         for name, value in fields.iteritems():
-            element = doc.createElement(name)
+            element = doc.createElement(self.get_dom_field_name(name))
+            if isinstance(value, models.Model):
+                element.setAttribute('key', str(value.pk))
             value = unicode(value)
             element.appendChild(doc.createTextNode(value))
             top.appendChild(element)

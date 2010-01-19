@@ -254,4 +254,8 @@ class CollectionItemTestCase(unittest.TestCase):
             self.assertEquals(e.field.name, 'code')
         else:
             self.fail("No exception raised")
-        
+       
+    def testDomForeignKey(self):
+        doc = self.item_4.to_dom()
+        self.assertEquals(doc.getElementsByTagName('collection')[0].getAttribute('key'), str(self.persepolis.id))
+
