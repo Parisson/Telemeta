@@ -36,6 +36,7 @@
 from django.db import models
 import cremquery as query
 from xml.dom.minidom import getDOMImplementation
+from telemeta.util.unaccent import unaccent_icmp
 
 class ModelCore(models.Model):
 
@@ -116,6 +117,17 @@ class MediaCore(ModelCore):
             return False
     is_well_formed_id = classmethod(is_well_formed_id)
 
+    def save(self, force_insert=False, force_update=False, using=None):
+        raise MissingUserError("save() method disabled, use save_by_user()")
+
+    def save_by_user(self, user, force_insert=False, force_update=False, using=None):
+        "Save a media object and add a revision"
+        super(MediaCore, self).save(force_insert, force_update, using)
+        Revision(element_type=self.element_type, element_id=self.id, user=user).touch()    
+
+    def get_revision(self):
+        return Revision.objects.filter(element_type=self.element_type, element_id=self.id).order_by('-time')[0]
+
     class Meta:
         abstract = True
 
@@ -124,6 +136,7 @@ class MetaCore:
 
 class MediaCollection(MediaCore):
     "Describe a collection of items"
+    element_type = 'collection'
     PUBLIC_ACCESS_CHOICES = (('none', 'none'), ('metadata', 'metadata'), ('metadata', 'full'))
 
     reference             = models.CharField(unique=True, max_length=250,
@@ -180,14 +193,6 @@ class MediaCollection(MediaCore):
     def __unicode__(self):
         return self.code
 
-    def save(self, force_insert=False, force_update=False, using=None):
-        raise MissingUserError("save() method disabled, use save_by_user()")
-
-    def save_by_user(self, user, force_insert=False, force_update=False, using=None):
-        "Save a collection and add a revision"
-        super(MediaCollection, self).save(force_insert, force_update, using)
-        Revision(element_type='collection', element_id=self.id, user=user).touch()    
-
     def has_mediafile(self):
         "Tell wether this collection has any media files attached to its items"
         items = self.items.all()
@@ -196,11 +201,41 @@ class MediaCollection(MediaCore):
                 return True
         return False
 
+    def __name_cmp(self, obj1, obj2):
+        return unaccent_icmp(obj1.name, obj2.name)
+
+    def get_countries(self):
+        "Return the countries of the items"
+        countries = []
+        items = self.items.all()
+        for item in items:
+            if item.location:
+                country = item.location.country()
+                if country and not country in countries:
+                    countries.append(country)
+
+        countries.sort(self.__name_cmp)                
+
+        return countries
+
+    def get_ethnic_groups(self):
+        "Return the ethnic groups of the items"
+        groups = []
+        items = self.items.all()
+        for item in items:
+            if item.ethnic_group and not item.ethnic_group in groups:
+                groups.append(item.ethnic_group)
+
+        groups.sort(self.__name_cmp)                
+
+        return groups
+
     class Meta(MetaCore):
         db_table = 'media_collections'
 
 class MediaItem(MediaCore):
     "Describe an item"
+    element_type = 'item'
     PUBLIC_ACCESS_CHOICES = (('none', 'none'), ('metadata', 'metadata'), ('full', 'full'))
 
     collection            = models.ForeignKey('MediaCollection', related_name="items")
@@ -246,16 +281,9 @@ class MediaItem(MediaCore):
             return self.code
         return self.old_code
 
-    def save(self, force_insert=False, force_update=False):
-        raise MissingUserError("save() method disabled, use save_by_user()")
-
-    def save_by_user(self, user, force_insert=False, force_update=False):
-        "Save an item and add a revision"
-        super(MediaItem, self).save(force_insert, force_update)
-        Revision(element_type='item', element_id=self.id, user=user).touch()    
-
 class MediaPart(MediaCore):
     "Describe an item part"
+    element_type = 'part'
     item  = models.ForeignKey('MediaItem', related_name="parts")
     title = models.CharField(max_length=250)
     start = models.FloatField()

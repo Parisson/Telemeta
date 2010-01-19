@@ -250,6 +250,7 @@ class CollectionItemTestCase(unittest.TestCase):
         self.assertEquals(self.items.without_collection().count(), 0)
 
     def testCodeRequired(self):
+        "Test that a proper failure occur when a collection code isn't provided"
         c = MediaCollection()
         try:
             c.save_by_user(self.olivier)
@@ -259,11 +260,18 @@ class CollectionItemTestCase(unittest.TestCase):
             self.fail("No exception raised")
        
     def testDomForeignKey(self):
+        "Test DOM foreign key embedding"
         doc = self.item_4.to_dom()
         self.assertEquals(doc.getElementsByTagName('collection')[0].getAttribute('key'), str(self.persepolis.id))
 
     def testLocationRelation(self):
+        "Test location country and continent resolving"
         self.assertEquals(self.france, self.item_1.location.country())
         self.assertEquals(self.europe, self.item_1.location.continent())
         self.assertEquals(self.france, self.item_2.location.country())
         self.assertEquals(self.europe, self.item_2.location.continent())
+
+    def testCollectionCountries(self):
+        "Test the MediaCollection.get_countries() method"
+        self.assertEquals(self.volonte.get_countries(), [self.belgique, self.france])
+
