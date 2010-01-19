@@ -144,6 +144,7 @@ class MediaCollection(MediaCore):
     collector_is_creator  = models.BooleanField(default="")
     publisher             = models.ForeignKey('Publisher', related_name="collections",
                                               null=True)     
+    is_published          = models.BooleanField(default="")
     year_published        = models.IntegerField(default=0)
     publisher_collection  = models.ForeignKey('PublisherCollection', related_name="collections",
                                               null=True)
