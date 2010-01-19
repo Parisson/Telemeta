@@ -34,7 +34,7 @@
 #          David LIPSZYC <davidlipszyc@gmail.com>
 
 import unittest
-from telemeta.models import MediaCollection, MediaItem, Location, EthnicGroup, LocationType, User, Revision, RequiredFieldError
+from telemeta.models import *
 from datetime import datetime, timedelta
 
 class CollectionItemTestCase(unittest.TestCase):
@@ -55,6 +55,9 @@ class CollectionItemTestCase(unittest.TestCase):
         self.france = Location.objects.create(name="France", type="country", complete_type=self.country)
         self.europe = Location.objects.create(name="Europe", type="continent", complete_type=self.continent)
         self.belgique = Location.objects.create(name="Belgique", type="country", complete_type=self.country)
+
+        LocationRelation.objects.create(location=self.paris, parent_location=self.france)
+        LocationRelation.objects.create(location=self.france, parent_location=self.europe)
 
         EthnicGroup.objects.all().delete()
         self.a = EthnicGroup.objects.create(name="a")
@@ -259,3 +262,8 @@ class CollectionItemTestCase(unittest.TestCase):
         doc = self.item_4.to_dom()
         self.assertEquals(doc.getElementsByTagName('collection')[0].getAttribute('key'), str(self.persepolis.id))
 
+    def testLocationRelation(self):
+        self.assertEquals(self.france, self.item_1.location.country())
+        self.assertEquals(self.europe, self.item_1.location.continent())
+        self.assertEquals(self.france, self.item_2.location.country())
+        self.assertEquals(self.europe, self.item_2.location.continent())

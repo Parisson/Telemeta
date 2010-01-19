@@ -426,6 +426,24 @@ class Location(ModelCore):
                                          db_column="current_name", null=True) 
     is_authoritative = models.BooleanField(default=0)
 
+    def _by_type(self, typename):
+        location = self
+        while location.type != typename:
+            relations = location.parent_relations
+            if relations:
+                location = relations.all()[0].parent_location
+            else:
+                location = None
+                break
+
+        return location
+
+    def country(self):
+        return self._by_type('country')
+
+    def continent(self):
+        return self._by_type('continent')
+
     class Meta(MetaCore):
         db_table = 'locations'
 
@@ -442,20 +460,20 @@ class LocationType(ModelCore):
 
 class LocationAlias(ModelCore):
     "Location other name"
-    location_name    = models.ForeignKey('Location', related_name="aliases",
+    location         = models.ForeignKey('Location', related_name="aliases",
                                           db_column="location_name", max_length=150)
     alias            = models.CharField(max_length=150)
     is_authoritative = models.BooleanField(default=0)
 
     class Meta(MetaCore):
         db_table = 'location_aliases'
-        unique_together = (('location_name', 'alias'),)
+        unique_together = (('location', 'alias'),)
     
 class LocationRelation(ModelCore):
     "Location family"
-    location_name        = models.ForeignKey('Location', related_name="parent_relations",
+    location             = models.ForeignKey('Location', related_name="parent_relations",
                                               db_column="location_name", max_length=150)
-    parent_location_name = models.ForeignKey('Location', related_name="child_relations",
+    parent_location      = models.ForeignKey('Location', related_name="child_relations",
                                               db_column="parent_location_name", null=True, max_length=150)
     is_authoritative     = models.BooleanField()
 
