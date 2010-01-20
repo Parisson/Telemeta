@@ -61,7 +61,7 @@ class ModelCore(models.Model):
     class Meta:
         abstract = True
 
-class MediaCore(ModelCore):
+class MediaResource(ModelCore):
     "Base class of all media objects"
 
     def to_dict(self):  
@@ -124,7 +124,7 @@ class MediaCore(ModelCore):
 class MetaCore:
     app_label = 'telemeta'
 
-class MediaCollection(MediaCore):
+class MediaCollection(MediaResource):
     "Describe a collection of items"
     element_type = 'collection'
     PUBLIC_ACCESS_CHOICES = (('none', 'none'), ('metadata', 'metadata'), ('metadata', 'full'))
@@ -242,7 +242,7 @@ class MediaCollection(MediaCore):
     class Meta(MetaCore):
         db_table = 'media_collections'
 
-class MediaItem(MediaCore):
+class MediaItem(MediaResource):
     "Describe an item"
     element_type = 'item'
     PUBLIC_ACCESS_CHOICES = (('none', 'none'), ('metadata', 'metadata'), ('full', 'full'))
@@ -306,7 +306,7 @@ class MediaItem(MediaCore):
             return self.code
         return self.old_code
 
-class MediaPart(MediaCore):
+class MediaPart(MediaResource):
     "Describe an item part"
     element_type = 'part'
     item  = models.ForeignKey('MediaItem', related_name="parts")
@@ -320,72 +320,69 @@ class MediaPart(MediaCore):
     def __unicode__(self):
         return self.title
 
-class PhysicalFormat(ModelCore):
-    "Collection physical format"
+class Enumeration(ModelCore):
+    "Abstract enumerations base class"
     value = models.CharField(max_length=250, unique=True)
     
     class Meta(MetaCore):
+        abstract = True
+
+class PhysicalFormat(Enumeration):
+    "Collection physical format"
+
+    class Meta(MetaCore):
         db_table = 'physical_formats'
 
-class PublishingStatus(ModelCore):
+class PublishingStatus(Enumeration):
     "Collection publishing status"
-    value = models.CharField(max_length=250, unique=True)
 
     class Meta(MetaCore):
         db_table = 'publishing_status'
 
-class AcquisitionMode(ModelCore):
+class AcquisitionMode(Enumeration):
     "Mode of acquisition of the collection"
-    value = models.CharField(max_length=250, unique=True)
 
     class Meta(MetaCore):
         db_table = 'acquisition_modes'
 
-class MetadataAuthor(ModelCore):
+class MetadataAuthor(Enumeration):
     "Collection metadata author"
-    value = models.CharField(max_length=250, unique=True)
 
     class Meta(MetaCore):
         db_table = 'metadata_authors'
 
-class MetadataWriter(ModelCore):  
+class MetadataWriter(Enumeration):  
     "Collection metadata writer"
-    value = models.CharField(max_length=250, unique=True)
 
     class Meta(MetaCore):
         db_table = 'metadata_writers'
 
-class LegalRight(ModelCore):
+class LegalRight(Enumeration):
     "Collection legal rights" 
-    value = models.CharField(max_length=250, unique=True)
 
     class Meta(MetaCore):
         db_table = 'legal_rights'
 
-class RecordingContext(ModelCore):
+class RecordingContext(Enumeration):
     "Collection recording context"
-    value = models.CharField(max_length=250, unique=True)
 
     class Meta(MetaCore):
         db_table = 'recording_contexts'
 
-class AdConversion(ModelCore):
+class AdConversion(Enumeration):
     "Collection digital to analog conversion status"
-    value = models.CharField(max_length=250, unique=True)
 
     class Meta(MetaCore):
         db_table = 'ad_conversions'
 
-class VernacularStyle(ModelCore):
+class VernacularStyle(Enumeration):
     "Item vernacular style"
-    value = models.CharField(max_length=250, unique=True)
 
     class Meta(MetaCore):
         db_table = 'vernacular_styles'
 
-class GenericStyle(ModelCore):
+class GenericStyle(Enumeration):
     "Item generic style"
-    value = models.CharField(max_length=250, unique=True)
 
     class Meta(MetaCore):
         db_table = 'generic_styles'
@@ -533,9 +530,8 @@ class LocationRelation(ModelCore):
     class Meta(MetaCore):
         db_table = 'location_relations'
     
-class ContextKeyword(ModelCore):
+class ContextKeyword(Enumeration):
     "Keyword"
-    value = models.CharField(max_length=250)
 
     class Meta(MetaCore):
         db_table = 'context_keywords'
@@ -549,9 +545,8 @@ class MediaItemKeyword(ModelCore):
         db_table = 'media_item_keywords'
         unique_together = (('item', 'keyword'),)
 
-class Publisher(ModelCore): 
+class Publisher(Enumeration): 
     "Collection publisher"
-    value = models.CharField(max_length=250, unique=True)
 
     class Meta(MetaCore):
         db_table = 'publishers'
