@@ -34,9 +34,11 @@
 #          David LIPSZYC <davidlipszyc@gmail.com>
 
 from django.db import models
+from django.core.exceptions import ObjectDoesNotExist
 import cremquery as query
 from xml.dom.minidom import getDOMImplementation
 from telemeta.util.unaccent import unaccent_icmp
+import re
 
 class ModelCore(models.Model):
 
@@ -108,22 +110,10 @@ class MediaCore(ModelCore):
             top.appendChild(element)
         return doc
     
-    def is_well_formed_id(cls, value):
-        "Check if the media id is well formed"
-        regex = re.compile(r"^" + media_id_regex + r"$")
-        if regex.match(value):
-            return True 
-        else:
-            return False
-    is_well_formed_id = classmethod(is_well_formed_id)
-
-    def save(self, force_insert=False, force_update=False, using=None):
-        raise MissingUserError("save() method disabled, use save_by_user()")
-
-    def save_by_user(self, user, force_insert=False, force_update=False, using=None):
+    def save_with_revision(self, user, force_insert=False, force_update=False, using=None):
         "Save a media object and add a revision"
-        super(MediaCore, self).save(force_insert, force_update, using)
-        Revision(element_type=self.element_type, element_id=self.id, user=user).touch()    
+        self.save(force_insert, force_update, using)
+        Revision.touch(self, user)    
 
     def get_revision(self):
         return Revision.objects.filter(element_type=self.element_type, element_id=self.id).order_by('-time')[0]
@@ -230,6 +220,25 @@ class MediaCollection(MediaCore):
 
         return groups
 
+    def is_valid_code(self, code):
+        "Check if the collection code is well formed"
+        if self.is_published:
+            regex = '^CNRSMH_E_[0-9]{4}_[0-9]{3}_[0-9]{3}$'
+        else:
+            regex = '^CNRSMH_I_[0-9]{4}_[0-9]{3}$'
+           
+        if re.match(regex, code):
+            return True
+
+        return False
+
+    def save(self, force_insert=False, force_update=False, using=None):
+        if not self.code:
+            raise RequiredFieldError(self, self._meta.get_field('code'))
+        if not self.is_valid_code(self.code):
+            raise MediaInvalidCodeError("%s is not a valid code for this collection" % self.code)
+        super(MediaCollection, self).save(force_insert, force_update, using)
+
     class Meta(MetaCore):
         db_table = 'media_collections'
 
@@ -275,6 +284,22 @@ class MediaItem(MediaCore):
 
     class Meta(MetaCore):
         db_table = 'media_items'
+
+    def is_valid_code(self, code):
+        "Check if the item code is well formed"
+        regex = '^' + self.collection.code + '_[0-9]{2}(_[0-9]{2})?$'
+        if re.match(regex, self.code):
+            return True
+
+        return False
+
+    def save(self, force_insert=False, force_update=False, using=None):
+        if not self.code:
+            raise RequiredFieldError(self, self._meta.get_field('code'))
+        if not self.is_valid_code(self.code):
+            raise MediaInvalidCodeError("%s is not a valid item code for collection %s" 
+                                        % (self.code, self.collection.code))
+        super(MediaItem, self).save(force_insert, force_update, using)
 
     def __unicode__(self):
         if self.code:
@@ -550,14 +575,21 @@ class Revision(ModelCore):
     time                 = models.DateTimeField(auto_now_add=True)
     user                 = models.ForeignKey('User', db_column='username', related_name="revisions")
     
-    def touch(self):    
+    @classmethod
+    def touch(cls, element, user):    
         "Create or update a revision"
-        q = Revision.objects.filter(element_type=self.element_type, element_id=self.element_id)
-        if q.count():
-            self.change_type = 'update'
-        else:
-            self.change_type = 'create'
-        self.save()
+        revision = cls(element_type=element.element_type, element_id=element.pk, 
+                       user=user, change_type='create')
+        if element.pk:
+            try: 
+                element.__class__.objects.get(pk=element.pk)
+            except ObjectDoesNotExist:
+                pass
+            else:
+                revision.change_type = 'update'
+
+        revision.save()
+        return revision
 
     class Meta(MetaCore):
         db_table = 'revisions'
@@ -589,3 +621,6 @@ class RequiredFieldError(Exception):
         self.model = model
         self.field = field
         super(Exception, self).__init__('%s.%s is required' % (model._meta.object_name, field.name))
+
+class MediaInvalidCodeError(Exception):
+    pass
