@@ -328,6 +328,9 @@ class Enumeration(ModelCore):
     "Abstract enumerations base class"
     value = models.CharField(max_length=250, unique=True)
     
+    def __unicode__(self):
+        return self.value
+
     class Meta(MetaCore):
         abstract = True
 
@@ -398,12 +401,18 @@ class Instrument(ModelCore):
     class Meta(MetaCore):
         db_table = 'instruments'
 
+    def __unicode__(self):
+        return self.name
+
 class InstrumentAlias(ModelCore):
     "Instrument other name"
     name = models.CharField(max_length=250)
 
     class Meta(MetaCore):
         db_table = 'instrument_aliases'
+
+    def __unicode__(self):
+        return self.name
 
 class InstrumentRelation(ModelCore):
     "Instrument family"
@@ -450,6 +459,9 @@ class User(ModelCore):
     class Meta(MetaCore):
         db_table = 'users'
 
+    def __unicode__(self):
+        return self.username
+
 class Playlist(ModelCore):
     "Item or collection playlist"
     owner_username = models.ForeignKey('User', related_name="playlists", db_column="owner_username") 
@@ -457,6 +469,9 @@ class Playlist(ModelCore):
 
     class Meta(MetaCore):
         db_table = 'playlists'
+
+    def __unicode__(self):
+        return self.name
 
 class PlaylistResource(ModelCore):
     "Playlist components"
@@ -519,6 +534,9 @@ class LocationAlias(ModelCore):
     alias            = models.CharField(max_length=150)
     is_authoritative = models.BooleanField(default=0)
 
+    def __unicode__(self):
+        return self.alias
+
     class Meta(MetaCore):
         db_table = 'location_aliases'
         unique_together = (('location', 'alias'),)
@@ -559,6 +577,9 @@ class PublisherCollection(ModelCore):
     "Collection which belongs to publisher"
     publisher = models.ForeignKey('Publisher', related_name="publisher_collections")
     value     = models.CharField(max_length=250)
+
+    def __unicode__(self):
+        return self.value
 
     class Meta(MetaCore):
         db_table = 'publisher_collections'
