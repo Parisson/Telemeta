@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2007 Samalyse SARL
+# Copyright (C) 2007-2010 Samalyse SARL
 
 # This software is a computer program whose purpose is to backup, analyse,
 # transcode and stream any audio content with its metadata over a web frontend.
@@ -31,7 +31,14 @@
 # knowledge of the CeCILL license and that you accept its terms.
 #
 # Authors: Olivier Guilyardi <olivier@samalyse.com>
-#          David LIPSZYC <davidlipszyc@gmail.com>
 
-from model_tests import *
-from util_tests import *
+import unittest
+from telemeta.util.unaccent import unaccent_icmp
+
+class UnaccentTestCase(unittest.TestCase):
+    def testSorting(self):
+        strings = [u'Métro', u'évasion', u'àccent', u'È', u'île', u'arrivée', u'elle']
+        strings.sort(unaccent_icmp)
+        expected = [u'àccent', u'arrivée', u'È', u'elle', u'évasion', u'île', u'Métro']
+        self.assertEquals(strings, expected)
+
