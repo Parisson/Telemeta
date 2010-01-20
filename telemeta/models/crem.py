@@ -287,7 +287,11 @@ class MediaItem(MediaResource):
 
     def is_valid_code(self, code):
         "Check if the item code is well formed"
-        regex = '^' + self.collection.code + '_[0-9]{2}(_[0-9]{2})?$'
+        if self.collection.is_published:
+            regex = '^' + self.collection.code + '_[0-9]{2}(_[0-9]{2})?$'
+        else:
+            regex = '^' + self.collection.code + '_[0-9]{3}(_[0-9]{2})?(_[0-9]{2})?$'
+
         if re.match(regex, self.code):
             return True
 
