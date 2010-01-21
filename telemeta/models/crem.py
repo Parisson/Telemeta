@@ -39,6 +39,8 @@ import cremquery as query
 from xml.dom.minidom import getDOMImplementation
 from telemeta.util.unaccent import unaccent_icmp
 import re
+from telemeta.models.core import DurationField, Duration
+from telemeta.models import dublincore as dc
 
 class ModelCore(models.Model):
 
@@ -118,6 +120,20 @@ class MediaResource(ModelCore):
     def get_revision(self):
         return Revision.objects.filter(element_type=self.element_type, element_id=self.id).order_by('-time')[0]
 
+    def dc_access_rights(self):
+        if self.public_access == 'full':
+            return 'public'
+        if self.public_access == 'metadata':
+            return 'restricted'
+        return 'private'
+
+    def dc_identifier(self):
+        if self.code:
+            return self.element_type + ':' + self.code
+        elif self.old_code:
+            return self.element_type + ':' + self.old_code
+        return None
+
     class Meta:
         abstract = True
 
@@ -167,7 +183,7 @@ class MediaCollection(MediaResource):
     recorded_to_year      = models.IntegerField(default=0)
     recording_context     = models.ForeignKey('RecordingContext', related_name="collections",
                                               null=True)
-    approx_duration       = models.TimeField(default='00:00')
+    approx_duration       = DurationField(default='00:00')
     doctype_code          = models.IntegerField(default=0)
     travail               = models.CharField(max_length=250, default="")
     state                 = models.TextField(default="")
@@ -239,6 +255,56 @@ class MediaCollection(MediaResource):
             raise MediaInvalidCodeError("%s is not a valid code for this collection" % self.code)
         super(MediaCollection, self).save(force_insert, force_update, using)
 
+    def to_dublincore(self):
+        "Express this collection as a Dublin Core resource"
+
+        if self.collector:
+            creator = (dc.Element('creator', self.collector), 
+                       dc.Element('contributor', self.creator))
+        else:                        
+            creator = dc.Element('creator', self.creator)
+
+        resource = dc.Resource(
+            dc.Element('identifier',  self.dc_identifier()),
+            dc.Element('type',        'Collection'),
+            dc.Element('title',       self.title),
+            dc.Element('title',       self.alt_title),
+            creator,
+            dc.Element('contributor', self.metadata_author),
+            dc.Element('subject',     'Ethnologie'),
+            dc.Element('subject',     'Ethnomusicologie'),
+            dc.Element('publisher',   self.publisher),
+            dc.Element('publisher',   u'CNRS - Musée de l\'homme'),
+            dc.Date(self.recorded_from_year, self.recorded_to_year, 'created'),
+            dc.Date(self.year_published, refinement='issued'),
+            dc.Element('rightsHolder', self.creator),
+            dc.Element('rightsHolder', self.collector),
+            dc.Element('rightsHolder', self.publisher),
+        )
+           
+        duration = Duration()
+        parts = []
+        for item in self.items.all():
+            duration += item.duration()
+
+            id = item.dc_identifier()
+            if id:
+                parts.append(dc.Element('relation', id, 'hasPart'))
+
+        if duration < self.approx_duration:            
+            duration = self.approx_duration
+
+        resource.add(
+            dc.Element('rights', self.legal_rights, 'license'),
+            dc.Element('rights', self.dc_access_rights(), 'accessRights'),
+            dc.Element('format', duration, 'extent'),
+            dc.Element('format', self.physical_format, 'medium'),
+            #FIXME: audio mime types are missing,
+            parts
+        )
+
+        return resource
+
     class Meta(MetaCore):
         db_table = 'media_collections'
 
@@ -251,7 +317,7 @@ class MediaItem(MediaResource):
     track                 = models.CharField(max_length=250, default="")
     old_code              = models.CharField(unique=True, max_length=250, null=True)
     code                  = models.CharField(unique=True, max_length=250, null=True)
-    approx_duration       = models.TimeField(default='00:00')
+    approx_duration       = DurationField(default='00:00')
     recorded_from_date    = models.DateField(default=0)
     recorded_to_date      = models.DateField(default=0)
     location              = models.ForeignKey('Location', related_name="items",
@@ -304,6 +370,21 @@ class MediaItem(MediaResource):
             raise MediaInvalidCodeError("%s is not a valid item code for collection %s" 
                                         % (self.code, self.collection.code))
         super(MediaItem, self).save(force_insert, force_update, using)
+
+    def duration(self):
+        "Tell the length in seconds of this item media data"
+        # FIXME: use TimeSide?
+        seconds = 0
+        if self.file:
+            import wave
+            media = wave.open(self.file.path, "rb")
+            seconds = media.getnframes() / media.getframerate()
+            media.close()
+
+        if seconds:
+            return Duration(seconds=seconds)
+
+        return self.approx_duration
 
     def __unicode__(self):
         if self.code:

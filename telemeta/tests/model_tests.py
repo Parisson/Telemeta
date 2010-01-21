@@ -78,8 +78,8 @@ class CollectionItemTestCase(unittest.TestCase):
 
         self.volonte.save_with_revision(self.olivier)
 
-        self.nicolas = MediaCollection(id=3, reference="A3",  code="CNRSMH_E_1967_123_456", title="petit nicolas", 
-            creator="Georgette McKenic", collector="Paul MAILLE",  year_published=1999, is_published=True, 
+        self.nicolas = MediaCollection(id=3, reference="A3",  code="CNRSMH_I_1967_123", title="petit nicolas", 
+            creator="Georgette McKenic", collector="Paul MAILLE",  year_published=1999,  
             recorded_from_year=1967, recorded_to_year=1968)
                                    
         self.nicolas.save_with_revision(self.olivier)
@@ -92,13 +92,13 @@ class CollectionItemTestCase(unittest.TestCase):
 
         self.item_1.save_with_revision(self.david)
 
-        self.item_2 = MediaItem(id=2, collection=self.volonte, code="CNRSMH_I_1960_001_12_78", 
+        self.item_2 = MediaItem(id=2, collection=self.volonte, code="CNRSMH_I_1960_001_129", 
             recorded_from_date="1981-01-12", recorded_to_date="1991-02-24", location=self.france, 
             ethnic_group=self.a, title="item 2", author="Rick ROLL", comment="comment 2") 
 
         self.item_2.save_with_revision(self.david)
 
-        self.item_3 = MediaItem(id=3, collection=self.nicolas, code="CNRSMH_E_1967_123_456_01_99", 
+        self.item_3 = MediaItem(id=3, collection=self.nicolas, code="CNRSMH_I_1967_123_456_01", 
             recorded_from_date="1968-01-12", recorded_to_date="1968-02-24", location=self.belgique, 
             ethnic_group=self.b, title="item 3", author="John SMITH", collector="Paul CARLOS",
             comment="comment 3",  )
@@ -112,7 +112,7 @@ class CollectionItemTestCase(unittest.TestCase):
 
         self.item_4.save_with_revision(self.olivier)
 
-        self.item_5 = MediaItem(id=5, collection=self.volonte,code="CNRSMH_I_1960_001_85", 
+        self.item_5 = MediaItem(id=5, collection=self.volonte,code="CNRSMH_I_1960_001_789_85_22", 
             approx_duration="00:05:00", recorded_from_date="1978-01-12", recorded_to_date="1978-02-24", 
             location=self.belgique, ethnic_group=self.a, title="item 5", alt_title="I5", 
             author="Simon PAUL", collector="Javier BARDEM", 
@@ -274,4 +274,6 @@ class CollectionItemTestCase(unittest.TestCase):
     def testCollectionCountries(self):
         "Test the MediaCollection.get_countries() method"
         self.assertEquals(self.volonte.get_countries(), [self.belgique, self.france])
+
+        
 

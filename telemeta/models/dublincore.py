@@ -35,10 +35,9 @@
 class Resource(object):
     "Represent a Dublin Core resource"
 
-    elements = []
-
     def __init__(self, *args):
-        self.elements = args  
+        self.elements = []
+        self.add(*args)
 
     def flatten(self):
         """Convert the resource to a dictionary with element names as keys.
@@ -63,12 +62,50 @@ class Resource(object):
             result.append((element.name, unicode(element.value)))
         return result
 
+    def add(self, *elements):
+        for e in elements:
+            if isinstance(e, Element):
+                if not e in self.elements:
+                    self.elements.append(e)
+            else:
+                try:
+                    iter(e)
+                except TypeError: 
+                    raise Exception("add() only accepts elements or sequences of elements")
+
+                self.add(*e)
+
+    def __unicode__(self):
+        dump = u''
+        for e in self.elements:
+            key = unicode(e.name)
+            if e.refinement:
+                key += u'.' + unicode(e.refinement)
+            dump += u'%s:\t%s\n' % (key, unicode(e.value))
+        return dump            
+            
+
 class Element(object):
     "Represent a Dublin Core element"
 
-    def __init__(self, name, field=None, value=None, refinement=None):
+    def __init__(self, name, value=None, refinement=None):
         self.name = name
         self.value = value
         self.refinement = refinement
-        self.field = field
-        
+
+    def __eq__(self, other):
+        return self.name == other.name and self.value == other.value and self.refinement == self.refinement
+
+    def __ne__(self, other):
+        return not (self == other)
+
+class Date(Element):
+    "Dublin Core date element formatted according to W3C-DTF or DCMI Period"
+
+    def __init__(self, start, end=None, refinement=None):
+        value = str(start) 
+        if end and start != end:
+            value = 'start=' + value + '; end=' + unicode(end) + ';'
+        super(Date, self).__init__('date', value, refinement)            
+            
+

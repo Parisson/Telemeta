@@ -49,7 +49,7 @@ class TelemetaOAIDataSource(object):
         _dc = record.to_dublincore().to_list()
         for k, v in _dc:
             if k == 'identifier':
-                dc.append((k, type + ':' + v))
+                dc.append((k, type + ':' + v)) # FIXME: type prepended by CREM model
             else:
                 dc.append((k, v))
         return (dc, ctime)
@@ -60,7 +60,8 @@ class TelemetaOAIDataSource(object):
             type, id = id.split(':')
         except ValueError:
             return None
-            
+        
+        #FIXME: search by code
         if (type == 'collection'):
             try:
                 record  = MediaCollection.objects.get(id=id)
@@ -68,6 +69,7 @@ class TelemetaOAIDataSource(object):
                 return None
         elif (type == 'item'):
             try:
+                #FIXME: also search by old_code if code is not found
                 record = MediaItem.objects.get(id=id)
             except MediaItem.DoesNotExist:
                 return None
