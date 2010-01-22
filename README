@@ -17,15 +17,15 @@ in accordance with open standards.
 Here are the main features of Telemeta:
 
     * Secure archiving, editing and publishing of audio files over internet.
-    * "On the fly" transcoding and metadata encapsulating (FLAC, OGG, MP3, WAV, etc..)
     * User friendly web frontend including workflows and high level search methods
     * Smart dynamical and skinnable audio player (thanks to Timeside and soundmanager2)
-    * "On the fly" complex audio analyzers based on an easy plugin architecture
+    * "On the fly" analyzing, transcoding and metadata embedding based on an easy plugin architecture
+    * Multi-formats : FLAC, OGG, MP3, WAV and more
+    * GEO Navigator for audio geolocalization
+    * DublinCore compatibility
+    * OAI-PMH data provider
+    * XML serialized backup
     * Strong SQL backend
-    * XML metadata backup
-    * Auto audio-marking with synthetized voices reading metadata (optional)
-    * Anti-corruption data security management with par2 recovery keys
-    * Data synchronizing over remote servers (rsync + ssh methods)
 
 The Telemeta data model is based on 'collections' and 'items'. A collection is described
 by its metadata and includes original audio items (sounds) and its own metadata. This
@@ -64,7 +64,7 @@ If you find some bugs, PLEASE leave a ticket on this page:
 http://telemeta.org/newticket
 
 You can also leave a ticket to request some new interesting features for the next versions.
-And even if Telemeta suits you, please give us some feedback (see §6.) !
+And even if Telemeta suits you, please give us some feedback !
 
 
 Related projects
@@ -79,14 +79,13 @@ Contact
 
 :Homepage:    http://telemeta.org
 
-:Emails:       Guillaume Pellerin <yomguy@parisson.com>,
+:Emails:      Guillaume Pellerin <yomguy@parisson.com>,
               Olivier Guilyardi <olivier@samalyse.com>
 
-Support
-=======
+Sponsors
+========
 
-The Telemeta project is developed by Parisson and Samalyse.
-It is supported and financed by :
+The Telemeta project is developed by Parisson and Samalyse. It is sponsored by :
 
   * CNRS : Centre National de la Recherche Scientifique (the french Natianal Research and Scientific Center)
     http://cnrs.fr
