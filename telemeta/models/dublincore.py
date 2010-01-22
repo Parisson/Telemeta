@@ -32,6 +32,8 @@
 #
 # Author: Olivier Guilyardi <olivier@samalyse.com>
 
+from telemeta.models.core import Duration
+
 class Resource(object):
     "Represent a Dublin Core resource"
 
@@ -107,5 +109,68 @@ class Date(Element):
         if end and start != end:
             value = 'start=' + value + '; end=' + unicode(end) + ';'
         super(Date, self).__init__('date', value, refinement)            
-            
+
+def media_access_rights(media):
+    if media.public_access == 'full':
+        return 'public'
+    if media.public_access == 'metadata':
+        return 'restricted'
+    return 'private'
+
+def media_identifier(media):
+    if media.code:
+        return media.element_type + ':' + media.code
+    elif media.old_code:
+        return media.element_type + ':' + media.old_code
+    return None
+
+def express_collection(collection):
+    "Express a collection as a Dublin Core resource"
+
+    if collection.collector:
+        creator = (Element('creator', collection.collector), 
+                   Element('contributor', collection.creator))
+    else:                        
+        creator = Element('creator', collection.creator)
+
+    resource = Resource(
+        Element('identifier',  media_identifier(collection)),
+        Element('type',        'Collection'),
+        Element('title',       collection.title),
+        Element('title',       collection.alt_title),
+        creator,
+        Element('contributor', collection.metadata_author),
+        Element('subject',     'Ethnologie'),
+        Element('subject',     'Ethnomusicologie'),
+        Element('publisher',   collection.publisher),
+        Element('publisher',   u'CNRS - Musée de l\'homme'),
+        Date(collection.recorded_from_year, collection.recorded_to_year, 'created'),
+        Date(collection.year_published, refinement='issued'),
+        Element('rightsHolder', collection.creator),
+        Element('rightsHolder', collection.collector),
+        Element('rightsHolder', collection.publisher),
+    )
+       
+    duration = Duration()
+    parts = []
+    for item in collection.items.all():
+        duration += item.duration()
+
+        id = media_identifier(item)
+        if id:
+            parts.append(Element('relation', id, 'hasPart'))
+
+    if duration < collection.approx_duration:            
+        duration = collection.approx_duration
+
+    resource.add(
+        Element('rights', collection.legal_rights, 'license'),
+        Element('rights', media_access_rights(collection), 'accessRights'),
+        Element('format', duration, 'extent'),
+        Element('format', collection.physical_format, 'medium'),
+        #FIXME: audio mime types are missing,
+        parts
+    )
+
+    return resource
 

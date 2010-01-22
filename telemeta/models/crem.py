@@ -60,25 +60,13 @@ class ModelCore(models.Model):
                 raise RequiredFieldError(self, field)
         super(ModelCore, self).save(force_insert, force_update, using)
 
-    class Meta:
-        abstract = True
+    def save_with_revision(self, user, force_insert=False, force_update=False, using=None):
+        "Save a media object and add a revision"
+        self.save(force_insert, force_update, using)
+        Revision.touch(self, user)    
 
-class MediaResource(ModelCore):
-    "Base class of all media objects"
-
-    def to_dict(self):  
-        "Return model fields as a dict of name/value pairs"
-        fields_dict = {}
-        for field in self._meta.fields:
-            fields_dict[field.name] = getattr(self, field.name)
-        return fields_dict
-
-    def to_list(self):  
-        "Return model fields as a list"
-        fields_list = []
-        for field in self._meta.fields:
-            fields_list.append({'name': field.name, 'value': getattr(self, field.name)})
-        return fields_list
+    def get_revision(self):
+        return Revision.objects.filter(element_type=self.element_type, element_id=self.id).order_by('-time')[0]
 
     @classmethod
     def get_dom_name(cls):
@@ -101,7 +89,7 @@ class MediaResource(ModelCore):
         root = self.get_dom_name()
         doc = impl.createDocument(None, root, None)
         top = doc.documentElement
-        top.setAttribute("id", str(self.id))
+        top.setAttribute("id", str(self.pk))
         fields = self.to_dict()
         for name, value in fields.iteritems():
             element = doc.createElement(self.get_dom_field_name(name))
@@ -112,13 +100,25 @@ class MediaResource(ModelCore):
             top.appendChild(element)
         return doc
     
-    def save_with_revision(self, user, force_insert=False, force_update=False, using=None):
-        "Save a media object and add a revision"
-        self.save(force_insert, force_update, using)
-        Revision.touch(self, user)    
+    def to_dict(self):  
+        "Return model fields as a dict of name/value pairs"
+        fields_dict = {}
+        for field in self._meta.fields:
+            fields_dict[field.name] = getattr(self, field.name)
+        return fields_dict
 
-    def get_revision(self):
-        return Revision.objects.filter(element_type=self.element_type, element_id=self.id).order_by('-time')[0]
+    def to_list(self):  
+        "Return model fields as a list"
+        fields_list = []
+        for field in self._meta.fields:
+            fields_list.append({'name': field.name, 'value': getattr(self, field.name)})
+        return fields_list
+
+    class Meta:
+        abstract = True
+
+class MediaResource(ModelCore):
+    "Base class of all media objects"
 
     def dc_access_rights(self):
         if self.public_access == 'full':
