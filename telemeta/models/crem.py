@@ -239,7 +239,7 @@ class MediaCollection(MediaResource):
     def is_valid_code(self, code):
         "Check if the collection code is well formed"
         if self.is_published:
-            regex = '^CNRSMH_E_[0-9]{4}_[0-9]{3}_[0-9]{3}$'
+            regex = '^CNRSMH_E_[0-9]{4}(_[0-9]{3}){2}$'
         else:
             regex = '^CNRSMH_I_[0-9]{4}_[0-9]{3}$'
            
@@ -354,9 +354,9 @@ class MediaItem(MediaResource):
     def is_valid_code(self, code):
         "Check if the item code is well formed"
         if self.collection.is_published:
-            regex = '^' + self.collection.code + '_[0-9]{2}(_[0-9]{2})?$'
+            regex = '^' + self.collection.code + '(_[0-9]{2}){1,2}$'
         else:
-            regex = '^' + self.collection.code + '_[0-9]{3}(_[0-9]{2})?(_[0-9]{2})?$'
+            regex = '^' + self.collection.code + '_[0-9]{2,3}(_[0-9]{2}){0,2}$'
 
         if re.match(regex, self.code):
             return True
