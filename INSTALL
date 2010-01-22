@@ -124,7 +124,7 @@ Modifiy the following variables:
 
 Add the following variables:
 
-    :TELEMETA_CACHE_DIR: absolute path to the cache directory you just created
+    :TELEMETA_CACHE_DIR:   absolute path to the cache directory you just created
 
 Just paste the two lines below::
 
@@ -145,8 +145,7 @@ This synchronizes the DB with the model::
 6. Configure your urls
 ----------------------
 
-    The simplest case is to have telemeta running at public root. To do so, add
-    this url in urls.py::
+    The simplest case is to have telemeta running at public root. To do so, add this url in urls.py::
 
     (r'^', include('telemeta.urls')),
 
@@ -159,8 +158,7 @@ We are ready to start the telemeta server::
 
     $ python manage.py runserver
 
-By default, the server starts on the port 8000.
-You can override this with, for example::
+By default, the server starts on the port 8000. You can override this with, for example::
 
     $ python manage.py runserver 9000
 

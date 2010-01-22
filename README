@@ -45,7 +45,7 @@ Development
 To participate to the development of telemeta, you will need a login/password couple.
 You're welcome to email us to join and commit your great ideas ;)
 
-To get the lastest development version, you need subversion and run:
+To get the lastest development version, you need subversion and run::
 
     $ svn co http://svn.parisson.org/svn/telemeta/trunk telemeta
 
@@ -77,26 +77,20 @@ http://code.google.com/p/timeside/
 Contact
 =======
 
-Homepage:
-    http://telemeta.org
+:Homepage:    http://telemeta.org
 
-Emails:
-    Guillaume Pellerin <pellerin@parisson.com>,
-    Olivier Guilyardi <olivier@samalyse.com>
-
+:Emails:       Guillaume Pellerin <yomguy@parisson.com>,
+              Olivier Guilyardi <olivier@samalyse.com>
 
 Support
 =======
 
 The Telemeta project is developed by Parisson and Samalyse.
-
 It is supported and financed by :
 
-  * CNRS : Centre National de la Recherche Scientifique
-    (the french Natianal Research and Scientific Center)
+  * CNRS : Centre National de la Recherche Scientifique (the french Natianal Research and Scientific Center)
     http://cnrs.fr
-  * CREM : Centre de Recherche en Ethnomusicology
-    (the french Ethnomusicology Research Center)
+  * CREM : Centre de Recherche en Ethnomusicology (the french Ethnomusicology Research Center)
     http://www.crem-cnrs.fr
   * LAM : Equipe Lutherie, Acoustique et Musique de l'Université Pierre et Marie Curie de Paris
     (Instrument design, Acoustic and Music team of the Pierre & Marie Curie University)
