@@ -32,6 +32,7 @@
 #
 # Author: Olivier Guilyardi <olivier@samalyse.com>
 
-from telemeta.models.media import MediaCollection, MediaItem, MediaPart, MediaCore, Revision
-from telemeta.models.enum import PhysicalFormat, PublishingStatus
+from telemeta.models.crem import *
+#MediaCollection, MediaItem, MediaPart,  Revision, \
+#    PhysicalFormat, PublishingStatus
 
