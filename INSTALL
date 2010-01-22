@@ -1,150 +1,178 @@
-# INSTALL
-# =======
+==================
+Telemeta - INSTALL
+==================
 
-
-# 1. Requirements
-# ===============
+Requirements
+============
 
 Telemeta is designed to run on Linux and other UNIX based architectures.
 The following third party applications or libraries are required:
 
-python (>= 2.3.5-7), python-xml, python-mutagen, python-django (>= 1.0-1),
-python-imaging (>= 1.1.6), sox (>= 14.2), vorbis-tools, flac, normalize-audio,
-python-mysqldb, mysql-server, octave2.9, python-tk, libgd2-xpm,
-libsndfile1 (>= 1.0.17), python-numpy, python-ctypes (>= 1.0.1),
-python-scikits-audiolab (>= 0.10), python-setuptools (>= 0.6b3),
-python-support (>= 0.3), python-scipy, lame (>= 3.98.2)
+:dependencies: python (>= 2.3.5-7), python-xml, python-mutagen, python-django (>= 1.0-1),
+               python-imaging (>= 1.1.6), sox (>= 14.2), vorbis-tools, flac, normalize-audio,
+               python-mysqldb, mysql-server, octave2.9, python-tk, libgd2-xpm,
+               libsndfile1 (>= 1.0.17), python-numpy, python-ctypes (>= 1.0.1),
+               python-scikits-audiolab (>= 0.10), python-setuptools (>= 0.6b3),
+               python-support (>= 0.3), python-scipy, lame (>= 3.98.2)
 
-optional:
-ecasound, festival, par2
+:optional:     ecasound, festival, par2
 
-Here, package names are taken from the Debian OS and could be different on other platforms
+Here, package names are taken from the Debian OS and could be different on other platforms.
 
 
-# 2. Install
-# ==========
+Install
+=======
 
-2.1. Install the software
+-----------------------
+1. Install the software
+-----------------------
 
-    2.1.1 Install Telemeta:
+1.1 Install Telemeta
+--------------------
 
-    * On Debian (Testing recommended) or Ubuntu Hoary :
+* On Debian (Testing recommended) or Ubuntu Hoary
 
-        Just add these lines to your /etc/apt/sources-list:
+    Just add these lines to your /etc/apt/sources-list::
 
         deb http://debian.parisson.org/ binary/
         deb-src http://debian.parisson.org/ source/
         deb http://www.debian-multimedia.org etch main
 
-        Then,
+    Then::
 
-        $ sudo apt-get update
-        $ sudo apt-get install telemeta
+    $ sudo apt-get update
+    $ sudo apt-get install telemeta
 
-        This method provides the installation of all needed packages
-        thanks to the Debian dependency system.
+    This method provides the installation of all needed packages
+    thanks to the Debian dependency system.
+    Go to 1.2.
 
-        Go to 2.2.
+* On other linux platforms
 
-    * On other linux platforms
+    Install all dependencies.
 
-        Install all dependencies listed at 1.
+    Download the lastest release of telemeta at
+    http://telemeta.org
 
-        Download the lastest release of telemeta at
+    Uncompress the archive like::
 
-        http://telemeta.org
+    $ tar xzvf telemeta_0.3.2.tar.gz
 
-        Uncompress the archive like :
+    Go to the main folder of telemeta and run this command
+    in a shell as root::
 
-        $ tar xzvf telemeta_0.3.2.tar.gz
-
-        Go to the main folder of telemeta and run this command
-        in a shell as root:
-
-        $ sudo python setup.py install
-
-
-    2.1.2. Install audiolab
-
-    This is ONLY needed if you did NOT install telemeta with Debian's apt-get.
-
-    In order to get the wavforms of the audio files,
-    python-audiolab have to be installed with the help of git :
-
-    $ git clone git://github.com/cournape/audiolab.git
-    $ cd audiolab/
     $ sudo python setup.py install
 
 
-    2.1.3. Install the Django framework version 1.0:
+1.2. Install audiolab
+---------------------
 
-    * On Debian (Lenny recommended) or Ubuntu Hoary :
+This is ONLY needed if you did NOT install telemeta with Debian's apt-get.
 
-        $ sudo apt-get install python-django
+In order to get the wavforms of the audio files,
+python-audiolab have to be installed with the help of git::
 
-    * On other linux platforms, download and install from:
+$ git clone git://github.com/cournape/audiolab.git
+$ cd audiolab/
+$ sudo python setup.py install
 
-        http://www.djangoproject.com/download/
+
+1.3. Install the Django framework version 1.0
+---------------------------------------------
+
+* On Debian (Lenny recommended) or Ubuntu Hoary::
+
+    $ sudo apt-get install python-django
+
+* On other linux platforms, download and install it from:
+
+    http://www.djangoproject.com/download/
 
 
-2.2. Create a Django project if you haven't already done it:
+--------------------------
+2. Create a Django project
+--------------------------
+
+If you haven't already done it, start a new django project::
 
     $ cd ~/my_projects
     $ django-admin startproject mysite
 
 
-2.3. Create the media and cache directories:
+-----------------------------------------
+3. Create the media and cache directories
+-----------------------------------------
+
+We need 2 directories for media and caching::
 
     $ cd mysite
     $ mkdir media cache
 
-    You might want to place these somewhere else...
+You might want to place these somewhere else...
 
 
-2.4. Configure Django (settings.py):
+----------------------------------
+4. Configure the telemeta project
+----------------------------------
 
-    Modifiy the following variables:
+Edit the file settings.py in a text editor.
+Modifiy the following variables:
 
-    DATABASE_*: your database settings (don't forget to create the database if needed)
-    MEDIA_ROOT: absolute path to the media directory you just created
-    INSTALLED_APPS: add 'telemeta'
+    :DATABASE_*:        your database settings (don't forget to create the database if needed)
+    :MEDIA_ROOT:        absolute path to the media directory you just created
+    :INSTALLED_APPS:    add 'telemeta'
 
-    Add the following variables:
+Add the following variables:
 
-    TELEMETA_CACHE_DIR = absolute path to the cache directory you just created
+    :TELEMETA_CACHE_DIR: absolute path to the cache directory you just created
 
-    Just paste the two lines below:
+Just paste the two lines below::
+
     TELEMETA_EXPORT_CACHE_DIR = TELEMETA_CACHE_DIR + "/export"
     CACHE_BACKEND = "file://" + TELEMETA_CACHE_DIR + "/data"
 
 
-2.5. Initialize the database:
+--------------------------
+5. Initialize the database
+--------------------------
+
+This synchronizes the DB with the model::
 
     $ python manage.py syncdb
 
 
-2.6. Configure your urls:
+----------------------
+6. Configure your urls
+----------------------
 
     The simplest case is to have telemeta running at public root. To do so, add
-    this url in urls.py :
+    this url in urls.py::
 
     (r'^', include('telemeta.urls')),
 
 
-2.7. Start the project:
+--------------------
+7. Start the project
+--------------------
+
+We are ready to start the telemeta server::
 
     $ python manage.py runserver
 
-    By default, the server starts on the port 8000.
-    You can override this with, for example:
+By default, the server starts on the port 8000.
+You can override this with, for example::
 
     $ python manage.py runserver 9000
 
 
-2.8. Go the web page with your browser:
+------------------------------------
+8. Go the web page with your browser
+------------------------------------
 
     http://localhost:8000
+
     or
+
     http://localhost:9000
 
 
