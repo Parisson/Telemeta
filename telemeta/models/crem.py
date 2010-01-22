@@ -120,20 +120,6 @@ class ModelCore(models.Model):
 class MediaResource(ModelCore):
     "Base class of all media objects"
 
-    def dc_access_rights(self):
-        if self.public_access == 'full':
-            return 'public'
-        if self.public_access == 'metadata':
-            return 'restricted'
-        return 'private'
-
-    def dc_identifier(self):
-        if self.code:
-            return self.element_type + ':' + self.code
-        elif self.old_code:
-            return self.element_type + ':' + self.old_code
-        return None
-
     class Meta:
         abstract = True
 
@@ -254,56 +240,6 @@ class MediaCollection(MediaResource):
         if not self.is_valid_code(self.code):
             raise MediaInvalidCodeError("%s is not a valid code for this collection" % self.code)
         super(MediaCollection, self).save(force_insert, force_update, using)
-
-    def to_dublincore(self):
-        "Express this collection as a Dublin Core resource"
-
-        if self.collector:
-            creator = (dc.Element('creator', self.collector), 
-                       dc.Element('contributor', self.creator))
-        else:                        
-            creator = dc.Element('creator', self.creator)
-
-        resource = dc.Resource(
-            dc.Element('identifier',  self.dc_identifier()),
-            dc.Element('type',        'Collection'),
-            dc.Element('title',       self.title),
-            dc.Element('title',       self.alt_title),
-            creator,
-            dc.Element('contributor', self.metadata_author),
-            dc.Element('subject',     'Ethnologie'),
-            dc.Element('subject',     'Ethnomusicologie'),
-            dc.Element('publisher',   self.publisher),
-            dc.Element('publisher',   u'CNRS - Musée de l\'homme'),
-            dc.Date(self.recorded_from_year, self.recorded_to_year, 'created'),
-            dc.Date(self.year_published, refinement='issued'),
-            dc.Element('rightsHolder', self.creator),
-            dc.Element('rightsHolder', self.collector),
-            dc.Element('rightsHolder', self.publisher),
-        )
-           
-        duration = Duration()
-        parts = []
-        for item in self.items.all():
-            duration += item.duration()
-
-            id = item.dc_identifier()
-            if id:
-                parts.append(dc.Element('relation', id, 'hasPart'))
-
-        if duration < self.approx_duration:            
-            duration = self.approx_duration
-
-        resource.add(
-            dc.Element('rights', self.legal_rights, 'license'),
-            dc.Element('rights', self.dc_access_rights(), 'accessRights'),
-            dc.Element('format', duration, 'extent'),
-            dc.Element('format', self.physical_format, 'medium'),
-            #FIXME: audio mime types are missing,
-            parts
-        )
-
-        return resource
 
     class Meta(MetaCore):
         db_table = 'media_collections'
