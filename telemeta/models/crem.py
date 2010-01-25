@@ -284,6 +284,10 @@ class MediaItem(MediaResource):
 
     objects               = query.MediaItemManager()
 
+    def _keywords(self):
+        return ContextKeyword.objects.filter(mediaitemkeyword__item = self)
+    keywords = property(_keywords)
+
     class Meta(MetaCore):
         db_table = 'media_items'
 
@@ -512,15 +516,17 @@ class Location(ModelCore):
                                          db_column="current_name", null=True) 
     is_authoritative = models.BooleanField(default=0)
 
+    def parent(self):
+        relations = self.parent_relations.all()
+        if relations:
+            return relations[0].parent_location
+
+        return None
+
     def _by_type(self, typename):
         location = self
-        while location.type != typename:
-            relations = location.parent_relations
-            if relations:
-                location = relations.all()[0].parent_location
-            else:
-                location = None
-                break
+        while location and location.type != typename:
+            location = location.parent()
 
         return location
 
@@ -535,6 +541,18 @@ class Location(ModelCore):
 
     def __unicode__(self):
         return self.name
+
+    def sequence(self):
+        sequence = []
+        location = self
+        while location:
+            sequence.append(location)
+            location = location.parent()
+        return sequence
+
+    def fullname(self):
+        
+        return u', '.join([unicode(l) for l in self.sequence()])
 
 class LocationType(ModelCore):
     "Location type of an item location"

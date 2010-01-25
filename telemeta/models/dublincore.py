@@ -33,6 +33,7 @@
 # Author: Olivier Guilyardi <olivier@samalyse.com>
 
 from telemeta.models.core import Duration
+from django.conf import settings
 
 class Resource(object):
     "Represent a Dublin Core resource"
@@ -90,10 +91,11 @@ class Resource(object):
 class Element(object):
     "Represent a Dublin Core element"
 
-    def __init__(self, name, value=None, refinement=None):
+    def __init__(self, name, value=None, refinement=None, related=None):
         self.name = name
         self.value = value
         self.refinement = refinement
+        self.related = related
 
     def __eq__(self, other):
         return self.name == other.name and self.value == other.value and self.refinement == self.refinement
@@ -101,13 +103,22 @@ class Element(object):
     def __ne__(self, other):
         return not (self == other)
 
+    @staticmethod
+    def multiple(name, values, refinement=None):
+        elements = []
+        for v in values:
+            elements.append(Element(name, v, refinement))
+        return elements
+
 class Date(Element):
     "Dublin Core date element formatted according to W3C-DTF or DCMI Period"
 
     def __init__(self, start, end=None, refinement=None):
-        value = str(start) 
-        if end and start != end:
-            value = 'start=' + value + '; end=' + unicode(end) + ';'
+        value = ''
+        if start:
+            value = str(start) 
+            if end and start != end:
+                value = 'start=' + value + '; end=' + unicode(end) + ';'
         super(Date, self).__init__('date', value, refinement)            
 
 def media_access_rights(media):
@@ -133,24 +144,6 @@ def express_collection(collection):
     else:                        
         creator = Element('creator', collection.creator)
 
-    resource = Resource(
-        Element('identifier',  media_identifier(collection)),
-        Element('type',        'Collection'),
-        Element('title',       collection.title),
-        Element('title',       collection.alt_title),
-        creator,
-        Element('contributor', collection.metadata_author),
-        Element('subject',     'Ethnologie'),
-        Element('subject',     'Ethnomusicologie'),
-        Element('publisher',   collection.publisher),
-        Element('publisher',   u'CNRS - Musée de l\'homme'),
-        Date(collection.recorded_from_year, collection.recorded_to_year, 'created'),
-        Date(collection.year_published, refinement='issued'),
-        Element('rightsHolder', collection.creator),
-        Element('rightsHolder', collection.collector),
-        Element('rightsHolder', collection.publisher),
-    )
-       
     duration = Duration()
     parts = []
     for item in collection.items.all():
@@ -158,19 +151,81 @@ def express_collection(collection):
 
         id = media_identifier(item)
         if id:
-            parts.append(Element('relation', id, 'hasPart'))
+            parts.append(Element('relation', id, 'hasPart', item))
 
     if duration < collection.approx_duration:            
         duration = collection.approx_duration
 
-    resource.add(
-        Element('rights', collection.legal_rights, 'license'),
-        Element('rights', media_access_rights(collection), 'accessRights'),
-        Element('format', duration, 'extent'),
-        Element('format', collection.physical_format, 'medium'),
+    resource = Resource(
+        Element('identifier',       media_identifier(collection), related=collection),
+        Element('type',             'Collection'),
+        Element('title',            collection.title),
+        Element('title',            collection.alt_title),
+        creator,
+        Element('contributor',      collection.metadata_author),
+        Element.multiple('subject', settings.TELEMETA_SUBJECTS),
+        Element('publisher',        collection.publisher),
+        Element('publisher',        settings.TELEMETA_ORGANIZATION),
+        Date(collection.recorded_from_year, collection.recorded_to_year, 'created'),
+        Date(collection.year_published, refinement='issued'),
+        Element('rights',           collection.legal_rights, 'license'),
+        Element('rights',           media_access_rights(collection), 'accessRights'),
+        Element('format',           duration, 'extent'),
+        Element('format',           collection.physical_format, 'medium'),
         #FIXME: audio mime types are missing,
         parts
     )
 
     return resource
+
+def express_item(item):
+    "Express a media item as a Dublin Core resource"
+
+    if item.collector:
+        creator = (Element('creator', item.collector),
+                   Element('contributor', item.collection.creator))
+    elif item.collection.collector:                   
+        creator = (Element('creator', item.collection.collector),
+                   Element('contributor', item.collection.creator))
+    else:
+        creator = Element('creator', item.collection.creator)
+       
+    if item.recorded_from_date:
+        date = Date(item.recorded_from_date, item.recorded_to_date, 'created')
+    else:
+        date = Date(item.collection.recorded_from_year, item.collection.recorded_to_year, 'created'),
+        
+    if item.title:
+        title = item.title
+    else:
+        title = item.collection.title
+        if item.track:
+            title += u' - ' + item.track
+
+    resource = Resource(
+        Element('identifier',       media_identifier(item), related=item),
+        Element('type',             'Sound'),
+        Element('title',            title),
+        Element('title',            item.alt_title),
+        creator,
+        Element('contributor',      item.collection.metadata_author),
+        Element.multiple('subject', settings.TELEMETA_SUBJECTS),
+        Element.multiple('subject', item.keywords),
+        Element('description',      item.context_comment, 'abstract'),
+        Element('publisher',        item.collection.publisher),
+        Element('publisher',        settings.TELEMETA_ORGANIZATION),
+        date,
+        Date(item.collection.year_published, refinement='issued'),
+        Element('coverage',         item.location.fullname(), 'spatial'),
+        Element('coverage',         item.location_comment, 'spatial'),
+        Element('rights',           item.collection.legal_rights, 'license'),
+        Element('rights',           media_access_rights(item.collection), 'accessRights'),
+        Element('format',           item.duration(), 'extent'),
+        Element('format',           item.collection.physical_format, 'medium'),
+        #FIXME: audio mime types are missing,
+        Element('relation',         media_identifier(item.collection), 'isPartOf', item.collection)
+    )
+
+    return resource
+    
 
