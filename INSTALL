@@ -118,13 +118,17 @@ You might want to place these somewhere else...
 Edit the file settings.py in a text editor.
 Modifiy the following variables:
 
+    :ADMINS:            telemeta requires that you indicate an administrator here
     :DATABASE_*:        your database settings (don't forget to create the database if needed)
     :MEDIA_ROOT:        absolute path to the media directory you just created
     :INSTALLED_APPS:    add 'telemeta'
 
 Add the following variables:
 
-    :TELEMETA_CACHE_DIR:   absolute path to the cache directory you just created
+    :TELEMETA_ORGANIZATION: name of the organization which hosts this installation
+    :TELEMETA_SUBJECTS:     tuple of subject keywords (used for Dublin Core), such
+                            as "Ethnology", etc...
+    :TELEMETA_CACHE_DIR:    absolute path to the cache directory that you just created
 
 Just paste the two lines below::
 
