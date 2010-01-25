@@ -131,6 +131,10 @@ class MediaCollection(MediaResource):
     element_type = 'collection'
     PUBLIC_ACCESS_CHOICES = (('none', 'none'), ('metadata', 'metadata'), ('metadata', 'full'))
 
+    published_code_regex   = 'CNRSMH_E_[0-9]{4}(?:_[0-9]{3}){2}'
+    unpublished_code_regex = 'CNRSMH_I_[0-9]{4}_[0-9]{3}'
+    code_regex             = '(?:%s|%s)' % (published_code_regex, unpublished_code_regex)
+
     reference             = models.CharField(unique=True, max_length=250,
                                              null=True)
     physical_format       = WeakForeignKey('PhysicalFormat', related_name="collections", null=True)
@@ -215,9 +219,9 @@ class MediaCollection(MediaResource):
     def is_valid_code(self, code):
         "Check if the collection code is well formed"
         if self.is_published:
-            regex = '^CNRSMH_E_[0-9]{4}(_[0-9]{3}){2}$'
+            regex = '^' + self.published_code_regex + '$'
         else:
-            regex = '^CNRSMH_I_[0-9]{4}_[0-9]{3}$'
+            regex = '^' + self.unpublished_code_regex + '$'
            
         if re.match(regex, code):
             return True
@@ -238,6 +242,10 @@ class MediaItem(MediaResource):
     "Describe an item"
     element_type = 'item'
     PUBLIC_ACCESS_CHOICES = (('none', 'none'), ('metadata', 'metadata'), ('full', 'full'))
+
+    published_code_regex    = MediaCollection.published_code_regex + '(?:_[0-9]{2}){1,2}'
+    unpublished_code_regex  = MediaCollection.unpublished_code_regex + '_[0-9]{2,3}(?:_[0-9]{2}){0,2}'
+    code_regex              = '(?:%s|%s)' % (published_code_regex, unpublished_code_regex)
 
     collection            = models.ForeignKey('MediaCollection', related_name="items")
     track                 = models.CharField(max_length=250, default="")
@@ -281,12 +289,15 @@ class MediaItem(MediaResource):
 
     def is_valid_code(self, code):
         "Check if the item code is well formed"
-        if self.collection.is_published:
-            regex = '^' + self.collection.code + '(_[0-9]{2}){1,2}$'
-        else:
-            regex = '^' + self.collection.code + '_[0-9]{2,3}(_[0-9]{2}){0,2}$'
+        if not re.match('^' + self.collection.code, self.code):
+            return false
 
-        if re.match(regex, self.code):
+        if self.collection.is_published:
+            regex = '^' + self.published_code_regex + '$'
+        else:
+            regex = '^' + self.unpublished_code_regex + '$'
+
+        if re.match(regex, code):
             return True
 
         return False

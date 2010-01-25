@@ -54,6 +54,7 @@ from telemeta.analysis import *
 from telemeta.analysis.vamp import *
 import telemeta.interop.oai as oai
 from telemeta.interop.oaidatasource import TelemetaOAIDataSource
+from django.core.exceptions import ObjectDoesNotExist
 
 class WebView(Component):
     """Provide web UI methods"""
@@ -69,9 +70,14 @@ class WebView(Component):
         context = Context({})
         return HttpResponse(template.render(context))
 
-    def item_detail(self, request, item_id, template='telemeta/mediaitem_detail.html'):
+    def collection_detail(self, request, code, template=''):
+        collection = MediaCollection.objects.get(code=code)
+        return render_to_response(template, {'collection': collection})
+
+
+    def item_detail(self, request, item_key, template='telemeta/mediaitem_detail.html'):
         """Show the details of a given item"""
-        item = MediaItem.objects.get(pk=item_id)
+        item = MediaItem.objects.get(code_or_id=item_key)
         
         formats = []
         for exporter in self.exporters:
@@ -88,7 +94,11 @@ class WebView(Component):
 
         analyzers = []
         for analyzer in self.analyzers:
-            value = analyzer.render(item)
+            if item.file:
+                value = analyzer.render(item)
+            else:
+                value = 'N/A'
+
             analyzers.append({'name':analyzer.get_name(),
                               'id':analyzer.get_id(),
                               'unit':analyzer.get_unit(),
@@ -105,7 +115,7 @@ class WebView(Component):
                     'visualizers': visualizers, 'visualizer_id': visualizer_id,
                     'analysers': analyzers, 'vamp_plugins': vamp_plugin_list})
                     
-    def item_visualize(self, request, item_id, visualizer_id, width, height):
+    def item_visualize(self, request, item_key, visualizer_id, width, height):
         for visualizer in self.visualizers:
             if visualizer.get_id() == visualizer_id:
                 break
@@ -113,7 +123,7 @@ class WebView(Component):
         if visualizer.get_id() != visualizer_id:
             raise Http404
         
-        item = MediaItem.objects.get(pk=item_id)
+        item = MediaItem.objects.get(code_or_id=item_key)
 
         visualizer.set_colors((255,255,255), 'purple')
         stream = visualizer.render(item, width=int(width), height=int(height))
@@ -127,7 +137,7 @@ class WebView(Component):
             list.append(exporter.get_file_extension())
         return list
 
-    def item_export(self, request, item_id, extension):                    
+    def item_export(self, request, item_key, extension):                    
         """Export a given media item in the specified format (OGG, FLAC, ...)"""
         for exporter in self.exporters:
             if exporter.get_file_extension() == extension:
@@ -140,7 +150,7 @@ class WebView(Component):
 
         exporter.set_cache_dir(settings.TELEMETA_EXPORT_CACHE_DIR)
 
-        item = MediaItem.objects.get(pk=item_id)
+        item = MediaItem.objects.get(code_or_id=item_key)
 
         infile = item.file.path
         metadata = item.to_dublincore().flatten()
@@ -306,18 +316,20 @@ class WebView(Component):
 
         return self.edit_enumeration(request, enumeration_id)
   
-    def collection_playlist(self, request, collection_id, template, mimetype):
-        collection = MediaCollection.objects.get(id__exact=collection_id)
-        if not collection:
+    def collection_playlist(self, request, code, template, mimetype):
+        try:
+            collection = MediaCollection.objects.get(code=code)
+        except ObjectDoesNotExist:
             raise Http404
 
         template = loader.get_template(template)
         context = Context({'collection': collection, 'host': request.META['HTTP_HOST']})
         return HttpResponse(template.render(context), mimetype=mimetype)
 
-    def item_playlist(self, request, item_id, template, mimetype):
-        item = MediaItem.objects.get(id__exact=item_id)
-        if not item:
+    def item_playlist(self, request, item_key, template, mimetype):
+        try:
+            item = MediaItem.objects.get(code_or_id=item_key)
+        except ObjectDoesNotExist:
             raise Http404
 
         template = loader.get_template(template)

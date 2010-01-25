@@ -1,5 +1,8 @@
 from django import template
 from django.utils.http import urlquote
+from telemeta.models import MediaItem, MediaCollection
+from django.core.urlresolvers import reverse
+import telemeta.models.dublincore as dc
 
 register = template.Library()
 
@@ -69,3 +72,24 @@ def build_query_string(vars):
       return "&amp;".join(args)
     return ''
 
+@register.filter
+def code_or_id(resource):
+    if resource.code:
+        return resource.code
+    else:
+        return resource.id
+     
+@register.filter
+def is_item(resource):
+    return isinstance(resource, MediaItem)
+
+@register.filter
+def is_collection(resource):
+    return isinstance(resource, MediaCollection)
+
+@register.filter
+def to_dublincore(resource):
+    if isinstance(resource, MediaItem):
+        return dc.express_item(resource)
+    else:
+        return dc.express_collection(resource)

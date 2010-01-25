@@ -8,15 +8,9 @@
 {% endblock %}
 
 {% block content %}
-    <h4 class="dublincore">Dublin Core Expression</h4>
-    <dl class="dublincore">
-        <dt class="caption"><span>Element</span>Refinement</dt><dd class="caption">Value</dd>
-        {% for element in item.to_dublincore.elements %}
-        {% if element.value %}
-        <dt><span>{{ element.name }}</span>{{ element.refinement|default:"&nbsp;" }}</dt><dd>{% ifequal element.field "collection" %}<a href="{% url telemeta-collection-dublincore item.collection.id|urlencode %}">{{ element.value }}</a>{% else %}{{ element.value }}{% endifequal %}</dd>
-        {% endif %}
-        {% endfor %}
-    </dl>
+{% with item|to_dublincore as resource %}
+{% include "telemeta/inc/dublincore.html" %}
+{% endwith %}
 {% endblock %}
 {% else %}
     <p>No such item</p>

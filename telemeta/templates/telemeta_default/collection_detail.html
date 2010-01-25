@@ -7,28 +7,28 @@
 <script src="{% url telemeta-js "swfobject.js" %}" type="text/javascript"></script>
 {% endblock %}
 
-{% if object %}
+{% if collection %}
 
 {% block submenu %}
-    <h3>Collection: {{ object.title }}</h3>
-    <div><a href="{% url telemeta-collection-dublincore object.id|urlencode %}">Dublin Core</a></div>
+    <h3>Collection: {{ collection.title }}</h3>
+    <div><a href="{% url telemeta-collection-dublincore collection.code %}">Dublin Core</a></div>
 {% endblock %}
 
 {% block content %}
-    <div class="{% if object.has_mediafile %}with-rightcol{% endif %}">
-        {% if object.has_mediafile %}
+    <div class="{% if collection.has_mediafile %}with-rightcol{% endif %}">
+        {% if collection.has_mediafile %}
         <div id="rightcol">
             <div id="collection_player">
               <p><b>Listen to this collection</b>
-              (<a href="{% url telemeta-collection-m3u object.id|urlencode %}">M3U</a>,
-              <a href="{% url telemeta-collection-xspf object.id|urlencode %}">XSPF</a>)</p>
+              (<a href="{% url telemeta-collection-m3u collection.code %}">M3U</a>,
+              <a href="{% url telemeta-collection-xspf collection.code %}">XSPF</a>)</p>
               {% if 0 %} {# Use 1/0 for alternate player #}
                 <!-- This is the XSPF Web Music Player, under the BSD license, 
                   from: http://musicplayer.sourceforge.net/-->
                 <object type="application/x-shockwave-flash" width="362" height="200"
-                  data="{% url telemeta-swf "xspf_player.swf" %}?playlist_url={% url telemeta-collection-xspf object.id|urlencode %}">
+                  data="{% url telemeta-swf "xspf_player.swf" %}?playlist_url={% url telemeta-collection-xspf collection.code %}">
                   <param name="movie" 
-                    value="{% url telemeta-swf "xspf_player.swf" %}?playlist_url={% url telemeta-collection-xspf object.id|urlencode %}" />
+                    value="{% url telemeta-swf "xspf_player.swf" %}?playlist_url={% url telemeta-collection-xspf collection.code %}" />
                 </object>
               {% else %}
                 <!-- This is Jeroen Wijering's Flash MP3 Player, 
@@ -39,7 +39,7 @@
                 </p>
                 <script type="text/javascript">
                   var so = new SWFObject('{% url telemeta-swf "mp3player.swf" %}','playlist','362','200','7');
-                  so.addVariable("file","{% url telemeta-collection-xspf object.id|urlencode %}");
+                  so.addVariable("file","{% url telemeta-collection-xspf collection.code %}");
                   so.addVariable("displayheight","0");
                   so.write('collection_player_c');
                 </script> 
@@ -48,26 +48,26 @@
         </div>
         {% endif %}
         <div class="intro">
-            <span>{% if object.items.count %}{{ object.items.count }} {% ifequal object.items.count 1 %}item{% else %}items{% endifequal %}{% else %}No item{% endif %}</span>
+            <span>{% if collection.items.count %}{{ collection.items.count }} {% ifequal collection.items.count 1 %}item{% else %}items{% endifequal %}{% else %}No item{% endif %}</span>
         </div>
         <div class="infos">
         {% block general_info %}
             <dl class="listing">
-                {% if object.creator %}<dt>Auteur / Cédant</dt><dd>{{ object.creator }}</dd>{% endif %}
+                {% if collection.creator %}<dt>Auteur / Cédant</dt><dd>{{ collection.creator }}</dd>{% endif %}
 
-                {% if object.is_published %}
-                {% if object.date_published %}<dt>Date</dt><dd>{{ object.date_published }}</dd>{% endif %}
+                {% if collection.is_published %}
+                {% if collection.date_published %}<dt>Date</dt><dd>{{ collection.date_published }}</dd>{% endif %}
                 {% else %}
-                {% if object.annee_enr %}<dt>Date</dt><dd>{{ object.annee_enr }}</dd>{% endif %}
+                {% if collection.annee_enr %}<dt>Date</dt><dd>{{ collection.annee_enr }}</dd>{% endif %}
                 {% endif %}
 
-                {% if object.title %}<dt>Titre</dt><dd>{{ object.title }}</dd>{% endif %}
-                {% if object.native_title %}<dt>Traduction du titre</dt><dd>{{ object.native_title }}</dd>{% endif %}
-                {% if object.duree_approx %}<dt>Durée</dt><dd>{{ object.duree_approx }}</dd>{% endif %}
+                {% if collection.title %}<dt>Titre</dt><dd>{{ collection.title }}</dd>{% endif %}
+                {% if collection.native_title %}<dt>Traduction du titre</dt><dd>{{ collection.native_title }}</dd>{% endif %}
+                {% if collection.duree_approx %}<dt>Durée</dt><dd>{{ collection.duree_approx }}</dd>{% endif %}
 
-                {% if object.is_published %}
-                {% if object.publisher %}<dt>Éditeur</dt><dd>{{ object.publisher }}</dd>{% endif %}
-                {% if object.publisher_reference %}<dt>Référence</dt><dd>{{ object.publisher_reference }}</dd>{% endif %}
+                {% if collection.is_published %}
+                {% if collection.publisher %}<dt>Éditeur</dt><dd>{{ collection.publisher }}</dd>{% endif %}
+                {% if collection.publisher_reference %}<dt>Référence</dt><dd>{{ collection.publisher_reference }}</dd>{% endif %}
                 {% endif %}
 
             </dl>
@@ -80,31 +80,31 @@
                 <div>
                     <dl class="listing">
 
-                    {% if object.get_countries %}
-                    <dt>État / Nation</dt><dd>{{object.get_countries|join:", "}}</dd>
+                    {% if collection.get_countries %}
+                    <dt>État / Nation</dt><dd>{{collection.get_countries|join:", "}}</dd>
                     {% endif %}
 
-                    {% if object.get_ethnic_groups %}
-                    <dt>Ethnie / Groupe social</dt><dd>{{ object.get_ethnic_groups|join:", " }}</dd>
+                    {% if collection.get_ethnic_groups %}
+                    <dt>Ethnie / Groupe social</dt><dd>{{ collection.get_ethnic_groups|join:", " }}</dd>
                     {% endif %}
 
-                    {% if object.terrain_ou_autre %}<dt>Contexte de l’enregistrement</dt><dd>{{ object.terrain_ou_autre }}</dd>{% endif %}
+                    {% if collection.terrain_ou_autre %}<dt>Contexte de l’enregistrement</dt><dd>{{ collection.terrain_ou_autre }}</dd>{% endif %}
 
                     </dl>
                 </div>
             </div>
         {% endblock geoethnic_data %}
         </div>
-        {% if object.is_published %}
+        {% if collection.is_published %}
         <div class="extraInfos">
         {% block publication_data %}
             <div class="folded">
                 <h4><a href="#">Détails du document édité</a></h4>
                 <div>
                     <dl class="listing">
-                    {% if object.publishing_status %}<dt>Réédition</dt><dd>{{ object.publishing_status }}</dd>{% endif %}
-                    {% if object.booklet_writer %}<dt>Auteur Notice</dt><dd>{{ object.booklet_writer }}</dd>{% endif %}
-                    {% if object.booklet_description %}<dt>Notice</dt><dd>{{ object.booklet_description }}</dd>{% endif %}
+                    {% if collection.publishing_status %}<dt>Réédition</dt><dd>{{ collection.publishing_status }}</dd>{% endif %}
+                    {% if collection.booklet_writer %}<dt>Auteur Notice</dt><dd>{{ collection.booklet_writer }}</dd>{% endif %}
+                    {% if collection.booklet_description %}<dt>Notice</dt><dd>{{ collection.booklet_description }}</dd>{% endif %}
                     </dl>
                 </div>
             </div>
@@ -118,8 +118,8 @@
                 <h4><a href="#">Identification du document</a></h4>
                 <div>
                     <dl class="listing">
-                    {% if object.id %}<dt>Cote</dt><dd>{{ object.id }}</dd>{% endif %}
-                    {% if object.physical_format %}<dt>Format de l'original</dt><dd>{{ object.physical_format }}</dd>{% endif %}
+                    {% if collection.id %}<dt>Cote</dt><dd>{{ collection.id }}</dd>{% endif %}
+                    {% if collection.physical_format %}<dt>Format de l'original</dt><dd>{{ collection.physical_format }}</dd>{% endif %}
                     </dl>
                 </div>
             </div>
@@ -131,35 +131,35 @@
                 <h4><a href="#">Informations documentaires</a></h4>
                 <div>
                     <dl class="listing">
-                    {% if object.a_informer %}<dt>a informer</dt><dd>{{ object.a_informer }}</dd>{% endif %}
-                    {% if object.acquisition_mode %}<dt>acquisition mode</dt><dd>{{ object.acquisition_mode }}</dd>{% endif %}
-                    {% if object.champ36 %}<dt>champ36</dt><dd>{{ object.champ36 }}</dd>{% endif %}
-                    {% if object.collector %}<dt>collector</dt><dd>{{ object.collector }}</dd>{% endif %}
-                    {% if object.comment %}<dt>comment</dt><dd>{{ object.comment }}</dd>{% endif %}
+                    {% if collection.a_informer %}<dt>a informer</dt><dd>{{ collection.a_informer }}</dd>{% endif %}
+                    {% if collection.acquisition_mode %}<dt>acquisition mode</dt><dd>{{ collection.acquisition_mode }}</dd>{% endif %}
+                    {% if collection.champ36 %}<dt>champ36</dt><dd>{{ collection.champ36 }}</dd>{% endif %}
+                    {% if collection.collector %}<dt>collector</dt><dd>{{ collection.collector }}</dd>{% endif %}
+                    {% if collection.comment %}<dt>comment</dt><dd>{{ collection.comment }}</dd>{% endif %}
                     <!--
                     <dt>compil face plage</dt><dd>{{ object.compil_face_plage }}</dd>
                     -->
-                    {% if object.deposant_cnrs %}<dt>deposant cnrs</dt><dd>{{ object.deposant_cnrs }}</dd>{% endif %}
-                    {% if object.fiches %}<dt>fiches</dt><dd>{{ object.fiches }}</dd>{% endif %}
-                    {% if object.is_full_copy %}<dt>is full copy</dt><dd>{{ object.is_full_copy }}</dd>{% endif %}
-                    {% if object.is_original %}<dt>is original</dt><dd>{{ object.is_original }}</dd>{% endif %}
-                    {% if object.numerisation %}<dt>numerisation</dt><dd>{{ object.numerisation }}</dd>{% endif %}
-                    {% if object.physical_items_num %}<dt>physical items num</dt><dd>{{ object.physical_items_num }}</dd>{% endif %}
-                    {% if object.publisher_collection %}<dt>publisher collection</dt><dd>{{ object.publisher_collection }}</dd>{% endif %}
-                    {% if object.publisher_serial_id %}<dt>publisher serial id</dt><dd>{{ object.publisher_serial_id }}</dd>{% endif %}
-                    {% if object.record_author %}<dt>record author</dt><dd>{{ object.record_author }}</dd>{% endif %}
-                    {% if object.record_writer %}<dt>record writer</dt><dd>{{ object.record_writer }}</dd>{% endif %}
-                    {% if object.ref_biblio %}<dt>ref biblio</dt><dd>{{ object.ref_biblio }}</dd>{% endif %}
-                    {% if object.rights %}<dt>rights</dt><dd>{{ object.rights }}</dd>{% endif %}
-                    {% if object.travail %}<dt>travail</dt><dd>{{ object.travail }}</dd>{% endif %}
-                    {% if object.tri_dibm %}<dt>tri dibm</dt><dd>{{ object.tri_dibm }}</dd>{% endif %}
+                    {% if collection.deposant_cnrs %}<dt>deposant cnrs</dt><dd>{{ collection.deposant_cnrs }}</dd>{% endif %}
+                    {% if collection.fiches %}<dt>fiches</dt><dd>{{ collection.fiches }}</dd>{% endif %}
+                    {% if collection.is_full_copy %}<dt>is full copy</dt><dd>{{ collection.is_full_copy }}</dd>{% endif %}
+                    {% if collection.is_original %}<dt>is original</dt><dd>{{ collection.is_original }}</dd>{% endif %}
+                    {% if collection.numerisation %}<dt>numerisation</dt><dd>{{ collection.numerisation }}</dd>{% endif %}
+                    {% if collection.physical_items_num %}<dt>physical items num</dt><dd>{{ collection.physical_items_num }}</dd>{% endif %}
+                    {% if collection.publisher_collection %}<dt>publisher collection</dt><dd>{{ collection.publisher_collection }}</dd>{% endif %}
+                    {% if collection.publisher_serial_id %}<dt>publisher serial id</dt><dd>{{ collection.publisher_serial_id }}</dd>{% endif %}
+                    {% if collection.record_author %}<dt>record author</dt><dd>{{ collection.record_author }}</dd>{% endif %}
+                    {% if collection.record_writer %}<dt>record writer</dt><dd>{{ collection.record_writer }}</dd>{% endif %}
+                    {% if collection.ref_biblio %}<dt>ref biblio</dt><dd>{{ collection.ref_biblio }}</dd>{% endif %}
+                    {% if collection.rights %}<dt>rights</dt><dd>{{ collection.rights }}</dd>{% endif %}
+                    {% if collection.travail %}<dt>travail</dt><dd>{{ collection.travail }}</dd>{% endif %}
+                    {% if collection.tri_dibm %}<dt>tri dibm</dt><dd>{{ collection.tri_dibm }}</dd>{% endif %}
                     </dl>
                 </div>
             </div>
         {% endblock document_data %}
         </div>
         <h4>Items</h4>
-        {% with object.ordered_items as items %}
+        {% with collection.ordered_items as items %}
             {% include "telemeta/inc/mediaitem_list.html" %}
         {% endwith %}
         </div>

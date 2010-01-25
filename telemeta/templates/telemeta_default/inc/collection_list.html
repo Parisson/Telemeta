@@ -9,7 +9,7 @@
     {% endif %}
     <ul>
     {% for p in collections %}
-        <li><a href="{% url telemeta-collection-detail p.id|urlencode %}">{{ p.title }}</a>
+        <li><a href="{% url telemeta-collection-detail p.code %}">{{ p.title }}</a>
             </li>
     {% endfor %}
     {% if more_collections %} <li>[...]</li> {% endif %}

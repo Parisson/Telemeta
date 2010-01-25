@@ -322,9 +322,11 @@ class RelatedDeleteTestCase(unittest.TestCase):
         self.assertEquals(q[0].publisher, self.publisher2)
         self.assertEquals(q[0].publisher_collection, None)
 
-    def testOnDeleteCascadeMultiple(self):
+    def testOnDeleteMultiple(self):
         Publisher.objects.all().delete()
         self.assertEquals(Publisher.objects.count(), 0)
         self.assertEquals(PublisherCollection.objects.count(), 0)
         self.assertEquals(MediaCollection.objects.count(), 2)
+
+        
 

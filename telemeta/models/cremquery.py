@@ -36,6 +36,7 @@
 from django.db.models import Manager, Q
 from telemeta.models.core import EnhancedQuerySet, EnhancedManager
 import re
+from django.core.exceptions import ObjectDoesNotExist
 
 class CoreQuerySet(EnhancedQuerySet):
     "Base class for all query sets"
@@ -74,6 +75,21 @@ class CoreManager(EnhancedManager):
         ""
         return self.get_query_set().none(*args, **kwargs)
 
+    def get(self, **kwargs):
+        if kwargs.has_key('code_or_id'):
+            try:
+                args = kwargs.copy()
+                args['code'] = kwargs['code_or_id']
+                args.pop('code_or_id')
+                return super(CoreManager, self).get(**args)
+            except ObjectDoesNotExist:
+                args = kwargs.copy()
+                args['id'] = kwargs['code_or_id']
+                args.pop('code_or_id')
+                return super(CoreManager, self).get(**args)
+
+        return super(CoreManager, self).get(**kwargs)
+                
 class MediaCollectionQuerySet(CoreQuerySet):
 
     def quick_search(self, pattern):
@@ -201,6 +217,7 @@ class MediaCollectionManager(CoreManager):
                 result.append(a)
         
         return result
+
 
 class MediaItemQuerySet(CoreQuerySet):
     "Base class for all media item query sets"
