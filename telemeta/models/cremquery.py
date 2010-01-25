@@ -34,10 +34,10 @@
 #          David LIPSZYC <davidlipszyc@gmail.com>
 
 from django.db.models import Manager, Q
-from django.db.models.query import QuerySet
+from telemeta.models.core import EnhancedQuerySet, EnhancedManager
 import re
 
-class CoreQuerySet(QuerySet):
+class CoreQuerySet(EnhancedQuerySet):
     "Base class for all query sets"
 
     def none(self): # redundant with none() in recent Django svn
@@ -67,7 +67,7 @@ class CoreQuerySet(QuerySet):
         return self.extra(
             where = ["id IN (SELECT DISTINCT element_id FROM revisions WHERE %s)" % " AND ".join(where)]);
 
-class CoreManager(Manager):
+class CoreManager(EnhancedManager):
     "Base class for all models managers"
 
     def none(self, *args, **kwargs):

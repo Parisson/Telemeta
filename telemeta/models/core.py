@@ -38,7 +38,7 @@ from django.utils.translation import ugettext_lazy as _
 import re
 
 class Duration(object):
-
+    """Represent a time duration"""
     def __init__(self, *args, **kwargs):
         if len(args) and isinstance(args[0], datetime.timedelta):
             self._delta = datetime.timedelta(days=args[0].days, seconds=args[0].seconds)
@@ -94,6 +94,9 @@ class Duration(object):
             
 # The following is based on Django TimeField
 class DurationField(models.Field):
+    """Duration Django model field. Essentially the same as a TimeField, but
+    with values over 24h allowed."""
+
     description = _("Duration")
 
     __metaclass__ = models.SubfieldBase
@@ -140,4 +143,57 @@ class DurationField(models.Field):
         defaults = {'form_class': forms.TimeField}
         defaults.update(kwargs)
         return super(DurationField, self).formfield(**defaults)
-            
+           
+
+class WeakForeignKey(models.ForeignKey):
+    """A weak foreign key is the same as foreign key but without cascading
+    delete. Instead the reference is set to null when the referenced record
+    get deleted. This emulates the ON DELETE SET NULL sql behaviour.
+    
+    Warning: must be used in conjunction with EnhancedQuerySet, EnhancedManager,
+    and EnhancedModel
+    """
+    def __init__(self, to, **kwargs):
+        super(WeakForeignKey, self).__init__(to, **kwargs)
+       
+class EnhancedQuerySet(models.query.QuerySet):
+    """QuerySet with added functionalities such as WeakForeignKey handling"""
+
+    def delete(self):
+        CHUNK=1024
+        objects = self.model._meta.get_all_related_objects()
+        ii = self.count()
+        for related in objects:
+            i = 0
+            while i < ii:
+                ids = [v[0] for v in self[i:i + CHUNK].values_list('pk')]
+                filter = {related.field.name + '__pk__in': ids}
+                q = related.model.objects.filter(**filter)
+                if isinstance(related.field, WeakForeignKey):
+                    update = {related.field.name: None}
+                    q.update(**update)
+                else:
+                    q.delete()
+
+                i += CHUNK
+        
+        super(EnhancedQuerySet, self).delete()
+             
+class EnhancedManager(models.Manager):
+    """Manager which is bound to EnhancedQuerySet"""
+    def get_query_set(self):
+        return EnhancedQuerySet(self.model)
+    
+
+class EnhancedModel(models.Model):
+    """Base model class with added functionality. See EnhancedQuerySet"""
+
+    objects = EnhancedManager()
+
+    def delete(self):
+        if not self.pk:
+            raise Exception("Can't delete without a primary key")
+        self.__class__.objects.filter(pk=self.pk).delete()            
+
+    class Meta:
+        abstract = True

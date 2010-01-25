@@ -39,10 +39,10 @@ import cremquery as query
 from xml.dom.minidom import getDOMImplementation
 from telemeta.util.unaccent import unaccent_icmp
 import re
-from telemeta.models.core import DurationField, Duration
+from telemeta.models.core import DurationField, Duration, WeakForeignKey, EnhancedModel
 from telemeta.models import dublincore as dc
 
-class ModelCore(models.Model):
+class ModelCore(EnhancedModel):
 
     @classmethod
     def required_fields(cls):
@@ -133,42 +133,33 @@ class MediaCollection(MediaResource):
 
     reference             = models.CharField(unique=True, max_length=250,
                                              null=True)
-    physical_format       = models.ForeignKey('PhysicalFormat', related_name="collections", 
-                                              null=True)
+    physical_format       = WeakForeignKey('PhysicalFormat', related_name="collections", null=True)
     old_code              = models.CharField(unique=True, max_length=250, null=True)
     code                  = models.CharField(unique=True, max_length=250)
     title                 = models.CharField(max_length=250)
     alt_title             = models.CharField(max_length=250, default="")
     physical_items_num    = models.IntegerField(default=0)
-    publishing_status     = models.ForeignKey('PublishingStatus', related_name="collections",
-                                              null=True)
+    publishing_status     = WeakForeignKey('PublishingStatus', related_name="collections", null=True)
     creator               = models.CharField(max_length=250, default="")
     booklet_author        = models.CharField(max_length=250, default="")
     booklet_description   = models.TextField(default="")
     collector             = models.CharField(max_length=250, default="")
     collector_is_creator  = models.BooleanField(default="")
-    publisher             = models.ForeignKey('Publisher', related_name="collections",
-                                              null=True)     
+    publisher             = WeakForeignKey('Publisher', related_name="collections", null=True)     
     is_published          = models.BooleanField(default="")
     year_published        = models.IntegerField(default=0)
-    publisher_collection  = models.ForeignKey('PublisherCollection', related_name="collections",
-                                              null=True)
+    publisher_collection  = WeakForeignKey('PublisherCollection', related_name="collections", null=True)
     publisher_serial      = models.CharField(max_length=250, default="")
     external_references   = models.TextField(default="")
-    acquisition_mode      = models.ForeignKey('AcquisitionMode', related_name="collections",
-                                              null=True)
+    acquisition_mode      = WeakForeignKey('AcquisitionMode', related_name="collections", null=True)
     comment               = models.TextField(default="")
-    metadata_author       = models.ForeignKey('MetadataAuthor', related_name="collections",
-                                              null=True)
-    metadata_writer       = models.ForeignKey('MetadataWriter', related_name="collections",
-                                              null=True)
-    legal_rights          = models.ForeignKey('LegalRight', related_name="collections",
-                                              null=True)
+    metadata_author       = WeakForeignKey('MetadataAuthor', related_name="collections", null=True)
+    metadata_writer       = WeakForeignKey('MetadataWriter', related_name="collections", null=True)
+    legal_rights          = WeakForeignKey('LegalRight', related_name="collections", null=True)
     alt_ids               = models.CharField(max_length=250, default="")
     recorded_from_year    = models.IntegerField(default=0)
     recorded_to_year      = models.IntegerField(default=0)
-    recording_context     = models.ForeignKey('RecordingContext', related_name="collections",
-                                              null=True)
+    recording_context     = WeakForeignKey('RecordingContext', related_name="collections", null=True)
     approx_duration       = DurationField(default='00:00')
     doctype_code          = models.IntegerField(default=0)
     travail               = models.CharField(max_length=250, default="")
@@ -176,8 +167,7 @@ class MediaCollection(MediaResource):
     cnrs_contributor      = models.CharField(max_length=250, default="")
     items_done            = models.CharField(max_length=250, default="")
     a_informer_07_03      = models.CharField(max_length=250, default="")
-    ad_conversion         = models.ForeignKey('AdConversion', related_name='collections',
-                                              null=True)
+    ad_conversion         = WeakForeignKey('AdConversion', related_name='collections', null=True)
     public_access         = models.CharField(choices=PUBLIC_ACCESS_CHOICES, max_length=16, default="metadata")
 
     objects               = query.MediaCollectionManager()
@@ -256,24 +246,22 @@ class MediaItem(MediaResource):
     approx_duration       = DurationField(default='00:00')
     recorded_from_date    = models.DateField(default=0)
     recorded_to_date      = models.DateField(default=0)
-    location              = models.ForeignKey('Location', related_name="items",
-                                              db_column='location_name', null=True, default="")
+    location              = WeakForeignKey('Location', related_name="items",
+                                           db_column='location_name', null=True)
     location_comment      = models.CharField(max_length=250, default="")
-    ethnic_group          = models.ForeignKey('EthnicGroup', related_name="items",
-                                              null=True)
+    ethnic_group          = WeakForeignKey('EthnicGroup', related_name="items", null=True)
     title                 = models.CharField(max_length=250)
     alt_title             = models.CharField(max_length=250, default="")
     author                = models.CharField(max_length=250, default="")
-    vernacular_style      = models.ForeignKey('VernacularStyle', related_name="items",
+    vernacular_style      = WeakForeignKey('VernacularStyle', related_name="items",
                                               null=True)
     context_comment       = models.TextField(default="")
     external_references   = models.TextField(default="")
     moda_execut           = models.CharField(max_length=250, default="")
-    copied_from_item      = models.ForeignKey('self', related_name="copies",
-                                              null=True)
+    copied_from_item      = WeakForeignKey('self', related_name="copies", null=True)
     collector             = models.CharField(max_length=250, default="")
     cultural_area         = models.CharField(max_length=250, default="")
-    generic_style         = models.ForeignKey('GenericStyle', related_name="items",
+    generic_style         = WeakForeignKey('GenericStyle', related_name="items",
                                               null=True)
     collector_selection   = models.CharField(max_length=250, default="")
     creator_reference     = models.CharField(max_length=250, default="")
@@ -456,10 +444,8 @@ class InstrumentAliasRelation(ModelCore):
 class MediaItemPerformance(ModelCore):
     "Item performance"
     media_item      = models.ForeignKey('MediaItem', related_name="performances")
-    instrument      = models.ForeignKey('Instrument', related_name="performances",
-                                        null=True)
-    alias           = models.ForeignKey('InstrumentAlias', related_name="performances",
-                                        null=True)
+    instrument      = WeakForeignKey('Instrument', related_name="performances", null=True)
+    alias           = WeakForeignKey('InstrumentAlias', related_name="performances", null=True)
     instruments_num = models.CharField(max_length=250, default="")
     musicians       = models.CharField(max_length=250, default="")
 
@@ -512,8 +498,8 @@ class Location(ModelCore):
     name             = models.CharField(primary_key=True, max_length=150)
     type             = models.CharField(choices=TYPE_CHOICES, max_length=16)
     complete_type    = models.ForeignKey('LocationType', related_name="types")
-    current_name     = models.ForeignKey('self', related_name="past_names", 
-                                         db_column="current_name", null=True) 
+    current_name     = WeakForeignKey('self', related_name="past_names", 
+                                      db_column="current_name", null=True) 
     is_authoritative = models.BooleanField(default=0)
 
     def parent(self):

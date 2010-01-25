@@ -38,19 +38,17 @@ from telemeta.models import *
 from datetime import datetime, timedelta
 
 class CollectionItemTestCase(unittest.TestCase):
+
     def setUp(self):
         "Create a test database based on objects created in Django"
    
-        User.objects.all().delete() 
         self.david   = User.objects.create(username="david", level="user")
         self.olivier = User.objects.create(username="olivier", level="admin")    
 
-        LocationType.objects.all().delete()
         self.country = LocationType.objects.create(id="country", name="Country")
         self.continent = LocationType.objects.create(id="continent", name="Continent")
         self.city = LocationType.objects.create(id="city", name="City")
 
-        Location.objects.all().delete()        
         self.paris = Location.objects.create(name="Paris", type="other", complete_type=self.city)
         self.france = Location.objects.create(name="France", type="country", complete_type=self.country)
         self.europe = Location.objects.create(name="Europe", type="continent", complete_type=self.continent)
@@ -59,13 +57,11 @@ class CollectionItemTestCase(unittest.TestCase):
         LocationRelation.objects.create(location=self.paris, parent_location=self.france)
         LocationRelation.objects.create(location=self.france, parent_location=self.europe)
 
-        EthnicGroup.objects.all().delete()
         self.a = EthnicGroup.objects.create(name="a")
         self.b = EthnicGroup.objects.create(name="b")
         self.c = EthnicGroup.objects.create(name="c")
         self.d = EthnicGroup.objects.create(name="d")
 
-        MediaCollection.objects.all().delete()
         self.persepolis = MediaCollection(id=1, code="CNRSMH_E_1970_001_002", reference="A1", title="persepolis", 
             creator="Abraham LINCOLN", collector="Friedrich HEINZ", year_published=2009, is_published=True,
             recorded_from_year=1970, recorded_to_year=1980)
@@ -84,7 +80,6 @@ class CollectionItemTestCase(unittest.TestCase):
                                    
         self.nicolas.save_with_revision(self.olivier)
      
-        MediaItem.objects.all().delete()        
         self.item_1 = MediaItem(id=1, collection=self.persepolis, code="CNRSMH_E_1970_001_002_44", 
             recorded_from_date="1971-01-12", recorded_to_date="1971-02-24", location=self.paris, 
             ethnic_group=self.a, title="item 1", author="Mickael SHEPHERD", collector="Charles PREMIER",  
@@ -129,6 +124,14 @@ class CollectionItemTestCase(unittest.TestCase):
 
         self.collections = MediaCollection.objects.all()
         self.items       = MediaItem.objects.all()
+
+    def tearDown(self):
+        User.objects.all().delete() 
+        LocationType.objects.all().delete()
+        Location.objects.all().delete()        
+        EthnicGroup.objects.all().delete()
+        MediaCollection.objects.all().delete()
+        MediaItem.objects.all().delete()        
 
     def testQuickSearchOnCollections(self):
         "Test quick_search property of MediaCollection class"
@@ -276,4 +279,52 @@ class CollectionItemTestCase(unittest.TestCase):
         self.assertEquals(self.volonte.get_countries(), [self.belgique, self.france])
 
         
+class RelatedDeleteTestCase(unittest.TestCase):
+    def setUp(self):
+        self.publisher1 = Publisher.objects.create(id=1, value='publisher1')
+        self.publisher2 = Publisher.objects.create(id=2, value='publisher2')
+        self.pubcollection1 = PublisherCollection.objects.create(publisher=self.publisher1, value='pub1_collection1')
+   
+        self.rights1 = LegalRight.objects.create(id=1, value='right1')
+
+        MediaCollection.objects.create(id=1, code='CNRSMH_I_1256_456', title='Collection1',
+                                       publisher=self.publisher1, publisher_collection=self.pubcollection1,
+                                       legal_rights=self.rights1)
+        MediaCollection.objects.create(id=2, code='CNRSMH_I_1256_123', title='Collection2',
+                                       publisher=self.publisher2)
+
+    def tearDown(self):
+        Publisher.objects.all().delete()
+        PublisherCollection.objects.all().delete()
+        LegalRight.objects.all().delete()
+        MediaCollection.objects.all().delete()
+
+    def testOnDeleteSetNull(self):
+        self.rights1.delete()
+        self.assertEquals(LegalRight.objects.filter(id=1).count(), 0)
+        q = MediaCollection.objects.filter(id=1)
+        self.assertEquals(q.count(), 1)
+        self.assertEquals(q[0].legal_rights, None)
+
+    def testOnDeleteCascade(self):
+        self.publisher1.delete()
+        self.assertEquals(Publisher.objects.filter(id=1).count(), 0)
+        self.assertEquals(Publisher.objects.filter(id=2).count(), 1)
+        self.assertEquals(PublisherCollection.objects.filter(id=1).count(), 0)
+
+        q = MediaCollection.objects.filter(id=1)
+        self.assertEquals(q.count(), 1)
+        self.assertEquals(q[0].publisher, None)
+        self.assertEquals(q[0].publisher_collection, None)
+
+        q = MediaCollection.objects.filter(id=2)
+        self.assertEquals(q.count(), 1)
+        self.assertEquals(q[0].publisher, self.publisher2)
+        self.assertEquals(q[0].publisher_collection, None)
+
+    def testOnDeleteCascadeMultiple(self):
+        Publisher.objects.all().delete()
+        self.assertEquals(Publisher.objects.count(), 0)
+        self.assertEquals(PublisherCollection.objects.count(), 0)
+        self.assertEquals(MediaCollection.objects.count(), 2)
 
