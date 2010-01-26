@@ -92,10 +92,37 @@ class Duration(object):
     def as_seconds(self):
         return self._delta.days * 24 * 3600 + self._delta.seconds
             
+def normalize_field(args, default_value):
+    """Normalize field constructor arguments, so that the field is marked blank=True
+       and has a default value by default.
+       
+       This behaviour can be disabled by passing the special argument required=True.
+
+       The default value can also be overriden with the default=value argument.
+       """
+    required = False
+    if args.has_key('required'):
+        required = args['required']
+        args.pop('required')
+
+    args['blank'] = not required
+
+    if not required:
+        if not args.has_key('default'):
+            if args.get('null'):
+                args['default'] = None
+            else:
+                args['default'] = default_value
+
+    return args                
+
 # The following is based on Django TimeField
 class DurationField(models.Field):
     """Duration Django model field. Essentially the same as a TimeField, but
-    with values over 24h allowed."""
+    with values over 24h allowed.
+    
+    The constructor arguments are also normalized with normalize_field(). 
+    """
 
     description = _("Duration")
 
@@ -104,6 +131,9 @@ class DurationField(models.Field):
     default_error_messages = {
         'invalid': _('Enter a valid duration in HH:MM[:ss[.uuuuuu]] format.'),
     }
+
+    def __init__(self, *args, **kwargs):
+        super(DurationField, self).__init__(args, **normalize_field(kwargs, '00:00'))
 
     def get_internal_type(self):
         return 'TimeField'
@@ -144,16 +174,34 @@ class DurationField(models.Field):
         defaults.update(kwargs)
         return super(DurationField, self).formfield(**defaults)
            
+class ForeignKey(models.ForeignKey):
+    """The constructor arguments of this ForeignKey are normalized
+    with normalize_field(), however the field is marked required by default
+    unless it is allowed to be null."""
 
-class WeakForeignKey(models.ForeignKey):
+    def __init__(self, to, **kwargs):
+        if not kwargs.has_key('required'):
+            if not kwargs.get('null'):
+                kwargs['required'] = True
+
+        super(ForeignKey, self).__init__(to, **normalize_field(kwargs, 0))                
+
+class WeakForeignKey(ForeignKey):
     """A weak foreign key is the same as foreign key but without cascading
     delete. Instead the reference is set to null when the referenced record
     get deleted. This emulates the ON DELETE SET NULL sql behaviour.
-    
+   
+    This field is automatically allowed to be null, there's no need to pass
+    null=True. 
+
+    The constructor arguments are normalized with normalize_field() by the
+    parent ForeignKey
+
     Warning: must be used in conjunction with EnhancedQuerySet, EnhancedManager,
     and EnhancedModel
     """
     def __init__(self, to, **kwargs):
+        kwargs['null'] = True
         super(WeakForeignKey, self).__init__(to, **kwargs)
        
 class EnhancedQuerySet(models.query.QuerySet):
@@ -197,3 +245,57 @@ class EnhancedModel(models.Model):
 
     class Meta:
         abstract = True
+
+class CharField(models.CharField):
+    """This is a CharField with a default max_length of 250.
+    
+       The arguments are also normalized with normalize_field()"""
+
+    def __init__(self, *args, **kwargs):
+        if not kwargs.has_key('max_length'):
+            kwargs['max_length'] = 250
+
+        super(CharField, self).__init__(*args, **normalize_field(kwargs, ''))
+
+class IntegerField(models.IntegerField):
+    """IntegerField normalized with normalize_field()"""
+
+    def __init__(self, *args, **kwargs):
+        super(IntegerField, self).__init__(*args, **normalize_field(kwargs, 0))
+
+class BooleanField(models.BooleanField):
+    """BooleanField normalized with normalize_field()"""
+
+    def __init__(self, *args, **kwargs):
+        super(BooleanField, self).__init__(*args, **normalize_field(kwargs, False))
+
+class TextField(models.TextField):
+    """TextField normalized with normalize_field()"""
+
+    def __init__(self, *args, **kwargs):
+        super(TextField, self).__init__(*args, **normalize_field(kwargs, ''))
+
+class DateTimeField(models.DateTimeField):
+    """DateTimeField normalized with normalize_field()"""
+
+    def __init__(self, *args, **kwargs):
+        super(DateTimeField, self).__init__(*args, **normalize_field(kwargs, '0000-00-00 00:00'))
+
+class FileField(models.FileField):
+    """FileField normalized with normalize_field()"""
+
+    def __init__(self, *args, **kwargs):
+        super(FileField, self).__init__(*args, **normalize_field(kwargs, ''))
+
+class FloatField(models.FloatField):
+    """FloatField normalized with normalize_field()"""
+
+    def __init__(self, *args, **kwargs):
+        super(FloatField, self).__init__(*args, **normalize_field(kwargs, 0))
+
+class DateField(models.DateField):
+    """DateField normalized with normalize_field()"""
+
+    def __init__(self, *args, **kwargs):
+        super(DateField, self).__init__(*args, **normalize_field(kwargs, '0000-00-00'))
+
