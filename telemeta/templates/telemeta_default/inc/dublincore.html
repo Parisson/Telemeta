@@ -8,9 +8,9 @@
         <dd>
         {% if element.related|is_item or element.related|is_collection %}
             {% if element.related|is_item %}
-            <a href="{% url telemeta-item-dublincore element.related|code_or_id %}">{{ element.value }}</a>
+            <a href="{% url telemeta-item-dublincore element.related.public_id %}">{{ element.value }}</a>
             {% else %}
-            <a href="{% url telemeta-collection-dublincore element.related.code %}">{{ element.value }}</a>
+            <a href="{% url telemeta-collection-dublincore element.related.public_id %}">{{ element.value }}</a>
             {% endif %}
         {% else %}
             {{ element.value }}

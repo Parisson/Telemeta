@@ -20,7 +20,7 @@
 soundManager.url = '{% url telemeta-swf "./" %}';
 soundManager.flashVersion = 9;
 soundManager.debugMode = false;
-set_player_image_url('{% url telemeta-item-visualize item|code_or_id,visualizer_id,"WIDTH","HEIGHT" %}');
+set_player_image_url('{% url telemeta-item-visualize item.public_id,visualizer_id,"WIDTH","HEIGHT" %}');
 load_player({{ item.get_duration }});
 </script>
 
@@ -30,7 +30,7 @@ load_player({{ item.get_duration }});
 {% if item %}
 {% block submenu %}
     <h3>Item : {{ item.title }}</h3>
-    <div><a href="{% url telemeta-item-dublincore item|code_or_id %}">Dublin Core</a></div>
+    <div><a href="{% url telemeta-item-dublincore item.public_id %}">Dublin Core</a></div>
 {% endblock %}
 
 {% block content %}
@@ -50,8 +50,8 @@ load_player({{ item.get_duration }});
             <div class="ts-viewer">
                 <div class="ts-wave">
                     <div class="ts-image-container">
-                        <a href="{% url telemeta-item-export item|code_or_id,"mp3" %}">
-                        <img class="ts-image" src="{% url telemeta-item-visualize item|code_or_id,visualizer_id,360,130 %}" 
+                        <a href="{% url telemeta-item-export item.public_id,"mp3" %}">
+                        <img class="ts-image" src="{% url telemeta-item-visualize item.public_id,visualizer_id,360,130 %}" 
                           alt="" /></a>
                     </div>
                 </div>  
@@ -71,7 +71,7 @@ load_player({{ item.get_duration }});
                 -->
                 <select id="visualizer_id" name="visualizer_id">
                     {% for v in visualizers %}
-                    <option value="{% url telemeta-item-visualize item|code_or_id,v.id,"WIDTH","HEIGHT" %}">
+                    <option value="{% url telemeta-item-visualize item.public_id,v.id,"WIDTH","HEIGHT" %}">
                     {{v.name}}</option>
                     {% endfor %}
                 </select>
@@ -117,7 +117,7 @@ load_player({{ item.get_duration }});
         <div class="exporter">
             <p>Download:
             {% for format in export_formats %}
-            <a href="{% url telemeta-item-export item|code_or_id,format.extension %}">{{ format.name }}</a>
+            <a href="{% url telemeta-item-export item.public_id,format.extension %}">{{ format.name }}</a>
             {% endfor %}</p>
         </div>
 
@@ -132,7 +132,7 @@ load_player({{ item.get_duration }});
             {% if item.dates_enregistr %}<dt>Date d'enregistrement</dt><dd>{{ item.dates_enregistr }}</dd>{% endif %}
             {% if item.title %}<dt>Titre</dt><dd>{{ item.title }}</dd>{% endif %}
             {% if item.transcrip_trad %}<dt>Traduction du titre</dt><dd>{{ item.transcrip_trad }}</dd>{% endif %}
-            <dt>Collection</dt><dd><a href="{% url telemeta-collection-detail item.collection.code %}">{{ item.collection.title }}</a></dd>
+            <dt>Collection</dt><dd><a href="{% url telemeta-collection-detail item.collection.public_id %}">{{ item.collection.title }}</a></dd>
             {% if item.duree %}<dt>Durée</dt><dd>{{ item.duree }}</dd>{% endif %}
             {% if item.collection.ispublished and item.Ref %}
             <dt>Ref</dt><dd>{{ item.Ref }}</dd>

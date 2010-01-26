@@ -11,7 +11,7 @@
 
 {% block submenu %}
     <h3>Collection: {{ collection.title }}</h3>
-    <div><a href="{% url telemeta-collection-dublincore collection.code %}">Dublin Core</a></div>
+    <div><a href="{% url telemeta-collection-dublincore collection.public_id %}">Dublin Core</a></div>
 {% endblock %}
 
 {% block content %}
@@ -20,15 +20,15 @@
         <div id="rightcol">
             <div id="collection_player">
               <p><b>Listen to this collection</b>
-              (<a href="{% url telemeta-collection-m3u collection.code %}">M3U</a>,
-              <a href="{% url telemeta-collection-xspf collection.code %}">XSPF</a>)</p>
+              (<a href="{% url telemeta-collection-m3u collection.public_id %}">M3U</a>,
+              <a href="{% url telemeta-collection-xspf collection.public_id %}">XSPF</a>)</p>
               {% if 0 %} {# Use 1/0 for alternate player #}
                 <!-- This is the XSPF Web Music Player, under the BSD license, 
                   from: http://musicplayer.sourceforge.net/-->
                 <object type="application/x-shockwave-flash" width="362" height="200"
-                  data="{% url telemeta-swf "xspf_player.swf" %}?playlist_url={% url telemeta-collection-xspf collection.code %}">
+                  data="{% url telemeta-swf "xspf_player.swf" %}?playlist_url={% url telemeta-collection-xspf collection.public_id %}">
                   <param name="movie" 
-                    value="{% url telemeta-swf "xspf_player.swf" %}?playlist_url={% url telemeta-collection-xspf collection.code %}" />
+                    value="{% url telemeta-swf "xspf_player.swf" %}?playlist_url={% url telemeta-collection-xspf collection.public_id %}" />
                 </object>
               {% else %}
                 <!-- This is Jeroen Wijering's Flash MP3 Player, 
@@ -39,7 +39,7 @@
                 </p>
                 <script type="text/javascript">
                   var so = new SWFObject('{% url telemeta-swf "mp3player.swf" %}','playlist','362','200','7');
-                  so.addVariable("file","{% url telemeta-collection-xspf collection.code %}");
+                  so.addVariable("file","{% url telemeta-collection-xspf collection.public_id %}");
                   so.addVariable("displayheight","0");
                   so.write('collection_player_c');
                 </script> 

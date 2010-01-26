@@ -179,6 +179,10 @@ class MediaCollection(MediaResource):
     def __unicode__(self):
         return self.code
 
+    @property
+    def public_id(self):
+        return self.code
+
     def has_mediafile(self):
         "Tell wether this collection has any media files attached to its items"
         items = self.items.all()
@@ -280,9 +284,15 @@ class MediaItem(MediaResource):
 
     objects               = query.MediaItemManager()
 
-    def _keywords(self):
+    @property
+    def keywords(self):
         return ContextKeyword.objects.filter(mediaitemkeyword__item = self)
-    keywords = property(_keywords)
+
+    @property
+    def public_id(self):
+        if self.code:
+            return self.code
+        return self.id
 
     class Meta(MetaCore):
         db_table = 'media_items'

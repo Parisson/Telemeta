@@ -76,16 +76,16 @@ class CoreManager(EnhancedManager):
         return self.get_query_set().none(*args, **kwargs)
 
     def get(self, **kwargs):
-        if kwargs.has_key('code_or_id'):
+        if kwargs.has_key('public_id'):
             try:
                 args = kwargs.copy()
-                args['code'] = kwargs['code_or_id']
-                args.pop('code_or_id')
+                args['code'] = kwargs['public_id']
+                args.pop('public_id')
                 return super(CoreManager, self).get(**args)
             except ObjectDoesNotExist:
                 args = kwargs.copy()
-                args['id'] = kwargs['code_or_id']
-                args.pop('code_or_id')
+                args['id'] = kwargs['public_id']
+                args.pop('public_id')
                 return super(CoreManager, self).get(**args)
 
         return super(CoreManager, self).get(**kwargs)

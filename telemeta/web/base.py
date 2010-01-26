@@ -70,14 +70,14 @@ class WebView(Component):
         context = Context({})
         return HttpResponse(template.render(context))
 
-    def collection_detail(self, request, code, template=''):
-        collection = MediaCollection.objects.get(code=code)
+    def collection_detail(self, request, public_id, template=''):
+        collection = MediaCollection.objects.get(public_id=public_id)
         return render_to_response(template, {'collection': collection})
 
 
-    def item_detail(self, request, item_key, template='telemeta/mediaitem_detail.html'):
+    def item_detail(self, request, public_id, template='telemeta/mediaitem_detail.html'):
         """Show the details of a given item"""
-        item = MediaItem.objects.get(code_or_id=item_key)
+        item = MediaItem.objects.get(public_id=public_id)
         
         formats = []
         for exporter in self.exporters:
@@ -115,7 +115,7 @@ class WebView(Component):
                     'visualizers': visualizers, 'visualizer_id': visualizer_id,
                     'analysers': analyzers, 'vamp_plugins': vamp_plugin_list})
                     
-    def item_visualize(self, request, item_key, visualizer_id, width, height):
+    def item_visualize(self, request, public_id, visualizer_id, width, height):
         for visualizer in self.visualizers:
             if visualizer.get_id() == visualizer_id:
                 break
@@ -123,7 +123,7 @@ class WebView(Component):
         if visualizer.get_id() != visualizer_id:
             raise Http404
         
-        item = MediaItem.objects.get(code_or_id=item_key)
+        item = MediaItem.objects.get(public_id=public_id)
 
         visualizer.set_colors((255,255,255), 'purple')
         stream = visualizer.render(item, width=int(width), height=int(height))
@@ -137,7 +137,7 @@ class WebView(Component):
             list.append(exporter.get_file_extension())
         return list
 
-    def item_export(self, request, item_key, extension):                    
+    def item_export(self, request, public_id, extension):                    
         """Export a given media item in the specified format (OGG, FLAC, ...)"""
         for exporter in self.exporters:
             if exporter.get_file_extension() == extension:
@@ -150,7 +150,7 @@ class WebView(Component):
 
         exporter.set_cache_dir(settings.TELEMETA_EXPORT_CACHE_DIR)
 
-        item = MediaItem.objects.get(code_or_id=item_key)
+        item = MediaItem.objects.get(public_id=public_id)
 
         infile = item.file.path
         metadata = item.to_dublincore().flatten()
@@ -316,9 +316,9 @@ class WebView(Component):
 
         return self.edit_enumeration(request, enumeration_id)
   
-    def collection_playlist(self, request, code, template, mimetype):
+    def collection_playlist(self, request, public_id, template, mimetype):
         try:
-            collection = MediaCollection.objects.get(code=code)
+            collection = MediaCollection.objects.get(public_id=public_id)
         except ObjectDoesNotExist:
             raise Http404
 
@@ -326,9 +326,9 @@ class WebView(Component):
         context = Context({'collection': collection, 'host': request.META['HTTP_HOST']})
         return HttpResponse(template.render(context), mimetype=mimetype)
 
-    def item_playlist(self, request, item_key, template, mimetype):
+    def item_playlist(self, request, public_id, template, mimetype):
         try:
-            item = MediaItem.objects.get(code_or_id=item_key)
+            item = MediaItem.objects.get(public_id=public_id)
         except ObjectDoesNotExist:
             raise Http404
 
