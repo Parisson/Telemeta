@@ -33,10 +33,13 @@
 # Authors: Olivier Guilyardi <olivier@samalyse.com>
 #          David LIPSZYC <davidlipszyc@gmail.com>
 
+from django import db
 from django.db.models import Manager, Q
 from telemeta.models.core import EnhancedQuerySet, EnhancedManager
 import re
 from django.core.exceptions import ObjectDoesNotExist
+from django import db
+import _mysql_exceptions
 
 class CoreQuerySet(EnhancedQuerySet):
     "Base class for all query sets"
@@ -102,7 +105,11 @@ class MediaCollectionQuerySet(CoreQuerySet):
 
     def by_country(self, country):
         "Find collections by country"
-        return self.filter(items__location__type="country", items__location=country).distinct()
+        db.connection.cursor() # Need this to establish connection
+        country = db.connection.connection.literal(country)
+        return self.extra(where=["media_items.collection_id = media_collections.id",
+                                 "telemeta_location_ascendant(media_items.location_name, 'country') = %s" % country],
+                          tables=['media_items']).distinct()
     
     def by_continent(self, continent):
         "Find collections by continent"
@@ -165,28 +172,33 @@ class MediaCollectionManager(CoreManager):
         return self.get_query_set().by_change_time(*args, **kwargs)
     by_change_time.__doc__ = MediaCollectionQuerySet.by_change_time.__doc__
 
-    def stat_continents(self, order_by='num'):      
+    def stat_continents(self, order_by='nitems'):      
         "Return the number of collections by continents and countries as a tree"
         from django.db import connection
         cursor = connection.cursor()
-        if order_by == 'num':
+        if order_by == 'nitems':
             order_by = 'items_num DESC'
-        else:
-            order_by = 'etat'
-        cursor.execute("SELECT continent, etat, count(*) AS items_num "
-            "FROM media_collections INNER JOIN media_items "
-            "ON media_collections.id = media_items.collection_id "
-            "WHERE (continent IN "
-            "  ('EUROPE', 'OCEANIE', 'ASIE', 'AMERIQUE', 'AFRIQUE')) "
-            "AND etat <> '' "
-            "GROUP BY etat ORDER BY continent, " + order_by)
+        elif order_by != 'country':
+            raise Exception("stat_continents() can only order by nitems or country")
+
+        try:
+            cursor.execute("""
+                SELECT telemeta_location_ascendant(location_name, 'continent') as continent, 
+                       telemeta_location_ascendant(location_name, 'country') as country, 
+                       count(*) AS items_num 
+                FROM media_collections INNER JOIN media_items 
+                ON media_collections.id = media_items.collection_id 
+                GROUP BY country ORDER BY continent, """ + order_by)
+        except _mysql_exceptions.Warning:
+            pass
         result_set = cursor.fetchall()
         stat = {}
         for continent, country, count in result_set:
-            if stat.has_key(continent):
-                stat[continent].append({'name':country, 'count':count})
-            else:
-                stat[continent] = [{'name':country, 'count':count}]
+            if continent and country:
+                if stat.has_key(continent):
+                    stat[continent].append({'name':country, 'count':count})
+                else:
+                    stat[continent] = [{'name':country, 'count':count}]
 
         keys = stat.keys()
         keys.sort()

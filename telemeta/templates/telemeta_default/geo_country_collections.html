@@ -1,9 +1,10 @@
 {% extends "telemeta/base.html" %}
 {% load telemeta_utils %}
+{% load i18n %}
 
 {% block content %}
-<h3><a href="{% url telemeta-geo-continents %}">WORLD</a> /
-  <a href="{% url telemeta-geo-countries continent|urlencode %}">{{ continent }}</a> 
+<h3><a href="{% url telemeta-geo-continents %}">{% trans "World" %}</a> /
+  <a href="{% url telemeta-geo-countries continent_flatname %}">{{ continent }}</a> 
   / {{ country }}</h3>
 
 {% with object_list as collections %}

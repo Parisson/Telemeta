@@ -136,9 +136,9 @@ urlpatterns = patterns('',
 
     # Geographic browsing
     url(r'^geo/$', web_view.list_continents, name="telemeta-geo-continents"),
-    url(r'^geo/(?P<continent>[A-Za-z]+)/$', web_view.list_countries, 
+    url(r'^geo/(?P<continent>[a-z_]+)/$', web_view.list_countries, 
         name="telemeta-geo-countries"),
-    url('^geo/(?P<continent>[A-Za-z]+)/(?P<country>[-A-Za-z0-9%;.,"& \']+)/$', 
+    url(r'^geo/(?P<continent>[a-z_]+)/(?P<country>[a-z_]+)/$', 
         web_view.list_country_collections, 
         name="telemeta-geo-country-collections"),
     url(r'^dynjs/continents.js$', web_view.get_continents_js, name="telemeta-continents-js"),
