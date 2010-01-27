@@ -38,10 +38,12 @@ import cremquery as query
 from xml.dom.minidom import getDOMImplementation
 from telemeta.util.unaccent import unaccent_icmp
 import re
+from django.db.models import FieldDoesNotExist
 from telemeta.models.core import DurationField, Duration, WeakForeignKey, EnhancedModel, \
                                  CharField, TextField, IntegerField, BooleanField, \
                                  DateTimeField, FileField, ForeignKey, FloatField, DateField
 from telemeta.models import dublincore as dc
+from django.utils.translation import ugettext_lazy as _
 
 class ModelCore(EnhancedModel):
 
@@ -114,6 +116,16 @@ class ModelCore(EnhancedModel):
             fields_list.append({'name': field.name, 'value': getattr(self, field.name)})
         return fields_list
 
+    @classmethod
+    def field_label(cls, field_name):
+        try:
+            return cls._meta.get_field(field_name).verbose_name
+        except FieldDoesNotExist:
+            try:
+                return getattr(cls, field_name).verbose_name
+            except AttributeError:
+                return field_name
+
     class Meta:
         abstract = True
 
@@ -135,43 +147,54 @@ class MediaCollection(MediaResource):
     unpublished_code_regex = 'CNRSMH_I_[0-9]{4}_[0-9]{3}'
     code_regex             = '(?:%s|%s)' % (published_code_regex, unpublished_code_regex)
 
-    reference             = CharField(unique=True, null=True)
-    physical_format       = WeakForeignKey('PhysicalFormat', related_name="collections")
-    old_code              = CharField(unique=True, null=True)
-    code                  = CharField(unique=True, required=True)
-    title                 = CharField(required=True)
-    alt_title             = CharField()
-    physical_items_num    = IntegerField(default=0)
-    publishing_status     = WeakForeignKey('PublishingStatus', related_name="collections")
-    creator               = CharField()
-    booklet_author        = CharField()
-    booklet_description   = TextField()
-    collector             = CharField()
-    collector_is_creator  = BooleanField()
-    publisher             = WeakForeignKey('Publisher', related_name="collections")     
-    is_published          = BooleanField()
-    year_published        = IntegerField()
-    publisher_collection  = WeakForeignKey('PublisherCollection', related_name="collections")
-    publisher_serial      = CharField()
-    external_references   = TextField()
-    acquisition_mode      = WeakForeignKey('AcquisitionMode', related_name="collections")
-    comment               = TextField()
-    metadata_author       = WeakForeignKey('MetadataAuthor', related_name="collections")
-    metadata_writer       = WeakForeignKey('MetadataWriter', related_name="collections")
-    legal_rights          = WeakForeignKey('LegalRight', related_name="collections")
-    alt_ids               = CharField()
-    recorded_from_year    = IntegerField()
-    recorded_to_year      = IntegerField()
-    recording_context     = WeakForeignKey('RecordingContext', related_name="collections")
-    approx_duration       = DurationField()
-    doctype_code          = IntegerField()
-    travail               = CharField()
-    state                 = TextField()
-    cnrs_contributor      = CharField()
-    items_done            = CharField()
-    a_informer_07_03      = CharField()
-    ad_conversion         = WeakForeignKey('AdConversion', related_name='collections')
-    public_access         = CharField(choices=PUBLIC_ACCESS_CHOICES, max_length=16, default="metadata")
+    reference             = CharField(_('reference'), unique=True, null=True)
+    physical_format       = WeakForeignKey('PhysicalFormat', related_name="collections", 
+                                           verbose_name=_('archive format'))
+    old_code              = CharField(_('old code'), unique=True, null=True)
+    code                  = CharField(_('code'), unique=True, required=True)
+    title                 = CharField(_('title'), required=True)
+    alt_title             = CharField(_('original title / translation'))
+    physical_items_num    = IntegerField(_('number of components (medium / piece)'))
+    publishing_status     = WeakForeignKey('PublishingStatus', related_name="collections", 
+                                           verbose_name=_('secondary edition'))
+    creator               = CharField(_('depositor / contributor'))
+    booklet_author        = CharField(_('author of published notice'))
+    booklet_description   = TextField(_('related documentation'))
+    collector             = CharField(_('collector'))
+    collector_is_creator  = BooleanField(_('collector identical to depositor'))
+    publisher             = WeakForeignKey('Publisher', related_name="collections", 
+                                           verbose_name=_('publisher / status'))     
+    is_published          = BooleanField(_('published'))
+    year_published        = IntegerField(_('year published'))
+    publisher_collection  = WeakForeignKey('PublisherCollection', related_name="collections", 
+                                            verbose_name=_('publisher collection'))
+    publisher_serial      = CharField(_('publisher serial number'))
+    external_references   = TextField(_('bibliographic references'))
+    acquisition_mode      = WeakForeignKey('AcquisitionMode', related_name="collections", 
+                                            verbose_name=_('mode of acquisition'))
+    comment               = TextField(_('comment'))
+    metadata_author       = WeakForeignKey('MetadataAuthor', related_name="collections", 
+                                           verbose_name=_('record author'))
+    metadata_writer       = WeakForeignKey('MetadataWriter', related_name="collections", 
+                                           verbose_name=_('record writer'))
+    legal_rights          = WeakForeignKey('LegalRight', related_name="collections", 
+                                           verbose_name=_('legal rights'))
+    alt_ids               = CharField(_('copies'))
+    recorded_from_year    = IntegerField(_('recording year (from)'))
+    recorded_to_year      = IntegerField(_('recording year (until)'))
+    recording_context     = WeakForeignKey('RecordingContext', related_name="collections", 
+                                           verbose_name=_('recording context'))
+    approx_duration       = DurationField(_('approximative duration'))
+    doctype_code          = IntegerField(_('document type'))
+    travail               = CharField(_('archiver notes'))
+    state                 = TextField(_('status'))
+    cnrs_contributor      = CharField(_('CNRS depositor'))
+    items_done            = CharField(_('items finished'))
+    a_informer_07_03      = CharField(_('a_informer_07_03'))
+    ad_conversion         = WeakForeignKey('AdConversion', related_name='collections', 
+                                           verbose_name=_('A/D conversion'))
+    public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES, 
+                                      max_length=16, default="metadata")
 
     objects               = query.MediaCollectionManager()
 
@@ -193,7 +216,7 @@ class MediaCollection(MediaResource):
     def __name_cmp(self, obj1, obj2):
         return unaccent_icmp(obj1.name, obj2.name)
 
-    def get_countries(self):
+    def countries(self):
         "Return the countries of the items"
         countries = []
         items = self.items.all()
@@ -206,8 +229,9 @@ class MediaCollection(MediaResource):
         countries.sort(self.__name_cmp)                
 
         return countries
+    countries.verbose_name = _("states / nations")
 
-    def get_ethnic_groups(self):
+    def ethnic_groups(self):
         "Return the ethnic groups of the items"
         groups = []
         items = self.items.all()
@@ -218,6 +242,15 @@ class MediaCollection(MediaResource):
         groups.sort(self.__name_cmp)                
 
         return groups
+    ethnic_groups.verbose_name = _('populations / social groups')
+
+    def computed_duration(self):
+        duration = Duration()
+        for item in self.items.all():
+            duration += item.computed_duration()
+
+        return duration
+    computed_duration.verbose_name = _('computed duration')        
 
     def is_valid_code(self, code):
         "Check if the collection code is well formed"
@@ -250,33 +283,37 @@ class MediaItem(MediaResource):
     unpublished_code_regex  = MediaCollection.unpublished_code_regex + '_[0-9]{2,3}(?:_[0-9]{2}){0,2}'
     code_regex              = '(?:%s|%s)' % (published_code_regex, unpublished_code_regex)
 
-    collection            = ForeignKey('MediaCollection', related_name="items")
-    track                 = CharField()
-    old_code              = CharField(unique=True, null=True)
-    code                  = CharField(unique=True, null=True)
-    approx_duration       = DurationField()
-    recorded_from_date    = DateField()
-    recorded_to_date      = DateField()
-    location              = WeakForeignKey('Location', related_name="items",
-                                           db_column='location_name')
-    location_comment      = CharField()
-    ethnic_group          = WeakForeignKey('EthnicGroup', related_name="items")
-    title                 = CharField(required=True)
-    alt_title             = CharField()
-    author                = CharField()
-    vernacular_style      = WeakForeignKey('VernacularStyle', related_name="items")
-    context_comment       = TextField()
-    external_references   = TextField()
-    moda_execut           = CharField()
-    copied_from_item      = WeakForeignKey('self', related_name="copies")
-    collector             = CharField()
-    cultural_area         = CharField()
-    generic_style         = WeakForeignKey('GenericStyle', related_name="items")
-    collector_selection   = CharField()
-    creator_reference     = CharField()
-    comment               = TextField()
-    file                  = FileField(upload_to='items/%Y/%m/%d', db_column="filename")
-    public_access         = CharField(choices=PUBLIC_ACCESS_CHOICES, max_length=16, default="metadata")
+    collection            = ForeignKey('MediaCollection', related_name="items", 
+                                       verbose_name=_('collection'))
+    track                 = CharField(_('item number'))
+    old_code              = CharField(_('old code'), unique=True, null=True)
+    code                  = CharField(_('code'), unique=True, null=True)
+    approx_duration       = DurationField(_('approximative duration'))
+    recorded_from_date    = DateField(_('recording date (from)'))
+    recorded_to_date      = DateField(_('recording date (until)'))
+    location              = WeakForeignKey('Location', related_name="items", 
+                                           db_column='location_name', verbose_name=_('location'))
+    location_comment      = CharField(_('location comment'))
+    ethnic_group          = WeakForeignKey('EthnicGroup', related_name="items", 
+                                           verbose_name=_('population / social group'))
+    title                 = CharField(_('title'), required=True)
+    alt_title             = CharField(_('original title / translation'))
+    author                = CharField(_('author'))
+    vernacular_style      = WeakForeignKey('VernacularStyle', related_name="items", 
+                                           verbose_name=_('vernacular name'))
+    context_comment       = TextField(_('comments'))
+    external_references   = TextField(_('published reference'))
+    moda_execut           = CharField(_('moda_execut'))
+    copied_from_item      = WeakForeignKey('self', related_name="copies", verbose_name=_('copy of'))
+    collector             = CharField(_('collector'))
+    cultural_area         = CharField(_('cultural area'))
+    generic_style         = WeakForeignKey('GenericStyle', related_name="items", 
+                                           verbose_name=_('generic name'))
+    collector_selection   = CharField(_('collector selection'))
+    creator_reference     = CharField(_('depositor reference'))
+    comment               = TextField(_('comment'))
+    file                  = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename")
+    public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES, max_length=16, default="metadata")
 
     objects               = query.MediaItemManager()
 
@@ -316,7 +353,7 @@ class MediaItem(MediaResource):
                                         % (self.code, self.collection.code))
         super(MediaItem, self).save(force_insert, force_update, using)
 
-    def duration(self):
+    def computed_duration(self):
         "Tell the length in seconds of this item media data"
         # FIXME: use TimeSide?
         seconds = 0
@@ -326,10 +363,9 @@ class MediaItem(MediaResource):
             seconds = media.getnframes() / media.getframerate()
             media.close()
 
-        if seconds:
-            return Duration(seconds=seconds)
+        return Duration(seconds=seconds)
 
-        return self.approx_duration
+    computed_duration.verbose_name = _('computed duration')        
 
     def __unicode__(self):
         if self.code:
@@ -339,10 +375,10 @@ class MediaItem(MediaResource):
 class MediaPart(MediaResource):
     "Describe an item part"
     element_type = 'part'
-    item  = ForeignKey('MediaItem', related_name="parts")
-    title = CharField(required=True)
-    start = FloatField(required=True)
-    end   = FloatField(required=True)
+    item  = ForeignKey('MediaItem', related_name="parts", verbose_name=_('item'))
+    title = CharField(_('title'), required=True)
+    start = FloatField(_('start'), required=True)
+    end   = FloatField(_('end'), required=True)
     
     class Meta(MetaCore):
         db_table = 'media_parts'
@@ -352,7 +388,7 @@ class MediaPart(MediaResource):
 
 class Enumeration(ModelCore):
     "Abstract enumerations base class"
-    value = CharField(required=True, unique=True)
+    value = CharField(_('value'), required=True, unique=True)
     
     def __unicode__(self):
         return self.value
@@ -422,7 +458,7 @@ class GenericStyle(Enumeration):
 
 class Instrument(ModelCore):
     "Instrument used in the item"
-    name    = CharField(required=True)
+    name    = CharField(_('name'), required=True)
 
     class Meta(MetaCore):
         db_table = 'instruments'
@@ -432,7 +468,7 @@ class Instrument(ModelCore):
 
 class InstrumentAlias(ModelCore):
     "Instrument other name"
-    name = CharField(required=True)
+    name = CharField(_('name'), required=True)
 
     class Meta(MetaCore):
         db_table = 'instrument_aliases'
@@ -442,8 +478,10 @@ class InstrumentAlias(ModelCore):
 
 class InstrumentRelation(ModelCore):
     "Instrument family"
-    instrument        = ForeignKey('Instrument', related_name="parent_relation")
-    parent_instrument = ForeignKey('Instrument', related_name="child_relation")
+    instrument        = ForeignKey('Instrument', related_name="parent_relation", 
+                                   verbose_name=_('instrument'))
+    parent_instrument = ForeignKey('Instrument', related_name="child_relation", 
+                                   verbose_name=_('parent instrument'))
 
     class Meta(MetaCore):
         db_table = 'instrument_relations'
@@ -451,8 +489,10 @@ class InstrumentRelation(ModelCore):
 
 class InstrumentAliasRelation(ModelCore):
     "Instrument family other name"
-    alias      = ForeignKey('InstrumentAlias', related_name="other_name")
-    instrument = ForeignKey('InstrumentAlias', related_name="relation")
+    alias      = ForeignKey('InstrumentAlias', related_name="other_name", 
+                            verbose_name=_('alias'))
+    instrument = ForeignKey('InstrumentAlias', related_name="relation", 
+                            verbose_name=_('instrument'))
 
     class Meta(MetaCore):
         db_table = 'instrument_alias_relations'
@@ -460,11 +500,14 @@ class InstrumentAliasRelation(ModelCore):
 
 class MediaItemPerformance(ModelCore):
     "Item performance"
-    media_item      = ForeignKey('MediaItem', related_name="performances")
-    instrument      = WeakForeignKey('Instrument', related_name="performances")
-    alias           = WeakForeignKey('InstrumentAlias', related_name="performances")
-    instruments_num = CharField()
-    musicians       = CharField()
+    media_item      = ForeignKey('MediaItem', related_name="performances", 
+                                 verbose_name=_('item'))
+    instrument      = WeakForeignKey('Instrument', related_name="performances", 
+                                     verbose_name=_('instrument'))
+    alias           = WeakForeignKey('InstrumentAlias', related_name="performances", 
+                                     verbose_name=_('alias'))
+    instruments_num = CharField(_('instruments num'))
+    musicians       = CharField(_('interprets'))
 
     class Meta(MetaCore):
         db_table = 'media_item_performances'
@@ -473,12 +516,12 @@ class User(ModelCore):
     "Telemeta user"
     LEVEL_CHOICES = (('user', 'user'), ('maintainer', 'maintainer'), ('admin', 'admin'))    
 
-    username   = CharField(primary_key=True, max_length=64, required=True)
-    level      = CharField(choices=LEVEL_CHOICES, max_length=32, required=True)
-    first_name = CharField()
-    last_name  = CharField()
-    phone      = CharField()
-    email      = CharField()
+    username   = CharField(_('username'), primary_key=True, max_length=64, required=True)
+    level      = CharField(_('level'), choices=LEVEL_CHOICES, max_length=32, required=True)
+    first_name = CharField(_('first name'))
+    last_name  = CharField(_('last name'))
+    phone      = CharField(_('phone'))
+    email      = CharField(_('email'))
 
     class Meta(MetaCore):
         db_table = 'users'
@@ -489,7 +532,7 @@ class User(ModelCore):
 class Playlist(ModelCore):
     "Item or collection playlist"
     owner_username = ForeignKey('User', related_name="playlists", db_column="owner_username") 
-    name           = CharField(required=True)
+    name           = CharField(_('name'), required=True)
 
     class Meta(MetaCore):
         db_table = 'playlists'
@@ -501,9 +544,9 @@ class PlaylistResource(ModelCore):
     "Playlist components"
     RESOURCE_TYPE_CHOICES = (('item', 'item'), ('collection', 'collection'))
 
-    playlist              = ForeignKey('Playlist', related_name="resources")
-    resource_type         = CharField(choices=RESOURCE_TYPE_CHOICES, required=True)
-    resource              = IntegerField(required=True)
+    playlist              = ForeignKey('Playlist', related_name="resources", verbose_name=_('playlist'))
+    resource_type         = CharField(_('resource type'), choices=RESOURCE_TYPE_CHOICES, required=True)
+    resource              = IntegerField(_('resource'), required=True)
 
     class Meta(MetaCore):
         db_table = 'playlist_resources'
@@ -512,12 +555,12 @@ class Location(ModelCore):
     "Item location"
     TYPE_CHOICES     = (('country', 'country'), ('continent', 'continent'), ('other', 'other'))
 
-    name             = CharField(primary_key=True, max_length=150, required=True)
-    type             = CharField(choices=TYPE_CHOICES, max_length=16, required=True)
-    complete_type    = ForeignKey('LocationType', related_name="types")
-    current_name     = WeakForeignKey('self', related_name="past_names", 
-                                      db_column="current_name") 
-    is_authoritative = BooleanField()
+    name             = CharField(_('name'), primary_key=True, max_length=150, required=True)
+    type             = CharField(_('type'), choices=TYPE_CHOICES, max_length=16, required=True)
+    complete_type    = ForeignKey('LocationType', related_name="types", verbose_name=_('complete type'))
+    current_name     = WeakForeignKey('self', related_name="past_names", db_column="current_name", 
+                                      verbose_name=_('current name')) 
+    is_authoritative = BooleanField(_('authoritative'))
 
     def parent(self):
         relations = self.parent_relations.all()
@@ -559,18 +602,18 @@ class Location(ModelCore):
 
 class LocationType(ModelCore):
     "Location type of an item location"
-    id   = CharField(max_length=64, primary_key=True, required=True)
-    name = CharField(max_length=150, required=True)
+    id   = CharField(_('identifier'), max_length=64, primary_key=True, required=True)
+    name = CharField(_('name'), max_length=150, required=True)
 
     class Meta(MetaCore):
         db_table = 'location_types'
 
 class LocationAlias(ModelCore):
     "Location other name"
-    location         = ForeignKey('Location', related_name="aliases",
-                                          db_column="location_name", max_length=150)
-    alias            = CharField(max_length=150, required=True)
-    is_authoritative = BooleanField()
+    location         = ForeignKey('Location', related_name="aliases", db_column="location_name", 
+                                  max_length=150, verbose_name=_('location'))
+    alias            = CharField(_('alias'), max_length=150, required=True)
+    is_authoritative = BooleanField(_('authoritative'))
 
     def __unicode__(self):
         return self.alias
@@ -581,10 +624,10 @@ class LocationAlias(ModelCore):
     
 class LocationRelation(ModelCore):
     "Location family"
-    location             = ForeignKey('Location', related_name="parent_relations",
-                                              db_column="location_name", max_length=150)
-    parent_location      = ForeignKey('Location', related_name="child_relations",
-                                              db_column="parent_location_name", null=True, max_length=150)
+    location             = ForeignKey('Location', related_name="parent_relations", 
+                                      db_column="location_name", max_length=150, verbose_name=_('location'))
+    parent_location      = ForeignKey('Location', related_name="child_relations", db_column="parent_location_name", 
+                                      null=True, max_length=150, verbose_name=_('parent location'))
     is_authoritative     = BooleanField()
 
     class Meta(MetaCore):
@@ -598,8 +641,8 @@ class ContextKeyword(Enumeration):
 
 class MediaItemKeyword(ModelCore):
     "Item keyword"
-    item    = ForeignKey('MediaItem')
-    keyword = ForeignKey('ContextKeyword')
+    item    = ForeignKey('MediaItem', verbose_name=_('item'))
+    keyword = ForeignKey('ContextKeyword', verbose_name=_('keyword'))
 
     class Meta(MetaCore):
         db_table = 'media_item_keywords'
@@ -613,8 +656,8 @@ class Publisher(Enumeration):
 
 class PublisherCollection(ModelCore):
     "Collection which belongs to publisher"
-    publisher = ForeignKey('Publisher', related_name="publisher_collections")
-    value     = CharField(required=True)
+    publisher = ForeignKey('Publisher', related_name="publisher_collections", verbose_name=_('publisher'))
+    value     = CharField(_('value'), required=True)
 
     def __unicode__(self):
         return self.value
@@ -627,11 +670,11 @@ class Revision(ModelCore):
     ELEMENT_TYPE_CHOICES = (('collection', 'collection'), ('item', 'item'), ('part', 'part'))
     CHANGE_TYPE_CHOICES  = (('import', 'import'), ('create', 'create'), ('update', 'update'), ('delete','delete'))
 
-    element_type         = CharField(choices=ELEMENT_TYPE_CHOICES, max_length=16, required=True)
-    element_id           = IntegerField(required=True)
-    change_type          = CharField(choices=CHANGE_TYPE_CHOICES, max_length=16, required=True)
-    time                 = DateTimeField(auto_now_add=True)
-    user                 = ForeignKey('User', db_column='username', related_name="revisions")
+    element_type         = CharField(_('element type'), choices=ELEMENT_TYPE_CHOICES, max_length=16, required=True)
+    element_id           = IntegerField(_('element identifier'), required=True)
+    change_type          = CharField(_('modification type'), choices=CHANGE_TYPE_CHOICES, max_length=16, required=True)
+    time                 = DateTimeField(_('time'), auto_now_add=True)
+    user                 = ForeignKey('User', db_column='username', related_name="revisions", verbose_name=_('user'))
     
     @classmethod
     def touch(cls, element, user):    
@@ -654,7 +697,7 @@ class Revision(ModelCore):
     
 class EthnicGroup(ModelCore):
     "Item ethnic group"
-    name = CharField(required=True)
+    name = CharField(_('name'), required=True)
 
     class Meta(MetaCore):
         db_table = 'ethnic_groups'
@@ -664,8 +707,8 @@ class EthnicGroup(ModelCore):
 
 class EthnicGroupAlias(ModelCore):
     "Item ethnic group other name" 
-    ethnic_group = ForeignKey('EthnicGroup', related_name="aliases")
-    name         = CharField(required=True)
+    ethnic_group = ForeignKey('EthnicGroup', related_name="aliases", verbose_name=_('population / social group'))
+    name         = CharField(_('name'), required=True)
 
     class Meta(MetaCore):
         db_table = 'ethnic_group_aliases'

@@ -144,17 +144,12 @@ def express_collection(collection):
     else:                        
         creator = Element('creator', collection.creator)
 
-    duration = Duration()
+    duration = max(collection.approx_duration, collection.computed_duration())
     parts = []
     for item in collection.items.all():
-        duration += item.duration()
-
         id = media_identifier(item)
         if id:
             parts.append(Element('relation', id, 'hasPart', item))
-
-    if duration < collection.approx_duration:            
-        duration = collection.approx_duration
 
     resource = Resource(
         Element('identifier',       media_identifier(collection), related=collection),
@@ -220,7 +215,8 @@ def express_item(item):
         Element('coverage',         item.location_comment, 'spatial'),
         Element('rights',           item.collection.legal_rights, 'license'),
         Element('rights',           media_access_rights(item.collection), 'accessRights'),
-        Element('format',           item.duration(), 'extent'),
+    
+        Element('format',           max(item.approx_duration, item.computed_duration()), 'extent'),
         Element('format',           item.collection.physical_format, 'medium'),
         #FIXME: audio mime types are missing,
         Element('relation',         media_identifier(item.collection), 'isPartOf', item.collection)

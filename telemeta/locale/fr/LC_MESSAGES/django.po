@@ -1,0 +1,418 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-01-27 14:13+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: models/core.py:127
+msgid "Duration"
+msgstr ""
+
+#: models/core.py:132
+msgid "Enter a valid duration in HH:MM[:ss[.uuuuuu]] format."
+msgstr ""
+
+#: models/crem.py:150
+msgid "reference"
+msgstr "référence"
+
+#: models/crem.py:152
+msgid "archive format"
+msgstr "format d'archivage"
+
+#: models/crem.py:153 models/crem.py:289
+msgid "old code"
+msgstr "ancienne cote"
+
+#: models/crem.py:154 models/crem.py:290
+msgid "code"
+msgstr "cote"
+
+#: models/crem.py:155 models/crem.py:299 models/crem.py:379
+msgid "title"
+msgstr "titre"
+
+#: models/crem.py:156 models/crem.py:300
+msgid "original title / translation"
+msgstr "titre original / traduction"
+
+#: models/crem.py:157
+msgid "number of components (medium / piece)"
+msgstr "nb de composants (support / pièce)"
+
+#: models/crem.py:159
+msgid "secondary edition"
+msgstr "réédition"
+
+#: models/crem.py:160
+msgid "depositor / contributor"
+msgstr "déposant / contributeur"
+
+#: models/crem.py:161
+msgid "author of published notice"
+msgstr "auteur de la notice éditée"
+
+#: models/crem.py:162
+msgid "related documentation"
+msgstr "documentation associée"
+
+#: models/crem.py:163 models/crem.py:308
+msgid "collector"
+msgstr "collecteur"
+
+#: models/crem.py:164
+msgid "collector identical to depositor"
+msgstr "collecteur identique au déposant"
+
+#: models/crem.py:166
+msgid "publisher / status"
+msgstr "éditeur / statut"
+
+#: models/crem.py:167
+msgid "published"
+msgstr "édité"
+
+#: models/crem.py:168
+msgid "year published"
+msgstr "année de parution"
+
+#: models/crem.py:170
+msgid "publisher collection"
+msgstr "collection éditeur"
+
+#: models/crem.py:171
+msgid "publisher serial number"
+msgstr "numéro dans la série"
+
+#: models/crem.py:172
+msgid "bibliographic references"
+msgstr "références bibliographiques"
+
+#: models/crem.py:174
+msgid "mode of acquisition"
+msgstr "mode d'acquisition"
+
+#: models/crem.py:175 models/crem.py:314
+msgid "comment"
+msgstr "commentaire"
+
+#: models/crem.py:177
+msgid "record author"
+msgstr "rédacteur fiche"
+
+#: models/crem.py:179
+msgid "record writer"
+msgstr "saisie fiche"
+
+#: models/crem.py:181
+msgid "legal rights"
+msgstr "droit d'utilisation"
+
+#: models/crem.py:182
+msgid "copies"
+msgstr "autres exemplaires"
+
+#: models/crem.py:183
+msgid "recording year (from)"
+msgstr "année d'enregistrement (depuis)"
+
+#: models/crem.py:184
+msgid "recording year (until)"
+msgstr "année d'enregistrement (jusqu'à)"
+
+#: models/crem.py:186
+msgid "recording context"
+msgstr "context d'enregistrement"
+
+#: models/crem.py:187 models/crem.py:291
+msgid "approximative duration"
+msgstr "durée approximative"
+
+#: models/crem.py:188
+msgid "document type"
+msgstr "type de document"
+
+#: models/crem.py:189
+msgid "archiver notes"
+msgstr "notes de l'archiviste"
+
+#: models/crem.py:190
+msgid "status"
+msgstr "etat"
+
+#: models/crem.py:191
+msgid "CNRS depositor"
+msgstr "déposant CNRS"
+
+#: models/crem.py:192
+msgid "items finished"
+msgstr "fiches faîtes"
+
+#: models/crem.py:193
+msgid "a_informer_07_03"
+msgstr ""
+
+#: models/crem.py:195
+msgid "A/D conversion"
+msgstr "numérisation"
+
+#: models/crem.py:196 models/crem.py:316
+msgid "public access"
+msgstr "accès public"
+
+#: models/crem.py:232
+msgid "states / nations"
+msgstr "états / nations"
+
+#: models/crem.py:245
+msgid "populations / social groups"
+msgstr "populations / groupes sociaux"
+
+#: models/crem.py:253 models/crem.py:368
+msgid "computed duration"
+msgstr "durée calculée"
+
+#: models/crem.py:287
+msgid "collection"
+msgstr ""
+
+#: models/crem.py:288
+msgid "item number"
+msgstr "n° de l'item"
+
+#: models/crem.py:292
+msgid "recording date (from)"
+msgstr "date d'enregistrement (depuis)"
+
+#: models/crem.py:293
+msgid "recording date (until)"
+msgstr "date d'enregistrement (jusqu'à)"
+
+#: models/crem.py:295 models/crem.py:614 models/crem.py:628
+msgid "location"
+msgstr "lieu"
+
+#: models/crem.py:296
+msgid "location comment"
+msgstr "commentaire lieu"
+
+#: models/crem.py:298 models/crem.py:710
+msgid "population / social group"
+msgstr "population / groupe social"
+
+#: models/crem.py:301
+msgid "author"
+msgstr "auteur"
+
+#: models/crem.py:303
+msgid "vernacular name"
+msgstr "nom vernaculaire"
+
+#: models/crem.py:304
+msgid "comments"
+msgstr "commentaires"
+
+#: models/crem.py:305
+msgid "published reference"
+msgstr "référence éditée"
+
+#: models/crem.py:306
+msgid "moda_execut"
+msgstr ""
+
+#: models/crem.py:307
+msgid "copy of"
+msgstr "copie de"
+
+#: models/crem.py:309
+msgid "cultural area"
+msgstr "aire culturelle"
+
+#: models/crem.py:311
+msgid "generic name"
+msgstr "nom générique"
+
+#: models/crem.py:312
+msgid "collector selection"
+msgstr "sélection collecteur"
+
+#: models/crem.py:313
+msgid "depositor reference"
+msgstr "référence du déposant"
+
+#: models/crem.py:315
+msgid "file"
+msgstr "fichier"
+
+#: models/crem.py:378 models/crem.py:504 models/crem.py:644
+msgid "item"
+msgstr "item"
+
+#: models/crem.py:380
+msgid "start"
+msgstr "début"
+
+#: models/crem.py:381
+msgid "end"
+msgstr "fin"
+
+#: models/crem.py:391 models/crem.py:660
+msgid "value"
+msgstr "valeur"
+
+#: models/crem.py:461 models/crem.py:471 models/crem.py:535 models/crem.py:558
+#: models/crem.py:606 models/crem.py:700 models/crem.py:711
+msgid "name"
+msgstr "nom"
+
+#: models/crem.py:482 models/crem.py:495 models/crem.py:506
+msgid "instrument"
+msgstr ""
+
+#: models/crem.py:484
+msgid "parent instrument"
+msgstr "instrument parent"
+
+#: models/crem.py:493 models/crem.py:508 models/crem.py:615
+msgid "alias"
+msgstr "alias"
+
+#: models/crem.py:509
+msgid "instruments num"
+msgstr "nb instruments"
+
+#: models/crem.py:510
+msgid "interprets"
+msgstr "interprètes"
+
+#: models/crem.py:519
+msgid "username"
+msgstr "nom d'utilisateur"
+
+#: models/crem.py:520
+msgid "level"
+msgstr "niveau"
+
+#: models/crem.py:521
+msgid "first name"
+msgstr "prénom"
+
+#: models/crem.py:522
+msgid "last name"
+msgstr "nom de famille"
+
+#: models/crem.py:523
+msgid "phone"
+msgstr "téléphone"
+
+#: models/crem.py:524
+msgid "email"
+msgstr "e-mail"
+
+#: models/crem.py:547
+msgid "playlist"
+msgstr "liste de lecture"
+
+#: models/crem.py:548
+msgid "resource type"
+msgstr "type de ressource"
+
+#: models/crem.py:549
+msgid "resource"
+msgstr "ressource"
+
+#: models/crem.py:559
+msgid "type"
+msgstr ""
+
+#: models/crem.py:560
+msgid "complete type"
+msgstr "type complet"
+
+#: models/crem.py:562
+msgid "current name"
+msgstr "nom actuel"
+
+#: models/crem.py:563 models/crem.py:616
+msgid "authoritative"
+msgstr "officiel"
+
+#: models/crem.py:605
+msgid "identifier"
+msgstr "identifiant"
+
+#: models/crem.py:630
+msgid "parent location"
+msgstr "lieu parent"
+
+#: models/crem.py:645
+msgid "keyword"
+msgstr "mot-clé"
+
+#: models/crem.py:659
+msgid "publisher"
+msgstr "éditeur"
+
+#: models/crem.py:673
+msgid "element type"
+msgstr "type d'élément"
+
+#: models/crem.py:674
+msgid "element identifier"
+msgstr "identifiant de l'élément"
+
+#: models/crem.py:675
+msgid "modification type"
+msgstr "type de modification"
+
+#: models/crem.py:676
+msgid "time"
+msgstr "heure"
+
+#: models/crem.py:677
+msgid "user"
+msgstr "utilisateur"
+
+#: templates/telemeta_default/collection_detail.html:51
+msgid "Recording year"
+msgstr "Année d'enregistrement"
+
+#: templates/telemeta_default/collection_detail.html:61
+msgid "Geographic and cultural informations"
+msgstr "Indications géographiques et culturelles"
+
+#: templates/telemeta_default/collection_detail.html:74
+msgid "Legal mentions"
+msgstr "Mentions légales"
+
+#: templates/telemeta_default/collection_detail.html:94
+msgid "Archiving data"
+msgstr "Données d'archivage"
+
+#: templates/telemeta_default/collection_detail.html:115
+msgid "Technical data"
+msgstr "Données techniques"
+
+#: templates/telemeta_default/collection_detail.html:120
+msgid "Media type"
+msgstr "Type de media"
+
+#: templates/telemeta_default/collection_detail.html:120
+msgid "Audio"
+msgstr ""
+
+#: templates/telemeta_default/collection_detail.html:124
+msgid "Number of items"
+msgstr "Nombre d'items"
