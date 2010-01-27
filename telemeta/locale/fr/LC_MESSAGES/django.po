@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-27 16:46+0100\n"
+"POT-Creation-Date: 2010-01-27 22:46+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -438,6 +438,11 @@ msgstr ""
 msgid "Number of items"
 msgstr "Nombre d'items"
 
+#: templates/telemeta_default/geo_countries.html:6
+#: templates/telemeta_default/geo_country_collections.html:6
+msgid "World"
+msgstr "Monde"
+
 #: templates/telemeta_default/mediaitem_detail.html:136
 msgid "Collection title"
 msgstr "Titre collection"
@@ -457,4 +462,3 @@ msgstr "Informations sur la musique"
 #: templates/telemeta_default/mediaitem_detail.html:203
 msgid "General informations"
 msgstr "Informations générales"
-
