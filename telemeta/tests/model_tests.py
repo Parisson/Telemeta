@@ -275,8 +275,8 @@ class CollectionItemTestCase(unittest.TestCase):
         self.assertEquals(self.europe, self.item_2.location.continent())
 
     def testCollectionCountries(self):
-        "Test the MediaCollection.get_countries() method"
-        self.assertEquals(self.volonte.get_countries(), [self.belgique, self.france])
+        "Test the MediaCollection.countries() method"
+        self.assertEquals(self.volonte.countries(), [self.belgique, self.france])
 
         
 class RelatedDeleteTestCase(unittest.TestCase):

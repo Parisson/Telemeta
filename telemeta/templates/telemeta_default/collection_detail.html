@@ -74,7 +74,13 @@
                 <h4><a href="#">{% trans "Legal mentions" %}</a></h4>
                 <div>
                     <dl class="listing">
+                        {% if collection.collector_is_creator %}
+                          {% if collection.creator %}
+                          <dt>{% trans "Collector" %}</dt><dd>{{ collector.creator }}</dd>
+                          {% endif%}
+                        {% else %}
                         {% dl_field collection.collector %}
+                        {% endif %}
                         {% dl_field collection.publisher %}
                         {% dl_field collection.publisher_collection %}
                         {% dl_field collection.publisher_serial %}

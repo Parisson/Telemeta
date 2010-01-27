@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-27 14:13+0100\n"
+"POT-Creation-Date: 2010-01-27 14:25+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -397,22 +397,26 @@ msgstr "Indications géographiques et culturelles"
 msgid "Legal mentions"
 msgstr "Mentions légales"
 
-#: templates/telemeta_default/collection_detail.html:94
+#: templates/telemeta_default/collection_detail.html:79
+msgid "Collector"
+msgstr "Collecteur"
+
+#: templates/telemeta_default/collection_detail.html:100
 msgid "Archiving data"
 msgstr "Données d'archivage"
 
-#: templates/telemeta_default/collection_detail.html:115
+#: templates/telemeta_default/collection_detail.html:121
 msgid "Technical data"
 msgstr "Données techniques"
 
-#: templates/telemeta_default/collection_detail.html:120
+#: templates/telemeta_default/collection_detail.html:126
 msgid "Media type"
 msgstr "Type de media"
 
-#: templates/telemeta_default/collection_detail.html:120
+#: templates/telemeta_default/collection_detail.html:126
 msgid "Audio"
 msgstr ""
 
-#: templates/telemeta_default/collection_detail.html:124
+#: templates/telemeta_default/collection_detail.html:130
 msgid "Number of items"
 msgstr "Nombre d'items"
