@@ -58,6 +58,9 @@ class Duration(object):
     def __add__(self, other):
         return self.__decorate(self._delta.__add__, other)
 
+    def __nonzero__(self):
+        return self._delta.__nonzero__()
+
     def __str__(self):
         hours   = self._delta.days * 24 + self._delta.seconds / 3600
         minutes = (self._delta.seconds % 3600) / 60
