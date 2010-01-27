@@ -44,14 +44,14 @@
         <div class="infos">
         {% block general_info %}
             <dl class="listing">
-                {% dl_field collection.title %}
-                {% dl_field collection.alt_title %}
-                {% dl_field collection.creator %}
+                {% dl_field collection "title" %}
+                {% dl_field collection "alt_title" %}
+                {% dl_field collection "creator" %}
                 {% if collection.recorded_from_year %}
                 <dt>{% trans "Recording year" %}</dt>
                 <dd>{{ collection.recorded_from_year }} {{ collection.recorded_to_year|prepend:" - "  }}</dd>
                 {% endif %}
-                {% dl_field collection.year_published %}
+                {% dl_field collection "year_published" %}
             </dl>
         {% endblock general_info %}
         </div>
@@ -61,8 +61,8 @@
                 <h4><a href="#">{% trans "Geographic and cultural informations" %}</a></h4>
                 <div>
                     <dl class="listing">
-                    {% dl_field collection.countries join with ", " %}
-                    {% dl_field collection.ethnic_groups join with ", " %}
+                    {% dl_field collection "countries" join with ", " %}
+                    {% dl_field collection "ethnic_groups" join with ", " %}
                     </dl>
                 </div>
             </div>
@@ -76,19 +76,19 @@
                     <dl class="listing">
                         {% if collection.collector_is_creator %}
                           {% if collection.creator %}
-                          <dt>{% trans "Collector" %}</dt><dd>{{ collector.creator }}</dd>
+                          <dt>{% trans "Collector" %}</dt><dd>{{ collection.creator }}</dd>
                           {% endif%}
                         {% else %}
-                        {% dl_field collection.collector %}
+                        {% dl_field collection "collector" %}
                         {% endif %}
-                        {% dl_field collection.publisher %}
-                        {% dl_field collection.publisher_collection %}
-                        {% dl_field collection.publisher_serial %}
-                        {% dl_field collection.booklet_author %}
-                        {% dl_field collection.external_references %}
-                        {% dl_field collection.doctype_code %}
-                        {% dl_field collection.public_access %}
-                        {% dl_field collection.legal_rights %}
+                        {% dl_field collection "publisher" %}
+                        {% dl_field collection "publisher_collection" %}
+                        {% dl_field collection "publisher_serial" %}
+                        {% dl_field collection "booklet_author" %}
+                        {% dl_field collection "external_references" %}
+                        {% dl_field collection "doctype_code" %}
+                        {% dl_field collection "public_access" %}
+                        {% dl_field collection "legal_rights" %}
                     </dl>
                 </div>
             </div>
@@ -100,16 +100,16 @@
                 <h4><a href="#">{% trans "Archiving data" %}</a></h4>
                 <div>
                     <dl class="listing">
-                        {% dl_field collection.acquisition_mode %}
-                        {% dl_field collection.cnrs_contributor %}
-                        {% dl_field collection.metadata_writer %}
-                        {% dl_field collection.booklet_description %}
-                        {% dl_field collection.publishing_status %}
-                        {% dl_field collection.alt_ids %}
-                        {% dl_field collection.comment %}
-                        {% dl_field collection.metadata_writer %}
-                        {% dl_field collection.travail %}
-                        {% dl_field collection.items_done %}
+                        {% dl_field collection "acquisition_mode" %}
+                        {% dl_field collection "cnrs_contributor" %}
+                        {% dl_field collection "metadata_writer" %}
+                        {% dl_field collection "booklet_description" %}
+                        {% dl_field collection "publishing_status" %}
+                        {% dl_field collection "alt_ids" %}
+                        {% dl_field collection "comment" %}
+                        {% dl_field collection "metadata_writer" %}
+                        {% dl_field collection "travail" %}
+                        {% dl_field collection "items_done" %}
                     </dl>
                 </div>
             </div>
@@ -121,15 +121,15 @@
                 <h4><a href="#">{% trans "Technical data" %}</a></h4>
                 <div>
                     <dl class="listing">
-                        {% dl_field collection.code %}
-                        {% dl_field collection.old_code %}
+                        {% dl_field collection "code" %}
+                        {% dl_field collection "old_code" %}
                         <dt>{% trans "Media type" %}</dt><dd>{% trans "Audio" %}</dd>
-                        {% dl_field collection.approx_duration %}
-                        {% dl_field collection.computed_duration %}
-                        {% dl_field collection.physical_items_num %}
+                        {% dl_field collection "approx_duration" %}
+                        {% dl_field collection "computed_duration" %}
+                        {% dl_field collection "physical_items_num" %}
                         <dt>{% trans "Number of items" %}</dt><dd>{{ collection.items.count }}</dd>
-                        {% dl_field collection.physical_format %}
-                        {% dl_field collection.ad_conversion %}
+                        {% dl_field collection "physical_format" %}
+                        {% dl_field collection "ad_conversion" %}
                     </dl>
                 </div>
             </div>

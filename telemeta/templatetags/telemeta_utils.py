@@ -98,18 +98,21 @@ def to_dublincore(resource):
         return dc.express_collection(resource)
 
 class DescriptionListFieldNode(template.Node):
-    def __init__(self, variable, join_with = None):
-        cut   = variable.split('.')
-        self.model  = template.Variable('.'.join(cut[:-1]))
-        self.member = cut[-1]
+    def __init__(self, model, attr, join_with = None):
+        self.model  = model
+        self.member = attr
         self.join_with = join_with
 
     def render(self, context):
         try:
             model = self.model.resolve(context)
-            label = html.escape(capfirst(unicode(model.field_label(self.member))))
+            if isinstance(self.member, template.Variable):
+                member = self.member.resolve(context)
+            else:
+                member = self.member
+            label = html.escape(capfirst(unicode(model.field_label(member))))
             try:
-                value = getattr(model, self.member)
+                value = getattr(model, member)
             except AttributeError:
                 value = '<ERROR: no such field>'
         except template.VariableDoesNotExist:
@@ -134,10 +137,10 @@ def dl_field(parser, token):
     cut = token.split_contents()
     join_with = None
     try:
-        tag_name, variable = cut
+        tag_name, model, attr = cut
     except ValueError:
         try:
-            tag_name, variable, arg3, arg4, arg5  = cut
+            tag_name, model, attr, arg3, arg4, arg5  = cut
             if arg3 == 'join' and arg4 == 'with'and arg5[0] == arg5[-1] and arg5[0] in ('"', "'"):
                 join_with = arg5[1:-1]
             else:
@@ -146,7 +149,12 @@ def dl_field(parser, token):
             raise template.TemplateSyntaxError("%r tag: invalid arguments" 
                                                % token.contents.split()[0])
 
-    return DescriptionListFieldNode(variable, join_with=join_with)
+    if attr[0] == attr[-1] and attr[0] in ('"', "'"):
+        attr = attr[1:-1]
+    else:
+        attr = template.Variable(attr)
+    model = template.Variable(model)
+    return DescriptionListFieldNode(model, attr, join_with=join_with)
 
 @register.filter
 def prepend(str, prefix):
