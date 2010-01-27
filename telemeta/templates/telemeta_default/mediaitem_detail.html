@@ -1,5 +1,6 @@
 {% extends "telemeta/base.html" %}
 {% load telemeta_utils %}
+{% load i18n %}
 
 {% block stylesheets %}
 {{ block.super }}
@@ -127,15 +128,17 @@ load_player({{ item.get_duration }});
     <div class="infos">
     {% block general_info %}
         <dl class="listing">
-            {% if item.auteur %}<dt>Auteur</dt><dd>{{ item.auteur }}</dd>{% endif %}
-            {% if item.annee_enr %}<dt>Année d'enregistrement</dt><dd>{{ item.annee_enr }}</dd>{% endif %}
-            {% if item.dates_enregistr %}<dt>Date d'enregistrement</dt><dd>{{ item.dates_enregistr }}</dd>{% endif %}
-            {% if item.title %}<dt>Titre</dt><dd>{{ item.title }}</dd>{% endif %}
-            {% if item.transcrip_trad %}<dt>Traduction du titre</dt><dd>{{ item.transcrip_trad }}</dd>{% endif %}
-            <dt>Collection</dt><dd><a href="{% url telemeta-collection-detail item.collection.public_id %}">{{ item.collection.title }}</a></dd>
-            {% if item.duree %}<dt>Durée</dt><dd>{{ item.duree }}</dd>{% endif %}
-            {% if item.collection.ispublished and item.Ref %}
-            <dt>Ref</dt><dd>{{ item.Ref }}</dd>
+            {% dl_field item "collection" %}
+            {% dl_field item "title" %}
+            {% dl_field item "alt_title" %}
+            {% dl_field item "collector" %}
+            {% if item.collection.title %}
+                <dt>{% trans "Collection title" %}</dt>
+                <dd>{{ item.collection.title }}</dd>
+            {% endif %}
+            {% if item.recorded_from_date %}
+                <dt>{% trans "Recording date" %}</dt>
+                <dd>{{ item.recorded_from_date }} {{ item.recorded_to_date|prepend:" - "  }}</dd>
             {% endif %}
         </dl>
     {% endblock general_info %}
@@ -143,85 +146,96 @@ load_player({{ item.get_duration }});
     <div class="extraInfos">
     {% block geoethnic_data %}
         <div>
-            <h4><a href="#">Informations géographiques et ethnographiques</a></h4>
+            <h4><a href="#">{% trans "Geographic and cultural informations" %}</a></h4>
             <dl class="listing">
-            {% if item.continent %}<dt>Continent</dt><dd>{{ item.continent }}</dd>{% endif %}
-            {% if item.etat %}<dt>État / Nation</dt><dd>{{ item.etat }}</dd>{% endif %}
-            {% if item.region_village %}<dt>Région / Village</dt><dd>{{ item.region_village }}</dd>{% endif %}
-            {% if item.ethnie_grsocial %}<dt>Ethnie/ Groupe social</dt><dd>{{ item.ethnie_grsocial }}</dd>{% endif %}
-            {% if item.aire_geo_cult %}<dt>Aire culturelle</dt><dd>{{ item.aire_geo_cult }}</dd>{% endif %}
-            {% if item.fonction_usage or item.comm_fonctusage %}
-            <dt class="group">Contexte ethnographique</dt>
-            {% if item.fonction_usage %}<dt class="sub">Mots clés</dt><dd>{{ item.fonction_usage }}</dd>{% endif %}
-            {% if item.comm_fonctusage %}<dt class="sub">Commentaires</dt><dd>{{ item.comm_fonctusage }}</dd>{% endif %}
-            {% endif %}
+                {% if item.location %}
+                    <dt>{% trans "Location" %}</dt>
+                    <dd>{{ item.location.fullname }}</dd>
+                {% endif %}
+                {% dl_field item "location_comment" %}
+                {% dl_field item "cultural_area" %}
+                {% dl_field item "ethnic_group" %}
+                {% dl_field item "context_comment" %}
+                {% dl_field item "keywords" join with ", " %}
             </dl>
         </div>
     {% endblock geoethnic_data %}
     </div>
     <div class="extraInfos">
-    {% block musical_performances %}
+    {% block musical_data %}
         <div>
-            <h4><a href="#">Formation musicale</a></h4>
+            <h4><a href="#">{% trans "Musical informations" %}</a></h4>
             <dl class="listing">
-            {% if item.form_genr_style %}<dt>Forme / genre vernaculaire</dt><dd>{{ item.form_genr_style }}</dd>{% endif %}
-            {% if item.formstyl_generi %}<dt>Forme / genre générique</dt><dd>{{ item.formstyl_generi }}</dd>{% endif %}
+                {% dl_field item "vernacular_style" %}
+                {% dl_field item "generic_style" %}
+                {% dl_field item "author" %}
             </dl>
+            {% if item.performances %}
             <div class="instruments">
                 <table class="instruments">
                 <thead>
                     <tr>
-                        <td>Nombre</td>
-                        <td>Nom générique</td>
-                        <td>Nom vernaculaire</td>
-                        <td>Interprète </td>
+                        <td>{% field_label "MediaItemPerformance" "instruments_num" %}</td>
+                        <td>{% field_label "MediaItemPerformance" "instrument" %}</td>
+                        <td>{% field_label "MediaItemPerformance" "alias" %}</td>
+                        <td>{% field_label "MediaItemPerformance" "musicians" %}</td>
                     </tr>
                 </thead>
                 <tbody>
+                    {% for performance in item.performances.all %}
                     <tr>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
+                        <td>{{ performance.instruments_num }}</td>
+                        <td>{{ performance.instrument|default:"" }}</td>
+                        <td>{{ performance.alias|default:"" }}</td>
+                        <td>{{ performance.musicians }}</td>
                     </tr>
+                    {% endfor %}
                 </tbody>
                 </table>
             </div>
+            {% endif %}
         </div>
-    {% endblock musical_performances %}
+    {% endblock musical_data %}
     </div>
     <div class="extraInfos">
-    {% block document_identification %}
+    {% block general_data %}
         <div>
-            <h4><a href="#">Identification du document</a></h4>
+            <h4><a href="#">{% trans "General informations" %}</a></h4>
             <dl class="listing">
-            {% if item.format %}<dt>Format</dt><dd>{{ item.format }}</dd>{% endif %}
-            {% if item.id %}<dt>Cote item</dt><dd>{{ item.id }}</dd>{% endif %}
-            {% if item.face_plage %}<dt>N° de l'item</dt><dd>{{ item.face_plage }}</dd>{% endif %}
+                {% dl_field item "comment" %}
+                {% dl_field item "collector_selection" %}
             </dl>
         </div>
-    {% endblock document_identification %}
+    {% endblock general_data %}
     </div>
     <div class="extraInfos">
-    {% block document_data %}
+    {% block archive_data %}
         <div>
-            <h4><a href="#">Informations documentaires</a></h4>
+            <h4><a href="#">{% trans "Archiving data" %}</a></h4>
             <dl class="listing">
-            {% if item.choixcollecteur %}<dt>choixcollecteur</dt><dd>{{ item.choixcollecteur }}</dd>{% endif %}
-            {% if item.copie_de %}<dt>Copie de</dt><dd>{{ item.copie_de }}</dd>{% endif %}
-            {% if item.enregistre_par %}<dt>Enregistré par</dt><dd>{{ item.enregistre_par }}</dd>{% endif %}
-            {% if item.file %}<dt>File</dt><dd>{{ item.file }}</dd>{% endif %}
-            {% if item.get_duration %}<dt>get duration</dt><dd>{{ item.get_duration }}</dd>{% endif %}
-            {% if item.moda_execut %}<dt>moda execut</dt><dd>{{ item.moda_execut }}</dd>{% endif %}
-            {% if item.nroband_nropiec %}<dt>nroband nropiec</dt><dd>{{ item.nroband_nropiec }}</dd>{% endif %}
-            {% if item.remarques %}<dt>Remarques</dt><dd>{{ item.remarques }}</dd>{% endif %}
-            {% if item.repere_bande %}<dt>Repère bande</dt><dd>{{ item.repere_bande }}</dd>{% endif %}
-            {% if item.struct_modale %}<dt>Struct modale</dt><dd>{{ item.struct_modale }}</dd>{% endif %}
-            {% if item.struct_rythm %}<dt>Struct rythm</dt><dd>{{ item.struct_rythm }}</dd>{% endif %}
-            {% if item.titre_support %}<dt>Titre support</dt><dd>{{ item.titre_support }}</dd>{% endif %}
+                {% dl_field item "code" %}
+                {% dl_field item "old_code" %}
+                {% dl_field item "track" %}
+                {% dl_field item "creator_reference" %}
+                {% dl_field item "external_references" %}
+                {% dl_field item "public_access" %}
             </dl>
         </div>
-    {% endblock document_data %}
+    {% endblock archive_data %}
+    </div>
+    <div class="extraInfos">
+    {% block technical_data %}
+        <div>
+            <h4><a href="#">{% trans "Technical data" %}</a></h4>
+            <div>
+                <dl class="listing">
+                    <dt>{% trans "Media type" %}</dt><dd>{% trans "Audio" %}</dd>
+                    {% dl_field item "approx_duration" %}
+                    {% dl_field item "computed_duration" %}
+                </dl>
+            </div>
+        </div>
+    {% endblock technical_data %}
     </div>
 
 </div> <!-- with-rightcol -->

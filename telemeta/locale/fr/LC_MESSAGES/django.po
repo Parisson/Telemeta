@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-27 14:25+0100\n"
+"POT-Creation-Date: 2010-01-27 16:46+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,15 +16,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: models/core.py:127
+#: models/core.py:130
 msgid "Duration"
 msgstr ""
 
-#: models/core.py:132
+#: models/core.py:135
 msgid "Enter a valid duration in HH:MM[:ss[.uuuuuu]] format."
 msgstr ""
 
-#: models/crem.py:150
+#: models/crem.py:150 models/crem.py:313
 msgid "reference"
 msgstr "référence"
 
@@ -68,7 +68,7 @@ msgstr "auteur de la notice éditée"
 msgid "related documentation"
 msgstr "documentation associée"
 
-#: models/crem.py:163 models/crem.py:308
+#: models/crem.py:163
 msgid "collector"
 msgstr "collecteur"
 
@@ -236,6 +236,10 @@ msgstr ""
 msgid "copy of"
 msgstr "copie de"
 
+#: models/crem.py:308
+msgid "recorded by"
+msgstr "enregistré par"
+
 #: models/crem.py:309
 msgid "cultural area"
 msgstr "aire culturelle"
@@ -248,13 +252,13 @@ msgstr "nom générique"
 msgid "collector selection"
 msgstr "sélection collecteur"
 
-#: models/crem.py:313
-msgid "depositor reference"
-msgstr "référence du déposant"
-
 #: models/crem.py:315
 msgid "file"
 msgstr "fichier"
+
+#: models/crem.py:322
+msgid "keywords"
+msgstr "mots-clés"
 
 #: models/crem.py:378 models/crem.py:504 models/crem.py:644
 msgid "item"
@@ -277,7 +281,7 @@ msgstr "valeur"
 msgid "name"
 msgstr "nom"
 
-#: models/crem.py:482 models/crem.py:495 models/crem.py:506
+#: models/crem.py:482 models/crem.py:495
 msgid "instrument"
 msgstr ""
 
@@ -285,13 +289,21 @@ msgstr ""
 msgid "parent instrument"
 msgstr "instrument parent"
 
-#: models/crem.py:493 models/crem.py:508 models/crem.py:615
+#: models/crem.py:493 models/crem.py:615
 msgid "alias"
 msgstr "alias"
 
+#: models/crem.py:506
+msgid "scientific instrument"
+msgstr "instrument scientifique"
+
+#: models/crem.py:508
+msgid "vernacular instrument"
+msgstr "instrument vernaculaire"
+
 #: models/crem.py:509
-msgid "instruments num"
-msgstr "nb instruments"
+msgid "number"
+msgstr "nombre"
 
 #: models/crem.py:510
 msgid "interprets"
@@ -390,6 +402,7 @@ msgid "Recording year"
 msgstr "Année d'enregistrement"
 
 #: templates/telemeta_default/collection_detail.html:61
+#: templates/telemeta_default/mediaitem_detail.html:149
 msgid "Geographic and cultural informations"
 msgstr "Indications géographiques et culturelles"
 
@@ -402,21 +415,46 @@ msgid "Collector"
 msgstr "Collecteur"
 
 #: templates/telemeta_default/collection_detail.html:100
+#: templates/telemeta_default/mediaitem_detail.html:214
 msgid "Archiving data"
 msgstr "Données d'archivage"
 
 #: templates/telemeta_default/collection_detail.html:121
+#: templates/telemeta_default/mediaitem_detail.html:229
 msgid "Technical data"
 msgstr "Données techniques"
 
 #: templates/telemeta_default/collection_detail.html:126
+#: templates/telemeta_default/mediaitem_detail.html:232
 msgid "Media type"
 msgstr "Type de media"
 
 #: templates/telemeta_default/collection_detail.html:126
+#: templates/telemeta_default/mediaitem_detail.html:232
 msgid "Audio"
 msgstr ""
 
 #: templates/telemeta_default/collection_detail.html:130
 msgid "Number of items"
 msgstr "Nombre d'items"
+
+#: templates/telemeta_default/mediaitem_detail.html:136
+msgid "Collection title"
+msgstr "Titre collection"
+
+#: templates/telemeta_default/mediaitem_detail.html:140
+msgid "Recording date"
+msgstr "Date d'enregistrement"
+
+#: templates/telemeta_default/mediaitem_detail.html:152
+msgid "Location"
+msgstr "Lieu"
+
+#: templates/telemeta_default/mediaitem_detail.html:167
+msgid "Musical informations"
+msgstr "Informations sur la musique"
+
+#: templates/telemeta_default/mediaitem_detail.html:203
+msgid "General informations"
+msgstr "Informations générales"
+

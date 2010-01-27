@@ -205,7 +205,7 @@ def express_item(item):
         creator,
         Element('contributor',      item.collection.metadata_author),
         Element.multiple('subject', settings.TELEMETA_SUBJECTS),
-        Element.multiple('subject', item.keywords),
+        Element.multiple('subject', item.keywords()),
         Element('description',      item.context_comment, 'abstract'),
         Element('publisher',        item.collection.publisher),
         Element('publisher',        settings.TELEMETA_ORGANIZATION),

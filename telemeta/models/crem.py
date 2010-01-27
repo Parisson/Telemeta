@@ -305,21 +305,21 @@ class MediaItem(MediaResource):
     external_references   = TextField(_('published reference'))
     moda_execut           = CharField(_('moda_execut'))
     copied_from_item      = WeakForeignKey('self', related_name="copies", verbose_name=_('copy of'))
-    collector             = CharField(_('collector'))
+    collector             = CharField(_('recorded by'))
     cultural_area         = CharField(_('cultural area'))
     generic_style         = WeakForeignKey('GenericStyle', related_name="items", 
                                            verbose_name=_('generic name'))
     collector_selection   = CharField(_('collector selection'))
-    creator_reference     = CharField(_('depositor reference'))
+    creator_reference     = CharField(_('reference'))
     comment               = TextField(_('comment'))
     file                  = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename")
     public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES, max_length=16, default="metadata")
 
     objects               = query.MediaItemManager()
 
-    @property
     def keywords(self):
-        return ContextKeyword.objects.filter(mediaitemkeyword__item = self)
+        return ContextKeyword.objects.filter(item_relations__item = self)
+    keywords.verbose_name = _('keywords')
 
     @property
     def public_id(self):
@@ -503,10 +503,10 @@ class MediaItemPerformance(ModelCore):
     media_item      = ForeignKey('MediaItem', related_name="performances", 
                                  verbose_name=_('item'))
     instrument      = WeakForeignKey('Instrument', related_name="performances", 
-                                     verbose_name=_('instrument'))
+                                     verbose_name=_('scientific instrument'))
     alias           = WeakForeignKey('InstrumentAlias', related_name="performances", 
-                                     verbose_name=_('alias'))
-    instruments_num = CharField(_('instruments num'))
+                                     verbose_name=_('vernacular instrument'))
+    instruments_num = CharField(_('number'))
     musicians       = CharField(_('interprets'))
 
     class Meta(MetaCore):
@@ -641,8 +641,8 @@ class ContextKeyword(Enumeration):
 
 class MediaItemKeyword(ModelCore):
     "Item keyword"
-    item    = ForeignKey('MediaItem', verbose_name=_('item'))
-    keyword = ForeignKey('ContextKeyword', verbose_name=_('keyword'))
+    item    = ForeignKey('MediaItem', verbose_name=_('item'), related_name="keyword_relations")
+    keyword = ForeignKey('ContextKeyword', verbose_name=_('keyword'), related_name="item_relations")
 
     class Meta(MetaCore):
         db_table = 'media_item_keywords'

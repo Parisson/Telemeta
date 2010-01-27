@@ -1,6 +1,6 @@
 from django import template
 from django.utils.http import urlquote
-from telemeta.models import MediaItem, MediaCollection
+from telemeta import models
 from django.core.urlresolvers import reverse
 import telemeta.models.dublincore as dc
 from django.utils import html
@@ -84,15 +84,15 @@ def code_or_id(resource):
      
 @register.filter
 def is_item(resource):
-    return isinstance(resource, MediaItem)
+    return isinstance(resource, models.MediaItem)
 
 @register.filter
 def is_collection(resource):
-    return isinstance(resource, MediaCollection)
+    return isinstance(resource, models.MediaCollection)
 
 @register.filter
 def to_dublincore(resource):
-    if isinstance(resource, MediaItem):
+    if isinstance(resource, models.MediaItem):
         return dc.express_item(resource)
     else:
         return dc.express_collection(resource)
@@ -161,3 +161,11 @@ def prepend(str, prefix):
     if str:
         return prefix + unicode(str)
     return ''
+
+@register.simple_tag
+def field_label(model, field):
+    if isinstance(model, basestring):
+        model = getattr(models, model)
+            
+    return capfirst(unicode(model.field_label(field)))
+    
