@@ -219,13 +219,11 @@ class MediaCollection(MediaResource):
     def countries(self):
         "Return the countries of the items"
         countries = []
-        items = self.items.all()
-        for item in items:
-            if item.location:
-                country = item.location.country()
-                if country and not country in countries:
+        for item in self.items.filter(location__isnull=False):
+            for country in item.location.countries():
+                if not country in countries:
                     countries.append(country)
-
+            
         countries.sort(self.__name_cmp)                
 
         return countries
@@ -291,8 +289,7 @@ class MediaItem(MediaResource):
     approx_duration       = DurationField(_('approximative duration'))
     recorded_from_date    = DateField(_('recording date (from)'))
     recorded_to_date      = DateField(_('recording date (until)'))
-    location              = WeakForeignKey('Location', related_name="items", 
-                                           db_column='location_name', verbose_name=_('location'))
+    location              = WeakForeignKey('Location', verbose_name=_('location'))
     location_comment      = CharField(_('location comment'))
     ethnic_group          = WeakForeignKey('EthnicGroup', related_name="items", 
                                            verbose_name=_('population / social group'))
@@ -552,35 +549,37 @@ class PlaylistResource(ModelCore):
         db_table = 'playlist_resources'
 
 class Location(ModelCore):
-    "Item location"
-    TYPE_CHOICES     = (('country', 'country'), ('continent', 'continent'), ('other', 'other'))
+    "Locations"
+    OTHER_TYPE  = 0
+    CONTINENT   = 1
+    COUNTRY     = 2
+    TYPE_CHOICES     = ((COUNTRY, _('country')), (CONTINENT, _('continent')), (OTHER_TYPE, _('other')))
 
-    name             = CharField(_('name'), primary_key=True, max_length=150, required=True)
-    type             = CharField(_('type'), choices=TYPE_CHOICES, max_length=16, required=True)
-    complete_type    = ForeignKey('LocationType', related_name="types", verbose_name=_('complete type'))
-    current_name     = WeakForeignKey('self', related_name="past_names", db_column="current_name", 
-                                      verbose_name=_('current name')) 
+    name             = CharField(_('name'), unique=True, max_length=150, required=True)
+    type             = IntegerField(_('type'), choices=TYPE_CHOICES, required=True, db_index=True)
+    complete_type    = ForeignKey('LocationType', related_name="locations", verbose_name=_('complete type'))
+    current_location = WeakForeignKey('self', related_name="past_names", 
+                                      verbose_name=_('current location')) 
     is_authoritative = BooleanField(_('authoritative'))
 
-    def parent(self):
-        relations = self.parent_relations.all()
-        if relations:
-            return relations[0].parent_location
+    objects = query.LocationManager()
 
-        return None
+    def items(self):
+        return MediaItem.objects.by_location(self)
 
-    def _by_type(self, typename):
-        location = self
-        while location and location.type != typename:
-            location = location.parent()
+    def collections(self):
+        return MediaCollection.objects.by_location(self)
 
-        return location
+    def ancestors(self):
+        return Location.objects.filter(descendant_relations__location=self)
 
-    def country(self):
-        return self._by_type('country')
+    def descendants(self):
+        return Location.objects.filter(ancestor_relations__ancestor_location=self)
 
-    def continent(self):
-        return self._by_type('continent')
+    def countries(self):
+        if self.type == self.COUNTRY:
+            return Location.objects.filter(pk=self.id)
+        return self.ancestors().filter(type=self.COUNTRY)
 
     class Meta(MetaCore):
         db_table = 'locations'
@@ -588,7 +587,18 @@ class Location(ModelCore):
     def __unicode__(self):
         return self.name
 
-    def sequence(self):
+    def flatname(self):
+        if self.type != self.COUNTRY and self.type != self.CONTINENT:
+            raise Exceptions("Flat names are only supported for countries and continents")
+
+        map = Location.objects.flatname_map()
+        for flatname in map:
+            if self.id == map[flatname]:
+                return flatname
+
+        return None                    
+
+    def sequences(self):
         sequence = []
         location = self
         while location:
@@ -596,22 +606,21 @@ class Location(ModelCore):
             location = location.parent()
         return sequence
 
-    def fullname(self):
+    def fullnames(self):
         
         return u', '.join([unicode(l) for l in self.sequence()])
 
 class LocationType(ModelCore):
-    "Location type of an item location"
-    id   = CharField(_('identifier'), max_length=64, primary_key=True, required=True)
+    "Location types"
+    code = CharField(_('identifier'), max_length=64, unique=True, required=True)
     name = CharField(_('name'), max_length=150, required=True)
 
     class Meta(MetaCore):
         db_table = 'location_types'
 
 class LocationAlias(ModelCore):
-    "Location other name"
-    location         = ForeignKey('Location', related_name="aliases", db_column="location_name", 
-                                  max_length=150, verbose_name=_('location'))
+    "Location aliases"
+    location         = ForeignKey('Location', related_name="aliases", verbose_name=_('location'))
     alias            = CharField(_('alias'), max_length=150, required=True)
     is_authoritative = BooleanField(_('authoritative'))
 
@@ -623,15 +632,14 @@ class LocationAlias(ModelCore):
         unique_together = (('location', 'alias'),)
     
 class LocationRelation(ModelCore):
-    "Location family"
-    location             = ForeignKey('Location', related_name="parent_relations", 
-                                      db_column="location_name", max_length=150, verbose_name=_('location'))
-    parent_location      = ForeignKey('Location', related_name="child_relations", db_column="parent_location_name", 
-                                      null=True, max_length=150, verbose_name=_('parent location'))
-    is_authoritative     = BooleanField()
+    "Location relations"
+    location             = ForeignKey('Location', related_name="ancestor_relations", verbose_name=_('location'))
+    ancestor_location      = ForeignKey('Location', related_name="descendant_relations",  verbose_name=_('ancestor location'))
+    is_direct            = BooleanField(db_index=True)
 
     class Meta(MetaCore):
         db_table = 'location_relations'
+        unique_together = ('location', 'ancestor_location')
     
 class ContextKeyword(Enumeration):
     "Keyword"

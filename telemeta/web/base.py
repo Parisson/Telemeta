@@ -45,8 +45,7 @@ from django.views.generic import list_detail
 from django.conf import settings
 
 import telemeta
-from telemeta.models import MediaItem
-from telemeta.models import MediaCollection
+from telemeta.models import MediaItem, Location, MediaCollection
 from telemeta.core import Component, ExtensionPoint
 from telemeta.export import *
 from telemeta.visualization import *
@@ -337,27 +336,8 @@ class WebView(Component):
         context = Context({'item': item, 'host': request.META['HTTP_HOST']})
         return HttpResponse(template.render(context), mimetype=mimetype)
 
-    def make_continents_flatnames(self, continents):
-        map = {}
-        for c in continents:
-            flat = unaccent(c['name']).lower()
-            flat = re.sub('[^a-z]', '_', flat)
-            while map.has_key(flat):
-                flat = '_' + flat
-            c['flatname'] = flat
-            map[flat] = c['name']
-            for d in c['countries']:
-                flat = unaccent(d['name']).lower()
-                flat = re.sub('[^a-z]', '_', flat)
-                while map.has_key(flat):
-                    flat = '_' + flat
-                d['flatname'] = flat
-                map[flat] = d['name']
-        return map
-
     def list_continents(self, request):
         continents = MediaCollection.objects.stat_continents()
-        self.make_continents_flatnames(continents)
         return render_to_response('telemeta/geo_continents.html', 
                     {'continents': continents })
 
@@ -367,23 +347,18 @@ class WebView(Component):
                     {'countries': countries})
 
     def list_countries(self, request, continent):                    
-        continents = MediaCollection.objects.stat_continents()
-        self.make_continents_flatnames(continents)
-        for c in continents:
-            if c["flatname"] == continent:
-                break
-        if c["flatname"] != continent:
-            raise Http404
+        continent = Location.objects.by_flatname(continent)[0]
+        data = MediaCollection.objects.stat_continents(only_continent=continent)
 
-        return render_to_response('telemeta/geo_countries.html', {'continent': c })
+        return render_to_response('telemeta/geo_countries.html', {'continent': data[0] })
 
     def list_country_collections(self, request, continent, country):
-        continents = MediaCollection.objects.stat_continents()
-        map = self.make_continents_flatnames(continents)
-        objects = MediaCollection.objects.by_country(map[country])
+        continent = Location.objects.by_flatname(continent)[0]
+        country = Location.objects.by_flatname(country)[0]
+        objects = MediaCollection.objects.by_location(country)
         return list_detail.object_list(request, objects, 
             template_name='telemeta/geo_country_collections.html', paginate_by=20,
-            extra_context={'country': map[country], 'continent_flatname': continent, 'continent': map[continent]})
+            extra_context={'country': country, 'continent': continent})
 
     def handle_oai_request(self, request):
         url         = 'http://' + request.META['HTTP_HOST'] + request.path

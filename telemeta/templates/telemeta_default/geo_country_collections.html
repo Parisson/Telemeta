@@ -4,7 +4,7 @@
 
 {% block content %}
 <h3><a href="{% url telemeta-geo-continents %}">{% trans "World" %}</a> /
-  <a href="{% url telemeta-geo-countries continent_flatname %}">{{ continent }}</a> 
+  <a href="{% url telemeta-geo-countries continent.flatname %}">{{ continent }}</a> 
   / {{ country }}</h3>
 
 {% with object_list as collections %}

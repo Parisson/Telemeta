@@ -40,6 +40,7 @@ import re
 from django.core.exceptions import ObjectDoesNotExist
 from django import db
 import _mysql_exceptions
+from telemeta.util.unaccent import unaccent_icmp, unaccent
 
 class CoreQuerySet(EnhancedQuerySet):
     "Base class for all query sets"
@@ -103,13 +104,9 @@ class MediaCollectionQuerySet(CoreQuerySet):
             self.word_search_q('creator', pattern)   
         )
 
-    def by_country(self, country):
+    def by_location(self, location):
         "Find collections by country"
-        db.connection.cursor() # Need this to establish connection
-        country = db.connection.connection.literal(country)
-        return self.extra(where=["media_items.collection_id = media_collections.id",
-                                 "telemeta_location_ascendant(media_items.location_name, 'country') = %s" % country],
-                          tables=['media_items']).distinct()
+        return self.filter(Q(items__location=location) | Q(items__location__in=location.descendants())).distinct()
     
     def by_continent(self, continent):
         "Find collections by continent"
@@ -148,9 +145,9 @@ class MediaCollectionManager(CoreManager):
         return self.get_query_set().quick_search(*args, **kwargs)
     quick_search.__doc__ = MediaCollectionQuerySet.quick_search.__doc__
 
-    def by_country(self, *args, **kwargs):
-        return self.get_query_set().by_country(*args, **kwargs)
-    by_country.__doc__ = MediaCollectionQuerySet.by_country.__doc__
+    def by_location(self, *args, **kwargs):
+        return self.get_query_set().by_location(*args, **kwargs)
+    by_location.__doc__ = MediaCollectionQuerySet.by_location.__doc__
 
     def by_continent(self, *args, **kwargs):
         return self.get_query_set().by_continent(*args, **kwargs)
@@ -172,63 +169,42 @@ class MediaCollectionManager(CoreManager):
         return self.get_query_set().by_change_time(*args, **kwargs)
     by_change_time.__doc__ = MediaCollectionQuerySet.by_change_time.__doc__
 
-    def stat_continents(self, order_by='nitems'):      
+    @staticmethod
+    def __name_cmp(obj1, obj2):
+        return unaccent_icmp(obj1.name, obj2.name)
+
+    def stat_continents(self, only_continent=None):      
         "Return the number of collections by continents and countries as a tree"
-        from django.db import connection
-        cursor = connection.cursor()
-        if order_by == 'nitems':
-            order_by = 'items_num DESC'
-        elif order_by != 'country':
-            raise Exception("stat_continents() can only order by nitems or country")
+        from telemeta.models import MediaItem, Location
 
-        try:
-            cursor.execute("""
-                SELECT telemeta_location_ascendant(location_name, 'continent') as continent, 
-                       telemeta_location_ascendant(location_name, 'country') as country, 
-                       count(*) AS items_num 
-                FROM media_collections INNER JOIN media_items 
-                ON media_collections.id = media_items.collection_id 
-                GROUP BY country ORDER BY continent, """ + order_by)
-        except _mysql_exceptions.Warning:
-            pass
-        result_set = cursor.fetchall()
+        countries = []
+        for lid in MediaItem.objects.filter(location__isnull=False).values_list('location', flat=True).distinct():
+            location = Location.objects.get(pk=lid)
+            if not only_continent or (only_continent in location.ancestors().filter(type=Location.CONTINENT)):
+                for l in location.countries():
+                    if not l in countries:
+                        countries.append(l)
+                
         stat = {}
-        for continent, country, count in result_set:
-            if continent and country:
-                if stat.has_key(continent):
-                    stat[continent].append({'name':country, 'count':count})
-                else:
-                    stat[continent] = [{'name':country, 'count':count}]
 
-        keys = stat.keys()
-        keys.sort()
-        ordered = [{'name': k, 'countries': stat[k]} for k in keys]
+        for country in countries:
+            count = country.collections().count()
+            for continent in country.ancestors().filter(type=Location.CONTINENT):
+                if not stat.has_key(continent):
+                    stat[continent] = {}
+
+                stat[continent][country] = count
+                
+        keys1 = stat.keys()
+        keys1.sort(self.__name_cmp)
+        ordered = []
+        for c in keys1:
+            keys2 = stat[c].keys()
+            keys2.sort(self.__name_cmp)
+            sub = [{'location': d, 'count': stat[c][d]} for d in keys2]
+            ordered.append({'location': c, 'countries': sub})
+        
         return ordered
-
-    def list_countries(self):
-        "Return a 2D list of all countries with continents"
-
-        from django.db import connection
-        cursor = connection.cursor()
-
-        cursor.execute("SELECT continent, etat FROM media_items "
-            "GROUP BY continent, etat ORDER BY REPLACE(etat, '\"', '')");
-        return cursor.fetchall()
-
-    def list_continents(self):
-        "Return a list of all continents"
-        
-        from django.db import connection
-        cursor = connection.cursor()
-
-        cursor.execute("SELECT DISTINCT(name) FROM locations WHERE type = 'continent' ORDER BY name")
-        result_set = cursor.fetchall()
-        result = []
-        for a, in result_set:
-            if a != '' and a != 'N': # CREM fix
-                result.append(a)
-        
-        return result
 
 
 class MediaItemQuerySet(CoreQuerySet):
@@ -269,6 +245,12 @@ class MediaItemQuerySet(CoreQuerySet):
     def by_change_time(self, from_time = None, until_time = None):
         "Find items by last change time"  
         return self._by_change_time('item', from_time, until_time)
+
+    def by_location(self, location):
+        "Find items by location"
+        from telemeta.models import LocationRelation
+        descendants = LocationRelation.objects.filter(ancestor_location=location)
+        return self.filter(Q(location=location) | Q(location__in=descendants))
             
 class MediaItemManager(CoreManager):
     "Manage media items queries"
@@ -301,3 +283,42 @@ class MediaItemManager(CoreManager):
         return self.get_query_set().by_change_time(*args, **kwargs)
     by_change_time.__doc__ = MediaItemQuerySet.by_change_time.__doc__    
 
+    def by_location(self, *args, **kwargs):
+        return self.get_query_set().by_location(*args, **kwargs)
+    by_location.__doc__ = MediaItemQuerySet.by_location.__doc__    
+
+class LocationQuerySet(CoreQuerySet):
+    def by_flatname(self, flatname):
+        map = LocationManager.flatname_map()
+        return self.filter(pk=map[flatname])
+
+class LocationManager(CoreManager):
+    __flatname_map = None
+
+    def get_query_set(self):
+        "Return location query set"
+        return LocationQuerySet(self.model)
+
+    @classmethod
+    def flatname_map(cls):
+        if cls.__flatname_map:
+            return cls.__flatname_map
+
+        from telemeta.models import Location
+        map = {}
+        locations = Location.objects.filter(Q(type=Location.COUNTRY) | Q(type=Location.CONTINENT))
+        for l in locations:
+            flatname = unaccent(l.name).lower()
+            flatname = re.sub('[^a-z]', '_', flatname)
+            while map.has_key(flatname):
+                flatname = '_' + flatname
+            map[flatname] = l.id
+
+        cls.__flatname_map = map
+        return map
+            
+    def by_flatname(self, *args, **kwargs):
+        return self.get_query_set().by_flatname(*args, **kwargs)
+    by_flatname.__doc__ = LocationQuerySet.by_flatname.__doc__    
+
+    
