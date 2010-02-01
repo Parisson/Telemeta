@@ -556,7 +556,7 @@ class Location(ModelCore):
     TYPE_CHOICES     = ((COUNTRY, _('country')), (CONTINENT, _('continent')), (OTHER_TYPE, _('other')))
 
     name             = CharField(_('name'), unique=True, max_length=150, required=True)
-    type             = IntegerField(_('type'), choices=TYPE_CHOICES, required=True, db_index=True)
+    type             = IntegerField(_('type'), choices=TYPE_CHOICES, default=OTHER_TYPE, db_index=True)
     complete_type    = ForeignKey('LocationType', related_name="locations", verbose_name=_('complete type'))
     current_location = WeakForeignKey('self', related_name="past_names", 
                                       verbose_name=_('current location')) 
@@ -576,10 +576,27 @@ class Location(ModelCore):
     def descendants(self):
         return Location.objects.filter(ancestor_relations__ancestor_location=self)
 
+    def add_child(self, other):
+        LocationRelation.objects.create(location=other, ancestor_location=self, is_direct=True)
+        for location in self.ancestors():
+            #FIXME: might raise Duplicate Entry
+            LocationRelation.objects.create(location=other, ancestor_location=location)
+            
+    def add_parent(self, other):
+        LocationRelation.objects.create(location=self, ancestor_location=other, is_direct=True)
+        for location in self.descendants():
+            #FIXME: might raise Duplicate Entry
+            LocationRelation.objects.create(location=location, ancestor_location=other)
+
     def countries(self):
         if self.type == self.COUNTRY:
             return Location.objects.filter(pk=self.id)
         return self.ancestors().filter(type=self.COUNTRY)
+
+    def continents(self):
+        if self.type == self.CONTINENT:
+            return Location.objects.filter(pk=self.id)
+        return self.ancestors().filter(type=self.CONTINENT)
 
     class Meta(MetaCore):
         db_table = 'locations'

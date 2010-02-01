@@ -180,7 +180,7 @@ class MediaCollectionManager(CoreManager):
         countries = []
         for lid in MediaItem.objects.filter(location__isnull=False).values_list('location', flat=True).distinct():
             location = Location.objects.get(pk=lid)
-            if not only_continent or (only_continent in location.ancestors().filter(type=Location.CONTINENT)):
+            if not only_continent or (only_continent in location.continents()):
                 for l in location.countries():
                     if not l in countries:
                         countries.append(l)
@@ -189,7 +189,7 @@ class MediaCollectionManager(CoreManager):
 
         for country in countries:
             count = country.collections().count()
-            for continent in country.ancestors().filter(type=Location.CONTINENT):
+            for continent in country.continents():
                 if not stat.has_key(continent):
                     stat[continent] = {}
 

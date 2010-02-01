@@ -45,17 +45,18 @@ class CollectionItemTestCase(unittest.TestCase):
         self.david   = User.objects.create(username="david", level="user")
         self.olivier = User.objects.create(username="olivier", level="admin")    
 
-        self.country = LocationType.objects.create(id="country", name="Country")
-        self.continent = LocationType.objects.create(id="continent", name="Continent")
-        self.city = LocationType.objects.create(id="city", name="City")
+        self.country = LocationType.objects.create(code="country", name="Country")
+        self.continent = LocationType.objects.create(code="continent", name="Continent")
+        self.city = LocationType.objects.create(code="city", name="City")
 
-        self.paris = Location.objects.create(name="Paris", type="other", complete_type=self.city)
-        self.france = Location.objects.create(name="France", type="country", complete_type=self.country)
-        self.europe = Location.objects.create(name="Europe", type="continent", complete_type=self.continent)
-        self.belgique = Location.objects.create(name="Belgique", type="country", complete_type=self.country)
+        self.paris = Location.objects.create(name="Paris", type=Location.OTHER_TYPE, complete_type=self.city)
+        self.france = Location.objects.create(name="France", type=Location.COUNTRY, complete_type=self.country)
+        self.europe = Location.objects.create(name="Europe", type=Location.CONTINENT, complete_type=self.continent)
+        self.belgique = Location.objects.create(name="Belgique", type=Location.COUNTRY, complete_type=self.country)
 
-        LocationRelation.objects.create(location=self.paris, parent_location=self.france)
-        LocationRelation.objects.create(location=self.france, parent_location=self.europe)
+        self.europe.add_child(self.france)
+        self.france.add_child(self.paris)
+        self.europe.add_child(self.belgique)
 
         self.a = EthnicGroup.objects.create(name="a")
         self.b = EthnicGroup.objects.create(name="b")
@@ -165,10 +166,10 @@ class CollectionItemTestCase(unittest.TestCase):
         
     def testLocationSearch(self):
         "Test by_country and by_continent properties of MediaCollection class"
-        self.assertEquals(self.collections.by_country("France")[0], self.persepolis)
-        self.assertEquals(self.collections.by_continent("Europe")[0], self.persepolis)
-        self.assertEquals(self.collections.by_country("Belgique").order_by("title")[0], self.nicolas)
-        self.assertEquals(self.collections.by_country("Belgique").order_by("title")[1], self.volonte)
+        self.assertEquals(self.collections.by_location(self.france)[0], self.persepolis)
+        self.assertEquals(self.collections.by_location(self.europe)[0], self.persepolis)
+        self.assertEquals(self.collections.by_location(self.belgique).order_by("title")[0], self.nicolas)
+        self.assertEquals(self.collections.by_location(self.belgique).order_by("title")[1], self.volonte)
 
     def testRecordingYear(self): 
         "Test by_recording_year property of MediaCollection class"
@@ -269,10 +270,10 @@ class CollectionItemTestCase(unittest.TestCase):
 
     def testLocationRelation(self):
         "Test location country and continent resolving"
-        self.assertEquals(self.france, self.item_1.location.country())
-        self.assertEquals(self.europe, self.item_1.location.continent())
-        self.assertEquals(self.france, self.item_2.location.country())
-        self.assertEquals(self.europe, self.item_2.location.continent())
+        self.assertEquals(self.france, self.item_1.location.countries()[0])
+        self.assertEquals(self.europe, self.item_1.location.continents()[0])
+        self.assertEquals(self.france, self.item_2.location.countries()[0])
+        self.assertEquals(self.europe, self.item_2.location.continents()[0])
 
     def testCollectionCountries(self):
         "Test the MediaCollection.countries() method"
