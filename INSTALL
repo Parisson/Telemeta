@@ -129,6 +129,7 @@ Add the following variables:
     :TELEMETA_SUBJECTS:     tuple of subject keywords (used for Dublin Core), such
                             as "Ethnology", etc...
     :TELEMETA_CACHE_DIR:    absolute path to the cache directory that you just created
+    :TELEMETA_GMAP_KEY:     your Google Map API key
 
 Just paste the two lines below::
 
