@@ -38,7 +38,7 @@ import cremquery as query
 from xml.dom.minidom import getDOMImplementation
 from telemeta.util.unaccent import unaccent_icmp
 import re
-from django.db.models import FieldDoesNotExist
+from django.db.models import FieldDoesNotExist, Q
 from telemeta.models.core import DurationField, Duration, WeakForeignKey, EnhancedModel, \
                                  CharField, TextField, IntegerField, BooleanField, \
                                  DateTimeField, FileField, ForeignKey, FloatField, DateField
@@ -570,11 +570,17 @@ class Location(ModelCore):
     def collections(self):
         return MediaCollection.objects.by_location(self)
 
-    def ancestors(self):
-        return Location.objects.filter(descendant_relations__location=self)
+    def ancestors(self, direct=False):
+        q = Q(descendant_relations__location=self)
+        if direct:
+            q &= Q(descendant_relations__is_direct=True)
+        return Location.objects.filter(q)           
 
-    def descendants(self):
-        return Location.objects.filter(ancestor_relations__ancestor_location=self)
+    def descendants(self, direct=False):
+        q = Q(ancestor_relations__ancestor_location=self)
+        if direct:
+            q &= Q(ancestor_relations__is_direct=True)
+        return Location.objects.filter(q)           
 
     def add_child(self, other):
         LocationRelation.objects.create(location=other, ancestor_location=self, is_direct=True)
@@ -657,6 +663,12 @@ class LocationRelation(ModelCore):
     class Meta(MetaCore):
         db_table = 'location_relations'
         unique_together = ('location', 'ancestor_location')
+
+    def __unicode__(self):
+        sep = ' > '
+        if not self.is_direct:
+            sep = ' >..> ' 
+        return unicode(self.ancestor_location) + sep + unicode(self.location)
     
 class ContextKeyword(Enumeration):
     "Keyword"
