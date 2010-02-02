@@ -10,7 +10,6 @@
 {% endblock %}
 {% block extra_javascript %}
 
-<script src="{% url telemeta-js "jquery.js" %}" type="text/javascript"></script>
 <script src="{% url telemeta-js "application.js" %}" type="text/javascript"></script>
 <script src="{% url telemeta-js "wz_jsgraphics.js" %}" type="text/javascript"></script>
 <script src="{% url telemeta-js "soundmanager2.js" %}" type="text/javascript"></script>
@@ -30,12 +29,12 @@ load_player({{ item.get_duration }});
 
 {% if item %}
 {% block submenu %}
-    <h3>Item : {{ item.title }}</h3>
     <div><a href="{% url telemeta-item-dublincore item.public_id %}">Dublin Core</a></div>
 {% endblock %}
 
 {% block content %}
 
+<h3>Item : {{ item.title }}</h3>
 <div class="{% if item.file %}with-rightcol{% endif %}">
 
 {% if item.file %}

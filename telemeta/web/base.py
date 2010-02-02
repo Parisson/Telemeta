@@ -339,7 +339,7 @@ class WebView(Component):
     def list_continents(self, request):
         continents = MediaCollection.objects.stat_continents()
         return render_to_response('telemeta/geo_continents.html', 
-                    {'continents': continents })
+                    {'continents': continents, 'gmap_key': settings.TELEMETA_GMAP_KEY })
 
     def get_continents_js(self, request):
         countries = MediaCollection.objects.list_countries()

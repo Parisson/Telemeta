@@ -560,6 +560,8 @@ class Location(ModelCore):
     complete_type    = ForeignKey('LocationType', related_name="locations", verbose_name=_('complete type'))
     current_location = WeakForeignKey('self', related_name="past_names", 
                                       verbose_name=_('current location')) 
+    latitude         = FloatField(null=True)                                    
+    longitude        = FloatField(null=True)                                    
     is_authoritative = BooleanField(_('authoritative'))
 
     objects = query.LocationManager()

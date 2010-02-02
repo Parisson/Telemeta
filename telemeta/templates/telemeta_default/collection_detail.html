@@ -3,7 +3,6 @@
 {% load i18n %}
 
 {% block extra_javascript %}
-<script src="{% url telemeta-js "jquery.js" %}" type="text/javascript"></script>
 <script src="{% url telemeta-js "application.js" %}" type="text/javascript"></script>
 <script src="{% url telemeta-js "swfobject.js" %}" type="text/javascript"></script>
 {% endblock %}
@@ -11,11 +10,11 @@
 {% if collection %}
 
 {% block submenu %}
-    <h3>Collection: {{ collection.title }}</h3>
     <div><a href="{% url telemeta-collection-dublincore collection.public_id %}">Dublin Core</a></div>
 {% endblock %}
 
 {% block content %}
+    <h3>Collection: {{ collection.title }}</h3>
     <div class="{% if collection.has_mediafile %}with-rightcol{% endif %}">
         {% if collection.has_mediafile %}
         <div id="rightcol">

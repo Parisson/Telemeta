@@ -75,6 +75,7 @@ h3 {
 #submenu {
     position: relative;
     margin: 5px 0 0;
+    z-index: 10;
 }
 #submenu h3, #submenu div {
     min-height: 1.6em;

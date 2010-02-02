@@ -168,4 +168,7 @@ def field_label(model, field):
         model = getattr(models, model)
             
     return capfirst(unicode(model.field_label(field)))
-    
+
+@register.filter
+def is_none(value):
+    return value is None
