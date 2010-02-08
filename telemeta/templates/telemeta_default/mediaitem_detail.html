@@ -34,7 +34,7 @@ load_player({{ item.get_duration }});
 
 {% block content %}
 
-<h3>Item : {{ item.title }}</h3>
+<h3>Item : {{ item }}</h3>
 <div class="{% if item.file %}with-rightcol{% endif %}">
 
 {% if item.file %}
@@ -131,10 +131,7 @@ load_player({{ item.get_duration }});
             {% dl_field item "title" %}
             {% dl_field item "alt_title" %}
             {% dl_field item "collector" %}
-            {% if item.collection.title %}
-                <dt>{% trans "Collection title" %}</dt>
-                <dd>{{ item.collection.title }}</dd>
-            {% endif %}
+            {% dl_field item "collection" %}
             {% if item.recorded_from_date %}
                 <dt>{% trans "Recording date" %}</dt>
                 <dd>{{ item.recorded_from_date }} {{ item.recorded_to_date|prepend:" - "  }}</dd>

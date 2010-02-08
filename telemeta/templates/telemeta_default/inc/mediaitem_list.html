@@ -9,7 +9,7 @@
     {% endif %}
     <ul>
     {% for p in items %}
-        <li><a href="{% url telemeta-item-detail p.public_id %}">{{ p.title }}</a></li>
+        <li><a href="{% url telemeta-item-detail p.public_id %}">{{ p }}</a></li>
     {% endfor %}
     {% if more_items %} <li>[...]</li> {% endif %}
     </ul>

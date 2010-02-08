@@ -3,7 +3,7 @@
 
 {% block tracklist %}
     <track>
-      <title>{{ item.title }}</title>
+      <title>{{ item }}</title>
       <meta rel="type">mp3</meta>
       <location>http://{{ host }}{% url telemeta-item-export item.public_id,"mp3" %}</location>
       <duration>{{ item.get_duration|mul:1000 }}</duration>

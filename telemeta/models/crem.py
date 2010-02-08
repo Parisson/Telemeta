@@ -199,6 +199,9 @@ class MediaCollection(MediaResource):
     objects               = query.MediaCollectionManager()
 
     def __unicode__(self):
+        if self.title:
+            return self.title
+
         return self.code
 
     @property
@@ -365,9 +368,15 @@ class MediaItem(MediaResource):
     computed_duration.verbose_name = _('computed duration')        
 
     def __unicode__(self):
-        if self.code:
-            return self.code
-        return self.old_code
+        if self.title and not re.match('^ *N *$', self.title):
+            title = self.title
+        else:
+            title = unicode(self.collection)
+
+        if self.track:
+            title += ' ' + self.track
+
+        return title
 
 class MediaPart(MediaResource):
     "Describe an item part"

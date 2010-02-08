@@ -3,7 +3,7 @@
 
 {% if collection %}
 {% block submenu %}
-    <h3>Collection: {{ collection.title }}</h3>
+    <h3>Collection: {{ collection }}</h3>
     <div><a href="{% url telemeta-collection-detail collection.public_id %}">Normal View</a></div>
 {% endblock %}
 
