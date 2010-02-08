@@ -6,6 +6,8 @@ import telemeta.models.dublincore as dc
 from django.utils import html
 from django import template
 from django.utils.text import capfirst
+from telemeta import models
+from django.utils.translation import ungettext
 
 register = template.Library()
 
@@ -172,3 +174,18 @@ def field_label(model, field):
 @register.filter
 def is_none(value):
     return value is None
+
+@register.filter
+def resources_num(value):
+    model = value.model
+    count = value.count()
+    label = str(count)
+    if model == models.MediaItem:
+        label = ungettext('%(count)d item', '%(count)d items', count) % {
+            'count': count, }
+    elif model == models.MediaCollection:
+        label = ungettext('%(count)d collection', '%(count)d collections', count) % {
+            'count': count, }
+
+    return label
+    

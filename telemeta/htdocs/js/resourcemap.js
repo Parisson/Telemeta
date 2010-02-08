@@ -5,6 +5,7 @@ function ResourceMap(list, cfg) {
     that.map       = null;
 
     that.init = function(list, cfg) {
+        that.cfg = cfg;
         $(document).ready(function() {
             that.log("init");
             that.list = $(list);
@@ -66,6 +67,18 @@ function ResourceMap(list, cfg) {
         return info.wrap('<div/>').parent().html();
     }
 
+    that.showResourceInfo = function(marker, resourceElement) {
+        var info = $('<div/>').addClass('resourcemap-info');
+        marker.openInfoWindowHtml(info.get(0));
+        var re  = /^resource-/;
+        var id  = resourceElement.attr('id').replace(re, '');
+        var uri = that.cfg.countryInfoUri.replace('RESOURCEID', id);
+        
+        $.get(uri, function(data) {
+            info.html(data);
+        });
+    }
+
     that.parseResources = function() {
         $('.resourcemap-element').each(function(i, e) {
             e = $(e)
@@ -73,13 +86,14 @@ function ResourceMap(list, cfg) {
             if (input.length) {
                 var lat       = parseFloat(input.attr('value'));
                 var lng       = parseFloat(e.find('.resourcemap-lng').attr('value'));
-                var name      = $.trim(e.find('.resourcemap-name').text());
-                var link      = e.find('a').attr('href');
-                var linktitle = e.find('a').attr('title');
+                //var name      = $.trim(e.find('.resourcemap-name').text());
+                //var link      = e.find('a').attr('href');
+                //var linktitle = e.find('a').attr('title');
                 var marker    = new google.maps.Marker(new GLatLng(lat, lng), {title: name});
-                var info      = that.makeInfoBox(name, link, linktitle);
+                //var info      = that.makeInfoBox(name, link, linktitle);
                 google.maps.Event.addListener(marker, "click", function() {
-                    marker.openInfoWindowHtml(info);
+                    that.showResourceInfo(marker, e);
+                    //marker.openInfoWindowHtml(info);
                 });
                 that.map.addOverlay(marker);
             }

@@ -1,0 +1,11 @@
+{% load telemeta_utils %}
+{% load i18n %}
+
+<h2>{{ country }}</h2>
+<a href="{% url telemeta-geo-country-items continent.flatname,country.flatname %}">
+{{ country.items|resources_num }}
+</a>
+{% trans "in" %}
+<a href="{% url telemeta-geo-country-collections continent.flatname,country.flatname %}">
+{{ country.collections|resources_num }}
+</a>

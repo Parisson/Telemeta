@@ -7,7 +7,9 @@
 <script src="http://www.google.com/jsapi?key={{ gmap_key }}" type="text/javascript"></script>
 <script src="{% url telemeta-js "resourcemap.js" %}" type="text/javascript"></script>
 <script type="text/javascript">
-var resourceMap = new ResourceMap('.continents');
+var resourceMap = new ResourceMap('.continents', {
+    'countryInfoUri': '{% url telemeta-country-info "RESOURCEID" %}'
+});
 </script>
 {% endif %}
 {% endblock %}
@@ -22,22 +24,21 @@ var resourceMap = new ResourceMap('.continents');
 <h3>Geographic Navigator</h3>
 {% if continents %}
 <ul class="continents">
-{% for continent in continents %}
-  <li class="name"><b><a href="{% url telemeta-geo-countries continent.location.flatname %}">{{ continent.location }}</a></b>
+{% for group in continents %}
+  <li class="name"><b><a href="{% url telemeta-geo-countries group.continent.flatname %}">{{ group.continent }}</a></b>
     <ul>
-    {% for country in continent.countries %}
-      <li class="country_name resourcemap-element">
-        <a href="{% url telemeta-geo-country-collections continent.location.flatname,country.location.flatname %}"
-           title="{{ country.count }} {% trans "collections" %}">
-          <span class="resourcemap-name">{{ country.location }}</span></a>
-        {% if not country.location.latitude|is_none and not country.location.longitude|is_none %}
-        <input type="hidden" class="resourcemap-lat" value="{{country.location.latitude}}" />
-        <input type="hidden" class="resourcemap-lng" value="{{country.location.longitude}}" />
+    {% for country in group.countries %}
+      <li id="resource-{{country.id}}" class="country_name resourcemap-element">
+        <a href="{% url telemeta-geo-country-collections group.continent.flatname,country.flatname %}">
+          <span class="resourcemap-name">{{ country }}</span></a>
+        {% if not country.latitude|is_none and not country.longitude|is_none %}
+        <input type="hidden" class="resourcemap-lat" value="{{country.latitude}}" />
+        <input type="hidden" class="resourcemap-lng" value="{{country.longitude}}" />
         {% endif %}
       </li>
     {% endfor %}
-    {% if continent.countries.10 %}
-    <li><a href="{% url telemeta-geo-countries continent.location.flatname %}">More..</a></li>
+    {% if group.countries.10 %}
+    <li><a href="{% url telemeta-geo-countries group.continent.flatname %}">More..</a></li>
     {% endif %}
     </ul>
   </li>

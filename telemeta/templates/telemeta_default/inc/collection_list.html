@@ -1,7 +1,7 @@
 {% load telemeta_utils %}
 {% if collections %}
     {% if hits %}
-    <p class="pagination">Records {{ first_on_page }} to {{ last_on_page }} on {{ hits }} 
+    <p class="pagination">Collections {{ first_on_page }} to {{ last_on_page }} on {{ hits }} 
     &nbsp;&nbsp;
     {% if has_previous %} <a href="?page={{ previous }}&amp;{{criteria|build_query_string}}">&lt;&lt;</a> {% endif %}
     {% if has_next %} <a href="?page={{ next }}&amp;{{criteria|build_query_string}}">&gt;&gt;</a> {% endif %}

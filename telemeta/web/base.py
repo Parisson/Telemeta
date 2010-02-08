@@ -337,9 +337,14 @@ class WebView(Component):
         return HttpResponse(template.render(context), mimetype=mimetype)
 
     def list_continents(self, request):
-        continents = MediaCollection.objects.stat_continents()
+        continents = MediaItem.objects.all().countries(group_by_continent=True)
         return render_to_response('telemeta/geo_continents.html', 
                     {'continents': continents, 'gmap_key': settings.TELEMETA_GMAP_KEY })
+
+    def country_info(self, request, id):
+        country = Location.objects.get(pk=id)
+        return render_to_response('telemeta/country_info.html', {
+            'country': country, 'continent': country.continents()[0]})
 
     def get_continents_js(self, request):
         countries = MediaCollection.objects.list_countries()
@@ -358,6 +363,14 @@ class WebView(Component):
         objects = MediaCollection.objects.by_location(country)
         return list_detail.object_list(request, objects, 
             template_name='telemeta/geo_country_collections.html', paginate_by=20,
+            extra_context={'country': country, 'continent': continent})
+
+    def list_country_items(self, request, continent, country):
+        continent = Location.objects.by_flatname(continent)[0]
+        country = Location.objects.by_flatname(country)[0]
+        objects = MediaItem.objects.by_location(country)
+        return list_detail.object_list(request, objects, 
+            template_name='telemeta/geo_country_items.html', paginate_by=20,
             extra_context={'country': country, 'continent': continent})
 
     def handle_oai_request(self, request):

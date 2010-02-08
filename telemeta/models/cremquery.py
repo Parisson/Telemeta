@@ -251,7 +251,41 @@ class MediaItemQuerySet(CoreQuerySet):
         from telemeta.models import LocationRelation
         descendants = LocationRelation.objects.filter(ancestor_location=location)
         return self.filter(Q(location=location) | Q(location__in=descendants))
+           
+    @staticmethod
+    def __name_cmp(obj1, obj2):
+        return unaccent_icmp(obj1.name, obj2.name)
+
+    def countries(self, group_by_continent=False):
+        from telemeta.models import Location
+        countries = []
+        for id in self.filter(location__isnull=False).values_list('location', flat=True).distinct():
+            location = Location.objects.get(pk=id)
+            for l in location.countries():
+                if not l in countries:
+                    countries.append(l)
+
+        if group_by_continent:
+            grouped = {}
+
+            for country in countries:
+                for continent in country.continents():
+                    if not grouped.has_key(continent):
+                        grouped[continent] = []
+
+                    grouped[continent].append(country)
+                    
+            keys = grouped.keys()
+            keys.sort(self.__name_cmp)
+            ordered = []
+            for c in keys:
+                grouped[c].sort(self.__name_cmp)
+                ordered.append({'continent': c, 'countries': grouped[c]})
             
+            countries = ordered
+            
+        return countries                    
+
 class MediaItemManager(CoreManager):
     "Manage media items queries"
 
