@@ -632,17 +632,23 @@ class Location(ModelCore):
 
         return None                    
 
-    def sequences(self):
-        sequence = []
+    def paths(self):
+        #FIXME: need to handle multiple (polyhierarchical) paths
+        path = []
         location = self
         while location:
-            sequence.append(location)
-            location = location.parent()
-        return sequence
+            path.append(location)
+            try:
+                location = location.ancestors(direct=True)[0]
+            except IndexError:
+                location = None
+        return [path]
 
     def fullnames(self):
-        
-        return u', '.join([unicode(l) for l in self.sequence()])
+        names = []
+        for path in self.paths():
+            names.append(u', '.join([unicode(l) for l in path]))
+        return names
 
 class LocationType(ModelCore):
     "Location types"

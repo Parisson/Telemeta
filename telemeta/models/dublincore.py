@@ -211,7 +211,7 @@ def express_item(item):
         Element('publisher',        settings.TELEMETA_ORGANIZATION),
         date,
         Date(item.collection.year_published, refinement='issued'),
-        Element('coverage',         item.location.fullname(), 'spatial'),
+        Element.multiple('coverage', item.location.fullnames(), 'spatial'),
         Element('coverage',         item.location_comment, 'spatial'),
         Element('rights',           item.collection.legal_rights, 'license'),
         Element('rights',           media_access_rights(item.collection), 'accessRights'),

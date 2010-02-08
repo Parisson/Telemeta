@@ -146,7 +146,7 @@ load_player({{ item.get_duration }});
             <dl class="listing">
                 {% if item.location %}
                     <dt>{% trans "Location" %}</dt>
-                    <dd>{{ item.location.fullname }}</dd>
+                    <dd>{{ item.location.fullnames|join:"<br/>" }}</dd>
                 {% endif %}
                 {% dl_field item "location_comment" %}
                 {% dl_field item "cultural_area" %}
