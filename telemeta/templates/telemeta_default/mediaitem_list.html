@@ -1,8 +1,13 @@
 {% extends "telemeta/base.html" %}
+{% load i18n %}
+{% load telemeta_utils %}
 
 {% block content %}
 <h3>Media items</h3>
 {% with object_list as items %}
+<div class="fullpage">
 {% include "telemeta/inc/mediaitem_list.html" %}
+</div>
 {% endwith %}
+
 {% endblock %}

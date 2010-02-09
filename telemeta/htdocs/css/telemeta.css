@@ -520,7 +520,6 @@ dl.dublincore dd.caption {
     margin-top: .7em;
     margin-bottom: .3em;
     padding: .3em 0;
-    float: left;
     font-size: .9em;
     background-color: #fff;
     border-bottom: 1px solid #aaa;
@@ -563,8 +562,12 @@ table.instruments tbody td {
 table.listing {
     clear: both;
     border-spacing: 0;
+}
+
+.fullpage table.listing {
     width: 100%;
 }
+
 table.listing th {
     text-align: left;
     padding: 0 14em .1em 0;
@@ -611,3 +614,5 @@ table.listing tbody tr { border-top: 1px solid #ddd }
 table.listing tbody tr.even { background-color: #fcfcfc }
 table.listing tbody tr.odd { background-color: #f7f7f7 }
 table.listing tbody tr:hover { background: #f7f8fa !important }
+
+

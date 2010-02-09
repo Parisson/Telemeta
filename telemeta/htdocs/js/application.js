@@ -8,5 +8,7 @@ function foldInfoBlocks() {
     });
 }
 
-$(document).ready(foldInfoBlocks);
+$(document).ready(function() {
+    foldInfoBlocks();
+});
 

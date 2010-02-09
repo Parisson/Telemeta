@@ -360,7 +360,7 @@ class WebView(Component):
     def list_country_collections(self, request, continent, country):
         continent = Location.objects.by_flatname(continent)[0]
         country = Location.objects.by_flatname(country)[0]
-        objects = MediaCollection.objects.by_location(country)
+        objects = MediaCollection.objects.enriched().by_location(country)
         return list_detail.object_list(request, objects, 
             template_name='telemeta/geo_country_collections.html', paginate_by=20,
             extra_context={'country': country, 'continent': continent})
@@ -368,7 +368,7 @@ class WebView(Component):
     def list_country_items(self, request, continent, country):
         continent = Location.objects.by_flatname(continent)[0]
         country = Location.objects.by_flatname(country)[0]
-        objects = MediaItem.objects.by_location(country)
+        objects = MediaItem.objects.enriched().by_location(country)
         return list_detail.object_list(request, objects, 
             template_name='telemeta/geo_country_items.html', paginate_by=20,
             extra_context={'country': country, 'continent': continent})

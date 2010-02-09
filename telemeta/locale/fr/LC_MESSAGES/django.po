@@ -205,8 +205,8 @@ msgid "location"
 msgstr "lieu"
 
 #: models/crem.py:296
-msgid "location comment"
-msgstr "commentaire lieu"
+msgid "location details"
+msgstr "précisions lieu"
 
 #: models/crem.py:298 models/crem.py:710
 msgid "population / social group"

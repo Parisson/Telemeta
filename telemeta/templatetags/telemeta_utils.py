@@ -171,6 +171,15 @@ def field_label(model, field):
             
     return capfirst(unicode(model.field_label(field)))
 
+@register.simple_tag
+def field_value(object, member):
+    value = getattr(object, member)
+    try:
+        value = value()
+    except TypeError:
+        pass
+    return value
+
 @register.filter
 def is_none(value):
     return value is None
@@ -189,3 +198,10 @@ def resources_num(value):
 
     return label
     
+@register.filter
+def split(value, sep=','):
+    return value.split(sep)
+
+@register.simple_tag
+def variable_link(object, url_name, url_key):
+    return reverse(url_name, args=[field_value(object, url_key)])

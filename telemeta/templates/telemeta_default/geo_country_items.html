@@ -8,7 +8,9 @@
   / {{ country }}</h3>
 
 {% with object_list as items %}
+<div class="fullpage">
 {% include "telemeta/inc/mediaitem_list.html" %}
+</div>
 {% endwith %}
 
 {% endblock %}

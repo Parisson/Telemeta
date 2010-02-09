@@ -76,6 +76,7 @@ function ResourceMap(list, cfg) {
         
         $.get(uri, function(data) {
             info.html(data);
+            //marker.openInfoWindowHtml(info.get(0));
         });
     }
 

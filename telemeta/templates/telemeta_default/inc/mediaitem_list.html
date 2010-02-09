@@ -1,18 +1,30 @@
 {% load telemeta_utils %}
+{% load i18n %}
 {% if items %}
-    {% if hits %}
-    <p class="pagination">Items {{ first_on_page }} to {{ last_on_page }} on {{ hits }} 
-    &nbsp;&nbsp;
-    {% if has_previous %} <a href="?page={{ previous }}&amp;{{criteria|build_query_string}}">&lt;&lt;</a> {% endif %}
-    {% if has_next %} <a href="?page={{ next }}&amp;{{criteria|build_query_string}}">&gt;&gt;</a> {% endif %}
-    </p>
-    {% endif %}
-    <ul>
-    {% for p in items %}
-        <li><a href="{% url telemeta-item-detail p.public_id %}">{{ p }}</a></li>
-    {% endfor %}
-    {% if more_items %} <li>[...]</li> {% endif %}
-    </ul>
-{% else %}
-    <p>No item</p>
+{% if hits %}
+<p class="pagination">Items {{ first_on_page }} to {{ last_on_page }} on {{ hits }} 
+&nbsp;&nbsp;
+{% if has_previous %} <a href="?page={{ previous }}&amp;{{criteria|build_query_string}}">&lt;&lt;</a> {% endif %}
+{% if has_next %} <a href="?page={{ next }}&amp;{{criteria|build_query_string}}">&gt;&gt;</a> {% endif %}
+</p>
 {% endif %}
+<table class="listing">
+<tr>
+    <th class="highlight">{% trans "Title" %}</th>
+    <th>{% trans "Recordist" %}</th>
+    <th>{% trans "Country/Continent" %}</th>
+</tr>
+{% for item in items %}
+<tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
+    <td class="highlight">
+        <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
+    </td>
+    <td>{{ item.apparent_collector }}</td>
+    <td>{{ item.country_or_continent|default:'&nbsp;' }}</td>
+</tr>
+{% endfor %}
+</table>
+{% else %}
+    <p>{% trans "No item" %}</p>
+{% endif %}
+

@@ -105,13 +105,9 @@ class MediaCollectionQuerySet(CoreQuerySet):
         )
 
     def by_location(self, location):
-        "Find collections by country"
+        "Find collections by location"
         return self.filter(Q(items__location=location) | Q(items__location__in=location.descendants())).distinct()
     
-    def by_continent(self, continent):
-        "Find collections by continent"
-        return self.filter(items__location__type="continent", items__location=continent).distinct()
-
     def by_recording_year(self, from_year, to_year=None):
         "Find collections by recording year"
         if to_year is None:
@@ -134,12 +130,27 @@ class MediaCollectionQuerySet(CoreQuerySet):
         "Find collections between two dates"
         return self._by_change_time('collection', from_time, until_time)
 
+    def virtual(self, *args):
+        qs = self
+        for f in args:
+            if f == 'apparent_collector':
+                qs = qs.extra(select={f: 'IF(media_collections.collector_is_creator, '
+                                         'media_collections.creator, media_collections.collector)'})
+            else:
+                raise Exception("Unsupported virtual field: %s" % f)
+
+        return qs                
+
 class MediaCollectionManager(CoreManager):
     "Manage collection queries"
 
     def get_query_set(self):
         "Return the collection query"
         return MediaCollectionQuerySet(self.model)
+
+    def enriched(self):
+        "Query set with additional virtual fields such as apparent_collector"
+        return self.get_query_set().virtual('apparent_collector')
 
     def quick_search(self, *args, **kwargs):
         return self.get_query_set().quick_search(*args, **kwargs)
@@ -148,10 +159,6 @@ class MediaCollectionManager(CoreManager):
     def by_location(self, *args, **kwargs):
         return self.get_query_set().by_location(*args, **kwargs)
     by_location.__doc__ = MediaCollectionQuerySet.by_location.__doc__
-
-    def by_continent(self, *args, **kwargs):
-        return self.get_query_set().by_continent(*args, **kwargs)
-    by_continent.__doc__ = MediaCollectionQuerySet.by_continent.__doc__
 
     def by_recording_year(self, *args, **kwargs):
         return self.get_query_set().by_recording_year(*args, **kwargs)
@@ -286,12 +293,53 @@ class MediaItemQuerySet(CoreQuerySet):
             
         return countries                    
 
+    def virtual(self, *args):
+        qs = self
+        need_collection = False
+        related = []
+        for f in args:
+            if f == 'apparent_collector':
+                related.append('collection')
+                qs = qs.extra(select={f: 
+                    'IF(collector_from_collection, '
+                        'IF(media_collections.collector_is_creator, '
+                           'media_collections.creator, '
+                           'media_collections.collector),'
+                        'media_items.collector)'})
+            elif f == 'country_or_continent':
+                from telemeta.models import Location
+                related.append('location')
+                qs = qs.extra(select={f:
+                    'IF(locations.type = ' + str(Location.COUNTRY) + ' '
+                    'OR locations.type = ' + str(Location.CONTINENT) + ',' 
+                    'locations.name, '
+                    '(SELECT l2.name FROM location_relations AS r INNER JOIN locations AS l2 '
+                    'ON r.ancestor_location_id = l2.id '
+                    'WHERE r.location_id = media_items.location_id AND l2.type = ' + str(Location.COUNTRY) + ' ))'
+                })
+            else:
+                raise Exception("Unsupported virtual field: %s" % f)
+
+        if related:
+            qs = qs.select_related(*related)
+
+        return qs                
+
+    def ethnic_groups(self):
+        return self.filter(ethnic_group__isnull=False) \
+               .values_list('ethnic_group__name', flat=True) \
+               .distinct().order_by('ethnic_group__name')        
+
 class MediaItemManager(CoreManager):
     "Manage media items queries"
 
     def get_query_set(self):
         "Return media query sets"
         return MediaItemQuerySet(self.model)
+
+    def enriched(self):
+        "Query set with additional virtual fields such as apparent_collector and country_or_continent"
+        return self.get_query_set().virtual('apparent_collector', 'country_or_continent')
 
     def quick_search(self, *args, **kwargs):
         return self.get_query_set().quick_search(*args, **kwargs)

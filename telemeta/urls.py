@@ -48,8 +48,8 @@ comp_mgr = ComponentManager()
 web_view = WebView(comp_mgr)
 
 # query sets for Django generic views
-all_items = { 'queryset': MediaItem.objects.all(), }
-all_collections = { 'queryset': MediaCollection.objects.all(), }
+all_items = { 'queryset': MediaItem.objects.enriched(), }
+all_collections = { 'queryset': MediaCollection.objects.enriched(), }
 
 # ID's regular expressions
 export_extensions = "|".join(web_view.list_export_extensions())
