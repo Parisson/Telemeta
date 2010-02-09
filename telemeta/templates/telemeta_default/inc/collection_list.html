@@ -13,6 +13,7 @@
     <th class="highlight">{% trans "Title" %}</th>
     <th>{% field_label "MediaCollection" "creator" %}</th>
     <th>{% trans "Recordist" %}</th>
+    <th>{% trans "Year of recording" %}</th>
 </tr>
 {% for collection in collections %}
 <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
@@ -21,6 +22,14 @@
     </td>
     <td>{{ collection.creator }}</td>
     <td>{{ collection.apparent_collector }}</td>
+    <td>
+    {% if collection.recorded_from_year %}
+        {{ collection.recorded_from_year }}
+        {% if collection.recorded_to_year and collection.recorded_to_year != collection.recorded_from_year %}
+            - {{ collection.recorded_to_year }}
+        {% endif %}
+    {% endif %}
+    </td>
 </tr>
 {% endfor %}
 </table>

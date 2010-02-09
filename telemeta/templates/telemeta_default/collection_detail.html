@@ -135,7 +135,9 @@
         </div>
         <h4>Items</h4>
         {% with collection.items.enriched as items %}
+        {% with "1" as location_name %}
             {% include "telemeta/inc/mediaitem_list.html" %}
+        {% endwith %}
         {% endwith %}
         <!--
         {% with collection.ordered_items as items %}

@@ -12,7 +12,12 @@
 <tr>
     <th class="highlight">{% trans "Title" %}</th>
     <th>{% trans "Recordist" %}</th>
+    {% if location_name %}
+    <th>{% trans "Location" %}</th>
+    {% else %}
     <th>{% trans "Country/Continent" %}</th>
+    {% endif %}
+    <th>{% trans "Year of recording" %}</th>
 </tr>
 {% for item in items %}
 <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
@@ -20,7 +25,19 @@
         <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
     </td>
     <td>{{ item.apparent_collector }}</td>
+    {% if location_name %}
+    <td>{{ item.location.name }}</td>
+    {% else %}
     <td>{{ item.country_or_continent|default:'&nbsp;' }}</td>
+    {% endif %}
+    <td>
+    {% if item.recorded_from_date %}
+        {{ item.recorded_from_date.year }}
+        {% if item.recorded_to_date and item.recorded_to_date.year != item.recorded_from_date.year %}
+            - {{ item.recorded_to_date.year }}
+        {% endif %}
+    {% endif %}
+    </td>
 </tr>
 {% endfor %}
 </table>

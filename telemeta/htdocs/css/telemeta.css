@@ -585,8 +585,10 @@ table.listing thead th {
 table.listing thead th :link:hover, table.listing thead th :visited:hover {
     background-color: transparent;
 }
-table.listing thead th a {
+table.listing a {
     border: none;
+}
+table.listing thead th a {
     padding-right: 12px;
 }
 table.listing th.asc a, table.listing th.desc a { font-weight: bold }
