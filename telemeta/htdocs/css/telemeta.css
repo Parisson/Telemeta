@@ -45,7 +45,6 @@ h3 {
 
 #content {
     position: relative;
-    margin-bottom: 2em;
 } 
 #content ul, #content ul ul, #content ol {
     list-style: square;
@@ -344,7 +343,7 @@ label.disabled { color: #d7d7d7 }
   border-top: 1px solid;
   height: 31px;
   padding: .25em 0;
-  margin-top: 3em;
+  margin-top: 2.5em;
 }
 #footer :link, #footer :visited { color: #bbb; }
 #footer hr { display: none }
@@ -617,4 +616,7 @@ table.listing tbody tr.even { background-color: #fcfcfc }
 table.listing tbody tr.odd { background-color: #f7f7f7 }
 table.listing tbody tr:hover { background: #f7f8fa !important }
 
-
+.gmap {
+    border: solid 1px #888;
+    margin-top: 0.8em;
+}

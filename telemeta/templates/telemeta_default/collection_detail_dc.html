@@ -1,10 +1,11 @@
 {% extends "telemeta/base.html" %}
 {% load telemeta_utils %}
+{% load i18n %}
 
 {% if collection %}
 {% block submenu %}
     <h3>Collection: {{ collection }}</h3>
-    <div><a href="{% url telemeta-collection-detail collection.public_id %}">Normal View</a></div>
+    <div><a href="{% url telemeta-collection-detail collection.public_id %}">{% trans "Normal View" %}</a></div>
 {% endblock %}
 
 {% block content %}
@@ -14,5 +15,5 @@
 
 {% endblock %}
 {% else %}
-    <p>No such collection</p>
+    <p>{% trans "No such collection" %}</p>
 {% endif %}

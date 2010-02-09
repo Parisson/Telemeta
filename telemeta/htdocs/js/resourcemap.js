@@ -9,7 +9,7 @@ function ResourceMap(list, cfg) {
         $(document).ready(function() {
             that.log("init");
             that.list = $(list);
-            that.container = $('<div/>').css({'width': '100%', 'height': 300});
+            that.container = $('<div/>').addClass('gmap').css({'width': '100%', 'height': 300});
             that.list.css('display', 'none').after(that.container);
             var resizeTimer = null;
             $(window).resize(function() {
@@ -29,7 +29,7 @@ function ResourceMap(list, cfg) {
 
     that.resize = function() {
         if (that.container.css('display') == 'block') {
-            newHeight = that.container.height() + $(window).height() - $("#layout").height();
+            newHeight = that.container.height() + $(window).height() - $("#layout").height() + $('#footer').height();
             if (newHeight < 300)
                 newHeight = 300;
             if (newHeight != that.container.height()) {

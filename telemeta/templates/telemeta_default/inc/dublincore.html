@@ -1,6 +1,7 @@
 {% load telemeta_utils %}
+{% load i18n %}
 
-    <h4 class="dublincore">Dublin Core Expression</h4>
+    <h4 class="dublincore">{% trans "Dublin Core Metadata" %}</h4>
     <dl class="dublincore">
         <dt class="caption"><span>Element</span>Refinement</dt><dd class="caption">Value</dd>
         {% for element in resource.elements %}

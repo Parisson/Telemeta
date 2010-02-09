@@ -132,6 +132,16 @@ class ModelCore(EnhancedModel):
 class MediaResource(ModelCore):
     "Base class of all media objects"
 
+    def public_access_label(self):
+        if self.public_access == 'metadata':
+            return _('Metadata only')
+        elif self.public_access == 'full':
+            return _('Sound and metadata')
+
+        return _('Private data')
+
+    public_access_label.verbose_name = _('public access')
+
     class Meta:
         abstract = True
 
@@ -141,7 +151,7 @@ class MetaCore:
 class MediaCollection(MediaResource):
     "Describe a collection of items"
     element_type = 'collection'
-    PUBLIC_ACCESS_CHOICES = (('none', 'none'), ('metadata', 'metadata'), ('metadata', 'full'))
+    PUBLIC_ACCESS_CHOICES = (('none', 'none'), ('metadata', 'metadata'), ('full', 'full'))
 
     published_code_regex   = 'CNRSMH_E_[0-9]{4}(?:_[0-9]{3}){2}'
     unpublished_code_regex = 'CNRSMH_I_[0-9]{4}_[0-9]{3}'

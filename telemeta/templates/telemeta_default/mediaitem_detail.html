@@ -126,11 +126,11 @@ load_player({{ item.get_duration }});
     <div class="infos">
     {% block general_info %}
         <dl class="listing">
-            {% dl_field item "collection" %}
             {% dl_field item "title" %}
             {% dl_field item "alt_title" %}
             {% dl_field item "collector" %}
-            {% dl_field item "collection" %}
+            <dt>{% field_label item "collection" %}</dt>
+            <dd><a href="{% url telemeta-collection-detail item.collection.public_id %}">{{ item.collection }}</a></dd>
             {% if item.recorded_from_date %}
                 <dt>{% trans "Recording date" %}</dt>
                 <dd>{{ item.recorded_from_date }} {{ item.recorded_to_date|prepend:" - "  }}</dd>
@@ -213,7 +213,7 @@ load_player({{ item.get_duration }});
                 {% dl_field item "track" %}
                 {% dl_field item "creator_reference" %}
                 {% dl_field item "external_references" %}
-                {% dl_field item "public_access" %}
+                {% dl_field item "public_access_label" %}
             </dl>
         </div>
     {% endblock archive_data %}

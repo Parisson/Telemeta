@@ -74,7 +74,7 @@
                     <dl class="listing">
                         {% if collection.collector_is_creator %}
                           {% if collection.creator %}
-                          <dt>{% trans "Collector" %}</dt><dd>{{ collection.creator }}</dd>
+                          <dt>{% trans "Recordist" %}</dt><dd>{{ collection.creator }}</dd>
                           {% endif%}
                         {% else %}
                         {% dl_field collection "collector" %}
@@ -85,7 +85,7 @@
                         {% dl_field collection "booklet_author" %}
                         {% dl_field collection "external_references" %}
                         {% dl_field collection "doctype_code" %}
-                        {% dl_field collection "public_access" %}
+                        {% dl_field collection "public_access_label" %}
                         {% dl_field collection "legal_rights" %}
                     </dl>
                 </div>
@@ -103,7 +103,9 @@
                         {% dl_field collection "metadata_writer" %}
                         {% dl_field collection "booklet_description" %}
                         {% dl_field collection "publishing_status" %}
+                        <!-- FIXME: alt_ids unsupported
                         {% dl_field collection "alt_ids" %}
+                        -->
                         {% dl_field collection "comment" %}
                         {% dl_field collection "metadata_writer" %}
                         {% dl_field collection "travail" %}

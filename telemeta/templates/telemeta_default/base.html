@@ -29,16 +29,16 @@
 <div id="quick_search">
 <form action="{% url telemeta-search %}" method="GET">
 <input type="text" id="quick_search_pattern" name="pattern" />
-<input type="submit" value="Search" />
+<input type="submit" value="{% trans 'Search' %}" />
 </form>        
-<p><a href="{% url telemeta-search-criteria %}">Advanced search</a></p>
+<p><a href="{% url telemeta-search-criteria %}">{% trans "Advanced search" %}</a></p>
 </div>
 
 <div id="menu" class="nav">
 {% block menu %}
 <ul>
 {# spaces between li and a elements breaks layout #}
-<li><a href="{% url telemeta-collections %}">All Collections</a></li><li><a href="{% url telemeta-items %}">All Items</a></li><li class="first"><a href="{% url telemeta-geo-continents %}">Geo Navigator</a></li><li class="last"><a href="{% url telemeta-admin %}">Admin</a></li>
+<li><a href="{% url telemeta-collections %}">{% trans "Collections" %}</a></li><li><a href="{% url telemeta-items %}">{% trans "Items" %}</a></li><li class="first"><a href="{% url telemeta-geo-continents %}">{% trans "Geo Navigator" %}</a></li><li class="last"><a href="{% url telemeta-admin %}">{% trans "Admin" %}</a></li>
 </ul>
 {% endblock %}
 </div>
@@ -58,12 +58,12 @@
  <a id="telemeta_powered" href="{% telemeta_url %}"><img src="{% url telemeta-images "logo_mini.png" %}" height="30" width="93"
    alt="Telemeta Powered"/></a>
  <p class="left">
-  Powered by <a href="{% telemeta_url %}"><strong>Telemeta {% telemeta_version %}</strong></a><br />
-  By <a href="http://www.parisson.com/">Parisson</a> &amp; <a href="http://www.samalyse.com/">Samalyse</a>.
+  {% trans "Powered by" %} <a href="{% telemeta_url %}"><strong>Telemeta {% telemeta_version %}</strong></a><br />
+  {% trans "By" %} <a href="http://www.parisson.com/">Parisson</a> &amp; <a href="http://www.samalyse.com/">Samalyse</a>.
  </p>
 
  <p class="right">
-  Visit the Telemeta open source project at<br /><a href="{% telemeta_url %}">{% telemeta_url %}</a>
+  {% trans "Visit the Telemeta open source project at" %}<br /><a href="{% telemeta_url %}">{% telemeta_url %}</a>
  </p>
 {% endblock %}
 </div>
