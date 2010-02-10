@@ -161,17 +161,29 @@ class WebView(Component):
         return response
 
     def edit_search(self, request):
-        continents = MediaCollection.objects.list_continents()
-        countries = MediaCollection.objects.list_countries()
-        ethnic_groups = MediaItem.objects.list_ethnic_groups()
+        ethnic_groups = MediaItem.objects.all().ethnic_groups()
         return render_to_response('telemeta/search_criteria.html', 
-            {'continents': continents, 'countries': countries, 
-            'ethnic_groups': ethnic_groups})
+            {'ethnic_groups': ethnic_groups})
+
+    def complete_location(self, request, with_items=True):
+        input = request.REQUEST
+       
+        token = input['q']
+        limit = int(input['limit'])
+        if with_items:
+            locations = MediaItem.objects.all().locations()
+        else:
+            locations = Location.objects.all()
+
+        locations = locations.filter(name__istartswith=token).order_by('name')[:limit]
+        data = [unicode(l) + " (%d items)" % l.items().count() for l in locations]
+
+        return HttpResponse("\n".join(data))
 
     def search(self, request, type = None):
         """Perform a search through collections and items metadata"""
-        collections = MediaCollection.objects.all()
-        items = MediaItem.objects.all()
+        collections = MediaCollection.objects.enriched()
+        items = MediaItem.objects.enriched()
         input = request.REQUEST
         criteria = {}
 
@@ -182,9 +194,9 @@ class WebView(Component):
             'title': lambda value: (
                 collections.word_search('title', value), 
                 items.by_title(value)),
-            'country': lambda value: (
-                collections.by_country(value), 
-                items.filter(etat = value)),
+            'location': lambda value: (
+                collections.by_location(Location.objects.get(name=value)), 
+                items.by_location(Location.objects.get(name=value))),
             'continent': lambda value: (
                 collections.by_continent(value), 
                 items.filter(continent = value)),
@@ -345,11 +357,6 @@ class WebView(Component):
         country = Location.objects.get(pk=id)
         return render_to_response('telemeta/country_info.html', {
             'country': country, 'continent': country.continents()[0]})
-
-    def get_continents_js(self, request):
-        countries = MediaCollection.objects.list_countries()
-        return render_to_response('telemeta/geo_continents.js', 
-                    {'countries': countries})
 
     def list_countries(self, request, continent):                    
         continent = Location.objects.by_flatname(continent)[0]

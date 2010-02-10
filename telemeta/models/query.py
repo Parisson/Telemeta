@@ -79,13 +79,17 @@ class MediaItemQuerySet(CoreQuerySet):
 
     def by_location(self, location):
         "Find items by location"
-        from telemeta.models import LocationRelation
-        descendants = LocationRelation.objects.filter(ancestor_location=location)
-        return self.filter(Q(location=location) | Q(location__in=descendants))
+        return self.filter(Q(location=location) | Q(location__in=location.descendants()))
            
     @staticmethod
     def __name_cmp(obj1, obj2):
         return unaccent_icmp(obj1.name, obj2.name)
+
+    def locations(self):
+        from telemeta.models import Location, LocationRelation
+        l = self.values('location')
+        r = LocationRelation.objects.filter(location__in=l).values('ancestor_location')
+        return Location.objects.filter(Q(pk__in=l) | Q(pk__in=r))
 
     def countries(self, group_by_continent=False):
         countries = []

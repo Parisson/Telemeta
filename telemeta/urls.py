@@ -111,6 +111,7 @@ urlpatterns = patterns('',
     url(r'^search/items/$', web_view.search, {'type': 'items'}, 
         name="telemeta-search-items"),
     url(r'^search/criteria/$', web_view.edit_search, name="telemeta-search-criteria"),
+    url(r'^complete_location/$', web_view.complete_location, name="telemeta-complete-location"),
 
     # administration        
     url(r'^admin/$', web_view.admin_index, name="telemeta-admin"),        
@@ -144,7 +145,6 @@ urlpatterns = patterns('',
     url(r'^geo/items/(?P<continent>[a-z_]+)/(?P<country>[a-z_]+)/$', 
         web_view.list_country_items, 
         name="telemeta-geo-country-items"),
-    url(r'^dynjs/continents.js$', web_view.get_continents_js, name="telemeta-continents-js"),
     url(r'^geo/country_info/(?P<id>[0-9A-Z]+)/$', 
         web_view.country_info, name="telemeta-country-info"),
 

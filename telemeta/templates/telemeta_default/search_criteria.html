@@ -1,8 +1,25 @@
 {% extends "telemeta/base.html" %}
 {% load telemeta_utils %}
+{% load i18n %}
+
+{% block stylesheets %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% url telemeta-css "jquery.autocomplete.css" %}" />
+{% endblock %}
 
 {% block extra_javascript %}
-<script src="{% url telemeta-continents-js %}" type="text/javascript"></script>
+<script src="{% url telemeta-js "jquery.autocomplete.js" %}" type="text/javascript"></script>
+<script type="text/javascript">
+$(document).ready(function () {
+    $('#location').autocomplete('{% url telemeta-complete-location %}', {
+        max: 20,
+        formatResult: function(data) {
+            console.log(data);
+            return data[0].replace(/ *\([0-9]+.*\) *$/, '');
+        }
+    });
+});
+</script>
 {% endblock %}
 
 {% block content %}
@@ -12,23 +29,8 @@
 <fieldset>
 
     <p>
-    <label for="continent">Continent</label>
-    <select id="continent" name="continent" onchange="update_countries(this, document.getElementById('country'));">
-        <option value="">All continents</option>
-    {% for continent in continents %}
-        <option value="{{continent|escape}}">{{continent|escape}}</option>
-    {% endfor %}
-    </select>
-    </p>
-
-    <p>
-    <label for="country">Country</label>
-    <select name="country" id="country">
-        <option value="">All countries</option>
-    {% for country in countries %}
-        <option value="{{country.1|escape}}">{{country.1|escape}}</option>
-    {% endfor %}
-    </select>
+    <label for="location">{% trans "Location" %}</label>
+    <input type="text" name="location" id="location" />
     </p>
 
     <p>
@@ -36,7 +38,7 @@
     <select id="ethnic_group" name="ethnic_group">
         <option value="">All ethnic groups</option>
     {% for group in ethnic_groups %}
-        <option value="{{group|escape}}">{{group|escape}}</option>
+        <option value="{{group.id}}">{{group|escape}}</option>
     {% endfor %}
     </select>
     </p>
