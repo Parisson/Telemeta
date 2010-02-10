@@ -1,21 +1,21 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2007 Samalyse SARL
-
+# Copyright (C) 2007-2010 Samalyse SARL
+#
 # This software is a computer program whose purpose is to backup, analyse,
 # transcode and stream any audio content with its metadata over a web frontend.
-
+#
 # This software is governed by the CeCILL  license under French law and
 # abiding by the rules of distribution of free software.  You can  use,
 # modify and/ or redistribute the software under the terms of the CeCILL
 # license as circulated by CEA, CNRS and INRIA at the following URL
 # "http://www.cecill.info".
-
+#
 # As a counterpart to the access to the source code and  rights to copy,
 # modify and redistribute granted by the license, users are provided only
 # with a limited warranty  and the software's author,  the holder of the
 # economic rights,  and the successive licensors  have only  limited
 # liability.
-
+#
 # In this respect, the user's attention is drawn to the risks associated
 # with loading,  using,  modifying and/or developing or reproducing the
 # software by the user in light of its specific status of free software,
@@ -26,74 +26,173 @@
 # requirements in conditions enabling the security of their systems and/or
 # data to be ensured and,  more generally, to use and operate it in the
 # same conditions as regards security.
-
+#
 # The fact that you are presently reading this means that you have had
 # knowledge of the CeCILL license and that you accept its terms.
 #
 # Authors: Olivier Guilyardi <olivier@samalyse.com>
 #          David LIPSZYC <davidlipszyc@gmail.com>
 
-from django import db
-from django.db.models import Manager, Q
-from telemeta.models.core import EnhancedQuerySet, EnhancedManager
+from django.db.models import Q
+from telemeta.models.core import *
+from telemeta.util.unaccent import unaccent, unaccent_icmp
 import re
-from django.core.exceptions import ObjectDoesNotExist
-from django import db
-import _mysql_exceptions
-from telemeta.util.unaccent import unaccent_icmp, unaccent
 
-class CoreQuerySet(EnhancedQuerySet):
-    "Base class for all query sets"
+class MediaItemQuerySet(CoreQuerySet):
+    "Base class for all media item query sets"
+    
+    def quick_search(self, pattern):
+        "Perform a quick search on id and title"
+        return self.filter(
+            self.word_search_q('id', pattern) |
+            self.word_search_q('title', pattern) |  
+            self.word_search_q('author', pattern)   
+        )
 
-    def none(self): # redundant with none() in recent Django svn
-        "Return an empty result set"
-        return self.extra(where = ["0 = 1"])
-
-    def word_search_q(self, field, pattern):
-        words = re.split("[ .*-]+", pattern)
-        q = Q()
-        for w in words:
-            if len(w) >= 3:
-                kwargs = {field + '__icontains': w}
-                q &= Q(**kwargs)
-
-        return q
-
-    def word_search(self, field, pattern):
-        return self.filter(self.word_search_q(field, pattern))
-        
-    def _by_change_time(self, type, from_time = None, until_time = None):
-        "Search between two revision dates"
-        where = ["element_type = '%s'" % type]
-        if from_time:
-            where.append("time >= '%s'" % from_time.strftime('%Y-%m-%d %H:%M:%S'))
-        if until_time:
-            where.append("time <= '%s'" % until_time.strftime('%Y-%m-%d %H:%M:%S'))
+    def without_collection(self):        
+        "Find items which do not belong to any collection"
         return self.extra(
-            where = ["id IN (SELECT DISTINCT element_id FROM revisions WHERE %s)" % " AND ".join(where)]);
+            where = ["collection_id NOT IN (SELECT id FROM media_collections)"]);
 
-class CoreManager(EnhancedManager):
-    "Base class for all models managers"
+    def by_recording_date(self, from_date, to_date = None):
+        "Find items by recording date"
+        if to_date is None:
+            return (self.filter(recorded_from_date__lte=from_date, recorded_to_date__gte=from_date))
+        else :
+            return (self.filter(Q(recorded_from_date__range=(from_date, to_date)) 
+                                | Q(recorded_to_date__range=(from_date, to_date))))
 
-    def none(self, *args, **kwargs):
-        ""
-        return self.get_query_set().none(*args, **kwargs)
+    def by_title(self, pattern):
+        "Find items by title"
+        # to (sort of) sync with models.media.MediaItem.get_title()
+        return self.filter(self.word_search_q("title", pattern) | self.word_search_q("collection__title", pattern))
 
-    def get(self, **kwargs):
-        if kwargs.has_key('public_id'):
-            try:
-                args = kwargs.copy()
-                args['code'] = kwargs['public_id']
-                args.pop('public_id')
-                return super(CoreManager, self).get(**args)
-            except ObjectDoesNotExist:
-                args = kwargs.copy()
-                args['id'] = kwargs['public_id']
-                args.pop('public_id')
-                return super(CoreManager, self).get(**args)
+    def by_publish_year(self, from_year, to_year = None):
+        "Find items by publishing year"
+        if to_year is None:
+            to_year = from_year
+        return self.filter(collection__year_published__range=(from_year, to_year)) 
 
-        return super(CoreManager, self).get(**kwargs)
-                
+    def by_change_time(self, from_time = None, until_time = None):
+        "Find items by last change time"  
+        return self._by_change_time('item', from_time, until_time)
+
+    def by_location(self, location):
+        "Find items by location"
+        from telemeta.models import LocationRelation
+        descendants = LocationRelation.objects.filter(ancestor_location=location)
+        return self.filter(Q(location=location) | Q(location__in=descendants))
+           
+    @staticmethod
+    def __name_cmp(obj1, obj2):
+        return unaccent_icmp(obj1.name, obj2.name)
+
+    def countries(self, group_by_continent=False):
+        countries = []
+        from telemeta.models import Location
+        for id in self.filter(location__isnull=False).values_list('location', flat=True).distinct():
+            location = Location.objects.get(pk=id)
+            for l in location.countries():
+                if not l in countries:
+                    countries.append(l)
+
+        if group_by_continent:
+            grouped = {}
+
+            for country in countries:
+                for continent in country.continents():
+                    if not grouped.has_key(continent):
+                        grouped[continent] = []
+
+                    grouped[continent].append(country)
+                    
+            keys = grouped.keys()
+            keys.sort(self.__name_cmp)
+            ordered = []
+            for c in keys:
+                grouped[c].sort(self.__name_cmp)
+                ordered.append({'continent': c, 'countries': grouped[c]})
+            
+            countries = ordered
+            
+        return countries                    
+
+    def virtual(self, *args):
+        qs = self
+        need_collection = False
+        related = []
+        from telemeta.models import Location
+        for f in args:
+            if f == 'apparent_collector':
+                related.append('collection')
+                qs = qs.extra(select={f: 
+                    'IF(collector_from_collection, '
+                        'IF(media_collections.collector_is_creator, '
+                           'media_collections.creator, '
+                           'media_collections.collector),'
+                        'media_items.collector)'})
+            elif f == 'country_or_continent':
+                related.append('location')
+                qs = qs.extra(select={f:
+                    'IF(locations.type = ' + str(Location.COUNTRY) + ' '
+                    'OR locations.type = ' + str(Location.CONTINENT) + ',' 
+                    'locations.name, '
+                    '(SELECT l2.name FROM location_relations AS r INNER JOIN locations AS l2 '
+                    'ON r.ancestor_location_id = l2.id '
+                    'WHERE r.location_id = media_items.location_id AND l2.type = ' + str(Location.COUNTRY) + ' ))'
+                })
+            else:
+                raise Exception("Unsupported virtual field: %s" % f)
+
+        if related:
+            qs = qs.select_related(*related)
+
+        return qs                
+
+    def ethnic_groups(self):
+        return self.filter(ethnic_group__isnull=False) \
+               .values_list('ethnic_group__name', flat=True) \
+               .distinct().order_by('ethnic_group__name')        
+
+class MediaItemManager(CoreManager):
+    "Manage media items queries"
+
+    def get_query_set(self):
+        "Return media query sets"
+        return MediaItemQuerySet(self.model)
+
+    def enriched(self):
+        "Query set with additional virtual fields such as apparent_collector and country_or_continent"
+        return self.get_query_set().virtual('apparent_collector', 'country_or_continent')
+
+    def quick_search(self, *args, **kwargs):
+        return self.get_query_set().quick_search(*args, **kwargs)
+    quick_search.__doc__ = MediaItemQuerySet.quick_search.__doc__
+
+    def without_collection(self, *args, **kwargs):
+        return self.get_query_set().without_collection(*args, **kwargs)
+    without_collection.__doc__ = MediaItemQuerySet.without_collection.__doc__   
+
+    def by_recording_date(self, *args, **kwargs):
+        return self.get_query_set().by_recording_date(*args, **kwargs)
+    by_recording_date.__doc__ = MediaItemQuerySet.by_recording_date.__doc__
+
+    def by_title(self, *args, **kwargs):
+        return self.get_query_set().by_title(*args, **kwargs)
+    by_title.__doc__ = MediaItemQuerySet.by_title.__doc__
+
+    def by_publish_year(self, *args, **kwargs):
+        return self.get_query_set().by_publish_year(*args, **kwargs)
+    by_publish_year.__doc__ = MediaItemQuerySet.by_publish_year.__doc__
+
+    def by_change_time(self, *args, **kwargs):
+        return self.get_query_set().by_change_time(*args, **kwargs)
+    by_change_time.__doc__ = MediaItemQuerySet.by_change_time.__doc__    
+
+    def by_location(self, *args, **kwargs):
+        return self.get_query_set().by_location(*args, **kwargs)
+    by_location.__doc__ = MediaItemQuerySet.by_location.__doc__    
+
 class MediaCollectionQuerySet(CoreQuerySet):
 
     def quick_search(self, pattern):
@@ -182,7 +281,6 @@ class MediaCollectionManager(CoreManager):
 
     def stat_continents(self, only_continent=None):      
         "Return the number of collections by continents and countries as a tree"
-        from telemeta.models import MediaItem, Location
 
         countries = []
         for lid in MediaItem.objects.filter(location__isnull=False).values_list('location', flat=True).distinct():
@@ -213,182 +311,19 @@ class MediaCollectionManager(CoreManager):
         
         return ordered
 
-
-class MediaItemQuerySet(CoreQuerySet):
-    "Base class for all media item query sets"
-    
-    def quick_search(self, pattern):
-        "Perform a quick search on id and title"
-        return self.filter(
-            self.word_search_q('id', pattern) |
-            self.word_search_q('title', pattern) |  
-            self.word_search_q('author', pattern)   
-        )
-
-    def without_collection(self):        
-        "Find items which do not belong to any collection"
-        return self.extra(
-            where = ["collection_id NOT IN (SELECT id FROM media_collections)"]);
-
-    def by_recording_date(self, from_date, to_date = None):
-        "Find items by recording date"
-        if to_date is None:
-            return (self.filter(recorded_from_date__lte=from_date, recorded_to_date__gte=from_date))
-        else :
-            return (self.filter(Q(recorded_from_date__range=(from_date, to_date)) 
-                                | Q(recorded_to_date__range=(from_date, to_date))))
-
-    def by_title(self, pattern):
-        "Find items by title"
-        # to (sort of) sync with models.media.MediaItem.get_title()
-        return self.filter(self.word_search_q("title", pattern) | self.word_search_q("collection__title", pattern))
-
-    def by_publish_year(self, from_year, to_year = None):
-        "Find items by publishing year"
-        if to_year is None:
-            to_year = from_year
-        return self.filter(collection__year_published__range=(from_year, to_year)) 
-
-    def by_change_time(self, from_time = None, until_time = None):
-        "Find items by last change time"  
-        return self._by_change_time('item', from_time, until_time)
-
-    def by_location(self, location):
-        "Find items by location"
-        from telemeta.models import LocationRelation
-        descendants = LocationRelation.objects.filter(ancestor_location=location)
-        return self.filter(Q(location=location) | Q(location__in=descendants))
-           
-    @staticmethod
-    def __name_cmp(obj1, obj2):
-        return unaccent_icmp(obj1.name, obj2.name)
-
-    def countries(self, group_by_continent=False):
-        from telemeta.models import Location
-        countries = []
-        for id in self.filter(location__isnull=False).values_list('location', flat=True).distinct():
-            location = Location.objects.get(pk=id)
-            for l in location.countries():
-                if not l in countries:
-                    countries.append(l)
-
-        if group_by_continent:
-            grouped = {}
-
-            for country in countries:
-                for continent in country.continents():
-                    if not grouped.has_key(continent):
-                        grouped[continent] = []
-
-                    grouped[continent].append(country)
-                    
-            keys = grouped.keys()
-            keys.sort(self.__name_cmp)
-            ordered = []
-            for c in keys:
-                grouped[c].sort(self.__name_cmp)
-                ordered.append({'continent': c, 'countries': grouped[c]})
-            
-            countries = ordered
-            
-        return countries                    
-
-    def virtual(self, *args):
-        qs = self
-        need_collection = False
-        related = []
-        for f in args:
-            if f == 'apparent_collector':
-                related.append('collection')
-                qs = qs.extra(select={f: 
-                    'IF(collector_from_collection, '
-                        'IF(media_collections.collector_is_creator, '
-                           'media_collections.creator, '
-                           'media_collections.collector),'
-                        'media_items.collector)'})
-            elif f == 'country_or_continent':
-                from telemeta.models import Location
-                related.append('location')
-                qs = qs.extra(select={f:
-                    'IF(locations.type = ' + str(Location.COUNTRY) + ' '
-                    'OR locations.type = ' + str(Location.CONTINENT) + ',' 
-                    'locations.name, '
-                    '(SELECT l2.name FROM location_relations AS r INNER JOIN locations AS l2 '
-                    'ON r.ancestor_location_id = l2.id '
-                    'WHERE r.location_id = media_items.location_id AND l2.type = ' + str(Location.COUNTRY) + ' ))'
-                })
-            else:
-                raise Exception("Unsupported virtual field: %s" % f)
-
-        if related:
-            qs = qs.select_related(*related)
-
-        return qs                
-
-    def ethnic_groups(self):
-        return self.filter(ethnic_group__isnull=False) \
-               .values_list('ethnic_group__name', flat=True) \
-               .distinct().order_by('ethnic_group__name')        
-
-class MediaItemManager(CoreManager):
-    "Manage media items queries"
-
-    def get_query_set(self):
-        "Return media query sets"
-        return MediaItemQuerySet(self.model)
-
-    def enriched(self):
-        "Query set with additional virtual fields such as apparent_collector and country_or_continent"
-        return self.get_query_set().virtual('apparent_collector', 'country_or_continent')
-
-    def quick_search(self, *args, **kwargs):
-        return self.get_query_set().quick_search(*args, **kwargs)
-    quick_search.__doc__ = MediaItemQuerySet.quick_search.__doc__
-
-    def without_collection(self, *args, **kwargs):
-        return self.get_query_set().without_collection(*args, **kwargs)
-    without_collection.__doc__ = MediaItemQuerySet.without_collection.__doc__   
-
-    def by_recording_date(self, *args, **kwargs):
-        return self.get_query_set().by_recording_date(*args, **kwargs)
-    by_recording_date.__doc__ = MediaItemQuerySet.by_recording_date.__doc__
-
-    def by_title(self, *args, **kwargs):
-        return self.get_query_set().by_title(*args, **kwargs)
-    by_title.__doc__ = MediaItemQuerySet.by_title.__doc__
-
-    def by_publish_year(self, *args, **kwargs):
-        return self.get_query_set().by_publish_year(*args, **kwargs)
-    by_publish_year.__doc__ = MediaItemQuerySet.by_publish_year.__doc__
-
-    def by_change_time(self, *args, **kwargs):
-        return self.get_query_set().by_change_time(*args, **kwargs)
-    by_change_time.__doc__ = MediaItemQuerySet.by_change_time.__doc__    
-
-    def by_location(self, *args, **kwargs):
-        return self.get_query_set().by_location(*args, **kwargs)
-    by_location.__doc__ = MediaItemQuerySet.by_location.__doc__    
-
 class LocationQuerySet(CoreQuerySet):
-    def by_flatname(self, flatname):
-        map = LocationManager.flatname_map()
-        return self.filter(pk=map[flatname])
-
-class LocationManager(CoreManager):
     __flatname_map = None
 
-    def get_query_set(self):
-        "Return location query set"
-        return LocationQuerySet(self.model)
+    def by_flatname(self, flatname):
+        map = self.flatname_map()
+        return self.filter(pk=map[flatname])
 
-    @classmethod
-    def flatname_map(cls):
-        if cls.__flatname_map:
-            return cls.__flatname_map
+    def flatname_map(self):
+        if self.__class__.__flatname_map:
+            return self.__class__.__flatname_map
 
-        from telemeta.models import Location
         map = {}
-        locations = Location.objects.filter(Q(type=Location.COUNTRY) | Q(type=Location.CONTINENT))
+        locations = self.filter(Q(type=self.model.COUNTRY) | Q(type=self.model.CONTINENT))
         for l in locations:
             flatname = unaccent(l.name).lower()
             flatname = re.sub('[^a-z]', '_', flatname)
@@ -396,11 +331,20 @@ class LocationManager(CoreManager):
                 flatname = '_' + flatname
             map[flatname] = l.id
 
-        cls.__flatname_map = map
+        self.__class__.__flatname_map = map
         return map
-            
+
+class LocationManager(CoreManager):
+
+    def get_query_set(self):
+        "Return location query set"
+        return LocationQuerySet(self.model)
+
     def by_flatname(self, *args, **kwargs):
         return self.get_query_set().by_flatname(*args, **kwargs)
     by_flatname.__doc__ = LocationQuerySet.by_flatname.__doc__    
 
-    
+    def flatname_map(self, *args, **kwargs):
+        return self.get_query_set().flatname_map(*args, **kwargs)
+    flatname_map.__doc__ = LocationQuerySet.flatname_map.__doc__    
+
