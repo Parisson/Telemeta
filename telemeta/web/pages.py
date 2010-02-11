@@ -44,7 +44,7 @@ class PageAttachment(object):
         file.close()
 
 def language_code(request=None):
-    code = (request and getattr(request, 'LANGUAGE_CODE')) or settings.LANGUAGE_CODE
+    code = (request and getattr(request, 'LANGUAGE_CODE', None)) or settings.LANGUAGE_CODE
     cut = re.split('[_-]', code)
     code = cut[0]
     return code.lower()
