@@ -34,7 +34,7 @@
     <td>
     {% if item.recorded_from_date %}
         {{ item.recorded_from_date.year }}
-        {% if item.recorded_to_date and item.recorded_to_date.year != item.recorded_from_date.year %}
+        {% if item.recorded_to_date and not item.recorded_to_date.year|equals:item.recorded_from_date.year %}
             - {{ item.recorded_to_date.year }}
         {% endif %}
     {% endif %}

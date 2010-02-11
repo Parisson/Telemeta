@@ -174,7 +174,7 @@ class DurationField(models.Field):
     def get_prep_value(self, value):
         return self.to_python(value)
 
-    def get_db_prep_value(self, value, connection, prepared=False):
+    def get_db_prep_value(self, value, connection=None, prepared=False):
         # Casts times into the format expected by the backend
         return value.as_seconds()
 
@@ -332,12 +332,12 @@ class ModelCore(EnhancedModel):
                 required.append(field)
         return required
 
-    def save(self, force_insert=False, force_update=False, using=None):
+    def save(self, force_insert=False, force_update=False):
         required = self.required_fields()
         for field in required:
             if not getattr(self, field.name):
                 raise RequiredFieldError(self, field)
-        super(ModelCore, self).save(force_insert, force_update, using)
+        super(ModelCore, self).save(force_insert, force_update)
 
     @classmethod
     def get_dom_name(cls):

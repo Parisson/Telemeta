@@ -54,9 +54,9 @@ class MediaResource(ModelCore):
         return _('Private data')
     public_access_label.verbose_name = _('public access')
 
-    def save_with_revision(self, user, force_insert=False, force_update=False, using=None):
+    def save_with_revision(self, user, force_insert=False, force_update=False):
         "Save a media object and add a revision"
-        self.save(force_insert, force_update, using)
+        self.save(force_insert, force_update)
         Revision.touch(self, user)    
 
     def get_revision(self):
@@ -192,12 +192,12 @@ class MediaCollection(MediaResource):
 
         return False
 
-    def save(self, force_insert=False, force_update=False, using=None):
+    def save(self, force_insert=False, force_update=False):
         if not self.code:
             raise RequiredFieldError(self, self._meta.get_field('code'))
         if not self.is_valid_code(self.code):
             raise MediaInvalidCodeError("%s is not a valid code for this collection" % self.code)
-        super(MediaCollection, self).save(force_insert, force_update, using)
+        super(MediaCollection, self).save(force_insert, force_update)
 
     class Meta(MetaCore):
         db_table = 'media_collections'
@@ -273,13 +273,13 @@ class MediaItem(MediaResource):
 
         return False
 
-    def save(self, force_insert=False, force_update=False, using=None):
+    def save(self, force_insert=False, force_update=False):
         if not self.code:
             raise RequiredFieldError(self, self._meta.get_field('code'))
         if not self.is_valid_code(self.code):
             raise MediaInvalidCodeError("%s is not a valid item code for collection %s" 
                                         % (self.code, self.collection.code))
-        super(MediaItem, self).save(force_insert, force_update, using)
+        super(MediaItem, self).save(force_insert, force_update)
 
     def computed_duration(self):
         "Tell the length in seconds of this item media data"

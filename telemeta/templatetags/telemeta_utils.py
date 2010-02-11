@@ -205,3 +205,7 @@ def split(value, sep=','):
 @register.simple_tag
 def variable_link(object, url_name, url_key):
     return reverse(url_name, args=[field_value(object, url_key)])
+
+@register.filter
+def equals(value1, value2):
+    return value1 == value2
