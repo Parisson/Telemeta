@@ -102,6 +102,7 @@ class Location(ModelCore):
 
     class Meta(MetaCore):
         db_table = 'locations'
+        verbose_name = _('location')
 
     def __unicode__(self):
         return self.name

@@ -1,5 +1,9 @@
 {% extends "telemeta/base.html" %}
+{% load telemeta_utils %}
 {% block content %}
+{{ page_content|rst }}
+
+<!--
 <div class="homelinks">
 <p><a href="{% url telemeta-collections %}">All collections</a><br />
   Browse all collections</p>
@@ -10,4 +14,5 @@
 <p><a href="{% url telemeta-admin %}">Administration</a><br />
   Configure Telemeta and manage users</p>
 </div>
+-->
 {% endblock %}

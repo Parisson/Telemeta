@@ -8,6 +8,10 @@ from django import template
 from django.utils.text import capfirst
 from telemeta import models
 from django.utils.translation import ungettext
+from docutils.core import publish_parts
+from django.utils.encoding import smart_str, force_unicode
+from django.utils.safestring import mark_safe
+import re
 
 register = template.Library()
 
@@ -165,10 +169,13 @@ def prepend(str, prefix):
     return ''
 
 @register.simple_tag
-def field_label(model, field):
+def field_label(model, field=None):
     if isinstance(model, basestring):
         model = getattr(models, model)
             
+    if not field:
+        return capfirst(unicode(model._meta.verbose_name))
+
     return capfirst(unicode(model.field_label(field)))
 
 @register.simple_tag
@@ -209,3 +216,36 @@ def variable_link(object, url_name, url_key):
 @register.filter
 def equals(value1, value2):
     return value1 == value2
+
+@register.filter
+def rst(content):
+    parsed = ""
+    path = getattr(content, 'path', '')
+    if isinstance(content, basestring):
+        content = content.split("\n")
+
+    for line in content:
+        match = re.match('^(\.\. *(?:_[^:]*:|image::) *)([^ ]+) *$', line)
+        if match:
+            directive, urlname = match.groups()
+            line = directive
+            try:
+                i = urlname.index('telemeta-')
+            except ValueError:
+                i = -1
+            if i == 0:
+                line += reverse(urlname)
+            elif urlname[:1] != '/':
+                print '|%s|' % urlname
+                line += reverse('telemeta-flatpage', args=[path + '/../' + urlname])
+            else:
+                line += urlname
+
+        parsed += line + "\n"
+
+    parts = publish_parts(source=smart_str(parsed), writer_name="html4css1", settings_overrides={})
+    return mark_safe('<div class="rst-content">\n' + force_unicode(parts["html_body"]) + '</div>')
+rst.is_safe = True
+
+
+

@@ -40,7 +40,7 @@ from django.template import Context, loader
 from django import template
 from django.http import HttpResponse
 from django.http import Http404
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, redirect
 from django.views.generic import list_detail
 from django.conf import settings
 
@@ -56,6 +56,7 @@ import telemeta.interop.oai as oai
 from telemeta.interop.oaidatasource import TelemetaOAIDataSource
 from django.core.exceptions import ObjectDoesNotExist
 from telemeta.util.unaccent import unaccent
+from telemeta.web import pages
 
 class WebView(Component):
     """Provide web UI methods"""
@@ -68,7 +69,7 @@ class WebView(Component):
         """Render the homepage"""
 
         template = loader.get_template('telemeta/index.html')
-        context = Context({})
+        context = Context({'page_content': pages.get_page_content(request, 'parts/home', True)})
         return HttpResponse(template.render(context))
 
     def collection_detail(self, request, public_id, template=''):
@@ -390,4 +391,14 @@ class WebView(Component):
         args.update(request.POST)
         return HttpResponse(provider.handle(args), mimetype='text/xml')
         
+    def render_flatpage(self, request, path):
+        try:
+            content = pages.get_page_content(request, path)
+        except pages.MalformedPagePath:
+            return redirect(request.path + '/')
 
+        if isinstance(content, pages.PageAttachment):
+            return HttpResponse(content, content.mimetype())
+        else:
+            return render_to_response('telemeta/flatpage.html', {'page_content': content })
+        

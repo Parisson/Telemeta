@@ -1,4 +1,4 @@
-* {margin: 0; padding: 0;}
+body {margin: 0; padding: 0;}
 a {text-decoration: none; color: #969696;}
 a img {border: none;}
 html, input, select, textarea, h1, h2, h3, h4, h5, h6 {
@@ -23,7 +23,7 @@ a:link:hover, a:visited:hover {
 }
 a img { border: none; }
 
-h3 {
+.rst-content h1, h3 {
     font-size: 1.2em;
     font-weight: bold;
     color: #353535;
@@ -619,4 +619,9 @@ table.listing tbody tr:hover { background: #f7f8fa !important }
 .gmap {
     border: solid 1px #888;
     margin-top: 0.8em;
+}
+
+img.home-image {
+    margin: 0 1.5em 1.5em 0;
+    float: left;
 }
