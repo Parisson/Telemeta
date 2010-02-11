@@ -223,7 +223,7 @@ class MediaItem(MediaResource):
     location_comment      = CharField(_('location details'))
     ethnic_group          = WeakForeignKey('EthnicGroup', related_name="items", 
                                            verbose_name=_('population / social group'))
-    title                 = CharField(_('title'), required=True)
+    title                 = CharField(_('title'))
     alt_title             = CharField(_('original title / translation'))
     author                = CharField(_('author'))
     vernacular_style      = WeakForeignKey('VernacularStyle', related_name="items", 
@@ -274,9 +274,7 @@ class MediaItem(MediaResource):
         return False
 
     def save(self, force_insert=False, force_update=False):
-        if not self.code:
-            raise RequiredFieldError(self, self._meta.get_field('code'))
-        if not self.is_valid_code(self.code):
+        if self.code and not self.is_valid_code(self.code):
             raise MediaInvalidCodeError("%s is not a valid item code for collection %s" 
                                         % (self.code, self.collection.code))
         super(MediaItem, self).save(force_insert, force_update)

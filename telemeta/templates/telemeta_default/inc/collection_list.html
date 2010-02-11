@@ -26,7 +26,7 @@
     <td>
     {% if collection.recorded_from_year %}
         {{ collection.recorded_from_year }}
-        {% if collection.recorded_to_year and collection.recorded_to_year != collection.recorded_from_year %}
+        {% if collection.recorded_to_year and not collection.recorded_to_year|equals:collection.recorded_from_year %}
             - {{ collection.recorded_to_year }}
         {% endif %}
     {% endif %}

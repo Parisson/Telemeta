@@ -298,6 +298,12 @@ class DateTimeField(models.DateTimeField):
     def __init__(self, *args, **kwargs):
         super(DateTimeField, self).__init__(*args, **normalize_field(kwargs, '0000-00-00 00:00'))
 
+    def get_db_prep_value(self, value):
+        if value is None and not self.null: 
+            return '0000-00-00 00:00'
+
+        return super(DateTimeField, self).get_db_prep_value(value)
+
 class FileField(models.FileField):
     """FileField normalized with normalize_field()"""
 
@@ -315,6 +321,12 @@ class DateField(models.DateField):
 
     def __init__(self, *args, **kwargs):
         super(DateField, self).__init__(*args, **normalize_field(kwargs, '0000-00-00'))
+
+    def get_db_prep_value(self, value):
+        if value is None and not self.null: 
+            return '0000-00-00'
+
+        return super(DateField, self).get_db_prep_value(value)
 
 class RequiredFieldError(Exception):
     def __init__(self, model, field):

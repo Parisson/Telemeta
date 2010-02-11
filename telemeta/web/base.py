@@ -46,6 +46,7 @@ from django.conf import settings
 
 import telemeta
 from telemeta.models import MediaItem, Location, MediaCollection
+from telemeta.models import dublincore
 from telemeta.core import Component, ExtensionPoint
 from telemeta.export import *
 from telemeta.visualization import *
@@ -153,7 +154,7 @@ class WebView(Component):
         item = MediaItem.objects.get(public_id=public_id)
 
         infile = item.file.path
-        metadata = item.to_dublincore().flatten()
+        metadata = dublincore.express_item(item).flatten()
         stream = exporter.process(item.id, infile, metadata)
 
         response = HttpResponse(stream, mimetype = mime_type)
