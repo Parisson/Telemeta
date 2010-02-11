@@ -144,18 +144,20 @@ class DurationField(models.Field):
     __metaclass__ = models.SubfieldBase
 
     default_error_messages = {
-        'invalid': _('Enter a valid duration in HH:MM[:ss[.uuuuuu]] format.'),
+        'invalid': _('Enter a valid duration in HH:MM[:ss] format.'),
     }
 
     def __init__(self, *args, **kwargs):
         super(DurationField, self).__init__(*args, **normalize_field(kwargs, '00:00'))
 
-    def get_internal_type(self):
-        return 'TimeField'
+    def db_type(self):
+        return 'int'
 
     def to_python(self, value):
         if value is None:
             return None
+        if isinstance(value, int) or isinstance(value, long):
+            return Duration(seconds=value)
         if isinstance(value, datetime.time):
             return Duration(hours=value.hour, minutes=value.minute, seconds=value.second)
         if isinstance(value, datetime.datetime):
@@ -174,7 +176,7 @@ class DurationField(models.Field):
 
     def get_db_prep_value(self, value, connection, prepared=False):
         # Casts times into the format expected by the backend
-        return unicode(value)
+        return value.as_seconds()
 
     def value_to_string(self, obj):
         val = self._get_val_from_obj(obj)
