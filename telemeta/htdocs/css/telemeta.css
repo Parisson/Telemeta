@@ -625,12 +625,13 @@ table.listing tbody tr:hover { background: #f7f8fa !important }
     text-align: justify;
 }
 
-.rst-content img {
-    margin: 1.5em;
+.rst-content img.align-left {
+    margin-right: 1em;
+    margin-top: 0.6ex;
 }
 
-.rst-content img.align-left, .rst-content img.align-right {
-    margin-left: 0;
+.rst-content img.align-right {
+    margin-left: 1em;
     margin-top: 0.6ex;
 }
 
