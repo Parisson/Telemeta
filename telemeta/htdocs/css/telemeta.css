@@ -621,6 +621,10 @@ table.listing tbody tr:hover { background: #f7f8fa !important }
     margin-top: 0.8em;
 }
 
+.rst-content {
+    text-align: justify;
+}
+
 .rst-content img {
     margin: 1.5em;
 }
