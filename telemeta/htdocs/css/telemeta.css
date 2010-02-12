@@ -629,23 +629,21 @@ table.listing tbody tr:hover { background: #f7f8fa !important }
     margin: 1.5em;
 }
 
-.rst-content img.align-left {
+.rst-content img.align-left, .rst-content img.align-right {
     margin-left: 0;
-    clear: left;
+    margin-top: 0.6ex;
 }
 
-.rst-content img.align-right {
-    margin-right: 0;
+.module-set {
+    float: right;
     clear: right;
 }
 
 .module {
-    float: right;
     border: 1px dotted #999;
     background: #EEE;
     padding: 1em;
     margin: 0 0 1.5em 1.5em;
-    clear: right;
 }
 
 .module h3 {

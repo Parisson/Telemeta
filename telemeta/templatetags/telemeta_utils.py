@@ -11,6 +11,7 @@ from django.utils.translation import ungettext
 from docutils.core import publish_parts
 from django.utils.encoding import smart_str, force_unicode
 from django.utils.safestring import mark_safe
+from django import db
 import re
 
 register = template.Library()
@@ -74,7 +75,9 @@ def build_query_string(vars):
       import urllib
       args = []
       for k, v in vars.iteritems():
-          if not isinstance(v, basestring):
+          if isinstance(v, db.models.Model):
+              v = v.pk
+          elif not isinstance(v, basestring):
               v = unicode(v)
           args.append(urlquote(k) + '=' + urlquote(v))
 
@@ -225,7 +228,7 @@ def render_flatpage(content):
         content = content.split("\n")
 
     for line in content:
-        match = re.match('^(\.\. *(?:_[^:]*:|image::) *)([^ ]+) *$', line)
+        match = re.match('^(\.\. *(?:_[^:]*:|(?:\|\w+\|)? *image::) *)([^ ]+) *$', line)
         if match:
             directive, urlname = match.groups()
             line = directive

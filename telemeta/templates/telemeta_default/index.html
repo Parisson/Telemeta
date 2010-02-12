@@ -4,6 +4,7 @@
 
 {% block content %}
 <div class="home-content">
+<div class="module-set">
 <div class="module">
     <h3>{% trans "Geographic Navigator" %}</h3>
     <a class="image-link" href="{% url telemeta-geo-continents %}">
@@ -17,9 +18,10 @@
         <a href="{% url telemeta-item-detail item.public_id %}"><b>{{item}}</b></a>
         <br />
         <span class="info">{{item.computed_duration}} {{item.apparent_collector|prepend:' - '}} - {{item.country_or_continent}}</span>
-        </li>
+    </li>
     {% endfor %}
-    </div>
+    </ul>
+</div>    
 </div>
 <div class="home-description">
 {{ page_content|render_flatpage }}
