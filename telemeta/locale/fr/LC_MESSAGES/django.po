@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-09 22:15+0100\n"
+"POT-Creation-Date: 2010-02-12 14:31+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Olivier Guilyardi <olivier samalyse com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,408 +16,410 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: models/core.py:130
+#: models/core.py:142
 msgid "Duration"
 msgstr "Durée"
 
-#: models/core.py:135
-msgid "Enter a valid duration in HH:MM[:ss[.uuuuuu]] format."
-msgstr "Entrez une durée valide au format HH:MM[:ss[.uuuuuu]]"
-
-#: models/crem.py:137
-msgid "Metadata only"
-msgstr "Métadonnées uniquement"
-
-#: models/crem.py:139
-msgid "Sound and metadata"
-msgstr "Son et métadonnées"
-
-#: models/crem.py:141
-msgid "Private data"
-msgstr "Données privées"
-
-#: models/crem.py:143 models/crem.py:206 models/crem.py:327
-msgid "public access"
-msgstr "accès public"
-
-#: models/crem.py:160 models/crem.py:324
-msgid "reference"
-msgstr "référence"
-
-#: models/crem.py:162
-msgid "archive format"
-msgstr "format d'archivage"
-
-#: models/crem.py:163 models/crem.py:300
-msgid "old code"
-msgstr "ancienne cote"
-
-#: models/crem.py:164 models/crem.py:301
-msgid "code"
-msgstr "cote"
-
-#: models/crem.py:165 models/crem.py:309 models/crem.py:396
-msgid "title"
-msgstr "titre"
-
-#: models/crem.py:166 models/crem.py:310
-msgid "original title / translation"
-msgstr "titre original / traduction"
-
-#: models/crem.py:167
-msgid "number of components (medium / piece)"
-msgstr "nb de composants (support / pièce)"
-
-#: models/crem.py:169
-msgid "secondary edition"
-msgstr "réédition"
-
-#: models/crem.py:170
-msgid "depositor / contributor"
-msgstr "déposant / contributeur"
-
-#: models/crem.py:171
-msgid "author of published notice"
-msgstr "auteur de la notice éditée"
-
-#: models/crem.py:172
-msgid "related documentation"
-msgstr "documentation associée"
-
-#: models/crem.py:173 models/crem.py:318
-msgid "recordist"
-msgstr "enregistré par"
-
-#: models/crem.py:174
-msgid "recordist identical to depositor"
-msgstr "collecteur identique au déposant"
-
-#: models/crem.py:176
-msgid "publisher / status"
-msgstr "éditeur / statut"
-
-#: models/crem.py:177
-msgid "published"
-msgstr "édité"
-
-#: models/crem.py:178
-msgid "year published"
-msgstr "année de parution"
-
-#: models/crem.py:180
-msgid "publisher collection"
-msgstr "collection éditeur"
-
-#: models/crem.py:181
-msgid "publisher serial number"
-msgstr "numéro dans la série"
-
-#: models/crem.py:182
-msgid "bibliographic references"
-msgstr "références bibliographiques"
-
-#: models/crem.py:184
-msgid "mode of acquisition"
-msgstr "mode d'acquisition"
-
-#: models/crem.py:185 models/crem.py:325
-msgid "comment"
-msgstr "commentaire"
-
-#: models/crem.py:187
-msgid "record author"
-msgstr "rédacteur fiche"
-
-#: models/crem.py:189
-msgid "record writer"
-msgstr "saisie fiche"
-
-#: models/crem.py:191
-msgid "legal rights"
-msgstr "droit d'utilisation"
-
-#: models/crem.py:192
-msgid "copies"
-msgstr "autres exemplaires"
-
-#: models/crem.py:193
-msgid "recording year (from)"
-msgstr "année d'enregistrement (depuis)"
-
-#: models/crem.py:194
-msgid "recording year (until)"
-msgstr "année d'enregistrement (jusqu'à)"
-
-#: models/crem.py:196
-msgid "recording context"
-msgstr "context d'enregistrement"
-
-#: models/crem.py:197 models/crem.py:302
-msgid "approximative duration"
-msgstr "durée approximative"
-
-#: models/crem.py:198
-msgid "document type"
-msgstr "type de document"
-
-#: models/crem.py:199
-msgid "archiver notes"
-msgstr "notes de l'archiviste"
-
-#: models/crem.py:200
-msgid "status"
-msgstr "etat"
-
-#: models/crem.py:201
-msgid "CNRS depositor"
-msgstr "déposant CNRS"
-
-#: models/crem.py:202
-msgid "items finished"
-msgstr "fiches faîtes"
-
-#: models/crem.py:203
-msgid "a_informer_07_03"
-msgstr "a_informer_07_03"
-
-#: models/crem.py:205
-msgid "A/D conversion"
-msgstr "numérisation"
-
-#: models/crem.py:243
-msgid "states / nations"
-msgstr "états / nations"
-
-#: models/crem.py:256
-msgid "populations / social groups"
-msgstr "populations / groupes sociaux"
-
-#: models/crem.py:264 models/crem.py:379
-msgid "computed duration"
-msgstr "durée calculée"
-
-#: models/crem.py:298
-msgid "collection"
-msgstr "collection"
-
-#: models/crem.py:299
-msgid "item number"
-msgstr "n° de l'item"
-
-#: models/crem.py:303
-msgid "recording date (from)"
-msgstr "date d'enregistrement (depuis)"
-
-#: models/crem.py:304
-msgid "recording date (until)"
-msgstr "date d'enregistrement (jusqu'à)"
-
-#: models/crem.py:305 models/crem.py:674 models/crem.py:687
-msgid "location"
-msgstr "lieu"
-
-#: models/crem.py:306
-msgid "location details"
-msgstr "précisions lieu"
-
-#: models/crem.py:308 models/crem.py:775
-msgid "population / social group"
-msgstr "population / groupe social"
-
-#: models/crem.py:311
-msgid "author"
-msgstr "auteur"
-
-#: models/crem.py:313
-msgid "vernacular name"
-msgstr "nom vernaculaire"
-
-#: models/crem.py:314
-msgid "comments"
-msgstr "commentaires"
-
-#: models/crem.py:315
-msgid "published reference"
-msgstr "référence éditée"
-
-#: models/crem.py:316
-msgid "moda_execut"
-msgstr "moda_execut"
-
-#: models/crem.py:317
-msgid "copy of"
-msgstr "copie de"
-
-#: models/crem.py:319
-msgid "recordist as in collection"
-msgstr "collecteur identique à la collection"
-
-#: models/crem.py:320
-msgid "cultural area"
-msgstr "aire culturelle"
-
-#: models/crem.py:322
-msgid "generic name"
-msgstr "nom générique"
-
-#: models/crem.py:323
-msgid "recordist selection"
-msgstr "sélection collecteur"
-
-#: models/crem.py:326
-msgid "file"
-msgstr "fichier"
-
-#: models/crem.py:333
-msgid "keywords"
-msgstr "mots-clés"
-
-#: models/crem.py:395 models/crem.py:521 models/crem.py:709
-msgid "item"
-msgstr "item"
-
-#: models/crem.py:397
-msgid "start"
-msgstr "début"
-
-#: models/crem.py:398
-msgid "end"
-msgstr "fin"
-
-#: models/crem.py:408 models/crem.py:725
+#: models/core.py:147
+msgid "Enter a valid duration in HH:MM[:ss] format."
+msgstr "Entrez une durée valide au format HH:MM[:ss]"
+
+#: models/enum.py:41 models/enum.py:124
 msgid "value"
 msgstr "valeur"
 
-#: models/crem.py:478 models/crem.py:488 models/crem.py:552 models/crem.py:578
-#: models/crem.py:667 models/crem.py:765 models/crem.py:776
-msgid "name"
-msgstr "nom"
-
-#: models/crem.py:499 models/crem.py:512
-msgid "instrument"
-msgstr "instrument"
-
-#: models/crem.py:501
-msgid "parent instrument"
-msgstr "instrument parent"
-
-#: models/crem.py:510 models/crem.py:675
-msgid "alias"
-msgstr "alias"
-
-#: models/crem.py:523
-msgid "scientific instrument"
-msgstr "instrument scientifique"
-
-#: models/crem.py:525
-msgid "vernacular instrument"
-msgstr "instrument vernaculaire"
-
-#: models/crem.py:526
-msgid "number"
-msgstr "nombre"
-
-#: models/crem.py:527
-msgid "interprets"
-msgstr "interprètes"
-
-#: models/crem.py:536
-msgid "username"
-msgstr "nom d'utilisateur"
-
-#: models/crem.py:537
-msgid "level"
-msgstr "niveau"
-
-#: models/crem.py:538
-msgid "first name"
-msgstr "prénom"
-
-#: models/crem.py:539
-msgid "last name"
-msgstr "nom de famille"
-
-#: models/crem.py:540
-msgid "phone"
-msgstr "téléphone"
-
-#: models/crem.py:541
-msgid "email"
-msgstr "e-mail"
-
-#: models/crem.py:564
-msgid "playlist"
-msgstr "liste de lecture"
-
-#: models/crem.py:565
-msgid "resource type"
-msgstr "type de ressource"
-
-#: models/crem.py:566
-msgid "resource"
-msgstr "ressource"
-
-#: models/crem.py:576
-msgid "country"
-msgstr "pays"
-
-#: models/crem.py:576
-msgid "continent"
-msgstr "continent"
-
-#: models/crem.py:576
-msgid "other"
-msgstr "autre"
-
-#: models/crem.py:579
-msgid "type"
-msgstr "type"
-
-#: models/crem.py:580
-msgid "complete type"
-msgstr "type complet"
-
-#: models/crem.py:582
-msgid "current location"
-msgstr "lieu actuel"
-
-#: models/crem.py:585 models/crem.py:676
-msgid "authoritative"
-msgstr "officiel"
-
-#: models/crem.py:666
-msgid "identifier"
-msgstr "identifiant"
-
-#: models/crem.py:688
-msgid "ancestor location"
-msgstr "lieu ancêtre"
-
-#: models/crem.py:710
-msgid "keyword"
-msgstr "mot-clé"
-
-#: models/crem.py:724
+#: models/enum.py:123
 msgid "publisher"
 msgstr "éditeur"
 
-#: models/crem.py:738
+#: models/enum.py:134 models/enum.py:145 models/instrument.py:41
+#: models/instrument.py:51 models/location.py:50 models/location.py:142
+#: models/media.py:347
+msgid "name"
+msgstr "nom"
+
+#: models/enum.py:144 models/media.py:225
+msgid "population / social group"
+msgstr "population / groupe social"
+
+#: models/instrument.py:62 models/instrument.py:75
+msgid "instrument"
+msgstr "instrument"
+
+#: models/instrument.py:64
+msgid "parent instrument"
+msgstr "instrument parent"
+
+#: models/instrument.py:73 models/location.py:150
+msgid "alias"
+msgstr "alias"
+
+#: models/location.py:48
+msgid "country"
+msgstr "pays"
+
+#: models/location.py:48
+msgid "continent"
+msgstr "continent"
+
+#: models/location.py:48
+msgid "other"
+msgstr "autre"
+
+#: models/location.py:51
+msgid "type"
+msgstr "type"
+
+#: models/location.py:52
+msgid "complete type"
+msgstr "type complet"
+
+#: models/location.py:54
+msgid "current location"
+msgstr "lieu actuel"
+
+#: models/location.py:57 models/location.py:151
+msgid "authoritative"
+msgstr "officiel"
+
+#: models/location.py:105 models/location.py:149 models/location.py:162
+#: models/media.py:222
+msgid "location"
+msgstr "lieu"
+
+#: models/location.py:141
+msgid "identifier"
+msgstr "identifiant"
+
+#: models/location.py:163
+msgid "ancestor location"
+msgstr "lieu ancêtre"
+
+#: models/media.py:50
+msgid "Metadata only"
+msgstr "Métadonnées uniquement"
+
+#: models/media.py:52
+msgid "Sound and metadata"
+msgstr "Son et métadonnées"
+
+#: models/media.py:54
+msgid "Private data"
+msgstr "Données privées"
+
+#: models/media.py:55 models/media.py:123 models/media.py:244
+msgid "public access"
+msgstr "accès public"
+
+#: models/media.py:77 models/media.py:241
+msgid "reference"
+msgstr "référence"
+
+#: models/media.py:79
+msgid "archive format"
+msgstr "format d'archivage"
+
+#: models/media.py:80 models/media.py:217
+msgid "old code"
+msgstr "ancienne cote"
+
+#: models/media.py:81 models/media.py:218
+msgid "code"
+msgstr "cote"
+
+#: models/media.py:82 models/media.py:226 models/media.py:334
+msgid "title"
+msgstr "titre"
+
+#: models/media.py:83 models/media.py:227
+msgid "original title / translation"
+msgstr "titre original / traduction"
+
+#: models/media.py:84
+msgid "number of components (medium / piece)"
+msgstr "nb de composants (support / pièce)"
+
+#: models/media.py:86
+msgid "secondary edition"
+msgstr "réédition"
+
+#: models/media.py:87
+msgid "depositor / contributor"
+msgstr "déposant / contributeur"
+
+#: models/media.py:88
+msgid "author of published notice"
+msgstr "auteur de la notice éditée"
+
+#: models/media.py:89
+msgid "related documentation"
+msgstr "documentation associée"
+
+#: models/media.py:90 models/media.py:235
+msgid "recordist"
+msgstr "enregistré par"
+
+#: models/media.py:91
+msgid "recordist identical to depositor"
+msgstr "collecteur identique au déposant"
+
+#: models/media.py:93
+msgid "publisher / status"
+msgstr "éditeur / statut"
+
+#: models/media.py:94
+msgid "published"
+msgstr "édité"
+
+#: models/media.py:95
+msgid "year published"
+msgstr "année de parution"
+
+#: models/media.py:97
+msgid "publisher collection"
+msgstr "collection éditeur"
+
+#: models/media.py:98
+msgid "publisher serial number"
+msgstr "numéro dans la série"
+
+#: models/media.py:99
+msgid "bibliographic references"
+msgstr "références bibliographiques"
+
+#: models/media.py:101
+msgid "mode of acquisition"
+msgstr "mode d'acquisition"
+
+#: models/media.py:102 models/media.py:242
+msgid "comment"
+msgstr "commentaire"
+
+#: models/media.py:104
+msgid "record author"
+msgstr "rédacteur fiche"
+
+#: models/media.py:106
+msgid "record writer"
+msgstr "saisie fiche"
+
+#: models/media.py:108
+msgid "legal rights"
+msgstr "droit d'utilisation"
+
+#: models/media.py:109
+msgid "copies"
+msgstr "autres exemplaires"
+
+#: models/media.py:110
+msgid "recording year (from)"
+msgstr "année d'enregistrement (depuis)"
+
+#: models/media.py:111
+msgid "recording year (until)"
+msgstr "année d'enregistrement (jusqu'à)"
+
+#: models/media.py:113
+msgid "recording context"
+msgstr "context d'enregistrement"
+
+#: models/media.py:114 models/media.py:219
+msgid "approximative duration"
+msgstr "durée approximative"
+
+#: models/media.py:115
+msgid "document type"
+msgstr "type de document"
+
+#: models/media.py:116
+msgid "archiver notes"
+msgstr "notes de l'archiviste"
+
+#: models/media.py:117
+msgid "status"
+msgstr "etat"
+
+#: models/media.py:118
+msgid "CNRS depositor"
+msgstr "déposant CNRS"
+
+#: models/media.py:119
+msgid "items finished"
+msgstr "fiches faîtes"
+
+#: models/media.py:120
+msgid "a_informer_07_03"
+msgstr "a_informer_07_03"
+
+#: models/media.py:122
+msgid "A/D conversion"
+msgstr "numérisation"
+
+#: models/media.py:160
+msgid "states / nations"
+msgstr "états / nations"
+
+#: models/media.py:173
+msgid "populations / social groups"
+msgstr "populations / groupes sociaux"
+
+#: models/media.py:181 models/media.py:294
+msgid "computed duration"
+msgstr "durée calculée"
+
+#: models/media.py:215
+msgid "collection"
+msgstr "collection"
+
+#: models/media.py:216
+msgid "item number"
+msgstr "n° de l'item"
+
+#: models/media.py:220
+msgid "recording date (from)"
+msgstr "date d'enregistrement (depuis)"
+
+#: models/media.py:221
+msgid "recording date (until)"
+msgstr "date d'enregistrement (jusqu'à)"
+
+#: models/media.py:223
+msgid "location details"
+msgstr "précisions lieu"
+
+#: models/media.py:228
+msgid "author"
+msgstr "auteur"
+
+#: models/media.py:230
+msgid "vernacular name"
+msgstr "nom vernaculaire"
+
+#: models/media.py:231
+msgid "comments"
+msgstr "commentaires"
+
+#: models/media.py:232
+msgid "published reference"
+msgstr "référence éditée"
+
+#: models/media.py:233
+msgid "moda_execut"
+msgstr "moda_execut"
+
+#: models/media.py:234
+msgid "copy of"
+msgstr "copie de"
+
+#: models/media.py:236
+msgid "recordist as in collection"
+msgstr "collecteur identique à la collection"
+
+#: models/media.py:237
+msgid "cultural area"
+msgstr "aire culturelle"
+
+#: models/media.py:239
+msgid "generic name"
+msgstr "nom générique"
+
+#: models/media.py:240
+msgid "recordist selection"
+msgstr "sélection collecteur"
+
+#: models/media.py:243
+msgid "file"
+msgstr "fichier"
+
+#: models/media.py:250
+msgid "keywords"
+msgstr "mots-clés"
+
+#: models/media.py:309 models/media.py:319 models/media.py:333
+msgid "item"
+msgstr "item"
+
+#: models/media.py:310
+msgid "keyword"
+msgstr "mot-clé"
+
+#: models/media.py:321
+msgid "scientific instrument"
+msgstr "instrument scientifique"
+
+#: models/media.py:323
+msgid "vernacular instrument"
+msgstr "instrument vernaculaire"
+
+#: models/media.py:324
+msgid "number"
+msgstr "nombre"
+
+#: models/media.py:325
+msgid "interprets"
+msgstr "interprètes"
+
+#: models/media.py:335
+msgid "start"
+msgstr "début"
+
+#: models/media.py:336
+msgid "end"
+msgstr "fin"
+
+#: models/media.py:359
+msgid "playlist"
+msgstr "liste de lecture"
+
+#: models/media.py:360
+msgid "resource type"
+msgstr "type de ressource"
+
+#: models/media.py:361
+msgid "resource"
+msgstr "ressource"
+
+#: models/system.py:44
+msgid "username"
+msgstr "nom d'utilisateur"
+
+#: models/system.py:45
+msgid "level"
+msgstr "niveau"
+
+#: models/system.py:46
+msgid "first name"
+msgstr "prénom"
+
+#: models/system.py:47
+msgid "last name"
+msgstr "nom de famille"
+
+#: models/system.py:48
+msgid "phone"
+msgstr "téléphone"
+
+#: models/system.py:49
+msgid "email"
+msgstr "e-mail"
+
+#: models/system.py:62
 msgid "element type"
 msgstr "type d'élément"
 
-#: models/crem.py:739
+#: models/system.py:63
 msgid "element identifier"
 msgstr "identifiant de l'élément"
 
-#: models/crem.py:740
+#: models/system.py:64
 msgid "modification type"
 msgstr "type de modification"
 
-#: models/crem.py:741
+#: models/system.py:65
 msgid "time"
 msgstr "heure"
 
-#: models/crem.py:742
+#: models/system.py:66
 msgid "user"
 msgstr "utilisateur"
 
@@ -462,7 +464,7 @@ msgid "Recording year"
 msgstr "Année d'enregistrement"
 
 #: templates/telemeta_default/collection_detail.html:59
-#: templates/telemeta_default/mediaitem_detail.html:143
+#: templates/telemeta_default/mediaitem_detail.html:144
 msgid "Geographic and cultural informations"
 msgstr "Indications géographiques et culturelles"
 
@@ -477,22 +479,22 @@ msgid "Recordist"
 msgstr "Enregistré par"
 
 #: templates/telemeta_default/collection_detail.html:98
-#: templates/telemeta_default/mediaitem_detail.html:208
+#: templates/telemeta_default/mediaitem_detail.html:209
 msgid "Archiving data"
 msgstr "Données d'archivage"
 
 #: templates/telemeta_default/collection_detail.html:121
-#: templates/telemeta_default/mediaitem_detail.html:223
+#: templates/telemeta_default/mediaitem_detail.html:224
 msgid "Technical data"
 msgstr "Données techniques"
 
 #: templates/telemeta_default/collection_detail.html:126
-#: templates/telemeta_default/mediaitem_detail.html:226
+#: templates/telemeta_default/mediaitem_detail.html:227
 msgid "Media type"
 msgstr "Type de media"
 
 #: templates/telemeta_default/collection_detail.html:126
-#: templates/telemeta_default/mediaitem_detail.html:226
+#: templates/telemeta_default/mediaitem_detail.html:227
 msgid "Audio"
 msgstr "Audio"
 
@@ -526,6 +528,7 @@ msgid "List"
 msgstr "Liste"
 
 #: templates/telemeta_default/geo_continents.html:24
+#: templates/telemeta_default/index.html:8
 msgid "Geographic Navigator"
 msgstr "Navigateur géographique"
 
@@ -535,20 +538,28 @@ msgstr "Navigateur géographique"
 msgid "World"
 msgstr "Monde"
 
-#: templates/telemeta_default/mediaitem_detail.html:134
+#: templates/telemeta_default/index.html:10
+msgid "Open the geographic navigator"
+msgstr "Accéder au navigateur géographique"
+
+#: templates/telemeta_default/index.html:13
+msgid "Musical selection"
+msgstr "Sélection musicale"
+
+#: templates/telemeta_default/mediaitem_detail.html:135
 msgid "Recording date"
 msgstr "Date d'enregistrement"
 
-#: templates/telemeta_default/mediaitem_detail.html:146
+#: templates/telemeta_default/mediaitem_detail.html:147
 #: templates/telemeta_default/inc/mediaitem_list.html:17
 msgid "Location"
 msgstr "Lieu"
 
-#: templates/telemeta_default/mediaitem_detail.html:161
+#: templates/telemeta_default/mediaitem_detail.html:162
 msgid "Musical informations"
 msgstr "Informations sur la musique"
 
-#: templates/telemeta_default/mediaitem_detail.html:197
+#: templates/telemeta_default/mediaitem_detail.html:198
 msgid "General informations"
 msgstr "Informations générales"
 
@@ -592,17 +603,16 @@ msgstr "Pays/Continent"
 msgid "No item"
 msgstr "Aucun item"
 
-#: templatetags/telemeta_utils.py:193
+#: templatetags/telemeta_utils.py:200
 #, python-format
 msgid "%(count)d item"
 msgid_plural "%(count)d items"
 msgstr[0] "%(count)d item"
 msgstr[1] "%(count)d items"
 
-#: templatetags/telemeta_utils.py:196
+#: templatetags/telemeta_utils.py:203
 #, python-format
 msgid "%(count)d collection"
 msgid_plural "%(count)d collections"
 msgstr[0] "%(count)d collection"
 msgstr[1] "%(count)d collections"
-

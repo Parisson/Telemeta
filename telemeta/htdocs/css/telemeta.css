@@ -622,8 +622,7 @@ table.listing tbody tr:hover { background: #f7f8fa !important }
 }
 
 .rst-content img {
-    margin: 0 1.5em 1.5em 1.5em;
-    float: left;
+    margin: 1.5em;
 }
 
 .rst-content img.align-left {
@@ -632,4 +631,51 @@ table.listing tbody tr:hover { background: #f7f8fa !important }
     
 .rst-content img.align-right {
     margin-right: 0
+}
+
+.module {
+    float: right;
+    border: 1px dotted #999;
+    background: #EEE;
+    padding: 1em;
+    margin: 0 0 1.5em 1.5em;
+    clear: right;
+}
+
+.module h3 {
+    margin-top: 0;
+    margin-bottom: 0.8em;
+    font-size: 1.1em;
+}
+
+a.image-link {
+    border: none;
+}
+
+.map-thumbnail {
+    border: solid 1px #999;
+}
+
+.home-content .module {
+    width: 338px;
+}
+
+.home-description {
+    padding-right: 370px;
+}
+
+ul.playlist {
+    list-style-type: none;
+    border-top: solid 1px #e1e1e1;
+    margin: 0;
+    padding: 0 !important;
+}
+
+ul.playlist li {
+    display: block;
+    border: solid 1px #e1e1e1;
+    border-top: 0;
+    background: white;
+    margin: 0;
+    padding: 1em !important;
 }

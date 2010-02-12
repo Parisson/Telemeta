@@ -218,7 +218,7 @@ def equals(value1, value2):
     return value1 == value2
 
 @register.filter
-def rst(content):
+def render_flatpage(content):
     parsed = ""
     path = getattr(content, 'path', '')
     if isinstance(content, basestring):
@@ -245,7 +245,7 @@ def rst(content):
 
     parts = publish_parts(source=smart_str(parsed), writer_name="html4css1", settings_overrides={})
     return mark_safe('<div class="rst-content">\n' + force_unicode(parts["html_body"]) + '</div>')
-rst.is_safe = True
+render_flatpage.is_safe = True
 
 
 

@@ -69,7 +69,11 @@ class WebView(Component):
         """Render the homepage"""
 
         template = loader.get_template('telemeta/index.html')
-        context = Context({'page_content': pages.get_page_content(request, 'parts/home', ignore_slash_issue=True)})
+        ids = [id for id in MediaItem.objects.all().values_list('id', flat=True).order_by('?')[0:4]]
+        items = MediaItem.objects.enriched().filter(pk__in=ids)
+
+        context = Context({'page_content': pages.get_page_content(request, 'parts/home', ignore_slash_issue=True),
+                           'items': items})
         return HttpResponse(template.render(context))
 
     def collection_detail(self, request, public_id, template=''):
