@@ -69,7 +69,7 @@ class WebView(Component):
         """Render the homepage"""
 
         template = loader.get_template('telemeta/index.html')
-        context = Context({'page_content': pages.get_page_content(request, 'parts/home', True)})
+        context = Context({'page_content': pages.get_page_content(request, 'parts/home', ignore_slash_issue=True)})
         return HttpResponse(template.render(context))
 
     def collection_detail(self, request, public_id, template=''):

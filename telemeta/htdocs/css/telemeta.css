@@ -621,7 +621,15 @@ table.listing tbody tr:hover { background: #f7f8fa !important }
     margin-top: 0.8em;
 }
 
-img.home-image {
-    margin: 0 1.5em 1.5em 0;
+.rst-content img {
+    margin: 0 1.5em 1.5em 1.5em;
     float: left;
+}
+
+.rst-content img.align-left {
+    margin-left: 0
+}
+    
+.rst-content img.align-right {
+    margin-right: 0
 }

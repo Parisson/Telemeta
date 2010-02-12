@@ -1,10 +1,10 @@
 from django.conf import settings
 import re
+import os
 import telemeta
-from os import path
 import mimetypes
 
-PAGES_ROOT = path.join(path.dirname(telemeta.__file__), 'pages')
+PAGES_ROOT = os.path.join(os.path.dirname(telemeta.__file__), 'pages')
 
 class PageTextContent(object):
     def __init__(self, filename, path):
@@ -49,35 +49,47 @@ def language_code(request=None):
     code = cut[0]
     return code.lower()
 
-def resolve_page_file(language_code, relative_path, ignore_slash_issue=False):
-    root = path.realpath(path.join(PAGES_ROOT, language_code))
+def project_dir():
+    import settings as settings_mod
+    if '__init__.py' in settings_mod.__file__:
+        p = os.path.dirname(settings_mod.__file__)
+    else:
+        p = settings_mod.__file__
+    project_directory, settings_filename = os.path.split(p)
+    if project_directory == os.curdir or not project_directory:
+        project_directory = os.getcwd()
+
+    return project_directory        
+
+def resolve_page_file(root, relative_path, ignore_slash_issue=False):
+    root = os.path.realpath(root)
     filename = None
     current = root
     is_attachment = False
     for node in relative_path.split('/'):
         if not node:
             continue
-        current = path.join(current, node)
+        current = os.path.join(current, node)
         rst = current + '.rst'
-        if path.isfile(rst):
+        if os.path.isfile(rst):
             filename = rst
             break
-        elif path.isfile(current):
+        elif os.path.isfile(current):
             filename      = current
             is_attachment = True
-        elif not path.isdir(current):
+        elif not os.path.isdir(current):
             break
 
-    if not filename and path.isdir(current):
-        rst = path.join(current, 'index.rst')
-        if path.isfile(rst):
+    if not filename and os.path.isdir(current):
+        rst = os.path.join(current, 'index.rst')
+        if os.path.isfile(rst):
             if not ignore_slash_issue and relative_path[-1:] != '/':
-                raise MalformedPagePath("The relative page path must end with a slash when "
+                raise MalformedPagePath("The relative page os.path must end with a slash when "
                                         "resolving an implicit directory index")
             filename = rst
 
     if filename:
-        filename = path.realpath(filename)
+        filename = os.path.realpath(filename)
         if filename.index(root) != 0:
             filename = None
 
@@ -91,7 +103,15 @@ def resolve_page_file(language_code, relative_path, ignore_slash_issue=False):
 
 def get_page_content(request, relative_path, ignore_slash_issue=False):     
     lang = language_code(request)
-    return resolve_page_file(lang, relative_path) or resolve_page_file('default', relative_path)
+    userroot = os.path.join(project_dir(), 'telemeta-pages')
+    rootlist = [os.path.join(userroot, lang), os.path.join(userroot, 'default'), 
+                os.path.join(PAGES_ROOT, lang), os.path.join(PAGES_ROOT, 'default')]
+    for root in rootlist:
+        content = resolve_page_file(root, relative_path, ignore_slash_issue=ignore_slash_issue)
+        if content:
+            return content
+
+    return None            
     
 class MalformedPagePath(Exception):
     pass
