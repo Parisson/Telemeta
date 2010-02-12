@@ -20,7 +20,7 @@ Here are the main features of Telemeta:
     * User friendly web frontend including workflows and high level search methods
     * Smart dynamical and skinnable audio player (thanks to Timeside and soundmanager2)
     * "On the fly" analyzing, transcoding and metadata embedding based on an easy plugin architecture
-    * Multi-formats : FLAC, OGG, MP3, WAV and more
+    * Multi-format support : FLAC, OGG, MP3, WAV and more
     * GEO Navigator for audio geolocalization
     * DublinCore compatibility
     * OAI-PMH data provider

@@ -11,7 +11,7 @@ U{http://telemeta.org}
 """
 
 __docformat__ = 'epytext en'
-__version__ = '0.4.1'
+__version__ = '0.5.0'
 __url__ = 'http://telemeta.org'
 __copyright__ = '(C) 2007-2009 Parisson SARL and Samalyse SARL'
 __license__ = 'CeCILL2'
@@ -143,7 +143,7 @@ These expressions may be used both in singular and plural form.
 The purpose of the Agreement is the grant by the Licensor to the
 Licensee of a non-exclusive, transferable and worldwide license for the
 Software as set forth in Article 5 hereinafter for the whole term of the
-protection granted by the rights over said Software. 
+protection granted by the rights over said Software.
 
 
     Article 3 - ACCEPTANCE
@@ -410,7 +410,7 @@ rights set forth in Article 5).
 
 9.3 The Licensee acknowledges that the Software is supplied "as is" by
 the Licensor without any other express or tacit warranty, other than
-that provided for in Article 9.2 and, in particular, without any warranty 
+that provided for in Article 9.2 and, in particular, without any warranty
 as to its commercial value, its secured, safe, innovative or relevant
 nature.
 

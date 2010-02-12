@@ -22,7 +22,7 @@
 <div id="header">
 <div id="logo">
 {% block logo %}
-<a href="{% url telemeta-home %}"><img src="{% url telemeta-images "logo.png" %}" alt="Telemeta" /></a>
+<a href="{% url telemeta-home %}"><img src="{% url telemeta-images "logo_telemeta_2.png" %}" alt="Telemeta" /></a>
 {% endblock %}
 </div>
 
@@ -30,7 +30,7 @@
 <form action="{% url telemeta-search %}" method="GET">
 <input type="text" id="quick_search_pattern" name="pattern" />
 <input type="submit" value="{% trans 'Search' %}" />
-</form>        
+</form>
 <p><a href="{% url telemeta-search-criteria %}">{% trans "Advanced search" %}</a></p>
 </div>
 
@@ -55,7 +55,7 @@
 <div id="footer">
 {% block footer %}
  <hr />
- <a id="telemeta_powered" href="{% telemeta_url %}"><img src="{% url telemeta-images "logo_mini.png" %}" height="30" width="93"
+ <a id="telemeta_powered" href="{% telemeta_url %}"><img src="{% url telemeta-images "logo_mini_2.png" %}" height="30" width="93"
    alt="Telemeta Powered"/></a>
  <p class="left">
   {% trans "Powered by" %} <a href="{% telemeta_url %}"><strong>Telemeta {% telemeta_version %}</strong></a><br />
