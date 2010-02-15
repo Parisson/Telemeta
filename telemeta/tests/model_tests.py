@@ -186,7 +186,7 @@ class CollectionItemTestCase(unittest.TestCase):
         
     def testEthnicGroup(self):
         "Test by_ethnic_group property of MediaCollection class"
-        result=self.collections.by_ethnic_group("a").order_by("title")
+        result=self.collections.by_ethnic_group(self.a).order_by("title")
         self.assertEquals(result[0], self.persepolis)
         self.assertEquals(result[1], self.volonte)
 
@@ -210,6 +210,10 @@ class CollectionItemTestCase(unittest.TestCase):
         self.assertEquals(result[3], self.item_4)
         self.assertEquals(result[4], self.item_5)
         self.assertEquals(result[5], self.item_6)
+        self.item_2.title = ''
+        self.item_2.save()
+        self.item_5.title = ''
+        self.item_5.save()
         result = self.items.by_title("volonté").order_by("title")
         self.assertEquals(result[0], self.item_2)
         self.assertEquals(result[1], self.item_5)
