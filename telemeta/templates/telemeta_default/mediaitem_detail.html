@@ -2,6 +2,8 @@
 {% load telemeta_utils %}
 {% load i18n %}
 
+{% block head_title %}{% trans "Item" %}{{item|prepend:': '}} - {{ block.super }}{% endblock %}
+
 {% block stylesheets %}
 {{ block.super }}
 <link rel="stylesheet" type="text/css" href="{% url telemeta-timeside "css/timeside.css" %}" />

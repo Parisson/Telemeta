@@ -13,6 +13,7 @@ from django.utils.encoding import smart_str, force_unicode
 from django.utils.safestring import mark_safe
 from django import db
 import re
+from django.conf import settings
 
 register = template.Library()
 
@@ -250,5 +251,7 @@ def render_flatpage(content):
     return mark_safe('<div class="rst-content">\n' + force_unicode(parts["html_body"]) + '</div>')
 render_flatpage.is_safe = True
 
-
+@register.simple_tag
+def organization():
+    return settings.TELEMETA_ORGANIZATION
 

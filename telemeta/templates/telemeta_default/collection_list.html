@@ -1,8 +1,10 @@
 {% extends "telemeta/base.html" %}
 {% load telemeta_utils %}
 
+{% block head_title %}{% trans "Media Collections" %} - {{ block.super }}{% endblock %}
+
 {% block content %}
-<h3>Collections</h3>
+<h3>{% trans "Media Collections" %}</h3>
 
 {% with object_list as collections %}
 <div class="fullpage">

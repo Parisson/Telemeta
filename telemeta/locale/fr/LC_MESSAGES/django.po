@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-15 17:49+0100\n"
+"POT-Creation-Date: 2010-02-15 22:08+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Olivier Guilyardi <olivier samalyse com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -428,7 +428,6 @@ msgid "Search"
 msgstr "Recherche"
 
 #: templates/telemeta_default/base.html:34
-#: templates/telemeta_default/search_criteria.html:53
 msgid "Advanced search"
 msgstr "Recherche avancée"
 
@@ -460,57 +459,67 @@ msgstr "Par"
 msgid "Visit the Telemeta open source project at"
 msgstr "Visitez le projet libre Telemeta"
 
-#: templates/telemeta_default/collection_detail.html:49
+#: templates/telemeta_default/collection_detail.html:5
+#: templates/telemeta_default/collection_detail_dc.html:5
+msgid "Collection"
+msgstr "Collection"
+
+#: templates/telemeta_default/collection_detail.html:51
 msgid "Recording year"
 msgstr "Année d'enregistrement"
 
-#: templates/telemeta_default/collection_detail.html:59
-#: templates/telemeta_default/mediaitem_detail.html:144
+#: templates/telemeta_default/collection_detail.html:61
+#: templates/telemeta_default/mediaitem_detail.html:146
 msgid "Geographic and cultural informations"
 msgstr "Indications géographiques et culturelles"
 
-#: templates/telemeta_default/collection_detail.html:72
+#: templates/telemeta_default/collection_detail.html:74
 msgid "Legal mentions"
 msgstr "Mentions légales"
 
-#: templates/telemeta_default/collection_detail.html:77
+#: templates/telemeta_default/collection_detail.html:79
 #: templates/telemeta_default/inc/collection_list.html:17
 #: templates/telemeta_default/inc/mediaitem_list.html:16
 msgid "Recordist"
 msgstr "Enregistré par"
 
-#: templates/telemeta_default/collection_detail.html:98
-#: templates/telemeta_default/mediaitem_detail.html:209
+#: templates/telemeta_default/collection_detail.html:100
+#: templates/telemeta_default/mediaitem_detail.html:211
 msgid "Archiving data"
 msgstr "Données d'archivage"
 
-#: templates/telemeta_default/collection_detail.html:121
-#: templates/telemeta_default/mediaitem_detail.html:224
+#: templates/telemeta_default/collection_detail.html:123
+#: templates/telemeta_default/mediaitem_detail.html:226
 msgid "Technical data"
 msgstr "Données techniques"
 
-#: templates/telemeta_default/collection_detail.html:126
-#: templates/telemeta_default/mediaitem_detail.html:227
+#: templates/telemeta_default/collection_detail.html:128
+#: templates/telemeta_default/mediaitem_detail.html:229
 msgid "Media type"
 msgstr "Type de media"
 
-#: templates/telemeta_default/collection_detail.html:126
-#: templates/telemeta_default/mediaitem_detail.html:227
+#: templates/telemeta_default/collection_detail.html:128
+#: templates/telemeta_default/mediaitem_detail.html:229
 msgid "Audio"
 msgstr "Audio"
 
-#: templates/telemeta_default/collection_detail.html:130
+#: templates/telemeta_default/collection_detail.html:132
 msgid "Number of items"
 msgstr "Nombre d'items"
 
-#: templates/telemeta_default/collection_detail_dc.html:8
-#: templates/telemeta_default/mediaitem_detail_dc.html:8
+#: templates/telemeta_default/collection_detail_dc.html:10
+#: templates/telemeta_default/mediaitem_detail_dc.html:10
 msgid "Normal View"
 msgstr "Vue normale"
 
-#: templates/telemeta_default/collection_detail_dc.html:18
+#: templates/telemeta_default/collection_detail_dc.html:20
 msgid "No such collection"
 msgstr "Collection introuvable"
+
+#: templates/telemeta_default/collection_list.html:4
+#: templates/telemeta_default/collection_list.html:7
+msgid "Media Collections"
+msgstr "Collections"
 
 #: templates/telemeta_default/country_info.html:9
 msgid "in"
@@ -520,22 +529,26 @@ msgstr "dans"
 msgid "Populations / Social groups"
 msgstr "Populations / Groupes sociaux"
 
-#: templates/telemeta_default/geo_continents.html:19
-msgid "Map"
-msgstr "Carte"
-
-#: templates/telemeta_default/geo_continents.html:20
-msgid "List"
-msgstr "Liste"
-
-#: templates/telemeta_default/geo_continents.html:24
+#: templates/telemeta_default/geo_continents.html:5
+#: templates/telemeta_default/geo_continents.html:26
+#: templates/telemeta_default/geo_countries.html:5
+#: templates/telemeta_default/geo_country_collections.html:5
+#: templates/telemeta_default/geo_country_items.html:5
 #: templates/telemeta_default/index.html:9
 msgid "Geographic Navigator"
 msgstr "Navigateur géographique"
 
-#: templates/telemeta_default/geo_countries.html:6
-#: templates/telemeta_default/geo_country_collections.html:6
-#: templates/telemeta_default/geo_country_items.html:6
+#: templates/telemeta_default/geo_continents.html:21
+msgid "Map"
+msgstr "Carte"
+
+#: templates/telemeta_default/geo_continents.html:22
+msgid "List"
+msgstr "Liste"
+
+#: templates/telemeta_default/geo_countries.html:8
+#: templates/telemeta_default/geo_country_collections.html:8
+#: templates/telemeta_default/geo_country_items.html:8
 msgid "World"
 msgstr "Monde"
 
@@ -547,57 +560,74 @@ msgstr "Accéder au navigateur géographique"
 msgid "Musical selection"
 msgstr "Sélection musicale"
 
-#: templates/telemeta_default/mediaitem_detail.html:135
+#: templates/telemeta_default/mediaitem_detail.html:5
+#: templates/telemeta_default/mediaitem_detail_dc.html:5
+msgid "Item"
+msgstr "Item"
+
+#: templates/telemeta_default/mediaitem_detail.html:137
 msgid "Recording date"
 msgstr "Date d'enregistrement"
 
-#: templates/telemeta_default/mediaitem_detail.html:147
+#: templates/telemeta_default/mediaitem_detail.html:149
 #: templates/telemeta_default/inc/mediaitem_list.html:18
 msgid "Location"
 msgstr "Lieu"
 
-#: templates/telemeta_default/mediaitem_detail.html:162
+#: templates/telemeta_default/mediaitem_detail.html:164
 msgid "Musical informations"
 msgstr "Informations sur la musique"
 
-#: templates/telemeta_default/mediaitem_detail.html:198
+#: templates/telemeta_default/mediaitem_detail.html:200
 msgid "General informations"
 msgstr "Informations générales"
 
-#: templates/telemeta_default/mediaitem_detail_dc.html:17
+#: templates/telemeta_default/mediaitem_detail_dc.html:19
 msgid "No such item"
 msgstr "Item introuvable"
 
-#: templates/telemeta_default/search_criteria.html:87
+#: templates/telemeta_default/mediaitem_list.html:5
+#: templates/telemeta_default/mediaitem_list.html:8
+msgid "Media Items"
+msgstr "Items"
+
+#: templates/telemeta_default/search_criteria.html:5
+#: templates/telemeta_default/search_criteria.html:55
+msgid "Advanced Search"
+msgstr "Recherche avancée"
+
+#: templates/telemeta_default/search_criteria.html:79
+#: templates/telemeta_default/search_results.html:28
 #: templates/telemeta_default/inc/collection_list.html:14
 #: templates/telemeta_default/inc/mediaitem_list.html:14
 msgid "Title"
 msgstr "Titre"
 
-#: templates/telemeta_default/search_criteria.html:93
-#: templates/telemeta_default/search_results.html:29
+#: templates/telemeta_default/search_criteria.html:95
+#: templates/telemeta_default/search_results.html:31
 #: templates/telemeta_default/inc/collection_list.html:18
 #: templates/telemeta_default/inc/mediaitem_list.html:22
 msgid "Year of recording"
 msgstr "Année d'enregistrement"
 
-#: templates/telemeta_default/search_criteria.html:100
-#: templates/telemeta_default/search_criteria.html:119
-#: templates/telemeta_default/search_results.html:31
-#: templates/telemeta_default/search_results.html:38
+#: templates/telemeta_default/search_criteria.html:102
+#: templates/telemeta_default/search_criteria.html:121
+#: templates/telemeta_default/search_results.html:33
+#: templates/telemeta_default/search_results.html:40
 msgid "to"
 msgstr "à"
 
-#: templates/telemeta_default/search_criteria.html:112
-#: templates/telemeta_default/search_results.html:36
+#: templates/telemeta_default/search_criteria.html:114
+#: templates/telemeta_default/search_results.html:38
 msgid "Year of issue"
 msgstr "Année de parution"
 
-#: templates/telemeta_default/search_results.html:6
-msgid "Search results"
+#: templates/telemeta_default/search_results.html:5
+#: templates/telemeta_default/search_results.html:8
+msgid "Search Results"
 msgstr "Résultats de recherche"
 
-#: templates/telemeta_default/search_results.html:11
+#: templates/telemeta_default/search_results.html:13
 msgid "Search pattern"
 msgstr "Recherche"
 
@@ -632,14 +662,14 @@ msgstr "Pays/Continent"
 msgid "No item"
 msgstr "Aucun item"
 
-#: templatetags/telemeta_utils.py:203
+#: templatetags/telemeta_utils.py:204
 #, python-format
 msgid "%(count)d item"
 msgid_plural "%(count)d items"
 msgstr[0] "%(count)d item"
 msgstr[1] "%(count)d items"
 
-#: templatetags/telemeta_utils.py:206
+#: templatetags/telemeta_utils.py:207
 #, python-format
 msgid "%(count)d collection"
 msgid_plural "%(count)d collections"

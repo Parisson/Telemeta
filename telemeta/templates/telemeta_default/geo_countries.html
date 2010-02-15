@@ -2,6 +2,8 @@
 {% load telemeta_utils %}
 {% load i18n %}
 
+{% block head_title %}{{ continent.location.name }} - {% trans "Geographic Navigator" %} - {{ block.super }}{% endblock %}
+
 {% block content %}
 <h3><a href="{% url telemeta-geo-continents %}">{% trans "World" %}</a> /
   {{ continent.location.name }}</h3>

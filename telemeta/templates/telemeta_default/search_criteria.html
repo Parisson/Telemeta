@@ -2,6 +2,8 @@
 {% load telemeta_utils %}
 {% load i18n %}
 
+{% block head_title %}{% trans "Advanced Search" %} - {{ block.super }}{% endblock %}
+
 {% block stylesheets %}
 {{ block.super }}
 <link rel="stylesheet" type="text/css" href="{% url telemeta-css "jquery.autocomplete.css" %}" />
@@ -50,7 +52,7 @@ $(document).ready(function () {
 {% endblock %}
 
 {% block content %}
-<h3>{% trans "Advanced search" %}</h3>
+<h3>{% trans "Advanced Search" %}</h3>
 
 <form action="{% url telemeta-search %}" id="searchform">
 <fieldset>

@@ -2,6 +2,8 @@
 {% load telemeta_utils %}
 {% load i18n %}
 
+{% block head_title %}{% trans "Collection" %}{{collection|prepend:': '}} - {{ block.super }}{% endblock %}
+
 {% if collection %}
 {% block submenu %}
     <h3>Collection: {{ collection }}</h3>

@@ -2,6 +2,8 @@
 {% load telemeta_utils %}
 {% load i18n %}
 
+{% block head_title %}{% trans "Item" %}{{item|prepend:': '}} - {{ block.super }}{% endblock %}
+
 {% if item %}
 {% block submenu %}
     <h3>Item: {{ item }}</h3>

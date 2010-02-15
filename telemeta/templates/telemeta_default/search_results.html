@@ -2,8 +2,10 @@
 {% load telemeta_utils %}
 {% load i18n %}
 
+{% block head_title %}{% trans "Search Results" %} - {{ block.super }}{% endblock %}
+
 {% block content %}
-<h3>{% trans "Search results" %}</h3>
+<h3>{% trans "Search Results" %}</h3>
 
 {% if criteria %}
 <ul>

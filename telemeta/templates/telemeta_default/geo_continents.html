@@ -2,6 +2,8 @@
 {% load telemeta_utils %}
 {% load i18n %}
 
+{% block head_title %}{% trans "Geographic Navigator" %} - {{ block.super }}{% endblock %}
+
 {% block extra_javascript %}
 {% if gmap_key %}
 <script src="http://www.google.com/jsapi?key={{ gmap_key }}" type="text/javascript"></script>
