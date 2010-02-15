@@ -23,7 +23,7 @@
     <li><b>{% field_label "MediaCollection" "collector" %}:</b> {{criteria.collector}}</li>
   {% endif %}
   {% if criteria.title %}
-    <li><b>Title:</b> {{criteria.title}}</li>
+    <li><b>{% trans "Title" %}:</b> {{criteria.title}}</li>
   {% endif %}
   {% if criteria.rec_year_from %}
     <li><b>{% trans "Year of recording" %}:</b> {{criteria.rec_year_from}}
