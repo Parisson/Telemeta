@@ -33,7 +33,7 @@
 # Authors: Olivier Guilyardi <olivier@samalyse.com>
 #          David LIPSZYC <davidlipszyc@gmail.com>
 
-from django.db.models import Q
+from django.db.models import Q, Max, Min
 from telemeta.models.core import *
 from telemeta.util.unaccent import unaccent, unaccent_icmp
 from telemeta.models.enum import EthnicGroup
@@ -243,6 +243,17 @@ class MediaCollectionQuerySet(CoreQuerySet):
                 raise Exception("Unsupported virtual field: %s" % f)
 
         return qs                
+
+    def recording_year_range(self):
+        from_max = self.aggregate(Max('recorded_from_year'))['recorded_from_year__max']
+        to_max   = self.aggregate(Max('recorded_to_year'))['recorded_to_year__max']
+        year_max = max(from_max, to_max)
+
+        from_min = self.filter(recorded_from_year__gt=0).aggregate(Min('recorded_from_year'))['recorded_from_year__min']
+        to_min   = self.filter(recorded_to_year__gt=0).aggregate(Min('recorded_to_year'))['recorded_to_year__min']
+        year_min = min(from_min, to_min) 
+
+        return year_min, year_max
 
 class MediaCollectionManager(CoreManager):
     "Manage collection queries"

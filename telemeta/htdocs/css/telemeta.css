@@ -290,6 +290,10 @@ label.disabled { color: #d7d7d7 }
     width: 450px;
 }
 
+#searchform select.tiny {
+    width: 12%;
+}
+
 /* Navigation (borrowed from Trac) */
 .nav h2, .nav hr { display: none }
 .nav ul { font-size: 10px; list-style: none; margin: 0; text-align: left }

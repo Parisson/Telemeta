@@ -107,7 +107,7 @@ class Duration(object):
     def as_seconds(self):
         return self._delta.days * 24 * 3600 + self._delta.seconds
             
-def normalize_field(args, default_value):
+def normalize_field(args, default_value=None):
     """Normalize field constructor arguments, so that the field is marked blank=True
        and has a default value by default.
        
@@ -126,7 +126,7 @@ def normalize_field(args, default_value):
         if not args.has_key('default'):
             if args.get('null'):
                 args['default'] = None
-            else:
+            elif default_value is not None:
                 args['default'] = default_value
 
     return args                
@@ -293,16 +293,13 @@ class TextField(models.TextField):
         super(TextField, self).__init__(*args, **normalize_field(kwargs, ''))
 
 class DateTimeField(models.DateTimeField):
-    """DateTimeField normalized with normalize_field()"""
+    """DateTimeField normalized with normalize_field(). This field is allowed to
+    be null by default unless null=False is passed"""
 
     def __init__(self, *args, **kwargs):
-        super(DateTimeField, self).__init__(*args, **normalize_field(kwargs, '0000-00-00 00:00'))
-
-    def get_db_prep_value(self, value):
-        if value is None and not self.null: 
-            return '0000-00-00 00:00'
-
-        return super(DateTimeField, self).get_db_prep_value(value)
+        if not kwargs.has_key('null'):
+            kwargs['null'] = True
+        super(DateTimeField, self).__init__(*args, **normalize_field(kwargs))
 
 class FileField(models.FileField):
     """FileField normalized with normalize_field()"""
@@ -317,16 +314,13 @@ class FloatField(models.FloatField):
         super(FloatField, self).__init__(*args, **normalize_field(kwargs, 0))
 
 class DateField(models.DateField):
-    """DateField normalized with normalize_field()"""
+    """DateField normalized with normalize_field(). This field is allowed to
+    be null by default unless null=False is passed"""
 
     def __init__(self, *args, **kwargs):
-        super(DateField, self).__init__(*args, **normalize_field(kwargs, '0000-00-00'))
-
-    def get_db_prep_value(self, value):
-        if value is None and not self.null: 
-            return '0000-00-00'
-
-        return super(DateField, self).get_db_prep_value(value)
+        if not kwargs.has_key('null'):
+            kwargs['null'] = True
+        super(DateField, self).__init__(*args, **normalize_field(kwargs))
 
 class RequiredFieldError(Exception):
     def __init__(self, model, field):
@@ -398,14 +392,17 @@ class ModelCore(EnhancedModel):
         return fields_list
 
     @classmethod
-    def field_label(cls, field_name):
-        try:
-            return cls._meta.get_field(field_name).verbose_name
-        except FieldDoesNotExist:
+    def field_label(cls, field_name=None):
+        if field_name:
             try:
-                return getattr(cls, field_name).verbose_name
-            except AttributeError:
-                return field_name
+                return cls._meta.get_field(field_name).verbose_name
+            except FieldDoesNotExist:
+                try:
+                    return getattr(cls, field_name).verbose_name
+                except AttributeError:
+                    return field_name
+        else:
+            return cls._meta.verbose_name
 
     class Meta:
         abstract = True

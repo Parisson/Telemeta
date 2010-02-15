@@ -22,8 +22,12 @@
   {% if criteria.title %}
     <li><b>Title:</b> {{criteria.title}}</li>
   {% endif %}
-  {% if criteria.rec_date %}
-    <li><b>{% trans "Year of recording" %}:</b> {{criteria.rec_date}}</li>
+  {% if criteria.rec_year_from %}
+    <li><b>{% trans "Year of recording" %}:</b> {{criteria.rec_year_from}}
+     {% ifnotequal criteria.rec_year_to criteria.rec_year_from %}
+     {% trans "to" %} {{criteria.rec_year_to}}
+     {% endifnotequal %}
+    </li>
   {% endif %}
   {% if criteria.pub_date %}
     <li><b>Publishing date:</b> {{criteria.pub_date}}</li>
