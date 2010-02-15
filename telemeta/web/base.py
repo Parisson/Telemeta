@@ -160,7 +160,7 @@ class WebView(Component):
         item = MediaItem.objects.get(public_id=public_id)
 
         infile = item.file.path
-        metadata = dublincore.express_item(item).flatten()
+        metadata = dublincore.express_item(item).to_list()
         stream = exporter.process(item.id, infile, metadata)
 
         response = HttpResponse(stream, mimetype = mime_type)
