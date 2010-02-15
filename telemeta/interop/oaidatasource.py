@@ -29,7 +29,8 @@
 # The fact that you are presently reading this means that you have had
 # knowledge of the CeCILL license and that you accept its terms.
 
-from telemeta.models import MediaCollection, MediaItem, Revision
+from telemeta.models import MediaCollection, MediaItem, Revision, dublincore
+from telemeta.interop.oai import BadArgumentError
 from datetime import datetime
 
 class TelemetaOAIDataSource(object):
@@ -43,41 +44,17 @@ class TelemetaOAIDataSource(object):
         except IndexError:
             return datetime.now()
 
-    def prepare_record(self, type, record):
+    def prepare_record(self, record):
         ctime = record.get_revision().time
-        dc = []
-        _dc = record.to_dublincore().to_list()
-        for k, v in _dc:
-            if k == 'identifier':
-                dc.append((k, type + ':' + v)) # FIXME: type prepended by CREM model
-            else:
-                dc.append((k, v))
-        return (dc, ctime)
+        return dublincore.express_resource(record).to_list(), ctime
 
     def get_record(self, id):
         """Return a specific record"""
         try:
-            type, id = id.split(':')
-        except ValueError:
-            return None
-        
-        #FIXME: search by code
-        if (type == 'collection'):
-            try:
-                record  = MediaCollection.objects.get(id=id)
-            except MediaCollection.DoesNotExist:
-                return None
-        elif (type == 'item'):
-            try:
-                #FIXME: also search by old_code if code is not found
-                record = MediaItem.objects.get(id=id)
-            except MediaItem.DoesNotExist:
-                return None
-        else:
-            return None
-
-        return self.prepare_record(type, record)
-
+            record = dublincore.lookup_resource(id)
+        except dublincore.MalformedMediaIdentifier, e:
+            raise BadArgumentError(e.message)
+        return record and self.prepare_record(record)
 
     def count_records(self, from_time = None, until_time = None):
         """Must return the number of records between (optional) from and until change time."""
@@ -95,7 +72,7 @@ class TelemetaOAIDataSource(object):
         if (offset < nitems):
             set = query[offset:offset + limit]
             for record in set:
-                result.append(self.prepare_record('item', record))
+                result.append(self.prepare_record(record))
             limit -= len(set)
             offset = 0
         else:
@@ -105,6 +82,6 @@ class TelemetaOAIDataSource(object):
             query = MediaCollection.objects.by_change_time(from_time, until_time)
             set = query[offset:offset + limit]
             for record in set:
-                result.append(self.prepare_record('collection', record))
+                result.append(self.prepare_record(record))
             
         return result

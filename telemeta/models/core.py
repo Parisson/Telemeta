@@ -432,13 +432,19 @@ class CoreQuerySet(EnhancedQuerySet):
         
     def _by_change_time(self, type, from_time = None, until_time = None):
         "Search between two revision dates"
-        where = ["element_type = '%s'" % type]
+        table = self.model._meta.db_table
+        where = []
         if from_time:
-            where.append("time >= '%s'" % from_time.strftime('%Y-%m-%d %H:%M:%S'))
+            where.append("revisions.time >= '%s'" % from_time.strftime('%Y-%m-%d %H:%M:%S'))
         if until_time:
-            where.append("time <= '%s'" % until_time.strftime('%Y-%m-%d %H:%M:%S'))
-        return self.extra(
-            where = ["id IN (SELECT DISTINCT element_id FROM revisions WHERE %s)" % " AND ".join(where)]);
+            where.append("revisions.time <= '%s'" % until_time.strftime('%Y-%m-%d %H:%M:%S'))
+
+        qs = self
+        if where:
+            where.extend(["revisions.element_type = '%s'" % type, "revisions.element_id = %s.id" % table])
+            qs = qs.extra(where = [" AND ".join(where)],
+                            tables = ['revisions']).distinct()
+        return qs
 
 class CoreManager(EnhancedManager):
     "Base class for all models managers"

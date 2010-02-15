@@ -33,6 +33,7 @@
 # Author: Olivier Guilyardi <olivier@samalyse.com>
 
 from telemeta.models.core import Duration
+from telemeta.models.media import MediaItem, MediaCollection
 from django.conf import settings
 
 class Resource(object):
@@ -106,8 +107,9 @@ class Element(object):
     @staticmethod
     def multiple(name, values, refinement=None):
         elements = []
-        for v in values:
-            elements.append(Element(name, v, refinement))
+        if values:
+            for v in values:
+                elements.append(Element(name, v, refinement))
         return elements
 
 class Date(Element):
@@ -211,7 +213,7 @@ def express_item(item):
         Element('publisher',        settings.TELEMETA_ORGANIZATION),
         date,
         Date(item.collection.year_published, refinement='issued'),
-        Element.multiple('coverage', item.location.fullnames(), 'spatial'),
+        Element.multiple('coverage', item.location and item.location.fullnames(), 'spatial'),
         Element('coverage',         item.location_comment, 'spatial'),
         Element('rights',           item.collection.legal_rights, 'license'),
         Element('rights',           media_access_rights(item.collection), 'accessRights'),
@@ -224,4 +226,35 @@ def express_item(item):
 
     return resource
     
+def express_resource(res):
+    if isinstance(res, MediaItem):
+        return express_item(res)
+    elif isinstance(res, MediaCollection):
+        return express_collection(res)
 
+    raise Exception("Invalid resource type")        
+
+def lookup_resource(media_id):
+    try:
+        type, code = media_id.split(':', 1)
+    except ValueError:
+        raise MalformedMediaIdentifier("Media identifier must be in type:code format")
+    
+    if (type == 'collection'):
+        try:
+            return MediaCollection.objects.get(code=code)
+        except MediaCollection.DoesNotExist:
+            return None
+    elif (type == 'item'):
+        try:
+            return MediaItem.objects.get(code=code)
+        except MediaItem.DoesNotExist:
+            try:
+                return MediaItem.objects.get(old_code=code)
+            except MediaItem.DoesNotExist:
+                return None
+    else:
+        raise MalformedMediaIdentifier("No such type in media identifier: " + type)
+   
+class MalformedMediaIdentifier(Exception):
+    pass

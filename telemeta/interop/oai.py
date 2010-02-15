@@ -54,7 +54,8 @@ class IDataSource(object):
                 [(dublin core element, element value), ...],
                 change time
               )
-           or None if the record doesn't exist.
+           or None if the record doesn't exist. In case the id isn't wellformed
+           a BadArgumentError should be raised.
 
            The dublin core data must contain an 'identifier' element, which is the same
            as the id parameter."""
@@ -387,7 +388,11 @@ class Response(object):
 
     def get_record(self, id):
         """Append GetRecord result"""
-        record = self.datasource.get_record(id)
+        try:
+            record = self.datasource.get_record(id)
+        except BadArgumentError, e:
+            self.error('badArgument', e.message)
+            return
         if not record:
             self.error('idDoesNotExist')
         else:
@@ -505,3 +510,6 @@ class Response(object):
         except AttributeError:
             # Apparently no free/unlink method in libxml2dom
             pass
+
+class BadArgumentError(Exception):
+    pass
