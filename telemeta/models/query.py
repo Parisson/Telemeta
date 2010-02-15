@@ -159,7 +159,7 @@ class MediaItemQuerySet(CoreQuerySet):
 
     def ethnic_groups(self):
         ids = self.filter(ethnic_group__isnull=False).values('ethnic_group');
-        return EthnicGroup.objects.filter(pk__in=ids).order_by('name')
+        return EthnicGroup.objects.filter(pk__in=ids)
 
     @staticmethod
     def by_fuzzy_collector_q(pattern):

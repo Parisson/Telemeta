@@ -58,10 +58,10 @@ class CollectionItemTestCase(unittest.TestCase):
         self.france.add_child(self.paris)
         self.europe.add_child(self.belgique)
 
-        self.a = EthnicGroup.objects.create(name="a")
-        self.b = EthnicGroup.objects.create(name="b")
-        self.c = EthnicGroup.objects.create(name="c")
-        self.d = EthnicGroup.objects.create(name="d")
+        self.a = EthnicGroup.objects.create(value="a")
+        self.b = EthnicGroup.objects.create(value="b")
+        self.c = EthnicGroup.objects.create(value="c")
+        self.d = EthnicGroup.objects.create(value="d")
 
         self.persepolis = MediaCollection(id=1, code="CNRSMH_E_1970_001_002", reference="A1", title="persepolis", 
             creator="Abraham LINCOLN", collector="Friedrich HEINZ", year_published=2009, is_published=True,

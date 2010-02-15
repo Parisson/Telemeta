@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-15 22:08+0100\n"
+"POT-Creation-Date: 2010-02-15 23:57+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Olivier Guilyardi <olivier samalyse com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,23 +24,70 @@ msgstr "Durée"
 msgid "Enter a valid duration in HH:MM[:ss] format."
 msgstr "Entrez une durée valide au format HH:MM[:ss]"
 
-#: models/enum.py:41 models/enum.py:124
+#: models/enum.py:41 models/enum.py:139
 msgid "value"
 msgstr "valeur"
 
-#: models/enum.py:123
+#: models/enum.py:57 models/media.py:79
+msgid "archive format"
+msgstr "format d'archivage"
+
+#: models/enum.py:64 models/media.py:86
+msgid "secondary edition"
+msgstr "réédition"
+
+#: models/enum.py:71 models/media.py:101
+msgid "mode of acquisition"
+msgstr "mode d'acquisition"
+
+#: models/enum.py:78 models/media.py:104
+msgid "record author"
+msgstr "rédacteur fiche"
+
+#: models/enum.py:85 models/media.py:106
+msgid "record writer"
+msgstr "saisie fiche"
+
+#: models/enum.py:92 models/media.py:108
+msgid "legal rights"
+msgstr "droit d'utilisation"
+
+#: models/enum.py:99 models/media.py:113
+msgid "recording context"
+msgstr "contexte d'enregistrement"
+
+#: models/enum.py:106 models/media.py:122
+msgid "A/D conversion"
+msgstr "numérisation"
+
+#: models/enum.py:113 models/media.py:230
+msgid "vernacular style"
+msgstr "style vernaculaire"
+
+#: models/enum.py:120 models/media.py:239
+msgid "generic style"
+msgstr "style générique"
+
+#: models/enum.py:127 models/media.py:310
+msgid "keyword"
+msgstr "mot-clé"
+
+#: models/enum.py:134 models/media.py:93
+msgid "publisher / status"
+msgstr "éditeur / statut"
+
+#: models/enum.py:138
 msgid "publisher"
 msgstr "éditeur"
 
-#: models/enum.py:134 models/enum.py:146 models/instrument.py:41
-#: models/instrument.py:51 models/location.py:50 models/location.py:142
-#: models/media.py:347
-msgid "name"
-msgstr "nom"
-
-#: models/enum.py:138 models/enum.py:145 models/media.py:225
+#: models/enum.py:152 models/enum.py:156 models/media.py:225
 msgid "population / social group"
 msgstr "population / groupe social"
+
+#: models/enum.py:157 models/instrument.py:41 models/instrument.py:51
+#: models/location.py:50 models/location.py:142 models/media.py:347
+msgid "name"
+msgstr "nom"
 
 #: models/instrument.py:62 models/instrument.py:75
 msgid "instrument"
@@ -115,10 +162,6 @@ msgstr "accès public"
 msgid "reference"
 msgstr "référence"
 
-#: models/media.py:79
-msgid "archive format"
-msgstr "format d'archivage"
-
 #: models/media.py:80 models/media.py:217
 msgid "old code"
 msgstr "ancienne cote"
@@ -138,10 +181,6 @@ msgstr "titre original / traduction"
 #: models/media.py:84
 msgid "number of components (medium / piece)"
 msgstr "nb de composants (support / pièce)"
-
-#: models/media.py:86
-msgid "secondary edition"
-msgstr "réédition"
 
 #: models/media.py:87
 msgid "depositor / contributor"
@@ -163,10 +202,6 @@ msgstr "enregistré par"
 msgid "recordist identical to depositor"
 msgstr "collecteur identique au déposant"
 
-#: models/media.py:93
-msgid "publisher / status"
-msgstr "éditeur / statut"
-
 #: models/media.py:94
 msgid "published"
 msgstr "édité"
@@ -187,25 +222,9 @@ msgstr "numéro dans la série"
 msgid "bibliographic references"
 msgstr "références bibliographiques"
 
-#: models/media.py:101
-msgid "mode of acquisition"
-msgstr "mode d'acquisition"
-
 #: models/media.py:102 models/media.py:242
 msgid "comment"
 msgstr "commentaire"
-
-#: models/media.py:104
-msgid "record author"
-msgstr "rédacteur fiche"
-
-#: models/media.py:106
-msgid "record writer"
-msgstr "saisie fiche"
-
-#: models/media.py:108
-msgid "legal rights"
-msgstr "droit d'utilisation"
 
 #: models/media.py:109
 msgid "copies"
@@ -218,10 +237,6 @@ msgstr "année d'enregistrement (depuis)"
 #: models/media.py:111
 msgid "recording year (until)"
 msgstr "année d'enregistrement (jusqu'à)"
-
-#: models/media.py:113
-msgid "recording context"
-msgstr "context d'enregistrement"
 
 #: models/media.py:114 models/media.py:219
 msgid "approximative duration"
@@ -250,10 +265,6 @@ msgstr "fiches faîtes"
 #: models/media.py:120
 msgid "a_informer_07_03"
 msgstr "a_informer_07_03"
-
-#: models/media.py:122
-msgid "A/D conversion"
-msgstr "numérisation"
 
 #: models/media.py:160
 msgid "states / nations"
@@ -291,10 +302,6 @@ msgstr "précisions lieu"
 msgid "author"
 msgstr "auteur"
 
-#: models/media.py:230
-msgid "vernacular name"
-msgstr "nom vernaculaire"
-
 #: models/media.py:231
 msgid "comments"
 msgstr "commentaires"
@@ -319,10 +326,6 @@ msgstr "collecteur identique à la collection"
 msgid "cultural area"
 msgstr "aire culturelle"
 
-#: models/media.py:239
-msgid "generic name"
-msgstr "nom générique"
-
 #: models/media.py:240
 msgid "recordist selection"
 msgstr "sélection collecteur"
@@ -338,10 +341,6 @@ msgstr "mots-clés"
 #: models/media.py:309 models/media.py:319 models/media.py:333
 msgid "item"
 msgstr "item"
-
-#: models/media.py:310
-msgid "keyword"
-msgstr "mot-clé"
 
 #: models/media.py:321
 msgid "scientific instrument"
@@ -528,6 +527,47 @@ msgstr "dans"
 #: templates/telemeta_default/country_info.html:18
 msgid "Populations / Social groups"
 msgstr "Populations / Groupes sociaux"
+
+#: templates/telemeta_default/enumeration_edit.html:4
+#: templates/telemeta_default/enumeration_edit.html:7
+#: templates/telemeta_default/enumeration_edit_value.html:4
+#: templates/telemeta_default/enumeration_edit_value.html:7
+msgid "Enumeration"
+msgstr "Enumération"
+
+#: templates/telemeta_default/enumeration_edit.html:12
+msgid "Add entry"
+msgstr "Ajouter une entrée"
+
+#: templates/telemeta_default/enumeration_edit.html:14
+#: templates/telemeta_default/enumeration_edit.html:26
+#: templates/telemeta_default/enumeration_edit_value.html:14
+msgid "Value"
+msgstr "Valeur"
+
+#: templates/telemeta_default/enumeration_edit.html:18
+msgid "Add"
+msgstr "Ajouter"
+
+#: templates/telemeta_default/enumeration_edit.html:40
+msgid "Remove selected items"
+msgstr "Supprimer les éléments sélectionnés"
+
+#: templates/telemeta_default/enumeration_edit.html:44
+msgid "This enumeration is empty"
+msgstr "Cette énumération est vide"
+
+#: templates/telemeta_default/enumeration_edit_value.html:12
+msgid "Modify an entry"
+msgstr "Modification d'une entrée"
+
+#: templates/telemeta_default/enumeration_edit_value.html:18
+msgid "Save"
+msgstr "Enregistrer"
+
+#: templates/telemeta_default/enumeration_edit_value.html:19
+msgid "Cancel"
+msgstr "Annuler"
 
 #: templates/telemeta_default/geo_continents.html:5
 #: templates/telemeta_default/geo_continents.html:26

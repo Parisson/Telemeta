@@ -46,7 +46,7 @@ from django.conf import settings
 
 import telemeta
 from telemeta.models import MediaItem, Location, MediaCollection, EthnicGroup
-from telemeta.models import dublincore
+from telemeta.models import dublincore, Enumeration
 from telemeta.core import Component, ExtensionPoint
 from telemeta.export import *
 from telemeta.visualization import *
@@ -58,6 +58,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from telemeta.util.unaccent import unaccent
 from telemeta.web import pages
 import datetime
+from telemeta.util.unaccent import unaccent_icmp
 
 class WebView(Component):
     """Provide web UI methods"""
@@ -269,9 +270,12 @@ class WebView(Component):
 
         enumerations = []
         for model in models:
-            if getattr(model, "is_enumeration", False):
-                enumerations.append({"name": model._meta.verbose_name_plural, 
+            if issubclass(model, Enumeration):
+                enumerations.append({"name": model._meta.verbose_name, 
                     "id": model._meta.module_name})
+
+        cmp = lambda obj1, obj2: unaccent_icmp(obj1['name'], obj2['name'])
+        enumerations.sort(cmp)
         return enumerations                    
     
     def __get_admin_context_vars(self):
@@ -301,7 +305,6 @@ class WebView(Component):
         vars = self.__get_admin_context_vars()
         vars["enumeration_id"] = enumeration._meta.module_name
         vars["enumeration_name"] = enumeration._meta.verbose_name            
-        vars["enumeration_name_plural"] = enumeration._meta.verbose_name_plural
         vars["enumeration_values"] = enumeration.objects.all()
         return render_to_response('telemeta/enumeration_edit.html', vars)
 
@@ -336,7 +339,6 @@ class WebView(Component):
         vars = self.__get_admin_context_vars()
         vars["enumeration_id"] = enumeration._meta.module_name
         vars["enumeration_name"] = enumeration._meta.verbose_name            
-        vars["enumeration_name_plural"] = enumeration._meta.verbose_name_plural
         vars["enumeration_record"] = enumeration.objects.get(id__exact=value_id)
         return render_to_response('telemeta/enumeration_edit_value.html', vars)
 

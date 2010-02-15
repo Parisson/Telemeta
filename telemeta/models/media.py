@@ -227,7 +227,7 @@ class MediaItem(MediaResource):
     alt_title             = CharField(_('original title / translation'))
     author                = CharField(_('author'))
     vernacular_style      = WeakForeignKey('VernacularStyle', related_name="items", 
-                                           verbose_name=_('vernacular name'))
+                                           verbose_name=_('vernacular style'))
     context_comment       = TextField(_('comments'))
     external_references   = TextField(_('published reference'))
     moda_execut           = CharField(_('moda_execut'))
@@ -236,7 +236,7 @@ class MediaItem(MediaResource):
     collector_from_collection = BooleanField(_('recordist as in collection'))
     cultural_area         = CharField(_('cultural area'))
     generic_style         = WeakForeignKey('GenericStyle', related_name="items", 
-                                           verbose_name=_('generic name'))
+                                           verbose_name=_('generic style'))
     collector_selection   = CharField(_('recordist selection'))
     creator_reference     = CharField(_('reference'))
     comment               = TextField(_('comment'))

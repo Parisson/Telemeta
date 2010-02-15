@@ -1,19 +1,22 @@
 {% extends "telemeta/admin.html" %}
+{% load i18n %}
+
+{% block head_title %}{% trans "Enumeration" %}: {{ enumeration_name|capfirst }} - {{ block.super }}{% endblock %}
 
 {% block tabcontents %}
-    <h4>Manage {{ enumeration_name_plural|capfirst }}</h4>
+ <h4>{% trans "Enumeration" %}: {{ enumeration_name|capfirst }}</h4>
 
  <form class="mod" id="addenum" method="post"
     action="{% url telemeta-enumeration-record-update enumeration_id,enumeration_record.id %}">
   <fieldset>
-   <legend>Modify {{ enumeration_name|capfirst }}</legend>
+   <legend>{% trans "Modify an entry" %}</legend>
    <div class="field">
-    <label>Value: <input type="text" name="value" value="{{enumeration_record.value}}" /></label>
+    <label>{% trans "Value" %}: <input type="text" name="value" value="{{enumeration_record.value}}" /></label>
 
    </div>
    <div class="buttons">
-    <input type="submit" name="save" value="Save">
-    <input type="submit" name="cancel" value="Cancel">
+    <input type="submit" name="save" value="{% trans 'Save' %}">
+    <input type="submit" name="cancel" value="{% trans 'Cancel' %}">
    </div>
   </fieldset>
  </form>

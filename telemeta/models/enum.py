@@ -46,77 +46,92 @@ class Enumeration(ModelCore):
     class Meta(MetaCore):
         abstract = True
 
+class MetaEnumeration(MetaCore):
+    ordering = ['value']
+
 class PhysicalFormat(Enumeration):
     "Collection physical format"
 
-    class Meta(MetaCore):
+    class Meta(MetaEnumeration):
         db_table = 'physical_formats'
+        verbose_name = _("archive format")
 
 class PublishingStatus(Enumeration):
     "Collection publishing status"
 
-    class Meta(MetaCore):
+    class Meta(MetaEnumeration):
         db_table = 'publishing_status'
+        verbose_name = _("secondary edition")
 
 class AcquisitionMode(Enumeration):
     "Mode of acquisition of the collection"
 
-    class Meta(MetaCore):
+    class Meta(MetaEnumeration):
         db_table = 'acquisition_modes'
+        verbose_name = _("mode of acquisition")
 
 class MetadataAuthor(Enumeration):
     "Collection metadata author"
 
-    class Meta(MetaCore):
+    class Meta(MetaEnumeration):
         db_table = 'metadata_authors'
+        verbose_name = _("record author")
 
 class MetadataWriter(Enumeration):  
     "Collection metadata writer"
 
-    class Meta(MetaCore):
+    class Meta(MetaEnumeration):
         db_table = 'metadata_writers'
+        verbose_name = _("record writer")
 
 class LegalRight(Enumeration):
     "Collection legal rights" 
 
-    class Meta(MetaCore):
+    class Meta(MetaEnumeration):
         db_table = 'legal_rights'
+        verbose_name = _("legal rights")
 
 class RecordingContext(Enumeration):
     "Collection recording context"
 
-    class Meta(MetaCore):
+    class Meta(MetaEnumeration):
         db_table = 'recording_contexts'
+        verbose_name = _("recording context")
 
 class AdConversion(Enumeration):
     "Collection digital to analog conversion status"
 
-    class Meta(MetaCore):
+    class Meta(MetaEnumeration):
         db_table = 'ad_conversions'
+        verbose_name = _("A/D conversion")
 
 class VernacularStyle(Enumeration):
     "Item vernacular style"
 
-    class Meta(MetaCore):
+    class Meta(MetaEnumeration):
         db_table = 'vernacular_styles'
+        verbose_name = _("vernacular style")
 
 class GenericStyle(Enumeration):
     "Item generic style"
 
-    class Meta(MetaCore):
+    class Meta(MetaEnumeration):
         db_table = 'generic_styles'
+        verbose_name = _("generic style")
 
 class ContextKeyword(Enumeration):
     "Keyword"
 
-    class Meta(MetaCore):
+    class Meta(MetaEnumeration):
         db_table = 'context_keywords'
+        verbose_name = _("keyword")
 
 class Publisher(Enumeration): 
     "Collection publisher"
 
-    class Meta(MetaCore):
+    class Meta(MetaEnumeration):
         db_table = 'publishers'
+        verbose_name = _("publisher / status")
 
 class PublisherCollection(ModelCore):
     "Collection which belongs to publisher"
@@ -129,23 +144,20 @@ class PublisherCollection(ModelCore):
     class Meta(MetaCore):
         db_table = 'publisher_collections'
 
-class EthnicGroup(ModelCore):
+class EthnicGroup(Enumeration):
     "Item ethnic group"
-    name = CharField(_('name'), required=True)
 
-    class Meta(MetaCore):
+    class Meta(MetaEnumeration):
         db_table = 'ethnic_groups'
         verbose_name = _('population / social group')
-
-    def __unicode__(self):
-        return self.name
 
 class EthnicGroupAlias(ModelCore):
     "Item ethnic group other name" 
     ethnic_group = ForeignKey('EthnicGroup', related_name="aliases", verbose_name=_('population / social group'))
-    name         = CharField(_('name'), required=True)
+    value        = CharField(_('name'), required=True)
 
     class Meta(MetaCore):
         db_table = 'ethnic_group_aliases'
+        unique_together = (('ethnic_group', 'value'),)
 
 

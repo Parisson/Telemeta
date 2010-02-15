@@ -46,6 +46,7 @@ a img { border: none; }
 #content {
     position: relative;
 }
+
 #content ul, #content ul ul, #content ol {
     list-style: square;
     padding: .7em;
