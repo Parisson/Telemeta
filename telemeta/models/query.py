@@ -329,6 +329,9 @@ class MediaCollectionManager(CoreManager):
     def stat_continents(self, only_continent=None):      
         "Return the number of collections by continents and countries as a tree"
 
+        from telemeta.models.media import MediaItem
+        from telemeta.models.location import Location
+
         countries = []
         for lid in MediaItem.objects.filter(location__isnull=False).values_list('location', flat=True).distinct():
             location = Location.objects.get(pk=lid)

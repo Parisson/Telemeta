@@ -25,7 +25,7 @@ var resourceMap = new ResourceMap('.continents', {
 {% if continents %}
 <ul class="continents">
 {% for group in continents %}
-  <li class="name"><b><a href="{% url telemeta-geo-countries group.continent.flatname %}">{{ group.continent }}</a></b>
+  <li class="name {% if not forloop.counter0|divisibleby:"2" %}odd{% endif %}"><b><a href="{% url telemeta-geo-countries group.continent.flatname %}">{{ group.continent }}</a></b>
     <ul>
     {% for country in group.countries %}
       <li id="resource-{{country.id}}" class="country_name resourcemap-element">
@@ -37,9 +37,6 @@ var resourceMap = new ResourceMap('.continents', {
         {% endif %}
       </li>
     {% endfor %}
-    {% if group.countries.10 %}
-    <li><a href="{% url telemeta-geo-countries group.continent.flatname %}">More..</a></li>
-    {% endif %}
     </ul>
   </li>
 {% endfor %}
