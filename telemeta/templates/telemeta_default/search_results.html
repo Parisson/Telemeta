@@ -3,7 +3,7 @@
 {% load i18n %}
 
 {% block content %}
-<h3>Search results</h3>
+<h3>{% trans "Search results" %}</h3>
 
 {% if criteria %}
 <ul>
@@ -11,13 +11,16 @@
     <li><b>{% trans "Search pattern" %}:</b> {{criteria.pattern}}</li>
   {% endif %}
   {% if criteria.location %}
-    <li><b>{% field_label "Location" %}</b>: {{criteria.location}}</li>
+    <li><b>{% field_label "Location" %}:</b> {{criteria.location}}</li>
   {% endif %}
   {% if criteria.ethnic_group %}
     <li><b>{% field_label "EthnicGroup" %}:</b> {{criteria.ethnic_group}}</li>
   {% endif %}
   {% if criteria.creator %}
-    <li><b>Creator:</b> {{criteria.creator}}</li>
+    <li><b>{% field_label "MediaCollection" "creator" %}:</b> {{criteria.creator}}</li>
+  {% endif %}
+  {% if criteria.collector %}
+    <li><b>{% field_label "MediaCollection" "collector" %}:</b> {{criteria.collector}}</li>
   {% endif %}
   {% if criteria.title %}
     <li><b>Title:</b> {{criteria.title}}</li>
@@ -29,8 +32,12 @@
      {% endifnotequal %}
     </li>
   {% endif %}
-  {% if criteria.pub_date %}
-    <li><b>Publishing date:</b> {{criteria.pub_date}}</li>
+  {% if criteria.pub_year_from %}
+    <li><b>{% trans "Year of issue" %}:</b> {{criteria.pub_year_from}}
+     {% ifnotequal criteria.pub_year_to criteria.pub_year_from %}
+     {% trans "to" %} {{criteria.pub_year_to}}
+     {% endifnotequal %}
+    </li>
   {% endif %}
 </ul>
 {% endif %}

@@ -254,7 +254,7 @@ label.disabled { color: #d7d7d7 }
 #searchform fieldset {
     padding: 0;
     padding: .5em;
-    width: 450px;
+    width: 650px;
     border: none;
     border: 1px dotted #888;
     margin-bottom: 1em;

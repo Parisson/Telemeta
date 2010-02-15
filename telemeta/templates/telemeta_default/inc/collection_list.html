@@ -12,6 +12,7 @@
 <table class="listing">
 <tr>
     <th class="highlight">{% trans "Title" %}</th>
+    <th>{% trans "Code" %}</th>
     <th>{% field_label "MediaCollection" "creator" %}</th>
     <th>{% trans "Recordist" %}</th>
     <th>{% trans "Year of recording" %}</th>
@@ -20,6 +21,9 @@
 <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
     <td class="highlight">
         <a href="{% url telemeta-collection-detail collection.public_id %}">{{ collection }}</a>
+    </td>
+    <td>
+        {{ collection.code|default:collection.old_code }}
     </td>
     <td>{{ collection.creator }}</td>
     <td>{{ collection.apparent_collector }}</td>

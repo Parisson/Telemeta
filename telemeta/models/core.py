@@ -36,7 +36,7 @@
 __all__ = ['ModelCore', 'MetaCore', 'DurationField', 'Duration', 'WeakForeignKey', 
            'EnhancedModel', 'CharField', 'TextField', 'IntegerField', 'BooleanField', 
            'DateTimeField', 'FileField', 'ForeignKey', 'FloatField', 'DateField',
-           'RequiredFieldError', 'CoreQuerySet', 'CoreManager']
+           'RequiredFieldError', 'CoreQuerySet', 'CoreManager', 'word_search_q']
 
 from django.core import exceptions
 from django import forms
@@ -410,6 +410,16 @@ class ModelCore(EnhancedModel):
 class MetaCore:
     app_label = 'telemeta'
 
+def word_search_q(field, pattern):
+    words = re.split("[ .*-]+", pattern)
+    q = Q()
+    for w in words:
+        if len(w) >= 3:
+            kwargs = {field + '__icontains': w}
+            q &= Q(**kwargs)
+
+    return q
+
 class CoreQuerySet(EnhancedQuerySet):
     "Base class for all query sets"
 
@@ -417,18 +427,8 @@ class CoreQuerySet(EnhancedQuerySet):
         "Return an empty result set"
         return self.extra(where = ["0 = 1"])
 
-    def word_search_q(self, field, pattern):
-        words = re.split("[ .*-]+", pattern)
-        q = Q()
-        for w in words:
-            if len(w) >= 3:
-                kwargs = {field + '__icontains': w}
-                q &= Q(**kwargs)
-
-        return q
-
     def word_search(self, field, pattern):
-        return self.filter(self.word_search_q(field, pattern))
+        return self.filter(word_search_q(field, pattern))
         
     def _by_change_time(self, type, from_time = None, until_time = None):
         "Search between two revision dates"

@@ -169,10 +169,12 @@ class WebView(Component):
 
     def edit_search(self, request, criteria=None):
         year_min, year_max = MediaCollection.objects.all().recording_year_range()
-        years = year_min and year_max and range(year_min, year_max + 1) \
-                or year_min and [year_min] or year_max and [year_max]
+        rec_years = year_min and year_max and range(year_min, year_max + 1) or []
+        year_min, year_max = MediaCollection.objects.all().publishing_year_range()
+        pub_years = year_min and year_max and range(year_min, year_max + 1) or []
         return render_to_response('telemeta/search_criteria.html', {
-            'rec_years': years,
+            'rec_years': rec_years,
+            'pub_years': pub_years,
             'ethnic_groups': MediaItem.objects.all().ethnic_groups(),
             'criteria': criteria
         })
@@ -218,26 +220,32 @@ class WebView(Component):
                 EthnicGroup.objects.get(pk=value)),
             'creator': lambda value: (
                 collections.word_search('creator', value),
-                items.word_search('auteur', value)),
+                items.word_search('collection__creator', value)),
+            'collector': lambda value: (
+                collections.by_fuzzy_collector(value),
+                items.by_fuzzy_collector(value)),
             'rec_year_from': lambda value: (
-                collections.by_recording_year(int(value), int(input['rec_year_to'])), 
+                collections.by_recording_year(int(value), int(input.get('rec_year_to', value))), 
                 items.by_recording_date(datetime.date(int(value), 1, 1), 
-                                        datetime.date(int(input['rec_year_to']), 12, 31))),
+                                        datetime.date(int(input.get('rec_year_to', value)), 12, 31))),
             'rec_year_to': lambda value: (collections, items),
-            'pub_date': lambda value: (
-                collections.by_publish_date(value), 
-                items.by_publish_date(value))
+            'pub_year_from': lambda value: (
+                collections.by_publish_year(int(value), int(input.get('pub_year_to', value))), 
+                items.by_publish_year(int(value), int(input.get('pub_year_to', value)))),
+            'pub_year_to': lambda value: (collections, items),
         }
        
         for key, value in input.items():
             func = switch.get(key)
-            if func and value:
+            if func and value and value != "0":
                 res = func(value)
                 if len(res) > 2:
                     collections, items, value = res
                 else: 
                     collections, items = res
                 criteria[key] = value
+
+        print collections.query
 
         if type is None:
             if collections.count() and not items.count():

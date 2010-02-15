@@ -43,11 +43,13 @@ class MediaItemQuerySet(CoreQuerySet):
     "Base class for all media item query sets"
     
     def quick_search(self, pattern):
-        "Perform a quick search on id and title"
+        "Perform a quick search on code, title and collector name"
+        pattern = pattern.strip()
         return self.filter(
-            self.word_search_q('id', pattern) |
-            self.word_search_q('title', pattern) |  
-            self.word_search_q('author', pattern)   
+            Q(code__contains=pattern.strip()) |
+            Q(old_code__contains=pattern.strip()) |
+            word_search_q('title', pattern) |  
+            self.by_fuzzy_collector_q(pattern)
         )
 
     def without_collection(self):        
@@ -66,7 +68,8 @@ class MediaItemQuerySet(CoreQuerySet):
     def by_title(self, pattern):
         "Find items by title"
         # to (sort of) sync with models.media.MediaItem.get_title()
-        return self.filter(self.word_search_q("title", pattern) | self.word_search_q("collection__title", pattern))
+        return self.filter(word_search_q("title", pattern) | 
+                           (Q(title="") & word_search_q("collection__title", pattern)))
 
     def by_publish_year(self, from_year, to_year = None):
         "Find items by publishing year"
@@ -158,6 +161,15 @@ class MediaItemQuerySet(CoreQuerySet):
         ids = self.filter(ethnic_group__isnull=False).values('ethnic_group');
         return EthnicGroup.objects.filter(pk__in=ids).order_by('name')
 
+    @staticmethod
+    def by_fuzzy_collector_q(pattern):
+        return (word_search_q('collection__creator', pattern) | 
+                word_search_q('collection__collector', pattern) | 
+                word_search_q('collector', pattern))
+
+    def by_fuzzy_collector(self, pattern):
+        return self.filter(self.by_fuzzy_collector_q(pattern))
+
 class MediaItemManager(CoreManager):
     "Manage media items queries"
 
@@ -200,11 +212,13 @@ class MediaItemManager(CoreManager):
 class MediaCollectionQuerySet(CoreQuerySet):
 
     def quick_search(self, pattern):
-        "Perform a quick search on id, title and creator name"
+        "Perform a quick search on code, title and collector name"
+        pattern = pattern.strip()
         return self.filter(
-            self.word_search_q('id', pattern) |
-            self.word_search_q('title', pattern) |  
-            self.word_search_q('creator', pattern)   
+            Q(code__contains=pattern.strip()) |
+            Q(old_code__contains=pattern.strip()) |
+            word_search_q('title', pattern) |  
+            self.by_fuzzy_collector_q(pattern)
         )
 
     def by_location(self, location):
@@ -253,7 +267,25 @@ class MediaCollectionQuerySet(CoreQuerySet):
         to_min   = self.filter(recorded_to_year__gt=0).aggregate(Min('recorded_to_year'))['recorded_to_year__min']
         year_min = min(from_min, to_min) 
 
+        if not year_max:
+            year_max = year_min
+        elif not year_min:
+            year_min = year_max
+
         return year_min, year_max
+
+    def publishing_year_range(self):
+        year_max = self.aggregate(Max('year_published'))['year_published__max']
+        year_min = self.filter(year_published__gt=0).aggregate(Min('year_published'))['year_published__min']
+
+        return year_min, year_max
+
+    @staticmethod
+    def by_fuzzy_collector_q(pattern):
+        return word_search_q('creator', pattern) | word_search_q('collector', pattern)
+
+    def by_fuzzy_collector(self, pattern):
+        return self.filter(self.by_fuzzy_collector_q(pattern))
 
 class MediaCollectionManager(CoreManager):
     "Manage collection queries"
