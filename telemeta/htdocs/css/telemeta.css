@@ -114,6 +114,11 @@ a img { border: none; }
     border: 1px solid #adadad;
 }
 
+#rightcol p {
+    margin: 0;
+    padding: 0;
+}
+
 .exporter {
     background-color: #fff;
     color: #555;
