@@ -34,7 +34,7 @@ $(document).ready(function () {
     </p>
 
     <p>
-    <label for="ethnic_group">Ethnic group</label>
+    <label for="ethnic_group">{% field_label "EthnicGroup" %}</label>
     <select id="ethnic_group" name="ethnic_group">
         <option value="">All ethnic groups</option>
     {% for group in ethnic_groups %}

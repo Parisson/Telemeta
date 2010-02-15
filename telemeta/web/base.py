@@ -45,7 +45,7 @@ from django.views.generic import list_detail
 from django.conf import settings
 
 import telemeta
-from telemeta.models import MediaItem, Location, MediaCollection
+from telemeta.models import MediaItem, Location, MediaCollection, EthnicGroup
 from telemeta.models import dublincore
 from telemeta.core import Component, ExtensionPoint
 from telemeta.export import *
@@ -167,9 +167,10 @@ class WebView(Component):
         return response
 
     def edit_search(self, request):
-        ethnic_groups = MediaItem.objects.all().ethnic_groups()
-        return render_to_response('telemeta/search_criteria.html', 
-            {'ethnic_groups': ethnic_groups})
+
+        return render_to_response('telemeta/search_criteria.html', {
+            'ethnic_groups': MediaItem.objects.all().ethnic_groups(),
+        })
 
     def complete_location(self, request, with_items=True):
         input = request.REQUEST
@@ -208,7 +209,8 @@ class WebView(Component):
                 items.filter(continent = value)),
             'ethnic_group': lambda value: (
                 collections.by_ethnic_group(value), 
-                items.filter(ethnie_grsocial = value)),
+                items.filter(ethnic_group = value),
+                EthnicGroup.objects.get(pk=value)),
             'creator': lambda value: (
                 collections.word_search('creator', value),
                 items.word_search('auteur', value)),
@@ -221,11 +223,13 @@ class WebView(Component):
         }
        
         for key, value in input.items():
-            if key == 'continent' and input.get('country'):
-                continue
             func = switch.get(key)
             if func and value:
-                collections, items = func(value)
+                res = func(value)
+                if len(res) > 2:
+                    collections, items, value = res
+                else: 
+                    collections, items = res
                 criteria[key] = value
 
         if type is None:

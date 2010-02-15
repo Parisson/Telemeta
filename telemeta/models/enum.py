@@ -135,6 +135,7 @@ class EthnicGroup(ModelCore):
 
     class Meta(MetaCore):
         db_table = 'ethnic_groups'
+        verbose_name = _('population / social group')
 
     def __unicode__(self):
         return self.name

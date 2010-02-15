@@ -1,5 +1,6 @@
 {% extends "telemeta/base.html" %}
 {% load telemeta_utils %}
+{% load i18n %}
 
 {% block content %}
 <h3>Search results</h3>
@@ -7,13 +8,13 @@
 {% if criteria %}
 <ul>
   {% if criteria.pattern %}
-    <li><b>Pattern:</b> {{criteria.pattern}}</li>
+    <li><b>{% trans "Search pattern" %}:</b> {{criteria.pattern}}</li>
   {% endif %}
   {% if criteria.location %}
-    <li><b>Location:</b> {{criteria.location}}</li>
+    <li><b>{% field_label "Location" %}</b>: {{criteria.location}}</li>
   {% endif %}
   {% if criteria.ethnic_group %}
-    <li><b>Ethnic group:</b> {{criteria.ethnic_group}}</li>
+    <li><b>{% field_label "EthnicGroup" %}:</b> {{criteria.ethnic_group}}</li>
   {% endif %}
   {% if criteria.creator %}
     <li><b>Creator:</b> {{criteria.creator}}</li>
@@ -22,7 +23,7 @@
     <li><b>Title:</b> {{criteria.title}}</li>
   {% endif %}
   {% if criteria.rec_date %}
-    <li><b>Recording date:</b> {{criteria.rec_date}}</li>
+    <li><b>{% trans "Year of recording" %}:</b> {{criteria.rec_date}}</li>
   {% endif %}
   {% if criteria.pub_date %}
     <li><b>Publishing date:</b> {{criteria.pub_date}}</li>

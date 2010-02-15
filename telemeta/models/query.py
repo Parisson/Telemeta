@@ -36,6 +36,7 @@
 from django.db.models import Q
 from telemeta.models.core import *
 from telemeta.util.unaccent import unaccent, unaccent_icmp
+from telemeta.models.enum import EthnicGroup
 import re
 
 class MediaItemQuerySet(CoreQuerySet):
@@ -154,9 +155,8 @@ class MediaItemQuerySet(CoreQuerySet):
         return qs                
 
     def ethnic_groups(self):
-        return self.filter(ethnic_group__isnull=False) \
-               .values_list('ethnic_group__name', flat=True) \
-               .distinct().order_by('ethnic_group__name')        
+        ids = self.filter(ethnic_group__isnull=False).values('ethnic_group');
+        return EthnicGroup.objects.filter(pk__in=ids).order_by('name')
 
 class MediaItemManager(CoreManager):
     "Manage media items queries"
@@ -227,7 +227,7 @@ class MediaCollectionQuerySet(CoreQuerySet):
 
     def by_ethnic_group(self, group):
         "Find collections by ethnic group"
-        return self.filter(items__ethnic_group__name=group).distinct()
+        return self.filter(items__ethnic_group=group).distinct()
 
     def by_change_time(self, from_time=None, until_time=None):
         "Find collections between two dates"
