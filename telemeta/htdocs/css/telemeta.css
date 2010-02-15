@@ -396,6 +396,7 @@ dl dd {
 }
 dl dt {
     float: left;
+    clear: left;
 }
 
 dl.listing dt {
