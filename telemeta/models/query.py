@@ -122,6 +122,8 @@ class MediaItemQuerySet(CoreQuerySet):
                 ordered.append({'continent': c, 'countries': grouped[c]})
             
             countries = ordered
+        else:
+            countries.sort(self.__name_cmp)
             
         return countries                    
 
@@ -325,41 +327,6 @@ class MediaCollectionManager(CoreManager):
     @staticmethod
     def __name_cmp(obj1, obj2):
         return unaccent_icmp(obj1.name, obj2.name)
-
-    def stat_continents(self, only_continent=None):      
-        "Return the number of collections by continents and countries as a tree"
-
-        from telemeta.models.media import MediaItem
-        from telemeta.models.location import Location
-
-        countries = []
-        for lid in MediaItem.objects.filter(location__isnull=False).values_list('location', flat=True).distinct():
-            location = Location.objects.get(pk=lid)
-            if not only_continent or (only_continent in location.continents()):
-                for l in location.countries():
-                    if not l in countries:
-                        countries.append(l)
-                
-        stat = {}
-
-        for country in countries:
-            count = country.collections().count()
-            for continent in country.continents():
-                if not stat.has_key(continent):
-                    stat[continent] = {}
-
-                stat[continent][country] = count
-                
-        keys1 = stat.keys()
-        keys1.sort(self.__name_cmp)
-        ordered = []
-        for c in keys1:
-            keys2 = stat[c].keys()
-            keys2.sort(self.__name_cmp)
-            sub = [{'location': d, 'count': stat[c][d]} for d in keys2]
-            ordered.append({'location': c, 'countries': sub})
-        
-        return ordered
 
 class LocationQuerySet(CoreQuerySet):
     __flatname_map = None

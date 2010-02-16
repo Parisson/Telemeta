@@ -387,9 +387,12 @@ class WebView(Component):
 
     def list_countries(self, request, continent):                    
         continent = Location.objects.by_flatname(continent)[0]
-        data = MediaCollection.objects.stat_continents(only_continent=continent)
+        countries = MediaItem.objects.by_location(continent).countries()
 
-        return render_to_response('telemeta/geo_countries.html', {'continent': data[0] })
+        return render_to_response('telemeta/geo_countries.html', {
+            'continent': continent,
+            'countries': countries
+        })
 
     def list_country_collections(self, request, continent, country):
         continent = Location.objects.by_flatname(continent)[0]
