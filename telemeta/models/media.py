@@ -167,7 +167,8 @@ class MediaCollection(MediaResource):
             if item.ethnic_group and not item.ethnic_group in groups:
                 groups.append(item.ethnic_group)
 
-        groups.sort(self.__name_cmp)                
+        cmp = lambda a, b: unaccent_icmp(a.value, b.value)
+        groups.sort(cmp)                
 
         return groups
     ethnic_groups.verbose_name = _('populations / social groups')
