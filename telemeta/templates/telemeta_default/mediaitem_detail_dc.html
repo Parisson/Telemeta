@@ -7,7 +7,7 @@
 {% if item %}
 {% block submenu %}
     <h3>Item: {{ item }}</h3>
-    <div><a href="{% url telemeta-item-detail item.id|urlencode %}">{% trans "Normal View" %}</a></div>
+    <div><a href="{% url telemeta-item-detail item.public_id %}">{% trans "Normal View" %}</a></div>
 {% endblock %}
 
 {% block content %}
