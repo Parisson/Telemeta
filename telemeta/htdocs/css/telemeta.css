@@ -235,6 +235,7 @@ label.disabled { color: #d7d7d7 }
 }
 #quick_search p {
     margin-top: .3em;
+    clear: left;
 }
 #quick_search a {
     font-size: .8em;
@@ -680,18 +681,18 @@ a.image-link {
     padding-right: 370px;
 }
 
-ul.playlist {
+#content ul.playlist {
     list-style-type: none;
     border-top: solid 1px #e1e1e1;
     margin: 0;
-    padding: 0 !important;
+    padding: 0;
 }
 
-ul.playlist li {
+#content ul.playlist li {
     display: block;
     border: solid 1px #e1e1e1;
     border-top: 0;
     background: white;
     margin: 0;
-    padding: 1em !important;
+    padding: 1em;
 }
