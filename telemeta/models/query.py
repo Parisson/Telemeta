@@ -147,7 +147,7 @@ class MediaItemQuerySet(CoreQuerySet):
                     'locations.name, '
                     '(SELECT l2.name FROM location_relations AS r INNER JOIN locations AS l2 '
                     'ON r.ancestor_location_id = l2.id '
-                    'WHERE r.location_id = media_items.location_id AND l2.type = ' + str(Location.COUNTRY) + ' ))'
+                    'WHERE r.location_id = media_items.location_id AND l2.type = ' + str(Location.COUNTRY) + ' LIMIT 1))'
                 })
             else:
                 raise Exception("Unsupported virtual field: %s" % f)
