@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-15 23:57+0100\n"
+"POT-Creation-Date: 2010-02-16 22:25+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Olivier Guilyardi <olivier samalyse com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -60,15 +60,15 @@ msgstr "contexte d'enregistrement"
 msgid "A/D conversion"
 msgstr "numérisation"
 
-#: models/enum.py:113 models/media.py:230
+#: models/enum.py:113 models/media.py:231
 msgid "vernacular style"
 msgstr "style vernaculaire"
 
-#: models/enum.py:120 models/media.py:239
+#: models/enum.py:120 models/media.py:240
 msgid "generic style"
 msgstr "style générique"
 
-#: models/enum.py:127 models/media.py:310
+#: models/enum.py:127 models/media.py:311
 msgid "keyword"
 msgstr "mot-clé"
 
@@ -80,12 +80,12 @@ msgstr "éditeur / statut"
 msgid "publisher"
 msgstr "éditeur"
 
-#: models/enum.py:152 models/enum.py:156 models/media.py:225
+#: models/enum.py:152 models/enum.py:156 models/media.py:226
 msgid "population / social group"
 msgstr "population / groupe social"
 
 #: models/enum.py:157 models/instrument.py:41 models/instrument.py:51
-#: models/location.py:50 models/location.py:142 models/media.py:347
+#: models/location.py:50 models/location.py:142 models/media.py:348
 msgid "name"
 msgstr "nom"
 
@@ -103,7 +103,7 @@ msgstr "alias"
 
 #: models/location.py:48
 msgid "country"
-msgstr "pays"
+msgstr "état/nation"
 
 #: models/location.py:48
 msgid "continent"
@@ -130,7 +130,7 @@ msgid "authoritative"
 msgstr "officiel"
 
 #: models/location.py:105 models/location.py:149 models/location.py:162
-#: models/media.py:222
+#: models/media.py:223
 msgid "location"
 msgstr "lieu"
 
@@ -154,27 +154,27 @@ msgstr "Son et métadonnées"
 msgid "Private data"
 msgstr "Données privées"
 
-#: models/media.py:55 models/media.py:123 models/media.py:244
+#: models/media.py:55 models/media.py:123 models/media.py:245
 msgid "public access"
 msgstr "accès public"
 
-#: models/media.py:77 models/media.py:241
+#: models/media.py:77 models/media.py:242
 msgid "reference"
 msgstr "référence"
 
-#: models/media.py:80 models/media.py:217
+#: models/media.py:80 models/media.py:218
 msgid "old code"
 msgstr "ancienne cote"
 
-#: models/media.py:81 models/media.py:218
+#: models/media.py:81 models/media.py:219
 msgid "code"
 msgstr "cote"
 
-#: models/media.py:82 models/media.py:226 models/media.py:334
+#: models/media.py:82 models/media.py:227 models/media.py:335
 msgid "title"
 msgstr "titre"
 
-#: models/media.py:83 models/media.py:227
+#: models/media.py:83 models/media.py:228
 msgid "original title / translation"
 msgstr "titre original / traduction"
 
@@ -194,7 +194,7 @@ msgstr "auteur de la notice éditée"
 msgid "related documentation"
 msgstr "documentation associée"
 
-#: models/media.py:90 models/media.py:235
+#: models/media.py:90 models/media.py:236
 msgid "recordist"
 msgstr "enregistré par"
 
@@ -222,7 +222,7 @@ msgstr "numéro dans la série"
 msgid "bibliographic references"
 msgstr "références bibliographiques"
 
-#: models/media.py:102 models/media.py:242
+#: models/media.py:102 models/media.py:243
 msgid "comment"
 msgstr "commentaire"
 
@@ -238,7 +238,7 @@ msgstr "année d'enregistrement (depuis)"
 msgid "recording year (until)"
 msgstr "année d'enregistrement (jusqu'à)"
 
-#: models/media.py:114 models/media.py:219
+#: models/media.py:114 models/media.py:220
 msgid "approximative duration"
 msgstr "durée approximative"
 
@@ -270,111 +270,111 @@ msgstr "a_informer_07_03"
 msgid "states / nations"
 msgstr "états / nations"
 
-#: models/media.py:173
+#: models/media.py:174
 msgid "populations / social groups"
 msgstr "populations / groupes sociaux"
 
-#: models/media.py:181 models/media.py:294
+#: models/media.py:182 models/media.py:295
 msgid "computed duration"
 msgstr "durée calculée"
 
-#: models/media.py:215
+#: models/media.py:216
 msgid "collection"
 msgstr "collection"
 
-#: models/media.py:216
+#: models/media.py:217
 msgid "item number"
 msgstr "n° de l'item"
 
-#: models/media.py:220
+#: models/media.py:221
 msgid "recording date (from)"
 msgstr "date d'enregistrement (depuis)"
 
-#: models/media.py:221
+#: models/media.py:222
 msgid "recording date (until)"
 msgstr "date d'enregistrement (jusqu'à)"
 
-#: models/media.py:223
+#: models/media.py:224
 msgid "location details"
 msgstr "précisions lieu"
 
-#: models/media.py:228
+#: models/media.py:229
 msgid "author"
 msgstr "auteur"
 
-#: models/media.py:231
+#: models/media.py:232
 msgid "comments"
 msgstr "commentaires"
 
-#: models/media.py:232
+#: models/media.py:233
 msgid "published reference"
 msgstr "référence éditée"
 
-#: models/media.py:233
+#: models/media.py:234
 msgid "moda_execut"
 msgstr "moda_execut"
 
-#: models/media.py:234
+#: models/media.py:235
 msgid "copy of"
 msgstr "copie de"
 
-#: models/media.py:236
+#: models/media.py:237
 msgid "recordist as in collection"
 msgstr "collecteur identique à la collection"
 
-#: models/media.py:237
+#: models/media.py:238
 msgid "cultural area"
 msgstr "aire culturelle"
 
-#: models/media.py:240
+#: models/media.py:241
 msgid "recordist selection"
 msgstr "sélection collecteur"
 
-#: models/media.py:243
+#: models/media.py:244
 msgid "file"
 msgstr "fichier"
 
-#: models/media.py:250
+#: models/media.py:251
 msgid "keywords"
 msgstr "mots-clés"
 
-#: models/media.py:309 models/media.py:319 models/media.py:333
+#: models/media.py:310 models/media.py:320 models/media.py:334
 msgid "item"
 msgstr "item"
 
-#: models/media.py:321
+#: models/media.py:322
 msgid "scientific instrument"
 msgstr "instrument scientifique"
 
-#: models/media.py:323
+#: models/media.py:324
 msgid "vernacular instrument"
 msgstr "instrument vernaculaire"
 
-#: models/media.py:324
+#: models/media.py:325
 msgid "number"
 msgstr "nombre"
 
-#: models/media.py:325
+#: models/media.py:326
 msgid "interprets"
 msgstr "interprètes"
 
-#: models/media.py:335
+#: models/media.py:336
 msgid "start"
 msgstr "début"
 
-#: models/media.py:336
+#: models/media.py:337
 msgid "end"
 msgstr "fin"
 
-#: models/media.py:359
+#: models/media.py:360
 msgid "playlist"
 msgstr "liste de lecture"
 
-#: models/media.py:360
+#: models/media.py:361
 msgid "resource type"
 msgstr "type de ressource"
 
-#: models/media.py:361
+#: models/media.py:362
 msgid "resource"
 msgstr "ressource"
 
@@ -423,6 +423,7 @@ msgid "user"
 msgstr "utilisateur"
 
 #: templates/telemeta_default/base.html:32
+#: templates/telemeta_default/search_criteria.html:134
 msgid "Search"
 msgstr "Recherche"
 
@@ -503,6 +504,7 @@ msgid "Audio"
 msgstr "Audio"
 
 #: templates/telemeta_default/collection_detail.html:132
+#: templates/telemeta_default/geo_countries.html:14
 msgid "Number of items"
 msgstr "Nombre d'items"
 
@@ -515,8 +517,8 @@ msgstr "Vue normale"
 msgid "No such collection"
 msgstr "Collection introuvable"
 
-#: templates/telemeta_default/collection_list.html:4
-#: templates/telemeta_default/collection_list.html:7
+#: templates/telemeta_default/collection_list.html:5
+#: templates/telemeta_default/collection_list.html:8
 msgid "Media Collections"
 msgstr "Collections"
 
@@ -591,6 +593,26 @@ msgstr "Liste"
 #: templates/telemeta_default/geo_country_items.html:8
 msgid "World"
 msgstr "Monde"
+
+#: templates/telemeta_default/geo_countries.html:12
+msgid "Country"
+msgstr "Etat/nation"
+
+#: templates/telemeta_default/geo_countries.html:13
+msgid "Number of collections"
+msgstr "Nombre de collections"
+
+#: templates/telemeta_default/geo_countries.html:22
+msgid "1 collection"
+msgid_plural "%(counter)s collections"
+msgstr[0] "1 collection"
+msgstr[1] "%(counter)s collections"
+
+#: templates/telemeta_default/geo_countries.html:29
+msgid "1 item"
+msgid_plural "%(counter)s items "
+msgstr[0] "1 item"
+msgstr[1] "%(counter)s items "
 
 #: templates/telemeta_default/index.html:11
 msgid "Open the geographic navigator"
@@ -696,7 +718,7 @@ msgstr "Items %(first_on_page)s à %(last_on_page)s sur %(hits)s"
 
 #: templates/telemeta_default/inc/mediaitem_list.html:20
 msgid "Country/Continent"
-msgstr "Pays/Continent"
+msgstr "Etat/Continent"
 
 #: templates/telemeta_default/inc/mediaitem_list.html:50
 msgid "No item"

@@ -246,8 +246,6 @@ class WebView(Component):
                     collections, items = res
                 criteria[key] = value
 
-        print collections.query
-
         if type is None:
             if collections.count() and not items.count():
                 type = 'collections'
