@@ -83,7 +83,7 @@ class MediaItemQuerySet(CoreQuerySet):
 
     def by_location(self, location):
         "Find items by location"
-        return self.filter(Q(location=location) | Q(location__in=location.descendants()))
+        return self.filter(location__in=location.apparented())
            
     @staticmethod
     def __name_cmp(obj1, obj2):
@@ -92,8 +92,9 @@ class MediaItemQuerySet(CoreQuerySet):
     def locations(self):
         from telemeta.models import Location, LocationRelation
         l = self.values('location')
+        c = self.values('location__current_location')
         r = LocationRelation.objects.filter(location__in=l).values('ancestor_location')
-        return Location.objects.filter(Q(pk__in=l) | Q(pk__in=r))
+        return Location.objects.filter(Q(pk__in=l) | Q(pk__in=r) | Q(pk__in=c))
 
     def countries(self, group_by_continent=False):
         countries = []
@@ -101,8 +102,9 @@ class MediaItemQuerySet(CoreQuerySet):
         for id in self.filter(location__isnull=False).values_list('location', flat=True).distinct():
             location = Location.objects.get(pk=id)
             for l in location.countries():
-                if not l in countries:
-                    countries.append(l)
+                c = l.current_location
+                if not c in countries:
+                    countries.append(c)
 
         if group_by_continent:
             grouped = {}
@@ -225,7 +227,7 @@ class MediaCollectionQuerySet(CoreQuerySet):
 
     def by_location(self, location):
         "Find collections by location"
-        return self.filter(Q(items__location=location) | Q(items__location__in=location.descendants())).distinct()
+        return self.filter(items__location__in=location.apparented()).distinct()
     
     def by_recording_year(self, from_year, to_year=None):
         "Find collections by recording year"
@@ -351,13 +353,8 @@ class LocationQuerySet(CoreQuerySet):
         self.__class__.__flatname_map = map
         return map
 
-    def current(self, is_current=True):
-        if is_current:
-            where = ["locations.id = locations.current_location_id"]
-        else:
-            where = ["locations.id <> locations.current_location_id"]
-
-        return self.extra(where = where);
+    def current(self):
+        return self.filter(id__in=self.values_list('current_location_id', flat=True)).distinct()
 
 class LocationManager(CoreManager):
 

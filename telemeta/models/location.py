@@ -78,6 +78,12 @@ class Location(ModelCore):
             q &= Q(ancestor_relations__is_direct=True)
         return Location.objects.filter(q)           
 
+    def apparented(self):
+        return Location.objects.filter(
+                Q(pk=self.id) | 
+                Q(ancestor_relations__ancestor_location=self) | 
+                Q(current_location=self.id)).distinct()
+
     def add_child(self, other):
         LocationRelation.objects.create(location=other, ancestor_location=self, is_direct=True)
         for location in self.ancestors():
