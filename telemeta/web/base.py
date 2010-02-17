@@ -239,11 +239,16 @@ class WebView(Component):
         for key, value in input.items():
             func = switch.get(key)
             if func and value and value != "0":
-                res = func(value)
-                if len(res) > 2:
-                    collections, items, value = res
-                else: 
-                    collections, items = res
+                try:
+                    res = func(value)
+                    if len(res) > 2:
+                        collections, items, value = res
+                    else: 
+                        collections, items = res
+                except ObjectDoesNotExist:
+                    collections = collections.none()
+                    items = items.none()
+
                 criteria[key] = value
 
         if type is None:
