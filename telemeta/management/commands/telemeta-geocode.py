@@ -20,26 +20,32 @@ class Command(BaseCommand):
         except IOError:
             raise CommandError("Unable to open %s" % datafile)
             
-        locations = Location.objects.filter(type=Location.COUNTRY)
+        locations = [l for l in Location.objects.filter(type=Location.COUNTRY)]
+
         i = 0
         geocoded = 0
-        total = locations.count()
+        total = len(locations)
         for line in datafile:
             (geonameid, name, asciiname, alternatenames, latitude, longitude, feature_class,
              feature_code, country_code, cc2, admin1_code, admin2_code, admin3_code,
              admin4_code, population, elevation, gtopo30, timezone, modification_date) = line.strip().split("\t")
            
-            if feature_class == 'A':
+            if feature_code[0:3] == 'PCL':
                 names = [asciiname.lower()]
                 if alternatenames:
                     names.extend([unaccent(n).lower() for n in alternatenames.split(',')])
 
+                found = []
                 for l in locations:
                     if unaccent(l.name).lower() in names:
                         l.latitude = float(latitude)
                         l.longitude = float(longitude)
                         l.save()
                         geocoded += 1
+                        found.append(l)
+
+                for l in found:
+                    locations.remove(l)
 
             i += 1
 
