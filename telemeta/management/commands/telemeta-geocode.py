@@ -20,7 +20,7 @@ class Command(BaseCommand):
         except IOError:
             raise CommandError("Unable to open %s" % datafile)
             
-        locations = [l for l in Location.objects.filter(type=Location.COUNTRY)]
+        locations = [l for l in Location.objects.all().current().filter(type=Location.COUNTRY)]
 
         i = 0
         geocoded = 0

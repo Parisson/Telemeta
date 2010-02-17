@@ -351,6 +351,14 @@ class LocationQuerySet(CoreQuerySet):
         self.__class__.__flatname_map = map
         return map
 
+    def current(self, is_current=True):
+        if is_current:
+            where = ["locations.id = locations.current_location_id"]
+        else:
+            where = ["locations.id <> locations.current_location_id"]
+
+        return self.extra(where = where);
+
 class LocationManager(CoreManager):
 
     def get_query_set(self):
