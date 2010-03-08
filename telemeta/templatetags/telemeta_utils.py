@@ -108,10 +108,11 @@ def to_dublincore(resource):
         return dc.express_collection(resource)
 
 class DescriptionListFieldNode(template.Node):
-    def __init__(self, model, attr, join_with = None):
+    def __init__(self, model, attr, join_with = None, show_empty = False):
         self.model  = model
         self.member = attr
         self.join_with = join_with
+        self.show_empty = show_empty
 
     def render(self, context):
         try:
@@ -135,7 +136,9 @@ class DescriptionListFieldNode(template.Node):
             pass
         if self.join_with:
             value = self.join_with.join([unicode(v) for v in value])
-        if value:
+        if not value:
+            value = ''
+        if value or self.show_empty:
             value = html.escape(unicode(value))
             markup  = '<dt>%s</dt><dd>%s</dd>' % (label, value)
             return markup
@@ -146,25 +149,36 @@ class DescriptionListFieldNode(template.Node):
 def dl_field(parser, token):
     cut = token.split_contents()
     join_with = None
-    try:
+    show_empty = False
+    if len(cut) == 3:
         tag_name, model, attr = cut
-    except ValueError:
-        try:
-            tag_name, model, attr, arg3, arg4, arg5  = cut
-            if arg3 == 'join' and arg4 == 'with'and arg5[0] == arg5[-1] and arg5[0] in ('"', "'"):
-                join_with = arg5[1:-1]
+    elif len(cut) == 4:
+        tag_name, model, attr, arg3 = cut
+        if arg3 == 'placeholder':
+            show_empty = True
+        else:
+            raise ValueError()
+    elif len(cut) >= 6:
+        tag_name, model, attr, arg3, arg4, arg5  = cut[0:6]
+        if arg3 == 'join' and arg4 == 'with'and arg5[0] == arg5[-1] and arg5[0] in ('"', "'"):
+            join_with = arg5[1:-1]
+        else:
+            raise ValueError()
+        if len(cut) > 6:
+            if cut[6] == 'placeholder':
+                show_empty = True
             else:
-                raise ValueError()
-        except ValueError:
-            raise template.TemplateSyntaxError("%r tag: invalid arguments" 
-                                               % token.contents.split()[0])
+                raise ValueError();
+    else:                
+        raise template.TemplateSyntaxError("%r tag: invalid arguments" 
+                                           % token.contents.split()[0])
 
     if attr[0] == attr[-1] and attr[0] in ('"', "'"):
         attr = attr[1:-1]
     else:
         attr = template.Variable(attr)
     model = template.Variable(model)
-    return DescriptionListFieldNode(model, attr, join_with=join_with)
+    return DescriptionListFieldNode(model, attr, join_with=join_with, show_empty=show_empty)
 
 @register.filter
 def prepend(str, prefix):

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-16 22:25+0100\n"
+"POT-Creation-Date: 2010-03-08 18:30+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Olivier Guilyardi <olivier samalyse com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -85,7 +85,7 @@ msgid "population / social group"
 msgstr "population / groupe social"
 
 #: models/enum.py:157 models/instrument.py:41 models/instrument.py:51
-#: models/location.py:50 models/location.py:142 models/media.py:348
+#: models/location.py:50 models/location.py:148 models/media.py:348
 msgid "name"
 msgstr "nom"
 
@@ -97,7 +97,7 @@ msgstr "instrument"
 msgid "parent instrument"
 msgstr "instrument parent"
 
-#: models/instrument.py:73 models/location.py:150
+#: models/instrument.py:73 models/location.py:156
 msgid "alias"
 msgstr "alias"
 
@@ -125,20 +125,20 @@ msgstr "type complet"
 msgid "current location"
 msgstr "lieu actuel"
 
-#: models/location.py:57 models/location.py:151 models/location.py:165
+#: models/location.py:57 models/location.py:157 models/location.py:171
 msgid "authoritative"
 msgstr "officiel"
 
-#: models/location.py:105 models/location.py:149 models/location.py:162
+#: models/location.py:111 models/location.py:155 models/location.py:168
 #: models/media.py:223
 msgid "location"
 msgstr "lieu"
 
-#: models/location.py:141
+#: models/location.py:147
 msgid "identifier"
 msgstr "identifiant"
 
-#: models/location.py:163
+#: models/location.py:169
 msgid "ancestor location"
 msgstr "lieu ancêtre"
 
@@ -196,7 +196,7 @@ msgstr "documentation associée"
 
 #: models/media.py:90 models/media.py:236
 msgid "recordist"
-msgstr "enregistré par"
+msgstr "collecteur"
 
 #: models/media.py:91
 msgid "recordist identical to depositor"
@@ -222,7 +222,7 @@ msgstr "numéro dans la série"
 msgid "bibliographic references"
 msgstr "références bibliographiques"
 
-#: models/media.py:102 models/media.py:243
+#: models/media.py:102
 msgid "comment"
 msgstr "commentaire"
 
@@ -260,7 +260,7 @@ msgstr "déposant CNRS"
 
 #: models/media.py:119
 msgid "items finished"
-msgstr "fiches faîtes"
+msgstr "fiches items faîtes"
 
 #: models/media.py:120
 msgid "a_informer_07_03"
@@ -299,8 +299,8 @@ msgid "location details"
 msgstr "précisions lieu"
 
 #: models/media.py:229
-msgid "author"
-msgstr "auteur"
+msgid "author / compositor"
+msgstr "auteur / compositeur"
 
 #: models/media.py:232
 msgid "comments"
@@ -329,6 +329,10 @@ msgstr "aire culturelle"
 #: models/media.py:241
 msgid "recordist selection"
 msgstr "sélection collecteur"
+
+#: models/media.py:243
+msgid "remarks"
+msgstr "remarques"
 
 #: models/media.py:244
 msgid "file"
@@ -464,7 +468,7 @@ msgstr "Visitez le projet libre Telemeta"
 msgid "Collection"
 msgstr "Collection"
 
-#: templates/telemeta_default/collection_detail.html:51
+#: templates/telemeta_default/collection_detail.html:52
 msgid "Recording year"
 msgstr "Année d'enregistrement"
 
@@ -481,7 +485,7 @@ msgstr "Mentions légales"
 #: templates/telemeta_default/inc/collection_list.html:17
 #: templates/telemeta_default/inc/mediaitem_list.html:16
 msgid "Recordist"
-msgstr "Enregistré par"
+msgstr "Collecteur"
 
 #: templates/telemeta_default/collection_detail.html:100
 #: templates/telemeta_default/mediaitem_detail.html:211
@@ -503,7 +507,7 @@ msgstr "Type de media"
 msgid "Audio"
 msgstr "Audio"
 
-#: templates/telemeta_default/collection_detail.html:132
+#: templates/telemeta_default/collection_detail.html:133
 #: templates/telemeta_default/geo_countries.html:14
 msgid "Number of items"
 msgstr "Nombre d'items"
@@ -603,12 +607,14 @@ msgid "Number of collections"
 msgstr "Nombre de collections"
 
 #: templates/telemeta_default/geo_countries.html:22
+#, python-format
 msgid "1 collection"
 msgid_plural "%(counter)s collections"
 msgstr[0] "1 collection"
 msgstr[1] "%(counter)s collections"
 
 #: templates/telemeta_default/geo_countries.html:29
+#, python-format
 msgid "1 item"
 msgid_plural "%(counter)s items "
 msgstr[0] "1 item"
@@ -724,14 +730,14 @@ msgstr "Etat/Continent"
 msgid "No item"
 msgstr "Aucun item"
 
-#: templatetags/telemeta_utils.py:204
+#: templatetags/telemeta_utils.py:218
 #, python-format
 msgid "%(count)d item"
 msgid_plural "%(count)d items"
 msgstr[0] "%(count)d item"
 msgstr[1] "%(count)d items"
 
-#: templatetags/telemeta_utils.py:207
+#: templatetags/telemeta_utils.py:221
 #, python-format
 msgid "%(count)d collection"
 msgid_plural "%(count)d collections"

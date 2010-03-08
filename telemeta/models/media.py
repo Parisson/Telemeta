@@ -226,7 +226,7 @@ class MediaItem(MediaResource):
                                            verbose_name=_('population / social group'))
     title                 = CharField(_('title'))
     alt_title             = CharField(_('original title / translation'))
-    author                = CharField(_('author'))
+    author                = CharField(_('author / compositor'))
     vernacular_style      = WeakForeignKey('VernacularStyle', related_name="items", 
                                            verbose_name=_('vernacular style'))
     context_comment       = TextField(_('comments'))
@@ -240,7 +240,7 @@ class MediaItem(MediaResource):
                                            verbose_name=_('generic style'))
     collector_selection   = CharField(_('recordist selection'))
     creator_reference     = CharField(_('reference'))
-    comment               = TextField(_('comment'))
+    comment               = TextField(_('remarks'))
     file                  = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename")
     public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES, max_length=16, default="metadata")
 
