@@ -405,10 +405,6 @@ def create_wavform_png(input_filename, output_filename_w, image_width, image_hei
     
     for x in range(image_width):
         
-        if x % (image_width/10) == 0:
-            sys.stdout.write('.')
-            sys.stdout.flush()
-            
         seek_point = int(x * samples_per_pixel)
         next_seek_point = int((x + 1) * samples_per_pixel)
         
@@ -418,8 +414,6 @@ def create_wavform_png(input_filename, output_filename_w, image_width, image_hei
         waveform.draw_peaks(x, peaks, spectral_centroid)
     
     waveform.save(output_filename_w)
-    
-    print " done"
 
 def create_spectrogram_png(input_filename, output_filename_s, image_width, image_height, fft_size,
                            bg_color = None, color_scheme = None):
@@ -432,10 +426,6 @@ def create_spectrogram_png(input_filename, output_filename_s, image_width, image
     
     for x in range(image_width):
    
-        if x % (image_width/10) == 0:
-            sys.stdout.write('.')
-            sys.stdout.flush()
-            
         seek_point = int(x * samples_per_pixel)
         next_seek_point = int((x + 1) * samples_per_pixel)  
         (spectral_centroid, db_spectrum) = processor.spectral_centroid(seek_point) 
@@ -443,5 +433,4 @@ def create_spectrogram_png(input_filename, output_filename_s, image_width, image
     
     spectrogram.save(output_filename_s)
     
-    print " done"
 

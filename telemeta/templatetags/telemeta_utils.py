@@ -254,7 +254,6 @@ def render_flatpage(content):
             if i == 0:
                 line += reverse(urlname)
             elif urlname[:1] != '/':
-                print '|%s|' % urlname
                 line += reverse('telemeta-flatpage', args=[path + '/../' + urlname])
             else:
                 line += urlname
