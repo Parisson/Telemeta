@@ -46,7 +46,7 @@ class FlacExporter(ExporterCore):
     """Defines methods to export to FLAC"""
 
     implements(IExporter)
-    
+
     def __init__(self):
         self.item_id = ''
         self.source = ''
@@ -60,7 +60,7 @@ class FlacExporter(ExporterCore):
 
     def get_format(self):
         return 'FLAC'
-    
+
     def get_file_extension(self):
         return 'flac'
 
@@ -84,8 +84,8 @@ class FlacExporter(ExporterCore):
 
     def set_cache_dir(self,path):
         """Set the directory where cached files should be stored. Does nothing
-        if the exporter doesn't support caching. 
-       
+        if the exporter doesn't support caching.
+
         The driver shouldn't assume that this method will always get called. A
         temporary directory should be used if that's not the case.
         """
@@ -145,7 +145,7 @@ class FlacExporter(ExporterCore):
         self.args = self.get_args(options)
         self.ext = self.get_file_extension()
         self.args = ' '.join(self.args)
-        self.command = 'sox "%s" -s -q -b 16 -r 44100 -t wav -c2 - | flac -c %s - ' % (self.source, self.args)
+        self.command = 'sox "%s" -s -q -b 16 -t wav -c2 - | flac -c %s - ' % (self.source, self.args)
 
         # Pre-proccessing
         self.dest = self.pre_process(self.item_id,
@@ -163,7 +163,7 @@ class FlacExporter(ExporterCore):
 
         self.write_tags(self.dest)
         file = open(self.dest,'r')
-        
+
         while True:
             chunk = file.read(self.buffer_size)
             if len(chunk) == 0:

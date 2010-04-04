@@ -45,7 +45,7 @@ class Mp3Exporter(ExporterCore):
     """Defines methods to export to MP3"""
 
     implements(IExporter)
-    
+
     def __init__(self):
         self.item_id = ''
         self.metadata = {}
@@ -74,7 +74,7 @@ class Mp3Exporter(ExporterCore):
                              }
     def get_format(self):
         return 'MP3'
-    
+
     def get_file_extension(self):
         return 'mp3'
 
@@ -109,7 +109,7 @@ class Mp3Exporter(ExporterCore):
     def write_tags(self):
         """Write all ID3v2.4 tags by mapping dub2id3_dict dictionnary with the
             respect of mutagen classes and methods"""
-        from mutagen import id3  
+        from mutagen import id3
         id3 = id3.ID3(self.dest)
         for tag in self.metadata.keys():
             if tag in self.dub2id3_dict.keys():
@@ -128,7 +128,7 @@ class Mp3Exporter(ExporterCore):
     def get_args(self, options=None):
         """Get process options and return arguments for the encoder"""
         args = []
-        if not options is None: 
+        if not options is None:
             self.options = options
             if not ( 'verbose' in self.options and self.options['verbose'] != '0' ):
                 args.append('-S')
@@ -156,7 +156,7 @@ class Mp3Exporter(ExporterCore):
         self.args = self.get_args(options)
         self.ext = self.get_file_extension()
         self.args = ' '.join(self.args)
-        self.command = 'sox "%s" -q -b 16 -r 44100 -t wav - | lame %s -' % (self.source, self.args)
+        self.command = 'sox "%s" -q -b 16 -t wav - | lame %s -' % (self.source, self.args)
         #self.command = 'lame %s "%s" -' % (self.args, self.source)
 
         # Pre-proccessing
@@ -171,7 +171,7 @@ class Mp3Exporter(ExporterCore):
         stream = self.core_process(self.command, self.buffer_size, self.dest)
         for chunk in stream:
             yield chunk
-    
+
         # Post-proccessing
         #self.post_process(self.item_id,
                          #self.source,

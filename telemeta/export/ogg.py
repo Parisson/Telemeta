@@ -44,7 +44,7 @@ class OggExporter(ExporterCore):
     """Defines methods to export to OGG Vorbis"""
 
     implements(IExporter)
-    
+
     def __init__(self):
         self.item_id = ''
         self.metadata = {}
@@ -58,10 +58,10 @@ class OggExporter(ExporterCore):
         self.dub2args_dict = {'creator': 'artist',
                              'relation': 'album'
                              }
-        
+
     def get_format(self):
         return 'OGG'
-    
+
     def get_file_extension(self):
         return 'ogg'
 
@@ -131,7 +131,7 @@ class OggExporter(ExporterCore):
         self.args = self.get_args(options)
         self.ext = self.get_file_extension()
         self.args = ' '.join(self.args)
-        self.command = 'sox "%s" -s -q -b 16 -r 44100 -t wav -c2 - | oggenc %s -' % (self.source, self.args)
+        self.command = 'sox "%s" -s -q -b 16 -t wav -c2 - | oggenc %s -' % (self.source, self.args)
 
         # Pre-proccessing
         self.dest = self.pre_process(self.item_id,
@@ -145,7 +145,7 @@ class OggExporter(ExporterCore):
         stream = self.core_process(self.command, self.buffer_size, self.dest)
         for chunk in stream:
             yield chunk
-    
+
         # Post-proccessing
         #self.post_process(self.item_id,
                         #self.source,
