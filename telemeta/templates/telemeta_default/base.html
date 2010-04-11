@@ -26,6 +26,20 @@
 {% endblock %}
 </div>
 
+<div id="auth_info">
+{% if user.is_authenticated %} 
+{% if user.first_name and user.last_name %}
+{{ user.first_name }} {{ user.last_name }} 
+{% else %}
+{{ user.username }}
+{% endif %}
+|
+<a href="{% url telemeta-logout %}">{% trans "Sign out" %}</a>
+{% else %}
+<a href="{% url telemeta-login %}?next={{ request.path|urlencode }}">{% trans "Sign in" %}</a>
+{% endif %}
+</div>
+
 <div id="quick_search">
 <form action="{% url telemeta-search %}" method="GET">
 <input type="text" id="quick_search_pattern" name="pattern" />
@@ -38,7 +52,7 @@
 {% block menu %}
 <ul>
 {# spaces between li and a elements breaks layout #}
-<li><a href="{% url telemeta-collections %}">{% trans "Collections" %}</a></li><li><a href="{% url telemeta-items %}">{% trans "Items" %}</a></li><li class="first"><a href="{% url telemeta-geo-continents %}">{% trans "Geo Navigator" %}</a></li><li class="last"><a href="{% url telemeta-admin %}">{% trans "Admin" %}</a></li>
+<li><a href="{% url telemeta-collections %}">{% trans "Collections" %}</a></li><li><a href="{% url telemeta-items %}">{% trans "Items" %}</a></li><li {% if not user.is_authenticated %} class="last" {% endif %}><a href="{% url telemeta-geo-continents %}">{% trans "Geo Navigator" %}</a></li>{% if user.is_authenticated %}<li class="last"><a href="{% url telemeta-admin %}">{% trans "Admin" %}</a></li>{% endif %}
 </ul>
 {% endblock %}
 </div>

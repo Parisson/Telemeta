@@ -115,12 +115,14 @@ load_player({{ item.computed_duration.as_seconds }});
         
         </div>
 
+        {% if audio_export_enabled %}
         <div class="exporter">
-            <p>Download:
+            <p>{% trans "Download:" %}
             {% for format in export_formats %}
             <a href="{% url telemeta-item-export item.public_id,format.extension %}">{{ format.name }}</a>
             {% endfor %}</p>
         </div>
+        {% endif %}
 
     </div>
 {% endif %}

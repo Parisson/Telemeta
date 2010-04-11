@@ -36,13 +36,15 @@ import re
 import os
 import sys
 
-from django.template import Context, loader
+from django.template import RequestContext, loader
 from django import template
 from django.http import HttpResponse
 from django.http import Http404
 from django.shortcuts import render_to_response, redirect
 from django.views.generic import list_detail
 from django.conf import settings
+from django.contrib import auth
+from django.contrib.auth.decorators import login_required
 
 import telemeta
 from telemeta.models import MediaItem, Location, MediaCollection, EthnicGroup
@@ -60,6 +62,10 @@ from telemeta.web import pages
 import datetime
 from telemeta.util.unaccent import unaccent_icmp
 
+def render(request, template, data = None, mimetype = None):
+    return render_to_response(template, data, context_instance=RequestContext(request), 
+                              mimetype=mimetype) 
+
 class WebView(Component):
     """Provide web UI methods"""
 
@@ -74,13 +80,14 @@ class WebView(Component):
         ids = [id for id in MediaItem.objects.all().values_list('id', flat=True).order_by('?')[0:4]]
         items = MediaItem.objects.enriched().filter(pk__in=ids)
 
-        context = Context({'page_content': pages.get_page_content(request, 'parts/home', ignore_slash_issue=True),
-                           'items': items})
+        context = RequestContext(request, {
+                    'page_content': pages.get_page_content(request, 'parts/home', ignore_slash_issue=True),
+                    'items': items})
         return HttpResponse(template.render(context))
 
     def collection_detail(self, request, public_id, template=''):
         collection = MediaCollection.objects.get(public_id=public_id)
-        return render_to_response(template, {'collection': collection})
+        return render(request, template, {'collection': collection})
 
 
     def item_detail(self, request, public_id, template='telemeta/mediaitem_detail.html'):
@@ -118,10 +125,12 @@ class WebView(Component):
         for plugin in vamp_plugins:
             vamp_plugin_list.append(':'.join(plugin[1:]))
           
-        return render_to_response(template, 
+        return render(request, template, 
                     {'item': item, 'export_formats': formats, 
                     'visualizers': visualizers, 'visualizer_id': visualizer_id,
-                    'analysers': analyzers, 'vamp_plugins': vamp_plugin_list})
+                    'analysers': analyzers, 'vamp_plugins': vamp_plugin_list,
+                    'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', False)
+                    })
                     
     def item_visualize(self, request, public_id, visualizer_id, width, height):
         for visualizer in self.visualizers:
@@ -147,6 +156,10 @@ class WebView(Component):
 
     def item_export(self, request, public_id, extension):                    
         """Export a given media item in the specified format (OGG, FLAC, ...)"""
+
+        if extension != 'mp3' and not getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', False):
+            raise Http404 # FIXME: should be some sort of permissions denied error
+
         for exporter in self.exporters:
             if exporter.get_file_extension() == extension:
                 break
@@ -173,7 +186,7 @@ class WebView(Component):
         rec_years = year_min and year_max and range(year_min, year_max + 1) or []
         year_min, year_max = MediaCollection.objects.all().publishing_year_range()
         pub_years = year_min and year_max and range(year_min, year_max + 1) or []
-        return render_to_response('telemeta/search_criteria.html', {
+        return render(request, 'telemeta/search_criteria.html', {
             'rec_years': rec_years,
             'pub_years': pub_years,
             'ethnic_groups': MediaItem.objects.all().ethnic_groups(),
@@ -284,8 +297,9 @@ class WebView(Component):
     def __get_admin_context_vars(self):
         return {"enumerations": self.__get_enumerations_list()}
 
+    @login_required
     def admin_index(self, request):
-        return render_to_response('telemeta/admin.html', self. __get_admin_context_vars())
+        return render(request, 'telemeta/admin.html', self. __get_admin_context_vars())
 
     def __get_enumeration(self, id):
         from django.db.models import get_models
@@ -299,6 +313,7 @@ class WebView(Component):
 
         return model
 
+    @login_required
     def edit_enumeration(self, request, enumeration_id):        
 
         enumeration  = self.__get_enumeration(enumeration_id)
@@ -309,8 +324,9 @@ class WebView(Component):
         vars["enumeration_id"] = enumeration._meta.module_name
         vars["enumeration_name"] = enumeration._meta.verbose_name            
         vars["enumeration_values"] = enumeration.objects.all()
-        return render_to_response('telemeta/enumeration_edit.html', vars)
+        return render(request, 'telemeta/enumeration_edit.html', vars)
 
+    @login_required
     def add_to_enumeration(self, request, enumeration_id):        
 
         enumeration  = self.__get_enumeration(enumeration_id)
@@ -322,6 +338,7 @@ class WebView(Component):
 
         return self.edit_enumeration(request, enumeration_id)
 
+    @login_required
     def update_enumeration(self, request, enumeration_id):        
         
         enumeration  = self.__get_enumeration(enumeration_id)
@@ -333,6 +350,7 @@ class WebView(Component):
 
         return self.edit_enumeration(request, enumeration_id)
 
+    @login_required
     def edit_enumeration_value(self, request, enumeration_id, value_id):        
 
         enumeration  = self.__get_enumeration(enumeration_id)
@@ -343,8 +361,9 @@ class WebView(Component):
         vars["enumeration_id"] = enumeration._meta.module_name
         vars["enumeration_name"] = enumeration._meta.verbose_name            
         vars["enumeration_record"] = enumeration.objects.get(id__exact=value_id)
-        return render_to_response('telemeta/enumeration_edit_value.html', vars)
+        return render(request, 'telemeta/enumeration_edit_value.html', vars)
 
+    @login_required
     def update_enumeration_value(self, request, enumeration_id, value_id):        
 
         if request.POST.has_key("save"):
@@ -365,7 +384,7 @@ class WebView(Component):
             raise Http404
 
         template = loader.get_template(template)
-        context = Context({'collection': collection, 'host': request.META['HTTP_HOST']})
+        context = RequestContext(request, {'collection': collection, 'host': request.META['HTTP_HOST']})
         return HttpResponse(template.render(context), mimetype=mimetype)
 
     def item_playlist(self, request, public_id, template, mimetype):
@@ -375,24 +394,24 @@ class WebView(Component):
             raise Http404
 
         template = loader.get_template(template)
-        context = Context({'item': item, 'host': request.META['HTTP_HOST']})
+        context = RequestContext(request, {'item': item, 'host': request.META['HTTP_HOST']})
         return HttpResponse(template.render(context), mimetype=mimetype)
 
     def list_continents(self, request):
         continents = MediaItem.objects.all().countries(group_by_continent=True)
-        return render_to_response('telemeta/geo_continents.html', 
+        return render(request, 'telemeta/geo_continents.html', 
                     {'continents': continents, 'gmap_key': settings.TELEMETA_GMAP_KEY })
 
     def country_info(self, request, id):
         country = Location.objects.get(pk=id)
-        return render_to_response('telemeta/country_info.html', {
+        return render(request, 'telemeta/country_info.html', {
             'country': country, 'continent': country.continents()[0]})
 
     def list_countries(self, request, continent):                    
         continent = Location.objects.by_flatname(continent)[0]
         countries = MediaItem.objects.by_location(continent).countries()
 
-        return render_to_response('telemeta/geo_countries.html', {
+        return render(request, 'telemeta/geo_countries.html', {
             'continent': continent,
             'countries': countries
         })
@@ -431,5 +450,8 @@ class WebView(Component):
         if isinstance(content, pages.PageAttachment):
             return HttpResponse(content, content.mimetype())
         else:
-            return render_to_response('telemeta/flatpage.html', {'page_content': content })
-        
+            return render(request, 'telemeta/flatpage.html', {'page_content': content })
+
+    def logout(self, request):
+        auth.logout(request)
+        return redirect('telemeta-home')

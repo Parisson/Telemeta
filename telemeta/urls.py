@@ -169,5 +169,10 @@ urlpatterns = patterns('',
     url(r'^page/(?P<path>.*)$', web_view.render_flatpage, name="telemeta-flatpage"),
 
     # OAI-PMH Data Provider
-    url(r'^oai/.*$', web_view.handle_oai_request, name="telemeta-oai")
+    url(r'^oai/.*$', web_view.handle_oai_request, name="telemeta-oai"),
+
+    # Authentication
+    url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'telemeta/login.html'},
+        name="telemeta-login"),
+    url(r'^logout/$', web_view.logout, name="telemeta-logout"),
 )

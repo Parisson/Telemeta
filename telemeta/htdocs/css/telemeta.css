@@ -199,9 +199,9 @@ input[type=reset][disabled] {
  border-style: solid;
  color: #999;
 }
-input[type=text], input.textwidget, textarea { border: 1px solid #ccc; }
-input[type=text], input.textwidget { padding: .25em .1em }
-input[type=text]:focus, input.textwidget:focus, textarea:focus {
+input[type=text], input[type=password], input.textwidget, textarea { border: 1px solid #ccc; }
+input[type=text], input[type=password], input.textwidget { padding: .25em .1em }
+input[type=text]:focus, input[type=password]:focus, input.textwidget:focus, textarea:focus {
    border-color: #aaa;
 }
 option { border-bottom: 1px dotted #d7d7d7; }
@@ -237,10 +237,12 @@ label.disabled { color: #d7d7d7 }
     margin-top: .3em;
     clear: left;
 }
+
 #quick_search a {
     font-size: .8em;
     font-weight: bold;
 }
+
 #quick_search input {
     vertical-align: middle;
     font-size: .8em;
@@ -253,6 +255,46 @@ label.disabled { color: #d7d7d7 }
     width: 150px;
     color: #555;
     font-weight: bold;
+}
+
+/* Authentication */
+#auth_info {
+    position: absolute;
+    top: 0.2em;
+    right: 1.1em;
+    margin-right: 12px;
+    font-size: .8em;
+}
+
+#auth_info a {
+    /* font-weight: bold; */
+}
+
+form.login {
+    font-size: 0.8em;
+    float: left;
+    margin-top: 2em;
+    margin-bottom: 4em;
+    padding: .5em;
+    border: 1px dotted #888;
+}
+
+.login-error {
+    color: #BB0000;
+}
+
+form.login label {
+    display: block;
+    width: 11em;
+    float: left;
+    clear: left;
+    font-weight: bold;
+    padding-top: 0.3em;
+}
+
+form.login .submit {
+    float: right;
+    margin-top: 1em;
 }
 
 /* Search form */

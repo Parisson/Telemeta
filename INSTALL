@@ -123,6 +123,8 @@ Modifiy the following variables:
     :DATABASE_*:        your database settings (don't forget to create the database if needed)
     :MEDIA_ROOT:        absolute path to the media directory you just created
     :INSTALLED_APPS:    add 'telemeta'
+    :TEMPLATE_CONTEXT_PROCESSORS: include 'django.core.context_processors.request' and 
+                                  'django.core.context_processors.auth'
 
 Add the following variables:
 
@@ -131,9 +133,12 @@ Add the following variables:
                             as "Ethnology", etc...
     :TELEMETA_CACHE_DIR:    absolute path to the cache directory that you just created
     :TELEMETA_GMAP_KEY:     your Google Map API key
+    :TELEMETA_DOWNLOAD_ENABLED: True to enable audio data download 
 
-Just paste the two lines below::
+Just paste the lines below::
 
+    LOGIN_URL = '/login'
+    LOGIN_REDIRECT_URL = '/'
     TELEMETA_EXPORT_CACHE_DIR = TELEMETA_CACHE_DIR + "/export"
     CACHE_BACKEND = "file://" + TELEMETA_CACHE_DIR + "/data"
 
