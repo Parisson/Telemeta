@@ -124,7 +124,7 @@ Modifiy the following variables:
     :MEDIA_ROOT:        absolute path to the media directory you just created
     :INSTALLED_APPS:    add 'telemeta'
     :TEMPLATE_CONTEXT_PROCESSORS: include 'django.core.context_processors.request' and 
-                                  'django.core.context_processors.auth'
+                                  'django.core.context_processors.auth' in this tuple
 
 Add the following variables:
 
