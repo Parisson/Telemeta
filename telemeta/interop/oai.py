@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Generic OAI-PMH Data Provider module
 #
 # Copyright (C) 2009 Samalyse SARL
@@ -371,7 +372,6 @@ class Response(object):
                  'date', 'type', 'format', 'identifier', 'source', 'language', 'relation',
                  'coverage', 'rights']
 
-        print data
         parsed = []
         id = None
         for k, v in data:
