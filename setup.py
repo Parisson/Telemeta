@@ -63,15 +63,15 @@ with open standards.
 Here are the main features of Telemeta:
 
     * Secure archiving, editing and publishing of audio files over internet.
-    * "On the fly" transcoding and metadata encapsulating (FLAC, OGG, MP3, WAV, etc..)
     * User friendly web frontend including workflows and high level search methods
     * Smart dynamical and skinnable audio player (thanks to Timeside and soundmanager2)
-    * "On the fly" complex audio analyzers based on an easy plugin architecture
+    * "On the fly" analyzing, transcoding and metadata embedding based on an easy plugin architecture
+    * Multi-format support : FLAC, OGG, MP3, WAV and more
+    * GEO Navigator for audio geolocalization
+    * DublinCore compatibility
+    * OAI-PMH data provider
+    * XML serialized backup
     * Strong SQL backend
-    * XML metadata backup
-    * Auto audio-marking with synthetized voices reading metadata (optional)
-    * Anti-corruption data security management with par2 recovery keys
-    * Data synchronizing over remote servers (rsync + ssh methods)
 
 The Telemeta data model is based on 'collections' and 'items'. A collection is described
 by its metadata and includes original audio items (sounds) and its own metadata. This

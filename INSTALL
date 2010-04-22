@@ -187,3 +187,15 @@ By default, the server starts on the port 8000. You can override this with, for 
 
 See README and http://telemeta.org for more informations.
 
+
+-------------------
+9. Configure Apache
+-------------------
+
+If you want to use Telemeta through a web server, it is highly recommended to use Apache 2
+with the mod_wsgi module as explained in the following page :
+
+http://docs.djangoproject.com/en/1.1/howto/deployment/modwsgi/#howto-deployment-modwsgi
+
+This will prevent Apache to put some audio data in the cache memory as it is usually the case with mod_python.
+
