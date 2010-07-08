@@ -1,130 +1,103 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
-# Copyright Guillaume Pellerin (2006-2009)
-# <yomguy@parisson.com>
-
-# This software is a computer program whose purpose is to backup
-# any audio content in a Telemeta instance
-
-# This software is governed by the CeCILL  license under French law and
-# abiding by the rules of distribution of free software.  You can  use,
-# modify and/ or redistribute the software under the terms of the CeCILL
-# license as circulated by CEA, CNRS and INRIA at the following URL
-# "http://www.cecill.info".
-
-# As a counterpart to the access to the source code and  rights to copy,
-# modify and redistribute granted by the license, users are provided only
-# with a limited warranty  and the software's author,  the holder of the
-# economic rights,  and the successive licensors  have only  limited
-# liability.
-
-# In this respect, the user's attention is drawn to the risks associated
-# with loading,  using,  modifying and/or developing or reproducing the
-# software by the user in light of its specific status of free software,
-# that may mean  that it is complicated to manipulate,  and  that  also
-# therefore means  that it is reserved for developers  and  experienced
-# professionals having in-depth computer knowledge. Users are therefore
-# encouraged to load and test the software's suitability as regards their
-# requirements in conditions enabling the security of their systems and/or
-# data to be ensured and,  more generally, to use and operate it in the
-# same conditions as regards security.
-
-# The fact that you are presently reading this means that you have had
-# knowledge of the CeCILL license and that you accept its terms.
-
+# Copyright (C) 2010 Guillaume Pellerin
+# All rights reserved.
+#
+# This software is licensed as described in the file COPYING, which
+# you should have received as part of this distribution. The terms
+# are also available at http://svn.parisson.org/telemeta/TelemetaLicense.
+#
+# Author: Guillaume Pellerin <yomguy@parisson.com>
+#
 
 import os
 import sys
-import shutil
+import csv
+import logging
 import datetime
-import string
 from django.core.management import setup_environ
-from django.core.files import File
+from django.core.files.base import ContentFile
 
-tool_name = "media_import.py"
-authorized_extensions = ['wav', 'aif', 'aiff', 'mp3', 'ogg', 'flac']
+class Logger:
 
-class TelemetaMediaImportError(Exception):
-    pass
+    def __init__(self, file):
+        self.logger = logging.getLogger('myapp')
+        self.hdlr = logging.FileHandler(file)
+        self.formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+        self.hdlr.setFormatter(self.formatter)
+        self.logger.addHandler(self.hdlr)
+        self.logger.setLevel(logging.INFO)
 
-class TelemetaMediaImport:
+    def write_info(self, prefix, message):
+        self.logger.info(' ' + prefix + ' : ' + message.decode('utf8'))
 
-    def __init__(self, settings, source_dir):
+    def write_error(self, prefix, message):
+        self.logger.error(prefix + ' : ' + message.decode('utf8'))
+
+
+class TelemetaWavImport:
+
+    def __init__(self, source_dir, log_file):
+        self.logger = Logger(log_file)
         self.source_dir = source_dir
-        self.source_files = os.listdir(self.source_dir)
-        self.media_filter()
-        #print self.source_files
-        self.item_media_root_dir = settings.MEDIA_ROOT
-        self.item_media_full_dir = self.item_media_root_dir + os.sep + 'items'
+        self.collections = os.listdir(self.source_dir)
+        self.buffer_size = 0x1000
 
-    def media_filter(self):
-        files = []
-        for media_file in self.source_files:
-            ext = get_media_extension(media_file)
-            if ext in authorized_extensions or \
-                ext in map(string.swapcase, authorized_extensions) or \
-                ext in map(string.capitalize, authorized_extensions) :
-                files.append(media_file)
-        self.source_files = files
+    def wav_import(self):
+        from telemeta.models import media
+        for collection in self.collections:
+            self.collection_name = collection.split(os.sep)[-1]
+            msg = '************************ ' + collection + ' ******************************'
+            self.logger.write_info(collection, msg[:70])
 
-    def media_import(self):
-        from telemeta.models import MediaItem
-        id_list = map(get_media_name, self.source_files)
-        #print id_list
-        
-        for item_id in id_list:
-            item_id = item_id.strip()
-            print "item_id : " + item_id
-            it = MediaItem.objects.get(id=item_id)
-            source_full_path = self.source_dir + os.sep + get_item_in_list(self.source_files, item_id)
-            if os.path.exists(source_full_path):
-                media = open(source_full_path, 'r')
-                f = File(media)
-                print "Adding : " + source_full_path
-                it.file.save(f.name, f, save=True)
-                media.close()
+            collection_files = os.listdir(self.source_dir + os.sep + collection)
+            if not collection + '.csv' in collection_files:
+                msg = 'Le fichier CSV est mal nommé ou inexistant'
+                self.logger.write_error(collection, msg)
+            else:
+                c = csv.reader(open(self.source_dir + os.sep + collection + os.sep + collection + '.csv'), delimiter=';')
+                for row in c:
+                    old_ref = row[0]
+                    new_ref = row[1]
+                    print old_ref + ' : ' + new_ref
+                    filename = new_ref + '.wav'
+                    wav_file = self.source_dir + os.sep + collection + os.sep + filename
+                    items = media.MediaItem.objects.filter(old_code=old_ref)
+                    if len(items) != 0:
+                        item = items[0]
+                        print item.old_code + ' : id = ' + str(item.id) + " : title = " + item.title
+                        f = open(wav_file, 'r')
+                        file_content = ContentFile(f.read())
+                        item.file.save(filename, file_content)
+                        f.close()
+                        item.code = new_ref
+                        item.save()
+                    else:
+                        msg = old_ref + ' : item inexistant dans la base de données !'
+                        print msg
+                        self.logger.write_error(collection, msg)
 
-    def main(self):
-        self.media_import()
 
-def get_media_name(media):
-    name = media.split('.')[:-1]
-    return '.'.join(name)
-
-def get_media_extension(media):
-    ext = media.split('.')[-1]
-    return ext
-
-def get_item_in_list(item_list, string):
-    for item in item_list:
-        if string in item:
-            return item
-
-def print_usage():
-    print """
- Usage: %s <project_dir> <source_dir> [<source_file>]
-
- project_dir: the directory of the Django project which hosts Telemeta
- source_dir: the directory containing all media files to include
-
- IMPORTANT: each file name without its extension has to correspond at least to one existing item id in the database."
- """ % tool_name
+def print_usage(tool_name):
+    print "Usage: "+tool_name+" <project_dir> <source_dir> <log_file>"
+    print "  project_dir: the directory of the Django project which hosts Telemeta"
+    print "  source_dir: the directory containing the wav files to include"
+    print "  log_file: the log file of the import"
 
 def run():
-    l = len(sys.argv)
-    if l < 2:
-        print_usage()
+    if len(sys.argv) < 4:
+        print_usage(os.path.basename(sys.argv[0]))
         sys.exit(1)
     else:
-        project_dir = sys.argv[1]
-        source_dir = sys.argv[2]
+        project_dir = sys.argv[-3]
+        source_dir = sys.argv[-2]
+        log_file = sys.argv[-1]
         sys.path.append(project_dir)
-        #from django.conf import settings
         import settings
         setup_environ(settings)
-        t = TelemetaMediaImport(settings, source_dir)
-        t.main()
+        t = TelemetaWavImport(source_dir, log_file)
+        t.wav_import()
 
 if __name__ == '__main__':
     run()
