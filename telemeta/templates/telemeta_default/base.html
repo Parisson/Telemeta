@@ -52,7 +52,7 @@
 {% block menu %}
 <ul>
 {# spaces between li and a elements breaks layout #}
-<li><a href="{% url telemeta-collections %}">{% trans "Collections" %}</a></li><li><a href="{% url telemeta-items %}">{% trans "Items" %}</a></li><li {% if not user.is_authenticated %} class="last" {% endif %}><a href="{% url telemeta-geo-continents %}">{% trans "Geo Navigator" %}</a></li>{% if user.is_authenticated %}<li class="last"><a href="{% url telemeta-admin %}">{% trans "Admin" %}</a></li>{% endif %}
+<li><a href="/">Home</a></li><li><a href="{% url telemeta-collections %}">{% trans "Collections" %}</a></li><li><a href="{% url telemeta-items %}">{% trans "Items" %}</a></li><li {% if not user.is_authenticated %} class="last" {% endif %}><a href="{% url telemeta-geo-continents %}">{% trans "Geo Navigator" %}</a></li>{% if user.is_authenticated %}<li class="last"><a href="{% url telemeta-admin %}">{% trans "Admin" %}</a></li>{% endif %}
 </ul>
 {% endblock %}
 </div>
