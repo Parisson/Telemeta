@@ -36,6 +36,7 @@ import re
 import os
 import sys
 import datetime
+import timeside
 
 from django.template import RequestContext, loader
 from django import template
@@ -49,20 +50,12 @@ from django.contrib.auth.decorators import login_required
 
 from telemeta.models import MediaItem, Location, MediaCollection, EthnicGroup
 from telemeta.models import dublincore, Enumeration
-#from telemeta.core import Component, ExtensionPoint
-#from telemeta.export import *
-#from telemeta.visualization import *
-#from telemeta.analysis import *
-#from telemeta.analysis.vamp import *
 import telemeta.interop.oai as oai
 from telemeta.interop.oaidatasource import TelemetaOAIDataSource
 from django.core.exceptions import ObjectDoesNotExist
 from telemeta.util.unaccent import unaccent
 from telemeta.web import pages
 from telemeta.util.unaccent import unaccent_icmp
-
-import timeside
-
 
 def render(request, template, data = None, mimetype = None):
     return render_to_response(template, data, context_instance=RequestContext(request), 
@@ -152,12 +145,6 @@ class WebView:
                                   'unit':analyzer.unit(),
                                   'value':str(value)})
 
-#        vamp = VampCoreAnalyzer()
-#        vamp_plugins = vamp.get_plugins_list()
-#        vamp_plugin_list = []
-#        for plugin in vamp_plugins:
-#            vamp_plugin_list.append(':'.join(plugin[1:]))
-                    
         return render(request, template, 
                     {'item': item, 'export_formats': formats, 
                     'visualizers': graphers, 'visualizer_id': grapher_id,'analysers': analyzers,
@@ -213,7 +200,7 @@ class WebView:
         item = MediaItem.objects.get(public_id=public_id)
         audio = os.path.join(os.path.dirname(__file__), item.file.path)
         decoder  = timeside.decoder.FileDecoder(audio)
-        print decoder.format(),  mime_type
+#        print decoder.format(),  mime_type
         if decoder.format() == mime_type:
             # source > stream
             media = audio
