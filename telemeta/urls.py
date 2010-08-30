@@ -36,7 +36,7 @@
 
 from django.conf.urls.defaults import *
 from telemeta.models import MediaItem, MediaCollection
-from telemeta.core import ComponentManager
+#from telemeta.core import ComponentManager
 from telemeta.web import WebView
 import os.path
 import telemeta.config
@@ -44,8 +44,8 @@ import telemeta.config
 telemeta.config.check()
 
 # initialization
-comp_mgr = ComponentManager()
-web_view = WebView(comp_mgr)
+#comp_mgr = ComponentManager()
+web_view = WebView()
 
 # query sets for Django generic views
 all_items = { 'queryset': MediaItem.objects.enriched(), }

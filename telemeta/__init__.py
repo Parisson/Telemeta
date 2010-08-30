@@ -2,7 +2,6 @@
 
 """
 Telemeta
-Parisson SARL
 
 U{http://telemeta.org}
 

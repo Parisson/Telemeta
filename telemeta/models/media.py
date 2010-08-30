@@ -282,15 +282,7 @@ class MediaItem(MediaResource):
 
     def computed_duration(self):
         "Tell the length in seconds of this item media data"
-        # FIXME: use TimeSide?
-        seconds = 0
-        if self.file:
-            import wave
-            media = wave.open(self.file.path, "rb")
-            seconds = media.getnframes() / media.getframerate()
-            media.close()
-
-        return Duration(seconds=seconds)
+        return self.approx_duration
 
     computed_duration.verbose_name = _('computed duration')        
 

@@ -35,6 +35,7 @@
 import re
 import os
 import sys
+import datetime
 
 from django.template import RequestContext, loader
 from django import template
@@ -46,33 +47,46 @@ from django.conf import settings
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 
-import telemeta
 from telemeta.models import MediaItem, Location, MediaCollection, EthnicGroup
 from telemeta.models import dublincore, Enumeration
-from telemeta.core import Component, ExtensionPoint
-from telemeta.export import *
-from telemeta.visualization import *
-from telemeta.analysis import *
-from telemeta.analysis.vamp import *
+#from telemeta.core import Component, ExtensionPoint
+#from telemeta.export import *
+#from telemeta.visualization import *
+#from telemeta.analysis import *
+#from telemeta.analysis.vamp import *
 import telemeta.interop.oai as oai
 from telemeta.interop.oaidatasource import TelemetaOAIDataSource
 from django.core.exceptions import ObjectDoesNotExist
 from telemeta.util.unaccent import unaccent
 from telemeta.web import pages
-import datetime
 from telemeta.util.unaccent import unaccent_icmp
+
+import timeside
+
 
 def render(request, template, data = None, mimetype = None):
     return render_to_response(template, data, context_instance=RequestContext(request), 
-                              mimetype=mimetype) 
+                              mimetype=mimetype)
 
-class WebView(Component):
+def stream(file):
+    chunk_size = 0x10000
+    f = open(file,  'r')
+    while True:
+        _chunk = f.read(chunk_size)
+        if not len(_chunk):
+            break
+        yield _chunk
+    f.close()
+
+
+class WebView:
     """Provide web UI methods"""
 
-    exporters = ExtensionPoint(IExporter)
-    visualizers = ExtensionPoint(IMediaItemVisualizer)
-    analyzers = ExtensionPoint(IMediaItemAnalyzer)
-
+    graphers = timeside.processors(timeside.api.IGrapher)
+    decoders = timeside.processors(timeside.api.IDecoder)
+    encoders= timeside.processors(timeside.api.IEncoder)
+    analyzers = timeside.processors(timeside.api.IAnalyzer)
+    
     def index(self, request):
         """Render the homepage"""
 
@@ -95,63 +109,88 @@ class WebView(Component):
         item = MediaItem.objects.get(public_id=public_id)
         
         formats = []
-        for exporter in self.exporters:
-            formats.append({'name': exporter.get_format(), 'extension': exporter.get_file_extension()})
+        for encoder in self.encoders:
+            formats.append({'name': encoder.format(), 'extension': encoder.file_extension()})
 
-        visualizers = []
-        for visualizer in self.visualizers:
-            visualizers.append({'name':visualizer.get_name(), 'id':
-                visualizer.get_id()})
-        if request.REQUEST.has_key('visualizer_id'):
-            visualizer_id = request.REQUEST['visualizer_id']
+        graphers = []
+        for grapher in self.graphers:
+            graphers.append({'name':grapher.name(), 'id': grapher.id()})
+        if request.REQUEST.has_key('grapher_id'):
+            grapher_id = request.REQUEST['grapher_id']
         else:
-            visualizer_id = 'waveform_audiolab'
-
-        analyzers = []
-        for analyzer in self.analyzers:
+            grapher_id = 'waveform'
+        
+        analyzers = [{'name':'','id':'','unit':'','value':''}]
+        # TODO: override timeside analyzer process when caching
+        self.analyzer_mode = 0
+        
+        if self.analyzer_mode:
+            analyzers_sub = []
             if item.file:
-                value = analyzer.render(item)
-            else:
-                value = 'N/A'
+                audio = os.path.join(os.path.dirname(__file__), item.file.path)
+                decoder  = timeside.decoder.FileDecoder(audio)
+                self.pipe = decoder
+                for analyzer in self.analyzers:
+                    subpipe = analyzer()
+                    analyzers_sub.append(subpipe)
+                    self.pipe = self.pipe | subpipe
+                self.pipe.run()
+                
+            for analyzer in analyzers_sub:
+                if item.file:
+                    value = analyzer.result()
+                    if analyzer.id() == 'duration':
+                        approx_value = int(round(value))
+                        item.approx_duration = approx_value
+                        item.save()
+                        value = datetime.timedelta(0,value)
+                else:
+                    value = 'N/A'
 
-            analyzers.append({'name':analyzer.get_name(),
-                              'id':analyzer.get_id(),
-                              'unit':analyzer.get_unit(),
-                              'value':str(value)})
+                analyzers.append({'name':analyzer.name(),
+                                  'id':analyzer.id(),
+                                  'unit':analyzer.unit(),
+                                  'value':str(value)})
 
-        vamp = VampCoreAnalyzer()
-        vamp_plugins = vamp.get_plugins_list()
-        vamp_plugin_list = []
-        for plugin in vamp_plugins:
-            vamp_plugin_list.append(':'.join(plugin[1:]))
-          
+#        vamp = VampCoreAnalyzer()
+#        vamp_plugins = vamp.get_plugins_list()
+#        vamp_plugin_list = []
+#        for plugin in vamp_plugins:
+#            vamp_plugin_list.append(':'.join(plugin[1:]))
+                    
         return render(request, template, 
                     {'item': item, 'export_formats': formats, 
-                    'visualizers': visualizers, 'visualizer_id': visualizer_id,
-                    'analysers': analyzers, 'vamp_plugins': vamp_plugin_list,
+                    'visualizers': graphers, 'visualizer_id': grapher_id,'analysers': analyzers,
                     'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', False)
                     })
-                    
+
     def item_visualize(self, request, public_id, visualizer_id, width, height):
-        for visualizer in self.visualizers:
-            if visualizer.get_id() == visualizer_id:
+        grapher_id = visualizer_id
+        for grapher in self.graphers:
+            if grapher.id() == grapher_id:
                 break
 
-        if visualizer.get_id() != visualizer_id:
+        if grapher.id() != grapher_id:
             raise Http404
-        
-        item = MediaItem.objects.get(public_id=public_id)
 
-        visualizer.set_colors((255,255,255), 'purple')
-        stream = visualizer.render(item, width=int(width), height=int(height))
-        response = HttpResponse(stream, mimetype = 'image/png')
+        media = settings.TELEMETA_EXPORT_DATA_DIR + os.sep + public_id + '_' + grapher_id + '_' + width + '_' + height + '.png'
+        #graph.set_colors((255,255,255), 'purple')
+        
+        if not os.path.exists(media):
+            item = MediaItem.objects.get(public_id=public_id)
+            audio = os.path.join(os.path.dirname(__file__), item.file.path)
+            decoder  = timeside.decoder.FileDecoder(audio)
+            graph = grapher(width=int(width), height=int(height), output=media)
+            (decoder | graph).run()
+            graph.render()
+        response = HttpResponse(stream(media), mimetype = 'image/png')
         return response
 
     def list_export_extensions(self):
         "Return the recognized item export file extensions, as a list"
         list = []
-        for exporter in self.exporters:
-            list.append(exporter.get_file_extension())
+        for encoder in self.encoders:
+            list.append(encoder.file_extension())
         return list
 
     def item_export(self, request, public_id, extension):                    
@@ -160,24 +199,34 @@ class WebView(Component):
         if extension != 'mp3' and not getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', False):
             raise Http404 # FIXME: should be some sort of permissions denied error
 
-        for exporter in self.exporters:
-            if exporter.get_file_extension() == extension:
+        for encoder in self.encoders:
+            if encoder.file_extension() == extension:
                 break
 
-        if exporter.get_file_extension() != extension:
+        if encoder.file_extension() != extension:
             raise Http404('Unknown export file extension: %s' % extension)
 
-        mime_type = exporter.get_mime_type()
-
-        exporter.set_cache_dir(settings.TELEMETA_EXPORT_CACHE_DIR)
-
+        mime_type = encoder.mime_type()
+        cache_dir = settings.TELEMETA_EXPORT_CACHE_DIR
+        media = cache_dir + os.sep + public_id + '.' + encoder.file_extension()
+        
         item = MediaItem.objects.get(public_id=public_id)
-
-        infile = item.file.path
-        metadata = dublincore.express_item(item).to_list()
-        stream = exporter.process(item.id, infile, metadata)
-
-        response = HttpResponse(stream, mimetype = mime_type)
+        audio = os.path.join(os.path.dirname(__file__), item.file.path)
+        decoder  = timeside.decoder.FileDecoder(audio)
+        print decoder.format(),  mime_type
+        if decoder.format() == mime_type:
+            # source > stream
+            media = audio
+        else:        
+            if not os.path.exists(media):
+                # source > encoder > stream
+                decoder  = timeside.decoder.FileDecoder(audio)
+                enc = encoder(media)
+                metadata = dublincore.express_item(item).to_list()
+                #enc.set_metadata(metadata)
+                (decoder | enc).run()
+            
+        response = HttpResponse(stream(media), mimetype = mime_type)
         response['Content-Disposition'] = 'attachment'
         return response
 

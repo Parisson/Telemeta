@@ -22,7 +22,7 @@ soundManager.url = '{% url telemeta-swf "./" %}';
 soundManager.flashVersion = 9;
 soundManager.debugMode = false;
 set_player_image_url('{% url telemeta-item-visualize item.public_id,visualizer_id,"WIDTH","HEIGHT" %}');
-load_player({{ item.computed_duration.as_seconds }});
+load_player({{ item.approx_duration.as_seconds }});
 </script>
 
 {% endblock %}
@@ -52,10 +52,10 @@ load_player({{ item.computed_duration.as_seconds }});
                 <div class="ts-wave">
                     <div class="ts-image-container">
                         <a href="{% url telemeta-item-export item.public_id,"mp3" %}">
-                        <img class="ts-image" src="{% url telemeta-item-visualize item.public_id,visualizer_id,360,130 %}" 
+                        <img class="ts-image" src="{% url telemeta-item-visualize item.public_id,visualizer_id,360,130 %}"
                           alt="" /></a>
                     </div>
-                </div>  
+                </div>
             </div>
         </div>
         </div>
@@ -79,7 +79,7 @@ load_player({{ item.computed_duration.as_seconds }});
                 <input type="submit" value="Set" />
             </form>
 
-          <div class="analyzer">
+<!--          <div class="analyzer">
             <table width="100%">
              <tr class="analyzer-title">
               <td>Property</td>
@@ -91,7 +91,7 @@ load_player({{ item.computed_duration.as_seconds }});
               <td>
                 {{ analyser.name }}
               </td>
-              <td> 
+              <td>
                 {{ analyser.value }}
               </td>
               <td>
@@ -100,8 +100,8 @@ load_player({{ item.computed_duration.as_seconds }});
             </tr>
             {% endfor %}
            </table>
-         </div>
-
+         </div>-->
+<!--
         <form method="get" action="#">
             <p>&nbsp;Vamp plugin analysis</p>
             <select name="vamp_id">
@@ -112,7 +112,7 @@ load_player({{ item.computed_duration.as_seconds }});
             </select>
             <input type="submit" value="Get" />
         </form>
-        
+-->
         </div>
 
         {% if audio_export_enabled %}
@@ -230,7 +230,6 @@ load_player({{ item.computed_duration.as_seconds }});
                 <dl class="listing">
                     <dt>{% trans "Media type" %}</dt><dd>{% trans "Audio" %}</dd>
                     {% dl_field item "approx_duration" %}
-                    {% dl_field item "computed_duration" %}
                 </dl>
             </div>
         </div>

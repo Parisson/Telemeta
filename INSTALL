@@ -10,11 +10,9 @@ The following third party applications or libraries are required:
 
 :dependencies: python (>= 2.3.5-7), python-xml, python-mutagen, python-django (>= 1.0-1),
                python-imaging (>= 1.1.6), sox (>= 14.2), vorbis-tools, flac, normalize-audio,
-               python-mysqldb, mysql-server, octave2.9, python-tk, libgd2-xpm,
-               libsndfile1 (>= 1.0.17), python-numpy, python-ctypes (>= 1.0.1),
-               python-scikits-audiolab (>= 0.10), python-setuptools (>= 0.6b3),
-               python-support (>= 0.3), python-scipy, lame (>= 3.98.2),
-               python-docutils (>= 0.5)
+               python-mysqldb, mysql-server, python-timeside (>= 0.2), python-numpy, python-scipy
+               python-ctypes (>= 1.0.1), python-setuptools (>= 0.6b3),
+               python-support (>= 0.3), python-docutils (>= 0.5)
 
 :optional:     ecasound, festival, par2
 
@@ -65,16 +63,22 @@ Install
     $ sudo python setup.py install
 
 
-1.2. Install audiolab
+1.2. Install TimeSide
 ---------------------
 
-This is ONLY needed if you did NOT install telemeta with Debian's apt-get.
+In order to get all the Web Audio Components from TimeSide,
+you have to download and install it from source.
 
-In order to get the wavforms of the audio files,
-python-audiolab have to be installed with the help of git::
+So, checkout the last archives at :
+http://code.google.com/p/timeside/downloads/list
 
-$ git clone git://github.com/cournape/audiolab.git
-$ cd audiolab/
+Install it like in the following example::
+
+$ tar xzf timeside-0.2.tar.gz
+$ cd timeside-0.2
+
+Read the README and INSTALL file, install dependencies and then::
+
 $ sudo python setup.py install
 
 
@@ -123,7 +127,7 @@ Modifiy the following variables:
     :DATABASE_*:        your database settings (don't forget to create the database if needed)
     :MEDIA_ROOT:        absolute path to the media directory you just created
     :INSTALLED_APPS:    add 'telemeta'
-    :TEMPLATE_CONTEXT_PROCESSORS: include 'django.core.context_processors.request' and 
+    :TEMPLATE_CONTEXT_PROCESSORS: include 'django.core.context_processors.request' and
                                   'django.core.context_processors.auth' in this tuple
 
 Add the following variables:
@@ -133,13 +137,14 @@ Add the following variables:
                             as "Ethnology", etc...
     :TELEMETA_CACHE_DIR:    absolute path to the cache directory that you just created
     :TELEMETA_GMAP_KEY:     your Google Map API key
-    :TELEMETA_DOWNLOAD_ENABLED: True to enable audio data download 
+    :TELEMETA_DOWNLOAD_ENABLED: True to enable audio data download
 
 Just paste the lines below::
 
     LOGIN_URL = '/login'
     LOGIN_REDIRECT_URL = '/'
     TELEMETA_EXPORT_CACHE_DIR = TELEMETA_CACHE_DIR + "/export"
+    TELEMETA_DATA_CACHE_DIR = TELEMETA_CACHE_DIR + "/data"
     CACHE_BACKEND = "file://" + TELEMETA_CACHE_DIR + "/data"
 
 
