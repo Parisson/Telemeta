@@ -160,7 +160,8 @@ class WebView:
         if grapher.id() != grapher_id:
             raise Http404
 
-        media = settings.TELEMETA_EXPORT_DATA_DIR + os.sep + public_id + '_' + grapher_id + '_' + width + '_' + height + '.png'
+        media = settings.TELEMETA_DATA_CACHE_DIR + \
+                    os.sep + '_'.join([public_id,  grapher_id,  width,  height]) + '.png'
         #graph.set_colors((255,255,255), 'purple')
         
         if not os.path.exists(media):
@@ -200,7 +201,7 @@ class WebView:
         item = MediaItem.objects.get(public_id=public_id)
         audio = os.path.join(os.path.dirname(__file__), item.file.path)
         decoder  = timeside.decoder.FileDecoder(audio)
-#        print decoder.format(),  mime_type
+        print decoder.format(),  mime_type
         if decoder.format() == mime_type:
             # source > stream
             media = audio

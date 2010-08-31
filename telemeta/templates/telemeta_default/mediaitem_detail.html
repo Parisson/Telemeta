@@ -20,6 +20,7 @@
 <script type="text/javascript">
 soundManager.url = '{% url telemeta-swf "./" %}';
 soundManager.flashVersion = 9;
+soundManager.useMovieStar = true; // enable MP4/M4A/AAC
 soundManager.debugMode = false;
 set_player_image_url('{% url telemeta-item-visualize item.public_id,visualizer_id,"WIDTH","HEIGHT" %}');
 load_player({{ item.approx_duration.as_seconds }});
