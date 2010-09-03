@@ -1,2 +1,3 @@
-from telemeta.web.base import WebView
-import pages
+#import telemeta.web.base
+#import telemeta.web.pages
+

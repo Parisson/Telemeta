@@ -54,15 +54,16 @@ import telemeta.interop.oai as oai
 from telemeta.interop.oaidatasource import TelemetaOAIDataSource
 from django.core.exceptions import ObjectDoesNotExist
 from telemeta.util.unaccent import unaccent
-from telemeta.web import pages
 from telemeta.util.unaccent import unaccent_icmp
+from telemeta.util.logger import Logger
+import telemeta.web.pages as pages
 
 def render(request, template, data = None, mimetype = None):
     return render_to_response(template, data, context_instance=RequestContext(request), 
                               mimetype=mimetype)
 
-def stream(file):
-    chunk_size = 0x10000
+def stream_from_file(file):
+    chunk_size = 0x1000
     f = open(file,  'r')
     while True:
         _chunk = f.read(chunk_size)
@@ -71,14 +72,23 @@ def stream(file):
         yield _chunk
     f.close()
 
+def stream_from_processor(decoder, processor):
+    while True:
+        frames,  eod = decoder.process()
+        buffer,  eod_proc = processor.process(frames, eod)
+        yield buffer
+        if eod_proc:
+            break
+
 
 class WebView:
     """Provide web UI methods"""
 
-    graphers = timeside.processors(timeside.api.IGrapher)
-    decoders = timeside.processors(timeside.api.IDecoder)
-    encoders= timeside.processors(timeside.api.IEncoder)
-    analyzers = timeside.processors(timeside.api.IAnalyzer)
+    graphers = timeside.core.processors(timeside.api.IGrapher)
+    decoders = timeside.core.processors(timeside.api.IDecoder)
+    encoders= timeside.core.processors(timeside.api.IEncoder)
+    analyzers = timeside.core.processors(timeside.api.IAnalyzer)
+    logger = Logger('/tmp/telemeta.log')
     
     def index(self, request):
         """Render the homepage"""
@@ -152,6 +162,7 @@ class WebView:
                     })
 
     def item_visualize(self, request, public_id, visualizer_id, width, height):
+        mime_type = 'image/png'
         grapher_id = visualizer_id
         for grapher in self.graphers:
             if grapher.id() == grapher_id:
@@ -159,19 +170,22 @@ class WebView:
 
         if grapher.id() != grapher_id:
             raise Http404
-
+        
         media = settings.TELEMETA_DATA_CACHE_DIR + \
                     os.sep + '_'.join([public_id,  grapher_id,  width,  height]) + '.png'
+
         #graph.set_colors((255,255,255), 'purple')
         
         if not os.path.exists(media):
             item = MediaItem.objects.get(public_id=public_id)
             audio = os.path.join(os.path.dirname(__file__), item.file.path)
             decoder  = timeside.decoder.FileDecoder(audio)
-            graph = grapher(width=int(width), height=int(height), output=media)
-            (decoder | graph).run()
-            graph.render()
-        response = HttpResponse(stream(media), mimetype = 'image/png')
+            graph = grapher(width=int(width), height=int(height))
+            pipe = decoder | graph
+            pipe.run()
+            graph.render(media)
+
+        response = HttpResponse(stream_from_file(media), mimetype = mime_type)
         return response
 
     def list_export_extensions(self):
@@ -204,17 +218,19 @@ class WebView:
         print decoder.format(),  mime_type
         if decoder.format() == mime_type:
             # source > stream
-            media = audio
+            response = HttpResponse(stream_from_file(audio), mimetype = mime_type)
         else:        
             if not os.path.exists(media):
                 # source > encoder > stream
-                decoder  = timeside.decoder.FileDecoder(audio)
-                enc = encoder(media)
-                metadata = dublincore.express_item(item).to_list()
+                decoder.setup()
+                proc = encoder(media)
+                proc.setup(decoder.channels(), decoder.samplerate())
+                #metadata = dublincore.express_item(item).to_list()
                 #enc.set_metadata(metadata)
-                (decoder | enc).run()
-            
-        response = HttpResponse(stream(media), mimetype = mime_type)
+                response = HttpResponse(stream_from_processor(decoder, proc), mimetype = mime_type)
+            else:
+                response = HttpResponse(stream_from_file(media), mimetype = mime_type)
+        
         response['Content-Disposition'] = 'attachment'
         return response
 

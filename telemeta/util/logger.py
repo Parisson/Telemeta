@@ -1,13 +1,23 @@
 
+import logging
+
 class Logger:
-    "Provide simple message logging"
+    """A logging object"""
 
-    filename="/tmp/telemeta.log"
+    def __init__(self, file):
+        self.logger = logging.getLogger('myapp')
+        self.hdlr = logging.FileHandler(file)
+        self.formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+        self.hdlr.setFormatter(self.formatter)
+        self.logger.addHandler(self.hdlr)
+        self.logger.setLevel(logging.INFO)
 
-    def __init__(self):
-        self.file = open(self.filename, "a")
+    def write_info(self, message):
+        self.logger.info(message)
+
+    def write_error(self, message):
+        self.logger.error(message)
 
     def debug(self, msg):
-        self.file.write(msg + "\n")
-        self.file.flush()
+        self.logger.error(message)
         

@@ -37,7 +37,7 @@
 from django.conf.urls.defaults import *
 from telemeta.models import MediaItem, MediaCollection
 #from telemeta.core import ComponentManager
-from telemeta.web import WebView
+from telemeta.web.base import WebView
 import os.path
 import telemeta.config
 
