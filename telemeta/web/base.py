@@ -124,7 +124,7 @@ class WebView:
             grapher_id = 'waveform'
         
         analyzers = [{'name':'','id':'','unit':'','value':''}]
-        # TODO: override timeside analyzer process when caching
+        # TODO: override timeside analyzer process when caching : write results to XML file in data/
         self.analyzer_mode = 0
         
         if self.analyzer_mode:
@@ -160,6 +160,12 @@ class WebView:
                     'visualizers': graphers, 'visualizer_id': grapher_id,'analysers': analyzers,
                     'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', False)
                     })
+    
+    def item_analyze(self, request, public_id):
+        # TODO: return an XML stream of the analyzed metadata
+        # response = HttpResponse(stream_from_file(media), mimetype = mime_type)
+        # return response
+        pass
 
     def item_visualize(self, request, public_id, visualizer_id, width, height):
         mime_type = 'image/png'
@@ -215,7 +221,7 @@ class WebView:
         item = MediaItem.objects.get(public_id=public_id)
         audio = os.path.join(os.path.dirname(__file__), item.file.path)
         decoder  = timeside.decoder.FileDecoder(audio)
-        print decoder.format(),  mime_type
+#        print decoder.format(),  mime_type
         if decoder.format() == mime_type:
             # source > stream
             response = HttpResponse(stream_from_file(audio), mimetype = mime_type)

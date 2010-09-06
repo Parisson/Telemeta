@@ -36,7 +36,6 @@
 
 from django.conf.urls.defaults import *
 from telemeta.models import MediaItem, MediaCollection
-#from telemeta.core import ComponentManager
 from telemeta.web.base import WebView
 import os.path
 import telemeta.config
@@ -44,7 +43,6 @@ import telemeta.config
 telemeta.config.check()
 
 # initialization
-#comp_mgr = ComponentManager()
 web_view = WebView()
 
 # query sets for Django generic views
@@ -78,6 +76,9 @@ urlpatterns = patterns('',
     url(r'^items/(?P<public_id>[A-Z0-9_]+)/visualize/(?P<visualizer_id>[0-9a-z_]+)/(?P<width>[0-9A-Z]+)x(?P<height>[0-9A-Z]+)/$', 
         web_view.item_visualize,
         name="telemeta-item-visualize"),
+    url(r'^items/(?P<public_id>[A-Z0-9_]+)/analyze/(?P<analyzer_id>[0-9a-z_]+)/$', 
+        web_view.item_analyze,
+        name="telemeta-item-analyze"),
     url(r'^items/(?P<public_id>[A-Z0-9_]+)/item_xspf.xml$', 
         web_view.item_playlist, 
         dict(template="telemeta/mediaitem_xspf.xml", mimetype="application/xspf+xml"),
