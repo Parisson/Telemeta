@@ -125,7 +125,7 @@ class WebView:
         
         analyzers = [{'name':'','id':'','unit':'','value':''}]
         # TODO: override timeside analyzer process when caching : write results to XML file in data/
-        self.analyzer_mode = 0
+        self.analyzer_mode = 1
         
         if self.analyzer_mode:
             analyzers_sub = []

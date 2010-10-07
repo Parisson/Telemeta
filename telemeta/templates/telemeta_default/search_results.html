@@ -35,7 +35,7 @@
     </li>
   {% endif %}
   {% if criteria.pub_year_from %}
-    <li><b>{% trans "Year of issue" %}:</b> {{criteria.pub_year_from}}
+    <li><b>{% trans "Year of publication" %}:</b> {{criteria.pub_year_from}}
      {% ifnotequal criteria.pub_year_to criteria.pub_year_from %}
      {% trans "to" %} {{criteria.pub_year_to}}
      {% endifnotequal %}

@@ -119,7 +119,7 @@ class MediaCollection(MediaResource):
     items_done            = CharField(_('items finished'))
     a_informer_07_03      = CharField(_('a_informer_07_03'))
     ad_conversion         = WeakForeignKey('AdConversion', related_name='collections', 
-                                           verbose_name=_('A/D conversion'))
+                                           verbose_name=_('digitization'))
     public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES, 
                                       max_length=16, default="metadata")
 
@@ -311,9 +311,9 @@ class MediaItemPerformance(ModelCore):
     media_item      = ForeignKey('MediaItem', related_name="performances", 
                                  verbose_name=_('item'))
     instrument      = WeakForeignKey('Instrument', related_name="performances", 
-                                     verbose_name=_('scientific instrument'))
+                                     verbose_name=_('composition'))
     alias           = WeakForeignKey('InstrumentAlias', related_name="performances", 
-                                     verbose_name=_('vernacular instrument'))
+                                     verbose_name=_('vernacular name'))
     instruments_num = CharField(_('number'))
     musicians       = CharField(_('interprets'))
 

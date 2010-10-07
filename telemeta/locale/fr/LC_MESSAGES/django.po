@@ -57,7 +57,7 @@ msgid "recording context"
 msgstr "contexte d'enregistrement"
 
 #: models/enum.py:106 models/media.py:122
-msgid "A/D conversion"
+msgid "digitization"
 msgstr "numérisation"
 
 #: models/enum.py:113 models/media.py:231
@@ -347,12 +347,12 @@ msgid "item"
 msgstr "item"
 
 #: models/media.py:322
-msgid "scientific instrument"
-msgstr "instrument scientifique"
+msgid "composition"
+msgstr "formation"
 
 #: models/media.py:324
-msgid "vernacular instrument"
-msgstr "instrument vernaculaire"
+msgid "vernacular name"
+msgstr "nom vernaculaire"
 
 #: models/media.py:325
 msgid "number"
@@ -708,8 +708,8 @@ msgstr "à"
 
 #: templates/telemeta_default/search_criteria.html:114
 #: templates/telemeta_default/search_results.html:38
-msgid "Year of issue"
-msgstr "Année de parution"
+msgid "Year of publication"
+msgstr "Année de publication"
 
 #: templates/telemeta_default/search_results.html:5
 #: templates/telemeta_default/search_results.html:8
