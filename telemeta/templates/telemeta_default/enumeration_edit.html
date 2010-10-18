@@ -1,0 +1,48 @@
+{% extends "telemeta/admin.html" %}
+{% load i18n %}
+
+{% block head_title %}{% trans "Enumeration" %}: {{ enumeration_name|capfirst }} - {{ block.super }}{% endblock %}
+
+{% block tabcontents %}
+ <h4>{% trans "Enumeration" %}: {{ enumeration_name|capfirst }}</h4>
+
+ <form class="addnew" id="addenum" method="post"
+        action="{% url telemeta-enumeration-add enumeration_id %}">
+  <fieldset>
+   <legend>{% trans "Add entry" %}</legend>
+   <div class="field">
+    <label>{% trans "Value" %}: <input type="text" name="value"></label>
+
+   </div>
+   <div class="buttons">
+    <input type="submit" name="add" value="{% trans 'Add' %}">
+   </div>
+  </fieldset>
+ </form>
+ {% if enumeration_values %}
+ <form method="POST" action="{% url telemeta-enumeration-update enumeration_id %}">
+  <table class="listing">
+   <thead>
+    <tr><th class="sel">&nbsp;</th><th>{% trans "Value"%}</th>
+
+    </tr>
+   </thead><tbody>
+    {% for record in enumeration_values %}
+    <tr>
+     <td><input type="checkbox" name="sel" value="{{record.id}}" /></td>
+     <td><a href="{% url telemeta-enumeration-record-edit enumeration_id,record.id %}">
+        {{record.value}}</a></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  <div class="buttons">
+   <input type="submit" name="remove" value="{% trans 'Remove selected items' %}" />
+  </div>
+ </form>
+ {% else %}
+    <p class="help">{% trans "This enumeration is empty" %}</p>
+ {% endif %}
+
+  <br style="clear: right"/>
+{% endblock %}

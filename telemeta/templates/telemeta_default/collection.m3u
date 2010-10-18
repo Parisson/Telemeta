@@ -1,0 +1,3 @@
+#EXTM3U{% load telemeta_utils %}{% for item in collection.items.all %}
+#EXTINF:{{ item.get_duration }},{{ item }}
+http://{{ host }}{% url telemeta-item-export item.public_id,"mp3" %}{% endfor %}

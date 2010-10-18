@@ -1,0 +1,371 @@
+=============================================
+eZTelemeta |version| - Mise en place et usage
+=============================================
+
+:Auteur: Olivier Guilyardi <olivier samalyse com>
+:Date: |today|
+
+.. contents:: **Table des matières**
+.. sectnum::
+
+----
+
+Introduction
+~~~~~~~~~~~~
+
+Le présent document décrit les procédures de mise en place et d'usage
+de l'extension eZPublish eZTelemeta |version|. Cette extension a pour but
+de permettre l'intégration dynamique d'éléments sonores en provenance
+du logiciel Telemeta.
+
+Pré-requis
+~~~~~~~~~~
+
+- Système Linux ou FreeBSD:
+- PHP version 5.2 ou supérieur
+- Apache version 1.3 ou supérieur
+- eZPublish 4.1.0
+- l'accès distant à une installation Telemeta
+
+Mise en place
+~~~~~~~~~~~~~
+
+Installation de l'extension
+---------------------------
+
+eZTelemeta |version| est distribuée sous la forme d'une archive .tar.gz,
+contenant le répertoire ``eztelemeta``, à placer dans le répertoire
+``extension`` de l'installation eZPublish.
+
+Puis activer l'extension dans l'administration, onglet Setup/Extensions,
+et régénerer les données de chargement automatique (``Regenerate
+autoload arrays for extensions``)
+
+Création de la classe principale
+--------------------------------
+
+eZTelemeta définit un nouveau type de données, appelé ``Telemeta
+Item``. Les utilisateur avancés de eZPublish peuvent envisager
+différents scénarios d'utilisation de ce type de données. La procédure
+décrite ici consiste à créer une classe qui ne contiendra qu'un
+seul attribut, de type ``Telemeta Item``. Il est fortement recommandé
+de procéder ainsi lors d'une première mise en place, notamment pour
+intégrer facilement le lecteur audio aux pages publiques.
+
+Dans l'administration, dans Setup/Classes, dans le groupe Media, créer
+une classe avec les paramètres suivants::
+
+    - Name:                 Telemeta Audio Item
+    - Identifier:           telemetaitem
+    - Object name pattern:  <item>
+
+Ajouter un attribut de type ``Telemeta Item``, avec pour paramètres (*respecter
+la casse*)::
+
+    - Name:                 Item
+    - Identifier:           item
+    - Required:             activé
+    - Searchable:           activé
+
+Cliquer sur OK pour enregistrer la nouvelle classe.
+
+Réglage des permissions
+-----------------------
+
+Pour pouvoir afficher les items sur les pages publiques, il faut autoriser
+leur accès aux utilisateurs *anonymes*.
+
+Dans l'espace d'administration, onglet Setup, dans Roles and policies:
+
+1. Éditer le rôle ``Anonymous``
+2. Cliquer sur ``New policy``
+3. Choisir le module ``content`` puis cliquer sur ``Grant access to one function``
+4. Choisir la fonction ``read`` puis cliquer sur ``Grant limited access``
+5. Choisir la classe ``Telemeta Audio Item`` puis cliquer en bas de page sur OK
+6. De retour sur le role, cliquer à nouveau sur OK
+
+Création d'un objet de contenu
+------------------------------
+
+Il est maintenant possible de créer un objet de contenu (une instance)
+à partir de cette classe, par exemple dans l'onglet Media Library,
+dossier Multimedia, créer un objet de type Telemeta Audio Item avec
+pour paramètres::
+
+    - Telemeta URL:         L'url de l'installation Telemeta distante.
+                            (exemple: http://mucem.telemeta.org)
+
+    - Item Identifier:      La cote de l'item. Celle-ci peut être trouvée
+                            en accédant à l'interface web de Telemeta, sur
+                            la page de l'item choisi.
+
+Puis enregistrer les modifications (``Send for publishing``). 
+
+**Remarque**: au moment de l'enregistrement, eZTelemeta établit
+une connexion avec l'installation Telemeta distante, en utilisant le
+protocole OAI-PMH via HTTP.  Si la cote de l'item est invalide, ou
+si la connexion HTTP ne peut-être établi à cause d'un mauvais URL,
+l'item ne sera pas enregistré, et une erreur s'affichera.  Dans ce cas
+vérifiez bien votre saisie.
+
+Intégration de l'objet de contenu dans un article
+-------------------------------------------------
+
+Maintenant que nous disposons d'un objet de contenu Telemeta, il est facile
+de l'intégrer à un article. Pour ce faire, lors de l'édition d'un article:
+
+1. Cliquer sur l'icône représentant un *trombone* (``Insérer/modifier un objet``)
+2. Une fenêtre DHTML doit s'ouvrir, cliquer sur Parcourir, Media puis sur Multimedia
+3. Sélectionner l'item Telemeta à insérer, un aperçu (lien, titre, etc...) doit s'afficher
+4. Cliquer sur OK
+
+L'item doit maintenant être intégré au corps de l'article, sous la
+forme d'une liste de définition HTML (``<dl>...</dl>``), affichant le
+titre de l'item sous la forme d'un lien vers le fichier son hébergé
+sur le serveur Telemeta, la durée (HH:MM:SS) de l'item, et suivant les
+informations qui sont disponibles, un ou plusieurs éléments parmi les
+suivants: Auteur/Collecteur, Description, Droits d'usage.
+
+L'intégration sous la forme d'une liste de définition HTML a plusieurs avantages:
+
+- en terme de contenu, c'est la construction HTML la plus adaptée à une liste de méta-données
+- la présentation est facilement personnalisable avec des feuilles de styles CSS.
+- elle est accessible, facilitant par exemple la consultation à l'aide de périphériques de type lecteur
+  d'écran destinés aux mal-voyants 
+
+Intégration du lecteur audio
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Remarques générales sur le lecteur
+----------------------------------
+
+eZTelemeta inclut un lecteur audio web employant javascript et flash de
+façon dîte *dégradable*: si flash ou javascript sont absents, le lien
+HTML vers le fichier son (mp3) est laissé intacte, et la lecture reste
+donc possible à l'aide d'un module externe au navigateur (Windows Media
+Player, iTunes, VLC, etc...).
+
+Cependant, la plupart des utilisateurs pourront profiter du lecteur audio
+permettant la lecture interactive du son sans quitter la page en cours,
+à la condition que le lecteur Adobe Flash 8 soit installé, et javascript
+activé, sous:
+
+- Internet Explorer 6 et 7 
+- Firefox 2 et 3 
+- Safari 3 
+- Opera 9
+
+Voici un aperçu du lecteur :
+
+.. image:: player.png
+    :scale: 75
+
+Dans le respect des règles de l'art du web actuel, les routines
+javascript sont séparées de façon stricte du contenu HTML. L'affichage
+interactif du lecteur est entièrement personnalisable via CSS et/ou
+modification des templates eZPublish. Flash est utilisé de façon
+invisible, via la librairie SoundManager2, offrant une API javascript
+dédiée au son.
+
+Plusieurs items peuvent être placés arbitrairement dans la page,
+s'intégrant bien au flot du contenu HTML. Lorsqu'on clique sur
+l'un deux, si la lecture d'un autre item est déjà en cours, elle
+s'interrompt, de façon à éviter la lecture accidentelle simultanée
+de plusieurs sons.
+
+**Remarque :** Pour simplifier la mise en place du lecteur, il est
+recommandé d'utiliser une classe de contenu eZPublish dont l'identifiant
+est ``telemetaitem`` comme indiqué à la section `Création de la classe 
+principale`_.
+
+Chargement des dépendances
+--------------------------
+
+Le lecteur possède des dépendances CSS et Javascript qui doivent êtres
+chargées dans la section ``<head/>`` des pages du site. Pour ce faire
+eZTelemeta contient un template qui doit être inclut dans cette section,
+en personnalisant le template ``pagelayout.tpl``, qui est utilisé
+par eZPublish pour construire toutes les pages.
+
+Pour ce faire, se rendre dans l'onglet Design de l'espace
+d'administration eZPublish, et (si ce n'est déjà fait) y créer
+un ``override`` du template ``pagelayout.tpl`` pour le ou les sites
+concernés. Il est également recommandé de créer un tel ``override``
+pour le template ``pagelayout.tpl`` de la partie administrative.
+
+Puis, dans chacun des templates ``pagelayout.tpl`` concernés, inclure 
+le template d'initialisation en plaçant l'expression suivante dans la section
+``<head/>``::
+
+{include uri="design:eztelemeta_head.tpl"}
+
+Enfin, vider le cache eZPublish. Le lecteur audio doit maintenant être actif
+à la fois sur les pages publiques intégrant un item Telemeta, et lors de la 
+pré-visualisation d'un article dans l'espace administratif.
+
+**Remarque**: le fait d'inclure le template ``eztelemeta_head.tpl`` dans toutes
+les pages du site via la personnalisation de ``pagelayout.tpl``, n'alourdit pas
+inutilement le chargement des pages. Les dépendances CSS, JS et Flash ne sont
+chargées que si la page en cours contient effectivement un item Telemeta.
+
+Personnalisation à l'aide de feuilles de style
+----------------------------------------------
+
+Comme indiqué à la section `Remarques générales sur le lecteur`_
+l'apparence du lecteur audio repose intégralement sur HTML et CSS,
+contrairement à un lecteur possédant une interface utilisateur flash,
+et peut donc facilement être personnalisée.
+
+Dans la majorité des cas, la personnalisation peut être effectuée à l'aide règles
+de style CSS. 
+
+Par défaut, l'affichage d'un item par défaut a la structure suivante::
+
+    <div class="telemeta-item">
+        <dl>
+            <dt class="telemeta-sound">Son :</dt>
+            <dd class="telemeta-sound"><a href="...">...</a></dd>
+
+            <dt class="telemeta-duration">Durée :</dt>
+            <dd class="telemeta-duration">
+                <span class="telemeta-position">...</span>
+                <span class="telemeta-separator"> / </span>
+                ...
+            </dd>
+
+            <dt class="telemeta-description">Description :</dt>
+            <dd class="telemeta-description">...</dd>
+            
+            <dt class="telemeta-creator">Auteur / Collecteur :</dt>
+            <dd class="telemeta-creator">...</dd>
+            
+            <dt class="telemeta-rights">Droits d'usage :</dt>
+            <dd class="telemeta-rights">...</dd>
+        </dl>
+        <div class="telemeta-clear"></div>
+    </div>
+
+Lorsque la lecture est en cours, la classe ``telemeta-playing`` est
+ajoutée automatiquement (par la classe javascript ``TelemetaPlayer``)
+à l'élément ``div``::
+
+    <div class="telemeta-item telemeta-playing">
+        ...
+    </div>
+
+Si la lecture est activée, mais que le son ne peut-être joué car il est
+en cours de chargement (mise en tampon), la classe ``telemeta-loading``
+est ajoutée à l'élément ``div``::
+
+    <div class="telemeta-item telemeta-playing telemeta-loading">
+        ...
+    </div>
+
+La feuille de style par défaut est quant à elle localisée dans::
+
+    eztelemeta/design/standard/stylesheets/eztelemeta.css
+
+Cette feuille de style contient deux sections:
+
+    - Core styles: ces règles laisse la liste de définition HTML ``<dl/>`` 
+      quasiment intacte, ajoutant simplement l'icône play/pause au lien, 
+      et un effet de clignotement en cours de chargement.
+    - Compact box styles: ces règles, légèrement plus intrusives, donne son
+      apparence plus compacte au lecteur, avec couleur de fond, etc...
+
+Personnalisation des Templates
+------------------------------
+
+Pour une personnalisation plus poussée de l'apparence du lecteur il est possible
+de modifier les templates HTML. Pour ce faire, comme ailleurs dans eZPublish, il
+est recommandé de créer des ``override`` de template, et non de modifier 
+directement les templates. Se reporter à la documentation de eZPublish pour plus 
+de détails.
+
+Le code HTML du lecteur réside essentiellement dans le template de vue du type
+de donnée ``Telemeta Item``::
+
+    eztelemeta/design/standard/templates/content/datatype/view/eztelemetaitem.tpl
+
+Cependant, d'autres templates sont nécessaires suivant le contexte d'affichage.
+Mais, pour éviter la redondance ils *incluent* le template ci-dessus. De cette
+façon, la modification de ce template se répercutent automatiquement dans les
+différents contextes. Néanmoins, dans certains cas, il peut-être utile d'éviter
+ce mécanisme d'inclusion pour une personnalisation plus poussée, ce qui reste
+possible via le système de surcharge (``override``) de eZPublish.
+
+Ces templates annexes, qui incluent le template principal sont::
+
+    - template d'imbrication (dans un article, etc...) :
+        eztelemeta/design/standard/override/templates/embed/eztelemetaitem.tpl
+
+    - template de vue autonome (résultat de recherche, etc...) :
+        eztelemeta/design/standard/override/templates/full/eztelemetaitem.tpl
+
+Par ailleurs, le chargement des dépendances et l'initialisation du
+lecteur sont réalisés dans::
+
+    eztelemeta/design/standard/templates/eztelemeta_head.tpl
+
+
+Mise à jour dynamique et gestion du cache
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Contenu dynamique
+-----------------
+
+Contrairement à la grande majorité des contenus gérés dans eZPublish,
+les items sont susceptibles de changer depuis l'extérieur, c'est à
+dire dans le contexte de Telemeta lui-même.
+
+L'une des raisons d'être de eZTelemeta est la répercussion automatique
+de ces changements (titre, son, auteur, etc...), sans qu'il soit
+nécessaire d'intervenir dans l'espace d'administration de eZPublish.
+
+Cette fonctionnalité est rendue possible grâce au lien OAI-PMH établi
+avec Telemeta, et la gestion du cache eZPublish.
+
+Gestion du cache
+----------------
+
+L'établissement d'une connexion avec le serveur distant Telemeta ne peut
+bien évidemment pas être effectuée à chaque affichage d'un item,
+ce serait trop lourd. 
+
+Cependant, eZTelemeta n'inclut pas de système de gestion de cache spécifique.
+C'est le cache standard de eZPublish qui est utilisé.
+
+Ainsi, il convient que l'administrateur vérifie les réglages du cache,
+de façon à ce qu'il soit vidé périodiquement, pour recharger les
+méta-données des items Telemeta.
+
+Cette opération peut notamment être réalisée via un cronjob appelant régulièrement
+le script eZPublish suivant::
+
+    php bin/php/ezcache.php --clear-tag=content
+
+Cette opération entraînera effectivement le rafraîchissement de l'ensemble des 
+méta-données des items, affichées dans le lecteur audio. 
+
+Cependant, le nom des objets de contenu n'est pas mis à jour par la
+purge du cache. C'est une limitation de eZPublish, qui est légèrement
+problématique dans le contexte de la gestion d'objets distants comme
+les items Telemeta.
+
+Les noms d'objets contiennent le titre d'item et apparaissent:
+
+- dans le titre HTML de la page lors de la vue autonome d'un item Telemeta 
+- dans la liste des résultats de recherche
+- dans la liste d'objets de contenu dans l'espace d'administration
+
+Aucune opération de purge de cache ne met à jour ces noms d'objets, il faut soit
+modifier l'item, soit avoir recours au script eZPublish suivant, via un cronjob
+par exemple (il est recommandé de faire une sauvegarde avant le premier lancement
+de ce script)::
+
+    php update/common/scripts/updatecontentobjectname.php
+
+
+.. |version| replace:: EZTVERSION
+.. |today| date::
+.. vim: set ft=rst:

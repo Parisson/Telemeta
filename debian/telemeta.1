@@ -1,0 +1,110 @@
+.TH "telemeta" "1" 
+.SH "NAME" 
+telemeta \(em backups, transcodes, tags and marks any audio content with metadata 
+.SH "SYNOPSIS" 
+.PP 
+\fBtelemeta\fR [\fB\fIOPTIONS\fR\fP]  [\fICOLLECTION\fR]  [\fB\fIOPTIONS\fR\fP]  [\fB\fIMEDIA\fR\fP]  
+.SH "DESCRIPTION" 
+.PP 
+\fBtelemeta\fR is an audio tool which creates audio transcoded collections fast from fresh mastered files. It can be useful to backup digitalized audio media from vinyls, old tapes or whatever and include them in a database. 
+.PP 
+Telemeta first creates a simple file structure where the original sounds will be backuped. The files can be transcoded to WAV, FLAC, MP3 and OGG including the corresponding tags. 
+.PP 
+Here are some cool functions: 
+.IP "\fB\fP" 10 
+\- XML generation for metadata tags of backuped WAV 
+.IP "" 10 
+\- Audio marking from a given file or from tags thanks to the Festival speech systhesis tool 
+.IP "" 10 
+\- File corruption security with par2 recovery files 
+.IP "" 10 
+\- Collection synchronizing to remote servers (ssh+rsync) 
+.IP "" 10 
+\- Modify metadata from XML or interactive shell 
+.SH "OPTIONS" 
+.PP 
+These programs follow the usual GNU command line syntax, 
+with long options starting with two dashes (`\-').  A summary of 
+options is included below.  For a complete description, see the 
+\fBInfo\fP files. 
+.IP "\fB\-\-create\fP         " 10 
+creates a collection repository 
+.IP "\fB\-\-backup\fP         " 10 
+backups and transcodes wave files to a collection 
+.IP "\fB\-\-album\fP         " 10 
+proccesses an entire directory (one shot album) 
+.IP "\fB\-\-backup\fP         " 10 
+backups a media to the collection 
+.IP "\fB\-\-from-xml\fP         " 10 
+takes tags and opts in original xml source 
+.IP "\fB\-\-force\fP         " 10 
+forces file conversion (no audio test) 
+.IP "\fB\-\-par2\fP         " 10 
+forces par2 security file creation 
+.IP "\fB\-\-all-default\fP         " 10 
+chooses default argument for all question 
+.IP "\fB\-\-recover\fP         " 10 
+check an repair the backuped media with the previously created "par2" security files 
+.IP "\fB\-\-rsync\fP         " 10 
+synchronizes collection to a remote server (ssh+rsync) 
+.IP "\fB\-\-erase\fP         " 10 
+erases a collection (flac, ogg, mp3 only !) 
+.IP "\fB\-\-help\fP         " 10 
+Show summary of options. 
+.IP "\fB\-\-version\fP         " 10 
+Show version of program. 
+.SH "EXAMPLES" 
+.PP 
+\fBtelemeta \-\-create my_collection\fR 
+.PP 
+\fBtelemeta \-\-backup my_collection file.wav\fR 
+.PP 
+\fBtelemeta \-\-backup my_collection \-\-album /path/to/directory/\fR 
+.PP 
+\fBtelemeta \-\-backup my_collection \-\-album \-\-par2 \-\-rsync /path/to/directory/\fR 
+.PP 
+\fBtelemeta \-\-backup my_collection \-\-album \-\-par2 \-\-rsync \-\-force /path/to/directory/\fR 
+.SH "DOWNLOAD" 
+.PP 
+Telemeta is written in python. So it doesn't require any compilation step. 
+.PP 
+On Debian or Ubuntu just add these lines to your /etc/apt/sources-list: 
+.PP 
+\fBdeb http://yomix.org/debian/ binary/\fR 
+.PP 
+\fBdeb-src http://yomix.org/debian/ source/\fR 
+.PP 
+Then, 
+.PP 
+\fBsudo apt-get update\fR 
+.PP 
+\fBsudo apt-get install telemeta\fR 
+.PP 
+On other linux platforms, \fIdownload (link to URL http://yomix.org/telemeta/download/) \fR the lastest .tar.gz archive, uncompress it, go into the created directory and just type this with your favorite shell : 
+.PP 
+\fBpython install.py\fR 
+.PP 
+See README and INSTALL file for more informations. 
+.PP 
+You can also get the lastest version of Telemeta with subversion (just type 'enter' for the password: 
+.PP 
+svn co http://svn.yomix.org/svn/telemeta/trunk telemeta \-\-username=anonymous 
+.SH "DEPENDS" 
+.PP 
+python (>= 2.3.5-7), python-xml, python-central (>= 0.5), python-mutagen, sox, vorbis-tools, flac, lame, normalize-audio, ecasound, festival, par2 
+.SH "SEE ALSO" 
+.PP 
+The program is documented fully by Guillaume Pellerin. More info at \fI\fIhttp://svn.yomix.org/telemeta/ (link to URL http://svn.yomix.org/telemeta/) \fR\fP. 
+.SH "AUTHOR" 
+.PP 
+This manual page was written by Guillaume Pellerin <yomguy@altern.org> for 
+the \fBDebian\fP system (but may be used by others).  Permission is 
+granted to copy, distribute and/or modify this document under 
+the terms of the GNU General Public License, Version 2 any 
+later version published by the Free Software Foundation. 
+ 
+.PP 
+On Debian systems, the complete text of the GNU General Public 
+License can be found in /usr/share/common-licenses/GPL. 
+ 
+.\" created by instant / docbook-to-man, Fri 26 Jan 2007, 00:26 

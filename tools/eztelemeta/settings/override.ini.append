@@ -1,0 +1,11 @@
+[telemetaitem_full]
+Source=node/view/full.tpl
+MatchFile=full/eztelemetaitem.tpl
+Subdir=templates
+Match[class_identifier]=telemetaitem
+
+[embed_telemetaitem]
+Source=content/view/embed.tpl
+MatchFile=embed/eztelemetaitem.tpl
+Subdir=templates
+Match[class_identifier]=telemetaitem

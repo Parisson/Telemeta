@@ -1,0 +1,332 @@
+
+==================
+Telemeta - Widgets
+==================
+
+.. contents:: Table des matières
+
+Introduction
+============
+
+Le présent document décrit les différents widgets prévus pour composer
+l'interface utilisateur de Telemeta. Il est destiné à permettre la
+conception HTML+CSS de ces widgets, dans un premier temps sous une forme
+purement statique (galerie de widgets).
+
+Chaque widget est associé à une classe CSS principale. Un travail sur
+l'interface a par ailleurs déjà été effectué, si bien que pour un
+certain nombre de ces widgets il existe une référence (ref) donnant un
+aperçu. Les descriptions ci-dessous priment cependant sur ces références
+qui ont pour seul but d'illustrer les premières.
+
+Définitions
+===========
+
+Ressources : 
+    les ressources sont les structures de données centrales dans Telemeta,
+    telles que les collection ou les items.
+
+Données CREM prioritaires :
+   certaines données ont été identifiées comme prioritaires. Au niveau
+   graphique elles peuvent être celles qui sont assorties d'un petit
+   icône. Il s'agit de :
+
+    - la cote (code alpha-numérique identifiant une ressource)
+    - le titre
+    - la zone géographique
+    - le nom du collecteur, c'est à dire le chercheur qui a collecté cet (ces) 
+      enregistrement(s)
+    - les instruments de musique utilisés
+    - l'année/date d'enregistrement
+    - l'ethnie / le contexte ethnographique
+
+Widgets
+=======
+
+Tableau de ressources
+~~~~~~~~~~~~~~~~~~~~~
+
+:classe: resource-table 
+:ref: http://crem.telemeta.org/items
+
+Les tableaux de ressources listent des collections ou des items, soit leur
+totalité, soit un résultat de recherche, etc...
+
+Ces tableaux peuvent avoir un nombre indéterminé de colonnes et de lignes,
+mais possèdent toujours des en-têtes de colonnes.
+
+Les lignes impaires doivent être différenciées, ainsi que les lignes
+survolées par la souris.
+
+Une ou plusieurs colonnes sont généralement mises en évidence (titre,
+etc..).
+
+Chaque ligne est cliquable dans son intégralité, les cellules contenant
+donc toutes un lien qui ne change pas d'apparence après avoir été visité.
+
+Il peut y avoir une ou plusieurs colonnes contenant des icônes cliquables.
+
+Les en-têtes de colonnes sont cliquables et permettent de trier le tableau,
+elles doivent donc pouvoir comporter un indicateur (flèche) de tri.
+
+L'impression de ces tableaux est importante et peut donc nécessiter des
+règles CSS print spécifiques.
+
+Liste de ressources
+~~~~~~~~~~~~~~~~~~~
+
+:classe: resource-list
+
+Les listes de ressources présentent le même type d'information que les
+tableaux de ressources mais avec possiblement plus de détails. Elles
+ressemblent aux résultat de recherche Google, c'est à dire des blocs
+d'information successifs, avec un titre bien mis en évidence et cliquable.
+
+En plus du titre peut apparaître une description, ainsi qu'une ou plusieurs
+propriétés (données CREM prioritaires uniquement). Les propriétés
+doivent s'afficher de façon différenciée de la description, et être
+soient en dessous, soit au dessus (à choisir au moment de la conception
+du widget). Elles peuvent être assorties d'un icône (à voir).
+
+Au dessus de la liste, un champ déroulant permet de sélectionner une
+méthode de tri.
+
+Menu principal
+~~~~~~~~~~~~~~
+
+:classe: main-menu
+:ref: http://telemeta.org/browser/trunk/design/maquette_v0.4_item_view_2.png
+
+Le menu principal est horizontal et contient un certain nombre d'items
+texte cliquable. Il n'y a pas de listes déroulantes.
+
+Un champ de recherche rapide est intégré dans ce menu, sur la gauche.
+
+Sous-menu
+~~~~~~~~~
+
+:classe: sub-menu
+:ref: http://telemeta.org/browser/trunk/design/maquette_v0.4_item_view_2.png
+
+Le sous-menu est horizontal et apparaît à droite. Il permet notamment
+de changer le mode d'affichage, par exemple de passer d'un tableau de
+ressources à la liste de ressources correspondante, ou encore de passer à
+la vue dublin core ou à l'édition d'un item lorsqu'on le visualise, etc...
+
+Il peut contenir d'une part des liens texte simples, et d'autre part
+(en dessous) un ou plusieurs boutons (Edit, etc..)
+
+Titre de page
+~~~~~~~~~~~~~
+
+:classe: main-title
+:ref: http://crem.telemeta.org/items/BM.000.003.001--04__01-01/
+
+Le titre de page est par exemple le titre de collection lors de la
+visualisation d'une collection, ou encore "Geographic Navigator" lors
+qu'on est dans le navigateur géographique, "Recherche", etc...
+
+Le titre peut éventuellement être assorti d'un icône (à décider au
+moment de la conception du widget).  Dans le cas où l'icône est différent
+suivant le type de page, prévoir un maximum de 10 icônes.
+
+Bloc de propriétés
+~~~~~~~~~~~~~~~~~~
+
+:classe: property-block
+:ref: http://crem.telemeta.org/items/BM.000.010.001__01-ii
+:ref: http://telemeta.org/browser/trunk/design/maquette_v0.4_item_edit_2.png
+
+Sur la page d'une ressource, apparaissent un certain nombre de blocs
+groupant des propriétés. A l'exception du premier bloc, ces blocs
+possèdent un titre et contiennent une liste de propriété qui peut
+être replié.
+
+Les titres de blocs et/ou propriétés peuvent être assortis d'un petit
+icône. Notamment pour les types de données prioritaires CREM. D'autres
+icônes peuvent s'avérer nécessaire. Il y en aura en tout au maximum 15.
+
+Outre l'affichage, ces blocs peuvent servir à l'édition et à la recherche,
+contenant alors des champs d'entrée.  Cependant, pour différencier les
+trois contextes (affichage, édition, recherche) il faut une variante
+graphique, par exemple un titre de bloc de couleur différente.
+
+Par ailleurs, les propriétés d'un bloc sont susceptibles de s'afficher
+sur une ou deux colonnes de largeur variable.
+
+En plus de l'affichage de propriétés de façon horizontal (titre à
+gauche, valeur à droite), des tableaux de propriétés sont aussi prévus,
+notamment pour les formations musicales.
+
+L'impression de ces blocs est importante et peut donc nécessiter des
+règles CSS print spécifiques.
+
+Formulaire de propriétés
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+:classe: property-form
+:ref: http://telemeta.org/browser/trunk/design/maquette_v0.4_item_edit_2.png
+
+Ce widget pouvant être utilisé pour l'édition comme pour la recherche
+contient un certain nombre de blocs de propriétés. Les champs d'entrée
+peuvent être de 4 types:
+
+ * champ texte (input)
+ * champ texte multi-ligne (textarea)
+ * liste simple (select)
+ * liste arborescente
+
+Les champs texte peuvent utiliser la complétion, c'est à dire faire
+apparaître une liste d'éléments automatiquement au cours de la frappe.
+
+La liste arborescente est destinée à sélectionner des éléments dans
+un thésaurus (instruments, lieux, ..).  C'est un menu déroulant avec un
+nombre indéterminé de niveaux. Il est possible d'être plus ou moins
+précis dans la sélection, c'est à dire qu'il n'est pas nécessaire
+d'aller jusqu'au dernier niveau pour effectuer une sélection. Par exemple
+on peut vouloir chercher les collections enregistrées en France, ou plus
+précisément en Ile-de-France, ou encore Paris, etc...
+
+Pour cette raison, le premier item de chaque niveau doit être différencié
+et servir à sélectionner l'ensemble des éléments de ce niveau (ex:
+France > [France : Tout], Bretagne, Ile de France, etc...)
+
+Dans les blocs de propriétés, comme pour l'affichage, ces champs d'entrée
+apparaissent généralement avec un label sur la gauche, mais peuvent
+aussi apparaître sous forme de tableau de propriétés. Dans ce dernier
+cas, il doit être possible d'ajouter et supprimer des lignes.
+
+Historique de modifications
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:classe: history
+
+Telemeta conserve un historique des modifications de chaque ressource. Une
+liste affichant cette historique est donc prévue avec pour chaque entrée :
+le type de modification (création, modification, ..), la date, et le nom
+de l'utilisateur.
+
+Il y a cependant deux formes d'historique : l'une pour une ressource donnée,
+l'autre pour différentes ressources (dernières modifications sur toute
+la base, ou sur les items d'Afrique, etc...).  Dans ce dernier cas, chaque
+entrée doit donc comporter le type et le titre de la ressource.
+
+Cet historique est destiné à s'afficher en pleine page.
+
+News
+~~~~
+
+:classe: news
+
+Les news dans Telemeta sont généralement des historiques de modifications
+compacts, destinés à occuper un espace restreint sur la page. C'est une
+boîte de news, avec un titre, des boutons RSS et ATOM. Y figurent titre,
+date et (dans la majorité des cas, c'est à dire l'affichage d'historiques
+compacts) le type de modification (création, modification, ..)
+
+Graphiquement, il faut vraiment les traiter comme des news, et donc utiliser
+un (ou des) icône(s) spécifiques.
+
+Enumeration
+~~~~~~~~~~~
+
+:classe: enumeration
+:ref: http://crem.telemeta.org/admin/enumerations/physicalformat/
+
+Ce widget composite est principalement destinée à la partie administration
+du site. Dans Telemeta il y a un certain nombre d'énumérations, c'est
+à dire de listes plates de valeurs. Par exemple la liste des ethnie.
+
+L'administrateur doit pouvoir consulter, ajouter, modifier et supprimer
+des valeurs d'une énumération.
+
+Pour ce faire, un tableau simple est prévu. Chaque ligne peut figurer un
+ou plusieurs des icônes suivants : édition, suppression, et alias. Dans
+certaines situations des éléments de l'énumération peuvent être
+en lecture seule et soit ne figurer aucun icônes, soit des icônes
+désactivés.
+
+Un bouton ajout (pour ajouter une valeur à la liste) est également
+nécessaire.
+
+Ce système d'édition d'énumération doit aussi permettre d'éditer des
+structures de données plus complexes tels que les thesaurus. Pour cela,
+un fil d'ariane peut optionnellement s'afficher au dessus de la liste, pour
+indiquer à quel niveau se trouve l'énumération en cours d'édition et
+permettre de revenir à l'un des niveaux supérieurs.
+
+L'ajout ou de la modification d'un item se font dans une popup DHTML
+figurant un champ texte simple (+ label et barre de titre de popup).
+
+Pagination
+~~~~~~~~~~
+
+:classe: pager
+:ref: http://crem.telemeta.org/items/
+
+Un certain nombre de listes peuvent nécessiter une pagination (listes et
+tableaux de ressources, énumérations, etc...)
+
+Ce widget doit donc permettre de passer à la page suivante, précédente
+ou à l'une des pages intermédiaires.
+
+Une attention particulière doit être apportée à l'ergonomie de ce widget.
+
+Il peut apparaître au dessus et/ou en dessous des listes.
+
+Informations de connexion
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:classe: login-info
+:ref: http://telemeta.org/browser/trunk/design/maquette_v0.4_item_view_2.png
+
+Ce petit widget apparaît en haut à droite et permet de se connecter. Il
+figure donc un bouton "Se connecter", puis une fois connecté : "Connecté
+: <nom>", éventuellement assorti d'un picto. Un lien "préférences"
+apparaît également.
+
+Pied de page
+~~~~~~~~~~~~
+
+:classe: footer
+:ref: http://telemeta.org/browser/trunk/design/maquette_v0.4_item_view_2.png
+:ref: http://crem.telemeta.org/
+
+Le pied de page figure le logo Telemeta, des informations concernant les auteurs
+et sponsors, ainsi qu'un lien vers la page officielle du projet Telemeta.
+
+Lecteur multimédia
+~~~~~~~~~~~~~~~~~~
+
+:classe: media-player
+
+Ce widget complexe et principalement destiné à l'audio dans un premier
+temps est en cours de développement dans le projet externe TimeSide.
+
+Sa structure HTML dynamique est documentée à l'URL suivant:
+http://code.google.com/p/timeside/wiki/UiGuide#Markup_structure
+
+Ce lecteur est "skinable". A l'heure actuelle, dans Telemeta c'est la skin
+"lab" qui est utilisée:
+http://svn.samalyse.com/timeside/tags/release-0.1/skins/lab/style.css
+
+Elle est cependant modifiée pour Telemeta par la surcharge de certaines
+classes CSS:
+http://telemeta.org/browser/trunk/telemeta/htdocs/css/player.css
+
+Outre la visualisation de la forme d'onde, l'affichage de marqueurs sous
+forme de lignes verticales ainsi que les boutons de contrôles de la lecture,
+sont aussi prévus :
+
+ * un mode playlist, pour pouvoir écouter chaque item, depuis une page de
+   collection.  Ceci est actuellement implémenté à l'aide d'un lecteur
+   alternatif qui a vocation a être remplacé par Timeside. Voir:
+   http://crem.telemeta.org/collections/DI.005.005.040/
+ * une liste de marqueurs éditables, apparaissant sous le lecteur. Voir:
+   http://telemeta.org/browser/trunk/design/maquette_v0.4_item_view_2.png
+
+La conception de ce widget, plus complexe, peut faire l'objet d'un maquettage
+jpeg simple, qui sera ensuite répercuté au cours du développement. Il
+n'est pas à priori pas nécessaire de faire figurer ce widget dans la
+galerie de widgets.
+
