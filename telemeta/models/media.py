@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+    # -*- coding: utf-8 -*-
 # Copyright (C) 2007-2010 Samalyse SARL
 
 # This software is a computer program whose purpose is to backup, analyse,
@@ -70,8 +70,8 @@ class MediaCollection(MediaResource):
     element_type = 'collection'
     PUBLIC_ACCESS_CHOICES = (('none', 'none'), ('metadata', 'metadata'), ('full', 'full'))
 
-    published_code_regex   = '[A-Za-z0-9.]*'
-    unpublished_code_regex = '[A-Za-z0-9.]*'
+    published_code_regex   = '[A-Za-z0-9._]*'
+    unpublished_code_regex = '[A-Za-z0-9._]*'
     code_regex             = '(?:%s|%s)' % (published_code_regex, unpublished_code_regex)
 
     reference             = CharField(_('reference'), unique=True, null=True)
@@ -196,8 +196,8 @@ class MediaCollection(MediaResource):
     def save(self, force_insert=False, force_update=False):
         if not self.code:
             raise RequiredFieldError(self, self._meta.get_field('code'))
-        if not self.is_valid_code(self.code):
-            raise MediaInvalidCodeError("%s is not a valid code for this collection" % self.code)
+#        if not self.is_valid_code(self.code):
+#            raise MediaInvalidCodeError("%s is not a valid code for this collection" % self.code)
         super(MediaCollection, self).save(force_insert, force_update)
 
     class Meta(MetaCore):
@@ -208,8 +208,8 @@ class MediaItem(MediaResource):
     element_type = 'item'
     PUBLIC_ACCESS_CHOICES = (('none', 'none'), ('metadata', 'metadata'), ('full', 'full'))
 
-    published_code_regex    = '[A-Za-z0-9.]*'
-    unpublished_code_regex  = '[A-Za-z0-9.]*'
+    published_code_regex    = '[A-Za-z0-9._]*'
+    unpublished_code_regex  = '[A-Za-z0-9._]*'
     code_regex              = '(?:%s|%s)' % (published_code_regex, unpublished_code_regex)
 
     collection            = ForeignKey('MediaCollection', related_name="items", 
@@ -275,9 +275,9 @@ class MediaItem(MediaResource):
         return False
 
     def save(self, force_insert=False, force_update=False):
-        if self.code and not self.is_valid_code(self.code):
-            raise MediaInvalidCodeError("%s is not a valid item code for collection %s" 
-                                        % (self.code, self.collection.code))
+#        if self.code and not self.is_valid_code(self.code):
+#            raise MediaInvalidCodeError("%s is not a valid item code for collection %s" 
+#                                        % (self.code, self.collection.code))
         super(MediaItem, self).save(force_insert, force_update)
 
     def computed_duration(self):
