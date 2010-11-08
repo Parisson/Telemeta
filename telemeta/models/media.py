@@ -70,8 +70,8 @@ class MediaCollection(MediaResource):
     element_type = 'collection'
     PUBLIC_ACCESS_CHOICES = (('none', 'none'), ('metadata', 'metadata'), ('full', 'full'))
 
-    published_code_regex   = 'CNRSMH_E_[0-9]{4}(?:_[0-9]{3}){2}'
-    unpublished_code_regex = 'CNRSMH_I_[0-9]{4}_[0-9]{3}'
+    published_code_regex   = '[A-Za-z0-9.]*'
+    unpublished_code_regex = '[A-Za-z0-9.]*'
     code_regex             = '(?:%s|%s)' % (published_code_regex, unpublished_code_regex)
 
     reference             = CharField(_('reference'), unique=True, null=True)
@@ -208,8 +208,8 @@ class MediaItem(MediaResource):
     element_type = 'item'
     PUBLIC_ACCESS_CHOICES = (('none', 'none'), ('metadata', 'metadata'), ('full', 'full'))
 
-    published_code_regex    = MediaCollection.published_code_regex + '(?:_[0-9]{2}){1,2}'
-    unpublished_code_regex  = MediaCollection.unpublished_code_regex + '_[0-9]{2,3}(?:_[0-9]{2}){0,2}'
+    published_code_regex    = '[A-Za-z0-9.]*'
+    unpublished_code_regex  = '[A-Za-z0-9.]*'
     code_regex              = '(?:%s|%s)' % (published_code_regex, unpublished_code_regex)
 
     collection            = ForeignKey('MediaCollection', related_name="items", 

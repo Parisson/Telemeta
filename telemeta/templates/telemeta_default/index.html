@@ -13,18 +13,7 @@
     <a class="image-link" href="{% url telemeta-geo-continents %}">
     <img class="map-thumbnail" src="{% url telemeta-images "map_thumbnail.png" %}" alt="{% trans "Open the geographic navigator" %}" /></a>
 </div>
-<div class="module">
-    <h3>{% trans "Musical selection" %}</h3>
-    <ul class="playlist">
-    {% for item in items %}
-    <li>
-        <a href="{% url telemeta-item-detail item.public_id %}"><b>{{item}}</b></a>
-        <br />
-        <span class="info">{{item.apparent_collector|prepend:' - '}} - {{item.country_or_continent}}</span>
-    </li>
-    {% endfor %}
-    </ul>
-</div>
+
 {% endblock %}
 
 </div>
