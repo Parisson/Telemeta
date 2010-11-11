@@ -63,7 +63,6 @@ def render(request, template, data = None, mimetype = None):
     return render_to_response(template, data, context_instance=RequestContext(request), 
                               mimetype=mimetype)
 
-
 def stream_from_processor(decoder, processor):
     while True:
         frames,  eod = decoder.process()
@@ -72,6 +71,15 @@ def stream_from_processor(decoder, processor):
         if eod_proc:
             break
 
+def stream_from_file(file):
+    chunk_size = 0x1000
+    f = open(file,  'r')
+    while True:
+        _chunk = f.read(chunk_size)
+        if not len(_chunk):
+            break
+        yield _chunk
+    f.close()
 
 class WebView:
     """Provide web UI methods"""
@@ -81,6 +89,7 @@ class WebView:
     encoders= timeside.core.processors(timeside.api.IEncoder)
     analyzers = timeside.core.processors(timeside.api.IAnalyzer)
     cache = TelemetaCache(settings.TELEMETA_DATA_CACHE_DIR)
+    cache_export = TelemetaCache(settings.TELEMETA_EXPORT_CACHE_DIR)
     
     def index(self, request):
         """Render the homepage"""
@@ -173,7 +182,8 @@ class WebView:
         if grapher.id() != grapher_id:
             raise Http404
         
-        file = '_'.join([public_id, grapher_id, width, height]) + '.png'
+        suffix = '_'.join([grapher_id, width, height])
+        file = public_id + '.' + suffix + '.png'
         
         if not self.cache.exists(file):
             if item.file:
@@ -209,18 +219,18 @@ class WebView:
             raise Http404('Unknown export file extension: %s' % extension)
 
         mime_type = encoder.mime_type()
-        cache_dir = settings.TELEMETA_EXPORT_CACHE_DIR
-        media = cache_dir + os.sep + public_id + '.' + encoder.file_extension()
+        file = public_id + '.' + encoder.file_extension()
+        media = self.cache_export.dir + os.sep + file
         
         item = MediaItem.objects.get(public_id=public_id)
         audio = os.path.join(os.path.dirname(__file__), item.file.path)
         decoder  = timeside.decoder.FileDecoder(audio)
-#        print decoder.format(),  mime_type
+
         if decoder.format() == mime_type:
             # source > stream
             response = HttpResponse(stream_from_file(audio), mimetype = mime_type)
         else:        
-            if not os.path.exists(media):
+            if not self.cache_export.exists(file):
                 # source > encoder > stream
                 decoder.setup()
                 proc = encoder(media)
