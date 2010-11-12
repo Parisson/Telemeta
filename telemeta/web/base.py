@@ -182,8 +182,8 @@ class WebView:
         if grapher.id() != grapher_id:
             raise Http404
         
-        suffix = '_'.join([grapher_id, width, height])
-        file = public_id + '.' + suffix + '.png'
+        size = width + '_' + height
+        file = '.'.join([public_id, grapher_id, size, 'png'])
         
         if not self.cache.exists(file):
             if item.file:
