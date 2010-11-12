@@ -90,6 +90,8 @@ class WebView:
     analyzers = timeside.core.processors(timeside.api.IAnalyzer)
     cache = TelemetaCache(settings.TELEMETA_DATA_CACHE_DIR)
     cache_export = TelemetaCache(settings.TELEMETA_EXPORT_CACHE_DIR)
+    #FIXME fir dev only
+    logger = Logger('/tmp/telemeta.log')
     
     def index(self, request):
         """Render the homepage"""
@@ -224,10 +226,12 @@ class WebView:
         
         item = MediaItem.objects.get(public_id=public_id)
         audio = os.path.join(os.path.dirname(__file__), item.file.path)
+        
         decoder  = timeside.decoder.FileDecoder(audio)
 
         if decoder.format() == mime_type:
             # source > stream
+            self.logger.info(audio)
             response = HttpResponse(stream_from_file(audio), mimetype = mime_type)
         else:        
             if not self.cache_export.exists(file):
