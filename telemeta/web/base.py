@@ -124,7 +124,7 @@ class WebView:
         if request.REQUEST.has_key('grapher_id'):
             grapher_id = request.REQUEST['grapher_id']
         else:
-            grapher_id = 'waveform'
+            grapher_id = 'waveform_awdio'
         
         file = public_id + '.xml'
         
