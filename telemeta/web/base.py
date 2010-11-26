@@ -166,12 +166,6 @@ class WebView:
                     'visualizers': graphers, 'visualizer_id': grapher_id,'analysers': analyzers,  #FIXME analysers
                     'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', False)
                     })
-    
-    def item_analyze(self, request, public_id):
-        # TODO: return an XML stream of the analyzed metadata
-        # response = HttpResponse(stream_from_file(media), mimetype = mime_type)
-        # return response
-        pass
 
     def item_visualize(self, request, public_id, visualizer_id, width, height):
         item = MediaItem.objects.get(public_id=public_id)
