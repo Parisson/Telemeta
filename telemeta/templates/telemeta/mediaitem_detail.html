@@ -1,5 +1,8 @@
 {% extends "telemeta_default/mediaitem_detail.html" %}
 
+{% load telemeta_utils %}
+{% load i18n %}
+
 {% block content %}
 
 <h3>Item : {{ item }}</h3>
@@ -18,7 +21,7 @@
             <div class="ts-viewer">
                 <div class="ts-wave">
                     <div class="ts-image-container">
-                        <a href="{% url telemeta-item-export item.public_id,"m4a" %}">
+                        <a href="{% url telemeta-item-export item.public_id,"mp3" %}">
                         <img class="ts-image" src="{% url telemeta-item-visualize item.public_id,visualizer_id,1800,233 %}"
                           alt="" /></a>
                     </div>
@@ -206,3 +209,4 @@
 </div> <!-- with-rightcol -->
 
 {% endblock %}
+
