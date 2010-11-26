@@ -167,6 +167,9 @@ class WebView:
                     'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', False)
                     })
 
+    def item_analyze(self):
+        pass
+        
     def item_visualize(self, request, public_id, visualizer_id, width, height):
         item = MediaItem.objects.get(public_id=public_id)
         mime_type = 'image/png'
