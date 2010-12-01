@@ -72,8 +72,8 @@ def stream_from_processor(decoder, processor):
             break
 
 def stream_from_file(file):
-    chunk_size = 0x1000
-    f = open(file,  'r')
+    chunk_size = 0xFFFF
+    f = open(file, 'r')
     while True:
         _chunk = f.read(chunk_size)
         if not len(_chunk):
@@ -90,8 +90,6 @@ class WebView:
     analyzers = timeside.core.processors(timeside.api.IAnalyzer)
     cache = TelemetaCache(settings.TELEMETA_DATA_CACHE_DIR)
     cache_export = TelemetaCache(settings.TELEMETA_EXPORT_CACHE_DIR)
-    #FIXME fir dev only
-    logger = Logger('/tmp/telemeta.log')
     
     def index(self, request):
         """Render the homepage"""
@@ -134,8 +132,7 @@ class WebView:
             analyzers = []
             analyzers_sub = []
             if item.file:
-                audio = os.path.join(os.path.dirname(__file__), item.file.path)
-                decoder  = timeside.decoder.FileDecoder(audio)
+                decoder  = timeside.decoder.FileDecoder(item.file.path)
                 self.pipe = decoder
                 for analyzer in self.analyzers:
                     subpipe = analyzer()
@@ -183,12 +180,11 @@ class WebView:
         
         size = width + '_' + height
         file = '.'.join([public_id, grapher_id, size, 'png'])
-        
+	
         if not self.cache.exists(file):
             if item.file:
                 item = MediaItem.objects.get(public_id=public_id)
-                audio = os.path.join(os.path.dirname(__file__), item.file.path)
-                decoder  = timeside.decoder.FileDecoder(audio)
+                decoder  = timeside.decoder.FileDecoder(item.file.path)
                 graph = grapher(width=int(width), height=int(height))
                 pipe = decoder | graph
                 pipe.run()
@@ -219,20 +215,18 @@ class WebView:
 
         mime_type = encoder.mime_type()
         file = public_id + '.' + encoder.file_extension()
-        media = self.cache_export.dir + os.sep + file
         
         item = MediaItem.objects.get(public_id=public_id)
-        audio = os.path.join(os.path.dirname(__file__), item.file.path)
-        
-        decoder  = timeside.decoder.FileDecoder(audio)
+        decoder = timeside.decoder.FileDecoder(item.file.path)
 
         if decoder.format() == mime_type:
             # source > stream
-            self.logger.info(audio)
-            response = HttpResponse(stream_from_file(audio), mimetype = mime_type)
+            #print item.file.path
+            response = HttpResponse(stream_from_file(item.file.path), mimetype = mime_type)
         else:        
             if not self.cache_export.exists(file):
                 # source > encoder > stream
+                media = self.cache_export.dir + os.sep + file
                 decoder.setup()
                 proc = encoder(media)
                 proc.setup(decoder.channels(), decoder.samplerate())
@@ -240,7 +234,7 @@ class WebView:
                 #enc.set_metadata(metadata)
                 response = HttpResponse(stream_from_processor(decoder, proc), mimetype = mime_type)
             else:
-                response = HttpResponse(stream_from_file(media), mimetype = mime_type)
+                response = HttpResponse(self.cache_export.read_stream_bin(file), mimetype = mime_type)
         
         response['Content-Disposition'] = 'attachment'
         return response
