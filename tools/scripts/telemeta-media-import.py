@@ -41,9 +41,17 @@ class TelemetaMediaImport:
     def __init__(self, media_dir, log_file):
         self.logger = Logger(log_file)
         self.media_dir = media_dir + os.sep + 'items'
-        self.medias = os.listdir(self.media_dir)
+        self.medias = self.get_medias()
         self.buffer_size = 0x1000
         self.media_item_dir = 'items/'
+    
+    def get_medias(self):
+        medias = []
+        list = os.listdir(self.media_dir)
+        for element in list:
+            if os.path.isfile(self.media_dir+os.sep+element):
+                medias.append(element)
+        return medias
         
     def set_collection(self, collection_name):
         import telemeta.models
