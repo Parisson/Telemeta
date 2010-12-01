@@ -128,6 +128,12 @@ class WebView:
         
         if self.cache.exists(file):
             analyzers = self.cache.read_analyzer_xml(file)
+            if not item.approx_duration:
+                for analyzer in analyzers:
+                    if analyzer['id'] == 'duration':
+                        approx_value = int(round(analyzer['value']))
+                        item.approx_duration = approx_value
+                        item.save()
         else:
             analyzers = []
             analyzers_sub = []
