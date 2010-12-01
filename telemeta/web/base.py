@@ -124,7 +124,7 @@ class WebView:
         if request.REQUEST.has_key('grapher_id'):
             grapher_id = request.REQUEST['grapher_id']
         else:
-            grapher_id = 'waveform'
+            grapher_id = 'waveform_awdio'
         
         file = public_id + '.xml'
         
@@ -168,8 +168,8 @@ class WebView:
                     })
 
     def item_analyze(self):
-        pass
-        
+	pass
+    
     def item_visualize(self, request, public_id, visualizer_id, width, height):
         item = MediaItem.objects.get(public_id=public_id)
         mime_type = 'image/png'
