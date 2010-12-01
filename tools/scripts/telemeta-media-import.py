@@ -43,6 +43,7 @@ class TelemetaMediaImport:
         self.media_dir = media_dir + os.sep + 'items'
         self.medias = os.listdir(self.media_dir)
         self.buffer_size = 0x1000
+        import telemeta.models
         
     def set_collection(self, collection_name):
         collections = telemeta.models.media.MediaCollection.objects.filter(code=collection_name)
@@ -58,7 +59,6 @@ class TelemetaMediaImport:
         return collection
 
     def media_import(self):
-        import telemeta.models
         self.collection_name = 'awdio'
         self.collection = self.set_collection(self.collection_name)
 

@@ -165,7 +165,7 @@ class WebView:
                     })
 
     def item_analyze(self):
-	pass
+        pass
     
     def item_visualize(self, request, public_id, visualizer_id, width, height):
         item = MediaItem.objects.get(public_id=public_id)
@@ -180,7 +180,7 @@ class WebView:
         
         size = width + '_' + height
         file = '.'.join([public_id, grapher_id, size, 'png'])
-	
+
         if not self.cache.exists(file):
             if item.file:
                 item = MediaItem.objects.get(public_id=public_id)
