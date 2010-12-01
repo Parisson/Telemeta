@@ -45,6 +45,7 @@ class TelemetaMediaImport:
         self.buffer_size = 0x1000
         
     def set_collection(self, collection_name):
+        import telemeta.models
         collections = telemeta.models.media.MediaCollection.objects.filter(code=collection_name)
         if not collections:
             c = telemeta.models.media.MediaCollection(code=collection_name)
