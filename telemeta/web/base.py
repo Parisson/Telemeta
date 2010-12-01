@@ -131,8 +131,11 @@ class WebView:
             if not item.approx_duration:
                 for analyzer in analyzers:
                     if analyzer['id'] == 'duration':
-                        approx_value = int(round(analyzer['value']))
-                        item.approx_duration = approx_value
+                        value = analyzer['value']
+                        time = value.split(':')
+                        time[2] = time[2].split('.')[0]
+                        time = ':'.join(time)
+                        item.approx_duration = time
                         item.save()
         else:
             analyzers = []
