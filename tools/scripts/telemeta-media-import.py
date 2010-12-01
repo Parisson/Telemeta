@@ -43,6 +43,7 @@ class TelemetaMediaImport:
         self.media_dir = media_dir + os.sep + 'items'
         self.medias = os.listdir(self.media_dir)
         self.buffer_size = 0x1000
+        self.media_item_dir = 'items/'
         
     def set_collection(self, collection_name):
         import telemeta.models
@@ -70,7 +71,7 @@ class TelemetaMediaImport:
                 print media
                 item = telemeta.models.media.MediaItem(collection=self.collection, code=filename)
                 item.title = filename
-                item.file = media
+                item.file = self.media_item_dir + media
                 item.save()
                 msg = 'added item : ' + filename
                 self.logger.write_info(self.collection_name, msg)
