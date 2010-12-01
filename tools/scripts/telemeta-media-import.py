@@ -43,39 +43,36 @@ class TelemetaMediaImport:
         self.media_dir = media_dir + os.sep + 'items'
         self.medias = os.listdir(self.media_dir)
         self.buffer_size = 0x1000
+        
+    def set_collection(self, collection_name):
+        collections = telemeta.models.media.MediaCollection.objects.filter(code=collection_name)
+        if not collections:
+            c = telemeta.models.media.MediaCollection(code=collection_name)
+            c.title = collection_name
+            c.save()
+            msg = 'added'
+            self.logger.write_info(collection_name, msg)
+            collection = c
+        else:
+            collection = collections[0]
+        return collection
 
     def media_import(self):
         import telemeta.models
+        self.collection_name = 'awdio'
+        self.collection = self.set_collection(self.collection_name)
+
         for media in self.medias:
-            print media
             filename,  ext = os.path.splitext(media)
-            data = filename.split('.')
-            date = data[0]
-            collection_name = data[1]
-            other = ''
-            if len(data) > 2:
-                other = '.'.join(data[2:])
-                
             item = telemeta.models.media.MediaItem.objects.filter(code=filename)
-            collections = telemeta.models.media.MediaCollection.objects.filter(code=collection_name)
-            
-            if not collections:
-                c = telemeta.models.media.MediaCollection(code=collection_name)
-                c.title = collection_name
-                c.save()
-                msg = 'added'
-                self.logger.write_info(collection_name, msg)
-                collection = c
-            else:
-                collection = collections[0]
-                
             if not item:
-                item = telemeta.models.media.MediaItem(collection=collection, code=filename)
+                print media
+                item = telemeta.models.media.MediaItem(collection=self.collection, code=filename)
                 item.title = filename
-                item.file = self.media_dir + os.sep + media
+                item.file = media
                 item.save()
                 msg = 'added item : ' + filename
-                self.logger.write_info(collection_name, msg)
+                self.logger.write_info(self.collection_name, msg)
 
 
 def run():

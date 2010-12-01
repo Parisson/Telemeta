@@ -160,7 +160,7 @@ class WebView:
                                       'value':str(value)})
                 
             self.cache.write_analyzer_xml(analyzers, file)
-
+        
         return render(request, template, 
                     {'item': item, 'export_formats': formats, 
                     'visualizers': graphers, 'visualizer_id': grapher_id,'analysers': analyzers,  #FIXME analysers
