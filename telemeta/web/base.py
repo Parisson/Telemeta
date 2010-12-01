@@ -217,12 +217,13 @@ class WebView:
         file = public_id + '.' + encoder.file_extension()
         
         item = MediaItem.objects.get(public_id=public_id)
-        decoder = timeside.decoder.FileDecoder(item.file.path)
+        audio = os.path.join(os.path.dirname(__file__), item.file.path)
+        decoder = timeside.decoder.FileDecoder(audio)
 
         if decoder.format() == mime_type:
             # source > stream
             #print item.file.path
-            response = HttpResponse(stream_from_file(item.file.path), mimetype = mime_type)
+            response = HttpResponse(stream_from_file(audio), mimetype = mime_type)
         else:        
             if not self.cache_export.exists(file):
                 # source > encoder > stream
