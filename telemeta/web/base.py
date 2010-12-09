@@ -122,12 +122,12 @@ class WebView:
         if request.REQUEST.has_key('grapher_id'):
             grapher_id = request.REQUEST['grapher_id']
         else:
-            grapher_id = 'waveform_awdio'
+            grapher_id = 'waveform'
         
-        file = public_id + '.xml'
+        analyze_file = public_id + '.xml'
         
-        if self.cache.exists(file):
-            analyzers = self.cache.read_analyzer_xml(file)
+        if self.cache.exists(analyze_file):
+            analyzers = self.cache.read_analyzer_xml(analyze_file)
             if not item.approx_duration:
                 for analyzer in analyzers:
                     if analyzer['id'] == 'duration':
@@ -142,30 +142,27 @@ class WebView:
             analyzers_sub = []
             if item.file:
                 decoder  = timeside.decoder.FileDecoder(item.file.path)
-                self.pipe = decoder
+                pipe = decoder
                 for analyzer in self.analyzers:
                     subpipe = analyzer()
                     analyzers_sub.append(subpipe)
-                    self.pipe = self.pipe | subpipe
-                self.pipe.run()
+                    pipe = pipe | subpipe
+                pipe.run()
                 
                 for analyzer in analyzers_sub:
-                    if item.file:
-                        value = analyzer.result()
-                        if analyzer.id() == 'duration':
-                            approx_value = int(round(value))
-                            item.approx_duration = approx_value
-                            item.save()
-                            value = datetime.timedelta(0,value)
-                    else:
-                        value = 'N/A'
-
+                    value = analyzer.result()
+                    if analyzer.id() == 'duration':
+                        approx_value = int(round(value))
+                        item.approx_duration = approx_value
+                        item.save()
+                        value = datetime.timedelta(0,value)
+                    
                     analyzers.append({'name':analyzer.name(),
                                       'id':analyzer.id(),
                                       'unit':analyzer.unit(),
                                       'value':str(value)})
                 
-            self.cache.write_analyzer_xml(analyzers, file)
+            self.cache.write_analyzer_xml(analyzers, analyze_file)
         
         return render(request, template, 
                     {'item': item, 'export_formats': formats, 
@@ -226,7 +223,7 @@ class WebView:
         file = public_id + '.' + encoder.file_extension()
         
         item = MediaItem.objects.get(public_id=public_id)
-        audio = os.path.join(os.path.dirname(__file__), item.file.path)
+        audio = item.file.path
         decoder = timeside.decoder.FileDecoder(audio)
 
         if decoder.format() == mime_type:

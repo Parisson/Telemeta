@@ -231,7 +231,7 @@ class EnhancedQuerySet(models.query.QuerySet):
         for related in objects:
             i = 0
             while i < ii:
-                ids = [v[0] for v in self[i:i + CHUNK].values_list('pk')]
+                ids = [v[0].values_list('pk') for v in self[i:i + CHUNK]]
                 filter = {related.field.name + '__pk__in': ids}
                 q = related.model.objects.filter(**filter)
                 if isinstance(related.field, WeakForeignKey):
