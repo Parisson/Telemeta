@@ -81,7 +81,7 @@ def stream_from_file(file):
         yield _chunk
     f.close()
 
-class WebView:
+class WebView(object):
     """Provide web UI methods"""
 
     graphers = timeside.core.processors(timeside.api.IGrapher)
@@ -221,15 +221,14 @@ class WebView:
 
         mime_type = encoder.mime_type()
         file = public_id + '.' + encoder.file_extension()
-        
         item = MediaItem.objects.get(public_id=public_id)
         audio = item.file.path
         decoder = timeside.decoder.FileDecoder(audio)
 
         if decoder.format() == mime_type:
             # source > stream
-            #print item.file.path
             response = HttpResponse(stream_from_file(audio), mimetype = mime_type)
+            
         else:        
             if not self.cache_export.exists(file):
                 # source > encoder > stream

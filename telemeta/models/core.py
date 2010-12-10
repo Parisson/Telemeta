@@ -228,10 +228,11 @@ class EnhancedQuerySet(models.query.QuerySet):
         CHUNK=1024
         objects = self.model._meta.get_all_related_objects()
         ii = self.count()
+        values = self.values_list('pk')
         for related in objects:
             i = 0
             while i < ii:
-                ids = [v[0].values_list('pk') for v in self[i:i + CHUNK]]
+                ids = [v[0] for v in values[i:i + CHUNK]]
                 filter = {related.field.name + '__pk__in': ids}
                 q = related.model.objects.filter(**filter)
                 if isinstance(related.field, WeakForeignKey):
