@@ -161,13 +161,14 @@ class WebView(object):
                                       'id':analyzer.id(),
                                       'unit':analyzer.unit(),
                                       'value':str(value)})
+                decoder.release()
                 
             self.cache.write_analyzer_xml(analyzers, analyze_file)
         
         return render(request, template, 
                     {'item': item, 'export_formats': formats, 
                     'visualizers': graphers, 'visualizer_id': grapher_id,'analysers': analyzers,  #FIXME analysers
-                    'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', False)
+                    'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True)
                     })
 
     def item_analyze(self):
@@ -195,7 +196,7 @@ class WebView(object):
                 pipe = decoder | graph
                 pipe.run()
                 graph.render(self.cache.dir + os.sep + file)
-
+        
         response = HttpResponse(self.cache.read_stream_bin(file), mimetype = mime_type)
         return response
 
@@ -233,15 +234,16 @@ class WebView(object):
             if not self.cache_export.exists(file):
                 # source > encoder > stream
                 media = self.cache_export.dir + os.sep + file
-                decoder.setup()
                 proc = encoder(media)
-                proc.setup(decoder.channels(), decoder.samplerate())
-                #metadata = dublincore.express_item(item).to_list()
-                #enc.set_metadata(metadata)
-                response = HttpResponse(stream_from_processor(decoder, proc), mimetype = mime_type)
-            else:
-                response = HttpResponse(self.cache_export.read_stream_bin(file), mimetype = mime_type)
+#                metadata = dublincore.express_item(item).to_list()
+#                enc.set_metadata(metadata)
+                pipe = decoder | proc
+                pipe.run()
+#                response = HttpResponse(stream_from_processor(decoder, proc), mimetype = mime_type)
+#            else:
+            response = HttpResponse(self.cache_export.read_stream_bin(file), mimetype = mime_type)
         
+        decoder.release()
         response['Content-Disposition'] = 'attachment'
         return response
 

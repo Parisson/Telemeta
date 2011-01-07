@@ -38,7 +38,6 @@
 
 import os
 import xml.dom.minidom
-#import xml.dom.ext
 
 
 class TelemetaCache(object):
@@ -74,7 +73,7 @@ class TelemetaCache(object):
         
     def read_stream_bin(self, file):
         path = self.dir + os.sep + file
-        chunk_size = 0x1000
+        chunk_size = 0xFFF
         f = open(path,  'r')
         while True:
             _chunk = f.read(chunk_size)
@@ -116,5 +115,4 @@ class TelemetaCache(object):
             root.appendChild(node)
         f = open(path, "w")
         f.write(xml.dom.minidom.Document.toprettyxml(doc))
-#        xml.dom.ext.PrettyPrint()
         f.close()
