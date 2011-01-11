@@ -70,8 +70,8 @@ class MediaCollection(MediaResource):
     element_type = 'collection'
     PUBLIC_ACCESS_CHOICES = (('none', 'none'), ('metadata', 'metadata'), ('full', 'full'))
 
-    published_code_regex   = '[A-Za-z0-9._]*'
-    unpublished_code_regex = '[A-Za-z0-9._]*'
+    published_code_regex   = '[A-Za-z0-9._-]*'
+    unpublished_code_regex = '[A-Za-z0-9._-]*'
     code_regex             = '(?:%s|%s)' % (published_code_regex, unpublished_code_regex)
 
     reference             = CharField(_('reference'), unique=True, null=True)
@@ -208,8 +208,8 @@ class MediaItem(MediaResource):
     element_type = 'item'
     PUBLIC_ACCESS_CHOICES = (('none', 'none'), ('metadata', 'metadata'), ('full', 'full'))
 
-    published_code_regex    = '[A-Za-z0-9._]*'
-    unpublished_code_regex  = '[A-Za-z0-9._]*'
+    published_code_regex    = '[A-Za-z0-9._-]*'
+    unpublished_code_regex  = '[A-Za-z0-9._-]*'
     code_regex              = '(?:%s|%s)' % (published_code_regex, unpublished_code_regex)
 
     collection            = ForeignKey('MediaCollection', related_name="items", 
