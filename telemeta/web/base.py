@@ -66,10 +66,10 @@ def render(request, template, data = None, mimetype = None):
 def stream_from_processor(decoder, processor):
     while True:
         frames,  eod = decoder.process()
-        buffer,  eod_proc = processor.process(frames, eod)
-        yield buffer
+        _chunk,  eod_proc = processor.process(frames, eod)
         if eod_proc:
             break
+        yield _chunk
 
 def stream_from_file(file):
     chunk_size = 0xFFFF
@@ -77,10 +77,11 @@ def stream_from_file(file):
     while True:
         _chunk = f.read(chunk_size)
         if not len(_chunk):
+            f.close()
             break
         yield _chunk
-    f.close()
-
+    
+    
 class WebView(object):
     """Provide web UI methods"""
 
@@ -143,10 +144,13 @@ class WebView(object):
             if item.file:
                 decoder  = timeside.decoder.FileDecoder(item.file.path)
                 pipe = decoder
+                mime_type = decoder.mimetype
+                
                 for analyzer in self.analyzers:
                     subpipe = analyzer()
                     analyzers_sub.append(subpipe)
                     pipe = pipe | subpipe
+                    
                 pipe.run()
                 
                 for analyzer in analyzers_sub:
@@ -156,14 +160,16 @@ class WebView(object):
                         item.approx_duration = approx_value
                         item.save()
                         value = datetime.timedelta(0,value)
-                    
+                    if analyzer.id() == 'mime_type':
+                        value = decoder.format()
+                        
                     analyzers.append({'name':analyzer.name(),
                                       'id':analyzer.id(),
                                       'unit':analyzer.unit(),
                                       'value':str(value)})
-                decoder.release()
                 
             self.cache.write_analyzer_xml(analyzers, analyze_file)
+            
         
         return render(request, template, 
                     {'item': item, 'export_formats': formats, 
@@ -173,11 +179,12 @@ class WebView(object):
 
     def item_analyze(self):
         pass
-    
+        
     def item_visualize(self, request, public_id, visualizer_id, width, height):
         item = MediaItem.objects.get(public_id=public_id)
         mime_type = 'image/png'
         grapher_id = visualizer_id
+        
         for grapher in self.graphers:
             if grapher.id() == grapher_id:
                 break
@@ -186,18 +193,17 @@ class WebView(object):
             raise Http404
         
         size = width + '_' + height
-        file = '.'.join([public_id, grapher_id, size, 'png'])
+        image_file = '.'.join([public_id, grapher_id, size, 'png'])
 
-        if not self.cache.exists(file):
+        if not self.cache.exists(image_file):
             if item.file:
-                item = MediaItem.objects.get(public_id=public_id)
                 decoder  = timeside.decoder.FileDecoder(item.file.path)
-                graph = grapher(width=int(width), height=int(height))
+                graph = grapher(width = int(width), height = int(height))
                 pipe = decoder | graph
                 pipe.run()
-                graph.render(self.cache.dir + os.sep + file)
-        
-        response = HttpResponse(self.cache.read_stream_bin(file), mimetype = mime_type)
+                graph.render(self.cache.dir + os.sep + image_file)
+                
+        response = HttpResponse(self.cache.read_stream_bin(image_file), mimetype = mime_type)
         return response
 
     def list_export_extensions(self):
@@ -239,11 +245,10 @@ class WebView(object):
 #                enc.set_metadata(metadata)
                 pipe = decoder | proc
                 pipe.run()
-#                response = HttpResponse(stream_from_processor(decoder, proc), mimetype = mime_type)
-#            else:
-            response = HttpResponse(self.cache_export.read_stream_bin(file), mimetype = mime_type)
+                response = HttpResponse(stream_from_processor(decoder, proc), mimetype = mime_type)
+            else:
+                response = HttpResponse(self.cache_export.read_stream_bin(file), mimetype = mime_type)
         
-        decoder.release()
         response['Content-Disposition'] = 'attachment'
         return response
 

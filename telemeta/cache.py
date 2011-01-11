@@ -73,14 +73,14 @@ class TelemetaCache(object):
         
     def read_stream_bin(self, file):
         path = self.dir + os.sep + file
-        chunk_size = 0xFFF
+        chunk_size = 0xFFFF
         f = open(path,  'r')
         while True:
-            _chunk = f.read(chunk_size)
-            if not len(_chunk):
+            chunk = f.read(chunk_size)
+            if not len(chunk):
+                f.close()
                 break
-            yield _chunk
-        f.close()
+            yield chunk
 
     def write_stream_bin(self, chunk, file_object):
         file_object.write(chunk)
@@ -88,6 +88,7 @@ class TelemetaCache(object):
     def read_analyzer_xml(self, file):
         list = []
         path = self.dir + os.sep + file
+        f = open(path, "r")
         doc = xml.dom.minidom.parse(path)
         for data in doc.documentElement.getElementsByTagName('data') :
             name = data.getAttribute('name')
@@ -95,6 +96,7 @@ class TelemetaCache(object):
             unit = data.getAttribute('unit')
             value = data.getAttribute('value')
             list.append({'name': name, 'id': id, 'unit': unit, 'value': value})
+        f.close()
         return list
         
     def write_analyzer_xml(self, data_list, file):
