@@ -1,1 +1,0 @@
-from telemeta.util import *
