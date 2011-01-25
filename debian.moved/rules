@@ -1,0 +1,11 @@
+#!/usr/bin/make -f
+
+DEB_PYTHON_SYSTEM := pysupport
+
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/class/python-distutils.mk
+
+DEB_PYTHON_SETUP_CMD := setup.py
+DEB_COMPRESS_EXCLUDE := .pyc
+DEB_STRIP_EXCLUDE := .pyc
+

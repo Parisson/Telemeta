@@ -1,0 +1,69 @@
+{% extends "telemeta/base.html" %}
+{% load telemeta_utils %}
+{% load i18n %}
+
+{% block head_title %}{% trans "Search Results" %} - {{ block.super }}{% endblock %}
+
+{% block content %}
+<h3>{% trans "Search Results" %}</h3>
+
+{% if criteria %}
+<ul>
+  {% if criteria.pattern %}
+    <li><b>{% trans "Search pattern" %}:</b> {{criteria.pattern}}</li>
+  {% endif %}
+  {% if criteria.location %}
+    <li><b>{% field_label "Location" %}:</b> {{criteria.location}}</li>
+  {% endif %}
+  {% if criteria.ethnic_group %}
+    <li><b>{% field_label "EthnicGroup" %}:</b> {{criteria.ethnic_group}}</li>
+  {% endif %}
+  {% if criteria.creator %}
+    <li><b>{% field_label "MediaCollection" "creator" %}:</b> {{criteria.creator}}</li>
+  {% endif %}
+  {% if criteria.collector %}
+    <li><b>{% field_label "MediaCollection" "collector" %}:</b> {{criteria.collector}}</li>
+  {% endif %}
+  {% if criteria.title %}
+    <li><b>{% trans "Title" %}:</b> {{criteria.title}}</li>
+  {% endif %}
+  {% if criteria.rec_year_from %}
+    <li><b>{% trans "Year of recording" %}:</b> {{criteria.rec_year_from}}
+     {% ifnotequal criteria.rec_year_to criteria.rec_year_from %}
+     {% trans "to" %} {{criteria.rec_year_to}}
+     {% endifnotequal %}
+    </li>
+  {% endif %}
+  {% if criteria.pub_year_from %}
+    <li><b>{% trans "Year of publication" %}:</b> {{criteria.pub_year_from}}
+     {% ifnotequal criteria.pub_year_to criteria.pub_year_from %}
+     {% trans "to" %} {{criteria.pub_year_to}}
+     {% endifnotequal %}
+    </li>
+  {% endif %}
+</ul>
+{% endif %}
+
+{% ifequal type 'items' %}
+
+  <p><b>Items ({{items_num}})</b> | 
+  <a href="{% url telemeta-search-collections %}?{{criteria|build_query_string}}">
+    Collections ({{collections_num}})</a></p>
+
+  {% with object_list as items %}
+      {% include "telemeta/inc/mediaitem_list.html" %}
+  {% endwith %}    
+
+{% else %}
+
+  <p><a href="{% url telemeta-search-items %}?{{criteria|build_query_string}}">
+    Items ({{items_num}})</a> |
+  <b>Collections ({{collections_num}})</b></p>
+
+  {% with object_list as collections %}
+      {% include "telemeta/inc/collection_list.html" %}
+  {% endwith %}
+
+{% endifequal %}
+
+{% endblock %}

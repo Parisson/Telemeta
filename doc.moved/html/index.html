@@ -1,0 +1,399 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>telemeta</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><H1
+><A
+NAME="AEN1"
+></A
+>telemeta</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN15"
+></A
+><H2
+>Name</H2
+>telemeta&nbsp;--&nbsp;backups, transcodes, tags and marks any audio content with metadata</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN18"
+></A
+><H2
+>Synopsis</H2
+><P
+><B
+CLASS="COMMAND"
+>telemeta</B
+>  [<CODE
+CLASS="OPTION"
+><TT
+CLASS="REPLACEABLE"
+><I
+>OPTIONS</I
+></TT
+></CODE
+>] [<TT
+CLASS="REPLACEABLE"
+><I
+>COLLECTION</I
+></TT
+>] [<CODE
+CLASS="OPTION"
+><TT
+CLASS="REPLACEABLE"
+><I
+>OPTIONS</I
+></TT
+></CODE
+>] [<CODE
+CLASS="OPTION"
+><TT
+CLASS="REPLACEABLE"
+><I
+>MEDIA</I
+></TT
+></CODE
+>]</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN32"
+></A
+><H2
+>DESCRIPTION</H2
+><P
+><B
+CLASS="COMMAND"
+>telemeta</B
+> is an audio tool which creates audio transcoded collections fast from fresh mastered files. It can be useful to backup digitalized audio media from vinyls, old tapes or whatever and include them in a database.</P
+><P
+>Telemeta first creates a simple file structure where the original sounds will be backuped. The files can be transcoded to WAV, FLAC, MP3 and OGG including the corresponding tags.</P
+><P
+>Here are some cool functions:</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><CODE
+CLASS="OPTION"
+></CODE
+></DT
+><DD
+><P
+>- XML generation for metadata tags of backuped WAV</P
+><P
+>- Audio marking from a given file or from tags thanks to the Festival speech systhesis tool</P
+><P
+>- File corruption security with par2 recovery files</P
+><P
+>- Collection synchronizing to remote servers (ssh+rsync)</P
+><P
+>- Modify metadata from XML or interactive shell</P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN48"
+></A
+><H2
+>OPTIONS</H2
+><P
+>These programs follow the usual <ACRONYM
+CLASS="ACRONYM"
+>GNU</ACRONYM
+> command line syntax,
+      with long options starting with two dashes (`-').  A summary of
+      options is included below.  For a complete description, see the
+      <SPAN
+CLASS="APPLICATION"
+>Info</SPAN
+> files.</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><CODE
+CLASS="OPTION"
+>--create</CODE
+></DT
+><DD
+><P
+>creates a collection repository</P
+></DD
+><DT
+><CODE
+CLASS="OPTION"
+>--backup</CODE
+></DT
+><DD
+><P
+>backups and transcodes wave files to a collection</P
+></DD
+><DT
+><CODE
+CLASS="OPTION"
+>--album</CODE
+></DT
+><DD
+><P
+>proccesses an entire directory (one shot album)</P
+></DD
+><DT
+><CODE
+CLASS="OPTION"
+>--backup</CODE
+></DT
+><DD
+><P
+>backups a media to the collection</P
+></DD
+><DT
+><CODE
+CLASS="OPTION"
+>--from-xml</CODE
+></DT
+><DD
+><P
+>takes tags and opts in original xml source</P
+></DD
+><DT
+><CODE
+CLASS="OPTION"
+>--force</CODE
+></DT
+><DD
+><P
+>forces file conversion (no audio test)</P
+></DD
+><DT
+><CODE
+CLASS="OPTION"
+>--par2</CODE
+></DT
+><DD
+><P
+>forces par2 security file creation</P
+></DD
+><DT
+><CODE
+CLASS="OPTION"
+>--all-default</CODE
+></DT
+><DD
+><P
+>chooses default argument for all question</P
+></DD
+><DT
+><CODE
+CLASS="OPTION"
+>--recover</CODE
+></DT
+><DD
+><P
+>check an repair the backuped media with the previously created "par2" security files</P
+></DD
+><DT
+><CODE
+CLASS="OPTION"
+>--rsync</CODE
+></DT
+><DD
+><P
+>synchronizes collection to a remote server (ssh+rsync)</P
+></DD
+><DT
+><CODE
+CLASS="OPTION"
+>--erase</CODE
+></DT
+><DD
+><P
+>erases a collection (flac, ogg, mp3 only !)</P
+></DD
+><DT
+><CODE
+CLASS="OPTION"
+>--help</CODE
+></DT
+><DD
+><P
+>Show summary of options.</P
+></DD
+><DT
+><CODE
+CLASS="OPTION"
+>--version</CODE
+></DT
+><DD
+><P
+>Show version of program.</P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN119"
+></A
+><H2
+>EXAMPLES</H2
+><P
+><B
+CLASS="COMMAND"
+>telemeta --create my_collection</B
+></P
+><P
+><B
+CLASS="COMMAND"
+>telemeta --backup my_collection file.wav</B
+></P
+><P
+><B
+CLASS="COMMAND"
+>telemeta --backup my_collection --album /path/to/directory/</B
+></P
+><P
+><B
+CLASS="COMMAND"
+>telemeta --backup my_collection --album --par2 --rsync /path/to/directory/</B
+></P
+><P
+><B
+CLASS="COMMAND"
+>telemeta --backup my_collection --album --par2 --rsync --force /path/to/directory/</B
+></P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN131"
+></A
+><H2
+>DOWNLOAD</H2
+><P
+>Telemeta is written in python. So it doesn't require any compilation step.</P
+><P
+>On Debian or Ubuntu just add these lines to your /etc/apt/sources-list:</P
+><P
+><B
+CLASS="COMMAND"
+>deb http://yomix.org/debian/ binary/</B
+></P
+><P
+><B
+CLASS="COMMAND"
+>deb-src http://yomix.org/debian/ source/</B
+></P
+><P
+>Then,</P
+><P
+><B
+CLASS="COMMAND"
+>sudo apt-get update</B
+></P
+><P
+><B
+CLASS="COMMAND"
+>sudo apt-get install telemeta</B
+></P
+><P
+>On other linux platforms, <A
+HREF="http://yomix.org/telemeta/download/"
+TARGET="_top"
+>download</A
+> the lastest .tar.gz archive, uncompress it, go into the created directory and just type this with your favorite shell :</P
+><P
+><B
+CLASS="COMMAND"
+>python install.py</B
+></P
+><P
+>See README and INSTALL file for more informations.</P
+><P
+>You can also get the lastest version of Telemeta with subversion (just type 'enter' for the password:</P
+><P
+>svn co http://svn.yomix.org/svn/telemeta/trunk telemeta --username=anonymous</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN151"
+></A
+><H2
+>DEPENDS</H2
+><P
+>python (&#62;= 2.3.5-7), python-xml, python-central (&#62;= 0.5), python-mutagen, sox, vorbis-tools, flac, lame, normalize-audio, ecasound, festival, par2</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN154"
+></A
+><H2
+>SEE ALSO</H2
+><P
+>The program is documented fully by Guillaume Pellerin. More info at <I
+CLASS="CITETITLE"
+><A
+HREF="http://svn.yomix.org/telemeta/"
+TARGET="_top"
+>http://svn.yomix.org/telemeta/</A
+></I
+>.</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN159"
+></A
+><H2
+>AUTHOR</H2
+><P
+>This manual page was written by Guillaume Pellerin &#60;<CODE
+CLASS="EMAIL"
+>&#60;<A
+HREF="mailto:yomguy@altern.org"
+>yomguy@altern.org</A
+>&#62;</CODE
+>&#62; for
+      the <SPAN
+CLASS="PRODUCTNAME"
+>Debian</SPAN
+> system (but may be used by others).  Permission is
+      granted to copy, distribute and/or modify this document under
+      the terms of the <ACRONYM
+CLASS="ACRONYM"
+>GNU</ACRONYM
+> General Public License, Version 2 any
+      later version published by the Free Software Foundation.
+    </P
+><P
+>	  On Debian systems, the complete text of the GNU General Public
+	  License can be found in /usr/share/common-licenses/GPL.
+	</P
+></DIV
+></BODY
+></HTML
+>

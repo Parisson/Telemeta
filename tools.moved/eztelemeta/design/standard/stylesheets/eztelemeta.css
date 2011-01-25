@@ -1,0 +1,86 @@
+/*
+ * eZTelemeta default CSS rules
+ *
+ * Copyright (c) 2009 Samalyse
+ * Author: Olivier Guilyardi <olivier samalyse com>
+ * License: CeCILL Free Software License Agreement
+ */
+
+/* Core styles
+ * 
+ * These style rules are quite neutral in regard to visual appearance, and
+ * are meant to provide basic ergonomic enhancements such as:
+ * - play/pause icons
+ * - sound load blinking
+ * - position hiding when stopped
+ */
+
+.telemeta-item { text-align: left; }
+
+.telemeta-item .telemeta-sound a {
+    display: block;
+    background: url('../images/play.gif') no-repeat left top;
+    padding-left: 29px;
+    height: 22px;
+    padding-top: 0.5ex;
+}
+.telemeta-item .telemeta-position, .telemeta-item .telemeta-separator { display: none; }
+.telemeta-playing .telemeta-sound a { background-image: url('../images/stop.gif'); }
+.telemeta-playing .telemeta-position, .telemeta-playing .telemeta-separator { display: inline; }
+.telemeta-loading .telemeta-position { text-decoration: blink; }
+
+/* Compact box styles
+ *
+ * While remaining quite visually neutral, these rules are meant to make telemeta
+ * items more appealing and compact, and may not fit with all designs.
+ */
+
+.telemeta-item {
+    position: relative;
+    background: #EEEEEE;
+    padding: 0.3ex 1.3ex 1.3ex 1.3ex;
+    border: solid 1px #DDDDDD;
+}
+
+.telemeta-item dd { margin-left: 0; }
+
+.telemeta-item dt.telemeta-sound, .telemeta-item dt.telemeta-duration, 
+.telemeta-item dt.telemeta-description { display: none; }
+
+.telemeta-item .telemeta-sound { padding-right: 8.3em; }
+
+.telemeta-item .telemeta-sound a {
+    text-decoration: none;
+    font-weight: bold;
+    color: #000066;
+    outline: none;
+    padding-bottom: 0.6ex;
+}
+
+.telemeta-item dd.telemeta-duration {
+    position: absolute;
+    right: 0.7ex;
+    top: 1.4ex;
+    font-size: 80%;
+    color: #000066;
+    padding: 0.4ex 0.7ex 0.3ex 0.7ex;
+    border-bottom: solid 1px #E0E0E0;
+    border-top: solid 1px #DDDDDD;
+    font-weight: bold;
+}
+
+.telemeta-item .telemeta-sound a:hover, .telemeta-playing dd.telemeta-duration { color: #0000AA; }
+.telemeta-playing .telemeta-position { color: #AA0000; }
+.telemeta-item dd.telemeta-description { font-style: italic; margin-left: 0.2em; }
+.telemeta-item .telemeta-creator, .telemeta-item .telemeta-rights { font-size: 90%; margin-bottom: 1px; }
+
+.telemeta-item dt.telemeta-creator, .telemeta-item dt.telemeta-rights {
+    float: left;
+    padding-right: 1ex;
+    position: relative;
+    margin-left: 0.2em;
+}
+
+.telemeta-item .telemeta-clear { clear: both; }
+.telemeta-item .telemeta-position, .telemeta-item .telemeta-separator { display: inline; }
+

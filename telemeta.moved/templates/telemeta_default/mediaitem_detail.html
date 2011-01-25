@@ -1,0 +1,245 @@
+{% extends "telemeta/base.html" %}
+{% load telemeta_utils %}
+{% load i18n %}
+
+{% block head_title %}{% trans "Item" %}{{item|prepend:': '}} - {{ block.super }}{% endblock %}
+
+{% block stylesheets %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% url telemeta-timeside "css/timeside.css" %}" />
+<link rel="stylesheet" type="text/css" href="{% url telemeta-timeside "skins/lab/style.css" %}" />
+<link rel="stylesheet" type="text/css" href="{% url telemeta-css "player.css" %}" />
+{% endblock %}
+{% block extra_javascript %}
+
+<script src="{% url telemeta-js "wz_jsgraphics.js" %}" type="text/javascript"></script>
+<script src="{% url telemeta-js "soundmanager2.js" %}" type="text/javascript"></script>
+<script src="{% url telemeta-timeside "src/timeside.js" %}" type="text/javascript"></script>
+<script src="{% url telemeta-js "player.js" %}" type="text/javascript"></script>
+
+<script type="text/javascript">
+soundManager.url = '{% url telemeta-swf "./" %}';
+soundManager.flashVersion = 9;
+soundManager.useMovieStar = true; // enable MP4/M4A/AAC
+soundManager.debugMode = false;
+set_player_image_url('{% url telemeta-item-visualize item.public_id,visualizer_id,"WIDTH","HEIGHT" %}');
+load_player({{ item.approx_duration.as_seconds }});
+</script>
+
+{% endblock %}
+
+
+{% if item %}
+{% block submenu %}
+    <div><a href="{% url telemeta-item-dublincore item.public_id %}">Dublin Core</a></div>
+{% endblock %}
+
+{% block content %}
+
+<h3>Item : {{ item }}</h3>
+<div class="{% if item.file %}with-rightcol{% endif %}">
+
+{% if item.file %}
+    <div id="player_maximized" class="ts-skin-lab">
+        <a href="#" class="toggle">Minimize</a>
+        <div class="wazing"></div>
+    </div>
+    <div id="rightcol">
+        <div id="player_minimized" class="ts-skin-lab">
+        <a href="#" class="toggle">Maximize</a>
+        <div class="wazing"></div>
+        <div id="player" class="ts-player">
+            <div class="ts-viewer">
+                <div class="ts-wave">
+                    <div class="ts-image-container">
+                        <a href="{% url telemeta-item-export item.public_id,"mp3" %}">
+                        <img class="ts-image" src="{% url telemeta-item-visualize item.public_id,visualizer_id,360,130 %}"
+                          alt="" /></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <div class="item_visualization">
+            <form id="visualizer_id_form" method="get" action="#">
+                <!--
+                <select name="visualizer_id" onchange="this.form.submit()">
+                    {% for v in visualizers %}
+                    <option value="{{ v.id }}" {% ifequal v.id visualizer_id %} selected="selected" {% endifequal %}>
+                    {{v.name}}</option>
+                    {% endfor %}
+                </select>
+                -->
+                <select id="visualizer_id" name="visualizer_id">
+                    {% for v in visualizers %}
+                    <option value="{% url telemeta-item-visualize item.public_id,v.id,"WIDTH","HEIGHT" %}">
+                    {{v.name}}</option>
+                    {% endfor %}
+                </select>
+                <input type="submit" value="Set" />
+            </form>
+
+          <div class="analyzer">
+            <table width="100%">
+             <tr class="analyzer-title">
+              <td>Property</td>
+              <td>Value</td>
+              <td>Unit</td>
+             <tr>
+            {% for analyser in analysers %}
+             <tr class="analyzer-line">
+              <td>
+                {{ analyser.name }}
+              </td>
+              <td>
+                {{ analyser.value }}
+              </td>
+              <td>
+                {{ analyser.unit }}
+              </td>
+            </tr>
+            {% endfor %}
+           </table>
+         </div>
+<!--
+        <form method="get" action="#">
+            <p>&nbsp;Vamp plugin analysis</p>
+            <select name="vamp_id">
+            {% for plugin in vamp_plugins %}
+            <option value="{{ plugin }}" {% ifequal plugin vamp_id %} selected="selected" {% endifequal %}>
+            {{ plugin }}</option>
+            {% endfor %}
+            </select>
+            <input type="submit" value="Get" />
+        </form>
+-->
+        </div>
+
+        {% if audio_export_enabled %}
+        <div class="exporter">
+            <p>{% trans "Download:" %}
+            {% for format in export_formats %}
+            <a href="{% url telemeta-item-export item.public_id,format.extension %}">{{ format.name }}</a>
+            {% endfor %}</p>
+        </div>
+        {% endif %}
+
+    </div>
+{% endif %}
+
+    <div class="infos">
+    {% block general_info %}
+        <dl class="listing">
+            {% dl_field item "title" %}
+            {% dl_field item "alt_title" %}
+            {% dl_field item "collector" %}
+            <dt>{% field_label item "collection" %}</dt>
+            <dd><a href="{% url telemeta-collection-detail item.collection.public_id %}">{{ item.collection }}</a></dd>
+            {% if item.recorded_from_date %}
+                <dt>{% trans "Recording date" %}</dt>
+                <dd>{{ item.recorded_from_date }} {{ item.recorded_to_date|prepend:" - "  }}</dd>
+            {% endif %}
+        </dl>
+    {% endblock general_info %}
+    </div>
+    <div class="extraInfos">
+    {% block geoethnic_data %}
+        <div>
+            <h4><a href="#">{% trans "Geographic and cultural informations" %}</a></h4>
+            <dl class="listing">
+                {% if item.location %}
+                    <dt>{% trans "Location" %}</dt>
+                    <dd>{{ item.location.fullnames|join:"<br/>" }}</dd>
+                {% endif %}
+                {% dl_field item "location_comment" %}
+                {% dl_field item "cultural_area" %}
+                {% dl_field item "ethnic_group" %}
+                {% dl_field item "context_comment" %}
+                {% dl_field item "keywords" join with ", " %}
+            </dl>
+        </div>
+    {% endblock geoethnic_data %}
+    </div>
+    <div class="extraInfos">
+    {% block musical_data %}
+        <div>
+            <h4><a href="#">{% trans "Musical informations" %}</a></h4>
+            <dl class="listing">
+                {% dl_field item "vernacular_style" %}
+                {% dl_field item "generic_style" %}
+                {% dl_field item "author" %}
+            </dl>
+            {% if item.performances %}
+            <div class="instruments">
+                <table class="instruments">
+                <thead>
+                    <tr>
+                        <td>{% field_label "MediaItemPerformance" "instruments_num" %}</td>
+                        <td>{% field_label "MediaItemPerformance" "instrument" %}</td>
+                        <td>{% field_label "MediaItemPerformance" "alias" %}</td>
+                        <td>{% field_label "MediaItemPerformance" "musicians" %}</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for performance in item.performances.all %}
+                    <tr>
+                        <td>{{ performance.instruments_num }}</td>
+                        <td>{{ performance.instrument|default:"" }}</td>
+                        <td>{{ performance.alias|default:"" }}</td>
+                        <td>{{ performance.musicians }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+            </div>
+            {% endif %}
+        </div>
+    {% endblock musical_data %}
+    </div>
+    <div class="extraInfos">
+    {% block general_data %}
+        <div>
+            <h4><a href="#">{% trans "General informations" %}</a></h4>
+            <dl class="listing">
+                {% dl_field item "comment" %}
+                {% dl_field item "collector_selection" %}
+            </dl>
+        </div>
+    {% endblock general_data %}
+    </div>
+    <div class="extraInfos">
+    {% block archive_data %}
+        <div>
+            <h4><a href="#">{% trans "Archiving data" %}</a></h4>
+            <dl class="listing">
+                {% dl_field item "code" %}
+                {% dl_field item "old_code" %}
+                {% dl_field item "track" %}
+                {% dl_field item "creator_reference" %}
+                {% dl_field item "external_references" %}
+                {% dl_field item "public_access_label" %}
+            </dl>
+        </div>
+    {% endblock archive_data %}
+    </div>
+    <div class="extraInfos">
+    {% block technical_data %}
+        <div>
+            <h4><a href="#">{% trans "Technical data" %}</a></h4>
+            <div>
+                <dl class="listing">
+                    <dt>{% trans "Media type" %}</dt><dd>{% trans "Audio" %}</dd>
+                    {% dl_field item "approx_duration" %}
+                </dl>
+            </div>
+        </div>
+    {% endblock technical_data %}
+    </div>
+
+</div> <!-- with-rightcol -->
+
+{% endblock %}
+{% else %}
+    <p>No such item</p>
+{% endif %}

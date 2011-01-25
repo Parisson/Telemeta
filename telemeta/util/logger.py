@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 import logging
 
@@ -12,12 +13,6 @@ class Logger:
         self.logger.addHandler(self.hdlr)
         self.logger.setLevel(logging.INFO)
 
-    def write_info(self, message):
-        self.logger.info(message)
-
-    def write_error(self, message):
-        self.logger.error(message)
-
     def debug(self, msg):
-        self.logger.error(message)
+        self.logger.error('DEBUG : ' + message)
         

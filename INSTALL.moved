@@ -1,0 +1,208 @@
+==================
+Telemeta - INSTALL
+==================
+
+Requirements
+============
+
+Telemeta is designed to run on Linux and other UNIX based architectures.
+The following third party applications or libraries are required:
+
+:dependencies: python python-xml python-mutagen python-django \
+	       python-imaging python-mysqldb mysql-server python-numpy python-scipy \
+               python-ctypes python-setuptools python-support python-docutils
+
+Here, package names are taken from the Debian OS and could be different on other platforms.
+
+
+Install
+=======
+
+-----------------------
+1. Install the software
+-----------------------
+
+1.1 Install Telemeta
+--------------------
+
+* On Debian (Testing recommended) or Ubuntu Hoary
+
+    Install all dependencies like this::
+	
+	sudo aptitude install python python-xml python-mutagen python-django \
+	       python-imaging python-mysqldb mysql-server python-numpy python-scipy \
+               python-ctypes python-setuptools python-support python-docutils
+
+    Just add these lines to your /etc/apt/sources-list::
+
+        deb http://debian.parisson.org/ binary/
+        deb-src http://debian.parisson.org/ source/
+        deb http://www.debian-multimedia.org etch main
+
+    Then::
+
+    $ sudo apt-get update
+    $ sudo apt-get install telemeta
+
+    This method provides the installation of all needed packages
+    thanks to the Debian dependency system.
+    Go to 1.2.
+
+* On other linux platforms
+
+    Install all dependencies.
+
+    Download the latest release of telemeta at
+    http://telemeta.org
+
+    Uncompress the archive like::
+
+    $ tar xzvf telemeta_0.3.2.tar.gz
+
+    Go to the main folder of telemeta and run this command
+    in a shell as root::
+
+    $ sudo python setup.py install
+
+
+1.2. Install TimeSide
+---------------------
+
+In order to get all the Web Audio Components from TimeSide,
+you have to download and install it from source.
+
+So, checkout the last archives at :
+http://code.google.com/p/timeside/downloads/list
+
+Install it like in the following example::
+
+$ tar xzf timeside-0.2.tar.gz
+$ cd timeside-0.2
+
+Read the README and INSTALL file, install dependencies and then::
+
+$ sudo python setup.py install
+
+
+1.3. Install the Django framework version 1.0
+---------------------------------------------
+
+* On Debian (Lenny recommended) or Ubuntu Hoary::
+
+    $ sudo apt-get install python-django
+
+* On other linux platforms, download and install it from:
+
+    http://www.djangoproject.com/download/
+
+
+--------------------------
+2. Create a Django project
+--------------------------
+
+If you haven't already done it, start a new django project::
+
+    $ cd ~/my_projects
+    $ django-admin startproject mysite
+
+
+-----------------------------------------
+3. Create the media and cache directories
+-----------------------------------------
+
+We need 2 directories for media and caching::
+
+    $ cd mysite
+    $ mkdir media cache
+
+You might want to place these somewhere else...
+
+
+----------------------------------
+4. Configure the telemeta project
+----------------------------------
+
+Edit the file settings.py in a text editor.
+Modifiy the following variables:
+
+    :ADMINS:            telemeta requires that you indicate an administrator here
+    :DATABASE_*:        your database settings (don't forget to create the database if needed)
+    :MEDIA_ROOT:        absolute path to the media directory you just created
+    :INSTALLED_APPS:    add 'telemeta'
+    :TEMPLATE_CONTEXT_PROCESSORS: include 'django.core.context_processors.request' and
+                                  'django.core.context_processors.auth' in this tuple
+
+Add the following variables:
+
+    :TELEMETA_ORGANIZATION: name of the organization which hosts this installation
+    :TELEMETA_SUBJECTS:     tuple of subject keywords (used for Dublin Core), such
+                            as "Ethnology", etc...
+    :TELEMETA_CACHE_DIR:    absolute path to the cache directory that you just created
+    :TELEMETA_GMAP_KEY:     your Google Map API key
+    :TELEMETA_DOWNLOAD_ENABLED: True to enable audio data download
+
+Just paste the lines below::
+
+    LOGIN_URL = '/login'
+    LOGIN_REDIRECT_URL = '/'
+    TELEMETA_EXPORT_CACHE_DIR = TELEMETA_CACHE_DIR + "/export"
+    TELEMETA_DATA_CACHE_DIR = TELEMETA_CACHE_DIR + "/data"
+    CACHE_BACKEND = "file://" + TELEMETA_CACHE_DIR + "/data"
+
+
+--------------------------
+5. Initialize the database
+--------------------------
+
+This synchronizes the DB with the model::
+
+    $ python manage.py syncdb
+
+
+----------------------
+6. Configure your urls
+----------------------
+
+    The simplest case is to have telemeta running at public root. To do so, add this url in urls.py::
+
+    (r'^', include('telemeta.urls')),
+
+
+--------------------
+7. Start the project
+--------------------
+
+We are ready to start the telemeta server::
+
+    $ python manage.py runserver
+
+By default, the server starts on the port 8000. You can override this with, for example::
+
+    $ python manage.py runserver 9000
+
+
+------------------------------------
+8. Go the web page with your browser
+------------------------------------
+
+    http://localhost:8000
+
+    or
+
+    http://localhost:9000
+
+
+See README and http://telemeta.org for more informations.
+
+
+-------------------
+9. Configure Apache
+-------------------
+
+If you want to use Telemeta through a web server, it is highly recommended to use Apache 2
+with the mod_wsgi module as explained in the following page :
+
+http://docs.djangoproject.com/en/1.1/howto/deployment/modwsgi/#howto-deployment-modwsgi
+
+This will prevent Apache to put some audio data in the cache memory as it is usually the case with mod_python.
+

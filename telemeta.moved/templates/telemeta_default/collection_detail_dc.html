@@ -1,0 +1,21 @@
+{% extends "telemeta/base.html" %}
+{% load telemeta_utils %}
+{% load i18n %}
+
+{% block head_title %}{% trans "Collection" %}{{collection|prepend:': '}} - {{ block.super }}{% endblock %}
+
+{% if collection %}
+{% block submenu %}
+    <h3>Collection: {{ collection }}</h3>
+    <div><a href="{% url telemeta-collection-detail collection.public_id %}">{% trans "Normal View" %}</a></div>
+{% endblock %}
+
+{% block content %}
+{% with collection|to_dublincore as resource %}
+{% include "telemeta/inc/dublincore.html" %}
+{% endwith %}
+
+{% endblock %}
+{% else %}
+    <p>{% trans "No such collection" %}</p>
+{% endif %}

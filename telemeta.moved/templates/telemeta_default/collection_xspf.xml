@@ -1,0 +1,23 @@
+{% extends "telemeta/base_xspf.xml" %}
+{% load telemeta_utils %}
+
+{% block listinfo %} 
+{% with collection.to_dublincore.flatten as dc %}
+  <creator>{{ dc.creator }}</creator>
+  <title>{{ dc.title }}</title>
+  <info>http://{{ host }}{% url telemeta-collection-detail collection.public_id %}</info>
+{% endwith %}
+{% endblock %}
+
+{% block tracklist %}
+{% for item in collection.items.all %}
+    <track>
+      <title>{{ item }}</title>
+      <meta rel="type">mp3</meta>
+      <location>http://{{ host }}{% url telemeta-item-export item.public_id,"mp3" %}</location>
+      <duration>{{ item.computed_duration.as_seconds|mul:1000 }}</duration>
+      <info>http://{{ host }}{% url telemeta-item-detail item.public_id %}</info>
+    </track>
+{% endfor %}
+{% endblock %}
+

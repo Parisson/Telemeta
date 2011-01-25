@@ -1,0 +1,271 @@
+<!doctype refentry PUBLIC "-//OASIS//DTD DocBook V4.1//EN" [
+
+<!-- Process this file with docbook-to-man to generate an nroff manual
+     page: `docbook-to-man manpage.sgml > manpage.1'.  You may view
+     the manual page with: `docbook-to-man manpage.sgml | nroff -man |
+     less'.  A typical entry in a Makefile or Makefile.am is:
+
+manpage.1: manpage.sgml
+	docbook-to-man $< > $@
+
+
+	The docbook-to-man binary is found in the docbook-to-man package.
+	Please remember that if you create the nroff version in one of the
+	debian/rules file targets (such as build), you will need to include
+	docbook-to-man in your Build-Depends control field.
+
+  -->
+
+  <!-- Fill in your name for FIRSTNAME and SURNAME. -->
+  <!ENTITY dhfirstname "<firstname>Guillaume</firstname>">
+  <!ENTITY dhsurname   "<surname>Pellerin</surname>">
+  <!-- Please adjust the date whenever revising the manpage. -->
+  <!ENTITY dhdate      "<date>August 17, 2006</date>">
+  <!-- SECTION should be 1-8, maybe w/ subsection other parameters are
+       allowed: see man(7), man(1). -->
+  <!ENTITY dhsection   "<manvolnum>1</manvolnum>">
+  <!ENTITY dhemail     "<email>yomguy@altern.org</email>">
+  <!ENTITY dhusername  "Guillaume Pellerin">
+  <!ENTITY dhucpackage "<refentrytitle>telemeta</refentrytitle>">
+  <!ENTITY dhpackage   "telemeta">
+
+  <!ENTITY debian      "<productname>Debian</productname>">
+  <!ENTITY gnu         "<acronym>GNU</acronym>">
+  <!ENTITY gpl         "&gnu; <acronym>GPL</acronym>">
+]>
+
+<refentry>
+  <refentryinfo>
+    <address>
+      &dhemail;
+    </address>
+    <author>
+      &dhfirstname;
+      &dhsurname;
+    </author>
+    <copyright>
+      <year>2006-2007</year>
+      <holder>&dhusername;</holder>
+    </copyright>
+    &dhdate;
+  </refentryinfo>
+  <refmeta>
+    &dhucpackage;
+
+    &dhsection;
+  </refmeta>
+  <refnamediv>
+    <refname>&dhpackage;</refname>
+
+    <refpurpose>backups, transcodes, tags and marks any audio content with metadata</refpurpose>
+  </refnamediv>
+  <refsynopsisdiv>
+    <cmdsynopsis>
+      <command>&dhpackage;</command>
+      <arg><option><replaceable>OPTIONS</replaceable></option></arg>
+      <arg><replaceable>COLLECTION</replaceable></arg>
+      <arg><option><replaceable>OPTIONS</replaceable></option></arg>
+      <arg><option><replaceable>MEDIA</replaceable></option></arg>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+  <refsect1>
+    <title>DESCRIPTION</title>
+    
+    <para><command>&dhpackage;</command> is an audio tool which creates audio transcoded collections fast from fresh mastered files. It can be useful to backup digitalized audio media from vinyls, old tapes or whatever and include them in a database.</para>
+    <para>Telemeta first creates a simple file structure where the original sounds will be backuped. The files can be transcoded to WAV, FLAC, MP3 and OGG including the corresponding tags.</para>
+    <para>Here are some cool functions:</para>
+	 <variablelist>
+      <varlistentry>
+        <term><option></option></term>
+        <listitem>
+			<para>- XML generation for metadata tags of backuped WAV</para>
+			<para>- Audio marking from a given file or from tags thanks to the Festival speech systhesis tool</para>
+			<para>- File corruption security with par2 recovery files</para>
+			<para>- Collection synchronizing to remote servers (ssh+rsync)</para>
+			<para>- Modify metadata from XML or interactive shell</para>
+        </listitem>
+	   </varlistentry>
+	  </variablelist>
+  </refsect1>
+  <refsect1>
+    <title>OPTIONS</title>
+
+    <para>These programs follow the usual &gnu; command line syntax,
+      with long options starting with two dashes (`-').  A summary of
+      options is included below.  For a complete description, see the
+      <application>Info</application> files.</para>
+
+     <variablelist>
+      <varlistentry>
+        <term><option>--create</option>
+        </term>
+        <listitem>
+	<para>creates a collection repository</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><option>--backup</option>
+        </term>
+        <listitem>
+	<para>backups and transcodes wave files to a collection</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><option>--album</option>
+        </term>
+        <listitem>
+          <para>proccesses an entire directory (one shot album)</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><option>--backup</option>
+        </term>
+        <listitem>
+          <para>backups a media to the collection</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><option>--from-xml</option>
+        </term>
+        <listitem>
+          <para>takes tags and opts in original xml source</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><option>--force</option>
+        </term>
+        <listitem>
+          <para>forces file conversion (no audio test)</para>
+        </listitem>
+      </varlistentry>
+	  <varlistentry>
+        <term><option>--par2</option>
+        </term>
+        <listitem>
+          <para>forces par2 security file creation</para>
+        </listitem>
+      </varlistentry>
+	  <varlistentry>
+        <term><option>--all-default</option>
+        </term>
+        <listitem>
+          <para>chooses default argument for all question</para>
+        </listitem>
+      </varlistentry>
+	  <varlistentry>
+        <term><option>--recover</option>
+        </term>
+        <listitem>
+          <para>check an repair the backuped media with the previously created "par2" security files</para>
+        </listitem>
+      </varlistentry>
+	  <varlistentry>
+        <term><option>--rsync</option>
+        </term>
+        <listitem>
+          <para>synchronizes collection to a remote server (ssh+rsync)</para>
+        </listitem>
+      </varlistentry>
+	  <varlistentry>
+        <term><option>--erase</option>
+        </term>
+        <listitem>
+	  <para>erases a collection (flac, ogg, mp3 only !)</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><option>--help</option>
+        </term>
+        <listitem>
+          <para>Show summary of options.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><option>--version</option>
+        </term>
+        <listitem>
+          <para>Show version of program.</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsect1>
+ 
+  <refsect1>
+	  <title>EXAMPLES</title>
+	  <para><command>telemeta --create my_collection</command></para>
+	  <para><command>telemeta --backup my_collection file.wav</command></para>
+	  <para><command>telemeta --backup my_collection --album /path/to/directory/</command></para>
+	  <para><command>telemeta --backup my_collection --album --par2 --rsync /path/to/directory/</command></para>
+	  <para><command>telemeta --backup my_collection --album --par2 --rsync --force /path/to/directory/</command></para>
+  </refsect1>
+
+  <refsect1>
+	  <title>DOWNLOAD</title>
+	  <para>Telemeta is written in python. So it doesn't require any compilation step.</para>  
+	  <para>On Debian or Ubuntu just add these lines to your /etc/apt/sources-list:</para>
+	  
+	  <para><command>deb http://debian.parisson.org/ binary/</command></para>
+	  <para><command>deb-src http://debian.parisson.org/ source/</command></para>
+  
+	  <para>Then,</para>
+	  
+	  <para><command>sudo apt-get update</command></para>
+	  <para><command>sudo apt-get install telemeta</command></para>
+	  
+	  <para>On other linux platforms, <ulink url="http://debian.parisson.org/">download</ulink> the lastest tar.gz archive, uncompress it, go into the created directory and just type this with your favorite shell :</para>
+	  
+	  <para><command>python install.py</command></para>
+	  
+	  <para>See README and INSTALL file for more informations.</para>
+	  <para>You can also get the lastest version of Telemeta with subversion (just type 'enter' for the password:</para>
+	  <para>svn co http://svn.parisson.org/svn/telemeta/trunk telemeta --username=anonymous</para>
+
+  </refsect1>
+
+  <refsect1>
+    <title>DEPENDS</title>
+    
+    <para>python (>= 2.3.5-7), python-xml, python-central (>= 0.5), python-mutagen, sox, vorbis-tools, flac, lame, normalize-audio, ecasound, festival, par2</para>
+  </refsect1>
+
+  <refsect1>
+    <title>SEE ALSO</title>
+    
+    <para>The program is documented fully by Guillaume Pellerin. More info at <citetitle><ulink url="http://svn.parisson.org/telemeta/">http://svn.parisson.org/telemeta/</ulink></citetitle>.</para>
+  </refsect1>
+ 
+  <refsect1>
+    <title>AUTHOR</title>
+
+    <para>This manual page was written by &dhusername; <&dhemail;> for
+      the &debian; system (but may be used by others).  Permission is
+      granted to copy, distribute and/or modify this document under
+      the terms of the &gnu; General Public License, Version 2 any
+      later version published by the Free Software Foundation.
+    </para>
+	<para>
+	  On Debian systems, the complete text of the GNU General Public
+	  License can be found in /usr/share/common-licenses/GPL.
+	</para>
+
+  </refsect1>
+</refentry>
+
+<!-- Keep this comment at the end of the file
+Local variables:
+mode: sgml
+sgml-omittag:t
+sgml-shorttag:t
+sgml-minimize-attributes:nil
+sgml-always-quote-attributes:t
+sgml-indent-step:2
+sgml-indent-data:t
+sgml-parent-document:nil
+sgml-default-dtd-file:nil
+sgml-exposed-tags:nil
+sgml-local-catalogs:nil
+sgml-local-ecat-files:nil
+End:
+-->
+
+

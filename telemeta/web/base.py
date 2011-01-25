@@ -56,39 +56,41 @@ from django.core.exceptions import ObjectDoesNotExist
 from telemeta.util.unaccent import unaccent
 from telemeta.util.unaccent import unaccent_icmp
 from telemeta.util.logger import Logger
+from telemeta.cache import TelemetaCache
 import telemeta.web.pages as pages
 
 def render(request, template, data = None, mimetype = None):
     return render_to_response(template, data, context_instance=RequestContext(request), 
                               mimetype=mimetype)
 
-def stream_from_file(file):
-    chunk_size = 0x1000
-    f = open(file,  'r')
-    while True:
-        _chunk = f.read(chunk_size)
-        if not len(_chunk):
-            break
-        yield _chunk
-    f.close()
-
 def stream_from_processor(decoder, processor):
     while True:
         frames,  eod = decoder.process()
-        buffer,  eod_proc = processor.process(frames, eod)
-        yield buffer
+        _chunk,  eod_proc = processor.process(frames, eod)
         if eod_proc:
             break
+        yield _chunk
 
-
-class WebView:
+def stream_from_file(file):
+    chunk_size = 0xFFFF
+    f = open(file, 'r')
+    while True:
+        _chunk = f.read(chunk_size)
+        if not len(_chunk):
+            f.close()
+            break
+        yield _chunk
+    
+    
+class WebView(object):
     """Provide web UI methods"""
 
     graphers = timeside.core.processors(timeside.api.IGrapher)
     decoders = timeside.core.processors(timeside.api.IDecoder)
     encoders= timeside.core.processors(timeside.api.IEncoder)
     analyzers = timeside.core.processors(timeside.api.IAnalyzer)
-    logger = Logger('/tmp/telemeta.log')
+    cache = TelemetaCache(settings.TELEMETA_DATA_CACHE_DIR)
+    cache_export = TelemetaCache(settings.TELEMETA_EXPORT_CACHE_DIR)
     
     def index(self, request):
         """Render the homepage"""
@@ -123,53 +125,66 @@ class WebView:
         else:
             grapher_id = 'waveform'
         
-        analyzers = [{'name':'','id':'','unit':'','value':''}]
-        # TODO: override timeside analyzer process when caching : write results to XML file in data/
-        self.analyzer_mode = 1
+        analyze_file = public_id + '.xml'
         
-        if self.analyzer_mode:
+        if self.cache.exists(analyze_file):
+            analyzers = self.cache.read_analyzer_xml(analyze_file)
+            if not item.approx_duration:
+                for analyzer in analyzers:
+                    if analyzer['id'] == 'duration':
+                        value = analyzer['value']
+                        time = value.split(':')
+                        time[2] = time[2].split('.')[0]
+                        time = ':'.join(time)
+                        item.approx_duration = time
+                        item.save()
+        else:
+            analyzers = []
             analyzers_sub = []
             if item.file:
-                audio = os.path.join(os.path.dirname(__file__), item.file.path)
-                decoder  = timeside.decoder.FileDecoder(audio)
-                self.pipe = decoder
+                decoder  = timeside.decoder.FileDecoder(item.file.path)
+                pipe = decoder
+                mime_type = decoder.mimetype
+                
                 for analyzer in self.analyzers:
                     subpipe = analyzer()
                     analyzers_sub.append(subpipe)
-                    self.pipe = self.pipe | subpipe
-                self.pipe.run()
+                    pipe = pipe | subpipe
+                    
+                pipe.run()
                 
-            for analyzer in analyzers_sub:
-                if item.file:
+                for analyzer in analyzers_sub:
                     value = analyzer.result()
                     if analyzer.id() == 'duration':
                         approx_value = int(round(value))
                         item.approx_duration = approx_value
                         item.save()
                         value = datetime.timedelta(0,value)
-                else:
-                    value = 'N/A'
-
-                analyzers.append({'name':analyzer.name(),
-                                  'id':analyzer.id(),
-                                  'unit':analyzer.unit(),
-                                  'value':str(value)})
-
+                    if analyzer.id() == 'mime_type':
+                        value = decoder.format()
+                        
+                    analyzers.append({'name':analyzer.name(),
+                                      'id':analyzer.id(),
+                                      'unit':analyzer.unit(),
+                                      'value':str(value)})
+                
+            self.cache.write_analyzer_xml(analyzers, analyze_file)
+            
+        
         return render(request, template, 
                     {'item': item, 'export_formats': formats, 
-                    'visualizers': graphers, 'visualizer_id': grapher_id,'analysers': analyzers,
-                    'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', False)
+                    'visualizers': graphers, 'visualizer_id': grapher_id,'analysers': analyzers,  #FIXME analysers
+                    'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True)
                     })
-    
-    def item_analyze(self, request, public_id):
-        # TODO: return an XML stream of the analyzed metadata
-        # response = HttpResponse(stream_from_file(media), mimetype = mime_type)
-        # return response
-        pass
 
+    def item_analyze(self):
+        pass
+        
     def item_visualize(self, request, public_id, visualizer_id, width, height):
+        item = MediaItem.objects.get(public_id=public_id)
         mime_type = 'image/png'
         grapher_id = visualizer_id
+        
         for grapher in self.graphers:
             if grapher.id() == grapher_id:
                 break
@@ -177,21 +192,18 @@ class WebView:
         if grapher.id() != grapher_id:
             raise Http404
         
-        media = settings.TELEMETA_DATA_CACHE_DIR + \
-                    os.sep + '_'.join([public_id,  grapher_id,  width,  height]) + '.png'
+        size = width + '_' + height
+        image_file = '.'.join([public_id, grapher_id, size, 'png'])
 
-        #graph.set_colors((255,255,255), 'purple')
-        
-        if not os.path.exists(media):
-            item = MediaItem.objects.get(public_id=public_id)
-            audio = os.path.join(os.path.dirname(__file__), item.file.path)
-            decoder  = timeside.decoder.FileDecoder(audio)
-            graph = grapher(width=int(width), height=int(height))
-            pipe = decoder | graph
-            pipe.run()
-            graph.render(media)
-
-        response = HttpResponse(stream_from_file(media), mimetype = mime_type)
+        if not self.cache.exists(image_file):
+            if item.file:
+                decoder  = timeside.decoder.FileDecoder(item.file.path)
+                graph = grapher(width = int(width), height = int(height))
+                pipe = decoder | graph
+                pipe.run()
+                graph.render(self.cache.dir + os.sep + image_file)
+                
+        response = HttpResponse(self.cache.read_stream_bin(image_file), mimetype = mime_type)
         return response
 
     def list_export_extensions(self):
@@ -215,27 +227,27 @@ class WebView:
             raise Http404('Unknown export file extension: %s' % extension)
 
         mime_type = encoder.mime_type()
-        cache_dir = settings.TELEMETA_EXPORT_CACHE_DIR
-        media = cache_dir + os.sep + public_id + '.' + encoder.file_extension()
-        
+        file = public_id + '.' + encoder.file_extension()
         item = MediaItem.objects.get(public_id=public_id)
-        audio = os.path.join(os.path.dirname(__file__), item.file.path)
-        decoder  = timeside.decoder.FileDecoder(audio)
-#        print decoder.format(),  mime_type
+        audio = item.file.path
+        decoder = timeside.decoder.FileDecoder(audio)
+
         if decoder.format() == mime_type:
             # source > stream
             response = HttpResponse(stream_from_file(audio), mimetype = mime_type)
+            
         else:        
-            if not os.path.exists(media):
+            if not self.cache_export.exists(file):
                 # source > encoder > stream
-                decoder.setup()
+                media = self.cache_export.dir + os.sep + file
                 proc = encoder(media)
-                proc.setup(decoder.channels(), decoder.samplerate())
-                #metadata = dublincore.express_item(item).to_list()
-                #enc.set_metadata(metadata)
+#                metadata = dublincore.express_item(item).to_list()
+#                enc.set_metadata(metadata)
+                pipe = decoder | proc
+                pipe.run()
                 response = HttpResponse(stream_from_processor(decoder, proc), mimetype = mime_type)
             else:
-                response = HttpResponse(stream_from_file(media), mimetype = mime_type)
+                response = HttpResponse(self.cache_export.read_stream_bin(file), mimetype = mime_type)
         
         response['Content-Disposition'] = 'attachment'
         return response
