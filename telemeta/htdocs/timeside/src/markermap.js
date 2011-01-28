@@ -114,7 +114,20 @@ $N.Class.create("MarkerMap", $N.Core, {
 
     each: function(callback) {
         $J(this.markers).each(callback);
+    },
+
+    _toString: function() {
+        var s = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<telemeta>\n<markers>";
+        for (var i in this.markers) {
+                marker = this.markers[i];
+            s+="\n\t"; //+marker._toString();
+            s+="<marker id="+marker.id+" position="+marker.offset+" description=\""+
+            +marker.desc+"\"/>"
+        }
+        s+="\n</markers>\n</telemeta>";
+        return s;
     }
+
 });
 
 $N.notifyScriptLoad();

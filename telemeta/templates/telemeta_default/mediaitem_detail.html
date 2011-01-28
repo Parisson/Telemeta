@@ -61,6 +61,7 @@ load_player({{ item.approx_duration.as_seconds }});
         </div>
         </div>
 
+        <div class="markers_div" id="markers_div_id"></div>
         <div class="item_visualization">
             <form id="visualizer_id_form" method="get" action="#">
                 <!--
@@ -86,7 +87,7 @@ load_player({{ item.approx_duration.as_seconds }});
               <td>Property</td>
               <td>Value</td>
               <td>Unit</td>
-             <tr>
+             </tr>
             {% for analyser in analysers %}
              <tr class="analyzer-line">
               <td>
@@ -115,7 +116,6 @@ load_player({{ item.approx_duration.as_seconds }});
         </form>
 -->
         </div>
-
         {% if audio_export_enabled %}
         <div class="exporter">
             <p>{% trans "Download:" %}

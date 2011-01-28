@@ -18,7 +18,8 @@ $N.Class.create("Player", $N.Core, {
         },
         'div.control': {
             'div.layout': {
-                'div.playback': ['a.play', 'a.pause', 'a.rewind', 'a.forward', 'a.set-marker']
+                'div.playback': ['a.play', 'a.pause', 'a.rewind', 'a.forward', 'a.set-marker', 'a.set-marker2']
+                //,'input.textMarker']
             }
         }/*,
         'div.marker-control': ['a.set-marker']*/
@@ -28,7 +29,9 @@ $N.Class.create("Player", $N.Core, {
         pause: 'Pause',
         rewind: 'Rewind',
         forward: 'Forward',
-        'set-marker': 'Set marker'
+        'set-marker': 'Set marker',
+        'set-marker2': 'Set marker2'
+        //,'text-marker' : 'textmarker'
     },
     elements: {},
     ruler: null,
@@ -93,11 +96,13 @@ $N.Class.create("Player", $N.Core, {
         // IE apparently doesn't send the second mousedown on double click:
         var jump = $J.browser.msie ? 'mousedown dblclick' : 'mousedown';
         this.elements.rewind.attr('href', '#').bind(jump, this.attach(this._onRewind))
-            .click(function() {return false; });
+            .click(function() {return false;});
         this.elements.forward.attr('href', '#').bind(jump, this.attach(this._onForward))
-            .click(function() {return false; });
+            .click(function() {return false;});
         this.elements.pause.attr('href', '#').bind('click', this.attach(this._onPause));
         this.elements.play.attr('href', '#').bind('click', this.attach(this._onPlay));
+        
+        //assigning title string to all anchors???????
         this.elements.control.find('a').add(this.elements.setMarker)
             .attr('href', '#')
             .each(function(i, a){
@@ -108,7 +113,12 @@ $N.Class.create("Player", $N.Core, {
             
         //this.elements.markerControl.find('a').attr('href', '#');
         if (this.map) {
+            //configureMarkersDiv();
             this.elements.setMarker.bind('click', this.attach(this._onSetMarker));
+            this.elements.setMarker2.bind('click', this.attach(this._onSetMarker2));
+            //this.elements.textMarker.attr('type', 'text');
+            //this.elements.textMarker.bind('click', this.attach(this._onSetMarker2));
+          
         } else {
             this.elements.setMarker.remove();
         }
@@ -131,6 +141,13 @@ $N.Class.create("Player", $N.Core, {
             resizeTimer = setTimeout(this.attach(this.resize), 100);
         }));
         //this.container.resize(this.attach(this.resize)); // Can loop ?
+    },
+
+    _onSetMarker2: function() {
+        if (this.map) {
+            this.fire('markeradd2', {offset: this.soundProvider.getPosition()});
+        }
+        return false;
     },
 
     resize: function(overrideHeight) {
