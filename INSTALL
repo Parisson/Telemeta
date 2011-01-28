@@ -176,6 +176,7 @@ By default, the server starts on the port 8000. You can override this with, for 
 
     http://localhost:9000
 
+Enjoy it !
 
 -------------------
 9. Configure Apache
@@ -193,3 +194,4 @@ This will prevent Apache to put some audio data in the cache memory as it is usu
 -------------------------
 
 See README and http://telemeta.org.
+
