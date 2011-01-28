@@ -23,9 +23,9 @@ Install the dependencies
 
     Install all dependencies like this::
 	
-	sudo aptitude install python python-xml python-mutagen python-django \
-	       python-imaging python-mysqldb mysql-server python-numpy python-scipy \
-               python-ctypes python-setuptools python-support python-docutils
+        sudo aptitude install python python-xml python-mutagen python-django \
+                              python-imaging python-mysqldb mysql-server python-numpy python-scipy \
+                              python-ctypes python-setuptools python-support python-docutils
 
     Just add these lines to your /etc/apt/sources-list::
 
@@ -61,7 +61,6 @@ Read the README and INSTALL file, install dependencies and then::
     sudo python setup.py install
 
 
-    
 Install Telemeta
 ------------------
 
