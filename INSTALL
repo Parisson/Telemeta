@@ -177,9 +177,6 @@ By default, the server starts on the port 8000. You can override this with, for 
     http://localhost:9000
 
 
-See README and http://telemeta.org for more informations.
-
-
 -------------------
 9. Configure Apache
 -------------------
@@ -191,3 +188,8 @@ http://docs.djangoproject.com/en/1.1/howto/deployment/modwsgi/#howto-deployment-
 
 This will prevent Apache to put some audio data in the cache memory as it is usually the case with mod_python.
 
+-------------------------
+10. Contact / More infos
+-------------------------
+
+See README and http://telemeta.org.
