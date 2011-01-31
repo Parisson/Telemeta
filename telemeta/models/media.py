@@ -359,3 +359,18 @@ class PlaylistResource(ModelCore):
 class MediaInvalidCodeError(Exception):
     pass
 
+class MediaItemMarker(ModelCore):
+    "2D marker object : text value vs. time"
+    
+    element_type = 'marker'
+    item_id  = CharField(_('item_id'), required=True)
+    public_id = CharField(_('public_id'), required=True)
+    time = CharField(_('time'), required=True)
+    description = TextField(_('description'))
+    author = CharField(_('author'))
+    
+    class Meta(MetaCore):
+        db_table = 'media_markers'
+
+    def __unicode__(self):
+        return self.time + ' : ' + self.description + '(' + self.author + ')'

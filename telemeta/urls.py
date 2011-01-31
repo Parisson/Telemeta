@@ -35,8 +35,9 @@
 # Author: Olivier Guilyardi <olivier@samalyse.com>
 
 from django.conf.urls.defaults import *
-from telemeta.models import MediaItem, MediaCollection
+from telemeta.models import MediaItem, MediaCollection, MediaItemMarker
 from telemeta.web.base import WebView
+from jsonrpc import jsonrpc_site
 import os.path
 import telemeta.config
 
@@ -176,4 +177,9 @@ urlpatterns = patterns('',
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'telemeta/login.html'},
         name="telemeta-login"),
     url(r'^logout/$', web_view.logout, name="telemeta-logout"),
+    
+    # JSON RPC
+    url(r'^json/browse/', 'jsonrpc.views.browse', name="jsonrpc_browser"), # for the graphical browser/web console only, omissible
+    url(r'^json/$', jsonrpc_site.dispatch, name='jsonrpc_mountpoint'),
+    url(r'^json/(?P<method>[a-zA-Z0-9.]+)$', jsonrpc_site.dispatch),  # for HTTP GET only, also omissible
 )

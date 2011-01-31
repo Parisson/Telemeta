@@ -61,6 +61,16 @@ Read the README and INSTALL file, install dependencies and then::
     sudo python setup.py install
 
 
+Install JSON-RPC server
+------------------------
+
+In order to use markers on the player, you will need a JSONN-RPC server for django::
+    
+    git clone git://github.com/samuraisam/django-json-rpc.git
+    cd django-json-rpc
+    python setup.py install
+
+
 Install Telemeta
 ------------------
 
@@ -116,7 +126,7 @@ Modifiy the following variables:
     ADMINS =            telemeta requires that you indicate an administrator here
     DATABASES =         your database setting dict (don't forget to create the database if needed)
     MEDIA_ROOT =        absolute path to the media directory you just created
-    INSTALLED_APPS =    add 'telemeta' to the tuple
+    INSTALLED_APPS =    add 'telemeta' and 'jsonrpc' to the tuple
     
 Add the following variables:
     

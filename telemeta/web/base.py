@@ -38,6 +38,8 @@ import sys
 import datetime
 import timeside
 
+from jsonrpc import jsonrpc_method
+
 from django.template import RequestContext, loader
 from django import template
 from django.http import HttpResponse
@@ -50,7 +52,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.context_processors import csrf
 
 from telemeta.models import MediaItem, Location, MediaCollection, EthnicGroup
-from telemeta.models import dublincore, Enumeration
+from telemeta.models import dublincore, Enumeration, MediaItemMarker
 import telemeta.interop.oai as oai
 from telemeta.interop.oaidatasource import TelemetaOAIDataSource
 from django.core.exceptions import ObjectDoesNotExist
@@ -59,6 +61,7 @@ from telemeta.util.unaccent import unaccent_icmp
 from telemeta.util.logger import Logger
 from telemeta.cache import TelemetaCache
 import telemeta.web.pages as pages
+
 
 def render(request, template, data = None, mimetype = None):
     return render_to_response(template, data, context_instance=RequestContext(request), 
@@ -527,3 +530,22 @@ class WebView(object):
     def logout(self, request):
         auth.logout(request)
         return redirect('telemeta-home')
+        
+    @jsonrpc_method('telemeta.add_marker')
+    def add_marker(request, item_id, public_id, time, description):
+        # FIXME: get current logged author
+        author = 'test'
+#        item = MediaItem.objects.get(public_id=item_id)
+        m = MediaItemMarker(item_id=item_id) 
+        m.public_id = public_id
+        m.time = time
+        m.description = description
+        m.author= author
+        m.save()
+#        return m.__dict__
+
+    @jsonrpc_method('telemeta.del_marker')
+    def del_marker(request, public_id):
+        m = MediaItemMarker.objects.get(public_id=public_id)
+        m.delete()
+        
