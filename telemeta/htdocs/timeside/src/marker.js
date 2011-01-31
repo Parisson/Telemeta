@@ -211,6 +211,11 @@ $N.Class.create("Marker", $N.Core, {
         $J(document).mouseup(this.attachWithEvent(this._onMouseUp));
     }
 
+//    _toString: function() {
+//        return "<marker id="+id+" position="+position+" description=\""+
+//            +description+"\"/>";
+//    }
+
 
 });
 
