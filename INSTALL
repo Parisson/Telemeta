@@ -114,11 +114,15 @@ Edit the file settings.py in a text editor.
 Modifiy the following variables:
 
     ADMINS =            telemeta requires that you indicate an administrator here
-    DATABASE_* =        your database settings (don't forget to create the database if needed)
+    DATABASES =         your database setting dict (don't forget to create the database if needed)
     MEDIA_ROOT =        absolute path to the media directory you just created
     INSTALLED_APPS =    add 'telemeta' to the tuple
     
 Add the following variables:
+    
+    TEMPLATE_CONTEXT_PROCESSORS = (
+        'django.core.context_processors.request',
+        'django.core.context_processors.auth',)
 
     TELEMETA_ORGANIZATION =  name of the organization which hosts this installation
     TELEMETA_SUBJECTS =      tuple of subject keywords (used for Dublin Core), such as "Ethnology", etc...

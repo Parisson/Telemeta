@@ -47,6 +47,7 @@ from django.views.generic import list_detail
 from django.conf import settings
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
+from django.core.context_processors import csrf
 
 from telemeta.models import MediaItem, Location, MediaCollection, EthnicGroup
 from telemeta.models import dublincore, Enumeration
@@ -144,7 +145,6 @@ class WebView(object):
             if item.file:
                 decoder  = timeside.decoder.FileDecoder(item.file.path)
                 pipe = decoder
-                mime_type = decoder.mimetype
                 
                 for analyzer in self.analyzers:
                     subpipe = analyzer()
@@ -153,6 +153,9 @@ class WebView(object):
                     
                 pipe.run()
                 
+                mime_type = decoder.format()
+                analyzers.append({'name': 'Mime type', 'id': 'mime_type', 'unit': '', 'value': mime_type})
+                    
                 for analyzer in analyzers_sub:
                     value = analyzer.result()
                     if analyzer.id() == 'duration':
@@ -160,14 +163,12 @@ class WebView(object):
                         item.approx_duration = approx_value
                         item.save()
                         value = datetime.timedelta(0,value)
-                    if analyzer.id() == 'mime_type':
-                        value = decoder.format()
                         
                     analyzers.append({'name':analyzer.name(),
                                       'id':analyzer.id(),
                                       'unit':analyzer.unit(),
                                       'value':str(value)})
-                
+                  
             self.cache.write_analyzer_xml(analyzers, analyze_file)
             
         
