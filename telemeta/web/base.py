@@ -536,16 +536,27 @@ class WebView(object):
         # FIXME: get current logged author
         author = 'test'
 #        item = MediaItem.objects.get(public_id=item_id)
-        m = MediaItemMarker(item_id=item_id) 
-        m.public_id = public_id
-        m.time = time
-        m.description = description
-        m.author= author
-        m.save()
-#        return m.__dict__
+        marker = MediaItemMarker(item_id=item_id) 
+        marker.public_id = public_id
+        marker.time = time
+        marker.description = description
+        marker.author= author
+        marker.save()
 
     @jsonrpc_method('telemeta.del_marker')
     def del_marker(request, public_id):
         m = MediaItemMarker.objects.get(public_id=public_id)
         m.delete()
         
+    @jsonrpc_method('telemeta.get_markers')
+    def get_markers(request, item_id):
+        markers = MediaItemMarker.objects.get(item_id=item_id)
+        list = []
+        for marker in markers:
+            dict = {}
+            dict['public_id'] = marker.public_id
+            dict['time'] = marker.time
+            dict['description'] = marker.description
+            dict['author'] = marker.author
+            list.append(dict)
+        return list
