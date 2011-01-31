@@ -550,7 +550,7 @@ class WebView(object):
         
     @jsonrpc_method('telemeta.get_markers')
     def get_markers(request, item_id):
-        markers = MediaItemMarker.objects.get(item_id=item_id)
+        markers = MediaItemMarker.objects.filter(item_id=item_id)
         list = []
         for marker in markers:
             dict = {}
