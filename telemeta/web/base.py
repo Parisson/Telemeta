@@ -532,16 +532,20 @@ class WebView(object):
         return redirect('telemeta-home')
         
     @jsonrpc_method('telemeta.add_marker')
-    def add_marker(request, item_id, public_id, time, description):
-        # FIXME: get current logged author
-        author = 'test'
-#        item = MediaItem.objects.get(public_id=item_id)
-        marker = MediaItemMarker(item_id=item_id) 
-        marker.public_id = public_id
-        marker.time = time
-        marker.description = description
-        marker.author= author
-        marker.save()
+    def add_marker(request, marker):
+        # marker must be a dict
+        if isinstance(marker, dict):
+            m = MediaItemMarker(item_id=marker['item_id']) 
+            m.public_id = marker['public_id']
+            m.time = float(marker['time'])
+            m.description = marker['description']
+            # FIXME: get current logged author
+            # marker.author = marker['author']
+            author = 'test'
+            m.author = author
+            m.save()
+        else:
+            return 'Error : Bad marker dictionnary'
 
     @jsonrpc_method('telemeta.del_marker')
     def del_marker(request, public_id):
@@ -555,7 +559,7 @@ class WebView(object):
         for marker in markers:
             dict = {}
             dict['public_id'] = marker.public_id
-            dict['time'] = marker.time
+            dict['time'] = str(marker.time)
             dict['description'] = marker.description
             dict['author'] = marker.author
             list.append(dict)

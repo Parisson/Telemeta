@@ -365,7 +365,7 @@ class MediaItemMarker(ModelCore):
     element_type = 'marker'
     item_id  = CharField(_('item_id'), required=True)
     public_id = CharField(_('public_id'), required=True)
-    time = CharField(_('time'), required=True)
+    time = FloatField(_('time'), required=True)
     description = TextField(_('description'))
     author = CharField(_('author'))
     
