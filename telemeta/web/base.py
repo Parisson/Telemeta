@@ -534,6 +534,7 @@ class WebView(object):
     @jsonrpc_method('telemeta.add_marker')
     def add_marker(request, marker):
         # marker must be a dict
+        print marker
         if isinstance(marker, dict):
             m = MediaItemMarker(item_id=marker['item_id']) 
             m.public_id = marker['public_id']
