@@ -100,12 +100,11 @@ TimeSide(function($N) {
             var m = nonNullMarkersMap.markers;
             var l = m.length;
             if(div){
-                var d = new Date();
                 var textWithFocus;
                 div.style.display = "block";
                 var doc = document;
                 var divChildren = div.childNodes;
-                var round = Math.round;
+                //var round = Math.round;
                 for(var i=0; i<l; i++){
                     var marker = m[i];
                     var subdiv, text;
@@ -150,11 +149,62 @@ TimeSide(function($N) {
                     if(selectedMarkOffset==marker.offset){
                         textWithFocus = text;
                     }
+                    var send = this.sendHTTP;
+                    //set the ok function
+                    ok.onclick = function(){
+                        marker.desc = text.value;
+                        send(marker);
+                    };
+
                 }
                 if(textWithFocus){
                     textWithFocus.focus();
                 }
             }
+        },
+
+        sendHTTP: function(marker){
+//            var data2send = {"item_id": itemid, "public_id": marker.id, "time": marker.offset,
+//                    "description": marker.desc};
+
+            //itemid is the item (spund file) name
+            var sPath = window.location.pathname;
+            //remove last "/" or last "/#", if any...
+            sPath = sPath.replace(/\/#*$/,"");
+            var itemid = sPath.substring(sPath.lastIndexOf('/') + 1);
+
+
+            //don't change the order BELOW unless the relative python code for the server changes as 
+            //well:
+            var data2send = [itemid, marker.id, marker.offset, marker.desc];
+            $.ajax({
+                type: "POST",
+                url: "index.php",
+                method: "telemeta.add_marker",
+                data: data2send,
+                //data: "name=John&location=Boston",
+                success: function(msg){
+                    alert( "Data Saved: " + msg );
+                }
+            });
+        },
+
+        quote: function(string){
+//            var s = "\"";
+//            var isEscaped = false;
+//            for(var i=0; i<string.length; i++){
+//                var c = string.charAt(i);
+//                if(isEscaped){
+//
+//                }else if(c == "\\"){
+//                    isEscaped = true;
+//                }else{
+//
+//                }
+//                s+=c;
+//            }
+//            s+="\"";
+            return s;
         }
 
     });
