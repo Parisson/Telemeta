@@ -28,11 +28,9 @@ load_player({{ item.approx_duration.as_seconds }});
 
 {% endblock %}
 
-
 {% if item %}
 {% block submenu %}
     <div>
-    <a href="{% url telemeta-item-detail-edit item.public_id %}"><button>EDIT</button></a>
     <a href="{% url telemeta-item-dublincore item.public_id %}">Dublin Core</a>
     </div>
 {% endblock %}
@@ -64,7 +62,6 @@ load_player({{ item.approx_duration.as_seconds }});
         </div>
         </div>
 
-        <div class="markers_div" id="markers_div_id"></div>
         <div class="item_visualization">
             <form id="visualizer_id_form" method="get" action="#">
                 <!--
@@ -90,7 +87,7 @@ load_player({{ item.approx_duration.as_seconds }});
               <td>Property</td>
               <td>Value</td>
               <td>Unit</td>
-             </tr>
+             <tr>
             {% for analyser in analysers %}
              <tr class="analyzer-line">
               <td>
@@ -119,6 +116,7 @@ load_player({{ item.approx_duration.as_seconds }});
         </form>
 -->
         </div>
+
         {% if audio_export_enabled %}
         <div class="exporter">
             <p>{% trans "Download:" %}
@@ -131,114 +129,12 @@ load_player({{ item.approx_duration.as_seconds }});
     </div>
 {% endif %}
 
-    <div class="infos">
-    {% block general_info %}
-        <dl class="listing">
-            {% dl_field item "title" %}
-            {% dl_field item "alt_title" %}
-            {% dl_field item "collector" %}
-            <dt>{% field_label item "collection" %}</dt>
-            <dd><a href="{% url telemeta-collection-detail item.collection.public_id %}">{{ item.collection }}</a></dd>
-            {% if item.recorded_from_date %}
-                <dt>{% trans "Recording date" %}</dt>
-                <dd>{{ item.recorded_from_date }} {{ item.recorded_to_date|prepend:" - "  }}</dd>
-            {% endif %}
-        </dl>
-    {% endblock general_info %}
-    </div>
-    <div class="extraInfos">
-    {% block geoethnic_data %}
-        <div>
-            <h4><a href="#">{% trans "Geographic and cultural informations" %}</a></h4>
-            <dl class="listing">
-                {% if item.location %}
-                    <dt>{% trans "Location" %}</dt>
-                    <dd>{{ item.location.fullnames|join:"<br/>" }}</dd>
-                {% endif %}
-                {% dl_field item "location_comment" %}
-                {% dl_field item "cultural_area" %}
-                {% dl_field item "ethnic_group" %}
-                {% dl_field item "context_comment" %}
-                {% dl_field item "keywords" join with ", " %}
-            </dl>
-        </div>
-    {% endblock geoethnic_data %}
-    </div>
-    <div class="extraInfos">
-    {% block musical_data %}
-        <div>
-            <h4><a href="#">{% trans "Musical informations" %}</a></h4>
-            <dl class="listing">
-                {% dl_field item "vernacular_style" %}
-                {% dl_field item "generic_style" %}
-                {% dl_field item "author" %}
-            </dl>
-            {% if item.performances %}
-            <div class="instruments">
-                <table class="instruments">
-                <thead>
-                    <tr>
-                        <td>{% field_label "MediaItemPerformance" "instruments_num" %}</td>
-                        <td>{% field_label "MediaItemPerformance" "instrument" %}</td>
-                        <td>{% field_label "MediaItemPerformance" "alias" %}</td>
-                        <td>{% field_label "MediaItemPerformance" "musicians" %}</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for performance in item.performances.all %}
-                    <tr>
-                        <td>{{ performance.instruments_num }}</td>
-                        <td>{{ performance.instrument|default:"" }}</td>
-                        <td>{{ performance.alias|default:"" }}</td>
-                        <td>{{ performance.musicians }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-                </table>
-            </div>
-            {% endif %}
-        </div>
-    {% endblock musical_data %}
-    </div>
-    <div class="extraInfos">
-    {% block general_data %}
-        <div>
-            <h4><a href="#">{% trans "General informations" %}</a></h4>
-            <dl class="listing">
-                {% dl_field item "comment" %}
-                {% dl_field item "collector_selection" %}
-            </dl>
-        </div>
-    {% endblock general_data %}
-    </div>
-    <div class="extraInfos">
-    {% block archive_data %}
-        <div>
-            <h4><a href="#">{% trans "Archiving data" %}</a></h4>
-            <dl class="listing">
-                {% dl_field item "code" %}
-                {% dl_field item "old_code" %}
-                {% dl_field item "track" %}
-                {% dl_field item "creator_reference" %}
-                {% dl_field item "external_references" %}
-                {% dl_field item "public_access_label" %}
-            </dl>
-        </div>
-    {% endblock archive_data %}
-    </div>
-    <div class="extraInfos">
-    {% block technical_data %}
-        <div>
-            <h4><a href="#">{% trans "Technical data" %}</a></h4>
-            <div>
-                <dl class="listing">
-                    <dt>{% trans "Media type" %}</dt><dd>{% trans "Audio" %}</dd>
-                    {% dl_field item "approx_duration" %}
-                </dl>
-            </div>
-        </div>
-    {% endblock technical_data %}
-    </div>
+<div class="infos">
+<form method="POST" action="">{% csrf_token %}
+    {{ formset }}
+<button type="submit">SAVE</button>
+</form>
+</div>
 
 </div> <!-- with-rightcol -->
 

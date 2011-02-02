@@ -41,6 +41,7 @@ import re
 from telemeta.models.location import LocationRelation, Location
 from telemeta.models.system import Revision
 from telemeta.models import query
+from django.forms import ModelForm
 
 class MediaResource(ModelCore):
     "Base class of all media objects"
@@ -202,7 +203,7 @@ class MediaCollection(MediaResource):
 
     class Meta(MetaCore):
         db_table = 'media_collections'
-
+    
 class MediaItem(MediaResource):
     "Describe an item"
     element_type = 'item'
@@ -374,3 +375,5 @@ class MediaItemMarker(ModelCore):
 
     def __unicode__(self):
         return self.time + ' : ' + self.description + '(' + self.author + ')'
+
+

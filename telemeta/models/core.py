@@ -165,7 +165,8 @@ class DurationField(models.Field):
             # information), but this can be a side-effect of interacting with a
             # database backend (e.g. Oracle), so we'll be accommodating.
             return self.to_python(value.time())
-
+        else:
+            value = str(value)
         try:
             return Duration.fromstr(value)
         except ValueError:

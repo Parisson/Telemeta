@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+    # -*- coding: utf-8 -*-
 # Copyright (C) 2007-2010 Samalyse SARL
 #
 # This software is a computer program whose purpose is to backup, analyse,
@@ -56,6 +56,10 @@ class MediaItemQuerySet(CoreQuerySet):
         "Find items which do not belong to any collection"
         return self.extra(
             where = ["collection_id NOT IN (SELECT id FROM media_collections)"]);
+
+    def by_public_id(self, public_id):
+        "Find items by public_id"
+        return self.filter(public_id=public_id) 
 
     def by_recording_date(self, from_date, to_date = None):
         "Find items by recording date"
