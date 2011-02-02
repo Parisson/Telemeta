@@ -164,8 +164,8 @@ TimeSide(function($N) {
         },
 
         sendHTTP: function(marker){
-//            var data2send = {"item_id": itemid, "public_id": marker.id, "time": marker.offset,
-//                    "description": marker.desc};
+            var data2send = {"item_id": itemid, "public_id": marker.id, "time": marker.offset,
+                    "description": marker.desc};
 
             //itemid is the item (spund file) name
             var sPath = window.location.pathname;
@@ -176,16 +176,22 @@ TimeSide(function($N) {
 
             //don't change the order BELOW unless the relative python code for the server changes as 
             //well:
-            var data2send = [itemid, marker.id, marker.offset, marker.desc];
+            //var data2send = [itemid, marker.id, marker.offset, marker.desc];
             $.ajax({
                 type: "POST",
-                url: "index.php",
+                url: "/json",
                 method: "telemeta.add_marker",
                 data: data2send,
-                //data: "name=John&location=Boston",
-                success: function(msg){
-                    alert( "Data Saved: " + msg );
+                dataType: 'text',
+                contentType: 'application/json; charset=utf-8',
+//                success: function(msg){
+//                    alert( "Data Saved: " + msg );
+//                },
+                error: function(msg){
+                    alert("Error: "+msg);
+                    
                 }
+
             });
         },
 
