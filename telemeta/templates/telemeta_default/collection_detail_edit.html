@@ -1,0 +1,27 @@
+{% extends "telemeta/base.html" %}
+{% load telemeta_utils %}
+{% load i18n %}
+
+{% block head_title %}{% trans "Collection" %}{{collection|prepend:': '}} - {{ block.super }}{% endblock %}
+
+
+{% if collection %}
+
+{% block submenu %}
+    <div><a href="{% url telemeta-collection-dublincore collection.public_id %}">Dublin Core</a></div>
+{% endblock %}
+
+{% block content %}
+    <h3>Collection: {{ collection }}</h3>
+        <div class="infos">
+        
+        <form method="POST" action="">{% csrf_token %}
+        {{ formset }}
+        <button type="submit">SAVE</button>
+
+        </div>
+{% endblock %}
+{% else %}
+    <p>No such collection</p>
+{% endif %}
+

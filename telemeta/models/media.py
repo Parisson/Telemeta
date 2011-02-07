@@ -364,7 +364,7 @@ class MediaItemMarker(ModelCore):
     "2D marker object : text value vs. time"
     
     element_type = 'marker'
-    item_id  = CharField(_('item_id'), required=True)
+    item  = ForeignKey('MediaItem', related_name="markers", verbose_name=_('item'))
     public_id = CharField(_('public_id'), required=True)
     time = FloatField(_('time'), required=True)
     description = TextField(_('description'))
