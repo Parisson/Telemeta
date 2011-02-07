@@ -62,59 +62,61 @@ load_player({{ item.approx_duration.as_seconds }});
         </div>
 
         <div class="markers_div" id="markers_div_id"></div>
-        <div class="item_visualization">
-            <form id="visualizer_id_form" method="get" action="#">
-                <!--
-                <select name="visualizer_id" onchange="this.form.submit()">
-                    {% for v in visualizers %}
-                    <option value="{{ v.id }}" {% ifequal v.id visualizer_id %} selected="selected" {% endifequal %}>
-                    {{v.name}}</option>
-                    {% endfor %}
-                </select>
-                -->
-                <select id="visualizer_id" name="visualizer_id">
-                    {% for v in visualizers %}
-                    <option value="{% url telemeta-item-visualize item.public_id,v.id,"WIDTH","HEIGHT" %}">
-                    {{v.name}}</option>
-                    {% endfor %}
-                </select>
-                <input type="submit" value="Set" />
-            </form>
+        <div id="item_edit">
+            <div class="item_visualization">
+                <form id="visualizer_id_form" method="get" action="#">
+                    <!--
+                    <select name="visualizer_id" onchange="this.form.submit()">
+                        {% for v in visualizers %}
+                        <option value="{{ v.id }}" {% ifequal v.id visualizer_id %} selected="selected" {% endifequal %}>
+                        {{v.name}}</option>
+                        {% endfor %}
+                    </select>
+                    -->
+                    <select id="visualizer_id" name="visualizer_id">
+                        {% for v in visualizers %}
+                        <option value="{% url telemeta-item-visualize item.public_id,v.id,"WIDTH","HEIGHT" %}">
+                                {{v.name}}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="submit" value="Set" />
+                </form>
 
-          <div class="analyzer">
-            <table width="100%">
-             <tr class="analyzer-title">
-              <td>Property</td>
-              <td>Value</td>
-              <td>Unit</td>
-             </tr>
-            {% for analyser in analysers %}
-             <tr class="analyzer-line">
-              <td>
-                {{ analyser.name }}
-              </td>
-              <td>
-                {{ analyser.value }}
-              </td>
-              <td>
-                {{ analyser.unit }}
-              </td>
-            </tr>
-            {% endfor %}
-           </table>
-         </div>
-<!--
-        <form method="get" action="#">
-            <p>&nbsp;Vamp plugin analysis</p>
-            <select name="vamp_id">
-            {% for plugin in vamp_plugins %}
-            <option value="{{ plugin }}" {% ifequal plugin vamp_id %} selected="selected" {% endifequal %}>
-            {{ plugin }}</option>
-            {% endfor %}
-            </select>
-            <input type="submit" value="Get" />
-        </form>
--->
+                <div class="analyzer">
+                    <table width="100%">
+                        <tr class="analyzer-title">
+                            <td>Property</td>
+                            <td>Value</td>
+                            <td>Unit</td>
+                        </tr>
+                        {% for analyser in analysers %}
+                        <tr class="analyzer-line">
+                            <td>
+                                {{ analyser.name }}
+                            </td>
+                            <td>
+                                {{ analyser.value }}
+                            </td>
+                            <td>
+                                {{ analyser.unit }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+                <!--
+                        <form method="get" action="#">
+                            <p>&nbsp;Vamp plugin analysis</p>
+                            <select name="vamp_id">
+                            {% for plugin in vamp_plugins %}
+                            <option value="{{ plugin }}" {% ifequal plugin vamp_id %} selected="selected" {% endifequal %}>
+                            {{ plugin }}</option>
+                            {% endfor %}
+                            </select>
+                            <input type="submit" value="Get" />
+                        </form>
+                -->
+            </div>
         </div>
         {% if audio_export_enabled %}
         <div class="exporter">
