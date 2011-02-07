@@ -7,129 +7,148 @@
 
 TimeSide(function($N, $J) {
 
-$N.Class.create("MarkerMap", $N.Core, {
-    markers: null,
+    $N.Class.create("MarkerMap", $N.Core, {
+        markers: null,
 
-    initialize: function($super, markers) {
-        $super();
-        if (!markers)
-            markers = [];
-        this.markers = markers;
-    },
-
-    toArray: function() {
-        return [].concat(this.markers);
-    },
-
-    byIndex: function(index) {
-        return this.markers[index];
-    },
-
-    byId: function(id) {
-        var marker = null;
-        for (var i in this.markers) {
-            if (this.markers[i].id == id) {
-                marker = this.markers[i];
-                break;
+        initialize: function($super, markers) {
+            $super();
+            if (!markers){
+                markers = [];
             }
-        }
-        return marker;
-    },
+            this.markers = markers;
+        },
 
-    indexOf: function(marker) {
-        var index = null;
-        for (var i in this.markers) {
-            if (this.markers[i].id == marker.id) {
-                index = parseInt(i);
-                break;
+        toArray: function() {
+            return [].concat(this.markers);
+        },
+
+        byIndex: function(index) {
+            return this.markers[index];
+        },
+
+        byId: function(id) {
+            var marker = null;
+            for (var i in this.markers) {
+                if (this.markers[i].id == id) {
+                    marker = this.markers[i];
+                    break;
+                }
             }
-        }
-        return index;
-    },
+            return marker;
+        },
 
-    _reorder: function() {
-        this.markers.sort(this.compare);
-        for (var i in this.markers) {
-            this.fire('indexchange', {marker: this.markers[i], index: parseInt(i)});
-        }
-    },
+        indexOf: function(marker) {
+            var index = null;
+            for (var i in this.markers) {
+                if (this.markers[i].id == marker.id) {
+                    index = parseInt(i);
+                    break;
+                }
+            }
+            return index;
+        },
 
-    add: function(offset, desc) {
-        var id = this.uniqid();
-        var marker = {id: id, offset: offset, desc: desc};
-        var i = this.markers.push(marker) - 1;
-        this.fire('add', {marker: marker, index: i});
-        this._reorder();
-        return marker;
-    },
+        _reorder: function() {
+            this.markers.sort(this.compare);
+            for (var i in this.markers) {
+                this.fire('indexchange', {
+                    marker: this.markers[i],
+                    index: parseInt(i)
+                    });
+            }
+        },
 
-    remove: function(marker) {
-        if (marker) {
-            var i = this.indexOf(marker);
-            this.markers.splice(i, 1);
-            this.fire('remove', {marker: marker});
+        add: function(offset, desc) {
+            var id = this.uniqid();
+            var marker = {
+                id: id,
+                offset: offset,
+                desc: desc
+            };
+            var i = this.markers.push(marker) - 1;
+            this.fire('add', {
+                marker: marker,
+                index: i
+            });
             this._reorder();
-        }
-        return marker;
-    },
+            return marker;
+        },
 
-    compare: function(marker1, marker2) {
-        if (marker1.offset > marker2.offset)
-            return 1;
-        if (marker1.offset < marker2.offset)
-            return -1;
-        return 0;
-    },
-
-    move: function(marker, offset) {
-        oldMarkers = [].concat(this.markers);
-        marker.offset = offset;
-        this._reorder();
-    },
-
-    getPrevious: function(offset, skip) {
-        var marker = null;
-        if (!skip) skip = 0;
-        markers = [].concat(this.markers).reverse();
-        $J(markers).each(function(i, m) {
-            if (offset > m.offset && !(skip--)) {
-                marker = m;
-                return false;
+        remove: function(marker) {
+            if (marker) {
+                var i = this.indexOf(marker);
+                this.markers.splice(i, 1);
+                this.fire('remove', {
+                    marker: marker
+                });
+                this._reorder();
             }
-        });
-        return marker;
-    },
+            return marker;
+        },
 
-    getNext: function(offset, skip) {
-        var marker = null;
-        if (!skip) skip = 0;
-        $J(this.markers).each(function(i, m) {
-            if (offset < m.offset && !(skip--)) {
-                marker = m;
-                return false;
+        compare: function(marker1, marker2) {
+            if (marker1.offset > marker2.offset){
+                return 1;
             }
-        });
-        return marker;
-    },
+            if (marker1.offset < marker2.offset){
+                return -1;
+            }
+            return 0;
+        },
 
-    each: function(callback) {
-        $J(this.markers).each(callback);
-    },
+        move: function(marker, offset) {
+            oldMarkers = [].concat(this.markers);
+            marker.offset = offset;
+            this._reorder();
+        },
 
-    _toString: function() {
-        var s = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<telemeta>\n<markers>";
-        for (var i in this.markers) {
+        getPrevious: function(offset, skip) {
+            var marker = null;
+            if (!skip) {
+                skip = 0;
+            }
+            markers = [].concat(this.markers).reverse();
+            $J(markers).each(function(i, m) {
+                if (offset > m.offset && !(skip--)) {
+                    marker = m;
+                    return false;
+                }
+            });
+            return marker;
+        },
+
+        getNext: function(offset, skip) {
+            var marker = null;
+            if (!skip) {
+                skip = 0;
+            }
+            $J(this.markers).each(function(i, m) {
+                if (offset < m.offset && !(skip--)) {
+                    marker = m;
+                    return false;
+                }
+            });
+            return marker;
+        },
+
+        each: function(callback) {
+            $J(this.markers).each(callback);
+        },
+
+        _toString: function() {
+            var s = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<telemeta>\n<markers>";
+            for (var i in this.markers) {
                 marker = this.markers[i];
-            s+="\n\t"; //+marker._toString();
-            s+="<marker id="+marker.id+" position="+marker.offset+" description=\""+
-            +marker.desc+"\"/>"
+                s+="\n\t"; //+marker._toString();
+                s+="<marker id="+marker.id+" position="+marker.offset+" description=\""+
+                +marker.desc+"\"/>"
+            }
+            s+="\n</markers>\n</telemeta>";
+            return s;
         }
-        s+="\n</markers>\n</telemeta>";
-        return s;
-    }
 
-});
+    });
 
-$N.notifyScriptLoad();
+    $N.notifyScriptLoad();
 
 });

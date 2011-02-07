@@ -164,52 +164,42 @@ TimeSide(function($N) {
         },
 
         sendHTTP: function(marker){
-            var data2send = {"item_id": itemid, "public_id": marker.id, "time": marker.offset,
-                    "description": marker.desc};
-
+            
             //itemid is the item (spund file) name
             var sPath = window.location.pathname;
             //remove last "/" or last "/#", if any...
             sPath = sPath.replace(/\/#*$/,"");
             var itemid = sPath.substring(sPath.lastIndexOf('/') + 1);
 
+            //WARNING: use single quotes for the whole string!!
+            //see http://stackoverflow.com/questions/4809157/i-need-to-pass-a-json-object-to-a-javascript-ajax-method-for-a-wcf-call-how-can
+            var data2send = '{"id":"jsonrpc", "params":[{"item_id":"'+ itemid+'", "public_id": "'+marker.id+'", "time": "'+
+            marker.offset+'","description": "'+marker.desc+'"}], "method":"telemeta.add_marker","jsonrpc":"1.0"}';
 
-            //don't change the order BELOW unless the relative python code for the server changes as 
-            //well:
-            //var data2send = [itemid, marker.id, marker.offset, marker.desc];
+
             $.ajax({
                 type: "POST",
-                url: "/json",
-                method: "telemeta.add_marker",
-                data: data2send,
-                dataType: 'text',
-                contentType: 'application/json; charset=utf-8',
-//                success: function(msg){
-//                    alert( "Data Saved: " + msg );
-//                },
-                error: function(msg){
-                    alert("Error: "+msg);
-                    
-                }
-
+                url: 'http://localhost:9000/json/',
+                contentType: "application/json",
+                data: data2send
             });
         },
 
         quote: function(string){
-//            var s = "\"";
-//            var isEscaped = false;
-//            for(var i=0; i<string.length; i++){
-//                var c = string.charAt(i);
-//                if(isEscaped){
-//
-//                }else if(c == "\\"){
-//                    isEscaped = true;
-//                }else{
-//
-//                }
-//                s+=c;
-//            }
-//            s+="\"";
+            //            var s = "\"";
+            //            var isEscaped = false;
+            //            for(var i=0; i<string.length; i++){
+            //                var c = string.charAt(i);
+            //                if(isEscaped){
+            //
+            //                }else if(c == "\\"){
+            //                    isEscaped = true;
+            //                }else{
+            //
+            //                }
+            //                s+=c;
+            //            }
+            //            s+="\"";
             return s;
         }
 

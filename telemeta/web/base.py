@@ -116,7 +116,7 @@ class WebView(object):
     def item_detail(self, request, public_id, template='telemeta/mediaitem_detail.html'):
         """Show the details of a given item"""
         item = MediaItem.objects.get(public_id=public_id)
-        
+        print 'ok'
         formats = []
         for encoder in self.encoders:
             formats.append({'name': encoder.format(), 'extension': encoder.file_extension()})
@@ -530,6 +530,10 @@ class WebView(object):
     def logout(self, request):
         auth.logout(request)
         return redirect('telemeta-home')
+
+    @jsonrpc_method('telemeta.add_marker_test')
+    def add_marker_test(request,marker):
+        print "Received"
         
     @jsonrpc_method('telemeta.add_marker')
     def add_marker(request, marker):
