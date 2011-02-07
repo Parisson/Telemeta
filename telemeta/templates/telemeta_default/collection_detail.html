@@ -11,7 +11,10 @@
 {% if collection %}
 
 {% block submenu %}
-    <div><a href="{% url telemeta-collection-dublincore collection.public_id %}">Dublin Core</a></div>
+    <div>
+    <a href="{% url telemeta-collection-detail-edit collection.public_id %}"><button>EDIT</button></a>
+    <a href="{% url telemeta-collection-dublincore collection.public_id %}">Dublin Core</a>
+    </div>
 {% endblock %}
 
 {% block content %}

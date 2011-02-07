@@ -108,6 +108,8 @@ urlpatterns = patterns('',
         web_view.collection_playlist, 
         dict(template="telemeta/collection.m3u", mimetype="audio/mpegurl"),
         name="telemeta-collection-m3u"),
+    url(r'^collections/(?P<public_id>[A-Za-z0-9._-]+)/edit/$', web_view.collection_detail_edit,
+        dict(template='telemeta/collection_detail_edit.html'), name="telemeta-collection-detail-edit"),
 
     # search
     url(r'^search/$', web_view.search, name="telemeta-search"),
