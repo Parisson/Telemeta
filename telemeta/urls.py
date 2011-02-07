@@ -84,6 +84,9 @@ urlpatterns = patterns('',
         web_view.item_playlist, 
         dict(template="telemeta/mediaitem_xspf.xml", mimetype="application/xspf+xml"),
         name="telemeta-item-xspf"),
+    url(r'^items/(?P<public_id>[A-Za-z0-9._-]+)/edit/$', 
+        web_view.item_detail_edit,
+        name="telemeta-item-detail-edit"),
 
     # collections
     url(r'^collections/$', 'django.views.generic.list_detail.object_list',

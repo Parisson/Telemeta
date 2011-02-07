@@ -31,7 +31,10 @@ load_player({{ item.approx_duration.as_seconds }});
 
 {% if item %}
 {% block submenu %}
-    <div><a href="{% url telemeta-item-dublincore item.public_id %}">Dublin Core</a></div>
+    <div>
+    <a href="{% url telemeta-item-detail-edit item.public_id %}"><button>EDIT</button></a>
+    <a href="{% url telemeta-item-dublincore item.public_id %}">Dublin Core</a>
+    </div>
 {% endblock %}
 
 {% block content %}

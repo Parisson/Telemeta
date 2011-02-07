@@ -50,6 +50,7 @@ from django.conf import settings
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.core.context_processors import csrf
+from django.forms.models import modelformset_factory
 
 from telemeta.models import MediaItem, Location, MediaCollection, EthnicGroup
 from telemeta.models import dublincore, Enumeration, MediaItemMarker
@@ -174,13 +175,88 @@ class WebView(object):
                   
             self.cache.write_analyzer_xml(analyzers, analyze_file)
             
-        
         return render(request, template, 
                     {'item': item, 'export_formats': formats, 
                     'visualizers': graphers, 'visualizer_id': grapher_id,'analysers': analyzers,  #FIXME analysers
                     'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True)
                     })
 
+    def item_detail_edit(self, request, public_id, template='telemeta/mediaitem_detail_edit.html'):
+        """Show the details of a given item"""
+        item = MediaItem.objects.get(public_id=public_id)
+        
+        formats = []
+        for encoder in self.encoders:
+            formats.append({'name': encoder.format(), 'extension': encoder.file_extension()})
+
+        graphers = []
+        for grapher in self.graphers:
+            graphers.append({'name':grapher.name(), 'id': grapher.id()})
+        if request.REQUEST.has_key('grapher_id'):
+            grapher_id = request.REQUEST['grapher_id']
+        else:
+            grapher_id = 'waveform'
+        
+        analyze_file = public_id + '.xml'
+        
+        if self.cache.exists(analyze_file):
+            analyzers = self.cache.read_analyzer_xml(analyze_file)
+            if not item.approx_duration:
+                for analyzer in analyzers:
+                    if analyzer['id'] == 'duration':
+                        value = analyzer['value']
+                        time = value.split(':')
+                        time[2] = time[2].split('.')[0]
+                        time = ':'.join(time)
+                        item.approx_duration = str(time)
+                        item.save()
+        else:
+            analyzers = []
+            analyzers_sub = []
+            if item.file:
+                decoder  = timeside.decoder.FileDecoder(item.file.path)
+                pipe = decoder
+                
+                for analyzer in self.analyzers:
+                    subpipe = analyzer()
+                    analyzers_sub.append(subpipe)
+                    pipe = pipe | subpipe
+                    
+                pipe.run()
+                
+                mime_type = decoder.format()
+                analyzers.append({'name': 'Mime type', 'id': 'mime_type', 'unit': '', 'value': mime_type})
+                    
+                for analyzer in analyzers_sub:
+                    value = analyzer.result()
+                    if analyzer.id() == 'duration':
+                        approx_value = int(round(value))
+                        item.approx_duration = approx_value
+                        item.save()
+                        value = datetime.timedelta(0,value)
+                        
+                    analyzers.append({'name':analyzer.name(),
+                                      'id':analyzer.id(),
+                                      'unit':analyzer.unit(),
+                                      'value':str(value)})
+                  
+            self.cache.write_analyzer_xml(analyzers, analyze_file)
+            
+        MediaItemFormSet = modelformset_factory(MediaItem)
+        if request.method == 'POST':
+            formset = MediaItemFormSet(request.POST, request.FILES, queryset=MediaItem.objects.filter(code=public_id))
+            if formset.is_valid():
+                formset.save()
+                # do something.
+        else:
+            formset = MediaItemFormSet(queryset=MediaItem.objects.filter(code=public_id))
+        
+        return render(request, template, 
+                    {'item': item, 'export_formats': formats, 
+                    'visualizers': graphers, 'visualizer_id': grapher_id,'analysers': analyzers,  #FIXME analysers
+                    'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True), "formset": formset, 
+                    })
+        
     def item_analyze(self):
         pass
         
@@ -569,3 +645,5 @@ class WebView(object):
             dict['author'] = marker.author
             list.append(dict)
         return list
+
+    
