@@ -614,4 +614,13 @@ class WebView(object):
             list.append(dict)
         return list
 
-    
+    @jsonrpc_method('telemeta.update_marker')
+    def update_marker(request, marker):
+        if isinstance(marker, dict):
+            m = MediaItemMarker.objects.get(public_id=marker['public_id'])
+            m.time = float(marker['time'])
+            m.description = marker['description']
+            m.save()
+        else:
+            raise 'Error : Bad marker dictionnary'
+        
