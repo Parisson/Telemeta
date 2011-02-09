@@ -18,7 +18,7 @@ TimeSide(function($N, $J) {
             },
             'div.control': {
                 'div.layout': {
-                    'div.playback': ['a.play', 'a.pause', 'a.rewind', 'a.forward', 'a.set-marker', 'a.set-marker2']
+                    'div.playback': ['a.play', 'a.pause', 'a.rewind', 'a.forward', 'a.set-marker']
                 //,'input.textMarker']
                 }
             }/*,
