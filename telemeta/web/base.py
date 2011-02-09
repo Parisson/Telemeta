@@ -70,9 +70,11 @@ def render(request, template, data = None, mimetype = None):
 
 def stream_from_processor(decoder, processor):
     while True:
-        frames,  eod = decoder.process()
-        _chunk,  eod_proc = processor.process(frames, eod)
-        if eod_proc:
+        frames, eod = decoder.process()
+        _chunk, eodproc = processor.process(frames, eod)
+        if eodproc:
+            decoder.release()
+            processor.release()
             break
         yield _chunk
 
@@ -267,7 +269,7 @@ class WebView(object):
             raise Http404 # FIXME: should be some sort of permissions denied error
 
         for encoder in self.encoders:
-            if encoder.file_extension() == extension:
+            if encoder.file_extension() == extension and 'stream' in encoder.id():
                 break
 
         if encoder.file_extension() != extension:
@@ -286,14 +288,15 @@ class WebView(object):
         else:        
             if not self.cache_export.exists(file):
                 # source > encoder > stream
+                decoder.setup()
                 media = self.cache_export.dir + os.sep + file
                 proc = encoder(media)
+                proc.setup(channels=decoder.channels(), samplerate=decoder.samplerate(), nframes=decoder.nframes())
 #                metadata = dublincore.express_item(item).to_list()
 #                enc.set_metadata(metadata)
-                pipe = decoder | proc
-                pipe.run()
                 response = HttpResponse(stream_from_processor(decoder, proc), mimetype = mime_type)
             else:
+                # cache > stream
                 response = HttpResponse(self.cache_export.read_stream_bin(file), mimetype = mime_type)
         
         response['Content-Disposition'] = 'attachment'
