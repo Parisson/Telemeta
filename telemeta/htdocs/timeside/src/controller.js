@@ -33,16 +33,11 @@ TimeSide(function($N) {
             .observe('move', this.attach(this._onMove))
             .observe('markeradd', this.attach(this._onMarkerAdd))
             .observe('markermove', this.attach(this._onMarkerMove))
-            .observe('markeradd2',this.attach(this._onMarkerAdd2))
+            
             .draw();
             
         },
 
-        _onMarkerAdd2: function(e,data){
-            if (this.cfg.map) {
-                alert(this.cfg.map._toString());
-            }
-        },
 
         _onMove: function(e, data) {
             this.cfg.soundProvider.seek(data.offset);
@@ -77,6 +72,7 @@ TimeSide(function($N) {
                 this.refreshMarkersText(this.cfg.map);
                 this.cfg.map.add(data.offset, '');
                 this.updateMarkersDiv(this.cfg.map, data.offset);
+
             }
         },
         

@@ -93,7 +93,7 @@ TimeSide(function($N, $J) {
             function klass() {
                 this.initialize.apply(this, arguments);
             }
-    
+            //Merge the contents of $N.Class.Methods into klass:
             $N.extend(klass, $N.Class.Methods);
             klass.__name__ = className;
             klass.__super__ = parent;

@@ -7,23 +7,23 @@
 {% block stylesheets %}
 {{ block.super }}
 <link rel="stylesheet" type="text/css" href="{% url telemeta-timeside "css/timeside.css" %}" />
-<link rel="stylesheet" type="text/css" href="{% url telemeta-timeside "skins/lab/style.css" %}" />
-<link rel="stylesheet" type="text/css" href="{% url telemeta-css "player.css" %}" />
-{% endblock %}
-{% block extra_javascript %}
+      <link rel="stylesheet" type="text/css" href="{% url telemeta-timeside "skins/lab/style.css" %}" />
+      <link rel="stylesheet" type="text/css" href="{% url telemeta-css "player.css" %}" />
+      {% endblock %}
+      {% block extra_javascript %}
 
 <script src="{% url telemeta-js "wz_jsgraphics.js" %}" type="text/javascript"></script>
 <script src="{% url telemeta-js "soundmanager2.js" %}" type="text/javascript"></script>
 <script src="{% url telemeta-timeside "src/timeside.js" %}" type="text/javascript"></script>
-<script src="{% url telemeta-js "player.js" %}" type="text/javascript"></script>
+<script src="{% url telemeta-js "playerUtils.js" %}" type="text/javascript"></script>
 
 <script type="text/javascript">
-soundManager.url = '{% url telemeta-swf "./" %}';
-soundManager.flashVersion = 9;
-soundManager.useMovieStar = true; // enable MP4/M4A/AAC
-soundManager.debugMode = false;
-set_player_image_url('{% url telemeta-item-visualize item.public_id,visualizer_id,"WIDTH","HEIGHT" %}');
-load_player({{ item.approx_duration.as_seconds }});
+    soundManager.url = '{% url telemeta-swf "./" %}';
+    soundManager.flashVersion = 9;
+    soundManager.useMovieStar = true; // enable MP4/M4A/AAC
+    soundManager.debugMode = false;
+    set_player_image_url('{% url telemeta-item-visualize item.public_id,visualizer_id,"WIDTH","HEIGHT" %}');
+    load_player({{ item.approx_duration.as_seconds }});
 </script>
 
 {% endblock %}
@@ -31,10 +31,10 @@ load_player({{ item.approx_duration.as_seconds }});
 
 {% if item %}
 {% block submenu %}
-    <div>
+<div>
     <a href="{% url telemeta-item-detail-edit item.public_id %}"><button>EDIT</button></a>
     <a href="{% url telemeta-item-dublincore item.public_id %}">Dublin Core</a>
-    </div>
+</div>
 {% endblock %}
 
 {% block content %}
@@ -42,31 +42,33 @@ load_player({{ item.approx_duration.as_seconds }});
 <h3>Item : {{ item }}</h3>
 <div class="{% if item.file %}with-rightcol{% endif %}">
 
-{% if item.file %}
+    {% if item.file %}
     <div id="player_maximized" class="ts-skin-lab">
         <a href="#" class="toggle">Minimize</a>
         <div class="wazing"></div>
     </div>
     <div id="rightcol">
         <div id="player_minimized" class="ts-skin-lab">
-        <a href="#" class="toggle">Maximize</a>
-        <div class="wazing"></div>
-        <div id="player" class="ts-player">
-            <div class="ts-viewer">
-                <div class="ts-wave">
-                    <div class="ts-image-container">
-                        <a href="{% url telemeta-item-export item.public_id,"mp3" %}">
-                        <img class="ts-image" src="{% url telemeta-item-visualize item.public_id,visualizer_id,360,130 %}"
-                          alt="" /></a>
+            <a href="#" class="toggle">Maximize</a>
+            <div class="wazing"></div>
+            <div id="player" class="ts-player">
+                <div class="ts-viewer">
+                    <div class="ts-wave">
+                        <div class="ts-image-container">
+                            <a href="{% url telemeta-item-export item.public_id,"mp3" %}">
+                               <img class="ts-image" src="{% url telemeta-item-visualize item.public_id,visualizer_id,360,130 %}"
+                                 alt="" /></a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        </div>
- 
+
         <div class="markers_div" id="markers_div_id"></div>
         <div id="item_edit">
-            <div class="item_visualization">
+            <div class="item_visualization" id="item_markers_id">
+            </div>
+            <div class="item_visualization" id="item_visualization_id">
                 <form id="visualizer_id_form" method="get" action="#">
                     <!--
                     <select name="visualizer_id" onchange="this.form.submit()">
@@ -124,17 +126,17 @@ load_player({{ item.approx_duration.as_seconds }});
         {% if audio_export_enabled %}
         <div class="exporter">
             <p>{% trans "Download:" %}
-            {% for format in export_formats %}
-            <a href="{% url telemeta-item-export item.public_id,format.extension %}">{{ format.name }}</a>
-            {% endfor %}</p>
+                {% for format in export_formats %}
+                <a href="{% url telemeta-item-export item.public_id,format.extension %}">{{ format.name }}</a>
+                {% endfor %}</p>
         </div>
         {% endif %}
 
     </div>
-{% endif %}
+    {% endif %}
 
     <div class="infos">
-    {% block general_info %}
+        {% block general_info %}
         <dl class="listing">
             {% dl_field item "title" %}
             {% dl_field item "alt_title" %}
@@ -142,20 +144,20 @@ load_player({{ item.approx_duration.as_seconds }});
             <dt>{% field_label item "collection" %}</dt>
             <dd><a href="{% url telemeta-collection-detail item.collection.public_id %}">{{ item.collection }}</a></dd>
             {% if item.recorded_from_date %}
-                <dt>{% trans "Recording date" %}</dt>
-                <dd>{{ item.recorded_from_date }} {{ item.recorded_to_date|prepend:" - "  }}</dd>
+            <dt>{% trans "Recording date" %}</dt>
+            <dd>{{ item.recorded_from_date }} {{ item.recorded_to_date|prepend:" - "  }}</dd>
             {% endif %}
         </dl>
-    {% endblock general_info %}
+        {% endblock general_info %}
     </div>
     <div class="extraInfos">
-    {% block geoethnic_data %}
+        {% block geoethnic_data %}
         <div>
             <h4><a href="#">{% trans "Geographic and cultural informations" %}</a></h4>
             <dl class="listing">
                 {% if item.location %}
-                    <dt>{% trans "Location" %}</dt>
-                    <dd>{{ item.location.fullnames|join:"<br/>" }}</dd>
+                <dt>{% trans "Location" %}</dt>
+                <dd>{{ item.location.fullnames|join:"<br/>" }}</dd>
                 {% endif %}
                 {% dl_field item "location_comment" %}
                 {% dl_field item "cultural_area" %}
@@ -164,10 +166,10 @@ load_player({{ item.approx_duration.as_seconds }});
                 {% dl_field item "keywords" join with ", " %}
             </dl>
         </div>
-    {% endblock geoethnic_data %}
+        {% endblock geoethnic_data %}
     </div>
     <div class="extraInfos">
-    {% block musical_data %}
+        {% block musical_data %}
         <div>
             <h4><a href="#">{% trans "Musical informations" %}</a></h4>
             <dl class="listing">
@@ -178,32 +180,32 @@ load_player({{ item.approx_duration.as_seconds }});
             {% if item.performances %}
             <div class="instruments">
                 <table class="instruments">
-                <thead>
-                    <tr>
-                        <td>{% field_label "MediaItemPerformance" "instruments_num" %}</td>
-                        <td>{% field_label "MediaItemPerformance" "instrument" %}</td>
-                        <td>{% field_label "MediaItemPerformance" "alias" %}</td>
-                        <td>{% field_label "MediaItemPerformance" "musicians" %}</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for performance in item.performances.all %}
-                    <tr>
-                        <td>{{ performance.instruments_num }}</td>
-                        <td>{{ performance.instrument|default:"" }}</td>
-                        <td>{{ performance.alias|default:"" }}</td>
-                        <td>{{ performance.musicians }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
+                    <thead>
+                        <tr>
+                            <td>{% field_label "MediaItemPerformance" "instruments_num" %}</td>
+                            <td>{% field_label "MediaItemPerformance" "instrument" %}</td>
+                            <td>{% field_label "MediaItemPerformance" "alias" %}</td>
+                            <td>{% field_label "MediaItemPerformance" "musicians" %}</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for performance in item.performances.all %}
+                        <tr>
+                            <td>{{ performance.instruments_num }}</td>
+                            <td>{{ performance.instrument|default:"" }}</td>
+                            <td>{{ performance.alias|default:"" }}</td>
+                            <td>{{ performance.musicians }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
                 </table>
             </div>
             {% endif %}
         </div>
-    {% endblock musical_data %}
+        {% endblock musical_data %}
     </div>
     <div class="extraInfos">
-    {% block general_data %}
+        {% block general_data %}
         <div>
             <h4><a href="#">{% trans "General informations" %}</a></h4>
             <dl class="listing">
@@ -211,10 +213,10 @@ load_player({{ item.approx_duration.as_seconds }});
                 {% dl_field item "collector_selection" %}
             </dl>
         </div>
-    {% endblock general_data %}
+        {% endblock general_data %}
     </div>
     <div class="extraInfos">
-    {% block archive_data %}
+        {% block archive_data %}
         <div>
             <h4><a href="#">{% trans "Archiving data" %}</a></h4>
             <dl class="listing">
@@ -226,10 +228,10 @@ load_player({{ item.approx_duration.as_seconds }});
                 {% dl_field item "public_access_label" %}
             </dl>
         </div>
-    {% endblock archive_data %}
+        {% endblock archive_data %}
     </div>
     <div class="extraInfos">
-    {% block technical_data %}
+        {% block technical_data %}
         <div>
             <h4><a href="#">{% trans "Technical data" %}</a></h4>
             <div>
@@ -239,12 +241,12 @@ load_player({{ item.approx_duration.as_seconds }});
                 </dl>
             </div>
         </div>
-    {% endblock technical_data %}
+        {% endblock technical_data %}
     </div>
 
 </div> <!-- with-rightcol -->
 
 {% endblock %}
 {% else %}
-    <p>No such item</p>
+<p>No such item</p>
 {% endif %}

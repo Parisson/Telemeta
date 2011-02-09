@@ -7,82 +7,82 @@
 
 TimeSide(function($N, $J) {
 
-$N.Class.create("Player", $N.Core, {
-    skeleton: {
-        'div.viewer': {
-            'div.ruler': {}, 
-            'div.wave': {
-                'div.image-canvas': {},
-                'div.image-container': ['img.image']
+    $N.Class.create("Player", $N.Core, {
+        skeleton: {
+            'div.viewer': {
+                'div.ruler': {},
+                'div.wave': {
+                    'div.image-canvas': {},
+                    'div.image-container': ['img.image']
+                }
+            },
+            'div.control': {
+                'div.layout': {
+                    'div.playback': ['a.play', 'a.pause', 'a.rewind', 'a.forward', 'a.set-marker', 'a.set-marker2']
+                //,'input.textMarker']
+                }
+            }/*,
+        'div.marker-control': ['a.set-marker']*/
+        },
+        defaultContents: {
+            play: 'Play',
+            pause: 'Pause',
+            rewind: 'Rewind',
+            forward: 'Forward',
+            'set-marker': 'Set marker'
+        //,'text-marker' : 'textmarker'
+        },
+        elements: {},
+        ruler: null,
+        soundProvider: null,
+        map: null,
+        container: null,
+        imageWidth: null,
+        imageHeight: null,
+
+        initialize: function($super, container, cfg) {
+            $super();
+            if (!container)
+                throw new $N.RequiredArgumentError(this, 'container');
+            this.container = $J(container);
+            this.configure(cfg, {
+                image: null
+            });
+        },
+
+        free: function($super) {
+            this.elements = null;
+            this.container = null;
+            $super();
+        },
+
+        setSoundProvider: function(soundProvider) {
+            this.soundProvider = soundProvider;
+            return this;
+        },
+
+        setMarkerMap: function(map) {
+            this.map = map;
+            return this;
+        },
+
+        setImage: function(expr) {
+            this.cfg.image = expr;
+            this.refreshImage();
+        },
+
+        refreshImage: function() {
+            var src = null;
+            if (typeof this.cfg.image == 'function') {
+                src = this.cfg.image(this.imageWidth, this.imageHeight);
+            } else if (typeof this.cfg.image == 'string') {
+                src = this.cfg.image;
+            }
+
+            if (src) {
+                this.elements.image.attr('src', src);
             }
         },
-        'div.control': {
-            'div.layout': {
-                'div.playback': ['a.play', 'a.pause', 'a.rewind', 'a.forward', 'a.set-marker', 'a.set-marker2']
-                //,'input.textMarker']
-            }
-        }/*,
-        'div.marker-control': ['a.set-marker']*/
-    },
-    defaultContents: {
-        play: 'Play',
-        pause: 'Pause',
-        rewind: 'Rewind',
-        forward: 'Forward',
-        'set-marker': 'Set marker',
-        'set-marker2': 'Set marker2'
-        //,'text-marker' : 'textmarker'
-    },
-    elements: {},
-    ruler: null,
-    soundProvider: null,
-    map: null,
-    container: null,
-    imageWidth: null,
-    imageHeight: null,
-
-    initialize: function($super, container, cfg) {
-        $super();
-        if (!container)
-            throw new $N.RequiredArgumentError(this, 'container');
-        this.container = $J(container);
-        this.configure(cfg, {
-            image: null
-        });
-    },
-
-    free: function($super) {
-        this.elements = null;
-        this.container = null;
-        $super();
-    },
-
-    setSoundProvider: function(soundProvider) {
-        this.soundProvider = soundProvider;
-        return this;
-    },
-
-    setMarkerMap: function(map) {
-        this.map = map;
-        return this;
-    },
-
-    setImage: function(expr) {
-        this.cfg.image = expr;
-        this.refreshImage();
-    },
-
-    refreshImage: function() {
-        var src = null;
-        if (typeof this.cfg.image == 'function') {
-            src = this.cfg.image(this.imageWidth, this.imageHeight);
-        } else if (typeof this.cfg.image == 'string') {
-            src = this.cfg.image;
-        }
-
-        if (src) 
-            this.elements.image.attr('src', src);
-    },
 
     draw: function() {
         this.debug('drawing');
@@ -96,42 +96,51 @@ $N.Class.create("Player", $N.Core, {
         // IE apparently doesn't send the second mousedown on double click:
         var jump = $J.browser.msie ? 'mousedown dblclick' : 'mousedown';
         this.elements.rewind.attr('href', '#').bind(jump, this.attach(this._onRewind))
-            .click(function() {return false;});
+        .click(function() {
+            return false;
+        });
         this.elements.forward.attr('href', '#').bind(jump, this.attach(this._onForward))
-            .click(function() {return false;});
+        .click(function() {
+            return false;
+        });
         this.elements.pause.attr('href', '#').bind('click', this.attach(this._onPause));
         this.elements.play.attr('href', '#').bind('click', this.attach(this._onPlay));
         
         //assigning title string to all anchors???????
         this.elements.control.find('a').add(this.elements.setMarker)
-            .attr('href', '#')
-            .each(function(i, a){
-                a = $J(a);
-                if (!a.attr('title'))
-                    a.attr('title', a.text());
-            });
+        .attr('href', '#')
+        .each(function(i, a){
+            a = $J(a);
+            if (!a.attr('title'))
+                a.attr('title', a.text());
+        });
             
         //this.elements.markerControl.find('a').attr('href', '#');
         if (this.map) {
             //configureMarkersDiv();
             this.elements.setMarker.bind('click', this.attach(this._onSetMarker));
-            this.elements.setMarker2.bind('click', this.attach(this._onSetMarker2));
-            //this.elements.textMarker.attr('type', 'text');
-            //this.elements.textMarker.bind('click', this.attach(this._onSetMarker2));
+        //this.elements.setMarker2.bind('click', this.attach(this._onSetMarker2));
+        //this.elements.textMarker.attr('type', 'text');
+        //this.elements.textMarker.bind('click', this.attach(this._onSetMarker2));
           
         } else {
             this.elements.setMarker.remove();
         }
+        //creating the ruler
         this.ruler = new $N.Ruler({
             viewer: this.elements.viewer,
             map: this.map,
             soundProvider: this.soundProvider
         });
+        //bind events to the ruler (see function observe in core.js, I guess,
+        //which overrides jQuery bind function):
+        //the first arg is basically the event name, the second
+        //arg is a function to execute each time the event is triggered
         this.ruler
-            .observe('markermove', this.forwardEvent)
-            .observe('markeradd', this.forwardEvent)
-            .observe('move', this.forwardEvent)
-            .draw();
+        .observe('markermove', this.forwardEvent)
+        .observe('markeradd', this.forwardEvent)
+        .observe('move', this.forwardEvent)
+        .draw();
         this.refreshImage();
         this.resize();
         var resizeTimer = null;
@@ -140,14 +149,7 @@ $N.Class.create("Player", $N.Core, {
                 clearTimeout(resizeTimer);
             resizeTimer = setTimeout(this.attach(this.resize), 100);
         }));
-        //this.container.resize(this.attach(this.resize)); // Can loop ?
-    },
-
-    _onSetMarker2: function() {
-        if (this.map) {
-            this.fire('markeradd2', {offset: this.soundProvider.getPosition()});
-        }
-        return false;
+    //this.container.resize(this.attach(this.resize)); // Can loop ?
     },
 
     resize: function(overrideHeight) {
@@ -169,8 +171,8 @@ $N.Class.create("Player", $N.Core, {
         }
 
         var elements = this.elements.image
-            .add(this.elements.imageContainer)
-            .add(this.elements.imageCanvas);
+        .add(this.elements.imageContainer)
+        .add(this.elements.imageCanvas);
 
         elements.css('width', 'auto'); // for IE6
 
@@ -200,7 +202,9 @@ $N.Class.create("Player", $N.Core, {
                 offset = marker.offset;
             }
         }
-        this.fire('move', {offset: offset});
+        this.fire('move', {
+            offset: offset
+        });
         return false;
     },
 
@@ -212,7 +216,9 @@ $N.Class.create("Player", $N.Core, {
                 offset = marker.offset;
             }
         }
-        this.fire('move', {offset: offset});
+        this.fire('move', {
+            offset: offset
+        });
         return false;
     },
 
@@ -228,12 +234,14 @@ $N.Class.create("Player", $N.Core, {
 
     _onSetMarker: function() {
         if (this.map) {
-            this.fire('markeradd', {offset: this.soundProvider.getPosition()});
+            this.fire('markeradd', {
+                offset: this.soundProvider.getPosition()
+                });
         }
         return false;
     }
-});
+    });
 
 $N.notifyScriptLoad();
 
-});
+    });
