@@ -38,12 +38,15 @@ class Logger:
 
 class TelemetaMediaImport:
 
-    def __init__(self, media_dir, log_file):
+    def __init__(self, collection, media_dir, log_file):
         self.logger = Logger(log_file)
         self.media_dir = media_dir + os.sep + 'items'
         self.medias = self.get_medias()
         self.buffer_size = 0x1000
         self.media_item_dir = 'items/'
+        self.collection_name = collection
+        self.collection = self.set_collection(self.collection_name)
+
     
     def get_medias(self):
         medias = []
@@ -69,9 +72,6 @@ class TelemetaMediaImport:
 
     def media_import(self):
         import telemeta.models
-        self.collection_name = 'awdio'
-        self.collection = self.set_collection(self.collection_name)
-
         for media in self.medias:
             filename,  ext = os.path.splitext(media)
             item = telemeta.models.media.MediaItem.objects.filter(code=filename)
@@ -86,13 +86,14 @@ class TelemetaMediaImport:
 
 
 def run():
-    project_dir = sys.argv[-2]
+    collection = sys.argv[-2]
+    project_dir = sys.argv[-3]
     log_file = sys.argv[-1]
     sys.path.append(project_dir)
     import settings
     setup_environ(settings)
     media_dir = settings.MEDIA_ROOT
-    t = TelemetaMediaImport(media_dir, log_file)
+    t = TelemetaMediaImport(collection, media_dir, log_file)
     t.media_import()
 
 if __name__ == '__main__':
