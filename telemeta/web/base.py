@@ -597,11 +597,11 @@ class WebView(object):
 
     @jsonrpc_method('telemeta.del_marker')
     def del_marker(request, public_id):
-#        m = MediaItemMarker.objects.get(public_id=public_id)
-#        m.delete()
-        m = MediaItemMarker.objects.filter(public_id=public_id)
-        for marker in m:
-            marker.delete()
+        m = MediaItemMarker.objects.get(public_id=public_id)
+        m.delete()
+#        m = MediaItemMarker.objects.filter(public_id=public_id)
+#        for marker in m:
+#            marker.delete()
         
     @jsonrpc_method('telemeta.get_markers')
     def get_markers(request, item_id):

@@ -86,7 +86,7 @@ TimeSide(function($N, $J) {
                 }
                 var i = klass.indexOf(marker);
                 klass.markers.splice(i, 1);
-                marker.div.remove();
+                marker.div['div'].remove();
                 klass.fire('remove', {
                     marker: marker
                 });
@@ -117,8 +117,8 @@ TimeSide(function($N, $J) {
             marker.offset = offset;
             var newIndex = this.insertionIndex(marker);
             //change marker time
-            $($( marker.div.children()[0] ).children()[1]).html(this.formatMarkerOffset(offset));
-
+            //$($( marker.div.children()[0] ).children()[1]).html(this.formatMarkerOffset(offset));
+            marker.div['labelOffset'].html(this.formatMarkerOffset(offset));
             if(newIndex>oldIndex){
                 newIndex--;
             }
@@ -131,14 +131,14 @@ TimeSide(function($N, $J) {
             //The .detach() method is the same as .remove(), except that .detach() keeps
             //all jQuery data associated with the removed elements.
             //This method is useful when removed elements are to be reinserted into the DOM at a later time.
-            marker.div.detach();
+            marker.div['div'].detach();
             if(newIndex==l-1){
-                this.divContainer.append(marker.div);
+                this.divContainer.append(marker.div['div']);
             }else{
-                $( this.divContainer.children()[newIndex] ).before(marker.div);
+                $( this.divContainer.children()[newIndex] ).before(marker.div['div']);
             }
-            $($( marker.div.children()[1] )).focus();
-            
+            //$($( marker.div.children()[1] )).focus();
+            marker.div['textarea'].focus();
             var i1= Math.min(oldIndex,newIndex);
             var i2= Math.max(oldIndex,newIndex);
             //var mrks = this.markers;
@@ -162,7 +162,8 @@ TimeSide(function($N, $J) {
                     index: i
                 });
                 //update label element
-                $($( this.markers[i].div.children()[0] ).children()[0]).html(i+1);
+                this.markers[i].div['labelIndex'].html(i+1)
+               // $($( this.markers[i].div.children()[0] ).children()[0]).html(i+1);
 
             }
         },
@@ -185,6 +186,115 @@ TimeSide(function($N, $J) {
 
 
         createDiv: function(marker,insertionIndex){
+            var div = this.divContainer;
+            var m = this.markers;
+            var l = m.length;
+            var ret = {};
+            if(div){
+                //var textWithFocus;
+                //div.style.display = "block";
+                //var doc = document;
+
+
+                var text, timeSpan, closeAnchor, ok, header;
+
+
+                //creating marker, see marker.js
+                //would be better not to copy this code but to
+                //reference it.
+                var label = $J('<span/>')
+                .css({
+                    color:'#fff',
+                    backgroundColor:'#009',
+                    width: '2em',
+                    textAlign: 'center'
+                //,fontFamily: 'monospace'
+                })
+                .html(insertionIndex+1);
+                ret['labelIndex']=label;
+
+                timeSpan = $J('<span/>')
+                .css({
+                    marginLeft:'1ex'
+                });
+                ret['labelOffset']=timeSpan;
+
+                closeAnchor = $J('<input/>')
+                .attr("type","submit")
+                .attr("value","x")
+                .css({
+                    //fontFamily: 'monospace',
+                    fontWeight:'bold',
+                    border:'1px dotted #333333',
+                    float:'right',
+                    color:'white'
+                });
+                ret['submitCancel']=closeAnchor;
+
+                header = $J('<div/>')
+                .append(label)
+                .append(timeSpan)
+                .append(closeAnchor);
+
+                text = $J('<textarea/>')
+                .css({
+                    margin:0,
+                    padding:0,
+                    width:'100%'
+                });
+                ret['textarea']=text;
+
+                ok = $J('<input/>')
+                .attr("type","submit")
+                .attr("value","OK");
+                ret['submitOk']=ok;
+
+                //create new div
+                var subdiv = $J('<div/>')
+                .append(header)
+                .append(text)
+                .append(ok)
+                .css({
+                    marginBottom:'1em',
+                    marginTop:'1ex'
+                });
+
+                var timeStr = this.formatMarkerOffset(marker.offset);
+
+                timeSpan.html(timeStr);
+
+                //updating text
+                text.val(marker.desc);
+
+                var send = this.sendHTTP;
+                //set the ok function
+                //we clear all the click event handlers from ok and assign a new one:
+                ok.unbind('click').click( function(){
+                    marker.desc = text.val();
+                    send(marker);
+                });
+                //set the remove action
+                var remove = this.remove;
+                var klass = this;
+                closeAnchor.unbind('click').click( function(){
+                    remove(klass, marker);
+                });
+
+                var divLen = div.children().length;
+                div.append(subdiv);
+                if(insertionIndex==divLen){
+                    div.append(subdiv);
+                }else{
+                    $( div.children()[insertionIndex] ).before(subdiv);
+                }
+                //if(textWithFocus){
+                text.focus();
+                // }
+                ret['div']=subdiv;
+                return ret;
+            }
+        },
+        createDivOld: function(marker,insertionIndex){
             var div = this.divContainer;
             var m = this.markers;
             var l = m.length;
@@ -289,7 +399,6 @@ TimeSide(function($N, $J) {
                 return subdiv;
             }
         },
-        
 
         formatMarkerOffset: function(markerOffset){
             //marker offset is in float format second.decimalPart
