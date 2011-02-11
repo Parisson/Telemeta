@@ -16,17 +16,17 @@ TimeSide(function($N) {
                 soundProvider: null,
                 map: null
             });
-//            if (this.cfg.player && !$N.isInstanceOf(this.cfg.player, 'Player')) {
-//                this.cfg.player = new $N.Player(this.cfg.player);
-//            }
-            //this._setupPlayer();
-            this.loadHTTP();
+            if (this.cfg.player && !$N.isInstanceOf(this.cfg.player, 'Player')) {
+                this.cfg.player = new $N.Player(this.cfg.player);
+            }
+            this._setupPlayer();
+            
         },
 
         _setupPlayer: function() {
-             if (this.cfg.player && !$N.isInstanceOf(this.cfg.player, 'Player')) {
-                this.cfg.player = new $N.Player(this.cfg.player);
-            }
+//             if (this.cfg.player && !$N.isInstanceOf(this.cfg.player, 'Player')) {
+//                this.cfg.player = new $N.Player(this.cfg.player);
+//            }
             this.attach(this.updateMarkersDiv);
             this.cfg.player
             .setSoundProvider(this.cfg.soundProvider)
@@ -38,6 +38,7 @@ TimeSide(function($N) {
             .observe('markermove', this.attach(this._onMarkerMove))
             
             .draw();
+            this.loadHTTP();
             
         },
 
@@ -49,16 +50,14 @@ TimeSide(function($N) {
 
         _onMarkerMove: function(e, data) {
             if (this.cfg.map) {
-                //this.refreshMarkersText(this.cfg.map);
                 this.cfg.map.move(this.cfg.map.byId(data.id), data.offset);
-            //this.updateMarkersDiv(this.cfg.map, data.offset);
             }
         },
 
         _onMarkerAdd: function(e, data) {
             if (this.cfg.map) {
                 //this.refreshMarkersText(this.cfg.map);
-                this.cfg.map.add(data.offset, '');
+                this.cfg.map.addNew(data.offset, '');
             //this.updateMarkersDiv(this.cfg.map, data.offset);
 
             }
@@ -89,17 +88,17 @@ TimeSide(function($N) {
                             var result = data.result;
                             
                             for(var i =0; i< result.length; i++){
-//                                var marker = {
-//                                    id: result[i].public_id,
-//                                    offset: result[i].time,
-//                                    desc: result[i].description
-//                                };
-                                map.add(result[i].time, result[i].description);
+                                var marker = {
+                                    id: result[i].public_id,
+                                    offset: result[i].time,
+                                    desc: result[i].description
+                                };
+                                map.add(marker);
                             }
                         }
                         
                     }
-                    me._setupPlayer();
+                    //me._setupPlayer();
                 }
             });
             var g = 9;

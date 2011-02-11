@@ -48,64 +48,55 @@ TimeSide(function($N, $J) {
             return index;
         },
 
-        _reorder: function(selectedMarkerOffset) {
-            //selectedMarkerOffset is the offset of the marker whose textarea
-            //must be selected. It can be undefined
 
-            //first of all, assign to each marker its text.
-            //we could assign it onchange, but that event is NOT fired when the textarea changes.
-            //so we doit it here
-            var div = this.divContainer;
-            var m = this.markers;
-            
-            if(div){
-                var divChildren = div.childNodes;
-                if(divChildren){
-                    var l = Math.min(divChildren.length, m.length);
-                    for(var i=0; i<l; i++){
-                        var marker = m[i];
-                        var subdiv = divChildren[i];
-                        var text = subdiv.childNodes[1];
-                        marker.desc = text.value;
-                    }
-                }
-            }
-            //old code:
-            this.markers.sort(this.compare);
-            for (var i in this.markers) {
-                this.fire('indexchange', {
-                    marker: this.markers[i],
-                    index: parseInt(i)
-                });
-            }
-            //now update the div
-            this.updateDiv(selectedMarkerOffset);
-        },
-
-        add: function(offset, desc) {
+        addNew: function(offset, description){
             var id = this.uniqid();
             var marker = {
                 id: id,
                 offset: offset,
-                desc: desc
+                desc: description,
+                isNew: true
             };
-            var i = this.markers.push(marker) - 1;
-            this.fire('add', {
-                marker: marker,
-                index: i
-            });
-            this._reorder(offset);
-            return marker;
+            this.add(marker);
         },
 
-        remove: function(marker) {
+        //this function adds a new marker. It is actually
+        add: function(marker) {
+            var idx = this.insertionIndex(marker);
+            //adding the div
+            marker.div = this.createDiv(marker,idx);
+            this.markers.splice(idx,0,marker);
+            //calls core.js $N.attachFunction
+            //which calls ruler.js onMapAdd
+            this.fire('add', {
+                marker: marker,
+                index: idx
+            });
+            this.fireRefreshLabels(idx+1,this.markers.length);
+            //this._reorder(marker.offset);
+            return marker;
+        },
+        
+        
+
+        remove: function(klass, marker) {
             if (marker) {
-                var i = this.indexOf(marker);
-                this.markers.splice(i, 1);
-                this.fire('remove', {
+                if(!(klass)){
+                    klass = this;
+                }
+                var i = klass.indexOf(marker);
+                klass.markers.splice(i, 1);
+                marker.div.remove();
+                klass.fire('remove', {
                     marker: marker
                 });
-                this._reorder();
+                //                var i1= Math.min(oldIndex,newIndex);
+                //                var i2= Math.max(oldIndex,newIndex);
+                //var mrks = this.markers;
+                klass.fireRefreshLabels(i,klass.markers.length);
+
+                klass.removeHTTP(marker);
+
             }
             return marker;
         },
@@ -121,133 +112,184 @@ TimeSide(function($N, $J) {
         },
 
         move: function(marker, offset) {
-            oldMarkers = [].concat(this.markers);
+            var oldIndex = this.indexOf(marker);
             marker.offset = offset;
-            this._reorder(offset);
+            marker.offset = offset;
+            var newIndex = this.insertionIndex(marker);
+            //change marker time
+            $($( marker.div.children()[0] ).children()[1]).html(this.formatMarkerOffset(offset));
+
+            if(newIndex>oldIndex){
+                newIndex--;
+            }
+            if(newIndex==oldIndex){
+                return;
+            }
+            var l = this.markers.length;
+            this.markers.splice(oldIndex,1);
+            this.markers.splice(newIndex,0,marker);
+            //The .detach() method is the same as .remove(), except that .detach() keeps
+            //all jQuery data associated with the removed elements.
+            //This method is useful when removed elements are to be reinserted into the DOM at a later time.
+            marker.div.detach();
+            if(newIndex==l-1){
+                this.divContainer.append(marker.div);
+            }else{
+                $( this.divContainer.children()[newIndex] ).before(marker.div);
+            }
+            $($( marker.div.children()[1] )).focus();
+            
+            var i1= Math.min(oldIndex,newIndex);
+            var i2= Math.max(oldIndex,newIndex);
+            //var mrks = this.markers;
+
+            this.fireRefreshLabels(i1,i2+1);
+
+
+           
+            
+        //this._reorder(offset);
         },
 
-        getPrevious: function(offset, skip) {
-            var marker = null;
-            if (!skip) {
-                skip = 0;
+        fireRefreshLabels: function(firstIndex,lastIndex){
+            if(lastIndex<=firstIndex){
+                return;
             }
-            markers = [].concat(this.markers).reverse();
-            $J(markers).each(function(i, m) {
-                if (offset > m.offset && !(skip--)) {
-                    marker = m;
-                    return false;
-                }
-            });
-            return marker;
+            for (var i=firstIndex; i <lastIndex;i++) {
+                //calls ruler _onMapIndexChange
+                this.fire('indexchange', {
+                    marker: this.markers[i],
+                    index: i
+                });
+                //update label element
+                $($( this.markers[i].div.children()[0] ).children()[0]).html(i+1);
+
+            }
         },
 
-        getNext: function(offset, skip) {
-            var marker = null;
-            if (!skip) {
-                skip = 0;
+        insertionIndex: function(marker){
+            var index = 0;
+            var l = this.markers.length;
+            while (index<l && this.markers[index].offset <= marker.offset) {
+                index ++;
             }
-            $J(this.markers).each(function(i, m) {
-                if (offset < m.offset && !(skip--)) {
-                    marker = m;
-                    return false;
-                }
-            });
-            return marker;
+            //markers.splice(index,0,marker);
+            return index;
         },
+
+        
 
         each: function(callback) {
             $J(this.markers).each(callback);
         },
 
-        updateDiv: function(selectedMarkOffset){
+
+        createDiv: function(marker,insertionIndex){
             var div = this.divContainer;
             var m = this.markers;
             var l = m.length;
             if(div){
-                var textWithFocus;
+                //var textWithFocus;
                 //div.style.display = "block";
                 //var doc = document;
-                var divChildren = div.children();
-                //var round = Math.round;
-                for(var i=0; i<l; i++){
-                    var marker = m[i];
 
-                    var subdiv, text;
-                    if(divChildren.length<=i){
-                       
-                        //creating marker, see marker.js
-                        //would be better not to copy this code but to
-                        //reference it.
-                        var label = $J('<span/>')
-                        .css({
-                            color:'#fff',
-                            backgroundColor:'#009',
-                            width: '2ex',
-                            textAlign: 'center',
-                            fontFamily: 'monospace'
-                        })
-                        .html(i+1);
 
-                        var timeSpan = $J('<span/>')
-                        .css({
-                            marginLeft:'1ex'
-                        });
-                        
-                        
-                        var header = $J('<div/>')
-                        .append(label)
-                        .append(timeSpan);
+                var text, timeSpan, closeAnchor, ok, header;
 
-                        text = $J('<textarea/>')
-                        .css({
-                            margin:0,
-                            padding:0,
-                            width:'100%'
-                        });
-                        
-                        var ok = $J('<a/>')
-                        .attr("href","#")
-                        .html("OK");
 
-                        //create new div
-                        subdiv = $J('<div/>')
-                        .append(header)
-                        .append(text)
-                        .append(ok)
-                        .css({
-                            marginBottom:'1em',
-                            marginTop:'1ex'
-                        });
+                //creating marker, see marker.js
+                //would be better not to copy this code but to
+                //reference it.
+                var label = $J('<span/>')
+                .css({
+                    color:'#fff',
+                    backgroundColor:'#009',
+                    width: '2em',
+                    textAlign: 'center'
+                //,fontFamily: 'monospace'
+                })
+                .html(insertionIndex+1);
 
-                        div.append(subdiv);
-                    }else{
-                        subdiv = $( div.children()[i] );
-                        text = $( subdiv.children()[1] );
-                        header = $( subdiv.children()[0] );
-                        ok = $( subdiv.children()[2] ); 
-                    }
-                    var timeStr = this.formatMarkerOffset(marker.offset);
+                timeSpan = $J('<span/>')
+                .css({
+                    marginLeft:'1ex'
+                });
 
-                    $( header.children()[1] ).html(timeStr);
-                    //updating text
-                    text.val(marker.desc);
+                closeAnchor = $J('<a/>')
+                .attr("href","#")
+                .html("x")
+                .css({
+                    //fontFamily: 'monospace',
+                    fontWeight:'bold',
+                    ackgroundColor:'#888877',
+                    float:'right',
+                    color:'white'
+                //,backgroundImage:'url("img/cancel.png")'
+                });
+                //.append('</img>').attr("src","img/cancel.png");
 
-                    if(selectedMarkOffset==marker.offset){
-                        textWithFocus = text;
-                    }
-                    var send = this.sendHTTP;
-                    //set the ok function
-                    ok.click( function(){
-                        marker.desc = text.val();
-                        send(marker);
-                    });
+                header = $J('<div/>')
+                .append(label)
+                .append(timeSpan)
+                .append(closeAnchor);
 
+                text = $J('<textarea/>')
+                .css({
+                    margin:0,
+                    padding:0,
+                    width:'100%'
+                });
+
+                ok = $J('<a/>')
+                .attr("href","#")
+                .addClass('ts-marker-button')
+                .html("OK");
+
+                //create new div
+                var subdiv = $J('<div/>')
+                .append(header)
+                .append(text)
+                .append(ok)
+                .css({
+                    marginBottom:'1em',
+                    marginTop:'1ex'
+                });
+
+                var timeStr = this.formatMarkerOffset(marker.offset);
+
+                timeSpan.html(timeStr);
+
+                //updating text
+                text.val(marker.desc);
+
+                var send = this.sendHTTP;
+                //set the ok function
+                //we clear all the click event handlers from ok and assign a new one:
+                ok.unbind('click').click( function(){
+                    marker.desc = text.val();
+                    send(marker);
+                });
+                //set the remove action
+                var remove = this.remove;
+                var klass = this;
+                closeAnchor.unbind('click').click( function(){
+                    remove(klass, marker);
+                });
+
+                var divLen = div.children().length;
+                div.append(subdiv);
+                if(insertionIndex==divLen){
+                    div.append(subdiv);
+                }else{
+                    $( div.children()[insertionIndex] ).before(subdiv);
                 }
-                if(textWithFocus){
-                    textWithFocus.focus();
-                }
+                //if(textWithFocus){
+                text.focus();
+                // }
+                return subdiv;
             }
         },
+        
 
         formatMarkerOffset: function(markerOffset){
             //marker offset is in float format second.decimalPart
@@ -276,16 +318,49 @@ TimeSide(function($N, $J) {
 
             //WARNING: use single quotes for the whole string!!
             //see http://stackoverflow.com/questions/4809157/i-need-to-pass-a-json-object-to-a-javascript-ajax-method-for-a-wcf-call-how-can
+            //            var data2send = '{"id":"jsonrpc", "params":[{"item_id":"'+ itemid+'", "public_id": "'+marker.id+'", "time": "'+
+            //            marker.offset+'","description": "'+marker.desc+'"}], "method":"telemeta.add_marker","jsonrpc":"1.0"}';
+            var isNew = marker.isNew;
+            var method = isNew ? "telemeta.add_marker" : "telemeta.update_marker";
             var data2send = '{"id":"jsonrpc", "params":[{"item_id":"'+ itemid+'", "public_id": "'+marker.id+'", "time": "'+
-            marker.offset+'","description": "'+marker.desc+'"}], "method":"telemeta.add_marker","jsonrpc":"1.0"}';
+            marker.offset+'","description": "'+marker.desc+'"}], "method":"'+method+'","jsonrpc":"1.0"}';
 
 
             $.ajax({
                 type: "POST",
                 url: 'http://localhost:9000/json/',
                 contentType: "application/json",
-                data: data2send
+                data: data2send,
+                success: function(){
+                    if(isNew){
+                        marker.isNew = false;
+                    }
+                }
             });
+        },
+
+        removeHTTP: function(marker){
+
+            //  //itemid is the item (spund file) name
+            //  var sPath = window.location.pathname;
+            //  //remove last "/" or last "/#", if any...
+            //  sPath = sPath.replace(/\/#*$/,"");
+            //  var itemid = sPath.substring(sPath.lastIndexOf('/') + 1);
+            var public_id = marker.id;
+            //WARNING: use single quotes for the whole string!!
+            //see http://stackoverflow.com/questions/4809157/i-need-to-pass-a-json-object-to-a-javascript-ajax-method-for-a-wcf-call-how-can
+            var data2send = '{"id":"jsonrpc","params":["'+public_id+'"], "method":"telemeta.del_marker","jsonrpc":"1.0"}';
+            //            var map = this.cfg.map;
+            //            var me = this;
+            $.ajax({
+                type: "POST",
+                url: 'http://localhost:9000/json/',
+                contentType: "application/json",
+                data: data2send,
+                dataType: "json"
+            
+            });
+            var g = 9;
         }
 
     });

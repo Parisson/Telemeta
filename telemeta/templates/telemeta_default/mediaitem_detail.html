@@ -64,10 +64,9 @@
             </div>
         </div>
 
-        <div class="markers_div" id="markers_div_id"></div>
-        <div id="item_edit">
-            <div class="item_visualization" id="item_markers_id">
-            </div>
+        
+       
+            
             <div class="item_visualization" id="item_visualization_id">
                 <form id="visualizer_id_form" method="get" action="#">
                     <!--
@@ -87,6 +86,8 @@
                     <input type="submit" value="Set" />
                 </form>
 
+                <div class="markers_div" id="markers_div_id"></div>
+                
                 <div class="analyzer">
                     <table width="100%">
                         <tr class="analyzer-title">
@@ -109,6 +110,8 @@
                         {% endfor %}
                     </table>
                 </div>
+
+                
                 <!--
                         <form method="get" action="#">
                             <p>&nbsp;Vamp plugin analysis</p>
@@ -122,7 +125,7 @@
                         </form>
                 -->
             </div>
-        </div>
+        
         {% if audio_export_enabled %}
         <div class="exporter">
             <p>{% trans "Download:" %}
