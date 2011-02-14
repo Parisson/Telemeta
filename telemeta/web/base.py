@@ -126,6 +126,22 @@ class WebView(object):
             formset = MediaCollectionFormSet(queryset=MediaCollection.objects.filter(code=public_id))
         return render(request, template, {'collection': collection, "formset": formset,})
 
+    def collection_detail_previous(self, request, public_id):
+        collection = MediaCollection.objects.get(public_id=public_id)
+        while True:
+            previous = MediaCollection.objects.get(pk=collection.pk-1)
+            if previous:
+                break
+        return self.collection_detail(request, previous.public_id)
+    
+    def collection_detail_next(self, request, public_id):
+        collection = MediaCollection.objects.get(public_id=public_id)
+        while True:
+            next = MediaCollection.objects.get(pk=collection.pk+1)
+            if next:
+                break
+        return self.collection_detail(request, next.public_id)
+    
     def item_detail(self, request, public_id, template='telemeta/mediaitem_detail.html'):
         """Show the details of a given item"""
         item = MediaItem.objects.get(public_id=public_id)
@@ -180,6 +196,22 @@ class WebView(object):
                     'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True), "formset": formset, 
                     })
         
+    def item_detail_previous(self, request, public_id):
+        item = MediaItem.objects.get(public_id=public_id)
+        while True:
+            previous = MediaItem.objects.get(pk=item.pk-1)
+            if previous:
+                break
+        return self.item_detail(request, previous.public_id)
+    
+    def item_detail_next(self, request, public_id):
+        item = MediaItem.objects.get(public_id=public_id)
+        while True:
+            next = MediaItem.objects.get(pk=item.pk+1)
+            if next:
+                break
+        return self.item_detail(request, next.public_id)
+    
     def item_analyze(self, item):
         public_id = str(item.public_id)
         analyze_file = public_id + '.xml'

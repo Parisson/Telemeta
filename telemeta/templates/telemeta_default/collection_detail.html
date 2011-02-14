@@ -12,8 +12,14 @@
 
 {% block submenu %}
     <div>
-    <a href="{% url telemeta-collection-detail-edit collection.public_id %}"><button>EDIT</button></a>
     <a href="{% url telemeta-collection-dublincore collection.public_id %}">Dublin Core</a>
+    
+    {% if user.is_authenticated %} 
+    <a href="{% url telemeta-collection-detail-edit collection.public_id %}"><img src="/images/edit_page.png" alt="EDIT"></a>
+    {% endif %}
+    <a href="{% url telemeta-collection-detail-previous collection.public_id %}"><img src="/images/previous.png" alt="PREVIOUS"></a>
+    <a href="{% url telemeta-collection-detail-next collection.public_id %}"><img src="/images/next.png" alt="NEXT"></a>
+    
     </div>
 {% endblock %}
 
