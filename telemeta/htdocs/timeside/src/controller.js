@@ -78,7 +78,7 @@ TimeSide(function($N) {
             var me = this;
             $.ajax({
                 type: "POST",
-                url: 'http://localhost:9000/json/',
+                url: '/json/',
                 contentType: "application/json",
                 data: data2send,
                 dataType: "json",

@@ -437,7 +437,7 @@ TimeSide(function($N, $J) {
 
             $.ajax({
                 type: "POST",
-                url: 'http://localhost:9000/json/',
+                url: '/json/',
                 contentType: "application/json",
                 data: data2send,
                 success: function(){

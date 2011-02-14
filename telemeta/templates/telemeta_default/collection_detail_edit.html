@@ -4,6 +4,14 @@
 
 {% block head_title %}{% trans "Collection" %}{{collection|prepend:': '}} - {{ block.super }}{% endblock %}
 
+{% block stylesheets %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% url telemeta-timeside "css/timeside.css" %}" />
+<link rel="stylesheet" type="text/css" href="{% url telemeta-timeside "skins/lab/style.css" %}" />
+<link rel="stylesheet" type="text/css" href="{% url telemeta-css "player.css" %}" />
+{% endblock %}
+{% block extra_javascript %}
+{% endblock %}
 
 {% if collection %}
 
@@ -14,11 +22,12 @@
 {% block content %}
     <h3>Collection: {{ collection }}</h3>
         <div class="infos">
-        
         <form method="POST" action="">{% csrf_token %}
-        {{ formset }}
-        <button type="submit">SAVE</button>
-
+        <table>
+            {{ formset }}
+        </table>
+        <input type="submit" value="save">
+        </form>
         </div>
 {% endblock %}
 {% else %}

@@ -181,7 +181,7 @@ class WebView(object):
                     })
         
     def item_analyze(self, item):
-        public_id = item.public_id
+        public_id = str(item.public_id)
         analyze_file = public_id + '.xml'
         
         if self.cache.exists(analyze_file):
@@ -375,7 +375,7 @@ class WebView(object):
             if func and value and value != "0":
                 try:
                     res = func(value)
-                    if len(res) > 2:
+                    if len(res)  > 2:
                         collections, items, value = res
                     else: 
                         collections, items = res
@@ -599,9 +599,6 @@ class WebView(object):
     def del_marker(request, public_id):
         m = MediaItemMarker.objects.get(public_id=public_id)
         m.delete()
-#        m = MediaItemMarker.objects.filter(public_id=public_id)
-#        for marker in m:
-#            marker.delete()
         
     @jsonrpc_method('telemeta.get_markers')
     def get_markers(request, item_id):
