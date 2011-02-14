@@ -32,7 +32,9 @@
 {% if item %}
 {% block submenu %}
 <div>
+    {% if user.is_authenticated %} 
     <a href="{% url telemeta-item-detail-edit item.public_id %}"><button>EDIT</button></a>
+    {% endif %}
     <a href="{% url telemeta-item-dublincore item.public_id %}">Dublin Core</a>
 </div>
 {% endblock %}

@@ -4,5 +4,4 @@ from django.contrib import admin
 
 admin.site.register(MediaCollection)
 admin.site.register(MediaItem)
-admin.site.register(User)
 

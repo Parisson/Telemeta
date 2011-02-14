@@ -26,6 +26,7 @@
 .ts-skin-lab .ts-player .ts-viewer .ts-pointer {
     background: #BB0000;
     color: #DDD;
+    border: solid 1px #BB0000;
 }
 .ts-skin-lab .ts-player .ts-viewer a.ts-pointer {
     color: #BB0000;
@@ -34,16 +35,16 @@
 }
 
 .ts-skin-lab .ts-player .ts-viewer .ts-marker {
-    background: #0C1A70;
-    color: #DDD;
+    background: #e65911;
+    color: #FFF;
 }
 .ts-skin-lab .ts-player .ts-ruler .ts-section .ts-label {
-    background: white;
-    color: #555;
+    background: #595959;
+    color: white;
 }
 
 .ts-skin-lab .ts-player .ts-ruler .ts-section .ts-lines {
-    background: #F2F2F2;
+    background: #2e2e2e;
     color: #ADADAD;
     border-bottom: solid 1px #adadad;
 }
@@ -53,13 +54,13 @@
 }
 
 .ts-skin-lab .ts-player .ts-control .ts-playback a {
-    padding: 20px 0 0 0;
+    padding: 28px 0 0 0;
     height /**/:20px; /* for IE5/Win only */
-    margin-right: 4px;
+    margin-right: 0px;
 }
 
 .ts-skin-lab .ts-player .ts-control .ts-layout {
-    margin-left: 3px;
+    margin-left: 0px;
 }
 
 #player_maximized, #player_minimized {

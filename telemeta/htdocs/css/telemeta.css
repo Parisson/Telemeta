@@ -346,7 +346,7 @@ form.login .submit {
 
 /* Navigation (borrowed from Trac) */
 .nav h2, .nav hr { display: none }
-.nav ul { font-size: 10px; list-style: none; margin: 0; text-align: left }
+.nav ul { font-size: 13px; list-style: none; margin: 0; text-align: left }
 .nav li {
  border-right: 1px solid #d7d7d7;
  display: inline;
@@ -357,20 +357,20 @@ form.login .submit {
 
 /* Main navigation bar  (borrowed from Trac) */
 #menu {
- background: #f7f7f7 url(../images/topbar_gradient.png) 0 0;
+ background: #6a0307 ;
  border: 1px solid #000;
  font: normal 10px verdana,'Bitstream Vera Sans',helvetica,arial,sans-serif;
  margin: .66em 0 .33em;
- padding: .2em 0;
+ padding: 1em 0;
 }
 #menu li { border-right: none; padding: .25em 0 }
 #menu li.last { border-right: 1px solid #000 }
 #menu :link, #menu :visited {
- background: url(../images/dots.gif) 0 0 no-repeat;
  border-right: 1px solid #fff;
  border-bottom: none;
  border-left: 1px solid #555;
- color: #000;
+ color: #FFF;
+ font-weight: bold;
  padding: .2em 20px;
 }
 * html #menu :link, * html #menu :visited { background-position: 1px 0 }
