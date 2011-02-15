@@ -110,13 +110,7 @@ urlpatterns = patterns('',
         name="telemeta-collection-m3u"),
     url(r'^collections/(?P<public_id>[A-Za-z0-9._-]+)/edit/$', web_view.collection_detail_edit,
         dict(template='telemeta/collection_detail_edit.html'), name="telemeta-collection-detail-edit"),
-    url(r'^collections/(?P<public_id>[A-Za-z0-9._-]+)/previous/$', 
-        web_view.collection_detail_previous,
-        name="telemeta-collection-detail-previous"),
-    url(r'^collections/(?P<public_id>[A-Za-z0-9._-]+)/next/$', 
-        web_view.collection_detail_next,
-        name="telemeta-collection-detail-next"),
-    
+
     # search
     url(r'^search/$', web_view.search, name="telemeta-search"),
     url(r'^search/collections/$', web_view.search, {'type': 'collections'}, 

@@ -126,22 +126,6 @@ class WebView(object):
             formset = MediaCollectionFormSet(queryset=MediaCollection.objects.filter(code=public_id))
         return render(request, template, {'collection': collection, "formset": formset,})
 
-    def collection_detail_previous(self, request, public_id):
-        collection = MediaCollection.objects.get(public_id=public_id)
-        while True:
-            previous = MediaCollection.objects.get(pk=collection.pk-1)
-            if previous:
-                break
-        return self.collection_detail(request, previous.public_id)
-    
-    def collection_detail_next(self, request, public_id):
-        collection = MediaCollection.objects.get(public_id=public_id)
-        while True:
-            next = MediaCollection.objects.get(pk=collection.pk+1)
-            if next:
-                break
-        return self.collection_detail(request, next.public_id)
-    
     def item_previous_next(self, item):
         # Get previous and next items
         pks = []
@@ -152,17 +136,20 @@ class WebView(object):
         for pk in pks:
             if pk == item.pk:
                 if pk == pks[0]:
-                    previous = pks[-1]
-                    next = pks[1]
+                    previous_pk = pks[-1]
+                    next_pk = pks[1]
                 elif pk == pks[-1]:
-                    previous = pks[-2]
-                    next = pks[0]
+                    previous_pk = pks[-2]
+                    next_pk = pks[0]
                 else:
-                    previous = pks[pks.index(pk)-1]
-                    next = pks[pks.index(pk)+1]
-                previous = MediaItem.objects.get(pk=previous)
+                    previous_pk = pks[pks.index(pk)-1]
+                    next_pk = pks[pks.index(pk)+1]
+                for it in items:
+                    if it.pk == previous_pk:
+                        previous = it
+                    if it.pk == next_pk:
+                        next = it
                 previous = previous.public_id
-                next = MediaItem.objects.get(pk=next)
                 next = next.public_id
         return previous, next
         
