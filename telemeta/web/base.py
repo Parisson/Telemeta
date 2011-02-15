@@ -130,27 +130,31 @@ class WebView(object):
         # Get previous and next items
         pks = []
         items = MediaItem.objects.filter(collection=item.collection)
-        for it in items:
-            pks.append(it.pk)
-        pks.sort()
-        for pk in pks:
-            if pk == item.pk:
-                if pk == pks[0]:
-                    previous_pk = pks[-1]
-                    next_pk = pks[1]
-                elif pk == pks[-1]:
-                    previous_pk = pks[-2]
-                    next_pk = pks[0]
-                else:
-                    previous_pk = pks[pks.index(pk)-1]
-                    next_pk = pks[pks.index(pk)+1]
-                for it in items:
-                    if it.pk == previous_pk:
-                        previous = it
-                    if it.pk == next_pk:
-                        next = it
-                previous = previous.public_id
-                next = next.public_id
+        if len(items) > 1:
+            for it in items:
+                pks.append(it.pk)
+            pks.sort()
+            for pk in pks:
+                if pk == item.pk:
+                    if pk == pks[0]:
+                        previous_pk = pks[-1]
+                        next_pk = pks[1]
+                    elif pk == pks[-1]:
+                        previous_pk = pks[-2]
+                        next_pk = pks[0]
+                    else:
+                        previous_pk = pks[pks.index(pk)-1]
+                        next_pk = pks[pks.index(pk)+1]
+                    for it in items:
+                        if it.pk == previous_pk:
+                            previous = it
+                        if it.pk == next_pk:
+                            next = it
+                    previous = previous.public_id
+                    next = next.public_id
+        else:
+             previous = item.public_id   
+             next = item.public_id
         return previous, next
         
     def item_detail(self, request, public_id, template='telemeta/mediaitem_detail.html'):
