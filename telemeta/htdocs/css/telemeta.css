@@ -100,9 +100,12 @@ a img { border: none; }
     z-index: 1;
     float: right;
     width: 362px;
-    border: 1px dotted #999;
+    border: 1px solid #999;
     padding: 6px;
     background-color: #eee;
+    -moz-border-radius: 5px 5px 5px 5px;
+    -webkit-border-radius: 5px 5px 5px 5px;
+    border-radius: 5px 5px 5px 5px;
 }
 #rightcol .analyzer, #rightcol .exporter {
     text-align: left;
@@ -701,10 +704,13 @@ table.listing tbody tr:hover { background: #f7f8fa !important }
 }
 
 .module {
-    border: 1px dotted #999;
+    border: 1px solid #999;
     background: #EEE;
     padding: 1em;
     margin: 0 0 1.5em 1.5em;
+    -moz-border-radius: 5px 5px 5px 5px;
+    -webkit-border-radius: 5px 5px 5px 5px;
+    border-radius: 5px 5px 5px 5px;
 }
 
 .module h3 {

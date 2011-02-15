@@ -89,13 +89,14 @@
                         {% endfor %}
                     </select>
                     -->
+                    &nbsp;Visualization :
                     <select id="visualizer_id" name="visualizer_id">
                         {% for v in visualizers %}
                         <option value="{% url telemeta-item-visualize item.public_id,v.id,"WIDTH","HEIGHT" %}">
                                 {{v.name}}</option>
                         {% endfor %}
                     </select>
-                    <input type="submit" value="Set" />
+<!--                     <input type="submit" value="Set" /> -->
                 </form>
 
                 <div class="markers_div" id="markers_div_id"></div>

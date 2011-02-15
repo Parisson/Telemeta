@@ -2,7 +2,7 @@
   background: #3c4251;
   padding-top: 10px;
   padding-bottom: 10px;
-  border: dotted #b2b2b2 1px;
+  border: solid #b2b2b2 1px;
 }
 
 .ts-skin-lab .ts-player .ts-viewer {
@@ -47,7 +47,7 @@
 .ts-skin-lab .ts-player .ts-control {
     background: url('img/controlbg.png');
     height: 28px;
-    border-top: dotted #b2b2b2 1px;
+/*     border-top: dotted #b2b2b2 1px; */
 }
 
 .ts-skin-lab .ts-player .ts-control .ts-layout {
