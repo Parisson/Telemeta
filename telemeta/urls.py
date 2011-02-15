@@ -87,12 +87,6 @@ urlpatterns = patterns('',
     url(r'^items/(?P<public_id>[A-Za-z0-9._-]+)/edit/$', 
         web_view.item_detail_edit,
         name="telemeta-item-detail-edit"),
-    url(r'^items/(?P<public_id>[A-Za-z0-9._-]+)/previous/$', 
-        web_view.item_detail_previous,
-        name="telemeta-item-detail-previous"),
-    url(r'^items/(?P<public_id>[A-Za-z0-9._-]+)/next/$', 
-        web_view.item_detail_next,
-        name="telemeta-item-detail-next"),
 
     # collections
     url(r'^collections/$', 'django.views.generic.list_detail.object_list',

@@ -13,7 +13,7 @@ body {
 }
 
 a:link, a:visited {
-    border-bottom:1px dotted #BBB;
+/*     border-bottom:1px dotted #BBB; */
     color:#BB0000;
     text-decoration:none;
 }

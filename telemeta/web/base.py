@@ -142,9 +142,35 @@ class WebView(object):
                 break
         return self.collection_detail(request, next.public_id)
     
+    def item_previous_next(self, item):
+        # Get previous and next items
+        pks = []
+        items = MediaItem.objects.filter(collection=item.collection)
+        for it in items:
+            pks.append(it.pk)
+        pks.sort()
+        for pk in pks:
+            if pk == item.pk:
+                if pk == pks[0]:
+                    previous = pks[-1]
+                    next = pks[1]
+                elif pk == pks[-1]:
+                    previous = pks[-2]
+                    next = pks[0]
+                else:
+                    previous = pks[pks.index(pk)-1]
+                    next = pks[pks.index(pk)+1]
+                previous = MediaItem.objects.get(pk=previous)
+                previous = previous.public_id
+                next = MediaItem.objects.get(pk=next)
+                next = next.public_id
+        return previous, next
+        
     def item_detail(self, request, public_id, template='telemeta/mediaitem_detail.html'):
         """Show the details of a given item"""
         item = MediaItem.objects.get(public_id=public_id)
+        
+        # Get TimeSide processors
         formats = []
         for encoder in self.encoders:
             formats.append({'name': encoder.format(), 'extension': encoder.file_extension()})
@@ -157,17 +183,20 @@ class WebView(object):
         else:
             grapher_id = 'waveform'
         
+        previous, next = self.item_previous_next(item)
         analyzers = self.item_analyze(item)
    
         return render(request, template, 
                     {'item': item, 'export_formats': formats, 
                     'visualizers': graphers, 'visualizer_id': grapher_id,'analysers': analyzers,  #FIXME analysers
-                    'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True)
+                    'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True), 
+                    'previous' : previous, 'next' : next, 
                     })
 
     def item_detail_edit(self, request, public_id, template='telemeta/mediaitem_detail_edit.html'):
         """Show the details of a given item"""
         item = MediaItem.objects.get(public_id=public_id)
+        
         formats = []
         for encoder in self.encoders:
             formats.append({'name': encoder.format(), 'extension': encoder.file_extension()})
@@ -179,7 +208,8 @@ class WebView(object):
             grapher_id = request.REQUEST['grapher_id']
         else:
             grapher_id = 'waveform'
-            
+        
+        previous, next = self.item_previous_next(item)
         analyzers = self.item_analyze(item)
         
         MediaItemFormSet = modelformset_factory(MediaItem)
@@ -194,24 +224,9 @@ class WebView(object):
                     {'item': item, 'export_formats': formats, 
                     'visualizers': graphers, 'visualizer_id': grapher_id,'analysers': analyzers,  #FIXME analysers
                     'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True), "formset": formset, 
+                    'previous' : previous, 'next' : next, 
                     })
         
-    def item_detail_previous(self, request, public_id):
-        item = MediaItem.objects.get(public_id=public_id)
-        while True:
-            previous = MediaItem.objects.get(pk=item.pk-1)
-            if previous:
-                break
-        return self.item_detail(request, previous.public_id)
-    
-    def item_detail_next(self, request, public_id):
-        item = MediaItem.objects.get(public_id=public_id)
-        while True:
-            next = MediaItem.objects.get(pk=item.pk+1)
-            if next:
-                break
-        return self.item_detail(request, next.public_id)
-    
     def item_analyze(self, item):
         public_id = str(item.public_id)
         analyze_file = public_id + '.xml'

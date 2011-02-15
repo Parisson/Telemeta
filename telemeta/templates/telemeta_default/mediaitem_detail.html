@@ -32,12 +32,20 @@
 {% if item %}
 {% block submenu %}
 <div>
+ <table>
+   <tr>
+    <td align="left">
     <a href="{% url telemeta-item-dublincore item.public_id %}">Dublin Core</a>
-    {% if user.is_authenticated %} 
+    </td>
+    <td align="right">
+    {% if user.is_authenticated and user.is_staff%} 
     <a href="{% url telemeta-item-detail-edit item.public_id %}"><img src="/images/edit_page.png" alt="EDIT"></a>
     {% endif %}
-    <a href="{% url telemeta-item-detail-previous item.public_id %}"><img src="/images/previous.png" alt="PREVIOUS"></a>
-    <a href="{% url telemeta-item-detail-next item.public_id %}"><img src="/images/next.png" alt="NEXT"></a>
+    <a href="{% url telemeta-item-detail previous %}"><img src="/images/previous.png" alt="PREVIOUS"></a>
+    <a href="{% url telemeta-item-detail next %}"><img src="/images/next.png" alt="NEXT"></a>
+    </td>
+   </tr>
+ </table>
 </div>
 {% endblock %}
 
