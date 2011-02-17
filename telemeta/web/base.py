@@ -52,7 +52,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.context_processors import csrf
 from django.forms.models import modelformset_factory
 
-from telemeta.models import MediaItem, Location, MediaCollection, EthnicGroup
+from telemeta.models import MediaItem, Location, MediaCollection, EthnicGroup, MediaCollectionForm, MediaItemForm
 from telemeta.models import dublincore, Enumeration, MediaItemMarker
 import telemeta.interop.oai as oai
 from telemeta.interop.oaidatasource import TelemetaOAIDataSource
@@ -94,7 +94,7 @@ class WebView(object):
 
     graphers = timeside.core.processors(timeside.api.IGrapher)
     decoders = timeside.core.processors(timeside.api.IDecoder)
-    encoders= timeside.core.processors(timeside.api.IEncoder)
+    encoders = timeside.core.processors(timeside.api.IEncoder)
     analyzers = timeside.core.processors(timeside.api.IAnalyzer)
     cache = TelemetaCache(settings.TELEMETA_DATA_CACHE_DIR)
     cache_export = TelemetaCache(settings.TELEMETA_EXPORT_CACHE_DIR)
@@ -117,14 +117,14 @@ class WebView(object):
 
     def collection_detail_edit(self, request, public_id, template='telemeta/collection_detail_edit.html'):
         collection = MediaCollection.objects.get(public_id=public_id)
-        MediaCollectionFormSet = modelformset_factory(MediaCollection)
         if request.method == 'POST':
-            formset = MediaCollectionFormSet(request.POST, request.FILES, queryset=MediaCollection.objects.filter(code=public_id))
-            if formset.is_valid():
-                formset.save()
+            form = MediaCollectionForm(request.POST, request.FILES, instance=collection)
+            if form.is_valid():
+                form.save()
         else:
-            formset = MediaCollectionFormSet(queryset=MediaCollection.objects.filter(code=public_id))
-        return render(request, template, {'collection': collection, "formset": formset,})
+            form = MediaCollectionForm(instance=collection)
+        
+        return render(request, template, {'collection': collection, "form": form,})
 
     def item_previous_next(self, item):
         # Get previous and next items
@@ -205,18 +205,17 @@ class WebView(object):
         previous, next = self.item_previous_next(item)
         analyzers = self.item_analyze(item)
         
-        MediaItemFormSet = modelformset_factory(MediaItem)
         if request.method == 'POST':
-            formset = MediaItemFormSet(request.POST, request.FILES, queryset=MediaItem.objects.filter(code=public_id))
-            if formset.is_valid():
-                formset.save()
+            form = MediaItemForm(request.POST, request.FILES, instance=item)
+            if form.is_valid():
+                form.save()
         else:
-            formset = MediaItemFormSet(queryset=MediaItem.objects.filter(code=public_id))
+            form = MediaItemForm(instance=item)
         
         return render(request, template, 
                     {'item': item, 'export_formats': formats, 
                     'visualizers': graphers, 'visualizer_id': grapher_id,'analysers': analyzers,  #FIXME analysers
-                    'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True), "formset": formset, 
+                    'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True), "form": form, 
                     'previous' : previous, 'next' : next, 
                     })
         

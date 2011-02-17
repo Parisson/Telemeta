@@ -204,6 +204,10 @@ class MediaCollection(MediaResource):
     class Meta(MetaCore):
         db_table = 'media_collections'
     
+class MediaCollectionForm(ModelForm):
+    class Meta:
+        model = MediaCollection
+
 class MediaItem(MediaResource):
     "Describe an item"
     element_type = 'item'
@@ -297,6 +301,10 @@ class MediaItem(MediaResource):
             title += ' ' + self.track
 
         return title
+
+class MediaItemForm(ModelForm):
+    class Meta:
+        model = MediaItem
 
 class MediaItemKeyword(ModelCore):
     "Item keyword"
