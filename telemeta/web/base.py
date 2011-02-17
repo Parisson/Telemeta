@@ -286,13 +286,16 @@ class WebView(object):
 
         if not self.cache.exists(image_file):
             if item.file:
+                path = self.cache.dir + os.sep + image_file
                 decoder  = timeside.decoder.FileDecoder(item.file.path)
                 graph = grapher(width = int(width), height = int(height))
                 pipe = decoder | graph
                 pipe.run()
-                graph.render(self.cache.dir + os.sep + image_file)
+                f = open(path, 'w')
+                graph.render(path)
+                f.close()
                 
-        response = HttpResponse(self.cache.read_stream_bin(image_file), mimetype = mime_type)
+        response = HttpResponse(self.cache.read_stream_bin(image_file), mimetype=mime_type)
         return response
 
     def list_export_extensions(self):

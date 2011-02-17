@@ -78,9 +78,9 @@ class TelemetaCache(object):
         while True:
             chunk = f.read(chunk_size)
             if not len(chunk):
-                f.close()
                 break
             yield chunk
+#        f.close()
 
     def write_stream_bin(self, chunk, file_object):
         file_object.write(chunk)
