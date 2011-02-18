@@ -42,7 +42,7 @@ from jsonrpc import jsonrpc_method
 
 from django.template import RequestContext, loader
 from django import template
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.http import Http404
 from django.shortcuts import render_to_response, redirect
 from django.views.generic import list_detail
@@ -121,6 +121,7 @@ class WebView(object):
             form = MediaCollectionForm(request.POST, request.FILES, instance=collection)
             if form.is_valid():
                 form.save()
+                return HttpResponseRedirect('/collections/'+public_id)
         else:
             form = MediaCollectionForm(instance=collection)
         
@@ -209,6 +210,7 @@ class WebView(object):
             form = MediaItemForm(request.POST, request.FILES, instance=item)
             if form.is_valid():
                 form.save()
+                return HttpResponseRedirect('/items/'+public_id)
         else:
             form = MediaItemForm(instance=item)
         

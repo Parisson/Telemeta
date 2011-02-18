@@ -32,7 +32,6 @@
 {% if item %}
 {% block submenu %}
     <div>
-    <a href="{% url telemeta-item-detail item.public_id %}"><button>EXIT</button></a>
     <a href="{% url telemeta-item-dublincore item.public_id %}">Dublin Core</a>
     </div>
 {% endblock %}
@@ -139,7 +138,9 @@
    <table>
      {{ form }}
    </table>
-  <input type="submit" value="save">
+   <p align="center">
+    <input type="image" src="/images/save_changes.png" value="save">
+   </p>
  </form>
 </div>
 
