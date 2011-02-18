@@ -33,7 +33,10 @@
 {% block submenu %}
     <div>
     <a href="{% url telemeta-item-dublincore item.public_id %}">Dublin Core</a>
+    <a href="{% url telemeta-item-detail item.public_id %}">
+      <img src="/images/edit_cancel.png"></a>
     </div>
+    
 {% endblock %}
 
 {% block content %}
@@ -138,9 +141,11 @@
    <table>
      {{ form }}
    </table>
-   <p align="center">
+   <div align="center">
+    <a href="{% url telemeta-item-detail item.public_id %}">
+     <img src="/images/edit_cancel.png"></a>
     <input type="image" src="/images/save_changes.png" value="save">
-   </p>
+   </div>
  </form>
 </div>
 
