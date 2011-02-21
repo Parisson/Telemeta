@@ -1,7 +1,7 @@
 /**
  * TimeSide - Web Audio Components
  * Copyright (c) 2008-2009 Samalyse
- * Author: Olivier Guilyardi <olivier samalyse com>
+ * Author: Olivier Guilyardi <olivier samalyse com> and Riccardo Zaccarelli
  * License: GNU General Public License version 2.0
  */
 
@@ -60,7 +60,7 @@ TimeSide(function($N, $J) {
             this.add(marker);
         },
 
-        //this function adds a new marker. It is actually
+        
         add: function(marker) {
             var idx = this.insertionIndex(marker);
             //adding the div
@@ -77,8 +77,9 @@ TimeSide(function($N, $J) {
             return marker;
         },
         
-        
-
+        //remove must have this class as argument (klass) as we cannot access this class with the keyword 'this':
+        //the latter, when remove is called from within
+        //a click function refers to the current document
         remove: function(klass, marker) {
             if (marker) {
                 if(!(klass)){
@@ -90,9 +91,7 @@ TimeSide(function($N, $J) {
                 klass.fire('remove', {
                     marker: marker
                 });
-                //                var i1= Math.min(oldIndex,newIndex);
-                //                var i2= Math.max(oldIndex,newIndex);
-                //var mrks = this.markers;
+                
                 klass.fireRefreshLabels(i,klass.markers.length);
 
                 klass.removeHTTP(marker);
@@ -163,7 +162,7 @@ TimeSide(function($N, $J) {
                 });
                 //update label element
                 this.markers[i].div['labelIndex'].html(i+1)
-               // $($( this.markers[i].div.children()[0] ).children()[0]).html(i+1);
+            // $($( this.markers[i].div.children()[0] ).children()[0]).html(i+1);
 
             }
         },
@@ -191,12 +190,7 @@ TimeSide(function($N, $J) {
             var l = m.length;
             var ret = {};
             if(div){
-                //var textWithFocus;
-                //div.style.display = "block";
-                //var doc = document;
-
-
-                var text, timeSpan, closeAnchor, ok, header;
+                var text, timeSpan, closeAnchor, ok, header, editAnchor, textShort;
 
 
                 //creating marker, see marker.js
@@ -205,8 +199,14 @@ TimeSide(function($N, $J) {
                 var label = $J('<span/>')
                 .css({
                     color:'#fff',
-                    backgroundColor:'#009',
-                    width: '2em',
+                    //backgroundColor:'#009',
+                    backgroundImage:'url("/images/marker_tiny.png")',
+                    backgroundRepeat:'no-repeat',
+                    backgroundPosition:'center center',
+                    fontSize: '60%',
+                    fontWeight:'bold',
+                    display:'inline-block',
+                    width:'3ex',
                     textAlign: 'center'
                 //,fontFamily: 'monospace'
                 })
@@ -215,13 +215,18 @@ TimeSide(function($N, $J) {
 
                 timeSpan = $J('<span/>')
                 .css({
-                    marginLeft:'1ex'
-                });
+                    marginLeft:'1ex',
+                    marginRight:'1ex'
+                })
+                .html(this.formatMarkerOffset(marker.offset));
+
                 ret['labelOffset']=timeSpan;
 
-                closeAnchor = $J('<input/>')
-                .attr("type","submit")
-                .attr("value","x")
+                closeAnchor = $J('<a/>')
+                .attr("href","#")
+                .append($J('<img/>').attr("src","/images/del_marker.png").css({
+                    width:'1em'
+                }))
                 .css({
                     //fontFamily: 'monospace',
                     fontWeight:'bold',
@@ -231,22 +236,55 @@ TimeSide(function($N, $J) {
                 });
                 ret['submitCancel']=closeAnchor;
 
+                editAnchor = $J('<a/>')
+                .attr("href","#")
+                .append($J('<img/>').attr("src","/images/edit_marker.png").css({
+                    width:'6.5ex'
+                }))
+                //.attr("type","submit")
+                //.attr("value","x")
+                .css({
+                    //fontFamily: 'monospace',
+                    //fontWeight:'bold',
+                    //border:'1px dotted #333333',
+                    //display:'none',
+                    float:'right',
+                //color:'white'
+                });
+                ret['editMarker']=editAnchor;
+
+
+                textShort = $J('<span/>')
+                 .css({
+                    fontWeight:'bold'
+                })
+                .html('x');
+
                 header = $J('<div/>')
                 .append(label)
                 .append(timeSpan)
-                .append(closeAnchor);
+                .append(textShort)
+                .append(closeAnchor)
+                .append(editAnchor);
 
                 text = $J('<textarea/>')
                 .css({
                     margin:0,
                     padding:0,
-                    width:'100%'
+                    width:'100%',
+                    display:'none'
                 });
                 ret['textarea']=text;
 
-                ok = $J('<input/>')
-                .attr("type","submit")
-                .attr("value","OK");
+               
+                ok = $J('<a/>')
+                .css({
+                    display:'none'
+                })
+                .attr("href","#")
+                .append($J('<img/>').attr("src","/images/marker_ok_green.png").css({
+                    width:'3em'
+                }))
                 ret['submitOk']=ok;
 
                 //create new div
@@ -259,18 +297,26 @@ TimeSide(function($N, $J) {
                     marginTop:'1ex'
                 });
 
-                var timeStr = this.formatMarkerOffset(marker.offset);
-
-                timeSpan.html(timeStr);
-
+                
                 //updating text
                 text.val(marker.desc);
 
+                //action for edit
+                editAnchor.unbind('click').click( function(){
+                    marker.desc = text.val();
+                    editAnchor.hide('fast');
+                    text.show('fast');
+                    ok.show('fast');
+                    //send(marker);
+                });
                 var send = this.sendHTTP;
                 //set the ok function
                 //we clear all the click event handlers from ok and assign a new one:
                 ok.unbind('click').click( function(){
                     marker.desc = text.val();
+                    editAnchor.show('fast');
+                    text.hide('fast');
+                    ok.hide('fast');
                     send(marker);
                 });
                 //set the remove action
@@ -291,114 +337,27 @@ TimeSide(function($N, $J) {
                 text.focus();
                 // }
                 ret['div']=subdiv;
-                return ret;
-            }
-        },
-        createDivOld: function(marker,insertionIndex){
-            var div = this.divContainer;
-            var m = this.markers;
-            var l = m.length;
-            if(div){
-                //var textWithFocus;
-                //div.style.display = "block";
-                //var doc = document;
 
-
-                var text, timeSpan, closeAnchor, ok, header;
-
-
-                //creating marker, see marker.js
-                //would be better not to copy this code but to
-                //reference it.
-                var label = $J('<span/>')
-                .css({
-                    color:'#fff',
-                    backgroundColor:'#009',
-                    width: '2em',
-                    textAlign: 'center'
-                //,fontFamily: 'monospace'
-                })
-                .html(insertionIndex+1);
-
-                timeSpan = $J('<span/>')
-                .css({
-                    marginLeft:'1ex'
-                });
-
-                closeAnchor = $J('<a/>')
-                .attr("href","#")
-                .html("x")
-                .css({
-                    //fontFamily: 'monospace',
-                    fontWeight:'bold',
-                    ackgroundColor:'#888877',
-                    float:'right',
-                    color:'white'
-                //,backgroundImage:'url("img/cancel.png")'
-                });
-                //.append('</img>').attr("src","img/cancel.png");
-
-                header = $J('<div/>')
-                .append(label)
-                .append(timeSpan)
-                .append(closeAnchor);
-
-                text = $J('<textarea/>')
-                .css({
-                    margin:0,
-                    padding:0,
-                    width:'100%'
-                });
-
-                ok = $J('<a/>')
-                .attr("href","#")
-                .addClass('ts-marker-button')
-                .html("OK");
-
-                //create new div
-                var subdiv = $J('<div/>')
-                .append(header)
-                .append(text)
-                .append(ok)
-                .css({
-                    marginBottom:'1em',
-                    marginTop:'1ex'
-                });
-
-                var timeStr = this.formatMarkerOffset(marker.offset);
-
-                timeSpan.html(timeStr);
-
-                //updating text
-                text.val(marker.desc);
-
-                var send = this.sendHTTP;
-                //set the ok function
-                //we clear all the click event handlers from ok and assign a new one:
-                ok.unbind('click').click( function(){
-                    marker.desc = text.val();
-                    send(marker);
-                });
-                //set the remove action
-                var remove = this.remove;
-                var klass = this;
-                closeAnchor.unbind('click').click( function(){
-                    remove(klass, marker);
-                });
-
-                var divLen = div.children().length;
-                div.append(subdiv);
-                if(insertionIndex==divLen){
-                    div.append(subdiv);
+                //show label according to div width:
+                var space = header.innerWidth()-label.outerWidth()-timeSpan.outerWidth()-closeAnchor.outerWidth()-editAnchor.outerWidth();
+                var ex = textShort.innerWidth();
+                if(space>ex){
+                    var string = text.val();
+                    var endS = string.length;
+                    var id=0;
+                    while(id<=endS && textShort.innerWidth()<space){
+                        id++;
+                        textShort.html(string.substring(0, id));
+                    }
                 }else{
-                    $( div.children()[insertionIndex] ).before(subdiv);
+                    textShort.html('');
                 }
-                //if(textWithFocus){
-                text.focus();
-                // }
-                return subdiv;
+                //var labelMarker =
+                alert(space);
             }
+            return ret;
         },
+       
 
         formatMarkerOffset: function(markerOffset){
             //marker offset is in float format second.decimalPart

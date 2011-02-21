@@ -24,9 +24,6 @@ TimeSide(function($N) {
         },
 
         _setupPlayer: function() {
-//             if (this.cfg.player && !$N.isInstanceOf(this.cfg.player, 'Player')) {
-//                this.cfg.player = new $N.Player(this.cfg.player);
-//            }
             this.attach(this.updateMarkersDiv);
             this.cfg.player
             .setSoundProvider(this.cfg.soundProvider)
