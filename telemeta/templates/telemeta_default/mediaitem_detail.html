@@ -26,26 +26,115 @@
     load_player({{ item.approx_duration.as_seconds }});
 </script>
 
+<!-- script for tabs-->
+<script type="text/javascript">
+    //    $(document).ready(function() {
+    //
+    //        //When page loads...
+    //        $(".tab_content").hide(); //Hide all content
+    //        $("ul.tabs li:first").addClass("active").show(); //Activate first tab
+    //        $(".tab_content:first").show(); //Show first tab content
+    //
+    //        //On Click Event
+    //        $("ul.tabs li").click(function() {
+    //
+    //            $("ul.tabs li").removeClass("active"); //Remove any "active" class
+    //            $(this).addClass("active"); //Add "active" class to selected tab
+    //            $(".tab_content").hide(); //Hide all tab content
+    //
+    //            var activeTab = $(this).find("a").attr("href");
+    //            //Find the href attribute value to identify the active tab + content
+    //            $(activeTab).fadeIn(); //Fade in the active ID content
+    //            return false;
+    //        });
+    //
+    //    });
+        $(document).ready(function() {
+
+          //When page loads...
+            //$(".tab_content").hide(); //Hide all content
+
+            var h1 = '5ex';
+            var h2 = '4ex';
+            var w = '10ex';
+            var bottom='0px';
+
+            $("#tabs_container").css({'position':'relative','height':h1});
+
+            var tabs = $('a[class^="tab_"]');
+
+            tabs.css('position','absolute');
+            tabs.css('height',h2);
+            //tabs.css('zIndex','10');
+            tabs.css('top','1ex');
+            tabs.css('bottom',bottom);
+            tabs.css('width',w);
+            tabs.css('textAlign','center');
+            //tabs.css('backgroundColor','#ffffff');
+
+            var tabA = $(tabs[0]);
+            var tabM = $(tabs[1]);
+
+            tabM.css('left',w);
+
+            tabA.click(function() {
+                tabA.removeClass("tab_unselected").addClass("tab_selected");
+                tabM.removeClass("tab_selected").addClass("tab_unselected");
+                $("#"+tabA.attr("name")).show('fast');
+                $("#"+tabM.attr("name")).hide();
+
+            });
+
+            tabM.click(function() {
+                tabM.removeClass("tab_unselected").addClass("tab_selected");
+                tabA.removeClass("tab_selected").addClass("tab_unselected");
+                $("#"+tabM.attr("name")).show('fast');
+                $("#"+tabA.attr("name")).hide();
+
+            });
+
+            tabA.trigger("click");
+            
+//            $("ul.tabs li:first").addClass("active").show(); //Activate first tab
+//            $(".tab_content:first").show(); //Show first tab content
+//
+//            //On Click Event
+//            $("ul.tabs li").click(function() {
+//
+//                $("ul.tabs li").removeClass("active"); //Remove any "active" class
+//                $(this).addClass("active"); //Add "active" class to selected tab
+//                $(".tab_content").hide(); //Hide all tab content
+//
+//              var activeTab = $(this).find("a").attr("href");
+//              //Find the href attribute value to identify the active tab + content
+//              $(activeTab).fadeIn(); //Fade in the active ID content
+//               return false;
+//           });
+
+      });
+
+</script>
+
 {% endblock %}
 
 
 {% if item %}
 {% block submenu %}
 <div>
- <table>
-   <tr>
-    <td align="left">
-    <a href="{% url telemeta-item-dublincore item.public_id %}">Dublin Core</a>
-    </td>
-    <td align="right">
-    {% if user.is_authenticated and user.is_staff%} 
-    <a href="{% url telemeta-item-detail-edit item.public_id %}"><img src="/images/edit_page.png" alt="EDIT"></a>
-    {% endif %}
-    <a href="{% url telemeta-item-detail previous %}"><img src="/images/previous.png" alt="PREVIOUS"></a>
-    <a href="{% url telemeta-item-detail next %}"><img src="/images/next.png" alt="NEXT"></a>
-    </td>
-   </tr>
- </table>
+    <table>
+        <tr>
+            <td align="left">
+                <a href="{% url telemeta-item-dublincore item.public_id %}">Dublin Core</a>
+            </td>
+            <td align="right">
+                {% if user.is_authenticated and user.is_staff%}
+                <a href="{% url telemeta-item-detail-edit item.public_id %}"><img src="/images/edit_page.png" alt="EDIT"></a>
+                {% endif %}
+                <a href="{% url telemeta-item-detail previous %}"><img src="/images/previous.png" alt="PREVIOUS"></a>
+                <a href="{% url telemeta-item-detail next %}"><img src="/images/next.png" alt="NEXT"></a>
+            </td>
+        </tr>
+    </table>
 </div>
 {% endblock %}
 
@@ -76,32 +165,63 @@
             </div>
         </div>
 
-        
-       
-            
-            <div class="item_visualization" id="item_visualization_id">
-                <form id="visualizer_id_form" method="get" action="#">
-                    <!--
-                    <select name="visualizer_id" onchange="this.form.submit()">
-                        {% for v in visualizers %}
-                        <option value="{{ v.id }}" {% ifequal v.id visualizer_id %} selected="selected" {% endifequal %}>
-                        {{v.name}}</option>
-                        {% endfor %}
-                    </select>
-                    -->
-                    &nbsp;Visualization :
-                    <select id="visualizer_id" name="visualizer_id">
-                        {% for v in visualizers %}
-                        <option value="{% url telemeta-item-visualize item.public_id,v.id,"WIDTH","HEIGHT" %}">
-                                {{v.name}}</option>
-                        {% endfor %}
-                    </select>
-                    <input type="submit" value="Set" />
-                </form>
 
-                <div class="markers_div" id="markers_div_id"></div>
-                
-                <div class="analyzer">
+
+
+        <div class="item_visualization" id="item_visualization_id">
+            <form id="visualizer_id_form" method="get" action="#">
+                <!--
+                <select name="visualizer_id" onchange="this.form.submit()">
+                    {% for v in visualizers %}
+                    <option value="{{ v.id }}" {% ifequal v.id visualizer_id %} selected="selected" {% endifequal %}>
+                    {{v.name}}</option>
+                    {% endfor %}
+                </select>
+                -->
+                &nbsp;Visualization :
+                <select id="visualizer_id" name="visualizer_id">
+                    {% for v in visualizers %}
+                    <option value="{% url telemeta-item-visualize item.public_id,v.id,"WIDTH","HEIGHT" %}">
+                            {{v.name}}</option>
+                    {% endfor %}
+                </select>
+                <input type="submit" value="Set" />
+            </form>
+
+
+            <!--
+                    <form method="get" action="#">
+                        <p>&nbsp;Vamp plugin analysis</p>
+                        <select name="vamp_id">
+                        {% for plugin in vamp_plugins %}
+                        <option value="{{ plugin }}" {% ifequal plugin vamp_id %} selected="selected" {% endifequal %}>
+                        {{ plugin }}</option>
+                        {% endfor %}
+                        </select>
+                        <input type="submit" value="Get" />
+                    </form>
+            -->
+        </div>
+
+        <div id="tabs_container">
+            <!--            <ul class="tabs_" >
+                            <li><a href="#">Analysis</a></li>
+                            <li><a href="#">Markers</a></li>
+                        </ul>-->
+            <a class="tab_analysis" name ="analyzer_div_id" href="#">Analysis</a>
+            <a class="tab_markers" name="markers_div_id" href="#">Markers</a>
+            </div>
+            <!--<div class="tab_container_">-->
+                <!--        <div id="tab1" class="tab_content">
+                            Content
+                        </div>
+                        <div id="tab2" class="tab_content">
+                           Content
+                        </div>
+                    </div>-->
+                <div class="markers" id="markers_div_id"></div>
+
+                <div class="analyzer" id="analyzer_div_id">
                     <table width="100%">
                         <tr class="analyzer-title">
                             <td>Property</td>
@@ -123,22 +243,9 @@
                         {% endfor %}
                     </table>
                 </div>
-
-                
-                <!--
-                        <form method="get" action="#">
-                            <p>&nbsp;Vamp plugin analysis</p>
-                            <select name="vamp_id">
-                            {% for plugin in vamp_plugins %}
-                            <option value="{{ plugin }}" {% ifequal plugin vamp_id %} selected="selected" {% endifequal %}>
-                            {{ plugin }}</option>
-                            {% endfor %}
-                            </select>
-                            <input type="submit" value="Get" />
-                        </form>
-                -->
-            </div>
+            <!--</div>-->
         
+
         {% if audio_export_enabled %}
         <div class="exporter">
             <p>{% trans "Download:" %}

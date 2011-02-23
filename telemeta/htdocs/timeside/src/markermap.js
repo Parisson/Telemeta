@@ -18,7 +18,7 @@ TimeSide(function($N, $J) {
             }
             this.markers = markers;
         },
-        //static variables to retireve the Marker Html Elements (MHE)
+        //static constant variables to retireve the Marker Html Elements (MHE)
         //to be used with the function below getHtmElm, eg:
         //getHtmElm(marker, this.MHE_OFFSET_LABEL)
         MHE_INDEX_LABEL:'indexLabel',
@@ -28,6 +28,11 @@ TimeSide(function($N, $J) {
         MHE_EDIT_BUTTON:'editButton',
         MHE_OK_BUTTON:'okButton',
         MHE_DELETE_BUTTON:'deleteButton',
+        //static constant variables for edit mode:
+        EDIT_MODE_SAVED:0,
+        EDIT_MODE_EDIT_TEXT:1,
+        EDIT_MODE_MARKER_MOVED:2,
+
         //function to retreve html elements in the edit div associated with marker:
         getHtmElm: function(marker, elementName){
             //return marker.div.children('[name="'+elementName+'"]');
@@ -35,14 +40,16 @@ TimeSide(function($N, $J) {
             return marker.div.find('*[name="'+elementName+'"]');
         },
 
-        toArray: function() {
-            return [].concat(this.markers);
-        },
+        //        toArray: function() {
+        //            return [].concat(this.markers);
+        //        },
+        //
+        //        byIndex: function(index) {
+        //            return this.markers[index];
+        //        },
+        //
 
-        byIndex: function(index) {
-            return this.markers[index];
-        },
-
+        //used by controller._onMarkerMove
         byId: function(id) {
             var marker = null;
             for (var i in this.markers) {
@@ -74,15 +81,12 @@ TimeSide(function($N, $J) {
                 desc: description,
                 isNew: true
             };
-            this.add(marker);
-            //fire the click event on the edit button (anchor)
-            var eB =
-            this.getHtmElm(marker, this.MHE_EDIT_BUTTON);
-            eB.trigger('click');
+            this.add(marker, this.EDIT_MODE_EDIT_TEXT);
         },
 
-        
-        add: function(marker) {
+            //editMode is optional, in case it defaults to
+         //EDIT_MODE_SAVED:0
+         add: function(marker, editMode) {
             var idx = this.insertionIndex(marker);
             //adding the div
             marker.div = this.createDiv(marker,idx);
@@ -102,6 +106,7 @@ TimeSide(function($N, $J) {
             });
             this.fireRefreshLabels(idx+1,this.markers.length);
             //this._reorder(marker.offset);
+            this.fireEditMode(marker,editMode);
             return marker;
         },
 
@@ -136,7 +141,7 @@ TimeSide(function($N, $J) {
             }
             var oldIndex = this.indexOf(marker);
             marker.offset = offset;
-            marker.offset = offset;
+            //marker.offset = offset;
             var newIndex = this.insertionIndex(marker);
             //change marker time
             //$($( marker.div.children()[0] ).children()[1]).html(this.formatMarkerOffset(offset));
@@ -145,9 +150,9 @@ TimeSide(function($N, $J) {
             if(newIndex>oldIndex){
                 newIndex--;
             }
-            //trigger the edit button in order to let appear the ok button to save the new offset
-            //must be done here because we might return in a moment
-            this.getHtmElm(marker, this.MHE_EDIT_BUTTON).trigger('click');
+            //fire edit mode
+            this.fireEditMode(marker, this.EDIT_MODE_MARKER_MOVED);
+
             if(newIndex==oldIndex){
                 return;
             }
@@ -166,7 +171,7 @@ TimeSide(function($N, $J) {
             //$($( marker.div.children()[1] )).focus();
 
             //this.getHtmElm(marker,this.MHE_DESCRIPTION_TEXT).focus();
-            this.getHtmElm(marker,this.MHE_DESCRIPTION_TEXT).select();
+            //this.getHtmElm(marker,this.MHE_DESCRIPTION_TEXT).select();
             var i1= Math.min(oldIndex,newIndex);
             var i2= Math.max(oldIndex,newIndex);
             //var mrks = this.markers;
@@ -218,7 +223,7 @@ TimeSide(function($N, $J) {
             var div = this.divContainer;
             var markerDiv;
             if(div){
-                var indexLabel, descriptionText, offsetLabel, closeButton, okbutton, header, editButton, descriptionLabel;
+                var indexLabel, descriptionText, offsetLabel, closeButton, okButton, header, editButton, descriptionLabel;
                 var margin = '1ex';
 
                 //index label
@@ -304,7 +309,7 @@ TimeSide(function($N, $J) {
                 });
             
                 //ok button
-                okbutton = $J('<a/>')
+                okButton = $J('<a/>')
                 .attr("name", this.MHE_OK_BUTTON)
                 .attr('title','save marker description and offset')
                 .css({
@@ -320,7 +325,7 @@ TimeSide(function($N, $J) {
                 markerDiv = $J('<div/>')
                 .append(header)
                 .append(descriptionText)
-                .append(okbutton)
+                .append(okButton)
                 .css({
                     paddingBottom:'1em',
                     paddingTop:'1ex',
@@ -331,33 +336,25 @@ TimeSide(function($N, $J) {
                 //ACTIONS TO BUTTONS:
                 ////first define this keyword inside functions
                 var klass = this;
+                //reference to fireEditMode
+                var func_fem = this.fireEditMode;
+                var editModeEditText = this.EDIT_MODE_EDIT_TEXT;
                 //action for edit
                 editButton.unbind('click').click( function(){
-                    marker.desc = descriptionText.val();
-                    editButton.hide('fast');
-                    descriptionText.show(400, function(){this.select();});
-                    descriptionLabel.hide(); //without arguments, otherwise alignement problems arise )in chrome)
-                    okbutton.show('fast');
+                   func_fem.apply(klass,[marker,editModeEditText,editButton, descriptionText,
+                        descriptionLabel, okButton]);
                 });
 
-                // ok button
-                //reference the send function (to be passed below):
-                var send = this.sendHTTP;
-                //reference to setLabelDescription
-                var sld = this.setLabelDescription;
-                //set the ok function
-                //we clear all the click event handlers from ok and assign a new one:
-                okbutton.unbind('click').click( function(){
-                    marker.desc = descriptionText.val();
-                    descriptionLabel.attr('title',marker.desc);
-                    editButton.show(); //we cannot show it fast because the sld function below needs
-                    //the edit button displayed to calculate the size. Without argument the editbutton
-                    //is shown immediately
-                    descriptionLabel.show(); //same as aboe: without arguments
-                    descriptionText.hide('fast');
-                    okbutton.hide('fast');
-                    send(marker);
-                    sld.apply(klass,[marker]);
+                //action for ok button
+                var editModeSaved = this.EDIT_MODE_SAVED;
+                var func_send = this.sendHTTP;
+                okButton.unbind('click').click( function(){
+                    if(marker.desc !== descriptionText.val()){ //strict equality needed. See note below
+                        marker.desc = descriptionText.val();
+                        func_send(marker);
+                    }
+                    func_fem.apply(klass,[marker,editModeSaved,editButton, descriptionText,
+                        descriptionLabel, okButton]);
                 });
 
                 //action for removing
@@ -381,6 +378,81 @@ TimeSide(function($N, $J) {
             }
             return markerDiv;
         },
+
+        //sets the edit mode in the div associated to marker. Last 4 arguments are optional
+        fireEditMode: function(marker, editMode, editButton, descriptionText,
+            descriptionLabel, okButton){
+            var e = this.getHtmElm;
+            if(editButton == undefined){
+                editButton = e(marker,this.MHE_EDIT_BUTTON);
+            }
+            if(descriptionLabel == undefined){
+                descriptionLabel = e(marker,this.MHE_DESCRIPTION_LABEL);
+            }
+            if(descriptionText == undefined){
+                descriptionText = e(marker,this.MHE_DESCRIPTION_TEXT);
+            }
+            if(okButton == undefined){
+                okButton = e(marker,this.MHE_OK_BUTTON);
+            }
+            var speed = 400; //fast is 200 slow is 600 (see jQuery help)
+//            var func_fem = this.fireEditMode;
+//            var func_send = this.sendHTTP;
+            var klass = this;
+            //var editModeSaved = this.EDIT_MODE_SAVED;
+            if(editMode == this.EDIT_MODE_EDIT_TEXT){ //edit text
+                descriptionLabel.hide(); //without arguments, otherwise alignement problems arise (in chrome)
+                editButton.hide(speed);
+                descriptionText.show(speed, function(){
+                    this.select();
+                });
+                okButton.show(speed);
+
+//                okButton.unbind('click').click( function(){
+//                    if(marker.desc !== descriptionText.val()){ //strict equality needed. See note below
+//                        marker.desc = descriptionText.val();
+//                        func_send(marker);
+//                    }
+//                    func_fem.apply(klass,[marker,editModeSaved,editButton, descriptionText,
+//                        descriptionLabel, okButton]);
+//                });
+            }else if(editMode == this.EDIT_MODE_MARKER_MOVED){
+                editButton.show(speed, function(){
+                    descriptionLabel.show();
+                });
+                //if then a user types the edit button, this function is called with
+                //editMode=1 (this.EDIT_MODE_EDIT_TEXT). Which means (see okbutton click binding above) marker will be saved
+                //ONLY if text is different from marker.desc. However, as the offset has changed we want to
+                //save IN ANY CASE, so we set marker.desc undefined. This way, text will be always different and
+                //we will save the marker in any case
+                marker.desc = undefined;
+                descriptionText.hide(speed);
+                okButton.show(speed);
+//                okButton.unbind('click').click( function(){
+//                    func_send(marker);
+//                    func_fem.apply(klass,[marker,editModeSaved,editButton, descriptionText,
+//                        descriptionLabel, okButton]);
+//                });
+            }else if(editMode == this.EDIT_MODE_SAVED){
+                var function_sld = klass.setLabelDescription;
+                editButton.show(speed, function(){
+                    function_sld.apply(klass,[marker]);
+                    descriptionLabel.show();
+                });
+                descriptionText.hide(speed);
+                okButton.hide(speed);
+            }
+        },
+
+//        fireMarkerMoved: function(marker){
+//            marker.desc = descriptionText.val();
+//            editButton.hide('fast');
+//            descriptionText.show(400, function(){
+//                this.select();
+//            });
+//            descriptionLabel.hide(); //without arguments, otherwise alignement problems arise )in chrome)
+//            okbutton.show('fast');
+//        },
 
         setLabelDescription: function(marker){
             var mDiv = marker.div;
