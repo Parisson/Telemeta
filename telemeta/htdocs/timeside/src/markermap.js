@@ -9,6 +9,7 @@ TimeSide(function($N, $J) {
 
     $N.Class.create("MarkerMap", $N.Core, {
         markers: null,
+        //the main div container:
         divContainer: $J("#markers_div_id"),
         initialize: function($super, markers) {
             $super();
@@ -16,6 +17,22 @@ TimeSide(function($N, $J) {
                 markers = [];
             }
             this.markers = markers;
+        },
+        //static variables to retireve the Marker Html Elements (MHE)
+        //to be used with the function below getHtmElm, eg:
+        //getHtmElm(marker, this.MHE_OFFSET_LABEL)
+        MHE_INDEX_LABEL:'indexLabel',
+        MHE_OFFSET_LABEL:'offsetLabel',
+        MHE_DESCRIPTION_TEXT:'descriptionText',
+        MHE_DESCRIPTION_LABEL:'descriptionLabel',
+        MHE_EDIT_BUTTON:'editButton',
+        MHE_OK_BUTTON:'okButton',
+        MHE_DELETE_BUTTON:'deleteButton',
+        //function to retreve html elements in the edit div associated with marker:
+        getHtmElm: function(marker, elementName){
+            //return marker.div.children('[name="'+elementName+'"]');
+            //children returns only the first level children, we must use:
+            return marker.div.find('*[name="'+elementName+'"]');
         },
 
         toArray: function() {
@@ -58,6 +75,10 @@ TimeSide(function($N, $J) {
                 isNew: true
             };
             this.add(marker);
+            //fire the click event on the edit button (anchor)
+            var eB =
+            this.getHtmElm(marker, this.MHE_EDIT_BUTTON);
+            eB.trigger('click');
         },
 
         
@@ -65,6 +86,13 @@ TimeSide(function($N, $J) {
             var idx = this.insertionIndex(marker);
             //adding the div
             marker.div = this.createDiv(marker,idx);
+            //setting focus and label description
+            //set label description
+            this.setLabelDescription(marker);
+            //finally, set the focus to the text
+            //this.getHtmElm(marker,this.MHE_DESCRIPTION_TEXT).focus();
+
+
             this.markers.splice(idx,0,marker);
             //calls core.js $N.attachFunction
             //which calls ruler.js onMapAdd
@@ -76,51 +104,50 @@ TimeSide(function($N, $J) {
             //this._reorder(marker.offset);
             return marker;
         },
-        
-        //remove must have this class as argument (klass) as we cannot access this class with the keyword 'this':
-        //the latter, when remove is called from within
-        //a click function refers to the current document
-        remove: function(klass, marker) {
+
+        remove: function(marker) {
             if (marker) {
-                if(!(klass)){
-                    klass = this;
-                }
-                var i = klass.indexOf(marker);
-                klass.markers.splice(i, 1);
-                marker.div['div'].remove();
-                klass.fire('remove', {
+                var i = this.indexOf(marker);
+                this.markers.splice(i, 1);
+                marker.div.remove();
+                this.fire('remove', {
                     marker: marker
                 });
-                
-                klass.fireRefreshLabels(i,klass.markers.length);
 
-                klass.removeHTTP(marker);
+                this.fireRefreshLabels(i,this.markers.length);
+                this.removeHTTP(marker);
 
             }
             return marker;
         },
-
-        compare: function(marker1, marker2) {
-            if (marker1.offset > marker2.offset){
-                return 1;
-            }
-            if (marker1.offset < marker2.offset){
-                return -1;
-            }
-            return 0;
-        },
+        //        compare: function(marker1, marker2) {
+        //            if (marker1.offset > marker2.offset){
+        //                return 1;
+        //            }
+        //            if (marker1.offset < marker2.offset){
+        //                return -1;
+        //            }
+        //            return 0;
+        //        },
 
         move: function(marker, offset) {
+            if(offset===marker.offset){
+                return;
+            }
             var oldIndex = this.indexOf(marker);
             marker.offset = offset;
             marker.offset = offset;
             var newIndex = this.insertionIndex(marker);
             //change marker time
             //$($( marker.div.children()[0] ).children()[1]).html(this.formatMarkerOffset(offset));
-            marker.div['labelOffset'].html(this.formatMarkerOffset(offset));
+            this.getHtmElm(marker,this.MHE_OFFSET_LABEL).html(this.formatMarkerOffset(offset));
+            //            marker.div[this.MHE_OFFSET_LABEL].html(this.formatMarkerOffset(offset));
             if(newIndex>oldIndex){
                 newIndex--;
             }
+            //trigger the edit button in order to let appear the ok button to save the new offset
+            //must be done here because we might return in a moment
+            this.getHtmElm(marker, this.MHE_EDIT_BUTTON).trigger('click');
             if(newIndex==oldIndex){
                 return;
             }
@@ -130,20 +157,22 @@ TimeSide(function($N, $J) {
             //The .detach() method is the same as .remove(), except that .detach() keeps
             //all jQuery data associated with the removed elements.
             //This method is useful when removed elements are to be reinserted into the DOM at a later time.
-            marker.div['div'].detach();
+            marker.div.detach();
             if(newIndex==l-1){
-                this.divContainer.append(marker.div['div']);
+                this.divContainer.append(marker.div);
             }else{
-                $( this.divContainer.children()[newIndex] ).before(marker.div['div']);
+                $( this.divContainer.children()[newIndex] ).before(marker.div);
             }
             //$($( marker.div.children()[1] )).focus();
-            marker.div['textarea'].focus();
+
+            //this.getHtmElm(marker,this.MHE_DESCRIPTION_TEXT).focus();
+            this.getHtmElm(marker,this.MHE_DESCRIPTION_TEXT).select();
             var i1= Math.min(oldIndex,newIndex);
             var i2= Math.max(oldIndex,newIndex);
             //var mrks = this.markers;
 
             this.fireRefreshLabels(i1,i2+1);
-
+            
 
            
             
@@ -161,7 +190,8 @@ TimeSide(function($N, $J) {
                     index: i
                 });
                 //update label element
-                this.markers[i].div['labelIndex'].html(i+1)
+                this.getHtmElm(this.markers[i], this.MHE_INDEX_LABEL).html(i+1);
+            //                this.markers[i].div['labelIndex'].html(i+1)
             // $($( this.markers[i].div.children()[0] ).children()[0]).html(i+1);
 
             }
@@ -183,181 +213,217 @@ TimeSide(function($N, $J) {
             $J(this.markers).each(callback);
         },
 
-
+        //creates a new div. By default, text is hidden and edit button is visible
         createDiv: function(marker,insertionIndex){
             var div = this.divContainer;
-            var m = this.markers;
-            var l = m.length;
-            var ret = {};
+            var markerDiv;
             if(div){
-                var text, timeSpan, closeAnchor, ok, header, editAnchor, textShort;
+                var indexLabel, descriptionText, offsetLabel, closeButton, okbutton, header, editButton, descriptionLabel;
+                var margin = '1ex';
 
-
-                //creating marker, see marker.js
-                //would be better not to copy this code but to
-                //reference it.
-                var label = $J('<span/>')
+                //index label
+                indexLabel = $J('<span/>')
+                .attr('name', this.MHE_INDEX_LABEL)
                 .css({
                     color:'#fff',
-                    //backgroundColor:'#009',
                     backgroundImage:'url("/images/marker_tiny.png")',
                     backgroundRepeat:'no-repeat',
                     backgroundPosition:'center center',
-                    fontSize: '60%',
+                    fontSize: '90%',
                     fontWeight:'bold',
                     display:'inline-block',
                     width:'3ex',
                     textAlign: 'center'
-                //,fontFamily: 'monospace'
+                    ,
+                    fontFamily: 'monospace'
                 })
                 .html(insertionIndex+1);
-                ret['labelIndex']=label;
 
-                timeSpan = $J('<span/>')
+                //offset label
+                offsetLabel = $J('<span/>')
+                .attr('name', this.MHE_OFFSET_LABEL)
                 .css({
-                    marginLeft:'1ex',
-                    marginRight:'1ex'
+                    marginLeft:margin,
+                    marginRight:margin
                 })
                 .html(this.formatMarkerOffset(marker.offset));
+                
+                //description label
+                descriptionLabel = $J('<span/>')
+                .attr("name",this.MHE_DESCRIPTION_LABEL)
+                .attr('title',marker.desc)
+                .css({
+                    fontWeight:'bold',
+                    marginRight:margin
+                })
 
-                ret['labelOffset']=timeSpan;
-
-                closeAnchor = $J('<a/>')
+                //close button
+                closeButton = $J('<a/>')
+                .attr('title','delete marker')
+                .attr('name', this.MHE_DELETE_BUTTON)
                 .attr("href","#")
                 .append($J('<img/>').attr("src","/images/del_marker.png").css({
                     width:'1em'
                 }))
                 .css({
-                    //fontFamily: 'monospace',
                     fontWeight:'bold',
-                    border:'1px dotted #333333',
+                    //border:'1px dotted #333333',
                     float:'right',
                     color:'white'
                 });
-                ret['submitCancel']=closeAnchor;
 
-                editAnchor = $J('<a/>')
+                //edit button
+                editButton = $J('<a/>')
+                .attr('title','edit marker description')
+                .attr('name', this.MHE_EDIT_BUTTON)
                 .attr("href","#")
                 .append($J('<img/>').attr("src","/images/edit_marker.png").css({
                     width:'6.5ex'
                 }))
-                //.attr("type","submit")
-                //.attr("value","x")
                 .css({
-                    //fontFamily: 'monospace',
-                    //fontWeight:'bold',
-                    //border:'1px dotted #333333',
-                    //display:'none',
                     float:'right',
-                //color:'white'
                 });
-                ret['editMarker']=editAnchor;
-
-
-                textShort = $J('<span/>')
-                 .css({
-                    fontWeight:'bold'
-                })
-                .html('x');
-
+            
+                //add all elements to header:
                 header = $J('<div/>')
-                .append(label)
-                .append(timeSpan)
-                .append(textShort)
-                .append(closeAnchor)
-                .append(editAnchor);
+                .append(indexLabel)
+                .append(offsetLabel)
+                .append(descriptionLabel)
+                .append(closeButton)
+                .append(editButton);
 
-                text = $J('<textarea/>')
+                //description text
+                descriptionText = $J('<textarea/>')
+                .attr("name", this.MHE_DESCRIPTION_TEXT)
+                .val(marker.desc)
                 .css({
                     margin:0,
                     padding:0,
-                    width:'100%',
-                    display:'none'
+                    display: 'none',
+                    width:'100%'
                 });
-                ret['textarea']=text;
-
-               
-                ok = $J('<a/>')
+            
+                //ok button
+                okbutton = $J('<a/>')
+                .attr("name", this.MHE_OK_BUTTON)
+                .attr('title','save marker description and offset')
                 .css({
-                    display:'none'
+                    display:'none',
+                    marginTop:'0.5ex'
                 })
                 .attr("href","#")
                 .append($J('<img/>').attr("src","/images/marker_ok_green.png").css({
                     width:'3em'
                 }))
-                ret['submitOk']=ok;
-
-                //create new div
-                var subdiv = $J('<div/>')
+            
+                //create marker div and append all elements
+                markerDiv = $J('<div/>')
                 .append(header)
-                .append(text)
-                .append(ok)
+                .append(descriptionText)
+                .append(okbutton)
                 .css({
-                    marginBottom:'1em',
-                    marginTop:'1ex'
+                    paddingBottom:'1em',
+                    paddingTop:'1ex',
+                    //borderTop: '1px solid #666666',
+                    borderBottom: '1px solid #999999'
                 });
 
-                
-                //updating text
-                text.val(marker.desc);
-
+                //ACTIONS TO BUTTONS:
+                ////first define this keyword inside functions
+                var klass = this;
                 //action for edit
-                editAnchor.unbind('click').click( function(){
-                    marker.desc = text.val();
-                    editAnchor.hide('fast');
-                    text.show('fast');
-                    ok.show('fast');
-                    //send(marker);
+                editButton.unbind('click').click( function(){
+                    marker.desc = descriptionText.val();
+                    editButton.hide('fast');
+                    descriptionText.show(400, function(){this.select();});
+                    descriptionLabel.hide(); //without arguments, otherwise alignement problems arise )in chrome)
+                    okbutton.show('fast');
                 });
+
+                // ok button
+                //reference the send function (to be passed below):
                 var send = this.sendHTTP;
+                //reference to setLabelDescription
+                var sld = this.setLabelDescription;
                 //set the ok function
                 //we clear all the click event handlers from ok and assign a new one:
-                ok.unbind('click').click( function(){
-                    marker.desc = text.val();
-                    editAnchor.show('fast');
-                    text.hide('fast');
-                    ok.hide('fast');
+                okbutton.unbind('click').click( function(){
+                    marker.desc = descriptionText.val();
+                    descriptionLabel.attr('title',marker.desc);
+                    editButton.show(); //we cannot show it fast because the sld function below needs
+                    //the edit button displayed to calculate the size. Without argument the editbutton
+                    //is shown immediately
+                    descriptionLabel.show(); //same as aboe: without arguments
+                    descriptionText.hide('fast');
+                    okbutton.hide('fast');
                     send(marker);
+                    sld.apply(klass,[marker]);
                 });
-                //set the remove action
+
+                //action for removing
                 var remove = this.remove;
-                var klass = this;
-                closeAnchor.unbind('click').click( function(){
-                    remove(klass, marker);
+                //reference the class (this) as within the function below this will refer to the document
+                
+                closeButton.unbind('click').click( function(){
+                    remove.apply(klass,[marker]);
+                //remove(klass, marker);
                 });
 
+                //insert the new div created
                 var divLen = div.children().length;
-                div.append(subdiv);
+                div.append(markerDiv);
                 if(insertionIndex==divLen){
-                    div.append(subdiv);
+                    div.append(markerDiv);
                 }else{
-                    $( div.children()[insertionIndex] ).before(subdiv);
+                    $( div.children()[insertionIndex] ).before(markerDiv);
                 }
-                //if(textWithFocus){
-                text.focus();
-                // }
-                ret['div']=subdiv;
 
-                //show label according to div width:
-                var space = header.innerWidth()-label.outerWidth()-timeSpan.outerWidth()-closeAnchor.outerWidth()-editAnchor.outerWidth();
-                var ex = textShort.innerWidth();
-                if(space>ex){
-                    var string = text.val();
-                    var endS = string.length;
-                    var id=0;
-                    while(id<=endS && textShort.innerWidth()<space){
-                        id++;
-                        textShort.html(string.substring(0, id));
-                    }
-                }else{
-                    textShort.html('');
-                }
-                //var labelMarker =
-                alert(space);
             }
-            return ret;
+            return markerDiv;
         },
-       
+
+        setLabelDescription: function(marker){
+            var mDiv = marker.div;
+            var e = this.getHtmElm;
+            var space = mDiv.innerWidth()-e(marker, this.MHE_INDEX_LABEL).outerWidth(true)-e(marker, this.MHE_OFFSET_LABEL).outerWidth(true)-
+            e(marker, this.MHE_EDIT_BUTTON).outerWidth(true)-e(marker, this.MHE_DELETE_BUTTON).outerWidth(true);
+            var labelDesc = e(marker, this.MHE_DESCRIPTION_LABEL);
+            var str='';
+            labelDesc.html(str);
+            if(space>0 && marker.desc && marker.desc.length>0){
+                var string = marker.desc;
+                labelDesc.html(string);
+                var id=string.length-1;
+                while(id>=0 && labelDesc.outerWidth(true)>=space){
+                    str = id==0 ? "" : string.substring(0,id);
+                    labelDesc.html(str);
+                    id--;
+                }
+            }
+            //we did not reach the end? in case, add dots
+            if(str.length>3 && str.length<marker.desc.length){
+                //workaround: add dots at the beginning, calculate the space, then move them at end
+                str = "..." + str;
+                labelDesc.html(str);
+                //so dots are at the beginning and we can remove safely the last character
+                id = str.length-1;
+                while(id>=0 && labelDesc.outerWidth(true)>=space){
+                    //var chr = string.substring(0,id);
+                    //str += chr==' ' ? '&nbsp;' : chr;
+                    str = id==0 ? "" : str.substring(0,id);
+                    labelDesc.html(str);
+                    id--;
+                }
+                //move dots at the end, if we didnt erase dots as well (space too short)
+                if(str.length>3){
+                    str = str.substring(3,str.length)+"...";
+                }else if(str.length<3){ //zero, one or two dots might be confusing, remove them
+                    str = '';
+                }
+                labelDesc.html(str);
+            }
+
+        },
 
         formatMarkerOffset: function(markerOffset){
             //marker offset is in float format second.decimalPart

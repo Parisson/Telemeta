@@ -98,7 +98,7 @@ TimeSide(function($N) {
                     //me._setupPlayer();
                 }
             });
-            var g = 9;
+            //var g = 9;
         }
 
     
