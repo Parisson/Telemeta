@@ -108,7 +108,7 @@ TimeSide(function($N, $J) {
             var section = $J('<div/>')
             .addClass($N.cssPrefix + 'section')
             .css({
-                fontSize: this.cfg.fontSize + 'px', 
+                fontSize: this.cfg.fontSize + 'px',
                 fontFamily: 'monospace',
                 width: pixelWidth,
                 overflow: 'hidden'
@@ -170,8 +170,9 @@ TimeSide(function($N, $J) {
                 return;
             }
             this.debug("draw ruler, duration: " + this.duration);
-            if (this.layout)
+            if (this.layout){
                 this.layout.remove();
+            }
             this.layout = $J('<div/>')
             .addClass($N.cssPrefix + 'layout')
             .css({
@@ -217,23 +218,6 @@ TimeSide(function($N, $J) {
             this._drawMarkers();
         },
 
-        _createPointer: function() {
-            if (this.pointer) {
-                this.pointer.clear();
-            }
-            this.pointer = new $N.Marker({
-                rulerLayout: this.layout.get(0),
-                viewer: this.waveContainer,
-                fontSize: this.cfg.fontSize,
-                zIndex: 1000,
-                className: 'pointer',
-                tooltip: 'Move head'
-            });
-            this.pointer
-            .setText($N.Util.makeTimeLabel(0))
-            .observe('move', this.attach(this._onPointerMove));
-        },
-
         _drawMarkers: function() {
             if (this.cfg.map) {
                 $J(this.markers).each(function(i, m) {
@@ -246,16 +230,45 @@ TimeSide(function($N, $J) {
             }
         },
 
+        _createPointer: function() {
+            if (this.pointer) {
+                this.pointer.clear();
+            }
+            this.pointer = new $N.Marker({
+                rulerLayout: this.layout.get(0),
+                viewer: this.waveContainer,
+                fontSize: this.cfg.fontSize,
+                zIndex: 1000,
+                top:0,
+                className: 'pointer',
+                tooltip: 'Move head'
+            });
+//            //create the label
+//            var tsMainLabel = $.find('.' + $N.cssPrefix + 'label');
+//            if(tsMainLabel){
+//                var label = tsMainLabel.find('#' + $N.cssPrefix + 'pointerOffset');
+//                if(!label){
+//                    label = $("<span/>").id('#' + $N.cssPrefix + 'pointerOffset').css('zIndex','10').appendTo(tsMainLabel);
+//                    this.pointer.label = label;
+//                }
+//            }
+
+            this.pointer
+            .setText("+")
+            //.setText($N.Util.makeTimeLabel(0))
+            .observe('move', this.attach(this._onPointerMove));
+        },
+
         _movePointer: function(offset) {
-            if (offset < 0)
+            if (offset < 0){
                 offset = 0;
-            else if (offset > this.duration)
+            }else if (offset > this.duration){
                 offset = this.duration;
-            
+            }
             pixelOffset = offset / this.duration * this.width;
             if (this.pointer) {
                 this.pointer.move(pixelOffset);
-                this.pointer.setText($N.Util.makeTimeLabel(offset));
+                //this.pointer.setText($N.Util.makeTimeLabel(offset));
             }
             this.pointerPos = offset;
         },
@@ -307,7 +320,7 @@ TimeSide(function($N, $J) {
             if(data.finish) {
                 this.fire('move', {
                     offset: this.pointerPos
-                    });
+                });
                 this.mouseDown = false;
             }
             return false;
@@ -326,7 +339,7 @@ TimeSide(function($N, $J) {
                 this.mouseDown = false;
                 this.fire('move', {
                     offset: this.pointerPos
-                    });
+                });
                 return false;
             }
         },

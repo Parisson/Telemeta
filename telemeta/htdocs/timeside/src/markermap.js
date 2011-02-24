@@ -73,20 +73,20 @@ TimeSide(function($N, $J) {
         },
 
 
-        addNew: function(offset, description){
+        addNew: function(offset){
             var id = this.uniqid();
             var marker = {
                 id: id,
                 offset: offset,
-                desc: description,
+                desc: undefined,
                 isNew: true
             };
             this.add(marker, this.EDIT_MODE_EDIT_TEXT);
         },
 
-            //editMode is optional, in case it defaults to
-         //EDIT_MODE_SAVED:0
-         add: function(marker, editMode) {
+        //editMode is optional, in case it defaults to
+        //EDIT_MODE_SAVED:0
+        add: function(marker, editMode) {
             var idx = this.insertionIndex(marker);
             //adding the div
             marker.div = this.createDiv(marker,idx);
@@ -256,7 +256,7 @@ TimeSide(function($N, $J) {
                 //description label
                 descriptionLabel = $J('<span/>')
                 .attr("name",this.MHE_DESCRIPTION_LABEL)
-                .attr('title',marker.desc)
+                .attr('title',marker.desc ? marker.desc : "")
                 .css({
                     fontWeight:'bold',
                     marginRight:margin
@@ -287,6 +287,7 @@ TimeSide(function($N, $J) {
                 }))
                 .css({
                     float:'right',
+                    marginRight:margin
                 });
             
                 //add all elements to header:
@@ -300,11 +301,10 @@ TimeSide(function($N, $J) {
                 //description text
                 descriptionText = $J('<textarea/>')
                 .attr("name", this.MHE_DESCRIPTION_TEXT)
-                .val(marker.desc)
+                .val(marker.desc ? marker.desc : "")
                 .css({
                     margin:0,
                     padding:0,
-                    display: 'none',
                     width:'100%'
                 });
             
@@ -329,6 +329,8 @@ TimeSide(function($N, $J) {
                 .css({
                     paddingBottom:'1em',
                     paddingTop:'1ex',
+                    paddingLeft:'1ex',
+                    paddingRight:'1ex',
                     //borderTop: '1px solid #666666',
                     borderBottom: '1px solid #999999'
                 });
@@ -341,8 +343,9 @@ TimeSide(function($N, $J) {
                 var editModeEditText = this.EDIT_MODE_EDIT_TEXT;
                 //action for edit
                 editButton.unbind('click').click( function(){
-                   func_fem.apply(klass,[marker,editModeEditText,editButton, descriptionText,
+                    func_fem.apply(klass,[marker,editModeEditText,editButton, descriptionText,
                         descriptionLabel, okButton]);
+                    return false; //avoid scrolling of the page on anchor click
                 });
 
                 //action for ok button
@@ -355,6 +358,7 @@ TimeSide(function($N, $J) {
                     }
                     func_fem.apply(klass,[marker,editModeSaved,editButton, descriptionText,
                         descriptionLabel, okButton]);
+                    return false; //avoid scrolling of the page on anchor click
                 });
 
                 //action for removing
@@ -363,7 +367,7 @@ TimeSide(function($N, $J) {
                 
                 closeButton.unbind('click').click( function(){
                     remove.apply(klass,[marker]);
-                //remove(klass, marker);
+                    return false; //avoid scrolling of the page on anchor click
                 });
 
                 //insert the new div created
@@ -396,8 +400,6 @@ TimeSide(function($N, $J) {
                 okButton = e(marker,this.MHE_OK_BUTTON);
             }
             var speed = 400; //fast is 200 slow is 600 (see jQuery help)
-//            var func_fem = this.fireEditMode;
-//            var func_send = this.sendHTTP;
             var klass = this;
             //var editModeSaved = this.EDIT_MODE_SAVED;
             if(editMode == this.EDIT_MODE_EDIT_TEXT){ //edit text
@@ -408,32 +410,21 @@ TimeSide(function($N, $J) {
                 });
                 okButton.show(speed);
 
-//                okButton.unbind('click').click( function(){
-//                    if(marker.desc !== descriptionText.val()){ //strict equality needed. See note below
-//                        marker.desc = descriptionText.val();
-//                        func_send(marker);
-//                    }
-//                    func_fem.apply(klass,[marker,editModeSaved,editButton, descriptionText,
-//                        descriptionLabel, okButton]);
-//                });
             }else if(editMode == this.EDIT_MODE_MARKER_MOVED){
-                editButton.show(speed, function(){
-                    descriptionLabel.show();
-                });
+                if(!descriptionText.is(':visible')){
+                    editButton.show(speed, function(){
+                        descriptionLabel.show();
+                    });
+                }
                 //if then a user types the edit button, this function is called with
                 //editMode=1 (this.EDIT_MODE_EDIT_TEXT). Which means (see okbutton click binding above) marker will be saved
                 //ONLY if text is different from marker.desc. However, as the offset has changed we want to
                 //save IN ANY CASE, so we set marker.desc undefined. This way, text will be always different and
                 //we will save the marker in any case
                 marker.desc = undefined;
-                descriptionText.hide(speed);
+                //descriptionText.hide(speed);
                 okButton.show(speed);
-//                okButton.unbind('click').click( function(){
-//                    func_send(marker);
-//                    func_fem.apply(klass,[marker,editModeSaved,editButton, descriptionText,
-//                        descriptionLabel, okButton]);
-//                });
-            }else if(editMode == this.EDIT_MODE_SAVED){
+            }else{
                 var function_sld = klass.setLabelDescription;
                 editButton.show(speed, function(){
                     function_sld.apply(klass,[marker]);
@@ -444,20 +435,13 @@ TimeSide(function($N, $J) {
             }
         },
 
-//        fireMarkerMoved: function(marker){
-//            marker.desc = descriptionText.val();
-//            editButton.hide('fast');
-//            descriptionText.show(400, function(){
-//                this.select();
-//            });
-//            descriptionLabel.hide(); //without arguments, otherwise alignement problems arise )in chrome)
-//            okbutton.show('fast');
-//        },
 
+        //sets the length of the label description. Note that all elements must be visible.
+        //Therefore, we call nediaitem_detail.setUpTabs from controller once all markers have been loaded
         setLabelDescription: function(marker){
             var mDiv = marker.div;
             var e = this.getHtmElm;
-            var space = mDiv.innerWidth()-e(marker, this.MHE_INDEX_LABEL).outerWidth(true)-e(marker, this.MHE_OFFSET_LABEL).outerWidth(true)-
+            var space = mDiv.width()-e(marker, this.MHE_INDEX_LABEL).outerWidth(true)-e(marker, this.MHE_OFFSET_LABEL).outerWidth(true)-
             e(marker, this.MHE_EDIT_BUTTON).outerWidth(true)-e(marker, this.MHE_DELETE_BUTTON).outerWidth(true);
             var labelDesc = e(marker, this.MHE_DESCRIPTION_LABEL);
             var str='';
@@ -510,7 +494,7 @@ TimeSide(function($N, $J) {
             var format = (hours<10 ? "0"+hours : hours )+":"+
             (minutes<10 ? "0"+minutes : minutes )+":"+
             (seconds<10 ? "0"+seconds : seconds )+"."+
-            msec;
+            (msec<10 ? "0"+msec : msec );
             return format;
         },
 

@@ -127,9 +127,8 @@ a img { border: none; }
     background-color: #fff;
     color: #555;
     border: 1px solid #adadad;
-    width: 301px;
+    /*width: 301px;height: 17px;*/
     padding: 2px;
-    height: 17px;
     margin: 5px 0 0;
     font-size: 1em;
 }
@@ -751,40 +750,17 @@ a.image-link {
     padding: 1em;
 }
 
-/*
-code for tabs. See link http://www.sohtanaka.com/web-design/simple-tabs-w-css-jquery/
-There is also a plugin jQuery UI, but is heavy, hard to understand (compared to implementing it on my own)
-and heavy for the page (the re are tons of files to download and include in the page)
-Example usage:
-    <ul class="tabs">
-        <li><a href="#tab1">Gallery</a></li>
-        <li><a href="#tab2">Submit</a></li>
-    </ul>
-
-    <div class="tab_container">
-        <div id="tab1" class="tab_content">
-            <!--Content-->
-        </div>
-        <div id="tab2" class="tab_content">
-           <!--Content-->
-        </div>
-    </div>
-*/
-
-
-
-
-
-
 .tab_unselected {
-    background-color: #999999;
-    color: #666666;
-    border: 1px solid #999999;
+    background-color: #cccccc;
+    font-weight: normal;
+    color: #333333;
+    border: 1px solid #cccccc;
     z-index: 0;
 }
 .tab_selected {
     background-color: #ffffff;
     color: #000000;
+    font-weight: bold;
     border-top: 1px solid #999999;
     border-right: 1px solid #999999;
     border-left: 1px solid #999999;
