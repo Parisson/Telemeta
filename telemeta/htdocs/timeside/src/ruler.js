@@ -254,8 +254,8 @@ TimeSide(function($N, $J) {
 //            }
 
             this.pointer
-            .setText("+")
-            //.setText($N.Util.makeTimeLabel(0))
+            //.setText("+")
+            .setText($N.Util.makeTimeLabel(0))
             .observe('move', this.attach(this._onPointerMove));
         },
 
@@ -268,7 +268,7 @@ TimeSide(function($N, $J) {
             pixelOffset = offset / this.duration * this.width;
             if (this.pointer) {
                 this.pointer.move(pixelOffset);
-                //this.pointer.setText($N.Util.makeTimeLabel(offset));
+                this.pointer.setText($N.Util.makeTimeLabel(offset));
             }
             this.pointerPos = offset;
         },
