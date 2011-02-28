@@ -1,6 +1,6 @@
-======================================================================================================
-Telemeta : a web frontend to backup, analyse, transcode and stream any audio content with its metadata
-======================================================================================================
+===================================================
+Telemeta : Web Audio Content Management System
+===================================================
 
 Telemeta is a web audio archiving program which introduces useful and secure methods to backup, index, transcode, analyse and publish any digitalized audio file with its metadata. It is dedicated to professionnals who wants to easily backup and publish documented sounds from collections of vinyls, magnetic tapes or audio CDs over a strong database, in accordance with open standards.
 

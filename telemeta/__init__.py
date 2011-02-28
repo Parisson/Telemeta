@@ -11,7 +11,7 @@ U{http://telemeta.org}
 """
 
 __docformat__ = 'epytext en'
-__version__ = '0.5.2'
+__version__ = '0.6.0'
 __url__ = 'http://telemeta.org'
 __copyright__ = '(C) 2007-2010 Parisson SARL and Samalyse SARL'
 __license__ = 'CeCILL-2'

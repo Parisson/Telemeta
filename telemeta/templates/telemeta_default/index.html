@@ -8,8 +8,11 @@
 <div class="module-set">
 
 {% block modules %}
-<div class="module">
-    <h3>{% trans "Geographic Navigator" %}</h3>
+<div id="module" class="module">
+    <table><tr>
+    <td><img src="{% url telemeta-images "module_world.png" %}"></td>
+    <td><h3>{% trans "Geo Navigator" %}</h3></td>
+    </tr></table>
     <a class="image-link" href="{% url telemeta-geo-continents %}">
     <img class="map-thumbnail" src="{% url telemeta-images "map_thumbnail.png" %}" alt="{% trans "Open the geographic navigator" %}" /></a>
 </div>
