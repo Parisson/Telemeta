@@ -132,10 +132,9 @@ a img { border: none; }
 
 .exporter {
     background-color: #fff;
-    color: #555;
     border: 1px solid #adadad;
     padding: 2px;
-    height: 30px;
+    height: 26px;
     margin: 5px 0 0;
     font-size: 1em;
     color: #000;
