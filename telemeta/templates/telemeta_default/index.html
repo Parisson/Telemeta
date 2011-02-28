@@ -9,13 +9,36 @@
 
 {% block modules %}
 <div id="module" class="module">
-    <table><tr>
-    <td><img src="{% url telemeta-images "module_world.png" %}"></td>
-    <td><h3>{% trans "Geo Navigator" %}</h3></td>
-    </tr></table>
+    <h3><img src="{% url telemeta-images "module_world.png" %}" style="vertical-align:middle" />
+    {% trans "Geo Navigator" %}</h3>
     <a class="image-link" href="{% url telemeta-geo-continents %}">
     <img class="map-thumbnail" src="{% url telemeta-images "map_thumbnail.png" %}" alt="{% trans "Open the geographic navigator" %}" /></a>
 </div>
+
+<div id="module" class="module">
+    <h3><img src="{% url telemeta-images "module_playlist.png" %}" style="vertical-align:middle" />
+    {% trans "Musical selection" %}</h3>
+    <ul class="playlist">
+    {% for item in items %}
+    <li>
+        <a href="{% url telemeta-item-detail item.public_id %}"><b>{{item}}</b></a>
+        <br />
+        <span class="info">{{item.computed_duration}} {{item.apparent_collector|prepend:' - '}} - {{item.country_or_continent}}</span>
+    </li>
+    {% endfor %}
+    </ul>
+</div>
+
+<!--
+{{ block.super }}
+<div id="module" class="module">
+    <h3><img src="{% url telemeta-images "module_playlist.png" %}" style="vertical-align:middle" />
+    {% trans "Partenaires" %}</h3>
+    <img class="image-link" src="http://files.parisson.com/img/logos/logo-CNRS.png">
+    <img class="image-link" src="http://files.parisson.com/img/logos/logo_mcc_2.png">
+    <img class="image-link" src="http://files.parisson.com/img/logos/mnhn.gif">
+</div>
+-->
 
 {% endblock %}
 

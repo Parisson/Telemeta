@@ -732,7 +732,7 @@ table.listing tbody tr:hover { background: #f7f8fa !important }
 }
 
 .module h3 {
-    margin-top: 0em;
+    margin-top: 0.4em;
     margin-bottom: 0.4em;
     font-size: 1.1em;
 }
