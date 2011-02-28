@@ -103,7 +103,7 @@ class WebView(object):
         """Render the homepage"""
 
         template = loader.get_template('telemeta/index.html')
-        ids = [id for id in MediaItem.objects.all().values_list('id', flat=True).order_by('?')[0:4]]
+        ids = [id for id in MediaItem.objects.all().values_list('id', flat=True).order_by('?')[0:3]]
         items = MediaItem.objects.enriched().filter(pk__in=ids)
 
         context = RequestContext(request, {
