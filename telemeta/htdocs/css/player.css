@@ -77,7 +77,7 @@
     padding: 10px 0 0 0;
     height: 0px !important; 
     height /**/:10px; /* for IE5/Win only */
-    background-image: url('../images/maximize.gif');
+    background-image: url('../images/maximize.png');
     text-decoration: none;
     border: none;
 }
