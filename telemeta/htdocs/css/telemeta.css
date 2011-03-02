@@ -71,6 +71,7 @@ a img { border: none; }
 #content h3 {
     color: #6a0307;
     font-weight: bold;
+    display:  inline;
 }
 #header {
     padding: 0.2em 0;

@@ -127,10 +127,10 @@
             </td>
             <td align="right">
                 {% if user.is_authenticated and user.is_staff%}
-                <a href="{% url telemeta-item-detail-edit item.public_id %}"><img src="/images/edit_page.png" alt="EDIT"></a>
+                <a href="{% url telemeta-item-detail-edit item.public_id %}"><img src="../../images/edit_page.png" alt="EDIT"></a>
                 {% endif %}
-                <a href="{% url telemeta-item-detail previous %}"><img src="/images/previous.png" alt="PREVIOUS"></a>
-                <a href="{% url telemeta-item-detail next %}"><img src="/images/next.png" alt="NEXT"></a>
+                <a href="{% url telemeta-item-detail previous %}"><img src="../../images/previous.png" alt="PREVIOUS"></a>
+                <a href="{% url telemeta-item-detail next %}"><img src="../../images/next.png" alt="NEXT"></a>
             </td>
         </tr>
     </table>
@@ -139,7 +139,8 @@
 
 {% block content %}
 
-<h3>Item : {{ item }}</h3>
+<h3><img src="../../images/item.png" style="vertical-align:middle" /> ITEM : {{ item }}</h3>
+
 <div class="{% if item.file %}with-rightcol{% endif %}">
 
     {% if item.file %}
@@ -170,7 +171,7 @@
         <div class="item_visualization" id="item_visualization_id">
             
             <form id="visualizer_id_form" method="get" action="#">
-                <img src="/images/plots.png" style="vertical-align:middle" />&nbsp;Visualization :
+                <img src="../../images/plots.png" style="vertical-align:middle" />&nbsp;Visualization :
                 <select id="visualizer_id" name="visualizer_id">
                     {% for v in visualizers %}
                     <option value="{% url telemeta-item-visualize item.public_id,v.id,"WIDTH","HEIGHT" %}">
@@ -240,10 +241,10 @@
 
         {% if audio_export_enabled %}
         <div class="exporter">
-            <p><img src="/images/download.png" style="vertical-align:middle" /> {% trans "Download:" %}
+            <p><img src="../../images/download.png" style="vertical-align:middle" /> {% trans "Download:" %}
                 {% for format in export_formats %}
                 <a href="{% url telemeta-item-export item.public_id,format.extension %}">
-                <img src="/images/{{ format.extension }}.png" style="vertical-align:middle" alt="{{ format.extension }}" /></a>
+                <img src="../../images/{{ format.extension }}.png" style="vertical-align:middle" alt="{{ format.extension }}" /></a>
                 {% endfor %}</p>
         </div>
         {% endif %}
