@@ -380,6 +380,8 @@ form.login .submit {
 #menu li.yellow { border-bottom: .5em solid #f3ad17; }
 #menu li.orange { border-bottom: .5em solid #e65911; }
 #menu li.darkgreen { border-bottom: .5em solid #006a12; }
+#menu li.black { border-bottom: .5em solid #000000; }
+#menu li.red { border-bottom: .5em solid #DD0000; }
 #menu li.last { border-right: 0px solid #000;  }
 
 #menu :link, #menu :visited {

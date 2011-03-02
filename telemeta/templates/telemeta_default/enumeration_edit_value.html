@@ -7,7 +7,7 @@
  <h4>{% trans "Enumeration" %}: {{ enumeration_name|capfirst }}</h4>
 
  <form class="mod" id="addenum" method="post"
-    action="{% url telemeta-enumeration-record-update enumeration_id,enumeration_record.id %}">
+    action="{% url telemeta-enumeration-record-update enumeration_id,enumeration_record.id %}">{% csrf_token %}
   <fieldset>
    <legend>{% trans "Modify an entry" %}</legend>
    <div class="field">

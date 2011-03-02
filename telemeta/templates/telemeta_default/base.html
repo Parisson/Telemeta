@@ -60,8 +60,9 @@
 <li class="blue"><a href="{% url telemeta-collections %}">{% trans "Collections" %}</a></li>
 <li class="green"><a href="{% url telemeta-items %}">{% trans "Items" %}</a></li>
 <li class="yellow" {% if not user.is_authenticated %} class="last" {% endif %}><a href="{% url telemeta-geo-continents %}">{% trans "Geo Navigator" %}</a></li>
+<li class="orange"><a href="{% url telemeta-search-criteria %}">{% trans "Advanced search" %}</a></li>
 {% if user.is_authenticated %}
-<li class="orange" class="last"><a href="{% url telemeta-admin %}">{% trans "Admin" %}</a></li>
+<li class="red" class="last"><a href="{% url telemeta-admin %}">{% trans "Admin" %}</a></li>
 {% endif %}
 </ul>
 {% endblock %}

@@ -54,6 +54,7 @@ from django.forms.models import modelformset_factory
 
 from telemeta.models import MediaItem, Location, MediaCollection, EthnicGroup, MediaCollectionForm, MediaItemForm
 from telemeta.models import dublincore, Enumeration, MediaItemMarker
+import telemeta.models
 import telemeta.interop.oai as oai
 from telemeta.interop.oaidatasource import TelemetaOAIDataSource
 from django.core.exceptions import ObjectDoesNotExist
@@ -461,10 +462,10 @@ class WebView(object):
     
     def __get_admin_context_vars(self):
         return {"enumerations": self.__get_enumerations_list()}
-        
+    
     @login_required
     def admin_index(self, request):
-        return render(request, 'telemeta/admin.html', self. __get_admin_context_vars())
+        return render(request, 'telemeta/admin.html', self.__get_admin_context_vars())
 
     def __get_enumeration(self, id):
         from django.db.models import get_models

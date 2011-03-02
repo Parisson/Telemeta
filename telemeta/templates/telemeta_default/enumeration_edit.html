@@ -7,7 +7,7 @@
  <h4>{% trans "Enumeration" %}: {{ enumeration_name|capfirst }}</h4>
 
  <form class="addnew" id="addenum" method="post"
-        action="{% url telemeta-enumeration-add enumeration_id %}">
+        action="{% url telemeta-enumeration-add enumeration_id %}">{% csrf_token %}
   <fieldset>
    <legend>{% trans "Add entry" %}</legend>
    <div class="field">
@@ -20,7 +20,7 @@
   </fieldset>
  </form>
  {% if enumeration_values %}
- <form method="POST" action="{% url telemeta-enumeration-update enumeration_id %}">
+ <form method="POST" action="{% url telemeta-enumeration-update enumeration_id %}">{% csrf_token %}
   <table class="listing">
    <thead>
     <tr><th class="sel">&nbsp;</th><th>{% trans "Value"%}</th>

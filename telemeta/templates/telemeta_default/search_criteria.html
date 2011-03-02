@@ -54,7 +54,7 @@ $(document).ready(function () {
 {% block content %}
 <h3>{% trans "Advanced Search" %}</h3>
 
-<form action="{% url telemeta-search %}" id="searchform">
+<form action="{% url telemeta-search %}" id="searchform">{% csrf_token %}
 <fieldset>
 
     <p>
