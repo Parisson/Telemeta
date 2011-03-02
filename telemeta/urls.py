@@ -179,7 +179,9 @@ urlpatterns = patterns('',
     url(r'^oai/.*$', web_view.handle_oai_request, name="telemeta-oai"),
 
     # Authentication
-    url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'telemeta/login.html'},
+     url(r'^login_/$', web_view.log_in_, {'template_name': 'telemeta/login.html'},
+        name="telemeta-login_"),
+     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'telemeta/login.html'},
         name="telemeta-login"),
     url(r'^logout/$', web_view.logout, name="telemeta-logout"),
     

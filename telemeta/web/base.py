@@ -40,6 +40,8 @@ import timeside
 
 from jsonrpc import jsonrpc_method
 
+from django.utils.decorators import method_decorator
+from django.contrib.auth import authenticate, login
 from django.template import RequestContext, loader
 from django import template
 from django.http import HttpResponse, HttpResponseRedirect
@@ -463,7 +465,7 @@ class WebView(object):
     def __get_admin_context_vars(self):
         return {"enumerations": self.__get_enumerations_list()}
     
-    @login_required
+    @method_decorator(login_required) #@login_required
     def admin_index(self, request):
         return render(request, 'telemeta/admin.html', self.__get_admin_context_vars())
 
@@ -479,7 +481,7 @@ class WebView(object):
 
         return model
 
-    @login_required
+    @method_decorator(login_required) #@login_required
     def edit_enumeration(self, request, enumeration_id):        
 
         enumeration  = self.__get_enumeration(enumeration_id)
@@ -492,7 +494,7 @@ class WebView(object):
         vars["enumeration_values"] = enumeration.objects.all()
         return render(request, 'telemeta/enumeration_edit.html', vars)
 
-    @login_required
+    @method_decorator(login_required) #@login_required
     def add_to_enumeration(self, request, enumeration_id):        
 
         enumeration  = self.__get_enumeration(enumeration_id)
@@ -504,7 +506,7 @@ class WebView(object):
 
         return self.edit_enumeration(request, enumeration_id)
 
-    @login_required
+    @method_decorator(login_required) #@login_required
     def update_enumeration(self, request, enumeration_id):        
         
         enumeration  = self.__get_enumeration(enumeration_id)
@@ -516,7 +518,7 @@ class WebView(object):
 
         return self.edit_enumeration(request, enumeration_id)
 
-    @login_required
+    @method_decorator(login_required) #@login_required
     def edit_enumeration_value(self, request, enumeration_id, value_id):        
 
         enumeration  = self.__get_enumeration(enumeration_id)
@@ -529,7 +531,7 @@ class WebView(object):
         vars["enumeration_record"] = enumeration.objects.get(id__exact=value_id)
         return render(request, 'telemeta/enumeration_edit_value.html', vars)
 
-    @login_required
+    @method_decorator(login_required) #@login_required
     def update_enumeration_value(self, request, enumeration_id, value_id):        
 
         if request.POST.has_key("save"):
@@ -608,6 +610,8 @@ class WebView(object):
         return HttpResponse(provider.handle(args), mimetype='text/xml')
         
     def render_flatpage(self, request, path):
+        print "REQUEST:"+request
+        print"PATH"+path
         try:
             content = pages.get_page_content(request, path)
         except pages.MalformedPagePath:
@@ -621,6 +625,35 @@ class WebView(object):
     def logout(self, request):
         auth.logout(request)
         return redirect('telemeta-home')
+
+    def log_in_(self, request, template_name):
+        print "before:"
+        print request.user
+        msg = []
+        if request.method == 'POST':
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    print "after:"
+                    print request.user
+                    return HttpResponseRedirect('/')
+                    # Redirect to a success page.
+                    msg.append("login successful")
+                else:
+                    msg.append("disabled account")
+                    # Return a 'disabled account' error message
+            else:
+                msg.append("disabled account")
+        
+        # Return an 'invalid login' error message.
+#        return render_flatpage(self, request, template_nam
+#        return django.contrib.auth.views.login(request, {'template_name': 'telemeta/login.html'});
+#        return render(request, template_name)
+#        return render_to_response('login.html', {'errors': msg})
+
         
     @jsonrpc_method('telemeta.add_marker')
     def add_marker(request, marker):
