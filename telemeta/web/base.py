@@ -469,6 +469,14 @@ class WebView(object):
     def admin_index(self, request):
         return render(request, 'telemeta/admin.html', self.__get_admin_context_vars())
 
+    @method_decorator(login_required) #@login_required
+    def admin_general(self, request):
+        return render(request, 'telemeta/admin_general.html', self.__get_admin_context_vars())
+    
+    @method_decorator(login_required) #@login_required
+    def admin_enumerations(self, request):
+        return render(request, 'telemeta/admin_enumerations.html', self.__get_admin_context_vars())
+
     def __get_enumeration(self, id):
         from django.db.models import get_models
         models = get_models(telemeta.models)

@@ -268,7 +268,7 @@ label.disabled { color: #d7d7d7 }
     background: #FFF url(search_bg.png) no-repeat;
     padding: .4em .1em;
     padding-left: 25px;
-    width: 150px;
+    width: 180px;
     color: #555;
     font-weight: bold;
 }
@@ -808,4 +808,3 @@ a.image-link {
     border-bottom: 1px solid #ffffff;
     z-index: 10;
 }
-

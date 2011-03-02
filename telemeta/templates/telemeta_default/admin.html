@@ -7,24 +7,11 @@
 
 {% block content %}
 <h3>Administration</h3>
+<br />
 <div class="tabs">
 <ul>
-<li>Users</li>
-
-{% if enumerations %}
-    <li>Enumerations
-    <ul>
-    {% for enum in enumerations %}
-        {%ifequal enum.id enumeration_id %}
-            <li class="active">{{ enum.name|capfirst }}</li>
-        {%else%}
-            <li><a href="{% url telemeta-enumeration-edit enum.id %}">
-                {{ enum.name|capfirst }}</a></li>
-        {%endifequal%}
-    {% endfor %}
-    </ul>
-</li>
-{% endif %}
+<li><a href="/admin/general/">Administration générale</a></li>
+<li><a href="/admin/enumerations/">Enumerations</a></li>
 </ul>
 </div>
 <div class="tabcontents">

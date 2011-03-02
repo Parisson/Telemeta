@@ -122,7 +122,9 @@ urlpatterns = patterns('',
 
     # administration        
     url(r'^admin/$', web_view.admin_index, name="telemeta-admin"),        
-
+    url(r'^admin/general/$', web_view.admin_general, name="telemeta-admin-general"),        
+    url(r'^admin/enumerations/$', web_view.admin_enumerations, name="telemeta-admin-enumerations"),        
+    
     # enumerations administration
     url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/$', 
         web_view.edit_enumeration ,

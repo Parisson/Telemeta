@@ -132,7 +132,7 @@ Add the following variables:
     
     TEMPLATE_CONTEXT_PROCESSORS = (
         'django.core.context_processors.request',
-        'django.core.context_processors.auth',)
+        'django.contrib.auth.context_processors.auth',)
 
     TELEMETA_ORGANIZATION =  name of the organization which hosts this installation
     TELEMETA_SUBJECTS =      tuple of subject keywords (used for Dublin Core), such as "Ethnology", etc...
