@@ -237,8 +237,13 @@ label.disabled { color: #d7d7d7 }
 /* Quick search */
 #quick_search {
     position: absolute;
-    top: 2.5em;
-    right: 1.1em;
+    top: 1.5em;
+    left: 35%;
+    background-color: #6a0307;
+    padding: 0.5em 0em 0.5em 0.5em;
+    -moz-border-radius: 8px 8px 8px 8px;
+    -webkit-border-radius: 8px 8px 8px 8px;
+    border-radius: 8px 8px 8px 8px;
 }
 #quick_search form {
     float: left;
@@ -270,15 +275,24 @@ label.disabled { color: #d7d7d7 }
 
 /* Authentication */
 #auth_info {
+    color: #FFF;
+    font-weight: bold;
     position: absolute;
-    top: 0.2em;
+    top: 1.5em;
     right: 1.1em;
-    margin-right: 12px;
-    font-size: .8em;
+    margin-right: 1em;
+    font-size: 0.9em;
+    background-color: #6a0307;
+    padding: 1em;
+    -moz-border-radius: 8px 8px 8px 8px;
+    -webkit-border-radius: 8px 8px 8px 8px;
+    border-radius: 8px 8px 8px 8px;
 }
 
 #auth_info a {
-    /* font-weight: bold; */
+    color: #FFF;
+    font-size: 1em;
+    font-weight: bold;
 }
 
 form.login {
