@@ -1,29 +1,11 @@
-{% extends "telemeta/base.html" %}
-{% load telemeta_utils %}
-{% load i18n %}
+{% extends "telemeta/collection_detail.html" %}
 
-{% block head_title %}{% trans "Collection" %}{{collection|prepend:': '}} - {{ block.super }}{% endblock %}
-
-{% block stylesheets %}
-{{ block.super }}
-<link rel="stylesheet" type="text/css" href="{% url telemeta-timeside "css/timeside.css" %}" />
-<link rel="stylesheet" type="text/css" href="{% url telemeta-timeside "skins/lab/style.css" %}" />
-<link rel="stylesheet" type="text/css" href="{% url telemeta-css "player.css" %}" />
-{% endblock %}
-{% block extra_javascript %}
-{% endblock %}
-
-{% if collection %}
-
-{% block submenu %}
-    <div><a href="{% url telemeta-collection-dublincore collection.public_id %}">Dublin Core</a>
+{% block tools %}
     <a href="{% url telemeta-collection-detail collection.public_id %}">
      <img src="images/edit_cancel.png" style="vertical-align:middle" /></a>
-    </div>
 {% endblock %}
 
-{% block content %}
-    <h3>Collection: {{ collection }}</h3>
+{% block infos %}
         <div class="infos">
         <form method="POST" action="">{% csrf_token %}
         <table>
@@ -36,8 +18,4 @@
         </div>
         </form>
         </div>
-{% endblock %}
-{% else %}
-    <p>No such collection</p>
-{% endif %}
-
+{% endblock infos%}
