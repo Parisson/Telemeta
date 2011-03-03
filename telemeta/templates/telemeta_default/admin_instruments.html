@@ -1,0 +1,17 @@
+{% extends "telemeta/admin.html" %}
+
+{% block tab %}
+<div class="tabs">
+{% if instruments %}
+    <ul>
+    {% for instrument in instruments %}
+            <li>{{ instrument|capfirst }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+No intruments
+{% endif %}
+</div>
+{% endblock tab %}
+
+

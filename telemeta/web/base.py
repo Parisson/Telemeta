@@ -55,7 +55,7 @@ from django.core.context_processors import csrf
 from django.forms.models import modelformset_factory
 
 from telemeta.models import MediaItem, Location, MediaCollection, EthnicGroup, MediaCollectionForm, MediaItemForm
-from telemeta.models import dublincore, Enumeration, MediaItemMarker
+from telemeta.models import dublincore, Enumeration, MediaItemMarker,  Instrument
 import telemeta.models
 import telemeta.interop.oai as oai
 from telemeta.interop.oaidatasource import TelemetaOAIDataSource
@@ -476,6 +476,15 @@ class WebView(object):
     @method_decorator(login_required)
     def admin_enumerations(self, request):
         return render(request, 'telemeta/admin_enumerations.html', self.__get_admin_context_vars())
+
+    @method_decorator(login_required)
+    def admin_instruments(self, request):
+        objects = Instrument.objects.all()
+        instruments = []
+        for instrument in objects:
+            instruments.append(instrument.name)
+        instruments.sort()
+        return render(request, 'telemeta/admin_instruments.html', {'instruments': instruments})
 
     def __get_enumeration(self, id):
         from django.db.models import get_models
