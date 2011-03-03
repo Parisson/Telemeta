@@ -76,8 +76,6 @@ def stream_from_processor(decoder, processor):
         frames, eod = decoder.process()
         _chunk, eodproc = processor.process(frames, eod)
         if eodproc:
-            decoder.release()
-            processor.release()
             break
         yield _chunk
 
@@ -168,8 +166,7 @@ class WebView(object):
         # Get TimeSide processors
         formats = []
         for encoder in self.encoders:
-            if 'stream' in encoder.id():
-                formats.append({'name': encoder.format(), 'extension': encoder.file_extension()})
+            formats.append({'name': encoder.format(), 'extension': encoder.file_extension()})
 
         graphers = []
         for grapher in self.graphers:
@@ -195,8 +192,7 @@ class WebView(object):
         
         formats = []
         for encoder in self.encoders:
-            if 'stream' in encoder.id():
-                formats.append({'name': encoder.format(), 'extension': encoder.file_extension()})
+            formats.append({'name': encoder.format(), 'extension': encoder.file_extension()})
 
         graphers = []
         for grapher in self.graphers:
@@ -316,7 +312,7 @@ class WebView(object):
             raise Http404 # FIXME: should be some sort of permissions denied error
 
         for encoder in self.encoders:
-            if encoder.file_extension() == extension and 'stream' in encoder.id():
+            if encoder.file_extension() == extension:
                 break
 
         if encoder.file_extension() != extension:
@@ -337,7 +333,7 @@ class WebView(object):
                 # source > encoder > stream
                 decoder.setup()
                 media = self.cache_export.dir + os.sep + file
-                proc = encoder(media)
+                proc = encoder(media, streaming=True)
                 proc.setup(channels=decoder.channels(), samplerate=decoder.samplerate(), nframes=decoder.nframes())
 #                metadata = dublincore.express_item(item).to_list()
 #                enc.set_metadata(metadata)
