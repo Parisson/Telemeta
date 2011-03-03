@@ -465,15 +465,15 @@ class WebView(object):
     def __get_admin_context_vars(self):
         return {"enumerations": self.__get_enumerations_list()}
     
-    @method_decorator(login_required) #@login_required
+    @method_decorator(login_required)
     def admin_index(self, request):
         return render(request, 'telemeta/admin.html', self.__get_admin_context_vars())
 
-    @method_decorator(login_required) #@login_required
+    @method_decorator(login_required)
     def admin_general(self, request):
         return render(request, 'telemeta/admin_general.html', self.__get_admin_context_vars())
     
-    @method_decorator(login_required) #@login_required
+    @method_decorator(login_required)
     def admin_enumerations(self, request):
         return render(request, 'telemeta/admin_enumerations.html', self.__get_admin_context_vars())
 

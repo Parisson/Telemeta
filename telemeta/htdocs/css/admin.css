@@ -1,7 +1,7 @@
 /* Shamelessly stolen from trac's admin.css... */
 
 .tabs {
- border: 1px solid black;
+ border: 1px dotted black;
  border-color: gray black black gray;
  margin: 1.8em 0;
  padding: .3em 0 0 .5em;

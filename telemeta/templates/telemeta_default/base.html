@@ -32,7 +32,7 @@
 
 <div id="auth_info">
 {% if user.is_authenticated %}
-<img src="../../images/user_red.png" style="vertical-align:middle" />
+<img src="images/user_red.png" style="vertical-align:middle" />
 Welcome, 
 {% if user.first_name and user.last_name %}
 {{ user.first_name }} {{ user.last_name }} 
@@ -41,7 +41,7 @@ Welcome,
 {% endif %}
 Account | Help | 
 <a href="{% url telemeta-logout %}">{% trans "Sign out" %}
-<img src="../../images/close.png" style="vertical-align:middle" /></a>
+<img src="images/close.png" style="vertical-align:middle" /></a>
 {% else %}
 Help |
 <a href="{% url telemeta-login %}?next={{ request.path|urlencode }}">{% trans "Sign in" %}</a>

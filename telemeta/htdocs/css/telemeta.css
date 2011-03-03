@@ -237,10 +237,10 @@ label.disabled { color: #d7d7d7 }
 /* Quick search */
 #quick_search {
     position: absolute;
-    top: 1.5em;
+    top: 1.7em;
     left: 35%;
     background-color: #6a0307;
-    padding: 0.5em 0em 0.5em 0.5em;
+    padding: 0.3em 0em 0.3em 0.3em;
     -moz-border-radius: 8px 8px 8px 8px;
     -webkit-border-radius: 8px 8px 8px 8px;
     border-radius: 8px 8px 8px 8px;
@@ -263,6 +263,9 @@ label.disabled { color: #d7d7d7 }
     vertical-align: middle;
     font-size: .8em;
     margin-right: 0;
+    -moz-border-radius: 5px 5px 5px 5px;
+    -webkit-border-radius: 5px 5px 5px 5px;
+    border-radius: 5px 5px 5px 5px;
 }
 #quick_search_pattern {
     background: #FFF url(search_bg.png) no-repeat;

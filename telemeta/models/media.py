@@ -219,6 +219,7 @@ class MediaItem(MediaResource):
 
     collection            = ForeignKey('MediaCollection', related_name="items", 
                                        verbose_name=_('collection'))
+    title                 = CharField(_('title'))
     track                 = CharField(_('item number'))
     old_code              = CharField(_('old code'), unique=True, null=True)
     code                  = CharField(_('code'), unique=True, null=True)
@@ -229,12 +230,10 @@ class MediaItem(MediaResource):
     location_comment      = CharField(_('location details'))
     ethnic_group          = WeakForeignKey('EthnicGroup', related_name="items", 
                                            verbose_name=_('population / social group'))
-    title                 = CharField(_('title'))
     alt_title             = CharField(_('original title / translation'))
     author                = CharField(_('author / compositor'))
     vernacular_style      = WeakForeignKey('VernacularStyle', related_name="items", 
                                            verbose_name=_('vernacular style'))
-    context_comment       = TextField(_('comments'))
     external_references   = TextField(_('published reference'))
     moda_execut           = CharField(_('moda_execut'))
     copied_from_item      = WeakForeignKey('self', related_name="copies", verbose_name=_('copy of'))
@@ -245,6 +244,7 @@ class MediaItem(MediaResource):
                                            verbose_name=_('generic style'))
     collector_selection   = CharField(_('recordist selection'))
     creator_reference     = CharField(_('reference'))
+    context_comment       = TextField(_('comments'))
     comment               = TextField(_('remarks'))
     file                  = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename")
     public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES, max_length=16, default="metadata")
