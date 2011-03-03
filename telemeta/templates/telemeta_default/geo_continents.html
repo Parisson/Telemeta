@@ -10,7 +10,7 @@
 <script src="{% url telemeta-js "resourcemap.js" %}" type="text/javascript"></script>
 <script type="text/javascript">
 var resourceMap = new ResourceMap('.continents', {
-    'countryInfoUri': '{% url telemeta-country-info "RESOURCEID" %}'
+    'countryInfoUri': '/geo/country_info/RESOURCEID/'
 });
 </script>
 {% endif %}
