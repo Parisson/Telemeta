@@ -38,7 +38,7 @@
                 <a href="{% url telemeta-item-dublincore item.public_id %}">Dublin Core</a>
             </td>
             <td align="right">
-                {% if user.is_authenticated and user.is_staff%}
+                {% if user.is_authenticated and perms.telemeta.change_mediaitem %}
                 {% block tools %}
                 <a href="{% url telemeta-item-detail-edit item.public_id %}"><img src="images/edit_page.png" alt="EDIT"></a>
                 {% endblock tools %}

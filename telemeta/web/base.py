@@ -50,7 +50,7 @@ from django.shortcuts import render_to_response, redirect
 from django.views.generic import list_detail
 from django.conf import settings
 from django.contrib import auth
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.core.context_processors import csrf
 from django.forms.models import modelformset_factory
 
@@ -80,7 +80,7 @@ def stream_from_processor(decoder, processor):
         yield _chunk
 
 def stream_from_file(file):
-    chunk_size = 0xFFFF
+    chunk_size = 0xFFFFF
     f = open(file, 'r')
     while True:
         _chunk = f.read(chunk_size)
@@ -116,6 +116,7 @@ class WebView(object):
         collection = MediaCollection.objects.get(public_id=public_id)
         return render(request, template, {'collection': collection})
 
+    @method_decorator(permission_required('telemeta.change_mediacollection'))
     def collection_detail_edit(self, request, public_id, template='telemeta/collection_detail_edit.html'):
         collection = MediaCollection.objects.get(public_id=public_id)
         if request.method == 'POST':
@@ -186,6 +187,7 @@ class WebView(object):
                     'previous' : previous, 'next' : next, 
                     })
 
+    @method_decorator(permission_required('telemeta.change_mediaitem'))
     def item_detail_edit(self, request, public_id, template='telemeta/mediaitem_detail_edit.html'):
         """Show the details of a given item"""
         item = MediaItem.objects.get(public_id=public_id)
@@ -461,19 +463,19 @@ class WebView(object):
     def __get_admin_context_vars(self):
         return {"enumerations": self.__get_enumerations_list()}
     
-    @method_decorator(login_required)
+    @method_decorator(permission_required('sites.change_site'))
     def admin_index(self, request):
         return render(request, 'telemeta/admin.html', self.__get_admin_context_vars())
 
-    @method_decorator(login_required)
+    @method_decorator(permission_required('sites.change_site'))
     def admin_general(self, request):
         return render(request, 'telemeta/admin_general.html', self.__get_admin_context_vars())
     
-    @method_decorator(login_required)
+    @method_decorator(permission_required('sites.change_site'))
     def admin_enumerations(self, request):
         return render(request, 'telemeta/admin_enumerations.html', self.__get_admin_context_vars())
 
-    @method_decorator(login_required)
+    @method_decorator(permission_required('sites.change_site'))
     def admin_instruments(self, request):
         objects = Instrument.objects.all()
         instruments = []
@@ -494,7 +496,7 @@ class WebView(object):
 
         return model
 
-    @method_decorator(login_required) #@login_required
+    @method_decorator(permission_required('telemeta.change_keyword'))
     def edit_enumeration(self, request, enumeration_id):        
 
         enumeration  = self.__get_enumeration(enumeration_id)
@@ -507,7 +509,7 @@ class WebView(object):
         vars["enumeration_values"] = enumeration.objects.all()
         return render(request, 'telemeta/enumeration_edit.html', vars)
 
-    @method_decorator(login_required) #@login_required
+    @method_decorator(permission_required('telemeta.add_keyword'))
     def add_to_enumeration(self, request, enumeration_id):        
 
         enumeration  = self.__get_enumeration(enumeration_id)
@@ -519,7 +521,7 @@ class WebView(object):
 
         return self.edit_enumeration(request, enumeration_id)
 
-    @method_decorator(login_required) #@login_required
+    @method_decorator(permission_required('telemeta.change_keyword'))
     def update_enumeration(self, request, enumeration_id):        
         
         enumeration  = self.__get_enumeration(enumeration_id)
@@ -531,7 +533,7 @@ class WebView(object):
 
         return self.edit_enumeration(request, enumeration_id)
 
-    @method_decorator(login_required) #@login_required
+    @method_decorator(permission_required('telemeta.change_keyword'))
     def edit_enumeration_value(self, request, enumeration_id, value_id):        
 
         enumeration  = self.__get_enumeration(enumeration_id)
@@ -544,7 +546,7 @@ class WebView(object):
         vars["enumeration_record"] = enumeration.objects.get(id__exact=value_id)
         return render(request, 'telemeta/enumeration_edit_value.html', vars)
 
-    @method_decorator(login_required) #@login_required
+    @method_decorator(permission_required('telemeta.change_keyword'))
     def update_enumeration_value(self, request, enumeration_id, value_id):        
 
         if request.POST.has_key("save"):
@@ -639,8 +641,8 @@ class WebView(object):
         auth.logout(request)
         return redirect('telemeta-home')
 
-        
     @jsonrpc_method('telemeta.add_marker')
+    @method_decorator(permission_required('telemeta.add_marker'))
     def add_marker(request, marker):
         # marker must be a dict
         if isinstance(marker, dict):
@@ -659,6 +661,7 @@ class WebView(object):
             raise 'Error : Bad marker dictionnary'
 
     @jsonrpc_method('telemeta.del_marker')
+    @method_decorator(permission_required('telemeta.delete_marker'))
     def del_marker(request, public_id):
         m = MediaItemMarker.objects.get(public_id=public_id)
         m.delete()
@@ -678,6 +681,7 @@ class WebView(object):
         return list
 
     @jsonrpc_method('telemeta.update_marker')
+    @method_decorator(permission_required('telemeta.change_marker'))
     def update_marker(request, marker):
         if isinstance(marker, dict):
             m = MediaItemMarker.objects.get(public_id=marker['public_id'])

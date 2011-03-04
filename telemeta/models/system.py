@@ -37,6 +37,7 @@ from telemeta.models.core import *
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import ugettext_lazy as _
 
+
 class User(ModelCore):
     "Telemeta user"
     LEVEL_CHOICES = (('user', 'user'), ('maintainer', 'maintainer'), ('admin', 'admin'))    

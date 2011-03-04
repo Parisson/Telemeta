@@ -14,7 +14,7 @@
     <div>
     <a href="{% url telemeta-collection-dublincore collection.public_id %}">Dublin Core</a>
     
-    {% if user.is_authenticated %} 
+    {% if user.is_authenticated and perms.telemeta.change_mediacollection %}
      {% block tools %}
      <a href="{% url telemeta-collection-detail-edit collection.public_id %}">
       <img src="images/edit_page.png" alt="EDIT" style="vertical-align:middle" /></a>
