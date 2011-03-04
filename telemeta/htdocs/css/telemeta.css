@@ -409,6 +409,7 @@ form.login .submit {
  padding: .2em 20px;
 }
 * html #menu :link, * html #menu :visited { background-position: 1px 0 }
+/*
 #menu :link:hover, #menu :visited:hover {
  background-color: #FFF;
  color: #6a0307;
@@ -416,14 +417,32 @@ form.login .submit {
  border-bottom: .4em solid #FFF; 
  border-top: 2px solid #FFF;
 }
+
 #menu .active :link, #menu .active :visited {
- background-color: #FFF;border-bottom: .5em solid #6a0307;
+ background-color: #FFF; border-bottom: .5em solid #6a0307;
  color: #6a0307;
 }
 #menu .active :link:hover, #menu .active :visited:hover {
  background-color: #FFF;
  color: #6a0307;
     
+}*/
+#menu .active, #menu :link:hover, #menu :visited:hover{
+   background-color: #FFF;
+ color: #6a0307;
+ text-decoration:none;
+ border-bottom: .4em solid #FFF;
+ border-top: 2px solid #FFF;
+    background-color: #FFF;
+    /*border-bottom: .5em solid #6a0307;*/
+    
+    -webkit-border-top-left-radius:5px 5px;
+    moz-border-radius-topleft: 5px 5px;
+    border-top-left-radius: 5px 5px;
+    -webkit-border-top-right-radius:5px 5px;
+    moz-border-radius-topright: 5px 5px;
+    border-top-right-radius: 5px 5px;
+
 }
 
 /* Footer (borrowed from Trac) */

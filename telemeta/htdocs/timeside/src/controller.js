@@ -47,14 +47,14 @@ TimeSide(function($N) {
 
         _onMarkerMove: function(e, data) {
             if (this.cfg.map) {
-                selectMarkerTab(); //defined in mediaitem|_detail.html
+                $N.Util.selectMarkerTab(); //defined in utils.js
                 this.cfg.map.move(this.cfg.map.byId(data.id), data.offset);
             }
         },
 
         _onMarkerAdd: function(e, data) {
             if (this.cfg.map) {
-                selectMarkerTab(); //defined in mediaitem|_detail.html
+                $N.Util.selectMarkerTab(); //defined in mediaitem|_detail.html
                 //this.refreshMarkersText(this.cfg.map);
                 this.cfg.map.addNew(data.offset);
             //this.updateMarkersDiv(this.cfg.map, data.offset);
@@ -97,7 +97,8 @@ TimeSide(function($N) {
                             //We call mediaitem_detail.setUpTabs from controller once all markers have been loaded
                             //this because setLabelDescription, which sets the label text according to the div width,
                             //needs to have all elements visible.
-                            setUpTabs(); //which hides the marker div. Call with argument 1 to set up marker div
+                            $N.Util.setUpTabs();
+                            //setUpTabs(); //which hides the marker div. Call with argument 1 to set up marker div
                             //as visible as startup
                         }
                         

@@ -437,7 +437,7 @@ TimeSide(function($N, $J) {
 
 
         //sets the length of the label description. Note that all elements must be visible.
-        //Therefore, we call nediaitem_detail.setUpTabs from controller once all markers have been loaded
+        //Therefore, we call $N.Util.setUpTabs() from controller once all markers have been loaded
         setLabelDescription: function(marker){
             var mDiv = marker.div;
             var e = this.getHtmElm;
