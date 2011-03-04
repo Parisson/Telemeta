@@ -642,7 +642,7 @@ class WebView(object):
         return redirect('telemeta-home')
 
     @jsonrpc_method('telemeta.add_marker')
-    @method_decorator(permission_required('telemeta.add_marker'))
+#    @method_decorator(permission_required('telemeta.add_marker'))
     def add_marker(request, marker):
         # marker must be a dict
         if isinstance(marker, dict):
@@ -661,7 +661,7 @@ class WebView(object):
             raise 'Error : Bad marker dictionnary'
 
     @jsonrpc_method('telemeta.del_marker')
-    @method_decorator(permission_required('telemeta.delete_marker'))
+#    @method_decorator(permission_required('telemeta.delete_marker'))
     def del_marker(request, public_id):
         m = MediaItemMarker.objects.get(public_id=public_id)
         m.delete()
@@ -681,7 +681,7 @@ class WebView(object):
         return list
 
     @jsonrpc_method('telemeta.update_marker')
-    @method_decorator(permission_required('telemeta.change_marker'))
+#    @method_decorator(permission_required('telemeta.change_marker'))
     def update_marker(request, marker):
         if isinstance(marker, dict):
             m = MediaItemMarker.objects.get(public_id=marker['public_id'])
