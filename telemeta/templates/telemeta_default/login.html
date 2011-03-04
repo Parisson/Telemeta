@@ -8,7 +8,7 @@
 <p class="login-error">{% trans "Your username and password didn't match. Please try again." %}</p>
 {% endif %}
 
-<form class="login" method="post" action="{% url telemeta-login_ %}">{% csrf_token %}
+<form class="login" method="post" action="{% url telemeta-login %}">{% csrf_token %}
 <p>
 {{ form.username.label_tag }}
 {{ form.username }}<br />

@@ -639,34 +639,6 @@ class WebView(object):
         auth.logout(request)
         return redirect('telemeta-home')
 
-    def log_in_(self, request, template_name):
-        print "before:"
-        print request.user
-        msg = []
-        if request.method == 'POST':
-            username = request.POST['username']
-            password = request.POST['password']
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                if user.is_active:
-                    login(request, user)
-                    print "after:"
-                    print request.user
-                    return HttpResponseRedirect('/')
-                    # Redirect to a success page.
-                    msg.append("login successful")
-                else:
-                    msg.append("disabled account")
-                    # Return a 'disabled account' error message
-            else:
-                msg.append("disabled account")
-        
-        # Return an 'invalid login' error message.
-#        return render_flatpage(self, request, template_nam
-#        return django.contrib.auth.views.login(request, {'template_name': 'telemeta/login.html'});
-#        return render(request, template_name)
-#        return render_to_response('login.html', {'errors': msg})
-
         
     @jsonrpc_method('telemeta.add_marker')
     def add_marker(request, marker):
