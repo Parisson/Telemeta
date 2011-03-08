@@ -198,8 +198,8 @@ class MediaCollection(MediaResource):
     def save(self, force_insert=False, force_update=False):
         if not self.code:
             raise RequiredFieldError(self, self._meta.get_field('code'))
-#        if not self.is_valid_code(self.code):
-#            raise MediaInvalidCodeError("%s is not a valid code for this collection" % self.code)
+        if not self.is_valid_code(self.code):
+            raise MediaInvalidCodeError("%s is not a valid code for this collection" % self.code)
         super(MediaCollection, self).save(force_insert, force_update)
 
     class Meta(MetaCore):
@@ -281,9 +281,9 @@ class MediaItem(MediaResource):
         return False
 
     def save(self, force_insert=False, force_update=False):
-#        if self.code and not self.is_valid_code(self.code):
-#            raise MediaInvalidCodeError("%s is not a valid item code for collection %s" 
-#                                        % (self.code, self.collection.code))
+        if self.code and not self.is_valid_code(self.code):
+            raise MediaInvalidCodeError("%s is not a valid item code for collection %s" 
+                                        % (self.code, self.collection.code))
         super(MediaItem, self).save(force_insert, force_update)
 
     def computed_duration(self):

@@ -204,11 +204,11 @@ class WebView(object):
         previous, next = self.item_previous_next(item)
         analyzers = self.item_analyze(item)
    
-        return render(request, template, 
-                    {'item': item, 'export_formats': formats, 
-                    'visualizers': graphers, 'visualizer_id': grapher_id,'analysers': analyzers,  #FIXME analysers
-                    'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True), 
-                    'previous' : previous, 'next' : next, 
+        return render(request, template,
+                    {'item': item, 'export_formats': formats,
+                    'visualizers': graphers, 'visualizer_id': grapher_id,'analysers': analyzers,
+                    'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True),
+                    'previous' : previous, 'next' : next,
                     })
 
     @method_decorator(permission_required('telemeta.change_mediaitem'))
@@ -241,7 +241,7 @@ class WebView(object):
         
         return render(request, template, 
                     {'item': item, 'export_formats': formats, 
-                    'visualizers': graphers, 'visualizer_id': grapher_id,'analysers': analyzers,  #FIXME analysers
+                    'visualizers': graphers, 'visualizer_id': grapher_id,'analysers': analyzers,
                     'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True), "form": form, 
                     'previous' : previous, 'next' : next, 
                     })
@@ -251,7 +251,7 @@ class WebView(object):
         """Show the details of a given item"""
         item = MediaItem()
         if request.method == 'POST':
-            form = MediaItemForm(request.POST, request.FILES, instance=item)
+            form = MediaItemForm(data=request.POST, files=request.FILES, instance=item)
             if form.is_valid():
                 form.save()
                 return HttpResponseRedirect('/items/'+form.cleaned_data['code'])
@@ -266,7 +266,7 @@ class WebView(object):
         item = MediaItem.objects.get(public_id=public_id)
         new_item = MediaItem()
         if request.method == 'POST':
-            form = MediaItemForm(request.POST, request.FILES, instance=new_item)
+            form = MediaItemForm(data=request.POST, files=request.FILES, instance=new_item)
             if form.is_valid():
                 form.save()
                 return HttpResponseRedirect('/items/'+form.cleaned_data['code'])
@@ -295,14 +295,11 @@ class WebView(object):
             if item.file:
                 decoder  = timeside.decoder.FileDecoder(item.file.path)
                 pipe = decoder
-                
                 for analyzer in self.analyzers:
                     subpipe = analyzer()
                     analyzers_sub.append(subpipe)
                     pipe = pipe | subpipe
-                    
                 pipe.run()
-                
                 mime_type = decoder.format()
                 analyzers.append({'name': 'Mime type', 'id': 'mime_type', 'unit': '', 'value': mime_type})
                     
@@ -319,9 +316,9 @@ class WebView(object):
                                       'unit':analyzer.unit(),
                                       'value':str(value)})
                   
-            self.cache.write_analyzer_xml(analyzers, analyze_file)
+                self.cache.write_analyzer_xml(analyzers, analyze_file)
+            
         return analyzers
-        
         
     def item_visualize(self, request, public_id, visualizer_id, width, height):
         item = MediaItem.objects.get(public_id=public_id)
@@ -694,7 +691,6 @@ class WebView(object):
         return redirect('telemeta-home')
 
     @jsonrpc_method('telemeta.add_marker')
-#    @method_decorator(permission_required('telemeta.add_marker'))
     def add_marker(request, marker):
         # marker must be a dict
         if isinstance(marker, dict):
@@ -713,7 +709,6 @@ class WebView(object):
             raise 'Error : Bad marker dictionnary'
 
     @jsonrpc_method('telemeta.del_marker')
-#    @method_decorator(permission_required('telemeta.delete_marker'))
     def del_marker(request, public_id):
         m = MediaItemMarker.objects.get(public_id=public_id)
         m.delete()
@@ -733,7 +728,6 @@ class WebView(object):
         return list
 
     @jsonrpc_method('telemeta.update_marker')
-#    @method_decorator(permission_required('telemeta.change_marker'))
     def update_marker(request, marker):
         if isinstance(marker, dict):
             m = MediaItemMarker.objects.get(public_id=marker['public_id'])

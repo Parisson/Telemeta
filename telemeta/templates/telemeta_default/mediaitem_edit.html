@@ -7,7 +7,7 @@
 
   {% block infos %}    
     <div class="infos">
-     <form method="POST" action="">{% csrf_token %}
+     <form enctype="multipart/form-data" method="POST" action="">{% csrf_token %}
       <table>
        {% for field in form %}
         {% if not field.html_name == "copied_from_item" %}
