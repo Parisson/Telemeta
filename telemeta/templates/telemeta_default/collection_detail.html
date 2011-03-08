@@ -18,7 +18,7 @@
      {% block tools %}
      <a href="{% url telemeta-collection-edit collection.public_id %}">
       <img src="images/edit_page.png" alt="EDIT" style="vertical-align:middle" /></a>
-      <a href="{% url telemeta-collection-copy collection.public_id %}">Copy</a>
+      <button><a href="{% url telemeta-collection-copy collection.public_id %}">Copy</a></button>
      {% endblock tools %}
     {% endif %}
     

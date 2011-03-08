@@ -34,7 +34,7 @@
     {% if user.is_authenticated and perms.telemeta.change_mediaitem %}
     
     <a href="{% url telemeta-item-edit item.public_id %}"><img src="images/edit_page.png" style="vertical-align:middle" alt="EDIT" /></a>
-    <a href="{% url telemeta-item-copy item.public_id %}">Copy</a>
+    <button><a href="{% url telemeta-item-copy item.public_id %}">Copy</a></button>
     
     {% endif %}
     <a href="{% url telemeta-item-detail previous %}"><img src="images/previous.png" style="vertical-align:middle" alt="PREVIOUS" /></a>
