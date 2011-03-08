@@ -1,0 +1,49 @@
+{% extends "telemeta/base.html" %}
+{% load telemeta_utils %}
+{% load i18n %}
+
+{% block head_title %}{% trans "Item" %}- {{ block.super }}{% endblock %}
+
+
+{% if item %}
+{% block submenu %}
+<div>
+    {% if perms.telemeta.add_mediaitem %}
+    {% block tools %}
+     <a href="{% url telemeta-item-detail item.public_id %}">
+         <img src="images/edit_cancel.png" /></a>
+    {% endblock tools %}
+    
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block content %}
+<h3><img src="images/item.png" style="vertical-align:middle" /> Item : NEW</h3>
+
+    {% block infos %}
+    <div class="infos">
+     <form method="POST" action="">{% csrf_token %}
+       <table>
+       {% for field in form %}
+        {% if not field.html_name == "copied_from_item" %}
+        <tr>
+            <tr><td>{{ field.errors }}</td></tr>
+            <td>{{ field.label_tag }}:</td><td> {{ field }}</td>
+        </tr>
+        {% endif %}
+       {% endfor %}
+       </table>
+       <div align="center">
+        <a href="{% url telemeta-item-detail item.public_id %}">
+         <img src="images/edit_cancel.png" style="vertical-align:middle" /></a>
+        <input type="image" src="images/save_changes.png" style="vertical-align:middle" value="save" />
+       </div>
+     </form>
+    </div>
+  {% endblock infos %}
+</div> <!-- with-rightcol -->
+{% endblock %}
+{% else %}
+<p>No such item</p>
+{% endif %}

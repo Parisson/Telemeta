@@ -8,9 +8,16 @@
 {% block infos %}
         <div class="infos">
         <form method="POST" action="">{% csrf_token %}
-        <table>
-             {{ form }}
-        </table>
+       <table>
+       {% for field in form %}
+        {% if not field.html_name == "copied_from_item" %}
+        <tr>
+            <tr><td>{{ field.errors }}</td></tr>
+            <td>{{ field.label_tag }}:</td><td> {{ field }}</td>
+        </tr>
+        {% endif %}
+       {% endfor %}
+       </table>
         <div align="center">
          <a href="{% url telemeta-collection-detail collection.public_id %}">
           <img src="images/edit_cancel.png" style="vertical-align:middle" /></a>

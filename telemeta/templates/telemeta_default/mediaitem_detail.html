@@ -2,21 +2,20 @@
 {% load telemeta_utils %}
 {% load i18n %}
 
-{% block head_title %}{% trans "Item" %}{{item|prepend:': '}} - {{ block.super }}{% endblock %}
+{% block head_title %}{% trans "Item" %}- {{ block.super }}{% endblock %}
 
 {% block stylesheets %}
 {{ block.super }}
 <link rel="stylesheet" type="text/css" href="{% url telemeta-timeside "css/timeside.css" %}" />
       <link rel="stylesheet" type="text/css" href="{% url telemeta-timeside "skins/lab/style.css" %}" />
       <link rel="stylesheet" type="text/css" href="{% url telemeta-css "player.css" %}" />
-      {% endblock %}
-      {% block extra_javascript %}
+{% endblock %}
 
+{% block extra_javascript %}
 <script src="{% url telemeta-js "wz_jsgraphics.js" %}" type="text/javascript"></script>
 <script src="{% url telemeta-js "soundmanager2.js" %}" type="text/javascript"></script>
 <script src="{% url telemeta-timeside "src/timeside.js" %}" type="text/javascript"></script>
 <script src="{% url telemeta-js "playerUtils.js" %}" type="text/javascript"></script>
-
 <script type="text/javascript">
     soundManager.url = '{% url telemeta-swf "./" %}';
     soundManager.flashVersion = 9;
@@ -25,29 +24,22 @@
     set_player_image_url('{% url telemeta-item-visualize item.public_id,visualizer_id,"WIDTH","HEIGHT" %}');
     load_player({{ item.approx_duration.as_seconds }});
 </script>
-
 {% endblock %}
-
 
 {% if item %}
 {% block submenu %}
 <div>
-    <table>
-        <tr>
-            <td align="left">
-                <a href="{% url telemeta-item-dublincore item.public_id %}">Dublin Core</a>
-            </td>
-            <td align="right">
-                {% if user.is_authenticated and perms.telemeta.change_mediaitem %}
-                {% block tools %}
-                <a href="{% url telemeta-item-detail-edit item.public_id %}"><img src="images/edit_page.png" alt="EDIT"></a>
-                {% endblock tools %}
-                {% endif %}
-                <a href="{% url telemeta-item-detail previous %}"><img src="images/previous.png" alt="PREVIOUS"></a>
-                <a href="{% url telemeta-item-detail next %}"><img src="images/next.png" alt="NEXT"></a>
-            </td>
-        </tr>
-    </table>
+    {% block tools %}
+    <a href="{% url telemeta-item-dublincore item.public_id %}">Dublin Core</a>
+    {% if user.is_authenticated and perms.telemeta.change_mediaitem %}
+    
+    <a href="{% url telemeta-item-edit item.public_id %}"><img src="images/edit_page.png" style="vertical-align:middle" alt="EDIT" /></a>
+    <a href="{% url telemeta-item-copy item.public_id %}">Copy</a>
+    
+    {% endif %}
+    <a href="{% url telemeta-item-detail previous %}"><img src="images/previous.png" style="vertical-align:middle" alt="PREVIOUS" /></a>
+    <a href="{% url telemeta-item-detail next %}"><img src="images/next.png" style="vertical-align:middle" alt="NEXT" /></a>
+    {% endblock tools %}
 </div>
 {% endblock %}
 

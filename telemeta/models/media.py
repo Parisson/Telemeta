@@ -74,14 +74,15 @@ class MediaCollection(MediaResource):
     published_code_regex   = '[A-Za-z0-9._-]*'
     unpublished_code_regex = '[A-Za-z0-9._-]*'
     code_regex             = '(?:%s|%s)' % (published_code_regex, unpublished_code_regex)
-
-    reference             = CharField(_('reference'), unique=True, null=True)
-    physical_format       = WeakForeignKey('PhysicalFormat', related_name="collections", 
-                                           verbose_name=_('archive format'))
-    old_code              = CharField(_('old code'), unique=True, null=True)
+    
     code                  = CharField(_('code'), unique=True, required=True)
+    old_code              = CharField(_('old code'), unique=True, null=True)
+    reference             = CharField(_('reference'), unique=True, null=True)
     title                 = CharField(_('title'), required=True)
     alt_title             = CharField(_('original title / translation'))
+    physical_format       = WeakForeignKey('PhysicalFormat', related_name="collections", 
+                                           verbose_name=_('archive format'))
+    
     physical_items_num    = IntegerField(_('number of components (medium / piece)'))
     publishing_status     = WeakForeignKey('PublishingStatus', related_name="collections", 
                                            verbose_name=_('secondary edition'))

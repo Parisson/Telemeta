@@ -16,8 +16,9 @@
     
     {% if user.is_authenticated and perms.telemeta.change_mediacollection %}
      {% block tools %}
-     <a href="{% url telemeta-collection-detail-edit collection.public_id %}">
+     <a href="{% url telemeta-collection-edit collection.public_id %}">
       <img src="images/edit_page.png" alt="EDIT" style="vertical-align:middle" /></a>
+      <a href="{% url telemeta-collection-copy collection.public_id %}">Copy</a>
      {% endblock tools %}
     {% endif %}
     

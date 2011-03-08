@@ -117,7 +117,7 @@ class WebView(object):
         return render(request, template, {'collection': collection})
 
     @method_decorator(permission_required('telemeta.change_mediacollection'))
-    def collection_detail_edit(self, request, public_id, template='telemeta/collection_detail_edit.html'):
+    def collection_edit(self, request, public_id, template='telemeta/collection_edit.html'):
         collection = MediaCollection.objects.get(public_id=public_id)
         if request.method == 'POST':
             form = MediaCollectionForm(request.POST, request.FILES, instance=collection)
@@ -126,9 +126,33 @@ class WebView(object):
                 return HttpResponseRedirect('/collections/'+public_id)
         else:
             form = MediaCollectionForm(instance=collection)
-        
         return render(request, template, {'collection': collection, "form": form,})
 
+    @method_decorator(permission_required('telemeta.add_mediacollection'))
+    def collection_add(self, request, template='telemeta/collection_add.html'):
+        collection = MediaCollection()
+        if request.method == 'POST':
+            form = MediaCollectionForm(request.POST, request.FILES, instance=collection)
+            if form.is_valid():
+                form.save()
+                return HttpResponseRedirect('/collections/'+form.cleaned_data['code'])
+        else:
+            form = MediaCollectionForm(instance=collection)
+        return render(request, template, {'collection': collection, "form": form,})
+
+    @method_decorator(permission_required('telemeta.add_mediacollection'))
+    def collection_copy(self, request, public_id, template='telemeta/collection_edit.html'):
+        collection = MediaCollection.objects.get(public_id=public_id)
+        new_collection = MediaCollection()
+        if request.method == 'POST':
+            form = MediaCollectionForm(request.POST, request.FILES, instance=new_collection)
+            if form.is_valid():
+                form.save()
+                return HttpResponseRedirect('/collections/'+form.cleaned_data['code'])
+        else:
+            form = MediaCollectionForm(instance=collection)
+        return render(request, template, {'collection': collection, "form": form,})
+        
     def item_previous_next(self, item):
         # Get previous and next items
         pks = []
@@ -188,7 +212,7 @@ class WebView(object):
                     })
 
     @method_decorator(permission_required('telemeta.change_mediaitem'))
-    def item_detail_edit(self, request, public_id, template='telemeta/mediaitem_detail_edit.html'):
+    def item_edit(self, request, public_id, template='telemeta/mediaitem_edit.html'):
         """Show the details of a given item"""
         item = MediaItem.objects.get(public_id=public_id)
         
@@ -221,6 +245,34 @@ class WebView(object):
                     'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True), "form": form, 
                     'previous' : previous, 'next' : next, 
                     })
+        
+    @method_decorator(permission_required('telemeta.add_mediaitem'))
+    def item_add(self, request, template='telemeta/mediaitem_add.html'):
+        """Show the details of a given item"""
+        item = MediaItem()
+        if request.method == 'POST':
+            form = MediaItemForm(request.POST, request.FILES, instance=item)
+            if form.is_valid():
+                form.save()
+                return HttpResponseRedirect('/items/'+form.cleaned_data['code'])
+        else:
+            form = MediaItemForm(instance=item)
+        return render(request, template, {'item': item, "form": form})
+    
+    
+    @method_decorator(permission_required('telemeta.add_mediaitem'))
+    def item_copy(self, request, public_id, template='telemeta/mediaitem_copy.html'):
+        """Show the details of a given item"""
+        item = MediaItem.objects.get(public_id=public_id)
+        new_item = MediaItem()
+        if request.method == 'POST':
+            form = MediaItemForm(request.POST, request.FILES, instance=new_item)
+            if form.is_valid():
+                form.save()
+                return HttpResponseRedirect('/items/'+form.cleaned_data['code'])
+        else:
+            form = MediaItemForm(instance=item)
+        return render(request, template, {'item': item, "form": form})
         
     def item_analyze(self, item):
         public_id = str(item.public_id)
