@@ -32,6 +32,8 @@ TimeSide(function($N, $J) {
         EDIT_MODE_SAVED:0,
         EDIT_MODE_EDIT_TEXT:1,
         EDIT_MODE_MARKER_MOVED:2,
+        //authentication ,sg
+        AUTHENTICATION_MSG :"You must be logged in and have the permission to edit/add/delete markers",
 
         //function to retreve html elements in the edit div associated with marker:
         getHtmElm: function(marker, elementName){
@@ -223,7 +225,7 @@ TimeSide(function($N, $J) {
             var div = this.divContainer;
             var markerDiv;
             if(div){
-                var indexLabel, descriptionText, offsetLabel, closeButton, okButton, header, editButton, descriptionLabel;
+                var indexLabel, descriptionText, offsetLabel, deleteButton, okButton, header, editButton, descriptionLabel;
                 var margin = '1ex';
 
                 //index label
@@ -238,8 +240,7 @@ TimeSide(function($N, $J) {
                     fontWeight:'bold',
                     display:'inline-block',
                     width:'3ex',
-                    textAlign: 'center'
-                    ,
+                    textAlign: 'center',
                     fontFamily: 'monospace'
                 })
                 .html(insertionIndex+1);
@@ -263,7 +264,7 @@ TimeSide(function($N, $J) {
                 })
 
                 //close button
-                closeButton = $J('<a/>')
+                deleteButton = $J('<a/>')
                 .attr('title','delete marker')
                 .attr('name', this.MHE_DELETE_BUTTON)
                 .attr("href","#")
@@ -277,6 +278,7 @@ TimeSide(function($N, $J) {
                     color:'white'
                 });
 
+                //var bRadius = '4px 4px 4px 4px';
                 //edit button
                 editButton = $J('<a/>')
                 .attr('title','edit marker description')
@@ -287,15 +289,41 @@ TimeSide(function($N, $J) {
                 }))
                 .css({
                     float:'right',
-                    marginRight:margin
+                    marginRight:margin,
                 });
+                //                .append($J('<span/>').html("EDIT").css({
+                //                    fontSize:'70%',
+                //                    fontWeight:'bold',
+                //                    verticalAlign:'top',
+                //                    color:'#000000',
+                //                    textAlign:'center',
+                //                    margin:'0px',
+                //                    /*border:'1px solid red',*/
+                //                    position:'relative',
+                //                    top:'-0.6ex',
+                //                    padding:'0px'
+                //                }))
+                //                .css({
+                //                    float:'right',
+                //                    height:'1.7ex',
+                //                    marginRight:margin,
+                //                    border:'2px solid #333333',
+                //                    '-webkit-border-radius':bRadius,
+                //                    'moz-border-radius': bRadius,
+                //                    'border-radius': bRadius,
+                //                    paddingLeft:'10px',
+                //                    paddingRight:'10px',
+                //                    paddingTop:'0px',
+                //                    paddingBottom:'0px',
+                //                    backgroundColor:'#FFFFF0'
+                //                });
             
                 //add all elements to header:
                 header = $J('<div/>')
                 .append(indexLabel)
                 .append(offsetLabel)
                 .append(descriptionLabel)
-                .append(closeButton)
+                .append(deleteButton)
                 .append(editButton);
 
                 //description text
@@ -343,8 +371,12 @@ TimeSide(function($N, $J) {
                 var editModeEditText = this.EDIT_MODE_EDIT_TEXT;
                 //action for edit
                 editButton.unbind('click').click( function(){
-                    func_fem.apply(klass,[marker,editModeEditText,editButton, descriptionText,
-                        descriptionLabel, okButton]);
+                    if(CURRENT_USER_NAME){
+                        func_fem.apply(klass,[marker,editModeEditText,editButton, descriptionText,
+                            descriptionLabel, okButton]);
+                    }else{
+                        alert(klass.AUTHENTICATION_MSG);
+                    }
                     return false; //avoid scrolling of the page on anchor click
                 });
 
@@ -352,12 +384,16 @@ TimeSide(function($N, $J) {
                 var editModeSaved = this.EDIT_MODE_SAVED;
                 var func_send = this.sendHTTP;
                 okButton.unbind('click').click( function(){
-                    if(marker.desc !== descriptionText.val()){ //strict equality needed. See note below
-                        marker.desc = descriptionText.val();
-                        func_send(marker);
+                    if(CURRENT_USER_NAME){
+                        if(marker.desc !== descriptionText.val()){ //strict equality needed. See note below
+                            marker.desc = descriptionText.val();
+                            func_send(marker);
+                        }
+                        func_fem.apply(klass,[marker,editModeSaved,editButton, descriptionText,
+                            descriptionLabel, okButton]);
+                    }else{
+                        alert(klass.AUTHENTICATION_MSG);
                     }
-                    func_fem.apply(klass,[marker,editModeSaved,editButton, descriptionText,
-                        descriptionLabel, okButton]);
                     return false; //avoid scrolling of the page on anchor click
                 });
 
@@ -365,11 +401,15 @@ TimeSide(function($N, $J) {
                 var remove = this.remove;
                 //reference the class (this) as within the function below this will refer to the document
                 
-                closeButton.unbind('click').click( function(){
-                    remove.apply(klass,[marker]);
+                deleteButton.unbind('click').click( function(){
+                    if(CURRENT_USER_NAME){
+                        remove.apply(klass,[marker]);
+                    }else{
+                        alert(klass.AUTHENTICATION_MSG);
+                    }
                     return false; //avoid scrolling of the page on anchor click
                 });
-
+                
                 //insert the new div created
                 var divLen = div.children().length;
                 div.append(markerDiv);
@@ -385,7 +425,7 @@ TimeSide(function($N, $J) {
 
         //sets the edit mode in the div associated to marker. Last 4 arguments are optional
         fireEditMode: function(marker, editMode, editButton, descriptionText,
-            descriptionLabel, okButton){
+            descriptionLabel, okButton,deleteButton){
             var e = this.getHtmElm;
             if(editButton == undefined){
                 editButton = e(marker,this.MHE_EDIT_BUTTON);
@@ -399,8 +439,17 @@ TimeSide(function($N, $J) {
             if(okButton == undefined){
                 okButton = e(marker,this.MHE_OK_BUTTON);
             }
+            if(deleteButton == undefined){
+                deleteButton = e(marker,this.MHE_DELETE_BUTTON);
+            }
             var speed = 400; //fast is 200 slow is 600 (see jQuery help)
             var klass = this;
+
+            //if user is not authenticated and does not have the necessary permission, we reset editmode to undefined
+            //we treat this case below (last else)
+            if(!(CURRENT_USER_NAME)){
+                editMode = undefined;
+            }
             //var editModeSaved = this.EDIT_MODE_SAVED;
             if(editMode == this.EDIT_MODE_EDIT_TEXT){ //edit text
                 descriptionLabel.hide(); //without arguments, otherwise alignement problems arise (in chrome)
@@ -425,11 +474,17 @@ TimeSide(function($N, $J) {
                 //descriptionText.hide(speed);
                 okButton.show(speed);
             }else{
-                var function_sld = klass.setLabelDescription;
-                editButton.show(speed, function(){
-                    function_sld.apply(klass,[marker]);
+                if(!(CURRENT_USER_NAME)){
+                    editButton.hide();
+                    deleteButton.hide();
                     descriptionLabel.show();
-                });
+                }else{
+                    var function_sld = klass.setLabelDescription;
+                    editButton.show(speed, function(){
+                        function_sld.apply(klass,[marker]);
+                        descriptionLabel.show();
+                    });
+                }
                 descriptionText.hide(speed);
                 okButton.hide(speed);
             }
@@ -437,12 +492,16 @@ TimeSide(function($N, $J) {
 
 
         //sets the length of the label description. Note that all elements must be visible.
-        //Therefore, we call $N.Util.setUpTabs() from controller once all markers have been loaded
+        //Therefore, we call $N.Util.setUpTabs() once all markers have been loaded
         setLabelDescription: function(marker){
             var mDiv = marker.div;
             var e = this.getHtmElm;
             var space = mDiv.width()-e(marker, this.MHE_INDEX_LABEL).outerWidth(true)-e(marker, this.MHE_OFFSET_LABEL).outerWidth(true)-
             e(marker, this.MHE_EDIT_BUTTON).outerWidth(true)-e(marker, this.MHE_DELETE_BUTTON).outerWidth(true);
+            //space is the space available for the label. Decrease it of 20% in order to keep the extra space for
+            //zooming in. This does not assures indefinitely that we won't have overlaps or overflows but gives us
+            //some zoom increase without them. Note: css overflow property does not work
+            space = space - 0.1*space;
             var labelDesc = e(marker, this.MHE_DESCRIPTION_LABEL);
             var str='';
             labelDesc.html(str);

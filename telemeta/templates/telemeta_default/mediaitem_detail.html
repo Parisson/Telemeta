@@ -23,8 +23,20 @@
     soundManager.debugMode = false;
     set_player_image_url('{% url telemeta-item-visualize item.public_id,visualizer_id,"WIDTH","HEIGHT" %}');
     load_player({{ item.approx_duration.as_seconds }});
+    
 </script>
+<<<<<<< TREE
+
+{% if user.is_authenticated and perms.telemeta.change_mediaitem %}
+    <script type='text/javascript'>var CURRENT_USER_NAME="{{ user.username }}";</script>
+{% else %}
+    <script type='text/javascript'>var CURRENT_USER_NAME=undefined;</script>
+{% endif %}
+
+    {% endblock %}
+=======
 {% endblock %}
+>>>>>>> MERGE-SOURCE
 
 {% if item %}
 {% block submenu %}

@@ -33,27 +33,28 @@
 # Authors: Olivier Guilyardi <olivier@samalyse.com>
 #          David LIPSZYC <davidlipszyc@gmail.com>
 
+from django.contrib.auth.models import User
 from telemeta.models.core import *
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import ugettext_lazy as _
 
 
-class User(ModelCore):
-    "Telemeta user"
-    LEVEL_CHOICES = (('user', 'user'), ('maintainer', 'maintainer'), ('admin', 'admin'))    
-
-    username   = CharField(_('username'), primary_key=True, max_length=64, required=True)
-    level      = CharField(_('level'), choices=LEVEL_CHOICES, max_length=32, required=True)
-    first_name = CharField(_('first name'))
-    last_name  = CharField(_('last name'))
-    phone      = CharField(_('phone'))
-    email      = CharField(_('email'))
-
-    class Meta(MetaCore):
-        db_table = 'users'
-
-    def __unicode__(self):
-        return self.username
+#class User(ModelCore):
+#    "Telemeta user"
+#    LEVEL_CHOICES = (('user', 'user'), ('maintainer', 'maintainer'), ('admin', 'admin'))
+#
+#    username   = CharField(_('username'), primary_key=True, max_length=64, required=True)
+#    level      = CharField(_('level'), choices=LEVEL_CHOICES, max_length=32, required=True)
+#    first_name = CharField(_('first name'))
+#    last_name  = CharField(_('last name'))
+#    phone      = CharField(_('phone'))
+#    email      = CharField(_('email'))
+#
+#    class Meta(MetaCore):
+#        db_table = 'users'
+#
+#    def __unicode__(self):
+#        return self.username
 
 class Revision(ModelCore):
     "Revision made by user"
@@ -64,8 +65,9 @@ class Revision(ModelCore):
     element_id           = IntegerField(_('element identifier'), required=True)
     change_type          = CharField(_('modification type'), choices=CHANGE_TYPE_CHOICES, max_length=16, required=True)
     time                 = DateTimeField(_('time'), auto_now_add=True)
-    user                 = ForeignKey('User', db_column='username', related_name="revisions", verbose_name=_('user'))
-    
+    #user                 = ForeignKey('User', db_column='username', related_name="revisions", verbose_name=_('user'))
+    user                 = ForeignKey(User, db_column='username', related_name="revisions", verbose_name=_('user'))
+
     @classmethod
     def touch(cls, element, user):    
         "Create or update a revision"

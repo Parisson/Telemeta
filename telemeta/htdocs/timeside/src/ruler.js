@@ -38,13 +38,15 @@ TimeSide(function($N, $J) {
             this.waveContainer = this.cfg.viewer.find('.' + $N.cssPrefix + 'image-canvas');
             this._setDuration(this.cfg.soundProvider.getDuration());
             var imgContainer = this.cfg.viewer.find('.' + $N.cssPrefix + 'image-container'); // for IE
-            this._observeMouseEvents(this.waveContainer.add(imgContainer));
-            if (this.cfg.map) {
-                this.cfg.map
-                .observe('add', this.attach(this._onMapAdd))
-                .observe('remove', this.attach(this._onMapRemove))
-                .observe('indexchange', this.attach(this._onMapIndexChange));
-            }
+            
+                this._observeMouseEvents(this.waveContainer.add(imgContainer));
+                if (this.cfg.map) {
+                    this.cfg.map
+                    .observe('add', this.attach(this._onMapAdd))
+                    .observe('remove', this.attach(this._onMapRemove))
+                    .observe('indexchange', this.attach(this._onMapIndexChange));
+                }
+            
             this.cfg.soundProvider.observe('update', this.attach(this._onSoundProviderUpdate));
         },
 
@@ -241,17 +243,18 @@ TimeSide(function($N, $J) {
                 zIndex: 1000,
                 top:0,
                 className: 'pointer',
-                tooltip: 'Move head'
+                tooltip: 'Move head',
+                canMove: true
             });
-//            //create the label
-//            var tsMainLabel = $.find('.' + $N.cssPrefix + 'label');
-//            if(tsMainLabel){
-//                var label = tsMainLabel.find('#' + $N.cssPrefix + 'pointerOffset');
-//                if(!label){
-//                    label = $("<span/>").id('#' + $N.cssPrefix + 'pointerOffset').css('zIndex','10').appendTo(tsMainLabel);
-//                    this.pointer.label = label;
-//                }
-//            }
+            //            //create the label
+            //            var tsMainLabel = $.find('.' + $N.cssPrefix + 'label');
+            //            if(tsMainLabel){
+            //                var label = tsMainLabel.find('#' + $N.cssPrefix + 'pointerOffset');
+            //                if(!label){
+            //                    label = $("<span/>").id('#' + $N.cssPrefix + 'pointerOffset').css('zIndex','10').appendTo(tsMainLabel);
+            //                    this.pointer.label = label;
+            //                }
+            //            }
 
             this.pointer
             //.setText("+")
@@ -335,6 +338,7 @@ TimeSide(function($N, $J) {
         },
 
         _onMouseUp: function(evt) {
+            
             if (this.mouseDown) {
                 this.mouseDown = false;
                 this.fire('move', {
@@ -345,6 +349,9 @@ TimeSide(function($N, $J) {
         },
 
         _observeMouseEvents: function(element) {
+             if(!(CURRENT_USER_NAME)){
+                return;
+            }
             element
             .bind('click dragstart', function() {
                 return false;
@@ -371,9 +378,14 @@ TimeSide(function($N, $J) {
                 fontSize: this.cfg.fontSize,
                 className: 'marker',
                 id: marker.id,
-                tooltip: 'Move marker'
+                tooltip: 'Move marker',
+                canMove: CURRENT_USER_NAME
             });
-            m.observe('move', this.attach(this._onMarkerMove))
+            if(CURRENT_USER_NAME){
+                m.observe('move', this.attach(this._onMarkerMove))
+            }
+            //m.observe('move', this.attach(this._onMarkerMove))
+            m
             .setText(index + 1)
             .move(pixelOffset)
             .show();
@@ -414,7 +426,7 @@ TimeSide(function($N, $J) {
         },
 
         _onDoubleClick: function(evt) {
-            if (this.cfg.map) {
+            if (this.cfg.map && CURRENT_USER_NAME) {
                 var offset = (evt.pageX - this.container.offset().left)
                 / this.width * this.duration;
                 this.fire('markeradd', {

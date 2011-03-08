@@ -24,19 +24,20 @@ function setSelectedMenu(){
         ///if we are at home, the window location href corresponds to window location origin,
         //so we select only links whose link points EXACTLY to the origin (home link)
         var linkHref = normalize(this.href);
+        var elm = jQuery(this); //does not work with $.. conflicts?
         if(pageOrigin===pageHref){
             if(pageHref == linkHref){
-                jQuery(this).addClass('active');
+                elm.addClass('active');
             }else{
-                jQuery(this).removeClass('active');
+                elm.removeClass('active');
             }
         }else{
             //here, on the other hand, we select if a link points to a page or super page
             //of the current paqge
             if(linkHref!=pageOrigin && pageHref.match("^"+linkHref+".*")){
-                jQuery(this).addClass('active');
+                elm.addClass('active');
             }else{
-                jQuery(this).removeClass('active');
+                elm.removeClass('active');
             }
         }
         

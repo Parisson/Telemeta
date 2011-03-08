@@ -33,6 +33,7 @@
 # Authors: Olivier Guilyardi <olivier@samalyse.com>
 #          David LIPSZYC <davidlipszyc@gmail.com>
 
+from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from telemeta.models.core import *
 from telemeta.models.enum import ContextKeyword
@@ -346,7 +347,8 @@ class MediaPart(MediaResource):
 
 class Playlist(ModelCore):
     "Item or collection playlist"
-    owner_username = ForeignKey('User', related_name="playlists", db_column="owner_username") 
+    #owner_username = ForeignKey('User', related_name="playlists", db_column="owner_username")
+    owner_username = ForeignKey(User, related_name="playlists", db_column="owner_username")
     name           = CharField(_('name'), required=True)
 
     class Meta(MetaCore):

@@ -20,6 +20,7 @@ TimeSide(function($N, $J) {
 
         initialize: function($super, cfg) {
             $super();
+            //sets the fields required???? see ruler.js createPointer
             this.configure(cfg, {
                 rulerLayout: [null, 'required'],
                 viewer: [null, 'required'],
@@ -27,7 +28,8 @@ TimeSide(function($N, $J) {
                 zIndex: null,
                 className: [null, 'required'],
                 id: null,
-                tooltip: null
+                tooltip: null,
+                canMove: false
             });
             this.cfg.rulerLayout = $J(this.cfg.rulerLayout);
             this.cfg.viewer = $J(this.cfg.viewer);
@@ -36,7 +38,9 @@ TimeSide(function($N, $J) {
             this.width = this.cfg.viewer.width();
             this.painter = new jsGraphics(this.cfg.viewer.get(0));
             this._create();
-            this._observeMouseEvents();
+            if(this.cfg.canMove){
+                this._observeMouseEvents();
+            }
         },
 
         free: function($super) {
@@ -130,7 +134,7 @@ TimeSide(function($N, $J) {
                     labelPixelOffset = this.width - labelWidth;
                 this.label.css({
                     left: Math.round(labelPixelOffset) + 'px'
-                    });
+                });
                 this.position = pixelOffset;
             }
             return this;
@@ -204,7 +208,7 @@ TimeSide(function($N, $J) {
             if (this.mouseDown) {
                 var offset = (evt.pageX - this.cfg.rulerLayout.offset().left);
                 this.move(offset);
-                this.fire('move', {
+                this.fire('move', { //calls move (see above)
                     offset: this.position,
                     finish: false
                 });
