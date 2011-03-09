@@ -20,6 +20,7 @@
     <th>{% trans "Country/Continent" %}</th>
     {% endif %}
     <th>{% trans "Year of recording" %}</th>
+    <th>{% trans "Sound" %}</th>
 </tr>
 {% for item in items %}
 <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
@@ -42,6 +43,10 @@
             - {{ item.recorded_to_date.year }}
         {% endif %}
     {% endif %}
+    </td>
+    <td>{% if item.file %}
+        <a href="{% url telemeta-item-detail item.public_id %}"><img src="images/text-speak.png" alt="(sound)" style="vertical-align:middle" /></a>
+        {% endif %}
     </td>
 </tr>
 {% endfor %}
