@@ -76,6 +76,7 @@ a img { border: none; }
 #header {
     padding: 0.2em 0;
     margin-bottom: .9em;
+    background: url("/images/waves.png") 100% 0% no-repeat;
 }
 
 #logo a, #logo a:hover { border: none; background: transparent; }
