@@ -382,7 +382,7 @@ class MediaItemMarker(ModelCore):
     title           = CharField(_('title'))
     date            = DateField(_('date'), auto_now=True)
     description     = TextField(_('description'))
-    author          = ForeignKey(User, db_column='author', related_name="markers", verbose_name=_('author'))
+    author          = ForeignKey(User, related_name="markers", verbose_name=_('author'))
     
     class Meta(MetaCore):
         db_table = 'media_markers'
