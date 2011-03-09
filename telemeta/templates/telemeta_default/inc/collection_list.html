@@ -16,6 +16,7 @@
     <th>{% field_label "MediaCollection" "creator" %}</th>
     <th>{% trans "Recordist" %}</th>
     <th>{% trans "Year of recording" %}</th>
+    <th>{% trans "Sound" %}</th>
 </tr>
 {% for collection in collections %}
 <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
@@ -34,6 +35,11 @@
             - {{ collection.recorded_to_year }}
         {% endif %}
     {% endif %}
+    </td>
+    <td>
+      {% if collection.has_mediafile %}
+       <img src="images/text-speak.png" alt="(sound)" style="vertical-align:middle" />
+      {% endif %}
     </td>
 </tr>
 {% endfor %}
