@@ -702,8 +702,7 @@ class WebView(object):
             m.time = float(marker['time'])
             m.title = marker['title']
             m.description = marker['description']
-            author = User.objects.get(username=marker['author'])
-            m.author = author
+            m.author = User.objects.get(username=marker['author'])
             m.save()
         else:
             raise 'Error : Bad marker dictionnary'
