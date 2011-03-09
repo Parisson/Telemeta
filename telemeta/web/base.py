@@ -53,6 +53,7 @@ from django.contrib import auth
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.context_processors import csrf
 from django.forms.models import modelformset_factory
+from django.contrib.auth.models import User
 
 from telemeta.models import MediaItem, Location, MediaCollection, EthnicGroup, MediaCollectionForm, MediaItemForm
 from telemeta.models import dublincore, Enumeration, MediaItemMarker,  Instrument
@@ -699,10 +700,9 @@ class WebView(object):
             m = MediaItemMarker(item=item) 
             m.public_id = marker['public_id']
             m.time = float(marker['time'])
+            m.title = marker['title']
             m.description = marker['description']
-            # FIXME: get current logged author
-            # marker.author = marker['author']
-            author = 'test'
+            author = User.objects.get(username=marker['author'])
             m.author = author
             m.save()
         else:
@@ -722,8 +722,9 @@ class WebView(object):
             dict = {}
             dict['public_id'] = marker.public_id
             dict['time'] = str(marker.time)
+            dict['title'] = marker.title
             dict['description'] = marker.description
-            dict['author'] = marker.author
+            dict['author'] = marker.author.username
             list.append(dict)
         return list
 
@@ -732,6 +733,7 @@ class WebView(object):
         if isinstance(marker, dict):
             m = MediaItemMarker.objects.get(public_id=marker['public_id'])
             m.time = float(marker['time'])
+            m.title = marker['title']
             m.description = marker['description']
             m.save()
         else:

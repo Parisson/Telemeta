@@ -375,11 +375,14 @@ class MediaItemMarker(ModelCore):
     "2D marker object : text value vs. time"
     
     element_type = 'marker'
-    item  = ForeignKey('MediaItem', related_name="markers", verbose_name=_('item'))
-    public_id = CharField(_('public_id'), required=True)
-    time = FloatField(_('time'), required=True)
-    description = TextField(_('description'))
-    author = CharField(_('author'))
+    
+    item            = ForeignKey('MediaItem', related_name="markers", verbose_name=_('item'))
+    public_id       = CharField(_('public_id'), required=True)
+    time            = FloatField(_('time'), required=True)
+    title           = CharField(_('title'))
+    date            = DateField(_('date'), auto_now=True)
+    description     = TextField(_('description'))
+    author          = ForeignKey(User, db_column='author', related_name="markers", verbose_name=_('author'))
     
     class Meta(MetaCore):
         db_table = 'media_markers'
