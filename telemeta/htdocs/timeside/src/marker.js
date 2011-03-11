@@ -27,20 +27,28 @@ TimeSide(function($N, $J) {
                 fontSize: 10,
                 zIndex: null,
                 className: [null, 'required'],
-                id: null,
+                index: null,
                 tooltip: null,
                 canMove: false
             });
             this.cfg.rulerLayout = $J(this.cfg.rulerLayout);
             this.cfg.viewer = $J(this.cfg.viewer);
 
-            this.id = cfg.id;
             this.width = this.cfg.viewer.width();
             this.painter = new jsGraphics(this.cfg.viewer.get(0));
             this._create();
             if(this.cfg.canMove){
                 this._observeMouseEvents();
             }
+            //if it is the pointer, cfg.index is undefined
+            if(cfg.index !== undefined && cfg.className!='pointer'){
+                this.setIndex(cfg.index);
+            }
+        },
+
+        setIndex: function(index){
+            this.index = index;
+            this.setText(index+1);
         },
 
         free: function($super) {
@@ -220,7 +228,7 @@ TimeSide(function($N, $J) {
             if (this.mouseDown) {
                 this.mouseDown = false;
                 this.fire('move', {
-                    id: this.id,
+                    index: this.index,
                     offset: this.position,
                     finish: true
                 });

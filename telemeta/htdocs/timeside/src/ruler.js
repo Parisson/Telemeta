@@ -30,7 +30,7 @@ TimeSide(function($N, $J) {
             this.configure(cfg, {
                 viewer: [null, 'required'],
                 fontSize: 10,
-                map: null,
+                //map: null,
                 soundProvider: [null, 'required']
             });
             this.cfg.viewer = $J(this.cfg.viewer);
@@ -39,13 +39,13 @@ TimeSide(function($N, $J) {
             this._setDuration(this.cfg.soundProvider.getDuration());
             var imgContainer = this.cfg.viewer.find('.' + $N.cssPrefix + 'image-container'); // for IE
             
-                this._observeMouseEvents(this.waveContainer.add(imgContainer));
-                if (this.cfg.map) {
-                    this.cfg.map
-                    .observe('add', this.attach(this._onMapAdd))
-                    .observe('remove', this.attach(this._onMapRemove))
-                    .observe('indexchange', this.attach(this._onMapIndexChange));
-                }
+            this._observeMouseEvents(this.waveContainer.add(imgContainer));
+            //if (this.cfg.map) {
+            //    this.cfg.map
+            //.observe('add', this.attach(this._onMapAdd))
+            //.observe('remove', this.attach(this._onMapRemove))
+            //.observe('indexchange', this.attach(this._onMapIndexChange));
+            //}
             
             this.cfg.soundProvider.observe('update', this.attach(this._onSoundProviderUpdate));
         },
@@ -217,20 +217,20 @@ TimeSide(function($N, $J) {
             }
 
             this._createPointer();
-            this._drawMarkers();
+        //this._drawMarkers();
         },
 
-        _drawMarkers: function() {
-            if (this.cfg.map) {
-                $J(this.markers).each(function(i, m) {
-                    m.clear();
-                });
-                this.markers = new Array();
-                this.cfg.map.each(this.attach(function(i, m) {
-                    this.markers.push(this._drawMarker(m, i));
-                }));
-            }
-        },
+        //        _drawMarkers: function() {
+        //            if (this.cfg.map) {
+        //                $J(this.markers).each(function(i, m) {
+        //                    m.clear();
+        //                });
+        //                this.markers = new Array();
+        //                this.cfg.map.each(this.attach(function(i, m) {
+        //                    this.markers.push(this._drawMarker(m, i));
+        //                }));
+        //            }
+        //        },
 
         _createPointer: function() {
             if (this.pointer) {
@@ -349,7 +349,7 @@ TimeSide(function($N, $J) {
         },
 
         _observeMouseEvents: function(element) {
-             if(!(CURRENT_USER_NAME)){
+            if(!(CURRENT_USER_NAME)){
                 return;
             }
             element
@@ -377,16 +377,16 @@ TimeSide(function($N, $J) {
                 viewer: this.waveContainer,
                 fontSize: this.cfg.fontSize,
                 className: 'marker',
-                id: marker.id,
+                index: index,
                 tooltip: 'Move marker',
-                canMove: CURRENT_USER_NAME
+                canMove: marker.isEditable
             });
-            if(CURRENT_USER_NAME){
+            if(marker.isEditable){
                 m.observe('move', this.attach(this._onMarkerMove))
             }
             //m.observe('move', this.attach(this._onMarkerMove))
             m
-            .setText(index + 1)
+            //.setText(index + 1)
             .move(pixelOffset)
             .show();
             return m;
@@ -396,37 +396,42 @@ TimeSide(function($N, $J) {
             if (data.finish) {
                 var offset = data.offset / this.width * this.duration;
                 this.fire('markermove', {
-                    id: data.id,
+                    index: data.index,
                     offset: offset
                 });
             }
         },
 
-        _onMapAdd: function(e, data) {
-            this.markers.push(this._drawMarker(data.marker, data.index));
+        add: function(marker, index){
+            this.markers.splice(index, 0, this._drawMarker(marker, index));
+            //this.markers.push(this._drawMarker(marker, index));
         },
 
+        //        _onMapAdd2: function(e, data) {
+        //            this.markers.push(this._drawMarker(data.marker, data.index));
+        //        },
 
-        _onMapRemove: function(e, data) {
-            $J(this.markers).each(this.attach(function(i, m) {
-                if (m.id == data.marker.id) {
-                    m.clear();
-                    this.markers.splice(i, 1);
-                }
-            }));
+        remove: function(index){
+            var rulermarker = this.markers[index];
+            rulermarker.clear();
+            this.markers.splice(index, 1);
+        },
+        
+        //it is assured that fromIndex!=toIndex and fromIndex!=toIndex+1 (see markermap.move)
+        move: function(fromIndex, toIndex){
+            var m = this.markers.splice(fromIndex,1)[0]; //remove
+            this.markers.splice(toIndex,0,m); //add
         },
 
-        _onMapIndexChange: function(e, data) {
-            $J(this.markers).each(this.attach(function(i, m) {
-                if (m.id == data.marker.id) {
-                    m.setText(data.index + 1);
-                    return false;
-                }
-            }));
+        updateMarkerIndices:function(fromIndex, toIndex){
+            for(var i=fromIndex; i<=toIndex; i++){
+                this.markers[i].setIndex(i);
+            }
         },
 
         _onDoubleClick: function(evt) {
-            if (this.cfg.map && CURRENT_USER_NAME) {
+            //if (this.cfg.map && CURRENT_USER_NAME) {
+            if (CURRENT_USER_NAME) {
                 var offset = (evt.pageX - this.container.offset().left)
                 / this.width * this.duration;
                 this.fire('markeradd', {
@@ -445,3 +450,24 @@ TimeSide(function($N, $J) {
     $N.notifyScriptLoad();
 
 });
+
+//        _onMapRemove: function(e, data) {
+        //            $J(this.markers).each(this.attach(function(i, m) {
+        //                if (m.id == data.marker.id) {
+        //                    m.clear();
+        //                    this.markers.splice(i, 1);
+        //                }
+        //            }));
+        //        },
+
+        //        onMapMove: function(fromIndex, toIndex) {
+        //            var min = Math.min(fromIndex, toIndex);
+        //            var max = Math.max(fromIndex, toIndex);
+        //            this.updateMarkerIndices(min,max);
+        ////            $J(this.markers).each(this.attach(function(i, m) {
+        ////                if (m.id == data.marker.id) {
+        ////                    m.setText(data.index + 1);
+        ////                    return false;
+        ////                }
+        ////            }));
+        //        },

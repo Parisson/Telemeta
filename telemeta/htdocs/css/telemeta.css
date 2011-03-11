@@ -13,7 +13,7 @@ body {
 }
 
 a:link, a:visited {
-/*     border-bottom:1px dotted #BBB; */
+    /*     border-bottom:1px dotted #BBB; */
     color: #BB0000;
     text-decoration:none;
 }
@@ -194,27 +194,27 @@ ul.continents ul li a { line-height: 1.8em; }
 input, textarea, select { margin: 2px }
 input, select { vertical-align: middle }
 input[type=button], input[type=submit], input[type=reset] {
- background: #f2f2f2;
- color: #444;
- border: 3px double #ccc;
- padding: .1em .5em;
- font-weight: bold;
- cursor: pointer;
+    background: #f2f2f2;
+    color: #444;
+    border: 3px double #ccc;
+    padding: .1em .5em;
+    font-weight: bold;
+    cursor: pointer;
 }
 input[type=button]:hover, input[type=submit]:hover, input[type=reset]:hover {
- background: #8D8C94;
- color: #fff;
+    background: #8D8C94;
+    color: #fff;
 }
 input[type=button][disabled], input[type=submit][disabled],
 input[type=reset][disabled] {
- background: #f6f6f6;
- border-style: solid;
- color: #999;
+    background: #f6f6f6;
+    border-style: solid;
+    color: #999;
 }
 input[type=text], input[type=password], input.textwidget, textarea { border: 1px solid #ccc; }
 input[type=text], input[type=password], input.textwidget { padding: .25em .1em }
 input[type=text]:focus, input[type=password]:focus, input.textwidget:focus, textarea:focus {
-   border-color: #aaa;
+    border-color: #aaa;
 }
 option { border-bottom: 1px dotted #d7d7d7; }
 fieldset { border: 1px solid #d7d7d7; padding: .5em; margin: 0 }
@@ -227,12 +227,12 @@ label.disabled { color: #d7d7d7 }
 .buttons form, .buttons form div { display: inline }
 .buttons input { margin: 1em .5em .1em 0 }
 .inlinebuttons input {
- font-size: 70%;
- border-width: 1px;
- border-style: dotted;
- margin: 0;
- padding: 0.1em;
- background: none;
+    font-size: 70%;
+    border-width: 1px;
+    border-style: dotted;
+    margin: 0;
+    padding: 0.1em;
+    background: none;
 }
 
 /* Quick search */
@@ -377,19 +377,19 @@ form.login .submit {
 .nav h2, .nav hr { display: none }
 .nav ul { font-size: 14px; list-style: none; margin: 0px; text-align: left; }
 .nav li {
- display: inline;
- padding: 0em;
- white-space: nowrap;
+    display: inline;
+    padding: 0em;
+    white-space: nowrap;
 }
 .nav li.last { border-right: 1px solid #000000; }
 
 /* Main navigation bar  (borrowed from Trac) */
 #menu {
- background-color: #6a0307 ;
- font: normal verdana,'Bitstream Vera Sans',helvetica,arial,sans-serif;
- padding: 0em 0em 0.75em 0em;
- border-bottom: .5em solid #6a0307;
- border-top: .7em solid #6a0307; 
+    background-color: #6a0307 ;
+    font: normal verdana,'Bitstream Vera Sans',helvetica,arial,sans-serif;
+    padding: 0em 0em 0.75em 0em;
+    border-bottom: .5em solid #6a0307;
+    border-top: .7em solid #6a0307;
 }
 
 #menu li { background-color: #6a0307; padding: .5em 0; }
@@ -404,10 +404,10 @@ form.login .submit {
 #menu li.last { border-right: 0px solid #000;  }
 
 #menu :link, #menu :visited {
- border-bottom: none;
- color: #FFF;
- font-weight: bold;
- padding: .2em 20px;
+    border-bottom: none;
+    color: #FFF;
+    font-weight: bold;
+    padding: .2em 20px;
 }
 * html #menu :link, * html #menu :visited { background-position: 1px 0 }
 /*
@@ -426,17 +426,17 @@ form.login .submit {
 #menu .active :link:hover, #menu .active :visited:hover {
  background-color: #FFF;
  color: #6a0307;
-    
+
 }*/
 #menu .active, #menu :link:hover, #menu :visited:hover{
-   background-color: #FFF;
- color: #6a0307;
- text-decoration:none;
- border-bottom: .4em solid #FFF;
- border-top: 2px solid #FFF;
+    background-color: #FFF;
+    color: #6a0307;
+    text-decoration:none;
+    border-bottom: .4em solid #FFF;
+    border-top: 2px solid #FFF;
     background-color: #FFF;
     /*border-bottom: .5em solid #6a0307;*/
-    
+
     -webkit-border-top-left-radius:5px 5px;
     moz-border-radius-topleft: 5px 5px;
     border-top-left-radius: 5px 5px;
@@ -448,14 +448,14 @@ form.login .submit {
 
 /* Footer (borrowed from Trac) */
 #footer {
-  background: #6a0307;
-  clear: both;
-  color: #FFF;
-  font-size: 10px;
-  border-top: 1px solid;
-  height: 31px;
-  padding: 0.5em;
-  margin-top: 2.5em;
+    background: #6a0307;
+    clear: both;
+    color: #FFF;
+    font-size: 10px;
+    border-top: 1px solid;
+    height: 31px;
+    padding: 0.5em;
+    margin-top: 2.5em;
 }
 #footer :link, #footer :visited { color: #FFF; }
 #footer hr { display: none }
@@ -463,15 +463,15 @@ form.login .submit {
 #footer #telemeta_powered:hover { background: transparent }
 #footer p { margin: 0 }
 #footer p.left {
-  float: left;
-  margin-left: 1em;
-  padding: 0 1em;
-  border-left: 1px solid #d7d7d7;
-  border-right: 1px solid #d7d7d7;
+    float: left;
+    margin-left: 1em;
+    padding: 0 1em;
+    border-left: 1px solid #d7d7d7;
+    border-right: 1px solid #d7d7d7;
 }
 #footer p.right {
-  float: right;
-  text-align: right;
+    float: right;
+    text-align: right;
 }
 
 /* Homepage */
@@ -707,8 +707,8 @@ table.listing thead th a {
 }
 table.listing th.asc a, table.listing th.desc a { font-weight: bold }
 table.listing th.asc a, table.listing th.desc a {
- background-position: 100% 50%;
- background-repeat: no-repeat;
+    background-position: 100% 50%;
+    background-repeat: no-repeat;
 }
 table.listing th.asc a { background-image: url(../images/asc.png) }
 table.listing th.desc a { background-image: url(../images/desc.png) }
@@ -724,7 +724,7 @@ table.listing tbody td.tmp {
     width: 100%;
 }
 table.listing tbody td a:hover, table.listing tbody th a:hover {
- background-color: transparent;
+    background-color: transparent;
 }
 table.listing tbody tr { border-top: 1px solid #ddd }
 table.listing tbody tr.even { background-color: #fcfcfc }
@@ -830,4 +830,94 @@ a.image-link {
     border-left: 1px solid #999999;
     border-bottom: 1px solid #ffffff;
     z-index: 10;
+}
+
+.markersdivButton{
+    /*padding: 0.3em 0.8em 0.8em 0.8em;
+    margin: 0 0 1.5em 1.5em;*/
+
+    -moz-border-radius: 6px 6px 6px 6px;
+    -webkit-border-radius: 6px 6px 6px 6px;
+    border-radius: 6px 6px 6px 6px;
+}
+
+.markersdivUneditable{
+    border: 0px !important;
+}
+
+.markersdivIndexLabel{
+    color: #fff;
+    background-image:url("/images/marker_tiny.png");
+    background-repeat:no-repeat;
+    background-position:center center;
+    font-size: 90%;
+    font-weight:bold;
+    display:inline-block;
+    width:3ex;
+    text-align: center;
+    font-family: monospace;
+    margin-right:2ex;
+}
+.markersdivOffset{
+    margin-right:1ex;
+    font-style: italic;
+}
+.markersdivTopElement{
+    vertical-align:middle;
+}
+.markersdivTitle{
+    font-weight:bold;
+    margin:0;
+    padding:0;
+    /*margin-right:margin*/
+}
+.markersdivEdit, .markersdivEdit:hover, .markersdivEdit:visited,
+.markersdivEdit:link, .markersdivEdit:link:hover, .markersdivEdit:visited:hover{
+    font-weight:bold;
+    border:1px dotted #333333;
+    float:right;
+    color:#000;
+    background-image: url('/images/edit_marker.png');
+    background-repeat:no-repeat;
+    background-position: center left;
+    border:2px solid #666;
+    height:1ex;
+    padding:0px 1ex 2ex 3ex; /*top right bottom left*/
+    font-size: 70%;
+    margin-left: 1ex;
+    margin-right:1ex;
+    position:relative;
+    top:-0.5ex;
+}
+.markersdivDelete{
+    border:0px;
+    float:right;
+    background-image: url('/images/del_marker.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+    padding:1ex 1ex 1ex 1ex;/*top right bottom left. The padding is only to show the element */
+}
+.markersdivDescription{
+    margin:1ex 0px 0ex 0px; /*top right bottom left*/
+    font-family: sans-serif;
+    padding:0;
+    width:100%;
+}
+.markersdivSave, .markersdivSave:hover, .markersdivSave:visited,
+.markersdivSave:link, .markersdivSave:link:hover, .markersdivSave:visited:hover{
+    background-color: #087714;
+    color: #fff;
+    font-weight: bold;
+    padding: 0.3em 0.8em 0.3em 0.8em;
+    /*here below the 3 lines to properly display top margin without <br> or including the element ina  div*/
+    display: block;
+    margin-top: 1ex;
+    width:3ex;
+    /* margin:1ex 0px 0px 0px;*/ /*top right bottom left*/
+}
+
+.markerdiv{
+    padding:1ex 1ex 1.2ex 1ex;  /*top right bottom left*/
+    border: 1px solid #aaaaaa;
+    margin-bottom: 1ex;
 }

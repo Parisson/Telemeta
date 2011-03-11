@@ -18,544 +18,158 @@ TimeSide(function($N, $J) {
             }
             this.markers = markers;
         },
-        //static constant variables to retireve the Marker Html Elements (MHE)
-        //to be used with the function below getHtmElm, eg:
-        //getHtmElm(marker, this.MHE_OFFSET_LABEL)
-        MHE_INDEX_LABEL:'indexLabel',
-        MHE_OFFSET_LABEL:'offsetLabel',
-        MHE_DESCRIPTION_TEXT:'descriptionText',
-        MHE_DESCRIPTION_LABEL:'descriptionLabel',
-        MHE_EDIT_BUTTON:'editButton',
-        MHE_OK_BUTTON:'okButton',
-        MHE_DELETE_BUTTON:'deleteButton',
-        //static constant variables for edit mode:
-        EDIT_MODE_SAVED:0,
-        EDIT_MODE_EDIT_TEXT:1,
-        EDIT_MODE_MARKER_MOVED:2,
-        //authentication ,sg
-        AUTHENTICATION_MSG :"You must be logged in and have the permission to edit/add/delete markers",
+   
+        get: function(index){
+            return this.markers[index];
 
-        //function to retreve html elements in the edit div associated with marker:
-        getHtmElm: function(marker, elementName){
-            //return marker.div.children('[name="'+elementName+'"]');
-            //children returns only the first level children, we must use:
-            return marker.div.find('*[name="'+elementName+'"]');
-        },
-
-        //        toArray: function() {
-        //            return [].concat(this.markers);
-        //        },
-        //
-        //        byIndex: function(index) {
-        //            return this.markers[index];
-        //        },
-        //
-
-        //used by controller._onMarkerMove
-        byId: function(id) {
-            var marker = null;
-            for (var i in this.markers) {
-                if (this.markers[i].id == id) {
-                    marker = this.markers[i];
-                    break;
-                }
-            }
-            return marker;
-        },
-
-        indexOf: function(marker) {
-            var index = null;
-            for (var i in this.markers) {
-                if (this.markers[i].id == marker.id) {
-                    index = parseInt(i);
-                    break;
-                }
-            }
-            return index;
         },
 
 
-        addNew: function(offset){
-            var id = this.uniqid();
-            var marker = {
-                id: id,
-                offset: offset,
-                desc: undefined,
-                isNew: true
-            };
-            this.add(marker, this.EDIT_MODE_EDIT_TEXT);
-        },
-
-        //editMode is optional, in case it defaults to
-        //EDIT_MODE_SAVED:0
-        add: function(marker, editMode) {
-            var idx = this.insertionIndex(marker);
+        add: function(obj) {
+            var marker = this.createMarker(obj);
+            var idx = this.indexOf(marker);
+            
             //adding the div
-            marker.div = this.createDiv(marker,idx);
+            //marker.div = this.createDiv(marker,idx);
             //setting focus and label description
             //set label description
-            this.setLabelDescription(marker);
+            //this.setLabelDescription(marker);
             //finally, set the focus to the text
             //this.getHtmElm(marker,this.MHE_DESCRIPTION_TEXT).focus();
 
 
             this.markers.splice(idx,0,marker);
-            //calls core.js $N.attachFunction
-            //which calls ruler.js onMapAdd
+            //notifies controller.onMarkerMapAdd
             this.fire('add', {
                 marker: marker,
                 index: idx
             });
-            this.fireRefreshLabels(idx+1,this.markers.length);
+            //this.fireRefreshLabels(idx+1,this.markers.length);
             //this._reorder(marker.offset);
-            this.fireEditMode(marker,editMode);
+            //this.fireEditMode(marker);
+            return idx;
+        },
+        //argument is either an object loaded from server or a number specifying the marker offset
+        createMarker: function(argument){
+            var marker = null;
+            if(typeof argument == 'object'){
+                var editable = CURRENT_USER_NAME === argument.author;
+                marker = {
+                    id: argument.public_id,
+                    offset: argument.time,
+                    desc: argument.description,
+                    title: argument.title,
+                    author: argument.author,
+                    isEditable: editable,
+                    isSaved: true
+
+                };
+            }else if(typeof argument == 'number'){
+                marker = {
+                    id: undefined, //before was: this.uniqid(),
+                    //now an undefined id means: not saved on server (see sendHTTP below)
+                    offset: parseFloat(argument),
+                    desc: "",
+                    title: "",
+                    author: CURRENT_USER_NAME,
+                    isEditable: true,
+                    isSaved: false
+                };
+            }
             return marker;
+
         },
 
-        remove: function(marker) {
+        remove: function(index) {
+            var marker = this.get(index);
             if (marker) {
-                var i = this.indexOf(marker);
-                this.markers.splice(i, 1);
-                marker.div.remove();
+                if(marker.isSaved){
+                    this.removeHTTP(marker);
+                }
+                this.markers.splice(index, 1);
+                //notifies controller.js
                 this.fire('remove', {
-                    marker: marker
+                    index: index
                 });
-
-                this.fireRefreshLabels(i,this.markers.length);
-                this.removeHTTP(marker);
-
             }
             return marker;
         },
-        //        compare: function(marker1, marker2) {
-        //            if (marker1.offset > marker2.offset){
-        //                return 1;
-        //            }
-        //            if (marker1.offset < marker2.offset){
-        //                return -1;
-        //            }
-        //            return 0;
-        //        },
 
-        move: function(marker, offset) {
-            if(offset===marker.offset){
-                return;
-            }
-            var oldIndex = this.indexOf(marker);
-            marker.offset = offset;
-            //marker.offset = offset;
-            var newIndex = this.insertionIndex(marker);
-            //change marker time
-            //$($( marker.div.children()[0] ).children()[1]).html(this.formatMarkerOffset(offset));
-            this.getHtmElm(marker,this.MHE_OFFSET_LABEL).html(this.formatMarkerOffset(offset));
-            //            marker.div[this.MHE_OFFSET_LABEL].html(this.formatMarkerOffset(offset));
-            if(newIndex>oldIndex){
+        move: function(markerIndex, newOffset){
+            var newIndex = this.indexOf(newOffset);
+            
+            //if we moved left to right, the insertion index is actually
+            //newIndex-1, as we must also consider to remove the current index markerIndex, so:
+            if(newIndex>markerIndex){
                 newIndex--;
             }
-            //fire edit mode
-            this.fireEditMode(marker, this.EDIT_MODE_MARKER_MOVED);
-
-            if(newIndex==oldIndex){
-                return;
+            //this way, we are sure that if markerIndex==newIndex we do not have to move,
+            //and we can safely first remove the marker then add it at the newIndex without
+            //checking if we moved left to right or right to left
+            var marker = this.markers[markerIndex];
+            marker.offset = newOffset;
+            marker.isSaved = marker.isEditable ? false : true;
+            if(newIndex != markerIndex){
+                this.markers.splice(markerIndex,1);
+                this.markers.splice(newIndex,0,marker);
             }
-            var l = this.markers.length;
-            this.markers.splice(oldIndex,1);
-            this.markers.splice(newIndex,0,marker);
-            //The .detach() method is the same as .remove(), except that .detach() keeps
-            //all jQuery data associated with the removed elements.
-            //This method is useful when removed elements are to be reinserted into the DOM at a later time.
-            marker.div.detach();
-            if(newIndex==l-1){
-                this.divContainer.append(marker.div);
-            }else{
-                $( this.divContainer.children()[newIndex] ).before(marker.div);
-            }
-            //$($( marker.div.children()[1] )).focus();
-
-            //this.getHtmElm(marker,this.MHE_DESCRIPTION_TEXT).focus();
-            //this.getHtmElm(marker,this.MHE_DESCRIPTION_TEXT).select();
-            var i1= Math.min(oldIndex,newIndex);
-            var i2= Math.max(oldIndex,newIndex);
-            //var mrks = this.markers;
-
-            this.fireRefreshLabels(i1,i2+1);
-            
-
-           
-            
-        //this._reorder(offset);
+            this.fire('moved', {
+                fromIndex: markerIndex,
+                toIndex: newIndex
+            });
         },
-
-        fireRefreshLabels: function(firstIndex,lastIndex){
-            if(lastIndex<=firstIndex){
-                return;
+        //
+        //The core search index function: returns insertionIndex if object is found according to comparatorFunction,
+        //(-insertionIndex-1) if object is not found. This assures that if the returned
+        //number is >=0, the array contains the element, otherwise not and the element can be inserted at
+        //-insertionIndex-1
+        insertionIndex: function(object){
+            var offset;
+            if(typeof object == 'object'){
+                offset = object.offset;
+            }else if(typeof object == 'number'){
+                offset = object;
+            }else{ //to be sure...
+                offset = parseFloat(object);
             }
-            for (var i=firstIndex; i <lastIndex;i++) {
-                //calls ruler _onMapIndexChange
-                this.fire('indexchange', {
-                    marker: this.markers[i],
-                    index: i
-                });
-                //update label element
-                this.getHtmElm(this.markers[i], this.MHE_INDEX_LABEL).html(i+1);
-            //                this.markers[i].div['labelIndex'].html(i+1)
-            // $($( this.markers[i].div.children()[0] ).children()[0]).html(i+1);
+            var pInt = parseInt; //reference to parseInt (to increase algorithm performances)
+            var comparatorFunction = function(a,b){
+                return (a<b ? -1 : (a>b ? 1 : 0));
+            };
+            var data = this.markers;
+            var low = 0;
+            var high = data.length-1;
 
+            while (low <= high) {
+                //int mid = (low + high) >>> 1;
+                var mid = pInt((low + high)/2);
+                var midVal = data[mid];
+                var cmp = comparatorFunction(midVal.offset,offset);
+                if (cmp < 0){
+                    low = mid + 1;
+                }else if (cmp > 0){
+                    high = mid - 1;
+                }else{
+                    return mid; // key found
+                }
             }
+            return -(low + 1);  // key not found
         },
-
-        insertionIndex: function(marker){
-            var index = 0;
-            var l = this.markers.length;
-            while (index<l && this.markers[index].offset <= marker.offset) {
-                index ++;
-            }
-            //markers.splice(index,0,marker);
-            return index;
-        },
-
-        
-
+        //indexOf is the same as insertionIndex, but returns a positive number.
+        //in other words, it is useful when we do not want to know if obj is already present
+        //in the map, but only WHERE WOULD be inserted obj in the map. obj can be a marker
+        //or an offset (time). In the latter case a dummy marker with that offset will be considered
+       indexOf: function(obj){
+           var idx = this.insertionIndex(obj);
+           return idx<0 ? -idx-1 : idx;
+       },
         each: function(callback) {
             $J(this.markers).each(callback);
         },
-
-        //creates a new div. By default, text is hidden and edit button is visible
-        createDiv: function(marker,insertionIndex){
-            var div = this.divContainer;
-            var markerDiv;
-            if(div){
-                var indexLabel, descriptionText, offsetLabel, deleteButton, okButton, header, editButton, descriptionLabel;
-                var margin = '1ex';
-
-                //index label
-                indexLabel = $J('<span/>')
-                .attr('name', this.MHE_INDEX_LABEL)
-                .css({
-                    color:'#fff',
-                    backgroundImage:'url("/images/marker_tiny.png")',
-                    backgroundRepeat:'no-repeat',
-                    backgroundPosition:'center center',
-                    fontSize: '90%',
-                    fontWeight:'bold',
-                    display:'inline-block',
-                    width:'3ex',
-                    textAlign: 'center',
-                    fontFamily: 'monospace'
-                })
-                .html(insertionIndex+1);
-
-                //offset label
-                offsetLabel = $J('<span/>')
-                .attr('name', this.MHE_OFFSET_LABEL)
-                .css({
-                    marginLeft:margin,
-                    marginRight:margin
-                })
-                .html(this.formatMarkerOffset(marker.offset));
-                
-                //description label
-                descriptionLabel = $J('<span/>')
-                .attr("name",this.MHE_DESCRIPTION_LABEL)
-                .attr('title',marker.desc ? marker.desc : "")
-                .css({
-                    fontWeight:'bold',
-                    marginRight:margin
-                })
-
-                //close button
-                deleteButton = $J('<a/>')
-                .attr('title','delete marker')
-                .attr('name', this.MHE_DELETE_BUTTON)
-                .attr("href","#")
-                .append($J('<img/>').attr("src","/images/del_marker.png").css({
-                    width:'1em'
-                }))
-                .css({
-                    fontWeight:'bold',
-                    //border:'1px dotted #333333',
-                    float:'right',
-                    color:'white'
-                });
-
-                //var bRadius = '4px 4px 4px 4px';
-                //edit button
-                editButton = $J('<a/>')
-                .attr('title','edit marker description')
-                .attr('name', this.MHE_EDIT_BUTTON)
-                .attr("href","#")
-                .append($J('<img/>').attr("src","/images/edit_marker.png").css({
-                    width:'6.5ex'
-                }))
-                .css({
-                    float:'right',
-                    marginRight:margin,
-                });
-                //                .append($J('<span/>').html("EDIT").css({
-                //                    fontSize:'70%',
-                //                    fontWeight:'bold',
-                //                    verticalAlign:'top',
-                //                    color:'#000000',
-                //                    textAlign:'center',
-                //                    margin:'0px',
-                //                    /*border:'1px solid red',*/
-                //                    position:'relative',
-                //                    top:'-0.6ex',
-                //                    padding:'0px'
-                //                }))
-                //                .css({
-                //                    float:'right',
-                //                    height:'1.7ex',
-                //                    marginRight:margin,
-                //                    border:'2px solid #333333',
-                //                    '-webkit-border-radius':bRadius,
-                //                    'moz-border-radius': bRadius,
-                //                    'border-radius': bRadius,
-                //                    paddingLeft:'10px',
-                //                    paddingRight:'10px',
-                //                    paddingTop:'0px',
-                //                    paddingBottom:'0px',
-                //                    backgroundColor:'#FFFFF0'
-                //                });
-            
-                //add all elements to header:
-                header = $J('<div/>')
-                .append(indexLabel)
-                .append(offsetLabel)
-                .append(descriptionLabel)
-                .append(deleteButton)
-                .append(editButton);
-
-                //description text
-                descriptionText = $J('<textarea/>')
-                .attr("name", this.MHE_DESCRIPTION_TEXT)
-                .val(marker.desc ? marker.desc : "")
-                .css({
-                    margin:0,
-                    padding:0,
-                    width:'100%'
-                });
-            
-                //ok button
-                okButton = $J('<a/>')
-                .attr("name", this.MHE_OK_BUTTON)
-                .attr('title','save marker description and offset')
-                .css({
-                    display:'none',
-                    marginTop:'0.5ex'
-                })
-                .attr("href","#")
-                .append($J('<img/>').attr("src","/images/marker_ok_green.png").css({
-                    width:'3em'
-                }))
-            
-                //create marker div and append all elements
-                markerDiv = $J('<div/>')
-                .append(header)
-                .append(descriptionText)
-                .append(okButton)
-                .css({
-                    paddingBottom:'1em',
-                    paddingTop:'1ex',
-                    paddingLeft:'1ex',
-                    paddingRight:'1ex',
-                    //borderTop: '1px solid #666666',
-                    borderBottom: '1px solid #999999'
-                });
-
-                //ACTIONS TO BUTTONS:
-                ////first define this keyword inside functions
-                var klass = this;
-                //reference to fireEditMode
-                var func_fem = this.fireEditMode;
-                var editModeEditText = this.EDIT_MODE_EDIT_TEXT;
-                //action for edit
-                editButton.unbind('click').click( function(){
-                    if(CURRENT_USER_NAME){
-                        func_fem.apply(klass,[marker,editModeEditText,editButton, descriptionText,
-                            descriptionLabel, okButton]);
-                    }else{
-                        alert(klass.AUTHENTICATION_MSG);
-                    }
-                    return false; //avoid scrolling of the page on anchor click
-                });
-
-                //action for ok button
-                var editModeSaved = this.EDIT_MODE_SAVED;
-                var func_send = this.sendHTTP;
-                okButton.unbind('click').click( function(){
-                    if(CURRENT_USER_NAME){
-                        if(marker.desc !== descriptionText.val()){ //strict equality needed. See note below
-                            marker.desc = descriptionText.val();
-                            func_send(marker);
-                        }
-                        func_fem.apply(klass,[marker,editModeSaved,editButton, descriptionText,
-                            descriptionLabel, okButton]);
-                    }else{
-                        alert(klass.AUTHENTICATION_MSG);
-                    }
-                    return false; //avoid scrolling of the page on anchor click
-                });
-
-                //action for removing
-                var remove = this.remove;
-                //reference the class (this) as within the function below this will refer to the document
-                
-                deleteButton.unbind('click').click( function(){
-                    if(CURRENT_USER_NAME){
-                        remove.apply(klass,[marker]);
-                    }else{
-                        alert(klass.AUTHENTICATION_MSG);
-                    }
-                    return false; //avoid scrolling of the page on anchor click
-                });
-                
-                //insert the new div created
-                var divLen = div.children().length;
-                div.append(markerDiv);
-                if(insertionIndex==divLen){
-                    div.append(markerDiv);
-                }else{
-                    $( div.children()[insertionIndex] ).before(markerDiv);
-                }
-
-            }
-            return markerDiv;
+        length: function(){
+            return this.markers ? this.markers.length : 0;
         },
-
-        //sets the edit mode in the div associated to marker. Last 4 arguments are optional
-        fireEditMode: function(marker, editMode, editButton, descriptionText,
-            descriptionLabel, okButton,deleteButton){
-            var e = this.getHtmElm;
-            if(editButton == undefined){
-                editButton = e(marker,this.MHE_EDIT_BUTTON);
-            }
-            if(descriptionLabel == undefined){
-                descriptionLabel = e(marker,this.MHE_DESCRIPTION_LABEL);
-            }
-            if(descriptionText == undefined){
-                descriptionText = e(marker,this.MHE_DESCRIPTION_TEXT);
-            }
-            if(okButton == undefined){
-                okButton = e(marker,this.MHE_OK_BUTTON);
-            }
-            if(deleteButton == undefined){
-                deleteButton = e(marker,this.MHE_DELETE_BUTTON);
-            }
-            var speed = 400; //fast is 200 slow is 600 (see jQuery help)
-            var klass = this;
-
-            //if user is not authenticated and does not have the necessary permission, we reset editmode to undefined
-            //we treat this case below (last else)
-            if(!(CURRENT_USER_NAME)){
-                editMode = undefined;
-            }
-            //var editModeSaved = this.EDIT_MODE_SAVED;
-            if(editMode == this.EDIT_MODE_EDIT_TEXT){ //edit text
-                descriptionLabel.hide(); //without arguments, otherwise alignement problems arise (in chrome)
-                editButton.hide(speed);
-                descriptionText.show(speed, function(){
-                    this.select();
-                });
-                okButton.show(speed);
-
-            }else if(editMode == this.EDIT_MODE_MARKER_MOVED){
-                if(!descriptionText.is(':visible')){
-                    editButton.show(speed, function(){
-                        descriptionLabel.show();
-                    });
-                }
-                //if then a user types the edit button, this function is called with
-                //editMode=1 (this.EDIT_MODE_EDIT_TEXT). Which means (see okbutton click binding above) marker will be saved
-                //ONLY if text is different from marker.desc. However, as the offset has changed we want to
-                //save IN ANY CASE, so we set marker.desc undefined. This way, text will be always different and
-                //we will save the marker in any case
-                marker.desc = undefined;
-                //descriptionText.hide(speed);
-                okButton.show(speed);
-            }else{
-                if(!(CURRENT_USER_NAME)){
-                    editButton.hide();
-                    deleteButton.hide();
-                    descriptionLabel.show();
-                }else{
-                    var function_sld = klass.setLabelDescription;
-                    editButton.show(speed, function(){
-                        function_sld.apply(klass,[marker]);
-                        descriptionLabel.show();
-                    });
-                }
-                descriptionText.hide(speed);
-                okButton.hide(speed);
-            }
-        },
-
-
-        //sets the length of the label description. Note that all elements must be visible.
-        //Therefore, we call $N.Util.setUpTabs() once all markers have been loaded
-        setLabelDescription: function(marker){
-            var mDiv = marker.div;
-            var e = this.getHtmElm;
-            var space = mDiv.width()-e(marker, this.MHE_INDEX_LABEL).outerWidth(true)-e(marker, this.MHE_OFFSET_LABEL).outerWidth(true)-
-            e(marker, this.MHE_EDIT_BUTTON).outerWidth(true)-e(marker, this.MHE_DELETE_BUTTON).outerWidth(true);
-            //space is the space available for the label. Decrease it of 20% in order to keep the extra space for
-            //zooming in. This does not assures indefinitely that we won't have overlaps or overflows but gives us
-            //some zoom increase without them. Note: css overflow property does not work
-            space = space - 0.1*space;
-            var labelDesc = e(marker, this.MHE_DESCRIPTION_LABEL);
-            var str='';
-            labelDesc.html(str);
-            if(space>0 && marker.desc && marker.desc.length>0){
-                var string = marker.desc;
-                labelDesc.html(string);
-                var id=string.length-1;
-                while(id>=0 && labelDesc.outerWidth(true)>=space){
-                    str = id==0 ? "" : string.substring(0,id);
-                    labelDesc.html(str);
-                    id--;
-                }
-            }
-            //we did not reach the end? in case, add dots
-            if(str.length>3 && str.length<marker.desc.length){
-                //workaround: add dots at the beginning, calculate the space, then move them at end
-                str = "..." + str;
-                labelDesc.html(str);
-                //so dots are at the beginning and we can remove safely the last character
-                id = str.length-1;
-                while(id>=0 && labelDesc.outerWidth(true)>=space){
-                    //var chr = string.substring(0,id);
-                    //str += chr==' ' ? '&nbsp;' : chr;
-                    str = id==0 ? "" : str.substring(0,id);
-                    labelDesc.html(str);
-                    id--;
-                }
-                //move dots at the end, if we didnt erase dots as well (space too short)
-                if(str.length>3){
-                    str = str.substring(3,str.length)+"...";
-                }else if(str.length<3){ //zero, one or two dots might be confusing, remove them
-                    str = '';
-                }
-                labelDesc.html(str);
-            }
-
-        },
-
-        formatMarkerOffset: function(markerOffset){
-            //marker offset is in float format second.decimalPart
-            var hours = parseInt(markerOffset/(60*24));
-            markerOffset-=hours*(60*24);
-            var minutes = parseInt(markerOffset/(60));
-            markerOffset-=minutes*(60);
-            var seconds = parseInt(markerOffset);
-            markerOffset-=seconds;
-            var msec = Math.round(markerOffset*100); //show only centiseconds
-            //(use 1000* to show milliseconds)
-            var format = (hours<10 ? "0"+hours : hours )+":"+
-            (minutes<10 ? "0"+minutes : minutes )+":"+
-            (seconds<10 ? "0"+seconds : seconds )+"."+
-            (msec<10 ? "0"+msec : msec );
-            return format;
-        },
+       
 
         sendHTTP: function(marker){
 
@@ -569,10 +183,17 @@ TimeSide(function($N, $J) {
             //see http://stackoverflow.com/questions/4809157/i-need-to-pass-a-json-object-to-a-javascript-ajax-method-for-a-wcf-call-how-can
             //            var data2send = '{"id":"jsonrpc", "params":[{"item_id":"'+ itemid+'", "public_id": "'+marker.id+'", "time": "'+
             //            marker.offset+'","description": "'+marker.desc+'"}], "method":"telemeta.add_marker","jsonrpc":"1.0"}';
-            var isNew = marker.isNew;
-            var method = isNew ? "telemeta.add_marker" : "telemeta.update_marker";
-            var data2send = '{"id":"jsonrpc", "params":[{"item_id":"'+ itemid+'", "public_id": "'+marker.id+'", "time": "'+
-            marker.offset+'","description": "'+marker.desc+'"}], "method":"'+method+'","jsonrpc":"1.0"}';
+           
+            var isSaved = marker.id !== undefined;
+            if(!isSaved){
+                marker.id=this.uniqid(); //defined in core;
+            }
+            var method = isSaved ? "telemeta.update_marker" : "telemeta.add_marker";
+            var data2send = '{"id":"jsonrpc", "params":[{"item_id":"'+ itemid+
+            '", "public_id": "'+marker.id+'", "time": "'+marker.offset+
+            '", "author": "'+marker.author+
+            '", "title": "'+marker.title+
+            '","description": "'+marker.desc+'"}], "method":"'+method+'","jsonrpc":"1.0"}';
 
 
             $.ajax({
@@ -581,8 +202,8 @@ TimeSide(function($N, $J) {
                 contentType: "application/json",
                 data: data2send,
                 success: function(){
-                    if(isNew){
-                        marker.isNew = false;
+                    if(!isSaved){
+                        marker.isSaved = true;
                     }
                 }
             });
