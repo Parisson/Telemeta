@@ -80,12 +80,12 @@ TimeSide(function($N, $J) {
                
                 //edit button
                 this.e_editButton = $J('<a/>')
-                .addClass('markersdivButton')
+                .addClass('roundBorder4')
                 .addClass('markersdivEdit')
                 .addClass('markersdivTopElement')
                 .attr('title','edit marker description')
                 .attr("href","#")
-                .html('EDIT')
+                .html('<span>EDIT</span>')
                                 
 
                 //add all elements to header:
@@ -103,7 +103,7 @@ TimeSide(function($N, $J) {
                 //ok button
                 this.e_okButton = $J('<a/>')
                 .attr('title','save marker description and offset')
-                .addClass('markersdivButton')
+                .addClass('roundBorder6')
                 .addClass('markersdivSave')
                 .attr("href","#")
                 .html("OK");
@@ -116,7 +116,7 @@ TimeSide(function($N, $J) {
                 .append(this.e_header)
                 .append(this.e_descriptionText)
                 .append(this.e_okButton)
-                .addClass('markersdivButton')
+                .addClass('roundBorder8')
                 .addClass('markerdiv');
 
             }
@@ -137,6 +137,8 @@ TimeSide(function($N, $J) {
                     //all jQuery data associated with the removed elements.
                     //This method is useful when removed elements are to be reinserted into the DOM at a later time.
                     this.me.detach();
+                    //note that we might have index!=this.markerIndex without the need to detach the div
+                    //we leave this code to be sure, especially on loading 
                 }else{
                     //div is not added: set description and title
                     this.e_descriptionText.val(marker.desc ? marker.desc : "");
@@ -179,6 +181,7 @@ TimeSide(function($N, $J) {
                     tText.removeAttr('readonly').removeClass('markersdivUneditable').show();
                     okB.show();
                     $(this).hide();
+                    tText.select();
                     return false; //avoid scrolling of the page on anchor click
                 });
                 var eB = this.e_editButton;
@@ -187,12 +190,16 @@ TimeSide(function($N, $J) {
                     //if(marker.desc !== descriptionText.val()){ //strict equality needed. See note below
                     marker.desc = dText.val();
                     marker.title = tText.val();
-                    map.sendHTTP(marker);
-                    //TODO: this should be done IF send was succesful
+                    map.sendHTTP(marker,
+                    
+                    function(){
                     dText.attr('readonly','readonly').addClass('markersdivUneditable');
                     tText.attr('readonly','readonly').addClass('markersdivUneditable');
                     eB.show();
                     okB.hide();
+                    },
+                    true
+                    );
                     //}
                     //                func_fem.apply(klass,[marker,editModeSaved,editButton, descriptionText,
                     //                    descriptionLabel, okButton]);

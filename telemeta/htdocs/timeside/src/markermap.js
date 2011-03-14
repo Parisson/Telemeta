@@ -159,19 +159,19 @@ TimeSide(function($N, $J) {
         //in other words, it is useful when we do not want to know if obj is already present
         //in the map, but only WHERE WOULD be inserted obj in the map. obj can be a marker
         //or an offset (time). In the latter case a dummy marker with that offset will be considered
-       indexOf: function(obj){
-           var idx = this.insertionIndex(obj);
-           return idx<0 ? -idx-1 : idx;
-       },
+        indexOf: function(obj){
+            var idx = this.insertionIndex(obj);
+            return idx<0 ? -idx-1 : idx;
+        },
         each: function(callback) {
             $J(this.markers).each(callback);
         },
-        length: function(){
-            return this.markers ? this.markers.length : 0;
-        },
+        //        length: function(){
+        //            return this.markers ? this.markers.length : 0;
+        //        },
        
 
-        sendHTTP: function(marker){
+        sendHTTP: function(marker, functionOnSuccess, showAlertOnError){
 
             //itemid is the item (spund file) name
             var sPath = window.location.pathname;
@@ -189,12 +189,13 @@ TimeSide(function($N, $J) {
                 marker.id=this.uniqid(); //defined in core;
             }
             var method = isSaved ? "telemeta.update_marker" : "telemeta.add_marker";
-            var data2send = '{"id":"jsonrpc", "params":[{"item_id":"'+ itemid+
-            '", "public_id": "'+marker.id+'", "time": "'+marker.offset+
-            '", "author": "'+marker.author+
-            '", "title": "'+marker.title+
-            '","description": "'+marker.desc+'"}], "method":"'+method+'","jsonrpc":"1.0"}';
-
+            
+            var s = this.jsonify;
+            var data2send = '{"id":"jsonrpc", "params":[{"item_id":"'+ s(itemid)+
+            '", "public_id": "'+s(marker.id)+'", "time": "'+s(marker.offset)+
+            '", "author": "'+s(marker.author)+
+            '", "title": "'+s(marker.title)+
+            '","description": "'+s(marker.desc)+'"}], "method":"'+method+'","jsonrpc":"1.0"}';
 
             $.ajax({
                 type: "POST",
@@ -205,10 +206,34 @@ TimeSide(function($N, $J) {
                     if(!isSaved){
                         marker.isSaved = true;
                     }
+                    if(functionOnSuccess){
+                        functionOnSuccess();
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown){
+                    if(showAlertOnError){
+                        var details = "\n(no further info available)";
+                        if(jqXHR) {
+                            details="\nThe server responded witha status of "+jqXHR.status+" ("+
+                                jqXHR.statusText+")\n\nDetails (request responseText):\n"+jqXHR.responseText;
+                        }
+                        alert("ERROR: Failed to save marker"+details);
+                    }
                 }
             });
+
+            
         },
 
+        jsonify: function(string){
+            var s = string;
+            if(typeof string == "string"){
+                s = string.replace(/\\/g,"\\\\")
+                .replace(/\n/g,"\\n")
+                .replace(/"/g,"\\\"");
+            }
+            return s;
+        },
         removeHTTP: function(marker){
 
             //  //itemid is the item (spund file) name

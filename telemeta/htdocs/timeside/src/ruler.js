@@ -217,6 +217,16 @@ TimeSide(function($N, $J) {
             }
 
             this._createPointer();
+            //draw markers
+            if (this.cfg.map) {
+                $J(this.markers).each(function(i, m) {
+                    m.clear();
+                });
+                this.markers = new Array();
+                this.cfg.map.each(this.attach(function(i, m) {
+                    this.markers.push(this._drawMarker(m, i));
+                }));
+            }
         //this._drawMarkers();
         },
 
@@ -404,7 +414,7 @@ TimeSide(function($N, $J) {
 
         add: function(marker, index){
             this.markers.splice(index, 0, this._drawMarker(marker, index));
-            //this.markers.push(this._drawMarker(marker, index));
+        //this.markers.push(this._drawMarker(marker, index));
         },
 
         //        _onMapAdd2: function(e, data) {
@@ -430,7 +440,6 @@ TimeSide(function($N, $J) {
         },
 
         _onDoubleClick: function(evt) {
-            //if (this.cfg.map && CURRENT_USER_NAME) {
             if (CURRENT_USER_NAME) {
                 var offset = (evt.pageX - this.container.offset().left)
                 / this.width * this.duration;

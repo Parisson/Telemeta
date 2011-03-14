@@ -176,8 +176,9 @@ TimeSide(function($N, $J) {
 
             elements.css('width', 'auto'); // for IE6
 
-            if (!height)
+            if (!height){
                 height = 200;
+            }
             var style = {
                 width: this.elements.wave.width(),
                 height: height

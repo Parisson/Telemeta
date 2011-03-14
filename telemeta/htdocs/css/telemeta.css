@@ -97,12 +97,12 @@ a img { border: none; }
     right: 0;
     top: 0;
 }
-#submenu a {
+/*#submenu a {
     height: 1.6em;
     color: #4d508a;
     font-size: 0.9em;
     font-weight: bold;
-}
+}*/
 
 #rightcol {
     position: relative;
@@ -832,13 +832,38 @@ a.image-link {
     z-index: 10;
 }
 
-.markersdivButton{
+
+.roundBorder4{
+    /*padding: 0.3em 0.8em 0.8em 0.8em;
+    margin: 0 0 1.5em 1.5em;*/
+
+    -moz-border-radius: 4px 4px 4px 4px;
+    -webkit-border-radius: 4px 4px 4px 4px;
+    border-radius: 4px 4px 4px 4px;
+}
+.roundBorder6{
     /*padding: 0.3em 0.8em 0.8em 0.8em;
     margin: 0 0 1.5em 1.5em;*/
 
     -moz-border-radius: 6px 6px 6px 6px;
     -webkit-border-radius: 6px 6px 6px 6px;
     border-radius: 6px 6px 6px 6px;
+}
+.roundBorder8{
+    /*padding: 0.3em 0.8em 0.8em 0.8em;
+    margin: 0 0 1.5em 1.5em;*/
+
+    -moz-border-radius: 8px 8px 8px 8px;
+    -webkit-border-radius: 8px 8px 8px 8px;
+    border-radius: 8px 8px 8px 8px;
+}
+.roundBorder10{
+    /*padding: 0.3em 0.8em 0.8em 0.8em;
+    margin: 0 0 1.5em 1.5em;*/
+
+    -moz-border-radius: 10px 10px 10px 10px;
+    -webkit-border-radius:  10px 10px 10px 10px;
+    border-radius:  10px 10px 10px 10px;
 }
 
 .markersdivUneditable{
@@ -863,31 +888,36 @@ a.image-link {
     font-style: italic;
 }
 .markersdivTopElement{
-    vertical-align:middle;
+    /*vertical-align:middle;*/
 }
 .markersdivTitle{
     font-weight:bold;
     margin:0;
     padding:0;
+    position:relative;
+    top:-0.5ex;
     /*margin-right:margin*/
 }
 .markersdivEdit, .markersdivEdit:hover, .markersdivEdit:visited,
 .markersdivEdit:link, .markersdivEdit:link:hover, .markersdivEdit:visited:hover{
     font-weight:bold;
-    border:1px dotted #333333;
     float:right;
-    color:#000;
+    color:#333;
     background-image: url('/images/edit_marker.png');
     background-repeat:no-repeat;
     background-position: center left;
     border:2px solid #666;
-    height:1ex;
-    padding:0px 1ex 2ex 3ex; /*top right bottom left*/
-    font-size: 70%;
+    height:2.2ex;
+    width: 8.5ex;
+    /*padding:0px 1ex 2ex 3ex;*/ /*top right bottom left*/
+    font-size: 65%;
     margin-left: 1ex;
     margin-right:1ex;
     position:relative;
-    top:-0.5ex;
+    /*top:-0.5ex;*/
+}
+.markersdivEdit span{
+    position:absolute;top:-0.75ex;left:3ex;
 }
 .markersdivDelete{
     border:0px;
@@ -920,4 +950,46 @@ a.image-link {
     padding:1ex 1ex 1.2ex 1ex;  /*top right bottom left*/
     border: 1px solid #aaaaaa;
     margin-bottom: 1ex;
+}
+
+
+.mediaitem_button, .mediaitem_button:hover, .mediaitem_button:visited,
+.mediaitem_button:link, .mediaitem_button:link:hover, .mediaitem_button:visited:hover{
+    padding:0.7ex 1ex 0.7ex 4ex; /*top right bottom left*/
+    border-top:  1px solid #DDD;
+    border-left:  1px solid #DDD;
+    border-bottom:  1px solid #666;
+    border-right:  1px solid #666;
+    background-color: #f9f9f9; /*#626262;*/
+    color:#444;
+    font-weight: bold;
+    background-repeat: no-repeat;
+    background-position: 1ex .5ex;
+   
+    
+}
+.mediaitem_button_edit{
+    background-image: url('/images/edit_page.png');
+    
+    }
+.mediaitem_button_copy{
+     background-image: url('/images/copy_page.png');
+}
+.mediaitem_button_previous{
+    background-image: url('/images/previous.png');
+}
+.mediaitem_button_next{
+     background-image: url('/images/next.png');
+}
+.mediaitem_button_dublin_core{
+     background-image: url('/images/dublin_core.png');
+}
+.mediaitem_button_cancel{
+    background-image: url('/images/cancel.png');
+}
+.mediaitem_button_save{
+    background-image: url('/images/save.png');
+}
+.mediaitem_button_add{
+    background-image: url('/images/add.png');
 }

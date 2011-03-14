@@ -116,11 +116,7 @@ TimeSide(function($N) {
                 var divRemoved = this.cfg.divmarkers.splice(idx,1)[0]; //there is only one element removed
                 divRemoved.remove();
                 this.cfg.player.ruler.remove(idx);
-                if(idx<this.cfg.divmarkers.length){
-                    //we might have removed the last index, in this case idx==this.cfg.divmarkers.length
-                    //no need to update and to enter this if
-                    this.updateIndices(idx);
-                }
+                this.updateIndices(idx);
             }
         },
 
@@ -128,8 +124,15 @@ TimeSide(function($N) {
             if(from===undefined || from==null){
                 from = 0;
             }
+            var len = this.cfg.divmarkers.length-1;
+            if(from>len){
+                //it might happen when we remove the last element
+                //suppose [0,1,2], we remove [2] then we call
+                //updateIndices[2] but array till 1 (there is nothing to update)
+                return;
+            }
             if(to==undefined || to ==null){
-                to = this.cfg.divmarkers.length-1;
+                to = len;
             }
             if(to<from){
                 var tmp = to;

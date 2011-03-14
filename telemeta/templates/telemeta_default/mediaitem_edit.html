@@ -1,13 +1,14 @@
 {% extends "telemeta/mediaitem_detail.html" %}
 
     {% block tools %}
-     <a href="{% url telemeta-item-detail item.public_id %}">
-         <img src="images/edit_cancel.png" /></a>
+<!--     <a href="{% url telemeta-item-detail item.public_id %}">
+         <img src="images/edit_cancel.png" /></a>-->
+ <a href="{% url telemeta-item-detail item.public_id %}"  class="roundBorder6 mediaitem_button mediaitem_button_cancel">Cancel</a>
     {% endblock tools %}
 
   {% block infos %}    
     <div class="infos">
-     <form enctype="multipart/form-data" method="POST" action="">{% csrf_token %}
+     <form enctype="multipart/form-data" id="_editItemForm" method="POST" action="">{% csrf_token %}
       <table>
        {% for field in form %}
         {% if not field.html_name == "copied_from_item" %}
@@ -19,9 +20,13 @@
        {% endfor %}
        </table>
        <div align="center">
-        <a href="{% url telemeta-item-detail item.public_id %}">
-         <img src="images/edit_cancel.png" style="vertical-align:middle" /></a>
-        <input type="image" src="images/save_changes.png" style="vertical-align:middle" value="save" />
+<!--        <a href="{% url telemeta-item-detail item.public_id %}">
+         <img src="images/edit_cancel.png" style="vertical-align:middle" /></a>-->
+        <a href="{% url telemeta-item-detail item.public_id %}"
+           class="roundBorder6 mediaitem_button mediaitem_button_cancel">Cancel</a>
+<a href="#" class="roundBorder6 mediaitem_button mediaitem_button_save"
+   onclick="document.getElementById('_editItemForm').submit(); return false;">Save</a>
+<!--           <input type="image" src="images/save_changes.png" style="vertical-align:middle" value="save" />-->
        </div>
      </form>
     </div>
