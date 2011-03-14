@@ -39,33 +39,15 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import ugettext_lazy as _
 
 
-#class User(ModelCore):
-#    "Telemeta user"
-#    LEVEL_CHOICES = (('user', 'user'), ('maintainer', 'maintainer'), ('admin', 'admin'))
-#
-#    username   = CharField(_('username'), primary_key=True, max_length=64, required=True)
-#    level      = CharField(_('level'), choices=LEVEL_CHOICES, max_length=32, required=True)
-#    first_name = CharField(_('first name'))
-#    last_name  = CharField(_('last name'))
-#    phone      = CharField(_('phone'))
-#    email      = CharField(_('email'))
-#
-#    class Meta(MetaCore):
-#        db_table = 'users'
-#
-#    def __unicode__(self):
-#        return self.username
-
 class Revision(ModelCore):
     "Revision made by user"
-    ELEMENT_TYPE_CHOICES = (('collection', 'collection'), ('item', 'item'), ('part', 'part'))
+    ELEMENT_TYPE_CHOICES = (('collection', 'collection'), ('item', 'item'), ('part', 'part'), ('marker', 'marker'))
     CHANGE_TYPE_CHOICES  = (('import', 'import'), ('create', 'create'), ('update', 'update'), ('delete','delete'))
 
     element_type         = CharField(_('element type'), choices=ELEMENT_TYPE_CHOICES, max_length=16, required=True)
     element_id           = IntegerField(_('element identifier'), required=True)
     change_type          = CharField(_('modification type'), choices=CHANGE_TYPE_CHOICES, max_length=16, required=True)
     time                 = DateTimeField(_('time'), auto_now_add=True)
-    #user                 = ForeignKey('User', db_column='username', related_name="revisions", verbose_name=_('user'))
     user                 = ForeignKey(User, db_column='username', related_name="revisions", verbose_name=_('user'))
 
     @classmethod

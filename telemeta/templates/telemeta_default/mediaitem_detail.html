@@ -43,10 +43,8 @@
     {% block tools %}
     <a href="{% url telemeta-item-dublincore item.public_id %}">Dublin Core</a>
     {% if user.is_authenticated and perms.telemeta.change_mediaitem %}
-    
     <a href="{% url telemeta-item-edit item.public_id %}"><img src="images/edit_page.png" style="vertical-align:middle" alt="EDIT" /></a>
     <button><a href="{% url telemeta-item-copy item.public_id %}">Copy</a></button>
-    
     {% endif %}
     <a href="{% url telemeta-item-detail previous %}"><img src="images/previous.png" style="vertical-align:middle" alt="PREVIOUS" /></a>
     <a href="{% url telemeta-item-detail next %}"><img src="images/next.png" style="vertical-align:middle" alt="NEXT" /></a>

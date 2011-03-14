@@ -7,5 +7,6 @@ admin.site.register(MediaCollection)
 admin.site.register(MediaItem)
 admin.site.register(MediaPart)
 admin.site.register(Playlist)
+admin.site.register(PlaylistResource)
 admin.site.register(Instrument)
 

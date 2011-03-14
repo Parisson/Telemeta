@@ -51,7 +51,9 @@
     Collections ({{collections_num}})</a></p>
 
   {% with object_list as items %}
+   <div class="fullpage">
       {% include "telemeta/inc/mediaitem_list.html" %}
+   </div>
   {% endwith %}    
 
 {% else %}
@@ -61,7 +63,9 @@
   <b>Collections ({{collections_num}})</b></p>
 
   {% with object_list as collections %}
+   <div class="fullpage">
       {% include "telemeta/inc/collection_list.html" %}
+   </div>
   {% endwith %}
 
 {% endifequal %}

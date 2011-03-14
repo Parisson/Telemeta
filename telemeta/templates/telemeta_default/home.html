@@ -1,0 +1,104 @@
+{% extends "telemeta/index.html" %}
+{% load telemeta_utils %}
+{% load i18n %}
+
+{% block content %}
+<div class="home-content">
+
+<div>
+<h3>Playlists</h3>
+ <form method="POST" action="">{% csrf_token %}
+  {% for playlist in playlists %}
+  <li>{{ playlist.name }}</li>
+    <table class="listing" width="50%">
+        <tr>
+            <th class="highlight">{% trans "Title" %}</th>
+            <th>{% trans "Type" %}</th>
+            <th>{% trans "Code" %}</th>
+            <th>{% trans "Recordist" %}</th>
+            <th>{% trans "Year of recording" %}</th>
+            <th>{% trans "Sound" %}</th>
+        </tr>
+        
+        {% for resource in playlist.resources %}
+        <tr>
+            {% if resource.type == "item" %}
+            <td><a href="{% url telemeta-item-detail resource.element.public_id %}">{{ resource.element }}</td>
+            {% else %}
+            <td><a href="{% url telemeta-collection-detail resource.element.public_id %}">{{ resource.element }}</td>
+            {% endif %}
+            <td>{{ resource.type }}</td>
+            <td>
+                {{ resource.element.code|default:resource.element.old_code }}
+            </td>
+            <td>{{ resource.element.apparent_collector }}</td>
+           
+            <td>
+            {% if resource.element.recorded_from_date %}
+                {{ resource.element.recorded_from_date.year }}
+                {% if resource.element.recorded_to_date and not resource.element.recorded_to_date.year|equals:resource.element.recorded_from_date.year %}
+                    - {{ resource.element.recorded_to_date.year }}
+                {% endif %}
+            {% endif %}
+            </td>
+            <td>
+                {% if resource.element.file or resource.element.has_mediafile %}
+                <a href="{% url telemeta-item-detail resource.element.public_id %}">
+                <img src="images/text-speak.png" alt="yes" style="vertical-align:middle" /></a>
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+   {% endfor %}
+ </form>
+</div>
+
+<br />
+<div>
+<h3>Searches</h3>
+    <table class="listing">
+     <tr>
+        <th class="highlight">Date</th>
+        <th>Keywords</th>
+        <th>Link</th>
+    </tr>
+    {% for search in searches %}
+    <tr>
+        <td>type</td>
+        <td>title</td>
+    </tr>
+    {% endfor %}
+    </table>
+   
+</div>
+
+<br />
+<div>
+<h3>Last changes</h3>
+    <table class="listing">
+     <tr>
+        <th class="highlight">Date</th>
+        <th>Element</th>
+        <th>Type</th>
+        <th>Change type</th>
+       
+    </tr>
+    {% for revision in revisions %}
+    <tr>
+        <td>{{ revision.time }}</td>
+        <td>{{ revision.element_id }}</td>
+        <td>{{ revision.element_type }}</td>
+        <td>{{ revision.change_type }}</td>
+       
+    </tr>
+    {% endfor %}
+    </table>
+
+
+
+</div>
+
+</div>
+{% endblock %}
+

@@ -55,7 +55,7 @@ from django.core.context_processors import csrf
 from django.forms.models import modelformset_factory
 from django.contrib.auth.models import User
 
-from telemeta.models import MediaItem, Location, MediaCollection, EthnicGroup, MediaCollectionForm, MediaItemForm
+from telemeta.models import MediaItem, Location, MediaCollection, EthnicGroup, MediaCollectionForm, MediaItemForm, Playlist, PlaylistResource, Search, Revision
 from telemeta.models import dublincore, Enumeration, MediaItemMarker,  Instrument
 import telemeta.models
 import telemeta.interop.oai as oai
@@ -103,16 +103,34 @@ class WebView(object):
     
     def index(self, request):
         """Render the homepage"""
+        if not request.user.is_authenticated():
+            template = loader.get_template('telemeta/index.html')
+            ids = [id for id in MediaItem.objects.all().values_list('id', flat=True).order_by('?')[0:3]]
+            items = MediaItem.objects.enriched().filter(pk__in=ids)
 
-        template = loader.get_template('telemeta/index.html')
-        ids = [id for id in MediaItem.objects.all().values_list('id', flat=True).order_by('?')[0:3]]
-        items = MediaItem.objects.enriched().filter(pk__in=ids)
-
-        context = RequestContext(request, {
-                    'page_content': pages.get_page_content(request, 'parts/home', ignore_slash_issue=True),
-                    'items': items})
-        return HttpResponse(template.render(context))
-
+            context = RequestContext(request, {
+                        'page_content': pages.get_page_content(request, 'parts/home', ignore_slash_issue=True),
+                        'items': items})
+            return HttpResponse(template.render(context))
+        else:
+            template='telemeta/home.html'
+            user_playlists = Playlist.objects.filter(owner_username=request.user)
+            playlists = []
+            for playlist in user_playlists:
+                playlist_resources = PlaylistResource.objects.filter(playlist=playlist)
+                resources = []
+                for resource in playlist_resources:
+                    if resource.resource_type == 'item':
+                        element = MediaItem.objects.get(pk=resource.resource)
+                    if resource.resource_type == 'collection':
+                        element = MediaCollection.objects.get(pk=resource.resource)
+                    resources.append({'element': element, 'type': resource.resource_type})
+                playlists.append({'name': playlist.name, 'resources': resources})
+            
+            searches = Search.objects.filter(username=request.user)
+            revisions = Revision.objects.all().order_by('-time')[0:10]
+            return render(request, template, {'playlists': playlists, 'searches': searches, 'revisions': revisions})
+        
     def collection_detail(self, request, public_id, template='telemeta/collection_detail.html'):
         collection = MediaCollection.objects.get(public_id=public_id)
         return render(request, template, {'collection': collection})
@@ -233,7 +251,7 @@ class WebView(object):
         analyzers = self.item_analyze(item)
         
         if request.method == 'POST':
-            form = MediaItemForm(request.POST, request.FILES, instance=item)
+            form = MediaItemForm(data=request.POST, files=request.FILES, instance=item)
             if form.is_valid():
                 form.save()
                 return HttpResponseRedirect('/items/'+public_id)

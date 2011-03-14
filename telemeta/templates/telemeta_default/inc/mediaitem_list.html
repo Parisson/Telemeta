@@ -9,6 +9,7 @@
 {% if has_next %} <a href="?page={{ next }}&amp;{{criteria|build_query_string}}">&gt;&gt;</a> {% endif %}
 </p>
 {% endif %}
+
 <table class="listing">
 <tr>
     <th class="highlight">{% trans "Title" %}</th>
@@ -44,13 +45,16 @@
         {% endif %}
     {% endif %}
     </td>
-    <td>{% if item.file %}
-        <a href="{% url telemeta-item-detail item.public_id %}"><img src="images/text-speak.png" alt="(sound)" style="vertical-align:middle" /></a>
+    <td>
+        {% if item.file %}
+         <a href="{% url telemeta-item-detail item.public_id %}">
+          <img src="images/text-speak.png" alt="yes" style="vertical-align:middle" /></a>
         {% endif %}
     </td>
 </tr>
 {% endfor %}
 </table>
+
 {% else %}
     <p>{% trans "No item" %}</p>
 {% endif %}

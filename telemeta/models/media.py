@@ -347,9 +347,10 @@ class MediaPart(MediaResource):
 
 class Playlist(ModelCore):
     "Item or collection playlist"
-    #owner_username = ForeignKey('User', related_name="playlists", db_column="owner_username")
+    element_type = 'playlist'
     owner_username = ForeignKey(User, related_name="playlists", db_column="owner_username")
     name           = CharField(_('name'), required=True)
+    is_current     = BooleanField(_('current_user_playlist'))
 
     class Meta(MetaCore):
         db_table = 'playlists'
@@ -360,7 +361,7 @@ class Playlist(ModelCore):
 class PlaylistResource(ModelCore):
     "Playlist components"
     RESOURCE_TYPE_CHOICES = (('item', 'item'), ('collection', 'collection'))
-
+    element_type = 'playlist_resource'
     playlist              = ForeignKey('Playlist', related_name="resources", verbose_name=_('playlist'))
     resource_type         = CharField(_('resource type'), choices=RESOURCE_TYPE_CHOICES, required=True)
     resource              = IntegerField(_('resource'), required=True)
@@ -371,7 +372,7 @@ class PlaylistResource(ModelCore):
 class MediaInvalidCodeError(Exception):
     pass
 
-class MediaItemMarker(ModelCore):
+class MediaItemMarker(MediaResource):
     "2D marker object : text value vs. time"
     
     element_type = 'marker'
@@ -389,5 +390,20 @@ class MediaItemMarker(ModelCore):
 
     def __unicode__(self):
         return self.time + ' : ' + self.description + '(' + self.author + ')'
+
+class Search(ModelCore):
+    "Keywork search"
+    
+    element_type = 'search'
+    
+    username = ForeignKey(User, related_name="searches", db_column="username")
+    keywords = CharField(_('keywords'), required=True)
+    date = DateField(_('date'), auto_now_add=True)
+
+    class Meta(MetaCore):
+        db_table = 'searches'
+
+    def __unicode__(self):
+        return self.keywords
 
 
