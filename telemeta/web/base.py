@@ -142,6 +142,7 @@ class WebView(object):
             form = MediaCollectionForm(request.POST, request.FILES, instance=collection)
             if form.is_valid():
                 form.save()
+                collection.set_revision(request.user)
                 return HttpResponseRedirect('/collections/'+public_id)
         else:
             form = MediaCollectionForm(instance=collection)
@@ -154,6 +155,7 @@ class WebView(object):
             form = MediaCollectionForm(request.POST, request.FILES, instance=collection)
             if form.is_valid():
                 form.save()
+                collection.set_revision(request.user)
                 return HttpResponseRedirect('/collections/'+form.cleaned_data['code'])
         else:
             form = MediaCollectionForm(instance=collection)
@@ -254,6 +256,7 @@ class WebView(object):
             form = MediaItemForm(data=request.POST, files=request.FILES, instance=item)
             if form.is_valid():
                 form.save()
+                item.set_revision(request.user)
                 return HttpResponseRedirect('/items/'+public_id)
         else:
             form = MediaItemForm(instance=item)
@@ -273,6 +276,7 @@ class WebView(object):
             form = MediaItemForm(data=request.POST, files=request.FILES, instance=item)
             if form.is_valid():
                 form.save()
+                item.set_revision(request.user)
                 return HttpResponseRedirect('/items/'+form.cleaned_data['code'])
         else:
             form = MediaItemForm(instance=item)
@@ -722,6 +726,7 @@ class WebView(object):
             m.description = marker['description']
             m.author = User.objects.get(username=marker['author'])
             m.save()
+            m.set_revision(request.user)
         else:
             raise 'Error : Bad marker dictionnary'
 
@@ -753,6 +758,7 @@ class WebView(object):
             m.title = marker['title']
             m.description = marker['description']
             m.save()
+            m.set_revision(request.user)
         else:
             raise 'Error : Bad marker dictionnary'
         

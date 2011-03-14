@@ -56,9 +56,8 @@ class MediaResource(ModelCore):
         return _('Private data')
     public_access_label.verbose_name = _('public access')
 
-    def save_with_revision(self, user, force_insert=False, force_update=False):
+    def set_revision(self, user):
         "Save a media object and add a revision"
-        self.save(force_insert, force_update)
         Revision.touch(self, user)    
 
     def get_revision(self):
@@ -196,7 +195,7 @@ class MediaCollection(MediaResource):
 
         return False
 
-    def save(self, force_insert=False, force_update=False):
+    def save(self, force_insert=False, force_update=False, user=None):
         if not self.code:
             raise RequiredFieldError(self, self._meta.get_field('code'))
         if not self.is_valid_code(self.code):
@@ -381,7 +380,7 @@ class MediaItemMarker(MediaResource):
     public_id       = CharField(_('public_id'), required=True)
     time            = FloatField(_('time'), required=True)
     title           = CharField(_('title'))
-    date            = DateField(_('date'), auto_now=True)
+    date            = DateTimeField(_('date'), auto_now=True)
     description     = TextField(_('description'))
     author          = ForeignKey(User, related_name="markers", verbose_name=_('author'))
     
