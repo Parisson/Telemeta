@@ -114,6 +114,7 @@ class WebView(object):
             return HttpResponse(template.render(context))
         else:
             template='telemeta/home.html'
+            
             user_playlists = Playlist.objects.filter(owner_username=request.user)
             playlists = []
             for playlist in user_playlists:
@@ -127,8 +128,17 @@ class WebView(object):
                     resources.append({'element': element, 'type': resource.resource_type})
                 playlists.append({'name': playlist.name, 'resources': resources})
             
+            last_revisions = Revision.objects.all().order_by('-time')[0:10]
+            revisions = []
+            for revision in last_revisions:
+                if revision.element_type == 'item':
+                    element = MediaItem.objects.get(pk=revision.element_id)
+                if revision.element_type == 'collection':
+                    element = MediaCollection.objects.get(pk=revision.element_id)
+                revisions.append({'revision': revision, 'element': element})
+            
             searches = Search.objects.filter(username=request.user)
-            revisions = Revision.objects.all().order_by('-time')[0:10]
+            
             return render(request, template, {'playlists': playlists, 'searches': searches, 'revisions': revisions})
         
     def collection_detail(self, request, public_id, template='telemeta/collection_detail.html'):
@@ -292,6 +302,7 @@ class WebView(object):
             form = MediaItemForm(data=request.POST, files=request.FILES, instance=new_item)
             if form.is_valid():
                 form.save()
+                item.set_revision(request.user)
                 return HttpResponseRedirect('/items/'+form.cleaned_data['code'])
         else:
             form = MediaItemForm(instance=item)

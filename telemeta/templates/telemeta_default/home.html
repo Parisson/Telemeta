@@ -79,17 +79,21 @@
     <table class="listing">
      <tr>
         <th class="highlight">Date</th>
-        <th>Element</th>
+        <th>Code</th>
         <th>Type</th>
         <th>Change type</th>
        
     </tr>
-    {% for revision in revisions %}
+    {% for r in revisions %}
     <tr>
-        <td>{{ revision.time }}</td>
-        <td>{{ revision.element_id }}</td>
-        <td>{{ revision.element_type }}</td>
-        <td>{{ revision.change_type }}</td>
+        <td>{{ r.revision.time }}</td>
+        {% if r.revision.type == "item" %}
+         <td><a href="{% url telemeta-item-detail r.element.public_id %}">{{ r.element }}</td>
+        {% else %}
+         <td><a href="{% url telemeta-collection-detail r.element.public_id %}">{{ r.element }}</td>
+            {% endif %}
+        <td>{{ r.revision.element_type }}</td>
+        <td>{{ r.revision.change_type }}</td>
        
     </tr>
     {% endfor %}
