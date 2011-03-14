@@ -41,7 +41,7 @@ Welcome,
 {% endif %}
 Account | Help | 
 <a href="{% url telemeta-logout %}">{% trans "Sign out" %}
-<img src="images/close.png" style="vertical-align:middle" /></a>
+<img src="images/logout.png" style="vertical-align:middle" /></a>
 {% else %}
 Help |
 <a href="{% url telemeta-login %}?next={{ request.path|urlencode }}">{% trans "Sign in" %}</a>

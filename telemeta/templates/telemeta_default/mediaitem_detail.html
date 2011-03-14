@@ -42,25 +42,20 @@
 <div>
     {% block tools %}
     <!--<a href="{% url telemeta-item-dublincore item.public_id %}">Dublin Core</a>-->
-    <a href="{% url telemeta-item-dublincore item.public_id %}" class="roundBorder6 mediaitem_button mediaitem_button_dublin_core">Dublin Core</a>
+    <a href="{% url telemeta-item-dublincore item.public_id %}" class="mediaitem_button mediaitem_button_dublin_core">Dublin Core</a>
     {% if user.is_authenticated and perms.telemeta.change_mediaitem %}
-<<<<<<< TREE
-    
+
     <!--<a href="{% url telemeta-item-edit item.public_id %}"><img src="images/edit_page.png" style="vertical-align:middle" alt="EDIT" /></a>
     <button><a href="{% url telemeta-item-copy item.public_id %}">Copy</a></button>-->
-    <a href="{% url telemeta-item-edit item.public_id %}" class="roundBorder6 mediaitem_button mediaitem_button_edit">Edit</a>
-    <a href="{% url telemeta-item-copy item.public_id %}" class="roundBorder6 mediaitem_button mediaitem_button_copy">Copy</a>
+    <a href="{% url telemeta-item-edit item.public_id %}" class="mediaitem_button mediaitem_button_edit">Edit</a>
+    <a href="{% url telemeta-item-copy item.public_id %}" class="mediaitem_button mediaitem_button_copy">Copy</a>
 
-    
-=======
-    <a href="{% url telemeta-item-edit item.public_id %}"><img src="images/edit_page.png" style="vertical-align:middle" alt="EDIT" /></a>
-    <button><a href="{% url telemeta-item-copy item.public_id %}">Copy</a></button>
->>>>>>> MERGE-SOURCE
+
     {% endif %}
     <!--<a href="{% url telemeta-item-detail previous %}"><img src="images/previous.png" style="vertical-align:middle" alt="PREVIOUS" /></a>
     <a href="{% url telemeta-item-detail next %}"><img src="images/next.png" style="vertical-align:middle" alt="NEXT" /></a>-->
-     <a href="{% url telemeta-item-detail previous %}" class="roundBorder6 mediaitem_button mediaitem_button_previous">Previous</a>
-    <a href="{% url telemeta-item-detail next %}" class="roundBorder6 mediaitem_button mediaitem_button_next">Next</a>
+     <a href="{% url telemeta-item-detail previous %}" class="mediaitem_button mediaitem_button_previous">Previous</a>
+    <a href="{% url telemeta-item-detail next %}" class="mediaitem_button mediaitem_button_next">Next</a>
     {% endblock tools %}
 </div>
 {% endblock %}
