@@ -23,14 +23,20 @@
         
         {% for resource in playlist.resources %}
         <tr>
+            <td>
             {% if resource.type == "item" %}
-            <td><a href="{% url telemeta-item-detail resource.element.public_id %}">{{ resource.element }}</td>
-            {% else %}
-            <td><a href="{% url telemeta-collection-detail resource.element.public_id %}">{{ resource.element }}</td>
+            <a href="{% url telemeta-item-detail resource.element.public_id %}">{{ resource.element }}</a>
             {% endif %}
+            {% if resource.type == "collection" %}
+            <a href="{% url telemeta-collection-detail resource.element.public_id %}">{{ resource.element }}</a>
+            {% endif %}
+            {% if resource.type == "marker" %}
+            {{ resource.element }}
+            {% endif %}
+            </td>
             <td>{{ resource.type }}</td>
             <td>
-                {{ resource.element.code|default:resource.element.old_code }}
+                {{ resource.element.public_id }}
             </td>
             <td>{{ resource.element.apparent_collector }}</td>
            

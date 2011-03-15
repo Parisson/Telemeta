@@ -365,12 +365,12 @@ class PlaylistForm(ModelForm):
 
 class PlaylistResource(ModelCore):
     "Playlist components"
-    RESOURCE_TYPE_CHOICES = (('item', 'item'), ('collection', 'collection'))
+    RESOURCE_TYPE_CHOICES = (('item', 'item'), ('collection', 'collection'), ('marker', 'marker'))
     element_type = 'playlist_resource'
     public_id          = CharField(_('public_id'), required=True)
     playlist           = ForeignKey('Playlist', related_name="resources", verbose_name=_('playlist'))
-    resource_type      = CharField(_('resource type'), choices=RESOURCE_TYPE_CHOICES, required=True)
-    resource_id        = CharField(_('resource'), required=True)
+    resource_type      = CharField(_('resource_type'), choices=RESOURCE_TYPE_CHOICES, required=True)
+    resource_id        = CharField(_('resource_id'), required=True)
 
     class Meta(MetaCore):
         db_table = 'playlist_resources'
@@ -395,7 +395,7 @@ class MediaItemMarker(MediaResource):
         db_table = 'media_markers'
 
     def __unicode__(self):
-        return self.time + ' : ' + self.description + '(' + self.author + ')'
+        return self.title
 
 class Search(ModelCore):
     "Keywork search"

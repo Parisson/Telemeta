@@ -785,6 +785,10 @@ class WebView(object):
             m.name = playlist['name']
             m.description = playlist['description']
             m.author = request.user
+            if playlist['is_current'] == 'True':
+                m.is_current = True
+            else:
+                m.is_current = False
             m.save()
         else:
             raise 'Error : Bad playlist dictionnary'
@@ -802,11 +806,14 @@ class WebView(object):
             resources = []
             for resource in playlist_resources:
                 if resource.resource_type == 'item':
-                    element = MediaItem.objects.get(public_id=resource.resource_id)
+                    element = MediaItem.objects.get(pk=resource.resource_id)
                 if resource.resource_type == 'collection':
-                    element = MediaCollection.objects.get(public_id=resource.resource_id)
+                    element = MediaCollection.objects.get(pk=resource.resource_id)
+                if resource.resource_type == 'marker':
+                    element = MediaItemMarker.objects.get(pk=resource.resource_id)
                 resources.append({'element': element, 'type': resource.resource_type})
-            playlists.append({'name': playlist.name, 'resources': resources})
+            playlists.append({'name': playlist.name, 'description': playlist.description, 
+                            'is_current': playlist.is_current, 'resources': resources})
         return playlists
         
     @jsonrpc_method('telemeta.update_playlist')
