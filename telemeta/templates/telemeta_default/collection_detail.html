@@ -12,19 +12,13 @@
 
 {% block submenu %}
     <div>
-<!--    <a href="{% url telemeta-collection-dublincore collection.public_id %}">Dublin Core</a>-->
-    <a href="{% url telemeta-collection-dublincore collection.public_id %}" class="mediaitem_button mediaitem_button_dublin_core">Dublin Core</a>
-
+    <a href="{% url telemeta-collection-dublincore collection.public_id %}">Dublin Core</a>
+    
     {% if user.is_authenticated and perms.telemeta.change_mediacollection %}
      {% block tools %}
-     <!--<a href="{% url telemeta-collection-edit collection.public_id %}">
+     <a href="{% url telemeta-collection-edit collection.public_id %}">
       <img src="images/edit_page.png" alt="EDIT" style="vertical-align:middle" /></a>
       <button><a href="{% url telemeta-collection-copy collection.public_id %}">Copy</a></button>
-      -->
-
-       <a href="{% url telemeta-collection-edit collection.public_id %}" class="mediaitem_button mediaitem_button_edit">Edit</a>
-    <a href="{% url telemeta-collection-copy collection.public_id %}" class="mediaitem_button mediaitem_button_copy">Copy</a>
-
      {% endblock tools %}
     {% endif %}
     

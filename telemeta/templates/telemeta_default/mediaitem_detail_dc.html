@@ -1,16 +1,13 @@
-{% extends "telemeta/base.html" %}
+{% extends "telemeta/mediaitem_detail.html" %}
 {% load telemeta_utils %}
 {% load i18n %}
 
-{% block head_title %}{% trans "Item" %}{{item|prepend:': '}} - {{ block.super }}{% endblock %}
-
 {% if item %}
 {% block submenu %}
-    <h3>Item: {{ item }}</h3>
     <div><a href="{% url telemeta-item-detail item.public_id %}">{% trans "Normal View" %}</a></div>
 {% endblock %}
 
-{% block content %}
+{% block infos %}
 {% with item|to_dublincore as resource %}
 {% include "telemeta/inc/dublincore.html" %}
 {% endwith %}

@@ -10,7 +10,7 @@
  <form method="POST" action="">{% csrf_token %}
   {% for playlist in playlists %}
   <li>{{ playlist.name }}</li>
-    <table class="listing" width="50%">
+    <table class="listing" width="75%">
         <tr>
             <th class="highlight">{% trans "Title" %}</th>
             <th>{% trans "Type" %}</th>
@@ -57,7 +57,7 @@
 <br />
 <div>
 <h3>Searches</h3>
-    <table class="listing">
+    <table class="listing" width="75%">
      <tr>
         <th class="highlight">Date</th>
         <th>Keywords</th>
@@ -76,31 +76,36 @@
 <br />
 <div>
 <h3>Last changes</h3>
-    <table class="listing">
-     <tr>
+    <table class="listing" width="75%">
+      <tr>
         <th class="highlight">Date</th>
-        <th>Code</th>
         <th>Type</th>
+        <th>{% trans "Title" %}</th>
         <th>Change type</th>
-       
-    </tr>
+        <th>User</th>
+      </tr>
     {% for r in revisions %}
-    <tr>
+     <tr>
         <td>{{ r.revision.time }}</td>
-        {% if r.revision.type == "item" %}
-         <td><a href="{% url telemeta-item-detail r.element.public_id %}">{{ r.element }}</td>
-        {% else %}
-         <td><a href="{% url telemeta-collection-detail r.element.public_id %}">{{ r.element }}</td>
-            {% endif %}
         <td>{{ r.revision.element_type }}</td>
-        <td>{{ r.revision.change_type }}</td>
-       
-    </tr>
+        {% if r.revision.type == "collection" %}
+          <td><a href="{% url telemeta-collection-detail r.element.public_id %}">{{ r.element }}</td>
+        {% else %}
+         {% if r.element %}
+          <td><a href="{% url telemeta-item-detail r.element.public_id %}">{{ r.element.title }}</td>
+         {% else %}
+          <td>{{ r.element }}</td>
+         {% endif %}
+        {% endif %}
+        {% if r.element %}
+         <td>{{ r.revision.change_type }}</td>
+        {% else %}
+         <td>delete</td>
+        {% endif %}
+         <td>{{ r.revision.user.username }}</td>
+     </tr>
     {% endfor %}
     </table>
-
-
-
 </div>
 
 </div>
