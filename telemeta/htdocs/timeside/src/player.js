@@ -42,8 +42,9 @@ TimeSide(function($N, $J) {
 
         initialize: function($super, container, cfg) {
             $super();
-            if (!container)
+            if (!container){
                 throw new $N.RequiredArgumentError(this, 'container');
+            }
             this.container = $J(container);
             this.configure(cfg, {
                 image: null
@@ -111,8 +112,9 @@ TimeSide(function($N, $J) {
             .attr('href', '#')
             .each(function(i, a){
                 a = $J(a);
-                if (!a.attr('title'))
+                if (!a.attr('title')){
                     a.attr('title', a.text());
+                }
             });
             
             //this.elements.markerControl.find('a').attr('href', '#');
@@ -145,8 +147,9 @@ TimeSide(function($N, $J) {
             this.resize();
             var resizeTimer = null;
             $J(window).resize(this.attach(function() {
-                if (resizeTimer)
+                if (resizeTimer){
                     clearTimeout(resizeTimer);
+                }
                 resizeTimer = setTimeout(this.attach(this.resize), 100);
             }));
         //this.container.resize(this.attach(this.resize)); // Can loop ?

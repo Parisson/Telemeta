@@ -65,15 +65,17 @@ TimeSide(function($N) {
         _onMarkerMapMoved:function(e, data){
             var from = data.fromIndex;
             var to = data.toIndex;
-            if(from===to){
-                //just update the div in order to show the new time offset
-                //and start edit
-                this.cfg.divmarkers[from].setIndex(to);
-                return;
-            }
-            this.cfg.player.ruler.move(from,to);
-            var m = this.cfg.divmarkers.splice(from,1)[0]; //remove
-            this.cfg.divmarkers.splice(to,0,m); //add
+//            if(from===to){
+//                //just update the div in order to show the new time offset
+//                //and start edit
+//                this.cfg.divmarkers[from].setIndex(to);
+//                return;
+//            }
+            this.cfg.divmarkers.move(from,to);
+            this.cfg.player.ruler.markers.move(from,to);
+//            this.cfg.player.ruler.move(from,to);
+//            var m = this.cfg.divmarkers.splice(from,1)[0]; //remove
+//            this.cfg.divmarkers.splice(to,0,m); //add
             this.updateIndices(from,to);
         },
 
@@ -98,9 +100,10 @@ TimeSide(function($N) {
                 //var idx = this.cfg.map.add(data.offset);
                 //alert('df');
                 var idx = data.index;
-                var divMarker = new $N.DivMarker(this.cfg.map);
-                this.cfg.divmarkers.splice(idx,0, divMarker);
-                this.cfg.player.ruler.add(data.marker, idx);
+                //var divMarker = new $N.DivMarker(this.cfg.map);
+                this.cfg.divmarkers.splice(idx,0, new $N.DivMarker(this.cfg.map));
+                this.cfg.player.ruler.onMapAdd(data.marker, idx);
+                //this.cfg.player.ruler.add(data.marker, idx);
             }
         },
 
@@ -116,7 +119,12 @@ TimeSide(function($N) {
                 var divRemoved = this.cfg.divmarkers.splice(idx,1)[0]; //there is only one element removed
                 divRemoved.remove();
                 this.cfg.player.ruler.remove(idx);
+
+                //if(idx<this.cfg.divmarkers.length){
+                    //we might have removed the last index, in this case idx==this.cfg.divmarkers.length
+                    //no need to update and to enter this if
                 this.updateIndices(idx);
+                //}
             }
         },
 
@@ -124,15 +132,11 @@ TimeSide(function($N) {
             if(from===undefined || from==null){
                 from = 0;
             }
-            var len = this.cfg.divmarkers.length-1;
-            if(from>len){
-                //it might happen when we remove the last element
-                //suppose [0,1,2], we remove [2] then we call
-                //updateIndices[2] but array till 1 (there is nothing to update)
+            if(from>this.cfg.divmarkers.length){
                 return;
             }
             if(to==undefined || to ==null){
-                to = len;
+                to = this.cfg.divmarkers.length-1;
             }
             if(to<from){
                 var tmp = to;
@@ -140,7 +144,7 @@ TimeSide(function($N) {
                 from=tmp;
             }
             for(var i = from; i <= to; i++){
-                this.cfg.divmarkers[i].setIndex(i);
+                this.cfg.divmarkers[i].updateMarkerIndex(i);
             }
             this.cfg.player.ruler.updateMarkerIndices(from,to);
         },

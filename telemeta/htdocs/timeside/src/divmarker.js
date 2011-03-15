@@ -21,11 +21,6 @@ TimeSide(function($N, $J) {
         e_titleText:null,
         me:null,
         markerMap:null,
-        markerIndex:-1,
-        //static constant variables for edit mode:
-        EDIT_MODE_SAVED:0,
-        EDIT_MODE_EDIT_TEXT:1,
-        EDIT_MODE_MARKER_MOVED:2,
 
         initialize: function($super, markermap) {
             $super();
@@ -37,8 +32,7 @@ TimeSide(function($N, $J) {
             this.cfg.parent = $J("#markers_div_id");
             this.markerMap = markermap;
             this.me = this.createDiv();
-        //set the index insert the div and set events on elements
-        //this.setIndex(insertionIndex);
+            this.cfg.parent.append(this.me);
         },
 
 
@@ -49,10 +43,6 @@ TimeSide(function($N, $J) {
             var markerDiv;
             if(div){
                 
-
-                //var indexLabel, descriptionText, offsetLabel, deleteButton, okButton, header, editButton, descriptionLabel;
-                var margin = '1ex';
-
                 //index label
                 this.e_indexLabel = $J('<span/>')
                 .addClass('markersdivIndexLabel')
@@ -107,9 +97,7 @@ TimeSide(function($N, $J) {
                 .addClass('markersdivSave')
                 .attr("href","#")
                 .html("OK");
-                //                .append($J('<img/>').attr("src","/images/marker_ok_green.png").css({
-                //                    width:'3em'
-                //                }))
+                
 
                 //create marker div and append all elements
                 markerDiv = $J('<div/>')
@@ -118,42 +106,30 @@ TimeSide(function($N, $J) {
                 .append(this.e_okButton)
                 .addClass('roundBorder8')
                 .addClass('markerdiv');
-
             }
             return markerDiv;
         },
 
-        setIndex: function(index){
+        updateMarkerIndex: function(index){
             var map = this.markerMap;
             var marker = map.get(index);
             this.e_indexLabel.attr('title',marker.toString());
             this.e_indexLabel.html(index+1);
             this.e_offsetLabel.html(this.formatMarkerOffset(marker.offset));
-            if(index!=this.markerIndex){ 
-                //add it to the parent div or move the div
-                if(this.markerIndex!=-1){
-                    //here is the case when the div is already added, so we have to remove it from the parent
-                    //The .detach() method is the same as .remove(), except that .detach() keeps
-                    //all jQuery data associated with the removed elements.
-                    //This method is useful when removed elements are to be reinserted into the DOM at a later time.
-                    this.me.detach();
-                    //note that we might have index!=this.markerIndex without the need to detach the div
-                    //we leave this code to be sure, especially on loading 
-                }else{
-                    //div is not added: set description and title
-                    this.e_descriptionText.val(marker.desc ? marker.desc : "");
-                    this.e_titleText.val(marker.title ? marker.title : "");
-                }
-                //the div is still to be added
-                var divLen = this.cfg.parent.children().length;
-                //this.cfg.parent.append(this.me);
-                if(index==divLen){
-                    this.cfg.parent.append(this.me);
-                }else{
-                    $( this.cfg.parent.children()[index] ).before(this.me);
-                }
+            this.e_descriptionText.val(marker.desc ? marker.desc : "");
+            this.e_titleText.val(marker.title ? marker.title : "");
+
+            var divIndex = this.me.prevAll().length;
+            //move the div if necessary:
+            //note that moving left to right the actual insertionIndex is index-1
+            //because we will first remove the current index
+            var insertionIndex = index>divIndex ? index-1 : index;
+            if(insertionIndex!=divIndex){
+                this.me.detach();//The .detach() method is the same as .remove(), except that .detach() keeps
+                //all jQuery data associated with the removed elements
+                $( this.cfg.parent.children()[insertionIndex] ).before(this.me); //add
             }
-            
+
             if(!marker.isEditable || marker.isSaved){
                 this.e_okButton.hide();
                 this.e_descriptionText.attr('readonly','readonly').addClass('markersdivUneditable');
@@ -164,54 +140,63 @@ TimeSide(function($N, $J) {
                     return;
                 }
             }
-            if(index!=this.markerIndex){
-                //update events associated to anchors
-                this.markerIndex = index;
-                var remove = map.remove;
-                this.e_deleteButton.unbind('click').click( function(){
-                    remove.apply(map,[index]);
-                    return false; //avoid scrolling of the page on anchor click
-                }).show();
+            
+            var remove = map.remove;
+            this.e_deleteButton.unbind('click').click( function(){
+                remove.apply(map,[index]); //which will call this.remove below
+                return false; //avoid scrolling of the page on anchor click
+            }).show();
+                
+            this.e_deleteButton.unbind('click').click( function(){
+                remove.apply(map,[index]);
+                return false; //avoid scrolling of the page on anchor click
+            }).show();
 
-                var dText = this.e_descriptionText;
-                var tText  = this.e_titleText;
-                var okB = this.e_okButton;
-                this.e_editButton.unbind('click').click( function(){
-                    dText.removeAttr('readonly').removeClass('markersdivUneditable').show();
-                    tText.removeAttr('readonly').removeClass('markersdivUneditable').show();
-                    okB.show();
-                    $(this).hide();
-                    tText.select();
-                    return false; //avoid scrolling of the page on anchor click
-                });
-                var eB = this.e_editButton;
-                //action for ok button
-                this.e_okButton.unbind('click').click( function(){
-                    //if(marker.desc !== descriptionText.val()){ //strict equality needed. See note below
-                    marker.desc = dText.val();
-                    marker.title = tText.val();
-                    map.sendHTTP(marker,
+
+            //notifies controller.js
+            //                this.fire('remove', {
+            //                    index: index
+            //                });
+
+            var dText = this.e_descriptionText;
+            var tText  = this.e_titleText;
+            var okB = this.e_okButton;
+            this.e_editButton.unbind('click').click( function(){
+                dText.removeAttr('readonly').removeClass('markersdivUneditable').show();
+                tText.removeAttr('readonly').removeClass('markersdivUneditable').show();
+                okB.show();
+                $(this).hide();
+                tText.select();
+                return false; //avoid scrolling of the page on anchor click
+            });
+            var eB = this.e_editButton;
+            //action for ok button
+            this.e_okButton.unbind('click').click( function(){
+                //if(marker.desc !== descriptionText.val()){ //strict equality needed. See note below
+                marker.desc = dText.val();
+                marker.title = tText.val();
+                map.sendHTTP(marker,
                     
                     function(){
-                    dText.attr('readonly','readonly').addClass('markersdivUneditable');
-                    tText.attr('readonly','readonly').addClass('markersdivUneditable');
-                    eB.show();
-                    okB.hide();
+                        dText.attr('readonly','readonly').addClass('markersdivUneditable');
+                        tText.attr('readonly','readonly').addClass('markersdivUneditable');
+                        eB.show();
+                        okB.hide();
                     },
                     true
                     );
-                    //}
-                    //                func_fem.apply(klass,[marker,editModeSaved,editButton, descriptionText,
-                    //                    descriptionLabel, okButton]);
-                    return false; //avoid scrolling of the page on anchor click
-                });
-                //set the title text width. This method
-                var w = tText.parent().width();
-                w-=tText.outerWidth(true)-tText.width(); //so we consider also tText margin border and padding
-                var space = w-this.e_indexLabel.outerWidth(true) - this.e_offsetLabel.outerWidth(true) -
-                this.e_editButton.outerWidth(true) - this.e_deleteButton.outerWidth(true);
-                tText.css('width',space+'px');
-            }
+                //}
+                //                func_fem.apply(klass,[marker,editModeSaved,editButton, descriptionText,
+                //                    descriptionLabel, okButton]);
+                return false; //avoid scrolling of the page on anchor click
+            });
+            //set the title text width. This method
+            var w = tText.parent().width();
+            w-=tText.outerWidth(true)-tText.width(); //so we consider also tText margin border and padding
+            var space = w-this.e_indexLabel.outerWidth(true) - this.e_offsetLabel.outerWidth(true) -
+            this.e_editButton.outerWidth(true) - this.e_deleteButton.outerWidth(true);
+            tText.css('width',space+'px');
+            //}
             if(!marker.isSaved){
                 this.e_editButton.trigger('click');
             }

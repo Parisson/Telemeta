@@ -411,10 +411,10 @@ TimeSide(function($N, $J) {
                 });
             }
         },
-
-        add: function(marker, index){
+        
+        //called from markermap after we retrieved the marker index:
+        onMapAdd: function(marker, index){
             this.markers.splice(index, 0, this._drawMarker(marker, index));
-        //this.markers.push(this._drawMarker(marker, index));
         },
 
         //        _onMapAdd2: function(e, data) {
@@ -428,10 +428,10 @@ TimeSide(function($N, $J) {
         },
         
         //it is assured that fromIndex!=toIndex and fromIndex!=toIndex+1 (see markermap.move)
-        move: function(fromIndex, toIndex){
-            var m = this.markers.splice(fromIndex,1)[0]; //remove
-            this.markers.splice(toIndex,0,m); //add
-        },
+//        move: function(fromIndex, toIndex){
+//            var m = this.markers.splice(fromIndex,1)[0]; //remove
+//            this.markers.splice(toIndex,0,m); //add
+//        },
 
         updateMarkerIndices:function(fromIndex, toIndex){
             for(var i=fromIndex; i<=toIndex; i++){

@@ -1,3 +1,31 @@
+//adds a move function to the array object.
+//moves the element at position from into to position
+//returns from if no move was accomplished, ie when either:
+//1) from or to are not integers
+//2) from==to or from==to-1 (also in this latter case there is no need to move)
+//3) from or to are lower than zero or greater than the array length
+//in any other case, returns to
+Array.prototype.move = function(from, to){
+    var pInt = parseInt;
+    if(pInt(from)!==from || pInt(to)!==to){
+        return from;
+    }
+    var len = this.length;
+    if((from<0 || from>len)||(to<0 || to>len)){
+        return from;
+    }
+    //if we moved left to right, the insertion index is actually
+    //newIndex-1, as we must also consider to remove the current index markerIndex, so:
+    if(to>from){
+        to--;
+    }
+    if(from != to){
+        var elm = this.splice(from,1)[0];
+        this.markers.splice(to,0,elm);
+        return to;
+    }
+    return from;
+}
 
 function foldInfoBlocks() {
     var extra = $('.extraInfos');

@@ -44,9 +44,9 @@ function change_visualizer() {
 
 function load_player(duration) {
     $(document).ready(function () {
-        if (!$('#player').length)
+        if (!$('#player').length){
             return;
-
+            }
         soundUrl = $('.ts-wave a').attr('href');
 
         $('.ts-wave a img').insertAfter('.ts-wave a');
@@ -60,7 +60,7 @@ function load_player(duration) {
             });
             controller = new TimeSide.Controller({
                 player: player,
-                soundProvider: provider, 
+                soundProvider: provider,
                 map: map
             });
             change_visualizer();
