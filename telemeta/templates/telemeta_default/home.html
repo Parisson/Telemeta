@@ -47,7 +47,7 @@
 </div>
 
 <div class="home-description">
-<h3>Playlists</h3>
+<h3>{% trans "Playlists" %}</h3>
   {% for playlist in playlists %}
   <h2>{{ playlist.name }} {% if playlist.is_current %}(current){% endif %}</h2>
     <table class="listing" width="90%">

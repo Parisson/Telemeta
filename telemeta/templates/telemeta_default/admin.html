@@ -1,4 +1,6 @@
 {% extends "telemeta/base.html" %}
+{% load telemeta_utils %}
+{% load i18n %}
 
 {% block stylesheets %}
 {{ block.super }}
@@ -6,13 +8,13 @@
 {% endblock %}
 
 {% block content %}
-<h3>Administration</h3>
+<h3>{% trans "Administration" %}</h3>
 <br />
 <div class="tabs">
 <ul>
-<li><a href="/admin/general/">Administration générale</a></li>
-<li><a href="/admin/enumerations/">Enumerations</a></li>
-<li><a href="/admin/instruments/">Instruments</a></li>
+<li><a href="/admin/general/">{% trans "General administration" %}</a></li>
+<li><a href="/admin/enumerations/">{% trans "Enumerations" %}</a></li>
+<li><a href="/admin/instruments/">{% trans "Instruments" %}</a></li>
 </ul>
 </div>
 {% block tab %}

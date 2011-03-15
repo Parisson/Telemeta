@@ -1,6 +1,6 @@
 {% extends "telemeta/base.html" %}
-{% load telemeta_utils %}
 {% load i18n %}
+{% load telemeta_utils %}
 
 {% block head_title %}{% trans "Collection" %}{{collection|prepend:': '}} - {{ block.super }}{% endblock %}
 
@@ -13,16 +13,10 @@
 {% block submenu %}
     <div>
     {% block tools %}
-    <!--<a href="{% url telemeta-collection-dublincore collection.public_id %}">Dublin Core</a>-->
-    <a href="{% url telemeta-collection-dublincore collection.public_id %}" class="mediaitem_button mediaitem_button_dublin_core">Dublin Core</a>
-    
+      <a href="{% url telemeta-collection-dublincore collection.public_id %}" class="mediaitem_button mediaitem_button_dublin_core">Dublin Core</a>
     {% if user.is_authenticated and perms.telemeta.change_mediacollection %}
-    <!-- <a href="{% url telemeta-collection-edit collection.public_id %}">
-      <img src="images/edit_page.png" alt="EDIT" style="vertical-align:middle" /></a>
-      <button><a href="{% url telemeta-collection-copy collection.public_id %}">Copy</a></button>-->
-
-       <a href="{% url telemeta-collection-edit collection.public_id %}" class="mediaitem_button mediaitem_button_edit">Edit</a>
-      <a href="{% url telemeta-collection-copy collection.public_id %}" class="mediaitem_button mediaitem_button_copy">Copy</a>
+      <a href="{% url telemeta-collection-edit collection.public_id %}" class="mediaitem_button mediaitem_button_edit">{% trans "Edit" %}</a>
+      <a href="{% url telemeta-collection-copy collection.public_id %}" class="mediaitem_button mediaitem_button_copy">{% trans "Copy" %}</a>
      {% endif %}
      {% endblock tools %}
     

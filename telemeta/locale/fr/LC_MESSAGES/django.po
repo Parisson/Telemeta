@@ -764,3 +764,68 @@ msgid "%(count)d collection"
 msgid_plural "%(count)d collections"
 msgstr[0] "%(count)d collection"
 msgstr[1] "%(count)d collections"
+
+#: templates/telemeta_default/mediaitem_detail.html:45
+msgid "Edit"
+msgstr "Editer"
+
+#: templates/telemeta_default/mediaitem_detail.html:46
+msgid "Copy"
+msgstr "Copier"
+
+#: templates/telemeta_default/mediaitem_detail.html:48
+msgid "Previous"
+msgstr "Précédent"
+
+#: templates/telemeta_default/mediaitem_detail.html:49
+msgid "Next"
+msgstr "Suivant"
+
+#: templates/telemeta_default/mediaitem_detail.html:127
+msgid "Property"
+msgstr "Propriété"
+
+#: templates/telemeta_default/mediaitem_detail.html:128
+msgid "Unit"
+msgstr "Unité"
+
+#: templates/telemeta_default/mediaitem_detail.html:129
+msgid "Analysis"
+msgstr "Analyse"
+
+#: templates/telemeta_default/mediaitem_detail.html:130
+msgid "Markers"
+msgstr "Marqueurs"
+
+#: templates/telemeta_default/home.html:13
+msgid "Last changes"
+msgstr "Dernières modifications"
+
+#: templates/telemeta_default/home.html:50
+msgid "Playlists"
+msgstr "Listes de lecture"
+
+#: templates/telemeta_default/home.html:52
+msgid "Sound"
+msgstr "Son"
+
+#: templates/telemeta_default/base.html:50
+msgid "Account"
+msgstr "Compte"
+
+#: templates/telemeta_default/base.html:50
+msgid "Help"
+msgstr "Aide"
+
+#: templates/telemeta_default/base.html:49
+msgid "Welcome"
+msgstr "Bienvenue"
+
+#: templates/telemeta_default/admin.html:10
+msgid "General administration"
+msgstr "Administration générale"
+
+#: templates/telemeta_default/admin.html:12
+msgid "Enumerations"
+msgstr "Énumérations"
+

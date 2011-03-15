@@ -40,21 +40,13 @@
 {% block submenu %}
 <div>
     {% block tools %}
-    <!--<a href="{% url telemeta-item-dublincore item.public_id %}">Dublin Core</a>-->
-    <a href="{% url telemeta-item-dublincore item.public_id %}" class="mediaitem_button mediaitem_button_dublin_core">Dublin Core</a>
+     <a href="{% url telemeta-item-dublincore item.public_id %}" class="mediaitem_button mediaitem_button_dublin_core">Dublin Core</a>
     {% if user.is_authenticated and perms.telemeta.change_mediaitem %}
-
-    <!--<a href="{% url telemeta-item-edit item.public_id %}"><img src="images/edit_page.png" style="vertical-align:middle" alt="EDIT" /></a>
-    <button><a href="{% url telemeta-item-copy item.public_id %}">Copy</a></button>-->
-    <a href="{% url telemeta-item-edit item.public_id %}" class="mediaitem_button mediaitem_button_edit">Edit</a>
-    <a href="{% url telemeta-item-copy item.public_id %}" class="mediaitem_button mediaitem_button_copy">Copy</a>
-
-
+     <a href="{% url telemeta-item-edit item.public_id %}" class="mediaitem_button mediaitem_button_edit">{% trans "Edit" %}</a>
+     <a href="{% url telemeta-item-copy item.public_id %}" class="mediaitem_button mediaitem_button_copy">{% trans "Copy" %}</a>
     {% endif %}
-    <!--<a href="{% url telemeta-item-detail previous %}"><img src="images/previous.png" style="vertical-align:middle" alt="PREVIOUS" /></a>
-    <a href="{% url telemeta-item-detail next %}"><img src="images/next.png" style="vertical-align:middle" alt="NEXT" /></a>-->
-     <a href="{% url telemeta-item-detail previous %}" class="mediaitem_button mediaitem_button_previous">Previous</a>
-    <a href="{% url telemeta-item-detail next %}" class="mediaitem_button mediaitem_button_next">Next</a>
+     <a href="{% url telemeta-item-detail previous %}" class="mediaitem_button mediaitem_button_previous">{% trans "Previous" %}</a>
+    <a href="{% url telemeta-item-detail next %}" class="mediaitem_button mediaitem_button_next">{% trans "Next" %}</a>
     {% endblock tools %}
 </div>
 {% endblock %}
@@ -114,8 +106,8 @@
                             <li><a href="#">Analysis</a></li>
                             <li><a href="#">Markers</a></li>
                         </ul>-->
-            <a id="tab_analysis" name ="analyzer_div_id" href="#">Analysis</a>
-            <a id="tab_markers" name="markers_div_id" href="#">Markers</a>
+            <a id="tab_analysis" name ="analyzer_div_id" href="#">{% trans "Analysis" %}</a>
+            <a id="tab_markers" name="markers_div_id" href="#">{% trans "Markers" %}</a>
         </div>
         <!--<div class="tab_container_">-->
         <!--        <div id="tab1" class="tab_content">
@@ -130,9 +122,9 @@
         <div class="analyzer" id="analyzer_div_id">
             <table width="100%">
                 <tr class="analyzer-title">
-                    <td>Property</td>
-                    <td>Value</td>
-                    <td>Unit</td>
+                    <td>{% trans "Property" %}</td>
+                    <td>{% trans "Value" %}</td>
+                    <td>{% trans "Unit" %}</td>
                 </tr>
                 {% for analyser in analysers %}
                 <tr class="analyzer-line">

@@ -33,13 +33,13 @@
 <div id="auth_info">
 {% if user.is_authenticated %}
 <img src="images/user_red.png" style="vertical-align:middle" />
-Welcome, 
+{% trans "Welcome" %}, 
 {% if user.first_name and user.last_name %}
 {{ user.first_name }} {{ user.last_name }} 
 {% else %}
 {{ user.username }}.
 {% endif %}
-Account | Help | 
+{% trans "Account" %} | {% trans "Help" %} | 
 <a href="{% url telemeta-logout %}">{% trans "Sign out" %}
 <img src="images/logout.png" style="vertical-align:middle" /></a>
 {% else %}
@@ -59,7 +59,7 @@ Help |
 {% block menu %}
 <ul>
 {# spaces between li and a elements breaks layout #}
-<li class="darkblue"><a href="/">Home</a></li>
+<li class="darkblue"><a href="/">{% trans "Home" %}</a></li>
 <li class="blue"><a href="{% url telemeta-collections %}">{% trans "Collections" %}</a></li>
 <li class="green"><a href="{% url telemeta-items %}">{% trans "Items" %}</a></li>
 <li class="yellow" {% if not user.is_authenticated %} class="last" {% endif %}><a href="{% url telemeta-geo-continents %}">{% trans "Geo Navigator" %}</a></li>
