@@ -5,7 +5,54 @@
 {% block content %}
 <div class="home-content">
 
-<div>
+<div class="module-set">
+
+{% block modules %}
+
+   <div id="module" class="module">
+   
+    <h3>Last changes</h3>
+    <table bgcolor="#FFFFFF">
+      <tr>
+        <th class="highlight">Date</th>
+        <th>Type</th>
+        <th>{% trans "Title" %}</th>
+        <th>Change type</th>
+        <th>User</th>
+      </tr>
+    {% for r in revisions %}
+     <tr>
+        <td>{{ r.revision.time }}</td>
+        <td>{{ r.revision.element_type }}</td>
+        <td>
+        {% if r.revision.element_type == "collection" %}
+          <a href="{% url telemeta-collection-detail r.element.public_id %}">{{ r.element.title }}</a>
+        {% endif %}
+        {% if r.revision.element_type == "item" %}
+         {% if r.element %}
+          <a href="{% url telemeta-item-detail r.element.public_id %}">{{ r.element.title }}</a>
+         {% else %}
+          {{ r.element }}
+         {% endif %}
+        {% endif %}
+        {% if r.revision.element_type == "marker" %}
+          {{ r.element.title }}
+        {% endif %}
+        </td>
+        <td>
+        {% if r.element %}
+         {{ r.revision.change_type }}
+        {% endif %}
+         </td>
+         <td>{{ r.revision.user.username }}</td>
+     </tr>
+    {% endfor %}
+    </table>
+   </div>
+
+{% endblock %}
+
+<div class="home-description">
 <h3>Playlists</h3>
  <form method="POST" action="">{% csrf_token %}
   {% for playlist in playlists %}
@@ -60,49 +107,6 @@
     </table>
    {% endfor %}
  </form>
-</div>
-
-
-<br />
-<div>
-<h3>Last changes</h3>
-    <table class="listing" width="75%">
-      <tr>
-        <th class="highlight">Date</th>
-        <th>Type</th>
-        <th>{% trans "Title" %}</th>
-        <th>Change type</th>
-        <th>User</th>
-      </tr>
-    {% for r in revisions %}
-     <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
-        <td>{{ r.revision.time }}</td>
-        <td>{{ r.revision.element_type }}</td>
-        <td>
-        {% if r.revision.element_type == "collection" %}
-          <a href="{% url telemeta-collection-detail r.element.public_id %}">{{ r.element.title }}</a>
-        {% endif %}
-        {% if r.revision.element_type == "item" %}
-         {% if r.element %}
-          <a href="{% url telemeta-item-detail r.element.public_id %}">{{ r.element.title }}</a>
-         {% else %}
-          {{ r.element }}
-         {% endif %}
-        {% endif %}
-        {% if r.revision.element_type == "marker" %}
-          {{ r.element.title }}
-        {% endif %}
-        </td>
-        <td>
-        {% if r.element %}
-         {{ r.revision.change_type }}
-        {% endif %}
-         </td>
-         <td>{{ r.revision.user.username }}</td>
-     </tr>
-    {% endfor %}
-    </table>
-</div>
 
 </div>
 {% endblock %}
