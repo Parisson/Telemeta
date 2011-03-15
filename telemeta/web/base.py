@@ -55,8 +55,7 @@ from django.core.context_processors import csrf
 from django.forms.models import modelformset_factory
 from django.contrib.auth.models import User
 
-from telemeta.models import MediaItem, Location, MediaCollection, EthnicGroup, MediaCollectionForm, MediaItemForm, Playlist, PlaylistResource, Search, Revision
-from telemeta.models import dublincore, Enumeration, MediaItemMarker,  Instrument
+from telemeta.models import *
 import telemeta.models
 import telemeta.interop.oai as oai
 from telemeta.interop.oaidatasource import TelemetaOAIDataSource
@@ -132,9 +131,20 @@ class WebView(object):
             revisions = []
             for revision in last_revisions:
                 if revision.element_type == 'item':
-                    element = MediaItem.objects.get(pk=revision.element_id)
+                    try:
+                        element = MediaItem.objects.get(pk=revision.element_id)
+                    except:
+                        element = None
                 if revision.element_type == 'collection':
-                    element = MediaCollection.objects.get(pk=revision.element_id)
+                    try:
+                        element = MediaCollection.objects.get(pk=revision.element_id)
+                    except:
+                        element = None
+                if revision.element_type == 'marker':
+                    try:
+                        element = MediaItemMarker.objects.get(pk=revision.element_id)
+                    except:
+                        element = None
                 revisions.append({'revision': revision, 'element': element})
             
             searches = Search.objects.filter(username=request.user)
@@ -215,7 +225,7 @@ class WebView(object):
              next = item.public_id
         return previous, next
         
-    def item_detail(self, request, public_id, template='telemeta/mediaitem_detail.html'):
+    def item_detail(self, request, public_id, marker_id=None, template='telemeta/mediaitem_detail.html'):
         """Show the details of a given item"""
         item = MediaItem.objects.get(public_id=public_id)
         
@@ -239,7 +249,7 @@ class WebView(object):
                     {'item': item, 'export_formats': formats,
                     'visualizers': graphers, 'visualizer_id': grapher_id,'analysers': analyzers,
                     'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True),
-                    'previous' : previous, 'next' : next,
+                    'previous' : previous, 'next' : next, 'marker': marker_id, 
                     })
 
     @method_decorator(permission_required('telemeta.change_mediaitem'))
@@ -772,4 +782,4 @@ class WebView(object):
             m.set_revision(request.user)
         else:
             raise 'Error : Bad marker dictionnary'
-        
+ 

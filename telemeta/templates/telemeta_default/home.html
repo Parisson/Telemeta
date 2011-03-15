@@ -18,6 +18,7 @@
             <th>{% trans "Recordist" %}</th>
             <th>{% trans "Year of recording" %}</th>
             <th>{% trans "Sound" %}</th>
+            <th>{% trans "Action" %}</th>
         </tr>
         
         {% for resource in playlist.resources %}
@@ -47,6 +48,7 @@
                 <img src="images/text-speak.png" alt="yes" style="vertical-align:middle" /></a>
                 {% endif %}
             </td>
+            <td>{% trans "Delete" %}</td>
         </tr>
     {% endfor %}
     </table>

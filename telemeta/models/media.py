@@ -357,6 +357,10 @@ class Playlist(ModelCore):
     def __unicode__(self):
         return self.name
 
+class PlaylistForm(ModelForm):
+    class Meta:
+        model = Playlist
+
 class PlaylistResource(ModelCore):
     "Playlist components"
     RESOURCE_TYPE_CHOICES = (('item', 'item'), ('collection', 'collection'))
