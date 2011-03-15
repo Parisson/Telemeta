@@ -113,43 +113,32 @@ class WebView(object):
             return HttpResponse(template.render(context))
         else:
             template='telemeta/home.html'
-            
-            user_playlists = Playlist.objects.filter(owner_username=request.user)
-            playlists = []
-            for playlist in user_playlists:
-                playlist_resources = PlaylistResource.objects.filter(playlist=playlist)
-                resources = []
-                for resource in playlist_resources:
-                    if resource.resource_type == 'item':
-                        element = MediaItem.objects.get(pk=resource.resource)
-                    if resource.resource_type == 'collection':
-                        element = MediaCollection.objects.get(pk=resource.resource)
-                    resources.append({'element': element, 'type': resource.resource_type})
-                playlists.append({'name': playlist.name, 'resources': resources})
-            
-            last_revisions = Revision.objects.all().order_by('-time')[0:10]
-            revisions = []
-            for revision in last_revisions:
-                if revision.element_type == 'item':
-                    try:
-                        element = MediaItem.objects.get(pk=revision.element_id)
-                    except:
-                        element = None
-                if revision.element_type == 'collection':
-                    try:
-                        element = MediaCollection.objects.get(pk=revision.element_id)
-                    except:
-                        element = None
-                if revision.element_type == 'marker':
-                    try:
-                        element = MediaItemMarker.objects.get(pk=revision.element_id)
-                    except:
-                        element = None
-                revisions.append({'revision': revision, 'element': element})
-            
+            playlists = self.get_playlists(request)
+            revisions = self.get_revisions(request)
             searches = Search.objects.filter(username=request.user)
-            
             return render(request, template, {'playlists': playlists, 'searches': searches, 'revisions': revisions})
+  
+    def get_revisions(selfself, request):
+        last_revisions = Revision.objects.all().order_by('-time')[0:10]
+        revisions = []
+        for revision in last_revisions:
+            if revision.element_type == 'item':
+                try:
+                    element = MediaItem.objects.get(pk=revision.element_id)
+                except:
+                    element = None
+            if revision.element_type == 'collection':
+                try:
+                    element = MediaCollection.objects.get(pk=revision.element_id)
+                except:
+                    element = None
+            if revision.element_type == 'marker':
+                try:
+                    element = MediaItemMarker.objects.get(pk=revision.element_id)
+                except:
+                    element = None
+            revisions.append({'revision': revision, 'element': element})
+        return revisions
         
     def collection_detail(self, request, public_id, template='telemeta/collection_detail.html'):
         collection = MediaCollection.objects.get(public_id=public_id)
@@ -734,6 +723,8 @@ class WebView(object):
         auth.logout(request)
         return redirect('telemeta-home')
 
+    #MARKERS
+    
     @jsonrpc_method('telemeta.add_marker')
     def add_marker(request, marker):
         # marker must be a dict
@@ -783,3 +774,66 @@ class WebView(object):
         else:
             raise 'Error : Bad marker dictionnary'
  
+    # PLAYLISTS
+    
+    @jsonrpc_method('telemeta.add_playlist')
+    def add_playlist(request, playlist):
+        # playlist must be a dict
+        if isinstance(playlist, dict):
+            m = Playlist()
+            m.public_id = playlist['public_id']
+            m.name = playlist['name']
+            m.description = playlist['description']
+            m.author = request.user
+            m.save()
+        else:
+            raise 'Error : Bad playlist dictionnary'
+
+    @jsonrpc_method('telemeta.del_playlist')
+    def del_playlist(request, public_id):
+        m = Playlist.objects.get(public_id=public_id)
+        m.delete()
+        
+    def get_playlists(self, request):
+        user_playlists = Playlist.objects.filter(author=request.user)
+        playlists = []
+        for playlist in user_playlists:
+            playlist_resources = PlaylistResource.objects.filter(playlist=playlist)
+            resources = []
+            for resource in playlist_resources:
+                if resource.resource_type == 'item':
+                    element = MediaItem.objects.get(public_id=resource.resource_id)
+                if resource.resource_type == 'collection':
+                    element = MediaCollection.objects.get(public_id=resource.resource_id)
+                resources.append({'element': element, 'type': resource.resource_type})
+            playlists.append({'name': playlist.name, 'resources': resources})
+        return playlists
+        
+    @jsonrpc_method('telemeta.update_playlist')
+    def update_playlist(request, playlist):
+        if isinstance(playlist, dict):
+            m = Playlist.objects.get(public_id=playlist['public_id'])
+            m.name = float(playlist['name'])
+            m.description = playlist['description']
+            m.save()
+        else:
+            raise 'Error : Bad playlist dictionnary'
+ 
+    @jsonrpc_method('telemeta.add_playlist_resource')
+    def add_playlist_resource(request, playlist_resource):
+        # playlist_resource must be a dict
+        if isinstance(playlist_resource, dict):
+            m = PlaylistResource()
+            m.public_id = playlist_resource['public_id']
+            m.playlist = Playlist.objects.get(public_id=playlist_resource['playlist_id'])
+            m.resource_type = playlist_resource['resource_type']
+            m.resource_id = playlist_resource['resource_id']
+            m.save()
+        else:
+            raise 'Error : Bad playlist_resource dictionnary'
+
+    @jsonrpc_method('telemeta.del_playlist_resource')
+    def del_playlist_resource(request, public_id):
+        m = PlaylistResource.objects.get(public_id=public_id)
+        m.delete()
+        

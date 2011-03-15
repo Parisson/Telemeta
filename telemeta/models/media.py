@@ -347,8 +347,10 @@ class MediaPart(MediaResource):
 class Playlist(ModelCore):
     "Item or collection playlist"
     element_type = 'playlist'
-    owner_username = ForeignKey(User, related_name="playlists", db_column="owner_username")
+    public_id      = CharField(_('public_id'), required=True)
+    author         = ForeignKey(User, related_name="playlists", db_column="author")
     name           = CharField(_('name'), required=True)
+    description    = TextField(_('description'))
     is_current     = BooleanField(_('current_user_playlist'))
 
     class Meta(MetaCore):
@@ -365,9 +367,10 @@ class PlaylistResource(ModelCore):
     "Playlist components"
     RESOURCE_TYPE_CHOICES = (('item', 'item'), ('collection', 'collection'))
     element_type = 'playlist_resource'
-    playlist              = ForeignKey('Playlist', related_name="resources", verbose_name=_('playlist'))
-    resource_type         = CharField(_('resource type'), choices=RESOURCE_TYPE_CHOICES, required=True)
-    resource              = IntegerField(_('resource'), required=True)
+    public_id          = CharField(_('public_id'), required=True)
+    playlist           = ForeignKey('Playlist', related_name="resources", verbose_name=_('playlist'))
+    resource_type      = CharField(_('resource type'), choices=RESOURCE_TYPE_CHOICES, required=True)
+    resource_id        = CharField(_('resource'), required=True)
 
     class Meta(MetaCore):
         db_table = 'playlist_resources'
