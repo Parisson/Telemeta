@@ -97,15 +97,16 @@ TimeSide(function($N, $J) {
 
         move: function(markerIndex, newOffset){
             var newIndex = this.indexOf(newOffset);
-            newIndex = this.markers.move(markerIndex,newIndex);
+            var realIndex = this.markers.move(markerIndex,newIndex);
 
-            var marker = this.markers[newIndex];
+            var marker = this.markers[realIndex];
             marker.offset = newOffset;
             marker.isSaved = marker.isEditable ? false : true;
             
             this.fire('moved', {
                 fromIndex: markerIndex,
-                toIndex: newIndex
+                toIndex: newIndex,
+                newIndex: realIndex
             });
 
 //            var newIndex = this.indexOf(newOffset);
@@ -195,10 +196,11 @@ TimeSide(function($N, $J) {
             //see http://stackoverflow.com/questions/4809157/i-need-to-pass-a-json-object-to-a-javascript-ajax-method-for-a-wcf-call-how-can
             //            var data2send = '{"id":"jsonrpc", "params":[{"item_id":"'+ itemid+'", "public_id": "'+marker.id+'", "time": "'+
             //            marker.offset+'","description": "'+marker.desc+'"}], "method":"telemeta.add_marker","jsonrpc":"1.0"}';
-           
-            var isSaved = marker.id !== undefined;
+
+           var id = marker.id;
+            var isSaved = id !== undefined;
             if(!isSaved){
-                marker.id=this.uniqid(); //defined in core;
+                id=this.uniqid(); //defined in core;
             }
             var method = isSaved ? "telemeta.update_marker" : "telemeta.add_marker";
             
@@ -210,7 +212,7 @@ TimeSide(function($N, $J) {
                 offset = "0.0";
             }
             var data2send = '{"id":"jsonrpc", "params":[{"item_id":"'+ s(itemid)+
-            '", "public_id": "'+s(marker.id)+'", "time": "'+s(offset)+
+            '", "public_id": "'+s(id)+'", "time": "'+s(offset)+
             '", "author": "'+s(marker.author)+
             '", "title": "'+s(marker.title)+
             '","description": "'+s(marker.desc)+'"}], "method":"'+method+'","jsonrpc":"1.0"}';
@@ -222,6 +224,7 @@ TimeSide(function($N, $J) {
                 data: data2send,
                 success: function(){
                     if(!isSaved){
+                        marker.id=id;
                         marker.isSaved = true;
                     }
                     if(functionOnSuccess){

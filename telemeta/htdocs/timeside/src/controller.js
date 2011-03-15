@@ -73,10 +73,8 @@ TimeSide(function($N) {
 //            }
             this.cfg.divmarkers.move(from,to);
             this.cfg.player.ruler.markers.move(from,to);
-//            this.cfg.player.ruler.move(from,to);
-//            var m = this.cfg.divmarkers.splice(from,1)[0]; //remove
-//            this.cfg.divmarkers.splice(to,0,m); //add
-            this.updateIndices(from,to);
+//           realIndex might not be equal to to
+            this.updateIndices(from,data.newIndex);
         },
 
         //called whenever a marker is added to the ruler BUT NOT in the map
@@ -132,11 +130,12 @@ TimeSide(function($N) {
             if(from===undefined || from==null){
                 from = 0;
             }
-            if(from>this.cfg.divmarkers.length){
+            var len = this.cfg.divmarkers.length-1;
+            if(from>len){
                 return;
             }
             if(to==undefined || to ==null){
-                to = this.cfg.divmarkers.length-1;
+                to = len;
             }
             if(to<from){
                 var tmp = to;

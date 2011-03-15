@@ -1002,7 +1002,7 @@ a.image-link {
     background-image: url('/images/cancel.png');
 }
 .mediaitem_button_save{
-    color:#6A0307 !important;
+    /*color:#6A0307 !important;*/
     background-image: url('/images/save.png');
 }
 .mediaitem_button_add{

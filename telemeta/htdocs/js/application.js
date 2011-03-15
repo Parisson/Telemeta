@@ -21,7 +21,7 @@ Array.prototype.move = function(from, to){
     }
     if(from != to){
         var elm = this.splice(from,1)[0];
-        this.markers.splice(to,0,elm);
+        this.splice(to,0,elm);
         return to;
     }
     return from;

@@ -11,8 +11,9 @@
 <div>
     {% if user.is_authenticated and perms.telemeta.add_mediaitem %}
     {% block tools %}
-     <a href="{% url telemeta-item-detail item.public_id %}">
-     <img src="images/edit_cancel.png" /></a>
+<!--     <a href="{% url telemeta-item-detail item.public_id %}">
+     <img src="images/edit_cancel.png" /></a>-->
+    <a href="{% url telemeta-item-detail item.public_id %}">Cancel</a>
     {% endblock tools %}
     {% endif %}
 </div>
@@ -23,7 +24,7 @@
   
   {% block infos %}    
     <div class="infos">
-     <form enctype="multipart/form-data" method="POST" action="">{% csrf_token %}
+     <form enctype="multipart/form-data" id="_mediaItemCopyForm" method="POST" action="">{% csrf_token %}
       <table>
        {% for field in form %}
         {% if not field.html_name == "copied_from_item" %}
@@ -35,9 +36,12 @@
        {% endfor %}
        </table>
        <div align="center">
-        <a href="{% url telemeta-item-detail item.public_id %}">
+<!--        <a href="{% url telemeta-item-detail item.public_id %}">
          <img src="images/edit_cancel.png" style="vertical-align:middle" /></a>
-        <input type="image" src="images/save_changes.png" style="vertical-align:middle" value="save" />
+        <input type="image" src="images/save_changes.png" style="vertical-align:middle" value="save" />-->
+<a href="{% url telemeta-item-detail item.public_id %}">Cancel</a>
+         <a href="#" class="mediaitem_button mediaitem_button_save"
+   onclick="document.getElementById('_mediaItemCopyForm').submit(); return false;">Save</a>
        </div>
      </form>
     </div>
