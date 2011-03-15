@@ -96,20 +96,26 @@
      <tr>
         <td>{{ r.revision.time }}</td>
         <td>{{ r.revision.element_type }}</td>
-        {% if r.revision.type == "collection" %}
-          <td><a href="{% url telemeta-collection-detail r.element.public_id %}">{{ r.element }}</td>
-        {% else %}
+        <td>
+        {% if r.revision.element_type == "collection" %}
+          <a href="{% url telemeta-collection-detail r.element.public_id %}">{{ r.element.title }}</a>
+        {% endif %}
+        {% if r.revision.element_type == "item" %}
          {% if r.element %}
-          <td><a href="{% url telemeta-item-detail r.element.public_id %}">{{ r.element.title }}</td>
+          <a href="{% url telemeta-item-detail r.element.public_id %}">{{ r.element.title }}</a>
          {% else %}
-          <td>{{ r.element }}</td>
+          {{ r.element }}
          {% endif %}
         {% endif %}
-        {% if r.element %}
-         <td>{{ r.revision.change_type }}</td>
-        {% else %}
-         <td>delete</td>
+        {% if r.revision.element_type == "marker" %}
+          {{ r.element.title }}
         {% endif %}
+        </td>
+        <td>
+        {% if r.element %}
+         {{ r.revision.change_type }}
+        {% endif %}
+         </td>
          <td>{{ r.revision.user.username }}</td>
      </tr>
     {% endfor %}
