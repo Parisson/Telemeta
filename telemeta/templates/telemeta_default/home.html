@@ -13,15 +13,14 @@
       {% trans "Last changes" %}</h3>
     <table class="listing" bgcolor="#FFFFFF" width="390px">
       <tr>
-        <th class="highlight">Date</th>
-        <th>Type</th>
+        <th class="highlight">{% trans "Date" %}</th>
         <th>{% trans "Title" %}</th>
-        <th>User</th>
+        <th>{% trans "Type" %}</th>
+        <th>{% trans "User" %}</th>
       </tr>
     {% for r in revisions %}
      <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
         <td>{{ r.revision.time }}</td>
-        <td>{{ r.revision.element_type }}</td>
         <td>
         {% if r.revision.element_type == "collection" %}
           <a href="{% url telemeta-collection-detail r.element.public_id %}">{{ r.element.title }}</a>
@@ -37,7 +36,8 @@
           {{ r.element.title }}
         {% endif %}
         </td>
-         <td>{{ r.revision.user.username }}</td>
+        <td>{{ r.revision.element_type }}</td>
+        <td>{{ r.revision.user.username }}</td>
      </tr>
     {% endfor %}
     </table>
