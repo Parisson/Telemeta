@@ -73,6 +73,14 @@ a img { border: none; }
     font-weight: bold;
     display:  inline;
 }
+
+#content h2 {
+    background-color: #6a0307;
+    color: #FFF;
+    width: 75%;
+    padding: 0.3em 0.3em 0.3em 0.5em;
+}
+
 #header {
     padding: 0.2em 0;
     margin-bottom: .9em;
