@@ -75,8 +75,8 @@ a img { border: none; }
 }
 
 #content h2 {
-    background-color: #6a0307;
-    color: #FFF;
+    color: #6a0307;
+    border-bottom: 1px solid #6a0307;
     width: 75%;
     padding: 0.3em 0.3em 0.3em 0.5em;
 }

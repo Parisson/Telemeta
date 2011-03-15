@@ -832,7 +832,7 @@ class WebView(object):
         if isinstance(playlist_resource, dict):
             m = PlaylistResource()
             m.public_id = playlist_resource['public_id']
-            m.playlist = Playlist.objects.get(public_id=playlist_resource['playlist_id'])
+            m.playlist = Playlist.objects.get(is_current=True, author=request.user)
             m.resource_type = playlist_resource['resource_type']
             m.resource_id = playlist_resource['resource_id']
             m.save()

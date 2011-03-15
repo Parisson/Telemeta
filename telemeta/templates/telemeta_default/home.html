@@ -9,7 +9,7 @@
 <h3>Playlists</h3>
  <form method="POST" action="">{% csrf_token %}
   {% for playlist in playlists %}
-  <h2>{{ playlist.name }}</h2>
+  <h2>{{ playlist.name }} {% if playlist.is_current %}(current){% endif %}</h2>
     <table class="listing" width="75%">
         <tr>
             <th class="highlight">{% trans "Title" %}</th>
@@ -22,7 +22,7 @@
         </tr>
         
         {% for resource in playlist.resources %}
-        <tr>
+        <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
             <td>
             {% if resource.type == "item" %}
             <a href="{% url telemeta-item-detail resource.element.public_id %}">{{ resource.element }}</a>
@@ -75,7 +75,7 @@
         <th>User</th>
       </tr>
     {% for r in revisions %}
-     <tr>
+     <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
         <td>{{ r.revision.time }}</td>
         <td>{{ r.revision.element_type }}</td>
         <td>
