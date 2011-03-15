@@ -3,7 +3,7 @@
 {% block tools %}
 <!--    <a href="{% url telemeta-collection-detail collection.public_id %}">
      <img src="images/edit_cancel.png" style="vertical-align:middle" /></a>-->
-     <a href="{% url telemeta-collection-detail collection.public_id %}">Cancel</a>
+     <a href="{% url telemeta-collection-detail collection.public_id %}" class="mediaitem_button mediaitem_button_cancel">Cancel</a>
 {% endblock %}
 
 {% block infos %}
@@ -23,7 +23,7 @@
 <!--         <a href="{% url telemeta-collection-detail collection.public_id %}">
           <img src="images/edit_cancel.png" style="vertical-align:middle" /></a>
          <input type="image" src="images/save_changes.png" style="vertical-align:middle" value="save"/>-->
-         <a href="{% url telemeta-collection-detail collection.public_id %}">Cancel</a>
+         <a href="{% url telemeta-collection-detail collection.public_id %}" class="mediaitem_button mediaitem_button_cancel">Cancel</a>
          <a href="#" class="mediaitem_button mediaitem_button_save"
    onclick="document.getElementById('_editCollectionForm').submit(); return false;">Save</a>
         </div>
