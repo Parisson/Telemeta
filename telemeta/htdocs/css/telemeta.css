@@ -77,7 +77,7 @@ a img { border: none; }
 #content h2 {
     color: #6a0307;
     border-bottom: 1px solid #6a0307;
-    width: 75%;
+    width: 90%;
     padding: 0.3em 0.3em 0.3em 0.5em;
 }
 
@@ -682,7 +682,7 @@ table.instruments tbody td {
 
 /* Styles for tabular listings (stolen from trac) */
 table.listing {
-    clear: both;
+    
     border-spacing: 0;
 }
 
