@@ -385,7 +385,7 @@ class MediaItemMarker(MediaResource):
     
     item            = ForeignKey('MediaItem', related_name="markers", verbose_name=_('item'))
     public_id       = CharField(_('public_id'), required=True)
-    time            = FloatField(_('time'), required=True)
+    time            = FloatField(_('time'))
     title           = CharField(_('title'))
     date            = DateTimeField(_('date'), auto_now=True)
     description     = TextField(_('description'))
