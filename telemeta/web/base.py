@@ -785,10 +785,7 @@ class WebView(object):
             m.name = playlist['name']
             m.description = playlist['description']
             m.author = request.user
-            if playlist['is_current'] == 'True':
-                m.is_current = True
-            else:
-                m.is_current = False
+            m.is_current = False
             m.save()
         else:
             raise 'Error : Bad playlist dictionnary'
@@ -797,6 +794,17 @@ class WebView(object):
     def del_playlist(request, public_id):
         m = Playlist.objects.get(public_id=public_id)
         m.delete()
+    
+    @jsonrpc_method('telemeta.make_playlist_current')
+    def make_playlist_current(request, public_id):
+        playlists = Playlist.objects.filter(author=request.user)
+        for playlist in playlists:
+            if playlist.is_current:
+                playlist.is_current = False
+                playlist.save()
+        m = Playlist.objects.get(public_id=public_id)
+        m.is_current = True
+        m.save()
         
     def get_playlists(self, request):
         user_playlists = Playlist.objects.filter(author=request.user)
