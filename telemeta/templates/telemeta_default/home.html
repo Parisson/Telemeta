@@ -9,13 +9,13 @@
 {% block modules %}
 
    <div id="module" class="module">
-    <h3>Last changes</h3>
-    <table class="listing" bgcolor="#FFFFFF" width="400px">
+    <h3><img src="{% url telemeta-images "module_playlist.png" %}" style="vertical-align:middle" />
+      {% trans "Last changes" %}</h3>
+    <table class="listing" bgcolor="#FFFFFF" width="390px">
       <tr>
         <th class="highlight">Date</th>
         <th>Type</th>
         <th>{% trans "Title" %}</th>
-        <th>Change type</th>
         <th>User</th>
       </tr>
     {% for r in revisions %}
@@ -37,11 +37,6 @@
           {{ r.element.title }}
         {% endif %}
         </td>
-        <td>
-        {% if r.element %}
-         {{ r.revision.change_type }}
-        {% endif %}
-         </td>
          <td>{{ r.revision.user.username }}</td>
      </tr>
     {% endfor %}
@@ -93,10 +88,9 @@
                 {% endif %}
             {% endif %}
             </td>
-            <td>
+            <td align="center">
                 {% if resource.element.file or resource.element.has_mediafile %}
-                <a href="{% url telemeta-item-detail resource.element.public_id %}">
-                <img src="images/text-speak.png" alt="yes" style="vertical-align:middle" /></a>
+                  <img src="images/ok.png" alt="yes" style="vertical-align:middle" /></a>
                 {% endif %}
             </td>
             <td>{% trans "Delete" %}</td>
