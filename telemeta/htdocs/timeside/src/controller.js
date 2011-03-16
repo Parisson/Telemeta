@@ -161,7 +161,7 @@ TimeSide(function($N) {
             //see http://stackoverflow.com/questions/4809157/i-need-to-pass-a-json-object-to-a-javascript-ajax-method-for-a-wcf-call-how-can
             var data2send = '{"id":"jsonrpc","params":["'+itemid+'"], "method":"telemeta.get_markers","jsonrpc":"1.0"}';
             var map = this.cfg.map;
-            var update = this.updateIndices;
+            var updateIndices = this.updateIndices;
             var me = this;
             $.ajax({
                 type: "POST",
@@ -170,6 +170,7 @@ TimeSide(function($N) {
                 data: data2send,
                 dataType: "json",
                 success: function(data) {
+                    var tabIndex = 0;
                     if(data){
                         if(data.result && data.result.length>0){
                             var result = data.result;
@@ -178,15 +179,15 @@ TimeSide(function($N) {
                                 map.add(result[i]);
                             }
                             //we call now updateindices
-                            update.apply(me);
-                            
+                            updateIndices.apply(me);
+                            tabIndex = result.length>0 ? 1 : 0;
                         }
                         
                     }
                     //We call mediaitem_detail.setUpTabs from controller once all markers have been loaded
                     //this because setLabelDescription, which sets the label text according to the div width,
                     //needs to have all elements visible.
-                    $N.Util.setUpTabs();
+                    $N.Util.setUpTabs(tabIndex);
                 //setUpTabs(); //which hides the marker div. Call with argument 1 to set up marker div
                 //as visible as startup
                 }
