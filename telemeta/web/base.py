@@ -873,16 +873,17 @@ class WebView(object):
             else:
                 pass
         
-        item = item.to_dict()
-        tags = item.keys()
-        writer.writerow(tags)
-        import types
-        
-        for item in items:
-            data = []
+        if items:
             item = item.to_dict()
-            for tag in tags:
-                data.append(item[tag])
-            writer.writerow(data)
-    
+            tags = item.keys()
+            writer.writerow(tags)
+            import types
+            
+            for item in items:
+                data = []
+                item = item.to_dict()
+                for tag in tags:
+                    data.append(item[tag])
+                writer.writerow(data)
+        
         return response
