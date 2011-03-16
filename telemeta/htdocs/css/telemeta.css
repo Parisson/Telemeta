@@ -171,6 +171,7 @@ a img { border: none; }
     background-color: #fdfdfd;
     color: #000;
     padding: 4px;
+    
 }
 
 /* Geographic navigator */
@@ -587,8 +588,14 @@ dl.dublincore dd.caption {
     margin-bottom: 15px;
 }
 
+.infos dl, .infos table {
+    position: relative;
+    font-size: 105%;
+}
+
 .extraInfos dl, .extraInfos table {
     position: relative;
+    font-size: 105%;
 }
 
 .extraInfos div {
@@ -688,6 +695,7 @@ table.listing {
 
 .fullpage table.listing {
     width: 100%;
+    font-size: 105%;
 }
 
 table.listing th {

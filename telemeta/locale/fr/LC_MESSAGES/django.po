@@ -797,6 +797,10 @@ msgstr "Analyse"
 msgid "Markers"
 msgstr "Marqueurs"
 
+#: templates/telemeta_default/mediaitem_detail.html:131
+msgid "Add to playlist"
+msgstr "Ajouter à la liste"
+
 #: templates/telemeta_default/home.html:13
 msgid "Last changes"
 msgstr "Dernières modifications"
