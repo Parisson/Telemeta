@@ -18,6 +18,9 @@
       <a href="{% url telemeta-collection-edit collection.public_id %}" class="mediaitem_button mediaitem_button_edit">{% trans "Edit" %}</a>
       <a href="{% url telemeta-collection-copy collection.public_id %}" class="mediaitem_button mediaitem_button_copy">{% trans "Copy" %}</a>
      {% endif %}
+    {% if user.is_authenticated %}
+     {% trans "Add to playlist" %}
+    {% endif %}
      {% endblock tools %}
     
     

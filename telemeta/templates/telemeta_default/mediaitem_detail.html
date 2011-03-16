@@ -45,6 +45,9 @@
      <a href="{% url telemeta-item-edit item.public_id %}" class="mediaitem_button mediaitem_button_edit">{% trans "Edit" %}</a>
      <a href="{% url telemeta-item-copy item.public_id %}" class="mediaitem_button mediaitem_button_copy">{% trans "Copy" %}</a>
     {% endif %}
+    {% if user.is_authenticated %}
+     {% trans "Add to playlist" %}
+    {% endif %}
      <a href="{% url telemeta-item-detail previous %}" class="mediaitem_button mediaitem_button_previous">{% trans "Previous" %}</a>
     <a href="{% url telemeta-item-detail next %}" class="mediaitem_button mediaitem_button_next">{% trans "Next" %}</a>
     {% endblock tools %}

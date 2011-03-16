@@ -47,10 +47,18 @@
 </div>
 
 <div class="home-description">
-<h3>{% trans "Playlists" %}</h3>
+<h3>{% trans "Playlists" %} {% trans "Add" %}</h3>
   {% for playlist in playlists %}
+  <div>
   <h2>{{ playlist.playlist.name }} {% if playlist.playlist.is_current %}(current){% endif %} 
-    <a href="{% url telemeta-playlist-csv-export playlist.playlist.public_id %}">CSV</a></h2>
+  <a href="{% url telemeta-playlist-csv-export playlist.playlist.public_id %}">CSV</a>
+  {% if not playlist.playlist.is_current %}
+    {% trans "Make_Current" %} 
+  {% endif %}
+  {% trans "Delete" %}
+  
+  </h2>
+  </div>
     <table class="listing" width="90%">
         <tr>
             <th class="highlight">{% trans "Title" %}</th>
