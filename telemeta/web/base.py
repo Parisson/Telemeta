@@ -785,7 +785,6 @@ class WebView(object):
             m.title = playlist['title']
             m.description = playlist['description']
             m.author = request.user
-            m.is_current = False
             m.save()
         else:
             raise 'Error : Bad playlist dictionnary'
@@ -794,17 +793,6 @@ class WebView(object):
     def del_playlist(request, public_id):
         m = Playlist.objects.get(public_id=public_id)
         m.delete()
-    
-    @jsonrpc_method('telemeta.make_playlist_current')
-    def make_playlist_current(request, public_id):
-        playlists = Playlist.objects.filter(author=request.user)
-        for playlist in playlists:
-            if playlist.is_current:
-                playlist.is_current = False
-                playlist.save()
-        m = Playlist.objects.get(public_id=public_id)
-        m.is_current = True
-        m.save()
         
     def get_playlists(self, request):
         user_playlists = Playlist.objects.filter(author=request.user)
@@ -834,12 +822,12 @@ class WebView(object):
             raise 'Error : Bad playlist dictionnary'
  
     @jsonrpc_method('telemeta.add_playlist_resource')
-    def add_playlist_resource(request, playlist_resource):
+    def add_playlist_resource(request, playlist_id, playlist_resource):
         # playlist_resource must be a dict
         if isinstance(playlist_resource, dict):
             m = PlaylistResource()
             m.public_id = playlist_resource['public_id']
-            m.playlist = Playlist.objects.get(is_current=True, author=request.user)
+            m.playlist = Playlist.objects.get(public_id=playlist_id, author=request.user)
             m.resource_type = playlist_resource['resource_type']
             m.resource_id = playlist_resource['resource_id']
             m.save()

@@ -351,7 +351,6 @@ class Playlist(ModelCore):
     author         = ForeignKey(User, related_name="playlists", db_column="author")
     title          = CharField(_('title'), required=True)
     description    = TextField(_('description'))
-    is_current     = BooleanField(_('current_user_playlist'))
 
     class Meta(MetaCore):
         db_table = 'playlists'
