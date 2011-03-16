@@ -39,11 +39,12 @@
 {% else %}
 {{ user.username }}.
 {% endif %}
-{% trans "Account" %} | {% trans "Help" %} | 
+{% trans "Account" %} |
+<a href="{% url telemeta-help %}">{% trans "Help" %}</a> | 
 <a href="{% url telemeta-logout %}">{% trans "Sign out" %}
 <img src="images/logout.png" style="vertical-align:middle" /></a>
 {% else %}
-{% trans "Help" %} |
+<a href="{% url telemeta-help %}">{% trans "Help" %}</a> |
 <a href="{% url telemeta-login %}?next={{ request.path|urlencode }}">{% trans "Sign in" %}</a>
 {% endif %}
 </div>

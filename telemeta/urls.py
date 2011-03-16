@@ -57,6 +57,7 @@ htdocs = os.path.dirname(__file__) + '/htdocs'
 
 urlpatterns = patterns('',
     url(r'^$', web_view.index, name="telemeta-home"),
+    url(r'^help$', web_view.help, name="telemeta-help"),
 
     # items
     url(r'^items/$', 'django.views.generic.list_detail.object_list', 

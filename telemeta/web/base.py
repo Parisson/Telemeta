@@ -709,8 +709,6 @@ class WebView(object):
         return HttpResponse(provider.handle(args), mimetype='text/xml')
         
     def render_flatpage(self, request, path):
-        print "REQUEST:"+request
-        print"PATH"+path
         try:
             content = pages.get_page_content(request, path)
         except pages.MalformedPagePath:
@@ -887,3 +885,16 @@ class WebView(object):
                 writer.writerow(data)
         
         return response
+
+    def help(self, request):
+        """Render the help page"""
+    
+        template = loader.get_template('telemeta/index.html')
+        ids = [id for id in MediaItem.objects.all().values_list('id', flat=True).order_by('?')[0:3]]
+        items = MediaItem.objects.enriched().filter(pk__in=ids)
+
+        context = RequestContext(request, {
+                    'page_content': pages.get_page_content(request, 'parts/help', ignore_slash_issue=True),
+                    'items': items})
+        return HttpResponse(template.render(context))
+        
