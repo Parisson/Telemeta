@@ -49,7 +49,8 @@
 <div class="home-description">
 <h3>{% trans "Playlists" %}</h3>
   {% for playlist in playlists %}
-  <h2>{{ playlist.name }} {% if playlist.is_current %}(current){% endif %}</h2>
+  <h2>{{ playlist.playlist.name }} {% if playlist.playlist.is_current %}(current){% endif %} 
+    <a href="{% url telemeta-playlist-csv-export playlist.playlist.public_id %}">CSV</a></h2>
     <table class="listing" width="90%">
         <tr>
             <th class="highlight">{% trans "Title" %}</th>
@@ -65,10 +66,10 @@
         <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
             <td>
             {% if resource.type == "item" %}
-            <a href="{% url telemeta-item-detail resource.element.public_id %}">{{ resource.element }}</a>
+             <a href="{% url telemeta-item-detail resource.element.public_id %}">{{ resource.element }}</a>
             {% endif %}
             {% if resource.type == "collection" %}
-            <a href="{% url telemeta-collection-detail resource.element.public_id %}">{{ resource.element }}</a>
+             <a href="{% url telemeta-collection-detail resource.element.public_id %}">{{ resource.element }}</a>
             {% endif %}
             {% if resource.type == "marker" %}
             {{ resource.element }}

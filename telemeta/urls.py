@@ -199,4 +199,8 @@ urlpatterns = patterns('',
     url(r'^json/browse/', 'jsonrpc.views.browse', name="jsonrpc_browser"), # for the graphical browser/web console only, omissible
     url(r'^json/$', jsonrpc_site.dispatch, name='jsonrpc_mountpoint'),
     url(r'^json/(?P<method>[a-zA-Z0-9.]+)$', jsonrpc_site.dispatch),  # for HTTP GET only, also omissible
+    
+    # Playlists
+    url(r'^playlists/(?P<public_id>[a-zA-Z0-9]+)/$', web_view.playlist_csv_export, name="telemeta-playlist-csv-export"),
+    
 )

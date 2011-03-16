@@ -35,6 +35,7 @@
 import re
 import os
 import sys
+import csv
 import datetime
 import timeside
 
@@ -820,8 +821,7 @@ class WebView(object):
                 if resource.resource_type == 'marker':
                     element = MediaItemMarker.objects.get(pk=resource.resource_id)
                 resources.append({'element': element, 'type': resource.resource_type})
-            playlists.append({'name': playlist.name, 'description': playlist.description, 
-                            'is_current': playlist.is_current, 'resources': resources})
+            playlists.append({'playlist': playlist, 'resources': resources})
         return playlists
         
     @jsonrpc_method('telemeta.update_playlist')
@@ -852,3 +852,34 @@ class WebView(object):
         m = PlaylistResource.objects.get(public_id=public_id)
         m.delete()
         
+    def playlist_csv_export(self, request, public_id):
+        playlist = Playlist.objects.get(public_id=public_id)
+        resources = PlaylistResource.objects.filter(playlist=playlist)
+        response = HttpResponse(mimetype='text/csv')
+        response['Content-Disposition'] = 'attachment; filename='+playlist.name+'.csv'
+        writer = csv.writer(response)
+        items = []
+        for resource in resources:
+            if resource.resource_type == 'collection':
+                collection = MediaCollection.objects.get(pk=resource.resource_id)
+                collection_items = MediaItem.objects.filter(collection=collection)
+                for item in collection_items:
+                    items.append(item)
+            elif resource.resource_type == 'item':
+                item = MediaItem.objects.get(pk=resource.resource_id)
+                items.append(item)
+            else:
+                pass
+        
+        item = item.to_dict()
+        tags = item.keys()
+        writer.writerow(tags)
+            
+        for item in items:
+            data = []
+            item = item.to_dict()
+            for tag in tags:
+                data.append(item[tag])
+            writer.writerow(data)
+        
+        return response
