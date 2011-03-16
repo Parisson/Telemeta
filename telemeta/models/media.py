@@ -349,7 +349,7 @@ class Playlist(ModelCore):
     element_type = 'playlist'
     public_id      = CharField(_('public_id'), required=True)
     author         = ForeignKey(User, related_name="playlists", db_column="author")
-    name           = CharField(_('name'), required=True)
+    title          = CharField(_('title'), required=True)
     description    = TextField(_('description'))
     is_current     = BooleanField(_('current_user_playlist'))
 

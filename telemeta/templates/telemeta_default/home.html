@@ -50,7 +50,7 @@
 <h3>{% trans "Playlists" %} {% trans "Add" %}</h3>
   {% for playlist in playlists %}
   <div>
-  <h2>{{ playlist.playlist.name }} {% if playlist.playlist.is_current %}(current){% endif %} 
+  <h2>{{ playlist.playlist.title }} {% if playlist.playlist.is_current %}(current){% endif %} 
   <a href="{% url telemeta-playlist-csv-export playlist.playlist.public_id %}">CSV</a>
   {% if not playlist.playlist.is_current %}
     {% trans "Make_Current" %} 

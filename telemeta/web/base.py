@@ -782,7 +782,7 @@ class WebView(object):
         if isinstance(playlist, dict):
             m = Playlist()
             m.public_id = playlist['public_id']
-            m.name = playlist['name']
+            m.title = playlist['title']
             m.description = playlist['description']
             m.author = request.user
             m.is_current = False
@@ -827,7 +827,7 @@ class WebView(object):
     def update_playlist(request, playlist):
         if isinstance(playlist, dict):
             m = Playlist.objects.get(public_id=playlist['public_id'])
-            m.name = float(playlist['name'])
+            m.title = float(playlist['title'])
             m.description = playlist['description']
             m.save()
         else:
@@ -855,7 +855,7 @@ class WebView(object):
         playlist = Playlist.objects.get(public_id=public_id, author=request.user)
         resources = PlaylistResource.objects.filter(playlist=playlist)
         response = HttpResponse(mimetype='text/csv')
-        response['Content-Disposition'] = 'attachment; filename='+playlist.name+'.csv'
+        response['Content-Disposition'] = 'attachment; filename='+playlist.title+'.csv'
         writer = UnicodeWriter(response)
         
         items = []
