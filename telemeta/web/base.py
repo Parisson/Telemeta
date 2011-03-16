@@ -64,6 +64,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from telemeta.util.unaccent import unaccent
 from telemeta.util.unaccent import unaccent_icmp
 from telemeta.util.logger import Logger
+from telemeta.util.unicode import UnicodeWriter
 from telemeta.cache import TelemetaCache
 import telemeta.web.pages as pages
 
@@ -853,11 +854,12 @@ class WebView(object):
         m.delete()
         
     def playlist_csv_export(self, request, public_id):
-        playlist = Playlist.objects.get(public_id=public_id)
+        playlist = Playlist.objects.get(public_id=public_id, author=request.user)
         resources = PlaylistResource.objects.filter(playlist=playlist)
         response = HttpResponse(mimetype='text/csv')
         response['Content-Disposition'] = 'attachment; filename='+playlist.name+'.csv'
-        writer = csv.writer(response)
+        writer = UnicodeWriter(response)
+        
         items = []
         for resource in resources:
             if resource.resource_type == 'collection':
@@ -874,12 +876,13 @@ class WebView(object):
         item = item.to_dict()
         tags = item.keys()
         writer.writerow(tags)
-            
+        import types
+        
         for item in items:
             data = []
             item = item.to_dict()
             for tag in tags:
                 data.append(item[tag])
             writer.writerow(data)
-        
+    
         return response
