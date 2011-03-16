@@ -18,8 +18,10 @@ var resourceMap = new ResourceMap('.continents', {
 
 {% block submenu %}
     <div>
-        <a href="#" onclick="resourceMap.toggle('map'); return false;">{% trans "Map" %}</a> |
-        <a href="#" onclick="resourceMap.toggle('list'); return false;">{% trans "List" %}</a> 
+        {% if continents %}
+        <a href="#" onclick="resourceMap.toggle('map'); return false;" class="mediaitem_button mediaitem_button_no_icon">{% trans "Map" %}</a> |
+        <a href="#" onclick="resourceMap.toggle('list'); return false;" class="mediaitem_button mediaitem_button_no_icon">{% trans "List" %}</a>
+        {% endif %}
     </div>
 {% endblock %}
 {% block content %}

@@ -84,7 +84,7 @@ TimeSide(function($N, $J) {
             var tabHeight = '3.5ex'; //height for the tab. Must be lower than tabContainerHeight
             var tabPaddingTop ='.8ex'; //padding top of each tab. Increasing it will increase also the tab height, so
             //compensate by decreasing tabHeight, in case. In any case, must be lower or equal to tabContainerHeight-tabHeight
-            var tabWidth = '10ex'; //width of each tab. Each tab from index 1 to n will be at left=n*tabWidth
+            var tabWidth = '12ex'; //width of each tab. Each tab from index 1 to n will be at left=n*tabWidth
             var tabBottom ='-1px'; //bottom of each tab. Must be equal and opposite to the border of the div below the tab
 
             //retrieve tab container:

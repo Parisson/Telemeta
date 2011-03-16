@@ -892,6 +892,10 @@ a.image-link {
     font-family: monospace;
     margin-right:2ex;
 }
+.markersdivIndexLabel span{
+    position:relative;
+    top:-2px;
+}
 .markersdivOffset{
     margin-right:1ex;
     font-style: italic;
@@ -933,13 +937,13 @@ a.image-link {
     float:right;
     background-image: url('/images/del_marker.png');
     background-repeat: no-repeat;
-    background-position: center center;
+    background-position: top center;
     padding:1ex 1ex 1ex 1ex;/*top right bottom left. The padding is only to show the element */
 }
 .markersdivDescription{
-    margin:1ex 0px 0ex 0px; /*top right bottom left*/
+    margin:0ex 0px 0ex 0px; /*top right bottom left*/
     font-family: sans-serif;
-    padding:0;
+    padding:0px;
     width:100%;
 }
 .markersdivSave, .markersdivSave:hover, .markersdivSave:visited,
@@ -948,15 +952,17 @@ a.image-link {
     color: #fff;
     font-weight: bold;
     padding: 0.3em 0.8em 0.3em 0.8em;
-    /*here below the 3 lines to properly display top margin without <br> or including the element ina  div*/
-    display: block;
-    margin-top: 1ex;
-    width:3ex;
-    /* margin:1ex 0px 0px 0px;*/ /*top right bottom left*/
+    padding:5px 10px 5px 26px;
+    background-repeat: no-repeat;
+    background-position: 1ex .5ex;
+    -moz-border-radius: 1ex 1ex 1ex 1ex;
+    -webkit-border-radius: 1ex 1ex 1ex 1ex;
+    border-radius: 1ex 1ex 1ex 1ex;
+    background-image: url('/images/ok.png');
 }
 
 .markerdiv{
-    padding:1ex 1ex 1.2ex 1ex;  /*top right bottom left*/
+    padding:1ex 1ex 1ex 1ex;  /*top right bottom left*/
     border: 1px solid #aaaaaa;
     margin-bottom: 1ex;
 }
@@ -964,7 +970,7 @@ a.image-link {
 
 .mediaitem_button,  .mediaitem_button:visited,
 .mediaitem_button:link{
-    padding:0.7ex 1ex 0.7ex 4ex; /*top right bottom left*/
+    padding:5px 10px 5px 26px; /*top right bottom left - last value depends on the icon size (default=16)*/
     border-top:  1px solid #DDD;
     border-left:  1px solid #DDD;
     border-bottom:  1px solid #666;
@@ -982,6 +988,9 @@ a.image-link {
     background-color: #e9e9d9;
     color:#6A0307;
     text-decoration: none;
+}
+.mediaitem_button_no_icon{
+    padding:5px 10px 5px 10px !important;
 }
 .mediaitem_button_edit{
     background-image: url('/images/edit_page.png');
@@ -1003,9 +1012,17 @@ a.image-link {
     background-image: url('/images/cancel.png');
 }
 .mediaitem_button_save{
-    /*color:#6A0307 !important;*/
     background-image: url('/images/save.png');
 }
 .mediaitem_button_add{
     background-image: url('/images/add.png');
+}
+.mediaitem_button_login{
+    background-image: url('/images/password.png');
+}
+.mediaitem_button_search{
+    background-image: url('/images/find.png');
+}
+.mediaitem_button_ok{
+    background-image: url('/images/ok.png');
 }

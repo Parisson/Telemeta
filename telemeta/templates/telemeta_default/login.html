@@ -8,7 +8,7 @@
 <p class="login-error">{% trans "Your username and password didn't match. Please try again." %}</p>
 {% endif %}
 
-<form class="login" method="post" action="{% url telemeta-login %}">{% csrf_token %}
+<form class="login" id="_loginForm" method="post" action="{% url telemeta-login %}">{% csrf_token %}
 <p>
 {{ form.username.label_tag }}
 {{ form.username }}<br />
@@ -17,7 +17,9 @@
 {{ form.password }}
 
 </p>
-<input class="submit" type="submit" value="{% trans "Sign in" %}"/>
+<a href="#" class="mediaitem_button mediaitem_button_login"
+                onclick="document.getElementById('_loginForm').submit(); return false;">{% trans "Sign in" %}</a>
+<!--<input class="submit" type="submit" value="{% trans "Sign in" %}"/>-->
 <input type="hidden" name="next" value="{{ next }}" />
 </form>
 

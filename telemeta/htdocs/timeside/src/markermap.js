@@ -61,19 +61,19 @@ TimeSide(function($N, $J) {
                     title: argument.title,
                     author: argument.author,
                     isEditable: editable,
-                    isSaved: true
-
+                    isSavedOnServer: true,
+                    isModified:false
                 };
             }else if(typeof argument == 'number'){
                 marker = {
-                    id: undefined, //before was: this.uniqid(),
-                    //now an undefined id means: not saved on server (see sendHTTP below)
+                    id: this.uniqid(),
                     offset: parseFloat(argument),
                     desc: "",
                     title: "",
                     author: CURRENT_USER_NAME,
                     isEditable: true,
-                    isSaved: false
+                    isSavedOnServer: false,
+                    isModified: true
                 };
             }
             return marker;
@@ -83,7 +83,7 @@ TimeSide(function($N, $J) {
         remove: function(index) {
             var marker = this.get(index);
             if (marker) {
-                if(marker.id!==undefined){
+                if(marker.isSavedOnServer){
                     this.removeHTTP(marker);
                 }
                 this.markers.splice(index, 1);
@@ -101,7 +101,7 @@ TimeSide(function($N, $J) {
 
             var marker = this.markers[realIndex];
             marker.offset = newOffset;
-            marker.isSaved = marker.isEditable ? false : true;
+            marker.isModified = true;
             
             this.fire('moved', {
                 fromIndex: markerIndex,
@@ -109,27 +109,7 @@ TimeSide(function($N, $J) {
                 newIndex: realIndex
             });
 
-//            var newIndex = this.indexOf(newOffset);
-//
-//            //if we moved left to right, the insertion index is actually
-//            //newIndex-1, as we must also consider to remove the current index markerIndex, so:
-//            if(newIndex>markerIndex){
-//                newIndex--;
-//            }
-//            //this way, we are sure that if markerIndex==newIndex we do not have to move,
-//            //and we can safely first remove the marker then add it at the newIndex without
-//            //checking if we moved left to right or right to left
-//            var marker = this.markers[markerIndex];
-//            marker.offset = newOffset;
-//            marker.isSaved = marker.isEditable ? false : true;
-//            if(newIndex != markerIndex){
-//                this.markers.splice(markerIndex,1);
-//                this.markers.splice(newIndex,0,marker);
-//            }
-//            this.fire('moved', {
-//                fromIndex: markerIndex,
-//                toIndex: newIndex
-//            });
+
         },
         //
         //The core search index function: returns insertionIndex if object is found according to comparatorFunction,
@@ -197,11 +177,8 @@ TimeSide(function($N, $J) {
             //            var data2send = '{"id":"jsonrpc", "params":[{"item_id":"'+ itemid+'", "public_id": "'+marker.id+'", "time": "'+
             //            marker.offset+'","description": "'+marker.desc+'"}], "method":"telemeta.add_marker","jsonrpc":"1.0"}';
 
-           var id = marker.id;
-            var isSaved = id !== undefined;
-            if(!isSaved){
-                id=this.uniqid(); //defined in core;
-            }
+           
+            var isSaved = marker.isSavedOnServer;
             var method = isSaved ? "telemeta.update_marker" : "telemeta.add_marker";
             
             var s = this.jsonify;
@@ -212,7 +189,7 @@ TimeSide(function($N, $J) {
                 offset = "0.0";
             }
             var data2send = '{"id":"jsonrpc", "params":[{"item_id":"'+ s(itemid)+
-            '", "public_id": "'+s(id)+'", "time": "'+s(offset)+
+            '", "public_id": "'+s(marker.id)+'", "time": "'+s(offset)+
             '", "author": "'+s(marker.author)+
             '", "title": "'+s(marker.title)+
             '","description": "'+s(marker.desc)+'"}], "method":"'+method+'","jsonrpc":"1.0"}';
@@ -224,8 +201,8 @@ TimeSide(function($N, $J) {
                 data: data2send,
                 success: function(){
                     if(!isSaved){
-                        marker.id=id;
-                        marker.isSaved = true;
+                        marker.isSavedOnServer = true;
+                        marker.isModified = false;
                     }
                     if(functionOnSuccess){
                         functionOnSuccess();

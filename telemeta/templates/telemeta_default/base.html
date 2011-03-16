@@ -50,9 +50,11 @@
 </div>
 
 <div id="quick_search">
-<form action="{% url telemeta-search %}" method="GET">
+<form action="{% url telemeta-search %}" id="_quickSearchForm" method="GET">
 <input type="text" id="quick_search_pattern" name="pattern" />
-<input type="submit" value="{% trans 'Search' %}" />
+<!--<input type="submit" value="{% trans 'Search' %}" />-->
+<a href="#" class="mediaitem_button mediaitem_button_no_icon"
+                onclick="document.getElementById('_quickSearchForm').submit(); return false;">{% trans "Search" %}</a>
 </form>
 </div>
 

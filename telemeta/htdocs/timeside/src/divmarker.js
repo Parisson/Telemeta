@@ -79,7 +79,7 @@ TimeSide(function($N, $J) {
                                 
 
                 //add all elements to header:
-                this.e_header = $J('<div/>')
+                this.e_header = $J('<div/>').css('margin','1ex 0ex 0.5ex 0ex')
                 .append(this.e_indexLabel)
                 .append(this.e_offsetLabel)
                 .append(this.e_titleText)
@@ -93,7 +93,6 @@ TimeSide(function($N, $J) {
                 //ok button
                 this.e_okButton = $J('<a/>')
                 .attr('title','save marker description and offset')
-                .addClass('roundBorder6')
                 .addClass('markersdivSave')
                 .attr("href","#")
                 .html("OK");
@@ -103,9 +102,13 @@ TimeSide(function($N, $J) {
                 markerDiv = $J('<div/>')
                 .append(this.e_header)
                 .append(this.e_descriptionText)
-                .append(this.e_okButton)
+                //.append(this.e_okButton)
+                .append($J('<div/>').css('margin','1ex 0ex 1ex 0ex').append(this.e_okButton))
                 .addClass('roundBorder8')
                 .addClass('markerdiv');
+
+            //set default visibility
+
             }
             return markerDiv;
         },
@@ -113,12 +116,12 @@ TimeSide(function($N, $J) {
         updateMarkerIndex: function(index){
             var map = this.markerMap;
             var marker = map.get(index);
-            this.e_indexLabel.attr('title',marker.toString());
-            this.e_indexLabel.html(index+1);
-            this.e_offsetLabel.html(this.formatMarkerOffset(marker.offset));
-            this.e_descriptionText.val(marker.desc ? marker.desc : "");
-            this.e_titleText.val(marker.title ? marker.title : "");
 
+            //set defualt element values regardeless of the marker state
+            this.e_indexLabel.attr('title',marker.toString());
+            this.e_indexLabel.html("<span>"+(index+1)+"</span>");
+            this.e_offsetLabel.html(this.formatMarkerOffset(marker.offset));
+            //move the div to the correct index
             var divIndex = this.me.prevAll().length;
             //move the div if necessary:
             //note that moving left to right the actual insertionIndex is index-1
@@ -129,28 +132,41 @@ TimeSide(function($N, $J) {
                 //all jQuery data associated with the removed elements
                 $( this.cfg.parent.children()[insertionIndex] ).before(this.me); //add
             }
+            
+            //set visibility and attach events according to the marker state:
+            //first, is editing or not
+            var isEditing = marker.isEditable && marker.isModified;
+            //            (!marker.isSavedOnServer || !(this.e_editButton.is(':visible')));
 
-            if(!marker.isEditable || marker.isSaved){
-                this.e_okButton.hide();
-                this.e_descriptionText.attr('readonly','readonly').addClass('markersdivUneditable');
-                this.e_titleText.attr('readonly','readonly').addClass('markersdivUneditable');
-                if(!marker.isEditable){
-                    this.e_deleteButton.hide();
-                    this.e_editButton.hide();
-                    return;
-                }
+            if(!isEditing){
+                this.e_descriptionText.val(marker.desc ? marker.desc : "");
+                this.e_titleText.val(marker.title ? marker.title : "");
+            }
+
+            this.e_okButton.hide();
+            this.e_editButton.show();
+            this.e_deleteButton.show();
+            this.e_descriptionText.attr('readonly','readonly').addClass('markersdivUneditable');
+            this.e_titleText.attr('readonly','readonly').addClass('markersdivUneditable');
+            
+
+            if(!marker.isEditable){
+                this.e_editButton.hide();
+                this.e_deleteButton.hide();
+                //we unbind events to be sure
+                this.e_okButton.unbind('click')
+                this.e_deleteButton.unbind('click').hide();
+                this.e_editButton.unbind('click').hide();
+                return;
             }
             
             var remove = map.remove;
             this.e_deleteButton.unbind('click').click( function(){
-                remove.apply(map,[index]); //which will call this.remove below
+                if(!(marker.isSavedOnServer) || confirm('delete the marker permanently?')){
+                    remove.apply(map,[index]);
+                }
                 return false; //avoid scrolling of the page on anchor click
-            }).show();
-                
-            this.e_deleteButton.unbind('click').click( function(){
-                remove.apply(map,[index]);
-                return false; //avoid scrolling of the page on anchor click
-            }).show();
+            })
 
 
             //notifies controller.js
@@ -161,11 +177,15 @@ TimeSide(function($N, $J) {
             var dText = this.e_descriptionText;
             var tText  = this.e_titleText;
             var okB = this.e_okButton;
+            var utw = this.updateTitleWidth;
+            var divmarker = this;
             this.e_editButton.unbind('click').click( function(){
+                marker.isModified = true;
                 dText.removeAttr('readonly').removeClass('markersdivUneditable').show();
                 tText.removeAttr('readonly').removeClass('markersdivUneditable').show();
                 okB.show();
                 $(this).hide();
+                utw.apply(divmarker,[tText]);
                 tText.select();
                 return false; //avoid scrolling of the page on anchor click
             });
@@ -182,25 +202,36 @@ TimeSide(function($N, $J) {
                         tText.attr('readonly','readonly').addClass('markersdivUneditable');
                         eB.show();
                         okB.hide();
+                        utw.apply(divmarker,[tText]);
                     },
                     true
                     );
-                //}
-                //                func_fem.apply(klass,[marker,editModeSaved,editButton, descriptionText,
-                //                    descriptionLabel, okButton]);
                 return false; //avoid scrolling of the page on anchor click
             });
-            //set the title text width. This method
-            var w = tText.parent().width();
-            w-=tText.outerWidth(true)-tText.width(); //so we consider also tText margin border and padding
-            var space = w-this.e_indexLabel.outerWidth(true) - this.e_offsetLabel.outerWidth(true) -
-            this.e_editButton.outerWidth(true) - this.e_deleteButton.outerWidth(true);
-            tText.css('width',space+'px');
-            //}
-            if(!marker.isSaved){
+            
+            if(isEditing){
                 this.e_editButton.trigger('click');
+                //which also calls this.updateTitleWidth();
+            }else{
+                this.updateTitleWidth();
             }
             
+        },
+
+        updateTitleWidth: function(tText){
+            if(!(tText)){
+                tText = this.e_titleText;
+            }
+            if(tText){
+                var w = tText.parent().width();
+                w-=tText.outerWidth(true)-tText.width(); //so we consider also tText margin border and padding
+                var space = w
+                - (this.e_indexLabel.is(':visible') ? this.e_indexLabel.outerWidth(true) : 0)
+                - (this.e_offsetLabel.is(':visible') ? this.e_offsetLabel.outerWidth(true) : 0)
+                - (this.e_editButton.is(':visible') ? this.e_editButton.outerWidth(true) : 0)
+                - (this.e_deleteButton.is(':visible') ? this.e_deleteButton.outerWidth(true) : 0);
+                tText.css('width',space+'px');
+            }
         },
 
         remove: function(){

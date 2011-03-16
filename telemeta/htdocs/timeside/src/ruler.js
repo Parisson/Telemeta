@@ -460,23 +460,4 @@ TimeSide(function($N, $J) {
 
 });
 
-//        _onMapRemove: function(e, data) {
-        //            $J(this.markers).each(this.attach(function(i, m) {
-        //                if (m.id == data.marker.id) {
-        //                    m.clear();
-        //                    this.markers.splice(i, 1);
-        //                }
-        //            }));
-        //        },
 
-        //        onMapMove: function(fromIndex, toIndex) {
-        //            var min = Math.min(fromIndex, toIndex);
-        //            var max = Math.max(fromIndex, toIndex);
-        //            this.updateMarkerIndices(min,max);
-        ////            $J(this.markers).each(this.attach(function(i, m) {
-        ////                if (m.id == data.marker.id) {
-        ////                    m.setText(data.index + 1);
-        ////                    return false;
-        ////                }
-        ////            }));
-        //        },
