@@ -65,18 +65,31 @@ TimeSide(function($N) {
         _onMarkerMapMoved:function(e, data){
             var from = data.fromIndex;
             var to = data.toIndex;
-//            if(from===to){
-//                //just update the div in order to show the new time offset
-//                //and start edit
-//                this.cfg.divmarkers[from].setIndex(to);
-//                return;
-//            }
+            //            if(from===to){
+            //                //just update the div in order to show the new time offset
+            //                //and start edit
+            //                this.cfg.divmarkers[from].setIndex(to);
+            //                return;
+            //            }
             this.cfg.divmarkers.move(from,to);
             this.cfg.player.ruler.markers.move(from,to);
-//           realIndex might not be equal to to
+            //           realIndex might not be equal to to
             this.updateIndices(from,data.newIndex);
+            this.divFocus(data.newIndex);
         },
 
+        divFocus: function(divIndex){
+            if(this.cfg.divmarkers){
+                var max = this.cfg.divmarkers.length;
+                for (var i = 0; i < max; i++) {
+                    if(i==divIndex){
+                        this.cfg.divmarkers[i].focusOn();
+                    }else{
+                        this.cfg.divmarkers[i].focusOff();
+                    }
+                }
+            }
+        },
         //called whenever a marker is added to the ruler BUT NOT in the map
         _onMarkerAdd: function(e, data) {
             if (this.cfg.map) {
@@ -85,6 +98,7 @@ TimeSide(function($N) {
                 //which btw adds a new div to divmarkers
                 //now update the indices for the div (which also sets the event bindings as clicks etc...
                 this.updateIndices(idx);
+                this.divFocus(idx);
             }
         },
         //fired from markermap, attached as listener above in
@@ -101,7 +115,7 @@ TimeSide(function($N) {
                 //var divMarker = new $N.DivMarker(this.cfg.map);
                 this.cfg.divmarkers.splice(idx,0, new $N.DivMarker(this.cfg.map));
                 this.cfg.player.ruler.onMapAdd(data.marker, idx);
-                //this.cfg.player.ruler.add(data.marker, idx);
+            //this.cfg.player.ruler.add(data.marker, idx);
             }
         },
 
@@ -119,10 +133,10 @@ TimeSide(function($N) {
                 this.cfg.player.ruler.remove(idx);
 
                 //if(idx<this.cfg.divmarkers.length){
-                    //we might have removed the last index, in this case idx==this.cfg.divmarkers.length
-                    //no need to update and to enter this if
+                //we might have removed the last index, in this case idx==this.cfg.divmarkers.length
+                //no need to update and to enter this if
                 this.updateIndices(idx);
-                //}
+            //}
             }
         },
 

@@ -179,17 +179,22 @@ TimeSide(function($N, $J) {
             var okB = this.e_okButton;
             var utw = this.updateTitleWidth;
             var divmarker = this;
-            this.e_editButton.unbind('click').click( function(){
+            var eB = this.e_editButton;
+            var startEdit = function(){
                 marker.isModified = true;
                 dText.removeAttr('readonly').removeClass('markersdivUneditable').show();
                 tText.removeAttr('readonly').removeClass('markersdivUneditable').show();
                 okB.show();
-                $(this).hide();
+                eB.hide();
                 utw.apply(divmarker,[tText]);
-                tText.select();
+            };
+            
+            this.e_editButton.unbind('click').click( function(){
+                startEdit();
+                divmarker.focusOn();
                 return false; //avoid scrolling of the page on anchor click
             });
-            var eB = this.e_editButton;
+            
             //action for ok button
             this.e_okButton.unbind('click').click( function(){
                 //if(marker.desc !== descriptionText.val()){ //strict equality needed. See note below
@@ -210,12 +215,20 @@ TimeSide(function($N, $J) {
             });
             
             if(isEditing){
-                this.e_editButton.trigger('click');
-                //which also calls this.updateTitleWidth();
+                startEdit();
             }else{
                 this.updateTitleWidth();
             }
             
+        },
+
+        focusOn: function(){
+            this.me.css('backgroundColor','#f5f5c2');
+            this.e_titleText.select();
+        },
+
+        focusOff: function(){
+            this.me.css('backgroundColor','');
         },
 
         updateTitleWidth: function(tText){

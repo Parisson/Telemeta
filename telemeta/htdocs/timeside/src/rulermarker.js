@@ -67,6 +67,11 @@ TimeSide(function($N, $J) {
         _create: function() {
             this.debug('create marker');
             var y = this.cfg.rulerLayout.find('.' + $N.cssPrefix + 'label').outerHeight();
+            //added by me:================
+            if(this.cfg.className == "pointer"){
+                y = 0;
+            }
+            //==========================
             this.label = $J('<a/>')
             .css({
                 display: 'block',
@@ -91,7 +96,8 @@ TimeSide(function($N, $J) {
             var x = 0;
             this.painter.drawLine(x, 0, x, height);
             x     = [-4, 4, 0];
-            var y = [0, 0, 4];
+            y = [0, 0, 4];
+            
             this.painter.fillPolygon(x, y);
             this.painter.paint();
             this.nodes = $J(this.painter.cnv).children();

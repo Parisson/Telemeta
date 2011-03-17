@@ -110,7 +110,7 @@ TimeSide(function($N, $J) {
 
                     $N.loadScripts(root, ['core.js'], function() {
                         $N.loadScripts(root, ['util.js'], function() {
-                            var scripts = ['controller.js', 'marker.js', 'markerlist.js',
+                            var scripts = ['controller.js', 'rulermarker.js', //'markerlist.js',
                             'markermap.js', 'player.js', 'ruler.js','divmarker.js',
                             'soundprovider.js'];
                                                        

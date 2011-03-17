@@ -27,16 +27,10 @@ TimeSide(function($N, $J) {
 
         add: function(obj) {
             var marker = this.createMarker(obj);
-            var idx = this.indexOf(marker);
-            
-            //adding the div
-            //marker.div = this.createDiv(marker,idx);
-            //setting focus and label description
-            //set label description
-            //this.setLabelDescription(marker);
-            //finally, set the focus to the text
-            //this.getHtmElm(marker,this.MHE_DESCRIPTION_TEXT).focus();
+            var idx = this.insertionIndex(marker);
 
+            //if exists (ix>0) add it AFTER the existing item
+            idx = idx<0 ? -idx-1 : idx+1;
 
             this.markers.splice(idx,0,marker);
             //notifies controller.onMarkerMapAdd
@@ -52,6 +46,9 @@ TimeSide(function($N, $J) {
         //argument is either an object loaded from server or a number specifying the marker offset
         createMarker: function(argument){
             var marker = null;
+            if(typeof argument == 'string'){
+                argument = parseFloat(argument);
+            }
             if(typeof argument == 'object'){
                 var editable = CURRENT_USER_NAME === argument.author;
                 marker = {
