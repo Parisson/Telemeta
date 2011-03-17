@@ -65,6 +65,7 @@ from telemeta.util.unaccent import unaccent
 from telemeta.util.unaccent import unaccent_icmp
 from telemeta.util.logger import Logger
 from telemeta.util.unicode import UnicodeWriter
+from telemeta.util.PyRSS2Gen import *
 from telemeta.cache import TelemetaCache
 import telemeta.web.pages as pages
 
@@ -120,7 +121,7 @@ class WebView(object):
             searches = Search.objects.filter(username=request.user)
             return render(request, template, {'playlists': playlists, 'searches': searches, 'revisions': revisions})
   
-    def get_revisions(selfself, request):
+    def get_revisions(self, request):
         last_revisions = Revision.objects.all().order_by('-time')[0:10]
         revisions = []
         for revision in last_revisions:
@@ -885,4 +886,55 @@ class WebView(object):
                     'page_content': pages.get_page_content(request, 'parts/help', ignore_slash_issue=True),
                     'items': items})
         return HttpResponse(template.render(context))
+        
+    def rss(self, request):
+        "Render the RSS feed of last revisions"
+        rss_item_list = []
+        organization = settings.TELEMETA_ORGANIZATION
+        subjects = settings.TELEMETA_SUBJECTS
+        rss_host = settings.RSS_HOST
+        date_now = datetime.datetime.now()
+        revisions = self.get_revisions(request)
+        tags = ['title', 'description', 'comment']
+        
+        for r in revisions:
+            revision = r['revision']
+            element = r['element']
+            
+            if element:
+                link = 'http://' + rss_host + '/' + revision.element_type + 's/' + str(element.public_id)                
+                description = ''
+                dict = element.to_dict()
+                for tag in dict.keys():
+                    try:
+                        value = dict[tag]
+                        if value != '':
+                            description += tag + ' : ' + value + '<br />'
+                    except:
+                        continue
+                    if tag == 'title':
+                        if element.title == '':
+                            title = str(element.public_id)
+                        else:
+                            title = element.title
+                        
+                rss_item_list.append(RSSItem(
+                        title = title,
+                        link = link,
+                        description = description.encode('utf-8'),
+                        guid = Guid(link),
+                        pubDate = revision.time,)
+                        )
+                        
+        rss = RSS2(title = organization + ' - Telemeta - last changes',
+                            link = rss_host,
+                            description = ' '.join([subject.decode('utf-8') for subject in subjects]),
+                            lastBuildDate = str(date_now),
+                            items = rss_item_list,)
+        
+        feed = rss.to_xml(encoding='utf-8')
+        response = HttpResponse(feed, mimetype='application/rss+xml')
+        
+        return response
+        
         

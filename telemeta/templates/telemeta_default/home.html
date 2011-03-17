@@ -42,7 +42,7 @@
         {% endif %}
         </td>
         <td>{{ r.revision.element_type }}</td>
-        <td>{{ r.revision.user.username }}</td>
+        <td>{% if r.revision.username %}{{ r.revision.user.username }}{% endif %}</td>
      </tr>
     {% endfor %}
     </table>

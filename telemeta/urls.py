@@ -204,4 +204,6 @@ urlpatterns = patterns('',
     # Playlists
     url(r'^playlists/(?P<public_id>[a-zA-Z0-9]+)$', web_view.playlist_csv_export, name="telemeta-playlist-csv-export"),
     
+    # RSS feeds
+    url(r'rss/$', web_view.rss, name="telemeta-rss"),
 )
