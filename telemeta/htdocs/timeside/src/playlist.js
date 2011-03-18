@@ -30,6 +30,12 @@ var playlist = {
         };
         popupDialog(element,table,onOk);
 
+    },
+
+    remove: function(id){
+        json([id],'telemeta.del_playlist',function(){
+                window.location.reload();
+            },true);
     }
 //    ,add:function(title){
 //        if(title instanceof String)
