@@ -7,7 +7,7 @@
 
 TimeSide(function($N, $J) {
 
-    $N.Class.create("Marker", $N.Core, {
+    $N.Class.create("RulerMarker", $N.Core, {
         id: null,
         painter: null,
         visible: false,

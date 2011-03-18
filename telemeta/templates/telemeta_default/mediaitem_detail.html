@@ -26,13 +26,6 @@
     
 </script>
 
-
-{% if user.is_authenticated and perms.telemeta.change_mediaitem %}
-    <script type='text/javascript'>var CURRENT_USER_NAME="{{ user.username }}";</script>
-{% else %}
-    <script type='text/javascript'>var CURRENT_USER_NAME=undefined;</script>
-{% endif %}
-
 {% endblock %}
 
 

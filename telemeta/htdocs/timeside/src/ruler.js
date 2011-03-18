@@ -246,7 +246,7 @@ TimeSide(function($N, $J) {
             if (this.pointer) {
                 this.pointer.clear();
             }
-            this.pointer = new $N.Marker({
+            this.pointer = new $N.RulerMarker({
                 rulerLayout: this.layout.get(0),
                 viewer: this.waveContainer,
                 fontSize: this.cfg.fontSize,
@@ -382,7 +382,7 @@ TimeSide(function($N, $J) {
             
             pixelOffset = marker.offset / this.duration * this.width;
 
-            m = new $N.Marker({
+            m = new $N.RulerMarker({
                 rulerLayout: this.layout.get(0),
                 viewer: this.waveContainer,
                 fontSize: this.cfg.fontSize,

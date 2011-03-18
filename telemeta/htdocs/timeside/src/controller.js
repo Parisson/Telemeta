@@ -65,15 +65,8 @@ TimeSide(function($N) {
         _onMarkerMapMoved:function(e, data){
             var from = data.fromIndex;
             var to = data.toIndex;
-            //            if(from===to){
-            //                //just update the div in order to show the new time offset
-            //                //and start edit
-            //                this.cfg.divmarkers[from].setIndex(to);
-            //                return;
-            //            }
-            this.cfg.divmarkers.move(from,to);
+            this.cfg.divmarkers.move(from,to); //new array method see application.js
             this.cfg.player.ruler.markers.move(from,to);
-            //           realIndex might not be equal to to
             this.updateIndices(from,data.newIndex);
             this.divFocus(data.newIndex);
         },
@@ -107,15 +100,10 @@ TimeSide(function($N) {
         //(see _onMarkerAdd and loadHTTP)
         _onMarkerMapAdd: function(e, data) {
             if (this.cfg.map) {
-                //$N.Util.selectMarkerTab(); //defined in mediaitem|_detail.html
-                //this.refreshMarkersText(this.cfg.map);
-                //var idx = this.cfg.map.add(data.offset);
-                //alert('df');
+                
                 var idx = data.index;
-                //var divMarker = new $N.DivMarker(this.cfg.map);
                 this.cfg.divmarkers.splice(idx,0, new $N.DivMarker(this.cfg.map));
                 this.cfg.player.ruler.onMapAdd(data.marker, idx);
-            //this.cfg.player.ruler.add(data.marker, idx);
             }
         },
 
@@ -123,20 +111,12 @@ TimeSide(function($N) {
         //this.cfg.map.observe('add',this.attach(this._onMarkerMapAdd));
         _onMarkerMapRemove: function(e, data) {
             if (this.cfg.map) {
-                //$N.Util.selectMarkerTab(); //defined in mediaitem|_detail.html
-                //this.refreshMarkersText(this.cfg.map);
-                //var idx = this.cfg.map.add(data.offset);
-                //alert('df');
                 var idx = data.index;
                 var divRemoved = this.cfg.divmarkers.splice(idx,1)[0]; //there is only one element removed
                 divRemoved.remove();
                 this.cfg.player.ruler.remove(idx);
-
-                //if(idx<this.cfg.divmarkers.length){
-                //we might have removed the last index, in this case idx==this.cfg.divmarkers.length
-                //no need to update and to enter this if
                 this.updateIndices(idx);
-            //}
+            
             }
         },
 

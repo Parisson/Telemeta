@@ -53,14 +53,16 @@
 </div>
 
 <div class="home-description">
-<h3>{% trans "Playlists" %} {% trans "Add" %}</h3>
+<h3>{% trans "Playlists" %} <a href=# style="float:right" class="mediaitem_button mediaitem_button_add" onclick="playlist.add($(this))">
+{% trans "Add" %}</a></h3>
   {% for playlist in playlists %}
   <div>
-  <h2>{{ playlist.playlist.title }} 
-  <a href="{% url telemeta-playlist-csv-export playlist.playlist.public_id %}">CSV</a>
-  {% trans "Delete" %}
+  <h2>{{ playlist.playlist.title }}</h2>
+  <a href="{% url telemeta-playlist-csv-export playlist.playlist.public_id %}" style="float:right" class="mediaitem_button mediaitem_button_add">CSV</a>
+  <a href="#" onclick="" style="float:right" class="mediaitem_button mediaitem_button_cancel"> {% trans "Delete" %}</a>
+
   
-  </h2>
+  
   </div>
     <table class="listing" width="90%">
         <tr>
