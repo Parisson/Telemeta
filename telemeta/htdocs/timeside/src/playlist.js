@@ -28,8 +28,8 @@ var playlist = {
                 window.location.reload();
             },true);
         };
-        popupDialog(element,table,onOk);
-
+        //popupDialog(element,table,onOk);
+        popup.show(element,table);
     },
 
     remove: function(id){

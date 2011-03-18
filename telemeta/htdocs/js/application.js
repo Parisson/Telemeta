@@ -53,10 +53,21 @@ function setSelectedMenu(){
     
     //function for normalizing paths (removes last n occurrences of the slash)
     var normalize = function(str){
-        return str.replace(/\/+$/,"");
+        return str.replace(/\/+#*$/,"");
     }
-    var pageOrigin = normalize(window.location.origin);
-    var pageHref = normalize(window.location.href);
+    
+    var host = window.location.host;
+    var protocol = window.location.protocol
+    var href = normalize(window.location.href);
+     
+    if(!(host) || !(protocol) || !(href)){
+        return;
+    }
+
+    //var pageOrigin = normalize(window.location.origin); //does not exist in FF, so:
+    var pageOrigin = normalize(protocol+"//"+host);
+    var pageHref = normalize(href);
+
     menus.each(function(){
         ///if we are at home, the window location href corresponds to window location origin,
         //so we select only links whose link points EXACTLY to the origin (home link)
@@ -242,10 +253,111 @@ popupDialog = function(invokerElement,divContent,callbackOnOk){
         height:div.outerHeight(),
         left: (left + 5)+'px',
         top:(top+5)+"px"
-        });
+    });
     div.fadeIn('fast', function() {
         divShadow.insertAfter(div);
         divShadow.fadeTo(0,0.4);
         cancelB.focus();
     });
+}
+popup={
+    id: '_popup_id__',
+    isFocused:false,
+    hide: function(){
+        var $J = jQuery;
+        $J(document).unbind('click');
+        $J(document).unbind('keydown');
+        var popupdiv = $J(this.id);
+        if(popupdiv){
+            popupdiv.remove();
+            this.isFocused = false;
+        }
+    },
+    show:function(invokerElement,divContent){
+        var popupId = this.id;
+        var createDiv = function(){
+            return jQuery("<div/>").append(jQuery("<div/>").css({
+                'backgroundColor':'#000',
+                position:'absolute',
+                bottom:0,
+                right:0,
+                top:'5px',
+                left:'5px'
+            }))
+            .append(
+                jQuery("<div/>").css({
+                    position: 'absolute',
+                    top:0,
+                    left:0,
+                    padding: '1ex',
+                    border: '1px solid #DDD',
+                    backgroundColor:'#eee'
+                })).attr('id',popupId).css({
+                display: 'none',
+                position: 'absolute',
+                zIndex:1000
+            });
+        }
+        var $J = jQuery;
+        var div = createDiv()
+
+        //adding
+        div.insertBefore(invokerElement);
+        
+        var mainDiv = $J(div.children()[1]).append(divContent);
+        var me = this;
+        var hide = this.hide;
+
+        var children = $J(divContent).find('*');
+        $(children).each(function(){
+            $J(this).focus(function(){
+                me.isFocused = true;
+            });
+            $J(this).blur(function(){
+                me.isFocused = false;
+            });
+        });
+        
+        //setting positions:
+        var pos = invokerElement.position();
+        var top = (invokerElement.outerHeight(true)+pos.top);
+        var left = pos.left;
+        div.css({
+            left: left + 'px',
+            top:top+"px"
+        });
+
+       
+        //showing
+        div.fadeIn('fast', function() {
+            //now that is displayed, set the parent div size (which affects the shadow, too)
+            var w = mainDiv.outerWidth();
+            var h = mainDiv.outerHeight();
+            div.css({
+                width:(w+5)+'px',
+                height:(h+5)+'px'
+            });
+            //show the shadow
+            $J(div.children()[0]).fadeTo(0,0.4);
+            var inputs = $J(divContent).find(':input');
+            me.isFocused=false;
+            if(inputs && inputs[0]){
+                inputs[0].focus();
+                //me.isFocused=true;
+            }
+            jQuery(document).bind('click', function(){
+                if(me.isFocused){
+                    return;
+                }
+                hide.apply(me);
+            });
+            jQuery(document).bind('keydown', function(){
+                if(me.isFocused){
+                    return;
+                }
+                hide.apply(me);
+            });
+        });
+    }
+
 }

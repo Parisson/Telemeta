@@ -978,7 +978,7 @@ a.image-link {
 
 .mediaitem_button,  .mediaitem_button:visited,
 .mediaitem_button:link{
-    padding:5px 10px 5px 26px; /*top right bottom left - last value depends on the icon size (default=16)*/
+    padding:4px 8px 4px 26px; /*top right bottom left - last value depends on the icon size (default=16)*/
     border-top:  1px solid #DDD;
     border-left:  1px solid #DDD;
     border-bottom:  1px solid #666;
@@ -998,7 +998,7 @@ a.image-link {
     text-decoration: none;
 }
 .mediaitem_button_no_icon{
-    padding:5px 10px 5px 10px !important;
+    padding:4px 8px 4px 8px !important;
 }
 .mediaitem_button_edit{
     background-image: url('/images/edit_page.png');
