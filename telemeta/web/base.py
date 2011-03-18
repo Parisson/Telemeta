@@ -798,20 +798,22 @@ class WebView(object):
         m.delete()
         
     def get_playlists(self, request):
-        user_playlists = Playlist.objects.filter(author=request.user)
+        user = request.user
         playlists = []
-        for playlist in user_playlists:
-            playlist_resources = PlaylistResource.objects.filter(playlist=playlist)
-            resources = []
-            for resource in playlist_resources:
-                if resource.resource_type == 'item':
-                    element = MediaItem.objects.get(pk=resource.resource_id)
-                if resource.resource_type == 'collection':
-                    element = MediaCollection.objects.get(pk=resource.resource_id)
-                if resource.resource_type == 'marker':
-                    element = MediaItemMarker.objects.get(pk=resource.resource_id)
-                resources.append({'element': element, 'type': resource.resource_type})
-            playlists.append({'playlist': playlist, 'resources': resources})
+        if user.is_authenticated():
+            user_playlists = Playlist.objects.filter(author=user)
+            for playlist in user_playlists:
+                playlist_resources = PlaylistResource.objects.filter(playlist=playlist)
+                resources = []
+                for resource in playlist_resources:
+                    if resource.resource_type == 'item':
+                        element = MediaItem.objects.get(pk=resource.resource_id)
+                    if resource.resource_type == 'collection':
+                        element = MediaCollection.objects.get(pk=resource.resource_id)
+                    if resource.resource_type == 'marker':
+                        element = MediaItemMarker.objects.get(pk=resource.resource_id)
+                    resources.append({'element': element, 'type': resource.resource_type})
+                playlists.append({'playlist': playlist, 'resources': resources})
         return playlists
         
     @jsonrpc_method('telemeta.update_playlist')
