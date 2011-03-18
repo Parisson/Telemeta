@@ -145,7 +145,8 @@ class WebView(object):
         
     def collection_detail(self, request, public_id, template='telemeta/collection_detail.html'):
         collection = MediaCollection.objects.get(public_id=public_id)
-        return render(request, template, {'collection': collection})
+        playlists = self.get_playlists(request)
+        return render(request, template, {'collection': collection, 'playlists' : playlists, })
 
     @method_decorator(permission_required('telemeta.change_mediacollection'))
     def collection_edit(self, request, public_id, template='telemeta/collection_edit.html'):
@@ -236,12 +237,13 @@ class WebView(object):
         
         previous, next = self.item_previous_next(item)
         analyzers = self.item_analyze(item)
+        playlists = self.get_playlists(request)
    
         return render(request, template,
                     {'item': item, 'export_formats': formats,
                     'visualizers': graphers, 'visualizer_id': grapher_id,'analysers': analyzers,
                     'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True),
-                    'previous' : previous, 'next' : next, 'marker': marker_id, 
+                    'previous' : previous, 'next' : next, 'marker': marker_id, 'playlists' : playlists, 
                     })
 
     @method_decorator(permission_required('telemeta.change_mediaitem'))
