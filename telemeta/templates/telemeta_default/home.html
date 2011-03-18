@@ -14,7 +14,8 @@
 {% block modules %}
 
    <div id="module" class="module">
-    <h3><img src="{% url telemeta-images "rss.png" %}" style="vertical-align:middle" />
+    <h3><a href="{% url telemeta-rss %}">
+      <img src="{% url telemeta-images "rss.png" %}" style="vertical-align:middle" /></a>
       {% trans "Last changes" %}</h3>
     <table class="listing" bgcolor="#FFFFFF" width="390px">
       <tr>
