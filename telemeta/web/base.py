@@ -816,7 +816,7 @@ class WebView(object):
                         element = MediaCollection.objects.get(pk=resource.resource_id)
                     if resource.resource_type == 'marker':
                         element = MediaItemMarker.objects.get(pk=resource.resource_id)
-                    resources.append({'element': element, 'type': resource.resource_type})
+                    resources.append({'element': element, 'type': resource.resource_type, 'public_id': resource.public_id })
                 playlists.append({'playlist': playlist, 'resources': resources})
         return playlists
         
