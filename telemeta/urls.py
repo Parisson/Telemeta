@@ -91,8 +91,6 @@ urlpatterns = patterns('',
         dict(template='telemeta/mediaitem_copy.html'), name="telemeta-item-copy"),
     url(r'^item/add/$', web_view.item_add,
         dict(template='telemeta/mediaitem_add.html'), name="telemeta-item-add"),
-    url(r'^items/(?P<public_id>[A-Za-z0-9._-]+)/marker/(?P<marker_id>[A-Za-z0-9]+)/$', web_view.item_detail, 
-        name="telemeta-item-detail-marker"),
 
     # collections
     url(r'^collections/$', 'django.views.generic.list_detail.object_list',
@@ -204,6 +202,9 @@ urlpatterns = patterns('',
     # Playlists
     url(r'^playlists/(?P<public_id>[a-zA-Z0-9]+)/csv/$', web_view.playlist_csv_export, name="telemeta-playlist-csv-export"),
     
+    # Markers
+    url(r'^markers/(?P<marker_id>[A-Za-z0-9]+)/$', web_view.item_detail, name="telemeta-item-detail-marker"),
+        
     # RSS feeds
     url(r'rss/$', web_view.rss, name="telemeta-rss"),
 )

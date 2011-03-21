@@ -218,9 +218,13 @@ class WebView(object):
              next = item.public_id
         return previous, next
         
-    def item_detail(self, request, public_id, marker_id=None, template='telemeta/mediaitem_detail.html'):
+    def item_detail(self, request, public_id=None, marker_id=None, template='telemeta/mediaitem_detail.html'):
         """Show the details of a given item"""
-        item = MediaItem.objects.get(public_id=public_id)
+        if not public_id and marker_id:
+            marker = MediaItemMarker(public_id=marker_id)
+            item = marker.item
+        else:
+            item = MediaItem.objects.get(public_id=public_id)
         
         # Get TimeSide processors
         formats = []
