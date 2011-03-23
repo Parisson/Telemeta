@@ -206,5 +206,8 @@ urlpatterns = patterns('',
     url(r'^markers/(?P<marker_id>[A-Za-z0-9]+)/$', web_view.item_detail, name="telemeta-item-detail-marker"),
         
     # RSS feeds
-    url(r'rss/$', web_view.rss, name="telemeta-rss"),
+    url(r'^rss/$', web_view.rss, name="telemeta-rss"),
+    
+    # Not allowed
+    url(r'^not_allowed/$', web_view.not_allowed, name="telemeta-not-allowed"),
 )

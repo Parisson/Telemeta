@@ -12,7 +12,7 @@
     {% block tools %}
 <!--     <a href="{% url telemeta-item-detail item.public_id %}">
          <img src="images/edit_cancel.png" /></a>-->
- <a href="{% url telemeta-item-detail item.public_id %}"
+ <a href="{% url telemeta-items %}"
            class="roundBorder6 mediaitem_button mediaitem_button_cancel">{% trans "Cancel" %}</a>
     {% endblock tools %}
     
@@ -37,7 +37,7 @@
        {% endfor %}
        </table>
        <div align="center">
-        <a href="{% url telemeta-item-detail item.public_id %}"
+        <a href="{% url telemeta-items %}"
            class="mediaitem_button mediaitem_button_cancel">{% trans "Cancel" %}</a>
         <a href="#" class="mediaitem_button mediaitem_button_save"
    onclick="document.getElementById('_addItemForm').submit(); return false;">{% trans "Save" %}</a>

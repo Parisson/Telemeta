@@ -1,0 +1,13 @@
+{% extends "telemeta/base.html" %}
+{% load i18n %}
+
+{% block content %}
+
+{% if messages %}
+ {% for message in messages %}
+  <h3>{{ message }}</h3>
+ {% endfor %}
+{% endif %}
+
+{% endblock %}
+

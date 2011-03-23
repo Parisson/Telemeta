@@ -51,6 +51,7 @@ from django.shortcuts import render_to_response, redirect
 from django.views.generic import list_detail
 from django.conf import settings
 from django.contrib import auth
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.context_processors import csrf
 from django.forms.models import modelformset_factory
@@ -400,9 +401,11 @@ class WebView(object):
 
     def item_export(self, request, public_id, extension):                    
         """Export a given media item in the specified format (OGG, FLAC, ...)"""
-
-        if extension != 'mp3' and not getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', False):
-            raise Http404 # FIXME: should be some sort of permissions denied error
+        
+        item = MediaItem.objects.get(public_id=public_id)
+        
+        if extension != 'mp3' and not getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', False) or item.public_access != 'full':
+            return HttpResponseRedirect('/not_allowed/')
 
         for encoder in self.encoders:
             if encoder.file_extension() == extension:
@@ -413,7 +416,6 @@ class WebView(object):
 
         mime_type = encoder.mime_type()
         file = public_id + '.' + encoder.file_extension()
-        item = MediaItem.objects.get(public_id=public_id)
         audio = item.file.path
         decoder = timeside.decoder.FileDecoder(audio)
 
@@ -942,7 +944,8 @@ class WebView(object):
         
         feed = rss.to_xml(encoding='utf-8')
         response = HttpResponse(feed, mimetype='application/rss+xml')
-        
         return response
         
-        
+    def not_allowed(self, request):
+        messages.error(request, 'Not allowed')
+        return render(request, 'telemeta/messages.html')
