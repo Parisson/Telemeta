@@ -1,4 +1,4 @@
-    # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 # Copyright (C) 2007-2010 Samalyse SARL
 #
 # This software is a computer program whose purpose is to backup, analyse,

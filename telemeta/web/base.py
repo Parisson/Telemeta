@@ -222,8 +222,9 @@ class WebView(object):
     def item_detail(self, request, public_id=None, marker_id=None, template='telemeta/mediaitem_detail.html'):
         """Show the details of a given item"""
         if not public_id and marker_id:
-            marker = MediaItemMarker(public_id=marker_id)
-            item = marker.item
+            marker = MediaItemMarker.objects.get(public_id=marker_id)
+            item_id = marker.item_id
+            item = MediaItem.objects.get(id=item_id)
         else:
             item = MediaItem.objects.get(public_id=public_id)
         

@@ -41,7 +41,7 @@
          {% endif %}
         {% endif %}
         {% if r.revision.element_type == "marker" %}
-          {{ r.element.title }}
+          <a href="{% url telemeta-item-detail-marker r.element.public_id %}">{{ r.element.title }}</a>
         {% endif %}
         </td>
         <td>{{ r.revision.element_type }}</td>

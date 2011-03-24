@@ -396,9 +396,9 @@ form.login .submit {
 #menu {
     background-color: #6a0307 ;
     font: normal verdana,'Bitstream Vera Sans',helvetica,arial,sans-serif;
-    padding: 0em 0em 0.75em 0em;
+    padding: 0em 0em 9px 0em;
     border-bottom: .5em solid #6a0307;
-    border-top: .7em solid #6a0307;
+    border-top: .75em solid #6a0307;
 }
 
 #menu li { background-color: #6a0307; padding: .5em 0; }
