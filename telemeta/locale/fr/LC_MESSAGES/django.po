@@ -834,5 +834,5 @@ msgid "Enumerations"
 msgstr "Énumérations"
 
 #: web.base.py:955
-msgid "Not allowed"
-msgstr "Non autorisé"
+msgid "Access not allowed"
+msgstr "Accès non autorisé"

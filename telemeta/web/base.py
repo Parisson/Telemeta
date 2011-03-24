@@ -245,12 +245,30 @@ class WebView(object):
         previous, next = self.item_previous_next(item)
         analyzers = self.item_analyze(item)
         playlists = self.get_playlists(request)
-   
+        
+        # Rrolling publishing date : Public access when time between recorded year 
+        # and currant year is over settings value PUBLIC_ACCESS_PERIOD
+        date_from = item.recorded_from_date
+        date_to = item.recorded_to_date
+        if date_to:
+            date = date_to
+        elif date_from:
+            date = date_from
+        else:
+            date = None
+        public_access = True
+        if date:
+            year = str(date).split('-')
+            year_now = datetime.datetime.now().strftime("%Y")
+            if int(year_now) - int(year[0]) < settings.PUBLIC_ACCESS_PERIOD:
+                public_access = False
+            
         return render(request, template,
                     {'item': item, 'export_formats': formats,
                     'visualizers': graphers, 'visualizer_id': grapher_id,'analysers': analyzers,
                     'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True),
                     'previous' : previous, 'next' : next, 'marker': marker_id, 'playlists' : playlists, 
+                    'public_access': public_access, 
                     })
 
     @method_decorator(permission_required('telemeta.change_mediaitem'))
@@ -952,5 +970,5 @@ class WebView(object):
         return response
         
     def not_allowed(self, request):
-        messages.error(request, ugettext('Not allowed'))
+        messages.error(request, ugettext('Access not allowed'))
         return render(request, 'telemeta/messages.html')
