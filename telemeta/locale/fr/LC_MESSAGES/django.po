@@ -833,3 +833,6 @@ msgstr "Administration générale"
 msgid "Enumerations"
 msgstr "Énumérations"
 
+#: web.base.py:955
+msgid "Not allowed"
+msgstr "Non autorisé"

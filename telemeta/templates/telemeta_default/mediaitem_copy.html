@@ -11,8 +11,6 @@
 <div>
     {% if user.is_authenticated and perms.telemeta.add_mediaitem %}
     {% block tools %}
-<!--     <a href="{% url telemeta-item-detail item.public_id %}">
-     <img src="images/edit_cancel.png" /></a>-->
     <a href="{% url telemeta-item-detail item.public_id %}" class="mediaitem_button mediaitem_button_cancel">{% trans "Cancel" %}</a>
     {% endblock tools %}
     {% endif %}

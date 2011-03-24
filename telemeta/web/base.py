@@ -56,6 +56,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.core.context_processors import csrf
 from django.forms.models import modelformset_factory
 from django.contrib.auth.models import User
+from django.utils.translation import ugettext
 
 from telemeta.models import *
 import telemeta.models
@@ -276,8 +277,10 @@ class WebView(object):
             form = MediaItemForm(request.POST, request.FILES, instance=item)
             if form.is_valid():
                 form.save()
+                if request.FILES:
+                    self.cache.delete_item_data(form.cleaned_data['code'])
                 item.set_revision(request.user)
-                return HttpResponseRedirect('/items/'+public_id)
+                return HttpResponseRedirect('/items/'+form.cleaned_data['code'])
         else:
             form = MediaItemForm(instance=item)
         
@@ -346,7 +349,8 @@ class WebView(object):
                 pipe.run()
                 mime_type = decoder.format()
                 analyzers.append({'name': 'Mime type', 'id': 'mime_type', 'unit': '', 'value': mime_type})
-                    
+                analyzers.append({'name': 'Channels', 'id': 'channels', 'unit': '', 'value': decoder.channels()})
+                
                 for analyzer in analyzers_sub:
                     value = analyzer.result()
                     if analyzer.id() == 'duration':
@@ -354,7 +358,7 @@ class WebView(object):
                         item.approx_duration = approx_value
                         item.save()
                         value = datetime.timedelta(0,value)
-                        
+                    
                     analyzers.append({'name':analyzer.name(),
                                       'id':analyzer.id(),
                                       'unit':analyzer.unit(),
@@ -948,5 +952,5 @@ class WebView(object):
         return response
         
     def not_allowed(self, request):
-        messages.error(request, 'Not allowed')
+        messages.error(request, ugettext('Not allowed'))
         return render(request, 'telemeta/messages.html')

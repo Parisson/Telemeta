@@ -2,11 +2,9 @@
 {% load i18n %}
 {% load telemeta_utils %}
 
-    {% block tools %}
-<!--     <a href="{% url telemeta-item-detail item.public_id %}">
-         <img src="images/edit_cancel.png" /></a>-->
- <a href="{% url telemeta-item-detail item.public_id %}" class="mediaitem_button mediaitem_button_cancel">{% trans "Cancel" %}</a>
-    {% endblock tools %}
+  {% block tools %}
+   <a href="{% url telemeta-item-detail item.public_id %}" class="mediaitem_button mediaitem_button_cancel">{% trans "Cancel" %}</a>
+  {% endblock tools %}
 
   {% block infos %}    
     <div class="infos">
