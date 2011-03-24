@@ -273,7 +273,7 @@ class WebView(object):
         analyzers = self.item_analyze(item)
         
         if request.method == 'POST':
-            form = MediaItemForm(data=request.POST, files=request.FILES, instance=item)
+            form = MediaItemForm(request.POST, request.FILES, instance=item)
             if form.is_valid():
                 form.save()
                 item.set_revision(request.user)
@@ -293,7 +293,7 @@ class WebView(object):
         """Show the details of a given item"""
         item = MediaItem()
         if request.method == 'POST':
-            form = MediaItemForm(data=request.POST, files=request.FILES, instance=item)
+            form = MediaItemForm(request.POST, request.FILES, instance=item)
             if form.is_valid():
                 form.save()
                 item.set_revision(request.user)

@@ -25,7 +25,7 @@
 
     {% block infos %}
     <div class="infos">
-     <form method="POST" id ="_addItemForm" action="">{% csrf_token %}
+     <form method="POST" id="_addItemForm" action="" enctype="multipart/form-data">{% csrf_token %}
        <table>
        {% for field in form %}
         {% if not field.html_name == "copied_from_item" %}
