@@ -139,6 +139,8 @@ Add the following variables:
     TELEMETA_CACHE_DIR =     absolute path to the cache directory that you just created
     TELEMETA_GMAP_KEY =      your Google Map API key
     TELEMETA_DOWNLOAD_ENABLED =  True to enable audio data download
+    TELEMETA_RSS_HOST = the public hostname of the RSS server
+    TELEMETA_PUBLIC_ACCESS_PERIOD = 51 # (in years)
 
 Just paste the lines below::
 
@@ -147,8 +149,7 @@ Just paste the lines below::
     TELEMETA_EXPORT_CACHE_DIR = TELEMETA_CACHE_DIR + "/export"
     TELEMETA_DATA_CACHE_DIR = TELEMETA_CACHE_DIR + "/data"
     CACHE_BACKEND = "file://" + TELEMETA_CACHE_DIR + "/data"
-
-
+    
 --------------------------
 5. Initialize the database
 --------------------------

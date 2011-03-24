@@ -246,7 +246,7 @@ class WebView(object):
         analyzers = self.item_analyze(item)
         playlists = self.get_playlists(request)
         
-        # Rrolling publishing date : Public access when time between recorded year 
+        # Rolling publishing date : Public access when time between recorded year 
         # and currant year is over settings value PUBLIC_ACCESS_PERIOD
         date_from = item.recorded_from_date
         date_to = item.recorded_to_date
@@ -260,7 +260,7 @@ class WebView(object):
         if date:
             year = str(date).split('-')
             year_now = datetime.datetime.now().strftime("%Y")
-            if int(year_now) - int(year[0]) < settings.PUBLIC_ACCESS_PERIOD:
+            if int(year_now) - int(year[0]) < settings.TELEMETA_PUBLIC_ACCESS_PERIOD:
                 public_access = False
             
         return render(request, template,
@@ -756,7 +756,6 @@ class WebView(object):
         return redirect('telemeta-home')
 
     #MARKERS
-    
     @jsonrpc_method('telemeta.add_marker')
     def add_marker(request, marker):
         # marker must be a dict
@@ -807,7 +806,6 @@ class WebView(object):
             raise 'Error : Bad marker dictionnary'
  
     # PLAYLISTS
-    
     @jsonrpc_method('telemeta.add_playlist')
     def add_playlist(request, playlist):
         # playlist must be a dict
@@ -905,16 +903,13 @@ class WebView(object):
                 for tag in tags:
                     data.append(item[tag])
                 writer.writerow(data)
-        
         return response
 
     def help(self, request):
         """Render the help page"""
-    
         template = loader.get_template('telemeta/index.html')
         ids = [id for id in MediaItem.objects.all().values_list('id', flat=True).order_by('?')[0:3]]
         items = MediaItem.objects.enriched().filter(pk__in=ids)
-
         context = RequestContext(request, {
                     'page_content': pages.get_page_content(request, 'parts/help', ignore_slash_issue=True),
                     'items': items})
@@ -925,7 +920,7 @@ class WebView(object):
         rss_item_list = []
         organization = settings.TELEMETA_ORGANIZATION
         subjects = settings.TELEMETA_SUBJECTS
-        rss_host = settings.RSS_HOST
+        rss_host = settings.TELEMETA.RSS_HOST
         date_now = datetime.datetime.now()
         revisions = self.get_revisions(request)
         tags = ['title', 'description', 'comment']
@@ -933,7 +928,6 @@ class WebView(object):
         for r in revisions:
             revision = r['revision']
             element = r['element']
-            
             if element:
                 link = 'http://' + rss_host + '/' + revision.element_type + 's/' + str(element.public_id)                
                 description = ''
