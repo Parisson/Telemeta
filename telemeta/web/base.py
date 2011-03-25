@@ -103,7 +103,7 @@ class WebView(object):
     decoders = timeside.core.processors(timeside.api.IDecoder)
     encoders = timeside.core.processors(timeside.api.IEncoder)
     analyzers = timeside.core.processors(timeside.api.IAnalyzer)
-    cache = TelemetaCache(settings.TELEMETA_DATA_CACHE_DIR)
+    cache_data = TelemetaCache(settings.TELEMETA_DATA_CACHE_DIR)
     cache_export = TelemetaCache(settings.TELEMETA_EXPORT_CACHE_DIR)
     
     def index(self, request):
@@ -320,7 +320,7 @@ class WebView(object):
                     code = public_id
                 form.save()
                 if form.files:
-                    self.cache.delete_item_data(code)
+                    self.cache_data.delete_item_data(code)
                 item.set_revision(request.user)
                 return HttpResponseRedirect('/items/'+code)
         else:
@@ -373,8 +373,8 @@ class WebView(object):
         public_id = str(item.public_id)
         analyze_file = public_id + '.xml'
         
-        if self.cache.exists(analyze_file):
-            analyzers = self.cache.read_analyzer_xml(analyze_file)
+        if self.cache_data.exists(analyze_file):
+            analyzers = self.cache_data.read_analyzer_xml(analyze_file)
             if not item.approx_duration:
                 for analyzer in analyzers:
                     if analyzer['id'] == 'duration':
@@ -412,7 +412,7 @@ class WebView(object):
                                       'unit':analyzer.unit(),
                                       'value':str(value)})
                   
-                self.cache.write_analyzer_xml(analyzers, analyze_file)
+                self.cache_data.write_analyzer_xml(analyzers, analyze_file)
             
         return analyzers
         
@@ -431,9 +431,9 @@ class WebView(object):
         size = width + '_' + height
         image_file = '.'.join([public_id, grapher_id, size, 'png'])
 
-        if not self.cache.exists(image_file):
+        if not self.cache_data.exists(image_file):
             if item.file:
-                path = self.cache.dir + os.sep + image_file
+                path = self.cache_data.dir + os.sep + image_file
                 __decoder  = timeside.decoder.FileDecoder(item.file.path)
                 graph = grapher(width = int(width), height = int(height))
                 pipe = __decoder | graph
@@ -442,7 +442,7 @@ class WebView(object):
                 graph.render(path)
                 f.close()
                 
-        response = HttpResponse(self.cache.read_stream_bin(image_file), mimetype=mime_type)
+        response = HttpResponse(self.cache_data.read_stream_bin(image_file), mimetype=mime_type)
         response['Content-Disposition'] = 'attachment'
         return response
 
