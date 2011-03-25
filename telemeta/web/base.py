@@ -78,22 +78,24 @@ def render(request, template, data = None, mimetype = None):
                               mimetype=mimetype)
 
 def stream_from_processor(decoder, processor):
+    _decoder = decoder
+    _processor = processor
     while True:
-        frames, eod = decoder.process()
-        _chunk, eodproc = processor.process(frames, eod)
+        __frames, eod = _decoder.process()
+        __chunk, eodproc = _processor.process(_frames, eod)
         if eodproc:
             break
-        yield _chunk
+        yield __chunk
 
 def stream_from_file(file):
-    chunk_size = 0x80000
+    chunk_size = 0x10000
     f = open(file, 'r')
     while True:
-        _chunk = f.read(chunk_size)
-        if not len(_chunk):
+        __chunk = f.read(chunk_size)
+        if not len(__chunk):
             f.close()
             break
-        yield _chunk
+        yield __chunk
     
     
 class WebView(object):
@@ -321,6 +323,7 @@ class WebView(object):
                 form.save()
                 if form.files:
                     self.cache_data.delete_item_data(code)
+                    self.item_analyze(item)
                 item.set_revision(request.user)
                 return HttpResponseRedirect('/items/'+code)
         else:
@@ -434,16 +437,15 @@ class WebView(object):
         if not self.cache_data.exists(image_file):
             if item.file:
                 path = self.cache_data.dir + os.sep + image_file
-                __decoder  = timeside.decoder.FileDecoder(item.file.path)
+                decoder  = timeside.decoder.FileDecoder(item.file.path)
                 graph = grapher(width = int(width), height = int(height))
-                pipe = __decoder | graph
+                pipe = decoder | graph
                 pipe.run()
                 f = open(path, 'w')
                 graph.render(path)
                 f.close()
                 
         response = HttpResponse(self.cache_data.read_stream_bin(image_file), mimetype=mime_type)
-        response['Content-Disposition'] = 'attachment'
         return response
 
     def list_export_extensions(self):
@@ -479,8 +481,8 @@ class WebView(object):
                 if analyzer['id'] == 'mime_type':
                     format = analyzer['value']
         else:
-            __decoder = timeside.decoder.FileDecoder(audio)
-            format = __decoder.format()
+            decoder = timeside.decoder.FileDecoder(audio)
+            format = decoder.format()
         
         if format == mime_type:
             # source > stream
@@ -489,13 +491,13 @@ class WebView(object):
         else:        
             if not self.cache_export.exists(file):
                 # source > encoder > stream
-                __decoder.setup()
+                decoder.setup()
                 media = self.cache_export.dir + os.sep + file
-                __proc = encoder(media, streaming=True)
-                __proc.setup(channels=__decoder.channels(), samplerate=__decoder.samplerate(), nframes=__decoder.nframes())
+                proc = encoder(media, streaming=True)
+                proc.setup(channels=decoder.channels(), samplerate=decoder.samplerate(), nframes=decoder.nframes())
 #                metadata = dublincore.express_item(item).to_list()
 #                enc.set_metadata(metadata)
-                response = HttpResponse(stream_from_processor(__decoder, __proc), mimetype = mime_type)
+                response = HttpResponse(stream_from_processor(decoder, proc), mimetype = mime_type)
             else:
                 # cache > stream
                 response = HttpResponse(self.cache_export.read_stream_bin(file), mimetype = mime_type)
