@@ -267,6 +267,7 @@ label.disabled { color: #d7d7d7 }
 #quick_search a {
     font-size: .8em;
     font-weight: bold;
+    vertical-align: middle;
 }
 
 #quick_search input {
