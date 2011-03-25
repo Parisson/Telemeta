@@ -97,20 +97,34 @@ $(document).ready(function() {
     setSelectedMenu();
 });
 
-//function to communicate with the server
-//param: the data to be sent or retrieved. Recognized types: 
-//  string, boolean number, dictionary of recognized types (including sub-dictionaries) and
-//  arrays of recognized types (including sub-arrays). param will be converted to string, escaping quotes newlines
-//  and backslashes if necessary.
-//method: the json method, eg "telemeta.update_marker"
-//onSuccesFcn(data, textStatus, jqXHR)
+//****************************************************************************
+//global function to senbd/retrieve data with the server
+//
+//param: the data to be sent or retrieved.
+//  param will be converted to string, escaping quotes newlines and backslashes if necessary.
+//  param can be a javascript string, boolean, number, dictionary and array.
+//      If dictionary or array, it must contain only the above mentioned recognized types.
+//      So, eg, {[" a string"]} is fine, {[/asd/]} not
+//
+//method: the json method, eg "telemeta.update_marker". See base.py
+//
+//onSuccesFcn(data, textStatus, jqXHR) OPTIONAL
 //   A function to be called if the request succeeds.
 //   The function gets passed three arguments:
 //      The data returned from the server, formatted according to the dataType parameter;
 //      a string describing the status;
 //      and the jqXHR (in jQuery 1.4.x, XMLHttpRequest) object
-//showAlertError: if true, on error a msg dialog box is shown
-var json = function(param,method,onSuccessFcn,showAlertOnError){
+//
+//onErrorFcn(jqXHR, textStatus, errorThrown) OPTIONAL. --If missing, default dialog error is shown--
+//    A function to be called if the request fails.
+//    The function receives three arguments:
+//      The jqXHR (in jQuery 1.4.x, XMLHttpRequest) object,
+//      a string describing the type of error that occurred and
+//      an optional exception object, if one occurred.
+//      Possible values for the second argument (besides null) are "timeout", "error", "abort", and "parsererror".
+//****************************************************************************
+
+var json = function(param,method,onSuccessFcn,onErrorFcn){
     //this function converts a javascript object to a string
     var toString_ = function(string){
         if(typeof string == "string"){
@@ -168,14 +182,18 @@ var json = function(param,method,onSuccessFcn,showAlertOnError){
             }
         },
         error: function(jqXHR, textStatus, errorThrown){
-            if(showAlertOnError){
-                var details = "\n(no further info available)";
-                if(jqXHR) {
-                    details="\nThe server responded witha status of "+jqXHR.status+" ("+
-                    jqXHR.statusText+")\n\nDetails (request responseText):\n"+jqXHR.responseText;
-                }
-                alert("ERROR: Failed to save"+details);
+            if(onErrorFcn){
+                onErrorFcn(jqXHR, textStatus, errorThrown);
+                return;
             }
+            //default:
+            var details = "\n(no further info available)";
+            if(jqXHR) {
+                details="\nThe server responded witha status of "+jqXHR.status+" ("+
+                jqXHR.statusText+")\n\nDetails (request responseText):\n"+jqXHR.responseText;
+            }
+            alert("ERROR: Failed to save"+details);
+            
         }
     });
 
@@ -223,7 +241,7 @@ var popup={
         divsToDelete:null,
         toggleBind: function(element, functionE){
             var clickNamespace = "click.popup__";
-            var keydownNamespace =  "keydown.popup__";
+            var keydownNamespace =  "keyup.popup__";
             element.unbind(clickNamespace);
             element.unbind(keydownNamespace);
             if(functionE){
@@ -363,7 +381,10 @@ var popup={
             height: max(20, (windowH + wdow.scrollTop() -position.top- shadowOffset))
         }
         //position div and size:
-        var divPadding = {left: div.outerWidth()-div.width(), top:div.outerHeight()-div.height()}; //setting width on a div means the width(),
+        var divPadding = {
+            left: div.outerWidth()-div.width(),
+            top:div.outerHeight()-div.height()
+            }; //setting width on a div means the width(),
         //but calculations here are made according to outerWidth(true), so we need this variable (se below)
 
         div.css({
@@ -411,7 +432,7 @@ var popup={
         });
         div.show(300, function(){ //400: basically in between fast (200) and slow (600)
             //position div shadow:
-              divShadow.css({
+            divShadow.css({
                 'top': (position.top+shadowOffset),
                 'left': (position.left+shadowOffset),
                 'width': div.outerWidth(true),
@@ -454,14 +475,15 @@ var popup={
             p.hide();
             return false;
         };
+       
         var onOk= function(){
             if(callbackOnOk){
                 var ret = {};
                 var inputs = table.find("input");
-                for(var ipt in inputs){
-                    var i = $(ipt);
-                    ret[i.attr('name')] = i.val();
-                }
+                $J.each(inputs, function(key,value){
+                    var v = $J(value);
+                    ret[v.attr('name')] = v.val();
+                });
                 callbackOnOk(ret);
                 return false;
             }else{

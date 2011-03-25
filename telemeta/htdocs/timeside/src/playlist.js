@@ -1,6 +1,6 @@
 
 
-var playlist = {
+var playlistUtils = {
     
     //    add : function(event){
     //
@@ -68,25 +68,25 @@ var playlist = {
             dictionary.user = CURRENT_USER_NAME;
         }
 
-        json(dictionary,'telemeta.add_playlist',function(){
+        json([dictionary],'telemeta.add_playlist',function(){
             window.location.reload();
-        },true);
+        });
 
 
     },
     remove: function(id){
         json([id],'telemeta.del_playlist',function(){
             window.location.reload();
-        },true);
+        });
     },
     
     removeResource: function(id){
         json([id],'telemeta.del_playlist_resource',function(){
             window.location.reload();
-        },true);
+        });
     },
     //resourceType can be: 'collection', 'item', 'marker'
-    addToPlaylist: function(elementInvoker, playlistId,resourceType,objectId){
+    addToPlaylist: function(playlistId,resourceType,objectId){
         var send = {
             'public_id':uniqid(),
             'resource_type':resourceType,
@@ -96,20 +96,9 @@ var playlist = {
             var p = popup;
             p.show(jQuery('<div/>').html('<a style="border:0" class="mediaitem_button mediaitem_button_ok">Ok</span>'));
             setTimeout(function(){p.hide()},600);
-        },true);
+        });
     }
 
 
-//    ,add:function(title){
-//        if(title instanceof String)
-//
-//        var pl = [{"public_id":new Date().getTime(), "title":title, "description":"", user:"admin"}];
-//    json(pl,'telemeta.add_playlist',alert('done'),true);
-//}
 }
-
-//varf();
-//function varf(){
-//    playlist.add('myplaylist');
-//}
 

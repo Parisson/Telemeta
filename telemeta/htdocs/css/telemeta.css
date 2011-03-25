@@ -981,6 +981,7 @@ a.image-link {
     margin-bottom: 1ex;
 }
 
+/*----------------------------------*/
 
 .mediaitem_button,  .mediaitem_button:visited,
 .mediaitem_button:link{
@@ -1007,9 +1008,8 @@ a.image-link {
     padding:4px 8px 4px 8px !important;
 }
 .mediaitem_button_edit{
-    background-image: url('/images/edit_page.png');
-    
-    }
+    background-image: url('/images/edit_page.png'); 
+}
 .mediaitem_button_copy{
      background-image: url('/images/copy_page.png');
 }

@@ -25,7 +25,7 @@
     set_player_image_url('{% url telemeta-item-visualize item.public_id,visualizer_id,"WIDTH","HEIGHT" %}');
     load_player({{ item.approx_duration.as_seconds }});
     jQuery(document).ready(function(){
-        var content = $('#_a_p_5638').clone(true,true);
+        var content = $('#_popup_add_to_playlist').clone(true,true);
         $('#_add_to_playlist').click(function(e){return popup.show(content,e)});
     });
 </script>
@@ -45,10 +45,10 @@
     {% if user.is_authenticated %}
      
      <a id="_add_to_playlist" href=# class="mediaitem_button mediaitem_button_add">{% trans "Add to playlist" %}</a>
-     <div id="_a_p_5638" style="display:none">
+     <div id="_popup_add_to_playlist" style="display:none">
         {% for playlist in playlists %}
           <a href="#" class="listItem mediaitem_button mediaitem_button_playlist" 
-             onclick="playlist.addToPlaylist(jQuery(this),'{{playlist.playlist.public_id}}','item','{{item.pk}}');">{{ playlist.playlist.title }}</a>
+             onclick="playlistUtils.addToPlaylist('{{playlist.playlist.public_id}}','item','{{item.pk}}');">{{ playlist.playlist.title }}</a>
         {% endfor %}
      </div>
 

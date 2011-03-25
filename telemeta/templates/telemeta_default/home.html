@@ -7,9 +7,8 @@
 <script>
     jQuery(document).ready(function(){
         $('#_new_playlist').bind("click.bla",function(e){var p = popup;
-            return p.show(p.createDivDialog({'title':'','descripiton':''}),e);
+            return p.show(p.createDivDialog({'title':'','description':''}, function(data){playlistUtils.add(data)}),e);
         });
-        $('#_new_playlist').focus(function(e){ });
     });
 </script>
 {% endblock %}
@@ -119,7 +118,7 @@
                 {% endif %}
             </td>
             <td>
-            <a href="#" onclick="playlist.removeResource('{{resource.public_id}}');return false;" class="mediaitem_button mediaitem_button_cancel"> {% trans "Delete" %}</a>
+            <a href="#" onclick="playlistUtils.removeResource('{{resource.public_id}}');return false;" class="mediaitem_button mediaitem_button_cancel"> {% trans "Delete" %}</a>
             </td>
         </tr>
     {% endfor %}
