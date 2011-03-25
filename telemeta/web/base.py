@@ -939,7 +939,7 @@ class WebView(object):
         rss_item_list = []
         organization = settings.TELEMETA_ORGANIZATION
         subjects = settings.TELEMETA_SUBJECTS
-        rss_host = settings.TELEMETA.RSS_HOST
+        rss_host = request.META['HTTP_HOST']
         date_now = datetime.datetime.now()
         revisions = self.get_revisions(request)
         tags = ['title', 'description', 'comment']
