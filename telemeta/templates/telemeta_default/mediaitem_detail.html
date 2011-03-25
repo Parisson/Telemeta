@@ -66,7 +66,7 @@
 
 <div class="{% if item.file %}{% if item.public_access == 'full' or public_access or user.is_staff %}with-rightcol{% endif %}{% endif %}">
    {% if item.file %}
-    {% if item.public_access == 'full' or public_access or user.is_staff %}
+    {% if public_access or user.is_staff %}
     <div id="player_maximized" class="ts-skin-lab">
         <a href="#" class="toggle">Minimize</a>
         <div class="wazing"></div>

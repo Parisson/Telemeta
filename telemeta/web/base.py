@@ -196,6 +196,7 @@ class WebView(object):
                 if not code:
                     code = public_id
                 form.save()
+                new_collection.set_revision(request.user)
                 return HttpResponseRedirect('/collections/'+code)
         else:
             form = MediaCollectionForm(instance=collection)
@@ -362,7 +363,7 @@ class WebView(object):
                 if not code:
                     code = public_id
                 form.save()
-                item.set_revision(request.user)
+                new_item.set_revision(request.user)
                 return HttpResponseRedirect('/items/'+code)
         else:
             form = MediaItemForm(instance=item)
@@ -456,9 +457,10 @@ class WebView(object):
         """Export a given media item in the specified format (OGG, FLAC, ...)"""
         
         item = MediaItem.objects.get(public_id=public_id)
-        
-        if settings.TELEMETA_DOWNLOAD_ENABLED == False or not item.public_access == 'full':
-            return HttpResponseRedirect('/not_allowed/')
+
+        public_access = self.get_public_access(item.public_access, item.recorded_from_date, item.recorded_to_date)
+        if (not public_access or not settings.TELEMETA_DOWNLOAD_ENABLED) and not request.user.is_staff:
+            return HttpResponseRedirect('not_allowed/')
 
         for encoder in self.encoders:
             if encoder.file_extension() == extension:
@@ -470,11 +472,18 @@ class WebView(object):
         mime_type = encoder.mime_type()
         file = public_id + '.' + encoder.file_extension()
         audio = item.file.path
-        __decoder = timeside.decoder.FileDecoder(audio)
-        format = __decoder.format()
+        
+        analyzers = self.item_analyze(item)
+        if analyzers:
+            for analyzer in analyzers:
+                if analyzer['id'] == 'mime_type':
+                    format = analyzer['value']
+        else:
+            __decoder = timeside.decoder.FileDecoder(audio)
+            format = __decoder.format()
+        
         if format == mime_type:
             # source > stream
-            __decoder.release()
             response = HttpResponse(stream_from_file(audio), mimetype = mime_type)
             
         else:        
@@ -486,7 +495,7 @@ class WebView(object):
                 __proc.setup(channels=__decoder.channels(), samplerate=__decoder.samplerate(), nframes=__decoder.nframes())
 #                metadata = dublincore.express_item(item).to_list()
 #                enc.set_metadata(metadata)
-                response = HttpResponse(stream_from___processor(__decoder, __proc), mimetype = mime_type)
+                response = HttpResponse(stream_from_processor(__decoder, __proc), mimetype = mime_type)
             else:
                 # cache > stream
                 response = HttpResponse(self.cache_export.read_stream_bin(file), mimetype = mime_type)
