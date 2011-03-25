@@ -87,7 +87,7 @@
              <a href="{% url telemeta-collection-detail resource.element.public_id %}">{{ resource.element }}</a>
             {% endif %}
             {% if resource.type == "marker" %}
-            {{ resource.element }}
+             <a href="{% url telemeta-item-detail-marker resource.element.public_id %}">{{ resource.element }}</a>
             {% endif %}
             </td>
             <td>{{ resource.type }}</td>
