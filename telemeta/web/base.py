@@ -36,6 +36,7 @@ import re
 import os
 import sys
 import csv
+import time
 import datetime
 import timeside
 
@@ -154,11 +155,14 @@ class WebView(object):
     def collection_edit(self, request, public_id, template='telemeta/collection_edit.html'):
         collection = MediaCollection.objects.get(public_id=public_id)
         if request.method == 'POST':
-            form = MediaCollectionForm(request.POST, request.FILES, instance=collection)
+            form = MediaCollectionForm(data=request.POST, files=request.FILES, instance=collection)
             if form.is_valid():
+                code = form.cleaned_data['code']
+                if not code:
+                    code = public_id
                 form.save()
                 collection.set_revision(request.user)
-                return HttpResponseRedirect('/collections/'+public_id)
+                return HttpResponseRedirect('/collections/'+code)
         else:
             form = MediaCollectionForm(instance=collection)
         return render(request, template, {'collection': collection, "form": form,})
@@ -167,11 +171,14 @@ class WebView(object):
     def collection_add(self, request, template='telemeta/collection_add.html'):
         collection = MediaCollection()
         if request.method == 'POST':
-            form = MediaCollectionForm(request.POST, request.FILES, instance=collection)
+            form = MediaCollectionForm(data=request.POST, files=request.FILES, instance=collection)
             if form.is_valid():
+                code = form.cleaned_data['code']
+                if not code:
+                    code = public_id
                 form.save()
                 collection.set_revision(request.user)
-                return HttpResponseRedirect('/collections/'+form.cleaned_data['code'])
+                return HttpResponseRedirect('/collections/'+code)
         else:
             form = MediaCollectionForm(instance=collection)
         return render(request, template, {'collection': collection, "form": form,})
@@ -181,10 +188,13 @@ class WebView(object):
         collection = MediaCollection.objects.get(public_id=public_id)
         new_collection = MediaCollection()
         if request.method == 'POST':
-            form = MediaCollectionForm(request.POST, request.FILES, instance=new_collection)
+            form = MediaCollectionForm(data=request.POST, files=request.FILES, instance=new_collection)
             if form.is_valid():
+                code = form.cleaned_data['code']
+                if not code:
+                    code = public_id
                 form.save()
-                return HttpResponseRedirect('/collections/'+form.cleaned_data['code'])
+                return HttpResponseRedirect('/collections/'+code)
         else:
             form = MediaCollectionForm(instance=collection)
         return render(request, template, {'collection': collection, "form": form,})
@@ -292,13 +302,16 @@ class WebView(object):
         analyzers = self.item_analyze(item)
         
         if request.method == 'POST':
-            form = MediaItemForm(request.POST, request.FILES, instance=item)
+            form = MediaItemForm(data=request.POST, files=request.FILES, instance=item)
             if form.is_valid():
+                code = form.cleaned_data['code']
+                if not code:
+                    code = public_id
                 form.save()
-                if request.FILES:
-                    self.cache.delete_item_data(form.cleaned_data['code'])
+                if form.files:
+                    self.cache.delete_item_data(code)
                 item.set_revision(request.user)
-                return HttpResponseRedirect('/items/'+form.cleaned_data['code'])
+                return HttpResponseRedirect('/items/'+code)
         else:
             form = MediaItemForm(instance=item)
         
@@ -314,11 +327,14 @@ class WebView(object):
         """Show the details of a given item"""
         item = MediaItem()
         if request.method == 'POST':
-            form = MediaItemForm(request.POST, request.FILES, instance=item)
+            form = MediaItemForm(data=request.POST, files=request.FILES, instance=item)
             if form.is_valid():
+                code = form.cleaned_data['code']
+                if not code:
+                    code = public_id
                 form.save()
                 item.set_revision(request.user)
-                return HttpResponseRedirect('/items/'+form.cleaned_data['code'])
+                return HttpResponseRedirect('/items/'+code)
         else:
             form = MediaItemForm(instance=item)
         return render(request, template, {'item': item, "form": form})
@@ -332,9 +348,12 @@ class WebView(object):
         if request.method == 'POST':
             form = MediaItemForm(data=request.POST, files=request.FILES, instance=new_item)
             if form.is_valid():
+                code = form.cleaned_data['code']
+                if not code:
+                    code = public_id
                 form.save()
                 item.set_revision(request.user)
-                return HttpResponseRedirect('/items/'+form.cleaned_data['code'])
+                return HttpResponseRedirect('/items/'+code)
         else:
             form = MediaItemForm(instance=item)
         return render(request, template, {'item': item, "form": form})

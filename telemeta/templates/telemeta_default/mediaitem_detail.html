@@ -61,8 +61,10 @@
 
 {% block content %}
 <h3><img src="images/item.png" style="vertical-align:middle" /> Item : {{ item }}</h3>
-<div class="{% if item.file and item.public_access == 'full' or public_access or user.is_staff %}with-rightcol{% endif %}">
-    {% if item.file and item.public_access == 'full' or public_access or user.is_staff %}
+
+<div class="{% if item.file %}{% if item.public_access == 'full' or public_access or user.is_staff %}with-rightcol{% endif %}{% endif %}">
+   {% if item.file %}
+    {% if item.public_access == 'full' or public_access or user.is_staff %}
     <div id="player_maximized" class="ts-skin-lab">
         <a href="#" class="toggle">Minimize</a>
         <div class="wazing"></div>
@@ -163,7 +165,8 @@
 
     </div>
     {% endif %}
-
+    {% endif %}
+    
     {% block infos %}
     <div class="infos">
         {% block general_info %}
