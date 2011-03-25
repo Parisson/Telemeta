@@ -987,8 +987,8 @@ a.image-link {
     padding:4px 8px 4px 26px; /*top right bottom left - last value depends on the icon size (default=16)*/
     border-top:  1px solid #DDD;
     border-left:  1px solid #DDD;
-    border-bottom:  1px solid #666;
-    border-right:  1px solid #666;
+    border-bottom:  1px solid #999;
+    border-right:  1px solid #999;
     background-color: #f9f9f9; /*#626262;*/
     color:#444;
     font-weight: bold;
@@ -1039,4 +1039,33 @@ a.image-link {
 }
 .mediaitem_button_ok{
     background-image: url('/images/ok.png');
+}
+.mediaitem_button_csv{
+    background-image: url('/images/csv.png');
+}
+.mediaitem_button_playlist{
+    background-image: url('/images/playlist.png');
+}
+
+a.listItem, a.listItem:visited, a.listItem:link{
+    display:block;
+    border:0px;
+    font-weight: normal;
+    color:#6A0307;
+    background-color: '';
+    text-decoration: none;
+}
+
+a.listItem:hover,a.listItem:link:hover, a.listItem:visited:hover{
+    background-color: #6A0307;
+    color:white;
+    text-decoration: none;
+}
+
+.addToPlaylist {
+    margin:0.5ex;
+    position: absolute;
+    display:none;
+    left: 0;
+    top: 0;
 }

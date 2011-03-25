@@ -16,6 +16,7 @@
 <script src="{% url telemeta-js "soundmanager2.js" %}" type="text/javascript"></script>
 <script src="{% url telemeta-timeside "src/timeside.js" %}" type="text/javascript"></script>
 <script src="{% url telemeta-js "playerUtils.js" %}" type="text/javascript"></script>
+<script src="{% url telemeta-timeside "src/playlist.js" %}" type="text/javascript"></script>
 <script type="text/javascript">
     soundManager.url = '{% url telemeta-swf "./" %}';
     soundManager.flashVersion = 9;
@@ -23,7 +24,10 @@
     soundManager.debugMode = false;
     set_player_image_url('{% url telemeta-item-visualize item.public_id,visualizer_id,"WIDTH","HEIGHT" %}');
     load_player({{ item.approx_duration.as_seconds }});
-    
+    jQuery(document).ready(function(){
+        var content = $('#_a_p_5638').clone(true,true);
+        $('#_add_to_playlist').click(function(e){return popup.show(content,e)});
+    });
 </script>
 
 {% endblock %}
@@ -40,17 +44,15 @@
     {% endif %}
     {% if user.is_authenticated %}
      
-     <a href=# class="mediaitem_button mediaitem_button_add">
-  
-     <select style="border:0px;margin:0px;padding:0px">
-         <option id="">{% trans "Add to playlist" %}</option>
-     {% for playlist in playlists %}
-          <option id="{{playlist.playlist.public_id}}">{{ playlist.playlist.title }}</option>
+     <a id="_add_to_playlist" href=# class="mediaitem_button mediaitem_button_add">{% trans "Add to playlist" %}</a>
+     <div id="_a_p_5638" style="display:none">
+        {% for playlist in playlists %}
+          <a href="#" class="listItem mediaitem_button mediaitem_button_playlist" 
+             onclick="playlist.addToPlaylist(jQuery(this),'{{playlist.playlist.public_id}}','item','{{item.pk}}');">{{ playlist.playlist.title }}</a>
+        {% endfor %}
+     </div>
 
-   {% endfor %}
-     </select>
 
-    </a>
 
     {% endif %}
      <a href="{% url telemeta-item-detail previous %}" class="mediaitem_button mediaitem_button_previous">{% trans "Previous" %}</a>

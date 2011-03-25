@@ -4,6 +4,14 @@
 
 {% block extra_javascript %}
 <script src="{% url telemeta-timeside "src/playlist.js" %}" type="text/javascript"></script>
+<script>
+    jQuery(document).ready(function(){
+        $('#_new_playlist').bind("click.bla",function(e){var p = popup;
+            return p.show(p.createDivDialog({'title':'','descripiton':''}),e);
+        });
+        $('#_new_playlist').focus(function(e){ });
+    });
+</script>
 {% endblock %}
 
 
@@ -55,12 +63,13 @@
 </div>
 
 <div class="home-description">
-<h3>{% trans "Playlists" %}</h3> <a href=# style="float:right" class="mediaitem_button mediaitem_button_add" onclick="playlist.add($(this))">
+<h3>{% trans "Playlists" %}</h3>
+<a href=# id="_new_playlist" style="float:right" class="mediaitem_button mediaitem_button_add">
 {% trans "Add" %}</a>
   {% for playlist in playlists %}
   <div>
   <h2>{{ playlist.playlist.title }}</h2>
-  <a href="{% url telemeta-playlist-csv-export playlist.playlist.public_id %}" style="float:right" class="mediaitem_button mediaitem_button_add">CSV</a>
+  <a href="{% url telemeta-playlist-csv-export playlist.playlist.public_id %}" style="float:right" class="mediaitem_button mediaitem_button_csv">CSV</a>
   <a href="#" id="{{playlist.playlist.public_id}}" onclick="playlist.remove(this.id);return false;" style="float:right" class="mediaitem_button mediaitem_button_cancel"> {% trans "Delete" %}</a>
 
   
@@ -109,7 +118,9 @@
                   <img src="images/ok.png" alt="yes" style="vertical-align:middle" /></a>
                 {% endif %}
             </td>
-            <td>{% trans "Delete" %}</td>
+            <td>
+            <a href="#" onclick="playlist.removeResource('{{resource.public_id}}');return false;" class="mediaitem_button mediaitem_button_cancel"> {% trans "Delete" %}</a>
+            </td>
         </tr>
     {% endfor %}
     </table>
