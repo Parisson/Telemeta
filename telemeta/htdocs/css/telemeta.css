@@ -747,6 +747,11 @@ table.listing tbody tr.even { background-color: #fcfcfc }
 table.listing tbody tr.odd { background-color: #f7f7f7 }
 table.listing tbody tr:hover { background: #f7f8fa !important }
 
+table td.error {
+    color: red; 
+    font-weight: bold;
+}
+
 .gmap {
     border: solid 1px #888;
     margin-top: 0.8em;
