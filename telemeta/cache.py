@@ -79,7 +79,7 @@ class TelemetaCache(object):
         
     def read_stream_bin(self, file):
         path = self.dir + os.sep + file
-        chunk_size = 0xFFFFF
+        chunk_size = 0x80000
         f = open(path,  'r')
         while True:
             chunk = f.read(chunk_size)

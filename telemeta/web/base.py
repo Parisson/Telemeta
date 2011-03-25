@@ -86,7 +86,7 @@ def stream_from_processor(decoder, processor):
         yield _chunk
 
 def stream_from_file(file):
-    chunk_size = 0xFFFFF
+    chunk_size = 0x80000
     f = open(file, 'r')
     while True:
         _chunk = f.read(chunk_size)
@@ -148,6 +148,8 @@ class WebView(object):
         
     def collection_detail(self, request, public_id, template='telemeta/collection_detail.html'):
         collection = MediaCollection.objects.get(public_id=public_id)
+        if collection.public_access == 'none' and not request.user.is_staff:
+            return HttpResponseRedirect('not_allowed/')
         playlists = self.get_playlists(request)
         return render(request, template, {'collection': collection, 'playlists' : playlists, })
 
@@ -232,6 +234,7 @@ class WebView(object):
         
     def item_detail(self, request, public_id=None, marker_id=None, template='telemeta/mediaitem_detail.html'):
         """Show the details of a given item"""
+        
         if not public_id and marker_id:
             marker = MediaItemMarker.objects.get(public_id=marker_id)
             item_id = marker.item_id
@@ -239,6 +242,9 @@ class WebView(object):
         else:
             item = MediaItem.objects.get(public_id=public_id)
         
+        if item.public_access == 'none' and not request.user.is_staff:
+            return HttpResponseRedirect('not_allowed/')
+            
         # Get TimeSide processors
         formats = []
         for encoder in self.encoders:
@@ -255,24 +261,8 @@ class WebView(object):
         previous, next = self.item_previous_next(item)
         analyzers = self.item_analyze(item)
         playlists = self.get_playlists(request)
+        public_access = self.get_public_access(item.public_access, item.recorded_from_date, item.recorded_to_date)
         
-        # Rolling publishing date : Public access when time between recorded year 
-        # and currant year is over settings value PUBLIC_ACCESS_PERIOD
-        date_from = item.recorded_from_date
-        date_to = item.recorded_to_date
-        if date_to:
-            date = date_to
-        elif date_from:
-            date = date_from
-        else:
-            date = None
-        public_access = True
-        if date:
-            year = str(date).split('-')
-            year_now = datetime.datetime.now().strftime("%Y")
-            if int(year_now) - int(year[0]) < settings.TELEMETA_PUBLIC_ACCESS_PERIOD:
-                public_access = False
-            
         return render(request, template,
                     {'item': item, 'export_formats': formats,
                     'visualizers': graphers, 'visualizer_id': grapher_id,'analysers': analyzers,
@@ -281,6 +271,26 @@ class WebView(object):
                     'public_access': public_access, 
                     })
 
+    def get_public_access(self, access, date_from, date_to):
+        # Rolling publishing date : Public access when time between recorded year 
+        # and currant year is over settings value PUBLIC_ACCESS_PERIOD
+        if date_to:
+            date = date_to
+        elif date_from:
+            date = date_from
+        else:
+            date = None
+        if access == 'full':
+            public_access = True
+        else:
+            public_access = False
+        if date:
+            year = str(date).split('-')
+            year_now = datetime.datetime.now().strftime("%Y")
+            if int(year_now) - int(year[0]) >= settings.TELEMETA_PUBLIC_ACCESS_PERIOD:
+                public_access = True
+        return public_access
+        
     @method_decorator(permission_required('telemeta.change_mediaitem'))
     def item_edit(self, request, public_id, template='telemeta/mediaitem_edit.html'):
         """Show the details of a given item"""
@@ -423,15 +433,16 @@ class WebView(object):
         if not self.cache.exists(image_file):
             if item.file:
                 path = self.cache.dir + os.sep + image_file
-                decoder  = timeside.decoder.FileDecoder(item.file.path)
+                __decoder  = timeside.decoder.FileDecoder(item.file.path)
                 graph = grapher(width = int(width), height = int(height))
-                pipe = decoder | graph
+                pipe = __decoder | graph
                 pipe.run()
                 f = open(path, 'w')
                 graph.render(path)
                 f.close()
                 
         response = HttpResponse(self.cache.read_stream_bin(image_file), mimetype=mime_type)
+        response['Content-Disposition'] = 'attachment'
         return response
 
     def list_export_extensions(self):
@@ -446,7 +457,7 @@ class WebView(object):
         
         item = MediaItem.objects.get(public_id=public_id)
         
-        if extension != 'mp3' and not getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', False) or item.public_access != 'full':
+        if settings.TELEMETA_DOWNLOAD_ENABLED == False or not item.public_access == 'full':
             return HttpResponseRedirect('/not_allowed/')
 
         for encoder in self.encoders:
@@ -459,22 +470,23 @@ class WebView(object):
         mime_type = encoder.mime_type()
         file = public_id + '.' + encoder.file_extension()
         audio = item.file.path
-        decoder = timeside.decoder.FileDecoder(audio)
-
-        if decoder.format() == mime_type:
+        __decoder = timeside.decoder.FileDecoder(audio)
+        format = __decoder.format()
+        if format == mime_type:
             # source > stream
+            __decoder.release()
             response = HttpResponse(stream_from_file(audio), mimetype = mime_type)
             
         else:        
             if not self.cache_export.exists(file):
                 # source > encoder > stream
-                decoder.setup()
+                __decoder.setup()
                 media = self.cache_export.dir + os.sep + file
-                proc = encoder(media, streaming=True)
-                proc.setup(channels=decoder.channels(), samplerate=decoder.samplerate(), nframes=decoder.nframes())
+                __proc = encoder(media, streaming=True)
+                __proc.setup(channels=__decoder.channels(), samplerate=__decoder.samplerate(), nframes=__decoder.nframes())
 #                metadata = dublincore.express_item(item).to_list()
 #                enc.set_metadata(metadata)
-                response = HttpResponse(stream_from_processor(decoder, proc), mimetype = mime_type)
+                response = HttpResponse(stream_from___processor(__decoder, __proc), mimetype = mime_type)
             else:
                 # cache > stream
                 response = HttpResponse(self.cache_export.read_stream_bin(file), mimetype = mime_type)
@@ -982,6 +994,9 @@ class WebView(object):
         response = HttpResponse(feed, mimetype='application/rss+xml')
         return response
         
-    def not_allowed(self, request):
-        messages.error(request, ugettext('Access not allowed'))
-        return render(request, 'telemeta/messages.html')
+    def not_allowed(self, request,  public_id = None):
+        mess = ugettext('Access not allowed') 
+        title = public_id + ' : ' + mess
+        description = 'Please login or contact the website administator to get private access.'
+        messages.error(request, title)
+        return render(request, 'telemeta/messages.html', {'description' : description})

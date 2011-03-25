@@ -209,5 +209,5 @@ urlpatterns = patterns('',
     url(r'^rss/$', web_view.rss, name="telemeta-rss"),
     
     # Not allowed
-    url(r'^not_allowed/$', web_view.not_allowed, name="telemeta-not-allowed"),
+    url(r'/*/(?P<public_id>[A-Za-z0-9._-]+)/not_allowed/$', web_view.not_allowed, name="telemeta-not-allowed"),
 )
