@@ -35,6 +35,7 @@
 
 from django.contrib.auth.models import User
 from telemeta.models.core import *
+from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import ugettext_lazy as _
 
@@ -68,4 +69,17 @@ class Revision(ModelCore):
 
     class Meta(MetaCore):
         db_table = 'revisions'
+
+
+class UserProfile(models.Model):
+    "User profile extension"
+    
+    user            = models.ForeignKey(User, unique=True)
+    institution     = CharField(_('institution'))
+    function        = CharField(_('function'))
+    address         = TextField(_('address'))
+    telephone       = CharField(_('function'))
+    expiration_date = DateField(_('expiration_date'))
+    
+
     
