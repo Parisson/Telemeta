@@ -24,6 +24,7 @@
     soundManager.debugMode = false;
     set_player_image_url('{% url telemeta-item-visualize item.public_id,visualizer_id,"WIDTH","HEIGHT" %}');
     load_player({{ item.approx_duration.as_seconds }});
+
     jQuery(document).ready(function(){
         var content = $('#_popup_add_to_playlist').clone(true,true);
         $('#_add_to_playlist').click(function(e){return popup.show(content,e)});
@@ -37,17 +38,17 @@
 {% block submenu %}
 <div>
     {% block tools %}
-     <a href="{% url telemeta-item-dublincore item.public_id %}" class="mediaitem_button mediaitem_button_dublin_core">Dublin Core</a>
+     <a href="{% url telemeta-item-dublincore item.public_id %}" class="component_icon button icon_dublin_core">Dublin Core</a>
     {% if user.is_authenticated and perms.telemeta.change_mediaitem %}
-     <a href="{% url telemeta-item-edit item.public_id %}" class="mediaitem_button mediaitem_button_edit">{% trans "Edit" %}</a>
-     <a href="{% url telemeta-item-copy item.public_id %}" class="mediaitem_button mediaitem_button_copy">{% trans "Copy" %}</a>
+     <a href="{% url telemeta-item-edit item.public_id %}" class="component_icon button icon_edit">{% trans "Edit" %}</a>
+     <a href="{% url telemeta-item-copy item.public_id %}" class="component_icon button icon_copy">{% trans "Copy" %}</a>
     {% endif %}
     {% if user.is_authenticated %}
      
-     <a id="_add_to_playlist" href=# class="mediaitem_button mediaitem_button_add">{% trans "Add to playlist" %}</a>
+     <a id="_add_to_playlist" href=# class="component_icon button icon_add">{% trans "Add to playlist" %}</a>
      <div id="_popup_add_to_playlist" style="display:none">
         {% for playlist in playlists %}
-          <a href="#" class="listItem mediaitem_button mediaitem_button_playlist" 
+          <a href="#" class="component_icon list_item icon_playlist"
              onclick="playlistUtils.addToPlaylist('{{playlist.playlist.public_id}}','item','{{item.pk}}');">{{ playlist.playlist.title }}</a>
         {% endfor %}
      </div>
@@ -55,8 +56,8 @@
 
 
     {% endif %}
-     <a href="{% url telemeta-item-detail previous %}" class="mediaitem_button mediaitem_button_previous">{% trans "Previous" %}</a>
-    <a href="{% url telemeta-item-detail next %}" class="mediaitem_button mediaitem_button_next">{% trans "Next" %}</a>
+     <a href="{% url telemeta-item-detail previous %}" class="component_icon button icon_previous">{% trans "Previous" %}</a>
+    <a href="{% url telemeta-item-detail next %}" class="component_icon button icon_next">{% trans "Next" %}</a>
     {% endblock tools %}
 </div>
 {% endblock %}

@@ -18,8 +18,8 @@ TimeSide(function($N, $J) {
             },
             'div.control': {
                 'div.layout': {
-                    'div.playback': ['a.play', 'a.pause', 'a.rewind', 'a.forward', 'a.set-marker']
-                //,'input.textMarker']
+                    'div.playback': ['a.play', 'a.pause', 'a.rewind', 'a.forward', 'a.set-marker' //]
+                    ,'a.volume']
                 }
             }/*,
         'div.marker-control': ['a.set-marker']*/
@@ -106,7 +106,14 @@ TimeSide(function($N, $J) {
             });
             this.elements.pause.attr('href', '#').bind('click', this.attach(this._onPause));
             this.elements.play.attr('href', '#').bind('click', this.attach(this._onPlay));
-        
+            //
+            this.elements.volume.attr('href', '#').bind('mousedown', this.attach(
+                function(e){
+                    this.changeVolume(e);
+                }
+                ));
+
+
             //assigning title string to all anchors???????
             this.elements.control.find('a').add(this.elements.setMarker)
             .attr('href', '#')
@@ -144,7 +151,7 @@ TimeSide(function($N, $J) {
             .observe('move', this.forwardEvent)
             .draw();
             this.refreshImage();
-            this.resize();
+            //this.resize(); //will be called in Timeside.load.
             var resizeTimer = null;
             $J(window).resize(this.attach(function() {
                 if (resizeTimer){
@@ -152,6 +159,8 @@ TimeSide(function($N, $J) {
                 }
                 resizeTimer = setTimeout(this.attach(this.resize), 100);
             }));
+             //_updateVolumeChanged(this.soundProvider.getVolume());
+             this.soundProvider.observe('volume',this.onVolumeChanged);
         //this.container.resize(this.attach(this.resize)); // Can loop ?
         },
 
@@ -248,6 +257,38 @@ TimeSide(function($N, $J) {
                 offset: offset
             });
             return false;
+        },
+
+        changeVolume: function(event){
+            var ticks = [18,26,33,40,47];
+            var vol = event.layerX;
+            for(var i=0; i<ticks.length; i++){
+                if(vol<=ticks[i]){
+                    var index = i;
+                    var volume = i*20;
+                    this.soundProvider.setVolume(volume);
+                    return false;
+                }
+            }
+            this.soundProvider.setVolume(100);
+//            var g = 9;
+//            console.log(event.layerX);
+            return false;
+        },
+
+        onVolumeChanged: function(e, data){
+           this.updateVolumeAnchor(data.volume);
+        },
+
+        updateVolumeAnchor: function(volume){
+            var indices = [20,40,60,80,100];
+            for(var i=0; i <indices.length; i++){
+                if(volume<indices[i]){
+                    this.elements.volume.css('backgroundPositionY',-28*(indices.length-i));
+                }
+            }
+          this.elements.volume.css('backgroundPositionY',0)
+
         },
 
         _onPlay: function() {

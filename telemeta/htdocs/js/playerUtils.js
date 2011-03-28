@@ -15,10 +15,16 @@ function togglePlayerMaximization() {
     } else {
         ctr = $('#player_maximized').append(view);
     }
-    ctr.css({opacity: 0, display: 'block'});
-    if (player)
+    ctr.css({
+        opacity: 0,
+        display: 'block'
+    });
+    if (player){
         player.resize();
-    ctr.animate({opacity: 1}, 100);
+    }
+    ctr.animate({
+        opacity: 1
+    }, 100);
 }
 
 function load_sound() {
@@ -31,14 +37,15 @@ function load_sound() {
         TimeSide.load(function() {
             provider.setSource(sound);
         });
-        // sound.load(); // Auto-loading overloads the Django test server
+    // sound.load(); // Auto-loading overloads the Django test server
     }
 }
 
 function change_visualizer() {
     set_player_image_url($('#visualizer_id').get(0).value);
-    if (player)
+    if (player){
         player.refreshImage();
+    }
     return false;
 }
 
@@ -46,7 +53,7 @@ function load_player(duration) {
     $(document).ready(function () {
         if (!$('#player').length){
             return;
-            }
+        }
         soundUrl = $('.ts-wave a').attr('href');
 
         $('.ts-wave a img').insertAfter('.ts-wave a');
@@ -54,7 +61,9 @@ function load_player(duration) {
 
         TimeSide.load(function() {
             map = new TimeSide.MarkerMap();
-            provider = new TimeSide.SoundProvider({duration: duration});
+            provider = new TimeSide.SoundProvider({
+                duration: duration
+            });
             player = new TimeSide.Player('#player', {
                 image: get_player_image_src
             });
@@ -79,10 +88,18 @@ function load_player(duration) {
         load_sound();
     });    
 
-    soundManager.onload = function() {
+    //old code valid for old version:
+    //    soundManager.onload = function() {
+    //        soundEngineReady = true;
+    //        load_sound();
+    //    }
+    //replaced by:
+    soundManager.onready(function() {
+        // SM2 is ready to go!
+        //alert('okkkk');
         soundEngineReady = true;
-        load_sound();
-    }
+        load_sound(); // soundManager.createSound(), etc.
+    });
 
 }
 

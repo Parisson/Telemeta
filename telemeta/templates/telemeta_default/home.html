@@ -63,14 +63,15 @@
 
 <div class="home-description">
 <h3>{% trans "Playlists" %}</h3>
-<a href=# id="_new_playlist" style="float:right" class="mediaitem_button mediaitem_button_add">
+<a href=# id="_new_playlist" style="float:right" class="component_icon button icon_add">
 {% trans "Add" %}</a>
   {% for playlist in playlists %}
   <div>
   <h2>{{ playlist.playlist.title }}</h2>
-  <a href="{% url telemeta-playlist-csv-export playlist.playlist.public_id %}" style="float:right" class="mediaitem_button mediaitem_button_csv">CSV</a>
-  <a href="#" id="{{playlist.playlist.public_id}}" onclick="playlist.remove(this.id);return false;" style="float:right" class="mediaitem_button mediaitem_button_cancel"> {% trans "Delete" %}</a>
-
+  <div style="float:right">
+  <a href="{% url telemeta-playlist-csv-export playlist.playlist.public_id %}" class="component_icon button icon_csv">CSV</a>
+  <a href="#" id="{{playlist.playlist.public_id}}" onclick="playlist.remove(this.id);return false;" class="component_icon button icon_cancel"> {% trans "Delete" %}</a>
+  </div>
   
   
   </div>
@@ -118,7 +119,7 @@
                 {% endif %}
             </td>
             <td>
-            <a href="#" onclick="playlistUtils.removeResource('{{resource.public_id}}');return false;" class="mediaitem_button mediaitem_button_cancel"> {% trans "Delete" %}</a>
+            <a href="#" onclick="playlistUtils.removeResource('{{resource.public_id}}');return false;" class="component_icon button icon_cancel"> {% trans "Delete" %}</a>
             </td>
         </tr>
     {% endfor %}

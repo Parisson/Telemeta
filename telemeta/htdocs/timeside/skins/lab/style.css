@@ -71,6 +71,13 @@
     background-position: 0 -28px;
 }
 
+.ts-volume {
+    background-image: url('img/volume.png');
+    background-repeat: no-repeat;
+    background-position: 0px 0px !important;
+    width:160px !important;
+}
+
 .ts-skin-lab .ts-player .ts-control .ts-playback .ts-play {
     background-image: url('img/play.png');
 }

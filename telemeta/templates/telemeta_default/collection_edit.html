@@ -3,7 +3,7 @@
 {% load telemeta_utils %}
 
 {% block tools %}
-     <a href="{% url telemeta-collection-detail collection.public_id %}" class="mediaitem_button mediaitem_button_cancel">{% trans "Cancel" %}</a>
+     <a href="{% url telemeta-collection-detail collection.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
 {% endblock %}
 
 {% block infos %}
@@ -20,8 +20,8 @@
        {% endfor %}
        </table>
         <div align="center">
-         <a href="{% url telemeta-collection-detail collection.public_id %}" class="mediaitem_button mediaitem_button_cancel">{% trans "Cancel" %}</a>
-         <a href="#" class="mediaitem_button mediaitem_button_save"
+         <a href="{% url telemeta-collection-detail collection.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+         <a href="#" class="component_icon button icon_save"
    onclick="document.getElementById('_editCollectionForm').submit(); return false;">{% trans "Save" %}</a>
         </div>
         </form>

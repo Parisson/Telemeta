@@ -8,7 +8,7 @@
 {% block submenu %}
     <div class="buttons">  
     {% if user.is_authenticated and perms.telemeta.add_mediaitem %}
-      <a href="{% url telemeta-item-add %}" class="mediaitem_button mediaitem_button_add">{% trans "Add" %}</a>
+      <a href="{% url telemeta-item-add %}" class="component_icon button icon_add">{% trans "Add" %}</a>
     {% endif %}
     </div>
 {% endblock %}

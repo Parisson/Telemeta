@@ -11,7 +11,7 @@
     {% if perms.telemeta.add_mediaitem %}
     {% block tools %}
       <a href="{% url telemeta-items %}"
-           class="roundBorder6 mediaitem_button mediaitem_button_cancel">{% trans "Cancel" %}</a>
+           class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
     {% endblock tools %}
     
     {% endif %}
@@ -36,8 +36,8 @@
        </table>
        <div align="center">
         <a href="{% url telemeta-items %}"
-           class="mediaitem_button mediaitem_button_cancel">{% trans "Cancel" %}</a>
-        <a href="#" class="mediaitem_button mediaitem_button_save"
+           class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+        <a href="#" class="component_icon button icon_save"
    onclick="document.getElementById('_addItemForm').submit(); return false;">{% trans "Save" %}</a>
        </div>
      </form>

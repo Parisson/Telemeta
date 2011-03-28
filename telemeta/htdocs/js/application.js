@@ -210,10 +210,6 @@ var popup={
             var div = this.jQuery('<div/>').css({ //this is _cfg_
                 position: 'absolute',
                 overflow:'auto', //necessary to properly display the content
-                border: '1px solid #DDD',
-                backgroundColor:'#f9f9f9', //same as mediaitem_button (see telemeta.css)
-                padding:'1ex',
-                margin: '0',
                 display: 'none',
                 zIndex:1000
             });
@@ -222,15 +218,20 @@ var popup={
             }
             return div;
         },
-        className: undefined,
+        className: 'component',
         divShadow: function(){
-            return this.jQuery('<div/>').css({ //this is _cfg_
+            var divShadow =  this.jQuery('<div/>').css({ //this is _cfg_
                 position: 'absolute',
                 display: 'none',
                 overflow:'visible',
-                backgroundColor:'#000',
+                padding: '0 !important', //otherwise setting divShadow dimension is tricky
+                backgroundColor:'#000 !important', //shadow must be black
                 zIndex:999
             });
+            if(this.className){
+                divShadow.addClass(this.className);
+            }
+            return divShadow;
         },
         //        mouseDownNamespace : "mousedown.popup__",
         //        keyDownNamespace : "keydown.popup__",
@@ -490,12 +491,13 @@ var popup={
                 return onCancel();
             }
         };
-        var subdiv = $J('<div/>').append(
+        var subdiv = $J('<div/>').css({'padding':'1ex','float':'right'}).
+            append(
             $J('<a/>').
             html('Ok').
-            css('float','right').
-            addClass('mediaitem_button').
-            addClass('mediaitem_button_ok').
+            addClass('component_icon').
+            addClass('button').
+            addClass('icon_ok').
             attr('href','#').
             click(function(){
                 return onOk();
@@ -505,9 +507,9 @@ var popup={
             subdiv.append(
                 $J('<a/>').
                 html('Cancel').
-                css('float','right').
-                addClass('mediaitem_button').
-                addClass('mediaitem_button_cancel').
+                addClass('component_icon').
+                addClass('button').
+                addClass('icon_cancel').
                 attr('href','#').
                 click(function(){
                     return onCancel();

@@ -20,16 +20,16 @@
 {% block submenu %}
     <div>
     {% block tools %}
-      <a href="{% url telemeta-collection-dublincore collection.public_id %}" class="mediaitem_button mediaitem_button_dublin_core">Dublin Core</a>
+      <a href="{% url telemeta-collection-dublincore collection.public_id %}" class="component_icon button icon_dublin_core">Dublin Core</a>
     {% if user.is_authenticated and perms.telemeta.change_mediacollection %}
-      <a href="{% url telemeta-collection-edit collection.public_id %}" class="mediaitem_button mediaitem_button_edit">{% trans "Edit" %}</a>
-      <a href="{% url telemeta-collection-copy collection.public_id %}" class="mediaitem_button mediaitem_button_copy">{% trans "Copy" %}</a>
+      <a href="{% url telemeta-collection-edit collection.public_id %}" class="component_icon button icon_edit">{% trans "Edit" %}</a>
+      <a href="{% url telemeta-collection-copy collection.public_id %}" class="component_icon button icon_copy">{% trans "Copy" %}</a>
      {% endif %}
     {% if user.is_authenticated %}
-    <a href=# id ="_add_to_playlist" class="mediaitem_button mediaitem_button_add">{% trans "Add to playlist" %}</a>
+    <a href=# id ="_add_to_playlist" class="component_icon button icon_add">{% trans "Add to playlist" %}</a>
     <div id="_popup_add_to_playlist" style="display:none">
         {% for playlist in playlists %}
-          <a href="#" class="listItem mediaitem_button mediaitem_button_playlist"
+          <a href="#" class="component_icon list_item icon_playlist"
              onclick="playlistUtils.addToPlaylist('{{playlist.playlist.public_id}}','collection','{{collection.pk}}');">{{ playlist.playlist.title }}</a>
         {% endfor %}
      </div>

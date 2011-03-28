@@ -12,12 +12,20 @@ body {
     margin: 0em;
 }
 
-a:link, a:visited {
-    /*     border-bottom:1px dotted #BBB; */
+/*a:link, a:visited {
     color: #BB0000;
     text-decoration:none;
 }
 a:link:hover, a:visited:hover {
+    background-color: transparent;
+    color: #BB0000;
+    text-decoration: underline;
+}*/
+a, a:visited {
+    color: #BB0000;
+    text-decoration:none;
+}
+a:hover {
     background-color: transparent;
     color: #BB0000;
     text-decoration: underline;
@@ -716,9 +724,10 @@ table.listing thead th {
 table.listing thead th :link:hover, table.listing thead th :visited:hover {
     background-color: transparent;
 }
-table.listing a {
+/*conflicts with buttons inside table*/
+/*table.listing a {
     border: none;
-}
+}*/
 table.listing thead th a {
     padding-right: 12px;
 }
@@ -982,85 +991,97 @@ a.image-link {
 }
 
 /*----------------------------------*/
-
-.mediaitem_button,  .mediaitem_button:visited,
-.mediaitem_button:link{
-    padding:4px 8px 4px 26px; /*top right bottom left - last value depends on the icon size (default=16)*/
-    border-top:  1px solid #DDD;
-    border-left:  1px solid #DDD;
-    border-bottom:  1px solid #999;
-    border-right:  1px solid #999;
-    background-color: #f9f9f9; /*#626262;*/
-    color:#444;
-    font-weight: bold;
-    background-repeat: no-repeat;
+.component, .component_icon, .component:hover, .component_icon:hover, .component:visited, .component_icon:visited{
     background-position: 1ex .5ex;
    -moz-border-radius: 1ex 1ex 1ex 1ex;
     -webkit-border-radius: 1ex 1ex 1ex 1ex;
     border-radius: 1ex 1ex 1ex 1ex;
-}
-.mediaitem_button:hover,.mediaitem_button:link:hover, .mediaitem_button:visited:hover{
-    background-color:  #e9e9e9; /*#e9e9d9;*/
-    color: #000; /*#6A0307;*/
+    padding:.7ex .7ex .7ex .7ex;
+    background-color:  #f9f9f9; /*#626262;*/
+    color:#444;
+    /*border:  1px solid #eee;*/
     text-decoration: none;
+    margin:0;
 }
-.mediaitem_button_no_icon{
-    padding:4px 8px 4px 8px !important;
+.component + .component, .component + .component_icon, .component_icon + .component ,
+.component_icon + .component_icon{
+    margin-left: .1ex;
 }
-.mediaitem_button_edit{
+
+.component_icon, .component_icon:hover, .component_icon:visited{
+    background-repeat: no-repeat;
+    background-position: 1ex .5ex;
+    padding:4px 8px 4px 26px; /*top right bottom left - last value depends on the icon size (default=16)*/
+}
+
+.button,  .button:visited, .button:hover{
+    font-weight: bold;
+    border-top:  2px solid #e9e9e9 !important;
+    border-left:  2px solid #e9e9e9 !important;
+    border-right:  2px solid #e9e9e9 !important;
+    border-bottom:  2px solid #e9e9e9 !important;
+}
+
+.button:hover{
+    border-top:  2px solid #f9f9f9 !important;
+    border-left:  2px solid #f9f9f9 !important;
+    border-bottom:  2px solid #999 !important;
+    border-right:  2px solid #999 !important;
+    background-color:  #f4f4f4; /*#e9e9d9;*/
+    color: #000; /*#6A0307;*/
+}
+
+
+.list_item, .list_item:visited, .list_item:hover{
+    display:block;
+    color:#6A0307 !important;
+}
+
+.list_item:hover{
+    background-color: #6A0307;
+    color:white !important;
+}
+
+.icon_edit{
     background-image: url('/images/edit_page.png'); 
 }
-.mediaitem_button_copy{
+.icon_copy{
      background-image: url('/images/copy_page.png');
 }
-.mediaitem_button_previous{
+.icon_previous{
     background-image: url('/images/previous.png');
 }
-.mediaitem_button_next{
+.icon_next{
      background-image: url('/images/next.png');
 }
-.mediaitem_button_dublin_core{
+.icon_dublin_core{
      background-image: url('/images/dublin_core.png');
 }
-.mediaitem_button_cancel{
+.icon_cancel{
     background-image: url('/images/cancel.png');
 }
-.mediaitem_button_save{
+.icon_save{
     background-image: url('/images/save.png');
 }
-.mediaitem_button_add{
+.icon_add{
     background-image: url('/images/add.png');
 }
-.mediaitem_button_login{
+.icon_login{
     background-image: url('/images/password.png');
 }
-.mediaitem_button_search{
+.icon_search{
     background-image: url('/images/find.png');
 }
-.mediaitem_button_ok{
+.icon_ok{
     background-image: url('/images/ok.png');
 }
-.mediaitem_button_csv{
+.icon_csv{
     background-image: url('/images/csv.png');
 }
-.mediaitem_button_playlist{
+.icon_playlist{
     background-image: url('/images/playlist.png');
 }
 
-a.listItem, a.listItem:visited, a.listItem:link{
-    display:block;
-    border:0px;
-    font-weight: normal;
-    color:#6A0307;
-    background-color: '';
-    text-decoration: none;
-}
-
-a.listItem:hover,a.listItem:link:hover, a.listItem:visited:hover{
-    background-color: #6A0307;
-    color:white;
-    text-decoration: none;
-}
 
 .addToPlaylist {
     margin:0.5ex;

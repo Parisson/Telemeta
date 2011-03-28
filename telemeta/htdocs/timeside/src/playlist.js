@@ -94,7 +94,7 @@ var playlistUtils = {
         };
         json([playlistId,send],'telemeta.add_playlist_resource',function(){
             var p = popup;
-            p.show(jQuery('<div/>').html('<a style="border:0" class="mediaitem_button mediaitem_button_ok">Ok</span>'));
+            p.show(jQuery('<div/>').html('<a style="border:0" class="component_icon button icon_ok">Ok</span>'));
             setTimeout(function(){p.hide()},600);
         });
     }

@@ -52,9 +52,26 @@ TimeSide(function($N) {
         },
 
         pause: function() {
-            if (this.sound)
+            if (this.sound){
                 this.sound.pause();
+            }
             return this;
+        },
+
+        setVolume: function(volume) {
+            if(typeof volume != 'number'){
+                return this;
+            }
+            volume = volume<0 ? 0 : volume >100 ? 100 : parseInt(volume);
+            if (this.sound && this.sound.volume!==volume){
+                this.sound.setVolume(volume);
+            }
+            this.fire('volume',{'volume':volume});
+            return this;
+        },
+
+        getVolume: function() {
+                return this.sound.volume;
         },
 
         seek: function(offset) {
