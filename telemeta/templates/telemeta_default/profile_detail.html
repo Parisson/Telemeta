@@ -1,0 +1,37 @@
+{% extends "telemeta/base.html" %}
+{% load i18n %}
+{% load telemeta_utils %}
+
+{% block head_title %}{% trans "User Profile" %} : {{ user.username }}{% endblock %}
+
+{% block submenu %}
+    <div>
+    {% block tools %}
+    {% if user.is_authenticated %}
+      {% trans "Edit" %}
+     {% endif %}
+    {% endblock tools %}
+    </div>
+{% endblock %}
+
+{% block content %}
+    <h3>{% trans "User profile" %} : {{ user.username }}</h3>
+    <div style="padding-top: 1em;">
+     <dl class="listing">
+      <dt>{% trans "First Name" %}</dt><dd>{{ usr.first_name }}</dd>
+      <dt>{% trans "Last Name" %}</dt><dd>{{ usr.last_name }}</dd>
+      <dt>{% trans "Email" %}</dt><dd>{{ usr.email }}</dd>
+      
+      <dt>{% trans "Institution" %}</dt><dd>{% if profile %}{{ profile.institution }}{% endif %}</dd>
+      <dt>{% trans "Function" %}</dt><dd>{% if profile %}{{ profile.function }}{% endif %}</dd>
+      <dt>{% trans "Address" %}</dt><dd>{% if profile %}{{ profile.address }}{% endif %}</dd>
+      <dt>{% trans "Telephone" %}</dt><dd>{% if profile %}{{ profile.telephone }}{% endif %}</dd>
+      <dt>{% trans "Expiration date" %}</dt><dd>{% if profile %}{{ profile.expiration_date }}{% endif %}</dd>
+      
+      <dt>{% trans "Is admin" %}</dt><dd>{{ usr.is_staff }}</dd>
+      <dt>{% trans "Is superuser" %}</dt><dd>{{ usr.is_superuser }}</dd>
+      <dt>{% trans "Last login" %}</dt><dd>{{ usr.last_login }}</dd>
+     </dl>
+    </div>
+{% endblock %}
+

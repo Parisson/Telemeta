@@ -47,7 +47,8 @@
         {% endif %}
         </td>
         <td>{{ r.revision.element_type }}</td>
-        <td>{{ r.revision.user.username }}</td>
+        <td>{% if r.revision.user %}{{ r.revision.user.username }}{% endif %}</td>
+        
      </tr>
     {% endfor %}
     </table>
@@ -65,7 +66,7 @@
   <h2>{{ playlist.playlist.title }}</h2>
   <div style="float:right">
   <a href="{% url telemeta-playlist-csv-export playlist.playlist.public_id %}" class="component_icon button icon_csv">CSV</a>
-  <a href="#" id="{{playlist.playlist.public_id}}" onclick="playlist.remove(this.id);return false;" class="component_icon button icon_cancel"> {% trans "Delete" %}</a>
+  <a href="#" id="{{playlist.playlist.public_id}}" onclick="playlist.remove(this.id);return false;" class="component_icon button icon_cancel">{% trans "Delete" %}</a>
   </div>
   
   
@@ -114,7 +115,7 @@
                 {% endif %}
             </td>
             <td>
-            <a href="#" onclick="playlistUtils.removeResource('{{resource.public_id}}');return false;" class="component_icon button icon_cancel"> {% trans "Delete" %}</a>
+            <a href="#" onclick="playlistUtils.removeResource('{{resource.public_id}}');return false;" class="component_icon button icon_cancel"></a>
             </td>
         </tr>
     {% endfor %}

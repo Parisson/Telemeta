@@ -1011,3 +1011,12 @@ class WebView(object):
         description = 'Please login or contact the website administator to get private access.'
         messages.error(request, title)
         return render(request, 'telemeta/messages.html', {'description' : description})
+    
+    @method_decorator(login_required)
+    def profile_detail(self, request, username, template='telemeta/profile_detail.html'):
+        user = User.objects.get(username=username)
+        try:
+            profile = user.get_profile()
+        except:
+            profile = None
+        return render(request, template, {'profile' : profile, 'usr': user})

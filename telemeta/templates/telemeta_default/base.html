@@ -47,7 +47,7 @@
 {% else %}
 {{ user.username }}.
 {% endif %}
-{% trans "Account" %} |
+<a href="{% url telemeta-profile-detail user.username %}">{% trans "Account" %}</a> |
 <a href="{% url telemeta-help %}">{% trans "Help" %}</a> | 
 <a href="{% url telemeta-logout %}">{% trans "Sign out" %}
 <img src="images/logout.png" style="vertical-align:middle" /></a>

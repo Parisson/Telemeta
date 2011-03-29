@@ -49,6 +49,7 @@ from django.utils.translation import ugettext_lazy as _
 import re
 from django.core.exceptions import ObjectDoesNotExist
 
+    
 class Duration(object):
     """Represent a time duration"""
     def __init__(self, *args, **kwargs):

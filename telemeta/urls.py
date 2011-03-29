@@ -190,9 +190,12 @@ urlpatterns = patterns('',
     url(r'^oai/.*$', web_view.handle_oai_request, name="telemeta-oai"),
 
     # Authentication
-     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'telemeta/login.html'},
+    url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'telemeta/login.html'},
         name="telemeta-login"),
     url(r'^logout/$', web_view.logout, name="telemeta-logout"),
+    
+    # Profile
+    url(r'^accounts/(?P<username>[A-Za-z0-9._-]+)/profile/$', web_view.profile_detail, name="telemeta-profile-detail"),
     
     # JSON RPC
     url(r'^json/browse/', 'jsonrpc.views.browse', name="jsonrpc_browser"), # for the graphical browser/web console only, omissible
