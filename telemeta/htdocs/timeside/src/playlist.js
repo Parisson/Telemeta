@@ -1,6 +1,13 @@
 
 
 var playlistUtils = {
+    playlists : {},
+    initialize: function(dictionary){
+        this.playlists = dictionary;
+    },
+    addPlayList: function(name, id){
+        this.playlists[name]=id;
+    },
     
     //    add : function(event){
     //

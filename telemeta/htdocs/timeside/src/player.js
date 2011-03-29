@@ -237,9 +237,18 @@ TimeSide(function($N, $J) {
             if (this.map) {
                 var position = parseFloat(this.soundProvider.getPosition());
                 var idx = this.map.insertionIndex(position);
-                if(idx>=0){ //the pointer is exactly on a marker, increase by one
-                    //otherwise the index is the marker itself and we wouldn't move ahead
-                    idx++;
+                if(idx>=0){ //the pointer is exactly on a marker, the index is the marker itself
+                    //so increase by one otherwise  and we wouldn't move ahead
+                    //more specifically, increase as long as we have markers with this offset (there could be more than
+                    //one marker at offset
+                    var m = this.map.get(idx);
+                    while(m && m.offset == position){
+                        idx++;
+                        m = this.map.get(idx);
+                        if(!m){
+                            idx=-1;
+                        }
+                    }
                 }else{
                     //we are not on a pointer, get the index of the marker
                     //(see markermap insertionindex)
