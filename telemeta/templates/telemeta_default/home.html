@@ -62,15 +62,20 @@
 <a href=# id="_new_playlist" style="float:right" class="component_icon button icon_add">
 {% trans "Add" %}</a>
   {% for playlist in playlists %}
-  <div>
-  <h2>{{ playlist.playlist.title }}</h2>
-  <div style="float:right">
-  <a href="{% url telemeta-playlist-csv-export playlist.playlist.public_id %}" class="component_icon button icon_csv">CSV</a>
-  <a href="#" id="{{playlist.playlist.public_id}}" onclick="playlist.remove(this.id);return false;" class="component_icon button icon_cancel">{% trans "Delete" %}</a>
-  </div>
+  <!--<div>-->
+  <!--<h2>{{ playlist.playlist.title }}</h2>-->
+  <table class="listing" style="width:90%;margin-top: 3em">
+      <tr>
+          <td style="border-bottom:1px solid #6A0307;color:#6A0307;font-size: 100%">{{ playlist.playlist.title }}</td>
+          <td style="width:33ex; padding-right: 0; border-bottom:1px solid #6A0307; text-align:right">
+            <a href="{% url telemeta-playlist-csv-export playlist.playlist.public_id %}" class="component_icon button icon_csv">CSV</a>
+            <a href="#" id="{{playlist.playlist.public_id}}" onclick="playlist.remove(this.id);return false;" class="component_icon button icon_cancel">{% trans "Delete" %}</a>
+          </td>
+      </tr>
+  </table>
   
   
-  </div>
+  <!--</div>-->
     <table class="listing" width="90%">
         <tr>
             <th class="highlight">{% trans "Title" %}</th>
@@ -109,13 +114,13 @@
                 {% endif %}
             {% endif %}
             </td>
-            <td align="center">
+            <td align="center" style="vertical-align:middle">
                 {% if resource.element.file or resource.element.has_mediafile %}
                   <img src="images/ok.png" alt="yes" style="vertical-align:middle" /></a>
                 {% endif %}
             </td>
-            <td>
-            <a href="#" onclick="playlistUtils.removeResource('{{resource.public_id}}');return false;" class="component_icon button icon_cancel"></a>
+            <td style="vertical-align:middle">
+            <a href="#" onclick="playlistUtils.removeResource('{{resource.public_id}}');return false;" class="component_icon button icon_cancel" style="padding: 4px 12px;"></a>
             </td>
         </tr>
     {% endfor %}
