@@ -2,21 +2,21 @@
 {% load i18n %}
 {% load telemeta_utils %}
 
-{% block head_title %}{% trans "User Profile" %} : {{ user.username }}{% endblock %}
+{% block head_title %}{% trans "User Profile" %} : {{ usr.username }}{% endblock %}
 
 {% block submenu %}
     <div>
     {% block tools %}
     {% if user.is_authenticated %}
-      {% trans "Edit" %}
+      <a href="{% url telemeta-profile-edit usr.username %}" class="component_icon button icon_edit">{% trans "Edit" %}</a>
      {% endif %}
     {% endblock tools %}
     </div>
 {% endblock %}
 
 {% block content %}
-    <h3>{% trans "User profile" %} : {{ user.username }}</h3>
-    <div style="padding-top: 1em;">
+    <h3>{% trans "User profile" %} : {{ usr.username }}</h3>
+    <div class="infos" style="padding-top: 1em;">
      <dl class="listing">
       <dt>{% trans "First Name" %}</dt><dd>{{ usr.first_name }}</dd>
       <dt>{% trans "Last Name" %}</dt><dd>{{ usr.last_name }}</dd>

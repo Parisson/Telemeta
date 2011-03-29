@@ -1008,7 +1008,7 @@ class WebView(object):
     def not_allowed(self, request,  public_id = None):
         mess = ugettext('Access not allowed') 
         title = public_id + ' : ' + mess
-        description = 'Please login or contact the website administator to get private access.'
+        description = 'Please login or contact the website administator to get admin or private access.'
         messages.error(request, title)
         return render(request, 'telemeta/messages.html', {'description' : description})
     
@@ -1020,3 +1020,24 @@ class WebView(object):
         except:
             profile = None
         return render(request, template, {'profile' : profile, 'usr': user})
+        
+    def profile_edit(self, request, username, template='telemeta/profile_edit.html'):
+        user = User.objects.get(username=username)
+        if user != request.user and not request.user.is_staff:
+            return HttpResponseRedirect('/accounts/'+username+'/not_allowed/')
+        
+        try:
+            profile = user.get_profile()
+        except:
+            profile = UserProfile(user=user)
+#            profile.save()
+            
+        if request.method == 'POST':
+            form = UserProfileForm(data=request.POST, instance=profile)
+            if form.is_valid():
+                form.save()
+                return HttpResponseRedirect('/accounts/'+username+'/profile/')
+        else:
+            form = UserProfileForm(instance=profile)
+        return render(request, template, {"form": form, 'usr': user})
+        

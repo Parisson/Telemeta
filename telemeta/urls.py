@@ -196,6 +196,7 @@ urlpatterns = patterns('',
     
     # Profile
     url(r'^accounts/(?P<username>[A-Za-z0-9._-]+)/profile/$', web_view.profile_detail, name="telemeta-profile-detail"),
+    url(r'^accounts/(?P<username>[A-Za-z0-9._-]+)/profile/edit/$', web_view.profile_edit, name="telemeta-profile-edit"),
     
     # JSON RPC
     url(r'^json/browse/', 'jsonrpc.views.browse', name="jsonrpc_browser"), # for the graphical browser/web console only, omissible

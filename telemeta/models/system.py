@@ -38,6 +38,7 @@ from telemeta.models.core import *
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import ugettext_lazy as _
 import django.db.models
+from django.forms import ModelForm
 
 
 class Revision(ModelCore):
@@ -83,4 +84,7 @@ class UserProfile(django.db.models.Model):
     
     class Meta(MetaCore):
         db_table = 'profiles'
-        
+
+class UserProfileForm(ModelForm):
+    class Meta:
+        model = UserProfile
