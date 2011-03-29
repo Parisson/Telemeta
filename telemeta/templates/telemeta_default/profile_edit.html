@@ -17,7 +17,7 @@
         {% if not field.html_name in hidden_fields %}
         <tr>
             <tr><td class="error">{{ field.errors }}</td></tr>
-            <td>{% trans field.label_tag %}:</td><td>{{ field }}</td>
+            <td>{% trans field.label_tag %} : </td><td>{{ field }}</td>
         </tr>
         {% else %}
         <tr>

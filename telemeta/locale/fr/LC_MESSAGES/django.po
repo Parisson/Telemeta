@@ -870,12 +870,12 @@ msgid "Expiration date"
 msgstr "Date d'expiration"
 
 #: templates/telemeta_default/profile_detail.html:19
-msgid "Is admin"
-msgstr "Est admin"
+msgid "Is staff"
+msgstr "Statut équipe"
 
 #: templates/telemeta_default/profile_detail.html:20
 msgid "Is superuser"
-msgstr "Est superuser"
+msgstr "Statut super-utilisateur"
 
 #: templates/telemeta_default/profile_detail.html:21
 msgid "Last login"

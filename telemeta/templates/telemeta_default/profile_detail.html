@@ -28,7 +28,7 @@
       <dt>{% trans "Telephone" %}</dt><dd>{% if profile %}{{ profile.telephone }}{% endif %}</dd>
       <dt>{% trans "Expiration date" %}</dt><dd>{% if profile %}{{ profile.expiration_date }}{% endif %}</dd>
       
-      <dt>{% trans "Is admin" %}</dt><dd>{{ usr.is_staff }}</dd>
+      <dt>{% trans "Is staff" %}</dt><dd>{{ usr.is_staff }}</dd>
       <dt>{% trans "Is superuser" %}</dt><dd>{{ usr.is_superuser }}</dd>
       <dt>{% trans "Last login" %}</dt><dd>{{ usr.last_login }}</dd>
      </dl>

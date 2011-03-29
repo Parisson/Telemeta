@@ -47,7 +47,7 @@
         {% endif %}
         </td>
         <td>{{ r.revision.element_type }}</td>
-        <td>{% if r.revision.user %}{{ r.revision.user.username }}{% endif %}</td>
+        <td>{% if r.revision.user %}<a href="{% url telemeta-profile-detail r.revision.user.username %}">{{ r.revision.user.username }}</a>{% endif %}</td>
         
      </tr>
     {% endfor %}

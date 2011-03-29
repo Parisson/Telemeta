@@ -134,6 +134,9 @@ urlpatterns = patterns('',
     url(r'^admin/enumerations/$', web_view.admin_enumerations, name="telemeta-admin-enumerations"),        
     url(r'^admin/instruments/$', web_view.admin_instruments, name="telemeta-admin-instruments"),        
     
+    # instruments administration
+    url(r'^admin/instruments/(?P<instrument_id>[0-9]+)/edit/$', web_view.admin_instrument_edit, name="telemeta-admin-instruments-edit"), 
+    
     # enumerations administration
     url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/$', 
         web_view.edit_enumeration ,

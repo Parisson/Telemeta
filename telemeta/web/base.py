@@ -636,13 +636,15 @@ class WebView(object):
 
     @method_decorator(permission_required('sites.change_site'))
     def admin_instruments(self, request):
-        objects = Instrument.objects.all()
-        instruments = []
-        for instrument in objects:
-            instruments.append(instrument.name)
-        instruments.sort()
+        instruments = Instrument.objects.all().order_by('name')
         return render(request, 'telemeta/admin_instruments.html', {'instruments': instruments})
 
+    @method_decorator(permission_required('telemeta.change_instrument'))
+    def admin_instrument_edit(self, request, instrument_id):
+        instrument = Instrument.objects.get(pk=instrument_id)
+        vars = self.__get_admin_context_vars()
+        render(request, 'telemeta/enumeration_edit_value.html', vars)
+        
     def __get_enumeration(self, id):
         from django.db.models import get_models
         models = get_models(telemeta.models)
@@ -1038,7 +1040,6 @@ class WebView(object):
             profile = user.get_profile()
         except:
             profile = UserProfile(user=user)
-#            profile.save()
             
         if request.method == 'POST':
             user_form = UserChangeForm(request.POST, instance=user, prefix='user')

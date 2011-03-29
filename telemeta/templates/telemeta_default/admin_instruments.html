@@ -1,17 +1,50 @@
 {% extends "telemeta/admin.html" %}
+{% load telemeta_utils %}
+{% load i18n %}
 
-{% block tab %}
-<div class="tabs">
-{% if instruments %}
-    <ul>
+{% block tabcontents %}
+ <h4>{% trans "Instruments" %}</h4>
+
+ <form class="addnew" id="addenum" method="post"
+        action="{% url telemeta-admin-instruments %}">{% csrf_token %}
+  <fieldset>
+   <legend>{% trans "Add entry" %}</legend>
+   <div class="field">
+    <label>{% trans "Name" %}: <input type="text" name="value"></label>
+
+   </div>
+   <div class="buttons">
+    <input type="submit" name="add" value="{% trans 'Add' %}">
+   </div>
+  </fieldset>
+ </form>
+ {% if instruments %}
+ <form method="POST" action="{% url telemeta-admin-instruments %}">{% csrf_token %}
+  <table class="listing">
+   <thead>
+    <tr><th class="sel">&nbsp;</th><th>{% trans "Name"%}</th>
+
+    </tr>
+   </thead><tbody>
     {% for instrument in instruments %}
-            <li>{{ instrument|capfirst }}</li>
+    <tr>
+     <td><input type="checkbox" name="sel" value="{{instrument.id}}" /></td>
+     <td>
+        {{instrument.name}}</td>
+    </tr>
     {% endfor %}
-    </ul>
-{% else %}
-No intruments
-{% endif %}
-</div>
-{% endblock tab %}
+    </tbody>
+  </table>
+  <div class="buttons">
+   <input type="submit" name="remove" value="{% trans 'Remove selected items' %}" />
+  </div>
+ </form>
+ {% else %}
+    <p class="help">{% trans "No instruments" %}</p>
+ {% endif %}
+
+  <br style="clear: right"/>
+{% endblock %}
+
 
 
