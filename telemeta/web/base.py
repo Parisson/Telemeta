@@ -128,7 +128,7 @@ class WebView(object):
             return render(request, template, {'playlists': playlists, 'searches': searches, 'revisions': revisions})
   
     def get_revisions(self, request):
-        last_revisions = Revision.objects.all().order_by('-time')[0:10]
+        last_revisions = Revision.objects.all().order_by('-time')[0:15]
         revisions = []
         for revision in last_revisions:
             if revision.element_type == 'item':
@@ -408,7 +408,10 @@ class WebView(object):
                     if analyzer.id() == 'duration':
                         approx_value = int(round(value))
                         item.approx_duration = approx_value
-                        item.save()
+                        try:
+                            item.save()
+                        except:
+                            pass
                         value = datetime.timedelta(0,value)
                     
                     analyzers.append({'name':analyzer.name(),
