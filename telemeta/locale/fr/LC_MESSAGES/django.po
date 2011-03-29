@@ -836,3 +836,47 @@ msgstr "Énumérations"
 #: web.base.py:955
 msgid "Access not allowed"
 msgstr "Accès non autorisé"
+
+#: templates/telemeta_default/profile_detail.html:11
+msgid "User profile"
+msgstr "Profil utilisateur"
+
+#: templates/telemeta_default/profile_detail.html:12
+msgid "Institution"
+msgstr "Institution"
+
+#: templates/telemeta_default/profile_detail.html:13
+msgid "Function"
+msgstr "Fonction"
+
+#: templates/telemeta_default/profile_detail.html:14
+msgid "Address"
+msgstr "Adresse"
+
+#: templates/telemeta_default/profile_detail.html:15
+msgid "Telephone"
+msgstr "Téléphone"
+
+#: templates/telemeta_default/profile_detail.html:16
+msgid "Last Name"
+msgstr "Nom"
+
+#: templates/telemeta_default/profile_detail.html:17
+msgid "First Name"
+msgstr "Prénom"
+
+#: templates/telemeta_default/profile_detail.html:18
+msgid "Expiration date"
+msgstr "Date d'expiration"
+
+#: templates/telemeta_default/profile_detail.html:19
+msgid "Is admin"
+msgstr "Est admin"
+
+#: templates/telemeta_default/profile_detail.html:20
+msgid "Is superuser"
+msgstr "Est superuser"
+
+#: templates/telemeta_default/profile_detail.html:21
+msgid "Last login"
+msgstr "Dernière connexion"

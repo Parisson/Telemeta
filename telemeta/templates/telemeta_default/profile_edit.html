@@ -12,27 +12,20 @@
        
         <form method="POST" id="_editUserProfileForm" action="">{% csrf_token %}
        <table>
-       
-        {% for field in user_form %}
+       {% for form in forms %}
+        {% for field in form %}
+        {% if not field.html_name in hidden_fields %}
         <tr>
             <tr><td class="error">{{ field.errors }}</td></tr>
-            <td>{{ field.label_tag }}:</td><td> {{ field }}</td>
-        </tr>
-        {% endfor %}
-       
-       
-        {% for field in profile_form %}
-        {% if field.html_name != "user" %}
-        <tr>
-            <tr><td class="error">{{ field.errors }}</td></tr>
-            <td>{{ field.label_tag }}:</td><td> {{ field }}</td>
+            <td>{% trans field.label_tag %}:</td><td>{{ field }}</td>
         </tr>
         {% else %}
-        <tr style="display:none;">
-          <td>{{ field.label_tag }}:</td><td> {{ field }}</td>
+        <tr>
+          <td>{{ field.label_tag.as_hidden }}</td><td>{{ field.as_hidden }}</td>
         </tr>
         {% endif %}
         {% endfor %}
+       {% endfor %}
        </table>
         <div align="center">
          <a href="{% url telemeta-profile-detail usr.username %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>

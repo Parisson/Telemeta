@@ -79,7 +79,7 @@ class UserProfile(django.db.models.Model):
     institution     = CharField(_('institution'))
     function        = CharField(_('function'))
     address         = TextField(_('address'))
-    telephone       = CharField(_('function'))
+    telephone       = CharField(_('telephone'))
     expiration_date = DateField(_('expiration_date'))
     
     class Meta(MetaCore):

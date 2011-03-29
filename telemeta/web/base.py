@@ -1023,6 +1023,13 @@ class WebView(object):
         return render(request, template, {'profile' : profile, 'usr': user})
         
     def profile_edit(self, request, username, template='telemeta/profile_edit.html'):
+        if request.user.is_staff:
+            user_hidden_fields = []
+        else:
+            user_hidden_fields = ['user-username', 'user-is_staff', 'profile-user', 'user-is_active', 
+                         'user-password', 'user-last_login', 'user-date_joined', 'user-groups', 
+                         'user-user_permissions', 'user-is_superuser', 'profile-expiration_date']
+        
         user = User.objects.get(username=username)
         if user != request.user and not request.user.is_staff:
             return HttpResponseRedirect('/accounts/'+username+'/not_allowed/')
@@ -1043,5 +1050,6 @@ class WebView(object):
         else:
             user_form = UserChangeForm(instance=user, prefix='user')
             profile_form = UserProfileForm(instance=profile, prefix='profile')
-        return render(request, template, {"user_form": user_form, "profile_form": profile_form, 'usr': user})
+            forms = [user_form, profile_form]
+        return render(request, template, {'forms': forms, 'usr': user, 'hidden_fields': user_hidden_fields})
         
