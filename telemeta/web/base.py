@@ -58,6 +58,7 @@ from django.core.context_processors import csrf
 from django.forms.models import modelformset_factory
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext
+from django.contrib.auth.forms import UserChangeForm
 
 from telemeta.models import *
 import telemeta.models
@@ -1033,11 +1034,14 @@ class WebView(object):
 #            profile.save()
             
         if request.method == 'POST':
-            form = UserProfileForm(data=request.POST, instance=profile)
-            if form.is_valid():
-                form.save()
+            user_form = UserChangeForm(request.POST, instance=user, prefix='user')
+            profile_form = UserProfileForm(request.POST, instance=profile, prefix='profile')
+            if user_form.is_valid() and profile_form.is_valid():
+                user_form.save()
+                profile_form.save()
                 return HttpResponseRedirect('/accounts/'+username+'/profile/')
         else:
-            form = UserProfileForm(instance=profile)
-        return render(request, template, {"form": form, 'usr': user})
+            user_form = UserChangeForm(instance=user, prefix='user')
+            profile_form = UserProfileForm(instance=profile, prefix='profile')
+        return render(request, template, {"user_form": user_form, "profile_form": profile_form, 'usr': user})
         
