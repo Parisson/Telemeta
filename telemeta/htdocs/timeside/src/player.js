@@ -107,9 +107,12 @@ TimeSide(function($N, $J) {
             this.elements.pause.attr('href', '#').bind('click', this.attach(this._onPause));
             this.elements.play.attr('href', '#').bind('click', this.attach(this._onPlay));
             //
-            this.elements.volume.attr('href', '#').bind('mousedown', this.attach(
+            this.elements.volume.attr('href', '#').click(function(){return false;}).bind('mousedown', this.attach(
                 function(e){
-                    this.changeVolume(e);
+                    if(e.which===1){ //left button
+                        this.changeVolume(e);
+                    }
+                    return false;
                 }
                 ));
 
@@ -160,7 +163,7 @@ TimeSide(function($N, $J) {
                 resizeTimer = setTimeout(this.attach(this.resize), 100);
             }));
              //_updateVolumeChanged(this.soundProvider.getVolume());
-             this.soundProvider.observe('volume',this.onVolumeChanged);
+             this.soundProvider.observe('volume',this.attach(this.onVolumeChanged));
         //this.container.resize(this.attach(this.resize)); // Can loop ?
         },
 
@@ -264,7 +267,7 @@ TimeSide(function($N, $J) {
             var vol = event.layerX;
             for(var i=0; i<ticks.length; i++){
                 if(vol<=ticks[i]){
-                    var index = i;
+                    //var index = i;
                     var volume = i*20;
                     this.soundProvider.setVolume(volume);
                     return false;
@@ -281,13 +284,16 @@ TimeSide(function($N, $J) {
         },
 
         updateVolumeAnchor: function(volume){
-            var indices = [20,40,60,80,100];
+            var indices = [20,40,60,80,100,100000];
             for(var i=0; i <indices.length; i++){
                 if(volume<indices[i]){
-                    this.elements.volume.css('backgroundPositionY',-28*(indices.length-i));
+                    var pos = -28*i;
+                    pos = '0px '+ pos+ 'px !important';
+                    this.elements.volume.css('backgroundPosition',pos);
+                    return;
                 }
             }
-          this.elements.volume.css('backgroundPositionY',0)
+         // this.elements.volume.css('backgroundPosition','0px 0px !important')
 
         },
 

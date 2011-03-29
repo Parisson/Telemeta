@@ -36,7 +36,9 @@ function load_sound() {
         
         TimeSide.load(function() {
             provider.setSource(sound);
+            player.updateVolumeAnchor(provider.getVolume());
         });
+
     // sound.load(); // Auto-loading overloads the Django test server
     }
 }

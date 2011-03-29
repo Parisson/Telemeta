@@ -20,11 +20,18 @@
     line-height: 13px;
 }
 
-.ts-skin-lab .ts-player .ts-viewer .ts-pointer {
+.ts-skin-lab .ts-player .ts-viewer { /*.ts-pointer {*/
     color: #3c4251;
     background: #e7e7e7;
 }
+.ts-pointer{
+    border: 1px solid #B0C4DE !important;
+     -moz-border-radius: .5ex !important;
+    -webkit-border-radius: .5ex  !important;
+    border-radius: .5ex !important;
+    color: #006666 !important;
 
+}
 .ts-skin-lab .ts-player .ts-ruler .ts-section .ts-label {
     color: #c3c2cc;
     background: #2a3242;
@@ -75,7 +82,7 @@
     background-image: url('img/volume.png');
     background-repeat: no-repeat;
     background-position: 0px 0px !important;
-    width:160px !important;
+    width:60px !important;
 }
 
 .ts-skin-lab .ts-player .ts-control .ts-playback .ts-play {

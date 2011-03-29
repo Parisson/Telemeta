@@ -42,8 +42,13 @@ TimeSide(function($N) {
 
         play: function() {
             if (this.sound) {
+                //it seems that, if sound is played until its end
+                //playing sound again resets the volume to 100, even though
+                //sound.volume is at the right value. We use this trick which seems to work:
+                this.sound.setVolume(this.sound.volume);
                 if (!this.sound.playState) {
                     this.sound.play();
+                    //console.log(this.getVolume());
                 } else if (this.sound.paused) {
                     this.sound.resume();
                 }
@@ -71,7 +76,7 @@ TimeSide(function($N) {
         },
 
         getVolume: function() {
-                return this.sound.volume;
+             return this.sound.volume;
         },
 
         seek: function(offset) {
