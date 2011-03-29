@@ -6,7 +6,6 @@ import telemeta.models.dublincore as dc
 from django.utils import html
 from django import template
 from django.utils.text import capfirst
-from telemeta import models
 from django.utils.translation import ungettext
 from docutils.core import publish_parts
 from django.utils.encoding import smart_str, force_unicode
