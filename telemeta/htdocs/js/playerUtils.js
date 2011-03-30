@@ -99,6 +99,7 @@ function load_player(duration) {
     soundManager.onready(function() {
         // SM2 is ready to go!
         //alert('okkkk');
+        map.debug('loaded sound manager');
         soundEngineReady = true;
         load_sound(); // soundManager.createSound(), etc.
     });

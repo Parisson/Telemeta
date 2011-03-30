@@ -73,7 +73,7 @@
           <td style="border-bottom:1px solid #6A0307;color:#6A0307;font-size: 100%">{{ playlist.playlist.title }}</td>
           <td style="width:33ex; padding-right: 0; border-bottom:1px solid #6A0307; text-align:right">
             <a href="{% url telemeta-playlist-csv-export playlist.playlist.public_id %}" class="component_icon button icon_csv">CSV</a>
-            <a href="#" id="{{playlist.playlist.public_id}}" onclick="playlist.remove(this.id);return false;" class="component_icon button icon_cancel">{% trans "Delete" %}</a>
+            <a href="#" id="{{playlist.playlist.public_id}}" onclick="playlistUtils.remove(this.id);return false;" class="component_icon button icon_cancel">{% trans "Delete" %}</a>
           </td>
       </tr>
   </table>

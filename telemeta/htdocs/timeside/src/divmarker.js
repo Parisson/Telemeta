@@ -19,6 +19,7 @@ TimeSide(function($N, $J) {
         e_header:null,
         e_editButton:null,
         e_titleText:null,
+        e_addplaylistButton:null,
         me:null,
         markerMap:null,
 
@@ -51,22 +52,28 @@ TimeSide(function($N, $J) {
                 //offset label
                 this.e_offsetLabel = $J('<span/>')
                 .addClass('markersdivTopElement')
-                .addClass('markersdivOffset')
+                .addClass('markersdivOffset');
                 
 
                 //title text
                 this.e_titleText = $J('<input/>')
                 .attr('type','text')
                 .addClass('markersdivTitle')
-                .addClass('markersdivTopElement')
+                .addClass('markersdivTopElement');
                 
-
+                //add playlist button
+                this.e_addplaylistButton = $J('<a/>')
+                .addClass('markersdivAddPlaylist')
+                .addClass('markersdivTopElement')
+                .attr('title','add to playlist')
+                .attr("href","#");
+                
                 //close button
                 this.e_deleteButton = $J('<a/>')
                 .addClass('markersdivDelete')
                 .addClass('markersdivTopElement')
                 .attr('title','delete marker')
-                .attr("href","#")
+                .attr("href","#");
                
                 //edit button
                 this.e_editButton = $J('<a/>')
@@ -75,16 +82,16 @@ TimeSide(function($N, $J) {
                 .addClass('markersdivTopElement')
                 .attr('title','edit marker description')
                 .attr("href","#")
-                .html('<span>EDIT</span>')
+                .html('<span>EDIT</span>');
                                 
-
                 //add all elements to header:
-                this.e_header = $J('<div/>').css('margin','1ex 0ex 0.5ex 0ex')
+                this.e_header = $J('<div/>') //.css('margin','0.1ex 0ex 0.5ex 0ex')
                 .append(this.e_indexLabel)
                 .append(this.e_offsetLabel)
                 .append(this.e_titleText)
                 .append(this.e_deleteButton)
-                .append(this.e_editButton);
+                .append(this.e_editButton)
+                .append(this.e_addplaylistButton);
                 
                 //description text
                 this.e_descriptionText = $J('<textarea/>')
@@ -97,17 +104,16 @@ TimeSide(function($N, $J) {
                 .attr("href","#")
                 .html("OK");
                 
-
                 //create marker div and append all elements
                 markerDiv = $J('<div/>')
                 .append(this.e_header)
                 .append(this.e_descriptionText)
                 //.append(this.e_okButton)
-                .append($J('<div/>').css('margin','1ex 0ex 1ex 0ex').append(this.e_okButton))
+                .append($J('<div/>') //.css('margin','1ex 0ex 0.1ex 0ex')
+                .append(this.e_okButton))
                 .addClass('roundBorder8')
                 .addClass('markerdiv');
-
-            //set default visibility
+                //set default visibility
 
             }
             return markerDiv;
@@ -146,6 +152,7 @@ TimeSide(function($N, $J) {
             this.e_okButton.hide();
             this.e_editButton.show();
             this.e_deleteButton.show();
+            this.e_addplaylistButton.show();
             this.e_descriptionText.attr('readonly','readonly').addClass('markersdivUneditable');
             this.e_titleText.attr('readonly','readonly').addClass('markersdivUneditable');
             
@@ -154,10 +161,11 @@ TimeSide(function($N, $J) {
                 this.e_editButton.hide();
                 this.e_deleteButton.hide();
                 //we unbind events to be sure
+                this.e_addplaylistButton.unbind('click').hide();
                 this.e_okButton.unbind('click')
                 this.e_deleteButton.unbind('click').hide();
                 this.e_editButton.unbind('click').hide();
-                return;
+                return false;
             }
             
             var remove = map.remove;
@@ -239,6 +247,7 @@ TimeSide(function($N, $J) {
                 var w = tText.parent().width();
                 w-=tText.outerWidth(true)-tText.width(); //so we consider also tText margin border and padding
                 var space = w
+                - (this.e_addplaylistButton.is(':visible') ? this.e_addplaylistButton.outerWidth(true) : 0)
                 - (this.e_indexLabel.is(':visible') ? this.e_indexLabel.outerWidth(true) : 0)
                 - (this.e_offsetLabel.is(':visible') ? this.e_offsetLabel.outerWidth(true) : 0)
                 - (this.e_editButton.is(':visible') ? this.e_editButton.outerWidth(true) : 0)

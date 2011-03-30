@@ -162,41 +162,18 @@ TimeSide(function($N, $J) {
        
 
         sendHTTP: function(marker, functionOnSuccess, showAlertOnError){
-
-            //itemid is the item (spund file) name
-            var sPath = window.location.pathname;
-            //remove last "/" or last "/#", if any...
-            sPath = sPath.replace(/\/#*$/,"");
-            var itemid = sPath.substring(sPath.lastIndexOf('/') + 1);
-
-            //WARNING: use single quotes for the whole string!!
-            //see http://stackoverflow.com/questions/4809157/i-need-to-pass-a-json-object-to-a-javascript-ajax-method-for-a-wcf-call-how-can
-            //            var data2send = '{"id":"jsonrpc", "params":[{"item_id":"'+ itemid+'", "public_id": "'+marker.id+'", "time": "'+
-            //            marker.offset+'","description": "'+marker.desc+'"}], "method":"telemeta.add_marker","jsonrpc":"1.0"}';
-
-           
-            var isSaved = marker.isSavedOnServer;
+            var itemid = ITEM_PUBLIC_ID;
+             var isSaved = marker.isSavedOnServer;
             var method = isSaved ? "telemeta.update_marker" : "telemeta.add_marker";
-            
-            var s = this.jsonify;
-            
-            //server problem on zero. offset of zero must be converted to 0.0
-            var offset = marker.offset;
-            if(!(offset)){
-                offset = "0.0";
-            }
-            var data2send = '{"id":"jsonrpc", "params":[{"item_id":"'+ s(itemid)+
-            '", "public_id": "'+s(marker.id)+'", "time": "'+s(offset)+
-            '", "author": "'+s(marker.author)+
-            '", "title": "'+s(marker.title)+
-            '","description": "'+s(marker.desc)+'"}], "method":"'+method+'","jsonrpc":"1.0"}';
-
-            $.ajax({
-                type: "POST",
-                url: '/json/',
-                contentType: "application/json",
-                data: data2send,
-                success: function(){
+            var param = {
+                'item_id':itemid,
+                'public_id': marker.id,
+                'time':marker.offset,
+                'author': marker.author,
+                'title':marker.title,
+                'description':marker.desc
+            };
+            var success = function(){
                     if(!isSaved){
                         marker.isSavedOnServer = true;
                         marker.isModified = false;
@@ -204,53 +181,16 @@ TimeSide(function($N, $J) {
                     if(functionOnSuccess){
                         functionOnSuccess();
                     }
-                },
-                error: function(jqXHR, textStatus, errorThrown){
-                    if(showAlertOnError){
-                        var details = "\n(no further info available)";
-                        if(jqXHR) {
-                            details="\nThe server responded witha status of "+jqXHR.status+" ("+
-                                jqXHR.statusText+")\n\nDetails (request responseText):\n"+jqXHR.responseText;
-                        }
-                        alert("ERROR: Failed to save marker"+details);
-                    }
-                }
-            });
-
+                };
+            //json(param,method,onSuccessFcn,onErrorFcn){
+            json([param], method, success);
             
         },
 
-        jsonify: function(string){
-            var s = string;
-            if(typeof string == "string"){
-                s = string.replace(/\\/g,"\\\\")
-                .replace(/\n/g,"\\n")
-                .replace(/"/g,"\\\"");
-            }
-            return s;
-        },
         removeHTTP: function(marker){
-
-            //  //itemid is the item (spund file) name
-            //  var sPath = window.location.pathname;
-            //  //remove last "/" or last "/#", if any...
-            //  sPath = sPath.replace(/\/#*$/,"");
-            //  var itemid = sPath.substring(sPath.lastIndexOf('/') + 1);
-            var public_id = marker.id;
-            //WARNING: use single quotes for the whole string!!
-            //see http://stackoverflow.com/questions/4809157/i-need-to-pass-a-json-object-to-a-javascript-ajax-method-for-a-wcf-call-how-can
-            var data2send = '{"id":"jsonrpc","params":["'+public_id+'"], "method":"telemeta.del_marker","jsonrpc":"1.0"}';
-            //            var map = this.cfg.map;
-            //            var me = this;
-            $.ajax({
-                type: "POST",
-                url: '/json/',
-                contentType: "application/json",
-                data: data2send,
-                dataType: "json"
-            
-            });
-            var g = 9;
+             var public_id = marker.id
+            //json(param,method,onSuccessFcn,onErrorFcn){
+            json([public_id], "telemeta.del_marker");
         }
 
     });

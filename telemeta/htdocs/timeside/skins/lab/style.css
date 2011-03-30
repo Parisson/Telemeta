@@ -25,11 +25,11 @@
     background: #e7e7e7;
 }
 .ts-pointer{
-    border: 1px solid #B0C4DE !important;
+    border: 1px solid #a10006 !important;
      -moz-border-radius: .5ex !important;
     -webkit-border-radius: .5ex  !important;
     border-radius: .5ex !important;
-    color: #006666 !important;
+    color: #6A0307 !important;
 
 }
 .ts-skin-lab .ts-player .ts-ruler .ts-section .ts-label {

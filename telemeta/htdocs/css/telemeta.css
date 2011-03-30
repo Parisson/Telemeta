@@ -924,7 +924,7 @@ a.image-link {
     font-style: italic;
 }
 .markersdivTopElement{
-    /*vertical-align:middle;*/
+   /* vertical-align:middle;*/
 }
 .markersdivTitle{
     font-weight:bold;
@@ -955,13 +955,21 @@ a.image-link {
 .markersdivEdit span{
     position:absolute;top:-0.75ex;left:3ex;
 }
-.markersdivDelete{
+.markersdivDelete, .markersdivAddPlaylist{
     border:0px;
     float:right;
     background-image: url('/images/del_marker.png');
     background-repeat: no-repeat;
     background-position: top center;
-    padding:1ex 1ex 1ex 1ex;/*top right bottom left. The padding is only to show the element */
+    /*padding:1ex 1ex 1ex 1ex; top right bottom left. The padding is only to show the element */
+    width: 15px;
+    height:15px;
+}
+.markersdivDelete{
+    background-image: url('/images/del_marker.png');
+}
+.markersdivAddPlaylist{
+    background-image: url('/images/add_playlist_marker.png');
 }
 .markersdivDescription{
     margin:0ex 0px 0ex 0px; /*top right bottom left*/
@@ -974,10 +982,13 @@ a.image-link {
     background-color: #087714;
     color: #fff;
     font-weight: bold;
-    padding: 0.3em 0.8em 0.3em 0.8em;
-    padding:5px 10px 5px 26px;
+    /*padding: 0.3em 0.8em 0.3em 0.8em;
+    padding:5px 10px 5px 26px;*/
+    display:block;
+    width: 4ex;
+    padding: 1ex .5ex 1ex 3.5ex;
     background-repeat: no-repeat;
-    background-position: 1ex .5ex;
+    background-position: 1ex 1ex;
     -moz-border-radius: 1ex 1ex 1ex 1ex;
     -webkit-border-radius: 1ex 1ex 1ex 1ex;
     border-radius: 1ex 1ex 1ex 1ex;

@@ -30,7 +30,9 @@
         $('#_add_to_playlist').click(function(e){return popup.show(content,e)});
     });
 
-
+    {% if item %}
+        var ITEM_PUBLIC_ID = '{{item.public_id}}';
+    {% endif %}
     
 </script>
 

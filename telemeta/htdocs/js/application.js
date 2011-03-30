@@ -108,14 +108,14 @@ $(document).ready(function() {
 //
 //method: the json method, eg "telemeta.update_marker". See base.py
 //
-//onSuccesFcn(data, textStatus, jqXHR) OPTIONAL
+//onSuccesFcn(data, textStatus, jqXHR) OPTIONAL --IF MISSING, NOTHING HAPPENS --
 //   A function to be called if the request succeeds.
 //   The function gets passed three arguments:
 //      The data returned from the server, formatted according to the dataType parameter;
 //      a string describing the status;
 //      and the jqXHR (in jQuery 1.4.x, XMLHttpRequest) object
 //
-//onErrorFcn(jqXHR, textStatus, errorThrown) OPTIONAL. --If missing, default dialog error is shown--
+//onErrorFcn(jqXHR, textStatus, errorThrown) OPTIONAL. --IF MISSING, THE DEFAULT ERROR DIALOG IS SHOWN--
 //    A function to be called if the request fails.
 //    The function receives three arguments:
 //      The jqXHR (in jQuery 1.4.x, XMLHttpRequest) object,

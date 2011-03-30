@@ -27,7 +27,7 @@ TimeSide(function($N, $J) {
     $N.isLoading = false;
     $N.onLoadCallbacks = [];
     $N.cssPrefix = 'ts-';
-    $N.debugging = false;
+    $N.debugging = true;
 
     $J(document).ready(function () {
         $N.isDomLoaded = true;
@@ -92,8 +92,9 @@ TimeSide(function($N, $J) {
     $N.load = function(callback) {
         $N.domReady(function() {
             if ($N.isLoaded) {
-                if (callback)
+                if (callback){
                     callback();
+                }
             } else {
                 if (callback)
                     $N.onLoadCallbacks.push(callback);
@@ -119,6 +120,7 @@ TimeSide(function($N, $J) {
                                 $N.isLoading = false;
                                 $J($N.onLoadCallbacks).each(function(i, callback) {
                                     callback();
+                                    //console.log(callback.toString());
                                 });
                             });
                         });
