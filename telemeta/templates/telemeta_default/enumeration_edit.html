@@ -15,12 +15,14 @@
 
    </div>
    <div class="buttons">
-    <input type="submit" name="add" value="{% trans 'Add' %}">
+    <br />
+    <a href="#" class="component_icon button icon_add"
+      onclick="document.getElementById('addenum').submit(); return false;">{% trans "Add" %}</a>
    </div>
   </fieldset>
  </form>
  {% if enumeration_values %}
- <form method="POST" action="{% url telemeta-enumeration-update enumeration_id %}">{% csrf_token %}
+ <form method="POST" id="editenum" action="{% url telemeta-enumeration-update enumeration_id %}">{% csrf_token %}
   <table class="listing">
    <thead>
     <tr><th class="sel">&nbsp;</th><th>{% trans "Value"%}</th>
@@ -29,7 +31,7 @@
    </thead><tbody>
     {% for record in enumeration_values %}
     <tr>
-     <td><input type="checkbox" name="sel" value="{{record.id}}" /></td>
+     <td><input type="checkbox" name="sel" value="{{instrument.id}}" /></td>
      <td><a href="{% url telemeta-enumeration-record-edit enumeration_id,record.id %}">
         {{record.value}}</a></td>
     </tr>
@@ -37,7 +39,9 @@
     </tbody>
   </table>
   <div class="buttons">
-   <input type="submit" name="remove" value="{% trans 'Remove selected items' %}" />
+   <br />
+   <a href="#" class="component_icon button icon_cancel"
+      onclick="document.getElementById('editenum').submit(); return false;">{% trans "Remove selected items" %}</a>
   </div>
  </form>
  {% else %}

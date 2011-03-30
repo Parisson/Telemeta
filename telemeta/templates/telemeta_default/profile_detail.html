@@ -4,18 +4,31 @@
 
 {% block head_title %}{% trans "User Profile" %} : {{ usr.username }}{% endblock %}
 
-{% block submenu %}
-    <div>
-    {% block tools %}
-    {% if user.is_authenticated %}
-      <a href="{% url telemeta-profile-edit usr.username %}" class="component_icon button icon_edit">{% trans "Edit" %}</a>
-     {% endif %}
-    {% endblock tools %}
-    </div>
-{% endblock %}
+
 
 {% block content %}
-    <h3>{% trans "User profile" %} : {{ usr.username }}</h3>
+  <div class="module-set" style="width: 33%">
+  {% block modules %}
+  <div id="module" class="module">
+    <h3><img src="{% url telemeta-images "module_playlist.png" %}" style="vertical-align:middle" />
+    {% trans "Playlists" %}</h3>
+    <ul class="playlist">
+    {% for p in playlists %}
+    <li>
+        <b>{{ p.playlist.title }}</b>
+        <br />
+        <span class="info">{{ p.playlist.description }}</span>
+    </li>
+    {% endfor %}
+    </ul>
+   </div>
+  {% endblock %}
+  </div>
+
+  <h3>{% trans "User profile" %} : {{ usr.username }}</h3>
+{% if user.is_authenticated %}
+      <a href="{% url telemeta-profile-edit usr.username %}" class="component_icon button icon_edit" style="float:right">{% trans "Edit" %}</a>
+     {% endif %}
     <div class="infos" style="padding-top: 1em;">
      <dl class="listing">
       <dt>{% trans "First Name" %}</dt><dd>{{ usr.first_name }}</dd>
@@ -33,5 +46,6 @@
       <dt>{% trans "Last login" %}</dt><dd>{{ usr.last_login }}</dd>
      </dl>
     </div>
+   </div>
 {% endblock %}
 

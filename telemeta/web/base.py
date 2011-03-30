@@ -890,8 +890,9 @@ class WebView(object):
         m = Playlist.objects.get(public_id=public_id)
         m.delete()
         
-    def get_playlists(self, request):
-        user = request.user
+    def get_playlists(self, request, user=None):
+        if not user:
+            user = request.user
         playlists = []
         if user.is_authenticated():
             user_playlists = Playlist.objects.filter(author=user)
@@ -1043,7 +1044,8 @@ class WebView(object):
             profile = user.get_profile()
         except:
             profile = None
-        return render(request, template, {'profile' : profile, 'usr': user})
+        playlists = self.get_playlists(request, user)
+        return render(request, template, {'profile' : profile, 'usr': user, 'playlists': playlists})
         
     def profile_edit(self, request, username, template='telemeta/profile_edit.html'):
         if request.user.is_staff:
