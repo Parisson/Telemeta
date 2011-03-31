@@ -134,12 +134,27 @@ urlpatterns = patterns('',
     # administration        
     url(r'^admin/$', web_view.admin_index, name="telemeta-admin"),        
     url(r'^admin/general/$', web_view.admin_general, name="telemeta-admin-general"),        
-    url(r'^admin/enumerations/$', web_view.admin_enumerations, name="telemeta-admin-enumerations"),        
-    url(r'^admin/instruments/$', web_view.admin_instruments, name="telemeta-admin-instruments"),        
+    url(r'^admin/enumerations/$', web_view.admin_enumerations, name="telemeta-admin-enumerations"),       
     
     # instruments administration
-    url(r'^admin/instruments/(?P<instrument_id>[0-9]+)/edit/$', web_view.admin_instrument_edit, name="telemeta-admin-instruments-edit"), 
-    
+    url(r'^admin/instruments/$', 
+        web_view.edit_instrument ,
+        name="telemeta-instrument-edit"),        
+    url(r'^admin/instruments/add/$', 
+        web_view.add_to_instrument,
+        name="telemeta-instrument-add"),        
+    url(r'^admin/instruments/update/$', 
+        web_view.update_instrument,
+        name="telemeta-instrument-update"),        
+    url(r'^admin/instruments/'
+        + r'(?P<value_id>[0-9]+)/$',
+        web_view.edit_instrument_value,
+        name="telemeta-instrument-record-edit"),   
+    url(r'^admin/instruments/'
+        + r'(?P<value_id>[0-9]+)/update/$',
+        web_view.update_instrument_value, 
+        name="telemeta-instrument-record-update"),   
+        
     # enumerations administration
     url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/$', 
         web_view.edit_enumeration ,

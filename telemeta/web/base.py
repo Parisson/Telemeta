@@ -626,6 +626,25 @@ class WebView(object):
             extra_context={'criteria': criteria, 'collections_num': collections.count(), 
                 'items_num': items.count(), 'type' : type})
 
+
+
+
+    # ADMIN
+
+    @method_decorator(permission_required('sites.change_site'))
+    def admin_index(self, request):
+        return render(request, 'telemeta/admin.html', self.__get_admin_context_vars())
+
+    @method_decorator(permission_required('sites.change_site'))
+    def admin_general(self, request):
+        return render(request, 'telemeta/admin_general.html', self.__get_admin_context_vars())
+    
+    @method_decorator(permission_required('sites.change_site'))
+    def admin_enumerations(self, request):
+        return render(request, 'telemeta/admin_enumerations.html', self.__get_admin_context_vars())
+
+    
+    # ENUMERATIONS
     def __get_enumerations_list(self):
         from django.db.models import get_models
         models = get_models(telemeta.models)
@@ -643,29 +662,6 @@ class WebView(object):
     def __get_admin_context_vars(self):
         return {"enumerations": self.__get_enumerations_list()}
     
-    @method_decorator(permission_required('sites.change_site'))
-    def admin_index(self, request):
-        return render(request, 'telemeta/admin.html', self.__get_admin_context_vars())
-
-    @method_decorator(permission_required('sites.change_site'))
-    def admin_general(self, request):
-        return render(request, 'telemeta/admin_general.html', self.__get_admin_context_vars())
-    
-    @method_decorator(permission_required('sites.change_site'))
-    def admin_enumerations(self, request):
-        return render(request, 'telemeta/admin_enumerations.html', self.__get_admin_context_vars())
-
-    @method_decorator(permission_required('sites.change_site'))
-    def admin_instruments(self, request):
-        instruments = Instrument.objects.all().order_by('name')
-        return render(request, 'telemeta/admin_instruments.html', {'instruments': instruments})
-
-    @method_decorator(permission_required('telemeta.change_instrument'))
-    def admin_instrument_edit(self, request, instrument_id):
-        instrument = Instrument.objects.get(pk=instrument_id)
-        vars = self.__get_admin_context_vars()
-        render(request, 'telemeta/enumeration_edit_value.html', vars)
-        
     def __get_enumeration(self, id):
         from django.db.models import get_models
         models = get_models(telemeta.models)
@@ -709,8 +705,8 @@ class WebView(object):
         enumeration  = self.__get_enumeration(enumeration_id)
         if enumeration == None:
             raise Http404
-
-        if request.POST.has_key("remove"):
+        
+        if request.method == 'POST':
             enumeration.objects.filter(id__in=request.POST.getlist('sel')).delete()
 
         return self.edit_enumeration(request, enumeration_id)
@@ -731,7 +727,7 @@ class WebView(object):
     @method_decorator(permission_required('telemeta.change_keyword'))
     def update_enumeration_value(self, request, enumeration_id, value_id):        
 
-        if request.POST.has_key("save"):
+        if request.method == 'POST':
             enumeration  = self.__get_enumeration(enumeration_id)
             if enumeration == None:
                 raise Http404
@@ -742,6 +738,50 @@ class WebView(object):
 
         return self.edit_enumeration(request, enumeration_id)
   
+  
+    
+    # INSTRUMENTS
+    @method_decorator(permission_required('telemeta.change_instrument'))
+    def edit_instrument(self, request):        
+        
+        instruments = Instrument.objects.all().order_by('name')
+        if instruments == None:
+            raise Http404
+        return render(request, 'telemeta/instrument_edit.html', {'instruments': instruments})
+
+    @method_decorator(permission_required('telemeta.add_instrument'))
+    def add_to_instrument(self, request):        
+
+        if request.method == 'POST':
+            instrument = Instrument(name=request.POST['value'])
+            instrument.save()
+
+        return self.edit_instrument(request)
+
+    @method_decorator(permission_required('telemeta.change_instrument'))
+    def update_instrument(self, request):        
+        
+        if request.method == 'POST':
+            Instrument.objects.filter(id__in=request.POST.getlist('sel')).delete()
+
+        return self.edit_instrument(request)
+
+    @method_decorator(permission_required('telemeta.change_instrument'))
+    def edit_instrument_value(self, request, value_id):        
+        instrument = Instrument.objects.get(id__exact=value_id)
+        
+        return render(request, 'telemeta/instrument_edit_value.html', {'instrument': instrument})
+
+    @method_decorator(permission_required('telemeta.change_instrument'))
+    def update_instrument_value(self, request, value_id):        
+
+        if request.method == 'POST':       
+            instrument = Instrument.objects.get(id__exact=value_id)
+            instrument.name = request.POST["value"]
+            instrument.save()
+
+        return self.edit_instrument(request)
+        
     def collection_playlist(self, request, public_id, template, mimetype):
         try:
             collection = MediaCollection.objects.get(public_id=public_id)

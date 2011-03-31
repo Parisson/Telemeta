@@ -14,9 +14,12 @@
     <label>{% trans "Value" %}: <input type="text" name="value" value="{{enumeration_record.value}}" /></label>
 
    </div>
+   <br />
    <div class="buttons">
-    <input type="submit" name="save" value="{% trans 'Save' %}">
-    <input type="submit" name="cancel" value="{% trans 'Cancel' %}">
+        <a href="#" class="component_icon button icon_save"
+   onclick="document.getElementById('addenum').submit(); return false;">{% trans "Save" %}</a>
+        <a href="{% url telemeta-enumeration-edit enumeration_id %}"
+           class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
    </div>
   </fieldset>
  </form>

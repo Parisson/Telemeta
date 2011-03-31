@@ -6,7 +6,7 @@
 {% block tabcontents %}
  <h4>{% trans "Enumeration" %}: {{ enumeration_name|capfirst }}</h4>
 
- <form class="addnew" id="addenum" method="post"
+ <form class="addnew" id="_addenum" method="POST"
         action="{% url telemeta-enumeration-add enumeration_id %}">{% csrf_token %}
   <fieldset>
    <legend>{% trans "Add entry" %}</legend>
@@ -17,12 +17,12 @@
    <div class="buttons">
     <br />
     <a href="#" class="component_icon button icon_add"
-      onclick="document.getElementById('addenum').submit(); return false;">{% trans "Add" %}</a>
+      onclick="document.getElementById('_addenum').submit(); return false;">{% trans "Add" %}</a>
    </div>
   </fieldset>
  </form>
  {% if enumeration_values %}
- <form method="POST" id="editenum" action="{% url telemeta-enumeration-update enumeration_id %}">{% csrf_token %}
+ <form id="_updateenum" method="POST" action="{% url telemeta-enumeration-update enumeration_id %}">{% csrf_token %}
   <table class="listing">
    <thead>
     <tr><th class="sel">&nbsp;</th><th>{% trans "Value"%}</th>
@@ -31,7 +31,7 @@
    </thead><tbody>
     {% for record in enumeration_values %}
     <tr>
-     <td><input type="checkbox" name="sel" value="{{instrument.id}}" /></td>
+     <td><input type="checkbox" name="sel" value="{{record.id}}" /></td>
      <td><a href="{% url telemeta-enumeration-record-edit enumeration_id,record.id %}">
         {{record.value}}</a></td>
     </tr>
@@ -41,7 +41,7 @@
   <div class="buttons">
    <br />
    <a href="#" class="component_icon button icon_cancel"
-      onclick="document.getElementById('editenum').submit(); return false;">{% trans "Remove selected items" %}</a>
+      onclick="document.getElementById('_updateenum').submit(); return false;">{% trans "Remove selected items" %}</a>
   </div>
  </form>
  {% else %}
