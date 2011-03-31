@@ -41,7 +41,7 @@
             {% endif %}
             {% if r.revision.element_type == "item" %}
             <a href="{% url telemeta-item-detail r.element.public_id %}">
-            {% if r.element.title != '' %}{{ r.element.title }}{% else %}{{ r.element.public_id }}{% endif %}</a>
+            {% if r.element.title != '' %}{{ r.element.title }}{% else %}{{ r.element.collection.title }} - {{ r.element.track }}{% endif %}</a>
             {% endif %}
             {% if r.revision.element_type == "marker" %}
             <a href="{% url telemeta-item-detail-marker r.element.public_id %}">{{ r.element.title }}</a>
