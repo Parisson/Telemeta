@@ -46,9 +46,7 @@
 
 {% ifequal type 'items' %}
 
-  <p><b>Items ({{items_num}})</b> | 
-  <a href="{% url telemeta-search-collections %}?{{criteria|build_query_string}}">
-    Collections ({{collections_num}})</a></p>
+  <p><a href="{% url telemeta-search-collections %}?{{criteria|build_query_string}}">Collections ({{collections_num}})</a> | <b>Items ({{items_num}})</b></p>
 
   {% with object_list as items %}
    <div class="fullpage">
@@ -58,9 +56,8 @@
 
 {% else %}
 
-  <p><a href="{% url telemeta-search-items %}?{{criteria|build_query_string}}">
-    Items ({{items_num}})</a> |
-  <b>Collections ({{collections_num}})</b></p>
+  <p><b>Collections ({{collections_num}})</b> | <a href="{% url telemeta-search-items %}?{{criteria|build_query_string}}">Items ({{items_num}})</a>
+  </p>
 
   {% with object_list as collections %}
    <div class="fullpage">

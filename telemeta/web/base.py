@@ -611,7 +611,7 @@ class WebView(object):
                 criteria[key] = value
 
         if type is None:
-            if collections.count() and not items.count():
+            if collections.count():
                 type = 'collections'
             else:
                 type = 'items'
@@ -626,11 +626,7 @@ class WebView(object):
             extra_context={'criteria': criteria, 'collections_num': collections.count(), 
                 'items_num': items.count(), 'type' : type})
 
-
-
-
     # ADMIN
-
     @method_decorator(permission_required('sites.change_site'))
     def admin_index(self, request):
         return render(request, 'telemeta/admin.html', self.__get_admin_context_vars())
@@ -643,7 +639,6 @@ class WebView(object):
     def admin_enumerations(self, request):
         return render(request, 'telemeta/admin_enumerations.html', self.__get_admin_context_vars())
 
-    
     # ENUMERATIONS
     def __get_enumerations_list(self):
         from django.db.models import get_models
