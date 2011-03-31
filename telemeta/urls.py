@@ -215,11 +215,21 @@ urlpatterns = patterns('',
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'telemeta/login.html'},
         name="telemeta-login"),
     url(r'^logout/$', web_view.logout, name="telemeta-logout"),
-    
+
     # Profile
     url(r'^accounts/(?P<username>[A-Za-z0-9._-]+)/profile/$', web_view.profile_detail, name="telemeta-profile-detail"),
     url(r'^accounts/(?P<username>[A-Za-z0-9._-]+)/profile/edit/$', web_view.profile_edit, name="telemeta-profile-edit"),
     
+    # Registration
+    url(r'^accounts/password_change/$', 'django.contrib.auth.views.password_change', {'template_name': 'telemeta/registration/password_change_form.html'}, name="telemeta-password-change"),
+    url(r'^accounts/password_change_done/$', 'django.contrib.auth.views.password_change_done', {'template_name': 'telemeta/registration/password_change_done.html'}, name="telemeta-password-change-done"),
+    
+    url(r'^accounts/password_reset/$', 'django.contrib.auth.views.password_reset', {'template_name': 'telemeta/registration/password_reset_form.html', 'email_template_name': 'telemeta/registration/password_reset_email.html'}, name="telemeta-password-reset"),
+    url(r'^accounts/password_reset_done/$', 'django.contrib.auth.views.password_reset_done', {'template_name': 'telemeta/registration/password_reset_done.html'}, name="telemeta-password-reset-done"),
+    url(r'^accounts/password_reset_confirm/(?P<uidb36>[A-Za-z0-9._-]+)/(?P<token>[A-Za-z0-9._-]+)/$', 'django.contrib.auth.views.password_reset_confirm', {'template_name': 'telemeta/registration/password_reset_confirm.html'}, name="telemeta-password-reset-confirm"),
+    url(r'^accounts/password_reset_complete/$', 'django.contrib.auth.views.password_reset_complete', {'template_name': 'telemeta/registration/password_reset_complete.html'}, name="telemeta-password-reset-complete"),
+    url(r'^accounts/password_reset_complete/$', 'django.contrib.auth.views.password_reset_complete', {'template_name': 'telemeta/registration/password_reset_complete.html'}, name="telemeta-password-reset-complete"),
+       
     # JSON RPC
     url(r'^json/browse/', 'jsonrpc.views.browse', name="jsonrpc_browser"), # for the graphical browser/web console only, omissible
     url(r'^json/$', jsonrpc_site.dispatch, name='jsonrpc_mountpoint'),

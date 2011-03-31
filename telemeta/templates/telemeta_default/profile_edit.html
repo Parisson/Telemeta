@@ -14,7 +14,7 @@
        <table>
        {% for form in forms %}
         {% for field in form %}
-        {% if not field.html_name in hidden_fields %}
+        {% if not field.html_name in user_hidden_fields %}
         <tr>
             <tr><td class="error">{{ field.errors }}</td></tr>
             <td>{% trans field.label_tag %} : </td><td>{{ field }}</td>

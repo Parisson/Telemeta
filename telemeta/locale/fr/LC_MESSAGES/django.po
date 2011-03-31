@@ -884,3 +884,7 @@ msgstr "Statut super-utilisateur"
 #: templates/telemeta_default/profile_detail.html:21
 msgid "Last login"
 msgstr "Dernière connexion"
+
+#: templates/telemeta_default/login.html:21
+msgid "Password forgotten"
+msgstr "Mot de passe oublié"

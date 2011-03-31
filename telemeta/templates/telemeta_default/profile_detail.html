@@ -46,6 +46,7 @@
       <dt>{% trans "Last login" %}</dt><dd>{{ usr.last_login }}</dd>
      </dl>
     </div>
+    <a href="{% url telemeta-password-change %}" class="component_icon button icon_login" style="float:left">{% trans "Change password" %}</a>
    </div>
 {% endblock %}
 
