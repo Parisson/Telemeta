@@ -938,40 +938,44 @@ class WebView(object):
         m = PlaylistResource.objects.get(public_id=public_id)
         m.delete()
         
-    def playlist_csv_export(self, request, public_id):
+
+    def playlist_csv_export(self, request, public_id, resource_type):
         playlist = Playlist.objects.get(public_id=public_id, author=request.user)
         resources = PlaylistResource.objects.filter(playlist=playlist)
         response = HttpResponse(mimetype='text/csv')
-        response['Content-Disposition'] = 'attachment; filename='+playlist.title+'.csv'
+        response['Content-Disposition'] = 'attachment; filename='+playlist.title+'_'+resource_type+'.csv'
         writer = UnicodeWriter(response)
         
-        items = []
+        elements = []
         for resource in resources:
-            if resource.resource_type == 'collection':
-                collection = MediaCollection.objects.get(pk=resource.resource_id)
-                collection_items = MediaItem.objects.filter(collection=collection)
-                for item in collection_items:
-                    items.append(item)
-            elif resource.resource_type == 'item':
-                item = MediaItem.objects.get(pk=resource.resource_id)
-                items.append(item)
-            else:
-                pass
-        
-        if items:
-            item = item.to_dict()
-            tags = item.keys()
+            if resource_type == 'items':
+                if resource.resource_type == 'collection':
+                    collection = MediaCollection.objects.get(pk=resource.resource_id)
+                    collection_items = MediaItem.objects.filter(collection=collection)
+                    for item in collection_items:
+                        elements.append(item)
+                elif resource.resource_type == 'item':
+                    item = MediaItem.objects.get(pk=resource.resource_id)
+                    elements.append(item)
+                
+            elif resource_type == 'collections':
+                if resource.resource_type == 'collection':
+                    collection = MediaCollection.objects.get(pk=resource.resource_id)
+                    elements.append(collection)
+                
+        if elements:
+            element = elements[0].to_dict()
+            tags = element.keys()
             writer.writerow(tags)
-            import types
             
-            for item in items:
+            for element in elements:
                 data = []
-                item = item.to_dict()
+                element = element.to_dict()
                 for tag in tags:
-                    data.append(item[tag])
+                    data.append(element[tag])
                 writer.writerow(data)
         return response
-
+        
     def help(self, request):
         """Render the help page"""
         template = loader.get_template('telemeta/index.html')
