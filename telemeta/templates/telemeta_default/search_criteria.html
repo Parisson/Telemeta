@@ -72,9 +72,6 @@ $(document).ready(function () {
     </select>
     </p>
 
-</fieldset>
-<fieldset>
-
     <p>
     <label for="title">{% trans "Title" %}</label>
     <input type="text" id="title" name="title" />
@@ -131,7 +128,8 @@ $(document).ready(function () {
 </fieldset>
 
 <p class="input">
-<input type="submit" value="{% trans 'Search' %}" />
+<a href="#" class="component_icon button icon_search"
+      onclick="document.getElementById('searchform').submit(); return false;">{% trans 'Search' %}</a>
 </p>
 
 </form>

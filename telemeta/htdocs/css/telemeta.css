@@ -353,8 +353,11 @@ form.login .submit {
     padding: .5em;
     width: 650px;
     border: none;
-    border: 1px dotted #888;
+    border: 1px solid #6a0307;
     margin-bottom: 1em;
+    -moz-border-radius: 8px 8px 8px 8px;
+    -webkit-border-radius: 8px 8px 8px 8px;
+    border-radius: 8px 8px 8px 8px;
 }
 #searchform p {
     background-color: #fff;

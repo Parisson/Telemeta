@@ -10,9 +10,9 @@
  color: #6a0307;
  font-size: 14px;
  font-weight: bold;
-     -moz-border-radius: 8px 8px 8px 8px;
-    -webkit-border-radius: 8px 8px 8px 8px;
-    border-radius: 8px 8px 8px 8px;
+ -moz-border-radius: 8px 8px 8px 8px;
+ -webkit-border-radius: 8px 8px 8px 8px;
+ border-radius: 8px 8px 8px 8px;
 }
 .tabs ul { list-style: none; margin: 0 0 .5em; padding: 0 }
 .tabs li { margin: 0; padding: 0.1em .5em }
