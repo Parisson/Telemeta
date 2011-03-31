@@ -833,6 +833,10 @@ msgstr "Administration générale"
 msgid "Enumerations"
 msgstr "Énumérations"
 
+#: templates/telemeta_default/admin.html:13
+msgid "Users"
+msgstr "Utilisateurs"
+
 #: web.base.py:955
 msgid "Access not allowed"
 msgstr "Accès non autorisé"

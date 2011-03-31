@@ -6,11 +6,9 @@
  <h4>{% trans "Users" %}</h4>
 
  {% if users %}
-   <ul>
     {% for user in users %}
-    <li>{{user.username}}</li>
+     <li><a href="{% url telemeta-profile-detail user.username %}">{{user.username}}</a></li>
     {% endfor %}
-    </ul>
  {% else %}
     <p class="help">{% trans "No users" %}</p>
  {% endif %}

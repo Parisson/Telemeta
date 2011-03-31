@@ -12,9 +12,10 @@
 <br />
 <div class="tabs">
 <ul>
-<li><a href="/admin/general/">{% trans "General administration" %}</a></li>
-<li><a href="/admin/enumerations/">{% trans "Enumerations" %}</a></li>
-<li><a href="/admin/instruments/">{% trans "Instruments" %}</a></li>
+<li><a href="{% url telemeta-admin-general %}">{% trans "General administration" %}</a></li>
+<li><a href="{% url telemeta-admin-users %}">{% trans "Users" %}</a></li>
+<li><a href="{% url telemeta-admin-enumerations %}">{% trans "Enumerations" %}</a></li>
+<li><a href="{% url telemeta-instrument-edit %}">{% trans "Instruments" %}</a></li>
 </ul>
 </div>
 {% block tab %}

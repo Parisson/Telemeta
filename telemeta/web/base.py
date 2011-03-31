@@ -638,6 +638,10 @@ class WebView(object):
     @method_decorator(permission_required('sites.change_site'))
     def admin_enumerations(self, request):
         return render(request, 'telemeta/admin_enumerations.html', self.__get_admin_context_vars())
+    @method_decorator(permission_required('sites.change_site'))
+    def admin_users(self, request):
+        users = User.objects.all()
+        return render(request, 'telemeta/admin_users.html', {'users': users})
 
     # ENUMERATIONS
     def __get_enumerations_list(self):
