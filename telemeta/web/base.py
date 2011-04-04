@@ -512,6 +512,8 @@ class WebView(object):
             
         else:        
             if not self.cache_export.exists(file):
+                if not decoder:
+                    decoder = timeside.decoder.FileDecoder(audio)
                 # source > encoder > stream
                 decoder.setup()
                 media = self.cache_export.dir + os.sep + file
@@ -940,11 +942,11 @@ class WebView(object):
                 resources = []
                 for resource in playlist_resources:
                     if resource.resource_type == 'item':
-                        element = MediaItem.objects.get(pk=resource.resource_id)
+                        element = MediaItem.objects.get(public_id=resource.resource_id)
                     if resource.resource_type == 'collection':
-                        element = MediaCollection.objects.get(pk=resource.resource_id)
+                        element = MediaCollection.objects.get(public_id=resource.resource_id)
                     if resource.resource_type == 'marker':
-                        element = MediaItemMarker.objects.get(pk=resource.resource_id)
+                        element = MediaItemMarker.objects.get(public_id=resource.resource_id)
                     resources.append({'element': element, 'type': resource.resource_type, 'public_id': resource.public_id })
                 playlists.append({'playlist': playlist, 'resources': resources})
         return playlists
