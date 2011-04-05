@@ -43,21 +43,26 @@ class MediaItemQuerySet(CoreQuerySet):
     "Base class for all media item query sets"
     
     def quick_search(self, pattern):
-        "Perform a quick search on various fields"
-        from telemeta.models.media import MediaItem
+        "Perform a quick search on code, title and collector name"
         pattern = pattern.strip()
-        model = MediaItem()
-        fields = model.to_dict()
-        keys =  fields.keys()
-        fields = []
-        for field in keys:
-            field_str = str(model._meta.get_field(field))
-            if 'CharField' in field_str:
-                fields.append(field)
-        q = Q(code__contains=pattern.strip()) | Q(old_code__contains=pattern.strip())
-        for field in fields:
-            q = q | word_search_q(field, pattern)
-        q = q | self.by_fuzzy_collector_q(pattern)
+        
+#        from telemeta.models.media import MediaItem
+#        mod = MediaItem()
+#        fields = mod.to_dict()
+#        keys =  fields.keys()
+#        q = self.by_fuzzy_collector_q(pattern)
+#        for field in keys:
+#            field_str = str(mod._meta.get_field(field))
+#            if 'CharField' in field_str:
+#                q = q | word_search_q(field)
+
+        q = ( Q(code__contains=pattern) |
+            Q(old_code__contains=pattern) |
+            word_search_q('title', pattern) |  
+            word_search_q('comment', pattern) |  
+            self.by_fuzzy_collector_q(pattern) )
+        
+        print q
         return self.filter(q)
 
     def without_collection(self):        
@@ -228,21 +233,17 @@ class MediaItemManager(CoreManager):
 class MediaCollectionQuerySet(CoreQuerySet):
 
     def quick_search(self, pattern):
-        "Perform a quick search on various fields"
+        "Perform a quick search on code, title and collector name"
         from telemeta.models.media import MediaCollection
         pattern = pattern.strip()
-        model = MediaCollection()
-        fields = model.to_dict()
+        mod = MediaCollection()
+        fields = mod.to_dict()
         keys =  fields.keys()
-        fields = []
+        q = self.by_fuzzy_collector_q(pattern)
         for field in keys:
-            field_str = str(model._meta.get_field(field))
-            if 'CharField' in field_str:
-                fields.append(field)
-        q = Q(code__contains=pattern.strip()) | Q(old_code__contains=pattern.strip())
-        for field in fields:
-            q = q | word_search_q(field, pattern)
-        q = q | self.by_fuzzy_collector_q(pattern)
+            field_str = str(mod._meta.get_field(field))
+            if 'CharField' in field_str or 'TextField' in field_str:
+                q = q | word_search_q(field, pattern)
         return self.filter(q)
 
     def by_location(self, location):

@@ -412,14 +412,7 @@ class WebView(object):
                         time = ':'.join(time)
                         item.approx_duration = str(time)
                         item.save()
-        else:
-            # process first waveform to speed up imports
-#            width = 360
-#            height = 130
-#            size =  str(width) + '_' + str(height)
-#            grapher_id = 'waveform'
-#            image_file = '.'.join([public_id, grapher_id, size, 'png'])
-#            
+        else:     
             analyzers = []
             analyzers_sub = []
             if item.file:
@@ -429,18 +422,8 @@ class WebView(object):
                     subpipe = analyzer()
                     analyzers_sub.append(subpipe)
                     pipe = pipe | subpipe
-#                if not self.cache_data.exists(image_file):
-#                    path = self.cache_data.dir + os.sep + image_file
-#                    for grapher in self.graphers:
-#                        if grapher.id() == grapher_id:
-#                            break
-#                    graph = grapher(width = int(width), height = int(height))
-#                    pipe = pipe | graph
                 pipe.run()
-#                if not self.cache_data.exists(image_file):
-#                    f = open(path, 'w')
-#                    graph.render(path)
-#                    f.close()
+
                 mime_type = decoder.format()
                 analyzers.append({'name': 'Mime type', 'id': 'mime_type', 'unit': '', 'value': mime_type})
                 analyzers.append({'name': 'Channels', 'id': 'channels', 'unit': '', 'value': decoder.channels()})
@@ -472,8 +455,7 @@ class WebView(object):
             self.item_analyze(item)
         mime_type = 'text/xml'
         response = HttpResponse(self.cache_data.read_stream_bin(analyze_file), mimetype=mime_type)
-#        response['Content-Disposition'] = 'attachment; filename='+public_id+'.xml'
-        
+        response['Content-Disposition'] = 'attachment; filename='+public_id+'.xml'        
         return response        
         
     def item_visualize(self, request, public_id, visualizer_id, width, height):
@@ -541,7 +523,7 @@ class WebView(object):
             decoder = timeside.decoder.FileDecoder(audio)
             format = decoder.format()
         
-        if format == mime_type:
+        if mime_type in format:
             # source > stream
             response = HttpResponse(stream_from_file(audio), mimetype = mime_type)
             
