@@ -43,14 +43,22 @@ class MediaItemQuerySet(CoreQuerySet):
     "Base class for all media item query sets"
     
     def quick_search(self, pattern):
-        "Perform a quick search on code, title and collector name"
+        "Perform a quick search on various fields"
+        from telemeta.models.media import MediaItem
         pattern = pattern.strip()
-        return self.filter(
-            Q(code__contains=pattern.strip()) |
-            Q(old_code__contains=pattern.strip()) |
-            word_search_q('title', pattern) |  
-            self.by_fuzzy_collector_q(pattern)
-        )
+        model = MediaItem()
+        fields = model.to_dict()
+        keys =  fields.keys()
+        fields = []
+        for field in keys:
+            field_str = str(model._meta.get_field(field))
+            if 'CharField' in field_str:
+                fields.append(field)
+        q = Q(code__contains=pattern.strip()) | Q(old_code__contains=pattern.strip())
+        for field in fields:
+            q = q | word_search_q(field, pattern)
+        q = q | self.by_fuzzy_collector_q(pattern)
+        return self.filter(q)
 
     def without_collection(self):        
         "Find items which do not belong to any collection"
@@ -220,14 +228,22 @@ class MediaItemManager(CoreManager):
 class MediaCollectionQuerySet(CoreQuerySet):
 
     def quick_search(self, pattern):
-        "Perform a quick search on code, title and collector name"
+        "Perform a quick search on various fields"
+        from telemeta.models.media import MediaCollection
         pattern = pattern.strip()
-        return self.filter(
-            Q(code__contains=pattern.strip()) |
-            Q(old_code__contains=pattern.strip()) |
-            word_search_q('title', pattern) |  
-            self.by_fuzzy_collector_q(pattern)
-        )
+        model = MediaCollection()
+        fields = model.to_dict()
+        keys =  fields.keys()
+        fields = []
+        for field in keys:
+            field_str = str(model._meta.get_field(field))
+            if 'CharField' in field_str:
+                fields.append(field)
+        q = Q(code__contains=pattern.strip()) | Q(old_code__contains=pattern.strip())
+        for field in fields:
+            q = q | word_search_q(field, pattern)
+        q = q | self.by_fuzzy_collector_q(pattern)
+        return self.filter(q)
 
     def by_location(self, location):
         "Find collections by location"

@@ -390,12 +390,12 @@ class WebView(object):
                         item.save()
         else:
             # process first waveform to speed up imports
-            width = 360
-            height = 130
-            size =  str(width) + '_' + str(height)
-            grapher_id = 'waveform'
-            image_file = '.'.join([public_id, grapher_id, size, 'png'])
-            
+#            width = 360
+#            height = 130
+#            size =  str(width) + '_' + str(height)
+#            grapher_id = 'waveform'
+#            image_file = '.'.join([public_id, grapher_id, size, 'png'])
+#            
             analyzers = []
             analyzers_sub = []
             if item.file:
@@ -440,6 +440,16 @@ class WebView(object):
                 self.cache_data.write_analyzer_xml(analyzers, analyze_file)
             
         return analyzers
+    
+    def item_analyze_xml(self, request, public_id):
+        item = MediaItem.objects.get(public_id=public_id)
+        analyze_file = public_id + '.xml'
+        if not self.cache_data.exists(analyze_file):
+            self.item_analyze(item)
+        mime_type = 'text/xml'
+        response = HttpResponse(self.cache_data.read_stream_bin(analyze_file), mimetype=mime_type)
+        response['Content-Disposition'] = 'attachment; filename='+public_id+'.xml'
+        return response        
         
     def item_visualize(self, request, public_id, visualizer_id, width, height):
         item = MediaItem.objects.get(public_id=public_id)
