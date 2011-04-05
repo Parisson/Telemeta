@@ -888,3 +888,15 @@ msgstr "Dernière connexion"
 #: templates/telemeta_default/login.html:21
 msgid "Password forgotten"
 msgstr "Mot de passe oublié"
+
+#: templates/telemeta_default/collection_list.html:9
+msgid "All"
+msgstr "Toutes"
+
+#: templates/telemeta_default/collection_list.html:10
+msgid "Novel"
+msgstr "Inédites"
+
+#: templates/telemeta_default/collection_list.html:1&
+msgid "Published"
+msgstr "Éditées"

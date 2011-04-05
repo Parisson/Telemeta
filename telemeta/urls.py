@@ -50,6 +50,10 @@ web_view = WebView()
 all_items = { 'queryset': MediaItem.objects.enriched(), }
 all_collections = { 'queryset': MediaCollection.objects.enriched(), }
 
+# CREM collections
+all_collections_novel = { 'queryset': MediaCollection.objects.filter(code__contains='_I_'), }
+all_collections_published = { 'queryset': MediaCollection.objects.filter(code__contains='_E_'), }
+
 # ID's regular expressions
 export_extensions = "|".join(web_view.list_export_extensions())
 
@@ -97,9 +101,11 @@ urlpatterns = patterns('',
         
     # collections
     url(r'^collections/$', 'django.views.generic.list_detail.object_list',
-        dict(all_collections, paginate_by=20, 
-            template_name="telemeta/collection_list.html"),
-        name="telemeta-collections"),
+        dict(all_collections, paginate_by=20, template_name="telemeta/collection_list.html"), name="telemeta-collections"),
+    url(r'^collections_novel/$', 'django.views.generic.list_detail.object_list',
+        dict(all_collections_novel, paginate_by=20, template_name="telemeta/collection_list.html"), name="telemeta-collections-novel"),
+    url(r'^collections_published/$', 'django.views.generic.list_detail.object_list',
+        dict(all_collections_published, paginate_by=20, template_name="telemeta/collection_list.html"), name="telemeta-collections-published"),
     url(r'^collections/?page=(?P<page>[0-9]+)$', 
         'django.views.generic.list_detail.object_list',
         dict(all_collections, paginate_by=20)),

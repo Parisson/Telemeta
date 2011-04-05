@@ -6,6 +6,9 @@
 
 {% block submenu %}
     <div class="buttons">  
+     <a href="{% url telemeta-collections %}" class="component_icon button icon_search">{% trans "All" %}</a>
+     <a href="{% url telemeta-collections-novel %}" class="component_icon button icon_search">{% trans "Novel" %}</a>
+     <a href="{% url telemeta-collections-published %}" class="component_icon button icon_search">{% trans "Published" %}</a>
     {% if user.is_authenticated and perms.telemeta.add_mediacollection %}
       <a href="{% url telemeta-collection-add %}" class="component_icon button icon_add">{% trans "Add" %}</a>
     {% endif %}

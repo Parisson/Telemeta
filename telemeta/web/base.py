@@ -324,7 +324,7 @@ class WebView(object):
                 form.save()
                 if form.files:
                     self.cache_data.delete_item_data(code)
-                    self.item_analyze(item)
+#                    self.item_analyze(item)
                 item.set_revision(request.user)
                 return HttpResponseRedirect('/items/'+code)
         else:
@@ -405,18 +405,18 @@ class WebView(object):
                     subpipe = analyzer()
                     analyzers_sub.append(subpipe)
                     pipe = pipe | subpipe
-                if not self.cache_data.exists(image_file):
-                    path = self.cache_data.dir + os.sep + image_file
-                    for grapher in self.graphers:
-                        if grapher.id() == grapher_id:
-                            break
-                    graph = grapher(width = int(width), height = int(height))
-                    pipe = pipe | graph
+#                if not self.cache_data.exists(image_file):
+#                    path = self.cache_data.dir + os.sep + image_file
+#                    for grapher in self.graphers:
+#                        if grapher.id() == grapher_id:
+#                            break
+#                    graph = grapher(width = int(width), height = int(height))
+#                    pipe = pipe | graph
                 pipe.run()
-                if not self.cache_data.exists(image_file):
-                    f = open(path, 'w')
-                    graph.render(path)
-                    f.close()
+#                if not self.cache_data.exists(image_file):
+#                    f = open(path, 'w')
+#                    graph.render(path)
+#                    f.close()
                 mime_type = decoder.format()
                 analyzers.append({'name': 'Mime type', 'id': 'mime_type', 'unit': '', 'value': mime_type})
                 analyzers.append({'name': 'Channels', 'id': 'channels', 'unit': '', 'value': decoder.channels()})
