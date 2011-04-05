@@ -448,7 +448,7 @@ class WebView(object):
             self.item_analyze(item)
         mime_type = 'text/xml'
         response = HttpResponse(self.cache_data.read_stream_bin(analyze_file), mimetype=mime_type)
-        response['Content-Disposition'] = 'attachment; filename='+public_id+'.xml'
+#        response['Content-Disposition'] = 'attachment; filename='+public_id+'.xml'
         return response        
         
     def item_visualize(self, request, public_id, visualizer_id, width, height):
