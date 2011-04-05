@@ -125,7 +125,13 @@ class WebView(object):
             playlists = self.get_playlists(request)
             revisions = self.get_revisions(request)
             searches = Search.objects.filter(username=request.user)
-            return render(request, template, {'playlists': playlists, 'searches': searches, 'revisions': revisions})
+            translation_list = ['Title', 'Description', 'OK', 'Cancel']
+            translations = {}
+            for term in translation_list:
+                translations[term] = ugettext(term)
+                
+            return render(request, template, {'playlists': playlists, 'searches': searches, 
+                                              'revisions': revisions, 'translations': translations})
   
     def get_revisions(self, request):
         last_revisions = Revision.objects.all().order_by('-time')[0:15]
@@ -147,6 +153,7 @@ class WebView(object):
                 except:
                     element = None
             revisions.append({'revision': revision, 'element': element})
+        
         return revisions
         
     def collection_detail(self, request, public_id, template='telemeta/collection_detail.html'):
@@ -154,7 +161,12 @@ class WebView(object):
         if collection.public_access == 'none' and not request.user.is_staff:
             return HttpResponseRedirect('not_allowed/')
         playlists = self.get_playlists(request)
-        return render(request, template, {'collection': collection, 'playlists' : playlists, })
+        translation_list = ['OK', 'Cancel', 'Collection', 'added to playlist']
+        translations = {}
+        for term in translation_list:
+            translations[term] = ugettext(term)
+        
+        return render(request, template, {'collection': collection, 'playlists' : playlists, 'translations': translations})
 
     @method_decorator(permission_required('telemeta.change_mediacollection'))
     def collection_edit(self, request, public_id, template='telemeta/collection_edit.html'):
@@ -170,6 +182,7 @@ class WebView(object):
                 return HttpResponseRedirect('/collections/'+code)
         else:
             form = MediaCollectionForm(instance=collection)
+        
         return render(request, template, {'collection': collection, "form": form,})
 
     @method_decorator(permission_required('telemeta.add_mediacollection'))
@@ -186,6 +199,7 @@ class WebView(object):
                 return HttpResponseRedirect('/collections/'+code)
         else:
             form = MediaCollectionForm(instance=collection)
+        
         return render(request, template, {'collection': collection, "form": form,})
 
     @method_decorator(permission_required('telemeta.add_mediacollection'))
@@ -203,6 +217,7 @@ class WebView(object):
                 return HttpResponseRedirect('/collections/'+code)
         else:
             form = MediaCollectionForm(instance=collection)
+        
         return render(request, template, {'collection': collection, "form": form,})
         
     def item_previous_next(self, item):
@@ -234,6 +249,7 @@ class WebView(object):
         else:
              previous = item.public_id   
              next = item.public_id
+        
         return previous, next
         
     def item_detail(self, request, public_id=None, marker_id=None, template='telemeta/mediaitem_detail.html'):
@@ -267,12 +283,17 @@ class WebView(object):
         playlists = self.get_playlists(request)
         public_access = self.get_public_access(item.public_access, item.recorded_from_date, item.recorded_to_date)
         
+        translation_list = ['OK', 'Cancel', 'Item' 'Marker', 'added to playlist']
+        translations = {}
+        for term in translation_list:
+            translations[term] = ugettext(term)
+                
         return render(request, template,
                     {'item': item, 'export_formats': formats,
                     'visualizers': graphers, 'visualizer_id': grapher_id,'analysers': analyzers,
                     'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True),
                     'previous' : previous, 'next' : next, 'marker': marker_id, 'playlists' : playlists, 
-                    'public_access': public_access, 
+                    'public_access': public_access, 'translations': translations, 
                     })
 
     def get_public_access(self, access, date_from, date_to):
@@ -293,6 +314,7 @@ class WebView(object):
             year_now = datetime.datetime.now().strftime("%Y")
             if int(year_now) - int(year[0]) >= settings.TELEMETA_PUBLIC_ACCESS_PERIOD:
                 public_access = True
+        
         return public_access
         
     @method_decorator(permission_required('telemeta.change_mediaitem'))
@@ -352,6 +374,7 @@ class WebView(object):
                 return HttpResponseRedirect('/items/'+code)
         else:
             form = MediaItemForm(instance=item)
+        
         return render(request, template, {'item': item, "form": form})
     
     
@@ -371,6 +394,7 @@ class WebView(object):
                 return HttpResponseRedirect('/items/'+code)
         else:
             form = MediaItemForm(instance=item)
+        
         return render(request, template, {'item': item, "form": form})
         
     def item_analyze(self, item):
@@ -449,6 +473,7 @@ class WebView(object):
         mime_type = 'text/xml'
         response = HttpResponse(self.cache_data.read_stream_bin(analyze_file), mimetype=mime_type)
 #        response['Content-Disposition'] = 'attachment; filename='+public_id+'.xml'
+        
         return response        
         
     def item_visualize(self, request, public_id, visualizer_id, width, height):

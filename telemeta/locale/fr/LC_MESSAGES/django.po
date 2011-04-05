@@ -797,6 +797,9 @@ msgstr "Analyse"
 msgid "Markers"
 msgstr "Marqueurs"
 
+msgid "Marker"
+msgstr "Marqueur"
+
 #: templates/telemeta_default/mediaitem_detail.html:131
 msgid "Add to playlist"
 msgstr "Ajouter à la liste"
@@ -897,6 +900,11 @@ msgstr "Toutes"
 msgid "Novel"
 msgstr "Inédites"
 
-#: templates/telemeta_default/collection_list.html:1&
+#: templates/telemeta_default/collection_list.html:11
 msgid "Published"
 msgstr "Éditées"
+
+msgid "added to playlist"
+msgstr "ajouté à la liste de lecture"
+
+
