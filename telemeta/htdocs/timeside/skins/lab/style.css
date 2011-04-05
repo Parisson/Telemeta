@@ -26,9 +26,9 @@
 }
 .ts-pointer{
     border: 1px solid #a10006 !important;
-     -moz-border-radius: .5ex !important;
-    -webkit-border-radius: .5ex  !important;
-    border-radius: .5ex !important;
+     -moz-border-radius: 1ex !important;
+    -webkit-border-radius: 1ex  !important;
+    border-radius: 1ex !important;
     color: #6A0307 !important;
 
 }
@@ -73,15 +73,15 @@
     height /**/:28px; /* for IE5/Win only */
     margin-right: 0px;
 }
-
-.ts-skin-lab .ts-player .ts-control .ts-playback a:hover {
+/*commented, apparently not used anymore, and it messes up the volume icon*/
+/*.ts-skin-lab .ts-player .ts-control .ts-playback a:hover {
     background-position: 0 -28px;
-}
+}*/
 
-.ts-volume {
+.ts-volume, .ts-volume:hover, .ts-volume:visited {
     background-image: url('img/volume.png');
     background-repeat: no-repeat;
-    background-position: 0px 0px !important;
+    /*background-position: 0px 0px !important;*/
     width:60px !important;
 }
 

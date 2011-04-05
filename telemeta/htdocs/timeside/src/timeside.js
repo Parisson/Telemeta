@@ -102,7 +102,7 @@ TimeSide(function($N, $J) {
                 if (!$N.isLoading) {
                     $N.isLoading = true;
                     var re = /(.*)timeside.js/;
-                    var root = '';
+                    var root = '/timeside/src/'; //TODO: changed by me!!!!!
                     $J('head script').each(function(i, e) {
                         if ((match = re.exec(e.src))) {
                             root = match[1];
@@ -112,8 +112,8 @@ TimeSide(function($N, $J) {
                     $N.loadScripts(root, ['core.js'], function() {
                         $N.loadScripts(root, ['util.js'], function() {
                             var scripts = ['controller.js', 'rulermarker.js', //'markerlist.js',
-                            'markermap.js', 'player.js', 'ruler.js','divmarker.js',
-                            'soundprovider.js'];
+                            'markermap.js', 'player.js', 'ruler.js','divmarker.js'];
+                            //,'soundprovider.js'];
                                                        
                             $N.loadScripts(root, scripts, function() {
                                 $N.isLoaded = true;

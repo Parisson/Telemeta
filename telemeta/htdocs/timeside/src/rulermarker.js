@@ -17,6 +17,7 @@ TimeSide(function($N, $J) {
         nodes: null,
         mouseDown: false,
         blinkAnimation: null,
+        mouseDownOffset:0,
 
         initialize: function($super, cfg) {
             $super();
@@ -44,6 +45,7 @@ TimeSide(function($N, $J) {
             if(cfg.index !== undefined && cfg.className!='pointer'){
                 this.setIndex(cfg.index);
             }
+            
         },
 
         setIndex: function(index){
@@ -90,6 +92,7 @@ TimeSide(function($N, $J) {
             if (this.cfg.tooltip){
                 this.label.attr('title', this.cfg.tooltip);
             }
+            
             this.cfg.rulerLayout.append(this.label);
 
             var height = this.cfg.viewer.height();
@@ -113,6 +116,7 @@ TimeSide(function($N, $J) {
             .each(function(i, node) {
                 node.originalPosition = parseInt($J(node).css('left'));
             });
+          
         },
 
         setText: function(text) {
@@ -214,13 +218,17 @@ TimeSide(function($N, $J) {
 
         _onMouseDown: function(evt) {
             this.mouseDown = true;
-            this._onMouseMove(evt);
+            this.mouseDownOffset = evt.pageX-(this.label.offset().left+this.label.outerWidth(true)/2);
+            //this._onMouseMove(evt);
             return false;
         },
 
         _onMouseMove: function(evt) {
             if (this.mouseDown) {
-                var offset = (evt.pageX - this.cfg.rulerLayout.offset().left);
+                var offset = (evt.pageX - this.cfg.rulerLayout.offset().left)-this.mouseDownOffset;
+                this.debug(evt.pageX);
+                this.debug(this.label.outerWidth(true));
+                this.debug(this.cfg.rulerLayout.offset().left);
                 this.move(offset);
                 this.fire('move', { //calls move (see above)
                     offset: this.position,

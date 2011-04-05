@@ -2,69 +2,39 @@
 
 var playlistUtils = {
     playlists : {},
-    initialize: function(dictionary){
-        this.playlists = dictionary;
-    },
-    addPlayList: function(name, id){
+    
+    addPlaylist: function(name, id){
         this.playlists[name]=id;
     },
-    
-    //    add : function(event){
-    //
-    //        var $J = jQuery;
-    //
-    //        var dText = $('<input/>')
-    //        .attr('type','text').val("");
-    //        var tText = $('<input/>')
-    //        .attr('type','text').val("");
-    //
-    //        var table = $J('<table/>')
-    //        .append($J('<tr/>')
-    //            .append($J('<td/>').html('title'))
-    //            .append($J('<td/>').append(tText)))
-    //        .append($J('<tr/>')
-    //            .append($J('<td/>').html('description'))
-    //            .append($J('<td/>').append(dText)));
-    //
-    //        var onOk= function(){
-    //            var pl = [{
-    //                "public_id":uniqid(),
-    //                "title":tText.val(),
-    //                "description":dText.val(),
-    //                user:CURRENT_USER_NAME
-    //            }];
-    //            json(pl,'telemeta.add_playlist',function(){
-    //                window.location.reload();
-    //            },true);
-    //        };
-    //        var onCancel= function(){
-    //            popup.hide();
-    //            return false;
-    //        };
-    //        var subdiv = $J('<div/>').append(
-    //            $J('<a/>').
-    //            html('Cancel').
-    //            css('float','right').
-    //            addClass('mediaitem_button').
-    //            addClass('mediaitem_button_cancel').
-    //            attr('href','#').
-    //            click(function(){
-    //                return onCancel();
-    //            })
-    //            ).append(
-    //            $J('<a/>').
-    //            html('Ok').
-    //            css('float','right').
-    //            addClass('mediaitem_button').
-    //            addClass('mediaitem_button_ok').
-    //            attr('href','#').
-    //            click(function(){
-    //                return onOk();
-    //            })
-    //            );
-    //        //popupDialog(element,table,onOk);
-    //        popup.show($J('<div/>').append(table).append(subdiv), event);
-    //    },
+
+    /*shows the popup for adding an item to the playlist*/
+    showPopupAddToPlaylist: function(event,resourceType,objectId, optionalMessage){
+        var $J = jQuery;
+        var content = $J('<div/>').addClass("_popup_add_to_playlist");
+        var addToPlaylist = this.addToPlaylist;
+        for(var p in this.playlists){
+            var id = this.playlists[p];
+
+            var a =  $J('<a/>').
+            attr('href','#').
+            addClass("component_icon").
+            addClass("list_item icon_playlist").
+            html(p).
+            //by wrapping the addToPlaylist function in order to accept the id variable as an argument 
+            //we avoid calling the function with id = number_of_playlists for all anchors 
+            //by returning another function (basically create another closure) we avoid executing the function
+            //immediately
+            click(function(id_){
+                    return function(){
+                        addToPlaylist(id_,resourceType,objectId,optionalMessage);
+                        return false;
+                    }
+                }(id)
+            );
+            content.append(a);
+        }
+        return popup.show(content,event);
+    },
 
     add : function(dictionary){
 
@@ -92,8 +62,10 @@ var playlistUtils = {
             window.location.reload();
         });
     },
+    
     //resourceType can be: 'collection', 'item', 'marker'
-    addToPlaylist: function(playlistId,resourceType,objectId){
+    addToPlaylist: function(playlistId,resourceType,objectId, optionalOkMessage){
+        consolelog(playlistId)
         var send = {
             'public_id':uniqid(),
             'resource_type':resourceType,
@@ -101,8 +73,14 @@ var playlistUtils = {
         };
         json([playlistId,send],'telemeta.add_playlist_resource',function(){
             var p = popup;
-            p.show(jQuery('<div/>').html('<a style="border:0" class="component_icon button icon_ok">Ok</span>'));
-            setTimeout(function(){p.hide()},600);
+            if(optionalOkMessage){
+                p.show(jQuery('<div/>').addClass("icon_ok").addClass("component_icon").html(optionalOkMessage));
+                setTimeout(function(){
+                    p.hide();
+                },1000);
+            }else{
+                p.hide(); //to be sure
+            }
         });
     }
 

@@ -23,6 +23,7 @@ TimeSide(function($N, $J) {
         me:null,
         markerMap:null,
 
+
         initialize: function($super, markermap) {
             $super();
             //sets the fields required???? see ruler.js createPointer
@@ -108,6 +109,7 @@ TimeSide(function($N, $J) {
                 markerDiv = $J('<div/>')
                 .append(this.e_header)
                 .append(this.e_descriptionText)
+                .attr('tabIndex',0)
                 //.append(this.e_okButton)
                 .append($J('<div/>') //.css('margin','1ex 0ex 0.1ex 0ex')
                 .append(this.e_okButton))
@@ -167,7 +169,8 @@ TimeSide(function($N, $J) {
                 this.e_editButton.unbind('click').hide();
                 return false;
             }
-            
+
+           
             var remove = map.remove;
             this.e_deleteButton.unbind('click').click( function(){
                 if(!(marker.isSavedOnServer) || confirm('delete the marker permanently?')){
@@ -176,7 +179,9 @@ TimeSide(function($N, $J) {
                 return false; //avoid scrolling of the page on anchor click
             })
 
-
+            this.e_addplaylistButton.unbind('click').bind('click',function(evtObj_){
+                playlistUtils.showPopupAddToPlaylist(evtObj_,'marker',""+marker.id,'marker added to selected playlist');return false;
+            });
             //notifies controller.js
             //                this.fire('remove', {
             //                    index: index
@@ -196,7 +201,13 @@ TimeSide(function($N, $J) {
                 eB.hide();
                 utw.apply(divmarker,[tText]);
             };
-            
+
+//            dText.unbind('focus').focus(function(){this.debug('dText focus')});
+//            tText.unbind('focus').focus(function(){this.debug('tText focus')});
+//            dText.unbind('blur').blur(function(){this.debug('dText blur')});
+//            tText.unbind('blur').blur(function(){this.debug('tText blur')});
+
+
             this.e_editButton.unbind('click').click( function(){
                 startEdit();
                 divmarker.focusOn();

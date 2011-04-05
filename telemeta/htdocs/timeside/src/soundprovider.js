@@ -33,6 +33,9 @@ TimeSide(function($N) {
             this.state.position = 0;
             this.update = this.attach(this._update);
             this.timer = setInterval(this.update, 43);
+            this.init=true;
+            this._update();
+            this.init=false;
         },
 
         free: function($super) {
@@ -144,6 +147,7 @@ TimeSide(function($N) {
         _update: function() {
             this._retrieveState();
             var updated = false;
+            var k;
             if (this.lastState) {
                 for (k in this.state) {
                     if (this.state[k] != this.lastState[k]) {
@@ -156,10 +160,27 @@ TimeSide(function($N) {
                 updated = true;
             }
             if (updated) {
+                var fireevent = false;
                 for (k in this.state) {
+                    if(k=='position' && this.lastState[k]!==undefined && this.lastState[k]!=this.state[k]){
+                        //this.lastState[k]!==undefined because otherwise we are initializing
+                        this.debug('fire-play-stop');
+                        fireevent = true;
+                    }else if(k=='playing' && this.lastState[k] && !this.state[k]){
+                        //stop playing, fire again to move the cursor REALLY at the end
+                        this.debug('fire-stop');
+                        fireevent = true;
+                    }
+                    if(this.state[k] != this.lastState[k]){
+                        this.debug('(soundprovider _update) '+k+': oldVal: '+this.lastState[k]+': val: '+this.state[k]);
+                    }
                     this.lastState[k] = this.state[k];
+                    
                 }
-                this.fire('update');
+                if(fireevent){
+                    this.debug('firing');
+                    this.fire('update');
+                }
             }
         },
 

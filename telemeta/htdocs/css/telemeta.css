@@ -54,8 +54,17 @@ a img { border: none; }
 }
 
 #content {
+    margin-top: 1em;
+    margin-bottom: 0em;
+}
+
+#content, #content_header {
     position: relative;
-    margin: 1em 2em 0em 2em;
+    margin-left: 2em;
+    margin-right: 2em;
+}
+#content_header {
+    top:-.45em; /*must be header.margin_bottom (0.9em)*/
 }
 
 #content ul, #content ul ul, #content ol {
@@ -76,7 +85,7 @@ a img { border: none; }
 #content li a {
     padding: .1em 0;
 }
-#content h3 {
+#content h3, #content_header h3 {
     color: #6a0307;
     font-weight: bold;
     display:  inline;
@@ -100,12 +109,15 @@ a img { border: none; }
 #submenu {
     position: relative;
     margin: 5px 2em 0;
-    height:3ex;
+    /*height:3ex;*/ /*no longer used, and it also shifts up the bottom content*/
     z-index: 10;
 }
-#submenu h3, #submenu div {
+/*#submenu h3, #submenu div {
     min-height: 1.6em;
-}
+}*/
+
+
+
 #submenu h3 {
     margin-right: 80px;
 }
@@ -121,13 +133,27 @@ a img { border: none; }
     font-weight: bold;
 }*/
 
+#content_header table{
+    width:100%;
+}
+#content_header table td{
+    vertical-align: bottom;
+}
+
+#content_header td.rightcol a{
+    display:inline-block;
+    margin-top:0.5ex;
+}
+#content_header td.rightcol {
+    width:374px; /*must be width+2*padding, see #rightcol below*/
+}
 #rightcol {
+    width: 362px; /**if u change this, change also width #content_header td.rightcol, see above*/
+    padding: 6px; /**if u change this, change also width #content_header td.rightcol, see above*/
     position: relative;
     z-index: 1;
     float: right;
-    width: 362px;
     border: 1px solid #999;
-    padding: 6px;
     background-color: #eee;
     -moz-border-radius: 8px 8px 8px 8px;
     -webkit-border-radius: 8px 8px 8px 8px;
@@ -1013,7 +1039,6 @@ a.image-link {
     padding:.7ex .7ex .7ex .7ex;
     background-color:  #f9f9f9; /*#626262;*/
     color:#444;
-    /*border:  1px solid #eee;*/
     text-decoration: none;
     margin:0;
 }
@@ -1030,10 +1055,12 @@ a.image-link {
 
 .button,  .button:visited, .button:hover{
     font-weight: bold;
-    border-top:  1px solid #e1e1e1 !important;
+    border:  1px solid #e1e1e1;
+    
+/*    border-top:  1px solid #e1e1e1 !important;
     border-left:  1px solid #e1e1e1 !important;
     border-right:  1px solid #e1e1e1 !important;
-    border-bottom:  1px solid #e1e1e1 !important;
+    border-bottom:  1px solid #e1e1e1 !important;*/
 }
 
 .button:hover{

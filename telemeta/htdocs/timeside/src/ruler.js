@@ -31,23 +31,49 @@ TimeSide(function($N, $J) {
                 viewer: [null, 'required'],
                 fontSize: 10,
                 //map: null,
-                soundProvider: [null, 'required']
+                sound: [null, 'required'],
+                soundDurationInMsec:0
             });
             this.cfg.viewer = $J(this.cfg.viewer);
             this.container = this.cfg.viewer.find('.' + $N.cssPrefix + 'ruler');
             this.waveContainer = this.cfg.viewer.find('.' + $N.cssPrefix + 'image-canvas');
-            this._setDuration(this.cfg.soundProvider.getDuration());
+
+            //this.duration = this.cfg.sound.duration/1000; //TODO: improve this function!!
+            //note that soundmanager2 returns the duration in milliseconds, while here we compute the
+            //layout according to the duration in seconds. Changing all functions it's a pain and it's useless'
+
+            //initialize duration. If sound autoLoad=false, duration is zero and we must use durationEstimate
+            //this.duration = this.cfg.sound.duration ? this.cfg.sound.duration : this.cfg.sound.durationEstimate;
+            //this
+            this.duration = this.cfg.soundDurationInMsec/1000;
+            consolelog('duration - - '+this.cfg.sound.duration);
+            consolelog('duration -E- '+this.cfg.sound.bytesTotal);
+            
             var imgContainer = this.cfg.viewer.find('.' + $N.cssPrefix + 'image-container'); // for IE
             
             this._observeMouseEvents(this.waveContainer.add(imgContainer));
-            //if (this.cfg.map) {
-            //    this.cfg.map
-            //.observe('add', this.attach(this._onMapAdd))
-            //.observe('remove', this.attach(this._onMapRemove))
-            //.observe('indexchange', this.attach(this._onMapIndexChange));
-            //}
+
+             //this is a workaround: when moving the marker the first time sound.setPosition seems not to work
+             //after playing the first time, it works. Or after having set position explicitly, apparently
+             //this.cfg.sound.setPosition(0);
+        //            this.sp = this._setPosition;
             
-            this.cfg.soundProvider.observe('update', this.attach(this._onSoundProviderUpdate));
+        //            this.cfg.sound.whileplaying(function(){
+        //                sp(this.position/1000);
+        //            });
+        //            this.cfg.sound.onfinish(function(){ //when it reaches the end (naturally) force pointer to be at the end
+        //                sp(this.duration);
+        //            });
+
+        //if (this.cfg.map) {
+        //    this.cfg.map
+        //.observe('add', this.attach(this._onMapAdd))
+        //.observe('remove', this.attach(this._onMapRemove))
+        //.observe('indexchange', this.attach(this._onMapIndexChange));
+        //}
+            
+        //this.cfg.soundProvider.observe('update', this.attach(this._onSoundProviderUpdate));
+        //this.cfg.soundProvider.observe('play', this.attach(this._onSoundProviderPlaying));
         },
 
         free: function($super) {
@@ -60,11 +86,14 @@ TimeSide(function($N, $J) {
 
         _computeLayout: function() {
             this.width = this.waveContainer.width();
-                
             this.debug('container width: ' + this.width);
             var i, ii = this.sectionSteps.length;
             this.timeLabelWidth = this._textWidth('00:00', this.cfg.fontSize);
             for (i = 0; i < ii; i++) {
+                //                this.debug('step: ' +i+' duration: '+this.sectionSteps[i][0]);
+                //                this.debug('step: ' +i+' subdivision: '+this.sectionSteps[i][1]);
+                //                this.debug('labelsNum: ' +i+' labelsNum (this.duration/duration): '+Math.floor(this.duration / duration));
+
                 var duration = this.sectionSteps[i][0];
                 var subDivision = this.sectionSteps[i][1];
                 var labelsNum = Math.floor(this.duration / duration);
@@ -72,6 +101,9 @@ TimeSide(function($N, $J) {
                     this.fullSectionDuration = duration;
                     this.sectionSubDivision = subDivision;
                     this.sectionsNum = Math.floor(this.duration / this.fullSectionDuration);
+                    this.debug('(in _computeLayout) this.fullSectionDuration: ' + this.fullSectionDuration);
+                    this.debug('(in _computeLayout) sectionsNum: ' +this.sectionsNum);
+                    this.debug('(in _computeLayout) duration: ' +this.duration);
                     break;
                 }
             }
@@ -82,29 +114,41 @@ TimeSide(function($N, $J) {
         },
 
         resize: function() {
-            var pointerVisible = this.pointer && this.pointer.isVisible();
+            //            var pointerVisible = this.pointer && this.pointer.isVisible();
+            //            this.debug('resizing (pointer visible: :'+pointerVisible+':');
+            //            alert(this.pointer.isVisible());
             this._computeLayout();
+            
             this.draw();
-            if (pointerVisible) {
-                this.setPosition(this.cfg.soundProvider.getPosition());
-                this.setBuffering(this.cfg.soundProvider.isBuffering() && this.cfg.soundProvider.isPlaying());
-                this.pointer.show();
+            if(this.pointer){
+                if(!this.pointer.isVisible()){
+                    this.pointer.show();
+                }
+                //            }
+                //            if (pointerVisible) {
+                //                this.setPosition(this.cfg.soundProvider.getPosition());
+                //                this.setBuffering(this.cfg.soundProvider.isBuffering() && this.cfg.soundProvider.isPlaying());
+
+                this._movePointer(this.cfg.sound.position/1000);
+                this.setBuffering(this.cfg.sound.isBuffering && this.cfg.sound.playState==1);
+            //Note that playState =  1 may not always guarantee that sound is being heard, given buffering and autoPlay status.
+            //(from soundmanager2 tutorial)
             }
         },
 
-        _setDuration: function(duration) {
-            this.duration = duration;
-            this._computeLayout();
-        },
-
-        setDuration: function(duration) {
-            if (duration == 0)
-                duration = 60;
-            if (this.duration != duration) {
-                this._setDuration(duration);
-                this.draw();
-            }
-        },
+//        _setDuration: function(duration) {
+//            this.debug('duration setting ruler: ' + duration);
+//            this.duration = duration;
+//            this._computeLayout();
+//        },
+//
+//        setDuration: function(durationInMillisecs) {
+//            var duration = durationInMillisecs ? durationInMillisecs/1000 : 60;
+//            if (this.duration != duration) {
+//                this._setDuration(duration);
+//                this.draw();
+//            }
+//        },
 
         _createSection: function(timeOffset, pixelWidth) {
             var section = $J('<div/>')
@@ -272,36 +316,26 @@ TimeSide(function($N, $J) {
             .observe('move', this.attach(this._onPointerMove));
         },
 
-        _movePointer: function(offset) {
-            if (offset < 0){
-                offset = 0;
-            }else if (offset > this.duration){
-                offset = this.duration;
-            }
-            pixelOffset = offset / this.duration * this.width;
-            if (this.pointer) {
-                this.pointer.move(pixelOffset);
-                this.pointer.setText($N.Util.makeTimeLabel(offset));
-            }
-            this.pointerPos = offset;
-        },
+        //        _setPosition: function(offset) {
+        //            this._movePointer(offset);
+        ////            if (this.pointer) {
+        ////                this.pointer.show();
+        ////            }
+        //        },
+        
+    
 
-        _setPosition: function(offset) {
-            this._movePointer(offset);
-            if (this.pointer) {
-                this.pointer.show();
-            }
-        },
+        
 
-        setPosition: function(offset) {
-            if (!this.mouseDown) {
-                this._setPosition(offset);
-            }
-        },
+        //        setPosition: function(offset) {
+        //            if (!this.mouseDown) {
+        //                this._setPosition(offset);
+        //            }
+        //        },
 
-        shiftPosition: function(delta) {
-            this.setPosition(this.pointerPos + delta);
-        },
+        //        shiftPosition: function(delta) {
+        //            this.setPosition(this.pointerPos + delta);
+        //        },
 
         hidePointer: function() {
             if (this.pointer)
@@ -324,40 +358,63 @@ TimeSide(function($N, $J) {
         _onMouseDown: function(evt) {
             this.mouseDown = true;
             this._onMouseMove(evt);
-            evt.preventDefault();
+            evt.preventDefault(); //If this method is called, the default action of the event will not be triggered.
         },
 
-        _onPointerMove: function(evt, data) {
-            this.mouseDown = true;
-            this._setPosition(data.offset / this.width * this.duration);
-            if(data.finish) {
-                this.fire('move', {
-                    offset: this.pointerPos
-                });
-                this.mouseDown = false;
-            }
-            return false;
-        },
-
+       
         _onMouseMove: function(evt) {
             if (this.mouseDown) {
                 var pixelOffset = evt.pageX - this.container.offset().left;
-                this._setPosition(pixelOffset / this.width * this.duration);
+                this._movePointerAndUpdateSoundPosition(pixelOffset / this.width * this.duration);
+                //moves the pointer and fires onPointerMove
                 return false;
             }
         },
 
         _onMouseUp: function(evt) {
-            
             if (this.mouseDown) {
                 this.mouseDown = false;
-                this.fire('move', {
-                    offset: this.pointerPos
-                });
-                return false;
+                this.debug('_onMouseUp:'+this.pointerPos+' '+this.cfg.sound.position);
+                //this.debug("mousedup"+this.cfg.sound.position)
             }
+            return false;
+        },
+        //called while playing, does not update sound position
+        _movePointer: function(offset) {
+            
+            if (offset < 0){
+                offset = 0;
+            }else if (offset > this.duration){
+                offset = this.duration;
+            }
+            var pixelOffset = offset / this.duration * this.width;
+            if (this.pointer) {
+                this.pointer.move(pixelOffset); //does NOT fire any move method
+                this.pointer.setText($N.Util.makeTimeLabel(offset));
+            }
+            this.pointerPos = offset;
+        },
+        //called by everything else than playing, same as _movePointer but updates also the sound position accordingly
+        _movePointerAndUpdateSoundPosition: function(offset) {
+            this._movePointer(offset)
+            this.cfg.sound.setPosition(parseInt(1000*this.pointerPos));
         },
 
+         _onPointerMove: function(evt, data) {
+            //this.debug('_onPointerMove:'+ this.pointerPos+' '+this.cfg.sound.position);
+
+            this.mouseDown = true;
+            this._movePointerAndUpdateSoundPosition(data.offset / this.width * this.duration);
+            if(data.finish) {
+                //                this.fire('move', {
+                //                    offset: this.pointerPos
+                //                });
+                this.mouseDown = false;
+            }
+            return false;
+        },
+
+        
         _observeMouseEvents: function(element) {
             if(!(CURRENT_USER_NAME)){
                 return;
@@ -381,7 +438,7 @@ TimeSide(function($N, $J) {
             }
             
             pixelOffset = marker.offset / this.duration * this.width;
-
+            
             m = new $N.RulerMarker({
                 rulerLayout: this.layout.get(0),
                 viewer: this.waveContainer,
@@ -391,6 +448,7 @@ TimeSide(function($N, $J) {
                 tooltip: 'Move marker',
                 canMove: marker.isEditable
             });
+            
             if(marker.isEditable){
                 m.observe('move', this.attach(this._onMarkerMove))
             }
@@ -428,10 +486,10 @@ TimeSide(function($N, $J) {
         },
         
         //it is assured that fromIndex!=toIndex and fromIndex!=toIndex+1 (see markermap.move)
-//        move: function(fromIndex, toIndex){
-//            var m = this.markers.splice(fromIndex,1)[0]; //remove
-//            this.markers.splice(toIndex,0,m); //add
-//        },
+        //        move: function(fromIndex, toIndex){
+        //            var m = this.markers.splice(fromIndex,1)[0]; //remove
+        //            this.markers.splice(toIndex,0,m); //add
+        //        },
 
         updateMarkerIndices:function(fromIndex, toIndex){
             for(var i=fromIndex; i<=toIndex; i++){
@@ -447,13 +505,15 @@ TimeSide(function($N, $J) {
                     offset: offset
                 });
             }
-        },
-
-        _onSoundProviderUpdate: function(e) {
-            this.setDuration(this.cfg.soundProvider.getDuration());
-            this.setPosition(this.cfg.soundProvider.getPosition());
-            this.setBuffering(this.cfg.soundProvider.isBuffering() && this.cfg.soundProvider.isPlaying());
         }
+
+    //        , _onSoundProviderUpdate: function(e) {
+    //            this.debug("spupdate");
+    //
+    //            //this.setDuration(this.cfg.soundProvider.getDuration());
+    //            this.setPosition(this.cfg.soundProvider.getPosition());
+    //            this.setBuffering(this.cfg.soundProvider.isBuffering() && this.cfg.soundProvider.isPlaying());
+    //        }
     });
 
     $N.notifyScriptLoad();

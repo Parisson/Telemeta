@@ -79,6 +79,7 @@ TimeSide(function($N, $J) {
         setUpTabs:function(selIndex) {//called from within controller.js once all markers have been loaded.
             //this is because we need all divs to be visible to calculate size. selIndex is optional, it defaults to 0
             //
+
             //declare variables:
             var tabContainerHeight = '5ex'; //height for the tab container
             var tabHeight = '3.5ex'; //height for the tab. Must be lower than tabContainerHeight
@@ -116,6 +117,15 @@ TimeSide(function($N, $J) {
             };
             //end of variables declaration
 
+
+            //first of all, delete the span shown only onloading
+            var span = tabContainer.find('#loading_span');
+            if(span.length){
+                span.remove();
+                consolelog('removed span');
+            }
+
+
             //tabContainer default css:
             tabContainer.css({
                 'position':'relative',
@@ -123,6 +133,7 @@ TimeSide(function($N, $J) {
             });
             //tabs default css:
             tabs.css({
+                'display':'', //reset the default value
                 'position':'absolute',
                 'height':tabHeight,
                 'bottom':tabBottom,
@@ -209,7 +220,7 @@ TimeSide(function($N, $J) {
                 }
             });
 
-        },
+        }
         
 
     }

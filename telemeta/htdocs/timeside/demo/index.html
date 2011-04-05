@@ -30,8 +30,8 @@ function diff_array(a1, a2) {
 function log_globals(label) {
     var g = get_globals();
     if (log_globals.cache && label && typeof console != 'undefined') {
-        console.log(label + ':');
-        console.log(diff_array(log_globals.cache, g));
+        consolelog(label + ':');
+        consolelog(diff_array(log_globals.cache, g));
     }
     log_globals.cache = g;
 }

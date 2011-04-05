@@ -23,24 +23,26 @@ TimeSide(function($N) {
             this._setupPlayer();
         //setting the divmarkers
         //this.cfg.map.observe('add')
+            this.loadHTTP();
             
         },
 
         _setupPlayer: function() {
-            
+            this.debug('_setupPlayer');
             this.cfg.player
-            .setSoundProvider(this.cfg.soundProvider)
+            //.setSoundProvider(this.cfg.soundProvider)
             .setMarkerMap(this.cfg.map)
-            .observe('play', $N.attachFunction(this.cfg.soundProvider, this.cfg.soundProvider.play))
-            .observe('pause', $N.attachFunction(this.cfg.soundProvider, this.cfg.soundProvider.pause))
-            .observe('move', this.attach(this._onMove))
+//            .observe('play', $N.attachFunction(this.cfg.soundProvider, this.cfg.soundProvider.play))
+//            .observe('pause', $N.attachFunction(this.cfg.soundProvider, this.cfg.soundProvider.pause))
+//            .observe('move', this.attach(this._onMove))
             .observe('markeradd', this.attach(this._onMarkerAdd))
             //player markermove listens for changes of ruler markermove which listens
             //foir changes in each marker move
             .observe('markermove', this.attach(this._onMarkerMove))
             
-            .draw();
-            this.loadHTTP();
+//            .draw();
+            ._setupInterface();
+            //this.loadHTTP();
 
             this.cfg.map.observe('add',this.attach(this._onMarkerMapAdd));
             this.cfg.map.observe('remove',this.attach(this._onMarkerMapRemove));
@@ -49,9 +51,9 @@ TimeSide(function($N) {
         },
 
 
-        _onMove: function(e, data) {
-            this.cfg.soundProvider.seek(data.offset);
-        },
+//        _onMove: function(e, data) {
+//            this.cfg.soundProvider.seek(data.offset);
+//        },
 
         //called whenever a marker is moved in the ruler BUT NOT in the map
         _onMarkerMove: function(e, data) {
@@ -144,31 +146,18 @@ TimeSide(function($N) {
 
 
         loadHTTP: function(){
-
-            //itemid is the item (spund file) name
-            var sPath = window.location.pathname;
-            //remove last "/" or last "/#", if any...
-            sPath = sPath.replace(/\/#*$/,"");
-            var itemid = sPath.substring(sPath.lastIndexOf('/') + 1);
-
-            //WARNING: use single quotes for the whole string!!
-            //see http://stackoverflow.com/questions/4809157/i-need-to-pass-a-json-object-to-a-javascript-ajax-method-for-a-wcf-call-how-can
-            var data2send = '{"id":"jsonrpc","params":["'+itemid+'"], "method":"telemeta.get_markers","jsonrpc":"1.0"}';
+            var itemId = ITEM_PUBLIC_ID;
             var map = this.cfg.map;
             var updateIndices = this.updateIndices;
+            //var setTabs = $N.Util.setUpTabs;
+            var util = $N.Util;
             var me = this;
-            $.ajax({
-                type: "POST",
-                url: '/json/',
-                contentType: "application/json",
-                data: data2send,
-                dataType: "json",
-                success: function(data) {
+            var onSuccess = function(data) {
                     var tabIndex = 0;
                     if(data){
                         if(data.result && data.result.length>0){
                             var result = data.result;
-                            
+
                             for(var i =0; i< result.length; i++){
                                 map.add(result[i]);
                             }
@@ -176,21 +165,14 @@ TimeSide(function($N) {
                             updateIndices.apply(me);
                             tabIndex = result.length>0 ? 1 : 0;
                         }
-                        
+
                     }
-                    //We call mediaitem_detail.setUpTabs from controller once all markers have been loaded
-                    //this because setLabelDescription, which sets the label text according to the div width,
-                    //needs to have all elements visible.
-                    $N.Util.setUpTabs(tabIndex);
-                //setUpTabs(); //which hides the marker div. Call with argument 1 to set up marker div
-                //as visible as startup
-                }
-            });
-        //var g = 9;
+                    util.setUpTabs.apply(util, [tabIndex]);
+//                setTabs(tabIndex);
+            };
+            //json(param, method, onSuccesFcn(data, textStatus, jqXHR), onErrorFcn(jqXHR, textStatus, errorThrown))
+            json([itemId],"telemeta.get_markers", onSuccess);
         }
-
-    
-
     });
 
     $N.notifyScriptLoad();

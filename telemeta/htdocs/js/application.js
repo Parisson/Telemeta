@@ -43,6 +43,12 @@ function foldInfoBlocks() {
         return false; 
     });
 }
+//returns the full path of the current url location removing the last slash '/' followed by one or more '#', if any
+function urlNormalized(){
+    var sPath = window.location.href;
+    sPath = sPath.replace(/\/#*$/,"");
+    return sPath;
+}
 
 
 function setSelectedMenu(){
@@ -98,6 +104,7 @@ $(document).ready(function() {
 });
 
 //****************************************************************************
+//json(param, method, onSuccesFcn(data, textStatus, jqXHR), onErrorFcn(jqXHR, textStatus, errorThrown))
 //global function to senbd/retrieve data with the server
 //
 //param: the data to be sent or retrieved.
@@ -211,6 +218,7 @@ var popup={
                 position: 'absolute',
                 overflow:'auto', //necessary to properly display the content
                 display: 'none',
+                border: '1px solid #e1e1e1',
                 zIndex:1000
             });
             if(this.className){
@@ -294,6 +302,7 @@ var popup={
     },
 
     show:function(content, optionalEvent){
+        consolelog("showing popup:"+optionalEvent);
         //if showing, hide
         if(this.isShowing()){
             this.hide();
@@ -354,7 +363,7 @@ var popup={
         var windowH = wdow.height();
         var windowW = wdow.width();
         var position = div.offset();
-        var shadowOffset=5;
+        var shadowOffset=2;
         var size = {
             width:div.outerWidth(true)+shadowOffset,
             height:div.outerHeight(true)+shadowOffset
@@ -363,8 +372,8 @@ var popup={
             position = invokerElement.offset();
             position.top+=  invokerElement.outerHeight(true);
         }else{
-            position.top = (windowH-size.height)/2;
-            position.left = (windowW-size.width)/2;
+            position.top = wdow.scrollTop()+ (windowH-size.height)/2;
+            position.left = wdow.scrollLeft()+(windowW-size.width)/2;
         }
         //position div. This must be done immediately cause here below we want to get the div  offset
         //(div position in absolute - ie, document's - coordinates)
@@ -385,7 +394,7 @@ var popup={
         var divPadding = {
             left: div.outerWidth()-div.width(),
             top:div.outerHeight()-div.height()
-            }; //setting width on a div means the width(),
+        }; //setting width on a div means the width(),
         //but calculations here are made according to outerWidth(true), so we need this variable (se below)
 
         div.css({
@@ -401,26 +410,10 @@ var popup={
                 });
             }
         }
-        var divShadow = this._cfg_.divShadow().insertAfter(div);
-        //        //position div shadow:
-        //        var divShadow = this._cfg_.divShadow().css({
-        //            'top': (position.top+shadowOffset),
-        //            'left': (position.left+shadowOffset),
-        //            'width': div.outerWidth(true),
-        //            'height': div.outerHeight(true)
-        //        }).insertAfter(div).fadeTo(0,0.4);
-        //
-        //        //set focus to the first input component, if any. Otherwise try with anchors, otherwise do nothing
-        //        var inputs = $J(div).find(':input');
-        //        if(inputs && inputs[0]){
-        //            inputs[0].focus();
-        //        }else{
-        //            inputs = $J(div).find('a');
-        //            if(inputs && inputs[0]){
-        //                inputs[0].focus();
-        //            }
-        //        }
-        //
+        //var divShadow = this._cfg_.divShadow().insertAfter(div);
+
+        var divShadow = div.clone(false,false).empty().css({'zIndex':999,'borderColor':'#000','display':'none','backgroundColor':'#000'}).insertAfter(div);
+        
         //store the divs to be removed
         this._cfg_.divsToDelete = [div,divShadow];
         //add a listener to the document. If one of the content children is clicked/keypressed,
@@ -431,15 +424,12 @@ var popup={
             hide.apply(me);
             e.stopPropagation();
         });
-        div.show(300, function(){ //400: basically in between fast (200) and slow (600)
+        div.show(300, function(){ //basically in between fast (200) and slow (600)
             //position div shadow:
-            divShadow.css({
-                'top': (position.top+shadowOffset),
-                'left': (position.left+shadowOffset),
-                'width': div.outerWidth(true),
-                'height': div.outerHeight(true)
-            }).fadeTo(0,0.4);
-
+            divShadow.show();
+            consolelog(div.outerHeight(true)+" "+div.outerHeight(false));
+            consolelog(divShadow.outerHeight(true)+" "+divShadow.outerHeight(false));
+            
             //set focus to the first input component, if any. Otherwise try with anchors, otherwise do nothing
             var inputs = $J(div).find(':input');
             if(inputs && inputs[0]){
@@ -450,6 +440,16 @@ var popup={
                     inputs[0].focus();
                 }
             }
+
+            divShadow.fadeTo(0,0.4, function(){
+                divShadow.css({
+                'top': (position.top+shadowOffset),
+                'left': (position.left+shadowOffset),
+                'width': div.outerWidth(true),
+                'height': div.outerHeight(true)
+            });
+
+            });
         });
         return false; //to avoid scrolling if we clicked on an anchor
     },
@@ -491,8 +491,11 @@ var popup={
                 return onCancel();
             }
         };
-        var subdiv = $J('<div/>').css({'padding':'1ex','float':'right'}).
-            append(
+        var subdiv = $J('<div/>').css({
+            'padding':'1ex',
+            'float':'right'
+        }).
+        append(
             $J('<a/>').
             html('Ok').
             addClass('component_icon').
@@ -520,4 +523,73 @@ var popup={
         return $J('<div/>').append(table).append(subdiv);
     }
 
+}
+
+
+//function loadScripts(scriptArrayName, callback){
+//     if(!(scriptArrayName) && callback){
+//         callback();
+//         return;
+//     }
+//     var len = scriptArrayName.length;
+//     var script = function(i){
+//         if(i>=len){
+//             if(callback){
+//                callback();
+//                return;
+//             }
+//         }
+//         jQuery.getScript(scriptArrayName[i], function(){script(i+1)});
+//     };
+//     script(0);
+//}
+
+function loadScripts(scriptArray, callback, loadInSeries){
+    loadInSeries = false;
+    if(!scriptArray){
+        if(callback){
+            callback();
+        }
+        return;
+    }
+    var len = scriptArray.length;
+    var $J = jQuery;
+    var time = new Date().getTime();
+    if(loadInSeries){
+        var load = function(i){
+            if(i<len){
+                consolelog("loading "+scriptArray[i]+" "+new Date().getTime());
+                $J.getScript(scriptArray[i],function(){
+                    load(i+1);
+                });
+            }else if(callback){
+                consolelog("EXECUTING CALLBACK ELAPSED TIME:"+(new Date().getTime()-time));
+                callback();
+            }
+        };
+        load(0);
+    }else{
+        var count=0;
+        var s;
+        for(var i=0; i <len; i++){
+            s = scriptArray[i];
+            consolelog("loading "+s+" "+new Date().getTime());
+            $J.getScript(s, function(){
+                count++;
+                if(count==len && callback){
+                    consolelog("EXECUTING CALLBACK ELAPSED TIME:"+(new Date().getTime()-time));
+                    callback();
+                }
+            });
+        }
+    }
+}
+
+function consolelog(text){
+    if(typeof console != 'undefined'){
+        var c = console;
+        if (c.log) {
+            c.log(text);
+        }
+    }
 }
