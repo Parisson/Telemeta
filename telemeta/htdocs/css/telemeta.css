@@ -1122,7 +1122,9 @@ a.image-link {
 .icon_playlist{
     background-image: url('/images/playlist.png');
 }
-
+.icon_filter{
+    background-image: url('/images/filter.png');
+}
 
 .addToPlaylist {
     margin:0.5ex;
