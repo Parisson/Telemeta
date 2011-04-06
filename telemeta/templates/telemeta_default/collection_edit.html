@@ -2,7 +2,12 @@
 {% load i18n %}
 {% load telemeta_utils %}
 
-<a href="{% url telemeta-collection-detail collection.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+{% block title %}
+    Collection: {{ collection }}
+{% endblock %}
+{% block title_buttons %}
+    <a href="{% url telemeta-collection-detail collection.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+{% endblock %}
 
 {% block infos %}
         <div class="infos">

@@ -393,10 +393,11 @@ TimeSide(function($N, $J) {
                 this.pointer.setText($N.Util.makeTimeLabel(offset));
             }
             this.pointerPos = offset;
+            this.debug('_movePointer: position set to'+offset);
         },
         //called by everything else than playing, same as _movePointer but updates also the sound position accordingly
         _movePointerAndUpdateSoundPosition: function(offset) {
-            this._movePointer(offset)
+            this._movePointer(offset);
             this.cfg.sound.setPosition(parseInt(1000*this.pointerPos));
         },
 

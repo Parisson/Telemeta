@@ -38,7 +38,6 @@ TimeSide(function($N, $J) {
         container: null,
         imageWidth: null,
         imageHeight: null,
-        soundPosition: 0,
 
         initialize: function($super, container, cfg) {
             $super();
@@ -174,13 +173,13 @@ TimeSide(function($N, $J) {
             this.refreshImage();
             this.resize(); 
 
-//            var resizeTimer = null;
-//            $J(window).resize(this.attach(function() {
-//                if (resizeTimer){
-//                    clearTimeout(resizeTimer);
-//                }
-//                resizeTimer = setTimeout(this.attach(this.resize), 100);
-//            }));
+            //            var resizeTimer = null;
+            //            $J(window).resize(this.attach(function() {
+            //                if (resizeTimer){
+            //                    clearTimeout(resizeTimer);
+            //                }
+            //                resizeTimer = setTimeout(this.attach(this.resize), 100);
+            //            }));
 
             this.setSoundVolume(this.getSoundVolume());
             //finally, binds events to play and pause. At the end cause this.ruler has to be fully initialized
@@ -190,15 +189,29 @@ TimeSide(function($N, $J) {
                 return false;
             });
             //var r = this.ruler;
+            var player = this;
+            var playOptions = {
+                whileplaying: function(){
+                    ruler._movePointer(this.position/1000); //this will refer to the sound object
+                }
+            };
             this.elements.play.attr('href', '#').bind('click', function(){
+
                 consolelog('playstate'+sound.playState);
+                consolelog('readystate'+sound.readyState);
                 if(sound.playState!=1 || sound.paused){
-                    sound.play({
-                        whileplaying: function(){
-                            ruler._movePointer(this.position/1000);
-                        //consolelog(this.ruler);
+                    //if sound has to be loaded and position is not zero, load it first
+                    if(sound.readyState==0 && player.getSoundPosition()){
+                        sound.options.onload=function(){
+                            this.setPosition(player.getSoundPosition()*1000);
+                            //consolelog('loaded and played from '+player.getSoundPosition() +' '+this.position);
+                            sound.play(playOptions);
                         }
-                    });
+                        sound.load();
+                    }else{
+                        //consolelog('NOT loaded and played');
+                        sound.play(playOptions);
+                    }
                 }
                 return false;
             });

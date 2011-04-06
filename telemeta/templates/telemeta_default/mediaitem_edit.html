@@ -1,9 +1,9 @@
-{% extends "telemeta/mediaitem.html" %}
+{% extends "telemeta/mediaitem_detail.html" %}
 {% load i18n %}
 {% load telemeta_utils %}
 
-{% block title %}
- 
+  {% block title %}
+        <img src="images/item.png" style="vertical-align:middle" /> Item : {{ item }}
   {% endblock %}
   {% block title_buttons %}
    <a href="{% url telemeta-item-detail item.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
