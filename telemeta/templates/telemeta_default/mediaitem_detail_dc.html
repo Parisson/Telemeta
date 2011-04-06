@@ -1,10 +1,10 @@
-{% extends "telemeta/mediaitem_detail.html" %}
+{% extends "telemeta/mediaitem.html" %}
 {% load telemeta_utils %}
 {% load i18n %}
 
 {% if item %}
-{% block submenu %}
-    <div><a href="{% url telemeta-item-detail item.public_id %}">{% trans "Normal View" %}</a></div>
+{% block title_buttons %}
+    <a class="component_icon button icon_previous" href="{% url telemeta-item-detail item.public_id %}">{% trans "Normal View" %}</a>
 {% endblock %}
 
 {% block infos %}

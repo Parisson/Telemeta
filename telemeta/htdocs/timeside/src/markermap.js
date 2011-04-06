@@ -38,15 +38,13 @@ TimeSide(function($N, $J) {
                 marker: marker,
                 index: idx
             });
-            //this.fireRefreshLabels(idx+1,this.markers.length);
-            //this._reorder(marker.offset);
-            //this.fireEditMode(marker);
             return idx;
         },
+
         //argument is either an object loaded from server or a number specifying the marker offset
         createMarker: function(argument){
             var marker = null;
-            if(typeof argument == 'string'){
+            if(typeof argument == 'string'){ //to be sure, it might be that we pass an offset in string format
                 argument = parseFloat(argument);
             }
             if(typeof argument == 'object'){

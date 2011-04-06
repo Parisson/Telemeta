@@ -81,13 +81,12 @@
 {% endblock %}
 </div>
 </div>
-<div id="submenu">
-{% block submenu %}{% endblock %}
-</div>
-<div id="content_header">
-{% block content_header %}{% endblock %}
-</div>
+
 <div id="content">
+    <table id="content_header"><tr>
+            <td class="leftcol"><h3>{% block title %}{% endblock %}</h3></td>
+            <td class="rightcol">{% block title_buttons %}{% endblock %}</td>
+    </tr></table>
 {% block content %}{% endblock %}
 <div class="nett"></div>
 </div>

@@ -54,18 +54,16 @@ a img { border: none; }
 }
 
 #content {
-    margin-top: 1em;
+    /*margin-top: 1em;*/
     margin-bottom: 0em;
 }
 
-#content, #content_header {
+#content {
     position: relative;
     margin-left: 2em;
     margin-right: 2em;
 }
-#content_header {
-    top:-.45em; /*must be header.margin_bottom (0.9em)*/
-}
+
 
 #content ul, #content ul ul, #content ol {
     list-style: square;
@@ -85,7 +83,7 @@ a img { border: none; }
 #content li a {
     padding: .1em 0;
 }
-#content h3, #content_header h3 {
+#content h3 {
     color: #6a0307;
     font-weight: bold;
     display:  inline;
@@ -97,56 +95,40 @@ a img { border: none; }
     width: 90%;
     padding: 0.3em 0.3em 0.3em 0.5em;
 }
+#logo a, #logo a:hover { border: none; background: transparent; }
 
 #header {
     padding: 0.2em 0;
-    margin-bottom: .9em;
     background: url("/images/waves.png") 100% 0% no-repeat;
 }
 
-#logo a, #logo a:hover { border: none; background: transparent; }
-
-#submenu {
-    position: relative;
-    margin: 5px 2em 0;
-    /*height:3ex;*/ /*no longer used, and it also shifts up the bottom content*/
-    z-index: 10;
+#content_header, #header{
+    margin-bottom: .8em;
 }
-/*#submenu h3, #submenu div {
-    min-height: 1.6em;
-}*/
 
-
-
-#submenu h3 {
-    margin-right: 80px;
-}
-#submenu div {
-    position: absolute;
-    right: 0;
-    top: 0;
-}
-/*#submenu a {
-    height: 1.6em;
-    color: #4d508a;
-    font-size: 0.9em;
-    font-weight: bold;
-}*/
-
-#content_header table{
+#content_header{
     width:100%;
-}
-#content_header table td{
-    vertical-align: bottom;
+    border-collapse:collapse;
 }
 
-#content_header td.rightcol a{
+#content_header td{
+    vertical-align: top;
+}
+#content_header td.rightcol{
+    text-align:right;
+    white-space:nowrap; /**this implies to stretach righcol to accomodate all the width,
+                        UNLESS there is a div.fixedWidthAsPlayer inside td.rightcol (see blow)*/
+}
+#content_header td.rightcol div.fixedWidthAsPlayer{
+    width:374px; /*must be width+2*padding, see #rightcol below*/
+    float:right;
+    white-space:normal; /*to override no-wrap defined in #content_header td.rightcol*/
+}
+#content_header td.rightcol div.fixedWidthAsPlayer a{
     display:inline-block;
     margin-top:0.5ex;
 }
-#content_header td.rightcol {
-    width:374px; /*must be width+2*padding, see #rightcol below*/
-}
+
 #rightcol {
     width: 362px; /**if u change this, change also width #content_header td.rightcol, see above*/
     padding: 6px; /**if u change this, change also width #content_header td.rightcol, see above*/
@@ -1056,7 +1038,7 @@ a.image-link {
 .button,  .button:visited, .button:hover{
     font-weight: bold;
     border:  1px solid #e1e1e1;
-    
+    white-space:nowrap;
 /*    border-top:  1px solid #e1e1e1 !important;
     border-left:  1px solid #e1e1e1 !important;
     border-right:  1px solid #e1e1e1 !important;

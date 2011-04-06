@@ -5,9 +5,11 @@
 {% block head_title %}{% trans "Collection" %}{{collection|prepend:': '}} - {{ block.super }}{% endblock %}
 
 {% if collection %}
-{% block submenu %}
-    <h3>Collection: {{ collection }}</h3>
-    <div><a href="{% url telemeta-collection-detail collection.public_id %}">{% trans "Normal View" %}</a></div>
+{% block title %}
+    Collection: {{ collection }}
+{% endblock %}
+{% block title_buttons %}
+    <a class="component_icon button icon_previous" href="{% url telemeta-collection-detail collection.public_id %}">{% trans "Normal View" %}</a>
 {% endblock %}
 
 {% block content %}

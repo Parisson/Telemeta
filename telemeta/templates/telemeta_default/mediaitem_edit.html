@@ -1,10 +1,13 @@
-{% extends "telemeta/mediaitem_detail.html" %}
+{% extends "telemeta/mediaitem.html" %}
 {% load i18n %}
 {% load telemeta_utils %}
 
-  {% block tools %}
+{% block title %}
+ 
+  {% endblock %}
+  {% block title_buttons %}
    <a href="{% url telemeta-item-detail item.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
-  {% endblock tools %}
+  {% endblock %}
 
   {% block infos %}    
     <div class="infos">

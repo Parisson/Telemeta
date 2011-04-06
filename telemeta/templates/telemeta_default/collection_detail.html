@@ -33,9 +33,11 @@
 
 {% if collection %}
 
-{% block submenu %}
-    <div>
-    {% block tools %}
+{% block title %}
+    Collection: {{ collection }}
+{% endblock %}
+
+{% block title_buttons %}
       <a href="{% url telemeta-collection-dublincore collection.public_id %}" class="component_icon button icon_dublin_core">Dublin Core</a>
     {% if user.is_authenticated and perms.telemeta.change_mediacollection %}
       <a href="{% url telemeta-collection-edit collection.public_id %}" class="component_icon button icon_edit">{% trans "Edit" %}</a>
@@ -44,14 +46,10 @@
     {% if user.is_authenticated %}
     <a href=# id ="_add_to_playlist" class="component_icon button icon_add">{% trans "Add to playlist" %}</a>
     {% endif %}
-    {% endblock tools %}
-    
-    
-    </div>
 {% endblock %}
 
 {% block content %}
-    <h3>Collection: {{ collection }}</h3>
+<!--    <h3>Collection: {{ collection }}</h3>-->
     <div class="{% if collection.has_mediafile %}with-rightcol{% endif %}">
         {% if collection.has_mediafile %}
         <div id="rightcol">

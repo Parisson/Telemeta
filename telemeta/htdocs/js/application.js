@@ -227,20 +227,20 @@ var popup={
             return div;
         },
         className: 'component',
-        divShadow: function(){
-            var divShadow =  this.jQuery('<div/>').css({ //this is _cfg_
-                position: 'absolute',
-                display: 'none',
-                overflow:'visible',
-                padding: '0 !important', //otherwise setting divShadow dimension is tricky
-                backgroundColor:'#000 !important', //shadow must be black
-                zIndex:999
-            });
-            if(this.className){
-                divShadow.addClass(this.className);
-            }
-            return divShadow;
-        },
+//        divShadow: function(){
+//            var divShadow =  this.jQuery('<div/>').css({ //this is _cfg_
+//                position: 'absolute',
+//                display: 'none',
+//                overflow:'visible',
+//                padding: '0 !important', //otherwise setting divShadow dimension is tricky
+//                backgroundColor:'#000 !important', //shadow must be black
+//                zIndex:999
+//            });
+//            if(this.className){
+//                divShadow.addClass(this.className);
+//            }
+//            return divShadow;
+//        },
         //        mouseDownNamespace : "mousedown.popup__",
         //        keyDownNamespace : "keydown.popup__",
 
@@ -363,7 +363,7 @@ var popup={
         var windowH = wdow.height();
         var windowW = wdow.width();
         var position = div.offset();
-        var shadowOffset=2;
+        var shadowOffset=5;
         var size = {
             width:div.outerWidth(true)+shadowOffset,
             height:div.outerHeight(true)+shadowOffset
@@ -397,10 +397,15 @@ var popup={
         }; //setting width on a div means the width(),
         //but calculations here are made according to outerWidth(true), so we need this variable (se below)
 
+        //the shadow in the background will be created according to the actual div size
+        //However, since we do not specify neither width nor height, the calculation of the div size
+        //works if maxWidth and maxHeight do set a width and height. In order to do so, they
+        //must be lower or equal to the actual div width and height. That's why the "min" here below:'
         div.css({
-            'maxWidth': maxSize.width-divPadding.left,
-            'maxHeight': maxSize.height-divPadding.top
+            'maxWidth': Math.min(div.width(), maxSize.width-divPadding.left),
+            'maxHeight': Math.min(div.height(), maxSize.height-divPadding.top)
         });
+
         //last thing: if invoker element exist, set width at least invoker element width
         if(invokerElement){
             var iEw = invokerElement.outerWidth(); //no margins considered
@@ -410,10 +415,8 @@ var popup={
                 });
             }
         }
-        //var divShadow = this._cfg_.divShadow().insertAfter(div);
-
+        //now we can build the divShadow
         var divShadow = div.clone(false,false).empty().css({'zIndex':999,'borderColor':'#000','display':'none','backgroundColor':'#000'}).insertAfter(div);
-        
         //store the divs to be removed
         this._cfg_.divsToDelete = [div,divShadow];
         //add a listener to the document. If one of the content children is clicked/keypressed,

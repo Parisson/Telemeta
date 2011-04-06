@@ -16,16 +16,16 @@ var resourceMap = new ResourceMap('.continents', {
 {% endif %}
 {% endblock %}
 
-{% block submenu %}
-    <div>
+{% block title %}
+    {% trans "Geographic Navigator" %}
+{% endblock %}
+{% block title_buttons %}
         {% if continents %}
         <a href="#" onclick="resourceMap.toggle('map'); return false;" class="component button">{% trans "Map" %}</a> |
         <a href="#" onclick="resourceMap.toggle('list'); return false;" class="component button">{% trans "List" %}</a>
         {% endif %}
-    </div>
 {% endblock %}
 {% block content %}
-<h3>{% trans "Geographic Navigator" %}</h3>
 {% if continents %}
 <ul class="continents">
 {% for group in continents %}

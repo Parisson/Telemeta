@@ -21,8 +21,6 @@ TimeSide(function($N) {
                 this.cfg.player = new $N.Player(this.cfg.player);
             }
             this._setupPlayer();
-        //setting the divmarkers
-        //this.cfg.map.observe('add')
             this.loadHTTP();
             
         },
@@ -30,30 +28,18 @@ TimeSide(function($N) {
         _setupPlayer: function() {
             this.debug('_setupPlayer');
             this.cfg.player
-            //.setSoundProvider(this.cfg.soundProvider)
             .setMarkerMap(this.cfg.map)
-//            .observe('play', $N.attachFunction(this.cfg.soundProvider, this.cfg.soundProvider.play))
-//            .observe('pause', $N.attachFunction(this.cfg.soundProvider, this.cfg.soundProvider.pause))
-//            .observe('move', this.attach(this._onMove))
             .observe('markeradd', this.attach(this._onMarkerAdd))
             //player markermove listens for changes of ruler markermove which listens
             //foir changes in each marker move
             .observe('markermove', this.attach(this._onMarkerMove))
-            
-//            .draw();
             ._setupInterface();
-            //this.loadHTTP();
 
             this.cfg.map.observe('add',this.attach(this._onMarkerMapAdd));
             this.cfg.map.observe('remove',this.attach(this._onMarkerMapRemove));
             this.cfg.map.observe('moved',this.attach(this._onMarkerMapMoved));
             
         },
-
-
-//        _onMove: function(e, data) {
-//            this.cfg.soundProvider.seek(data.offset);
-//        },
 
         //called whenever a marker is moved in the ruler BUT NOT in the map
         _onMarkerMove: function(e, data) {
@@ -168,9 +154,7 @@ TimeSide(function($N) {
 
                     }
                     util.setUpTabs.apply(util, [tabIndex]);
-//                setTabs(tabIndex);
             };
-            //json(param, method, onSuccesFcn(data, textStatus, jqXHR), onErrorFcn(jqXHR, textStatus, errorThrown))
             json([itemId],"telemeta.get_markers", onSuccess);
         }
     });

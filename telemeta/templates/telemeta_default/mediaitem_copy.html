@@ -1,4 +1,4 @@
-{% extends "telemeta/mediaitem_detail.html" %}
+{% extends "telemeta/mediaitem.html" %}
 {% load telemeta_utils %}
 {% load i18n %}
 
@@ -7,19 +7,16 @@
 {% block extra_javascript %}
 {% endblock %}
 
-{% block submenu %}
-<div>
+{% block title %}
+    <img src="images/item.png" style="vertical-align:middle" /> Item : {{ item }}
+{% endblock %}
+{% block title_buttons %}
     {% if user.is_authenticated and perms.telemeta.add_mediaitem %}
-    {% block tools %}
     <a href="{% url telemeta-item-detail item.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
-    {% endblock tools %}
     {% endif %}
-</div>
 {% endblock %}
 
 {% block content %}
-<h3><img src="images/item.png" style="vertical-align:middle" /> Item : {{ item }}</h3>
-  
   {% block infos %}    
     <div class="infos">
      <form enctype="multipart/form-data" id="_mediaItemCopyForm" method="POST" action="">{% csrf_token %}

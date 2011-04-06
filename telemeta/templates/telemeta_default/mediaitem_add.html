@@ -6,21 +6,17 @@
 
 
 {% if item %}
-{% block submenu %}
-<div>
+{% block title %}
+    <img src="images/item.png" style="vertical-align:middle" /> Item : NEW
+{% endblock %}
+{% block title_buttons %}
     {% if perms.telemeta.add_mediaitem %}
-    {% block tools %}
       <a href="{% url telemeta-items %}"
            class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
-    {% endblock tools %}
-    
     {% endif %}
-</div>
 {% endblock %}
 
 {% block content %}
-<h3><img src="images/item.png" style="vertical-align:middle" /> Item : NEW</h3>
-
     {% block infos %}
     <div class="infos">
      <form method="POST" id="_addItemForm" action="" enctype="multipart/form-data">{% csrf_token %}
