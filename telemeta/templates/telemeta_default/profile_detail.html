@@ -49,7 +49,7 @@
              <option {% if lang.0 == LANGUAGE_CODE %}selected{% endif %} value="{{ lang.0 }}">{{ lang.1 }}</option>
             {% endfor %}
           </select>
-          <a href="#" class="component_icon button icon_save" 
+          <a href="#" class="component_icon button icon_ok" 
             onclick="document.getElementById('setlang').submit(); return false;">{% trans "Set" %}</a>
          </form>
         </dd>
