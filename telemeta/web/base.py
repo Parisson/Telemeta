@@ -346,7 +346,7 @@ class WebView(object):
                 form.save()
                 if form.files:
                     self.cache_data.delete_item_data(code)
-#                    self.item_analyze(item)
+                    self.cache_export.delete_item_data(code)
                 item.set_revision(request.user)
                 return HttpResponseRedirect('/items/'+code)
         else:
