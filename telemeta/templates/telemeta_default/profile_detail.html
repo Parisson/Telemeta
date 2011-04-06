@@ -1,10 +1,8 @@
 {% extends "telemeta/base.html" %}
 {% load i18n %}
 {% load telemeta_utils %}
-
+        
 {% block head_title %}{% trans "User Profile" %} : {{ usr.username }}{% endblock %}
-
-
 
 {% block content %}
   <div class="module-set" style="width: 33%">
@@ -26,9 +24,6 @@
   </div>
 
   <h3>{% trans "User profile" %} : {{ usr.username }}</h3>
-{% if user.is_authenticated %}
-      <a href="{% url telemeta-profile-edit usr.username %}" class="component_icon button icon_edit" style="float:right">{% trans "Edit" %}</a>
-     {% endif %}
     <div class="infos" style="padding-top: 1em;">
      <dl class="listing">
       <dt>{% trans "First Name" %}</dt><dd>{{ usr.first_name }}</dd>
@@ -44,9 +39,31 @@
       <dt>{% trans "Is staff" %}</dt><dd>{{ usr.is_staff }}</dd>
       <dt>{% trans "Is superuser" %}</dt><dd>{{ usr.is_superuser }}</dd>
       <dt>{% trans "Last login" %}</dt><dd>{{ usr.last_login }}</dd>
+      {% if user.is_authenticated and user.username == usr.username %}
+        {% get_current_language as LANGUAGE_CODE %}
+        {% get_available_languages as LANGUAGES %}
+      <dt>{% trans "Language" %}</dt><dd><form id="setlang" action="/i18n/setlang/" method="post">{% csrf_token %}
+        <input name="next" type="hidden" value="" />
+          <select name="language">
+            {% for lang in LANGUAGES %}
+             <option {% if lang.0 == LANGUAGE_CODE %}selected{% endif %} value="{{ lang.0 }}">{{ lang.1 }}</option>
+            {% endfor %}
+          </select>
+          <a href="#" class="component_icon button icon_save" 
+            onclick="document.getElementById('setlang').submit(); return false;">{% trans "Set" %}</a>
+         </form>
+        </dd>
+      {%  endif %}
      </dl>
     </div>
-    <a href="{% url telemeta-password-change %}" class="component_icon button icon_login" style="float:left">{% trans "Change password" %}</a>
-   </div>
+        
+    {% if user.is_authenticated and user.username == usr.username or user.is_staff %}
+    <a href="{% url telemeta-profile-edit usr.username %}" class="component_icon button icon_edit">{% trans "Edit" %}</a>
+    {%  endif %}
+    {% if user.is_authenticated and user.username == usr.username %}
+    <a href="{% url telemeta-password-change %}" class="component_icon button icon_login">{% trans "Change password" %}</a>
+    {%  endif %}
+ 
+  </div>
 {% endblock %}
 

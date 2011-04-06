@@ -888,6 +888,14 @@ msgstr "Statut super-utilisateur"
 msgid "Last login"
 msgstr "Dernière connexion"
 
+#: templates/telemeta_default/profile_detail.html:60
+msgid "Set"
+msgstr "Appliquer"
+
+#: templates/telemeta_default/profile_detail.html:50
+msgid "Language"
+msgstr "Langue"
+
 #: templates/telemeta_default/login.html:21
 msgid "Password forgotten"
 msgstr "Mot de passe oublié"

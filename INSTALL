@@ -127,24 +127,45 @@ Modifiy the following variables:
     DATABASES =         your database setting dict (don't forget to create the database if needed)
     MEDIA_ROOT =        absolute path to the media directory you just created
     INSTALLED_APPS =    add 'telemeta' and 'jsonrpc' to the tuple
+
+Set the following languages:
     
+    LANGUAGES = [ ('fr', 'French'),
+                  ('en', 'English'),
+    ]
+
+
+Set the following Middlewares:
+    
+    MIDDLEWARE_CLASSES = (
+        'django.middleware.common.CommonMiddleware',
+        'django.contrib.sessions.middleware.SessionMiddleware',
+        'django.middleware.csrf.CsrfViewMiddleware',
+        'django.contrib.auth.middleware.AuthenticationMiddleware',
+        'django.contrib.messages.middleware.MessageMiddleware',
+        'django.middleware.locale.LocaleMiddleware',
+    )
+
 Add the following variables:
     
     TEMPLATE_CONTEXT_PROCESSORS = (
         'django.core.context_processors.request',
         'django.contrib.auth.context_processors.auth',)
 
-    TELEMETA_ORGANIZATION =  name of the organization which hosts this installation
-    TELEMETA_SUBJECTS =      tuple of subject keywords (used for Dublin Core), such as "Ethnology", etc...
-    TELEMETA_CACHE_DIR =     absolute path to the cache directory that you just created
-    TELEMETA_GMAP_KEY =      your Google Map API key
-    TELEMETA_DOWNLOAD_ENABLED =  True to enable audio data download
-    TELEMETA_PUBLIC_ACCESS_PERIOD = 51 # (in years)
-
+    TELEMETA_ORGANIZATION =         name of the organization which hosts this installation
+    TELEMETA_SUBJECTS =             tuple of subject keywords (used for Dublin Core), such as "Ethnology", etc...
+    TELEMETA_CACHE_DIR =            absolute path to the cache directory that you just created
+    TELEMETA_GMAP_KEY =             your Google Map API key
+    TELEMETA_DOWNLOAD_ENABLED =     True to enable audio data download
+    TELEMETA_PUBLIC_ACCESS_PERIOD = number of years above which item files are automagically published
+    EMAIL_HOST =                    your default SMTP server
+    DEFAULT_FROM_EMAIL =            the default sending email address 
+    
 Just paste the lines below::
 
     LOGIN_URL = '/login'
     LOGIN_REDIRECT_URL = '/'
+    AUTH_PROFILE_MODULE = 'telemeta.userprofile'
     TELEMETA_EXPORT_CACHE_DIR = TELEMETA_CACHE_DIR + "/export"
     TELEMETA_DATA_CACHE_DIR = TELEMETA_CACHE_DIR + "/data"
     CACHE_BACKEND = "file://" + TELEMETA_CACHE_DIR + "/data"

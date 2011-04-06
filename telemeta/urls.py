@@ -237,9 +237,11 @@ urlpatterns = patterns('',
     url(r'^accounts/password_reset_complete/$', 'django.contrib.auth.views.password_reset_complete', {'template_name': 'telemeta/registration/password_reset_complete.html'}, name="telemeta-password-reset-complete"),
        
     # JSON RPC
-    url(r'^json/browse/', 'jsonrpc.views.browse', name="jsonrpc_browser"), # for the graphical browser/web console only, omissible
     url(r'^json/$', jsonrpc_site.dispatch, name='jsonrpc_mountpoint'),
-    url(r'^json/(?P<method>[a-zA-Z0-9.]+)$', jsonrpc_site.dispatch),  # for HTTP GET only, also omissible
+    # for the graphical browser/web console only, omissible
+    url(r'^json/browse/', 'jsonrpc.views.browse', name="jsonrpc_browser"), 
+    # for HTTP GET only, also omissible
+    #url(r'^json/(?P<method>[a-zA-Z0-9.]+)$', jsonrpc_site.dispatch),  
     
     # Playlists
     url(r'^playlists/(?P<public_id>[a-zA-Z0-9]+)/(?P<resource_type>[a-zA-Z0-9]+)/csv/$', web_view.playlist_csv_export, name="telemeta-playlist-csv-export"),
@@ -249,4 +251,5 @@ urlpatterns = patterns('',
     
     # Not allowed
     url(r'/*/(?P<public_id>[A-Za-z0-9._-]+)/not_allowed/$', web_view.not_allowed, name="telemeta-not-allowed"),
+    
 )
