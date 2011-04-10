@@ -958,12 +958,15 @@ class WebView(object):
                 playlist_resources = PlaylistResource.objects.filter(playlist=playlist)
                 resources = []
                 for resource in playlist_resources:
-                    if resource.resource_type == 'item':
-                        element = MediaItem.objects.get(public_id=resource.resource_id)
-                    if resource.resource_type == 'collection':
-                        element = MediaCollection.objects.get(public_id=resource.resource_id)
-                    if resource.resource_type == 'marker':
-                        element = MediaItemMarker.objects.get(public_id=resource.resource_id)
+                    try:
+                        if resource.resource_type == 'item':
+                            element = MediaItem.objects.get(public_id=resource.resource_id)
+                        if resource.resource_type == 'collection':
+                            element = MediaCollection.objects.get(public_id=resource.resource_id)
+                        if resource.resource_type == 'marker':
+                            element = MediaItemMarker.objects.get(public_id=resource.resource_id)
+                    except:
+                        element = None
                     resources.append({'element': element, 'type': resource.resource_type, 'public_id': resource.public_id })
                 playlists.append({'playlist': playlist, 'resources': resources})
         return playlists

@@ -95,15 +95,16 @@
         {% for resource in playlist.resources %}
         <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
             <td>
-            {% if resource.type == "item" %}
+            {% if resource.type == "item" and not resource.element == None %}
              <a href="{% url telemeta-item-detail resource.element.public_id %}">{{ resource.element }}</a>
             {% endif %}
-            {% if resource.type == "collection" %}
+            {% if resource.type == "collection" and not resource.element == None %}
              <a href="{% url telemeta-collection-detail resource.element.public_id %}">{{ resource.element }}</a>
             {% endif %}
-            {% if resource.type == "marker" %}
+            {% if resource.type == "marker" and not resource.element == None  %}
              <a href="{% url telemeta-item-detail-marker resource.element.public_id %}">{{ resource.element }}</a>
             {% endif %}
+            {% if resource.element == None %}<b>deleted</b>{% endif %}
             </td>
             <td>{{ resource.type }}</td>
             <td>
