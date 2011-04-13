@@ -816,6 +816,10 @@ msgstr "Listes de lecture"
 msgid "Sound"
 msgstr "Son"
 
+#: templates/telemeta_default/home.html:107
+msgid "deleted"
+msgstr "supprimé"
+
 #: templates/telemeta_default/base.html:50
 msgid "Account"
 msgstr "Compte"
@@ -889,7 +893,7 @@ msgid "Last login"
 msgstr "Dernière connexion"
 
 #: templates/telemeta_default/profile_detail.html:60
-msgid "Set"
+msgid "Apply"
 msgstr "Appliquer"
 
 #: templates/telemeta_default/profile_detail.html:50
