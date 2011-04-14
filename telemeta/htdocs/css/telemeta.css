@@ -114,16 +114,19 @@ a img { border: none; }
 #content_header td{
     vertical-align: top;
 }
+
 #content_header td.rightcol{
     text-align:right;
     white-space:nowrap; /**this implies to stretach righcol to accomodate all the width,
                         UNLESS there is a div.fixedWidthAsPlayer inside td.rightcol (see blow)*/
 }
+
 #content_header td.rightcol div.fixedWidthAsPlayer{
     width:374px; /*must be width+2*padding, see #rightcol below*/
     float:right;
     white-space:normal; /*to override no-wrap defined in #content_header td.rightcol*/
 }
+
 #content_header td.rightcol div.fixedWidthAsPlayer a{
     display:inline-block;
     margin-top:0.5ex;
@@ -141,10 +144,12 @@ a img { border: none; }
     -webkit-border-radius: 8px 8px 8px 8px;
     border-radius: 8px 8px 8px 8px;
 }
+
 #rightcol .analyzer, #rightcol .exporter, .markers {
     text-align: left;
     position: relative;
 }
+
 #rightcol form {
     width: 360px;
     margin-top: 5px;

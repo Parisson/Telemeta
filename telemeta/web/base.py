@@ -295,7 +295,7 @@ class WebView(object):
                     'previous' : previous, 'next' : next, 'marker': marker_id, 'playlists' : playlists, 
                     'public_access': public_access, 'translations': translations, 
                     })
-
+    
     def get_public_access(self, access, date_from, date_to):
         # Rolling publishing date : Public access when time between recorded year 
         # and currant year is over settings value PUBLIC_ACCESS_PERIOD
@@ -376,7 +376,6 @@ class WebView(object):
             form = MediaItemForm(instance=item)
         
         return render(request, template, {'item': item, "form": form})
-    
     
     @method_decorator(permission_required('telemeta.add_mediaitem'))
     def item_copy(self, request, public_id, template='telemeta/mediaitem_copy.html'):
