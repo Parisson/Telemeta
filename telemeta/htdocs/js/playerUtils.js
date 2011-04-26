@@ -1,11 +1,4 @@
-//var sound = null;
-//var soundUrl = null;
-//var soundEngineReady = false;
-var map;
-//var provider;
-var player;
-var player_image_url = null;
-var controller;
+var player; //public player variable
 
 function togglePlayerMaximization() {
     consolelog('entered togglePlayerMaximization');
@@ -45,7 +38,9 @@ function change_visualizer_clicked(){
 
     //form.append(img);
     setTimeout(function(){
-        change_visualizer();
+        if (player){
+            player.refreshImage();
+        }
         //img.remove();
         setTimeout(function(){
             if(src){
@@ -56,19 +51,10 @@ function change_visualizer_clicked(){
     },600);
 }
 
-function change_visualizer() {
-    consolelog('playerUtils.changeVisualizer');
-    set_player_image_url($('#visualizer_id').get(0).value);
-    if (player){
-        player.refreshImage();
-    }
-    return false;
-}
-
-
-
-
 function loadPlayer(analizerUrl, soundUrl){
+    if(!(analizerUrl) || !(soundUrl)){
+        return;
+    }
     var $J = jQuery;
     var msgElm = $J('#loading_span_text'); //element to show messages
     if(msgElm){
@@ -86,20 +72,20 @@ function loadPlayer(analizerUrl, soundUrl){
                 var elm = $J(element);
                 tableBody.append('<tr><td>'+elm.attr('name')+'</td><td>'+elm.attr('value')+'</td><td>'
                     +elm.attr('unit')+'</td></tr>');
-                });
-                //loaded analizer, loading player
-                if(msgElm){
-                    msgElm.html('Loading player...');
-                }
-                var duration = $J(data).find('#duration').attr('value');
-                duration = duration.split(":");
-                consolelog('analyzer loaded, duration: '+duration);
-                //format duration
-                var pin = parseInt;
-                var pfl = parseFloat;
-                var timeInMSecs=pin(duration[0])*3600+pin(duration[1])*60+pfl(duration[2]);
-                timeInMSecs = Math.round(timeInMSecs*1000);
-                load_player(soundUrl, timeInMSecs);
+            });
+            //loaded analizer, loading player
+            if(msgElm){
+                msgElm.html('Loading player...');
+            }
+            var duration = $J(data).find('#duration').attr('value');
+            duration = duration.split(":");
+            consolelog('analyzer loaded, duration: '+duration);
+            //format duration
+            var pin = parseInt;
+            var pfl = parseFloat;
+            var timeInMSecs=pin(duration[0])*3600+pin(duration[1])*60+pfl(duration[2]);
+            timeInMSecs = Math.round(timeInMSecs*1000);
+            load_player(soundUrl, timeInMSecs);
         },
         error:function(){
             msgElm.parent().html("<img src='/images/dialog-error.png' style='vertical-align:middle'/><span class='login-error'>Error loading analyzer</span>");
@@ -110,9 +96,6 @@ function loadPlayer(analizerUrl, soundUrl){
 
 //loads a player WAITING for the sound identified by soundUrl to be FULLY LOADED!!!!
 function load_player(soundUrl, durationInMsecs) {
-//    if (!$('#player').length){
-//        return;
-//    }
     consolelog('PlayerUtils.load_player: '+soundUrl+' '+durationInMsecs);
     var load_player2 = this.load_player2;
 
@@ -136,33 +119,31 @@ function load_player(soundUrl, durationInMsecs) {
         }
     });
     if(!loadImmediately){
-        load_player2(sound,durationInMsecs);
+        //TODO: remove this code is only temporary here!!!!!!!!!!!!!!!!!!!!1
+        loadScripts('/timeside/src/',['rulermarker.js', //'markerlist.js',
+            'markermap.js', 'player.js', 'ruler.js','divmarker.js'], function(){
+                load_player2(sound,durationInMsecs);
+            });
     }
+
 }
-//NOTE: the sound MUST be FULLY LOADED!!!!!! otherwise the duration is null. This method is called from load_player
+//NOTE: the duration must be present. Loaded from xmlanalyzer (see above)
 function load_player2(sound, durationInMsec) {
     if (!$('#player').length){
         return;
     }
     consolelog("entered load_player2");
 
+    //TODO: what are we doing here????
     $('.ts-wave a img').insertAfter('.ts-wave a');
     $('.ts-wave a').remove();
 
-    TimeSide.load(function() {
-        map = new TimeSide.MarkerMap();
+    var p = new Player(jQuery('#player'), sound, durationInMsec);
+    consolelog('initialized player');
+    p._setupInterface(CURRENT_USER_NAME ? true : false);
+    //p.loadMarkers();
 
-        player = new TimeSide.Player('#player', {
-            image: get_player_image_src,
-            'sound': sound,
-            'soundDurationInMsec': durationInMsec
-        });
-        change_visualizer();
-        controller = new TimeSide.Controller({
-            player: player,
-            map: map
-        });
-    });
+    player = p;
 
     var change_visualizer_click = change_visualizer_clicked;
     $('#visualizer_id').change(change_visualizer_click);
@@ -175,99 +156,4 @@ function load_player2(sound, durationInMsec) {
     });
 
 
-}
-function set_player_image_url(str) {
-    player_image_url = str;
-}
-
-function get_player_image_src(width, height) {
-    var src = null;
-    if (player_image_url && (width || height)) {
-        src = player_image_url.replace('WIDTH', width + '').replace('HEIGHT', height + '');
-    }
-    return src;
-}
-
-//======================================================================
-//OLD STUFF
-//======================================================================
-
-
-//TODO REMOVE NOTE: the sound MUST be FULLY LOADED!!!!!! otherwise the duration is null. This method is called from load_player
-function load_player2Old(sound) {
-    if (!$('#player').length){
-        return;
-    }
-    consolelog("entered load_player2");
-    //        sound = soundManager.createSound({
-    //            id: 'sound',
-    //            url: soundUrl
-    //        });
-    //soundUrl = $('.ts-wave a').attr('href');
-
-    $('.ts-wave a img').insertAfter('.ts-wave a');
-    $('.ts-wave a').remove();
-   
-    TimeSide.load(function() {
-        map = new TimeSide.MarkerMap();
-        //        provider = new TimeSide.SoundProvider({
-        //            duration: sound.duration
-        //        });
-        //        provider.setSource(sound);
-        player = new TimeSide.Player('#player', {
-            image: get_player_image_src,
-            'sound': sound
-        });
-        change_visualizer();
-        controller = new TimeSide.Controller({
-            player: player,
-            //soundProvider: provider,
-            map: map
-        });
-    //change_visualizer();
-    //player.resize();
-    //player.updateVolumeAnchor(provider.getVolume());
-    });
-
-    //    $('#visualizer_id').change(change_visualizer);
-    //    $('#visualizer_id_form').submit(change_visualizer);
-    $('#visualizer_id').change(change_visualizer_clicked);
-    $('#visualizer_id_form').submit(change_visualizer_clicked);
-
-    $('#player_maximized .toggle, #player_minimized .toggle').click(function() {
-        togglePlayerMaximization();
-        this.blur();
-        return false;
-    });
-
-
-}
-
-//TODO: REMOVE loads a player WAITING for the sound identified by soundUrl to be FULLY LOADED!!!!
-function load_playerOld(soundUrl) {
-    if (!$('#player').length){
-        return;
-    }
-    consolelog('PlayerUtils.load_player: '+soundUrl);
-    var callback = this.load_player2;
-
-    //this variable can be changed to load a sound immediately or not
-    var loadImmediately = true;
-    var sound = soundManager.createSound({
-        id: 'sound',
-        autoLoad: loadImmediately,
-        url: soundUrl,
-        whileloading: function() {
-            //PROBLEM/BUG: on chrome and firefox whileloading is the same as onload,
-            //ie it is not called at regular interval but when the whole file has loaded
-            if(loadImmediately){
-                consolelog('entering while loading setting up---------------'+this.bytesLoaded+' of '+this.bytesTotal);
-                loadImmediately=false;
-                callback(this);
-            }
-        }
-    });
-    if(!loadImmediately){
-        callback(sound);
-    }
 }

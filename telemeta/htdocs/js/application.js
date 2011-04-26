@@ -12,27 +12,27 @@
 //2) from==to or from==to-1 (also in this latter case there is no need to move)
 //3) from or to are lower than zero or greater than the array length
 //in any other case, returns to
-Array.prototype.move = function(from, to){
-    var pInt = parseInt;
-    if(pInt(from)!==from || pInt(to)!==to){
-        return from;
-    }
-    var len = this.length;
-    if((from<0 || from>len)||(to<0 || to>len)){
-        return from;
-    }
-    //if we moved left to right, the insertion index is actually
-    //newIndex-1, as we must also consider to remove the current index markerIndex, so:
-    if(to>from){
-        to--;
-    }
-    if(from != to){
-        var elm = this.splice(from,1)[0];
-        this.splice(to,0,elm);
-        return to;
-    }
-    return from;
-}
+//Array.prototype.move = function(from, to){
+//    var pInt = parseInt;
+//    if(pInt(from)!==from || pInt(to)!==to){
+//        return from;
+//    }
+//    var len = this.length;
+//    if((from<0 || from>len)||(to<0 || to>len)){
+//        return from;
+//    }
+//    //if we moved left to right, the insertion index is actually
+//    //newIndex-1, as we must also consider to remove the current index markerIndex, so:
+//    if(to>from){
+//        to--;
+//    }
+//    if(from != to){
+//        var elm = this.splice(from,1)[0];
+//        this.splice(to,0,elm);
+//        return to;
+//    }
+//    return from;
+//}
 
 function foldInfoBlocks() {
     var $J = jQuery;
@@ -50,7 +50,9 @@ function urlNormalized(){
     return sPath;
 }
 
-
+/**
+ * Global telemeta function to set the current selected menu active according toi the current url
+ */
 function setSelectedMenu(){
     var $J = jQuery;
     var menus = $J('#menu a');
@@ -87,7 +89,7 @@ function setSelectedMenu(){
             }
         }else{
             //here, on the other hand, we select if a link points to a page or super page
-            //of the current paqge
+            //of the current page
             if(linkHref!=pageOrigin && pageHref.match("^"+linkHref+".*")){
                 elm.addClass('active');
             }else{
@@ -116,14 +118,14 @@ $(document).ready(function() {
 //method: the json method, eg "telemeta.update_marker". See base.py
 //
 //onSuccesFcn(data, textStatus, jqXHR) OPTIONAL --IF MISSING, NOTHING HAPPENS --
-//   A function to be called if the request succeeds.
-//   The function gets passed three arguments:
+//   A function to be called if the request succeeds with the same syntax of jQuery's ajax onSuccess function.
+//   The function gets passed three arguments 
 //      The data returned from the server, formatted according to the dataType parameter;
 //      a string describing the status;
 //      and the jqXHR (in jQuery 1.4.x, XMLHttpRequest) object
 //
 //onErrorFcn(jqXHR, textStatus, errorThrown) OPTIONAL. --IF MISSING, THE DEFAULT ERROR DIALOG IS SHOWN--
-//    A function to be called if the request fails.
+//    A function to be called if the request fails with the same syntax of jQuery ajax onError function..
 //    The function receives three arguments:
 //      The jqXHR (in jQuery 1.4.x, XMLHttpRequest) object,
 //      a string describing the type of error that occurred and
@@ -227,20 +229,6 @@ var popup={
             return div;
         },
         className: 'component',
-//        divShadow: function(){
-//            var divShadow =  this.jQuery('<div/>').css({ //this is _cfg_
-//                position: 'absolute',
-//                display: 'none',
-//                overflow:'visible',
-//                padding: '0 !important', //otherwise setting divShadow dimension is tricky
-//                backgroundColor:'#000 !important', //shadow must be black
-//                zIndex:999
-//            });
-//            if(this.className){
-//                divShadow.addClass(this.className);
-//            }
-//            return divShadow;
-//        },
         //        mouseDownNamespace : "mousedown.popup__",
         //        keyDownNamespace : "keydown.popup__",
 
@@ -528,45 +516,78 @@ var popup={
 
 }
 
-
-//function loadScripts(scriptArrayName, callback){
-//     if(!(scriptArrayName) && callback){
-//         callback();
-//         return;
-//     }
-//     var len = scriptArrayName.length;
-//     var script = function(i){
-//         if(i>=len){
-//             if(callback){
-//                callback();
-//                return;
-//             }
-//         }
-//         jQuery.getScript(scriptArrayName[i], function(){script(i+1)});
-//     };
-//     script(0);
-//}
-
-function loadScripts(scriptArray, callback, loadInSeries){
-    loadInSeries = false;
+/**
+ * Loads scripts asynchronously
+ * can take up to four arguments:
+ * root (optional): a string specifying the root (such as '/usr/local/'). Must end with slash, otherwise
+ *      each element in scriptArray must begin with a slash
+ * scriptArray: a string array of js script filenames, such as ['script1.js','script2.js']
+ * callback (optional): callback to be executed when ALL scripts are succesfully loaded
+ * loadInSeries (optional): if true scripts are loaded in synchronously, ie each script is loaded only once the
+ *      previous has been loaded. The default (argument missing) is false
+ *
+ * Examples. Given scripts = ['s1.js', 's2.js']
+ *  loadScripts(scripts)                          //loads (asynchronously) scripts
+ *  loadScripts('/usr/', scripts)                 //loads (asynchronously) ['/usr/s1.js', '/usr/s2.js']
+ *  loadScripts(scripts, callback)                //loads (asynchronously) scripts. When loaded, executes callback
+ *  loadScripts('/usr/', scripts, callback)       //loads (asynchronously) ['/usr/s1.js', '/usr/s2.js']. When loaded, executes callback
+ *  loadScripts(scripts, callback, true)          //loads (synchronously) scripts. When loaded, executes callback
+ *  loadScripts('/usr/', scripts, callback, true) //loads (synchronously) ['/usr/s1.js', '/usr/s2.js']. When loaded, executes callback
+ *
+ */
+function loadScripts(){
+    var optionalRoot='', scriptArray=[], callback=undefined, loadInSeries=false;
+    var len = arguments.length;
+    if(len==1){
+        scriptArray = arguments[0];
+    }else if(len==2){
+        if(typeof arguments[0] == 'string'){
+            optionalRoot = arguments[0];
+            scriptArray = arguments[1];
+        }else{
+            scriptArray = arguments[0];
+            callback = arguments[1];
+        }
+    }else if(len>2){
+        if(typeof arguments[0] == 'string'){
+            optionalRoot = arguments[0];
+            scriptArray = arguments[1];
+            callback = arguments[2];
+            if(len>3){
+                loadInSeries = arguments[3];
+            }
+        }else{
+            scriptArray = arguments[0];
+            callback = arguments[1];
+            loadInSeries = arguments[2];
+        }
+    }
+    
     if(!scriptArray){
         if(callback){
             callback();
         }
         return;
     }
-    var len = scriptArray.length;
+    len = scriptArray.length;
+    var i=0;
+    if(optionalRoot){
+        for(i =0; i<len; i++){
+            scriptArray[i] = optionalRoot+scriptArray[i];
+        }
+    }
+
     var $J = jQuery;
-    var time = new Date().getTime();
+    //var time = new Date().getTime();
     if(loadInSeries){
-        var load = function(i){
-            if(i<len){
-                consolelog("loading "+scriptArray[i]+" "+new Date().getTime());
-                $J.getScript(scriptArray[i],function(){
-                    load(i+1);
+        var load = function(index){
+            if(index<len){
+                //consolelog("loading "+scriptArray[index]+" "+new Date().getTime());
+                $J.getScript(scriptArray[index],function(){
+                    load(index+1);
                 });
             }else if(callback){
-                consolelog("EXECUTING CALLBACK ELAPSED TIME:"+(new Date().getTime()-time));
+                //consolelog("EXECUTING CALLBACK ELAPSED TIME:"+(new Date().getTime()-time));
                 callback();
             }
         };
@@ -574,13 +595,13 @@ function loadScripts(scriptArray, callback, loadInSeries){
     }else{
         var count=0;
         var s;
-        for(var i=0; i <len; i++){
+        for(i=0; i <len; i++){
             s = scriptArray[i];
-            consolelog("loading "+s+" "+new Date().getTime());
+            //consolelog("loading "+s+" "+new Date().getTime());
             $J.getScript(s, function(){
                 count++;
                 if(count==len && callback){
-                    consolelog("EXECUTING CALLBACK ELAPSED TIME:"+(new Date().getTime()-time));
+                    //consolelog("EXECUTING CALLBACK ELAPSED TIME:"+(new Date().getTime()-time));
                     callback();
                 }
             });

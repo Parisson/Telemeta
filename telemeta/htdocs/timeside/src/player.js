@@ -1,405 +1,608 @@
-/**
- * TimeSide - Web Audio Components
- * Copyright (c) 2008-2009 Samalyse
- * Author: Olivier Guilyardi <olivier samalyse com>
- * License: GNU General Public License version 2.0
- */
+var Player = TimesideClass.extend({
 
-TimeSide(function($N, $J) {
+    //sound duration is in milliseconds because the soundmanager has that unit,
+    //player (according to timeside syntax) has durations in seconds
+    init: function(container, sound, soundDurationInMsec) {
+        this._super();
+        if (!container){
+            this.debug('ERROR: container is null in initializing the player')
+        }
+        this.getContainer = function(){
+            return container;
+        }
+        this.getSound = function(){
+            return sound;
+        }
 
-    $N.Class.create("Player", $N.Core, {
-        skeleton: {
-            'div.viewer': {
-                'div.ruler': {},
-                'div.wave': {
-                    'div.image-canvas': {},
-                    'div.image-container': ['img.image']
+        //rpivate functions for converting
+        //soundmanager has milliseconds, we use here seconds
+        var pInt = Math.round; //instantiate once for faster lookup
+        var pFloat = parseFloat; //instantiate once for faster lookup
+        function toMsec(seconds){
+            return pInt(seconds*1000);
+        }
+        function toSec(msec){
+            return pFloat(msec)/1000;
+        }
+
+
+
+        var sd = toSec(soundDurationInMsec);
+        this.getSoundDuration = function(){
+            return sd;
+        }
+       
+        this.isPlaying = function(){
+            /*Numeric value indicating the current playing state of the sound.
+             * 0 = stopped/uninitialised
+             * 1 = playing or buffering sound (play has been called, waiting for data etc.)
+             *Note that a 1 may not always guarantee that sound is being heard, given buffering and autoPlay status.*/
+            return sound && sound.playState==1;
+        };
+        
+        //setting the position===============================================
+        //if sound is not loaded, position is buggy. Moreover, we have to handle the conversions between units: 
+        //seconds (here) and milliseconds (swmanager sound). So we store a private variable
+        //private variable and function
+        var soundPos = sound.position ? toSec(sound.position) : 0.0;
+        //private method: updates just the internal variable (called in whilePlaying below)
+        function setPos(value){
+            soundPos = value;
+        }
+        //public methods: calls setPos above AND updates sounbd position
+        this.setSoundPosition = function(newPositionInSeconds){
+            //for some odd reason, if we set sound.setPosition here soundPos
+            //is rounded till the 3rd decimal integer AND WILL BE ROUNDED THIS WAY IN THE FUTURE
+            //don't know why, however we set the sound position before playing (see below)
+            //however, now it works. Even odder....
+            setPos(newPositionInSeconds);
+            if(sound){
+                var s = toMsec(this.getSoundPosition());
+                sound.setPosition(s);
+            }
+        }
+        //public methods: returns the sound position
+        this.getSoundPosition = function(){
+            return soundPos;
+        };
+
+        
+        //implement play here: while playing we do not have to update the sound position, so
+        //we call the private variable soundPos
+        this.play = function(){
+            var player = this;
+            if(!player || player.isPlaying()){
+                return false;
+            }
+            var sound = player.getSound();
+            if(!sound){
+                return false;
+            }
+
+            var map = player.getMarkerMap();
+            var indexToShow = map.insertionIndex(player.getSoundPosition());
+            
+            var mydiv = this.$J('<div/>').addClass('markerDiv').css({'position':'absolute','zIndex':1000});
+
+            var ruler = player.getRuler();
+            
+            var playOptions = {
+                whileplaying: function(){
+                    var sPos = toSec(this.position); //this will refer to the sound object (see below)
+                    setPos(sPos);
+                    if(ruler && !ruler.isPointerMovingFromMouse()){
+                        ruler.movePointer(sPos);
+                    }
+                    if(indexToShow<map.length){
+                        //consolelog(map.toArray()[indexToShow].offset+' '+sPos);
+                        var spanSec = 0.25;
+                        var offzet = map.toArray()[indexToShow].offset;
+                        if(offzet>=sPos-spanSec && offzet<=sPos+spanSec){
+                            indexToShow++;
+                            popup.show(jQuery('<div/>').html(map.toArray()[indexToShow-1].toString()));
+                            consolelog('showing marker '+(indexToShow-1));
+                        }
+                    }
+                },
+                onfinish: function() {
+                    setPos(0); //reset position, not cursor, so that clicking play restarts from zero
+                }
+            };
+            //internal play function. Set all properties and play:
+            var play_ = function(sound, positionInSec){
+                sound.setPosition(toMsec(positionInSec));
+                indexToShow = map.insertionIndex(positionInSec); //if we are at zero
+                if(indexToShow<0){
+                    indexToShow = -indexToShow-1;
+                }
+                sound.setVolume(sound.volume); //workaround. Just to be sure. Sometimes it fails when we re-play
+                sound.play(playOptions);
+            };
+            //var s = toMsec(player.getSoundPosition());
+            if(sound.readyState != 3){
+                /*sound.readyState
+                 * Numeric value indicating a sound's current load status
+                 * 0 = uninitialised
+                 * 1 = loading
+                 * 2 = failed/error
+                 * 3 = loaded/success
+                 */
+                sound.options.onload=function(){
+                    //consolelog('LOADED AND PLAY '+' volume '+ sound.volume+' sPos: '+sound.position);
+                    //we set position and volume to be sure. Sometimes they are buggy
+                    //sound.setPosition(s);
+                    //sound.setVolume(sound.volume); //workaround. Just to be sure
+                    //sound.play(playOptions);
+                    play_(sound, player.getSoundPosition());
+                }
+                sound.load();
+            }else{
+                //consolelog('PLAY IMMEDIATELY'+' volume '+ sound.volume+' sPos: '+sound.position);
+                //we set position and volume to be sure. Sometimes they are buggy
+                //                sound.setPosition(s);
+                //                sound.setVolume(sound.volume); //workaround. Just to be sure/
+                //                sound.play(playOptions);
+                play_(sound, player.getSoundPosition());
+            }
+            
+            return false;
+        };
+        //now implement also pause here: note that pause has some odd behaviour.
+        //Try this sequence: play stop moveforward moveback play pause
+        //When we press the last pause the sound restarts (??!!!!)
+        this.pause = function(){
+            var sound = this.getSound();
+            //we don't check if it's playing, as the stop must really stop anyway
+            //if(sound && this.isPlaying()){
+            sound.stop();
+            //}
+            return false;
+        };
+
+        //initializing markermap and markerui
+        var map = new MarkerMap();
+        this.getMarkerMap = function(){
+            return map;
+        }
+        var mapUI = new MarkerMapDiv();
+        this.getMarkersUI = function(){
+            return mapUI;
+        }
+    //TODO: define setUpInterface here????
+
+    },
+
+    _setupInterface: function(isInteractive) {
+        
+        this.isInteractive = function(){
+            return isInteractive;
+        }
+
+        var sound = this.getSound();
+        consolelog('player _setupInterface sound.readyState:'+sound.readyState); //handle also cases 0 and 2????
+        
+        var $J = this.$J; //defined in the super constructor
+           
+        //TODO: use cssPrefix or delete cssPrefix!!!!!
+        //TODO: note that ts-viewer is already in the html page. Better avoid this (horrible) method and use the html
+        var skeleton =  {
+            'div.ts-viewer': {
+                'div.ts-ruler': {},
+                'div.ts-wave': {
+                    'div.ts-image-canvas': {},
+                    'div.ts-image-container': ['img.ts-image']
                 }
             },
-            'div.control': {
-                'div.layout': {
-                    'div.playback': ['a.play', 'a.pause', 'a.rewind', 'a.forward', 'a.set-marker' //]
-                    ,'a.volume']
+            'div.ts-control': {
+                'div.ts-layout': {
+                    'div.ts-playback': ['a.ts-play', 'a.ts-pause', 'a.ts-rewind', 'a.ts-forward', 'a.ts-set-marker' //]
+                    ,'a.ts-volume']
                 }
             }/*,
         'div.marker-control': ['a.set-marker']*/
-        },
-        defaultContents: {
-            play: 'Play',
-            pause: 'Pause',
-            rewind: 'Rewind',
-            forward: 'Forward',
-            'set-marker': 'Set marker'
-        //,'text-marker' : 'textmarker'
-        },
-        elements: {},
-        ruler: null,
-        map: null,
-        container: null,
-        imageWidth: null,
-        imageHeight: null,
+        };
+        var jQueryObjs = this.loadUI(this.getContainer(), skeleton);
 
-        initialize: function($super, container, cfg) {
-            $super();
-            if (!container){
-                throw new $N.RequiredArgumentError(this, 'container');
-            }
-            this.container = $J(container);
             
-            this.configure(cfg, {
-                image: null,
-                sound:null,
-                soundDurationInMsec:0
-            });
-        //if(this.cfg.sound && this.cfg.sound.)
-        },
 
-        free: function($super) {
-            this.elements = null;
-            this.container = null;
-            //this.sound.destruct(); //should be called here?
-            $super();
-        },
+        this.getElements = function(){
+            return jQueryObjs;
+        }
 
 
-        setMarkerMap: function(map) {
-            this.map = map;
-            return this;
-        },
 
-        setImage: function(expr) {
-            this.cfg.image = expr;
-            this.refreshImage();
-        },
+        var rewind = jQueryObjs.find('.ts-rewind');
+        var forward = jQueryObjs.find('.ts-forward');
+        var play = jQueryObjs.find('.ts-play');
+        var pause = jQueryObjs.find('.ts-pause');
+        var volume = jQueryObjs.find('.ts-volume');
 
-        refreshImage: function() {
-            var src = null;
-            if (typeof this.cfg.image == 'function') {
-                src = this.cfg.image(this.imageWidth, this.imageHeight);
-            } else if (typeof this.cfg.image == 'string') {
-                src = this.cfg.image;
-            }
 
-            if (src) {
-                this.elements.image.attr('src', src);
-            }
-        },
-
-        //        draw: function() {
-        //            this.debug('drawing');
-        //            $N.domReady(this.attach(this._setupInterface));
-        //            return this;
-        //        },
-
-        _setupInterface: function() {
-            consolelog('player _setupInterface sound.readyState:'+this.cfg.sound.readyState); //handle also cases 0 and 2????
-            //0 = uninitialised
-            //1 = loading
-            //2 = failed/error
-            //3 = loaded/success
-            if(this.cfg.sound.readyState==1){
-                var rsz = this.resize;
-                //attach an event when fully loaded and repaint all.
-                //For the moment we will display the ruler and other stuff
-                //based on durationEstimate property
-                this.cfg.sound.options.onload = function() {
-                    rsz();
-                }
-            }
-            this.elements = $N.Util.loadUI(this.container, this.skeleton, this.defaultContents);
-
-            // IE apparently doesn't send the second mousedown on double click:
-            var jump = $J.browser.msie ? 'mousedown dblclick' : 'mousedown';
-            this.elements.rewind.attr('href', '#').bind(jump, this.attach(this._onRewind))
-            .click(function() {
-                return false;
-            });
-            this.elements.forward.attr('href', '#').bind(jump, this.attach(this._onForward))
-            .click(function() {
-                return false;
-            });
+        //setting events to buttons (code left untouched from olivier):
+        //rewind
+        //
+        //(olivier comment) IE apparently doesn't send the second mousedown on double click:
+        //        var jump = $J.browser.msie ? 'mousedown dblclick' : 'mousedown';
+        //        rewind.attr('href', '#').bind(jump, this.attach(this._onRewind))
+        //        .click(function() {
+        //            return false;
+        //        });
+        //        //forward:
+        //        forward.attr('href', '#').bind(jump, this.attach(this._onForward))
+        //        .click(function() {
+        //            return false;
+        //        });
+        var me=this;
+        //attaching event to the image. Note that attaching an event to a transparent div is buggy in IE
+//        if($J.browser.msie){
+//
+//        }
+        consolelog('ope');
+        consolelog(jQueryObjs.find('.ts-image').length);
+        jQueryObjs.find('.ts-image').click(function(event){
+            alert('g');
+            consolelog(event);
             
-            //
-            this.elements.volume.attr('href', '#').click(function(){
-                return false;
-            }).bind('mousedown', this.attach(
-                function(e){
-                    if(e.which===1){ //left button
-                        this.setVolume(e);
-                    }
-                    return false;
-                }
-                ));
+//            me.setSoundPosition( me.getSoundDuration()/$J(this).width());
+        });
 
 
-            //assigning title string to all anchors???????
-            this.elements.control.find('a').add(this.elements.setMarker)
-            .attr('href', '#')
-            .each(function(i, a){
-                a = $J(a);
-                if (!a.attr('title')){
-                    a.attr('title', a.text());
-                }
-            });
-            
-            //this.elements.markerControl.find('a').attr('href', '#');
-            if (this.map && CURRENT_USER_NAME) {
-                //configureMarkersDiv();
-                this.elements.setMarker.bind('click', this.attach(this._onSetMarker));
-            //this.elements.setMarker2.bind('click', this.attach(this._onSetMarker2));
-            //this.elements.textMarker.attr('type', 'text');
-            //this.elements.textMarker.bind('click', this.attach(this._onSetMarker2));
-          
-            } else {
-                this.elements.setMarker.remove();
-            }
-            //creating the ruler
-            var ruler = new $N.Ruler({
-                viewer: this.elements.viewer,
-                //map: this.map,
-                sound: this.cfg.sound,
-                soundDurationInMsec: this.cfg.soundDurationInMsec
-            });
-            this.ruler = ruler;
-            //bind events to the ruler (see function observe in core.js, I guess,
-            //which overrides jQuery bind function):
-            //the first arg is basically the event name, the second
-            //arg is a function to execute each time the event is triggered
-            this.ruler
-            .observe('markermove', this.forwardEvent)
-            .observe('markeradd', this.forwardEvent)
-            //.observe('move', this.forwardEvent)
-            .draw();
-            this.refreshImage();
-            this.resize(); 
-
-            //            var resizeTimer = null;
-            //            $J(window).resize(this.attach(function() {
-            //                if (resizeTimer){
-            //                    clearTimeout(resizeTimer);
-            //                }
-            //                resizeTimer = setTimeout(this.attach(this.resize), 100);
-            //            }));
-
-            this.setSoundVolume(this.getSoundVolume());
-            //finally, binds events to play and pause. At the end cause this.ruler has to be fully initialized
-            var sound = this.cfg.sound;
-            this.elements.pause.attr('href', '#').bind('click', function(){
-                sound.pause();
-                return false;
-            });
-            //var r = this.ruler;
-            var player = this;
-            var playOptions = {
-                whileplaying: function(){
-                    ruler._movePointer(this.position/1000); //this will refer to the sound object
-                }
-            };
-            this.elements.play.attr('href', '#').bind('click', function(){
-
-                consolelog('playstate'+sound.playState);
-                consolelog('readystate'+sound.readyState);
-                if(sound.playState!=1 || sound.paused){
-                    //if sound has to be loaded and position is not zero, load it first
-                    if(sound.readyState==0 && player.getSoundPosition()){
-                        sound.options.onload=function(){
-                            this.setPosition(player.getSoundPosition()*1000);
-                            //consolelog('loaded and played from '+player.getSoundPosition() +' '+this.position);
-                            sound.play(playOptions);
-                        }
-                        sound.load();
-                    }else{
-                        //consolelog('NOT loaded and played');
-                        sound.play(playOptions);
-                    }
-                }
-                return false;
-            });
-        },
-
-        resize: function(overrideHeight) {
-            this.debug("resizing");
-            var height;
-            if (overrideHeight === true) {
-                this.debug("override height");
-                height = this.elements.image.css('height', 'auto').height();
-            } else {
-                height = this.elements.wave.height();
-                this.debug("wave height:" + height);
-                if (!height) {
-                    this.elements.image.one('load', this.attach(function() {
-                        this.resize(true);
-                        this.debug("image loaded");
-                    }));
-                    height = this.elements.image.height();
-                }
-            }
-
-            var elements = this.elements.image
-            .add(this.elements.imageContainer)
-            .add(this.elements.imageCanvas);
-
-            elements.css('width', 'auto'); // for IE6
-
-            if (!height){
-                height = 200;
-            }
-            var style = {
-                width: this.elements.wave.width(),
-                height: height
-            }
-            elements.css(style);
-            this.imageWidth = style.width;
-            this.imageHeight = style.height;
-            this.refreshImage();
-            this.ruler.resize();
-            return this;
-        },
-        //sound object methods
-
-        getSoundPosition :function(){
-            //note that this.cfg.sound.position is buggy. If we did not play, calling this.cfg.sound.setPosition(p)
-            //stores the position, but this.cfg.position returns zero.
-            //otherwise (we did play at least once) this.cfg.sound.position returns the good value
-            //to overcome this problem, we return the ruler position, NOTE that it is in seconds
-            return this.ruler.pointerPos;
-        //            var s = this.cfg.sound;
-        //            return s ? s.position/1000 : 0;
-        },
-
-        getSoundVolume :function(){
-            var s = this.cfg.sound;
-            return s ? s.volume : 0;
-        },
-
-        getSoundDuration :function(){
-            var s = this.cfg.sound;
-            return s ? s.duration/1000 : 0;
-        },
-
-        _onRewind: function() {
-            var offset = 0;
-            if (this.map) {
-                var position = parseFloat(this.getSoundPosition());
-                var idx = this.map.indexOf(position)-1;
-                if(idx>=0){
-                    var marker = this.map.get(idx);
-                    if(marker){
-                        offset = marker.offset;
-                    }
-                }
-            }
-            this.ruler._movePointerAndUpdateSoundPosition(offset);
+        var rewind_ = this.rewind;
+        var forward_ = this.forward;
+        rewind.attr('href', '#').click(function(e){
+            rewind_.apply(me);
             return false;
-        },
-
-        _onForward: function() {
-            var offset = this.getSoundDuration();
-            if (this.map) {
-                var position = parseFloat(this.getSoundPosition());
-                var idx = this.map.insertionIndex(position);
-                if(idx>=0){ //the pointer is exactly on a marker, the index is the marker itself
-                    //so increase by one otherwise  and we wouldn't move ahead
-                    //more specifically, increase as long as we have markers with this offset (there could be more than
-                    //one marker at offset
-                    var m = this.map.get(idx);
-                    while(m && m.offset == position){
-                        idx++;
-                        m = this.map.get(idx);
-                        if(!m){
-                            idx=-1;
-                        }
-                    }
-                }else{
-                    //we are not on a pointer, get the index of the marker
-                    //(see markermap insertionindex)
-                    idx = -idx-1;
-                }
-                if(idx>=0){
-                    var marker = this.map.get(idx);
-                    if(marker){
-                        offset = marker.offset;
-                    }
-                }
-            }
-            this.ruler._movePointerAndUpdateSoundPosition(offset);
-            
+        });
+        forward.attr('href', '#').click(function(e){
+            forward_.apply(me);
             return false;
-        },
+        });
 
-        //notified from a click event on the anchor
-        setVolume: function(event){
-            
+        //volume:
+        function setVolume(event){
             var ticks = [18,26,33,40,47];
             var vol = event.layerX;
             for(var i=0; i<ticks.length; i++){
                 if(vol<=ticks[i]){
-                    //var index = i;
                     var volume = i*20;
-                    this.setSoundVolume(volume);
-                    this.debug('setting volume'+volume);
+                    me.setSoundVolume(volume);
+                    me.debug('setting volume'+volume);
                     return false;
                 }
             }
-            this.setSoundVolume(100);
-            //            var g = 9;
-            //            console.log(event.layerX);
-            return false;
-        },
-
-        //TODO: remove unused
-        //        onVolumeChanged: function(e, data){
-        //           this.updateVolumeAnchor(data.volume);
-        //        },
-
-        setSoundVolume: function(volume){
-            
-            if(typeof volume != 'number'){ //note: typeof for primitive values, instanceof for the rest
-                //see topic http://stackoverflow.com/questions/472418/why-is-4-not-an-instance-of-number
-                volume = 100;
-            }
-            if(volume<0){
-                volume = 0;
-            }
-            if(volume>100){
-                volume = 100;
-            }
-            this.cfg.sound.setVolume(volume);
-            //update the anchor image:
-            var indices = [20,40,60,80,100,100000];
-            
-            for(var i=0; i <indices.length; i++){
-                if(volume<indices[i]){
-                    var pos = -28*i;
-                    pos = '0px '+ pos+ 'px'; //DO NOT SET !important as in FF3 DOES NOT WORK!!!!!
-                    this.elements.volume.css('backgroundPosition',pos);
-                    return;
-                }
-            }
-        // this.elements.volume.css('backgroundPosition','0px 0px !important')
-
-        },
-
-        _onPlay: function() {
-            this.fire('play');
-            return false;
-        },
-
-        _onPause: function() {
-            this.fire('pause');
-            return false;
-        },
-
-        _onSetMarker: function() {
-            if (this.map) {
-                this.fire('markeradd', {
-                    offset: this.getSoundPosition()
-                });
-            }
+            me.setSoundVolume(100);
             return false;
         }
-    });
+        volume.attr('href', '#').click(function(event){
+            return setVolume(event);
+        });
+        //        volume.attr('href', '#').click(function(){
+        //            return false;
+        //        }).bind('mousedown', this.attach(
+        //            function(e){
+        //                if(e.which===1){ //left button
+        //                    this.setVolume(e);
+        //                }
+        //                return false;
+        //            }
+        //            ));
 
-    $N.notifyScriptLoad();
+        //assigning title to all anchors
+        jQueryObjs.attr('href', '#')
+        .each(function(i, a){
+            a = $J(a);
+            a.attr('title', a.attr('class').substring(3));
+        });
+        
+        //creating the ruler
 
+        //TODO: why the line below does not work?!!!!!
+        //var viewer = jQueryObjs.find('.ts-viewer');
+        var viewer = this.getContainer().find('.ts-viewer');
+        var ruler = new Ruler(viewer, this.getSoundDuration(), isInteractive);
+        this.getRuler = function(){
+            return ruler;
+        }
+        
+        this.resize(); //which calls also ruler.resize() (see below)
+
+        //TODO: here? maybe in the constructor
+        this.setSoundVolume(this.getSoundVolume());
+
+
+        //bind events to play and pause.
+        //pause:
+        var pause_ = me.pause;
+        pause.attr('href', '#').bind('click', function(){
+            pause_.apply(me);
+            return false;
+        });
+        //play:
+        var play_ = me.play;
+        play.attr('href', '#').bind('click', function(){
+            play_.apply(me);
+            return false;
+        });
+
+        //finally, load markers and bind events for markers (see method below):
+        this.loadMarkers(isInteractive);
+        
+    },
+    resize: function() {
+        this.debug("resizing");
+        var height;
+        var playerelements = this.getElements();
+        var wave = playerelements.find('.ts-wave');
+        var image = playerelements.find('.ts-image');
+        height = wave.height();
+        this.debug("wave height:" + height);
+        if (!height) {
+            this.debug('ERROR: image height is zero in player.,resize!!!!')
+            height = image.height();
+        }
+        //set image, imagecontainer and canvas (container on imagecontainer for lines and pointer triangles) css
+        var elements = image
+        .add(playerelements.find('.ts-image-container'))
+        .add(playerelements.find('.ts-image-canvas'));
+
+        elements.css('width', 'auto'); // for IE6
+
+        if (!height){
+            height = 200;
+        }
+        var style = {
+            width: wave.width(),
+            height: height
+        }
+        elements.css(style);
+        //this.imageWidth = style.width;
+        //this.imageHeight = style.height;
+        //refreshing images
+        //        var funcImg = function(player_image_url, width, height){
+        //            var _src_ = null;
+        //            if (player_image_url && (width || height)) {
+        //                _src_ = player_image_url.replace('WIDTH', width + '').replace('HEIGHT', height + '');
+        //            }
+        //            return _src_;
+        //        };
+        //        var imgSrc = funcImg(this.getImageUrl(), style.width,style.height);
+        //        if(image.attr('src')!=imgSrc){
+        //            image.attr('src', imgSrc);
+        //        }
+        this.refreshImage(image);
+        this.getRuler().resize();
+        return this;
+    },
+
+    getImageUrl: function(){
+        return this.$J('#visualizer_id').get(0).value;
+    },
+    refreshImage: function(optionalImgTagElm){
+        var image;
+        if(optionalImgTagElm){
+            image = optionalImgTagElm;
+        }else{
+            image = this.getElements().find('.ts-image');
+        }
+        var funcImg = function(player_image_url, width, height){
+            var _src_ = null;
+            if (player_image_url && (width || height)) {
+                _src_ = player_image_url.replace('WIDTH', width + '').replace('HEIGHT', height + '');
+            }
+            return _src_;
+        };
+        var imgSrc = funcImg(this.getImageUrl(), image.width(),image.height());
+        if(image.attr('src')!=imgSrc){
+            consolelog('setting attrt');
+            image.attr('src', imgSrc);
+        }
+    },
+
+    getSoundVolume :function(){
+        var s = this.getSound();
+        return s ? s.volume : 0;
+    },
+    //moves the pointer (and sound position) forward till the next marker or the end of sound
+    forward: function() {
+        var map = this.getMarkerMap();
+        var markers = map.toArray();
+        var len = markers.length;
+        var offset =  this.getSoundDuration();
+        var position = this.getSoundPosition(); //parseFloat(this.getSoundPosition());
+        var idx = map.insertionIndex(position);
+        consolelog('current pointer position: '+position+' '+(typeof position));
+        if(idx<0){
+            idx = -idx-1; //cursor is not on a a marker, get the insertion index
+        }else{
+            //cursor is on a marker. As there might be several markers with the same offset
+            //(see MarkerMap.insertionIndex), move to the outmost right
+            while(idx<len  && markers[idx].offset == position){
+                idx++;
+            }
+        }
+        
+        if(idx< len){
+            offset = markers[idx].offset;
+        }
+        this.setSoundPosition(offset);
+        this.getRuler().movePointer(offset);
+        return false;
+    },
+    //moves the pointer (and sound position) backward till the previous marker or the start of sound
+    rewind: function() {
+        var map = this.getMarkerMap();
+        var markers = map.toArray();
+        var offset =  0;
+        var position = this.getSoundPosition(); //parseFloat(this.getSoundPosition());
+        var idx = map.insertionIndex(position);
+        if(idx<0){
+            idx = -idx-1; //cursor is not on a a marker, get the insertion index
+        }else{
+            //cursor is on a marker. As there might be several markers with the same offset
+            //(see MarkerMap.insertionIndex), move to the outmost left
+            while(idx>0  && markers[idx-1].offset == position){
+                idx--;
+            }
+        }
+        idx--; //move backward (rewind)
+        if(idx>=0){
+            offset = markers[idx].offset;
+        }
+        this.setSoundPosition(offset);
+        this.getRuler().movePointer(offset)
+        return false;
+    },
+
+    setSoundVolume: function(volume){
+
+        if(typeof volume != 'number'){ //note: typeof for primitive values, instanceof for the rest
+            //see topic http://stackoverflow.com/questions/472418/why-is-4-not-an-instance-of-number
+            volume = 100;
+        }
+        if(volume<0){
+            volume = 0;
+        }else if(volume>100){
+            volume = 100;
+        }
+        var sound = this.getSound();
+        //        if(sound.volume == volume){
+        //            return;
+        //        }
+        sound.setVolume(volume);
+        //update the anchor image:
+        var indices = [20,40,60,80,100,100000];
+
+        var volumeElm = this.getElements().find('.ts-volume');
+        for(var i=0; i <indices.length; i++){
+            if(volume<indices[i]){
+                var pos = -28*i;
+                pos = '0px '+ pos+ 'px'; //DO NOT SET !important as in FF3 DOES NOT WORK!!!!!
+                volumeElm.css('backgroundPosition',pos);
+                return;
+            }
+        }
+    // this.elements.volume.css('backgroundPosition','0px 0px !important')
+
+    },
+        
+    loadMarkers: function(isInteractive_){
+        //ruler.bind('markermoved',this.markerMoved,this);
+
+        var itemId = ITEM_PUBLIC_ID;
+
+        var player = this;
+        //initialize the map.
+        var map = this.getMarkerMap();
+        var mapUI = this.getMarkersUI();
+        var ruler = this.getRuler();
+        map.clear();
+        mapUI.clear();
+        ruler.clear();
+        
+        //building the onSuccess function
+        var onSuccess = function(data) {
+            var tabIndex = 0;
+            var mapuiAdd = mapUI.add;
+            var rulerAdd = ruler.add;
+
+            if(data && data.result && data.result.length>0){
+                var result = data.result;
+                //add markers to the map. No listeners associated to it (for the moment)
+                var mapAdd = map.add;
+                for(var i =0; i< result.length; i++){
+                    mapAdd.apply(map,[result[i]]);
+                }
+                //add markers to ruler and div
+                map.each(function(i,marker){
+                    rulerAdd.apply(ruler,[marker, i]);
+                    mapuiAdd.apply(mapUI,[marker, i]);
+                });
+
+                tabIndex = result.length>0 ? 1 : 0;
+            }
+            //BINDINGS:
+            //
+            //1) ADD
+            //
+            //add binding to the setMarker button (html anchor):
+            var setMarkerButton = player.getElements().find('.ts-set-marker');
+            if(setMarkerButton){
+                if(isInteractive_){
+                    setMarkerButton.show().attr('href','#').unbind('click').bind('click', function(){
+                        map.add(player.getSoundPosition());
+                        return false;
+                    });
+                }else{
+                    setMarkerButton.hide().unbind('click');
+                }
+            }
+
+                    
+            //the function above calls map.add:
+            //add bindings when adding a marker:
+            map.bind('add',function(data){
+                mapuiAdd.apply(mapUI,[data.marker, data.index,data.isNew]);
+                rulerAdd.apply(ruler,[data.marker, data.index]);
+            });
+
+            //2) MOVE
+
+            //add the binding when we move a marker on the ruler:
+            ruler.bind('markermoved',function(data){
+                var soundPos = data.soundPosition;
+                var markerClass = data.markerClass;
+                if(markerClass=='pointer'){
+                    player.setSoundPosition(soundPos);
+                }else{
+                    map.move(data.markerElement.getIndex(), soundPos);
+                }
+            });
+                    
+            //and now add a binding to the map when we move a marker:
+            var rulerMove = ruler.move;
+            var mapuiMove = mapUI.move;
+                   
+            map.bind('move', function(data){
+                var from = data.fromIndex;
+                var to = data.toIndex;
+                rulerMove.apply(ruler,[from,to]);
+                mapuiMove.apply(mapUI,[from,to,data.newOffset]);
+            });
+                    
+            //3) EVENTS ON MARKERDIV: SAVE AND REMOVE
+            //save - UI delegates the map:
+            var mapSave = map.save;
+            mapUI.bind('save',function(data){
+                mapSave.apply(map,[data.marker]);
+            });
+            //and map delegates back to the UI:
+            var mapuiSetEditMode = mapUI.setEditMode;
+            map.bind('save',function(data){
+                mapuiSetEditMode.apply(mapUI,[data.index,false]);
+            });
+
+            //remove - UI delegates the map:
+            var mapRemove = map.remove;
+            mapUI.bind('remove',function(data){
+                mapRemove.apply(map,[data.marker]);
+            });
+            //and, again, map delegates back to the UIs:
+            var mapuiRemove = mapUI.remove;
+            var rulerRemove = ruler.remove;
+            map.bind('remove',function(data){
+                mapuiRemove.apply(mapUI, [data.index]);
+                rulerRemove.apply(ruler, [data.index]);
+            });
+
+            jQuery('#loading_span').empty().remove();
+            //TODO: move this in load_player?
+            //                    setUpPlayerTabs([jQuery('#tab_analysis'), jQuery('#tab_markers')],
+            //                    [jQuery('#analyzer_div_id'), jQuery('#markers_div_id')], tabIndex,
+            //                    'tab_selected','tab_unselected');
+            setUpPlayerTabs(jQuery('#tab_analysis').add(jQuery('#tab_markers')),
+                [jQuery('#analyzer_div_id'), jQuery('#markers_div_id')], tabIndex,
+                'tab_selected','tab_unselected');
+        };
+        json([itemId],"telemeta.get_markers", onSuccess);
+    }
 });

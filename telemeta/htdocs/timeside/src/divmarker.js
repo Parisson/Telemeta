@@ -1,315 +1,275 @@
 /**
  * TimeSide - Web Audio Components
- * Copyright (c) 2008-2009 Samalyse
+ * Copyright (c) 2011 Parisson
  * Author: Riccardo Zaccarelli
  * License: GNU General Public License version 2.0
  */
 
-TimeSide(function($N, $J) {
-
-    $N.Class.create("DivMarker", $N.Core, {
-        //static constant variables to retireve the Marker Html Elements (MHE)
-        //to be used with the function below getHtmElm, eg:
-        //getHtmElm(marker, this.MHE_OFFSET_LABEL)
-        e_indexLabel:null,
-        e_descriptionText:null,
-        e_offsetLabel:null,
-        e_deleteButton:null,
-        e_okButton:null,
-        e_header:null,
-        e_editButton:null,
-        e_titleText:null,
-        e_addplaylistButton:null,
-        me:null,
-        markerMap:null,
-
-
-        initialize: function($super, markermap) {
-            $super();
-            //sets the fields required???? see ruler.js createPointer
-            this.configure({
-                //why instantiating a variable to null?
-                parent: [null, 'required']
-            });
-            this.cfg.parent = $J("#markers_div_id");
-            this.markerMap = markermap;
-            this.me = this.createDiv();
-            this.cfg.parent.append(this.me);
-        },
-
-
-        //creates a new div. By default, text is hidden and edit button is visible
-        createDiv: function(){
-            
-            var div = this.cfg.parent;
-            var markerDiv;
-            if(div){
-                
-                //index label
-                this.e_indexLabel = $J('<span/>')
-                .addClass('markersdivIndexLabel')
-                .addClass('markersdivTopElement');
-
-                //offset label
-                this.e_offsetLabel = $J('<span/>')
-                .addClass('markersdivTopElement')
-                .addClass('markersdivOffset');
-                
-
-                //title text
-                this.e_titleText = $J('<input/>')
-                .attr('type','text')
-                .addClass('markersdivTitle')
-                .addClass('markersdivTopElement');
-                
-                //add playlist button
-                this.e_addplaylistButton = $J('<a/>')
-                .addClass('markersdivAddPlaylist')
-                .addClass('markersdivTopElement')
-                .attr('title','add to playlist')
-                .attr("href","#");
-                
-                //close button
-                this.e_deleteButton = $J('<a/>')
-                .addClass('markersdivDelete')
-                .addClass('markersdivTopElement')
-                .attr('title','delete marker')
-                .attr("href","#");
-               
-                //edit button
-                this.e_editButton = $J('<a/>')
-                .addClass('roundBorder4')
-                .addClass('markersdivEdit')
-                .addClass('markersdivTopElement')
-                .attr('title','edit marker description')
-                .attr("href","#")
-                .html('<span>EDIT</span>');
-                                
-                //add all elements to header:
-                this.e_header = $J('<div/>') //.css('margin','0.1ex 0ex 0.5ex 0ex')
-                .append(this.e_indexLabel)
-                .append(this.e_offsetLabel)
-                .append(this.e_titleText)
-                .append(this.e_deleteButton)
-                .append(this.e_editButton)
-                .append(this.e_addplaylistButton);
-                
-                //description text
-                this.e_descriptionText = $J('<textarea/>')
-                .addClass('markersdivDescription')
-
-                //ok button
-                this.e_okButton = $J('<a/>')
-                .attr('title','save marker description and offset')
-                .addClass('markersdivSave')
-                .attr("href","#")
-                .html("OK");
-                
-                //create marker div and append all elements
-                markerDiv = $J('<div/>')
-                .append(this.e_header)
-                .append(this.e_descriptionText)
-                .attr('tabIndex',0)
-                //.append(this.e_okButton)
-                .append($J('<div/>') //.css('margin','1ex 0ex 0.1ex 0ex')
-                .append(this.e_okButton))
-                .addClass('roundBorder8')
-                .addClass('markerdiv');
-                //set default visibility
-
-            }
-            return markerDiv;
-        },
-
-        updateMarkerIndex: function(index){
-            var map = this.markerMap;
-            var marker = map.get(index);
-
-            //set defualt element values regardeless of the marker state
-            this.e_indexLabel.attr('title',marker.toString());
-            this.e_indexLabel.html("<span>"+(index+1)+"</span>");
-            this.e_offsetLabel.html(this.formatMarkerOffset(marker.offset));
-            //move the div to the correct index
-            var divIndex = this.me.prevAll().length;
-            //move the div if necessary:
-            //note that moving left to right the actual insertionIndex is index-1
-            //because we will first remove the current index
-            var insertionIndex = index>divIndex ? index-1 : index;
-            if(insertionIndex!=divIndex){
-                this.me.detach();//The .detach() method is the same as .remove(), except that .detach() keeps
-                //all jQuery data associated with the removed elements
-                $( this.cfg.parent.children()[insertionIndex] ).before(this.me); //add
-            }
-            
-            //set visibility and attach events according to the marker state:
-            //first, is editing or not
-            var isEditing = marker.isEditable && marker.isModified;
-            //            (!marker.isSavedOnServer || !(this.e_editButton.is(':visible')));
-
-            if(!isEditing){
-                this.e_descriptionText.val(marker.desc ? marker.desc : "");
-                this.e_titleText.val(marker.title ? marker.title : "");
-            }
-
-            this.e_okButton.hide();
-            this.e_editButton.show();
-            this.e_deleteButton.show();
-            this.e_addplaylistButton.show();
-            this.e_descriptionText.attr('readonly','readonly').addClass('markersdivUneditable');
-            this.e_titleText.attr('readonly','readonly').addClass('markersdivUneditable');
-            
-
-            if(!marker.isEditable){
-                this.e_editButton.hide();
-                this.e_deleteButton.hide();
-                //we unbind events to be sure
-                this.e_addplaylistButton.unbind('click').hide();
-                this.e_okButton.unbind('click')
-                this.e_deleteButton.unbind('click').hide();
-                this.e_editButton.unbind('click').hide();
-                return false;
-            }
-
-           
-            var remove = map.remove;
-            this.e_deleteButton.unbind('click').click( function(){
-                if(!(marker.isSavedOnServer) || confirm('delete the marker permanently?')){
-                    remove.apply(map,[index]);
-                }
-                return false; //avoid scrolling of the page on anchor click
-            })
-
-            this.e_addplaylistButton.unbind('click').bind('click',function(evtObj_){
-                playlistUtils.showPopupAddToPlaylist(evtObj_,'marker',""+marker.id,'marker added to selected playlist');return false;
-            });
-            //notifies controller.js
-            //                this.fire('remove', {
-            //                    index: index
-            //                });
-
-            var dText = this.e_descriptionText;
-            var tText  = this.e_titleText;
-            var okB = this.e_okButton;
-            var utw = this.updateTitleWidth;
-            var divmarker = this;
-            var eB = this.e_editButton;
-            var startEdit = function(){
-                marker.isModified = true;
-                dText.removeAttr('readonly').removeClass('markersdivUneditable').show();
-                tText.removeAttr('readonly').removeClass('markersdivUneditable').show();
-                okB.show();
-                eB.hide();
-                utw.apply(divmarker,[tText]);
-            };
-
-//            dText.unbind('focus').focus(function(){this.debug('dText focus')});
-//            tText.unbind('focus').focus(function(){this.debug('tText focus')});
-//            dText.unbind('blur').blur(function(){this.debug('dText blur')});
-//            tText.unbind('blur').blur(function(){this.debug('tText blur')});
-
-
-            this.e_editButton.unbind('click').click( function(){
-                startEdit();
-                divmarker.focusOn();
-                return false; //avoid scrolling of the page on anchor click
-            });
-            
-            //action for ok button
-            this.e_okButton.unbind('click').click( function(){
-                //if(marker.desc !== descriptionText.val()){ //strict equality needed. See note below
-                marker.desc = dText.val();
-                marker.title = tText.val();
-                map.sendHTTP(marker,
-                    
-                    function(){
-                        dText.attr('readonly','readonly').addClass('markersdivUneditable');
-                        tText.attr('readonly','readonly').addClass('markersdivUneditable');
-                        eB.show();
-                        okB.hide();
-                        utw.apply(divmarker,[tText]);
-                    },
-                    true
-                    );
-                return false; //avoid scrolling of the page on anchor click
-            });
-            
-            if(isEditing){
-                startEdit();
+var MarkerMapDiv = TimesideArray.extend({
+    init:function(){
+        this._super();
+        this.div = this.$J("#markers_div_id");
+    },
+    //overridden
+    add: function(marker, index,  isNew){
+         
+        var div = this.createMarkerDiv(index, marker);
+        if(index==this.length){
+                this.div.append(div);
             }else{
-                this.updateTitleWidth();
+                this.$J( this.div.children()[index] ).before(div);
             }
-            
-        },
-
-        focusOn: function(){
-            this.me.css('backgroundColor','#f5f5c2');
-            this.e_titleText.select();
-        },
-
-        focusOff: function(){
-            this.me.css('backgroundColor','');
-        },
-
-        updateTitleWidth: function(tText){
-            if(!(tText)){
-                tText = this.e_titleText;
-            }
-            if(tText){
-                var w = tText.parent().width();
-                w-=tText.outerWidth(true)-tText.width(); //so we consider also tText margin border and padding
-                var space = w
-                - (this.e_addplaylistButton.is(':visible') ? this.e_addplaylistButton.outerWidth(true) : 0)
-                - (this.e_indexLabel.is(':visible') ? this.e_indexLabel.outerWidth(true) : 0)
-                - (this.e_offsetLabel.is(':visible') ? this.e_offsetLabel.outerWidth(true) : 0)
-                - (this.e_editButton.is(':visible') ? this.e_editButton.outerWidth(true) : 0)
-                - (this.e_deleteButton.is(':visible') ? this.e_deleteButton.outerWidth(true) : 0);
-                tText.css('width',space+'px');
-            }
-        },
-
-        remove: function(){
-            this.me.remove();
-            this.e_indexLabel = null;
-            this.e_descriptionText=null;
-            this.e_offsetLabel=null;
-            this.e_deleteButton=null;
-            this.e_okButton=null;
-            this.e_header=null;
-            this.e_editButton=null;
-            this.e_titleText=null;
-            this.me=null;
-        },
-
-        formatMarkerOffset: function(markerOffset){
-            //marker offset is in float format second.decimalPart
-            var hours = parseInt(markerOffset/(60*24));
-            markerOffset-=hours*(60*24);
-            var minutes = parseInt(markerOffset/(60));
-            markerOffset-=minutes*(60);
-            var seconds = parseInt(markerOffset);
-            markerOffset-=seconds;
-            var msec = Math.round(markerOffset*100); //show only centiseconds
-            //(use 1000* to show milliseconds)
-            var format = (hours<10 ? "0"+hours : hours )+":"+
-            (minutes<10 ? "0"+minutes : minutes )+":"+
-            (seconds<10 ? "0"+seconds : seconds )+"."+
-            (msec<10 ? "0"+msec : msec );
-            return format;
+        //this.setIndex(this.length-1,d); //length has been increased when calling super
+        this._super(div,index);
+        if(isNew){
+            this.setEditMode(index,true);
+            this.setFocus(index,true);
         }
-   
+        if(index<this.length){
+            //update indices. Note that this is NOT done at startup as index == this.length ALWAYS
+            var t = this;
+            var setIdx = t.setIndex;
+            this.each(index, function(i, div){
+                setIdx.apply(t,[div,i]);
+            });
+        }
+        this.stretch(div.find('.markersdivTitle'));
+        this.stretch(div.find('.markersdivDescription'));
+        return div;
+    },
+    //overridden
+    move: function(from, to, newOffset){
+
+        //call super method
+        var realIndex = this._super(from,to);
+        //reflect the same changes in the document:
+        var me = this.toArray();
+        if(realIndex!=from){
+            var div = me[realIndex]; //me has already been updated
+            div.detach();
+            var parent = this.div;
+            if(to==this.length){
+                parent.append(div);
+            }else{
+                this.$J( parent.children()[realIndex] ).before(div);
+            }
+        }
+
+        var t = this;
+        var setIdx = t.setIndex;
+
+        this.each(Math.min(from,realIndex),Math.max(from,realIndex)+1, function(i, div){
+            setIdx.apply(t,[div,i]);
+        });
+
+        this.setOffset(me[realIndex],newOffset);
+
+        //TODO: create a function?
+        this.setEditMode(realIndex,true);
+        this.setFocus(realIndex,true);
+        return realIndex;
+    },
+    //overridden
+    remove : function(index){
+        var div = this._super(index);
+        div.remove();
+        var me = this;
+        this.each(index,function(i, div){
+            me.setIndex.apply(me,[div,i]);
+        });
+    },
+    //overridden
+    makeTimeLabel: function(time){
+        return this._super(time,['hh','mm','ss','C']);
+    },
+    //overridden
+    clear: function(){
+        var divs = this._super();
+        for(var i=0; i< divs.length; i++){
+            divs[i].empty().remove();
+        }
+        return divs;
+    },
+    //if value is missing, toggles edit mode
+    //if editbutton is not present (marker not editable), this method does nothing
+    setEditMode: function(index, value){
+        
+        var div = this.toArray()[index];
+        var editButton = div.find('.markersdivEdit');
+        if(!((editButton) && (editButton.length))){
+            return;
+        }
+        var visible = editButton.is(':visible');
+
+        if(arguments.length==1){ //toggle
+            value = visible; //if edit visible, editmode = true, otherwise false
+        }else if(value!=visible){ 
+            //value is defined. if true and edit mode is NOT visible, we return cause we are already in edit mode
+            //same if false (dont edit) and edit mode is visible (not edit mode)
+            return;
+        }
+        var e_okButton = div.find('.markersdivSave');
+       
+        var e_descriptionText = div.find('.markersdivDescription');
+        var e_titleText = div.find('.markersdivTitle');
+        if(value){
+            this.debug('setting ba bla bla');
+            e_descriptionText.removeAttr('readonly').removeClass('markersdivUneditable');
+            e_titleText.removeAttr('readonly').removeClass('markersdivUneditable');
+            e_okButton.show();
+            e_titleText.select(); //TODO: this does NOT set the focus on the div. Why?
+            editButton.hide();
+            //e_titleText.focus();
+        }else{
+            e_descriptionText.attr('readonly','readonly').addClass('markersdivUneditable');
+            e_titleText.attr('readonly','readonly').addClass('markersdivUneditable');
+            e_okButton.hide();
+            editButton.show();
+        }
+
+        this.stretch(e_titleText);
+    },
+
+    setFocus: function(index,value){
+        this.each(function(i,div){
+            if(i==index && value){
+                div.css('backgroundColor','#f5cf23'); //'#efc823'
+            }else{
+                div.css('backgroundColor','');
+            }
+        });
+    },
 
 
-    });
+    setIndex: function(div,index){
+        //div.attr('id','_markerdiv'+index);
+        div.find('.ts-marker').html(index+1);
+        var me = this;
+        div.find('.markersdivDescription').unbind('focus').focus(function(){
+            me.setFocus(index,true);
+        });
+        div.find('.markersdivTitle').unbind('focus').focus(function(){
+            me.setFocus(index,true);
+        });
+        div.find('.markersdivEdit').unbind('click').click( function(){
+            me.setEditMode(index);
+            return false; //avoid scrolling of the page on anchor click
+        });
+    },
+/**
+ * stretches jQueryElm the whole possible width. Note that text nodes are not considered!!!!
+ */
+    stretch: function(jQueryElm){
+      var siblings = jQueryElm.siblings(":visible");
+      siblings = siblings.add(jQueryElm);
+      var spaceStretchable = jQueryElm.parent().width();
+      var $J = this.$J;
+      siblings.each(function(i,elm){
+          spaceStretchable -= $J(elm).outerWidth(true);
+          //consolelog("\t"+spaceStretchable+' elm:'+$J(elm).attr('class')+" left: "+$J(elm).position().left+" outerw:" +$J(elm).outerWidth(true)+" w: "+$J(elm).width());
+      });
+      //consolelog('w'+ jQueryElm.parent().width()+' elm.w: '+jQueryElm.width()+' spacestretchable: '+spaceStretchable);
+      var w = jQueryElm.width() + spaceStretchable;
+      jQueryElm.css('width', w+'px');
+    },
 
-    $N.notifyScriptLoad();
+    setOffset: function(div,offset){
+        div.find('.markersdivOffset').html(this.makeTimeLabel(offset));
+    },
+    createMarkerDiv : function(index, marker){
+        //TODO: why class 'ts-marker' does not work?
+        //for the moment we set the style manually, remove
+        //TODO: table width with CSS?
+        var div = this.$J('<div/>').addClass("markerdiv").html('<div>'+
+                                '<a class="ts-marker"></a>'+
+                                '<span class="markersdivOffset" type="text"></span>'+
+                                '<input class="markersdivTitle" type="text"/>'+
+                                '<a class="markersdivAddPlaylist" title="add to playlist"></a>'+
+                                '<a class="markersdivEdit" title="edit">EDIT</a>'+
+                                '<a class="markersdivDelete" title="delete"></a>'+
+                            '</div>'+
+                          '<div zero_top_padding><textarea class="markersdivDescription"></textarea></div>'+
+                          '<div zero_top_padding><a class="markersdivSave">OK</a></div>'); //TODO: avoid text nodes
+        div.find('a').attr('href','#');
+        //todo: remove markerlabel from css!!!!!!!
+        //new RulerMarker(div.find('.markerlbl'),div.find('.markercanvas'),'marker',false);
+
+        var e_indexLabel = div.find('.ts-marker');
+        //var e_offsetLabel =div.find('.markersdivOffset');
+        var e_okButton = div.find('.markersdivSave');
+        var e_editButton = div.find('.markersdivEdit');
+        var e_deleteButton =  div.find('.markersdivDelete');
+        var e_addplaylistButton = div.find('.markersdivAddPlaylist');
+        var e_descriptionText = div.find('.markersdivDescription');
+        var e_titleText = div.find('.markersdivTitle');
+
+        //set defualt element values regardeless of the marker state
+        e_indexLabel.attr('title',marker.toString());
+        this.setIndex(div, index);
+            
+        //e_offsetLabel.html(this.makeTimeLabel(marker.offset));
+        this.setOffset(div,marker.offset);
+        //set visibility and attach events according to the marker state:
+        //first, is editing or not
+        //var isEditing = marker.isEditable && marker.isModified;
+        //            (!marker.isSavedOnServer || !(this.e_editButton.is(':visible')));
+
+        //if(!isEditing){
+        e_descriptionText.val(marker.desc ? marker.desc : "");
+        e_titleText.val(marker.title ? marker.title : "");
+        //}
+
+        e_okButton.hide();
+        e_editButton.show();
+        e_deleteButton.show();
+        e_addplaylistButton.show();
+        e_descriptionText.attr('readonly','readonly').addClass('markersdivUneditable').unbind('focus');
+        e_titleText.attr('readonly','readonly').addClass('markersdivUneditable').unbind('focus');
+
+
+        if(!marker.isEditable){
+            e_editButton.hide();
+            e_deleteButton.hide();
+            //we unbind events to be sure
+            e_addplaylistButton.unbind('click').hide();
+            e_okButton.unbind('click')
+            e_deleteButton.unbind('click').hide();
+            e_editButton.remove(); //so that if edit button is not present, we do not edit (safety reasons) see this.setEditMode
+            return div;
+        }
+        
+        var me = this;
+        e_deleteButton.unbind('click').click( function(){
+            if(!(marker.isSavedOnServer) || confirm('delete the marker permanently?')){
+                me.fire('remove',{
+                    'marker':marker
+                });
+            }
+            return false; //avoid scrolling of the page on anchor click
+        })
+
+        e_addplaylistButton.unbind('click').bind('click',function(evtObj_){
+            playlistUtils.showPopupAddToPlaylist(evtObj_,'marker',""+marker.id,'marker added to selected playlist');
+            return false;
+        });
+
+        //action for ok button
+        e_okButton.unbind('click').click( function(){
+            //if(marker.desc !== descriptionText.val()){ //strict equality needed. See note below
+            marker.desc = e_descriptionText.val();
+            marker.title = e_titleText.val();
+            me.fire('save',{
+                'marker':marker
+            });
+            return false; //avoid scrolling of the page on anchor click
+        });
+
+        //            if(isEditing){
+        //                startEdit();
+        //            }else{
+        //                this.updateTitleWidth();
+        //            }
+        return div;
+    }
 
 });
-
-
-Object.prototype.toString = function(){
-    var s="";
-    for(var k in this){
-        s+=k+": "+this[k]+"\n";
-    }
-    return s;
-}
