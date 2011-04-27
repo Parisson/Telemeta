@@ -78,15 +78,12 @@ def render(request, template, data = None, mimetype = None):
     return render_to_response(template, data, context_instance=RequestContext(request), 
                               mimetype=mimetype)
 
-def stream_from_processor(decoder, processor):
-    _decoder = decoder
-    _processor = processor
+def stream_from_processor(__decoder, __processor):
     while True:
-        __frames, eod = _decoder.process()
-        __chunk, eodproc = _processor.process(_frames, eod)
+        __frames, eodproc = __processor.process(*__decoder.process())
         if eodproc:
             break
-        yield __chunk
+        yield __processor.chunk
 
 def stream_from_file(file):
     chunk_size = 0x10000
@@ -528,13 +525,12 @@ class WebView(object):
             
         else:        
             if not self.cache_export.exists(file):
-                if not decoder:
-                    decoder = timeside.decoder.FileDecoder(audio)
+                decoder = timeside.decoder.FileDecoder(audio)
                 # source > encoder > stream
                 decoder.setup()
                 media = self.cache_export.dir + os.sep + file
                 proc = encoder(media, streaming=True)
-                proc.setup(channels=decoder.channels(), samplerate=decoder.samplerate(), nframes=decoder.nframes())
+                proc.setup(channels=decoder.channels(), samplerate=decoder.samplerate())
 #                metadata = dublincore.express_item(item).to_list()
 #                enc.set_metadata(metadata)
                 response = HttpResponse(stream_from_processor(decoder, proc), mimetype = mime_type)

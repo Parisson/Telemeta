@@ -170,6 +170,11 @@ Just paste the lines below::
     TELEMETA_DATA_CACHE_DIR = TELEMETA_CACHE_DIR + "/data"
     CACHE_BACKEND = "file://" + TELEMETA_CACHE_DIR + "/data"
     
+You can find an example for settings.py there::
+    
+    conf/examples/django/settings.py
+
+
 --------------------------
 5. Initialize the database
 --------------------------
@@ -186,6 +191,11 @@ This synchronizes the DB with the model::
     The simplest case is to have telemeta running at public root. To do so, add this url in urls.py::
 
     (r'^', include('telemeta.urls')),
+    (r'^i18n/', include('django.conf.urls.i18n')),
+
+You can find an example for url.py there::
+    
+    conf/examples/django/urls.py
 
 
 --------------------
@@ -220,14 +230,18 @@ Enjoy it !
 If you want to use Telemeta through a web server, it is highly recommended to use Apache 2
 with the mod_wsgi module as explained in the following page :
 
-http://docs.djangoproject.com/en/1.1/howto/deployment/modwsgi/#howto-deployment-modwsgi
+    http://docs.djangoproject.com/en/1.1/howto/deployment/modwsgi/#howto-deployment-modwsgi
 
 This will prevent Apache to put some audio data in the cache memory as it is usually the case with mod_python.
+
+You can find an example of an Apache2 VirtualHost conf file there::
+
+    conf/examples/apache2/telemeta.conf
+
 
 -------------------------
 10. Contact / More infos
 -------------------------
 
 See README and http://telemeta.org.
-
 
