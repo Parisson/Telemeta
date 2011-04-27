@@ -59,7 +59,6 @@ export_extensions = "|".join(web_view.list_export_extensions())
 
 htdocs = os.path.dirname(__file__) + '/htdocs'
 
-
 urlpatterns = patterns('',
     url(r'^$', web_view.index, name="telemeta-home"),
     url(r'^help$', web_view.help, name="telemeta-help"),
@@ -254,9 +253,6 @@ urlpatterns = patterns('',
     
     # Not allowed
     url(r'/*/(?P<public_id>[A-Za-z0-9._-]+)/not_allowed/$', web_view.not_allowed, name="telemeta-not-allowed"),
-
-    #i18n javascript
-    url(r'^jsi18n/(?P<packages>\S+?)/$', 'django.views.i18n.javascript_catalog', name="telemeta-js-translations")
 
 
 )

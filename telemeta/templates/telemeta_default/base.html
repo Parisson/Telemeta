@@ -3,6 +3,9 @@
 <head>
 {% load i18n %}
 {% load telemeta_utils %}
+{% get_current_language as LANGUAGE_CODE %}
+{% get_available_languages as LANGUAGES %}
+
 <title>{%block head_title %}{% organization %} - Telemeta{% endblock %}</title>
 {% block stylesheets %}
 <link rel="stylesheet" type="text/css" href="{% url telemeta-css "telemeta.css" %}" />
@@ -14,15 +17,9 @@
 <link rel="stylesheet"type="text/css" href="{% url telemeta-css "telemeta_ie6.css" %}" />
 <![endif]-->
 {% endblock %}
-<!--<script type="application/x-javascript" src="{% url jsonrpc_browser %}?f=mochikit.js"></script>
-<script type="application/x-javascript" src="{% url jsonrpc_browser %}?f=interpreter.js"></script>-->
 <script src="{% url telemeta-js "jquery.js" %}" type="text/javascript"></script>
 <script src="{% url telemeta-js "application.js" %}" type="text/javascript"></script>
-<script type="text/javascript" src="{% url telemeta-js-translations 'telemeta'  %}"></script>
-<script type="text/javascript">
-    //alert(gettext('Change password'));
-</script>
-<!--<script src="{% url telemeta-js "json.js" %}" type="text/javascript"></script>-->
+<script src="{% url django.views.i18n.javascript_catalog %}" type="text/javascript"></script>
 
 {% block extra_javascript %}{% endblock %}
 
