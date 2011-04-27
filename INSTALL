@@ -187,10 +187,20 @@ This synchronizes the DB with the model::
 6. Configure your urls
 ----------------------
 
-    The simplest case is to have telemeta running at public root. To do so, add this url in urls.py::
+Add this dictionary to get Javascript translation::
+    
+    js_info_dict = {
+        'packages': ('telemeta',),
+    }
 
+The simplest case is to have telemeta running at public root. To do so, add this url in urls.py::
+
+    # Telemeta
     (r'^', include('telemeta.urls')),
-    (r'^i18n/', include('django.conf.urls.i18n')),
+    
+    # Languages
+    (r'^i18n/', include('django.conf.urls.i18n')),    
+    (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
 
 You can find an example for url.py there::
     
@@ -210,21 +220,24 @@ By default, the server starts on the port 8000. You can override this with, for 
     python manage.py runserver 9000
 
 
-------------------------------------
-8. Go the web page with your browser
-------------------------------------
+-----------
+8. Test it
+-----------
+
+Go to this URL with your browser::
 
     http://localhost:8000
 
-    or
+or::
 
     http://localhost:9000
 
-Enjoy it !
+Test it and enjoy it !
 
--------------------
-9. Configure Apache
--------------------
+
+--------------------------
+9. Deploy it with Apache
+--------------------------
 
 If you want to use Telemeta through a web server, it is highly recommended to use Apache 2
 with the mod_wsgi module as explained in the following page :
