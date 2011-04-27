@@ -381,8 +381,8 @@ var Ruler = TimesideArray.extend({
             //note that setText is called BEFORE move as move must have the proper label width
             this.each(indexIfMarker, function(i,rulermarker){
                 rulermarker.setIndex(i,i!=indexIfMarker);
-                //rulermarker.setIndex.apply(rulermarker, [i,i!=indexIfMarker]); //update label width only if it is not this marker added
-                //as for this marker we update the position below (move)
+            //rulermarker.setIndex.apply(rulermarker, [i,i!=indexIfMarker]); //update label width only if it is not this marker added
+            //as for this marker we update the position below (move)
             });
             this.debug('added marker at index '+indexIfMarker+' offset: '+markerObjOrOffset.offset);
         }else{
@@ -394,6 +394,13 @@ var Ruler = TimesideArray.extend({
        
         //pointer.setText(markerClass== 'pointer' ? this.makeTimeLabel(0) : this.length);
 
+        //click on labels stop propagating. Always:
+        var lbl = pointer.getLabel();
+        lbl.bind('click', function(evt){
+            evt.stopPropagation();
+            return false;
+        });
+
         //if there are no events to associate, return it.
         if(!isMovable){
             return pointer;
@@ -402,7 +409,6 @@ var Ruler = TimesideArray.extend({
         //namespace for jquery event:
         var eventId = 'markerclicked';
         var doc = $J(document);
-        var lbl = pointer.getLabel();
         
         var me = this;
 
@@ -411,8 +417,12 @@ var Ruler = TimesideArray.extend({
             ismovingpointer = value;
         }
         //TODO: this method below private, but how to let him see in the bind below???
-        this.setPointerMovingFromMouse = function(value){setmovingpointer(value);}
-        this.isPointerMovingFromMouse = function(){ return ismovingpointer;};
+        this.setPointerMovingFromMouse = function(value){
+            setmovingpointer(value);
+        }
+        this.isPointerMovingFromMouse = function(){
+            return ismovingpointer;
+        };
         //functions to set if we are moving the pointer (for player when playing)
 
         lbl.bind('mousedown.'+eventId,function(evt) {
@@ -424,7 +434,7 @@ var Ruler = TimesideArray.extend({
             var startX = evt.pageX; //lbl.position().left-container.position().left;
             var startPos = lbl.position().left+lbl.width()/2;
             
-            evt.stopPropagation(); //dont notify the ruler;
+            evt.stopPropagation(); //dont notify the ruler or other elements;
             var newPos = startPos;
             doc.bind('mousemove.'+eventId, function(evt){
                 var x = evt.pageX; 
@@ -437,23 +447,24 @@ var Ruler = TimesideArray.extend({
                 return false;
                 
             });
-            lbl.bind('click.'+eventId, function(){
-                return false;
-            }); //to avoid scrolling
+            //to avoid scrolling
             //TODO: what happens if the user releases the mouse OUTSIDE the browser????
             var mouseup = function(evt_){
                 doc.unbind('mousemove.'+eventId);
                 doc.unbind('mouseup.'+eventId);
                 evt_.stopPropagation();
-                //TODO: fire event marker moved (with the class name)
+                if(markerClass=='pointer'){
+                    me.setPointerMovingFromMouse(false);
+                }
+                if(newPos == startPos){
+                    consolelog('NOT MOVED!!!!');
+                    return false;
+                }
                 var data = {
                     'markerElement':pointer,
                     'soundPosition': me.toSoundPosition.apply(me,[newPos]),
                     'markerClass':markerClass
                 };
-                if(markerClass=='pointer'){
-                    me.setPointerMovingFromMouse(false);
-                }
                 me.fire('markermoved',data);
                 return false;
             };

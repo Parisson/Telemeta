@@ -133,7 +133,7 @@ var MarkerMapDiv = TimesideArray.extend({
     setFocus: function(index,value){
         this.each(function(i,div){
             if(i==index && value){
-                div.css('backgroundColor','#f5cf23'); //'#efc823'
+                div.css('backgroundColor','#E65911'); //'#f5cf23'
             }else{
                 div.css('backgroundColor','');
             }

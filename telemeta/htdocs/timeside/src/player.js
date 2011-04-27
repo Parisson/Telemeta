@@ -82,7 +82,10 @@ var Player = TimesideClass.extend({
             var map = player.getMarkerMap();
             var indexToShow = map.insertionIndex(player.getSoundPosition());
             
-            var mydiv = this.$J('<div/>').addClass('markerDiv').css({'position':'absolute','zIndex':1000});
+            var mydiv = this.$J('<div/>').addClass('markerDiv').css({
+                'position':'absolute',
+                'zIndex':1000
+            });
 
             var ruler = player.getRuler();
             
@@ -234,18 +237,10 @@ var Player = TimesideClass.extend({
         //        });
         var me=this;
         //attaching event to the image. Note that attaching an event to a transparent div is buggy in IE
-//        if($J.browser.msie){
-//
-//        }
-        consolelog('ope');
-        consolelog(jQueryObjs.find('.ts-image').length);
-        jQueryObjs.find('.ts-image').click(function(event){
-            alert('g');
-            consolelog(event);
-            
-//            me.setSoundPosition( me.getSoundDuration()/$J(this).width());
-        });
-
+        //        if($J.browser.msie){
+        //
+        //        }
+       
 
         var rewind_ = this.rewind;
         var forward_ = this.forward;
@@ -324,6 +319,18 @@ var Player = TimesideClass.extend({
             return false;
         });
 
+        //binds click for the pointer: TODO: change this way of getting the tsviweer!!!!
+        var v = $J('#player').find('.ts-viewer');
+        v.unbind('click').click(function(evt){
+            var w = v.width();
+            var x = evt.pageX - v.offset().left; //using absolute coordinates allows us to
+            //avoid checking whether or not we are clicking on a vertical marker line, on a subdiv etcetera
+            var sd = me.getSoundDuration();
+            me.setSoundPosition(sd*x/w);
+            ruler.movePointer(ruler.toSoundPosition(x));
+        });
+       
+
         //finally, load markers and bind events for markers (see method below):
         this.loadMarkers(isInteractive);
         
@@ -377,10 +384,10 @@ var Player = TimesideClass.extend({
     getImageUrl: function(){
         return this.$J('#visualizer_id').get(0).value;
     },
-    refreshImage: function(optionalImgTagElm){
+    refreshImage: function(optionalImgJQueryElm){
         var image;
-        if(optionalImgTagElm){
-            image = optionalImgTagElm;
+        if(optionalImgJQueryElm){
+            image = optionalImgJQueryElm;
         }else{
             image = this.getElements().find('.ts-image');
         }
@@ -487,6 +494,7 @@ var Player = TimesideClass.extend({
         
     loadMarkers: function(isInteractive_){
         //ruler.bind('markermoved',this.markerMoved,this);
+        var $J = this.$J; //reference to jQuery
 
         var itemId = ITEM_PUBLIC_ID;
 
@@ -526,9 +534,13 @@ var Player = TimesideClass.extend({
             //
             //add binding to the setMarker button (html anchor):
             var setMarkerButton = player.getElements().find('.ts-set-marker');
+            var tab = $J('#tab_markers');
             if(setMarkerButton){
                 if(isInteractive_){
                     setMarkerButton.show().attr('href','#').unbind('click').bind('click', function(){
+                        if(tab && tab.length){
+                            tab.trigger('click');
+                        }
                         map.add(player.getSoundPosition());
                         return false;
                     });
@@ -599,8 +611,8 @@ var Player = TimesideClass.extend({
             //                    setUpPlayerTabs([jQuery('#tab_analysis'), jQuery('#tab_markers')],
             //                    [jQuery('#analyzer_div_id'), jQuery('#markers_div_id')], tabIndex,
             //                    'tab_selected','tab_unselected');
-            setUpPlayerTabs(jQuery('#tab_analysis').add(jQuery('#tab_markers')),
-                [jQuery('#analyzer_div_id'), jQuery('#markers_div_id')], tabIndex,
+            setUpPlayerTabs($J('#tab_analysis').add($J('#tab_markers')),
+                [$J('#analyzer_div_id'), $J('#markers_div_id')], tabIndex,
                 'tab_selected','tab_unselected');
         };
         json([itemId],"telemeta.get_markers", onSuccess);
