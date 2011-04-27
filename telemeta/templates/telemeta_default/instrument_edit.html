@@ -25,9 +25,7 @@
  <form id="_updateinstru" method="POST" action="{% url telemeta-instrument-update %}">{% csrf_token %}
   <table class="listing">
    <thead>
-    <tr><th class="sel">&nbsp;</th><th>{% trans "Name"%}</th>
-
-    </tr>
+    <tr><th class="sel">&nbsp;</th><th>{% trans "Name"%}</th></tr>
    </thead><tbody>
     {% for record in instruments %}
     <tr>
