@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-27 18:06+0200\n"
+"POT-Creation-Date: 2011-04-27 18:20+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Olivier Guilyardi <olivier samalyse com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,1008 +17,378 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: htdocs/timeside.moved/telemeta/models/core.py:142 models/core.py:143
+#: models/core.py:143
 msgid "Duration"
 msgstr "Durée"
 
-#: htdocs/timeside.moved/telemeta/models/core.py:147 models/core.py:148
+#: models/core.py:148
 msgid "Enter a valid duration in HH:MM[:ss] format."
 msgstr "Entrez une durée valide au format HH:MM[:ss]"
 
-#: htdocs/timeside.moved/telemeta/models/enum.py:41
-#: htdocs/timeside.moved/telemeta/models/enum.py:139 models/enum.py:41
-#: models/enum.py:139
+#: models/enum.py:41 models/enum.py:139
 msgid "value"
 msgstr "valeur"
 
-#: htdocs/timeside.moved/telemeta/models/enum.py:57
-#: htdocs/timeside.moved/telemeta/models/media.py:84 models/enum.py:57
-#: models/media.py:84
+#: models/enum.py:57 models/media.py:84
 msgid "archive format"
 msgstr "format d'archivage"
 
-#: htdocs/timeside.moved/telemeta/models/enum.py:64
-#: htdocs/timeside.moved/telemeta/models/media.py:88 models/enum.py:64
-#: models/media.py:88
+#: models/enum.py:64 models/media.py:88
 msgid "secondary edition"
 msgstr "réédition"
 
-#: htdocs/timeside.moved/telemeta/models/enum.py:71
-#: htdocs/timeside.moved/telemeta/models/media.py:103 models/enum.py:71
-#: models/media.py:103
+#: models/enum.py:71 models/media.py:103
 msgid "mode of acquisition"
 msgstr "mode d'acquisition"
 
-#: htdocs/timeside.moved/telemeta/models/enum.py:78
-#: htdocs/timeside.moved/telemeta/models/media.py:106 models/enum.py:78
-#: models/media.py:106
+#: models/enum.py:78 models/media.py:106
 msgid "record author"
 msgstr "rédacteur fiche"
 
-#: htdocs/timeside.moved/telemeta/models/enum.py:85
-#: htdocs/timeside.moved/telemeta/models/media.py:108 models/enum.py:85
-#: models/media.py:108
+#: models/enum.py:85 models/media.py:108
 msgid "record writer"
 msgstr "saisie fiche"
 
-#: htdocs/timeside.moved/telemeta/models/enum.py:92
-#: htdocs/timeside.moved/telemeta/models/media.py:110 models/enum.py:92
-#: models/media.py:110
+#: models/enum.py:92 models/media.py:110
 msgid "legal rights"
 msgstr "droit d'utilisation"
 
-#: htdocs/timeside.moved/telemeta/models/enum.py:99
-#: htdocs/timeside.moved/telemeta/models/media.py:115 models/enum.py:99
-#: models/media.py:115
+#: models/enum.py:99 models/media.py:115
 msgid "recording context"
 msgstr "contexte d'enregistrement"
 
-#: htdocs/timeside.moved/telemeta/models/enum.py:106 models/enum.py:106
+#: models/enum.py:106
 msgid "A/D conversion"
 msgstr ""
 
-#: htdocs/timeside.moved/telemeta/models/enum.py:113
-#: htdocs/timeside.moved/telemeta/models/media.py:237 models/enum.py:113
-#: models/media.py:237
+#: models/enum.py:113 models/media.py:237
 msgid "vernacular style"
 msgstr "style vernaculaire"
 
-#: htdocs/timeside.moved/telemeta/models/enum.py:120
-#: htdocs/timeside.moved/telemeta/models/media.py:245 models/enum.py:120
-#: models/media.py:245
+#: models/enum.py:120 models/media.py:245
 msgid "generic style"
 msgstr "style générique"
 
-#: htdocs/timeside.moved/telemeta/models/enum.py:127
-#: htdocs/timeside.moved/telemeta/models/media.py:313 models/enum.py:127
-#: models/media.py:313
+#: models/enum.py:127 models/media.py:313
 msgid "keyword"
 msgstr "mot-clé"
 
-#: htdocs/timeside.moved/telemeta/models/enum.py:134
-#: htdocs/timeside.moved/telemeta/models/media.py:95 models/enum.py:134
-#: models/media.py:95
+#: models/enum.py:134 models/media.py:95
 msgid "publisher / status"
 msgstr "éditeur / statut"
 
-#: htdocs/timeside.moved/telemeta/models/enum.py:138 models/enum.py:138
+#: models/enum.py:138
 msgid "publisher"
 msgstr "éditeur"
 
-#: htdocs/timeside.moved/telemeta/models/enum.py:152
-#: htdocs/timeside.moved/telemeta/models/enum.py:156
-#: htdocs/timeside.moved/telemeta/models/media.py:233 models/enum.py:152
-#: models/enum.py:156 models/media.py:233
+#: models/enum.py:152 models/enum.py:156 models/media.py:233
 msgid "population / social group"
 msgstr "population / groupe social"
 
-#: htdocs/timeside.moved/telemeta/models/enum.py:157
-#: htdocs/timeside.moved/telemeta/models/instrument.py:41
-#: htdocs/timeside.moved/telemeta/models/instrument.py:51
-#: htdocs/timeside.moved/telemeta/models/location.py:50
-#: htdocs/timeside.moved/telemeta/models/location.py:148
-#: htdocs/timeside.moved/telemeta/models/media.py:351 models/enum.py:157
-#: models/instrument.py:41 models/instrument.py:51 models/location.py:50
-#: models/location.py:148
+#: models/enum.py:157 models/instrument.py:41 models/instrument.py:51
+#: models/location.py:50 models/location.py:148
 msgid "name"
 msgstr "nom"
 
-#: htdocs/timeside.moved/telemeta/models/instrument.py:62
-#: htdocs/timeside.moved/telemeta/models/instrument.py:75
 #: models/instrument.py:62 models/instrument.py:75
 msgid "instrument"
 msgstr "instrument"
 
-#: htdocs/timeside.moved/telemeta/models/instrument.py:64
 #: models/instrument.py:64
 msgid "parent instrument"
 msgstr "instrument parent"
 
-#: htdocs/timeside.moved/telemeta/models/instrument.py:73
-#: htdocs/timeside.moved/telemeta/models/location.py:156
 #: models/instrument.py:73 models/location.py:156
 msgid "alias"
 msgstr "alias"
 
-#: htdocs/timeside.moved/telemeta/models/location.py:48 models/location.py:48
+#: models/location.py:48
 msgid "country"
 msgstr "état/nation"
 
-#: htdocs/timeside.moved/telemeta/models/location.py:48 models/location.py:48
+#: models/location.py:48
 msgid "continent"
 msgstr "continent"
 
-#: htdocs/timeside.moved/telemeta/models/location.py:48 models/location.py:48
+#: models/location.py:48
 msgid "other"
 msgstr "autre"
 
-#: htdocs/timeside.moved/telemeta/models/location.py:51 models/location.py:51
+#: models/location.py:51
 msgid "type"
 msgstr "type"
 
-#: htdocs/timeside.moved/telemeta/models/location.py:52 models/location.py:52
+#: models/location.py:52
 msgid "complete type"
 msgstr "type complet"
 
-#: htdocs/timeside.moved/telemeta/models/location.py:54 models/location.py:54
+#: models/location.py:54
 msgid "current location"
 msgstr "lieu actuel"
 
-#: htdocs/timeside.moved/telemeta/models/location.py:57
-#: htdocs/timeside.moved/telemeta/models/location.py:157
-#: htdocs/timeside.moved/telemeta/models/location.py:171 models/location.py:57
-#: models/location.py:157 models/location.py:171
+#: models/location.py:57 models/location.py:157 models/location.py:171
 msgid "authoritative"
 msgstr "officiel"
 
-#: htdocs/timeside.moved/telemeta/models/location.py:111
-#: htdocs/timeside.moved/telemeta/models/location.py:155
-#: htdocs/timeside.moved/telemeta/models/location.py:168
-#: htdocs/timeside.moved/telemeta/models/media.py:230 models/location.py:111
-#: models/location.py:155 models/location.py:168 models/media.py:230
+#: models/location.py:111 models/location.py:155 models/location.py:168
+#: models/media.py:230
 msgid "location"
 msgstr "lieu"
 
-#: htdocs/timeside.moved/telemeta/models/location.py:147
 #: models/location.py:147
 msgid "identifier"
 msgstr "identifiant"
 
-#: htdocs/timeside.moved/telemeta/models/location.py:169
 #: models/location.py:169
 msgid "ancestor location"
 msgstr "lieu ancêtre"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:52 models/media.py:52
+#: models/media.py:52
 msgid "Metadata only"
 msgstr "Métadonnées uniquement"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:54 models/media.py:54
+#: models/media.py:54
 msgid "Sound and metadata"
 msgstr "Son et métadonnées"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:56 models/media.py:56
+#: models/media.py:56
 msgid "Private data"
 msgstr "Données privées"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:57
-#: htdocs/timeside.moved/telemeta/models/media.py:125
-#: htdocs/timeside.moved/telemeta/models/media.py:251 models/media.py:57
-#: models/media.py:125 models/media.py:251
+#: models/media.py:57 models/media.py:125 models/media.py:251
 msgid "public access"
 msgstr "accès public"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:78
-#: htdocs/timeside.moved/telemeta/models/media.py:226 models/media.py:78
-#: models/media.py:226
+#: models/media.py:78 models/media.py:226
 msgid "code"
 msgstr "cote"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:79
-#: htdocs/timeside.moved/telemeta/models/media.py:225 models/media.py:79
-#: models/media.py:225
+#: models/media.py:79 models/media.py:225
 msgid "old code"
 msgstr "ancienne cote"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:80
-#: htdocs/timeside.moved/telemeta/models/media.py:247 models/media.py:80
-#: models/media.py:247
+#: models/media.py:80 models/media.py:247
 msgid "reference"
 msgstr "référence"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:81
-#: htdocs/timeside.moved/telemeta/models/media.py:223
-#: htdocs/timeside.moved/telemeta/models/media.py:337
-#: htdocs/timeside.moved/telemeta/models/media.py:382 models/media.py:81
-#: models/media.py:223 models/media.py:337 models/media.py:352
-#: models/media.py:388
+#: models/media.py:81 models/media.py:223 models/media.py:337
+#: models/media.py:352 models/media.py:388
 msgid "title"
 msgstr "titre"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:82
-#: htdocs/timeside.moved/telemeta/models/media.py:234 models/media.py:82
-#: models/media.py:234
+#: models/media.py:82 models/media.py:234
 msgid "original title / translation"
 msgstr "titre original / traduction"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:86 models/media.py:86
+#: models/media.py:86
 msgid "number of components (medium / piece)"
 msgstr "nb de composants (support / pièce)"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:89 models/media.py:89
+#: models/media.py:89
 msgid "depositor / contributor"
 msgstr "déposant / contributeur"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:90 models/media.py:90
+#: models/media.py:90
 msgid "author of published notice"
 msgstr "auteur de la notice éditée"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:91 models/media.py:91
+#: models/media.py:91
 msgid "related documentation"
 msgstr "documentation associée"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:92
-#: htdocs/timeside.moved/telemeta/models/media.py:241 models/media.py:92
-#: models/media.py:241
+#: models/media.py:92 models/media.py:241
 msgid "recordist"
 msgstr "collecteur"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:93 models/media.py:93
+#: models/media.py:93
 msgid "recordist identical to depositor"
 msgstr "collecteur identique au déposant"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:96 models/media.py:96
+#: models/media.py:96
 msgid "published"
 msgstr "édité"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:97 models/media.py:97
+#: models/media.py:97
 msgid "year published"
 msgstr "année de parution"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:99 models/media.py:99
+#: models/media.py:99
 msgid "publisher collection"
 msgstr "collection éditeur"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:100 models/media.py:100
+#: models/media.py:100
 msgid "publisher serial number"
 msgstr "numéro dans la série"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:101 models/media.py:101
+#: models/media.py:101
 msgid "bibliographic references"
 msgstr "références bibliographiques"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:104 models/media.py:104
+#: models/media.py:104
 msgid "comment"
 msgstr "commentaire"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:111 models/media.py:111
+#: models/media.py:111
 msgid "copies"
 msgstr "autres exemplaires"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:112 models/media.py:112
+#: models/media.py:112
 msgid "recording year (from)"
 msgstr "année d'enregistrement (depuis)"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:113 models/media.py:113
+#: models/media.py:113
 msgid "recording year (until)"
 msgstr "année d'enregistrement (jusqu'à)"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:116
-#: htdocs/timeside.moved/telemeta/models/media.py:227 models/media.py:116
-#: models/media.py:227
+#: models/media.py:116 models/media.py:227
 msgid "approximative duration"
 msgstr "durée approximative"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:117 models/media.py:117
+#: models/media.py:117
 msgid "document type"
 msgstr "type de document"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:118 models/media.py:118
+#: models/media.py:118
 msgid "archiver notes"
 msgstr "notes de l'archiviste"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:119 models/media.py:119
+#: models/media.py:119
 msgid "status"
 msgstr "etat"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:120 models/media.py:120
+#: models/media.py:120
 msgid "CNRS depositor"
 msgstr "déposant CNRS"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:121 models/media.py:121
+#: models/media.py:121
 msgid "items finished"
 msgstr "fiches items faîtes"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:122 models/media.py:122
+#: models/media.py:122
 msgid "a_informer_07_03"
 msgstr "a_informer_07_03"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:124 models/media.py:124
+#: models/media.py:124
 msgid "digitization"
 msgstr "numérisation"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:162 models/media.py:162
+#: models/media.py:162
 msgid "states / nations"
 msgstr "états / nations"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:176 models/media.py:176
+#: models/media.py:176
 msgid "populations / social groups"
 msgstr "populations / groupes sociaux"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:184
-#: htdocs/timeside.moved/telemeta/models/media.py:293 models/media.py:184
-#: models/media.py:293
+#: models/media.py:184 models/media.py:293
 msgid "computed duration"
 msgstr "durée calculée"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:222 models/media.py:222
+#: models/media.py:222
 msgid "collection"
 msgstr "collection"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:224 models/media.py:224
+#: models/media.py:224
 msgid "item number"
 msgstr "n° de l'item"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:228 models/media.py:228
+#: models/media.py:228
 msgid "recording date (from)"
 msgstr "date d'enregistrement (depuis)"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:229 models/media.py:229
+#: models/media.py:229
 msgid "recording date (until)"
 msgstr "date d'enregistrement (jusqu'à)"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:231 models/media.py:231
+#: models/media.py:231
 msgid "location details"
 msgstr "précisions lieu"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:235 models/media.py:235
+#: models/media.py:235
 msgid "author / compositor"
 msgstr "auteur / compositeur"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:238 models/media.py:238
+#: models/media.py:238
 msgid "published reference"
 msgstr "référence éditée"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:239 models/media.py:239
+#: models/media.py:239
 msgid "moda_execut"
 msgstr "moda_execut"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:240 models/media.py:240
+#: models/media.py:240
 msgid "copy of"
 msgstr "copie de"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:242 models/media.py:242
+#: models/media.py:242
 msgid "recordist as in collection"
 msgstr "collecteur identique à la collection"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:243 models/media.py:243
+#: models/media.py:243
 msgid "cultural area"
 msgstr "aire culturelle"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:246 models/media.py:246
+#: models/media.py:246
 msgid "recordist selection"
 msgstr "sélection collecteur"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:248 models/media.py:248
+#: models/media.py:248
 msgid "comments"
 msgstr "commentaires"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:249 models/media.py:249
+#: models/media.py:249
 msgid "remarks"
 msgstr "remarques"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:250 models/media.py:250
+#: models/media.py:250
 msgid "file"
 msgstr "fichier"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:257
-#: htdocs/timeside.moved/telemeta/models/media.py:399 models/media.py:257
-#: models/media.py:405
+#: models/media.py:257 models/media.py:405
 msgid "keywords"
 msgstr "mots-clés"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:312
-#: htdocs/timeside.moved/telemeta/models/media.py:322
-#: htdocs/timeside.moved/telemeta/models/media.py:336
-#: htdocs/timeside.moved/telemeta/models/media.py:379 models/media.py:312
-#: models/media.py:322 models/media.py:336 models/media.py:385
+#: models/media.py:312 models/media.py:322 models/media.py:336
+#: models/media.py:385
 msgid "item"
 msgstr "item"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:324 models/media.py:324
+#: models/media.py:324
 msgid "composition"
 msgstr "formation"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:326 models/media.py:326
+#: models/media.py:326
 msgid "vernacular name"
 msgstr "nom vernaculaire"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:327 models/media.py:327
+#: models/media.py:327
 msgid "number"
 msgstr "nombre"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:328 models/media.py:328
+#: models/media.py:328
 msgid "interprets"
 msgstr "interprètes"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:338 models/media.py:338
+#: models/media.py:338
 msgid "start"
 msgstr "début"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:339 models/media.py:339
+#: models/media.py:339
 msgid "end"
 msgstr "fin"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:352
-msgid "current_user_playlist"
-msgstr ""
-
-#: htdocs/timeside.moved/telemeta/models/media.py:364 models/media.py:370
-msgid "playlist"
-msgstr "liste de lecture"
-
-#: htdocs/timeside.moved/telemeta/models/media.py:365
-msgid "resource type"
-msgstr "type de ressource"
-
-#: htdocs/timeside.moved/telemeta/models/media.py:366
-msgid "resource"
-msgstr "ressource"
-
-#: htdocs/timeside.moved/telemeta/models/media.py:380 models/media.py:350
-#: models/media.py:369 models/media.py:386
+#: models/media.py:350 models/media.py:369 models/media.py:386
 #, fuzzy
 msgid "public_id"
 msgstr "édité"
 
-#: htdocs/timeside.moved/telemeta/models/media.py:381
-#: htdocs/timeside.moved/telemeta/models/system.py:50 models/media.py:387
-#: models/system.py:52
-msgid "time"
-msgstr "heure"
-
-#: htdocs/timeside.moved/telemeta/models/media.py:383
-#: htdocs/timeside.moved/telemeta/models/media.py:400 models/media.py:389
-#: models/media.py:406
-msgid "date"
-msgstr ""
-
-#: htdocs/timeside.moved/telemeta/models/media.py:384 models/media.py:353
-#: models/media.py:390
+#: models/media.py:353 models/media.py:390
 msgid "description"
 msgstr ""
 
-#: htdocs/timeside.moved/telemeta/models/media.py:385 models/media.py:391
-#, fuzzy
-msgid "author"
-msgstr "rédacteur fiche"
-
-#: htdocs/timeside.moved/telemeta/models/system.py:47 models/system.py:49
-msgid "element type"
-msgstr "type d'élément"
-
-#: htdocs/timeside.moved/telemeta/models/system.py:48 models/system.py:50
-msgid "element identifier"
-msgstr "identifiant de l'élément"
-
-#: htdocs/timeside.moved/telemeta/models/system.py:49 models/system.py:51
-msgid "modification type"
-msgstr "type de modification"
-
-#: htdocs/timeside.moved/telemeta/models/system.py:51 models/system.py:53
-msgid "user"
-msgstr "utilisateur"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/base.html:43
-#: templates/telemeta_default/base.html:53
-msgid "Sign out"
-msgstr "Déconnexion"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/base.html:47
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/login.html:20
-#: templates/telemeta_default/base.html:57
-#: templates/telemeta_default/login.html:21
-msgid "Sign in"
-msgstr "Connexion"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/base.html:54
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/search_criteria.html:134
-#: templates/telemeta_default/base.html:65
-#: templates/telemeta_default/search_criteria.html:132
-msgid "Search"
-msgstr "Recherche"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/base.html:63
-#: templates/telemeta_default/base.html:74
-msgid "Collections"
-msgstr "Collections"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/base.html:64
-#: templates/telemeta_default/base.html:75
-msgid "Items"
-msgstr "Items"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/base.html:65
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/index.html:13
-#: templates/telemeta_default/base.html:76
-#: templates/telemeta_default/index.html:13
-msgid "Geo Navigator"
-msgstr "Géo-Navigateur"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/base.html:66
-#: templates/telemeta_default/base.html:77
-msgid "Advanced search"
-msgstr "Recherche avancée"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/base.html:68
-#: templates/telemeta_default/base.html:79
-msgid "Admin"
-msgstr "Admin"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/base.html:89
-#: templates/telemeta_default/base.html:101
-msgid "Powered by"
-msgstr "Propulsé par"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/base.html:90
-#: templates/telemeta_default/base.html:102
-msgid "By"
-msgstr "Par"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/collection_detail.html:5
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/collection_detail_dc.html:5
-#: templates/telemeta_default/collection_detail.html:5
-#: templates/telemeta_default/collection_detail_dc.html:5
-msgid "Collection"
-msgstr "Collection"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/collection_detail.html:71
-#: templates/telemeta_default/collection_detail.html:89
-msgid "Recording year"
-msgstr "Année d'enregistrement"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/collection_detail.html:81
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/mediaitem_detail.html:187
-#: templates/telemeta_default/collection_detail.html:99
-#: templates/telemeta_default/mediaitem_detail.html:214
-msgid "Geographic and cultural informations"
-msgstr "Indications géographiques et culturelles"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/collection_detail.html:94
-#: templates/telemeta_default/collection_detail.html:112
-msgid "Legal mentions"
-msgstr "Mentions légales"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/collection_detail.html:99
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/home.html:18
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/inc/collection_list.html:17
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/inc/mediaitem_list.html:17
-#: templates/telemeta_default/collection_detail.html:117
-#: templates/telemeta_default/home.html:89
-#: templates/telemeta_default/inc/collection_list.html:17
-#: templates/telemeta_default/inc/mediaitem_list.html:17
-msgid "Recordist"
-msgstr "Collecteur"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/collection_detail.html:120
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/mediaitem_detail.html:252
-#: templates/telemeta_default/collection_detail.html:138
-#: templates/telemeta_default/mediaitem_detail.html:279
-msgid "Archiving data"
-msgstr "Données d'archivage"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/collection_detail.html:143
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/mediaitem_detail.html:267
-#: templates/telemeta_default/collection_detail.html:161
-#: templates/telemeta_default/mediaitem_detail.html:294
-msgid "Technical data"
-msgstr "Données techniques"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/collection_detail.html:148
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/mediaitem_detail.html:270
-#: templates/telemeta_default/collection_detail.html:166
-#: templates/telemeta_default/mediaitem_detail.html:297
-msgid "Media type"
-msgstr "Type de media"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/collection_detail.html:148
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/mediaitem_detail.html:270
-#: templates/telemeta_default/collection_detail.html:166
-#: templates/telemeta_default/mediaitem_detail.html:297
-msgid "Audio"
-msgstr "Audio"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/collection_detail.html:153
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/geo_countries.html:14
-#: templates/telemeta_default/collection_detail.html:171
-#: templates/telemeta_default/geo_countries.html:14
-msgid "Number of items"
-msgstr "Nombre d'items"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/collection_detail_dc.html:10
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/mediaitem_detail_dc.html:10
-#: templates/telemeta_default/collection_detail_dc.html:12
-#: templates/telemeta_default/mediaitem_detail_dc.html:7
-msgid "Normal View"
-msgstr "Vue normale"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/collection_detail_dc.html:20
-#: templates/telemeta_default/collection_detail_dc.html:22
-msgid "No such collection"
-msgstr "Collection introuvable"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/collection_list.html:5
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/collection_list.html:18
-#: templates/telemeta_default/collection_list.html:5
-#: templates/telemeta_default/collection_list.html:8
-msgid "Media Collections"
-msgstr "Collections"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/country_info.html:9
-#: templates/telemeta_default/country_info.html:9
-msgid "in"
-msgstr "dans"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/country_info.html:18
-#: templates/telemeta_default/country_info.html:18
-msgid "Populations / Social groups"
-msgstr "Populations / Groupes sociaux"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/enumeration_edit.html:4
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/enumeration_edit.html:7
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/enumeration_edit_value.html:4
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/enumeration_edit_value.html:7
-#: templates/telemeta_default/enumeration_edit.html:4
-#: templates/telemeta_default/enumeration_edit.html:7
-#: templates/telemeta_default/enumeration_edit_value.html:4
-#: templates/telemeta_default/enumeration_edit_value.html:7
-msgid "Enumeration"
-msgstr "Enumération"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/enumeration_edit.html:12
-#: templates/telemeta_default/enumeration_edit.html:12
-#: templates/telemeta_default/instrument_edit.html:12
-msgid "Add entry"
-msgstr "Ajouter une entrée"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/enumeration_edit.html:14
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/enumeration_edit.html:26
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/enumeration_edit_value.html:14
-#: templates/telemeta_default/enumeration_edit.html:14
-#: templates/telemeta_default/enumeration_edit.html:28
-#: templates/telemeta_default/enumeration_edit_value.html:14
-#: templates/telemeta_default/mediaitem_detail.html:161
-#: templates/telemeta_default/mediaitem_player.html:138
-msgid "Value"
-msgstr "Valeur"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/enumeration_edit.html:18
-#: templates/telemeta_default/collection_list.html:15
-#: templates/telemeta_default/enumeration_edit.html:20
-#: templates/telemeta_default/home.html:67
-#: templates/telemeta_default/instrument_edit.html:20
-#: templates/telemeta_default/mediaitem_list.html:12
-msgid "Add"
-msgstr "Ajouter"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/enumeration_edit.html:40
-#: templates/telemeta_default/enumeration_edit.html:44
-#: templates/telemeta_default/instrument_edit.html:42
-msgid "Remove selected items"
-msgstr "Supprimer les éléments sélectionnés"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/enumeration_edit.html:44
-#: templates/telemeta_default/enumeration_edit.html:48
-msgid "This enumeration is empty"
-msgstr "Cette énumération est vide"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/enumeration_edit_value.html:12
-#: templates/telemeta_default/enumeration_edit_value.html:12
-#: templates/telemeta_default/instrument_edit_value.html:12
-msgid "Modify an entry"
-msgstr "Modification d'une entrée"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/enumeration_edit_value.html:18
-#: templates/telemeta_default/collection_add.html:27
-#: templates/telemeta_default/collection_edit.html:28
-#: templates/telemeta_default/enumeration_edit_value.html:20
-#: templates/telemeta_default/instrument_edit_value.html:20
-#: templates/telemeta_default/mediaitem_add.html:37
-#: templates/telemeta_default/mediaitem_copy.html:36
-#: templates/telemeta_default/mediaitem_edit.html:35
-#: templates/telemeta_default/profile_edit.html:31
-msgid "Save"
-msgstr "Enregistrer"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/enumeration_edit_value.html:19
-#: templates/telemeta_default/collection_add.html:7
-#: templates/telemeta_default/collection_add.html:25
-#: templates/telemeta_default/collection_edit.html:9
-#: templates/telemeta_default/collection_edit.html:26
-#: templates/telemeta_default/enumeration_edit_value.html:22
-#: templates/telemeta_default/instrument_edit_value.html:22
-#: templates/telemeta_default/mediaitem_add.html:15
-#: templates/telemeta_default/mediaitem_add.html:35
-#: templates/telemeta_default/mediaitem_copy.html:15
-#: templates/telemeta_default/mediaitem_copy.html:34
-#: templates/telemeta_default/mediaitem_edit.html:9
-#: templates/telemeta_default/mediaitem_edit.html:33
-#: templates/telemeta_default/profile_edit.html:5
-#: templates/telemeta_default/profile_edit.html:29
-msgid "Cancel"
-msgstr "Annuler"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/geo_continents.html:5
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/geo_continents.html:26
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/geo_countries.html:5
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/geo_country_collections.html:5
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/geo_country_items.html:5
-#: templates/telemeta_default/geo_continents.html:5
-#: templates/telemeta_default/geo_continents.html:20
-#: templates/telemeta_default/geo_countries.html:5
-#: templates/telemeta_default/geo_country_collections.html:5
-#: templates/telemeta_default/geo_country_items.html:5
-msgid "Geographic Navigator"
-msgstr "Navigateur géographique"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/geo_continents.html:21
-#: templates/telemeta_default/geo_continents.html:24
-msgid "Map"
-msgstr "Carte"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/geo_continents.html:22
-#: templates/telemeta_default/geo_continents.html:25
-msgid "List"
-msgstr "Liste"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/geo_countries.html:8
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/geo_country_collections.html:8
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/geo_country_items.html:8
-#: templates/telemeta_default/geo_countries.html:8
-#: templates/telemeta_default/geo_country_collections.html:8
-#: templates/telemeta_default/geo_country_items.html:8
-msgid "World"
-msgstr "Monde"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/geo_countries.html:12
-#: templates/telemeta_default/geo_countries.html:12
-msgid "Country"
-msgstr "Etat/nation"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/geo_countries.html:13
-#: templates/telemeta_default/geo_countries.html:13
-msgid "Number of collections"
-msgstr "Nombre de collections"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/geo_countries.html:22
-#: templates/telemeta_default/geo_countries.html:22
-#, python-format
-msgid "1 collection"
-msgid_plural "%(counter)s collections"
-msgstr[0] "1 collection"
-msgstr[1] "%(counter)s collections"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/geo_countries.html:29
-#: templates/telemeta_default/geo_countries.html:29
-#, python-format
-msgid "1 item"
-msgid_plural "%(counter)s items "
-msgstr[0] "1 item"
-msgstr[1] "%(counter)s items "
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/home.html:15
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/search_criteria.html:79
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/search_results.html:28
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/inc/collection_list.html:14
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/inc/mediaitem_list.html:15
-#: templates/telemeta_default/admin_enumerations.html:12
-#: templates/telemeta_default/home.html:30
-#: templates/telemeta_default/home.html:86
-#: templates/telemeta_default/search_criteria.html:76
-#: templates/telemeta_default/search_results.html:28
-#: templates/telemeta_default/inc/collection_list.html:14
-#: templates/telemeta_default/inc/mediaitem_list.html:15
-msgid "Title"
-msgstr "Titre"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/home.html:16
-#: templates/telemeta_default/home.html:31
-#: templates/telemeta_default/home.html:87
-msgid "Type"
-msgstr ""
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/home.html:17
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/inc/collection_list.html:15
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/inc/mediaitem_list.html:16
-#: templates/telemeta_default/home.html:88
-#: templates/telemeta_default/inc/collection_list.html:15
-#: templates/telemeta_default/inc/mediaitem_list.html:16
-msgid "Code"
-msgstr "Cote"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/home.html:19
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/search_criteria.html:95
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/search_results.html:31
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/inc/collection_list.html:18
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/inc/mediaitem_list.html:23
-#: templates/telemeta_default/home.html:90
-#: templates/telemeta_default/search_criteria.html:92
-#: templates/telemeta_default/search_results.html:31
-#: templates/telemeta_default/inc/collection_list.html:18
-#: templates/telemeta_default/inc/mediaitem_list.html:23
-msgid "Year of recording"
-msgstr "Année d'enregistrement"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/home.html:20
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/inc/collection_list.html:19
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/inc/mediaitem_list.html:24
-#: templates/telemeta_default/home.html:91
-#: templates/telemeta_default/inc/collection_list.html:19
-#: templates/telemeta_default/inc/mediaitem_list.html:24
-msgid "Sound"
-msgstr "Son"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/index.html:15
-#: templates/telemeta_default/index.html:15
-msgid "Open the geographic navigator"
-msgstr "Accéder au navigateur géographique"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/index.html:20
-#: templates/telemeta_default/index.html:20
-msgid "Musical selection"
-msgstr "Sélection musicale"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/index.html:36
-#: templates/telemeta_default/index.html:36
-msgid "Partenaires"
-msgstr ""
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/login.html:5
-#: templates/telemeta_default/login.html:5
-msgid "User authentication"
-msgstr "Identification"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/login.html:8
-#: templates/telemeta_default/login.html:8
-msgid "Your username and password didn't match. Please try again."
-msgstr ""
-"Vos nom d'utilisateur et/ou mot de passe sont incorrects. Essayez à nouveau."
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/mediaitem_add.html:5
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/mediaitem_copy.html:5
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/mediaitem_detail.html:5
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/mediaitem_detail_dc.html:5
-#: templates/telemeta_default/mediaitem_add.html:5
-#: templates/telemeta_default/mediaitem_copy.html:5
-#: templates/telemeta_default/mediaitem_detail.html:5
-#: templates/telemeta_default/mediaitem_player.html:8
-msgid "Item"
-msgstr "Item"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/mediaitem_detail.html:157
-#: templates/telemeta_default/mediaitem_detail.html:183
-#: templates/telemeta_default/mediaitem_player.html:160
-msgid "Download:"
-msgstr "Téléchargement:"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/mediaitem_detail.html:178
-#: templates/telemeta_default/mediaitem_detail.html:205
-msgid "Recording date"
-msgstr "Date d'enregistrement"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/mediaitem_detail.html:190
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/inc/mediaitem_list.html:19
-#: templates/telemeta_default/mediaitem_detail.html:217
-#: templates/telemeta_default/inc/mediaitem_list.html:19
-msgid "Location"
-msgstr "Lieu"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/mediaitem_detail.html:205
-#: templates/telemeta_default/mediaitem_detail.html:232
-msgid "Musical informations"
-msgstr "Informations sur la musique"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/mediaitem_detail.html:241
-#: templates/telemeta_default/mediaitem_detail.html:268
-msgid "General informations"
-msgstr "Informations générales"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/mediaitem_detail_dc.html:19
-#: templates/telemeta_default/mediaitem_detail_dc.html:16
-msgid "No such item"
-msgstr "Item introuvable"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/mediaitem_list.html:5
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/mediaitem_list.html:18
-#: templates/telemeta_default/mediaitem_list.html:5
-#: templates/telemeta_default/mediaitem_list.html:8
-msgid "Media Items"
-msgstr "Items"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/search_criteria.html:5
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/search_criteria.html:55
-#: templates/telemeta_default/search_criteria.html:5
-#: templates/telemeta_default/search_criteria.html:55
-msgid "Advanced Search"
-msgstr "Recherche avancée"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/search_criteria.html:102
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/search_criteria.html:121
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/search_results.html:33
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/search_results.html:40
-#: templates/telemeta_default/search_criteria.html:99
-#: templates/telemeta_default/search_criteria.html:118
-#: templates/telemeta_default/search_results.html:33
-#: templates/telemeta_default/search_results.html:40
-msgid "to"
-msgstr "à"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/search_criteria.html:114
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/search_results.html:38
-#: templates/telemeta_default/search_criteria.html:111
-#: templates/telemeta_default/search_results.html:38
-msgid "Year of publication"
-msgstr "Année de publication"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/search_results.html:5
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/search_results.html:8
-#: templates/telemeta_default/search_results.html:5
-#: templates/telemeta_default/search_results.html:8
-msgid "Search Results"
-msgstr "Résultats de recherche"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/search_results.html:13
-#: templates/telemeta_default/search_results.html:13
-msgid "Search pattern"
-msgstr "Recherche"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/inc/collection_list.html:6
-#: templates/telemeta_default/inc/collection_list.html:6
-#, python-format
-msgid "Collections %(first_on_page)s to %(last_on_page)s on %(hits)s"
-msgstr "Collections %(first_on_page)s à %(last_on_page)s sur %(hits)s"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/inc/collection_list.html:48
-#: templates/telemeta_default/inc/collection_list.html:48
-msgid "No collection"
-msgstr "Aucune collection"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/inc/dublincore.html:4
-#: templates/telemeta_default/inc/dublincore.html:4
-msgid "Dublin Core Metadata"
-msgstr "Métadonnées Dublin Core"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/inc/mediaitem_list.html:6
-#: templates/telemeta_default/inc/mediaitem_list.html:6
-#, python-format
-msgid "Items %(first_on_page)s to %(last_on_page)s on %(hits)s"
-msgstr "Items %(first_on_page)s à %(last_on_page)s sur %(hits)s"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/inc/mediaitem_list.html:21
-#: templates/telemeta_default/inc/mediaitem_list.html:21
-msgid "Country/Continent"
-msgstr "Etat/Continent"
-
-#: htdocs/timeside.moved/telemeta/templates/telemeta_default/inc/mediaitem_list.html:59
-#: templates/telemeta_default/inc/mediaitem_list.html:59
-msgid "No item"
-msgstr "Aucun item"
-
-#: htdocs/timeside.moved/telemeta/templatetags/telemeta_utils.py:218
-#: templatetags/telemeta_utils.py:217
-#, python-format
-msgid "%(count)d item"
-msgid_plural "%(count)d items"
-msgstr[0] "%(count)d item"
-msgstr[1] "%(count)d items"
-
-#: htdocs/timeside.moved/telemeta/templatetags/telemeta_utils.py:221
-#: templatetags/telemeta_utils.py:220
-#, python-format
-msgid "%(count)d collection"
-msgid_plural "%(count)d collections"
-msgstr[0] "%(count)d collection"
-msgstr[1] "%(count)d collections"
+#: models/media.py:370
+msgid "playlist"
+msgstr "liste de lecture"
 
 #: models/media.py:371
 #, fuzzy
@@ -1029,6 +399,35 @@ msgstr "type de ressource"
 #, fuzzy
 msgid "resource_id"
 msgstr "ressource"
+
+#: models/media.py:387 models/system.py:52
+msgid "time"
+msgstr "heure"
+
+#: models/media.py:389 models/media.py:406
+msgid "date"
+msgstr ""
+
+#: models/media.py:391
+#, fuzzy
+msgid "author"
+msgstr "rédacteur fiche"
+
+#: models/system.py:49
+msgid "element type"
+msgstr "type d'élément"
+
+#: models/system.py:50
+msgid "element identifier"
+msgstr "identifiant de l'élément"
+
+#: models/system.py:51
+msgid "modification type"
+msgstr "type de modification"
+
+#: models/system.py:53
+msgid "user"
+msgstr "utilisateur"
 
 #: models/system.py:79 templates/telemeta_default/profile_detail.html:33
 msgid "Institution"
@@ -1100,24 +499,34 @@ msgstr "Énumérations"
 #: templates/telemeta_default/instrument_edit_value.html:7
 #, fuzzy
 msgid "Instruments"
-msgstr "instrument"
+msgstr "instruments"
+
+#: templates/telemeta_default/admin_enumerations.html:12
+#: templates/telemeta_default/home.html:30
+#: templates/telemeta_default/home.html:86
+#: templates/telemeta_default/search_criteria.html:76
+#: templates/telemeta_default/search_results.html:28
+#: templates/telemeta_default/inc/collection_list.html:14
+#: templates/telemeta_default/inc/mediaitem_list.html:15
+msgid "Title"
+msgstr "Titre"
 
 #: templates/telemeta_default/admin_enumerations.html:22
 #, fuzzy
 msgid "No enumerations"
-msgstr "Énumérations"
+msgstr "Pas d'énumérations"
 
 #: templates/telemeta_default/admin_instruments.html:15
 #: templates/telemeta_default/admin_users.html:30
 #, fuzzy
 msgid "No users"
-msgstr "utilisateur"
+msgstr "Pas d'utilisateurs"
 
 #: templates/telemeta_default/admin_users.html:12
 #: templates/telemeta_default/home.html:32
 #, fuzzy
 msgid "User"
-msgstr "Utilisateurs"
+msgstr "Utilisateur"
 
 #: templates/telemeta_default/admin_users.html:13
 #: templates/telemeta_default/profile_detail.html:29
@@ -1132,7 +541,7 @@ msgstr "Nom"
 #: templates/telemeta_default/admin_users.html:15
 #, fuzzy
 msgid "E-mail"
-msgstr "e-mail"
+msgstr "E-mail"
 
 #: templates/telemeta_default/base.html:45
 msgid "Welcome"
@@ -1146,6 +555,82 @@ msgstr "Compte"
 #: templates/telemeta_default/base.html:56
 msgid "Help"
 msgstr "Aide"
+
+#: templates/telemeta_default/base.html:53
+msgid "Sign out"
+msgstr "Déconnexion"
+
+#: templates/telemeta_default/base.html:57
+#: templates/telemeta_default/login.html:21
+msgid "Sign in"
+msgstr "Connexion"
+
+#: templates/telemeta_default/base.html:65
+#: templates/telemeta_default/search_criteria.html:132
+msgid "Search"
+msgstr "Recherche"
+
+#: templates/telemeta_default/base.html:74
+msgid "Collections"
+msgstr "Collections"
+
+#: templates/telemeta_default/base.html:75
+msgid "Items"
+msgstr "Items"
+
+#: templates/telemeta_default/base.html:76
+#: templates/telemeta_default/index.html:13
+msgid "Geo Navigator"
+msgstr "Géo-Navigateur"
+
+#: templates/telemeta_default/base.html:77
+msgid "Advanced search"
+msgstr "Recherche avancée"
+
+#: templates/telemeta_default/base.html:79
+msgid "Admin"
+msgstr "Admin"
+
+#: templates/telemeta_default/base.html:101
+msgid "Powered by"
+msgstr "Propulsé par"
+
+#: templates/telemeta_default/base.html:102
+msgid "By"
+msgstr "Par"
+
+#: templates/telemeta_default/collection_add.html:7
+#: templates/telemeta_default/collection_add.html:25
+#: templates/telemeta_default/collection_edit.html:9
+#: templates/telemeta_default/collection_edit.html:26
+#: templates/telemeta_default/enumeration_edit_value.html:22
+#: templates/telemeta_default/instrument_edit_value.html:22
+#: templates/telemeta_default/mediaitem_add.html:15
+#: templates/telemeta_default/mediaitem_add.html:35
+#: templates/telemeta_default/mediaitem_copy.html:15
+#: templates/telemeta_default/mediaitem_copy.html:34
+#: templates/telemeta_default/mediaitem_edit.html:9
+#: templates/telemeta_default/mediaitem_edit.html:33
+#: templates/telemeta_default/profile_edit.html:5
+#: templates/telemeta_default/profile_edit.html:29
+msgid "Cancel"
+msgstr "Annuler"
+
+#: templates/telemeta_default/collection_add.html:27
+#: templates/telemeta_default/collection_edit.html:28
+#: templates/telemeta_default/enumeration_edit_value.html:20
+#: templates/telemeta_default/instrument_edit_value.html:20
+#: templates/telemeta_default/mediaitem_add.html:37
+#: templates/telemeta_default/mediaitem_copy.html:36
+#: templates/telemeta_default/mediaitem_edit.html:35
+#: templates/telemeta_default/profile_edit.html:31
+msgid "Save"
+msgstr "Enregistrer"
+
+#: templates/telemeta_default/collection_detail.html:5
+#: templates/telemeta_default/collection_detail_dc.html:5
+msgid "Collection"
+msgstr "Collection"
 
 #: templates/telemeta_default/collection_detail.html:43
 #: templates/telemeta_default/mediaitem_detail.html:82
@@ -1163,6 +648,65 @@ msgstr "Copier"
 msgid "Add to playlist"
 msgstr "Ajouter à la liste"
 
+#: templates/telemeta_default/collection_detail.html:89
+msgid "Recording year"
+msgstr "Année d'enregistrement"
+
+#: templates/telemeta_default/collection_detail.html:99
+#: templates/telemeta_default/mediaitem_detail.html:214
+msgid "Geographic and cultural informations"
+msgstr "Indications géographiques et culturelles"
+
+#: templates/telemeta_default/collection_detail.html:112
+msgid "Legal mentions"
+msgstr "Mentions légales"
+
+#: templates/telemeta_default/collection_detail.html:117
+#: templates/telemeta_default/home.html:89
+#: templates/telemeta_default/inc/collection_list.html:17
+#: templates/telemeta_default/inc/mediaitem_list.html:17
+msgid "Recordist"
+msgstr "Collecteur"
+
+#: templates/telemeta_default/collection_detail.html:138
+#: templates/telemeta_default/mediaitem_detail.html:279
+msgid "Archiving data"
+msgstr "Données d'archivage"
+
+#: templates/telemeta_default/collection_detail.html:161
+#: templates/telemeta_default/mediaitem_detail.html:294
+msgid "Technical data"
+msgstr "Données techniques"
+
+#: templates/telemeta_default/collection_detail.html:166
+#: templates/telemeta_default/mediaitem_detail.html:297
+msgid "Media type"
+msgstr "Type de media"
+
+#: templates/telemeta_default/collection_detail.html:166
+#: templates/telemeta_default/mediaitem_detail.html:297
+msgid "Audio"
+msgstr "Audio"
+
+#: templates/telemeta_default/collection_detail.html:171
+#: templates/telemeta_default/geo_countries.html:14
+msgid "Number of items"
+msgstr "Nombre d'items"
+
+#: templates/telemeta_default/collection_detail_dc.html:12
+#: templates/telemeta_default/mediaitem_detail_dc.html:7
+msgid "Normal View"
+msgstr "Vue normale"
+
+#: templates/telemeta_default/collection_detail_dc.html:22
+msgid "No such collection"
+msgstr "Collection introuvable"
+
+#: templates/telemeta_default/collection_list.html:5
+#: templates/telemeta_default/collection_list.html:8
+msgid "Media Collections"
+msgstr "Collections"
+
 #: templates/telemeta_default/collection_list.html:11
 msgid "All"
 msgstr "Toutes"
@@ -1175,12 +719,111 @@ msgstr "Inédites"
 msgid "Published"
 msgstr "Éditées"
 
+#: templates/telemeta_default/collection_list.html:15
+#: templates/telemeta_default/enumeration_edit.html:20
+#: templates/telemeta_default/home.html:67
+#: templates/telemeta_default/instrument_edit.html:20
+#: templates/telemeta_default/mediaitem_list.html:12
+msgid "Add"
+msgstr "Ajouter"
+
+#: templates/telemeta_default/country_info.html:9
+msgid "in"
+msgstr "dans"
+
+#: templates/telemeta_default/country_info.html:18
+msgid "Populations / Social groups"
+msgstr "Populations / Groupes sociaux"
+
+#: templates/telemeta_default/enumeration_edit.html:4
+#: templates/telemeta_default/enumeration_edit.html:7
+#: templates/telemeta_default/enumeration_edit_value.html:4
+#: templates/telemeta_default/enumeration_edit_value.html:7
+msgid "Enumeration"
+msgstr "Enumération"
+
+#: templates/telemeta_default/enumeration_edit.html:12
+#: templates/telemeta_default/instrument_edit.html:12
+msgid "Add entry"
+msgstr "Ajouter une entrée"
+
+#: templates/telemeta_default/enumeration_edit.html:14
+#: templates/telemeta_default/enumeration_edit.html:28
+#: templates/telemeta_default/enumeration_edit_value.html:14
+#: templates/telemeta_default/mediaitem_detail.html:161
+#: templates/telemeta_default/mediaitem_player.html:138
+msgid "Value"
+msgstr "Valeur"
+
+#: templates/telemeta_default/enumeration_edit.html:44
+#: templates/telemeta_default/instrument_edit.html:42
+msgid "Remove selected items"
+msgstr "Supprimer les éléments sélectionnés"
+
+#: templates/telemeta_default/enumeration_edit.html:48
+msgid "This enumeration is empty"
+msgstr "Cette énumération est vide"
+
+#: templates/telemeta_default/enumeration_edit_value.html:12
+#: templates/telemeta_default/instrument_edit_value.html:12
+msgid "Modify an entry"
+msgstr "Modification d'une entrée"
+
+#: templates/telemeta_default/geo_continents.html:5
+#: templates/telemeta_default/geo_continents.html:20
+#: templates/telemeta_default/geo_countries.html:5
+#: templates/telemeta_default/geo_country_collections.html:5
+#: templates/telemeta_default/geo_country_items.html:5
+msgid "Geographic Navigator"
+msgstr "Navigateur géographique"
+
+#: templates/telemeta_default/geo_continents.html:24
+msgid "Map"
+msgstr "Carte"
+
+#: templates/telemeta_default/geo_continents.html:25
+msgid "List"
+msgstr "Liste"
+
+#: templates/telemeta_default/geo_countries.html:8
+#: templates/telemeta_default/geo_country_collections.html:8
+#: templates/telemeta_default/geo_country_items.html:8
+msgid "World"
+msgstr "Monde"
+
+#: templates/telemeta_default/geo_countries.html:12
+msgid "Country"
+msgstr "Etat/nation"
+
+#: templates/telemeta_default/geo_countries.html:13
+msgid "Number of collections"
+msgstr "Nombre de collections"
+
+#: templates/telemeta_default/geo_countries.html:22
+#, python-format
+msgid "1 collection"
+msgid_plural "%(counter)s collections"
+msgstr[0] "1 collection"
+msgstr[1] "%(counter)s collections"
+
+#: templates/telemeta_default/geo_countries.html:29
+#, python-format
+msgid "1 item"
+msgid_plural "%(counter)s items "
+msgstr[0] "1 item"
+msgstr[1] "%(counter)s items "
+
 #: templates/telemeta_default/home.html:26
 msgid "Last changes"
 msgstr "Dernières modifications"
 
 #: templates/telemeta_default/home.html:29
 msgid "Date"
+msgstr ""
+
+#: templates/telemeta_default/home.html:31
+#: templates/telemeta_default/home.html:87
+msgid "Type"
 msgstr ""
 
 #: templates/telemeta_default/home.html:50
@@ -1198,10 +841,42 @@ msgstr "Listes de lecture"
 msgid "Delete"
 msgstr "Supprimé"
 
+#: templates/telemeta_default/home.html:88
+#: templates/telemeta_default/inc/collection_list.html:15
+#: templates/telemeta_default/inc/mediaitem_list.html:16
+msgid "Code"
+msgstr "Cote"
+
+#: templates/telemeta_default/home.html:90
+#: templates/telemeta_default/search_criteria.html:92
+#: templates/telemeta_default/search_results.html:31
+#: templates/telemeta_default/inc/collection_list.html:18
+#: templates/telemeta_default/inc/mediaitem_list.html:23
+msgid "Year of recording"
+msgstr "Année d'enregistrement"
+
+#: templates/telemeta_default/home.html:91
+#: templates/telemeta_default/inc/collection_list.html:19
+#: templates/telemeta_default/inc/mediaitem_list.html:24
+msgid "Sound"
+msgstr "Son"
+
 #: templates/telemeta_default/home.html:92
 #, fuzzy
 msgid "Action"
 msgstr "Fonction"
+
+#: templates/telemeta_default/index.html:15
+msgid "Open the geographic navigator"
+msgstr "Accéder au navigateur géographique"
+
+#: templates/telemeta_default/index.html:20
+msgid "Musical selection"
+msgstr "Sélection musicale"
+
+#: templates/telemeta_default/index.html:36
+msgid "Partenaires"
+msgstr ""
 
 #: templates/telemeta_default/instrument_edit.html:14
 #: templates/telemeta_default/instrument_edit.html:28
@@ -1215,9 +890,25 @@ msgstr "Nom"
 msgid "This instrument list is empty"
 msgstr "Cette énumération est vide"
 
+#: templates/telemeta_default/login.html:5
+msgid "User authentication"
+msgstr "Identification"
+
+#: templates/telemeta_default/login.html:8
+msgid "Your username and password didn't match. Please try again."
+msgstr ""
+"Vos nom d'utilisateur et/ou mot de passe sont incorrects. Essayez à nouveau."
+
 #: templates/telemeta_default/login.html:23
 msgid "Password forgotten"
 msgstr "Mot de passe oublié"
+
+#: templates/telemeta_default/mediaitem_add.html:5
+#: templates/telemeta_default/mediaitem_copy.html:5
+#: templates/telemeta_default/mediaitem_detail.html:5
+#: templates/telemeta_default/mediaitem_player.html:8
+msgid "Item"
+msgstr "Item"
 
 #: templates/telemeta_default/mediaitem_detail.html:88
 msgid "Previous"
@@ -1246,6 +937,37 @@ msgstr "Propriété"
 #: templates/telemeta_default/mediaitem_player.html:139
 msgid "Unit"
 msgstr "Unité"
+
+#: templates/telemeta_default/mediaitem_detail.html:183
+#: templates/telemeta_default/mediaitem_player.html:160
+msgid "Download:"
+msgstr "Téléchargement:"
+
+#: templates/telemeta_default/mediaitem_detail.html:205
+msgid "Recording date"
+msgstr "Date d'enregistrement"
+
+#: templates/telemeta_default/mediaitem_detail.html:217
+#: templates/telemeta_default/inc/mediaitem_list.html:19
+msgid "Location"
+msgstr "Lieu"
+
+#: templates/telemeta_default/mediaitem_detail.html:232
+msgid "Musical informations"
+msgstr "Informations sur la musique"
+
+#: templates/telemeta_default/mediaitem_detail.html:268
+msgid "General informations"
+msgstr "Informations générales"
+
+#: templates/telemeta_default/mediaitem_detail_dc.html:16
+msgid "No such item"
+msgstr "Item introuvable"
+
+#: templates/telemeta_default/mediaitem_list.html:5
+#: templates/telemeta_default/mediaitem_list.html:8
+msgid "Media Items"
+msgstr "Items"
 
 #: templates/telemeta_default/message.html:5
 #: templates/telemeta_default/not_allowed.html:5
@@ -1301,6 +1023,58 @@ msgstr "Appliquer"
 msgid "Change password"
 msgstr ""
 
+#: templates/telemeta_default/search_criteria.html:5
+#: templates/telemeta_default/search_criteria.html:55
+msgid "Advanced Search"
+msgstr "Recherche avancée"
+
+#: templates/telemeta_default/search_criteria.html:99
+#: templates/telemeta_default/search_criteria.html:118
+#: templates/telemeta_default/search_results.html:33
+#: templates/telemeta_default/search_results.html:40
+msgid "to"
+msgstr "à"
+
+#: templates/telemeta_default/search_criteria.html:111
+#: templates/telemeta_default/search_results.html:38
+msgid "Year of publication"
+msgstr "Année de publication"
+
+#: templates/telemeta_default/search_results.html:5
+#: templates/telemeta_default/search_results.html:8
+msgid "Search Results"
+msgstr "Résultats de recherche"
+
+#: templates/telemeta_default/search_results.html:13
+msgid "Search pattern"
+msgstr "Recherche"
+
+#: templates/telemeta_default/inc/collection_list.html:6
+#, python-format
+msgid "Collections %(first_on_page)s to %(last_on_page)s on %(hits)s"
+msgstr "Collections %(first_on_page)s à %(last_on_page)s sur %(hits)s"
+
+#: templates/telemeta_default/inc/collection_list.html:48
+msgid "No collection"
+msgstr "Aucune collection"
+
+#: templates/telemeta_default/inc/dublincore.html:4
+msgid "Dublin Core Metadata"
+msgstr "Métadonnées Dublin Core"
+
+#: templates/telemeta_default/inc/mediaitem_list.html:6
+#, python-format
+msgid "Items %(first_on_page)s to %(last_on_page)s on %(hits)s"
+msgstr "Items %(first_on_page)s à %(last_on_page)s sur %(hits)s"
+
+#: templates/telemeta_default/inc/mediaitem_list.html:21
+msgid "Country/Continent"
+msgstr "Etat/Continent"
+
+#: templates/telemeta_default/inc/mediaitem_list.html:59
+msgid "No item"
+msgstr "Aucun item"
+
 #: templates/telemeta_default/registration/password_change_done.html:3
 #: templates/telemeta_default/registration/password_change_form.html:4
 #, fuzzy
@@ -1353,7 +1127,7 @@ msgstr ""
 #: templates/telemeta_default/registration/password_change_form.html:37
 #, fuzzy
 msgid "Password (again)"
-msgstr "Mot de passe oublié"
+msgstr "Mot de passe (encore)"
 
 #: templates/telemeta_default/registration/password_change_form.html:45
 #: templates/telemeta_default/registration/password_reset_confirm.html:21
@@ -1374,7 +1148,7 @@ msgstr "Mot de passe oublié"
 #: templates/telemeta_default/registration/password_reset_complete.html:10
 #, fuzzy
 msgid "Password reset complete"
-msgstr "Mot de passe oublié"
+msgstr "Mise à jour du mot de passe effectuée"
 
 #: templates/telemeta_default/registration/password_reset_complete.html:12
 msgid "Your password has been set.  You may go ahead and log in now."
@@ -1467,9 +1241,29 @@ msgstr ""
 msgid "Reset my password"
 msgstr ""
 
+#: templatetags/telemeta_utils.py:217
+#, python-format
+msgid "%(count)d item"
+msgid_plural "%(count)d items"
+msgstr[0] "%(count)d item"
+msgstr[1] "%(count)d items"
+
+#: templatetags/telemeta_utils.py:220
+#, python-format
+msgid "%(count)d collection"
+msgid_plural "%(count)d collections"
+msgstr[0] "%(count)d collection"
+msgstr[1] "%(count)d collections"
+
 #: web/base.py:1094
 msgid "Access not allowed"
 msgstr "Accès non autorisé"
+
+#~ msgid "resource type"
+#~ msgstr "type de ressource"
+
+#~ msgid "resource"
+#~ msgstr "ressource"
 
 #~ msgid "username"
 #~ msgstr "nom d'utilisateur"
