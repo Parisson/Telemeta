@@ -76,11 +76,11 @@ class UserProfile(django.db.models.Model):
     "User profile extension"
     
     user            = ForeignKey(User, unique=True)
-    institution     = CharField(_('institution'))
-    function        = CharField(_('function'))
-    address         = TextField(_('address'))
-    telephone       = CharField(_('telephone'))
-    expiration_date = DateField(_('expiration_date'))
+    institution     = CharField(_('Institution'))
+    function        = CharField(_('Function'))
+    address         = TextField(_('Address'))
+    telephone       = CharField(_('Telephone'))
+    expiration_date = DateField(_('Expiration_date'))
     
     class Meta(MetaCore):
         db_table = 'profiles'

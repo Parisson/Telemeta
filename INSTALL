@@ -27,15 +27,14 @@ Install the dependencies
                               python-imaging python-mysqldb mysql-server python-numpy python-scipy \
                               python-ctypes python-setuptools python-support python-docutils
 
-    Just add these lines to your /etc/apt/sources-list::
+    To get MP3 reading and writing, just add these lines to your /etc/apt/sources-list::
 
-        deb http://debian.parisson.org/ binary/
-        deb-src http://debian.parisson.org/ source/
         deb http://www.debian-multimedia.org stable main
 
     Then::
 
         sudo apt-get update
+        sudo aptitude install gstreamer0.10-fluendo-mp3 gstreamer0.10-lame
 
 * On other linux platforms:
 
@@ -48,7 +47,7 @@ Install TimeSide
 In order to get all the Web Audio Components from TimeSide,
 you have to download and install it from source.
 
-So, checkout the last archives at :
+So, checkout the last archive at :
 http://code.google.com/p/timeside/downloads/list
 
 Install it like in the following example::

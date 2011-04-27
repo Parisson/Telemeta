@@ -38,6 +38,7 @@
       
       <dt>{% trans "Is staff" %}</dt><dd>{{ usr.is_staff }}</dd>
       <dt>{% trans "Is superuser" %}</dt><dd>{{ usr.is_superuser }}</dd>
+      <dt>{% trans "Groups" %}</dt><dd>{{ usr.groups.all }}</dd>
       <dt>{% trans "Last login" %}</dt><dd>{{ usr.last_login }}</dd>
       {% if user.is_authenticated and user.username == usr.username %}
         {% get_current_language as LANGUAGE_CODE %}
