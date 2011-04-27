@@ -126,7 +126,7 @@ var MarkerMapDiv = TimesideArray.extend({
             e_okButton.hide();
             editButton.show();
         }
-
+        this.setFocus(index,value);
         this.stretch(e_titleText);
     },
 

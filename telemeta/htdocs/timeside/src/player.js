@@ -1,9 +1,11 @@
 var Player = TimesideClass.extend({
-
+    
     //sound duration is in milliseconds because the soundmanager has that unit,
     //player (according to timeside syntax) has durations in seconds
     init: function(container, sound, soundDurationInMsec) {
         this._super();
+        var player = this;
+
         if (!container){
             this.debug('ERROR: container is null in initializing the player')
         }
@@ -13,6 +15,8 @@ var Player = TimesideClass.extend({
         this.getSound = function(){
             return sound;
         }
+
+
 
         //rpivate functions for converting
         //soundmanager has milliseconds, we use here seconds
@@ -24,7 +28,6 @@ var Player = TimesideClass.extend({
         function toSec(msec){
             return pFloat(msec)/1000;
         }
-
 
 
         var sd = toSec(soundDurationInMsec);
@@ -39,7 +42,12 @@ var Player = TimesideClass.extend({
              *Note that a 1 may not always guarantee that sound is being heard, given buffering and autoPlay status.*/
             return sound && sound.playState==1;
         };
-        
+
+        var currentMarkerIndex=0;
+        this.getCurrentMarkerIndex = function(){
+            return currentMarkerIndex;
+        };
+
         //setting the position===============================================
         //if sound is not loaded, position is buggy. Moreover, we have to handle the conversions between units: 
         //seconds (here) and milliseconds (swmanager sound). So we store a private variable
@@ -48,6 +56,13 @@ var Player = TimesideClass.extend({
         //private method: updates just the internal variable (called in whilePlaying below)
         function setPos(value){
             soundPos = value;
+            var map = player.getMarkerMap();
+            if(map){
+                currentMarkerIndex = map.insertionIndex(value);
+                if(currentMarkerIndex<0){ //see markermap.insertionindex
+                    currentMarkerIndex = -currentMarkerIndex-1;
+                }
+            }
         }
         //public methods: calls setPos above AND updates sounbd position
         this.setSoundPosition = function(newPositionInSeconds){
@@ -70,7 +85,6 @@ var Player = TimesideClass.extend({
         //implement play here: while playing we do not have to update the sound position, so
         //we call the private variable soundPos
         this.play = function(){
-            var player = this;
             if(!player || player.isPlaying()){
                 return false;
             }
@@ -79,13 +93,7 @@ var Player = TimesideClass.extend({
                 return false;
             }
 
-            var map = player.getMarkerMap();
-            var indexToShow = map.insertionIndex(player.getSoundPosition());
             
-            var mydiv = this.$J('<div/>').addClass('markerDiv').css({
-                'position':'absolute',
-                'zIndex':1000
-            });
 
             var ruler = player.getRuler();
             
@@ -96,16 +104,8 @@ var Player = TimesideClass.extend({
                     if(ruler && !ruler.isPointerMovingFromMouse()){
                         ruler.movePointer(sPos);
                     }
-                    if(indexToShow<map.length){
-                        //consolelog(map.toArray()[indexToShow].offset+' '+sPos);
-                        var spanSec = 0.25;
-                        var offzet = map.toArray()[indexToShow].offset;
-                        if(offzet>=sPos-spanSec && offzet<=sPos+spanSec){
-                            indexToShow++;
-                            popup.show(jQuery('<div/>').html(map.toArray()[indexToShow-1].toString()));
-                            consolelog('showing marker '+(indexToShow-1));
-                        }
-                    }
+                    
+                    player.showMarkerPopup(currentMarkerIndex);
                 },
                 onfinish: function() {
                     setPos(0); //reset position, not cursor, so that clicking play restarts from zero
@@ -114,10 +114,6 @@ var Player = TimesideClass.extend({
             //internal play function. Set all properties and play:
             var play_ = function(sound, positionInSec){
                 sound.setPosition(toMsec(positionInSec));
-                indexToShow = map.insertionIndex(positionInSec); //if we are at zero
-                if(indexToShow<0){
-                    indexToShow = -indexToShow-1;
-                }
                 sound.setVolume(sound.volume); //workaround. Just to be sure. Sometimes it fails when we re-play
                 sound.play(playOptions);
             };
@@ -174,6 +170,8 @@ var Player = TimesideClass.extend({
     //TODO: define setUpInterface here????
 
     },
+
+  
 
     _setupInterface: function(isInteractive) {
         
@@ -333,8 +331,55 @@ var Player = TimesideClass.extend({
 
         //finally, load markers and bind events for markers (see method below):
         this.loadMarkers(isInteractive);
-        
+
+        //set the marker popup
+        //functions to set the marker popup
+        var popupMarker = $J('<div/>').css({
+            'dislay':'none',
+            'position':'absolute',
+            'zIndex':1000
+        }).addClass('container');
+        $J(document).append(popupMarker);
+        var w = v.width();
+        var h = v.height();
+        var offs = v.offset(); //relative to the document
+        var width = parseInt(w/2);
+        var height = parseInt(h/2);
+        var margin = 5;
+        popupMarker.css({
+            'left':(margin+offs.left+width)+'px',
+            'top': parseInt(margin+offs.top)+'px',
+            'width':width+'px',
+            'height':height+'px'
+            });
+        popupMarker.html("<table style='width:100%'><tr><td>"+gettrans('title')+"</td><td class='title></td></tr><tr><td>"+
+            gettrans('description')+"</td><td class='description'></td></tr></table>");
+        this.getMarkerPopup = function(){
+            return popupMarker;
+        }
     },
+
+    showMarkerPopup: function(markerIndex){
+        var popup = this.getMarkerPopup();
+       // consolelog(popup.attr('id'));
+        consolelog('popup');
+        if(popup.attr('id') != 'markerpopup'+markerIndex){
+            
+            var marker = getMarkerMap().toArray()[markerIndex];
+            var pos = this.getPosition();
+            var mPos = marker.offset;
+            var span = 0.3;
+            if(pos>=mPos-span && pos<=mPos+span){
+                popup.attr('id','markerpopup'+markerIndex);
+                popup.find('.title').html(marker.title);
+                popup.find('.description').html(marker.desc);
+                if(!popup.is(':visible')){
+                    popup.show('fast');
+                }
+            }
+        }
+    },
+
     resize: function() {
         this.debug("resizing");
         var height;
