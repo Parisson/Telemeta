@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-27 21:03+0200\n"
+"POT-Creation-Date: 2011-04-28 11:46+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Olivier Guilyardi <olivier samalyse com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -502,8 +502,8 @@ msgid "Instruments"
 msgstr "instruments"
 
 #: templates/telemeta_default/admin_enumerations.html:12
-#: templates/telemeta_default/home.html:30
-#: templates/telemeta_default/home.html:86
+#: templates/telemeta_default/home.html:31
+#: templates/telemeta_default/home.html:87
 #: templates/telemeta_default/search_criteria.html:76
 #: templates/telemeta_default/search_results.html:28
 #: templates/telemeta_default/inc/collection_list.html:14
@@ -523,7 +523,7 @@ msgid "No users"
 msgstr "Pas d'utilisateurs"
 
 #: templates/telemeta_default/admin_users.html:12
-#: templates/telemeta_default/home.html:32
+#: templates/telemeta_default/home.html:33
 #, fuzzy
 msgid "User"
 msgstr "Utilisateur"
@@ -599,6 +599,12 @@ msgstr "Propulsé par"
 msgid "By"
 msgstr "Par"
 
+#: templates/telemeta_default/base.html:108
+#: templates/telemeta_default/collection_detail.html:112
+#, fuzzy
+msgid "Legal notices"
+msgstr "Mentions légales"
+
 #: templates/telemeta_default/collection_add.html:7
 #: templates/telemeta_default/collection_add.html:25
 #: templates/telemeta_default/collection_edit.html:9
@@ -657,12 +663,8 @@ msgstr "Année d'enregistrement"
 msgid "Geographic and cultural informations"
 msgstr "Indications géographiques et culturelles"
 
-#: templates/telemeta_default/collection_detail.html:112
-msgid "Legal mentions"
-msgstr "Mentions légales"
-
 #: templates/telemeta_default/collection_detail.html:117
-#: templates/telemeta_default/home.html:89
+#: templates/telemeta_default/home.html:90
 #: templates/telemeta_default/inc/collection_list.html:17
 #: templates/telemeta_default/inc/mediaitem_list.html:17
 msgid "Recordist"
@@ -721,7 +723,7 @@ msgstr "Éditées"
 
 #: templates/telemeta_default/collection_list.html:15
 #: templates/telemeta_default/enumeration_edit.html:20
-#: templates/telemeta_default/home.html:67
+#: templates/telemeta_default/home.html:68
 #: templates/telemeta_default/instrument_edit.html:20
 #: templates/telemeta_default/mediaitem_list.html:12
 msgid "Add"
@@ -817,37 +819,37 @@ msgstr[1] "%(counter)s items "
 msgid "Last changes"
 msgstr "Dernières modifications"
 
-#: templates/telemeta_default/home.html:29
+#: templates/telemeta_default/home.html:30
 msgid "Date"
 msgstr ""
 
-#: templates/telemeta_default/home.html:31
-#: templates/telemeta_default/home.html:87
+#: templates/telemeta_default/home.html:32
+#: templates/telemeta_default/home.html:88
 msgid "Type"
 msgstr ""
 
-#: templates/telemeta_default/home.html:50
-#: templates/telemeta_default/home.html:107
+#: templates/telemeta_default/home.html:51
+#: templates/telemeta_default/home.html:108
 msgid "deleted"
 msgstr "supprimé"
 
-#: templates/telemeta_default/home.html:65
+#: templates/telemeta_default/home.html:66
 #: templates/telemeta_default/profile_detail.html:12
 msgid "Playlists"
 msgstr "Listes de lecture"
 
-#: templates/telemeta_default/home.html:77
+#: templates/telemeta_default/home.html:78
 #, fuzzy
 msgid "Delete"
 msgstr "Supprimé"
 
-#: templates/telemeta_default/home.html:88
+#: templates/telemeta_default/home.html:89
 #: templates/telemeta_default/inc/collection_list.html:15
 #: templates/telemeta_default/inc/mediaitem_list.html:16
 msgid "Code"
 msgstr "Cote"
 
-#: templates/telemeta_default/home.html:90
+#: templates/telemeta_default/home.html:91
 #: templates/telemeta_default/search_criteria.html:92
 #: templates/telemeta_default/search_results.html:31
 #: templates/telemeta_default/inc/collection_list.html:18
@@ -855,13 +857,13 @@ msgstr "Cote"
 msgid "Year of recording"
 msgstr "Année d'enregistrement"
 
-#: templates/telemeta_default/home.html:91
+#: templates/telemeta_default/home.html:92
 #: templates/telemeta_default/inc/collection_list.html:19
 #: templates/telemeta_default/inc/mediaitem_list.html:24
 msgid "Sound"
 msgstr "Son"
 
-#: templates/telemeta_default/home.html:92
+#: templates/telemeta_default/home.html:93
 #, fuzzy
 msgid "Action"
 msgstr "Fonction"
