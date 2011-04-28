@@ -1077,6 +1077,12 @@ a.image-link {
 .icon_filter{
     background-image: url('/images/filter.png');
 }
+.icon_rss,.icon_rss:hover{
+    background: url('/images/feed-icon-14x14.png') no-repeat;
+    background-position: 0ex .8ex;
+    padding:.0ex 0ex .8ex .7ex;
+    text-decoration: none;
+}
 
 .addToPlaylist {
     margin:0.5ex;
