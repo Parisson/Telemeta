@@ -240,7 +240,7 @@ var MarkerMapDiv = TimesideArray.extend({
         
         var me = this;
         e_deleteButton.unbind('click').click( function(){
-            if(!(marker.isSavedOnServer) || confirm('delete the marker permanently?')){
+            if(!(marker.isSavedOnServer) || confirm(gettrans('delete the marker permanently?'))){
                 me.fire('remove',{
                     'marker':marker
                 });
