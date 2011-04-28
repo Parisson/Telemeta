@@ -249,7 +249,7 @@ var MarkerMapDiv = TimesideArray.extend({
         })
 
         e_addplaylistButton.unbind('click').bind('click',function(evtObj_){
-            playlistUtils.showPopupAddToPlaylist(evtObj_,'marker',""+marker.id,'marker added to selected playlist');
+            playlistUtils.showPopupAddToPlaylist(evtObj_,'marker',""+marker.id,gettrans('marker added to the selected playlist'));
             return false;
         });
 

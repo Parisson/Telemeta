@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-27 18:20+0200\n"
+"POT-Creation-Date: 2011-04-27 21:03+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Olivier Guilyardi <olivier samalyse com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -451,7 +451,7 @@ msgid "Expiration_date"
 msgstr "Date d'expiration"
 
 #: templates/telemeta/registration/logged_out.html:4
-#: templates/telemeta_default/base.html:73
+#: templates/telemeta_default/base.html:74
 #: templates/telemeta_default/registration/logged_out.html:4
 #: templates/telemeta_default/registration/password_change_done.html:4
 #: templates/telemeta_default/registration/password_change_form.html:5
@@ -543,59 +543,59 @@ msgstr "Nom"
 msgid "E-mail"
 msgstr "E-mail"
 
-#: templates/telemeta_default/base.html:45
+#: templates/telemeta_default/base.html:46
 msgid "Welcome"
 msgstr "Bienvenue"
 
-#: templates/telemeta_default/base.html:51
+#: templates/telemeta_default/base.html:52
 msgid "Account"
 msgstr "Compte"
 
-#: templates/telemeta_default/base.html:52
-#: templates/telemeta_default/base.html:56
+#: templates/telemeta_default/base.html:53
+#: templates/telemeta_default/base.html:57
 msgid "Help"
 msgstr "Aide"
 
-#: templates/telemeta_default/base.html:53
+#: templates/telemeta_default/base.html:54
 msgid "Sign out"
 msgstr "Déconnexion"
 
-#: templates/telemeta_default/base.html:57
+#: templates/telemeta_default/base.html:58
 #: templates/telemeta_default/login.html:21
 msgid "Sign in"
 msgstr "Connexion"
 
-#: templates/telemeta_default/base.html:65
+#: templates/telemeta_default/base.html:66
 #: templates/telemeta_default/search_criteria.html:132
 msgid "Search"
 msgstr "Recherche"
 
-#: templates/telemeta_default/base.html:74
+#: templates/telemeta_default/base.html:75
 msgid "Collections"
 msgstr "Collections"
 
-#: templates/telemeta_default/base.html:75
+#: templates/telemeta_default/base.html:76
 msgid "Items"
 msgstr "Items"
 
-#: templates/telemeta_default/base.html:76
+#: templates/telemeta_default/base.html:77
 #: templates/telemeta_default/index.html:13
 msgid "Geo Navigator"
 msgstr "Géo-Navigateur"
 
-#: templates/telemeta_default/base.html:77
+#: templates/telemeta_default/base.html:78
 msgid "Advanced search"
 msgstr "Recherche avancée"
 
-#: templates/telemeta_default/base.html:79
+#: templates/telemeta_default/base.html:80
 msgid "Admin"
 msgstr "Admin"
 
-#: templates/telemeta_default/base.html:101
+#: templates/telemeta_default/base.html:102
 msgid "Powered by"
 msgstr "Propulsé par"
 
-#: templates/telemeta_default/base.html:102
+#: templates/telemeta_default/base.html:103
 msgid "By"
 msgstr "Par"
 

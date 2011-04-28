@@ -34,7 +34,7 @@
         var anchor = jQuery('#_add_to_playlist');
         if(anchor.length){
             anchor.click(function(evtObj_){
-                p.showPopupAddToPlaylist(evtObj_,'item','{{item.public_id}}',gettext('item added to the selected playlist'));return false;
+                p.showPopupAddToPlaylist(evtObj_,'item','{{item.public_id}}',gettrans('item added to the selected playlist'));return false;
             });
         }
         {% endif %}

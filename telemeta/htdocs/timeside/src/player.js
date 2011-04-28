@@ -5,7 +5,7 @@ var Player = TimesideClass.extend({
     init: function(container, sound, soundDurationInMsec) {
         this._super();
         var player = this;
-
+        
         if (!container){
             this.debug('ERROR: container is null in initializing the player')
         }
