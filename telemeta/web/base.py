@@ -745,8 +745,7 @@ class WebView(object):
 
         return self.edit_enumeration(request, enumeration_id)
   
-  
-    
+
     # INSTRUMENTS
     @method_decorator(permission_required('telemeta.change_instrument'))
     def edit_instrument(self, request):        
@@ -1000,17 +999,17 @@ class WebView(object):
         for resource in resources:
             if resource_type == 'items':
                 if resource.resource_type == 'collection':
-                    collection = MediaCollection.objects.get(pk=resource.resource_id)
+                    collection = MediaCollection.objects.get(code=resource.resource_id)
                     collection_items = MediaItem.objects.filter(collection=collection)
                     for item in collection_items:
                         elements.append(item)
                 elif resource.resource_type == 'item':
-                    item = MediaItem.objects.get(pk=resource.resource_id)
+                    item = MediaItem.objects.get(code=resource.resource_id)
                     elements.append(item)
                 
             elif resource_type == 'collections':
                 if resource.resource_type == 'collection':
-                    collection = MediaCollection.objects.get(pk=resource.resource_id)
+                    collection = MediaCollection.objects.get(code=resource.resource_id)
                     elements.append(collection)
                 
         if elements:

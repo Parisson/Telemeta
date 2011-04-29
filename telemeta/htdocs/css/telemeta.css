@@ -786,6 +786,10 @@ table td.error {
 .rst-content {
 }
 
+.rst-content h1 {
+    color: #6a0307;
+}
+
 .rst-content img.align-left {
     margin-right: 1em;
     margin-top: 0.6ex;
