@@ -678,16 +678,16 @@ dl.dublincore dd.caption {
     margin-top: .7em;
     margin-bottom: .3em;
     padding: .3em 0;
-    font-size: .9em;
+    font-size: 1em;
     background-color: #fff;
     border-bottom: 1px solid #aaa;
     color: #333;
     font-weight: bold;
 }
 .pagination a {
-    background-color: #eee;
+    background-color: #fff;
     border-bottom: none;
-    font-size: .9em;
+    font-size: 1em;
     padding: .3em;
 }
 

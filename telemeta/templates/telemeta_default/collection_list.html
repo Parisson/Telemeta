@@ -5,9 +5,9 @@
 {% block head_title %}{% trans "Media Collections" %} - {{ block.super }}{% endblock %}
 
 {% block title%}
-    <h1>{% trans "Media Collections" %}</h1>
+ <h1>{% trans "Media Collections" %}</h1>
 {% endblock %}
-{% block title_buttons %} 
+{% block title_buttons %}
      <a href="{% url telemeta-collections %}" class="component_icon button icon_search">{% trans "All" %}</a>
      <a href="{% url telemeta-collections-novel %}" class="component_icon button icon_filter">{% trans "Unpublished" %}</a>
      <a href="{% url telemeta-collections-published %}" class="component_icon button icon_filter">{% trans "Published" %}</a>
