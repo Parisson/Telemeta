@@ -113,7 +113,7 @@ class WebView(object):
             ids = [id for id in MediaItem.objects.all().values_list('id', flat=True).order_by('?')[0:3]]
             items = MediaItem.objects.enriched().filter(pk__in=ids)
             context = RequestContext(request, {
-                        'page_content': pages.get_page_content(request, 'parts/home-'+request.LANGUAGE_CODE, ignore_slash_issue=True),
+                        'page_content': pages.get_page_content(request, 'home', ignore_slash_issue=True),
                         'items': items})
             return HttpResponse(template.render(context))
         else:

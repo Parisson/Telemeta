@@ -213,7 +213,7 @@ urlpatterns = patterns('',
         name="telemeta-timeside"),
 
     # Flat pages
-    url(r'^page/(?P<path>.*)$', web_view.render_flatpage, name="telemeta-flatpage"),
+    url(r'^pages/(?P<path>.*)$', web_view.render_flatpage, name="telemeta-flatpage"),
 
     # OAI-PMH Data Provider
     url(r'^oai/.*$', web_view.handle_oai_request, name="telemeta-oai"),

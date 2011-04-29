@@ -50,11 +50,11 @@
 {{ user.username }}.
 {% endif %}
 <a href="{% url telemeta-profile-detail user.username %}">{% trans "Account" %}</a> |
-<a href="/page/parts/help-{{ LANGUAGE_CODE }}">{% trans "Help" %}</a> | 
+<a href="{% url telemeta-flatpage "help" %}">{% trans "Help" %}</a> | 
 <a href="{% url telemeta-logout %}">{% trans "Sign out" %}
 <img src="images/logout.png" style="vertical-align:middle" /></a>
 {% else %}
-<a href="/page/parts/help-{{ LANGUAGE_CODE }}">{% trans "Help" %}</a> |
+<a href="{% url telemeta-flatpage "help" %}">{% trans "Help" %}</a> |
 <a href="{% url telemeta-login %}?next={{ request.path|urlencode }}">{% trans "Sign in" %}</a>
 {% endif %}
 </div>
@@ -105,7 +105,7 @@
 
  <p class="right">
   Copyright &copy; 2011 Parisson<br />
-  <a href="/page/parts/legal_notices-{{ LANGUAGE_CODE }}">{% trans "Legal notices" %}</a>
+  <a href="{% url telemeta-flatpage "legal_notices" %}">{% trans "Legal notices" %}</a>
  </p>
 {% endblock %}
 </div>
