@@ -112,9 +112,8 @@ class WebView(object):
             template = loader.get_template('telemeta/index.html')
             ids = [id for id in MediaItem.objects.all().values_list('id', flat=True).order_by('?')[0:3]]
             items = MediaItem.objects.enriched().filter(pk__in=ids)
-
             context = RequestContext(request, {
-                        'page_content': pages.get_page_content(request, 'parts/home', ignore_slash_issue=True),
+                        'page_content': pages.get_page_content(request, 'parts/home-'+request.LANGUAGE_CODE, ignore_slash_issue=True),
                         'items': items})
             return HttpResponse(template.render(context))
         else:
@@ -122,13 +121,8 @@ class WebView(object):
             playlists = self.get_playlists(request)
             revisions = self.get_revisions(request)
             searches = Search.objects.filter(username=request.user)
-            translation_list = ['Title', 'Description', 'OK', 'Cancel']
-            translations = {}
-            for term in translation_list:
-                translations[term] = ugettext(term)
-                
             return render(request, template, {'playlists': playlists, 'searches': searches, 
-                                              'revisions': revisions, 'translations': translations})
+                                              'revisions': revisions,})
   
     def get_revisions(self, request):
         last_revisions = Revision.objects.all().order_by('-time')[0:15]
@@ -1031,16 +1025,6 @@ class WebView(object):
                     data.append(element[tag])
                 writer.writerow(data)
         return response
-        
-    def help(self, request):
-        """Render the help page"""
-        template = loader.get_template('telemeta/index.html')
-        ids = [id for id in MediaItem.objects.all().values_list('id', flat=True).order_by('?')[0:3]]
-        items = MediaItem.objects.enriched().filter(pk__in=ids)
-        context = RequestContext(request, {
-                    'page_content': pages.get_page_content(request, 'parts/help', ignore_slash_issue=True),
-                    'items': items})
-        return HttpResponse(template.render(context))
         
     def rss(self, request):
         "Render the RSS feed of last revisions"
