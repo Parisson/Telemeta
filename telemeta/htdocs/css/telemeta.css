@@ -33,7 +33,7 @@ a:hover {
 
 a img { border: none; }
 
-.rst-content h1, h3 {
+.rst-content h1 {
     font-size: 1.2em;
     font-weight: bold;
     color: #353535;
@@ -91,10 +91,8 @@ a img { border: none; }
 
 #content h2 {
     color: #6a0307;
-    border-bottom: 1px solid #6a0307;
-    width: 90%;
-    padding: 0.3em 0.3em 0.3em 0.5em;
 }
+
 #logo a, #logo a:hover { border: none; background: transparent; }
 
 #header {
