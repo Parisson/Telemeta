@@ -10,7 +10,7 @@ def paginator(context, adjacent_pages=2):
     last page links in addition to those created by the object_list generic
     view.
     
-    Thanks to  tummy.com, ltd.
+    Thanks to tummy.com, ltd.
     http://www.tummy.com/Community/Articles/django-pagination/
 
     """
@@ -39,5 +39,5 @@ def paginator(context, adjacent_pages=2):
         'show_last': context['pages'] not in page_numbers,
     }
 
-register.inclusion_tag('telemeta_default/paginator.html', takes_context=True)(paginator)
+register.inclusion_tag('telemeta/paginator.html', takes_context=True)(paginator)
 
