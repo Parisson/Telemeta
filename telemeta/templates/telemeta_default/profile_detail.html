@@ -38,7 +38,7 @@
       
       <dt>{% trans "Is staff" %}</dt><dd>{{ usr.is_staff }}</dd>
       <dt>{% trans "Is superuser" %}</dt><dd>{{ usr.is_superuser }}</dd>
-      <dt>{% trans "Groups" %}</dt><dd>{{ usr.groups.all }}</dd>
+      <dt>{% trans "Groups" %}</dt><dd>{% for group in usr.groups.all %}{{ group }}, {% endfor %}</dd>
       <dt>{% trans "Last login" %}</dt><dd>{{ usr.last_login }}</dd>
       {% if user.is_authenticated and user.username == usr.username %}
       <dt>{% trans "Language" %}</dt><dd><form id="setlang" action="/i18n/setlang/" method="post">{% csrf_token %}
