@@ -1054,6 +1054,7 @@ class WebView(object):
                             title = str(element.public_id)
                         else:
                             title = element.title
+                        title = element.element_type + ' : ' + title
                         
                 rss_item_list.append(RSSItem(
                         title = title,
@@ -1063,7 +1064,7 @@ class WebView(object):
                         pubDate = revision.time,)
                         )
                         
-        rss = RSS2(title = organization + ' - Telemeta - last changes',
+        rss = RSS2(title = organization + ' - Telemeta - ' + ugettext('Last changes'),
                             link = rss_host,
                             description = ' '.join([subject.decode('utf-8') for subject in subjects]),
                             lastBuildDate = str(date_now),
