@@ -81,19 +81,30 @@ var Player = TimesideClass.extend({
             return soundPos;
         };
 
+
+//       if(sound.readyState != 3){
+//                /*sound.readyState
+//                 * Numeric value indicating a sound's current load status
+//                 * 0 = uninitialised
+//                 * 1 = loading
+//                 * 2 = failed/error
+//                 * 3 = loaded/success
+//                 */
+//                sound.options.whileloading=function(){
+//
+//                }
+//        };
         
         //implement play here: while playing we do not have to update the sound position, so
         //we call the private variable soundPos
         this.play = function(){
-            if(!player || player.isPlaying()){
+            if(!player || player.isPlaying()){ //TODO: remove?, multishot is set to false
                 return false;
             }
             var sound = player.getSound();
             if(!sound){
                 return false;
             }
-
-            
 
             var ruler = player.getRuler();
             
@@ -113,36 +124,15 @@ var Player = TimesideClass.extend({
             };
             //internal play function. Set all properties and play:
             var play_ = function(sound, positionInSec){
-                sound.setPosition(toMsec(positionInSec));
+                //consolelog('position is '+positionInSec+' sec');
+                sound.setPosition(toMsec(positionInSec)); //TODO: remove???
+                //consolelog('sound position is '+sound.position+' msec');
                 sound.setVolume(sound.volume); //workaround. Just to be sure. Sometimes it fails when we re-play
+                playOptions.position = toMsec(positionInSec); //apparently THIS IS WORKING
                 sound.play(playOptions);
             };
-            //var s = toMsec(player.getSoundPosition());
-            if(sound.readyState != 3){
-                /*sound.readyState
-                 * Numeric value indicating a sound's current load status
-                 * 0 = uninitialised
-                 * 1 = loading
-                 * 2 = failed/error
-                 * 3 = loaded/success
-                 */
-                sound.options.onload=function(){
-                    //consolelog('LOADED AND PLAY '+' volume '+ sound.volume+' sPos: '+sound.position);
-                    //we set position and volume to be sure. Sometimes they are buggy
-                    //sound.setPosition(s);
-                    //sound.setVolume(sound.volume); //workaround. Just to be sure
-                    //sound.play(playOptions);
-                    play_(sound, player.getSoundPosition());
-                }
-                sound.load();
-            }else{
-                //consolelog('PLAY IMMEDIATELY'+' volume '+ sound.volume+' sPos: '+sound.position);
-                //we set position and volume to be sure. Sometimes they are buggy
-                //                sound.setPosition(s);
-                //                sound.setVolume(sound.volume); //workaround. Just to be sure/
-                //                sound.play(playOptions);
-                play_(sound, player.getSoundPosition());
-            }
+           
+            play_(sound, player.getSoundPosition());
             
             return false;
         };
@@ -334,12 +324,14 @@ var Player = TimesideClass.extend({
 
         //set the marker popup
         //functions to set the marker popup
-        var popupMarker = $J('<div/>').css({
+        var popupMarker = $J('<div/>').addClass('component').css({
             'dislay':'none',
             'position':'absolute',
-            'zIndex':1000
-        }).addClass('container');
-        $J(document).append(popupMarker);
+            'zIndex':1000,
+            'overflow':'auto'
+            //'backgroundColor':'#666'
+        });
+        $J('body').append(popupMarker);
         var w = v.width();
         var h = v.height();
         var offs = v.offset(); //relative to the document
@@ -352,7 +344,7 @@ var Player = TimesideClass.extend({
             'width':width+'px',
             'height':height+'px'
             });
-        popupMarker.html("<table style='width:100%'><tr><td>"+gettrans('title')+"</td><td class='title></td></tr><tr><td>"+
+        popupMarker.html("<table style='width:100%'><tr><td>"+gettrans('title')+"</td><td class='title'></td></tr><tr><td>"+
             gettrans('description')+"</td><td class='description'></td></tr></table>");
         this.getMarkerPopup = function(){
             return popupMarker;
@@ -362,14 +354,16 @@ var Player = TimesideClass.extend({
     showMarkerPopup: function(markerIndex){
         var popup = this.getMarkerPopup();
        // consolelog(popup.attr('id'));
-        consolelog('popup');
+        
         if(popup.attr('id') != 'markerpopup'+markerIndex){
             
-            var marker = getMarkerMap().toArray()[markerIndex];
-            var pos = this.getPosition();
+            var marker = this.getMarkerMap().toArray()[markerIndex];
+            var pos = this.getSoundPosition();
             var mPos = marker.offset;
             var span = 0.3;
+            
             if(pos>=mPos-span && pos<=mPos+span){
+                consolelog('songpos: '+pos+' nextmarkerpos:'+mPos);
                 popup.attr('id','markerpopup'+markerIndex);
                 popup.find('.title').html(marker.title);
                 popup.find('.description').html(marker.desc);
