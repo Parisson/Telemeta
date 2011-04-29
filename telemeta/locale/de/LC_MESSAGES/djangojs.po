@@ -1,7 +1,7 @@
-# Telemeta French Translation (JS)
-# Copyright (C) 2011 Parisson
-# This file is distributed under the same license as the Telemeta package.
-# Guillaume Pellerin <yomguy@parisson.com>, 2011.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
@@ -10,34 +10,34 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-04-29 20:53+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Guillaume Pellerin <yomguy@parisson.com>\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n>1\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: htdocs/js/locale.js:2
 msgid "title"
-msgstr "titre"
+msgstr ""
 
 #: htdocs/js/locale.js:3
 msgid "description"
-msgstr "description"
+msgstr ""
 
 #: htdocs/js/locale.js:4
 msgid "delete the marker permanently?"
-msgstr "supprimer le marqueur définitivement ?"
+msgstr ""
 
 #: htdocs/js/locale.js:5
 msgid "marker added to the selected playlist"
-msgstr "marqueur ajouté à la liste de lecture"
+msgstr ""
 
 #: htdocs/js/locale.js:6
 msgid "item added to the selected playlist"
-msgstr "item ajouté à la liste de lecture"
+msgstr ""
 
 #: htdocs/js/locale.js:7
 msgid "collection added to the selected playlist"
-msgstr "collection ajoutée à la liste de lecture"
+msgstr ""
