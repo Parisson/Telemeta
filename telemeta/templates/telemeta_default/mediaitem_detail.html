@@ -74,7 +74,7 @@
 {% if item %}
 
 {% block title %}
-<img src="images/item.png" style="vertical-align:middle" /> Item : {{ item }}
+<img src="images/item.png" style="vertical-align:middle" /> <h1>Item : {{ item }}</h1>
 {% endblock %}
 {% block title_buttons %}
      <div class="fixedWidthAsPlayer">
@@ -92,7 +92,6 @@
 {% endblock %}
 
 {% block content %}
-<!--<div id="div_title" style="padding-bottom:2ex;padding-right:362px"><h3><img src="images/item.png" style="vertical-align:middle" /> Item : {{ item }}</h3></div>-->
 
 <div class="{% if item.file %}{% if item.public_access == 'full' or public_access or user.is_staff %}with-rightcol{% endif %}{% endif %}">
     {% if item.file %}

@@ -83,6 +83,12 @@ a img { border: none; }
 #content li a {
     padding: .1em 0;
 }
+#content h1 {
+    color: #6a0307;
+    font-weight: bold;
+    display:  inline;
+    font-size: 120%; 
+}
 #content h3 {
     color: #6a0307;
     font-weight: bold;
@@ -823,6 +829,7 @@ table td.error {
     margin-top: 0.4em;
     margin-bottom: 0.4em;
     font-size: 1.1em;
+    color: #000000;
 }
 
 #module h3 {
@@ -1092,4 +1099,15 @@ a.image-link {
     display:none;
     left: 0;
     top: 0;
+}
+
+/* FORMS */
+#id_title {
+    width: 500px;
+}
+#id_old_code {
+    width: 300px;
+}
+#id_code {
+    width: 300px;
 }

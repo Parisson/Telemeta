@@ -3,7 +3,7 @@
 {% load telemeta_utils %}
 
 {% block title %}
-    Collection: {{ collection }}
+    <h1>Collection: {{ collection }}</h1>
 {% endblock %}
 {% block title_buttons %}
     <a href="{% url telemeta-collection-detail collection.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>

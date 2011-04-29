@@ -34,7 +34,7 @@
 {% if collection %}
 
 {% block title %}
-    Collection: {{ collection }}
+    <h1>Collection: {{ collection }}</h1>
 {% endblock %}
 
 {% block title_buttons %}
@@ -49,7 +49,6 @@
 {% endblock %}
 
 {% block content %}
-<!--    <h3>Collection: {{ collection }}</h3>-->
     <div class="{% if collection.has_mediafile %}with-rightcol{% endif %}">
         {% if collection.has_mediafile %}
         <div id="rightcol">
