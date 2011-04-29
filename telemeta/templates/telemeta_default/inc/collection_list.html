@@ -4,8 +4,7 @@
 {% if hits %}
 <p class="pagination">
 {% blocktrans %}Collections {{ first_on_page }} to {{ last_on_page }} on {{ hits }}{% endblocktrans %}
-&nbsp;&nbsp;
-{% if is_paginated %}{% load paginator %}{% paginator 5 %}{% endif %}
+| Pages : {% if is_paginated %}{% load paginator %}{% paginator 5 %}{% endif %}
 </p>
 {% endif %}
 <table class="listing">

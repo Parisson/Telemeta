@@ -3,7 +3,7 @@
 {% load telemeta_utils %}
 
   {% block title %}
-        <img src="images/item.png" style="vertical-align:middle" /> <h1>Item : {{ item }}</h1>
+    <img src="images/item.png" style="vertical-align:middle" /> <h1>Item : {{ item }}</h1>
   {% endblock %}
   {% block title_buttons %}
    <a href="{% url telemeta-item-detail item.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
@@ -21,7 +21,11 @@
              {% if field.html_name == "file" %}
               <td> {{ item.file.name }} <br /> {{ field }}</td>
              {% else %}
+             {% if field.html_name == "collection" %}
+              <td>{{ field }} <br />&nbsp;{% trans "Code" %} : {{ item.collection.code }}</td>
+             {% else %}
               <td>{{ field }}</td>
+             {% endif %}
              {% endif %}
         </tr>
         {% endif %}
