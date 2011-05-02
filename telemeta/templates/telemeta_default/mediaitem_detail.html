@@ -67,10 +67,11 @@
 
     jQuery(document).ready(function(){
         var ar = [];
-        for(var i=0; i<1000; i++){
+        for(var i=0; i<100; i++){
             ar.push('<a href=#>'+i+'</a>');
         }
         var p = new PopupDiv(ar.join('<br/>'));
+        //var p = new PopupDiv({'title':"azzo",'description':'w'});
          consolelog(p);
             p.getDiv().find('a').each(function(i,aa){
                 jQuery(aa).click(function(){alert(jQuery(aa).html());p.hide();return false;});

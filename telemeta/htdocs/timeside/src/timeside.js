@@ -176,14 +176,14 @@ var TimesideClass = Class.extend({
 
         //first of all, instantiate the power function once (and not inside the function or function's loop):
         var mpow = Math.pow; //instantiate mpow once
-        var format = function(integer,ceilAsPowerOfTen){
+        var format = function(integer,minimumNumberOfDigits){
             var n = ""+integer;
-            if(!(ceilAsPowerOfTen)){
-                return n;
-            }
+//            if(!(ceilAsPowerOfTen)){
+//                return n;
+//            }
             var zero = "0"; //instantiating once increases performances???
-            for(var i=0; i< ceilAsPowerOfTen; i++){
-                if(integer<mpow(10,i+1)){
+            for(var i=1; i< minimumNumberOfDigits; i++){
+                if(integer<mpow(10,i)){
                     n = zero+n;
                 }
             }
@@ -211,6 +211,8 @@ var TimesideClass = Class.extend({
             }else if(f=='C'){
                 separator = ".";
                 ret[i]=format(round(time*100),2);
+                consolelog('NOW=======================================');
+                consolelog(time);
             }else if(f=='D'){
                 separator = ".";
                 ret[i]=format(round(time*10),1);

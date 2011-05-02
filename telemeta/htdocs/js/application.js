@@ -656,24 +656,24 @@ function PopupUtils(){
             var spaceAbove = offs.top - rect.y;
             var spaceBelow = rect.height - height - spaceAbove;
 
-           // consolelog('wHeight:'+rect.height+ ' space above: '+spaceAbove + ' spacebelow: '+spaceBelow);
+            // consolelog('wHeight:'+rect.height+ ' space above: '+spaceAbove + ' spacebelow: '+spaceBelow);
 
             if(spaceAbove>spaceBelow){
                 p.css({
                     'maxHeight':(spaceAbove-p.shadowoffset)+'px',
                     'top':rect.y+'px'
-                    });
+                });
             }else{
                 p.css({
                     'maxHeight':(spaceBelow-p.shadowoffset)+'px',
                     'top':(offs.top+height)+'px'
-                    });
+                });
             }
             p.css({
                 'height':'auto',
                 'width' :'auto',
                 'maxWidth': (rect.x+rect.width-offs.left)+'px'
-                });
+            });
 
             //consolelog("size"); consolelog(size);
             //        p.offset({
@@ -822,17 +822,17 @@ function DivDialog(content){
         popup.css({
             'maxHeight':size.height,
             'maxWidth':size.width
-            });
+        });
         popupContent.css({
             'maxHeight':size.height-(popup.outerHeight()-popup.height()),
             'maxWidth':size.width-(popup.outerWidth()-popup.width())
-            });
+        });
     };
     this.minsize = function(size){
         popup.css({
             'minHeight':size.height,
             'minWidth':size.width
-            });
+        });
     };
     this.offset = function(){
         var ret = popup.offset.apply(popup,arguments);
@@ -968,7 +968,7 @@ function DivDialog(content){
                 //otherwise execute callback
                 setTimeout(function(){
                     var v = document.activeElement;
-                   // consolelog(v);
+                    // consolelog(v);
                     if(v && $J(v).attr(focusid)){
                         return;
                     }
@@ -1414,21 +1414,25 @@ function PopupDiv(content){
     var div  = $J('<div/>').addClass(this.defaultClasses).css({
         'position':'absolute',
         'zIndex':this.zIndex,
-//        'display':'none',
-//        'left':wdw.scrollLeft()+'px',
-//        'top':wdw.scrollTop()+'px',
-        'overflow':'auto',
+        //        'display':'none',
+        //        'left':wdw.scrollLeft()+'px',
+        //        'top':wdw.scrollTop()+'px',
+        //        'overflow':'auto',
         'padding':'1ex',
         'border':'1px solid #666'
     });
+    var header = $J('<div/>').css('float','right');
+    var container = $J('<div/>').css('overflow','auto');
+    var footer = $J('<div/>');
+    div.append(header).append(container).append(footer);
+
     //div.appendTo('body'); //necessary to properly display the div size
     if(content instanceof $J){
-        div.append(content);
+        container.append(content);
     }else if(typeof content == 'string'){
-        div.html(""+content);
+        container.html(""+content);
     }else{
         div.css('overflow',''); //clear overflow
-        var container = $J('<div/>').css('overflow','auto');
         var table = $J('<table/>');
         container.append(table);
         var insert = function(e1,e2){
@@ -1467,7 +1471,7 @@ function PopupDiv(content){
             }
         }
     }
-    div.attr('id',this.defaultId+"_"+(new Date().getTime()));
+    
     this.getFocusId = function(){
         return this.defaultId+'_focus';
     }
@@ -1490,8 +1494,28 @@ function PopupDiv(content){
     p.defaultId = 'popup_'+(new Date().getTime());
     p.focusId = p.defaultId+'_focus';
 
+    p.okButtonClass =  'component_icon button icon_ok';
+    p.cancelButtonClass = 'component_icon button icon_cancel';
     //p.wdow = p.$J(window);
     //methods:
+
+    p.addButton = function(onTop, caption, classNames, callback){
+        var $J = this.$J;
+        var div = $J($J(this.getDiv()).children()[onTop ? 0 : 2]);
+        var a = $J('<a/>').html(caption).addClass(classNames).attr('href','#').click(function(evt){callback(evt); return false;});
+        div.append(a);
+        return a;
+    },
+
+    p.addCancelButton = function(caption, removeOnClick){
+        var me = this;
+        addButton(false,caption,this.cancelButtonClass, removeOnClick ? function(){me.remove()} : function(){me.hide()});
+    },
+
+    p.addOkButton = function(caption, callbackOnClick){
+        addButton(false,caption,this.okButtonClass, callbackOnClick);
+    },
+
     p.getId = function(){
         var div = this.getDiv();
         if(!(div.attr('id'))){
@@ -1500,7 +1524,12 @@ function PopupDiv(content){
         return div.attr('id');
     };
     //p.createButtons({'ok':function...,'cancel':function,...});
-   
+   p.createButtons = function(jQueryElement){
+     var bottomDiv = this.$J(this.getDiv().children()[2]);
+     for(k in dict){
+         bottomDiv.append(this.$J('<a/>'))
+     }
+   },
 
     p.setAsPopupOf = function(invoker,removeOnBlur){
         if(!(invoker.is('a') || invoker.is('input[type=button]') || invoker.is('button') ||
@@ -1596,17 +1625,36 @@ function PopupDiv(content){
 
     p.show = function(){
         var div = this.getDiv();
+        var me = this;
 
         if(!div.parent().length){
             div.appendTo('body');
         }
-        //set the div as opacity 0 but displayable
+        //set the div invisible but displayable to calculate the size (callbackPreShow)
         div.css({
-            'visibility':'visible'
-        }).fadeTo(0,0).show();
+            'visibility':'hidden'
+        }).show();
 
         if(this.callbackPreShow){
             this.callbackPreShow();
+
+            //set all subdivs to same width. Must be done when the element is full showing
+            //apparently, even opacity is considered not fully showing
+            var subdiv = div.children();
+            consolelog(subdiv);
+            var maxw = 0;
+            var $J= me.$J;
+            var max = Math.max;
+            subdiv.each(function(i,d){
+                //consolelog(i);
+                maxw = max(maxw,$J(d).width());
+            });
+            subdiv.each(function(i,d){
+                $J(d).css('minWidth',maxw+'px');
+            });
+            $J(subdiv[1]).css('maxHeight',(div.height()-$J(subdiv[0]).outerHeight()-$J(subdiv[2]).outerHeight()-
+                ($J(subdiv[1]).outerHeight(true)-$J(subdiv[1]).height()))+'px');
+            //done
         }
 
        
@@ -1614,13 +1662,14 @@ function PopupDiv(content){
         var shadow = div.clone(true,true).empty().css({
             'backgroundColor':'#000',
             'borderColor':'#000',
+            'visibility':'visible',
             'zIndex':this.zIndex-1
         }).removeAttr('tabindex').fadeTo(0,0);
         var id = this.getId();
         shadow.attr('id',id+'_shadow'); //for use in hide
         shadow.insertAfter(div);
 
-        var me = this;
+        
         var postShowFcn = function(){
             var rect = me.getBounds.apply(me);
             shadow.css({
@@ -1628,7 +1677,10 @@ function PopupDiv(content){
                 'top':(rect.y + me.shadowOffset)+'px',
                 'width':(rect.width)+'px',
                 'height':(rect.height)+'px'
-            }).fadeTo(0,me.shadowOpacity);
+            }).fadeTo(me.defaultFadeTime,me.shadowOpacity);
+
+            
+            
             if(me.callbackPostShow){
                 me.callbackPostShow.apply(me);
             }
@@ -1637,7 +1689,7 @@ function PopupDiv(content){
         var arg1 = arguments.length && arguments[0] instanceof Function ? arguments[0] : this.defaultFadeTime;
         var arg2 = arguments.length && arguments[arguments.length-1] instanceof Function ? arguments[arguments.length-1] : undefined;
 
-        div.fadeTo(arg1,1,function(){
+        div.hide().css('visibility','visible').show(arg1,function(){
             postShowFcn();
             if(arg2){
                 arg2();

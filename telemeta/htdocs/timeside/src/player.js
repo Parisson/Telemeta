@@ -328,7 +328,8 @@ var Player = TimesideClass.extend({
             'dislay':'none',
             'position':'absolute',
             'zIndex':1000,
-            'overflow':'auto'
+            'overflow':'auto',
+            'display':'none' //TODO: remove this
             //'backgroundColor':'#666'
         });
         $J('body').append(popupMarker);
@@ -352,26 +353,25 @@ var Player = TimesideClass.extend({
     },
 
     showMarkerPopup: function(markerIndex){
-        var popup = this.getMarkerPopup();
-       // consolelog(popup.attr('id'));
-        
-        if(popup.attr('id') != 'markerpopup'+markerIndex){
-            
-            var marker = this.getMarkerMap().toArray()[markerIndex];
-            var pos = this.getSoundPosition();
-            var mPos = marker.offset;
-            var span = 0.3;
-            
-            if(pos>=mPos-span && pos<=mPos+span){
-                consolelog('songpos: '+pos+' nextmarkerpos:'+mPos);
-                popup.attr('id','markerpopup'+markerIndex);
-                popup.find('.title').html(marker.title);
-                popup.find('.description').html(marker.desc);
-                if(!popup.is(':visible')){
-                    popup.show('fast');
-                }
-            }
-        }
+//        var popup = this.getMarkerPopup();
+//
+//        if(popup.attr('id') != 'markerpopup'+markerIndex){
+//
+//            var marker = this.getMarkerMap().toArray()[markerIndex];
+//            var pos = this.getSoundPosition();
+//            var mPos = marker.offset;
+//            var span = 0.3;
+//
+//            if(pos>=mPos-span && pos<=mPos+span){
+//                consolelog('songpos: '+pos+' nextmarkerpos:'+mPos);
+//                popup.attr('id','markerpopup'+markerIndex);
+//                popup.find('.title').html(marker.title);
+//                popup.find('.description').html(marker.desc);
+//                if(!popup.is(':visible')){
+//                    popup.show('fast');
+//                }
+//            }
+//        }
     },
 
     resize: function() {
