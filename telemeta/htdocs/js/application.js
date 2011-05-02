@@ -290,7 +290,6 @@ var popup={
     },
 
     show:function(content, optionalEvent){
-        consolelog("showing popup:"+optionalEvent);
         //if showing, hide
         if(this.isShowing()){
             this.hide();
@@ -423,8 +422,6 @@ var popup={
         div.show(300, function(){ //basically in between fast (200) and slow (600)
             //position div shadow:
             divShadow.show();
-            consolelog(div.outerHeight(true)+" "+div.outerHeight(false));
-            consolelog(divShadow.outerHeight(true)+" "+divShadow.outerHeight(false));
             
             //set focus to the first input component, if any. Otherwise try with anchors, otherwise do nothing
             var inputs = $J(div).find(':input');
@@ -642,14 +639,14 @@ function PopupUtils(){
      * The workaround is quite tricky and maybe not well formed, as it uses a timeout function. However, any other implementation was trickier
      * and with potential drawbacks. Note that any subelement of dialogDiv is assigned a "focus" attribute with the current time in millisecs
      */
-//    var setAsPopup = function(dialogDiv, removeOnHide){
-//        dialogDiv.setAsPopup(removeOnHide ? function(){dialogDiv.remove();} : function(){dialogDiv.hide();});
-//    };
+    //    var setAsPopup = function(dialogDiv, removeOnHide){
+    //        dialogDiv.setAsPopup(removeOnHide ? function(){dialogDiv.remove();} : function(){dialogDiv.hide();});
+    //    };
 
     this.bindClickToPopup = function(invokerAsJQueryObj, popupContent){
-     var p = new DivDialog(popupContent);
+        var p = new DivDialog(popupContent);
         var oldShow = p.show;
-       // var pint = parseInt;
+        // var pint = parseInt;
         p.show = function(){
 
             var rect = screenRect();
@@ -659,43 +656,55 @@ function PopupUtils(){
             var spaceAbove = offs.top - rect.y;
             var spaceBelow = rect.height - height - spaceAbove;
 
-            consolelog('wHeight:'+rect.height+ ' space above: '+spaceAbove + ' spacebelow: '+spaceBelow);
+           // consolelog('wHeight:'+rect.height+ ' space above: '+spaceAbove + ' spacebelow: '+spaceBelow);
 
             if(spaceAbove>spaceBelow){
-                p.css({'maxHeight':(spaceAbove-p.shadowoffset)+'px', 'top':rect.y+'px'});
+                p.css({
+                    'maxHeight':(spaceAbove-p.shadowoffset)+'px',
+                    'top':rect.y+'px'
+                    });
             }else{
-                p.css({'maxHeight':(spaceBelow-p.shadowoffset)+'px', 'top':(offs.top+height)+'px'});
+                p.css({
+                    'maxHeight':(spaceBelow-p.shadowoffset)+'px',
+                    'top':(offs.top+height)+'px'
+                    });
             }
-            p.css({'height':'auto','width' :'auto', 'maxWidth': (rect.x+rect.width-offs.left)+'px'});
+            p.css({
+                'height':'auto',
+                'width' :'auto',
+                'maxWidth': (rect.x+rect.width-offs.left)+'px'
+                });
 
-        //consolelog("size"); consolelog(size);
-//        p.offset({
-//            left: rect.x + pint((rect.width-size.width)/2),
-//            top: rect.y + pint((rect.height-size.height)/2)
-//        });
-        //consolelog("offset"); consolelog({
-        //    left: rect.x + pint((rect.width-size.width)/2),
-        //    top: rect.y + pint((rect.height-size.height)/2)
-       // });
+            //consolelog("size"); consolelog(size);
+            //        p.offset({
+            //            left: rect.x + pint((rect.width-size.width)/2),
+            //            top: rect.y + pint((rect.height-size.height)/2)
+            //        });
+            //consolelog("offset"); consolelog({
+            //    left: rect.x + pint((rect.width-size.width)/2),
+            //    top: rect.y + pint((rect.height-size.height)/2)
+            // });
 
             oldShow.apply(p,arguments);
             p.refreshShadowPosition();
             p.setFocus();
         };
-        consolelog(invokerAsJQueryObj);
+        //consolelog(invokerAsJQueryObj);
         p.css({
             'minWidth':invokerAsJQueryObj.outerWidth()+'px',
             'left':invokerAsJQueryObj.offset().left+'px'
         });
 
-        p.setPopupFocus(function(){p.hide();});
+        p.setPopupFocus(function(){
+            p.hide();
+        });
 
         invokerAsJQueryObj.unbind('click').click(function(evt){
-           p.show();
-           return false;
+            p.show();
+            return false;
         });
-        //p.show();
-        //p.setFocus();
+    //p.show();
+    //p.setFocus();
     }
     /**
      * Shows an info dialog centered in screeen. The dialog is a DivDialog with maxwidth and maxheight equals to the half of the
@@ -713,24 +722,24 @@ function PopupUtils(){
         p.show = function(){
             oldShow.apply(p,arguments);
             var rect = screenRect();
-//        var pint = parseInt;
-//        p.css({
-//            'maxWidth':pint(rect.width/2)+'px',
-//            'maxHeight':pint(rect.height/2)+'px'
-//        });
-//consolelog("screeenrect"); consolelog(rect);
-        var size = p.size();
-        //consolelog("size"); consolelog(size);
-        p.offset({
-            left: rect.x + pint((rect.width-size.width)/2),
-            top: rect.y + pint((rect.height-size.height)/2)
-        });
-        //consolelog("offset"); consolelog({
-        //    left: rect.x + pint((rect.width-size.width)/2),
-        //    top: rect.y + pint((rect.height-size.height)/2)
-       // });
+            //        var pint = parseInt;
+            //        p.css({
+            //            'maxWidth':pint(rect.width/2)+'px',
+            //            'maxHeight':pint(rect.height/2)+'px'
+            //        });
+            //consolelog("screeenrect"); consolelog(rect);
+            var size = p.size();
+            //consolelog("size"); consolelog(size);
+            p.offset({
+                left: rect.x + pint((rect.width-size.width)/2),
+                top: rect.y + pint((rect.height-size.height)/2)
+            });
+            //consolelog("offset"); consolelog({
+            //    left: rect.x + pint((rect.width-size.width)/2),
+            //    top: rect.y + pint((rect.height-size.height)/2)
+            // });
 
-        p.refreshShadowPosition();
+            p.refreshShadowPosition();
 
         };
         var rect = screenRect();
@@ -745,9 +754,13 @@ function PopupUtils(){
                 p=null;
             },timeInMsec);
         }else if(timeInMsec == 'hide'){ //is a boolean
-            p.setPopupFocus(function(){p.hide();});
+            p.setPopupFocus(function(){
+                p.hide();
+            });
         }else if(timeInMsec == 'remove'){ //is a boolean
-            p.setPopupFocus(function(){p.remove();});
+            p.setPopupFocus(function(){
+                p.remove();
+            });
         }
         p.show();
         p.setFocus();
@@ -796,23 +809,32 @@ function DivDialog(content){
 
 
 
-//    if(invoker.is('a') || invoker.is('input[type=button]') || invoker.is('button') ||
-//    invoker.is('input[type=submit]')){
-//        var w = invoker.outerWidth();
-//        popup.css({'minWidth':w+'px'});
-//        this.show = show1();
-//    }else{
-//
-//    }
+    //    if(invoker.is('a') || invoker.is('input[type=button]') || invoker.is('button') ||
+    //    invoker.is('input[type=submit]')){
+    //        var w = invoker.outerWidth();
+    //        popup.css({'minWidth':w+'px'});
+    //        this.show = show1();
+    //    }else{
+    //
+    //    }
 
     this.maxSize = function(size){
-        popup.css({'maxHeight':size.height,'maxWidth':size.width});
-        popupContent.css({'maxHeight':size.height-(popup.outerHeight()-popup.height()),'maxWidth':size.width-(popup.outerWidth()-popup.width())});
+        popup.css({
+            'maxHeight':size.height,
+            'maxWidth':size.width
+            });
+        popupContent.css({
+            'maxHeight':size.height-(popup.outerHeight()-popup.height()),
+            'maxWidth':size.width-(popup.outerWidth()-popup.width())
+            });
     };
     this.minsize = function(size){
-        popup.css({'minHeight':size.height,'minWidth':size.width});
+        popup.css({
+            'minHeight':size.height,
+            'minWidth':size.width
+            });
     };
-     this.offset = function(){
+    this.offset = function(){
         var ret = popup.offset.apply(popup,arguments);
         //refreshPosition();
         return me;
@@ -899,8 +921,8 @@ function DivDialog(content){
                     }
                 }
                 arg = [a];
-//                consolelog('css');
-//                consolelog(arg);
+            //                consolelog('css');
+            //                consolelog(arg);
             }
         }else{
             return me;
@@ -912,17 +934,17 @@ function DivDialog(content){
 
 
 
-//    this.bindAsPopupFor = function(jQueryAnchorElement){
-//        if(!jQueryAnchorElement.attr('id')){
-//            jQueryAnchorElement.attr('id','popup_'+new Date().getTime());
-//        }
-//        var id = jQueryAnchorElement.attr('id');
-//
-//        anchorElement.click(function(){
-//
-//        })
-//
-//    }
+    //    this.bindAsPopupFor = function(jQueryAnchorElement){
+    //        if(!jQueryAnchorElement.attr('id')){
+    //            jQueryAnchorElement.attr('id','popup_'+new Date().getTime());
+    //        }
+    //        var id = jQueryAnchorElement.attr('id');
+    //
+    //        anchorElement.click(function(){
+    //
+    //        })
+    //
+    //    }
    
     this.setPopupFocus = function(callbackOnFocusLost){
         
@@ -946,7 +968,7 @@ function DivDialog(content){
                 //otherwise execute callback
                 setTimeout(function(){
                     var v = document.activeElement;
-                    consolelog(v);
+                   // consolelog(v);
                     if(v && $J(v).attr(focusid)){
                         return;
                     }
@@ -980,3 +1002,832 @@ function DivDialog(content){
 }
 
 
+
+
+
+//var PopupManager={
+//
+//    //default properties:
+//    $J: jQuery,
+//    shadowOpacity: 0.4,
+//    shadowOffset: 5,
+//    zIndex: 1000,
+//    infoDialogMaxSizeInWindowPercent: 0.5,
+//    defaultClasses: 'control component',
+//    createPopupDiv: function(content){
+//        var $J = this.$J;
+//        var wdw = $J(window);
+//        var div  = $J('<div/>').addClass(this.defaultClasses).css({
+//            'position':'absolute',
+//            'zIndex':this.zIndex,
+//            'visibility':'hidden',
+//            'left':wdw.scrollLeft()+'px',
+//            'top':wdw.scrollTop()+'px',
+//            'overflow':'auto',
+//            'padding':'1ex'
+//        });
+//        div.appendTo('body'); //necessary to properly display the div size
+//        if(content instanceof $J){
+//            div.append(content);
+//        }else if(typeof content == 'string'){
+//            div.html(""+content);
+//        }else{
+//            div.css('overflow',''); //clear overflow
+//            var container = $J('<div/>').css('overflow','auto');
+//            var table = $J('<table/>');
+//            container.append(table);
+//            var insert = function(e1,e2){
+//                var t1 = $J('<td/>');
+//                var t2 = $J('<td/>');
+//                if(e1){
+//                    t1.append(e1);
+//                }
+//                if(e2){
+//                    t2.append(e2);
+//                }
+//                table.append($J('<tr/>').append(t1).append(t2));
+//            }
+//            var title, component;
+//            for(var k in content){
+//                var val = content[k];
+//                if(val instanceof Function){
+//                    component = $J('<a/>').html(k).attr('href','#').click(function(evt){
+//                        val();
+//                        return false;
+//                    });
+//                    insert(component);
+//                }else if(typeof val == 'string' || typeof val == 'number'){
+//                    title = $J('<span/>').html(k);
+//                    component = $('<input/>').attr('type','text').val(val).attr('name',k);
+//                    insert(title,component);
+//                }else if(val === true || val === false){
+//                    title = $J('<span/>').html(k);
+//                    component = $('<input/>').attr('type','checkbox').attr('name',k);
+//                    if(val){
+//                        component.attr('checked','checked');
+//                    }else{
+//                        component.removeAttr('checked');
+//                    }
+//                    insert(title,component);
+//                }
+//            }
+//        }
+//        this.getId(div); //actually, sets an id (see below)
+//        return div;
+//    },
+//
+//    showInfoDialog: function(content, timeInMSec){
+//        var remove = this.remove;
+//        var popup = this.createPopupDiv(content)
+//        this.setBounds(popup,this.infoDialogMaxSizeInWindowPercent);
+//        if(timeInMSec){
+//            this.show(popup, function(){
+//                setTimeout(function(){
+//                    remove(content)
+//                    },timeInMSec);
+//            })
+//        }else{
+//            var focus = this.setPopupBehaviourAndReturnFocusElement(popup, true); //remove on hide
+//            this.show(popup);
+//            focus.focus();
+//        }
+//    },
+//
+//    getId: function(div){
+//        if(!(div.attr('id'))){
+//            div.attr('id','popup_'+(new Date().getTime()));
+//        }
+//        return div.attr('id');
+//    },
+//    /**
+//     * sets dialogDiv (a jQuery object or a DivDialog, see below) as popup mode. In other words,
+//     * scans each sub-element of dialogDiv and assigns to it a onblur event: when the subselemnt looses the focus and the focus
+//     * is NOT given to another dialogDiv subelement, hides or removes (depending on removeOnHide param) dialogDiv.
+//     * The workaround is quite tricky and maybe not well formed, as it uses a timeout function. However, any other implementation was trickier
+//     * and with potential drawbacks. Note that any subelement of dialogDiv is assigned a "focus" attribute with the current time in millisecs
+//     */
+//    bindPopupClick: function(invoker, popupDiv, removeOnBlur){
+//        if(invoker.is('a') || invoker.is('input[type=button]') || invoker.is('button') ||
+//            invoker.is('input[type=submit]')){
+//            var $J = this.$J;
+//            var focusElm = this.setPopupBehaviourAndReturnFocusElement(popupDiv, removeOnBlur ? this.remove(popupDiv) : this.hide(popupDiv));
+//            var id = this.getId(popupDiv);
+//            var me = this;
+//            invoker.unbind('click').bind('click',function(evt){
+//                var pup = $J('#'+id); //dont do anything if the popup is already visible
+//                if(pup.length && pup.is(':visible')){
+//                    focusElm.focus();
+//                    return false;
+//                }
+////                me.setBounds.apply(me, [popupDiv,invoker]);
+////                me.show.apply(me,[popupDiv, function(){focusElm.focus();}]);
+//                me.show.apply(me,[popupDiv, function(){me.setBounds.apply(me, [popupDiv,invoker]);focusElm.focus();}]);
+//                return false;
+//            });
+//        }
+//    },
+//
+//    //binds every child of popup that is focusable to a blur event
+//    //TODO: TEST IT WITH OTHER BROWSERS!!!! if not working, manda tutto affanculo and use click events
+//    setPopupBehaviourAndReturnFocusElement: function(popup, callbackOnBlur){
+//        popup.attr('tabindex',0);
+//        var $J = this.$J;
+//        var elementsWithFocus = $J(popup).find('textarea,a,input');
+//        var doc = document;
+//        var ret = elementsWithFocus.length ? $J(elementsWithFocus[0]) : popup;
+//        elementsWithFocus = elementsWithFocus.add(popup);
+//        //build the attribute focus to recognize subelement of popup
+//        var focusid = 'popupfocus'+(new Date().getTime());
+//        var me = this;
+//        //bind the blur to each focusable element:
+//        elementsWithFocus.each(function(i,e){
+//            var ee = $J(e);
+//            ee.attr(focusid,'true');
+//            ee.attr('tabindex',i+1);
+//            ee.blur(function(){
+//                //wait 250msec to see if the focus has been given to another popup focusable element: if yes, do nothing
+//                //otherwise execute callback
+//                setTimeout(function(){
+//                    var v = doc.activeElement;
+//                    //consolelog(v);
+//                    if(v && $J(v).attr(focusid)){
+//                        return;
+//                    }
+//                    if(callbackOnBlur){
+//                        me.hide.apply(me,[popup,callbackOnBlur]);
+//                    }else{
+//                        me.hide.apply(me,[popup]);
+//                    }
+//                },200)
+//            }); //set here another time delay. 300 seems to be the good compromise between visual hide and safetiness that
+//        //meanwhile the focus has already been given to the next component
+//        });
+//        return ret;
+//    },
+//
+//
+//    hideAllPopups: function(){
+//        this.hide(this.$J('div[name^="popup_"]'));
+//    },
+//
+//    //show(div, argumentsAsInJQueryShow)
+//    //creates a shwdow and shows div and shadow
+//    show: function(){
+//        var div = arguments[0];
+//        div.css({
+//            'display':'none',
+//            'visibility':'visible'
+//        });
+//        var body = this.$J('body');
+//        if(!div.parent().length){
+//            div.appendTo('body');
+//        }
+//        //TODO: avoid clone and empty?
+//        var shadow = div.clone(true,true).empty().css({
+//            'backgroundColor':'#000',
+//            'borderColor':'#000',
+//            'zIndex':this.zIndex-1
+//            }).removeAttr('tabindex').fadeTo(0,this.shadowOpacity);
+//        var id = this.getId(div);
+//        shadow.attr('id',id+'_shadow'); //for use in hide
+//        body.append(shadow);
+//
+//        var both = div.add(shadow);
+//
+//        var me = this;
+//        var placeShadow = function(){
+//            var rect = me.getBounds.apply(me,[div]);
+//            shadow.css({
+//                'left':(rect.x + me.shadowOffset)+'px',
+//                'top':(rect.y + me.shadowOffset)+'px',
+//                'width':(rect.width)+'px',
+//                'height':(rect.height)+'px'
+//            });
+//        }
+//        //calling show with the specified arguments:
+//        var args = [];
+//        for(var i=1; i<arguments.length; i++){
+//            args.push(arguments[i]);
+//        }
+//        if(args.length==0 || !(args[args.length-1] instanceof Function)){
+//            args.push(placeShadow);
+//        }else{
+//            var fcn = args[args.length-1];
+//            args[args.length-1] = function(){
+//                placeShadow();
+//                fcn();
+//            }
+//        }
+//        both.show.apply(both,args);
+//    },
+//
+//    //hide(div, argumentsAsInJQueryShow)
+//    hide: function(){
+//        var $J = this.$J;
+//        var div = arguments[0];
+//        var shadow = $J([]);
+//        $J.each(div, function(i,e){
+//            shadow = shadow.add($J('#'+$J(e).attr('id')+'_shadow'));
+//        });
+//        var both = div.add(shadow);
+//        //calling hide with the specified arguments:
+//        var removeShadow = new function(){
+//            shadow.remove();
+//        };
+//        var args = [];
+//        for(var i=1; i<arguments.length; i++){
+//            args.push(arguments[i]);
+//        }
+//        if(args.length<1 || !(args[args.length-1] instanceof Function)){
+//            args.push(removeShadow);
+//        }else{
+//            var f = args[args.length-1];
+//            var newf = function(){
+//                removeShadow();
+//                f();
+//            }
+//            args[args.length-1] = newf;
+//        }
+//        both.hide.apply(both, args);
+//    },
+//
+//    remove: function(div){
+//        var shadow = $J('#'+div.attr('id')+'_shadow');
+//        var both = div.add(shadow);
+//        both.remove();
+//    },
+//
+//    setMaxSize: function(div, size){
+//        this.convertSize(div, size);
+//        var css = {};
+//        if('width' in size){
+//            css.maxWidth = size.width+'px';
+//        }
+//        if('height' in size){
+//            css.maxHeight = size.height+'px';
+//        }
+//        if(css){
+//            div.css(css);
+//        }
+//        return size;
+//    },
+//    setMinSize: function(div, size){
+//        this.convertSize(div, size);
+//        var css = {};
+//        if('width' in size){
+//            css.minWidth = size.width+'px';
+//        }
+//        if('height' in size){
+//            css.minHeight = size.height+'px';
+//        }
+//        if(css){
+//            div.css(css);
+//        }
+//        return size;
+//    },
+//    //div must be display!=hidden. size is a dict with at least one of the fields 'width' and 'height'
+//    convertSize: function(div, size){
+//        var eD = {
+//            'width': div.outerWidth(true)-div.width(),
+//            'height':div.outerHeight(true)-div.height()
+//            };
+//        if('width' in size){
+//            size.width -= (eD.width + this.shadowOffset);
+//        }
+//        if('height' in size){
+//            size.height -= (eD.height + this.shadowOffset);
+//        }
+//    },
+//
+//    setSize: function(div, size){ //does it works like that?
+//        this.setMaxSize(div, size);
+//        this.setMinSize(div, size);
+//    },
+//
+//    offset: function(div, offs){
+//        //if offs is a jquery element, size it as a popup.
+//        div.offset(offs);
+//    },
+//
+//    //div must be display!=hidden
+//    centerInParent: function(div, parent, maxPercentageSize){
+//        var bounds = this.getBounds(parent);
+//        var x=bounds.x;
+//        var y = bounds.y;
+//        var w = bounds.width
+//        var h = bounds.height;
+//        var pInt = parseInt;
+//        if(maxPercentageSize){
+//            this.setMaxSize(div,{
+//                'width':pInt(w*maxPercentageSize),
+//                'height':pInt(h*maxPercentageSize)
+//                });
+//        }
+//        var offs = {
+//            'left':x+pInt((w-div.outerWidth())/2),
+//            'top':y+pInt((h-div.outerHeight())/2)
+//            };
+//        div.offset(offs);
+//    },
+//    //setBounds(div, invokerAsjQueryElement): sets the maxsize, minwidth and offset relative ot invokerAs...
+//    //setBounds(div, 0.5) sets the maxsize and the offset relative to the window
+//    setBounds: function(popupDiv, argument){
+//        if(typeof invokerAsJQueryObj == 'number'){
+//            this.centerInParent(popupDiv, this.$J(window), argument);
+//            return;
+//        }
+//        var popupOffset = {
+//            'left':argument.offset().left,
+//            'top':0
+//        };
+//        var windowRectangle = this.getBounds(); //returns the window rectangle
+//        var invokerOffset = argument.offset();
+//        var invokerOuterHeight = argument.outerHeight();
+//
+//        var spaceAbove = invokerOffset.top - windowRectangle.y;
+//        var spaceBelow = windowRectangle.height - invokerOuterHeight - spaceAbove;
+//
+//        // consolelog('wHeight:'+rect.height+ ' space above: '+spaceAbove + ' spacebelow: '+spaceBelow);
+//
+//        var popupMaxSize={
+//            height:0,
+//            width:(windowRectangle.x+windowRectangle.width-invokerOffset.left)
+//        };
+//        if(spaceAbove>spaceBelow){
+//            popupMaxSize.height = (spaceAbove-popupDiv.shadowoffset);
+//            popupOffset.top = invokerOffset.top - popupDiv.outerHeight(true);
+//
+//        //p.css({'maxHeight':(spaceAbove-p.shadowoffset)+'px', 'top':rect.y+'px'});
+//        }else{
+//            popupMaxSize.height =(spaceBelow-popupDiv.shadowoffset);
+//            popupOffset.top = (invokerOffset.top+invokerOuterHeight);
+//        //p.css({'maxHeight':(spaceBelow-p.shadowoffset)+'px', 'top':(offs.top+height)+'px'});
+//        }
+//        this.setMaxSize(popupDiv, popupMaxSize);
+//        this.setMinSize(popupDiv, {
+//            width: argument.outerWidth()
+//            });
+//        this.offset(popupDiv, popupOffset);
+//
+//        consolelog('maxSize');
+//        consolelog(popupMaxSize);
+//        consolelog('minWidth');
+//        consolelog(argument.outerWidth());
+//        consolelog('offset');
+//        consolelog(popupOffset);
+//        consolelog('maxWidth: '+popupDiv.css('maxWidth')+' maxHeight: '+popupDiv.css('maxHeight')+
+//        ' width: '+popupDiv.css('width')+' height: '+popupDiv.css('height')+' left '+popupDiv.css('left')+' top '+popupDiv.css('top'));
+//    },
+//    //returns a dictionary with x,y,width and height keys representing the
+//    //rectangle where jQueryElement lies. width and height are jQuery.width() and jQuery.height() respectively
+//    //if jQueryElement is missing, jQuery(window) is used
+//    //jQueryElement must be display!=none
+//    getBounds: function(jQueryElement){
+//        var ret = {
+//            x:0,
+//            y:0,
+//            width:0,
+//            height:0
+//        };
+//        if(!jQueryElement){
+//            jQueryElement = this.$J(window);
+//        }
+//        if(jQueryElement[0] === window){
+//            ret.x = jQueryElement.scrollLeft();
+//            ret.y = jQueryElement.scrollTop();
+//        }else{
+//            var offs = jQueryElement.offset();
+//            ret.x = offs.left;
+//            ret.y = offs.top;
+//        }
+//        ret.width = jQueryElement.width();
+//        ret.height = jQueryElement.height();
+//        return ret;
+//    }
+//
+//
+//};
+
+function PopupDiv(content){
+    var $J = this.$J;
+    //var wdw = $J(window);
+    var div  = $J('<div/>').addClass(this.defaultClasses).css({
+        'position':'absolute',
+        'zIndex':this.zIndex,
+//        'display':'none',
+//        'left':wdw.scrollLeft()+'px',
+//        'top':wdw.scrollTop()+'px',
+        'overflow':'auto',
+        'padding':'1ex',
+        'border':'1px solid #666'
+    });
+    //div.appendTo('body'); //necessary to properly display the div size
+    if(content instanceof $J){
+        div.append(content);
+    }else if(typeof content == 'string'){
+        div.html(""+content);
+    }else{
+        div.css('overflow',''); //clear overflow
+        var container = $J('<div/>').css('overflow','auto');
+        var table = $J('<table/>');
+        container.append(table);
+        var insert = function(e1,e2){
+            var t1 = $J('<td/>');
+            var t2 = $J('<td/>');
+            if(e1){
+                t1.append(e1);
+            }
+            if(e2){
+                t2.append(e2);
+            }
+            table.append($J('<tr/>').append(t1).append(t2));
+        }
+        var title, component;
+        for(var k in content){
+            var val = content[k];
+            if(val instanceof Function){
+                component = $J('<a/>').html(k).attr('href','#').click(function(evt){
+                    val();
+                    return false;
+                });
+                insert(component);
+            }else if(typeof val == 'string' || typeof val == 'number'){
+                title = $J('<span/>').html(k);
+                component = $('<input/>').attr('type','text').val(val).attr('name',k);
+                insert(title,component);
+            }else if(val === true || val === false){
+                title = $J('<span/>').html(k);
+                component = $('<input/>').attr('type','checkbox').attr('name',k);
+                if(val){
+                    component.attr('checked','checked');
+                }else{
+                    component.removeAttr('checked');
+                }
+                insert(title,component);
+            }
+        }
+    }
+    div.attr('id',this.defaultId+"_"+(new Date().getTime()));
+    this.getFocusId = function(){
+        return this.defaultId+'_focus';
+    }
+    this.getDiv = function(){
+        return div;
+    }
+    
+    this.callbackPreShow = null;
+    this.callbackPostShow = null;
+}
+(function(p){
+    //populating the prototype:
+    //properties:
+    p.defaultFadeTime='fast',
+    p.$J = jQuery;
+    p.shadowOpacity = 0.4;
+    p.shadowOffset = 5;
+    p.zIndex = 1000;
+    p.defaultClasses = 'control component';
+    p.defaultId = 'popup_'+(new Date().getTime());
+    p.focusId = p.defaultId+'_focus';
+
+    //p.wdow = p.$J(window);
+    //methods:
+    p.getId = function(){
+        var div = this.getDiv();
+        if(!(div.attr('id'))){
+            div.attr('id',this.defaultId+'_'+(new Date().getTime()));
+        }
+        return div.attr('id');
+    };
+    //p.createButtons({'ok':function...,'cancel':function,...});
+   
+
+    p.setAsPopupOf = function(invoker,removeOnBlur){
+        if(!(invoker.is('a') || invoker.is('input[type=button]') || invoker.is('button') ||
+            invoker.is('input[type=submit]'))){
+            return;
+        }
+        invoker.attr('tabindex',0).attr(this.focusId,'true');
+        //invoker.attr(this.getFocusId(),'true');
+        var me =this;
+        this.callbackPreShow = function(){
+            me.setBounds.apply(me,[invoker]);
+        };
+        this.callbackPostShow = function(){
+            var fcn = removeOnBlur ? me.remove : me.hide;
+            me.setFocusable.apply(me,[function(){
+                fcn.apply(me);
+            }]);
+            var elm = me.getFirstFocusableElement();
+            elm.focus();
+        };
+
+        var popupDiv = this.getDiv();
+        invoker.unbind('click').bind('click',function(evt){
+            if(popupDiv.length && popupDiv.is(':visible')){
+                me.getFirstFocusableElement().focus();
+                return false;
+            }
+            //                me.setBounds.apply(me, [popupDiv,invoker]);
+            //                me.show.apply(me,[popupDiv, function(){focusElm.focus();}]);
+            me.show.apply(me);
+            return false;
+        });
+    };
+
+    p.setAsWindowDialog = function(timeInMsec, windowPercentSize){
+
+        var me =this;
+        this.callbackPreShow = function(){
+            me.setBounds.apply(me,[windowPercentSize]);
+        }
+
+        if(timeInMsec){
+            this.callbackPostShow = function(){
+                setTimeout(timeInMsec, function(){
+                    me.remove.apply(me);
+                });
+            }
+        }else{
+            this.callbackPostShow = function(){
+                var elm = me.setFocusable.apply(me,function(){
+                    me.remove.apply(me);
+                });
+                elm.focus();
+            };
+        }
+    };
+    p.setFocusable = function(callbackOnBlur){
+        var popup = this.getDiv();
+        popup.attr('tabindex',0);
+        var $J = this.$J;
+        var elementsWithFocus = $J(popup).find('textarea,a,input');
+        var doc = document;
+        var ret = elementsWithFocus.length ? $J(elementsWithFocus[0]) : popup;
+        elementsWithFocus = elementsWithFocus.add(popup);
+        //build the attribute focus to recognize subelement of popup
+        var focusid =this.focusId;
+    
+        //bind the blur to each focusable element:
+        elementsWithFocus.each(function(i,e){
+            var ee = $J(e);
+            ee.removeAttr(focusid).attr(focusid,'true'); //makes sense?
+            ee.attr('tabindex',i+1);
+            ee.unbind('blur').blur(function(){
+                //wait 250msec to see if the focus has been given to another popup focusable element: if yes, do nothing
+                //otherwise execute callback
+                setTimeout(function(){
+                    var v = doc.activeElement;
+                    //consolelog(v);
+                    if(v && $J(v).attr(focusid)){
+                        return;
+                    }
+                    if(callbackOnBlur){
+                        callbackOnBlur();
+                    }
+                },200)
+            }); //set here another time delay. 300 seems to be the good compromise between visual hide and safetiness that
+        //meanwhile the focus has already been given to the next component
+        });
+        this.getFirstFocusableElement = function(){
+            return ret;
+        }
+    };
+
+    p.show = function(){
+        var div = this.getDiv();
+
+        if(!div.parent().length){
+            div.appendTo('body');
+        }
+        //set the div as opacity 0 but displayable
+        div.css({
+            'visibility':'visible'
+        }).fadeTo(0,0).show();
+
+        if(this.callbackPreShow){
+            this.callbackPreShow();
+        }
+
+       
+        //TODO: avoid clone and empty?
+        var shadow = div.clone(true,true).empty().css({
+            'backgroundColor':'#000',
+            'borderColor':'#000',
+            'zIndex':this.zIndex-1
+        }).removeAttr('tabindex').fadeTo(0,0);
+        var id = this.getId();
+        shadow.attr('id',id+'_shadow'); //for use in hide
+        shadow.insertAfter(div);
+
+        var me = this;
+        var postShowFcn = function(){
+            var rect = me.getBounds.apply(me);
+            shadow.css({
+                'left':(rect.x + me.shadowOffset)+'px',
+                'top':(rect.y + me.shadowOffset)+'px',
+                'width':(rect.width)+'px',
+                'height':(rect.height)+'px'
+            }).fadeTo(0,me.shadowOpacity);
+            if(me.callbackPostShow){
+                me.callbackPostShow.apply(me);
+            }
+        }
+
+        var arg1 = arguments.length && arguments[0] instanceof Function ? arguments[0] : this.defaultFadeTime;
+        var arg2 = arguments.length && arguments[arguments.length-1] instanceof Function ? arguments[arguments.length-1] : undefined;
+
+        div.fadeTo(arg1,1,function(){
+            postShowFcn();
+            if(arg2){
+                arg2();
+            }
+        });
+    };
+    //setBounds(0.5)
+    //setBounds(jQueryDisplayedElement)
+    p.setBounds = function(arg){
+        if(typeof arg == ' number'){
+            this.centerIn(this.$J(window), arg);
+            return;
+        }
+        var invoker = arg;
+        var popupDiv = this.getDiv();
+
+        var popupOffset = {
+            'left':invoker.offset().left,
+            'top':0
+        };
+        var windowRectangle = this.getBoundsOf(this.$J(window)); //returns the window rectangle
+        var invokerOffset = invoker.offset();
+        var invokerOuterHeight = invoker.outerHeight();
+
+        var spaceAbove = invokerOffset.top - windowRectangle.y;
+        var spaceBelow = windowRectangle.height - invokerOuterHeight - spaceAbove;
+
+        var popupMaxSize={
+            height:0,
+            width:(windowRectangle.x+windowRectangle.width-invokerOffset.left)
+        };
+        if(spaceAbove>spaceBelow){
+            popupMaxSize.height = spaceAbove;
+            popupOffset.top = invokerOffset.top - Math.min(spaceAbove, popupDiv.outerHeight(true));
+
+        //p.css({'maxHeight':(spaceAbove-p.shadowoffset)+'px', 'top':rect.y+'px'});
+        }else{
+            popupMaxSize.height = Math.min(spaceBelow, popupDiv.outerHeight(true));
+            popupOffset.top = (invokerOffset.top+invokerOuterHeight);
+        //p.css({'maxHeight':(spaceBelow-p.shadowoffset)+'px', 'top':(offs.top+height)+'px'});
+        }
+        this.setMaxSize(popupMaxSize);
+        this.setMinSize({
+            width: invoker.outerWidth()
+        });
+        this.offset(popupOffset);
+
+        consolelog('maxSize:');
+        consolelog(popupMaxSize);
+        consolelog('minWidth:'+ invoker.outerWidth());
+        consolelog('offset:');
+        consolelog(popupOffset);
+        consolelog('maxWidth: '+popupDiv.css('maxWidth')+' maxHeight: '+popupDiv.css('maxHeight')+
+            ' width: '+popupDiv.css('width')+' height: '+popupDiv.css('height')+' left '+popupDiv.css('left')+' top '+popupDiv.css('top'));
+    };
+
+    p.centerIn = function(parent, maxPercentageSize){
+        var div = this.getDiv();
+        var bounds = this._getBounds(parent);
+        var x=bounds.x;
+        var y = bounds.y;
+        var w = bounds.width
+        var h = bounds.height;
+        var pInt = parseInt;
+        if(maxPercentageSize){
+            this.setMaxSize(div,{
+                'width':pInt(w*maxPercentageSize),
+                'height':pInt(h*maxPercentageSize)
+            });
+        }
+        var offs = {
+            'left':x+pInt((w-div.outerWidth())/2),
+            'top':y+pInt((h-div.outerHeight())/2)
+        };
+        div.offset(offs);
+    };
+    p.getBounds = function(){
+        return this.getBoundsOf(this.getDiv());
+    },
+    //TODO: change argument
+    p.getBoundsOf = function(jQueryElement){
+        var ret = {
+            x:0,
+            y:0,
+            width:0,
+            height:0
+        };
+        if(!jQueryElement){
+            jQueryElement = this.$J(window);
+        }
+        if(jQueryElement[0] === window){
+            ret.x = jQueryElement.scrollLeft();
+            ret.y = jQueryElement.scrollTop();
+        }else{
+            var offs = jQueryElement.offset();
+            ret.x = offs.left;
+            ret.y = offs.top;
+        }
+        ret.width = jQueryElement.width();
+        ret.height = jQueryElement.height();
+        return ret;
+    }
+
+    p.setMaxSize = function(size){
+        var div = this.getDiv();
+        this._convertSize(div, size);
+        var css = {};
+        if('width' in size){
+            css.maxWidth = size.width+'px';
+        }
+        if('height' in size){
+            css.maxHeight = size.height+'px';
+        }
+        if(css){
+            div.css(css);
+        }
+        return size;
+    };
+    p.setMinSize = function(size){
+        var div = this.getDiv();
+        this._convertSize(div, size);
+        var css = {};
+        if('width' in size){
+            css.minWidth = size.width+'px';
+        }
+        if('height' in size){
+            css.minHeight = size.height+'px';
+        }
+        if(css){
+            div.css(css);
+        }
+        return size;
+    },
+    //div must be display!=hidden. size is a dict with at least one of the fields 'width' and 'height'
+    p._convertSize = function(div, size){
+        var eD = {
+            'width': div.outerWidth(true)-div.width(),
+            'height':div.outerHeight(true)-div.height()
+        };
+        if('width' in size){
+            size.width -= (eD.width + this.shadowOffset);
+        }
+        if('height' in size){
+            size.height -= (eD.height + this.shadowOffset);
+        }
+    },
+
+    p.setSize = function(div, size){ //does it works like that?
+        this.setMaxSize(div, size);
+        this.setMinSize(div, size);
+    };
+
+    p.offset = function(offs){
+        //if offs is a jquery element, size it as a popup.
+        this.getDiv().offset(offs);
+    };
+
+    p.hide = function(){
+        var div = this.getDiv();
+        var $J = this.$J;
+        var shadow = $J([]);
+        $J.each(div, function(i,e){
+            shadow = shadow.add($J('#'+$J(e).attr('id')+'_shadow'));
+        });
+        var both = div.add(shadow);
+        //calling hide with the specified arguments:
+        var removeShadow = new function(){
+            shadow.remove();
+        };
+        var args = [];
+        for(var i=1; i<arguments.length; i++){
+            args.push(arguments[i]);
+        }
+        if(args.length<1 || !(args[args.length-1] instanceof Function)){
+            args.push(removeShadow);
+        }else{
+            var f = args[args.length-1];
+            var newf = function(){
+                removeShadow();
+                f();
+            }
+            args[args.length-1] = newf;
+        }
+        both.hide.apply(both, args);
+    };
+
+    p.remove = function(){
+        var div = this.getDiv();
+        var shadow = $J('#'+div.attr('id')+'_shadow');
+        var both = div.add(shadow);
+        both.remove();
+    };
+})(PopupDiv.prototype);
