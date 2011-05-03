@@ -6,7 +6,7 @@
 
 {% if collection %}
 {% block title %}
-    Collection: {{ collection }}
+<h1>Collection: {{ collection }}</h1>
 {% endblock %}
 {% block title_buttons %}
     <a class="component_icon button icon_previous" href="{% url telemeta-collection-detail collection.public_id %}">{% trans "Normal View" %}</a>
