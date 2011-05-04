@@ -1015,6 +1015,12 @@ class WebView(object):
         if elements:
             element = elements[0].to_dict()
             tags = element.keys()
+            # code and title on the two first column
+            tags.remove('code')
+            tags.remove('title')
+            tags.sort()
+            tags.insert(0, 'title')
+            tags.insert(0, 'code')
             writer.writerow(tags)
             
             for element in elements:
@@ -1077,7 +1083,7 @@ class WebView(object):
     def not_allowed(self, request,  public_id = None):
         mess = ugettext('Access not allowed') 
         title = public_id + ' : ' + mess
-        description = 'Please login or contact the website administator to get admin or private access.'
+        description = ugettext('Please login or contact the website administator to get admin or private access.')
         messages.error(request, title)
         return render(request, 'telemeta/messages.html', {'description' : description})
     
