@@ -53,9 +53,11 @@
         {% if collection.has_mediafile %}
         <div id="rightcol">
             <div id="collection_player">
-              <p><b>Listen to this collection</b>
+             <div class="title">
+              <h3><b>Listen to this collection</b>
               (<a href="{% url telemeta-collection-m3u collection.public_id %}">M3U</a>,
-              <a href="{% url telemeta-collection-xspf collection.public_id %}">XSPF</a>)</p>
+              <a href="{% url telemeta-collection-xspf collection.public_id %}">XSPF</a>)</h3>
+             </div>
                 <!-- This is Jeroen Wijering's Flash MP3 Player, 
                   under CC Attribution-NonCommercial-ShareAlike 2.0 license
                   from: http://www.jeroenwijering.com/?item=Flash_MP3_Player-->
