@@ -96,17 +96,29 @@
 <div id="footer">
 {% block footer %}
  <hr />
- <a id="telemeta_powered" href="{% telemeta_url %}"><img src="{% url telemeta-images "logo_mini_2.png" %}" height="30" width="93"
+ <table width="100%">
+  <tr>
+   <td>
+    <a id="telemeta_powered" href="{% telemeta_url %}"><img src="{% url telemeta-images "logo_mini_2.png" %}" height="30" width="93"
    alt="Telemeta Powered"/></a>
- <p class="left">
-  {% trans "Powered by" %} <a href="{% telemeta_url %}"><strong>Telemeta {% telemeta_version %}</strong></a><br />
-  {% trans "By" %} <a href="http://www.parisson.com/">Parisson</a> &amp; <a href="http://www.samalyse.com/">Samalyse</a>.
- </p>
-
- <p class="right">
-  Copyright &copy; 2011 Parisson<br />
-  <a href="{% url telemeta-flatpage "legal_notices" %}">{% trans "Legal notices" %}</a>
- </p>
+    <p class="left">
+    {% trans "Powered by" %} <a href="{% telemeta_url %}"><strong>Telemeta {% telemeta_version %}</strong></a><br />
+    {% trans "By" %} <a href="http://www.parisson.com/">Parisson</a> &amp; <a href="http://www.samalyse.com/">Samalyse</a>.
+    </p>
+   </td>
+   <td>
+    <p class="center">
+    {% trans "Usage of the archives in the respect of cultural heritage of the original communities." %}
+    </p>
+   </td>
+   <td>
+    <p class="right">
+    Copyright &copy; 2011 Parisson<br />
+    <a href="{% url telemeta-flatpage "legal_notices" %}">{% trans "Legal notices" %}</a>
+    </p>
+   </td>
+  </tr>
+ </table>
 {% endblock %}
 </div>
 </div>

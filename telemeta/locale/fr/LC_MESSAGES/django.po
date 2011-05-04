@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-04 17:38+0200\n"
+"POT-Creation-Date: 2011-05-04 17:58+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Olivier Guilyardi <olivier samalyse com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -591,15 +591,21 @@ msgstr "Recherche avancée"
 msgid "Admin"
 msgstr "Admin"
 
-#: templates/telemeta_default/base.html:102
+#: templates/telemeta_default/base.html:105
 msgid "Powered by"
 msgstr "Propulsé par"
 
-#: templates/telemeta_default/base.html:103
+#: templates/telemeta_default/base.html:106
 msgid "By"
 msgstr "Par"
 
-#: templates/telemeta_default/base.html:108
+#: templates/telemeta_default/base.html:111
+msgid ""
+"Usage of the archives in the respect of cultural heritage of the original "
+"communities."
+msgstr "Usage des archives réservé dans le respect du patrimoine culturel des communautés d'origine."
+
+#: templates/telemeta_default/base.html:117
 #: templates/telemeta_default/collection_detail.html:111
 #: templates/telemeta_default/collection_detail_new.html:116
 msgid "Legal notices"
