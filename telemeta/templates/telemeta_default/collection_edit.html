@@ -10,8 +10,9 @@
 {% endblock %}
 
 {% block infos %}
-        <div class="infos">
-        <form method="POST" id="_editCollectionForm" action="">{% csrf_token %}
+     <div class="infos">
+      <form method="POST" id="_editCollectionForm" action="">{% csrf_token %}
+      <ul>{% for error in form.non_field_errors %}<li class="error">{{ error }}</li>{% endfor %}</ul>
        <table>
        {% for field in form %}
         {% if not field.html_name == "copied_from_item" %}
@@ -27,6 +28,6 @@
          <a href="#" class="component_icon button icon_save"
    onclick="document.getElementById('_editCollectionForm').submit(); return false;">{% trans "Save" %}</a>
         </div>
-        </form>
-        </div>
+      </form>
+     </div>
 {% endblock infos%}

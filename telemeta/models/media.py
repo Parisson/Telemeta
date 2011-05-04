@@ -35,14 +35,16 @@
 
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
+from django.core.exceptions import ValidationError
 from telemeta.models.core import *
 from telemeta.models.enum import ContextKeyword
 from telemeta.util.unaccent import unaccent_icmp
 import re
 from telemeta.models.location import LocationRelation, Location
 from telemeta.models.system import Revision
-from telemeta.models import query
+from telemeta.models.query import *
 from django.forms import ModelForm
+
 
 class MediaResource(ModelCore):
     "Base class of all media objects"
@@ -66,16 +68,24 @@ class MediaResource(ModelCore):
     class Meta:
         abstract = True
 
+
+collection_published_code_regex   = '[A-Za-z0-9._-]*'
+collection_unpublished_code_regex = '[A-Za-z0-9._-]*'
+collection_code_regex             = '(?:%s|%s)' % (collection_published_code_regex, 
+                                                    collection_unpublished_code_regex)
+                                                        
 class MediaCollection(MediaResource):
     "Describe a collection of items"
     element_type = 'collection'
     PUBLIC_ACCESS_CHOICES = (('none', 'none'), ('metadata', 'metadata'), ('full', 'full'))
 
-    published_code_regex   = '[A-Za-z0-9._-]*'
-    unpublished_code_regex = '[A-Za-z0-9._-]*'
-    code_regex             = '(?:%s|%s)' % (published_code_regex, unpublished_code_regex)
+    def is_valid_collection_code(value):
+        "Check if the collection code is well formed"
+        regex = '^' + collection_code_regex + '$'
+        if not re.match(regex, value):
+            raise ValidationError(u'%s is not a valid collection code' % value)
     
-    code                  = CharField(_('code'), unique=True, required=True)
+    code                  = CharField(_('code'), unique=True, required=True, validators=[is_valid_collection_code])
     old_code              = CharField(_('old code'), unique=True, null=True)
     reference             = CharField(_('reference'), unique=True, null=True)
     title                 = CharField(_('title'), required=True)
@@ -125,7 +135,7 @@ class MediaCollection(MediaResource):
     public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES, 
                                       max_length=16, default="metadata")
 
-    objects               = query.MediaCollectionManager()
+    objects               = MediaCollectionManager()
 
     def __unicode__(self):
         if self.title:
@@ -179,29 +189,13 @@ class MediaCollection(MediaResource):
         duration = Duration()
         for item in self.items.all():
             duration += item.computed_duration()
-
         return duration
+        
     computed_duration.verbose_name = _('computed duration')        
-
-    def is_valid_code(self, code):
-        "Check if the collection code is well formed"
-        if self.is_published:
-            regex = '^' + self.published_code_regex + '$'
-        else:
-            regex = '^' + self.unpublished_code_regex + '$'
-           
-        if re.match(regex, code):
-            return True
-
-        return False
-
-    def save(self, force_insert=False, force_update=False, user=None):
-        if not self.code:
-            raise RequiredFieldError(self, self._meta.get_field('code'))
-        if not self.is_valid_code(self.code):
-            raise MediaInvalidCodeError("%s is not a valid code for this collection" % self.code)
+            
+    def save(self, force_insert=False, force_update=False, user=None, code=None):
         super(MediaCollection, self).save(force_insert, force_update)
-
+        
     class Meta(MetaCore):
         db_table = 'media_collections'
     
@@ -209,14 +203,15 @@ class MediaCollectionForm(ModelForm):
     class Meta:
         model = MediaCollection
 
+
+item_published_code_regex    = '[A-Za-z0-9._-]*'
+item_unpublished_code_regex  = '[A-Za-z0-9._-]*'
+item_code_regex              = '(?:%s|%s)' % (item_published_code_regex, item_unpublished_code_regex)
+
 class MediaItem(MediaResource):
     "Describe an item"
     element_type = 'item'
     PUBLIC_ACCESS_CHOICES = (('none', 'none'), ('metadata', 'metadata'), ('full', 'full'))
-
-    published_code_regex    = '[A-Za-z0-9._-]*'
-    unpublished_code_regex  = '[A-Za-z0-9._-]*'
-    code_regex              = '(?:%s|%s)' % (published_code_regex, unpublished_code_regex)
 
     collection            = ForeignKey('MediaCollection', related_name="items", 
                                        verbose_name=_('collection'))
@@ -250,7 +245,7 @@ class MediaItem(MediaResource):
     file                  = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename")
     public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES, max_length=16, default="metadata")
 
-    objects               = query.MediaItemManager()
+    objects               = MediaItemManager()
 
     def keywords(self):
         return ContextKeyword.objects.filter(item_relations__item = self)
@@ -269,21 +264,20 @@ class MediaItem(MediaResource):
         "Check if the item code is well formed"
         if not re.match('^' + self.collection.code, self.code):
             return False
-
         if self.collection.is_published:
-            regex = '^' + self.published_code_regex + '$'
+            regex = '^' + item_published_code_regex + '$'
         else:
-            regex = '^' + self.unpublished_code_regex + '$'
-
+            regex = '^' + item_unpublished_code_regex + '$'
         if re.match(regex, code):
             return True
-
         return False
 
-    def save(self, force_insert=False, force_update=False):
+    def clean(self):
         if self.code and not self.is_valid_code(self.code):
-            raise MediaInvalidCodeError("%s is not a valid item code for collection %s" 
+            raise ValidationError("%s is not a valid item code for collection %s" 
                                         % (self.code, self.collection.code))
+                                        
+    def save(self, force_insert=False, force_update=False):
         super(MediaItem, self).save(force_insert, force_update)
 
     def computed_duration(self):
@@ -373,9 +367,7 @@ class PlaylistResource(ModelCore):
 
     class Meta(MetaCore):
         db_table = 'playlist_resources'
-
-class MediaInvalidCodeError(Exception):
-    pass
+        
 
 class MediaItemMarker(MediaResource):
     "2D marker object : text value vs. time"

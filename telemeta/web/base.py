@@ -366,7 +366,7 @@ class WebView(object):
         else:
             form = MediaItemForm(instance=item)
         
-        return render(request, template, {'item': item, "form": form})
+        return render(request, template, {'item': item, 'form': form})
     
     @method_decorator(permission_required('telemeta.add_mediaitem'))
     def item_copy(self, request, public_id, template='telemeta/mediaitem_copy.html'):

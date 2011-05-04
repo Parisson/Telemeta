@@ -792,6 +792,12 @@ table td.error {
     font-weight: bold;
 }
 
+.infos li.error{
+    color: red; 
+    font-weight: bold;
+    font-size: 110%;
+}
+
 .gmap {
     border: solid 1px #888;
     margin-top: 0.8em;

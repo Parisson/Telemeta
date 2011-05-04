@@ -24,7 +24,7 @@
 
 {% block extra_javascript %}{% endblock %}
 
-{% if user.is_authenticated and perms.telemeta.change_mediaitem %}
+{% if user.is_authenticated %}
     <script type='text/javascript'>var CURRENT_USER_NAME="{{ user.username }}";</script>
 {% else %}
     <script type='text/javascript'>var CURRENT_USER_NAME=undefined;</script>

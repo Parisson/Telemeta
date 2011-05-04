@@ -20,6 +20,7 @@
     {% block infos %}
     <div class="infos">
      <form method="POST" id="_addItemForm" action="" enctype="multipart/form-data">{% csrf_token %}
+       <ul>{% for error in form.non_field_errors %}<li class="error">{{ error }}</li>{% endfor %}</ul>
        <table>
        {% for field in form %}
         {% if not field.html_name == "copied_from_item" %}
