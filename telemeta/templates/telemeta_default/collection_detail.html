@@ -84,13 +84,11 @@
                 {% dl_field collection "reference" %}
                 {% dl_field collection "title"  %}
                 {% dl_field collection "alt_title" %}
-                {% dl_field collection "creator"  %}
+                {% dl_field collection "creator" placeholder %}
                 {% dl_field collection "recording_context" %}
-                {% if collection.recorded_from_year %}
-                    <dt>{% trans "Recording year" %}</dt>
-                    <dd>{{ collection.recorded_from_year|default:'' }} {{ collection.recorded_to_year|prepend:" - "  }}</dd>
-                {% endif %}
-                {% dl_field collection "year_published"  %}
+                <dt>{% trans "Recording year" %}</dt>
+                    <dd>{% if collection.recorded_from_year %}{{ collection.recorded_from_year|default:'' }} {{ collection.recorded_to_year|prepend:" - "  }}{% endif %}</dd>
+                {% dl_field collection "year_published" placeholder %}
             </dl>
         {% endblock general_info %}
         </div>
@@ -101,7 +99,7 @@
                 <div>
                     <dl class="listing">
                         {% dl_field collection "countries" join with ", " %}
-                        {% dl_field collection "ethnic_groups" join with ", "  %}
+                        {% dl_field collection "ethnic_groups" join with ", " placeholder %}
                     </dl>
                 </div>
             </div>

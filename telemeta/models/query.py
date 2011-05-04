@@ -190,7 +190,8 @@ class MediaItemQuerySet(CoreQuerySet):
 
     def by_fuzzy_collector(self, pattern):
         return self.filter(self.by_fuzzy_collector_q(pattern))
-
+    
+        
 class MediaItemManager(CoreManager):
     "Manage media items queries"
 
@@ -229,6 +230,7 @@ class MediaItemManager(CoreManager):
     def by_location(self, *args, **kwargs):
         return self.get_query_set().by_location(*args, **kwargs)
     by_location.__doc__ = MediaItemQuerySet.by_location.__doc__    
+
 
 class MediaCollectionQuerySet(CoreQuerySet):
 
@@ -312,6 +314,7 @@ class MediaCollectionQuerySet(CoreQuerySet):
     def by_fuzzy_collector(self, pattern):
         return self.filter(self.by_fuzzy_collector_q(pattern))
 
+
 class MediaCollectionManager(CoreManager):
     "Manage collection queries"
 
@@ -346,7 +349,7 @@ class MediaCollectionManager(CoreManager):
     def by_change_time(self, *args, **kwargs):
         return self.get_query_set().by_change_time(*args, **kwargs)
     by_change_time.__doc__ = MediaCollectionQuerySet.by_change_time.__doc__
-
+    
     @staticmethod
     def __name_cmp(obj1, obj2):
         return unaccent_icmp(obj1.name, obj2.name)
