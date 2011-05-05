@@ -12,6 +12,7 @@ from django.utils.encoding import smart_str, force_unicode
 from django.utils.safestring import mark_safe
 from django import db
 import re
+import datetime
 from django.conf import settings
 
 register = template.Library()
@@ -291,3 +292,7 @@ def set_var(parser, token):
         raise template.TemplateSyntaxError("'set' tag must be of the form:  {% set <var_name>  = <var_value> %}")
     return SetVarNode(parts[1], parts[3])
  
+@register.simple_tag
+def current_year():
+    return datetime.datetime.now().strftime("%Y")
+

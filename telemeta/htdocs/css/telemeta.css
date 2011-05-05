@@ -814,13 +814,17 @@ table td.error {
 }
 
 .rst-content img.align-left {
-    margin-right: 1em;
+    float: left;
+    margin-right: 2ex;
     margin-top: 0.6ex;
+    margin-bottom: 2ex;
 }
 
 .rst-content img.align-right {
-    margin-left: 1em;
+    float: left;
+    margin-left: 2ex;
     margin-top: 0.6ex;
+    margin-bottom: 2ex;
 }
 
 #content .rst-content ul,  #content .rst-content ol {
