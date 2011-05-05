@@ -29,6 +29,8 @@
     </ul>
 </div>
 
+{% include "telemeta/inc/module_revisions.html" %}
+
 <!--
 {{ block.super }}
 <div id="module" class="module">
@@ -44,6 +46,7 @@
 </div>
 
 <div class="home-description">
+<img class="align-left" src="{% url telemeta-images "vox.png" %}" style="vertical-align:middle;" />
 {{ page_content|render_flatpage }}
 </div>
 

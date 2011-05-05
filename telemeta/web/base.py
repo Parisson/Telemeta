@@ -112,20 +112,21 @@ class WebView(object):
             template = loader.get_template('telemeta/index.html')
             ids = [id for id in MediaItem.objects.all().values_list('id', flat=True).order_by('?')[0:3]]
             items = MediaItem.objects.enriched().filter(pk__in=ids)
+            revisions = self.get_revisions(request, 3)
             context = RequestContext(request, {
                         'page_content': pages.get_page_content(request, 'home', ignore_slash_issue=True),
-                        'items': items})
+                        'items': items, 'revisions': revisions})
             return HttpResponse(template.render(context))
         else:
             template='telemeta/home.html'
             playlists = self.get_playlists(request)
-            revisions = self.get_revisions(request)
+            revisions = self.get_revisions(request, 15)
             searches = Search.objects.filter(username=request.user)
             return render(request, template, {'playlists': playlists, 'searches': searches, 
                                               'revisions': revisions,})
   
-    def get_revisions(self, request):
-        last_revisions = Revision.objects.all().order_by('-time')[0:15]
+    def get_revisions(self, request, nb):
+        last_revisions = Revision.objects.all().order_by('-time')[0:nb]
         revisions = []
         for revision in last_revisions:
             if revision.element_type == 'item':
@@ -1038,7 +1039,7 @@ class WebView(object):
         subjects = settings.TELEMETA_SUBJECTS
         rss_host = request.META['HTTP_HOST']
         date_now = datetime.datetime.now()
-        revisions = self.get_revisions(request)
+        revisions = self.get_revisions(request, 50)
         tags = ['title', 'description', 'comment']
         
         for r in revisions:
