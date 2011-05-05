@@ -138,21 +138,22 @@ var TimesideClass = Class.extend({
         return text.length * ratio * fontSize;
     },
     
-    //formats (ie returns a string representation of) a time which is in the form seconds,milliseconds, eg 07.6750067
-    //formatArray is an array of strings which can be:
-    // 'h' hours. Use 'hh' for a zero-padding to 10 (so that 6 hours is rendered as '06')
-    // 'm' hours. Use 'mm' for a zero-padding to 10 (so that 6 minutes is rendered as '06')
-    // 's' hours. Use 'ss' foar a zero-padding to 10 (so that 6 seconds is rendered as '06')
-    // 'D' deciseconds
-    // 'C' centiseconds (it will be padded to 10, so that 5 centiseconds will be rendered as '05')
-    // 'S' milliseconds (it will be padded to 100, so that 5 milliseconds will be rendered as '005')
-    // If formatArray is null or undefined or zero-length, it defaults to ['mm','ss']
-    // 'h','m' and 's' will be prepended the separator ':'. For the others, the prepended separator is '.'
-    // Examples:
-    // makeTimeLabel(607,087) returns '10:07'
-    // makeTimeLabel(611,087,['m':'s']) returns '10:7'
-    // makeTimeLabel(611,087,['m':'s','C']) returns '10:7.09'
-    //========================================================================================
+    /*
+     *formats (ie returns a string representation of) a time which is in the form seconds,milliseconds (eg 07.6750067)
+     * formatArray is an array of strings which can be:
+     * 'h' hours. Use 'hh' for a zero-padding to 10 (so that 6 hours is rendered as '06')
+     * 'm' hours. Use 'mm' for a zero-padding to 10 (so that 6 minutes is rendered as '06')
+     * 's' hours. Use 'ss' foar a zero-padding to 10 (so that 6 seconds is rendered as '06')
+     * 'D' deciseconds
+     * 'C' centiseconds (it will be padded to 10, so that 5 centiseconds will be rendered as '05')
+     * 'S' milliseconds (it will be padded to 100, so that 5 milliseconds will be rendered as '005')
+     * If formatArray is null or undefined or zero-length, it defaults to ['mm','ss']
+     * 'h','m' and 's' will be prepended the separator ':'. For the others, the prepended separator is '.'
+     * Examples:
+     * makeTimeLabel(607,087)               returns '10:07' (formatArray defaults to ['mm','ss'])
+     * makeTimeLabel(607,087,['m':'s'])     returns '10:7'
+     * makeTimeLabel(607,087,['m':'s','C']) returns '10:7.09'
+     */
     makeTimeLabel: function(time, formatArray){
         if(!(formatArray)){
             formatArray = ['mm','ss'];
@@ -175,12 +176,10 @@ var TimesideClass = Class.extend({
         //Examples: format(6) = "6", format(6,1)= "06", format(23,1)= "23"
 
         //first of all, instantiate the power function once (and not inside the function or function's loop):
+        //note that minimumNumberOfDigits lower to 2 returns integer as it is
         var mpow = Math.pow; //instantiate mpow once
         var format = function(integer,minimumNumberOfDigits){
             var n = ""+integer;
-//            if(!(ceilAsPowerOfTen)){
-//                return n;
-//            }
             var zero = "0"; //instantiating once increases performances???
             for(var i=1; i< minimumNumberOfDigits; i++){
                 if(integer<mpow(10,i)){
@@ -196,26 +195,24 @@ var TimesideClass = Class.extend({
             if(f=='h'){
                 ret[i]=hours;
             }else if(f=='hh'){
-                ret[i]=format(hours,1);
+                ret[i]=format(hours,2);
             }else if(f=='m'){
                 ret[i]=minutes;
             }else if(f=='mm'){
-                ret[i]=format(minutes,1);
+                ret[i]=format(minutes,2);
             }else if(f=='s'){
                 ret[i]=seconds;
             }else if(f=='ss'){
-                ret[i]=format(seconds,1);
+                ret[i]=format(seconds,2);
             }else if(f=='S'){
                 separator = ".";
                 ret[i]=format(round(time*1000),3);
             }else if(f=='C'){
                 separator = ".";
                 ret[i]=format(round(time*100),2);
-                consolelog('NOW=======================================');
-                consolelog(time);
             }else if(f=='D'){
                 separator = ".";
-                ret[i]=format(round(time*10),1);
+                ret[i]= round(time*10);
             }
             if(i>0){
                 ret[i] = separator+ret[i];
@@ -230,7 +227,6 @@ var TimesideClass = Class.extend({
     debug : function(message) {
         if (this.debugging && typeof console != 'undefined' && console.log) {
             console.log(message);
-        //console.log('TimeSide.' + this.__class__.__name__ + ': ' + message);
         }
     },
     //init constructor. Define the 'bind' and 'fire' (TODO: rename as 'trigger'?) methods

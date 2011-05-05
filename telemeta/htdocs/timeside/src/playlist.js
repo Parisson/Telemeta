@@ -7,6 +7,35 @@ var playlistUtils = {
         this.playlists[name]=id;
     },
 
+//    /*shows the popup for adding an item to the playlist*/
+//    showPopupAddToPlaylist: function(event,resourceType,objectId, optionalMessage){
+//        var $J = jQuery;
+//        var content = $J('<div/>').addClass("_popup_add_to_playlist");
+//        var addToPlaylist = this.addToPlaylist;
+//        for(var p in this.playlists){
+//            var id = this.playlists[p];
+//
+//            var a =  $J('<a/>').
+//            attr('href','#').
+//            addClass("component_icon").
+//            addClass("list_item icon_playlist").
+//            html(p).
+//            //by wrapping the addToPlaylist function in order to accept the id variable as an argument
+//            //we avoid calling the function with id = number_of_playlists for all anchors
+//            //by returning another function (basically create another closure) we avoid executing the function
+//            //immediately
+//            click(function(id_){
+//                    return function(){
+//                        addToPlaylist(id_,resourceType,objectId,optionalMessage);
+//                        return false;
+//                    }
+//                }(id)
+//            );
+//            content.append(a);
+//        }
+//        return popup.show(content,event);
+//    },
+
     /*shows the popup for adding an item to the playlist*/
     showPopupAddToPlaylist: function(event,resourceType,objectId, optionalMessage){
         var $J = jQuery;
@@ -20,8 +49,8 @@ var playlistUtils = {
             addClass("component_icon").
             addClass("list_item icon_playlist").
             html(p).
-            //by wrapping the addToPlaylist function in order to accept the id variable as an argument 
-            //we avoid calling the function with id = number_of_playlists for all anchors 
+            //by wrapping the addToPlaylist function in order to accept the id variable as an argument
+            //we avoid calling the function with id = number_of_playlists for all anchors
             //by returning another function (basically create another closure) we avoid executing the function
             //immediately
             click(function(id_){
