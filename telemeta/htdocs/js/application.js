@@ -1299,9 +1299,19 @@ return element && element.length && element instanceof this.$J && element[0] !==
     //p.wdow = p.$J(window);
     //methods:
 
-    //    p.getFormData = function(){
-    //        var elms = this.getDiv().find
-    //    }
+        p.getFormData = function(){
+            var elms = this.find('input,select,textarea');
+            var ret = {};
+            var $J = this.$J;
+            elms.each(function(i,e){
+                var ee = $J(e);
+                var key = ee.attr('name');
+                if(key){
+                    ret[key] = ee.val();
+                }
+            });
+            return ret;
+        }
 
     p.bind = function(eventName, callback){ //eventname: show, blur or ok
         var listeners = this.getListeners();

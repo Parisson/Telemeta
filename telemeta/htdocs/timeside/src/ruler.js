@@ -41,57 +41,6 @@ var Ruler = TimesideArray.extend({
         if(!isInteractive){ //is not interactive, skip all methods assignmenets below
             return;
         }
-
-    // TODO: check here
-    // http://stackoverflow.com/questions/3299926/ie-mousemove-bug
-    // div in IE to receive mouse events must have a background
-    // so for the moment
-        
-        
-   
-    //        var mouseDown = false;
-    //        var _onMouseDown = function(evt) {
-    //            mouseDown = true;
-    //            this._onMouseMove(evt);
-    //            evt.preventDefault(); //If this method is called, the default action of the event will not be triggered.
-    //        };
-    //        var _onMouseMove = function(evt) {
-    //            if (mouseDown) {
-    //                var pixelOffset = evt.pageX - container.offset().left;
-    //                this._movePointerAndUpdateSoundPosition(pixelOffset / this.width * this.duration);
-    //            //moves the pointer and fires onPointerMove
-    //            }
-    //            return false;
-    //        };
-    //
-    //        var _onMouseUp= function(evt) {
-    //            if (mouseDown) {
-    //                mouseDown = false;
-    //                this.debug('_onMouseUp:'+this.pointerPos+' '+this.cfg.sound.position);
-    //            }
-    //            return false;
-    //        };
-    //        var imgContainer = viewer.find('.' + cssPref + 'image-container'); // for IE
-    //        var element = waveContainer.add(imgContainer); //constructs a new jQuery object which is the union of the jquery objects
-    //
-    //        element
-    //        .bind('click dragstart', function() {
-    //            return false;
-    //        })
-    //        .bind('mousedown', function(evt){
-    //            return _onMouseDown(evt);
-    //        })
-    //        .bind('mousemove', function(evt){
-    //            return _onMouseMove(evt);
-    //        })
-    //        .bind('mouseup', function(evt){
-    //            return _onMouseUp(evt);
-    //        });
-    //        this.$J(document)
-    //        .bind('mousemove', function(evt){
-    //            return _onMouseMove(evt);
-    //        });
-
     },
 
     resize : function(){
@@ -362,7 +311,7 @@ var Ruler = TimesideArray.extend({
 
         if(typeof markerObjOrOffset == 'number'){
             soundPosition = markerObjOrOffset;
-            isMovable = this.isInteractive();
+            isMovable = true; //this.isInteractive();
             markerClass='pointer';
         }else{
             soundPosition = markerObjOrOffset.offset;
@@ -534,3 +483,54 @@ var Ruler = TimesideArray.extend({
         return soundPosition;
     }
 });
+
+
+    // TODO: check here
+    // http://stackoverflow.com/questions/3299926/ie-mousemove-bug
+    // div in IE to receive mouse events must have a background
+    // so for the moment
+
+
+
+    //        var mouseDown = false;
+    //        var _onMouseDown = function(evt) {
+    //            mouseDown = true;
+    //            this._onMouseMove(evt);
+    //            evt.preventDefault(); //If this method is called, the default action of the event will not be triggered.
+    //        };
+    //        var _onMouseMove = function(evt) {
+    //            if (mouseDown) {
+    //                var pixelOffset = evt.pageX - container.offset().left;
+    //                this._movePointerAndUpdateSoundPosition(pixelOffset / this.width * this.duration);
+    //            //moves the pointer and fires onPointerMove
+    //            }
+    //            return false;
+    //        };
+    //
+    //        var _onMouseUp= function(evt) {
+    //            if (mouseDown) {
+    //                mouseDown = false;
+    //                this.debug('_onMouseUp:'+this.pointerPos+' '+this.cfg.sound.position);
+    //            }
+    //            return false;
+    //        };
+    //        var imgContainer = viewer.find('.' + cssPref + 'image-container'); // for IE
+    //        var element = waveContainer.add(imgContainer); //constructs a new jQuery object which is the union of the jquery objects
+    //
+    //        element
+    //        .bind('click dragstart', function() {
+    //            return false;
+    //        })
+    //        .bind('mousedown', function(evt){
+    //            return _onMouseDown(evt);
+    //        })
+    //        .bind('mousemove', function(evt){
+    //            return _onMouseMove(evt);
+    //        })
+    //        .bind('mouseup', function(evt){
+    //            return _onMouseUp(evt);
+    //        });
+    //        this.$J(document)
+    //        .bind('mousemove', function(evt){
+    //            return _onMouseMove(evt);
+    //        });
