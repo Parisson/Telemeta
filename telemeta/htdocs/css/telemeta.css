@@ -818,14 +818,14 @@ table td.error {
     float: left;
     margin-right: 2ex;
     margin-top: 0.6ex;
-    margin-bottom: 1ex;
+    margin-bottom: 0.5ex;
 }
 
 .rst-content img.align-right {
     float: left;
     margin-left: 2ex;
     margin-top: 0.6ex;
-    margin-bottom: 1ex;
+    margin-bottom: 0.5ex;
 }
 
 img.align-left {
