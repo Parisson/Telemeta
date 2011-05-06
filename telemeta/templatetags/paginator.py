@@ -37,6 +37,7 @@ def paginator(context, adjacent_pages=2):
         'has_previous': context['has_previous'],
         'show_first': 1 not in page_numbers,
         'show_last': context['pages'] not in page_numbers,
+        'criteria' : context['criteria'], 
     }
 
 register.inclusion_tag('telemeta/paginator.html', takes_context=True)(paginator)
