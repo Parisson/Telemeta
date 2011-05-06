@@ -5,7 +5,7 @@
 {% block head_title %}{% trans "Media Collections" %} - {{ block.super }}{% endblock %}
 
 {% block title%}
- <h1>{% trans "Media Collections" %}</h1>
+ <h1><img src="{% url telemeta-images "collections_red.png" %}" style="vertical-align:middle" /> {% trans "Media Collections" %}</h1>
 {% endblock %}
 {% block title_buttons %}
      <a href="{% url telemeta-collections %}" class="component_icon button icon_filter">{% trans "All" %}</a>
