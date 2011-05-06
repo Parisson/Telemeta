@@ -5,9 +5,9 @@
 {% block head_title %}{{ country }} - {% trans "Geographic Navigator" %} - {{ block.super }}{% endblock %}
 
 {% block content %}
-<h3><a href="{% url telemeta-geo-continents %}">{% trans "World" %}</a> /
+<h1><img src="{% url telemeta-images "world_red.png" %}" style="vertical-align:middle" /> <a href="{% url telemeta-geo-continents %}">{% trans "World" %}</a> /
   <a href="{% url telemeta-geo-countries continent.flatname %}">{{ continent }}</a> 
-  / {{ country }}</h3>
+  / {{ country }}</h1>
 
 {% with object_list as collections %}
 <div class="fullpage">
