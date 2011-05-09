@@ -729,7 +729,7 @@ function PopupDiv(){
     p.focusable = false;
     p.fadInTime = 'fast',
     p.fadeOutTime = 0,
-    p.shadowOpacity = 0.3;
+    p.shadowOpacity = 0.25;
     p.zIndex = 10000;
    // p.listItemClass = '';
     
@@ -1544,21 +1544,21 @@ function PopupDiv(){
     
 })(PopupDiv.prototype);
 
-//default PopupDiv properties in telemeta
-//PopupDiv.listItemClass = 'component_icon list_item icon_playlist';
-PopupDiv.shadowOffset = 4;
-PopupDiv.popupClass = 'control component';
-PopupDiv.popupCss = {
-    'border':'1px solid #666',
-    'padding':'1ex'
-};
-PopupDiv.okButtonTitle =  'Ok';
-PopupDiv.okButtonClass =  'component_icon button icon_ok';
-PopupDiv.closeButtonTitle =  '';
-PopupDiv.closeButtonClass =  'markersdivDelete';
-PopupDiv.fadInTime = 'fast',
-    PopupDiv.fadeOutTime = 0,
-    PopupDiv.shadowOpacity = 0.3;
+////default PopupDiv properties in telemeta
+////PopupDiv.listItemClass = 'component_icon list_item icon_playlist';
+//PopupDiv.shadowOffset = 4;
+//PopupDiv.popupClass = 'control component';
+//PopupDiv.popupCss = {
+//    'border':'1px solid #666',
+//    'padding':'1ex'
+//};
+//PopupDiv.okButtonTitle =  'Ok';
+//PopupDiv.okButtonClass =  'component_icon button icon_ok';
+//PopupDiv.closeButtonTitle =  '';
+//PopupDiv.closeButtonClass =  'markersdivDelete';
+//PopupDiv.fadInTime = 'fast',
+//    PopupDiv.fadeOutTime = 0,
+//    PopupDiv.shadowOpacity = 0.3;
 
 
 

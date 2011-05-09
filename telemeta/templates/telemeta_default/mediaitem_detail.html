@@ -37,9 +37,6 @@
                 p.showAddToPlaylist(anchor,'item','{{item.public_id}}',gettrans('item added to the selected playlist'));return false;
                 
             });
-//            anchor.click(function(evtObj_){
-//                p.showPopupAddToPlaylist(evtObj_,'item','{{item.public_id}}',gettrans('item added to the selected playlist'));return false;
-//            });
         }
         {% endif %}
     };
@@ -55,7 +52,7 @@
     var _sound_manager_loaded=false;
     var _jQuery_loaded = false;
 
-    jQuery(document).ready(function(){
+    jQuery(window).ready(function(){
         _jQuery_loaded=true;
         if(_sound_manager_loaded){
             loadScripts(scripts, function(){loadPlayer('{% url telemeta-item-analyze-xml item.public_id %}',$('.ts-wave a').attr('href'));setupPlaylist()});

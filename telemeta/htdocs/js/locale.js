@@ -1,3 +1,14 @@
+/**
+ * TimeSide - Web Audio Components
+ * Copyright (c) 2011 Parisson
+ * Author: Riccardo Zaccarelli <riccardo.zaccarelli gmail.com>
+ * License: GNU General Public License version 2.0
+ */
+
+/**
+ * Class for managing translations in telemeta.
+ */
+
 var localeStrings = {
     'title': gettext('title'),
     'description': gettext('description'),

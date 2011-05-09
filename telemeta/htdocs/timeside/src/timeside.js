@@ -1,7 +1,12 @@
 /**
  * TimeSide - Web Audio Components
- * Author: Riccardo Zaccarelli and Olivier Guilyardi <olivier samalyse com>
+ * Copyright (c) 2011 Parisson
+ * Author: Riccardo Zaccarelli <riccardo.zaccarelli gmail.com> and Olivier Guilyardi <olivier samalyse com>
  * License: GNU General Public License version 2.0
+ */
+
+/**
+ * Base class defining classes for TimesideUI
  */
 
 /* Simple JavaScript Inheritance
@@ -236,13 +241,20 @@ var TimesideClass = Class.extend({
        
         //the map for listeners. Must be declared in the init as it's private and NOT shared by all instances
         //(ie, every instance has its own copy)
-        var listenersMap={};
+        this.listenersMap={};
         //follows jquery bind. Same as adding a listener for a key
-        this.bind = function(key, callback, optionalThisArgInCallback){
+        
+    },
+
+    /**
+     *methods defining listeners, events fire and bind:
+     */
+    bind : function(key, callback, optionalThisArgInCallback){
             if(!(callback && callback instanceof Function)){
                 this.debug('cannot bind '+key+' to callback: the latter is null or not a function');
                 return;
             }
+            var listenersMap = this.listenersMap;
             var keyAlreadyRegistered = (key in listenersMap);
             if(!keyAlreadyRegistered){
                 listenersMap[key] = [];
@@ -251,18 +263,22 @@ var TimesideClass = Class.extend({
                 callback:callback,
                 optionalThisArgInCallback:optionalThisArgInCallback
             });
-        };
-        this.unbind = function(){
+        },
+        unbind : function(){
+             var listenersMap = this.listenersMap;
             if(arguments.length>0){
                 var key = arguments[0];
                 if(key in listenersMap){
                     delete listenersMap[key];
                 }
             }else{
-                listenersMap={};
+                for(key in listenersMap){
+                    delete listenersMap[key];
+                }
             }
-        };
-        this.fire = function(key, dataArgument){
+        },
+        fire : function(key, dataArgument){
+              var listenersMap = this.listenersMap;
             if(!(key in listenersMap)){
                 this.debug(key+' fired but no binding associated to it');
                 return;
@@ -277,8 +293,7 @@ var TimesideClass = Class.extend({
                     obj.callback(dataArgument);
                 }
             }
-        };
-    },
+        },
 
     /* creates all elements in skeleton and appends them in container. Returns
         * the jQuery object representing all elements created

@@ -1,3 +1,27 @@
+/**
+ * TimeSide - Web Audio Components
+ * Copyright (c) 2011 Parisson
+ * Author: Riccardo Zaccarelli <riccardo.zaccarelli gmail.com>
+ * License: GNU General Public License version 2.0
+ */
+
+/**
+ * Class for managing playlists in telemeta.
+ * Requires jQuery and PopupDiv
+ */
+
+//default PopupDiv properties for playlists (mainly for css appearence)
+PopupDiv.popupClass = 'control component';
+PopupDiv.popupCss = {
+    'border':'1px solid #999',
+    'padding':'1ex'
+};
+PopupDiv.okButtonTitle =  'Ok';
+PopupDiv.okButtonClass =  'component_icon button icon_ok';
+PopupDiv.closeButtonTitle =  '';
+PopupDiv.closeButtonClass =  'markersdivDelete';
+PopupDiv.defaultCloseOperation = 'remove';
+PopupDiv.focusable = true;
 
 var playlistUtils = {
     playlists : [],
@@ -10,6 +34,7 @@ var playlistUtils = {
         });
     },
 
+    
     /*shows the popup for adding an item to the playlist*/
     showAddToPlaylist: function(anchorElement,resourceType,objectId, optionalOkMessage){
         var ar = [];
@@ -25,8 +50,6 @@ var playlistUtils = {
         }
         var addFcn = this.addToPlaylist;
         new PopupDiv({
-            defaultCloseOperation: 'remove',
-            focusable:true,
             invoker:anchorElement,
             content: ar,
             ok:function(data){
@@ -37,11 +60,11 @@ var playlistUtils = {
                     callbackok = function(){
                         var p =new PopupDiv({
                             content : "<div class='component_icon icon_ok'>"+optionalOkMessage+"</div>",
-                            defaultCloseOperation: 'remove'
+                            focusable: false
 
                         });
                         p.bind('show', function(){
-                            this.closeLater(2500)
+                            this.closeLater(1500);
                         });
                         p.show();
                     }
@@ -66,10 +89,7 @@ var playlistUtils = {
         var playlist = this;
         new PopupDiv({
             'content':dd,
-            focusable:true,
             invoker:anchorElement,
-            defaultCloseOperation:'remove',
-            showclose:true,
             showok:true,
             ok:function(data){
                 if(!data[t] && !data[d]){
