@@ -419,9 +419,8 @@ var Player = TimesideClass.extend({
 
 
     setDynamicResize: function(value){
-        var key = 'dynamicResize';
+        var key = '_dynamicResize';
         if(!value && key in this){
-            alert('clearing');
             clearInterval(this[key]);
             delete this[key];
             return;
