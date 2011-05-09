@@ -25,7 +25,7 @@ def paginator(context, adjacent_pages=2):
     if context.has_key('criteria'):
         criteria = context['criteria']
     else:
-        criteria =''
+        criteria = ''
         
     return {
         'page_obj': page_obj,

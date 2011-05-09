@@ -23,8 +23,7 @@ Install the dependencies
 
     Install all dependencies like this::
 	
-        sudo aptitude install python python-xml python-mutagen python-django \
-                              python-imaging python-mysqldb mysql-server python-numpy python-scipy \
+        sudo aptitude install python python-django python-xml python-mysqldb mysql-server \
                               python-ctypes python-setuptools python-support python-docutils
 
     To get MP3 reading and writing, just add these lines to your /etc/apt/sources-list::
@@ -44,20 +43,14 @@ Install the dependencies
 Install TimeSide
 -----------------
 
-In order to get all the Web Audio Components from TimeSide,
-you have to download and install it from source.
+Telemeta needs the audio processing library named TimeSide.
+You have to download and install it from source.
 
-So, checkout the last archive at :
+So, download the last archive at :
 http://code.google.com/p/timeside/downloads/list
 
-Install it like in the following example::
-
-    tar xzf timeside-0.2.tar.gz
-    cd timeside-0.2
-
-Read the README and INSTALL file, install dependencies and then::
-
-    sudo python setup.py install
+Uncompress it and see README and INSTALL to install the dependencies 
+and then the module.
 
 
 Install JSON-RPC server
