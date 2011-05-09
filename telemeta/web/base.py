@@ -350,6 +350,22 @@ class WebView(object):
                     'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True), "form": form, 
                     'previous' : previous, 'next' : next, 
                     })
+    
+    @method_decorator(permission_required('telemeta.change_mediaitem'))
+    def item_performances_edit(self, request, public_id, template):
+        item = MediaItem.objects.get(public_id=public_id)
+        PerformanceFormSet = modelformset_factory(MediaItemPerformance)
+        queryset = MediaItemPerformance.objects.filter(media_item=item)
+        if request.method == 'POST':
+            formset = PerformanceFormSet(data=request.POST, queryset=queryset)
+            if formset.is_valid():
+                formset.save()
+                return HttpResponseRedirect('/items/'+public_id)
+        else:
+            formset = PerformanceFormSet(queryset=queryset)
+        return render(request, template, 
+                    {'item': item, 'formset': formset,})
+    
         
     @method_decorator(permission_required('telemeta.add_mediaitem'))
     def item_add(self, request, template='telemeta/mediaitem_add.html'):

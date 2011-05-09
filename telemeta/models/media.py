@@ -43,6 +43,7 @@ import re
 from telemeta.models.location import LocationRelation, Location
 from telemeta.models.system import Revision
 from telemeta.models.query import *
+from telemeta.models.instrument import *
 from django.forms import ModelForm
 
 
@@ -138,8 +139,8 @@ class MediaCollection(MediaResource):
     objects               = MediaCollectionManager()
 
     def __unicode__(self):
-        if self.title:
-            return self.title
+#        if self.title:
+#            return self.title
 
         return self.code
 
@@ -324,6 +325,10 @@ class MediaItemPerformance(ModelCore):
     class Meta(MetaCore):
         db_table = 'media_item_performances'
 
+class MediaItemPerformanceForm(ModelForm):
+    class Meta:
+        model = MediaItemPerformance
+        
 class MediaPart(MediaResource):
     "Describe an item part"
     element_type = 'part'
@@ -350,8 +355,8 @@ class Playlist(ModelCore):
         db_table = 'playlists'
 
     def __unicode__(self):
-        return self.name
-
+        return self.title
+        
 class PlaylistForm(ModelForm):
     class Meta:
         model = Playlist
@@ -368,7 +373,7 @@ class PlaylistResource(ModelCore):
     class Meta(MetaCore):
         db_table = 'playlist_resources'
         
-
+        
 class MediaItemMarker(MediaResource):
     "2D marker object : text value vs. time"
     
@@ -386,7 +391,10 @@ class MediaItemMarker(MediaResource):
         db_table = 'media_markers'
 
     def __unicode__(self):
-        return self.title
+        if self.title:
+            return self.title
+        else:
+            return self.public_id
 
 class Search(ModelCore):
     "Keywork search"

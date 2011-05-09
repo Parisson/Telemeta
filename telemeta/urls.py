@@ -97,6 +97,8 @@ urlpatterns = patterns('',
         dict(template='telemeta/mediaitem_add.html'), name="telemeta-item-add"),
     url(r'^items/(?P<public_id>[A-Za-z0-9._-]+)/player/$', web_view.item_detail,
         dict(template='telemeta/mediaitem_player.html'), name="telemeta-item-player"),
+    url(r'^items/(?P<public_id>[A-Za-z0-9._-]+)/performances/$', web_view.item_performances_edit,
+        dict(template='telemeta/mediaitem_performances_edit.html'), name="telemeta-item-performances_edit"),
 
     # Markers
     url(r'^markers/(?P<marker_id>[A-Za-z0-9]+)/$', web_view.item_detail, name="telemeta-item-detail-marker"),

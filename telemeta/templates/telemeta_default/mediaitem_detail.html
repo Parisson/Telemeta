@@ -260,6 +260,9 @@
         </div>
         {% endblock musical_data %}
     </div>
+    {% if user.is_authenticated and perms.telemeta.change_mediaitem %}
+      <a href="{% url telemeta-item-performances_edit item.public_id %}" class="component_icon button icon_edit">{% trans "Edit" %}</a>
+    {% endif %}
     <div class="extraInfos">
         {% block general_data %}
         <div>

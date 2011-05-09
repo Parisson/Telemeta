@@ -29,11 +29,12 @@
              {% endif %}
              {% endif %}
         </tr>
+        {% else %}
+           <tr><td>{{ field.label_tag.as_hidden }}{{ field.as_hidden }}</td></tr>
         {% endif %}
        {% endfor %}
        </table>
        <div align="center">
-
         <a href="{% url telemeta-item-detail item.public_id %}"
            class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
         <a href="#" class="component_icon button icon_save"
