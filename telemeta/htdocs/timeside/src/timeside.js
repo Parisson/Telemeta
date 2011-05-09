@@ -319,10 +319,11 @@ var TimesideClass = Class.extend({
         var i = 0;
         var $J = this.$J;
         var elements = $J([]); //create empty jquery object
-        
+
         
         var _loadChild = function(container_, tag, className, index) {
             var element = container_.find('.'+className);
+            
             if (!element.length) {
                 element = $J(document.createElement(tag)).addClass(className);
                 var children = container_.children();
@@ -333,6 +334,7 @@ var TimesideClass = Class.extend({
                     container_.append(element);
                 }
             }else{
+                
             //consolelog('loadUI: returning ' + element.attr('class')+' (already present) ');
             }
             return element;
@@ -343,6 +345,7 @@ var TimesideClass = Class.extend({
                 var s = selector.split('.');
                 var newChild = _loadChild(container, s[0], s[1], i++);
                 elements = elements.add(newChild);
+                
             }));
         } else {
             for (var key in skeleton) {
@@ -356,7 +359,7 @@ var TimesideClass = Class.extend({
 
             }
         }
-       
+       //consolelog(elements.find('.ts-image'));
         return elements;
     }
 

@@ -5,10 +5,12 @@ function togglePlayerMaximization() {
     var view = $('#player');
     $('#player_maximized, #player_minimized').css('display', 'none');
     var ctr;
+    var dynamicResize = false;
     if (view.parents('#player_maximized').length) {
         ctr = $('#player_minimized').append(view);
     } else {
         ctr = $('#player_maximized').append(view);
+        dynamicResize = true;
     }
     ctr.css({
         opacity: 0,
@@ -20,38 +22,40 @@ function togglePlayerMaximization() {
     ctr.animate({
         opacity: 1
     }, 100);
+    player.setDynamicResize(dynamicResize);
 }
 
-function change_visualizer_clicked(){
-    var $J = jQuery;
-    var form = $J("#visualizer_id_form");
-    //var img = jQuery("<img/>").attr("src","/images/wait.gif").css('verticalAlign','middle');
+//function change_visualizer_clicked(){
+//    var $J = jQuery;
+//    var form = $J("#visualizer_id_form");
+//    //var img = jQuery("<img/>").attr("src","/images/wait.gif").css('verticalAlign','middle');
+//
+//    var visId = $J("#visualizer_id");
+//    visId.attr("disabled","disabled");
+//    var img = $J(form.children()[0]);
+//    var src = undefined;
+//    if(img.attr('src')){
+//        src = img.attr('src');
+//        img.attr("src","/images/wait_small.gif");
+//    }
+//
+//    //form.append(img);
+//    setTimeout(function(){
+//        if (player){
+//            player.refreshImage();
+//        }
+//        //img.remove();
+//        setTimeout(function(){
+//            if(src){
+//                img.attr('src',src);
+//            }
+//            visId.removeAttr("disabled");
+//        },300);
+//    },600);
+//}
 
-    var visId = $J("#visualizer_id");
-    visId.attr("disabled","disabled");
-    var img = $J(form.children()[0]);
-    var src = undefined;
-    if(img.attr('src')){
-        src = img.attr('src');
-        img.attr("src","/images/wait_small.gif");
-    }
-
-    //form.append(img);
-    setTimeout(function(){
-        if (player){
-            player.refreshImage();
-        }
-        //img.remove();
-        setTimeout(function(){
-            if(src){
-                img.attr('src',src);
-            }
-            visId.removeAttr("disabled");
-        },300);
-    },600);
-}
-
-function loadPlayer(analizerUrl, soundUrl){
+function loadPlayer(analizerUrl, soundUrl, visualizers){
+    
     if(!(analizerUrl) || !(soundUrl)){
         return;
     }
@@ -85,7 +89,7 @@ function loadPlayer(analizerUrl, soundUrl){
             var pfl = parseFloat;
             var timeInMSecs=pin(duration[0])*3600+pin(duration[1])*60+pfl(duration[2]);
             timeInMSecs = Math.round(timeInMSecs*1000);
-            load_player(soundUrl, timeInMSecs);
+            load_player(soundUrl, timeInMSecs,visualizers);
         },
         error:function(){
             msgElm.parent().html("<img src='/images/dialog-error.png' style='vertical-align:middle'/><span class='login-error'>Error loading analyzer</span>");
@@ -95,7 +99,7 @@ function loadPlayer(analizerUrl, soundUrl){
 
 
 //loads a player WAITING for the sound identified by soundUrl to be FULLY LOADED!!!!
-function load_player(soundUrl, durationInMsecs) {
+function load_player(soundUrl, durationInMsecs, visualizers) {
     consolelog('PlayerUtils.load_player: '+soundUrl+' '+durationInMsecs);
     var load_player2 = this.load_player2;
 
@@ -114,7 +118,7 @@ function load_player(soundUrl, durationInMsecs) {
             if(loadImmediately){
                 consolelog('entering while loading setting up---------------'+this.bytesLoaded+' of '+this.bytesTotal);
                 loadImmediately=false;
-                load_player2(this, this.duration);
+                load_player2(this, this.duration,visualizers);
             }
         }
     });
@@ -122,13 +126,14 @@ function load_player(soundUrl, durationInMsecs) {
         //TODO: remove this code is only temporary here!!!!!!!!!!!!!!!!!!!!1
         loadScripts('/timeside/src/',['rulermarker.js', //'markerlist.js',
             'markermap.js', 'player.js', 'ruler.js','divmarker.js'], function(){
-                load_player2(sound,durationInMsecs);
+                load_player2(sound,durationInMsecs,visualizers);
             });
     }
 
 }
 //NOTE: the duration must be present. Loaded from xmlanalyzer (see above)
-function load_player2(sound, durationInMsec) {
+function load_player2(sound, durationInMsec, visualizers) {
+    
     if (!$('#player').length){
         return;
     }
@@ -138,15 +143,15 @@ function load_player2(sound, durationInMsec) {
     $('.ts-wave a img').insertAfter('.ts-wave a');
     $('.ts-wave a').remove();
 
-    var p = new Player(jQuery('#player'), sound, durationInMsec);
+    var p = new Player(jQuery('#player'), sound, durationInMsec, visualizers);
     consolelog('initialized player');
     p._setupInterface(CURRENT_USER_NAME ? true : false);
     //p.loadMarkers();
 
     player = p;
 
-    var change_visualizer_click = change_visualizer_clicked;
-    $('#visualizer_id').change(change_visualizer_click);
+//    var change_visualizer_click = change_visualizer_clicked;
+//    $('#visualizer_id').change(change_visualizer_click);
     //$('#visualizer_id_form').submit(change_visualizer_clicked);
 
     $('#player_maximized .toggle, #player_minimized .toggle').click(function() {

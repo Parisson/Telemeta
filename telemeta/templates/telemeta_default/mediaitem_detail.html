@@ -51,18 +51,22 @@
 
     var _sound_manager_loaded=false;
     var _jQuery_loaded = false;
-
+    var visualizers = {};
+     {% for v in visualizers %}
+                    visualizers["{{v.name}}"] = "{% url telemeta-item-visualize item.public_id,v.id,"WIDTH","HEIGHT" %}";
+                    {% endfor %}
+                    //consolelog(visualizers);
     jQuery(window).ready(function(){
         _jQuery_loaded=true;
         if(_sound_manager_loaded){
-            loadScripts(scripts, function(){loadPlayer('{% url telemeta-item-analyze-xml item.public_id %}',$('.ts-wave a').attr('href'));setupPlaylist()});
+            loadScripts(scripts, function(){loadPlayer('{% url telemeta-item-analyze-xml item.public_id %}',$('.ts-wave a').attr('href'),visualizers);setupPlaylist()});
         }
     });
     //$('.ts-wave a').attr('href')
     soundManager.onready(function() {
         _sound_manager_loaded=true;
         if(_jQuery_loaded){
-            loadScripts(scripts, function(){loadPlayer('{% url telemeta-item-analyze-xml item.public_id %}',$('.ts-wave a').attr('href'));setupPlaylist()});
+            loadScripts(scripts, function(){loadPlayer('{% url telemeta-item-analyze-xml item.public_id %}',$('.ts-wave a').attr('href'), visualizers);setupPlaylist()});
         }
     });
 
@@ -117,7 +121,7 @@
                 </div>
             </div>
         </div>
-        <div class="item_visualization" id="item_visualization_id">
+        <!-- <div class="item_visualization" id="item_visualization_id">
             <form id="visualizer_id_form" method="get" action="#">
                 <img src="images/plots.png" style="vertical-align:middle" />&nbsp;Visualization :
                 <select id="visualizer_id" name="visualizer_id">
@@ -127,7 +131,7 @@
                     {% endfor %}
                 </select>
                 <input style="visibility: hidden;" type="submit" value="Set" />
-            </form>
+            </form> -->
 
             <!--
                     <form method="get" action="#">
@@ -141,7 +145,7 @@
                         <input type="submit" value="Get" />
                     </form>
             -->
-        </div>
+        <!-- </div> -->
 
         <div id="tabs_container">
             <!-- this div will be hidden when everything is fully loaded-->

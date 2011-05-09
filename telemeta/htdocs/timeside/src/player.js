@@ -2,7 +2,7 @@ var Player = TimesideClass.extend({
     
     //sound duration is in milliseconds because the soundmanager has that unit,
     //player (according to timeside syntax) has durations in seconds
-    init: function(container, sound, soundDurationInMsec) {
+    init: function(container, sound, soundDurationInMsec,visualizers) {
         this._super();
         var player = this;
         
@@ -15,7 +15,10 @@ var Player = TimesideClass.extend({
         this.getSound = function(){
             return sound;
         }
-
+        
+        this.getVisualizers = function(){
+            return visualizers;
+        }
 
 
         //rpivate functions for converting
@@ -82,18 +85,18 @@ var Player = TimesideClass.extend({
         };
 
 
-//       if(sound.readyState != 3){
-//                /*sound.readyState
-//                 * Numeric value indicating a sound's current load status
-//                 * 0 = uninitialised
-//                 * 1 = loading
-//                 * 2 = failed/error
-//                 * 3 = loaded/success
-//                 */
-//                sound.options.whileloading=function(){
-//
-//                }
-//        };
+        //       if(sound.readyState != 3){
+        //                /*sound.readyState
+        //                 * Numeric value indicating a sound's current load status
+        //                 * 0 = uninitialised
+        //                 * 1 = loading
+        //                 * 2 = failed/error
+        //                 * 3 = loaded/success
+        //                 */
+        //                sound.options.whileloading=function(){
+        //
+        //                }
+        //        };
         
         //implement play here: while playing we do not have to update the sound position, so
         //we call the private variable soundPos
@@ -173,7 +176,7 @@ var Player = TimesideClass.extend({
         consolelog('player _setupInterface sound.readyState:'+sound.readyState); //handle also cases 0 and 2????
         
         var $J = this.$J; //defined in the super constructor
-           
+        var me=this;
         //TODO: use cssPrefix or delete cssPrefix!!!!!
         //TODO: note that ts-viewer is already in the html page. Better avoid this (horrible) method and use the html
         var skeleton =  {
@@ -187,7 +190,7 @@ var Player = TimesideClass.extend({
             'div.ts-control': {
                 'div.ts-layout': {
                     'div.ts-playback': ['a.ts-play', 'a.ts-pause', 'a.ts-rewind', 'a.ts-forward', 'a.ts-set-marker' //]
-                    ,'a.ts-volume']
+                    ,'a.ts-volume','select.visualizer']
                 }
             }/*,
         'div.marker-control': ['a.set-marker']*/
@@ -209,6 +212,46 @@ var Player = TimesideClass.extend({
         var volume = jQueryObjs.find('.ts-volume');
 
 
+        //setting the select option for visualizers:
+        var visualizers = this.getVisualizers();
+        var select = jQueryObjs.find('.visualizer');
+        for(var name in visualizers){
+            $J('<option/>').val(visualizers[name]).html(name).appendTo(select);
+        }
+        select.css('margin',0).css('marginLeft','5px');
+        //TODO: why the line below does not work?!!!!!
+        //jQueryObjs.find('.ts-control')
+        var control = $J('#player').find('.ts-control');
+        var span = control.height() - select.outerHeight(true);
+        consolelog()
+        if(span>1){
+            select.css('marginTop',(span/2)+'px');
+        }
+        select.change(
+            function (){
+                
+                var img = $J('<img/>').attr("src","/images/wait_small.gif").css(
+                {
+                    'marginLeft':select.css('marginLeft'),
+                    'marginTop':select.css('marginTop'),
+                    'height' :select.height()+'px',
+                    'width':select.width()+'px'
+                });
+                select.hide();
+                img.insertBefore(select);
+                setTimeout(function(){
+                    if (me){
+                        me.refreshImage();
+                    }
+                    //img.remove();
+                    setTimeout(function(){
+                        img.remove();
+                        select.show();
+                    },150);
+                },300);
+            });
+
+
         //setting events to buttons (code left untouched from olivier):
         //rewind
         //
@@ -223,7 +266,7 @@ var Player = TimesideClass.extend({
         //        .click(function() {
         //            return false;
         //        });
-        var me=this;
+        
         //attaching event to the image. Note that attaching an event to a transparent div is buggy in IE
         //        if($J.browser.msie){
         //
@@ -330,7 +373,7 @@ var Player = TimesideClass.extend({
             'zIndex':1000,
             'overflow':'auto',
             'display':'none' //TODO: remove this
-            //'backgroundColor':'#666'
+        //'backgroundColor':'#666'
         });
         $J('body').append(popupMarker);
         var w = v.width();
@@ -344,7 +387,7 @@ var Player = TimesideClass.extend({
             'top': parseInt(margin+offs.top)+'px',
             'width':width+'px',
             'height':height+'px'
-            });
+        });
         popupMarker.html("<table style='width:100%'><tr><td>"+gettrans('title')+"</td><td class='title'></td></tr><tr><td>"+
             gettrans('description')+"</td><td class='description'></td></tr></table>");
         this.getMarkerPopup = function(){
@@ -353,25 +396,54 @@ var Player = TimesideClass.extend({
     },
 
     showMarkerPopup: function(markerIndex){
-//        var popup = this.getMarkerPopup();
-//
-//        if(popup.attr('id') != 'markerpopup'+markerIndex){
-//
-//            var marker = this.getMarkerMap().toArray()[markerIndex];
-//            var pos = this.getSoundPosition();
-//            var mPos = marker.offset;
-//            var span = 0.3;
-//
-//            if(pos>=mPos-span && pos<=mPos+span){
-//                consolelog('songpos: '+pos+' nextmarkerpos:'+mPos);
-//                popup.attr('id','markerpopup'+markerIndex);
-//                popup.find('.title').html(marker.title);
-//                popup.find('.description').html(marker.desc);
-//                if(!popup.is(':visible')){
-//                    popup.show('fast');
-//                }
-//            }
-//        }
+    //        var popup = this.getMarkerPopup();
+    //
+    //        if(popup.attr('id') != 'markerpopup'+markerIndex){
+    //
+    //            var marker = this.getMarkerMap().toArray()[markerIndex];
+    //            var pos = this.getSoundPosition();
+    //            var mPos = marker.offset;
+    //            var span = 0.3;
+    //
+    //            if(pos>=mPos-span && pos<=mPos+span){
+    //                consolelog('songpos: '+pos+' nextmarkerpos:'+mPos);
+    //                popup.attr('id','markerpopup'+markerIndex);
+    //                popup.find('.title').html(marker.title);
+    //                popup.find('.description').html(marker.desc);
+    //                if(!popup.is(':visible')){
+    //                    popup.show('fast');
+    //                }
+    //            }
+    //        }
+    },
+
+
+    setDynamicResize: function(value){
+        var key = 'dynamicResize';
+        if(!value && key in this){
+            alert('clearing');
+            clearInterval(this[key]);
+            delete this[key];
+            return;
+        }
+        var wdw = this.$J(window);
+        var w = wdw.width();
+        var h = wdw.height();
+        var me = this;
+        this.dynamicResize = setInterval(function(){
+            var newW = wdw.width();
+            if(w!=newW){
+                w = newW;
+                //still wait a second: are we still adjusting the window? (call resize just once):
+                setTimeout(function(){
+                    if(wdw.width()==newW){
+                        me.resize.apply(me);
+                    }else{
+                        consolelog('resizing in act');
+                    }
+                },150);
+            }
+        },250);
     },
 
     resize: function() {
@@ -420,9 +492,9 @@ var Player = TimesideClass.extend({
         return this;
     },
 
-    getImageUrl: function(){
-        return this.$J('#visualizer_id').get(0).value;
-    },
+    //    getImageUrl: function(){
+    //        return this.$J('#visualizer_id').get(0).value;
+    //    },
     refreshImage: function(optionalImgJQueryElm){
         var image;
         if(optionalImgJQueryElm){
@@ -437,9 +509,11 @@ var Player = TimesideClass.extend({
             }
             return _src_;
         };
-        var imgSrc = funcImg(this.getImageUrl(), image.width(),image.height());
+        var imageUrl = this.getElements().find('.visualizer').val();
+        //alert(imageUrl);
+        var imgSrc = funcImg(imageUrl, image.width(),image.height());
         if(image.attr('src')!=imgSrc){
-            consolelog('setting attrt');
+            // consolelog('setting attrt');
             image.attr('src', imgSrc);
         }
     },
@@ -456,7 +530,7 @@ var Player = TimesideClass.extend({
         var offset =  this.getSoundDuration();
         var position = this.getSoundPosition(); //parseFloat(this.getSoundPosition());
         var idx = map.insertionIndex(position);
-        consolelog('current pointer position: '+position+' '+(typeof position));
+        //consolelog('current pointer position: '+position+' '+(typeof position));
         if(idx<0){
             idx = -idx-1; //cursor is not on a a marker, get the insertion index
         }else{
