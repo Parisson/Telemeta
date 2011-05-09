@@ -65,23 +65,6 @@
         }
     });
 
-    jQuery(document).ready(function(){
-//        var ar = [];
-//        for(var i=0; i<100; i++){
-//            ar.push('<a href=#>'+i+'</a>');
-//        }
-//        var p = new PopupDiv(ar.join('<br/>'));
-//        p.getDiv().find('a').each(function(i,aa){
-//                jQuery(aa).click(function(){alert(jQuery(aa).html());p.hide();return false;});
-//            });
-
-        var p = new PopupDiv({'close me and see what you can get':function(){p.hide();}});
-//        var p = new PopupDiv({'close me and see what you can get':function(){p.hide();},'options':['ferrari','maserati','bmw'],'inputa':'default','liar':true});
-        var a = jQuery('<a/>').attr('href','#').html('clickme');
-
-        p.setInvoker(a);
-        jQuery('body').append(a);
-    });
 </script>
 <!--item.approx_duration-->
 

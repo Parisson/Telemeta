@@ -65,6 +65,29 @@ var playlistUtils = {
         return popup.show(content,event);
     },
 
+
+    bindToNewPlaylistAction: function(anchorElement){
+
+      var t = gettrans('title');
+        var d = gettrans('description');
+        var dd = {};
+        dd[t]='';
+        dd[d]='';
+        var playlist = this;
+          var ppp_ = new PopupDiv({'content':dd,
+          focusable:true,  invoker:anchorElement, showclose:true, showok:true, ok:function(data){
+              if(!data[t] && !data[d]){
+                  return;
+              }
+              //convert language
+              playlist.add({'title':data[t],'description':data[d]});
+          } });
+consolelog(anchorElement);
+      anchorElement.unbind('click').click(function(){ppp_.show();});
+//        p.okButtonTitle = 'A';
+//        ppp_.show();
+    },
+
     add : function(dictionary){
 
         if(dictionary.public_id===undefined){

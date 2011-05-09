@@ -645,6 +645,17 @@ var Player = TimesideClass.extend({
                 rulerRemove.apply(ruler, [data.index]);
             });
 
+            //finally, focus events (WHEN the user CLICKS on a textinput or a textarea on a markerdiv)
+            mapUI.bind('focus', function(data){
+                if(data && 'index' in data){
+                    if(data.index>=0 && data.index<map.length){
+                        var offset = map.toArray()[data.index].offset;
+                        player.setSoundPosition(offset);
+                        player.getRuler().movePointer(offset);
+                    }
+                }
+            });
+
             jQuery('#loading_span').empty().remove();
             //TODO: move this in load_player?
             //                    setUpPlayerTabs([jQuery('#tab_analysis'), jQuery('#tab_markers')],

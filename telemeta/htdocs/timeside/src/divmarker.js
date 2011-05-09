@@ -147,9 +147,11 @@ var MarkerMapDiv = TimesideArray.extend({
         var me = this;
         div.find('.markersdivDescription').unbind('focus').focus(function(){
             me.setFocus(index,true);
+            me.fire('focus', {'index': index});
         });
         div.find('.markersdivTitle').unbind('focus').focus(function(){
             me.setFocus(index,true);
+            me.fire('focus', {'index': index});
         });
         div.find('.markersdivEdit').unbind('click').click( function(){
             me.setEditMode(index);
@@ -239,6 +241,7 @@ var MarkerMapDiv = TimesideArray.extend({
         }
         
         var me = this;
+
         e_deleteButton.unbind('click').click( function(){
             if(!(marker.isSavedOnServer) || confirm(gettrans('delete the marker permanently?'))){
                 me.fire('remove',{
@@ -264,11 +267,16 @@ var MarkerMapDiv = TimesideArray.extend({
             return false; //avoid scrolling of the page on anchor click
         });
 
-        //            if(isEditing){
-        //                startEdit();
-        //            }else{
-        //                this.updateTitleWidth();
-        //            }
+
+        e_titleText.keydown(function(event){
+           if(e_okButton.is(':visible')){
+               if (event.keyCode == '13') {
+                    event.preventDefault();
+                    e_okButton.trigger('click');
+                }
+           }
+        });
+
         return div;
     }
 

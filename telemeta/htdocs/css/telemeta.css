@@ -990,7 +990,8 @@ a.image-link {
 .markerdiv .ts-marker, .markerdiv .ts-marker:hover, .markerdiv .ts-marker:visited{
     font-family: monospace; background: #e65911;color: #FFF;padding-left: .3ex; padding-right:.3ex;
 }
-.markersdivDelete{    background-image: url('/images/del_marker.png');width:15px;height:2ex;}
+.markersdivDelete{    background-image: url('/images/del_marker.png');width:15px;height:2ex;background-repeat: no-repeat;}
+/*backfround-repeat is redundant with .markerDiv a,.. defined above but this way .markersDivDelete is re-usable in other context (eg popupdiv*/
 .markersdivAddPlaylist{    background-image: url('/images/add_playlist_marker.png');width:13px;height:2ex; }
 .markersdivTitle{    font-weight:bold;}
 .markersdivEdit, .markersdivEdit:hover, .markersdivEdit:visited{
