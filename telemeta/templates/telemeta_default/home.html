@@ -9,7 +9,9 @@
 //        jQuery('#_new_playlist').bind("click.bla",function(e){var p = popup;
 //            return p.show(p.createDivDialog({'title':'','description':''}, function(data){playlistUtils.add(data)}),e);
 //        });
- playlistUtils.bindToNewPlaylistAction(jQuery('#_new_playlist'));
+var a = jQuery('#_new_playlist');
+a.unbind('click').click(function(){playlistUtils.showAdd(a);});
+ //playlistUtils.bindToNewPlaylistAction(jQuery('#_new_playlist'));
     });
    
 </script>

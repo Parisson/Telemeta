@@ -1,92 +1,90 @@
 
-
 var playlistUtils = {
-    playlists : {},
+    playlists : [],
     
     addPlaylist: function(name, id){
-        this.playlists[name]=id;
+        //this.playlists[name]=id;
+        this.playlists.push({
+            'name':name,
+            'id':id
+        });
     },
-
-//    /*shows the popup for adding an item to the playlist*/
-//    showPopupAddToPlaylist: function(event,resourceType,objectId, optionalMessage){
-//        var $J = jQuery;
-//        var content = $J('<div/>').addClass("_popup_add_to_playlist");
-//        var addToPlaylist = this.addToPlaylist;
-//        for(var p in this.playlists){
-//            var id = this.playlists[p];
-//
-//            var a =  $J('<a/>').
-//            attr('href','#').
-//            addClass("component_icon").
-//            addClass("list_item icon_playlist").
-//            html(p).
-//            //by wrapping the addToPlaylist function in order to accept the id variable as an argument
-//            //we avoid calling the function with id = number_of_playlists for all anchors
-//            //by returning another function (basically create another closure) we avoid executing the function
-//            //immediately
-//            click(function(id_){
-//                    return function(){
-//                        addToPlaylist(id_,resourceType,objectId,optionalMessage);
-//                        return false;
-//                    }
-//                }(id)
-//            );
-//            content.append(a);
-//        }
-//        return popup.show(content,event);
-//    },
 
     /*shows the popup for adding an item to the playlist*/
-    showPopupAddToPlaylist: function(event,resourceType,objectId, optionalMessage){
-        var $J = jQuery;
-        var content = $J('<div/>').addClass("_popup_add_to_playlist");
-        var addToPlaylist = this.addToPlaylist;
-        for(var p in this.playlists){
-            var id = this.playlists[p];
-
-            var a =  $J('<a/>').
-            attr('href','#').
-            addClass("component_icon").
-            addClass("list_item icon_playlist").
-            html(p).
-            //by wrapping the addToPlaylist function in order to accept the id variable as an argument
-            //we avoid calling the function with id = number_of_playlists for all anchors
-            //by returning another function (basically create another closure) we avoid executing the function
-            //immediately
-            click(function(id_){
-                    return function(){
-                        addToPlaylist(id_,resourceType,objectId,optionalMessage);
-                        return false;
-                    }
-                }(id)
-            );
-            content.append(a);
+    showAddToPlaylist: function(anchorElement,resourceType,objectId, optionalOkMessage){
+        var ar = [];
+        var playlists = this.playlists;
+        for(var i=0; i< playlists.length; i++){
+            ar.push({
+                'html':playlists[i].name,
+                'class':"component_icon list_item icon_playlist"
+            });
         }
-        return popup.show(content,event);
+        if(!ar.length){
+            return;
+        }
+        var addFcn = this.addToPlaylist;
+        new PopupDiv({
+            defaultCloseOperation: 'remove',
+            focusable:true,
+            invoker:anchorElement,
+            content: ar,
+            ok:function(data){
+                var val = data.selIndex;
+                consolelog(data);
+                var callbackok = undefined;
+                if(optionalOkMessage){
+                    callbackok = function(){
+                        var p =new PopupDiv({
+                            content : "<div class='component_icon icon_ok'>"+optionalOkMessage+"</div>",
+                            defaultCloseOperation: 'remove'
+
+                        });
+                        p.bind('show', function(){
+                            this.closeLater(2500)
+                        });
+                        p.show();
+                    }
+                }
+                addFcn(playlists[val].id,resourceType,objectId,callbackok);
+                
+                
+            }
+        }).show();
+
     },
 
 
-    bindToNewPlaylistAction: function(anchorElement){
 
-      var t = gettrans('title');
+    showAdd: function(anchorElement){
+
+        var t = gettrans('title');
         var d = gettrans('description');
         var dd = {};
         dd[t]='';
         dd[d]='';
         var playlist = this;
-          var ppp_ = new PopupDiv({'content':dd,
-          focusable:true,  invoker:anchorElement, showclose:true, showok:true, ok:function(data){
-              if(!data[t] && !data[d]){
-                  return;
-              }
-              //convert language
-              playlist.add({'title':data[t],'description':data[d]});
-          } });
-consolelog(anchorElement);
-      anchorElement.unbind('click').click(function(){ppp_.show();});
-//        p.okButtonTitle = 'A';
-//        ppp_.show();
+        new PopupDiv({
+            'content':dd,
+            focusable:true,
+            invoker:anchorElement,
+            defaultCloseOperation:'remove',
+            showclose:true,
+            showok:true,
+            ok:function(data){
+                if(!data[t] && !data[d]){
+                    return;
+                }
+                //convert language
+                playlist.add({
+                    'title':data[t],
+                    'description':data[d]
+                });
+            }
+        }).show();
+
     },
+    
 
     add : function(dictionary){
 
@@ -116,24 +114,14 @@ consolelog(anchorElement);
     },
     
     //resourceType can be: 'collection', 'item', 'marker'
-    addToPlaylist: function(playlistId,resourceType,objectId, optionalOkMessage){
+    addToPlaylist: function(playlistId,resourceType,objectId, callbackOnSuccess,callbackOnError){
         consolelog(playlistId)
         var send = {
             'public_id':uniqid(),
             'resource_type':resourceType,
             'resource_id':objectId
         };
-        json([playlistId,send],'telemeta.add_playlist_resource',function(){
-            var p = popup;
-            if(optionalOkMessage){
-                p.show(jQuery('<div/>').addClass("icon_ok").addClass("component_icon").html(optionalOkMessage));
-                setTimeout(function(){
-                    p.hide();
-                },1000);
-            }else{
-                p.hide(); //to be sure
-            }
-        });
+        json([playlistId,send],'telemeta.add_playlist_resource',callbackOnSuccess,callbackOnError);
     }
 
 
