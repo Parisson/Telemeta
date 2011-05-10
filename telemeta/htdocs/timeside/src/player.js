@@ -190,7 +190,7 @@ var Player = TimesideClass.extend({
             'div.ts-control': {
                 'div.ts-layout': {
                     'div.ts-playback': ['a.ts-play', 'a.ts-pause', 'a.ts-rewind', 'a.ts-forward', 'a.ts-set-marker' //]
-                    ,'a.ts-volume','select.visualizer']
+                    ,'a.ts-volume','img.ts-wait', 'select.ts-visualizer']
                 }
             }/*,
         'div.marker-control': ['a.set-marker']*/
@@ -203,7 +203,7 @@ var Player = TimesideClass.extend({
             return jQueryObjs;
         }
 
-
+       
 
         var rewind = jQueryObjs.find('.ts-rewind');
         var forward = jQueryObjs.find('.ts-forward');
@@ -212,66 +212,23 @@ var Player = TimesideClass.extend({
         var volume = jQueryObjs.find('.ts-volume');
 
 
+         //hide the wait image and set the src
+        var waitImg = jQueryObjs.find('.ts-wait');
+        waitImg.attr('src','/images/wait_small.gif').attr('title','refreshing image').attr('alt','refreshing image').hide();
+
         //setting the select option for visualizers:
         var visualizers = this.getVisualizers();
-        var select = jQueryObjs.find('.visualizer');
+        var select = jQueryObjs.find('.ts-visualizer');
         for(var name in visualizers){
             $J('<option/>').val(visualizers[name]).html(name).appendTo(select);
         }
-        select.css('margin',0).css('marginLeft','5px');
-        //TODO: why the line below does not work?!!!!!
-        //jQueryObjs.find('.ts-control')
-        var control = $J('#player').find('.ts-control');
-        var span = control.height() - select.outerHeight(true);
-        consolelog()
-        if(span>1){
-            select.css('marginTop',(span/2)+'px');
-        }
+        //assigning event on select:
         select.change(
             function (){
-                
-                var img = $J('<img/>').attr("src","/images/wait_small.gif").css(
-                {
-                    'marginLeft':select.css('marginLeft'),
-                    'marginTop':select.css('marginTop'),
-                    'height' :select.height()+'px',
-                    'width':select.width()+'px'
-                });
-                select.hide();
-                img.insertBefore(select);
-                setTimeout(function(){
-                    if (me){
-                        me.refreshImage();
-                    }
-                    //img.remove();
-                    setTimeout(function(){
-                        img.remove();
-                        select.show();
-                    },150);
-                },300);
+                me.refreshImage.apply(me);
             });
-
-
-        //setting events to buttons (code left untouched from olivier):
-        //rewind
-        //
-        //(olivier comment) IE apparently doesn't send the second mousedown on double click:
-        //        var jump = $J.browser.msie ? 'mousedown dblclick' : 'mousedown';
-        //        rewind.attr('href', '#').bind(jump, this.attach(this._onRewind))
-        //        .click(function() {
-        //            return false;
-        //        });
-        //        //forward:
-        //        forward.attr('href', '#').bind(jump, this.attach(this._onForward))
-        //        .click(function() {
-        //            return false;
-        //        });
         
-        //attaching event to the image. Note that attaching an event to a transparent div is buggy in IE
-        //        if($J.browser.msie){
-        //
-        //        }
-       
+        
 
         var rewind_ = this.rewind;
         var forward_ = this.forward;
@@ -363,36 +320,38 @@ var Player = TimesideClass.extend({
        
 
         //finally, load markers and bind events for markers (see method below):
+        //NOTE: loadMarkers ASYNCHRONOUSLY CALLS THE SERVER, SO METHODS WRITTEN AFTER IT MIGHT BE EXECUTED BEFORE
+        //loadMarkers has finished its job
         this.loadMarkers(isInteractive);
 
         //set the marker popup
         //functions to set the marker popup
-        var popupMarker = $J('<div/>').addClass('component').css({
-            'dislay':'none',
-            'position':'absolute',
-            'zIndex':1000,
-            'overflow':'auto',
-            'display':'none' //TODO: remove this
-        //'backgroundColor':'#666'
-        });
-        $J('body').append(popupMarker);
-        var w = v.width();
-        var h = v.height();
-        var offs = v.offset(); //relative to the document
-        var width = parseInt(w/2);
-        var height = parseInt(h/2);
-        var margin = 5;
-        popupMarker.css({
-            'left':(margin+offs.left+width)+'px',
-            'top': parseInt(margin+offs.top)+'px',
-            'width':width+'px',
-            'height':height+'px'
-        });
-        popupMarker.html("<table style='width:100%'><tr><td>"+gettrans('title')+"</td><td class='title'></td></tr><tr><td>"+
-            gettrans('description')+"</td><td class='description'></td></tr></table>");
-        this.getMarkerPopup = function(){
-            return popupMarker;
-        }
+//        var popupMarker = $J('<div/>').addClass('component').css({
+//            'dislay':'none',
+//            'position':'absolute',
+//            'zIndex':1000,
+//            'overflow':'auto',
+//            'display':'none' //TODO: remove this
+//        //'backgroundColor':'#666'
+//        });
+//        $J('body').append(popupMarker);
+//        var w = v.width();
+//        var h = v.height();
+//        var offs = v.offset(); //relative to the document
+//        var width = parseInt(w/2);
+//        var height = parseInt(h/2);
+//        var margin = 5;
+//        popupMarker.css({
+//            'left':(margin+offs.left+width)+'px',
+//            'top': parseInt(margin+offs.top)+'px',
+//            'width':width+'px',
+//            'height':height+'px'
+//        });
+//        popupMarker.html("<table style='width:100%'><tr><td>"+gettrans('title')+"</td><td class='title'></td></tr><tr><td>"+
+//            gettrans('description')+"</td><td class='description'></td></tr></table>");
+//        this.getMarkerPopup = function(){
+//            return popupMarker;
+//        }
     },
 
     showMarkerPopup: function(markerIndex){
@@ -427,7 +386,7 @@ var Player = TimesideClass.extend({
         }
         var wdw = this.$J(window);
         var w = wdw.width();
-        var h = wdw.height();
+        //var h = wdw.height();
         var me = this;
         this.dynamicResize = setInterval(function(){
             var newW = wdw.width();
@@ -437,12 +396,10 @@ var Player = TimesideClass.extend({
                 setTimeout(function(){
                     if(wdw.width()==newW){
                         me.resize.apply(me);
-                    }else{
-                        consolelog('resizing in act');
                     }
-                },150);
+                },200);
             }
-        },250);
+        },100);
     },
 
     resize: function() {
@@ -472,22 +429,53 @@ var Player = TimesideClass.extend({
             height: height
         }
         elements.css(style);
-        //this.imageWidth = style.width;
-        //this.imageHeight = style.height;
-        //refreshing images
-        //        var funcImg = function(player_image_url, width, height){
-        //            var _src_ = null;
-        //            if (player_image_url && (width || height)) {
-        //                _src_ = player_image_url.replace('WIDTH', width + '').replace('HEIGHT', height + '');
-        //            }
-        //            return _src_;
-        //        };
-        //        var imgSrc = funcImg(this.getImageUrl(), style.width,style.height);
-        //        if(image.attr('src')!=imgSrc){
-        //            image.attr('src', imgSrc);
-        //        }
+
+        
+        //refreshing images:
         this.refreshImage(image);
         this.getRuler().resize();
+
+
+        //adjusting select size:
+        //NOTE: some buttons might be hidden AFTER THIS METHOD HAS BEEN INVOKED
+        //TODO: why the line below does not work?!!!!!
+        //jQueryObjs.find('.ts-control')
+//        var $J = this.$J;
+//        var control = $J('#player').find('.ts-control');
+//        var imgwait = playerelements.find('.ts-wait').hide();
+//        var select = playerelements.find('.ts-visualizer');
+//        var maxHeight = control.height();
+//        var availableWidth = 0;
+//        select.siblings().each(function(i,e){
+//            var ee = $J(e);
+//            if(ee.is('a')){
+//                availableWidth+=ee.outerWidth(true);
+////                consolelog(ee);
+////                consolelog(ee.outerWidth());
+//            }
+//        });
+//
+//        availableWidth = control.width() - availableWidth;
+//        var both = select.add(imgwait);
+//        both.css({
+//            'margin':'0px',
+//            'width':'',
+//            'height':''
+//        });
+//
+//        select.css('maxHeight', (maxHeight-(select.outerHeight(true)-select.height()))+'px');
+//        imgwait.css('maxHeight', (maxHeight-(imgwait.outerHeight(true)-imgwait.height()))+'px');
+//        var imgMarginTop =  (maxHeight- imgwait.outerHeight(true))/2;
+//        var selectMarginTop =  (maxHeight-select.outerHeight(true))/2;
+//        select.css('marginTop', selectMarginTop+'px');
+//        imgwait.css('marginTop', imgMarginTop+'px');
+//
+//        select.css('maxWidth', (availableWidth-(select.outerWidth(true)-select.width())+'px'));
+//        imgwait.css('maxWidth', (availableWidth-(imgwait.outerWidth(true)-imgwait.width())+'px'));
+//        select.css('marginLeft', ((availableWidth-select.outerWidth(true)-selectMarginTop))+'px');
+//        imgwait.css('marginLeft', ((availableWidth- imgwait.outerWidth(true) - imgMarginTop))+'px');
+
+        
         return this;
     },
 
@@ -501,6 +489,7 @@ var Player = TimesideClass.extend({
         }else{
             image = this.getElements().find('.ts-image');
         }
+        var select = this.getElements().find('.ts-visualizer');
         var funcImg = function(player_image_url, width, height){
             var _src_ = null;
             if (player_image_url && (width || height)) {
@@ -508,13 +497,29 @@ var Player = TimesideClass.extend({
             }
             return _src_;
         };
-        var imageUrl = this.getElements().find('.visualizer').val();
+        var imageUrl = this.getElements().find('.ts-visualizer').val();
         //alert(imageUrl);
         var imgSrc = funcImg(imageUrl, image.width(),image.height());
-        if(image.attr('src')!=imgSrc){
+
+        if(image.attr('src')==imgSrc){
             // consolelog('setting attrt');
-            image.attr('src', imgSrc);
+            return;
         }
+        var w =select.width();
+        var h = select.height();
+        select.hide();
+        var progressBar = this.getElements().find('.ts-wait').css({'width':w+'px','height':h+'px'}).show();
+        
+        image.load(function(){
+            progressBar.hide();
+            select.show();
+            image.unbind('load');
+        });
+        //this timeout is set in order to leave the time to hide show components above:
+        //setTimeout(function(){
+        image.attr('src', imgSrc);
+    //},100);
+       
     },
 
     getSoundVolume :function(){

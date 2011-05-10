@@ -90,3 +90,7 @@
     margin: 10px 0 15px 0;
     display: none;
 }
+
+#player .ts-visualizer, .ts-wait{
+    margin:5px;
+}
