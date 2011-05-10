@@ -1139,6 +1139,5 @@ class WebView(object):
                 return HttpResponseRedirect('/items/'+public_id)
         else:
             formset = PerformanceFormSet(instance=item)
-        return render(request, template, 
-                    {'item': item, 'formset': formset,})
+        return render(request, template, {'item': item, 'formset': formset,})
     
