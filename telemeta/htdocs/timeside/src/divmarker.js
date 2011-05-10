@@ -147,14 +147,14 @@ var MarkerMapDiv = TimesideArray.extend({
         //div.attr('id','_markerdiv'+index);
         div.find('.ts-marker').html(index+1);
         var me = this;
-//        div.find('.markersdivDescription').unbind('focus').focus(function(){
-//            me.setFocus(index,true);
-//            me.fire('focus', {'index': index});
-//        });
-//        div.find('.markersdivTitle').unbind('focus').focus(function(){
-//            me.setFocus(index,true);
-//            me.fire('focus', {'index': index});
-//        });
+        div.find('.markersdivDescription').unbind('focus').focus(function(){
+            me.setFocus(index,true);
+            me.fire('focus', {'index': index});
+        });
+        div.find('.markersdivTitle').unbind('focus').focus(function(){
+            me.setFocus(index,true);
+            me.fire('focus', {'index': index});
+        });
         div.find('.markersdivEdit').unbind('click').click( function(){
             me.setEditMode(index);
             return false; //avoid scrolling of the page on anchor click
