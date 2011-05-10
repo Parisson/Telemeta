@@ -37,6 +37,11 @@
                 <a href="#" id="{{playlist.playlist.public_id}}" onclick="playlistUtils.remove(this.id);return false;" class="component_icon button icon_cancel">{% trans "Delete" %}</a>
             </td>
         </tr>
+        {% if playlist.playlist.description %}
+         <tr>
+          <td colspan="2" style="border-bottom:1px solid #6A0307;color:#6A0307;font-size: 80%">{{ playlist.playlist.description }}</td>
+         </tr>
+        {% endif %}  
     </table>
 
     <table class="listing" width="100%">
