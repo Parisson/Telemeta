@@ -55,7 +55,7 @@ from django.contrib import auth
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.context_processors import csrf
-from django.forms.models import modelformset_factory
+from django.forms.models import modelformset_factory, inlineformset_factory
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext
 from django.contrib.auth.forms import UserChangeForm
@@ -350,22 +350,6 @@ class WebView(object):
                     'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True), "form": form, 
                     'previous' : previous, 'next' : next, 
                     })
-    
-    @method_decorator(permission_required('telemeta.change_mediaitem'))
-    def item_performances_edit(self, request, public_id, template):
-        item = MediaItem.objects.get(public_id=public_id)
-        PerformanceFormSet = modelformset_factory(MediaItemPerformance)
-        queryset = MediaItemPerformance.objects.filter(media_item=item)
-        if request.method == 'POST':
-            formset = PerformanceFormSet(data=request.POST, queryset=queryset)
-            if formset.is_valid():
-                formset.save()
-                return HttpResponseRedirect('/items/'+public_id)
-        else:
-            formset = PerformanceFormSet(queryset=queryset)
-        return render(request, template, 
-                    {'item': item, 'formset': formset,})
-    
         
     @method_decorator(permission_required('telemeta.add_mediaitem'))
     def item_add(self, request, template='telemeta/mediaitem_add.html'):
@@ -1143,4 +1127,18 @@ class WebView(object):
             profile_form = UserProfileForm(instance=profile, prefix='profile')
             forms = [user_form, profile_form]
         return render(request, template, {'forms': forms, 'usr': user, 'user_hidden_fields': user_hidden_fields})
-        
+
+    @method_decorator(permission_required('telemeta.change_mediaitem'))
+    def item_performances_edit(self, request, public_id, template):
+        item = MediaItem.objects.get(public_id=public_id)
+        PerformanceFormSet = inlineformset_factory(MediaItem, MediaItemPerformance)
+        if request.method == 'POST':
+            formset = PerformanceFormSet(data=request.POST, instance=item)
+            if formset.is_valid():
+                formset.save()
+                return HttpResponseRedirect('/items/'+public_id)
+        else:
+            formset = PerformanceFormSet(instance=item)
+        return render(request, template, 
+                    {'item': item, 'formset': formset,})
+    

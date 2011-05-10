@@ -394,17 +394,3 @@ class LocationManager(CoreManager):
         return self.get_query_set().flatname_map(*args, **kwargs)
     flatname_map.__doc__ = LocationQuerySet.flatname_map.__doc__    
 
-
-#class MediaItemPerformanceQuerySet(CoreQuerySet):
-#    
-#    def by_item(self, item):
-#        return self.filter(item=item)
-#        
-#
-#class MediaItemPerformanceManager(CoreManager):
-#    
-#    def get_query_set(self):
-#        "Return performance query set"
-#        return MediaItemPerformanceQuerySet(self.model)
-    
-        
