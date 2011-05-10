@@ -100,7 +100,8 @@ function setSelectedMenu(){
     })
 }
 
-$(document).ready(function() {
+
+jQuery(document).ready(function() {
     foldInfoBlocks();
     setSelectedMenu();
 });
@@ -848,7 +849,7 @@ function PopupDiv(){
                 if('css' in item){
                     a.css(item['css']);
                 }
-                a.css('display','block');
+                a.css({'display':'block','margin':'2px'}); //margin is used to display the outline (focus)
                 setEvents(h,a,input);
                 container.append(a);
             }
@@ -988,7 +989,8 @@ function PopupDiv(){
                 //otherwise execute callback
                 setTimeout(function(){
                     var v = doc_.activeElement;
-                    if(v && $(v).attr(focusAttr) || me.isClosing){
+                    consolelog(v);
+                    if((v && $(v).attr(focusAttr)) || me.isClosing){
                         //if we are closing, we will call back this method which removes the focus attributes, bt meanwhile the
                         //timeout should execute
                         return;
@@ -1193,12 +1195,15 @@ function PopupDiv(){
             }
         }
 
+        //creating shadow. REmove attributes tabindex (unnecessary) and especially focusAttr,
+        //so that clicking tab key and setting the shadow focusable hides the popup. If one wants the shadow not to hide the popup. keep
+        //focusAttr BUT insert shadow in the focus cycle root (see method)
         var shadow = div.clone(false,false).empty().css({
             'backgroundColor':'#000',
             'borderColor':'#000',
             'visibility':'visible',
             'zIndex':this.zIndex-1
-        }).removeAttr('tabindex').fadeTo(0,0).
+        }).removeAttr('tabindex').removeAttr(this.getFocusAttr()).fadeTo(0,0).
         attr('id',this.getShadowDivId()) //for use in hide
         .insertAfter(div);
 

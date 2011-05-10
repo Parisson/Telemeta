@@ -1142,3 +1142,12 @@ a.image-link {
 #id_code {
     width: 300px;
 }
+
+/*focus on elements*/
+a:focus,div:focus{
+  -moz-outline: 1px dotted #999  !important;
+  outline: #999 dotted 1px  !important;
+}
+input,textarea{
+    outline: none !important;
+}

@@ -113,7 +113,8 @@ var MarkerMapDiv = TimesideArray.extend({
         var e_descriptionText = div.find('.markersdivDescription');
         var e_titleText = div.find('.markersdivTitle');
         if(value){
-            this.debug('setting ba bla bla');
+            this.debug('setting editmode');
+            div.css('backgroundColor','#E65911');
             e_descriptionText.removeAttr('readonly').removeClass('markersdivUneditable');
             e_titleText.removeAttr('readonly').removeClass('markersdivUneditable');
             e_okButton.show();
@@ -125,19 +126,20 @@ var MarkerMapDiv = TimesideArray.extend({
             e_titleText.attr('readonly','readonly').addClass('markersdivUneditable');
             e_okButton.hide();
             editButton.show();
+            div.css('backgroundColor','');
         }
         this.setFocus(index,value);
         this.stretch(e_titleText);
     },
 
     setFocus: function(index,value){
-        this.each(function(i,div){
-            if(i==index && value){
-                div.css('backgroundColor','#E65911'); //'#f5cf23'
-            }else{
-                div.css('backgroundColor','');
-            }
-        });
+//        this.each(function(i,div){
+//            if(i==index && value){
+//                div.css('backgroundColor','#E65911'); //'#f5cf23'
+//            }else{
+//                div.css('backgroundColor','');
+//            }
+//        });
     },
 
 
@@ -145,14 +147,14 @@ var MarkerMapDiv = TimesideArray.extend({
         //div.attr('id','_markerdiv'+index);
         div.find('.ts-marker').html(index+1);
         var me = this;
-        div.find('.markersdivDescription').unbind('focus').focus(function(){
-            me.setFocus(index,true);
-            me.fire('focus', {'index': index});
-        });
-        div.find('.markersdivTitle').unbind('focus').focus(function(){
-            me.setFocus(index,true);
-            me.fire('focus', {'index': index});
-        });
+//        div.find('.markersdivDescription').unbind('focus').focus(function(){
+//            me.setFocus(index,true);
+//            me.fire('focus', {'index': index});
+//        });
+//        div.find('.markersdivTitle').unbind('focus').focus(function(){
+//            me.setFocus(index,true);
+//            me.fire('focus', {'index': index});
+//        });
         div.find('.markersdivEdit').unbind('click').click( function(){
             me.setEditMode(index);
             return false; //avoid scrolling of the page on anchor click
@@ -182,7 +184,7 @@ var MarkerMapDiv = TimesideArray.extend({
         //TODO: why class 'ts-marker' does not work?
         //for the moment we set the style manually, remove
         //TODO: table width with CSS?
-        var div = this.$J('<div/>').addClass("markerdiv").html('<div>'+
+        var div = this.$J('<div/>').attr('tabindex','0').addClass("markerdiv").html('<div>'+
                                 '<a class="ts-marker"></a>'+
                                 '<span class="markersdivOffset" type="text"></span>'+
                                 '<input class="markersdivTitle" type="text"/>'+

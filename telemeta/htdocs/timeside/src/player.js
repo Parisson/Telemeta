@@ -220,14 +220,15 @@ var Player = TimesideClass.extend({
         var visualizers = this.getVisualizers();
         var select = jQueryObjs.find('.ts-visualizer');
         for(var name in visualizers){
-            $J('<option/>').val(visualizers[name]).html(name).appendTo(select);
+            //$J('<option/>').val(visualizers[name]).html(name).appendTo(select);
+            $J('<option/>').html(name).appendTo(select);
         }
         //assigning event on select:
         select.change(
             function (){
                 me.refreshImage.apply(me);
             });
-        
+        select.css('maxHeight',(play.height()-(select.outerHeight(true)-select.height()))+'px');
         
 
         var rewind_ = this.rewind;
@@ -497,10 +498,10 @@ var Player = TimesideClass.extend({
             }
             return _src_;
         };
-        var imageUrl = this.getElements().find('.ts-visualizer').val();
+        var imageUrl = this.getVisualizers()[""+select.val()];
+        //consolelog(this.getVisualizers());
         //alert(imageUrl);
         var imgSrc = funcImg(imageUrl, image.width(),image.height());
-
         if(image.attr('src')==imgSrc){
             // consolelog('setting attrt');
             return;

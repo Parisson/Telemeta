@@ -8,7 +8,7 @@
     jQuery(window).ready(function(){
 
         var a = jQuery('#_new_playlist');
-        a.unbind('click').click(function(){playlistUtils.showAdd(a);});
+        a.unbind('click').click(function(){playlistUtils.showAdd(a);return false;});
     });
    
 </script>

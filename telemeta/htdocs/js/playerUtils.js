@@ -60,7 +60,9 @@ function loadPlayer(analizerUrl, soundUrl, visualizers){
         return;
     }
     var $J = jQuery;
+    consolelog('till here all ok1');
     var msgElm = $J('#loading_span_text'); //element to show messages
+    consolelog('till here all ok2');
     if(msgElm){
         msgElm.html('Loading analyzer...');
     }
