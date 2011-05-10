@@ -7,9 +7,12 @@
 <link rel="stylesheet" type="text/css" href="{% url telemeta-css "admin.css" %}" />
 {% endblock %}
 
-{% block content %}
+{% block title %}
 <h1><img src="{% url telemeta-images "admin_red.png" %}" style="vertical-align:middle" /> {% trans "Administration" %}</h1>
-<br />
+{% endblock %}
+
+{% block content %}
+
 {% block tab %}
 <div class="tabs">
 <ul>

@@ -3,7 +3,7 @@
 .tabs {
  border: 1px solid #6a0307;
  /* border-color: gray black black gray;*/
- margin: 1.8em 0;
+ margin: 0em 0;
  padding: .3em 0 0 .5em;
  float: left;
  width: 15em;
@@ -22,7 +22,7 @@
 .tabs :link:hover, .tabs :visited:hover { background: transparent }
 
 .tabcontents {
- padding: 0.4em 2em;
+ padding: 0em 2em;
  margin-left: 17em;
  min-height: 300px;
 }

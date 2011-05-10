@@ -51,9 +51,11 @@ $(document).ready(function () {
 </script>
 {% endblock %}
 
-{% block content %}
+{% block title %}
 <h1><img src="{% url telemeta-images "adv_search_red.png" %}" style="vertical-align:middle" /> {% trans "Advanced Search" %}</h1>
+{% endblock %}
 
+{% block content %}
 <form action="{% url telemeta-search %}" id="searchform">{% csrf_token %}
 <fieldset>
 

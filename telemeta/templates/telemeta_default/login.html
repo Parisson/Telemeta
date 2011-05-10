@@ -1,9 +1,12 @@
 {% extends "telemeta/base.html" %}
 {% load i18n %}
 
+{% block title %}
+<h1><img src="{% url telemeta-images "user_red.png" %}" style="vertical-align:middle" /> {% trans "User authentication" %}</h1>
+{% endblock %}
+
 {% block content %}
-<h1>{% trans "User authentication" %}</h1>
-<br />
+
 {% if form.errors %}
 <p class="login-error">{% trans "Your username and password didn't match. Please try again." %}</p>
 {% endif %}

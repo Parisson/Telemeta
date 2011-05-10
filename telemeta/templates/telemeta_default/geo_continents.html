@@ -17,14 +17,16 @@ var resourceMap = new ResourceMap('.continents', {
 {% endblock %}
 
 {% block title %}
-    <h1><img src="{% url telemeta-images "world_red.png" %}" style="vertical-align:middle" /> {% trans "Geographic Navigator" %}</h1>
+ <h1><img src="{% url telemeta-images "world_red.png" %}" style="vertical-align:middle" /> {% trans "Geographic Navigator" %}</h1>
 {% endblock %}
+
 {% block title_buttons %}
         {% if continents %}
         <a href="#" onclick="resourceMap.toggle('map'); return false;" class="component button">{% trans "Map" %}</a> |
         <a href="#" onclick="resourceMap.toggle('list'); return false;" class="component button">{% trans "List" %}</a>
         {% endif %}
 {% endblock %}
+
 {% block content %}
 {% if continents %}
 <ul class="continents">
