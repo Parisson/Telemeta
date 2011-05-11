@@ -4,11 +4,11 @@
 
 {% block head_title %}{% trans "Item" %}- {{ block.super }}{% endblock %}
 
-
 {% if item %}
 {% block title %}
-    <img src="images/item.png" style="vertical-align:middle" /> <h1>Item : NEW</h1>
+    <img src="images/item.png" style="vertical-align:middle" /> Item : NEW
 {% endblock %}
+
 {% block title_buttons %}
     {% if perms.telemeta.add_mediaitem %}
       <a href="{% url telemeta-items %}"

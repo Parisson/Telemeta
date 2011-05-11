@@ -5,8 +5,9 @@
 {% block head_title %}{% trans "Media Items" %} - {{ block.super }}{% endblock %}
 
 {% block title %}
- <img src="images/item.png" style="vertical-align:middle" /> <h1>{% trans "Media Items" %}</h1>
+ <img src="images/item.png" style="vertical-align:middle" /> {% trans "Media Items" %}
 {% endblock %}
+
 {% block title_buttons %}
     {% if user.is_authenticated and perms.telemeta.add_mediaitem %}
       <a href="{% url telemeta-item-add %}" class="component_icon button icon_add">{% trans "Add" %}</a>
@@ -19,5 +20,4 @@
 {% include "telemeta/inc/mediaitem_list.html" %}
 </div>
 {% endwith %}
-
 {% endblock %}

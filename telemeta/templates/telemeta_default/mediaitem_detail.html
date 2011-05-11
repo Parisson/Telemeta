@@ -80,17 +80,15 @@
     });
 
 </script>
-<!--item.approx_duration-->
-
 {% endif %}
 {% endblock %}
-
 
 {% if item %}
 
 {% block title %}
-<img src="images/item.png" style="vertical-align:middle" /> <h1>Item : {{ item }}</h1>
+ <img src="images/item.png" style="vertical-align:middle" /> Item : {{ item }}
 {% endblock %}
+
 {% block title_buttons %}
 <div class="fixedWidthAsPlayer">
     {% if user.is_authenticated and perms.telemeta.change_mediaitem %}
@@ -107,7 +105,6 @@
 {% endblock %}
 
 {% block content %}
-
 <div class="{% if item.file %}{% if item.public_access == 'full' or public_access or user.is_staff %}with-rightcol{% endif %}{% endif %}">
     {% if item.file %}
     {% if public_access or user.is_staff %}

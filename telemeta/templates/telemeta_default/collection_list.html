@@ -5,8 +5,9 @@
 {% block head_title %}{% trans "Media Collections" %} - {{ block.super }}{% endblock %}
 
 {% block title%}
- <h1><img src="{% url telemeta-images "collections_red.png" %}" style="vertical-align:middle" /> {% trans "Media Collections" %}</h1>
+ <img src="{% url telemeta-images "collections_red.png" %}" style="vertical-align:middle" /> {% trans "Media Collections" %}
 {% endblock %}
+
 {% block title_buttons %}
      <a href="{% url telemeta-collections %}" class="component_icon button icon_filter">{% trans "All" %}</a>
      <a href="{% url telemeta-collections-unpublished %}" class="component_icon button icon_filter">{% trans "Unpublished" %}</a>
@@ -22,5 +23,4 @@
 {% include "telemeta/inc/collection_list.html" %}
 </div>
 {% endwith %}
-
 {% endblock %}

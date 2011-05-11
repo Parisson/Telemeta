@@ -4,6 +4,10 @@
         
 {% block head_title %}{% trans "User Profile" %} : {{ usr.username }}{% endblock %}
 
+{% block title %}
+ <img src="{% url telemeta-images "user_red.png" %}" style="vertical-align:middle" /> {% trans "User profile" %} : {{ usr.username }}
+{% endblock %}
+
 {% block content %}
   <div class="module-set" style="width: 33%">
   {% block modules %}
@@ -21,9 +25,8 @@
     </ul>
    </div>
   {% endblock %}
-  </div>
+ </div>
 
-  <h1><img src="{% url telemeta-images "user_red.png" %}" style="vertical-align:middle" /> {% trans "User profile" %} : {{ usr.username }}</h1>
     <div class="infos" style="padding-top: 1em;">
      <dl class="listing">
       <dt>{% trans "First Name" %}</dt><dd>{{ usr.first_name }}</dd>

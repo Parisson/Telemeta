@@ -2,45 +2,45 @@
 {% load i18n %}
 {% load telemeta_utils %}
 
-  {% block title %}
-    <img src="images/item.png" style="vertical-align:middle" /> <h1>Item : {{ item }}</h1>
-  {% endblock %}
-  
-  {% block title_buttons %}
-   <a href="{% url telemeta-item-detail item.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
-  {% endblock %}
+{% block title %}
+<img src="images/item.png" style="vertical-align:middle" /> Item : {{ item }}
+{% endblock %}
 
-  {% block infos %}    
-    <div class="infos">
-     <form enctype="multipart/form-data" id="_editItemForm" method="POST" action="">{% csrf_token %}   
-      <table>
-       <tr><td colspan="2">{% for error in form.non_field_errors %}<li class="error">{{ error }}</li>{% endfor %}</td></tr>
-       {% for field in form %}
-        {% if not field.html_name == "copied_from_item" %}
-        <tr>
-            <tr><td class="error">{{ field.errors }}</td></tr>
-            <td>{{ field.label_tag }}:</td>
-             {% if field.html_name == "file" %}
-              <td> {{ item.file.name }} <br /> {{ field }}</td>
-             {% else %}
-             {% if field.html_name == "collection" %}
-              <td>{{ field }} <br />&nbsp;{% trans "Title" %} : {{ item.collection.title }}</td>
-             {% else %}
-              <td>{{ field }}</td>
-             {% endif %}
-             {% endif %}
-        </tr>
-        {% else %}
-           <tr><td>{{ field.label_tag.as_hidden }}{{ field.as_hidden }}</td></tr>
-        {% endif %}
-       {% endfor %}
-       </table>
-       <div align="center">
-        <a href="{% url telemeta-item-detail item.public_id %}"
-           class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
-        <a href="#" class="component_icon button icon_save"
-   onclick="document.getElementById('_editItemForm').submit(); return false;">{% trans "Save" %}</a>
-       </div>
-     </form>
+{% block title_buttons %}
+<a href="{% url telemeta-item-detail item.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+{% endblock %}
+
+{% block infos %}    
+<div class="infos">
+    <form enctype="multipart/form-data" id="_editItemForm" method="POST" action="">{% csrf_token %}   
+    <table>
+    <tr><td colspan="2">{% for error in form.non_field_errors %}<li class="error">{{ error }}</li>{% endfor %}</td></tr>
+    {% for field in form %}
+    {% if not field.html_name == "copied_from_item" %}
+    <tr>
+        <tr><td class="error">{{ field.errors }}</td></tr>
+        <td>{{ field.label_tag }}:</td>
+            {% if field.html_name == "file" %}
+            <td> {{ item.file.name }} <br /> {{ field }}</td>
+            {% else %}
+            {% if field.html_name == "collection" %}
+            <td>{{ field }} <br />&nbsp;{% trans "Title" %} : {{ item.collection.title }}</td>
+            {% else %}
+            <td>{{ field }}</td>
+            {% endif %}
+            {% endif %}
+    </tr>
+    {% else %}
+        <tr><td>{{ field.label_tag.as_hidden }}{{ field.as_hidden }}</td></tr>
+    {% endif %}
+    {% endfor %}
+    </table>
+    <div align="center">
+    <a href="{% url telemeta-item-detail item.public_id %}"
+        class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+    <a href="#" class="component_icon button icon_save"
+onclick="document.getElementById('_editItemForm').submit(); return false;">{% trans "Save" %}</a>
     </div>
-  {% endblock infos %}
+    </form>
+</div>
+{% endblock infos %}

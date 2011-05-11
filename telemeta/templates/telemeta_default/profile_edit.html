@@ -2,12 +2,13 @@
 {% load i18n %}
 {% load telemeta_utils %}
 
-<a href="{% url telemeta-profile-detail usr.username %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+{% block title_buttons %}
+ <a href="{% url telemeta-profile-detail usr.username %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+{% endblock %}
 
 {% block content %}
-       <h1><img src="{% url telemeta-images "user_red.png" %}" style="vertical-align:middle" /> {% trans "User profile" %} : {{ usr.username }}</h1>
        <div class="infos" style="padding-top: 1em;">
-       
+
         <form method="POST" id="_editUserProfileForm" action="">{% csrf_token %}
        <table>
        {% for form in forms %}
