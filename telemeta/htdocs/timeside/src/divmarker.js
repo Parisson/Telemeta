@@ -5,6 +5,9 @@
  * License: GNU General Public License version 2.0
  */
 
+/**
+ * Class for showing/editing a marker on details. 
+ */
 var MarkerMapDiv = TimesideArray.extend({
     init:function(){
         this._super();
@@ -254,8 +257,7 @@ var MarkerMapDiv = TimesideArray.extend({
         })
 
         e_addplaylistButton.unbind('click').bind('click',function(evtObj_){
-            playlistUtils.showAddToPlaylist(e_addplaylistButton,'marker',""+marker.id,gettrans('marker added to the selected playlist'));
-            //playlistUtils.showPopupAddToPlaylist(evtObj_,'marker',""+marker.id,gettrans('marker added to the selected playlist'));
+            playlistUtils.showAddResourceToPlaylist(e_addplaylistButton,'marker',""+marker.id,gettrans('marker added to the selected playlist'));
             return false;
         });
 

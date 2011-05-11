@@ -34,51 +34,6 @@ var playlistUtils = {
         });
     },
 
-    
-    /*shows the popup for adding an item to the playlist*/
-    showAddToPlaylist: function(anchorElement,resourceType,objectId, optionalOkMessage){
-        var ar = [];
-        var playlists = this.playlists;
-        for(var i=0; i< playlists.length; i++){
-            ar.push({
-                'html':playlists[i].name,
-                'class':"component_icon list_item icon_playlist"
-            });
-        }
-        if(!ar.length){
-            return;
-        }
-        var addFcn = this.addToPlaylist;
-        new PopupDiv({
-            invoker:anchorElement,
-            content: ar,
-            ok:function(data){
-                var val = data.selIndex;
-                consolelog(data);
-                var callbackok = undefined;
-                if(optionalOkMessage){
-                    callbackok = function(){
-                        var p =new PopupDiv({
-                            content : "<div class='component_icon icon_ok'>"+optionalOkMessage+"</div>",
-                            focusable: false
-
-                        });
-                        p.bind('show', function(){
-                            this.closeLater(1500);
-                        });
-                        p.show();
-                    }
-                }
-                addFcn(playlists[val].id,resourceType,objectId,callbackok);
-                
-                
-            }
-        }).show();
-
-    },
-
-
-
     showAdd: function(anchorElement){
 
         var t = gettrans('title');
@@ -109,7 +64,7 @@ var playlistUtils = {
     add : function(dictionary){
 
         if(dictionary.public_id===undefined){
-            dictionary.public_id = uniqid();
+            dictionary.public_id = uniqid(); //defined in application.js
         }
         if(dictionary.user===undefined){
             dictionary.user = CURRENT_USER_NAME;
@@ -132,9 +87,53 @@ var playlistUtils = {
             window.location.reload();
         });
     },
-    
+
+
+    /*shows the popup for adding a resource to a playlist*/
+    showAddResourceToPlaylist: function(anchorElement,resourceType,objectId, optionalOkMessage){
+        var ar = [];
+        var playlists = this.playlists;
+        for(var i=0; i< playlists.length; i++){
+            ar.push({
+                'html':playlists[i].name,
+                'class':"component_icon list_item icon_playlist"
+            });
+        }
+        if(!ar.length){
+            return;
+        }
+        var addFcn = this.addResourceToPlaylist;
+        new PopupDiv({
+            invoker:anchorElement,
+            content: ar,
+            ok:function(data){
+                var val = data.selIndex;
+                consolelog(data);
+                var callbackok = undefined;
+                if(optionalOkMessage){
+                    callbackok = function(){
+                        var p =new PopupDiv({
+                            content : "<div class='component_icon icon_ok'>"+optionalOkMessage+"</div>",
+                            focusable: false
+
+                        });
+                        p.bind('show', function(){
+                            this.closeLater(1500); //this refers to p
+                        });
+                        p.show();
+                    }
+                }
+                addFcn(playlists[val].id,resourceType,objectId,callbackok);
+
+
+            }
+        }).show();
+
+    },
+
     //resourceType can be: 'collection', 'item', 'marker'
-    addToPlaylist: function(playlistId,resourceType,objectId, callbackOnSuccess,callbackOnError){
+    //addResource RENAME TODO!!!!
+    addResourceToPlaylist: function(playlistId,resourceType,objectId, callbackOnSuccess,callbackOnError){
         consolelog(playlistId)
         var send = {
             'public_id':uniqid(),
