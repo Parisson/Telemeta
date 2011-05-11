@@ -311,6 +311,10 @@ class MediaItemKeyword(ModelCore):
         db_table = 'media_item_keywords'
         unique_together = (('item', 'keyword'),)
 
+class MediaItemKeywordForm(ModelForm):
+    class Meta:
+        model = MediaItemKeyword
+
 class MediaItemPerformance(ModelCore):
     "Item performance"
     media_item      = ForeignKey('MediaItem', related_name="performances", 

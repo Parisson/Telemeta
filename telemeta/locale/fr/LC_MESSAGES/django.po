@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-11 16:01+0200\n"
+"POT-Creation-Date: 2011-05-11 16:57+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Olivier Guilyardi <olivier samalyse com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -70,8 +70,9 @@ msgid "generic style"
 msgstr "style générique"
 
 #: models/enum.py:127 models/media.py:308
+#, fuzzy
 msgid "keyword"
-msgstr "mot-clé"
+msgstr "Mot-clé"
 
 #: models/enum.py:134 models/media.py:106
 msgid "publisher / status"
@@ -171,8 +172,8 @@ msgstr "ancienne cote"
 msgid "reference"
 msgstr "référence"
 
-#: models/media.py:92 models/media.py:219 models/media.py:336
-#: models/media.py:351 models/media.py:385
+#: models/media.py:92 models/media.py:219 models/media.py:340
+#: models/media.py:355 models/media.py:389
 msgid "title"
 msgstr "titre"
 
@@ -344,71 +345,72 @@ msgstr "remarques"
 msgid "file"
 msgstr "fichier"
 
-#: models/media.py:253 models/media.py:405
+#: models/media.py:253 models/media.py:409
+#: templates/telemeta_default/mediaitem_detail.html:242
 msgid "keywords"
 msgstr "mots-clés"
 
-#: models/media.py:307 models/media.py:317 models/media.py:335
-#: models/media.py:382
+#: models/media.py:307 models/media.py:321 models/media.py:339
+#: models/media.py:386
 msgid "item"
 msgstr "item"
 
-#: models/media.py:319
+#: models/media.py:323
 msgid "composition"
 msgstr "formation"
 
-#: models/media.py:321
+#: models/media.py:325
 msgid "vernacular name"
 msgstr "nom vernaculaire"
 
-#: models/media.py:322
+#: models/media.py:326
 msgid "number"
 msgstr "nombre"
 
-#: models/media.py:323
+#: models/media.py:327
 msgid "interprets"
 msgstr "interprètes"
 
-#: models/media.py:337
+#: models/media.py:341
 msgid "start"
 msgstr "début"
 
-#: models/media.py:338
+#: models/media.py:342
 msgid "end"
 msgstr "fin"
 
-#: models/media.py:349 models/media.py:368 models/media.py:383
+#: models/media.py:353 models/media.py:372 models/media.py:387
 #, fuzzy
 msgid "public_id"
 msgstr "édité"
 
-#: models/media.py:352 models/media.py:387
+#: models/media.py:356 models/media.py:391
 msgid "description"
 msgstr ""
 
-#: models/media.py:369
+#: models/media.py:373
 msgid "playlist"
 msgstr "liste de lecture"
 
-#: models/media.py:370
+#: models/media.py:374
 #, fuzzy
 msgid "resource_type"
 msgstr "type de ressource"
 
-#: models/media.py:371
+#: models/media.py:375
 #, fuzzy
 msgid "resource_id"
 msgstr "ressource"
 
-#: models/media.py:384 models/system.py:52
+#: models/media.py:388 models/system.py:52
 msgid "time"
 msgstr "heure"
 
-#: models/media.py:386 models/media.py:406
+#: models/media.py:390 models/media.py:410
 msgid "date"
 msgstr ""
 
-#: models/media.py:388
+#: models/media.py:392
 #, fuzzy
 msgid "author"
 msgstr "rédacteur fiche"
@@ -510,6 +512,8 @@ msgstr "Instruments"
 
 #: templates/telemeta_default/admin_enumerations.html:12
 #: templates/telemeta_default/home.html:49
+#: templates/telemeta_default/mediaitem_copy.html:31
+#: templates/telemeta_default/mediaitem_edit.html:27
 #: templates/telemeta_default/search_criteria.html:78
 #: templates/telemeta_default/search_results.html:30
 #: templates/telemeta_default/inc/collection_list.html:13
@@ -628,6 +632,8 @@ msgstr "Mentions légales"
 #: templates/telemeta_default/mediaitem_copy.html:40
 #: templates/telemeta_default/mediaitem_edit.html:10
 #: templates/telemeta_default/mediaitem_edit.html:40
+#: templates/telemeta_default/mediaitem_keywords_edit.html:12
+#: templates/telemeta_default/mediaitem_keywords_edit.html:43
 #: templates/telemeta_default/mediaitem_performances_edit.html:12
 #: templates/telemeta_default/mediaitem_performances_edit.html:43
 #: templates/telemeta_default/profile_edit.html:5
@@ -642,6 +648,7 @@ msgstr "Annuler"
 #: templates/telemeta_default/mediaitem_add.html:38
 #: templates/telemeta_default/mediaitem_copy.html:42
 #: templates/telemeta_default/mediaitem_edit.html:42
+#: templates/telemeta_default/mediaitem_keywords_edit.html:45
 #: templates/telemeta_default/mediaitem_performances_edit.html:45
 #: templates/telemeta_default/profile_edit.html:31
 msgid "Save"
@@ -656,7 +663,8 @@ msgstr "Collection"
 #: templates/telemeta_default/collection_detail.html:43
 #: templates/telemeta_default/collection_detail_new.html:43
 #: templates/telemeta_default/mediaitem_detail.html:97
-#: templates/telemeta_default/mediaitem_detail.html:278
+#: templates/telemeta_default/mediaitem_detail.html:242
+#: templates/telemeta_default/mediaitem_detail.html:282
 #: templates/telemeta_default/profile_detail.html:60
 msgid "Edit"
 msgstr "Editer"
@@ -702,25 +710,25 @@ msgstr "Collecteur"
 
 #: templates/telemeta_default/collection_detail.html:140
 #: templates/telemeta_default/collection_detail_new.html:142
-#: templates/telemeta_default/mediaitem_detail.html:294
+#: templates/telemeta_default/mediaitem_detail.html:298
 msgid "Archiving data"
 msgstr "Données d'archivage"
 
 #: templates/telemeta_default/collection_detail.html:163
 #: templates/telemeta_default/collection_detail_new.html:165
-#: templates/telemeta_default/mediaitem_detail.html:309
+#: templates/telemeta_default/mediaitem_detail.html:313
 msgid "Technical data"
 msgstr "Données techniques"
 
 #: templates/telemeta_default/collection_detail.html:168
 #: templates/telemeta_default/collection_detail_new.html:170
-#: templates/telemeta_default/mediaitem_detail.html:312
+#: templates/telemeta_default/mediaitem_detail.html:316
 msgid "Media type"
 msgstr "Type de media"
 
 #: templates/telemeta_default/collection_detail.html:168
 #: templates/telemeta_default/collection_detail_new.html:170
-#: templates/telemeta_default/mediaitem_detail.html:312
+#: templates/telemeta_default/mediaitem_detail.html:316
 msgid "Audio"
 msgstr "Audio"
 
@@ -865,8 +873,6 @@ msgid "Type"
 msgstr ""
 
 #: templates/telemeta_default/home.html:51
-#: templates/telemeta_default/mediaitem_copy.html:31
-#: templates/telemeta_default/mediaitem_edit.html:27
 #: templates/telemeta_default/inc/collection_list.html:14
 #: templates/telemeta_default/inc/mediaitem_list.html:14
 msgid "Code"
@@ -981,11 +987,15 @@ msgstr "Date d'enregistrement"
 msgid "Location"
 msgstr "Lieu"
 
-#: templates/telemeta_default/mediaitem_detail.html:244
+#: templates/telemeta_default/mediaitem_detail.html:248
 msgid "Musical informations"
 msgstr "Informations sur la musique"
 
-#: templates/telemeta_default/mediaitem_detail.html:283
+#: templates/telemeta_default/mediaitem_detail.html:282
+msgid "performance"
+msgstr "composition"
+
+#: templates/telemeta_default/mediaitem_detail.html:287
 msgid "General informations"
 msgstr "Informations générales"
 
@@ -993,10 +1003,18 @@ msgstr "Informations générales"
 msgid "No such item"
 msgstr "Item introuvable"
 
+#: templates/telemeta_default/mediaitem_keywords_edit.html:23
+msgid "Keyword"
+msgstr "Mot-clé"
+
 #: templates/telemeta_default/mediaitem_list.html:5
 #: templates/telemeta_default/mediaitem_list.html:8
 msgid "Media Items"
 msgstr "Items"
+
+#: templates/telemeta_default/mediaitem_performances_edit.html:23
+msgid "Performance"
+msgstr ""
 
 #: templates/telemeta_default/profile_detail.html:5
 msgid "User Profile"
@@ -1288,6 +1306,9 @@ msgid ""
 msgstr ""
 "Connectez-vous s'il vous plaît ou bien contactez l'administrateur du site "
 "pour obtenir un accès privé."
+
+#~ msgid "Keywords"
+#~ msgstr "Mots-clés"
 
 #~ msgid "resource type"
 #~ msgstr "type de ressource"

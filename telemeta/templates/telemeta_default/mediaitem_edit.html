@@ -24,7 +24,7 @@
               <td> {{ item.file.name }} <br /> {{ field }}</td>
              {% else %}
              {% if field.html_name == "collection" %}
-              <td>{{ field }} <br />&nbsp;{% trans "Code" %} : {{ item.collection.code }}</td>
+              <td>{{ field }} <br />&nbsp;{% trans "Title" %} : {{ item.collection.title }}</td>
              {% else %}
               <td>{{ field }}</td>
              {% endif %}

@@ -1150,3 +1150,16 @@ class WebView(object):
             formset = PerformanceFormSet(instance=item)
         return render(request, template, {'item': item, 'formset': formset,})
     
+    @method_decorator(permission_required('telemeta.change_mediaitem'))
+    def item_keywords_edit(self, request, public_id, template):
+        item = MediaItem.objects.get(public_id=public_id)
+        FormSet = inlineformset_factory(MediaItem, MediaItemKeyword)
+        if request.method == 'POST':
+            formset = FormSet(data=request.POST, instance=item)
+            if formset.is_valid():
+                formset.save()
+                return HttpResponseRedirect('/items/'+public_id)
+        else:
+            formset = FormSet(instance=item)
+        return render(request, template, {'item': item, 'formset': formset,})
+    

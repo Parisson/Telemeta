@@ -238,6 +238,9 @@
         </div>
         {% endblock geoethnic_data %}
     </div>
+    {% if user.is_authenticated and perms.telemeta.change_mediaitem %}
+       <a href="{% url telemeta-item-keywords_edit item.public_id %}" class="component_icon button icon_edit">{% trans "Edit" %} {% trans "keywords" %}</a>
+    {% endif %}
     <div class="extraInfos">
         {% block musical_data %}
         <div>
@@ -275,7 +278,7 @@
         {% endblock musical_data %}
     </div>
     {% if user.is_authenticated and perms.telemeta.change_mediaitem %}
-    <a href="{% url telemeta-item-performances_edit item.public_id %}" class="component_icon button icon_edit">{% trans "Edit" %}</a>
+     <a href="{% url telemeta-item-performances_edit item.public_id %}" class="component_icon button icon_edit">{% trans "Edit"%} {% trans "performance"%}</a>
     {% endif %}
     <div class="extraInfos">
         {% block general_data %}
