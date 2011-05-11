@@ -237,17 +237,37 @@ var MarkerMapDiv = TimesideArray.extend({
         e_descriptionText.attr('readonly','readonly').addClass('markersdivUneditable').unbind('focus');
         e_titleText.attr('readonly','readonly').addClass('markersdivUneditable').unbind('focus');
 
+        //add to playlist always visible, provided that it is saved on server
+        if(marker.isSavedOnServer){
+            e_addplaylistButton.hide();
+        }
+        e_addplaylistButton.unbind('click').bind('click',function(evtObj_){
+            if(!marker.isSavedOnServer){
+                return false;
+            }
+            //make a request to the server to get the pk (id)
+            //note that marker.id (client side) is marker.public_id (server side)
+            json([marker.id],"telemeta.get_marker_id", function(data){
+                consolelog('received');
+                consolelog(data);
+                var id = data.result;
+                playlistUtils.showAddResourceToPlaylist(e_addplaylistButton,'marker',""+id,gettrans('marker added to the selected playlist'));
+            });
+            return false;
+        });
 
-        if(!marker.isEditable){
+        if(!marker.isEditable){ //marker is editable means that author == CURRENT_USER_NAME. addToPlaylist always visible
             e_editButton.hide();
             e_deleteButton.hide();
             //we unbind events to be sure
-            e_addplaylistButton.unbind('click').hide();
+            //e_addplaylistButton.unbind('click').hide();
             e_okButton.unbind('click')
             e_deleteButton.unbind('click').hide();
             e_editButton.remove(); //so that if edit button is not present, we do not edit (safety reasons) see this.setEditMode
             return div;
         }
+
+
         
         var me = this;
 
@@ -260,19 +280,7 @@ var MarkerMapDiv = TimesideArray.extend({
             return false; //avoid scrolling of the page on anchor click
         })
 
-        e_addplaylistButton.unbind('click').bind('click',function(evtObj_){
-            if(!marker.isSavedOnServer){
-                return false;
-            }
-            //make a request to the server to get the pk (id)
-            //note that marker.id (client side) is marker.public_id (server side)
-            json([marker.id],"telemeta.get_marker_id", function(data){
-                consolelog('received');
-                consolelog(data);
-                //playlistUtils.showAddResourceToPlaylist(e_addplaylistButton,'marker',""+marker.id,gettrans('marker added to the selected playlist'));
-                });
-            return false;
-        });
+        
 
         //action for ok button
         e_okButton.unbind('click').click( function(){
