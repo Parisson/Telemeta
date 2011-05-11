@@ -10,12 +10,16 @@
 <div>
 {% if item.file %}
     {% if public_access or user.is_staff %}
-    <div id="rightcol" style="float: left;">
+    <div id="rightcol" style="float: left; padding-bottom:0;">
         <div id="player_minimized" class="ts-skin-lab">
             <div class="wazing"></div>
             <div id="player" class="ts-player">
             </div>
         </div>
+       <div>
+        <span style="font-size:70%; float:left">{% organization %} - Item : <a href="{% url telemeta-item-detail item.public_id %}">{% if item.code %}{{ item.code }}{% else %}{{ item.old_code }}{% endif %}</a></span>
+        <span style="font-size:70%; float:right"><a href="http://telemeta.org">Telemeta</a> powered</span>
+       </div>
     </div>
     {% endif %}
 {% endif %}
