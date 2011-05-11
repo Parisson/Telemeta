@@ -475,6 +475,7 @@ class WebView(object):
                 graph = grapher(width = int(width), height = int(height))
                 pipe = decoder | graph
                 pipe.run()
+#                graph.watermark('telemeta', opacity=.6, margin=(5,5))
                 f = open(path, 'w')
                 graph.render(path)
                 f.close()
