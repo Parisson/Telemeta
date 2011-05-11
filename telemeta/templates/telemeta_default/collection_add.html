@@ -2,11 +2,13 @@
 {% load i18n %}
 {% load telemeta_utils %}
 
+{% block title %}
+    <h1><img src="{% url telemeta-images "collections_red.png" %}" style="vertical-align:middle" /> Collection : NEW</h1>
+{% endblock %}
 
 {% block title_buttons %}
      <a href="{% url telemeta-collections %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
 {% endblock %}
-
 
 {% block infos %}
         <div class="infos">

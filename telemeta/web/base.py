@@ -949,11 +949,11 @@ class WebView(object):
                 for resource in playlist_resources:
                     try:
                         if resource.resource_type == 'item':
-                            element = MediaItem.objects.get(public_id=resource.resource_id)
+                            element = MediaItem.objects.get(pk=resource.resource_id)
                         if resource.resource_type == 'collection':
-                            element = MediaCollection.objects.get(public_id=resource.resource_id)
+                            element = MediaCollection.objects.get(pk=resource.resource_id)
                         if resource.resource_type == 'marker':
-                            element = MediaItemMarker.objects.get(public_id=resource.resource_id)
+                            element = MediaItemMarker.objects.get(pk=resource.resource_id)
                     except:
                         element = None
                     resources.append({'element': element, 'type': resource.resource_type, 'public_id': resource.public_id })
@@ -1000,17 +1000,17 @@ class WebView(object):
         for resource in resources:
             if resource_type == 'items':
                 if resource.resource_type == 'collection':
-                    collection = MediaCollection.objects.get(code=resource.resource_id)
+                    collection = MediaCollection.objects.get(pk=resource.resource_id)
                     collection_items = MediaItem.objects.filter(collection=collection)
                     for item in collection_items:
                         elements.append(item)
                 elif resource.resource_type == 'item':
-                    item = MediaItem.objects.get(code=resource.resource_id)
+                    item = MediaItem.objects.get(pk=resource.resource_id)
                     elements.append(item)
                 
             elif resource_type == 'collections':
                 if resource.resource_type == 'collection':
-                    collection = MediaCollection.objects.get(code=resource.resource_id)
+                    collection = MediaCollection.objects.get(pk=resource.resource_id)
                     elements.append(collection)
                 
         if elements:
