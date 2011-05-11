@@ -918,6 +918,11 @@ class WebView(object):
         else:
             raise 'Error : Bad marker dictionnary'
  
+    @jsonrpc_method('telemeta.get_marker_id')
+    def get_marker_id(request, public_id):
+        marker = MediaItemMarker.objects.get(public_id=public_id)
+        return marker.id
+    
     # PLAYLISTS
     @jsonrpc_method('telemeta.add_playlist')
     def add_playlist(request, playlist):
