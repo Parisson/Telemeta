@@ -6,12 +6,18 @@
  */
 var MarkerMap = TimesideArray.extend({
 
-    init: function() {
+    init: function(itemId, currentUserName) {
         this._super();
         var ui = uniqid; //defined in application.js (global vars and functions)
         this.uniqid = function(){
             return  ui();
         };
+        this.getItemId = function(){
+            return itemId;
+        }
+        this.getCurrentUserName = function(){
+            return currentUserName;
+        }
     },
 
     //overridden
@@ -50,8 +56,9 @@ var MarkerMap = TimesideArray.extend({
         if(typeof argument == 'string'){ //to be sure, it might be that we pass an offset in string format
             argument = pFloat(argument);
         }
+        var currentUserName = this.getCurrentUserName();
         if(typeof argument == 'object'){
-            var editable = CURRENT_USER_NAME === argument.author;
+            var editable = currentUserName === argument.author;
             marker = {
                 id: argument.public_id,
                 offset: pFloat(argument.time), //IMPORTANT: IT IS A STRING!!!!!!
@@ -67,7 +74,7 @@ var MarkerMap = TimesideArray.extend({
                 offset: pFloat(argument),
                 desc: "",
                 title: "",
-                author: CURRENT_USER_NAME,
+                author: currentUserName,
                 isEditable: true,
                 isSavedOnServer: false
             };
@@ -132,7 +139,7 @@ var MarkerMap = TimesideArray.extend({
         }
         
         //TODO: item public id defined elsewhere up, not here inside
-        var itemid = ITEM_PUBLIC_ID;
+        var itemid = this.getItemId();
         var isSavedOnServer = marker.isSavedOnServer;
         var method = isSavedOnServer ? "telemeta.update_marker" : "telemeta.add_marker";
         var param = {

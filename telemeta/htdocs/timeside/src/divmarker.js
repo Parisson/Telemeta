@@ -9,9 +9,12 @@
  * Class for showing/editing a marker on details. 
  */
 var MarkerMapDiv = TimesideArray.extend({
-    init:function(){
+    init:function(currentUserName){
         this._super();
         this.div = this.$J("#markers_div_id");
+        this.getCurrentUserName = function(){
+            return currentUserName;
+        }
     },
     //overridden
     add: function(marker, index,  isNew){
@@ -237,8 +240,9 @@ var MarkerMapDiv = TimesideArray.extend({
         e_descriptionText.attr('readonly','readonly').addClass('markersdivUneditable').unbind('focus');
         e_titleText.attr('readonly','readonly').addClass('markersdivUneditable').unbind('focus');
 
-        //add to playlist always visible, provided that it is saved on server
-        if(!marker.isSavedOnServer){
+        //add to playlist always visible, provided that it is saved on server AND current user is logged
+        //(getCurrentUserName evaluates to true)
+        if(!marker.isSavedOnServer || !this.getCurrentUserName()){
             e_addplaylistButton.hide();
         }else{
             e_addplaylistButton.unbind('click').bind('click',function(evtObj_){
@@ -256,7 +260,8 @@ var MarkerMapDiv = TimesideArray.extend({
                 return false;
             });
         }
-        if(!marker.isEditable){ //marker is editable means that author == CURRENT_USER_NAME. addToPlaylist always visible
+        if(!marker.isEditable){ //marker is editable means that author == getCurrentUserName(). addToPlaylist
+            //visibility is skipped because it depends on other circumstances (see above)
             e_editButton.hide();
             e_deleteButton.hide();
             //we unbind events to be sure

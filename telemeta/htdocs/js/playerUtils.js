@@ -54,7 +54,7 @@ function togglePlayerMaximization() {
 //    },600);
 //}
 
-function loadPlayer(analizerUrl, soundUrl, visualizers){
+function loadPlayer(analizerUrl, soundUrl, itemId, visualizers, currentUserName){
     
     if(!(analizerUrl) || !(soundUrl)){
         return;
@@ -91,7 +91,7 @@ function loadPlayer(analizerUrl, soundUrl, visualizers){
             var pfl = parseFloat;
             var timeInMSecs=pin(duration[0])*3600+pin(duration[1])*60+pfl(duration[2]);
             timeInMSecs = Math.round(timeInMSecs*1000);
-            load_player(soundUrl, timeInMSecs,visualizers);
+            load_player(soundUrl, timeInMSecs, itemId, visualizers, currentUserName);
         },
         error:function(){
             msgElm.parent().html("<img src='/images/dialog-error.png' style='vertical-align:middle'/><span class='login-error'>Error loading analyzer</span>");
@@ -101,7 +101,7 @@ function loadPlayer(analizerUrl, soundUrl, visualizers){
 
 
 //loads a player WAITING for the sound identified by soundUrl to be FULLY LOADED!!!!
-function load_player(soundUrl, durationInMsecs, visualizers) {
+function load_player(soundUrl, durationInMsecs, itemId, visualizers, currentUserName) {
     consolelog('PlayerUtils.load_player: '+soundUrl+' '+durationInMsecs);
     var load_player2 = this.load_player2;
 
@@ -120,7 +120,7 @@ function load_player(soundUrl, durationInMsecs, visualizers) {
             if(loadImmediately){
                 consolelog('entering while loading setting up---------------'+this.bytesLoaded+' of '+this.bytesTotal);
                 loadImmediately=false;
-                load_player2(this, this.duration,visualizers);
+                load_player2(this, this.duration, itemId, visualizers, currentUserName);
             }
         }
     });
@@ -128,13 +128,13 @@ function load_player(soundUrl, durationInMsecs, visualizers) {
         //TODO: remove this code is only temporary here!!!!!!!!!!!!!!!!!!!!1
         loadScripts('/timeside/src/',['rulermarker.js', //'markerlist.js',
             'markermap.js', 'player.js', 'ruler.js','divmarker.js'], function(){
-                load_player2(sound,durationInMsecs,visualizers);
+                load_player2(sound,durationInMsecs,itemId, visualizers, currentUserName);
             });
     }
 
 }
 //NOTE: the duration must be present. Loaded from xmlanalyzer (see above)
-function load_player2(sound, durationInMsec, visualizers) {
+function load_player2(sound, durationInMsec, itemId, visualizers, currentUserName) {
     
     if (!$('#player').length){
         return;
@@ -145,9 +145,9 @@ function load_player2(sound, durationInMsec, visualizers) {
     $('.ts-wave a img').insertAfter('.ts-wave a');
     $('.ts-wave a').remove();
 
-    var p = new Player(jQuery('#player'), sound, durationInMsec, visualizers);
+    var p = new Player(jQuery('#player'), sound, durationInMsec, itemId, visualizers, currentUserName);
     consolelog('initialized player');
-    p._setupInterface(CURRENT_USER_NAME ? true : false);
+    p._setupInterface();
     //p.loadMarkers();
 
     player = p;

@@ -13,7 +13,7 @@
 
 {% block extra_javascript %}
 {% if item.file %}
-    {% if public_access or user.is_staff %}
+
       <!--<script src="{% url telemeta-js "wz_jsgraphics.js" %}" type="text/javascript"></script>-->
 <script src="{% url telemeta-js "soundmanager2.js" %}" type="text/javascript"></script>
 <script src="{% url telemeta-timeside "src/playlist.js" %}" type="text/javascript"></script>
@@ -43,9 +43,9 @@
         {% endif %}
     };
 
-    {% if item %}
-    var ITEM_PUBLIC_ID = '{{item.public_id}}';
-    {% endif %}
+//    {% if item %}
+//    var ITEM_PUBLIC_ID = '{{item.public_id}}';
+//    {% endif %}
 
     var scripts = ["{% url telemeta-js "wz_jsgraphics.js" %}", "{% url telemeta-timeside "src/timeside.js" %}","{% url telemeta-js "playerUtils.js" %}"];
 
@@ -62,7 +62,7 @@
             alert(jQuery('.ts-wave a'));
             loadScripts(scripts, 
             function(){
-                loadPlayer('{% url telemeta-item-analyze-xml item.public_id %}',"{% url telemeta-item-export item.public_id,"mp3" %}",visualizers);
+                loadPlayer('{% url telemeta-item-analyze-xml item.public_id %}',"{% url telemeta-item-export item.public_id,"mp3" %}",'{{item.id}}', visualizers, CURRENT_USER_NAME);
                 setupPlaylist();
             });
         }
@@ -73,7 +73,7 @@
         if(_jQuery_loaded){
             loadScripts(scripts, 
             function(){
-                loadPlayer('{% url telemeta-item-analyze-xml item.public_id %}',"{% url telemeta-item-export item.public_id,"mp3" %}", visualizers);
+                loadPlayer('{% url telemeta-item-analyze-xml item.public_id %}',"{% url telemeta-item-export item.public_id,"mp3" %}", '{{item.id}}', visualizers, CURRENT_USER_NAME);
                 setupPlaylist();
             });
         }
@@ -81,7 +81,7 @@
 
 </script>
 <!--item.approx_duration-->
-{% endif %}
+
 {% endif %}
 {% endblock %}
 

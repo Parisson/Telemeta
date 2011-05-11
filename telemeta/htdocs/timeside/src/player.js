@@ -2,13 +2,18 @@ var Player = TimesideClass.extend({
     
     //sound duration is in milliseconds because the soundmanager has that unit,
     //player (according to timeside syntax) has durations in seconds
-    init: function(container, sound, soundDurationInMsec,visualizers) {
+    init: function(container, sound, soundDurationInMsec, itemId, visualizers, currentUserName) {
         this._super();
         var player = this;
-        
+
+
         if (!container){
             this.debug('ERROR: container is null in initializing the player')
         }
+        this.getItemId = function(){
+            return itemId;
+        }
+
         this.getContainer = function(){
             return container;
         }
@@ -152,13 +157,16 @@ var Player = TimesideClass.extend({
         };
 
         //initializing markermap and markerui
-        var map = new MarkerMap();
+        var map = new MarkerMap(this.getItemId(), currentUserName);
         this.getMarkerMap = function(){
             return map;
         }
-        var mapUI = new MarkerMapDiv();
+        var mapUI = new MarkerMapDiv(currentUserName);
         this.getMarkersUI = function(){
             return mapUI;
+        }
+        this.getCurrentUserName = function(){
+            return currentUserName;
         }
     //TODO: define setUpInterface here????
 
@@ -166,12 +174,8 @@ var Player = TimesideClass.extend({
 
   
 
-    _setupInterface: function(isInteractive) {
+    _setupInterface: function() {
         
-        this.isInteractive = function(){
-            return isInteractive;
-        }
-
         var sound = this.getSound();
         consolelog('player _setupInterface sound.readyState:'+sound.readyState); //handle also cases 0 and 2????
         
@@ -283,7 +287,7 @@ var Player = TimesideClass.extend({
         //TODO: why the line below does not work?!!!!!
         //var viewer = jQueryObjs.find('.ts-viewer');
         var viewer = this.getContainer().find('.ts-viewer');
-        var ruler = new Ruler(viewer, this.getSoundDuration(), isInteractive);
+        var ruler = new Ruler(viewer, this.getSoundDuration(), (this.getCurrentUserName() || false));
         this.getRuler = function(){
             return ruler;
         }
@@ -323,7 +327,7 @@ var Player = TimesideClass.extend({
         //finally, load markers and bind events for markers (see method below):
         //NOTE: loadMarkers ASYNCHRONOUSLY CALLS THE SERVER, SO METHODS WRITTEN AFTER IT MIGHT BE EXECUTED BEFORE
         //loadMarkers has finished its job
-        this.loadMarkers(isInteractive);
+        this.loadMarkers();
 
         //set the marker popup
         //functions to set the marker popup
@@ -610,11 +614,11 @@ var Player = TimesideClass.extend({
 
     },
         
-    loadMarkers: function(isInteractive_){
+    loadMarkers: function(){
         //ruler.bind('markermoved',this.markerMoved,this);
         var $J = this.$J; //reference to jQuery
-
-        var itemId = ITEM_PUBLIC_ID;
+        var isInteractive_ = this.getCurrentUserName() || false;
+        var itemId = this.getItemId();
 
         var player = this;
         //initialize the map.
