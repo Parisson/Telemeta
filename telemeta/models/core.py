@@ -189,7 +189,7 @@ class DurationField(models.Field):
         return data
 
     def formfield(self, **kwargs):
-        defaults = {'form_class': forms.TimeField}
+        defaults = {'form_class': forms.CharField}
         defaults.update(kwargs)
         return super(DurationField, self).formfield(**defaults)
            
