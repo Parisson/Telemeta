@@ -984,6 +984,10 @@ a.image-link {
     display: inline-block; /*otherwise width and height do not work*/
     background-repeat: no-repeat;
     text-decoration: none;
+
+}
+.markerdiv .markersdivOffset, .markerdiv .markersdivOffset:hover, .markerdiv .markersdivOffset:visited{
+    color: #000;
 }
 .markerdiv .ts-marker, .markerdiv .ts-marker:hover, .markerdiv .ts-marker:visited{
     font-family: monospace; background: #e65911;color: #FFF;padding-left: .3ex; padding-right:.3ex;

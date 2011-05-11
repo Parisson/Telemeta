@@ -115,7 +115,6 @@ var MarkerMapDiv = TimesideArray.extend({
             return;
         }
         var e_okButton = div.find('.markersdivSave');
-       
         var e_descriptionText = div.find('.markersdivDescription');
         var e_titleText = div.find('.markersdivTitle');
         if(value){
@@ -134,9 +133,14 @@ var MarkerMapDiv = TimesideArray.extend({
             editButton.show();
             div.css('backgroundColor','');
         }
+
+        //var e_addplaylistButton = div.find('.markersdivAddPlaylist');
+
         this.setFocus(index,value);
         this.stretch(e_titleText);
     },
+
+    
 
     setFocus: function(index,value){
     //        this.each(function(i,div){
@@ -153,17 +157,14 @@ var MarkerMapDiv = TimesideArray.extend({
         //div.attr('id','_markerdiv'+index);
         div.find('.ts-marker').html(index+1);
         var me = this;
-        div.find('.markersdivDescription').unbind('focus').focus(function(){
+        var e_indexLabel = div.find('.ts-marker');
+        var e_offsetLabel =div.find('.markersdivOffset');
+        e_indexLabel.add(e_offsetLabel).unbind('click').click(function(){
             me.setFocus(index,true);
             me.fire('focus', {
                 'index': index
             });
-        });
-        div.find('.markersdivTitle').unbind('focus').focus(function(){
-            me.setFocus(index,true);
-            me.fire('focus', {
-                'index': index
-            });
+            return false;
         });
         div.find('.markersdivEdit').unbind('click').click( function(){
             me.setEditMode(index);
@@ -195,8 +196,8 @@ var MarkerMapDiv = TimesideArray.extend({
         //for the moment we set the style manually, remove
         //TODO: table width with CSS?
         var div = this.$J('<div/>').attr('tabindex','0').addClass("markerdiv").html('<div>'+
-            '<a class="ts-marker"></a>'+
-            '<span class="markersdivOffset" type="text"></span>'+
+            '<a href=# class="ts-marker"></a>'+
+            '<a href=# class="markersdivOffset" type="text"></a>'+
             '<input class="markersdivTitle" type="text"/>'+
             '<a class="markersdivAddPlaylist" title="add to playlist"></a>'+
             '<a class="markersdivEdit" title="edit">EDIT</a>'+
@@ -242,24 +243,28 @@ var MarkerMapDiv = TimesideArray.extend({
 
         //add to playlist always visible, provided that it is saved on server AND current user is logged
         //(getCurrentUserName evaluates to true)
-        if(!marker.isSavedOnServer || !this.getCurrentUserName()){
-            e_addplaylistButton.hide();
-        }else{
-            e_addplaylistButton.unbind('click').bind('click',function(evtObj_){
-                if(!marker.isSavedOnServer){
-                    return false;
-                }
-                //make a request to the server to get the pk (id)
-                //note that marker.id (client side) is marker.public_id (server side)
-                json([marker.id],"telemeta.get_marker_id", function(data){
-                    consolelog('received');
-                    consolelog(data);
-                    var id = data.result;
-                    playlistUtils.showAddResourceToPlaylist(e_addplaylistButton,'marker',""+id,gettrans('marker added to the selected playlist'));
-                });
+        //        if(!marker.isSavedOnServer || !this.getCurrentUserName()){
+        //            e_addplaylistButton.hide();
+        //        }else{
+        e_addplaylistButton.unbind('click').bind('click',function(evtObj_){
+            if(!marker.isSavedOnServer){
                 return false;
+            }
+            //make a request to the server to get the pk (id)
+            //note that marker.id (client side) is marker.public_id (server side)
+            json([marker.id],"telemeta.get_marker_id", function(data){
+                consolelog('received');
+                consolelog(data);
+                var id = data.result;
+                playlistUtils.showAddResourceToPlaylist(e_addplaylistButton,'marker',""+id,gettrans('marker added to the selected playlist'));
             });
-        }
+            return false;
+        });
+
+
+
+
+
         if(!marker.isEditable){ //marker is editable means that author == getCurrentUserName(). addToPlaylist
             //visibility is skipped because it depends on other circumstances (see above)
             e_editButton.hide();

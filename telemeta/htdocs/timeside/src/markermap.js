@@ -18,6 +18,23 @@ var MarkerMap = TimesideArray.extend({
         this.getCurrentUserName = function(){
             return currentUserName;
         }
+
+        var me = this;
+        var confirmExit = function(){
+            var markerUnsaved=0;
+            me.each(function(i,marker){
+                if(!marker.isSavedOnServer){
+                    markerUnsaved++;
+                }
+            });
+            consolelog(markerUnsaved);
+            if(markerUnsaved>0){
+                return 'There ' + (markerUnsaved==1 ? 'is ' : 'are ') + markerUnsaved+ ' unsaved marker'+
+                    (markerUnsaved==1 ? '' : 's') + '. If you exit the page you will loose your changes';
+            }
+                
+        };
+        window.onbeforeunload = confirmExit;
     },
 
     //overridden
@@ -119,12 +136,12 @@ var MarkerMap = TimesideArray.extend({
         var functionOnSuccess = function(){
             superRemove.apply(me,[idx]);
             me.fire('remove',{
-                    'index':idx
-                })
+                'index':idx
+            })
         }
 
         if(marker.isSavedOnServer){
-             //json(param,method,onSuccessFcn,onErrorFcn){
+            //json(param,method,onSuccessFcn,onErrorFcn){
             json([marker.id], "telemeta.del_marker",functionOnSuccess);
         }else{
             functionOnSuccess();
@@ -158,7 +175,7 @@ var MarkerMap = TimesideArray.extend({
                 marker.isSavedOnServer = true;
                 marker.isModified = false;
             }
-             me.fire('save',{
+            me.fire('save',{
                 'index':idx
             });
         };
@@ -168,11 +185,11 @@ var MarkerMap = TimesideArray.extend({
     },
 
     //TODO: there is no need of a public method
-//    removeHTTP: function(marker){
-//        var public_id = marker.id
-//        //json(param,method,onSuccessFcn,onErrorFcn){
-//        json([public_id], "telemeta.del_marker");
-//    },
+    //    removeHTTP: function(marker){
+    //        var public_id = marker.id
+    //        //json(param,method,onSuccessFcn,onErrorFcn){
+    //        json([public_id], "telemeta.del_marker");
+    //    },
 
     //overridden method
     move: function(markerIndex, newOffset){
@@ -239,8 +256,8 @@ var MarkerMap = TimesideArray.extend({
                 }
             }
             return 0;
-            //var ret = a < b ? -1 : (a>b ? 1 : (markerInMap.id === newMarker.id ? 0 : -1));
-            //return ret;
+        //var ret = a < b ? -1 : (a>b ? 1 : (markerInMap.id === newMarker.id ? 0 : -1));
+        //return ret;
         };
         if(!(typeof object == 'object')){
             var offset;

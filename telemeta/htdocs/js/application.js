@@ -213,310 +213,6 @@ var uniqid = function() {
     return new String(d.getTime() + '' + Math.floor(Math.random() * 1000000)).substr(0, 18);
 };
 
-var popup={
-    _cfg_:{
-        jQuery:jQuery,
-        div: function(){
-            var div = this.jQuery('<div/>').css({ //this is _cfg_
-                position: 'absolute',
-                overflow:'auto', //necessary to properly display the content
-                display: 'none',
-                border: '1px solid #e1e1e1',
-                zIndex:1000
-            });
-            if(this.className){
-                div.addClass(this.className);
-            }
-            return div;
-        },
-        className: 'component',
-        //        mouseDownNamespace : "mousedown.popup__",
-        //        keyDownNamespace : "keydown.popup__",
-
-        //namespace: 'popup__', //used for namespaces when binding click to document
-        handlersToRestore: [],
-        event: null,
-        divsToDelete:null,
-        toggleBind: function(element, functionE){
-            var clickNamespace = "click.popup__";
-            var keydownNamespace =  "keyup.popup__";
-            element.unbind(clickNamespace);
-            element.unbind(keydownNamespace);
-            if(functionE){
-                element.bind(clickNamespace, functionE);
-                element.bind(keydownNamespace,functionE);
-            }
-        }
-    },
-    
-    isShowing: function(){
-        return this._cfg_.divsToDelete ? true : false;
-    },
-
-
-    hide: function(){
-        var toggleBind = this._cfg_.toggleBind;
-       
-        var $J = this._cfg_.jQuery;
-
-        toggleBind($J(document));
-        if(this._cfg_.divsToDelete){
-            for(var i=0; i < this._cfg_.divsToDelete.length; i++){
-                this._cfg_.divsToDelete[i].empty().remove();
-            }
-        }
-        if(this._cfg_.event && this._cfg_.handlersToRestore){
-            var type = this._cfg_.event.type; //which should be the same as h.type below, without namespaces?
-            var invokerElement = this._cfg_.event.target;
-            if(invokerElement){
-                var e = $J(invokerElement);
-                toggleBind(e);
-                if(type){
-                    //e.unbind(type);
-                    for(var i=0; i<this._cfg_.handlersToRestore.length; i++){
-                        var h = this._cfg_.handlersToRestore[i];
-                        var functionCode = h.handler;
-                        var namespace = ""+h.namespace;
-                        if(namespace.length>0){
-                            namespace="."+namespace;
-                        }
-                        var what = h.type+ namespace;
-                        e.bind(what, functionCode);
-                    }
-                }
-            }
-        }
-        this._cfg_.event=null;
-        this._cfg_.handlersToRestore=null;
-    },
-
-    show:function(content, optionalEvent){
-        //if showing, hide
-        if(this.isShowing()){
-            this.hide();
-        }
-
-        var $J = this._cfg_.jQuery;
-        var div = this._cfg_.div();
-        //toggleBind sets the functions to hiding/keep shown the popup when clicking or
-        //using the keyboard keys
-        var toggleBind = this._cfg_.toggleBind;
-
-        //remove the callback on invoker so that clicking on invoker does nothing
-        //moreover, toggleBind on invoker so that clicking invoker doesn't hide the popup
-        this.oldCallback = undefined;
-        var oldHandlers=[];
-        var invokerElement = optionalEvent && optionalEvent.target ? $J(optionalEvent.target) : undefined;
-        if(invokerElement){
-            optionalEvent.stopPropagation(); //othewrwise the popup hides immediately
-            //cause the event is catched from the document click (added later, see below)
-            // but apparently as soon as we add it it catches even the current event)
-            var type = optionalEvent.type;
-            var clickEvents =invokerElement.data("events")[type];
-            $J.each(clickEvents, function(key, value) {
-                oldHandlers.push(value);
-            })
-            invokerElement.unbind(type); //remove (temporarily) the binding to the event.
-            //for instance, if we show the popup by clicking invoker, when the popup is shown do nothing
-            //on clicking invoker until popup.hide is called
-            toggleBind(invokerElement,function(e){ //add bindings to stop cancel the popup in case the invoker is clicked again
-                e.stopPropagation();
-                return false;
-            });
-        }
-        //store the functions removed from invoker, if any, to restore them in this.hide
-        this._cfg_.handlersToRestore = oldHandlers;
-        this._cfg_.event = optionalEvent;
-        
-        //toggleBind on each child of content so that clicking and pressing keys on
-        //a child doesn't hide the popup
-        var children = $J(content).find('*');
-        $J(children).each(function(){
-            toggleBind($(this),function(e){
-                e.stopPropagation();
-                return false;
-            });
-        });
-        //showing
-        var doc = $J(document);
-        $J('body').append(div);
-        
-        content.css('position','static'); //this is really important to place the content in the normal flow
-        //within the div. static is the default
-        content.show(); //in case the div is display:none
-        div.append(content);
-
-        //positioning div: center of the screen if no invoker, below the invoker otherwise
-        var wdow = $J(window); //reference the window object (doing it once speeds up a bit performances)
-        var windowH = wdow.height();
-        var windowW = wdow.width();
-        var position = div.offset();
-        var shadowOffset=5;
-        var size = {
-            width:div.outerWidth(true)+shadowOffset,
-            height:div.outerHeight(true)+shadowOffset
-        };
-        if(invokerElement){
-            position = invokerElement.offset();
-            position.top+=  invokerElement.outerHeight(true);
-        }else{
-            position.top = wdow.scrollTop()+ (windowH-size.height)/2;
-            position.left = wdow.scrollLeft()+(windowW-size.width)/2;
-        }
-        //position div. This must be done immediately cause here below we want to get the div  offset
-        //(div position in absolute - ie, document's - coordinates)
-        div.css({
-            'top': position.top,
-            'left': position.left,
-            'right': 'auto', //in case right has been set by some css class rule
-            'bottom': 'auto' //see above...
-        });
-        //set the maximum size
-        //due to overflow:auto a scrollbar will automatically appear
-        var max = Math.max; //reference max immediately (speeds up performances a bit)
-        var maxSize = {
-            width: max(20,windowW +  wdow.scrollLeft() -position.left-shadowOffset),
-            height: max(20, (windowH + wdow.scrollTop() -position.top- shadowOffset))
-        }
-        //position div and size:
-        var divPadding = {
-            left: div.outerWidth()-div.width(),
-            top:div.outerHeight()-div.height()
-        }; //setting width on a div means the width(),
-        //but calculations here are made according to outerWidth(true), so we need this variable (se below)
-
-        //the shadow in the background will be created according to the actual div size
-        //However, since we do not specify neither width nor height, the calculation of the div size
-        //works if maxWidth and maxHeight do set a width and height. In order to do so, they
-        //must be lower or equal to the actual div width and height. That's why the "min" here below:'
-        div.css({
-            'maxWidth': Math.min(div.width(), maxSize.width-divPadding.left),
-            'maxHeight': Math.min(div.height(), maxSize.height-divPadding.top)
-        });
-
-        //last thing: if invoker element exist, set width at least invoker element width
-        if(invokerElement){
-            var iEw = invokerElement.outerWidth(); //no margins considered
-            if(iEw<maxSize.width && iEw>div.outerWidth()){
-                div.css({
-                    'minWidth':iEw-divPadding.left
-                });
-            }
-        }
-        //now we can build the divShadow
-        var divShadow = div.clone(false,false).empty().css({
-            'zIndex':999,
-            'borderColor':'#000',
-            'display':'none',
-            'backgroundColor':'#000'
-        }).insertAfter(div);
-        //store the divs to be removed
-        this._cfg_.divsToDelete = [div,divShadow];
-        //add a listener to the document. If one of the content children is clicked/keypressed,
-        //we won't come here. Otherwise hide popup
-        var me = this;
-        var hide = this.hide;
-        toggleBind(doc,function(e){
-            hide.apply(me);
-            e.stopPropagation();
-        });
-        div.show(300, function(){ //basically in between fast (200) and slow (600)
-            //position div shadow:
-            divShadow.show();
-            
-            //set focus to the first input component, if any. Otherwise try with anchors, otherwise do nothing
-            var inputs = $J(div).find(':input');
-            if(inputs && inputs[0]){
-                inputs[0].focus();
-            }else{
-                inputs = $J(div).find('a');
-                if(inputs && inputs[0]){
-                    inputs[0].focus();
-                }
-            }
-
-            divShadow.fadeTo(0,0.4, function(){
-                divShadow.css({
-                    'top': (position.top+shadowOffset),
-                    'left': (position.left+shadowOffset),
-                    'width': div.outerWidth(true),
-                    'height': div.outerHeight(true)
-                });
-
-            });
-        });
-        return false; //to avoid scrolling if we clicked on an anchor
-    },
-
-    //field must be a dictionary of label:defaultValues (both strings)
-    //callbackOnOk is the callback to be executed on ok, if null ok will simply hide the dialog
-    createDivDialog : function(field,callbackOnOk){
-
-        var $J = this._cfg_.jQuery;
-        var table = $J('<table/>');
-        var fieldElms = {};
-        for(var label in field){
-            var input = $('<input/>')
-            .attr('type','text').val(field[label]).attr("name",label);
-            table.append($J('<tr/>')
-                .append($J('<td/>').html(label))
-                .append($J('<td/>').append(input)));
-            fieldElms[label]=input;
-        }
-
-        var p = this;
-        var onCancel= function(){
-            p.hide();
-            return false;
-        };
-       
-        var onOk= function(){
-            if(callbackOnOk){
-                var ret = {};
-                var inputs = table.find("input");
-                $J.each(inputs, function(key,value){
-                    var v = $J(value);
-                    ret[v.attr('name')] = v.val();
-                });
-                callbackOnOk(ret);
-                return false;
-            }else{
-                return onCancel();
-            }
-        };
-        var subdiv = $J('<div/>').css({
-            'padding':'1ex',
-            'float':'right'
-        }).
-        append(
-            $J('<a/>').
-            html('Ok').
-            addClass('component_icon').
-            addClass('button').
-            addClass('icon_ok').
-            attr('href','#').
-            click(function(){
-                return onOk();
-            })
-            );
-        if(callbackOnOk){
-            subdiv.append(
-                $J('<a/>').
-                html('Cancel').
-                addClass('component_icon').
-                addClass('button').
-                addClass('icon_cancel').
-                attr('href','#').
-                click(function(){
-                    return onCancel();
-                })
-                );
-        }
-        //popupDialog(element,table,onOk);
-        return $J('<div/>').append(table).append(subdiv);
-    }
-}
-
 /**
  * Loads scripts asynchronously
  * can take up to four arguments:
@@ -678,6 +374,7 @@ function PopupDiv(){
 
 }
 
+
 (function(p){
     //private static variables
     var $ = jQuery;
@@ -690,7 +387,7 @@ function PopupDiv(){
 
     //in the functions below, this refers to the new Popup instance, not to the prototype
 
-    
+
 
     p.isClickElement = function(element){
         return element && element.length==1 && element instanceof $ && element[0] !== w_ && element[0] !== d_ &&
@@ -706,7 +403,7 @@ function PopupDiv(){
         return div.attr('id');
     };
 
-    
+
     //default properties which can be overridden
     p.shadowOffset = 4;
     p.invoker = wdw;
@@ -733,7 +430,7 @@ function PopupDiv(){
     p.shadowOpacity = 0.25;
     p.zIndex = 10000;
    // p.listItemClass = '';
-    
+
     p.getFormData = function(){
         var elms = this.find('input,select,textarea');
         var ret = {};
@@ -777,7 +474,7 @@ function PopupDiv(){
             }
         }
     };
-    
+
     p.trigger = function(eventName){
         var listeners = this.getListeners();
         var me = this;
@@ -814,7 +511,7 @@ function PopupDiv(){
         var container =   $($(div).children()[1]);
         //div.appendTo('body'); //necessary to properly display the div size
         container.empty();
-      
+
         if(content instanceof $){
             container.append(content);
         }else if(content instanceof Array){
@@ -975,9 +672,9 @@ function PopupDiv(){
                 this.invoker.attr('tabindex',0).attr(focusAttr,'true');
             }
         var doc_ = d_; //closure (see nested function below)
-        
+
         //now all elements (including header and footer)
-        
+
         var me = this;
         //bind the blur to each focusable element:
         elementsWithFocus.each(function(i,e){
@@ -995,7 +692,7 @@ function PopupDiv(){
                         //timeout should execute
                         return;
                     }
-                    
+
                     me.close();
                 },200)
             }); //set here another time delay. 300 seems to be the good compromise between visual hide and safetiness that
@@ -1011,8 +708,8 @@ function PopupDiv(){
     p.show = function(){
         var div = this.getDiv();
         var me = this;
-        
-        
+
+
         var cssModified = (this.popupClass || this.popupCss);
         if(this.popupClass){
             //which might be the prototype
@@ -1042,7 +739,7 @@ function PopupDiv(){
 //            this.listItemClass = "";
 //        }
 //        elms.css('display','block');
-        
+
 
         this.setFocusCycleRoot(this.focusable);
         this.setSizable();//this means the popupdiv is display: !none and visibility:hidden, so every element
@@ -1092,7 +789,7 @@ function PopupDiv(){
         //do the same as above, ok must exist and be visible, otherwise is undefined
         var okButton = bottomDiv.find('a');
         okButton = okButton.length ? $(okButton.get(0)) : undefined;
-        
+
         //see note above about why we dont use okButton.is(':visible')
         if(this.showok){
             bottomDiv.css('paddingTop','0.5ex').show(); //add padding to bottom
@@ -1121,9 +818,9 @@ function PopupDiv(){
             'width':''
         });
 
-        
+
         var invoker = this.invoker;
-        
+
         var sizeAsPopup = false;
         if(this.isClickElement(invoker)){
             this.setBoundsAsPopup(invoker, true);
@@ -1161,7 +858,7 @@ function PopupDiv(){
             this.setBoundsInside(invoker, this.bounds, this.boundsexact, true);
         }
 
-        
+
 
         //set central div max height ONLY IF NECESSARY:
         var maxHeight = (div.height()-topDiv.outerHeight(true)-bottomDiv.outerHeight(true)-
@@ -1207,7 +904,7 @@ function PopupDiv(){
         attr('id',this.getShadowDivId()) //for use in hide
         .insertAfter(div);
 
-        
+
         var postShowFcn = function(){
             me.trigger('show');
             var rect = me.getBounds.apply(me);
@@ -1225,32 +922,45 @@ function PopupDiv(){
         }
 
         div.hide().css('visibility','visible').show(this.fadInTime,function(){
-            
+
             postShowFcn();
-            
-            
+
+
         });
     };
-    
+
     p.setBoundsAsPopup = function(popupInvoker, isSizable){
         var invoker = popupInvoker;
         var div = this.getDiv();
         var oldCss= isSizable ?  undefined : this.setSizable();
-        
+
         var windowRectangle = this.getBoundsOf(wdw); //returns the window rectangle
 
         var invokerOffset = invoker.offset();
         var invokerOuterHeight = invoker.outerHeight();
 
+        //first set the maxwidth,so that we can compute the height according to it:
+        this.setMaxSize({
+            width: wdw.scrollLeft()+wdw.width()-invokerOffset.left
+        },isSizable);
+
+
         var spaceAbove = invokerOffset.top - windowRectangle.y;
         var spaceBelow = windowRectangle.height - invokerOuterHeight - spaceAbove;
 
+        var placeAbove = spaceAbove > spaceBelow && div.outerHeight(true) > spaceBelow;
+        //note that div.outerHeight() should be  == div.outerHeight(true), as we set margins =0
+
+//        alert(div.outerHeight(true)+' '+spaceAbove+' '+spaceBelow);
+//        div.css('visibility','');
+//        return;
+
         this.setMaxSize({
-            height : spaceAbove>spaceBelow ? spaceAbove : spaceBelow,
-            width: wdw.scrollLeft()+wdw.width()-invokerOffset.left
+            height : (placeAbove ? spaceAbove : spaceBelow)
         },isSizable); //width will be ignored (for the moment)
-        
-        
+        //decrement of one pixel cause when the popup has to be reduced and the shadows bounds "touch" the window right or bottom sides,
+        //the window scrolls (and it shouldn't)
+
         //setting the minimum size to the invoker width, minheight the same as maxHeight (see above)
         this.setMinSize({
             width: invoker.outerWidth()+this.shadowOffset //workaround to NOT consider the shadow, as offset below substracts the shadow
@@ -1263,7 +973,7 @@ function PopupDiv(){
         //must have been computed according to the height set above...
         this.offset({
             'left': invokerOffset.left,
-            'top': (spaceAbove > spaceBelow ? invokerOffset.top -  div.outerHeight(true) :
+            'top': (placeAbove ? invokerOffset.top -  div.outerHeight(true) :
                 invokerOffset.top + invokerOuterHeight)
         },isSizable);
         if(oldCss){
@@ -1284,21 +994,21 @@ function PopupDiv(){
         var oldCss = isSizable ?  undefined : this.setSizable();
 
         var bounds = this.getBoundsOf(parent);
-        
+
         var x=bounds.x;
         var y = bounds.y;
         var w = bounds.width
         var h = bounds.height;
         var pInt = parseInt;
         //rebuilding:
-        
+
         var padding = {
             top: pd['top'],
             left:pd['left'],
             bottom:pd['bottom'],
             right:pd['right']
         };
-        
+
         for(var k in padding){
             if(padding[k]<=0){
                 padding[k]=0;
@@ -1313,13 +1023,13 @@ function PopupDiv(){
             'width':w-padding['left']-padding['right']+this.shadowOffset,
             'height':h-padding['top']-padding['bottom']+this.shadowOffset
         };
-            
+
         var vvvv ={
             width:maxSize.width,
             height:maxSize.height
         };
         this._convertSize(div, vvvv);
-           
+
         if(boundsExact){
             this.setMinSize({
                 width:maxSize.width,
@@ -1329,7 +1039,7 @@ function PopupDiv(){
                 width:maxSize.width,
                 height:maxSize.height
             }, isSizable); //a copy cause the argument will be modified
-            
+
             this.offset({
                 'left':x + padding['left'],
                 'top': y + padding['top']
@@ -1348,7 +1058,7 @@ function PopupDiv(){
 
         }
         //convert to percentage in order to keep same dimensions when zooming
-        
+
 
         if(oldCss){
             div.css({
@@ -1441,7 +1151,7 @@ function PopupDiv(){
             'width': div.outerWidth(true)-div.width(),
             'height':div.outerHeight(true)-div.height()
         };
-        
+
         if('width' in size){
             size.width -= (eD.width + this.shadowOffset);
         }
@@ -1454,7 +1164,7 @@ function PopupDiv(){
         var div = this.getDiv();
         var oldCss= isSizable?  undefined : this.setSizable();
         //offset does NOT consider margins. Do we have top and left?
-        
+
         this.getDiv().offset(offs);
         if(oldCss){
             div.css({
@@ -1478,13 +1188,13 @@ function PopupDiv(){
         var me = this;
         var remove = this.defaultCloseOperation == 'remove';
         div.hide(this.fadeOutTime, function(){
-            
+
             if(remove){
                 div.remove();
             //this is because all bindings will be removed, including blur events
             //we remove this.getFocusAttr() to reupdate focus cycle root when calling show again
             }
-            
+
             //restore event data on invoker, if any
             var id = '_tmpHandlers'+me.getId();
             if(me[id]){
@@ -1500,7 +1210,7 @@ function PopupDiv(){
             me.isClosing = false;
             me.trigger('close');
         });
-        
+
     };
 
 
@@ -1542,28 +1252,5 @@ function PopupDiv(){
         return this.getId()+"_focus";
     }
 
-//    p.getListItemName = function(){
-//        return this.getId()+"_listitem";
-//    }
 
-    
 })(PopupDiv.prototype);
-
-////default PopupDiv properties in telemeta
-////PopupDiv.listItemClass = 'component_icon list_item icon_playlist';
-//PopupDiv.shadowOffset = 4;
-//PopupDiv.popupClass = 'control component';
-//PopupDiv.popupCss = {
-//    'border':'1px solid #666',
-//    'padding':'1ex'
-//};
-//PopupDiv.okButtonTitle =  'Ok';
-//PopupDiv.okButtonClass =  'component_icon button icon_ok';
-//PopupDiv.closeButtonTitle =  '';
-//PopupDiv.closeButtonClass =  'markersdivDelete';
-//PopupDiv.fadInTime = 'fast',
-//    PopupDiv.fadeOutTime = 0,
-//    PopupDiv.shadowOpacity = 0.3;
-
-
-
