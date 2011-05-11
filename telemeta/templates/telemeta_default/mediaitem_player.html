@@ -6,6 +6,7 @@
 {% block title %}{% endblock %}
 {% block title_buttons %}{% endblock %}
 
+{% block layout %}
 {% block content %}
 <div>
 {% if item.file %}
@@ -24,6 +25,7 @@
     {% endif %}
 {% endif %}
 </div>
-{% endblock %}
+{% endblock content%}
+{% endblock layout %}
 
 {% block footer %}{% endblock %}
