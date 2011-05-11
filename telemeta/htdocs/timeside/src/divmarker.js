@@ -261,8 +261,9 @@ var MarkerMapDiv = TimesideArray.extend({
             return false;
         });
 
-
-
+        if(!this.getCurrentUserName()){
+            e_addplaylistButton.hide();
+        }
 
 
         if(!marker.isEditable){ //marker is editable means that author == getCurrentUserName(). addToPlaylist

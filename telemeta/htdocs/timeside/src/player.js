@@ -6,7 +6,8 @@ var Player = TimesideClass.extend({
         this._super();
         var player = this;
 
-
+        //container is the div #player
+        
         if (!container){
             this.debug('ERROR: container is null in initializing the player')
         }

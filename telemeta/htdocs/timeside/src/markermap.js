@@ -29,8 +29,8 @@ var MarkerMap = TimesideArray.extend({
             });
             consolelog(markerUnsaved);
             if(markerUnsaved>0){
-                return 'There ' + (markerUnsaved==1 ? 'is ' : 'are ') + markerUnsaved+ ' unsaved marker'+
-                    (markerUnsaved==1 ? '' : 's') + '. If you exit the page you will loose your changes';
+                return gettrans('there is at least one unsaved marker') +' ('+ markerUnsaved+ '). '+
+                    gettrans('If you exit the page you will loose your changes');
             }
                 
         };
