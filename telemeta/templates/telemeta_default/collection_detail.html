@@ -20,7 +20,7 @@
         var anchor = jQuery('#_add_to_playlist');
         if(anchor.length){
         anchor.click(function(){
-            p.showAddResourceToPlaylist(anchor,'collection','{{collection.public_id}}',gettrans('collection added to the selected playlist'));return false;
+            p.showAddResourceToPlaylist(anchor,'collection','{{collection.id}}',gettrans('collection added to the selected playlist'));return false;
         });
         }
         {% endif %}

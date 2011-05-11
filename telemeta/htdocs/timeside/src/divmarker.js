@@ -18,10 +18,10 @@ var MarkerMapDiv = TimesideArray.extend({
          
         var div = this.createMarkerDiv(index, marker);
         if(index==this.length){
-                this.div.append(div);
-            }else{
-                this.$J( this.div.children()[index] ).before(div);
-            }
+            this.div.append(div);
+        }else{
+            this.$J( this.div.children()[index] ).before(div);
+        }
         //this.setIndex(this.length-1,d); //length has been increased when calling super
         this._super(div,index);
         if(isNew){
@@ -123,7 +123,7 @@ var MarkerMapDiv = TimesideArray.extend({
             e_okButton.show();
             e_titleText.select(); //TODO: this does NOT set the focus on the div. Why?
             editButton.hide();
-            //e_titleText.focus();
+        //e_titleText.focus();
         }else{
             e_descriptionText.attr('readonly','readonly').addClass('markersdivUneditable');
             e_titleText.attr('readonly','readonly').addClass('markersdivUneditable');
@@ -136,13 +136,13 @@ var MarkerMapDiv = TimesideArray.extend({
     },
 
     setFocus: function(index,value){
-//        this.each(function(i,div){
-//            if(i==index && value){
-//                div.css('backgroundColor','#E65911'); //'#f5cf23'
-//            }else{
-//                div.css('backgroundColor','');
-//            }
-//        });
+    //        this.each(function(i,div){
+    //            if(i==index && value){
+    //                div.css('backgroundColor','#E65911'); //'#f5cf23'
+    //            }else{
+    //                div.css('backgroundColor','');
+    //            }
+    //        });
     },
 
 
@@ -152,32 +152,36 @@ var MarkerMapDiv = TimesideArray.extend({
         var me = this;
         div.find('.markersdivDescription').unbind('focus').focus(function(){
             me.setFocus(index,true);
-            me.fire('focus', {'index': index});
+            me.fire('focus', {
+                'index': index
+            });
         });
         div.find('.markersdivTitle').unbind('focus').focus(function(){
             me.setFocus(index,true);
-            me.fire('focus', {'index': index});
+            me.fire('focus', {
+                'index': index
+            });
         });
         div.find('.markersdivEdit').unbind('click').click( function(){
             me.setEditMode(index);
             return false; //avoid scrolling of the page on anchor click
         });
     },
-/**
+    /**
  * stretches jQueryElm the whole possible width. Note that text nodes are not considered!!!!
  */
     stretch: function(jQueryElm){
-      var siblings = jQueryElm.siblings(":visible");
-      siblings = siblings.add(jQueryElm);
-      var spaceStretchable = jQueryElm.parent().width();
-      var $J = this.$J;
-      siblings.each(function(i,elm){
-          spaceStretchable -= $J(elm).outerWidth(true);
-          //consolelog("\t"+spaceStretchable+' elm:'+$J(elm).attr('class')+" left: "+$J(elm).position().left+" outerw:" +$J(elm).outerWidth(true)+" w: "+$J(elm).width());
-      });
-      //consolelog('w'+ jQueryElm.parent().width()+' elm.w: '+jQueryElm.width()+' spacestretchable: '+spaceStretchable);
-      var w = jQueryElm.width() + spaceStretchable;
-      jQueryElm.css('width', w+'px');
+        var siblings = jQueryElm.siblings(":visible");
+        siblings = siblings.add(jQueryElm);
+        var spaceStretchable = jQueryElm.parent().width();
+        var $J = this.$J;
+        siblings.each(function(i,elm){
+            spaceStretchable -= $J(elm).outerWidth(true);
+        //consolelog("\t"+spaceStretchable+' elm:'+$J(elm).attr('class')+" left: "+$J(elm).position().left+" outerw:" +$J(elm).outerWidth(true)+" w: "+$J(elm).width());
+        });
+        //consolelog('w'+ jQueryElm.parent().width()+' elm.w: '+jQueryElm.width()+' spacestretchable: '+spaceStretchable);
+        var w = jQueryElm.width() + spaceStretchable;
+        jQueryElm.css('width', w+'px');
     },
 
     setOffset: function(div,offset){
@@ -188,15 +192,15 @@ var MarkerMapDiv = TimesideArray.extend({
         //for the moment we set the style manually, remove
         //TODO: table width with CSS?
         var div = this.$J('<div/>').attr('tabindex','0').addClass("markerdiv").html('<div>'+
-                                '<a class="ts-marker"></a>'+
-                                '<span class="markersdivOffset" type="text"></span>'+
-                                '<input class="markersdivTitle" type="text"/>'+
-                                '<a class="markersdivAddPlaylist" title="add to playlist"></a>'+
-                                '<a class="markersdivEdit" title="edit">EDIT</a>'+
-                                '<a class="markersdivDelete" title="delete"></a>'+
-                            '</div>'+
-                          '<div zero_top_padding><textarea class="markersdivDescription"></textarea></div>'+
-                          '<div zero_top_padding><a class="markersdivSave">OK</a></div>'); //TODO: avoid text nodes
+            '<a class="ts-marker"></a>'+
+            '<span class="markersdivOffset" type="text"></span>'+
+            '<input class="markersdivTitle" type="text"/>'+
+            '<a class="markersdivAddPlaylist" title="add to playlist"></a>'+
+            '<a class="markersdivEdit" title="edit">EDIT</a>'+
+            '<a class="markersdivDelete" title="delete"></a>'+
+            '</div>'+
+            '<div zero_top_padding><textarea class="markersdivDescription"></textarea></div>'+
+            '<div zero_top_padding><a class="markersdivSave">OK</a></div>'); //TODO: avoid text nodes
         div.find('a').attr('href','#');
         //todo: remove markerlabel from css!!!!!!!
         //new RulerMarker(div.find('.markerlbl'),div.find('.markercanvas'),'marker',false);
@@ -257,7 +261,16 @@ var MarkerMapDiv = TimesideArray.extend({
         })
 
         e_addplaylistButton.unbind('click').bind('click',function(evtObj_){
-            playlistUtils.showAddResourceToPlaylist(e_addplaylistButton,'marker',""+marker.id,gettrans('marker added to the selected playlist'));
+            if(!marker.isSavedOnServer){
+                return false;
+            }
+            //make a request to the server to get the pk (id)
+            //note that marker.id (client side) is marker.public_id (server side)
+            json([marker.id],"telemeta.get_marker_id", function(data){
+                consolelog('received');
+                consolelog(data);
+                //playlistUtils.showAddResourceToPlaylist(e_addplaylistButton,'marker',""+marker.id,gettrans('marker added to the selected playlist'));
+                });
             return false;
         });
 
@@ -274,12 +287,12 @@ var MarkerMapDiv = TimesideArray.extend({
 
 
         e_titleText.keydown(function(event){
-           if(e_okButton.is(':visible')){
-               if (event.keyCode == '13') {
+            if(e_okButton.is(':visible')){
+                if (event.keyCode == '13') {
                     event.preventDefault();
                     e_okButton.trigger('click');
                 }
-           }
+            }
         });
 
         return div;
