@@ -874,7 +874,7 @@ class WebView(object):
         # marker must be a dict
         if isinstance(marker, dict):
             item_id = marker['item_id']
-            item = MediaItem.objects.get(code=item_id)
+            item = MediaItem.objects.get(id=item_id)
             m = MediaItemMarker(item=item) 
             m.public_id = marker['public_id']
             m.time = float(marker['time'])
@@ -887,14 +887,14 @@ class WebView(object):
             raise 'Error : Bad marker dictionnary'
 
     @jsonrpc_method('telemeta.del_marker')
-    def del_marker(request, public_id):
-        m = MediaItemMarker.objects.get(public_id=public_id)
+    def del_marker(request, item_id):
+        m = MediaItemMarker.objects.get(id=item_id)
         m.delete()
         
     @jsonrpc_method('telemeta.get_markers')
     def get_markers(request, item_id):
-        item = MediaItem.objects.get(public_id=item_id)
-        markers = MediaItemMarker.objects.filter(item=item.pk)
+        item = MediaItem.objects.get(id=item_id)
+        markers = MediaItemMarker.objects.filter(item=item)
         list = []
         for marker in markers:
             dict = {}
