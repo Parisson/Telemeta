@@ -225,9 +225,7 @@ ul.continents ul li a { line-height: 1.8em; }
     font-weight: bold;
     color: #444;
     margin: 5px 0;
-    padding-left: 13px;
     font-size: 0.8em;
-    background: #FFF url(indent.png) no-repeat 0 1px;
 }
 #content .intro span {
     padding: 3px;

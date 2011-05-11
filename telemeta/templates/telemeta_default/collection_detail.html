@@ -34,7 +34,7 @@
 {% if collection %}
 
 {% block title %}
-    <h1><img src="{% url telemeta-images "collections_red.png" %}" style="vertical-align:middle" /> Collection : {{ collection }}</h1>
+    <h1><img src="{% url telemeta-images "collections_red.png" %}" style="vertical-align:middle" /> Collection : {{ collection.title }}</h1>
 {% endblock %}
 
 {% block title_buttons %}
@@ -79,7 +79,7 @@
         {% endif %}
       {% block infos %}
         <div class="intro">
-            <span>{% if collection.items.count %}{{ collection.items.count }} {% ifequal collection.items.count 1 %}item{% else %}items{% endifequal %}{% else %}No item{% endif %}</span>
+            <span><img src="{% url telemeta-images "item_title.png" %}" style="vertical-align:middle" /> {% if collection.items.count %}{{ collection.items.count }} {% ifequal collection.items.count 1 %}item{% else %}items{% endifequal %}{% else %}No item{% endif %}</span>
         </div>
         <div class="infos">
         {% block general_info %}
