@@ -75,7 +75,7 @@ class Revision(ModelCore):
 class UserProfile(django.db.models.Model):
     "User profile extension"
     
-    user            = ForeignKey(User, unique=True)
+    user            = ForeignKey(User, unique=True, required=True)
     institution     = CharField(_('Institution'))
     function        = CharField(_('Function'))
     address         = TextField(_('Address'))

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-11 14:04+0200\n"
+"POT-Creation-Date: 2011-05-11 16:01+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Olivier Guilyardi <olivier samalyse com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -611,7 +611,7 @@ msgstr ""
 "communautés d'origine."
 
 #: templates/telemeta_default/base.html:118
-#: templates/telemeta_default/collection_detail.html:111
+#: templates/telemeta_default/collection_detail.html:114
 #: templates/telemeta_default/collection_detail_new.html:116
 msgid "Legal notices"
 msgstr "Mentions légales"
@@ -667,28 +667,32 @@ msgstr "Editer"
 msgid "Copy"
 msgstr "Copier"
 
-#: templates/telemeta_default/collection_detail.html:47
+#: templates/telemeta_default/collection_detail.html:45
+msgid "Add item"
+msgstr "Ajouter item"
+
+#: templates/telemeta_default/collection_detail.html:48
 #: templates/telemeta_default/collection_detail_new.html:47
 #: templates/telemeta_default/mediaitem_detail.html:101
 msgid "Add to playlist"
 msgstr "Ajouter à la liste"
 
-#: templates/telemeta_default/collection_detail.html:57
+#: templates/telemeta_default/collection_detail.html:60
 msgid "Listen to this collection"
 msgstr "Écouter la collection"
 
-#: templates/telemeta_default/collection_detail.html:89
+#: templates/telemeta_default/collection_detail.html:92
 #: templates/telemeta_default/collection_detail_new.html:93
 msgid "Recording year"
 msgstr "Année d'enregistrement"
 
-#: templates/telemeta_default/collection_detail.html:98
+#: templates/telemeta_default/collection_detail.html:101
 #: templates/telemeta_default/collection_detail_new.html:103
 #: templates/telemeta_default/mediaitem_detail.html:228
 msgid "Geographic and cultural informations"
 msgstr "Indications géographiques et culturelles"
 
-#: templates/telemeta_default/collection_detail.html:116
+#: templates/telemeta_default/collection_detail.html:119
 #: templates/telemeta_default/collection_detail_new.html:121
 #: templates/telemeta_default/home.html:52
 #: templates/telemeta_default/inc/collection_list.html:16
@@ -696,31 +700,31 @@ msgstr "Indications géographiques et culturelles"
 msgid "Recordist"
 msgstr "Collecteur"
 
-#: templates/telemeta_default/collection_detail.html:137
+#: templates/telemeta_default/collection_detail.html:140
 #: templates/telemeta_default/collection_detail_new.html:142
 #: templates/telemeta_default/mediaitem_detail.html:294
 msgid "Archiving data"
 msgstr "Données d'archivage"
 
-#: templates/telemeta_default/collection_detail.html:160
+#: templates/telemeta_default/collection_detail.html:163
 #: templates/telemeta_default/collection_detail_new.html:165
 #: templates/telemeta_default/mediaitem_detail.html:309
 msgid "Technical data"
 msgstr "Données techniques"
 
-#: templates/telemeta_default/collection_detail.html:165
+#: templates/telemeta_default/collection_detail.html:168
 #: templates/telemeta_default/collection_detail_new.html:170
 #: templates/telemeta_default/mediaitem_detail.html:312
 msgid "Media type"
 msgstr "Type de media"
 
-#: templates/telemeta_default/collection_detail.html:165
+#: templates/telemeta_default/collection_detail.html:168
 #: templates/telemeta_default/collection_detail_new.html:170
 #: templates/telemeta_default/mediaitem_detail.html:312
 msgid "Audio"
 msgstr "Audio"
 
-#: templates/telemeta_default/collection_detail.html:170
+#: templates/telemeta_default/collection_detail.html:173
 #: templates/telemeta_default/collection_detail_new.html:175
 #: templates/telemeta_default/geo_countries.html:17
 msgid "Number of items"
@@ -1093,7 +1097,7 @@ msgstr "Etat/Continent"
 msgid "No item"
 msgstr "Aucun item"
 
-#: templates/telemeta_default/inc/module_revisions.html:7 web/base.py:1079
+#: templates/telemeta_default/inc/module_revisions.html:7 web/base.py:1083
 msgid "Last changes"
 msgstr "Dernières modifications"
 
@@ -1273,11 +1277,11 @@ msgid_plural "%(count)d collections"
 msgstr[0] "%(count)d collection"
 msgstr[1] "%(count)d collections"
 
-#: web/base.py:1090
+#: web/base.py:1094
 msgid "Access not allowed"
 msgstr "Accès non autorisé"
 
-#: web/base.py:1092
+#: web/base.py:1096
 msgid ""
 "Please login or contact the website administator to get admin or private "
 "access."

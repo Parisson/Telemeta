@@ -1099,6 +1099,9 @@ a.image-link {
 .icon_add{
     background-image: url('/images/add.png');
 }
+.icon_add_to_playlist{
+    background-image: url('/images/add_to_playlist.png');
+}
 .icon_login{
     background-image: url('/images/password.png');
 }

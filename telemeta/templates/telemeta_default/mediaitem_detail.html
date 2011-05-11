@@ -98,7 +98,7 @@
     <a href="{% url telemeta-item-copy item.public_id %}" class="component_icon button icon_copy">{% trans "Copy" %}</a>
     {% endif %}
     {% if user.is_authenticated %}
-    <a id="_add_to_playlist" href='#' class="component_icon button icon_add">{% trans "Add to playlist" %}</a>
+    <a id="_add_to_playlist" href='#' class="component_icon button icon_add_to_playlist">{% trans "Add to playlist" %}</a>
     {% endif %}
     <a href="{% url telemeta-item-detail previous %}" class="component_icon button icon_previous">{% trans "Previous" %}</a>
     <a href="{% url telemeta-item-detail next %}" class="component_icon button icon_next">{% trans "Next" %}</a>

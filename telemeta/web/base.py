@@ -352,9 +352,13 @@ class WebView(object):
                     })
         
     @method_decorator(permission_required('telemeta.add_mediaitem'))
-    def item_add(self, request, template='telemeta/mediaitem_add.html'):
+    def item_add(self, request, public_id=None, template='telemeta/mediaitem_add.html'):
         """Show the details of a given item"""
-        item = MediaItem()
+        if public_id:
+            collection = MediaCollection.objects.get(public_id=public_id)
+            item = MediaItem(collection=collection)
+        else:
+            item = MediaItem()
         if request.method == 'POST':
             form = MediaItemForm(data=request.POST, files=request.FILES, instance=item)
             if form.is_valid():

@@ -38,14 +38,17 @@
 {% endblock %}
 
 {% block title_buttons %}
-      <a href="{% url telemeta-collection-dublincore collection.public_id %}" class="component_icon button icon_dublin_core">Dublin Core</a>
+  <div class="fixedWidthAsPlayer">
     {% if user.is_authenticated and perms.telemeta.change_mediacollection %}
       <a href="{% url telemeta-collection-edit collection.public_id %}" class="component_icon button icon_edit">{% trans "Edit" %}</a>
       <a href="{% url telemeta-collection-copy collection.public_id %}" class="component_icon button icon_copy">{% trans "Copy" %}</a>
+      <a href="{% url telemeta-collection-additem collection.public_id %}" class="component_icon button icon_add">{% trans "Add item" %}</a>
      {% endif %}
     {% if user.is_authenticated %}
-    <a href=# id ="_add_to_playlist" class="component_icon button icon_add">{% trans "Add to playlist" %}</a>
+    <a href=# id ="_add_to_playlist" class="component_icon button icon_add_to_playlist">{% trans "Add to playlist" %}</a>
     {% endif %}
+    <a href="{% url telemeta-collection-dublincore collection.public_id %}" class="component_icon button icon_dublin_core">Dublin Core</a>
+   </div>
 {% endblock %}
 
 {% block content %}
