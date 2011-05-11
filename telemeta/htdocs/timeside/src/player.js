@@ -184,46 +184,67 @@ var Player = TimesideClass.extend({
         var me=this;
         //TODO: use cssPrefix or delete cssPrefix!!!!!
         //TODO: note that ts-viewer is already in the html page. Better avoid this (horrible) method and use the html
-        var skeleton =  {
-            'div.ts-viewer': {
-                'div.ts-ruler': {},
-                'div.ts-wave': {
-                    'div.ts-image-canvas': {},
-                    'div.ts-image-container': ['img.ts-image']
-                }
-            },
-            'div.ts-control': {
-                'div.ts-layout': {
-                    'div.ts-playback': ['a.ts-play', 'a.ts-pause', 'a.ts-rewind', 'a.ts-forward', 'a.ts-set-marker' //]
-                    ,'a.ts-volume','img.ts-wait', 'select.ts-visualizer']
-                }
-            }/*,
-        'div.marker-control': ['a.set-marker']*/
-        };
-        var jQueryObjs = this.loadUI(this.getContainer(), skeleton);
+//        var skeleton =  {
+//            'div.ts-viewer': {
+//                'div.ts-ruler': {},
+//                'div.ts-wave': {
+//                    'div.ts-image-canvas': {},
+//                    'div.ts-image-container': ['img.ts-image']
+//                }
+//            },
+//            'div.ts-control': {
+//                'div.ts-layout': {
+//                    'div.ts-playback': ['a.ts-play', 'a.ts-pause', 'a.ts-rewind', 'a.ts-forward', 'a.ts-set-marker' //]
+//                    ,'a.ts-volume','img.ts-wait', 'select.ts-visualizer']
+//                }
+//            }/*,
+//        'div.marker-control': ['a.set-marker']*/
+//        };
+        //var jQueryObjs = this.loadUI(this.getContainer(), skeleton);
 
-            
 
-        this.getElements = function(){
-            return jQueryObjs;
-        }
+        var html = ["<div class='ts-viewer'>",
+                        "<div class='ts-ruler'></div>",
+                        "<div class='ts-wave'>",
+                            "<div class='ts-image-canvas'></div>",
+                            "<div class='ts-image-container'>",
+                               "<img class='ts-image' src='' alt='' />",
+                            "</div>",
+                        "</div>",
+                    "</div>",
+                    "<div class='ts-control'>",
+                        "<div class='ts-layout'>",
+                            "<div class='ts-playback'>",
+                                "<a class='ts-play'></a>",
+                                "<a class='ts-pause'></a>",
+                                "<a class='ts-rewind'></a>",
+                                "<a class='ts-forward'></a>",
+                                "<a class='ts-set-marker'></a>",
+                                "<a class='ts-volume'></a>",
+                                "<img class='ts-wait'/>",
+                                "<select class='ts-visualizer'></select>",
+                            "</div>",
+                        "</div>",
+                    "</div>"];
 
+        this.getContainer().html(html.join(''));
+        var container = this.getContainer();
        
 
-        var rewind = jQueryObjs.find('.ts-rewind');
-        var forward = jQueryObjs.find('.ts-forward');
-        var play = jQueryObjs.find('.ts-play');
-        var pause = jQueryObjs.find('.ts-pause');
-        var volume = jQueryObjs.find('.ts-volume');
+        var rewind = container.find('.ts-rewind');
+        var forward = container.find('.ts-forward');
+        var play = container.find('.ts-play');
+        var pause = container.find('.ts-pause');
+        var volume = container.find('.ts-volume');
 
 
          //hide the wait image and set the src
-        var waitImg = jQueryObjs.find('.ts-wait');
+        var waitImg = container.find('.ts-wait');
         waitImg.attr('src','/images/wait_small.gif').attr('title','refreshing image').attr('alt','refreshing image').hide();
 
         //setting the select option for visualizers:
         var visualizers = this.getVisualizers();
-        var select = jQueryObjs.find('.ts-visualizer');
+        var select = container.find('.ts-visualizer');
         for(var name in visualizers){
             //$J('<option/>').val(visualizers[name]).html(name).appendTo(select);
             $J('<option/>').html(name).appendTo(select);
@@ -277,7 +298,7 @@ var Player = TimesideClass.extend({
         //            ));
 
         //assigning title to all anchors
-        jQueryObjs.attr('href', '#')
+        container.find('a').attr('href', '#')
         .each(function(i, a){
             a = $J(a);
             a.attr('title', a.attr('class').substring(3));
@@ -411,9 +432,9 @@ var Player = TimesideClass.extend({
     resize: function() {
         this.debug("resizing");
         var height;
-        var playerelements = this.getElements();
-        var wave = playerelements.find('.ts-wave');
-        var image = playerelements.find('.ts-image');
+        var container = this.getContainer();
+        var wave = container.find('.ts-wave');
+        var image = container.find('.ts-image');
         height = wave.height();
         this.debug("wave height:" + height);
         if (!height) {
@@ -422,8 +443,8 @@ var Player = TimesideClass.extend({
         }
         //set image, imagecontainer and canvas (container on imagecontainer for lines and pointer triangles) css
         var elements = image
-        .add(playerelements.find('.ts-image-container'))
-        .add(playerelements.find('.ts-image-canvas'));
+        .add(container.find('.ts-image-container'))
+        .add(container.find('.ts-image-canvas'));
 
         elements.css('width', 'auto'); // for IE6
 
@@ -490,12 +511,13 @@ var Player = TimesideClass.extend({
     //    },
     refreshImage: function(optionalImgJQueryElm){
         var image;
+        var container = this.getContainer();
         if(optionalImgJQueryElm){
             image = optionalImgJQueryElm;
         }else{
-            image = this.getElements().find('.ts-image');
+            image = container.find('.ts-image');
         }
-        var select = this.getElements().find('.ts-visualizer');
+        var select = container.find('.ts-visualizer');
         var funcImg = function(player_image_url, width, height){
             var _src_ = null;
             if (player_image_url && (width || height)) {
@@ -514,7 +536,7 @@ var Player = TimesideClass.extend({
         var w =select.width();
         var h = select.height();
         select.hide();
-        var progressBar = this.getElements().find('.ts-wait').css({'width':w+'px','height':h+'px'}).show();
+        var progressBar = container.find('.ts-wait').css({'width':w+'px','height':h+'px'}).show();
         
         image.load(function(){
             progressBar.hide();
@@ -602,7 +624,7 @@ var Player = TimesideClass.extend({
         //update the anchor image:
         var indices = [20,40,60,80,100,100000];
 
-        var volumeElm = this.getElements().find('.ts-volume');
+        var volumeElm = this.getContainer().find('.ts-volume');
         for(var i=0; i <indices.length; i++){
             if(volume<indices[i]){
                 var pos = -28*i;
@@ -656,7 +678,7 @@ var Player = TimesideClass.extend({
             //1) ADD
             //
             //add binding to the setMarker button (html anchor):
-            var setMarkerButton = player.getElements().find('.ts-set-marker');
+            var setMarkerButton = player.getContainer().find('.ts-set-marker');
             var tab = $J('#tab_markers');
             if(setMarkerButton){
                 if(isInteractive_){

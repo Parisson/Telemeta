@@ -59,6 +59,7 @@ function loadPlayer(analizerUrl, soundUrl, itemId, visualizers, currentUserName)
     if(!(analizerUrl) || !(soundUrl)){
         return;
     }
+   
     var $J = jQuery;
     consolelog('till here all ok1');
     var msgElm = $J('#loading_span_text'); //element to show messages

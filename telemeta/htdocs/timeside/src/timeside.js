@@ -14,8 +14,7 @@
  * MIT Licensed.
  * (Inspired by base2 and Prototype)
  * 
- * In my opinion the lightest (no tons of heavy .js files to be included) and
- * easiest (no days spent understanding what is going on) way to implement inhertance and OOP in
+ * In my (Riccardo) opinion the lightest and most-comprehensive way to implement inhertance and OOP in
  * javascript. Usages can be found below.
  * Basically,
  * 1) a new Class is instantiated with Class.extend(). This function takes a dictionary
@@ -25,11 +24,12 @@
  * In this case, the variable this._super inside the overridden methods will refers to the super-method and can thus be called safely.
  * Consequently, if a _super property/method is implemented in the extend dictionary, it WILL NOT be accessible
  * to the overriding methods of B. Basically, don't use _super as a key of the argument of extend.
- * 3) AFTER the prototype has been populated, the init function, if exists, is called. The latter can be seen as a class constructor in java.
- * Private variable can be declared in the init function (which is used as class constructor), as well as
+ * 3) AFTER the prototype has been populated, the init function, if exists, is called. The latter can be seen as a class constructor in java,
+ * with a substantial difference: when executing the init() method the class prototype has already been populated with all inherited methods.
+ * Private variable can be declared in the init function, as well as
  * relative getters and setters, if needed. Downside is that the privileged getters and setters can’t be put in the prototype,
- * i.e. they are created for each instance separately. Another issue is the overhead of closures in general (basically, write as less as possible
- * in the init functionm in particular if the class has to be declared several times)
+ * i.e. they are created for each instance separately, and the _super keyword does not apply to them. Another issue is the overhead of closures in general (basically, write as less as possible
+ * in the init function, in particular if the class has to be declared several times)
  * Of course, the this._super keyword of methods implemented in the init constructor does not work
  *
  * EXAMPLE:
@@ -242,7 +242,7 @@ var TimesideClass = Class.extend({
         //the map for listeners. Must be declared in the init as it's private and NOT shared by all instances
         //(ie, every instance has its own copy)
         this.listenersMap={};
-        //follows jquery bind. Same as adding a listener for a key
+    //follows jquery bind. Same as adding a listener for a key
         
     },
 
@@ -250,117 +250,49 @@ var TimesideClass = Class.extend({
      *methods defining listeners, events fire and bind:
      */
     bind : function(key, callback, optionalThisArgInCallback){
-            if(!(callback && callback instanceof Function)){
-                this.debug('cannot bind '+key+' to callback: the latter is null or not a function');
-                return;
+        if(!(callback && callback instanceof Function)){
+            this.debug('cannot bind '+key+' to callback: the latter is null or not a function');
+            return;
+        }
+        var listenersMap = this.listenersMap;
+        var keyAlreadyRegistered = (key in listenersMap);
+        if(!keyAlreadyRegistered){
+            listenersMap[key] = [];
+        }
+        listenersMap[key].push({
+            callback:callback,
+            optionalThisArgInCallback:optionalThisArgInCallback
+        });
+    },
+    unbind : function(){
+        var listenersMap = this.listenersMap;
+        if(arguments.length>0){
+            var key = arguments[0];
+            if(key in listenersMap){
+                delete listenersMap[key];
             }
-            var listenersMap = this.listenersMap;
-            var keyAlreadyRegistered = (key in listenersMap);
-            if(!keyAlreadyRegistered){
-                listenersMap[key] = [];
-            }
-            listenersMap[key].push({
-                callback:callback,
-                optionalThisArgInCallback:optionalThisArgInCallback
-            });
-        },
-        unbind : function(){
-             var listenersMap = this.listenersMap;
-            if(arguments.length>0){
-                var key = arguments[0];
-                if(key in listenersMap){
-                    delete listenersMap[key];
-                }
-            }else{
-                for(key in listenersMap){
-                    delete listenersMap[key];
-                }
-            }
-        },
-        fire : function(key, dataArgument){
-              var listenersMap = this.listenersMap;
-            if(!(key in listenersMap)){
-                this.debug(key+' fired but no binding associated to it');
-                return;
-            }
-            var callbacks = listenersMap[key];
-            var len = callbacks && callbacks.length ? callbacks.length : 0;
-            for(var i=0; i<len; i++){
-                var obj = callbacks[i];
-                if('optionalThisArgInCallback' in obj){
-                    obj.callback.apply(obj.optionalThisArgInCallback, [dataArgument]);
-                }else{
-                    obj.callback(dataArgument);
-                }
-            }
-        },
-
-    /* creates all elements in skeleton and appends them in container. Returns
-        * the jQuery object representing all elements created
-        *
-        * skeleton can be is a javascript object or array. 
-        * 1) a javascript array. In this case its elements must be strings according to the syntax 'tag.className' or simply 'tag', 
-        * eg, 'div.classname', 'a' etcetera
-        * 2) a javascript object. In this case its keys must be strings in the same syntax as specified above
-        * and the values associated to each key must be in turn an object or an array following again the same syntax 
-        * in order to represent the subelements of key to be created
-        * Example1
-        *   skeleton = { 'div.className':['a.className2'] };
-        *   UI(container, skeleton);
-        * will return a jQuery object of the newly created div (with class 'className') which has been appended to container
-        * the returned div has an anchor element as child with class 'className2'
-        * Example2
-        *   skeleton= {'div.className':{}, ', 'div':{}};
-        *   UI(container, skeleton)
-        * will return a jQuery object of the 2 newly created divs (the former with class 'className')
-        * which have been appended to container
-        */
-    loadUI: function(container, skeleton) {
-        var i = 0;
-        var $J = this.$J;
-        var elements = $J([]); //create empty jquery object
-
-        
-        var _loadChild = function(container_, tag, className, index) {
-            var element = container_.find('.'+className);
-            
-            if (!element.length) {
-                element = $J(document.createElement(tag)).addClass(className);
-                var children = container_.children();
-                //consolelog('loadUI: inserting ' + element.attr('class')+' in '+container_.attr('class'));
-                if (index < children.length) {
-                    children.eq(index).before(element);
-                } else {
-                    container_.append(element);
-                }
-            }else{
-                
-            //consolelog('loadUI: returning ' + element.attr('class')+' (already present) ');
-            }
-            return element;
-        };
-
-        if (skeleton[0]) {
-            $J(skeleton).each((function(i, selector) {
-                var s = selector.split('.');
-                var newChild = _loadChild(container, s[0], s[1], i++);
-                elements = elements.add(newChild);
-                
-            }));
-        } else {
-            for (var key in skeleton) {
-                var s = key.split('.');
-                var subcontainer = _loadChild(container, s[0], s[1], i++);
-                elements = elements.add(subcontainer);
-                elements = elements.add(this.loadUI(subcontainer, skeleton[key]));
-                
-            //elements[$N.Util.camelize(s[1])] = e;
-            //$N.extend(elements, UI(e, skeleton[key], contents));
-
+        }else{
+            for(key in listenersMap){
+                delete listenersMap[key];
             }
         }
-       //consolelog(elements.find('.ts-image'));
-        return elements;
+    },
+    fire : function(key, dataArgument){
+        var listenersMap = this.listenersMap;
+        if(!(key in listenersMap)){
+            this.debug(key+' fired but no binding associated to it');
+            return;
+        }
+        var callbacks = listenersMap[key];
+        var len = callbacks && callbacks.length ? callbacks.length : 0;
+        for(var i=0; i<len; i++){
+            var obj = callbacks[i];
+            if('optionalThisArgInCallback' in obj){
+                obj.callback.apply(obj.optionalThisArgInCallback, [dataArgument]);
+            }else{
+                obj.callback(dataArgument);
+            }
+        }
     }
 
 });
@@ -386,7 +318,7 @@ var TimesideArray = TimesideClass.extend({
         }
         this.length = me.length; //in order to match the javascript array property
     },
-    length:0, //implement it as public property to be consistent with Array length property. However, DO NOT modify directly this property!!!
+    length:0, //implement it as public property to be consistent with Array length property. Be careful however to NOT TO modify directly this property!!!
     //adds at the end of the array. If index is missing the object is appended at the end
     add : function(object, index){
         var array = this.toArray();
@@ -456,36 +388,7 @@ var TimesideArray = TimesideClass.extend({
         for(var i = startInclusive; i<endExclusive; i++){
             callback(i,me[i]);
         }
-    //
-    //
-    //        if(!(len) || arg[len-1]===undefined){
-    //            consolelog('each called without arguments!!!');
-    //            return;
-    //        }
-    //        callback = arg[len-1];
-    //        //return immediately if startinedx exists and is greater or equal this.length
-    //        if(len>1 && arg[0] >= this.length){
-    //            return;
-    //        }
-    //        if(len>1 && startInclusive=== undefined){
-    //            consolelog('oops---------------- startindex');
-    //        }else if(len>2 && endExclusive=== undefined){
-    //            consolelog('oops---------------- endIndex');
-    //        }
-    //
-    //        var formatvar = function(array,index, correctionValue){
-    //            if(array.length>index && array[index]!== undefined){
-    //                return array[index];
-    //            }
-    //            return correctionValue;
-    //        }
-    //        var me =this.toArray();
-    //        var s = len > 1 ? formatvar(arg,0,0) : 0;
-    //        var e = len > 2 ? formatvar(arg,1,me.length) : me.length;
-    //        //consolelog(s+' - '+e);
-    //        for(var i = s; i<e; i++){
-    //            callback(i,me[i]);
-    //        }
+    
     },
 
     //clears the array and the events associated to it, ie removes all its elements and calls unbind(). Returns the array of the removed elements
@@ -539,13 +442,13 @@ var TimesideArray = TimesideClass.extend({
  *   or container are jQuery objects, the html elements inside them are sorted according to the document order. That's why tabs and
  *   container can be passed also as javascript arrays, so that the binding n-th tab -> n-th container can be decided by the user
  *   regardeless on how elements are written on the page, if already present
- * 3rd argument: the selected index. If missing it defaullts to zero.
+ * 3rd argument: the selected index. If missing it defaults to zero.
  * 4th argument: selectedtab class. Applies to the selected tab after click of one tab. If missing, nothing is done
  * 5th argument the unselectedtab class. Applies to all tabs not selected after click of one tab. If missing, nothing is done
  *
- * NOTE: that the last 2 arguments are intended for css "visual look", as the relevant css will be overridden inside the code.
- * With relevant css we mean all css necessary to let tabs behave like a 'desktop application tab' (eg, (position, top, zIndex). Note also
- * that very tab parent container' of every tab's visibility is set to 'visible' (the default)
+ * NOTE: The last 2 arguments are mostly for customizing the tab "visual look", as some css elements (eg, (position, top, zIndex)
+ * are set inside the code and cannot be changed, as they are mandatory to let tab anchor behave like desktop application tabs. Note also
+ * that every tab container is set to 'visible' by means of jQuery.show()
  *
  * Examples:
  * setUpPlayerTabs([jQuery('#tab1),jQuery('#tab1)], [jQuery('#div1),jQuery('#div2)], 1);
