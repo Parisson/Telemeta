@@ -17,7 +17,8 @@ var localeStrings = {
     'item added to the selected playlist': gettext('item added to the selected playlist'),
     'collection added to the selected playlist': gettext('collection added to the selected playlist'),
     'there is at least one unsaved marker': gettext('there is at least one unsaved marker'),
-    'If you exit the page you will loose your changes' : gettext('If you exit the page you will loose your changes')
+    'If you exit the page you will loose your changes' : gettext('If you exit the page you will loose your changes'),
+    'author' : gettext('author')
 };
 
 function gettrans(str){

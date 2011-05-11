@@ -122,14 +122,15 @@ var MarkerMapDiv = TimesideArray.extend({
             div.css('backgroundColor','#E65911');
             e_descriptionText.removeAttr('readonly').removeClass('markersdivUneditable');
             e_titleText.removeAttr('readonly').removeClass('markersdivUneditable');
-            e_okButton.show();
+            e_okButton.add(e_okButton.parent()).show(); //hiding also the parent div saves space (padding bottom hidden)
             e_titleText.select(); //TODO: this does NOT set the focus on the div. Why?
             editButton.hide();
         //e_titleText.focus();
         }else{
             e_descriptionText.attr('readonly','readonly').addClass('markersdivUneditable');
             e_titleText.attr('readonly','readonly').addClass('markersdivUneditable');
-            e_okButton.hide();
+            consolelog(e_okButton.parent());
+            e_okButton.add(e_okButton.parent()).hide(); //hiding also the parent div saves space (padding bottom hidden)
             editButton.show();
             div.css('backgroundColor','');
         }
@@ -204,7 +205,8 @@ var MarkerMapDiv = TimesideArray.extend({
             '<a class="markersdivDelete" title="delete"></a>'+
             '</div>'+
             '<div zero_top_padding><textarea class="markersdivDescription"></textarea></div>'+
-            '<div zero_top_padding><a class="markersdivSave">OK</a></div>'); //TODO: avoid text nodes
+            '<div zero_top_padding><a class="markersdivSave">OK</a></div>'+
+        '<div zero_top_padding><span style="font-size:75%;color:#999">'+gettrans('author')+': '+marker.author+'</span></div>'); //TODO: avoid text nodes
         div.find('a').attr('href','#');
         //todo: remove markerlabel from css!!!!!!!
         //new RulerMarker(div.find('.markerlbl'),div.find('.markercanvas'),'marker',false);
@@ -234,7 +236,7 @@ var MarkerMapDiv = TimesideArray.extend({
         e_titleText.val(marker.title ? marker.title : "");
         //}
 
-        e_okButton.hide();
+        e_okButton.add(e_okButton.parent()).hide(); //hiding also the parent div saves space (padding bottom hidden)
         e_editButton.show();
         e_deleteButton.show();
         e_addplaylistButton.show();

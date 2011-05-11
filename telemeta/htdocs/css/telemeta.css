@@ -963,7 +963,7 @@ a.image-link {
 }
 
 .markerdiv div{
-    padding:1ex;
+    padding:0.7ex 1ex;
 }
 .markerdiv div[zero_top_padding]{ /*mathces any div with the attribute zero_top_padding set (whatever the value)*/
     padding-top:0px;
