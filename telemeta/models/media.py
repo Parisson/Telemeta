@@ -456,7 +456,13 @@ class DublinCoreToFormatMetadata(object):
             value = data[1]
             if value:
                 if key == 'date':
-                    value = value.split(';')[0].split('=')[1].split('-')[0]
+                    value = value.split(';')[0].split('=')
+                    print value
+                    if len(value) > 1:
+                        value  = value[1]
+                        value = value.split('-')[0]
+                    else:
+                        value = value[0].split('-')[0]
                 if key in mapp:
                     metadata[mapp[key]] = str(value)
                 elif 'all' in mapp.keys():

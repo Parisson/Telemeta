@@ -518,21 +518,24 @@ class WebView(object):
             # source > stream
             response = HttpResponse(stream_from_file(audio), mimetype = mime_type)
             
-        else:        
+        else:
+            dc_metadata = dublincore.express_item(item).to_list()
+            mapping = DublinCoreToFormatMetadata(extension)
+            metadata = mapping.get_metadata(dc_metadata)     
+            media = self.cache_export.dir + os.sep + file
             if not self.cache_export.exists(file):
                 decoder = timeside.decoder.FileDecoder(audio)
                 # source > encoder > stream
                 decoder.setup()
-                media = self.cache_export.dir + os.sep + file
                 proc = encoder(media, streaming=True)
                 proc.setup(channels=decoder.channels(), samplerate=decoder.samplerate())
-                dc_metadata = dublincore.express_item(item).to_list()
-                mapping = DublinCoreToFormatMetadata(extension)
-                metadata = mapping.get_metadata(dc_metadata)
                 proc.set_metadata(metadata)
                 response = HttpResponse(stream_from_processor(decoder, proc), mimetype = mime_type)
             else:
                 # cache > stream
+                proc = encoder(media)
+                proc.set_metadata(metadata)
+                proc.write_metadata()
                 response = HttpResponse(self.cache_export.read_stream_bin(file), mimetype = mime_type)
         
         response['Content-Disposition'] = 'attachment'
