@@ -29,7 +29,9 @@
             <tr><td class="error">{{ field.errors }}</td></tr>
             <td>{{ field.label_tag }}:</td>
              {% if field.html_name == "collection" %}
-              <td>{{ field }} <br />&nbsp;{% trans "Title" %} : {{ item.collection.title }}</td>
+              <td>&nbsp;{% trans "Title" %} : {{ item.collection.title }}<br />
+                  &nbsp;{% trans "Code" %} : {{ item.collection.code }}<br />
+                  {{ field }}</td>    
              {% else %}
               <td>{{ field }}</td>
              {% endif %}

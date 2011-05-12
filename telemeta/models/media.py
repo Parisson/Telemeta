@@ -416,3 +416,50 @@ class Search(ModelCore):
         return self.keywords
 
 
+class DublinCoreToFormatMetadata(object):
+    """ a mapping class to get item DublinCore metadata dictionaries 
+    in various audio metadata format (MP3, OGG, etc...)"""
+    
+    metadata_mapping = { 
+                    'mp3' : {
+                         'title': 'TIT2', #title2
+                         'creator': 'TCOM', #composer
+                         'creator': 'TPE1', #lead
+                         'identifier': 'UFID', #unique ID
+                         'relation': 'TALB', #album
+                         'type': 'TCON', #genre
+                         'publisher': 'TPUB', #publisher
+                         'date': 'TDRC', #year
+#                         'coverage': 'COMM',  #comment
+                         }, 
+                    'ogg': {
+                        'creator': 'artist',
+                        'relation': 'album', 
+                        'all': 'all', 
+                       }, 
+                    'flac': {
+                        'creator': 'artist',
+                        'relation': 'album', 
+                        'all': 'all', 
+                       }, 
+                    }
+    
+    def __init__(self, format):
+        self.format = format
+        
+    def get_metadata(self, dc_metadata):
+        mapp = self.metadata_mapping[self.format]
+        metadata = {}
+        keys_done = []
+        for data in dc_metadata:
+            key = data[0]
+            value = data[1]
+            if value:
+                if key == 'date':
+                    value = value.split(';')[0].split('=')[1].split('-')[0]
+                if key in mapp:
+                    metadata[mapp[key]] = str(value)
+                elif 'all' in mapp.keys():
+                    metadata[key] = str(value)
+                keys_done.append(key)
+        return metadata

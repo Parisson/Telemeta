@@ -274,18 +274,13 @@ class WebView(object):
         analyzers = self.item_analyze(item)
         playlists = self.get_playlists(request)
         public_access = self.get_public_access(item.public_access, item.recorded_from_date, item.recorded_to_date)
-        
-        translation_list = ['OK', 'Cancel', 'Item' 'Marker', 'added to playlist']
-        translations = {}
-        for term in translation_list:
-            translations[term] = ugettext(term)
                 
         return render(request, template,
                     {'item': item, 'export_formats': formats,
                     'visualizers': graphers, 'visualizer_id': grapher_id,'analysers': analyzers,
                     'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True),
                     'previous' : previous, 'next' : next, 'marker': marker_id, 'playlists' : playlists, 
-                    'public_access': public_access, 'translations': translations, 
+                    'public_access': public_access,
                     })
     
     def get_public_access(self, access, date_from, date_to):
@@ -531,8 +526,10 @@ class WebView(object):
                 media = self.cache_export.dir + os.sep + file
                 proc = encoder(media, streaming=True)
                 proc.setup(channels=decoder.channels(), samplerate=decoder.samplerate())
-#                metadata = dublincore.express_item(item).to_list()
-#                enc.set_metadata(metadata)
+                dc_metadata = dublincore.express_item(item).to_list()
+                mapping = DublinCoreToFormatMetadata(extension)
+                metadata = mapping.get_metadata(dc_metadata)
+                proc.set_metadata(metadata)
                 response = HttpResponse(stream_from_processor(decoder, proc), mimetype = mime_type)
             else:
                 # cache > stream

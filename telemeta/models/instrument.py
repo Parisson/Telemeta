@@ -66,6 +66,10 @@ class InstrumentRelation(ModelCore):
     class Meta(MetaCore):
         db_table = 'instrument_relations'
         unique_together = (('instrument', 'parent_instrument'),)
+    
+    def __unicode__(self):
+        sep = ' > '
+        return self.parent_instrument.name + sep + self.instrument.name
 
 class InstrumentAliasRelation(ModelCore):
     "Instrument family other name"
@@ -74,6 +78,10 @@ class InstrumentAliasRelation(ModelCore):
     instrument = ForeignKey('InstrumentAlias', related_name="relation", 
                             verbose_name=_('instrument'))
 
+    def __unicode__(self):
+        sep = ' : '
+        return self.alias.name + sep + self.instrument.name
+        
     class Meta(MetaCore):
         db_table = 'instrument_alias_relations'
         unique_together = (('alias', 'instrument'),)

@@ -147,6 +147,9 @@ class LocationType(ModelCore):
     code = CharField(_('identifier'), max_length=64, unique=True, required=True)
     name = CharField(_('name'), max_length=150, required=True)
 
+    def __unicode__(self):
+        return self.name
+        
     class Meta(MetaCore):
         db_table = 'location_types'
 
