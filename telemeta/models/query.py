@@ -45,17 +45,34 @@ class MediaItemQuerySet(CoreQuerySet):
     def quick_search(self, pattern):
         "Perform a quick search on code, title and collector name"
         pattern = pattern.strip()
-        return self.filter(
-            Q(code__contains=pattern.strip()) |
-            Q(old_code__contains=pattern.strip()) |
+        
+#        from telemeta.models.media import MediaItem
+#        mod = MediaItem()
+#        fields = mod.to_dict()
+#        keys =  fields.keys()
+#        q = self.by_fuzzy_collector_q(pattern)
+#        for field in keys:
+#            field_str = str(mod._meta.get_field(field))
+#            if 'CharField' in field_str:
+#                q = q | word_search_q(field)
+
+        q = ( Q(code__contains=pattern) |
+            Q(old_code__contains=pattern) |
             word_search_q('title', pattern) |  
-            self.by_fuzzy_collector_q(pattern)
-        )
+            word_search_q('comment', pattern) |  
+            self.by_fuzzy_collector_q(pattern) )
+        
+        print q
+        return self.filter(q)
 
     def without_collection(self):        
         "Find items which do not belong to any collection"
         return self.extra(
             where = ["collection_id NOT IN (SELECT id FROM media_collections)"]);
+
+    def by_public_id(self, public_id):
+        "Find items by public_id"
+        return self.filter(public_id=public_id) 
 
     def by_recording_date(self, from_date, to_date = None):
         "Find items by recording date"
@@ -173,7 +190,8 @@ class MediaItemQuerySet(CoreQuerySet):
 
     def by_fuzzy_collector(self, pattern):
         return self.filter(self.by_fuzzy_collector_q(pattern))
-
+    
+        
 class MediaItemManager(CoreManager):
     "Manage media items queries"
 
@@ -213,17 +231,22 @@ class MediaItemManager(CoreManager):
         return self.get_query_set().by_location(*args, **kwargs)
     by_location.__doc__ = MediaItemQuerySet.by_location.__doc__    
 
+
 class MediaCollectionQuerySet(CoreQuerySet):
 
     def quick_search(self, pattern):
         "Perform a quick search on code, title and collector name"
+        from telemeta.models.media import MediaCollection
         pattern = pattern.strip()
-        return self.filter(
-            Q(code__contains=pattern.strip()) |
-            Q(old_code__contains=pattern.strip()) |
-            word_search_q('title', pattern) |  
-            self.by_fuzzy_collector_q(pattern)
-        )
+        mod = MediaCollection()
+        fields = mod.to_dict()
+        keys =  fields.keys()
+        q = self.by_fuzzy_collector_q(pattern)
+        for field in keys:
+            field_str = str(mod._meta.get_field(field))
+            if 'CharField' in field_str or 'TextField' in field_str:
+                q = q | word_search_q(field, pattern)
+        return self.filter(q)
 
     def by_location(self, location):
         "Find collections by location"
@@ -291,6 +314,7 @@ class MediaCollectionQuerySet(CoreQuerySet):
     def by_fuzzy_collector(self, pattern):
         return self.filter(self.by_fuzzy_collector_q(pattern))
 
+
 class MediaCollectionManager(CoreManager):
     "Manage collection queries"
 
@@ -325,7 +349,7 @@ class MediaCollectionManager(CoreManager):
     def by_change_time(self, *args, **kwargs):
         return self.get_query_set().by_change_time(*args, **kwargs)
     by_change_time.__doc__ = MediaCollectionQuerySet.by_change_time.__doc__
-
+    
     @staticmethod
     def __name_cmp(obj1, obj2):
         return unaccent_icmp(obj1.name, obj2.name)

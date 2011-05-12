@@ -23,19 +23,17 @@ Install the dependencies
 
     Install all dependencies like this::
 	
-        sudo aptitude install python python-xml python-mutagen python-django \
-                              python-imaging python-mysqldb mysql-server python-numpy python-scipy \
+        sudo aptitude install python python-django python-xml python-mysqldb mysql-server \
                               python-ctypes python-setuptools python-support python-docutils
 
-    Just add these lines to your /etc/apt/sources-list::
+    To get MP3 reading and writing, just add these lines to your /etc/apt/sources-list::
 
-        deb http://debian.parisson.org/ binary/
-        deb-src http://debian.parisson.org/ source/
         deb http://www.debian-multimedia.org stable main
 
     Then::
 
         sudo apt-get update
+        sudo aptitude install gstreamer0.10-fluendo-mp3 gstreamer0.10-lame
 
 * On other linux platforms:
 
@@ -45,20 +43,24 @@ Install the dependencies
 Install TimeSide
 -----------------
 
-In order to get all the Web Audio Components from TimeSide,
-you have to download and install it from source.
+Telemeta needs the audio processing library named TimeSide.
+You have to download and install it from source.
 
-So, checkout the last archives at :
+So, download the last archive at :
 http://code.google.com/p/timeside/downloads/list
 
-Install it like in the following example::
+Uncompress it and see README and INSTALL to install the dependencies 
+and then the module.
 
-    tar xzf timeside-0.2.tar.gz
-    cd timeside-0.2
 
-Read the README and INSTALL file, install dependencies and then::
+Install JSON-RPC server
+------------------------
 
-    sudo python setup.py install
+In order to use markers on the player, you will need a JSONN-RPC server for django::
+    
+    git clone git://github.com/samuraisam/django-json-rpc.git
+    cd django-json-rpc
+    python setup.py install
 
 
 Install Telemeta
@@ -116,27 +118,54 @@ Modifiy the following variables:
     ADMINS =            telemeta requires that you indicate an administrator here
     DATABASES =         your database setting dict (don't forget to create the database if needed)
     MEDIA_ROOT =        absolute path to the media directory you just created
-    INSTALLED_APPS =    add 'telemeta' to the tuple
+    INSTALLED_APPS =    add 'telemeta' and 'jsonrpc' to the tuple
+
+Set the following languages:
     
+    LANGUAGES = [ ('fr', 'French'),
+                  ('en', 'English'),
+    ]
+
+
+Set the following Middlewares:
+    
+    MIDDLEWARE_CLASSES = (
+        'django.middleware.common.CommonMiddleware',
+        'django.contrib.sessions.middleware.SessionMiddleware',
+        'django.middleware.csrf.CsrfViewMiddleware',
+        'django.contrib.auth.middleware.AuthenticationMiddleware',
+        'django.contrib.messages.middleware.MessageMiddleware',
+        'django.middleware.locale.LocaleMiddleware',
+    )
+
 Add the following variables:
     
     TEMPLATE_CONTEXT_PROCESSORS = (
         'django.core.context_processors.request',
-        'django.core.context_processors.auth',)
+        'django.contrib.auth.context_processors.auth',)
 
-    TELEMETA_ORGANIZATION =  name of the organization which hosts this installation
-    TELEMETA_SUBJECTS =      tuple of subject keywords (used for Dublin Core), such as "Ethnology", etc...
-    TELEMETA_CACHE_DIR =     absolute path to the cache directory that you just created
-    TELEMETA_GMAP_KEY =      your Google Map API key
-    TELEMETA_DOWNLOAD_ENABLED =  True to enable audio data download
-
+    TELEMETA_ORGANIZATION =         name of the organization which hosts this installation
+    TELEMETA_SUBJECTS =             tuple of subject keywords (used for Dublin Core), such as "Ethnology", etc...
+    TELEMETA_CACHE_DIR =            absolute path to the cache directory that you just created
+    TELEMETA_GMAP_KEY =             your Google Map API key
+    TELEMETA_DOWNLOAD_ENABLED =     True to enable raw audio data download
+    TELEMETA_STREAMING_FORMATS =    tuple of authoized streaming formats. Ex : ('mp3', 'ogg')
+    TELEMETA_PUBLIC_ACCESS_PERIOD = number of years above which item files are automagically published
+    EMAIL_HOST =                    your default SMTP server
+    DEFAULT_FROM_EMAIL =            the default sending email address 
+    
 Just paste the lines below::
 
     LOGIN_URL = '/login'
     LOGIN_REDIRECT_URL = '/'
+    AUTH_PROFILE_MODULE = 'telemeta.userprofile'
     TELEMETA_EXPORT_CACHE_DIR = TELEMETA_CACHE_DIR + "/export"
     TELEMETA_DATA_CACHE_DIR = TELEMETA_CACHE_DIR + "/data"
     CACHE_BACKEND = "file://" + TELEMETA_CACHE_DIR + "/data"
+    
+You can find an example for settings.py there::
+    
+    conf/examples/django/settings.py
 
 
 --------------------------
@@ -152,9 +181,24 @@ This synchronizes the DB with the model::
 6. Configure your urls
 ----------------------
 
-    The simplest case is to have telemeta running at public root. To do so, add this url in urls.py::
+Add this dictionary to get Javascript translation::
+    
+    js_info_dict = {
+        'packages': ('telemeta',),
+    }
 
+The simplest case is to have telemeta running at public root. To do so, add this url in urls.py::
+
+    # Telemeta
     (r'^', include('telemeta.urls')),
+    
+    # Languages
+    (r'^i18n/', include('django.conf.urls.i18n')),    
+    (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
+
+You can find an example for url.py there::
+    
+    conf/examples/django/urls.py
 
 
 --------------------
@@ -170,33 +214,40 @@ By default, the server starts on the port 8000. You can override this with, for 
     python manage.py runserver 9000
 
 
-------------------------------------
-8. Go the web page with your browser
-------------------------------------
+-----------
+8. Test it
+-----------
+
+Go to this URL with your browser::
 
     http://localhost:8000
 
-    or
+or::
 
     http://localhost:9000
 
-Enjoy it !
+Test it and enjoy it !
 
--------------------
-9. Configure Apache
--------------------
+
+--------------------------
+9. Deploy it with Apache
+--------------------------
 
 If you want to use Telemeta through a web server, it is highly recommended to use Apache 2
 with the mod_wsgi module as explained in the following page :
 
-http://docs.djangoproject.com/en/1.1/howto/deployment/modwsgi/#howto-deployment-modwsgi
+    http://docs.djangoproject.com/en/1.1/howto/deployment/modwsgi/#howto-deployment-modwsgi
 
 This will prevent Apache to put some audio data in the cache memory as it is usually the case with mod_python.
+
+You can find an example of an Apache2 VirtualHost conf file there::
+
+    conf/examples/apache2/telemeta.conf
+
 
 -------------------------
 10. Contact / More infos
 -------------------------
 
 See README and http://telemeta.org.
-
 

@@ -2,11 +2,10 @@
 {% load i18n %}
 {% if collections %}
 {% if hits %}
+
 <p class="pagination">
 {% blocktrans %}Collections {{ first_on_page }} to {{ last_on_page }} on {{ hits }}{% endblocktrans %}
-&nbsp;&nbsp;
-{% if has_previous %} <a href="?page={{ previous }}&amp;{{criteria|build_query_string}}">&lt;&lt;</a> {% endif %}
-{% if has_next %} <a href="?page={{ next }}&amp;{{criteria|build_query_string}}">&gt;&gt;</a> {% endif %}
+| Pages : {% if pages == 1 %}1{% else %}{% if is_paginated %}{% load paginator %}{% paginator 5 %}{% endif %}{% endif %}
 </p>
 {% endif %}
 <table class="listing">
@@ -16,11 +15,12 @@
     <th>{% field_label "MediaCollection" "creator" %}</th>
     <th>{% trans "Recordist" %}</th>
     <th>{% trans "Year of recording" %}</th>
+    <th>{% trans "Sound" %}</th>
 </tr>
 {% for collection in collections %}
 <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
     <td class="highlight">
-        <a href="{% url telemeta-collection-detail collection.public_id %}">{{ collection }}</a>
+        <a href="{% url telemeta-collection-detail collection.public_id %}">{{ collection.title }}</a>
     </td>
     <td>
         {{ collection.code|default:collection.old_code }}
@@ -34,6 +34,11 @@
             - {{ collection.recorded_to_year }}
         {% endif %}
     {% endif %}
+    </td>
+    <td>
+      {% if collection.has_mediafile %}
+       <img src="images/ok.png" alt="yes" style="vertical-align:middle" />
+      {% endif %}
     </td>
 </tr>
 {% endfor %}

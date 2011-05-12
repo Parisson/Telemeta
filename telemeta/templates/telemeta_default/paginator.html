@@ -1,0 +1,24 @@
+{% load telemeta_utils %}
+{% load i18n %}
+
+{% if has_previous %}
+    <a href="?page={{ previous }}&amp;{{ criteria|build_query_string }}">&lt; {% trans "Previous" %}</a>
+{% endif %}
+
+{% if show_first %}
+<a href="?page=1">1</a> ...
+{% endif %}
+{% for linkpage in page_numbers %}
+    {% ifequal linkpage page %}
+        {{ page }}
+    {% else %}
+        <a href="?page={{ linkpage }}&amp;{{ criteria|build_query_string }}">{{ linkpage }}</a>
+    {% endifequal %}
+{% endfor %}
+{% if show_last %}
+    ...
+    <a href="?page=last">{{ pages }}</a>
+{% endif %}
+{% if has_next %}
+    <a href="?page={{ next }}&amp;{{ criteria|build_query_string }}">{% trans "Next" %} &gt;</a>
+{% endif %}

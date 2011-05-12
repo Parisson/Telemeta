@@ -33,6 +33,7 @@
 # Authors: Olivier Guilyardi <olivier@samalyse.com>
 #          David LIPSZYC <davidlipszyc@gmail.com>
 
+from django.contrib.auth.models import User
 import unittest
 from telemeta.models import *
 from datetime import datetime, timedelta
@@ -42,8 +43,10 @@ class CollectionItemTestCase(unittest.TestCase):
     def setUp(self):
         "Create a test database based on objects created in Django"
    
-        self.david   = User.objects.create(username="david", level="user")
-        self.olivier = User.objects.create(username="olivier", level="admin")    
+#        self.david   = User.objects.create(username="david", level="user")
+#        self.olivier = User.objects.create(username="olivier", level="admin")
+        self.david   = User.objects.create_user(username="david")
+        self.olivier = User.objects.create_user(username="olivier")
 
         self.country = LocationType.objects.create(code="country", name="Country")
         self.continent = LocationType.objects.create(code="continent", name="Continent")

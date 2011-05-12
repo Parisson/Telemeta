@@ -166,7 +166,7 @@ class LocationAlias(ModelCore):
 class LocationRelation(ModelCore):
     "Location relations"
     location             = ForeignKey('Location', related_name="ancestor_relations", verbose_name=_('location'))
-    ancestor_location      = ForeignKey('Location', related_name="descendant_relations",  verbose_name=_('ancestor location'))
+    ancestor_location    = ForeignKey('Location', related_name="descendant_relations",  verbose_name=_('ancestor location'))
     is_direct            = BooleanField(db_index=True)
     is_authoritative = BooleanField(_('authoritative'))
 

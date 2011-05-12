@@ -1,14 +1,14 @@
 {% load telemeta_utils %}
 {% load i18n %}
 {% if items %}
+
 {% if hits %}
 <p class="pagination">
 {% blocktrans %}Items {{ first_on_page }} to {{ last_on_page }} on {{ hits }}{% endblocktrans %}
-&nbsp;&nbsp;
-{% if has_previous %} <a href="?page={{ previous }}&amp;{{criteria|build_query_string}}">&lt;&lt;</a> {% endif %}
-{% if has_next %} <a href="?page={{ next }}&amp;{{criteria|build_query_string}}">&gt;&gt;</a> {% endif %}
+| Pages : {% if pages == 1 %}1{% else %}{% if is_paginated %}{% load paginator %}{% paginator 5 %}{% endif %}{% endif %}
 </p>
 {% endif %}
+
 <table class="listing">
 <tr>
     <th class="highlight">{% trans "Title" %}</th>
@@ -20,6 +20,7 @@
     <th>{% trans "Country/Continent" %}</th>
     {% endif %}
     <th>{% trans "Year of recording" %}</th>
+    <th>{% trans "Sound" %}</th>
 </tr>
 {% for item in items %}
 <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
@@ -43,9 +44,16 @@
         {% endif %}
     {% endif %}
     </td>
+    <td align="center">
+        {% if item.file %}
+         <a href="{% url telemeta-item-detail item.public_id %}">
+          <img src="images/ok.png" alt="yes" style="vertical-align:middle" /></a>
+        {% endif %}
+    </td>
 </tr>
 {% endfor %}
 </table>
+
 {% else %}
     <p>{% trans "No item" %}</p>
 {% endif %}

@@ -2,7 +2,7 @@
   background: #3c4251;
   padding-top: 10px;
   padding-bottom: 10px;
-  border: dotted #b2b2b2 1px;
+  border: solid #b2b2b2 1px;
 }
 
 .ts-skin-lab .ts-player .ts-viewer {
@@ -20,11 +20,18 @@
     line-height: 13px;
 }
 
-.ts-skin-lab .ts-player .ts-viewer .ts-pointer {
+.ts-skin-lab .ts-player .ts-viewer { /*.ts-pointer {*/
     color: #3c4251;
     background: #e7e7e7;
 }
+.ts-pointer{
+    border: 1px solid #a10006 !important;
+     -moz-border-radius: 1ex !important;
+    -webkit-border-radius: 1ex  !important;
+    border-radius: 1ex !important;
+    color: #6A0307 !important;
 
+}
 .ts-skin-lab .ts-player .ts-ruler .ts-section .ts-label {
     color: #c3c2cc;
     background: #2a3242;
@@ -47,28 +54,35 @@
 .ts-skin-lab .ts-player .ts-control {
     background: url('img/controlbg.png');
     height: 28px;
-    border-top: dotted #b2b2b2 1px;
+/*     border-top: dotted #b2b2b2 1px; */
 }
 
 .ts-skin-lab .ts-player .ts-control .ts-layout {
     margin-left: 12px;
     margin-right: 12px;
-    padding-top: 4px;
+    padding-top: 0px;
 }
 
 .ts-skin-lab .ts-player .ts-control .ts-playback a {
     display: block;
     float: left;
-    width: 21px;
-    padding: 21px 0 0 0;
+    width: 30px;
+    padding: 28px 0 0 0;
     overflow: hidden;
     height: 0px !important; 
-    height /**/:21px; /* for IE5/Win only */
-    margin-right: 1px;
+    height /**/:28px; /* for IE5/Win only */
+    margin-right: 0px;
 }
+/*commented, apparently not used anymore, and it messes up the volume icon*/
+/*.ts-skin-lab .ts-player .ts-control .ts-playback a:hover {
+    background-position: 0 -28px;
+}*/
 
-.ts-skin-lab .ts-player .ts-control .ts-playback a:hover {
-    background-position: 0 -21px;
+.ts-volume, .ts-volume:hover, .ts-volume:visited {
+    background-image: url('img/volume.png');
+    background-repeat: no-repeat;
+    /*background-position: 0px 0px !important;*/
+    width:60px !important;
 }
 
 .ts-skin-lab .ts-player .ts-control .ts-playback .ts-play {
@@ -95,10 +109,10 @@
 .ts-skin-lab .ts-player .ts-marker-control .ts-set-marker {
     display: block;
     width: 89px;
-    padding: 21px 0 0 0;
+    padding: 28px 0 0 0;
     overflow: hidden;
     height: 0px !important; 
-    height /**/:21px; /* for IE5/Win only */
+    height /**/:28px; /* for IE5/Win only */
     background-image: url('img/setmarker.gif');
     margin: 5px auto 0 auto;
 }
@@ -113,4 +127,6 @@
     border-bottom: dotted #b2b2b2 1px;
     height: 30px;
 }
+
+
 

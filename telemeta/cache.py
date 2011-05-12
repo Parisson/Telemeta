@@ -58,6 +58,12 @@ class TelemetaCache(object):
         self.files = self.get_files()
         return file in self.files
             
+    def delete_item_data(self, public_id):
+        # public_id is the public_id of an item
+        for file in self.get_files():
+            if public_id in file:
+                os.remove(self.dir + os.sep + file)
+        
     def write_bin(self, data, file):
         path = self.dir + os.sep + file
         f = open(path, 'w')
@@ -73,7 +79,7 @@ class TelemetaCache(object):
         
     def read_stream_bin(self, file):
         path = self.dir + os.sep + file
-        chunk_size = 0xFFFF
+        chunk_size = 0x80000
         f = open(path,  'r')
         while True:
             chunk = f.read(chunk_size)
@@ -81,7 +87,7 @@ class TelemetaCache(object):
                 f.close()
                 break
             yield chunk
-
+        
     def write_stream_bin(self, chunk, file_object):
         file_object.write(chunk)
 

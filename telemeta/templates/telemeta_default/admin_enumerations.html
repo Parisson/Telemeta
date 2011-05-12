@@ -1,0 +1,27 @@
+{% extends "telemeta/admin.html" %}
+{% load telemeta_utils %}
+{% load i18n %}
+
+{% block tabcontents %}
+ <h4>{% trans "Enumerations" %}</h4>
+ 
+{% if enumerations %}
+
+  <table class="listing">
+   <thead>
+    <tr><th>{% trans "Title"%}</th></tr>
+   </thead><tbody>
+    {% for enum in enumerations %}
+         <tr><td><a href="{% url telemeta-enumeration-edit enum.id %}">
+                {{ enum.name|capfirst }}</a></td></tr>    
+    {% endfor %}
+    </tbody>
+  </table>
+ 
+  {% else %}
+    <p class="help">{% trans "No enumerations" %}</p>
+ {% endif %}
+
+{% endblock %}
+
+

@@ -49,6 +49,7 @@ from django.utils.translation import ugettext_lazy as _
 import re
 from django.core.exceptions import ObjectDoesNotExist
 
+    
 class Duration(object):
     """Represent a time duration"""
     def __init__(self, *args, **kwargs):
@@ -165,7 +166,8 @@ class DurationField(models.Field):
             # information), but this can be a side-effect of interacting with a
             # database backend (e.g. Oracle), so we'll be accommodating.
             return self.to_python(value.time())
-
+        else:
+            value = str(value)
         try:
             return Duration.fromstr(value)
         except ValueError:
@@ -187,7 +189,7 @@ class DurationField(models.Field):
         return data
 
     def formfield(self, **kwargs):
-        defaults = {'form_class': forms.TimeField}
+        defaults = {'form_class': forms.CharField}
         defaults.update(kwargs)
         return super(DurationField, self).formfield(**defaults)
            

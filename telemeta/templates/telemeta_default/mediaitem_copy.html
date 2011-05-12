@@ -1,0 +1,48 @@
+{% extends "telemeta/mediaitem_detail.html" %}
+{% load telemeta_utils %}
+{% load i18n %}
+
+{% block head_title %}{% trans "Item" %}- {{ block.super }}{% endblock %}
+
+{% block extra_javascript %}
+{% endblock %}
+
+{% block title %}
+ <img src="images/item.png" style="vertical-align:middle" /> Item : NEW
+{% endblock %}
+
+{% block title_buttons %}
+    {% if user.is_authenticated and perms.telemeta.add_mediaitem %}
+    <a href="{% url telemeta-item-detail item.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+  {% block infos %}    
+    <div class="infos">
+     <form enctype="multipart/form-data" id="_mediaItemCopyForm" method="POST" action="">{% csrf_token %}
+     <ul>{% for error in form.non_field_errors %}<li class="error">{{ error }}</li>{% endfor %}</ul>
+      <table>
+       {% for field in form %}
+        {% if not field.html_name == "copied_from_item" %}
+        <tr>
+            <tr><td class="error">{{ field.errors }}</td></tr>
+            <td>{{ field.label_tag }}:</td>
+             {% if field.html_name == "collection" %}
+              <td>{{ field }} <br />&nbsp;{% trans "Title" %} : {{ item.collection.title }}</td>
+             {% else %}
+              <td>{{ field }}</td>
+             {% endif %}
+        </tr>
+        {% endif %}
+       {% endfor %}
+       </table>
+       <div align="center">
+           <a href="{% url telemeta-item-detail item.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+         <a href="#" class="component_icon button icon_save"
+            onclick="document.getElementById('_mediaItemCopyForm').submit(); return false;">{% trans "Save" %}</a>
+       </div>
+     </form>
+    </div>
+  {% endblock infos %}  
+{% endblock %}

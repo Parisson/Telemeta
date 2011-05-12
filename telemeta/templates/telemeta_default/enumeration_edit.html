@@ -6,8 +6,8 @@
 {% block tabcontents %}
  <h4>{% trans "Enumeration" %}: {{ enumeration_name|capfirst }}</h4>
 
- <form class="addnew" id="addenum" method="post"
-        action="{% url telemeta-enumeration-add enumeration_id %}">
+ <form class="addnew" id="_addenum" method="POST"
+        action="{% url telemeta-enumeration-add enumeration_id %}">{% csrf_token %}
   <fieldset>
    <legend>{% trans "Add entry" %}</legend>
    <div class="field">
@@ -15,12 +15,14 @@
 
    </div>
    <div class="buttons">
-    <input type="submit" name="add" value="{% trans 'Add' %}">
+    <br />
+    <a href="#" class="component_icon button icon_add"
+      onclick="document.getElementById('_addenum').submit(); return false;">{% trans "Add" %}</a>
    </div>
   </fieldset>
  </form>
  {% if enumeration_values %}
- <form method="POST" action="{% url telemeta-enumeration-update enumeration_id %}">
+ <form id="_updateenum" method="POST" action="{% url telemeta-enumeration-update enumeration_id %}">{% csrf_token %}
   <table class="listing">
    <thead>
     <tr><th class="sel">&nbsp;</th><th>{% trans "Value"%}</th>
@@ -37,7 +39,9 @@
     </tbody>
   </table>
   <div class="buttons">
-   <input type="submit" name="remove" value="{% trans 'Remove selected items' %}" />
+   <br />
+   <a href="#" class="component_icon button icon_cancel"
+      onclick="document.getElementById('_updateenum').submit(); return false;">{% trans "Remove selected items" %}</a>
   </div>
  </form>
  {% else %}

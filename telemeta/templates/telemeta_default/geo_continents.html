@@ -10,20 +10,24 @@
 <script src="{% url telemeta-js "resourcemap.js" %}" type="text/javascript"></script>
 <script type="text/javascript">
 var resourceMap = new ResourceMap('.continents', {
-    'countryInfoUri': '{% url telemeta-country-info "RESOURCEID" %}'
+    'countryInfoUri': '/geo/country_info/RESOURCEID/'
 });
 </script>
 {% endif %}
 {% endblock %}
 
-{% block submenu %}
-    <div>
-        <a href="#" onclick="resourceMap.toggle('map'); return false;">{% trans "Map" %}</a> |
-        <a href="#"onclick="resourceMap.toggle('list'); return false;">{% trans "List" %}</a> 
-    </div>
+{% block title %}
+ <img src="{% url telemeta-images "world_red.png" %}" style="vertical-align:middle" /> {% trans "Geographic Navigator" %}
 {% endblock %}
+
+{% block title_buttons %}
+        {% if continents %}
+        <a href="#" onclick="resourceMap.toggle('map'); return false;" class="component button">{% trans "Map" %}</a> |
+        <a href="#" onclick="resourceMap.toggle('list'); return false;" class="component button">{% trans "List" %}</a>
+        {% endif %}
+{% endblock %}
+
 {% block content %}
-<h3>{% trans "Geographic Navigator" %}</h3>
 {% if continents %}
 <ul class="continents">
 {% for group in continents %}

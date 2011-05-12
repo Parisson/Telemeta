@@ -8,17 +8,18 @@ U{http://telemeta.org}
 @author: Guillaume Pellerin <pellerin@parisson.com>
 @author: Olivier Guilyardi <olivier@samalyse.com>
 @author: David Lipszyc <davidlipszyc@gmail.com>
+@author: Riccardo Zaccarelli <riccardo.zaccarelli@gmail.com>
 """
 
 __docformat__ = 'epytext en'
-__version__ = '0.5.2'
+__version__ = '0.8'
 __url__ = 'http://telemeta.org'
-__copyright__ = '(C) 2007-2010 Parisson SARL and Samalyse SARL'
+__copyright__ = '(C) 2007-2011 Parisson'
 __license__ = 'CeCILL-2'
 __license_long__ = """
-Copyright Parisson SARL (2010)
+Copyright Parisson SARL (2007-2011)
 
-<guillaume.<pellerin@parisson.com>
+<yomguy@parisson.com>
 <olivier@samalyse.com>
 
 This software is a computer program whose purpose is to backup, analyse, 

@@ -1,0 +1,47 @@
+{% extends "telemeta/base.html" %}
+{% load telemeta_utils %}
+{% load i18n %}
+
+{% block head_title %}{% trans "Item" %}- {{ block.super }}{% endblock %}
+
+{% if item %}
+{% block title %}
+    <img src="images/item.png" style="vertical-align:middle" /> Item : NEW
+{% endblock %}
+
+{% block title_buttons %}
+    {% if perms.telemeta.add_mediaitem %}
+      <a href="{% url telemeta-items %}"
+           class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% block infos %}
+    <div class="infos">
+     <form method="POST" id="_addItemForm" action="" enctype="multipart/form-data">{% csrf_token %}
+       <ul>{% for error in form.non_field_errors %}<li class="error">{{ error }}</li>{% endfor %}</ul>
+       <table>
+       {% for field in form %}
+        {% if not field.html_name == "copied_from_item" %}
+        <tr>
+            <tr><td class="error">{{ field.errors }}</td></tr>
+            <td>{{ field.label_tag }}:</td><td> {{ field }}</td>
+        </tr>
+        {% endif %}
+       {% endfor %}
+       </table>
+       <div align="center">
+        <a href="{% url telemeta-items %}"
+           class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+        <a href="#" class="component_icon button icon_save"
+   onclick="document.getElementById('_addItemForm').submit(); return false;">{% trans "Save" %}</a>
+       </div>
+     </form>
+    </div>
+  {% endblock infos %}
+</div> <!-- with-rightcol -->
+{% endblock %}
+{% else %}
+<p>No such item</p>
+{% endif %}

@@ -8,19 +8,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-11 17:36+0200\n"
+"POT-Creation-Date: 2011-05-12 00:01+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Olivier Guilyardi <olivier samalyse com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: models/core.py:142
+#: models/core.py:143
 msgid "Duration"
 msgstr "Durée"
 
-#: models/core.py:147
+#: models/core.py:148
 msgid "Enter a valid duration in HH:MM[:ss] format."
 msgstr "Entrez une durée valide au format HH:MM[:ss]"
 
@@ -28,51 +29,52 @@ msgstr "Entrez une durée valide au format HH:MM[:ss]"
 msgid "value"
 msgstr "valeur"
 
-#: models/enum.py:57 models/media.py:79
+#: models/enum.py:57 models/media.py:95
 msgid "archive format"
 msgstr "format d'archivage"
 
-#: models/enum.py:64 models/media.py:86
+#: models/enum.py:64 models/media.py:99
 msgid "secondary edition"
 msgstr "réédition"
 
-#: models/enum.py:71 models/media.py:101
+#: models/enum.py:71 models/media.py:114
 msgid "mode of acquisition"
 msgstr "mode d'acquisition"
 
-#: models/enum.py:78 models/media.py:104
+#: models/enum.py:78 models/media.py:117
 msgid "record author"
 msgstr "rédacteur fiche"
 
-#: models/enum.py:85 models/media.py:106
+#: models/enum.py:85 models/media.py:119
 msgid "record writer"
 msgstr "saisie fiche"
 
-#: models/enum.py:92 models/media.py:108
+#: models/enum.py:92 models/media.py:121
 msgid "legal rights"
 msgstr "droit d'utilisation"
 
-#: models/enum.py:99 models/media.py:113
+#: models/enum.py:99 models/media.py:126
 msgid "recording context"
 msgstr "contexte d'enregistrement"
 
-#: models/enum.py:106 models/media.py:122
-msgid "digitization"
-msgstr "numérisation"
+#: models/enum.py:106
+msgid "A/D conversion"
+msgstr ""
 
-#: models/enum.py:113 models/media.py:231
+#: models/enum.py:113 models/media.py:233
 msgid "vernacular style"
 msgstr "style vernaculaire"
 
-#: models/enum.py:120 models/media.py:240
+#: models/enum.py:120 models/media.py:241
 msgid "generic style"
 msgstr "style générique"
 
-#: models/enum.py:127 models/media.py:311
+#: models/enum.py:127 models/media.py:308
+#, fuzzy
 msgid "keyword"
-msgstr "mot-clé"
+msgstr "Mot-clé"
 
-#: models/enum.py:134 models/media.py:93
+#: models/enum.py:134 models/media.py:106
 msgid "publisher / status"
 msgstr "éditeur / statut"
 
@@ -80,12 +82,12 @@ msgstr "éditeur / statut"
 msgid "publisher"
 msgstr "éditeur"
 
-#: models/enum.py:152 models/enum.py:156 models/media.py:226
+#: models/enum.py:152 models/enum.py:156 models/media.py:229
 msgid "population / social group"
 msgstr "population / groupe social"
 
 #: models/enum.py:157 models/instrument.py:41 models/instrument.py:51
-#: models/location.py:50 models/location.py:148 models/media.py:348
+#: models/location.py:50 models/location.py:148
 msgid "name"
 msgstr "nom"
 
@@ -130,7 +132,7 @@ msgid "authoritative"
 msgstr "officiel"
 
 #: models/location.py:111 models/location.py:155 models/location.py:168
-#: models/media.py:223
+#: models/media.py:226
 msgid "location"
 msgstr "lieu"
 
@@ -142,391 +144,606 @@ msgstr "identifiant"
 msgid "ancestor location"
 msgstr "lieu ancêtre"
 
-#: models/media.py:50
+#: models/media.py:55
 msgid "Metadata only"
 msgstr "Métadonnées uniquement"
 
-#: models/media.py:52
+#: models/media.py:57
 msgid "Sound and metadata"
 msgstr "Son et métadonnées"
 
-#: models/media.py:54
+#: models/media.py:59
 msgid "Private data"
 msgstr "Données privées"
 
-#: models/media.py:55 models/media.py:123 models/media.py:245
+#: models/media.py:60 models/media.py:136 models/media.py:247
 msgid "public access"
 msgstr "accès public"
 
-#: models/media.py:77 models/media.py:242
-msgid "reference"
-msgstr "référence"
-
-#: models/media.py:80 models/media.py:218
-msgid "old code"
-msgstr "ancienne cote"
-
-#: models/media.py:81 models/media.py:219
+#: models/media.py:89 models/media.py:222
 msgid "code"
 msgstr "cote"
 
-#: models/media.py:82 models/media.py:227 models/media.py:335
+#: models/media.py:90 models/media.py:221
+msgid "old code"
+msgstr "ancienne cote"
+
+#: models/media.py:91 models/media.py:243
+msgid "reference"
+msgstr "référence"
+
+#: models/media.py:92 models/media.py:219 models/media.py:340
+#: models/media.py:355 models/media.py:389
 msgid "title"
 msgstr "titre"
 
-#: models/media.py:83 models/media.py:228
+#: models/media.py:93 models/media.py:230
 msgid "original title / translation"
 msgstr "titre original / traduction"
 
-#: models/media.py:84
+#: models/media.py:97
 msgid "number of components (medium / piece)"
 msgstr "nb de composants (support / pièce)"
 
-#: models/media.py:87
+#: models/media.py:100
 msgid "depositor / contributor"
 msgstr "déposant / contributeur"
 
-#: models/media.py:88
+#: models/media.py:101
 msgid "author of published notice"
 msgstr "auteur de la notice éditée"
 
-#: models/media.py:89
+#: models/media.py:102
 msgid "related documentation"
 msgstr "documentation associée"
 
-#: models/media.py:90 models/media.py:236
+#: models/media.py:103 models/media.py:237
 msgid "recordist"
 msgstr "collecteur"
 
-#: models/media.py:91
+#: models/media.py:104
 msgid "recordist identical to depositor"
 msgstr "collecteur identique au déposant"
 
-#: models/media.py:94
+#: models/media.py:107
 msgid "published"
 msgstr "édité"
 
-#: models/media.py:95
+#: models/media.py:108
 msgid "year published"
 msgstr "année de parution"
 
-#: models/media.py:97
+#: models/media.py:110
 msgid "publisher collection"
 msgstr "collection éditeur"
 
-#: models/media.py:98
+#: models/media.py:111
 msgid "publisher serial number"
 msgstr "numéro dans la série"
 
-#: models/media.py:99
+#: models/media.py:112
 msgid "bibliographic references"
 msgstr "références bibliographiques"
 
-#: models/media.py:102
+#: models/media.py:115
 msgid "comment"
 msgstr "commentaire"
 
-#: models/media.py:109
+#: models/media.py:122
 msgid "copies"
 msgstr "autres exemplaires"
 
-#: models/media.py:110
+#: models/media.py:123
 msgid "recording year (from)"
 msgstr "année d'enregistrement (depuis)"
 
-#: models/media.py:111
+#: models/media.py:124
 msgid "recording year (until)"
 msgstr "année d'enregistrement (jusqu'à)"
 
-#: models/media.py:114 models/media.py:220
+#: models/media.py:127 models/media.py:223
 msgid "approximative duration"
 msgstr "durée approximative"
 
-#: models/media.py:115
+#: models/media.py:128
 msgid "document type"
 msgstr "type de document"
 
-#: models/media.py:116
+#: models/media.py:129
 msgid "archiver notes"
 msgstr "notes de l'archiviste"
 
-#: models/media.py:117
+#: models/media.py:130
 msgid "status"
 msgstr "etat"
 
-#: models/media.py:118
+#: models/media.py:131
 msgid "CNRS depositor"
 msgstr "déposant CNRS"
 
-#: models/media.py:119
+#: models/media.py:132
 msgid "items finished"
 msgstr "fiches items faîtes"
 
-#: models/media.py:120
+#: models/media.py:133
 msgid "a_informer_07_03"
 msgstr "a_informer_07_03"
 
-#: models/media.py:160
+#: models/media.py:135
+msgid "digitization"
+msgstr "numérisation"
+
+#: models/media.py:173
 msgid "states / nations"
 msgstr "états / nations"
 
-#: models/media.py:174
+#: models/media.py:187
 msgid "populations / social groups"
 msgstr "populations / groupes sociaux"
 
-#: models/media.py:182 models/media.py:295
+#: models/media.py:195 models/media.py:288
 msgid "computed duration"
 msgstr "durée calculée"
 
-#: models/media.py:216
+#: models/media.py:218
 msgid "collection"
 msgstr "collection"
 
-#: models/media.py:217
+#: models/media.py:220
 msgid "item number"
 msgstr "n° de l'item"
 
-#: models/media.py:221
+#: models/media.py:224
 msgid "recording date (from)"
 msgstr "date d'enregistrement (depuis)"
 
-#: models/media.py:222
+#: models/media.py:225
 msgid "recording date (until)"
 msgstr "date d'enregistrement (jusqu'à)"
 
-#: models/media.py:224
+#: models/media.py:227
 msgid "location details"
 msgstr "précisions lieu"
 
-#: models/media.py:229
+#: models/media.py:231
 msgid "author / compositor"
 msgstr "auteur / compositeur"
 
-#: models/media.py:232
-msgid "comments"
-msgstr "commentaires"
-
-#: models/media.py:233
+#: models/media.py:234
 msgid "published reference"
 msgstr "référence éditée"
 
-#: models/media.py:234
+#: models/media.py:235
 msgid "moda_execut"
 msgstr "moda_execut"
 
-#: models/media.py:235
+#: models/media.py:236
 msgid "copy of"
 msgstr "copie de"
 
-#: models/media.py:237
+#: models/media.py:238
 msgid "recordist as in collection"
 msgstr "collecteur identique à la collection"
 
-#: models/media.py:238
+#: models/media.py:239
 msgid "cultural area"
 msgstr "aire culturelle"
 
-#: models/media.py:241
+#: models/media.py:242
 msgid "recordist selection"
 msgstr "sélection collecteur"
 
-#: models/media.py:243
+#: models/media.py:244
+msgid "comments"
+msgstr "commentaires"
+
+#: models/media.py:245
 msgid "remarks"
 msgstr "remarques"
 
-#: models/media.py:244
+#: models/media.py:246
 msgid "file"
 msgstr "fichier"
 
-#: models/media.py:251
+#: models/media.py:253 models/media.py:409
+#: templates/telemeta_default/mediaitem_detail.html:239
 msgid "keywords"
 msgstr "mots-clés"
 
-#: models/media.py:310 models/media.py:320 models/media.py:334
+#: models/media.py:307 models/media.py:321 models/media.py:339
+#: models/media.py:386
 msgid "item"
 msgstr "item"
 
-#: models/media.py:322
+#: models/media.py:323
 msgid "composition"
 msgstr "formation"
 
-#: models/media.py:324
+#: models/media.py:325
 msgid "vernacular name"
 msgstr "nom vernaculaire"
 
-#: models/media.py:325
+#: models/media.py:326
 msgid "number"
 msgstr "nombre"
 
-#: models/media.py:326
+#: models/media.py:327
 msgid "interprets"
 msgstr "interprètes"
 
-#: models/media.py:336
+#: models/media.py:341
 msgid "start"
 msgstr "début"
 
-#: models/media.py:337
+#: models/media.py:342
 msgid "end"
 msgstr "fin"
 
-#: models/media.py:360
+#: models/media.py:353 models/media.py:372 models/media.py:387
+#, fuzzy
+msgid "public_id"
+msgstr "édité"
+
+#: models/media.py:356 models/media.py:391
+msgid "description"
+msgstr ""
+
+#: models/media.py:373
 msgid "playlist"
 msgstr "liste de lecture"
 
-#: models/media.py:361
-msgid "resource type"
+#: models/media.py:374
+#, fuzzy
+msgid "resource_type"
 msgstr "type de ressource"
 
-#: models/media.py:362
-msgid "resource"
+#: models/media.py:375
+#, fuzzy
+msgid "resource_id"
 msgstr "ressource"
 
-#: models/system.py:44
-msgid "username"
-msgstr "nom d'utilisateur"
-
-#: models/system.py:45
-msgid "level"
-msgstr "niveau"
-
-#: models/system.py:46
-msgid "first name"
-msgstr "prénom"
-
-#: models/system.py:47
-msgid "last name"
-msgstr "nom de famille"
-
-#: models/system.py:48
-msgid "phone"
-msgstr "téléphone"
-
-#: models/system.py:49
-msgid "email"
-msgstr "e-mail"
-
-#: models/system.py:62
-msgid "element type"
-msgstr "type d'élément"
-
-#: models/system.py:63
-msgid "element identifier"
-msgstr "identifiant de l'élément"
-
-#: models/system.py:64
-msgid "modification type"
-msgstr "type de modification"
-
-#: models/system.py:65
+#: models/media.py:388 models/system.py:52
 msgid "time"
 msgstr "heure"
 
-#: models/system.py:66
+#: models/media.py:390 models/media.py:410
+msgid "date"
+msgstr ""
+
+#: models/media.py:392
+#, fuzzy
+msgid "author"
+msgstr "rédacteur fiche"
+
+#: models/system.py:49
+msgid "element type"
+msgstr "type d'élément"
+
+#: models/system.py:50
+msgid "element identifier"
+msgstr "identifiant de l'élément"
+
+#: models/system.py:51
+msgid "modification type"
+msgstr "type de modification"
+
+#: models/system.py:53
 msgid "user"
 msgstr "utilisateur"
 
-#: templates/telemeta_default/base.html:37
+#: models/system.py:79 templates/telemeta_default/profile_detail.html:36
+msgid "Institution"
+msgstr "Institution"
+
+#: models/system.py:80 templates/telemeta_default/profile_detail.html:37
+msgid "Function"
+msgstr "Fonction"
+
+#: models/system.py:81 templates/telemeta_default/profile_detail.html:38
+msgid "Address"
+msgstr "Adresse"
+
+#: models/system.py:82 templates/telemeta_default/profile_detail.html:39
+msgid "Telephone"
+msgstr "Téléphone"
+
+#: models/system.py:83
+#, fuzzy
+msgid "Expiration_date"
+msgstr "Date d'expiration"
+
+#: templates/admin/base.html:21
+#: templates/telemeta/registration/logged_out.html:4
+#: templates/telemeta_default/base.html:78
+#: templates/telemeta_default/registration/logged_out.html:4
+#: templates/telemeta_default/registration/password_change_done.html:5
+#: templates/telemeta_default/registration/password_change_form.html:5
+#: templates/telemeta_default/registration/password_reset_complete.html:4
+#: templates/telemeta_default/registration/password_reset_confirm.html:4
+#: templates/telemeta_default/registration/password_reset_done.html:4
+#: templates/telemeta_default/registration/password_reset_form.html:4
+msgid "Home"
+msgstr ""
+
+#: templates/admin/base_site.html:4
+msgid "Telemta site admin"
+msgstr ""
+
+#: templates/admin/base_site.html:7
+msgid "Telemeta administration"
+msgstr "Administration Telemeta"
+
+#: templates/telemeta/registration/logged_out.html:8
+#: templates/telemeta_default/registration/logged_out.html:8
+msgid "Thanks for spending some quality time with the Web site today."
+msgstr ""
+
+#: templates/telemeta/registration/logged_out.html:10
+#: templates/telemeta_default/registration/logged_out.html:10
+msgid "Log in again"
+msgstr ""
+
+#: templates/telemeta_default/admin.html:11
+msgid "Administration"
+msgstr "Administration"
+
+#: templates/telemeta_default/admin.html:19
+msgid "General administration"
+msgstr "Administration générale"
+
+#: templates/telemeta_default/admin.html:20
+#: templates/telemeta_default/admin_instruments.html:6
+#: templates/telemeta_default/admin_users.html:6
+msgid "Users"
+msgstr "Utilisateurs"
+
+#: templates/telemeta_default/admin.html:21
+#: templates/telemeta_default/admin_enumerations.html:6
+msgid "Enumerations"
+msgstr "Énumérations"
+
+#: templates/telemeta_default/admin.html:22
+#: templates/telemeta_default/instrument_edit.html:4
+#: templates/telemeta_default/instrument_edit.html:7
+#: templates/telemeta_default/instrument_edit_value.html:4
+#: templates/telemeta_default/instrument_edit_value.html:7
+msgid "Instruments"
+msgstr "Instruments"
+
+#: templates/telemeta_default/admin_enumerations.html:12
+#: templates/telemeta_default/home.html:49
+#: templates/telemeta_default/mediaitem_copy.html:32
+#: templates/telemeta_default/mediaitem_edit.html:27
+#: templates/telemeta_default/search_criteria.html:78
+#: templates/telemeta_default/search_results.html:30
+#: templates/telemeta_default/inc/collection_list.html:13
+#: templates/telemeta_default/inc/mediaitem_list.html:14
+#: templates/telemeta_default/inc/module_revisions.html:12
+msgid "Title"
+msgstr "Titre"
+
+#: templates/telemeta_default/admin_enumerations.html:22
+msgid "No enumerations"
+msgstr "Pas d'énumérations"
+
+#: templates/telemeta_default/admin_instruments.html:15
+#: templates/telemeta_default/admin_users.html:30
+msgid "No users"
+msgstr "Pas d'utilisateurs"
+
+#: templates/telemeta_default/admin_users.html:12
+#: templates/telemeta_default/inc/module_revisions.html:14
+msgid "User"
+msgstr "Utilisateur"
+
+#: templates/telemeta_default/admin_users.html:13
+#: templates/telemeta_default/profile_detail.html:32
+msgid "First Name"
+msgstr "Prénom"
+
+#: templates/telemeta_default/admin_users.html:14
+#: templates/telemeta_default/profile_detail.html:33
+msgid "Last Name"
+msgstr "Nom"
+
+#: templates/telemeta_default/admin_users.html:15
+msgid "E-mail"
+msgstr "Courriel"
+
+#: templates/telemeta_default/base.html:50
+msgid "Welcome"
+msgstr "Bienvenue"
+
+#: templates/telemeta_default/base.html:56
+msgid "Account"
+msgstr "Compte"
+
+#: templates/telemeta_default/base.html:57
+#: templates/telemeta_default/base.html:61
+msgid "Help"
+msgstr "Aide"
+
+#: templates/telemeta_default/base.html:58
 msgid "Sign out"
 msgstr "Déconnexion"
 
-#: templates/telemeta_default/base.html:39
-#: templates/telemeta_default/login.html:20
+#: templates/telemeta_default/base.html:62
+#: templates/telemeta_default/login.html:24
 msgid "Sign in"
 msgstr "Connexion"
 
-#: templates/telemeta_default/base.html:46
+#: templates/telemeta_default/base.html:70
 #: templates/telemeta_default/search_criteria.html:134
 msgid "Search"
 msgstr "Recherche"
 
-#: templates/telemeta_default/base.html:48
-msgid "Advanced search"
-msgstr "Recherche avancée"
-
-#: templates/telemeta_default/base.html:55
+#: templates/telemeta_default/base.html:79
 msgid "Collections"
 msgstr "Collections"
 
-#: templates/telemeta_default/base.html:55
+#: templates/telemeta_default/base.html:80
 msgid "Items"
 msgstr "Items"
 
-#: templates/telemeta_default/base.html:55
+#: templates/telemeta_default/base.html:81
+#: templates/telemeta_default/index.html:13
 msgid "Geo Navigator"
 msgstr "Géo-Navigateur"
 
-#: templates/telemeta_default/base.html:55
+#: templates/telemeta_default/base.html:82
+msgid "Advanced search"
+msgstr "Recherche avancée"
+
+#: templates/telemeta_default/base.html:84
 msgid "Admin"
 msgstr "Admin"
 
-#: templates/telemeta_default/base.html:75
+#: templates/telemeta_default/base.html:110
 msgid "Powered by"
 msgstr "Propulsé par"
 
-#: templates/telemeta_default/base.html:76
+#: templates/telemeta_default/base.html:111
 msgid "By"
 msgstr "Par"
 
-#: templates/telemeta_default/base.html:80
-msgid "Visit the Telemeta open source project at"
-msgstr "Visitez le projet libre Telemeta"
+#: templates/telemeta_default/base.html:116
+msgid ""
+"Usage of the archives in the respect of cultural heritage of the original "
+"communities."
+msgstr ""
+"Usage des archives réservé dans le respect du patrimoine culturel des "
+"communautés d'origine."
+
+#: templates/telemeta_default/base.html:122
+#: templates/telemeta_default/collection_detail.html:114
+#: templates/telemeta_default/collection_detail_new.html:116
+msgid "Legal notices"
+msgstr "Mentions légales"
+
+#: templates/telemeta_default/collection_add.html:10
+#: templates/telemeta_default/collection_add.html:28
+#: templates/telemeta_default/collection_edit.html:9
+#: templates/telemeta_default/collection_edit.html:27
+#: templates/telemeta_default/enumeration_edit_value.html:22
+#: templates/telemeta_default/instrument_edit_value.html:22
+#: templates/telemeta_default/mediaitem_add.html:15
+#: templates/telemeta_default/mediaitem_add.html:36
+#: templates/telemeta_default/mediaitem_copy.html:16
+#: templates/telemeta_default/mediaitem_copy.html:41
+#: templates/telemeta_default/mediaitem_edit.html:10
+#: templates/telemeta_default/mediaitem_edit.html:40
+#: templates/telemeta_default/mediaitem_keywords_edit.html:12
+#: templates/telemeta_default/mediaitem_keywords_edit.html:43
+#: templates/telemeta_default/mediaitem_performances_edit.html:12
+#: templates/telemeta_default/mediaitem_performances_edit.html:42
+#: templates/telemeta_default/profile_edit.html:6
+#: templates/telemeta_default/profile_edit.html:30
+msgid "Cancel"
+msgstr "Annuler"
+
+#: templates/telemeta_default/collection_add.html:30
+#: templates/telemeta_default/collection_edit.html:29
+#: templates/telemeta_default/enumeration_edit_value.html:20
+#: templates/telemeta_default/instrument_edit_value.html:20
+#: templates/telemeta_default/mediaitem_add.html:38
+#: templates/telemeta_default/mediaitem_copy.html:43
+#: templates/telemeta_default/mediaitem_edit.html:42
+#: templates/telemeta_default/mediaitem_keywords_edit.html:45
+#: templates/telemeta_default/mediaitem_performances_edit.html:44
+#: templates/telemeta_default/profile_edit.html:32
+msgid "Save"
+msgstr "Enregistrer"
 
 #: templates/telemeta_default/collection_detail.html:5
 #: templates/telemeta_default/collection_detail_dc.html:5
+#: templates/telemeta_default/collection_detail_new.html:5
 msgid "Collection"
 msgstr "Collection"
 
-#: templates/telemeta_default/collection_detail.html:53
+#: templates/telemeta_default/collection_detail.html:43
+#: templates/telemeta_default/collection_detail_new.html:43
+#: templates/telemeta_default/mediaitem_detail.html:95
+#: templates/telemeta_default/mediaitem_detail.html:239
+#: templates/telemeta_default/mediaitem_detail.html:278
+#: templates/telemeta_default/profile_detail.html:63
+msgid "Edit"
+msgstr "Editer"
+
+#: templates/telemeta_default/collection_detail.html:44
+#: templates/telemeta_default/collection_detail_new.html:44
+#: templates/telemeta_default/mediaitem_detail.html:96
+msgid "Copy"
+msgstr "Copier"
+
+#: templates/telemeta_default/collection_detail.html:45
+msgid "Add item"
+msgstr "Ajouter item"
+
+#: templates/telemeta_default/collection_detail.html:48
+#: templates/telemeta_default/collection_detail_new.html:47
+#: templates/telemeta_default/mediaitem_detail.html:99
+msgid "Add to playlist"
+msgstr "Ajouter à la liste"
+
+#: templates/telemeta_default/collection_detail.html:60
+msgid "Listen to this collection"
+msgstr "Écouter la collection"
+
+#: templates/telemeta_default/collection_detail.html:92
+#: templates/telemeta_default/collection_detail_new.html:93
 msgid "Recording year"
 msgstr "Année d'enregistrement"
 
-#: templates/telemeta_default/collection_detail.html:63
-#: templates/telemeta_default/mediaitem_detail.html:148
+#: templates/telemeta_default/collection_detail.html:101
+#: templates/telemeta_default/collection_detail_new.html:103
+#: templates/telemeta_default/mediaitem_detail.html:225
 msgid "Geographic and cultural informations"
 msgstr "Indications géographiques et culturelles"
 
-#: templates/telemeta_default/collection_detail.html:76
-msgid "Legal mentions"
-msgstr "Mentions légales"
-
-#: templates/telemeta_default/collection_detail.html:81
-#: templates/telemeta_default/inc/collection_list.html:17
+#: templates/telemeta_default/collection_detail.html:119
+#: templates/telemeta_default/collection_detail_new.html:121
+#: templates/telemeta_default/home.html:52
+#: templates/telemeta_default/inc/collection_list.html:16
 #: templates/telemeta_default/inc/mediaitem_list.html:16
 msgid "Recordist"
 msgstr "Collecteur"
 
-#: templates/telemeta_default/collection_detail.html:102
-#: templates/telemeta_default/mediaitem_detail.html:213
+#: templates/telemeta_default/collection_detail.html:140
+#: templates/telemeta_default/collection_detail_new.html:142
+#: templates/telemeta_default/mediaitem_detail.html:294
 msgid "Archiving data"
 msgstr "Données d'archivage"
 
-#: templates/telemeta_default/collection_detail.html:125
-#: templates/telemeta_default/mediaitem_detail.html:228
+#: templates/telemeta_default/collection_detail.html:163
+#: templates/telemeta_default/collection_detail_new.html:165
+#: templates/telemeta_default/mediaitem_detail.html:309
 msgid "Technical data"
 msgstr "Données techniques"
 
-#: templates/telemeta_default/collection_detail.html:130
-#: templates/telemeta_default/mediaitem_detail.html:231
+#: templates/telemeta_default/collection_detail.html:168
+#: templates/telemeta_default/collection_detail_new.html:170
+#: templates/telemeta_default/mediaitem_detail.html:312
 msgid "Media type"
 msgstr "Type de media"
 
-#: templates/telemeta_default/collection_detail.html:130
-#: templates/telemeta_default/mediaitem_detail.html:231
+#: templates/telemeta_default/collection_detail.html:168
+#: templates/telemeta_default/collection_detail_new.html:170
+#: templates/telemeta_default/mediaitem_detail.html:312
 msgid "Audio"
 msgstr "Audio"
 
-#: templates/telemeta_default/collection_detail.html:135
-#: templates/telemeta_default/geo_countries.html:14
+#: templates/telemeta_default/collection_detail.html:173
+#: templates/telemeta_default/collection_detail_new.html:175
+#: templates/telemeta_default/geo_countries.html:16
 msgid "Number of items"
 msgstr "Nombre d'items"
 
-#: templates/telemeta_default/collection_detail_dc.html:10
-#: templates/telemeta_default/mediaitem_detail_dc.html:10
+#: templates/telemeta_default/collection_detail_dc.html:12
+#: templates/telemeta_default/mediaitem_detail_dc.html:7
 msgid "Normal View"
 msgstr "Vue normale"
 
-#: templates/telemeta_default/collection_detail_dc.html:20
+#: templates/telemeta_default/collection_detail_dc.html:22
 msgid "No such collection"
 msgstr "Collection introuvable"
 
@@ -534,6 +751,26 @@ msgstr "Collection introuvable"
 #: templates/telemeta_default/collection_list.html:8
 msgid "Media Collections"
 msgstr "Collections"
+
+#: templates/telemeta_default/collection_list.html:12
+msgid "All"
+msgstr "Toutes"
+
+#: templates/telemeta_default/collection_list.html:13
+msgid "Unpublished"
+msgstr "Inédites"
+
+#: templates/telemeta_default/collection_list.html:14
+msgid "Published"
+msgstr "Éditées"
+
+#: templates/telemeta_default/collection_list.html:16
+#: templates/telemeta_default/enumeration_edit.html:20
+#: templates/telemeta_default/home.html:29
+#: templates/telemeta_default/instrument_edit.html:20
+#: templates/telemeta_default/mediaitem_list.html:13
+msgid "Add"
+msgstr "Ajouter"
 
 #: templates/telemeta_default/country_info.html:9
 msgid "in"
@@ -551,53 +788,44 @@ msgid "Enumeration"
 msgstr "Enumération"
 
 #: templates/telemeta_default/enumeration_edit.html:12
+#: templates/telemeta_default/instrument_edit.html:12
 msgid "Add entry"
 msgstr "Ajouter une entrée"
 
 #: templates/telemeta_default/enumeration_edit.html:14
-#: templates/telemeta_default/enumeration_edit.html:26
+#: templates/telemeta_default/enumeration_edit.html:28
 #: templates/telemeta_default/enumeration_edit_value.html:14
+#: templates/telemeta_default/mediaitem_detail.html:172
 msgid "Value"
 msgstr "Valeur"
 
-#: templates/telemeta_default/enumeration_edit.html:18
-msgid "Add"
-msgstr "Ajouter"
-
-#: templates/telemeta_default/enumeration_edit.html:40
+#: templates/telemeta_default/enumeration_edit.html:44
+#: templates/telemeta_default/instrument_edit.html:42
 msgid "Remove selected items"
 msgstr "Supprimer les éléments sélectionnés"
 
-#: templates/telemeta_default/enumeration_edit.html:44
+#: templates/telemeta_default/enumeration_edit.html:48
 msgid "This enumeration is empty"
 msgstr "Cette énumération est vide"
 
 #: templates/telemeta_default/enumeration_edit_value.html:12
+#: templates/telemeta_default/instrument_edit_value.html:12
 msgid "Modify an entry"
 msgstr "Modification d'une entrée"
 
-#: templates/telemeta_default/enumeration_edit_value.html:18
-msgid "Save"
-msgstr "Enregistrer"
-
-#: templates/telemeta_default/enumeration_edit_value.html:19
-msgid "Cancel"
-msgstr "Annuler"
-
 #: templates/telemeta_default/geo_continents.html:5
-#: templates/telemeta_default/geo_continents.html:26
+#: templates/telemeta_default/geo_continents.html:20
 #: templates/telemeta_default/geo_countries.html:5
 #: templates/telemeta_default/geo_country_collections.html:5
 #: templates/telemeta_default/geo_country_items.html:5
-#: templates/telemeta_default/index.html:9
 msgid "Geographic Navigator"
 msgstr "Navigateur géographique"
 
-#: templates/telemeta_default/geo_continents.html:21
+#: templates/telemeta_default/geo_continents.html:25
 msgid "Map"
 msgstr "Carte"
 
-#: templates/telemeta_default/geo_continents.html:22
+#: templates/telemeta_default/geo_continents.html:26
 msgid "List"
 msgstr "Liste"
 
@@ -607,107 +835,240 @@ msgstr "Liste"
 msgid "World"
 msgstr "Monde"
 
-#: templates/telemeta_default/geo_countries.html:12
+#: templates/telemeta_default/geo_countries.html:14
 msgid "Country"
 msgstr "Etat/nation"
 
-#: templates/telemeta_default/geo_countries.html:13
+#: templates/telemeta_default/geo_countries.html:15
 msgid "Number of collections"
 msgstr "Nombre de collections"
 
-#: templates/telemeta_default/geo_countries.html:22
+#: templates/telemeta_default/geo_countries.html:24
 #, python-format
 msgid "1 collection"
 msgid_plural "%(counter)s collections"
 msgstr[0] "1 collection"
 msgstr[1] "%(counter)s collections"
 
-#: templates/telemeta_default/geo_countries.html:29
+#: templates/telemeta_default/geo_countries.html:31
 #, python-format
 msgid "1 item"
 msgid_plural "%(counter)s items "
 msgstr[0] "1 item"
 msgstr[1] "%(counter)s items "
 
-#: templates/telemeta_default/index.html:11
+#: templates/telemeta_default/home.html:27
+#: templates/telemeta_default/profile_detail.html:16
+msgid "Playlists"
+msgstr "Listes de lecture"
+
+#: templates/telemeta_default/home.html:37
+msgid "Delete"
+msgstr "Supprimer"
+
+#: templates/telemeta_default/home.html:50
+#: templates/telemeta_default/inc/module_revisions.html:13
+msgid "Type"
+msgstr ""
+
+#: templates/telemeta_default/home.html:51
+#: templates/telemeta_default/inc/collection_list.html:14
+#: templates/telemeta_default/inc/mediaitem_list.html:15
+msgid "Code"
+msgstr "Cote"
+
+#: templates/telemeta_default/home.html:53
+#: templates/telemeta_default/search_criteria.html:94
+#: templates/telemeta_default/search_results.html:33
+#: templates/telemeta_default/inc/collection_list.html:17
+#: templates/telemeta_default/inc/mediaitem_list.html:22
+msgid "Year of recording"
+msgstr "Année d'enregistrement"
+
+#: templates/telemeta_default/home.html:54
+#: templates/telemeta_default/inc/collection_list.html:18
+#: templates/telemeta_default/inc/mediaitem_list.html:23
+msgid "Sound"
+msgstr "Son"
+
+#: templates/telemeta_default/home.html:55
+msgid "Action"
+msgstr "Action"
+
+#: templates/telemeta_default/home.html:70
+#: templates/telemeta_default/inc/module_revisions.html:32
+msgid "deleted"
+msgstr "supprimé"
+
+#: templates/telemeta_default/index.html:15
 msgid "Open the geographic navigator"
 msgstr "Accéder au navigateur géographique"
 
-#: templates/telemeta_default/index.html:14
+#: templates/telemeta_default/index.html:20
 msgid "Musical selection"
 msgstr "Sélection musicale"
+
+#: templates/telemeta_default/index.html:38
+msgid "Partenaires"
+msgstr ""
+
+#: templates/telemeta_default/instrument_edit.html:14
+#: templates/telemeta_default/instrument_edit.html:28
+#: templates/telemeta_default/instrument_edit_value.html:14
+msgid "Name"
+msgstr "Nom"
+
+#: templates/telemeta_default/instrument_edit.html:46
+msgid "This instrument list is empty"
+msgstr "Cette énumération est vide"
 
 #: templates/telemeta_default/login.html:5
 msgid "User authentication"
 msgstr "Identification"
 
-#: templates/telemeta_default/login.html:8
+#: templates/telemeta_default/login.html:11
 msgid "Your username and password didn't match. Please try again."
-msgstr "Vos nom d'utilisateur et/ou mot de passe sont incorrects. Essayez à nouveau."
+msgstr ""
+"Vos nom d'utilisateur et/ou mot de passe sont incorrects. Essayez à nouveau."
 
+#: templates/telemeta_default/login.html:26
+msgid "Password forgotten"
+msgstr "Mot de passe oublié"
+
+#: templates/telemeta_default/mediaitem_add.html:5
+#: templates/telemeta_default/mediaitem_copy.html:5
 #: templates/telemeta_default/mediaitem_detail.html:5
-#: templates/telemeta_default/mediaitem_detail_dc.html:5
 msgid "Item"
 msgstr "Item"
 
-#: templates/telemeta_default/mediaitem_detail.html:120
+#: templates/telemeta_default/mediaitem_detail.html:101
+#: templates/telemeta_default/paginator.html:5
+msgid "Previous"
+msgstr "Précédent"
+
+#: templates/telemeta_default/mediaitem_detail.html:102
+#: templates/telemeta_default/paginator.html:23
+msgid "Next"
+msgstr "Suivant"
+
+#: templates/telemeta_default/mediaitem_detail.html:161
+msgid "Analysis"
+msgstr "Analyse"
+
+#: templates/telemeta_default/mediaitem_detail.html:163
+msgid "Markers"
+msgstr "Marqueurs"
+
+#: templates/telemeta_default/mediaitem_detail.html:171
+msgid "Property"
+msgstr "Propriété"
+
+#: templates/telemeta_default/mediaitem_detail.html:173
+msgid "Unit"
+msgstr "Unité"
+
+#: templates/telemeta_default/mediaitem_detail.html:194
 msgid "Download:"
 msgstr "Téléchargement:"
 
-#: templates/telemeta_default/mediaitem_detail.html:139
+#: templates/telemeta_default/mediaitem_detail.html:215
 msgid "Recording date"
 msgstr "Date d'enregistrement"
 
-#: templates/telemeta_default/mediaitem_detail.html:151
+#: templates/telemeta_default/mediaitem_detail.html:227
 #: templates/telemeta_default/inc/mediaitem_list.html:18
 msgid "Location"
 msgstr "Lieu"
 
-#: templates/telemeta_default/mediaitem_detail.html:166
+#: templates/telemeta_default/mediaitem_detail.html:244
 msgid "Musical informations"
 msgstr "Informations sur la musique"
 
-#: templates/telemeta_default/mediaitem_detail.html:202
+#: templates/telemeta_default/mediaitem_detail.html:278
+msgid "performance"
+msgstr "composition"
+
+#: templates/telemeta_default/mediaitem_detail.html:283
 msgid "General informations"
 msgstr "Informations générales"
 
-#: templates/telemeta_default/mediaitem_detail_dc.html:19
+#: templates/telemeta_default/mediaitem_detail_dc.html:16
 msgid "No such item"
 msgstr "Item introuvable"
+
+#: templates/telemeta_default/mediaitem_keywords_edit.html:23
+msgid "Keyword"
+msgstr "Mot-clé"
 
 #: templates/telemeta_default/mediaitem_list.html:5
 #: templates/telemeta_default/mediaitem_list.html:8
 msgid "Media Items"
 msgstr "Items"
 
+#: templates/telemeta_default/mediaitem_performances_edit.html:23
+msgid "Performance"
+msgstr ""
+
+#: templates/telemeta_default/profile_detail.html:5
+msgid "User Profile"
+msgstr "Profil utilisateur"
+
+#: templates/telemeta_default/profile_detail.html:8
+msgid "User profile"
+msgstr "Profil utilisateur"
+
+#: templates/telemeta_default/profile_detail.html:34
+msgid "Email"
+msgstr "Courriel"
+
+#: templates/telemeta_default/profile_detail.html:40
+msgid "Expiration date"
+msgstr "Date d'expiration"
+
+#: templates/telemeta_default/profile_detail.html:42
+msgid "Is staff"
+msgstr "Statut équipe"
+
+#: templates/telemeta_default/profile_detail.html:43
+msgid "Is superuser"
+msgstr "Statut super-utilisateur"
+
+#: templates/telemeta_default/profile_detail.html:44
+msgid "Groups"
+msgstr ""
+
+#: templates/telemeta_default/profile_detail.html:45
+msgid "Last login"
+msgstr "Dernière connexion"
+
+#: templates/telemeta_default/profile_detail.html:47
+msgid "Language"
+msgstr "Langue"
+
+#: templates/telemeta_default/profile_detail.html:55
+msgid "Apply"
+msgstr "Appliquer"
+
+#: templates/telemeta_default/profile_detail.html:66
+#: templates/telemeta_default/registration/password_change_done.html:3
+#: templates/telemeta_default/registration/password_change_form.html:4
+msgid "Change password"
+msgstr ""
+
 #: templates/telemeta_default/search_criteria.html:5
 #: templates/telemeta_default/search_criteria.html:55
 msgid "Advanced Search"
 msgstr "Recherche avancée"
 
-#: templates/telemeta_default/search_criteria.html:79
-#: templates/telemeta_default/search_results.html:28
-#: templates/telemeta_default/inc/collection_list.html:14
-#: templates/telemeta_default/inc/mediaitem_list.html:14
-msgid "Title"
-msgstr "Titre"
-
-#: templates/telemeta_default/search_criteria.html:95
-#: templates/telemeta_default/search_results.html:31
-#: templates/telemeta_default/inc/collection_list.html:18
-#: templates/telemeta_default/inc/mediaitem_list.html:22
-msgid "Year of recording"
-msgstr "Année d'enregistrement"
-
-#: templates/telemeta_default/search_criteria.html:102
-#: templates/telemeta_default/search_criteria.html:121
-#: templates/telemeta_default/search_results.html:33
-#: templates/telemeta_default/search_results.html:40
+#: templates/telemeta_default/search_criteria.html:101
+#: templates/telemeta_default/search_criteria.html:120
+#: templates/telemeta_default/search_results.html:35
+#: templates/telemeta_default/search_results.html:42
 msgid "to"
 msgstr "à"
 
-#: templates/telemeta_default/search_criteria.html:114
-#: templates/telemeta_default/search_results.html:38
+#: templates/telemeta_default/search_criteria.html:113
+#: templates/telemeta_default/search_results.html:40
 msgid "Year of publication"
 msgstr "Année de publication"
 
@@ -716,21 +1077,16 @@ msgstr "Année de publication"
 msgid "Search Results"
 msgstr "Résultats de recherche"
 
-#: templates/telemeta_default/search_results.html:13
+#: templates/telemeta_default/search_results.html:15
 msgid "Search pattern"
 msgstr "Recherche"
 
-#: templates/telemeta_default/inc/collection_list.html:6
+#: templates/telemeta_default/inc/collection_list.html:7
 #, python-format
 msgid "Collections %(first_on_page)s to %(last_on_page)s on %(hits)s"
 msgstr "Collections %(first_on_page)s à %(last_on_page)s sur %(hits)s"
 
-#: templates/telemeta_default/inc/collection_list.html:15
-#: templates/telemeta_default/inc/mediaitem_list.html:15
-msgid "Code"
-msgstr "Cote"
-
-#: templates/telemeta_default/inc/collection_list.html:42
+#: templates/telemeta_default/inc/collection_list.html:47
 msgid "No collection"
 msgstr "Aucune collection"
 
@@ -738,7 +1094,7 @@ msgstr "Aucune collection"
 msgid "Dublin Core Metadata"
 msgstr "Métadonnées Dublin Core"
 
-#: templates/telemeta_default/inc/mediaitem_list.html:6
+#: templates/telemeta_default/inc/mediaitem_list.html:7
 #, python-format
 msgid "Items %(first_on_page)s to %(last_on_page)s on %(hits)s"
 msgstr "Items %(first_on_page)s à %(last_on_page)s sur %(hits)s"
@@ -747,9 +1103,175 @@ msgstr "Items %(first_on_page)s à %(last_on_page)s sur %(hits)s"
 msgid "Country/Continent"
 msgstr "Etat/Continent"
 
-#: templates/telemeta_default/inc/mediaitem_list.html:50
+#: templates/telemeta_default/inc/mediaitem_list.html:58
 msgid "No item"
 msgstr "Aucun item"
+
+#: templates/telemeta_default/inc/module_revisions.html:7 web/base.py:1084
+msgid "Last changes"
+msgstr "Dernières modifications"
+
+#: templates/telemeta_default/inc/module_revisions.html:11
+msgid "Date"
+msgstr ""
+
+#: templates/telemeta_default/registration/password_change_done.html:3
+#: templates/telemeta_default/registration/password_change_form.html:4
+#, fuzzy
+msgid "Documentation"
+msgstr "documentation associée"
+
+#: templates/telemeta_default/registration/password_change_done.html:3
+#: templates/telemeta_default/registration/password_change_form.html:4
+#, fuzzy
+msgid "Log out"
+msgstr "Déconnexion"
+
+#: templates/telemeta_default/registration/password_change_done.html:5
+#: templates/telemeta_default/registration/password_change_form.html:5
+#: templates/telemeta_default/registration/password_change_form.html:7
+#: templates/telemeta_default/registration/password_change_form.html:19
+#, fuzzy
+msgid "Password change"
+msgstr "Mot de passe oublié"
+
+#: templates/telemeta_default/registration/password_change_done.html:7
+msgid "Password change successful"
+msgstr ""
+
+#: templates/telemeta_default/registration/password_change_done.html:11
+msgid "Your password was changed."
+msgstr ""
+
+#: templates/telemeta_default/registration/password_change_form.html:15
+msgid "Please correct the error below."
+msgid_plural "Please correct the errors below."
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/telemeta_default/registration/password_change_form.html:21
+msgid ""
+"Please enter your old password, for security's sake, and then enter your new "
+"password twice so we can verify you typed it in correctly."
+msgstr ""
+
+#: templates/telemeta_default/registration/password_change_form.html:27
+msgid "Old password"
+msgstr ""
+
+#: templates/telemeta_default/registration/password_change_form.html:32
+msgid "New password"
+msgstr ""
+
+#: templates/telemeta_default/registration/password_change_form.html:37
+#, fuzzy
+msgid "Password (again)"
+msgstr "Mot de passe (encore)"
+
+#: templates/telemeta_default/registration/password_change_form.html:45
+#: templates/telemeta_default/registration/password_reset_confirm.html:19
+msgid "Change my password"
+msgstr ""
+
+#: templates/telemeta_default/registration/password_reset_complete.html:4
+#: templates/telemeta_default/registration/password_reset_confirm.html:6
+#: templates/telemeta_default/registration/password_reset_done.html:4
+#: templates/telemeta_default/registration/password_reset_form.html:4
+#: templates/telemeta_default/registration/password_reset_form.html:6
+#, fuzzy
+msgid "Password reset"
+msgstr "Mot de passe oublié"
+
+#: templates/telemeta_default/registration/password_reset_complete.html:6
+#, fuzzy
+msgid "Password reset complete"
+msgstr "Mise à jour du mot de passe effectuée"
+
+#: templates/telemeta_default/registration/password_reset_complete.html:10
+msgid "Your password has been set.  You may go ahead and log in now."
+msgstr ""
+
+#: templates/telemeta_default/registration/password_reset_complete.html:12
+msgid "Log in"
+msgstr ""
+
+#: templates/telemeta_default/registration/password_reset_confirm.html:4
+msgid "Password reset confirmation"
+msgstr ""
+
+#: templates/telemeta_default/registration/password_reset_confirm.html:12
+msgid ""
+"Please enter your new password twice so we can verify you typed it in "
+"correctly."
+msgstr ""
+
+#: templates/telemeta_default/registration/password_reset_confirm.html:16
+msgid "New password:"
+msgstr ""
+
+#: templates/telemeta_default/registration/password_reset_confirm.html:18
+msgid "Confirm password:"
+msgstr ""
+
+#: templates/telemeta_default/registration/password_reset_confirm.html:24
+msgid "Password reset unsuccessful"
+msgstr ""
+
+#: templates/telemeta_default/registration/password_reset_confirm.html:26
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used.  Please request a new password reset."
+msgstr ""
+
+#: templates/telemeta_default/registration/password_reset_done.html:6
+msgid "Password reset successful"
+msgstr ""
+
+#: templates/telemeta_default/registration/password_reset_done.html:10
+msgid ""
+"We've e-mailed you instructions for setting your password to the e-mail "
+"address you submitted. You should be receiving it shortly."
+msgstr ""
+
+#: templates/telemeta_default/registration/password_reset_email.html:2
+msgid "You're receiving this e-mail because you requested a password reset"
+msgstr ""
+
+#: templates/telemeta_default/registration/password_reset_email.html:3
+#, python-format
+msgid "for your user account at %(site_name)s"
+msgstr ""
+
+#: templates/telemeta_default/registration/password_reset_email.html:5
+msgid "Please go to the following page and choose a new password:"
+msgstr ""
+
+#: templates/telemeta_default/registration/password_reset_email.html:9
+msgid "Your username, in case you've forgotten:"
+msgstr ""
+
+#: templates/telemeta_default/registration/password_reset_email.html:11
+msgid "Thanks for using our site!"
+msgstr ""
+
+#: templates/telemeta_default/registration/password_reset_email.html:13
+#, python-format
+msgid "The %(site_name)s team"
+msgstr ""
+
+#: templates/telemeta_default/registration/password_reset_form.html:10
+msgid ""
+"Forgotten your password? Enter your e-mail address below, and we'll e-mail "
+"instructions for setting a new one."
+msgstr ""
+
+#: templates/telemeta_default/registration/password_reset_form.html:14
+msgid "E-mail address:"
+msgstr ""
+
+#: templates/telemeta_default/registration/password_reset_form.html:14
+msgid "Reset my password"
+msgstr ""
 
 #: templatetags/telemeta_utils.py:218
 #, python-format
@@ -764,3 +1286,48 @@ msgid "%(count)d collection"
 msgid_plural "%(count)d collections"
 msgstr[0] "%(count)d collection"
 msgstr[1] "%(count)d collections"
+
+#: web/base.py:1095
+msgid "Access not allowed"
+msgstr "Accès non autorisé"
+
+#: web/base.py:1097
+msgid ""
+"Please login or contact the website administator to get admin or private "
+"access."
+msgstr ""
+"Connectez-vous s'il vous plaît ou bien contactez l'administrateur du site "
+"pour obtenir un accès privé."
+
+#~ msgid "Keywords"
+#~ msgstr "Mots-clés"
+
+#~ msgid "resource type"
+#~ msgstr "type de ressource"
+
+#~ msgid "resource"
+#~ msgstr "ressource"
+
+#~ msgid "username"
+#~ msgstr "nom d'utilisateur"
+
+#~ msgid "level"
+#~ msgstr "niveau"
+
+#~ msgid "first name"
+#~ msgstr "prénom"
+
+#~ msgid "last name"
+#~ msgstr "nom de famille"
+
+#~ msgid "phone"
+#~ msgstr "téléphone"
+
+#~ msgid "Visit the Telemeta open source project at"
+#~ msgstr "Visitez le projet libre Telemeta"
+
+#~ msgid "Marker"
+#~ msgstr "Marqueur"
+
+#~ msgid "item added to the selected playlist"
+#~ msgstr "item ajouté à la liste de lecture sélectionnée"

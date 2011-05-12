@@ -1,12 +1,18 @@
 /* Shamelessly stolen from trac's admin.css... */
 
 .tabs {
- border: 1px solid black;
- border-color: gray black black gray;
- margin: 2em 0;
- padding: .5em 0 0;
+ border: 1px solid #6a0307;
+ /* border-color: gray black black gray;*/
+ margin: 0em 0;
+ padding: .3em 0 0 .5em;
  float: left;
- width: 12em;
+ width: 15em;
+ color: #6a0307;
+ font-size: 14px;
+ font-weight: bold;
+ -moz-border-radius: 8px 8px 8px 8px;
+ -webkit-border-radius: 8px 8px 8px 8px;
+ border-radius: 8px 8px 8px 8px;
 }
 .tabs ul { list-style: none; margin: 0 0 .5em; padding: 0 }
 .tabs li { margin: 0; padding: 0.1em .5em }
@@ -16,8 +22,8 @@
 .tabs :link:hover, .tabs :visited:hover { background: transparent }
 
 .tabcontents {
- padding: 0.4em 2em;
- margin-left: 12em;
+ padding: 0em 2em;
+ margin-left: 17em;
  min-height: 300px;
 }
 p.help { color: #666; font-size: 90%; margin: 1em .5em .5em }

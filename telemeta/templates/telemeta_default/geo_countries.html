@@ -4,9 +4,11 @@
 
 {% block head_title %}{{ continent }} - {% trans "Geographic Navigator" %} - {{ block.super }}{% endblock %}
 
+{% block title %}
+ <img src="{% url telemeta-images "world_red.png" %}" style="vertical-align:middle" /> <a href="{% url telemeta-geo-continents %}">{% trans "World" %}</a> / {{ continent }}
+{% endblock title %}
+
 {% block content %}
-<h3><a href="{% url telemeta-geo-continents %}">{% trans "World" %}</a> /
-  {{ continent }}</h3>
 <table class="listing">
 <tr>
     <th>{% trans "Country" %}</th>

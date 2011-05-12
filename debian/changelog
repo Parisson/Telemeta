@@ -1,3 +1,10 @@
+telemeta (0.8-1) unstable; urgency=low
+
+  * New upstream release
+  * See http://telemeta.org/log/ for the entire changelog 
+
+ -- Guillaume Pellerin <yomguy@parisson.com>  Fri, 06 May 2011 11:33:22 +0200
+
 telemeta (0.4-1) unstable; urgency=low
 
   * New upstream release

@@ -1,28 +1,66 @@
 {% extends "telemeta/base.html" %}
-{% load telemeta_utils %}
 {% load i18n %}
+{% load telemeta_utils %}
 
 {% block head_title %}{% trans "Collection" %}{{collection|prepend:': '}} - {{ block.super }}{% endblock %}
 
 {% block extra_javascript %}
 <script src="{% url telemeta-js "swfobject.js" %}" type="text/javascript"></script>
+<script src="{% url telemeta-timeside "src/playlist.js" %}" type="text/javascript"></script>
+<script>
+    var setupPlaylist = function(){
+        {% if user.is_authenticated %}
+        var p = playlistUtils;
+        {% for playlist in playlists %}
+        p.addPlaylist('{{ playlist.playlist.title }}','{{playlist.playlist.public_id}}');
+        {% endfor %}
+
+        {% endif %}
+        {% if collection %}
+        var anchor = jQuery('#_add_to_playlist');
+        if(anchor.length){
+        anchor.click(function(){
+            p.showAddResourceToPlaylist(anchor,'collection','{{collection.id}}',gettrans('collection added to the selected playlist'));return false;
+        });
+        }
+        {% endif %}
+    };
+    jQuery(document).ready(function(){
+        setupPlaylist();
+    });
+</script>
 {% endblock %}
 
 {% if collection %}
 
-{% block submenu %}
-    <div><a href="{% url telemeta-collection-dublincore collection.public_id %}">Dublin Core</a></div>
+{% block title %}
+    <img src="{% url telemeta-images "collections_red.png" %}" style="vertical-align:middle" /> Collection : {{ collection.title }}
+{% endblock %}
+
+{% block title_buttons %}
+  <div class="fixedWidthAsPlayer">
+    {% if user.is_authenticated and perms.telemeta.change_mediacollection %}
+      <a href="{% url telemeta-collection-edit collection.public_id %}" class="component_icon button icon_edit">{% trans "Edit" %}</a>
+      <a href="{% url telemeta-collection-copy collection.public_id %}" class="component_icon button icon_copy">{% trans "Copy" %}</a>
+      <a href="{% url telemeta-collection-additem collection.public_id %}" class="component_icon button icon_add">{% trans "Add item" %}</a>
+     {% endif %}
+    {% if user.is_authenticated %}
+    <a href=# id ="_add_to_playlist" class="component_icon button icon_add_to_playlist">{% trans "Add to playlist" %}</a>
+    {% endif %}
+    <a href="{% url telemeta-collection-dublincore collection.public_id %}" class="component_icon button icon_dublin_core">Dublin Core</a>
+   </div>
 {% endblock %}
 
 {% block content %}
-    <h3>Collection: {{ collection }}</h3>
     <div class="{% if collection.has_mediafile %}with-rightcol{% endif %}">
         {% if collection.has_mediafile %}
         <div id="rightcol">
             <div id="collection_player">
-              <p><b>Listen to this collection</b>
+             <div class="title">
+              <h3><b>{% trans "Listen to this collection" %}</b>
               (<a href="{% url telemeta-collection-m3u collection.public_id %}">M3U</a>,
-              <a href="{% url telemeta-collection-xspf collection.public_id %}">XSPF</a>)</p>
+              <a href="{% url telemeta-collection-xspf collection.public_id %}">XSPF</a>)</h3>
+             </div>
                 <!-- This is Jeroen Wijering's Flash MP3 Player, 
                   under CC Attribution-NonCommercial-ShareAlike 2.0 license
                   from: http://www.jeroenwijering.com/?item=Flash_MP3_Player-->
@@ -33,13 +71,15 @@
                   var so = new SWFObject('{% url telemeta-swf "mp3player.swf" %}','playlist','362','200','7');
                   so.addVariable("file","{% url telemeta-collection-xspf collection.public_id %}");
                   so.addVariable("displayheight","0");
+                  so.addParam("wmode", "opaque");
                   so.write('collection_player_c');
                 </script> 
             </div>
         </div>
         {% endif %}
+      {% block infos %}
         <div class="intro">
-            <span>{% if collection.items.count %}{{ collection.items.count }} {% ifequal collection.items.count 1 %}item{% else %}items{% endifequal %}{% else %}No item{% endif %}</span>
+            <span><img src="{% url telemeta-images "item_title.png" %}" style="vertical-align:middle" /> {% if collection.items.count %}{{ collection.items.count }} {% ifequal collection.items.count 1 %}item{% else %}items{% endifequal %}{% else %}No item{% endif %}</span>
         </div>
         <div class="infos">
         {% block general_info %}
@@ -47,13 +87,11 @@
                 {% dl_field collection "reference" %}
                 {% dl_field collection "title"  %}
                 {% dl_field collection "alt_title" %}
-                {% dl_field collection "creator"  %}
+                {% dl_field collection "creator" placeholder %}
                 {% dl_field collection "recording_context" %}
-                {% if collection.recorded_from_year %}
-                    <dt>{% trans "Recording year" %}</dt>
-                    <dd>{{ collection.recorded_from_year|default:'' }} {{ collection.recorded_to_year|prepend:" - "  }}</dd>
-                {% endif %}
-                {% dl_field collection "year_published"  %}
+                <dt>{% trans "Recording year" %}</dt>
+                    <dd>{% if collection.recorded_from_year %}{{ collection.recorded_from_year|default:'' }} {{ collection.recorded_to_year|prepend:" - "  }}{% endif %}</dd>
+                {% dl_field collection "year_published" placeholder %}
             </dl>
         {% endblock general_info %}
         </div>
@@ -64,7 +102,7 @@
                 <div>
                     <dl class="listing">
                         {% dl_field collection "countries" join with ", " %}
-                        {% dl_field collection "ethnic_groups" join with ", "  %}
+                        {% dl_field collection "ethnic_groups" join with ", " placeholder %}
                     </dl>
                 </div>
             </div>
@@ -73,7 +111,7 @@
         <div class="extraInfos">
         {% block legal_data %}
             <div>
-                <h4><a href="#">{% trans "Legal mentions" %}</a></h4>
+                <h4><a href="#">{% trans "Legal notices" %}</a></h4>
                 <div>
                     <dl class="listing">
                         {% if collection.collector_is_creator %}
@@ -152,6 +190,7 @@
         {% endwith %}
         -->
         </div>
+        {% endblock infos %}
     </div>
 {% endblock %}
 {% else %}

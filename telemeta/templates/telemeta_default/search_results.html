@@ -4,9 +4,11 @@
 
 {% block head_title %}{% trans "Search Results" %} - {{ block.super }}{% endblock %}
 
-{% block content %}
-<h3>{% trans "Search Results" %}</h3>
+{% block title %}
+ <img src="{% url telemeta-images "search_red.png" %}" style="vertical-align:middle" /> {% trans "Search Results" %}
+{% endblock %}
 
+{% block content %}
 {% if criteria %}
 <ul>
   {% if criteria.pattern %}
@@ -46,22 +48,23 @@
 
 {% ifequal type 'items' %}
 
-  <p><b>Items ({{items_num}})</b> | 
-  <a href="{% url telemeta-search-collections %}?{{criteria|build_query_string}}">
-    Collections ({{collections_num}})</a></p>
+  <p><a href="{% url telemeta-search-collections %}?{{criteria|build_query_string}}">Collections ({{collections_num}})</a> | <b>Items ({{items_num}})</b></p>
 
   {% with object_list as items %}
+   <div class="fullpage">
       {% include "telemeta/inc/mediaitem_list.html" %}
+   </div>
   {% endwith %}    
 
 {% else %}
 
-  <p><a href="{% url telemeta-search-items %}?{{criteria|build_query_string}}">
-    Items ({{items_num}})</a> |
-  <b>Collections ({{collections_num}})</b></p>
+  <p><b>Collections ({{collections_num}})</b> | <a href="{% url telemeta-search-items %}?{{criteria|build_query_string}}">Items ({{items_num}})</a>
+  </p>
 
   {% with object_list as collections %}
+   <div class="fullpage">
       {% include "telemeta/inc/collection_list.html" %}
+   </div>
   {% endwith %}
 
 {% endifequal %}

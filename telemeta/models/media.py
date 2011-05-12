@@ -33,14 +33,19 @@
 # Authors: Olivier Guilyardi <olivier@samalyse.com>
 #          David LIPSZYC <davidlipszyc@gmail.com>
 
+from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
+from django.core.exceptions import ValidationError
 from telemeta.models.core import *
 from telemeta.models.enum import ContextKeyword
 from telemeta.util.unaccent import unaccent_icmp
 import re
 from telemeta.models.location import LocationRelation, Location
 from telemeta.models.system import Revision
-from telemeta.models import query
+from telemeta.models.query import *
+from telemeta.models.instrument import *
+from django.forms import ModelForm
+
 
 class MediaResource(ModelCore):
     "Base class of all media objects"
@@ -54,9 +59,8 @@ class MediaResource(ModelCore):
         return _('Private data')
     public_access_label.verbose_name = _('public access')
 
-    def save_with_revision(self, user, force_insert=False, force_update=False):
+    def set_revision(self, user):
         "Save a media object and add a revision"
-        self.save(force_insert, force_update)
         Revision.touch(self, user)    
 
     def get_revision(self):
@@ -65,22 +69,31 @@ class MediaResource(ModelCore):
     class Meta:
         abstract = True
 
+
+collection_published_code_regex   = '[A-Za-z0-9._-]*'
+collection_unpublished_code_regex = '[A-Za-z0-9._-]*'
+collection_code_regex             = '(?:%s|%s)' % (collection_published_code_regex, 
+                                                    collection_unpublished_code_regex)
+                                                        
 class MediaCollection(MediaResource):
     "Describe a collection of items"
     element_type = 'collection'
     PUBLIC_ACCESS_CHOICES = (('none', 'none'), ('metadata', 'metadata'), ('full', 'full'))
 
-    published_code_regex   = '[A-Za-z0-9._-]*'
-    unpublished_code_regex = '[A-Za-z0-9._-]*'
-    code_regex             = '(?:%s|%s)' % (published_code_regex, unpublished_code_regex)
-
-    reference             = CharField(_('reference'), unique=True, null=True)
-    physical_format       = WeakForeignKey('PhysicalFormat', related_name="collections", 
-                                           verbose_name=_('archive format'))
+    def is_valid_collection_code(value):
+        "Check if the collection code is well formed"
+        regex = '^' + collection_code_regex + '$'
+        if not re.match(regex, value):
+            raise ValidationError(u'%s is not a valid collection code' % value)
+    
+    code                  = CharField(_('code'), unique=True, required=True, validators=[is_valid_collection_code])
     old_code              = CharField(_('old code'), unique=True, null=True)
-    code                  = CharField(_('code'), unique=True, required=True)
+    reference             = CharField(_('reference'), unique=True, null=True)
     title                 = CharField(_('title'), required=True)
     alt_title             = CharField(_('original title / translation'))
+    physical_format       = WeakForeignKey('PhysicalFormat', related_name="collections", 
+                                           verbose_name=_('archive format'))
+    
     physical_items_num    = IntegerField(_('number of components (medium / piece)'))
     publishing_status     = WeakForeignKey('PublishingStatus', related_name="collections", 
                                            verbose_name=_('secondary edition'))
@@ -123,11 +136,11 @@ class MediaCollection(MediaResource):
     public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES, 
                                       max_length=16, default="metadata")
 
-    objects               = query.MediaCollectionManager()
+    objects               = MediaCollectionManager()
 
     def __unicode__(self):
-        if self.title:
-            return self.title
+#        if self.title:
+#            return self.title
 
         return self.code
 
@@ -177,43 +190,33 @@ class MediaCollection(MediaResource):
         duration = Duration()
         for item in self.items.all():
             duration += item.computed_duration()
-
         return duration
+        
     computed_duration.verbose_name = _('computed duration')        
-
-    def is_valid_code(self, code):
-        "Check if the collection code is well formed"
-        if self.is_published:
-            regex = '^' + self.published_code_regex + '$'
-        else:
-            regex = '^' + self.unpublished_code_regex + '$'
-           
-        if re.match(regex, code):
-            return True
-
-        return False
-
-    def save(self, force_insert=False, force_update=False):
-        if not self.code:
-            raise RequiredFieldError(self, self._meta.get_field('code'))
-#        if not self.is_valid_code(self.code):
-#            raise MediaInvalidCodeError("%s is not a valid code for this collection" % self.code)
+            
+    def save(self, force_insert=False, force_update=False, user=None, code=None):
         super(MediaCollection, self).save(force_insert, force_update)
-
+        
     class Meta(MetaCore):
         db_table = 'media_collections'
+    
+class MediaCollectionForm(ModelForm):
+    class Meta:
+        model = MediaCollection
+
+
+item_published_code_regex    = '[A-Za-z0-9._-]*'
+item_unpublished_code_regex  = '[A-Za-z0-9._-]*'
+item_code_regex              = '(?:%s|%s)' % (item_published_code_regex, item_unpublished_code_regex)
 
 class MediaItem(MediaResource):
     "Describe an item"
     element_type = 'item'
     PUBLIC_ACCESS_CHOICES = (('none', 'none'), ('metadata', 'metadata'), ('full', 'full'))
 
-    published_code_regex    = '[A-Za-z0-9._-]*'
-    unpublished_code_regex  = '[A-Za-z0-9._-]*'
-    code_regex              = '(?:%s|%s)' % (published_code_regex, unpublished_code_regex)
-
     collection            = ForeignKey('MediaCollection', related_name="items", 
                                        verbose_name=_('collection'))
+    title                 = CharField(_('title'))
     track                 = CharField(_('item number'))
     old_code              = CharField(_('old code'), unique=True, null=True)
     code                  = CharField(_('code'), unique=True, null=True)
@@ -224,12 +227,10 @@ class MediaItem(MediaResource):
     location_comment      = CharField(_('location details'))
     ethnic_group          = WeakForeignKey('EthnicGroup', related_name="items", 
                                            verbose_name=_('population / social group'))
-    title                 = CharField(_('title'))
     alt_title             = CharField(_('original title / translation'))
     author                = CharField(_('author / compositor'))
     vernacular_style      = WeakForeignKey('VernacularStyle', related_name="items", 
                                            verbose_name=_('vernacular style'))
-    context_comment       = TextField(_('comments'))
     external_references   = TextField(_('published reference'))
     moda_execut           = CharField(_('moda_execut'))
     copied_from_item      = WeakForeignKey('self', related_name="copies", verbose_name=_('copy of'))
@@ -240,11 +241,12 @@ class MediaItem(MediaResource):
                                            verbose_name=_('generic style'))
     collector_selection   = CharField(_('recordist selection'))
     creator_reference     = CharField(_('reference'))
+    context_comment       = TextField(_('comments'))
     comment               = TextField(_('remarks'))
     file                  = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename")
     public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES, max_length=16, default="metadata")
 
-    objects               = query.MediaItemManager()
+    objects               = MediaItemManager()
 
     def keywords(self):
         return ContextKeyword.objects.filter(item_relations__item = self)
@@ -263,21 +265,20 @@ class MediaItem(MediaResource):
         "Check if the item code is well formed"
         if not re.match('^' + self.collection.code, self.code):
             return False
-
         if self.collection.is_published:
-            regex = '^' + self.published_code_regex + '$'
+            regex = '^' + item_published_code_regex + '$'
         else:
-            regex = '^' + self.unpublished_code_regex + '$'
-
+            regex = '^' + item_unpublished_code_regex + '$'
         if re.match(regex, code):
             return True
-
         return False
 
+    def clean(self):
+        if self.code and not self.is_valid_code(self.code):
+            raise ValidationError("%s is not a valid item code for collection %s" 
+                                        % (self.code, self.collection.code))
+                                        
     def save(self, force_insert=False, force_update=False):
-#        if self.code and not self.is_valid_code(self.code):
-#            raise MediaInvalidCodeError("%s is not a valid item code for collection %s" 
-#                                        % (self.code, self.collection.code))
         super(MediaItem, self).save(force_insert, force_update)
 
     def computed_duration(self):
@@ -297,6 +298,10 @@ class MediaItem(MediaResource):
 
         return title
 
+class MediaItemForm(ModelForm):
+    class Meta:
+        model = MediaItem
+
 class MediaItemKeyword(ModelCore):
     "Item keyword"
     item    = ForeignKey('MediaItem', verbose_name=_('item'), related_name="keyword_relations")
@@ -305,6 +310,10 @@ class MediaItemKeyword(ModelCore):
     class Meta(MetaCore):
         db_table = 'media_item_keywords'
         unique_together = (('item', 'keyword'),)
+
+class MediaItemKeywordForm(ModelForm):
+    class Meta:
+        model = MediaItemKeyword
 
 class MediaItemPerformance(ModelCore):
     "Item performance"
@@ -320,6 +329,10 @@ class MediaItemPerformance(ModelCore):
     class Meta(MetaCore):
         db_table = 'media_item_performances'
 
+class MediaItemPerformanceForm(ModelForm):
+    class Meta:
+        model = MediaItemPerformance
+        
 class MediaPart(MediaResource):
     "Describe an item part"
     element_type = 'part'
@@ -336,26 +349,70 @@ class MediaPart(MediaResource):
 
 class Playlist(ModelCore):
     "Item or collection playlist"
-    owner_username = ForeignKey('User', related_name="playlists", db_column="owner_username") 
-    name           = CharField(_('name'), required=True)
+    element_type = 'playlist'
+    public_id      = CharField(_('public_id'), required=True)
+    author         = ForeignKey(User, related_name="playlists", db_column="author")
+    title          = CharField(_('title'), required=True)
+    description    = TextField(_('description'))
 
     class Meta(MetaCore):
         db_table = 'playlists'
 
     def __unicode__(self):
-        return self.name
+        return self.title
+        
+class PlaylistForm(ModelForm):
+    class Meta:
+        model = Playlist
 
 class PlaylistResource(ModelCore):
     "Playlist components"
-    RESOURCE_TYPE_CHOICES = (('item', 'item'), ('collection', 'collection'))
-
-    playlist              = ForeignKey('Playlist', related_name="resources", verbose_name=_('playlist'))
-    resource_type         = CharField(_('resource type'), choices=RESOURCE_TYPE_CHOICES, required=True)
-    resource              = IntegerField(_('resource'), required=True)
+    RESOURCE_TYPE_CHOICES = (('item', 'item'), ('collection', 'collection'), ('marker', 'marker'))
+    element_type = 'playlist_resource'
+    public_id          = CharField(_('public_id'), required=True)
+    playlist           = ForeignKey('Playlist', related_name="resources", verbose_name=_('playlist'))
+    resource_type      = CharField(_('resource_type'), choices=RESOURCE_TYPE_CHOICES, required=True)
+    resource_id        = CharField(_('resource_id'), required=True)
 
     class Meta(MetaCore):
         db_table = 'playlist_resources'
+        
+        
+class MediaItemMarker(MediaResource):
+    "2D marker object : text value vs. time"
+    
+    element_type = 'marker'
+    
+    item            = ForeignKey('MediaItem', related_name="markers", verbose_name=_('item'))
+    public_id       = CharField(_('public_id'), required=True)
+    time            = FloatField(_('time'))
+    title           = CharField(_('title'))
+    date            = DateTimeField(_('date'), auto_now=True)
+    description     = TextField(_('description'))
+    author          = ForeignKey(User, related_name="markers", verbose_name=_('author'))
+    
+    class Meta(MetaCore):
+        db_table = 'media_markers'
 
-class MediaInvalidCodeError(Exception):
-    pass
+    def __unicode__(self):
+        if self.title:
+            return self.title
+        else:
+            return self.public_id
+
+class Search(ModelCore):
+    "Keywork search"
+    
+    element_type = 'search'
+    
+    username = ForeignKey(User, related_name="searches", db_column="username")
+    keywords = CharField(_('keywords'), required=True)
+    date = DateField(_('date'), auto_now_add=True)
+
+    class Meta(MetaCore):
+        db_table = 'searches'
+
+    def __unicode__(self):
+        return self.keywords
+
 

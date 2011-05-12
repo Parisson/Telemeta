@@ -37,4 +37,6 @@ from telemeta.models.location import *
 from telemeta.models.instrument import *
 from telemeta.models.enum import *
 from telemeta.models.system import *
+from telemeta.models.query import *
+
 
