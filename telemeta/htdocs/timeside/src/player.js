@@ -203,12 +203,16 @@ var Player = TimesideClass.extend({
         //var jQueryObjs = this.loadUI(this.getContainer(), skeleton);
 
 
+        //image source (see below) is given a src with a temporary 1x1 pixels transparent image
+        //see http://www.nczonline.net/blog/2009/11/30/empty-image-src-can-destroy-your-site/ and
+        //http://geekswithblogs.net/bcaraway/archive/2007/08/24/114945.aspx
+        //for details
         var html = ["<div class='ts-viewer'>",
                         "<div class='ts-ruler'></div>",
                         "<div class='ts-wave'>",
                             "<div class='ts-image-canvas'></div>",
                             "<div class='ts-image-container'>",
-                               "<img class='ts-image' src='' alt='' />",
+                               "<img class='ts-image' src='/images/transparent.png' alt='' />",
                             "</div>",
                         "</div>",
                     "</div>",
@@ -433,12 +437,13 @@ var Player = TimesideClass.extend({
         this.debug("resizing");
         var height;
         var container = this.getContainer();
+        
         var wave = container.find('.ts-wave');
         var image = container.find('.ts-image');
         height = wave.height();
         this.debug("wave height:" + height);
         if (!height) {
-            this.debug('ERROR: image height is zero in player.,resize!!!!')
+            //this.debug('ERROR: image height is zero in player.,resize!!!!')
             height = image.height();
         }
         //set image, imagecontainer and canvas (container on imagecontainer for lines and pointer triangles) css
@@ -537,7 +542,7 @@ var Player = TimesideClass.extend({
         var h = select.height();
         select.hide();
         var progressBar = container.find('.ts-wait').css({'width':w+'px','height':h+'px'}).show();
-        
+
         image.load(function(){
             progressBar.hide();
             select.show();

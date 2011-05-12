@@ -43,41 +43,29 @@
         {% endif %}
     };
 
-//    {% if item %}
-//    var ITEM_PUBLIC_ID = '{{item.public_id}}';
-//    {% endif %}
-
-    var scripts = ["{% url telemeta-js "wz_jsgraphics.js" %}", "{% url telemeta-timeside "src/timeside.js" %}","{% url telemeta-js "playerUtils.js" %}"];
-
-    var _sound_manager_loaded=false;
-    var _jQuery_loaded = false;
+    
+    //initializing the visualizers to be passed to the player
     var visualizers = {};
     {% for v in visualizers %}
     visualizers["{{v.name}}"] = "{% url telemeta-item-visualize item.public_id,v.id,"WIDTH","HEIGHT" %}";
     {% endfor %}
     
-    jQuery(window).ready(function(){
-        _jQuery_loaded=true;
-        if(_sound_manager_loaded){
-            alert(jQuery('.ts-wave a'));
-            loadScripts(scripts, 
-            function(){
-                loadPlayer('{% url telemeta-item-analyze-xml item.public_id %}',"{% url telemeta-item-export item.public_id,"mp3" %}",'{{item.id}}', visualizers, CURRENT_USER_NAME);
-                setupPlaylist();
-            });
-        }
-    });
+    var scripts = ["{% url telemeta-js "wz_jsgraphics.js" %}", "{% url telemeta-timeside "src/timeside.js" %}","{% url telemeta-js "playerUtils.js" %}"];
 
-    soundManager.onready(function() {
-        _sound_manager_loaded=true;
-        if(_jQuery_loaded){
-            loadScripts(scripts, 
+    jQuery(window).ready(function(){
+        //if soundmanager is ready, the callback is executed immetiately
+        //onready is executed BEFORE onload, it basically queues several onload events.
+        //It it is executed immetiately if soundmanager has already been loaded
+        soundManager.onready(function() {
+            loadScripts(scripts,
             function(){
                 loadPlayer('{% url telemeta-item-analyze-xml item.public_id %}',"{% url telemeta-item-export item.public_id,"mp3" %}", '{{item.id}}', visualizers, CURRENT_USER_NAME);
                 setupPlaylist();
             });
-        }
     });
+    });
+
+
 
 </script>
 {% endif %}
@@ -117,29 +105,8 @@
             <a href="#" class="toggle">Maximize</a>
             <div class="wazing"></div>
             <div id="player" class="ts-player">
-                <!--<div class="ts-viewer">
-                    <div class="ts-wave">
-                        <div class="ts-image-container">
-                            <a href="{% url telemeta-item-export item.public_id,"mp3" %}">
-                               <img class="ts-image" src="{% url telemeta-item-visualize item.public_id,visualizer_id,360,130 %}"
-                                 alt="" /></a>
-                        </div>
-                    </div>
-                </div>-->
             </div>
         </div>
-        <!-- <div class="item_visualization" id="item_visualization_id">
-            <form id="visualizer_id_form" method="get" action="#">
-                <img src="images/plots.png" style="vertical-align:middle" />&nbsp;Visualization :
-                <select id="visualizer_id" name="visualizer_id">
-                    {% for v in visualizers %}
-                    <option value="{% url telemeta-item-visualize item.public_id,v.id,"WIDTH","HEIGHT" %}">
-                            {{v.name}}</option>
-                    {% endfor %}
-                </select>
-                <input style="visibility: hidden;" type="submit" value="Set" />
-            </form> -->
-
         <!--
                 <form method="get" action="#">
                     <p>&nbsp;Vamp plugin analysis</p>
@@ -153,7 +120,6 @@
                 </form>
         -->
         <!-- </div> -->
-
         <div id="tabs_container">
             <!-- this div will be hidden when everything is fully loaded-->
             <span id="loading_span" href="#"><img style="vertical-align:middle" src="/images/wait.gif"/>&nbsp;
@@ -172,19 +138,6 @@
                     <td>{% trans "Value" %}</td>
                     <td>{% trans "Unit" %}</td>
                 </tr>
-                <!-- {% for analyser in analysers %}
-                 <tr class="analyzer-line">
-                     <td>
-                         {{ analyser.name }}
-                     </td>
-                     <td>
-                         {{ analyser.value }}
-                     </td>
-                     <td>
-                         {{ analyser.unit }}
-                     </td>
-                 </tr>
-                 {% endfor %}-->
             </table>
         </div>
         <!--</div>-->
