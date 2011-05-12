@@ -306,6 +306,8 @@ function loadScripts(){
     }
 }
 
+
+
 function consolelog(text){
     if(typeof console != 'undefined'){
         var c = console;
@@ -357,7 +359,7 @@ function PopupDiv(){
 
     //setting instance-specific properties:
     for(k in data){
-        if(k == 'ok' || k == 'blur' || k == 'close'){
+        if(k == 'onOk' || k == 'onShow' || k == 'onClose'){
             this.bind(k,data[k]);
         }else if(k == 'content'){
             this.setContent(data[k]);
@@ -429,7 +431,7 @@ function PopupDiv(){
     p.fadeOutTime = 0,
     p.shadowOpacity = 0.25;
     p.zIndex = 10000;
-   // p.listItemClass = '';
+    // p.listItemClass = '';
 
     p.getFormData = function(){
         var elms = this.find('input,select,textarea');
@@ -445,8 +447,10 @@ function PopupDiv(){
     };
 
     p.closeLater = function(millseconds){
-      var me = this;
-      setTimeout(function(){ me.close();},millseconds);
+        var me = this;
+        setTimeout(function(){
+            me.close();
+        },millseconds);
     },
 
     //methods:
@@ -520,7 +524,7 @@ function PopupDiv(){
             //var name = this.getListItemName();
             var input = $('<input/>').attr('type','hidden').attr('name','selIndex');
             var setEvents = function(idx,anchor,input){
-              anchor.click(function(){
+                anchor.click(function(){
                     input.val(idx);
                     me.trigger('ok',true);
                     return false;
@@ -546,7 +550,10 @@ function PopupDiv(){
                 if('css' in item){
                     a.css(item['css']);
                 }
-                a.css({'display':'block','margin':'2px'}); //margin is used to display the outline (focus)
+                a.css({
+                    'display':'block',
+                    'margin':'2px'
+                }); //margin is used to display the outline (focus)
                 setEvents(h,a,input);
                 container.append(a);
             }
@@ -668,9 +675,9 @@ function PopupDiv(){
             }
             return;
         }
-         if(invokerIsClickable){
-                this.invoker.attr('tabindex',0).attr(focusAttr,'true');
-            }
+        if(invokerIsClickable){
+            this.invoker.attr('tabindex',0).attr(focusAttr,'true');
+        }
         var doc_ = d_; //closure (see nested function below)
 
         //now all elements (including header and footer)
@@ -732,13 +739,13 @@ function PopupDiv(){
         }
 
         //if we have elements of type listitem, add the specified class
-//        var name = this.getListItemName();
-//        var elms = this.find('a[name='+name+']');
-//        if(this.listItemClass){
-//            elms.removeClass().addClass(this.listItemClass);
-//            this.listItemClass = "";
-//        }
-//        elms.css('display','block');
+        //        var name = this.getListItemName();
+        //        var elms = this.find('a[name='+name+']');
+        //        if(this.listItemClass){
+        //            elms.removeClass().addClass(this.listItemClass);
+        //            this.listItemClass = "";
+        //        }
+        //        elms.css('display','block');
 
 
         this.setFocusCycleRoot(this.focusable);
@@ -830,28 +837,28 @@ function PopupDiv(){
             this['_tmpHandlers'+this.getId()] = undefined;
             var focusElm = this.getFirstFocusableElement();
             if(focusElm){
-            var oldHandlers = [];
-            var type = 'click';
-            var clickEvents =invoker.data("events")[type];
-            $.each(clickEvents, function(key, value) {
-                oldHandlers.push(value);
-            })
-            invoker.unbind(type); //remove (temporarily) the binding to the event.
-            //for instance, if we show the popup by clicking invoker, when the popup is shown do nothing
-            //on clicking invoker until popup.hide is called
+                var oldHandlers = [];
+                var type = 'click';
+                var clickEvents =invoker.data("events")[type];
+                $.each(clickEvents, function(key, value) {
+                    oldHandlers.push(value);
+                })
+                invoker.unbind(type); //remove (temporarily) the binding to the event.
+                //for instance, if we show the popup by clicking invoker, when the popup is shown do nothing
+                //on clicking invoker until popup.hide is called
 
-            this['_tmpHandlers'+this.getId()] = oldHandlers;
-            invoker.unbind(type).bind(type,function(evt){
-                //let the invoker have focus and let it be recognized as an element which does not blur the popup:
-                //invoker.attr('tabindex',0).attr(focusAttr,'true');
-                if(div.length && div.is(':visible')){
-                       focusElm.focus();
+                this['_tmpHandlers'+this.getId()] = oldHandlers;
+                invoker.unbind(type).bind(type,function(evt){
+                    //let the invoker have focus and let it be recognized as an element which does not blur the popup:
+                    //invoker.attr('tabindex',0).attr(focusAttr,'true');
+                    if(div.length && div.is(':visible')){
+                        focusElm.focus();
+                        return false;
+                    }
+                    //something wrong: close the popup and restore the hanlers
+                    me.close.apply(me);
                     return false;
-                }
-                //something wrong: close the popup and restore the hanlers
-                me.close.apply(me);
-                return false;
-            });
+                });
             }
 
         }else{
@@ -951,9 +958,9 @@ function PopupDiv(){
         var placeAbove = spaceAbove > spaceBelow && div.outerHeight(true) > spaceBelow;
         //note that div.outerHeight() should be  == div.outerHeight(true), as we set margins =0
 
-//        alert(div.outerHeight(true)+' '+spaceAbove+' '+spaceBelow);
-//        div.css('visibility','');
-//        return;
+        //        alert(div.outerHeight(true)+' '+spaceAbove+' '+spaceBelow);
+        //        div.css('visibility','');
+        //        return;
 
         this.setMaxSize({
             height : (placeAbove ? spaceAbove : spaceBelow)

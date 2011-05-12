@@ -182,54 +182,33 @@ var Player = TimesideClass.extend({
         
         var $J = this.$J; //defined in the super constructor
         var me=this;
-        //TODO: use cssPrefix or delete cssPrefix!!!!!
-        //TODO: note that ts-viewer is already in the html page. Better avoid this (horrible) method and use the html
-//        var skeleton =  {
-//            'div.ts-viewer': {
-//                'div.ts-ruler': {},
-//                'div.ts-wave': {
-//                    'div.ts-image-canvas': {},
-//                    'div.ts-image-container': ['img.ts-image']
-//                }
-//            },
-//            'div.ts-control': {
-//                'div.ts-layout': {
-//                    'div.ts-playback': ['a.ts-play', 'a.ts-pause', 'a.ts-rewind', 'a.ts-forward', 'a.ts-set-marker' //]
-//                    ,'a.ts-volume','img.ts-wait', 'select.ts-visualizer']
-//                }
-//            }/*,
-//        'div.marker-control': ['a.set-marker']*/
-//        };
-        //var jQueryObjs = this.loadUI(this.getContainer(), skeleton);
-
-
         //image source (see below) is given a src with a temporary 1x1 pixels transparent image
         //see http://www.nczonline.net/blog/2009/11/30/empty-image-src-can-destroy-your-site/ and
         //http://geekswithblogs.net/bcaraway/archive/2007/08/24/114945.aspx
         //for details
         var html = ["<div class='ts-viewer'>",
-                        "<div class='ts-ruler'></div>",
-                        "<div class='ts-wave'>",
-                            "<div class='ts-image-canvas'></div>",
-                            "<div class='ts-image-container'>",
-                               "<img class='ts-image' src='/images/transparent.png' alt='' />",
-                            "</div>",
-                        "</div>",
-                    "</div>",
-                    "<div class='ts-control'>",
-                        "<div class='ts-layout'>",
-                            "<div class='ts-playback'>",
-                                "<a class='ts-play'></a>",
-                                "<a class='ts-pause'></a>",
-                                "<a class='ts-rewind'></a>",
-                                "<a class='ts-forward'></a>",
-                                "<a class='ts-set-marker'></a>",
-                                "<a class='ts-volume'></a>",
-                                "<img class='ts-wait'/>",
-                                "<select class='ts-visualizer'></select>",
-                            "</div>",
-                        "</div>",
-                    "</div>"];
+        "<div class='ts-ruler'></div>",
+        "<div class='ts-wave'>",
+        "<div class='ts-image-canvas'></div>",
+        "<div class='ts-image-container'>",
+        "<img class='ts-image' src='/images/transparent.png' alt='' />",
+        "</div>",
+        "</div>",
+        "</div>",
+        "<div class='ts-control'>",
+        "<div class='ts-layout'>",
+        "<div class='ts-playback'>",
+        "<a class='ts-play'></a>",
+        "<a class='ts-pause'></a>",
+        "<a class='ts-rewind'></a>",
+        "<a class='ts-forward'></a>",
+        "<a class='ts-set-marker'></a>",
+        "<a class='ts-volume'></a>",
+        "<img class='ts-wait'/>",
+        "<select class='ts-visualizer'></select>",
+        "</div>",
+        "</div>",
+        "</div>"];
 
         this.getContainer().html(html.join(''));
         var container = this.getContainer();
@@ -242,7 +221,7 @@ var Player = TimesideClass.extend({
         var volume = container.find('.ts-volume');
 
 
-         //hide the wait image and set the src
+        //hide the wait image and set the src
         var waitImg = container.find('.ts-wait');
         waitImg.attr('src','/images/wait_small.gif').attr('title','refreshing image').attr('alt','refreshing image').hide();
 
@@ -290,16 +269,6 @@ var Player = TimesideClass.extend({
         volume.attr('href', '#').click(function(event){
             return setVolume(event);
         });
-        //        volume.attr('href', '#').click(function(){
-        //            return false;
-        //        }).bind('mousedown', this.attach(
-        //            function(e){
-        //                if(e.which===1){ //left button
-        //                    this.setVolume(e);
-        //                }
-        //                return false;
-        //            }
-        //            ));
 
         //assigning title to all anchors
         container.find('a').attr('href', '#')
@@ -309,10 +278,7 @@ var Player = TimesideClass.extend({
         });
         
         //creating the ruler
-
-        //TODO: why the line below does not work?!!!!!
-        //var viewer = jQueryObjs.find('.ts-viewer');
-        var viewer = this.getContainer().find('.ts-viewer');
+        var viewer = container.find('.ts-viewer');
         var ruler = new Ruler(viewer, this.getSoundDuration(), (this.getCurrentUserName() || false));
         this.getRuler = function(){
             return ruler;
@@ -355,34 +321,34 @@ var Player = TimesideClass.extend({
         //loadMarkers has finished its job
         this.loadMarkers();
 
-        //set the marker popup
-        //functions to set the marker popup
-//        var popupMarker = $J('<div/>').addClass('component').css({
-//            'dislay':'none',
-//            'position':'absolute',
-//            'zIndex':1000,
-//            'overflow':'auto',
-//            'display':'none' //TODO: remove this
-//        //'backgroundColor':'#666'
-//        });
-//        $J('body').append(popupMarker);
-//        var w = v.width();
-//        var h = v.height();
-//        var offs = v.offset(); //relative to the document
-//        var width = parseInt(w/2);
-//        var height = parseInt(h/2);
-//        var margin = 5;
-//        popupMarker.css({
-//            'left':(margin+offs.left+width)+'px',
-//            'top': parseInt(margin+offs.top)+'px',
-//            'width':width+'px',
-//            'height':height+'px'
-//        });
-//        popupMarker.html("<table style='width:100%'><tr><td>"+gettrans('title')+"</td><td class='title'></td></tr><tr><td>"+
-//            gettrans('description')+"</td><td class='description'></td></tr></table>");
-//        this.getMarkerPopup = function(){
-//            return popupMarker;
-//        }
+    //set the marker popup
+    //functions to set the marker popup
+    //        var popupMarker = $J('<div/>').addClass('component').css({
+    //            'dislay':'none',
+    //            'position':'absolute',
+    //            'zIndex':1000,
+    //            'overflow':'auto',
+    //            'display':'none' //TODO: remove this
+    //        //'backgroundColor':'#666'
+    //        });
+    //        $J('body').append(popupMarker);
+    //        var w = v.width();
+    //        var h = v.height();
+    //        var offs = v.offset(); //relative to the document
+    //        var width = parseInt(w/2);
+    //        var height = parseInt(h/2);
+    //        var margin = 5;
+    //        popupMarker.css({
+    //            'left':(margin+offs.left+width)+'px',
+    //            'top': parseInt(margin+offs.top)+'px',
+    //            'width':width+'px',
+    //            'height':height+'px'
+    //        });
+    //        popupMarker.html("<table style='width:100%'><tr><td>"+gettrans('title')+"</td><td class='title'></td></tr><tr><td>"+
+    //            gettrans('description')+"</td><td class='description'></td></tr></table>");
+    //        this.getMarkerPopup = function(){
+    //            return popupMarker;
+    //        }
     },
 
     showMarkerPopup: function(markerIndex){
@@ -407,7 +373,10 @@ var Player = TimesideClass.extend({
     //        }
     },
 
-
+    /**
+      * sets whether or not window resize resizes also this player. When true, a variable _dynamicResize =setInterval(...) is attached to
+      * this class. When false, if _dynamicResize is in this class, clearInterval(_dynamicResize) is called and then the key is deleted
+      */
     setDynamicResize: function(value){
         var key = '_dynamicResize';
         if(!value && key in this){
@@ -472,40 +441,40 @@ var Player = TimesideClass.extend({
         //NOTE: some buttons might be hidden AFTER THIS METHOD HAS BEEN INVOKED
         //TODO: why the line below does not work?!!!!!
         //jQueryObjs.find('.ts-control')
-//        var $J = this.$J;
-//        var control = $J('#player').find('.ts-control');
-//        var imgwait = playerelements.find('.ts-wait').hide();
-//        var select = playerelements.find('.ts-visualizer');
-//        var maxHeight = control.height();
-//        var availableWidth = 0;
-//        select.siblings().each(function(i,e){
-//            var ee = $J(e);
-//            if(ee.is('a')){
-//                availableWidth+=ee.outerWidth(true);
-////                consolelog(ee);
-////                consolelog(ee.outerWidth());
-//            }
-//        });
-//
-//        availableWidth = control.width() - availableWidth;
-//        var both = select.add(imgwait);
-//        both.css({
-//            'margin':'0px',
-//            'width':'',
-//            'height':''
-//        });
-//
-//        select.css('maxHeight', (maxHeight-(select.outerHeight(true)-select.height()))+'px');
-//        imgwait.css('maxHeight', (maxHeight-(imgwait.outerHeight(true)-imgwait.height()))+'px');
-//        var imgMarginTop =  (maxHeight- imgwait.outerHeight(true))/2;
-//        var selectMarginTop =  (maxHeight-select.outerHeight(true))/2;
-//        select.css('marginTop', selectMarginTop+'px');
-//        imgwait.css('marginTop', imgMarginTop+'px');
-//
-//        select.css('maxWidth', (availableWidth-(select.outerWidth(true)-select.width())+'px'));
-//        imgwait.css('maxWidth', (availableWidth-(imgwait.outerWidth(true)-imgwait.width())+'px'));
-//        select.css('marginLeft', ((availableWidth-select.outerWidth(true)-selectMarginTop))+'px');
-//        imgwait.css('marginLeft', ((availableWidth- imgwait.outerWidth(true) - imgMarginTop))+'px');
+        //        var $J = this.$J;
+        //        var control = $J('#player').find('.ts-control');
+        //        var imgwait = playerelements.find('.ts-wait').hide();
+        //        var select = playerelements.find('.ts-visualizer');
+        //        var maxHeight = control.height();
+        //        var availableWidth = 0;
+        //        select.siblings().each(function(i,e){
+        //            var ee = $J(e);
+        //            if(ee.is('a')){
+        //                availableWidth+=ee.outerWidth(true);
+        ////                consolelog(ee);
+        ////                consolelog(ee.outerWidth());
+        //            }
+        //        });
+        //
+        //        availableWidth = control.width() - availableWidth;
+        //        var both = select.add(imgwait);
+        //        both.css({
+        //            'margin':'0px',
+        //            'width':'',
+        //            'height':''
+        //        });
+        //
+        //        select.css('maxHeight', (maxHeight-(select.outerHeight(true)-select.height()))+'px');
+        //        imgwait.css('maxHeight', (maxHeight-(imgwait.outerHeight(true)-imgwait.height()))+'px');
+        //        var imgMarginTop =  (maxHeight- imgwait.outerHeight(true))/2;
+        //        var selectMarginTop =  (maxHeight-select.outerHeight(true))/2;
+        //        select.css('marginTop', selectMarginTop+'px');
+        //        imgwait.css('marginTop', imgMarginTop+'px');
+        //
+        //        select.css('maxWidth', (availableWidth-(select.outerWidth(true)-select.width())+'px'));
+        //        imgwait.css('maxWidth', (availableWidth-(imgwait.outerWidth(true)-imgwait.width())+'px'));
+        //        select.css('marginLeft', ((availableWidth-select.outerWidth(true)-selectMarginTop))+'px');
+        //        imgwait.css('marginLeft', ((availableWidth- imgwait.outerWidth(true) - imgMarginTop))+'px');
 
         
         return this;
@@ -541,7 +510,10 @@ var Player = TimesideClass.extend({
         var w =select.width();
         var h = select.height();
         select.hide();
-        var progressBar = container.find('.ts-wait').css({'width':w+'px','height':h+'px'}).show();
+        var progressBar = container.find('.ts-wait').css({
+            'width':w+'px',
+            'height':h+'px'
+        }).show();
 
         image.load(function(){
             progressBar.hide();
@@ -767,7 +739,7 @@ var Player = TimesideClass.extend({
                 }
             });
 
-            jQuery('#loading_span').empty().remove();
+            $J('#loading_span').empty().remove();
             //TODO: move this in load_player?
             //                    setUpPlayerTabs([jQuery('#tab_analysis'), jQuery('#tab_markers')],
             //                    [jQuery('#analyzer_div_id'), jQuery('#markers_div_id')], tabIndex,

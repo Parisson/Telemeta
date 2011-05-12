@@ -6,13 +6,13 @@
 
 {% block stylesheets %}
 {{ block.super }}
-    <link rel="stylesheet" type="text/css" href="{% url telemeta-timeside "css/timeside.css" %}" />
-    <link rel="stylesheet" type="text/css" href="{% url telemeta-timeside "skins/lab/style.css" %}" />
-    <link rel="stylesheet" type="text/css" href="{% url telemeta-css "player.css" %}" />
-{% endblock %}
+<link rel="stylesheet" type="text/css" href="{% url telemeta-timeside "css/timeside.css" %}" />
+      <link rel="stylesheet" type="text/css" href="{% url telemeta-timeside "skins/lab/style.css" %}" />
+      <link rel="stylesheet" type="text/css" href="{% url telemeta-css "player.css" %}" />
+      {% endblock %}
 
-{% block extra_javascript %}
-{% if item.file %}
+      {% block extra_javascript %}
+      {% if item.file %}
 
       <!--<script src="{% url telemeta-js "wz_jsgraphics.js" %}" type="text/javascript"></script>-->
 <script src="{% url telemeta-js "soundmanager2.js" %}" type="text/javascript"></script>
@@ -43,14 +43,33 @@
         {% endif %}
     };
 
-    
+    //managing errors (might be improved in future development)
+    function playerError(msg){
+        var elm = jQuery('#loading_span');
+        if(elm.length>0){
+            elm.empty().remove();
+        }
+        jQuery('#rightcol').hide();
+        alert(msg);
+    }
+    //warn on soundmanager error:
+    soundManager.onerror = function() {
+        playerError('SoundManager error. Try to:\n - Reload the page\n - Empty the cache (see browser preferences) and reload the page\n - Restart the browser');
+    };
+
+    setTimeout(function(){
+        if(jQuery('#loading_span').length>0){
+            playerError('SoundManager error. Try to:\n - Reload the page\n - Empty the cache (see browser preferences) and reload the page\n - Restart the browser');
+        }
+    },10000);
+
     //initializing the visualizers to be passed to the player
     var visualizers = {};
     {% for v in visualizers %}
     visualizers["{{v.name}}"] = "{% url telemeta-item-visualize item.public_id,v.id,"WIDTH","HEIGHT" %}";
     {% endfor %}
     
-    var scripts = ["{% url telemeta-js "wz_jsgraphics.js" %}", "{% url telemeta-timeside "src/timeside.js" %}","{% url telemeta-js "playerUtils.js" %}"];
+    var scripts = ["{% url telemeta-js "wz_jsgraphics.js" %}", "{% url telemeta-timeside "src/timeside.js" %}","{% url telemeta-js "playerLoader.js" %}"];
 
     jQuery(window).ready(function(){
         //if soundmanager is ready, the callback is executed immetiately
@@ -62,7 +81,7 @@
                 loadPlayer('{% url telemeta-item-analyze-xml item.public_id %}',"{% url telemeta-item-export item.public_id,"mp3" %}", '{{item.id}}', visualizers, CURRENT_USER_NAME);
                 setupPlaylist();
             });
-    });
+        });
     });
 
 
@@ -74,7 +93,7 @@
 {% if item %}
 
 {% block title %}
- <img src="images/item.png" style="vertical-align:middle" /> Item : {{ item }}
+<img src="images/item.png" style="vertical-align:middle" /> Item : {{ item }}
 {% endblock %}
 
 {% block title_buttons %}
@@ -189,7 +208,7 @@
         {% endblock geoethnic_data %}
     </div>
     {% if user.is_authenticated and perms.telemeta.change_mediaitem %}
-       <a href="{% url telemeta-item-keywords_edit item.public_id %}" class="component_icon button icon_edit">{% trans "Edit" %} {% trans "keywords" %}</a>
+    <a href="{% url telemeta-item-keywords_edit item.public_id %}" class="component_icon button icon_edit">{% trans "Edit" %} {% trans "keywords" %}</a>
     {% endif %}
     <div class="extraInfos">
         {% block musical_data %}
@@ -228,7 +247,7 @@
         {% endblock musical_data %}
     </div>
     {% if user.is_authenticated and perms.telemeta.change_mediaitem %}
-     <a href="{% url telemeta-item-performances_edit item.public_id %}" class="component_icon button icon_edit">{% trans "Edit"%} {% trans "performance"%}</a>
+    <a href="{% url telemeta-item-performances_edit item.public_id %}" class="component_icon button icon_edit">{% trans "Edit"%} {% trans "performance"%}</a>
     {% endif %}
     <div class="extraInfos">
         {% block general_data %}

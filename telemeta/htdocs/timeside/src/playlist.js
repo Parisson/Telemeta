@@ -46,7 +46,7 @@ var playlistUtils = {
             'content':dd,
             invoker:anchorElement,
             showok:true,
-            ok:function(data){
+            onOk:function(data){
                 if(!data[t] && !data[d]){
                     return;
                 }
@@ -106,7 +106,7 @@ var playlistUtils = {
         new PopupDiv({
             invoker:anchorElement,
             content: ar,
-            ok:function(data){
+            onOk:function(data){
                 var val = data.selIndex;
                 consolelog(data);
                 var callbackok = undefined;

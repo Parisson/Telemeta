@@ -4,6 +4,12 @@
  * Author: Riccardo Zaccarelli
  * License: GNU General Public License version 2.0
  */
+
+/**
+ * class fior managing markers in the player. Markers on the ruler (ruler.js) or on the divs (divmarker.js)
+ * are not included here, they are separate classes. See player.js (loadMarkers method) where the bindings
+ * between this class, ruler and divmarker are set
+ */
 var MarkerMap = TimesideArray.extend({
 
     init: function(itemId, currentUserName) {
@@ -183,13 +189,6 @@ var MarkerMap = TimesideArray.extend({
         json([param], method, success);
 
     },
-
-    //TODO: there is no need of a public method
-    //    removeHTTP: function(marker){
-    //        var public_id = marker.id
-    //        //json(param,method,onSuccessFcn,onErrorFcn){
-    //        json([public_id], "telemeta.del_marker");
-    //    },
 
     //overridden method
     move: function(markerIndex, newOffset){
