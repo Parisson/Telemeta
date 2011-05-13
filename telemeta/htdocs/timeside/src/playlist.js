@@ -45,7 +45,7 @@ var playlistUtils = {
         new PopupDiv({
             'content':dd,
             invoker:anchorElement,
-            showok:true,
+            showOk:true,
             onOk:function(data){
                 if(!data[t] && !data[d]){
                     return;
