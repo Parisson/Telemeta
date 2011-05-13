@@ -360,7 +360,7 @@ function PopupDiv(){
     //setting instance-specific properties:
     for(k in data){
         if(k == 'onOk' || k == 'onShow' || k == 'onClose'){
-            this.bind(k,data[k]);
+            this.bind(k.substring(2).toLowerCase(),data[k]);
         }else if(k == 'content'){
             this.setContent(data[k]);
         }else {

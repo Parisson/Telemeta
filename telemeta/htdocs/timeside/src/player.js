@@ -237,8 +237,6 @@ var Player = TimesideClass.extend({
             function (){
                 me.refreshImage.apply(me);
             });
-        select.css('maxHeight',(play.height()-(select.outerHeight(true)-select.height()))+'px');
-        
 
         var rewind_ = this.rewind;
         var forward_ = this.forward;
@@ -438,43 +436,21 @@ var Player = TimesideClass.extend({
 
 
         //adjusting select size:
+        var select = container.find('.ts-visualizer');
+        var imgWait = container.find('.ts-wait');
+
         //NOTE: some buttons might be hidden AFTER THIS METHOD HAS BEEN INVOKED
-        //TODO: why the line below does not work?!!!!!
-        //jQueryObjs.find('.ts-control')
-        //        var $J = this.$J;
-        //        var control = $J('#player').find('.ts-control');
-        //        var imgwait = playerelements.find('.ts-wait').hide();
-        //        var select = playerelements.find('.ts-visualizer');
-        //        var maxHeight = control.height();
-        //        var availableWidth = 0;
-        //        select.siblings().each(function(i,e){
-        //            var ee = $J(e);
-        //            if(ee.is('a')){
-        //                availableWidth+=ee.outerWidth(true);
-        ////                consolelog(ee);
-        ////                consolelog(ee.outerWidth());
-        //            }
-        //        });
-        //
-        //        availableWidth = control.width() - availableWidth;
-        //        var both = select.add(imgwait);
-        //        both.css({
-        //            'margin':'0px',
-        //            'width':'',
-        //            'height':''
-        //        });
-        //
-        //        select.css('maxHeight', (maxHeight-(select.outerHeight(true)-select.height()))+'px');
-        //        imgwait.css('maxHeight', (maxHeight-(imgwait.outerHeight(true)-imgwait.height()))+'px');
-        //        var imgMarginTop =  (maxHeight- imgwait.outerHeight(true))/2;
-        //        var selectMarginTop =  (maxHeight-select.outerHeight(true))/2;
-        //        select.css('marginTop', selectMarginTop+'px');
-        //        imgwait.css('marginTop', imgMarginTop+'px');
-        //
-        //        select.css('maxWidth', (availableWidth-(select.outerWidth(true)-select.width())+'px'));
-        //        imgwait.css('maxWidth', (availableWidth-(imgwait.outerWidth(true)-imgwait.width())+'px'));
-        //        select.css('marginLeft', ((availableWidth-select.outerWidth(true)-selectMarginTop))+'px');
-        //        imgwait.css('marginLeft', ((availableWidth- imgwait.outerWidth(true) - imgMarginTop))+'px');
+        //Therefore, setting the width of select or imgWait is skipped for the moment.
+        select.css('fontSize','90%'); //this is to increase probability that the select width will fit the available space
+
+        var control = container.find('.ts-control');
+        var maxHeight = control.height();
+        select.add(imgWait).css('maxHeight',(maxHeight-2)+'px'); //at least a margin left and top of 1 px (see below)
+
+        var span = (maxHeight-select.outerHeight())/2; //do not include margins in oputerHeight (we will set them to zero below)
+        select.css({'margin':'0px', 'marginTop':span+'px','marginLeft':span+'px'});
+        var span2 = (maxHeight - imgWait.outerHeight())/2; //do not include margins in oputerHeight (we will set them to zero below)
+        imgWait.css({'margin':'0px', 'marginTop':span2+'px','marginLeft':span+'px'})
 
         
         return this;
