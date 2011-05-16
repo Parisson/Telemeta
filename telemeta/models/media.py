@@ -72,8 +72,8 @@ class MediaResource(ModelCore):
         abstract = True
 
 
-collection_published_code_regex   = '[A-Za-z0-9._-]*'
-collection_unpublished_code_regex = '[A-Za-z0-9._-]*'
+collection_published_code_regex   = 'CNRSMH_E_[0-9]{4}(?:_[0-9]{3}){2}'
+collection_unpublished_code_regex = 'CNRSMH_I_[0-9]{4}_[0-9]{3}'
 collection_code_regex             = '(?:%s|%s)' % (collection_published_code_regex, 
                                                     collection_unpublished_code_regex)
                                                         
@@ -214,8 +214,8 @@ class MediaCollectionForm(ModelForm):
         model = MediaCollection
 
 
-item_published_code_regex    = '[A-Za-z0-9._-]*'
-item_unpublished_code_regex  = '[A-Za-z0-9._-]*'
+item_published_code_regex    = collection_published_code_regex + '(?:_[0-9]{2}){1,2}'
+item_unpublished_code_regex  = collection_unpublished_code_regex + '_[0-9]{2,3}(?:_[0-9]{2}){0,2}'
 item_code_regex              = '(?:%s|%s)' % (item_published_code_regex, item_unpublished_code_regex)
 
 class MediaItem(MediaResource):
