@@ -894,8 +894,8 @@ class WebView(object):
             raise 'Error : Bad marker dictionnary'
 
     @jsonrpc_method('telemeta.del_marker')
-    def del_marker(request, item_id):
-        m = MediaItemMarker.objects.get(id=item_id)
+    def del_marker(request, public_id):
+        m = MediaItemMarker.objects.get(public_id=public_id)
         m.delete()
         
     @jsonrpc_method('telemeta.get_markers')

@@ -433,7 +433,7 @@ form.login .submit {
 #menu {
     background-color: #6a0307 ;
     font: normal verdana,'Bitstream Vera Sans',helvetica,arial,sans-serif;
-    border-top: .5em solid #6a0307;
+    border-top: .25em solid #6a0307;
     padding-left:26px;
 }
 
