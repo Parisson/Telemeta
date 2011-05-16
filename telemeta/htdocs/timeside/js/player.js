@@ -4,6 +4,7 @@ var Player = TimesideClass.extend({
     //player (according to timeside syntax) has durations in seconds
     init: function(container, sound, soundDurationInMsec, itemId, visualizers, currentUserName) {
         this._super();
+        this.ready = false;
         var player = this;
 
         //container is the div #player
@@ -175,7 +176,7 @@ var Player = TimesideClass.extend({
 
   
 
-    _setupInterface: function() {
+    setupInterface: function() {
         
         var sound = this.getSound();
         consolelog('player _setupInterface sound.readyState:'+sound.readyState); //handle also cases 0 and 2????
