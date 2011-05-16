@@ -1,14 +1,11 @@
 
 var Ruler = TimesideArray.extend({
     //init constructor: soundDuration is IN SECONDS!!! (float)
-    init: function(viewer, soundDuration, isInteractive){
+    init: function(viewer, soundDuration){
         this._super();
         var cssPref = this.cssPrefix;
         
-        this.isInteractive = function(){
-            return isInteractive;
-        };
-        
+       
         this.getSoundDuration= function(){
             return soundDuration;
         };
@@ -35,11 +32,6 @@ var Ruler = TimesideArray.extend({
         
         this.getRulerContainer = function(){
             return container;
-        }
-
-
-        if(!isInteractive){ //is not interactive, skip all methods assignmenets below
-            return;
         }
     },
 
@@ -217,23 +209,6 @@ var Ruler = TimesideArray.extend({
             pointer = this.getPointer();
         }
         if(!pointer){
-            //consolelog('QUALE CHAZZO E IL CONTAINER??????                  ' + $J(layout.get(0)).attr('class'));
-            //            pointer = new RulerMarker($J(layout.get(0)),this.getWaveContainer(),'pointer', true);
-            //            pointer.setText(this.makeTimeLabel(0));
-            //
-            //            this.debug('WELL, ');
-            //            consolelog(pointer);
-            //            var me = this;
-            //            pointer.getLabel().mousedown(function(evt) {
-            //                var lbl = $J(evt.target);
-            //                me.markerBeingClicked = {
-            //                    'marker':pointer,
-            //                    'offset':evt.pageX-(lbl.offset().left+lbl.outerWidth(true)/2)
-            //                };
-            //                consolelog(evt.pageX-(lbl.offset().left+lbl.outerWidth(true)/2));
-            //                evt.stopPropagation(); //dont notify the ruler;
-            //                return false;
-            //            });
             pointer = this.add(0);
             this.getPointer = function(){
                 return pointer;
@@ -246,27 +221,6 @@ var Ruler = TimesideArray.extend({
             rulermarker.refreshPosition();
         });
 
-    //            if(!pointer){
-    //                this.debug("Creating pointer:"+layout);
-    //                //this.createMarkerForRuler = function(rulerLayout,viewer,className, fontSize, optionalToolTip)
-    //                pointer = this.createMarkerForRuler($J(layout.get(0)),waveContainer,'pointer',fontSize,'move pointer');
-    //                this.debug('pointerdisplay'+pointer.css('display'));
-    //            }
-
-    //TODO: move pointer??????
-    //this._movePointer(sound.position/1000);
-
-
-    //TODO: draw markers?
-    //            if (this.cfg.map) {
-    //                $J(this.markers).each(function(i, m) {
-    //                    m.clear();
-    //                });
-    //                this.markers = new Array();
-    //                this.cfg.map.each(this.attach(function(i, m) {
-    //                    this.markers.push(this._drawMarker(m, i));
-    //                }));
-    //            }
     },
 
     //overridden: Note that the pointer is NOT cleared!!!!!
@@ -285,7 +239,6 @@ var Ruler = TimesideArray.extend({
         var rulermarker = this._super(index);
         rulermarker.remove();
         this.each(index, function(i,rulermarker){
-            consolelog(i);
             rulermarker.setIndex(i, true);
         });
     },
@@ -311,11 +264,11 @@ var Ruler = TimesideArray.extend({
 
         if(typeof markerObjOrOffset == 'number'){
             soundPosition = markerObjOrOffset;
-            isMovable = true; //this.isInteractive();
+            isMovable = true;
             markerClass='pointer';
         }else{
             soundPosition = markerObjOrOffset.offset;
-            isMovable = markerObjOrOffset.isEditable && this.isInteractive();
+            isMovable = markerObjOrOffset.isEditable;
             markerClass='marker';
         }
         
@@ -406,7 +359,6 @@ var Ruler = TimesideArray.extend({
                     me.setPointerMovingFromMouse(false);
                 }
                 if(newPos == startPos){
-                    consolelog('NOT MOVED!!!!');
                     return false;
                 }
                 var data = {
@@ -418,21 +370,7 @@ var Ruler = TimesideArray.extend({
                 return false;
             };
             doc.bind('mouseup.'+eventId, mouseup);
-            //lbl.bind('mouseup.'+eventId, mouseup);
-            //            doc.bind('mouseup.'+eventId, function(evt){
-            //                consolelog(newPos);
-            //                doc.unbind('mousemove.'+eventId);
-            //                doc.unbind('mouseup.'+eventId);
-            //
-            //                //TODO: fire event marker moved (with the class name)
-            //                var data = {
-            //                    'markerElement':pointer,
-            //                    'soundPosition': me.toSoundPosition.apply(me,[newPos]),
-            //                    'markerClass':markerClass
-            //                };
-            //                me.fire('markermoved',data);
-            //                return false;
-            //            });
+            
             return false;
         });
         

@@ -2,7 +2,7 @@ var Player = TimesideClass.extend({
     
     //sound duration is in milliseconds because the soundmanager has that unit,
     //player (according to timeside syntax) has durations in seconds
-    init: function(container, sound, soundDurationInMsec, itemId, visualizers, currentUserName) {
+    init: function(container, sound, soundDurationInMsec, itemId, visualizers, currentUserName, isStaffOrSuperUser) {
         this._super();
         this.ready = false;
         var player = this;
@@ -126,7 +126,7 @@ var Player = TimesideClass.extend({
                         ruler.movePointer(sPos);
                     }
                     
-                    player.showMarkerPopup(currentMarkerIndex);
+                //player.showMarkerPopup(currentMarkerIndex);
                 },
                 onfinish: function() {
                     setPos(0); //reset position, not cursor, so that clicking play restarts from zero
@@ -134,9 +134,7 @@ var Player = TimesideClass.extend({
             };
             //internal play function. Set all properties and play:
             var play_ = function(sound, positionInSec){
-                //consolelog('position is '+positionInSec+' sec');
                 sound.setPosition(toMsec(positionInSec)); //TODO: remove???
-                //consolelog('sound position is '+sound.position+' msec');
                 sound.setVolume(sound.volume); //workaround. Just to be sure. Sometimes it fails when we re-play
                 playOptions.position = toMsec(positionInSec); //apparently THIS IS WORKING
                 sound.play(playOptions);
@@ -159,34 +157,31 @@ var Player = TimesideClass.extend({
         };
 
         //initializing markermap and markerui
-        var map = new MarkerMap(this.getItemId(), currentUserName);
+        var map = new MarkerMap(this.getItemId(), currentUserName, isStaffOrSuperUser);
         this.getMarkerMap = function(){
             return map;
         }
-        var mapUI = new MarkerMapDiv(currentUserName);
+        var mapUI = new MarkerMapDiv();
         this.getMarkersUI = function(){
             return mapUI;
         }
-        this.getCurrentUserName = function(){
-            return currentUserName;
-        }
-    //TODO: define setUpInterface here????
-
     },
 
-  
-
-    setupInterface: function() {
+    //sets up the player interface and loads the markers. There is theoretically no need of this method, as it might be included in
+    //the init constructor, it is separated for "historical" reasons: this method stems from the old _setupInterface,
+    //which was a separate method in the old player code. Future releases might include it in the init constructor
+    setupInterface: function(callback) {
         
         var sound = this.getSound();
-        consolelog('player _setupInterface sound.readyState:'+sound.readyState); //handle also cases 0 and 2????
+        this.debug('player _setupInterface sound.readyState:'+sound.readyState); //handle also cases 0 and 2????
         
         var $J = this.$J; //defined in the super constructor
         var me=this;
-        //image source (see below) is given a src with a temporary 1x1 pixels transparent image
+        //build the innerHTML as array, then join it. This is usually faster than string concatenation in some browsers.
+        //Note that the player image (see below) is given a src with a temporary 1x1 pixels transparent image
+        //Basically, NOT specifying any src for image tags can be harmful,
         //see http://www.nczonline.net/blog/2009/11/30/empty-image-src-can-destroy-your-site/ and
-        //http://geekswithblogs.net/bcaraway/archive/2007/08/24/114945.aspx
-        //for details
+        //http://geekswithblogs.net/bcaraway/archive/2007/08/24/114945.aspx for details
         var html = ["<div class='ts-viewer'>",
         "<div class='ts-ruler'></div>",
         "<div class='ts-wave'>",
@@ -251,14 +246,14 @@ var Player = TimesideClass.extend({
         });
 
         //volume:
-        function setVolume(event){
+        function setVolume(event,volumeElement){
             var ticks = [18,26,33,40,47];
-            var vol = event.layerX;
+            var vol = event.pageX - volumeElement.offset().left; //using absolute coordinates allows us to
+            //avoid using layerX (not supported in all browsers) and clientX (which needs the window scrollLeft variable)
             for(var i=0; i<ticks.length; i++){
                 if(vol<=ticks[i]){
                     var volume = i*20;
                     me.setSoundVolume(volume);
-                    me.debug('setting volume'+volume);
                     return false;
                 }
             }
@@ -266,7 +261,7 @@ var Player = TimesideClass.extend({
             return false;
         }
         volume.attr('href', '#').click(function(event){
-            return setVolume(event);
+            return setVolume(event,volume);
         });
 
         //assigning title to all anchors
@@ -278,7 +273,7 @@ var Player = TimesideClass.extend({
         
         //creating the ruler
         var viewer = container.find('.ts-viewer');
-        var ruler = new Ruler(viewer, this.getSoundDuration(), (this.getCurrentUserName() || false));
+        var ruler = new Ruler(viewer, this.getSoundDuration());
         this.getRuler = function(){
             return ruler;
         }
@@ -318,7 +313,7 @@ var Player = TimesideClass.extend({
         //finally, load markers and bind events for markers (see method below):
         //NOTE: loadMarkers ASYNCHRONOUSLY CALLS THE SERVER, SO METHODS WRITTEN AFTER IT MIGHT BE EXECUTED BEFORE
         //loadMarkers has finished its job
-        this.loadMarkers();
+        this.loadMarkers(callback);
 
     //set the marker popup
     //functions to set the marker popup
@@ -361,7 +356,6 @@ var Player = TimesideClass.extend({
     //            var span = 0.3;
     //
     //            if(pos>=mPos-span && pos<=mPos+span){
-    //                consolelog('songpos: '+pos+' nextmarkerpos:'+mPos);
     //                popup.attr('id','markerpopup'+markerIndex);
     //                popup.find('.title').html(marker.title);
     //                popup.find('.description').html(marker.desc);
@@ -421,6 +415,7 @@ var Player = TimesideClass.extend({
 
         elements.css('width', 'auto'); // for IE6
 
+        
         if (!height){
             height = 200;
         }
@@ -430,6 +425,10 @@ var Player = TimesideClass.extend({
         }
         elements.css(style);
 
+        image.css({
+            'width':'100%',
+            'height':'100%'
+        }); // for IE7. Does not seem to hurt IE8, FF, Chrome
         
         //refreshing images:
         this.refreshImage(image);
@@ -449,17 +448,23 @@ var Player = TimesideClass.extend({
         select.add(imgWait).css('maxHeight',(maxHeight-2)+'px'); //at least a margin left and top of 1 px (see below)
 
         var span = (maxHeight-select.outerHeight())/2; //do not include margins in oputerHeight (we will set them to zero below)
-        select.css({'margin':'0px', 'marginTop':span+'px','marginLeft':span+'px'});
+        select.css({
+            'margin':'0px',
+            'marginTop':span+'px',
+            'marginLeft':span+'px'
+            });
         var span2 = (maxHeight - imgWait.outerHeight())/2; //do not include margins in oputerHeight (we will set them to zero below)
-        imgWait.css({'margin':'0px', 'marginTop':span2+'px','marginLeft':span+'px'})
+        imgWait.css({
+            'margin':'0px',
+            'marginTop':span2+'px',
+            'marginLeft':span+'px'
+            })
 
         
         return this;
     },
 
-    //    getImageUrl: function(){
-    //        return this.$J('#visualizer_id').get(0).value;
-    //    },
+   
     refreshImage: function(optionalImgJQueryElm){
         var image;
         var container = this.getContainer();
@@ -477,11 +482,8 @@ var Player = TimesideClass.extend({
             return _src_;
         };
         var imageUrl = this.getVisualizers()[""+select.val()];
-        //consolelog(this.getVisualizers());
-        //alert(imageUrl);
         var imgSrc = funcImg(imageUrl, image.width(),image.height());
         if(image.attr('src')==imgSrc){
-            // consolelog('setting attrt');
             return;
         }
         var w =select.width();
@@ -497,6 +499,7 @@ var Player = TimesideClass.extend({
             select.show();
             image.unbind('load');
         });
+        
         //this timeout is set in order to leave the time to hide show components above:
         //setTimeout(function(){
         image.attr('src', imgSrc);
@@ -516,7 +519,6 @@ var Player = TimesideClass.extend({
         var offset =  this.getSoundDuration();
         var position = this.getSoundPosition(); //parseFloat(this.getSoundPosition());
         var idx = map.insertionIndex(position);
-        //consolelog('current pointer position: '+position+' '+(typeof position));
         if(idx<0){
             idx = -idx-1; //cursor is not on a a marker, get the insertion index
         }else{
@@ -555,7 +557,7 @@ var Player = TimesideClass.extend({
             offset = markers[idx].offset;
         }
         this.setSoundPosition(offset);
-        this.getRuler().movePointer(offset)
+        this.getRuler().movePointer(offset);
         return false;
     },
 
@@ -591,10 +593,10 @@ var Player = TimesideClass.extend({
 
     },
         
-    loadMarkers: function(){
+    loadMarkers: function(callback){
         //ruler.bind('markermoved',this.markerMoved,this);
         var $J = this.$J; //reference to jQuery
-        var isInteractive_ = this.getCurrentUserName() || false;
+        
         var itemId = this.getItemId();
 
         var player = this;
@@ -605,7 +607,7 @@ var Player = TimesideClass.extend({
         map.clear();
         mapUI.clear();
         ruler.clear();
-        
+        var showAddMarker = map.getCurrentUserName() || false;
         //building the onSuccess function
         var onSuccess = function(data) {
             var tabIndex = 0;
@@ -635,7 +637,7 @@ var Player = TimesideClass.extend({
             var setMarkerButton = player.getContainer().find('.ts-set-marker');
             var tab = $J('#tab_markers');
             if(setMarkerButton){
-                if(isInteractive_){
+                if(showAddMarker){
                     setMarkerButton.show().attr('href','#').unbind('click').bind('click', function(){
                         if(tab && tab.length){
                             tab.trigger('click');
@@ -716,15 +718,15 @@ var Player = TimesideClass.extend({
                 }
             });
 
-            $J('#loading_span').empty().remove();
-            //TODO: move this in load_player?
-            //                    setUpPlayerTabs([jQuery('#tab_analysis'), jQuery('#tab_markers')],
-            //                    [jQuery('#analyzer_div_id'), jQuery('#markers_div_id')], tabIndex,
-            //                    'tab_selected','tab_unselected');
-            setUpPlayerTabs($J('#tab_analysis').add($J('#tab_markers')),
-                [$J('#analyzer_div_id'), $J('#markers_div_id')], tabIndex,
-                'tab_selected','tab_unselected');
+            if(callback){
+                callback();
+            }
         };
-        json([itemId],"telemeta.get_markers", onSuccess);
+        var onError = function(){
+            if(callback){
+                callback();
+            }
+        }
+        json([itemId],"telemeta.get_markers", onSuccess, onError);
     }
 });

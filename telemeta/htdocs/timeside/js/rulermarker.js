@@ -193,7 +193,6 @@ var RulerMarker = TimesideClass.extend({
             }
             label.find('span').html(text);
             if(oldWidth != labelWidth && optionalUpdateLabelPosition){
-                consolelog('refreshing label position');
                 this.refreshLabelPosition();
             }
         }

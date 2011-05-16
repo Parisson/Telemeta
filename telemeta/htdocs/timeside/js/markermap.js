@@ -12,7 +12,7 @@
  */
 var MarkerMap = TimesideArray.extend({
 
-    init: function(itemId, currentUserName) {
+    init: function(itemId, currentUserName, isStaffOrSuperuser) {
         this._super();
         var ui = uniqid; //defined in application.js (global vars and functions)
         this.uniqid = function(){
@@ -24,6 +24,9 @@ var MarkerMap = TimesideArray.extend({
         this.getCurrentUserName = function(){
             return currentUserName;
         }
+        this.isCurrentUserStaffOrSuperuser = function(){
+            return isStaffOrSuperuser;
+        }
 
         var me = this;
         var confirmExit = function(){
@@ -33,7 +36,6 @@ var MarkerMap = TimesideArray.extend({
                     markerUnsaved++;
                 }
             });
-            consolelog(markerUnsaved);
             if(markerUnsaved>0){
                 return gettrans('there is at least one unsaved marker') +' ('+ markerUnsaved+ '). '+
                     gettrans('If you exit the page you will loose your changes');
@@ -80,8 +82,10 @@ var MarkerMap = TimesideArray.extend({
             argument = pFloat(argument);
         }
         var currentUserName = this.getCurrentUserName();
+        var isStaffOrSuperuser = this.isCurrentUserStaffOrSuperuser();
         if(typeof argument == 'object'){
-            var editable = currentUserName === argument.author;
+            var editable = isStaffOrSuperuser || currentUserName === argument.author;
+            var canBeAddedToPlaylist_ = currentUserName ? true : false;
             marker = {
                 id: argument.public_id,
                 offset: pFloat(argument.time), //IMPORTANT: IT IS A STRING!!!!!!
@@ -89,6 +93,7 @@ var MarkerMap = TimesideArray.extend({
                 title: argument.title,
                 author: argument.author,
                 isEditable: editable,
+                canBeAddedToPlaylist: canBeAddedToPlaylist_,
                 isSavedOnServer: true
             };
         }else if(typeof argument == 'number'){
@@ -99,6 +104,7 @@ var MarkerMap = TimesideArray.extend({
                 title: "",
                 author: currentUserName,
                 isEditable: true,
+                canBeAddedToPlaylist: true,
                 isSavedOnServer: false
             };
         }
@@ -125,10 +131,6 @@ var MarkerMap = TimesideArray.extend({
             idx = this.insertionIndex(identifier);
         }
         if(idx<0 || idx>=this.length){
-            this.each(function(i,m){
-                consolelog(m);
-            });
-            consolelog(identifier);
             //TODO: handle error
             this.debug('remove: marker not found');
             return;

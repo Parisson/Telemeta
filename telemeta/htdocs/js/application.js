@@ -279,12 +279,10 @@ function loadScripts(){
     if(loadInSeries){
         var load = function(index){
             if(index<len){
-                //consolelog("loading "+scriptArray[index]+" "+new Date().getTime());
                 $J.getScript(scriptArray[index],function(){
                     load(index+1);
                 });
             }else if(callback){
-                //consolelog("EXECUTING CALLBACK ELAPSED TIME:"+(new Date().getTime()-time));
                 callback();
             }
         };
@@ -294,11 +292,9 @@ function loadScripts(){
         var s;
         for(i=0; i <len; i++){
             s = scriptArray[i];
-            //consolelog("loading "+s+" "+new Date().getTime());
             $J.getScript(s, function(){
                 count++;
                 if(count==len && callback){
-                    //consolelog("EXECUTING CALLBACK ELAPSED TIME:"+(new Date().getTime()-time));
                     callback();
                 }
             });
