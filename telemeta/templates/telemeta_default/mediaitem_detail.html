@@ -94,7 +94,7 @@
 {% if item %}
 
 {% block title %}
-<img src="images/item.png" style="vertical-align:middle" /> Item : {{ item }}
+<img src="images/item.png" alt="item" style="vertical-align:middle" /> Item : {{ item }}
 {% endblock %}
 
 {% block title_buttons %}
@@ -131,7 +131,7 @@
         <!-- </div> -->
         <div id="tabs_container">
             <!-- this div will be hidden when everything is fully loaded-->
-            <span id="loading_span" href="#"><img style="vertical-align:middle" src="/images/wait.gif"/>&nbsp;
+            <span id="loading_span" href="#"><img style="vertical-align:middle" alt="wait" src="/images/wait.gif"/>&nbsp;
                 <span id="loading_span_text">Loading...</span></span>
             <a id="tab_analysis" style="display:none" class ="tab" href="#">{% trans "Analysis" %}</a><!--
              do not let space here as it appears in the document
@@ -153,7 +153,7 @@
 
         {% if audio_export_enabled %}
         <div class="exporter">
-            <p><img src="images/download.png" style="vertical-align:middle" /> {% trans "Download:" %}
+            <p><img src="images/download.png" alt="download" style="vertical-align:middle" /> {% trans "Download:" %}
                 {% for format in export_formats %}
                 <a href="{% url telemeta-item-export item.public_id,format.extension %}">
                     <img src="images/{{ format.extension }}.png" style="vertical-align:middle" alt="{{ format.extension }}" /></a>

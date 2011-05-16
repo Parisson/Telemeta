@@ -22,7 +22,7 @@
     {% endblock %}
 </div>
 <div class="home-description">
-    <h1><img src="{% url telemeta-images "playlist_title.png" %}" style="vertical-align:middle" /> {% trans "Playlists" %}</h1>
+    <h1><img src="{% url telemeta-images "playlist_title.png" %}" alt="playlists" style="vertical-align:middle" /> {% trans "Playlists" %}</h1>
     <a href=# id="_new_playlist" style="float:right" class="component_icon button icon_add">
         {% trans "Add" %}</a>
     {% for playlist in playlists %}
