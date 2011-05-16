@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # Copyright (C) 2007 Samalyse SARL
-#
-# Copyright (c) 2007-2009 Guillaume Pellerin <yomguy@parisson.com>
+# Copyright (c) 2007-2011 Parisson SARL
 
 # This software is a computer program whose purpose is to backup, analyse,
 # transcode and stream any audio content with its metadata over a web frontend.
@@ -32,7 +31,8 @@
 # The fact that you are presently reading this means that you have had
 # knowledge of the CeCILL license and that you accept its terms.
 #
-# Author: Olivier Guilyardi <olivier@samalyse.com>
+# Authors: Olivier Guilyardi <olivier@samalyse.com>
+#          Guillaume Pellerin <yomguy@parisson.com>
 
 from django.conf.urls.defaults import *
 from telemeta.models import MediaItem, MediaCollection, MediaItemMarker

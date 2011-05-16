@@ -15,15 +15,12 @@
 </script>
 {% endblock %}
 
-
 {% block content %}
-
 <div class="module-set" style="width: 33%">
     {% block modules %}
     {% include "telemeta/inc/module_revisions.html" %}
     {% endblock %}
 </div>
-
 <div class="home-description">
     <h1><img src="{% url telemeta-images "playlist_title.png" %}" style="vertical-align:middle" /> {% trans "Playlists" %}</h1>
     <a href=# id="_new_playlist" style="float:right" class="component_icon button icon_add">
@@ -44,7 +41,6 @@
          </tr>
         {% endif %}  
     </table>
-
     <table class="listing" width="100%">
         <tr>
             <th class="highlight">{% trans "Title" %}</th>
@@ -55,7 +51,6 @@
             <th>{% trans "Sound" %}</th>
             <th>{% trans "Action" %}</th>
         </tr>
-
         {% for resource in playlist.resources %}
         <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
             <td>
@@ -97,6 +92,5 @@
     </table>
     {% endfor %}
 </div>
-
 {% endblock %}
 

@@ -46,32 +46,28 @@ version = __import__('telemeta').__version__
 
 setup(
   name = "telemeta",
-  url = "/http://svn.parisson.org/telemeta",
-  description = "web frontend to backup, transcode and tag any audio content with metadata",
-  author = ["Guillaume Pellerin, Olivier Guilyardi"],
-  author_email = ["pellerin@parisson.com","olivier@samalyse.com"],
+  url = "http://telemeta.org",
+  description = "Web Audio Content Management System",
+  author = ["Guillaume Pellerin, Olivier Guilyardi", "Riccardo Zaccarelli"],
+  author_email = ["pellerin@parisson.com","olivier@samalyse.com", "riccardo.zaccarrelli@gmail.com"],
   version = version,
   packages = packages,
   data_files = data_files,
   long_description = """
-Telemeta is a web audio archiving program which introduces useful and secure methods to
-backup, index, transcode, analyse and publish any digitalized audio file with its metadata.
-It is dedicated to professionnals who wants to easily backup and publish documented sounds
-from collections of vinyls, magnetic tapes or audio CDs over a strong database, in accordance
-with open standards.
+Telemeta is a web audio archiving program which introduces useful and secure methods to backup, index, transcode, analyse and publish any digitalized audio file with its metadata. It is dedicated to professionnals who wants to easily backup and publish documented sounds from collections of vinyls, magnetic tapes or audio CDs over a strong database, in accordance with open standards.
 
 Here are the main features of Telemeta:
 
-    * Secure archiving, editing and publishing of audio files over internet.
-    * User friendly web frontend including workflows and high level search methods
-    * Smart dynamical and skinnable audio player (thanks to Timeside and soundmanager2)
-    * "On the fly" analyzing, transcoding and metadata embedding based on an easy plugin architecture
-    * Multi-format support : FLAC, OGG, MP3, WAV and more
-    * GEO Navigator for audio geolocalization
-    * DublinCore compatibility
-    * OAI-PMH data provider
-    * XML serialized backup
-    * Strong SQL backend
+ * Secure archiving, editing and publishing of audio files over internet.
+ * User friendly web frontend including workflows and high level search methods
+ * Smart dynamical and skinnable audio player (thanks to Timeside and soundmanager2)
+ * "On the fly" analyzing, transcoding and metadata embedding based on an easy plugin architecture
+ * Multi-format support : FLAC, OGG, MP3, WAV and more
+ * GEO Navigator for audio geolocalization
+ * DublinCore compatibility
+ * OAI-PMH data provider
+ * XML serialized backup
+ * Strong SQL backend
 
 The Telemeta data model is based on 'collections' and 'items'. A collection is described
 by its metadata and includes original audio items (sounds) and its own metadata. This

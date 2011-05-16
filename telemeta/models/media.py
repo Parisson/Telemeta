@@ -1,5 +1,6 @@
     # -*- coding: utf-8 -*-
 # Copyright (C) 2007-2010 Samalyse SARL
+# Copyright (C) 2010-2011 Parisson SARL
 
 # This software is a computer program whose purpose is to backup, analyse,
 # transcode and stream any audio content with its metadata over a web frontend.
@@ -32,6 +33,7 @@
 #
 # Authors: Olivier Guilyardi <olivier@samalyse.com>
 #          David LIPSZYC <davidlipszyc@gmail.com>
+#          Guillaume Pellerin <yomguy@parisson.com>
 
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
@@ -457,7 +459,6 @@ class DublinCoreToFormatMetadata(object):
             if value:
                 if key == 'date':
                     value = value.split(';')[0].split('=')
-                    print value
                     if len(value) > 1:
                         value  = value[1]
                         value = value.split('-')[0]

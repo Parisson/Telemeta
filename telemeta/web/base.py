@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2007 Samalyse SARL
+# Copyright (C) 2007-2010 Samalyse SARL
+# Copyright (C) 2010-2011 Parisson SARL
 
 # This software is a computer program whose purpose is to backup, analyse,
 # transcode and stream any audio content with its metadata over a web frontend.
@@ -30,7 +31,8 @@
 # The fact that you are presently reading this means that you have had
 # knowledge of the CeCILL license and that you accept its terms.
 
-# Author: Olivier Guilyardi <olivier@samalyse.com>
+# Authors: Olivier Guilyardi <olivier@samalyse.com>
+#          Guillaume Pellerin <yomguy@parisson.com>
 
 import re
 import os
@@ -284,8 +286,8 @@ class WebView(object):
                     })
     
     def get_public_access(self, access, date_from, date_to):
-        # Rolling publishing date : Public access when time between recorded year 
-        # and currant year is over settings value PUBLIC_ACCESS_PERIOD
+        # Rolling publishing date : public access is given when time between recorded year 
+        # and current year is over the settings value PUBLIC_ACCESS_PERIOD
         if date_to:
             date = date_to
         elif date_from:
@@ -470,7 +472,7 @@ class WebView(object):
                 graph = grapher(width = int(width), height = int(height))
                 pipe = decoder | graph
                 pipe.run()
-#                graph.watermark('telemeta', opacity=.6, margin=(5,5))
+                graph.watermark('telemeta', opacity=.6, margin=(5,5))
                 f = open(path, 'w')
                 graph.render(path)
                 f.close()

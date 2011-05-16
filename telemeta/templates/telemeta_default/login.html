@@ -6,25 +6,19 @@
 {% endblock %}
 
 {% block content %}
-
 {% if form.errors %}
 <p class="login-error">{% trans "Your username and password didn't match. Please try again." %}</p>
 {% endif %}
-
 <form class="login" id="_loginForm" method="post" action="{% url telemeta-login %}">{% csrf_token %}
 <p>
 {{ form.username.label_tag }}
 {{ form.username }}<br />
-
 {{ form.password.label_tag }}
 {{ form.password }}
-
 </p>
 <a href="#" class="component_icon button icon_login" style="float: right;"
                 onclick="document.getElementById('_loginForm').submit(); return false;">{% trans "Sign in" %}</a>
 <input type="hidden" name="next" value="{{ next }}" />
 <span style="align: right;"><a href="{% url telemeta-password-reset %}">{% trans "Password forgotten" %} ?</a></span>
 </form>
-
-
 {% endblock %}

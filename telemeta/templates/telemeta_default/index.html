@@ -4,7 +4,6 @@
 
 {% block content %}
 <div class="home-content">
-
 <div class="module-set">
 
 {% block modules %}
@@ -30,17 +29,6 @@
 </div>
 
 {% include "telemeta/inc/module_revisions.html" %}
-
-<!--
-{{ block.super }}
-<div id="module" class="module">
-    <h3><img src="{% url telemeta-images "module_playlist.png" %}" style="vertical-align:middle" />
-    {% trans "Partenaires" %}</h3>
-    <img class="image-link" src="http://files.parisson.com/img/logos/logo-CNRS.png">
-    <img class="image-link" src="http://files.parisson.com/img/logos/logo_mcc_2.png">
-    <img class="image-link" src="http://files.parisson.com/img/logos/mnhn.gif">
-</div>
--->
 
 {% endblock %}
 </div>

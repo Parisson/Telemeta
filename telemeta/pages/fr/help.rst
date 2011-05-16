@@ -10,13 +10,12 @@ Page d'aide de Telemeta
 Introduction
 ==============
 
-Telemeta est un système de gestion d'archives sonores. Cette plateforme a été conçue par le CREM et Parisson pour satisfaire les besoins de valorisation des archives audio des laboratoires de recherche mais aussi pour permettre aux chercheurs et aux documentalistes de collaborer autour d'un outil commun en réseau.
-
-
+Telemeta est un système de gestion collaborative d'archives sonores. Il a été conçue par le Centre de Recherche en Ethnomusicologie  et la société Parisson pour satisfaire les besoins de valorisation des archives audio des laboratoires de recherche mais aussi pour permettre aux chercheurs et aux documentalistes d'indéxer mutuellement les fonds d'archives.
 
 
 Prise en main
 ================
+
 
 -----------
 Connexion
