@@ -19,14 +19,8 @@ __all__ = ['Component', 'ExtensionPoint', 'implements', 'Interface',
 
 class TelemetaError(Exception):
     """Exception base class for errors in Telemeta."""
-    # FIXME: is this redundant with Django's error handling ?
-
-#    def __init__(self, message, title=None, show_traceback=False):
-#        Exception.__init__(self, message)
-#        self.message = message
-#        self.title = title
-#        self.show_traceback = show_traceback
-
+    pass
+    
 class Interface(object):
     """Marker base class for extension point interfaces."""
 
