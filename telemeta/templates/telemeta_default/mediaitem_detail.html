@@ -23,7 +23,7 @@
     soundManager.url = "{% url telemeta-timeside "swf/" %}";
     soundManager.flashVersion = 9;
     soundManager.useMovieStar = true; // enable MP4/M4A/AAC
-    soundManager.debugMode = true;
+    soundManager.debugMode = false;
     soundManager.allowPolling = true;
 
     var setupPlaylist = function(){
@@ -56,7 +56,7 @@
     }
     //warn on soundmanager error:
     soundManager.onerror = function() {
-        playerError('SoundManager error. If your browser does not support HTML5, Flash player (version 9+) must be installed.\nIf flash is installed, try to:\n - Reload the page\n - Empty the cache (see browser preferences) and reload the page\n - Restart the browser');
+        playerError('SoundManager error. If your browser does not support HTML5, Flash player (version '+soundManager.flashVersion+'+) must be installed.\nIf flash is installed, try to:\n - Reload the page\n - Empty the cache (see browser preferences/options/tools) and reload the page\n - Restart the browser');
     };
 
     setTimeout(function(){
@@ -80,7 +80,12 @@
         soundManager.onready(function() {
             loadScripts(scripts,
             function(){
-                loadPlayer('{% url telemeta-item-analyze-xml item.public_id %}',"{% url telemeta-item-export item.public_id,"mp3" %}", '{{item.id}}', visualizers, CURRENT_USER_NAME);
+                {% if user.is_staff or user.is_superuser %}
+                var superuser = true;
+                {% else %}
+                var superuser = false;
+                {% endif %}
+                loadPlayer('{% url telemeta-item-analyze-xml item.public_id %}',"{% url telemeta-item-export item.public_id,"mp3" %}", '{{item.id}}', visualizers, CURRENT_USER_NAME, superuser);
                 setupPlaylist();
             });
         });
@@ -116,7 +121,7 @@
 {% block content %}
 <div class="{% if item.file %}{% if item.public_access == 'full' or public_access or user.is_staff %}with-rightcol{% endif %}{% endif %}">
     {% if item.file %}
-    {% if public_access or user.is_staff %}
+    {% if public_access or user.is_staff or user.is_superuser %}
     <div id="player_maximized" class="ts-skin-lab">
         <a href="#" class="toggle">Minimize</a>
         <div class="wazing"></div>

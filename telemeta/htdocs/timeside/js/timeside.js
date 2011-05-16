@@ -280,7 +280,7 @@ var TimesideClass = Class.extend({
     fire : function(key, dataArgument){
         var listenersMap = this.listenersMap;
         if(!(key in listenersMap)){
-            this.debug(key+' fired but no binding associated to it');
+            this.debug('"'+key+'" fired but no binding associated to it');
             return;
         }
         var callbacks = listenersMap[key];
@@ -307,7 +307,6 @@ var TimesideArray = TimesideClass.extend({
         //note that this method written here OVERRIDES the same method written outside init in the children!!!!
         this.toArray = function(returnACopy){
             if(returnACopy){
-                consolelog('copying array');
                 var ret = [];
                 for(var i=0; i<me.length; i++){
                     ret.push(me[i]);
@@ -348,10 +347,6 @@ var TimesideArray = TimesideClass.extend({
     //argument (even if it is a function) is a number. Why?????
     //Anyway, we must write the function arguments as empty
     each : function(){
-        //        consolelog(arguments.length+' arguments passed. Details: ');
-        //        for(var j=0; j<arguments.length; j++){
-        //            consolelog('arguments['+ j+']: ');consolelog(arguments[j]);
-        //        }
         var startInclusive, endExclusive, callback;
 
         var arg = arguments;
@@ -504,7 +499,6 @@ function setUpPlayerTabs() {//called from within controller.js once all markers 
             var t = $J(tabs[i]);
             
             var div = $J(divs[i]);
-            // consolelog(t.attr('id')+' is '+(i==index ? 'showing ' : 'hiding ')+div.attr('id'));
             var addClass = i==index ? selectedTabClass : unselectedTabClass;
             var removeClass = i==index ? unselectedTabClass : selectedTabClass;
             if(removeClass){

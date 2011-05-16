@@ -106,7 +106,6 @@ var playlistUtils = {
             content: ar,
             onOk:function(data){
                 var val = data.selIndex;
-                consolelog(data);
                 var callbackok = undefined;
                 if(optionalOkMessage){
                     callbackok = function(){
@@ -130,7 +129,6 @@ var playlistUtils = {
     //resourceType can be: 'collection', 'item', 'marker'
     //addResource RENAME TODO!!!!
     addResourceToPlaylist: function(playlistId,resourceType,objectId, callbackOnSuccess,callbackOnError){
-        consolelog(playlistId)
         var send = {
             'public_id':uniqid(),
             'resource_type':resourceType,

@@ -9,12 +9,10 @@
  * Class for showing/editing a marker on details. 
  */
 var MarkerMapDiv = TimesideArray.extend({
-    init:function(currentUserName){
+    init:function(){
         this._super();
         this.div = this.$J("#markers_div_id");
-        this.getCurrentUserName = function(){
-            return currentUserName;
-        }
+      
     },
     //overridden
     add: function(marker, index,  isNew){
@@ -129,7 +127,6 @@ var MarkerMapDiv = TimesideArray.extend({
         }else{
             e_descriptionText.attr('readonly','readonly').addClass('markersdivUneditable');
             e_titleText.attr('readonly','readonly').addClass('markersdivUneditable');
-            consolelog(e_okButton.parent());
             e_okButton.add(e_okButton.parent()).hide(); //hiding also the parent div saves space (padding bottom hidden)
             editButton.show();
             div.css('backgroundColor','');
@@ -182,9 +179,7 @@ var MarkerMapDiv = TimesideArray.extend({
         var $J = this.$J;
         siblings.each(function(i,elm){
             spaceStretchable -= $J(elm).outerWidth(true);
-        //consolelog("\t"+spaceStretchable+' elm:'+$J(elm).attr('class')+" left: "+$J(elm).position().left+" outerw:" +$J(elm).outerWidth(true)+" w: "+$J(elm).width());
         });
-        //consolelog('w'+ jQueryElm.parent().width()+' elm.w: '+jQueryElm.width()+' spacestretchable: '+spaceStretchable);
         var w = jQueryElm.width() + spaceStretchable;
         jQueryElm.css('width', w+'px');
     },
@@ -193,20 +188,19 @@ var MarkerMapDiv = TimesideArray.extend({
         div.find('.markersdivOffset').html(this.makeTimeLabel(offset));
     },
     createMarkerDiv : function(index, marker){
-        //TODO: why class 'ts-marker' does not work?
-        //for the moment we set the style manually, remove
-        //TODO: table width with CSS?
-        var div = this.$J('<div/>').attr('tabindex','0').addClass("markerdiv").html('<div>'+
-            '<a href=# class="ts-marker"></a>'+
-            '<a href=# class="markersdivOffset" type="text"></a>'+
-            '<input class="markersdivTitle" type="text"/>'+
-            '<a class="markersdivAddPlaylist" title="add to playlist"></a>'+
-            '<a class="markersdivEdit" title="edit">EDIT</a>'+
-            '<a class="markersdivDelete" title="delete"></a>'+
-            '</div>'+
-            '<div zero_top_padding><textarea class="markersdivDescription"></textarea></div>'+
-            '<div zero_top_padding><a class="markersdivSave">OK</a></div>'+
-        '<div zero_top_padding><span style="font-size:75%;color:#999">'+gettrans('author')+': '+marker.author+'</span></div>'); //TODO: avoid text nodes
+        //create html content. Use array.join cause it is usually faster than string concatenation:
+        var html_ = ['<div style="white-space:nowrap">', //whitespace no wrap is really important to keep all content of first div on one line (without it, IE displays it on 2 lines)
+            '<a href=# class="ts-marker"></a>',
+            '<a href=# class="markersdivOffset" type="text"></a>',
+            '<input class="markersdivTitle" type="text"/>',
+            '<a class="markersdivAddPlaylist" title="add to playlist"></a>',
+            '<a class="markersdivEdit" title="edit">EDIT</a>',
+            '<a class="markersdivDelete" title="delete"></a>',
+            '</div>',
+            '<div zero_top_padding><textarea class="markersdivDescription"></textarea></div>',
+            '<div zero_top_padding><a class="markersdivSave">OK</a></div>',
+        '<div zero_top_padding><span style="font-size:75%;color:#999">'+gettrans('author')+': '+marker.author+'</span></div>'].join("");
+        var div = this.$J('<div/>').attr('tabindex','0').addClass("markerdiv").html(html_); //TODO: avoid text nodes
         div.find('a').attr('href','#');
         //todo: remove markerlabel from css!!!!!!!
         //new RulerMarker(div.find('.markerlbl'),div.find('.markercanvas'),'marker',false);
@@ -243,11 +237,7 @@ var MarkerMapDiv = TimesideArray.extend({
         e_descriptionText.attr('readonly','readonly').addClass('markersdivUneditable').unbind('focus');
         e_titleText.attr('readonly','readonly').addClass('markersdivUneditable').unbind('focus');
 
-        //add to playlist always visible, provided that it is saved on server AND current user is logged
-        //(getCurrentUserName evaluates to true)
-        //        if(!marker.isSavedOnServer || !this.getCurrentUserName()){
-        //            e_addplaylistButton.hide();
-        //        }else{
+        
         e_addplaylistButton.unbind('click').bind('click',function(evtObj_){
             if(!marker.isSavedOnServer){
                 return false;
@@ -255,21 +245,19 @@ var MarkerMapDiv = TimesideArray.extend({
             //make a request to the server to get the pk (id)
             //note that marker.id (client side) is marker.public_id (server side)
             json([marker.id],"telemeta.get_marker_id", function(data){
-                consolelog('received');
-                consolelog(data);
                 var id = data.result;
                 playlistUtils.showAddResourceToPlaylist(e_addplaylistButton,'marker',""+id,gettrans('marker added to the selected playlist'));
             });
             return false;
         });
 
-        if(!this.getCurrentUserName()){
+        if(!marker.canBeAddedToPlaylist){
             e_addplaylistButton.hide();
         }
 
 
-        if(!marker.isEditable){ //marker is editable means that author == getCurrentUserName(). addToPlaylist
-            //visibility is skipped because it depends on other circumstances (see above)
+        if(!marker.isEditable){ //marker is editable means that author is superuser or author == getCurrentUserName().
+            //addToPlaylist visibility is skipped because it depends on other circumstances (see above)
             e_editButton.hide();
             e_deleteButton.hide();
             //we unbind events to be sure
