@@ -1,57 +1,65 @@
+/*
+ * Copyright (C) 2007-2011 Parisson
+ * Copyright (c) 2011 Riccardo Zaccarelli <riccardo.zaccarelli@gmail.com>
+ * Copyright (c) 2010 Olivier Guilyardi <olivier@samalyse.com>
+ *
+ * This file is part of TimeSide.
+ *
+ * TimeSide is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * TimeSide is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with TimeSide.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Authors: Riccardo Zaccarelli <riccardo.zaccarelli@gmail.com>
+ *          Olivier Guilyardi <olivier@samalyse.com>
+ */
 
-//Class for global functions.
-//Note that the dollar sign is a reserved keyword in some browsers
-//(see http://davidwalsh.name/dollar-functions)
-//which might be in conflict with jQuery dollar sign
+/**
+ * Class for telemeta global functions.
+ * Note that the dollar sign is a reserved keyword in some browsers
+ * (see http://davidwalsh.name/dollar-functions)
+ * which might be in conflict with jQuery dollar sign.
+ */
 
-//PENDING: use static method?
-//adds a move function to the array object.
-//moves the element at position from into to position
-//returns from if no move was accomplished, ie when either:
-//1) from or to are not integers
-//2) from==to or from==to-1 (also in this latter case there is no need to move)
-//3) from or to are lower than zero or greater than the array length
-//in any other case, returns to
-//Array.prototype.move = function(from, to){
-//    var pInt = parseInt;
-//    if(pInt(from)!==from || pInt(to)!==to){
-//        return from;
-//    }
-//    var len = this.length;
-//    if((from<0 || from>len)||(to<0 || to>len)){
-//        return from;
-//    }
-//    //if we moved left to right, the insertion index is actually
-//    //newIndex-1, as we must also consider to remove the current index markerIndex, so:
-//    if(to>from){
-//        to--;
-//    }
-//    if(from != to){
-//        var elm = this.splice(from,1)[0];
-//        this.splice(to,0,elm);
-//        return to;
-//    }
-//    return from;
-//}
 
-function foldInfoBlocks() {
-    var $J = jQuery;
-    var extra = $J('.extraInfos');
-    extra.find('.folded dl, .folded table').css('display', 'none');
-    extra.find('a').click(function() { 
-        $J(this).parents('.extraInfos').children().toggleClass('folded').find('dl, table').toggle(100);
-        return false; 
-    });
-}
+
 //returns the full path of the current url location removing the last slash '/' followed by one or more '#', if any
 function urlNormalized(){
     var sPath = window.location.href;
     sPath = sPath.replace(/\/#*$/,"");
     return sPath;
 }
+/**
+ *sets up few stuff when the page is ready (see functions below it)
+ */
+jQuery(document).ready(function() {
+    foldInfoBlocks();
+    setSelectedMenu();
+});
 
 /**
- * Global telemeta function to set the current selected menu active according toi the current url
+ *function inherited from old code, never touched. Guess fixes the left data table, if any
+ */
+function foldInfoBlocks() {
+    var $J = jQuery;
+    var extra = $J('.extraInfos');
+    extra.find('.folded dl, .folded table').css('display', 'none');
+    extra.find('a').click(function() {
+        $J(this).parents('.extraInfos').children().toggleClass('folded').find('dl, table').toggle(100);
+        return false;
+    });
+}
+
+/**
+ * Global telemeta function which sets the current selected menu according to the current url
  */
 function setSelectedMenu(){
     var $J = jQuery;
@@ -101,38 +109,35 @@ function setSelectedMenu(){
 }
 
 
-jQuery(document).ready(function() {
-    foldInfoBlocks();
-    setSelectedMenu();
-});
 
-//****************************************************************************
-//json(param, method, onSuccesFcn(data, textStatus, jqXHR), onErrorFcn(jqXHR, textStatus, errorThrown))
-//global function to senbd/retrieve data with the server
-//
-//param: the data to be sent or retrieved.
-//  param will be converted to string, escaping quotes newlines and backslashes if necessary.
-//  param can be a javascript string, boolean, number, dictionary and array.
-//      If dictionary or array, it must contain only the above mentioned recognized types.
-//      So, eg, {[" a string"]} is fine, {[/asd/]} not
-//
-//method: the json method, eg "telemeta.update_marker". See base.py
-//
-//onSuccesFcn(data, textStatus, jqXHR) OPTIONAL --IF MISSING, NOTHING HAPPENS --
-//   A function to be called if the request succeeds with the same syntax of jQuery's ajax onSuccess function.
-//   The function gets passed three arguments 
-//      The data returned from the server, formatted according to the dataType parameter;
-//      a string describing the status;
-//      and the jqXHR (in jQuery 1.4.x, XMLHttpRequest) object
-//
-//onErrorFcn(jqXHR, textStatus, errorThrown) OPTIONAL. --IF MISSING, THE DEFAULT ERROR DIALOG IS SHOWN--
-//    A function to be called if the request fails with the same syntax of jQuery ajax onError function..
-//    The function receives three arguments:
-//      The jqXHR (in jQuery 1.4.x, XMLHttpRequest) object,
-//      a string describing the type of error that occurred and
-//      an optional exception object, if one occurred.
-//      Possible values for the second argument (besides null) are "timeout", "error", "abort", and "parsererror".
-//****************************************************************************
+
+/*****************************************************************************
+ * json(param, method, onSuccesFcn(data, textStatus, jqXHR), onErrorFcn(jqXHR, textStatus, errorThrown))
+ * global function to senbd/retrieve data with the server
+ *
+ * param: the data to be sent or retrieved.
+ *   param will be converted to string, escaping quotes newlines and backslashes if necessary.
+ *   param can be a javascript string, boolean, number, dictionary and array.
+ *       If dictionary or array, it must contain only the above mentioned recognized types.
+ *       So, eg, {[" a string"]} is fine, {[/asd/]} not
+ *
+ * method: the json method, eg "telemeta.update_marker". See base.py
+ *
+ * onSuccesFcn(data, textStatus, jqXHR) OPTIONAL --IF MISSING, NOTHING HAPPENS --
+ *    A function to be called if the request succeeds with the same syntax of jQuery's ajax onSuccess function.
+ *    The function gets passed three arguments
+ *       The data returned from the server, formatted according to the dataType parameter;
+ *       a string describing the status;
+ *       and the jqXHR (in jQuery 1.4.x, XMLHttpRequest) object
+ *
+ * onErrorFcn(jqXHR, textStatus, errorThrown) OPTIONAL. --IF MISSING, THE DEFAULT ERROR DIALOG IS SHOWN--
+ *     A function to be called if the request fails with the same syntax of jQuery ajax onError function..
+ *     The function receives three arguments:
+ *       The jqXHR (in jQuery 1.4.x, XMLHttpRequest) object,
+ *       a string describing the type of error that occurred and
+ *       an optional exception object, if one occurred.
+ *       Possible values for the second argument (besides null) are "timeout", "error", "abort", and "parsererror".
+ * ****************************************************************************/
 
 var json = function(param,method,onSuccessFcn,onErrorFcn){
     //this function converts a javascript object to a string
@@ -165,20 +170,15 @@ var json = function(param,method,onSuccessFcn,onErrorFcn){
         }
         return string;
     };
-    //var g = 9;
-    //creating the string to send. We use array join and string concatenation with +=
-    //as it is more efficient
+    
+    //creating the string to send. 
     var param2string = toString_(param);
     var data2send = '{"id":"jsonrpc", "params":';
     data2send+=param2string;
     data2send+=', "method":"'
     data2send+=method;
     data2send+='","jsonrpc":"1.0"}';
-    //        var data2send = '{"id":"jsonrpc", "params":[{"item_id":"'+ s(itemid)+
-    //            '", "public_id": "'+s(marker.id)+'", "time": "'+s(offset)+
-    //            '", "author": "'+s(marker.author)+
-    //            '", "title": "'+s(marker.title)+
-    //            '","description": "'+s(marker.desc)+'"}], "method":"'+method+'","jsonrpc":"1.0"}';
+    
     var $J = jQuery;
     $J.ajax({
         type: "POST",
@@ -208,6 +208,10 @@ var json = function(param,method,onSuccessFcn,onErrorFcn){
     });
 
 };
+
+/**
+ * Returns an uniqid by creating the current local time in millisecond + a random number. Used for markers and some json calls
+ */
 var uniqid = function() {
     var d = new Date();
     return new String(d.getTime() + '' + Math.floor(Math.random() * 1000000)).substr(0, 18);
@@ -275,7 +279,7 @@ function loadScripts(){
     }
 
     var $J = jQuery;
-    //var time = new Date().getTime();
+   
     if(loadInSeries){
         var load = function(index){
             if(index<len){
@@ -303,7 +307,9 @@ function loadScripts(){
 }
 
 
-
+/**
+ * function for writing to the console. Catches errors, if any (eg, console == undefined)
+ */
 function consolelog(text){
     if(typeof console != 'undefined'){
         var c = console;
