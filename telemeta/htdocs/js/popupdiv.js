@@ -41,12 +41,56 @@ function PopupDiv(){
     }
 
     var k;
-    //setting static properties, if any:
+
+    //setting static properties, if any.
+    //The idea is that static PopupDiv properties SPP (eg, PopupDiv.shadowOffset = 5) should be added to the current PopupDiv
+    //instance prototype ONCE (properties in the prototype are shared between all PopupDiv instances)
+    //and then deleted from the PopupDiv function.
+    //The problem is how to access the prototype: nor __proto__ neither Object.getPrototypeOf(this) are cross browser
+    //(see http://ejohn.org/blog/objectgetprototypeof/, which suggests to rewrite a global Object.getPrototypeOf(arg), which
+    //however does not work if arg constructor has been manipulated). Eventually, we do the following:
+    //Find a prototype variable P: P= Object.getPrototypeOf: is it NOT a function? then P = this.__proto__. Is it NOT an object?
+    //then P= this.
+    //Populate P, if P = this, we are assigning SPP to each new instance and NOT ONCE to the prototype object, which of course
+    //means that SPP's cannot be deleted after their first assignment. This requires more work and more memory consumption
+    //but it assures cross browser compatibility
+
+    var staticProps = undefined;
     for(k in PopupDiv){
-        this.__proto__[k] = PopupDiv[k];
-        //        consolelog(k+' '+PopupDiv[k]);
-        delete PopupDiv[k];
+        if(!staticProps){
+            staticProps = {};
+        }
+        var f = PopupDiv[k];
+        if(typeof f !== 'function'){ //do not assign functions (PopupDiv.function... might be used in future as
+            //static functions accessible from outside
+            staticProps[k] = f;
+        }
     }
+    if(staticProps){
+        var remove = true;
+        var proto = undefined;
+        if ( typeof Object.getPrototypeOf !== "function" ) {
+            if ( typeof this.__proto__ === "object" ) {
+                proto = this.__proto__;
+            } else {
+                // May break if the constructor has been tampered with:
+                // proto =  this.constructor.prototype;
+                //so we assign tis class BUT we DO NOT remove static properties
+                proto = this;
+                remove = false;
+            }
+        }else{
+            proto = Object.getPrototypeOf(this);
+        }
+        for(k in staticProps){
+            proto[k] = staticProps[k];
+            if(remove){
+                delete PopupDiv[k];
+            }
+        }
+    }
+
+    
 
     //setting instance-specific properties:
     for(k in data){
@@ -124,14 +168,19 @@ function PopupDiv(){
     p.fadeOutTime = 0,
     p.shadowOpacity = 0.25;
     p.zIndex = 10000;
-    // p.listItemClass = '';
+    p.listItemClass = '';
+    p.listItemCss = '';
 
+    //returns the data associated to this popup. Basically, it searches for all input, select or textarea with attribute
+    //this.getFormDataAttrName(). The use of a custom attribute is cross browser, note that some attributes, eg name, are
+    //not (name is not safe in IE for instance)
     p.getFormData = function(){
         var elms = this.find('input,select,textarea');
         var ret = {};
+        var att = this.getFormDataAttrName();
         elms.each(function(i,e){
             var ee = $(e);
-            var key = ee.attr('name');
+            var key = ee.attr(att);
             if(key){
                 ret[key] = ee.val();
             }
@@ -208,14 +257,14 @@ function PopupDiv(){
         var container =   $($(div).children()[1]);
         //div.appendTo('body'); //necessary to properly display the div size
         container.empty();
-
+        var att = this.getFormDataAttrName();
         if(content instanceof $){
             container.append(content);
         }else if(content instanceof Array){
-            var jQ = $;
+            
             var me = this;
             //var name = this.getListItemName();
-            var input = $('<input/>').attr('type','hidden').attr('name','selIndex');
+            var input = $('<input/>').attr('type','hidden').attr(att,'selIndex');
             var setEvents = function(idx,anchor,input){
                 anchor.click(function(){
                     input.val(idx);
@@ -225,31 +274,31 @@ function PopupDiv(){
                     input.val(idx);
                 })
             };
+            var listItems = $([]);
             for(var h=0; h<content.length; h++){
                 var item = content[h];
-                var a = $('<a/>').attr('href','#');
-                if('class' in item){
-                    a.addClass(item['class']);
-                }
-                if('html' in item){
-                    a.html(item['html']);
-                }
-                if('name' in item){
-                    a.attr('name', item['name']);
-                }
-                if('id' in item){
-                    a.attr('id', item['id']);
-                }
-                if('css' in item){
-                    a.css(item['css']);
-                }
-                a.css({
-                    'display':'block',
-                    'margin':'2px'
-                }); //margin is used to display the outline (focus)
+                var a = $('<a/>').attr('href','#').html(""+item);
+                listItems = listItems.add(a);
                 setEvents(h,a,input);
                 container.append(a);
             }
+            //set css and class on all listitem anchor:
+            //set margin to properly display the outline (border focus)
+            //this css can be overridden (see lines below) as it is not strictly necessary
+            listItems.css({
+                'margin':'2px'
+            });
+            if(this.listItemClass){
+                listItems.addClass(this.listItemClass);
+            }
+            if(this.listItemCss){
+                listItems.css(this.listItemCss);
+            }
+            //override css which are necessary to properly display the listItem:
+            listItems.css({
+                'position' : '',
+                'display':'block'
+            });
             container.append(input);
         }else if(content && content.constructor == Object){
             var leftElements = $([]);
@@ -277,11 +326,11 @@ function PopupDiv(){
                     title = $('<span/>').html(k);
                     maxw[0] = max(maxw[0],k.length);
                     maxw[1] = max(maxw[1],val.length);
-                    component = $('<input/>').attr('type','text').val(val).attr('name',k);
+                    component = $('<input/>').attr('type','text').val(val).attr(att,k);
                     lineDivs = lineDivs.add(insert(title,component));
                 }else if(val === true || val === false){
                     var id = this.getId()+"_checkbox";
-                    title = $('<input/>').attr('type','checkbox').attr('name',k).attr('id',id);
+                    title = $('<input/>').attr('type','checkbox').attr(att,k).attr('id',id);
                     if(val){
                         title.attr('checked','checked');
                     }else{
@@ -293,7 +342,7 @@ function PopupDiv(){
                 }else if(val instanceof Array){
                     title = $('<span/>').html(k);
                     maxw[0] = max(maxw[0],k.length);
-                    component = $('<select/>').attr('size',1);
+                    component = $('<select/>').attr('size',1).attr(att,k);
                     for(var i=0; i< val.length; i++){
                         component.append($('<option/>').val(val[i]).html(val[i]));
                         maxw[1] = max(maxw[1],val[i].length);
@@ -328,7 +377,7 @@ function PopupDiv(){
                 'width':Math.round((3/5)*maxw[0])+'em'
             });
             rightElements.css({
-                'width':Math.round((3/5)*Math.max(maxw[0], maxw[1]))+'em'
+                'width':Math.round((3/5)*max(maxw[0], maxw[1]))+'em'
             }); //might be zero if default values are all ""
         }else{
             container.append(""+content);
@@ -352,11 +401,11 @@ function PopupDiv(){
             elementsWithFocus =elementsWithFocus.add(topDiv.find('a'));
         }
         if(this.showOk || this.title){
-	    elementsWithFocus = elementsWithFocus.add(topDiv.find(':text'));
-	    if(this.showOk){
-		elementsWithFocus = elementsWithFocus.add(bottomDiv.find('a'));
-	    }
-	}
+            elementsWithFocus = elementsWithFocus.add(topDiv.find(':text'));
+            if(this.showOk){
+                elementsWithFocus = elementsWithFocus.add(bottomDiv.find('a'));
+            }
+        }
         elementsWithFocus = elementsWithFocus.add(popup);
         var focusNameSpace = "blur."+this.getId();
         if(!value){
@@ -389,7 +438,7 @@ function PopupDiv(){
                 //otherwise execute callback
                 setTimeout(function(){
                     var v = doc_.activeElement;
-                    console.log(v);
+                    //console.log(v);
                     if((v && $(v).attr(focusAttr)) || me.isClosing){
                         //if we are closing, we will call back this method which removes the focus attributes, bt meanwhile the
                         //timeout should execute
@@ -425,7 +474,7 @@ function PopupDiv(){
             this.popupCss = ''; //override prototype property
         }
         //css modified, restore properties we need not to change:
-	//cssModified should be true ALL first times we call show, as this.popupCss = {} )ie, it evaluates to TRUE)
+        //cssModified should be true ALL first times we call show, as this.popupCss = {} )ie, it evaluates to TRUE)
         if(cssModified){
             div.css({
                 'position':'absolute',
@@ -443,52 +492,67 @@ function PopupDiv(){
         var titleInput = topDiv.find(':text').eq(0); //$(':text') is equivalent to $('[type=text]') (selects all <input type="text"> elements)
         var closeBtn = topDiv.find('a').eq(0);
         if(!this.showClose && !this.title){
-	  topDiv.hide();
-	}else{
-		topDiv.css({'paddingBottom':'1em','whiteSpace': 'nowrap'}).show(); //add padding to bottom
-			//warning: do NOT use real numbers such as 0.5ex cause browsers round it in a different manner
-			//whiteSpace is FUNDAMENTAL in calculating the popup div in case the title is the longest (max width) element
-			//in the popup div. We will set the same whitespace css also on the title (see below)
+            topDiv.hide();
+        }else{
+            topDiv.css({
+                'paddingBottom':'1em',
+                'whiteSpace': 'nowrap'
+            }).show(); //add padding to bottom
+            //warning: do NOT use real numbers such as 0.5ex cause browsers round it in a different manner
+            //whiteSpace is FUNDAMENTAL in calculating the popup div in case the title is the longest (max width) element
+            //in the popup div. We will set the same whitespace css also on the title (see below)
 
-		if(this.showClose){
-			closeBtn.attr('class',this.closeButtonClass); //removes all existing classes, if any (see jQuery removeClass doc)
-			closeBtn.html(this.closeButtonTitle);
-			closeBtn.css({
-				'display':'inline-block','visibility':'visible','marginLeft':'1em'
-				//warning: do NOT use real numbers such as 0.5ex cause browsers round it in a different manner
-				//inline-block in order to retrieve/set width and height on the element
-			});
-		}else{
-			closeBtn.css({'margin':'0px'}).hide(); //margin:0 is to be sure, as afterwards we must span the title the whole popup width
-		}
-		//in any case, show titleElement cause even if title="", titleElement is used to position close on the right
-		titleInput.val(this.title).attr('readonly','readonly').attr('class',this.titleClass).removeClass().css({
-		  'display':'inline-block',
-		  'backgroundColor':'transparent',
-		  'padding': '0px', 'margin':'0px','border':'0px',
-		  'visibility': this.title ? 'visible' : 'hidden',
-		  'width':'',
-		  'maxWidth':'1px'	//it is too tricky to set the width of the input spanning the whole title (in case of long titles)
-		  //we might use a span, but we experienced problems in vertical align with the close button, as stated somewhere above.
-		  //Moreover, a long title messes up the calculations in popup mode:
-		  //a long title most likely determines the popup size, the latter the popup position, and once
-		  //positioned and sized the popup size determines the title width (in order to span the title or letting the close button be visible)
-		  //This is not robust at all and in fact it does not render the same popup position in all browsers.
-		  //So, finally, set the input to the minimum allowed width, This means that maxWidth and maxHeight
-		  //will be calculated based on the centraldiv dimensions, which is anyway the core div we want to properly visualize.
-		  //Moreover, this way title resizing does not interfeere with the position
-		 });
-	}
+            if(this.showClose){
+                closeBtn.attr('class',this.closeButtonClass); //removes all existing classes, if any (see jQuery removeClass doc)
+                closeBtn.html(this.closeButtonTitle);
+                closeBtn.css({
+                    'display':'inline-block',
+                    'visibility':'visible',
+                    'marginLeft':'1em'
+                //warning: do NOT use real numbers such as 0.5ex cause browsers round it in a different manner
+                //inline-block in order to retrieve/set width and height on the element
+                });
+            }else{
+                closeBtn.css({
+                    'margin':'0px'
+                }).hide(); //margin:0 is to be sure, as afterwards we must span the title the whole popup width
+            }
+            //in any case, show titleElement cause even if title="", titleElement is used to position close on the right
+            titleInput.val(this.title).attr('readonly','readonly').attr('class',this.titleClass).removeClass().css({
+                'display':'inline-block',
+                'backgroundColor':'transparent',
+                'padding': '0px',
+                'margin':'0px',
+                'border':'0px',
+                'visibility': this.title ? 'visible' : 'hidden',
+                'width':'',
+                'maxWidth':'1px'	//it is too tricky to set the width of the input spanning the whole title (in case of long titles)
+            //we might use a span, but we experienced problems in vertical align with the close button, as stated somewhere above.
+            //Moreover, a long title messes up the calculations in popup mode:
+            //a long title most likely determines the popup size, the latter the popup position, and once
+            //positioned and sized the popup size determines the title width (in order to span the title or letting the close button be visible)
+            //This is not robust at all and in fact it does not render the same popup position in all browsers.
+            //So, finally, set the input to the minimum allowed width, This means that maxWidth and maxHeight
+            //will be calculated based on the centraldiv dimensions, which is anyway the core div we want to properly visualize.
+            //Moreover, this way title resizing does not interfeere with the position
+            });
+        }
 
         var bottomDiv = $(subdiv[2]);
         var okButton = bottomDiv.find('a').eq(0);
         //see note above about why we dont use okButton.is(':visible')
         if(this.showOk){
-            bottomDiv.css({'paddingTop':'1em','textAlign':this.okButtonAlign}).show(); //add padding to bottom
-	    //warning: do NOT use real numbers such as 0.5ex cause browsers round it in a different manner
-                okButton.attr('class', this.okButtonClass); //removes all existing classes, if any
-                okButton.html(this.okButtonTitle);
-                okButton.css({'display':'inline-block','visibility':'visible'}); //in order to set width and height on the element
+            bottomDiv.css({
+                'paddingTop':'1em',
+                'textAlign':this.okButtonAlign
+            }).show(); //add padding to bottom
+            //warning: do NOT use real numbers such as 0.5ex cause browsers round it in a different manner
+            okButton.attr('class', this.okButtonClass); //removes all existing classes, if any
+            okButton.html(this.okButtonTitle);
+            okButton.css({
+                'display':'inline-block',
+                'visibility':'visible'
+            }); //in order to set width and height on the element
         }else{
             bottomDiv.hide();
         }
@@ -496,17 +560,17 @@ function PopupDiv(){
         var centralDiv = $(subdiv[1]);
         //reset properties of the central div
         centralDiv.css({
-	    'overflow':'auto',
+            'overflow':'auto',
             'maxHeight':'',
             'maxWidth':'',
             'minHeight':'',
             'minWidth':'',
             'height':'',
             'width':'',
-			'visibility':'visible'
+            'visibility':'visible'
         }).show();
 
-		this.setSizable();//this means the popupdiv is display: !none and visibility:hidden, so every element
+        this.setSizable();//this means the popupdiv is display: !none and visibility:hidden, so every element
         //inside it should be visible and therefore sizable. Being visible means that jQuery.is(':visible') returns true
         //start with showing top and bottom if some elements are visible
 
@@ -549,24 +613,27 @@ function PopupDiv(){
             this.setBoundsInside(invoker, this.bounds, this.boundsExact, true);
         }
 
-	//set title and close button to span whole width, if necessary
-	//closeButton.outerWidth should be zero if this.showClose = false
-	//titleInput.outerWidth(true) should be equal to titleInput.width(), as margins borders and padding are zero, however we want to calculate it safely
+        //set title and close button to span whole width, if necessary
+        //closeButton.outerWidth should be zero if this.showClose = false
+        //titleInput.outerWidth(true) should be equal to titleInput.width(), as margins borders and padding are zero, however we want to calculate it safely
         if(this.showClose || this.title){
             var titleW = topDiv.width() - closeBtn.outerWidth(true) - (titleInput.outerWidth(true)-titleInput.width());
-               titleInput.css({'maxWidth':'','width':(titleW)+'px'});
+            titleInput.css({
+                'maxWidth':'',
+                'width':(titleW)+'px'
+            });
         }
 
         //set central div max height ONLY IF NECESSARY (overflow). Until here, the main popup is sized and placed
-		//but the central div might overflow
-		var height = centralDiv.height();
+        //but the central div might overflow
+        var height = centralDiv.height();
         var maxHeight = (div.height()-topDiv.outerHeight(true)-bottomDiv.outerHeight(true)-
             (centralDiv.outerHeight(true)-centralDiv.height()));
-		if(maxHeight<height){
+        if(maxHeight<height){
             centralDiv.css('maxHeight',maxHeight+'px');
         }
-		//same for width:
-		var maxWidth = div.width();
+        //same for width:
+        var maxWidth = div.width();
         var width = centralDiv.outerWidth(true);
         if(maxWidth<width){
             centralDiv.css('maxWidth',maxWidth+'px');
@@ -574,23 +641,23 @@ function PopupDiv(){
 
         // var height = centralDiv.height();
         // if(sizeAsPopup && maxHeight<height){
-            // centralDiv.css('maxHeight',maxHeight+'px');
+        // centralDiv.css('maxHeight',maxHeight+'px');
         // }else{
-            // centralDiv.css({
-                // 'maxHeight': maxHeight+'px',
-                // 'minHeight': maxHeight+'px'
-            // });
+        // centralDiv.css({
+        // 'maxHeight': maxHeight+'px',
+        // 'minHeight': maxHeight+'px'
+        // });
         // }
         // //set central div max width ONLY IF NECESSARY:
         // var maxWidth = div.width();
         // var width = $(subdiv[1]).outerWidth(true);
         // if(sizeAsPopup && maxWidth<width){
-            // centralDiv.css('maxWidth',maxWidth+'px');
+        // centralDiv.css('maxWidth',maxWidth+'px');
         // }else{
-            // centralDiv.css({
-                // 'maxWidth': maxWidth+'px',
-                // 'minWidth':maxWidth+'px'
-            // });
+        // centralDiv.css({
+        // 'maxWidth': maxWidth+'px',
+        // 'minWidth':maxWidth+'px'
+        // });
         // }
 
 
@@ -634,24 +701,24 @@ function PopupDiv(){
         var div = this.getDiv();
         var oldCss= isSizable ?  undefined : this.setSizable();
 
-	var shadowOffset = this.shadowOffset;
+        var shadowOffset = this.shadowOffset;
         var windowRectangle = this.getBoundsOf(wdw); //returns the window rectangle
 
         var invokerOffset = invoker.offset();
 
-	var invokerOuterHeight = invoker.outerHeight();
-	var spaceAbove = invokerOffset.top - windowRectangle.y;
+        var invokerOuterHeight = invoker.outerHeight();
+        var spaceAbove = invokerOffset.top - windowRectangle.y;
         var spaceBelow = windowRectangle.height - invokerOuterHeight - spaceAbove;
         var placeAbove = spaceAbove > spaceBelow && div.outerHeight(false) + shadowOffset > spaceBelow;
 
-	var invokerOuterWidth = invoker.outerWidth();
-	var spaceRight = windowRectangle.x + windowRectangle.width - invokerOffset.left ;
+        var invokerOuterWidth = invoker.outerWidth();
+        var spaceRight = windowRectangle.x + windowRectangle.width - invokerOffset.left ;
         var spaceLeft = invokerOffset.left + invokerOuterWidth - windowRectangle.x;
         var placeLeft = spaceLeft > spaceRight && div.outerWidth(false) + shadowOffset > spaceRight;
 
         this.setMaxSize({
             height : (placeAbove ? spaceAbove : spaceBelow),
-			width: (placeLeft ? spaceLeft : spaceRight)
+            width: (placeLeft ? spaceLeft : spaceRight)
         },isSizable); //width will be ignored (for the moment)
         //decrement of one pixel cause when the popup has to be reduced and the shadows bounds "touch" the window right or bottom sides,
         //the window scrolls (and it shouldn't)
@@ -949,5 +1016,8 @@ function PopupDiv(){
         return this.getId()+"_focus";
     }
 
+    p.getFormDataAttrName = function(){
+        return this.getId()+"_data";
+    }
 
 })(PopupDiv.prototype);

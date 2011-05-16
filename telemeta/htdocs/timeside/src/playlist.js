@@ -22,6 +22,7 @@ PopupDiv.closeButtonTitle =  '';
 PopupDiv.closeButtonClass =  'markersdivDelete';
 PopupDiv.defaultCloseOperation = 'remove';
 PopupDiv.focusable = true;
+PopupDiv.listItemClass = "component_icon list_item icon_playlist";
 
 var playlistUtils = {
     playlists : [],
@@ -94,10 +95,7 @@ var playlistUtils = {
         var ar = [];
         var playlists = this.playlists;
         for(var i=0; i< playlists.length; i++){
-            ar.push({
-                'html':playlists[i].name,
-                'class':"component_icon list_item icon_playlist"
-            });
+            ar.push(playlists[i].name);
         }
         if(!ar.length){
             return;
@@ -124,8 +122,6 @@ var playlistUtils = {
                     }
                 }
                 addFcn(playlists[val].id,resourceType,objectId,callbackok);
-
-
             }
         }).show();
 
