@@ -11,7 +11,7 @@
 
 {% block infos %}
      <div class="infos">
-      <form method="POST" id="_editCollectionForm" action="">{% csrf_token %}
+      <form method="post" id="_editCollectionForm" action="">{% csrf_token %}
        <table>
        <tr><td colspan="2">{% for error in form.non_field_errors %}<li class="error">{{ error }}</li>{% endfor %}</td></tr>
        {% for field in form %}

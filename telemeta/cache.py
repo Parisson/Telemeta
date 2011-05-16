@@ -1,9 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2006-2010 Guillaume Pellerin
-
-# <yomguy@parisson.com>
+# Copyright (C) 2006-2010 Guillaume Pellerin, Parisson SARL
 
 # This software is a computer program whose purpose is to stream audio
 # and video data through icecast2 servers.

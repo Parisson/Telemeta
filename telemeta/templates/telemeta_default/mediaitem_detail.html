@@ -6,22 +6,24 @@
 
 {% block stylesheets %}
 {{ block.super }}
-    <link rel="stylesheet" type="text/css" href="{% url telemeta-timeside "css/timeside.css" %}" />
-    <link rel="stylesheet" type="text/css" href="{% url telemeta-timeside "skins/lab/style.css" %}" />
-    <link rel="stylesheet" type="text/css" href="{% url telemeta-css "player.css" %}" />
-{% endblock %}
+<link rel="stylesheet" type="text/css" href="{% url telemeta-timeside "css/timeside.css" %}" />
+      <link rel="stylesheet" type="text/css" href="{% url telemeta-timeside "skins/lab/style.css" %}" />
+      <link rel="stylesheet" type="text/css" href="{% url telemeta-css "player.css" %}" />
+      {% endblock %}
 
-{% block extra_javascript %}
-{% if item.file %}
+      {% block extra_javascript %}
+      {% if item.file %}
 
       <!--<script src="{% url telemeta-js "wz_jsgraphics.js" %}" type="text/javascript"></script>-->
-<script src="{% url telemeta-js "soundmanager2.js" %}" type="text/javascript"></script>
-<script src="{% url telemeta-timeside "src/playlist.js" %}" type="text/javascript"></script>
+<script src="{% url telemeta-timeside "js/soundmanager2-nodebug-jsmin.js" %}" type="text/javascript"></script>
+<script src="{% url telemeta-js "popupdiv.js" %}" type="text/javascript"></script>
+<script src="{% url telemeta-js "playlist.js" %}" type="text/javascript"></script>
 <script type="text/javascript">
-    soundManager.url = '{% url telemeta-swf "./" %}';
+    //soundManager.url = '{% url telemeta-swf "./" %}';
+    soundManager.url = "{% url telemeta-timeside "swf/" %}";
     soundManager.flashVersion = 9;
     soundManager.useMovieStar = true; // enable MP4/M4A/AAC
-    soundManager.debugMode = false;
+    soundManager.debugMode = true;
     soundManager.allowPolling = true;
 
     var setupPlaylist = function(){
@@ -43,41 +45,48 @@
         {% endif %}
     };
 
-//    {% if item %}
-//    var ITEM_PUBLIC_ID = '{{item.public_id}}';
-//    {% endif %}
+    //managing errors (might be improved in future development)
+    function playerError(msg){
+        var elm = jQuery('#loading_span');
+        if(elm.length>0){
+            elm.empty().remove();
+        }
+        jQuery('#rightcol').hide();
+        alert(msg);
+    }
+    //warn on soundmanager error:
+    soundManager.onerror = function() {
+        playerError('SoundManager error. If your browser does not support HTML5, Flash player (version 9+) must be installed.\nIf flash is installed, try to:\n - Reload the page\n - Empty the cache (see browser preferences) and reload the page\n - Restart the browser');
+    };
 
-    var scripts = ["{% url telemeta-js "wz_jsgraphics.js" %}", "{% url telemeta-timeside "src/timeside.js" %}","{% url telemeta-js "playerUtils.js" %}"];
+    setTimeout(function(){
+        if(jQuery('#loading_span').length>0){
+            playerError('SoundManager error. Try to:\n - Reload the page\n - Empty the cache (see browser preferences) and reload the page\n - Restart the browser');
+        }
+    },10000);
 
-    var _sound_manager_loaded=false;
-    var _jQuery_loaded = false;
+    //initializing the visualizers to be passed to the player
     var visualizers = {};
     {% for v in visualizers %}
     visualizers["{{v.name}}"] = "{% url telemeta-item-visualize item.public_id,v.id,"WIDTH","HEIGHT" %}";
     {% endfor %}
     
-    jQuery(window).ready(function(){
-        _jQuery_loaded=true;
-        if(_sound_manager_loaded){
-            alert(jQuery('.ts-wave a'));
-            loadScripts(scripts, 
-            function(){
-                loadPlayer('{% url telemeta-item-analyze-xml item.public_id %}',"{% url telemeta-item-export item.public_id,"mp3" %}",'{{item.id}}', visualizers, CURRENT_USER_NAME);
-                setupPlaylist();
-            });
-        }
-    });
+    var scripts = ["{% url telemeta-timeside "js/wz_jsgraphics.js" %}", "{% url telemeta-timeside "js/timeside.js" %}","{% url telemeta-timeside "js/playerLoader.js" %}"];
 
-    soundManager.onready(function() {
-        _sound_manager_loaded=true;
-        if(_jQuery_loaded){
-            loadScripts(scripts, 
+    jQuery(window).ready(function(){
+        //if soundmanager is ready, the callback is executed immetiately
+        //onready is executed BEFORE onload, it basically queues several onload events.
+        //It it is executed immetiately if soundmanager has already been loaded
+        soundManager.onready(function() {
+            loadScripts(scripts,
             function(){
                 loadPlayer('{% url telemeta-item-analyze-xml item.public_id %}',"{% url telemeta-item-export item.public_id,"mp3" %}", '{{item.id}}', visualizers, CURRENT_USER_NAME);
                 setupPlaylist();
             });
-        }
+        });
     });
+
+
 
 </script>
 {% endif %}
@@ -86,7 +95,7 @@
 {% if item %}
 
 {% block title %}
- <img src="images/item.png" style="vertical-align:middle" /> Item : {{ item }}
+<img src="images/item.png" alt="item" style="vertical-align:middle" /> Item : {{ item }}
 {% endblock %}
 
 {% block title_buttons %}
@@ -117,46 +126,13 @@
             <a href="#" class="toggle">Maximize</a>
             <div class="wazing"></div>
             <div id="player" class="ts-player">
-                <!--<div class="ts-viewer">
-                    <div class="ts-wave">
-                        <div class="ts-image-container">
-                            <a href="{% url telemeta-item-export item.public_id,"mp3" %}">
-                               <img class="ts-image" src="{% url telemeta-item-visualize item.public_id,visualizer_id,360,130 %}"
-                                 alt="" /></a>
-                        </div>
-                    </div>
-                </div>-->
             </div>
         </div>
-        <!-- <div class="item_visualization" id="item_visualization_id">
-            <form id="visualizer_id_form" method="get" action="#">
-                <img src="images/plots.png" style="vertical-align:middle" />&nbsp;Visualization :
-                <select id="visualizer_id" name="visualizer_id">
-                    {% for v in visualizers %}
-                    <option value="{% url telemeta-item-visualize item.public_id,v.id,"WIDTH","HEIGHT" %}">
-                            {{v.name}}</option>
-                    {% endfor %}
-                </select>
-                <input style="visibility: hidden;" type="submit" value="Set" />
-            </form> -->
 
-        <!--
-                <form method="get" action="#">
-                    <p>&nbsp;Vamp plugin analysis</p>
-                    <select name="vamp_id">
-                    {% for plugin in vamp_plugins %}
-                    <option value="{{ plugin }}" {% ifequal plugin vamp_id %} selected="selected" {% endifequal %}>
-                    {{ plugin }}</option>
-                    {% endfor %}
-                    </select>
-                    <input type="submit" value="Get" />
-                </form>
-        -->
         <!-- </div> -->
-
         <div id="tabs_container">
             <!-- this div will be hidden when everything is fully loaded-->
-            <span id="loading_span" href="#"><img style="vertical-align:middle" src="/images/wait.gif"/>&nbsp;
+            <span id="loading_span" href="#"><img style="vertical-align:middle" alt="wait" src="/images/wait.gif"/>&nbsp;
                 <span id="loading_span_text">Loading...</span></span>
             <a id="tab_analysis" style="display:none" class ="tab" href="#">{% trans "Analysis" %}</a><!--
              do not let space here as it appears in the document
@@ -172,26 +148,13 @@
                     <td>{% trans "Value" %}</td>
                     <td>{% trans "Unit" %}</td>
                 </tr>
-                <!-- {% for analyser in analysers %}
-                 <tr class="analyzer-line">
-                     <td>
-                         {{ analyser.name }}
-                     </td>
-                     <td>
-                         {{ analyser.value }}
-                     </td>
-                     <td>
-                         {{ analyser.unit }}
-                     </td>
-                 </tr>
-                 {% endfor %}-->
             </table>
         </div>
         <!--</div>-->
 
         {% if audio_export_enabled %}
         <div class="exporter">
-            <p><img src="images/download.png" style="vertical-align:middle" /> {% trans "Download:" %}
+            <p><img src="images/download.png" alt="download" style="vertical-align:middle" /> {% trans "Download:" %}
                 {% for format in export_formats %}
                 <a href="{% url telemeta-item-export item.public_id,format.extension %}">
                     <img src="images/{{ format.extension }}.png" style="vertical-align:middle" alt="{{ format.extension }}" /></a>
@@ -236,7 +199,7 @@
         {% endblock geoethnic_data %}
     </div>
     {% if user.is_authenticated and perms.telemeta.change_mediaitem %}
-       <a href="{% url telemeta-item-keywords_edit item.public_id %}" class="component_icon button icon_edit">{% trans "Edit" %} {% trans "keywords" %}</a>
+    <a href="{% url telemeta-item-keywords_edit item.public_id %}" class="component_icon button icon_edit">{% trans "Edit" %} {% trans "keywords" %}</a>
     {% endif %}
     <div class="extraInfos">
         {% block musical_data %}
@@ -275,7 +238,7 @@
         {% endblock musical_data %}
     </div>
     {% if user.is_authenticated and perms.telemeta.change_mediaitem %}
-     <a href="{% url telemeta-item-performances_edit item.public_id %}" class="component_icon button icon_edit">{% trans "Edit"%} {% trans "performance"%}</a>
+    <a href="{% url telemeta-item-performances_edit item.public_id %}" class="component_icon button icon_edit">{% trans "Edit"%} {% trans "performance"%}</a>
     {% endif %}
     <div class="extraInfos">
         {% block general_data %}

@@ -12,7 +12,7 @@
 
 {% block infos %}    
 <div class="infos">
-    <form enctype="multipart/form-data" id="_editItemForm" method="POST" action="">{% csrf_token %}   
+    <form enctype="multipart/form-data" id="_editItemForm" method="post" action="">{% csrf_token %}   
     <table>
     <tr><td colspan="2">{% for error in form.non_field_errors %}<li class="error">{{ error }}</li>{% endfor %}</td></tr>
     {% for field in form %}
@@ -24,7 +24,9 @@
             <td> {{ item.file.name }} <br /> {{ field }}</td>
             {% else %}
             {% if field.html_name == "collection" %}
-            <td>{{ field }} <br />&nbsp;{% trans "Title" %} : {{ item.collection.title }}</td>
+            <td>&nbsp;{% trans "Title" %} : {{ item.collection.title }}<br />
+                &nbsp;{% trans "Code" %} : {{ item.collection.code }}<br />
+                {{ field }}</td>
             {% else %}
             <td>{{ field }}</td>
             {% endif %}

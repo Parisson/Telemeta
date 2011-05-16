@@ -5,7 +5,6 @@
 
 {% block tabcontents %}
  <h4>{% trans "Instruments" %}</h4>
-
  <form class="addnew" id="_addinstru" method="POST"
         action="{% url telemeta-instrument-add %}">{% csrf_token %}
   <fieldset>

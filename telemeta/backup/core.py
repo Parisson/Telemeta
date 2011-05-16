@@ -60,13 +60,13 @@ class CollectionSerializer(object):
         return hash.hexdigest()
 
     def __get_media_filename(self, item):
-        return item.id + ".wav"
+        return str(item.id) + ".wav"
 
     def store(self, dest_dir):
         """Serialize and store the collection with related items and media 
         files into a subdirectory of the provided directory
         """
-        coll_dir = dest_dir + "/" + self.collection.id
+        coll_dir = dest_dir + "/" + str(self.collection.id)
         os.mkdir(coll_dir)
 
         xml = self.get_xml()
@@ -97,7 +97,7 @@ class CollectionSerializer(object):
         coll_doc = self.collection.to_dom()
         coll_node = doc.documentElement.appendChild(coll_doc.documentElement)
         coll_doc.unlink()
-        items_node_name = MediaItem.get_dom_element_name() + "List"
+        items_node_name = MediaItem.get_dom_name() + "List"
         items_node = doc.createElement(items_node_name)
         coll_node.appendChild(items_node)
 

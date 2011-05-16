@@ -5,14 +5,14 @@
 {% block head_title %}{% trans "User Profile" %} : {{ usr.username }}{% endblock %}
 
 {% block title %}
- <img src="{% url telemeta-images "user_red.png" %}" style="vertical-align:middle" /> {% trans "User profile" %} : {{ usr.username }}
+ <img src="{% url telemeta-images "user_red.png" %}" alt="user" style="vertical-align:middle" /> {% trans "User profile" %} : {{ usr.username }}
 {% endblock %}
 
 {% block content %}
-  <div class="module-set" style="width: 33%">
+  <div id="module-set" style="width: 33%">
   {% block modules %}
-  <div id="module" class="module">
-    <h3><img src="{% url telemeta-images "module_playlist.png" %}" style="vertical-align:middle" />
+  <div class="module">
+    <h3><img src="{% url telemeta-images "module_playlist.png" %}" alt="playlists" style="vertical-align:middle" />
     {% trans "Playlists" %}</h3>
     <ul class="playlist">
     {% for p in playlists %}

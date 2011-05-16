@@ -1,5 +1,6 @@
     # -*- coding: utf-8 -*-
 # Copyright (C) 2007-2010 Samalyse SARL
+# Copyright (C) 2010-2011 Parisson SARL
 
 # This software is a computer program whose purpose is to backup, analyse,
 # transcode and stream any audio content with its metadata over a web frontend.
@@ -32,6 +33,7 @@
 #
 # Authors: Olivier Guilyardi <olivier@samalyse.com>
 #          David LIPSZYC <davidlipszyc@gmail.com>
+#          Guillaume Pellerin <yomguy@parisson.com>
 
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
@@ -86,62 +88,69 @@ class MediaCollection(MediaResource):
         if not re.match(regex, value):
             raise ValidationError(u'%s is not a valid collection code' % value)
     
-    code                  = CharField(_('code'), unique=True, required=True, validators=[is_valid_collection_code])
-    old_code              = CharField(_('old code'), unique=True, null=True)
+    # General informations
     reference             = CharField(_('reference'), unique=True, null=True)
     title                 = CharField(_('title'), required=True)
     alt_title             = CharField(_('original title / translation'))
-    physical_format       = WeakForeignKey('PhysicalFormat', related_name="collections", 
-                                           verbose_name=_('archive format'))
-    
-    physical_items_num    = IntegerField(_('number of components (medium / piece)'))
-    publishing_status     = WeakForeignKey('PublishingStatus', related_name="collections", 
-                                           verbose_name=_('secondary edition'))
     creator               = CharField(_('depositor / contributor'))
-    booklet_author        = CharField(_('author of published notice'))
-    booklet_description   = TextField(_('related documentation'))
+    recording_context     = WeakForeignKey('RecordingContext', related_name="collections", 
+                                           verbose_name=_('recording context'))
+    recorded_from_year    = IntegerField(_('recording year (from)'))
+    recorded_to_year      = IntegerField(_('recording year (until)'))
+    year_published        = IntegerField(_('year published'))
+    
+    # Geographic and cultural informations
+    ## See "countries" and "ethnic_groups" methods below
+
+    # Legal notices
     collector             = CharField(_('recordist'))
-    collector_is_creator  = BooleanField(_('recordist identical to depositor'))
     publisher             = WeakForeignKey('Publisher', related_name="collections", 
                                            verbose_name=_('publisher / status'))     
-    is_published          = BooleanField(_('published'))
-    year_published        = IntegerField(_('year published'))
     publisher_collection  = WeakForeignKey('PublisherCollection', related_name="collections", 
                                             verbose_name=_('publisher collection'))
     publisher_serial      = CharField(_('publisher serial number'))
+    booklet_author        = CharField(_('author of published notice'))
     external_references   = TextField(_('bibliographic references'))
-    acquisition_mode      = WeakForeignKey('AcquisitionMode', related_name="collections", 
-                                            verbose_name=_('mode of acquisition'))
-    comment               = TextField(_('comment'))
-    metadata_author       = WeakForeignKey('MetadataAuthor', related_name="collections", 
-                                           verbose_name=_('record author'))
-    metadata_writer       = WeakForeignKey('MetadataWriter', related_name="collections", 
-                                           verbose_name=_('record writer'))
-    legal_rights          = WeakForeignKey('LegalRight', related_name="collections", 
-                                           verbose_name=_('legal rights'))
-    alt_ids               = CharField(_('copies'))
-    recorded_from_year    = IntegerField(_('recording year (from)'))
-    recorded_to_year      = IntegerField(_('recording year (until)'))
-    recording_context     = WeakForeignKey('RecordingContext', related_name="collections", 
-                                           verbose_name=_('recording context'))
-    approx_duration       = DurationField(_('approximative duration'))
     doctype_code          = IntegerField(_('document type'))
-    travail               = CharField(_('archiver notes'))
-    state                 = TextField(_('status'))
-    cnrs_contributor      = CharField(_('CNRS depositor'))
-    items_done            = CharField(_('items finished'))
-    a_informer_07_03      = CharField(_('a_informer_07_03'))
-    ad_conversion         = WeakForeignKey('AdConversion', related_name='collections', 
-                                           verbose_name=_('digitization'))
     public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES, 
                                       max_length=16, default="metadata")
-
+    legal_rights          = WeakForeignKey('LegalRight', related_name="collections", 
+                                           verbose_name=_('legal rights'))
+    
+    # Archiving data
+    acquisition_mode      = WeakForeignKey('AcquisitionMode', related_name="collections", 
+                                            verbose_name=_('mode of acquisition'))
+    cnrs_contributor      = CharField(_('CNRS depositor'))
+    metadata_author       = WeakForeignKey('MetadataAuthor', related_name="collections", 
+                                           verbose_name=_('record author'))
+    booklet_description   = TextField(_('related documentation'))
+    publishing_status     = WeakForeignKey('PublishingStatus', related_name="collections", 
+                                           verbose_name=_('secondary edition'))
+    alt_ids               = CharField(_('copies'))
+    comment               = TextField(_('comment'))
+    metadata_writer       = WeakForeignKey('MetadataWriter', related_name="collections", 
+                                           verbose_name=_('record writer'))
+    travail               = CharField(_('archiver notes'))
+    items_done            = CharField(_('items finished'))
+    collector_is_creator  = BooleanField(_('recordist identical to depositor'))
+    is_published          = BooleanField(_('published'))
+    
+    # Technical data
+    code                  = CharField(_('code'), unique=True, required=True, validators=[is_valid_collection_code])
+    old_code              = CharField(_('old code'), unique=True, null=True)
+    approx_duration       = DurationField(_('approximative duration'))
+    physical_items_num    = IntegerField(_('number of components (medium / piece)'))
+    physical_format       = WeakForeignKey('PhysicalFormat', related_name="collections", 
+                                           verbose_name=_('archive format'))
+    ad_conversion         = WeakForeignKey('AdConversion', related_name='collections', 
+                                           verbose_name=_('digitization'))
+    state                 = TextField(_('status'))
+    a_informer_07_03      = CharField(_('a_informer_07_03'))
+    
+    # All
     objects               = MediaCollectionManager()
 
     def __unicode__(self):
-#        if self.title:
-#            return self.title
-
         return self.code
 
     @property
@@ -213,39 +222,51 @@ class MediaItem(MediaResource):
     "Describe an item"
     element_type = 'item'
     PUBLIC_ACCESS_CHOICES = (('none', 'none'), ('metadata', 'metadata'), ('full', 'full'))
-
-    collection            = ForeignKey('MediaCollection', related_name="items", 
-                                       verbose_name=_('collection'))
+    
+    # Main Informations
     title                 = CharField(_('title'))
-    track                 = CharField(_('item number'))
-    old_code              = CharField(_('old code'), unique=True, null=True)
-    code                  = CharField(_('code'), unique=True, null=True)
-    approx_duration       = DurationField(_('approximative duration'))
+    alt_title             = CharField(_('original title / translation'))
+    collector             = CharField(_('recordist'))
+    collection            = ForeignKey('MediaCollection', related_name="items", 
+                                       verbose_name=_('collection'))    
     recorded_from_date    = DateField(_('recording date (from)'))
     recorded_to_date      = DateField(_('recording date (until)'))
+    
+    # Geographic and cultural informations
     location              = WeakForeignKey('Location', verbose_name=_('location'))
     location_comment      = CharField(_('location details'))
+    cultural_area         = CharField(_('cultural area'))
     ethnic_group          = WeakForeignKey('EthnicGroup', related_name="items", 
                                            verbose_name=_('population / social group'))
-    alt_title             = CharField(_('original title / translation'))
-    author                = CharField(_('author / compositor'))
+    context_comment       = TextField(_('comments'))
+    moda_execut           = CharField(_('moda_execut'))
+    
+    # Musical informations
     vernacular_style      = WeakForeignKey('VernacularStyle', related_name="items", 
                                            verbose_name=_('vernacular style'))
-    external_references   = TextField(_('published reference'))
-    moda_execut           = CharField(_('moda_execut'))
-    copied_from_item      = WeakForeignKey('self', related_name="copies", verbose_name=_('copy of'))
-    collector             = CharField(_('recordist'))
-    collector_from_collection = BooleanField(_('recordist as in collection'))
-    cultural_area         = CharField(_('cultural area'))
     generic_style         = WeakForeignKey('GenericStyle', related_name="items", 
                                            verbose_name=_('generic style'))
-    collector_selection   = CharField(_('recordist selection'))
-    creator_reference     = CharField(_('reference'))
-    context_comment       = TextField(_('comments'))
+    author                = CharField(_('author / compositor'))
+    
+    # General informations
     comment               = TextField(_('remarks'))
-    file                  = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename")
+    collector_selection   = CharField(_('recordist selection'))
+    collector_from_collection = BooleanField(_('recordist as in collection'))
+    
+    # Archiving data
+    code                  = CharField(_('code'), unique=True, null=True)
+    old_code              = CharField(_('old code'), unique=True, null=True)
+    track                 = CharField(_('item number'))
+    creator_reference     = CharField(_('reference'))
+    external_references   = TextField(_('published reference'))
+    copied_from_item      = WeakForeignKey('self', related_name="copies", verbose_name=_('copy of'))
     public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES, max_length=16, default="metadata")
-
+    file                  = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename")
+    
+    # Technical data
+    approx_duration       = DurationField(_('approximative duration'))
+    
+    # All
     objects               = MediaItemManager()
 
     def keywords(self):
@@ -416,3 +437,55 @@ class Search(ModelCore):
         return self.keywords
 
 
+class DublinCoreToFormatMetadata(object):
+    """ a mapping class to get item DublinCore metadata dictionaries 
+    in various audio metadata format (MP3, OGG, etc...)"""
+    
+    metadata_mapping = { 
+                    'mp3' : {
+                         'title': 'TIT2', #title2
+                         'creator': 'TCOM', #composer
+                         'creator': 'TPE1', #lead
+                         'identifier': 'UFID', #unique ID
+                         'relation': 'TALB', #album
+                         'type': 'TCON', #genre
+                         'publisher': 'TPUB', #publisher
+                         'date': 'TDRC', #year
+#                         'coverage': 'COMM',  #comment
+                         }, 
+                    'ogg': {
+                        'creator': 'artist',
+                        'relation': 'album', 
+                        'all': 'all', 
+                       }, 
+                    'flac': {
+                        'creator': 'artist',
+                        'relation': 'album', 
+                        'all': 'all', 
+                       }, 
+                    }
+    
+    def __init__(self, format):
+        self.format = format
+        
+    def get_metadata(self, dc_metadata):
+        mapp = self.metadata_mapping[self.format]
+        metadata = {}
+        keys_done = []
+        for data in dc_metadata:
+            key = data[0]
+            value = data[1]
+            if value:
+                if key == 'date':
+                    value = value.split(';')[0].split('=')
+                    if len(value) > 1:
+                        value  = value[1]
+                        value = value.split('-')[0]
+                    else:
+                        value = value[0].split('-')[0]
+                if key in mapp:
+                    metadata[mapp[key]] = str(value)
+                elif 'all' in mapp.keys():
+                    metadata[key] = str(value)
+                keys_done.append(key)
+        return metadata

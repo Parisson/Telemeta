@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Copyright (C) 2007-2010 Samalyse SARL
+# Copyright (C) 2010-2011 Parisson SARL
 
 # This software is a computer program whose purpose is to backup, analyse,
 # transcode and stream any audio content with its metadata over a web frontend.
@@ -32,6 +33,7 @@
 #
 # Authors: Olivier Guilyardi <olivier@samalyse.com>
 #          David LIPSZYC <davidlipszyc@gmail.com>
+#          Guillaume Pellerin <yomguy@parisson.com>
 
 from telemeta.models.core import *
 from django.utils.translation import ugettext_lazy as _
@@ -66,6 +68,10 @@ class InstrumentRelation(ModelCore):
     class Meta(MetaCore):
         db_table = 'instrument_relations'
         unique_together = (('instrument', 'parent_instrument'),)
+    
+    def __unicode__(self):
+        sep = ' > '
+        return self.parent_instrument.name + sep + self.instrument.name
 
 class InstrumentAliasRelation(ModelCore):
     "Instrument family other name"
@@ -74,6 +80,10 @@ class InstrumentAliasRelation(ModelCore):
     instrument = ForeignKey('InstrumentAlias', related_name="relation", 
                             verbose_name=_('instrument'))
 
+    def __unicode__(self):
+        sep = ' : '
+        return self.alias.name + sep + self.instrument.name
+        
     class Meta(MetaCore):
         db_table = 'instrument_alias_relations'
         unique_together = (('alias', 'instrument'),)

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2007 Samalyse SARL
+# Copyright (C) 2007-2010 Samalyse SARL
+# Copyright (C) 2010-2011 Parisson SARL
 
 # This software is a computer program whose purpose is to backup, analyse,
 # transcode and stream any audio content with its metadata over a web frontend.
@@ -30,7 +31,8 @@
 # The fact that you are presently reading this means that you have had
 # knowledge of the CeCILL license and that you accept its terms.
 
-# Author: Olivier Guilyardi <olivier@samalyse.com>
+# Authors: Olivier Guilyardi <olivier@samalyse.com>
+#          Guillaume Pellerin <yomguy@parisson.com>
 
 import re
 import os
@@ -274,23 +276,18 @@ class WebView(object):
         analyzers = self.item_analyze(item)
         playlists = self.get_playlists(request)
         public_access = self.get_public_access(item.public_access, item.recorded_from_date, item.recorded_to_date)
-        
-        translation_list = ['OK', 'Cancel', 'Item' 'Marker', 'added to playlist']
-        translations = {}
-        for term in translation_list:
-            translations[term] = ugettext(term)
                 
         return render(request, template,
                     {'item': item, 'export_formats': formats,
                     'visualizers': graphers, 'visualizer_id': grapher_id,'analysers': analyzers,
                     'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True),
                     'previous' : previous, 'next' : next, 'marker': marker_id, 'playlists' : playlists, 
-                    'public_access': public_access, 'translations': translations, 
+                    'public_access': public_access,
                     })
     
     def get_public_access(self, access, date_from, date_to):
-        # Rolling publishing date : Public access when time between recorded year 
-        # and currant year is over settings value PUBLIC_ACCESS_PERIOD
+        # Rolling publishing date : public access is given when time between recorded year 
+        # and current year is over the settings value PUBLIC_ACCESS_PERIOD
         if date_to:
             date = date_to
         elif date_from:
@@ -475,7 +472,7 @@ class WebView(object):
                 graph = grapher(width = int(width), height = int(height))
                 pipe = decoder | graph
                 pipe.run()
-#                graph.watermark('telemeta', opacity=.6, margin=(5,5))
+                graph.watermark('telemeta', opacity=.6, margin=(5,5))
                 f = open(path, 'w')
                 graph.render(path)
                 f.close()
@@ -523,19 +520,24 @@ class WebView(object):
             # source > stream
             response = HttpResponse(stream_from_file(audio), mimetype = mime_type)
             
-        else:        
+        else:
+            dc_metadata = dublincore.express_item(item).to_list()
+            mapping = DublinCoreToFormatMetadata(extension)
+            metadata = mapping.get_metadata(dc_metadata)     
+            media = self.cache_export.dir + os.sep + file
             if not self.cache_export.exists(file):
                 decoder = timeside.decoder.FileDecoder(audio)
                 # source > encoder > stream
                 decoder.setup()
-                media = self.cache_export.dir + os.sep + file
                 proc = encoder(media, streaming=True)
                 proc.setup(channels=decoder.channels(), samplerate=decoder.samplerate())
-#                metadata = dublincore.express_item(item).to_list()
-#                enc.set_metadata(metadata)
+                proc.set_metadata(metadata)
                 response = HttpResponse(stream_from_processor(decoder, proc), mimetype = mime_type)
             else:
                 # cache > stream
+                proc = encoder(media)
+                proc.set_metadata(metadata)
+                proc.write_metadata()
                 response = HttpResponse(self.cache_export.read_stream_bin(file), mimetype = mime_type)
         
         response['Content-Disposition'] = 'attachment'
@@ -892,8 +894,8 @@ class WebView(object):
             raise 'Error : Bad marker dictionnary'
 
     @jsonrpc_method('telemeta.del_marker')
-    def del_marker(request, item_id):
-        m = MediaItemMarker.objects.get(id=item_id)
+    def del_marker(request, public_id):
+        m = MediaItemMarker.objects.get(public_id=public_id)
         m.delete()
         
     @jsonrpc_method('telemeta.get_markers')

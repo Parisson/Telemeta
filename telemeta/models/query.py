@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Copyright (C) 2007-2010 Samalyse SARL
+# Copyright (C) 2010-2011 Parisson SARL
 #
 # This software is a computer program whose purpose is to backup, analyse,
 # transcode and stream any audio content with its metadata over a web frontend.
@@ -32,6 +33,7 @@
 #
 # Authors: Olivier Guilyardi <olivier@samalyse.com>
 #          David LIPSZYC <davidlipszyc@gmail.com>
+#          Guillaume Pellerin <yomguy@parisson.com>
 
 from django.db.models import Q, Max, Min
 from telemeta.models.core import *

@@ -24,7 +24,8 @@ Install the dependencies
     Install all dependencies like this::
 	
         sudo aptitude install python python-django python-xml python-mysqldb mysql-server \
-                              python-ctypes python-setuptools python-support python-docutils
+                              python-ctypes python-setuptools python-support python-docutils \
+                              python-libxml2 python-django-registration
 
     To get MP3 reading and writing, just add these lines to your /etc/apt/sources-list::
 
