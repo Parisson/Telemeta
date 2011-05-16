@@ -1,13 +1,30 @@
-/**
- * TimeSide - Web Audio Components
- * Copyright (c) 2011 Parisson
- * Author: Riccardo Zaccarelli <riccardo.zaccarelli gmail.com> and Olivier Guilyardi <olivier samalyse com>
- * License: GNU General Public License version 2.0
+/*
+ * Copyright (C) 2007-2011 Parisson
+ * Copyright (c) 2011 Riccardo Zaccarelli <riccardo.zaccarelli@gmail.com>
+ * Copyright (c) 2010 Olivier Guilyardi <olivier@samalyse.com>
+ *
+ * This file is part of TimeSide.
+ *
+ * TimeSide is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * TimeSide is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with TimeSide.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Authors: Riccardo Zaccarelli <riccardo.zaccarelli@gmail.com>
+ *          Olivier Guilyardi <olivier@samalyse.com>
  */
 
 /**
  * Class representing a RulerMarker in TimesideUI
- * Requires jQuery and all associated player classes
+ * Requires jQuery wz_jsgraphics and all associated player classes
  */
 
 var RulerMarker = TimesideClass.extend({
@@ -91,81 +108,6 @@ var RulerMarker = TimesideClass.extend({
             return label;
         }
         
-      
-        //CODE HERE BELOW IS EXECUTED ONLY IF THE MARKER HAS CAN MOVE IMPLEMENTED (see Ruler???).
-        //Otherwise, no mouse event can call these methods
-        //re-implement function move
-        //        var position = 0;
-        //        var relativePosition = 0; //position in percentage of container width, set it in move and use it in refreshPosition
-        //
-        //        var mRound = Math.round; //instantiate the functio once
-
-        //        this.move = function(pixelOffset) {
-        //            var width =  viewer.width();
-        //            if (position != pixelOffset) {
-        //                if (pixelOffset < 0) {
-        //                    pixelOffset = 0;
-        //                } else if (pixelOffset >= width) {
-        //                    pixelOffset = width - 1;
-        //                }
-        //                nodes.each(function(i, node) {
-        //                    $J(node).css('left', mRound(node.originalPosition + pixelOffset) + 'px');
-        //                });
-        //                position = pixelOffset;
-        //                this.refreshLabelPosition(width);
-        //                //store relative position (see refreshPosition below)
-        //                relativePosition = pixelOffset == width-1 ? 1 : pixelOffset/width;
-        //            }
-        //            return this;
-        //        };
-        //
-        //        this.refreshLabelPosition = function(optionalContainerWidth){
-        //            if(!(optionalContainerWidth)){
-        //                optionalContainerWidth = viewer.width();
-        //            }
-        //            var width = optionalContainerWidth;
-        //            var pixelOffset = position;
-        //            var labelWidth = label.outerWidth(); //consider margins and padding //label.width();
-        //            var labelPixelOffset = pixelOffset - labelWidth / 2;
-        //            if (labelPixelOffset < 0){
-        //                labelPixelOffset = 0;
-        //            }else if (labelPixelOffset + labelWidth > width){
-        //                labelPixelOffset = width - labelWidth;
-        //            }
-        //            label.css({
-        //                left: mRound(labelPixelOffset) + 'px'
-        //            });
-        //
-        //        };
-        //
-        //        //function called on ruler.resize. Instead of recreating all markers, simply redraw them
-        //        this.refreshPosition = function(){
-        //            var width =  viewer.width();
-        //            //store relativePosition:
-        //            var rp = relativePosition;
-        //            this.move(mRound(relativePosition*width));
-        //            //reset relative position, which does not have to change
-        //            //but in move might have been rounded:
-        //            relativePosition = rp;
-        //            //last thing: resize the vertical line.
-        //            //Assumptions (having a look at the web page element with a debugger and the code above
-        //            //which uses jsgraphics):
-        //            //The line is the first item (see drawLine above)
-        //            //not only the height, but also the height of the clip property must be set
-        //            var h = viewer.height();
-        //            $J(nodes[0]).css({
-        //                'height':h+'px',
-        //                'clip': 'rect(0px 1px '+h+'px 0px)'
-        //            });
-        //        }
-        //
-        //        this.remove = function() {
-        //            painter.clear();
-        //            $J(painter.cnv).remove();
-        //            label.remove();
-        //            return this;
-        //        };
-
         this.getViewer = function(){
             return viewer;
         }
@@ -184,7 +126,7 @@ var RulerMarker = TimesideClass.extend({
         var label = this.getLabel();
         if (label) {
             text += '';
-            var labelWidth = this._textWidth(text, this.getFontSize()) + 10;
+            var labelWidth = this.textWidth(text, this.getFontSize()) + 10;
             var oldWidth = label.width();
             if (oldWidth != labelWidth) {
                 label.css({

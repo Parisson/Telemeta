@@ -1,8 +1,25 @@
-/**
- * TimeSide - Web Audio Components
- * Copyright (c) 2011 Parisson
- * Author: Riccardo Zaccarelli <riccardo.zaccarelli gmail.com> and Olivier Guilyardi <olivier samalyse com>
- * License: GNU General Public License version 2.0
+/*
+ * Copyright (C) 2007-2011 Parisson
+ * Copyright (c) 2011 Riccardo Zaccarelli <riccardo.zaccarelli@gmail.com>
+ * Copyright (c) 2010 Olivier Guilyardi <olivier@samalyse.com>
+ *
+ * This file is part of TimeSide.
+ *
+ * TimeSide is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * TimeSide is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with TimeSide.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Authors: Riccardo Zaccarelli <riccardo.zaccarelli@gmail.com>
+ *          Olivier Guilyardi <olivier@samalyse.com>
  */
 
 /**
@@ -13,9 +30,10 @@
  * By John Resig http://ejohn.org/
  * MIT Licensed.
  * (Inspired by base2 and Prototype)
- * 
- * In my (Riccardo) opinion the lightest and most-comprehensive way to implement inhertance and OOP in
- * javascript. Usages can be found below.
+ */
+ 
+/*
+ * In few words: the lightest and most-comprehensive way to implement inhertance and OOP in javascript. Usages can be found below.
  * Basically,
  * 1) a new Class is instantiated with Class.extend(). This function takes a dictionary
  * of properties/methods which will be put IN THE PROTOTYPE of the class, so that each instance will share the same properties/methods
@@ -134,11 +152,13 @@
 })();
 
 //Defining the base TimeClass class. Player, Ruler, MarkerMap are typical implementations (see js files)
-//Basically we store here static methods which must be accessible
-//in several timside sub-classes
+//Basically we store here static methods which must be accessible in several timside sub-classes
 var TimesideClass = Class.extend({
- 
-    _textWidth : function(text, fontSize) {
+
+    /**
+     * function to calculate the text width according to a text and a given fontsize
+     */
+    textWidth : function(text, fontSize) {
         var ratio = 3/5;
         return text.length * ratio * fontSize;
     },
@@ -226,9 +246,9 @@ var TimesideClass = Class.extend({
         return ret.join("");
     },
 
-    cssPrefix : 'ts-',
+    cssPrefix : 'ts-', //actually almost uneuseful, backward compatibility with old code (TODO: remove?)
     $J : jQuery,
-    debugging : true,
+    debugging : false,
     debug : function(message) {
         if (this.debugging && typeof console != 'undefined' && console.log) {
             console.log(message);
@@ -242,12 +262,10 @@ var TimesideClass = Class.extend({
         //the map for listeners. Must be declared in the init as it's private and NOT shared by all instances
         //(ie, every instance has its own copy)
         this.listenersMap={};
-    //follows jquery bind. Same as adding a listener for a key
-        
     },
 
     /**
-     *methods defining listeners, events fire and bind:
+     * 3 methods defining listeners, events fire and bind (aloing the lines of jQuery.bind, unbind and trigger):
      */
     bind : function(key, callback, optionalThisArgInCallback){
         if(!(callback && callback instanceof Function)){
@@ -297,8 +315,10 @@ var TimesideClass = Class.extend({
 
 });
 
-//re-implemented array for easier access/modification of markers:
-//Ruler, MArkerMap and MarkerMapDiv implement this class
+/**
+ * An Array-like implementation that suits the need of Marker mnanagement
+ * Ruler, MarkerMap and MarkerMapDiv implement this class
+ */
 var TimesideArray = TimesideClass.extend({
     init: function(optionalArray){
         this._super();
@@ -345,7 +365,7 @@ var TimesideArray = TimesideClass.extend({
 
     //NOTE: writing   each : function(startInclusive, endExclusive, callback) throws an error in chrome, as the last 
     //argument (even if it is a function) is a number. Why?????
-    //Anyway, we must write the function arguments as empty
+    //Anyway, we write the function arguments as empty
     each : function(){
         var startInclusive, endExclusive, callback;
 
@@ -449,7 +469,7 @@ var TimesideArray = TimesideClass.extend({
  * setUpPlayerTabs([jQuery('#tab1),jQuery('#tab1)], [jQuery('#div1),jQuery('#div2)], 1);
  * sets the elements with id '#tab1' and '#tab2' as tab and assign the click events to them so that clicking tab_1 will show '#div_1'
  * (and hide '#div2') and viceversa for '#tab2'. The selected index will be 1 (second tab '#tab2')
-*/
+ */
 function setUpPlayerTabs() {//called from within controller.js once all markers have been loaded.
     //this is because we need all divs to be visible to calculate size. selIndex is optional, it defaults to 0
     //

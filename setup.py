@@ -49,7 +49,7 @@ setup(
   url = "http://telemeta.org",
   description = "Web Audio Content Management System",
   author = ["Guillaume Pellerin, Olivier Guilyardi", "Riccardo Zaccarelli"],
-  author_email = ["pellerin@parisson.com","olivier@samalyse.com", "riccardo.zaccarrelli@gmail.com"],
+  author_email = ["yomguy@parisson.com","olivier@samalyse.com", "riccardo.zaccarelli@gmail.com"],
   version = version,
   packages = packages,
   data_files = data_files,
@@ -60,22 +60,25 @@ Here are the main features of Telemeta:
 
  * Secure archiving, editing and publishing of audio files over internet.
  * User friendly web frontend including workflows and high level search methods
- * Smart dynamical and skinnable audio player (thanks to Timeside and soundmanager2)
+ * Smart dynamical and skinnable audio player (thanks to TimeSide and SoundManager2)
  * "On the fly" analyzing, transcoding and metadata embedding based on an easy plugin architecture
+ * Temporal and collaborative indexation with fast user marker management
  * Multi-format support : FLAC, OGG, MP3, WAV and more
- * Temporal indexation with fast user marker management
  * User management with individual profiles and rights
  * Playlist management for users with CSV data export
  * Geo-Navigator for audio geolocalization
  * DublinCore compatibility
  * OAI-PMH data provider
+ * RSS feeds generator
  * XML serialized backup
  * Strong SQL or Oracle backend
 
-The Telemeta data model is based on 'collections' and 'items'. A collection is described
-by its metadata and includes original audio items (sounds) and its own metadata. This
-existing model has been designed to fit the one of the French Centre of Etnomusicology (CREM)
-but could be easily adapted/overrided to sue other data structures.
+The Telemeta data model is now based on *collection* and *item* elements. 
+A *collection* is described by its metadata and is related to audio *items*. 
+An *item* embeds audio files with its metadata. 
+This model has been designed to fit the one of the French Centre of Ethnomusicology 
+(`CREM <http://www.crem-cnrs.fr>`_) of the University of Paris Ouest - Nanterre 
+but could be easily adapted or overrided to suit other data structures.
 
 See http://telemeta.org for more informations.
 """

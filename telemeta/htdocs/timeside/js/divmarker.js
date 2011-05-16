@@ -1,12 +1,27 @@
-/**
- * TimeSide - Web Audio Components
- * Copyright (c) 2011 Parisson
- * Author: Riccardo Zaccarelli
- * License: GNU General Public License version 2.0
+/*
+ * Copyright (C) 2007-2011 Parisson
+ * Copyright (c) 2011 Riccardo Zaccarelli <riccardo.zaccarelli@gmail.com>
+ *
+ * This file is part of TimeSide.
+ *
+ * TimeSide is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * TimeSide is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with TimeSide.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Author: Riccardo Zaccarelli <riccardo.zaccarelli@gmail.com>
  */
 
 /**
- * Class for showing/editing a marker on details. 
+ * Class representing a marker div html element for showing/editing a marker on details.
  */
 var MarkerMapDiv = TimesideArray.extend({
     init:function(){
@@ -214,8 +229,8 @@ var MarkerMapDiv = TimesideArray.extend({
         var e_descriptionText = div.find('.markersdivDescription');
         var e_titleText = div.find('.markersdivTitle');
 
-        //set defualt element values regardeless of the marker state
-        e_indexLabel.attr('title',marker.toString());
+        //set defualt element values regardeless of the marker state (for debugging, comment it if not needed)
+        //e_indexLabel.attr('title',marker.toString());
         this.setIndex(div, index);
             
         //e_offsetLabel.html(this.makeTimeLabel(marker.offset));

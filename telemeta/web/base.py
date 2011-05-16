@@ -61,12 +61,12 @@ from django.forms.models import modelformset_factory, inlineformset_factory
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext
 from django.contrib.auth.forms import UserChangeForm
+from django.core.exceptions import ObjectDoesNotExist
 
 from telemeta.models import *
 import telemeta.models
 import telemeta.interop.oai as oai
 from telemeta.interop.oaidatasource import TelemetaOAIDataSource
-from django.core.exceptions import ObjectDoesNotExist
 from telemeta.util.unaccent import unaccent
 from telemeta.util.unaccent import unaccent_icmp
 from telemeta.util.logger import Logger
