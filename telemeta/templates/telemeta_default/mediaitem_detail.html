@@ -15,14 +15,14 @@
       {% if item.file %}
 
       <!--<script src="{% url telemeta-js "wz_jsgraphics.js" %}" type="text/javascript"></script>-->
-<script src="{% url telemeta-js "soundmanager2.js" %}" type="text/javascript"></script>
+<script src="{% url telemeta-js "soundmanager2-nodebug-jsmin.js" %}" type="text/javascript"></script>
 <script src="{% url telemeta-js "popupdiv.js" %}" type="text/javascript"></script>
 <script src="{% url telemeta-timeside "src/playlist.js" %}" type="text/javascript"></script>
 <script type="text/javascript">
     soundManager.url = '{% url telemeta-swf "./" %}';
     soundManager.flashVersion = 9;
     soundManager.useMovieStar = true; // enable MP4/M4A/AAC
-    soundManager.debugMode = false;
+    soundManager.debugMode = true;
     soundManager.allowPolling = true;
 
     var setupPlaylist = function(){
