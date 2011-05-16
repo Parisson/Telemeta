@@ -12,7 +12,7 @@ U{http://telemeta.org}
 """
 
 __docformat__ = 'epytext en'
-__version__ = '0.8'
+__version__ = '0.9'
 __url__ = 'http://telemeta.org'
 __copyright__ = '(C) 2007-2011 Parisson'
 __license__ = 'CeCILL-2'
@@ -21,6 +21,7 @@ Copyright Parisson SARL (2007-2011)
 
 <yomguy@parisson.com>
 <olivier@samalyse.com>
+<riccardo.zaccarelli@gmail.com>
 
 This software is a computer program whose purpose is to backup, analyse, 
 transcode and stream any audio content with its metadata.
@@ -54,5 +55,4 @@ knowledge of the CeCILL license and that you accept its terms.
 
 from models import *
 from util import *
-
 

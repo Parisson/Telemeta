@@ -6,7 +6,7 @@
 {% endblock %}
 
   {% block title %}
-    <img src="images/item.png" style="vertical-align:middle" /> <h1>Item : {{ item }}</h1>
+    <img src="images/item.png" alt="item" style="vertical-align:middle" /> <h1>Item : {{ item }}</h1>
   {% endblock %}
   {% block title_buttons %}
    <a href="{% url telemeta-item-detail item.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>

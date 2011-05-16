@@ -63,11 +63,14 @@ Here are the main features of Telemeta:
  * Smart dynamical and skinnable audio player (thanks to Timeside and soundmanager2)
  * "On the fly" analyzing, transcoding and metadata embedding based on an easy plugin architecture
  * Multi-format support : FLAC, OGG, MP3, WAV and more
- * GEO Navigator for audio geolocalization
+ * Temporal indexation with fast user marker management
+ * User management with individual profiles and rights
+ * Playlist management for users with CSV data export
+ * Geo-Navigator for audio geolocalization
  * DublinCore compatibility
  * OAI-PMH data provider
  * XML serialized backup
- * Strong SQL backend
+ * Strong SQL or Oracle backend
 
 The Telemeta data model is based on 'collections' and 'items'. A collection is described
 by its metadata and includes original audio items (sounds) and its own metadata. This
