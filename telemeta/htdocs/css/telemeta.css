@@ -168,7 +168,7 @@ a img { border: none; }
 
 #collection_player {
     background: transparent; 
-/*     background-image: url(../images/grid_bg.png); */
+    /*     background-image: url(../images/grid_bg.png); */
 }
 
 #collection_player .title {
@@ -433,64 +433,41 @@ form.login .submit {
 #menu {
     background-color: #6a0307 ;
     font: normal verdana,'Bitstream Vera Sans',helvetica,arial,sans-serif;
-    padding: 0em 0em 2px 0em;
-    border-bottom: .5em solid #6a0307;
-    border-top: .75em solid #6a0307;
+    border-top: .5em solid #6a0307;
+    padding-left:26px;
 }
 
-#menu li { background-color: #6a0307; padding: .5em 0; }
-#menu li.darkblue { border-bottom: .5em solid #0f3179; }
-#menu li.blue { border-bottom: .5em solid #4f628a; }
-#menu li.green { border-bottom: .5em solid #92b220; }
-#menu li.yellow { border-bottom: .5em solid #f3ad17; }
-#menu li.orange { border-bottom: .5em solid #e65911; }
-#menu li.darkgreen { border-bottom: .5em solid #006a12; }
-#menu li.black { border-bottom: .5em solid #000000; }
-#menu li.red { border-bottom: .5em solid #DD0000; }
-#menu li.last { border-right: 0px solid #000;  }
-
-#menu :link, #menu :visited {
-    border-bottom: none;
-    color: #FFF;
-    font-weight: bold;
-    padding: .2em 20px;
-}
-* html #menu :link, * html #menu :visited { background-position: 1px 0 }
-/*
-#menu :link:hover, #menu :visited:hover {
- background-color: #FFF;
- color: #6a0307;
- text-decoration:none;
- border-bottom: .4em solid #FFF; 
- border-top: 2px solid #FFF;
-}
-
-#menu .active :link, #menu .active :visited {
- background-color: #FFF; border-bottom: .5em solid #6a0307;
- color: #6a0307;
-}
-#menu .active :link:hover, #menu .active :visited:hover {
- background-color: #FFF;
- color: #6a0307;
-
-}*/
-#menu .active, #menu :link:hover, #menu :visited:hover{
-    background-color: #FFF;
-    color: #6a0307;
+#menu a, #menu a:visited{
+    display:inline-block;
+    color: #fff;
     text-decoration:none;
-    border-bottom: .4em solid #FFF;
-    border-top: 2px solid #FFF;
-    background-color: #FFF;
-    /*border-bottom: .5em solid #6a0307;*/
-
+    border-bottom-width:.5em;
+    border-bottom-style: solid;
+    background-color: #6a0307;
     -webkit-border-top-left-radius:5px 5px;
     moz-border-radius-topleft: 5px 5px;
     border-top-left-radius: 5px 5px;
     -webkit-border-top-right-radius:5px 5px;
     moz-border-radius-topright: 5px 5px;
     border-top-right-radius: 5px 5px;
-
+    font-weight: bold;
+    font-size: 14px;
+    padding: .5em 1em;
 }
+#menu a:hover, #menu a.active{
+    background-color: #FFF;
+    color: #6a0307;
+}
+#menu .darkblue { border-bottom-color: #0f3179; }
+#menu .blue { border-bottom-color:  #4f628a; }
+#menu .green { border-bottom-color:  #92b220; }
+#menu .yellow { border-bottom-color:  #f3ad17; }
+#menu .orange { border-bottom-color:  #e65911; }
+#menu .darkgreen { border-bottom-color:  #006a12; }
+#menu .black { border-bottom-color:  #000000; }
+#menu .red { border-bottom-color:  #DD0000; }
+
+* html #menu :link, * html #menu :visited { background-position: 1px 0 }
 
 /* Footer (borrowed from Trac) */
 #footer {
@@ -729,7 +706,7 @@ table.instruments tbody td {
 
 /* Styles for tabular listings (stolen from trac) */
 table.listing {
-    
+
     border-spacing: 0;
 }
 
@@ -898,7 +875,7 @@ a.image-link {
     font-weight: normal;
     color: #333333;
     border: 1px solid #cccccc;
-   
+
 }
 .tab_selected, .tab_selected:hover, .tab_selected:visited {
     background-color: #ffffff;
@@ -908,7 +885,7 @@ a.image-link {
     border-right: 1px solid #999999;
     border-left: 1px solid #999999;
     border-bottom: 1px solid #ffffff;
-   
+
 }
 
 .tab, .tab:hover, .tab:visited{
@@ -960,7 +937,7 @@ a.image-link {
     padding:0.7ex 1ex;
 }
 .markerdiv div[zero_top_padding]{ /*mathces any div with the attribute zero_top_padding set (whatever the value)*/
-    padding-top:0px;
+                                  padding-top:0px;
 }
 .markerdiv div *{
     vertical-align:middle;
@@ -993,7 +970,7 @@ a.image-link {
 .markersdivEdit, .markersdivEdit:hover, .markersdivEdit:visited{
     line-height: normal;
     color:#000;
-     background-position: -2px center;
+    background-position: -2px center;
     padding-left: 13px; padding-right: 2px;
     font-size: 65%;
     border:2px solid #666;
@@ -1021,7 +998,7 @@ a.image-link {
 /*----------------------------------*/
 .component, .component_icon, .component:hover, .component_icon:hover, .component:visited, .component_icon:visited{
     background-position: 1ex .5ex;
-   -moz-border-radius: 1ex 1ex 1ex 1ex;
+    -moz-border-radius: 1ex 1ex 1ex 1ex;
     -webkit-border-radius: 1ex 1ex 1ex 1ex;
     border-radius: 1ex 1ex 1ex 1ex;
     padding:.7ex .7ex .7ex .7ex;
@@ -1045,10 +1022,10 @@ a.image-link {
     font-weight: bold;
     border:  1px solid #e1e1e1;
     white-space:nowrap;
-/*    border-top:  1px solid #e1e1e1 !important;
-    border-left:  1px solid #e1e1e1 !important;
-    border-right:  1px solid #e1e1e1 !important;
-    border-bottom:  1px solid #e1e1e1 !important;*/
+    /*    border-top:  1px solid #e1e1e1 !important;
+        border-left:  1px solid #e1e1e1 !important;
+        border-right:  1px solid #e1e1e1 !important;
+        border-bottom:  1px solid #e1e1e1 !important;*/
 }
 
 .button:hover{
@@ -1075,16 +1052,16 @@ a.image-link {
     background-image: url('/images/edit_page.png'); 
 }
 .icon_copy{
-     background-image: url('/images/copy_page.png');
+    background-image: url('/images/copy_page.png');
 }
 .icon_previous{
     background-image: url('/images/previous.png');
 }
 .icon_next{
-     background-image: url('/images/next.png');
+    background-image: url('/images/next.png');
 }
 .icon_dublin_core{
-     background-image: url('/images/dublin_core.png');
+    background-image: url('/images/dublin_core.png');
 }
 .icon_cancel{
     background-image: url('/images/cancel.png');
@@ -1144,8 +1121,8 @@ a.image-link {
 
 /*focus on elements*/
 a:focus,div:focus{
-  -moz-outline: 1px dotted #999  !important;
-  outline: #999 dotted 1px  !important;
+    -moz-outline: 1px dotted #999  !important;
+    outline: #999 dotted 1px  !important;
 }
 input,textarea{
     outline: none !important;

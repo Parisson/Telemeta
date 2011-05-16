@@ -75,17 +75,17 @@
 
 <div id="menu" class="nav">
 {% block menu %}
-<ul>
+
 {# spaces between li and a elements breaks layout #}
- <li class="darkblue"><a href="/">{% trans "Home" %}</a></li>
- <li class="blue"><a href="{% url telemeta-collections %}">{% trans "Collections" %}</a></li>
- <li class="green"><a href="{% url telemeta-items %}">{% trans "Items" %}</a></li>
- <li class="yellow"><a href="{% url telemeta-geo-continents %}">{% trans "Geo Navigator" %}</a></li>
- <li class="orange"><a href="{% url telemeta-search-criteria %}">{% trans "Advanced search" %}</a></li>
+ <a href="/" class="darkblue">{% trans "Home" %}</a>
+ <a href="{% url telemeta-collections %}" class="blue">{% trans "Collections" %}</a>
+ <a href="{% url telemeta-items %}" class="green">{% trans "Items" %}</a>
+ <a href="{% url telemeta-geo-continents %}" class="yellow">{% trans "Geo Navigator" %}</a>
+ <a href="{% url telemeta-search-criteria %}" class="orange">{% trans "Advanced search" %}</a>
  {% if user.is_staff %}
- <li class="red"><a href="{% url telemeta-admin %}">{% trans "Admin" %}</a></li>
+ <a href="{% url telemeta-admin %}" class="red">{% trans "Admin" %}</a>
  {% endif %}
-</ul>
+
 {% endblock %}
 </div>
 </div>
