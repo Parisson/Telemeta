@@ -838,12 +838,12 @@ img.align-left {
     margin-left: 0.4em;
 }
 
-.module-set {
+#module-set {
     float: right;
     clear: right;
 }
 
-.module {
+#module-set .module {
     border: 1px solid #000;
     background-image: url(../images/grid_bg.png);
     padding: 0.3em 0.8em 0.8em 0.8em;
@@ -853,15 +853,9 @@ img.align-left {
     border-radius: 8px 8px 8px 8px;
 }
 
-.module h3 {
-    margin-top: 0.4em;
-    margin-bottom: 0.4em;
-    font-size: 1.1em;
-    color: #000000;
-}
-
-#module h3 {
+#module-set .module h3 {
     color: #FFF;
+    font-size: 1.1em;
     font-weight: bold;
 }
 
