@@ -8,14 +8,14 @@
 
 {% block modules %}
 <div id="module" class="module">
-    <h3><img src="{% url telemeta-images "module_world.png" %}" style="vertical-align:middle" />
+    <h3><img src="{% url telemeta-images "module_world.png" %}" alt="world" style="vertical-align:middle" />
     {% trans "Geo Navigator" %}</h3>
     <a class="image-link" href="{% url telemeta-geo-continents %}">
     <img class="map-thumbnail" src="{% url telemeta-images "map_thumbnail.png" %}" alt="{% trans "Open the geographic navigator" %}" /></a>
 </div>
 
 <div id="module" class="module">
-    <h3><img src="{% url telemeta-images "module_playlist.png" %}" style="vertical-align:middle" />
+    <h3><img src="{% url telemeta-images "module_playlist.png" %}" alt="playlist" style="vertical-align:middle" />
     {% trans "Musical selection" %}</h3>
     <ul class="playlist">
     {% for item in items %}
@@ -34,7 +34,7 @@
 </div>
 
 <div class="home-description">
-<img class="align-left" src="{% url telemeta-images "vox.png" %}" style="vertical-align:middle;" />
+<img class="align-left" src="{% url telemeta-images "vox.png" %}" alt="vox" style="vertical-align:middle;" />
 {{ page_content|render_flatpage }}
 </div>
 

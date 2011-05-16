@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Copyright (C) 2007 Samalyse SARL
+# Copyright (C) 2008-2011 Parisson SARL
 
 # This software is a computer program whose purpose is to backup, analyse,
 # transcode and stream any audio content with its metadata over a web frontend.
@@ -31,6 +32,7 @@
 # knowledge of the CeCILL license and that you accept its terms.
 #
 # Author: Olivier Guilyardi <olivier@samalyse.com>
+#         Guillaume Pellerin <yomguy@parisson.com>
 
 from telemeta.models.media import *
 from telemeta.models.location import *
