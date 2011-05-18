@@ -74,6 +74,24 @@ class Revision(ModelCore):
         db_table = 'revisions'
 
 
+class OldUser(ModelCore):
+    "Telemeta user (NOT USED ANYMORE !)"
+    LEVEL_CHOICES = (('user', 'user'), ('maintainer', 'maintainer'), ('admin', 'admin'))
+
+    username   = CharField(_('username'), primary_key=True, max_length=64, required=True)
+    level      = CharField(_('level'), choices=LEVEL_CHOICES, max_length=32, required=True)
+    first_name = CharField(_('first name'))
+    last_name  = CharField(_('last name'))
+    phone      = CharField(_('phone'))
+    email      = CharField(_('email'))
+
+    class Meta(MetaCore):
+        db_table = 'users'
+
+    def __unicode__(self):
+        return self.username
+
+
 class UserProfile(django.db.models.Model):
     "User profile extension"
     
