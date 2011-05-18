@@ -114,7 +114,7 @@ var Ruler = TimesideArray.extend({
             //.bind('resize', this.attachWithEvent(this.resize)) // Can loop ?
             .appendTo(container);
         }else{
-            //remove all elements neither pointer nor marker
+            //remove all elements neither pointer (or children of it) nor marker (or children of it)
             layout.find(':not(a.ts-pointer,a.ts-marker,a.ts-pointer>*,a.ts-marker>*)').remove();
         }
 
@@ -341,23 +341,15 @@ var Ruler = TimesideArray.extend({
         
         var me = this;
 
-        var ismovingpointer = false;
-        var setmovingpointer = function(value){
-            ismovingpointer = value;
-        }
-        //TODO: this method below private, but how to let him see in the bind below???
-        this.setPointerMovingFromMouse = function(value){
-            setmovingpointer(value);
-        }
-        this.isPointerMovingFromMouse = function(){
-            return ismovingpointer;
-        };
+        //flag to be set to true when moving a poiner from mouse.
+        //when true, movePointer (see below) has no effect
+        this.isPointerMovingFromMouse = false;
         //functions to set if we are moving the pointer (for player when playing)
 
         lbl.bind('mousedown.'+eventId,function(evt) {
             
             if(markerClass=='pointer'){
-                me.setPointerMovingFromMouse(true);
+                me.isPointerMovingFromMouse = true;
             }
 
             var startX = evt.pageX; //lbl.position().left-container.position().left;
@@ -382,9 +374,6 @@ var Ruler = TimesideArray.extend({
                 doc.unbind('mousemove.'+eventId);
                 doc.unbind('mouseup.'+eventId);
                 evt_.stopPropagation();
-                if(markerClass=='pointer'){
-                    me.setPointerMovingFromMouse(false);
-                }
                 if(newPos == startPos){
                     return false;
                 }
@@ -394,6 +383,9 @@ var Ruler = TimesideArray.extend({
                     'markerClass':markerClass
                 };
                 me.fire('markermoved',data);
+                if(markerClass=='pointer'){
+                    me.isPointerMovingFromMouse = false;
+                }
                 return false;
             };
             doc.bind('mouseup.'+eventId, mouseup);
@@ -410,7 +402,7 @@ var Ruler = TimesideArray.extend({
     //soundPosition is in seconds (float)
     movePointer : function(soundPosition) {
         var pointer = this.getPointer();
-        if (pointer) {
+        if (pointer && !this.isPointerMovingFromMouse) {
             var pixelOffset = this.toPixelOffset(soundPosition);
             //first set text, so the label width is set, then call move:
             pointer.setText(this.makeTimeLabel(soundPosition));
@@ -448,54 +440,3 @@ var Ruler = TimesideArray.extend({
         return soundPosition;
     }
 });
-
-
-    // TODO: check here
-    // http://stackoverflow.com/questions/3299926/ie-mousemove-bug
-    // div in IE to receive mouse events must have a background
-    // so for the moment
-
-
-
-    //        var mouseDown = false;
-    //        var _onMouseDown = function(evt) {
-    //            mouseDown = true;
-    //            this._onMouseMove(evt);
-    //            evt.preventDefault(); //If this method is called, the default action of the event will not be triggered.
-    //        };
-    //        var _onMouseMove = function(evt) {
-    //            if (mouseDown) {
-    //                var pixelOffset = evt.pageX - container.offset().left;
-    //                this._movePointerAndUpdateSoundPosition(pixelOffset / this.width * this.duration);
-    //            //moves the pointer and fires onPointerMove
-    //            }
-    //            return false;
-    //        };
-    //
-    //        var _onMouseUp= function(evt) {
-    //            if (mouseDown) {
-    //                mouseDown = false;
-    //                this.debug('_onMouseUp:'+this.pointerPos+' '+this.cfg.sound.position);
-    //            }
-    //            return false;
-    //        };
-    //        var imgContainer = viewer.find('.' + cssPref + 'image-container'); // for IE
-    //        var element = waveContainer.add(imgContainer); //constructs a new jQuery object which is the union of the jquery objects
-    //
-    //        element
-    //        .bind('click dragstart', function() {
-    //            return false;
-    //        })
-    //        .bind('mousedown', function(evt){
-    //            return _onMouseDown(evt);
-    //        })
-    //        .bind('mousemove', function(evt){
-    //            return _onMouseMove(evt);
-    //        })
-    //        .bind('mouseup', function(evt){
-    //            return _onMouseUp(evt);
-    //        });
-    //        this.$J(document)
-    //        .bind('mousemove', function(evt){
-    //            return _onMouseMove(evt);
-    //        });

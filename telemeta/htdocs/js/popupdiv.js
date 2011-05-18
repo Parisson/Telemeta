@@ -21,7 +21,126 @@
  */
 
 /**
- * class for showing non-modal dialogs such as popups or combo lists. Requires jQuery
+ * class for showing non-modal dialogs such as popups or combo lists. Requires jQuery. If you're scared about the doc, scroll below to
+ * see some examples.
+ * This class builds an absolutely positioned div for popup forms, message dialogs or listitem popup (emilating the
+ * <select> tag element popup).
+ * Usage:
+ * var p = new PopupDiv(dictionary); p.show(); or simply new PopupDiv(dictionary).show();
+ * dictionary is an object with the following parameters (In brackets the default value if missing). None of them is mandatory, but
+ * at least content should be specified (unless showing an empty div is what you want to get)
+ * content (""): the popup content. Can be:
+ *      a dictionnary of (key: val) pairs for form filling popup. Each pair represents a row in the popupm built as a div with
+ *          a string (key) followed by an input with value = val (the popup takes care of inputs horizontal alignement so there should be
+ *          no need of extra css).
+ *          The input is determined as follows:
+ *          val is boolean: checkbox input
+ *          val is an array of strings: select tag (non multi select)
+ *          otherwise: text input (with val.toString as value)
+ *          If showOk is true (see below), a click on the ok anchor will trigger the popup onOk callback (see below) with
+ *          argument a dictionary of (key: val) pairs, where each val is the relative input value
+ *      an array of strings for listItem popup. Each array element represents a line of the popup (internally, an anchor with
+ *          inner html the array element value). A click on each anchor triggers the onOk callback (see onOk below)
+ *      a jQuery object: the content will be appended to the popup
+ *      otherwise: content.toString() will be set as the popup innerHTML
+ * invoker (jQuery(window)): a jQuery object representing an html element. If invoker is a clickable element (anchor, input of type button or submit,
+ *      button), then the PopupDiv bounds will be placed according to invoker as if it was a popup list of a select tag. Otherwise, the popupdiv will be centered inside invoker. Note that
+ *      internally each popupdiv is appended to the body element, so it will be visually centered in invoker, it should not belong
+ *      to invoker children
+ * bounds ({'top':0.25, 'left':0.25, 'right':0.25, 'bottom':0.25}): if invoker is a clickable element, it is ignored. Otherwise, specifies the
+ *      insets (margins) of the popup within invoker (internally, the popup has no margins, so bounds represents the distances from each window
+ *      size). Each bounds element can be in percentage of invoker size if lower than 1 (eg, bounds first element is 0.25: popup left margin is
+ *      25% of invoker height, and so on) or as pixel measure (if greater than 1)
+ * boundsExact (false): if invoker is a clickable element, it is ignored. Otherwise, specifies whether bounds (see above) should be a hint
+ *      (maximum allowed margins) or an exact measure. In other words, with boundsExact the popup will have the size of the rectangle R
+ *      determined by invoker size and bounds. Otherwise, the maximum popup size will be R, and if the popup size is included in R, it
+ *      will be centered in R.
+ * focusable (false): boolean. When true, the popup gains the focus when shown, and disappears when losses the focus
+ *      (popup.close() is called, see below)
+ * showOk (false): determines whether or not an ok button should be shown at the bottom of the popup. The ok button is an anchor whose
+ *      click will trigger the popup.onOk callback. This parameter should always be true for form filling popup (see content)
+ * onOk (null): callback. callback to be executed when the ok button is pressed. The callback takes as argument a dictionary of the popup data.
+ *      which is not empty only if the popup was built as form filling or listitem popup (see content above). In this last two cases,
+ *      the data returned is a dictionnary of [key:value] pairs (form filling popup) or a dictionary with one key (selIndex) and the
+ *      selected index that was clicked. This parameter should be specified for form filling popup (see content). popup.close() is always called
+ *      after onOk callback is executed, but without triggering the onClose callback, if any (see below)
+ * onShow (function): callback to be executed when the popup shows up
+ * defaultCloseOperation ('hide'): specified what to do when popup.close() is called. 'remove' removes the html element from the document,
+ *      'hide' or any other value simply call jQuery.hide() on the popup
+ * onClose (null): callback to be executed when the popup .close() function is called. It includes the case when focusable=true and
+ *      the popup looses the focus BUT NOT when the ok button (if any) is pressed (see onOk above)
+ * shadowOffset (4): the shadow offset. Each popup has a 'shadow' which renders a kind of 3d raised effect. Set to 0 if no shadow must be visualized
+ * popupClass ("") [see note1]: the popup class, if any, in the same form as jQuery.addClass() argument (ie, it can include multiple classes separated by space).
+ *      The top and bottom divs (housing title and close anchor and ok button respectively) are not affected by this parameter
+ * popupCss ({}) [see note1]: the popup css, if any, in the same form as jQuery.css() argument.
+ *      The top and bottom divs (housing title and close anchor and ok button respectively) are not affected by this parameter
+ * showClose (false): a parameter specifying whether a close button should appear on the top-right corner of the popup. Clicking the close button
+ *      (internally, an anchor) will close the popup and trigger popup.close() (and associated callbacks bindings, if any)
+ * title (""): a parameter specifying whether the popup should have a title. The title will be placed on the top of the popup.
+ * okButtonClass ('') [see note1]: the ok button (anchor) class, if showOk = true, in the same form as jQuery.addClass() argument (ie, it can include multiple classes separated by space).
+ * okButtonTitle ('Ok'): self-explicatory
+ * p.okButtonAlign ('right'): self explicatory. Takes the same argument as css text-align property
+ * closeButtonClass ('') [see note1]: the close button (anchor) class, if showClose = true, in the same form as jQuery.addClass() argument (ie, it can include multiple classes separated by space).
+ * closeButtonTitle ('x'): self- explicatory
+ * titleClass ('') [see note1]: the title (inpuit of type text) class, if title is not empty, in the same form as jQuery.addClass() argument (ie, it can include multiple classes separated by space).
+ * fadeInTime ('fast'): the fade in time when popup.show() is called. See jQuery show for possible values (briefly, a number in milliseconds or the string 'fast' or 'slow')
+ * fadeOutTime (0): the fade out time when popup.close() is called. See jQuery show for possible values (briefly, a number in milliseconds or the string 'fast' or 'slow')
+ * shadowOpacity (0.25): elf-explicatory. 1 means shadow completely black, 0 completely transparent (bascially, no shadow)
+ * zIndex (10000): the popup zIndex. Should be left untouched unless there are issues with other component with hight zIndex.
+ * listItemClass ('') [see note1]: the list items css, valid only if the popup is a listitem popup (see content above),
+ *      in the same form as jQuery.addClass() argument (that is, can take multiple classes separated by space).
+ * listItemCss ('') [see note1]: the list items css, valid only if the popup is a listitem popup (see content above),
+ *      in the same form as jQuery.addClass() argument (ie, a dictionary of key:value pairs).
+ *
+ * [note1] IMPORTANT: For every css or class parameter, some css styles might be overridden before showing the popup because they would interfere with the correct placement and
+ *      appearence of the popup: surely, 'display', 'position' and 'visibility' are among them. Usually, also 'size' css properties
+ *      such as width, height, left, right ectetera. Css and class parameters are useful for customizing the popup 'visually' (eg, colors, font,
+ *      backgrounds etcetera)
+ *
+ * EXAMPLES: given an anchor <a> (jQuery element)
+ *      1) show a popup when clicking <a> leaving the user choose among three oprions: 'banana', 'orange' and 'apple'. The popup will
+ *      behave as a default popup hiding when it looses focus
+ *      //setup parameters
+ *      var choices = ['banana','oranges','apples'];
+ *      var dict = {
+ *          content: choices,
+ *          onOk: function(data){
+ *              var fruitChosen = choices[data.selIndex];
+ *              //.. do something with the selected fruit....
+ *          },
+ *          focusable: true,
+ *          invoker: a,
+ *          defaultCloseOperation: ' remove'
+ *      }
+ *      //bind the click event of the anchor:
+ *      a.click(function(){ new PopupDiv(dict).show();});
+ *      
+ *      1) show a popup when clicking <a> leaving the user choose the fruit as text. The popup will close either when ok or close are clicked
+ *      //setup parameters
+ *      var choices = {'yourFruit':'banana'}; //banana will be the default value when the popup shows
+ *      var dict = {
+ *          content: choices,
+ *          showClose: true, 
+ *          showOk: true,
+ *          onOk: function(data){
+ *              var fruitChosen = data['yourFruit'];
+ *              //.. do something with the selected fruit....
+ *          },
+ *          invoker: a
+ *      }
+ *      //bind the click event of the anchor:
+ *      a.click(function(){ new PopupDiv(dict).show();});
+ *
+ *      3) show a message dialog which expires after 1500 milliseconds. No invoker specified means the popup will be centered in screen
+ *      new PopupDiv.show({
+ *          content: "i'm gonna disappear!", //one could also input "<span>i'm gonna disappear!</span>" or jQuery('<span/>').html("i'm gonna disappear!")
+ *          onShow: function(){
+ *              var me = this; //this refers to the popup
+ *              setTimeout(function(){
+ *                  this.close();
+ *              }, 1500);
+ *          }
+ *      });
  */
 function PopupDiv(){
     var $J = jQuery;
@@ -55,8 +174,7 @@ function PopupDiv(){
         return listeners;
     }
 
-    var k;
-
+    
     //setting static properties, if any.
     //The idea is that static PopupDiv properties SPP (eg, PopupDiv.shadowOffset = 5) should be added to the current PopupDiv
     //instance prototype ONCE (properties in the prototype are shared between all PopupDiv instances)
@@ -70,6 +188,7 @@ function PopupDiv(){
     //means that SPP's cannot be deleted after their first assignment. This requires more work and more memory consumption
     //but it assures cross browser compatibility
 
+    var k;
     var staticProps = undefined;
     for(k in PopupDiv){
         if(!staticProps){
@@ -105,8 +224,6 @@ function PopupDiv(){
         }
     }
 
-    
-
     //setting instance-specific properties:
     for(k in data){
         if(k == 'onOk' || k == 'onShow' || k == 'onClose'){
@@ -126,7 +243,7 @@ function PopupDiv(){
 
 }
 
-
+//populating the prototype object:
 (function(p){
     //private static variables
     var $ = jQuery;

@@ -21,14 +21,17 @@
  * Authors: Riccardo Zaccarelli <riccardo.zaccarelli@gmail.com>
  *          Olivier Guilyardi <olivier@samalyse.com>
  */
+
+/**
+ * The player class to instantiate a new player. Requires all necessary js (timeside, ruler, markermap etcetera...) and
+ * jQuery
+ */
 var Player = TimesideClass.extend({
     
     //sound duration is in milliseconds because the soundmanager has that unit,
     //player (according to timeside syntax) has durations in seconds
     init: function(container, sound, soundDurationInMsec, itemId, visualizers, currentUserName, isStaffOrSuperUser) {
         this._super();
-        this.ready = false;
-        var player = this;
 
         //container is the div #player
         
@@ -53,65 +56,21 @@ var Player = TimesideClass.extend({
 
         //rpivate functions for converting
         //soundmanager has milliseconds, we use here seconds
-        var pInt = Math.round; //instantiate once for faster lookup
-        var pFloat = parseFloat; //instantiate once for faster lookup
-        function toMsec(seconds){
-            return pInt(seconds*1000);
-        }
-        function toSec(msec){
-            return pFloat(msec)/1000;
-        }
+        
 
 
-        var sd = toSec(soundDurationInMsec);
+        var sd = this.toSec(soundDurationInMsec);
         this.getSoundDuration = function(){
             return sd;
         }
        
-        this.isPlaying = function(){
-            /*Numeric value indicating the current playing state of the sound.
-             * 0 = stopped/uninitialised
-             * 1 = playing or buffering sound (play has been called, waiting for data etc.)
-             *Note that a 1 may not always guarantee that sound is being heard, given buffering and autoPlay status.*/
-            return sound && sound.playState==1;
-        };
+       
 
-        var currentMarkerIndex=0;
-        this.getCurrentMarkerIndex = function(){
-            return currentMarkerIndex;
-        };
-
-        //setting the position===============================================
-        //if sound is not loaded, position is buggy. Moreover, we have to handle the conversions between units: 
-        //seconds (here) and milliseconds (swmanager sound). So we store a private variable
-        //private variable and function
-        var soundPos = sound.position ? toSec(sound.position) : 0.0;
-        //private method: updates just the internal variable (called in whilePlaying below)
-        function setPos(value){
-            soundPos = value;
-            var map = player.getMarkerMap();
-            if(map){
-                currentMarkerIndex = map.insertionIndex(value);
-                if(currentMarkerIndex<0){ //see markermap.insertionindex
-                    currentMarkerIndex = -currentMarkerIndex-1;
-                }
-            }
-        }
-        //public methods: calls setPos above AND updates sounbd position
-        this.setSoundPosition = function(newPositionInSeconds){
-            //for some odd reason, if we set sound.setPosition here soundPos
-            //is rounded till the 3rd decimal integer AND WILL BE ROUNDED THIS WAY IN THE FUTURE
-            //don't know why, however we set the sound position before playing (see below)
-            //however, now it works. Even odder....
-            setPos(newPositionInSeconds);
-            if(sound){
-                var s = toMsec(this.getSoundPosition());
-                sound.setPosition(s);
-            }
-        }
+        
+        this.soundPosition =  sound.position ? this.toSec(sound.position) : 0;
         //public methods: returns the sound position
         this.getSoundPosition = function(){
-            return soundPos;
+            return this.soundPosition;
         };
 
 
@@ -128,56 +87,11 @@ var Player = TimesideClass.extend({
         //                }
         //        };
         
-        //implement play here: while playing we do not have to update the sound position, so
-        //we call the private variable soundPos
-        this.play = function(){
-            if(!player || player.isPlaying()){ //TODO: remove?, multishot is set to false
-                return false;
-            }
-            var sound = player.getSound();
-            if(!sound){
-                return false;
-            }
+        var currentMarkerIndex=0;
+        this.getCurrentMarkerIndex = function(){
+            return currentMarkerIndex;
+        };
 
-            var ruler = player.getRuler();
-            
-            var playOptions = {
-                whileplaying: function(){
-                    var sPos = toSec(this.position); //this will refer to the sound object (see below)
-                    setPos(sPos);
-                    if(ruler && !ruler.isPointerMovingFromMouse()){
-                        ruler.movePointer(sPos);
-                    }
-                    
-                //player.showMarkerPopup(currentMarkerIndex);
-                },
-                onfinish: function() {
-                    setPos(0); //reset position, not cursor, so that clicking play restarts from zero
-                }
-            };
-            //internal play function. Set all properties and play:
-            var play_ = function(sound, positionInSec){
-                sound.setPosition(toMsec(positionInSec)); //TODO: remove???
-                sound.setVolume(sound.volume); //workaround. Just to be sure. Sometimes it fails when we re-play
-                playOptions.position = toMsec(positionInSec); //apparently THIS IS WORKING
-                sound.play(playOptions);
-            };
-           
-            play_(sound, player.getSoundPosition());
-            
-            return false;
-        };
-        //now implement also pause here: note that pause has some odd behaviour.
-        //Try this sequence: play stop moveforward moveback play pause
-        //When we press the last pause the sound restarts (??!!!!)
-        this.pause = function(){
-            var sound = this.getSound();
-            //we don't check if it's playing, as the stop must really stop anyway
-            //if(sound && this.isPlaying()){
-            sound.stop();
-            //}
-            return false;
-        };
 
         //initializing markermap and markerui
         var map = new MarkerMap(this.getItemId(), currentUserName, isStaffOrSuperUser);
@@ -189,7 +103,83 @@ var Player = TimesideClass.extend({
             return mapUI;
         }
     },
+    //functions for converting seconds (player unit) to milliseconds (sound manager unit) and viceversa:
+    toSec: function(milliseconds){
+        return milliseconds/1000;
+    },
+    toMsec : function(seconds){ //this function has less performances than toSec, as it calls Math.round
+        return Math.round(1000*seconds); //however, it is assumed that it is NOT called in loops
+    },
+    isPlaying : function(){
+        var sound = this.getSound();
+        if(!sound){
+            return false;
+        }
+        /*Numeric value indicating the current playing state of the sound.
+             * 0 = stopped/uninitialised
+             * 1 = playing or buffering sound (play has been called, waiting for data etc.)
+             *Note that a 1 may not always guarantee that sound is being heard, given buffering and autoPlay status.*/
+        return sound && sound.playState==1;
+    },
+    setSoundPosition : function(newPositionInSeconds){
+        //for some odd reason, if we set sound.setPosition here soundPos
+        //is rounded till the 3rd decimal integer AND WILL BE ROUNDED THIS WAY IN THE FUTURE
+        //don't know why, however we set the sound position before playing (see below)
+        //however, now it works. Even odder....
+        this.soundPosition = newPositionInSeconds;
 
+        if(this.isPlaying()){
+            this.getSound().setPosition(this.toMsec(newPositionInSeconds));
+            //if playing, we do not need to update the pointer position, the play function takes care of it
+        }else{
+           //it is not playing, update pointer position. If this call is due to a pointer move (mouse release),
+           //ruler.isPointerMovingFromMouse=true and the following code has no effect
+            var ruler = this.getRuler();
+            if(ruler){
+                ruler.movePointer(newPositionInSeconds);
+            }
+        }
+    },
+    play : function(){
+        var player = this;
+        if(!player || player.isPlaying()){ //TODO: remove?, multishot is set to false
+            return false;
+        }
+        var sound = player.getSound();
+        if(!sound){
+            return false;
+        }
+
+        var toSec = player.toSec;
+        var ruler = player.getRuler();
+        var sPosInMsec = player.toMsec(player.soundPosition);
+        var playOptions = {
+            whileplaying: function(){
+                var sPosInSec = toSec(this.position); //this refers to the soundmanager obj
+                player.soundPosition = sPosInSec;
+                if(ruler){
+                    ruler.movePointer(sPosInSec);
+                }
+            },
+            position: sPosInMsec,
+            onfinish: function() {
+                setPos(0); //reset position, not cursor, so that clicking play restarts from zero
+            }
+        };
+
+        sound.setVolume(sound.volume); //workaround. Just to be sure. Sometimes it fails when we re-play
+        sound.play(playOptions);
+
+        return false;
+    },
+    pause: function(){
+        var sound = this.getSound();
+        //we don't check if it's playing, as the stop must really stop anyway
+        //if(sound && this.isPlaying()){
+        sound.stop();
+        //}
+        return false;
+    },
     //sets up the player interface and loads the markers. There is theoretically no need of this method, as it might be included in
     //the init constructor, it is separated for "historical" reasons: this method stems from the old _setupInterface,
     //which was a separate method in the old player code. Future releases might include it in the init constructor
@@ -329,7 +319,6 @@ var Player = TimesideClass.extend({
             //avoid checking whether or not we are clicking on a vertical marker line, on a subdiv etcetera
             var sd = me.getSoundDuration();
             me.setSoundPosition(sd*x/w);
-            ruler.movePointer(ruler.toSoundPosition(x));
         });
        
 
@@ -475,13 +464,13 @@ var Player = TimesideClass.extend({
             'margin':'0px',
             'marginTop':span+'px',
             'marginLeft':span+'px'
-            });
+        });
         var span2 = (maxHeight - imgWait.outerHeight())/2; //do not include margins in oputerHeight (we will set them to zero below)
         imgWait.css({
             'margin':'0px',
             'marginTop':span2+'px',
             'marginLeft':span+'px'
-            })
+        })
 
         
         return this;
@@ -556,7 +545,6 @@ var Player = TimesideClass.extend({
             offset = markers[idx].offset;
         }
         this.setSoundPosition(offset);
-        this.getRuler().movePointer(offset);
         return false;
     },
     //moves the pointer (and sound position) backward till the previous marker or the start of sound
@@ -580,7 +568,6 @@ var Player = TimesideClass.extend({
             offset = markers[idx].offset;
         }
         this.setSoundPosition(offset);
-        this.getRuler().movePointer(offset);
         return false;
     },
 
@@ -736,7 +723,6 @@ var Player = TimesideClass.extend({
                     if(data.index>=0 && data.index<map.length){
                         var offset = map.toArray()[data.index].offset;
                         player.setSoundPosition(offset);
-                        player.getRuler().movePointer(offset);
                     }
                 }
             });
