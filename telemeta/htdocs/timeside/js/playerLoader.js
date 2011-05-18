@@ -121,7 +121,6 @@ function loadPlayer(analizerUrl, soundUrl, itemId, visualizers, currentUserName,
                 });
                 if(selOffs >= 0){
                     p.setSoundPosition(selOffs);
-                    p.getRuler().movePointer(selOffs);
                 }
                 //3) assing a binding to the player maximization button:
                 $J('#player_maximized .toggle, #player_minimized .toggle').click(function() {

@@ -1,7 +1,6 @@
 /*
  * Copyright (C) 2007-2011 Parisson
  * Copyright (c) 2011 Riccardo Zaccarelli <riccardo.zaccarelli@gmail.com>
- * Copyright (c) 2010 Olivier Guilyardi <olivier@samalyse.com>
  *
  * This file is part of TimeSide.
  *
@@ -18,14 +17,13 @@
  * You should have received a copy of the GNU General Public License
  * along with TimeSide.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Authors: Riccardo Zaccarelli <riccardo.zaccarelli@gmail.com>
- *          Olivier Guilyardi <olivier@samalyse.com>
+ * Author: Riccardo Zaccarelli <riccardo.zaccarelli@gmail.com>
  */
 
 /**
- * class fior managing markers in the player. Markers on the ruler (ruler.js) or on the divs (divmarker.js)
- * are not included here, they are separate classes. See player.js (loadMarkers method) where the bindings
- * between this class, ruler and divmarker are set
+ * class fior managing markers in the player. This class extends TimesideArray (see timeside.js), and communicates with the other 
+ * two TimesideArrays of the player which receive edit events (click, keys events etcetera): the ruler (ruler.js) and the markermapdiv (divmarker.js)
+ * All bindings between these three classes are set in in the player (See player.js , in particular loadMarkers method)
  */
 var MarkerMap = TimesideArray.extend({
 
@@ -294,7 +292,7 @@ var MarkerMap = TimesideArray.extend({
                 return a < b ? -1 : (a>b ? 1 : 0);
             };
         }
-        var pInt = parseInt; //reference to parseInt outside the loop below
+        //var pInt = parseInt; //reference to parseInt outside the loop below
         //(to increase algorithm performances)
 
         var data = this.toArray();
@@ -302,8 +300,9 @@ var MarkerMap = TimesideArray.extend({
         var high = data.length-1;
 
         while (low <= high) {
-            //int mid = (low + high) >>> 1;
-            var mid = pInt((low + high)/2);
+            var mid = (low + high) >>> 1;
+            //biwise operation equivalent to (but faster than):
+            //var mid = parseInt((low + high)/2);
             var midVal = data[mid];
             var cmp = comparatorFunction(midVal,object);
             if (cmp < 0){
@@ -320,3 +319,11 @@ var MarkerMap = TimesideArray.extend({
     }
 }
 );
+
+//var low = 6;
+//var high = 8;
+//consolelog(low+' '+high+' returns '+((low + high) >>> 1));
+//high = 9;
+//consolelog(low+' '+high+' returns '+((low + high) >>> 1));
+//high = 10;
+//consolelog(low+' '+high+' returns '+((low + high) >>> 1));
