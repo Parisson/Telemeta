@@ -38,7 +38,8 @@ from telemeta.util.unaccent import unaccent
 import re
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
-from telemeta.models import query
+from telemeta.models.query import *
+from django.forms import ModelForm
 
 class Location(ModelCore):
     "Locations"
@@ -56,7 +57,7 @@ class Location(ModelCore):
     longitude        = FloatField(null=True)                                    
     is_authoritative = BooleanField(_('authoritative'))
 
-    objects = query.LocationManager()
+    objects = LocationManager()
 
     def items(self):
         from telemeta.models import MediaItem
@@ -183,3 +184,12 @@ class LocationRelation(ModelCore):
             sep = ' >..> ' 
         return unicode(self.ancestor_location) + sep + unicode(self.location)
 
+
+class LocationForm(ModelForm):
+    class Meta:
+        model = Location
+
+    def __init__(self, *args, **kwds):
+        super(LocationForm, self).__init__(*args, **kwds)
+        self.fields['name'].queryset = Location.objects.order_by('name')
+        
