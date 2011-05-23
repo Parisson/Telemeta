@@ -322,7 +322,11 @@ class MediaItem(MediaResource):
 class MediaItemForm(ModelForm):
     class Meta:
         model = MediaItem
-
+    
+    def __init__(self, *args, **kwds):
+        super(MediaItemForm, self).__init__(*args, **kwds)
+        self.fields['location'].queryset = Location.objects.order_by('name')
+        
 class MediaItemKeyword(ModelCore):
     "Item keyword"
     item    = ForeignKey('MediaItem', verbose_name=_('item'), related_name="keyword_relations")

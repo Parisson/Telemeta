@@ -122,22 +122,36 @@ var Player = TimesideClass.extend({
         return sound && sound.playState==1;
     },
     setSoundPosition : function(newPositionInSeconds){
-        //for some odd reason, if we set sound.setPosition here soundPos
-        //is rounded till the 3rd decimal integer AND WILL BE ROUNDED THIS WAY IN THE FUTURE
-        //don't know why, however we set the sound position before playing (see below)
-        //however, now it works. Even odder....
-        this.soundPosition = newPositionInSeconds;
+        //if the player is playing and NOT yet fully loaded, simply calling:
+        //this.getSound().setPosition(this.toMsec(newPositionInSeconds));
+        //resets the position to zero. So we use this workaround:
+        //    this.getSound().stop(); //calling this.pause() hides the waiting bar, which is not the case here
+        //    this.soundPosition = newPositionInSeconds;
+        //    this.play();
 
-        if(this.isPlaying()){
-            this.getSound().setPosition(this.toMsec(newPositionInSeconds));
-            //if playing, we do not need to update the pointer position, the play function takes care of it
-        }else{
-           //it is not playing, update pointer position. If this call is due to a pointer move (mouse release),
-           //ruler.isPointerMovingFromMouse=true and the following code has no effect
-            var ruler = this.getRuler();
-            if(ruler){
-                ruler.movePointer(newPositionInSeconds);
-            }
+        //however, if this.isPlaying() we first call stop otherwise some fast pointer move effect is undesiderable
+
+        //So:
+        var wasPlaying = this.isPlaying();
+        if(wasPlaying){
+            this.getSound().stop(); //dont call this.pause cause it hides the waitbar, if visible
+        }
+        //update pointer position. If this call is due to a pointer move (mouse release),
+        //ruler.isPointerMovingFromMouse=true and the following code has no effect (the pointer is already at the good position)
+        var ruler = this.getRuler();
+        if(ruler){
+            ruler.movePointer(newPositionInSeconds);
+        }
+        //set sound position:
+        this.soundPosition = newPositionInSeconds;
+        //resume playing if it was playing:
+        if(wasPlaying){
+            var player = this;
+            //delay a little bit the play resume, this might avoid fast pointer repositioning
+            //(it should not be the case, but it happens. why??)
+            setTimeout(function(){
+                player.play.apply(player);
+            },100);
         }
     },
     play : function(){
@@ -153,15 +167,30 @@ var Player = TimesideClass.extend({
         var toSec = player.toSec;
         var ruler = player.getRuler();
         var sPosInMsec = player.toMsec(player.soundPosition);
+        var imgWaitDisplaying = this.isWaitVisible();
         var playOptions = {
+            position: sPosInMsec,
             whileplaying: function(){
-                var sPosInSec = toSec(this.position); //this refers to the soundmanager obj
-                player.soundPosition = sPosInSec;
-                if(ruler){
+                var sPos = this.position;
+                var buffering = this.isBuffering; //this refers to the soundmanager sound obj
+                if(buffering && !imgWaitDisplaying){
+                    imgWaitDisplaying=true;
+                    player.setWait.apply(player,[true]);
+                //consolelog('displaying wait '+this.readyState+' '+this.playState);
+                }else if(!buffering && sPosInMsec < sPos){
+                    //isBuffering seems to be true at regular interval, so we could be in the case
+                    //that !buffering but is actually buffering and no sound is heard, so
+                    //we add the condition sPosInMSec !=sPos as a "sound heard" condition
+                    sPosInMsec = sPos;
+                    var sPosInSec = toSec(sPos); 
+                    player.soundPosition = sPosInSec;
                     ruler.movePointer(sPosInSec);
+                    if(imgWaitDisplaying){
+                        player.setWait.apply(player,[false]);
+                        imgWaitDisplaying = false;
+                    }
                 }
             },
-            position: sPosInMsec,
             onfinish: function() {
                 setPos(0); //reset position, not cursor, so that clicking play restarts from zero
             }
@@ -177,8 +206,26 @@ var Player = TimesideClass.extend({
         //we don't check if it's playing, as the stop must really stop anyway
         //if(sound && this.isPlaying()){
         sound.stop();
+        this.setWait(false);
         //}
         return false;
+    },
+    isWaitVisible: function(){
+        return this.getContainer().find('.ts-wait').is(':visible');
+    },
+    setWait: function(value){
+        var c = this.getContainer();
+        var imgWait = c.find('.ts-wait');
+        var selectVis = c.find('.ts-visualizer');
+        setTimeout(function(){
+            if(value){
+                selectVis.hide();
+                imgWait.css('display','inline-block');
+            }else{
+                imgWait.hide();
+                selectVis.css('display','inline-block');
+            }
+        },50);
     },
     //sets up the player interface and loads the markers. There is theoretically no need of this method, as it might be included in
     //the init constructor, it is separated for "historical" reasons: this method stems from the old _setupInterface,
