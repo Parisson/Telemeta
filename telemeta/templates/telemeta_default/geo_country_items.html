@@ -4,15 +4,16 @@
 
 {% block head_title %}{{ country }} - {% trans "Geographic Navigator" %} - {{ block.super }}{% endblock %}
 
-{% block content %}
-<h3><a href="{% url telemeta-geo-continents %}">{% trans "World" %}</a> /
+{% block title %}
+<a href="{% url telemeta-geo-continents %}">{% trans "World" %}</a> /
   <a href="{% url telemeta-geo-countries continent.flatname %}">{{ continent }}</a> 
-  / {{ country }}</h3>
+  / {{ country }}
+{% endblock title %}
 
+{% block content %}
 {% with object_list as items %}
 <div class="fullpage">
 {% include "telemeta/inc/mediaitem_list.html" %}
 </div>
 {% endwith %}
-
 {% endblock %}
