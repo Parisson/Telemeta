@@ -44,7 +44,7 @@ Install the dependencies
 Install TimeSide
 -----------------
 
-Telemeta needs the audio processing library named TimeSide.
+Telemeta needs the audio processing library named TimeSide (>= 0.3)
 You have to download and install it from source.
 
 So, download the last archive at :
@@ -57,7 +57,7 @@ and then the module.
 Install JSON-RPC server
 ------------------------
 
-In order to use markers on the player, you will need a JSONN-RPC server for django::
+In order to use markers on the player, you will need a JSON-RPC server for django::
     
     git clone git://github.com/samuraisam/django-json-rpc.git
     cd django-json-rpc
