@@ -106,7 +106,7 @@ def run():
         sys.path.append(project_dir)
         import settings
         setup_environ(settings)
-        t = TelemetaWavImport(source_dir, log_file)
+        t = TelemetaWavImport(source_dir, log_file, pattern)
         t.wav_import()
 
 if __name__ == '__main__':
