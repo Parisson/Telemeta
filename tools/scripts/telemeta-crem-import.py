@@ -38,17 +38,18 @@ class Logger:
 
 class TelemetaWavImport:
 
-    def __init__(self, source_dir, log_file):
+    def __init__(self, source_dir, log_file, pattern):
         self.logger = Logger(log_file)
         self.source_dir = source_dir
         self.collections = os.listdir(self.source_dir)
         self.buffer_size = 0x1000
+        self.pattern = pattern
 
     def wav_import(self):
         from telemeta.models import MediaItem
         for collection in self.collections:
             collection_dir = self.source_dir + os.sep + collection
-            if not '/.' in collection_dir:
+            if not '/.' in collection_dir and self.pattern in collection_dir:
                 self.collection_name = collection.split(os.sep)[-1]
                 msg = '************************ ' + collection + ' ******************************'
                 self.logger.write_info(collection, msg[:70])
@@ -87,17 +88,20 @@ class TelemetaWavImport:
 
 
 def print_usage(tool_name):
-    print "Usage: "+tool_name+" <project_dir> <source_dir> <log_file>"
+    print "Usage: "+tool_name+" <project_dir> <source_dir> <pattern> <log_file>"
     print "  project_dir: the directory of the Django project which hosts Telemeta"
     print "  source_dir: the directory containing the wav files to include"
+    print "  pattern: a pattern to match the collection names"
+    print "  log_file: a log file to write logs"
 
 def run():
     if len(sys.argv) < 3:
         print_usage(os.path.basename(sys.argv[0]))
         sys.exit(1)
     else:
-        project_dir = sys.argv[-3]
-        source_dir = sys.argv[-2]
+        project_dir = sys.argv[-4]
+        source_dir = sys.argv[-3]
+        pattern = sys.argv[-2]
         log_file = sys.argv[-1]
         sys.path.append(project_dir)
         import settings

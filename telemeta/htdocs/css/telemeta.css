@@ -1112,10 +1112,28 @@ a.image-link {
 #id_title {
     width: 500px;
 }
+#id_alt_title {
+    width: 500px;
+}
+#id_collector {
+    width: 500px;
+}
+#id_cultural_area {
+    width: 500px;
+}
+#id_location_comment {
+    width: 500px;
+}
 #id_old_code {
     width: 300px;
 }
 #id_code {
+    width: 300px;
+}
+#id_author {
+    width: 300px;
+}
+#id_collector_selection {
     width: 300px;
 }
 
