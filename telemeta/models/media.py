@@ -478,7 +478,7 @@ class DublinCoreToFormatMetadata(object):
         keys_done = []
         for data in dc_metadata:
             key = data[0]
-            value = data[1]
+            value = data[1].encode('utf-8')
             if value:
                 if key == 'date':
                     value = value.split(';')[0].split('=')
@@ -488,8 +488,9 @@ class DublinCoreToFormatMetadata(object):
                     else:
                         value = value[0].split('-')[0]
                 if key in mapp:
-                    metadata[mapp[key]] = str(value)
+                    print value
+                    metadata[mapp[key]] = value.decode('utf-8')
                 elif 'all' in mapp.keys():
-                    metadata[key] = str(value)
+                    metadata[key] = value.decode('utf-8')
                 keys_done.append(key)
         return metadata
