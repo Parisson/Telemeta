@@ -24,9 +24,10 @@
 
 /**
  * Class representing the ruler (upper part) of the player. Requires jQuery
- * wz_jsgraphics.
+ * and Raphael
  */
 var Ruler = TimesideArray.extend({
+
     //init constructor: soundDuration is IN SECONDS!!! (float)
     init: function(viewer, soundDuration){
         this._super();
@@ -42,19 +43,14 @@ var Ruler = TimesideArray.extend({
         this.getWaveContainer =function(){
             return waveContainer;
         };
-        //ts-image-canvas has width=0. Why was not the case in old code?
-        //BECAUSE IN OLD CODE ts-image-canvas has style="width..height" defined, and not HERE!!!!
+        //TODO: we dont need containerWiever here!!!
+        //better: it is usefult only for the canvas defined below. However...
         this.getContainerWidth =function(){
             return waveContainer.width();
         };
-        
-        
         this.debug( 'init ruler: container width '+this.getContainerWidth());
         
-        
         //private function used in resize() defined below
-        
-
         var container = viewer.find('.' + cssPref + 'ruler');
         
         this.getRulerContainer = function(){
@@ -63,174 +59,44 @@ var Ruler = TimesideArray.extend({
     },
 
     resize : function(){
-        //code copied from old implementation, still to get completely what is going on here...
-        var sectionSteps = [[5, 1], [10, 1], [20, 2], [30, 5], [60, 10], [120, 20], [300, 30],
-        [600, 60], [1800, 300], [3600, 600]];
-        //old computeLayout code
-        var fullSectionDuration,sectionSubDivision, sectionsNum;
-        var width = this.getContainerWidth();
-        var duration = this.getSoundDuration();
-        var cssPref = this.cssPrefix;//defined in superclass
-        var fontSize = 10;
-        var mfloor = Math.floor; //instanciating once increases performances
-        var $J = this.$J; //reference to jQuery
-        //this.debug('container width: ' +" "+width);
-
-
-        var i, ii = sectionSteps.length;
-        var timeLabelWidth = this.textWidth('00:00', fontSize);
-        for (i = 0; i < ii; i++) {
-            var tempDuration = sectionSteps[i][0];
-            var subDivision = sectionSteps[i][1];
-            var labelsNum = mfloor(duration / tempDuration);
-            if ((i == ii - 1) || (width / labelsNum > timeLabelWidth * 2)) {
-                fullSectionDuration = tempDuration;
-                sectionSubDivision = subDivision;
-                sectionsNum = mfloor(duration / fullSectionDuration);
-                //this.debug('(in _computeLayout) this.fullSectionDuration: ' + fullSectionDuration);
-                //this.debug('(in _computeLayout) sectionsNum: ' +sectionsNum);
-                //this.debug('(in _computeLayout) sectionSubDivision: ' +sectionSubDivision);
-                break;
-            }
-        }
-        //old draw() code:
+        var duration = this.getSoundDuration(); //in seconds
         if (!duration) {
             this.debug("Can't draw ruler with a duration of 0");
             return;
         }
-        //this.debug("draw ruler, duration: " + duration);
-
-        var container = this.getRulerContainer();
-        var layout = container.find("."+cssPref + 'layout');
-        //REDONE: if does not exists, create it
-        if(!layout || !(layout.length)){
-            layout = $J('<div/>')
-            .addClass(cssPref + 'layout')
-            .css({
-                position: 'relative'
-            }) // bugs on IE when resizing
-            //TODO: bind doubleclick events!!!!!!
-            //.bind('dblclick', this.attachWithEvent(this._onDoubleClick))
-            //.bind('resize', this.attachWithEvent(this.resize)) // Can loop ?
-            .appendTo(container);
-        }else{
-            //remove all elements neither pointer (or children of it) nor marker (or children of it)
-            layout.find(':not(a.ts-pointer,a.ts-marker,a.ts-pointer>*,a.ts-marker>*)').remove();
-        }
-
-        //        if (layout && layout.length){
-        //            layout.remove();
-        //        }
-        //        layout = $J('<div/>')
-        //        .addClass(cssPref + 'layout')
-        //        .css({
-        //            position: 'relative'
-        //        }) // bugs on IE when resizing
-        //        //TODO: bind doubleclick events!!!!!!
-        //        //.bind('dblclick', this.attachWithEvent(this._onDoubleClick))
-        //        //.bind('resize', this.attachWithEvent(this.resize)) // Can loop ?
-        //        .appendTo(container);
 
         
+        //build a canvas with raphael:
+        //setting global attributes:
+        var backgroundcolor = '#333';
+        var lineAttr = {
+                        'stroke-width':1,
+                        'stroke':'#eeeeee'
+                    };
+        var rulerContainer = this.getRulerContainer();
+        rulerContainer.css({'backgroundColor':backgroundcolor});
 
-        //creating sections
-        //defining function maketimelabel
-        var makeTimeLabel = this.makeTimeLabel;
-            
-        //defining the function createSection
-        var _createSection = function(timeOffset, pixelWidth,timeLabelWidth) {
-            var section = $J('<div/>')
-            .addClass(cssPref + 'section')
-            .css({
-                fontSize: fontSize + 'px',
-                fontFamily: 'monospace',
-                width: pixelWidth,
-                overflow: 'hidden'
-            })
-            .append($J('<div />').addClass(cssPref + 'canvas'));
+        //remove all elements not pointer or marker
+        rulerContainer.find(':not(a.ts-pointer,a.ts-marker,a.ts-pointer>*,a.ts-marker>*)').remove();
 
-            var topDiv = $J('<div/>')
-            .addClass(cssPref + 'label')
-            .appendTo(section);
-            var bottomDiv = $J('<div/>')
-            .addClass(cssPref + 'lines')
-                
-            .appendTo(section);
-            var empty = $J('<span/>').css({
-                visibility: 'hidden'
-            }).text('&nbsp;');
-            var text;
+        //set font size (maybe this will be placed in a global or static variable)
+        var h = 28; //TODO: change it (global var?)
+        var obj = this.calculateRulerElements(rulerContainer.width(),h,duration);
+        consolelog(obj);
 
-            if (pixelWidth > timeLabelWidth) {
-                text = $J('<span/>')
-                .text(makeTimeLabel(timeOffset))
-                .bind('mousedown selectstart', function() { //WHY THIS?
-                    return false;
-                });
-            } else {
-                text = empty.clone();
+        var paper = Raphael(rulerContainer[0], rulerContainer.width(), h);
+        var path = paper.path(obj.path);
+        path.attr(lineAttr);
+
+        var labels = obj.labels;
+        if(labels){
+            var $J = this.$J;
+            for(var i=0; i <labels.length;i++){
+                var span = $J('<span/>').html(labels[i][0]).css({'color':'white', 'display':'block','position':'absolute','top':'0', 'left':labels[i][1]+'px'});
+                rulerContainer.append(span);
             }
-            topDiv.append(text);
-            bottomDiv.append(empty);
-            return section;
-        };
-        //function defined, creating sections:
-        var sections = new Array();
-        var currentWidth = 0;
-        var sectionDuration, sectionWidth;
-        for (i = 0; i <= sectionsNum; i++) {
-            if (i < sectionsNum) {
-                sectionDuration = fullSectionDuration;
-                sectionWidth = mfloor(sectionDuration / duration * width);
-            } else {
-                sectionDuration = duration - i * fullSectionDuration;
-                sectionWidth = width - currentWidth;
-
-            }
-            var section = _createSection(i * fullSectionDuration, sectionWidth, timeLabelWidth);
-            if (i > 0) {
-                section.css({
-                    left: currentWidth,
-                    top: 0,
-                    position: 'absolute'
-                });
-            }
-            section.duration = sectionDuration;
-            layout.append(section);
-            currentWidth += section.width();
-            sections[i] = section;
         }
 
-        //function to draw section rulers:
-        var _drawSectionRuler= function(section, drawFirstMark) {
-            var j;
-               
-            var jg = new jsGraphics(section.find('.' + cssPref + 'canvas').get(0));
-            jg.setColor(layout.find('.' + cssPref + 'lines').css('color'));
-            var height = section.height();
-            var ypos;
-            for (j = 0; j < section.duration; j += sectionSubDivision) {
-                if (j == 0) {
-                    if (drawFirstMark) {
-                        ypos = 0;
-                    } else {
-                        continue;
-                    }
-                } else {
-                    ypos = (j == section.duration / 2) ? 1/2 + 1/8 : 3/4;
-                }
-                //var x = j / this.duration * this.width;
-                var x = j / duration * width;
-                jg.drawLine(x, height * ypos, x, height - 1);
-            }
-            jg.paint();
-        };
-        //draw section rulers
-        for (i = 0; i <= sectionsNum; i++) {
-            _drawSectionRuler(sections[i], (i > 0));
-        }
-
-       
         var pointer = undefined;
         if('getPointer' in this){
             pointer = this.getPointer();
@@ -248,6 +114,70 @@ var Ruler = TimesideArray.extend({
             rulermarker.refreshPosition();
         });
 
+    },
+
+    /**
+     * returns an object with the following properties:
+     * path: (string) the path of the ruler to be drawn
+     * labels (array) an array of arrays ['text',x,y]
+     */
+    calculateRulerElements: function(w,h){
+        var fontSize = 10;
+        var duration = this.getSoundDuration();
+        
+        //the fontSize is actually a measure og height, seo we can set:
+        var fontMargin = 2;
+
+
+        var timeLabelWidth = this.textWidth('00:00', fontSize);
+        var timeLabelDuration = timeLabelWidth*duration/w;
+
+        //determine the ticks:
+        var sectionDurations = [1,2,5,10,30,60,120,300,1800,3600,7200,18000,36000];
+        //sectionDurations in seconds. Note that 60=1 minute, 3600=1 hour (so the maximum sectionDuration is 36000=10hours)
+        var i=0;
+        var len = sectionDurations.length;
+        while(i<len && timeLabelDuration>sectionDurations[i]){
+            i++;
+        }
+        var sectionDuration = sectionDurations[i];
+        var sectionNums = parseInt(0.5+(duration/sectionDurations[i])); //ceil
+        var sectionWidth = w*sectionDuration/duration;
+
+        var tickCounts = [10,5,2,1];
+        i=0;
+        var tickCount = tickCounts[0];
+        while(i<tickCounts.length-1 && tickCounts[i]*2>sectionWidth){
+            i++;
+        }
+        var tickAtHalfSectionWidthHigher = i==0 || i==2; //draw tick at half section higher if ticks are even
+        tickCount = tickCounts[i];
+        var tickWidth = sectionWidth/tickCount;
+        var makeTimeLabel = this.makeTimeLabel;
+        var h_1 = h-1; //TODO: use line tickness instead of 1
+        var path = new Array(parseInt(0.5+(w/tickWidth)));
+        consolelog(path.length);
+        path[0] = ['M 0 '+h_1];
+        len = path.length;
+        for(i=0;  i < len; i+=tickCount){
+            for(var j=1; j<tickCount+1; j++){
+                var k = i+j;
+                var x = (k*tickWidth);
+                //consolelog(k+') = '+x+' ; '+i+' * '+sectionWidth+' + '+j+' * '+tickWidth);
+                //if(x<w){
+                    var y = (j==tickCount ? 0 : tickAtHalfSectionWidthHigher && j==(tickCount)/2 ? .5*h : .75*h);
+                    var baseline = ' L '+x+' '+h_1;
+                    path[k] = baseline;
+                    path[k] += ' L '+x+' '+y;
+                    path[k] += baseline;
+                //}
+            }
+        }
+        var labels = new Array(sectionNums);
+        for(i=0; i<sectionNums; i++){
+            labels[i] = [makeTimeLabel(sectionDuration*i),fontMargin+i*sectionWidth];
+        }
+        return {'path': path.join('')+' z', 'labels':labels};
     },
 
     //overridden: Note that the pointer is NOT cleared!!!!!
@@ -302,7 +232,13 @@ var Ruler = TimesideArray.extend({
         var container = this.getRulerContainer();
         var layout = container.find("."+this.cssPrefix + 'layout');
         var $J = this.$J;
-        var pointer = new RulerMarker($J(layout.get(0)),this.getWaveContainer(),markerClass);
+//        var pointer = new RulerMarker($J(layout.get(0)),this.getWaveContainer(),markerClass);
+
+        
+        var pointer = new RulerMarker(this.getRulerContainer(),this.getWaveContainer(),markerClass);
+
+        
+
         //call super constructor
         //if it is a pointer, dont add it
         if(markerClass != 'pointer'){
@@ -358,7 +294,7 @@ var Ruler = TimesideArray.extend({
             evt.stopPropagation(); //dont notify the ruler or other elements;
             var newPos = startPos;
             doc.bind('mousemove.'+eventId, function(evt){
-                var x = evt.pageX; 
+                var x = evt.pageX;
                 newPos = startPos+(x-startX);
                 pointer.move(newPos);
                 //update the text if pointer

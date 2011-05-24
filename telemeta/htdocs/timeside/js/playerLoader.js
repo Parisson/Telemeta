@@ -56,6 +56,57 @@ function togglePlayerMaximization() {
     }
 }
 
+//function loadPlayer_(htmlContainer, w, h, durationInMsec, soundUrl, callback){
+//    var $ = jQuery;
+//    if(w<=0){
+//        w = 360;
+//    }
+//    if(h<=0){
+//        h= 130;
+//    }
+//    if(!callback || (typeof callback !== 'function')){
+//        callback = function(){};
+//    }
+//    if(!(htmlContainer instanceof $)){
+//        htmlContainer = $(htmlContainer);
+//    }
+//    if(htmlContainer.length!=1){
+//        throw 'invalid htmlContainer';
+//    }
+//    var errMsg = '';
+//    if(typeof durationInMsecOrAnalyzerUrl == 'number'){
+//        load_player(soundUrl, durationInMsecOrAnalyzerUrl, itemId, visualizers, currentUserName);
+//    }else{
+//
+//        $.ajax({
+//            url: durationInMsecOrAnalyzerUrl, //'analyze/xml',
+//            dataType: 'xml',
+//            success: function(data){
+//                //populatetable
+//                $J.each($J(data).find('data'),function(index,element){
+//                    var elm = $J(element);
+//                    tableBody.append('<tr><td>'+elm.attr('name')+'</td><td>'+elm.attr('value')+'</td><td>'
+//                        +elm.attr('unit')+'</td></tr>');
+//                });
+//                //loaded analizer, loading player
+//                if(msgElm){
+//                    msgElm.html('Loading player...');
+//                }
+//                var duration = $J(data).find('#duration').attr('value');
+//                duration = duration.split(":");
+//                //format duration
+//                var pin = parseInt;
+//                var pfl = parseFloat;
+//                var timeInMSecs=pin(duration[0])*3600+pin(duration[1])*60+pfl(duration[2]);
+//                timeInMSecs = Math.round(timeInMSecs*1000);
+//                load_player(soundUrl, timeInMSecs, itemId, visualizers, currentUserName);
+//            },
+//            error:function(){
+//                errMsg = 'Error loading analyzer';
+//            }
+//        });
+//    }
+//}
 
 
 function loadPlayer(analizerUrl, soundUrl, itemId, visualizers, currentUserName, isStaffOrSuperuser){

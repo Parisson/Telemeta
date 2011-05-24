@@ -154,6 +154,19 @@
 //Defining the base TimeClass class. Player, Ruler, MarkerMap are typical implementations (see js files)
 //Basically we store here static methods which must be accessible in several timside sub-classes
 var TimesideClass = Class.extend({
+    /**
+     * Returns whether SVG is supported. If it is the case, this property can simply return true.
+     * For a more clean code, one should remove this property, elementToPaperMap (see below),
+     * check where we call isSvgSupported (ruler.js and rulermarker.js) and eventually
+     * remove the vml methods in ruler.js and rulermarker.js 
+     */
+    isSvgSupported : function(){return Raphael.svg},
+    /**
+     * Raphael unfortunately does not allow to wrap existing elements, which is a big lack not even planned to be implemented in
+     * future releases (see raphael forum). Therefore, we store here a map which binds html elements -> Raphael paper object
+     * This property can be deleted if svg is supported
+     */
+    elementToPaperMap: {},
 
     /**
      * function to calculate the text width according to a text and a given fontsize

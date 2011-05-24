@@ -61,7 +61,7 @@
 
     setTimeout(function(){
         if(jQuery('#loading_span').length>0){
-            playerError('SoundManager error. Try to:\n - Reload the page\n - Empty the cache (see browser preferences) and reload the page\n - Restart the browser');
+            playerError('SoundManager is not responding. Try to:\n - Reload the page\n - Empty the cache (see browser preferences) and reload the page\n - Restart the browser');
         }
     },10000);
 
@@ -71,7 +71,7 @@
     visualizers["{{v.name}}"] = "{% url telemeta-item-visualize item.public_id,v.id,"WIDTH","HEIGHT" %}";
     {% endfor %}
     
-    var scripts = ["{% url telemeta-timeside "js/wz_jsgraphics.js" %}", "{% url telemeta-timeside "js/timeside.js" %}","{% url telemeta-timeside "js/playerLoader.js" %}"];
+    var scripts = ["{% url telemeta-timeside "js/raphael-min.js" %}","{% url telemeta-timeside "js/wz_jsgraphics.js" %}", "{% url telemeta-timeside "js/timeside.js" %}","{% url telemeta-timeside "js/playerLoader.js" %}"];
 
     jQuery(window).ready(function(){
         //if soundmanager is ready, the callback is executed immetiately
