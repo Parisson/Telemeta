@@ -215,11 +215,9 @@ var MarkerMapDiv = TimesideArray.extend({
             '<div zero_top_padding><textarea class="markersdivDescription"></textarea></div>',
             '<div zero_top_padding><a class="markersdivSave">OK</a></div>',
         '<div zero_top_padding><span style="font-size:75%;color:#999">'+gettrans('author')+': '+marker.author+'</span></div>'].join("");
-        var div = this.$J('<div/>').attr('tabindex','0').addClass("markerdiv").html(html_); //TODO: avoid text nodes
+        var div = this.$J('<div/>').attr('tabindex','0').addClass("markerdiv").html(html_); 
         div.find('a').attr('href','#');
-        //todo: remove markerlabel from css!!!!!!!
-        //new RulerMarker(div.find('.markerlbl'),div.find('.markercanvas'),'marker',false);
-
+        
         var e_indexLabel = div.find('.ts-marker');
         //var e_offsetLabel =div.find('.markersdivOffset');
         var e_okButton = div.find('.markersdivSave');

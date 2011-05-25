@@ -88,12 +88,12 @@ var RulerMarker = TimesideClass.extend({
         this.positionInPixels = 0;
         this.positionAsViewerRatio = 0;
 
-        var tW = 9; //2*((fontSize - 1) >>> 1)+1; //if fontsize:10 or 9, tW:9, if fontSize:8 or 7, tW:7, and so on
+        var arrowBaselineWidth = 9; //2*((fontSize - 1) >>> 1)+1; //if fontsize:10 or 9, tW:9, if fontSize:8 or 7, tW:7, and so on
 
         var canvas = undefined;
         var canvasClass = cssPref + className+'-canvas';
         if(this.isSvgSupported()){
-            canvas = this.createCanvasSvg(waveImgDiv, tW);
+            canvas = this.createCanvasSvg(waveImgDiv, arrowBaselineWidth);
             var path = canvas.childNodes[0]; //note that $J(canvas).find('path') does not work in FF at least 3.5
             path.setAttributeNS(null,'class',canvasClass);
             this.moveCanvas = function(pixelOffset){
@@ -101,7 +101,7 @@ var RulerMarker = TimesideClass.extend({
             }
             this.jQueryCanvas = $J(canvas);
         }else{
-            canvas = this.createCanvasVml(waveImgDiv, tW);
+            canvas = this.createCanvasVml(waveImgDiv, arrowBaselineWidth);
             this.jQueryCanvas = $J(canvas.node);
             var attributes = ruler.classToRaphaelAttr[canvasClass];
             if(!attributes){
@@ -244,7 +244,7 @@ var RulerMarker = TimesideClass.extend({
             paper.canvas.style.height='100%';
             paper.canvas.width='100%';
             paper.canvas.height='100%';
-        //apparently, there is also a clip style declaration. The following code trhows an error in IE7:
+        //apparently, there is also a clip style declaration made by raphael. The following code trhows an error in IE7:
         //paper.canvas.style.clip = 'auto';
         //however, even leaving the clip style declaration as it is, it seems to work (the div spans the whole width)
         }

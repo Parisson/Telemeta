@@ -156,7 +156,7 @@ var Player = TimesideClass.extend({
     },
     play : function(){
         var player = this;
-        if(!player || player.isPlaying()){ //TODO: remove?, multishot is set to false
+        if(!player || player.isPlaying()){ //soundManager multishot is set to false. We leave this check for safety
             return false;
         }
         var sound = player.getSound();
@@ -365,7 +365,7 @@ var Player = TimesideClass.extend({
             return false;
         });
 
-        //binds click for the pointer: TODO: change this way of getting the tsviweer!!!!
+        //binds click for the pointer
         var v = $J('#player').find('.ts-viewer');
         v.unbind('click').click(function(evt){
             var w = v.width();

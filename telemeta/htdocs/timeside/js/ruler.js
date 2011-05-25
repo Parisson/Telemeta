@@ -67,34 +67,23 @@ var Ruler = TimesideArray.extend({
         }
         var $J = this.$J;
         var rulerContainer = this.getRulerContainer();
-        var linesColor = this.color(rulerContainer.css('color'));
-        if(!linesColor){
-            linesColor = '#000000';
-        }
-        var lineAttr = {
-            'stroke-width':1,
-            'stroke': linesColor
-        };
-        
+       
         //remove all elements not pointer or marker
         rulerContainer.find(':not(a.ts-pointer,a.ts-marker,a.ts-pointer>*,a.ts-marker>*)').remove();
 
         //calculate h with an artifice: create a span (that will be reused later) with the "standard" label
         var firstSpan = $J('<span/>').css({
-                    'display':'block',
-                    'position':'absolute'
-                    }).html('00000'); //typical timelabel should be '00:00', with '00000' we assure a bit of extra safety space
-                    //note also that display and position must be set as below to calculate the proper outerHeight
+            'display':'block',
+            'position':'absolute'
+        }).html('00000'); //typical timelabel should be '00:00', with '00000' we assure a bit of extra safety space
+        //note also that display and position must be set as below to calculate the proper outerHeight
         rulerContainer.append(firstSpan); //to calculate height, element must be in the document, append it
         var verticalMargin = 1;
         var h = 2*(verticalMargin+firstSpan.outerHeight());
-        
+        //TODO: set height in div ruler???? 
         var obj = this.calculateRulerElements(rulerContainer.width(),h,firstSpan.outerWidth());
-
-        var paper = Raphael(rulerContainer[0], rulerContainer.width(), h);
-        var path = paper.path(obj.path);
-        path.attr(lineAttr);
-
+        this.drawRuler(rulerContainer,h,obj.path);
+        
         var labels = obj.labels;
         if(labels){
             for(var i=0; i <labels.length;i++){
@@ -108,7 +97,7 @@ var Ruler = TimesideArray.extend({
                     'bottom':'',
                     'top':'0',
                     'left':labels[i][1]+'px'
-                    });
+                });
                 rulerContainer.append(span);
             }
         }else{
@@ -134,6 +123,39 @@ var Ruler = TimesideArray.extend({
 
     },
 
+    drawRuler: function(rulerContainer,h,rulerLinesPath){
+        if(!this.isSvgSupported()){
+            var paper = Raphael(rulerContainer[0], rulerContainer.width(), h);
+            var rect = paper.rect(0,0, rulerContainer.width(), h/2);
+            var path = paper.path(rulerLinesPath);
+            var attr = this.getVmlAttr;
+            rect.attr(attr('ts-ruler-upper-rect'));
+            path.attr(attr('ts-ruler-lines'));
+            return;
+        }
+        //create svg. Note that elements must be created within a namespace (createElementNS)
+        //and attributes must be set via .setAttributeNS(null,name,value)
+        //in other words, jQuery does not work (maybe in future releases)
+        var $J = this.$J;
+        var svgNS = "http://www.w3.org/2000/svg";
+        var d = document;
+        var svg  = d.createElementNS(svgNS, "svg:svg");
+        svg.setAttributeNS( null, "width", rulerContainer.width()); //TODO: optimize width is called also below
+        svg.setAttributeNS( null, "height", h);
+        rulerContainer.append($J(svg));
+
+        var rect = d.createElementNS(svgNS, "svg:rect");
+        rect.setAttributeNS( null, "x", 0);
+        rect.setAttributeNS( null, "y", 0);
+        rect.setAttributeNS( null, "width", rulerContainer.width());
+        rect.setAttributeNS( null, "height", (h/2));
+        rect.setAttributeNS( null, "class", 'ts-ruler-upper-rect');
+        svg.appendChild(rect);
+        var lines = d.createElementNS(svgNS, "svg:path");
+        lines.setAttributeNS( null, "d", rulerLinesPath);
+        lines.setAttributeNS( null, "class", 'ts-ruler-lines');
+        svg.appendChild(lines);
+    },
     /**
      * returns an object with the following properties:
      * path: (string) the path of the ruler to be drawn
@@ -191,7 +213,7 @@ var Ruler = TimesideArray.extend({
             labels[i] = [makeTimeLabel(sectionDuration*i),fontLeftMargin+i*sectionWidth];
         }
         return {
-            'path': path.join('')+' z',
+            'path': path.join(''),
             'labels':labels
         };
     },
@@ -199,9 +221,6 @@ var Ruler = TimesideArray.extend({
     //overridden: Note that the pointer is NOT cleared!!!!!
     clear: function(){
         var markers = this._super();
-        //        if('getPointer' in this){
-        //            markers.push(this.getPointer());
-        //        }
         for( var i=0; i<markers.length; i++){
             markers[i].remove();
         }
@@ -321,7 +340,7 @@ var Ruler = TimesideArray.extend({
                 
             });
             //to avoid scrolling
-            //TODO: what happens if the user releases the mouse OUTSIDE the browser????
+            //TODO: what happens if the user releases the mouse OUTSIDE the browser???? check bug in IE (mouse release)
             var mouseup = function(evt_){
                 doc.unbind('mousemove.'+eventId);
                 doc.unbind('mouseup.'+eventId);

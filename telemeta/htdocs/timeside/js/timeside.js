@@ -154,7 +154,63 @@
 //Defining the base TimeClass class. Player, Ruler, MarkerMap are typical implementations (see js files)
 //Basically we store here static methods which must be accessible in several timside sub-classes
 var TimesideClass = Class.extend({
+    //init constructor. Define the 'bind' and 'fire' (TODO: rename as 'trigger'?) methods
+    //we do it in the init function so that we can set a private variable storing all
+    //listeners. This means we have to re-write all methods
+    init: function(){
+        //the map for listeners. Must be declared in the init as it's private and NOT shared by all instances
+        //(ie, every instance has its own copy)
+        this.listenersMap={};
+    },
 
+    /**
+     * 3 methods defining listeners, events fire and bind (aloing the lines of jQuery.bind, unbind and trigger):
+     */
+    bind : function(key, callback, optionalThisArgInCallback){
+        if(!(callback && callback instanceof Function)){
+            this.debug('cannot bind '+key+' to callback: the latter is null or not a function');
+            return;
+        }
+        var listenersMap = this.listenersMap;
+        var keyAlreadyRegistered = (key in listenersMap);
+        if(!keyAlreadyRegistered){
+            listenersMap[key] = [];
+        }
+        listenersMap[key].push({
+            callback:callback,
+            optionalThisArgInCallback:optionalThisArgInCallback
+        });
+    },
+    unbind : function(){
+        var listenersMap = this.listenersMap;
+        if(arguments.length>0){
+            var key = arguments[0];
+            if(key in listenersMap){
+                delete listenersMap[key];
+            }
+        }else{
+            for(key in listenersMap){
+                delete listenersMap[key];
+            }
+        }
+    },
+    fire : function(key, dataArgument){
+        var listenersMap = this.listenersMap;
+        if(!(key in listenersMap)){
+            this.debug('"'+key+'" fired but no binding associated to it');
+            return;
+        }
+        var callbacks = listenersMap[key];
+        var len = callbacks && callbacks.length ? callbacks.length : 0;
+        for(var i=0; i<len; i++){
+            var obj = callbacks[i];
+            if('optionalThisArgInCallback' in obj){
+                obj.callback.apply(obj.optionalThisArgInCallback, [dataArgument]);
+            }else{
+                obj.callback(dataArgument);
+            }
+        }
+    },
     /**
      * function to calculate the text width according to a text and a given fontsize
      */
@@ -252,64 +308,6 @@ var TimesideClass = Class.extend({
     debug : function(message) {
         if (this.debugging && typeof console != 'undefined' && console.log) {
             console.log(message);
-        }
-    },
-    //init constructor. Define the 'bind' and 'fire' (TODO: rename as 'trigger'?) methods
-    //we do it in the init function so that we can set a private variable storing all
-    //listeners. This means we have to re-write all methods
-    init: function(){
-       
-        //the map for listeners. Must be declared in the init as it's private and NOT shared by all instances
-        //(ie, every instance has its own copy)
-        this.listenersMap={};
-    },
-
-    /**
-     * 3 methods defining listeners, events fire and bind (aloing the lines of jQuery.bind, unbind and trigger):
-     */
-    bind : function(key, callback, optionalThisArgInCallback){
-        if(!(callback && callback instanceof Function)){
-            this.debug('cannot bind '+key+' to callback: the latter is null or not a function');
-            return;
-        }
-        var listenersMap = this.listenersMap;
-        var keyAlreadyRegistered = (key in listenersMap);
-        if(!keyAlreadyRegistered){
-            listenersMap[key] = [];
-        }
-        listenersMap[key].push({
-            callback:callback,
-            optionalThisArgInCallback:optionalThisArgInCallback
-        });
-    },
-    unbind : function(){
-        var listenersMap = this.listenersMap;
-        if(arguments.length>0){
-            var key = arguments[0];
-            if(key in listenersMap){
-                delete listenersMap[key];
-            }
-        }else{
-            for(key in listenersMap){
-                delete listenersMap[key];
-            }
-        }
-    },
-    fire : function(key, dataArgument){
-        var listenersMap = this.listenersMap;
-        if(!(key in listenersMap)){
-            this.debug('"'+key+'" fired but no binding associated to it');
-            return;
-        }
-        var callbacks = listenersMap[key];
-        var len = callbacks && callbacks.length ? callbacks.length : 0;
-        for(var i=0; i<len; i++){
-            var obj = callbacks[i];
-            if('optionalThisArgInCallback' in obj){
-                obj.callback.apply(obj.optionalThisArgInCallback, [dataArgument]);
-            }else{
-                obj.callback(dataArgument);
-            }
         }
     },
 
