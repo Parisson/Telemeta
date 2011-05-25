@@ -176,16 +176,11 @@ function loadPlayer(analizerUrl, soundUrl, itemId, visualizers, currentUserName,
                 //3) assing a binding to the player maximization button:
                 $J('#player_maximized .toggle, #player_minimized .toggle').click(function() {
                     togglePlayerMaximization();
-                    //alert(this);
-                    //this.blur();
                     return false;
                 });
             }
             p.setupInterface(cbckAtEnd);
-
             player = p;
-
-           
         });
     };
 

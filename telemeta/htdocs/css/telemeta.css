@@ -642,7 +642,7 @@ dl.dublincore dd.caption {
     text-decoration: none;
     margin: 0;
     background: #fff url(more.png) no-repeat left top;
-    background-position: 0 -17px;
+    background-position: 0 -16px;
     padding-bottom: 2px;
     padding-left: 16px;
     border-bottom: none !important;
@@ -658,7 +658,7 @@ dl.dublincore dd.caption {
     border-bottom: none;
 }
 .extraInfos .folded h4 a {
-    background-position: 0 0px;
+    background-position: 0 1px;
 }
 
 /* Pagination */

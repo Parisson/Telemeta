@@ -80,10 +80,15 @@ var Ruler = TimesideArray.extend({
         rulerContainer.find(':not(a.ts-pointer,a.ts-marker,a.ts-pointer>*,a.ts-marker>*)').remove();
 
         //calculate h with an artifice: create a span (that will be reused later) with the "standard" label
-        var firstSpan = $J('<span/>').html('00000'); //typical timelabel should be '00:00', with '00000' we assure a bit of extra safety space
-        rulerContainer.append(firstSpan);
+        var firstSpan = $J('<span/>').css({
+                    'display':'block',
+                    'position':'absolute'
+                    }).html('00000'); //typical timelabel should be '00:00', with '00000' we assure a bit of extra safety space
+                    //note also that display and position must be set as below to calculate the proper outerHeight
+        rulerContainer.append(firstSpan); //to calculate height, element must be in the document, append it
         var verticalMargin = 1;
         var h = 2*(verticalMargin+firstSpan.outerHeight());
+        
         var obj = this.calculateRulerElements(rulerContainer.width(),h,firstSpan.outerWidth());
 
         var paper = Raphael(rulerContainer[0], rulerContainer.width(), h);
@@ -92,7 +97,6 @@ var Ruler = TimesideArray.extend({
 
         var labels = obj.labels;
         if(labels){
-            
             for(var i=0; i <labels.length;i++){
                 var span = (i==0 ? firstSpan : $J('<span/>'));
                 span.html(labels[i][0]).css({
@@ -139,7 +143,9 @@ var Ruler = TimesideArray.extend({
         
         var duration = this.getSoundDuration();
         
-        var fontMargin = 0;
+        var fontLeftMargin = 2; //should be eual or greater to the ruler stroke width, so that
+        //the labels are not overlapping the vertical ruler lines
+        timeLabelWidth+=fontLeftMargin;
 
         var timeLabelDuration = timeLabelWidth*duration/w;
 
@@ -174,19 +180,16 @@ var Ruler = TimesideArray.extend({
             for(var j=1; j<tickCount+1; j++){
                 var k = i+j;
                 var x = (k*tickWidth);
-                //consolelog(k+') = '+x+' ; '+i+' * '+sectionWidth+' + '+j+' * '+tickWidth);
-                //if(x<w){
                 var y = (j==tickCount ? 0 : tickAtHalfSectionWidthHigher && j==(tickCount)/2 ? .5*h : .75*h);
                 var baseline = ' L '+x+' '+h_1;
                 path[k] = baseline;
                 path[k] += ' L '+x+' '+y;
                 path[k] += baseline;
-            //}
             }
         }
         var labels = new Array(sectionNums);
         for(i=0; i<sectionNums; i++){
-            labels[i] = [makeTimeLabel(sectionDuration*i),fontMargin+i*sectionWidth];
+            labels[i] = [makeTimeLabel(sectionDuration*i),fontLeftMargin+i*sectionWidth];
         }
         return {
             'path': path.join('')+' z',

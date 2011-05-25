@@ -46,7 +46,7 @@ jQuery(document).ready(function() {
 });
 
 /**
- *function inherited from old code, never touched. Guess fixes the left data table, if any
+ *function inherited from old code, never touched. Guess fixes the click on the left data table, if any
  */
 function foldInfoBlocks() {
     var $J = jQuery;
@@ -54,6 +54,7 @@ function foldInfoBlocks() {
     extra.find('.folded dl, .folded table').css('display', 'none');
     extra.find('a').click(function() {
         $J(this).parents('.extraInfos').children().toggleClass('folded').find('dl, table').toggle(100);
+        //toggle toggles the visibility of elements
         return false;
     });
 }
