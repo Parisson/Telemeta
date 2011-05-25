@@ -196,6 +196,7 @@
                 <dd>{% if item.location %}{{ item.location.fullnames|join:"<br/>" }}{% endif %}</dd>
                 {% dl_field item "location_comment" %}
                 {% dl_field item "cultural_area" %}
+                {% dl_field item "language" %}
                 {% dl_field item "ethnic_group" placeholder %}
                 {% dl_field item "context_comment" %}
                 {% dl_field item "keywords" join with ", " %}

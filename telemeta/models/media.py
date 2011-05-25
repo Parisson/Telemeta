@@ -240,6 +240,7 @@ class MediaItem(MediaResource):
                                            verbose_name=_('population / social group'))
     context_comment       = TextField(_('comments'))
     moda_execut           = CharField(_('moda_execut'))
+    language              = CharField(_('language'))
     
     # Musical informations
     vernacular_style      = WeakForeignKey('VernacularStyle', related_name="items", 
