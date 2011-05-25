@@ -173,7 +173,6 @@ var Ruler = TimesideArray.extend({
         var makeTimeLabel = this.makeTimeLabel;
         var h_1 = h-1; //TODO: use line tickness instead of 1
         var path = new Array(parseInt(0.5+(w/tickWidth)));
-        consolelog(path.length);
         path[0] = ['M 0 '+h_1];
         len = path.length;
         for(i=0;  i < len; i+=tickCount){

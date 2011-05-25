@@ -319,11 +319,3 @@ var MarkerMap = TimesideArray.extend({
     }
 }
 );
-
-//var low = 6;
-//var high = 8;
-//consolelog(low+' '+high+' returns '+((low + high) >>> 1));
-//high = 9;
-//consolelog(low+' '+high+' returns '+((low + high) >>> 1));
-//high = 10;
-//consolelog(low+' '+high+' returns '+((low + high) >>> 1));

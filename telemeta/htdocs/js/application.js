@@ -309,7 +309,7 @@ function loadScripts(){
 
 
 /**
- * function for writing to the console. Catches errors, if any (eg, console == undefined)
+ * function for writing to the console. Catches errors, if any (eg, console == undefined) and does nothing in case
  */
 function consolelog(text){
     if(typeof console != 'undefined'){

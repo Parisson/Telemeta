@@ -368,8 +368,7 @@ var TimesideClass = Class.extend({
     getComputedStyle : function(_elem, _style){
         var computedStyle;
         var $J = this.$J;
-        consolelog(_elem instanceof $J);
-        if(_elem instanceof $J){
+        if(_elem instanceof $J){ //note: '_elem instanceof this.$J' doesnt work. why??
             _elem = _elem.get(0);
         }
         if (typeof _elem.currentStyle != 'undefined'){

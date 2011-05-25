@@ -176,7 +176,6 @@ var Player = TimesideClass.extend({
                 if(buffering && !imgWaitDisplaying){
                     imgWaitDisplaying=true;
                     player.setWait.apply(player,[true]);
-                //consolelog('displaying wait '+this.readyState+' '+this.playState);
                 }else if(!buffering && sPosInMsec < sPos){
                     //isBuffering seems to be true at regular interval, so we could be in the case
                     //that !buffering but is actually buffering and no sound is heard, so
@@ -492,7 +491,6 @@ var Player = TimesideClass.extend({
         }
         elements.css(style);
         elements.css('position','absolute');
-        consolelog(elements);
         
         //image inside ts-image-container:
         image.css({
