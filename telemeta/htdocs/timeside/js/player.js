@@ -331,8 +331,16 @@ var Player = TimesideClass.extend({
             a.attr('title', a.attr('class').substring(3));
         });
         
-        //creating the ruler
+
+        //SET NECESSARY CSS (THIS WILL OVERRIDE CSS SET IN STYLESHEETS):
         var viewer = container.find('.ts-viewer');
+        var wave = container.find('.ts-wave');
+        var control = container.find('.ts-control');
+        var ruler_ = container.find('.ts-ruler');
+        wave.add(viewer).add(control).add(ruler_).css({'position':'relative','overflow':'hidden'});
+
+
+        //creating the ruler
         var ruler = new Ruler(viewer, this.getSoundDuration());
         this.getRuler = function(){
             return ruler;
@@ -369,6 +377,7 @@ var Player = TimesideClass.extend({
         });
        
 
+        
         //finally, load markers and bind events for markers (see method below):
         //NOTE: loadMarkers ASYNCHRONOUSLY CALLS THE SERVER, SO METHODS WRITTEN AFTER IT MIGHT BE EXECUTED BEFORE
         //loadMarkers has finished its job
@@ -460,30 +469,32 @@ var Player = TimesideClass.extend({
         var container = this.getContainer();
         
         var wave = container.find('.ts-wave');
+
         var image = container.find('.ts-image');
         height = wave.height();
         this.debug("wave height:" + height);
         if (!height) {
             //this.debug('ERROR: image height is zero in player.,resize!!!!')
             height = image.height();
+            if (!height){
+                height = 200;
+            }
         }
         //set image, imagecontainer and canvas (container on imagecontainer for lines and pointer triangles) css
-        var elements = image
-        .add(container.find('.ts-image-container'))
-        .add(container.find('.ts-image-canvas'));
+        var elements = container.find('.ts-image-container').css('zIndex','0')
+        .add(container.find('.ts-image-canvas').css('zIndex','1')); //the two children of ts-wave. Set also the zIndex
+        //in order to visualize the canvas OVER the wav image
 
-        elements.css('width', 'auto'); // for IE6
-
-        
-        if (!height){
-            height = 200;
-        }
+        elements.css('width', 'auto'); // for IE6. We leave it although IE6 is not anymore supported
         var style = {
             width: wave.width(),
             height: height
         }
         elements.css(style);
-
+        elements.css('position','absolute');
+        consolelog(elements);
+        
+        //image inside ts-image-container:
         image.css({
             'width':'100%',
             'height':'100%'

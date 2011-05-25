@@ -24,65 +24,41 @@
 
 /**
  * Class representing a RulerMarker in TimesideUI
- * Requires jQuery wz_jsgraphics and all associated player classes
+ * Requires jQuery Raphael and all associated player classes. rulerDiv position MUST be relative
+ * (if this class is called from within player, it is)
  */
 
 var RulerMarker = TimesideClass.extend({
 
-    class2CanvasColor: {
-        'pointer':'#a10006',
-        'marker':'#e65911'
-    },
-
-    init: function(rulerDiv, waveImgDiv, className) {
+    
+    init: function(ruler, waveImgDiv, className) {
         this._super();
+        var rulerDiv = ruler.getRulerContainer();
         var $J = this.$J;
-        var fontSize = 10;
-        this.getFontSize = function(){
-            return fontSize;
-        }
 
-        var zIndex = 1000;
         var tooltip = '';
 
         var cssPref = this.cssPrefix;
 
         var label = $J('<a/>')
+        .addClass(cssPref + className)
         .css({
             display: 'block',
-            width: fontSize +'px',
             textAlign: 'center',
             position: 'absolute',
-            fontSize: fontSize + 'px',
-            fontFamily: 'monospace',
-            top: 0
-        })
-        .attr('href', '#')
-        .addClass(cssPref + className)
-        .html('<span>0</span>'); //the text inside the span is FUNDAMENTAL, although it will be replaced later,
-        //to calculate now the label position (see below *)
-       
+            zIndex: 1000
+        }).append($J('<span/>')).attr('href', '#');
         
         if (tooltip){
             label.attr('title', tooltip);
         }
-
-        if(rulerDiv.css('position')!='relative'){
-            rulerDiv.css({
-                'position':'relative'
-            });
-        }
         rulerDiv.append(label);
 
-       
+        //rulerDiv MUST HAVE POSITON relative or absolute (it is relative, see player.resize)
         if(className != "pointer"){
-            label.css('top',rulerDiv.height()-label.outerHeight());
-        }
-        
-        var style = {};
-        if (zIndex) {
-            style.zIndex = zIndex;
-            label.css(style);
+            label.css('bottom','0');
+        }else{
+            label.css('top','0');
         }
         
         //set the index,
@@ -112,27 +88,26 @@ var RulerMarker = TimesideClass.extend({
         this.positionInPixels = 0;
         this.positionAsViewerRatio = 0;
 
-        var tW = 2*((fontSize - 1) >>> 1)+1; //if fontsize:10 or 9, tW:9, if fontSize:8 or 7, tW:7, and so on
-        
-        var fillColor = this.class2CanvasColor[className];
+        var tW = 9; //2*((fontSize - 1) >>> 1)+1; //if fontsize:10 or 9, tW:9, if fontSize:8 or 7, tW:7, and so on
+
         var canvas = undefined;
+        var canvasClass = cssPref + className+'-canvas';
         if(this.isSvgSupported()){
             canvas = this.createCanvasSvg(waveImgDiv, tW);
             var path = canvas.childNodes[0]; //note that $J(canvas).find('path') does not work in FF at least 3.5
-            path.setAttributeNS(null,'fill',fillColor);
-            path.setAttributeNS(null,'stroke-width',0);
+            path.setAttributeNS(null,'class',canvasClass);
             this.moveCanvas = function(pixelOffset){
-                //consolelog(pixelOffset);
                 canvas.setAttributeNS( null, "transform", "translate("+pixelOffset+",0)");
             }
             this.jQueryCanvas = $J(canvas);
         }else{
             canvas = this.createCanvasVml(waveImgDiv, tW);
             this.jQueryCanvas = $J(canvas.node);
-            var attributes = {
-                'stroke-width':'0',
-                'fill':fillColor
-            };
+            var attributes = ruler.classToRaphaelAttr[canvasClass];
+            if(!attributes){
+                attributes = ruler.getVmlAttr(canvasClass);
+                ruler.classToRaphaelAttr[canvasClass] = attributes;
+            }
             canvas.attr(attributes); //Raphael method
             this.moveCanvas = function(pixelOffset){
                 //for some reason, coordinates inside the VML object are stored by raphael with a zoom of 10:
@@ -152,29 +127,17 @@ var RulerMarker = TimesideClass.extend({
     setText: function(text, optionalUpdateLabelPosition) {
         var label = this.getLabel();
         if (label) {
-            text += '';
-            var labelWidth = this.textWidth(text, this.getFontSize()) + 10;
             var oldWidth = label.width();
-            if (oldWidth != labelWidth) {
-                label.css({
-                    width: labelWidth+'px'
-                });
-            }
             label.find('span').html(text);
+            var labelWidth = label.width();
             if(oldWidth != labelWidth && optionalUpdateLabelPosition){
                 this.refreshLabelPosition();
             }
         }
         return this;
     },
-
-
-    getNodes: function(){
-        return this.$J([]);
-    //return this.$J(this.getPainter().cnv).children();
-    },
+    
     //these methods are executed only if marker is movable (see Ruler.js)
-
     move : function(pixelOffset) {
         var width =  this.getRulerWidth();
         if (this.positionInPixels != pixelOffset) {
@@ -235,7 +198,9 @@ var RulerMarker = TimesideClass.extend({
 
 
     createCanvasSvg: function(container, arrowBaseWidth){
-        //<path fill="#0000ff" stroke="#000000" d="M0,0L9,0L4.5,5Z" style="stroke-width: 0px; left: 100px; position: absolute;" stroke-width="0" x="100px"></path>
+        //create svg. Note that elements must be created within a namespace (createElementNS)
+        //and attributes must be set via .setAttributeNS(null,name,value)
+        //in other words, jQuery does not work (maybe in future releases)
         var $J = this.$J;
         var svgNS = "http://www.w3.org/2000/svg";
         var d = document;
@@ -255,8 +220,7 @@ var RulerMarker = TimesideClass.extend({
             group.appendChild(path);
             svg.appendChild(group);
        
-        return group;
-    //return $J('<path/>').attr('fill',fillColor).attr('style','fill:'+fillColor+';strokeWidth:0');
+        return group; //return the group, not the path, as it is the group that will be translated when moving
     },
 
     createCanvasVml: function(container, arrowBaseWidth){

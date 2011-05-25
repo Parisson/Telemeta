@@ -31,12 +31,27 @@
 .ts-skin-lab .ts-player .ts-viewer a.ts-pointer {
     color: #BB0000;
     background: white;
-
 }
-
+/*class for the canvas (svg) associated to a marker. If svg is not supported, a parser in the palyer
+converts these values (nb: not all are supported) to specigic vml attributes. In this case, however, ONLY CLASSES WRITTEN
+ALONE ARE PARSED (eg ".ts-blabla, .ts-marker-canvas{...}" WILL NOT BE RECOGNIZED)*/
+.ts-pointer-canvas {
+    fill: #BB0000;
+    stroke-width:0;
+    stroke:#e65911; /*to be sure...*/
+}
 .ts-skin-lab .ts-player .ts-viewer .ts-marker {
+    padding: 0 0.5em;
     background: #e65911;
     color: #FFF;
+}
+/*class for the canvas (svg) associated to a marker. If svg is not supported, a parser in the palyer 
+converts these values (nb: not all are supported) to specigic vml attributes. In this case, however, ONLY CLASSES WRITTEN 
+ALONE ARE PARSED (eg ".ts-blabla, .ts-marker-canvas{...}" WILL NOT BE RECOGNIZED)*/
+.ts-marker-canvas {
+    fill: #e65911;
+    stroke-width:0;
+    stroke:#e65911; /*to be sure...*/
 }
 .ts-skin-lab .ts-player .ts-ruler .ts-section .ts-label {
     background: #595959;
@@ -93,4 +108,10 @@
 
 #player .ts-visualizer, .ts-wait{
     margin:5px;
+}
+
+.ts-ruler{
+    color: white;
+    background-color: #333;
+    font-size: 10px;
 }

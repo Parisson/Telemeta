@@ -27,7 +27,6 @@
  * and Raphael
  */
 var Ruler = TimesideArray.extend({
-
     //init constructor: soundDuration is IN SECONDS!!! (float)
     init: function(viewer, soundDuration){
         this._super();
@@ -58,31 +57,34 @@ var Ruler = TimesideArray.extend({
         }
     },
 
+    colors:{}, //used to draw rulermarkers
+    
     resize : function(){
         var duration = this.getSoundDuration(); //in seconds
         if (!duration) {
             this.debug("Can't draw ruler with a duration of 0");
             return;
         }
-
-        
-        //build a canvas with raphael:
-        //setting global attributes:
-        var backgroundcolor = '#333';
-        var lineAttr = {
-                        'stroke-width':1,
-                        'stroke':'#eeeeee'
-                    };
+        var $J = this.$J;
         var rulerContainer = this.getRulerContainer();
-        rulerContainer.css({'backgroundColor':backgroundcolor});
-
+        var linesColor = this.color(rulerContainer.css('color'));
+        if(!linesColor){
+            linesColor = '#000000';
+        }
+        var lineAttr = {
+            'stroke-width':1,
+            'stroke': linesColor
+        };
+        
         //remove all elements not pointer or marker
         rulerContainer.find(':not(a.ts-pointer,a.ts-marker,a.ts-pointer>*,a.ts-marker>*)').remove();
 
-        //set font size (maybe this will be placed in a global or static variable)
-        var h = 28; //TODO: change it (global var?)
-        var obj = this.calculateRulerElements(rulerContainer.width(),h,duration);
-        consolelog(obj);
+        //calculate h with an artifice: create a span (that will be reused later) with the "standard" label
+        var firstSpan = $J('<span/>').html('00000'); //typical timelabel should be '00:00', with '00000' we assure a bit of extra safety space
+        rulerContainer.append(firstSpan);
+        var verticalMargin = 1;
+        var h = 2*(verticalMargin+firstSpan.outerHeight());
+        var obj = this.calculateRulerElements(rulerContainer.width(),h,firstSpan.outerWidth());
 
         var paper = Raphael(rulerContainer[0], rulerContainer.width(), h);
         var path = paper.path(obj.path);
@@ -90,11 +92,23 @@ var Ruler = TimesideArray.extend({
 
         var labels = obj.labels;
         if(labels){
-            var $J = this.$J;
+            
             for(var i=0; i <labels.length;i++){
-                var span = $J('<span/>').html(labels[i][0]).css({'color':'white', 'display':'block','position':'absolute','top':'0', 'left':labels[i][1]+'px'});
+                var span = (i==0 ? firstSpan : $J('<span/>'));
+                span.html(labels[i][0]).css({
+                    'display':'block',
+                    'position':'absolute',
+                    'width':'',
+                    'height':'',
+                    'right':'',
+                    'bottom':'',
+                    'top':'0',
+                    'left':labels[i][1]+'px'
+                    });
                 rulerContainer.append(span);
             }
+        }else{
+            firstSpan.remove();
         }
 
         var pointer = undefined;
@@ -121,15 +135,12 @@ var Ruler = TimesideArray.extend({
      * path: (string) the path of the ruler to be drawn
      * labels (array) an array of arrays ['text',x,y]
      */
-    calculateRulerElements: function(w,h){
-        var fontSize = 10;
+    calculateRulerElements: function(w,h,timeLabelWidth){
+        
         var duration = this.getSoundDuration();
         
-        //the fontSize is actually a measure og height, seo we can set:
-        var fontMargin = 2;
+        var fontMargin = 0;
 
-
-        var timeLabelWidth = this.textWidth('00:00', fontSize);
         var timeLabelDuration = timeLabelWidth*duration/w;
 
         //determine the ticks:
@@ -165,19 +176,22 @@ var Ruler = TimesideArray.extend({
                 var x = (k*tickWidth);
                 //consolelog(k+') = '+x+' ; '+i+' * '+sectionWidth+' + '+j+' * '+tickWidth);
                 //if(x<w){
-                    var y = (j==tickCount ? 0 : tickAtHalfSectionWidthHigher && j==(tickCount)/2 ? .5*h : .75*h);
-                    var baseline = ' L '+x+' '+h_1;
-                    path[k] = baseline;
-                    path[k] += ' L '+x+' '+y;
-                    path[k] += baseline;
-                //}
+                var y = (j==tickCount ? 0 : tickAtHalfSectionWidthHigher && j==(tickCount)/2 ? .5*h : .75*h);
+                var baseline = ' L '+x+' '+h_1;
+                path[k] = baseline;
+                path[k] += ' L '+x+' '+y;
+                path[k] += baseline;
+            //}
             }
         }
         var labels = new Array(sectionNums);
         for(i=0; i<sectionNums; i++){
             labels[i] = [makeTimeLabel(sectionDuration*i),fontMargin+i*sectionWidth];
         }
-        return {'path': path.join('')+' z', 'labels':labels};
+        return {
+            'path': path.join('')+' z',
+            'labels':labels
+        };
     },
 
     //overridden: Note that the pointer is NOT cleared!!!!!
@@ -232,10 +246,10 @@ var Ruler = TimesideArray.extend({
         var container = this.getRulerContainer();
         var layout = container.find("."+this.cssPrefix + 'layout');
         var $J = this.$J;
-//        var pointer = new RulerMarker($J(layout.get(0)),this.getWaveContainer(),markerClass);
+        //        var pointer = new RulerMarker($J(layout.get(0)),this.getWaveContainer(),markerClass);
 
         
-        var pointer = new RulerMarker(this.getRulerContainer(),this.getWaveContainer(),markerClass);
+        var pointer = new RulerMarker(this,this.getWaveContainer(),markerClass);
 
         
 
