@@ -489,7 +489,6 @@ class DublinCoreToFormatMetadata(object):
                     else:
                         value = value[0].split('-')[0]
                 if key in mapp:
-                    print value
                     metadata[mapp[key]] = value.decode('utf-8')
                 elif 'all' in mapp.keys():
                     metadata[key] = value.decode('utf-8')
