@@ -85,7 +85,7 @@ var Ruler = TimesideArray.extend({
         this.drawRuler(rulerContainer,h,obj.path);
         
         var labels = obj.labels;
-        if(labels){
+        if(labels && labels.length){
             for(var i=0; i <labels.length;i++){
                 var span = (i==0 ? firstSpan : $J('<span/>'));
                 span.html(labels[i][0]).css({
@@ -101,7 +101,7 @@ var Ruler = TimesideArray.extend({
                 rulerContainer.append(span);
             }
         }else{
-            firstSpan.remove();
+            firstSpan.html(this.makeTimeLabel(0));
         }
 
         var pointer = undefined;
@@ -170,7 +170,7 @@ var Ruler = TimesideArray.extend({
         timeLabelWidth+=fontLeftMargin;
 
         var timeLabelDuration = timeLabelWidth*duration/w;
-
+        
         //determine the ticks:
         var sectionDurations = [1,2,5,10,30,60,120,300,1800,3600,7200,18000,36000];
         //sectionDurations in seconds. Note that 60=1 minute, 3600=1 hour (so the maximum sectionDuration is 36000=10hours)

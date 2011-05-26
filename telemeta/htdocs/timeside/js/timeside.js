@@ -242,7 +242,7 @@ var TimesideClass = Class.extend({
         //marker offset is in float format second.decimalPart
         var pInt = parseInt;
         var round = Math.round;
-        var factor = 60*24;
+        var factor = 3600;
         var hours = pInt(time/factor);
         time-=hours*factor;
         factor = 60;
@@ -250,7 +250,7 @@ var TimesideClass = Class.extend({
         time-=minutes*factor;
         var seconds = pInt(time);
         time-=seconds;
-
+        
         //here below the function to format a number
         //ceilAsPowerOfTen is the ceil specifiedas integer indicating the relative power of ten
         //(0: return the number as it is, 1: format as "0#" and so on)
