@@ -376,6 +376,7 @@ class WebView(object):
                 code = form.cleaned_data['code']
                 if not code:
                     code = public_id
+                form.file = None
                 form.save()
                 new_item.set_revision(request.user)
                 return HttpResponseRedirect('/items/'+code)

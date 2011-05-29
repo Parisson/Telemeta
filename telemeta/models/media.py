@@ -137,7 +137,7 @@ class MediaCollection(MediaResource):
     
     # Technical data
     code                  = CharField(_('code'), unique=True, required=True, validators=[is_valid_collection_code])
-    old_code              = CharField(_('old code'), null=True)
+    old_code              = CharField(_('old code'), unique=False, null=True, blank=True)
     approx_duration       = DurationField(_('approximative duration'))
     physical_items_num    = IntegerField(_('number of components (medium / piece)'))
     physical_format       = WeakForeignKey('PhysicalFormat', related_name="collections", 
@@ -256,7 +256,7 @@ class MediaItem(MediaResource):
     
     # Archiving data
     code                  = CharField(_('code'), unique=True, null=True)
-    old_code              = CharField(_('old code'), null=True)
+    old_code              = CharField(_('old code'), unique=False, null=True, blank=True)
     track                 = CharField(_('item number'))
     creator_reference     = CharField(_('reference'))
     external_references   = TextField(_('published reference'))
