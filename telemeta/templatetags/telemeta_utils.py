@@ -296,3 +296,6 @@ def set_var(parser, token):
 def current_year():
     return datetime.datetime.now().strftime("%Y")
 
+@register.filter
+def sort_by_code(items):
+    return items.order_by('code')

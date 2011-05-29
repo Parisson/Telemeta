@@ -359,6 +359,11 @@ class MediaItemPerformanceForm(ModelForm):
     class Meta:
         model = MediaItemPerformance
         
+    def __init__(self, *args, **kwds):
+        super(MediaItemPerformanceForm, self).__init__(*args, **kwds)
+        self.fields['instrument'].queryset = Instrument.objects.order_by('name')
+        self.fields['alias'].queryset = InstrumentAlias.objects.order_by('name')
+        
 class MediaPart(MediaResource):
     "Describe an item part"
     element_type = 'part'

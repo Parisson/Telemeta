@@ -1118,6 +1118,9 @@ a.image-link {
 #id_collector {
     width: 500px;
 }
+#id_creator {
+    width: 500px;
+}
 #id_cultural_area {
     width: 500px;
 }
@@ -1125,16 +1128,31 @@ a.image-link {
     width: 500px;
 }
 #id_old_code {
-    width: 300px;
+    width: 500px;
 }
 #id_code {
-    width: 300px;
+    width: 500px;
 }
 #id_author {
-    width: 300px;
+    width: 500px;
 }
 #id_collector_selection {
-    width: 300px;
+    width: 500px;
+}
+#id_booklet_author {
+    width: 500px;
+}
+#id_alt_ids {
+    width: 500px;
+}
+#id_travail {
+    width: 500px;
+}
+#id_value_add {
+    width: 200px;
+}
+#id_value_edit {
+    width: 500px;
 }
 
 /*focus on elements*/
