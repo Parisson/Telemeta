@@ -149,7 +149,7 @@ class MediaCollection(MediaResource):
     
     # All
     objects               = MediaCollectionManager()
-
+ 
     def __unicode__(self):
         return self.code
 
