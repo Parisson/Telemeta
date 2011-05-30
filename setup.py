@@ -48,7 +48,7 @@ setup(
   name = "Telemeta",
   url = "http://telemeta.org",
   description = "Web Audio Content Management System",
-  author = ["Guillaume Pellerin, Olivier Guilyardi", "Riccardo Zaccarelli"],
+  author = ["Guillaume Pellerin", "Olivier Guilyardi", "Riccardo Zaccarelli"],
   author_email = ["yomguy@parisson.com","olivier@samalyse.com", "riccardo.zaccarelli@gmail.com"],
   version = version,
   packages = packages,

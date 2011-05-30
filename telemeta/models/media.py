@@ -431,6 +431,19 @@ class MediaItemMarker(MediaResource):
         else:
             return self.public_id
 
+
+class MediaItemTranscodingFlag(ModelCore):
+    "Item flag to know if the MediaItem has been transcoded to a given format"
+    
+    item            = ForeignKey('MediaItem', related_name="transcoding", verbose_name=_('item'))
+    mime_type       = CharField(_('mime_type'), required=True)
+    date            = DateTimeField(_('date'), auto_now=True)
+    value           = BooleanField(_('transcoded'))
+    
+    class Meta(MetaCore):
+        db_table = 'media_transcoding'
+
+
 class Search(ModelCore):
     "Keywork search"
     

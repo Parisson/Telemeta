@@ -80,10 +80,12 @@ def render(request, template, data = None, mimetype = None):
     return render_to_response(template, data, context_instance=RequestContext(request), 
                               mimetype=mimetype)
 
-def stream_from_processor(__decoder, __processor):
+def stream_from_processor(__decoder, __processor, __flag):
     while True:
         __frames, eodproc = __processor.process(*__decoder.process())
         if eodproc:
+            __flag.value = True
+            __flag.save()
             break
         yield __processor.chunk
 
@@ -487,7 +489,7 @@ class WebView(object):
         """Export a given media item in the specified format (OGG, FLAC, ...)"""
         
         item = MediaItem.objects.get(public_id=public_id)
-
+        
         public_access = self.get_public_access(item.public_access, item.recorded_from_date, item.recorded_to_date)
         if (not public_access or not extension in settings.TELEMETA_STREAMING_FORMATS) and not request.user.is_staff:
             return HttpResponseRedirect('not_allowed/')
@@ -502,6 +504,14 @@ class WebView(object):
         mime_type = encoder.mime_type()
         file = public_id + '.' + encoder.file_extension()
         audio = item.file.path
+        
+        flag = MediaItemTranscodingFlag.objects.filter(item=item, mime_type=mime_type)
+        if not flag:
+            flag = MediaItemTranscodingFlag(item=item, mime_type=mime_type)
+            flag.value = False
+            flag.save()
+        else:
+            flag = flag[0]
         
         analyzers = self.item_analyze(item)
         if analyzers:
@@ -521,14 +531,14 @@ class WebView(object):
             mapping = DublinCoreToFormatMetadata(extension)
             metadata = mapping.get_metadata(dc_metadata)     
             media = self.cache_export.dir + os.sep + file
-            if not self.cache_export.exists(file):
-                decoder = timeside.decoder.FileDecoder(audio)
+            if not self.cache_export.exists(file) or flag.value == False:
                 # source > encoder > stream
+                decoder = timeside.decoder.FileDecoder(audio)
                 decoder.setup()
                 proc = encoder(media, streaming=True)
                 proc.setup(channels=decoder.channels(), samplerate=decoder.samplerate())
                 proc.set_metadata(metadata)
-                response = HttpResponse(stream_from_processor(decoder, proc), mimetype = mime_type)
+                response = HttpResponse(stream_from_processor(decoder, proc, flag), mimetype = mime_type)
             else:
                 # cache > stream
                 proc = encoder(media)
