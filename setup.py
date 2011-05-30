@@ -45,7 +45,7 @@ for dirpath, dirnames, filenames in os.walk(telemeta_dir):
 version = __import__('telemeta').__version__
 
 setup(
-  name = "telemeta",
+  name = "Telemeta",
   url = "http://telemeta.org",
   description = "Web Audio Content Management System",
   author = ["Guillaume Pellerin, Olivier Guilyardi", "Riccardo Zaccarelli"],
