@@ -333,6 +333,9 @@ class WebView(object):
                 if form.files:
                     self.cache_data.delete_item_data(code)
                     self.cache_export.delete_item_data(code)
+                    flags = MediaItemTranscodingFlag.objects.filter(item=item)
+                    for flag in flags:
+                        flag.delete()
                 item.set_revision(request.user)
                 return HttpResponseRedirect('/items/'+code)
         else:
