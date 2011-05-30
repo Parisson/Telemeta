@@ -45,7 +45,7 @@ for dirpath, dirnames, filenames in os.walk(telemeta_dir):
 version = __import__('telemeta').__version__
 
 setup(
-  name = "telemeta",
+  name = "Telemeta",
   url = "http://telemeta.org",
   description = "Web Audio Content Management System",
   author = ["Guillaume Pellerin, Olivier Guilyardi", "Riccardo Zaccarelli"],
@@ -53,6 +53,8 @@ setup(
   version = version,
   packages = packages,
   data_files = data_files,
+  intall_requires = ['timeside'],
+  classifiers = ['Environment :: Web Environment', 'Framework :: Django', 'Intended Audience :: Science/Research', 'Intended Audience :: Education', 'Programming Language :: Python', 'Programming Language :: JavaScript', 'Topic :: Internet :: WWW/HTTP :: Dynamic Content', 'Topic :: Internet :: WWW/HTTP :: WSGI :: Application', 'Topic :: Multimedia :: Sound/Audio', 'Topic :: Multimedia :: Sound/Audio :: Analysis', 'Topic :: Multimedia :: Sound/Audio :: Players', 'Topic :: Scientific/Engineering :: Information Analysis', 'Topic :: System :: Archiving',  ], 
   long_description = """
 Telemeta is a web audio archiving program which introduces useful and secure methods to backup, index, transcode, analyse and publish any digitalized audio file with its metadata. It is dedicated to professionnals who wants to easily backup and publish documented sounds from collections of vinyls, magnetic tapes or audio CDs over a strong database, in accordance with open standards.
 
