@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-29 21:26+0200\n"
+"POT-Creation-Date: 2011-05-30 11:05+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Olivier Guilyardi <olivier samalyse com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -338,8 +338,8 @@ msgid "item number"
 msgstr "n° de l'item"
 
 #: models/media.py:262
-msgid "published reference"
-msgstr "référence éditée"
+msgid "published references"
+msgstr "références éditées"
 
 #: models/media.py:263
 msgid "copy of"
@@ -350,7 +350,7 @@ msgid "file"
 msgstr "fichier"
 
 #: models/media.py:275 models/media.py:440
-#: templates/telemeta_default/mediaitem_detail.html:207
+#: templates/telemeta_default/mediaitem_detail.html:208
 msgid "keywords"
 msgstr "mots-clés"
 
@@ -693,8 +693,8 @@ msgstr "Collection"
 
 #: templates/telemeta_default/collection_detail.html:44
 #: templates/telemeta_default/mediaitem_detail.html:108
-#: templates/telemeta_default/mediaitem_detail.html:207
-#: templates/telemeta_default/mediaitem_detail.html:246
+#: templates/telemeta_default/mediaitem_detail.html:208
+#: templates/telemeta_default/mediaitem_detail.html:247
 #: templates/telemeta_default/profile_detail.html:63
 msgid "Edit"
 msgstr "Editer"
@@ -733,27 +733,40 @@ msgstr "Indications géographiques et culturelles"
 msgid "Recordist"
 msgstr "Collecteur"
 
-#: templates/telemeta_default/collection_detail.html:141
-#: templates/telemeta_default/mediaitem_detail.html:262
+#: templates/telemeta_default/collection_detail.html:129
+msgid "Bibliographic references"
+msgstr "Références bibliographiques"
+
+#: templates/telemeta_default/collection_detail.html:142
+#: templates/telemeta_default/mediaitem_detail.html:264
 msgid "Archiving data"
 msgstr "Données d'archivage"
 
-#: templates/telemeta_default/collection_detail.html:162
-#: templates/telemeta_default/mediaitem_detail.html:277
+#: templates/telemeta_default/collection_detail.html:148
+msgid "Related documentation"
+msgstr "Documentation associée"
+
+#: templates/telemeta_default/collection_detail.html:152
+#: templates/telemeta_default/mediaitem_detail.html:200
+msgid "Comments"
+msgstr "Commentaires"
+
+#: templates/telemeta_default/collection_detail.html:165
+#: templates/telemeta_default/mediaitem_detail.html:280
 msgid "Technical data"
 msgstr "Données techniques"
 
-#: templates/telemeta_default/collection_detail.html:167
-#: templates/telemeta_default/mediaitem_detail.html:280
+#: templates/telemeta_default/collection_detail.html:170
+#: templates/telemeta_default/mediaitem_detail.html:283
 msgid "Media type"
 msgstr "Type de media"
 
-#: templates/telemeta_default/collection_detail.html:167
-#: templates/telemeta_default/mediaitem_detail.html:280
+#: templates/telemeta_default/collection_detail.html:170
+#: templates/telemeta_default/mediaitem_detail.html:283
 msgid "Audio"
 msgstr "Audio"
 
-#: templates/telemeta_default/collection_detail.html:172
+#: templates/telemeta_default/collection_detail.html:175
 #: templates/telemeta_default/geo_countries.html:16
 msgid "Number of items"
 msgstr "Nombre d'items"
@@ -998,17 +1011,25 @@ msgstr "Date d'enregistrement"
 msgid "Location"
 msgstr "Lieu"
 
-#: templates/telemeta_default/mediaitem_detail.html:212
+#: templates/telemeta_default/mediaitem_detail.html:213
 msgid "Musical informations"
 msgstr "Informations sur la musique"
 
-#: templates/telemeta_default/mediaitem_detail.html:246
+#: templates/telemeta_default/mediaitem_detail.html:247
 msgid "performance"
 msgstr "composition"
 
-#: templates/telemeta_default/mediaitem_detail.html:251
+#: templates/telemeta_default/mediaitem_detail.html:252
 msgid "General informations"
 msgstr "Informations générales"
+
+#: templates/telemeta_default/mediaitem_detail.html:254
+msgid "Remarks"
+msgstr "Remarques"
+
+#: templates/telemeta_default/mediaitem_detail.html:270
+msgid "Published references"
+msgstr "Références éditées"
 
 #: templates/telemeta_default/mediaitem_detail_dc.html:16
 msgid "No such item"
@@ -1127,7 +1148,7 @@ msgstr "Etat/Continent"
 msgid "No item"
 msgstr "Aucun item"
 
-#: templates/telemeta_default/inc/module_revisions.html:7 web/base.py:1081
+#: templates/telemeta_default/inc/module_revisions.html:7 web/base.py:1082
 msgid "Last changes"
 msgstr "Dernières modifications"
 
@@ -1307,11 +1328,11 @@ msgid_plural "%(count)d collections"
 msgstr[0] "%(count)d collection"
 msgstr[1] "%(count)d collections"
 
-#: web/base.py:1092
+#: web/base.py:1093
 msgid "Access not allowed"
 msgstr "Accès non autorisé"
 
-#: web/base.py:1094
+#: web/base.py:1095
 msgid ""
 "Please login or contact the website administator to get admin or private "
 "access."

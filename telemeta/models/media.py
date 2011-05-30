@@ -259,7 +259,7 @@ class MediaItem(MediaResource):
     old_code              = CharField(_('old code'), unique=False, null=True, blank=True)
     track                 = CharField(_('item number'))
     creator_reference     = CharField(_('reference'))
-    external_references   = TextField(_('published reference'))
+    external_references   = TextField(_('published references'))
     copied_from_item      = WeakForeignKey('self', related_name="copies", verbose_name=_('copy of'))
     public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES, max_length=16, default="metadata")
     file                  = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename")

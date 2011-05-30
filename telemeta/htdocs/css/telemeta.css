@@ -1154,6 +1154,9 @@ a.image-link {
 #id_value_edit {
     width: 500px;
 }
+#id_file {
+    width: 500px;
+}
 
 /*focus on elements*/
 a:focus,div:focus{
