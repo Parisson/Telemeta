@@ -142,7 +142,6 @@ var playlistUtils = {
     },
 
     //resourceType can be: 'collection', 'item', 'marker'
-    //addResource RENAME TODO!!!!
     addResourceToPlaylist: function(playlistId,resourceType,objectId, callbackOnSuccess,callbackOnError){
         var send = {
             'public_id':uniqid(),

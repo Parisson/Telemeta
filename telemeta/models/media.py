@@ -137,7 +137,7 @@ class MediaCollection(MediaResource):
     
     # Technical data
     code                  = CharField(_('code'), unique=True, required=True, validators=[is_valid_collection_code])
-    old_code              = CharField(_('old code'), unique=True, null=True)
+    old_code              = CharField(_('old code'), unique=False, null=True, blank=True)
     approx_duration       = DurationField(_('approximative duration'))
     physical_items_num    = IntegerField(_('number of components (medium / piece)'))
     physical_format       = WeakForeignKey('PhysicalFormat', related_name="collections", 
@@ -149,7 +149,7 @@ class MediaCollection(MediaResource):
     
     # All
     objects               = MediaCollectionManager()
-
+ 
     def __unicode__(self):
         return self.code
 
@@ -240,6 +240,7 @@ class MediaItem(MediaResource):
                                            verbose_name=_('population / social group'))
     context_comment       = TextField(_('comments'))
     moda_execut           = CharField(_('moda_execut'))
+    language              = CharField(_('language'))
     
     # Musical informations
     vernacular_style      = WeakForeignKey('VernacularStyle', related_name="items", 
@@ -255,10 +256,10 @@ class MediaItem(MediaResource):
     
     # Archiving data
     code                  = CharField(_('code'), unique=True, null=True)
-    old_code              = CharField(_('old code'), unique=True, null=True)
+    old_code              = CharField(_('old code'), unique=False, null=True, blank=True)
     track                 = CharField(_('item number'))
     creator_reference     = CharField(_('reference'))
-    external_references   = TextField(_('published reference'))
+    external_references   = TextField(_('published references'))
     copied_from_item      = WeakForeignKey('self', related_name="copies", verbose_name=_('copy of'))
     public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES, max_length=16, default="metadata")
     file                  = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename")
@@ -357,6 +358,11 @@ class MediaItemPerformance(ModelCore):
 class MediaItemPerformanceForm(ModelForm):
     class Meta:
         model = MediaItemPerformance
+        
+    def __init__(self, *args, **kwds):
+        super(MediaItemPerformanceForm, self).__init__(*args, **kwds)
+        self.fields['instrument'].queryset = Instrument.objects.order_by('name')
+        self.fields['alias'].queryset = InstrumentAlias.objects.order_by('name')
         
 class MediaPart(MediaResource):
     "Describe an item part"
@@ -488,7 +494,6 @@ class DublinCoreToFormatMetadata(object):
                     else:
                         value = value[0].split('-')[0]
                 if key in mapp:
-                    print value
                     metadata[mapp[key]] = value.decode('utf-8')
                 elif 'all' in mapp.keys():
                     metadata[key] = value.decode('utf-8')

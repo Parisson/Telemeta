@@ -155,12 +155,7 @@ class WebView(object):
         if collection.public_access == 'none' and not request.user.is_staff:
             return HttpResponseRedirect('not_allowed/')
         playlists = self.get_playlists(request)
-        translation_list = ['OK', 'Cancel', 'Collection', 'added to playlist']
-        translations = {}
-        for term in translation_list:
-            translations[term] = ugettext(term)
-        
-        return render(request, template, {'collection': collection, 'playlists' : playlists, 'translations': translations})
+        return render(request, template, {'collection': collection, 'playlists' : playlists})
 
     @method_decorator(permission_required('telemeta.change_mediacollection'))
     def collection_edit(self, request, public_id, template='telemeta/collection_edit.html'):
@@ -381,6 +376,7 @@ class WebView(object):
                 code = form.cleaned_data['code']
                 if not code:
                     code = public_id
+                form.file = None
                 form.save()
                 new_item.set_revision(request.user)
                 return HttpResponseRedirect('/items/'+code)
@@ -1143,7 +1139,7 @@ class WebView(object):
     @method_decorator(permission_required('telemeta.change_mediaitem'))
     def item_performances_edit(self, request, public_id, template):
         item = MediaItem.objects.get(public_id=public_id)
-        PerformanceFormSet = inlineformset_factory(MediaItem, MediaItemPerformance)
+        PerformanceFormSet = inlineformset_factory(MediaItem, MediaItemPerformance, form=MediaItemPerformanceForm)
         if request.method == 'POST':
             formset = PerformanceFormSet(data=request.POST, instance=item)
             if formset.is_valid():

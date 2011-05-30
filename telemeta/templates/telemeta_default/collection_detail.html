@@ -126,7 +126,8 @@
                         {% dl_field collection "publisher_collection" %}
                         {% dl_field collection "publisher_serial" %}
                         {% dl_field collection "booklet_author" %}
-                        {% dl_field collection "external_references" %}
+                        <dt>{% trans "Bibliographic references" %}</dt>
+                        <dd>{{ collection.external_references|html_line_break|safe }}</dd>
                         {% dl_field collection "doctype_code" %}
                         {% dl_field collection "public_access_label" %}
                         {% dl_field collection "legal_rights" %}
@@ -144,10 +145,12 @@
                         {% dl_field collection "acquisition_mode" %}
                         {% dl_field collection "cnrs_contributor" %}
                         {% dl_field collection "metadata_author" %}
-                        {% dl_field collection "booklet_description" %}
+                        <dt>{% trans "Related documentation" %}</dt>
+                        <dd>{{ collection.booklet_description|html_line_break|safe }}</dd>
                         {% dl_field collection "publishing_status" %}
                         {% dl_field collection "alt_ids" %}
-                        {% dl_field collection "comment" %}
+                        <dt>{% trans "Comments" %}</dt>
+                        <dd>{{ collection.comment|html_line_break|safe }}</dd>
                         {% dl_field collection "metadata_writer" %}
                         {% dl_field collection "travail" %}
                         {% dl_field collection "items_done" %}

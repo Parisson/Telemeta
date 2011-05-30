@@ -53,19 +53,10 @@ var Player = TimesideClass.extend({
             return visualizers;
         }
 
-
-        //rpivate functions for converting
-        //soundmanager has milliseconds, we use here seconds
-        
-
-
         var sd = this.toSec(soundDurationInMsec);
         this.getSoundDuration = function(){
             return sd;
         }
-       
-       
-
         
         this.soundPosition =  sound.position ? this.toSec(sound.position) : 0;
         //public methods: returns the sound position
@@ -156,18 +147,21 @@ var Player = TimesideClass.extend({
     },
     play : function(){
         var player = this;
-        if(!player || player.isPlaying()){ //TODO: remove?, multishot is set to false
-            return false;
-        }
         var sound = player.getSound();
-        if(!sound){
+        var imgWaitDisplaying = this.isWaitVisible();
+        //soundManager multishot set false should prevent the play when already playing. We leave this check for safety
+        if(!player || player.isPlaying() || !sound){
+            if(imgWaitDisplaying){
+                this.setWait(false);
+            }
             return false;
         }
 
         var toSec = player.toSec;
         var ruler = player.getRuler();
         var sPosInMsec = player.toMsec(player.soundPosition);
-        var imgWaitDisplaying = this.isWaitVisible();
+        
+        
         var playOptions = {
             position: sPosInMsec,
             whileplaying: function(){
@@ -176,7 +170,6 @@ var Player = TimesideClass.extend({
                 if(buffering && !imgWaitDisplaying){
                     imgWaitDisplaying=true;
                     player.setWait.apply(player,[true]);
-                //consolelog('displaying wait '+this.readyState+' '+this.playState);
                 }else if(!buffering && sPosInMsec < sPos){
                     //isBuffering seems to be true at regular interval, so we could be in the case
                     //that !buffering but is actually buffering and no sound is heard, so
@@ -192,7 +185,15 @@ var Player = TimesideClass.extend({
                 }
             },
             onfinish: function() {
-                setPos(0); //reset position, not cursor, so that clicking play restarts from zero
+                //whileplaying is NOT called onsinfish. We must update the pointer:
+                //note that for small length sounds (wg, 5 secs) the pointer shifts abruptly from the last
+                //whileplaying position to the end. We tried with a setTimeout function but the visual effect is not
+                //removed. So we leave this small 'bug'
+                ruler.movePointer(player.getSoundDuration());
+                if(imgWaitDisplaying){
+                    player.setWait.apply(player,[false]);
+                    imgWaitDisplaying = false;
+                }
             }
         };
 
@@ -213,21 +214,33 @@ var Player = TimesideClass.extend({
     isWaitVisible: function(){
         return this.getContainer().find('.ts-wait').is(':visible');
     },
-    setWait: function(value){
+    setWait: function(value, optionalCallback){
         var c = this.getContainer();
         var imgWait = c.find('.ts-wait');
         var selectVis = c.find('.ts-visualizer');
-        setTimeout(function(){
-            if(value){
+        var wait = function(){};
+        if(value){
+            wait= function(){
                 selectVis.hide();
                 imgWait.css('display','inline-block');
-            }else{
+            };
+        }else{
+            wait = function(){
                 imgWait.hide();
                 selectVis.css('display','inline-block');
             }
-        },50);
+        }
+        var delay = 100;
+        if(optionalCallback){
+            wait();
+            setTimeout(optionalCallback, delay);
+        }else{
+            //if there is no callback, delay the wait function in order to emulate a paraller thread
+            //running:
+            setTimeout(wait, delay);
+        }
     },
-    //sets up the player interface and loads the markers. There is theoretically no need of this method, as it might be included in
+    //sets up the player interface and loads the markers. There is theoretically no need for this method, as it might be included in
     //the init constructor, it is separated for "historical" reasons: this method stems from the old _setupInterface,
     //which was a separate method in the old player code. Future releases might include it in the init constructor
     setupInterface: function(callback) {
@@ -279,7 +292,7 @@ var Player = TimesideClass.extend({
 
         //hide the wait image and set the src
         var waitImg = container.find('.ts-wait');
-        waitImg.attr('src','/images/wait_small.gif').attr('title','refreshing image').attr('alt','refreshing image').hide();
+        waitImg.attr('src','/images/wait_small.gif').attr('title','wait...').attr('alt','wait').hide();
 
         //setting the select option for visualizers:
         var visualizers = this.getVisualizers();
@@ -331,8 +344,19 @@ var Player = TimesideClass.extend({
             a.attr('title', a.attr('class').substring(3));
         });
         
-        //creating the ruler
+
+        //SET NECESSARY CSS (THIS WILL OVERRIDE CSS SET IN STYLESHEETS):
         var viewer = container.find('.ts-viewer');
+        var wave = container.find('.ts-wave');
+        var control = container.find('.ts-control');
+        var ruler_ = container.find('.ts-ruler');
+        wave.add(viewer).add(control).add(ruler_).css({
+            'position':'relative',
+            'overflow':'hidden'
+        });
+
+
+        //creating the ruler
         var ruler = new Ruler(viewer, this.getSoundDuration());
         this.getRuler = function(){
             return ruler;
@@ -346,19 +370,19 @@ var Player = TimesideClass.extend({
 
         //bind events to play and pause.
         //pause:
-        var pause_ = me.pause;
         pause.attr('href', '#').bind('click', function(){
-            pause_.apply(me);
+            me.pause.apply(me);
             return false;
         });
         //play:
-        var play_ = me.play;
         play.attr('href', '#').bind('click', function(){
-            play_.apply(me);
+            me.setWait(true,function(){
+                me.play.apply(me);
+            });
             return false;
         });
 
-        //binds click for the pointer: TODO: change this way of getting the tsviweer!!!!
+        //binds click for the pointer
         var v = $J('#player').find('.ts-viewer');
         v.unbind('click').click(function(evt){
             var w = v.width();
@@ -369,6 +393,7 @@ var Player = TimesideClass.extend({
         });
        
 
+        
         //finally, load markers and bind events for markers (see method below):
         //NOTE: loadMarkers ASYNCHRONOUSLY CALLS THE SERVER, SO METHODS WRITTEN AFTER IT MIGHT BE EXECUTED BEFORE
         //loadMarkers has finished its job
@@ -460,30 +485,31 @@ var Player = TimesideClass.extend({
         var container = this.getContainer();
         
         var wave = container.find('.ts-wave');
+
         var image = container.find('.ts-image');
         height = wave.height();
         this.debug("wave height:" + height);
         if (!height) {
             //this.debug('ERROR: image height is zero in player.,resize!!!!')
             height = image.height();
+            if (!height){
+                height = 200;
+            }
         }
         //set image, imagecontainer and canvas (container on imagecontainer for lines and pointer triangles) css
-        var elements = image
-        .add(container.find('.ts-image-container'))
-        .add(container.find('.ts-image-canvas'));
+        var elements = container.find('.ts-image-container').css('zIndex','0')
+        .add(container.find('.ts-image-canvas').css('zIndex','1')); //the two children of ts-wave. Set also the zIndex
+        //in order to visualize the canvas OVER the wav image
 
-        elements.css('width', 'auto'); // for IE6
-
-        
-        if (!height){
-            height = 200;
-        }
+        elements.css('width', 'auto'); // for IE6. We leave it although IE6 is not anymore supported
         var style = {
             width: wave.width(),
             height: height
         }
         elements.css(style);
-
+        elements.css('position','absolute');
+        
+        //image inside ts-image-container:
         image.css({
             'width':'100%',
             'height':'100%'

@@ -6,12 +6,11 @@
 
 {% block stylesheets %}
 {{ block.super }}
-<link rel="stylesheet" type="text/css" href="{% url telemeta-timeside "css/timeside.css" %}" />
       <link rel="stylesheet" type="text/css" href="{% url telemeta-timeside "skins/lab/style.css" %}" />
       <link rel="stylesheet" type="text/css" href="{% url telemeta-css "player.css" %}" />
-      {% endblock %}
+{% endblock %}
 
-      {% block extra_javascript %}
+{% block extra_javascript %}
 {% if item %}
 
       <!--<script src="{% url telemeta-js "wz_jsgraphics.js" %}" type="text/javascript"></script>-->
@@ -61,7 +60,7 @@
 
     setTimeout(function(){
         if(jQuery('#loading_span').length>0){
-            playerError('SoundManager error. Try to:\n - Reload the page\n - Empty the cache (see browser preferences) and reload the page\n - Restart the browser');
+            playerError('SoundManager is not responding. Try to:\n - Reload the page\n - Empty the cache (see browser preferences) and reload the page\n - Restart the browser');
         }
     },10000);
 
@@ -71,8 +70,8 @@
     visualizers["{{v.name}}"] = "{% url telemeta-item-visualize item.public_id,v.id,"WIDTH","HEIGHT" %}";
     {% endfor %}
     
-    var scripts = ["{% url telemeta-timeside "js/wz_jsgraphics.js" %}", "{% url telemeta-timeside "js/timeside.js" %}","{% url telemeta-timeside "js/playerLoader.js" %}"];
-
+    var scripts = ["{% url telemeta-timeside "js/raphael-min.js" %}", "{% url telemeta-timeside "js/timeside.js" %}","{% url telemeta-timeside "js/playerLoader.js" %}"];
+    //"{% url telemeta-timeside "js/wz_jsgraphics.js" %}",
     jQuery(window).ready(function(){
         //if soundmanager is ready, the callback is executed immetiately
         //onready is executed BEFORE onload, it basically queues several onload events.
@@ -196,8 +195,10 @@
                 <dd>{% if item.location %}{{ item.location.fullnames|join:"<br/>" }}{% endif %}</dd>
                 {% dl_field item "location_comment" %}
                 {% dl_field item "cultural_area" %}
+                {% dl_field item "language" %}
                 {% dl_field item "ethnic_group" placeholder %}
-                {% dl_field item "context_comment" %}
+                <dt>{% trans "Comments" %}</dt>
+                <dd>{{ item.context_comment|html_line_break|safe }}</dd>
                 {% dl_field item "keywords" join with ", " %}
             </dl>
         </div>
@@ -250,7 +251,8 @@
         <div>
             <h4><a href="#">{% trans "General informations" %}</a></h4>
             <dl class="listing">
-                {% dl_field item "comment" %}
+                <dt>{% trans "Remarks" %}</dt>
+                <dd>{{ item.comment|html_line_break|safe }}</dd>
                 {% dl_field item "collector_selection" %}
             </dl>
         </div>
@@ -265,7 +267,8 @@
                 {% dl_field item "old_code" %}
                 {% dl_field item "track" %}
                 {% dl_field item "creator_reference" %}
-                {% dl_field item "external_references" %}
+                <dt>{% trans "Published references" %}</dt>
+                <dd>{{ item.external_references|html_line_break|safe }}</dd>
                 {% dl_field item "public_access_label" %}
             </dl>
         </div>

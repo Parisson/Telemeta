@@ -86,9 +86,7 @@ var MarkerMap = TimesideArray.extend({
             
         return idx;
     },
-    //TODO: remove from here
-        
-
+    
     //argument is either an object loaded from server or a number specifying the marker offset
     createMarker: function(argument){
         var marker = null;
@@ -146,7 +144,6 @@ var MarkerMap = TimesideArray.extend({
             idx = this.insertionIndex(identifier);
         }
         if(idx<0 || idx>=this.length){
-            //TODO: handle error
             this.debug('remove: marker not found');
             return;
         }
@@ -174,11 +171,10 @@ var MarkerMap = TimesideArray.extend({
     save: function(marker){
         var idx = this.insertionIndex(marker);
         if(idx<0 || idx>=this.length){
-            //TODO: habdle error
             this.debug('marker not found');
+            return;
         }
         
-        //TODO: item public id defined elsewhere up, not here inside
         var itemid = this.getItemId();
         var isSavedOnServer = marker.isSavedOnServer;
         var method = isSavedOnServer ? "telemeta.update_marker" : "telemeta.add_marker";
@@ -216,11 +212,9 @@ var MarkerMap = TimesideArray.extend({
             //just return the real insertionIndex
             newIndex = -newIndex-1;
         }
-        //            var markers = this.getMarkers();
-        //            //TODO: remove move from array prototype!!!!
+        
         var realIndex = this._super(markerIndex,newIndex);
-        //            //var realIndex = markers.move(markerIndex,newIndex);
-        //            this.debug('fromindex '+markerIndex+' to: '+newIndex+' results in '+realIndex);
+        
         var markers = this.toArray();
         var marker = markers[realIndex];
         marker.offset = newOffset;
@@ -319,11 +313,3 @@ var MarkerMap = TimesideArray.extend({
     }
 }
 );
-
-//var low = 6;
-//var high = 8;
-//consolelog(low+' '+high+' returns '+((low + high) >>> 1));
-//high = 9;
-//consolelog(low+' '+high+' returns '+((low + high) >>> 1));
-//high = 10;
-//consolelog(low+' '+high+' returns '+((low + high) >>> 1));
