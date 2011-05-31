@@ -146,31 +146,56 @@
 .ts-skin-lab .ts-player .ts-control  .ts-set-marker {
     background-image: url('img/setmarker.png');
 }
-.ts-skin-lab .ts-player .ts-control .ts-volume {
+
+/*.ts-skin-lab .ts-player .ts-control .ts-volume {
     background-image: url('img/volume.png');
-    width:60px !important;
+    width:90px !important;
+}*/
+/*.ts-skin-lab .ts-player .ts-control .ts-volume-speaker {
+    background-image: url('img/volumeon.png');
+}*/
+.ts-skin-lab .ts-player .ts-control .ts-volume-speaker-on {
+    background-image: url('img/volumeon.png');
+    width:24px;
+}
+.ts-skin-lab .ts-player .ts-control .ts-volume-speaker-off {
+    background-image: url('img/volumeoff.png');
+    width:24px;
+}
+.ts-skin-lab .ts-player .ts-control .ts-volume-bar-container { 
+    background: url('img/controlbg-inverted.png');
+    background-position: -3px left;
+    background-repeat: repeat-x;
+    height:10px;
+    width:56px;
+    margin-top:9px;
+     -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    
 }
 
-/*top is set inside javascript*/
+.ts-skin-lab .ts-player .ts-control .ts-volume-bar { /*width will be changed inside the code*/
+    background-color: #e4eaf1;
+     -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+
+
+/*position is set to absolute inside javascript*/
 .ts-skin-lab .ts-player .ts-control .ts-wait {
     background-repeat: no-repeat;
-    background-image: url('img/wait2.gif');
+    background-image: url('img/wait3.gif');
     text-align: right;
-    height: 21px;
+    right:0;
+    height:28px;
+    line-height:28px;
+    top:0;
     background-position: right center;
     padding-right: 60px;
     font-size: 80%;
     color:white;
+
 }
 
-/* unused
-.ts-skin-lab .ts-player .ts-control .ts-set-marker {
-    display: block;
-    width: 89px;
-    padding: 28px 0 0 0;
-    overflow: hidden;
-    height: 0px !important;
-    background-image: url('img/setmarker.gif');
-    margin: 5px auto 0 auto;
-}
-*/

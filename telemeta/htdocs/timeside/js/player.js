@@ -48,9 +48,9 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
             return sound;
         }
         this.imageCallback = imageCallback;
-//        this.getVisualizers = function(){
-//            return visualizers;
-//        }
+        //        this.getVisualizers = function(){
+        //            return visualizers;
+        //        }
 
         var sd = this.toSec(soundDurationInMsec);
         this.getSoundDuration = function(){
@@ -227,11 +227,15 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         return false;
     },
     isWaitVisible: function(){
-        return this.getContainer().find('.ts-wait').is(':visible');
+        return this.getContainer().find('.ts-control').find('.ts-wait').is(':visible');
     },
+    getWaitString: function(){
+        return this.getContainer().find('.ts-control').find('.ts-wait').html();
+    },
+
     setWait: function(value, optionalCallback){
         var c = this.getContainer();
-        var waitDiv = c.find('.ts-wait');
+        var waitDiv = c.find('.ts-control').find('.ts-wait');
 
         var player = this;
         var wait = function(){};
@@ -243,12 +247,16 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
             waitDiv.html(wtext);
             wait= function(){
                 waitDiv.css('display','inline-block');
-                player.fire('waiting',{'value': wtext || true}); //assures is a string or a true boolean
+                player.fire('waiting',{
+                    'value': wtext || true
+                    }); //assures is a string or a true boolean
             };
         }else{
             wait = function(){
                 waitDiv.hide();
-                player.fire('waiting',{'value':false});
+                player.fire('waiting',{
+                    'value':false
+                });
             }
         }
         var delay = 100;
@@ -281,7 +289,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         "<div class='ts-wave'>",
         "<div class='ts-image-canvas'></div>",
         "<div class='ts-image-container'>",
-        "<img class='ts-image' src='/images/transparent.png' alt='' />",
+       // "<img class='ts-image' src='/images/transparent.png' alt='' />",
         "</div>",
         "</div>",
         "</div>",
@@ -293,7 +301,16 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         "<a class='ts-rewind'></a>",
         "<a class='ts-forward'></a>",
         "<a class='ts-set-marker'></a>",
-        "<a class='ts-volume'></a>",
+        //        "<a class='ts-volume'></a>",
+
+        //"<div class='ts-volume'>",
+        "<a class='ts-volume-speaker'></a>",
+        "<div class='ts-volume-wrapper-div'>",
+        "<a class='ts-volume-bar-container'>",
+        "<span class='ts-volume-bar'></span>",
+        "</a>",
+        "</div>",
+
         "<div class='ts-wait'></div>",
         //"<img class='ts-wait'/>",
         //"<select class='ts-visualizer'></select>",
@@ -303,88 +320,124 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
 
         this.getContainer().html(html.join(''));
         var container = this.getContainer();
+
+        var control = container.find('.ts-control');
+
+        //bind events to buttons:
+        var rewind = control.find('.ts-rewind');
+        rewind.attr('href', '#').click(function(e){
+            me.rewind.apply(me);
+            return false;
+        });
+        
+        var forward = control.find('.ts-forward');
+        forward.attr('href', '#').click(function(e){
+            me.forward.apply(me);
+            return false;
+        });
+
+        var pause = control.find('.ts-pause');
+        pause.attr('href', '#').bind('click', function(){
+            me.pause.apply(me);
+            return false;
+        });
+
+        var play = control.find('.ts-play');
+        play.attr('href', '#').bind('click', function(){
+            me.setWait('loading',function(){
+                me.play.apply(me);
+            });
+            return false;
+        });
+
+        var setMarkerButton = control.find('.ts-set-marker');
+
+        var canAddMarkers = this.canAddMarker();
+        
+            if(canAddMarkers){
+                setMarkerButton.show().attr('href','#').unbind('click').bind('click', function(){
+                    me.addMarker(me.getSoundPosition());
+                    return false;
+                });
+            }
        
 
-        var rewind = container.find('.ts-rewind');
-        var forward = container.find('.ts-forward');
-        var play = container.find('.ts-play');
-        var pause = container.find('.ts-pause');
-        var volume = container.find('.ts-volume');
-
-
-        //hide the wait image and set the src
-        
-        //waitImg.attr('src','/images/wait_small.gif').attr('title','wait...').attr('alt','wait').hide();
-
-        //setting the select option for visualizers:
-//        var visualizers = this.getVisualizers();
-//        var select = container.find('.ts-visualizer');
-//        for(var name in visualizers){
-//            //$J('<option/>').val(visualizers[name]).html(name).appendTo(select);
-//            $J('<option/>').html(name).appendTo(select);
-//        }
-//        //assigning event on select:
-//        select.change(
-//            function (){
-//                me.refreshImage.apply(me);
-//            });
-
-        var rewind_ = this.rewind;
-        var forward_ = this.forward;
-        rewind.attr('href', '#').click(function(e){
-            rewind_.apply(me);
-            return false;
-        });
-        forward.attr('href', '#').click(function(e){
-            forward_.apply(me);
-            return false;
-        });
-
         //volume:
+        var volumeSpeaker = control.find('.ts-volume-speaker');
+        var volumeBarContainer = control.find('.ts-volume-bar-container');
+        var volumeBar = volumeBarContainer.find('.ts-volume-bar');
+
+        var getVol = function(x){
+            return 100*x/volumeBarContainer.width();
+        };
         function setVolume(event,volumeElement){
-            var ticks = [18,26,33,40,47];
-            var vol = event.pageX - volumeElement.offset().left; //using absolute coordinates allows us to
+            //var ticks = [18,26,33,40,47];
+            var x = event.pageX - volumeElement.offset().left; //using absolute coordinates allows us to
             //avoid using layerX (not supported in all browsers) and clientX (which needs the window scrollLeft variable)
-            for(var i=0; i<ticks.length; i++){
-                if(vol<=ticks[i]){
-                    var volume = i*20;
-                    me.setSoundVolume(volume);
-                    return false;
-                }
-            }
-            me.setSoundVolume(100);
+            me.setSoundVolume(getVol(x));
+            consolelog(x+' '+getVol(x));
             return false;
         }
-        volume.attr('href', '#').click(function(event){
-            return setVolume(event,volume);
+        volumeBarContainer.attr('href', '#').click(function(event){
+            return setVolume(event,volumeBar);
         });
+        volumeSpeaker.attr('href', '#').click(function(){
+             me.setSoundVolume(me.getSoundVolume()>0 ? 0 : getVol(volumeBar.outerWidth()));
+             return false;
+        });
+        this.setSoundVolume(this.getSoundVolume());
 
-        
+        control.find('a').attr('href', '#') ;
 
         //SET NECESSARY CSS (THIS WILL OVERRIDE CSS SET IN STYLESHEETS):
         var viewer = container.find('.ts-viewer');
         var wave = container.find('.ts-wave');
-        var control = container.find('.ts-control');
         var ruler_ = container.find('.ts-ruler');
         wave.add(viewer).add(control).add(ruler_).css({
             'position':'relative',
             'overflow':'hidden'
         });
         //assigning display and title to all anchors
-        control.find('*').css({'display':'inline-block','overflow':'hidden'});
-        
-        //TODO: filter?
-        control.find('a').attr('href', '#') //.css('display','inlineBlock')
-        .each(function(i, a){
-            a = $J(a);
-            a.attr('title', a.attr('class').substring(3));
+        control.find('*').css({
+            'display':'inline-block',
+            'overflow':'hidden'
         });
+        if(!canAddMarkers){
+             setMarkerButton.hide().unbind('click');
+        }
+        //TODO: filter?
+        //.css('display','inlineBlock')
+//        .each(function(i, a){
+//            a = $J(a);
+//
+//            //a.attr('title', a.attr('class').substring(3));
+//        });
         var waitImg = control.find('.ts-wait');
-        waitImg.html('wait').css({'position':'absolute','right':0});
+        waitImg.html('wait').css({
+            'position':'absolute'
+        });
 
-        var h = waitImg.parent().height();
-        var h2 = waitImg.height();
-        waitImg.css('top',((h-h2)/2)+'px');
+
+        var div = control.find('.ts-volume-wrapper-div');
+        div.css({
+            'position':'absolute',
+            'left':(volumeSpeaker.position().left+volumeSpeaker.outerWidth())+'px',
+            'top':0,
+            'width':'auto',
+            'height':'100%'
+        });
+        consolelog(volumeSpeaker.position().left+' '+volumeSpeaker.outerWidth());
+//        var h = waitImg.parent().height();
+//        var h2 = waitImg.height();
+//        waitImg.css('top',((h-h2)/2)+'px');
+
+//        volumeBarContainer.css('position','relative');
+//        volumeBarContainer.css({
+//            'position':'absolute'
+//        });
+//        volumeBar.add(volumeBarContainer).css({'position':'absolute'});
+
+
         this.setWait(false);
 
         //creating the ruler
@@ -394,24 +447,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         }
         
         this.resize(); //which calls also ruler.resize() (see below)
-
-        //TODO: here? maybe in the constructor
-        this.setSoundVolume(this.getSoundVolume());
-
-
-        //bind events to play and pause.
-        //pause:
-        pause.attr('href', '#').bind('click', function(){
-            me.pause.apply(me);
-            return false;
-        });
-        //play:
-        play.attr('href', '#').bind('click', function(){
-            me.setWait('loading',function(){
-                me.play.apply(me);
-            });
-            return false;
-        });
+        
 
         //binds click for the pointer
         var v = $J('#player').find('.ts-viewer');
@@ -527,8 +563,8 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
             //this.debug('ERROR: image height is zero in player.,resize!!!!')
             //height = image.height();
             //if (!height){
-                height = 200;
-            //}
+            height = 200;
+        //}
         }
         //set image, imagecontainer and canvas (container on imagecontainer for lines and pointer triangles) css
         var elements = container.find('.ts-image-container').css('zIndex','0')
@@ -553,49 +589,49 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
        
         
         //adjusting select size:
-//        var select = container.find('.ts-visualizer');
-//        var imgWait = container.find('.ts-wait');
-//
-//        //NOTE: some buttons might be hidden AFTER THIS METHOD HAS BEEN INVOKED
-//        //Therefore, setting the width of select or imgWait is skipped for the moment.
-//        select.css('fontSize','90%'); //this is to increase probability that the select width will fit the available space
-//
-//        var control = container.find('.ts-control');
-//        var maxHeight = control.height();
-//        select.add(imgWait).css('maxHeight',(maxHeight-2)+'px'); //at least a margin left and top of 1 px (see below)
-//
-//        var span = (maxHeight-select.outerHeight())/2; //do not include margins in oputerHeight (we will set them to zero below)
-//        select.css({
-//            'margin':'0px',
-//            'marginTop':span+'px',
-//            'marginLeft':span+'px'
-//        });
-//        var span2 = (maxHeight - imgWait.outerHeight())/2; //do not include margins in oputerHeight (we will set them to zero below)
-//        imgWait.css({
-//            'margin':'0px',
-//            'marginTop':span2+'px',
-//            'marginLeft':span+'px'
-//        })
+        //        var select = container.find('.ts-visualizer');
+        //        var imgWait = container.find('.ts-wait');
+        //
+        //        //NOTE: some buttons might be hidden AFTER THIS METHOD HAS BEEN INVOKED
+        //        //Therefore, setting the width of select or imgWait is skipped for the moment.
+        //        select.css('fontSize','90%'); //this is to increase probability that the select width will fit the available space
+        //
+        //        var control = container.find('.ts-control');
+        //        var maxHeight = control.height();
+        //        select.add(imgWait).css('maxHeight',(maxHeight-2)+'px'); //at least a margin left and top of 1 px (see below)
+        //
+        //        var span = (maxHeight-select.outerHeight())/2; //do not include margins in oputerHeight (we will set them to zero below)
+        //        select.css({
+        //            'margin':'0px',
+        //            'marginTop':span+'px',
+        //            'marginLeft':span+'px'
+        //        });
+        //        var span2 = (maxHeight - imgWait.outerHeight())/2; //do not include margins in oputerHeight (we will set them to zero below)
+        //        imgWait.css({
+        //            'margin':'0px',
+        //            'marginTop':span2+'px',
+        //            'marginLeft':span+'px'
+        //        })
 
         
         return this;
     },
     getImageUrl : function(){
-         var image = this.getContainer().find('.ts-image');
-         if(image && image.length){
-             return image.attr('src');
-         }
-         return '';
+        var image = this.getContainer().find('.ts-image');
+        if(image && image.length){
+            return image.attr('src');
+        }
+        return '';
     },
-   refreshImage: function(){
+    refreshImage: function(){
         var container = this.getContainer();
         var imageC = container.find('.ts-image-container');
         var image = imageC.find('.ts-image');
-//        if(optionalImageAsJQueryElement){
-//            image = optionalImageAsJQueryElement;
-//        }else{
-//            image = container.find('.ts-image');
-//        }
+        //        if(optionalImageAsJQueryElement){
+        //            image = optionalImageAsJQueryElement;
+        //        }else{
+        //            image = container.find('.ts-image');
+        //        }
 
         var size = this.getImageSize();
         var imgSrc = this.imageCallback(size.width,size.height);
@@ -605,7 +641,8 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         }
 
         var player= this;
-        player.setWait.apply(player,['refreshing img']);
+        var waitString = 'refreshing img';
+        player.setWait.apply(player,[waitString]);
 
         
         if(imageNotYetCreated){
@@ -619,7 +656,11 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         }); // for IE7. Does not seem to hurt IE8, FF, Chrome
         
         image.load(function(){
-            player.setWait.apply(player,[false]);
+            if(player.getWaitString()===waitString){
+                //we could have started playback, which means that if the wait bar has a different text,
+                //another method is responsible for hiding it and therefore MUST stay visible
+                player.setWait.apply(player,[false]);
+            }
             image.unbind('load');
             if(imageNotYetCreated){
                 imageC.append(image);
@@ -637,39 +678,39 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         }
     },
 
-//    refreshImage: function(optionalImageAsJQueryElement){
-//        var image;
-//        var container = this.getContainer();
-//        if(optionalImageAsJQueryElement){
-//            image = optionalImageAsJQueryElement;
-//        }else{
-//            image = container.find('.ts-image');
-//        }
-//        var select = container.find('.ts-visualizer');
-//        var funcImg = function(player_image_url, width, height){
-//            var _src_ = null;
-//            if (player_image_url && (width || height)) {
-//                _src_ = player_image_url.replace('WIDTH', width + '').replace('HEIGHT', height + '');
-//            }
-//            return _src_;
-//        };
-//        var imageUrl = getVisualizers()[""+select.val()];
-//        var imgSrc = funcImg(imageUrl, image.width(),image.height());
-//        if(image.attr('src')==imgSrc){
-//            return;
-//        }
-//
-//        var player= this;
-//        player.setWait.apply(player,['refreshing image']);
-//        image.load(function(){
-//            player.setWait.apply(player,[false]);
-//            select.show();
-//            image.unbind('load');
-//        });
-//
-//        image.attr('src', imgSrc);
-//
-//    },
+    //    refreshImage: function(optionalImageAsJQueryElement){
+    //        var image;
+    //        var container = this.getContainer();
+    //        if(optionalImageAsJQueryElement){
+    //            image = optionalImageAsJQueryElement;
+    //        }else{
+    //            image = container.find('.ts-image');
+    //        }
+    //        var select = container.find('.ts-visualizer');
+    //        var funcImg = function(player_image_url, width, height){
+    //            var _src_ = null;
+    //            if (player_image_url && (width || height)) {
+    //                _src_ = player_image_url.replace('WIDTH', width + '').replace('HEIGHT', height + '');
+    //            }
+    //            return _src_;
+    //        };
+    //        var imageUrl = getVisualizers()[""+select.val()];
+    //        var imgSrc = funcImg(imageUrl, image.width(),image.height());
+    //        if(image.attr('src')==imgSrc){
+    //            return;
+    //        }
+    //
+    //        var player= this;
+    //        player.setWait.apply(player,['refreshing image']);
+    //        image.load(function(){
+    //            player.setWait.apply(player,[false]);
+    //            select.show();
+    //            image.unbind('load');
+    //        });
+    //
+    //        image.attr('src', imgSrc);
+    //
+    //    },
 
     getSoundVolume :function(){
         var s = this.getSound();
@@ -723,9 +764,40 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         return false;
     },
 
-    setSoundVolume: function(volume){
+//    setSoundVolume: function(volume){
+//
+//        if(typeof volume != 'number'){ //note: typeof for primitive values, instanceof for the rest
+//            //see topic http://stackoverflow.com/questions/472418/why-is-4-not-an-instance-of-number
+//            volume = 100;
+//        }
+//        if(volume<0){
+//            volume = 0;
+//        }else if(volume>100){
+//            volume = 100;
+//        }
+//        var sound = this.getSound();
+//        //        if(sound.volume == volume){
+//        //            return;
+//        //        }
+//        sound.setVolume(volume);
+//        //update the anchor image:
+//        var indices = [20,40,60,80,100,100000];
+//
+//        var volumeElm = this.getContainer().find('.ts-volume');
+//        for(var i=0; i <indices.length; i++){
+//            if(volume<indices[i]){
+//                var pos = -28*i;
+//                pos = '0px '+ pos+ 'px'; //DO NOT SET !important as in FF3 DOES NOT WORK!!!!!
+//                volumeElm.css('backgroundPosition',pos);
+//                return;
+//            }
+//        }
+//    // this.elements.volume.css('backgroundPosition','0px 0px !important')
+//
+//    },
 
-        if(typeof volume != 'number'){ //note: typeof for primitive values, instanceof for the rest
+    setSoundVolume: function(volume){
+      if(typeof volume != 'number'){ //note: typeof for primitive values, instanceof for the rest
             //see topic http://stackoverflow.com/questions/472418/why-is-4-not-an-instance-of-number
             volume = 100;
         }
@@ -734,25 +806,23 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         }else if(volume>100){
             volume = 100;
         }
-        var sound = this.getSound();
-        //        if(sound.volume == volume){
-        //            return;
-        //        }
-        sound.setVolume(volume);
-        //update the anchor image:
-        var indices = [20,40,60,80,100,100000];
-
-        var volumeElm = this.getContainer().find('.ts-volume');
-        for(var i=0; i <indices.length; i++){
-            if(volume<indices[i]){
-                var pos = -28*i;
-                pos = '0px '+ pos+ 'px'; //DO NOT SET !important as in FF3 DOES NOT WORK!!!!!
-                volumeElm.css('backgroundPosition',pos);
-                return;
-            }
+        volume = Math.round(volume);
+      var sound = this.getSound();
+        if(sound){
+            sound.setVolume(volume);
         }
-    // this.elements.volume.css('backgroundPosition','0px 0px !important')
-
+        var control = this.getContainer().find('.ts-control');
+        var volumeSpeaker = control.find('.ts-volume-speaker');
+        var volumeBarContainer = control.find('.ts-volume-bar-container');
+        var volumeBar = volumeBarContainer.find('.ts-volume-bar');
+        if(volume==0){
+            volumeSpeaker.removeClass('ts-volume-speaker-on').addClass('ts-volume-speaker-off');
+            volumeBar.css('visibility','hidden');
+        }else{
+            volumeSpeaker.removeClass('ts-volume-speaker-off').addClass('ts-volume-speaker-on');
+            volumeBar.css('visibility','visible');
+            volumeBar.css({'height':'100%','width':volume+'%'});
+        }
     },
 
     newMarker: function(offset){
@@ -812,19 +882,19 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         //1) ADD
         //
         //add binding to the setMarker button (html anchor):
-        var setMarkerButton = player.getContainer().find('.ts-set-marker');
-            
-        var showAddMarkerButton = this.canAddMarker();
-        if(setMarkerButton){
-            if(showAddMarkerButton){
-                setMarkerButton.show().attr('href','#').unbind('click').bind('click', function(){
-                    player.addMarker(player.getSoundPosition());
-                    return false;
-                });
-            }else{
-                setMarkerButton.hide().unbind('click');
-            }
-        }
+//        var setMarkerButton = player.getContainer().find('.ts-set-marker');
+//
+//        var showAddMarkerButton = this.canAddMarker();
+//        if(setMarkerButton){
+//            if(showAddMarkerButton){
+//                setMarkerButton.show().attr('href','#').unbind('click').bind('click', function(){
+//                    player.addMarker(player.getSoundPosition());
+//                    return false;
+//                });
+//            }else{
+//                setMarkerButton.hide().unbind('click');
+//            }
+//        }
 
 
         //the function above calls map.add:
