@@ -25,45 +25,24 @@
  * two TimesideArrays of the player which receive edit events (click, keys events etcetera): the ruler (ruler.js) and the markermapdiv (divmarker.js)
  * All bindings between these three classes are set in in the player (See player.js , in particular loadMarkers method)
  */
-var MarkerMap = TimesideArray.extend({
+Timeside.classes.MarkerMap = Timeside.classes.TimesideArray.extend({
 
-    init: function(itemId, currentUserName, isStaffOrSuperuser) {
+    init: function() { 
         this._super();
-        var ui = uniqid; //defined in application.js (global vars and functions)
-        this.uniqid = function(){
-            return  ui();
-        };
-        this.getItemId = function(){
-            return itemId;
-        }
-        this.getCurrentUserName = function(){
-            return currentUserName;
-        }
-        this.isCurrentUserStaffOrSuperuser = function(){
-            return isStaffOrSuperuser;
-        }
-
-        var me = this;
-        var confirmExit = function(){
-            var markerUnsaved=0;
-            me.each(function(i,marker){
-                if(!marker.isSavedOnServer){
-                    markerUnsaved++;
-                }
-            });
-            if(markerUnsaved>0){
-                return gettrans('there is at least one unsaved marker') +' ('+ markerUnsaved+ '). '+
-                    gettrans('If you exit the page you will loose your changes');
-            }
-                
-        };
-        window.onbeforeunload = confirmExit;
     },
 
+    pFloat: parseFloat, //reference to function parseFloat for faster lookup
     //overridden
     add: function(obj) {
         //var markers = this.toArray();
-        var marker = this.createMarker(obj);
+        
+        if(!('offset' in obj)){
+            return -1;
+        }
+        if(typeof obj.offset != 'number'){ //check to be sure:
+            obj.offset = this.pFloat(obj.offset);
+        }
+        var marker = obj; //this.createMarker(obj);
         var idx = this.insertionIndex(marker);
         if(idx>=0){ //it exists? there is a problem....
             this.debug('adding a marker already existing!!'); //should not happen. however...
@@ -77,8 +56,8 @@ var MarkerMap = TimesideArray.extend({
 
         this.fire('add', {
             marker: marker,
-            index: idx,
-            isNew: (typeof obj == 'number' || typeof obj == 'string')
+            index: idx
+            //,isNew: (typeof obj == 'number' || typeof obj == 'string')
         });
         //var temp = new MarkerDiv();
         // this.debug(this.createMarkerDiv());
@@ -86,56 +65,9 @@ var MarkerMap = TimesideArray.extend({
             
         return idx;
     },
-    
-    //argument is either an object loaded from server or a number specifying the marker offset
-    createMarker: function(argument){
-        var marker = null;
-        var pFloat = parseFloat;
-        if(typeof argument == 'string'){ //to be sure, it might be that we pass an offset in string format
-            argument = pFloat(argument);
-        }
-        var currentUserName = this.getCurrentUserName();
-        var isStaffOrSuperuser = this.isCurrentUserStaffOrSuperuser();
-        if(typeof argument == 'object'){
-            var editable = isStaffOrSuperuser || currentUserName === argument.author;
-            var canBeAddedToPlaylist_ = currentUserName ? true : false;
-            marker = {
-                id: argument.public_id,
-                offset: pFloat(argument.time), //IMPORTANT: IT IS A STRING!!!!!!
-                desc: argument.description,
-                title: argument.title,
-                author: argument.author,
-                isEditable: editable,
-                canBeAddedToPlaylist: canBeAddedToPlaylist_,
-                isSavedOnServer: true
-            };
-        }else if(typeof argument == 'number'){
-            marker = {
-                id: this.uniqid(),
-                offset: pFloat(argument),
-                desc: "",
-                title: "",
-                author: currentUserName,
-                isEditable: true,
-                canBeAddedToPlaylist: true,
-                isSavedOnServer: false
-            };
-        }
-        marker.toString = function(){
-            var props = [];
-            for(var prop in this){
-                if(!(prop == 'toString')){
-                    props.push(prop+': '+this[prop]);
-                }
-            }
-            return props.sort().join("\n");
-        }
-        return marker;
-
-    },
 
     //overridden
-    //markerOrIndex can be an number (marker index) or a marker (the index will be aearched)
+    //identifier can be an number (marker index) or a marker (the index will be aearched)
     remove: function(identifier) {
         var idx = -1;
         if(typeof index == 'number'){
@@ -145,62 +77,14 @@ var MarkerMap = TimesideArray.extend({
         }
         if(idx<0 || idx>=this.length){
             this.debug('remove: marker not found');
-            return;
+            return -1;
         }
-
-        //build the function to be called if the marker is deleted
-        //if the marker is NOT saved on server, call the function immediately
-        var marker = this.toArray()[idx];
-        var me = this;
-        var superRemove = me._super;
-        var functionOnSuccess = function(){
-            superRemove.apply(me,[idx]);
-            me.fire('remove',{
-                'index':idx
-            })
-        }
-
-        if(marker.isSavedOnServer){
-            //json(param,method,onSuccessFcn,onErrorFcn){
-            json([marker.id], "telemeta.del_marker",functionOnSuccess);
-        }else{
-            functionOnSuccess();
-        }
-    },
-
-    save: function(marker){
-        var idx = this.insertionIndex(marker);
-        if(idx<0 || idx>=this.length){
-            this.debug('marker not found');
-            return;
-        }
-        
-        var itemid = this.getItemId();
-        var isSavedOnServer = marker.isSavedOnServer;
-        var method = isSavedOnServer ? "telemeta.update_marker" : "telemeta.add_marker";
-        var param = {
-            'item_id':itemid,
-            'public_id': marker.id,
-            'time':marker.offset,
-            'author': marker.author,
-            'title':marker.title,
-            'description':marker.desc
-        };
-
-        //function on success:
-        var me = this;
-        var success = function(){
-            if(!isSavedOnServer){
-                marker.isSavedOnServer = true;
-                marker.isModified = false;
-            }
-            me.fire('save',{
-                'index':idx
+        var marker = this._super(idx);
+        this.fire('remove',{
+                'index':idx,
+                'marker':marker
             });
-        };
-        //json(param,method,onSuccessFcn,onErrorFcn){
-        json([param], method, success);
-
+            return idx;
     },
 
     //overridden method
@@ -217,12 +101,13 @@ var MarkerMap = TimesideArray.extend({
         
         var markers = this.toArray();
         var marker = markers[realIndex];
+        var oldOffset = marker.offset;
         marker.offset = newOffset;
-        marker.isModified = true;
         this.fire('move', {
+            marker: marker,
             fromIndex: markerIndex,
             toIndex: newIndex,
-            newOffset: newOffset
+            oldOffset: oldOffset
         //,newIndex: realIndex
         });
     },

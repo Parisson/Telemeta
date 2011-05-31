@@ -28,7 +28,7 @@
  * (if this class is called from within player, it is)
  */
 
-var RulerMarker = TimesideClass.extend({
+Timeside.classes.RulerMarker = Timeside.classes.TimesideClass.extend({
 
     
     init: function(ruler, waveImgDiv, className) {
@@ -92,7 +92,7 @@ var RulerMarker = TimesideClass.extend({
 
         var canvas = undefined;
         var canvasClass = cssPref + className+'-canvas';
-        if(this.isSvgSupported()){
+        if(this.isSvgSupported){
             canvas = this.createCanvasSvg(waveImgDiv, arrowBaselineWidth);
             var path = canvas.childNodes[0]; //note that $J(canvas).find('path') does not work in FF at least 3.5
             path.setAttributeNS(null,'class',canvasClass);

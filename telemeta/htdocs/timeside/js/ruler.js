@@ -26,7 +26,7 @@
  * Class representing the ruler (upper part) of the player. Requires jQuery
  * and Raphael
  */
-var Ruler = TimesideArray.extend({
+Timeside.classes.Ruler = Timeside.classes.TimesideArray.extend({
     //init constructor: soundDuration is IN SECONDS!!! (float)
     init: function(viewer, soundDuration){
         this._super();
@@ -80,7 +80,8 @@ var Ruler = TimesideArray.extend({
         rulerContainer.append(firstSpan); //to calculate height, element must be in the document, append it
         var verticalMargin = 1;
         var h = 2*(verticalMargin+firstSpan.outerHeight());
-        //TODO: set height in div ruler???? 
+        //TODO: set height in div ruler????
+        rulerContainer.css('height',h+'px');
         var obj = this.calculateRulerElements(rulerContainer.width(),h,firstSpan.outerWidth());
         this.drawRuler(rulerContainer,h,obj.path);
         
@@ -109,7 +110,7 @@ var Ruler = TimesideArray.extend({
             pointer = this.getPointer();
         }
         if(!pointer){
-            pointer = this.add(0);
+            pointer = this.add(0,-1);
             this.getPointer = function(){
                 return pointer;
             };
@@ -120,11 +121,19 @@ var Ruler = TimesideArray.extend({
         this.each(function(i,rulermarker){
             rulermarker.refreshPosition();
         });
+        //IE7 BUG: the viewer might not shift downwards after canvas is drawn and covers part of the rulrer.
+        //Weird enough (with IE it isn't actually), we have just to set a dummy css top to zero
+        //(which will be REALTIVE to ts-wave div normal flow, as ts-wave has position relative in order
+        //to accomodate image and canvas absolutely positioned)
+        //Basically, if we have to tell IE to do what it is supposed to do
+        if(h > $J('.ts-wave').position().top){
+            $J('.ts-wave').css('top',0+'px');
+        }
 
     },
 
     drawRuler: function(rulerContainer,h,rulerLinesPath){
-        if(!this.isSvgSupported()){
+        if(!this.isSvgSupported){
             var paper = Raphael(rulerContainer[0], rulerContainer.width(), h);
             var rect = paper.rect(0,0, rulerContainer.width(), h/2);
             var path = paper.path(rulerLinesPath);
@@ -248,19 +257,20 @@ var Ruler = TimesideArray.extend({
         }
     },
     //overridden
-    //markerObjOrOffset can be a marker object (see in markermap) or any object with the fields isEditable and offset
-    add: function(markerObjOrOffset, indexIfMarker){
+    //add(offset.-1) adds the pointer, isMovable is ingored
+    //add(offset, index, isMovable) adds a marker, movable if isMovable == true
+    add: function(offset, index, isMovable){
         var soundPosition;
         var isMovable;
         var markerClass;
 
-        if(typeof markerObjOrOffset == 'number'){
-            soundPosition = markerObjOrOffset;
+        if(index<0){
+            soundPosition = offset;
             isMovable = true;
             markerClass='pointer';
         }else{
-            soundPosition = markerObjOrOffset.offset;
-            isMovable = markerObjOrOffset.isEditable;
+            soundPosition = offset;
+            //isMovable = offset.isEditable;
             markerClass='marker';
         }
         
@@ -270,21 +280,21 @@ var Ruler = TimesideArray.extend({
         //        var pointer = new RulerMarker($J(layout.get(0)),this.getWaveContainer(),markerClass);
 
         
-        var pointer = new RulerMarker(this,this.getWaveContainer(),markerClass);
+        var pointer = new Timeside.classes.RulerMarker(this,this.getWaveContainer(),markerClass);
 
         
 
         //call super constructor
         //if it is a pointer, dont add it
         if(markerClass != 'pointer'){
-            this._super(pointer,indexIfMarker); //add at the end
+            this._super(pointer,index); //add at the end
             //note that setText is called BEFORE move as move must have the proper label width
-            this.each(indexIfMarker, function(i,rulermarker){
-                rulermarker.setIndex(i,i!=indexIfMarker);
+            this.each(index, function(i,rulermarker){
+                rulermarker.setIndex(i,i!=index);
             //rulermarker.setIndex.apply(rulermarker, [i,i!=indexIfMarker]); //update label width only if it is not this marker added
             //as for this marker we update the position below (move)
             });
-            this.debug('added marker at index '+indexIfMarker+' offset: '+markerObjOrOffset.offset);
+            this.debug('added marker at index '+index+' offset: '+offset);
         }else{
             //note that setText is called BEFORE move as move must have the proper label width
             pointer.setText(this.makeTimeLabel(0));
@@ -340,6 +350,7 @@ var Ruler = TimesideArray.extend({
                 
             });
             //to avoid scrolling
+            ////TODO: check IE bug on mouseup on the ruler (pointer is moving too)
             //TODO: what happens if the user releases the mouse OUTSIDE the browser???? check bug in IE (mouse release)
             var mouseup = function(evt_){
                 doc.unbind('mousemove.'+eventId);

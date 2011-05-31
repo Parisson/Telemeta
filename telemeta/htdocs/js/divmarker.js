@@ -23,15 +23,18 @@
 /**
  * Class representing a marker div html element for showing/editing a marker on details.
  */
-var MarkerMapDiv = TimesideArray.extend({
-    init:function(){
+Timeside.classes.MarkerMapDiv = Timeside.classes.TimesideArray.extend({
+    init:function(containerDiv){
         this._super();
-        this.div = this.$J("#markers_div_id");
-      
+        var $J = this.$J;
+
+        var div = containerDiv instanceof $J ? containerDiv : $J(containerDiv);
+        div = div.length ? div.eq(0) : $J([]); //empty jQuery object
+        this.div = div
     },
     //overridden
     add: function(marker, index,  isNew){
-         
+       
         var div = this.createMarkerDiv(index, marker);
         if(index==this.length){
             this.div.append(div);
@@ -90,6 +93,9 @@ var MarkerMapDiv = TimesideArray.extend({
     },
     //overridden
     remove : function(index){
+        if(index<0 || index>=this.length){
+            return;
+        }
         var div = this._super(index);
         div.remove();
         var me = this;
@@ -205,15 +211,15 @@ var MarkerMapDiv = TimesideArray.extend({
     createMarkerDiv : function(index, marker){
         //create html content. Use array.join cause it is usually faster than string concatenation:
         var html_ = ['<div style="white-space:nowrap">', //whitespace no wrap is really important to keep all content of first div on one line (without it, IE displays it on 2 lines)
-            '<a href=# class="ts-marker"></a>',
-            '<a href=# class="markersdivOffset" type="text"></a>',
-            '<input class="markersdivTitle" type="text"/>',
-            '<a class="markersdivAddPlaylist" title="add to playlist"></a>',
-            '<a class="markersdivEdit" title="edit">EDIT</a>',
-            '<a class="markersdivDelete" title="delete"></a>',
-            '</div>',
-            '<div zero_top_padding><textarea class="markersdivDescription"></textarea></div>',
-            '<div zero_top_padding><a class="markersdivSave">OK</a></div>',
+        '<a href=# class="ts-marker"></a>',
+        '<a href=# class="markersdivOffset" type="text"></a>',
+        '<input class="markersdivTitle" type="text"/>',
+        '<a class="markersdivAddPlaylist" title="add to playlist"></a>',
+        '<a class="markersdivEdit" title="edit">EDIT</a>',
+        '<a class="markersdivDelete" title="delete"></a>',
+        '</div>',
+        '<div zero_top_padding><textarea class="markersdivDescription"></textarea></div>',
+        '<div zero_top_padding><a class="markersdivSave">OK</a></div>',
         '<div zero_top_padding><span style="font-size:75%;color:#999">'+gettrans('author')+': '+marker.author+'</span></div>'].join("");
         var div = this.$J('<div/>').attr('tabindex','0').addClass("markerdiv").html(html_); 
         div.find('a').attr('href','#');
@@ -259,6 +265,7 @@ var MarkerMapDiv = TimesideArray.extend({
             //note that marker.id (client side) is marker.public_id (server side)
             json([marker.id],"telemeta.get_marker_id", function(data){
                 var id = data.result;
+                //TODO: we should not call global objects, rather pass them in the construcotr:
                 playlistUtils.showAddResourceToPlaylist(e_addplaylistButton,'marker',""+id,gettrans('marker added to the selected playlist'));
             });
             return false;
