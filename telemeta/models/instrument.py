@@ -54,6 +54,7 @@ class InstrumentAlias(ModelCore):
 
     class Meta(MetaCore):
         db_table = 'instrument_aliases'
+        verbose_name_plural = _('instrument aliases')
 
     def __unicode__(self):
         return self.name

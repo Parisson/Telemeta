@@ -209,23 +209,11 @@ class MediaCollection(MediaResource):
         
     class Meta(MetaCore):
         db_table = 'media_collections'
+        ordering = ['code']
     
 class MediaCollectionForm(ModelForm):
     class Meta:
         model = MediaCollection
-            
-    def __init__(self, *args, **kwds):
-        super(MediaCollectionForm, self).__init__(*args, **kwds)
-        self.fields['publisher'].queryset = Publisher.objects.order_by('value')
-        self.fields['publisher_collection'].queryset = PublisherCollection.objects.order_by('value')
-        self.fields['recording_context'].queryset = RecordingContext.objects.order_by('value')
-        self.fields['legal_rights'].queryset = LegalRight.objects.order_by('value')
-        self.fields['acquisition_mode'].queryset = AcquisitionMode.objects.order_by('value')
-        self.fields['metadata_author'].queryset = MetadataAuthor.objects.order_by('value')
-        self.fields['publishing_status'].queryset = PublishingStatus.objects.order_by('value')
-        self.fields['metadata_writer'].queryset = MetadataWriter.objects.order_by('value')
-        self.fields['physical_format'].queryset = PhysicalFormat.objects.order_by('value')
-        self.fields['ad_conversion'].queryset = AdConversion.objects.order_by('value')
         
 
 item_published_code_regex    = '[A-Za-z0-9._-]*'
@@ -296,6 +284,7 @@ class MediaItem(MediaResource):
 
     class Meta(MetaCore):
         db_table = 'media_items'
+        ordering = ['code', 'old_code']
 
     def is_valid_code(self, code):
         "Check if the item code is well formed"
@@ -337,13 +326,6 @@ class MediaItem(MediaResource):
 class MediaItemForm(ModelForm):
     class Meta:
         model = MediaItem
-    
-    def __init__(self, *args, **kwds):
-        super(MediaItemForm, self).__init__(*args, **kwds)                
-        self.fields['location'].queryset = Location.objects.order_by('name')
-        self.fields['ethnic_group'].queryset = EthnicGroup.objects.order_by('name')
-        self.fields['vernacular_style'].queryset = VernacularStyle.objects.order_by('name')
-        self.fields['generic_style'].queryset = GenericStyle.objects.order_by('name')
         
 class MediaItemKeyword(ModelCore):
     "Item keyword"
