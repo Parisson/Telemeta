@@ -46,6 +46,7 @@ from telemeta.models.location import LocationRelation, Location
 from telemeta.models.system import Revision
 from telemeta.models.query import *
 from telemeta.models.instrument import *
+from telemeta.models.enum import *
 from django.forms import ModelForm
 
 
@@ -149,7 +150,7 @@ class MediaCollection(MediaResource):
     
     # All
     objects               = MediaCollectionManager()
- 
+        
     def __unicode__(self):
         return self.code
 
@@ -212,6 +213,19 @@ class MediaCollection(MediaResource):
 class MediaCollectionForm(ModelForm):
     class Meta:
         model = MediaCollection
+            
+    def __init__(self, *args, **kwds):
+        super(MediaCollectionForm, self).__init__(*args, **kwds)
+        self.fields['publisher'].queryset = Publisher.objects.order_by('value')
+        self.fields['publisher_collection'].queryset = PublisherCollection.objects.order_by('value')
+        self.fields['recording_context'].queryset = RecordingContext.objects.order_by('value')
+        self.fields['legal_rights'].queryset = LegalRight.objects.order_by('value')
+        self.fields['acquisition_mode'].queryset = AcquisitionMode.objects.order_by('value')
+        self.fields['metadata_author'].queryset = MetadataAuthor.objects.order_by('value')
+        self.fields['publishing_status'].queryset = PublishingStatus.objects.order_by('value')
+        self.fields['metadata_writer'].queryset = MetadataWriter.objects.order_by('value')
+        self.fields['physical_format'].queryset = PhysicalFormat.objects.order_by('value')
+        self.fields['ad_conversion'].queryset = AdConversion.objects.order_by('value')
         
 
 item_published_code_regex    = '[A-Za-z0-9._-]*'
@@ -325,8 +339,11 @@ class MediaItemForm(ModelForm):
         model = MediaItem
     
     def __init__(self, *args, **kwds):
-        super(MediaItemForm, self).__init__(*args, **kwds)
+        super(MediaItemForm, self).__init__(*args, **kwds)                
         self.fields['location'].queryset = Location.objects.order_by('name')
+        self.fields['ethnic_group'].queryset = EthnicGroup.objects.order_by('name')
+        self.fields['vernacular_style'].queryset = VernacularStyle.objects.order_by('name')
+        self.fields['generic_style'].queryset = GenericStyle.objects.order_by('name')
         
 class MediaItemKeyword(ModelCore):
     "Item keyword"
