@@ -48,9 +48,6 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
             return sound;
         }
         this.imageCallback = imageCallback;
-        //        this.getVisualizers = function(){
-        //            return visualizers;
-        //        }
 
         var sd = this.toSec(soundDurationInMsec);
         this.getSoundDuration = function(){
@@ -101,10 +98,6 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
                 return false;
             }
         }
-    //        var mapUI = new Timeside.classes.MarkerMapDiv();
-    //        this.getMarkersUI = function(){
-    //            return mapUI;
-    //        }
     },
     //functions for converting seconds (player unit) to milliseconds (sound manager unit) and viceversa:
     toSec: function(milliseconds){
@@ -124,7 +117,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
              *Note that a 1 may not always guarantee that sound is being heard, given buffering and autoPlay status.*/
         return sound && sound.playState==1;
     },
-    setSoundPosition : function(newPositionInSeconds){
+    setSoundPosition: function(newPositionInSeconds){
         //if the player is playing and NOT yet fully loaded, simply calling:
         //this.getSound().setPosition(this.toMsec(newPositionInSeconds));
         //resets the position to zero. So we use this workaround:
@@ -157,6 +150,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
             },100);
         }
     },
+    
     play : function(){
         var player = this;
         var sound = player.getSound();
@@ -175,29 +169,75 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         
         var waitDiv = this.getContainer().find('.ts-wait');
         var bufferingString = 'buffering';
-        var forceWait = !imgWaitDisplaying || waitDiv.html() != bufferingString;
+        //var forceWait = !imgWaitDisplaying || waitDiv.html() != bufferingString;
+        var numberOfSubsequentPlayCall=0;
+        var minimumNumberOfSubsequentPlayCall=3;
+        var isPlayingId=2;
+        var isBufferingId=1;
+        var uninitializedId=0;
+        var currentState=uninitializedId;
         var playOptions = {
             position: sPosInMsec,
             whileplaying: function(){
                 var sPos = this.position;
                 var buffering = this.isBuffering; //this refers to the soundmanager sound obj
-                if(buffering && (forceWait || !imgWaitDisplaying)){
-                    imgWaitDisplaying = true;
-                    forceWait = false;
-                    player.setWait.apply(player,[bufferingString]);
-                }else if(!buffering && sPosInMsec < sPos){
-                    //isBuffering seems to be true at regular interval, so we could be in the case
-                    //that !buffering but is actually buffering and no sound is heard, so
-                    //we add the condition sPosInMSec !=sPos as a "sound heard" condition
-                    sPosInMsec = sPos;
-                    var sPosInSec = toSec(sPos); 
-                    player.soundPosition = sPosInSec;
-                    ruler.movePointer(sPosInSec);
-                    if(imgWaitDisplaying){
-                        player.setWait.apply(player,[false]);
-                        imgWaitDisplaying = false;
-                    }
+                //Now, what are we doing here below? we could simply check whether is buffering or not..
+                //Unfortunately, when buffering some playState (isBuffering = false) are also fired, randomly
+                //ONCE in a while
+                //the result is a blinking 'isBuffering' 'isPlaying' state in the wait element displaying the state (not so nice),
+                //which is also costly in terms of computation. So, we wait for at least N playstate fired SUBSEQUENTLY, without
+                //NO bufferingState fired between them. N is set to minimumNumberOfSubsequentPlayCall. When this happens, we can start moving the
+                //pointer as a result of a real play state, and we avoid blinking of the wait element
+                switch(buffering){
+                    case true:
+                        numberOfSubsequentPlayCall = 0; //reset the count
+                        switch(currentState){
+                            case isBufferingId: //do nothing (wait element already displaying)
+                                break;
+                            default: //update the wait element showing it:
+                                currentState = isBufferingId;
+                                player.setWait.apply(player,[bufferingString]);
+                        }
+                        break;
+                    default:
+                        switch(currentState){
+                            case uninitializedId:
+                            case isBufferingId: //in these 2 cases, increment numberOfSubsequentPlayCall
+                                numberOfSubsequentPlayCall++;
+                                if(numberOfSubsequentPlayCall == minimumNumberOfSubsequentPlayCall){
+                                    if(currentState == isBufferingId){ //wait element displaying: hide it
+                                        player.setWait.apply(player,[false]);
+                                    }
+                                    currentState = isPlayingId; //set state for future subsequent calls of this case
+                                }else{
+                                    break; //do not move pointer (default condition below)
+                                }
+                            default: //move pointer
+                                var sPosInSec = toSec(sPos);
+                                player.soundPosition = sPosInSec;
+                                ruler.movePointer(sPosInSec);
+                        }
                 }
+
+            //    consolelog('currentState '+currentState+ ' nspc: '+numberOfSubsequentPlayCall);
+
+            //                if(buffering && (forceWait || !imgWaitDisplaying)){
+            //                    imgWaitDisplaying = true;
+            //                    forceWait = false;
+            //                    player.setWait.apply(player,[bufferingString]);
+            //                }else if(!buffering && sPosInMsec < sPos){
+            //                    //isBuffering seems to be true at regular interval, so we could be in the case
+            //                    //that !buffering but is actually buffering and no sound is heard, so
+            //                    //we add the condition sPosInMSec !=sPos as a "sound heard" condition
+            //                    sPosInMsec = sPos;
+            //                    var sPosInSec = toSec(sPos);
+            //                    player.soundPosition = sPosInSec;
+            //                    ruler.movePointer(sPosInSec);
+            //                    if(imgWaitDisplaying){
+            //                        player.setWait.apply(player,[false]);
+            //                        imgWaitDisplaying = false;
+            //                    }
+            //                }
             },
             onfinish: function() {
                 //whileplaying is NOT called onsinfish. We must update the pointer:
@@ -249,7 +289,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
                 waitDiv.css('display','inline-block');
                 player.fire('waiting',{
                     'value': wtext || true
-                    }); //assures is a string or a true boolean
+                }); //assures is a string or a true boolean
             };
         }else{
             wait = function(){
@@ -289,7 +329,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         "<div class='ts-wave'>",
         "<div class='ts-image-canvas'></div>",
         "<div class='ts-image-container'>",
-       // "<img class='ts-image' src='/images/transparent.png' alt='' />",
+        // "<img class='ts-image' src='/images/transparent.png' alt='' />",
         "</div>",
         "</div>",
         "</div>",
@@ -354,12 +394,12 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
 
         var canAddMarkers = this.canAddMarker();
         
-            if(canAddMarkers){
-                setMarkerButton.show().attr('href','#').unbind('click').bind('click', function(){
-                    me.addMarker(me.getSoundPosition());
-                    return false;
-                });
-            }
+        if(canAddMarkers){
+            setMarkerButton.show().attr('href','#').unbind('click').bind('click', function(){
+                me.addMarker(me.getSoundPosition());
+                return false;
+            });
+        }
        
 
         //volume:
@@ -368,22 +408,29 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         var volumeBar = volumeBarContainer.find('.ts-volume-bar');
 
         var getVol = function(x){
-            return 100*x/volumeBarContainer.width();
+            var vol = 100*x/volumeBarContainer.width();
+            //allow click to easily set to zero or 100, ie set a margin to 5%:
+            var margin = 5;
+            if (vol < margin){
+                vol=0;
+            }else if(vol >100-margin){
+                vol = 100;
+            }
+            return vol;
         };
         function setVolume(event,volumeElement){
             //var ticks = [18,26,33,40,47];
             var x = event.pageX - volumeElement.offset().left; //using absolute coordinates allows us to
             //avoid using layerX (not supported in all browsers) and clientX (which needs the window scrollLeft variable)
             me.setSoundVolume(getVol(x));
-            consolelog(x+' '+getVol(x));
             return false;
         }
         volumeBarContainer.attr('href', '#').click(function(event){
             return setVolume(event,volumeBar);
         });
         volumeSpeaker.attr('href', '#').click(function(){
-             me.setSoundVolume(me.getSoundVolume()>0 ? 0 : getVol(volumeBar.outerWidth()));
-             return false;
+            me.setSoundVolume(me.getSoundVolume()>0 ? 0 : getVol(volumeBar.outerWidth()));
+            return false;
         });
         this.setSoundVolume(this.getSoundVolume());
 
@@ -403,15 +450,9 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
             'overflow':'hidden'
         });
         if(!canAddMarkers){
-             setMarkerButton.hide().unbind('click');
+            setMarkerButton.hide().unbind('click');
         }
-        //TODO: filter?
-        //.css('display','inlineBlock')
-//        .each(function(i, a){
-//            a = $J(a);
-//
-//            //a.attr('title', a.attr('class').substring(3));
-//        });
+       
         var waitImg = control.find('.ts-wait');
         waitImg.html('wait').css({
             'position':'absolute'
@@ -426,18 +467,8 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
             'width':'auto',
             'height':'100%'
         });
-        consolelog(volumeSpeaker.position().left+' '+volumeSpeaker.outerWidth());
-//        var h = waitImg.parent().height();
-//        var h2 = waitImg.height();
-//        waitImg.css('top',((h-h2)/2)+'px');
-
-//        volumeBarContainer.css('position','relative');
-//        volumeBarContainer.css({
-//            'position':'absolute'
-//        });
-//        volumeBar.add(volumeBarContainer).css({'position':'absolute'});
-
-
+        //END NECESSARY CSS
+        
         this.setWait(false);
 
         //creating the ruler
@@ -639,7 +670,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         if(!imageNotYetCreated && image.attr('src')==imgSrc){
             return;
         }
-
+        
         var player= this;
         var waitString = 'refreshing img';
         player.setWait.apply(player,[waitString]);
@@ -663,7 +694,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
             }
             image.unbind('load');
             if(imageNotYetCreated){
-                imageC.append(image);
+                imageC.append(image.addClass('ts-image'));
             }
         });
 
@@ -764,40 +795,40 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         return false;
     },
 
-//    setSoundVolume: function(volume){
-//
-//        if(typeof volume != 'number'){ //note: typeof for primitive values, instanceof for the rest
-//            //see topic http://stackoverflow.com/questions/472418/why-is-4-not-an-instance-of-number
-//            volume = 100;
-//        }
-//        if(volume<0){
-//            volume = 0;
-//        }else if(volume>100){
-//            volume = 100;
-//        }
-//        var sound = this.getSound();
-//        //        if(sound.volume == volume){
-//        //            return;
-//        //        }
-//        sound.setVolume(volume);
-//        //update the anchor image:
-//        var indices = [20,40,60,80,100,100000];
-//
-//        var volumeElm = this.getContainer().find('.ts-volume');
-//        for(var i=0; i <indices.length; i++){
-//            if(volume<indices[i]){
-//                var pos = -28*i;
-//                pos = '0px '+ pos+ 'px'; //DO NOT SET !important as in FF3 DOES NOT WORK!!!!!
-//                volumeElm.css('backgroundPosition',pos);
-//                return;
-//            }
-//        }
-//    // this.elements.volume.css('backgroundPosition','0px 0px !important')
-//
-//    },
+    //    setSoundVolume: function(volume){
+    //
+    //        if(typeof volume != 'number'){ //note: typeof for primitive values, instanceof for the rest
+    //            //see topic http://stackoverflow.com/questions/472418/why-is-4-not-an-instance-of-number
+    //            volume = 100;
+    //        }
+    //        if(volume<0){
+    //            volume = 0;
+    //        }else if(volume>100){
+    //            volume = 100;
+    //        }
+    //        var sound = this.getSound();
+    //        //        if(sound.volume == volume){
+    //        //            return;
+    //        //        }
+    //        sound.setVolume(volume);
+    //        //update the anchor image:
+    //        var indices = [20,40,60,80,100,100000];
+    //
+    //        var volumeElm = this.getContainer().find('.ts-volume');
+    //        for(var i=0; i <indices.length; i++){
+    //            if(volume<indices[i]){
+    //                var pos = -28*i;
+    //                pos = '0px '+ pos+ 'px'; //DO NOT SET !important as in FF3 DOES NOT WORK!!!!!
+    //                volumeElm.css('backgroundPosition',pos);
+    //                return;
+    //            }
+    //        }
+    //    // this.elements.volume.css('backgroundPosition','0px 0px !important')
+    //
+    //    },
 
     setSoundVolume: function(volume){
-      if(typeof volume != 'number'){ //note: typeof for primitive values, instanceof for the rest
+        if(typeof volume != 'number'){ //note: typeof for primitive values, instanceof for the rest
             //see topic http://stackoverflow.com/questions/472418/why-is-4-not-an-instance-of-number
             volume = 100;
         }
@@ -807,7 +838,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
             volume = 100;
         }
         volume = Math.round(volume);
-      var sound = this.getSound();
+        var sound = this.getSound();
         if(sound){
             sound.setVolume(volume);
         }
@@ -821,7 +852,10 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         }else{
             volumeSpeaker.removeClass('ts-volume-speaker-off').addClass('ts-volume-speaker-on');
             volumeBar.css('visibility','visible');
-            volumeBar.css({'height':'100%','width':volume+'%'});
+            volumeBar.css({
+                'height':'100%',
+                'width':volume+'%'
+            });
         }
     },
 
@@ -882,19 +916,19 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         //1) ADD
         //
         //add binding to the setMarker button (html anchor):
-//        var setMarkerButton = player.getContainer().find('.ts-set-marker');
-//
-//        var showAddMarkerButton = this.canAddMarker();
-//        if(setMarkerButton){
-//            if(showAddMarkerButton){
-//                setMarkerButton.show().attr('href','#').unbind('click').bind('click', function(){
-//                    player.addMarker(player.getSoundPosition());
-//                    return false;
-//                });
-//            }else{
-//                setMarkerButton.hide().unbind('click');
-//            }
-//        }
+        //        var setMarkerButton = player.getContainer().find('.ts-set-marker');
+        //
+        //        var showAddMarkerButton = this.canAddMarker();
+        //        if(setMarkerButton){
+        //            if(showAddMarkerButton){
+        //                setMarkerButton.show().attr('href','#').unbind('click').bind('click', function(){
+        //                    player.addMarker(player.getSoundPosition());
+        //                    return false;
+        //                });
+        //            }else{
+        //                setMarkerButton.hide().unbind('click');
+        //            }
+        //        }
 
 
         //the function above calls map.add:
