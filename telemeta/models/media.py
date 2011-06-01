@@ -212,7 +212,7 @@ class MediaCollection(MediaResource):
 class MediaCollectionForm(ModelForm):
     class Meta:
         model = MediaCollection
-
+        
 
 item_published_code_regex    = '[A-Za-z0-9._-]*'
 item_unpublished_code_regex  = '[A-Za-z0-9._-]*'

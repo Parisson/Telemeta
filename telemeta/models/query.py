@@ -199,7 +199,7 @@ class MediaItemManager(CoreManager):
 
     def get_query_set(self):
         "Return media query sets"
-        return MediaItemQuerySet(self.model)
+        return MediaItemQuerySet(self.model).order_by('code', 'old_code')
 
     def enriched(self):
         "Query set with additional virtual fields such as apparent_collector and country_or_continent"
@@ -322,7 +322,7 @@ class MediaCollectionManager(CoreManager):
 
     def get_query_set(self):
         "Return the collection query"
-        return MediaCollectionQuerySet(self.model)
+        return MediaCollectionQuerySet(self.model).order_by('code')
 
     def enriched(self):
         "Query set with additional virtual fields such as apparent_collector"
