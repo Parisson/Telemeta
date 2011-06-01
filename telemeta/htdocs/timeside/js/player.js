@@ -205,9 +205,8 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
                             case isBufferingId: //in these 2 cases, increment numberOfSubsequentPlayCall
                                 numberOfSubsequentPlayCall++;
                                 if(numberOfSubsequentPlayCall == minimumNumberOfSubsequentPlayCall){
-                                    if(currentState == isBufferingId){ //wait element displaying: hide it
-                                        player.setWait.apply(player,[false]);
-                                    }
+                                    //if is not buffering, we could skip this. However, there could be the waitbar displaying for some other reason:
+                                    player.setWait.apply(player,[false]);
                                     currentState = isPlayingId; //set state for future subsequent calls of this case
                                 }else{
                                     break; //do not move pointer (default condition below)
