@@ -372,21 +372,21 @@ class WebView(object):
     
     @method_decorator(permission_required('telemeta.add_mediaitem'))
     def item_copy(self, request, public_id, template='telemeta/mediaitem_copy.html'):
-        """Show the details of a given item"""
-        item = MediaItem.objects.get(public_id=public_id)
-        new_item = MediaItem()
+        """Show the details of a given item"""        
         if request.method == 'POST':
+            new_item = MediaItem()
             form = MediaItemForm(data=request.POST, files=request.FILES, instance=new_item)
             if form.is_valid():
                 code = form.cleaned_data['code']
                 if not code:
                     code = public_id
-                form.file = None
                 form.save()
                 new_item.set_revision(request.user)
                 return HttpResponseRedirect('/items/'+code)
         else:
+            item = MediaItem.objects.get(public_id=public_id)
             form = MediaItemForm(instance=item)
+            form.file = None
         
         return render(request, template, {'item': item, "form": form})
         
