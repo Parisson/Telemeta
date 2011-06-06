@@ -199,7 +199,6 @@ function loadPlayer(analizerUrl, soundUrl, itemId, visualizers, currentUserName,
                         };
                     }
                     msgElm.html('Loading player...');
-                    consolelog(visualizers);
                     var visualizersSelectElement = $J('<select/>');
                     for(var name in visualizers){
                         $J('<option/>').html(name).appendTo(visualizersSelectElement);
@@ -314,8 +313,14 @@ function loadPlayer(analizerUrl, soundUrl, itemId, visualizers, currentUserName,
                         var control = player.getContainer().find('.ts-control');
                         var ch = control.height();
                         var margin = 3;
-                        visualizersSelectElement.css({'display':'inline-block','height':(ch-2*margin)+'px',
-                            'position':'absolute','top':margin+'px','right':margin,'margin':0});
+                        visualizersSelectElement.css({
+                            'display':'inline-block',
+                            'height':(ch-2*margin)+'px',
+                            'position':'absolute',
+                            'top':margin+'px',
+                            'right':margin,
+                            'margin':0
+                        });
                         player.bind('waiting', function(data){
                             if(data.value){ //is waiting
                                 visualizersSelectElement.hide();
@@ -344,6 +349,33 @@ function loadPlayer(analizerUrl, soundUrl, itemId, visualizers, currentUserName,
 
                             };
                             wdw.onbeforeunload = confirmExit;
+                        }
+                        if(map && window.PopupDiv){
+                            var popupdiv = new PopupDiv({
+                                focusable: false,
+                                titleClass: 'markersdivTitle',
+                                showClose:false,
+                                bounds: {
+                                    top:0.4,
+                                    left:0.1,
+                                    right:0.1,
+                                    bottom:0
+                                },
+                                invoker: player.getContainer().find('.ts-wave'),
+                                defaultCloseOperation: 'hide'
+                            });
+                            player.bind('markerCrossed',function(data){
+                                popupdiv.refresh(data.marker.desc,data.marker.title);
+                                var index = data.index;
+                                if(index+1 == map.length || map.toArray()[index+1].offset-data.marker.offset>3){
+                                    popupdiv.closeLater(3000);
+                                }
+                                //consolelog('firing markercrossed');
+                                //consolelog(data.marker.title);
+                                if(!popupdiv.isShowing()){
+                                    popupdiv.show();
+                                }
+                            });
                         }
 
                         //set up the marker tab

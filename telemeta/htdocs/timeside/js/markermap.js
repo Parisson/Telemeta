@@ -39,8 +39,16 @@ Timeside.classes.MarkerMap = Timeside.classes.TimesideArray.extend({
         if(!('offset' in obj)){
             return -1;
         }
+
+
         if(typeof obj.offset != 'number'){ //check to be sure:
             obj.offset = this.pFloat(obj.offset);
+        }
+        if(!('id' in obj)){
+            obj.id = Timeside.utils.uniqid();
+        }
+        if(!('isEditable' in obj)){
+            obj.isEditable = false;
         }
         var marker = obj; //this.createMarker(obj);
         var idx = this.insertionIndex(marker);

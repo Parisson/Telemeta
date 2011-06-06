@@ -32,7 +32,6 @@ Timeside.classes.Ruler = Timeside.classes.TimesideArray.extend({
         this._super();
         var cssPref = this.cssPrefix;
         
-       
         this.getSoundDuration= function(){
             return soundDuration;
         };
@@ -191,6 +190,7 @@ Timeside.classes.Ruler = Timeside.classes.TimesideArray.extend({
         var sectionDuration = sectionDurations[i];
         var sectionNums = parseInt(0.5+(duration/sectionDurations[i])); //ceil
         var sectionWidth = w*sectionDuration/duration;
+
 
         var tickCounts = [10,5,2,1];
         i=0;
