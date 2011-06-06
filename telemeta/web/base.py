@@ -195,9 +195,8 @@ class WebView(object):
 
     @method_decorator(permission_required('telemeta.add_mediacollection'))
     def collection_copy(self, request, public_id, template='telemeta/collection_edit.html'):
-        collection = MediaCollection.objects.get(public_id=public_id)
-        new_collection = MediaCollection()
         if request.method == 'POST':
+            new_collection = MediaCollection()
             form = MediaCollectionForm(data=request.POST, files=request.FILES, instance=new_collection)
             if form.is_valid():
                 code = form.cleaned_data['code']
@@ -207,6 +206,7 @@ class WebView(object):
                 new_collection.set_revision(request.user)
                 return HttpResponseRedirect('/collections/'+code)
         else:
+            collection = MediaCollection.objects.get(public_id=public_id)
             form = MediaCollectionForm(instance=collection)
         
         return render(request, template, {'collection': collection, "form": form,})
@@ -372,21 +372,21 @@ class WebView(object):
     
     @method_decorator(permission_required('telemeta.add_mediaitem'))
     def item_copy(self, request, public_id, template='telemeta/mediaitem_copy.html'):
-        """Show the details of a given item"""
-        item = MediaItem.objects.get(public_id=public_id)
-        new_item = MediaItem()
+        """Show the details of a given item"""        
         if request.method == 'POST':
+            new_item = MediaItem()
             form = MediaItemForm(data=request.POST, files=request.FILES, instance=new_item)
             if form.is_valid():
                 code = form.cleaned_data['code']
                 if not code:
                     code = public_id
-                form.file = None
                 form.save()
                 new_item.set_revision(request.user)
                 return HttpResponseRedirect('/items/'+code)
         else:
+            item = MediaItem.objects.get(public_id=public_id)
             form = MediaItemForm(instance=item)
+            form.file = None
         
         return render(request, template, {'item': item, "form": form})
         
@@ -473,7 +473,7 @@ class WebView(object):
                 graph = grapher(width = int(width), height = int(height))
                 pipe = decoder | graph
                 pipe.run()
-                graph.watermark('telemeta', opacity=.6, margin=(5,5))
+                graph.watermark('timeside', opacity=.6, margin=(5,5))
                 f = open(path, 'w')
                 graph.render(path)
                 f.close()
