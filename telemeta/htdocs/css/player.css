@@ -84,16 +84,21 @@ ALONE ARE PARSED (eg ".ts-blabla, .ts-marker-canvas{...}" WILL NOT BE RECOGNIZED
     background: url('../images/player_controlbg.png');
 }
 
-.ts-skin-lab .ts-player .ts-control .ts-playback a {
+/*.ts-skin-lab .ts-player .ts-control .ts-playback a {
     padding: 28px 0 0 0;
-    height /**/:20px; /* for IE5/Win only */
+    height :20px;  for IE5/Win only 
+    margin-right: 0px;
+}
+
+.ts-skin-lab .ts-player .ts-control  a {
+    height:28px;
     margin-right: 0px;
 }
 
 .ts-skin-lab .ts-player .ts-control .ts-layout {
     margin-left: 0px;
 }
-
+*/
 #player_maximized, #player_minimized {
     position: relative;
 }
@@ -122,7 +127,7 @@ ALONE ARE PARSED (eg ".ts-blabla, .ts-marker-canvas{...}" WILL NOT BE RECOGNIZED
     display: none;
 }
 
-#player .ts-visualizer, .ts-wait{
+#player .ts-visualizer{
     margin:5px;
 }
 

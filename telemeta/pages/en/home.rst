@@ -8,7 +8,7 @@ Key features of Telemeta:
     
  * Secure archiving, editing and publishing of audio files over internet.
  * User friendly web frontend including workflows and high level search methods
- * Smart dynamical and skinnable audio player (thanks to `TimeSide <http://code.google.com/p/timeside/> and `SoundManager2 <http://www.schillmania.com/projects/soundmanager2/>`_)
+ * Smart dynamical and skinnable audio player (thanks to `TimeSide <http://code.google.com/p/timeside/>`_ and `SoundManager2 <http://www.schillmania.com/projects/soundmanager2/>`_)
  * "On the fly" analyzing, transcoding and metadata embedding based on an easy plugin architecture
  * Temporal and collaborative indexation with fast user marker management
  * Multi-format support : FLAC, OGG, MP3, WAV and more

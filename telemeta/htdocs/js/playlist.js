@@ -39,9 +39,10 @@ PopupDiv.defaultCloseOperation = 'remove';
 PopupDiv.focusable = true;
 PopupDiv.listItemClass = "component_icon list_item icon_playlist";
 
+
 var playlistUtils = {
     playlists : [],
-    
+
     addPlaylist: function(name, id){
         //this.playlists[name]=id;
         this.playlists.push({
@@ -58,6 +59,7 @@ var playlistUtils = {
         dd[t]='';
         dd[d]='';
         var playlist = this;
+        consolelog(this);
         new PopupDiv({
             'content':dd,
             invoker:anchorElement,
@@ -75,12 +77,19 @@ var playlistUtils = {
         }).show();
 
     },
-    
-
+    /**
+     * Returns an uniqid by creating the current local time in millisecond + a random number. Used for markers and some json calls
+     * Copied from Timeside.utils.uniqid (Timeside might NOT ALWAYS be loaded, see home.html when user is authenitcated)
+     *
+     */
+    uniqid : function() {
+        var d = new Date();
+        return new String(d.getTime() + '' + Math.floor(Math.random() * 1000000)).substr(0, 18);
+    },
     add : function(dictionary){
 
         if(dictionary.public_id===undefined){
-            dictionary.public_id = uniqid(); //defined in application.js
+            dictionary.public_id = this.uniqid(); //defined in application.js
         }
         if(dictionary.user===undefined){
             dictionary.user = CURRENT_USER_NAME;
@@ -97,7 +106,7 @@ var playlistUtils = {
             window.location.reload();
         });
     },
-    
+
     removeResource: function(id){
         json([id],'telemeta.del_playlist_resource',function(){
             window.location.reload();
@@ -115,7 +124,8 @@ var playlistUtils = {
         if(!ar.length){
             return;
         }
-        var addFcn = this.addResourceToPlaylist;
+        var pl = this;
+        //var addFcn = this.addResourceToPlaylist;
         new PopupDiv({
             invoker:anchorElement,
             content: ar,
@@ -135,7 +145,7 @@ var playlistUtils = {
                         p.show();
                     }
                 }
-                addFcn(playlists[val].id,resourceType,objectId,callbackok);
+                pl.addResourceToPlaylist.apply(pl,[playlists[val].id,resourceType,objectId,callbackok]);
             }
         }).show();
 
@@ -144,7 +154,7 @@ var playlistUtils = {
     //resourceType can be: 'collection', 'item', 'marker'
     addResourceToPlaylist: function(playlistId,resourceType,objectId, callbackOnSuccess,callbackOnError){
         var send = {
-            'public_id':uniqid(),
+            'public_id':this.uniqid(),
             'resource_type':resourceType,
             'resource_id':objectId
         };

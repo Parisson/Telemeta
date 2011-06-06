@@ -7,9 +7,9 @@
 <script src="{% url telemeta-js "playlist.js" %}" type="text/javascript"></script>
 <script>
     jQuery(window).ready(function(){
-
-        var a = jQuery('#_new_playlist');
-        a.unbind('click').click(function(){playlistUtils.showAdd(a);return false;});
+        var p = playlistUtils;
+        var a = jQuery('#_new_playlist'); 
+        a.unbind('click').click(function(){p.showAdd(a);return false;});
     });
    
 </script>

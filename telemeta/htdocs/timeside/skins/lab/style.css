@@ -52,15 +52,14 @@
 
 .ts-skin-lab .ts-player .ts-control {
     background: url('img/controlbg.png');
-    height: 28px;
-/*     border-top: dotted #b2b2b2 1px; */
+/*    height: 28px;
+     border-top: dotted #b2b2b2 1px; */
 }
 
-.ts-skin-lab .ts-player .ts-control .ts-layout {
+/*.ts-skin-lab .ts-player .ts-control .ts-layout {
     margin-left: 12px;
     margin-right: 12px;
     padding-top: 0px;
-}
 
 .ts-skin-lab .ts-player .ts-control .ts-playback a {
     display: block;
@@ -69,18 +68,15 @@
     padding: 28px 0 0 0;
     overflow: hidden;
     height: 0px !important; 
-    height /**/:28px; /* for IE5/Win only */
     margin-right: 0px;
 }
-/*commented, apparently not used anymore, and it messes up the volume icon*/
-/*.ts-skin-lab .ts-player .ts-control .ts-playback a:hover {
+.ts-skin-lab .ts-player .ts-control .ts-playback a:hover {
     background-position: 0 -28px;
-}*/
+}
 
 .ts-volume, .ts-volume:hover, .ts-volume:visited {
     background-image: url('img/volume.png');
     background-repeat: no-repeat;
-    /*background-position: 0px 0px !important;*/
     width:60px !important;
 }
 
@@ -104,19 +100,16 @@
     background-image: url('img/setmarker.png');
 }
 
-/* unused */
 .ts-skin-lab .ts-player .ts-marker-control .ts-set-marker {
     display: block;
     width: 89px;
     padding: 28px 0 0 0;
     overflow: hidden;
-    height: 0px !important; 
-    height /**/:28px; /* for IE5/Win only */
+    height: 0px !important;
     background-image: url('img/setmarker.gif');
     margin: 5px auto 0 auto;
 }
 
-/* unused */
 .ts-skin-lab .ts-player .ts-marker-control .ts-set-marker:hover {
     background-position: 0 -21px;
 }
@@ -126,6 +119,83 @@
     border-bottom: dotted #b2b2b2 1px;
     height: 30px;
 }
+ */
+
+ /** display (inline-block) and overflow of a is set inside javascript*/
+.ts-skin-lab .ts-player .ts-control a {
+    background-repeat: no-repeat;
+    height:28px;
+    width:28px;
+}
+.ts-skin-lab .ts-player .ts-control .ts-play {
+    background-image: url('img/play.png');
+}
+
+.ts-skin-lab .ts-player .ts-control  .ts-pause {
+    background-image: url('img/pause.png');
+}
+
+.ts-skin-lab .ts-player .ts-control  .ts-rewind {
+    background-image: url('img/rewind.png');
+}
+
+.ts-skin-lab .ts-player .ts-control  .ts-forward {
+    background-image: url('img/forward.png');
+}
+
+.ts-skin-lab .ts-player .ts-control  .ts-set-marker {
+    background-image: url('img/setmarker.png');
+}
+
+/*.ts-skin-lab .ts-player .ts-control .ts-volume {
+    background-image: url('img/volume.png');
+    width:90px !important;
+}*/
+/*.ts-skin-lab .ts-player .ts-control .ts-volume-speaker {
+    background-image: url('img/volumeon.png');
+}*/
+.ts-skin-lab .ts-player .ts-control .ts-volume-speaker-on {
+    background-image: url('img/volumeon.png');
+    width:24px;
+}
+.ts-skin-lab .ts-player .ts-control .ts-volume-speaker-off {
+    background-image: url('img/volumeoff.png');
+    width:24px;
+}
+.ts-skin-lab .ts-player .ts-control .ts-volume-bar-container { 
+    background: url('img/controlbg-inverted.png');
+    background-position: -3px left;
+    background-repeat: repeat-x;
+    height:10px;
+    width:56px;
+    margin-top:9px;
+     -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    
+}
+
+.ts-skin-lab .ts-player .ts-control .ts-volume-bar { /*width will be changed inside the code*/
+    background-color: #e4eaf1;
+     -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
 
 
+/*position is set to absolute inside javascript*/
+.ts-skin-lab .ts-player .ts-control .ts-wait {
+    background-repeat: no-repeat;
+    background-image: url('img/wait3.gif');
+    text-align: right;
+    right:0;
+    height:28px;
+    line-height:28px;
+    top:0;
+    background-position: right center;
+    padding-right: 60px;
+    font-size: 80%;
+    color:white;
+
+}
 

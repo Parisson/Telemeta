@@ -210,103 +210,13 @@ var json = function(param,method,onSuccessFcn,onErrorFcn){
 
 };
 
-/**
- * Returns an uniqid by creating the current local time in millisecond + a random number. Used for markers and some json calls
- */
-var uniqid = function() {
-    var d = new Date();
-    return new String(d.getTime() + '' + Math.floor(Math.random() * 1000000)).substr(0, 18);
-};
-
-/**
- * Loads scripts asynchronously
- * can take up to four arguments:
- * root (optional): a string specifying the root (such as '/usr/local/'). Must end with slash, otherwise
- *      each element in scriptArray must begin with a slash
- * scriptArray: a string array of js script filenames, such as ['script1.js','script2.js']
- * callback (optional): callback to be executed when ALL scripts are succesfully loaded
- * loadInSeries (optional): if true scripts are loaded in synchronously, ie each script is loaded only once the
- *      previous has been loaded. The default (argument missing) is false
- *
- * Examples. Given scripts = ['s1.js', 's2.js']
- *  loadScripts(scripts)                          //loads (asynchronously) scripts
- *  loadScripts('/usr/', scripts)                 //loads (asynchronously) ['/usr/s1.js', '/usr/s2.js']
- *  loadScripts(scripts, callback)                //loads (asynchronously) scripts. When loaded, executes callback
- *  loadScripts('/usr/', scripts, callback)       //loads (asynchronously) ['/usr/s1.js', '/usr/s2.js']. When loaded, executes callback
- *  loadScripts(scripts, callback, true)          //loads (synchronously) scripts. When loaded, executes callback
- *  loadScripts('/usr/', scripts, callback, true) //loads (synchronously) ['/usr/s1.js', '/usr/s2.js']. When loaded, executes callback
- *
- */
-function loadScripts(){
-    var optionalRoot='', scriptArray=[], callback=undefined, loadInSeries=false;
-    var len = arguments.length;
-    if(len==1){
-        scriptArray = arguments[0];
-    }else if(len==2){
-        if(typeof arguments[0] == 'string'){
-            optionalRoot = arguments[0];
-            scriptArray = arguments[1];
-        }else{
-            scriptArray = arguments[0];
-            callback = arguments[1];
-        }
-    }else if(len>2){
-        if(typeof arguments[0] == 'string'){
-            optionalRoot = arguments[0];
-            scriptArray = arguments[1];
-            callback = arguments[2];
-            if(len>3){
-                loadInSeries = arguments[3];
-            }
-        }else{
-            scriptArray = arguments[0];
-            callback = arguments[1];
-            loadInSeries = arguments[2];
-        }
-    }
-    
-    if(!scriptArray){
-        if(callback){
-            callback();
-        }
-        return;
-    }
-    len = scriptArray.length;
-    var i=0;
-    if(optionalRoot){
-        for(i =0; i<len; i++){
-            scriptArray[i] = optionalRoot+scriptArray[i];
-        }
-    }
-
-    var $J = jQuery;
-   
-    if(loadInSeries){
-        var load = function(index){
-            if(index<len){
-                $J.getScript(scriptArray[index],function(){
-                    load(index+1);
-                });
-            }else if(callback){
-                callback();
-            }
-        };
-        load(0);
-    }else{
-        var count=0;
-        var s;
-        for(i=0; i <len; i++){
-            s = scriptArray[i];
-            $J.getScript(s, function(){
-                count++;
-                if(count==len && callback){
-                    callback();
-                }
-            });
-        }
-    }
-}
-
+///**
+// * Returns an uniqid by creating the current local time in millisecond + a random number. Used for markers and some json calls
+// */
+//var uniqid = function() {
+//    var d = new Date();
+//    return new String(d.getTime() + '' + Math.floor(Math.random() * 1000000)).substr(0, 18);
+//};
 
 /**
  * function for writing to the console. Catches errors, if any (eg, console == undefined) and does nothing in case

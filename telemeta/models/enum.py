@@ -143,6 +143,7 @@ class PublisherCollection(ModelCore):
 
     class Meta(MetaCore):
         db_table = 'publisher_collections'
+        ordering = ['value']
 
 class EthnicGroup(Enumeration):
     "Item ethnic group"
@@ -159,5 +160,6 @@ class EthnicGroupAlias(ModelCore):
     class Meta(MetaCore):
         db_table = 'ethnic_group_aliases'
         unique_together = (('ethnic_group', 'value'),)
+        ordering = ['ethnic_group__value']
 
 

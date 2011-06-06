@@ -80,10 +80,12 @@ def render(request, template, data = None, mimetype = None):
     return render_to_response(template, data, context_instance=RequestContext(request), 
                               mimetype=mimetype)
 
-def stream_from_processor(__decoder, __processor):
+def stream_from_processor(__decoder, __processor, __flag):
     while True:
         __frames, eodproc = __processor.process(*__decoder.process())
         if eodproc:
+            __flag.value = True
+            __flag.save()
             break
         yield __processor.chunk
 
@@ -193,9 +195,8 @@ class WebView(object):
 
     @method_decorator(permission_required('telemeta.add_mediacollection'))
     def collection_copy(self, request, public_id, template='telemeta/collection_edit.html'):
-        collection = MediaCollection.objects.get(public_id=public_id)
-        new_collection = MediaCollection()
         if request.method == 'POST':
+            new_collection = MediaCollection()
             form = MediaCollectionForm(data=request.POST, files=request.FILES, instance=new_collection)
             if form.is_valid():
                 code = form.cleaned_data['code']
@@ -205,6 +206,7 @@ class WebView(object):
                 new_collection.set_revision(request.user)
                 return HttpResponseRedirect('/collections/'+code)
         else:
+            collection = MediaCollection.objects.get(public_id=public_id)
             form = MediaCollectionForm(instance=collection)
         
         return render(request, template, {'collection': collection, "form": form,})
@@ -331,6 +333,9 @@ class WebView(object):
                 if form.files:
                     self.cache_data.delete_item_data(code)
                     self.cache_export.delete_item_data(code)
+                    flags = MediaItemTranscodingFlag.objects.filter(item=item)
+                    for flag in flags:
+                        flag.delete()
                 item.set_revision(request.user)
                 return HttpResponseRedirect('/items/'+code)
         else:
@@ -367,21 +372,21 @@ class WebView(object):
     
     @method_decorator(permission_required('telemeta.add_mediaitem'))
     def item_copy(self, request, public_id, template='telemeta/mediaitem_copy.html'):
-        """Show the details of a given item"""
-        item = MediaItem.objects.get(public_id=public_id)
-        new_item = MediaItem()
+        """Show the details of a given item"""        
         if request.method == 'POST':
+            new_item = MediaItem()
             form = MediaItemForm(data=request.POST, files=request.FILES, instance=new_item)
             if form.is_valid():
                 code = form.cleaned_data['code']
                 if not code:
                     code = public_id
-                form.file = None
                 form.save()
                 new_item.set_revision(request.user)
                 return HttpResponseRedirect('/items/'+code)
         else:
+            item = MediaItem.objects.get(public_id=public_id)
             form = MediaItemForm(instance=item)
+            form.file = None
         
         return render(request, template, {'item': item, "form": form})
         
@@ -468,7 +473,7 @@ class WebView(object):
                 graph = grapher(width = int(width), height = int(height))
                 pipe = decoder | graph
                 pipe.run()
-                graph.watermark('telemeta', opacity=.6, margin=(5,5))
+                graph.watermark('timeside', opacity=.6, margin=(5,5))
                 f = open(path, 'w')
                 graph.render(path)
                 f.close()
@@ -487,7 +492,7 @@ class WebView(object):
         """Export a given media item in the specified format (OGG, FLAC, ...)"""
         
         item = MediaItem.objects.get(public_id=public_id)
-
+        
         public_access = self.get_public_access(item.public_access, item.recorded_from_date, item.recorded_to_date)
         if (not public_access or not extension in settings.TELEMETA_STREAMING_FORMATS) and not request.user.is_staff:
             return HttpResponseRedirect('not_allowed/')
@@ -502,6 +507,14 @@ class WebView(object):
         mime_type = encoder.mime_type()
         file = public_id + '.' + encoder.file_extension()
         audio = item.file.path
+        
+        flag = MediaItemTranscodingFlag.objects.filter(item=item, mime_type=mime_type)
+        if not flag:
+            flag = MediaItemTranscodingFlag(item=item, mime_type=mime_type)
+            flag.value = False
+            flag.save()
+        else:
+            flag = flag[0]
         
         analyzers = self.item_analyze(item)
         if analyzers:
@@ -521,14 +534,14 @@ class WebView(object):
             mapping = DublinCoreToFormatMetadata(extension)
             metadata = mapping.get_metadata(dc_metadata)     
             media = self.cache_export.dir + os.sep + file
-            if not self.cache_export.exists(file):
-                decoder = timeside.decoder.FileDecoder(audio)
+            if not self.cache_export.exists(file) or flag.value == False:
                 # source > encoder > stream
+                decoder = timeside.decoder.FileDecoder(audio)
                 decoder.setup()
                 proc = encoder(media, streaming=True)
                 proc.setup(channels=decoder.channels(), samplerate=decoder.samplerate())
                 proc.set_metadata(metadata)
-                response = HttpResponse(stream_from_processor(decoder, proc), mimetype = mime_type)
+                response = HttpResponse(stream_from_processor(decoder, proc, flag), mimetype = mime_type)
             else:
                 # cache > stream
                 proc = encoder(media)

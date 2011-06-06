@@ -26,6 +26,26 @@
  * Base class defining classes for TimesideUI
  */
 
+/**
+ *global variable housing all Timeside variable/classes:
+ */
+var Timeside = {
+    Class:undefined,
+    classes:{},
+    player:undefined,
+    utils:{
+        
+        /**
+         * Returns an uniqid by creating the current local time in millisecond + a random number. Used for markers and some json calls
+         */
+        uniqid : function() {
+            var d = new Date();
+            return new String(d.getTime() + '' + Math.floor(Math.random() * 1000000)).substr(0, 18);
+        }
+    }
+};
+
+
 /* Simple JavaScript Inheritance
  * By John Resig http://ejohn.org/
  * MIT Licensed.
@@ -79,8 +99,9 @@
  * });
  *
  */
-// 
-(function(){
+
+
+(function(parent){
 
     var initializing = false, fnTest = /xyz/.test(function(){
         xyz;
@@ -93,11 +114,21 @@
      *it’s nice to skip that step if it isn’t needed.
      */
 
-    // The base Class implementation (does nothing)
-    this.Class = function(){};
+    //ADDED BY ME:
+    // before was: this.Class = function(){}, where this here is the DomWindow
+    // In order to chose where to attach the Class object, we added the argument parent (see above):
+    //if parent is undefined, attach Class to the DomWindow (same as before):
+    if(!parent){
+        parent= window;
+    }
+    parent.Class = function(){};
 
+    //from here on, the code is untouched:
+    //
+    //We have the base Class implementation (does nothing)
+    //and we write here below the method extend which returns the Class with inhertance implemented:
     // Create a new Class that inherits from this class
-    Class.extend = function(prop) {
+    parent.Class.extend = function(prop) {
         var _super = this.prototype;
 
         // Instantiate a base class (but only create the instance,
@@ -149,11 +180,15 @@
 
         return Class;
     };
-})();
+})(Timeside);
 
-//Defining the base TimeClass class. Player, Ruler, MarkerMap are typical implementations (see js files)
+//not really ortodox: we should create the function Class inside Timeside (above)
+//Timeside.Class = Class;
+//delete Class;
+
+//Defining the base TimeClass class. Timeside.classes.[Player, Ruler, MarkerMap...] are typical implementations (see js files)
 //Basically we store here static methods which must be accessible in several timside sub-classes
-var TimesideClass = Class.extend({
+Timeside.classes.TimesideClass = Timeside.Class.extend({
     //init constructor. Define the 'bind' and 'fire' (TODO: rename as 'trigger'?) methods
     //we do it in the init function so that we can set a private variable storing all
     //listeners. This means we have to re-write all methods
@@ -302,7 +337,7 @@ var TimesideClass = Class.extend({
         return ret.join("");
     },
 
-    cssPrefix : 'ts-', //actually almost uneuseful, backward compatibility with old code (TODO: remove?)
+    cssPrefix : 'ts-', //actually almost uneuseful, still here for backward compatibility with old code (TODO: remove?)
     $J : jQuery,
     debugging : false,
     debug : function(message) {
@@ -315,11 +350,12 @@ var TimesideClass = Class.extend({
 
     /**
      * Returns whether SVG is supported. If it is the case, this property can simply return true.
-     * For a more clean code, one should remove this property, elementToPaperMap (see below),
-     * check where we call isSvgSupported (ruler.js and rulermarker.js) and eventually
-     * remove the vml methods in ruler.js and rulermarker.js
+     * If full svg support will be a standard (hopefully...), for a a more clean code, one should remove all remaining
+     * properties/functions,
+     * check where we call isSvgSupported (currently, ruler.js and rulermarker.js) and eventually
+     * remove the vml methods, which should always be separated from the already implemented svg methods
      */
-    isSvgSupported : function(){return Raphael.svg},
+    isSvgSupported : Raphael.svg, //note that Raphael MUST be loaded!! (put it in the header scripts before Timeside)
     /**
      * Raphael unfortunately does not allow to wrap existing elements, which is a big lack not even planned to be implemented in
      * future releases (see raphael forum). Therefore, we store here a map which binds html elements -> Raphael paper object
@@ -350,7 +386,7 @@ var TimesideClass = Class.extend({
                         var val = style[availableAttrs[k]];
                         if(val){
                             attr[availableAttrs[k]] = val;
-                            //console.log(val); //REMOVE THIS
+                        //console.log(val); //REMOVE THIS
                         }
                     }
                 }
@@ -363,6 +399,7 @@ var TimesideClass = Class.extend({
 
     //css specific functions:
     //get computed style first (cross browser solution, from http://blog.stchur.com/2006/06/21/css-computed-style/
+    //not used anymnore, we keep it here because it can be useful
     getComputedStyle : function(_elem, _style){
         var computedStyle;
         var $J = this.$J;
@@ -377,64 +414,227 @@ var TimesideClass = Class.extend({
         return computedStyle[_style];
     },
     //returns a hex color from strColor. strColor can be one of the predefined css colors (eg, 'aliceBlue', case insensitive)
-    //or rgb (eg: rgb(12,0,45)) or an hex color (eg, '#ff98a3' or '#f8g')
+    //or rgb (eg: rgb(12,0,45)) or an hex color (eg, '#ff98a3' or '#f8g'). Leading and trailing spaces will be omitted,
+    //case is insensitive, an empty string is returned in case of error (bad format string, parseInt errors etcetera..)
     color : function(strColor){
-    if(!strColor){
-        return '';
-    }
-    strColor = strColor.replace(/(^\s+|\s+$)/g,'').toLowerCase();
-    var predefined_colors = {aliceblue:"#f0f8ff",antiquewhite:"#faebd7",aqua:"#00ffff",aquamarine:"#7fffd4",azure:"#f0ffff",beige:"#f5f5dc",bisque:"#ffe4c4",black:"#000000",blanchedalmond:"#ffebcd",blue:"#0000ff",blueviolet:"#8a2be2",brown:"#a52a2a",burlywood:"#deb887",cadetblue:"#5f9ea0",chartreuse:"#7fff00",chocolate:"#d2691e",coral:"#ff7f50",cornflowerblue:"#6495ed",cornsilk:"#fff8dc",crimson:"#dc143c",cyan:"#00ffff",darkblue:"#00008b",darkcyan:"#008b8b",darkgoldenrod:"#b8860b",darkgray:"#a9a9a9",darkgrey:"#a9a9a9",darkgreen:"#006400",darkkhaki:"#bdb76b",darkmagenta:"#8b008b",darkolivegreen:"#556b2f",darkorange:"#ff8c00",darkorchid:"#9932cc",darkred:"#8b0000",darksalmon:"#e9967a",darkseagreen:"#8fbc8f",darkslateblue:"#483d8b",darkslategray:"#2f4f4f",darkslategrey:"#2f4f4f",darkturquoise:"#00ced1",darkviolet:"#9400d3",deeppink:"#ff1493",deepskyblue:"#00bfff",dimgray:"#696969",dimgrey:"#696969",dodgerblue:"#1e90ff",firebrick:"#b22222",floralwhite:"#fffaf0",forestgreen:"#228b22",fuchsia:"#ff00ff",gainsboro:"#dcdcdc",ghostwhite:"#f8f8ff",gold:"#ffd700",goldenrod:"#daa520",gray:"#808080",grey:"#808080",green:"#008000",greenyellow:"#adff2f",honeydew:"#f0fff0",hotpink:"#ff69b4",indianred:"#cd5c5c",indigo:"#4b0082",ivory:"#fffff0",khaki:"#f0e68c",lavender:"#e6e6fa",lavenderblush:"#fff0f5",lawngreen:"#7cfc00",lemonchiffon:"#fffacd",lightblue:"#add8e6",lightcoral:"#f08080",lightcyan:"#e0ffff",lightgoldenrodyellow:"#fafad2",lightgray:"#d3d3d3",lightgrey:"#d3d3d3",lightgreen:"#90ee90",lightpink:"#ffb6c1",lightsalmon:"#ffa07a",lightseagreen:"#20b2aa",lightskyblue:"#87cefa",lightslategray:"#778899",lightslategrey:"#778899",lightsteelblue:"#b0c4de",lightyellow:"#ffffe0",lime:"#00ff00",limegreen:"#32cd32",linen:"#faf0e6",magenta:"#ff00ff",maroon:"#800000",mediumaquamarine:"#66cdaa",mediumblue:"#0000cd",mediumorchid:"#ba55d3",mediumpurple:"#9370d8",mediumseagreen:"#3cb371",mediumslateblue:"#7b68ee",mediumspringgreen:"#00fa9a",mediumturquoise:"#48d1cc",mediumvioletred:"#c71585",midnightblue:"#191970",mintcream:"#f5fffa",mistyrose:"#ffe4e1",moccasin:"#ffe4b5",navajowhite:"#ffdead",navy:"#000080",oldlace:"#fdf5e6",olive:"#808000",olivedrab:"#6b8e23",orange:"#ffa500",orangered:"#ff4500",orchid:"#da70d6",palegoldenrod:"#eee8aa",palegreen:"#98fb98",paleturquoise:"#afeeee",palevioletred:"#d87093",papayawhip:"#ffefd5",peachpuff:"#ffdab9",peru:"#cd853f",pink:"#ffc0cb",plum:"#dda0dd",powderblue:"#b0e0e6",purple:"#800080",red:"#ff0000",rosybrown:"#bc8f8f",royalblue:"#4169e1",saddlebrown:"#8b4513",salmon:"#fa8072",sandybrown:"#f4a460",seagreen:"#2e8b57",seashell:"#fff5ee",sienna:"#a0522d",silver:"#c0c0c0",skyblue:"#87ceeb",slateblue:"#6a5acd",slategray:"#708090",slategrey:"#708090",snow:"#fffafa",springgreen:"#00ff7f",steelblue:"#4682b4",tan:"#d2b48c",teal:"#008080",thistle:"#d8bfd8",tomato:"#ff6347",turquoise:"#40e0d0",violet:"#ee82ee",wheat:"#f5deb3",white:"#ffffff",whitesmoke:"#f5f5f5",yellow:"#ffff00",yellowgreen:"#9acd32"};
-    var cl = predefined_colors[strColor];
-    if(cl){
-        return cl;
-    }
-    var pint = parseInt;
-    var color_defs = [
-        {re: /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/, //example: ['rgb(123, 234, 45)', 'rgb(255,234,245)'],
-            process: function (bits){
-                return [pint(bits[1]), pint(bits[2]),pint(bits[3])];
-            }},
-        {re: /^#*(\w{2})(\w{2})(\w{2})$/, //example: ['#00ff00', '336699'],
+        if(!strColor){
+            return '';
+        }
+        strColor = strColor.replace(/(^\s+|\s+$)/g,'').toLowerCase();
+        if(!strColor){
+            return '';
+        }
+        var predefined_colors = {
+            aliceblue:"#f0f8ff",
+            antiquewhite:"#faebd7",
+            aqua:"#00ffff",
+            aquamarine:"#7fffd4",
+            azure:"#f0ffff",
+            beige:"#f5f5dc",
+            bisque:"#ffe4c4",
+            black:"#000000",
+            blanchedalmond:"#ffebcd",
+            blue:"#0000ff",
+            blueviolet:"#8a2be2",
+            brown:"#a52a2a",
+            burlywood:"#deb887",
+            cadetblue:"#5f9ea0",
+            chartreuse:"#7fff00",
+            chocolate:"#d2691e",
+            coral:"#ff7f50",
+            cornflowerblue:"#6495ed",
+            cornsilk:"#fff8dc",
+            crimson:"#dc143c",
+            cyan:"#00ffff",
+            darkblue:"#00008b",
+            darkcyan:"#008b8b",
+            darkgoldenrod:"#b8860b",
+            darkgray:"#a9a9a9",
+            darkgrey:"#a9a9a9",
+            darkgreen:"#006400",
+            darkkhaki:"#bdb76b",
+            darkmagenta:"#8b008b",
+            darkolivegreen:"#556b2f",
+            darkorange:"#ff8c00",
+            darkorchid:"#9932cc",
+            darkred:"#8b0000",
+            darksalmon:"#e9967a",
+            darkseagreen:"#8fbc8f",
+            darkslateblue:"#483d8b",
+            darkslategray:"#2f4f4f",
+            darkslategrey:"#2f4f4f",
+            darkturquoise:"#00ced1",
+            darkviolet:"#9400d3",
+            deeppink:"#ff1493",
+            deepskyblue:"#00bfff",
+            dimgray:"#696969",
+            dimgrey:"#696969",
+            dodgerblue:"#1e90ff",
+            firebrick:"#b22222",
+            floralwhite:"#fffaf0",
+            forestgreen:"#228b22",
+            fuchsia:"#ff00ff",
+            gainsboro:"#dcdcdc",
+            ghostwhite:"#f8f8ff",
+            gold:"#ffd700",
+            goldenrod:"#daa520",
+            gray:"#808080",
+            grey:"#808080",
+            green:"#008000",
+            greenyellow:"#adff2f",
+            honeydew:"#f0fff0",
+            hotpink:"#ff69b4",
+            indianred:"#cd5c5c",
+            indigo:"#4b0082",
+            ivory:"#fffff0",
+            khaki:"#f0e68c",
+            lavender:"#e6e6fa",
+            lavenderblush:"#fff0f5",
+            lawngreen:"#7cfc00",
+            lemonchiffon:"#fffacd",
+            lightblue:"#add8e6",
+            lightcoral:"#f08080",
+            lightcyan:"#e0ffff",
+            lightgoldenrodyellow:"#fafad2",
+            lightgray:"#d3d3d3",
+            lightgrey:"#d3d3d3",
+            lightgreen:"#90ee90",
+            lightpink:"#ffb6c1",
+            lightsalmon:"#ffa07a",
+            lightseagreen:"#20b2aa",
+            lightskyblue:"#87cefa",
+            lightslategray:"#778899",
+            lightslategrey:"#778899",
+            lightsteelblue:"#b0c4de",
+            lightyellow:"#ffffe0",
+            lime:"#00ff00",
+            limegreen:"#32cd32",
+            linen:"#faf0e6",
+            magenta:"#ff00ff",
+            maroon:"#800000",
+            mediumaquamarine:"#66cdaa",
+            mediumblue:"#0000cd",
+            mediumorchid:"#ba55d3",
+            mediumpurple:"#9370d8",
+            mediumseagreen:"#3cb371",
+            mediumslateblue:"#7b68ee",
+            mediumspringgreen:"#00fa9a",
+            mediumturquoise:"#48d1cc",
+            mediumvioletred:"#c71585",
+            midnightblue:"#191970",
+            mintcream:"#f5fffa",
+            mistyrose:"#ffe4e1",
+            moccasin:"#ffe4b5",
+            navajowhite:"#ffdead",
+            navy:"#000080",
+            oldlace:"#fdf5e6",
+            olive:"#808000",
+            olivedrab:"#6b8e23",
+            orange:"#ffa500",
+            orangered:"#ff4500",
+            orchid:"#da70d6",
+            palegoldenrod:"#eee8aa",
+            palegreen:"#98fb98",
+            paleturquoise:"#afeeee",
+            palevioletred:"#d87093",
+            papayawhip:"#ffefd5",
+            peachpuff:"#ffdab9",
+            peru:"#cd853f",
+            pink:"#ffc0cb",
+            plum:"#dda0dd",
+            powderblue:"#b0e0e6",
+            purple:"#800080",
+            red:"#ff0000",
+            rosybrown:"#bc8f8f",
+            royalblue:"#4169e1",
+            saddlebrown:"#8b4513",
+            salmon:"#fa8072",
+            sandybrown:"#f4a460",
+            seagreen:"#2e8b57",
+            seashell:"#fff5ee",
+            sienna:"#a0522d",
+            silver:"#c0c0c0",
+            skyblue:"#87ceeb",
+            slateblue:"#6a5acd",
+            slategray:"#708090",
+            slategrey:"#708090",
+            snow:"#fffafa",
+            springgreen:"#00ff7f",
+            steelblue:"#4682b4",
+            tan:"#d2b48c",
+            teal:"#008080",
+            thistle:"#d8bfd8",
+            tomato:"#ff6347",
+            turquoise:"#40e0d0",
+            violet:"#ee82ee",
+            wheat:"#f5deb3",
+            white:"#ffffff",
+            whitesmoke:"#f5f5f5",
+            yellow:"#ffff00",
+            yellowgreen:"#9acd32"
+        };
+        var cl = predefined_colors[strColor];
+        if(cl){
+            return cl;
+        }
+        var pint = parseInt;
+        //color parsers: note that the order is not random: we put first the most likely case ('#aaaaaa') and at last
+        //the less one ('rgb(...)'), this might increase performances in most cases, especially if this method is called from
+        //within a loop
+        var color_defs = [
+        {
+            re: /^#*(\w{2})(\w{2})(\w{2})$/, //example: ['#00ff00', '336699'],
             process: function (bits){
                 return [pint(bits[1], 16),pint(bits[2], 16),pint(bits[3], 16)];
-            }},
-        {re: /^#*(\w{1})(\w{1})(\w{1})$/, //example: ['#fb0', 'f0f'],
+            }
+        },
+
+        {
+            re: /^#*(\w{1})(\w{1})(\w{1})$/, //example: ['#fb0', 'f0f'],
             process: function (bits){
                 return [pint(bits[1] + bits[1], 16),pint(bits[2] + bits[2], 16),pint(bits[3] + bits[3], 16)];
-            }}
-    ];
-
-    // search through the definitions to find a match
-    var nan = isNaN;
-    for (var i = 0; i < color_defs.length; i++) {
-        var re = color_defs[i].re;
-        var processor = color_defs[i].process;
-        var bits = re.exec(strColor);
-        if (bits) {
-            var channels = processor(bits);
-            if(channels.length ==3){
-                for(var j=0; j<3; j++){
-                    var c = channels[j];
-                    c = (nan(c) || c< 0 ? 0 : (c>255 ? 255 :c));
-                    c = c.toString(16);
-                    var len = c.length;
-                    switch(len){
-                        case 1:
-                            c = '0'+c;
-                            break;
-                        case 2:
-                            break;
-                        default:
-                            return '';
-                    }
-                    channels[j] = c;
-                }
-                return '#'+channels.join('');
+            }
+        },
+        {
+            re: /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/, //example: ['rgb(123, 234, 45)', 'rgb(255,234,245)'],
+            process: function (bits){
+                return [pint(bits[1]), pint(bits[2]),pint(bits[3])];
             }
         }
+
+        ];
+
+        // search through the definitions to find a match
+        var nan = isNaN;
+        for (var i = 0; i < color_defs.length; i++) {
+            var re = color_defs[i].re;
+            var processor = color_defs[i].process;
+            var bits = re.exec(strColor);
+            if (bits) {
+                var channels = processor(bits);
+                if(channels.length ==3){
+                    for(var j=0; j<3; j++){
+                        var c = channels[j];
+                        c = (nan(c) || c< 0 ? 0 : (c>255 ? 255 :c));
+                        c = c.toString(16);
+                        var len = c.length;
+                        switch(len){
+                            case 1:
+                                c = '0'+c;
+                                break;
+                            case 2:
+                                break;
+                            default:
+                                return '';
+                        }
+                        channels[j] = c;
+                    }
+                    return '#'+channels.join('');
+                }
+            }
+        }
+        return '';
     }
-    return '';
-}
 
 });
 
@@ -442,7 +642,7 @@ var TimesideClass = Class.extend({
  * An Array-like implementation that suits the need of Marker mnanagement
  * Ruler, MarkerMap and MarkerMapDiv implement this class
  */
-var TimesideArray = TimesideClass.extend({
+Timeside.classes.TimesideArray = Timeside.classes.TimesideClass.extend({
     init: function(optionalArray){
         this._super();
         //here methods that CANNOT be overridden
@@ -573,26 +773,26 @@ var TimesideArray = TimesideClass.extend({
 
 
 /*
- * Sets a "tab look" on some elements of the page. Takes at least 3 arguments, at most 5:
- * 1st argument: an array (or a jquery object) of html elements, ususally anchors, representing the tabs
- * 2nd argument: an array (or a jquery object) of html elements, ususally divs, representing the containers to be shown/hidden when 
- *   clicking the tabs. The n-th tab will set the n-th container to visible, hiding the others. So order is important. Note that if tabs
- *   or container are jQuery objects, the html elements inside them are sorted according to the document order. That's why tabs and
- *   container can be passed also as javascript arrays, so that the binding n-th tab -> n-th container can be decided by the user
- *   regardeless on how elements are written on the page, if already present
- * 3rd argument: the selected index. If missing it defaults to zero.
- * 4th argument: selectedtab class. Applies to the selected tab after click of one tab. If missing, nothing is done
- * 5th argument the unselectedtab class. Applies to all tabs not selected after click of one tab. If missing, nothing is done
- *
- * NOTE: The last 2 arguments are mostly for customizing the tab "visual look", as some css elements (eg, (position, top, zIndex)
- * are set inside the code and cannot be changed, as they are mandatory to let tab anchor behave like desktop application tabs. Note also
- * that every tab container is set to 'visible' by means of jQuery.show()
- *
- * Examples:
- * setUpPlayerTabs([jQuery('#tab1),jQuery('#tab1)], [jQuery('#div1),jQuery('#div2)], 1);
- * sets the elements with id '#tab1' and '#tab2' as tab and assign the click events to them so that clicking tab_1 will show '#div_1'
- * (and hide '#div2') and viceversa for '#tab2'. The selected index will be 1 (second tab '#tab2')
- */
+* Sets a "tab look" on some elements of the page. Takes at least 3 arguments, at most 5:
+* 1st argument: an array (or a jquery object) of html elements, ususally anchors, representing the tabs
+* 2nd argument: an array (or a jquery object) of html elements, ususally divs, representing the containers to be shown/hidden when 
+*   clicking the tabs. The n-th tab will set the n-th container to visible, hiding the others. So order is important. Note that if tabs
+*   or container are jQuery objects, the html elements inside them are sorted according to the document order. That's why tabs and
+*   container can be passed also as javascript arrays, so that the binding n-th tab -> n-th container can be decided by the user
+*   regardeless on how elements are written on the page, if already present
+* 3rd argument: the selected index. If missing it defaults to zero.
+* 4th argument: selectedtab class. Applies to the selected tab after click of one tab. If missing, nothing is done
+* 5th argument the unselectedtab class. Applies to all tabs not selected after click of one tab. If missing, nothing is done
+*
+* NOTE: The last 2 arguments are mostly for customizing the tab "visual look", as some css elements (eg, (position, top, zIndex)
+* are set inside the code and cannot be changed, as they are mandatory to let tab anchor behave like desktop application tabs. Note also
+* that every tab container is set to 'visible' by means of jQuery.show()
+*
+* Examples:
+* setUpPlayerTabs([jQuery('#tab1),jQuery('#tab1)], [jQuery('#div1),jQuery('#div2)], 1);
+* sets the elements with id '#tab1' and '#tab2' as tab and assign the click events to them so that clicking tab_1 will show '#div_1'
+* (and hide '#div2') and viceversa for '#tab2'. The selected index will be 1 (second tab '#tab2')
+*/
 function setUpPlayerTabs() {//called from within controller.js once all markers have been loaded.
     //this is because we need all divs to be visible to calculate size. selIndex is optional, it defaults to 0
     //
@@ -683,3 +883,165 @@ function setUpPlayerTabs() {//called from within controller.js once all markers 
     $(tabs[selIndex]).trigger("click");
 }
 
+/**
+* Loads scripts asynchronously
+* can take up to four arguments:
+* root (optional): a string specifying the root (such as '/usr/local/'). Must end with slash, otherwise
+*      each element in scriptArray must begin with a slash
+* scriptArray: a string array of js script filenames, such as ['script1.js','script2.js']
+* callback (optional): callback to be executed when ALL scripts are succesfully loaded
+* loadInSeries (optional): if true scripts are loaded in synchronously, ie each script is loaded only once the
+*      previous has been loaded. The default (argument missing) is false
+*
+* Examples. Given scripts = ['s1.js', 's2.js']
+*  loadScripts(scripts)                          //loads (asynchronously) scripts
+*  loadScripts('/usr/', scripts)                 //loads (asynchronously) ['/usr/s1.js', '/usr/s2.js']
+*  loadScripts(scripts, callback)                //loads (asynchronously) scripts. When loaded, executes callback
+*  loadScripts('/usr/', scripts, callback)       //loads (asynchronously) ['/usr/s1.js', '/usr/s2.js']. When loaded, executes callback
+*  loadScripts(scripts, callback, true)          //loads (synchronously) scripts. When loaded, executes callback
+*  loadScripts('/usr/', scripts, callback, true) //loads (synchronously) ['/usr/s1.js', '/usr/s2.js']. When loaded, executes callback
+*
+*/
+Timeside.loadScripts = function(){
+    var optionalRoot='', scriptArray=[], callback=undefined, loadInSeries=false;
+    var len = arguments.length;
+    if(len==1){
+        scriptArray = arguments[0];
+    }else if(len==2){
+        if(typeof arguments[0] == 'string'){
+            optionalRoot = arguments[0];
+            scriptArray = arguments[1];
+        }else{
+            scriptArray = arguments[0];
+            callback = arguments[1];
+        }
+    }else if(len>2){
+        if(typeof arguments[0] == 'string'){
+            optionalRoot = arguments[0];
+            scriptArray = arguments[1];
+            callback = arguments[2];
+            if(len>3){
+                loadInSeries = arguments[3];
+            }
+        }else{
+            scriptArray = arguments[0];
+            callback = arguments[1];
+            loadInSeries = arguments[2];
+        }
+    }
+
+    if(!scriptArray){
+        if(callback){
+            callback();
+        }
+        return;
+    }
+    len = scriptArray.length;
+    var i=0;
+    if(optionalRoot){
+        optionalRoot = optionalRoot.replace(/\/*$/,"/"); //add slash at end if not present
+        for(i =0; i<len; i++){
+            scriptArray[i] = optionalRoot+scriptArray[i];
+        }
+    }
+
+    var $J = jQuery;
+
+    if(loadInSeries){
+        var load = function(index){
+            if(index<len){
+                $J.getScript(scriptArray[index],function(){
+                    load(index+1);
+                });
+            }else if(callback){
+                callback();
+            }
+        };
+        load(0);
+    }else{
+        var count=0;
+        var s;
+        for(i=0; i <len; i++){
+            s = scriptArray[i];
+            $J.getScript(s, function(){
+                count++;
+                if(count==len && callback){
+                    callback();
+                }
+            });
+        }
+    }
+}
+
+
+Timeside.load =function(container, soundUrl, durationInMsec, visualizers, markerMap, newMarkerCallback, onError, onReady){
+
+    var $J = jQuery;
+    var playerDiv = container;
+    onError = onError && typeof onError === 'function' ? onError : function(msg){};
+    onReady = onReady && typeof onReady === 'function' ? onReady : function(player){};
+    
+    playerDiv = container instanceof $J ? container : $J(container);
+    playerDiv = playerDiv.length ? playerDiv.eq(0) : undefined;
+    
+    if (!playerDiv || !playerDiv.length){
+        onError('container not defined or invalid');
+        return;
+    }
+    durationInMsec = parseInt(durationInMsec);
+    if(isNaN(durationInMsec) || durationInMsec<=0){
+        onError('invalid duration: NaN or not positive');
+        return;
+    }
+
+    if(!(soundUrl)){
+        onError('invalid sound url');
+        return;
+    }
+
+    if(!(visualizers)){
+        onError('invalid visualizers');
+        return;
+    }
+    if(!(markerMap) || !(markerMap.length)){
+        markerMap = [];
+    }
+
+    $J(window).ready(function(){
+        //if soundmanager is ready, the callback is executed immetiately
+        //onready is executed BEFORE onload, it basically queues several onload events.
+        //It it is executed immetiately if soundmanager has already been loaded
+        soundManager.onready(function() {
+            var sound = soundManager.createSound({
+                id: 'sound',
+                autoLoad: false,
+                url: soundUrl
+            });
+            //get the current script path (this file name is timeside.js?... or simplt timeside.js)
+            var scripts = $J('script');
+            var thisScriptPath = '';
+            scripts.each(function(i,s){
+                var src = $J(s).attr('src');
+                if(src){
+                    var srcName = src.split(/\//);
+                    if(srcName.length){
+                        srcName = srcName[srcName.length-1];
+                        //is this script ? consider the case here we are loading timeside.js?....
+                        if(srcName.replace(/\.js(?:\?[^\?]*)*$/,'.js') == 'timeside.js'){
+                            src[src.length-1] = '';
+                            thisScriptPath = src.replace(/\/[^\/]+$/, '');
+                        }
+                    }
+                }
+            });
+            
+            Timeside.loadScripts(thisScriptPath,['rulermarker.js','markermap.js', 'player.js', 'ruler.js'], function() {
+                var p = new Timeside.classes.Player(playerDiv, sound, durationInMsec, visualizers,newMarkerCallback);
+                p.setupInterface(markerMap || []);
+                Timeside.player = p;
+                onReady(p);
+                return false;
+            });
+        });
+    });
+}

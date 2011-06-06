@@ -13,10 +13,14 @@
 {% block extra_javascript %}
 {% if item %}
 
-      <!--<script src="{% url telemeta-js "wz_jsgraphics.js" %}" type="text/javascript"></script>-->
-<script src="{% url telemeta-timeside "js/soundmanager2-nodebug-jsmin.js" %}" type="text/javascript"></script>
+<script src="{% url telemeta-timeside "js/libs/soundmanager2-nodebug-jsmin.js" %}" type="text/javascript"></script>
+<script src="{% url telemeta-timeside "js/libs/raphael-min.js" %}" type="text/javascript"></script>
+<script src="{% url telemeta-timeside "js/timeside.js" %}" type="text/javascript"></script>
 <script src="{% url telemeta-js "popupdiv.js" %}" type="text/javascript"></script>
 <script src="{% url telemeta-js "playlist.js" %}" type="text/javascript"></script>
+<script src="{% url telemeta-js "playerLoader.js" %}" type="text/javascript"></script>
+<script src="{% url telemeta-js "divmarker.js" %}" type="text/javascript"></script>
+
 <script type="text/javascript">
     //soundManager.url = '{% url telemeta-swf "./" %}';
     soundManager.url = "{% url telemeta-timeside "swf/" %}";
@@ -25,44 +29,21 @@
     soundManager.debugMode = false;
     soundManager.allowPolling = true;
 
-    var setupPlaylist = function(){
-        {% if user.is_authenticated %}
-        var p = playlistUtils;
+    {% if user.is_authenticated %}
         {% for playlist in playlists %}
-        p.addPlaylist('{{ playlist.playlist.title }}','{{playlist.playlist.public_id}}');
+        playlistUtils.addPlaylist('{{ playlist.playlist.title }}','{{playlist.playlist.public_id}}');
         {% endfor %}
+    {% endif %}
 
-        {% endif %}
-        {% if item %}
+    jQuery(window).ready(function(){
         var anchor = jQuery('#_add_to_playlist');
         if(anchor.length){
             anchor.unbind('click').click(function(){
-                p.showAddResourceToPlaylist(anchor,'item','{{item.id}}',gettrans('item added to the selected playlist'));
+                playlistUtils.showAddResourceToPlaylist(anchor,'item','{{item.id}}',gettrans('item added to the selected playlist'));
                 return false;
             });
         }
-        {% endif %}
-    };
-
-    //managing errors (might be improved in future development)
-    function playerError(msg){
-        var elm = jQuery('#loading_span');
-        if(elm.length>0){
-            elm.empty().remove();
-        }
-        jQuery('#rightcol').hide();
-        alert(msg);
-    }
-    //warn on soundmanager error:
-    soundManager.onerror = function() {
-        playerError('SoundManager error. If your browser does not support HTML5, Flash player (version '+soundManager.flashVersion+'+) must be installed.\nIf flash is installed, try to:\n - Reload the page\n - Empty the cache (see browser preferences/options/tools) and reload the page\n - Restart the browser');
-    };
-
-    setTimeout(function(){
-        if(jQuery('#loading_span').length>0){
-            playerError('SoundManager is not responding. Try to:\n - Reload the page\n - Empty the cache (see browser preferences) and reload the page\n - Restart the browser');
-        }
-    },10000);
+    });
 
     //initializing the visualizers to be passed to the player
     var visualizers = {};
@@ -70,28 +51,17 @@
     visualizers["{{v.name}}"] = "{% url telemeta-item-visualize item.public_id,v.id,"WIDTH","HEIGHT" %}";
     {% endfor %}
     
-    var scripts = ["{% url telemeta-timeside "js/raphael-min.js" %}", "{% url telemeta-timeside "js/timeside.js" %}","{% url telemeta-timeside "js/playerLoader.js" %}"];
-    //"{% url telemeta-timeside "js/wz_jsgraphics.js" %}",
-    jQuery(window).ready(function(){
-        //if soundmanager is ready, the callback is executed immetiately
-        //onready is executed BEFORE onload, it basically queues several onload events.
-        //It it is executed immetiately if soundmanager has already been loaded
-        soundManager.onready(function() {
-            loadScripts(scripts,
-            function(){
-                {% if user.is_staff or user.is_superuser %}
-                var superuser = true;
-                {% else %}
-                var superuser = false;
-                {% endif %}
-                loadPlayer('{% url telemeta-item-analyze-xml item.public_id %}',"{% url telemeta-item-export item.public_id,"mp3" %}", '{{item.id}}', visualizers, CURRENT_USER_NAME, superuser);
-                setupPlaylist();
-            });
-        });
-    });
 
+//loadPlayer(analizerUrl, soundUrl, itemId, visualizers, currentUserName, isStaffOrSuperuser)
+   {% if user.is_staff or user.is_superuser %}
+    var superuser = true;
+   {% else %}
+    var superuser = false;
+   {% endif %}
+    loadPlayer('{% url telemeta-item-analyze-xml item.public_id %}',
+    "{% url telemeta-item-export item.public_id,"mp3" %}", '{{item.id}}', visualizers, CURRENT_USER_NAME, superuser);
 
-
+    var g = 9;
 </script>
 {% endif %}
 {% endblock %}

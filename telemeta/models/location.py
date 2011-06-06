@@ -110,6 +110,8 @@ class Location(ModelCore):
     class Meta(MetaCore):
         db_table = 'locations'
         verbose_name = _('location')
+        verbose_name_plural = _('locations')
+        ordering = ['name']
 
     def __unicode__(self):
         return self.name
@@ -153,6 +155,7 @@ class LocationType(ModelCore):
         
     class Meta(MetaCore):
         db_table = 'location_types'
+        ordering = ['name']
 
 class LocationAlias(ModelCore):
     "Location aliases"
@@ -166,6 +169,8 @@ class LocationAlias(ModelCore):
     class Meta(MetaCore):
         db_table = 'location_aliases'
         unique_together = (('location', 'alias'),)
+        verbose_name_plural = _('location aliases')
+        ordering = ['alias']
     
 class LocationRelation(ModelCore):
     "Location relations"
@@ -177,6 +182,7 @@ class LocationRelation(ModelCore):
     class Meta(MetaCore):
         db_table = 'location_relations'
         unique_together = ('location', 'ancestor_location')
+        ordering = ['ancestor_location__name']
 
     def __unicode__(self):
         sep = ' > '
@@ -191,5 +197,5 @@ class LocationForm(ModelForm):
 
     def __init__(self, *args, **kwds):
         super(LocationForm, self).__init__(*args, **kwds)
-        self.fields['name'].queryset = Location.objects.order_by('name')
+#        self.fields['name'].queryset = Location.objects.order_by('name')
         

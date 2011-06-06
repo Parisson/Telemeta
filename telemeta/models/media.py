@@ -46,6 +46,7 @@ from telemeta.models.location import LocationRelation, Location
 from telemeta.models.system import Revision
 from telemeta.models.query import *
 from telemeta.models.instrument import *
+from telemeta.models.enum import *
 from django.forms import ModelForm
 
 
@@ -149,7 +150,7 @@ class MediaCollection(MediaResource):
     
     # All
     objects               = MediaCollectionManager()
- 
+        
     def __unicode__(self):
         return self.code
 
@@ -208,11 +209,12 @@ class MediaCollection(MediaResource):
         
     class Meta(MetaCore):
         db_table = 'media_collections'
+        ordering = ['code']
     
 class MediaCollectionForm(ModelForm):
     class Meta:
         model = MediaCollection
-
+        
 
 item_published_code_regex    = collection_published_code_regex + '(?:_[0-9]{2}){1,2}'
 item_unpublished_code_regex  = collection_unpublished_code_regex + '_[0-9]{2,3}(?:_[0-9]{2}){0,2}'
@@ -282,6 +284,7 @@ class MediaItem(MediaResource):
 
     class Meta(MetaCore):
         db_table = 'media_items'
+        ordering = ['code', 'old_code']
 
     def is_valid_code(self, code):
         "Check if the item code is well formed"
@@ -323,10 +326,6 @@ class MediaItem(MediaResource):
 class MediaItemForm(ModelForm):
     class Meta:
         model = MediaItem
-    
-    def __init__(self, *args, **kwds):
-        super(MediaItemForm, self).__init__(*args, **kwds)
-        self.fields['location'].queryset = Location.objects.order_by('name')
         
 class MediaItemKeyword(ModelCore):
     "Item keyword"
@@ -430,6 +429,19 @@ class MediaItemMarker(MediaResource):
             return self.title
         else:
             return self.public_id
+
+
+class MediaItemTranscodingFlag(ModelCore):
+    "Item flag to know if the MediaItem has been transcoded to a given format"
+    
+    item            = ForeignKey('MediaItem', related_name="transcoding", verbose_name=_('item'))
+    mime_type       = CharField(_('mime_type'), required=True)
+    date            = DateTimeField(_('date'), auto_now=True)
+    value           = BooleanField(_('transcoded'))
+    
+    class Meta(MetaCore):
+        db_table = 'media_transcoding'
+
 
 class Search(ModelCore):
     "Keywork search"
