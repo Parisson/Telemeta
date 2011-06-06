@@ -107,7 +107,7 @@ function loadPlayer(analizerUrl, soundUrl, itemId, visualizers, currentUserName,
         
         var markersUI = "#markers_div_id";
         var msgElm = $J('#loading_span_text').html('Loading sound info...');
-        var uinqid_ = Timeside.utils.uniqid; //defined in application.js
+        //var uinqid_ = Timeside.utils.uniqid; //defined in application.js
         var pFloat = parseFloat;
         //load analyser xml and proceed on success:
         $J.ajax({
@@ -142,7 +142,9 @@ function loadPlayer(analizerUrl, soundUrl, itemId, visualizers, currentUserName,
                 //format duration
                 var pin = parseInt;
                 
-                var timeInMSecs=pin(duration[0])*3600+pin(duration[1])*60+pFloat(duration[2]);
+                var radix = 10; //REALLY IMPORTANT. IF ANY ELEMENT OF DURATION STARTS WITH '0', THEN THE RADIX IS CONSIDERED EITHER OCTAL OR HEXADECIMAL
+                //WE WANT TO PREVENT NON 10-BASED RADIX PARSING
+                var timeInMSecs=pin(duration[0],radix)*3600+pin(duration[1],radix)*60+pFloat(duration[2],radix);
                 timeInMSecs = Math.round(timeInMSecs*1000);
                 var callbackAfterMarkersLoading = function(data) {
                     var markerMap = [];
@@ -184,7 +186,7 @@ function loadPlayer(analizerUrl, soundUrl, itemId, visualizers, currentUserName,
                         //markerMode becomes a function:
                         markerMode = function(offset){
                             var m = {
-                                id: uinqid_(),
+                                //id: uinqid_(), //will be set in markermap
                                 offset: pFloat(offset),
                                 desc: "",
                                 title: "",
