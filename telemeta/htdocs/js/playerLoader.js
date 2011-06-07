@@ -56,27 +56,32 @@ function togglePlayerMaximization() {
     }
 }
 
-//end(''): clears loading span, if any
-//end('msg') if loading span is there, clear loading span. If loading span is there, display alert msg
 
-function end(optionalErrorMsg){
-    var $ = jQuery;
-    $(window).ready(function(){
-        var elm = $('#loading_span');
-        if(elm.length<1){
-            return;
-        }
-        elm.empty().remove();
-        if(optionalErrorMsg){
-            $('#rightcol').hide();
-            alert(optionalErrorMsg);
-        }
-    });
-}
 
 function loadPlayer(analizerUrl, soundUrl, itemId, visualizers, currentUserName, isStaffOrSuperuser){
     var $J = jQuery;
     var wdw = window;
+
+
+    //end(''): clears loading span, if any
+    //end('msg') if loading span is there, clear loading span. If loading span is there, display alert msg
+
+    function end(optionalErrorMsg){
+        //var $J = jQuery;
+        $J(wdw).ready(function(){
+            var elm = $J('#loading_span');
+            if(elm.length<1){
+                return;
+            }
+            elm.empty().remove();
+            if(optionalErrorMsg){
+                $J('#rightcol').hide();
+                alert(optionalErrorMsg);
+            }
+        });
+    }
+
+
     //grab the case of soundManager init errors:
     soundManager.onerror = function() {
         end('SoundManager error. If your browser does not support HTML5, Flash player (version '+soundManager.flashVersion+'+) must be installed.\nIf flash is installed, try to:\n - Reload the page\n - Empty the cache (see browser preferences/options/tools) and reload the page\n - Restart the browser');
@@ -373,17 +378,24 @@ function loadPlayer(analizerUrl, soundUrl, itemId, visualizers, currentUserName,
                             invoker: player.getContainer().find('.ts-wave'),
                             defaultCloseOperation: 'hide'
                         });
+                        var closeTimeout = undefined;
+                        var ci = clearTimeout;
                         player.bind('markerCrossed',function(data){
-                            popupdiv.refresh(data.marker.desc,data.marker.title);
-                            var index = data.index;
-                            if(index+1 == map.length || map.toArray()[index+1].offset-data.marker.offset>3){
-                                popupdiv.closeLater(3000);
+                            if(closeTimeout !== undefined){
+                                cl(closeTimeout);
                             }
-                            //consolelog('firing markercrossed');
-                            //consolelog(data.marker.title);
+                            closeTimeout=undefined;
+                            popupdiv.refresh(data.marker.desc,data.marker.title);
                             if(!popupdiv.isShowing()){
                                 popupdiv.show();
                             }
+                            var index = data.index;
+                            if(index+1 == map.length || map.toArray()[index+1].offset-data.marker.offset>3){
+                                closeTimeout = popupdiv.setTimeout('close',3000);
+                            }
+                            //consolelog('firing markercrossed');
+                            //consolelog(data.marker.title);
+                            
                         });
                     }
 

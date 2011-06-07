@@ -612,16 +612,16 @@ function PopupDiv(){
         //set title and close button to span whole width, if necessary
         //closeButton.outerWidth should be zero if this.showClose = false
         //titleInput.outerWidth(true) should be equal to titleInput.width(), as margins borders and padding are zero, however we want to calculate it safely
-//        if(this.showClose || this.title){
-//            var topDiv = this.getDiv().children().eq(0);
-//            var closeBtn = topDiv.find('a').eq(0);
-//            var titleInput = topDiv.find(':text').eq(0);
-//            var titleW = topDiv.width() - closeBtn.outerWidth(true) - (titleInput.outerWidth(true)-titleInput.width());
-//            titleInput.css({
-//                'maxWidth':'',
-//                'width':(titleW)+'px'
-//            });
-//        }
+        //        if(this.showClose || this.title){
+        //            var topDiv = this.getDiv().children().eq(0);
+        //            var closeBtn = topDiv.find('a').eq(0);
+        //            var titleInput = topDiv.find(':text').eq(0);
+        //            var titleW = topDiv.width() - closeBtn.outerWidth(true) - (titleInput.outerWidth(true)-titleInput.width());
+        //            titleInput.css({
+        //                'maxWidth':'',
+        //                'width':(titleW)+'px'
+        //            });
+        //        }
 
         this.shadow(); //updates shadow
         if(focusable){
@@ -644,16 +644,16 @@ function PopupDiv(){
             node.nodeValue = title;
         }
 
-//        var titleIpt = subdiv.find(':text').hide();
-//        var titleSpan = subdiv.find('span').css({'display':'inline-block','float':'left'});
-//        if(title){
-//            titleSpan.html(title);
-//        }else{
-//            titleSpan.hide();
-//        }
-//        var titleSpanWidth = titleSpan.html(title).width();
-//        titleIpt.val(title).css('width',titleSpanWidth+'px');
-//        titleSpan.html('').css('display','none');
+    //        var titleIpt = subdiv.find(':text').hide();
+    //        var titleSpan = subdiv.find('span').css({'display':'inline-block','float':'left'});
+    //        if(title){
+    //            titleSpan.html(title);
+    //        }else{
+    //            titleSpan.hide();
+    //        }
+    //        var titleSpanWidth = titleSpan.html(title).width();
+    //        titleIpt.val(title).css('width',titleSpanWidth+'px');
+    //        titleSpan.html('').css('display','none');
     }
 
     p.isShowing = function(){
@@ -714,7 +714,8 @@ function PopupDiv(){
 
             if(this.showClose){
                 closeBtn.css('marginLeft','0.5em').attr('class',this.closeButtonClass).html(this.closeButtonTitle).css({
-                    'display':'inline-block','float':'right'
+                    'display':'inline-block',
+                    'float':'right'
                 //warning: do NOT use real numbers such as 0.5ex cause browsers round it in a different manner
                 //inline-block in order to retrieve/set width and height on the element
                 });
@@ -722,17 +723,17 @@ function PopupDiv(){
                 closeBtn.hide(); //margin:0 is to be sure, as afterwards we must span the title the whole popup width
             }
             //in any case, show titleElement cause even if title="", titleElement is used to position close on the right
-//            titleInput.css({
-//                'backgroundColor':'transparent',
-//                'padding': '0px',
-//                'margin':'0px',
-//                'border':'0px'
-//            }).attr('readonly','readonly').attr('class',this.titleClass).css({
-//                'display':'inline-block','float':'left'
-//            //it is too tricky to set the width of the input spanning the whole title (in case of long titles)
-//            //we experienced problems in vertical align with the close button, as stated somewhere above.
-//            //we will use a span (see setTitle below)
-//            });
+            //            titleInput.css({
+            //                'backgroundColor':'transparent',
+            //                'padding': '0px',
+            //                'margin':'0px',
+            //                'border':'0px'
+            //            }).attr('readonly','readonly').attr('class',this.titleClass).css({
+            //                'display':'inline-block','float':'left'
+            //            //it is too tricky to set the width of the input spanning the whole title (in case of long titles)
+            //            //we experienced problems in vertical align with the close button, as stated somewhere above.
+            //            //we will use a span (see setTitle below)
+            //            });
             this.setTitle(this.title);
         }
 
@@ -755,18 +756,18 @@ function PopupDiv(){
             bottomDiv.hide();
         }
 
-//        var centralDiv = $(subdiv[1]);
-//        //reset properties of the central div
-//        centralDiv.css({
-//            'overflow':'auto',
-//            'maxHeight':'',
-//            'maxWidth':'',
-//            'minHeight':'',
-//            'minWidth':'',
-//            'height':'',
-//            'width':'',
-//            'visibility':'visible'
-//        }).show();
+        //        var centralDiv = $(subdiv[1]);
+        //        //reset properties of the central div
+        //        centralDiv.css({
+        //            'overflow':'auto',
+        //            'maxHeight':'',
+        //            'maxWidth':'',
+        //            'minHeight':'',
+        //            'minWidth':'',
+        //            'height':'',
+        //            'width':'',
+        //            'visibility':'visible'
+        //        }).show();
 
 
         var invoker = this.invoker;
@@ -806,31 +807,31 @@ function PopupDiv(){
             this.setBoundsInside(invoker, this.bounds, this.boundsExact, true);
         }
 
-//        //set title and close button to span whole width, if necessary
-//        //closeButton.outerWidth should be zero if this.showClose = false
-//        //titleInput.outerWidth(true) should be equal to titleInput.width(), as margins borders and padding are zero, however we want to calculate it safely
-//        if(this.showClose || this.title){
-//            var titleW = topDiv.width() - closeBtn.outerWidth(true) - (titleInput.outerWidth(true)-titleInput.width());
-//            titleInput.css({
-//                'maxWidth':'',
-//                'width':(titleW)+'px'
-//            });
-//        }
-//
-//        //set central div max height ONLY IF NECESSARY (overflow). Until here, the main popup is sized and placed
-//        //but the central div might overflow
-//        var height = centralDiv.height();
-//        var maxHeight = (div.height()-topDiv.outerHeight(true)-bottomDiv.outerHeight(true)-
-//            (centralDiv.outerHeight(true)-centralDiv.height()));
-//        if(maxHeight<height){
-//            centralDiv.css('maxHeight',maxHeight+'px');
-//        }
-//        //same for width:
-//        var maxWidth = div.width();
-//        var width = centralDiv.outerWidth(true);
-//        if(maxWidth<width){
-//            centralDiv.css('maxWidth',maxWidth+'px');
-//        }
+        //        //set title and close button to span whole width, if necessary
+        //        //closeButton.outerWidth should be zero if this.showClose = false
+        //        //titleInput.outerWidth(true) should be equal to titleInput.width(), as margins borders and padding are zero, however we want to calculate it safely
+        //        if(this.showClose || this.title){
+        //            var titleW = topDiv.width() - closeBtn.outerWidth(true) - (titleInput.outerWidth(true)-titleInput.width());
+        //            titleInput.css({
+        //                'maxWidth':'',
+        //                'width':(titleW)+'px'
+        //            });
+        //        }
+        //
+        //        //set central div max height ONLY IF NECESSARY (overflow). Until here, the main popup is sized and placed
+        //        //but the central div might overflow
+        //        var height = centralDiv.height();
+        //        var maxHeight = (div.height()-topDiv.outerHeight(true)-bottomDiv.outerHeight(true)-
+        //            (centralDiv.outerHeight(true)-centralDiv.height()));
+        //        if(maxHeight<height){
+        //            centralDiv.css('maxHeight',maxHeight+'px');
+        //        }
+        //        //same for width:
+        //        var maxWidth = div.width();
+        //        var width = centralDiv.outerWidth(true);
+        //        if(maxWidth<width){
+        //            centralDiv.css('maxWidth',maxWidth+'px');
+        //        }
 
        
 
@@ -888,7 +889,7 @@ function PopupDiv(){
         isSizable = true;
 
         var div = this.getDiv();
-//        var oldCss= isSizable ?  undefined : this.setSizable();
+        //        var oldCss= isSizable ?  undefined : this.setSizable();
 
         var shadowOffset = this.shadowOffset;
         var windowRectangle = this.getBoundsOf(wdw); //returns the window rectangle
@@ -930,12 +931,12 @@ function PopupDiv(){
 
         this.postSizeFcn();
 
-//        if(oldCss){
-//            div.css({
-//                'display':oldCss['display'],
-//                'visibility':oldCss['visibility']
-//            });
-//        }
+    //        if(oldCss){
+    //            div.css({
+    //                'display':oldCss['display'],
+    //                'visibility':oldCss['visibility']
+    //            });
+    //        }
 
     };
     //places and resize the popupdiv inside parent
@@ -946,7 +947,7 @@ function PopupDiv(){
     p.setBoundsInside = function(parent, pd, boundsExact, isSizable){
 
         var div = this.getDiv();
-//        var oldCss = isSizable ?  undefined : this.setSizable();
+        //        var oldCss = isSizable ?  undefined : this.setSizable();
         
         this.preSizeFcn();
         isSizable = true;
@@ -1019,12 +1020,12 @@ function PopupDiv(){
 
         this.postSizeFcn();
 
-//        if(oldCss){
-//            div.css({
-//                'display':oldCss['display'],
-//                'visibility':oldCss['visibility']
-//            });
-//        }
+    //        if(oldCss){
+    //            div.css({
+    //                'display':oldCss['display'],
+    //                'visibility':oldCss['visibility']
+    //            });
+    //        }
     };
     p.preSizeFcn = function(){
         this.setSizable();
@@ -1060,16 +1061,16 @@ function PopupDiv(){
         //we must set a width:100% on the topDiv in order to stretch the whole HEIGHT (having two elements inside it with float:left and right)
         //however, we might have here a width LOWER than the actual div width, so stretch it more if it's lower:
         
-//        if(this.showClose || this.title){
-//            var closeBtn = topDiv.find('a').eq(0);
-//            var titleInput = topDiv.find(':text').eq(0);
-//            var span = topDiv.find('span').eq(0).hide();
-//            var titleW = topDiv.width() - closeBtn.outerWidth(true) - (titleInput.outerWidth(true)-titleInput.width());
-//            titleInput.html(span.html()).css({
-//                'maxWidth':'',
-//                'width':(titleW)+'px'
-//            });
-//        }
+        //        if(this.showClose || this.title){
+        //            var closeBtn = topDiv.find('a').eq(0);
+        //            var titleInput = topDiv.find(':text').eq(0);
+        //            var span = topDiv.find('span').eq(0).hide();
+        //            var titleW = topDiv.width() - closeBtn.outerWidth(true) - (titleInput.outerWidth(true)-titleInput.width());
+        //            titleInput.html(span.html()).css({
+        //                'maxWidth':'',
+        //                'width':(titleW)+'px'
+        //            });
+        //        }
 
         var topBottom = $([]);
         if(this.showClose || this.title){
@@ -1078,7 +1079,10 @@ function PopupDiv(){
         if(this.showOk){
             topBottom = topBottom.add(subdivs.eq(2));
         }
-        topBottom.css({'overflow':'hidden', 'width':'100%'}); //to span the whole width
+        topBottom.css({
+            'overflow':'hidden',
+            'width':'100%'
+        }); //to span the whole width
 
 
         var centralDiv = subdivs.eq(1);
@@ -1250,11 +1254,20 @@ function PopupDiv(){
 
     };
 
-    p.closeLater = function(millseconds){
+    //sets a t=timeout and returns t. eventName can be 'show' or 'close'
+    p.setTimeout = function(eventName, millseconds){
         var me = this;
-        setTimeout(function(){
-            me.close();
-        },millseconds);
+        var t=undefined;
+        if(eventName == 'show'){
+            t=setTimeout(function(){
+                me.show();
+            },millseconds);
+        }else if(eventName == 'close'){
+            t=setTimeout(function(){
+                me.close();
+            },millseconds);
+        }
+        return t;
     },
 
     p.setSizable = function(){
