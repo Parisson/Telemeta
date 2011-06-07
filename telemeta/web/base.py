@@ -343,7 +343,7 @@ class WebView(object):
         
         return render(request, template, 
                     {'item': item, 'export_formats': formats, 
-                    'visualizers': graphers, 'visualizer_id': grapher_id,'analysers': analyzers,
+                    'visualizers': graphers, 'visualizer_id': grapher_id,
                     'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True), "form": form, 
                     'previous' : previous, 'next' : next, 
                     })
