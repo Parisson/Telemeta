@@ -864,7 +864,7 @@ class WebView(object):
         url         = 'http://' + request.META['HTTP_HOST'] + request.path
         datasource  = TelemetaOAIDataSource()
         admin       = settings.ADMINS[0][1]
-        provider    = oai.DataProvider(datasource, "Telemeta", url, admin)
+        provider    = oai.DataProvider(datasource, settings.TELEMETA_OAI_REPOSITORY_NAME, url, admin)
         args        = request.GET.copy()
         args.update(request.POST)
         return HttpResponse(provider.handle(args), mimetype='text/xml')

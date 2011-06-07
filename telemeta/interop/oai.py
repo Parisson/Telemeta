@@ -400,9 +400,9 @@ class Response(object):
             dc_id, dc = self.parse_dc(dc)
             if dc_id == None:
                 raise Exception("DataSource.get_record() didn't provide an 'identifier' dublin core element")
-            elif dc_id != id:
-                raise Exception("DataSource.get_record() returned an 'identifier' dublin core element "
-                                "which is different from the requested identifier")
+#            elif dc_id != id:
+#                raise Exception("DataSource.get_record() returned an 'identifier' dublin core element "
+#                                "which is different from the requested identifier")
 
             self.set_attributes(self.request, {'identifier': id, 'metadataPrefix': 'oai_dc'})
             container = self.root.appendChild(self.doc.createElement(self.verb))

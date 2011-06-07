@@ -362,6 +362,20 @@ class MediaItemPerformanceForm(ModelForm):
         super(MediaItemPerformanceForm, self).__init__(*args, **kwds)
         self.fields['instrument'].queryset = Instrument.objects.order_by('name')
         self.fields['alias'].queryset = InstrumentAlias.objects.order_by('name')
+
+class MediaItemAnalysis(ModelCore):
+    "Item analysis result computed by TimeSide"
+
+    element_type = 'analysis'    
+    item  = ForeignKey('MediaItem', related_name="analysis", verbose_name=_('item'))
+    analyzer_id = CharField(_('id'), required=True)
+    analyzer_name = CharField(_('name'))
+    analyzer_value = CharField(_('value'))
+    analyzer_unit = CharField(_('unit'))
+    
+    class Meta(MetaCore):
+        db_table = 'media_analysis'
+        
         
 class MediaPart(MediaResource):
     "Describe an item part"
@@ -378,7 +392,7 @@ class MediaPart(MediaResource):
         return self.title
 
 class Playlist(ModelCore):
-    "Item or collection playlist"
+    "Item, collection or marker playlist"
     element_type = 'playlist'
     public_id      = CharField(_('public_id'), required=True)
     author         = ForeignKey(User, related_name="playlists", db_column="author")
