@@ -132,13 +132,17 @@ Timeside.classes.Ruler = Timeside.classes.TimesideArray.extend({
     },
 
     drawRuler: function(rulerContainer,h,rulerLinesPath){
+        var cssPref = this.cssPrefix;
+        var upperRectClass = cssPref + 'svg-' + 'ruler-upper-rect';
+        var rulerLinesClass = cssPref + 'svg-' + 'ruler-lines';
+
         if(!this.isSvgSupported){
             var paper = Raphael(rulerContainer[0], rulerContainer.width(), h);
             var rect = paper.rect(0,0, rulerContainer.width(), h/2);
             var path = paper.path(rulerLinesPath);
             var attr = this.getVmlAttr;
-            rect.attr(attr('ts-ruler-upper-rect'));
-            path.attr(attr('ts-ruler-lines'));
+            rect.attr(attr(upperRectClass));
+            path.attr(attr(rulerLinesClass));
             return;
         }
         //create svg. Note that elements must be created within a namespace (createElementNS)
@@ -157,11 +161,11 @@ Timeside.classes.Ruler = Timeside.classes.TimesideArray.extend({
         rect.setAttributeNS( null, "y", 0);
         rect.setAttributeNS( null, "width", rulerContainer.width());
         rect.setAttributeNS( null, "height", (h/2));
-        rect.setAttributeNS( null, "class", 'ts-ruler-upper-rect');
+        rect.setAttributeNS( null, "class", upperRectClass);
         svg.appendChild(rect);
         var lines = d.createElementNS(svgNS, "svg:path");
         lines.setAttributeNS( null, "d", rulerLinesPath);
-        lines.setAttributeNS( null, "class", 'ts-ruler-lines');
+        lines.setAttributeNS( null, "class", rulerLinesClass);
         svg.appendChild(lines);
     },
     /**

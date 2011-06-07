@@ -197,6 +197,15 @@ Timeside.classes.TimesideClass = Timeside.Class.extend({
         //(ie, every instance has its own copy)
         this.listenersMap={};
     },
+    
+    cssPrefix : 'ts-', //actually almost uneuseful, still here for backward compatibility with old code (TODO: remove?)
+    $J : jQuery,
+    debugging : false,
+    debug : function(message) {
+        if (this.debugging && typeof console != 'undefined' && console.log) {
+            console.log(message);
+        }
+    },
 
     /**
      * 3 methods defining listeners, events fire and bind (aloing the lines of jQuery.bind, unbind and trigger):
@@ -338,15 +347,7 @@ Timeside.classes.TimesideClass = Timeside.Class.extend({
         return ret.join("");
     },
 
-    cssPrefix : 'ts-', //actually almost uneuseful, still here for backward compatibility with old code (TODO: remove?)
-    $J : jQuery,
-    debugging : false,
-    debug : function(message) {
-        if (this.debugging && typeof console != 'undefined' && console.log) {
-            console.log(message);
-        }
-    },
-
+    
     //vml (+css specific functions): Used in ruler.js and RulerMarker.js:
 
     /**
