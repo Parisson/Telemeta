@@ -21,83 +21,86 @@
  */
 
 /**
- * class for showing non-modal dialogs such as popups or combo lists. Requires jQuery. If you're scared about the doc, scroll below to
- * see some examples.
+ * Class for showing non-modal dialogs such as popups or combo lists. Requires jQuery.
  * This class builds an absolutely positioned div for popup forms, message dialogs or listitem popup (emilating the
- * <select> tag element popup).
+ * <select> tag element popup). If you're scared about the doc, scroll below to see some examples.
  * Usage:
  * var p = new PopupDiv(dictionary); p.show(); or simply new PopupDiv(dictionary).show();
  * dictionary is an object with the following parameters (In brackets the default value if missing). None of them is mandatory, but
- * at least content should be specified (unless showing an empty div is what you want to get)
+ * at least the property 'content' should be specified, unless showing an empty div is what you want to get)
  * content (""): the popup content. Can be:
- *      a dictionnary of (key: val) pairs for form filling popup. Each pair represents a row in the popupm built as a div with
- *          a string (key) followed by an input with value = val (the popup takes care of inputs horizontal alignement so there should be
- *          no need of extra css).
- *          The input is determined as follows:
- *          val is boolean: checkbox input
- *          val is an array of strings: select tag (non multi select)
- *          otherwise: text input (with val.toString as value)
+ *      1) a dictionnary of key:val pairs (form filling popup). Each pair represents a row in the popup. The row will be a div with
+ *          a <span> with innerHTML=key followed by an <input> with value = val. The popup takes care of <span>s and <input>s horizontal alignement so there should be
+ *          no need of extra css). The type of <input> is determined as follows:
+ *          a) val is boolean: <input type=checkbox>
+ *          b) val is an array of strings: <select> tag (non multi select. Yes, it is not an <input> tag in the strict term...)
+ *          c) otherwise: <input type=text> with val.toString as value
  *          If showOk is true (see below), a click on the ok anchor will trigger the popup onOk callback (see below) with
- *          argument a dictionary of (key: val) pairs, where each val is the relative input value
- *      an array of strings for listItem popup. Each array element represents a line of the popup (internally, an anchor with
- *          inner html the array element value). A click on each anchor triggers the onOk callback (see onOk below)
- *      a jQuery object: the content will be appended to the popup
- *      otherwise: content.toString() will be set as the popup innerHTML
- * invoker (jQuery(window)): a jQuery object representing an html element. If invoker is a clickable element (anchor, input of type button or submit,
- *      button), then the PopupDiv bounds will be placed according to invoker as if it was a popup list of a select tag. Otherwise, the popupdiv will be centered inside invoker. Note that
- *      internally each popupdiv is appended to the body element, so it will be visually centered in invoker, it should not belong
- *      to invoker children
+ *          argument a dictionary of (key: <input> value) pairs
+ *      2) an array of strings for (list item popup). Each array element (string) S will be represented by a row of the popup (internally, an anchor with innerHTML=S). A click on each anchor triggers the onOk callback (see onOk below), with argument an object of the form {selIndex:N},
+ where N is the index of the anchor being clicked
+ *      3) a jQuery object: the content will be appended to the popup
+ *      4) otherwise: content.toString() will be set as the popup innerHTML
+ *        In all of these cases, object inserted in the popup via the content property can be retrieved and manipulated via the popup.find method (same syntax as in jQuery)
+ * invoker (jQuery(window)): a jQuery object representing an html element. If invoker is:
+ *        a clickable element (anchor, input of type button or submit, button), then the PopupDiv will behave as a <select> popuplist of invoker.
+ *          Thus, when showing, the PopupDiv will calculate the available space nearby invoker to show up in the window corner next to invoker which best fits its size. In this case the parameter focusable (see below) is usually set to true
+ *        Otherwise, the popupdiv will be centered inside invoker. Note that internally each popupdiv is appended to the body element, so it will
+ *            be visually centered in invoker, it does not belong to invoker children (well, unless invoker is the jQuery('body') element). In this case the parameters bounds and/or boundsExact (see below) might be also specified
  * bounds ({'top':0.25, 'left':0.25, 'right':0.25, 'bottom':0.25}): if invoker is a clickable element, it is ignored. Otherwise, specifies the
- *      insets (margins) of the popup within invoker (internally, the popup has no margins, so bounds represents the distances from each window
- *      size). Each bounds element can be in percentage of invoker size if lower than 1 (eg, bounds first element is 0.25: popup left margin is
- *      25% of invoker height, and so on) or as pixel measure (if greater than 1)
+ *      insets (margins) of the popup within invoker (internally, the popup has no margins, so bounds represent the distances from each window
+ *      size: top, left, right, bottom). Each bounds element can be in percentage of invoker size if lower than 1 (eg, bounds.left = 0.25: popup left margin is 25% of invoker width, and so on) or as pixel measure (if greater than 1)
  * boundsExact (false): if invoker is a clickable element, it is ignored. Otherwise, specifies whether bounds (see above) should be a hint
  *      (maximum allowed margins) or an exact measure. In other words, with boundsExact the popup will have the size of the rectangle R
  *      determined by invoker size and bounds. Otherwise, the maximum popup size will be R, and if the popup size is included in R, it
- *      will be centered in R.
+ *      will be centered in R. NOTE: padding margin and border, if set via the property popupClass or popupCss (see below) might alter
+ *      the real height and width of the rectangle (those properties are ADDED to the natural height/width of the popup)
  * focusable (false): boolean. When true, the popup gains the focus when shown, and disappears when losses the focus
  *      (popup.close() is called, see below)
- * showOk (false): determines whether or not an ok button should be shown at the bottom of the popup. The ok button is an anchor whose
- *      click will trigger the popup.onOk callback. This parameter should always be true for form filling popup (see content)
- * onOk (null): callback. callback to be executed when the ok button is pressed. The callback takes as argument a dictionary of the popup data.
- *      which is not empty only if the popup was built as form filling or listitem popup (see content above). In this last two cases,
- *      the data returned is a dictionnary of [key:value] pairs (form filling popup) or a dictionary with one key (selIndex) and the
- *      selected index that was clicked. This parameter should be specified for form filling popup (see content). popup.close() is always called
- *      after onOk callback is executed, but without triggering the onClose callback, if any (see below)
- * onShow (function): callback to be executed when the popup shows up
- * defaultCloseOperation ('hide'): specified what to do when popup.close() is called. 'remove' removes the html element from the document,
- *      'hide' or any other value simply call jQuery.hide() on the popup
- * onClose (null): callback to be executed when the popup .close() function is called. It includes the case when focusable=true and
- *      the popup looses the focus BUT NOT when the ok button (if any) is pressed (see onOk above)
- * shadowOffset (4): the shadow offset. Each popup has a 'shadow' which renders a kind of 3d raised effect. Set to 0 if no shadow must be visualized
- * popupClass ("") [see note1]: the popup class, if any, in the same form as jQuery.addClass() argument (ie, it can include multiple classes separated by space).
- *      The top and bottom divs (housing title and close anchor and ok button respectively) are not affected by this parameter
- * popupCss ({}) [see note1]: the popup css, if any, in the same form as jQuery.css() argument.
- *      The top and bottom divs (housing title and close anchor and ok button respectively) are not affected by this parameter
+ * showOk (false): determines whether or not an ok button should be shown at the bottom of the popup. The ok button is an <a> tag whose
+ *      click will trigger the popup.onOk callback (see below). This parameter should always be true for form filling popup (see PopupDiv.content above) and when onOk is specified (see below)
+ * okButtonTitle ('Ok'): self-explanatory
+ * onOk (null): callback. callback to be executed when the ok button is pressed. When specified, showOk must be set to true.
+ *        The callback takes as argument a dictionary that the popup will build by retrieving all <input> <select> or <textarea>
+ *        elements among its children: each element E whith attribute A = popup.getFormDataAttrName() (static popup method), will denote the property
+ *        [A:E_value] of the dictionary. Elements with such attributes are automatically created when content (see above) is
+ *        an object (form fill popup) or an array (listItem popup), but the user might provide its own custom implementation, for instance:
+ *         popup.setContent("<input type='text' "+popup.getFormDataAttrName()+"='default value'/>");popup.showOk=true;
+ *        After each onOk callback has been executed, popup.close() will be always called
+ * onShow (null): callback to be executed when the popup shows up
+ * defaultCloseOperation ('hide'): specified what to do when popup.close() is called. 'remove' calls jQuery.remove() on the popup, ie it removes the html element from the document, 'hide' or any other value simply call jQuery.hide() on the popup
+ * onClose (null): callback to be executed when the popup .close() function is called. The callback must take one argument (boolean) which
+ *        denotes wether the popup is closing after the ok button has been pressed or not. On the other hand, the argument is false, e.g.,
+ *        if the close button is clicked (see showClose below), or when popup.focusable=true and the popup looses the focus
  * showClose (false): a parameter specifying whether a close button should appear on the top-right corner of the popup. Clicking the close button
- *      (internally, an anchor) will close the popup and trigger popup.close() (and associated callbacks bindings, if any)
+ *      (internally, an <a> tag) will close the popup and trigger popup.close() (and associated callbacks bindings, if any)
+ * closeButtonTitle ('x'): self-explanatory
  * title (""): a parameter specifying whether the popup should have a title. The title will be placed on the top of the popup.
- * okButtonClass ('') [see note1]: the ok button (anchor) class, if showOk = true, in the same form as jQuery.addClass() argument (ie, it can include multiple classes separated by space).
- * okButtonTitle ('Ok'): self-explicatory
- * p.okButtonAlign ('right'): self explicatory. Takes the same argument as css text-align property
- * closeButtonClass ('') [see note1]: the close button (anchor) class, if showClose = true, in the same form as jQuery.addClass() argument (ie, it can include multiple classes separated by space).
- * closeButtonTitle ('x'): self- explicatory
- * titleClass ('') [see note1]: the title (inpuit of type text) class, if title is not empty, in the same form as jQuery.addClass() argument (ie, it can include multiple classes separated by space).
+ * shadowOffset (4): the shadow offset, in pixels. Each popup has a 'shadow' which renders a kind of 3d raised effect. Set to 0 if no shadow must be visualized
+ * p.okButtonAlign ('right'): self-explanatory. Takes the same argument as css text-align property. The css property text-align is set on the ok button parent div, so if okButtonClass (see below) is specified it might override the button alignement behaviour
+ * popupClass ("") [see note1+2]: the popup class(es). The top and bottom divs (housing title/close and ok buttons respectively) are not affected by this parameter
+ * popupCss ({}) [see note1+3]: the popup css. The top and bottom divs (housing title/close and ok buttons respectively) are not affected by this parameter
+ * okButtonClass ('') [see note1+2]: the ok button class
+ * closeButtonClass ('') [see note1+2]: the close button class
+ * titleClass ('') [see note1+2]: the title class
+ * listItemClass ('') [see note1+2]: the list items css, valid only if the popup is a listitem popup (see content above):
+ *         it applies to each popup row (internally, an <a> tag with display block)
+ * listItemCss ('') [see note1+3]: the list items css, valid only if the popup is a listitem popup (see content above):
+ *        it applies to each popup row (internally, an <a> tag with display block)
  * fadeInTime ('fast'): the fade in time when popup.show() is called. See jQuery show for possible values (briefly, a number in milliseconds or the string 'fast' or 'slow')
  * fadeOutTime (0): the fade out time when popup.close() is called. See jQuery show for possible values (briefly, a number in milliseconds or the string 'fast' or 'slow')
- * shadowOpacity (0.25): elf-explicatory. 1 means shadow completely black, 0 completely transparent (bascially, no shadow)
+ * shadowOpacity (0.25): self-explanatory. 1 means shadow completely black, 0 completely transparent (bascially, no shadow)
  * zIndex (10000): the popup zIndex. Should be left untouched unless there are issues with other component with hight zIndex.
- * listItemClass ('') [see note1]: the list items css, valid only if the popup is a listitem popup (see content above),
- *      in the same form as jQuery.addClass() argument (that is, can take multiple classes separated by space).
- * listItemCss ('') [see note1]: the list items css, valid only if the popup is a listitem popup (see content above),
- *      in the same form as jQuery.addClass() argument (ie, a dictionary of key:value pairs).
  *
  * [note1] IMPORTANT: For every css or class parameter, some css styles might be overridden before showing the popup because they would interfere with the correct placement and
  *      appearence of the popup: surely, 'display', 'position' and 'visibility' are among them. Usually, also 'size' css properties
  *      such as width, height, left, right ectetera. Css and class parameters are useful for customizing the popup 'visually' (eg, colors, font,
  *      backgrounds etcetera)
+ * [note2]: class arguments are in the same form of jQuery.addClass() argument (ie, a string which can denote also multiple classes separated by spaces)
+ * [note3]: css arguments are in the same form of jQuery.css() argument (ie, an object of cssName:cssValue pairs)
  *
- * EXAMPLES: given an anchor <a> (jQuery element)
+ * And finally, EXAMPLES:
+ * Given an anchor <a> (jQuery element)
  *      1) show a popup when clicking <a> leaving the user choose among three oprions: 'banana', 'orange' and 'apple'. The popup will
  *      behave as a default popup hiding when it looses focus
  *      //setup parameters
@@ -114,13 +117,13 @@
  *      }
  *      //bind the click event of the anchor:
  *      a.click(function(){ new PopupDiv(dict).show();});
- *      
+ *
  *      1) show a popup when clicking <a> leaving the user choose the fruit as text. The popup will close either when ok or close are clicked
  *      //setup parameters
  *      var choices = {'yourFruit':'banana'}; //banana will be the default value when the popup shows
  *      var dict = {
  *          content: choices,
- *          showClose: true, 
+ *          showClose: true,
  *          showOk: true,
  *          onOk: function(data){
  *              var fruitChosen = data['yourFruit'];
@@ -152,16 +155,17 @@ function PopupDiv(){
     //we use an input rather than a span for two reasons:
     //1: span with overflow:hidden have problems in vertical align with the close button in FF and IE
     //2: if text title overlaps, with a span it is not selectable, with an input it is
-    var header = $J('<div/>').append($J('<input/>')).append($J('<a/>').attr('href','#').click(function(){
+    //we however append a span to calculate the input width, not really ortodox I know. See setTitle (below)
+    var header = $J('<div/>').append($J('<a/>').attr('href','#').click(function(){
         me.close();
         return false;
-    })); //.css('float','right');
+    })).append(' ').append($J('<div/>').css('clear','both')); //.css('float','right');
     var container = $J('<div/>').css('overflow','auto');
     var footer = $J('<div/>').append($J('<a/>').attr('href','#').click(function(){
         me.trigger('ok',true);
         return false;
     }));
-    header.find('*').add(footer.find('*')).css('display','none');
+    //header.find('*').add(footer.find('*')).css('display','none');
     div.append(header).append(container).append(footer);
     //defining immediately the method getDiv (because it is used below)
     this.getDiv = function(){
@@ -174,9 +178,10 @@ function PopupDiv(){
         return listeners;
     }
 
-    
+
     //setting static properties, if any.
-    //The idea is that static PopupDiv properties SPP (eg, PopupDiv.shadowOffset = 5) should be added to the current PopupDiv
+    //The idea is that static PopupDiv properties SPP (eg, PopupDiv.shadowOffset = 5) must define default PopupDiv properties values
+    //and they should be added to the current PopupDiv
     //instance prototype ONCE (properties in the prototype are shared between all PopupDiv instances)
     //and then deleted from the PopupDiv function.
     //The problem is how to access the prototype: nor __proto__ neither Object.getPrototypeOf(this) are cross browser
@@ -191,12 +196,12 @@ function PopupDiv(){
     var k;
     var staticProps = undefined;
     for(k in PopupDiv){
-        if(!staticProps){
-            staticProps = {};
-        }
         var f = PopupDiv[k];
         if(typeof f !== 'function'){ //do not assign functions (PopupDiv.function... might be used in future as
             //static functions accessible from outside
+            if(!staticProps){
+                staticProps = {};
+            }
             staticProps[k] = f;
         }
     }
@@ -209,7 +214,7 @@ function PopupDiv(){
             } else {
                 // May break if the constructor has been tampered with:
                 // proto =  this.constructor.prototype;
-                //so we assign tis class BUT we DO NOT remove static properties
+                //so we assign static properties to this instance BUT we DO NOT remove static properties
                 proto = this;
                 remove = false;
             }
@@ -245,18 +250,14 @@ function PopupDiv(){
 
 //populating the prototype object:
 (function(p){
+    //in the functions below, this refers to the new Popup instance, not to the prototype
+
     //private static variables
     var $ = jQuery;
     var w_ = window;
     var d_ = document;
     var wdw = $(w_);
     var popupStaticId = 'popup_'+(new Date().getTime());
-    //var doc = $(d_);
-
-
-    //in the functions below, this refers to the new Popup instance, not to the prototype
-
-
 
     p.isClickElement = function(element){
         return element && element.length==1 && element instanceof $ && element[0] !== w_ && element[0] !== d_ &&
@@ -320,16 +321,13 @@ function PopupDiv(){
         return ret;
     };
 
-    p.closeLater = function(millseconds){
-        var me = this;
-        setTimeout(function(){
-            me.close();
-        },millseconds);
-    },
+    p.setTitle = function(title){
+        this.getDiv().children().eq(0).find(':title').eq(0).val(title);
+    }
 
     //methods:
     p.find = function(argumentAsInJQueryFind){
-        return $(this.getDiv().children()[1]).find(argumentAsInJQueryFind);
+        return this.getDiv().children().eq(1).find(argumentAsInJQueryFind);
     };
 
     p.bind = function(eventName, callback){ //eventname: show, close or ok
@@ -364,17 +362,13 @@ function PopupDiv(){
                 for(i=0; i<callbacks.length; i++){
                     callbacks[i].apply(me,[data]);
                 }
-                if(arguments.length>1 && arguments[1]){
-                    //workaround to remove listeners on close:
-                    if('close' in listeners){
-                        var v = listeners['close'];
-                        delete listeners['close'];
-                        this.close();
-                        listeners['close'] = v;
-                    }else{
-                        this.close();
-                    }
-
+                this.__okButtonHasBeenPressed = true;
+                this.close();
+                delete this['__okButtonHasBeenPressed'];
+            }else if(eventName == 'close'){
+                var okBHBP = this.__okButtonHasBeenPressed || false;
+                for(i=0; i<callbacks.length; i++){
+                    callbacks[i].apply(me,[okBHBP]);
                 }
             }else{
                 for(i=0; i<callbacks.length; i++){
@@ -393,7 +387,7 @@ function PopupDiv(){
         if(content instanceof $){
             container.append(content);
         }else if(content instanceof Array){
-            
+
             var me = this;
             //var name = this.getListItemName();
             var input = $('<input/>').attr('type','hidden').attr(att,'selIndex');
@@ -571,7 +565,7 @@ function PopupDiv(){
                 setTimeout(function(){
                     var v = doc_.activeElement;
                     //console.log(v);
-                    if((v && $(v).attr(focusAttr)) || me.isClosing){
+                    if((v && $(v).attr(focusAttr)) || me.__isClosing){
                         //if we are closing, we will call back this method which removes the focus attributes, bt meanwhile the
                         //timeout should execute
                         return;
@@ -588,6 +582,82 @@ function PopupDiv(){
     };
     p.getFirstFocusableElement = function(){
         return undefined;
+    };
+
+    p.refresh = function(content, title){
+        var showing = this.isShowing();
+        var focusable = this.focusable;
+        if(content!==undefined){
+            this.setContent(content);
+            if(showing && focusable){
+                this.setFocusCycleRoot(this.focusable);
+            }
+        }
+        if(title!=undefined){
+            if(showing){
+                this.setTitle(title);
+            }else{
+                this.title = title;
+            }
+        }
+        if(!showing){
+            return; //show(), when called, will update size and other stuff written in this method here bwloe
+        }
+        var invoker = this.invoker;
+        if(this.isClickElement(invoker)){
+            this.setBoundsAsPopup(invoker, true);
+        }else{
+            this.setBoundsInside(invoker, this.bounds, this.boundsExact, true);
+        }
+        //set title and close button to span whole width, if necessary
+        //closeButton.outerWidth should be zero if this.showClose = false
+        //titleInput.outerWidth(true) should be equal to titleInput.width(), as margins borders and padding are zero, however we want to calculate it safely
+//        if(this.showClose || this.title){
+//            var topDiv = this.getDiv().children().eq(0);
+//            var closeBtn = topDiv.find('a').eq(0);
+//            var titleInput = topDiv.find(':text').eq(0);
+//            var titleW = topDiv.width() - closeBtn.outerWidth(true) - (titleInput.outerWidth(true)-titleInput.width());
+//            titleInput.css({
+//                'maxWidth':'',
+//                'width':(titleW)+'px'
+//            });
+//        }
+
+        this.shadow(); //updates shadow
+        if(focusable){
+            this.getFirstFocusableElement().focus();
+        }
+    }
+
+    p.setTitle= function(title){
+        var subdiv = this.getDiv().children().eq(0);
+        var text = subdiv.contents().filter(function() {
+            return this.nodeType == 3;
+        });
+        var node = text.get(0);
+        if(!title){
+            title='';
+        }
+        if (node.textContent) {
+            node.textContent = title;
+        } else if (node.nodeValue) {
+            node.nodeValue = title;
+        }
+
+//        var titleIpt = subdiv.find(':text').hide();
+//        var titleSpan = subdiv.find('span').css({'display':'inline-block','float':'left'});
+//        if(title){
+//            titleSpan.html(title);
+//        }else{
+//            titleSpan.hide();
+//        }
+//        var titleSpanWidth = titleSpan.html(title).width();
+//        titleIpt.val(title).css('width',titleSpanWidth+'px');
+//        titleSpan.html('').css('display','none');
+    }
+
+    p.isShowing = function(){
+        return this.getDiv().is(':visible');
     };
 
     p.show = function(){
@@ -616,58 +686,54 @@ function PopupDiv(){
             });
         }
 
+        //this.setSizable();//this means the popupdiv is display: !none and visibility:hidden, so every element
+        //inside it should be visible and therefore sizable. Being visible means that jQuery.is(':visible') returns true
+
         this.setFocusCycleRoot(this.focusable);
 
         var subdiv = div.children();
         //configure buttons. Text and classes are added here cause might have been changed
         var topDiv = $(subdiv[0]);
-        var titleInput = topDiv.find(':text').eq(0); //$(':text') is equivalent to $('[type=text]') (selects all <input type="text"> elements)
         var closeBtn = topDiv.find('a').eq(0);
+
         if(!this.showClose && !this.title){
             topDiv.hide();
         }else{
             topDiv.css({
-                'paddingBottom':'1em',
-                'whiteSpace': 'nowrap'
-            }).show(); //add padding to bottom
+                'paddingBottom':'0.25em'
+            }); //add padding to bottom
             //warning: do NOT use real numbers such as 0.5ex cause browsers round it in a different manner
             //whiteSpace is FUNDAMENTAL in calculating the popup div in case the title is the longest (max width) element
             //in the popup div. We will set the same whitespace css also on the title (see below)
 
+            if(this.titleClass && this.title){
+                topDiv.attr('class',this.titleClass);
+                this.titleClass='';
+            }
+
+
             if(this.showClose){
-                closeBtn.attr('class',this.closeButtonClass); //removes all existing classes, if any (see jQuery removeClass doc)
-                closeBtn.html(this.closeButtonTitle);
-                closeBtn.css({
-                    'display':'inline-block',
-                    'visibility':'visible',
-                    'marginLeft':'1em'
+                closeBtn.css('marginLeft','0.5em').attr('class',this.closeButtonClass).html(this.closeButtonTitle).css({
+                    'display':'inline-block','float':'right'
                 //warning: do NOT use real numbers such as 0.5ex cause browsers round it in a different manner
                 //inline-block in order to retrieve/set width and height on the element
                 });
             }else{
-                closeBtn.css({
-                    'margin':'0px'
-                }).hide(); //margin:0 is to be sure, as afterwards we must span the title the whole popup width
+                closeBtn.hide(); //margin:0 is to be sure, as afterwards we must span the title the whole popup width
             }
             //in any case, show titleElement cause even if title="", titleElement is used to position close on the right
-            titleInput.val(this.title).attr('readonly','readonly').attr('class',this.titleClass).removeClass().css({
-                'display':'inline-block',
-                'backgroundColor':'transparent',
-                'padding': '0px',
-                'margin':'0px',
-                'border':'0px',
-                'visibility': this.title ? 'visible' : 'hidden',
-                'width':'',
-                'maxWidth':'1px'	//it is too tricky to set the width of the input spanning the whole title (in case of long titles)
-            //we might use a span, but we experienced problems in vertical align with the close button, as stated somewhere above.
-            //Moreover, a long title messes up the calculations in popup mode:
-            //a long title most likely determines the popup size, the latter the popup position, and once
-            //positioned and sized the popup size determines the title width (in order to span the title or letting the close button be visible)
-            //This is not robust at all and in fact it does not render the same popup position in all browsers.
-            //So, finally, set the input to the minimum allowed width, This means that maxWidth and maxHeight
-            //will be calculated based on the centraldiv dimensions, which is anyway the core div we want to properly visualize.
-            //Moreover, this way title resizing does not interfeere with the position
-            });
+//            titleInput.css({
+//                'backgroundColor':'transparent',
+//                'padding': '0px',
+//                'margin':'0px',
+//                'border':'0px'
+//            }).attr('readonly','readonly').attr('class',this.titleClass).css({
+//                'display':'inline-block','float':'left'
+//            //it is too tricky to set the width of the input spanning the whole title (in case of long titles)
+//            //we experienced problems in vertical align with the close button, as stated somewhere above.
+//            //we will use a span (see setTitle below)
+//            });
+            this.setTitle(this.title);
         }
 
         var bottomDiv = $(subdiv[2]);
@@ -675,9 +741,9 @@ function PopupDiv(){
         //see note above about why we dont use okButton.is(':visible')
         if(this.showOk){
             bottomDiv.css({
-                'paddingTop':'1em',
+                'paddingTop':'0.25em',
                 'textAlign':this.okButtonAlign
-            }).show(); //add padding to bottom
+            }); //add padding to bottom
             //warning: do NOT use real numbers such as 0.5ex cause browsers round it in a different manner
             okButton.attr('class', this.okButtonClass); //removes all existing classes, if any
             okButton.html(this.okButtonTitle);
@@ -689,29 +755,24 @@ function PopupDiv(){
             bottomDiv.hide();
         }
 
-        var centralDiv = $(subdiv[1]);
-        //reset properties of the central div
-        centralDiv.css({
-            'overflow':'auto',
-            'maxHeight':'',
-            'maxWidth':'',
-            'minHeight':'',
-            'minWidth':'',
-            'height':'',
-            'width':'',
-            'visibility':'visible'
-        }).show();
+//        var centralDiv = $(subdiv[1]);
+//        //reset properties of the central div
+//        centralDiv.css({
+//            'overflow':'auto',
+//            'maxHeight':'',
+//            'maxWidth':'',
+//            'minHeight':'',
+//            'minWidth':'',
+//            'height':'',
+//            'width':'',
+//            'visibility':'visible'
+//        }).show();
 
-        this.setSizable();//this means the popupdiv is display: !none and visibility:hidden, so every element
-        //inside it should be visible and therefore sizable. Being visible means that jQuery.is(':visible') returns true
-        //start with showing top and bottom if some elements are visible
 
         var invoker = this.invoker;
 
-        var sizeAsPopup = false;
         if(this.isClickElement(invoker)){
             this.setBoundsAsPopup(invoker, true);
-            sizeAsPopup = true;
             //storing click events, when showing clicking on an event must give the focus to the popup
             //old handlers will be restored in close()
             this['_tmpHandlers'+this.getId()] = undefined;
@@ -745,77 +806,38 @@ function PopupDiv(){
             this.setBoundsInside(invoker, this.bounds, this.boundsExact, true);
         }
 
-        //set title and close button to span whole width, if necessary
-        //closeButton.outerWidth should be zero if this.showClose = false
-        //titleInput.outerWidth(true) should be equal to titleInput.width(), as margins borders and padding are zero, however we want to calculate it safely
-        if(this.showClose || this.title){
-            var titleW = topDiv.width() - closeBtn.outerWidth(true) - (titleInput.outerWidth(true)-titleInput.width());
-            titleInput.css({
-                'maxWidth':'',
-                'width':(titleW)+'px'
-            });
-        }
+//        //set title and close button to span whole width, if necessary
+//        //closeButton.outerWidth should be zero if this.showClose = false
+//        //titleInput.outerWidth(true) should be equal to titleInput.width(), as margins borders and padding are zero, however we want to calculate it safely
+//        if(this.showClose || this.title){
+//            var titleW = topDiv.width() - closeBtn.outerWidth(true) - (titleInput.outerWidth(true)-titleInput.width());
+//            titleInput.css({
+//                'maxWidth':'',
+//                'width':(titleW)+'px'
+//            });
+//        }
+//
+//        //set central div max height ONLY IF NECESSARY (overflow). Until here, the main popup is sized and placed
+//        //but the central div might overflow
+//        var height = centralDiv.height();
+//        var maxHeight = (div.height()-topDiv.outerHeight(true)-bottomDiv.outerHeight(true)-
+//            (centralDiv.outerHeight(true)-centralDiv.height()));
+//        if(maxHeight<height){
+//            centralDiv.css('maxHeight',maxHeight+'px');
+//        }
+//        //same for width:
+//        var maxWidth = div.width();
+//        var width = centralDiv.outerWidth(true);
+//        if(maxWidth<width){
+//            centralDiv.css('maxWidth',maxWidth+'px');
+//        }
 
-        //set central div max height ONLY IF NECESSARY (overflow). Until here, the main popup is sized and placed
-        //but the central div might overflow
-        var height = centralDiv.height();
-        var maxHeight = (div.height()-topDiv.outerHeight(true)-bottomDiv.outerHeight(true)-
-            (centralDiv.outerHeight(true)-centralDiv.height()));
-        if(maxHeight<height){
-            centralDiv.css('maxHeight',maxHeight+'px');
-        }
-        //same for width:
-        var maxWidth = div.width();
-        var width = centralDiv.outerWidth(true);
-        if(maxWidth<width){
-            centralDiv.css('maxWidth',maxWidth+'px');
-        }
+       
 
-        // var height = centralDiv.height();
-        // if(sizeAsPopup && maxHeight<height){
-        // centralDiv.css('maxHeight',maxHeight+'px');
-        // }else{
-        // centralDiv.css({
-        // 'maxHeight': maxHeight+'px',
-        // 'minHeight': maxHeight+'px'
-        // });
-        // }
-        // //set central div max width ONLY IF NECESSARY:
-        // var maxWidth = div.width();
-        // var width = $(subdiv[1]).outerWidth(true);
-        // if(sizeAsPopup && maxWidth<width){
-        // centralDiv.css('maxWidth',maxWidth+'px');
-        // }else{
-        // centralDiv.css({
-        // 'maxWidth': maxWidth+'px',
-        // 'minWidth':maxWidth+'px'
-        // });
-        // }
-
-
-
-        //creating shadow. REmove attributes tabindex (unnecessary) and especially focusAttr,
-        //so that clicking tab key and setting the shadow focusable hides the popup. If one wants the shadow not to hide the popup. keep
-        //focusAttr BUT insert shadow in the focus cycle root (see method)
-        var shadow = div.clone(false,false).empty().css({
-            'backgroundColor':'#000',
-            'borderColor':'#000',
-            'visibility':'visible',
-            'zIndex':this.zIndex-1
-        }).removeAttr('tabindex').removeAttr(this.getFocusAttr()).fadeTo(0,0).
-        attr('id',this.getShadowDivId()) //for use in hide
-        .insertAfter(div);
-
-
+        var shadow = this.shadow();
         var postShowFcn = function(){
             me.trigger('show');
-            var rect = me.getBounds.apply(me);
-            shadow.css({
-                'left':(rect.x + me.shadowOffset)+'px',
-                'top':(rect.y + me.shadowOffset)+'px',
-                'width':(rect.width)+'px',
-                'height':(rect.height)+'px'
-            }).fadeTo(me.fadInTime,me.shadowOpacity, function(){
+            shadow.fadeTo(me.fadInTime,me.shadowOpacity, function(){
                 var v = me.getFirstFocusableElement();
                 if(v){
                     v.focus();
@@ -823,15 +845,50 @@ function PopupDiv(){
             });
         }
 
-        div.hide().css('visibility','visible').show(this.fadInTime,function(){
+        div.show(this.fadInTime,function(){
             postShowFcn();
         });
     };
+    //div must be visible
+    p.shadow = function(){
+        var shadow = $('#'+this.getShadowDivId());
+        var so = this.shadowOffset;
+        if(!so && shadow.length){
+            shadow.remove();
+            return $([]);
+        }else if(so){
+            var div = this.getDiv();
+            if(!shadow.length){
+                //creating shadow. Remove attributes tabindex (unnecessary) and especially focusAttr,
+                //so that clicking tab key and setting the shadow focusable hides the popup. If one wants the shadow not to hide the popup. keep
+                //focusAttr BUT insert shadow in the focus cycle root (see method)
+                shadow = div.clone(false,false).empty().css({
+                    'backgroundColor':'#000',
+                    'borderColor':'#000',
+                    'display':'block',
+                    'zIndex':this.zIndex-1
+                }).removeAttr('tabindex').removeAttr(this.getFocusAttr()).fadeTo(0,0).
+                attr('id',this.getShadowDivId()).insertAfter(div);
+            }
+            var rect = this.getBounds.apply(this);
+            shadow.css({
+                'left':(rect.x + so)+'px',
+                'top':(rect.y + so)+'px',
+                'width':(rect.width)+'px',
+                'height':(rect.height)+'px'
+            });
+        }
+        return shadow;
+    }
 
     p.setBoundsAsPopup = function(popupInvoker, isSizable){
         var invoker = popupInvoker;
+
+        this.preSizeFcn();
+        isSizable = true;
+
         var div = this.getDiv();
-        var oldCss= isSizable ?  undefined : this.setSizable();
+//        var oldCss= isSizable ?  undefined : this.setSizable();
 
         var shadowOffset = this.shadowOffset;
         var windowRectangle = this.getBoundsOf(wdw); //returns the window rectangle
@@ -871,13 +928,15 @@ function PopupDiv(){
                 invokerOffset.top + invokerOuterHeight)
         },isSizable);
 
+        this.postSizeFcn();
 
-        if(oldCss){
-            div.css({
-                'display':oldCss['display'],
-                'visibility':oldCss['visibility']
-            });
-        }
+//        if(oldCss){
+//            div.css({
+//                'display':oldCss['display'],
+//                'visibility':oldCss['visibility']
+//            });
+//        }
+
     };
     //places and resize the popupdiv inside parent
     //padding is a dict {top:,left:,bottom:..,right:,...} measuring the distance of the popupdiv from the corners, so that
@@ -887,10 +946,14 @@ function PopupDiv(){
     p.setBoundsInside = function(parent, pd, boundsExact, isSizable){
 
         var div = this.getDiv();
-        var oldCss = isSizable ?  undefined : this.setSizable();
+//        var oldCss = isSizable ?  undefined : this.setSizable();
+        
+        this.preSizeFcn();
+        isSizable = true;
 
         var bounds = this.getBoundsOf(parent);
-
+        
+        
         var x=bounds.x;
         var y = bounds.y;
         var w = bounds.width
@@ -953,15 +1016,96 @@ function PopupDiv(){
             },isSizable);
 
         }
-        //convert to percentage in order to keep same dimensions when zooming
 
+        this.postSizeFcn();
 
-        if(oldCss){
-            div.css({
-                'display':oldCss['display'],
-                'visibility':oldCss['visibility']
-            });
+//        if(oldCss){
+//            div.css({
+//                'display':oldCss['display'],
+//                'visibility':oldCss['visibility']
+//            });
+//        }
+    };
+    p.preSizeFcn = function(){
+        this.setSizable();
+        var subdivs = this.getDiv().children().hide();
+        var subdivsshow = subdivs.eq(1);
+        if(this.showClose || this.title){
+            subdivsshow = subdivsshow.add(subdivs.eq(0));
         }
+        if(this.showOk){
+            subdivsshow = subdivsshow.add(subdivs.eq(2));
+        }
+        
+        subdivsshow.css({
+            'overflow':'auto',
+            'maxHeight':'',
+            'maxWidth':'',
+            'minHeight':'',
+            'minWidth':'',
+            'height':'auto',
+            'width':'auto',
+            'display':'block'
+        });
+    }
+    
+    p.postSizeFcn = function(){
+        //set title and close button to span whole width, if necessary
+        //closeButton.outerWidth should be zero if this.showClose = false
+        //titleInput.outerWidth(true) should be equal to titleInput.width(), as margins borders and padding are zero, however we want to calculate it safely
+        var div = this.getDiv();
+        var subdivs = div.children();
+        var topDiv = subdivs.eq(0);
+
+        //we must set a width:100% on the topDiv in order to stretch the whole HEIGHT (having two elements inside it with float:left and right)
+        //however, we might have here a width LOWER than the actual div width, so stretch it more if it's lower:
+        
+//        if(this.showClose || this.title){
+//            var closeBtn = topDiv.find('a').eq(0);
+//            var titleInput = topDiv.find(':text').eq(0);
+//            var span = topDiv.find('span').eq(0).hide();
+//            var titleW = topDiv.width() - closeBtn.outerWidth(true) - (titleInput.outerWidth(true)-titleInput.width());
+//            titleInput.html(span.html()).css({
+//                'maxWidth':'',
+//                'width':(titleW)+'px'
+//            });
+//        }
+
+        var topBottom = $([]);
+        if(this.showClose || this.title){
+            topBottom = topBottom.add(subdivs.eq(0));
+        }
+        if(this.showOk){
+            topBottom = topBottom.add(subdivs.eq(2));
+        }
+        topBottom.css({'overflow':'hidden', 'width':'100%'}); //to span the whole width
+
+
+        var centralDiv = subdivs.eq(1);
+        centralDiv.css('overflow','auto');
+        var bottomDiv = subdivs.eq(2);
+        //set central div max height ONLY IF NECESSARY (overflow). Until here, the main popup is sized and placed
+        //but the central div might overflow
+        var height = centralDiv.height();
+        var maxHeight = (div.height()-topDiv.outerHeight(true)-bottomDiv.outerHeight(true)-
+            (centralDiv.outerHeight(true)-centralDiv.height()));
+        //same for width:
+        var maxWidth = div.width();
+        var width = centralDiv.outerWidth(true);
+
+        if(maxHeight<=0 || maxWidth<=0){
+            centralDiv.hide();
+            return;
+        }
+        
+        if(maxHeight<height){
+            centralDiv.css('maxHeight',maxHeight+'px');
+        }
+        
+        if(maxWidth<width){
+            centralDiv.css('maxWidth',maxWidth+'px');
+        }
+
     };
 
     p.getBounds = function(){
@@ -1074,9 +1218,8 @@ function PopupDiv(){
         }
     };
 
-    p.isClosing = false;
     p.close = function(){
-        this.isClosing = true;
+        this.__isClosing = true;
         this.setFocusCycleRoot(false);
         var div = this.getDiv();
         var shadow = $('#'+this.getShadowDivId());
@@ -1087,15 +1230,13 @@ function PopupDiv(){
 
             if(remove){
                 div.remove();
-            //this is because all bindings will be removed, including blur events
-            //we remove this.getFocusAttr() to reupdate focus cycle root when calling show again
             }
 
             //restore event data on invoker, if any
             var id = '_tmpHandlers'+me.getId();
             if(me[id]){
                 var oldHandlers = me[id];
-                delete  me[id];
+                delete me[id];
                 me.invoker.unbind('click');
                 for(var k =0; k< oldHandlers.length; k++){
                     var h = oldHandlers[k];
@@ -1103,12 +1244,18 @@ function PopupDiv(){
                 }
             }
 
-            me.isClosing = false;
+            delete me['__isClosing'];
             me.trigger('close');
         });
 
     };
 
+    p.closeLater = function(millseconds){
+        var me = this;
+        setTimeout(function(){
+            me.close();
+        },millseconds);
+    },
 
     p.setSizable = function(){
         //if false, just update the flag
@@ -1128,7 +1275,6 @@ function PopupDiv(){
         });
         //set the div invisible but displayable to calculate the size (callbackPreShow)
         div.css({
-            'visibility':'hidden',
             'maxWidth':'',
             'maxHeight':'',
             'minWidth':'',
@@ -1153,3 +1299,4 @@ function PopupDiv(){
     }
 
 })(PopupDiv.prototype);
+

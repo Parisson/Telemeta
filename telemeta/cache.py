@@ -105,6 +105,12 @@ class TelemetaCache(object):
         
     def write_analyzer_xml(self, data_list, file):
         path = self.dir + os.sep + file
+        data = self.get_analyzer_xml(data_list)
+        f = open(path, "w")
+        f.write(data)
+        f.close()
+
+    def get_analyzer_xml(self, data_list):
         doc = xml.dom.minidom.Document()
         root = doc.createElement('telemeta')
         doc.appendChild(root)
@@ -119,6 +125,4 @@ class TelemetaCache(object):
             node.setAttribute('unit', unit)
             node.setAttribute('value', str(value))
             root.appendChild(node)
-        f = open(path, "w")
-        f.write(xml.dom.minidom.Document.toprettyxml(doc))
-        f.close()
+        return xml.dom.minidom.Document.toprettyxml(doc)

@@ -98,6 +98,8 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
                 return false;
             }
         }
+
+
     },
     //functions for converting seconds (player unit) to milliseconds (sound manager unit) and viceversa:
     toSec: function(milliseconds){
@@ -143,6 +145,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         //resume playing if it was playing:
         if(wasPlaying){
             var player = this;
+            
             //delay a little bit the play resume, this might avoid fast pointer repositioning
             //(it should not be the case, but it happens. why??)
             setTimeout(function(){
@@ -167,15 +170,55 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         var ruler = player.getRuler();
         var sPosInMsec = player.toMsec(player.soundPosition);
         
-        var waitDiv = this.getContainer().find('.ts-wait');
         var bufferingString = 'buffering';
-        //var forceWait = !imgWaitDisplaying || waitDiv.html() != bufferingString;
+        //for these varirables, see explanation below:
         var numberOfSubsequentPlayCall=0;
         var minimumNumberOfSubsequentPlayCall=3;
         var isPlayingId=2;
         var isBufferingId=1;
         var uninitializedId=0;
         var currentState=uninitializedId;
+
+        var fireOnMarkerPosition = function(seconds){}; //does nothing by default
+        var map = player.getMarkerMap();
+        var markerCrossListeners = player.listenersMap['markerCrossed'];
+        
+        if(map && map.length && markerCrossListeners){
+            var idx = 0;
+            if(player.soundPosition>0){
+                idx = map.insertionIndex(player.soundPosition);
+                if(idx<0){
+                    idx=-idx-1;
+                }
+            }
+            var len = map.length;
+            if(idx>-1 && idx < len){
+                var markers = map.toArray();
+                var marker = markers[idx];
+                var margin = 0.5; //1 second (0.5*2) of margin (before+after)
+                var offs = marker.offset;
+                var intervalUpperBound =  offs+margin;
+                var intervalLowerBound =  offs-margin;
+                var data = {index:idx,marker:marker};
+                fireOnMarkerPosition = function(seconds){
+                    if(marker){
+                        if(seconds>intervalLowerBound && seconds < intervalUpperBound){
+                             player.fire('markerCrossed',data);
+                             idx++;
+                             if(idx<len){
+                                 marker = markers[idx];
+                                 offs = marker.offset;
+                                 intervalUpperBound =  offs+margin;
+                                 intervalLowerBound =  offs-margin;
+                                 data = {index:idx,marker:marker};
+                             }else{
+                                 marker = undefined;
+                             }
+                        }
+                    }
+                };
+            }
+        }
         var playOptions = {
             position: sPosInMsec,
             whileplaying: function(){
@@ -216,27 +259,9 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
                                 player.soundPosition = sPosInSec;
                                 ruler.movePointer(sPosInSec);
                         }
+                                fireOnMarkerPosition(sPosInSec);
                 }
 
-            //    consolelog('currentState '+currentState+ ' nspc: '+numberOfSubsequentPlayCall);
-
-            //                if(buffering && (forceWait || !imgWaitDisplaying)){
-            //                    imgWaitDisplaying = true;
-            //                    forceWait = false;
-            //                    player.setWait.apply(player,[bufferingString]);
-            //                }else if(!buffering && sPosInMsec < sPos){
-            //                    //isBuffering seems to be true at regular interval, so we could be in the case
-            //                    //that !buffering but is actually buffering and no sound is heard, so
-            //                    //we add the condition sPosInMSec !=sPos as a "sound heard" condition
-            //                    sPosInMsec = sPos;
-            //                    var sPosInSec = toSec(sPos);
-            //                    player.soundPosition = sPosInSec;
-            //                    ruler.movePointer(sPosInSec);
-            //                    if(imgWaitDisplaying){
-            //                        player.setWait.apply(player,[false]);
-            //                        imgWaitDisplaying = false;
-            //                    }
-            //                }
             },
             onfinish: function() {
                 //whileplaying is NOT called onsinfish. We must update the pointer:
@@ -263,6 +288,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         //if(sound && this.isPlaying()){
         sound.stop();
         this.setWait(false);
+        this.fire('paused');
         return false;
     },
     isWaitVisible: function(){
@@ -497,55 +523,6 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         //this.loadMarkers(callback);
        
         this.loadMarkers(markersArray);
-    //set the marker popup
-    //functions to set the marker popup
-    //        var popupMarker = $J('<div/>').addClass('component').css({
-    //            'dislay':'none',
-    //            'position':'absolute',
-    //            'zIndex':1000,
-    //            'overflow':'auto',
-    //            'display':'none' //TODO: remove this
-    //        //'backgroundColor':'#666'
-    //        });
-    //        $J('body').append(popupMarker);
-    //        var w = v.width();
-    //        var h = v.height();
-    //        var offs = v.offset(); //relative to the document
-    //        var width = parseInt(w/2);
-    //        var height = parseInt(h/2);
-    //        var margin = 5;
-    //        popupMarker.css({
-    //            'left':(margin+offs.left+width)+'px',
-    //            'top': parseInt(margin+offs.top)+'px',
-    //            'width':width+'px',
-    //            'height':height+'px'
-    //        });
-    //        popupMarker.html("<table style='width:100%'><tr><td>"+gettrans('title')+"</td><td class='title'></td></tr><tr><td>"+
-    //            gettrans('description')+"</td><td class='description'></td></tr></table>");
-    //        this.getMarkerPopup = function(){
-    //            return popupMarker;
-    //        }
-    },
-
-    showMarkerPopup: function(markerIndex){
-    //        var popup = this.getMarkerPopup();
-    //
-    //        if(popup.attr('id') != 'markerpopup'+markerIndex){
-    //
-    //            var marker = this.getMarkerMap().toArray()[markerIndex];
-    //            var pos = this.getSoundPosition();
-    //            var mPos = marker.offset;
-    //            var span = 0.3;
-    //
-    //            if(pos>=mPos-span && pos<=mPos+span){
-    //                popup.attr('id','markerpopup'+markerIndex);
-    //                popup.find('.title').html(marker.title);
-    //                popup.find('.description').html(marker.desc);
-    //                if(!popup.is(':visible')){
-    //                    popup.show('fast');
-    //                }
-    //            }
-    //        }
     },
 
     /**
@@ -609,41 +586,11 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         elements.css(style);
         elements.css('position','absolute');
         
-        
-        
         //refreshing images:
         
         this.refreshImage();
         this.getRuler().resize();
 
-       
-        
-        //adjusting select size:
-        //        var select = container.find('.ts-visualizer');
-        //        var imgWait = container.find('.ts-wait');
-        //
-        //        //NOTE: some buttons might be hidden AFTER THIS METHOD HAS BEEN INVOKED
-        //        //Therefore, setting the width of select or imgWait is skipped for the moment.
-        //        select.css('fontSize','90%'); //this is to increase probability that the select width will fit the available space
-        //
-        //        var control = container.find('.ts-control');
-        //        var maxHeight = control.height();
-        //        select.add(imgWait).css('maxHeight',(maxHeight-2)+'px'); //at least a margin left and top of 1 px (see below)
-        //
-        //        var span = (maxHeight-select.outerHeight())/2; //do not include margins in oputerHeight (we will set them to zero below)
-        //        select.css({
-        //            'margin':'0px',
-        //            'marginTop':span+'px',
-        //            'marginLeft':span+'px'
-        //        });
-        //        var span2 = (maxHeight - imgWait.outerHeight())/2; //do not include margins in oputerHeight (we will set them to zero below)
-        //        imgWait.css({
-        //            'margin':'0px',
-        //            'marginTop':span2+'px',
-        //            'marginLeft':span+'px'
-        //        })
-
-        
         return this;
     },
     getImageUrl : function(){
@@ -708,40 +655,6 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         }
     },
 
-    //    refreshImage: function(optionalImageAsJQueryElement){
-    //        var image;
-    //        var container = this.getContainer();
-    //        if(optionalImageAsJQueryElement){
-    //            image = optionalImageAsJQueryElement;
-    //        }else{
-    //            image = container.find('.ts-image');
-    //        }
-    //        var select = container.find('.ts-visualizer');
-    //        var funcImg = function(player_image_url, width, height){
-    //            var _src_ = null;
-    //            if (player_image_url && (width || height)) {
-    //                _src_ = player_image_url.replace('WIDTH', width + '').replace('HEIGHT', height + '');
-    //            }
-    //            return _src_;
-    //        };
-    //        var imageUrl = getVisualizers()[""+select.val()];
-    //        var imgSrc = funcImg(imageUrl, image.width(),image.height());
-    //        if(image.attr('src')==imgSrc){
-    //            return;
-    //        }
-    //
-    //        var player= this;
-    //        player.setWait.apply(player,['refreshing image']);
-    //        image.load(function(){
-    //            player.setWait.apply(player,[false]);
-    //            select.show();
-    //            image.unbind('load');
-    //        });
-    //
-    //        image.attr('src', imgSrc);
-    //
-    //    },
-
     getSoundVolume :function(){
         var s = this.getSound();
         return s ? s.volume : 0;
@@ -793,38 +706,6 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         this.setSoundPosition(offset);
         return false;
     },
-
-    //    setSoundVolume: function(volume){
-    //
-    //        if(typeof volume != 'number'){ //note: typeof for primitive values, instanceof for the rest
-    //            //see topic http://stackoverflow.com/questions/472418/why-is-4-not-an-instance-of-number
-    //            volume = 100;
-    //        }
-    //        if(volume<0){
-    //            volume = 0;
-    //        }else if(volume>100){
-    //            volume = 100;
-    //        }
-    //        var sound = this.getSound();
-    //        //        if(sound.volume == volume){
-    //        //            return;
-    //        //        }
-    //        sound.setVolume(volume);
-    //        //update the anchor image:
-    //        var indices = [20,40,60,80,100,100000];
-    //
-    //        var volumeElm = this.getContainer().find('.ts-volume');
-    //        for(var i=0; i <indices.length; i++){
-    //            if(volume<indices[i]){
-    //                var pos = -28*i;
-    //                pos = '0px '+ pos+ 'px'; //DO NOT SET !important as in FF3 DOES NOT WORK!!!!!
-    //                volumeElm.css('backgroundPosition',pos);
-    //                return;
-    //            }
-    //        }
-    //    // this.elements.volume.css('backgroundPosition','0px 0px !important')
-    //
-    //    },
 
     setSoundVolume: function(volume){
         if(typeof volume != 'number'){ //note: typeof for primitive values, instanceof for the rest
@@ -899,6 +780,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
        
   
         var rulerAdd = ruler.add;
+        var debug_ = player.debug; //TODO: remove
             
         if(markers){
             //add markers to the map. No listeners associated to it (for the moment)
@@ -907,27 +789,11 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
             }
             //add markers to ruler and div
             map.each(function(i,marker){
-                rulerAdd.apply(ruler,[marker.offset, i, 'isEditable' in marker ? marker.isEditable : false]);
+                //isEditable and id are added if not present
+                rulerAdd.apply(ruler,[marker.offset, i, marker.isEditable]);
             });
         }
-        //BINDINGS:
-        //
-        //1) ADD
-        //
-        //add binding to the setMarker button (html anchor):
-        //        var setMarkerButton = player.getContainer().find('.ts-set-marker');
-        //
-        //        var showAddMarkerButton = this.canAddMarker();
-        //        if(setMarkerButton){
-        //            if(showAddMarkerButton){
-        //                setMarkerButton.show().attr('href','#').unbind('click').bind('click', function(){
-        //                    player.addMarker(player.getSoundPosition());
-        //                    return false;
-        //                });
-        //            }else{
-        //                setMarkerButton.hide().unbind('click');
-        //            }
-        //        }
+        
 
 
         //the function above calls map.add:
@@ -936,8 +802,8 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
             //mapuiAdd.apply(mapUI,[data.marker, data.index,data.isNew]);
             rulerAdd.apply(ruler,[data.marker.offset, data.index,data.marker.isEditable]);
             player.fire('markerAdded',data);
-            consolelog('add');
-            consolelog(data);
+            debug_('add');
+            debug_(data);
         });
 
         //2) MOVE
@@ -960,8 +826,8 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
             var to = data.toIndex;
             ruler.move.apply(ruler,[from,to]);
             player.fire('markerMoved',data);
-            consolelog('moved');
-            consolelog(data);
+            debug_('moved');
+            debug_(data);
         });
 
             
@@ -969,8 +835,8 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         map.bind('remove',function(data){
             ruler.remove.apply(ruler, [data.index]);
             player.fire('markerRemoved',data);
-            consolelog('removed');
-            consolelog(data);
+            debug_('removed');
+            debug_(data);
         });
 
     }

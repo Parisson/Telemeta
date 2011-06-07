@@ -274,6 +274,7 @@ Timeside.classes.TimesideClass = Timeside.Class.extend({
         if(!(formatArray)){
             formatArray = ['mm','ss'];
         }
+        
         //marker offset is in float format second.decimalPart
         var pInt = parseInt;
         var round = Math.round;

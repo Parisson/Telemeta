@@ -118,9 +118,11 @@ class Date(Element):
     def __init__(self, start, end=None, refinement=None):
         value = ''
         if start:
-            value = str(start) 
-            if end and start != end:
-                value = 'start=' + value + '; end=' + unicode(end) + ';'
+            value = unicode(start) 
+        elif end:
+            value = unicode(end)
+        else:
+            value = ''
         super(Date, self).__init__('date', value, refinement)            
 
 def media_access_rights(media):
@@ -131,11 +133,7 @@ def media_access_rights(media):
     return 'private'
 
 def media_identifier(media):
-    if media.code:
-        return media.element_type + ':' + media.code
-    elif media.old_code:
-        return media.element_type + ':' + media.old_code
-    return None
+    return 'http://' + settings.TELEMETA_OAI_HOST + '/' + media.element_type + 's/' + unicode(media.id)
 
 def express_collection(collection):
     "Express a collection as a Dublin Core resource"

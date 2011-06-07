@@ -155,6 +155,9 @@ Add the following variables:
     EMAIL_HOST =                    your default SMTP server
     DEFAULT_FROM_EMAIL =            the default sending email address 
     
+    TELEMETA_OAI_HOST =             the default host name to provide dublin core identifier through the OAI data provider
+    TELEMETA_OAI_REPOSITORY_NAME =  the description of the OAI data provider
+    
 Just paste the lines below::
 
     LOGIN_URL = '/login'

@@ -59,7 +59,6 @@ var playlistUtils = {
         dd[t]='';
         dd[d]='';
         var playlist = this;
-        consolelog(this);
         new PopupDiv({
             'content':dd,
             invoker:anchorElement,
