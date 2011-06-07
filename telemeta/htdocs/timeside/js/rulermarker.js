@@ -91,7 +91,7 @@ Timeside.classes.RulerMarker = Timeside.classes.TimesideClass.extend({
         var arrowBaselineWidth = 9; //2*((fontSize - 1) >>> 1)+1; //if fontsize:10 or 9, tW:9, if fontSize:8 or 7, tW:7, and so on
 
         var canvas = undefined;
-        var canvasClass = cssPref + className+'-canvas';
+        var canvasClass = cssPref + 'svg-'+className+'-line';
         if(this.isSvgSupported){
             canvas = this.createCanvasSvg(waveImgDiv, arrowBaselineWidth);
             var path = canvas.childNodes[0]; //note that $J(canvas).find('path') does not work in FF at least 3.5

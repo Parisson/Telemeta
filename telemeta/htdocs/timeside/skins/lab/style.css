@@ -1,49 +1,138 @@
+/*
+* Style for the timeside player. The skeleton of the player must be embedded inside a div of class C (in this case
+* C = 'ts-skin-lab') and reads:
+*
+* <div class='ts-viewer'>
+*     <div class='ts-ruler'></div>               >>RULER CONTAINER
+*     <div class='ts-wave'>                      >>PLAYER BODY CONTAINER which includes:
+*         <div class='ts-image-canvas'></div>        >>MARKER LINES CONTAINER
+*         <div class='ts-image-container'>           >>WAVE IMAGE CONTAINER
+*             <img class='ts-image'/>
+*         </div>
+*     </div>
+*  </div>
+*  <div class='ts-control'>",                    >>CONTROLS (BUTTONS) CONTAINER
+*      <a class='ts-play ts-button'></a>
+*      <a class='ts-pause ts-button'></a>
+*      <a class='ts-rewind ts-button'></a>
+*      <a class='ts-forward ts-button'></a>
+*      <a class='ts-set-marker ts-button'></a>
+*      <a class='ts-volume-speaker ts-button'></a>
+*      <div class='ts-volume-wrapper-div'>
+*          <a class='ts-volume-bar-container'>
+*              <span class='ts-volume-bar'></span>
+*          </a>
+*      </div>
+*      <div class='ts-wait'></div>
+*  </div>
+*
+* IMPORTANT NOTES: ======================================================
+* 1) Css rules here should deal only with player APPEARENCE, not player LAYOUT and POSITIONING. For instance, some styles properties,
+*    namely position and overflow of divs, are unnecessary here, as they will be overridden by javascript code,
+*    because otherwise they might break the player layout.
+* 2) .ts-marker and .ts-pointer fontSize should be changed according to .ts-ruler fontSize. In general, change the latter without
+*    specifying a font for the formers, which will inherit it. The player internally calculates a default ruler height before housing
+*    pointer and markers in order to paint its ruler lines. If font sizes of ruler vs. pointer and markers are different, the latters
+*    might overlap vertically. On the other hand, if pointers and markers have strong borders/padding,
+*    playing around with different font size  and line heights might be the solution to avoid vartical overlap
+* 3) canvas classes (classes beginning with '.ts-svg-') have specific svg-css syntax (have a look)
+*    Svg is not supported in IE7-8, as usual, and apparently even 9 (it should be, it is not according to Raphael function detecting svg support),
+*    In this cases, raphael library will care about building VML canvas, and a parser inside the player will read class rules and send them to raphael library
+*    in the form of a map suitable for the 'attr' function in Raphael. Note that:
+*       a) Many but not all css properties are supported for conversion.
+*       b) The parser READS ONLY STAND ALONE RULES, SO BE CAREFUL: If we want,eg, define css for '.ts-svg-marker-line', write something
+*          like:
+*            .aClass .ts-marker-canvas'{...}
+*          will not be rendered
+*/
+
 .ts-skin-lab .ts-player {
+    padding: 0;
+    /*clear: both;
+    background: white;*/
+    /*padding-top: 10px;
+  padding-bottom: 10px;*/
+    border: solid 1px #ADADAD;
+    margin-top: 2px;
+}
+
+.ts-skin-lab .ts-player .ts-viewer {
+    margin: 0;
+    border: 0;
+}
+
+
+
+.ts-skin-lab .ts-player .ts-ruler{
+    color: white;
+    background-color: #2E2E2E;
+    font-size: 10px;
+    line-height: 13px;
+}
+
+.ts-skin-lab .ts-player .ts-ruler .ts-svg-ruler-upper-rect{
+    fill:  #595959;
+    stroke-width:0;
+    stroke: #595959; /*to be sure...*/
+}
+.ts-skin-lab .ts-player .ts-ruler .ts-svg-ruler-lines{
+    stroke-width:1;
+    stroke:#ADADAD;
+}
+
+/*wave:*/
+.ts-skin-lab .ts-player .ts-wave {
+    height: 130px;
+}
+.ts-skin-lab .ts-player .ts-wave .ts-image {
+    width: 360px;
+    height: 130px;
+    background: transparent;
+}
+
+/*.ts-skin-lab .ts-player {
   background: #3c4251;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  
   border: solid #b2b2b2 1px;
 }
 
 .ts-skin-lab .ts-player .ts-viewer {
   margin: 0 12px 10px 12px;
   border: solid 1px white;
-}
+}*/
 
 .ts-skin-lab .ts-player .ts-viewer .ts-marker {
-    color: white;
-    background: #7290bc;
-}
-
-.ts-skin-lab .ts-player .ts-viewer a.ts-marker, .ts-skin-lab .ts-player .ts-viewer a.ts-pointer {
+     padding: 0 0.5em;
+    background: #e65911;
+    color: #FFF;
     text-decoration: none;
+    /*color: white;
+    background: #7290bc;*/
 }
 
-.ts-skin-lab .ts-player .ts-viewer { /*.ts-pointer {*/
-    color: #3c4251;
-    background: #e7e7e7;
-}
-.ts-pointer{
-    border: 1px solid #a10006 !important;
-     -moz-border-radius: 1ex !important;
-    -webkit-border-radius: 1ex  !important;
-    border-radius: 1ex !important;
-    color: #6A0307 !important;
-
-}
-.ts-skin-lab .ts-player .ts-ruler .ts-section .ts-label {
-    color: #c3c2cc;
-    background: #2a3242;
-    padding-bottom: 1px;
-    padding-left: 2px;
-    line-height: 13px;
+.ts-skin-lab .ts-player .ts-wave .ts-image-canvas .ts-svg-marker-line {
+    fill: #e65911;
+    stroke-width:0;
 }
 
-.ts-skin-lab .ts-player .ts-ruler .ts-section .ts-lines {
-    background: #384051;
-    color: #9498a1;
-    border-bottom: solid 1px white;
-    line-height: 13px;
+.ts-skin-lab .ts-player .ts-viewer a.ts-pointer {
+    color: #BB0000;
+    background-color: white;
+    padding: 0 0.5em;
+    border: solid 1px #BB0000;
+
+    text-decoration: none;
+    /*background-color: #e7e7e7;
+    border: 1px solid #3c4251; #a10006 !important;*/
+     -moz-border-radius: .3em !important;
+    -webkit-border-radius: .3em  !important;
+    border-radius: .3em !important;
+    /*color: #3c4251; #6A0307 !important;*/
+}
+
+.ts-skin-lab .ts-player .ts-wave .ts-image-canvas .ts-svg-pointer-line {
+    fill: #BB0000;
+    stroke-width:0;
 }
 
 .ts-skin-lab .ts-player .ts-wave .ts-image {
@@ -52,77 +141,10 @@
 
 .ts-skin-lab .ts-player .ts-control {
     background: url('img/controlbg.png');
-/*    height: 28px;
-     border-top: dotted #b2b2b2 1px; */
 }
-
-/*.ts-skin-lab .ts-player .ts-control .ts-layout {
-    margin-left: 12px;
-    margin-right: 12px;
-    padding-top: 0px;
-
-.ts-skin-lab .ts-player .ts-control .ts-playback a {
-    display: block;
-    float: left;
-    width: 30px;
-    padding: 28px 0 0 0;
-    overflow: hidden;
-    height: 0px !important; 
-    margin-right: 0px;
-}
-.ts-skin-lab .ts-player .ts-control .ts-playback a:hover {
-    background-position: 0 -28px;
-}
-
-.ts-volume, .ts-volume:hover, .ts-volume:visited {
-    background-image: url('img/volume.png');
-    background-repeat: no-repeat;
-    width:60px !important;
-}
-
-.ts-skin-lab .ts-player .ts-control .ts-playback .ts-play {
-    background-image: url('img/play.png');
-}
-
-.ts-skin-lab .ts-player .ts-control .ts-playback .ts-pause {
-    background-image: url('img/pause.png');
-}
-
-.ts-skin-lab .ts-player .ts-control .ts-playback .ts-rewind {
-    background-image: url('img/rewind.png');
-}
-
-.ts-skin-lab .ts-player .ts-control .ts-playback .ts-forward {
-    background-image: url('img/forward.png');
-}
-
-.ts-skin-lab .ts-player .ts-control .ts-playback .ts-set-marker {
-    background-image: url('img/setmarker.png');
-}
-
-.ts-skin-lab .ts-player .ts-marker-control .ts-set-marker {
-    display: block;
-    width: 89px;
-    padding: 28px 0 0 0;
-    overflow: hidden;
-    height: 0px !important;
-    background-image: url('img/setmarker.gif');
-    margin: 5px auto 0 auto;
-}
-
-.ts-skin-lab .ts-player .ts-marker-control .ts-set-marker:hover {
-    background-position: 0 -21px;
-}
-
-.ts-skin-lab .ts-player .ts-marker-control {
-    border-top: dotted #b2b2b2 1px;
-    border-bottom: dotted #b2b2b2 1px;
-    height: 30px;
-}
- */
 
  /** display (inline-block) and overflow of a is set inside javascript*/
-.ts-skin-lab .ts-player .ts-control a {
+.ts-skin-lab .ts-player .ts-control .ts-button {
     background-repeat: no-repeat;
     height:28px;
     width:28px;
@@ -147,13 +169,6 @@
     background-image: url('img/setmarker.png');
 }
 
-/*.ts-skin-lab .ts-player .ts-control .ts-volume {
-    background-image: url('img/volume.png');
-    width:90px !important;
-}*/
-/*.ts-skin-lab .ts-player .ts-control .ts-volume-speaker {
-    background-image: url('img/volumeon.png');
-}*/
 .ts-skin-lab .ts-player .ts-control .ts-volume-speaker-on {
     background-image: url('img/volumeon.png');
     width:24px;
@@ -167,7 +182,7 @@
     background-position: -3px left;
     background-repeat: repeat-x;
     height:10px;
-    width:56px;
+    width:42px;
     margin-top:9px;
      -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
@@ -196,6 +211,36 @@
     padding-right: 60px;
     font-size: 80%;
     color:white;
-
 }
 
+
+/*.ts-skin-lab .ts-player .ts-ruler{
+    color: #c3c2cc;
+    background-color: #2a3242;
+}*/
+
+/*canvas (svg). If svg is not supported, a parser in the palyer
+converts these values (nb: not all are supported) to specigic vml attributes. In this case, however, ONLY CLASSES WRITTEN
+ALONE ARE PARSED (eg ".ts-blabla, .ts-marker-canvas{...}" WILL NOT BE RECOGNIZED)*/
+
+/*ruler canvas (svg)"*/
+/*.ts-skin-lab .ts-player .ts-ruler .ts-svg-ruler-upper-rect{
+     fill:  #2a3242;
+    stroke-width:0;
+    stroke: #c3c2cc; to be sure...
+}*/
+/*.ts-skin-lab .ts-player .ts-ruler .ts-svg-ruler-lines{
+    stroke-width:1;
+    stroke:#9498a1;
+}*/
+/*class for the canvas (svg) associated to a marker.
+.ts-skin-lab .ts-player .ts-wave .ts-image-canvas .ts-svg-pointer-line {
+    fill: #a10006;
+    stroke-width:0;
+} */
+
+/*class for the canvas (svg) associated to a marker.*/
+/*.ts-skin-lab .ts-player .ts-wave .ts-image-canvas .ts-svg-marker-line {
+    fill: #7290bc;
+    stroke-width:0;
+}*/

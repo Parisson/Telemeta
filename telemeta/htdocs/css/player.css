@@ -1,21 +1,6 @@
-/**
-* player.css customize the player skin. Note:
-* 1) Some styles will be overridden, namely position and overflow of divs, because otherwise they might break the player layout.
-* 2) .ts-marker and .ts-pointer fontSize should be changed according to .ts-ruler fontSize. In general, change the latter without
-*    specifying a font for the formers, which will inherit it. The player internally calculates a default ruler height before housing
-*    pointer and markers in order to paint its ruler lines. If font sizes of ruler vs. pointer and markers are different, the latters
-*    might overlap vertically. On the other hand, if pointers and markers have strong borders/padding,
-*    playing around with different font size  and line heights might be the solution to avoid vartical overlap
-* 3) canvas (svg) classes (.ts-pointer-canvas, .ts-marker-canvas, .ts-ruler-upper-rect and .ts-ruler-lines)
-*    have specific css syntax (have a look)
-*    In case svg is not supported (IE7-8, as usual, and apparently even 9, according to Raphael function detecting svg support),
-*    a parser inside the player will read class rules and send them to raphael library
-*    in the form of a map (function attr in Raphael. Note that many but not all css properties are supported).
-*    This parser READS ONLY STAND ALONE RULES, SO BE CAREFUL NOT WRITING A CSS RULE LIKE '.aClass .ts-marker-canvas' because
-*    it WILL NOT affect elements with class 'ts-marker-canvas' (watiing for full SVG support, when this mess will be over)
-*/
 
-.ts-skin-lab .ts-player {
+
+/*.ts-skin-lab .ts-player {
     padding: 0;
     clear: both;
     background: white;
@@ -30,46 +15,48 @@
     width: 360px;
     height: 130px;
     background: transparent;
-}
+}*/
 
 #player_maximized .ts-player .ts-wave,  #player_maximized .ts-player .ts-image {
     height: 170px;
 }
 
-.ts-skin-lab .ts-player .ts-viewer {
+/*.ts-skin-lab .ts-player .ts-viewer {
     margin: 0;
     border: 0;
-}
-.ts-skin-lab .ts-player .ts-viewer .ts-pointer {
+}*/
+/*.ts-skin-lab .ts-player .ts-viewer .ts-pointer {
     background: #BB0000;
     color: #DDD;
     border: solid 1px #BB0000;
 }
-.ts-skin-lab .ts-player .ts-viewer a.ts-pointer {
+.ts-skin-lab .ts-player .ts-viewer .ts-pointer {
     color: #BB0000;
     background: white;
     padding: 0 0.5em;
-}
+    border: solid 1px #BB0000;
+}*/
 /*class for the canvas (svg) associated to a marker. If svg is not supported, a parser in the palyer
 converts these values (nb: not all are supported) to specigic vml attributes. In this case, however, ONLY CLASSES WRITTEN
 ALONE ARE PARSED (eg ".ts-blabla, .ts-marker-canvas{...}" WILL NOT BE RECOGNIZED)*/
-.ts-pointer-canvas {
+/*.ts-skin-lab .ts-player .ts-wave .ts-image-canvas .ts-svg-pointer-line {
     fill: #BB0000;
     stroke-width:0;
-}
-.ts-skin-lab .ts-player .ts-viewer .ts-marker {
+}*/
+/*.ts-skin-lab .ts-player .ts-viewer .ts-marker {
     padding: 0 0.5em;
     background: #e65911;
     color: #FFF;
-}
+}*/
 /*class for the canvas (svg) associated to a marker. If svg is not supported, a parser in the palyer 
 converts these values (nb: not all are supported) to specigic vml attributes. In this case, however, ONLY CLASSES WRITTEN 
 ALONE ARE PARSED (eg ".ts-blabla, .ts-marker-canvas{...}" WILL NOT BE RECOGNIZED)*/
-.ts-marker-canvas {
+/*.ts-skin-lab .ts-player .ts-wave .ts-image-canvas .ts-svg-marker-line {
     fill: #e65911;
     stroke-width:0;
-}
-.ts-skin-lab .ts-player .ts-ruler .ts-section .ts-label {
+}*/
+
+/*.ts-skin-lab .ts-player .ts-ruler .ts-section .ts-label {
     background: #595959;
     color: white;
 }
@@ -78,27 +65,12 @@ ALONE ARE PARSED (eg ".ts-blabla, .ts-marker-canvas{...}" WILL NOT BE RECOGNIZED
     background: #2e2e2e;
     color: #ADADAD;
     border-bottom: solid 1px #adadad;
-}
+}*/
 
 .ts-skin-lab .ts-player .ts-control {
     background: url('../images/player_controlbg.png');
 }
 
-/*.ts-skin-lab .ts-player .ts-control .ts-playback a {
-    padding: 28px 0 0 0;
-    height :20px;  for IE5/Win only 
-    margin-right: 0px;
-}
-
-.ts-skin-lab .ts-player .ts-control  a {
-    height:28px;
-    margin-right: 0px;
-}
-
-.ts-skin-lab .ts-player .ts-control .ts-layout {
-    margin-left: 0px;
-}
-*/
 #player_maximized, #player_minimized {
     position: relative;
 }
@@ -127,29 +99,22 @@ ALONE ARE PARSED (eg ".ts-blabla, .ts-marker-canvas{...}" WILL NOT BE RECOGNIZED
     display: none;
 }
 
-#player .ts-visualizer{
+/*#player .ts-visualizer{
     margin:5px;
 }
 
-.ts-ruler{
-    color: white;
-    background-color: #333;
-    font-size: 10px;
-}
-
-.ts-ruler{
+.ts-skin-lab .ts-player .ts-ruler{
     color: white;
     background-color: #2E2E2E;
     font-size: 10px;
     line-height: 13px;
 }
-/*ruler canvas (svg)"*/
-.ts-ruler-upper-rect{
+.ts-skin-lab .ts-player .ts-ruler .ts-svg-ruler-upper-rect{
      fill:  #595959;
     stroke-width:0;
-    stroke: #595959; /*to be sure...*/
+    stroke: #595959; to be sure...
 }
-.ts-ruler-lines{
+.ts-skin-lab .ts-player .ts-ruler .ts-svg-ruler-lines{
     stroke-width:1;
     stroke:#ADADAD;
-}
+}*/
