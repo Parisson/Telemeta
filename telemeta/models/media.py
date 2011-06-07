@@ -369,12 +369,16 @@ class MediaItemAnalysis(ModelCore):
     element_type = 'analysis'    
     item  = ForeignKey('MediaItem', related_name="analysis", verbose_name=_('item'))
     analyzer_id = CharField(_('id'), required=True)
-    analyzer_name = CharField(_('name'))
-    analyzer_value = CharField(_('value'))
-    analyzer_unit = CharField(_('unit'))
+    name = CharField(_('name'))
+    value = CharField(_('value'))
+    unit = CharField(_('unit'))
     
     class Meta(MetaCore):
         db_table = 'media_analysis'
+        ordering = ['name']
+        
+    def to_dict(self):
+        return {'id': self.analyzer_id, 'name': self.name, 'value': self.value, 'unit': self.unit}
         
         
 class MediaPart(MediaResource):

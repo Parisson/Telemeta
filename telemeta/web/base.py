@@ -270,13 +270,13 @@ class WebView(object):
             grapher_id = 'waveform'
         
         previous, next = self.item_previous_next(item)
-        analyzers = self.item_analyze(item)
+        self.item_analyze(item)
         playlists = self.get_playlists(request)
         public_access = self.get_public_access(item.public_access, item.recorded_from_date, item.recorded_to_date)
                 
         return render(request, template,
                     {'item': item, 'export_formats': formats,
-                    'visualizers': graphers, 'visualizer_id': grapher_id,'analysers': analyzers,
+                    'visualizers': graphers, 'visualizer_id': grapher_id,
                     'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True),
                     'previous' : previous, 'next' : next, 'marker': marker_id, 'playlists' : playlists, 
                     'public_access': public_access,
@@ -321,7 +321,7 @@ class WebView(object):
             grapher_id = 'waveform'
         
         previous, next = self.item_previous_next(item)
-        analyzers = self.item_analyze(item)
+        self.item_analyze(item)
         
         if request.method == 'POST':
             form = MediaItemForm(data=request.POST, files=request.FILES, instance=item)
@@ -391,15 +391,13 @@ class WebView(object):
         return render(request, template, {'item': item, "form": form})
         
     def item_analyze(self, item):
-        public_id = str(item.public_id)
-        analyze_file = public_id + '.xml'
+        analyses = MediaItemAnalysis.objects.filter(item=item)
         
-        if self.cache_data.exists(analyze_file):
-            analyzers = self.cache_data.read_analyzer_xml(analyze_file)
+        if analyses:
             if not item.approx_duration:
-                for analyzer in analyzers:
-                    if analyzer['id'] == 'duration':
-                        value = analyzer['value']
+                for analysis in analyses:
+                    if analysis.id == 'duration':
+                        value = analysis.value
                         time = value.split(':')
                         time[2] = time[2].split('.')[0]
                         time = ':'.join(time)
@@ -418,8 +416,10 @@ class WebView(object):
                 pipe.run()
 
                 mime_type = decoder.format()
-                analyzers.append({'name': 'Mime type', 'id': 'mime_type', 'unit': '', 'value': mime_type})
-                analyzers.append({'name': 'Channels', 'id': 'channels', 'unit': '', 'value': decoder.channels()})
+                analysis = MediaItemAnalysis(item=item, name='MimeType', analyzer_id='mime_type', unit='', value=mime_type)
+                analysis.save()
+                analysis = MediaItemAnalysis(item=item, name='Channels', analyzer_id='channels', unit='', value=decoder.channels())
+                analysis.save()
                 
                 for analyzer in analyzers_sub:
                     value = analyzer.result()
@@ -432,22 +432,18 @@ class WebView(object):
                             pass
                         value = datetime.timedelta(0,value)
                     
-                    analyzers.append({'name':analyzer.name(),
-                                      'id':analyzer.id(),
-                                      'unit':analyzer.unit(),
-                                      'value':str(value)})
-                  
-                self.cache_data.write_analyzer_xml(analyzers, analyze_file)
-            
-        return analyzers
-    
+                    analysis = MediaItemAnalysis(item=item, name=analyzer.name(), analyzer_id=analyzer.id(), 
+                                                 unit=analyzer.unit(), value=str(value))
+                    analysis.save()
+        
     def item_analyze_xml(self, request, public_id):
         item = MediaItem.objects.get(public_id=public_id)
-        analyze_file = public_id + '.xml'
-        if not self.cache_data.exists(analyze_file):
-            self.item_analyze(item)
+        analyses = MediaItemAnalysis.objects.filter(item=item)
+        analyzers = []
+        for analysis in analyses:
+            analyzers.append(analysis.to_dict())
         mime_type = 'text/xml'
-        response = HttpResponse(self.cache_data.read_stream_bin(analyze_file), mimetype=mime_type)
+        response = HttpResponse(self.cache_data.get_analyzer_xml(analyzers), mimetype=mime_type)
         response['Content-Disposition'] = 'attachment; filename='+public_id+'.xml'        
         return response        
         
