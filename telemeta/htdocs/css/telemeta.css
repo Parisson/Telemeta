@@ -1093,6 +1093,9 @@ a.image-link {
 .icon_filter{
     background-image: url('/images/filter.png');
 }
+.icon_delete{
+    background-image: url('/images/delete.png');
+}
 .icon_rss,.icon_rss:hover{
     background: url('/images/feed-icon-14x14.png') no-repeat;
     background-position: 0ex .8ex;

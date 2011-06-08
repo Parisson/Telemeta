@@ -260,7 +260,7 @@
 </div> <!-- with-rightcol -->
 {% if user.is_authenticated and perms.telemeta.delete_mediaitem %}
 <div style="float: right;">
- <a href="{% url telemeta-item-delete item.public_id %}" class="component_icon button icon_cancel">{% trans "Delete" %}</a>
+ <a href="{% url telemeta-item-delete item.public_id %}" class="component_icon button icon_delete">{% trans "Delete" %}</a>
 </div>
 {% endif %}
 {% endblock %}
