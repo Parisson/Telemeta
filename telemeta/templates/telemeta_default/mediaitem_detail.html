@@ -258,6 +258,9 @@
     </div>
     {% endblock infos %}
 </div> <!-- with-rightcol -->
+<div style="float: right;">
+ <a href="{% url telemeta-item-delete item.public_id %}" class="component_icon button icon_cancel">{% trans "Delete" %}</a>
+</div>
 {% endblock %}
 {% else %}
 <p>No such item</p>
