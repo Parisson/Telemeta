@@ -976,7 +976,7 @@ Timeside.loadScripts = function(){
 }
 
 
-Timeside.load =function(container, soundUrl, durationInMsec, visualizers, markerMap, newMarkerCallback, onError, onReady){
+Timeside.load =function(container, soundUrl, durationInMsec, soundImgFcn, markerMap, newMarkerCallback, onError, onReady){
 
     var $J = jQuery;
     var playerDiv = container;
@@ -1001,8 +1001,8 @@ Timeside.load =function(container, soundUrl, durationInMsec, visualizers, marker
         return;
     }
 
-    if(!(visualizers)){
-        onError('invalid visualizers');
+    if(!(soundImgFcn)){
+        onError('invalid sound image. Provide a callback(width,height) or a string denoting a valid url');
         return;
     }
     if(!(markerMap) || !(markerMap.length)){
@@ -1038,7 +1038,7 @@ Timeside.load =function(container, soundUrl, durationInMsec, visualizers, marker
             });
             
             Timeside.loadScripts(thisScriptPath,['rulermarker.js','markermap.js', 'player.js', 'ruler.js'], function() {
-                var p = new Timeside.classes.Player(playerDiv, sound, durationInMsec, visualizers,newMarkerCallback);
+                var p = new Timeside.classes.Player(playerDiv, sound, durationInMsec, soundImgFcn,newMarkerCallback);
                 p.setupInterface(markerMap || []);
                 Timeside.player = p;
                 onReady(p);
