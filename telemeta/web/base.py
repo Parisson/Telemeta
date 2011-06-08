@@ -499,7 +499,8 @@ class WebView(object):
         
         item = MediaItem.objects.get(public_id=public_id)
         
-        public_access = self.get_public_access(item.public_access, item.recorded_from_date, item.recorded_to_date)
+        public_access = self.get_public_access(item.public_access, str(item.recorded_from_date).split('-')[0], 
+                                                str(item.recorded_to_date).split('-')[0])
         if (not public_access or not extension in settings.TELEMETA_STREAMING_FORMATS) and not request.user.is_staff:
             return HttpResponseRedirect('not_allowed/')
 
