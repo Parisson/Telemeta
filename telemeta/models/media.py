@@ -217,7 +217,7 @@ class MediaCollectionForm(ModelForm):
         
 
 item_published_code_regex    = collection_published_code_regex + '(?:_[0-9]{2,3}){1,2}'
-item_unpublished_code_regex  = collection_unpublished_code_regex + '_[0-9]{2,3}(?:_[0-9]{2}){0,2}'
+item_unpublished_code_regex  = collection_unpublished_code_regex + '_[0-9]{2,3}(?:_[0-9]{2,3}){0,2}'
 item_code_regex              = '(?:%s|%s)' % (item_published_code_regex, item_unpublished_code_regex)
 
 class MediaItem(MediaResource):
