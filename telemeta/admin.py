@@ -11,6 +11,7 @@ class MediaCollectionAdmin(admin.ModelAdmin):
 class MediaItemAdmin(admin.ModelAdmin):
     search_fields = ['title', 'code']
     ordering = ['code']
+    exclude = ('copied_from_item', )
 
 class MediaPartAdmin(admin.ModelAdmin):
     search_fields = ['title', 'item__code']
@@ -45,7 +46,7 @@ class LocationRelationAdmin(admin.ModelAdmin):
     ordering = ['ancestor_location__name']
 
 admin.site.register(MediaCollection, MediaCollectionAdmin)
-#admin.site.register(MediaItem, MediaItemAdmin)
+admin.site.register(MediaItem, MediaItemAdmin)
 admin.site.register(MediaPart, MediaPartAdmin)
 
 admin.site.register(Instrument, InstrumentAdmin)
