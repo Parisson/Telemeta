@@ -35,6 +35,7 @@
 from telemeta.models.core import Duration
 from telemeta.models.media import MediaItem, MediaCollection
 from django.conf import settings
+from telemeta.interop.oai import *
 
 class Resource(object):
     "Represent a Dublin Core resource"
@@ -118,9 +119,9 @@ class Date(Element):
     def __init__(self, start, end=None, refinement=None):
         value = ''
         if start:
-            value = unicode(start) 
+            value = iso_time(start)
         elif end:
-            value = unicode(end)
+            value = iso_time(end)
         else:
             value = ''
         super(Date, self).__init__('date', value, refinement)            
