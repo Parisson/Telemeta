@@ -73,7 +73,7 @@
 {% endblock %}
 
 {% block content %}
-    <div class="{% if collection.has_mediafile %}{% if item.public_access == 'full' or public_access or user.is_staff %}with-rightcol{% endif %}{% endif %}">
+    <div class="{% if collection.has_mediafile %}{% if public_access or user.is_staff or user.is_superuser %}with-rightcol{% endif %}{% endif %}">
         {% if collection.has_mediafile %}
         {% if public_access or user.is_staff or user.is_superuser %}
         <div id="rightcol">

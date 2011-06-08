@@ -156,8 +156,10 @@ class WebView(object):
         collection = MediaCollection.objects.get(public_id=public_id)
         if collection.public_access == 'none' and not request.user.is_staff:
             return HttpResponseRedirect('not_allowed/')
+        public_access = self.get_public_access(collection.public_access, collection.recorded_from_year, 
+                                                collection.recorded_to_year)
         playlists = self.get_playlists(request)
-        return render(request, template, {'collection': collection, 'playlists' : playlists})
+        return render(request, template, {'collection': collection, 'playlists': playlists, 'public_access': public_access})
 
     @method_decorator(permission_required('telemeta.change_mediacollection'))
     def collection_edit(self, request, public_id, template='telemeta/collection_edit.html'):
@@ -272,7 +274,8 @@ class WebView(object):
         previous, next = self.item_previous_next(item)
         self.item_analyze(item)
         playlists = self.get_playlists(request)
-        public_access = self.get_public_access(item.public_access, item.recorded_from_date, item.recorded_to_date)
+        public_access = self.get_public_access(item.public_access, str(item.recorded_from_date).split('-')[0], 
+                                                str(item.recorded_to_date).split('-')[0])
                 
         return render(request, template,
                     {'item': item, 'export_formats': formats,
@@ -282,23 +285,22 @@ class WebView(object):
                     'public_access': public_access,
                     })
     
-    def get_public_access(self, access, date_from, date_to):
+    def get_public_access(self, access, year_from, year_to):
         # Rolling publishing date : public access is given when time between recorded year 
         # and current year is over the settings value PUBLIC_ACCESS_PERIOD
-        if date_to:
-            date = date_to
-        elif date_from:
-            date = date_from
+        if year_to:
+            year = year_to
+        elif year_from:
+            year = year_from
         else:
-            date = None
+            year = None
         if access == 'full':
             public_access = True
         else:
             public_access = False
-        if date:
-            year = str(date).split('-')
+        if year:
             year_now = datetime.datetime.now().strftime("%Y")
-            if int(year_now) - int(year[0]) >= settings.TELEMETA_PUBLIC_ACCESS_PERIOD:
+            if int(year_now) - int(year) >= settings.TELEMETA_PUBLIC_ACCESS_PERIOD:
                 public_access = True
         
         return public_access
@@ -497,7 +499,8 @@ class WebView(object):
         
         item = MediaItem.objects.get(public_id=public_id)
         
-        public_access = self.get_public_access(item.public_access, item.recorded_from_date, item.recorded_to_date)
+        public_access = self.get_public_access(item.public_access, str(item.recorded_from_date).split('-')[0], 
+                                                str(item.recorded_to_date).split('-')[0])
         if (not public_access or not extension in settings.TELEMETA_STREAMING_FORMATS) and not request.user.is_staff:
             return HttpResponseRedirect('not_allowed/')
 

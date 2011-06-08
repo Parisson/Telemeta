@@ -47,8 +47,12 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         this.getSound = function(){
             return sound;
         }
-        this.imageCallback = imageCallback;
-
+        if(typeof imageCallback == 'string'){
+            var url = imageCallback;
+            this.imageCallback =  new function(w,h){return url;} ;
+        }else{
+            this.imageCallback = imageCallback;
+        }
         var sd = this.toSec(soundDurationInMsec);
         this.getSoundDuration = function(){
             return sd;
@@ -101,6 +105,200 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
 
 
     },
+
+     //sets up the player interface and loads the markers. There is theoretically no need for this method, as it might be included in
+    //the init constructor, it is separated for "historical" reasons: this method stems from the old _setupInterface,
+    //which was a separate method in the old player code. Future releases might include it in the init constructor
+    setupInterface: function(markersArray) {
+
+        var sound = this.getSound();
+        this.debug('player _setupInterface sound.readyState:'+sound.readyState); //handle also cases 0 and 2????
+
+        var $J = this.$J; //defined in the super constructor
+        var me=this;
+        //build the innerHTML as array, then join it. This is usually faster than string concatenation in some browsers.
+        //Note that the player image (see below) is given a src with a temporary 1x1 pixels transparent image
+        //Basically, NOT specifying any src for image tags can be harmful,
+        //see http://www.nczonline.net/blog/2009/11/30/empty-image-src-can-destroy-your-site/ and
+        //http://geekswithblogs.net/bcaraway/archive/2007/08/24/114945.aspx for details
+        var html = ["<div class='ts-viewer'>",
+        "<div class='ts-ruler'></div>",
+        "<div class='ts-wave'>",
+        "<div class='ts-image-canvas'></div>",
+        "<div class='ts-image-container'>",
+        // "<img class='ts-image' src='/images/transparent.png' alt='' />",
+        "</div>",
+        "</div>",
+        "</div>",
+        "<div class='ts-control'>",
+        //"<div class='ts-layout'>",
+        //"<div class='ts-playback'>",
+        "<a class='ts-play ts-button'></a>",
+        "<a class='ts-pause ts-button'></a>",
+        "<a class='ts-rewind ts-button'></a>",
+        "<a class='ts-forward ts-button'></a>",
+        "<a class='ts-set-marker ts-button'></a>",
+        //        "<a class='ts-volume'></a>",
+
+        //"<div class='ts-volume'>",
+        "<a class='ts-volume-speaker ts-button'></a>",
+        "<div class='ts-volume-wrapper-div'>",
+        "<a class='ts-volume-bar-container'>",
+        "<span class='ts-volume-bar'></span>",
+        "</a>",
+        "</div>",
+
+        "<div class='ts-wait'></div>",
+        //"<img class='ts-wait'/>",
+        //"<select class='ts-visualizer'></select>",
+        //"</div>",
+        //"</div>",
+        "</div>"];
+
+        this.getContainer().html(html.join(''));
+        var container = this.getContainer();
+
+        var control = container.find('.ts-control');
+
+        //bind events to buttons:
+        var rewind = control.find('.ts-rewind');
+        rewind.attr('href', '#').click(function(e){
+            me.rewind.apply(me);
+            return false;
+        });
+
+        var forward = control.find('.ts-forward');
+        forward.attr('href', '#').click(function(e){
+            me.forward.apply(me);
+            return false;
+        });
+
+        var pause = control.find('.ts-pause');
+        pause.attr('href', '#').bind('click', function(){
+            me.pause.apply(me);
+            return false;
+        });
+
+        var play = control.find('.ts-play');
+        play.attr('href', '#').bind('click', function(){
+            me.setWait('loading',function(){
+                me.play.apply(me);
+            });
+            return false;
+        });
+
+        var setMarkerButton = control.find('.ts-set-marker');
+
+        var canAddMarkers = this.canAddMarker();
+
+        if(canAddMarkers){
+            setMarkerButton.show().attr('href','#').unbind('click').bind('click', function(){
+                me.addMarker(me.getSoundPosition());
+                return false;
+            });
+        }
+
+
+        //volume:
+        var volumeSpeaker = control.find('.ts-volume-speaker');
+        var volumeBarContainer = control.find('.ts-volume-bar-container');
+        var volumeBar = volumeBarContainer.find('.ts-volume-bar');
+
+        var getVol = function(x){
+            var vol = 100*x/volumeBarContainer.width();
+            //allow click to easily set to zero or 100, ie set a margin to 5%:
+            var margin = 5;
+            if (vol < margin){
+                vol=0;
+            }else if(vol >100-margin){
+                vol = 100;
+            }
+            return vol;
+        };
+        function setVolume(event,volumeElement){
+            //var ticks = [18,26,33,40,47];
+            var x = event.pageX - volumeElement.offset().left; //using absolute coordinates allows us to
+            //avoid using layerX (not supported in all browsers) and clientX (which needs the window scrollLeft variable)
+            me.setSoundVolume(getVol(x));
+            return false;
+        }
+        volumeBarContainer.attr('href', '#').click(function(event){
+            return setVolume(event,volumeBar);
+        });
+        volumeSpeaker.attr('href', '#').click(function(){
+            me.setSoundVolume(me.getSoundVolume()>0 ? 0 : getVol(volumeBar.outerWidth()));
+            return false;
+        });
+        this.setSoundVolume(this.getSoundVolume());
+
+        control.find('a').attr('href', '#') ;
+
+        //SET NECESSARY CSS (THIS WILL OVERRIDE CSS SET IN STYLESHEETS):
+        var viewer = container.find('.ts-viewer');
+        var wave = container.find('.ts-wave');
+        var ruler_ = container.find('.ts-ruler');
+        wave.add(viewer).add(control).add(ruler_).css({
+            'position':'relative',
+            'overflow':'hidden'
+        });
+        //assigning display and title to all anchors
+        control.find('*').css({
+            'display':'inline-block',
+            'overflow':'hidden'
+        });
+        if(!canAddMarkers){
+            setMarkerButton.hide().unbind('click');
+        }
+
+        var waitImg = control.find('.ts-wait');
+        waitImg.html('wait').css({
+            'position':'absolute'
+        });
+
+
+        var div = control.find('.ts-volume-wrapper-div');
+        div.css({
+            'position':'absolute',
+            'left':(volumeSpeaker.position().left+volumeSpeaker.outerWidth())+'px',
+            'top':0,
+            'width':'auto',
+            'height':'100%'
+        });
+        //END NECESSARY CSS
+
+        this.setWait(false);
+
+        //creating the ruler
+        var ruler = new Timeside.classes.Ruler(viewer, this.getSoundDuration());
+        this.getRuler = function(){
+            return ruler;
+        }
+
+        this.resize(); //which calls also ruler.resize() (see below)
+
+
+        //binds click for the pointer
+        var v = $J('#player').find('.ts-viewer');
+        v.unbind('click').click(function(evt){
+            var w = v.width();
+            var x = evt.pageX - v.offset().left; //using absolute coordinates allows us to
+            //avoid checking whether or not we are clicking on a vertical marker line, on a subdiv etcetera
+            var sd = me.getSoundDuration();
+            me.setSoundPosition(sd*x/w);
+        });
+
+
+
+        //finally, load markers and bind events for markers (see method below):
+        //NOTE: loadMarkers ASYNCHRONOUSLY CALLS THE SERVER, SO METHODS WRITTEN AFTER IT MIGHT BE EXECUTED BEFORE
+        //loadMarkers has finished its job
+        //this.loadMarkers(callback);
+
+        this.loadMarkers(markersArray);
+    },
+
+
+
     //functions for converting seconds (player unit) to milliseconds (sound manager unit) and viceversa:
     toSec: function(milliseconds){
         return milliseconds/1000;
@@ -334,196 +532,6 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
             setTimeout(wait, delay);
         }
     },
-    //sets up the player interface and loads the markers. There is theoretically no need for this method, as it might be included in
-    //the init constructor, it is separated for "historical" reasons: this method stems from the old _setupInterface,
-    //which was a separate method in the old player code. Future releases might include it in the init constructor
-    setupInterface: function(markersArray) {
-        
-        var sound = this.getSound();
-        this.debug('player _setupInterface sound.readyState:'+sound.readyState); //handle also cases 0 and 2????
-        
-        var $J = this.$J; //defined in the super constructor
-        var me=this;
-        //build the innerHTML as array, then join it. This is usually faster than string concatenation in some browsers.
-        //Note that the player image (see below) is given a src with a temporary 1x1 pixels transparent image
-        //Basically, NOT specifying any src for image tags can be harmful,
-        //see http://www.nczonline.net/blog/2009/11/30/empty-image-src-can-destroy-your-site/ and
-        //http://geekswithblogs.net/bcaraway/archive/2007/08/24/114945.aspx for details
-        var html = ["<div class='ts-viewer'>",
-        "<div class='ts-ruler'></div>",
-        "<div class='ts-wave'>",
-        "<div class='ts-image-canvas'></div>",
-        "<div class='ts-image-container'>",
-        // "<img class='ts-image' src='/images/transparent.png' alt='' />",
-        "</div>",
-        "</div>",
-        "</div>",
-        "<div class='ts-control'>",
-        //"<div class='ts-layout'>",
-        //"<div class='ts-playback'>",
-        "<a class='ts-play ts-button'></a>",
-        "<a class='ts-pause ts-button'></a>",
-        "<a class='ts-rewind ts-button'></a>",
-        "<a class='ts-forward ts-button'></a>",
-        "<a class='ts-set-marker ts-button'></a>",
-        //        "<a class='ts-volume'></a>",
-
-        //"<div class='ts-volume'>",
-        "<a class='ts-volume-speaker ts-button'></a>",
-        "<div class='ts-volume-wrapper-div'>",
-        "<a class='ts-volume-bar-container'>",
-        "<span class='ts-volume-bar'></span>",
-        "</a>",
-        "</div>",
-
-        "<div class='ts-wait'></div>",
-        //"<img class='ts-wait'/>",
-        //"<select class='ts-visualizer'></select>",
-        //"</div>",
-        //"</div>",
-        "</div>"];
-
-        this.getContainer().html(html.join(''));
-        var container = this.getContainer();
-
-        var control = container.find('.ts-control');
-
-        //bind events to buttons:
-        var rewind = control.find('.ts-rewind');
-        rewind.attr('href', '#').click(function(e){
-            me.rewind.apply(me);
-            return false;
-        });
-        
-        var forward = control.find('.ts-forward');
-        forward.attr('href', '#').click(function(e){
-            me.forward.apply(me);
-            return false;
-        });
-
-        var pause = control.find('.ts-pause');
-        pause.attr('href', '#').bind('click', function(){
-            me.pause.apply(me);
-            return false;
-        });
-
-        var play = control.find('.ts-play');
-        play.attr('href', '#').bind('click', function(){
-            me.setWait('loading',function(){
-                me.play.apply(me);
-            });
-            return false;
-        });
-
-        var setMarkerButton = control.find('.ts-set-marker');
-
-        var canAddMarkers = this.canAddMarker();
-        
-        if(canAddMarkers){
-            setMarkerButton.show().attr('href','#').unbind('click').bind('click', function(){
-                me.addMarker(me.getSoundPosition());
-                return false;
-            });
-        }
-       
-
-        //volume:
-        var volumeSpeaker = control.find('.ts-volume-speaker');
-        var volumeBarContainer = control.find('.ts-volume-bar-container');
-        var volumeBar = volumeBarContainer.find('.ts-volume-bar');
-
-        var getVol = function(x){
-            var vol = 100*x/volumeBarContainer.width();
-            //allow click to easily set to zero or 100, ie set a margin to 5%:
-            var margin = 5;
-            if (vol < margin){
-                vol=0;
-            }else if(vol >100-margin){
-                vol = 100;
-            }
-            return vol;
-        };
-        function setVolume(event,volumeElement){
-            //var ticks = [18,26,33,40,47];
-            var x = event.pageX - volumeElement.offset().left; //using absolute coordinates allows us to
-            //avoid using layerX (not supported in all browsers) and clientX (which needs the window scrollLeft variable)
-            me.setSoundVolume(getVol(x));
-            return false;
-        }
-        volumeBarContainer.attr('href', '#').click(function(event){
-            return setVolume(event,volumeBar);
-        });
-        volumeSpeaker.attr('href', '#').click(function(){
-            me.setSoundVolume(me.getSoundVolume()>0 ? 0 : getVol(volumeBar.outerWidth()));
-            return false;
-        });
-        this.setSoundVolume(this.getSoundVolume());
-
-        control.find('a').attr('href', '#') ;
-
-        //SET NECESSARY CSS (THIS WILL OVERRIDE CSS SET IN STYLESHEETS):
-        var viewer = container.find('.ts-viewer');
-        var wave = container.find('.ts-wave');
-        var ruler_ = container.find('.ts-ruler');
-        wave.add(viewer).add(control).add(ruler_).css({
-            'position':'relative',
-            'overflow':'hidden'
-        });
-        //assigning display and title to all anchors
-        control.find('*').css({
-            'display':'inline-block',
-            'overflow':'hidden'
-        });
-        if(!canAddMarkers){
-            setMarkerButton.hide().unbind('click');
-        }
-       
-        var waitImg = control.find('.ts-wait');
-        waitImg.html('wait').css({
-            'position':'absolute'
-        });
-
-
-        var div = control.find('.ts-volume-wrapper-div');
-        div.css({
-            'position':'absolute',
-            'left':(volumeSpeaker.position().left+volumeSpeaker.outerWidth())+'px',
-            'top':0,
-            'width':'auto',
-            'height':'100%'
-        });
-        //END NECESSARY CSS
-        
-        this.setWait(false);
-
-        //creating the ruler
-        var ruler = new Timeside.classes.Ruler(viewer, this.getSoundDuration());
-        this.getRuler = function(){
-            return ruler;
-        }
-        
-        this.resize(); //which calls also ruler.resize() (see below)
-        
-
-        //binds click for the pointer
-        var v = $J('#player').find('.ts-viewer');
-        v.unbind('click').click(function(evt){
-            var w = v.width();
-            var x = evt.pageX - v.offset().left; //using absolute coordinates allows us to
-            //avoid checking whether or not we are clicking on a vertical marker line, on a subdiv etcetera
-            var sd = me.getSoundDuration();
-            me.setSoundPosition(sd*x/w);
-        });
-       
-
-        
-        //finally, load markers and bind events for markers (see method below):
-        //NOTE: loadMarkers ASYNCHRONOUSLY CALLS THE SERVER, SO METHODS WRITTEN AFTER IT MIGHT BE EXECUTED BEFORE
-        //loadMarkers has finished its job
-        //this.loadMarkers(callback);
-       
-        this.loadMarkers(markersArray);
-    },
 
     /**
       * sets whether or not window resize resizes also this player. When true, a variable _dynamicResize =setInterval(...) is attached to
@@ -574,8 +582,8 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         //}
         }
         //set image, imagecontainer and canvas (container on imagecontainer for lines and pointer triangles) css
-        var elements = container.find('.ts-image-container').css('zIndex','0')
-        .add(container.find('.ts-image-canvas').css('zIndex','1')); //the two children of ts-wave. Set also the zIndex
+        var elements = wave.find('.ts-image-container').css('zIndex','0')
+        .add(wave.find('.ts-image-canvas').css('zIndex','1')); //the two children of ts-wave. Set also the zIndex
         //in order to visualize the canvas OVER the wav image
 
         elements.css('width', 'auto'); // for IE6. We leave it although IE6 is not anymore supported
@@ -653,6 +661,11 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
             width: wave.width(),
             height:wave.height()
         }
+    },
+    setImageSize: function(width,height){
+        var wave = this.getContainer().find('.ts-wave');
+        wave.css({'width':width,'height':height});
+        this.resize();
     },
 
     getSoundVolume :function(){

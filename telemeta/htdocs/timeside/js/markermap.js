@@ -80,7 +80,7 @@ Timeside.classes.MarkerMap = Timeside.classes.TimesideArray.extend({
         var idx = -1;
         if(typeof index == 'number'){
             idx = identifier;
-        }else{
+        }else if('id' in identifier && 'offset' in identifier){
             idx = this.insertionIndex(identifier);
         }
         if(idx<0 || idx>=this.length){
