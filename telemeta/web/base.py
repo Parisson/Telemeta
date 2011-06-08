@@ -293,15 +293,17 @@ class WebView(object):
         elif year_from:
             year = year_from
         else:
-            year = None
+            year = False
         if access == 'full':
             public_access = True
         else:
             public_access = False
-        if year:
+        if year and not year == 'None':
             year_now = datetime.datetime.now().strftime("%Y")
             if int(year_now) - int(year) >= settings.TELEMETA_PUBLIC_ACCESS_PERIOD:
                 public_access = True
+        else:
+            public_access = False
         
         return public_access
         
