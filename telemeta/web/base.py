@@ -305,7 +305,7 @@ class WebView(object):
         
     @method_decorator(permission_required('telemeta.change_mediaitem'))
     def item_edit(self, request, public_id, template='telemeta/mediaitem_edit.html'):
-        """Show the details of a given item"""
+        """Edit a given item"""
         item = MediaItem.objects.get(public_id=public_id)
         
         formats = []
@@ -350,7 +350,7 @@ class WebView(object):
         
     @method_decorator(permission_required('telemeta.add_mediaitem'))
     def item_add(self, request, public_id=None, template='telemeta/mediaitem_add.html'):
-        """Show the details of a given item"""
+        """Add an item"""
         if public_id:
             collection = MediaCollection.objects.get(public_id=public_id)
             item = MediaItem(collection=collection)
@@ -372,7 +372,7 @@ class WebView(object):
     
     @method_decorator(permission_required('telemeta.add_mediaitem'))
     def item_copy(self, request, public_id, template='telemeta/mediaitem_copy.html'):
-        """Show the details of a given item"""        
+        """Copy a given item"""        
         if request.method == 'POST':
             new_item = MediaItem()
             form = MediaItemForm(data=request.POST, files=request.FILES, instance=new_item)
@@ -389,6 +389,14 @@ class WebView(object):
             form.file = None
         
         return render(request, template, {'item': item, "form": form})
+       
+    @method_decorator(permission_required('telemeta.delete_mediaitem'))
+    def item_delete(self, request, public_id):
+        """Delete a given item"""
+        item = MediaItem.objects.get(public_id=public_id)
+        collection = item.collection
+        item.delete()
+        return HttpResponseRedirect('/collections/'+collection.code)
         
     def item_analyze(self, item):
         analyses = MediaItemAnalysis.objects.filter(item=item)
