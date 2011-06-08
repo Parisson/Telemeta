@@ -424,7 +424,7 @@ class WebView(object):
                 pipe.run()
 
                 mime_type = decoder.format()
-                analysis = MediaItemAnalysis(item=item, name='MimeType', analyzer_id='mime_type', unit='', value=mime_type)
+                analysis = MediaItemAnalysis(item=item, name='MIME type', analyzer_id='mime_type', unit='', value=mime_type)
                 analysis.save()
                 analysis = MediaItemAnalysis(item=item, name='Channels', analyzer_id='channels', unit='', value=decoder.channels())
                 analysis.save()
