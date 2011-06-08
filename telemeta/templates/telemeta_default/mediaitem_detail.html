@@ -87,7 +87,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="{% if item.file %}{% if item.public_access == 'full' or public_access or user.is_staff %}with-rightcol{% endif %}{% endif %}">
+<div class="{% if item.file %}{% if public_access or user.is_staff or user.is_superuser %}with-rightcol{% endif %}{% endif %}">
     {% if item.file %}
     {% if public_access or user.is_staff or user.is_superuser %}
     <div id="player_maximized" class="ts-skin-lab">
@@ -125,7 +125,7 @@
         </div>
         <!--</div>-->
 
-        {% if audio_export_enabled %}
+        {% if audio_export_enabled or user.is_staff or user.is_superuser %}
         <div class="exporter">
             <p><img src="images/download.png" alt="download" style="vertical-align:middle" /> {% trans "Download:" %}
                 {% for format in export_formats %}
