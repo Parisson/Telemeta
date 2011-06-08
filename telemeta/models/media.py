@@ -135,6 +135,7 @@ class MediaCollection(MediaResource):
     items_done            = CharField(_('items finished'))
     collector_is_creator  = BooleanField(_('recordist identical to depositor'))
     is_published          = BooleanField(_('published'))
+    conservation_site     = CharField(_('conservation site'))
     
     # Technical data
     code                  = CharField(_('code'), unique=True, required=True, validators=[is_valid_collection_code])
