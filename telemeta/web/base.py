@@ -89,9 +89,9 @@ def stream_from_processor(__decoder, __processor, __flag):
             break
         yield __processor.chunk
 
-def stream_from_file(file):
+def stream_from_file(__file):
     chunk_size = 0x10000
-    f = open(file, 'r')
+    f = open(__file, 'r')
     while True:
         __chunk = f.read(chunk_size)
         if not len(__chunk):

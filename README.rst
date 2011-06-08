@@ -52,7 +52,7 @@ To get the lastest development version, you need subversion and run::
 
 Licence
 =======
-CeCILL v2 (see COPYING)
+CeCILL v2 (see LICENSE)
 
 
 Bugs and feedback
@@ -86,7 +86,7 @@ Contact
 Sponsors
 ========
 
-The Telemeta project is developed by Parisson and Samalyse. It is sponsored by :
+The Telemeta project is developed by Parisson. It is sponsored by :
 
   * CNRS : Centre National de la Recherche Scientifique (the french Natianal Research and Scientific Center)
     http://cnrs.fr
@@ -99,4 +99,3 @@ The Telemeta project is developed by Parisson and Samalyse. It is sponsored by :
     http://www.musee-europemediterranee.org
   * MMSH : Maison Méditerranéenne des Sciences de l'Homme
     http://www.mmsh.univ-aix.fr/
-  *  The Antropponet Project (ended)
