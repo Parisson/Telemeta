@@ -1160,6 +1160,9 @@ a.image-link {
 #id_file {
     width: 500px;
 }
+#id_conservation_site {
+    width: 500px;
+}
 
 /*focus on elements*/
 a:focus,div:focus{
