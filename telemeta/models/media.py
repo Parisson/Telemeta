@@ -284,7 +284,7 @@ class MediaItem(MediaResource):
 
     class Meta(MetaCore):
         db_table = 'media_items'
-        ordering = ['code', 'old_code']
+#        ordering = ['code', 'old_code']
 
     def is_valid_code(self, code):
         "Check if the item code is well formed"

@@ -47,7 +47,7 @@ telemeta.config.check()
 web_view = WebView()
 
 # query sets for Django generic views
-all_items = { 'queryset': MediaItem.objects.enriched(), }
+all_items = { 'queryset': MediaItem.objects.enriched().order_by('code', 'old_code') }
 all_collections = { 'queryset': MediaCollection.objects.enriched(), }
 
 # CREM collections
