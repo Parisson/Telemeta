@@ -58,7 +58,7 @@ function togglePlayerMaximization() {
 
 
 
-function loadPlayer(analizerUrl, soundUrl, itemId, visualizers, currentUserName, isStaffOrSuperuser){
+function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, currentUserName, isStaffOrSuperuser){
     var $J = jQuery;
     var wdw = window;
 
@@ -225,7 +225,7 @@ function loadPlayer(analizerUrl, soundUrl, itemId, visualizers, currentUserName,
                 }
 
                 //function(container, soundUrl, durationInMsec, visualizers, markerMap, showAddMarkerButton, onError,onReady ){
-                Timeside.load(playerDiv,soundUrl,timeInMSecs,imageSrcFcn,markerMap,markerMode, function(msg){
+                Timeside.load(playerDiv,soundUrl,timeInMSecs,imageSrcFcn,soundImgSize,markerMap,markerMode, function(msg){
                     end(msg);
                 },
                 function(player){
@@ -365,38 +365,58 @@ function loadPlayer(analizerUrl, soundUrl, itemId, visualizers, currentUserName,
                         wdw.onbeforeunload = confirmExit;
                     }
                     if(map && wdw.PopupDiv){
-                        var popupdiv = new PopupDiv({
-                            focusable: false,
-                            titleClass: 'markersdivTitle',
-                            showClose:false,
-                            bounds: {
-                                top:0.4,
-                                left:0.1,
-                                right:0.1,
-                                bottom:0
-                            },
-                            invoker: player.getContainer().find('.ts-wave'),
-                            defaultCloseOperation: 'hide'
-                        });
-                        var closeTimeout = undefined;
-                        var ci = clearTimeout;
-                        player.bind('markerCrossed',function(data){
-                            if(closeTimeout !== undefined){
-                                cl(closeTimeout);
-                            }
-                            closeTimeout=undefined;
-                            popupdiv.refresh(data.marker.desc,data.marker.title);
-                            if(!popupdiv.isShowing()){
-                                popupdiv.show();
-                            }
-                            var index = data.index;
-                            if(index+1 == map.length || map.toArray()[index+1].offset-data.marker.offset>3){
-                                closeTimeout = popupdiv.setTimeout('close',3000);
-                            }
-                            //consolelog('firing markercrossed');
-                            //consolelog(data.marker.title);
+                        var POPUP_TIMEOUT=3; //in seconds. Zero means: no popup, negative numbers:
+                        //popup stays infinitely on the player (until next marker cross)
+                        //a number N means: popup stays maximum N seconds on the screen
+                        if(POPUP_TIMEOUT){
+                            var popupdiv = new PopupDiv({
+                                focusable: false,
+                                titleClass: 'markersdivTitle',
+                                showClose:false,
+                                bounds: {
+                                    top:0.4,
+                                    left:0.1,
+                                    right:0.1,
+                                    bottom:0
+                                },
+                                invoker: player.getContainer().find('.ts-wave'),
+                                defaultCloseOperation: 'hide'
+                            });
+                            var popupShowFunction = function(data){
+//                                    if(popupTimeoutId !== undefined){
+//                                        cT(popupTimeoutId);
+//                                    }
+//                                    popupTimeoutId=undefined;
+                                    popupdiv.refresh(data.marker.desc,data.marker.title);
+                                    if(!popupdiv.isShowing()){
+                                        popupdiv.show();
+                                    }
+//                                    var index = data.index;
+//                                    if(index+1 == map.length || map.toArray()[index+1].offset-data.marker.offset>3){
+//                                        popupTimeoutId = popupdiv.setTimeout('close',3000);
+//                                    }
+                                };
+                            if(POPUP_TIMEOUT<0){
+                                player.bind('markerCrossed',popupShowFunction);
+                            }else{
+                                var popupTimeoutId = undefined;
+                                var cT = clearTimeout;
+                                player.bind('markerCrossed',function(data){
+                                    if(popupTimeoutId !== undefined){
+                                        cT(popupTimeoutId);
+                                    }
+                                    popupTimeoutId=undefined;
+                                    popupShowFunction(data);
+                                    var index = data.index;
+                                    if(index+1 == map.length || map.toArray()[index+1].offset-data.marker.offset>3){
+                                        popupTimeoutId = popupdiv.setTimeout('close',3000);
+                                    }
+                                //consolelog('firing markercrossed');
+                                //consolelog(data.marker.title);
                             
-                        });
+                                });
+                            }
+                        }
                     }
 
                     //set up the marker tab

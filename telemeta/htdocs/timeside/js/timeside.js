@@ -382,7 +382,11 @@ Timeside.classes.TimesideClass = Timeside.Class.extend({
             var l = rules.length;
             for(var j=0; j <l; j++){
                 var rule = rules[j];
+//                if(i==2){
+//                    consolelog(rule.selectorText);
+//                }
                 if(rule.selectorText == className){
+                    
                     var style = rule.style;
                     for(var k =0; k<availableAttrs.length; k++){
                         var val = style[availableAttrs[k]];
@@ -976,7 +980,7 @@ Timeside.loadScripts = function(){
 }
 
 
-Timeside.load =function(container, soundUrl, durationInMsec, soundImgFcn, markerMap, newMarkerCallback, onError, onReady){
+Timeside.load =function(container, soundUrl, durationInMsec, soundImgFcn, soundImgSize, markersArray, newMarkerCallback, onError, onReady){
 
     var $J = jQuery;
     var playerDiv = container;
@@ -1001,13 +1005,11 @@ Timeside.load =function(container, soundUrl, durationInMsec, soundImgFcn, marker
         return;
     }
 
-    if(!(soundImgFcn)){
+    if(!(typeof soundImgFcn == 'string' || typeof soundImgFcn === 'function')){
         onError('invalid sound image. Provide a callback(width,height) or a string denoting a valid url');
         return;
     }
-    if(!(markerMap) || !(markerMap.length)){
-        markerMap = [];
-    }
+  
 
     $J(window).ready(function(){
         //if soundmanager is ready, the callback is executed immetiately
@@ -1038,8 +1040,9 @@ Timeside.load =function(container, soundUrl, durationInMsec, soundImgFcn, marker
             });
             
             Timeside.loadScripts(thisScriptPath,['rulermarker.js','markermap.js', 'player.js', 'ruler.js'], function() {
-                var p = new Timeside.classes.Player(playerDiv, sound, durationInMsec, soundImgFcn,newMarkerCallback);
-                p.setupInterface(markerMap || []);
+                var p = new Timeside.classes.Player(playerDiv, sound, durationInMsec, soundImgFcn, soundImgSize,
+                markersArray,newMarkerCallback);
+                //p.setupInterface(markerMap || []);
                 Timeside.player = p;
                 onReady(p);
                 return false;

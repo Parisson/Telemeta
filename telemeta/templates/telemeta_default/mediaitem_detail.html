@@ -59,7 +59,7 @@
     var superuser = false;
    {% endif %}
     loadPlayer('{% url telemeta-item-analyze-xml item.public_id %}',
-    "{% url telemeta-item-export item.public_id,"mp3" %}", '{{item.id}}', visualizers, CURRENT_USER_NAME, superuser);
+    "{% url telemeta-item-export item.public_id,"mp3" %}", undefined, '{{item.id}}', visualizers, CURRENT_USER_NAME, superuser);
 
 </script>
 {% endif %}
