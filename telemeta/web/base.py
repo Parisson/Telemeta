@@ -256,7 +256,7 @@ class WebView(object):
         else:
             item = MediaItem.objects.get(public_id=public_id)
         
-        if item.public_access == 'none' and not request.user.is_staff:
+        if (item.public_access == 'none' or item.collection.public_access == 'none') and not request.user.is_staff:
             return HttpResponseRedirect('not_allowed/')
             
         # Get TimeSide processors
