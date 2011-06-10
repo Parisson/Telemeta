@@ -35,7 +35,7 @@
 from telemeta.models.core import Duration
 from telemeta.models.media import MediaItem, MediaCollection
 from django.conf import settings
-from telemeta.interop.oai import *
+
 
 class Resource(object):
     "Represent a Dublin Core resource"
@@ -119,11 +119,17 @@ class Date(Element):
     def __init__(self, start, end=None, refinement=None):
         value = ''
         if start:
-            value = iso_time(start)
+            value = start
         elif end:
-            value = iso_time(end)
+            value = end
         else:
             value = ''
+        if isinstance(value, long):
+            # start is a year
+            value = unicode(value) + '-01-01T00:00:00Z'
+        elif value:
+            value = value.strftime('%Y-%m-%dT%H:%M:%SZ')
+            
         super(Date, self).__init__('date', value, refinement)            
 
 def media_access_rights(media):
@@ -162,7 +168,7 @@ def express_collection(collection):
         Element.multiple('subject', settings.TELEMETA_SUBJECTS),
         Element('publisher',        collection.publisher),
         Element('publisher',        settings.TELEMETA_ORGANIZATION),
-        Date(collection.recorded_from_year, collection.recorded_to_year, 'created'),
+        Date(collection.recorded_from_year, collection.recorded_to_year, refinement='created'),
         Date(collection.year_published, refinement='issued'),
         Element('rights',           collection.legal_rights, 'license'),
         Element('rights',           media_access_rights(collection), 'accessRights'),
@@ -187,9 +193,9 @@ def express_item(item):
         creator = Element('creator', item.collection.creator)
        
     if item.recorded_from_date:
-        date = Date(item.recorded_from_date, item.recorded_to_date, 'created')
+        date = Date(item.recorded_from_date, item.recorded_to_date, refinement='created')
     else:
-        date = Date(item.collection.recorded_from_year, item.collection.recorded_to_year, 'created'),
+        date = Date(item.collection.recorded_from_year, item.collection.recorded_to_year, refinement='created'),
         
     if item.title:
         title = item.title
