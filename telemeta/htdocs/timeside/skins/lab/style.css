@@ -69,13 +69,16 @@
     font-size: 10px;
     line-height: 13px;
 }
-
-.ts-skin-lab .ts-player .ts-ruler .ts-svg-ruler-upper-rect{
+/*svg style, MUST BE A SINGLE SELECTOR. FOR INSTANCE, THIS DOES NOT WORK WHEN SVG IS NOT SUPPORTED:
+  ".ts-skin-lab .ts-player .ts-ruler .ts-svg-ruler-upper-rect" */
+.ts-svg-ruler-upper-rect{
     fill:  #595959;
     stroke-width:0;
     stroke: #595959; /*to be sure...*/
 }
-.ts-skin-lab .ts-player .ts-ruler .ts-svg-ruler-lines{
+/*svg style, MUST BE A SINGLE SELECTOR. FOR INSTANCE, THIS DOES NOT WORK WHEN SVG IS NOT SUPPORTED:
+  ".ts-skin-lab .ts-player .ts-ruler .ts-svg-ruler-lines"*/
+.ts-svg-ruler-lines{
     stroke-width:1;
     stroke:#ADADAD;
 }
@@ -84,11 +87,12 @@
 .ts-skin-lab .ts-player .ts-wave {
     height: 130px;
 }
-.ts-skin-lab .ts-player .ts-wave .ts-image {
+
+/*.ts-skin-lab .ts-player .ts-wave .ts-image {
     width: 360px;
     height: 130px;
     background: transparent;
-}
+}*/
 
 /*.ts-skin-lab .ts-player {
   background: #3c4251;
@@ -109,8 +113,9 @@
     /*color: white;
     background: #7290bc;*/
 }
-
-.ts-skin-lab .ts-player .ts-wave .ts-image-canvas .ts-svg-marker-line {
+/*svg style, MUST BE A SINGLE SELECTOR. FOR INSTANCE, THIS DOES NOT WORK WHEN SVG IS NOT SUPPORTED:
+  ".ts-skin-lab .ts-player .ts-wave .ts-image-canvas .ts-svg-marker-line" */
+.ts-svg-marker-line {
     fill: #e65911;
     stroke-width:0;
 }
@@ -129,8 +134,9 @@
     border-radius: .3em !important;
     /*color: #3c4251; #6A0307 !important;*/
 }
-
-.ts-skin-lab .ts-player .ts-wave .ts-image-canvas .ts-svg-pointer-line {
+/*svg style, MUST BE A SINGLE SELECTOR. FOR INSTANCE, THIS DOES NOT WORK WHEN SVG IS NOT SUPPORTED:
+  ".ts-skin-lab .ts-player .ts-wave .ts-image-canvas .ts-svg-pointer-line" */
+.ts-svg-pointer-line {
     fill: #BB0000;
     stroke-width:0;
 }

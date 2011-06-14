@@ -245,7 +245,8 @@ class WebView(object):
         
         return previous, next
         
-    def item_detail(self, request, public_id=None, marker_id=None, template='telemeta/mediaitem_detail.html'):
+    def item_detail(self, request, public_id=None, marker_id=None, width=None, height=None, 
+                        template='telemeta/mediaitem_detail.html'):
         """Show the details of a given item"""
         
         if not public_id and marker_id:
@@ -255,7 +256,7 @@ class WebView(object):
         else:
             item = MediaItem.objects.get(public_id=public_id)
         
-        if item.public_access == 'none' and not request.user.is_staff:
+        if (item.public_access == 'none' or item.collection.public_access == 'none') and not request.user.is_staff:
             return HttpResponseRedirect('not_allowed/')
             
         # Get TimeSide processors
@@ -282,7 +283,7 @@ class WebView(object):
                     'visualizers': graphers, 'visualizer_id': grapher_id,
                     'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True),
                     'previous' : previous, 'next' : next, 'marker': marker_id, 'playlists' : playlists, 
-                    'public_access': public_access,
+                    'public_access': public_access, 'width': width, 'height': height, 
                     })
     
     def get_public_access(self, access, year_from, year_to):

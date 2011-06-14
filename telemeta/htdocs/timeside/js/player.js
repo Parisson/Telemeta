@@ -32,11 +32,14 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
     
     //sound duration is in milliseconds because the soundmanager has that unit,
     //player (according to timeside syntax) has durations in seconds
-    init: function(container, sound, soundDurationInMsec, imageCallback, newMarkerCallback) {
+    // newMarkerCallback must be either a string or a function, the necessary checks is done in Timeside.load
+    // (which calls this method)
+    //if markersArray is not an array, it defaults to []
+    init: function(container, sound, soundDurationInMsec, soundImgFcn, soundImgSize, markersArray, newMarkerCallback) {
         this._super();
 
         //container is the div #player
-        
+       
         if (!container){
             this.debug('ERROR: container is null in initializing the player');
         }
@@ -47,12 +50,15 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         this.getSound = function(){
             return sound;
         }
-        if(typeof imageCallback == 'string'){
-            var url = imageCallback;
-            this.imageCallback =  new function(w,h){return url;} ;
-        }else{
-            this.imageCallback = imageCallback;
+        if(typeof soundImgFcn == 'string'){
+            var url = soundImgFcn;
+            this.imageCallback =  new function(w,h){
+                return url;
+            };
+        }else if(typeof soundImgFcn === 'function'){
+            this.imageCallback = soundImgFcn;
         }
+
         var sd = this.toSec(soundDurationInMsec);
         this.getSoundDuration = function(){
             return sd;
@@ -78,10 +84,10 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         //                }
         //        };
         
-        var currentMarkerIndex=0;
-        this.getCurrentMarkerIndex = function(){
-            return currentMarkerIndex;
-        };
+        //        var currentMarkerIndex=0;
+        //        this.getCurrentMarkerIndex = function(){
+        //            return currentMarkerIndex;
+        //        };
 
 
         //initializing markermap and markerui
@@ -90,28 +96,33 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
             return map;
         }
 
+        var canAddMarkers = false;
         if(newMarkerCallback){
-            this.canAddMarker = function(){
-                return true;
-            }
+            //            this.canAddMarker = function(){
+            //                return true;
+            //            }
+            canAddMarkers = true;
             if(typeof newMarkerCallback === 'function'){
                 this.newMarker = newMarkerCallback;
             }
-        }else{
-            this.canAddMarker = function(){
-                return false;
-            }
         }
+        //        else{
+        //            this.canAddMarker = function(){
+        //                return false;
+        //            }
+        //        }
 
 
-    },
+        // },
 
-     //sets up the player interface and loads the markers. There is theoretically no need for this method, as it might be included in
-    //the init constructor, it is separated for "historical" reasons: this method stems from the old _setupInterface,
-    //which was a separate method in the old player code. Future releases might include it in the init constructor
-    setupInterface: function(markersArray) {
+        //sets up the player interface and loads the markers. There is theoretically no need for this method, as it might be included in
+        //the init constructor, it is separated for "historical" reasons: this method stems from the old _setupInterface,
+        //which was a separate method in the old player code. Future releases might include it in the init constructor
+        //  setupInterface: function(markersArray) {
 
-        var sound = this.getSound();
+        //removed"
+        //      var sound = this.getSound();
+        //removed"
         this.debug('player _setupInterface sound.readyState:'+sound.readyState); //handle also cases 0 and 2????
 
         var $J = this.$J; //defined in the super constructor
@@ -155,8 +166,13 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         //"</div>",
         "</div>"];
 
-        this.getContainer().html(html.join(''));
-        var container = this.getContainer();
+        //removed"
+        //this.getContainer().html(html.join(''));
+        //var container = this.getContainer();
+        //removed"
+        //added"
+        container.html(html.join(''));
+        //added"
 
         var control = container.find('.ts-control');
 
@@ -189,13 +205,17 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
 
         var setMarkerButton = control.find('.ts-set-marker');
 
-        var canAddMarkers = this.canAddMarker();
+        //removed"
+        //var canAddMarkers = this.canAddMarker();
+        //removed"
 
         if(canAddMarkers){
             setMarkerButton.show().attr('href','#').unbind('click').bind('click', function(){
                 me.addMarker(me.getSoundPosition());
                 return false;
             });
+        }else{
+            setMarkerButton.hide().unbind('click');
         }
 
 
@@ -246,9 +266,9 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
             'display':'inline-block',
             'overflow':'hidden'
         });
-        if(!canAddMarkers){
-            setMarkerButton.hide().unbind('click');
-        }
+        //        if(!canAddMarkers){
+        //            setMarkerButton.hide().unbind('click');
+        //        }
 
         var waitImg = control.find('.ts-wait');
         waitImg.html('wait').css({
@@ -274,7 +294,15 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
             return ruler;
         }
 
-        this.resize(); //which calls also ruler.resize() (see below)
+        //setting image size (if provided) and resize player. Note that _setImageSize (with underscore) is intended to be
+        //a private method (faster). setImageSize (without underscore) is the public method to use outside of player object
+        if(soundImgSize){
+            this._setImageSize(soundImgSize.width,soundImgSize.height,container, wave,true); //calls this.resize which calls ruler.resize
+        }else{
+            this._setImageSize('','',container, wave,true); //calls this.resize which calls ruler.resize
+        }
+
+        //this.resize(); //which calls also ruler.resize() (see below)
 
 
         //binds click for the pointer
@@ -293,7 +321,9 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         //NOTE: loadMarkers ASYNCHRONOUSLY CALLS THE SERVER, SO METHODS WRITTEN AFTER IT MIGHT BE EXECUTED BEFORE
         //loadMarkers has finished its job
         //this.loadMarkers(callback);
-
+        if(!(markersArray) || !(markersArray.length)){
+            markersArray = [];
+        }
         this.loadMarkers(markersArray);
     },
 
@@ -397,21 +427,27 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
                 var offs = marker.offset;
                 var intervalUpperBound =  offs+margin;
                 var intervalLowerBound =  offs-margin;
-                var data = {index:idx,marker:marker};
+                var data = {
+                    index:idx,
+                    marker:marker
+                };
                 fireOnMarkerPosition = function(seconds){
                     if(marker){
                         if(seconds>intervalLowerBound && seconds < intervalUpperBound){
-                             player.fire('markerCrossed',data);
-                             idx++;
-                             if(idx<len){
-                                 marker = markers[idx];
-                                 offs = marker.offset;
-                                 intervalUpperBound =  offs+margin;
-                                 intervalLowerBound =  offs-margin;
-                                 data = {index:idx,marker:marker};
-                             }else{
-                                 marker = undefined;
-                             }
+                            player.fire('markerCrossed',data);
+                            idx++;
+                            if(idx<len){
+                                marker = markers[idx];
+                                offs = marker.offset;
+                                intervalUpperBound =  offs+margin;
+                                intervalLowerBound =  offs-margin;
+                                data = {
+                                    index:idx,
+                                    marker:marker
+                                };
+                            }else{
+                                marker = undefined;
+                            }
                         }
                     }
                 };
@@ -457,7 +493,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
                                 player.soundPosition = sPosInSec;
                                 ruler.movePointer(sPosInSec);
                         }
-                                fireOnMarkerPosition(sPosInSec);
+                        fireOnMarkerPosition(sPosInSec);
                 }
 
             },
@@ -568,38 +604,61 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         
         var wave = container.find('.ts-wave');
 
-        //var image = wave.find('img.ts-image');
-        //if(!image.length){
-        //    image = this.$J('<img/>');
-        //}
+        
         height = wave.height();
         this.debug("wave height:" + height);
-        if (!height) {
-            //this.debug('ERROR: image height is zero in player.,resize!!!!')
-            //height = image.height();
-            //if (!height){
-            height = 200;
-        //}
-        }
+
+        if (height) {
+
         //set image, imagecontainer and canvas (container on imagecontainer for lines and pointer triangles) css
         var elements = wave.find('.ts-image-container').css('zIndex','0')
         .add(wave.find('.ts-image-canvas').css('zIndex','1')); //the two children of ts-wave. Set also the zIndex
         //in order to visualize the canvas OVER the wav image
 
-        elements.css('width', 'auto'); // for IE6. We leave it although IE6 is not anymore supported
+        //elements.css('width', 'auto'); // for IE6. We leave it although IE6 is not anymore supported
         var style = {
             width: wave.width(),
             height: height
         }
         elements.css(style);
         elements.css('position','absolute');
-        
+
+        }
+
         //refreshing images:
-        
+
         this.refreshImage();
         this.getRuler().resize();
 
-        return this;
+
+//
+//        if (!height) {
+//            //this.debug('ERROR: image height is zero in player.,resize!!!!')
+//            //height = image.height();
+//            //if (!height){
+//            height = 1; //200;
+//            wave.css('minHeight',height+'px');
+//        //}
+//        }
+//        //set image, imagecontainer and canvas (container on imagecontainer for lines and pointer triangles) css
+//        var elements = wave.find('.ts-image-container').css('zIndex','0')
+//        .add(wave.find('.ts-image-canvas').css('zIndex','1')); //the two children of ts-wave. Set also the zIndex
+//        //in order to visualize the canvas OVER the wav image
+//
+//        elements.css('width', 'auto'); // for IE6. We leave it although IE6 is not anymore supported
+//        var style = {
+//            width: wave.width(),
+//            height: height
+//        }
+//        elements.css(style);
+//        elements.css('position','absolute');
+//
+//        //refreshing images:
+//
+//        this.refreshImage();
+//        this.getRuler().resize();
+//
+//        return this;
     },
     getImageUrl : function(){
         var image = this.getContainer().find('.ts-image');
@@ -618,7 +677,14 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         //            image = container.find('.ts-image');
         //        }
 
+        //consolelog(this);
+
         var size = this.getImageSize();
+
+        if(!size.width || !size.height){
+            consolelog('size is zero!!!!');
+            return;
+        }
         var imgSrc = this.imageCallback(size.width,size.height);
         var imageNotYetCreated = image.length == 0;
         if(!imageNotYetCreated && image.attr('src')==imgSrc){
@@ -662,10 +728,31 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
             height:wave.height()
         }
     },
+
     setImageSize: function(width,height){
-        var wave = this.getContainer().find('.ts-wave');
-        wave.css({'width':width,'height':height});
-        this.resize();
+        var container = this.getContainer();
+        var wave = container.find('.ts-wave');
+        this._setImageSize(width,height,container, wave,true);
+    },
+    //this is intended to be a private method, use setImageSize from outside the player object)
+    _setImageSize: function(width,height,jQueryContainerElement, jQueryWaveElement, resize){
+        if(width || height){
+            consolelog('SETTING SIZE!!!');
+            var re = /(?:px|ex|em|%)$/;
+            if(width){
+                width+='';
+                width = re.exec(width) ? width : width+'px';
+                jQueryContainerElement.css('width',width);
+            }
+            if(height){
+                height+='';
+                height = re.exec(height) ? height : height+'px';
+                jQueryWaveElement.css('height',height);
+            }
+        }
+        if(resize){
+            this.resize();
+        }
     },
 
     getSoundVolume :function(){
