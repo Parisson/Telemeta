@@ -17,10 +17,20 @@ import sys
 import logging
 import datetime
 import timeside
-from django.utils import html
 from django.core.management import setup_environ
 from django.core.files.base import ContentFile
 
+mapping = {
+             'title': 'title',
+             'album': 'collection',
+             'date': 'recorded_from_date',
+             'artist': 'author',
+             'track-number': 'track',
+             'encoder': 'comment',
+             'genre': 'generic_style',
+             'audio-codec': 'comment',
+             'container-format': 'comment',
+             }
 
 class Logger:
 
@@ -60,14 +70,7 @@ class TelemetaMediaImport:
         if not collection_name:
             collection_name = 'Unkown'
         code = collection_name.replace(' ','_')
-        code = code.replace("'",'_')
-        code = re.escape(code)
-        code = code.replace("\\",'')
-        code = code.replace("(",'_')
-        code = code.replace(")",'_')
-        code = code.replace(",",'_')
-        print code
-        #code = html.escape(code)
+        code = re.sub(r'\W+', '_', code)
         from telemeta.models.media import MediaCollection
         collections = MediaCollection.objects.filter(code=code)
         if not collections:
@@ -78,7 +81,7 @@ class TelemetaMediaImport:
         else:
             collection = collections[0]
         return collection
-
+        
     def media_import(self):
         from telemeta.models.media import MediaItem
         for media in self.medias:
@@ -89,24 +92,30 @@ class TelemetaMediaImport:
             if not item:
                 print 'importing ' + path
                 decoder = timeside.decoder.FileDecoder(path)
-                obj = timeside.decoder.metadata.Mp3Metadata(path)
-                metadata = obj.metadata()
-                print metadata
-                collection = self.set_collection(metadata['album'])
-                item = MediaItem(collection=collection)
-                item.title = metadata['title']
-                item.author = metadata['artist']
-                #item.generic_style = metadata.genre
-                date = metadata['date']
-                if not date or date == '0000':
-                    date = '1900'
-                if not len(date) > 4:
-                    item.recorded_from_date = date + '-01-01'
-                item.file = path
-                item.save()
-                msg = 'added item : ' + path
-                self.logger.write_info(collection.code, msg)
-
+                try:
+                    metadata = decoder.metadata()
+                    print metadata
+                    collection = self.set_collection(metadata['album'])
+                    item = MediaItem(collection=collection)
+                    item.code = re.sub(r'\W+', '_', metadata['title'])
+                    for tag in mapping.keys():
+                        try:
+                            if tag == 'date':
+                                date = metadata[tag].split(' ')[1].split('/')
+                                metadata[tag] = date[2]+'-'+date[1]+'-'+date[0]                               
+                            if mapping[tag] == 'comment':
+                                item[mapping[tag]] = item[mapping[tag]] + '\n' + metadata[tag]
+                            else:
+                                item[mapping[tag]] = metadata[tag]
+                        except:
+                            continue
+                    item.file = path
+                    item.save()
+                    msg = 'added item : ' + path
+                    self.logger.write_info(collection.code, msg)
+                except:
+                    continue
+                
 
 def run():
     project_dir = sys.argv[-2]
