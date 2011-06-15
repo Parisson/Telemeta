@@ -78,7 +78,7 @@
 {% block menu %}
 
 {# spaces between li and a elements breaks layout #}
- <a href="/" class="darkblue">{% trans "Home" %}</a>
+ <a href="{% url telemeta-home %}" class="darkblue">{% trans "Home" %}</a>
  <a href="{% url telemeta-collections %}" class="blue">{% trans "Collections" %}</a>
  <a href="{% url telemeta-items %}" class="green">{% trans "Items" %}</a>
  <a href="{% url telemeta-geo-continents %}" class="yellow">{% trans "Geo Navigator" %}</a>

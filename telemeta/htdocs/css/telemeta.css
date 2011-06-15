@@ -103,7 +103,7 @@ a img { border: none; }
 
 #header {
     padding: 0.2em 0;
-    background: url("/images/waves.png") 100% 0% no-repeat;
+    background: url("../images/waves.png") 100% 0% no-repeat;
 }
 
 #content_header, #header{
@@ -948,7 +948,7 @@ a.image-link {
     padding:2px;
 }
 .markerdiv .ts-marker{
-    background-image: url('/images/marker_tiny.png'); text-align: center; min-width:3ex;
+    background-image: url(../images/marker_tiny.png'); text-align: center; min-width:3ex;
 }
 .markerdiv .ts-marker, .markerdiv .markersdivOffset, .markerdiv .markersdivTitle, .markerdiv .markersdivAddPlaylist, .markerdiv .markersdivEdit{margin-right:.8ex;}
 .markerdiv div a, .markerdiv div a:visited, .markerdiv div a:hover{
@@ -963,9 +963,9 @@ a.image-link {
 .markerdiv .ts-marker, .markerdiv .ts-marker:hover, .markerdiv .ts-marker:visited{
     font-family: monospace; background: #e65911;color: #FFF;padding-left: .3ex; padding-right:.3ex;
 }
-.markersdivDelete{    background-image: url('/images/del_marker.png');width:15px;height:2ex;background-repeat: no-repeat;}
+.markersdivDelete{    background-image: url('../images/del_marker.png');width:15px;height:2ex;background-repeat: no-repeat;}
 /*backfround-repeat is redundant with .markerDiv a,.. defined above but this way .markersDivDelete is re-usable in other context (eg popupdiv*/
-.markersdivAddPlaylist{    background-image: url('/images/add_playlist_marker.png');width:13px;height:2ex; }
+.markersdivAddPlaylist{    background-image: url('../images/add_playlist_marker.png');width:13px;height:2ex; }
 .markersdivTitle{    font-weight:bold;}
 .markersdivEdit, .markersdivEdit:hover, .markersdivEdit:visited{
     line-height: normal;
@@ -975,7 +975,7 @@ a.image-link {
     font-size: 65%;
     border:2px solid #666;
     background-color: #fff;
-    background-image: url('/images/edit_marker.png');
+    background-image: url('../images/edit_marker.png');
     -moz-border-radius: 1ex; -webkit-border-radius: 1ex; border-radius: 1ex;
 }
 .markersdivSave, .markersdivSave:hover, .markersdivSave:visited{
@@ -985,7 +985,7 @@ a.image-link {
     padding:.7ex; padding-left: 20px;
     background-position: 5px center;
     -moz-border-radius: 1ex;-webkit-border-radius: 1ex;border-radius: 1ex;
-    background-image: url('/images/ok.png');
+    background-image: url('../images/ok.png');
 }
 .markerdiv{ 
     border: 1px solid #aaaaaa;
@@ -1049,55 +1049,55 @@ a.image-link {
 }
 
 .icon_edit{
-    background-image: url('/images/edit_page.png'); 
+    background-image: url('../images/edit_page.png'); 
 }
 .icon_copy{
-    background-image: url('/images/copy_page.png');
+    background-image: url('../images/copy_page.png');
 }
 .icon_previous{
-    background-image: url('/images/previous.png');
+    background-image: url('../images/previous.png');
 }
 .icon_next{
-    background-image: url('/images/next.png');
+    background-image: url('../images/next.png');
 }
 .icon_dublin_core{
-    background-image: url('/images/dublin_core.png');
+    background-image: url('../images/dublin_core.png');
 }
 .icon_cancel{
-    background-image: url('/images/cancel.png');
+    background-image: url('../images/cancel.png');
 }
 .icon_save{
-    background-image: url('/images/save.png');
+    background-image: url('../images/save.png');
 }
 .icon_add{
-    background-image: url('/images/add.png');
+    background-image: url('../images/add.png');
 }
 .icon_add_to_playlist{
-    background-image: url('/images/add_to_playlist.png');
+    background-image: url('../images/add_to_playlist.png');
 }
 .icon_login{
-    background-image: url('/images/password.png');
+    background-image: url('../images/password.png');
 }
 .icon_search{
-    background-image: url('/images/find.png');
+    background-image: url('../images/find.png');
 }
 .icon_ok{
-    background-image: url('/images/ok.png');
+    background-image: url('../images/ok.png');
 }
 .icon_csv{
-    background-image: url('/images/csv.png');
+    background-image: url('../images/csv.png');
 }
 .icon_playlist{
-    background-image: url('/images/playlist.png');
+    background-image: url('../images/playlist.png');
 }
 .icon_filter{
-    background-image: url('/images/filter.png');
+    background-image: url('../images/filter.png');
 }
 .icon_delete{
-    background-image: url('/images/delete.png');
+    background-image: url('../images/delete.png');
 }
 .icon_rss,.icon_rss:hover{
-    background: url('/images/feed-icon-14x14.png') no-repeat;
+    background: url('../images/feed-icon-14x14.png') no-repeat;
     background-position: 0ex .8ex;
     padding:.0ex 0ex .8ex .7ex;
     text-decoration: none;

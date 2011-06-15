@@ -183,7 +183,7 @@ var json = function(param,method,onSuccessFcn,onErrorFcn){
     var $J = jQuery;
     $J.ajax({
         type: "POST",
-        url: '/json/',
+        url: 'json/',
         contentType: "application/json",
         data: data2send,
         dataType: "json",
