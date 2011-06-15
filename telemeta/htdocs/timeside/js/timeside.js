@@ -666,7 +666,7 @@ Timeside.classes.TimesideArray = Timeside.classes.TimesideClass.extend({
         }
         this.length = me.length; //in order to match the javascript array property
     },
-    length:0, //implement it as public property to be consistent with Array length property. Be careful however to NOT TO modify directly this property!!!
+    //length:0, //implement it as public property to be consistent with Array length property. Be careful however to NOT TO modify directly this property!!!
     //adds at the end of the array. If index is missing the object is appended at the end
     add : function(object, index){
         var array = this.toArray();

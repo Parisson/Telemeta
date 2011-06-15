@@ -48,18 +48,14 @@
 
 .ts-skin-lab .ts-player {
     padding: 0;
-    /*clear: both;
-    background: white;*/
-    /*padding-top: 10px;
-  padding-bottom: 10px;*/
     border: solid 1px #ADADAD;
     margin-top: 2px;
 }
 
-.ts-skin-lab .ts-player .ts-viewer {
+/*.ts-skin-lab .ts-player .ts-viewer {
     margin: 0;
     border: 0;
-}
+}*/
 
 
 
@@ -88,24 +84,8 @@
     height: 130px;
 }
 
-/*.ts-skin-lab .ts-player .ts-wave .ts-image {
-    width: 360px;
-    height: 130px;
-    background: transparent;
-}*/
-
-/*.ts-skin-lab .ts-player {
-  background: #3c4251;
-  
-  border: solid #b2b2b2 1px;
-}
-
-.ts-skin-lab .ts-player .ts-viewer {
-  margin: 0 12px 10px 12px;
-  border: solid 1px white;
-}*/
-
-.ts-skin-lab .ts-player .ts-viewer .ts-marker {
+/*.ts-skin-lab .ts-player .ts-viewer .ts-marker {*/
+.ts-skin-lab .ts-player .ts-ruler .ts-marker {
      padding: 0 0.5em;
     background: #e65911;
     color: #FFF;
@@ -120,15 +100,14 @@
     stroke-width:0;
 }
 
-.ts-skin-lab .ts-player .ts-viewer a.ts-pointer {
+/*.ts-skin-lab .ts-player .ts-viewer a.ts-pointer {*/
+.ts-skin-lab .ts-player .ts-ruler a.ts-pointer {
     color: #BB0000;
     background-color: white;
     padding: 0 0.5em;
     border: solid 1px #BB0000;
 
     text-decoration: none;
-    /*background-color: #e7e7e7;
-    border: 1px solid #3c4251; #a10006 !important;*/
      -moz-border-radius: .3em !important;
     -webkit-border-radius: .3em  !important;
     border-radius: .3em !important;
@@ -218,35 +197,3 @@
     font-size: 80%;
     color:white;
 }
-
-
-/*.ts-skin-lab .ts-player .ts-ruler{
-    color: #c3c2cc;
-    background-color: #2a3242;
-}*/
-
-/*canvas (svg). If svg is not supported, a parser in the palyer
-converts these values (nb: not all are supported) to specigic vml attributes. In this case, however, ONLY CLASSES WRITTEN
-ALONE ARE PARSED (eg ".ts-blabla, .ts-marker-canvas{...}" WILL NOT BE RECOGNIZED)*/
-
-/*ruler canvas (svg)"*/
-/*.ts-skin-lab .ts-player .ts-ruler .ts-svg-ruler-upper-rect{
-     fill:  #2a3242;
-    stroke-width:0;
-    stroke: #c3c2cc; to be sure...
-}*/
-/*.ts-skin-lab .ts-player .ts-ruler .ts-svg-ruler-lines{
-    stroke-width:1;
-    stroke:#9498a1;
-}*/
-/*class for the canvas (svg) associated to a marker.
-.ts-skin-lab .ts-player .ts-wave .ts-image-canvas .ts-svg-pointer-line {
-    fill: #a10006;
-    stroke-width:0;
-} */
-
-/*class for the canvas (svg) associated to a marker.*/
-/*.ts-skin-lab .ts-player .ts-wave .ts-image-canvas .ts-svg-marker-line {
-    fill: #7290bc;
-    stroke-width:0;
-}*/

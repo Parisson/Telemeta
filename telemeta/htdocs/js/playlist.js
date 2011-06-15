@@ -139,7 +139,7 @@ var playlistUtils = {
 
                         });
                         p.bind('show', function(){
-                            this.closeLater(1500); //this refers to p
+                            this.setTimeout('close',1500); //this refers to p
                         });
                         p.show();
                     }

@@ -33,27 +33,26 @@ Timeside.classes.MarkerMap = Timeside.classes.TimesideArray.extend({
 
     pFloat: parseFloat, //reference to function parseFloat for faster lookup
     //overridden
-    add: function(obj) {
+    add: function(newMarker) {
         //var markers = this.toArray();
         
-        if(!('offset' in obj)){
+        if(!('offset' in newMarker)){
             return -1;
         }
 
-
-        if(typeof obj.offset != 'number'){ //check to be sure:
-            obj.offset = this.pFloat(obj.offset);
+        if(typeof newMarker.offset != 'number'){ //check to be sure:
+            newMarker.offset = this.pFloat(newMarker.offset);
         }
-        if(!('id' in obj)){
-            obj.id = Timeside.utils.uniqid();
+        if(!('id' in newMarker)){
+            newMarker.id = Timeside.utils.uniqid();
         }
-        if(!('isEditable' in obj)){
-            obj.isEditable = false;
+        if(!('isEditable' in newMarker)){
+            newMarker.isEditable = false;
         }
-        var marker = obj; //this.createMarker(obj);
+        var marker = newMarker; //this.createMarker(obj);
         var idx = this.insertionIndex(marker);
         if(idx>=0){ //it exists? there is a problem....
-            this.debug('adding a marker already existing!!'); //should not happen. however...
+            this.debug('adding an already existing marker!!'); //should not happen. however...
             return -1;
         }
        
@@ -65,7 +64,7 @@ Timeside.classes.MarkerMap = Timeside.classes.TimesideArray.extend({
         this.fire('add', {
             marker: marker,
             index: idx
-            //,isNew: (typeof obj == 'number' || typeof obj == 'string')
+        //,isNew: (typeof obj == 'number' || typeof obj == 'string')
         });
         //var temp = new MarkerDiv();
         // this.debug(this.createMarkerDiv());
@@ -74,29 +73,46 @@ Timeside.classes.MarkerMap = Timeside.classes.TimesideArray.extend({
         return idx;
     },
 
-    //overridden
-    //identifier can be an number (marker index) or a marker (the index will be aearched)
-    remove: function(identifier) {
+    //overridden method. Contrarily to super method,
+    //where the first argument is the index (integer), here the
+    //the first argument can also be a marker. Its index will be found and, if valid, the super method will be called
+    //RETURNS -1 IF SOMETHING HAS GONE WRONG, OTHERWISE THE
+    remove: function(markerOrMarkerIndex) {
         var idx = -1;
-        if(typeof index == 'number'){
-            idx = identifier;
-        }else if('id' in identifier && 'offset' in identifier){
-            idx = this.insertionIndex(identifier);
+        if(typeof markerOrMarkerIndex == 'number'){
+            idx = markerOrMarkerIndex;
+        }else if('id' in markerOrMarkerIndex && 'offset' in markerOrMarkerIndex){
+            idx = this.insertionIndex(markerOrMarkerIndex);
+            //idx>=0 ONLY if marker has been found
         }
         if(idx<0 || idx>=this.length){
-            this.debug('remove: marker not found');
+            this.debug('markermap.remove: index out of bounds or marker not found');
             return -1;
         }
         var marker = this._super(idx);
         this.fire('remove',{
-                'index':idx,
-                'marker':marker
-            });
-            return idx;
+            'index':idx,
+            'marker':marker
+        });
+        return idx;
     },
 
-    //overridden method
-    move: function(markerIndex, newOffset){
+    //overridden method. Contrarily to super method,
+    //where the first argument is the 'from' index, here the 
+    //the first argument can also be a marker
+    move: function(markerOrMarkerIndex, newOffset){
+        var oldIndex = -1;
+        if(typeof markerOrMarkerIndex == 'number'){
+            oldIndex = markerOrMarkerIndex;
+        }else if('id' in markerOrMarkerIndex && 'offset' in markerOrMarkerIndex){
+            oldIndex = this.insertionIndex(markerOrMarkerIndex);
+            //oldIndex>=0 ONLY if marker has been found
+        }
+        if(oldIndex<0 || oldIndex>=this.length){
+            this.debug('markermap.move: index out of bounds or marker not found');
+            return -1;
+        }
+
         var newIndex = this.insertionIndex(newOffset);
         //select the case:
         if(newIndex<0){
@@ -104,8 +120,11 @@ Timeside.classes.MarkerMap = Timeside.classes.TimesideArray.extend({
             //just return the real insertionIndex
             newIndex = -newIndex-1;
         }
-        
-        var realIndex = this._super(markerIndex,newIndex);
+
+        //realIndex is the REAL INDEX AT WHICH WILL BE the moving marker M AFTER move.
+        //It newIndex = oldIndex+1
+        //we move M IMMEDIATELY AFTER ITSELF, which means, after removing M, that M has realIndex=n, as before
+        var realIndex = this._super(oldIndex,newIndex);
         
         var markers = this.toArray();
         var marker = markers[realIndex];
@@ -113,11 +132,13 @@ Timeside.classes.MarkerMap = Timeside.classes.TimesideArray.extend({
         marker.offset = newOffset;
         this.fire('move', {
             marker: marker,
-            fromIndex: markerIndex,
+            index: realIndex,
+            fromIndex: oldIndex,
             toIndex: newIndex,
             oldOffset: oldOffset
         //,newIndex: realIndex
         });
+        return newIndex;
     },
        
     

@@ -28,15 +28,15 @@
  */
 Timeside.classes.Ruler = Timeside.classes.TimesideArray.extend({
     //init constructor: soundDuration is IN SECONDS!!! (float)
-    init: function(viewer, soundDuration){
+    init: function(rulerContainer, waveContainer, soundDuration){
         this._super();
-        var cssPref = this.cssPrefix;
-        
+        //var cssPref = this.cssPrefix;
+
         this.getSoundDuration= function(){
             return soundDuration;
         };
-        
-        var waveContainer = viewer.find('.' + cssPref + 'image-canvas');
+
+        //var waveContainer = viewer.find('.' + cssPref + 'image-canvas');
         this.debug( 'WAVECONTAINER?? LENGTH='+ waveContainer.length);
         this.getWaveContainer =function(){
             return waveContainer;
@@ -47,16 +47,43 @@ Timeside.classes.Ruler = Timeside.classes.TimesideArray.extend({
             return waveContainer.width();
         };
         this.debug( 'init ruler: container width '+this.getContainerWidth());
-        
+
         //private function used in resize() defined below
-        var container = viewer.find('.' + cssPref + 'ruler');
-        
+        //var container = viewer.find('.' + cssPref + 'ruler');
+
         this.getRulerContainer = function(){
-            return container;
+            return rulerContainer;
         }
     },
+//    init: function(viewer, soundDuration){
+//        this._super();
+//        var cssPref = this.cssPrefix;
+//
+//        this.getSoundDuration= function(){
+//            return soundDuration;
+//        };
+//
+//        var waveContainer = viewer.find('.' + cssPref + 'image-canvas');
+//        this.debug( 'WAVECONTAINER?? LENGTH='+ waveContainer.length);
+//        this.getWaveContainer =function(){
+//            return waveContainer;
+//        };
+//        //TODO: we dont need containerWiever here!!!
+//        //better: it is usefult only for the canvas defined below. However...
+//        this.getContainerWidth =function(){
+//            return waveContainer.width();
+//        };
+//        this.debug( 'init ruler: container width '+this.getContainerWidth());
+//
+//        //private function used in resize() defined below
+//        var container = viewer.find('.' + cssPref + 'ruler');
+//
+//        this.getRulerContainer = function(){
+//            return container;
+//        }
+//    },
 
-    colors:{}, //used to draw rulermarkers
+    //colors:{}, //used to draw rulermarkers
     
     resize : function(){
         var duration = this.getSoundDuration(); //in seconds
@@ -64,6 +91,7 @@ Timeside.classes.Ruler = Timeside.classes.TimesideArray.extend({
             this.debug("Can't draw ruler with a duration of 0");
             return;
         }
+
         var $J = this.$J;
         var rulerContainer = this.getRulerContainer();
        
@@ -79,8 +107,17 @@ Timeside.classes.Ruler = Timeside.classes.TimesideArray.extend({
         rulerContainer.append(firstSpan); //to calculate height, element must be in the document, append it
         var verticalMargin = 1;
         var h = 2*(verticalMargin+firstSpan.outerHeight());
+        //h is the default height of the ruler svg (according to ruler font size)
+        //to accomodate the necessary space for the labels
+        //however, if we set a custom height on the ruler, ie h2 is nonzero:
+        var h2 = rulerContainer.height(); 
+        //then, set the custom height as height for the canvas:
+        //note that, as markers and pointer have position: absolute, they do not affect div height
+        if(h2){
+            h = h2;
+        }
         //TODO: set height in div ruler????
-        rulerContainer.css('height',h+'px');
+        //rulerContainer.css('height',h+'px');
         var obj = this.calculateRulerElements(rulerContainer.width(),h,firstSpan.outerWidth());
         this.drawRuler(rulerContainer,h,obj.path);
         
@@ -120,14 +157,7 @@ Timeside.classes.Ruler = Timeside.classes.TimesideArray.extend({
         this.each(function(i,rulermarker){
             rulermarker.refreshPosition();
         });
-        //IE7 BUG: the viewer might not shift downwards after canvas is drawn and covers part of the rulrer.
-        //Weird enough (with IE it isn't actually), we have just to set a dummy css top to zero
-        //(which will be REALTIVE to ts-wave div normal flow, as ts-wave has position relative in order
-        //to accomodate image and canvas absolutely positioned)
-        //Basically, if we have to tell IE to do what it is supposed to do
-        if(h > $J('.ts-wave').position().top){
-            $J('.ts-wave').css('top',0+'px');
-        }
+        
 
     },
 
@@ -234,12 +264,14 @@ Timeside.classes.Ruler = Timeside.classes.TimesideArray.extend({
     //overridden: Note that the pointer is NOT cleared!!!!!
     clear: function(){
         var markers = this._super();
+        //now remove also the labels in the player ruler:
         for( var i=0; i<markers.length; i++){
             markers[i].remove();
         }
         return markers;
     },
-    //overridden TimesideArray methods (add, move, remove):
+    
+    //overridden 
     remove: function(index){
         var rulermarker = this._super(index);
         rulermarker.remove();
@@ -247,9 +279,20 @@ Timeside.classes.Ruler = Timeside.classes.TimesideArray.extend({
             rulermarker.setIndex(i, true);
         });
     },
-    //overridden
-    move: function(from, to){
+
+    //overridden: do not call directly this method, use markermap.move
+    move: function(from, to, newOffset){
         var newIndex = this._super(from,to);
+        //update label if it is the case:
+        var rulermarker = this.toArray()[newIndex];
+        var pixelOffset = this.toPixelOffset(newOffset);
+        if(rulermarker.positionInPixels != pixelOffset){ //should not be the case if this method is called from a mouse event
+            rulermarker.move(pixelOffset);
+//            consolelog('moved');
+//        }else{
+//            consolelog('nothing to move');
+        }
+
         //this.debug('ruler.move: [from:'+from+', to:'+to+', real:'+newIndex+']');
         if(newIndex!=from){
             var i1 = Math.min(from,newIndex);
@@ -284,14 +327,14 @@ Timeside.classes.Ruler = Timeside.classes.TimesideArray.extend({
         //        var pointer = new RulerMarker($J(layout.get(0)),this.getWaveContainer(),markerClass);
 
         
-        var pointer = new Timeside.classes.RulerMarker(this,this.getWaveContainer(),markerClass);
+        var pointerOrMarker = new Timeside.classes.RulerMarker(this,this.getWaveContainer(),markerClass);
 
         
 
         //call super constructor
         //if it is a pointer, dont add it
         if(markerClass != 'pointer'){
-            this._super(pointer,index); //add at the end
+            this._super(pointerOrMarker,index); //add at the end
             //note that setText is called BEFORE move as move must have the proper label width
             this.each(index, function(i,rulermarker){
                 rulermarker.setIndex(i,i!=index);
@@ -301,15 +344,15 @@ Timeside.classes.Ruler = Timeside.classes.TimesideArray.extend({
             this.debug('added marker at index '+index+' offset: '+offset);
         }else{
             //note that setText is called BEFORE move as move must have the proper label width
-            pointer.setText(this.makeTimeLabel(0));
+            pointerOrMarker.setText(this.makeTimeLabel(0));
         }
         //proceed with events and other stuff: move (called AFTER setText or setText)
-        pointer.move(this.toPixelOffset(soundPosition));
+        pointerOrMarker.move(this.toPixelOffset(soundPosition));
        
         //pointer.setText(markerClass== 'pointer' ? this.makeTimeLabel(0) : this.length);
 
         //click on labels stop propagating. Always:
-        var lbl = pointer.getLabel();
+        var lbl = pointerOrMarker.getLabel();
         lbl.bind('click', function(evt){
             evt.stopPropagation();
             return false;
@@ -317,7 +360,7 @@ Timeside.classes.Ruler = Timeside.classes.TimesideArray.extend({
 
         //if there are no events to associate, return it.
         if(!isMovable){
-            return pointer;
+            return pointerOrMarker;
         }
 
         //namespace for jquery event:
@@ -345,10 +388,10 @@ Timeside.classes.Ruler = Timeside.classes.TimesideArray.extend({
             doc.bind('mousemove.'+eventId, function(evt){
                 var x = evt.pageX;
                 newPos = startPos+(x-startX);
-                pointer.move(newPos);
+                pointerOrMarker.move(newPos);
                 //update the text if pointer
                 if(markerClass=='pointer'){
-                    pointer.setText(me.makeTimeLabel(me.toSoundPosition(newPos)));
+                    pointerOrMarker.setText(me.makeTimeLabel(me.toSoundPosition(newPos)));
                 }
                 return false;
                 
@@ -364,7 +407,7 @@ Timeside.classes.Ruler = Timeside.classes.TimesideArray.extend({
                     return false;
                 }
                 var data = {
-                    'markerElement':pointer,
+                    'markerElement':pointerOrMarker,
                     'soundPosition': me.toSoundPosition.apply(me,[newPos]),
                     'markerClass':markerClass
                 };
@@ -379,7 +422,7 @@ Timeside.classes.Ruler = Timeside.classes.TimesideArray.extend({
             return false;
         });
         
-        return pointer;
+        return pointerOrMarker;
 
 
     },
