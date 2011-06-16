@@ -241,8 +241,11 @@ Timeside.classes.TimesideClass = Timeside.Class.extend({
     fire : function(key, dataArgument){
         var listenersMap = this.listenersMap;
         if(!(key in listenersMap)){
-            this.debug('"'+key+'" fired but no binding associated to it');
+            //this.debug('"'+key+'" fired but no binding associated to it');
             return;
+        }
+        if(arguments.length < 2 || !dataArgument){
+            dataArgument = {};
         }
         var callbacks = listenersMap[key];
         var len = callbacks && callbacks.length ? callbacks.length : 0;
@@ -400,248 +403,248 @@ Timeside.classes.TimesideClass = Timeside.Class.extend({
         }
         return attr;
     },
-    //map to store each class name to the relative sictionary for raphael attr function (VML only)
-    classToRaphaelAttr : {},
+    //map to store each class name to the relative dictionary for raphael attr function (VML only)
+    classToRaphaelAttr : {} //,
 
     //css specific functions:
     //get computed style first (cross browser solution, from http://blog.stchur.com/2006/06/21/css-computed-style/
     //not used anymnore, we keep it here because it can be useful
-    getComputedStyle : function(_elem, _style){
-        var computedStyle;
-        var $J = this.$J;
-        if(_elem instanceof $J){ //note: '_elem instanceof this.$J' doesnt work. why??
-            _elem = _elem.get(0);
-        }
-        if (typeof _elem.currentStyle != 'undefined'){
-            computedStyle = _elem.currentStyle;
-        }else{
-            computedStyle = document.defaultView.getComputedStyle(_elem, null);
-        }
-        return computedStyle[_style];
-    },
-    //returns a hex color from strColor. strColor can be one of the predefined css colors (eg, 'aliceBlue', case insensitive)
-    //or rgb (eg: rgb(12,0,45)) or an hex color (eg, '#ff98a3' or '#f8g'). Leading and trailing spaces will be omitted,
-    //case is insensitive, an empty string is returned in case of error (bad format string, parseInt errors etcetera..)
-    color : function(strColor){
-        if(!strColor){
-            return '';
-        }
-        strColor = strColor.replace(/(^\s+|\s+$)/g,'').toLowerCase();
-        if(!strColor){
-            return '';
-        }
-        var predefined_colors = {
-            aliceblue:"#f0f8ff",
-            antiquewhite:"#faebd7",
-            aqua:"#00ffff",
-            aquamarine:"#7fffd4",
-            azure:"#f0ffff",
-            beige:"#f5f5dc",
-            bisque:"#ffe4c4",
-            black:"#000000",
-            blanchedalmond:"#ffebcd",
-            blue:"#0000ff",
-            blueviolet:"#8a2be2",
-            brown:"#a52a2a",
-            burlywood:"#deb887",
-            cadetblue:"#5f9ea0",
-            chartreuse:"#7fff00",
-            chocolate:"#d2691e",
-            coral:"#ff7f50",
-            cornflowerblue:"#6495ed",
-            cornsilk:"#fff8dc",
-            crimson:"#dc143c",
-            cyan:"#00ffff",
-            darkblue:"#00008b",
-            darkcyan:"#008b8b",
-            darkgoldenrod:"#b8860b",
-            darkgray:"#a9a9a9",
-            darkgrey:"#a9a9a9",
-            darkgreen:"#006400",
-            darkkhaki:"#bdb76b",
-            darkmagenta:"#8b008b",
-            darkolivegreen:"#556b2f",
-            darkorange:"#ff8c00",
-            darkorchid:"#9932cc",
-            darkred:"#8b0000",
-            darksalmon:"#e9967a",
-            darkseagreen:"#8fbc8f",
-            darkslateblue:"#483d8b",
-            darkslategray:"#2f4f4f",
-            darkslategrey:"#2f4f4f",
-            darkturquoise:"#00ced1",
-            darkviolet:"#9400d3",
-            deeppink:"#ff1493",
-            deepskyblue:"#00bfff",
-            dimgray:"#696969",
-            dimgrey:"#696969",
-            dodgerblue:"#1e90ff",
-            firebrick:"#b22222",
-            floralwhite:"#fffaf0",
-            forestgreen:"#228b22",
-            fuchsia:"#ff00ff",
-            gainsboro:"#dcdcdc",
-            ghostwhite:"#f8f8ff",
-            gold:"#ffd700",
-            goldenrod:"#daa520",
-            gray:"#808080",
-            grey:"#808080",
-            green:"#008000",
-            greenyellow:"#adff2f",
-            honeydew:"#f0fff0",
-            hotpink:"#ff69b4",
-            indianred:"#cd5c5c",
-            indigo:"#4b0082",
-            ivory:"#fffff0",
-            khaki:"#f0e68c",
-            lavender:"#e6e6fa",
-            lavenderblush:"#fff0f5",
-            lawngreen:"#7cfc00",
-            lemonchiffon:"#fffacd",
-            lightblue:"#add8e6",
-            lightcoral:"#f08080",
-            lightcyan:"#e0ffff",
-            lightgoldenrodyellow:"#fafad2",
-            lightgray:"#d3d3d3",
-            lightgrey:"#d3d3d3",
-            lightgreen:"#90ee90",
-            lightpink:"#ffb6c1",
-            lightsalmon:"#ffa07a",
-            lightseagreen:"#20b2aa",
-            lightskyblue:"#87cefa",
-            lightslategray:"#778899",
-            lightslategrey:"#778899",
-            lightsteelblue:"#b0c4de",
-            lightyellow:"#ffffe0",
-            lime:"#00ff00",
-            limegreen:"#32cd32",
-            linen:"#faf0e6",
-            magenta:"#ff00ff",
-            maroon:"#800000",
-            mediumaquamarine:"#66cdaa",
-            mediumblue:"#0000cd",
-            mediumorchid:"#ba55d3",
-            mediumpurple:"#9370d8",
-            mediumseagreen:"#3cb371",
-            mediumslateblue:"#7b68ee",
-            mediumspringgreen:"#00fa9a",
-            mediumturquoise:"#48d1cc",
-            mediumvioletred:"#c71585",
-            midnightblue:"#191970",
-            mintcream:"#f5fffa",
-            mistyrose:"#ffe4e1",
-            moccasin:"#ffe4b5",
-            navajowhite:"#ffdead",
-            navy:"#000080",
-            oldlace:"#fdf5e6",
-            olive:"#808000",
-            olivedrab:"#6b8e23",
-            orange:"#ffa500",
-            orangered:"#ff4500",
-            orchid:"#da70d6",
-            palegoldenrod:"#eee8aa",
-            palegreen:"#98fb98",
-            paleturquoise:"#afeeee",
-            palevioletred:"#d87093",
-            papayawhip:"#ffefd5",
-            peachpuff:"#ffdab9",
-            peru:"#cd853f",
-            pink:"#ffc0cb",
-            plum:"#dda0dd",
-            powderblue:"#b0e0e6",
-            purple:"#800080",
-            red:"#ff0000",
-            rosybrown:"#bc8f8f",
-            royalblue:"#4169e1",
-            saddlebrown:"#8b4513",
-            salmon:"#fa8072",
-            sandybrown:"#f4a460",
-            seagreen:"#2e8b57",
-            seashell:"#fff5ee",
-            sienna:"#a0522d",
-            silver:"#c0c0c0",
-            skyblue:"#87ceeb",
-            slateblue:"#6a5acd",
-            slategray:"#708090",
-            slategrey:"#708090",
-            snow:"#fffafa",
-            springgreen:"#00ff7f",
-            steelblue:"#4682b4",
-            tan:"#d2b48c",
-            teal:"#008080",
-            thistle:"#d8bfd8",
-            tomato:"#ff6347",
-            turquoise:"#40e0d0",
-            violet:"#ee82ee",
-            wheat:"#f5deb3",
-            white:"#ffffff",
-            whitesmoke:"#f5f5f5",
-            yellow:"#ffff00",
-            yellowgreen:"#9acd32"
-        };
-        var cl = predefined_colors[strColor];
-        if(cl){
-            return cl;
-        }
-        var pint = parseInt;
-        //color parsers: note that the order is not random: we put first the most likely case ('#aaaaaa') and at last
-        //the less one ('rgb(...)'), this might increase performances in most cases, especially if this method is called from
-        //within a loop
-        var color_defs = [
-        {
-            re: /^#*(\w{2})(\w{2})(\w{2})$/, //example: ['#00ff00', '336699'],
-            process: function (bits){
-                return [pint(bits[1], 16),pint(bits[2], 16),pint(bits[3], 16)];
-            }
-        },
-
-        {
-            re: /^#*(\w{1})(\w{1})(\w{1})$/, //example: ['#fb0', 'f0f'],
-            process: function (bits){
-                return [pint(bits[1] + bits[1], 16),pint(bits[2] + bits[2], 16),pint(bits[3] + bits[3], 16)];
-            }
-        },
-        {
-            re: /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/, //example: ['rgb(123, 234, 45)', 'rgb(255,234,245)'],
-            process: function (bits){
-                return [pint(bits[1]), pint(bits[2]),pint(bits[3])];
-            }
-        }
-
-        ];
-
-        // search through the definitions to find a match
-        var nan = isNaN;
-        for (var i = 0; i < color_defs.length; i++) {
-            var re = color_defs[i].re;
-            var processor = color_defs[i].process;
-            var bits = re.exec(strColor);
-            if (bits) {
-                var channels = processor(bits);
-                if(channels.length ==3){
-                    for(var j=0; j<3; j++){
-                        var c = channels[j];
-                        c = (nan(c) || c< 0 ? 0 : (c>255 ? 255 :c));
-                        c = c.toString(16);
-                        var len = c.length;
-                        switch(len){
-                            case 1:
-                                c = '0'+c;
-                                break;
-                            case 2:
-                                break;
-                            default:
-                                return '';
-                        }
-                        channels[j] = c;
-                    }
-                    return '#'+channels.join('');
-                }
-            }
-        }
-        return '';
-    }
-
+//    getComputedStyle : function(_elem, _style){
+//        var computedStyle;
+//        var $J = this.$J;
+//        if(_elem instanceof $J){ //note: '_elem instanceof this.$J' doesnt work. why??
+//            _elem = _elem.get(0);
+//        }
+//        if (typeof _elem.currentStyle != 'undefined'){
+//            computedStyle = _elem.currentStyle;
+//        }else{
+//            computedStyle = document.defaultView.getComputedStyle(_elem, null);
+//        }
+//        return computedStyle[_style];
+//    },
+//    //returns a hex color from strColor. strColor can be one of the predefined css colors (eg, 'aliceBlue', case insensitive)
+//    //or rgb (eg: rgb(12,0,45)) or an hex color (eg, '#ff98a3' or '#f8g'). Leading and trailing spaces will be omitted,
+//    //case is insensitive, an empty string is returned in case of error (bad format string, parseInt errors etcetera..)
+//    color : function(strColor){
+//        if(!strColor){
+//            return '';
+//        }
+//        strColor = strColor.replace(/(^\s+|\s+$)/g,'').toLowerCase();
+//        if(!strColor){
+//            return '';
+//        }
+//        var predefined_colors = {
+//            aliceblue:"#f0f8ff",
+//            antiquewhite:"#faebd7",
+//            aqua:"#00ffff",
+//            aquamarine:"#7fffd4",
+//            azure:"#f0ffff",
+//            beige:"#f5f5dc",
+//            bisque:"#ffe4c4",
+//            black:"#000000",
+//            blanchedalmond:"#ffebcd",
+//            blue:"#0000ff",
+//            blueviolet:"#8a2be2",
+//            brown:"#a52a2a",
+//            burlywood:"#deb887",
+//            cadetblue:"#5f9ea0",
+//            chartreuse:"#7fff00",
+//            chocolate:"#d2691e",
+//            coral:"#ff7f50",
+//            cornflowerblue:"#6495ed",
+//            cornsilk:"#fff8dc",
+//            crimson:"#dc143c",
+//            cyan:"#00ffff",
+//            darkblue:"#00008b",
+//            darkcyan:"#008b8b",
+//            darkgoldenrod:"#b8860b",
+//            darkgray:"#a9a9a9",
+//            darkgrey:"#a9a9a9",
+//            darkgreen:"#006400",
+//            darkkhaki:"#bdb76b",
+//            darkmagenta:"#8b008b",
+//            darkolivegreen:"#556b2f",
+//            darkorange:"#ff8c00",
+//            darkorchid:"#9932cc",
+//            darkred:"#8b0000",
+//            darksalmon:"#e9967a",
+//            darkseagreen:"#8fbc8f",
+//            darkslateblue:"#483d8b",
+//            darkslategray:"#2f4f4f",
+//            darkslategrey:"#2f4f4f",
+//            darkturquoise:"#00ced1",
+//            darkviolet:"#9400d3",
+//            deeppink:"#ff1493",
+//            deepskyblue:"#00bfff",
+//            dimgray:"#696969",
+//            dimgrey:"#696969",
+//            dodgerblue:"#1e90ff",
+//            firebrick:"#b22222",
+//            floralwhite:"#fffaf0",
+//            forestgreen:"#228b22",
+//            fuchsia:"#ff00ff",
+//            gainsboro:"#dcdcdc",
+//            ghostwhite:"#f8f8ff",
+//            gold:"#ffd700",
+//            goldenrod:"#daa520",
+//            gray:"#808080",
+//            grey:"#808080",
+//            green:"#008000",
+//            greenyellow:"#adff2f",
+//            honeydew:"#f0fff0",
+//            hotpink:"#ff69b4",
+//            indianred:"#cd5c5c",
+//            indigo:"#4b0082",
+//            ivory:"#fffff0",
+//            khaki:"#f0e68c",
+//            lavender:"#e6e6fa",
+//            lavenderblush:"#fff0f5",
+//            lawngreen:"#7cfc00",
+//            lemonchiffon:"#fffacd",
+//            lightblue:"#add8e6",
+//            lightcoral:"#f08080",
+//            lightcyan:"#e0ffff",
+//            lightgoldenrodyellow:"#fafad2",
+//            lightgray:"#d3d3d3",
+//            lightgrey:"#d3d3d3",
+//            lightgreen:"#90ee90",
+//            lightpink:"#ffb6c1",
+//            lightsalmon:"#ffa07a",
+//            lightseagreen:"#20b2aa",
+//            lightskyblue:"#87cefa",
+//            lightslategray:"#778899",
+//            lightslategrey:"#778899",
+//            lightsteelblue:"#b0c4de",
+//            lightyellow:"#ffffe0",
+//            lime:"#00ff00",
+//            limegreen:"#32cd32",
+//            linen:"#faf0e6",
+//            magenta:"#ff00ff",
+//            maroon:"#800000",
+//            mediumaquamarine:"#66cdaa",
+//            mediumblue:"#0000cd",
+//            mediumorchid:"#ba55d3",
+//            mediumpurple:"#9370d8",
+//            mediumseagreen:"#3cb371",
+//            mediumslateblue:"#7b68ee",
+//            mediumspringgreen:"#00fa9a",
+//            mediumturquoise:"#48d1cc",
+//            mediumvioletred:"#c71585",
+//            midnightblue:"#191970",
+//            mintcream:"#f5fffa",
+//            mistyrose:"#ffe4e1",
+//            moccasin:"#ffe4b5",
+//            navajowhite:"#ffdead",
+//            navy:"#000080",
+//            oldlace:"#fdf5e6",
+//            olive:"#808000",
+//            olivedrab:"#6b8e23",
+//            orange:"#ffa500",
+//            orangered:"#ff4500",
+//            orchid:"#da70d6",
+//            palegoldenrod:"#eee8aa",
+//            palegreen:"#98fb98",
+//            paleturquoise:"#afeeee",
+//            palevioletred:"#d87093",
+//            papayawhip:"#ffefd5",
+//            peachpuff:"#ffdab9",
+//            peru:"#cd853f",
+//            pink:"#ffc0cb",
+//            plum:"#dda0dd",
+//            powderblue:"#b0e0e6",
+//            purple:"#800080",
+//            red:"#ff0000",
+//            rosybrown:"#bc8f8f",
+//            royalblue:"#4169e1",
+//            saddlebrown:"#8b4513",
+//            salmon:"#fa8072",
+//            sandybrown:"#f4a460",
+//            seagreen:"#2e8b57",
+//            seashell:"#fff5ee",
+//            sienna:"#a0522d",
+//            silver:"#c0c0c0",
+//            skyblue:"#87ceeb",
+//            slateblue:"#6a5acd",
+//            slategray:"#708090",
+//            slategrey:"#708090",
+//            snow:"#fffafa",
+//            springgreen:"#00ff7f",
+//            steelblue:"#4682b4",
+//            tan:"#d2b48c",
+//            teal:"#008080",
+//            thistle:"#d8bfd8",
+//            tomato:"#ff6347",
+//            turquoise:"#40e0d0",
+//            violet:"#ee82ee",
+//            wheat:"#f5deb3",
+//            white:"#ffffff",
+//            whitesmoke:"#f5f5f5",
+//            yellow:"#ffff00",
+//            yellowgreen:"#9acd32"
+//        };
+//        var cl = predefined_colors[strColor];
+//        if(cl){
+//            return cl;
+//        }
+//        var pint = parseInt;
+//        //color parsers: note that the order is not random: we put first the most likely case ('#aaaaaa') and at last
+//        //the less one ('rgb(...)'), this might increase performances in most cases, especially if this method is called from
+//        //within a loop
+//        var color_defs = [
+//        {
+//            re: /^#*(\w{2})(\w{2})(\w{2})$/, //example: ['#00ff00', '336699'],
+//            process: function (bits){
+//                return [pint(bits[1], 16),pint(bits[2], 16),pint(bits[3], 16)];
+//            }
+//        },
+//
+//        {
+//            re: /^#*(\w{1})(\w{1})(\w{1})$/, //example: ['#fb0', 'f0f'],
+//            process: function (bits){
+//                return [pint(bits[1] + bits[1], 16),pint(bits[2] + bits[2], 16),pint(bits[3] + bits[3], 16)];
+//            }
+//        },
+//        {
+//            re: /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/, //example: ['rgb(123, 234, 45)', 'rgb(255,234,245)'],
+//            process: function (bits){
+//                return [pint(bits[1]), pint(bits[2]),pint(bits[3])];
+//            }
+//        }
+//
+//        ];
+//
+//        // search through the definitions to find a match
+//        var nan = isNaN;
+//        for (var i = 0; i < color_defs.length; i++) {
+//            var re = color_defs[i].re;
+//            var processor = color_defs[i].process;
+//            var bits = re.exec(strColor);
+//            if (bits) {
+//                var channels = processor(bits);
+//                if(channels.length ==3){
+//                    for(var j=0; j<3; j++){
+//                        var c = channels[j];
+//                        c = (nan(c) || c< 0 ? 0 : (c>255 ? 255 :c));
+//                        c = c.toString(16);
+//                        var len = c.length;
+//                        switch(len){
+//                            case 1:
+//                                c = '0'+c;
+//                                break;
+//                            case 2:
+//                                break;
+//                            default:
+//                                return '';
+//                        }
+//                        channels[j] = c;
+//                    }
+//                    return '#'+channels.join('');
+//                }
+//            }
+//        }
+//        return '';
+//    }
+//
 });
 
 /**
@@ -746,6 +749,31 @@ Timeside.classes.TimesideArray = Timeside.classes.TimesideClass.extend({
         }
         return me.splice(0,l);
     },
+    //moves the element at position from into position to
+    //the element that was at from will be at position to
+    //returns:
+    //-1 if from or to not integers, or from or to not within the array bounds (lower than zero or greater or equal to this.length)
+    //from if from === to (no move)
+    //to otherwise (move succesful)
+    move : function(from, to){
+
+        var pInt = parseInt;
+        if(pInt(from)!==from || pInt(to)!==to){ //just a check
+            return -1;
+        }
+        if(from === to){
+            return from;
+        }
+        var me =this.toArray();
+        var len = me.length;
+        if((from<0 || from>=len)||(to<0 || to>=len)){
+            return -1;
+        }
+        var elm = me.splice(from,1)[0];
+        me.splice(to,0,elm);
+
+        return to;
+    }
     //moves the element from position [from] to position [to]. Shifts all elements
     //from position [to] (inclusive) of one position. Note that the elemnt at position from is first removed
     //and then inserted at position to. Therefore,
@@ -754,140 +782,30 @@ Timeside.classes.TimesideArray = Timeside.classes.TimesideClass.extend({
     //1) from or to are not integers or from or to are lower than zero or greater than the array length.
     //in any other case, returns the index of the element moved, which is not necessarily to:
     //It is, if to<from, otherwise (to>from+1) is to-1
-    move : function(from, to){
-        var pInt = parseInt;
-        if(pInt(from)!==from || pInt(to)!==to){
-            return from;
-        }
-        var me =this.toArray();
-        var len = me.length;
-        if((from<0 || from>len)||(to<0 || to>len)){
-            return from;
-        }
-        //if we moved left to right, the insertion index is actually
-        //newIndex-1, as we must also consider the removal of the object at index from
-        if(to>from){
-            to--;
-        }
-        if(from != to){
-            var elm = me.splice(from,1)[0];
-            me.splice(to,0,elm);
-        }
-        return to;
-    }
+//    move : function(from, to){
+//
+//        var pInt = parseInt;
+//        if(pInt(from)!==from || pInt(to)!==to){
+//            return from;
+//        }
+//        var me =this.toArray();
+//        var len = me.length;
+//        if((from<0 || from>len)||(to<0 || to>len)){
+//            return from;
+//        }
+//        //if we moved left to right, the insertion index is actually
+//        //newIndex-1, as we must also consider the removal of the object at index from
+//        if(to>from){
+//            to--;
+//        }
+//        if(from != to){
+//            var elm = me.splice(from,1)[0];
+//            me.splice(to,0,elm);
+//        }
+//        return to;
+//    }
 });
 
-
-/*
-* Sets a "tab look" on some elements of the page. Takes at least 3 arguments, at most 5:
-* 1st argument: an array (or a jquery object) of html elements, ususally anchors, representing the tabs
-* 2nd argument: an array (or a jquery object) of html elements, ususally divs, representing the containers to be shown/hidden when 
-*   clicking the tabs. The n-th tab will set the n-th container to visible, hiding the others. So order is important. Note that if tabs
-*   or container are jQuery objects, the html elements inside them are sorted according to the document order. That's why tabs and
-*   container can be passed also as javascript arrays, so that the binding n-th tab -> n-th container can be decided by the user
-*   regardeless on how elements are written on the page, if already present
-* 3rd argument: the selected index. If missing it defaults to zero.
-* 4th argument: selectedtab class. Applies to the selected tab after click of one tab. If missing, nothing is done
-* 5th argument the unselectedtab class. Applies to all tabs not selected after click of one tab. If missing, nothing is done
-*
-* NOTE: The last 2 arguments are mostly for customizing the tab "visual look", as some css elements (eg, (position, top, zIndex)
-* are set inside the code and cannot be changed, as they are mandatory to let tab anchor behave like desktop application tabs. Note also
-* that every tab container is set to 'visible' by means of jQuery.show()
-*
-* Examples:
-* setUpPlayerTabs([jQuery('#tab1),jQuery('#tab1)], [jQuery('#div1),jQuery('#div2)], 1);
-* sets the elements with id '#tab1' and '#tab2' as tab and assign the click events to them so that clicking tab_1 will show '#div_1'
-* (and hide '#div2') and viceversa for '#tab2'. The selected index will be 1 (second tab '#tab2')
-*/
-function setUpPlayerTabs() {//called from within controller.js once all markers have been loaded.
-    //this is because we need all divs to be visible to calculate size. selIndex is optional, it defaults to 0
-    //
-    
-    var $J = jQuery;
-    var tabs_ = arguments[0];
-    var divs_ = arguments[1]; //they might be ctually any content, div is a shoertand
-
-    //converting arguments to array: tabs
-    var tabs=[];
-    if(tabs_ instanceof $J){
-        tabs_.each(function(i,elm){
-            tabs.push(elm);
-        });
-    }else{
-        tabs = tabs_;
-    }
-    //set the overflow property of the parent tab to visible, otherwise scrollbars are displayed
-    //and the trick of setting position:relative+top:1px+zIndices (see css) doesnt work)
-    $J(tabs).each(function(i,tab){
-        var t = $J(tab).attr('href','#');
-        t.show(); //might be hidden
-        //set necessary style for the tab appearence:
-        var overflow = t.parent().css('overflow');
-        if(overflow && overflow != 'visible'){
-            t.parent().css('overflow','visible');
-        }
-    });
-    //converting arguments to array: divs
-    var divs=[];
-    if(divs_ instanceof $J){
-        divs_.each(function(i,elm){
-            divs.push(elm);
-        });
-    }else{
-        divs = divs_;
-    }
-    
-    //reading remaing arguments (if any)
-    var selIndex = arguments.length>2 ? arguments[2] : 0;
-    var selectedTabClass = arguments.length>3 ? arguments[3] : undefined;
-    var unselectedTabClass = arguments.length>4 ? arguments[4] : undefined;
-
-    //function to be associate to every click on the tab (see below)
-    var tabClicked = function(index) {
-        for(var i=0; i<tabs.length; i++){
-            var t = $J(tabs[i]);
-            
-            var div = $J(divs[i]);
-            var addClass = i==index ? selectedTabClass : unselectedTabClass;
-            var removeClass = i==index ? unselectedTabClass : selectedTabClass;
-            if(removeClass){
-                t.removeClass(removeClass);
-            }
-            if(addClass){
-                t.addClass(addClass);
-            }
-            
-            //relevant css. Will override any css set in stylesheets
-            t.css({
-                'position':'relative',
-                'top':'1px',
-                'zIndex': (i==index ? '10' : '0')
-            });
-            
-            if(i===index){
-                div.fadeIn('slow');
-            }else{
-                div.hide();
-            }
-        }
-    };
-    
-    //bind clicks on tabs to the function just created
-    for (var i=0;i<tabs.length;i++){
-        // introduce a new scope (round brackets)
-        //otherwise i is retrieved from the current scope and will be always equal to tabs.length
-        //due to this loop
-        (function(tabIndex){
-            $J(tabs[i]).click(function(){
-                tabClicked(tabIndex);
-                return false;//returning false avoids scroll of the anchor to the top of the page
-            });
-        })(i);
-    }
-    
-    //select the tab
-    $(tabs[selIndex]).trigger("click");
-}
 
 /**
 * Loads scripts asynchronously

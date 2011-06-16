@@ -315,7 +315,7 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                     $J('#analyzer_div_id').find('table').find('tbody:last').append(analyzerContentArray.join(""));
 
                     //setting up the select tag
-
+                   
                     player.bind('waitShown', function(data){
                         visualizersSelectElement.hide();
                     });
@@ -338,8 +338,11 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                         'top':margin+'px',
                         'right':margin,
                         'margin':0
-                    }).hide(); //hide it to be sure. We could check player.isImgRefreshing but we have to think about event queue...
+                    });
 
+                    if(player.isImgRefreshing){
+                        visualizersSelectElement.hide();
+                    }
                     control.append(visualizersSelectElement);
                     //Eventually, do 3 last things:
                     //1) call end (without arguments simply clears the wait span and avoid subsequent calls to end(msg) to
@@ -406,12 +409,20 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                                     }
                                     popupTimeoutId=undefined;
                                     popupShowFunction(data);
-                                    var index = data.index;
-                                    //consolelog(data);
-                                    //consolelog(index+') '+data.marker.offset+' | '+(map.toArray()[index+1].offset+' - '+data.timeMarginInSec));
-                                    if(index+1 == map.length || map.toArray()[index+1].offset-data.marker.offset-data.timeMarginInSec>3){
-                                        popupTimeoutId = popupdiv.setTimeout('close',3000);
+                                    
+                                    var next = data.nextMarkerTimeInterval ? data.nextMarkerTimeInterval[0] :undefined;
+                                    if(next === undefined || next-data.currentSoundPosition > POPUP_TIMEOUT){
+                                        popupTimeoutId = popupdiv.setTimeout('close',POPUP_TIMEOUT*1000);
                                     }
+                                    
+                                //var index = data.index;
+                                //consolelog('===');
+                                //consolelog(data.currentSoundPosition);
+                                //consolelog(data.nextMarkerTimeInterval);
+                                //consolelog(index+') '+data.marker.offset+' | '+(map.toArray()[index+1].offset+' - '+data.timeMarginInSec));
+                                //if(index+1 == map.length || map.toArray()[index+1].offset-data.marker.offset-data.timeMarginInSec>3){
+                                //    popupTimeoutId = popupdiv.setTimeout('close',3000);
+                                //}
                                 //consolelog('firing markercrossed');
                                 //consolelog(data.marker.title);
                             
@@ -462,3 +473,114 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
    
 }
 
+
+/*
+* Sets a "tab look" on some elements of the page. Takes at least 3 arguments, at most 5:
+* 1st argument: an array (or a jquery object) of html elements, ususally anchors, representing the tabs
+* 2nd argument: an array (or a jquery object) of html elements, ususally divs, representing the containers to be shown/hidden when
+*   clicking the tabs. The n-th tab will set the n-th container to visible, hiding the others. So order is important. Note that if tabs
+*   or container are jQuery objects, the html elements inside them are sorted according to the document order. That's why tabs and
+*   container can be passed also as javascript arrays, so that the binding n-th tab -> n-th container can be decided by the user
+*   regardeless on how elements are written on the page, if already present
+* 3rd argument: the selected index. If missing it defaults to zero.
+* 4th argument: selectedtab class. Applies to the selected tab after click of one tab. If missing, nothing is done
+* 5th argument the unselectedtab class. Applies to all tabs not selected after click of one tab. If missing, nothing is done
+*
+* NOTE: The last 2 arguments are mostly for customizing the tab "visual look", as some css elements (eg, (position, top, zIndex)
+* are set inside the code and cannot be changed, as they are mandatory to let tab anchor behave like desktop application tabs. Note also
+* that every tab container is set to 'visible' by means of jQuery.show()
+*
+* Examples:
+* setUpPlayerTabs([jQuery('#tab1),jQuery('#tab1)], [jQuery('#div1),jQuery('#div2)], 1);
+* sets the elements with id '#tab1' and '#tab2' as tab and assign the click events to them so that clicking tab_1 will show '#div_1'
+* (and hide '#div2') and viceversa for '#tab2'. The selected index will be 1 (second tab '#tab2')
+*/
+function setUpPlayerTabs() {//called from within controller.js once all markers have been loaded.
+    //this is because we need all divs to be visible to calculate size. selIndex is optional, it defaults to 0
+    //
+
+    var $J = jQuery;
+    var tabs_ = arguments[0];
+    var divs_ = arguments[1]; //they might be ctually any content, div is a shoertand
+
+    //converting arguments to array: tabs
+    var tabs=[];
+    if(tabs_ instanceof $J){
+        tabs_.each(function(i,elm){
+            tabs.push(elm);
+        });
+    }else{
+        tabs = tabs_;
+    }
+    //set the overflow property of the parent tab to visible, otherwise scrollbars are displayed
+    //and the trick of setting position:relative+top:1px+zIndices (see css) doesnt work)
+    $J(tabs).each(function(i,tab){
+        var t = $J(tab).attr('href','#');
+        t.show(); //might be hidden
+        //set necessary style for the tab appearence:
+        var overflow = t.parent().css('overflow');
+        if(overflow && overflow != 'visible'){
+            t.parent().css('overflow','visible');
+        }
+    });
+    //converting arguments to array: divs
+    var divs=[];
+    if(divs_ instanceof $J){
+        divs_.each(function(i,elm){
+            divs.push(elm);
+        });
+    }else{
+        divs = divs_;
+    }
+
+    //reading remaing arguments (if any)
+    var selIndex = arguments.length>2 ? arguments[2] : 0;
+    var selectedTabClass = arguments.length>3 ? arguments[3] : undefined;
+    var unselectedTabClass = arguments.length>4 ? arguments[4] : undefined;
+
+    //function to be associate to every click on the tab (see below)
+    var tabClicked = function(index) {
+        for(var i=0; i<tabs.length; i++){
+            var t = $J(tabs[i]);
+
+            var div = $J(divs[i]);
+            var addClass = i==index ? selectedTabClass : unselectedTabClass;
+            var removeClass = i==index ? unselectedTabClass : selectedTabClass;
+            if(removeClass){
+                t.removeClass(removeClass);
+            }
+            if(addClass){
+                t.addClass(addClass);
+            }
+
+            //relevant css. Will override any css set in stylesheets
+            t.css({
+                'position':'relative',
+                'top':'1px',
+                'zIndex': (i==index ? '10' : '0')
+            });
+
+            if(i===index){
+                div.fadeIn('slow');
+            }else{
+                div.hide();
+            }
+        }
+    };
+
+    //bind clicks on tabs to the function just created
+    for (var i=0;i<tabs.length;i++){
+        // introduce a new scope (round brackets)
+        //otherwise i is retrieved from the current scope and will be always equal to tabs.length
+        //due to this loop
+        (function(tabIndex){
+            $J(tabs[i]).click(function(){
+                tabClicked(tabIndex);
+                return false;//returning false avoids scroll of the anchor to the top of the page
+            });
+        })(i);
+    }
+
+    //select the tab
+    $(tabs[selIndex]).trigger("click");
+}

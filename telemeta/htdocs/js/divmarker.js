@@ -61,34 +61,40 @@ Timeside.classes.MarkerMapDiv = Timeside.classes.TimesideArray.extend({
     },
     //overridden. Do not call explicitly, use marker map.move
     move: function(from, to, newOffset){
-
+        
         //call super method
-        var realIndex = this._super(from,to);
+        to = this._super(from,to);
+        if(to<0){
+            return -1;
+        }
+
         //reflect the same changes in the document:
         var me = this.toArray();
-        if(realIndex!=from){
-            var div = me[realIndex]; //me has already been updated
+        if(to!=from){
+            var div = me[to]; //me has already been updated
             div.detach();
             var parent = this.div;
-            if(to==this.length){
+            if(to==this.length-1){
+                //consolelog('appending '+this.length+' '+parent.children().length+' '+to);
                 parent.append(div);
             }else{
-                this.$J( parent.children()[realIndex] ).before(div);
+                //consolelog('inserting '+this.length+' '+parent.children().length+' '+to);
+                this.$J( parent.children()[to] ).before(div);
             }
         }
 
         var t = this;
         var setIdx = t.setIndex;
 
-        this.each(Math.min(from,realIndex),Math.max(from,realIndex)+1, function(i, div){
+        this.each(Math.min(from,to),Math.max(from,to)+1, function(i, div){
             setIdx.apply(t,[div,i]);
         });
-        this.setOffset(me[realIndex],newOffset);
+        this.setOffset(me[to],newOffset);
 
         //TODO: create a function?
-        this.setEditMode(realIndex,true);
-        this.setFocus(realIndex,true);
-        return realIndex;
+        this.setEditMode(to,true);
+        this.setFocus(to,true);
+        return to;
     },
     //overridden
     remove : function(index){

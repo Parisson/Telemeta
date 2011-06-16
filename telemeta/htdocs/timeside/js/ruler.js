@@ -282,9 +282,12 @@ Timeside.classes.Ruler = Timeside.classes.TimesideArray.extend({
 
     //overridden: do not call directly this method, use markermap.move
     move: function(from, to, newOffset){
-        var newIndex = this._super(from,to);
+        to = this._super(from,to);
+        if(to <0){ //no move (some error)
+            return -1;
+        }
         //update label if it is the case:
-        var rulermarker = this.toArray()[newIndex];
+        var rulermarker = this.toArray()[to];
         var pixelOffset = this.toPixelOffset(newOffset);
         if(rulermarker.positionInPixels != pixelOffset){ //should not be the case if this method is called from a mouse event
             rulermarker.move(pixelOffset);
@@ -294,14 +297,15 @@ Timeside.classes.Ruler = Timeside.classes.TimesideArray.extend({
         }
 
         //this.debug('ruler.move: [from:'+from+', to:'+to+', real:'+newIndex+']');
-        if(newIndex!=from){
-            var i1 = Math.min(from,newIndex);
-            var i2 = Math.max(from,newIndex)+1;
+        if(to!=from){
+            var i1 = Math.min(from,to);
+            var i2 = Math.max(from,to)+1;
             //this.debug('updating ['+i1+','+i2+']');
             this.each(i1,i2, function(index,rulermarker){
                 rulermarker.setIndex(index, true);
             });
         }
+        return to;
     },
     //overridden
     //add(offset.-1) adds the pointer, isMovable is ingored

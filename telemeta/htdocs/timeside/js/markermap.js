@@ -115,24 +115,35 @@ Timeside.classes.MarkerMap = Timeside.classes.TimesideArray.extend({
 
         var newIndex = this.insertionIndex(newOffset);
         //select the case:
-        if(newIndex<0){
+        if(newIndex<0){ //newindex should ALWAYS be lower than zero, as insertionIndex(number) should not match any marker
             //we didn't move the marker on another marker (newOffset does not correspond to any marker)
             //just return the real insertionIndex
             newIndex = -newIndex-1;
+        }
+        
+        //now: if the isnertionIndex is greater than the marker index (oldIndex), 
+        //we decrement newIndex cause super.move will first REMOVE the marker and then set it at newIndex
+        if(newIndex > oldIndex){
+            newIndex--;
         }
 
         //realIndex is the REAL INDEX AT WHICH WILL BE the moving marker M AFTER move.
         //It newIndex = oldIndex+1
         //we move M IMMEDIATELY AFTER ITSELF, which means, after removing M, that M has realIndex=n, as before
-        var realIndex = this._super(oldIndex,newIndex);
+       
+        newIndex = this._super(oldIndex,newIndex);
+        
+        if(newIndex <0){
+            this.debug('markermap.move: index out of bounds');
+            return -1;
+        }
         
         var markers = this.toArray();
-        var marker = markers[realIndex];
+        var marker = markers[newIndex];
         var oldOffset = marker.offset;
         marker.offset = newOffset;
         this.fire('move', {
             marker: marker,
-            index: realIndex,
             fromIndex: oldIndex,
             toIndex: newIndex,
             oldOffset: oldOffset
