@@ -18,7 +18,7 @@ urlpatterns = patterns('',
     # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
-    (r'^djangoadmin/', include(admin.site.urls)),
+    (r'^admin/django/', include(admin.site.urls)),
     
     # Telemeta
     (r'^', include('telemeta.urls')),
@@ -26,5 +26,4 @@ urlpatterns = patterns('',
     # Languages
     (r'^i18n/', include('django.conf.urls.i18n')),    
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
-#    (r'^forum/', include('pybb.urls')),
 )

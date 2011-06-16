@@ -78,7 +78,7 @@ Install Telemeta
 
     Uncompress the archive like::
 
-        tar xzvf telemeta_0.5.1.tar.gz
+        tar xzvf telemeta_0.9.6.tar.gz
 
     Go to the main folder of telemeta and run this command
     in a shell as root::
@@ -119,7 +119,19 @@ Modifiy the following variables:
     ADMINS =            telemeta requires that you indicate an administrator here
     DATABASES =         your database setting dict (don't forget to create the database if needed)
     MEDIA_ROOT =        absolute path to the media directory you just created
-    INSTALLED_APPS =    add 'telemeta' and 'jsonrpc' to the tuple
+
+Set the app lists as follow::
+    
+    INSTALLED_APPS = (
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.sites',
+    'django.contrib.messages',
+    'django.contrib.admin',
+    'telemeta',
+    'jsonrpc',
+    )
 
 Set the following languages:
     
@@ -166,7 +178,14 @@ Just paste the lines below::
     TELEMETA_EXPORT_CACHE_DIR = TELEMETA_CACHE_DIR + "/export"
     TELEMETA_DATA_CACHE_DIR = TELEMETA_CACHE_DIR + "/data"
     CACHE_BACKEND = "file://" + TELEMETA_CACHE_DIR + "/data"
+
+If you want some personal templates, for example::
     
+    TEMPLATE_DIRS = (
+    '/home/dev/telemeta/sandboxes/sandbox_generic/templates/',
+    )
+
+
 You can find an example for settings.py there::
     
     conf/examples/django/settings.py
@@ -199,6 +218,15 @@ The simplest case is to have telemeta running at public root. To do so, add this
     # Languages
     (r'^i18n/', include('django.conf.urls.i18n')),    
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
+    
+You should also bring the django admin::
+    
+    (r'^admin/django/', include(admin.site.urls)),
+    
+Please also uncomment::
+    
+    from django.contrib import admin
+    admin.autodiscover()
 
 You can find an example for url.py there::
     
