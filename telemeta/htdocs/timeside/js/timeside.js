@@ -41,7 +41,7 @@ var Timeside = {
         timesideScripts: ['rulermarker.js','markermap.js', 'player.js', 'ruler.js'],
         //vml config variables. Used only if svg is NOT supported
         vml : {
-           /*
+            /*
             * raphael script to be loaded when Timeside.load is called and svg is not supported. It will be prepended to the
             * timesideScripts array defined above in config. URL paths are relative to the timeside folder, which
             * will be determined according to the src attribute of the timeside.js script path (to be included in the <head> of the page)
@@ -236,28 +236,79 @@ Timeside.classes.TimesideClass = Timeside.Class.extend({
     },
 
     /**
-     * 3 methods defining listeners, events fire and bind (aloing the lines of jQuery.bind, unbind and trigger. The latter is 'fire' here):
+     * 3 methods defining listeners, events fire and bind (aloing the lines of jQuery.bind, unbind and trigger.
+     * the only difference is that 'trigger' is 'fire' here). namespaces are allowed as in jQuery
      */
+  
     bind : function(eventType, callback, optionalThisArgInCallback){
         if(!callback || typeof callback !== 'function'){
             this.debug('cannot bind '+eventType+' to callback: the latter is null or not a function');
             return;
         }
-        var listenersMap = this.listenersMap;
-        var keyAlreadyRegistered = (listenersMap.hasOwnProperty(eventType));
-        if(!keyAlreadyRegistered){
-            listenersMap[eventType] = [];
+        if(!eventType){
+            this.debug('eventType is empty in bind');
+            return;
         }
-        listenersMap[eventType].push({
-            callback:callback,
-            optionalThisArgInCallback:optionalThisArgInCallback
-        });
+        var listenersMap = this.listenersMap;
+        if(optionalThisArgInCallback){
+            var cb = callback;
+            callback = function(data){
+                cb.apply(optionalThisArgInCallback,[data]);
+            };
+        }
+        
+        if(listenersMap.hasOwnProperty(eventType)){
+            listenersMap[eventType].push(callback);
+        }else{
+            listenersMap[eventType] = [callback];
+        }
+
+        var idx = eventType.indexOf('.');
+        if(idx <= 0 || idx >= eventType.length-1){
+            return;
+        }
+
+        eventType = eventType.substring(0,idx);
+
+
+        if(listenersMap.hasOwnProperty(eventType)){
+            listenersMap[eventType].push(callback);
+        }else{
+            listenersMap[eventType] = [callback];
+        }
+
     },
     unbind : function(){
         var listenersMap = this.listenersMap;
+        var key,keyPlusDot;
         if(arguments.length>0){
-            var key = arguments[0];
+            key = arguments[0];
             if(listenersMap.hasOwnProperty(key)){
+                var callbacks = listenersMap[key];
+                var idx = key.indexOf('.');
+                if(idx>0 && idx < key.length-1){
+                    //key is "eventtype.namespace", delete also functions stored in "eventType", if any
+                    var baseKey = key.substring(0,idx);
+                    var baseCallbacks = listenersMap[baseKey];
+                    if(baseCallbacks){
+                        for( var i = baseCallbacks.length; i>-1; i--){
+                            var bc = baseCallbacks[i];
+                            for( var j = callbacks.length; j>-1; j--){
+                                if(bc === callbacks[j]){
+                                    baseCallbacks.splice(i,1);
+                                }
+                            }
+                        }
+                    }
+                }else if(idx<0){
+                    //key is "eventtype", delete also all functions stored in "eventType.namespace", if any
+                    keyPlusDot = key+'.';
+                    for(var k in listenersMap){
+                        if(listenersMap.hasOwnProperty(k) && k.indexOf(keyPlusDot)==0 && k.length > keyPlusDot.length){
+                            delete listenersMap[k];
+                        }
+                    }
+                }
                 delete listenersMap[key];
             }
         }else{
@@ -280,12 +331,7 @@ Timeside.classes.TimesideClass = Timeside.Class.extend({
         var callbacks = listenersMap[key];
         var len = callbacks && callbacks.length ? callbacks.length : 0;
         for(var i=0; i<len; i++){
-            var obj = callbacks[i];
-            if(obj.hasOwnProperty('optionalThisArgInCallback')){
-                obj.callback.apply(obj.optionalThisArgInCallback, [dataArgument]);
-            }else{
-                obj.callback(dataArgument);
-            }
+            callbacks[i](dataArgument);
         }
     },
     
@@ -586,22 +632,25 @@ Timeside.load =function(container, soundUrl, durationInMsec, soundImgFcn, soundI
             //detect SVG support and load Raphael in case. Copied from Raphael code v 1.5.2:
             var svg = (win.SVGAngle || doc.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1"));
             if(!svg){
-                //add the raphael path
+                //add the raphael path. Raphael will be loaded in Timeside.load (see below)
                 ts_scripts.splice(0,0,ts.config.vml.raphaelScript);
                 //populate the vml object with methods to be used in ruler and rulermarker:
 
                 //global private variable:
                 //map to store each class name to the relative dictionary for raphael attr function (VML only)
                 var classToRaphaelAttr = {};
-                //here below we store  Raphael paper objects. var paper = Raphael(htmlElement) is the raphel method to build
-                //a new paper object. Internally, the method builds a div embedding vmls inside htmlElement
-                //However, calling again var paper = Raphael(htmlElement) does not use the already created paper,
-                //but creates a new object (and accordingly, a new div embedding vmls). Too bad. This features is not even
-                //planned according to raphael developers (see raphael forums). In case of markers lines, we want to draw a new marker
-                //on the same raphael paper. Therefore, we store here raphael papers in a map htmlElement -> paper
-                var raphael_papers = {};
                 //get the raphael attributes for which a conversion css -> raphael_attribute is possible:
                 var availableAttrs = ts.config.vml.raphaelAttributes;
+                //here below we store  Raphael paper objects. var paper = Raphael(htmlElement) is the raphel method to build
+                //a new paper object. Internally, the method builds a div embedding vmls inside htmlElement, retriavable via the
+                //paper.node property.
+                //However, calling again var paper = Raphael(htmlElement) does not use the already created paper,
+                //but creates a new paper with a new paper.node (div). Too bad. The possibility to wrap existing paper node
+                //into a Raphael paper would be a nice and almost necessary feature, which however is not even
+                //planned to be implemented according to raphael developers (see raphael forums).
+                //In case of markers lines, we want to draw a new marker
+                //on the same raphael paper. Therefore, we store here raphael papers in a map htmlElement -> paper
+                var raphael_papers = {};
                 ts.utils.vml = {
                     getVmlAttr: function(className){
                         //                        if(className in classToRaphaelAttr){
@@ -610,7 +659,7 @@ Timeside.load =function(container, soundUrl, durationInMsec, soundImgFcn, soundI
                         //                            consolelog('getVmlAttr: '+className+' to be created');
                         //                        }
                         if(classToRaphaelAttr.hasOwnProperty(className)){
-                        //if(className in classToRaphaelAttr){
+                            //if(className in classToRaphaelAttr){
                             return classToRaphaelAttr[className];
                         }
                         var d = document;
