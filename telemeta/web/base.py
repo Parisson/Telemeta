@@ -1078,7 +1078,7 @@ class WebView(object):
             element = r['element']
             if element:
                 link = 'http://' + rss_host + '/' + revision.element_type + 's/' + str(element.public_id)                
-                description = '<b>modified by : ' + revision.user.username + '</b><br /><br />'
+                description = '<b>modified by ' + revision.user.username + ' on ' + unicode(revision.time) + '</b><br /><br />'
                 dict = element.to_dict()
                 for tag in dict.keys():
                     try:
