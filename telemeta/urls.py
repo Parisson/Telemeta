@@ -246,9 +246,9 @@ urlpatterns = patterns('',
     url(r'^accounts/password_reset_complete/$', 'django.contrib.auth.views.password_reset_complete', {'template_name': 'telemeta/registration/password_reset_complete.html'}, name="telemeta-password-reset-complete"),
        
     # JSON RPC
-    url(r'^json/$', jsonrpc_site.dispatch, name='jsonrpc_mountpoint'),
+    url(r'json/$', jsonrpc_site.dispatch, name='jsonrpc_mountpoint'),
     # for the graphical browser/web console only, omissible
-    url(r'^json/browse/', 'jsonrpc.views.browse', name="jsonrpc_browser"), 
+    url(r'json/browse/', 'jsonrpc.views.browse', name="jsonrpc_browser"), 
     # for HTTP GET only, also omissible
     #url(r'^json/(?P<method>[a-zA-Z0-9.]+)$', jsonrpc_site.dispatch),  
     

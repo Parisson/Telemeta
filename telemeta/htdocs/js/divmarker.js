@@ -59,7 +59,7 @@ Timeside.classes.MarkerMapDiv = Timeside.classes.TimesideArray.extend({
         this.stretch(div.find('.markersdivDescription'));
         return div;
     },
-    //overridden
+    //overridden. Do not call explicitly, use marker map.move
     move: function(from, to, newOffset){
 
         //call super method
@@ -83,7 +83,6 @@ Timeside.classes.MarkerMapDiv = Timeside.classes.TimesideArray.extend({
         this.each(Math.min(from,realIndex),Math.max(from,realIndex)+1, function(i, div){
             setIdx.apply(t,[div,i]);
         });
-
         this.setOffset(me[realIndex],newOffset);
 
         //TODO: create a function?
@@ -160,7 +159,7 @@ Timeside.classes.MarkerMapDiv = Timeside.classes.TimesideArray.extend({
     },
 
     
-
+//TODO: what is doing this method here?
     setFocus: function(index,value){
     //        this.each(function(i,div){
     //            if(i==index && value){
@@ -179,6 +178,7 @@ Timeside.classes.MarkerMapDiv = Timeside.classes.TimesideArray.extend({
         var e_indexLabel = div.find('.ts-marker');
         var e_offsetLabel =div.find('.markersdivOffset');
         e_indexLabel.add(e_offsetLabel).unbind('click').click(function(){
+            //Timeside.player.moveMarker(index,0.2);return; //just a try
             me.setFocus(index,true);
             me.fire('focus', {
                 'index': index

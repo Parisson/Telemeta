@@ -59,7 +59,7 @@
  *      (popup.close() is called, see below)
  * showOk (false): determines whether or not an ok button should be shown at the bottom of the popup. The ok button is an <a> tag whose
  *      click will trigger the popup.onOk callback (see below). This parameter should always be true for form filling popup (see PopupDiv.content above) and when onOk is specified (see below)
- * okButtonTitle ('Ok'): self-explanatory
+ * okButtonTitle ('Ok') [see note4]: self-explanatory
  * onOk (null): callback. callback to be executed when the ok button is pressed. When specified, showOk must be set to true.
  *        The callback takes as argument a dictionary that the popup will build by retrieving all <input> <select> or <textarea>
  *        elements among its children: each element E whith attribute A = popup.getFormDataAttrName() (static popup method), will denote the property
@@ -74,14 +74,14 @@
  *        if the close button is clicked (see showClose below), or when popup.focusable=true and the popup looses the focus
  * showClose (false): a parameter specifying whether a close button should appear on the top-right corner of the popup. Clicking the close button
  *      (internally, an <a> tag) will close the popup and trigger popup.close() (and associated callbacks bindings, if any)
- * closeButtonTitle ('x'): self-explanatory
+ * closeButtonTitle ('x') [see note4]: self-explanatory
  * title (""): a parameter specifying whether the popup should have a title. The title will be placed on the top of the popup.
  * shadowOffset (4): the shadow offset, in pixels. Each popup has a 'shadow' which renders a kind of 3d raised effect. Set to 0 if no shadow must be visualized
  * p.okButtonAlign ('right'): self-explanatory. Takes the same argument as css text-align property. The css property text-align is set on the ok button parent div, so if okButtonClass (see below) is specified it might override the button alignement behaviour
  * popupClass ("") [see note1+2]: the popup class(es). The top and bottom divs (housing title/close and ok buttons respectively) are not affected by this parameter
  * popupCss ({}) [see note1+3]: the popup css. The top and bottom divs (housing title/close and ok buttons respectively) are not affected by this parameter
- * okButtonClass ('') [see note1+2]: the ok button class
- * closeButtonClass ('') [see note1+2]: the close button class
+ * okButtonClass ('') [see note1+2+4]: the ok button class
+ * closeButtonClass ('') [see note1+2+4]: the close button class
  * titleClass ('') [see note1+2]: the title class
  * listItemClass ('') [see note1+2]: the list items css, valid only if the popup is a listitem popup (see content above):
  *         it applies to each popup row (internally, an <a> tag with display block)
@@ -98,6 +98,9 @@
  *      backgrounds etcetera)
  * [note2]: class arguments are in the same form of jQuery.addClass() argument (ie, a string which can denote also multiple classes separated by spaces)
  * [note3]: css arguments are in the same form of jQuery.css() argument (ie, an object of cssName:cssValue pairs)
+ * [note4]: to customize ok button (closeButton respectively) with css (eg, with an icon), specify a background image in the class AND an height and a width (or padding),
+ * otherwise title and icon might overlap or, if okButtonTitle (closeButtonTitle respectively) is the empty string '', the button will be invisible. Note that the anchor has by default
+ * display = inline-block, so dimensions can be specified.
  *
  * And finally, EXAMPLES:
  * Given an anchor <a> (jQuery element)
@@ -508,7 +511,6 @@ function PopupDiv(){
         }else{
             container.append(""+content);
         }
-
     };
 
     p.setFocusCycleRoot = function(value){
@@ -605,24 +607,11 @@ function PopupDiv(){
         }
         var invoker = this.invoker;
         if(this.isClickElement(invoker)){
-            this.setBoundsAsPopup(invoker, true);
+            this.setBoundsAsPopup(invoker);
         }else{
-            this.setBoundsInside(invoker, this.bounds, this.boundsExact, true);
+            this.setBoundsInside(invoker, this.bounds, this.boundsExact);
         }
-        //set title and close button to span whole width, if necessary
-        //closeButton.outerWidth should be zero if this.showClose = false
-        //titleInput.outerWidth(true) should be equal to titleInput.width(), as margins borders and padding are zero, however we want to calculate it safely
-        //        if(this.showClose || this.title){
-        //            var topDiv = this.getDiv().children().eq(0);
-        //            var closeBtn = topDiv.find('a').eq(0);
-        //            var titleInput = topDiv.find(':text').eq(0);
-        //            var titleW = topDiv.width() - closeBtn.outerWidth(true) - (titleInput.outerWidth(true)-titleInput.width());
-        //            titleInput.css({
-        //                'maxWidth':'',
-        //                'width':(titleW)+'px'
-        //            });
-        //        }
-
+        
         this.shadow(); //updates shadow
         if(focusable){
             this.getFirstFocusableElement().focus();
@@ -631,29 +620,27 @@ function PopupDiv(){
 
     p.setTitle= function(title){
         var subdiv = this.getDiv().children().eq(0);
+
+
         var text = subdiv.contents().filter(function() {
             return this.nodeType == 3;
         });
+        
         var node = text.get(0);
         if(!title){
-            title='';
+            //if title is the empty string, apparently the text node seems to be "deleted", so resetting
+            //the title later has no effect. Setting a white space is not really perfect, as we could have extra space. However,
+            //if assures at least a minimum width if the container is empty
+            title=' ';
         }
         if (node.textContent) {
             node.textContent = title;
         } else if (node.nodeValue) {
             node.nodeValue = title;
         }
-
-    //        var titleIpt = subdiv.find(':text').hide();
-    //        var titleSpan = subdiv.find('span').css({'display':'inline-block','float':'left'});
-    //        if(title){
-    //            titleSpan.html(title);
-    //        }else{
-    //            titleSpan.hide();
-    //        }
-    //        var titleSpanWidth = titleSpan.html(title).width();
-    //        titleIpt.val(title).css('width',titleSpanWidth+'px');
-    //        titleSpan.html('').css('display','none');
+//        consolelog('"'+ title+'"');
+//        consolelog(text);
+//        consolelog(node);
     }
 
     p.isShowing = function(){
@@ -664,7 +651,6 @@ function PopupDiv(){
         var div = this.getDiv();
         var me = this;
 
-        var cssModified = (this.popupClass || this.popupCss);
         if(this.popupClass){
             //this.popupClass might be in the prototype (not set by user)
             div.removeClass().addClass(this.popupClass);
@@ -675,19 +661,7 @@ function PopupDiv(){
             div.css(this.popupCss);
             this.popupCss = ''; //override prototype property
         }
-        //css modified, restore properties we need not to change:
-        //cssModified should be true ALL first times we call show, as this.popupCss = {} )ie, it evaluates to TRUE)
-        if(cssModified){
-            div.css({
-                'position':'absolute',
-                'zIndex':this.zIndex,
-                'margin':'0px',
-                'overflow':'hidden'
-            });
-        }
-
-        //this.setSizable();//this means the popupdiv is display: !none and visibility:hidden, so every element
-        //inside it should be visible and therefore sizable. Being visible means that jQuery.is(':visible') returns true
+        
 
         this.setFocusCycleRoot(this.focusable);
 
@@ -696,9 +670,7 @@ function PopupDiv(){
         var topDiv = $(subdiv[0]);
         var closeBtn = topDiv.find('a').eq(0);
 
-        if(!this.showClose && !this.title){
-            topDiv.hide();
-        }else{
+        if(this.showClose || this.title){
             topDiv.css({
                 'paddingBottom':'0.25em'
             }); //add padding to bottom
@@ -722,18 +694,6 @@ function PopupDiv(){
             }else{
                 closeBtn.hide(); //margin:0 is to be sure, as afterwards we must span the title the whole popup width
             }
-            //in any case, show titleElement cause even if title="", titleElement is used to position close on the right
-            //            titleInput.css({
-            //                'backgroundColor':'transparent',
-            //                'padding': '0px',
-            //                'margin':'0px',
-            //                'border':'0px'
-            //            }).attr('readonly','readonly').attr('class',this.titleClass).css({
-            //                'display':'inline-block','float':'left'
-            //            //it is too tricky to set the width of the input spanning the whole title (in case of long titles)
-            //            //we experienced problems in vertical align with the close button, as stated somewhere above.
-            //            //we will use a span (see setTitle below)
-            //            });
             this.setTitle(this.title);
         }
 
@@ -749,31 +709,19 @@ function PopupDiv(){
             okButton.attr('class', this.okButtonClass); //removes all existing classes, if any
             okButton.html(this.okButtonTitle);
             okButton.css({
-                'display':'inline-block',
-                'visibility':'visible'
+                'float':'none',
+                'display':'inline-block'
             }); //in order to set width and height on the element
-        }else{
-            bottomDiv.hide();
         }
 
-        //        var centralDiv = $(subdiv[1]);
-        //        //reset properties of the central div
-        //        centralDiv.css({
-        //            'overflow':'auto',
-        //            'maxHeight':'',
-        //            'maxWidth':'',
-        //            'minHeight':'',
-        //            'minWidth':'',
-        //            'height':'',
-        //            'width':'',
-        //            'visibility':'visible'
-        //        }).show();
-
+        if(!div.parent().length){ //to be done before setSizeAsPopup or setBoundsInside
+            div.appendTo('body');
+        }
 
         var invoker = this.invoker;
 
         if(this.isClickElement(invoker)){
-            this.setBoundsAsPopup(invoker, true);
+            this.setBoundsAsPopup(invoker);
             //storing click events, when showing clicking on an event must give the focus to the popup
             //old handlers will be restored in close()
             this['_tmpHandlers'+this.getId()] = undefined;
@@ -804,37 +752,10 @@ function PopupDiv(){
             }
 
         }else{
-            this.setBoundsInside(invoker, this.bounds, this.boundsExact, true);
+            this.setBoundsInside(invoker, this.bounds, this.boundsExact);
         }
 
-        //        //set title and close button to span whole width, if necessary
-        //        //closeButton.outerWidth should be zero if this.showClose = false
-        //        //titleInput.outerWidth(true) should be equal to titleInput.width(), as margins borders and padding are zero, however we want to calculate it safely
-        //        if(this.showClose || this.title){
-        //            var titleW = topDiv.width() - closeBtn.outerWidth(true) - (titleInput.outerWidth(true)-titleInput.width());
-        //            titleInput.css({
-        //                'maxWidth':'',
-        //                'width':(titleW)+'px'
-        //            });
-        //        }
-        //
-        //        //set central div max height ONLY IF NECESSARY (overflow). Until here, the main popup is sized and placed
-        //        //but the central div might overflow
-        //        var height = centralDiv.height();
-        //        var maxHeight = (div.height()-topDiv.outerHeight(true)-bottomDiv.outerHeight(true)-
-        //            (centralDiv.outerHeight(true)-centralDiv.height()));
-        //        if(maxHeight<height){
-        //            centralDiv.css('maxHeight',maxHeight+'px');
-        //        }
-        //        //same for width:
-        //        var maxWidth = div.width();
-        //        var width = centralDiv.outerWidth(true);
-        //        if(maxWidth<width){
-        //            centralDiv.css('maxWidth',maxWidth+'px');
-        //        }
-
        
-
         var shadow = this.shadow();
         var postShowFcn = function(){
             me.trigger('show');
@@ -882,14 +803,12 @@ function PopupDiv(){
         return shadow;
     }
 
-    p.setBoundsAsPopup = function(popupInvoker, isSizable){
+    p.setBoundsAsPopup = function(popupInvoker){
         var invoker = popupInvoker;
 
         this.preSizeFcn();
-        isSizable = true;
 
         var div = this.getDiv();
-        //        var oldCss= isSizable ?  undefined : this.setSizable();
 
         var shadowOffset = this.shadowOffset;
         var windowRectangle = this.getBoundsOf(wdw); //returns the window rectangle
@@ -909,7 +828,7 @@ function PopupDiv(){
         this.setMaxSize({
             height : (placeAbove ? spaceAbove : spaceBelow),
             width: (placeLeft ? spaceLeft : spaceRight)
-        },isSizable); //width will be ignored (for the moment)
+        }); //width will be ignored (for the moment)
         //decrement of one pixel cause when the popup has to be reduced and the shadows bounds "touch" the window right or bottom sides,
         //the window scrolls (and it shouldn't)
 
@@ -919,7 +838,7 @@ function PopupDiv(){
         //height : spaceAbove>spaceBelow ? spaceAbove : spaceBelow //why this? because if we click the popup a
         //computed height CH seems to be set. At subsequent popup show, CH will be the same UNLESS a new maxHeight lower than CH is set
         //however, we want CH to change even if a new maxHeight greater than CH is set
-        },isSizable);
+        });
 
         //setting the top and left. This must be done at last because popupDiv.outerHeight(true)
         //must have been computed according to the height set above...
@@ -927,16 +846,9 @@ function PopupDiv(){
             'left': placeLeft ? invokerOffset.left+ invokerOuterWidth - div.outerWidth(true)-shadowOffset : invokerOffset.left,
             'top': (placeAbove ? invokerOffset.top -  div.outerHeight(true) :
                 invokerOffset.top + invokerOuterHeight)
-        },isSizable);
+        });
 
         this.postSizeFcn();
-
-    //        if(oldCss){
-    //            div.css({
-    //                'display':oldCss['display'],
-    //                'visibility':oldCss['visibility']
-    //            });
-    //        }
 
     };
     //places and resize the popupdiv inside parent
@@ -944,14 +856,12 @@ function PopupDiv(){
     //padding={top:0.25,left:0.25,bottom:0.25,right:0.25} will place the popupdiv at the center of parent
     //padding={top:25,left:25,bottom:25,right:25} will place the popupdiv at distances 25 px from parent sides
     //in other words, padding keys lower or euqals to 1 will be conbsidered as percentage, otherwise as absolute measures in px
-    p.setBoundsInside = function(parent, pd, boundsExact, isSizable){
+    p.setBoundsInside = function(parent, pd, boundsExact){
 
         var div = this.getDiv();
-        //        var oldCss = isSizable ?  undefined : this.setSizable();
         
         this.preSizeFcn();
-        isSizable = true;
-
+        
         var bounds = this.getBoundsOf(parent);
         
         
@@ -994,42 +904,35 @@ function PopupDiv(){
             this.setMinSize({
                 width:maxSize.width,
                 height:maxSize.height
-            },isSizable); //a copy cause the argument will be modified
+            }); //a copy cause the argument will be modified
             this.setMaxSize({
                 width:maxSize.width,
                 height:maxSize.height
-            }, isSizable); //a copy cause the argument will be modified
+            }); //a copy cause the argument will be modified
 
             this.offset({
                 'left':x + padding['left'],
                 'top': y + padding['top']
-            },isSizable);
+            });
         }else{
             this.setMaxSize({
                 width:maxSize.width,
                 height:maxSize.height
-            },isSizable); //a copy cause the argument will be modified
+            }); //a copy cause the argument will be modified
             var spanLeft = maxSize.width - div.outerWidth(true);
             var spanTop = maxSize.height - div.outerHeight(true);
             this.offset({
                 'left':x + padding['left'] + (spanLeft > 0 ? spanLeft/2 : 0),
                 'top': y + padding['top'] +(spanTop > 0 ? spanTop/2 : 0)
-            },isSizable);
+            });
 
         }
 
         this.postSizeFcn();
-
-    //        if(oldCss){
-    //            div.css({
-    //                'display':oldCss['display'],
-    //                'visibility':oldCss['visibility']
-    //            });
-    //        }
     };
     p.preSizeFcn = function(){
-        this.setSizable();
-        var subdivs = this.getDiv().children().hide();
+        var div = this.getDiv();
+        var subdivs = div.children().hide();
         var subdivsshow = subdivs.eq(1);
         if(this.showClose || this.title){
             subdivsshow = subdivsshow.add(subdivs.eq(0));
@@ -1038,15 +941,22 @@ function PopupDiv(){
             subdivsshow = subdivsshow.add(subdivs.eq(2));
         }
         
-        subdivsshow.css({
-            'overflow':'auto',
-            'maxHeight':'',
-            'maxWidth':'',
-            'minHeight':'',
-            'minWidth':'',
+        subdivsshow.add(div).css({
+            'maxHeight':'none',
+            'maxWidth':'none',
+            'minHeight':'none',
+            'minWidth':'none',
             'height':'auto',
             'width':'auto',
-            'display':'block'
+            'display':'block',
+            'overflow':'visible',
+            'float':'none'
+        });
+
+        div.css({
+            'margin':'0px',
+            'zIndex':this.zIndex,
+            'position':'absolute'
         });
     }
     
@@ -1057,33 +967,6 @@ function PopupDiv(){
         var div = this.getDiv();
         var subdivs = div.children();
         var topDiv = subdivs.eq(0);
-
-        //we must set a width:100% on the topDiv in order to stretch the whole HEIGHT (having two elements inside it with float:left and right)
-        //however, we might have here a width LOWER than the actual div width, so stretch it more if it's lower:
-        
-        //        if(this.showClose || this.title){
-        //            var closeBtn = topDiv.find('a').eq(0);
-        //            var titleInput = topDiv.find(':text').eq(0);
-        //            var span = topDiv.find('span').eq(0).hide();
-        //            var titleW = topDiv.width() - closeBtn.outerWidth(true) - (titleInput.outerWidth(true)-titleInput.width());
-        //            titleInput.html(span.html()).css({
-        //                'maxWidth':'',
-        //                'width':(titleW)+'px'
-        //            });
-        //        }
-
-        var topBottom = $([]);
-        if(this.showClose || this.title){
-            topBottom = topBottom.add(subdivs.eq(0));
-        }
-        if(this.showOk){
-            topBottom = topBottom.add(subdivs.eq(2));
-        }
-        topBottom.css({
-            'overflow':'hidden',
-            'width':'100%'
-        }); //to span the whole width
-
 
         var centralDiv = subdivs.eq(1);
         centralDiv.css('overflow','auto');
@@ -1138,11 +1021,10 @@ function PopupDiv(){
         ret.height = jQueryElement.height();
         return ret;
     };
-
-    p.setMaxSize = function(size, isSizable){
+    //getDiv must be sizable (preShowFcn must have been called)
+    p.setMaxSize = function(size){
         var div = this.getDiv();
-        var oldCss = isSizable ?  undefined : this.setSizable();
-
+        
         this._convertSize(div, size);
         var css = {};
         if('width' in size){
@@ -1154,20 +1036,12 @@ function PopupDiv(){
         if(css){
             div.css(css);
         }
-        if(oldCss){
-            div.css({
-                'display':oldCss['display'],
-                'visibility':oldCss['visibility'],
-                'top':oldCss['top'],
-                'left':oldCss['left']
-            });
-        }
         return size;
     };
-    p.setMinSize = function(size, isSizable){
+    //getDiv must be sizable (preShowFcn must have been called)
+    p.setMinSize = function(size){
         var div = this.getDiv();
-        var oldCss= isSizable ?  undefined : this.setSizable();
-
+        
         this._convertSize(div, size);
         var css = {};
         if('width' in size){
@@ -1178,14 +1052,6 @@ function PopupDiv(){
         }
         if(css){
             div.css(css);
-        }
-        if(oldCss){
-            div.css({
-                'display':oldCss['display'],
-                'visibility':oldCss['visibility'],
-                'top':oldCss['top'],
-                'left':oldCss['left']
-            });
         }
         return size;
     };
@@ -1204,22 +1070,9 @@ function PopupDiv(){
         }
     };
 
-    p.offset = function(offs, isSizable){
+    p.offset = function(offs){
         var div = this.getDiv();
-        var oldCss= isSizable?  undefined : this.setSizable();
-        //offset does NOT consider margins. Do we have top and left?
-
-        this.getDiv().offset(offs);
-        if(oldCss){
-            div.css({
-                'display':oldCss['display'],
-                'visibility':oldCss['visibility'],
-                'maxWidth':oldCss['maxWidth'],
-                'maxHeight':oldCss['maxHeight'],
-                'minWidth':oldCss['minWidth'],
-                'minHeight':oldCss['minHeight']
-            });
-        }
+        div.offset(offs);
     };
 
     p.close = function(){
@@ -1270,35 +1123,6 @@ function PopupDiv(){
         return t;
     },
 
-    p.setSizable = function(){
-        //if false, just update the flag
-        var div = this.getDiv();
-
-        if(!div.parent().length){
-            div.appendTo('body');
-        }
-        var keys = ['display','visibility','left','top','maxWidth','maxHeight','minWidth','minHeight'];
-        var css = {};
-        for(var i=0; i<keys.length; i++){
-            css[keys[i]] = div.css(keys[i]);
-        }
-        div.offset({
-            'left':wdw.scrollLeft(),
-            'top':wdw.scrollTop()
-        });
-        //set the div invisible but displayable to calculate the size (callbackPreShow)
-        div.css({
-            'maxWidth':'',
-            'maxHeight':'',
-            'minWidth':'',
-            'minHeight':'',
-            'height':'',
-            'width':''
-        }).show();
-
-
-        return css;
-    }
     p.getShadowDivId = function(){
         return this.getId()+"_shadow";
     }
@@ -1312,4 +1136,3 @@ function PopupDiv(){
     }
 
 })(PopupDiv.prototype);
-

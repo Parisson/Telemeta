@@ -104,8 +104,7 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
         end('SoundManager is not responding. Try to:\n - Reload the page\n - Empty the cache (see browser preferences) and reload the page\n - Restart the browser');
     },maxTime);
     
-    //    var playerDiv = $J('#player');
-    //    var markersUI = $J("#markers_div_id");
+   
 
     
         
@@ -134,10 +133,7 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                 analyzerContentArray.push(elm.attr('unit'));
                 analyzerContentArray.push('</td></tr>');
             });
-                
-                
-
-
+            
             //loaded analizer, loading player
             //msgElm.html('Loading markers...');
                 
@@ -319,6 +315,14 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                     $J('#analyzer_div_id').find('table').find('tbody:last').append(analyzerContentArray.join(""));
 
                     //setting up the select tag
+
+                    player.bind('waitShown', function(data){
+                        visualizersSelectElement.hide();
+                    });
+                    player.bind('waitHidden', function(data){
+                        visualizersSelectElement.css('display','inline-block');
+                    });
+
                     //assigning event on select:
                     visualizersSelectElement.change(
                         function (){
@@ -328,20 +332,14 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                     var ch = control.height();
                     var margin = 3;
                     visualizersSelectElement.css({
-                        'display':'inline-block',
+                        'display': 'inline-block',
                         'height':(ch-2*margin)+'px',
                         'position':'absolute',
                         'top':margin+'px',
                         'right':margin,
                         'margin':0
-                    });
-                    player.bind('waiting', function(data){
-                        if(data.value){ //is waiting
-                            visualizersSelectElement.hide();
-                            return;
-                        }
-                        visualizersSelectElement.css('display','inline-block');
-                    });
+                    }).hide(); //hide it to be sure. We could check player.isImgRefreshing but we have to think about event queue...
+
                     control.append(visualizersSelectElement);
                     //Eventually, do 3 last things:
                     //1) call end (without arguments simply clears the wait span and avoid subsequent calls to end(msg) to
@@ -372,7 +370,7 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                             var popupdiv = new PopupDiv({
                                 focusable: false,
                                 titleClass: 'markersdivTitle',
-                                showClose:false,
+                                showClose:true,
                                 bounds: {
                                     top:0.4,
                                     left:0.1,
@@ -383,19 +381,20 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                                 defaultCloseOperation: 'hide'
                             });
                             var popupShowFunction = function(data){
-//                                    if(popupTimeoutId !== undefined){
-//                                        cT(popupTimeoutId);
-//                                    }
-//                                    popupTimeoutId=undefined;
-                                    popupdiv.refresh(data.marker.desc,data.marker.title);
-                                    if(!popupdiv.isShowing()){
-                                        popupdiv.show();
-                                    }
-//                                    var index = data.index;
-//                                    if(index+1 == map.length || map.toArray()[index+1].offset-data.marker.offset>3){
-//                                        popupTimeoutId = popupdiv.setTimeout('close',3000);
-//                                    }
-                                };
+                                //                                    if(popupTimeoutId !== undefined){
+                                //                                        cT(popupTimeoutId);
+                                //                                    }
+                                //                                    popupTimeoutId=undefined;
+                                
+                                popupdiv.refresh(data.marker.desc,data.marker.title);
+                                if(!popupdiv.isShowing()){
+                                    popupdiv.show();
+                                }
+                            //                                    var index = data.index;
+                            //                                    if(index+1 == map.length || map.toArray()[index+1].offset-data.marker.offset>3){
+                            //                                        popupTimeoutId = popupdiv.setTimeout('close',3000);
+                            //                                    }
+                            };
                             if(POPUP_TIMEOUT<0){
                                 player.bind('markerCrossed',popupShowFunction);
                             }else{
@@ -408,7 +407,9 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                                     popupTimeoutId=undefined;
                                     popupShowFunction(data);
                                     var index = data.index;
-                                    if(index+1 == map.length || map.toArray()[index+1].offset-data.marker.offset>3){
+                                    //consolelog(data);
+                                    //consolelog(index+') '+data.marker.offset+' | '+(map.toArray()[index+1].offset+' - '+data.timeMarginInSec));
+                                    if(index+1 == map.length || map.toArray()[index+1].offset-data.marker.offset-data.timeMarginInSec>3){
                                         popupTimeoutId = popupdiv.setTimeout('close',3000);
                                     }
                                 //consolelog('firing markercrossed');
