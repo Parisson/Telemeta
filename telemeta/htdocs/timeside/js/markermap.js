@@ -44,7 +44,7 @@ Timeside.classes.MarkerMap = Timeside.classes.TimesideArray.extend({
             newMarker.offset = this.pFloat(newMarker.offset);
         }
         if(!('id' in newMarker)){
-            newMarker.id = Timeside.utils.uniqid();
+            newMarker.id = this.$TU.uniqid(); //Timeside.utils.uniqid();
         }
         if(!('isEditable' in newMarker)){
             newMarker.isEditable = false;
@@ -220,8 +220,10 @@ Timeside.classes.MarkerMap = Timeside.classes.TimesideArray.extend({
 
         while (low <= high) {
             var mid = (low + high) >>> 1;
-            //biwise operation equivalent to (but faster than):
+            //biwise operation is not as fast as in compiled languages such as C and java (see Jslint web page)
+            //However (tested on a PC in Chrome, IE and FF), it is faster than the equivalent:
             //var mid = parseInt((low + high)/2);
+            //even if we reference parseInt before this loop and we call the variable assigned to it
             var midVal = data[mid];
             var cmp = comparatorFunction(midVal,object);
             if (cmp < 0){

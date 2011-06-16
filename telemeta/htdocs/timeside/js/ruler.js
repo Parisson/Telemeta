@@ -166,11 +166,13 @@ Timeside.classes.Ruler = Timeside.classes.TimesideArray.extend({
         var upperRectClass = cssPref + 'svg-' + 'ruler-upper-rect';
         var rulerLinesClass = cssPref + 'svg-' + 'ruler-lines';
 
-        if(!this.isSvgSupported){
+        var vml = this.$TU.vml;
+        if(vml){
+            //we create each time a new Raphael object. This is not a big performance issue
             var paper = Raphael(rulerContainer[0], rulerContainer.width(), h);
             var rect = paper.rect(0,0, rulerContainer.width(), h/2);
             var path = paper.path(rulerLinesPath);
-            var attr = this.getVmlAttr;
+            var attr = vml.getVmlAttr;
             rect.attr(attr(upperRectClass));
             path.attr(attr(rulerLinesClass));
             return;
