@@ -67,9 +67,9 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         
         this.soundPosition =  sound.position ? this.toSec(sound.position) : 0;
         //public methods: returns the sound position
-        this.getSoundPosition = function(){
-            return this.soundPosition;
-        };
+//        this.getSoundPosition = function(){
+//            return this.soundPosition;
+//        };
 
 
         //       if(sound.readyState != 3){
@@ -210,7 +210,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
 
         if(canAddMarkers){
             setMarkerButton.show().attr('href','#').unbind('click').bind('click', function(){
-                me.addMarker(me.getSoundPosition());
+                me.addMarker(me.soundPosition);
                 return false;
             });
         }else{
@@ -293,6 +293,15 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         this.getRuler = function(){
             return ruler;
         }
+        //bind mouse events:
+        ruler.bind('markermouseevent', function(data){
+           consolelog(data.eventName);
+           consolelog(data);
+           var idx = data.index;
+           data.marker = idx > -1 ? me.getMarker(idx) : undefined;
+           me.fire('markerMouseEvent',data);
+        });
+
 
         //setting image size (if provided) and resize player. Note that _setImageSize (with underscore) is intended to be
         //a private method (faster). setImageSize (without underscore) is the public method to use outside of player object
@@ -870,7 +879,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         var markers = map.toArray();
         var len = markers.length;
         var offset =  this.getSoundDuration();
-        var position = this.getSoundPosition(); //parseFloat(this.getSoundPosition());
+        var position = this.soundPosition; //parseFloat(this.getSoundPosition());
         var idx = map.insertionIndex(position);
         if(idx<0){
             idx = -idx-1; //cursor is not on a a marker, get the insertion index
@@ -893,7 +902,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         var map = this.getMarkerMap();
         var markers = map.toArray();
         var offset =  0;
-        var position = this.getSoundPosition(); //parseFloat(this.getSoundPosition());
+        var position = this.soundPosition; //parseFloat(this.getSoundPosition());
         var idx = map.insertionIndex(position);
         if(idx<0){
             idx = -idx-1; //cursor is not on a a marker, get the insertion index
@@ -941,6 +950,13 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
                 'height':'100%',
                 'width':volume+'%'
             });
+        }
+    },
+
+    each: function(){
+      var map = this.getMarkerMap();
+        if(map){
+            map.each.apply(map,arguments);
         }
     },
 
@@ -992,8 +1008,10 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         var map = this.getMarkerMap();
         //var mapUI = this.getMarkersUI();
         var ruler = this.getRuler();
-        map.clear();
-        ruler.clear();
+
+        //TODO: think about if clearing or not: we assign some bindings in the constructor, too:
+//        map.clear();
+//        ruler.clear();
        
   
         var rulerAdd = ruler.add;
@@ -1039,7 +1057,6 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         //and now add a binding to the map when we move a marker:
           
         map.bind('move', function(data){
-            consolelog(data);
             var from = data.fromIndex;
             var to = data.toIndex;
             ruler.move.apply(ruler,[from,to,data.marker.offset]);

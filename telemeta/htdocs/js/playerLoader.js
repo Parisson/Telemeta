@@ -402,14 +402,17 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                                 player.bind('markerCrossed',popupShowFunction);
                             }else{
                                 var popupTimeoutId = undefined;
-                                var cT = clearTimeout;
+                                var clearHidePopupTimeout = clearTimeout;
                                 player.bind('markerCrossed',function(data){
                                     if(popupTimeoutId !== undefined){
-                                        cT(popupTimeoutId);
+                                        clearHidePopupTimeout(popupTimeoutId);
                                     }
                                     popupTimeoutId=undefined;
                                     popupShowFunction(data);
-                                    
+
+                                    if(POPUP_TIMEOUT<0){
+                                        return;
+                                    }
                                     var next = data.nextMarkerTimeInterval ? data.nextMarkerTimeInterval[0] :undefined;
                                     if(next === undefined || next-data.currentSoundPosition > POPUP_TIMEOUT){
                                         popupTimeoutId = popupdiv.setTimeout('close',POPUP_TIMEOUT*1000);
@@ -427,6 +430,30 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                                 //consolelog(data.marker.title);
                             
                                 });
+                                //now bind mouse events
+                                player.bind('markerMouseEvent', function(data){
+                                    if(data.index<0){ //is the pointer
+                                        return;
+                                    }
+                                    if(popupTimeoutId !== undefined){
+                                        clearHidePopupTimeout(popupTimeoutId);
+                                    }
+                                    if(data.eventName === 'dragstart' || data.eventName === 'mouseleave'){
+                                        if(popupdiv.isShowing()){
+                                            popupdiv.close();
+                                        }
+                                        return;
+                                    }
+                                    if(data.eventName !== 'mouseenter'){
+                                        return;
+                                    }
+                                    popupShowFunction(data);
+                                    if(POPUP_TIMEOUT<0){
+                                        return;
+                                    }
+                                    popupTimeoutId = popupdiv.setTimeout('close',POPUP_TIMEOUT*1000);
+                                });
+
                             }
                         }
                     }

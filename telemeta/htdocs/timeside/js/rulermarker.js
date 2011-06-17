@@ -123,7 +123,7 @@ Timeside.classes.RulerMarker = Timeside.classes.TimesideClass.extend({
             }
         }
     },
-
+    //isMovedByMouse: false, //flag to be set by the ruler (see add method) when mouse is moving this rulermarker
     //sets the text of the marker, if the text changes the marker width and optionalUpdateLabelPosition=true,
     //re-arranges the marker position to be center-aligned with its vertical line (the one lying on the wav image)
     setText: function(text, optionalUpdateLabelPosition) {
