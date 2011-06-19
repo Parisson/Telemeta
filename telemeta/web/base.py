@@ -62,6 +62,7 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext
 from django.contrib.auth.forms import UserChangeForm
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.syndication.views import Feed
 
 from telemeta.models import *
 import telemeta.models
@@ -116,7 +117,7 @@ class WebView(object):
             template = loader.get_template('telemeta/index.html')
             ids = [id for id in MediaItem.objects.all().values_list('id', flat=True).order_by('?')[0:3]]
             items = MediaItem.objects.enriched().filter(pk__in=ids)
-            revisions = self.get_revisions(request, 3)
+            revisions = get_revisions(3)
             context = RequestContext(request, {
                         'page_content': pages.get_page_content(request, 'home', ignore_slash_issue=True),
                         'items': items, 'revisions': revisions})
@@ -124,33 +125,10 @@ class WebView(object):
         else:
             template='telemeta/home.html'
             playlists = self.get_playlists(request)
-            revisions = self.get_revisions(request, 15)
+            revisions = get_revisions(15)
             searches = Search.objects.filter(username=request.user)
             return render(request, template, {'playlists': playlists, 'searches': searches, 
                                               'revisions': revisions,})
-  
-    def get_revisions(self, request, nb):
-        last_revisions = Revision.objects.all().order_by('-time')[0:nb]
-        revisions = []
-        for revision in last_revisions:
-            if revision.element_type == 'item':
-                try:
-                    element = MediaItem.objects.get(pk=revision.element_id)
-                except:
-                    element = None
-            if revision.element_type == 'collection':
-                try:
-                    element = MediaCollection.objects.get(pk=revision.element_id)
-                except:
-                    element = None
-            if revision.element_type == 'marker':
-                try:
-                    element = MediaItemMarker.objects.get(pk=revision.element_id)
-                except:
-                    element = None
-            revisions.append({'revision': revision, 'element': element})
-        
-        return revisions
         
     def collection_detail(self, request, public_id, template='telemeta/collection_detail.html'):
         collection = MediaCollection.objects.get(public_id=public_id)
@@ -1070,7 +1048,7 @@ class WebView(object):
         subjects = settings.TELEMETA_SUBJECTS
         rss_host = request.META['HTTP_HOST']
         date_now = datetime.datetime.now()
-        revisions = self.get_revisions(request, 50)
+        revisions = self.get_revisions(50)
         tags = ['title', 'description', 'comment']
         
         for r in revisions:
@@ -1185,3 +1163,71 @@ class WebView(object):
             formset = FormSet(instance=item)
         return render(request, template, {'item': item, 'formset': formset,})
     
+
+def get_revisions(nb):
+    last_revisions = Revision.objects.order_by('-time')[0:nb]
+    revisions = []
+    for revision in last_revisions:
+        if revision.element_type == 'item':
+            try:
+                element = MediaItem.objects.get(pk=revision.element_id)
+            except:
+                element = None
+        if revision.element_type == 'collection':
+            try:
+                element = MediaCollection.objects.get(pk=revision.element_id)
+            except:
+                element = None
+        if revision.element_type == 'marker':
+            try:
+                element = MediaItemMarker.objects.get(pk=revision.element_id)
+            except:
+                element = None
+        if not element == None:
+            revisions.append({'revision': revision, 'element': element})
+    return revisions
+    
+
+class LastestChangesFeed(Feed):
+    "Render the RSS feed of last revisions"
+        
+    organization = settings.TELEMETA_ORGANIZATION
+    subjects = settings.TELEMETA_SUBJECTS
+    tags = ['title', 'description', 'comment']
+    title = organization + ' - Telemeta - ' + ugettext('Last changes')
+    link = ""
+    description = ' '.join([subject.decode('utf-8') for subject in subjects])
+
+    def items(self):
+        return get_revisions(25)
+
+    def item_title(self, r):
+        revision = r['revision']
+        element = r['element']
+        if element.title == '':
+            title = str(element.public_id)
+        else:
+            title = element.title
+        return element.element_type + ' : ' + title
+
+    def item_description(self, r):
+        revision = r['revision']
+        element = r['element']
+        description = '<b>modified by ' + revision.user.username + ' on ' + unicode(revision.time) + '</b><br /><br />'
+        dict = element.to_dict()
+        for tag in dict.keys():
+            try:
+                value = dict[tag]
+                if value != '':
+                    description += tag + ' : ' + value + '<br />'
+            except:
+                continue
+        return description.encode('utf-8')
+        
+    def item_link(self, r):
+        revision = r['revision']
+        element = r['element']
+        link = '/' + revision.element_type + 's/' + str(element.public_id) 
+        return link
+        
+        
