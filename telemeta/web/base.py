@@ -1202,7 +1202,6 @@ class LastestRevisionsFeed(Feed):
         return get_revisions(25)
 
     def item_title(self, r):
-        revision = r['revision']
         element = r['element']
         if element.title == '':
             title = str(element.public_id)

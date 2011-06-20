@@ -3,7 +3,7 @@ Telemeta - INSTALL
 ==================
 
 -----------------
-0. Requirements
+Requirements
 -----------------
 
 Telemeta is designed to run on Linux and other UNIX based architectures.
@@ -13,7 +13,7 @@ See http://djangoproject.com.
 Other needed librairies are listed below.
 
 -----------------------
-1. Install the software
+Install the software
 -----------------------
 
 Install the dependencies
@@ -87,7 +87,7 @@ Install Telemeta
 
 
 --------------------------
-2. Create a Django project
+Create a Django project
 --------------------------
 
 If you haven't already done it, start a new django project::
@@ -97,7 +97,7 @@ If you haven't already done it, start a new django project::
 
 
 -----------------------------------------
-3. Create the media and cache directories
+Create the media and cache directories
 -----------------------------------------
 
 We need 2 directories for media and caching::
@@ -110,7 +110,7 @@ You might want to place these data directories somewhere else, no pb.
 
 
 ----------------------------------
-4. Configure the telemeta project
+Configure the telemeta project
 ----------------------------------
 
 Edit the file settings.py in a text editor.
@@ -190,7 +190,7 @@ You can find an example for settings.py there::
 
 
 --------------------------
-5. Initialize the database
+Initialize the database
 --------------------------
 
 This synchronizes the DB with the model::
@@ -199,7 +199,7 @@ This synchronizes the DB with the model::
 
 
 ----------------------
-6. Configure your urls
+Configure your urls
 ----------------------
 
 Add this dictionary to get Javascript translation::
@@ -232,7 +232,7 @@ You can find an example for url.py there::
 
 
 --------------------
-7. Start the project
+Start the project
 --------------------
 
 We are ready to start the telemeta server::
@@ -245,7 +245,7 @@ By default, the server starts on the port 8000. You can override this with, for 
 
 
 -----------
-8. Test it
+Test it
 -----------
 
 Go to this URL with your browser::
@@ -256,11 +256,22 @@ or::
 
     http://localhost:9000
 
+
+Configure the site domain name in admin > general admin > sites
+
 Test it and enjoy it !
 
-
 --------------------------
-9. Deploy it with Apache
+Template customization
+--------------------------
+
+Please see ::
+    
+    http://telemeta.org/wiki/InterfaceCustomization
+    
+    
+--------------------------
+Deploy it with Apache 2
 --------------------------
 
 If you want to use Telemeta through a web server, it is highly recommended to use Apache 2
@@ -272,11 +283,11 @@ This will prevent Apache to put some audio data in the cache memory as it is usu
 
 You can find an example of an Apache2 VirtualHost conf file there::
 
-    conf/examples/apache2/telemeta.conf
+    example/apache2/telemeta.conf
 
 
 -------------------------
-10. Contact / More infos
+Contact / More infos
 -------------------------
 
 See README and http://telemeta.org.

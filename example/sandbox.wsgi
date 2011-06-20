@@ -4,8 +4,10 @@
 import os
 import sys
 
-sys.path.append('.')
-sys.path.append('./sandbox')
+here = os.path.dirname(__file__)
+
+sys.path.append(here)
+sys.path.append(os.path.join(here,'sandbox'))
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'sandbox_generic.settings'
 

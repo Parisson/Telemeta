@@ -948,7 +948,7 @@ a.image-link {
     padding:2px;
 }
 .markerdiv .ts-marker{
-    background-image: url(../images/marker_tiny.png'); text-align: center; min-width:3ex;
+    background-image: url('../images/marker_tiny.png'); text-align: center; min-width:3ex;
 }
 .markerdiv .ts-marker, .markerdiv .markersdivOffset, .markerdiv .markersdivTitle, .markerdiv .markersdivAddPlaylist, .markerdiv .markersdivEdit{margin-right:.8ex;}
 .markerdiv div a, .markerdiv div a:visited, .markerdiv div a:hover{
