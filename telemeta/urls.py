@@ -36,7 +36,7 @@
 
 from django.conf.urls.defaults import *
 from telemeta.models import MediaItem, MediaCollection, MediaItemMarker
-from telemeta.web.base import WebView, LastestChangesFeed
+from telemeta.web.base import WebView, LastestRevisionsFeed
 from jsonrpc import jsonrpc_site
 import os.path
 import telemeta.config
@@ -256,7 +256,7 @@ urlpatterns = patterns('',
     url(r'^playlists/(?P<public_id>[a-zA-Z0-9]+)/(?P<resource_type>[a-zA-Z0-9]+)/csv/$', web_view.playlist_csv_export, name="telemeta-playlist-csv-export"),
     
     # RSS feeds
-    url(r'^rss/$', LastestChangesFeed(), name="telemeta-rss"),
+    url(r'^rss/$', LastestRevisionsFeed(), name="telemeta-rss"),
     
     # Not allowed
     url(r'/*/(?P<public_id>[A-Za-z0-9._-]+)/not_allowed/$', web_view.not_allowed, name="telemeta-not-allowed"),

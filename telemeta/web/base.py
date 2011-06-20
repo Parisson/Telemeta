@@ -72,7 +72,6 @@ from telemeta.util.unaccent import unaccent
 from telemeta.util.unaccent import unaccent_icmp
 from telemeta.util.logger import Logger
 from telemeta.util.unicode import UnicodeWriter
-from telemeta.util.PyRSS2Gen import *
 from telemeta.cache import TelemetaCache
 import telemeta.web.pages as pages
 
@@ -849,10 +848,11 @@ class WebView(object):
             extra_context={'country': country, 'continent': continent})
 
     def handle_oai_request(self, request):
-        url         = 'http://' + request.META['HTTP_HOST'] + request.path
+        host = request.META['HTTP_HOST']
+        url         = 'http://' + host + request.path
         datasource  = TelemetaOAIDataSource()
         admin       = settings.ADMINS[0][1]
-        provider    = oai.DataProvider(datasource, settings.TELEMETA_OAI_REPOSITORY_NAME, url, admin)
+        provider    = oai.DataProvider(datasource, host, url, admin)
         args        = request.GET.copy()
         args.update(request.POST)
         return HttpResponse(provider.handle(args), mimetype='text/xml')
@@ -1188,8 +1188,8 @@ def get_revisions(nb):
     return revisions
     
 
-class LastestChangesFeed(Feed):
-    "Render the RSS feed of last revisions"
+class LastestRevisionsFeed(Feed):
+    "the RSS feed of the lastest revisions"
         
     organization = settings.TELEMETA_ORGANIZATION
     subjects = settings.TELEMETA_SUBJECTS

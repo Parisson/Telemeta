@@ -166,8 +166,6 @@ Add the following variables:
     TELEMETA_PUBLIC_ACCESS_PERIOD = number of years above which item files are automagically published
     EMAIL_HOST =                    your default SMTP server
     DEFAULT_FROM_EMAIL =            the default sending email address 
-    
-    TELEMETA_OAI_HOST =             the default host name to provide dublin core identifier through the OAI data provider
     TELEMETA_OAI_REPOSITORY_NAME =  the description of the OAI data provider
     
 Just paste the lines below::
