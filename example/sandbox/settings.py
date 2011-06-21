@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Django settings for sandbox project.
 
+import os.path
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -12,11 +14,10 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-#        'OPTIONS': { 'init_command': 'SET storage_engine=INNODB', },
-        'NAME': 'telemeta',                      # Or path to database file if using sqlite3.
-        'USER': '******',                      # Not used with sqlite3.
-        'PASSWORD': '************',                  # Not used with sqlite3.
+        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'sandbox.db',                      # Or path to database file if using sqlite3.
+        'USER': '',                      # Not used with sqlite3.
+        'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
@@ -50,7 +51,7 @@ USE_L10N = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = '/home/dev/telemeta/sandboxes/sandbox_generic/media/'
+MEDIA_ROOT = os.path.join(os.path.dirname(__file__), 'media/')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -60,10 +61,10 @@ MEDIA_URL = ''
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = 'http://wm22.parisson.com/django/media/'
+ADMIN_MEDIA_PREFIX = 'http://localhost/django/media/'
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = '***************************************'
+SECRET_KEY = 'a8l7%06wr2k+3=%#*#@#rvop2mmzko)44%7k(zx%lls^ihm9^5'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -82,13 +83,13 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.locale.LocaleMiddleware',
 )
 
-ROOT_URLCONF = 'sandbox_generic.urls'
+ROOT_URLCONF = 'sandbox.urls'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '/home/dev/telemeta/sandboxes/sandbox_generic/templates/',
+    '',
 )
 
 INSTALLED_APPS = (
@@ -107,20 +108,15 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
 )
 
-#LOCALE_PATHS = (
-    #'/home/dev/telemeta/telemeta/telemeta/locale',
-#)
-
-TELEMETA_ORGANIZATION = 'CREM'
-TELEMETA_SUBJECTS = ('Ethnomusicology', 'Research')
+TELEMETA_ORGANIZATION = 'Parisson'
+TELEMETA_SUBJECTS = ('Test', 'Sandbox')
 TELEMETA_GMAP_KEY = 'ABQIAAAArg7eSfnfTkBRma8glnGrlxRVbMrhnNNvToCbZQtWdaMbZTA_3RRGObu5PDoiBImgalVnnLU2yN4RMA'
 TELEMETA_DOWNLOAD_ENABLED = True
 TELEMETA_STREAMING_FORMATS = ('mp3', 'ogg')
 TELEMETA_PUBLIC_ACCESS_PERIOD = 51
 AUTH_PROFILE_MODULE = 'telemeta.userprofile'
 
-TELEMETA_OAI_HOST = 'telemeta.wm22.parisson.org'
-TELEMETA_OAI_REPOSITORY_NAME = "University of Paris 10. CNRS. Research Centre of Ethnomusicology (CREM). Sound archives"
+TELEMETA_OAI_REPOSITORY_NAME = "Telemeta TEST sandbox"
 
 LOGIN_URL = '/login'
 LOGIN_REDIRECT_URL = '/'
