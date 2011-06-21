@@ -396,72 +396,69 @@ Timeside.classes.Ruler = Timeside.classes.TimesideArray.extend({
         });
 
         lbl.bind('mousedown.'+eventId,function(evt) {
-            pointerOrMarker.isMovedByMouse = true;
-
-           
-            //            if(markerClass=='pointer'){
-            //                me.isPointerMovingFromMouse = true;
-            //            }
-
-            var launchDragStart = true;
-
-            var startX = evt.pageX; //lbl.position().left-container.position().left;
-            var startPos = lbl.position().left+lbl.width()/2;
+            if(evt.which===1){
+                pointerOrMarker.isMovedByMouse = true;
+                //consolelog('w '+evt.which);
             
-            evt.stopPropagation(); //dont notify the ruler or other elements;
-            var newPos = startPos;
-            doc.bind('mousemove.'+eventId, function(evt_){
-                var x = evt_.pageX;
-                newPos = startPos+(x-startX);
-                pointerOrMarker.move(newPos);
-                //update the text if pointer
-                if(markerClass=='pointer'){
-                    pointerOrMarker.setText(me.makeTimeLabel(me.toSoundPosition(newPos)));
-                }
+                var launchDragStart = true;
 
-                if(launchDragStart){
-                    launchDragStart = false;
+                var startX = evt.pageX; //lbl.position().left-container.position().left;
+                var startPos = lbl.position().left+lbl.width()/2;
+            
+                evt.stopPropagation(); //dont notify the ruler or other elements;
+                var newPos = startPos;
+                doc.bind('mousemove.'+eventId, function(evt_){
+                    var x = evt_.pageX;
+                    newPos = startPos+(x-startX);
+                    pointerOrMarker.move(newPos);
+                    //update the text if pointer
+                    if(markerClass=='pointer'){
+                        pointerOrMarker.setText(me.makeTimeLabel(me.toSoundPosition(newPos)));
+                    }
+
+                    if(launchDragStart){
+                        launchDragStart = false;
+                        me.fire(mme,{
+                            eventName: 'dragstart',
+                            eventObj: evt_,
+                            index: markerClass=='pointer' ? -1 : pointerOrMarker.getIndex()
+                        });
+                    }
+                    return false;
+                
+                });
+                //to avoid scrolling
+                ////TODO: check IE bug on mouseup on the ruler (pointer is moving too)
+                //TODO: what happens if the user releases the mouse OUTSIDE the browser???? check bug in IE (mouse release)
+                var mouseup = function(evt_){
+                    doc.unbind('mousemove.'+eventId);
+                    doc.unbind('mouseup.'+eventId);
+                    evt_.stopPropagation();
+                    if(newPos == startPos){
+                        return false;
+                    }
+                    var data = {
+                        'markerElement':pointerOrMarker,
+                        'soundPosition': me.toSoundPosition.apply(me,[newPos]),
+                        'markerClass':markerClass
+                    };
+                    me.fire('markermoved',data);
+
+                    pointerOrMarker.isMovedByMouse = false;
+                    //                if(markerClass=='pointer'){
+                    //                    me.isPointerMovingFromMouse = false;
+                    //                }
+
                     me.fire(mme,{
-                        eventName: 'dragstart',
+                        eventName: 'mouseup',
                         eventObj: evt_,
                         index: markerClass=='pointer' ? -1 : pointerOrMarker.getIndex()
                     });
-                }
-                return false;
-                
-            });
-            //to avoid scrolling
-            ////TODO: check IE bug on mouseup on the ruler (pointer is moving too)
-            //TODO: what happens if the user releases the mouse OUTSIDE the browser???? check bug in IE (mouse release)
-            var mouseup = function(evt_){
-                doc.unbind('mousemove.'+eventId);
-                doc.unbind('mouseup.'+eventId);
-                evt_.stopPropagation();
-                if(newPos == startPos){
+
                     return false;
-                }
-                var data = {
-                    'markerElement':pointerOrMarker,
-                    'soundPosition': me.toSoundPosition.apply(me,[newPos]),
-                    'markerClass':markerClass
                 };
-                me.fire('markermoved',data);
-
-                pointerOrMarker.isMovedByMouse = false;
-                //                if(markerClass=='pointer'){
-                //                    me.isPointerMovingFromMouse = false;
-                //                }
-
-                me.fire(mme,{
-                    eventName: 'mouseup',
-                    eventObj: evt_,
-                    index: markerClass=='pointer' ? -1 : pointerOrMarker.getIndex()
-                });
-
-                return false;
-            };
-            doc.bind('mouseup.'+eventId, mouseup);
-
+                doc.bind('mouseup.'+eventId, mouseup);
+            }
 
             me.fire(mme,{
                 eventName: 'mousedown',

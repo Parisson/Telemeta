@@ -295,8 +295,6 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         }
         //bind mouse events:
         ruler.bind('markermouseevent', function(data){
-           consolelog(data.eventName);
-           consolelog(data);
            var idx = data.index;
            data.marker = idx > -1 ? me.getMarker(idx) : undefined;
            me.fire('markerMouseEvent',data);

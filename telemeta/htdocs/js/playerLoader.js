@@ -371,9 +371,11 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                         //a number N means: popup stays maximum N seconds on the screen
                         if(POPUP_TIMEOUT){
                             var popupdiv = new PopupDiv({
-                                focusable: false,
+                                focusable: true,
                                 titleClass: 'markersdivTitle',
-                                showClose:true,
+                                //showClose:true,
+
+                                //boundsExact:true,
                                 bounds: {
                                     top:0.4,
                                     left:0.1,
@@ -430,31 +432,45 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                                 //consolelog(data.marker.title);
                             
                                 });
-                                //now bind mouse events
-                                player.bind('markerMouseEvent', function(data){
-                                    if(data.index<0){ //is the pointer
-                                        return;
-                                    }
-                                    if(popupTimeoutId !== undefined){
-                                        clearHidePopupTimeout(popupTimeoutId);
-                                    }
-                                    if(data.eventName === 'dragstart' || data.eventName === 'mouseleave'){
-                                        if(popupdiv.isShowing()){
-                                            popupdiv.close();
-                                        }
-                                        return;
-                                    }
-                                    if(data.eventName !== 'mouseenter'){
-                                        return;
-                                    }
-                                    popupShowFunction(data);
-                                    if(POPUP_TIMEOUT<0){
-                                        return;
-                                    }
-                                    popupTimeoutId = popupdiv.setTimeout('close',POPUP_TIMEOUT*1000);
-                                });
+                                
 
                             }
+                            var draggingSomeMarker = false;
+                            //now bind mouse events
+                            player.bind('markerMouseEvent', function(data){
+//                                if(data.index<0 || player.playState>0){ //is the pointer
+//                                    return;
+//                                }
+
+
+
+                                //                                if(popupTimeoutId !== undefined){
+                                //                                    clearHidePopupTimeout(popupTimeoutId);
+                                //                                }
+                                //                                if(data.eventName === 'dragstart'){ // || data.eventName === 'mouseleave'){
+                                //                                    if(popupdiv.isShowing()){
+                                //                                        popupdiv.close();
+                                //                                    }
+                                //                                    return;
+                                //                                }
+                                if(data.eventName === 'mouseenter'){
+                                    if(!draggingSomeMarker && data.index>=0 && player.playState===0){
+                                        popupShowFunction(data);
+                                        return;
+                                    }
+                                }else if(data.eventName === 'dragstart'){
+                                    draggingSomeMarker = true;
+                                }else if(data.eventName === 'mouseup'){
+                                    draggingSomeMarker = false;
+                                }
+                                if(popupdiv.isShowing()){
+                                    popupdiv.close();
+                                }
+                            //                                if(POPUP_TIMEOUT<0){
+                            //                                    return;
+                            //                                }
+                            //                                popupTimeoutId = popupdiv.setTimeout('close',POPUP_TIMEOUT*1000);
+                            });
                         }
                     }
 
