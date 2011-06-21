@@ -52,7 +52,7 @@ Timeside.classes.MarkerMap = Timeside.classes.TimesideArray.extend({
         var marker = newMarker; //this.createMarker(obj);
         var idx = this.insertionIndex(marker);
         if(idx>=0){ //it exists? there is a problem....
-            this.debug('adding an already existing marker!!'); //should not happen. however...
+            this.debug('markermap.add: adding an already existing marker!!'); //should not happen. however...
             return -1;
         }
        
@@ -64,11 +64,7 @@ Timeside.classes.MarkerMap = Timeside.classes.TimesideArray.extend({
         this.fire('add', {
             marker: marker,
             index: idx
-        //,isNew: (typeof obj == 'number' || typeof obj == 'string')
         });
-        //var temp = new MarkerDiv();
-        // this.debug(this.createMarkerDiv());
-         
             
         return idx;
     },
@@ -134,7 +130,7 @@ Timeside.classes.MarkerMap = Timeside.classes.TimesideArray.extend({
         newIndex = this._super(oldIndex,newIndex);
         
         if(newIndex <0){
-            this.debug('markermap.move: index out of bounds');
+            this.debug('markermap.move: new index out of bounds');
             return -1;
         }
         

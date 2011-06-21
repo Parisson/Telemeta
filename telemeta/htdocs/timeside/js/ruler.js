@@ -36,8 +36,7 @@ Timeside.classes.Ruler = Timeside.classes.TimesideArray.extend({
             return soundDuration;
         };
 
-        //var waveContainer = viewer.find('.' + cssPref + 'image-canvas');
-        this.debug( 'WAVECONTAINER?? LENGTH='+ waveContainer.length);
+        
         this.getWaveContainer =function(){
             return waveContainer;
         };
@@ -46,8 +45,7 @@ Timeside.classes.Ruler = Timeside.classes.TimesideArray.extend({
         this.getContainerWidth =function(){
             return waveContainer.width();
         };
-        this.debug( 'init ruler: container width '+this.getContainerWidth());
-
+        
         //private function used in resize() defined below
         //var container = viewer.find('.' + cssPref + 'ruler');
 
@@ -55,40 +53,11 @@ Timeside.classes.Ruler = Timeside.classes.TimesideArray.extend({
             return rulerContainer;
         }
     },
-    //    init: function(viewer, soundDuration){
-    //        this._super();
-    //        var cssPref = this.cssPrefix;
-    //
-    //        this.getSoundDuration= function(){
-    //            return soundDuration;
-    //        };
-    //
-    //        var waveContainer = viewer.find('.' + cssPref + 'image-canvas');
-    //        this.debug( 'WAVECONTAINER?? LENGTH='+ waveContainer.length);
-    //        this.getWaveContainer =function(){
-    //            return waveContainer;
-    //        };
-    //        //TODO: we dont need containerWiever here!!!
-    //        //better: it is usefult only for the canvas defined below. However...
-    //        this.getContainerWidth =function(){
-    //            return waveContainer.width();
-    //        };
-    //        this.debug( 'init ruler: container width '+this.getContainerWidth());
-    //
-    //        //private function used in resize() defined below
-    //        var container = viewer.find('.' + cssPref + 'ruler');
-    //
-    //        this.getRulerContainer = function(){
-    //            return container;
-    //        }
-    //    },
-
-    //colors:{}, //used to draw rulermarkers
     
     resize : function(){
         var duration = this.getSoundDuration(); //in seconds
         if (!duration) {
-            this.debug("Can't draw ruler with a duration of 0");
+            this.debug("ruler.resize: Can't draw ruler with a duration of 0");
             return;
         }
 
@@ -293,16 +262,11 @@ Timeside.classes.Ruler = Timeside.classes.TimesideArray.extend({
         var pixelOffset = this.toPixelOffset(newOffset);
         if(rulermarker.positionInPixels != pixelOffset){ //should not be the case if this method is called from a mouse event
             rulermarker.move(pixelOffset);
-        //            consolelog('moved');
-        //        }else{
-        //            consolelog('nothing to move');
         }
 
-        //this.debug('ruler.move: [from:'+from+', to:'+to+', real:'+newIndex+']');
         if(to!=from){
             var i1 = Math.min(from,to);
             var i2 = Math.max(from,to)+1;
-            //this.debug('updating ['+i1+','+i2+']');
             this.each(i1,i2, function(index,rulermarker){
                 rulermarker.setIndex(index, true);
             });
@@ -314,7 +278,6 @@ Timeside.classes.Ruler = Timeside.classes.TimesideArray.extend({
     //add(offset, index, isMovable) adds a marker, movable if isMovable == true
     add: function(offset, index, isMovable){
         var soundPosition;
-        var isMovable;
         var markerClass;
 
         if(index<0){
@@ -327,15 +290,8 @@ Timeside.classes.Ruler = Timeside.classes.TimesideArray.extend({
             markerClass='marker';
         }
         
-        var container = this.getRulerContainer();
-        var layout = container.find("."+this.cssPrefix + 'layout');
-        var $J = this.$J;
-        //        var pointer = new RulerMarker($J(layout.get(0)),this.getWaveContainer(),markerClass);
-
-        
+       
         var pointerOrMarker = new Timeside.classes.RulerMarker(this,this.getWaveContainer(),markerClass);
-
-        
 
         //call super constructor
         //if it is a pointer, dont add it
@@ -347,7 +303,6 @@ Timeside.classes.Ruler = Timeside.classes.TimesideArray.extend({
             //rulermarker.setIndex.apply(rulermarker, [i,i!=indexIfMarker]); //update label width only if it is not this marker added
             //as for this marker we update the position below (move)
             });
-            this.debug('added marker at index '+index+' offset: '+offset);
         }else{
             //note that setText is called BEFORE move as move must have the proper label width
             pointerOrMarker.setText(this.makeTimeLabel(0));
@@ -358,121 +313,140 @@ Timeside.classes.Ruler = Timeside.classes.TimesideArray.extend({
         //pointer.setText(markerClass== 'pointer' ? this.makeTimeLabel(0) : this.length);
 
         //click on labels stop propagating. Always:
-        var lbl = pointerOrMarker.getLabel();
-        lbl.bind('click', function(evt){
-            evt.stopPropagation();
-            return false;
-        });
+        var isPointer  = markerClass === 'pointer';
+        this._setEditable(pointerOrMarker, isMovable, isPointer);
+        return pointerOrMarker;
 
-        //if there are no events to associate, return it.
-        if(!isMovable){
-            return pointerOrMarker;
+    },
+
+    eventNamespace : 'rulerMouseEvent', //namespace for mouse events
+    mouseEventType : 'rulermarkermouseevent', //event type for fire TO THE PLAYER. The player then fires markerMouseEvent to outside
+
+    setEditable: function(index, value){
+        var a = this.toArray();
+        if(index>=0 && index < a.length){
+            this._setEditable(a[index],value,false);
         }
-
-        //namespace for jquery event:
-        var eventId = 'markerclicked';
-        var doc = $J(document);
-        
+    },
+    //do not call, use setEditable(index,value) instead
+    _setEditable: function(pointerOrMarker, value, isPointer){
+        var eventNamespace = this.eventNamespace;
+        var doc = this.$J(document);
+        var lbl = pointerOrMarker.getLabel();
         var me = this;
+        var mme = this.mouseEventType;
 
-        //flag to be set to true when moving a poiner from mouse.
-        //when true, movePointer (see below) has no effect
-        //this.isPointerMovingFromMouse = false;
-        //functions to set if we are moving the pointer (for player when playing)
-        var mme = 'markermouseevent';
-        lbl.bind('mouseenter.'+eventId,function(evt){
+        
+        lbl.unbind('.'+eventNamespace); //this should delete all previous events
+        //TODO: check!!!!
+
+        lbl.bind('mouseenter.'+eventNamespace,function(evt){
             me.fire(mme,{
                 eventName: 'mouseenter',
                 eventObj: evt,
-                index: markerClass=='pointer' ? -1 : pointerOrMarker.getIndex()
+                index: isPointer ? -1 : pointerOrMarker.getIndex()
             });
+            return false;
         });
-        lbl.bind('mouseleave.'+eventId,function(evt){
+        lbl.bind('mouseleave.'+eventNamespace,function(evt){
             me.fire(mme,{
                 eventName: 'mouseleave',
                 eventObj: evt,
-                index: markerClass=='pointer' ? -1 : pointerOrMarker.getIndex()
+                index: isPointer ? -1 : pointerOrMarker.getIndex()
             });
+            return false;
         });
+        
+        //to prevent page scrolling after mouseup, as click is also fired
+        lbl.bind('click.'+this.eventNamespace, function(evt){
+            return false;
+        });
+        
 
-        lbl.bind('mousedown.'+eventId,function(evt) {
+        lbl.bind('mousedown.'+eventNamespace,function(evt) {
             if(evt.which===1){
-                pointerOrMarker.isMovedByMouse = true;
-                //consolelog('w '+evt.which);
-            
+                if(value){
+                    pointerOrMarker.isMovedByMouse = true;
+                }
+                
+                //preventClickFire = false;
+
                 var launchDragStart = true;
 
                 var startX = evt.pageX; //lbl.position().left-container.position().left;
                 var startPos = lbl.position().left+lbl.width()/2;
-            
+
                 evt.stopPropagation(); //dont notify the ruler or other elements;
                 var newPos = startPos;
-                doc.bind('mousemove.'+eventId, function(evt_){
-                    var x = evt_.pageX;
-                    newPos = startPos+(x-startX);
-                    pointerOrMarker.move(newPos);
-                    //update the text if pointer
-                    if(markerClass=='pointer'){
-                        pointerOrMarker.setText(me.makeTimeLabel(me.toSoundPosition(newPos)));
+                doc.bind('mousemove.'+eventNamespace, function(evt_){
+                    //preventClickFire=true;
+                    if(value){
+                        var x = evt_.pageX;
+                        newPos = startPos+(x-startX);
+                        pointerOrMarker.move(newPos);
+                        //update the text if pointer
+                        if(isPointer){
+                            pointerOrMarker.setText(me.makeTimeLabel(me.toSoundPosition(newPos)));
+                        }
                     }
-
                     if(launchDragStart){
                         launchDragStart = false;
                         me.fire(mme,{
                             eventName: 'dragstart',
                             eventObj: evt_,
-                            index: markerClass=='pointer' ? -1 : pointerOrMarker.getIndex()
+                            index: isPointer ? -1 : pointerOrMarker.getIndex()
                         });
                     }
                     return false;
-                
+
                 });
                 //to avoid scrolling
                 ////TODO: check IE bug on mouseup on the ruler (pointer is moving too)
                 //TODO: what happens if the user releases the mouse OUTSIDE the browser???? check bug in IE (mouse release)
                 var mouseup = function(evt_){
-                    doc.unbind('mousemove.'+eventId);
-                    doc.unbind('mouseup.'+eventId);
+                    
+                    doc.unbind('mousemove.'+eventNamespace);
+                    doc.unbind('mouseup.'+eventNamespace);
                     evt_.stopPropagation();
-                    if(newPos == startPos){
-                        return false;
+                    if(value){
+                        if(newPos !== startPos){
+                        
+                            var data = {
+                                'markerElement':pointerOrMarker,
+                                'soundPosition': me.toSoundPosition.apply(me,[newPos]),
+                                'isPointer':isPointer
+                            };
+                            me.fire('markermoved',data);
+                        }
+                        pointerOrMarker.isMovedByMouse = false;
                     }
-                    var data = {
-                        'markerElement':pointerOrMarker,
-                        'soundPosition': me.toSoundPosition.apply(me,[newPos]),
-                        'markerClass':markerClass
-                    };
-                    me.fire('markermoved',data);
-
-                    pointerOrMarker.isMovedByMouse = false;
-                    //                if(markerClass=='pointer'){
-                    //                    me.isPointerMovingFromMouse = false;
-                    //                }
-
-                    me.fire(mme,{
-                        eventName: 'mouseup',
-                        eventObj: evt_,
-                        index: markerClass=='pointer' ? -1 : pointerOrMarker.getIndex()
-                    });
-
+                    if(evt_.pageX !== startX){
+                        me.fire(mme,{
+                            eventName: 'dragend',
+                            eventObj: evt_,
+                            index: isPointer ? -1 : pointerOrMarker.getIndex()
+                        });
+                    }else{
+                        me.fire(mme,{
+                            eventName: 'click',
+                            eventObj: evt_,
+                            index: isPointer ? -1 : pointerOrMarker.getIndex()
+                        });
+                    }
                     return false;
                 };
-                doc.bind('mouseup.'+eventId, mouseup);
+                doc.bind('mouseup.'+eventNamespace, mouseup);
             }
 
             me.fire(mme,{
                 eventName: 'mousedown',
                 eventObj: evt,
-                index: markerClass=='pointer' ? -1 : pointerOrMarker.getIndex()
+                index: isPointer ? -1 : pointerOrMarker.getIndex()
             });
 
-            
+
             return false;
         });
-        
-        return pointerOrMarker;
-
-
     },
 
     //moves the pointer, does not notify any listener.
@@ -485,13 +459,11 @@ Timeside.classes.Ruler = Timeside.classes.TimesideArray.extend({
             pointer.setText(this.makeTimeLabel(soundPosition));
             pointer.move(pixelOffset); //does NOT fire any move method
         }
-        //this.debug('moving pointer: position set to '+offset);
         return soundPosition;
     },
 
     //soundPosition is in seconds (float)
     toPixelOffset: function(soundPosition) {
-        //this.debug('sPos:' + soundPosition+ 'sDur: '+this.getSoundDuration());
         var duration = this.getSoundDuration();
         if (soundPosition < 0){
             soundPosition = 0;

@@ -103,11 +103,7 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
     setTimeout(function(){
         end('SoundManager is not responding. Try to:\n - Reload the page\n - Empty the cache (see browser preferences) and reload the page\n - Restart the browser');
     },maxTime);
-    
-   
-
-    
-        
+     
     
     //var msgElm = $J('#loading_span_text').html('Loading sound info...');
     //var uinqid_ = Timeside.utils.uniqid; //defined in application.js
@@ -164,7 +160,8 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                             desc: argument.description,
                             title: argument.title,
                             author: argument.author,
-                            isEditable: argument.author === currentUserName || isStaffOrSuperuser,
+                            isEditable: false,
+                            canBeSetEditable: (argument.author === currentUserName) || isStaffOrSuperuser,
                             canBeAddedToPlaylist: currentUserName ? true : false,
                             isSavedOnServer: true
                         };
@@ -192,7 +189,8 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                             desc: "",
                             title: "",
                             author: currentUserName,
-                            isEditable: true,
+                            isEditable: false,
+                            canBeSetEditable: true,
                             canBeAddedToPlaylist: true,
                             isSavedOnServer: false
                         };
@@ -266,6 +264,17 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                         }
 
                     });
+
+                    mapUI.bind('edit',function(data){
+                        var map = player.getMarkerMap();
+                        var len = map.length;
+                        var idx = data.index;
+                        if(map && idx>=0 && idx<len){
+                            map.toArray()[idx].isEditable = data.value;
+                            player.getRuler().setEditable(idx,data.value, false);
+                        }
+                    });  // {'value':value, 'index':index});
+
                     //bind save marker -> player save
                     var map = player.getMarkerMap();
                     if(map){
@@ -273,7 +282,7 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                             var marker = data.marker;
                             var idx = map.insertionIndex(marker);
                             if(idx<0 || idx>=map.length){
-                                this.debug('marker not found');
+                                this.debug('mapUI.save: marker not found');
                                 return;
                             }
 
@@ -365,6 +374,8 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                         };
                         wdw.onbeforeunload = confirmExit;
                     }
+
+                   
                     if(map && wdw.PopupDiv){
                         var POPUP_TIMEOUT=3; //in seconds. Zero means: no popup, negative numbers:
                         //popup stays infinitely on the player (until next marker cross)
@@ -409,7 +420,10 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                                     if(popupTimeoutId !== undefined){
                                         clearHidePopupTimeout(popupTimeoutId);
                                     }
-                                    popupTimeoutId=undefined;
+                                                         popupTimeoutId=undefined;
+
+
+
                                     popupShowFunction(data);
 
                                     if(POPUP_TIMEOUT<0){
@@ -419,17 +433,6 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                                     if(next === undefined || next-data.currentSoundPosition > POPUP_TIMEOUT){
                                         popupTimeoutId = popupdiv.setTimeout('close',POPUP_TIMEOUT*1000);
                                     }
-                                    
-                                //var index = data.index;
-                                //consolelog('===');
-                                //consolelog(data.currentSoundPosition);
-                                //consolelog(data.nextMarkerTimeInterval);
-                                //consolelog(index+') '+data.marker.offset+' | '+(map.toArray()[index+1].offset+' - '+data.timeMarginInSec));
-                                //if(index+1 == map.length || map.toArray()[index+1].offset-data.marker.offset-data.timeMarginInSec>3){
-                                //    popupTimeoutId = popupdiv.setTimeout('close',3000);
-                                //}
-                                //consolelog('firing markercrossed');
-                                //consolelog(data.marker.title);
                             
                                 });
                                 
@@ -438,21 +441,11 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                             var draggingSomeMarker = false;
                             //now bind mouse events
                             player.bind('markerMouseEvent', function(data){
-//                                if(data.index<0 || player.playState>0){ //is the pointer
-//                                    return;
-//                                }
-
-
-
-                                //                                if(popupTimeoutId !== undefined){
-                                //                                    clearHidePopupTimeout(popupTimeoutId);
-                                //                                }
-                                //                                if(data.eventName === 'dragstart'){ // || data.eventName === 'mouseleave'){
-                                //                                    if(popupdiv.isShowing()){
-                                //                                        popupdiv.close();
-                                //                                    }
-                                //                                    return;
-                                //                                }
+                                if(data.eventName === 'click' && data.index>-1){
+                                    player.setSoundPosition(data.marker.offset);
+                                    draggingSomeMarker = false; //to be sure
+                                    return;
+                                }
                                 if(data.eventName === 'mouseenter'){
                                     if(!draggingSomeMarker && data.index>=0 && player.playState===0){
                                         popupShowFunction(data);
@@ -460,7 +453,7 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                                     }
                                 }else if(data.eventName === 'dragstart'){
                                     draggingSomeMarker = true;
-                                }else if(data.eventName === 'mouseup'){
+                                }else if(data.eventName === 'dragend'){
                                     draggingSomeMarker = false;
                                 }
                                 if(popupdiv.isShowing()){

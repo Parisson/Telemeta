@@ -34,6 +34,10 @@ var Timeside = {
     classes:{},
     player:undefined,
     config: {
+        /**
+         *set to true to see debug messages on the console (only error or warning messages shown)
+         */
+        debug: false,
         /*
          * timeside scripts to be loaded when Timeside.load is called. URL paths are relative to the timeside folder, which
          * will be determined according to the src attribute of the timeside.js script path (to be included in the <head> of the page)
@@ -229,11 +233,12 @@ Timeside.classes.TimesideClass = Timeside.Class.extend({
     $J : jQuery, //reference to jQuery for faster lookup inside methods
     $TU : Timeside.utils, //reference to Timeside variable for faster lookup inside methods
     debugging : false,
-    debug : function(message) {
-        if (this.debugging && typeof console != 'undefined' && console.log) {
-            console.log(message);
+    debug : Timeside.config.debug ? function(message) {
+        var C = console;
+        if (C && C.log) {
+            C.log(message);
         }
-    },
+    } : function(message){},
 
     /**
      * 3 methods defining listeners, events fire and bind (aloing the lines of jQuery.bind, unbind and trigger.
@@ -242,11 +247,11 @@ Timeside.classes.TimesideClass = Timeside.Class.extend({
   
     bind : function(eventType, callback, optionalThisArgInCallback){
         if(!callback || typeof callback !== 'function'){
-            this.debug('cannot bind '+eventType+' to callback: the latter is null or not a function');
+            this.debug('TimesideClass.bind: cannot bind '+eventType+' to callback: the latter is null or not a function');
             return;
         }
         if(!eventType){
-            this.debug('eventType is empty in bind');
+            this.debug('TimesideClass.bind: eventType is empty in bind');
             return;
         }
         var listenersMap = this.listenersMap;
@@ -322,7 +327,6 @@ Timeside.classes.TimesideClass = Timeside.Class.extend({
     fire : function(key, dataArgument){
         var listenersMap = this.listenersMap;
         if(!(listenersMap.hasOwnProperty(key))){
-            //this.debug('"'+key+'" fired but no binding associated to it');
             return;
         }
         if(arguments.length < 2 || !dataArgument){
@@ -385,7 +389,7 @@ Timeside.classes.TimesideClass = Timeside.Class.extend({
                 }
             }
             return n;
-        }
+        };
         var ret = [];
         for(var i =0; i<formatArray.length; i++){
             var f = formatArray[i];
@@ -439,7 +443,7 @@ Timeside.classes.TimesideArray = Timeside.classes.TimesideClass.extend({
                 return ret;
             }
             return me;
-        }
+        };
         this.length = me.length; //in order to match the javascript array property
     },
     //length:0, //implement it as public property to be consistent with Array length property. Be careful however to NOT TO modify directly this property!!!
@@ -479,7 +483,7 @@ Timeside.classes.TimesideArray = Timeside.classes.TimesideClass.extend({
         var l = this.length;
         switch(len){
             case 0:
-                this.debug('each called without arguments!!!');
+                this.debug('TimesideClass.each: each called without arguments!!!');
                 return;
             case 1:
                 //callback = arg[0];
@@ -501,7 +505,7 @@ Timeside.classes.TimesideArray = Timeside.classes.TimesideClass.extend({
         }
         callback = arg[len-1];
         if(!(callback instanceof Function)){
-            this.debug('callback NOT a function!!!');
+            this.debug('TimesideClass.each: callback NOT a function!!!');
             return;
         }
         var me =this.toArray();
@@ -653,11 +657,7 @@ Timeside.load =function(container, soundUrl, durationInMsec, soundImgFcn, soundI
                 var raphael_papers = {};
                 ts.utils.vml = {
                     getVmlAttr: function(className){
-                        //                        if(className in classToRaphaelAttr){
-                        //                            consolelog('getVmlAttr: '+className+' exists');
-                        //                        }else{
-                        //                            consolelog('getVmlAttr: '+className+' to be created');
-                        //                        }
+                        
                         if(classToRaphaelAttr.hasOwnProperty(className)){
                             //if(className in classToRaphaelAttr){
                             return classToRaphaelAttr[className];
@@ -673,9 +673,7 @@ Timeside.load =function(container, soundUrl, durationInMsec, soundImgFcn, soundI
                             var l = rules.length;
                             for(var j=0; j <l; j++){
                                 var rule = rules[j];
-                                //                if(i==2){
-                                //                    consolelog(rule.selectorText);
-                                //                }
+                                
                                 if(rule.selectorText === dottedclassName){
 
                                     var style = rule.style;
@@ -694,13 +692,7 @@ Timeside.load =function(container, soundUrl, durationInMsec, soundImgFcn, soundI
                     },
 
                     Raphael: function(element,w,h){
-                        //var element = arguments[0]; //the first argument is the html element (NOT jQuery element!!!
-
-                        //                        if(raphael_papers[element]){
-                        //                            consolelog('vml.Raphael: '+element.tagName+' has paper');
-                        //                        }else{
-                        //                            consolelog('vml.Raphael: '+element.tagName+' does not have paper');
-                        //                        }
+                       
 
                         //pass jQueryElm.get(0) as first argument, in case)
                         if(raphael_papers[element]){
@@ -734,7 +726,7 @@ Timeside.load =function(container, soundUrl, durationInMsec, soundImgFcn, soundI
             },onError);
         });
     });
-}
+};
 
 /**
 * Loads scripts asynchronously
@@ -815,4 +807,4 @@ Timeside.utils.loadScripts = function(scriptsOptionalRoot,scriptArray, optionalO
             });
         }
     }
-}
+};

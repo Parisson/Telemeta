@@ -45,7 +45,6 @@ Timeside.classes.MarkerMapDiv = Timeside.classes.TimesideArray.extend({
         this._super(div,index);
         if(isNew){
             this.setEditMode(index,true);
-            this.setFocus(index,true);
         }
         if(index<this.length){
             //update indices. Note that this is NOT done at startup as index == this.length ALWAYS
@@ -75,10 +74,8 @@ Timeside.classes.MarkerMapDiv = Timeside.classes.TimesideArray.extend({
             div.detach();
             var parent = this.div;
             if(to==this.length-1){
-                //consolelog('appending '+this.length+' '+parent.children().length+' '+to);
                 parent.append(div);
             }else{
-                //consolelog('inserting '+this.length+' '+parent.children().length+' '+to);
                 this.$J( parent.children()[to] ).before(div);
             }
         }
@@ -93,7 +90,6 @@ Timeside.classes.MarkerMapDiv = Timeside.classes.TimesideArray.extend({
 
         //TODO: create a function?
         this.setEditMode(to,true);
-        this.setFocus(to,true);
         return to;
     },
     //overridden
@@ -142,7 +138,6 @@ Timeside.classes.MarkerMapDiv = Timeside.classes.TimesideArray.extend({
         var e_descriptionText = div.find('.markersdivDescription');
         var e_titleText = div.find('.markersdivTitle');
         if(value){
-            this.debug('setting editmode');
             div.css('backgroundColor','#E65911');
             e_descriptionText.removeAttr('readonly').removeClass('markersdivUneditable');
             e_titleText.removeAttr('readonly').removeClass('markersdivUneditable');
@@ -158,22 +153,10 @@ Timeside.classes.MarkerMapDiv = Timeside.classes.TimesideArray.extend({
             div.css('backgroundColor','');
         }
 
+        this.fire('edit',{'value':value, 'index':index});
         //var e_addplaylistButton = div.find('.markersdivAddPlaylist');
 
-        this.setFocus(index,value);
         this.stretch(e_titleText);
-    },
-
-    
-//TODO: what is doing this method here?
-    setFocus: function(index,value){
-    //        this.each(function(i,div){
-    //            if(i==index && value){
-    //                div.css('backgroundColor','#E65911'); //'#f5cf23'
-    //            }else{
-    //                div.css('backgroundColor','');
-    //            }
-    //        });
     },
 
 
@@ -184,8 +167,6 @@ Timeside.classes.MarkerMapDiv = Timeside.classes.TimesideArray.extend({
         var e_indexLabel = div.find('.ts-marker');
         var e_offsetLabel =div.find('.markersdivOffset');
         e_indexLabel.add(e_offsetLabel).unbind('click').click(function(){
-            //Timeside.player.moveMarker(index,0.2);return; //just a try
-            me.setFocus(index,true);
             me.fire('focus', {
                 'index': index
             });
@@ -281,20 +262,15 @@ Timeside.classes.MarkerMapDiv = Timeside.classes.TimesideArray.extend({
             e_addplaylistButton.hide();
         }
 
-
-        if(!marker.isEditable){ //marker is editable means that author is superuser or author == getCurrentUserName().
+        if(!marker.canBeSetEditable){ //marker is editable means that author is superuser or author == getCurrentUserName().
             //addToPlaylist visibility is skipped because it depends on other circumstances (see above)
             e_editButton.hide();
             e_deleteButton.hide();
-            //we unbind events to be sure
-            //e_addplaylistButton.unbind('click').hide();
             e_okButton.unbind('click')
             e_deleteButton.unbind('click').hide();
             e_editButton.remove(); //so that if edit button is not present, we do not edit (safety reasons) see this.setEditMode
             return div;
         }
-
-
         
         var me = this;
 

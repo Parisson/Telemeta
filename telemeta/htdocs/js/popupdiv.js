@@ -415,7 +415,7 @@ function PopupDiv() {
             var listItems = $([]);
             for(var h=0; h<content.length; h++){
                 var item = content[h];
-                var a = $('<a/>').attr('href','#').html(""+item).css('whiteSpace','nowrap');
+                var a = $('<a/>').attr('href','#').html(""+item); //.css('whiteSpace','nowrap');
                 listItems = listItems.add(a);
                 setEvents(h,a,input);
                 container.append(a);
@@ -585,8 +585,7 @@ function PopupDiv() {
                 //otherwise execute callback
                 setTimeout(function(){
                     var v = doc_.activeElement;
-                    consolelog(v.tagName+' ' +$(v).attr(focusAttr));
-                    //console.log(v);
+                    
                     if((v && $(v).attr(focusAttr)) || me.__isClosing){
                         //if we are closing, we will call back this method which removes the focus attributes, bt meanwhile the
                         //timeout should execute
@@ -658,9 +657,6 @@ function PopupDiv() {
         } else if (node.nodeValue) {
             node.nodeValue = title;
         }
-    //        consolelog('"'+ title+'"');
-    //        consolelog(text);
-    //        consolelog(node);
     };
 
     p.isShowing = function(){
@@ -692,8 +688,8 @@ function PopupDiv() {
 
         if(this.showClose || this.title){
             topDiv.css({
-                'paddingBottom':'0.25em',
-                'whiteSpace':'nowrap'
+                'paddingBottom':'0.25em'
+            //,'whiteSpace':'nowrap'
             }); //add padding to bottom
             //warning: do NOT use real numbers such as 0.5ex cause browsers round it in a different manner
             //whiteSpace is FUNDAMENTAL in calculating the popup div in case the title is the longest (max width) element
@@ -933,10 +929,10 @@ function PopupDiv() {
             'height':h-padding['top']-padding['bottom']+this.shadowOffset
         };
         
-            this.setMaxSize({
-                width:maxSize.width,
-                height:maxSize.height
-            }); //a copy cause the argument will be modified
+        this.setMaxSize({
+            width:maxSize.width,
+            height:maxSize.height
+        }); //a copy cause the argument will be modified
 
         if(boundsExact){
             this.setMinSize({
@@ -948,6 +944,7 @@ function PopupDiv() {
 
         this.postSizeFcn();
     };
+    
     p.preSizeFcn = function(){
         var div = this.getDiv();
         var subdivs = div.children();
@@ -1012,16 +1009,16 @@ function PopupDiv() {
         div.css({
             'left':bounds.x+'px',
             'top':bounds.y+'px'
-            });
+        });
 
     //        var topDiv =subdivs.eq(0);
     //        var centralDiv = subdivs.eq(1);
     //        var bottomDiv = subdivs.eq(2);
-    //        consolelog('presize');
-    //        consolelog('width: '+ topDiv.width()+' css-minWidth: ' +topDiv.css('minWidth')+' css-width: ' +topDiv.css('width')+' css-maxWidth: ' +topDiv.css('maxWidth'));
-    //        consolelog('width: '+centralDiv.width()+' css-minWidth: ' +centralDiv.css('minWidth')+' css-width: ' +centralDiv.css('width')+' css-maxWidth: ' +centralDiv.css('maxWidth'));
-    //        consolelog('width: '+bottomDiv.width()+' css-minWidth: ' +bottomDiv.css('minWidth')+' css-width: ' +bottomDiv.css('width')+' css-maxWidth: ' +bottomDiv.css('maxWidth'));
-    //        consolelog(' ' );
+    //        console.log('presize');
+    //        console.log('width: '+ topDiv.width()+' css-minWidth: ' +topDiv.css('minWidth')+' css-width: ' +topDiv.css('width')+' css-maxWidth: ' +topDiv.css('maxWidth'));
+    //        console.log('width: '+centralDiv.width()+' css-minWidth: ' +centralDiv.css('minWidth')+' css-width: ' +centralDiv.css('width')+' css-maxWidth: ' +centralDiv.css('maxWidth'));
+    //        console.log('width: '+bottomDiv.width()+' css-minWidth: ' +bottomDiv.css('minWidth')+' css-width: ' +bottomDiv.css('width')+' css-maxWidth: ' +bottomDiv.css('maxWidth'));
+    //        console.log(' ' );
     };
     
     p.postSizeFcn = function(){
@@ -1073,7 +1070,7 @@ function PopupDiv() {
         //It might be a refresh problem cause if we display an alert then the size is properly set.
         //However:
         //if(centralDiv.height()==0 && maxHeight>0){
-        //consolelog('buggy: '+maxHeight);
+       
         //centralDiv.css('height',maxHeight);
         //}
 
@@ -1082,11 +1079,11 @@ function PopupDiv() {
         //a specified width property
         //IE does what it is expected (werird enogh...), ie sets a maxWidth and
 
-        //        consolelog('postsize');
-        //        consolelog('width: '+ topDiv.width()+' css-minWidth: ' +topDiv.css('minWidth')+' css-width: ' +topDiv.css('width')+' css-maxWidth: ' +topDiv.css('maxWidth'));
-        //        consolelog('width: '+centralDiv.width()+' css-minWidth: ' +centralDiv.css('minWidth')+' css-width: ' +centralDiv.css('width')+' css-maxWidth: ' +centralDiv.css('maxWidth'));
-        //        consolelog('width: '+bottomDiv.width()+' css-minWidth: ' +bottomDiv.css('minWidth')+' css-width: ' +bottomDiv.css('width')+' css-maxWidth: ' +bottomDiv.css('maxWidth'));
-        //        consolelog(' ' );
+        //        console.log('postsize');
+        //        console.log('width: '+ topDiv.width()+' css-minWidth: ' +topDiv.css('minWidth')+' css-width: ' +topDiv.css('width')+' css-maxWidth: ' +topDiv.css('maxWidth'));
+        //        console.log('width: '+centralDiv.width()+' css-minWidth: ' +centralDiv.css('minWidth')+' css-width: ' +centralDiv.css('width')+' css-maxWidth: ' +centralDiv.css('maxWidth'));
+        //        console.log('width: '+bottomDiv.width()+' css-minWidth: ' +bottomDiv.css('minWidth')+' css-width: ' +bottomDiv.css('width')+' css-maxWidth: ' +bottomDiv.css('maxWidth'));
+        //        console.log(' ' );
         if(this.isClickElement(this.invoker)){
             this.placeAsPopup();
         }else{
@@ -1125,8 +1122,8 @@ function PopupDiv() {
         div.css({
             'top':offs.top+'px',
             'left':offs.left+'px'
-            });
-            this.shadow(); //replace the shadow
+        });
+        this.shadow(); //repositioning the shadow
     };
 
     p.placeInside = function(){
@@ -1188,9 +1185,9 @@ function PopupDiv() {
         div.css({
             'left':(x+padding['left']+spanLeft)+'px',
             'top':(y+padding['top']+spanTop)+'px'
-            });
+        });
 
-            this.shadow(); //replace the shadow
+        this.shadow(); //repositioning the shadow
     };
 
     p.getBounds = function(){

@@ -105,11 +105,6 @@ Timeside.classes.RulerMarker = Timeside.classes.TimesideClass.extend({
             canvas = this.createCanvasVml(waveImgDiv, arrowBaselineWidth);
             this.jQueryCanvas = $J(canvas.node);
             var attributes = vml.getVmlAttr(canvasClass);
-//            var attributes = ruler.classToRaphaelAttr[canvasClass];
-//            if(!attributes){
-//                attributes = ruler.getVmlAttr(canvasClass);
-//                ruler.classToRaphaelAttr[canvasClass] = attributes;
-//            }
             canvas.attr(attributes); //Raphael method
             this.moveCanvas = function(pixelOffset){
                 //for some reason, coordinates inside the VML object are stored by raphael with a zoom of 10:
@@ -231,36 +226,6 @@ Timeside.classes.RulerMarker = Timeside.classes.TimesideClass.extend({
         var shape = paper.path(this.createCanvasPath(0, arrowBaseWidth));
         return shape;
     },
-//    createCanvasVml: function(container, arrowBaseWidth){
-//        //for creating a vml object, we make use of raphael to avoid a pain in the ... implementing a non standard Microsoft syntax
-//        //(which, after a glance, it's even syntactically a mess)
-//        //unfotunately (and this is a real lack not even planned to be fixed, see raphael forums),
-//        //raphael does not allow to wrap existing object, so we have to register in this.elementToPaperMap (see timeside.js)
-//        //which is a map where to each container is associated a raphael paper:
-//        var paper = this.elementToPaperMap && this.elementToPaperMap[container.get(0)];
-//        if(!paper){
-//            var obj = this.elementToPaperMap;
-//            if(!obj){
-//                this.elementToPaperMap = {};
-//                obj = this.elementToPaperMap;
-//            }
-//            paper = Raphael(container.get(0),container.width(),container.height());
-//            obj[container.get(0)] = paper;
-//            //paper canvas is a div with weird dimensions. You can check it by printing paper.canvas.outerHTML in IE.
-//            //We set them to 100% so we dont have clipping regions when resizing (maximizing)
-//            paper.canvas.style.width='100%';
-//            paper.canvas.style.height='100%';
-//            paper.canvas.width='100%';
-//            paper.canvas.height='100%';
-//        //apparently, there is also a clip style declaration made by raphael. The following code trhows an error in IE7:
-//        //paper.canvas.style.clip = 'auto';
-//        //however, even leaving the clip style declaration as it is, it seems to work (the div spans the whole width)
-//        }
-//
-//
-//        var shape = paper.path(this.createCanvasPath(0, arrowBaseWidth));
-//        return shape;
-//    },
 
     //w must be odd. Cause the central line must be centered. Example:
     //
