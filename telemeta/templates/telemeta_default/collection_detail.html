@@ -195,10 +195,11 @@
             {% include "telemeta/inc/mediaitem_list.html" %}
         {% endwith %}
         -->
-        </div>
+
         {% endblock infos %}
     </div>
 {% endblock %}
+
 {% block deleteitem %}
 {% if user.is_authenticated and perms.telemeta.delete_mediacollection %}
  <a href="#" onclick="if(confirm(gettrans('delete the item permanently?'))){window.location.href='{% url telemeta-collection-delete collection.public_id %}';};return false;"
