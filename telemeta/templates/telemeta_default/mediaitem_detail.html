@@ -13,6 +13,7 @@
 {% block extra_javascript %}
 {% if item %}
 
+
 <script src="{% url telemeta-timeside "js/libs/soundmanager2-nodebug-jsmin.js" %}" type="text/javascript"></script>
 <script src="{% url telemeta-timeside "js/timeside.js" %}" type="text/javascript"></script>
 <script src="{% url telemeta-js "popupdiv-min.js" %}" type="text/javascript"></script>
@@ -92,11 +93,13 @@
     {% if item.file %}
     {% if public_access or user.is_staff or user.is_superuser %}
     <div id="player_maximized" class="ts-skin-lab">
+        <a href="#" class="embed_player_frame">&lt;/&gt;</a>
         <a href="#" class="toggle">Minimize</a>
         <div class="wazing"></div>
     </div>
     <div id="rightcol">
         <div id="player_minimized" class="ts-skin-lab">
+            <a href="#" class="embed_player_frame">&lt;/&gt;</a>
             <a href="#" class="toggle">Maximize</a>
             <div class="wazing"></div>
             <div id="player" class="ts-player">

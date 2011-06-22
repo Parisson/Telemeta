@@ -489,6 +489,34 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                         togglePlayerMaximization();
                         return false;
                     });
+                    //and assing the function to the form_link element
+                    $J('#player_maximized .embed_player_frame, #player_minimized .embed_player_frame').click(function() {
+                        var player_url = urlNormalized(); //defined in application.js
+                        var size= player.getImageSize();
+                        player_url += "/player/"+size.width+"x"+size.height;
+                        var input_text = "<iframe width='"+size.width+"' height='"+size.height+
+                            "' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='"+
+                            player_url+"'></iframe>";
+                        var ipt = $J('<input/>').attr('type','text');
+                        ipt.val(input_text);
+                        ipt.focus(function(){
+                            $J(this).select();
+                        });
+                        var p = new PopupDiv({
+                            invoker: $J(this),
+                            title: gettrans('Paste HTML to embed in website'),
+                            content: ipt,
+                            defaultCloseOperation:'remove',
+                            focusable: 'true',
+                            onShow : function(){
+                                if(ipt.outerWidth(true)<ipt.parent().width()){
+                                    ipt.css('width',(ipt.parent().width()-(ipt.outerWidth(true)-ipt.width()))+'px');
+                                }
+                            }
+                        });
+                        p.show();
+                        return false;
+                    });
                 }
                 );
             }
