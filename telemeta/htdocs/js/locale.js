@@ -7,7 +7,8 @@ var localeStrings = {
     'collection added to the selected playlist': gettext('collection added to the selected playlist'),
     'there are unsaved or modified markers': gettext('there are unsaved or modified markers'),
     'If you exit the page you will loose your changes' : gettext('If you exit the page you will loose your changes'),
-    'author' : gettext('author')
+    'author' : gettext('author'),
+    'Paste HTML to embed in website': gettext('Paste HTML to embed in website'),
 };
 
 function gettrans(str){
