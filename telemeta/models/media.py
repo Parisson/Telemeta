@@ -241,9 +241,9 @@ class MediaItem(MediaResource):
     cultural_area         = CharField(_('cultural area'))
     ethnic_group          = WeakForeignKey('EthnicGroup', related_name="items", 
                                            verbose_name=_('population / social group'))
+    language              = CharField(_('language'))
     context_comment       = TextField(_('comments'))
     moda_execut           = CharField(_('moda_execut'))
-    language              = CharField(_('language'))
     
     # Musical informations
     vernacular_style      = WeakForeignKey('VernacularStyle', related_name="items", 

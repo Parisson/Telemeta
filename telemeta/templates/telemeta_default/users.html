@@ -1,0 +1,18 @@
+{% extends "telemeta/base.html" %}
+{% load i18n %}
+{% load telemeta_utils %}
+
+{% block head_title %}{% trans "Users" %} - {{ block.super }}{% endblock %}
+
+{% block title %}
+ <img src="{% url telemeta-images "user_red.png" %}" alt="user" style="vertical-align:middle" /> {% trans "Users" %}
+{% endblock %}
+
+{% block content %}
+ {% if users %}
+  <br />
+  {% include "telemeta/inc/user_list.html" %}
+ {% else %}
+    <p class="help">{% trans "No users" %}</p>
+ {% endif %}
+{% endblock %}

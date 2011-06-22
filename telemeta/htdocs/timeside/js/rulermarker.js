@@ -69,21 +69,21 @@ Timeside.classes.RulerMarker = Timeside.classes.TimesideClass.extend({
         };
         this.getIndex = function(){
             return index;
-        }
+        };
 
         //end=======================================================
         //creating public methods:
         this.getLabel = function(){
             return label;
-        }
+        };
 
 
         this.getRulerWidth = function(){
             return rulerDiv.width();
-        }
+        };
         this.getWaveHeight = function(){
             return waveImgDiv.height();
-        }
+        };
 
         this.positionInPixels = 0;
         this.positionAsViewerRatio = 0;
@@ -92,27 +92,24 @@ Timeside.classes.RulerMarker = Timeside.classes.TimesideClass.extend({
 
         var canvas = undefined;
         var canvasClass = cssPref + 'svg-'+className+'-line';
-        if(this.isSvgSupported){
+        var vml = this.$TU.vml; //if vml, this class is populated with methods and NOT undefined
+        if(!vml){
             canvas = this.createCanvasSvg(waveImgDiv, arrowBaselineWidth);
             var path = canvas.childNodes[0]; //note that $J(canvas).find('path') does not work in FF at least 3.5
             path.setAttributeNS(null,'class',canvasClass);
             this.moveCanvas = function(pixelOffset){
                 canvas.setAttributeNS( null, "transform", "translate("+pixelOffset+",0)");
-            }
+            };
             this.jQueryCanvas = $J(canvas);
         }else{
             canvas = this.createCanvasVml(waveImgDiv, arrowBaselineWidth);
             this.jQueryCanvas = $J(canvas.node);
-            var attributes = ruler.classToRaphaelAttr[canvasClass];
-            if(!attributes){
-                attributes = ruler.getVmlAttr(canvasClass);
-                ruler.classToRaphaelAttr[canvasClass] = attributes;
-            }
+            var attributes = vml.getVmlAttr(canvasClass);
             canvas.attr(attributes); //Raphael method
             this.moveCanvas = function(pixelOffset){
                 //for some reason, coordinates inside the VML object are stored by raphael with a zoom of 10:
                 this.jQueryCanvas.css('left',(10*pixelOffset)+'px');
-            }
+            };
             //apparently, when resizing the markers loose their attributes. Therefore:
             var r = this.refreshPosition; //reference to current refreshPosition
             this.refreshPosition = function(){
@@ -121,7 +118,7 @@ Timeside.classes.RulerMarker = Timeside.classes.TimesideClass.extend({
             }
         }
     },
-
+    //isMovedByMouse: false, //flag to be set by the ruler (see add method) when mouse is moving this rulermarker
     //sets the text of the marker, if the text changes the marker width and optionalUpdateLabelPosition=true,
     //re-arranges the marker position to be center-aligned with its vertical line (the one lying on the wav image)
     setText: function(text, optionalUpdateLabelPosition) {
@@ -224,37 +221,13 @@ Timeside.classes.RulerMarker = Timeside.classes.TimesideClass.extend({
     },
 
     createCanvasVml: function(container, arrowBaseWidth){
-        //for creating a vml object, we make use of raphael to avoid a pain in the ... implementing a non standard Microsoft syntax
-        //(which, after a glance, it's even syntactically a mess)
-        //unfotunately (and this is a real lack not even planned to be fixed, see raphael forums),
-        //raphael does not allow to wrap existing object, so we have to register in this.elementToPaperMap (see timeside.js)
-        //which is a map where to each container is associated a raphael paper:
-        var paper = this.elementToPaperMap && this.elementToPaperMap[container.get(0)];
-        if(!paper){ 
-            var obj = this.elementToPaperMap;
-            if(!obj){
-                this.elementToPaperMap = {};
-                obj = this.elementToPaperMap;
-            }
-            paper = Raphael(container.get(0),container.width(),container.height());
-            obj[container.get(0)] = paper;
-            //paper canvas is a div with weird dimensions. You can check it by printing paper.canvas.outerHTML in IE.
-            //We set them to 100% so we dont have clipping regions when resizing (maximizing)
-            paper.canvas.style.width='100%';
-            paper.canvas.style.height='100%';
-            paper.canvas.width='100%';
-            paper.canvas.height='100%';
-        //apparently, there is also a clip style declaration made by raphael. The following code trhows an error in IE7:
-        //paper.canvas.style.clip = 'auto';
-        //however, even leaving the clip style declaration as it is, it seems to work (the div spans the whole width)
-        }
-        
-        
+        var vml = this.$TU.vml;
+        var paper = vml.Raphael(container.get(0),container.width(),container.height());
         var shape = paper.path(this.createCanvasPath(0, arrowBaseWidth));
         return shape;
     },
 
-    //w must be odd. Cause le central line must be centered. Example:
+    //w must be odd. Cause the central line must be centered. Example:
     //
     //      xxxxx
     //       xxx
@@ -264,7 +237,15 @@ Timeside.classes.RulerMarker = Timeside.classes.TimesideClass.extend({
     //
     createCanvasPath: function(x,w){
         var halfW = w >>> 1;
-        var h = this.$J(window).height();
+        //in order to calculate the line height, we could simply set the wave height. However, due to potential
+        //resizing afterwards, the line could not stretch till the bottom (if it overflows it's fine, as the wave div container has 
+        //overflow = hidden). As we do not want to rebuild the canvas on resize,
+        //we assess an height which will 99% overflow the wave height in any case.
+        //We use the wave height and the window height, and take 2 times
+        //the maximum of those heights:
+        var wdwH = this.$J(window).height();
+        var waveH = this.getWaveHeight();
+        var h = 2* (wdwH > waveH ? wdwH : waveH);
         return 'M '+(x-halfW)+' 0 L '+(x)+' '+(halfW)+' L '+x+' '+h+
         ' L '+ (x+1)+' '+h+' L '+(x+1)+ ' '+(halfW)+' L '+(x+halfW+1)+' 0 z';
     },

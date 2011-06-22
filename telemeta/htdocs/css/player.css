@@ -94,6 +94,31 @@ ALONE ARE PARSED (eg ".ts-blabla, .ts-marker-canvas{...}" WILL NOT BE RECOGNIZED
     background-position: 0px -10px;
 }
 
+#player_maximized .embed_player_frame, #player_minimized .embed_player_frame {
+    float: right;
+    font-weight: bold;
+    color: #6A0307;
+    text-decoration: none;
+    font-size: 50%;
+    padding-left: 2ex;
+    padding-right: 2ex;
+    /*-moz-border-radius: 1ex;
+    -webkit-border-radius: 1ex;
+    border-radius: 1ex;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    
+    */
+     position: relative;
+    top: -1px;
+    line-height: 1.5em;
+   
+}
+
+#player_maximized .embed_player_frame:hover, #player_minimized .embed_player_frame:hover {
+    text-decoration: none;
+}
+
 #player_maximized {
     margin: 10px 0 15px 0;
     display: none;

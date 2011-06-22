@@ -62,6 +62,7 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext
 from django.contrib.auth.forms import UserChangeForm
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.syndication.views import Feed
 
 from telemeta.models import *
 import telemeta.models
@@ -71,7 +72,6 @@ from telemeta.util.unaccent import unaccent
 from telemeta.util.unaccent import unaccent_icmp
 from telemeta.util.logger import Logger
 from telemeta.util.unicode import UnicodeWriter
-from telemeta.util.PyRSS2Gen import *
 from telemeta.cache import TelemetaCache
 import telemeta.web.pages as pages
 
@@ -99,16 +99,76 @@ def stream_from_file(__file):
             break
         yield __chunk
     
-    
-class WebView(object):
-    """Provide web UI methods"""
+def get_public_access(access, year_from=None, year_to=None):
+    # Rolling publishing date : public access is given when time between recorded year 
+    # and current year is over the settings value PUBLIC_ACCESS_PERIOD
+    if year_from and not year_from == 0:
+        year = year_from
+    elif year_to and not year_to == 0:
+        year = year_to
+    else:
+        year = 0
+    if access == 'full':
+        public_access = True
+    else:
+        public_access = False
+        if year and not year == 'None':
+            year_now = datetime.datetime.now().strftime("%Y")
+            if int(year_now) - int(year) >= settings.TELEMETA_PUBLIC_ACCESS_PERIOD:
+                public_access = True
+        else:
+            public_access = False        
+    return public_access
 
-    graphers = timeside.core.processors(timeside.api.IGrapher)
-    decoders = timeside.core.processors(timeside.api.IDecoder)
-    encoders = timeside.core.processors(timeside.api.IEncoder)
-    analyzers = timeside.core.processors(timeside.api.IAnalyzer)
-    cache_data = TelemetaCache(settings.TELEMETA_DATA_CACHE_DIR)
-    cache_export = TelemetaCache(settings.TELEMETA_EXPORT_CACHE_DIR)
+def get_revisions(nb):
+    last_revisions = Revision.objects.order_by('-time')[0:nb]
+    revisions = []
+    for revision in last_revisions:
+        if revision.element_type == 'item':
+            try:
+                element = MediaItem.objects.get(pk=revision.element_id)
+            except:
+                element = None
+        if revision.element_type == 'collection':
+            try:
+                element = MediaCollection.objects.get(pk=revision.element_id)
+            except:
+                element = None
+        if revision.element_type == 'marker':
+            try:
+                element = MediaItemMarker.objects.get(pk=revision.element_id)
+            except:
+                element = None
+        if not element == None:
+            revisions.append({'revision': revision, 'element': element})
+    return revisions
+
+def get_playlists(request, user=None):
+    if not user:
+        user = request.user
+    playlists = []
+    if user.is_authenticated():
+        user_playlists = Playlist.objects.filter(author=user)
+        for playlist in user_playlists:
+            playlist_resources = PlaylistResource.objects.filter(playlist=playlist)
+            resources = []
+            for resource in playlist_resources:
+                try:
+                    if resource.resource_type == 'item':
+                        element = MediaItem.objects.get(id=resource.resource_id)
+                    if resource.resource_type == 'collection':
+                        element = MediaCollection.objects.get(id=resource.resource_id)
+                    if resource.resource_type == 'marker':
+                        element = MediaItemMarker.objects.get(id=resource.resource_id)
+                except:
+                    element = None
+                resources.append({'element': element, 'type': resource.resource_type, 'public_id': resource.public_id })
+            playlists.append({'playlist': playlist, 'resources': resources})
+    return playlists
+
+
+class GeneralView(object):
+    """Provide general web UI methods"""
     
     def index(self, request):
         """Render the homepage"""
@@ -116,49 +176,163 @@ class WebView(object):
             template = loader.get_template('telemeta/index.html')
             ids = [id for id in MediaItem.objects.all().values_list('id', flat=True).order_by('?')[0:3]]
             items = MediaItem.objects.enriched().filter(pk__in=ids)
-            revisions = self.get_revisions(request, 3)
+            revisions = get_revisions(3)
             context = RequestContext(request, {
                         'page_content': pages.get_page_content(request, 'home', ignore_slash_issue=True),
                         'items': items, 'revisions': revisions})
             return HttpResponse(template.render(context))
         else:
             template='telemeta/home.html'
-            playlists = self.get_playlists(request)
-            revisions = self.get_revisions(request, 15)
+            playlists = get_playlists(request)
+            revisions = get_revisions(15)
             searches = Search.objects.filter(username=request.user)
             return render(request, template, {'playlists': playlists, 'searches': searches, 
                                               'revisions': revisions,})
-  
-    def get_revisions(self, request, nb):
-        last_revisions = Revision.objects.all().order_by('-time')[0:nb]
-        revisions = []
-        for revision in last_revisions:
-            if revision.element_type == 'item':
-                try:
-                    element = MediaItem.objects.get(pk=revision.element_id)
-                except:
-                    element = None
-            if revision.element_type == 'collection':
-                try:
-                    element = MediaCollection.objects.get(pk=revision.element_id)
-                except:
-                    element = None
-            if revision.element_type == 'marker':
-                try:
-                    element = MediaItemMarker.objects.get(pk=revision.element_id)
-                except:
-                    element = None
-            revisions.append({'revision': revision, 'element': element})
+
+    def edit_search(self, request, criteria=None):
+        year_min, year_max = MediaCollection.objects.all().recording_year_range()
+        rec_years = year_min and year_max and range(year_min, year_max + 1) or []
+        year_min, year_max = MediaCollection.objects.all().publishing_year_range()
+        pub_years = year_min and year_max and range(year_min, year_max + 1) or []
+        return render(request, 'telemeta/search_criteria.html', {
+            'rec_years': rec_years,
+            'pub_years': pub_years,
+            'ethnic_groups': MediaItem.objects.all().ethnic_groups(),
+            'criteria': criteria
+        })
+
+    def handle_oai_request(self, request):
+        host = request.META['HTTP_HOST']
+        url         = 'http://' + host + request.path
+        datasource  = TelemetaOAIDataSource()
+        admin       = settings.ADMINS[0][1]
+        provider    = oai.DataProvider(datasource, host, url, admin)
+        args        = request.GET.copy()
+        args.update(request.POST)
+        return HttpResponse(provider.handle(args), mimetype='text/xml')
         
-        return revisions
+    def render_flatpage(self, request, path):
+        try:
+            content = pages.get_page_content(request, path)
+        except pages.MalformedPagePath:
+            return redirect(request.path + '/')
+
+        if isinstance(content, pages.PageAttachment):
+            return HttpResponse(content, content.mimetype())
+        else:
+            return render(request, 'telemeta/flatpage.html', {'page_content': content })
+
+    def logout(self, request):
+        auth.logout(request)
+        return redirect('telemeta-home')
+
+    def search(self, request, type = None):
+        """Perform a search through collections and items metadata"""
+        collections = MediaCollection.objects.enriched()
+        items = MediaItem.objects.enriched()
+        input = request.REQUEST
+        criteria = {}
+
+        switch = {
+            'pattern': lambda value: ( 
+                collections.quick_search(value), 
+                items.quick_search(value)),
+            'title': lambda value: (
+                collections.word_search('title', value), 
+                items.by_title(value)),
+            'location': lambda value: (
+                collections.by_location(Location.objects.get(name=value)), 
+                items.by_location(Location.objects.get(name=value))),
+            'continent': lambda value: (
+                collections.by_continent(value), 
+                items.filter(continent = value)),
+            'ethnic_group': lambda value: (
+                collections.by_ethnic_group(value), 
+                items.filter(ethnic_group = value),
+                EthnicGroup.objects.get(pk=value)),
+            'creator': lambda value: (
+                collections.word_search('creator', value),
+                items.word_search('collection__creator', value)),
+            'collector': lambda value: (
+                collections.by_fuzzy_collector(value),
+                items.by_fuzzy_collector(value)),
+            'rec_year_from': lambda value: (
+                collections.by_recording_year(int(value), int(input.get('rec_year_to', value))), 
+                items.by_recording_date(datetime.date(int(value), 1, 1), 
+                                        datetime.date(int(input.get('rec_year_to', value)), 12, 31))),
+            'rec_year_to': lambda value: (collections, items),
+            'pub_year_from': lambda value: (
+                collections.by_publish_year(int(value), int(input.get('pub_year_to', value))), 
+                items.by_publish_year(int(value), int(input.get('pub_year_to', value)))),
+            'pub_year_to': lambda value: (collections, items),
+        }
+       
+        for key, value in input.items():
+            func = switch.get(key)
+            if func and value and value != "0":
+                try:
+                    res = func(value)
+                    if len(res)  > 2:
+                        collections, items, value = res
+                    else: 
+                        collections, items = res
+                except ObjectDoesNotExist:
+                    collections = collections.none()
+                    items = items.none()
+
+                criteria[key] = value
+
+        if type is None:
+            if collections.count():
+                type = 'collections'
+            else:
+                type = 'items'
+
+        if type == 'items':
+            objects = items
+        else:
+            objects = collections
+
+        return list_detail.object_list(request, objects, 
+            template_name='telemeta/search_results.html', paginate_by=20,
+            extra_context={'criteria': criteria, 'collections_num': collections.count(), 
+                'items_num': items.count(), 'type' : type})
+
+    def complete_location(self, request, with_items=True):
+        input = request.REQUEST
+       
+        token = input['q']
+        limit = int(input['limit'])
+        if with_items:
+            locations = MediaItem.objects.all().locations()
+        else:
+            locations = Location.objects.all()
+
+        locations = locations.filter(name__istartswith=token).order_by('name')[:limit]
+        data = [unicode(l) + " (%d items)" % l.items().count() for l in locations]
+
+        return HttpResponse("\n".join(data))
+
+    def users(self, request):
+        users = User.objects.all()
+        return render(request, 'telemeta/users.html', {'users': users})
         
+class CollectionView(object):
+    """Provide Collections web UI methods"""
+
     def collection_detail(self, request, public_id, template='telemeta/collection_detail.html'):
         collection = MediaCollection.objects.get(public_id=public_id)
-        if collection.public_access == 'none' and not request.user.is_staff:
-            return HttpResponseRedirect('not_allowed/')
-        public_access = self.get_public_access(collection.public_access, collection.recorded_from_year, 
+        
+        if collection.public_access == 'none' and not (request.user.is_staff or request.user.is_superuser):
+            mess = ugettext('Access not allowed') 
+            title = ugettext('Collection') + ' : ' + public_id + ' : ' + mess
+            description = ugettext('Please login or contact the website administator to get a private access.')
+            messages.error(request, title)
+            return render(request, 'telemeta/messages.html', {'description' : description})
+
+        public_access = get_public_access(collection.public_access, collection.recorded_from_year, 
                                                 collection.recorded_to_year)
-        playlists = self.get_playlists(request)
+        playlists = get_playlists(request)
         return render(request, template, {'collection': collection, 'playlists': playlists, 'public_access': public_access})
 
     @method_decorator(permission_required('telemeta.change_mediacollection'))
@@ -212,7 +386,28 @@ class WebView(object):
             form = MediaCollectionForm(instance=collection)
         
         return render(request, template, {'collection': collection, "form": form,})
-        
+
+    def collection_playlist(self, request, public_id, template, mimetype):
+        try:
+            collection = MediaCollection.objects.get(public_id=public_id)
+        except ObjectDoesNotExist:
+            raise Http404
+
+        template = loader.get_template(template)
+        context = RequestContext(request, {'collection': collection, 'host': request.META['HTTP_HOST']})
+        return HttpResponse(template.render(context), mimetype=mimetype)
+
+
+class ItemView(object):
+    """Provide Collections web UI methods"""
+
+    graphers = timeside.core.processors(timeside.api.IGrapher)
+    decoders = timeside.core.processors(timeside.api.IDecoder)
+    encoders = timeside.core.processors(timeside.api.IEncoder)
+    analyzers = timeside.core.processors(timeside.api.IAnalyzer)
+    cache_data = TelemetaCache(settings.TELEMETA_DATA_CACHE_DIR)
+    cache_export = TelemetaCache(settings.TELEMETA_EXPORT_CACHE_DIR)
+    
     def item_previous_next(self, item):
         # Get previous and next items
         pks = []
@@ -256,8 +451,13 @@ class WebView(object):
         else:
             item = MediaItem.objects.get(public_id=public_id)
         
-        if (item.public_access == 'none' or item.collection.public_access == 'none') and not request.user.is_staff:
-            return HttpResponseRedirect('not_allowed/')
+        item_public_access = item.public_access == 'none' or item.collection.public_access == 'none'
+        if item_public_access and not (request.user.is_staff or request.user.is_superuser):
+            mess = ugettext('Access not allowed') 
+            title = ugettext('Item') + ' : ' + public_id + ' : ' + mess
+            description = ugettext('Please login or contact the website administator to get a private access.')
+            messages.error(request, title)
+            return render(request, 'telemeta/messages.html', {'description' : description})
             
         # Get TimeSide processors
         formats = []
@@ -274,8 +474,8 @@ class WebView(object):
         
         previous, next = self.item_previous_next(item)
         self.item_analyze(item)
-        playlists = self.get_playlists(request)
-        public_access = self.get_public_access(item.public_access, str(item.recorded_from_date).split('-')[0], 
+        playlists = get_playlists(request)
+        public_access = get_public_access(item.public_access, str(item.recorded_from_date).split('-')[0], 
                                                 str(item.recorded_to_date).split('-')[0])
                 
         return render(request, template,
@@ -285,28 +485,6 @@ class WebView(object):
                     'previous' : previous, 'next' : next, 'marker': marker_id, 'playlists' : playlists, 
                     'public_access': public_access, 'width': width, 'height': height, 
                     })
-    
-    def get_public_access(self, access, year_from, year_to):
-        # Rolling publishing date : public access is given when time between recorded year 
-        # and current year is over the settings value PUBLIC_ACCESS_PERIOD
-        if year_to:
-            year = year_to
-        elif year_from:
-            year = year_from
-        else:
-            year = False
-        if access == 'full':
-            public_access = True
-        else:
-            public_access = False
-        if year and not year == 'None':
-            year_now = datetime.datetime.now().strftime("%Y")
-            if int(year_now) - int(year) >= settings.TELEMETA_PUBLIC_ACCESS_PERIOD:
-                public_access = True
-        else:
-            public_access = False
-        
-        return public_access
         
     @method_decorator(permission_required('telemeta.change_mediaitem'))
     def item_edit(self, request, public_id, template='telemeta/mediaitem_edit.html'):
@@ -501,11 +679,16 @@ class WebView(object):
         """Export a given media item in the specified format (OGG, FLAC, ...)"""
         
         item = MediaItem.objects.get(public_id=public_id)
-        
-        public_access = self.get_public_access(item.public_access, str(item.recorded_from_date).split('-')[0], 
+        public_access = get_public_access(item.public_access, str(item.recorded_from_date).split('-')[0], 
                                                 str(item.recorded_to_date).split('-')[0])
-        if (not public_access or not extension in settings.TELEMETA_STREAMING_FORMATS) and not request.user.is_staff:
-            return HttpResponseRedirect('not_allowed/')
+        
+        if (not public_access or not extension in settings.TELEMETA_STREAMING_FORMATS) and \
+                    not (request.user.is_staff or request.user.is_superuser):
+            mess = ugettext('Access not allowed') 
+            title = 'Item file : ' + public_id + '.' + extension + ' : ' + mess
+            description = ugettext('Please login or contact the website administator to get a private access.')
+            messages.error(request, title)
+            return render(request, 'telemeta/messages.html', {'description' : description})
 
         for encoder in self.encoders:
             if encoder.file_extension() == extension:
@@ -562,106 +745,47 @@ class WebView(object):
         response['Content-Disposition'] = 'attachment'
         return response
 
-    def edit_search(self, request, criteria=None):
-        year_min, year_max = MediaCollection.objects.all().recording_year_range()
-        rec_years = year_min and year_max and range(year_min, year_max + 1) or []
-        year_min, year_max = MediaCollection.objects.all().publishing_year_range()
-        pub_years = year_min and year_max and range(year_min, year_max + 1) or []
-        return render(request, 'telemeta/search_criteria.html', {
-            'rec_years': rec_years,
-            'pub_years': pub_years,
-            'ethnic_groups': MediaItem.objects.all().ethnic_groups(),
-            'criteria': criteria
-        })
+    def item_playlist(self, request, public_id, template, mimetype):
+        try:
+            item = MediaItem.objects.get(public_id=public_id)
+        except ObjectDoesNotExist:
+            raise Http404
 
-    def complete_location(self, request, with_items=True):
-        input = request.REQUEST
-       
-        token = input['q']
-        limit = int(input['limit'])
-        if with_items:
-            locations = MediaItem.objects.all().locations()
+        template = loader.get_template(template)
+        context = RequestContext(request, {'item': item, 'host': request.META['HTTP_HOST']})
+        return HttpResponse(template.render(context), mimetype=mimetype)
+
+    @method_decorator(permission_required('telemeta.change_mediaitem'))
+    def item_performances_edit(self, request, public_id, template):
+        item = MediaItem.objects.get(public_id=public_id)
+        PerformanceFormSet = inlineformset_factory(MediaItem, MediaItemPerformance, form=MediaItemPerformanceForm)
+        if request.method == 'POST':
+            formset = PerformanceFormSet(data=request.POST, instance=item)
+            if formset.is_valid():
+                formset.save()
+                return HttpResponseRedirect('/items/'+public_id)
         else:
-            locations = Location.objects.all()
-
-        locations = locations.filter(name__istartswith=token).order_by('name')[:limit]
-        data = [unicode(l) + " (%d items)" % l.items().count() for l in locations]
-
-        return HttpResponse("\n".join(data))
-
-    def search(self, request, type = None):
-        """Perform a search through collections and items metadata"""
-        collections = MediaCollection.objects.enriched()
-        items = MediaItem.objects.enriched()
-        input = request.REQUEST
-        criteria = {}
-
-        switch = {
-            'pattern': lambda value: ( 
-                collections.quick_search(value), 
-                items.quick_search(value)),
-            'title': lambda value: (
-                collections.word_search('title', value), 
-                items.by_title(value)),
-            'location': lambda value: (
-                collections.by_location(Location.objects.get(name=value)), 
-                items.by_location(Location.objects.get(name=value))),
-            'continent': lambda value: (
-                collections.by_continent(value), 
-                items.filter(continent = value)),
-            'ethnic_group': lambda value: (
-                collections.by_ethnic_group(value), 
-                items.filter(ethnic_group = value),
-                EthnicGroup.objects.get(pk=value)),
-            'creator': lambda value: (
-                collections.word_search('creator', value),
-                items.word_search('collection__creator', value)),
-            'collector': lambda value: (
-                collections.by_fuzzy_collector(value),
-                items.by_fuzzy_collector(value)),
-            'rec_year_from': lambda value: (
-                collections.by_recording_year(int(value), int(input.get('rec_year_to', value))), 
-                items.by_recording_date(datetime.date(int(value), 1, 1), 
-                                        datetime.date(int(input.get('rec_year_to', value)), 12, 31))),
-            'rec_year_to': lambda value: (collections, items),
-            'pub_year_from': lambda value: (
-                collections.by_publish_year(int(value), int(input.get('pub_year_to', value))), 
-                items.by_publish_year(int(value), int(input.get('pub_year_to', value)))),
-            'pub_year_to': lambda value: (collections, items),
-        }
-       
-        for key, value in input.items():
-            func = switch.get(key)
-            if func and value and value != "0":
-                try:
-                    res = func(value)
-                    if len(res)  > 2:
-                        collections, items, value = res
-                    else: 
-                        collections, items = res
-                except ObjectDoesNotExist:
-                    collections = collections.none()
-                    items = items.none()
-
-                criteria[key] = value
-
-        if type is None:
-            if collections.count():
-                type = 'collections'
-            else:
-                type = 'items'
-
-        if type == 'items':
-            objects = items
+            formset = PerformanceFormSet(instance=item)
+        return render(request, template, {'item': item, 'formset': formset,})
+    
+    @method_decorator(permission_required('telemeta.change_mediaitem'))
+    def item_keywords_edit(self, request, public_id, template):
+        item = MediaItem.objects.get(public_id=public_id)
+        FormSet = inlineformset_factory(MediaItem, MediaItemKeyword)
+        if request.method == 'POST':
+            formset = FormSet(data=request.POST, instance=item)
+            if formset.is_valid():
+                formset.save()
+                return HttpResponseRedirect('/items/'+public_id)
         else:
-            objects = collections
+            formset = FormSet(instance=item)
+        return render(request, template, {'item': item, 'formset': formset,})
 
-        return list_detail.object_list(request, objects, 
-            template_name='telemeta/search_results.html', paginate_by=20,
-            extra_context={'criteria': criteria, 'collections_num': collections.count(), 
-                'items_num': items.count(), 'type' : type})
 
-    # ADMIN
+
+class AdminView(object):
+    """Provide Admin web UI methods"""
+    
     @method_decorator(permission_required('sites.change_site'))
     def admin_index(self, request):
         return render(request, 'telemeta/admin.html', self.__get_admin_context_vars())
@@ -673,12 +797,12 @@ class WebView(object):
     @method_decorator(permission_required('sites.change_site'))
     def admin_enumerations(self, request):
         return render(request, 'telemeta/admin_enumerations.html', self.__get_admin_context_vars())
+
     @method_decorator(permission_required('sites.change_site'))
     def admin_users(self, request):
         users = User.objects.all()
         return render(request, 'telemeta/admin_users.html', {'users': users})
 
-    # ENUMERATIONS
     def __get_enumerations_list(self):
         from django.db.models import get_models
         models = get_models(telemeta.models)
@@ -695,7 +819,7 @@ class WebView(object):
     
     def __get_admin_context_vars(self):
         return {"enumerations": self.__get_enumerations_list()}
-    
+
     def __get_enumeration(self, id):
         from django.db.models import get_models
         models = get_models(telemeta.models)
@@ -773,7 +897,9 @@ class WebView(object):
         return self.edit_enumeration(request, enumeration_id)
   
 
-    # INSTRUMENTS
+class InstrumentView(object):
+    """Provide Instrument web UI methods"""
+
     @method_decorator(permission_required('telemeta.change_instrument'))
     def edit_instrument(self, request):        
         
@@ -815,25 +941,9 @@ class WebView(object):
 
         return self.edit_instrument(request)
         
-    def collection_playlist(self, request, public_id, template, mimetype):
-        try:
-            collection = MediaCollection.objects.get(public_id=public_id)
-        except ObjectDoesNotExist:
-            raise Http404
-
-        template = loader.get_template(template)
-        context = RequestContext(request, {'collection': collection, 'host': request.META['HTTP_HOST']})
-        return HttpResponse(template.render(context), mimetype=mimetype)
-
-    def item_playlist(self, request, public_id, template, mimetype):
-        try:
-            item = MediaItem.objects.get(public_id=public_id)
-        except ObjectDoesNotExist:
-            raise Http404
-
-        template = loader.get_template(template)
-        context = RequestContext(request, {'item': item, 'host': request.META['HTTP_HOST']})
-        return HttpResponse(template.render(context), mimetype=mimetype)
+        
+class GeoView(object):
+    """Provide Geo web UI methods"""
 
     def list_continents(self, request):
         continents = MediaItem.objects.all().countries(group_by_continent=True)
@@ -870,31 +980,9 @@ class WebView(object):
             template_name='telemeta/geo_country_items.html', paginate_by=20,
             extra_context={'country': country, 'continent': continent})
 
-    def handle_oai_request(self, request):
-        url         = 'http://' + request.META['HTTP_HOST'] + request.path
-        datasource  = TelemetaOAIDataSource()
-        admin       = settings.ADMINS[0][1]
-        provider    = oai.DataProvider(datasource, settings.TELEMETA_OAI_REPOSITORY_NAME, url, admin)
-        args        = request.GET.copy()
-        args.update(request.POST)
-        return HttpResponse(provider.handle(args), mimetype='text/xml')
-        
-    def render_flatpage(self, request, path):
-        try:
-            content = pages.get_page_content(request, path)
-        except pages.MalformedPagePath:
-            return redirect(request.path + '/')
+class MarkerView(object):
+    """Provide Collections web UI methods"""
 
-        if isinstance(content, pages.PageAttachment):
-            return HttpResponse(content, content.mimetype())
-        else:
-            return render(request, 'telemeta/flatpage.html', {'page_content': content })
-
-    def logout(self, request):
-        auth.logout(request)
-        return redirect('telemeta-home')
-
-    #MARKERS
     @jsonrpc_method('telemeta.add_marker')
     def add_marker(request, marker):
         # marker must be a dict
@@ -949,7 +1037,9 @@ class WebView(object):
         marker = MediaItemMarker.objects.get(public_id=public_id)
         return marker.id
     
-    # PLAYLISTS
+class PlaylistView(object):
+    """Provide Collections web UI methods"""
+
     @jsonrpc_method('telemeta.add_playlist')
     def add_playlist(request, playlist):
         # playlist must be a dict
@@ -967,29 +1057,6 @@ class WebView(object):
     def del_playlist(request, public_id):
         m = Playlist.objects.get(public_id=public_id)
         m.delete()
-        
-    def get_playlists(self, request, user=None):
-        if not user:
-            user = request.user
-        playlists = []
-        if user.is_authenticated():
-            user_playlists = Playlist.objects.filter(author=user)
-            for playlist in user_playlists:
-                playlist_resources = PlaylistResource.objects.filter(playlist=playlist)
-                resources = []
-                for resource in playlist_resources:
-                    try:
-                        if resource.resource_type == 'item':
-                            element = MediaItem.objects.get(id=resource.resource_id)
-                        if resource.resource_type == 'collection':
-                            element = MediaCollection.objects.get(id=resource.resource_id)
-                        if resource.resource_type == 'marker':
-                            element = MediaItemMarker.objects.get(id=resource.resource_id)
-                    except:
-                        element = None
-                    resources.append({'element': element, 'type': resource.resource_type, 'public_id': resource.public_id })
-                playlists.append({'playlist': playlist, 'resources': resources})
-        return playlists
         
     @jsonrpc_method('telemeta.update_playlist')
     def update_playlist(request, playlist):
@@ -1063,62 +1130,10 @@ class WebView(object):
                 writer.writerow(data)
         return response
         
-    def rss(self, request):
-        "Render the RSS feed of last revisions"
-        rss_item_list = []
-        organization = settings.TELEMETA_ORGANIZATION
-        subjects = settings.TELEMETA_SUBJECTS
-        rss_host = request.META['HTTP_HOST']
-        date_now = datetime.datetime.now()
-        revisions = self.get_revisions(request, 50)
-        tags = ['title', 'description', 'comment']
-        
-        for r in revisions:
-            revision = r['revision']
-            element = r['element']
-            if element:
-                link = 'http://' + rss_host + '/' + revision.element_type + 's/' + str(element.public_id)                
-                description = ''
-                dict = element.to_dict()
-                for tag in dict.keys():
-                    try:
-                        value = dict[tag]
-                        if value != '':
-                            description += tag + ' : ' + value + '<br />'
-                    except:
-                        continue
-                    if tag == 'title':
-                        if element.title == '':
-                            title = str(element.public_id)
-                        else:
-                            title = element.title
-                        title = element.element_type + ' : ' + title
-                        
-                rss_item_list.append(RSSItem(
-                        title = title,
-                        link = link,
-                        description = description.encode('utf-8'),
-                        guid = Guid(link),
-                        pubDate = revision.time,)
-                        )
-                        
-        rss = RSS2(title = organization + ' - Telemeta - ' + ugettext('Last changes'),
-                            link = rss_host,
-                            description = ' '.join([subject.decode('utf-8') for subject in subjects]),
-                            lastBuildDate = str(date_now),
-                            items = rss_item_list,)
-        
-        feed = rss.to_xml(encoding='utf-8')
-        response = HttpResponse(feed, mimetype='application/rss+xml')
-        return response
-        
-    def not_allowed(self, request,  public_id = None):
-        mess = ugettext('Access not allowed') 
-        title = public_id + ' : ' + mess
-        description = ugettext('Please login or contact the website administator to get admin or private access.')
-        messages.error(request, title)
-        return render(request, 'telemeta/messages.html', {'description' : description})
-    
+
+class ProfileView(object):
+    """Provide Collections web UI methods"""
+
     @method_decorator(login_required)
     def profile_detail(self, request, username, template='telemeta/profile_detail.html'):
         user = User.objects.get(username=username)
@@ -1126,11 +1141,11 @@ class WebView(object):
             profile = user.get_profile()
         except:
             profile = None
-        playlists = self.get_playlists(request, user)
+        playlists = get_playlists(request, user)
         return render(request, template, {'profile' : profile, 'usr': user, 'playlists': playlists})
         
     def profile_edit(self, request, username, template='telemeta/profile_edit.html'):
-        if request.user.is_staff:
+        if request.user.is_superuser:
             user_hidden_fields = ['profile-user', 'user-password', 'user-last_login', 'user-date_joined']
         else:
             user_hidden_fields = ['user-username', 'user-is_staff', 'profile-user', 'user-is_active', 
@@ -1139,7 +1154,11 @@ class WebView(object):
         
         user = User.objects.get(username=username)
         if user != request.user and not request.user.is_staff:
-            return HttpResponseRedirect('/accounts/'+username+'/not_allowed/')
+            mess = ugettext('Access not allowed') 
+            title = ugettext('User profile') + ' : ' + username + ' : ' + mess
+            description = ugettext('Please login or contact the website administator to get a private access.')
+            messages.error(request, title)
+            return render(request, 'telemeta/messages.html', {'description' : description})
         
         try:
             profile = user.get_profile()
@@ -1159,29 +1178,47 @@ class WebView(object):
             forms = [user_form, profile_form]
         return render(request, template, {'forms': forms, 'usr': user, 'user_hidden_fields': user_hidden_fields})
 
-    @method_decorator(permission_required('telemeta.change_mediaitem'))
-    def item_performances_edit(self, request, public_id, template):
-        item = MediaItem.objects.get(public_id=public_id)
-        PerformanceFormSet = inlineformset_factory(MediaItem, MediaItemPerformance, form=MediaItemPerformanceForm)
-        if request.method == 'POST':
-            formset = PerformanceFormSet(data=request.POST, instance=item)
-            if formset.is_valid():
-                formset.save()
-                return HttpResponseRedirect('/items/'+public_id)
+
+
+class LastestRevisionsFeed(Feed):
+    "the RSS feed of the lastest revisions"
+        
+    organization = settings.TELEMETA_ORGANIZATION
+    subjects = settings.TELEMETA_SUBJECTS
+    tags = ['title', 'description', 'comment']
+    title = organization + ' - Telemeta - ' + ugettext('Last changes')
+    link = ""
+    description = ' '.join([subject.decode('utf-8') for subject in subjects])
+
+    def items(self):
+        return get_revisions(25)
+
+    def item_title(self, r):
+        element = r['element']
+        if element.title == '':
+            title = str(element.public_id)
         else:
-            formset = PerformanceFormSet(instance=item)
-        return render(request, template, {'item': item, 'formset': formset,})
-    
-    @method_decorator(permission_required('telemeta.change_mediaitem'))
-    def item_keywords_edit(self, request, public_id, template):
-        item = MediaItem.objects.get(public_id=public_id)
-        FormSet = inlineformset_factory(MediaItem, MediaItemKeyword)
-        if request.method == 'POST':
-            formset = FormSet(data=request.POST, instance=item)
-            if formset.is_valid():
-                formset.save()
-                return HttpResponseRedirect('/items/'+public_id)
-        else:
-            formset = FormSet(instance=item)
-        return render(request, template, {'item': item, 'formset': formset,})
-    
+            title = element.title
+        return element.element_type + ' : ' + title
+
+    def item_description(self, r):
+        revision = r['revision']
+        element = r['element']
+        description = '<b>modified by ' + revision.user.username + ' on ' + unicode(revision.time) + '</b><br /><br />'
+        dict = element.to_dict()
+        for tag in dict.keys():
+            try:
+                value = dict[tag]
+                if value != '':
+                    description += tag + ' : ' + value + '<br />'
+            except:
+                continue
+        return description.encode('utf-8')
+        
+    def item_link(self, r):
+        revision = r['revision']
+        element = r['element']
+        link = '/' + revision.element_type + 's/' + str(element.public_id) 
+        return link
+        
+        

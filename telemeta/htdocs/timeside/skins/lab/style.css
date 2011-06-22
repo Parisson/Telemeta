@@ -52,12 +52,6 @@
     margin-top: 2px;
 }
 
-/*.ts-skin-lab .ts-player .ts-viewer {
-    margin: 0;
-    border: 0;
-}*/
-
-
 
 .ts-skin-lab .ts-player .ts-ruler{
     color: white;
@@ -76,7 +70,7 @@
   ".ts-skin-lab .ts-player .ts-ruler .ts-svg-ruler-lines"*/
 .ts-svg-ruler-lines{
     stroke-width:1;
-    stroke:#ADADAD;
+    stroke: #ADADAD;
 }
 
 /*wave:*/

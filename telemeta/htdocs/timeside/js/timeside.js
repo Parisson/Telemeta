@@ -23,25 +23,58 @@
  */
 
 /**
- * Base class defining classes for TimesideUI
+ * Root javascript file for TimesideUI, to be manually included in your web page (see online doc)
  */
 
 /**
- *global variable housing all Timeside variable/classes:
+ *global variable housing all Timeside variables/mathods/classes:
  */
 var Timeside = {
     Class:undefined,
     classes:{},
     player:undefined,
-    utils:{
-        
+    config: {
         /**
-         * Returns an uniqid by creating the current local time in millisecond + a random number. Used for markers and some json calls
+         *set to true to see debug messages on the console (only error or warning messages shown)
+         */
+        debug: false,
+        /*
+         * timeside scripts to be loaded when Timeside.load is called. URL paths are relative to the timeside folder, which
+         * will be determined according to the src attribute of the timeside.js script path (to be included in the <head> of the page)
+         */
+        timesideScripts: ['rulermarker.js','markermap.js', 'player.js', 'ruler.js'],
+        //vml config variables. Used only if svg is NOT supported
+        vml : {
+            /*
+            * raphael script to be loaded when Timeside.load is called and svg is not supported. It will be prepended to the
+            * timesideScripts array defined above in config. URL paths are relative to the timeside folder, which
+            * will be determined according to the src attribute of the timeside.js script path (to be included in the <head> of the page)
+            */
+            raphaelScript : 'libs/raphael-min.js',
+            /*
+             * available attributes which can be converted from css-svg to Raphael attributes (see Raphael.js):
+             */
+            raphaelAttributes : ["clip-rect", "cursor",'fill', "fill-opacity",'opacity', 'stroke', "stroke-dasharray", "stroke-linecap", "stroke-linejoin","stroke-miterlimit","stroke-opacity","stroke-width", "text-anchor"]
+        }
+    },
+    utils:{
+        /**
+         * Returns an uniqid by creating the current local time in millisecond + a random number.
+         * Used for markers in markermap. The method is kind of public in order to be more accessible for other functions
+         * by calling Timeside.utils.uniqid(), in case it is needed
          */
         uniqid : function() {
             var d = new Date();
             return new String(d.getTime() + '' + Math.floor(Math.random() * 1000000)).substr(0, 18);
-        }
+        },
+        /**
+         * vml object which will be populated by vml functions to interface timeside and raphael. See timeside.load.
+         * We could implement functions here for code readability, however,
+         * we delegate Timeside.load so that if svg is supported memory is free from unused vml methods.
+         * IN ANY CASE, svg support can be detected anywhere by calling, eg:
+         *  var svg = !Timeside.utils.vml;
+         */
+        vml: undefined 
     }
 };
 
@@ -182,9 +215,7 @@ var Timeside = {
     };
 })(Timeside);
 
-//not really ortodox: we should create the function Class inside Timeside (above)
-//Timeside.Class = Class;
-//delete Class;
+
 
 //Defining the base TimeClass class. Timeside.classes.[Player, Ruler, MarkerMap...] are typical implementations (see js files)
 //Basically we store here static methods which must be accessible in several timside sub-classes
@@ -199,68 +230,113 @@ Timeside.classes.TimesideClass = Timeside.Class.extend({
     },
     
     cssPrefix : 'ts-', //actually almost uneuseful, still here for backward compatibility with old code (TODO: remove?)
-    $J : jQuery,
+    $J : jQuery, //reference to jQuery for faster lookup inside methods
+    $TU : Timeside.utils, //reference to Timeside variable for faster lookup inside methods
     debugging : false,
-    debug : function(message) {
-        if (this.debugging && typeof console != 'undefined' && console.log) {
-            console.log(message);
+    debug : Timeside.config.debug ? function(message) {
+        var C = console;
+        if (C && C.log) {
+            C.log(message);
         }
-    },
+    } : function(message){},
 
     /**
-     * 3 methods defining listeners, events fire and bind (aloing the lines of jQuery.bind, unbind and trigger):
+     * 3 methods defining listeners, events fire and bind (aloing the lines of jQuery.bind, unbind and trigger.
+     * the only difference is that 'trigger' is 'fire' here). namespaces are allowed as in jQuery
      */
-    bind : function(key, callback, optionalThisArgInCallback){
-        if(!(callback && callback instanceof Function)){
-            this.debug('cannot bind '+key+' to callback: the latter is null or not a function');
+  
+    bind : function(eventType, callback, optionalThisArgInCallback){
+        if(!callback || typeof callback !== 'function'){
+            this.debug('TimesideClass.bind: cannot bind '+eventType+' to callback: the latter is null or not a function');
+            return;
+        }
+        if(!eventType){
+            this.debug('TimesideClass.bind: eventType is empty in bind');
             return;
         }
         var listenersMap = this.listenersMap;
-        var keyAlreadyRegistered = (key in listenersMap);
-        if(!keyAlreadyRegistered){
-            listenersMap[key] = [];
+        if(optionalThisArgInCallback){
+            var cb = callback;
+            callback = function(data){
+                cb.apply(optionalThisArgInCallback,[data]);
+            };
         }
-        listenersMap[key].push({
-            callback:callback,
-            optionalThisArgInCallback:optionalThisArgInCallback
-        });
+        
+        if(listenersMap.hasOwnProperty(eventType)){
+            listenersMap[eventType].push(callback);
+        }else{
+            listenersMap[eventType] = [callback];
+        }
+
+        var idx = eventType.indexOf('.');
+        if(idx <= 0 || idx >= eventType.length-1){
+            return;
+        }
+
+        eventType = eventType.substring(0,idx);
+
+
+        if(listenersMap.hasOwnProperty(eventType)){
+            listenersMap[eventType].push(callback);
+        }else{
+            listenersMap[eventType] = [callback];
+        }
+
     },
     unbind : function(){
         var listenersMap = this.listenersMap;
+        var key,keyPlusDot;
         if(arguments.length>0){
-            var key = arguments[0];
-            if(key in listenersMap){
+            key = arguments[0];
+            if(listenersMap.hasOwnProperty(key)){
+                var callbacks = listenersMap[key];
+                var idx = key.indexOf('.');
+                if(idx>0 && idx < key.length-1){
+                    //key is "eventtype.namespace", delete also functions stored in "eventType", if any
+                    var baseKey = key.substring(0,idx);
+                    var baseCallbacks = listenersMap[baseKey];
+                    if(baseCallbacks){
+                        for( var i = baseCallbacks.length; i>-1; i--){
+                            var bc = baseCallbacks[i];
+                            for( var j = callbacks.length; j>-1; j--){
+                                if(bc === callbacks[j]){
+                                    baseCallbacks.splice(i,1);
+                                }
+                            }
+                        }
+                    }
+                }else if(idx<0){
+                    //key is "eventtype", delete also all functions stored in "eventType.namespace", if any
+                    keyPlusDot = key+'.';
+                    for(var k in listenersMap){
+                        if(listenersMap.hasOwnProperty(k) && k.indexOf(keyPlusDot)==0 && k.length > keyPlusDot.length){
+                            delete listenersMap[k];
+                        }
+                    }
+                }
                 delete listenersMap[key];
             }
         }else{
             for(key in listenersMap){
-                delete listenersMap[key];
+                if(listenersMap.hasOwnProperty(key)){
+                    delete listenersMap[key];
+                }
             }
         }
     },
     fire : function(key, dataArgument){
         var listenersMap = this.listenersMap;
-        if(!(key in listenersMap)){
-            this.debug('"'+key+'" fired but no binding associated to it');
+        if(!(listenersMap.hasOwnProperty(key))){
             return;
+        }
+        if(arguments.length < 2 || !dataArgument){
+            dataArgument = {};
         }
         var callbacks = listenersMap[key];
         var len = callbacks && callbacks.length ? callbacks.length : 0;
         for(var i=0; i<len; i++){
-            var obj = callbacks[i];
-            if('optionalThisArgInCallback' in obj){
-                obj.callback.apply(obj.optionalThisArgInCallback, [dataArgument]);
-            }else{
-                obj.callback(dataArgument);
-            }
+            callbacks[i](dataArgument);
         }
-    },
-    /**
-     * function to calculate the text width according to a text and a given fontsize
-     */
-    textWidth : function(text, fontSize) {
-        var ratio = 3/5;
-        return text.length * ratio * fontSize;
     },
     
     /*
@@ -313,7 +389,7 @@ Timeside.classes.TimesideClass = Timeside.Class.extend({
                 }
             }
             return n;
-        }
+        };
         var ret = [];
         for(var i =0; i<formatArray.length; i++){
             var f = formatArray[i];
@@ -345,303 +421,7 @@ Timeside.classes.TimesideClass = Timeside.Class.extend({
             }
         }
         return ret.join("");
-    },
-
-    
-    //vml (+css specific functions): Used in ruler.js and RulerMarker.js:
-
-    /**
-     * Returns whether SVG is supported. If it is the case, this property can simply return true.
-     * If full svg support will be a standard (hopefully...), for a a more clean code, one should remove all remaining
-     * properties/functions,
-     * check where we call isSvgSupported (currently, ruler.js and rulermarker.js) and eventually
-     * remove the vml methods, which should always be separated from the already implemented svg methods
-     */
-    isSvgSupported : Raphael.svg, //note that Raphael MUST be loaded!! (put it in the header scripts before Timeside)
-    /**
-     * Raphael unfortunately does not allow to wrap existing elements, which is a big lack not even planned to be implemented in
-     * future releases (see raphael forum). Therefore, we store here a map which binds html elements -> Raphael paper object
-     * This property can be deleted if svg is supported
-     */
-    elementToPaperMap: {},
-
-    //use this function only IF isVmlSupported = true. Converts a class name declared in a stylesheet to
-    //the equivalent Raphael attr argument. This function has been tested only under IE
-    getVmlAttr: function(className){
-        var d = document;
-        className = className.replace(/^\.*/,'.'); //add a dot if not present
-        var ssheets = d.styleSheets;
-        var len = ssheets.length-1;
-        //available attributes which can be converted from css svg to Raphael attributes (see Raphael.js):
-        var availableAttrs = ["clip-rect", "cursor",'fill', "fill-opacity",'opacity', 'stroke', "stroke-dasharray", "stroke-linecap", "stroke-linejoin","stroke-miterlimit","stroke-opacity","stroke-width", "text-anchor"];
-
-        //var availableAttrs = ['fill','stroke','stroke-width','fill-opacity','stroke-opacity'];
-        var attr = {};
-        for(var i=0; i<len; i++){
-            var rules = ssheets[i].rules;
-            var l = rules.length;
-            for(var j=0; j <l; j++){
-                var rule = rules[j];
-//                if(i==2){
-//                    consolelog(rule.selectorText);
-//                }
-                if(rule.selectorText == className){
-                    
-                    var style = rule.style;
-                    for(var k =0; k<availableAttrs.length; k++){
-                        var val = style[availableAttrs[k]];
-                        if(val){
-                            attr[availableAttrs[k]] = val;
-                        //console.log(val); //REMOVE THIS
-                        }
-                    }
-                }
-            }
-        }
-        return attr;
-    },
-    //map to store each class name to the relative sictionary for raphael attr function (VML only)
-    classToRaphaelAttr : {},
-
-    //css specific functions:
-    //get computed style first (cross browser solution, from http://blog.stchur.com/2006/06/21/css-computed-style/
-    //not used anymnore, we keep it here because it can be useful
-    getComputedStyle : function(_elem, _style){
-        var computedStyle;
-        var $J = this.$J;
-        if(_elem instanceof $J){ //note: '_elem instanceof this.$J' doesnt work. why??
-            _elem = _elem.get(0);
-        }
-        if (typeof _elem.currentStyle != 'undefined'){
-            computedStyle = _elem.currentStyle;
-        }else{
-            computedStyle = document.defaultView.getComputedStyle(_elem, null);
-        }
-        return computedStyle[_style];
-    },
-    //returns a hex color from strColor. strColor can be one of the predefined css colors (eg, 'aliceBlue', case insensitive)
-    //or rgb (eg: rgb(12,0,45)) or an hex color (eg, '#ff98a3' or '#f8g'). Leading and trailing spaces will be omitted,
-    //case is insensitive, an empty string is returned in case of error (bad format string, parseInt errors etcetera..)
-    color : function(strColor){
-        if(!strColor){
-            return '';
-        }
-        strColor = strColor.replace(/(^\s+|\s+$)/g,'').toLowerCase();
-        if(!strColor){
-            return '';
-        }
-        var predefined_colors = {
-            aliceblue:"#f0f8ff",
-            antiquewhite:"#faebd7",
-            aqua:"#00ffff",
-            aquamarine:"#7fffd4",
-            azure:"#f0ffff",
-            beige:"#f5f5dc",
-            bisque:"#ffe4c4",
-            black:"#000000",
-            blanchedalmond:"#ffebcd",
-            blue:"#0000ff",
-            blueviolet:"#8a2be2",
-            brown:"#a52a2a",
-            burlywood:"#deb887",
-            cadetblue:"#5f9ea0",
-            chartreuse:"#7fff00",
-            chocolate:"#d2691e",
-            coral:"#ff7f50",
-            cornflowerblue:"#6495ed",
-            cornsilk:"#fff8dc",
-            crimson:"#dc143c",
-            cyan:"#00ffff",
-            darkblue:"#00008b",
-            darkcyan:"#008b8b",
-            darkgoldenrod:"#b8860b",
-            darkgray:"#a9a9a9",
-            darkgrey:"#a9a9a9",
-            darkgreen:"#006400",
-            darkkhaki:"#bdb76b",
-            darkmagenta:"#8b008b",
-            darkolivegreen:"#556b2f",
-            darkorange:"#ff8c00",
-            darkorchid:"#9932cc",
-            darkred:"#8b0000",
-            darksalmon:"#e9967a",
-            darkseagreen:"#8fbc8f",
-            darkslateblue:"#483d8b",
-            darkslategray:"#2f4f4f",
-            darkslategrey:"#2f4f4f",
-            darkturquoise:"#00ced1",
-            darkviolet:"#9400d3",
-            deeppink:"#ff1493",
-            deepskyblue:"#00bfff",
-            dimgray:"#696969",
-            dimgrey:"#696969",
-            dodgerblue:"#1e90ff",
-            firebrick:"#b22222",
-            floralwhite:"#fffaf0",
-            forestgreen:"#228b22",
-            fuchsia:"#ff00ff",
-            gainsboro:"#dcdcdc",
-            ghostwhite:"#f8f8ff",
-            gold:"#ffd700",
-            goldenrod:"#daa520",
-            gray:"#808080",
-            grey:"#808080",
-            green:"#008000",
-            greenyellow:"#adff2f",
-            honeydew:"#f0fff0",
-            hotpink:"#ff69b4",
-            indianred:"#cd5c5c",
-            indigo:"#4b0082",
-            ivory:"#fffff0",
-            khaki:"#f0e68c",
-            lavender:"#e6e6fa",
-            lavenderblush:"#fff0f5",
-            lawngreen:"#7cfc00",
-            lemonchiffon:"#fffacd",
-            lightblue:"#add8e6",
-            lightcoral:"#f08080",
-            lightcyan:"#e0ffff",
-            lightgoldenrodyellow:"#fafad2",
-            lightgray:"#d3d3d3",
-            lightgrey:"#d3d3d3",
-            lightgreen:"#90ee90",
-            lightpink:"#ffb6c1",
-            lightsalmon:"#ffa07a",
-            lightseagreen:"#20b2aa",
-            lightskyblue:"#87cefa",
-            lightslategray:"#778899",
-            lightslategrey:"#778899",
-            lightsteelblue:"#b0c4de",
-            lightyellow:"#ffffe0",
-            lime:"#00ff00",
-            limegreen:"#32cd32",
-            linen:"#faf0e6",
-            magenta:"#ff00ff",
-            maroon:"#800000",
-            mediumaquamarine:"#66cdaa",
-            mediumblue:"#0000cd",
-            mediumorchid:"#ba55d3",
-            mediumpurple:"#9370d8",
-            mediumseagreen:"#3cb371",
-            mediumslateblue:"#7b68ee",
-            mediumspringgreen:"#00fa9a",
-            mediumturquoise:"#48d1cc",
-            mediumvioletred:"#c71585",
-            midnightblue:"#191970",
-            mintcream:"#f5fffa",
-            mistyrose:"#ffe4e1",
-            moccasin:"#ffe4b5",
-            navajowhite:"#ffdead",
-            navy:"#000080",
-            oldlace:"#fdf5e6",
-            olive:"#808000",
-            olivedrab:"#6b8e23",
-            orange:"#ffa500",
-            orangered:"#ff4500",
-            orchid:"#da70d6",
-            palegoldenrod:"#eee8aa",
-            palegreen:"#98fb98",
-            paleturquoise:"#afeeee",
-            palevioletred:"#d87093",
-            papayawhip:"#ffefd5",
-            peachpuff:"#ffdab9",
-            peru:"#cd853f",
-            pink:"#ffc0cb",
-            plum:"#dda0dd",
-            powderblue:"#b0e0e6",
-            purple:"#800080",
-            red:"#ff0000",
-            rosybrown:"#bc8f8f",
-            royalblue:"#4169e1",
-            saddlebrown:"#8b4513",
-            salmon:"#fa8072",
-            sandybrown:"#f4a460",
-            seagreen:"#2e8b57",
-            seashell:"#fff5ee",
-            sienna:"#a0522d",
-            silver:"#c0c0c0",
-            skyblue:"#87ceeb",
-            slateblue:"#6a5acd",
-            slategray:"#708090",
-            slategrey:"#708090",
-            snow:"#fffafa",
-            springgreen:"#00ff7f",
-            steelblue:"#4682b4",
-            tan:"#d2b48c",
-            teal:"#008080",
-            thistle:"#d8bfd8",
-            tomato:"#ff6347",
-            turquoise:"#40e0d0",
-            violet:"#ee82ee",
-            wheat:"#f5deb3",
-            white:"#ffffff",
-            whitesmoke:"#f5f5f5",
-            yellow:"#ffff00",
-            yellowgreen:"#9acd32"
-        };
-        var cl = predefined_colors[strColor];
-        if(cl){
-            return cl;
-        }
-        var pint = parseInt;
-        //color parsers: note that the order is not random: we put first the most likely case ('#aaaaaa') and at last
-        //the less one ('rgb(...)'), this might increase performances in most cases, especially if this method is called from
-        //within a loop
-        var color_defs = [
-        {
-            re: /^#*(\w{2})(\w{2})(\w{2})$/, //example: ['#00ff00', '336699'],
-            process: function (bits){
-                return [pint(bits[1], 16),pint(bits[2], 16),pint(bits[3], 16)];
-            }
-        },
-
-        {
-            re: /^#*(\w{1})(\w{1})(\w{1})$/, //example: ['#fb0', 'f0f'],
-            process: function (bits){
-                return [pint(bits[1] + bits[1], 16),pint(bits[2] + bits[2], 16),pint(bits[3] + bits[3], 16)];
-            }
-        },
-        {
-            re: /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/, //example: ['rgb(123, 234, 45)', 'rgb(255,234,245)'],
-            process: function (bits){
-                return [pint(bits[1]), pint(bits[2]),pint(bits[3])];
-            }
-        }
-
-        ];
-
-        // search through the definitions to find a match
-        var nan = isNaN;
-        for (var i = 0; i < color_defs.length; i++) {
-            var re = color_defs[i].re;
-            var processor = color_defs[i].process;
-            var bits = re.exec(strColor);
-            if (bits) {
-                var channels = processor(bits);
-                if(channels.length ==3){
-                    for(var j=0; j<3; j++){
-                        var c = channels[j];
-                        c = (nan(c) || c< 0 ? 0 : (c>255 ? 255 :c));
-                        c = c.toString(16);
-                        var len = c.length;
-                        switch(len){
-                            case 1:
-                                c = '0'+c;
-                                break;
-                            case 2:
-                                break;
-                            default:
-                                return '';
-                        }
-                        channels[j] = c;
-                    }
-                    return '#'+channels.join('');
-                }
-            }
-        }
-        return '';
     }
-
 });
 
 /**
@@ -663,7 +443,7 @@ Timeside.classes.TimesideArray = Timeside.classes.TimesideClass.extend({
                 return ret;
             }
             return me;
-        }
+        };
         this.length = me.length; //in order to match the javascript array property
     },
     //length:0, //implement it as public property to be consistent with Array length property. Be careful however to NOT TO modify directly this property!!!
@@ -703,7 +483,7 @@ Timeside.classes.TimesideArray = Timeside.classes.TimesideClass.extend({
         var l = this.length;
         switch(len){
             case 0:
-                this.debug('each called without arguments!!!');
+                this.debug('TimesideClass.each: each called without arguments!!!');
                 return;
             case 1:
                 //callback = arg[0];
@@ -725,7 +505,7 @@ Timeside.classes.TimesideArray = Timeside.classes.TimesideClass.extend({
         }
         callback = arg[len-1];
         if(!(callback instanceof Function)){
-            this.debug('callback NOT a function!!!');
+            this.debug('TimesideClass.each: callback NOT a function!!!');
             return;
         }
         var me =this.toArray();
@@ -746,245 +526,57 @@ Timeside.classes.TimesideArray = Timeside.classes.TimesideClass.extend({
         }
         return me.splice(0,l);
     },
-    //moves the element from position [from] to position [to]. Shifts all elements
-    //from position [to] (inclusive) of one position. Note that the elemnt at position from is first removed
-    //and then inserted at position to. Therefore,
-    //if to==from+1 the element is not moved. Returns from if the element
-    //is not moved, i.e. either in the case above, or when:
-    //1) from or to are not integers or from or to are lower than zero or greater than the array length.
-    //in any other case, returns the index of the element moved, which is not necessarily to:
-    //It is, if to<from, otherwise (to>from+1) is to-1
+    //moves the element at position from into position to
+    //the element that was at from will be at position to
+    //returns:
+    //-1 if from or to not integers, or from or to not within the array bounds (lower than zero or greater or equal to this.length)
+    //from if from === to (no move)
+    //to otherwise (move succesful)
     move : function(from, to){
+
         var pInt = parseInt;
-        if(pInt(from)!==from || pInt(to)!==to){
+        if(pInt(from)!==from || pInt(to)!==to){ //just a check
+            return -1;
+        }
+        if(from === to){
             return from;
         }
         var me =this.toArray();
         var len = me.length;
-        if((from<0 || from>len)||(to<0 || to>len)){
-            return from;
+        if((from<0 || from>=len)||(to<0 || to>=len)){
+            return -1;
         }
-        //if we moved left to right, the insertion index is actually
-        //newIndex-1, as we must also consider the removal of the object at index from
-        if(to>from){
-            to--;
-        }
-        if(from != to){
-            var elm = me.splice(from,1)[0];
-            me.splice(to,0,elm);
-        }
+        var elm = me.splice(from,1)[0];
+        me.splice(to,0,elm);
+
         return to;
     }
 });
 
 
-/*
-* Sets a "tab look" on some elements of the page. Takes at least 3 arguments, at most 5:
-* 1st argument: an array (or a jquery object) of html elements, ususally anchors, representing the tabs
-* 2nd argument: an array (or a jquery object) of html elements, ususally divs, representing the containers to be shown/hidden when 
-*   clicking the tabs. The n-th tab will set the n-th container to visible, hiding the others. So order is important. Note that if tabs
-*   or container are jQuery objects, the html elements inside them are sorted according to the document order. That's why tabs and
-*   container can be passed also as javascript arrays, so that the binding n-th tab -> n-th container can be decided by the user
-*   regardeless on how elements are written on the page, if already present
-* 3rd argument: the selected index. If missing it defaults to zero.
-* 4th argument: selectedtab class. Applies to the selected tab after click of one tab. If missing, nothing is done
-* 5th argument the unselectedtab class. Applies to all tabs not selected after click of one tab. If missing, nothing is done
-*
-* NOTE: The last 2 arguments are mostly for customizing the tab "visual look", as some css elements (eg, (position, top, zIndex)
-* are set inside the code and cannot be changed, as they are mandatory to let tab anchor behave like desktop application tabs. Note also
-* that every tab container is set to 'visible' by means of jQuery.show()
-*
-* Examples:
-* setUpPlayerTabs([jQuery('#tab1),jQuery('#tab1)], [jQuery('#div1),jQuery('#div2)], 1);
-* sets the elements with id '#tab1' and '#tab2' as tab and assign the click events to them so that clicking tab_1 will show '#div_1'
-* (and hide '#div2') and viceversa for '#tab2'. The selected index will be 1 (second tab '#tab2')
-*/
-function setUpPlayerTabs() {//called from within controller.js once all markers have been loaded.
-    //this is because we need all divs to be visible to calculate size. selIndex is optional, it defaults to 0
-    //
-    
-    var $J = jQuery;
-    var tabs_ = arguments[0];
-    var divs_ = arguments[1]; //they might be ctually any content, div is a shoertand
-
-    //converting arguments to array: tabs
-    var tabs=[];
-    if(tabs_ instanceof $J){
-        tabs_.each(function(i,elm){
-            tabs.push(elm);
-        });
-    }else{
-        tabs = tabs_;
-    }
-    //set the overflow property of the parent tab to visible, otherwise scrollbars are displayed
-    //and the trick of setting position:relative+top:1px+zIndices (see css) doesnt work)
-    $J(tabs).each(function(i,tab){
-        var t = $J(tab).attr('href','#');
-        t.show(); //might be hidden
-        //set necessary style for the tab appearence:
-        var overflow = t.parent().css('overflow');
-        if(overflow && overflow != 'visible'){
-            t.parent().css('overflow','visible');
-        }
-    });
-    //converting arguments to array: divs
-    var divs=[];
-    if(divs_ instanceof $J){
-        divs_.each(function(i,elm){
-            divs.push(elm);
-        });
-    }else{
-        divs = divs_;
-    }
-    
-    //reading remaing arguments (if any)
-    var selIndex = arguments.length>2 ? arguments[2] : 0;
-    var selectedTabClass = arguments.length>3 ? arguments[3] : undefined;
-    var unselectedTabClass = arguments.length>4 ? arguments[4] : undefined;
-
-    //function to be associate to every click on the tab (see below)
-    var tabClicked = function(index) {
-        for(var i=0; i<tabs.length; i++){
-            var t = $J(tabs[i]);
-            
-            var div = $J(divs[i]);
-            var addClass = i==index ? selectedTabClass : unselectedTabClass;
-            var removeClass = i==index ? unselectedTabClass : selectedTabClass;
-            if(removeClass){
-                t.removeClass(removeClass);
-            }
-            if(addClass){
-                t.addClass(addClass);
-            }
-            
-            //relevant css. Will override any css set in stylesheets
-            t.css({
-                'position':'relative',
-                'top':'1px',
-                'zIndex': (i==index ? '10' : '0')
-            });
-            
-            if(i===index){
-                div.fadeIn('slow');
-            }else{
-                div.hide();
-            }
-        }
-    };
-    
-    //bind clicks on tabs to the function just created
-    for (var i=0;i<tabs.length;i++){
-        // introduce a new scope (round brackets)
-        //otherwise i is retrieved from the current scope and will be always equal to tabs.length
-        //due to this loop
-        (function(tabIndex){
-            $J(tabs[i]).click(function(){
-                tabClicked(tabIndex);
-                return false;//returning false avoids scroll of the anchor to the top of the page
-            });
-        })(i);
-    }
-    
-    //select the tab
-    $(tabs[selIndex]).trigger("click");
-}
 
 /**
-* Loads scripts asynchronously
-* can take up to four arguments:
-* root (optional): a string specifying the root (such as '/usr/local/'). Must end with slash, otherwise
-*      each element in scriptArray must begin with a slash
-* scriptArray: a string array of js script filenames, such as ['script1.js','script2.js']
-* callback (optional): callback to be executed when ALL scripts are succesfully loaded
-* loadInSeries (optional): if true scripts are loaded in synchronously, ie each script is loaded only once the
-*      previous has been loaded. The default (argument missing) is false
-*
-* Examples. Given scripts = ['s1.js', 's2.js']
-*  loadScripts(scripts)                          //loads (asynchronously) scripts
-*  loadScripts('/usr/', scripts)                 //loads (asynchronously) ['/usr/s1.js', '/usr/s2.js']
-*  loadScripts(scripts, callback)                //loads (asynchronously) scripts. When loaded, executes callback
-*  loadScripts('/usr/', scripts, callback)       //loads (asynchronously) ['/usr/s1.js', '/usr/s2.js']. When loaded, executes callback
-*  loadScripts(scripts, callback, true)          //loads (synchronously) scripts. When loaded, executes callback
-*  loadScripts('/usr/', scripts, callback, true) //loads (synchronously) ['/usr/s1.js', '/usr/s2.js']. When loaded, executes callback
-*
-*/
-Timeside.loadScripts = function(){
-    var optionalRoot='', scriptArray=[], callback=undefined, loadInSeries=false;
-    var len = arguments.length;
-    if(len==1){
-        scriptArray = arguments[0];
-    }else if(len==2){
-        if(typeof arguments[0] == 'string'){
-            optionalRoot = arguments[0];
-            scriptArray = arguments[1];
-        }else{
-            scriptArray = arguments[0];
-            callback = arguments[1];
-        }
-    }else if(len>2){
-        if(typeof arguments[0] == 'string'){
-            optionalRoot = arguments[0];
-            scriptArray = arguments[1];
-            callback = arguments[2];
-            if(len>3){
-                loadInSeries = arguments[3];
-            }
-        }else{
-            scriptArray = arguments[0];
-            callback = arguments[1];
-            loadInSeries = arguments[2];
-        }
-    }
-
-    if(!scriptArray){
-        if(callback){
-            callback();
-        }
-        return;
-    }
-    len = scriptArray.length;
-    var i=0;
-    if(optionalRoot){
-        optionalRoot = optionalRoot.replace(/\/*$/,"/"); //add slash at end if not present
-        for(i =0; i<len; i++){
-            scriptArray[i] = optionalRoot+scriptArray[i];
-        }
-    }
-
-    var $J = jQuery;
-
-    if(loadInSeries){
-        var load = function(index){
-            if(index<len){
-                $J.getScript(scriptArray[index],function(){
-                    load(index+1);
-                });
-            }else if(callback){
-                callback();
-            }
-        };
-        load(0);
-    }else{
-        var count=0;
-        var s;
-        for(i=0; i <len; i++){
-            s = scriptArray[i];
-            $J.getScript(s, function(){
-                count++;
-                if(count==len && callback){
-                    callback();
-                }
-            });
-        }
-    }
-}
-
+ *Main Timeside method to load player (see Timeside online doc)
+ */
 
 Timeside.load =function(container, soundUrl, durationInMsec, soundImgFcn, soundImgSize, markersArray, newMarkerCallback, onError, onReady){
 
     var $J = jQuery;
+    var win = window;
+    var doc = document;
     var playerDiv = container;
-    onError = onError && typeof onError === 'function' ? onError : function(msg){};
+    onError = onError && typeof onError === 'function' ? onError : function(msg){
+        //if no error callback is defined, we want however warn onError.
+        // Define a cross-browser window.console.log method.
+        // For IE and FF without Firebug, fallback to using an alert.
+        var console = win.console;
+        var log = console && console.error ? console.error : (console && console.log ? console.log : undefined);
+        if (!log) {
+            log = win.opera ? win.opera.postError : alert;
+        }
+        log(msg);
+    };
+    //onREady, if not defined, we set it as an empty function
     onReady = onReady && typeof onReady === 'function' ? onReady : function(player){};
     
     playerDiv = container instanceof $J ? container : $J(container);
@@ -1011,7 +603,7 @@ Timeside.load =function(container, soundUrl, durationInMsec, soundImgFcn, soundI
     }
   
 
-    $J(window).ready(function(){
+    $J(win).ready(function(){
         //if soundmanager is ready, the callback is executed immetiately
         //onready is executed BEFORE onload, it basically queues several onload events.
         //It it is executed immetiately if soundmanager has already been loaded
@@ -1038,15 +630,181 @@ Timeside.load =function(container, soundUrl, durationInMsec, soundImgFcn, soundI
                     }
                 }
             });
-            
-            Timeside.loadScripts(thisScriptPath,['rulermarker.js','markermap.js', 'player.js', 'ruler.js'], function() {
-                var p = new Timeside.classes.Player(playerDiv, sound, durationInMsec, soundImgFcn, soundImgSize,
-                markersArray,newMarkerCallback);
+
+            var ts = Timeside;
+            var ts_scripts = ts.config.timesideScripts;
+            //detect SVG support and load Raphael in case. Copied from Raphael code v 1.5.2:
+            var svg = (win.SVGAngle || doc.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1"));
+            if(!svg){
+                //add the raphael path. Raphael will be loaded in Timeside.load (see below)
+                ts_scripts.splice(0,0,ts.config.vml.raphaelScript);
+                //populate the vml object with methods to be used in ruler and rulermarker:
+
+                //global private variable:
+                //map to store each class name to the relative dictionary for raphael attr function (VML only)
+                var classToRaphaelAttr = {};
+                //get the raphael attributes for which a conversion css -> raphael_attribute is possible:
+                var availableAttrs = ts.config.vml.raphaelAttributes;
+                //here below we store  Raphael paper objects. var paper = Raphael(htmlElement) is the raphel method to build
+                //a new paper object. Internally, the method builds a div embedding vmls inside htmlElement, retriavable via the
+                //paper.node property.
+                //However, calling again var paper = Raphael(htmlElement) does not use the already created paper,
+                //but creates a new paper with a new paper.node (div). Too bad. The possibility to wrap existing paper node
+                //into a Raphael paper would be a nice and almost necessary feature, which however is not even
+                //planned to be implemented according to raphael developers (see raphael forums).
+                //In case of markers lines, we want to draw a new marker
+                //on the same raphael paper. Therefore, we store here raphael papers in a map htmlElement -> paper
+                var raphael_papers = {};
+                ts.utils.vml = {
+                    getVmlAttr: function(className){
+                        
+                        if(classToRaphaelAttr.hasOwnProperty(className)){
+                            //if(className in classToRaphaelAttr){
+                            return classToRaphaelAttr[className];
+                        }
+                        var d = document;
+                        var dottedclassName = className.replace(/^\.*/,'.'); //add a dot if not present
+                        var ssheets = d.styleSheets;
+                        var len = ssheets.length-1;
+
+                        var attr = {};
+                        for(var i=0; i<len; i++){
+                            var rules = ssheets[i].rules;
+                            var l = rules.length;
+                            for(var j=0; j <l; j++){
+                                var rule = rules[j];
+                                
+                                if(rule.selectorText === dottedclassName){
+
+                                    var style = rule.style;
+                                    for(var k =0; k<availableAttrs.length; k++){
+                                        var val = style[availableAttrs[k]];
+                                        if(val){
+                                            attr[availableAttrs[k]] = val;
+                                        //console.log(val); //REMOVE THIS
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        classToRaphaelAttr[className] = attr;
+                        return attr;
+                    },
+
+                    Raphael: function(element,w,h){
+                       
+
+                        //pass jQueryElm.get(0) as first argument, in case)
+                        if(raphael_papers[element]){
+                            return raphael_papers[element];
+                        }
+                        var paper = Raphael(element,w,h);
+                        raphael_papers[element] = paper;
+                        //paper canvas is a div with weird dimensions. You can check it by printing paper.canvas.outerHTML in IE.
+                        //We set them to 100% so we dont have clipping regions when resizing (maximizing)
+                        paper.canvas.style.width='100%';
+                        paper.canvas.style.height='100%';
+                        paper.canvas.width='100%';
+                        paper.canvas.height='100%';
+                        //apparently, there is also a clip style declaration made by raphael. The following code trhows an error in IE7:
+                        //paper.canvas.style.clip = 'auto';
+                        //however, even leaving the clip style declaration as it is, it seems to work (the div spans the whole width)
+                        return paper;
+                    }
+
+                };
+
+            }
+            //finally,define the error function
+            ts.utils.loadScripts(thisScriptPath,ts_scripts, function() {
+                var p = new ts.classes.Player(playerDiv, sound, durationInMsec, soundImgFcn, soundImgSize,
+                    markersArray,newMarkerCallback);
                 //p.setupInterface(markerMap || []);
-                Timeside.player = p;
+                ts.player = p;
                 onReady(p);
                 return false;
-            });
+            },onError);
         });
     });
-}
+};
+
+/**
+* Loads scripts asynchronously
+* can take up to four arguments:
+* scriptsOptionalRoot (optional): a string specifying the root (such as '/usr/local/'). IF IT IS A NONEMPTY STRING AND
+*                                 DOES NOT END WITH A SLASH, A SLASH WILL B APPENDED
+* scriptArray: a string array of js script filenames, such as ['script1.js','script2.js']
+* optionalOnOkCallback (optional): callback to be executed when ALL scripts are succesfully loaded
+* optionalOnErrorCallback (optional) a callback receiving a string as argument to be called if some script is not found
+* optionalSynchroLoad (optional): if true scripts are loaded in synchronously, ie each script is loaded only once the
+*                                 previous has been loaded. Otherise (including missing argument) an asynchronous load is performed
+*                                 and the optional onOkCallback is executed once ALL scripts are loaded
+*/
+Timeside.utils.loadScripts = function(scriptsOptionalRoot,scriptArray, optionalOnOkCallback, optionalOnErrorCallback, optionalSynchroLoad){
+    //var optionalRoot='', callback=undefined, loadInSeries=false;
+    if(!optionalOnOkCallback || typeof optionalOnOkCallback !== 'function'){
+        optionalOnOkCallback = function(){};
+    }
+    if(!optionalOnErrorCallback|| typeof optionalOnErrorCallback !== 'function'){
+        optionalOnErrorCallback = function(msg){};
+    }
+
+    if(!scriptArray || !scriptArray.length){
+        optionalOnOkCallback();
+        return;
+    }
+    var len = scriptArray.length;
+    var i=0;
+    if(scriptsOptionalRoot){
+        scriptsOptionalRoot = scriptsOptionalRoot.replace(/\/*$/,"/"); //add slash at end if not present
+        for(i =0; i<len; i++){
+            scriptArray[i] = scriptsOptionalRoot+scriptArray[i];
+        }
+    }
+
+    var $J = jQuery;
+    //there is a handy getScript function in jQuery, which however does NOT manage the onError case (script load error)
+    //looking at jQuery doc, getScript is the same as the followig ajax request,
+    //to which we added the error property to manage errors:
+    var loadScript = function(url,onSuccess,onError){
+        $J.ajax({
+            url: url,
+            dataType: 'script',
+            success: onSuccess,
+            error: function(a,b,errorThrown){
+                onError('file "'+url+'" error: '+errorThrown);
+            }
+        });
+    };
+    if(optionalSynchroLoad){
+        var load = function(index){
+            if(index<len){
+                loadScript(scriptArray[index],function(){
+                    load(index+1);
+                }, function(msg){
+                    optionalOnErrorCallback(msg);
+                });
+            }else if(index==len){
+                optionalOnOkCallback();
+            }
+        };
+        load(0);
+    }else{
+        var count=0;
+        var s;
+        for(i=0; i <len; i++){
+            s = scriptArray[i];
+            //this means that onError all scripts will be loaded.
+            //However, if everything works fine, asynchornous load (here) should be faster
+            loadScript(s, function(){
+                count++;
+                if(count===len){
+                    optionalOnOkCallback();
+                }
+            },function(msg){
+                count = len+1; //avoid calling optionalOkOnCallback
+                optionalOnErrorCallback(msg);
+            });
+        }
+    }
+};

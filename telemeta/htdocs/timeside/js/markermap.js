@@ -44,7 +44,7 @@ Timeside.classes.MarkerMap = Timeside.classes.TimesideArray.extend({
             newMarker.offset = this.pFloat(newMarker.offset);
         }
         if(!('id' in newMarker)){
-            newMarker.id = Timeside.utils.uniqid();
+            newMarker.id = this.$TU.uniqid(); //Timeside.utils.uniqid();
         }
         if(!('isEditable' in newMarker)){
             newMarker.isEditable = false;
@@ -52,7 +52,7 @@ Timeside.classes.MarkerMap = Timeside.classes.TimesideArray.extend({
         var marker = newMarker; //this.createMarker(obj);
         var idx = this.insertionIndex(marker);
         if(idx>=0){ //it exists? there is a problem....
-            this.debug('adding an already existing marker!!'); //should not happen. however...
+            this.debug('markermap.add: adding an already existing marker!!'); //should not happen. however...
             return -1;
         }
        
@@ -64,11 +64,7 @@ Timeside.classes.MarkerMap = Timeside.classes.TimesideArray.extend({
         this.fire('add', {
             marker: marker,
             index: idx
-        //,isNew: (typeof obj == 'number' || typeof obj == 'string')
         });
-        //var temp = new MarkerDiv();
-        // this.debug(this.createMarkerDiv());
-         
             
         return idx;
     },
@@ -115,24 +111,35 @@ Timeside.classes.MarkerMap = Timeside.classes.TimesideArray.extend({
 
         var newIndex = this.insertionIndex(newOffset);
         //select the case:
-        if(newIndex<0){
+        if(newIndex<0){ //newindex should ALWAYS be lower than zero, as insertionIndex(number) should not match any marker
             //we didn't move the marker on another marker (newOffset does not correspond to any marker)
             //just return the real insertionIndex
             newIndex = -newIndex-1;
+        }
+        
+        //now: if the isnertionIndex is greater than the marker index (oldIndex), 
+        //we decrement newIndex cause super.move will first REMOVE the marker and then set it at newIndex
+        if(newIndex > oldIndex){
+            newIndex--;
         }
 
         //realIndex is the REAL INDEX AT WHICH WILL BE the moving marker M AFTER move.
         //It newIndex = oldIndex+1
         //we move M IMMEDIATELY AFTER ITSELF, which means, after removing M, that M has realIndex=n, as before
-        var realIndex = this._super(oldIndex,newIndex);
+       
+        newIndex = this._super(oldIndex,newIndex);
+        
+        if(newIndex <0){
+            this.debug('markermap.move: new index out of bounds');
+            return -1;
+        }
         
         var markers = this.toArray();
-        var marker = markers[realIndex];
+        var marker = markers[newIndex];
         var oldOffset = marker.offset;
         marker.offset = newOffset;
         this.fire('move', {
             marker: marker,
-            index: realIndex,
             fromIndex: oldIndex,
             toIndex: newIndex,
             oldOffset: oldOffset
@@ -209,8 +216,10 @@ Timeside.classes.MarkerMap = Timeside.classes.TimesideArray.extend({
 
         while (low <= high) {
             var mid = (low + high) >>> 1;
-            //biwise operation equivalent to (but faster than):
+            //biwise operation is not as fast as in compiled languages such as C and java (see Jslint web page)
+            //However (tested on a PC in Chrome, IE and FF), it is faster than the equivalent:
             //var mid = parseInt((low + high)/2);
+            //even if we reference parseInt before this loop and we call the variable assigned to it
             var midVal = data[mid];
             var cmp = comparatorFunction(midVal,object);
             if (cmp < 0){
