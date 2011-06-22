@@ -397,6 +397,13 @@ class CollectionView(object):
         context = RequestContext(request, {'collection': collection, 'host': request.META['HTTP_HOST']})
         return HttpResponse(template.render(context), mimetype=mimetype)
 
+    @method_decorator(permission_required('telemeta.delete_mediacollection'))
+    def collection_delete(self, request, public_id):
+        """Delete a given collection"""
+        collection = MediaCollection.objects.get(public_id=public_id)
+        collection.delete()
+        return HttpResponseRedirect('/collections/')
+    
 
 class ItemView(object):
     """Provide Collections web UI methods"""

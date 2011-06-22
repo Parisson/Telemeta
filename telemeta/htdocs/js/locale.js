@@ -9,6 +9,8 @@ var localeStrings = {
     'If you exit the page you will loose your changes' : gettext('If you exit the page you will loose your changes'),
     'author' : gettext('author'),
     'Paste HTML to embed player in website': gettext('Paste HTML to embed player in website'),
+    'delete the item permanently?' : gettext('delete the item permanently?'),
+    'delete the collection permanently?' : gettext('delete the collection permanently?')
 };
 
 function gettrans(str){

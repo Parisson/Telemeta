@@ -262,12 +262,16 @@
     </div>
     {% endblock infos %}
 </div> <!-- with-rightcol -->
+
+{% endblock %}
+
+{% block deleteitem %}
 {% if user.is_authenticated and perms.telemeta.delete_mediaitem %}
-<div style="float: right;">
- <a href="#" onclick="if(confirm(gettrans('delete the item permanently?'))){window.location.href='{% url telemeta-item-delete item.public_id %}';};return false;"  class="component_icon button icon_delete">{% trans "Delete" %}</a>
-</div>
+ <a href="#" onclick="if(confirm(gettrans('delete the item permanently?'))){window.location.href='{% url telemeta-item-delete item.public_id %}';};return false;"  
+        class="component_icon button icon_delete" style="float:right;margin-top:0.5em;margin-bottom:1em">{% trans "Delete" %}</a>
 {% endif %}
 {% endblock %}
+
 {% else %}
 <p>No such item</p>
 {% endif %}
