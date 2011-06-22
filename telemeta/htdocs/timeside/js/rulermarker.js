@@ -69,21 +69,21 @@ Timeside.classes.RulerMarker = Timeside.classes.TimesideClass.extend({
         };
         this.getIndex = function(){
             return index;
-        }
+        };
 
         //end=======================================================
         //creating public methods:
         this.getLabel = function(){
             return label;
-        }
+        };
 
 
         this.getRulerWidth = function(){
             return rulerDiv.width();
-        }
+        };
         this.getWaveHeight = function(){
             return waveImgDiv.height();
-        }
+        };
 
         this.positionInPixels = 0;
         this.positionAsViewerRatio = 0;
@@ -99,7 +99,7 @@ Timeside.classes.RulerMarker = Timeside.classes.TimesideClass.extend({
             path.setAttributeNS(null,'class',canvasClass);
             this.moveCanvas = function(pixelOffset){
                 canvas.setAttributeNS( null, "transform", "translate("+pixelOffset+",0)");
-            }
+            };
             this.jQueryCanvas = $J(canvas);
         }else{
             canvas = this.createCanvasVml(waveImgDiv, arrowBaselineWidth);
@@ -109,7 +109,7 @@ Timeside.classes.RulerMarker = Timeside.classes.TimesideClass.extend({
             this.moveCanvas = function(pixelOffset){
                 //for some reason, coordinates inside the VML object are stored by raphael with a zoom of 10:
                 this.jQueryCanvas.css('left',(10*pixelOffset)+'px');
-            }
+            };
             //apparently, when resizing the markers loose their attributes. Therefore:
             var r = this.refreshPosition; //reference to current refreshPosition
             this.refreshPosition = function(){

@@ -362,12 +362,12 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                         var confirmExit = function(){
                             var markerUnsaved=0;
                             map.each(function(i,marker){
-                                if(!marker.isSavedOnServer){
+                                if(!marker.isSavedOnServer || marker.isEditable){
                                     markerUnsaved++;
                                 }
                             });
                             if(markerUnsaved>0){
-                                return gettrans('there is at least one unsaved marker') +' ('+ markerUnsaved+ '). '+
+                                return gettrans('there are unsaved or modified markers') +' ('+ markerUnsaved+ '). '+
                                 gettrans('If you exit the page you will loose your changes');
                             }
 
@@ -382,7 +382,7 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                         //a number N means: popup stays maximum N seconds on the screen
                         if(POPUP_TIMEOUT){
                             var popupdiv = new PopupDiv({
-                                focusable: true,
+                                //focusable: false,
                                 titleClass: 'markersdivTitle',
                                 //showClose:true,
 

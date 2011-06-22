@@ -1011,17 +1011,18 @@ function PopupDiv() {
             'top':bounds.y+'px'
         });
 
-    //        var topDiv =subdivs.eq(0);
-    //        var centralDiv = subdivs.eq(1);
-    //        var bottomDiv = subdivs.eq(2);
-    //        console.log('presize');
-    //        console.log('width: '+ topDiv.width()+' css-minWidth: ' +topDiv.css('minWidth')+' css-width: ' +topDiv.css('width')+' css-maxWidth: ' +topDiv.css('maxWidth'));
-    //        console.log('width: '+centralDiv.width()+' css-minWidth: ' +centralDiv.css('minWidth')+' css-width: ' +centralDiv.css('width')+' css-maxWidth: ' +centralDiv.css('maxWidth'));
-    //        console.log('width: '+bottomDiv.width()+' css-minWidth: ' +bottomDiv.css('minWidth')+' css-width: ' +bottomDiv.css('width')+' css-maxWidth: ' +bottomDiv.css('maxWidth'));
-    //        console.log(' ' );
+//            var topDiv =subdivs.eq(0);
+//            var centralDiv = subdivs.eq(1);
+//            var bottomDiv = subdivs.eq(2);
+//            console.log('presize');
+//            console.log('width: '+ topDiv.width()+' css-minWidth: ' +topDiv.css('minWidth')+' css-width: ' +topDiv.css('width')+' css-maxWidth: ' +topDiv.css('maxWidth'));
+//            console.log('width: '+centralDiv.width()+' css-minWidth: ' +centralDiv.css('minWidth')+' css-width: ' +centralDiv.css('width')+' css-maxWidth: ' +centralDiv.css('maxWidth'));
+//            console.log('width: '+bottomDiv.width()+' css-minWidth: ' +bottomDiv.css('minWidth')+' css-width: ' +bottomDiv.css('width')+' css-maxWidth: ' +bottomDiv.css('maxWidth'));
+//            console.log(' ' );
     };
     
     p.postSizeFcn = function(){
+        
         //set title and close button to span whole width, if necessary
         //closeButton.outerWidth should be zero if this.showClose = false
         //titleInput.outerWidth(true) should be equal to titleInput.width(), as margins borders and padding are zero, however we want to calculate it safely
@@ -1041,28 +1042,19 @@ function PopupDiv() {
         var maxWidth = div.width();
         var width = centralDiv.outerWidth(true);
             
-        if(maxHeight<=0 || maxWidth<=0){
-            //centralDiv.hide();
-            return;
-        }
         
-        //        if(maxHeight<height){
-        //            centralDiv.css('maxHeight',maxHeight+'px');
-        //        }
+        
+        
 
         //setting centralDiv maxHeight is buggy and not the same behaviour in all browsers
         //so we set a height, which will be reset in preSizeFcn
-        centralDiv.css('height',maxHeight+'px');
+        if(maxHeight>0){
+            centralDiv.css('height',maxHeight+'px');
+        }
         //same for width
-        centralDiv.css('width',maxWidth+'px');
+        //centralDiv.css('width',maxWidth+'px');
 
-        //TODO: check padding margins border or set them to zero in preSizeFcn!!!!!!
-
-
-        //        centralDiv.css('width',maxWidth+'px');
-        //        if(maxWidth<width){
-        //            centralDiv.css('maxWidth',maxWidth+'px');
-        //        }
+        
 
         //to be put AT THE END otherwise bug in IE7
         centralDiv.css('overflow','auto');
@@ -1074,16 +1066,14 @@ function PopupDiv() {
         //centralDiv.css('height',maxHeight);
         //}
 
-        //last thing: the subelements width property seems to be handles in different ways across browsers:
-        //in preSizeFcn, we set a width to auto. Curiously, when resizing the parent div (this.getDiv()), subelements are assigned
-        //a specified width property
-        //IE does what it is expected (werird enogh...), ie sets a maxWidth and
+        
 
-        //        console.log('postsize');
-        //        console.log('width: '+ topDiv.width()+' css-minWidth: ' +topDiv.css('minWidth')+' css-width: ' +topDiv.css('width')+' css-maxWidth: ' +topDiv.css('maxWidth'));
-        //        console.log('width: '+centralDiv.width()+' css-minWidth: ' +centralDiv.css('minWidth')+' css-width: ' +centralDiv.css('width')+' css-maxWidth: ' +centralDiv.css('maxWidth'));
-        //        console.log('width: '+bottomDiv.width()+' css-minWidth: ' +bottomDiv.css('minWidth')+' css-width: ' +bottomDiv.css('width')+' css-maxWidth: ' +bottomDiv.css('maxWidth'));
-        //        console.log(' ' );
+//                console.log('postsize');
+//                console.log('width: '+ topDiv.width()+' css-minWidth: ' +topDiv.css('minWidth')+' css-width: ' +topDiv.css('width')+' css-maxWidth: ' +topDiv.css('maxWidth'));
+//                console.log('width: '+centralDiv.width()+' css-minWidth: ' +centralDiv.css('minWidth')+' css-width: ' +centralDiv.css('width')+' css-maxWidth: ' +centralDiv.css('maxWidth'));
+//                console.log('width: '+bottomDiv.width()+' css-minWidth: ' +bottomDiv.css('minWidth')+' css-width: ' +bottomDiv.css('width')+' css-maxWidth: ' +bottomDiv.css('maxWidth'));
+//                console.log(' ' );
+
         if(this.isClickElement(this.invoker)){
             this.placeAsPopup();
         }else{

@@ -92,7 +92,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         var map = new Timeside.classes.MarkerMap();
         this.getMarkerMap = function(){
             return map;
-        }
+        };
 
         var canAddMarkers = false;
         if(newMarkerCallback){
@@ -262,7 +262,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         //var ruler = new Timeside.classes.Ruler(viewer, this.getSoundDuration());
         this.getRuler = function(){
             return ruler;
-        }
+        };
         //bind mouse events:
         ruler.bind('rulermarkermouseevent', function(data){
            var idx = data.index;
@@ -632,7 +632,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
             var style = {
                 width: wave.width(),
                 height: height
-            }
+            };
             elements.css(style);
             elements.css('position','absolute');
 
