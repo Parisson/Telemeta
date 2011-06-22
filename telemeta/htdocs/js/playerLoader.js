@@ -26,7 +26,6 @@
  * Class for loading a player. Requires a div#player, jQuery and all timeside javascript (player.js, markermap.js etcetera)
  */
 
-//var player; //global player variable
 
 function togglePlayerMaximization() {
     var $ = jQuery;
@@ -105,12 +104,10 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
     },maxTime);
      
     
-    //var msgElm = $J('#loading_span_text').html('Loading sound info...');
-    //var uinqid_ = Timeside.utils.uniqid; //defined in application.js
     var pFloat = parseFloat;
     //load analyser xml and proceed on success:
     $J.ajax({
-        url: analizerUrl, //'analyze/xml',
+        url: analizerUrl, 
         dataType: 'xml',
         error:function(){
             end('Error loading analyzer');
@@ -129,10 +126,7 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                 analyzerContentArray.push(elm.attr('unit'));
                 analyzerContentArray.push('</td></tr>');
             });
-            
-            //loaded analizer, loading player
-            //msgElm.html('Loading markers...');
-                
+               
             var duration = $J(data).find('#duration').attr('value');
             duration = duration.split(":");
             //format duration
@@ -166,15 +160,7 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                             isSavedOnServer: true
                         };
                         markerMap.push(marker);
-                    //mapAdd.apply(map,[result[i]]);
                     }
-                //add markers to ruler and div
-                //                map.each(function(i,marker){
-                //                    rulerAdd.apply(ruler,[marker, i]);
-                //                    mapuiAdd.apply(mapUI,[marker, i]);
-                //                });
-
-                //tabIndex = result.length>0 ? 1 : 0;
                 }
 
                 //defining the marker callback:
@@ -273,7 +259,7 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                             map.toArray()[idx].isEditable = data.value;
                             player.getRuler().setEditable(idx,data.value, false);
                         }
-                    });  // {'value':value, 'index':index});
+                    }); 
 
                     //bind save marker -> player save
                     var map = player.getMarkerMap();
@@ -397,19 +383,10 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                                 defaultCloseOperation: 'hide'
                             });
                             var popupShowFunction = function(data){
-                                //                                    if(popupTimeoutId !== undefined){
-                                //                                        cT(popupTimeoutId);
-                                //                                    }
-                                //                                    popupTimeoutId=undefined;
-                                
                                 popupdiv.refresh(data.marker.desc,data.marker.title);
                                 if(!popupdiv.isShowing()){
                                     popupdiv.show();
                                 }
-                            //                                    var index = data.index;
-                            //                                    if(index+1 == map.length || map.toArray()[index+1].offset-data.marker.offset>3){
-                            //                                        popupTimeoutId = popupdiv.setTimeout('close',3000);
-                            //                                    }
                             };
                             if(POPUP_TIMEOUT<0){
                                 player.bind('markerCrossed',popupShowFunction);
@@ -420,12 +397,8 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                                     if(popupTimeoutId !== undefined){
                                         clearHidePopupTimeout(popupTimeoutId);
                                     }
-                                                         popupTimeoutId=undefined;
-
-
-
+                                      popupTimeoutId=undefined;
                                     popupShowFunction(data);
-
                                     if(POPUP_TIMEOUT<0){
                                         return;
                                     }
@@ -459,10 +432,6 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                                 if(popupdiv.isShowing()){
                                     popupdiv.close();
                                 }
-                            //                                if(POPUP_TIMEOUT<0){
-                            //                                    return;
-                            //                                }
-                            //                                popupTimeoutId = popupdiv.setTimeout('close',POPUP_TIMEOUT*1000);
                             });
                         }
                     }
@@ -531,9 +500,6 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
             }
             //and niow call json method to load markers (load player also onError, no markers will be loaded)
             json([itemId],"telemeta.get_markers", onSuccess,onSuccess);
-        //function(container, soundUrl, durationInMsec, visualizers, markerMap, showAddMarkerButton, onError, onReady){
-        //Timeside.load(playerDiv,soundUrl,,timeInMSecs,visualizers,markerMap,)
-        //load_player(soundUrl, timeInMSecs, itemId, visualizers, currentUserName);
         }
     });
    
@@ -563,8 +529,7 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
 */
 function setUpPlayerTabs() {//called from within controller.js once all markers have been loaded.
     //this is because we need all divs to be visible to calculate size. selIndex is optional, it defaults to 0
-    //
-
+    
     var $J = jQuery;
     var tabs_ = arguments[0];
     var divs_ = arguments[1]; //they might be ctually any content, div is a shoertand

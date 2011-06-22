@@ -41,7 +41,7 @@ Timeside.classes.MarkerMapDiv = Timeside.classes.TimesideArray.extend({
         }else{
             this.$J( this.div.children()[index] ).before(div);
         }
-        //this.setIndex(this.length-1,d); //length has been increased when calling super
+        
         this._super(div,index);
         if(isNew){
             this.setEditMode(index,true);
@@ -88,7 +88,6 @@ Timeside.classes.MarkerMapDiv = Timeside.classes.TimesideArray.extend({
         });
         this.setOffset(me[to],newOffset);
 
-        //TODO: create a function?
         this.setEditMode(to,true);
         return to;
     },
@@ -142,9 +141,8 @@ Timeside.classes.MarkerMapDiv = Timeside.classes.TimesideArray.extend({
             e_descriptionText.removeAttr('readonly').removeClass('markersdivUneditable');
             e_titleText.removeAttr('readonly').removeClass('markersdivUneditable');
             e_okButton.add(e_okButton.parent()).show(); //hiding also the parent div saves space (padding bottom hidden)
-            e_titleText.select(); //TODO: this does NOT set the focus on the div. Why?
+            e_titleText.select(); 
             editButton.hide();
-        //e_titleText.focus();
         }else{
             e_descriptionText.attr('readonly','readonly').addClass('markersdivUneditable');
             e_titleText.attr('readonly','readonly').addClass('markersdivUneditable');
@@ -154,14 +152,12 @@ Timeside.classes.MarkerMapDiv = Timeside.classes.TimesideArray.extend({
         }
 
         this.fire('edit',{'value':value, 'index':index});
-        //var e_addplaylistButton = div.find('.markersdivAddPlaylist');
 
         this.stretch(e_titleText);
     },
 
 
     setIndex: function(div,index){
-        //div.attr('id','_markerdiv'+index);
         div.find('.ts-marker').html(index+1);
         var me = this;
         var e_indexLabel = div.find('.ts-marker');
@@ -211,8 +207,6 @@ Timeside.classes.MarkerMapDiv = Timeside.classes.TimesideArray.extend({
         var div = this.$J('<div/>').attr('tabindex','0').addClass("markerdiv").html(html_); 
         div.find('a').attr('href','#');
         
-        var e_indexLabel = div.find('.ts-marker');
-        //var e_offsetLabel =div.find('.markersdivOffset');
         var e_okButton = div.find('.markersdivSave');
         var e_editButton = div.find('.markersdivEdit');
         var e_deleteButton =  div.find('.markersdivDelete');
@@ -223,19 +217,12 @@ Timeside.classes.MarkerMapDiv = Timeside.classes.TimesideArray.extend({
         //set defualt element values regardeless of the marker state (for debugging, comment it if not needed)
         //e_indexLabel.attr('title',marker.toString());
         this.setIndex(div, index);
-            
-        //e_offsetLabel.html(this.makeTimeLabel(marker.offset));
-        this.setOffset(div,marker.offset);
-        //set visibility and attach events according to the marker state:
-        //first, is editing or not
-        //var isEditing = marker.isEditable && marker.isModified;
-        //            (!marker.isSavedOnServer || !(this.e_editButton.is(':visible')));
 
-        //if(!isEditing){
+        this.setOffset(div,marker.offset);
+        
         e_descriptionText.val(marker.desc ? marker.desc : "");
         e_titleText.val(marker.title ? marker.title : "");
-        //}
-
+        
         e_okButton.add(e_okButton.parent()).hide(); //hiding also the parent div saves space (padding bottom hidden)
         e_editButton.show();
         e_deleteButton.show();
@@ -263,7 +250,6 @@ Timeside.classes.MarkerMapDiv = Timeside.classes.TimesideArray.extend({
         }
 
         if(!marker.canBeSetEditable){ //marker is editable means that author is superuser or author == getCurrentUserName().
-            //addToPlaylist visibility is skipped because it depends on other circumstances (see above)
             e_editButton.hide();
             e_deleteButton.hide();
             e_okButton.unbind('click')
@@ -281,10 +267,8 @@ Timeside.classes.MarkerMapDiv = Timeside.classes.TimesideArray.extend({
                 });
             }
             return false; //avoid scrolling of the page on anchor click
-        })
-
+        });
         
-
         //action for ok button
         e_okButton.unbind('click').click( function(){
             //if(marker.desc !== descriptionText.val()){ //strict equality needed. See note below

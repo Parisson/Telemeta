@@ -1,101 +1,56 @@
 /*
-* Style for the timeside player. The skeleton of the player must be embedded inside a div of class C (in this case
-* C = 'ts-skin-lab') and reads:
-*
-* <div class='ts-viewer'>
-*     <div class='ts-ruler'></div>               >>RULER CONTAINER
-*     <div class='ts-wave'>                      >>PLAYER BODY CONTAINER which includes:
-*         <div class='ts-image-canvas'></div>        >>MARKER LINES CONTAINER
-*         <div class='ts-image-container'>           >>WAVE IMAGE CONTAINER
-*             <img class='ts-image'/>
-*         </div>
-*     </div>
-*  </div>
-*  <div class='ts-control'>",                    >>CONTROLS (BUTTONS) CONTAINER
-*      <a class='ts-play ts-button'></a>
-*      <a class='ts-pause ts-button'></a>
-*      <a class='ts-rewind ts-button'></a>
-*      <a class='ts-forward ts-button'></a>
-*      <a class='ts-set-marker ts-button'></a>
-*      <a class='ts-volume-speaker ts-button'></a>
-*      <div class='ts-volume-wrapper-div'>
-*          <a class='ts-volume-bar-container'>
-*              <span class='ts-volume-bar'></span>
-*          </a>
-*      </div>
-*      <div class='ts-wait'></div>
-*  </div>
-*
-* IMPORTANT NOTES: ======================================================
-* 1) Css rules here should deal only with player APPEARENCE, not player LAYOUT and POSITIONING. For instance, some styles properties,
-*    namely position and overflow of divs, are unnecessary here, as they will be overridden by javascript code,
-*    because otherwise they might break the player layout.
-* 2) .ts-marker and .ts-pointer fontSize should be changed according to .ts-ruler fontSize. In general, change the latter without
-*    specifying a font for the formers, which will inherit it. The player internally calculates a default ruler height before housing
-*    pointer and markers in order to paint its ruler lines. If font sizes of ruler vs. pointer and markers are different, the latters
-*    might overlap vertically. On the other hand, if pointers and markers have strong borders/padding,
-*    playing around with different font size  and line heights might be the solution to avoid vartical overlap
-* 3) canvas classes (classes beginning with '.ts-svg-') have specific svg-css syntax (have a look)
-*    Svg is not supported in IE7-8, as usual, and apparently even 9 (it should be, it is not according to Raphael function detecting svg support),
-*    In this cases, raphael library will care about building VML canvas, and a parser inside the player will read class rules and send them to raphael library
-*    in the form of a map suitable for the 'attr' function in Raphael. Note that:
-*       a) Many but not all css properties are supported for conversion.
-*       b) The parser READS ONLY STAND ALONE RULES, SO BE CAREFUL: If we want,eg, define css for '.ts-svg-marker-line', write something
-*          like:
-*            .aClass .ts-marker-canvas'{...}
-*          will not be rendered
+* Style for the timeside player. The player div is supposed to be of class .ts-player. Change if needed
+* For details, see http://code.google.com/p/timeside/wiki/UiGuide?ts=1308677096&updated=UiGuide#CSS_and_skins
 */
 
-.ts-skin-lab .ts-player {
+.ts-player {
     padding: 0;
     border: solid 1px #ADADAD;
     margin-top: 2px;
 }
 
 
-.ts-skin-lab .ts-player .ts-ruler{
+.ts-player .ts-ruler{
     color: white;
     background-color: #2E2E2E;
     font-size: 10px;
     line-height: 13px;
 }
 /*svg style, MUST BE A SINGLE SELECTOR. FOR INSTANCE, THIS DOES NOT WORK WHEN SVG IS NOT SUPPORTED:
-  ".ts-skin-lab .ts-player .ts-ruler .ts-svg-ruler-upper-rect" */
+  ".ts-player .ts-ruler .ts-svg-ruler-upper-rect" */
 .ts-svg-ruler-upper-rect{
     fill:  #595959;
     stroke-width:0;
     stroke: #595959; /*to be sure...*/
 }
 /*svg style, MUST BE A SINGLE SELECTOR. FOR INSTANCE, THIS DOES NOT WORK WHEN SVG IS NOT SUPPORTED:
-  ".ts-skin-lab .ts-player .ts-ruler .ts-svg-ruler-lines"*/
+  ".ts-player .ts-ruler .ts-svg-ruler-lines"*/
 .ts-svg-ruler-lines{
     stroke-width:1;
     stroke: #ADADAD;
 }
 
 /*wave:*/
-.ts-skin-lab .ts-player .ts-wave {
+.ts-player .ts-wave {
     height: 130px;
 }
 
-/*.ts-skin-lab .ts-player .ts-viewer .ts-marker {*/
-.ts-skin-lab .ts-player .ts-ruler .ts-marker {
+/*.ts-player .ts-viewer .ts-marker {*/
+.ts-player .ts-ruler .ts-marker {
      padding: 0 0.5em;
     background: #e65911;
     color: #FFF;
     text-decoration: none;
-    /*color: white;
-    background: #7290bc;*/
 }
 /*svg style, MUST BE A SINGLE SELECTOR. FOR INSTANCE, THIS DOES NOT WORK WHEN SVG IS NOT SUPPORTED:
-  ".ts-skin-lab .ts-player .ts-wave .ts-image-canvas .ts-svg-marker-line" */
+  ".ts-player .ts-wave .ts-image-canvas .ts-svg-marker-line" */
 .ts-svg-marker-line {
     fill: #e65911;
     stroke-width:0;
 }
 
-/*.ts-skin-lab .ts-player .ts-viewer a.ts-pointer {*/
-.ts-skin-lab .ts-player .ts-ruler a.ts-pointer {
+/*.ts-player .ts-viewer a.ts-pointer {*/
+.ts-player .ts-ruler a.ts-pointer {
     color: #BB0000;
     background-color: white;
     padding: 0 0.5em;
@@ -108,55 +63,55 @@
     /*color: #3c4251; #6A0307 !important;*/
 }
 /*svg style, MUST BE A SINGLE SELECTOR. FOR INSTANCE, THIS DOES NOT WORK WHEN SVG IS NOT SUPPORTED:
-  ".ts-skin-lab .ts-player .ts-wave .ts-image-canvas .ts-svg-pointer-line" */
+  ".ts-player .ts-wave .ts-image-canvas .ts-svg-pointer-line" */
 .ts-svg-pointer-line {
     fill: #BB0000;
     stroke-width:0;
 }
 
-.ts-skin-lab .ts-player .ts-wave .ts-image {
+.ts-player .ts-wave .ts-image {
     background: #090e0d ;
 }
 
-.ts-skin-lab .ts-player .ts-control {
+.ts-player .ts-control {
     background: url('img/controlbg.png');
 }
 
  /** display (inline-block) and overflow of a is set inside javascript*/
-.ts-skin-lab .ts-player .ts-control .ts-button {
+.ts-player .ts-control .ts-button {
     background-repeat: no-repeat;
     height:28px;
     width:28px;
 }
-.ts-skin-lab .ts-player .ts-control .ts-play {
+.ts-player .ts-control .ts-play {
     background-image: url('img/play.png');
 }
 
-.ts-skin-lab .ts-player .ts-control  .ts-pause {
+.ts-player .ts-control  .ts-pause {
     background-image: url('img/pause.png');
 }
 
-.ts-skin-lab .ts-player .ts-control  .ts-rewind {
+.ts-player .ts-control  .ts-rewind {
     background-image: url('img/rewind.png');
 }
 
-.ts-skin-lab .ts-player .ts-control  .ts-forward {
+.ts-player .ts-control  .ts-forward {
     background-image: url('img/forward.png');
 }
 
-.ts-skin-lab .ts-player .ts-control  .ts-set-marker {
+.ts-player .ts-control  .ts-set-marker {
     background-image: url('img/setmarker.png');
 }
 
-.ts-skin-lab .ts-player .ts-control .ts-volume-speaker-on {
+.ts-player .ts-control .ts-volume-speaker-on {
     background-image: url('img/volumeon.png');
     width:24px;
 }
-.ts-skin-lab .ts-player .ts-control .ts-volume-speaker-off {
+.ts-player .ts-control .ts-volume-speaker-off {
     background-image: url('img/volumeoff.png');
     width:24px;
 }
-.ts-skin-lab .ts-player .ts-control .ts-volume-bar-container { 
+.ts-player .ts-control .ts-volume-bar-container { 
     background: url('img/controlbg-inverted.png');
     background-position: -3px left;
     background-repeat: repeat-x;
@@ -168,17 +123,14 @@
     border-radius: 5px;
     
 }
-
-.ts-skin-lab .ts-player .ts-control .ts-volume-bar { /*width will be changed inside the code*/
+.ts-player .ts-control .ts-volume-bar { /*width will be changed inside the code*/
     background-color: #e4eaf1;
      -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     border-radius: 5px;
 }
-
-
 /*position is set to absolute inside javascript*/
-.ts-skin-lab .ts-player .ts-control .ts-wait {
+.ts-player .ts-control .ts-wait {
     background-repeat: no-repeat;
     background-image: url('img/wait3.gif');
     text-align: right;

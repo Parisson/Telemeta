@@ -88,7 +88,7 @@ Timeside.classes.RulerMarker = Timeside.classes.TimesideClass.extend({
         this.positionInPixels = 0;
         this.positionAsViewerRatio = 0;
 
-        var arrowBaselineWidth = 9; //2*((fontSize - 1) >>> 1)+1; //if fontsize:10 or 9, tW:9, if fontSize:8 or 7, tW:7, and so on
+        var arrowBaselineWidth = 9;
 
         var canvas = undefined;
         var canvasClass = cssPref + 'svg-'+className+'-line';
@@ -118,7 +118,7 @@ Timeside.classes.RulerMarker = Timeside.classes.TimesideClass.extend({
             }
         }
     },
-    //isMovedByMouse: false, //flag to be set by the ruler (see add method) when mouse is moving this rulermarker
+    
     //sets the text of the marker, if the text changes the marker width and optionalUpdateLabelPosition=true,
     //re-arranges the marker position to be center-aligned with its vertical line (the one lying on the wav image)
     setText: function(text, optionalUpdateLabelPosition) {
@@ -143,7 +143,7 @@ Timeside.classes.RulerMarker = Timeside.classes.TimesideClass.extend({
             } else if (pixelOffset >= width) {
                 pixelOffset = width - 1;
             }
-           //defined in the conmstructor (it depends on wehter the current browser supports SVG or not)
+           //defined in the init method (it depends on wehter the current browser supports SVG or not)
             this.moveCanvas(pixelOffset);
            
             this.positionInPixels = pixelOffset;
@@ -161,7 +161,7 @@ Timeside.classes.RulerMarker = Timeside.classes.TimesideClass.extend({
         var label = this.getLabel();
         var width = optionalContainerWidth;
         var pixelOffset = this.positionInPixels;
-        var labelWidth = label.outerWidth(); //consider margins and padding //label.width();
+        var labelWidth = label.outerWidth(); //consider margins and padding
         var labelPixelOffset = pixelOffset - labelWidth / 2;
         if (labelPixelOffset < 0){
             labelPixelOffset = 0;

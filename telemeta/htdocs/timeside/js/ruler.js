@@ -30,25 +30,19 @@ Timeside.classes.Ruler = Timeside.classes.TimesideArray.extend({
     //init constructor: soundDuration is IN SECONDS!!! (float)
     init: function(rulerContainer, waveContainer, soundDuration){
         this._super();
-        //var cssPref = this.cssPrefix;
-
+        
         this.getSoundDuration= function(){
             return soundDuration;
         };
 
-        
         this.getWaveContainer =function(){
             return waveContainer;
         };
-        //TODO: we dont need containerWiever here!!!
-        //better: it is usefult only for the canvas defined below. However...
+        
         this.getContainerWidth =function(){
             return waveContainer.width();
         };
         
-        //private function used in resize() defined below
-        //var container = viewer.find('.' + cssPref + 'ruler');
-
         this.getRulerContainer = function(){
             return rulerContainer;
         }
@@ -85,8 +79,6 @@ Timeside.classes.Ruler = Timeside.classes.TimesideArray.extend({
         if(h2){
             h = h2;
         }
-        //TODO: set height in div ruler????
-        //rulerContainer.css('height',h+'px');
         var obj = this.calculateRulerElements(rulerContainer.width(),h,firstSpan.outerWidth());
         this.drawRuler(rulerContainer,h,obj.path);
         
@@ -299,9 +291,7 @@ Timeside.classes.Ruler = Timeside.classes.TimesideArray.extend({
             this._super(pointerOrMarker,index); //add at the end
             //note that setText is called BEFORE move as move must have the proper label width
             this.each(index, function(i,rulermarker){
-                rulermarker.setIndex(i,i!=index);
-            //rulermarker.setIndex.apply(rulermarker, [i,i!=indexIfMarker]); //update label width only if it is not this marker added
-            //as for this marker we update the position below (move)
+                rulermarker.setIndex(i,i!=index);//update label width only if it is not this marker added
             });
         }else{
             //note that setText is called BEFORE move as move must have the proper label width
@@ -309,10 +299,7 @@ Timeside.classes.Ruler = Timeside.classes.TimesideArray.extend({
         }
         //proceed with events and other stuff: move (called AFTER setText or setText)
         pointerOrMarker.move(this.toPixelOffset(soundPosition));
-       
-        //pointer.setText(markerClass== 'pointer' ? this.makeTimeLabel(0) : this.length);
-
-        //click on labels stop propagating. Always:
+        //set mouse events:
         var isPointer  = markerClass === 'pointer';
         this._setEditable(pointerOrMarker, isMovable, isPointer);
         return pointerOrMarker;
@@ -338,7 +325,6 @@ Timeside.classes.Ruler = Timeside.classes.TimesideArray.extend({
 
         
         lbl.unbind('.'+eventNamespace); //this should delete all previous events
-        //TODO: check!!!!
 
         lbl.bind('mouseenter.'+eventNamespace,function(evt){
             me.fire(mme,{
@@ -369,11 +355,9 @@ Timeside.classes.Ruler = Timeside.classes.TimesideArray.extend({
                     pointerOrMarker.isMovedByMouse = true;
                 }
                 
-                //preventClickFire = false;
-
                 var launchDragStart = true;
 
-                var startX = evt.pageX; //lbl.position().left-container.position().left;
+                var startX = evt.pageX; 
                 var startPos = lbl.position().left+lbl.width()/2;
 
                 evt.stopPropagation(); //dont notify the ruler or other elements;

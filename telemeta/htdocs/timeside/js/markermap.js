@@ -34,8 +34,6 @@ Timeside.classes.MarkerMap = Timeside.classes.TimesideArray.extend({
     pFloat: parseFloat, //reference to function parseFloat for faster lookup
     //overridden
     add: function(newMarker) {
-        //var markers = this.toArray();
-        
         if(!('offset' in newMarker)){
             return -1;
         }
@@ -49,7 +47,7 @@ Timeside.classes.MarkerMap = Timeside.classes.TimesideArray.extend({
         if(!('isEditable' in newMarker)){
             newMarker.isEditable = false;
         }
-        var marker = newMarker; //this.createMarker(obj);
+        var marker = newMarker; 
         var idx = this.insertionIndex(marker);
         if(idx>=0){ //it exists? there is a problem....
             this.debug('markermap.add: adding an already existing marker!!'); //should not happen. however...
@@ -122,11 +120,6 @@ Timeside.classes.MarkerMap = Timeside.classes.TimesideArray.extend({
         if(newIndex > oldIndex){
             newIndex--;
         }
-
-        //realIndex is the REAL INDEX AT WHICH WILL BE the moving marker M AFTER move.
-        //It newIndex = oldIndex+1
-        //we move M IMMEDIATELY AFTER ITSELF, which means, after removing M, that M has realIndex=n, as before
-       
         newIndex = this._super(oldIndex,newIndex);
         
         if(newIndex <0){
@@ -143,7 +136,6 @@ Timeside.classes.MarkerMap = Timeside.classes.TimesideArray.extend({
             fromIndex: oldIndex,
             toIndex: newIndex,
             oldOffset: oldOffset
-        //,newIndex: realIndex
         });
         return newIndex;
     },
@@ -187,8 +179,6 @@ Timeside.classes.MarkerMap = Timeside.classes.TimesideArray.extend({
                 }
             }
             return 0;
-        //var ret = a < b ? -1 : (a>b ? 1 : (markerInMap.id === newMarker.id ? 0 : -1));
-        //return ret;
         };
         if(!(typeof object == 'object')){
             var offset;
@@ -207,9 +197,7 @@ Timeside.classes.MarkerMap = Timeside.classes.TimesideArray.extend({
                 return a < b ? -1 : (a>b ? 1 : 0);
             };
         }
-        //var pInt = parseInt; //reference to parseInt outside the loop below
-        //(to increase algorithm performances)
-
+        
         var data = this.toArray();
         var low = 0;
         var high = data.length-1;

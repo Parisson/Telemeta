@@ -1,71 +1,7 @@
 
-
-/*.ts-skin-lab .ts-player {
-    padding: 0;
-    clear: both;
-    background: white;
-    border: solid 1px #ADADAD;
-    margin-top: 2px;
-}
-
-.ts-skin-lab .ts-player .ts-wave {
-    height: 130px;
-}
-.ts-skin-lab .ts-player .ts-wave .ts-image {
-    width: 360px;
-    height: 130px;
-    background: transparent;
-}*/
-
 #player_maximized .ts-player .ts-wave,  #player_maximized .ts-player .ts-image {
     height: 170px;
 }
-
-/*.ts-skin-lab .ts-player .ts-viewer {
-    margin: 0;
-    border: 0;
-}*/
-/*.ts-skin-lab .ts-player .ts-viewer .ts-pointer {
-    background: #BB0000;
-    color: #DDD;
-    border: solid 1px #BB0000;
-}
-.ts-skin-lab .ts-player .ts-viewer .ts-pointer {
-    color: #BB0000;
-    background: white;
-    padding: 0 0.5em;
-    border: solid 1px #BB0000;
-}*/
-/*class for the canvas (svg) associated to a marker. If svg is not supported, a parser in the palyer
-converts these values (nb: not all are supported) to specigic vml attributes. In this case, however, ONLY CLASSES WRITTEN
-ALONE ARE PARSED (eg ".ts-blabla, .ts-marker-canvas{...}" WILL NOT BE RECOGNIZED)*/
-/*.ts-skin-lab .ts-player .ts-wave .ts-image-canvas .ts-svg-pointer-line {
-    fill: #BB0000;
-    stroke-width:0;
-}*/
-/*.ts-skin-lab .ts-player .ts-viewer .ts-marker {
-    padding: 0 0.5em;
-    background: #e65911;
-    color: #FFF;
-}*/
-/*class for the canvas (svg) associated to a marker. If svg is not supported, a parser in the palyer 
-converts these values (nb: not all are supported) to specigic vml attributes. In this case, however, ONLY CLASSES WRITTEN 
-ALONE ARE PARSED (eg ".ts-blabla, .ts-marker-canvas{...}" WILL NOT BE RECOGNIZED)*/
-/*.ts-skin-lab .ts-player .ts-wave .ts-image-canvas .ts-svg-marker-line {
-    fill: #e65911;
-    stroke-width:0;
-}*/
-
-/*.ts-skin-lab .ts-player .ts-ruler .ts-section .ts-label {
-    background: #595959;
-    color: white;
-}
-
-.ts-skin-lab .ts-player .ts-ruler .ts-section .ts-lines {
-    background: #2e2e2e;
-    color: #ADADAD;
-    border-bottom: solid 1px #adadad;
-}*/
 
 .ts-skin-lab .ts-player .ts-control {
     background: url('../images/player_controlbg.png');
@@ -102,13 +38,6 @@ ALONE ARE PARSED (eg ".ts-blabla, .ts-marker-canvas{...}" WILL NOT BE RECOGNIZED
     font-size: 50%;
     padding-left: 2ex;
     padding-right: 2ex;
-    /*-moz-border-radius: 1ex;
-    -webkit-border-radius: 1ex;
-    border-radius: 1ex;
-    border: 1px solid #ddd;
-    background-color: #fff;
-    
-    */
      position: relative;
     top: -1px;
     line-height: 1.5em;
@@ -123,23 +52,3 @@ ALONE ARE PARSED (eg ".ts-blabla, .ts-marker-canvas{...}" WILL NOT BE RECOGNIZED
     margin: 10px 0 15px 0;
     display: none;
 }
-
-/*#player .ts-visualizer{
-    margin:5px;
-}
-
-.ts-skin-lab .ts-player .ts-ruler{
-    color: white;
-    background-color: #2E2E2E;
-    font-size: 10px;
-    line-height: 13px;
-}
-.ts-skin-lab .ts-player .ts-ruler .ts-svg-ruler-upper-rect{
-     fill:  #595959;
-    stroke-width:0;
-    stroke: #595959; to be sure...
-}
-.ts-skin-lab .ts-player .ts-ruler .ts-svg-ruler-lines{
-    stroke-width:1;
-    stroke:#ADADAD;
-}*/
