@@ -21,7 +21,8 @@
  */
 
 /**
- * Class for showing non-modal dialogs such as popups or combo lists. Requires jQuery.
+ * Class for showing non-modal dialogs such as popups or combo lists. Requires jQuery. Works in IE7+, FF, Chrome. In IE7 some dimensions
+ * do not span the whole optimized width. Probably due to a bug in calculating the size when scrollbars are present. It works however.
  * This class builds an absolutely positioned div for popup forms, message dialogs or listitem popup (emilating the
  * <select> tag element popup). If you're scared about the doc, scroll below to see some examples.
  * Usage:
@@ -69,9 +70,10 @@
  *        After each onOk callback has been executed, popup.close() will be always called
  * onShow (null): callback to be executed when the popup shows up
  * defaultCloseOperation ('hide'): specified what to do when popup.close() is called. 'remove' calls jQuery.remove() on the popup, ie it removes the html element from the document, 'hide' or any other value simply call jQuery.hide() on the popup
- * onClose (null): callback to be executed when the popup .close() function is called. The callback must take one argument (boolean) which
- *        denotes wether the popup is closing after the ok button has been pressed or not. On the other hand, the argument is false, e.g.,
- *        if the close button is clicked (see showClose below), or when popup.focusable=true and the popup looses the focus
+ * onClose (null): callback to be executed when the popup .close() function is called. The callback must take one argument (string) which
+ *        denotes wether the popup is closing  because of 1) the ok button click, 2) a lost of focus, 3) the close button click or 4)
+ *        another reason (eg, a custom code call to popup.close()). In these cases, the string argument is
+ *        1) "okClicked", 2) "focusLost", 3) "closeClicked" and 4) the empty string ""
  * showClose (false): a parameter specifying whether a close button should appear on the top-right corner of the popup. Clicking the close button
  *      (internally, an <a> tag) will close the popup and trigger popup.close() (and associated callbacks bindings, if any)
  * closeButtonTitle ('x') [see note4]: self-explanatory
@@ -162,12 +164,12 @@ function PopupDiv() {
     //2: if text title overlaps, with a span it is not selectable, with an input it is
     //we however append a span to calculate the input width, not really ortodox I know. See setTitle (below)
     var header = $J('<div/>').append($J('<a/>').attr('href','#').click(function(){
-        me.close();
+        me.close('closeClicked');
         return false;
     })).append(' ').append($J('<div/>').css('clear','both')); //.css('float','right');
     var container = $J('<div/>').css('overflow','auto');
     var footer = $J('<div/>').append($J('<a/>').attr('href','#').click(function(){
-        me.trigger('ok',true);
+        me.trigger('ok');
         return false;
     }));
     //header.find('*').add(footer.find('*')).css('display','none');
@@ -285,7 +287,7 @@ function PopupDiv() {
 
 
     //default properties which can be overridden
-    p.shadowOffset = 4;
+    p.shadowOffset = 4; //zero means: no shadow
     p.invoker = wdw;
     p.bounds = {
         'top':0.25,
@@ -331,10 +333,6 @@ function PopupDiv() {
         return ret;
     };
 
-    p.setTitle = function(title){
-        this.getDiv().children().eq(0).find(':title').eq(0).val(title);
-    };
-
     //methods:
     p.find = function(argumentAsInJQueryFind){
         return this.getDiv().children().eq(1).find(argumentAsInJQueryFind);
@@ -374,13 +372,14 @@ function PopupDiv() {
                 for(i=0; i<callbacks.length; i++){
                     callbacks[i].apply(me,[data]);
                 }
-                this.__okButtonHasBeenPressed = true;
-                this.close();
-                delete this['__okButtonHasBeenPressed'];
+                this.close('okClicked');
             }else if(eventName == 'close'){
-                var okBHBP = this.__okButtonHasBeenPressed || false;
+                var str = "";
+                if(arguments && arguments.length>1 && typeof arguments[1] === 'string'){
+                    str = arguments[1];
+                }
                 for(i=0; i<callbacks.length; i++){
-                    callbacks[i].apply(me,[okBHBP]);
+                    callbacks[i].apply(me,[str]);
                 }
             }else{
                 for(i=0; i<callbacks.length; i++){
@@ -406,7 +405,7 @@ function PopupDiv() {
             var setEvents = function(idx,anchor,input){
                 anchor.click(function(){
                     input.val(idx);
-                    me.trigger('ok',true);
+                    me.trigger('ok');
                     return false;
                 }).focus(function(){ //focus because we need to get the value if ok is present
                     input.val(idx);
@@ -495,7 +494,7 @@ function PopupDiv() {
             }
             lineDivs.css({
                 'white-space': 'nowrap',
-                'marginBottom':'0.5ex'
+                'marginBottom': '0.5ex'
             });
             //last div erase marginBottom
             $(lineDivs[lineDivs.length-1]).css('marginBottom','');
@@ -517,7 +516,7 @@ function PopupDiv() {
                 'width':Math.round((3/5)*maxw[0])+'em'
             });
             rightElements.css({
-                'width':Math.round((3/5)*max(maxw[0], maxw[1]))+'em'
+                'width':Math.round((3/5)*max(maxw[0], maxw[1]))+'em' //approximate width
             }); //might be zero if default values are all ""
         }else{
             container.append(""+content);
@@ -547,7 +546,7 @@ function PopupDiv() {
                 elementsWithFocus = elementsWithFocus.add(bottomDiv.find('a'));
             }
         }
-        popup.add(centralDiv).css('outline','#FFF none 0px'); //DO NOT SHOW BORDER FOCUS FOR DIVS (NICER)
+        popup.add(centralDiv).css('outline','#FFF none 0px'); //DO NOT SHOW BORDER FOCUS FOR DIVS (NICER). Doesnt work in IE7
         elementsWithFocus = elementsWithFocus.add(popup).add(centralDiv);
         //we add the popup div cause in case of padding clicking on the popup padding should NOT hide the popup
         //we add the centralDiv cause, if scrollbars are present, then moving the scrollbars sets the focus to the
@@ -592,7 +591,7 @@ function PopupDiv() {
                         return;
                     }
 
-                    me.close();
+                    me.close('focusLost');
                 },200)
             }); //set here another time delay. 300 seems to be the good compromise between visual hide and safetiness that
         //meanwhile the focus has already been given to the next component
@@ -624,20 +623,15 @@ function PopupDiv() {
         if(!showing){
             return; //show(), when called, will update size and other stuff written in this method here bwloe
         }
-        var invoker = this.invoker;
-        if(this.isClickElement(invoker)){
-            this.setBoundsAsPopup(invoker);
-        }else{
-            this.setBoundsInside(invoker, this.bounds, this.boundsExact);
-        }
+        this.setBounds();
         
-        //this.shadow(); //updates shadow
+        
         if(focusable){
             this.getFirstFocusableElement().focus();
         }
     };
 
-    p.setTitle= function(title){
+    p.setTitle = function(title){
         var subdiv = this.getDiv().children().eq(0);
 
 
@@ -666,6 +660,11 @@ function PopupDiv() {
     p.show = function(){
         var div = this.getDiv();
         var me = this;
+        var invoker = this.invoker;
+        var isClickElement = this.isClickElement(invoker);
+        this._isClickElement = isClickElement;
+        this.setBounds = isClickElement ? this._setBoundsAsPopup : this._setBoundsInside;
+        this.setOffset = isClickElement ? this._setOffsetAsPopup : this._setOffsetInside;
 
         if(this.popupClass){
             //this.popupClass might be in the prototype (not set by user)
@@ -731,14 +730,12 @@ function PopupDiv() {
             }); //in order to set width and height on the element
         }
 
-        if(!div.parent().length){ //to be done before setSizeAsPopup or setBoundsInside
+        if(!div.parent().length){ //to be done before setsetBounds
             div.appendTo('body');
         }
 
-        var invoker = this.invoker;
-        var isClickElement = this.isClickElement(invoker);
+        
         if(isClickElement){
-            this.setBoundsAsPopup(invoker);
             //storing click events, when showing clicking on an event must give the focus to the popup
             //old handlers will be restored in close()
             this['_tmpHandlers'+this.getId()] = undefined;
@@ -768,13 +765,11 @@ function PopupDiv() {
                 });
             }
 
-        }else{
-            this.setBoundsInside(invoker, this.bounds, this.boundsExact);
         }
-
+        this.setBounds();
        
-        var shadow = this.shadow();
-        var place = isClickElement ? this.placeAsPopup : this.placeInside;
+        var shadow = this._getShadow();
+        var place = this.setOffset;
         var postShowFcn = function(){
             //adding window resize interval to track window changes
             var w = wdw.width();
@@ -796,12 +791,20 @@ function PopupDiv() {
 
 
             me.trigger('show');
-            shadow.fadeTo(me.fadInTime,me.shadowOpacity, function(){
+            if(shadow !== undefined){
+                shadow.fadeTo(me.fadInTime,me.shadowOpacity, function(){
+                    var v = me.getFirstFocusableElement();
+                    if(v){
+                        v.focus();
+                    }
+                });
+            }else{
                 var v = me.getFirstFocusableElement();
                 if(v){
                     v.focus();
                 }
-            });
+            }
+            
         };
 
         div.show(this.fadInTime,function(){
@@ -809,15 +812,15 @@ function PopupDiv() {
         });
     };
     //div must be visible
-    p.shadow = function(){
-        var shadow = $('#'+this.getShadowDivId());
+    p.refreshShadow = function(){
+        var shadow = this._getShadow(); //$('#'+this.getShadowDivId());
         var so = this.shadowOffset;
-        if(!so && shadow.length){
+        if(!so && shadow !== undefined){
             shadow.remove();
-            return $([]);
+        //shadow = undefined;
         }else if(so){
             var div = this.getDiv();
-            if(!shadow.length){
+            if(shadow === undefined){
                 //creating shadow. Remove attributes tabindex (unnecessary) and especially focusAttr,
                 //so that clicking tab key and setting the shadow focusable hides the popup. If one wants the shadow not to hide the popup. keep
                 //focusAttr BUT insert shadow in the focus cycle root (see method)
@@ -837,11 +840,19 @@ function PopupDiv() {
                 'height':(rect.height)+'px'
             });
         }
-        return shadow;
+    //return shadow;
     };
 
-    p.setBoundsAsPopup = function(popupInvoker){
-        var invoker = popupInvoker;
+    p._getShadow = function(){
+        var next = this.getDiv().next('div');
+        if(next && next.length && next.attr('id') === this.getShadowDivId()){
+            return next;
+        }
+        return undefined;
+    };
+
+    p._setBoundsAsPopup = function(){
+        var invoker = this.invoker;
 
         this.preSizeFcn();
 
@@ -887,7 +898,10 @@ function PopupDiv() {
     //padding={top:0.25,left:0.25,bottom:0.25,right:0.25} will place the popupdiv at the center of parent
     //padding={top:25,left:25,bottom:25,right:25} will place the popupdiv at distances 25 px from parent sides
     //in other words, padding keys lower or euqals to 1 will be conbsidered as percentage, otherwise as absolute measures in px
-    p.setBoundsInside = function(parent, pd, boundsExact){
+    p._setBoundsInside = function(){
+        var parent = this.invoker;
+        var pd = this.bounds;
+        var boundsExact = this.boundsExact;
 
         var div = this.getDiv();
         
@@ -977,26 +991,6 @@ function PopupDiv() {
             'visibility' : 'visible',
             'float':''
         });
-        //        subdivsshow.css({
-        //            'height':'',
-        //            'width':''
-        //        });
-
-        //subdivs.eq(0).css('width','');
-
-        //        subdivsshow.add(div).css({
-        //            'maxHeight':'none',
-        //            'maxWidth':'none',
-        //            'minHeight':'none',
-        //            'minWidth':'none',
-        //            'height':'auto',
-        //            'width':'auto',
-        //            'display':'block',
-        //            'overflow':'visible',
-        //            'float':'none'
-        //        });
-
-
         div.css({
             'margin':'0px',
             'zIndex':this.zIndex,
@@ -1011,14 +1005,14 @@ function PopupDiv() {
             'top':bounds.y+'px'
         });
 
-//            var topDiv =subdivs.eq(0);
-//            var centralDiv = subdivs.eq(1);
-//            var bottomDiv = subdivs.eq(2);
-//            console.log('presize');
-//            console.log('width: '+ topDiv.width()+' css-minWidth: ' +topDiv.css('minWidth')+' css-width: ' +topDiv.css('width')+' css-maxWidth: ' +topDiv.css('maxWidth'));
-//            console.log('width: '+centralDiv.width()+' css-minWidth: ' +centralDiv.css('minWidth')+' css-width: ' +centralDiv.css('width')+' css-maxWidth: ' +centralDiv.css('maxWidth'));
-//            console.log('width: '+bottomDiv.width()+' css-minWidth: ' +bottomDiv.css('minWidth')+' css-width: ' +bottomDiv.css('width')+' css-maxWidth: ' +bottomDiv.css('maxWidth'));
-//            console.log(' ' );
+    //            var topDiv =subdivs.eq(0);
+    //            var centralDiv = subdivs.eq(1);
+    //            var bottomDiv = subdivs.eq(2);
+    //            console.log('presize');
+    //            console.log('width: '+ topDiv.width()+' css-minWidth: ' +topDiv.css('minWidth')+' css-width: ' +topDiv.css('width')+' css-maxWidth: ' +topDiv.css('maxWidth'));
+    //            console.log('width: '+centralDiv.width()+' css-minWidth: ' +centralDiv.css('minWidth')+' css-width: ' +centralDiv.css('width')+' css-maxWidth: ' +centralDiv.css('maxWidth'));
+    //            console.log('width: '+bottomDiv.width()+' css-minWidth: ' +bottomDiv.css('minWidth')+' css-width: ' +bottomDiv.css('width')+' css-maxWidth: ' +bottomDiv.css('maxWidth'));
+    //            console.log(' ' );
     };
     
     p.postSizeFcn = function(){
@@ -1033,56 +1027,36 @@ function PopupDiv() {
         var centralDiv = subdivs.eq(1);
         //
         var bottomDiv = subdivs.eq(2);
-        //set central div max height ONLY IF NECESSARY (overflow). Until here, the main popup is sized and placed
-        //but the central div might overflow
-        var height = centralDiv.height();
+        //set central div height. We could set the central div height only if necessary, or the central div max height,
+        //but this has side effect in IE
+       
         var maxHeight = (div.height()-topDiv.outerHeight(true)-bottomDiv.outerHeight(true)-
             (centralDiv.outerHeight(true)-centralDiv.height()));
-        //same for width:
-        var maxWidth = div.width();
-        var width = centralDiv.outerWidth(true);
-            
-        
-        
-        
-
-        //setting centralDiv maxHeight is buggy and not the same behaviour in all browsers
-        //so we set a height, which will be reset in preSizeFcn
+       
+        //setting centralDiv maxHeight or height is actually the same, we use height to be sure...
         if(maxHeight>0){
             centralDiv.css('height',maxHeight+'px');
         }
-        //same for width
-        //centralDiv.css('width',maxWidth+'px');
-
-        
-
+       
         //to be put AT THE END otherwise bug in IE7
         centralDiv.css('overflow','auto');
         //after the command above, centralDiv.hegith is set to zero in IE7.
         //It might be a refresh problem cause if we display an alert then the size is properly set.
-        //However:
-        //if(centralDiv.height()==0 && maxHeight>0){
-       
-        //centralDiv.css('height',maxHeight);
-        //}
-
+        //However, put it at the end
         
 
-//                console.log('postsize');
-//                console.log('width: '+ topDiv.width()+' css-minWidth: ' +topDiv.css('minWidth')+' css-width: ' +topDiv.css('width')+' css-maxWidth: ' +topDiv.css('maxWidth'));
-//                console.log('width: '+centralDiv.width()+' css-minWidth: ' +centralDiv.css('minWidth')+' css-width: ' +centralDiv.css('width')+' css-maxWidth: ' +centralDiv.css('maxWidth'));
-//                console.log('width: '+bottomDiv.width()+' css-minWidth: ' +bottomDiv.css('minWidth')+' css-width: ' +bottomDiv.css('width')+' css-maxWidth: ' +bottomDiv.css('maxWidth'));
-//                console.log(' ' );
+        //                console.log('postsize');
+        //                console.log('width: '+ topDiv.width()+' css-minWidth: ' +topDiv.css('minWidth')+' css-width: ' +topDiv.css('width')+' css-maxWidth: ' +topDiv.css('maxWidth'));
+        //                console.log('width: '+centralDiv.width()+' css-minWidth: ' +centralDiv.css('minWidth')+' css-width: ' +centralDiv.css('width')+' css-maxWidth: ' +centralDiv.css('maxWidth'));
+        //                console.log('width: '+bottomDiv.width()+' css-minWidth: ' +bottomDiv.css('minWidth')+' css-width: ' +bottomDiv.css('width')+' css-maxWidth: ' +bottomDiv.css('maxWidth'));
+        //                console.log(' ' );
 
-        if(this.isClickElement(this.invoker)){
-            this.placeAsPopup();
-        }else{
-            this.placeInside();
-        }
+        
+        this.setOffset();
 
     };
 
-    p.placeAsPopup = function(){
+    p._setOffsetAsPopup = function(){
         var div = this.getDiv();
 
         var shadowOffset = this.shadowOffset;
@@ -1113,10 +1087,10 @@ function PopupDiv() {
             'top':offs.top+'px',
             'left':offs.left+'px'
         });
-        this.shadow(); //repositioning the shadow
+        this.refreshShadow(); //repositioning the shadow
     };
 
-    p.placeInside = function(){
+    p._setOffsetInside = function(){
        
         var div = this.getDiv();
 
@@ -1177,7 +1151,7 @@ function PopupDiv() {
             'top':(y+padding['top']+spanTop)+'px'
         });
 
-        this.shadow(); //repositioning the shadow
+        this.refreshShadow(); //repositioning the shadow
     };
 
     p.getBounds = function(){
@@ -1280,8 +1254,10 @@ function PopupDiv() {
         }
         this.setFocusCycleRoot(false);
         var div = this.getDiv();
-        var shadow = $('#'+this.getShadowDivId());
-        shadow.remove();
+        var shadow = this._getShadow(); //$('#'+this.getShadowDivId());
+        if(shadow !== undefined){
+            shadow.remove();
+        }
         var me = this;
         var remove = this.defaultCloseOperation == 'remove';
         div.hide(this.fadeOutTime, function(){
@@ -1303,7 +1279,11 @@ function PopupDiv() {
             }
 
             delete me['__isClosing'];
-            me.trigger('close');
+            if(arguments && arguments.length>0 && typeof arguments[0] === 'string'){
+                me.trigger('close',arguments[0]);
+            }else{
+                me.trigger('close');
+            }
         });
 
     };
