@@ -97,7 +97,7 @@ ALONE ARE PARSED (eg ".ts-blabla, .ts-marker-canvas{...}" WILL NOT BE RECOGNIZED
 #player_maximized .embed_player_frame, #player_minimized .embed_player_frame {
     float: left;
     font-weight: bold;
-    color: #333;
+    color: #6A0307;
     text-decoration: none;
     font-size: 50%;
     -moz-border-radius: 1ex;
@@ -108,6 +108,8 @@ ALONE ARE PARSED (eg ".ts-blabla, .ts-marker-canvas{...}" WILL NOT BE RECOGNIZED
     padding-right: 2ex;
     background-color: #fff;
     line-height: 1.5em;
+    position: relative;
+    top: -2px;
 }
 
 #player_maximized .embed_player_frame:hover, #player_minimized .embed_player_frame:hover {
