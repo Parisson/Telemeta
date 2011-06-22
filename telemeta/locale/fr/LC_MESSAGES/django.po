@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-22 12:37+0200\n"
+"POT-Creation-Date: 2011-06-22 14:44+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Olivier Guilyardi <olivier samalyse com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -695,7 +695,7 @@ msgid "Save"
 msgstr "Enregistrer"
 
 #: templates/telemeta_default/collection_detail.html:5
-#: templates/telemeta_default/collection_detail_dc.html:5 web/base.py:137
+#: templates/telemeta_default/collection_detail_dc.html:5 web/base.py:324
 msgid "Collection"
 msgstr "Collection"
 
@@ -976,7 +976,7 @@ msgstr "Mot de passe oublié"
 
 #: templates/telemeta_default/mediaitem_add.html:5
 #: templates/telemeta_default/mediaitem_copy.html:5
-#: templates/telemeta_default/mediaitem_detail.html:5 web/base.py:245
+#: templates/telemeta_default/mediaitem_detail.html:5 web/base.py:453
 msgid "Item"
 msgstr "Item"
 
@@ -1064,7 +1064,7 @@ msgstr "Formation"
 msgid "User Profile"
 msgstr "Profil utilisateur"
 
-#: templates/telemeta_default/profile_detail.html:8 web/base.py:1129
+#: templates/telemeta_default/profile_detail.html:8 web/base.py:1154
 msgid "User profile"
 msgstr "Profil utilisateur"
 
@@ -1160,8 +1160,7 @@ msgstr "Etat/Continent"
 msgid "No item"
 msgstr "Aucun item"
 
-#: templates/telemeta_default/inc/module_revisions.html:7 web/base.py:1098
-#: web/base.py:1209
+#: templates/telemeta_default/inc/module_revisions.html:7 web/base.py:1185
 msgid "Last changes"
 msgstr "Dernières modifications"
 
@@ -1341,17 +1340,16 @@ msgid_plural "%(count)d collections"
 msgstr[0] "%(count)d collection"
 msgstr[1] "%(count)d collections"
 
-#: web/base.py:136 web/base.py:244 web/base.py:496 web/base.py:1128
+#: web/base.py:323 web/base.py:452 web/base.py:683 web/base.py:1153
 msgid "Access not allowed"
 msgstr "Accès non autorisé"
 
-#: web/base.py:138 web/base.py:246 web/base.py:498 web/base.py:1130
+#: web/base.py:325 web/base.py:454 web/base.py:685 web/base.py:1155
 msgid ""
 "Please login or contact the website administator to get a private access."
 msgstr ""
 "Connectez-vous s'il vous plaît ou bien contactez l'administrateur du site "
 "pour obtenir un accès privé."
-
 
 #~ msgid "username"
 #~ msgstr "nom d'utilisateur"

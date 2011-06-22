@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-29 21:26+0200\n"
+"POT-Creation-Date: 2011-06-22 14:44+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Guillaume Pellerin <yomguy@parisson.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,38 +18,38 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n>1\n"
 
-#: htdocs/js/locale.js:28
+#: htdocs/js/locale.js:2
 msgid "title"
 msgstr "titre"
 
-#: htdocs/js/locale.js:29
+#: htdocs/js/locale.js:3
 msgid "description"
 msgstr "description"
 
-#: htdocs/js/locale.js:30
+#: htdocs/js/locale.js:4
 msgid "delete the marker permanently?"
 msgstr "supprimer le marqueur définitivement ?"
 
-#: htdocs/js/locale.js:31
+#: htdocs/js/locale.js:5
 msgid "marker added to the selected playlist"
 msgstr "marqueur ajouté à la liste de lecture"
 
-#: htdocs/js/locale.js:32
+#: htdocs/js/locale.js:6
 msgid "item added to the selected playlist"
 msgstr "item ajouté à la liste de lecture"
 
-#: htdocs/js/locale.js:33
+#: htdocs/js/locale.js:7
 msgid "collection added to the selected playlist"
 msgstr "collection ajoutée à la liste de lecture"
 
-#: htdocs/js/locale.js:34
-msgid "there is at least one unsaved marker"
-msgstr "il y a au moins un marqueur non sauvegardé"
+#: htdocs/js/locale.js:8
+msgid "there are unsaved or modified markers"
+msgstr "il y a des marqueurs modifiés ou non sauvegardés"
 
-#: htdocs/js/locale.js:35
+#: htdocs/js/locale.js:9
 msgid "If you exit the page you will loose your changes"
 msgstr "Si vous sortez de la page, vous perdrez vos modifications"
 
-#: htdocs/js/locale.js:36
+#: htdocs/js/locale.js:10
 msgid "author"
 msgstr "auteur"
