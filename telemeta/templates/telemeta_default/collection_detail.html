@@ -29,26 +29,7 @@
     });
 
         {% endif %}
-//    var setupPlaylist = function(){
-//        {% if user.is_authenticated %}
-//        var p = playlistUtils;
-//        {% for playlist in playlists %}
-//        p.addPlaylist('{{ playlist.playlist.title }}','{{playlist.playlist.public_id}}');
-//        {% endfor %}
-//
-//        {% endif %}
-//        {% if collection %}
-//        var anchor = jQuery('#_add_to_playlist');
-//        if(anchor.length){
-//        anchor.click(function(){
-//            p.showAddResourceToPlaylist(anchor,'collection','{{collection.id}}',gettrans('collection added to the selected playlist'));return false;
-//        });
-//        }
-//        {% endif %}
-//    };
-//    jQuery(document).ready(function(){
-//        setupPlaylist();
-//    });
+
 </script>
 {% endblock %}
 
@@ -218,6 +199,14 @@
         {% endblock infos %}
     </div>
 {% endblock %}
+{% block deleteitem %}
+{% if user.is_authenticated and perms.telemeta.delete_mediacollection %}
+ <a href="#" onclick="if(confirm(gettrans('delete the item permanently?'))){window.location.href='{% url telemeta-collection-delete collection.public_id %}';};return false;"
+        class="component_icon button icon_delete" style="float:right;margin-top:0.5em;margin-bottom:1em">{% trans "Delete" %}</a>
+{% endif %}
+
+{% endblock %}
+
 {% else %}
     <p>No such collection</p>
 {% endif %}
