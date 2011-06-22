@@ -93,14 +93,14 @@
     {% if item.file %}
     {% if public_access or user.is_staff or user.is_superuser %}
     <div id="player_maximized" class="ts-skin-lab">
-        <a href="#" class="embed_player_frame">&lt;/&gt;</a>
         <a href="#" class="toggle">Minimize</a>
+        <a href="#" class="embed_player_frame">&lt;/&gt;</a>
         <div class="wazing"></div>
     </div>
     <div id="rightcol">
         <div id="player_minimized" class="ts-skin-lab">
-            <a href="#" class="embed_player_frame">&lt;/&gt;</a>
             <a href="#" class="toggle">Maximize</a>
+            <a href="#" class="embed_player_frame">&lt;/&gt;</a>
             <div class="wazing"></div>
             <div id="player" class="ts-player">
             </div>
@@ -264,7 +264,7 @@
 </div> <!-- with-rightcol -->
 {% if user.is_authenticated and perms.telemeta.delete_mediaitem %}
 <div style="float: right;">
- <a href="#" onclick="if(confirm(gettrans('delete the marker permanently?'))){window.location.href='{% url telemeta-item-delete item.public_id %}';};return false;"  class="component_icon button icon_delete">{% trans "Delete" %}</a>
+ <a href="#" onclick="if(confirm(gettrans('delete the item permanently?'))){window.location.href='{% url telemeta-item-delete item.public_id %}';};return false;"  class="component_icon button icon_delete">{% trans "Delete" %}</a>
 </div>
 {% endif %}
 {% endblock %}

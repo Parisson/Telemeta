@@ -494,7 +494,9 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                         var player_url = urlNormalized(); //defined in application.js
                         var size= player.getImageSize();
                         player_url += "/player/"+size.width+"x"+size.height;
-                        var input_text = "<iframe width='"+size.width+"' height='"+size.height+
+                        var iframeSpanW = 15;
+                        var iframeSpanH = 85;
+                        var input_text = "<iframe width='"+(size.width+iframeSpanW)+"' height='"+(size.height+iframeSpanH)+
                             "' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='"+
                             player_url+"'></iframe>";
                         var ipt = $J('<input/>').attr('type','text');
@@ -504,7 +506,7 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                         });
                         var p = new PopupDiv({
                             invoker: $J(this),
-                            title: gettrans('Paste HTML to embed in website'),
+                            title: gettrans('Paste HTML to embed player in website'),
                             content: ipt,
                             defaultCloseOperation:'remove',
                             focusable: 'true',
