@@ -248,19 +248,13 @@ urlpatterns = patterns('',
     # JSON RPC
     url(r'json/$', jsonrpc_site.dispatch, name='jsonrpc_mountpoint'),
     # for the graphical browser/web console only, omissible
-    url(r'json/browse/', 'jsonrpc.views.browse', name="jsonrpc_browser"), 
-    # for HTTP GET only, also omissible
-    #url(r'^json/(?P<method>[a-zA-Z0-9.]+)$', jsonrpc_site.dispatch),  
+    # url(r'json/browse/', 'jsonrpc.views.browse', name="jsonrpc_browser"), 
     
     # Playlists
     url(r'^playlists/(?P<public_id>[a-zA-Z0-9]+)/(?P<resource_type>[a-zA-Z0-9]+)/csv/$', web_view.playlist_csv_export, name="telemeta-playlist-csv-export"),
     
     # RSS feeds
     url(r'^rss/$', LastestRevisionsFeed(), name="telemeta-rss"),
-    
-    # Not allowed
-    url(r'/*/(?P<public_id>[A-Za-z0-9._-]+)/not_allowed/$', web_view.not_allowed, name="telemeta-not-allowed"),
-
 
 )
 

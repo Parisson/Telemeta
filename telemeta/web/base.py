@@ -131,8 +131,14 @@ class WebView(object):
         
     def collection_detail(self, request, public_id, template='telemeta/collection_detail.html'):
         collection = MediaCollection.objects.get(public_id=public_id)
+        
         if collection.public_access == 'none' and not (request.user.is_staff or request.user.is_superuser):
-            return HttpResponseRedirect('not_allowed/')
+            mess = ugettext('Access not allowed') 
+            title = ugettext('Collection') + ' : ' + public_id + ' : ' + mess
+            description = ugettext('Please login or contact the website administator to get a private access.')
+            messages.error(request, title)
+            return render(request, 'telemeta/messages.html', {'description' : description})
+
         public_access = self.get_public_access(collection.public_access, collection.recorded_from_year, 
                                                 collection.recorded_to_year)
         playlists = self.get_playlists(request)
@@ -235,7 +241,11 @@ class WebView(object):
         
         item_public_access = item.public_access == 'none' or item.collection.public_access == 'none'
         if item_public_access and not (request.user.is_staff or request.user.is_superuser):
-            return HttpResponseRedirect('not_allowed/')
+            mess = ugettext('Access not allowed') 
+            title = ugettext('Item') + ' : ' + public_id + ' : ' + mess
+            description = ugettext('Please login or contact the website administator to get a private access.')
+            messages.error(request, title)
+            return render(request, 'telemeta/messages.html', {'description' : description})
             
         # Get TimeSide processors
         formats = []
@@ -478,11 +488,16 @@ class WebView(object):
         """Export a given media item in the specified format (OGG, FLAC, ...)"""
         
         item = MediaItem.objects.get(public_id=public_id)
-        
         public_access = self.get_public_access(item.public_access, str(item.recorded_from_date).split('-')[0], 
                                                 str(item.recorded_to_date).split('-')[0])
-        if (not public_access or not extension in settings.TELEMETA_STREAMING_FORMATS) and not request.user.is_staff:
-            return HttpResponseRedirect('not_allowed/')
+        
+        if (not public_access or not extension in settings.TELEMETA_STREAMING_FORMATS) and \
+                    not (request.user.is_staff or request.user.is_superuser):
+            mess = ugettext('Access not allowed') 
+            title = 'Item file : ' + public_id + '.' + extension + ' : ' + mess
+            description = ugettext('Please login or contact the website administator to get a private access.')
+            messages.error(request, title)
+            return render(request, 'telemeta/messages.html', {'description' : description})
 
         for encoder in self.encoders:
             if encoder.file_extension() == extension:
@@ -1089,13 +1104,6 @@ class WebView(object):
         feed = rss.to_xml(encoding='utf-8')
         response = HttpResponse(feed, mimetype='application/rss+xml')
         return response
-        
-    def not_allowed(self, request,  public_id = None):
-        mess = ugettext('Access not allowed') 
-        title = public_id + ' : ' + mess
-        description = ugettext('Please login or contact the website administator to get admin or private access.')
-        messages.error(request, title)
-        return render(request, 'telemeta/messages.html', {'description' : description})
     
     @method_decorator(login_required)
     def profile_detail(self, request, username, template='telemeta/profile_detail.html'):
@@ -1117,7 +1125,11 @@ class WebView(object):
         
         user = User.objects.get(username=username)
         if user != request.user and not request.user.is_staff:
-            return HttpResponseRedirect('/accounts/'+username+'/not_allowed/')
+            mess = ugettext('Access not allowed') 
+            title = ugettext('User profile') + ' : ' + username + ' : ' + mess
+            description = ugettext('Please login or contact the website administator to get a private access.')
+            messages.error(request, title)
+            return render(request, 'telemeta/messages.html', {'description' : description})
         
         try:
             profile = user.get_profile()
