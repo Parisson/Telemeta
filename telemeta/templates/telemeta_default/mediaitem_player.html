@@ -2,7 +2,19 @@
 {% load telemeta_utils %}
 {% load i18n %}
 
-{% block header %}{% endblock %}
+
+{% block stylesheets %}
+{{ block.super }}
+    <style type="text/css">
+        #rightcol {
+            width: {{width}}px;
+        }
+        .ts-skin-lab .ts-player .ts-wave {
+            height: {{height}}px;
+        }
+    </style>
+{% endblock %}
+
 {% block title %}{% endblock %}
 {% block title_buttons %}{% endblock %}
 
@@ -25,8 +37,6 @@
     {% endif %}
 {% endif %}
 </div>
-
-width : {{ width }}, height : {{ height }}
 
 {% endblock content%}
 {% endblock layout %}

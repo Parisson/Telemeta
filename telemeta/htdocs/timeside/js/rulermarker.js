@@ -237,7 +237,15 @@ Timeside.classes.RulerMarker = Timeside.classes.TimesideClass.extend({
     //
     createCanvasPath: function(x,w){
         var halfW = w >>> 1;
-        var h = this.$J(window).height();
+        //in order to calculate the line height, we could simply set the wave height. However, due to potential
+        //resizing afterwards, the line could not stretch till the bottom (if it overflows it's fine, as the wave div container has 
+        //overflow = hidden). As we do not want to rebuild the canvas on resize,
+        //we assess an height which will 99% overflow the wave height in any case.
+        //We use the wave height and the window height, and take 2 times
+        //the maximum of those heights:
+        var wdwH = this.$J(window).height();
+        var waveH = this.getWaveHeight();
+        var h = 2* (wdwH > waveH ? wdwH : waveH);
         return 'M '+(x-halfW)+' 0 L '+(x)+' '+(halfW)+' L '+x+' '+h+
         ' L '+ (x+1)+' '+h+' L '+(x+1)+ ' '+(halfW)+' L '+(x+halfW+1)+' 0 z';
     },
