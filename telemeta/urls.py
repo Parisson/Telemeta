@@ -141,11 +141,12 @@ urlpatterns = patterns('',
         dict(template='telemeta/collection_edit.html'), name="telemeta-collection-edit"),
     url(r'^collections/(?P<public_id>[A-Za-z0-9._-]+)/copy/$', collection_view.collection_copy,
         dict(template='telemeta/collection_edit.html'), name="telemeta-collection-copy"),
-    url(r'^collection/add/$', collection_view.collection_add,
+    url(r'^collections/add/$', collection_view.collection_add,
         dict(template='telemeta/collection_add.html'), name="telemeta-collection-add"),
-    url(r'^collection/(?P<public_id>[A-Za-z0-9._-]+)/add_item/$', item_view.item_add,
+    url(r'^collections/(?P<public_id>[A-Za-z0-9._-]+)/add_item/$', item_view.item_add,
         dict(template='telemeta/mediaitem_add.html'), name="telemeta-collection-additem"),
-
+    url(r'^collections/(?P<public_id>[A-Za-z0-9._-]+)/delete/$', collection_view.item_delete, name="telemeta-collection-delete"),
+    
     # search
     url(r'^search/$', general_view.search, name="telemeta-search"),
     url(r'^search/collections/$', general_view.search, {'type': 'collections'}, 
