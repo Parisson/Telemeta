@@ -131,7 +131,7 @@ class WebView(object):
         
     def collection_detail(self, request, public_id, template='telemeta/collection_detail.html'):
         collection = MediaCollection.objects.get(public_id=public_id)
-        if collection.public_access == 'none' and not request.user.is_staff:
+        if collection.public_access == 'none' and not (request.user.is_staff or request.user.is_superuser):
             return HttpResponseRedirect('not_allowed/')
         public_access = self.get_public_access(collection.public_access, collection.recorded_from_year, 
                                                 collection.recorded_to_year)
@@ -233,7 +233,8 @@ class WebView(object):
         else:
             item = MediaItem.objects.get(public_id=public_id)
         
-        if (item.public_access == 'none' or item.collection.public_access == 'none') and not request.user.is_staff:
+        item_public_access = item.public_access == 'none' or item.collection.public_access == 'none'
+        if item_public_access and not (request.user.is_staff or request.user.is_superuser):
             return HttpResponseRedirect('not_allowed/')
             
         # Get TimeSide processors
@@ -263,26 +264,25 @@ class WebView(object):
                     'public_access': public_access, 'width': width, 'height': height, 
                     })
     
-    def get_public_access(self, access, year_from, year_to):
+    def get_public_access(self, access, year_from=None, year_to=None):
         # Rolling publishing date : public access is given when time between recorded year 
         # and current year is over the settings value PUBLIC_ACCESS_PERIOD
-        if year_to:
-            year = year_to
-        elif year_from:
+        if year_from and not year_from == 0:
             year = year_from
+        elif year_to and not year_to == 0:
+            year = year_to
         else:
-            year = False
+            year = 0
         if access == 'full':
             public_access = True
         else:
             public_access = False
-        if year and not year == 'None':
-            year_now = datetime.datetime.now().strftime("%Y")
-            if int(year_now) - int(year) >= settings.TELEMETA_PUBLIC_ACCESS_PERIOD:
-                public_access = True
-        else:
-            public_access = False
-        
+            if year and not year == 'None':
+                year_now = datetime.datetime.now().strftime("%Y")
+                if int(year_now) - int(year) >= settings.TELEMETA_PUBLIC_ACCESS_PERIOD:
+                    public_access = True
+            else:
+                public_access = False        
         return public_access
         
     @method_decorator(permission_required('telemeta.change_mediaitem'))
@@ -1108,7 +1108,7 @@ class WebView(object):
         return render(request, template, {'profile' : profile, 'usr': user, 'playlists': playlists})
         
     def profile_edit(self, request, username, template='telemeta/profile_edit.html'):
-        if request.user.is_staff:
+        if request.user.is_superuser:
             user_hidden_fields = ['profile-user', 'user-password', 'user-last_login', 'user-date_joined']
         else:
             user_hidden_fields = ['user-username', 'user-is_staff', 'profile-user', 'user-is_active', 

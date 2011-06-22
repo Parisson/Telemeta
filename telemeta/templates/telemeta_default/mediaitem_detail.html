@@ -151,7 +151,7 @@
             <dd><a href="{% url telemeta-collection-detail item.collection.public_id %}">{{ item.collection }}</a></dd>
             <dt>{% trans "Recording date" %}</dt>
 
-            <dd>{% if item.recorded_from_date %}{{ item.recorded_from_date }} {{ item.recorded_to_date|prepend:" - "  }}{% endif %}</dd>
+            <dd>{% if item.recorded_from_date %}{{ item.recorded_from_date }}{% endif %}{% if item.recorded_from_date and item.recorded_to_date%} - {% endif %}{% if item.recorded_to_date %}{{ item.recorded_to_date}}{% endif %}</dd>
 
         </dl>
         {% endblock general_info %}
@@ -167,7 +167,7 @@
                 {% dl_field item "cultural_area" %}
                 {% dl_field item "language" %}
                 {% dl_field item "ethnic_group" placeholder %}
-                <dt>{% trans "Comments" %}</dt>
+                <dt>{% trans "Comments / ethnographic context" %}</dt>
                 <dd>{{ item.context_comment|html_line_break|safe }}</dd>
                 {% dl_field item "keywords" join with ", " %}
             </dl>

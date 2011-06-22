@@ -83,7 +83,7 @@
  <a href="{% url telemeta-items %}" class="green">{% trans "Items" %}</a>
  <a href="{% url telemeta-geo-continents %}" class="yellow">{% trans "Geo Navigator" %}</a>
  <a href="{% url telemeta-search-criteria %}" class="orange">{% trans "Advanced search" %}</a>
- {% if user.is_staff %}
+ {% if user.is_staff or user.is_superuser %}
  <a href="{% url telemeta-admin %}" class="red">{% trans "Admin" %}</a>
  {% endif %}
 
