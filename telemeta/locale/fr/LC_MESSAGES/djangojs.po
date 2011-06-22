@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-22 18:34+0200\n"
+"POT-Creation-Date: 2011-06-22 18:37+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Guillaume Pellerin <yomguy@parisson.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -61,3 +61,7 @@ msgstr "Coller le code HTML pour inclure le lecteur dans un site"
 #: htdocs/js/locale.js:12
 msgid "delete the item permanently?"
 msgstr "supprimer l'item définitivement ?"
+
+#: htdocs/js/locale.js:13
+msgid "delete the collection permanently?"
+msgstr "supprimer la collection définitivement ?"
