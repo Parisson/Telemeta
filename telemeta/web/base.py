@@ -313,6 +313,10 @@ class GeneralView(object):
 
         return HttpResponse("\n".join(data))
 
+    def users(self, request):
+        users = User.objects.all()
+        return render(request, 'telemeta/users.html', {'users': users})
+        
 class CollectionView(object):
     """Provide Collections web UI methods"""
 

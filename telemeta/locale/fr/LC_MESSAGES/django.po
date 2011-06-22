@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-22 14:44+0200\n"
+"POT-Creation-Date: 2011-06-22 17:41+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Olivier Guilyardi <olivier samalyse com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -531,6 +531,9 @@ msgstr "Administration générale"
 #: templates/telemeta_default/admin.html:20
 #: templates/telemeta_default/admin_instruments.html:6
 #: templates/telemeta_default/admin_users.html:6
+#: templates/telemeta_default/base.html:87
+#: templates/telemeta_default/users.html:5
+#: templates/telemeta_default/users.html:8
 msgid "Users"
 msgstr "Utilisateurs"
 
@@ -564,40 +567,18 @@ msgid "No enumerations"
 msgstr "Pas d'énumérations"
 
 #: templates/telemeta_default/admin_instruments.html:15
-#: templates/telemeta_default/admin_users.html:32
+#: templates/telemeta_default/admin_users.html:11
+#: templates/telemeta_default/users.html:16
 msgid "No users"
 msgstr "Pas d'utilisateurs"
-
-#: templates/telemeta_default/admin_users.html:12
-#: templates/telemeta_default/inc/module_revisions.html:14
-msgid "User"
-msgstr "Utilisateur"
-
-#: templates/telemeta_default/admin_users.html:13
-#: templates/telemeta_default/profile_detail.html:32
-msgid "First Name"
-msgstr "Prénom"
-
-#: templates/telemeta_default/admin_users.html:14
-#: templates/telemeta_default/profile_detail.html:33
-msgid "Last Name"
-msgstr "Nom"
-
-#: templates/telemeta_default/admin_users.html:15
-msgid "E-mail"
-msgstr "Courriel"
-
-#: templates/telemeta_default/admin_users.html:16
-msgid "Groups"
-msgstr "Groupes"
 
 #: templates/telemeta_default/base.html:53
 msgid "Welcome"
 msgstr "Bienvenue"
 
 #: templates/telemeta_default/base.html:59
-msgid "Account"
-msgstr "Compte"
+msgid "Profile"
+msgstr "Profil"
 
 #: templates/telemeta_default/base.html:60
 #: templates/telemeta_default/base.html:64
@@ -635,19 +616,19 @@ msgstr "Géo-Navigateur"
 msgid "Advanced search"
 msgstr "Recherche avancée"
 
-#: templates/telemeta_default/base.html:87
+#: templates/telemeta_default/base.html:90
 msgid "Admin"
 msgstr "Admin"
 
-#: templates/telemeta_default/base.html:113
+#: templates/telemeta_default/base.html:116
 msgid "Powered by"
 msgstr "Propulsé par"
 
-#: templates/telemeta_default/base.html:114
+#: templates/telemeta_default/base.html:117
 msgid "By"
 msgstr "Par"
 
-#: templates/telemeta_default/base.html:119
+#: templates/telemeta_default/base.html:122
 msgid ""
 "Usage of the archives in the respect of cultural heritage of the original "
 "communities."
@@ -655,7 +636,7 @@ msgstr ""
 "Usage des archives réservé dans le respect du patrimoine culturel des "
 "communautés d'origine."
 
-#: templates/telemeta_default/base.html:125
+#: templates/telemeta_default/base.html:128
 #: templates/telemeta_default/collection_detail.html:137
 msgid "Legal notices"
 msgstr "Mentions légales"
@@ -695,7 +676,7 @@ msgid "Save"
 msgstr "Enregistrer"
 
 #: templates/telemeta_default/collection_detail.html:5
-#: templates/telemeta_default/collection_detail_dc.html:5 web/base.py:324
+#: templates/telemeta_default/collection_detail_dc.html:5 web/base.py:328
 msgid "Collection"
 msgstr "Collection"
 
@@ -976,7 +957,7 @@ msgstr "Mot de passe oublié"
 
 #: templates/telemeta_default/mediaitem_add.html:5
 #: templates/telemeta_default/mediaitem_copy.html:5
-#: templates/telemeta_default/mediaitem_detail.html:5 web/base.py:453
+#: templates/telemeta_default/mediaitem_detail.html:5 web/base.py:457
 msgid "Item"
 msgstr "Item"
 
@@ -1064,9 +1045,19 @@ msgstr "Formation"
 msgid "User Profile"
 msgstr "Profil utilisateur"
 
-#: templates/telemeta_default/profile_detail.html:8 web/base.py:1154
+#: templates/telemeta_default/profile_detail.html:8 web/base.py:1158
 msgid "User profile"
 msgstr "Profil utilisateur"
+
+#: templates/telemeta_default/profile_detail.html:32
+#: templates/telemeta_default/inc/user_list.html:7
+msgid "First Name"
+msgstr "Prénom"
+
+#: templates/telemeta_default/profile_detail.html:33
+#: templates/telemeta_default/inc/user_list.html:8
+msgid "Last Name"
+msgstr "Nom"
 
 #: templates/telemeta_default/profile_detail.html:34
 msgid "Email"
@@ -1160,13 +1151,26 @@ msgstr "Etat/Continent"
 msgid "No item"
 msgstr "Aucun item"
 
-#: templates/telemeta_default/inc/module_revisions.html:7 web/base.py:1185
+#: templates/telemeta_default/inc/module_revisions.html:7 web/base.py:1189
 msgid "Last changes"
 msgstr "Dernières modifications"
 
 #: templates/telemeta_default/inc/module_revisions.html:11
 msgid "Date"
 msgstr ""
+
+#: templates/telemeta_default/inc/module_revisions.html:14
+#: templates/telemeta_default/inc/user_list.html:6
+msgid "User"
+msgstr "Utilisateur"
+
+#: templates/telemeta_default/inc/user_list.html:9
+msgid "E-mail"
+msgstr "Courriel"
+
+#: templates/telemeta_default/inc/user_list.html:10
+msgid "Groups"
+msgstr "Groupes"
 
 #: templates/telemeta_default/registration/password_change_done.html:3
 #: templates/telemeta_default/registration/password_change_form.html:4
@@ -1340,16 +1344,19 @@ msgid_plural "%(count)d collections"
 msgstr[0] "%(count)d collection"
 msgstr[1] "%(count)d collections"
 
-#: web/base.py:323 web/base.py:452 web/base.py:683 web/base.py:1153
+#: web/base.py:327 web/base.py:456 web/base.py:687 web/base.py:1157
 msgid "Access not allowed"
 msgstr "Accès non autorisé"
 
-#: web/base.py:325 web/base.py:454 web/base.py:685 web/base.py:1155
+#: web/base.py:329 web/base.py:458 web/base.py:689 web/base.py:1159
 msgid ""
 "Please login or contact the website administator to get a private access."
 msgstr ""
 "Connectez-vous s'il vous plaît ou bien contactez l'administrateur du site "
 "pour obtenir un accès privé."
+
+#~ msgid "Account"
+#~ msgstr "Compte"
 
 #~ msgid "username"
 #~ msgstr "nom d'utilisateur"

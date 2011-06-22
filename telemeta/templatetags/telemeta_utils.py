@@ -299,3 +299,7 @@ def current_year():
 @register.filter
 def html_line_break(text):
     return text.replace('\n', '<br />')
+
+@register.simple_tag
+def profile(user):
+    return user.get_profile()

@@ -52,11 +52,11 @@
 <img src="images/user.png" alt="user" style="vertical-align:middle" />
 {% trans "Welcome" %}, 
 {% if user.first_name and user.last_name %}
-{{ user.first_name }} {{ user.last_name }}.
+{{ user.first_name }} {{ user.last_name }} |
 {% else %}
-{{ user.username }}.
+{{ user.username }} |
 {% endif %}
-<a href="{% url telemeta-profile-detail user.username %}">{% trans "Account" %}</a> |
+<a href="{% url telemeta-profile-detail user.username %}">{% trans "Profile" %}</a> |
 <a href="{% url telemeta-flatpage "help" %}">{% trans "Help" %}</a> | 
 <a href="{% url telemeta-logout %}">{% trans "Sign out" %}
 <img src="images/logout.png" alt="logout" style="vertical-align:middle" /></a>
@@ -83,8 +83,11 @@
  <a href="{% url telemeta-items %}" class="green">{% trans "Items" %}</a>
  <a href="{% url telemeta-geo-continents %}" class="yellow">{% trans "Geo Navigator" %}</a>
  <a href="{% url telemeta-search-criteria %}" class="orange">{% trans "Advanced search" %}</a>
+ {% if user.is_authenticated %}
+ <a href="{% url telemeta-users %}" class="red">{% trans "Users" %}</a>
+ {% endif %}
  {% if user.is_staff or user.is_superuser %}
- <a href="{% url telemeta-admin %}" class="red">{% trans "Admin" %}</a>
+ <a href="{% url telemeta-admin %}" class="black">{% trans "Admin" %}</a>
  {% endif %}
 
 {% endblock %}
