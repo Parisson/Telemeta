@@ -459,7 +459,7 @@ class ItemView(object):
             item = MediaItem.objects.get(public_id=public_id)
         
         item_public_access = item.public_access == 'none' or item.collection.public_access == 'none'
-        if item_public_access and not (request.user.is_staff or request.user.is_superuser):
+        if not item_public_access and not (request.user.is_staff or request.user.is_superuser):
             mess = ugettext('Access not allowed') 
             title = ugettext('Item') + ' : ' + public_id + ' : ' + mess
             description = ugettext('Please login or contact the website administator to get a private access.')
@@ -701,7 +701,7 @@ class ItemView(object):
                                                 str(item.recorded_to_date).split('-')[0])
         
         if (not public_access or not extension in settings.TELEMETA_STREAMING_FORMATS) and \
-                    not (request.user.is_staff or request.user.is_superuser):
+                    not (request.user.has_perm('telemeta.can_play_all_items') or request.user.is_superuser):
             mess = ugettext('Access not allowed') 
             title = 'Item file : ' + public_id + '.' + extension + ' : ' + mess
             description = ugettext('Please login or contact the website administator to get a private access.')
