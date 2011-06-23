@@ -524,8 +524,11 @@ class ItemView(object):
                     self.cache_data.delete_item_data(code)
                     self.cache_export.delete_item_data(code)
                     flags = MediaItemTranscodingFlag.objects.filter(item=item)
+                    analyses = MediaItemAnalysis.objects.filter(item=item)
                     for flag in flags:
                         flag.delete()
+                    for analysis in analyses:
+                        analysis.delete()
                 item.set_revision(request.user)
                 return HttpResponseRedirect('/items/'+code)
         else:
@@ -614,11 +617,19 @@ class ItemView(object):
                 pipe.run()
 
                 mime_type = decoder.format()
-                analysis = MediaItemAnalysis(item=item, name='MIME type', analyzer_id='mime_type', unit='', value=mime_type)
+                analysis = MediaItemAnalysis(item=item, name='MIME type', 
+                                             analyzer_id='mime_type', unit='', value=mime_type)
                 analysis.save()
-                analysis = MediaItemAnalysis(item=item, name='Channels', analyzer_id='channels', unit='', value=decoder.channels())
+                analysis = MediaItemAnalysis(item=item, name='Channels', 
+                                             analyzer_id='channels', unit='', value=decoder.channels())
                 analysis.save()
-                
+                analysis = MediaItemAnalysis(item=item, name='Samplerate', 
+                                             analyzer_id='samplerate', unit='Hz', value=unicode(decoder.audiorate))
+                analysis.save()
+                analysis = MediaItemAnalysis(item=item, name='Resolution', 
+                                             analyzer_id='resolution', unit='bits', value=unicode(decoder.audiowidth))
+                analysis.save()
+
                 for analyzer in analyzers_sub:
                     value = analyzer.result()
                     if analyzer.id() == 'duration':
@@ -787,7 +798,6 @@ class ItemView(object):
         else:
             formset = FormSet(instance=item)
         return render(request, template, {'item': item, 'formset': formset,})
-
 
 
 class AdminView(object):
