@@ -3,7 +3,7 @@
 {% load telemeta_utils %}
 
 {% block title %}
-<img src="images/item.png" style="vertical-align:middle" /> Item : {{ item }}
+<img src="{% url telemeta-images "item.png" %}" style="vertical-align:middle" /> Item : {{ item }}
 {% endblock %}
 
 {% block title_buttons %}
@@ -42,7 +42,7 @@
         class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
     <a href="#" class="component_icon button icon_save" 
 onclick="var d=document; d.getElementById('wait-img').style.display='inline'; setTimeout(function(){d.getElementById('_editItemForm').submit();},300); return false;">{% trans "Save" %}</a>
-           <img id="wait-img" style="display:none" style="vertical-align:middle" alt="wait" src="/images/wait.gif"/>
+           <img id="wait-img" style="display:none" style="vertical-align:middle" alt="wait" src="{% url telemeta-images  "wait.gif" %}" />
     </div>
     </form>
 </div>

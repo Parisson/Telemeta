@@ -49,7 +49,7 @@
 
 <div id="auth_info">
 {% if user.is_authenticated %}
-<img src="images/user.png" alt="user" style="vertical-align:middle" />
+<img src="{% url telemeta-images "user.png" %}" alt="user" style="vertical-align:middle" />
 {% trans "Welcome" %}, 
 {% if user.first_name and user.last_name %}
 {{ user.first_name }} {{ user.last_name }} |
@@ -59,7 +59,7 @@
 <a href="{% url telemeta-profile-detail user.username %}">{% trans "Profile" %}</a> |
 <a href="{% url telemeta-flatpage "help" %}">{% trans "Help" %}</a> | 
 <a href="{% url telemeta-logout %}">{% trans "Sign out" %}
-<img src="images/logout.png" alt="logout" style="vertical-align:middle" /></a>
+<img src="{% url telemeta-images "logout.png" %}" alt="logout" style="vertical-align:middle" /></a>
 {% else %}
 <a href="{% url telemeta-flatpage "help" %}">{% trans "Help" %}</a> |
 <a href="{% url telemeta-login %}?next={{ request.path|urlencode }}">{% trans "Sign in" %}</a>

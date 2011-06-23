@@ -12,17 +12,13 @@
 
 {% block extra_javascript %}
 {% if item %}
-
-
 <script src="{% url telemeta-timeside "js/libs/soundmanager2-nodebug-jsmin.js" %}" type="text/javascript"></script>
 <script src="{% url telemeta-timeside "js/timeside.js" %}" type="text/javascript"></script>
 <script src="{% url telemeta-js "popupdiv-min.js" %}" type="text/javascript"></script>
 <script src="{% url telemeta-js "playlist.js" %}" type="text/javascript"></script>
 <script src="{% url telemeta-js "playerLoader.js" %}" type="text/javascript"></script>
 <script src="{% url telemeta-js "divmarker.js" %}" type="text/javascript"></script>
-
 <script type="text/javascript">
-    //soundManager.url = '{% url telemeta-swf "./" %}';
     soundManager.url = "{% url telemeta-timeside "swf/" %}";
     soundManager.flashVersion = 9;
     soundManager.useMovieStar = true; // enable MP4/M4A/AAC
@@ -52,10 +48,10 @@
     {% endfor %}
     
 
-//loadPlayer(analizerUrl, soundUrl, itemId, visualizers, currentUserName, isStaffOrSuperuser)
- //  django before was: if user.is_staff or user.is_superuser 
+ // loadPlayer(analizerUrl, soundUrl, itemId, visualizers, currentUserName, isStaffOrSuperuser)
+ // django before was: if user.is_staff or user.is_superuser 
 
-   {% if user.is_superuser %}
+   {% if perms.can_play_all_items %}
     var superuser = true;
    {% else %}
     var superuser = false;
@@ -70,7 +66,7 @@
 {% if item %}
 
 {% block title %}
-<img src="images/item.png" alt="item" style="vertical-align:middle" /> Item : {{ item }}
+<img src="{% url telemeta-images "item.png" %}" alt="item" style="vertical-align:middle" /> Item : {{ item }}
 {% endblock %}
 
 {% block title_buttons %}
@@ -89,9 +85,9 @@
 {% endblock %}
 
 {% block content %}
-<div class="{% if item.file %}{% if public_access or user.is_staff or user.is_superuser %}with-rightcol{% endif %}{% endif %}">
+<div class="{% if item.file %}{% if public_access or perms.telemeta.can_play_all_items %}with-rightcol{% endif %}{% endif %}">
     {% if item.file %}
-    {% if public_access or user.is_staff or user.is_superuser %}
+    {% if public_access or perms.telemeta.can_play_all_items %}
     <div id="player_maximized" class="ts-skin-lab">
         <a href="#" class="toggle">Minimize</a>
         <a href="#" class="embed_player_frame">&lt;/&gt;</a>
@@ -109,7 +105,7 @@
         <!-- </div> -->
         <div id="tabs_container">
             <!-- this div will be hidden when everything is fully loaded-->
-            <span id="loading_span" href="#"><img style="vertical-align:middle" alt="wait" src="/images/wait.gif"/>&nbsp;
+            <span id="loading_span" href="#"><img style="vertical-align:middle" alt="wait" src="{% url telemeta-images "wait.gif" %}" />&nbsp;
                 <span id="loading_span_text">Loading...</span></span>
             <a id="tab_analysis" style="display:none" class ="tab" href="#">{% trans "Analysis" %}</a><!--
              do not let space here as it appears in the document!!!!!
@@ -131,7 +127,7 @@
 
         {% if audio_export_enabled or user.is_staff or user.is_superuser %}
         <div class="exporter">
-            <p><img src="images/download.png" alt="download" style="vertical-align:middle" /> {% trans "Download:" %}
+            <p><img src="{% url telemeta-images "download.png" %}" alt="download" style="vertical-align:middle" /> {% trans "Download:" %}
                 {% for format in export_formats %}
                 <a href="{% url telemeta-item-export item.public_id,format.extension %}">
                     <img src="images/{{ format.extension }}.png" style="vertical-align:middle" alt="{{ format.extension }}" /></a>
@@ -170,7 +166,7 @@
                 {% dl_field item "cultural_area" %}
                 {% dl_field item "language" %}
                 {% dl_field item "ethnic_group" placeholder %}
-                <dt>{% trans "Comments / ethnographic context" %}</dt>
+                <dt>{% trans "Ethnographic context" %}</dt>
                 <dd>{{ item.context_comment|html_line_break|safe }}</dd>
                 {% dl_field item "keywords" join with ", " %}
             </dl>

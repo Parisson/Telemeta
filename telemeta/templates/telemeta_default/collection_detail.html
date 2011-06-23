@@ -11,8 +11,8 @@
 <script>
     {% if user.is_authenticated %}
     jQuery(document).ready(function(){
-
         var p = playlistUtils;
+        
         {% for playlist in playlists %}
         p.addPlaylist('{{ playlist.playlist.title }}','{{playlist.playlist.public_id}}');
         {% endfor %}
@@ -25,11 +25,8 @@
         });
         }
         {% endif %}
-    
     });
-
         {% endif %}
-
 </script>
 {% endblock %}
 
@@ -54,9 +51,9 @@
 {% endblock %}
 
 {% block content %}
-    <div class="{% if collection.has_mediafile %}{% if public_access or user.is_staff or user.is_superuser %}with-rightcol{% endif %}{% endif %}">
+    <div class="{% if collection.has_mediafile %}{% if public_access or perms.telemeta.can_play_all_items %}with-rightcol{% endif %}{% endif %}">
         {% if collection.has_mediafile %}
-        {% if public_access or user.is_staff or user.is_superuser %}
+        {% if public_access or perms.telemeta.can_play_all_items %}
         <div id="rightcol">
             <div id="collection_player">
              <div class="title">
