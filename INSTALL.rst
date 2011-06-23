@@ -85,6 +85,8 @@ Install Telemeta
 
         sudo python setup.py install
 
+---------------------
+Fast testing 
 
 --------------------------
 Create a Django project
@@ -108,6 +110,11 @@ We need 2 directories for media and caching::
 
 You might want to place these data directories somewhere else, no pb.
 
+------------------------
+Create the database
+------------------------
+
+Telemeta needs MySQL to work well and fast. So you need to create a MySQL database before trying it.
 
 ----------------------------------
 Configure the telemeta project

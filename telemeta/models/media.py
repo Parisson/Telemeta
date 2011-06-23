@@ -242,7 +242,7 @@ class MediaItem(MediaResource):
     ethnic_group          = WeakForeignKey('EthnicGroup', related_name="items", 
                                            verbose_name=_('population / social group'))
     language              = CharField(_('language'))
-    context_comment       = TextField(_('comments'))
+    context_comment       = TextField(_('comments / ethnographic context'))
     moda_execut           = CharField(_('moda_execut'))
     
     # Musical informations
@@ -285,7 +285,6 @@ class MediaItem(MediaResource):
 
     class Meta(MetaCore):
         db_table = 'media_items'
-#        ordering = ['code', 'old_code']
 
     def is_valid_code(self, code):
         "Check if the item code is well formed"

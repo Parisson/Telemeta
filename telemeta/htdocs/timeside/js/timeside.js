@@ -244,7 +244,6 @@ Timeside.classes.TimesideClass = Timeside.Class.extend({
      * 3 methods defining listeners, events fire and bind (aloing the lines of jQuery.bind, unbind and trigger.
      * the only difference is that 'trigger' is 'fire' here). namespaces are allowed as in jQuery
      */
-  
     bind : function(eventType, callback, optionalThisArgInCallback){
         if(!callback || typeof callback !== 'function'){
             this.debug('TimesideClass.bind: cannot bind '+eventType+' to callback: the latter is null or not a function');
@@ -446,7 +445,6 @@ Timeside.classes.TimesideArray = Timeside.classes.TimesideClass.extend({
         };
         this.length = me.length; //in order to match the javascript array property
     },
-    //length:0, //implement it as public property to be consistent with Array length property. Be careful however to NOT TO modify directly this property!!!
     //adds at the end of the array. If index is missing the object is appended at the end
     add : function(object, index){
         var array = this.toArray();
@@ -486,7 +484,6 @@ Timeside.classes.TimesideArray = Timeside.classes.TimesideClass.extend({
                 this.debug('TimesideClass.each: each called without arguments!!!');
                 return;
             case 1:
-                //callback = arg[0];
                 startInclusive = 0;
                 endExclusive = l;
                 break;
@@ -496,12 +493,10 @@ Timeside.classes.TimesideArray = Timeside.classes.TimesideClass.extend({
                 }
                 startInclusive = arg[0]=== undefined ? 0 : arg[0];
                 endExclusive = l;
-                //callback = arg[len-1];
                 break;
             default:
                 startInclusive = arg[0]=== undefined ? 0 : arg[0];
                 endExclusive = arg[1]=== undefined ? l : arg[1];
-        //callback = arg[len-1];
         }
         callback = arg[len-1];
         if(!(callback instanceof Function)){
@@ -681,7 +676,6 @@ Timeside.load =function(container, soundUrl, durationInMsec, soundImgFcn, soundI
                                         var val = style[availableAttrs[k]];
                                         if(val){
                                             attr[availableAttrs[k]] = val;
-                                        //console.log(val); //REMOVE THIS
                                         }
                                     }
                                 }
@@ -692,8 +686,6 @@ Timeside.load =function(container, soundUrl, durationInMsec, soundImgFcn, soundI
                     },
 
                     Raphael: function(element,w,h){
-                       
-
                         //pass jQueryElm.get(0) as first argument, in case)
                         if(raphael_papers[element]){
                             return raphael_papers[element];
@@ -719,7 +711,6 @@ Timeside.load =function(container, soundUrl, durationInMsec, soundImgFcn, soundI
             ts.utils.loadScripts(thisScriptPath,ts_scripts, function() {
                 var p = new ts.classes.Player(playerDiv, sound, durationInMsec, soundImgFcn, soundImgSize,
                     markersArray,newMarkerCallback);
-                //p.setupInterface(markerMap || []);
                 ts.player = p;
                 onReady(p);
                 return false;

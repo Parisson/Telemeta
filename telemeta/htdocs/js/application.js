@@ -29,8 +29,6 @@
  * which might be in conflict with jQuery dollar sign.
  */
 
-
-
 //returns the full path of the current url location removing the last slash '/' followed by one or more '#', if any
 function urlNormalized(){
     var sPath = window.location.href;
@@ -209,14 +207,6 @@ var json = function(param,method,onSuccessFcn,onErrorFcn){
     });
 
 };
-
-///**
-// * Returns an uniqid by creating the current local time in millisecond + a random number. Used for markers and some json calls
-// */
-//var uniqid = function() {
-//    var d = new Date();
-//    return new String(d.getTime() + '' + Math.floor(Math.random() * 1000000)).substr(0, 18);
-//};
 
 /**
  * function for writing to the console. Catches errors, if any (eg, console == undefined) and does nothing in case

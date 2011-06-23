@@ -67,9 +67,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         
         this.soundPosition =  sound.position ? this.toSec(sound.position) : 0;
  
-
-
-        //       if(sound.readyState != 3){
+       
         //                /*sound.readyState
         //                 * Numeric value indicating a sound's current load status
         //                 * 0 = uninitialised
@@ -77,17 +75,8 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         //                 * 2 = failed/error
         //                 * 3 = loaded/success
         //                 */
-        //                sound.options.whileloading=function(){
-        //
-        //                }
-        //        };
+        //               
         
-        //        var currentMarkerIndex=0;
-        //        this.getCurrentMarkerIndex = function(){
-        //            return currentMarkerIndex;
-        //        };
-
-
         //initializing markermap and markerui
         var map = new Timeside.classes.MarkerMap();
         this.getMarkerMap = function(){
@@ -102,18 +91,11 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
             }
         }
        
-
-        //sets up the player interface and loads the markers. There is theoretically no need for this method, as it might be included in
-        //the init constructor, it is separated for "historical" reasons: this method stems from the old _setupInterface,
-        //which was a separate method in the old player code. Future releases might include it in the init constructor
-        //  setupInterface: function(markersArray) {
-
-        
         //var $J = this.$J; //defined in the super constructor
         var me=this;
         //build the innerHTML as array, then join it. This is usually faster than string concatenation in some browsers.
-        //Note that the player image (see below) is given a src with a temporary 1x1 pixels transparent image
-        //Basically, NOT specifying any src for image tags can be harmful,
+        //Note that the player image (see below) is not created now, however, if it was, it should be given a src
+        //as NOT specifying any src for image tags can be harmful,
         //see http://www.nczonline.net/blog/2009/11/30/empty-image-src-can-destroy-your-site/ and
         //http://geekswithblogs.net/bcaraway/archive/2007/08/24/114945.aspx for details
         var html = [
@@ -139,14 +121,8 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         "<div class='ts-wait'></div>",
         "</div>"];
 
-        //removed"
-        //this.getContainer().html(html.join(''));
-        //var container = this.getContainer();
-        //removed"
-        //added"
         container.html(html.join(''));
-        //added"
-
+        
         var control = container.find('.ts-control');
 
         //bind events to buttons:
@@ -176,10 +152,6 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
 
         var setMarkerButton = control.find('.ts-set-marker');
 
-        //removed"
-        //var canAddMarkers = this.canAddMarker();
-        //removed"
-
         if(canAddMarkers){
             setMarkerButton.show().attr('href','#').unbind('click').bind('click', function(){
                 me.addMarker(me.soundPosition);
@@ -207,7 +179,6 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
             return vol;
         };
         function setVolume(event,volumeElement){
-            //var ticks = [18,26,33,40,47];
             var x = event.pageX - volumeElement.offset().left; //using absolute coordinates allows us to
             //avoid using layerX (not supported in all browsers) and clientX (which needs the window scrollLeft variable)
             me.setSoundVolume(getVol(x));
@@ -237,13 +208,11 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
             'display':'inline-block',
             'overflow':'hidden'
         });
-       
 
         var waitImg = control.find('.ts-wait');
         waitImg.html('wait').css({
             'position':'absolute'
         });
-
 
         var div = control.find('.ts-volume-wrapper-div');
         div.css({
@@ -255,7 +224,6 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         });
         //END NECESSARY CSS
 
-        
         //creating the ruler
         var waveImage =  container.find('.ts-image-canvas');
         var ruler = new Timeside.classes.Ruler(ruler_, waveImage, this.getSoundDuration());
@@ -270,7 +238,6 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
            me.fire('markerMouseEvent',data);
         });
 
-
         //setting image size (if provided) and resize player. Note that _setImageSize (with underscore) is intended to be
         //a private method (faster). setImageSize (without underscore) is the public method to use outside of player object
         if(soundImgSize){
@@ -278,9 +245,6 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         }else{
             this._setImageSize('','',container, wave,true); //calls this.resize which calls ruler.resize
         }
-
-        //this.resize(); //which calls also ruler.resize() (see below)
-
 
         //binds click for the pointer:
         var v = wave; //.add(ruler);
@@ -339,9 +303,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         //    this.getSound().stop(); //calling this.pause() hides the waiting bar, which is not the case here
         //    this.soundPosition = newPositionInSeconds;
         //    this.play();
-
-        //however, if this.isPlaying() we first call stop otherwise some fast pointer move effect is undesiderable
-
+        //however, that causes fast pointer move effect is undesiderable
         //So:
         var wasPlaying = this.isPlaying();
         if(wasPlaying){
@@ -554,15 +516,10 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         return false;
     },
 
-    setWaitElement: function(element){
-
-    },
-
     getWaitElement: function(){
         return this.getContainer().find('.ts-control').find('.ts-wait');
     },
 
-    //msg string: undefined: do nothing, empty: hide, otherwise show wait with html = msg
     setWait: function(msg){
         var wait = undefined;
       
@@ -622,13 +579,10 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         height = wave.height();
         
         if (height) {
-
             //set image, imagecontainer and canvas (container on imagecontainer for lines and pointer triangles) css
             var elements = wave.find('.ts-image-container').css('zIndex','0')
             .add(wave.find('.ts-image-canvas').css('zIndex','1')); //the two children of ts-wave. Set also the zIndex
-            //in order to visualize the canvas OVER the wav image
-
-            //elements.css('width', 'auto'); // for IE6. We leave it although IE6 is not anymore supported
+                                                                   //in order to visualize the canvas OVER the wav image
             var style = {
                 width: wave.width(),
                 height: height
@@ -639,7 +593,6 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         }
 
         //refreshing images:
-
         this.refreshImage();
         this.getRuler().resize();
     },
@@ -668,7 +621,6 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         }
         
         var player= this;
-        //var waitString = 'refreshing img';
         
         if(imageNotYetCreated){
             image = this.$J('<img/>');
