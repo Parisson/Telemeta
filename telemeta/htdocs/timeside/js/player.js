@@ -83,37 +83,46 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         var sMan = soundManager;
         var sound = configObject.sound;
         var createSound = false;
-        if(typeof sound !== 'string' && typeof sound !== 'object'){
-            onError('bad sound parameter (specify a a valid soundManager sound-object, an object with at least two properties, url and id, or URL as string)');
-            return;
-        }else if(typeof sound === 'string'){
-            createSound = true;
-            var soundURL = sound;
-            sound = {
-                id: 'sound',
-                autoLoad: false,
-                url: soundURL,
-                multiShot: false
+        if(this.$TU.flahsFailed){
+            this.soundErrorMsg = 'SoundManager error. If your browser does not support HTML5, Flash player (version '+soundManager.flashVersion+'+) must be installed.\nIf flash is installed, try to:\n - Reload the page\n - Empty the cache (see browser preferences/options/tools) and reload the page\n - Restart the browser';
+        }else{
+            if(typeof sound !== 'string' && typeof sound !== 'object'){
+                this.soundErrorMsg ='bad sound parameter (specify a a valid soundManager sound-object, an object with at least two properties, url and id, or URL as string)';
+            }else if(typeof sound === 'string'){
+                createSound = true;
+                var soundURL = sound;
+                sound = {
+                    id: 'ts-sound',
+                    autoLoad: false,
+                    url: soundURL,
+                    multiShot: false
+                };
+            //do a raw check to see if it is a soundmanager object
+            }else if(!sound.hasWonProperty('sID') || !sound.hasWonProperty('_iO') || !sound.hasWonProperty('url')){
+                if(!sound.hasWonProperty('url') || !sound.hasWonProperty('id')){ //it is not a soundManager object, has at least an url???
+                    this.soundErrorMsg = 'bad sound parameter: object requires properties url and id at minimum';
+                }else{
+                    createSound = true;
+                }
+            }
+            if(createSound){
+                var soundOptions = sound;
+                if(sMan.canPlayURL(soundOptions.url)){ //this actually checks only if the url is well formed, not if the file is there
+                    sound = sMan.createSound(soundOptions);
+                }else{
+                    this.soundErrorMsg = 'bad sound parameter (soundManager.canPlayURL returned false)';
+                }
+            }
+        }
+        if(this.soundErrorMsg){
+            this.getSound = function(){
+                return undefined;
             };
-        //do a raw check to see if it is a soundmanager object
-        }else if(!sound.hasWonProperty('sID') || !sound.hasWonProperty('_iO') || !sound.hasWonProperty('url')){
-            if(!sound.hasWonProperty('url') || !sound.hasWonProperty('id')){ //it is not a soundManager object, has at least an url???
-                onError('bad sound parameter: object requires properties url and id at minimum');
-                return;
-            }
-            createSound = true;
+        }else{
+            this.getSound = function(){
+                return sound;
+            };
         }
-        if(createSound){
-            var soundOptions = sound;
-            if(sMan.canPlayURL(soundOptions.url)){ //this actually checks only if the url is well formed, not if the file is there
-                sound = sMan.createSound(soundOptions);
-            }else{
-                onError('bad sound parameter (soundManager.canPlayURL returned false)');
-                return;
-            }
-        }
-
-
         var soundDurationInMsec = configObject.soundDuration;
         if(isNaN(soundDurationInMsec) || soundDurationInMsec<=0){
             onError('invalid soundDurationInMsec: NaN or not positive');
@@ -149,9 +158,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         this.getContainer = function(){
             return container;
         };
-        this.getSound = function(){
-            return sound;
-        };
+        
         
 
         var sd = this.toSec(soundDurationInMsec);
@@ -169,7 +176,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         //                 * 2 = failed/error
         //                 * 3 = loaded/success
         //                 */
-        //               
+        //
         
         //initializing markermap and markerui
         var map = new Timeside.classes.MarkerMap();
@@ -433,18 +440,24 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         });
 
     },
+
+    soundErrorMsg: "",
     //given a marker at index I, specifies that a marker corss event is fired whenever the sound position (pointer)
     //is in the interval ]markerCrossedOffsetMargin-I,I+markerCrossedOffsetMargin[
     //the value is in seconds
     //markerCrossedOffsetMargin : 0.5,
     play : function(){
+        
+        if(this.soundErrorMsg){
+            alert(this.soundErrorMsg);
+            return false;
+        }
+
         var player = this;
         var sound = player.getSound();
-       
-        if(!player || !sound || this.$TU.flashFailed){
-            if(this.$TU.flashFailed){
-               alert('SoundManager error. If your browser does not support HTML5, Flash player (version '+soundManager.flashVersion+'+) must be installed.\nIf flash is installed, try to:\n - Reload the page\n - Empty the cache (see browser preferences/options/tools) and reload the page\n - Restart the browser');
-            }
+
+        if(!player || !sound){ //just check. The cases here (especially, sound = undefined, should be
+            //together with this.soundErrorMsg != "", so we should have catch the case above
             return false;
         }
         
@@ -527,7 +540,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         };
         //done
         var playState = this.playState;
-        if(!playState){ 
+        if(!playState){
             if(loadingString){
                 updateWaitBar.apply(this,[loadingString]); //calling setWait of an empty string hides the wait, we dont want it here
             //ps: without apply this in updateWait is the dom window

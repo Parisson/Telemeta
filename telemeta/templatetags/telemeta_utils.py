@@ -268,6 +268,15 @@ render_flatpage.is_safe = True
 def organization():
     return settings.TELEMETA_ORGANIZATION
 
+@register.simple_tag
+def description():
+    try:
+        description = settings.TELEMETA_OAI_REPOSITORY_NAME
+    except:
+        description = settings.TELEMETA_DESCRIPTION
+        pass
+    return description
+
 class SetVarNode(template.Node):
  
     def __init__(self, var_name, var_value):

@@ -166,6 +166,7 @@ Add the following variables:
 
     TELEMETA_ORGANIZATION =         name of the organization which hosts this installation
     TELEMETA_SUBJECTS =             tuple of subject keywords (used for Dublin Core), such as "Ethnology", etc...
+    TELEMETA_DESCRIPTION =          the description of the site
     TELEMETA_CACHE_DIR =            absolute path to the cache directory that you just created
     TELEMETA_GMAP_KEY =             your Google Map API key
     TELEMETA_DOWNLOAD_ENABLED =     True to enable raw audio data download
@@ -173,7 +174,6 @@ Add the following variables:
     TELEMETA_PUBLIC_ACCESS_PERIOD = number of years above which item files are automagically published
     EMAIL_HOST =                    your default SMTP server
     DEFAULT_FROM_EMAIL =            the default sending email address 
-    TELEMETA_OAI_REPOSITORY_NAME =  the description of the OAI data provider
     
 Just paste the lines below::
 

@@ -1196,7 +1196,6 @@ class ProfileView(object):
         return render(request, template, {'forms': forms, 'usr': user, 'user_hidden_fields': user_hidden_fields})
 
 
-
 class LastestRevisionsFeed(Feed):
     "the RSS feed of the lastest revisions"
         
@@ -1206,9 +1205,10 @@ class LastestRevisionsFeed(Feed):
     title = organization + ' - Telemeta - ' + ugettext('Last changes')
     link = ""
     description = ' '.join([subject.decode('utf-8') for subject in subjects])
+    n_items = 100
 
     def items(self):
-        return get_revisions(25)
+        return get_revisions(self.n_items)
 
     def item_title(self, r):
         element = r['element']

@@ -110,13 +110,12 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 TELEMETA_ORGANIZATION = 'Parisson'
 TELEMETA_SUBJECTS = ('test', 'telemeta', 'sandbox')
+TELEMETA_DESCRIPTION = "Telemeta TEST sandbox"
 TELEMETA_GMAP_KEY = '***************************************************************************'
 TELEMETA_DOWNLOAD_ENABLED = True
 TELEMETA_STREAMING_FORMATS = ('mp3', 'ogg')
 TELEMETA_PUBLIC_ACCESS_PERIOD = 51
 AUTH_PROFILE_MODULE = 'telemeta.userprofile'
-
-TELEMETA_OAI_REPOSITORY_NAME = "Telemeta TEST sandbox"
 
 LOGIN_URL = '/login'
 LOGIN_REDIRECT_URL = '/'

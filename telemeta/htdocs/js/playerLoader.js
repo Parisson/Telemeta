@@ -80,11 +80,6 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
         });
     }
 
-
-    
-
-
-
     //we load the player once the window is fully loaded. Note that the function Timeside.load (called within this method)
     //is started on $J(wdw), so it will be executed immediately. The reason of a 'double' $K(wdw)
     //is that we want to display some messages on html spans (which therefore must exist) and that if the
@@ -94,11 +89,11 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
     //Ideally, we should not enter here in some cases. For the moment we just catch the case div#player doesnt exist and
     //we return
     
-    var maxTime = 10000;
-    //if the loading span is still visible in 10 seconds, throw an error:
-    setTimeout(function(){
-        end('SoundManager is not responding. Try to:\n - Reload the page\n - Empty the cache (see browser preferences) and reload the page\n - Restart the browser');
-    },maxTime);
+//    var maxTime = 10000;
+//    //if the loading span is still visible in 10 seconds, throw an error:
+//    setTimeout(function(){
+//        end('SoundManager is not responding. Try to:\n - Reload the page\n - Empty the cache (see browser preferences) and reload the page\n - Restart the browser');
+//    },maxTime);
      
     
     var pFloat = parseFloat;
