@@ -285,9 +285,8 @@ class MediaItem(MediaResource):
 
     class Meta(MetaCore):
         db_table = 'media_items'
-        permissions = (
-                       ("can_play_all_items", "Can play all media items"), 
-                       )
+        permissions = (("can_play_all_items", "Can play all media items"), 
+                       ("can_download_all_items", "Can download all media items"), )
 
     def is_valid_code(self, code):
         "Check if the item code is well formed"

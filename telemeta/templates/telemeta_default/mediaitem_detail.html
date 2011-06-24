@@ -125,7 +125,7 @@
         </div>
         <!--</div>-->
 
-        {% if audio_export_enabled or user.is_staff or user.is_superuser %}
+        {% if audio_export_enabled or perms.telemeta.can_download_all_items or user.is_superuser %}
         <div class="exporter">
             <p><img src="{% url telemeta-images "download.png" %}" alt="download" style="vertical-align:middle" /> {% trans "Download:" %}
                 {% for format in export_formats %}
