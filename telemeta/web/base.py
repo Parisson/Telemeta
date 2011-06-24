@@ -1188,7 +1188,7 @@ class ProfileView(object):
             if user_form.is_valid() and profile_form.is_valid():
                 user_form.save()
                 profile_form.save()
-                return HttpResponseRedirect('/accounts/'+username+'/profile/')
+                return HttpResponseRedirect('/users/'+username+'/profile/')
         else:
             user_form = UserChangeForm(instance=user, prefix='user')
             profile_form = UserProfileForm(instance=profile, prefix='profile')

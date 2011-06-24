@@ -51,7 +51,7 @@
  // loadPlayer(analizerUrl, soundUrl, itemId, visualizers, currentUserName, isStaffOrSuperuser)
  // django before was: if user.is_staff or user.is_superuser 
 
-   {% if perms.can_play_all_items %}
+   {% if public_access or perms.telemeta.can_play_all_items %}
     var superuser = true;
    {% else %}
     var superuser = false;

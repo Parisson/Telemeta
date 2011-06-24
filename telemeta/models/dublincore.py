@@ -207,10 +207,10 @@ def express_item(item):
             title += u' - ' + item.track
     
     try:
-        analysis = MediaItemAnalysis(item=item, analyzer_id='mime_type')
+        analysis = MediaItemAnalysis.objects.get(item=item, analyzer_id='mime_type')
         mime_type = analysis.value 
     except:
-        mime_type = 'unknown'
+        mime_type = ''
 
     resource = Resource(
         Element('identifier',       media_identifier(item), related=item),
