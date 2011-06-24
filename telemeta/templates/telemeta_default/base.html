@@ -86,7 +86,7 @@
  {% if user.is_authenticated %}
  <a href="{% url telemeta-users %}" class="red">{% trans "Users" %}</a>
  {% endif %}
- {% if user.is_staff or user.is_superuser %}
+ {% if user.is_staff %}
  <a href="{% url telemeta-admin %}" class="violet">{% trans "Admin" %}</a>
  {% endif %}
 
@@ -102,7 +102,7 @@
     </tr></table>
 {% block content %}{% endblock %}
 <div class="nett"></div>
-{% block deleteitem %}{% endblock %}
+{% block delete %}{% endblock %}
 </div>
 
 {% block footer %}

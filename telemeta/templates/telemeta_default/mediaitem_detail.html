@@ -51,7 +51,7 @@
  // loadPlayer(analizerUrl, soundUrl, itemId, visualizers, currentUserName, isStaffOrSuperuser)
  // django before was: if user.is_staff or user.is_superuser 
 
-   {% if perms.can_play_all_items %}
+   {% if public_access or perms.telemeta.can_play_all_items %}
     var superuser = true;
    {% else %}
     var superuser = false;
@@ -261,7 +261,7 @@
 
 {% endblock %}
 
-{% block deleteitem %}
+{% block delete %}
 {% if user.is_authenticated and perms.telemeta.delete_mediaitem %}
  <a href="#" onclick="if(confirm(gettrans('delete the item permanently?'))){window.location.href='{% url telemeta-item-delete item.public_id %}';};return false;"  
         class="component_icon button icon_delete" style="float:right;margin-top:0.5em;margin-bottom:1em">{% trans "Delete" %}</a>

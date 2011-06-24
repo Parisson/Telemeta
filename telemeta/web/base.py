@@ -458,7 +458,7 @@ class ItemView(object):
         else:
             item = MediaItem.objects.get(public_id=public_id)
         
-        item_public_access = item.public_access == 'none' or item.collection.public_access == 'none'
+        item_public_access = item.public_access != 'none' or item.collection.public_access != 'none'
         if not item_public_access and not (request.user.is_staff or request.user.is_superuser):
             mess = ugettext('Access not allowed') 
             title = ugettext('Item') + ' : ' + public_id + ' : ' + mess
@@ -1188,7 +1188,7 @@ class ProfileView(object):
             if user_form.is_valid() and profile_form.is_valid():
                 user_form.save()
                 profile_form.save()
-                return HttpResponseRedirect('/accounts/'+username+'/profile/')
+                return HttpResponseRedirect('/users/'+username+'/profile/')
         else:
             user_form = UserChangeForm(instance=user, prefix='user')
             profile_form = UserProfileForm(instance=profile, prefix='profile')
