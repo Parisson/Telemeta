@@ -12,53 +12,66 @@
 
 {% block extra_javascript %}
 {% if item %}
+
+{% if item.file %}
+{% if public_access or perms.telemeta.can_play_all_items %}
 <script src="{% url telemeta-timeside "js/libs/soundmanager2-nodebug-jsmin.js" %}" type="text/javascript"></script>
 <script src="{% url telemeta-timeside "js/timeside.js" %}" type="text/javascript"></script>
+{% endif %}
+{% endif %}
+
 <script src="{% url telemeta-js "popupdiv-min.js" %}" type="text/javascript"></script>
 <script src="{% url telemeta-js "playlist.js" %}" type="text/javascript"></script>
+
+{% if item.file %}
+{% if public_access or perms.telemeta.can_play_all_items %}
 <script src="{% url telemeta-js "playerLoader.js" %}" type="text/javascript"></script>
 <script src="{% url telemeta-js "divmarker.js" %}" type="text/javascript"></script>
-<script type="text/javascript">
-    soundManager.url = "{% url telemeta-timeside "swf/" %}";
-    soundManager.flashVersion = 9;
-    soundManager.useMovieStar = true; // enable MP4/M4A/AAC
-    soundManager.debugMode = false;
-    soundManager.allowPolling = true;
+{% endif %}
+{% endif %}
 
+<script type="text/javascript">
+    {% if item.file %}
+    {% if public_access or perms.telemeta.can_play_all_items %}
+        //initializing soundManager default properties
+        soundManager.url = "{% url telemeta-timeside "swf/" %}";
+        soundManager.flashVersion = 9;
+        soundManager.useMovieStar = true; // enable MP4/M4A/AAC
+        soundManager.debugMode = false;
+        soundManager.allowPolling = true;
+        //initializing the visualizers to be passed to the player
+        var visualizers = {};
+        {% for v in visualizers %}
+            visualizers["{{v.name}}"] = "{% url telemeta-item-visualize item.public_id,v.id,"WIDTH","HEIGHT" %}";
+        {% endfor %}
+        {% if user.is_superuser %}
+             loadPlayer('{% url telemeta-item-analyze-xml item.public_id %}',
+              "{% url telemeta-item-export item.public_id,"mp3" %}", undefined, '{{item.id}}', visualizers,
+              CURRENT_USER_NAME,  //undefined if !user.is_authenticated
+              true); //true because superuser
+        {% else %}
+           loadPlayer('{% url telemeta-item-analyze-xml item.public_id %}',
+             "{% url telemeta-item-export item.public_id,"mp3" %}", undefined, '{{item.id}}', visualizers,
+             CURRENT_USER_NAME,  //undefined if !user.is_authenticated
+             false); //false because not superuser
+        {% endif %}
+    {% endif %}
+    {% endif %}
+    //playlists:
     {% if user.is_authenticated %}
         {% for playlist in playlists %}
-        playlistUtils.addPlaylist('{{ playlist.playlist.title }}','{{playlist.playlist.public_id}}');
+            playlistUtils.addPlaylist('{{ playlist.playlist.title }}','{{playlist.playlist.public_id}}');
         {% endfor %}
-    {% endif %}
-
-    jQuery(window).ready(function(){
-        var anchor = jQuery('#_add_to_playlist');
-        if(anchor.length){
-            anchor.unbind('click').click(function(){
-                playlistUtils.showAddResourceToPlaylist(anchor,'item','{{item.id}}',gettrans('item added to the selected playlist'));
-                return false;
+            jQuery(window).ready(function(){
+                var anchor = jQuery('#_add_to_playlist');
+                if(anchor.length){
+                    anchor.unbind('click').click(function(){
+                        playlistUtils.showAddResourceToPlaylist(anchor,'item','{{item.id}}',gettrans('item added to the selected playlist'));
+                        return false;
+                    });
+                }
             });
-        }
-    });
-
-    //initializing the visualizers to be passed to the player
-    var visualizers = {};
-    {% for v in visualizers %}
-    visualizers["{{v.name}}"] = "{% url telemeta-item-visualize item.public_id,v.id,"WIDTH","HEIGHT" %}";
-    {% endfor %}
-    
-
- // loadPlayer(analizerUrl, soundUrl, itemId, visualizers, currentUserName, isStaffOrSuperuser)
- // django before was: if user.is_staff or user.is_superuser 
-
-   {% if public_access or perms.telemeta.can_play_all_items %}
-    var superuser = true;
-   {% else %}
-    var superuser = false;
-   {% endif %}
-    loadPlayer('{% url telemeta-item-analyze-xml item.public_id %}',
-    "{% url telemeta-item-export item.public_id,"mp3" %}", undefined, '{{item.id}}', visualizers, CURRENT_USER_NAME, superuser);
-
+    {% endif %}
 </script>
 {% endif %}
 {% endblock %}

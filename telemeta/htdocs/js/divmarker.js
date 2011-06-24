@@ -136,8 +136,10 @@ Timeside.classes.MarkerMapDiv = Timeside.classes.TimesideArray.extend({
         var e_okButton = div.find('.markersdivSave');
         var e_descriptionText = div.find('.markersdivDescription');
         var e_titleText = div.find('.markersdivTitle');
+        var mas = div.find(".marker_author_span");
         if(value){
             div.css('backgroundColor','#E65911');
+            mas.css('color','#6a0307');
             e_descriptionText.removeAttr('readonly').removeClass('markersdivUneditable');
             e_titleText.removeAttr('readonly').removeClass('markersdivUneditable');
             e_okButton.add(e_okButton.parent()).show(); //hiding also the parent div saves space (padding bottom hidden)
@@ -149,6 +151,7 @@ Timeside.classes.MarkerMapDiv = Timeside.classes.TimesideArray.extend({
             e_okButton.add(e_okButton.parent()).hide(); //hiding also the parent div saves space (padding bottom hidden)
             editButton.show();
             div.css('backgroundColor','');
+            mas.css('color','#999'); //TODO: should be set in one declaration only. Change here and also in marker div creation
         }
 
         this.fire('edit',{'value':value, 'index':index});
@@ -203,8 +206,8 @@ Timeside.classes.MarkerMapDiv = Timeside.classes.TimesideArray.extend({
         '</div>',
         '<div zero_top_padding><textarea class="markersdivDescription"></textarea></div>',
         '<div zero_top_padding><a class="markersdivSave">OK</a></div>',
-        '<div zero_top_padding><span style="font-size:75%;color:#999">'+gettrans('author')+': '+marker.author+'</span></div>'].join("");
-        var div = this.$J('<div/>').attr('tabindex','0').addClass("markerdiv").html(html_); 
+        '<div zero_top_padding><span class="marker_author_span" style="font-size:75%;color:#999">'+gettrans('author')+': '+marker.author+'</span></div>'].join("");
+        var div = this.$J('<div/>').addClass("markerdiv").html(html_); //.attr('tabindex','0')
         div.find('a').attr('href','#');
         
         var e_okButton = div.find('.markersdivSave');

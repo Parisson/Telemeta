@@ -554,48 +554,48 @@ Timeside.classes.TimesideArray = Timeside.classes.TimesideClass.extend({
  *Main Timeside method to load player (see Timeside online doc)
  */
 
-Timeside.load =function(container, soundUrl, durationInMsec, soundImgFcn, soundImgSize, markersArray, newMarkerCallback, onError, onReady){
+Timeside.load =function(config){
 
     var $J = jQuery;
     var win = window;
     var doc = document;
-    var playerDiv = container;
-    onError = onError && typeof onError === 'function' ? onError : function(msg){
-        //if no error callback is defined, we want however warn onError.
-        // Define a cross-browser window.console.log method.
-        // For IE and FF without Firebug, fallback to using an alert.
-        var console = win.console;
-        var log = console && console.error ? console.error : (console && console.log ? console.log : undefined);
-        if (!log) {
-            log = win.opera ? win.opera.postError : alert;
-        }
-        log(msg);
-    };
-    //onREady, if not defined, we set it as an empty function
-    onReady = onReady && typeof onReady === 'function' ? onReady : function(player){};
-    
-    playerDiv = container instanceof $J ? container : $J(container);
-    playerDiv = playerDiv.length ? playerDiv.eq(0) : undefined;
-    
-    if (!playerDiv || !playerDiv.length){
-        onError('container not defined or invalid');
-        return;
-    }
-    durationInMsec = parseInt(durationInMsec);
-    if(isNaN(durationInMsec) || durationInMsec<=0){
-        onError('invalid duration: NaN or not positive');
-        return;
-    }
-
-    if(!(soundUrl)){
-        onError('invalid sound url');
-        return;
-    }
-
-    if(!(typeof soundImgFcn == 'string' || typeof soundImgFcn === 'function')){
-        onError('invalid sound image. Provide a callback(width,height) or a string denoting a valid url');
-        return;
-    }
+//    var playerDiv = container;
+//    onError = onError && typeof onError === 'function' ? onError : function(msg){
+//        //if no error callback is defined, we want however warn onError.
+//        // Define a cross-browser window.console.log method.
+//        // For IE and FF without Firebug, fallback to using an alert.
+//        var console = win.console;
+//        var log = console && console.error ? console.error : (console && console.log ? console.log : undefined);
+//        if (!log) {
+//            log = win.opera ? win.opera.postError : alert;
+//        }
+//        log(msg);
+//    };
+//    //onREady, if not defined, we set it as an empty function
+//    onReady = onReady && typeof onReady === 'function' ? onReady : function(player){};
+//
+//    playerDiv = container instanceof $J ? container : $J(container);
+//    playerDiv = playerDiv.length ? playerDiv.eq(0) : undefined;
+//
+//    if (!playerDiv || !playerDiv.length){
+//        onError('container not defined or invalid');
+//        return;
+//    }
+//    durationInMsec = parseInt(durationInMsec);
+//    if(isNaN(durationInMsec) || durationInMsec<=0){
+//        onError('invalid duration: NaN or not positive');
+//        return;
+//    }
+//
+//    if(!(soundUrl)){
+//        onError('invalid sound url');
+//        return;
+//    }
+//
+//    if(!(typeof soundImgFcn == 'string' || typeof soundImgFcn === 'function')){
+//        onError('invalid sound image. Provide a callback(width,height) or a string denoting a valid url');
+//        return;
+//    }
   
 
     $J(win).ready(function(){
@@ -603,11 +603,8 @@ Timeside.load =function(container, soundUrl, durationInMsec, soundImgFcn, soundI
         //onready is executed BEFORE onload, it basically queues several onload events.
         //It it is executed immetiately if soundmanager has already been loaded
         soundManager.onready(function() {
-            var sound = soundManager.createSound({
-                id: 'sound',
-                autoLoad: false,
-                url: soundUrl
-            });
+            
+            
             //get the current script path (this file name is timeside.js?... or simplt timeside.js)
             var scripts = $J('script');
             var thisScriptPath = '';
@@ -709,12 +706,10 @@ Timeside.load =function(container, soundUrl, durationInMsec, soundImgFcn, soundI
             }
             //finally,define the error function
             ts.utils.loadScripts(thisScriptPath,ts_scripts, function() {
-                var p = new ts.classes.Player(playerDiv, sound, durationInMsec, soundImgFcn, soundImgSize,
-                    markersArray,newMarkerCallback);
+                var p = new ts.classes.Player(config);
                 ts.player = p;
-                onReady(p);
                 return false;
-            },onError);
+            },config.onError);
         });
     });
 };
@@ -736,7 +731,7 @@ Timeside.utils.loadScripts = function(scriptsOptionalRoot,scriptArray, optionalO
     if(!optionalOnOkCallback || typeof optionalOnOkCallback !== 'function'){
         optionalOnOkCallback = function(){};
     }
-    if(!optionalOnErrorCallback|| typeof optionalOnErrorCallback !== 'function'){
+    if(!optionalOnErrorCallback || typeof optionalOnErrorCallback !== 'function'){
         optionalOnErrorCallback = function(msg){};
     }
 

@@ -155,7 +155,7 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                             title: argument.title,
                             author: argument.author,
                             isEditable: false,
-                            canBeSetEditable: (argument.author === currentUserName) || isStaffOrSuperuser,
+                            canBeSetEditable: isStaffOrSuperuser || (argument.author === currentUserName) ,
                             canBeAddedToPlaylist: currentUserName ? true : false,
                             isSavedOnServer: true
                         };
@@ -183,14 +183,24 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                         return m;
                     };
                 }
-                //create visualizer select element (append it later, document here could NOT be ready)
-                var visualizersSelectElement = $J('<select/>');
-                for(var name in visualizers){
-                    $J('<option/>').html(name).appendTo(visualizersSelectElement);
-                }
+               
 
                 //creating the visualizer <select/> tag
-                var imageSrcFcn = function(width,height){
+                
+//                var playerDiv = '#player';
+//                if(!($J(playerDiv).length)){
+//                    end(); //stop without raising error messages. If passed within Timeside.load, an error will be thrown
+//                }
+
+                var timesideConfig = {
+                    container: '#player',
+                    sound : soundUrl,
+                    soundDuration: timeInMSecs,
+                    onError: end, //globally defined (see above)
+                    markersArray: markerMap,
+                    newMarker: markerMode
+                };
+                timesideConfig.soundImage = function(width,height){
                     var player_image_url = visualizers[""+visualizersSelectElement.val()];
                     var _src_ = null;
                     if (player_image_url && (width || height)) {
@@ -198,17 +208,44 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                     }
                     return _src_;
                 };
-
-                var playerDiv = '#player';
-                if(!($J(playerDiv).length)){
-                    end(); //stop without raising error messages. If passed within Timeside.load, an error will be thrown
+                if(typeof soundImgSize === 'object' && (soundImgSize.hasOwnProperty('width') || soundImgSize.hasOwnProperty('height'))){
+                    timesideConfig.imageSize = soundImgSize;
                 }
+                //onReadyWithImage: set select visualizers:
+                 //create visualizer select element (append it later, document here could NOT be ready)
+                var visualizersSelectElement = $J('<select/>');
+                for(var name in visualizers){
+                    $J('<option/>').html(name).appendTo(visualizersSelectElement);
+                }
+               timesideConfig.onReadyWithImage = function(player){
+                   //setting up the select tag
 
-                //function(container, soundUrl, durationInMsec, visualizers, markerMap, showAddMarkerButton, onError,onReady ){
-                Timeside.load(playerDiv,soundUrl,timeInMSecs,imageSrcFcn,soundImgSize,markerMap,markerMode, function(msg){
-                    end(msg);
-                },
-                function(player){
+                    player.bind('waitShown', function(data){
+                        visualizersSelectElement.hide();
+                    });
+                    player.bind('waitHidden', function(data){
+                        visualizersSelectElement.css('display','inline-block');
+                    });
+
+                    //assigning event on select:
+                    visualizersSelectElement.change(
+                        function (){
+                            player.refreshImage.apply(player);
+                        });
+                    var control = player.getContainer().find('.ts-control');
+                    var ch = control.height();
+                    var margin = 3;
+                    visualizersSelectElement.css({
+                        'display': 'inline-block',
+                        'height':(ch-2*margin)+'px',
+                        'position':'absolute',
+                        'top':margin+'px',
+                        'right':margin,
+                        'margin':0
+                    });
+                    control.append(visualizersSelectElement);
+               };
+                timesideConfig.onReady = function(player){
                     //document here is READY
                     var markersUI = "#markers_div_id";
                     var mapUI = new Timeside.classes.MarkerMapDiv(markersUI);
@@ -256,8 +293,9 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                         var len = map.length;
                         var idx = data.index;
                         if(map && idx>=0 && idx<len){
-                            map.toArray()[idx].isEditable = data.value;
-                            player.getRuler().setEditable(idx,data.value, false);
+                            map.setEditable(idx,data.value);
+//                            map.toArray()[idx].isEditable = data.value;
+//                            player.getRuler().setEditable(idx,data.value, false);
                         }
                     }); 
 
@@ -309,36 +347,7 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                     //populate the analyzers table
                     $J('#analyzer_div_id').find('table').find('tbody:last').append(analyzerContentArray.join(""));
 
-                    //setting up the select tag
-                   
-                    player.bind('waitShown', function(data){
-                        visualizersSelectElement.hide();
-                    });
-                    player.bind('waitHidden', function(data){
-                        visualizersSelectElement.css('display','inline-block');
-                    });
-
-                    //assigning event on select:
-                    visualizersSelectElement.change(
-                        function (){
-                            player.refreshImage.apply(player);
-                        });
-                    var control = player.getContainer().find('.ts-control');
-                    var ch = control.height();
-                    var margin = 3;
-                    visualizersSelectElement.css({
-                        'display': 'inline-block',
-                        'height':(ch-2*margin)+'px',
-                        'position':'absolute',
-                        'top':margin+'px',
-                        'right':margin,
-                        'margin':0
-                    });
-
-                    if(player.isImgRefreshing){
-                        visualizersSelectElement.hide();
-                    }
-                    control.append(visualizersSelectElement);
+                    
                     //Eventually, do 3 last things:
                     //1) call end (without arguments simply clears the wait span and avoid subsequent calls to end(msg) to
                     //display error messages)
@@ -488,18 +497,20 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                         p.show();
                         return false;
                     });
-                }
-                );
-            }
+                };
+                //and finally, load the player:
+                Timeside.load(timesideConfig);
+
+            };
                 
             //execute all the stuff once the document is ready:
-            var onSuccess = function(data){
-                $J(wdw).ready(function(){
-                    callbackAfterMarkersLoading(data);
-                });
-            }
+//            var onSuccess = function(data){
+//                $J(wdw).ready(function(){
+//                    callbackAfterMarkersLoading(data);
+//                });
+//            }
             //and niow call json method to load markers (load player also onError, no markers will be loaded)
-            json([itemId],"telemeta.get_markers", onSuccess,onSuccess);
+            json([itemId],"telemeta.get_markers", callbackAfterMarkersLoading,callbackAfterMarkersLoading);
         }
     });
    
