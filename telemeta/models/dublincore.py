@@ -33,7 +33,7 @@
 # Author: Olivier Guilyardi <olivier@samalyse.com>
 
 from telemeta.models.core import Duration
-from telemeta.models.media import MediaItem, MediaCollection
+from telemeta.models.media import MediaItem, MediaCollection, MediaItemAnalysis
 from django.contrib.sites.models import Site
 from django.conf import settings
 
@@ -177,7 +177,6 @@ def express_collection(collection):
         Element('rights',           media_access_rights(collection), 'accessRights'),
         Element('format',           duration, 'extent'),
         Element('format',           collection.physical_format, 'medium'),
-        #FIXME: audio mime types are missing,
         parts
     )
 
@@ -206,6 +205,12 @@ def express_item(item):
         title = item.collection.title
         if item.track:
             title += u' - ' + item.track
+    
+    try:
+        analysis = MediaItemAnalysis(item=item, analyzer_id='mime_type')
+        mime_type = analysis.value
+    except:
+        mime_type = 'unknown'
 
     resource = Resource(
         Element('identifier',       media_identifier(item), related=item),
@@ -225,10 +230,9 @@ def express_item(item):
         Element('coverage',         item.location_comment, 'spatial'),
         Element('rights',           item.collection.legal_rights, 'license'),
         Element('rights',           media_access_rights(item.collection), 'accessRights'),
-    
         Element('format',           max(item.approx_duration, item.computed_duration()), 'extent'),
         Element('format',           item.collection.physical_format, 'medium'),
-        #FIXME: audio mime types are missing,
+        Element('format',           mime_type, 'MIME type'),
         Element('relation',         media_identifier(item.collection), 'isPartOf', item.collection)
     )
 

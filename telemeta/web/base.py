@@ -458,7 +458,7 @@ class ItemView(object):
         else:
             item = MediaItem.objects.get(public_id=public_id)
         
-        item_public_access = item.public_access == 'none' or item.collection.public_access == 'none'
+        item_public_access = item.public_access != 'none' or item.collection.public_access != 'none'
         if not item_public_access and not (request.user.is_staff or request.user.is_superuser):
             mess = ugettext('Access not allowed') 
             title = ugettext('Item') + ' : ' + public_id + ' : ' + mess
