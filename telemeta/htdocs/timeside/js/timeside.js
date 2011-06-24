@@ -74,7 +74,12 @@ var Timeside = {
          * IN ANY CASE, svg support can be detected anywhere by calling, eg:
          *  var svg = !Timeside.utils.vml;
          */
-        vml: undefined 
+        vml: undefined,
+
+        /**
+         * property that will be set to false if soundManager fails to initialize flash
+         */
+        flashFailed : false
     }
 };
 
@@ -559,158 +564,135 @@ Timeside.load =function(config){
     var $J = jQuery;
     var win = window;
     var doc = document;
-//    var playerDiv = container;
-//    onError = onError && typeof onError === 'function' ? onError : function(msg){
-//        //if no error callback is defined, we want however warn onError.
-//        // Define a cross-browser window.console.log method.
-//        // For IE and FF without Firebug, fallback to using an alert.
-//        var console = win.console;
-//        var log = console && console.error ? console.error : (console && console.log ? console.log : undefined);
-//        if (!log) {
-//            log = win.opera ? win.opera.postError : alert;
-//        }
-//        log(msg);
-//    };
-//    //onREady, if not defined, we set it as an empty function
-//    onReady = onReady && typeof onReady === 'function' ? onReady : function(player){};
-//
-//    playerDiv = container instanceof $J ? container : $J(container);
-//    playerDiv = playerDiv.length ? playerDiv.eq(0) : undefined;
-//
-//    if (!playerDiv || !playerDiv.length){
-//        onError('container not defined or invalid');
-//        return;
-//    }
-//    durationInMsec = parseInt(durationInMsec);
-//    if(isNaN(durationInMsec) || durationInMsec<=0){
-//        onError('invalid duration: NaN or not positive');
-//        return;
-//    }
-//
-//    if(!(soundUrl)){
-//        onError('invalid sound url');
-//        return;
-//    }
-//
-//    if(!(typeof soundImgFcn == 'string' || typeof soundImgFcn === 'function')){
-//        onError('invalid sound image. Provide a callback(width,height) or a string denoting a valid url');
-//        return;
-//    }
-  
+    //function to be called onready or onerror:
+    var loadAll = function() {
 
-    $J(win).ready(function(){
-        //if soundmanager is ready, the callback is executed immetiately
-        //onready is executed BEFORE onload, it basically queues several onload events.
-        //It it is executed immetiately if soundmanager has already been loaded
-        soundManager.onready(function() {
-            
-            
-            //get the current script path (this file name is timeside.js?... or simplt timeside.js)
-            var scripts = $J('script');
-            var thisScriptPath = '';
-            scripts.each(function(i,s){
-                var src = $J(s).attr('src');
-                if(src){
-                    var srcName = src.split(/\//);
-                    if(srcName.length){
-                        srcName = srcName[srcName.length-1];
-                        //is this script ? consider the case here we are loading timeside.js?....
-                        if(srcName.replace(/\.js(?:\?[^\?]*)*$/,'.js') == 'timeside.js'){
-                            src[src.length-1] = '';
-                            thisScriptPath = src.replace(/\/[^\/]+$/, '');
-                        }
+
+        //get the current script path (this file name is timeside.js?... or simplt timeside.js)
+        var scripts = $J('script');
+        var thisScriptPath = '';
+        scripts.each(function(i,s){
+            var src = $J(s).attr('src');
+            if(src){
+                var srcName = src.split(/\//);
+                if(srcName.length){
+                    srcName = srcName[srcName.length-1];
+                    //is this script ? consider the case here we are loading timeside.js?....
+                    if(srcName.replace(/\.js(?:\?[^\?]*)*$/,'.js') == 'timeside.js'){
+                        src[src.length-1] = '';
+                        thisScriptPath = src.replace(/\/[^\/]+$/, '');
                     }
                 }
-            });
+            }
+        });
 
-            var ts = Timeside;
-            var ts_scripts = ts.config.timesideScripts;
-            //detect SVG support and load Raphael in case. Copied from Raphael code v 1.5.2:
-            var svg = (win.SVGAngle || doc.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1"));
-            if(!svg){
-                //add the raphael path. Raphael will be loaded in Timeside.load (see below)
-                ts_scripts.splice(0,0,ts.config.vml.raphaelScript);
-                //populate the vml object with methods to be used in ruler and rulermarker:
+        var ts = Timeside;
+        var ts_scripts = ts.config.timesideScripts;
+        //detect SVG support and load Raphael in case. Copied from Raphael code v 1.5.2:
+        var svg = (win.SVGAngle || doc.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1"));
+        if(!svg){
+            //add the raphael path. Raphael will be loaded in Timeside.load (see below)
+            ts_scripts.splice(0,0,ts.config.vml.raphaelScript);
+            //populate the vml object with methods to be used in ruler and rulermarker:
 
-                //global private variable:
-                //map to store each class name to the relative dictionary for raphael attr function (VML only)
-                var classToRaphaelAttr = {};
-                //get the raphael attributes for which a conversion css -> raphael_attribute is possible:
-                var availableAttrs = ts.config.vml.raphaelAttributes;
-                //here below we store  Raphael paper objects. var paper = Raphael(htmlElement) is the raphel method to build
-                //a new paper object. Internally, the method builds a div embedding vmls inside htmlElement, retriavable via the
-                //paper.node property.
-                //However, calling again var paper = Raphael(htmlElement) does not use the already created paper,
-                //but creates a new paper with a new paper.node (div). Too bad. The possibility to wrap existing paper node
-                //into a Raphael paper would be a nice and almost necessary feature, which however is not even
-                //planned to be implemented according to raphael developers (see raphael forums).
-                //In case of markers lines, we want to draw a new marker
-                //on the same raphael paper. Therefore, we store here raphael papers in a map htmlElement -> paper
-                var raphael_papers = {};
-                ts.utils.vml = {
-                    getVmlAttr: function(className){
-                        
-                        if(classToRaphaelAttr.hasOwnProperty(className)){
-                            //if(className in classToRaphaelAttr){
-                            return classToRaphaelAttr[className];
-                        }
-                        var d = document;
-                        var dottedclassName = className.replace(/^\.*/,'.'); //add a dot if not present
-                        var ssheets = d.styleSheets;
-                        var len = ssheets.length-1;
+            //global private variable:
+            //map to store each class name to the relative dictionary for raphael attr function (VML only)
+            var classToRaphaelAttr = {};
+            //get the raphael attributes for which a conversion css -> raphael_attribute is possible:
+            var availableAttrs = ts.config.vml.raphaelAttributes;
+            //here below we store  Raphael paper objects. var paper = Raphael(htmlElement) is the raphel method to build
+            //a new paper object. Internally, the method builds a div embedding vmls inside htmlElement, retriavable via the
+            //paper.node property.
+            //However, calling again var paper = Raphael(htmlElement) does not use the already created paper,
+            //but creates a new paper with a new paper.node (div). Too bad. The possibility to wrap existing paper node
+            //into a Raphael paper would be a nice and almost necessary feature, which however is not even
+            //planned to be implemented according to raphael developers (see raphael forums).
+            //In case of markers lines, we want to draw a new marker
+            //on the same raphael paper. Therefore, we store here raphael papers in a map htmlElement -> paper
+            var raphael_papers = {};
+            ts.utils.vml = {
+                getVmlAttr: function(className){
 
-                        var attr = {};
-                        for(var i=0; i<len; i++){
-                            var rules = ssheets[i].rules;
-                            var l = rules.length;
-                            for(var j=0; j <l; j++){
-                                var rule = rules[j];
-                                
-                                if(rule.selectorText === dottedclassName){
+                    if(classToRaphaelAttr.hasOwnProperty(className)){
+                        //if(className in classToRaphaelAttr){
+                        return classToRaphaelAttr[className];
+                    }
+                    var d = document;
+                    var dottedclassName = className.replace(/^\.*/,'.'); //add a dot if not present
+                    var ssheets = d.styleSheets;
+                    var len = ssheets.length-1;
 
-                                    var style = rule.style;
-                                    for(var k =0; k<availableAttrs.length; k++){
-                                        var val = style[availableAttrs[k]];
-                                        if(val){
-                                            attr[availableAttrs[k]] = val;
-                                        }
+                    var attr = {};
+                    for(var i=0; i<len; i++){
+                        var rules = ssheets[i].rules;
+                        var l = rules.length;
+                        for(var j=0; j <l; j++){
+                            var rule = rules[j];
+
+                            if(rule.selectorText === dottedclassName){
+
+                                var style = rule.style;
+                                for(var k =0; k<availableAttrs.length; k++){
+                                    var val = style[availableAttrs[k]];
+                                    if(val){
+                                        attr[availableAttrs[k]] = val;
                                     }
                                 }
                             }
                         }
-                        classToRaphaelAttr[className] = attr;
-                        return attr;
-                    },
-
-                    Raphael: function(element,w,h){
-                        //pass jQueryElm.get(0) as first argument, in case)
-                        if(raphael_papers[element]){
-                            return raphael_papers[element];
-                        }
-                        var paper = Raphael(element,w,h);
-                        raphael_papers[element] = paper;
-                        //paper canvas is a div with weird dimensions. You can check it by printing paper.canvas.outerHTML in IE.
-                        //We set them to 100% so we dont have clipping regions when resizing (maximizing)
-                        paper.canvas.style.width='100%';
-                        paper.canvas.style.height='100%';
-                        paper.canvas.width='100%';
-                        paper.canvas.height='100%';
-                        //apparently, there is also a clip style declaration made by raphael. The following code trhows an error in IE7:
-                        //paper.canvas.style.clip = 'auto';
-                        //however, even leaving the clip style declaration as it is, it seems to work (the div spans the whole width)
-                        return paper;
                     }
+                    classToRaphaelAttr[className] = attr;
+                    return attr;
+                },
 
-                };
+                Raphael: function(element,w,h){
+                    //pass jQueryElm.get(0) as first argument, in case)
+                    if(raphael_papers[element]){
+                        return raphael_papers[element];
+                    }
+                    var paper = Raphael(element,w,h);
+                    raphael_papers[element] = paper;
+                    //paper canvas is a div with weird dimensions. You can check it by printing paper.canvas.outerHTML in IE.
+                    //We set them to 100% so we dont have clipping regions when resizing (maximizing)
+                    paper.canvas.style.width='100%';
+                    paper.canvas.style.height='100%';
+                    paper.canvas.width='100%';
+                    paper.canvas.height='100%';
+                    //apparently, there is also a clip style declaration made by raphael. The following code trhows an error in IE7:
+                    //paper.canvas.style.clip = 'auto';
+                    //however, even leaving the clip style declaration as it is, it seems to work (the div spans the whole width)
+                    return paper;
+                }
 
-            }
-            //finally,define the error function
-            ts.utils.loadScripts(thisScriptPath,ts_scripts, function() {
-                var p = new ts.classes.Player(config);
-                ts.player = p;
-                return false;
-            },config.onError);
-        });
+            };
+
+        }
+        //finally,define the error function
+        ts.utils.loadScripts(thisScriptPath,ts_scripts, function() {
+            var p = new ts.classes.Player(config);
+            ts.player = p;
+            return false;
+        },config.onError);
+    };
+
+
+
+
+    $J(win).ready(function(){
+
+        //grab the case of soundManager init errors:
+        soundManager.onerror = function() {
+            Timeside.utils.flashFailed = true;
+            //end('SoundManager error. If your browser does not support HTML5, Flash player (version '+soundManager.flashVersion+'+) must be installed.\nIf flash is installed, try to:\n - Reload the page\n - Empty the cache (see browser preferences/options/tools) and reload the page\n - Restart the browser');
+
+            //and load all anyway:
+            loadAll();
+        };
+
+        //if soundmanager is ready, the callback is executed immetiately
+        //onready is executed BEFORE onload, it basically queues several onload events.
+        //It it is executed immetiately if soundmanager has already been loaded
+        soundManager.onready(loadAll);
     });
 };
 
