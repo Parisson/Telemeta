@@ -35,30 +35,124 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
     // newMarkerCallback must be either a string or a function, the necessary checks is done in Timeside.load
     // (which calls this method)
     //if markersArray is not an array, it defaults to []
-    init: function(container, sound, soundDurationInMsec, soundImgFcn, soundImgSize, markersArray, newMarkerCallback) {
+    init: function(configObject) {
         this._super();
+        var $J = this.$J;
+        var me=this;
+
+        var msgs = configObject.messages;
+        if(msgs){
+            for(var k in msgs){
+                if(msgs.hasOwnProperty(k)){
+                    var ms = msgs[k];
+                    if(typeof ms === 'string'){
+                        this.msgs[k] = ms;
+                    }
+                }
+            }
+        }
+
+        var onError = configObject.onError;
+        if(typeof onError !== 'function'){
+            onError = function(msg){};
+        }
+
+        var onReady = configObject.onReady;
+        if(typeof onReady !== 'function'){
+            onReady = function(player){};
+        }
+
+        var onReadyWithImage = configObject.onReadyWithImage;
+        
+        if(typeof onReadyWithImage === 'function'){
+            var onReadyWithImageNamespace = 'imgRefreshed.temp_'+new Date().getTime(); //get an unique namespace
+            this.bind(onReadyWithImageNamespace,function(data){
+                onReadyWithImage(me);
+                me.unbind(onReadyWithImageNamespace);
+            });
+        }
+
+        var container = configObject.container;
+        container = container instanceof $J ? container : $J(container);
+        container = container.length ? container.eq(0) : undefined;
+        if (!container || !container.length){
+            onError('container not defined or invalid');
+            return;
+        }
+
+        var sMan = soundManager;
+        var sound = configObject.sound;
+        var createSound = false;
+        if(typeof sound !== 'string' && typeof sound !== 'object'){
+            onError('bad sound parameter (specify a a valid soundManager sound-object, an object with at least two properties, url and id, or URL as string)');
+            return;
+        }else if(typeof sound === 'string'){
+            createSound = true;
+            var soundURL = sound;
+            sound = {
+                id: 'sound',
+                autoLoad: false,
+                url: soundURL,
+                multiShot: false
+            };
+        //do a raw check to see if it is a soundmanager object
+        }else if(!sound.hasWonProperty('sID') || !sound.hasWonProperty('_iO') || !sound.hasWonProperty('url')){
+            if(!sound.hasWonProperty('url') || !sound.hasWonProperty('id')){ //it is not a soundManager object, has at least an url???
+                onError('bad sound parameter: object requires properties url and id at minimum');
+                return;
+            }
+            createSound = true;
+        }
+        if(createSound){
+            var soundOptions = sound;
+            if(sMan.canPlayURL(soundOptions.url)){ //this actually checks only if the url is well formed, not if the file is there
+                sound = sMan.createSound(soundOptions);
+            }else{
+                onError('bad sound parameter (soundManager.canPlayURL returned false)');
+                return;
+            }
+        }
+
+
+        var soundDurationInMsec = configObject.soundDuration;
+        if(isNaN(soundDurationInMsec) || soundDurationInMsec<=0){
+            onError('invalid soundDurationInMsec: NaN or not positive');
+            return;
+        }
+
+
+        var soundImgFcn = configObject.soundImage;
+
+        if(!(typeof soundImgFcn === 'string' || typeof soundImgFcn === 'function')){
+            onError('invalid sound soundImgFcn. Provide a callback(width,height) or a string denoting a valid URL');
+            return;
+        }else{
+            if(typeof soundImgFcn === 'string'){
+                var url = soundImgFcn;
+                this.imageCallback =  new function(w,h){
+                    return url;
+                };
+            }else{ //surely a function
+                this.imageCallback = soundImgFcn;
+            }
+        }
+
+        var soundImgSize = configObject.imageSize;
+        var markersArray = configObject.markersArray;
+        var newMarker = configObject.newMarker;
+
+
 
         this.playState = 0; //0: not playing, 1: loading, 2:buffering, 3 playing (sound heard)
         //container is the div #player
        
-        if (!container){
-            this.debug('ERROR: container is null in initializing the player');
-        }
-
         this.getContainer = function(){
             return container;
         };
         this.getSound = function(){
             return sound;
         };
-        if(typeof soundImgFcn == 'string'){
-            var url = soundImgFcn;
-            this.imageCallback =  new function(w,h){
-                return url;
-            };
-        }else if(typeof soundImgFcn === 'function'){
-            this.imageCallback = soundImgFcn;
-        }
+        
 
         var sd = this.toSec(soundDurationInMsec);
         this.getSoundDuration = function(){
@@ -84,15 +178,13 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         };
 
         var canAddMarkers = false;
-        if(newMarkerCallback){
+        if(newMarker === true || (typeof newMarker === 'function')){
             canAddMarkers = true;
-            if(typeof newMarkerCallback === 'function'){
-                this.newMarker = newMarkerCallback;
+            if(typeof newMarker === 'function'){
+                this.newMarker = newMarker;
             }
         }
        
-        //var $J = this.$J; //defined in the super constructor
-        var me=this;
         //build the innerHTML as array, then join it. This is usually faster than string concatenation in some browsers.
         //Note that the player image (see below) is not created now, however, if it was, it should be given a src
         //as NOT specifying any src for image tags can be harmful,
@@ -103,7 +195,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         "<div class='ts-wave'>",
         "<div class='ts-image-canvas'></div>",
         "<div class='ts-image-container'>",
-       //lazily created:  "<img class='ts-image' src='xyz.png' alt='' />", //not providing a src attribute is harmful. Dummy src attribute
+        //lazily created:  "<img class='ts-image' src='xyz.png' alt='' />", //not providing a src attribute is harmful. Dummy src attribute
         "</div>",
         "</div>",
         "<div class='ts-control'>",
@@ -204,7 +296,11 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
             'overflow':'hidden'
         });
         //assigning display and title to all anchors
-        control.find('*').css({
+        var subcontrolsToBeSetVisible = control.find('*');
+        if(!canAddMarkers){
+            subcontrolsToBeSetVisible = subcontrolsToBeSetVisible.filter(':not(a.ts-set-marker)');
+        }
+        subcontrolsToBeSetVisible.css({
             'display':'inline-block',
             'overflow':'hidden'
         });
@@ -233,9 +329,9 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         };
         //bind mouse events:
         ruler.bind('rulermarkermouseevent', function(data){
-           var idx = data.index;
-           data.marker = idx > -1 ? me.getMarker(idx) : undefined;
-           me.fire('markerMouseEvent',data);
+            var idx = data.index;
+            data.marker = idx > -1 ? me.getMarker(idx) : undefined;
+            me.fire('markerMouseEvent',data);
         });
 
         //setting image size (if provided) and resize player. Note that _setImageSize (with underscore) is intended to be
@@ -273,6 +369,8 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         //ie, top: auto. This is however useful even if somebody specified a top property on the divs
         ruler_.add(wave).add(control).css('top','auto');
 
+
+        onReady(this);
     },
 
 
@@ -329,7 +427,10 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
                 player.play.apply(player);
             },100);
         }
-        this.fire('soundPositionSet',{player:this,oldSoundPosition:oldSoundPosition});
+        this.fire('soundPositionSet',{
+            player:this,
+            oldSoundPosition:oldSoundPosition
+        });
 
     },
     //given a marker at index I, specifies that a marker corss event is fired whenever the sound position (pointer)
@@ -402,15 +503,31 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         
         var updateWaitBar = this.setWait;
         //building immediately data events to be passed instead of bulding them in the loop whileplaying
-        var loadData = {player:this,oldPlayState:0, endOfPlayback:false};
-        var bufferData = {player:this,oldPlayState:0, endOfPlayback:false};
-        var playData = {player:this,oldPlayState:0, endOfPlayback:false};
-        var endData = {player:this,oldPlayState:0, endOfPlayback:true};
+        var loadData = {
+            player:this,
+            oldPlayState:0,
+            endOfPlayback:false
+        };
+        var bufferData = {
+            player:this,
+            oldPlayState:0,
+            endOfPlayback:false
+        };
+        var playData = {
+            player:this,
+            oldPlayState:0,
+            endOfPlayback:false
+        };
+        var endData = {
+            player:this,
+            oldPlayState:0,
+            endOfPlayback:true
+        };
         //done
         var playState = this.playState;
         if(!playState){ 
             if(loadingString){
-            updateWaitBar.apply(this,[loadingString]); //calling setWait of an empty string hides the wait, we dont want it here
+                updateWaitBar.apply(this,[loadingString]); //calling setWait of an empty string hides the wait, we dont want it here
             //ps: without apply this in updateWait is the dom window
             }
             loadData.oldPlayState = playState;
@@ -508,7 +625,11 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         if(sound){
             var v = this.isPlaying();
             sound.stop();
-            var data = {player:this, oldPlayState:this.playState, endOfPlayback:false};
+            var data = {
+                player:this,
+                oldPlayState:this.playState,
+                endOfPlayback:false
+            };
             this.playState = 0;
             this.fire('playStateChanged',data);
             this.setWait(this.isImgRefreshing ? this.msgs.imgRefreshing : '');
@@ -570,6 +691,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
             }
         },100);
     },
+    
     resize: function() {
         var height;
         var container = this.getContainer();
@@ -577,20 +699,27 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         var wave = container.find('.ts-wave');
 
         height = wave.height();
-        
-        if (height) {
-            //set image, imagecontainer and canvas (container on imagecontainer for lines and pointer triangles) css
-            var elements = wave.find('.ts-image-container').css('zIndex','0')
-            .add(wave.find('.ts-image-canvas').css('zIndex','1')); //the two children of ts-wave. Set also the zIndex
-                                                                   //in order to visualize the canvas OVER the wav image
-            var style = {
-                width: wave.width(),
-                height: height
-            };
-            elements.css(style);
-            elements.css('position','absolute');
-
-        }
+        //        if(!height){
+        //            height = this.minWaveHeight;
+        //            wave.css('height',height+'px');
+        //        }
+        //if (height) {
+        //set image, imagecontainer and canvas (container on imagecontainer for lines and pointer triangles) css
+        var elements = wave.find('.ts-image-container').css('zIndex','0')
+        .add(wave.find('.ts-image-canvas').css('zIndex','1')); //the two children of ts-wave. Set also the zIndex
+        //in order to visualize the canvas OVER the wav image
+        var style = {
+            width: wave.width(),
+            height: height,
+            border: 0,
+            padding:0,
+            margin:0,
+            top:0,
+            left:0
+        };
+        elements.css(style);
+        elements.css('position','absolute');
+        //}
 
         //refreshing images:
         this.refreshImage();
@@ -649,14 +778,14 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
             }
             updateWait();
             player.isImgRefreshing = false;
-            player.fire('ImgRefreshed');
+            player.fire('imgRefreshed');
         });
         if(ir && we && (!this.playState || this.playState===3)){ //if loading (1) or buffering (2) do not update wait.
             //If not playing (undefined or 0) playing (3) update wait
             this.setWait(ir);
         }
         this.isImgRefreshing = true;
-        this.fire('ImgRefreshing');
+        this.fire('imgRefreshing');
         image.attr('src', imgSrc);
        
     },
@@ -778,7 +907,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
     },
 
     each: function(){
-      var map = this.getMarkerMap();
+        var map = this.getMarkerMap();
         if(map){
             map.each.apply(map,arguments);
         }
@@ -818,6 +947,15 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         }
         return undefined;
     },
+
+    setMarkerEditable: function(identifier, value){
+        var map = this.getMarkerMap();
+        if(map){
+            return map.setEditable(identifier,value);
+        }
+        return undefined;
+    },
+
     //markers is an array of objects with at least the field offset:sconds.milliseconds
     loadMarkers: function(markers){
         //ruler.bind('markermoved',this.markerMoved,this);
@@ -830,8 +968,8 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         var ruler = this.getRuler();
 
         //TODO: think about if clearing or not: we assign some bindings in the constructor, too:
-//        map.clear();
-//        ruler.clear();
+        //        map.clear();
+        //        ruler.clear();
        
   
         var rulerAdd = ruler.add;
@@ -885,6 +1023,12 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         map.bind('remove',function(data){
             ruler.remove.apply(ruler, [data.index]);
             player.fire('markerRemoved',data);
+        });
+
+        //edit state changed
+        map.bind('markerEditStateChanged',function(data){
+            ruler.setEditable.apply(ruler, [data.index, data.value]);
+            player.fire('markerEditStateChanged',data);
         });
 
     }

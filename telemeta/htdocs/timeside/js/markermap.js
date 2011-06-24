@@ -221,6 +221,32 @@ Timeside.classes.MarkerMap = Timeside.classes.TimesideArray.extend({
             }
         }
         return -(low + 1);  // key not found
+    },
+
+    //sets isEditable to value
+    setEditable: function(markerOrMarkerIndex, value) {
+        var idx = -1;
+        if(typeof markerOrMarkerIndex == 'number'){
+            idx = markerOrMarkerIndex;
+        }else if('id' in markerOrMarkerIndex && 'offset' in markerOrMarkerIndex){
+            idx = this.insertionIndex(markerOrMarkerIndex);
+            //idx>=0 ONLY if marker has been found
+        }
+        if(idx<0 || idx>=this.length){
+            this.debug('markermap.setEditable: index out of bounds or marker not found');
+            return -1;
+        }
+        var marker = this.toArray()[idx];
+        var oldVal = marker.isEditable ? true : false;
+        marker.isEditable = value;
+        this.fire('markerEditStateChanged',{
+            'index':idx,
+            'marker':marker,
+            'oldValue':oldVal,
+            'value':value
+        });
+        return idx;
     }
+
 }
 );
