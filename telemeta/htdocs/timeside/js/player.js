@@ -441,8 +441,10 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         var player = this;
         var sound = player.getSound();
        
-        
-        if(!player || !sound){
+        if(!player || !sound || this.$TU.flashFailed){
+            if(this.$TU.flashFailed){
+               alert('SoundManager error. If your browser does not support HTML5, Flash player (version '+soundManager.flashVersion+'+) must be installed.\nIf flash is installed, try to:\n - Reload the page\n - Empty the cache (see browser preferences/options/tools) and reload the page\n - Restart the browser');
+            }
             return false;
         }
         
