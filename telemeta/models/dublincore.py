@@ -208,7 +208,7 @@ def express_item(item):
     
     try:
         analysis = MediaItemAnalysis(item=item, analyzer_id='mime_type')
-        mime_type = analysis.value
+        mime_type = analysis.value 
     except:
         mime_type = 'unknown'
 
