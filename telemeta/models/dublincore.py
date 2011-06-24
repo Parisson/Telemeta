@@ -34,6 +34,7 @@
 
 from telemeta.models.core import Duration
 from telemeta.models.media import MediaItem, MediaCollection
+from django.contrib.sites.models import Site
 from django.conf import settings
 
 
@@ -140,7 +141,9 @@ def media_access_rights(media):
     return 'private'
 
 def media_identifier(media):
-    return 'http://' + settings.TELEMETA_OAI_HOST + '/' + media.element_type + 's/' + unicode(media.id)
+    sites = Site.objects.all()
+    domain = sites[0].domain
+    return 'http://' + domain + '/' + media.element_type + 's/' + unicode(media.id)
 
 def express_collection(collection):
     "Express a collection as a Dublin Core resource"
