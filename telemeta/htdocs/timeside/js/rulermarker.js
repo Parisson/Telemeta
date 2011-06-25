@@ -93,11 +93,13 @@ Timeside.classes.RulerMarker = Timeside.classes.TimesideClass.extend({
         var canvas = undefined;
         var canvasClass = cssPref + 'svg-'+className+'-line';
         var vml = this.$TU.vml; //if vml, this class is populated with methods and NOT undefined
+        var round = Math.round;
         if(!vml){
             canvas = this.createCanvasSvg(waveImgDiv, arrowBaselineWidth);
             var path = canvas.childNodes[0]; //note that $J(canvas).find('path') does not work in FF at least 3.5
             path.setAttributeNS(null,'class',canvasClass);
             this.moveCanvas = function(pixelOffset){
+                pixelOffset = round(pixelOffset);
                 canvas.setAttributeNS( null, "transform", "translate("+pixelOffset+",0)");
             };
             this.jQueryCanvas = $J(canvas);
@@ -107,6 +109,7 @@ Timeside.classes.RulerMarker = Timeside.classes.TimesideClass.extend({
             var attributes = vml.getVmlAttr(canvasClass);
             canvas.attr(attributes); //Raphael method
             this.moveCanvas = function(pixelOffset){
+                pixelOffset = round(pixelOffset);
                 //for some reason, coordinates inside the VML object are stored by raphael with a zoom of 10:
                 this.jQueryCanvas.css('left',(10*pixelOffset)+'px');
             };

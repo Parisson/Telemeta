@@ -322,7 +322,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         var div = control.find('.ts-volume-wrapper-div');
         div.css({
             'position':'absolute',
-            'left':(volumeSpeaker.position().left+volumeSpeaker.outerWidth())+'px',
+            'left':(volumeSpeaker.position().left+volumeSpeaker.outerWidth(true))+'px',
             'top':0,
             'width':'auto',
             'height':'100%'
