@@ -121,6 +121,9 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
                 return undefined;
             };
         }else{
+            //            sound.play = function(){
+            //                alert(this.readyState);
+            //            };
             this.getSound = function(){
                 return sound;
             };
@@ -171,13 +174,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         this.soundPosition =  sound.position ? this.toSec(sound.position) : 0;
  
        
-        //                /*sound.readyState
-        //                 * Numeric value indicating a sound's current load status
-        //                 * 0 = uninitialised
-        //                 * 1 = loading
-        //                 * 2 = failed/error
-        //                 * 3 = loaded/success
-        //                 */
+        
         //
         
         //initializing markermap and markerui
@@ -552,6 +549,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         }
         
         var playOptions = {
+            
             position: sPosInMsec,
             whileplaying: function(){
 
@@ -614,8 +612,25 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
             //player.fire('endReached');
             }
         };
-
-
+        //attach onload event only if the sound is NOT already loaded:
+        //                /*sound.readyState
+        //                 * Numeric value indicating a sound's current load status
+        //                 * 0 = uninitialised
+        //                 * 1 = loading
+        //                 * 2 = failed/error
+        //                 * 3 = loaded/success
+        //                 */
+        if(sound.readyState !== 3){
+            playOptions.onload = function(success){
+                if(!success){
+                    this.stop();
+                    player.playState = 0;
+                    player.setWait(player.isImgRefreshing ? player.msgs.imgRefreshing : '');
+                    player.soundErrorMsg = 'Error while loading sound: check sound url';
+                    player.showSoundErroMessage();
+                }
+            };
+        }
         //if the pointer is already at the end of sound, soundmanager does not fire onfinish but starts buffering
         //forever. Therefore, we must check this case here.
         //We use a margin of time of 20 milliseconds (.2 seconds) to indicate that inside this margin the sound is at its end
@@ -624,6 +639,11 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         }else{
             sound.setVolume(sound.volume); //workaround. Just to be sure. Sometimes it fails when we re-play
             sound.play(playOptions);
+        //            soundManager.play(sound.sId,{
+        //                onload: function(success){
+        //                    alert(success);
+        //                }
+        //            });
         }
 
         return false;
