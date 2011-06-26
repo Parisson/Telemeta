@@ -85,11 +85,15 @@ Install Telemeta
 
         sudo python setup.py install
 
----------------------
-Fast testing 
+-------------------------
+Fast testing (sandbox)
+-------------------------
+
+If you just want to test Telemeta, a sandbox is available in the example/ directory.
+As Telemeta needs MySQL to work properly and fast, please create a database before editing setting.py
 
 --------------------------
-Create a Django project
+Or create a Django project
 --------------------------
 
 If you haven't already done it, start a new django project::
@@ -190,11 +194,9 @@ If you want some personal templates, for example::
     '/home/dev/telemeta/sandboxes/sandbox_generic/templates/',
     )
 
-
 You can find an example for settings.py there::
     
-    conf/examples/django/settings.py
-
+    example/sandbox/settings.py
 
 --------------------------
 Initialize the database
@@ -235,7 +237,7 @@ Please also uncomment::
 
 You can find an example for url.py there::
     
-    conf/examples/django/urls.py
+    example/sandbox/urls.py
 
 
 --------------------
@@ -297,5 +299,5 @@ You can find an example of an Apache2 VirtualHost conf file there::
 Contact / More infos
 -------------------------
 
-See README and http://telemeta.org.
+See README.rst and http://telemeta.org.
 

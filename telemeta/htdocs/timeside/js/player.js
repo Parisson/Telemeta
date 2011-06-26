@@ -83,11 +83,11 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         var sMan = soundManager;
         var sound = configObject.sound;
         var createSound = false;
-        if(this.$TU.flahsFailed){
-            this.soundErrorMsg = 'SoundManager error. If your browser does not support HTML5, Flash player (version '+soundManager.flashVersion+'+) must be installed.\nIf flash is installed, try to:\n - Reload the page\n - Empty the cache (see browser preferences/options/tools) and reload the page\n - Restart the browser';
+        if(this.$TU.flashFailed){
+            this.soundErrorMsg = 'soundManager error. If your browser does not support HTML5, Flash player (version '+sMan.flashVersion+'+) must be installed.\nIf flash is installed, try to:\n - Reload the page\n - Empty the cache (see browser preferences/options/tools) and reload the page\n - Restart the browser';
         }else{
             if(typeof sound !== 'string' && typeof sound !== 'object'){
-                this.soundErrorMsg ='bad sound parameter (specify a a valid soundManager sound-object, an object with at least two properties, url and id, or URL as string)';
+                this.soundErrorMsg ='bad sound parameter: specify a a valid soundManager sound-object, an object with at least two properties, url and id, or URL as string';
             }else if(typeof sound === 'string'){
                 createSound = true;
                 var soundURL = sound;
@@ -108,6 +108,8 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
             if(createSound){
                 var soundOptions = sound;
                 if(sMan.canPlayURL(soundOptions.url)){ //this actually checks only if the url is well formed, not if the file is there
+                    //check if we specified a valid sound duration, otherwise the sound must be loaded
+                    
                     sound = sMan.createSound(soundOptions);
                 }else{
                     this.soundErrorMsg = 'bad sound parameter (soundManager.canPlayURL returned false)';
@@ -119,12 +121,15 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
                 return undefined;
             };
         }else{
+            //            sound.play = function(){
+            //                alert(this.readyState);
+            //            };
             this.getSound = function(){
                 return sound;
             };
         }
         var soundDurationInMsec = configObject.soundDuration;
-        if(isNaN(soundDurationInMsec) || soundDurationInMsec<=0){
+        if(typeof soundDurationInMsec !== 'number' || soundDurationInMsec<=0){
             onError('invalid soundDurationInMsec: NaN or not positive');
             return;
         }
@@ -169,13 +174,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         this.soundPosition =  sound.position ? this.toSec(sound.position) : 0;
  
        
-        //                /*sound.readyState
-        //                 * Numeric value indicating a sound's current load status
-        //                 * 0 = uninitialised
-        //                 * 1 = loading
-        //                 * 2 = failed/error
-        //                 * 3 = loaded/success
-        //                 */
+        
         //
         
         //initializing markermap and markerui
@@ -320,7 +319,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         var div = control.find('.ts-volume-wrapper-div');
         div.css({
             'position':'absolute',
-            'left':(volumeSpeaker.position().left+volumeSpeaker.outerWidth())+'px',
+            'left':(volumeSpeaker.position().left+volumeSpeaker.outerWidth(true))+'px',
             'top':0,
             'width':'auto',
             'height':'100%'
@@ -375,8 +374,6 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         //Weird enough (with IE it isn't actually), we have just to set the property we already set in the css:
         //ie, top: auto. This is however useful even if somebody specified a top property on the divs
         ruler_.add(wave).add(control).css('top','auto');
-
-
         onReady(this);
     },
 
@@ -440,8 +437,9 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         });
 
     },
-
-    soundErrorMsg: "",
+    showSoundErroMessage: function(){
+        alert(this.soundErrorMsg);
+    },
     //given a marker at index I, specifies that a marker corss event is fired whenever the sound position (pointer)
     //is in the interval ]markerCrossedOffsetMargin-I,I+markerCrossedOffsetMargin[
     //the value is in seconds
@@ -551,6 +549,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         }
         
         var playOptions = {
+            
             position: sPosInMsec,
             whileplaying: function(){
 
@@ -613,8 +612,25 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
             //player.fire('endReached');
             }
         };
-
-
+        //attach onload event only if the sound is NOT already loaded:
+        //                /*sound.readyState
+        //                 * Numeric value indicating a sound's current load status
+        //                 * 0 = uninitialised
+        //                 * 1 = loading
+        //                 * 2 = failed/error
+        //                 * 3 = loaded/success
+        //                 */
+        if(sound.readyState !== 3){
+            playOptions.onload = function(success){
+                if(!success){
+                    this.stop();
+                    player.playState = 0;
+                    player.setWait(player.isImgRefreshing ? player.msgs.imgRefreshing : '');
+                    player.soundErrorMsg = 'Error while loading sound: check sound url';
+                    player.showSoundErroMessage();
+                }
+            };
+        }
         //if the pointer is already at the end of sound, soundmanager does not fire onfinish but starts buffering
         //forever. Therefore, we must check this case here.
         //We use a margin of time of 20 milliseconds (.2 seconds) to indicate that inside this margin the sound is at its end
@@ -623,6 +639,11 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         }else{
             sound.setVolume(sound.volume); //workaround. Just to be sure. Sometimes it fails when we re-play
             sound.play(playOptions);
+        //            soundManager.play(sound.sId,{
+        //                onload: function(success){
+        //                    alert(success);
+        //                }
+        //            });
         }
 
         return false;

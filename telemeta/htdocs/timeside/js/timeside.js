@@ -665,13 +665,24 @@ Timeside.load =function(config){
                 }
 
             };
-
         }
+
+        ts.player = undefined;
+        if(config.onReady && typeof config.onReady === 'function'){
+            var oR = config.onReady;
+            config.onReady = function(player){
+                ts.player = player;
+                oR(player);
+            };
+        }else{
+            config.onReady = function(player){
+                ts.player = player;
+            };
+        }
+
         //finally,define the error function
         ts.utils.loadScripts(thisScriptPath,ts_scripts, function() {
-            var p = new ts.classes.Player(config);
-            ts.player = p;
-            return false;
+            new ts.classes.Player(config); //do not assign it to any variable, we do it only onready
         },config.onError);
     };
 
@@ -679,12 +690,12 @@ Timeside.load =function(config){
 
 
     $J(win).ready(function(){
-
+        var s = soundManager;
         //grab the case of soundManager init errors:
-        soundManager.onerror = function() {
+        s.onerror = function() {
             Timeside.utils.flashFailed = true;
             //end('SoundManager error. If your browser does not support HTML5, Flash player (version '+soundManager.flashVersion+'+) must be installed.\nIf flash is installed, try to:\n - Reload the page\n - Empty the cache (see browser preferences/options/tools) and reload the page\n - Restart the browser');
-
+            
             //and load all anyway:
             loadAll();
         };
@@ -692,7 +703,7 @@ Timeside.load =function(config){
         //if soundmanager is ready, the callback is executed immetiately
         //onready is executed BEFORE onload, it basically queues several onload events.
         //It it is executed immetiately if soundmanager has already been loaded
-        soundManager.onready(loadAll);
+        s.onready(function(){loadAll();});
     });
 };
 
