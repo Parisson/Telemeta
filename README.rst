@@ -1,8 +1,8 @@
-=================
-Telemeta - README
-=================
+=======
+README
+=======
 
-Telemeta: web frontend to backup, analyse, transcode and stream any audio content and metadata
+Telemeta: Web Audio Content Management System
 
 
 Introduction
@@ -36,7 +36,7 @@ but could be easily adapted/overrided to sue other data structures.
 Installation and usage
 ======================
 
-See INSTALL and http://telemeta.org for more informations.
+See INSTALL.rst and http://telemeta.org for more informations.
 
 
 Development
