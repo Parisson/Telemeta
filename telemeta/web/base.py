@@ -207,7 +207,7 @@ class GeneralView(object):
         repository_name = settings.TELEMETA_DESCRIPTION
         url         = 'http://' + host + request.path
         admin       = settings.ADMINS[0][1]
-        provider    = oai.DataProvider(datasource, host, url, admin)
+        provider    = oai.DataProvider(datasource, repository_name, url, admin)
         args        = request.GET.copy()
         args.update(request.POST)
         return HttpResponse(provider.handle(args), mimetype='text/xml')
