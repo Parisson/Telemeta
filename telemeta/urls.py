@@ -237,8 +237,10 @@ urlpatterns = patterns('',
     url(r'^oai/.*$', general_view.handle_oai_request, name="telemeta-oai"),
 
     # Authentication
-    url(r'^login/$', 'ipauth.views.login', {'template_name': 'telemeta/login.html'},
+    url(r'^login/$', 'django.contrib.views.login', {'template_name': 'telemeta/login.html'},
         name="telemeta-login"),
+    #url(r'^login/$', 'ipauth.views.login', {'template_name': 'telemeta/login.html'},
+    #    name="telemeta-login"),
     url(r'^logout/$', general_view.logout, name="telemeta-logout"),
 
     # Users
