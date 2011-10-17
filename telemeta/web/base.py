@@ -204,7 +204,7 @@ class GeneralView(object):
     def handle_oai_request(self, request):
         host = request.META['HTTP_HOST']
         datasource  = TelemetaOAIDataSource()
-        repository_name = settings.TELEMETA_DESCRIPTION
+        repository_name = settings.TELEMETA_ORGANIZATION
         url         = 'http://' + host + request.path
         admin       = settings.ADMINS[0][1]
         provider    = oai.DataProvider(datasource, repository_name, url, admin)

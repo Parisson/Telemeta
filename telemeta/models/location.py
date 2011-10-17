@@ -144,6 +144,13 @@ class Location(ModelCore):
         for path in self.paths():
             names.append(u', '.join([unicode(l) for l in path]))
         return names
+        
+    def listnames(self):
+        names = []
+        for path in self.paths():
+            for l in path:
+                names.append(unicode(l))
+        return names
 
 class LocationType(ModelCore):
     "Location types"
