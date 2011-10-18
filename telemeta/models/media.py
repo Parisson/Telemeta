@@ -258,8 +258,8 @@ class MediaItem(MediaResource):
     collector_from_collection = BooleanField(_('recordist as in collection'))
     
     # Archiving data
-    code                  = CharField(_('code'), unique=True, null=True)
-    old_code              = CharField(_('old code'), unique=False, null=True, blank=True)
+    code                  = CharField(_('code'), unique=True, blank=True)
+    old_code              = CharField(_('old code'), unique=False, blank=True)
     track                 = CharField(_('item number'))
     creator_reference     = CharField(_('reference'))
     external_references   = TextField(_('published references'))
@@ -325,9 +325,12 @@ class MediaItem(MediaResource):
 
         return title
 
+
 class MediaItemForm(ModelForm):
     class Meta:
         model = MediaItem
+    def clean_code(self):
+        return self.cleaned_data['code'] or None
         
 class MediaItemKeyword(ModelCore):
     "Item keyword"

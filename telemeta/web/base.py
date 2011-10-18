@@ -517,10 +517,10 @@ class ItemView(object):
         if request.method == 'POST':
             form = MediaItemForm(data=request.POST, files=request.FILES, instance=item)
             if form.is_valid():
+                form.save()
                 code = form.cleaned_data['code']
                 if not code:
-                    code = public_id
-                form.save()
+                    code = str(item.id)
                 if form.files:
                     self.cache_data.delete_item_data(code)
                     self.cache_export.delete_item_data(code)
@@ -553,11 +553,11 @@ class ItemView(object):
         if request.method == 'POST':
             form = MediaItemForm(data=request.POST, files=request.FILES, instance=item)
             if form.is_valid():
-                code = form.cleaned_data['code']
-                if not code:
-                    code = public_id
                 form.save()
                 item.set_revision(request.user)
+                code = form.cleaned_data['code']
+                if not code:
+                    code = str(item.id)
                 return HttpResponseRedirect('/items/'+code)
         else:
             form = MediaItemForm(instance=item)
@@ -571,10 +571,10 @@ class ItemView(object):
             new_item = MediaItem()
             form = MediaItemForm(data=request.POST, files=request.FILES, instance=new_item)
             if form.is_valid():
+                form.save()
                 code = form.cleaned_data['code']
                 if not code:
-                    code = public_id
-                form.save()
+                    code = str(new_item.id)
                 new_item.set_revision(request.user)
                 return HttpResponseRedirect('/items/'+code)
         else:
