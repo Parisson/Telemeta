@@ -411,9 +411,8 @@ class Response(object):
     def format_id_header(self, id):
         organization = self.identity[0][1] 
         if 'http' in id:
-            return ':'.join(['oai', organization.lower(), 'items', id.split('/')[-1]])
-        else:
-            return id
+            id = id.split('/')[-1]
+        return ':'.join(['oai', organization.lower(), 'items', id])
     
     def list_records(self, from_time, until_time, token = None, ids_only = False):
         """Append ListIdentifiers or ListRecords result"""

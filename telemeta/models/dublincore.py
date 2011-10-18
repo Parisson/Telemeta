@@ -162,8 +162,8 @@ def express_collection(collection):
             parts.append(Element('relation', id, 'hasPart', item))
 
     resource = Resource(
-        Element('record_identifier', collection.public_id, related=collection),
         Element('identifier',       media_identifier(collection), related=collection),
+        Element('identifier',       collection.public_id, related=collection),
         Element('type',             'Collection'),
         Element('title',            collection.title),
         Element('title',            collection.alt_title),
@@ -214,8 +214,8 @@ def express_item(item):
         mime_type = ''
 
     resource = Resource(
-        Element('record_identifier', item.public_id, related=item),
         Element('identifier',       media_identifier(item), related=item),
+        Element('identifier',       item.public_id, related=item),
         Element('type',             'Sound'),
         Element('title',            title),
         Element('title',            item.alt_title),
