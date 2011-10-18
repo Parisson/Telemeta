@@ -408,6 +408,12 @@ class Response(object):
             container = self.root.appendChild(self.doc.createElement(self.verb))
             container.appendChild(self.make_record(id, dc, ctime))
 
+    def format_id_header(self, id):
+        organization = self.identity[0][1] 
+        if 'http' in id:
+            id = id.split('/')[-1]
+        return ':'.join(['oai', organization.lower(), 'items', id])
+    
     def list_records(self, from_time, until_time, token = None, ids_only = False):
         """Append ListIdentifiers or ListRecords result"""
         offset = 0
@@ -456,6 +462,7 @@ class Response(object):
             for item in data:
                 dc, ctime = item
                 id, dc = self.parse_dc(dc)
+                id = self.format_id_header(id)
                 if id == None:
                     raise Exception("DataSource.list_records() didn't provide an 'identifier' dublin core element")
 
