@@ -64,7 +64,6 @@ class MediaItemQuerySet(CoreQuerySet):
             word_search_q('comment', pattern) |  
             self.by_fuzzy_collector_q(pattern) )
         
-        print q
         return self.filter(q)
 
     def without_collection(self):        
