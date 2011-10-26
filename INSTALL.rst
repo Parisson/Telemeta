@@ -71,12 +71,11 @@ Install Telemeta
 
     sudo pip install telemeta
   
-  or::
+  or
   
     sudo easy_install telemeta
     
-* Downloading the latest tar archive at http://telemeta.org
-  Uncompress it and install. For example::
+* Downloading the latest tar archive at http://telemeta.org. Uncompress it and install. For example::
   
         tar xzf telemeta-1.0.tar.gz
         cd telemeta-1.0
