@@ -57,6 +57,7 @@ geo_view = GeoView()
 
 # query sets for Django generic views
 all_items = { 'queryset': MediaItem.objects.enriched().order_by('code', 'old_code') }
+all_sound_items = { 'queryset': MediaItem.objects.sound().order_by('code', 'old_code') }
 all_collections = { 'queryset': MediaCollection.objects.enriched(), }
 
 # CREM collections
@@ -76,6 +77,8 @@ urlpatterns = patterns('',
     url(r'^items/$', 'django.views.generic.list_detail.object_list', 
         dict(all_items, paginate_by=20, template_name="telemeta/mediaitem_list.html"),
         name="telemeta-items"),
+    url(r'^items_sound/$', 'django.views.generic.list_detail.object_list',
+        dict(all_sound_items, paginate_by=20, template_name="telemeta/mediaitem_list.html"), name="telemeta-items-sound"),
     url(r'^items/(?P<public_id>[A-Za-z0-9._-]+)/$', item_view.item_detail, 
         name="telemeta-item-detail"),
     url(r'^items/(?P<public_id>[A-Za-z0-9._-]+)/dc/$', item_view.item_detail, 
