@@ -71,7 +71,7 @@ Install Telemeta
 
     sudo pip install telemeta
   
-  or
+  or::
   
     sudo easy_install telemeta
     
@@ -80,7 +80,6 @@ Install Telemeta
         tar xzf telemeta-1.0.tar.gz
         cd telemeta-1.0
         sudo python setup.py install
-
 
 -------------------------
 Fast testing (sandbox)
@@ -97,7 +96,6 @@ If you haven't already done it, start a new django project::
 
     cd ~/my_projects
     django-admin startproject mysite
-
 
 -----------------------------------------
 Create the media and cache directories
