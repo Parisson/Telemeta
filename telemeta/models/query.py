@@ -192,6 +192,8 @@ class MediaItemQuerySet(CoreQuerySet):
     def by_fuzzy_collector(self, pattern):
         return self.filter(self.by_fuzzy_collector_q(pattern))
     
+    def sound(self):
+        return self.filter(file__contains='/')
         
 class MediaItemManager(CoreManager):
     "Manage media items queries"
@@ -232,6 +234,9 @@ class MediaItemManager(CoreManager):
         return self.get_query_set().by_location(*args, **kwargs)
     by_location.__doc__ = MediaItemQuerySet.by_location.__doc__    
 
+    def sound(self, *args, **kwargs):
+        return self.get_query_set().sound(*args, **kwargs)
+    sound.__doc__ = MediaItemQuerySet.sound.__doc__    
 
 class MediaCollectionQuerySet(CoreQuerySet):
 

@@ -31,11 +31,23 @@
 {% include "telemeta/inc/module_revisions.html" %}
 
 {% endblock %}
+
 </div>
 
 <div class="home-description">
 <img class="align-left" src="{% url telemeta-images "vox.png" %}" alt="vox" style="vertical-align:middle;" />
 {{ page_content|render_flatpage }}
+</div>
+
+<div style="margin-top: 1ex;">
+<h1><img src="{% url telemeta-images "playlist_title.png" %}" alt="playlists" style="vertical-align:middle" />
+    {% trans "Musical selection" %}</h1>
+<table><tr>
+{% for item in sound_items %}
+<td><iframe width='375' height='215' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='/items/{{item.public_id }}/player/362x130/'></iframe></td>
+{% endfor %}
+</tr>
+</table>
 </div>
 
 </div>
