@@ -45,7 +45,7 @@
 <table style="font-size: 90%"><tr>
 {% for item in sound_items %}
 <td width="390"><a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>{% if item.alt_title %} ({{ item.alt_title }}){% endif %}<br /><span style="font-size: 90%">{{ item.location.fullnames|to_string }}</span><br />
-<iframe width='375' height='215' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='/items/{{item.public_id }}/player/362x130/'></iframe></td>
+<iframe width='376' height='215' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='/items/{{item.public_id }}/player/362x130/'></iframe></td>
 {% endfor %}
 </tr>
 </table>

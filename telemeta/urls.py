@@ -64,7 +64,6 @@ all_collections = { 'queryset': MediaCollection.objects.enriched(), }
 all_collections_unpublished = { 'queryset': MediaCollection.objects.filter(code__contains='_I_'), }
 all_collections_published = { 'queryset': MediaCollection.objects.filter(code__contains='_E_'), }
 
-
 # ID's regular expressions
 export_extensions = "|".join(item_view.list_export_extensions())
 

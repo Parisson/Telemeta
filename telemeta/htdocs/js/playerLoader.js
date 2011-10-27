@@ -463,7 +463,7 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                     $J('#player_maximized .embed_player_frame, #player_minimized .embed_player_frame').click(function() {
                         var player_url = urlNormalized(); //defined in application.js
                         var size= player.getImageSize();
-                        player_url += "/player/"+size.width+2+"x"+size.height;
+                        player_url += "/player/"+size.width+"x"+size.height;
                         var iframeSpanW = 15;
                         var iframeSpanH = 85;
                         var input_text = "<iframe width='"+(size.width+iframeSpanW)+"' height='"+(size.height+iframeSpanH)+

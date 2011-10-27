@@ -185,7 +185,8 @@ class GeneralView(object):
                                                 str(item.recorded_to_date).split('-')[0]):
                     sound_pub_items.append(item)
             random.shuffle(sound_pub_items)
-            sound_pub_items = sound_pub_items[0:2]
+            if len(sound_pub_items) >= 2:
+                sound_pub_items = sound_pub_items[0:2]
             
             revisions = get_revisions(3)
             context = RequestContext(request, {
@@ -633,13 +634,16 @@ class ItemView(object):
                                              analyzer_id='mime_type', unit='', value=mime_type)
                 analysis.save()
                 analysis = MediaItemAnalysis(item=item, name='Channels', 
-                                             analyzer_id='channels', unit='', value=decoder.channels())
+                                             analyzer_id='channels', 
+                                             unit='', value=decoder.channels())
                 analysis.save()
                 analysis = MediaItemAnalysis(item=item, name='Samplerate', 
-                                             analyzer_id='samplerate', unit='Hz', value=unicode(decoder.audiorate))
+                                             analyzer_id='samplerate', unit='Hz', 
+                                             value=unicode(decoder.audiorate))
                 analysis.save()
                 analysis = MediaItemAnalysis(item=item, name='Resolution', 
-                                             analyzer_id='resolution', unit='bits', value=unicode(decoder.audiowidth))
+                                             analyzer_id='resolution', unit='bits', 
+                                             value=unicode(decoder.audiowidth))
                 analysis.save()
 
                 for analyzer in analyzers_sub:
@@ -653,7 +657,8 @@ class ItemView(object):
                             pass
                         value = datetime.timedelta(0,value)
                     
-                    analysis = MediaItemAnalysis(item=item, name=analyzer.name(), analyzer_id=analyzer.id(), 
+                    analysis = MediaItemAnalysis(item=item, name=analyzer.name(), 
+                                                 analyzer_id=analyzer.id(), 
                                                  unit=analyzer.unit(), value=str(value))
                     analysis.save()
         
@@ -709,8 +714,9 @@ class ItemView(object):
         """Export a given media item in the specified format (OGG, FLAC, ...)"""
         
         item = MediaItem.objects.get(public_id=public_id)
-        public_access = get_public_access(item.public_access, str(item.recorded_from_date).split('-')[0], 
-                                                str(item.recorded_to_date).split('-')[0])
+        public_access = get_public_access(item.public_access, 
+                                          str(item.recorded_from_date).split('-')[0], 
+                                          str(item.recorded_to_date).split('-')[0])
         
         if (not public_access or not extension in settings.TELEMETA_STREAMING_FORMATS) and \
                     not (request.user.has_perm('telemeta.can_play_all_items') or request.user.is_superuser):
