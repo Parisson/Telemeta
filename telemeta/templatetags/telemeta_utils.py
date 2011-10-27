@@ -315,4 +315,7 @@ def profile(user):
 
 @register.filter
 def to_string(list):
-    return list[0].encode('utf-8')
+    if len(list) != 0:
+        return list[0].encode('utf-8')
+    else:
+        return ''
