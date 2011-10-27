@@ -10,15 +10,15 @@ Key features of Telemeta:
  * User friendly web frontend including workflows and high level search methods
  * Smart dynamical and skinnable audio player (thanks to `TimeSide <http://code.google.com/p/timeside/>`_ and `SoundManager2 <http://www.schillmania.com/projects/soundmanager2/>`_)
  * "On the fly" analyzing, transcoding and metadata embedding based on an easy plugin architecture
- * Temporal and collaborative indexation with fast user marker management
+ * Collaborative temporal indexing with fast user marker management
  * Multi-format support : FLAC, OGG, MP3, WAV and more
  * User management with individual profiles and rights
- * Playlist management for users with CSV data export
+ * User playlist management with CSV data export
  * Geo-Navigator for audio geolocalization
  * `DublinCore <http://dublincore.org/>`_ compatibility
  * `OAI-PMH <http://www.openarchives.org/pmh/>`_ data provider
+ * Relational database system (MySQL type)
  * RSS feeds generator
  * XML serialized backup
- * Strong SQL or Oracle backend
 
 The Telemeta data model is now based on *collection* and *item* elements. A *collection* is described by its metadata and is related to audio *items*. An *item* embeds audio files with its metadata. This model has been designed to fit the one of the French Centre of Ethnomusicology (`CREM <http://www.crem-cnrs.fr>`_) of the University of Paris Ouest - Nanterre but could be easily adapted or overrided to suit other data structures.

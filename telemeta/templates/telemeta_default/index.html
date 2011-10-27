@@ -29,6 +29,19 @@
 
 {% include "telemeta/inc/module_revisions.html" %}
 
+{{ block.super }}
+<div id="module" class="module">
+    <h3><img src="/images/module_playlist.png" style="vertical-align:middle" />
+    Partenaires</h3><br />
+    <div style="background-color: white; padding: 1ex;" align="center">
+    <a href="http://www.cnrs.fr"><img class="image-link" src="{% url telemeta-images "logo-CNRS.png" %}" alt="CNRS"></a>&nbsp;&nbsp;&nbsp;
+    <a href="http://www.culture.gouv.fr"><img class="image-link" src="{% url telemeta-images "logo_mcc_2.png" %}" alt="MCC"></a>&nbsp;&nbsp;
+    <a href="http://www.mnhn.fr"><img class="image-link" src="{% url telemeta-images "logo-mnhn.gif" %}" alt="MNHN"></a>
+    <br /><br />
+    <a href="http://www.tge-adonis.fr"><img class="image-link" src="{% url telemeta-images "logo-adonis.jpg" %}" alt="TGE Adonis"></a>
+	</div>
+</div>
+
 {% endblock %}
 
 </div>

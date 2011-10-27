@@ -2,23 +2,26 @@
 Telemeta : Web Audio Content Management System
 ===================================================
 
-`Telemeta <http://telemeta.org>`_ is a web audio archiving program which introduces useful and secure methods to backup, index, transcode, analyse and publish any digitalized audio file with its metadata. It is dedicated to professionnals who wants to easily organize, backup and publish documented sound collections of audio files, CDs, digitalized vinyls and magnetic tapes over a strong database, in accordance with open web standards.
+`Telemeta <http://telemeta.org>`_ est une solution libre d'archivage et d'indexation audio basée sur une interface de type web. Elle offre des fonctions avancées d'édition, d'indexation, de transcodage, de publication et de sauvegarde d'archives audio et de leurs méta-données. Il donne accès aux ressources distantes publiées ou privatisés issues de collections numérisées (fichiers, CD audio, vinyl ou bandes magnétiques) par l'intermédiaire d'un simple navigateur ou d'une application dédiée en accord avec les standards du web.
 
-Key features of Telemeta:
-    
- * Secure archiving, editing and publishing of audio files over internet.
- * User friendly web frontend including workflows and high level search methods
- * Smart dynamical and skinnable audio player (thanks to `TimeSide <http://code.google.com/p/timeside/>`_ and `SoundManager2 <http://www.schillmania.com/projects/soundmanager2/>`_)
- * "On the fly" analyzing, transcoding and metadata embedding based on an easy plugin architecture
- * Temporal and collaborative indexation with fast user marker management
- * Multi-format support : FLAC, OGG, MP3, WAV and more
- * User management with individual profiles and rights
- * Playlist management for users with CSV data export
- * Geo-Navigator for audio geolocalization
- * `DublinCore <http://dublincore.org/>`_ compatibility
- * `OAI-PMH <http://www.openarchives.org/pmh/>`_ data provider
- * RSS feeds generator
- * XML serialized backup
- * Strong SQL or Oracle backend
+Liste des fonctionnalités principales:
 
-The Telemeta data model is now based on *collection* and *item* elements. A *collection* is described by its metadata and is related to audio *items*. An *item* embeds audio files with its metadata. This model has been designed to fit the one of the French Centre of Ethnomusicology (`CREM <http://www.crem-cnrs.fr>`_) of the University of Paris Ouest - Nanterre but could be easily adapted or overrided to suit other data structures.
+ * Edition, archivage pérenne sécurisé, indexation collaborative sur la base d'une application web
+ * Interface utilisateur conforme aux standards ouverts du web
+ * Moteur de recherche par mots clés ou par critères (géographiques, ethniques, etc...)
+ * Lecteur audio avancé dynamique et paramétrable (tous formats audio et video supportés)
+ * Moteur d'analyse et de visualisation audio basée sur une structure de modules paramétrables
+ * Transcodage vers les formats FLAC, OGG, MP3 et WAV avec encapsulation des métadonnées à la volée
+ * Gestion complète des droits et profils utilisateurs
+ * Gestion de listes de lecture personnelles avec export CSV
+ * Indexation temporelle à la volée (marqueurs textuels sur le lecteur web audio)
+ * Base de données relationnelle (type MySQL)
+ * Service d'accès aux données par le protocole OAI-PMH (moissonnage)
+ * Compatibilité `DublinCore <http://dublincore.org/>`_
+ * Service de moissonnage `OAI-PMH <http://www.openarchives.org/pmh/>`_ 
+ * Geo-navigateur pour la géolocalisation audio (Google Maps)
+ * Flux RSS dynamique des dernières modifications
+ * Sauvegarde sérialisée des aarchives et de leurs métadonnées aux formats WAV + XML
+ * Traduction complète anglais / français (détection automatique et/ou contrainte manuelle)
+
+Telemeta incorpore ainsi un ensemble de fonctions spécifiques au travail des archives temporelles comme la musique ou la voix parlée / chantée, l'interface ayant été pensée par et pour les chercheurs. Les services de transposition des méta-données au format DublinCore à travers le protocole OAI-PMH permet de proposer l'ensemble des méta-données aux services de moissonnage institutionels tels que `Isidore <http://www.rechercheisidore.fr>`_ créé par le `TGE Adonis <http://www.tge-adonis.fr>`_ pour les sciences humaines et sociales.
