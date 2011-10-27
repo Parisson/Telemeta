@@ -65,17 +65,13 @@ And even if Telemeta suits you, please give us some feedback !
 Related projects
 ================
 
-TimeSide : Web Audio Components
-
-http://code.google.com/p/timeside/
+TimeSide (Web Audio Components): http://code.google.com/p/timeside/
 
 
 Contact
 =======
 
-Homepage:
-
- * http://telemeta.org
+Homepage: http://telemeta.org
 
 E-mails:
 
@@ -83,7 +79,7 @@ E-mails:
  * Olivier Guilyardi <olivier@samalyse.com>,
  * Riccardo Zaccarelli <riccardo.zaccarelli@gmail.com>
 
-Twitter::
+Twitter:
 
  * http://twitter.com/telemeta
  * http://twitter.com/parisson_studio
