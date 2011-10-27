@@ -66,27 +66,28 @@ Related projects
 ================
 
 TimeSide : Web Audio Components
+
 http://code.google.com/p/timeside/
 
 
 Contact
 =======
 
-Homepage::
+Homepage:
 
-	http://telemeta.org
+ * http://telemeta.org
 
-E-mails::
+E-mails:
 
-	Guillaume Pellerin <yomguy@parisson.com>,
-    Olivier Guilyardi <olivier@samalyse.com>,
-    Riccardo Zaccarelli <riccardo.zaccarelli@gmail.com>
+ * Guillaume Pellerin <yomguy@parisson.com>,
+ * Olivier Guilyardi <olivier@samalyse.com>,
+ * Riccardo Zaccarelli <riccardo.zaccarelli@gmail.com>
 
 Twitter::
 
-	http://twitter.com/telemeta
-	http://twitter.com/parisson_studio
-	
+ * http://twitter.com/telemeta
+ * http://twitter.com/parisson_studio
+ 
 
 Sponsors
 ========
