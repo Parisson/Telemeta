@@ -179,21 +179,23 @@ class GeneralView(object):
 #            items = MediaItem.objects.enriched().filter(pk__in=ids)
 #            
             sound_items = MediaItem.objects.sound()
-            sound_pub_items = []
+            _sound_pub_items = []
             for item in sound_items:
                 if get_public_access(item.public_access,  str(item.recorded_from_date).split('-')[0], 
                                                 str(item.recorded_to_date).split('-')[0]):
-                    sound_pub_items.append(item)
+                    _sound_pub_items.append(item)
             
-            random.shuffle(sound_pub_items)
-            if len(sound_pub_items) != 0:
-                sound_pub_item = sound_pub_items[0]
+            random.shuffle(_sound_pub_items)
+            if len(_sound_pub_items) != 0:
+                sound_pub_item = _sound_pub_items[0]
             else:
                 sound_pub_item = None
-            if len(sound_pub_items) == 2:
-                sound_pub_items = sound_pub_items[1]
-            if len(sound_pub_items) > 2:
-                sound_pub_items = sound_pub_items[1:3]
+            if len(_sound_pub_items) == 2:
+                sound_pub_items = [_sound_pub_items[1]]
+            elif len(_sound_pub_items) > 2:
+                sound_pub_items = _sound_pub_items[1:3]
+            else:
+                sound_pub_items = None
                 
             revisions = get_revisions(4)
             context = RequestContext(request, {
