@@ -2,23 +2,19 @@
 README
 =======
 
-Telemeta: Web Audio Content Management System
+Telemeta: a web Audio Content Management System
 
 
 Introduction
 ============
 
-Telemeta is a web audio archiving program which introduces useful and secure methods to
-backup, index, transcode, analyse and publish any digitalized audio file with its metadata.
-It is dedicated to professionnals who wants to easily backup and publish documented sounds
-from collections of vinyls, magnetic tapes or audio CDs over a strong database,
-in accordance with open standards.
+Telemeta is a web audio archiving program which introduces useful and secure methods to backup, index, transcode, analyse and publish any digitalized audio file with its metadata. It is dedicated to professionnals who wants to easily organize, backup and publish documented sound collections of audio files, CDs, digitalized vinyls and magnetic tapes over a strong database, in accordance with open web standards.
 
 Here are the main features of Telemeta:
 
     * Secure archiving, editing and publishing of audio files over internet.
     * User friendly web frontend including workflows and high level search methods
-    * Smart dynamical and skinnable audio player (thanks to Timeside and soundmanager2)
+    * Smart dynamical and skinnable audio player (thanks to Timeside and SoundManager2)
     * "On the fly" analyzing, transcoding and metadata embedding based on an easy plugin architecture
     * Multi-format support : FLAC, OGG, MP3, WAV and more
     * GEO Navigator for audio geolocalization
@@ -47,8 +43,7 @@ You're welcome to email us to join and commit your great ideas ;)
 
 To get the lastest development version, you need subversion and run::
 
-    $ svn co http://svn.parisson.org/svn/telemeta/trunk telemeta
-
+    $ git clone http://vcs.parisson.com/git/telemeta.git
 
 Licence
 =======

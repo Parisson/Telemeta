@@ -312,3 +312,7 @@ def html_line_break(text):
 @register.simple_tag
 def profile(user):
     return user.get_profile()
+
+@register.filter
+def to_string(list):
+    return list[0].encode('utf-8')

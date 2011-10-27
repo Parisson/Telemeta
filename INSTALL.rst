@@ -67,22 +67,18 @@ In order to use markers on the player, you will need a JSON-RPC server for djang
 Install Telemeta
 ------------------
 
-* On Debian style systems, if you have added our repositories::
+* Using python package tools::
 
-    sudo apt-get install telemeta
-
-* Else:
-
-    Download the latest release of telemeta at
-    http://telemeta.org
-
-    Uncompress the archive like::
-
-        tar xzvf telemeta_0.9.6.tar.gz
-
-    Go to the main folder of telemeta and run this command
-    in a shell as root::
-
+    sudo pip install telemeta
+  
+  or::
+  
+    sudo easy_install telemeta
+    
+* Downloading the latest tar archive at http://telemeta.org. Uncompress it and install. For example::
+  
+        tar xzf telemeta-1.0.tar.gz
+        cd telemeta-1.0
         sudo python setup.py install
 
 -------------------------
@@ -100,7 +96,6 @@ If you haven't already done it, start a new django project::
 
     cd ~/my_projects
     django-admin startproject mysite
-
 
 -----------------------------------------
 Create the media and cache directories

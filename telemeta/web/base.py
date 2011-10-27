@@ -39,6 +39,7 @@ import os
 import sys
 import csv
 import time
+import random
 import datetime
 import timeside
 
@@ -174,12 +175,31 @@ class GeneralView(object):
         """Render the homepage"""
         if not request.user.is_authenticated():
             template = loader.get_template('telemeta/index.html')
-            ids = [id for id in MediaItem.objects.all().values_list('id', flat=True).order_by('?')[0:3]]
-            items = MediaItem.objects.enriched().filter(pk__in=ids)
-            revisions = get_revisions(3)
+#            ids = [id for id in MediaItem.objects.all().values_list('id', flat=True).order_by('?')[0:3]]
+#            items = MediaItem.objects.enriched().filter(pk__in=ids)
+#            
+            sound_items = MediaItem.objects.sound()
+            sound_pub_items = []
+            for item in sound_items:
+                if get_public_access(item.public_access,  str(item.recorded_from_date).split('-')[0], 
+                                                str(item.recorded_to_date).split('-')[0]):
+                    sound_pub_items.append(item)
+            
+            random.shuffle(sound_pub_items)
+            if len(sound_pub_items) != 0:
+                sound_pub_item = sound_pub_items[0]
+            else:
+                sound_pub_item = None
+            if len(sound_pub_items) == 2:
+                sound_pub_items = sound_pub_items[1]
+            if len(sound_pub_items) > 2:
+                sound_pub_items = sound_pub_items[1:3]
+                
+            revisions = get_revisions(4)
             context = RequestContext(request, {
                         'page_content': pages.get_page_content(request, 'home', ignore_slash_issue=True),
-                        'items': items, 'revisions': revisions})
+                        'revisions': revisions,  'sound_pub_items': sound_pub_items, 
+                        'sound_pub_item': sound_pub_item })
             return HttpResponse(template.render(context))
         else:
             template='telemeta/home.html'
@@ -622,13 +642,16 @@ class ItemView(object):
                                              analyzer_id='mime_type', unit='', value=mime_type)
                 analysis.save()
                 analysis = MediaItemAnalysis(item=item, name='Channels', 
-                                             analyzer_id='channels', unit='', value=decoder.channels())
+                                             analyzer_id='channels', 
+                                             unit='', value=decoder.channels())
                 analysis.save()
                 analysis = MediaItemAnalysis(item=item, name='Samplerate', 
-                                             analyzer_id='samplerate', unit='Hz', value=unicode(decoder.audiorate))
+                                             analyzer_id='samplerate', unit='Hz', 
+                                             value=unicode(decoder.audiorate))
                 analysis.save()
                 analysis = MediaItemAnalysis(item=item, name='Resolution', 
-                                             analyzer_id='resolution', unit='bits', value=unicode(decoder.audiowidth))
+                                             analyzer_id='resolution', unit='bits', 
+                                             value=unicode(decoder.audiowidth))
                 analysis.save()
 
                 for analyzer in analyzers_sub:
@@ -642,7 +665,8 @@ class ItemView(object):
                             pass
                         value = datetime.timedelta(0,value)
                     
-                    analysis = MediaItemAnalysis(item=item, name=analyzer.name(), analyzer_id=analyzer.id(), 
+                    analysis = MediaItemAnalysis(item=item, name=analyzer.name(), 
+                                                 analyzer_id=analyzer.id(), 
                                                  unit=analyzer.unit(), value=str(value))
                     analysis.save()
         
@@ -698,8 +722,9 @@ class ItemView(object):
         """Export a given media item in the specified format (OGG, FLAC, ...)"""
         
         item = MediaItem.objects.get(public_id=public_id)
-        public_access = get_public_access(item.public_access, str(item.recorded_from_date).split('-')[0], 
-                                                str(item.recorded_to_date).split('-')[0])
+        public_access = get_public_access(item.public_access, 
+                                          str(item.recorded_from_date).split('-')[0], 
+                                          str(item.recorded_to_date).split('-')[0])
         
         if (not public_access or not extension in settings.TELEMETA_STREAMING_FORMATS) and \
                     not (request.user.has_perm('telemeta.can_play_all_items') or request.user.is_superuser):
