@@ -175,9 +175,9 @@ class GeneralView(object):
         """Render the homepage"""
         if not request.user.is_authenticated():
             template = loader.get_template('telemeta/index.html')
-            ids = [id for id in MediaItem.objects.all().values_list('id', flat=True).order_by('?')[0:3]]
-            items = MediaItem.objects.enriched().filter(pk__in=ids)
-            
+#            ids = [id for id in MediaItem.objects.all().values_list('id', flat=True).order_by('?')[0:3]]
+#            items = MediaItem.objects.enriched().filter(pk__in=ids)
+#            
             sound_items = MediaItem.objects.sound()
             sound_pub_items = []
             for item in sound_items:
@@ -185,15 +185,20 @@ class GeneralView(object):
                                                 str(item.recorded_to_date).split('-')[0]):
                     sound_pub_items.append(item)
             
-            sound_pub_item = sound_pub_items[0]
             random.shuffle(sound_pub_items)
-            if len(sound_pub_items) >= 2:
-                sound_pub_items = sound_pub_items[0:2]
-            
+            if len(sound_pub_items) != 0:
+                sound_pub_item = sound_pub_items[0]
+            else:
+                sound_pub_item = None
+            if len(sound_pub_items) == 2:
+                sound_pub_items = sound_pub_items[1]
+            if len(sound_pub_items) > 2:
+                sound_pub_items = sound_pub_items[1:3]
+                
             revisions = get_revisions(4)
             context = RequestContext(request, {
                         'page_content': pages.get_page_content(request, 'home', ignore_slash_issue=True),
-                        'items': items, 'revisions': revisions,  'sound_items': sound_pub_items, 
+                        'revisions': revisions,  'sound_pub_items': sound_pub_items, 
                         'sound_pub_item': sound_pub_item })
             return HttpResponse(template.render(context))
         else:

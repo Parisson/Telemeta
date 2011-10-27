@@ -14,6 +14,7 @@
     <img class="map-thumbnail" src="{% url telemeta-images "world2.png" %}" alt="{% trans "Open the geographic navigator" %}" style="width:398px" /></a>
 </div>
 
+{% if sound_pub_item %}
 <div id="module" class="module">
     <h3><img src="{% url telemeta-images "module_playlist.png" %}" alt="playlist" style="vertical-align:middle" />
     {% trans "Musical selection" %}</h3>
@@ -23,6 +24,7 @@
     </li>
     </ul>
 </div>
+{% endif %}
 
 {% include "telemeta/inc/module_revisions.html" %}
 
@@ -35,17 +37,19 @@
 {{ page_content|render_flatpage }}
 </div>
 
+{% if sound_pub_items %}
 <div style="margin-top: 1ex;">
 <h1><img src="{% url telemeta-images "playlist_title.png" %}" alt="playlists" style="vertical-align:middle" />
     {% trans "Musical selection" %}</h1>
 <table style="font-size: 90%"><tr>
-{% for item in sound_items %}
-<td width="390"><a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>{% if item.alt_title %} ({{ item.alt_title }}){% endif %}<br /><span style="font-size: 90%">{{ item.location.fullnames|to_string }}</span><br />
+{% for item in sound_pub_items %}
+<td width="390"><a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>{% if item.alt_title %} ({{ item.alt_title }}){% endif %}<br /><span style="font-size: 80%">{{ item.location.fullnames|to_string }}</span><br />
 <iframe width='376' height='215' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='/items/{{item.public_id }}/player/362x130/'></iframe></td>
 {% endfor %}
 </tr>
 </table>
 </div>
+{% endif %}
 
 </div>
 {% endblock %}
