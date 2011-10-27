@@ -2,7 +2,11 @@
 Sound archives of the CNRS - Musée de l'Homme 
 ==============================================
 
+<<<<<<< HEAD
 The establishment of the `CREM <http://www.crem-cnrs.fr>`_’s audio archives is the result of a long history of scientific research on music. Since the birth of ethnomusicology (then "comparative musicology"), which coincided with the invention of the first recorders in the late nineteenth century, recording music materials and their classification and preservation are central in our knowledge of the musical Man. 
+=======
+`Telemeta <http://telemeta.org>`_ is a web audio archiving program which introduces useful and secure methods to backup, index, transcode, analyse and publish any digitalized audio file with its metadata. It is dedicated to professionnals who wants to easily organize, backup and publish documented sound collections of audio files, CDs, digitalized vinyls and magnetic tapes over a strong database, in accordance with open web standards.
+>>>>>>> master
 
 .. image:: home_img.jpg
     :align: left
