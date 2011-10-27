@@ -184,14 +184,17 @@ class GeneralView(object):
                 if get_public_access(item.public_access,  str(item.recorded_from_date).split('-')[0], 
                                                 str(item.recorded_to_date).split('-')[0]):
                     sound_pub_items.append(item)
+            
+            sound_pub_item = sound_pub_items[0]
             random.shuffle(sound_pub_items)
             if len(sound_pub_items) >= 2:
                 sound_pub_items = sound_pub_items[0:2]
             
-            revisions = get_revisions(3)
+            revisions = get_revisions(4)
             context = RequestContext(request, {
                         'page_content': pages.get_page_content(request, 'home', ignore_slash_issue=True),
-                        'items': items, 'revisions': revisions,  'sound_items': sound_pub_items})
+                        'items': items, 'revisions': revisions,  'sound_items': sound_pub_items, 
+                        'sound_pub_item': sound_pub_item })
             return HttpResponse(template.render(context))
         else:
             template='telemeta/home.html'

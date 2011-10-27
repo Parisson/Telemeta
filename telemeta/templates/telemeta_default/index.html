@@ -11,20 +11,16 @@
     <h3><img src="{% url telemeta-images "module_world.png" %}" alt="world" style="vertical-align:middle" />
     {% trans "Geo Navigator" %}</h3>
     <a class="image-link" href="{% url telemeta-geo-continents %}">
-    <img class="map-thumbnail" src="{% url telemeta-images "map_thumbnail.png" %}" alt="{% trans "Open the geographic navigator" %}" /></a>
+    <img class="map-thumbnail" src="{% url telemeta-images "world2.png" %}" alt="{% trans "Open the geographic navigator" %}" style="width:398px" /></a>
 </div>
 
 <div id="module" class="module">
     <h3><img src="{% url telemeta-images "module_playlist.png" %}" alt="playlist" style="vertical-align:middle" />
     {% trans "Musical selection" %}</h3>
     <ul class="playlist">
-    {% for item in items %}
-    <li>
-        <a href="{% url telemeta-item-detail item.public_id %}"><b>{{item}}</b></a>
-        <br />
-        <span class="info">{{item.computed_duration}} {{item.apparent_collector|prepend:' - '}} - {{item.country_or_continent}}</span>
+    <li><a href="{% url telemeta-item-detail sound_pub_item.public_id %}"><b>{{ sound_pub_item }}</b></a>{% if sound_pub_item.alt_title %} ({{ sound_pub_item.alt_title }}){% endif %}<br /><span style="font-size: 90%">{{ sound_pub_item.location.fullnames|to_string }}</span><br />
+<iframe width='376' height='215' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='/items/{{sound_pub_item.public_id }}/player/362x130/'></iframe>
     </li>
-    {% endfor %}
     </ul>
 </div>
 
