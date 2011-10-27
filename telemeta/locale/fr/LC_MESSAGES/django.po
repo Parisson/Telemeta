@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-27 10:53+0200\n"
+"POT-Creation-Date: 2011-10-27 12:09+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Olivier Guilyardi <olivier samalyse com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -608,7 +608,7 @@ msgid "Items"
 msgstr "Items"
 
 #: templates/telemeta_default/base.html:84
-#: templates/telemeta_default/index.html:12
+#: templates/telemeta_default/index.html:25
 msgid "Geo Navigator"
 msgstr "Géo-Navigateur"
 
@@ -676,7 +676,7 @@ msgid "Save"
 msgstr "Enregistrer"
 
 #: templates/telemeta_default/collection_detail.html:5
-#: templates/telemeta_default/collection_detail_dc.html:5 web/base.py:341
+#: templates/telemeta_default/collection_detail_dc.html:5 web/base.py:349
 msgid "Collection"
 msgstr "Collection"
 
@@ -921,13 +921,13 @@ msgid "deleted"
 msgstr "supprimé"
 
 #: templates/telemeta_default/index.html:14
-msgid "Open the geographic navigator"
-msgstr "Accéder au navigateur géographique"
-
-#: templates/telemeta_default/index.html:19
 #: templates/telemeta_default/index.html:44
 msgid "Musical selection"
 msgstr "Sélection musicale"
+
+#: templates/telemeta_default/index.html:27
+msgid "Open the geographic navigator"
+msgstr "Accéder au navigateur géographique"
 
 #: templates/telemeta_default/instrument_edit.html:13
 #: templates/telemeta_default/instrument_edit.html:27
@@ -954,7 +954,7 @@ msgstr "Mot de passe oublié"
 
 #: templates/telemeta_default/mediaitem_add.html:5
 #: templates/telemeta_default/mediaitem_copy.html:5
-#: templates/telemeta_default/mediaitem_detail.html:5 web/base.py:477
+#: templates/telemeta_default/mediaitem_detail.html:5 web/base.py:485
 msgid "Item"
 msgstr "Item"
 
@@ -1046,7 +1046,7 @@ msgstr "Formation"
 msgid "User Profile"
 msgstr "Profil utilisateur"
 
-#: templates/telemeta_default/profile_detail.html:8 web/base.py:1193
+#: templates/telemeta_default/profile_detail.html:8 web/base.py:1201
 msgid "User profile"
 msgstr "Profil utilisateur"
 
@@ -1158,7 +1158,7 @@ msgstr "Etat/Continent"
 msgid "No item"
 msgstr "Aucun item"
 
-#: templates/telemeta_default/inc/module_revisions.html:7 web/base.py:1223
+#: templates/telemeta_default/inc/module_revisions.html:7 web/base.py:1231
 msgid "Last changes"
 msgstr "Dernières modifications"
 
@@ -1351,11 +1351,11 @@ msgid_plural "%(count)d collections"
 msgstr[0] "%(count)d collection"
 msgstr[1] "%(count)d collections"
 
-#: web/base.py:340 web/base.py:476 web/base.py:723 web/base.py:1192
+#: web/base.py:348 web/base.py:484 web/base.py:731 web/base.py:1200
 msgid "Access not allowed"
 msgstr "Accès non autorisé"
 
-#: web/base.py:342 web/base.py:478 web/base.py:725 web/base.py:1194
+#: web/base.py:350 web/base.py:486 web/base.py:733 web/base.py:1202
 msgid ""
 "Please login or contact the website administator to get a private access."
 msgstr ""

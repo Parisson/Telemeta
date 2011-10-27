@@ -7,12 +7,6 @@
 <div id="module-set">
 
 {% block modules %}
-<div class="module">
-    <h3><img src="{% url telemeta-images "module_world.png" %}" alt="world" style="vertical-align:middle" />
-    {% trans "Geo Navigator" %}</h3>
-    <a class="image-link" href="{% url telemeta-geo-continents %}">
-    <img class="map-thumbnail" src="{% url telemeta-images "world2.png" %}" alt="{% trans "Open the geographic navigator" %}" style="width:398px" /></a>
-</div>
 
 {% if sound_pub_item %}
 <div id="module" class="module">
@@ -25,6 +19,13 @@
     </ul>
 </div>
 {% endif %}
+
+<div class="module">
+    <h3><img src="{% url telemeta-images "module_world.png" %}" alt="world" style="vertical-align:middle" />
+    {% trans "Geo Navigator" %}</h3>
+    <a class="image-link" href="{% url telemeta-geo-continents %}">
+    <img class="map-thumbnail" src="{% url telemeta-images "world2.png" %}" alt="{% trans "Open the geographic navigator" %}" style="width:398px" /></a>
+</div>
 
 {% include "telemeta/inc/module_revisions.html" %}
 
