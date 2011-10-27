@@ -72,11 +72,21 @@ http://code.google.com/p/timeside/
 Contact
 =======
 
-:Homepage:    http://telemeta.org
+Homepage::
 
-:Emails:      Guillaume Pellerin <yomguy@parisson.com>,
-              Olivier Guilyardi <olivier@samalyse.com>,
-              Riccardo Zaccarelli <riccardo.zaccarelli@gmail.com>
+	http://telemeta.org
+
+E-mails::
+
+	Guillaume Pellerin <yomguy@parisson.com>,
+    Olivier Guilyardi <olivier@samalyse.com>,
+    Riccardo Zaccarelli <riccardo.zaccarelli@gmail.com>
+
+Twitter::
+
+	http://twitter.com/telemeta
+	http://twitter.com/parisson_studio
+	
 
 Sponsors
 ========
