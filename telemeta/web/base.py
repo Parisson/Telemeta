@@ -175,9 +175,7 @@ class GeneralView(object):
         """Render the homepage"""
         if not request.user.is_authenticated():
             template = loader.get_template('telemeta/index.html')
-#            ids = [id for id in MediaItem.objects.all().values_list('id', flat=True).order_by('?')[0:3]]
-#            items = MediaItem.objects.enriched().filter(pk__in=ids)
-#            
+            
             sound_items = MediaItem.objects.sound()
             _sound_pub_items = []
             for item in sound_items:
