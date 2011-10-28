@@ -22,3 +22,5 @@ Key features of Telemeta:
  * XML serialized backup
 
 The Telemeta data model is now based on *collection* and *item* elements. A *collection* is described by its metadata and is related to audio *items*. An *item* embeds audio files and its metadata. This model has been designed to fit the one of the French Centre of Ethnomusicology (`CREM <http://www.crem-cnrs.fr>`_) of the University of Paris Ouest - Nanterre but could be easily adapted or overrided to suit other data structures.
+
+|
