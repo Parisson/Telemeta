@@ -38,7 +38,7 @@ See [http://telemeta.org/browser/INSTALL.rst INSTALL.rst] and http://telemeta.or
 Changelog
 =========
 
-See [http://telemeta.org/browser/CHANGELOG.rst CHANGELOG.rst].
+See [http://telemeta.org/browser/CHANGELOG CHANGELOG].
 
 
 Development
