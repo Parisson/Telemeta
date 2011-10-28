@@ -32,7 +32,13 @@ but could be easily adapted/overrided to sue other data structures.
 Installation and usage
 ======================
 
-See INSTALL.rst and http://telemeta.org for more informations.
+See [http://telemeta.org/browser/INSTALL.rst INSTALL.rst] and http://telemeta.org for more informations.
+
+
+Changelog
+=========
+
+See [http://telemeta.org/browser/CHANGELOG.rst CHANGELOG.rst].
 
 
 Development
