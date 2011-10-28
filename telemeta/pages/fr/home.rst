@@ -21,7 +21,7 @@ Liste des fonctionnalités principales:
  * Service de moissonnage `OAI-PMH <http://www.openarchives.org/pmh/>`_ 
  * Geo-navigateur pour la géolocalisation audio (Google Maps)
  * Flux RSS dynamique des dernières modifications
- * Sauvegarde sérialisée des aarchives et de leurs métadonnées aux formats WAV + XML
+ * Sauvegarde sérialisée des archives et de leurs métadonnées aux formats WAV + XML
  * Traduction complète anglais / français (détection automatique et/ou contrainte manuelle)
 
 Telemeta incorpore ainsi un ensemble de fonctions spécifiques au travail des archives temporelles comme la musique ou la voix parlée / chantée, l'interface ayant été pensée par et pour les chercheurs. Les services de transposition des méta-données au format DublinCore à travers le protocole OAI-PMH permet de proposer l'ensemble des méta-données aux services de moissonnage institutionels tels que `Isidore <http://www.rechercheisidore.fr>`_ créé par le `TGE Adonis <http://www.tge-adonis.fr>`_ pour les sciences humaines et sociales.
