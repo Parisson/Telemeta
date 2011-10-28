@@ -2,6 +2,8 @@
 Telemeta - INSTALL
 ==================
 
+Don't worry, Telemeta is easy to setup as any other Django app !
+
 -----------------
 Requirements
 -----------------
@@ -16,6 +18,24 @@ Other needed librairies are listed below.
 Install the software
 -----------------------
 
+Install Telemeta
+------------------
+
+* Using python package tools (install MANY dependencies automatically)::
+
+    sudo pip install telemeta
+
+  or::
+
+    sudo easy_install telemeta
+
+* Downloading the latest tar archive at http://telemeta.org. Uncompress it and install. For example::
+
+        tar xzf telemeta-1.0.tar.gz
+        cd telemeta-1.0
+        sudo python setup.py install
+
+        
 Install the dependencies
 -------------------------
 
@@ -63,24 +83,6 @@ In order to use markers on the player, you will need a JSON-RPC server for djang
     cd django-json-rpc
     python setup.py install
 
-
-Install Telemeta
-------------------
-
-* Using python package tools::
-
-    sudo pip install telemeta
-  
-  or::
-  
-    sudo easy_install telemeta
-    
-* Downloading the latest tar archive at http://telemeta.org. Uncompress it and install. For example::
-  
-        tar xzf telemeta-1.0.tar.gz
-        cd telemeta-1.0
-        sudo python setup.py install
-
 -------------------------
 Fast testing (sandbox)
 -------------------------
@@ -120,7 +122,7 @@ Configure the telemeta project
 ----------------------------------
 
 Edit the file settings.py in a text editor.
-Modifiy the following variables:
+Modifiy the following variables::
 
     ADMINS =            telemeta requires that you indicate an administrator here
     DATABASES =         your database setting dict (don't forget to create the database if needed)
@@ -139,14 +141,14 @@ Set the app lists as follow::
     'jsonrpc',
     )
 
-Set the following languages:
+Set the following languages::
     
     LANGUAGES = [ ('fr', 'French'),
                   ('en', 'English'),
     ]
 
 
-Set the following Middlewares:
+Set the following Middlewares::
     
     MIDDLEWARE_CLASSES = (
         'django.middleware.common.CommonMiddleware',
@@ -157,7 +159,7 @@ Set the following Middlewares:
         'django.middleware.locale.LocaleMiddleware',
     )
 
-Add the following variables:
+Add the following variables::
     
     TEMPLATE_CONTEXT_PROCESSORS = (
         'django.core.context_processors.request',
