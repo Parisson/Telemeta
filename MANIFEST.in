@@ -1,0 +1,16 @@
+include AUTHORS
+include LICENSE
+include CHANGELOG
+include README.rst
+include INSTALL.rst
+recursive-include doc *
+recursive-include example *
+recursive-include telemeta/locale *
+recursive-include telemeta/templates *
+recursive-include telemeta/htdocs *
+recursive-include telemeta/backup *
+recursive-include telemeta/pages *
+recursive-exclude * *.pyc
+recursive-exclude dist *
+recursive-exclude build *
+recursive-exclude Telemeta.egg-info *

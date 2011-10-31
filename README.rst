@@ -4,7 +4,6 @@ README
 
 Telemeta: a web Audio Content Management System
 
-
 Introduction
 ============
 
@@ -29,10 +28,18 @@ existing model has been designed to fit the one of the French Centre of Etnomusi
 but could be easily adapted/overrided to sue other data structures.
 
 
-Installation and usage
-======================
+Installation, upgrade and usage
+================================
 
-See INSTALL.rst and http://telemeta.org for more informations.
+**WARNING** : sorry the setup process of 1.1 was just wrong, please upgrade to 1.2 !
+
+See `INSTALL.rst <http://telemeta.org/browser/INSTALL.rst>`_ and `telemeta.org <http://telemeta.org>`_ for more informations.
+
+
+Changelog
+=========
+
+See `CHANGELOG <http://telemeta.org/browser/CHANGELOG>`_
 
 
 Development
@@ -47,13 +54,14 @@ To get the lastest development version, you need subversion and run::
 
 Licence
 =======
+
 CeCILL v2 (see LICENSE)
 
 
 Bugs and feedback
 =================
 
-You are welcome to freely use this application in accordance to its licence.
+You are welcome to freely use this application in accordance with its licence.
 If you find some bugs, PLEASE leave a ticket on this page:
 
 http://telemeta.org/newticket
