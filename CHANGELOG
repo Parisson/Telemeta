@@ -1,3 +1,9 @@
+telemeta (1.2) unstable; urgency=low
+
+ * fix the whole setup
+
+-- Guillaume Pellerin <yomguy@parisson.com>  Mon, 31 Oct 2011 13:46:22 +0200
+
 telemeta (1.1-1) unstable; urgency=low
 
  * fix OAI repository names, coverages and headers in according with TGE Adonis specs
