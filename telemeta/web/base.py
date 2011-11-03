@@ -505,13 +505,20 @@ class ItemView(object):
         playlists = get_playlists(request)
         public_access = get_public_access(item.public_access, str(item.recorded_from_date).split('-')[0], 
                                                 str(item.recorded_to_date).split('-')[0])
-                
+        
+        related_files = MediaItemRelatedFile.objects.filter(item=item)
+        for file in related_files:
+            if not file.mime_type:
+                file.set_mime_type()
+                file.save()
+        
         return render(request, template,
                     {'item': item, 'export_formats': formats,
                     'visualizers': graphers, 'visualizer_id': grapher_id,
                     'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True),
                     'previous' : previous, 'next' : next, 'marker': marker_id, 'playlists' : playlists, 
                     'public_access': public_access, 'width': width, 'height': height, 
+                    'related_files': related_files, 
                     })
         
     @method_decorator(permission_required('telemeta.change_mediaitem'))
@@ -561,6 +568,27 @@ class ItemView(object):
                     'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True), "form": form, 
                     'previous' : previous, 'next' : next, 
                     })
+    
+    def related_file_stream(self, request, item_public_id, file_id):
+        item = MediaItem.objects.get(public_id=item_public_id)
+        file = MediaItemRelatedFile.objects.get(item=item, id=file_id)
+        response = HttpResponse(stream_from_file(file.file.path), mimetype=file.mime_type)
+#        response['Content-Disposition'] = 'attachment'
+        return response
+    
+    @method_decorator(permission_required('telemeta.change_mediaitem'))
+    def related_file_edit(self, request, public_id, template):
+        item = MediaItem.objects.get(public_id=public_id)
+        MediaItemRelatedFileFormSet = inlineformset_factory(MediaItem, MediaItemRelatedFile, form=MediaItemRelatedFileForm)
+        if request.method == 'POST':
+            formset = MediaItemRelatedFileFormSet(data=request.POST, files=request.FILES, instance=item)
+            if formset.is_valid():
+                formset.save()
+                return HttpResponseRedirect('/items/'+public_id)
+        else:
+            formset = MediaItemRelatedFileFormSet(instance=item)
+        
+        return render(request, template, {'item': item, 'formset': formset,})
         
     @method_decorator(permission_required('telemeta.add_mediaitem'))
     def item_add(self, request, public_id=None, template='telemeta/mediaitem_add.html'):
@@ -710,7 +738,7 @@ class ItemView(object):
                 
         response = HttpResponse(self.cache_data.read_stream_bin(image_file), mimetype=mime_type)
         return response
-
+        
     def list_export_extensions(self):
         "Return the recognized item export file extensions, as a list"
         list = []

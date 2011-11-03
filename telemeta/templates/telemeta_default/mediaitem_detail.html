@@ -272,6 +272,43 @@
     {% endblock infos %}
 </div> <!-- with-rightcol -->
 
+<div class="infos">
+        {% block related_files %}
+        <div>
+            <h4><a href="#">{% trans "Related files" %}</a></h4>
+            {% if related_files %}
+            <div class="instruments">
+                <table class="instruments">
+                    <thead>
+                        <tr>
+                            <td>{% field_label "MediaItemRelatedFile" "file" %}</td>
+                            <td>{% field_label "MediaItemRelatedFile" "title" %}</td>
+                            <td>{% field_label "MediaItemRelatedFile" "mime type" %}</td>
+                            <td>{% field_label "MediaItemRelatedFile" "author" %}</td>
+                            <td>{% field_label "MediaItemRelatedFile" "preview" %}</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for file in related_files %}
+                        <tr>
+                            <td><a href="{% url telemeta-item-related-file item.public_id file.id %}">{% if file.file %}{{ file.file|get_filename }}{% endif %}</a></td>
+                            <td>{{ file.title }}</td>
+                            <td>{{ file.mime_type }}</td>
+                            <td>{{ file.author }}</td>
+                            <td>{% if file.is_image %}<a href="{% url telemeta-item-related-file item.public_id file.id %}"><img src="{% url telemeta-item-related-file item.public_id file.id %}" style="width: 400px;" /></a>{% else %}<a href="{% url telemeta-item-related-file item.public_id file.id %}">link</a>{% endif %}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% if user.is_authenticated and perms.telemeta.change_mediaitem %}
+                <a href="{% url telemeta-item-related_edit item.public_id %}" class="component_icon button icon_edit">{% trans "Edit"%} {% trans "related"%}</a>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+        {% endblock related_files %}
+    </div>
+
 {% endblock %}
 
 {% block delete %}

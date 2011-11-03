@@ -42,6 +42,7 @@ from telemeta.models.core import *
 from telemeta.models.enum import ContextKeyword
 from telemeta.util.unaccent import unaccent_icmp
 import re
+import mimetypes
 from telemeta.models.location import LocationRelation, Location
 from telemeta.models.system import Revision
 from telemeta.models.query import *
@@ -319,16 +320,60 @@ class MediaItem(MediaResource):
             title = self.title
         else:
             title = unicode(self.collection)
-
         if self.track:
             title += ' ' + self.track
-
         return title
-
 
 class MediaItemForm(ModelForm):
     class Meta:
         model = MediaItem
+    def clean_code(self):
+        return self.cleaned_data['code'] or None
+
+
+class MediaItemRelatedFile(MediaResource):
+    "Item related attached file"
+    
+    element_type = 'media'
+    
+    item            = ForeignKey('MediaItem', related_name="related", verbose_name=_('item'))
+    code            = CharField(_('code'), unique=True, blank=True)
+    title           = CharField(_('title'))
+    date            = DateTimeField(_('date'), auto_now=True)
+    description     = TextField(_('description'))
+    author          = ForeignKey(User, related_name="related", verbose_name=_('author'))
+    mime_type       = CharField(_('mime_type'), blank=True)
+    file            = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename")
+    
+    @property
+    def public_id(self):
+        if self.code:
+            return self.code
+        return self.id
+
+    def is_image(self):
+        return 'image' in self.mime_type
+        
+    def save(self, force_insert=False, force_update=False):
+        super(MediaItemRelatedFile, self).save(force_insert, force_update)
+        
+    def set_mime_type(self):
+        if self.file:
+            self.mime_type = mimetypes.guess_type(self.file.path)[0]
+    
+    def __unicode__(self):
+        if self.title and not re.match('^ *N *$', self.title):
+            title = self.title
+        else:
+            title = unicode(self.item)
+        return title
+    
+    class Meta(MetaCore):
+        db_table = 'media_item_related_file'
+
+class MediaItemRelatedFileForm(ModelForm):
+    class Meta:
+        model = MediaItemRelatedFile
     def clean_code(self):
         return self.cleaned_data['code'] or None
         
@@ -464,8 +509,8 @@ class MediaItemTranscodingFlag(ModelCore):
     
     class Meta(MetaCore):
         db_table = 'media_transcoding'
-
-
+        
+        
 class Search(ModelCore):
     "Keywork search"
     

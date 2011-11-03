@@ -12,6 +12,7 @@ from django.utils.encoding import smart_str, force_unicode
 from django.utils.safestring import mark_safe
 from django import db
 import re
+import os
 import datetime
 from django.conf import settings
 
@@ -319,3 +320,7 @@ def to_string(list):
         return list[0].encode('utf-8')
     else:
         return ''
+
+@register.filter
+def get_filename(file):
+    return file.path.split(os.sep)[-1]
