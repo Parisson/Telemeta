@@ -512,7 +512,15 @@ class ItemView(object):
                 file.set_mime_type()
                 file.save()
             if not file.title and file.url:
-                file.title = file.url
+                try:
+                    from lxml import etree
+                    parser = etree.HTMLParser()
+                    tree = etree.parse(file.url, parser)
+                    title = tree.find(".//title").text
+                    title = title.replace('\n', '').strip()
+                    file.title = title
+                except:
+                    file.title = file.url
                 file.save()
                 
         return render(request, template,
