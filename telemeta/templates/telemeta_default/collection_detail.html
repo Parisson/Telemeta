@@ -2,7 +2,7 @@
 {% load i18n %}
 {% load telemeta_utils %}
 
-{% block head_title %}{% trans "Collection" %}{{collection|prepend:': '}} - {{ block.super }}{% endblock %}
+{% block head_title %}{{ block.super }}{% trans "Collection" %}{{collection|prepend:' : '}}{% endblock %}
 
 {% block extra_javascript %}
 <script src="{% url telemeta-js "swfobject.js" %}" type="text/javascript"></script>
