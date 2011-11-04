@@ -2,7 +2,7 @@
 {% load telemeta_utils %}
 {% load i18n %}
 
-{% block head_title %}{{ block.super }}{% trans "Item" %} : {% if item.title %}{{ item.title }}{% else %}{{ item.public_id}}{% endif %}{% endblock %}
+{% block head_title %}{% trans "Item" %} : {% if item.title %}{{ item.title }}{% else %}{{ item.public_id}}{% endif %} - {{ block.super }}{% endblock %}
 
 {% block stylesheets %}
 {{ block.super }}
