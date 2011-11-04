@@ -50,7 +50,7 @@ function foldInfoBlocks() {
     var $J = jQuery;
     var extra = $J('.extraInfos');
     extra.find('.folded dl, .folded table').css('display', 'none');
-    extra.find('a').click(function() {
+    extra.find('h4').click(function() {
         $J(this).parents('.extraInfos').children().toggleClass('folded').find('dl, table').toggle(100);
         //toggle toggles the visibility of elements
         return false;

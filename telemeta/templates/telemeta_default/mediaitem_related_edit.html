@@ -22,6 +22,7 @@
       <table>
         <tr><td><b>{% trans "File" %} :</b><td></td></tr>
         {% for field in form %}
+        <tr><td class="error">{{ field.errors }}</td></tr>
         <tr>
         {% if not "media_item" in field.html_name %}
             {% if "id" in field.html_name or "item" in field.html_name %}

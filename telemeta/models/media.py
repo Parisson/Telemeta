@@ -49,6 +49,7 @@ from telemeta.models.query import *
 from telemeta.models.instrument import *
 from telemeta.models.enum import *
 from django.forms import ModelForm
+from django.db.models.fields import URLField
 
 
 class MediaResource(ModelCore):
@@ -342,7 +343,8 @@ class MediaItemRelatedFile(MediaResource):
     date            = DateTimeField(_('date'), auto_now=True)
     description     = TextField(_('description'))
     author          = ForeignKey(User, related_name="related", verbose_name=_('author'))
-    mime_type       = CharField(_('mime_type'), blank=True)
+    mime_type       = CharField(_('mime_type'))
+    url             = CharField(_('url'), max_length=500)
     file            = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename")
     
     @property
@@ -352,7 +354,13 @@ class MediaItemRelatedFile(MediaResource):
         return self.id
 
     def is_image(self):
-        return 'image' in self.mime_type
+        is_url_image = False
+        if self.url:
+            url_types = ['.png', '.jpg', '.gif', '.jpeg']
+            for type in url_types:
+                if type in self.url:
+                    is_url_image = True
+        return 'image' in self.mime_type or is_url_image
         
     def save(self, force_insert=False, force_update=False):
         super(MediaItemRelatedFile, self).save(force_insert, force_update)

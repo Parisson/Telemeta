@@ -322,5 +322,14 @@ def to_string(list):
         return ''
 
 @register.filter
-def get_filename(file):
-    return file.path.split(os.sep)[-1]
+def get_filename(object):
+    if isinstance(object, unicode):
+       return object.split('/')[-1]
+    else:
+        return object.path.split(os.sep)[-1]
+
+@register.filter
+def get_youtube(link):
+    link = link.split('&')
+    ref = link[0].split('=')[1]
+    return 'http://www.youtube.com/embed/'+ref
