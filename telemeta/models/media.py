@@ -338,21 +338,13 @@ class MediaItemRelatedFile(MediaResource):
     element_type = 'media'
     
     item            = ForeignKey('MediaItem', related_name="related", verbose_name=_('item'))
-    code            = CharField(_('code'), unique=True, blank=True)
     title           = CharField(_('title'))
     date            = DateTimeField(_('date'), auto_now=True)
     description     = TextField(_('description'))
-    author          = ForeignKey(User, related_name="related", verbose_name=_('author'))
     mime_type       = CharField(_('mime_type'))
     url             = CharField(_('url'), max_length=500)
     file            = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename")
     
-    @property
-    def public_id(self):
-        if self.code:
-            return self.code
-        return self.id
-
     def is_image(self):
         is_url_image = False
         if self.url:
@@ -382,8 +374,6 @@ class MediaItemRelatedFile(MediaResource):
 class MediaItemRelatedFileForm(ModelForm):
     class Meta:
         model = MediaItemRelatedFile
-    def clean_code(self):
-        return self.cleaned_data['code'] or None
         
 class MediaItemKeyword(ModelCore):
     "Item keyword"

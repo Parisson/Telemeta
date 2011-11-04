@@ -19,8 +19,9 @@
 
     {{ formset.management_form }}
     {% for form in formset.forms %}
+      <hr>
       <table>
-        <tr><td><b>{% trans "File" %} :</b><td></td></tr>
+        <tr><td><b>{% trans "Media" %} :</b><td></td></tr>
         {% for field in form %}
         <tr><td class="error">{{ field.errors }}</td></tr>
         <tr>

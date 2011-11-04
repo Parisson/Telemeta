@@ -511,7 +511,10 @@ class ItemView(object):
             if not file.mime_type:
                 file.set_mime_type()
                 file.save()
-        
+            if not file.title and file.url:
+                file.title = file.url
+                file.save()
+                
         return render(request, template,
                     {'item': item, 'export_formats': formats,
                     'visualizers': graphers, 'visualizer_id': grapher_id,

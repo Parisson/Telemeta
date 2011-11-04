@@ -19,6 +19,7 @@
 
     {{ formset.management_form }}
     {% for form in formset.forms %}
+      <hr>
       <table>
         <tr><td><b>{% trans "Performance" %} :</b><td></td></tr>
         {% for field in form %}

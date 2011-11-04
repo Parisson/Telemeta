@@ -14,8 +14,7 @@ class MediaItemAdmin(admin.ModelAdmin):
     exclude = ('copied_from_item', )
 
 class MediaItemRelatedFileAdmin(admin.ModelAdmin):
-    search_fields = ['title', 'code']
-    ordering = ['code']
+    search_fields = ['title', 'description']
     
 class MediaPartAdmin(admin.ModelAdmin):
     search_fields = ['title', 'item__code']
