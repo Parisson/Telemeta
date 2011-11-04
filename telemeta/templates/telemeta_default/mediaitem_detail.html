@@ -292,7 +292,7 @@
                         <tr>
                             <td>
                             {% if file.url %}
-                               <a href="{{ file.url }}">
+                               <a href="{{ file.url }}" target="_blank">
                                 {% if file.title %}
                                  {{ file.title }}
                                 {% else %} 
@@ -301,7 +301,7 @@
                                 </a>
                             {% endif %}
                             {% if file.file %}
-                              <a href="{% url telemeta-item-related-file item.public_id file.id %}">
+                              <a href="{% url telemeta-item-related-file item.public_id file.id %}" target="_blank">
                                 {% if file.title %}
                                  {{ file.title }}
                                 {% else %} 
