@@ -529,6 +529,9 @@ class DublinCoreToFormatMetadata(object):
     """ a mapping class to get item DublinCore metadata dictionaries 
     in various audio metadata format (MP3, OGG, etc...)"""
     
+    #FIXME: should be given by timeside
+    unavailable_extensions = ['wav', 'aiff', 'aif']
+    
     metadata_mapping = { 
                     'mp3' : {
                          'title': 'TIT2', #title2
@@ -547,6 +550,11 @@ class DublinCoreToFormatMetadata(object):
                         'all': 'all', 
                        }, 
                     'flac': {
+                        'creator': 'artist',
+                        'relation': 'album', 
+                        'all': 'all', 
+                       }, 
+                    'wav': {
                         'creator': 'artist',
                         'relation': 'album', 
                         'all': 'all', 

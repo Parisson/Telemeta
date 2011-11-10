@@ -810,14 +810,18 @@ class ItemView(object):
             decoder = timeside.decoder.FileDecoder(audio)
             format = decoder.format()
         
+        dc_metadata = dublincore.express_item(item).to_list()
+        mapping = DublinCoreToFormatMetadata(extension)
+        metadata = mapping.get_metadata(dc_metadata)     
+        
         if mime_type in format:
             # source > stream
+            if not extension in mapping.unavailable_extensions:
+                proc = encoder(audio)
+                proc.set_metadata(metadata)
+                proc.write_metadata()
             response = HttpResponse(stream_from_file(audio), mimetype = mime_type)
-            
         else:
-            dc_metadata = dublincore.express_item(item).to_list()
-            mapping = DublinCoreToFormatMetadata(extension)
-            metadata = mapping.get_metadata(dc_metadata)     
             media = self.cache_export.dir + os.sep + file
             if not self.cache_export.exists(file) or flag.value == False:
                 # source > encoder > stream
@@ -829,9 +833,10 @@ class ItemView(object):
                 response = HttpResponse(stream_from_processor(decoder, proc, flag), mimetype = mime_type)
             else:
                 # cache > stream
-                proc = encoder(media)
-                proc.set_metadata(metadata)
-                proc.write_metadata()
+                if not extension in mapping.unavailable_extensions:
+                    proc = encoder(media)
+                    proc.set_metadata(metadata)
+                    proc.write_metadata()
                 response = HttpResponse(self.cache_export.read_stream_bin(file), mimetype = mime_type)
         
         response['Content-Disposition'] = 'attachment'
