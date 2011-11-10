@@ -276,7 +276,7 @@
         {% block related %}
         <div>
             <h4><a href="#">{% trans "Related media" %}</a></h4>
-            {% if related_files %}
+            {% if related_media %}
             <div>
                 <table class="instruments" width="100%">
                     <thead>
@@ -286,56 +286,56 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for file in related_files %}
+                        {% for media in related_media %}
                         <tr>
                             <td style="font-size: 1em;">
                             <dl class="listing">
                                 <dt>{% trans "Title" %}</dt>
                                 <dd>
-                                    {% if file.url %}
-                                        <a href="{{ file.url }}" target="_blank">
-                                        {% if file.title %}
-                                            {{ file.title }}</a>
+                                    {% if media.url %}
+                                        <a href="{{ media.url }}" target="_blank">
+                                        {% if media.title %}
+                                            {{ media.title }}</a>
                                         {% else %}
-                                            {{ file.url|get_filename }}</a>
+                                            {{ media.url|get_filename }}</a>
                                         {% endif %}
                                     {% else %}
-                                        <a href="{% url telemeta-item-related-file item.public_id file.id %}" target="_blank">
-                                        {% if file.title %}
-                                            {{ file.title }}</a>
+                                        <a href="{% url telemeta-item-related item.public_id media.id %}" target="_blank">
+                                        {% if media.title %}
+                                            {{ media.title }}</a>
                                         {% else %}
-                                            {{ file.file|get_filename }}</a>
+                                            {{ media.file|get_filename }}</a>
                                         {% endif %} 
                                     {% endif %}
                                 </dd>
                                 <dt>{% trans "Description" %}</dt>
-                                <dd>{{ file.description|html_line_break|safe }}</dd>
-                                {% dl_field file "mime_type" %}
+                                <dd>{{ media.description|html_line_break|safe }}</dd>
+                                {% dl_field media "mime_type" %}
                                 <dt>{% trans "URL" %}</dt>
                                 <dd>
-                                {% if file.url %}
-                                    <a href="{{ file.url }}" target="_blank">{{ file.url }}</a>
+                                {% if media.url %}
+                                    <a href="{{ media.url }}" target="_blank">{{ media.url }}</a>
                                 {% else %}
-                                    <a href="{% url telemeta-item-related-file item.public_id file.id %}" target="_blank">
-                                        {% url telemeta-item-related-file item.public_id file.id %}
+                                    <a href="{% url telemeta-item-related item.public_id media.id %}" target="_blank">
+                                        {% url telemeta-item-related item.public_id media.id %}
                                     </a>
                                 {% endif %}
                                 </dd>
                             </dl>
                             </td>
 
-                            <td>{% if file.is_image %}
-                                  {% if file.url %}
-                                   <a href="{{ file.url }}">
-                                   <img src="{{ file.url }}" style="max-width: 420px; max-height: 200px;" /></a>
+                            <td>{% if media.is_image %}
+                                  {% if media.url %}
+                                   <a href="{{ media.url }}">
+                                   <img src="{{ media.url }}" style="max-width: 420px; max-height: 200px;" /></a>
                                   {% else %}
-                                   <a href="{% url telemeta-item-related-file item.public_id file.id %}">
-                                   <img src="{% url telemeta-item-related-file item.public_id file.id %}" style="max-width: 420px; max-height: 200px;" /></a>
+                                   <a href="{% url telemeta-item-related item.public_id media.id %}">
+                                   <img src="{% url telemeta-item-related item.public_id media.id %}" style="max-width: 420px; max-height: 200px;" /></a>
                                    {% endif %}
                                 {% else %}
-                                {% if file.url %}
-                                 {% if "youtube" in file.url %}
-                                 <iframe width="251" height="200" src="{{ file.url|get_youtube }}" frameborder="0" allowfullscreen></iframe>
+                                {% if media.url %}
+                                 {% if "youtube" in media.url %}
+                                 <iframe width="251" height="200" src="{{ media.url|get_youtube }}" frameborder="0" allowfullscreen></iframe>
                                  {% endif %}
                                 {% endif %}
                                 {% endif %}

@@ -510,8 +510,8 @@ class ItemView(object):
         public_access = get_public_access(item.public_access, str(item.recorded_from_date).split('-')[0], 
                                                 str(item.recorded_to_date).split('-')[0])
         
-        related_files = MediaItemRelated.objects.filter(item=item)
-        for file in related_files:
+        related_media = MediaItemRelated.objects.filter(item=item)
+        for file in related_media:
             if not file.mime_type:
                 file.set_mime_type()
                 file.save()
@@ -533,7 +533,7 @@ class ItemView(object):
                     'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True),
                     'previous' : previous, 'next' : next, 'marker': marker_id, 'playlists' : playlists, 
                     'public_access': public_access, 'width': width, 'height': height, 
-                    'related_files': related_files, 
+                    'related_media': related_media, 
                     })
         
     @method_decorator(permission_required('telemeta.change_mediaitem'))
@@ -584,15 +584,15 @@ class ItemView(object):
                     'previous' : previous, 'next' : next, 
                     })
     
-    def related_file_stream(self, request, item_public_id, file_id):
+    def related_media_stream(self, request, item_public_id, media_id):
         item = MediaItem.objects.get(public_id=item_public_id)
-        file = MediaItemRelated.objects.get(item=item, id=file_id)
-        response = HttpResponse(stream_from_file(file.file.path), mimetype=file.mime_type)
+        media = MediaItemRelated.objects.get(item=item, id=media_id)
+        response = HttpResponse(stream_from_file(media.file.path), mimetype=media.mime_type)
 #        response['Content-Disposition'] = 'attachment'
         return response
     
     @method_decorator(permission_required('telemeta.change_mediaitem'))
-    def related_file_edit(self, request, public_id, template):
+    def related_media_edit(self, request, public_id, template):
         item = MediaItem.objects.get(public_id=public_id)
         MediaItemRelatedFormSet = inlineformset_factory(MediaItem, MediaItemRelated, form=MediaItemRelatedForm)
         if request.method == 'POST':
