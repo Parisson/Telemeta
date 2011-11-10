@@ -281,8 +281,8 @@
                 <table class="instruments" width="100%">
                     <thead>
                         <tr>
-                            <td>{% field_label "MediaItemRelated" "media" %}</td>
-                            <td>{% field_label "MediaItemRelated" "preview" %}</td>
+                            <td>{% trans "Media" %}</td>
+                            <td>{% trans "Preview" %}</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -324,7 +324,7 @@
                             </dl>
                             </td>
 
-                            <td>{% if media.is_image %}
+                            <td style="padding-bottom: 1em;">{% if media.is_image %}
                                   {% if media.url %}
                                    <a href="{{ media.url }}">
                                    <img src="{{ media.url }}" style="max-width: 420px; max-height: 200px;" /></a>
