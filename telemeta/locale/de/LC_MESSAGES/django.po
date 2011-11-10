@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-04 12:15+0100\n"
+"POT-Creation-Date: 2011-11-10 14:27+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -553,6 +553,7 @@ msgstr ""
 #: templates/telemeta_default/admin_enumerations.html:12
 #: templates/telemeta_default/home.html:46
 #: templates/telemeta_default/mediaitem_copy.html:32
+#: templates/telemeta_default/mediaitem_detail.html:293
 #: templates/telemeta_default/mediaitem_edit.html:27
 #: templates/telemeta_default/search_criteria.html:78
 #: templates/telemeta_default/search_results.html:30
@@ -677,7 +678,7 @@ msgid "Save"
 msgstr ""
 
 #: templates/telemeta_default/collection_detail.html:5
-#: templates/telemeta_default/collection_detail_dc.html:5 web/base.py:349
+#: templates/telemeta_default/collection_detail_dc.html:5 web/base.py:351
 msgid "Collection"
 msgstr ""
 
@@ -685,7 +686,7 @@ msgstr ""
 #: templates/telemeta_default/mediaitem_detail.html:88
 #: templates/telemeta_default/mediaitem_detail.html:190
 #: templates/telemeta_default/mediaitem_detail.html:229
-#: templates/telemeta_default/mediaitem_detail.html:342
+#: templates/telemeta_default/mediaitem_detail.html:350
 #: templates/telemeta_default/profile_detail.html:63
 msgid "Edit"
 msgstr ""
@@ -763,9 +764,9 @@ msgstr ""
 msgid "Number of items"
 msgstr ""
 
-#: templates/telemeta_default/collection_detail.html:203
+#: templates/telemeta_default/collection_detail.html:199
 #: templates/telemeta_default/home.html:35
-#: templates/telemeta_default/mediaitem_detail.html:353
+#: templates/telemeta_default/mediaitem_detail.html:361
 msgid "Delete"
 msgstr ""
 
@@ -956,7 +957,7 @@ msgstr ""
 
 #: templates/telemeta_default/mediaitem_add.html:5
 #: templates/telemeta_default/mediaitem_copy.html:5
-#: templates/telemeta_default/mediaitem_detail.html:5 web/base.py:485
+#: templates/telemeta_default/mediaitem_detail.html:5 web/base.py:489
 msgid "Item"
 msgstr ""
 
@@ -1027,11 +1028,24 @@ msgstr ""
 msgid "Related media"
 msgstr ""
 
-#: templates/telemeta_default/mediaitem_detail.html:328
-msgid "link"
+#: templates/telemeta_default/mediaitem_detail.html:284
+#: templates/telemeta_default/mediaitem_related_edit.html:24
+msgid "Media"
 msgstr ""
 
-#: templates/telemeta_default/mediaitem_detail.html:342
+#: templates/telemeta_default/mediaitem_detail.html:285
+msgid "Preview"
+msgstr ""
+
+#: templates/telemeta_default/mediaitem_detail.html:311
+msgid "Description"
+msgstr ""
+
+#: templates/telemeta_default/mediaitem_detail.html:314
+msgid "URL"
+msgstr ""
+
+#: templates/telemeta_default/mediaitem_detail.html:350
 msgid "related media"
 msgstr ""
 
@@ -1056,15 +1070,11 @@ msgstr ""
 msgid "Performance"
 msgstr ""
 
-#: templates/telemeta_default/mediaitem_related_edit.html:24
-msgid "Media"
-msgstr ""
-
 #: templates/telemeta_default/profile_detail.html:5
 msgid "User Profile"
 msgstr ""
 
-#: templates/telemeta_default/profile_detail.html:8 web/base.py:1232
+#: templates/telemeta_default/profile_detail.html:8 web/base.py:1245
 msgid "User profile"
 msgstr ""
 
@@ -1176,7 +1186,7 @@ msgstr ""
 msgid "No item"
 msgstr ""
 
-#: templates/telemeta_default/inc/module_revisions.html:7 web/base.py:1262
+#: templates/telemeta_default/inc/module_revisions.html:7 web/base.py:1275
 msgid "Last changes"
 msgstr ""
 
@@ -1363,11 +1373,11 @@ msgid_plural "%(count)d collections"
 msgstr[0] ""
 msgstr[1] ""
 
-#: web/base.py:348 web/base.py:484 web/base.py:762 web/base.py:1231
+#: web/base.py:350 web/base.py:488 web/base.py:775 web/base.py:1244
 msgid "Access not allowed"
 msgstr ""
 
-#: web/base.py:350 web/base.py:486 web/base.py:764 web/base.py:1233
+#: web/base.py:352 web/base.py:490 web/base.py:777 web/base.py:1246
 msgid ""
 "Please login or contact the website administator to get a private access."
 msgstr ""

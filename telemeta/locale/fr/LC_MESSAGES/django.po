@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-04 12:15+0100\n"
+"POT-Creation-Date: 2011-11-10 14:27+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Olivier Guilyardi <olivier samalyse com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -558,6 +558,7 @@ msgstr "Instruments"
 #: templates/telemeta_default/admin_enumerations.html:12
 #: templates/telemeta_default/home.html:46
 #: templates/telemeta_default/mediaitem_copy.html:32
+#: templates/telemeta_default/mediaitem_detail.html:293
 #: templates/telemeta_default/mediaitem_edit.html:27
 #: templates/telemeta_default/search_criteria.html:78
 #: templates/telemeta_default/search_results.html:30
@@ -684,7 +685,7 @@ msgid "Save"
 msgstr "Enregistrer"
 
 #: templates/telemeta_default/collection_detail.html:5
-#: templates/telemeta_default/collection_detail_dc.html:5 web/base.py:349
+#: templates/telemeta_default/collection_detail_dc.html:5 web/base.py:351
 msgid "Collection"
 msgstr "Collection"
 
@@ -692,7 +693,7 @@ msgstr "Collection"
 #: templates/telemeta_default/mediaitem_detail.html:88
 #: templates/telemeta_default/mediaitem_detail.html:190
 #: templates/telemeta_default/mediaitem_detail.html:229
-#: templates/telemeta_default/mediaitem_detail.html:342
+#: templates/telemeta_default/mediaitem_detail.html:350
 #: templates/telemeta_default/profile_detail.html:63
 msgid "Edit"
 msgstr "Editer"
@@ -770,9 +771,9 @@ msgstr "Audio"
 msgid "Number of items"
 msgstr "Nombre d'items"
 
-#: templates/telemeta_default/collection_detail.html:203
+#: templates/telemeta_default/collection_detail.html:199
 #: templates/telemeta_default/home.html:35
-#: templates/telemeta_default/mediaitem_detail.html:353
+#: templates/telemeta_default/mediaitem_detail.html:361
 msgid "Delete"
 msgstr "Supprimer"
 
@@ -964,7 +965,7 @@ msgstr "Mot de passe oublié"
 
 #: templates/telemeta_default/mediaitem_add.html:5
 #: templates/telemeta_default/mediaitem_copy.html:5
-#: templates/telemeta_default/mediaitem_detail.html:5 web/base.py:485
+#: templates/telemeta_default/mediaitem_detail.html:5 web/base.py:489
 msgid "Item"
 msgstr "Item"
 
@@ -1033,15 +1034,29 @@ msgstr "Références éditées"
 
 #: templates/telemeta_default/mediaitem_detail.html:278
 msgid "Related media"
-msgstr "Media associés"
+msgstr "Média associés"
 
-#: templates/telemeta_default/mediaitem_detail.html:328
-msgid "link"
-msgstr "lien"
+#: templates/telemeta_default/mediaitem_detail.html:284
+#: templates/telemeta_default/mediaitem_related_edit.html:24
+msgid "Media"
+msgstr "Média"
 
-#: templates/telemeta_default/mediaitem_detail.html:342
+#: templates/telemeta_default/mediaitem_detail.html:285
+msgid "Preview"
+msgstr "Prévisualisation"
+
+#: templates/telemeta_default/mediaitem_detail.html:311
+#, fuzzy
+msgid "Description"
+msgstr "Durée"
+
+#: templates/telemeta_default/mediaitem_detail.html:314
+msgid "URL"
+msgstr ""
+
+#: templates/telemeta_default/mediaitem_detail.html:350
 msgid "related media"
-msgstr "media associés"
+msgstr "média associés"
 
 #: templates/telemeta_default/mediaitem_detail_dc.html:16
 msgid "No such item"
@@ -1064,16 +1079,11 @@ msgstr "Sonores"
 msgid "Performance"
 msgstr "Formation"
 
-#: templates/telemeta_default/mediaitem_related_edit.html:24
-#, fuzzy
-msgid "Media"
-msgstr "Type de media"
-
 #: templates/telemeta_default/profile_detail.html:5
 msgid "User Profile"
 msgstr "Profil utilisateur"
 
-#: templates/telemeta_default/profile_detail.html:8 web/base.py:1232
+#: templates/telemeta_default/profile_detail.html:8 web/base.py:1245
 msgid "User profile"
 msgstr "Profil utilisateur"
 
@@ -1185,7 +1195,7 @@ msgstr "Etat/Continent"
 msgid "No item"
 msgstr "Aucun item"
 
-#: templates/telemeta_default/inc/module_revisions.html:7 web/base.py:1262
+#: templates/telemeta_default/inc/module_revisions.html:7 web/base.py:1275
 msgid "Last changes"
 msgstr "Dernières modifications"
 
@@ -1378,16 +1388,19 @@ msgid_plural "%(count)d collections"
 msgstr[0] "%(count)d collection"
 msgstr[1] "%(count)d collections"
 
-#: web/base.py:348 web/base.py:484 web/base.py:762 web/base.py:1231
+#: web/base.py:350 web/base.py:488 web/base.py:775 web/base.py:1244
 msgid "Access not allowed"
 msgstr "Accès non autorisé"
 
-#: web/base.py:350 web/base.py:486 web/base.py:764 web/base.py:1233
+#: web/base.py:352 web/base.py:490 web/base.py:777 web/base.py:1246
 msgid ""
 "Please login or contact the website administator to get a private access."
 msgstr ""
 "Connectez-vous s'il vous plaît ou bien contactez l'administrateur du site "
 "pour obtenir un accès privé."
+
+#~ msgid "link"
+#~ msgstr "lien"
 
 #~ msgid "related"
 #~ msgstr "associés"
