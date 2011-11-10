@@ -332,8 +332,8 @@ class MediaItemForm(ModelForm):
         return self.cleaned_data['code'] or None
 
 
-class MediaItemRelatedFile(MediaResource):
-    "Item related attached file"
+class MediaItemRelated(MediaResource):
+    "Item related media"
     
     element_type = 'media'
     
@@ -355,7 +355,7 @@ class MediaItemRelatedFile(MediaResource):
         return 'image' in self.mime_type or is_url_image
         
     def save(self, force_insert=False, force_update=False):
-        super(MediaItemRelatedFile, self).save(force_insert, force_update)
+        super(MediaItemRelated, self).save(force_insert, force_update)
         
     def set_mime_type(self):
         if self.file:
@@ -369,11 +369,11 @@ class MediaItemRelatedFile(MediaResource):
         return title
     
     class Meta(MetaCore):
-        db_table = 'media_item_related_file'
+        db_table = 'media_item_related'
 
-class MediaItemRelatedFileForm(ModelForm):
+class MediaItemRelatedForm(ModelForm):
     class Meta:
-        model = MediaItemRelatedFile
+        model = MediaItemRelated
         
 class MediaItemKeyword(ModelCore):
     "Item keyword"

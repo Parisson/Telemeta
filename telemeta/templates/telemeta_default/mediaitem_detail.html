@@ -281,10 +281,10 @@
                 <table class="instruments" width="100%">
                     <thead>
                         <tr>
-                            <td>{% field_label "MediaItemRelatedFile" "title" %}</td>
-                            <td>{% field_label "MediaItemRelatedFile" "description" %}</td>
-                            <td>{% field_label "MediaItemRelatedFile" "mime type" %}</td>
-                            <td>{% field_label "MediaItemRelatedFile" "preview" %}</td>
+                            <td>{% field_label "MediaItemRelated" "title" %}</td>
+                            <td>{% field_label "MediaItemRelated" "description" %}</td>
+                            <td>{% field_label "MediaItemRelated" "mime type" %}</td>
+                            <td>{% field_label "MediaItemRelated" "preview" %}</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -315,10 +315,10 @@
                             <td>{% if file.is_image %}
                                   {% if file.url %}
                                    <a href="{{ file.url }}">
-                                   <img src="{{ file.url }}" style="width: 400px;" /></a>
+                                   <img src="{{ file.url }}" /></a>
                                   {% else %}
                                    <a href="{% url telemeta-item-related-file item.public_id file.id %}">
-                                   <img src="{% url telemeta-item-related-file item.public_id file.id %}" style="width: 400px;" /></a>
+                                   <img src="{% url telemeta-item-related-file item.public_id file.id %}"  /></a>
                                    {% endif %}
                                 {% else %}
                                 {% if file.url %}
