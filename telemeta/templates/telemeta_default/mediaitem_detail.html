@@ -315,10 +315,10 @@
                             <td>{% if file.is_image %}
                                   {% if file.url %}
                                    <a href="{{ file.url }}">
-                                   <img src="{{ file.url }}" /></a>
+                                   <img src="{{ file.url }}" style="max-width: 420px;" /></a>
                                   {% else %}
                                    <a href="{% url telemeta-item-related-file item.public_id file.id %}">
-                                   <img src="{% url telemeta-item-related-file item.public_id file.id %}"  /></a>
+                                   <img src="{% url telemeta-item-related-file item.public_id file.id %}" style="max-width: 420px;" /></a>
                                    {% endif %}
                                 {% else %}
                                 {% if file.url %}
