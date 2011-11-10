@@ -42,12 +42,14 @@ from telemeta.models.core import *
 from telemeta.models.enum import ContextKeyword
 from telemeta.util.unaccent import unaccent_icmp
 import re
+import mimetypes
 from telemeta.models.location import LocationRelation, Location
 from telemeta.models.system import Revision
 from telemeta.models.query import *
 from telemeta.models.instrument import *
 from telemeta.models.enum import *
 from django.forms import ModelForm
+from django.db.models.fields import URLField
 
 
 class MediaResource(ModelCore):
@@ -319,18 +321,59 @@ class MediaItem(MediaResource):
             title = self.title
         else:
             title = unicode(self.collection)
-
         if self.track:
             title += ' ' + self.track
-
         return title
-
 
 class MediaItemForm(ModelForm):
     class Meta:
         model = MediaItem
     def clean_code(self):
         return self.cleaned_data['code'] or None
+
+
+class MediaItemRelatedFile(MediaResource):
+    "Item related attached file"
+    
+    element_type = 'media'
+    
+    item            = ForeignKey('MediaItem', related_name="related", verbose_name=_('item'))
+    title           = CharField(_('title'))
+    date            = DateTimeField(_('date'), auto_now=True)
+    description     = TextField(_('description'))
+    mime_type       = CharField(_('mime_type'))
+    url             = CharField(_('url'), max_length=500)
+    file            = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename")
+    
+    def is_image(self):
+        is_url_image = False
+        if self.url:
+            url_types = ['.png', '.jpg', '.gif', '.jpeg']
+            for type in url_types:
+                if type in self.url:
+                    is_url_image = True
+        return 'image' in self.mime_type or is_url_image
+        
+    def save(self, force_insert=False, force_update=False):
+        super(MediaItemRelatedFile, self).save(force_insert, force_update)
+        
+    def set_mime_type(self):
+        if self.file:
+            self.mime_type = mimetypes.guess_type(self.file.path)[0]
+    
+    def __unicode__(self):
+        if self.title and not re.match('^ *N *$', self.title):
+            title = self.title
+        else:
+            title = unicode(self.item)
+        return title
+    
+    class Meta(MetaCore):
+        db_table = 'media_item_related_file'
+
+class MediaItemRelatedFileForm(ModelForm):
+    class Meta:
+        model = MediaItemRelatedFile
         
 class MediaItemKeyword(ModelCore):
     "Item keyword"
@@ -464,8 +507,8 @@ class MediaItemTranscodingFlag(ModelCore):
     
     class Meta(MetaCore):
         db_table = 'media_transcoding'
-
-
+        
+        
 class Search(ModelCore):
     "Keywork search"
     

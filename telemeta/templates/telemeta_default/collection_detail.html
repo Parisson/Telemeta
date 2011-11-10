@@ -2,7 +2,7 @@
 {% load i18n %}
 {% load telemeta_utils %}
 
-{% block head_title %}{% trans "Collection" %}{{collection|prepend:': '}} - {{ block.super }}{% endblock %}
+{% block head_title %}{% trans "Collection" %}{{collection|prepend:' : '}} - {{ block.super }}{% endblock %}
 
 {% block extra_javascript %}
 <script src="{% url telemeta-js "swfobject.js" %}" type="text/javascript"></script>
@@ -181,18 +181,14 @@
             </div>
         {% endblock technical_data %}
         </div>
-        <h4>Items</h4>
-        {% with collection.items.enriched as items %}
+        
+        <div class="extraInfos">
+        <h4><img src="{% url telemeta-images "item_title.png" %}" style="vertical-align:middle" /> Items</h4>
         {% with "1" as location_name %}
             {% include "telemeta/inc/mediaitem_list.html" %}
         {% endwith %}
-        {% endwith %}
-        <!--
-        {% with collection.ordered_items as items %}
-            {% include "telemeta/inc/mediaitem_list.html" %}
-        {% endwith %}
-        -->
-
+        </div>
+        
         {% endblock infos %}
     </div>
 {% endblock %}

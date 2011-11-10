@@ -7,7 +7,7 @@
 
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
-<title>{%block head_title %}{% organization %} - Telemeta - {% description %}{% endblock %}</title>
+<title>{%block head_title %}{% description %} - Telemeta{% endblock %}</title>
 
 {% block stylesheets %}
 <link rel="stylesheet" type="text/css" href="{% url telemeta-css "telemeta.css" %}" />
@@ -111,10 +111,10 @@
  <table width="100%">
   <tr>
    <td>
-    <a id="telemeta_powered" href="{% telemeta_url %}"><img src="{% url telemeta-images "logo_mini_2.png" %}" height="30" width="93"
+    <a id="telemeta_powered" href="{% telemeta_url %}" target="_blank"><img src="{% url telemeta-images "logo_mini_2.png" %}" height="30" width="93"
    alt="Telemeta Powered"/></a>
     <p class="left">
-    {% trans "Powered by" %} <a href="{% telemeta_url %}"><strong>Telemeta {% telemeta_version %}</strong></a><br />
+    {% trans "Powered by" %} <a href="{% telemeta_url %}" target="_blank"><strong>Telemeta {% telemeta_version %}</strong></a><br />
     {% trans "By" %} <a href="http://www.parisson.com/">Parisson SARL</a>
     </p>
    </td>
@@ -135,5 +135,9 @@
 {% endblock %}
 </div>
 {% endblock layout %}
+
+{% block analytics %}
+{% endblock analytics %}
+
 </body>
 </html>

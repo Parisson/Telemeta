@@ -2,7 +2,7 @@
 {% load telemeta_utils %}
 {% load i18n %}
 
-{% block head_title %}{{ block.super }} - {% trans "Item" %} : {{ item.title }}{% endblock %}
+{% block head_title %}{% trans "Item" %} : {% if item.title %}{{ item.title }}{% else %}{{ item.public_id}}{% endif %} - {{ block.super }}{% endblock %}
 
 {% block stylesheets %}
 {{ block.super }}
@@ -271,6 +271,79 @@
     </div>
     {% endblock infos %}
 </div> <!-- with-rightcol -->
+
+<div class="extraInfos">
+        {% block related %}
+        <div>
+            <h4><a href="#">{% trans "Related media" %}</a></h4>
+            {% if related_files %}
+            <div class="instruments">
+                <table class="instruments" width="100%">
+                    <thead>
+                        <tr>
+                            <td>{% field_label "MediaItemRelatedFile" "title" %}</td>
+                            <td>{% field_label "MediaItemRelatedFile" "description" %}</td>
+                            <td>{% field_label "MediaItemRelatedFile" "mime type" %}</td>
+                            <td>{% field_label "MediaItemRelatedFile" "preview" %}</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for file in related_files %}
+                        <tr>
+                            <td>
+                            {% if file.url %}
+                               <a href="{{ file.url }}" target="_blank">
+                                {% if file.title %}
+                                 {{ file.title }}
+                                {% else %} 
+                                 {{ file.url|get_filename }}
+                                {% endif %}
+                                </a>
+                            {% endif %}
+                            {% if file.file %}
+                              <a href="{% url telemeta-item-related-file item.public_id file.id %}" target="_blank">
+                                {% if file.title %}
+                                 {{ file.title }}
+                                {% else %} 
+                                 {{ file.file|get_filename }}
+                                {% endif %}
+                              </a>
+                            {% endif %}
+                            </td>
+                            <td>{{ file.description }}</td>
+                            <td>{{ file.mime_type }}</td>
+                            <td>{% if file.is_image %}
+                                  {% if file.url %}
+                                   <a href="{{ file.url }}">
+                                   <img src="{{ file.url }}" style="width: 400px;" /></a>
+                                  {% else %}
+                                   <a href="{% url telemeta-item-related-file item.public_id file.id %}">
+                                   <img src="{% url telemeta-item-related-file item.public_id file.id %}" style="width: 400px;" /></a>
+                                   {% endif %}
+                                {% else %}
+                                {% if file.url %}
+                                 {% if "youtube" in file.url %}
+                                 <iframe width="420" height="315" src="{{ file.url|get_youtube }}" frameborder="0" allowfullscreen></iframe>
+                                 {% else %}
+                                 <a href="{{ file.url }}">{% trans "link" %}</a>
+                                 {% endif %}
+                                {% endif %}
+                                {% if file.file %}
+                                <a href="{% url telemeta-item-related-file item.public_id file.id %}">link</a>
+                                {% endif %}
+                                {% endif %}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+            {% if user.is_authenticated and perms.telemeta.change_mediaitem %}
+                <br /><a href="{% url telemeta-item-related_edit item.public_id %}" class="component_icon button icon_edit">{% trans "Edit"%} {% trans "related media"%}</a>
+            {% endif %}
+        </div>
+        {% endblock related %}
+    </div>
 
 {% endblock %}
 
