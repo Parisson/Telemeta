@@ -343,6 +343,8 @@ class CollectionView(object):
 
     def collection_detail(self, request, public_id, template='telemeta/collection_detail.html'):
         collection = MediaCollection.objects.get(public_id=public_id)
+        items = collection.items.enriched()
+        items = items.order_by('code', 'old_code')
         
         if collection.public_access == 'none' and not (request.user.is_staff or request.user.is_superuser):
             mess = ugettext('Access not allowed') 
@@ -354,7 +356,8 @@ class CollectionView(object):
         public_access = get_public_access(collection.public_access, collection.recorded_from_year, 
                                                 collection.recorded_to_year)
         playlists = get_playlists(request)
-        return render(request, template, {'collection': collection, 'playlists': playlists, 'public_access': public_access})
+        
+        return render(request, template, {'collection': collection, 'playlists': playlists, 'public_access': public_access, 'items': items})
 
     @method_decorator(permission_required('telemeta.change_mediacollection'))
     def collection_edit(self, request, public_id, template='telemeta/collection_edit.html'):
@@ -440,10 +443,11 @@ class ItemView(object):
         # Get previous and next items
         pks = []
         items = MediaItem.objects.filter(collection=item.collection)
+        items = items.order_by('code', 'old_code')
+        
         if len(items) > 1:
             for it in items:
                 pks.append(it.pk)
-            pks.sort()
             for pk in pks:
                 if pk == item.pk:
                     if pk == pks[0]:
