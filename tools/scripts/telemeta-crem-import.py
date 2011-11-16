@@ -46,14 +46,23 @@ class TelemetaWavImport:
         self.pattern = pattern
 
     def wav_import(self):
-        from telemeta.models import MediaItem
+        from telemeta.models import MediaItem,  MediaCollection
+        
         for collection in self.collections:
             collection_dir = self.source_dir + os.sep + collection
             if not '/.' in collection_dir and self.pattern in collection_dir:
-                self.collection_name = collection.split(os.sep)[-1]
+                collection_name = collection.split(os.sep)[-1]
+                c = MediaCollection.objects.filter(code=collection_name)
+                if len(c) == 0:
+                    sys.exit(msg = collection + ' collection NON présente dans la BDD, SORTIE ')
+                    
+        for collection in self.collections:
+            collection_dir = self.source_dir + os.sep + collection
+            if not '/.' in collection_dir and self.pattern in collection_dir:
+                collection_name = collection.split(os.sep)[-1]
                 msg = '************************ ' + collection + ' ******************************'
                 self.logger.write_info(collection, msg[:70])
-
+                    
                 collection_files = os.listdir(collection_dir)
                 if not collection + '.csv' in collection_files:
                     msg = 'Le fichier CSV est mal nommé ou inexistant'
