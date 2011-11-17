@@ -18,7 +18,6 @@ import logging
 import datetime
 from django.core.management import setup_environ
 from django.core.files.base import ContentFile
-from django.contrib.auth.models import User
 
 
 class Logger:
@@ -169,6 +168,7 @@ def run():
         sys.path.append(project_dir)
         import settings
         setup_environ(settings)
+        from django.contrib.auth.models import User
         t = TelemetaWavImport(source_dir, log_file, pattern)
         t.wav_import()
 
