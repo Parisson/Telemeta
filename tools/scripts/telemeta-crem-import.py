@@ -20,6 +20,7 @@ from django.core.management import setup_environ
 from django.core.files.base import ContentFile
 from django.contrib.auth.models import User
 
+
 class Logger:
 
     def __init__(self, file):
@@ -45,6 +46,7 @@ class TelemetaWavImport:
         self.collections = os.listdir(self.source_dir)
         self.buffer_size = 0x1000
         self.pattern = pattern
+        self.user = User.objects.filter(username='admin')
 
     def write_file(self, item, wav_file, user):
         if os.path.exists(wav_file):
@@ -55,7 +57,7 @@ class TelemetaWavImport:
                 f.close()
                 item.code = new_ref
                 item.save()
-                iteml.set_revision(user)
+                item.set_revision(self.user)
             else:
                 msg = code + ' : fichier ' + wav_file + ' déjà ajouté !'
                 self.logger.error(collection, msg)
@@ -71,7 +73,7 @@ class TelemetaWavImport:
             if not '/.' in collection_dir and self.pattern in collection_dir:
                 collection_name = collection.split(os.sep)[-1]
                 c = MediaCollection.objects.filter(code=collection_name)
-                if len(c) == 0:
+                if not c:
                     sys.exit(msg = collection + ' collection NON présente dans la base de données, SORTIE ')
                     
         for collection in self.collections:
@@ -86,7 +88,7 @@ class TelemetaWavImport:
                     msg = collection + ' pas de fichier CSV dans la collection'
                     self.logger.info(collection, msg[:70])
                     c = MediaCollection.objects.filter(code=collection_name)
-                    if len(c) == 0:
+                    if not c:
                         msg = collection + ' collection NON présente dans la BDD, CREATION '
                         self.logger.info(collection, msg)
                         c = MediaCollection(code=collection_name)
@@ -116,7 +118,7 @@ class TelemetaWavImport:
                         filename = new_ref + '.wav'
                         wav_file = self.source_dir + os.sep + collection + os.sep + filename
                         items = MediaItem.objects.filter(old_code=old_ref)
-                        if len(items) != 0:
+                        if items:
                             item = items[0]
                             msg = item.old_code + ' : id = ' + str(item.id) + " : title = " + item.title
                             self.logger.info(item, msg)
