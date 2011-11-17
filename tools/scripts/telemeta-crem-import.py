@@ -48,20 +48,20 @@ class TelemetaWavImport:
         self.user = User.objects.filter(username='admin')[0]
 
     def write_file(self, item, wav_file, overwrite=False):
+        filename = wav_file.split(os.sep)[-1]
         if os.path.exists(wav_file):
             if not item.file or overwrite:
-                filename = wav_file.split(os.sep)[-1]
                 f = open(wav_file, 'r')
                 file_content = ContentFile(f.read())
                 item.file.save(filename, file_content)
                 f.close()
                 item.set_revision(self.user)
             else:
-                msg = code + ' : fichier ' + wav_file + ' déjà existant ! PASS'
-                self.logger.error(collection, msg)
+                msg = item.code + ' : fichier ' + item.file.name + ' deja inscrit dans la base de donnees !'
+                self.logger.error('item', msg)
         else:
-            msg = code + ' : fichier audio ' + wav_file + ' inexistant ! PASS'
-            self.logger.error(collection, msg)
+            msg = item.code + ' : fichier audio ' + filename + ' inexistant dans le dossier !'
+            self.logger.error('item', msg)
             
     def wav_import(self):
         from telemeta.models import MediaItem,  MediaCollection
@@ -98,19 +98,21 @@ class TelemetaWavImport:
                 collection_files = os.listdir(collection_dir)
                 
                 if not collection + '.csv' in collection_files:
+                    overwrite = False
                     msg = collection + ' pas de fichier CSV dans la collection'
                     self.logger.info(collection, msg[:70])
                     c = MediaCollection.objects.filter(code=collection_name)
                     
                     if not c:
-                        msg = collection + ' collection NON présente dans la BDD, CREATION '
-                        self.logger.info('collection', msg)
                         c = MediaCollection(code=collection_name)
                         c.save()
+                        msg = ' collection NON présente dans la BDD, CREATION '
+                        self.logger.info(c.code, msg)
+                        
                     else:
                         c = c[0]
-                        msg = ' : id = '+str(c.id)+" : title = "+c.title+' SELECTION'
-                        self.logger.info('collection', msg)
+                        msg = ' id = '+str(c.id)
+                        self.logger.info(c.code, msg)
                         
                     for filename in collection_files:
                         wav_file = self.source_dir + os.sep + collection + os.sep + filename
@@ -119,16 +121,17 @@ class TelemetaWavImport:
                         
                         if len(items) != 0:
                             item = items[0]
-                            msg = item.code + ' : id = '+str(item.id)+" : title = "+item.title+' SELECTION'
+                            msg = item.code + ' : id = '+str(item.id)
                             self.logger.info('item', msg)
                         else:
                             item = MediaItem(code=code, collection=c)
                             msg = item.code + ' : item NON présent dans la base de données, CREATION'
                             self.logger.info('item', msg)
                             
-                        self.write_file(item, wav_file, True)
+                        self.write_file(item, wav_file, overwrite)
 
                 else:
+                    overwrite = False
                     csv_file = self.source_dir + os.sep + collection + os.sep + collection + '.csv'
                     c = csv.reader(open(csv_file), delimiter=';')
                     
@@ -141,13 +144,13 @@ class TelemetaWavImport:
                 
                         if items:
                             item = items[0]
-                            msg = item.old_code + ' : id = ' + str(item.id) + " : title = " + item.title
+                            msg = item.old_code + ' : id = ' + str(item.id)
                             self.logger.info('item', msg)
-                            self.write_file(item, wav_file, True)
+                            self.write_file(item, wav_file, overwrite)
                             item.code = new_ref
                             item.save()
                         else:
-                            msg = old_ref + ' : item inexistant dans la base de données ! PASS'
+                            msg = old_ref + ' : item inexistant dans la base de données !'
                             self.logger.error('item', msg)
 
 
