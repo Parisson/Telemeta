@@ -28,10 +28,10 @@ class Logger:
         self.logger.addHandler(self.hdlr)
         self.logger.setLevel(logging.INFO)
 
-    def write_info(self, prefix, message):
+    def info(self, prefix, message):
         self.logger.info(' ' + prefix + ' : ' + message.decode('utf8'))
 
-    def write_error(self, prefix, message):
+    def error(self, prefix, message):
         self.logger.error(prefix + ' : ' + message.decode('utf8'))
 
 
@@ -54,10 +54,10 @@ class TelemetaWavImport:
                 item.save()
             else:
                 msg = code + ' : fichier ' + wav_file + ' déjà ajouté !'
-                self.logger.write_error(collection, msg)
+                self.logger.error(collection, msg)
         else:
             msg = code + ' : fichier audio ' + wav_file + ' inexistant !'
-            self.logger.write_error(collection, msg)
+            self.logger.error(collection, msg)
             
     def wav_import(self):
         from telemeta.models import MediaItem, MediaCollection
@@ -67,11 +67,11 @@ class TelemetaWavImport:
             collection_dir = self.source_dir + os.sep + collection
             if not '/.' in collection_dir and self.pattern in collection_dir:
                 msg = '************************ ' + collection + ' ******************************'
-                self.logger.write_info(collection, msg[:70])
+                self.logger.info(collection, msg[:70])
                 c = MediaCollection.objects.filter(code=collection_name)
                 if len(c) == 0:
                     msg = collection + ' collection NON présente dans la BDD, CREATION '
-                    self.logger.write_info(collection, msg[:70])
+                    self.logger.info(collection, msg[:70])
                     c = MediaCollection(code=collection_name)
                     c.save()
                 else:
@@ -84,11 +84,11 @@ class TelemetaWavImport:
                     items = MediaItem.objects.filter(code=code)
                     if len(items) != 0:
                         msg = item.code+' : id = '+str(item.id)+" : title = "+item.title
-                        self.logger.write_info(collection, msg)
+                        self.logger.info(collection, msg)
                         item = items[0]
                     else:
                         msg = item.code + ' : item NON présent dans la base de données, CREATION'
-                        self.logger.write_info(collection, msg)
+                        self.logger.info(collection, msg)
                         item = MediaItem(code=code, collection=c)
                     self.write_file(item, wav_file)
 
