@@ -102,7 +102,7 @@ class TelemetaMediaImport:
                         try:
                             if tag == 'date':
                                 date = metadata[tag].split(' ')[1].split('/')
-                                metadata[tag] = date[2]+'-'+date[1]+'-'+date[0]                               
+                                metadata[tag] = date[2]+'-'+date[1]+'-'+date[0]    
                             if mapping[tag] == 'comment':
                                 item[mapping[tag]] = item[mapping[tag]] + '\n' + metadata[tag]
                             else:
