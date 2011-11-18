@@ -141,6 +141,7 @@ class TelemetaWavImport:
                 if len(audio_files) <= nb_items:
                     items = MediaItem.objects.filter(code=code)
                     
+                    old_ref = ''
                     if code in rows and not items:
                         old_ref = rows[code]
                         items = MediaItem.objects.filter(old_code=old_ref)
@@ -148,13 +149,13 @@ class TelemetaWavImport:
                     if items:
                         item = items[0]
                         msg = item.old_code + ' : Cas 1 ou 2 : id = ' + str(item.id)
-                        self.logger.info('item', msg)
+                        self.logger.info(item, msg)
                         item.code = code
                         item.save()
                     else:
                         item = MediaItem(code=code, collection=c)
-                        msg = item.code + ' : Cas 1 ou 2 : item NON présent dans la base de données, CREATION'
-                        self.logger.info('item', msg)
+                        msg = old_ref + ' : Cas 1 ou 2 : item NON présent dans la base de données, CREATION'
+                        self.logger.info(item, msg)
                     
                     self.write_file(item, wav_file, overwrite)
                     
