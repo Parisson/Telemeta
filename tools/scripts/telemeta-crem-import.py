@@ -66,10 +66,11 @@ class TelemetaWavImport:
     def wav_import(self):
         from telemeta.models import MediaItem,  MediaCollection
         
+        collections = []
         for collection in self.collections:
             collection_dir = self.source_dir + os.sep + collection
             collection_files = os.listdir(collection_dir)
-            collections = []
+            
             
             if not '/.' in collection_dir and self.pattern in collection_dir:
                 collection_name = collection.split(os.sep)[-1]
