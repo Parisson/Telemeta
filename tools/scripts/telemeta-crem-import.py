@@ -148,14 +148,14 @@ class TelemetaWavImport:
                         
                     if items:
                         item = items[0]
-                        msg = item.old_code + ' : Cas 1 ou 2 : id = ' + str(item.id)
-                        self.logger.info(item, msg)
+                        msg = code + ' : ' + item.old_code + ' : Cas 1 ou 2 : id = ' + str(item.id)
+                        self.logger.info('item', msg)
                         item.code = code
                         item.save()
                     else:
                         item = MediaItem(code=code, collection=c)
-                        msg = old_ref + ' : Cas 1 ou 2 : item NON présent dans la base de données, CREATION'
-                        self.logger.info(item, msg)
+                        msg = code + ' : ' + old_ref + ' : Cas 1 ou 2 : item NON présent dans la base de données, CREATION'
+                        self.logger.info('item', msg)
                     
                     self.write_file(item, wav_file, overwrite)
                     
@@ -165,7 +165,7 @@ class TelemetaWavImport:
                         self.logger.info('item', msg)
                     else:
                         item = MediaItem(code=code, collection=c)
-                        msg = item.code + ' : Cas 3a : item NON présent dans la base de données, CREATION'
+                        msg = code + ' : Cas 3a : item NON présent dans la base de données, CREATION'
                         self.logger.info('item', msg)
                         self.write_file(item, wav_file, overwrite)
                 
