@@ -67,7 +67,8 @@ class TelemetaWavImport:
         from telemeta.models import MediaItem,  MediaCollection
         
         for collection in self.collections:
-            collection_dir = self.source_dir + os.sep + collection 
+            collection_dir = self.source_dir + os.sep + collection
+            collection_files = os.listdir(collection_dir)
             collections = []
             
             if not '/.' in collection_dir and self.pattern in collection_dir:
@@ -86,7 +87,7 @@ class TelemetaWavImport:
                     c.save()
                     c.set_revision(self.user)
                 else:
-                    msg = 'collection présente dans la base de données'
+                    msg = 'collection présente dans la base de données, SELECTION'
                     self.logger.info(collection, msg)
                     
         for collection in collections:
