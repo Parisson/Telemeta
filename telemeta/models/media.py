@@ -217,6 +217,8 @@ class MediaCollection(MediaResource):
 class MediaCollectionForm(ModelForm):
     class Meta:
         model = MediaCollection
+    def clean_doctype_code(self):
+        return self.cleaned_data['doctype_code'] or 0
         
 
 item_published_code_regex    = collection_published_code_regex + '(?:_[0-9]{2,3}){1,2}'
