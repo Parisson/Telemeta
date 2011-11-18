@@ -39,13 +39,14 @@ class Logger:
 
 class TelemetaWavImport:
 
-    def __init__(self, source_dir, log_file, pattern):
+    def __init__(self, source_dir, log_file, pattern, domain):
         from django.contrib.auth.models import User
         self.logger = Logger(log_file)
         self.source_dir = source_dir
         self.collections = os.listdir(self.source_dir)
         self.pattern = pattern
         self.user = User.objects.filter(username='admin')[0]
+        self.domain = domain
 
     def write_file(self, item, wav_file, overwrite=False):
         filename = wav_file.split(os.sep)[-1]
@@ -172,27 +173,36 @@ class TelemetaWavImport:
                     self.logger.info('item', msg)
 
                 counter += 1
-
+        
+        msg = 'Liste des URLs des collections importées :'
+        self.logger.info('INFO', msg)
+        for collection in collections:
+            msg = 'http://'+self.domain+'/collections/'+collection
+            self.logger.info(collection, msg)
+            
+        
 def print_usage(tool_name):
-    print "Usage: "+tool_name+" <project_dir> <source_dir> <pattern> <log_file>"
+    print "Usage: "+tool_name+" <project_dir> <source_dir> <pattern> <log_file> <domain>"
     print "  project_dir: the directory of the Django project which hosts Telemeta"
     print "  source_dir: the directory containing the wav files to include"
     print "  pattern: a pattern to match the collection names"
     print "  log_file: a log file to write logs"
+    print "  domain: root domain for collections"
 
 def run():
     if len(sys.argv) < 3:
         print_usage(os.path.basename(sys.argv[0]))
         sys.exit(1)
     else:
-        project_dir = sys.argv[-4]
-        source_dir = sys.argv[-3]
-        pattern = sys.argv[-2]
-        log_file = sys.argv[-1]
+        project_dir = sys.argv[-5]
+        source_dir = sys.argv[-4]
+        pattern = sys.argv[-3]
+        log_file = sys.argv[-2]
+        url = sys.argv[-1]
         sys.path.append(project_dir)
         import settings
         setup_environ(settings)
-        t = TelemetaWavImport(source_dir, log_file, pattern)
+        t = TelemetaWavImport(source_dir, log_file, pattern, url)
         t.wav_import()
 
 if __name__ == '__main__':
