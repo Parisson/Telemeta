@@ -106,7 +106,7 @@ class TelemetaWavImport:
                 csv_file = self.source_dir + os.sep + collection + os.sep + collection + '.csv'
                 csv_data = csv.reader(open(csv_file), delimiter=';')
                 for row in csv_data:
-                    rows[row[1]] = row[0]
+                    rows[row[1].strip()] = row[0].strip()
                 msg = collection + ' import du fichier CSV de la collection'
                 self.logger.info(collection, msg[:70])
             else:
