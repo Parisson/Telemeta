@@ -1007,7 +1007,6 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         //        map.clear();
         //        ruler.clear();
        
-  
         var rulerAdd = ruler.add;
             
         if(markers){
@@ -1022,8 +1021,6 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
             });
         }
         
-
-
         //the function above calls map.add:
         //add bindings when adding a marker:
         map.bind('add',function(data){
@@ -1054,7 +1051,6 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
             player.fire('markerMoved',data);
         });
 
-            
         //remove
         map.bind('remove',function(data){
             ruler.remove.apply(ruler, [data.index]);
@@ -1066,7 +1062,5 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
             ruler.setEditable.apply(ruler, [data.index, data.value]);
             player.fire('markerEditStateChanged',data);
         });
-
     }
-
 });
