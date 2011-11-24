@@ -34,11 +34,13 @@
     {% if item.file %}
     {% if public_access or perms.telemeta.can_play_all_items %}
         //initializing soundManager default properties
-        soundManager.url = "{% url telemeta-timeside "swf/" %}";
         soundManager.flashVersion = 9;
-        soundManager.useMovieStar = true; // enable MP4/M4A/AAC
+        soundManager.url = "{% url telemeta-timeside "swf/" %}";
         soundManager.debugMode = false;
         soundManager.allowPolling = true;
+        soundManager.useHTML5Audio = true;
+        soundManager.preferFlash = false;
+        
         //initializing the visualizers to be passed to the player
         var visualizers = {};
         {% for v in visualizers %}
