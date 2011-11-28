@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-10 14:27+0100\n"
+"POT-Creation-Date: 2011-11-28 17:25+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,35 +26,35 @@ msgstr ""
 msgid "Enter a valid duration in HH:MM[:ss] format."
 msgstr ""
 
-#: models/enum.py:41 models/enum.py:139 models/media.py:421
+#: models/enum.py:41 models/enum.py:139 models/media.py:459
 msgid "value"
 msgstr ""
 
-#: models/enum.py:57 models/media.py:148
+#: models/enum.py:57 models/media.py:183
 msgid "archive format"
 msgstr ""
 
-#: models/enum.py:64 models/media.py:131
+#: models/enum.py:64 models/media.py:166
 msgid "secondary edition"
 msgstr ""
 
-#: models/enum.py:71 models/media.py:125
+#: models/enum.py:71 models/media.py:160
 msgid "mode of acquisition"
 msgstr ""
 
-#: models/enum.py:78 models/media.py:128
+#: models/enum.py:78 models/media.py:163
 msgid "record author"
 msgstr ""
 
-#: models/enum.py:85 models/media.py:135
+#: models/enum.py:85 models/media.py:170
 msgid "record writer"
 msgstr ""
 
-#: models/enum.py:92 models/media.py:121
+#: models/enum.py:92 models/media.py:156
 msgid "legal rights"
 msgstr ""
 
-#: models/enum.py:99 models/media.py:100
+#: models/enum.py:99 models/media.py:133
 msgid "recording context"
 msgstr ""
 
@@ -62,19 +62,19 @@ msgstr ""
 msgid "A/D conversion"
 msgstr ""
 
-#: models/enum.py:113 models/media.py:252
+#: models/enum.py:113 models/media.py:289
 msgid "vernacular style"
 msgstr ""
 
-#: models/enum.py:120 models/media.py:254
+#: models/enum.py:120 models/media.py:291
 msgid "generic style"
 msgstr ""
 
-#: models/enum.py:127 models/media.py:381
+#: models/enum.py:127 models/media.py:419
 msgid "keyword"
 msgstr ""
 
-#: models/enum.py:134 models/media.py:111
+#: models/enum.py:134 models/media.py:146
 msgid "publisher / status"
 msgstr ""
 
@@ -82,12 +82,12 @@ msgstr ""
 msgid "publisher"
 msgstr ""
 
-#: models/enum.py:153 models/enum.py:157 models/media.py:245
+#: models/enum.py:153 models/enum.py:157 models/media.py:282
 msgid "population / social group"
 msgstr ""
 
 #: models/enum.py:158 models/instrument.py:43 models/instrument.py:53
-#: models/location.py:51 models/location.py:158 models/media.py:420
+#: models/location.py:51 models/location.py:158 models/media.py:458
 msgid "name"
 msgstr ""
 
@@ -136,7 +136,7 @@ msgid "authoritative"
 msgstr ""
 
 #: models/location.py:112 models/location.py:169 models/location.py:184
-#: models/media.py:241
+#: models/media.py:278
 msgid "location"
 msgstr ""
 
@@ -168,288 +168,296 @@ msgstr ""
 msgid "Private data"
 msgstr ""
 
-#: models/media.py:65 models/media.py:118 models/media.py:269
+#: models/media.py:65 models/media.py:89 models/media.py:153
+#: models/media.py:306
 msgid "public access"
 msgstr ""
 
-#: models/media.py:95 models/media.py:266
+#: models/media.py:85 models/media.py:128 models/media.py:303
 msgid "reference"
 msgstr ""
 
-#: models/media.py:96 models/media.py:232 models/media.py:341
-#: models/media.py:436 models/media.py:451 models/media.py:485
+#: models/media.py:86 models/media.py:129 models/media.py:269
+#: models/media.py:378 models/media.py:477 models/media.py:492
+#: models/media.py:526
 msgid "title"
 msgstr ""
 
-#: models/media.py:97 models/media.py:233
-msgid "original title / translation"
-msgstr ""
-
-#: models/media.py:98
-msgid "depositor / contributor"
-msgstr ""
-
-#: models/media.py:101
-msgid "recording year (from)"
-msgstr ""
-
-#: models/media.py:102
-msgid "recording year (until)"
-msgstr ""
-
-#: models/media.py:103
-msgid "year published"
-msgstr ""
-
-#: models/media.py:109 models/media.py:234
-msgid "recordist"
-msgstr ""
-
-#: models/media.py:113
-msgid "publisher collection"
-msgstr ""
-
-#: models/media.py:114
-msgid "publisher serial number"
-msgstr ""
-
-#: models/media.py:115
-msgid "author of published notice"
-msgstr ""
-
-#: models/media.py:116
-msgid "bibliographic references"
-msgstr ""
-
-#: models/media.py:117
-msgid "document type"
-msgstr ""
-
-#: models/media.py:126
-msgid "CNRS depositor"
-msgstr ""
-
-#: models/media.py:129
-msgid "related documentation"
-msgstr ""
-
-#: models/media.py:132
-msgid "copies"
-msgstr ""
-
-#: models/media.py:133
-msgid "comment"
-msgstr ""
-
-#: models/media.py:136
-msgid "archiver notes"
-msgstr ""
-
-#: models/media.py:137
-msgid "items finished"
-msgstr ""
-
-#: models/media.py:138
-msgid "recordist identical to depositor"
-msgstr ""
-
-#: models/media.py:139
-msgid "published"
-msgstr ""
-
-#: models/media.py:140
-msgid "conservation site"
-msgstr ""
-
-#: models/media.py:143 models/media.py:263
-msgid "code"
-msgstr ""
-
-#: models/media.py:144 models/media.py:264
-msgid "old code"
-msgstr ""
-
-#: models/media.py:145 models/media.py:273
-msgid "approximative duration"
-msgstr ""
-
-#: models/media.py:146
-msgid "number of components (medium / piece)"
-msgstr ""
-
-#: models/media.py:150
-msgid "digitization"
-msgstr ""
-
-#: models/media.py:151
-msgid "status"
-msgstr ""
-
-#: models/media.py:152
-msgid "a_informer_07_03"
-msgstr ""
-
-#: models/media.py:186
-msgid "states / nations"
-msgstr ""
-
-#: models/media.py:200
-msgid "populations / social groups"
-msgstr ""
-
-#: models/media.py:208 models/media.py:317
-msgid "computed duration"
-msgstr ""
-
-#: models/media.py:236
-msgid "collection"
-msgstr ""
-
-#: models/media.py:237
-msgid "recording date (from)"
-msgstr ""
-
-#: models/media.py:238
-msgid "recording date (until)"
-msgstr ""
-
-#: models/media.py:242
-msgid "location details"
-msgstr ""
-
-#: models/media.py:243
-msgid "cultural area"
-msgstr ""
-
-#: models/media.py:246
-msgid "language"
-msgstr ""
-
-#: models/media.py:247
-msgid "comments / ethnographic context"
-msgstr ""
-
-#: models/media.py:248
-msgid "moda_execut"
-msgstr ""
-
-#: models/media.py:255
-msgid "author / compositor"
-msgstr ""
-
-#: models/media.py:258
-msgid "remarks"
-msgstr ""
-
-#: models/media.py:259
-msgid "recordist selection"
-msgstr ""
-
-#: models/media.py:260
-msgid "recordist as in collection"
-msgstr ""
-
-#: models/media.py:265
-msgid "item number"
-msgstr ""
-
-#: models/media.py:267
-msgid "published references"
-msgstr ""
-
-#: models/media.py:268
-msgid "copy of"
-msgstr ""
-
-#: models/media.py:270 models/media.py:346
-msgid "file"
-msgstr ""
-
-#: models/media.py:280 models/media.py:518
-#: templates/telemeta_default/mediaitem_detail.html:190
-msgid "keywords"
-msgstr ""
-
-#: models/media.py:340 models/media.py:380 models/media.py:394
-#: models/media.py:418 models/media.py:435 models/media.py:482
-#: models/media.py:503
-msgid "item"
-msgstr ""
-
-#: models/media.py:342 models/media.py:486 models/media.py:505
-#: models/media.py:519
-msgid "date"
-msgstr ""
-
-#: models/media.py:343 models/media.py:452 models/media.py:487
+#: models/media.py:87 models/media.py:380 models/media.py:493
+#: models/media.py:528
 msgid "description"
 msgstr ""
 
-#: models/media.py:344 models/media.py:504
+#: models/media.py:88 models/media.py:178 models/media.py:300
+msgid "code"
+msgstr ""
+
+#: models/media.py:130 models/media.py:270
+msgid "original title / translation"
+msgstr ""
+
+#: models/media.py:131
+msgid "depositor / contributor"
+msgstr ""
+
+#: models/media.py:134
+msgid "recording year (from)"
+msgstr ""
+
+#: models/media.py:135
+msgid "recording year (until)"
+msgstr ""
+
+#: models/media.py:136
+msgid "year published"
+msgstr ""
+
+#: models/media.py:144 models/media.py:271
+msgid "recordist"
+msgstr ""
+
+#: models/media.py:148
+msgid "publisher collection"
+msgstr ""
+
+#: models/media.py:149
+msgid "publisher serial number"
+msgstr ""
+
+#: models/media.py:150
+msgid "author of published notice"
+msgstr ""
+
+#: models/media.py:151
+msgid "bibliographic references"
+msgstr ""
+
+#: models/media.py:152
+msgid "document type"
+msgstr ""
+
+#: models/media.py:161
+msgid "CNRS depositor"
+msgstr ""
+
+#: models/media.py:164
+msgid "related documentation"
+msgstr ""
+
+#: models/media.py:167
+msgid "copies"
+msgstr ""
+
+#: models/media.py:168
+msgid "comment"
+msgstr ""
+
+#: models/media.py:171
+msgid "archiver notes"
+msgstr ""
+
+#: models/media.py:172
+msgid "items finished"
+msgstr ""
+
+#: models/media.py:173
+msgid "recordist identical to depositor"
+msgstr ""
+
+#: models/media.py:174
+msgid "published"
+msgstr ""
+
+#: models/media.py:175
+msgid "conservation site"
+msgstr ""
+
+#: models/media.py:179 models/media.py:301
+msgid "old code"
+msgstr ""
+
+#: models/media.py:180 models/media.py:310
+msgid "approximative duration"
+msgstr ""
+
+#: models/media.py:181
+msgid "number of components (medium / piece)"
+msgstr ""
+
+#: models/media.py:185
+msgid "digitization"
+msgstr ""
+
+#: models/media.py:186
+msgid "status"
+msgstr ""
+
+#: models/media.py:187
+msgid "a_informer_07_03"
+msgstr ""
+
+#: models/media.py:221
+msgid "states / nations"
+msgstr ""
+
+#: models/media.py:235
+msgid "populations / social groups"
+msgstr ""
+
+#: models/media.py:243 models/media.py:354
+msgid "computed duration"
+msgstr ""
+
+#: models/media.py:273
+msgid "collection"
+msgstr ""
+
+#: models/media.py:274
+msgid "recording date (from)"
+msgstr ""
+
+#: models/media.py:275
+msgid "recording date (until)"
+msgstr ""
+
+#: models/media.py:279
+msgid "location details"
+msgstr ""
+
+#: models/media.py:280
+msgid "cultural area"
+msgstr ""
+
+#: models/media.py:283
+msgid "language"
+msgstr ""
+
+#: models/media.py:284
+msgid "comments / ethnographic context"
+msgstr ""
+
+#: models/media.py:285
+msgid "moda_execut"
+msgstr ""
+
+#: models/media.py:292
+msgid "author / compositor"
+msgstr ""
+
+#: models/media.py:295
+msgid "remarks"
+msgstr ""
+
+#: models/media.py:296
+msgid "recordist selection"
+msgstr ""
+
+#: models/media.py:297
+msgid "recordist as in collection"
+msgstr ""
+
+#: models/media.py:302
+msgid "item number"
+msgstr ""
+
+#: models/media.py:304
+msgid "published references"
+msgstr ""
+
+#: models/media.py:305
+msgid "copy of"
+msgstr ""
+
+#: models/media.py:307 models/media.py:384
+msgid "file"
+msgstr ""
+
+#: models/media.py:317 models/media.py:559
+#: templates/telemeta_default/mediaitem_detail.html:192
+#: templates/telemeta_default/mediaitem_detail_video.html:192
+msgid "keywords"
+msgstr ""
+
+#: models/media.py:377 models/media.py:418 models/media.py:432
+#: models/media.py:456 models/media.py:476 models/media.py:523
+#: models/media.py:544
+msgid "item"
+msgstr ""
+
+#: models/media.py:379 models/media.py:527 models/media.py:546
+#: models/media.py:560
+msgid "date"
+msgstr ""
+
+#: models/media.py:381 models/media.py:545
 msgid "mime_type"
 msgstr ""
 
-#: models/media.py:345
+#: models/media.py:382
 msgid "url"
 msgstr ""
 
-#: models/media.py:396
+#: models/media.py:383
+msgid "credits"
+msgstr ""
+
+#: models/media.py:434
 msgid "composition"
 msgstr ""
 
-#: models/media.py:398
+#: models/media.py:436
 msgid "vernacular name"
 msgstr ""
 
-#: models/media.py:399
+#: models/media.py:437
 msgid "number"
 msgstr ""
 
-#: models/media.py:400
+#: models/media.py:438
 msgid "interprets"
 msgstr ""
 
-#: models/media.py:419
+#: models/media.py:457
 msgid "id"
 msgstr ""
 
-#: models/media.py:422
+#: models/media.py:460
 msgid "unit"
 msgstr ""
 
-#: models/media.py:437
+#: models/media.py:478
 msgid "start"
 msgstr ""
 
-#: models/media.py:438
+#: models/media.py:479
 msgid "end"
 msgstr ""
 
-#: models/media.py:449 models/media.py:468 models/media.py:483
+#: models/media.py:490 models/media.py:509 models/media.py:524
 msgid "public_id"
 msgstr ""
 
-#: models/media.py:469
+#: models/media.py:510
 msgid "playlist"
 msgstr ""
 
-#: models/media.py:470
+#: models/media.py:511
 msgid "resource_type"
 msgstr ""
 
-#: models/media.py:471
+#: models/media.py:512
 msgid "resource_id"
 msgstr ""
 
-#: models/media.py:484 models/system.py:54
+#: models/media.py:525 models/system.py:54
 msgid "time"
 msgstr ""
 
-#: models/media.py:488
+#: models/media.py:529
 msgid "author"
 msgstr ""
 
-#: models/media.py:506
+#: models/media.py:547
 msgid "transcoded"
 msgstr ""
 
@@ -553,7 +561,8 @@ msgstr ""
 #: templates/telemeta_default/admin_enumerations.html:12
 #: templates/telemeta_default/home.html:46
 #: templates/telemeta_default/mediaitem_copy.html:32
-#: templates/telemeta_default/mediaitem_detail.html:293
+#: templates/telemeta_default/mediaitem_detail.html:295
+#: templates/telemeta_default/mediaitem_detail_video.html:295
 #: templates/telemeta_default/mediaitem_edit.html:27
 #: templates/telemeta_default/search_criteria.html:78
 #: templates/telemeta_default/search_results.html:30
@@ -683,16 +692,21 @@ msgid "Collection"
 msgstr ""
 
 #: templates/telemeta_default/collection_detail.html:42
-#: templates/telemeta_default/mediaitem_detail.html:88
-#: templates/telemeta_default/mediaitem_detail.html:190
-#: templates/telemeta_default/mediaitem_detail.html:229
-#: templates/telemeta_default/mediaitem_detail.html:350
+#: templates/telemeta_default/mediaitem_detail.html:90
+#: templates/telemeta_default/mediaitem_detail.html:192
+#: templates/telemeta_default/mediaitem_detail.html:231
+#: templates/telemeta_default/mediaitem_detail.html:352
+#: templates/telemeta_default/mediaitem_detail_video.html:90
+#: templates/telemeta_default/mediaitem_detail_video.html:192
+#: templates/telemeta_default/mediaitem_detail_video.html:231
+#: templates/telemeta_default/mediaitem_detail_video.html:352
 #: templates/telemeta_default/profile_detail.html:63
 msgid "Edit"
 msgstr ""
 
 #: templates/telemeta_default/collection_detail.html:43
-#: templates/telemeta_default/mediaitem_detail.html:89
+#: templates/telemeta_default/mediaitem_detail.html:91
+#: templates/telemeta_default/mediaitem_detail_video.html:91
 msgid "Copy"
 msgstr ""
 
@@ -701,7 +715,8 @@ msgid "Add item"
 msgstr ""
 
 #: templates/telemeta_default/collection_detail.html:47
-#: templates/telemeta_default/mediaitem_detail.html:92
+#: templates/telemeta_default/mediaitem_detail.html:94
+#: templates/telemeta_default/mediaitem_detail_video.html:94
 msgid "Add to playlist"
 msgstr ""
 
@@ -716,7 +731,8 @@ msgid "Recording period"
 msgstr ""
 
 #: templates/telemeta_default/collection_detail.html:102
-#: templates/telemeta_default/mediaitem_detail.html:174
+#: templates/telemeta_default/mediaitem_detail.html:176
+#: templates/telemeta_default/mediaitem_detail_video.html:176
 msgid "Geographic and cultural informations"
 msgstr ""
 
@@ -732,7 +748,8 @@ msgid "Bibliographic references"
 msgstr ""
 
 #: templates/telemeta_default/collection_detail.html:142
-#: templates/telemeta_default/mediaitem_detail.html:246
+#: templates/telemeta_default/mediaitem_detail.html:248
+#: templates/telemeta_default/mediaitem_detail_video.html:248
 msgid "Archiving data"
 msgstr ""
 
@@ -745,17 +762,20 @@ msgid "Comments"
 msgstr ""
 
 #: templates/telemeta_default/collection_detail.html:166
-#: templates/telemeta_default/mediaitem_detail.html:262
+#: templates/telemeta_default/mediaitem_detail.html:264
+#: templates/telemeta_default/mediaitem_detail_video.html:264
 msgid "Technical data"
 msgstr ""
 
 #: templates/telemeta_default/collection_detail.html:171
-#: templates/telemeta_default/mediaitem_detail.html:265
+#: templates/telemeta_default/mediaitem_detail.html:267
+#: templates/telemeta_default/mediaitem_detail_video.html:267
 msgid "Media type"
 msgstr ""
 
 #: templates/telemeta_default/collection_detail.html:171
-#: templates/telemeta_default/mediaitem_detail.html:265
+#: templates/telemeta_default/mediaitem_detail.html:267
+#: templates/telemeta_default/mediaitem_detail_video.html:267
 msgid "Audio"
 msgstr ""
 
@@ -766,7 +786,8 @@ msgstr ""
 
 #: templates/telemeta_default/collection_detail.html:199
 #: templates/telemeta_default/home.html:35
-#: templates/telemeta_default/mediaitem_detail.html:361
+#: templates/telemeta_default/mediaitem_detail.html:363
+#: templates/telemeta_default/mediaitem_detail_video.html:363
 msgid "Delete"
 msgstr ""
 
@@ -828,7 +849,8 @@ msgstr ""
 #: templates/telemeta_default/enumeration_edit.html:14
 #: templates/telemeta_default/enumeration_edit.html:28
 #: templates/telemeta_default/enumeration_edit_value.html:14
-#: templates/telemeta_default/mediaitem_detail.html:134
+#: templates/telemeta_default/mediaitem_detail.html:136
+#: templates/telemeta_default/mediaitem_detail_video.html:136
 msgid "Value"
 msgstr ""
 
@@ -957,95 +979,117 @@ msgstr ""
 
 #: templates/telemeta_default/mediaitem_add.html:5
 #: templates/telemeta_default/mediaitem_copy.html:5
-#: templates/telemeta_default/mediaitem_detail.html:5 web/base.py:489
+#: templates/telemeta_default/mediaitem_detail.html:5
+#: templates/telemeta_default/mediaitem_detail_video.html:5 web/base.py:489
 msgid "Item"
 msgstr ""
 
-#: templates/telemeta_default/mediaitem_detail.html:94
+#: templates/telemeta_default/mediaitem_detail.html:96
+#: templates/telemeta_default/mediaitem_detail_video.html:96
 #: templates/telemeta_default/paginator.html:5
 msgid "Previous"
 msgstr ""
 
-#: templates/telemeta_default/mediaitem_detail.html:95
+#: templates/telemeta_default/mediaitem_detail.html:97
+#: templates/telemeta_default/mediaitem_detail_video.html:97
 #: templates/telemeta_default/paginator.html:23
 msgid "Next"
 msgstr ""
 
-#: templates/telemeta_default/mediaitem_detail.html:123
+#: templates/telemeta_default/mediaitem_detail.html:125
+#: templates/telemeta_default/mediaitem_detail_video.html:125
 msgid "Analysis"
 msgstr ""
 
-#: templates/telemeta_default/mediaitem_detail.html:125
+#: templates/telemeta_default/mediaitem_detail.html:127
+#: templates/telemeta_default/mediaitem_detail_video.html:127
 msgid "Markers"
 msgstr ""
 
-#: templates/telemeta_default/mediaitem_detail.html:133
+#: templates/telemeta_default/mediaitem_detail.html:135
+#: templates/telemeta_default/mediaitem_detail_video.html:135
 msgid "Property"
 msgstr ""
 
-#: templates/telemeta_default/mediaitem_detail.html:135
+#: templates/telemeta_default/mediaitem_detail.html:137
+#: templates/telemeta_default/mediaitem_detail_video.html:137
 msgid "Unit"
 msgstr ""
 
-#: templates/telemeta_default/mediaitem_detail.html:143
+#: templates/telemeta_default/mediaitem_detail.html:145
+#: templates/telemeta_default/mediaitem_detail_video.html:145
 msgid "Download:"
 msgstr ""
 
-#: templates/telemeta_default/mediaitem_detail.html:164
+#: templates/telemeta_default/mediaitem_detail.html:166
+#: templates/telemeta_default/mediaitem_detail_video.html:166
 msgid "Recording date"
 msgstr ""
 
-#: templates/telemeta_default/mediaitem_detail.html:176
+#: templates/telemeta_default/mediaitem_detail.html:178
+#: templates/telemeta_default/mediaitem_detail_video.html:178
 #: templates/telemeta_default/inc/mediaitem_list.html:18
 msgid "Location"
 msgstr ""
 
-#: templates/telemeta_default/mediaitem_detail.html:182
+#: templates/telemeta_default/mediaitem_detail.html:184
+#: templates/telemeta_default/mediaitem_detail_video.html:184
 msgid "Ethnographic context"
 msgstr ""
 
-#: templates/telemeta_default/mediaitem_detail.html:195
+#: templates/telemeta_default/mediaitem_detail.html:197
+#: templates/telemeta_default/mediaitem_detail_video.html:197
 msgid "Musical informations"
 msgstr ""
 
-#: templates/telemeta_default/mediaitem_detail.html:229
+#: templates/telemeta_default/mediaitem_detail.html:231
+#: templates/telemeta_default/mediaitem_detail_video.html:231
 msgid "performance"
 msgstr ""
 
-#: templates/telemeta_default/mediaitem_detail.html:234
+#: templates/telemeta_default/mediaitem_detail.html:236
+#: templates/telemeta_default/mediaitem_detail_video.html:236
 msgid "General informations"
 msgstr ""
 
-#: templates/telemeta_default/mediaitem_detail.html:236
+#: templates/telemeta_default/mediaitem_detail.html:238
+#: templates/telemeta_default/mediaitem_detail_video.html:238
 msgid "Remarks"
 msgstr ""
 
-#: templates/telemeta_default/mediaitem_detail.html:252
+#: templates/telemeta_default/mediaitem_detail.html:254
+#: templates/telemeta_default/mediaitem_detail_video.html:254
 msgid "Published references"
 msgstr ""
 
-#: templates/telemeta_default/mediaitem_detail.html:278
+#: templates/telemeta_default/mediaitem_detail.html:280
+#: templates/telemeta_default/mediaitem_detail_video.html:280
 msgid "Related media"
 msgstr ""
 
-#: templates/telemeta_default/mediaitem_detail.html:284
+#: templates/telemeta_default/mediaitem_detail.html:286
+#: templates/telemeta_default/mediaitem_detail_video.html:286
 #: templates/telemeta_default/mediaitem_related_edit.html:24
 msgid "Media"
 msgstr ""
 
-#: templates/telemeta_default/mediaitem_detail.html:285
+#: templates/telemeta_default/mediaitem_detail.html:287
+#: templates/telemeta_default/mediaitem_detail_video.html:287
 msgid "Preview"
 msgstr ""
 
-#: templates/telemeta_default/mediaitem_detail.html:311
+#: templates/telemeta_default/mediaitem_detail.html:313
+#: templates/telemeta_default/mediaitem_detail_video.html:313
 msgid "Description"
 msgstr ""
 
-#: templates/telemeta_default/mediaitem_detail.html:314
+#: templates/telemeta_default/mediaitem_detail.html:316
+#: templates/telemeta_default/mediaitem_detail_video.html:316
 msgid "URL"
 msgstr ""
 
-#: templates/telemeta_default/mediaitem_detail.html:350
+#: templates/telemeta_default/mediaitem_detail.html:352
+#: templates/telemeta_default/mediaitem_detail_video.html:352
 msgid "related media"
 msgstr ""
 
@@ -1074,7 +1118,7 @@ msgstr ""
 msgid "User Profile"
 msgstr ""
 
-#: templates/telemeta_default/profile_detail.html:8 web/base.py:1245
+#: templates/telemeta_default/profile_detail.html:8 web/base.py:1254
 msgid "User profile"
 msgstr ""
 
@@ -1186,7 +1230,7 @@ msgstr ""
 msgid "No item"
 msgstr ""
 
-#: templates/telemeta_default/inc/module_revisions.html:7 web/base.py:1275
+#: templates/telemeta_default/inc/module_revisions.html:7 web/base.py:1284
 msgid "Last changes"
 msgstr ""
 
@@ -1373,11 +1417,11 @@ msgid_plural "%(count)d collections"
 msgstr[0] ""
 msgstr[1] ""
 
-#: web/base.py:350 web/base.py:488 web/base.py:775 web/base.py:1244
+#: web/base.py:350 web/base.py:488 web/base.py:779 web/base.py:1253
 msgid "Access not allowed"
 msgstr ""
 
-#: web/base.py:352 web/base.py:490 web/base.py:777 web/base.py:1246
+#: web/base.py:352 web/base.py:490 web/base.py:781 web/base.py:1255
 msgid ""
 "Please login or contact the website administator to get a private access."
 msgstr ""
