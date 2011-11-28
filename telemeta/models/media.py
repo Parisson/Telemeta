@@ -51,6 +51,16 @@ from telemeta.models.enum import *
 from django.forms import ModelForm
 from django.db.models.fields import URLField
 
+        
+collection_published_code_regex   = 'CNRSMH_E_[0-9]{4}(?:_[0-9]{3}){2}'
+collection_unpublished_code_regex = 'CNRSMH_I_[0-9]{4}_[0-9]{3}'
+collection_code_regex             = '(?:%s|%s)' % (collection_published_code_regex, 
+                                                    collection_unpublished_code_regex)
+
+item_published_code_regex    = collection_published_code_regex + '(?:_[0-9]{2,3}){1,2}'
+item_unpublished_code_regex  = collection_unpublished_code_regex + '_[0-9]{2,3}(?:_[0-9]{2,3}){0,2}'
+item_code_regex              = '(?:%s|%s)' % (item_published_code_regex, item_unpublished_code_regex)
+
 
 class MediaResource(ModelCore):
     "Base class of all media objects"
@@ -107,12 +117,23 @@ class MediaCorpusForm(ModelForm):
     class Meta:
         model = MediaCorpus
         
-        
 
-collection_published_code_regex   = 'CNRSMH_E_[0-9]{4}(?:_[0-9]{3}){2}'
-collection_unpublished_code_regex = 'CNRSMH_I_[0-9]{4}_[0-9]{3}'
-collection_code_regex             = '(?:%s|%s)' % (collection_published_code_regex, 
-                                                    collection_unpublished_code_regex)
+class MediaCorpusCollectionRelation(ModelCore):
+    "Relations between Corpus and Collections"
+    
+    collection        = ForeignKey('MediaCollection', related_name="parent_relation", 
+                                   verbose_name=_('collection'))
+    corpus            = ForeignKey('MediaCorpus', related_name="child_relation", 
+                                   verbose_name=_('corpus'))
+
+    class Meta(MetaCore):
+        db_table = 'media_corpus_collection_relations'
+        unique_together = (('collection', 'corpus'),)
+    
+    def __unicode__(self):
+        sep = ' > '
+        return self.corpus.code + sep + self.collection.code
+
                                                         
 class MediaCollection(MediaResource):
     "Describe a collection of items"
@@ -135,8 +156,6 @@ class MediaCollection(MediaResource):
     recorded_from_year    = IntegerField(_('recording year (from)'))
     recorded_to_year      = IntegerField(_('recording year (until)'))
     year_published        = IntegerField(_('year published'))
-#    corpus                = ForeignKey('MediaCorpus', related_name="collections", 
-#                                       verbose_name=_('corpus')) 
     
     # Geographic and cultural informations
     ## See "countries" and "ethnic_groups" methods below
@@ -256,10 +275,6 @@ class MediaCollectionForm(ModelForm):
     def clean_doctype_code(self):
         return self.cleaned_data['doctype_code'] or 0
         
-
-item_published_code_regex    = collection_published_code_regex + '(?:_[0-9]{2,3}){1,2}'
-item_unpublished_code_regex  = collection_unpublished_code_regex + '_[0-9]{2,3}(?:_[0-9]{2,3}){0,2}'
-item_code_regex              = '(?:%s|%s)' % (item_published_code_regex, item_unpublished_code_regex)
 
 class MediaItem(MediaResource):
     "Describe an item"
