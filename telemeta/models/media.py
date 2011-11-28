@@ -75,6 +75,40 @@ class MediaResource(ModelCore):
         abstract = True
 
 
+class MediaCorpus(MediaResource):
+    "Describe a corpus of collections"
+    
+    element_type = 'corpus'
+    PUBLIC_ACCESS_CHOICES = (('none', 'none'), ('metadata', 'metadata'), ('full', 'full'))
+
+    # General informations
+    reference             = CharField(_('reference'), unique=True, null=True)
+    title                 = CharField(_('title'), required=True)
+    description           = CharField(_('description'))
+    code                  = CharField(_('code'), unique=True, required=True)
+    public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES, 
+                                      max_length=16, default="metadata")
+                                      
+    def __unicode__(self):
+        return self.code
+
+    @property
+    def public_id(self):
+        return self.code
+
+    def save(self, force_insert=False, force_update=False, user=None, code=None):
+        super(MediaCorpus, self).save(force_insert, force_update)
+        
+    class Meta(MetaCore):
+        db_table = 'media_corpus'
+        ordering = ['code']
+    
+class MediaCorpusForm(ModelForm):
+    class Meta:
+        model = MediaCorpus
+        
+        
+
 collection_published_code_regex   = 'CNRSMH_E_[0-9]{4}(?:_[0-9]{3}){2}'
 collection_unpublished_code_regex = 'CNRSMH_I_[0-9]{4}_[0-9]{3}'
 collection_code_regex             = '(?:%s|%s)' % (collection_published_code_regex, 
@@ -101,6 +135,8 @@ class MediaCollection(MediaResource):
     recorded_from_year    = IntegerField(_('recording year (from)'))
     recorded_to_year      = IntegerField(_('recording year (until)'))
     year_published        = IntegerField(_('year published'))
+#    corpus                = ForeignKey('MediaCorpus', related_name="collections", 
+#                                       verbose_name=_('corpus')) 
     
     # Geographic and cultural informations
     ## See "countries" and "ethnic_groups" methods below
@@ -345,6 +381,7 @@ class MediaItemRelated(MediaResource):
     description     = TextField(_('description'))
     mime_type       = CharField(_('mime_type'))
     url             = CharField(_('url'), max_length=500)
+    credits         = CharField(_('credits'))
     file            = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename")
     
     def is_image(self):

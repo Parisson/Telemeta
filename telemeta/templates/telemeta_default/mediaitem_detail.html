@@ -312,6 +312,8 @@
                                 </dd>
                                 <dt>{% trans "Description" %}</dt>
                                 <dd>{{ media.description|html_line_break|safe }}</dd>
+                                <dt>{% trans "Credits" %}</dt>
+                                <dd>{{ media.credits }}</dd>
                                 {% dl_field media "mime_type" %}
                                 <dt>{% trans "URL" %}</dt>
                                 <dd>

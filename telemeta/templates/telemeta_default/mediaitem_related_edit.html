@@ -25,15 +25,11 @@
         {% for field in form %}
         <tr><td class="error">{{ field.errors }}</td></tr>
         <tr>
-        {% if not "media_item" in field.html_name %}
-            {% if "id" in field.html_name or "item" in field.html_name %}
+            {% if "media_item" in field.html_name or "id" in field.html_name or "item" in field.html_name or "mime_type" in field.html_name %}
                 <td>{{ field.label_tag.as_hidden }}</td><td>{{ field.as_hidden }}</td>
             {% else %}
                 <td>{{ field.label_tag }}: </td><td>{{ field }}</td>
             {% endif %}
-        {% else %}
-            <td>{{ field.label_tag.as_hidden }}</td><td>{{ field.as_hidden }}</td>
-        {% endif %}
         </tr>
         {% endfor %}
        </table>
