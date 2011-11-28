@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-28 17:25+0100\n"
+"POT-Creation-Date: 2011-11-28 17:40+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -563,7 +563,7 @@ msgstr ""
 #: templates/telemeta_default/mediaitem_copy.html:32
 #: templates/telemeta_default/mediaitem_detail.html:295
 #: templates/telemeta_default/mediaitem_detail_video.html:295
-#: templates/telemeta_default/mediaitem_edit.html:27
+#: templates/telemeta_default/mediaitem_edit.html:26
 #: templates/telemeta_default/search_criteria.html:78
 #: templates/telemeta_default/search_results.html:30
 #: templates/telemeta_default/inc/collection_list.html:13
@@ -652,7 +652,7 @@ msgstr ""
 #: templates/telemeta_default/collection_add.html:10
 #: templates/telemeta_default/collection_add.html:28
 #: templates/telemeta_default/collection_edit.html:9
-#: templates/telemeta_default/collection_edit.html:27
+#: templates/telemeta_default/collection_edit.html:29
 #: templates/telemeta_default/enumeration_edit_value.html:22
 #: templates/telemeta_default/instrument_edit_value.html:21
 #: templates/telemeta_default/mediaitem_add.html:15
@@ -660,28 +660,28 @@ msgstr ""
 #: templates/telemeta_default/mediaitem_copy.html:16
 #: templates/telemeta_default/mediaitem_copy.html:43
 #: templates/telemeta_default/mediaitem_edit.html:10
-#: templates/telemeta_default/mediaitem_edit.html:42
+#: templates/telemeta_default/mediaitem_edit.html:38
 #: templates/telemeta_default/mediaitem_keywords_edit.html:12
 #: templates/telemeta_default/mediaitem_keywords_edit.html:43
 #: templates/telemeta_default/mediaitem_performances_edit.html:12
 #: templates/telemeta_default/mediaitem_performances_edit.html:43
 #: templates/telemeta_default/mediaitem_related_edit.html:12
-#: templates/telemeta_default/mediaitem_related_edit.html:44
+#: templates/telemeta_default/mediaitem_related_edit.html:40
 #: templates/telemeta_default/profile_edit.html:6
 #: templates/telemeta_default/profile_edit.html:29
 msgid "Cancel"
 msgstr ""
 
 #: templates/telemeta_default/collection_add.html:30
-#: templates/telemeta_default/collection_edit.html:29
+#: templates/telemeta_default/collection_edit.html:31
 #: templates/telemeta_default/enumeration_edit_value.html:20
 #: templates/telemeta_default/instrument_edit_value.html:19
 #: templates/telemeta_default/mediaitem_add.html:38
 #: templates/telemeta_default/mediaitem_copy.html:45
-#: templates/telemeta_default/mediaitem_edit.html:44
+#: templates/telemeta_default/mediaitem_edit.html:40
 #: templates/telemeta_default/mediaitem_keywords_edit.html:45
 #: templates/telemeta_default/mediaitem_performances_edit.html:45
-#: templates/telemeta_default/mediaitem_related_edit.html:46
+#: templates/telemeta_default/mediaitem_related_edit.html:42
 #: templates/telemeta_default/profile_edit.html:31
 msgid "Save"
 msgstr ""
@@ -695,7 +695,7 @@ msgstr ""
 #: templates/telemeta_default/mediaitem_detail.html:90
 #: templates/telemeta_default/mediaitem_detail.html:192
 #: templates/telemeta_default/mediaitem_detail.html:231
-#: templates/telemeta_default/mediaitem_detail.html:352
+#: templates/telemeta_default/mediaitem_detail.html:354
 #: templates/telemeta_default/mediaitem_detail_video.html:90
 #: templates/telemeta_default/mediaitem_detail_video.html:192
 #: templates/telemeta_default/mediaitem_detail_video.html:231
@@ -786,7 +786,7 @@ msgstr ""
 
 #: templates/telemeta_default/collection_detail.html:199
 #: templates/telemeta_default/home.html:35
-#: templates/telemeta_default/mediaitem_detail.html:363
+#: templates/telemeta_default/mediaitem_detail.html:365
 #: templates/telemeta_default/mediaitem_detail_video.html:363
 msgid "Delete"
 msgstr ""
@@ -924,7 +924,7 @@ msgstr ""
 
 #: templates/telemeta_default/home.html:48
 #: templates/telemeta_default/mediaitem_copy.html:33
-#: templates/telemeta_default/mediaitem_edit.html:28
+#: templates/telemeta_default/mediaitem_edit.html:27
 #: templates/telemeta_default/inc/collection_list.html:14
 #: templates/telemeta_default/inc/mediaitem_list.html:15
 msgid "Code"
@@ -1083,12 +1083,16 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: templates/telemeta_default/mediaitem_detail.html:316
+#: templates/telemeta_default/mediaitem_detail.html:315
+msgid "Credits"
+msgstr ""
+
+#: templates/telemeta_default/mediaitem_detail.html:318
 #: templates/telemeta_default/mediaitem_detail_video.html:316
 msgid "URL"
 msgstr ""
 
-#: templates/telemeta_default/mediaitem_detail.html:352
+#: templates/telemeta_default/mediaitem_detail.html:354
 #: templates/telemeta_default/mediaitem_detail_video.html:352
 msgid "related media"
 msgstr ""
