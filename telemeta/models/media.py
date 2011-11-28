@@ -428,6 +428,9 @@ class MediaItemAnalysis(ModelCore):
         ordering = ['name']
         
     def to_dict(self):
+        if self.analyzer_id == 'duration':
+            value = self.value.split('.')
+            self.value = '.'.join([value[0], value[1][:2]])
         return {'id': self.analyzer_id, 'name': self.name, 'value': self.value, 'unit': self.unit}
         
         
