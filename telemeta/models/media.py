@@ -61,6 +61,7 @@ item_published_code_regex    = collection_published_code_regex + '(?:_[0-9]{2,3}
 item_unpublished_code_regex  = collection_unpublished_code_regex + '_[0-9]{2,3}(?:_[0-9]{2,3}){0,2}'
 item_code_regex              = '(?:%s|%s)' % (item_published_code_regex, item_unpublished_code_regex)
 
+PUBLIC_ACCESS_CHOICES = (('none', 'none'), ('metadata', 'metadata'), ('full', 'full'))
 
 class MediaResource(ModelCore):
     "Base class of all media objects"
@@ -89,7 +90,6 @@ class MediaCorpus(MediaResource):
     "Describe a corpus of collections"
     
     element_type = 'corpus'
-    PUBLIC_ACCESS_CHOICES = (('none', 'none'), ('metadata', 'metadata'), ('full', 'full'))
 
     # General informations
     reference             = CharField(_('reference'), unique=True, null=True)
@@ -137,8 +137,8 @@ class MediaCorpusCollectionRelation(ModelCore):
                                                         
 class MediaCollection(MediaResource):
     "Describe a collection of items"
+    
     element_type = 'collection'
-    PUBLIC_ACCESS_CHOICES = (('none', 'none'), ('metadata', 'metadata'), ('full', 'full'))
 
     def is_valid_collection_code(value):
         "Check if the collection code is well formed"
@@ -278,8 +278,8 @@ class MediaCollectionForm(ModelForm):
 
 class MediaItem(MediaResource):
     "Describe an item"
+    
     element_type = 'item'
-    PUBLIC_ACCESS_CHOICES = (('none', 'none'), ('metadata', 'metadata'), ('full', 'full'))
     
     # Main Informations
     title                 = CharField(_('title'))
