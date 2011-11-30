@@ -287,6 +287,9 @@ class GeneralView(object):
                 collections.by_publish_year(int(value), int(input.get('pub_year_to', value))), 
                 items.by_publish_year(int(value), int(input.get('pub_year_to', value)))),
             'pub_year_to': lambda value: (collections, items),
+            'sound': lambda value: (
+                collections.sound(),
+                items.sound()),
         }
        
         for key, value in input.items():
