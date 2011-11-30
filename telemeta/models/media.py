@@ -84,6 +84,45 @@ class MediaResource(ModelCore):
     class Meta:
         abstract = True
 
+class MediaRelated(MediaResource):
+    "Related media"
+    
+    element_type = 'media'
+    
+    title           = CharField(_('title'))
+    date            = DateTimeField(_('date'), auto_now=True)
+    description     = TextField(_('description'))
+    mime_type       = CharField(_('mime_type'))
+    url             = CharField(_('url'), max_length=500)
+    credits         = CharField(_('credits'))
+    file            = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename")
+    
+    def is_image(self):
+        is_url_image = False
+        if self.url:
+            url_types = ['.png', '.jpg', '.gif', '.jpeg']
+            for type in url_types:
+                if type in self.url:
+                    is_url_image = True
+        return 'image' in self.mime_type or is_url_image
+        
+    def save(self, force_insert=False, force_update=False):
+        super(MediaRelated, self).save(force_insert, force_update)
+        
+    def set_mime_type(self):
+        if self.file:
+            self.mime_type = mimetypes.guess_type(self.file.path)[0]
+    
+    def __unicode__(self):
+        if self.title and not re.match('^ *N *$', self.title):
+            title = self.title
+        else:
+            title = unicode(self.item)
+        return title
+    
+    class Meta:
+        abstract = True
+
 
 class MediaCorpus(MediaResource):
     "Describe a corpus of collections"
@@ -265,42 +304,10 @@ class MediaCollection(MediaResource):
         ordering = ['code']
 
 
-class MediaCollectionRelated(MediaResource):
+class MediaCollectionRelated(MediaRelated):
     "Collection related media"
     
-    element_type = 'media'
-    
     collection      = ForeignKey('MediaCollection', related_name="related", verbose_name=_('collection'))
-    title           = CharField(_('title'))
-    date            = DateTimeField(_('date'), auto_now=True)
-    description     = TextField(_('description'))
-    mime_type       = CharField(_('mime_type'))
-    url             = CharField(_('url'), max_length=500)
-    credits         = CharField(_('credits'))
-    file            = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename")
-    
-    def is_image(self):
-        is_url_image = False
-        if self.url:
-            url_types = ['.png', '.jpg', '.gif', '.jpeg']
-            for type in url_types:
-                if type in self.url:
-                    is_url_image = True
-        return 'image' in self.mime_type or is_url_image
-        
-    def save(self, force_insert=False, force_update=False):
-        super(MediaCollectionRelated, self).save(force_insert, force_update)
-        
-    def set_mime_type(self):
-        if self.file:
-            self.mime_type = mimetypes.guess_type(self.file.path)[0]
-    
-    def __unicode__(self):
-        if self.title and not re.match('^ *N *$', self.title):
-            title = self.title
-        else:
-            title = unicode(self.item)
-        return title
     
     class Meta(MetaCore):
         db_table = 'media_collection_related'
@@ -409,42 +416,10 @@ class MediaItem(MediaResource):
         return title
 
 
-class MediaItemRelated(MediaResource):
+class MediaItemRelated(MediaRelated):
     "Item related media"
     
-    element_type = 'media'
-    
     item            = ForeignKey('MediaItem', related_name="related", verbose_name=_('item'))
-    title           = CharField(_('title'))
-    date            = DateTimeField(_('date'), auto_now=True)
-    description     = TextField(_('description'))
-    mime_type       = CharField(_('mime_type'))
-    url             = CharField(_('url'), max_length=500)
-    credits         = CharField(_('credits'))
-    file            = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename")
-    
-    def is_image(self):
-        is_url_image = False
-        if self.url:
-            url_types = ['.png', '.jpg', '.gif', '.jpeg']
-            for type in url_types:
-                if type in self.url:
-                    is_url_image = True
-        return 'image' in self.mime_type or is_url_image
-        
-    def save(self, force_insert=False, force_update=False):
-        super(MediaItemRelated, self).save(force_insert, force_update)
-        
-    def set_mime_type(self):
-        if self.file:
-            self.mime_type = mimetypes.guess_type(self.file.path)[0]
-    
-    def __unicode__(self):
-        if self.title and not re.match('^ *N *$', self.title):
-            title = self.title
-        else:
-            title = unicode(self.item)
-        return title
     
     class Meta(MetaCore):
         db_table = 'media_item_related'
