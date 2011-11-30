@@ -249,7 +249,8 @@ class MediaCollection(MediaResource):
     @property
     def public_id(self):
         return self.code
-
+    
+    @property
     def has_mediafile(self):
         "Tell wether this collection has any media files attached to its items"
         items = self.items.all()
@@ -257,7 +258,7 @@ class MediaCollection(MediaResource):
             if item.file:
                 return True
         return False
-
+    
     def __name_cmp(self, obj1, obj2):
         return unaccent_icmp(obj1.name, obj2.name)
 

@@ -12,6 +12,7 @@
      <a href="{% url telemeta-collections %}" class="component_icon button icon_filter">{% trans "All" %}</a>
      <a href="{% url telemeta-collections-unpublished %}" class="component_icon button icon_filter">{% trans "Unpublished" %}</a>
      <a href="{% url telemeta-collections-published %}" class="component_icon button icon_filter">{% trans "Published" %}</a>
+     <a href="{% url telemeta-collections-sound %}" class="component_icon button icon_filter">{% trans "Sounds" %}</a>
     {% if user.is_authenticated and perms.telemeta.add_mediacollection %}
       <a href="{% url telemeta-collection-add %}" class="component_icon button icon_add">{% trans "Add" %}</a>
     {% endif %}
