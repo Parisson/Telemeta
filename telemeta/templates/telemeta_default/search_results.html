@@ -8,6 +8,16 @@
  <img src="{% url telemeta-images "search_red.png" %}" alt="search-results" style="vertical-align:middle" /> {% trans "Search Results" %}
 {% endblock %}
 
+{% block title_buttons %}
+    {% ifequal type 'items' %}
+     <a href="{% url telemeta-search-items %}?{{criteria|with_no_sound|build_query_string}}" class="component_icon button icon_filter">{% trans "All" %}</a>
+     <a href="{% url telemeta-search-items %}?{{criteria|with_sound|build_query_string}}" class="component_icon button icon_filter">{% trans "Sounds" %}</a>
+    {% else %}
+     <a href="{% url telemeta-search-collections %}?{{criteria|with_no_sound|build_query_string}}" class="component_icon button icon_filter">{% trans "All" %}</a>
+     <a href="{% url telemeta-search-collections %}?{{criteria|with_sound|build_query_string}}" class="component_icon button icon_filter">{% trans "Sounds" %}</a>
+    {% endifequal %}
+{% endblock %}
+
 {% block content %}
 {% if criteria %}
 <ul>
@@ -42,6 +52,9 @@
      {% trans "to" %} {{criteria.pub_year_to}}
      {% endifnotequal %}
     </li>
+  {% endif %}
+    {% if criteria.sound %}
+    <li><b>{% trans "Sound" %}:</b> {{criteria.sound}}</li>
   {% endif %}
 </ul>
 {% endif %}
