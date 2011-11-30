@@ -150,11 +150,7 @@ class MediaCorpus(MediaResource):
     class Meta(MetaCore):
         db_table = 'media_corpus'
         ordering = ['code']
-    
-class MediaCorpusForm(ModelForm):
-    class Meta:
-        model = MediaCorpus
-        
+
 
 class MediaCorpusCollectionRelation(ModelCore):
     "Relations between Corpus and Collections"
