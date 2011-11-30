@@ -331,5 +331,8 @@ def get_filename(object):
 @register.filter
 def get_youtube(link):
     link = link.split('&')
-    ref = link[0].split('=')[1]
+    if "=" in link:
+        ref = link[0].split('=')[1]
+    else:
+        ref = link[0].split('/')[-1]
     return 'http://www.youtube.com/embed/'+ref
