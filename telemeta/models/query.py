@@ -323,7 +323,7 @@ class MediaCollectionQuerySet(CoreQuerySet):
         return self.filter(self.by_fuzzy_collector_q(pattern))
 
     def sound(self):
-        return self.filter(items__file__contains='/')
+        return self.filter(items__file__contains='/').distinct()
         
         
 class MediaCollectionManager(CoreManager):
