@@ -21,23 +21,24 @@ Install the software
 Install Telemeta
 ------------------
 
-* Using python package tools (install MANY dependencies automatically)::
+* The best is to use the python package tools (install MANY dependencies automatically)::
 
+    sudo aptitude install python-pip
     sudo pip install telemeta
 
-  or::
+  or (deprecated)::
 
     sudo easy_install telemeta
 
 * Downloading the latest tar archive at http://telemeta.org. Uncompress it and install. For example::
 
-        tar xzf telemeta-1.0.tar.gz
-        cd telemeta-1.0
-        sudo python setup.py install
+    tar xzf telemeta-1.0.tar.gz
+    cd telemeta-1.0
+    sudo python setup.py install
 
         
-Install the dependencies
--------------------------
+Install the system dependencies
+--------------------------------
 
 * On Debian (Squeeze recommended) or Ubuntu Lucid:
 
@@ -64,8 +65,10 @@ Install the dependencies
 Install TimeSide
 -----------------
 
-Telemeta needs the audio processing library named TimeSide (>= 0.3)
-You have to download and install it from source.
+The web audio components provided by the TimeSide module have been automatically installed if you used pip or setup.py to install Telemeta.
+In this case only, you can pass this stage.
+
+Otherwise, you have to download and install it from source.
 
 So, download the last archive at :
 http://code.google.com/p/timeside/downloads/list
@@ -267,6 +270,7 @@ Configure the site domain name in admin > general admin > sites
 
 Test it and enjoy it !
 
+
 --------------------------
 Template customization
 --------------------------
@@ -293,6 +297,16 @@ You can find an example of an Apache2 VirtualHost conf file there::
 
 
 -------------------------
+IP based authorization
+-------------------------
+
+It is possible to login automatically an IP range of machines to Telemeta thanks to the django-ipauth module::
+
+    sudo pip install django-ipauth
+
+See http://pypi.python.org/pypi/django-ipauth/ for setup.
+
+
 Contact / More infos
 -------------------------
 
