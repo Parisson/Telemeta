@@ -183,16 +183,16 @@
         </div>
         
         <div class="extraInfos">
+            {% block related %}
+                {% include "telemeta/inc/collection_related.html" %}
+            {% endblock related %}
+        </div>
+        
+        <div class="extraInfos">
         <h4><img src="{% url telemeta-images "item_title.png" %}" style="vertical-align:middle" /> Items</h4>
         {% with "1" as location_name %}
             {% include "telemeta/inc/mediaitem_list.html" %}
         {% endwith %}
-        </div>
-        
-        <div class="extraInfos">
-            {% block related %}
-                {% include "telemeta/inc/collection_related.html" %}
-            {% endblock related %}
         </div>
 
         {% endblock infos %}
