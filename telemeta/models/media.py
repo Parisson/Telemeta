@@ -1,4 +1,4 @@
-    # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 # Copyright (C) 2007-2010 Samalyse SARL
 # Copyright (C) 2010-2011 Parisson SARL
 
@@ -48,7 +48,6 @@ from telemeta.models.system import Revision
 from telemeta.models.query import *
 from telemeta.models.instrument import *
 from telemeta.models.enum import *
-from django.forms import ModelForm
 from django.db.models.fields import URLField
 
         
@@ -112,10 +111,6 @@ class MediaCorpus(MediaResource):
     class Meta(MetaCore):
         db_table = 'media_corpus'
         ordering = ['code']
-    
-class MediaCorpusForm(ModelForm):
-    class Meta:
-        model = MediaCorpus
 
 
 class MediaCorpusCollectionRelation(ModelCore):
@@ -268,14 +263,49 @@ class MediaCollection(MediaResource):
     class Meta(MetaCore):
         db_table = 'media_collections'
         ordering = ['code']
-    
-class MediaCollectionForm(ModelForm):
-    class Meta:
-        model = MediaCollection
-    def clean_doctype_code(self):
-        return self.cleaned_data['doctype_code'] or 0
-        
 
+
+class MediaCollectionRelated(MediaResource):
+    "Collection related media"
+    
+    element_type = 'media'
+    
+    collection      = ForeignKey('MediaCollection', related_name="related", verbose_name=_('collection'))
+    title           = CharField(_('title'))
+    date            = DateTimeField(_('date'), auto_now=True)
+    description     = TextField(_('description'))
+    mime_type       = CharField(_('mime_type'))
+    url             = CharField(_('url'), max_length=500)
+    credits         = CharField(_('credits'))
+    file            = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename")
+    
+    def is_image(self):
+        is_url_image = False
+        if self.url:
+            url_types = ['.png', '.jpg', '.gif', '.jpeg']
+            for type in url_types:
+                if type in self.url:
+                    is_url_image = True
+        return 'image' in self.mime_type or is_url_image
+        
+    def save(self, force_insert=False, force_update=False):
+        super(MediaCollectionRelated, self).save(force_insert, force_update)
+        
+    def set_mime_type(self):
+        if self.file:
+            self.mime_type = mimetypes.guess_type(self.file.path)[0]
+    
+    def __unicode__(self):
+        if self.title and not re.match('^ *N *$', self.title):
+            title = self.title
+        else:
+            title = unicode(self.item)
+        return title
+    
+    class Meta(MetaCore):
+        db_table = 'media_collection_related'
+
+        
 class MediaItem(MediaResource):
     "Describe an item"
     
@@ -378,12 +408,6 @@ class MediaItem(MediaResource):
             title += ' ' + self.track
         return title
 
-class MediaItemForm(ModelForm):
-    class Meta:
-        model = MediaItem
-    def clean_code(self):
-        return self.cleaned_data['code'] or None
-
 
 class MediaItemRelated(MediaResource):
     "Item related media"
@@ -425,10 +449,7 @@ class MediaItemRelated(MediaResource):
     class Meta(MetaCore):
         db_table = 'media_item_related'
 
-class MediaItemRelatedForm(ModelForm):
-    class Meta:
-        model = MediaItemRelated
-        
+
 class MediaItemKeyword(ModelCore):
     "Item keyword"
     item    = ForeignKey('MediaItem', verbose_name=_('item'), related_name="keyword_relations")
@@ -438,9 +459,6 @@ class MediaItemKeyword(ModelCore):
         db_table = 'media_item_keywords'
         unique_together = (('item', 'keyword'),)
 
-class MediaItemKeywordForm(ModelForm):
-    class Meta:
-        model = MediaItemKeyword
 
 class MediaItemPerformance(ModelCore):
     "Item performance"
@@ -456,14 +474,6 @@ class MediaItemPerformance(ModelCore):
     class Meta(MetaCore):
         db_table = 'media_item_performances'
 
-class MediaItemPerformanceForm(ModelForm):
-    class Meta:
-        model = MediaItemPerformance
-        
-    def __init__(self, *args, **kwds):
-        super(MediaItemPerformanceForm, self).__init__(*args, **kwds)
-        self.fields['instrument'].queryset = Instrument.objects.order_by('name')
-        self.fields['alias'].queryset = InstrumentAlias.objects.order_by('name')
 
 class MediaItemAnalysis(ModelCore):
     "Item analysis result computed by TimeSide"
@@ -514,9 +524,6 @@ class Playlist(ModelCore):
     def __unicode__(self):
         return self.title
         
-class PlaylistForm(ModelForm):
-    class Meta:
-        model = Playlist
 
 class PlaylistResource(ModelCore):
     "Playlist components"

@@ -113,7 +113,7 @@ urlpatterns = patterns('',
     url(r'^items/(?P<public_id>[A-Za-z0-9._-]+)/keywords/$', item_view.item_keywords_edit,
         dict(template='telemeta/mediaitem_keywords_edit.html'), name="telemeta-item-keywords_edit"),
     url(r'^items/(?P<public_id>[A-Za-z0-9._-]+)/delete/$', item_view.item_delete, name="telemeta-item-delete"),
-    url(r'^items/(?P<item_public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)$', item_view.related_media_stream, name="telemeta-item-related"),
+    url(r'^items/(?P<item_public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)$', item_view.related_media_item_stream, name="telemeta-item-related"),
     url(r'^items/(?P<public_id>[A-Za-z0-9._-]+)/related_edit/$', item_view.related_media_edit,  dict(template='telemeta/mediaitem_related_edit.html'), name="telemeta-item-related_edit"),
     # Markers
     url(r'^markers/(?P<marker_id>[A-Za-z0-9]+)/$', item_view.item_detail, name="telemeta-item-detail-marker"),
@@ -149,6 +149,8 @@ urlpatterns = patterns('',
     url(r'^collections/(?P<public_id>[A-Za-z0-9._-]+)/add_item/$', item_view.item_add,
         dict(template='telemeta/mediaitem_add.html'), name="telemeta-collection-additem"),
     url(r'^collections/(?P<public_id>[A-Za-z0-9._-]+)/delete/$', collection_view.collection_delete, name="telemeta-collection-delete"),
+    url(r'^collections/(?P<collection_public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)$', collection_view.related_media_collection_stream, name="telemeta-collection-related"),
+    url(r'^collections/(?P<public_id>[A-Za-z0-9._-]+)/related_edit/$', collection_view.related_media_edit,  dict(template='telemeta/collection_related_edit.html'), name="telemeta-collection-related_edit"),
     
     # search
     url(r'^search/$', general_view.search, name="telemeta-search"),

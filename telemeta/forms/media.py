@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2007 Samalyse SARL
-# Copyright (C) 2008-2011 Parisson SARL
+# Copyright (C) 2011 Parisson SARL
 
 # This software is a computer program whose purpose is to backup, analyse,
 # transcode and stream any audio content with its metadata over a web frontend.
@@ -31,15 +30,49 @@
 # The fact that you are presently reading this means that you have had
 # knowledge of the CeCILL license and that you accept its terms.
 #
-# Author: Olivier Guilyardi <olivier@samalyse.com>
-#         Guillaume Pellerin <yomguy@parisson.com>
-
-from media import *
-from location import *
-from instrument import *
-from enum import *
-from system import *
-from query import *
-from dublincore import *
+# Authors: Guillaume Pellerin <yomguy@parisson.com>
 
 
+from django.forms import ModelForm
+from telemeta.models import *
+
+class MediaCorpusForm(ModelForm):
+    class Meta:
+        model = MediaCorpus
+        
+class MediaCollectionForm(ModelForm):
+    class Meta:
+        model = MediaCollection
+    def clean_doctype_code(self):
+        return self.cleaned_data['doctype_code'] or 0
+        
+class MediaCollectionRelatedForm(ModelForm):
+    class Meta:
+        model = MediaCollectionRelated
+
+class MediaItemForm(ModelForm):
+    class Meta:
+        model = MediaItem
+    def clean_code(self):
+        return self.cleaned_data['code'] or None
+
+class MediaItemRelatedForm(ModelForm):
+    class Meta:
+        model = MediaItemRelated
+        
+class MediaItemKeywordForm(ModelForm):
+    class Meta:
+        model = MediaItemKeyword
+
+class MediaItemPerformanceForm(ModelForm):
+    class Meta:
+        model = MediaItemPerformance
+        
+    def __init__(self, *args, **kwds):
+        super(MediaItemPerformanceForm, self).__init__(*args, **kwds)
+        self.fields['instrument'].queryset = Instrument.objects.order_by('name')
+        self.fields['alias'].queryset = InstrumentAlias.objects.order_by('name')
+
+class PlaylistForm(ModelForm):
+    class Meta:
+        model = Playlist

@@ -23,14 +23,10 @@
         <tr><td><b>{% trans "Keyword" %} :</b><td></td></tr>
         {% for field in form %}
         <tr>
-        {% if not "media_item" in field.html_name %}
-            {% if "id" in field.html_name %}
-                <td>{{ field.label_tag.as_hidden }}</td><td>{{ field.as_hidden }}</td>
-            {% else %}
-                <td>{{ field.label_tag }}: </td><td>{{ field }}</td>
-            {% endif %}
-        {% else %}
+        {% if "item" in field.html_name or "id" in field.html_name %}
             <td>{{ field.label_tag.as_hidden }}</td><td>{{ field.as_hidden }}</td>
+        {% else %}
+            <td>{{ field.label_tag }}: </td><td>{{ field }}</td>
         {% endif %}
         </tr>
         {% endfor %}

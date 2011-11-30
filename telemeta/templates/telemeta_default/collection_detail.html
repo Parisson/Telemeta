@@ -189,6 +189,12 @@
         {% endwith %}
         </div>
         
+        <div class="extraInfos">
+            {% block related %}
+                {% include "telemeta/inc/collection_related.html" %}
+            {% endblock related %}
+        </div>
+
         {% endblock infos %}
     </div>
 {% endblock %}
