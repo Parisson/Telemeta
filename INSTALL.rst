@@ -1,6 +1,6 @@
-==================
-Telemeta - INSTALL
-==================
+===========
+INSTALL
+===========
 
 Don't worry, Telemeta is easy to setup as any other Django app !
 
@@ -9,10 +9,11 @@ Requirements
 -----------------
 
 Telemeta is designed to run on Linux and other UNIX based architectures.
-It depends on several python librairies like Django (version >= 1.1.1).
+It depends on several python librairies like Django (version >= 1.3.1).
 See http://djangoproject.com.
 
 Other needed librairies are listed below.
+
 
 -----------------------
 Install the software
@@ -65,33 +66,36 @@ Install the system dependencies
 Install TimeSide
 -----------------
 
-The web audio components provided by the TimeSide module have been automatically installed if you used pip or setup.py to install Telemeta.
-In this case only, you can pass this stage.
+The web audio components provided by the TimeSide module have been automatically installed if you used pip or setup.py to install Telemeta. In this case only, you can pass this stage.
 
 Otherwise, you have to download and install it from source.
 
 So, download the last archive at :
 http://code.google.com/p/timeside/downloads/list
 
-Uncompress it and see README and INSTALL to install the dependencies 
+Uncompress it and read README and INSTALL to install the dependencies 
 and then the module.
 
 
 Install JSON-RPC server
 ------------------------
 
-In order to use markers on the player, you will need a JSON-RPC server for django::
+The JSON module provided by django-json-rpc have been automatically installed if you used pip or setup.py to install Telemeta. In this case only, you can pass this stage.
+
+Otherwise, you have to download and install it from source::
     
     git clone git://github.com/samuraisam/django-json-rpc.git
     cd django-json-rpc
     python setup.py install
 
+    
 -------------------------
 Fast testing (sandbox)
 -------------------------
 
 If you just want to test Telemeta, a sandbox is available in the example/ directory.
 As Telemeta needs MySQL to work properly and fast, please create a database before editing setting.py
+
 
 --------------------------
 Or create a Django project
@@ -102,6 +106,7 @@ If you haven't already done it, start a new django project::
     cd ~/my_projects
     django-admin startproject mysite
 
+    
 -----------------------------------------
 Create the media and cache directories
 -----------------------------------------
@@ -114,11 +119,13 @@ We need 2 directories for media and caching::
 
 You might want to place these data directories somewhere else, no pb.
 
+
 ------------------------
 Create the database
 ------------------------
 
 Telemeta needs MySQL to work well and fast. So you need to create a MySQL database before trying it.
+
 
 ----------------------------------
 Configure the telemeta project
@@ -198,6 +205,7 @@ You can find an example for settings.py there::
     
     example/sandbox/settings.py
 
+    
 --------------------------
 Initialize the database
 --------------------------
