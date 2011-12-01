@@ -1,4 +1,15 @@
-telemeta (1.2) unstable; urgency=low
+telemeta (1.3-1) unstable; urgency=low
+
+ * add related media objects to collections and items (mime type detection, image preview, URL only capable, YouTube URL detection and preview)
+ * add "Sound" filters to collection lists and search results
+ * add a scrollbar to marker lists
+ * add dependencies to setup.py
+ * various bugfixes
+ * developers now use Git
+
+-- Guillaume Pellerin <yomguy@parisson.com>  Mon, 01 Dec 2011 17:10:22 +0200
+
+telemeta (1.2-1) unstable; urgency=low
 
  * fix the whole setup
 
