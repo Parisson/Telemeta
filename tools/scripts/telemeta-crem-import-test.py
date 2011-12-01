@@ -56,6 +56,7 @@ class TelemetaWavImport:
 #                file_content = ContentFile(f.read())
 #                item.file.save(filename, file_content)
 #                f.close()
+                item.save()
                 item.set_revision(self.user)
             else:
                 msg = item.code + ' : fichier ' + item.file.name + ' deja inscrit dans la base de donnees !'
