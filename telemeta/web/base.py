@@ -678,6 +678,7 @@ class ItemView(object):
     def item_copy(self, request, public_id, template='telemeta/mediaitem_copy.html'):
         """Copy a given item"""        
         if request.method == 'POST':
+            source_item = MediaItem.objects.get(public_id=public_id)
             item = MediaItem()
             form = MediaItemForm(data=request.POST, files=request.FILES, instance=item)
             if form.is_valid():
@@ -685,6 +686,21 @@ class ItemView(object):
                 code = form.cleaned_data['code']
                 if not code:
                     code = str(item.id)
+                
+                performances = MediaItemPerformance.objects.filter(media_item=source_item)
+                for performance in performances:
+                    performance.pk = None
+                    performance.id = None
+                    performance.media_item = item
+                    performance.save()
+                    
+                keywords = MediaItemKeyword.objects.filter(item=source_item)
+                for keyword in keywords:
+                    keyword.pk = None
+                    keyword.id = None
+                    keyword.item = item
+                    keyword.save()
+
                 item.set_revision(request.user)
                 return HttpResponseRedirect('/items/'+code)
         else:
