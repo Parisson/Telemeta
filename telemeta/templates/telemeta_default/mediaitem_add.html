@@ -22,14 +22,23 @@
      <form method="post" id="_addItemForm" action="" enctype="multipart/form-data">{% csrf_token %}
        <ul>{% for error in form.non_field_errors %}<li class="error">{{ error }}</li>{% endfor %}</ul>
        <table>
-       {% for field in form %}
-        {% if not field.html_name == "copied_from_item" %}
-        <tr>
-            <tr><td class="error">{{ field.errors }}</td></tr>
-            <td>{{ field.label_tag }}:</td><td> {{ field }}</td>
-        </tr>
-        {% endif %}
-       {% endfor %}
+        {% for field in form %}
+            <tr>
+            {% if field.html_name == "copied_from_item" %}
+                <td>{{ field.label_tag.as_hidden }}{{ field.as_hidden }}</td>
+            {% else %}
+                <tr><td class="error">{{ field.errors }}</td></tr>
+                <td>{{ field.label_tag }}:</td>
+                    {% if field.html_name == "collection" %}
+                    <td>&nbsp;{% trans "Title" %} : {{ item.collection.title }}<br />
+                        &nbsp;{% trans "Code" %} : {{ item.collection.code }}<br />
+                        {{ field }}</td>
+                    {% else %}
+                    <td>{{ field }}</td>
+                    {% endif %}
+            {% endif %}
+            </tr>
+    {% endfor %}
        </table>
        <div align="center" style="margin-top:3ex;">
         <a href="{% url telemeta-items %}"
