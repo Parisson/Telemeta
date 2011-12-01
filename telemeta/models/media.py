@@ -1,4 +1,4 @@
-    # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 # Copyright (C) 2007-2010 Samalyse SARL
 # Copyright (C) 2010-2011 Parisson SARL
 
@@ -48,9 +48,19 @@ from telemeta.models.system import Revision
 from telemeta.models.query import *
 from telemeta.models.instrument import *
 from telemeta.models.enum import *
-from django.forms import ModelForm
 from django.db.models.fields import URLField
 
+        
+collection_published_code_regex   = 'CNRSMH_E_[0-9]{4}(?:_[0-9]{3}){2}'
+collection_unpublished_code_regex = 'CNRSMH_I_[0-9]{4}_[0-9]{3}'
+collection_code_regex             = '(?:%s|%s)' % (collection_published_code_regex, 
+                                                    collection_unpublished_code_regex)
+
+item_published_code_regex    = collection_published_code_regex + '(?:_[0-9]{2,3}){1,2}'
+item_unpublished_code_regex  = collection_unpublished_code_regex + '_[0-9]{2,3}(?:_[0-9]{2,3}){0,2}'
+item_code_regex              = '(?:%s|%s)' % (item_published_code_regex, item_unpublished_code_regex)
+
+PUBLIC_ACCESS_CHOICES = (('none', 'none'), ('metadata', 'metadata'), ('full', 'full'))
 
 class MediaResource(ModelCore):
     "Base class of all media objects"
@@ -74,16 +84,95 @@ class MediaResource(ModelCore):
     class Meta:
         abstract = True
 
+class MediaRelated(MediaResource):
+    "Related media"
+    
+    element_type = 'media'
+    
+    title           = CharField(_('title'))
+    date            = DateTimeField(_('date'), auto_now=True)
+    description     = TextField(_('description'))
+    mime_type       = CharField(_('mime_type'))
+    url             = CharField(_('url'), max_length=500)
+    credits         = CharField(_('credits'))
+    file            = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename")
+    
+    def is_image(self):
+        is_url_image = False
+        if self.url:
+            url_types = ['.png', '.jpg', '.gif', '.jpeg']
+            for type in url_types:
+                if type in self.url:
+                    is_url_image = True
+        return 'image' in self.mime_type or is_url_image
+        
+    def save(self, force_insert=False, force_update=False):
+        super(MediaRelated, self).save(force_insert, force_update)
+        
+    def set_mime_type(self):
+        if self.file:
+            self.mime_type = mimetypes.guess_type(self.file.path)[0]
+    
+    def __unicode__(self):
+        if self.title and not re.match('^ *N *$', self.title):
+            title = self.title
+        else:
+            title = unicode(self.item)
+        return title
+    
+    class Meta:
+        abstract = True
 
-collection_published_code_regex   = 'CNRSMH_E_[0-9]{4}(?:_[0-9]{3}){2}'
-collection_unpublished_code_regex = 'CNRSMH_I_[0-9]{4}_[0-9]{3}'
-collection_code_regex             = '(?:%s|%s)' % (collection_published_code_regex, 
-                                                    collection_unpublished_code_regex)
+
+class MediaCorpus(MediaResource):
+    "Describe a corpus of collections"
+    
+    element_type = 'corpus'
+
+    # General informations
+    reference             = CharField(_('reference'), unique=True, null=True)
+    title                 = CharField(_('title'), required=True)
+    description           = CharField(_('description'))
+    code                  = CharField(_('code'), unique=True, required=True)
+    public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES, 
+                                      max_length=16, default="metadata")
+                                      
+    def __unicode__(self):
+        return self.code
+
+    @property
+    def public_id(self):
+        return self.code
+
+    def save(self, force_insert=False, force_update=False, user=None, code=None):
+        super(MediaCorpus, self).save(force_insert, force_update)
+        
+    class Meta(MetaCore):
+        db_table = 'media_corpus'
+        ordering = ['code']
+
+
+class MediaCorpusCollectionRelation(ModelCore):
+    "Relations between Corpus and Collections"
+    
+    collection        = ForeignKey('MediaCollection', related_name="parent_relation", 
+                                   verbose_name=_('collection'))
+    corpus            = ForeignKey('MediaCorpus', related_name="child_relation", 
+                                   verbose_name=_('corpus'))
+
+    class Meta(MetaCore):
+        db_table = 'media_corpus_collection_relations'
+        unique_together = (('collection', 'corpus'),)
+    
+    def __unicode__(self):
+        sep = ' > '
+        return self.corpus.code + sep + self.collection.code
+
                                                         
 class MediaCollection(MediaResource):
     "Describe a collection of items"
+    
     element_type = 'collection'
-    PUBLIC_ACCESS_CHOICES = (('none', 'none'), ('metadata', 'metadata'), ('full', 'full'))
 
     def is_valid_collection_code(value):
         "Check if the collection code is well formed"
@@ -160,7 +249,8 @@ class MediaCollection(MediaResource):
     @property
     def public_id(self):
         return self.code
-
+    
+    @property
     def has_mediafile(self):
         "Tell wether this collection has any media files attached to its items"
         items = self.items.all()
@@ -168,7 +258,7 @@ class MediaCollection(MediaResource):
             if item.file:
                 return True
         return False
-
+    
     def __name_cmp(self, obj1, obj2):
         return unaccent_icmp(obj1.name, obj2.name)
 
@@ -213,22 +303,21 @@ class MediaCollection(MediaResource):
     class Meta(MetaCore):
         db_table = 'media_collections'
         ordering = ['code']
+
+
+class MediaCollectionRelated(MediaRelated):
+    "Collection related media"
     
-class MediaCollectionForm(ModelForm):
-    class Meta:
-        model = MediaCollection
-    def clean_doctype_code(self):
-        return self.cleaned_data['doctype_code'] or 0
+    collection      = ForeignKey('MediaCollection', related_name="related", verbose_name=_('collection'))
+    
+    class Meta(MetaCore):
+        db_table = 'media_collection_related'
+
         
-
-item_published_code_regex    = collection_published_code_regex + '(?:_[0-9]{2,3}){1,2}'
-item_unpublished_code_regex  = collection_unpublished_code_regex + '_[0-9]{2,3}(?:_[0-9]{2,3}){0,2}'
-item_code_regex              = '(?:%s|%s)' % (item_published_code_regex, item_unpublished_code_regex)
-
 class MediaItem(MediaResource):
     "Describe an item"
+    
     element_type = 'item'
-    PUBLIC_ACCESS_CHOICES = (('none', 'none'), ('metadata', 'metadata'), ('full', 'full'))
     
     # Main Informations
     title                 = CharField(_('title'))
@@ -327,56 +416,16 @@ class MediaItem(MediaResource):
             title += ' ' + self.track
         return title
 
-class MediaItemForm(ModelForm):
-    class Meta:
-        model = MediaItem
-    def clean_code(self):
-        return self.cleaned_data['code'] or None
 
-
-class MediaItemRelated(MediaResource):
+class MediaItemRelated(MediaRelated):
     "Item related media"
     
-    element_type = 'media'
-    
     item            = ForeignKey('MediaItem', related_name="related", verbose_name=_('item'))
-    title           = CharField(_('title'))
-    date            = DateTimeField(_('date'), auto_now=True)
-    description     = TextField(_('description'))
-    mime_type       = CharField(_('mime_type'))
-    url             = CharField(_('url'), max_length=500)
-    file            = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename")
-    
-    def is_image(self):
-        is_url_image = False
-        if self.url:
-            url_types = ['.png', '.jpg', '.gif', '.jpeg']
-            for type in url_types:
-                if type in self.url:
-                    is_url_image = True
-        return 'image' in self.mime_type or is_url_image
-        
-    def save(self, force_insert=False, force_update=False):
-        super(MediaItemRelated, self).save(force_insert, force_update)
-        
-    def set_mime_type(self):
-        if self.file:
-            self.mime_type = mimetypes.guess_type(self.file.path)[0]
-    
-    def __unicode__(self):
-        if self.title and not re.match('^ *N *$', self.title):
-            title = self.title
-        else:
-            title = unicode(self.item)
-        return title
     
     class Meta(MetaCore):
         db_table = 'media_item_related'
 
-class MediaItemRelatedForm(ModelForm):
-    class Meta:
-        model = MediaItemRelated
-        
+
 class MediaItemKeyword(ModelCore):
     "Item keyword"
     item    = ForeignKey('MediaItem', verbose_name=_('item'), related_name="keyword_relations")
@@ -386,9 +435,6 @@ class MediaItemKeyword(ModelCore):
         db_table = 'media_item_keywords'
         unique_together = (('item', 'keyword'),)
 
-class MediaItemKeywordForm(ModelForm):
-    class Meta:
-        model = MediaItemKeyword
 
 class MediaItemPerformance(ModelCore):
     "Item performance"
@@ -404,14 +450,6 @@ class MediaItemPerformance(ModelCore):
     class Meta(MetaCore):
         db_table = 'media_item_performances'
 
-class MediaItemPerformanceForm(ModelForm):
-    class Meta:
-        model = MediaItemPerformance
-        
-    def __init__(self, *args, **kwds):
-        super(MediaItemPerformanceForm, self).__init__(*args, **kwds)
-        self.fields['instrument'].queryset = Instrument.objects.order_by('name')
-        self.fields['alias'].queryset = InstrumentAlias.objects.order_by('name')
 
 class MediaItemAnalysis(ModelCore):
     "Item analysis result computed by TimeSide"
@@ -428,6 +466,10 @@ class MediaItemAnalysis(ModelCore):
         ordering = ['name']
         
     def to_dict(self):
+        if self.analyzer_id == 'duration':
+            if '.' in self.value:
+                value = self.value.split('.')
+                self.value = '.'.join([value[0], value[1][:2]])
         return {'id': self.analyzer_id, 'name': self.name, 'value': self.value, 'unit': self.unit}
         
         
@@ -459,9 +501,6 @@ class Playlist(ModelCore):
     def __unicode__(self):
         return self.title
         
-class PlaylistForm(ModelForm):
-    class Meta:
-        model = Playlist
 
 class PlaylistResource(ModelCore):
     "Playlist components"

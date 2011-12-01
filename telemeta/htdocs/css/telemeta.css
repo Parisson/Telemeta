@@ -197,6 +197,12 @@ a img { border: none; }
     font-size: 1em;
 }
 
+.markers {
+    max-height: 500px;
+    overflow-y: scroll;
+}
+    
+
 .analyzer-title {
     background-color: #f2f2f2;
     color: #000;

@@ -87,6 +87,22 @@ def build_query_string(vars):
     return ''
 
 @register.filter
+def with_no_sound(vars):
+    _vars = vars.copy()
+    if type(_vars) == dict:
+        if u'sound' in _vars:
+            del _vars[u'sound']
+    return _vars
+
+@register.filter
+def with_sound(vars):
+    _vars = vars.copy()
+    if type(_vars) == dict:
+        if not 'sound' in _vars:
+            _vars['sound'] = True
+    return _vars
+
+@register.filter
 def code_or_id(resource):
     if resource.code:
         return resource.code
@@ -331,5 +347,8 @@ def get_filename(object):
 @register.filter
 def get_youtube(link):
     link = link.split('&')
-    ref = link[0].split('=')[1]
+    if "=" in link:
+        ref = link[0].split('=')[1]
+    else:
+        ref = link[0].split('/')[-1]
     return 'http://www.youtube.com/embed/'+ref

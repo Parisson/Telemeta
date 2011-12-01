@@ -322,7 +322,10 @@ class MediaCollectionQuerySet(CoreQuerySet):
     def by_fuzzy_collector(self, pattern):
         return self.filter(self.by_fuzzy_collector_q(pattern))
 
-
+    def sound(self):
+        return self.filter(items__file__contains='/').distinct()
+        
+        
 class MediaCollectionManager(CoreManager):
     "Manage collection queries"
 
@@ -362,7 +365,11 @@ class MediaCollectionManager(CoreManager):
     def __name_cmp(obj1, obj2):
         return unaccent_icmp(obj1.name, obj2.name)
 
-
+    def sound(self, *args, **kwargs):
+        return self.get_query_set().sound(*args, **kwargs)
+    sound.__doc__ = MediaCollectionQuerySet.sound.__doc__   
+    
+    
 class LocationQuerySet(CoreQuerySet):
     __flatname_map = None
 

@@ -57,12 +57,11 @@ geo_view = GeoView()
 
 # query sets for Django generic views
 all_items = { 'queryset': MediaItem.objects.enriched().order_by('code', 'old_code') }
-all_sound_items = { 'queryset': MediaItem.objects.sound().order_by('code', 'old_code') }
+all_items_sound = { 'queryset': MediaItem.objects.sound().order_by('code', 'old_code') }
 all_collections = { 'queryset': MediaCollection.objects.enriched(), }
-
-# CREM collections
 all_collections_unpublished = { 'queryset': MediaCollection.objects.filter(code__contains='_I_'), }
 all_collections_published = { 'queryset': MediaCollection.objects.filter(code__contains='_E_'), }
+all_collections_sound = { 'queryset': MediaCollection.objects.sound().order_by('code', 'old_code') }
 
 # ID's regular expressions
 export_extensions = "|".join(item_view.list_export_extensions())
@@ -77,7 +76,7 @@ urlpatterns = patterns('',
         dict(all_items, paginate_by=20, template_name="telemeta/mediaitem_list.html"),
         name="telemeta-items"),
     url(r'^items_sound/$', 'django.views.generic.list_detail.object_list',
-        dict(all_sound_items, paginate_by=20, template_name="telemeta/mediaitem_list.html"), name="telemeta-items-sound"),
+        dict(all_items_sound, paginate_by=20, template_name="telemeta/mediaitem_list.html"), name="telemeta-items-sound"),
     url(r'^items/(?P<public_id>[A-Za-z0-9._-]+)/$', item_view.item_detail, 
         name="telemeta-item-detail"),
     url(r'^items/(?P<public_id>[A-Za-z0-9._-]+)/dc/$', item_view.item_detail, 
@@ -113,7 +112,7 @@ urlpatterns = patterns('',
     url(r'^items/(?P<public_id>[A-Za-z0-9._-]+)/keywords/$', item_view.item_keywords_edit,
         dict(template='telemeta/mediaitem_keywords_edit.html'), name="telemeta-item-keywords_edit"),
     url(r'^items/(?P<public_id>[A-Za-z0-9._-]+)/delete/$', item_view.item_delete, name="telemeta-item-delete"),
-    url(r'^items/(?P<item_public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)$', item_view.related_media_stream, name="telemeta-item-related"),
+    url(r'^items/(?P<item_public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)$', item_view.related_media_item_stream, name="telemeta-item-related"),
     url(r'^items/(?P<public_id>[A-Za-z0-9._-]+)/related_edit/$', item_view.related_media_edit,  dict(template='telemeta/mediaitem_related_edit.html'), name="telemeta-item-related_edit"),
     # Markers
     url(r'^markers/(?P<marker_id>[A-Za-z0-9]+)/$', item_view.item_detail, name="telemeta-item-detail-marker"),
@@ -149,7 +148,11 @@ urlpatterns = patterns('',
     url(r'^collections/(?P<public_id>[A-Za-z0-9._-]+)/add_item/$', item_view.item_add,
         dict(template='telemeta/mediaitem_add.html'), name="telemeta-collection-additem"),
     url(r'^collections/(?P<public_id>[A-Za-z0-9._-]+)/delete/$', collection_view.collection_delete, name="telemeta-collection-delete"),
-    
+    url(r'^collections/(?P<collection_public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)$', collection_view.related_media_collection_stream, name="telemeta-collection-related"),
+    url(r'^collections/(?P<public_id>[A-Za-z0-9._-]+)/related_edit/$', collection_view.related_media_edit,  dict(template='telemeta/collection_related_edit.html'), name="telemeta-collection-related_edit"),
+    url(r'^collections_sound/$', 'django.views.generic.list_detail.object_list',
+        dict(all_collections_sound, paginate_by=20, template_name="telemeta/collection_list.html"), name="telemeta-collections-sound"),
+        
     # search
     url(r'^search/$', general_view.search, name="telemeta-search"),
     url(r'^search/collections/$', general_view.search, {'type': 'collections'}, 

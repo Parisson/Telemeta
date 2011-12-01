@@ -75,6 +75,7 @@ from telemeta.util.logger import Logger
 from telemeta.util.unicode import UnicodeWriter
 from telemeta.cache import TelemetaCache
 import telemeta.web.pages as pages
+from telemeta.forms import *
 
 
 def render(request, template, data = None, mimetype = None):
@@ -286,6 +287,9 @@ class GeneralView(object):
                 collections.by_publish_year(int(value), int(input.get('pub_year_to', value))), 
                 items.by_publish_year(int(value), int(input.get('pub_year_to', value)))),
             'pub_year_to': lambda value: (collections, items),
+            'sound': lambda value: (
+                collections.sound(),
+                items.sound()),
         }
        
         for key, value in input.items():
@@ -357,7 +361,24 @@ class CollectionView(object):
                                                 collection.recorded_to_year)
         playlists = get_playlists(request)
         
-        return render(request, template, {'collection': collection, 'playlists': playlists, 'public_access': public_access, 'items': items})
+        related_media = MediaCollectionRelated.objects.filter(collection=collection)
+        for media in related_media:
+            if not media.mime_type:
+                media.set_mime_type()
+                media.save()
+            if not media.title and media.url:
+                try:
+                    from lxml import etree
+                    parser = etree.HTMLParser()
+                    tree = etree.parse(media.url, parser)
+                    title = tree.find(".//title").text
+                    title = title.replace('\n', '').strip()
+                    media.title = title
+                except:
+                    media.title = media.url
+                media.save()
+                
+        return render(request, template, {'collection': collection, 'playlists': playlists, 'public_access': public_access, 'items': items, 'related_media': related_media})
 
     @method_decorator(permission_required('telemeta.change_mediacollection'))
     def collection_edit(self, request, public_id, template='telemeta/collection_edit.html'):
@@ -428,6 +449,27 @@ class CollectionView(object):
         collection.delete()
         return HttpResponseRedirect('/collections/')
     
+    def related_media_collection_stream(self, request, collection_public_id, media_id):
+        collection = MediaCollection.objects.get(public_id=collection_public_id)
+        media = MediaCollectionRelated.objects.get(collection=collection, id=media_id)
+        response = HttpResponse(stream_from_file(media.file.path), mimetype=media.mime_type)
+#        response['Content-Disposition'] = 'attachment'
+        return response
+    
+    @method_decorator(permission_required('telemeta.change_mediacollection'))
+    def related_media_edit(self, request, public_id, template):
+        collection = MediaCollection.objects.get(public_id=public_id)
+        MediaCollectionRelatedFormSet = inlineformset_factory(MediaCollection, MediaCollectionRelated, form=MediaCollectionRelatedForm)
+        if request.method == 'POST':
+            formset = MediaCollectionRelatedFormSet(data=request.POST, files=request.FILES, instance=collection)
+            if formset.is_valid():
+                formset.save()
+                collection.set_revision(request.user)
+                return HttpResponseRedirect('/collections/'+public_id)
+        else:
+            formset = MediaCollectionRelatedFormSet(instance=collection)
+        
+        return render(request, template, {'collection': collection, 'formset': formset,})
 
 class ItemView(object):
     """Provide Collections web UI methods"""
@@ -513,21 +555,21 @@ class ItemView(object):
                                                 str(item.recorded_to_date).split('-')[0])
         
         related_media = MediaItemRelated.objects.filter(item=item)
-        for file in related_media:
-            if not file.mime_type:
-                file.set_mime_type()
-                file.save()
-            if not file.title and file.url:
+        for media in related_media:
+            if not media.mime_type:
+                media.set_mime_type()
+                media.save()
+            if not media.title and media.url:
                 try:
                     from lxml import etree
                     parser = etree.HTMLParser()
-                    tree = etree.parse(file.url, parser)
+                    tree = etree.parse(media.url, parser)
                     title = tree.find(".//title").text
                     title = title.replace('\n', '').strip()
-                    file.title = title
+                    media.title = title
                 except:
-                    file.title = file.url
-                file.save()
+                    media.title = media.url
+                media.save()
                 
         return render(request, template,
                     {'item': item, 'export_formats': formats,
@@ -588,7 +630,7 @@ class ItemView(object):
                     'previous' : previous, 'next' : next, 
                     })
     
-    def related_media_stream(self, request, item_public_id, media_id):
+    def related_media_item_stream(self, request, item_public_id, media_id):
         item = MediaItem.objects.get(public_id=item_public_id)
         media = MediaItemRelated.objects.get(item=item, id=media_id)
         response = HttpResponse(stream_from_file(media.file.path), mimetype=media.mime_type)
