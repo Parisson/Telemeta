@@ -417,14 +417,14 @@ class CollectionView(object):
     @method_decorator(permission_required('telemeta.add_mediacollection'))
     def collection_copy(self, request, public_id, template='telemeta/collection_edit.html'):
         if request.method == 'POST':
-            new_collection = MediaCollection()
-            form = MediaCollectionForm(data=request.POST, files=request.FILES, instance=new_collection)
+            collection = MediaCollection()
+            form = MediaCollectionForm(data=request.POST, files=request.FILES, instance=collection)
             if form.is_valid():
                 code = form.cleaned_data['code']
                 if not code:
                     code = public_id
                 form.save()
-                new_collection.set_revision(request.user)
+                collection.set_revision(request.user)
                 return HttpResponseRedirect('/collections/'+code)
         else:
             collection = MediaCollection.objects.get(public_id=public_id)
@@ -678,14 +678,14 @@ class ItemView(object):
     def item_copy(self, request, public_id, template='telemeta/mediaitem_copy.html'):
         """Copy a given item"""        
         if request.method == 'POST':
-            new_item = MediaItem()
-            form = MediaItemForm(data=request.POST, files=request.FILES, instance=new_item)
+            item = MediaItem()
+            form = MediaItemForm(data=request.POST, files=request.FILES, instance=item)
             if form.is_valid():
                 form.save()
                 code = form.cleaned_data['code']
                 if not code:
-                    code = str(new_item.id)
-                new_item.set_revision(request.user)
+                    code = str(item.id)
+                item.set_revision(request.user)
                 return HttpResponseRedirect('/items/'+code)
         else:
             item = MediaItem.objects.get(public_id=public_id)
