@@ -3,7 +3,7 @@ include LICENSE
 include CHANGELOG
 include README.rst
 include INSTALL.rst
-exclude setup.cfg
+exclude *.cfg
 recursive-include doc *
 recursive-include example *
 recursive-include telemeta/locale *
@@ -15,3 +15,4 @@ global-exclude *.pyc
 prune dist
 prune build
 prune Telemeta.egg-info
+
