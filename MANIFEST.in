@@ -14,5 +14,4 @@ recursive-include telemeta/pages *
 global-exclude *.pyc
 prune dist
 prune build
-prune Telemeta.egg-info
 
