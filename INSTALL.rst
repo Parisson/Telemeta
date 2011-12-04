@@ -15,9 +15,32 @@ See http://djangoproject.com.
 Other needed librairies are listed below.
 
 
------------------------
-Install the software
------------------------
+Install the system dependencies
+--------------------------------
+
+* On Debian (Squeeze recommended) or Ubuntu Lucid:
+    
+    Install all dependencies like this::
+        
+        sudo aptitude install python python-dev python-django python-xml python-mysqldb mysql-server \
+        python-ctypes python-setuptools python-support python-docutils \
+        python-libxml2 python-django-registration python-lxml python-numpy \
+        python-scipy python-imaging python-mutagen python-gobject python-gst0.10 \
+        gstreamer0.10-plugins-base gobject-introspection
+        
+    To get MP3 reading and writing, just add these lines to your /etc/apt/sources-list::
+            
+        deb http://www.debian-multimedia.org stable main
+
+    Then::
+
+        sudo apt-get update
+        sudo aptitude install gstreamer0.10-fluendo-mp3 gstreamer0.10-lame
+                
+* On other linux platforms:
+                    
+    Please install all dependencies thanks to your application manager.
+                    
 
 Install Telemeta
 ------------------
@@ -36,32 +59,7 @@ Install Telemeta
     tar xzf telemeta-1.0.tar.gz
     cd telemeta-1.0
     sudo python setup.py install
-
         
-Install the system dependencies
---------------------------------
-
-* On Debian (Squeeze recommended) or Ubuntu Lucid:
-
-    Install all dependencies like this::
-	
-        sudo aptitude install python python-django python-xml python-mysqldb mysql-server \
-                              python-ctypes python-setuptools python-support python-docutils \
-                              python-libxml2 python-django-registration python-lxml
-
-    To get MP3 reading and writing, just add these lines to your /etc/apt/sources-list::
-
-        deb http://www.debian-multimedia.org stable main
-
-    Then::
-
-        sudo apt-get update
-        sudo aptitude install gstreamer0.10-fluendo-mp3 gstreamer0.10-lame
-
-* On other linux platforms:
-
-    Please install all dependencies thanks to your application manager.
-
 
 Install TimeSide
 -----------------
@@ -90,7 +88,7 @@ Otherwise, you have to download and install it from source::
 
     
 -------------------------
-Fast testing (sandbox)
+Testing (sandbox)
 -------------------------
 
 If you just want to test Telemeta, a sandbox is available in the example/ directory.
@@ -98,16 +96,18 @@ As Telemeta needs MySQL to work properly and fast, please create a database befo
 
 
 --------------------------
-Or create a Django project
+Create a Django project
 --------------------------
+
+Start the project
+------------------
 
 If you haven't already done it, start a new django project::
 
     cd ~/my_projects
     django-admin startproject mysite
 
-    
------------------------------------------
+
 Create the media and cache directories
 -----------------------------------------
 
@@ -120,14 +120,12 @@ We need 2 directories for media and caching::
 You might want to place these data directories somewhere else, no pb.
 
 
-------------------------
 Create the database
 ------------------------
 
 Telemeta needs MySQL to work well and fast. So you need to create a MySQL database before trying it.
 
 
-----------------------------------
 Configure the telemeta project
 ----------------------------------
 
@@ -206,7 +204,6 @@ You can find an example for settings.py there::
     example/sandbox/settings.py
 
     
---------------------------
 Initialize the database
 --------------------------
 
@@ -215,7 +212,6 @@ This synchronizes the DB with the model::
     python manage.py syncdb
 
 
-----------------------
 Configure your urls
 ----------------------
 
@@ -248,7 +244,6 @@ You can find an example for url.py there::
     example/sandbox/urls.py
 
 
---------------------
 Start the project
 --------------------
 
@@ -261,7 +256,6 @@ By default, the server starts on the port 8000. You can override this with, for 
     python manage.py runserver 9000
 
 
------------
 Test it
 -----------
 
@@ -315,6 +309,7 @@ It is possible to login automatically an IP range of machines to Telemeta thanks
 See http://pypi.python.org/pypi/django-ipauth/ for setup.
 
 
+-------------------------
 Contact / More infos
 -------------------------
 
