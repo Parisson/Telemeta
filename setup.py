@@ -14,11 +14,10 @@ setup(
   author_email = "yomguy@parisson.com",
   version = telemeta.__version__,
   install_requires = [
-        'timeside', 
         'django>=1.3.1',
         'django-registration', 
-        'lxml', 
-        'django-json-rpc', 
+        'django-json-rpc',
+        'timeside',
   ],
   platforms=['OS Independent'],
   license='CeCILL v2',
