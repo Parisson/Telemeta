@@ -33,7 +33,9 @@
 {% if collection %}
 
 {% block title %}
-    <img src="{% url telemeta-images "collections_red.png" %}" style="vertical-align:middle" /> Collection : {{ collection.title }}
+    <img src="{% url telemeta-images "collections_red.png" %}" style="vertical-align:middle" /> 
+    Collection : 
+    <a href="{% url telemeta-collection-detail collection.public_id %}">{{ collection.title }}</a>
 {% endblock %}
 
 {% block title_buttons %}

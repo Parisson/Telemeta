@@ -81,7 +81,8 @@
 {% if item %}
 
 {% block title %}
-<img src="{% url telemeta-images "item.png" %}" alt="item" style="vertical-align:middle" /> Item : {{ item }}
+<img src="{% url telemeta-images "item.png" %}" alt="item" style="vertical-align:middle" /> 
+Item : <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
 {% endblock %}
 
 {% block title_buttons %}
