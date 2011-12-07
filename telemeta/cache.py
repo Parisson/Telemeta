@@ -39,29 +39,34 @@ import xml.dom.minidom
 
 
 class TelemetaCache(object):
-    
+
     def __init__(self, dir, params=None):
         self.dir = dir
         self.params = params
         self.files = self.get_files()
-        
+        if not os.path.exists(dir):
+            try:
+                os.makedirs(dir)
+            except IOError:
+                raise 'Could not create the '+dir+' directory !'
+
     def get_files(self):
         list = []
         for root, dirs, files in os.walk(self.dir):
             for file in files:
                 list.append(file)
         return list
-    
+
     def exists(self, file):
         self.files = self.get_files()
         return file in self.files
-            
+
     def delete_item_data(self, public_id):
         # public_id is the public_id of an item
         for file in self.get_files():
             if public_id in file:
                 os.remove(self.dir + os.sep + file)
-        
+
     def write_bin(self, data, file):
         path = self.dir + os.sep + file
         f = open(path, 'w')
@@ -74,7 +79,7 @@ class TelemetaCache(object):
         data = f.read()
         f.close()
         return data
-        
+
     def read_stream_bin(self, file):
         path = self.dir + os.sep + file
         chunk_size = 0x80000
@@ -85,7 +90,7 @@ class TelemetaCache(object):
                 f.close()
                 break
             yield chunk
-        
+
     def write_stream_bin(self, chunk, file_object):
         file_object.write(chunk)
 
@@ -102,7 +107,7 @@ class TelemetaCache(object):
             list.append({'name': name, 'id': id, 'unit': unit, 'value': value})
         f.close()
         return list
-        
+
     def write_analyzer_xml(self, data_list, file):
         path = self.dir + os.sep + file
         data = self.get_analyzer_xml(data_list)
