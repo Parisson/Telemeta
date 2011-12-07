@@ -82,10 +82,13 @@ def render(request, template, data = None, mimetype = None):
     return render_to_response(template, data, context_instance=RequestContext(request),
                               mimetype=mimetype)
 
-def stream_from_processor(__decoder, __processor, __flag):
+def stream_from_processor(__decoder, __processor, __flag, metadata=None):
     while True:
-        __frames, eodproc = __processor.process(*__decoder.process())
-        if eodproc:
+        __frames, __eodproc = __processor.process(*__decoder.process())
+        if __eodproc or not len(__frames):
+            if metadata:
+                __processor.set_metadata(metadata)
+                __processor.write_metadata()
             __flag.value = True
             __flag.save()
             break
@@ -875,32 +878,23 @@ class ItemView(object):
         if mime_type in format:
             # source > stream
             if not extension in mapping.unavailable_extensions:
-                try:
-                    proc = encoder(audio)
-                    proc.set_metadata(metadata)
-                    proc.write_metadata()
-                except:
-                    pass
+                proc = encoder(audio)
+                proc.set_metadata(metadata)
+                proc.write_metadata()
             response = HttpResponse(stream_from_file(audio), mimetype = mime_type)
         else:
             media = self.cache_export.dir + os.sep + file
-            if not self.cache_export.exists(file) or flag.value == False:
+            if not self.cache_export.exists(file) or not flag.value:
                 # source > encoder > stream
                 decoder = timeside.decoder.FileDecoder(audio)
                 decoder.setup()
                 proc = encoder(media, streaming=True)
                 proc.setup(channels=decoder.channels(), samplerate=decoder.samplerate())
-                proc.set_metadata(metadata)
-                response = HttpResponse(stream_from_processor(decoder, proc, flag), mimetype = mime_type)
+                if extension in mapping.unavailable_extensions:
+                    metadata=None
+                response = HttpResponse(stream_from_processor(decoder, proc, flag, metadata=metadata), mimetype = mime_type)
             else:
                 # cache > stream
-                if not extension in mapping.unavailable_extensions:
-                    try:
-                        proc = encoder(media)
-                        proc.set_metadata(metadata)
-                        proc.write_metadata()
-                    except:
-                        pass
                 response = HttpResponse(self.cache_export.read_stream_bin(file), mimetype = mime_type)
 
         response['Content-Disposition'] = 'attachment'
