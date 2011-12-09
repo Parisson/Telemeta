@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2007 Samalyse SARL
-# Copyright (C) 2008-2011 Parisson SARL
+# Copyright (C) 2011-2012 Parisson SARL
 
 # This software is a computer program whose purpose is to backup, analyse,
 # transcode and stream any audio content with its metadata over a web frontend.
@@ -31,15 +30,33 @@
 # The fact that you are presently reading this means that you have had
 # knowledge of the CeCILL license and that you accept its terms.
 #
-# Author: Olivier Guilyardi <olivier@samalyse.com>
-#         Guillaume Pellerin <yomguy@parisson.com>
+# Authors:
+#          Guillaume Pellerin <yomguy@parisson.com>
 
-from media import *
-from location import *
-from instrument import *
-from enum import *
-from system import *
-from query import *
-from dublincore import *
-from language import *
+from django.utils.translation import ugettext_lazy as _
+from django.core.exceptions import ValidationError
+from telemeta.models.core import *
 
+SCOPE_CHOICES = (('I', 'Individual'), ('M', 'Macrolanguage'), ('S', 'Special'))
+
+TYPE_CHOICES = (('A', 'Ancient'), ('C', 'Constructed'), ('E', 'Extinct'),
+                ('H', 'Historical'), ('L', 'Living'), ('S', 'Special'))
+
+class Language(ModelCore):
+    "ISO 639-3 normalized languages"
+
+    identifier      = CharField(_('identifier'), max_length=3)
+    part2B          = CharField(_('equivalent 639-2 identifier (bibliographic)'), max_length=3)
+    part2T          = CharField(_('equivalent 639-2 identifier (terminologic)'), max_length=3)
+    part1           = CharField(_('equivalent 639-1 identifier'), max_length=1)
+    scope           = CharField(_('scope'), choices=SCOPE_CHOICES, max_length=1)
+    type            = CharField(_('scope'), choices=TYPE_CHOICES, max_length=1)
+    name            = CharField(_('name'))
+    comment         = TextField(_('comment'))
+
+    def __str__(self):
+        return self.name
+
+    class Meta(MetaCore):
+        db_table = 'languages'
+        ordering = ['name']

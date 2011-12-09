@@ -48,8 +48,8 @@ from telemeta.models.system import Revision
 from telemeta.models.query import *
 from telemeta.models.instrument import *
 from telemeta.models.enum import *
-from django.db.models.fields import URLField
-
+from telemeta.models.language import *
+from django.db import models
 
 collection_published_code_regex   = '[A-Za-z0-9._-]*'
 collection_unpublished_code_regex = '[A-Za-z0-9._-]*'
@@ -335,6 +335,9 @@ class MediaItem(MediaResource):
     ethnic_group          = WeakForeignKey('EthnicGroup', related_name="items",
                                            verbose_name=_('population / social group'))
     language              = CharField(_('language'))
+    language_iso          = ForeignKey('Language', related_name="items",
+                                       verbose_name=_('ISO language'), blank=True,
+                                        null=True, on_delete=models.SET_NULL)
     context_comment       = TextField(_('comments / ethnographic context'))
     moda_execut           = CharField(_('moda_execut'))
 

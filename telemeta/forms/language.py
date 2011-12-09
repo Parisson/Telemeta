@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2007 Samalyse SARL
-# Copyright (C) 2008-2011 Parisson SARL
+# Copyright (C) 2011 Parisson SARL
 
 # This software is a computer program whose purpose is to backup, analyse,
 # transcode and stream any audio content with its metadata over a web frontend.
@@ -31,15 +30,12 @@
 # The fact that you are presently reading this means that you have had
 # knowledge of the CeCILL license and that you accept its terms.
 #
-# Author: Olivier Guilyardi <olivier@samalyse.com>
-#         Guillaume Pellerin <yomguy@parisson.com>
+# Authors: Guillaume Pellerin <yomguy@parisson.com>
 
-from media import *
-from location import *
-from instrument import *
-from enum import *
-from system import *
-from query import *
-from dublincore import *
-from language import *
 
+from django.forms import ModelForm
+from telemeta.models import *
+
+class LanguageForm(ModelForm):
+    class Meta:
+        model = Language
