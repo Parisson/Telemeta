@@ -2,6 +2,7 @@ from telemeta.models.media import *
 from telemeta.models.instrument import *
 from telemeta.models.location import *
 from telemeta.models.language import *
+from telemeta.models.system import *
 from django.contrib import admin
 
 
@@ -53,6 +54,10 @@ class LanguageAdmin(admin.ModelAdmin):
     search_fields = ['name', 'identifier']
     ordering = ['name']
 
+class RevisionAdmin(admin.ModelAdmin):
+    search_fields = ['element_id', 'user']
+    ordering = ['-time']
+
 
 admin.site.register(MediaCollection, MediaCollectionAdmin)
 admin.site.register(MediaItem, MediaItemAdmin)
@@ -70,3 +75,5 @@ admin.site.register(LocationAlias, LocationAliasAdmin)
 admin.site.register(LocationRelation, LocationRelationAdmin)
 
 admin.site.register(Language, LanguageAdmin)
+
+admin.site.register(Revision, RevisionAdmin)
