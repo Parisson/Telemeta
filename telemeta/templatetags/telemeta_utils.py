@@ -24,12 +24,12 @@ def tolist(dict):
     list = []
     for k, v in dict.iteritems():
         list.append({'name': k, 'value': v})
-    return list        
+    return list
 
 @register.filter
 def mul(value, arg):
     "Multiply a numeric value"
-    return value * arg        
+    return value * arg
 
 class TelemetaVersionNode(template.Node):
     def render(self, context):
@@ -108,7 +108,7 @@ def code_or_id(resource):
         return resource.code
     else:
         return resource.id
-     
+
 @register.filter
 def is_item(resource):
     return isinstance(resource, models.MediaItem)
@@ -186,8 +186,8 @@ def dl_field(parser, token):
                 show_empty = True
             else:
                 raise ValueError();
-    else:                
-        raise template.TemplateSyntaxError("%r tag: invalid arguments" 
+    else:
+        raise template.TemplateSyntaxError("%r tag: invalid arguments"
                                            % token.contents.split()[0])
 
     if attr[0] == attr[-1] and attr[0] in ('"', "'"):
@@ -207,7 +207,7 @@ def prepend(str, prefix):
 def field_label(model, field=None):
     if isinstance(model, basestring):
         model = getattr(models, model)
-            
+
     if not field:
         return capfirst(unicode(model._meta.verbose_name))
 
@@ -239,7 +239,7 @@ def resources_num(value):
             'count': count, }
 
     return label
-    
+
 @register.filter
 def split(value, sep=','):
     return value.split(sep)
@@ -295,11 +295,11 @@ def description():
     return description
 
 class SetVarNode(template.Node):
- 
+
     def __init__(self, var_name, var_value):
         self.var_name = var_name
         self.var_value = var_value
- 
+
     def render(self, context):
         try:
             value = template.Variable(self.var_value).resolve(context)
@@ -308,7 +308,7 @@ class SetVarNode(template.Node):
         context[self.var_name] = value
         return u""
 
-@register.tag 
+@register.tag
 def set_var(parser, token):
     """
         {% set <var_name>  = <var_value> %}
@@ -317,7 +317,7 @@ def set_var(parser, token):
     if len(parts) < 4:
         raise template.TemplateSyntaxError("'set' tag must be of the form:  {% set <var_name>  = <var_value> %}")
     return SetVarNode(parts[1], parts[3])
- 
+
 @register.simple_tag
 def current_year():
     return datetime.datetime.now().strftime("%Y")
@@ -352,3 +352,7 @@ def get_youtube(link):
     else:
         ref = link[0].split('/')[-1]
     return 'http://www.youtube.com/embed/'+ref
+
+@register.filter
+def to_utf8(word):
+    return word.encode('utf-8')

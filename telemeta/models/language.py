@@ -46,16 +46,16 @@ class Language(ModelCore):
     "ISO 639-3 normalized languages"
 
     identifier      = CharField(_('identifier'), max_length=3)
-    part2B          = CharField(_('equivalent 639-2 identifier (bibliographic)'), max_length=3)
-    part2T          = CharField(_('equivalent 639-2 identifier (terminologic)'), max_length=3)
-    part1           = CharField(_('equivalent 639-1 identifier'), max_length=1)
+    part2B          = CharField(_('equivalent ISO 639-2 identifier (bibliographic)'), max_length=3)
+    part2T          = CharField(_('equivalent ISO 639-2 identifier (terminologic)'), max_length=3)
+    part1           = CharField(_('equivalent ISO 639-1 identifier'), max_length=1)
     scope           = CharField(_('scope'), choices=SCOPE_CHOICES, max_length=1)
-    type            = CharField(_('scope'), choices=TYPE_CHOICES, max_length=1)
+    type            = CharField(_('type'), choices=TYPE_CHOICES, max_length=1)
     name            = CharField(_('name'))
     comment         = TextField(_('comment'))
 
     def __str__(self):
-        return self.name
+        return self.name.encode('utf-8')
 
     class Meta(MetaCore):
         db_table = 'languages'
