@@ -92,7 +92,7 @@ class MediaRelated(MediaResource):
     title           = CharField(_('title'))
     date            = DateTimeField(_('date'), auto_now=True)
     description     = TextField(_('description'))
-    mime_type       = CharField(_('mime_type'))
+    mime_type       = CharField(_('mime_type'), null=True)
     url             = CharField(_('url'), max_length=500)
     credits         = CharField(_('credits'))
     file            = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename")
