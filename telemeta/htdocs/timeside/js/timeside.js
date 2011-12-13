@@ -89,7 +89,7 @@ var Timeside = {
  * MIT Licensed.
  * (Inspired by base2 and Prototype)
  */
- 
+
 /*
  * In few words: the lightest and most-comprehensive way to implement inhertance and OOP in javascript. Usages can be found below.
  * Basically,
@@ -118,7 +118,7 @@ var Timeside = {
  *           this._super();         //!!!ERROR: methods defined in the init function don't have acces to _super
  *       }
  *       this.alert = function(){   //another public method, !!!WARNING: this will be put in the MyClass scope (NOT in the prototype)
- *           alert('ok');           
+ *           alert('ok');
  *       }
  *   },
  *   count:0,                       //public property
@@ -131,7 +131,7 @@ var Timeside = {
  *      this._super();                  //call the super constructor
  *  }
  *  alert: function(){                  //override a method
- *      this._super();                  //call the super method, ie alerts 'no'. WARNING: However, as long as there is an alert written 
+ *      this._super();                  //call the super method, ie alerts 'no'. WARNING: However, as long as there is an alert written
  *                                      //in the init method of the superclass (see above), THAT method will be called
  *  }
  * });
@@ -209,7 +209,7 @@ var Timeside = {
 
         // Populate our constructed prototype object
         Class.prototype = prototype;
-        
+
         // Enforce the constructor to be what we expect
         Class.constructor = Class;
 
@@ -233,7 +233,7 @@ Timeside.classes.TimesideClass = Timeside.Class.extend({
         //(ie, every instance has its own copy)
         this.listenersMap={};
     },
-    
+
     cssPrefix : 'ts-', //actually almost uneuseful, still here for backward compatibility with old code (TODO: remove?)
     $J : jQuery, //reference to jQuery for faster lookup inside methods
     $TU : Timeside.utils, //reference to Timeside variable for faster lookup inside methods
@@ -265,7 +265,7 @@ Timeside.classes.TimesideClass = Timeside.Class.extend({
                 cb.apply(optionalThisArgInCallback,[data]);
             };
         }
-        
+
         if(listenersMap.hasOwnProperty(eventType)){
             listenersMap[eventType].push(callback);
         }else{
@@ -342,7 +342,7 @@ Timeside.classes.TimesideClass = Timeside.Class.extend({
             callbacks[i](dataArgument);
         }
     },
-    
+
     /*
      *formats (ie returns a string representation of) a time which is in the form seconds,milliseconds (eg 07.6750067)
      * formatArray is an array of strings which can be:
@@ -363,7 +363,7 @@ Timeside.classes.TimesideClass = Timeside.Class.extend({
         if(!(formatArray)){
             formatArray = ['mm','ss'];
         }
-        
+
         //marker offset is in float format second.decimalPart
         var pInt = parseInt;
         var round = Math.round;
@@ -375,7 +375,7 @@ Timeside.classes.TimesideClass = Timeside.Class.extend({
         time-=minutes*factor;
         var seconds = pInt(time);
         time-=seconds;
-        
+
         //here below the function to format a number
         //ceilAsPowerOfTen is the ceil specifiedas integer indicating the relative power of ten
         //(0: return the number as it is, 1: format as "0#" and so on)
@@ -475,7 +475,7 @@ Timeside.classes.TimesideArray = Timeside.classes.TimesideClass.extend({
     //2) each(m, callback) iterates over the elements from m executing callback
     //3) each(m,n,callback) iterates over the elements from m (inclusive) to n-1 (inclusive) executing callback
 
-    //NOTE: writing   each : function(startInclusive, endExclusive, callback) throws an error in chrome, as the last 
+    //NOTE: writing   each : function(startInclusive, endExclusive, callback) throws an error in chrome, as the last
     //argument (even if it is a function) is a number. Why?????
     //Anyway, we write the function arguments as empty
     each : function(){
@@ -512,7 +512,7 @@ Timeside.classes.TimesideArray = Timeside.classes.TimesideClass.extend({
         for(var i = startInclusive; i<endExclusive; i++){
             callback(i,me[i]);
         }
-    
+
     },
 
     //clears the array and the events associated to it, ie removes all its elements and calls unbind(). Returns the array of the removed elements
@@ -695,7 +695,7 @@ Timeside.load =function(config){
         s.onerror = function() {
             Timeside.utils.flashFailed = true;
             //end('SoundManager error. If your browser does not support HTML5, Flash player (version '+soundManager.flashVersion+'+) must be installed.\nIf flash is installed, try to:\n - Reload the page\n - Empty the cache (see browser preferences/options/tools) and reload the page\n - Restart the browser');
-            
+
             //and load all anyway:
             loadAll();
         };

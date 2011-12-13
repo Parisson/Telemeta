@@ -55,12 +55,12 @@ class Revision(ModelCore):
     user                 = ForeignKey(User, db_column='username', related_name="revisions", verbose_name=_('user'))
 
     @classmethod
-    def touch(cls, element, user):    
+    def touch(cls, element, user):
         "Create or update a revision"
-        revision = cls(element_type=element.element_type, element_id=element.pk, 
+        revision = cls(element_type=element.element_type, element_id=element.pk,
                        user=user, change_type='create')
         if element.pk:
-            try: 
+            try:
                 element.__class__.objects.get(pk=element.pk)
             except ObjectDoesNotExist:
                 pass
@@ -70,20 +70,23 @@ class Revision(ModelCore):
         revision.save()
         return revision
 
+    def __str__(self):
+        return str(self.time) + ' : ' + self.element_type + ' : ' + str(self.element_id)
+
     class Meta(MetaCore):
         db_table = 'revisions'
 
 
 class UserProfile(django.db.models.Model):
     "User profile extension"
-    
+
     user            = ForeignKey(User, unique=True, required=True)
     institution     = CharField(_('Institution'))
     function        = CharField(_('Function'))
     address         = TextField(_('Address'))
     telephone       = CharField(_('Telephone'))
     expiration_date = DateField(_('Expiration_date'))
-    
+
     class Meta(MetaCore):
         db_table = 'profiles'
 
