@@ -29,7 +29,7 @@
 
 //playerDiv, sound, durationInMsec, visualizers, markerMap);
 Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
-    
+
     //sound duration is in milliseconds because the soundmanager has that unit,
     //player (according to timeside syntax) has durations in seconds
     // newMarkerCallback must be either a string or a function, the necessary checks is done in Timeside.load
@@ -63,7 +63,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         }
 
         var onReadyWithImage = configObject.onReadyWithImage;
-        
+
         if(typeof onReadyWithImage === 'function'){
             var onReadyWithImageNamespace = 'imgRefreshed.temp_'+new Date().getTime(); //get an unique namespace
             this.bind(onReadyWithImageNamespace,function(data){
@@ -109,7 +109,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
                 var soundOptions = sound;
                 if(sMan.canPlayURL(soundOptions.url)){ //this actually checks only if the url is well formed, not if the file is there
                     //check if we specified a valid sound duration, otherwise the sound must be loaded
-                    
+
                     sound = sMan.createSound(soundOptions);
                 }else{
                     this.soundErrorMsg = 'bad sound parameter (soundManager.canPlayURL returned false)';
@@ -159,24 +159,24 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
 
         this.playState = 0; //0: not playing, 1: loading, 2:buffering, 3 playing (sound heard)
         //container is the div #player
-       
+
         this.getContainer = function(){
             return container;
         };
-        
-        
+
+
 
         var sd = this.toSec(soundDurationInMsec);
         this.getSoundDuration = function(){
             return sd;
         };
-        
+
         this.soundPosition =  sound.position ? this.toSec(sound.position) : 0;
- 
-       
-        
+
+
+
         //
-        
+
         //initializing markermap and markerui
         var map = new Timeside.classes.MarkerMap();
         this.getMarkerMap = function(){
@@ -190,7 +190,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
                 this.newMarker = newMarker;
             }
         }
-       
+
         //build the innerHTML as array, then join it. This is usually faster than string concatenation in some browsers.
         //Note that the player image (see below) is not created now, however, if it was, it should be given a src
         //as NOT specifying any src for image tags can be harmful,
@@ -220,7 +220,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         "</div>"];
 
         container.html(html.join(''));
-        
+
         var control = container.find('.ts-control');
 
         //bind events to buttons:
@@ -420,11 +420,11 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         //set sound position:
         var oldSoundPosition = this.soundPosition;
         this.soundPosition = newPositionInSeconds;
-        
+
         //resume playing if it was playing:
         if(wasPlaying){
             var player = this;
-            
+
             //delay a little bit the play resume, this might avoid fast pointer repositioning
             //(it should not be the case, but it happens. why??)
             setTimeout(function(){
@@ -445,7 +445,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
     //the value is in seconds
     //markerCrossedOffsetMargin : 0.5,
     play : function(){
-        
+
         if(this.soundErrorMsg){
             alert(this.soundErrorMsg);
             return false;
@@ -458,7 +458,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
             //together with this.soundErrorMsg != "", so we should have catch the case above
             return false;
         }
-        
+
 
         var fireOnMarkerPosition = function(seconds){}; //does nothing by default
         var map = player.getMarkerMap();
@@ -495,7 +495,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
                             data.currentSoundPosition = seconds;
                             data.nextMarkerTimeInterval = marker ? [offs-margin, offs+margin] : undefined;
                             player.fire('markerCrossed',data);
-                            
+
                             if(idx<len){
                                 intervalUpperBound =  offs+margin;
                                 intervalLowerBound =  offs-margin;
@@ -513,7 +513,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         var sPosInMsec = player.toMsec(player.soundPosition);
         var bufferingString = this.msgs.buffering;
         var loadingString = this.msgs.loading;
-        
+
         var updateWaitBar = this.setWait;
         //building immediately data events to be passed instead of bulding them in the loop whileplaying
         var loadData = {
@@ -547,15 +547,15 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
             playState = this.playState = 1;
             this.fire('playStateChanged',loadData);
         }
-        
+
         var playOptions = {
-            
+
             position: sPosInMsec,
             whileplaying: function(){
 
                 var sPos = this.position;
                 var buffering = this.isBuffering || typeof sPos != 'number' || sPos < sPosInMsec;
-                
+
                 //var buffering = this.isBuffering; //this refers to the soundmanager sound obj
                 //Now, what are we doing here below? we could simply check whether is buffering or not..
                 //Unfortunately, when buffering some playState (isBuffering = false) are also fired, randomly
@@ -599,7 +599,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
 
             },
             onfinish: function() {
-                
+
                 //whileplaying is NOT called onsinfish. We must update the pointer:
                 //note that for small length sounds (wg, 5 secs) the pointer shifts abruptly from the last
                 //whileplaying position to the end. We tried with a setTimeout function but the visual effect is not
@@ -679,7 +679,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
 
     setWait: function(msg){
         var wait = undefined;
-      
+
         wait = this.getWaitElement();
         if(!wait || msg === undefined){
             return;
@@ -689,7 +689,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         }
 
         var visible = wait.css('display') != 'none';
-        
+
         if(msg && !visible){
             wait.show();
             this.fire('waitShown');
@@ -727,11 +727,11 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
             }
         },100);
     },
-    
+
     resize: function() {
         var height;
         var container = this.getContainer();
-        
+
         var wave = container.find('.ts-wave');
 
         height = wave.height();
@@ -772,7 +772,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         var container = this.getContainer();
         var imageC = container.find('.ts-image-container');
         var image = imageC.find('.ts-image');
-        
+
 
         var size = this.getImageSize();
 
@@ -784,9 +784,9 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         if(!imageNotYetCreated && image.attr('src')==imgSrc){
             return;
         }
-        
+
         var player= this;
-        
+
         if(imageNotYetCreated){
             image = this.$J('<img/>');
         }
@@ -823,7 +823,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         this.isImgRefreshing = true;
         this.fire('imgRefreshing');
         image.attr('src', imgSrc);
-       
+
     },
     getImageSize: function(){
         var wave = this.getContainer().find('.ts-wave');
@@ -879,7 +879,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
                 idx++;
             }
         }
-        
+
         if(idx< len){
             offset = markers[idx].offset;
         }
@@ -1006,9 +1006,9 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         //TODO: think about if clearing or not: we assign some bindings in the constructor, too:
         //        map.clear();
         //        ruler.clear();
-       
+
         var rulerAdd = ruler.add;
-            
+
         if(markers){
             //add markers to the map. No listeners associated to it (for the moment)
             for(var i =0; i< markers.length; i++){
@@ -1020,7 +1020,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
                 rulerAdd.apply(ruler,[marker.offset, i, marker.isEditable]);
             });
         }
-        
+
         //the function above calls map.add:
         //add bindings when adding a marker:
         map.bind('add',function(data){
@@ -1043,7 +1043,7 @@ Timeside.classes.Player = Timeside.classes.TimesideClass.extend({
         });
 
         //and now add a binding to the map when we move a marker:
-          
+
         map.bind('move', function(data){
             var from = data.fromIndex;
             var to = data.toIndex;
