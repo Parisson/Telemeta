@@ -1,6 +1,6 @@
-==================
-Telemeta - INSTALL
-==================
+===========
+INSTALL
+===========
 
 Don't worry, Telemeta is easy to setup as any other Django app !
 
@@ -9,14 +9,38 @@ Requirements
 -----------------
 
 Telemeta is designed to run on Linux and other UNIX based architectures.
-It depends on several python librairies like Django (version >= 1.1.1).
+It depends on several python librairies like Django (version >= 1.3.1).
 See http://djangoproject.com.
 
 Other needed librairies are listed below.
 
------------------------
-Install the software
------------------------
+
+Install the system dependencies
+--------------------------------
+
+* On Debian (Squeeze recommended) or Ubuntu Lucid:
+
+    Install all dependencies like this::
+
+        sudo aptitude install python python-dev python-django python-xml python-mysqldb mysql-server \
+        python-ctypes python-setuptools python-support python-docutils \
+        python-libxml2 python-django-registration python-lxml python-numpy \
+        python-scipy python-imaging python-mutagen python-gobject python-gst0.10 \
+        gstreamer0.10-plugins-base gobject-introspection
+
+    To get MP3 reading and writing, just add these lines to your /etc/apt/sources-list::
+
+        deb http://www.debian-multimedia.org stable main
+
+    Then::
+
+        sudo apt-get update
+        sudo aptitude install gstreamer0.10-fluendo-mp3 gstreamer0.10-lame
+
+* On other linux platforms:
+
+    Please install all dependencies thanks to your application manager.
+
 
 Install Telemeta
 ------------------
@@ -36,91 +60,60 @@ Install Telemeta
     cd telemeta-1.0
     sudo python setup.py install
 
-        
-Install the system dependencies
---------------------------------
-
-* On Debian (Squeeze recommended) or Ubuntu Lucid:
-
-    Install all dependencies like this::
-	
-        sudo aptitude install python python-django python-xml python-mysqldb mysql-server \
-                              python-ctypes python-setuptools python-support python-docutils \
-                              python-libxml2 python-django-registration python-lxml
-
-    To get MP3 reading and writing, just add these lines to your /etc/apt/sources-list::
-
-        deb http://www.debian-multimedia.org stable main
-
-    Then::
-
-        sudo apt-get update
-        sudo aptitude install gstreamer0.10-fluendo-mp3 gstreamer0.10-lame
-
-* On other linux platforms:
-
-    Please install all dependencies thanks to your application manager.
-
 
 Install TimeSide
 -----------------
 
-The web audio components provided by the TimeSide module have been automatically installed if you used pip or setup.py to install Telemeta.
-In this case only, you can pass this stage.
+The web audio components provided by the TimeSide module have been automatically installed if you used pip or setup.py to install Telemeta. In this case only, you can pass this stage.
 
 Otherwise, you have to download and install it from source.
 
 So, download the last archive at :
 http://code.google.com/p/timeside/downloads/list
 
-Uncompress it and see README and INSTALL to install the dependencies 
+Uncompress it and read README and INSTALL to install the dependencies
 and then the module.
 
 
 Install JSON-RPC server
 ------------------------
 
-In order to use markers on the player, you will need a JSON-RPC server for django::
-    
+The JSON module provided by django-json-rpc have been automatically installed if you used pip or setup.py to install Telemeta. In this case only, you can pass this stage.
+
+Otherwise, you have to download and install it from source::
+
     git clone git://github.com/samuraisam/django-json-rpc.git
     cd django-json-rpc
     python setup.py install
 
+
 -------------------------
-Fast testing (sandbox)
+Testing (sandbox)
 -------------------------
 
 If you just want to test Telemeta, a sandbox is available in the example/ directory.
 As Telemeta needs MySQL to work properly and fast, please create a database before editing setting.py
 
+
 --------------------------
-Or create a Django project
+Create a Django project
 --------------------------
+
+Start the project
+------------------
 
 If you haven't already done it, start a new django project::
 
     cd ~/my_projects
     django-admin startproject mysite
 
------------------------------------------
-Create the media and cache directories
------------------------------------------
 
-We need 2 directories for media and caching::
-
-    cd mysite
-    mkdir media cache cache/data cache/export
-
-
-You might want to place these data directories somewhere else, no pb.
-
-------------------------
 Create the database
 ------------------------
 
 Telemeta needs MySQL to work well and fast. So you need to create a MySQL database before trying it.
 
-----------------------------------
+
 Configure the telemeta project
 ----------------------------------
 
@@ -132,7 +125,7 @@ Modifiy the following variables::
     MEDIA_ROOT =        absolute path to the media directory you just created
 
 Set the app lists as follow::
-    
+
     INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -145,14 +138,14 @@ Set the app lists as follow::
     )
 
 Set the following languages::
-    
+
     LANGUAGES = [ ('fr', 'French'),
                   ('en', 'English'),
     ]
 
 
 Set the following Middlewares::
-    
+
     MIDDLEWARE_CLASSES = (
         'django.middleware.common.CommonMiddleware',
         'django.contrib.sessions.middleware.SessionMiddleware',
@@ -163,7 +156,7 @@ Set the following Middlewares::
     )
 
 Add the following variables::
-    
+
     TEMPLATE_CONTEXT_PROCESSORS = (
         'django.core.context_processors.request',
         'django.contrib.auth.context_processors.auth',)
@@ -177,8 +170,8 @@ Add the following variables::
     TELEMETA_STREAMING_FORMATS =    tuple of authoized streaming formats. Ex : ('mp3', 'ogg')
     TELEMETA_PUBLIC_ACCESS_PERIOD = number of years above which item files are automagically published
     EMAIL_HOST =                    your default SMTP server
-    DEFAULT_FROM_EMAIL =            the default sending email address 
-    
+    DEFAULT_FROM_EMAIL =            the default sending email address
+
 Just paste the lines below::
 
     LOGIN_URL = '/login'
@@ -189,16 +182,16 @@ Just paste the lines below::
     CACHE_BACKEND = "file://" + TELEMETA_CACHE_DIR + "/data"
 
 If you want some personal templates, for example::
-    
+
     TEMPLATE_DIRS = (
     '/home/dev/telemeta/sandboxes/sandbox_generic/templates/',
     )
 
 You can find an example for settings.py there::
-    
+
     example/sandbox/settings.py
 
---------------------------
+
 Initialize the database
 --------------------------
 
@@ -207,12 +200,11 @@ This synchronizes the DB with the model::
     python manage.py syncdb
 
 
-----------------------
 Configure your urls
 ----------------------
 
 Add this dictionary to get Javascript translation::
-    
+
     js_info_dict = {
         'packages': ('telemeta',),
     }
@@ -221,26 +213,25 @@ The simplest case is to have telemeta running at public root. To do so, add this
 
     # Telemeta
     (r'^', include('telemeta.urls')),
-    
+
     # Languages
-    (r'^i18n/', include('django.conf.urls.i18n')),    
+    (r'^i18n/', include('django.conf.urls.i18n')),
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
-    
+
 You should also bring the django admin::
-    
+
     (r'^admin/django/', include(admin.site.urls)),
-    
+
 Please also uncomment::
-    
+
     from django.contrib import admin
     admin.autodiscover()
 
 You can find an example for url.py there::
-    
+
     example/sandbox/urls.py
 
 
---------------------
 Start the project
 --------------------
 
@@ -252,8 +243,11 @@ By default, the server starts on the port 8000. You can override this with, for 
 
     python manage.py runserver 9000
 
+To get it on your network interface::
 
------------
+    python manage.py runserver 192.168.0.10:9000
+
+
 Test it
 -----------
 
@@ -264,6 +258,10 @@ Go to this URL with your browser::
 or::
 
     http://localhost:9000
+
+or::
+
+    http://192.168.0.10:9000
 
 
 Configure the site domain name in admin > general admin > sites
@@ -276,16 +274,16 @@ Template customization
 --------------------------
 
 Please see ::
-    
+
     http://telemeta.org/wiki/InterfaceCustomization
-    
-    
+
+
 --------------------------
 Deploy it with Apache 2
 --------------------------
 
 If you want to use Telemeta through a web server, it is highly recommended to use Apache 2
-with the mod_wsgi module as explained in the following page :
+with the mod_wsgi module as explained in the following page ::
 
     http://docs.djangoproject.com/en/1.1/howto/deployment/modwsgi/#howto-deployment-modwsgi
 
@@ -307,6 +305,7 @@ It is possible to login automatically an IP range of machines to Telemeta thanks
 See http://pypi.python.org/pypi/django-ipauth/ for setup.
 
 
+-------------------------
 Contact / More infos
 -------------------------
 

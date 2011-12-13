@@ -16,8 +16,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'telemeta_sandbox',                      # Or path to database file if using sqlite3.
-        'USER': '********',                      # Not used with sqlite3.
-        'PASSWORD': '********',                  # Not used with sqlite3.
+        'USER': 'demo',                      # Not used with sqlite3.
+        'PASSWORD': 'demo',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
@@ -36,7 +36,7 @@ TIME_ZONE = 'Europe/Paris'
 # http://www.i18nguy.com/unicode/language-identifiers.html
 #LANGUAGE_CODE = 'fr_FR'
 LANGUAGES = [ ('fr', 'French'),
-	      ('en', 'English'),
+              ('en', 'English'),
 ]
 
 SITE_ID = 1
@@ -51,12 +51,12 @@ USE_L10N = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = os.path.join(os.path.dirname(__file__), 'media/')
+MEDIA_ROOT = '/var/telemeta/media/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = ''
+MEDIA_URL = '/media/'
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
@@ -111,20 +111,16 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 TELEMETA_ORGANIZATION = 'Parisson'
 TELEMETA_SUBJECTS = ('test', 'telemeta', 'sandbox')
 TELEMETA_DESCRIPTION = "Telemeta TEST sandbox"
-TELEMETA_GMAP_KEY = '***************************************************************************'
+TELEMETA_GMAP_KEY = 'ABQIAAAArg7eSfnfTkBRma8glnGrlxRVbMrhnNNvToCbZQtWdaMbZTA_3RRGObu5PDoiBImgalVnnLU2yN4RMA'
+TELEMETA_CACHE_DIR = MEDIA_ROOT + 'cache'
+TELEMETA_EXPORT_CACHE_DIR = TELEMETA_CACHE_DIR + "/export"
+TELEMETA_DATA_CACHE_DIR = TELEMETA_CACHE_DIR + "/data"
+
 TELEMETA_DOWNLOAD_ENABLED = True
 TELEMETA_STREAMING_FORMATS = ('mp3', 'ogg')
 TELEMETA_PUBLIC_ACCESS_PERIOD = 51
 AUTH_PROFILE_MODULE = 'telemeta.userprofile'
-
-LOGIN_URL = '/login'
-LOGIN_REDIRECT_URL = '/'
-EMAIL_HOST = 'smtp.free.fr'
-DEFAULT_FROM_EMAIL = 'webmaster@parisson.com'
-
-TELEMETA_CACHE_DIR = MEDIA_ROOT + 'cache'
-TELEMETA_EXPORT_CACHE_DIR = TELEMETA_CACHE_DIR + "/export"
-TELEMETA_DATA_CACHE_DIR = TELEMETA_CACHE_DIR + "/data"
-CACHE_BACKEND = "file://" + TELEMETA_CACHE_DIR + "/data"
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
+EMAIL_HOST = 'smtp.free.fr'
+DEFAULT_FROM_EMAIL = 'webmaster@parisson.com'

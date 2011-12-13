@@ -27,8 +27,6 @@ This web audio CMS is exclusively based on open source modules and can be run on
 Installation, upgrade and usage
 ================================
 
-**WARNING** : sorry the setup process of 1.1 was just wrong, please upgrade to 1.2 !
-
 See `INSTALL.rst <http://telemeta.org/browser/INSTALL.rst>`_ and `telemeta.org <http://telemeta.org>`_ for more informations.
 
 
@@ -87,7 +85,7 @@ Twitter:
 
  * http://twitter.com/telemeta
  * http://twitter.com/parisson_studio
- 
+
 
 Sponsors
 ========
