@@ -48,13 +48,17 @@ from telemeta.models.system import Revision
 from telemeta.models.query import *
 from telemeta.models.instrument import *
 from telemeta.models.enum import *
-from django.db.models.fields import URLField
+from telemeta.models.language import *
+from django.db import models
 
+
+# Special code regex of collections for the branch
 collection_published_code_regex   = 'CNRSMH_E_[0-9]{4}(?:_[0-9]{3}){2}'
 collection_unpublished_code_regex = 'CNRSMH_I_[0-9]{4}_[0-9]{3}'
 collection_code_regex             = '(?:%s|%s)' % (collection_published_code_regex,
                                                     collection_unpublished_code_regex)
 
+# Special code regex of items for the branch
 item_published_code_regex    = collection_published_code_regex + '(?:_[0-9]{2,3}){1,2}'
 item_unpublished_code_regex  = collection_unpublished_code_regex + '_[0-9]{2,3}(?:_[0-9]{2,3}){0,2}'
 item_code_regex              = '(?:%s|%s)' % (item_published_code_regex, item_unpublished_code_regex)
@@ -91,7 +95,7 @@ class MediaRelated(MediaResource):
     title           = CharField(_('title'))
     date            = DateTimeField(_('date'), auto_now=True)
     description     = TextField(_('description'))
-    mime_type       = CharField(_('mime_type'))
+    mime_type       = CharField(_('mime_type'), null=True)
     url             = CharField(_('url'), max_length=500)
     credits         = CharField(_('credits'))
     file            = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename")
@@ -334,6 +338,9 @@ class MediaItem(MediaResource):
     ethnic_group          = WeakForeignKey('EthnicGroup', related_name="items",
                                            verbose_name=_('population / social group'))
     language              = CharField(_('language'))
+    language_iso          = ForeignKey('Language', related_name="items",
+                                       verbose_name=_('ISO language'), blank=True,
+                                        null=True, on_delete=models.SET_NULL)
     context_comment       = TextField(_('comments / ethnographic context'))
     moda_execut           = CharField(_('moda_execut'))
 

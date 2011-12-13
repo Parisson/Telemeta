@@ -1,6 +1,8 @@
 from telemeta.models.media import *
 from telemeta.models.instrument import *
 from telemeta.models.location import *
+from telemeta.models.language import *
+from telemeta.models.system import *
 from django.contrib import admin
 
 
@@ -15,7 +17,7 @@ class MediaItemAdmin(admin.ModelAdmin):
 
 class MediaItemRelatedAdmin(admin.ModelAdmin):
     search_fields = ['title', 'description']
-    
+
 class MediaPartAdmin(admin.ModelAdmin):
     search_fields = ['title', 'item__code']
     ordering = ['title']
@@ -23,7 +25,7 @@ class MediaPartAdmin(admin.ModelAdmin):
 class InstrumentAdmin(admin.ModelAdmin):
     search_fields = ['name']
     ordering = ['name']
-    
+
 class InstrumentAliasAdmin(admin.ModelAdmin):
     search_fields = ['name']
     ordering = ['name']
@@ -31,7 +33,7 @@ class InstrumentAliasAdmin(admin.ModelAdmin):
 class InstrumentRelationAdmin(admin.ModelAdmin):
     search_fields = ['instrument__name', 'parent_instrument__name']
     ordering = ['parent_instrument__name']
-     
+
 class InstrumentAliasRelationAdmin(admin.ModelAdmin):
     search_fields = ['alias__name', 'instrument__name']
     ordering = ['alias__name']
@@ -39,14 +41,23 @@ class InstrumentAliasRelationAdmin(admin.ModelAdmin):
 class LocationAdmin(admin.ModelAdmin):
     search_fields = ['name']
     ordering = ['name']
-     
+
 class LocationAliasAdmin(admin.ModelAdmin):
     search_fields = ['location__name', 'alias']
     ordering = ['alias']
-     
+
 class LocationRelationAdmin(admin.ModelAdmin):
     search_fields = ['location__name', 'ancestor_location__name']
     ordering = ['ancestor_location__name']
+
+class LanguageAdmin(admin.ModelAdmin):
+    search_fields = ['name', 'identifier']
+    ordering = ['name']
+
+class RevisionAdmin(admin.ModelAdmin):
+    search_fields = ['element_id', 'user']
+    ordering = ['-time']
+
 
 admin.site.register(MediaCollection, MediaCollectionAdmin)
 admin.site.register(MediaItem, MediaItemAdmin)
@@ -63,3 +74,6 @@ admin.site.register(Location, LocationAdmin)
 admin.site.register(LocationAlias, LocationAliasAdmin)
 admin.site.register(LocationRelation, LocationRelationAdmin)
 
+admin.site.register(Language, LanguageAdmin)
+
+admin.site.register(Revision, RevisionAdmin)

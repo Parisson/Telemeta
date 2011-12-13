@@ -40,7 +40,7 @@
         soundManager.allowPolling = true;
         soundManager.useHTML5Audio = true;
         soundManager.preferFlash = true;
-        
+
         //initializing the visualizers to be passed to the player
         var visualizers = {};
         {% for v in visualizers %}
@@ -81,7 +81,7 @@
 {% if item %}
 
 {% block title %}
-<img src="{% url telemeta-images "item.png" %}" alt="item" style="vertical-align:middle" /> 
+<img src="{% url telemeta-images "item.png" %}" alt="item" style="vertical-align:middle" />
 Item : <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
 {% endblock %}
 
@@ -181,6 +181,10 @@ Item : <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
                 {% dl_field item "location_comment" %}
                 {% dl_field item "cultural_area" %}
                 {% dl_field item "language" %}
+                {% if item.language_iso %}
+                <dt>{% trans "Language ISO" %}</dt>
+                <dd>{{ item.language_iso.name|to_utf8 }}</dd>
+                {% endif %}
                 {% dl_field item "ethnic_group" placeholder %}
                 <dt>{% trans "Ethnographic context" %}</dt>
                 <dd>{{ item.context_comment|html_line_break|safe }}</dd>
@@ -285,7 +289,7 @@ Item : <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
 
 {% block delete %}
 {% if user.is_authenticated and perms.telemeta.delete_mediaitem %}
- <a href="#" onclick="if(confirm(gettrans('delete the item permanently?'))){window.location.href='{% url telemeta-item-delete item.public_id %}';};return false;"  
+ <a href="#" onclick="if(confirm(gettrans('delete the item permanently?'))){window.location.href='{% url telemeta-item-delete item.public_id %}';};return false;"
         class="component_icon button icon_delete" style="float:right;margin-top:0.5em;margin-bottom:1em">{% trans "Delete" %}</a>
 {% endif %}
 {% endblock %}
