@@ -6,9 +6,26 @@ from telemeta.models.system import *
 from django.contrib import admin
 
 
+class MediaFundAdmin(admin.ModelAdmin):
+    search_fields = ['title', 'code']
+    ordering = ['code']
+
+class MediaCorpusAdmin(admin.ModelAdmin):
+    search_fields = ['title', 'code']
+    ordering = ['code']
+
+class MediaFundCorpusRelationAdmin(admin.ModelAdmin):
+    pass
+
 class MediaCollectionAdmin(admin.ModelAdmin):
     search_fields = ['title', 'code']
     ordering = ['code']
+
+class MediaCorpusCollectionRelationAdmin(admin.ModelAdmin):
+    pass
+
+class MediaCollectionRelatedAdmin(admin.ModelAdmin):
+    search_fields = ['title', 'description']
 
 class MediaItemAdmin(admin.ModelAdmin):
     search_fields = ['title', 'code']
@@ -59,10 +76,17 @@ class RevisionAdmin(admin.ModelAdmin):
     ordering = ['-time']
 
 
+admin.site.register(MediaFund, MediaFundAdmin)
+admin.site.register(MediaCorpus, MediaCorpusAdmin)
 admin.site.register(MediaCollection, MediaCollectionAdmin)
 admin.site.register(MediaItem, MediaItemAdmin)
 admin.site.register(MediaPart, MediaPartAdmin)
+
 admin.site.register(MediaItemRelated, MediaItemRelatedAdmin)
+admin.site.register(MediaCollectionRelated, MediaCollectionRelatedAdmin)
+
+admin.site.register(MediaFundCorpusRelation, MediaFundCorpusRelationAdmin)
+admin.site.register(MediaCorpusCollectionRelation, MediaCorpusCollectionRelationAdmin)
 
 admin.site.register(Instrument, InstrumentAdmin)
 admin.site.register(InstrumentAlias, InstrumentAliasAdmin)

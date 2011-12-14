@@ -84,50 +84,8 @@ class MediaResource(ModelCore):
     class Meta:
         abstract = True
 
-class MediaRelated(MediaResource):
-    "Related media"
-
-    element_type = 'media'
-
-    title           = CharField(_('title'))
-    date            = DateTimeField(_('date'), auto_now=True)
-    description     = TextField(_('description'))
-    mime_type       = CharField(_('mime_type'), null=True)
-    url             = CharField(_('url'), max_length=500)
-    credits         = CharField(_('credits'))
-    file            = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename")
-
-    def is_image(self):
-        is_url_image = False
-        if self.url:
-            url_types = ['.png', '.jpg', '.gif', '.jpeg']
-            for type in url_types:
-                if type in self.url:
-                    is_url_image = True
-        return 'image' in self.mime_type or is_url_image
-
-    def save(self, force_insert=False, force_update=False):
-        super(MediaRelated, self).save(force_insert, force_update)
-
-    def set_mime_type(self):
-        if self.file:
-            self.mime_type = mimetypes.guess_type(self.file.path)[0]
-
-    def __unicode__(self):
-        if self.title and not re.match('^ *N *$', self.title):
-            title = self.title
-        else:
-            title = unicode(self.item)
-        return title
-
-    class Meta:
-        abstract = True
-
-
-class MediaCorpus(MediaResource):
-    "Describe a corpus of collections"
-
-    element_type = 'corpus'
+class MediaBaseResource(MediaResource):
+    "Describe a base resource"
 
     # General informations
     reference             = CharField(_('reference'), unique=True, null=True)
@@ -145,24 +103,63 @@ class MediaCorpus(MediaResource):
         return self.code
 
     def save(self, force_insert=False, force_update=False, user=None, code=None):
-        super(MediaCorpus, self).save(force_insert, force_update)
+        super(MediaBaseResource, self).save(force_insert, force_update)
 
     class Meta(MetaCore):
-        db_table = 'media_corpus'
+        abstract = True
         ordering = ['code']
 
 
-class MediaCorpusCollectionRelation(ModelCore):
-    "Relations between Corpus and Collections"
+class MediaFund(MediaBaseResource):
+    "Describe a fund"
 
-    collection        = ForeignKey('MediaCollection', related_name="parent_relation",
-                                   verbose_name=_('collection'))
-    corpus            = ForeignKey('MediaCorpus', related_name="child_relation",
-                                   verbose_name=_('corpus'))
+    element_type = 'fund'
 
     class Meta(MetaCore):
-        db_table = 'media_corpus_collection_relations'
-        unique_together = (('collection', 'corpus'),)
+        db_table = 'media_funds'
+        verbose_name = _('fund')
+
+
+class MediaCorpus(MediaBaseResource):
+    "Describe a corpus"
+
+    element_type = 'corpus'
+
+    class Meta(MetaCore):
+        db_table = 'media_corpus'
+        verbose_name = _('corpus')
+        verbose_name_plural = _('corpus')
+
+class MediaFundCorpusRelation(MediaResource):
+    "Relations between funds and corpus"
+
+    corpus                = ForeignKey('MediaCorpus', related_name="funds",
+                                   verbose_name=_('corpus'))
+    fund                  = ForeignKey('MediaFund', related_name="funds",
+                                   verbose_name=_('collection'))
+
+    class Meta(MetaCore):
+        db_table = 'media_fund_corpus'
+        verbose_name = _('fund relation')
+#        unique_together = (('fund', 'corpus'),)
+
+    def __unicode__(self):
+        sep = ' > '
+        return self.fund.code + sep + self.corpus.code
+
+
+class MediaCorpusCollectionRelation(MediaResource):
+    "Relations between corpus and collections"
+
+    corpus                = ForeignKey('MediaCorpus', related_name="corpus",
+                                   verbose_name=_('corpus'))
+    collection            = ForeignKey('MediaCollection', related_name="corpus",
+                                   verbose_name=_('collection'))
+
+    class Meta(MetaCore):
+        db_table = 'media_corpus_collections'
+        verbose_name = _('corpus relation')
+#        unique_together = (('collection', 'corpus'),)
 
     def __unicode__(self):
         sep = ' > '
@@ -303,7 +300,46 @@ class MediaCollection(MediaResource):
     class Meta(MetaCore):
         db_table = 'media_collections'
         ordering = ['code']
+        verbose_name = _('collection')
 
+class MediaRelated(MediaResource):
+    "Related media"
+
+    element_type = 'media'
+
+    title           = CharField(_('title'))
+    date            = DateTimeField(_('date'), auto_now=True)
+    description     = TextField(_('description'))
+    mime_type       = CharField(_('mime_type'), null=True)
+    url             = CharField(_('url'), max_length=500)
+    credits         = CharField(_('credits'))
+    file            = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename")
+
+    def is_image(self):
+        is_url_image = False
+        if self.url:
+            url_types = ['.png', '.jpg', '.gif', '.jpeg']
+            for type in url_types:
+                if type in self.url:
+                    is_url_image = True
+        return 'image' in self.mime_type or is_url_image
+
+    def save(self, force_insert=False, force_update=False):
+        super(MediaRelated, self).save(force_insert, force_update)
+
+    def set_mime_type(self):
+        if self.file:
+            self.mime_type = mimetypes.guess_type(self.file.path)[0]
+
+    def __unicode__(self):
+        if self.title and not re.match('^ *N *$', self.title):
+            title = self.title
+        else:
+            title = unicode(self.item)
+        return title
+
+    class Meta:
+        abstract = True
 
 class MediaCollectionRelated(MediaRelated):
     "Collection related media"
@@ -312,6 +348,8 @@ class MediaCollectionRelated(MediaRelated):
 
     class Meta(MetaCore):
         db_table = 'media_collection_related'
+        verbose_name = _('collection related media')
+        verbose_name_plural = _('collection related media')
 
 
 class MediaItem(MediaResource):
@@ -383,6 +421,7 @@ class MediaItem(MediaResource):
         db_table = 'media_items'
         permissions = (("can_play_all_items", "Can play all media items"),
                        ("can_download_all_items", "Can download all media items"), )
+        verbose_name = _('item')
 
     def is_valid_code(self, code):
         "Check if the item code is well formed"
@@ -427,6 +466,8 @@ class MediaItemRelated(MediaRelated):
 
     class Meta(MetaCore):
         db_table = 'media_item_related'
+        verbose_name = _('item related media')
+        verbose_name_plural = _('item related media')
 
 
 class MediaItemKeyword(ModelCore):
@@ -486,6 +527,7 @@ class MediaPart(MediaResource):
 
     class Meta(MetaCore):
         db_table = 'media_parts'
+        verbose_name = _('item part')
 
     def __unicode__(self):
         return self.title
