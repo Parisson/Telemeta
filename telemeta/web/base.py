@@ -880,7 +880,10 @@ class ItemView(object):
             if not extension in mapping.unavailable_extensions:
                 proc = encoder(audio)
                 proc.set_metadata(metadata)
-                proc.write_metadata()
+                try:
+                    proc.write_metadata()
+                except:
+                    pass
             response = HttpResponse(stream_from_file(audio), mimetype = mime_type)
         else:
             media = self.cache_export.dir + os.sep + file

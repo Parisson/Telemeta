@@ -35,19 +35,22 @@
 #          David LIPSZYC <davidlipszyc@gmail.com>
 #          Guillaume Pellerin <yomguy@parisson.com>
 
+from django.conf import settings
 from django.db.models import Q, Max, Min
 from telemeta.models.core import *
 from telemeta.util.unaccent import unaccent, unaccent_icmp
 from telemeta.models.enum import EthnicGroup
 import re
 
+engine = settings.DATABASES['default']['ENGINE']
+
 class MediaItemQuerySet(CoreQuerySet):
     "Base class for all media item query sets"
-    
+
     def quick_search(self, pattern):
         "Perform a quick search on code, title and collector name"
         pattern = pattern.strip()
-        
+
 #        from telemeta.models.media import MediaItem
 #        mod = MediaItem()
 #        fields = mod.to_dict()
@@ -60,49 +63,49 @@ class MediaItemQuerySet(CoreQuerySet):
 
         q = ( Q(code__contains=pattern) |
             Q(old_code__contains=pattern) |
-            word_search_q('title', pattern) |  
-            word_search_q('comment', pattern) |  
+            word_search_q('title', pattern) |
+            word_search_q('comment', pattern) |
             self.by_fuzzy_collector_q(pattern) )
-        
+
         return self.filter(q)
 
-    def without_collection(self):        
+    def without_collection(self):
         "Find items which do not belong to any collection"
         return self.extra(
             where = ["collection_id NOT IN (SELECT id FROM media_collections)"]);
 
     def by_public_id(self, public_id):
         "Find items by public_id"
-        return self.filter(public_id=public_id) 
+        return self.filter(public_id=public_id)
 
     def by_recording_date(self, from_date, to_date = None):
         "Find items by recording date"
         if to_date is None:
             return (self.filter(recorded_from_date__lte=from_date, recorded_to_date__gte=from_date))
         else :
-            return (self.filter(Q(recorded_from_date__range=(from_date, to_date)) 
+            return (self.filter(Q(recorded_from_date__range=(from_date, to_date))
                                 | Q(recorded_to_date__range=(from_date, to_date))))
 
     def by_title(self, pattern):
         "Find items by title"
         # to (sort of) sync with models.media.MediaItem.get_title()
-        return self.filter(word_search_q("title", pattern) | 
+        return self.filter(word_search_q("title", pattern) |
                            (Q(title="") & word_search_q("collection__title", pattern)))
 
     def by_publish_year(self, from_year, to_year = None):
         "Find items by publishing year"
         if to_year is None:
             to_year = from_year
-        return self.filter(collection__year_published__range=(from_year, to_year)) 
+        return self.filter(collection__year_published__range=(from_year, to_year))
 
     def by_change_time(self, from_time = None, until_time = None):
-        "Find items by last change time"  
+        "Find items by last change time"
         return self._by_change_time('item', from_time, until_time)
 
     def by_location(self, location):
         "Find items by location"
         return self.filter(location__in=location.apparented())
-           
+
     @staticmethod
     def __name_cmp(obj1, obj2):
         return unaccent_icmp(obj1.name, obj2.name)
@@ -133,19 +136,19 @@ class MediaItemQuerySet(CoreQuerySet):
                         grouped[continent] = []
 
                     grouped[continent].append(country)
-                    
+
             keys = grouped.keys()
             keys.sort(self.__name_cmp)
             ordered = []
             for c in keys:
                 grouped[c].sort(self.__name_cmp)
                 ordered.append({'continent': c, 'countries': grouped[c]})
-            
+
             countries = ordered
         else:
             countries.sort(self.__name_cmp)
-            
-        return countries                    
+
+        return countries
 
     def virtual(self, *args):
         qs = self
@@ -154,30 +157,32 @@ class MediaItemQuerySet(CoreQuerySet):
         from telemeta.models import Location
         for f in args:
             if f == 'apparent_collector':
-                related.append('collection')
-                qs = qs.extra(select={f: 
-                    'IF(collector_from_collection, '
-                        'IF(media_collections.collector_is_creator, '
-                           'media_collections.creator, '
-                           'media_collections.collector),'
-                        'media_items.collector)'})
+                if not 'sqlite3' in engine:
+                    related.append('collection')
+                    qs = qs.extra(select={f:
+                        'IF(collector_from_collection, '
+                            'IF(media_collections.collector_is_creator, '
+                               'media_collections.creator, '
+                               'media_collections.collector),'
+                            'media_items.collector)'})
             elif f == 'country_or_continent':
                 related.append('location')
-                qs = qs.extra(select={f:
-                    'IF(locations.type = ' + str(Location.COUNTRY) + ' '
-                    'OR locations.type = ' + str(Location.CONTINENT) + ',' 
-                    'locations.name, '
-                    '(SELECT l2.name FROM location_relations AS r INNER JOIN locations AS l2 '
-                    'ON r.ancestor_location_id = l2.id '
-                    'WHERE r.location_id = media_items.location_id AND l2.type = ' + str(Location.COUNTRY) + ' LIMIT 1))'
-                })
+                if not 'sqlite3' in engine:
+                    qs = qs.extra(select={f:
+                        'IF(locations.type = ' + str(Location.COUNTRY) + ' '
+                        'OR locations.type = ' + str(Location.CONTINENT) + ','
+                        'locations.name, '
+                        '(SELECT l2.name FROM location_relations AS r INNER JOIN locations AS l2 '
+                        'ON r.ancestor_location_id = l2.id '
+                        'WHERE r.location_id = media_items.location_id AND l2.type = ' + str(Location.COUNTRY) + ' LIMIT 1))'
+                    })
             else:
                 raise Exception("Unsupported virtual field: %s" % f)
 
         if related:
             qs = qs.select_related(*related)
 
-        return qs                
+        return qs
 
     def ethnic_groups(self):
         ids = self.filter(ethnic_group__isnull=False).values('ethnic_group');
@@ -185,17 +190,17 @@ class MediaItemQuerySet(CoreQuerySet):
 
     @staticmethod
     def by_fuzzy_collector_q(pattern):
-        return (word_search_q('collection__creator', pattern) | 
-                word_search_q('collection__collector', pattern) | 
+        return (word_search_q('collection__creator', pattern) |
+                word_search_q('collection__collector', pattern) |
                 word_search_q('collector', pattern))
 
     def by_fuzzy_collector(self, pattern):
         return self.filter(self.by_fuzzy_collector_q(pattern))
-    
+
     def sound(self):
         return self.filter(file__contains='/')
-        
-        
+
+
 class MediaItemManager(CoreManager):
     "Manage media items queries"
 
@@ -213,7 +218,7 @@ class MediaItemManager(CoreManager):
 
     def without_collection(self, *args, **kwargs):
         return self.get_query_set().without_collection(*args, **kwargs)
-    without_collection.__doc__ = MediaItemQuerySet.without_collection.__doc__   
+    without_collection.__doc__ = MediaItemQuerySet.without_collection.__doc__
 
     def by_recording_date(self, *args, **kwargs):
         return self.get_query_set().by_recording_date(*args, **kwargs)
@@ -229,16 +234,16 @@ class MediaItemManager(CoreManager):
 
     def by_change_time(self, *args, **kwargs):
         return self.get_query_set().by_change_time(*args, **kwargs)
-    by_change_time.__doc__ = MediaItemQuerySet.by_change_time.__doc__    
+    by_change_time.__doc__ = MediaItemQuerySet.by_change_time.__doc__
 
     def by_location(self, *args, **kwargs):
         return self.get_query_set().by_location(*args, **kwargs)
-    by_location.__doc__ = MediaItemQuerySet.by_location.__doc__    
+    by_location.__doc__ = MediaItemQuerySet.by_location.__doc__
 
     def sound(self, *args, **kwargs):
         return self.get_query_set().sound(*args, **kwargs)
-    sound.__doc__ = MediaItemQuerySet.sound.__doc__   
-    
+    sound.__doc__ = MediaItemQuerySet.sound.__doc__
+
 
 class MediaCollectionQuerySet(CoreQuerySet):
 
@@ -259,20 +264,20 @@ class MediaCollectionQuerySet(CoreQuerySet):
     def by_location(self, location):
         "Find collections by location"
         return self.filter(items__location__in=location.apparented()).distinct()
-    
+
     def by_recording_year(self, from_year, to_year=None):
         "Find collections by recording year"
         if to_year is None:
             return (self.filter(recorded_from_year__lte=from_year, recorded_to_year__gte=from_year))
         else:
-            return (self.filter(Q(recorded_from_year__range=(from_year, to_year)) | 
+            return (self.filter(Q(recorded_from_year__range=(from_year, to_year)) |
                     Q(recorded_to_year__range=(from_year, to_year))))
 
     def by_publish_year(self, from_year, to_year=None):
         "Find collections by publishing year"
         if to_year is None:
             to_year = from_year
-        return self.filter(year_published__range=(from_year, to_year)) 
+        return self.filter(year_published__range=(from_year, to_year))
 
     def by_ethnic_group(self, group):
         "Find collections by ethnic group"
@@ -286,12 +291,13 @@ class MediaCollectionQuerySet(CoreQuerySet):
         qs = self
         for f in args:
             if f == 'apparent_collector':
-                qs = qs.extra(select={f: 'IF(media_collections.collector_is_creator, '
+                if not 'sqlite3' in engine:
+                    qs = qs.extra(select={f: 'IF(media_collections.collector_is_creator, '
                                          'media_collections.creator, media_collections.collector)'})
             else:
                 raise Exception("Unsupported virtual field: %s" % f)
 
-        return qs                
+        return qs
 
     def recording_year_range(self):
         from_max = self.aggregate(Max('recorded_from_year'))['recorded_from_year__max']
@@ -300,7 +306,7 @@ class MediaCollectionQuerySet(CoreQuerySet):
 
         from_min = self.filter(recorded_from_year__gt=0).aggregate(Min('recorded_from_year'))['recorded_from_year__min']
         to_min   = self.filter(recorded_to_year__gt=0).aggregate(Min('recorded_to_year'))['recorded_to_year__min']
-        year_min = min(from_min, to_min) 
+        year_min = min(from_min, to_min)
 
         if not year_max:
             year_max = year_min
@@ -324,8 +330,8 @@ class MediaCollectionQuerySet(CoreQuerySet):
 
     def sound(self):
         return self.filter(items__file__contains='/').distinct()
-        
-        
+
+
 class MediaCollectionManager(CoreManager):
     "Manage collection queries"
 
@@ -360,16 +366,16 @@ class MediaCollectionManager(CoreManager):
     def by_change_time(self, *args, **kwargs):
         return self.get_query_set().by_change_time(*args, **kwargs)
     by_change_time.__doc__ = MediaCollectionQuerySet.by_change_time.__doc__
-    
+
     @staticmethod
     def __name_cmp(obj1, obj2):
         return unaccent_icmp(obj1.name, obj2.name)
 
     def sound(self, *args, **kwargs):
         return self.get_query_set().sound(*args, **kwargs)
-    sound.__doc__ = MediaCollectionQuerySet.sound.__doc__   
-    
-    
+    sound.__doc__ = MediaCollectionQuerySet.sound.__doc__
+
+
 class LocationQuerySet(CoreQuerySet):
     __flatname_map = None
 
@@ -404,9 +410,9 @@ class LocationManager(CoreManager):
 
     def by_flatname(self, *args, **kwargs):
         return self.get_query_set().by_flatname(*args, **kwargs)
-    by_flatname.__doc__ = LocationQuerySet.by_flatname.__doc__    
+    by_flatname.__doc__ = LocationQuerySet.by_flatname.__doc__
 
     def flatname_map(self, *args, **kwargs):
         return self.get_query_set().flatname_map(*args, **kwargs)
-    flatname_map.__doc__ = LocationQuerySet.flatname_map.__doc__    
+    flatname_map.__doc__ = LocationQuerySet.flatname_map.__doc__
 
