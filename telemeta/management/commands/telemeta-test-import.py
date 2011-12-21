@@ -39,6 +39,7 @@ class Command(BaseCommand):
 
         for url in self.urls:
             code = url.split('/')[-1]
+            code = code.replace(' ', '_')
             items = MediaItem.objects.filter(code=code)
             if not items:
                 item = MediaItem(collection=collection, code=code, title=code)
