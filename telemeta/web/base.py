@@ -539,9 +539,7 @@ class ItemView(object):
         # Get TimeSide processors
         formats = []
         for encoder in self.encoders:
-            #FIXME: timeside cannot encode to FLAC and OGG now :'(
-            if encoder.file_extension() != 'ogg' and encoder.file_extension() != 'flac':
-                formats.append({'name': encoder.format(), 'extension': encoder.file_extension()})
+            formats.append({'name': encoder.format(), 'extension': encoder.file_extension()})
 
         graphers = []
         for grapher in self.graphers:

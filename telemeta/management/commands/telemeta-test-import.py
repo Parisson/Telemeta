@@ -13,8 +13,13 @@ class Command(BaseCommand):
     code = 'test'
     title = 'test'
     urls = ['http://files.parisson.com/telemeta/tests/media/sweep.mp3',
+            'http://files.parisson.com/telemeta/tests/media/sweep.wav',
+            'http://files.parisson.com/telemeta/tests/media/test.ogg',
+            'http://files.parisson.com/telemeta/tests/media/test.flac',
             'http://files.parisson.com/telemeta/tests/media/test4.mp3',
-            'http://files.parisson.com/telemeta/tests/media/test5.wav']
+            'http://files.parisson.com/telemeta/tests/media/test5.wav',
+            'http://files.parisson.com/telemeta/tests/media/test6.wav']
+
     cache_data = TelemetaCache(settings.TELEMETA_DATA_CACHE_DIR)
     cache_export = TelemetaCache(settings.TELEMETA_EXPORT_CACHE_DIR)
 
@@ -27,6 +32,7 @@ class Command(BaseCommand):
         collections = MediaCollection.objects.filter(code=self.code)
         if not collections:
             collection = MediaCollection(code=self.code, title=self.title)
+            collection.public_access = 'full'
             collection.save()
         else:
             collection = collections[0]
