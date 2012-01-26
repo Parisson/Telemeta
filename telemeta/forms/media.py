@@ -36,6 +36,10 @@
 from django.forms import ModelForm
 from telemeta.models import *
 
+class MediaFundForm(ModelForm):
+    class Meta:
+        model = MediaFund
+
 class MediaCorpusForm(ModelForm):
     class Meta:
         model = MediaCorpus
