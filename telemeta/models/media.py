@@ -62,6 +62,7 @@ item_code_regex              = '(?:%s|%s)' % (item_published_code_regex, item_un
 
 PUBLIC_ACCESS_CHOICES = (('none', 'none'), ('metadata', 'metadata'), ('full', 'full'))
 
+
 class MediaResource(ModelCore):
     "Base class of all media objects"
 
@@ -83,6 +84,7 @@ class MediaResource(ModelCore):
 
     class Meta:
         abstract = True
+
 
 class MediaBaseResource(MediaResource):
     "Describe a base resource"
@@ -108,62 +110,6 @@ class MediaBaseResource(MediaResource):
     class Meta(MetaCore):
         abstract = True
         ordering = ['code']
-
-
-class MediaFund(MediaBaseResource):
-    "Describe a fund"
-
-    element_type = 'fund'
-
-    class Meta(MetaCore):
-        db_table = 'media_funds'
-        verbose_name = _('fund')
-
-
-class MediaCorpus(MediaBaseResource):
-    "Describe a corpus"
-
-    element_type = 'corpus'
-
-    class Meta(MetaCore):
-        db_table = 'media_corpus'
-        verbose_name = _('corpus')
-        verbose_name_plural = _('corpus')
-
-class MediaFundCorpusRelation(MediaResource):
-    "Relations between funds and corpus"
-
-    corpus                = ForeignKey('MediaCorpus', related_name="funds",
-                                   verbose_name=_('corpus'))
-    fund                  = ForeignKey('MediaFund', related_name="funds",
-                                   verbose_name=_('collection'))
-
-    class Meta(MetaCore):
-        db_table = 'media_fund_corpus'
-        verbose_name = _('fund relation')
-#        unique_together = (('fund', 'corpus'),)
-
-    def __unicode__(self):
-        sep = ' > '
-        return self.fund.code + sep + self.corpus.code
-
-
-class MediaCorpusCollectionRelation(MediaResource):
-    "Relations between corpus and collections"
-
-    corpus                = ForeignKey('MediaCorpus', related_name="corpus",
-                                   verbose_name=_('corpus'))
-    collection            = ForeignKey('MediaCollection', related_name="corpus",
-                                   verbose_name=_('collection'))
-
-    class Meta(MetaCore):
-        db_table = 'media_corpus_collections'
-        verbose_name = _('corpus relation')
-#        unique_together = (('collection', 'corpus'),)
-
-    def __unicode__(self):
-        sep = ' > '
-        return self.corpus.code + sep + self.collection.code
 
 
 class MediaCollection(MediaResource):
@@ -671,3 +617,52 @@ class DublinCoreToFormatMetadata(object):
                     metadata[key] = value.decode('utf-8')
                 keys_done.append(key)
         return metadata
+
+
+class MediaCorpus(MediaBaseResource):
+    "Describe a corpus"
+
+    element_type = 'corpus'
+    
+    collections = models.ManyToManyField(MediaCollection)
+    
+    class Meta(MetaCore):
+        db_table = 'media_corpus'
+        verbose_name = _('corpus')
+        verbose_name_plural = _('corpus')
+
+
+class MediaCorpusRelated(MediaRelated):
+    "Corpus related media"
+
+    corpus = ForeignKey(MediaCorpus, related_name="related", verbose_name=_('corpus'))
+
+    class Meta(MetaCore):
+        db_table = 'media_corpus_related'
+        verbose_name = _('corpus related media')
+        verbose_name_plural = _('corpus related media')
+        
+        
+class MediaFund(MediaBaseResource):
+    "Describe a fund"
+
+    element_type = 'fund'
+    
+    corpus = models.ManyToManyField(MediaCorpus)
+
+    class Meta(MetaCore):
+        db_table = 'media_funds'
+        verbose_name = _('fund')
+
+
+class MediaFundRelated(MediaRelated):
+    "Fund related media"
+
+    fund = ForeignKey(MediaFund, related_name="related", verbose_name=_('fund'))
+
+    class Meta(MetaCore):
+        db_table = 'media_fund_related'
+        verbose_name = _('fund related media')
+        verbose_name_plural = _('fund related media')
+        
+        

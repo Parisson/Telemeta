@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from telemeta.models.media import *
 from telemeta.models.instrument import *
 from telemeta.models.location import *
@@ -14,15 +15,9 @@ class MediaCorpusAdmin(admin.ModelAdmin):
     search_fields = ['title', 'code']
     ordering = ['code']
 
-class MediaFundCorpusRelationAdmin(admin.ModelAdmin):
-    pass
-
 class MediaCollectionAdmin(admin.ModelAdmin):
     search_fields = ['title', 'code']
     ordering = ['code']
-
-class MediaCorpusCollectionRelationAdmin(admin.ModelAdmin):
-    pass
 
 class MediaCollectionRelatedAdmin(admin.ModelAdmin):
     search_fields = ['title', 'description']
@@ -84,9 +79,6 @@ admin.site.register(MediaPart, MediaPartAdmin)
 
 admin.site.register(MediaItemRelated, MediaItemRelatedAdmin)
 admin.site.register(MediaCollectionRelated, MediaCollectionRelatedAdmin)
-
-admin.site.register(MediaFundCorpusRelation, MediaFundCorpusRelationAdmin)
-admin.site.register(MediaCorpusCollectionRelation, MediaCorpusCollectionRelationAdmin)
 
 admin.site.register(Instrument, InstrumentAdmin)
 admin.site.register(InstrumentAlias, InstrumentAliasAdmin)

@@ -36,7 +36,7 @@
 
 from django.conf.urls.defaults import *
 from telemeta.models import MediaItem, MediaCollection, MediaItemMarker
-from telemeta.web.base import GeneralView, AdminView, CollectionView, ItemView, \
+from telemeta.views.base import GeneralView, AdminView, CollectionView, ItemView, \
                                 InstrumentView, PlaylistView, ProfileView, GeoView, \
                                 LastestRevisionsFeed
 from jsonrpc import jsonrpc_site

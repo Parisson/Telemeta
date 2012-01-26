@@ -74,7 +74,7 @@ from telemeta.util.unaccent import unaccent_icmp
 from telemeta.util.logger import Logger
 from telemeta.util.unicode import UnicodeWriter
 from telemeta.cache import TelemetaCache
-import telemeta.web.pages as pages
+import telemeta.views.pages as pages
 from telemeta.forms import *
 
 

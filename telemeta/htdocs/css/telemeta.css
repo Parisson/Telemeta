@@ -1047,12 +1047,11 @@ a.image-link {
 
 .list_item, .list_item:visited, .list_item:hover{
     display:block;
-    color:#6A0307 !important;
+    color:#6A0307;
 }
 
 .list_item:hover{
-    background-color: #0f3179;
-    color:white !important;
+    font-weight: bold;
 }
 
 .icon_edit{
