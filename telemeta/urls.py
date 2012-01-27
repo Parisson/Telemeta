@@ -35,7 +35,8 @@
 #          Guillaume Pellerin <yomguy@parisson.com>
 
 from django.conf.urls.defaults import *
-from telemeta.models import MediaItem, MediaCollection, MediaItemMarker
+from django.views.generic.simple import redirect_to
+from telemeta.models import MediaItem, MediaCollection, MediaItemMarker, MediaCorpus, MediaFund
 from telemeta.views.base import GeneralView, AdminView, CollectionView, ItemView, \
                                 InstrumentView, PlaylistView, ProfileView, GeoView, \
                                 LastestRevisionsFeed
@@ -62,6 +63,8 @@ all_collections = { 'queryset': MediaCollection.objects.enriched(), }
 all_collections_unpublished = { 'queryset': MediaCollection.objects.filter(code__contains='_I_'), }
 all_collections_published = { 'queryset': MediaCollection.objects.filter(code__contains='_E_'), }
 all_collections_sound = { 'queryset': MediaCollection.objects.sound().order_by('code', 'old_code') }
+all_corpus = { 'queryset': MediaCorpus.objects.all().order_by('title') }
+all_funds = { 'queryset': MediaFund.objects.all().order_by('title') }
 
 # ID's regular expressions
 export_extensions = "|".join(item_view.list_export_extensions())
@@ -71,87 +74,104 @@ htdocs = os.path.dirname(__file__) + '/htdocs'
 urlpatterns = patterns('',
     url(r'^$', general_view.index, name="telemeta-home"),
 
+    # archives
+    # TODO: make a real archives tree view
+    url(r'^archives/$', redirect_to, {'url': '/archives/collections/'},
+        name="telemeta-archives"),
+        
     # items
-    url(r'^items/$', 'django.views.generic.list_detail.object_list', 
+    url(r'^archives/items/$', 'django.views.generic.list_detail.object_list', 
         dict(all_items, paginate_by=20, template_name="telemeta/mediaitem_list.html"),
         name="telemeta-items"),
-    url(r'^items_sound/$', 'django.views.generic.list_detail.object_list',
+    url(r'^archives/items_sound/$', 'django.views.generic.list_detail.object_list',
         dict(all_items_sound, paginate_by=20, template_name="telemeta/mediaitem_list.html"), name="telemeta-items-sound"),
-    url(r'^items/(?P<public_id>[A-Za-z0-9._-]+)/$', item_view.item_detail, 
+    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/$', item_view.item_detail, 
         name="telemeta-item-detail"),
-    url(r'^items/(?P<public_id>[A-Za-z0-9._-]+)/dc/$', item_view.item_detail, 
+    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/dc/$', item_view.item_detail, 
         {'template': 'telemeta/mediaitem_detail_dc.html'},
         name="telemeta-item-dublincore"),
-    url(r'^items/(?P<public_id>[A-Za-z0-9._-]+)/dc/xml/$', item_view.item_detail, 
+    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/dc/xml/$', item_view.item_detail, 
         {'format': 'dublin_core_xml'},
         name="telemeta-item-dublincore-xml"),
-    url(r'^items/download/(?P<public_id>[A-Za-z0-9._-]+)\.(?P<extension>' 
+    url(r'^archives/items/download/(?P<public_id>[A-Za-z0-9._-]+)\.(?P<extension>' 
             + export_extensions + ')$', 
         item_view.item_export,
         name="telemeta-item-export"),
-    url(r'^items/(?P<public_id>[A-Za-z0-9._-]+)/visualize/(?P<visualizer_id>[0-9a-z_]+)/(?P<width>[0-9A-Z]+)x(?P<height>[0-9A-Z]+)/$', 
+    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/visualize/(?P<visualizer_id>[0-9a-z_]+)/(?P<width>[0-9A-Z]+)x(?P<height>[0-9A-Z]+)/$', 
         item_view.item_visualize,
         name="telemeta-item-visualize"),
-    url(r'^items/(?P<public_id>[A-Za-z0-9._-]+)/analyze/xml/$', 
+    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/analyze/xml/$', 
         item_view.item_analyze_xml,
         name="telemeta-item-analyze-xml"),
-    url(r'^items/(?P<public_id>[A-Za-z0-9._-]+)/item_xspf.xml$', 
+    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/item_xspf.xml$', 
         item_view.item_playlist, 
         dict(template="telemeta/mediaitem_xspf.xml", mimetype="application/xspf+xml"),
         name="telemeta-item-xspf"),
-    url(r'^items/(?P<public_id>[A-Za-z0-9._-]+)/edit/$', item_view.item_edit,
+    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/edit/$', item_view.item_edit,
         dict(template='telemeta/mediaitem_edit.html'), name="telemeta-item-edit"),
-    url(r'^items/(?P<public_id>[A-Za-z0-9._-]+)/copy/$', item_view.item_copy,
+    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/copy/$', item_view.item_copy,
         dict(template='telemeta/mediaitem_copy.html'), name="telemeta-item-copy"),
     url(r'^item/add/$', item_view.item_add,
         dict(template='telemeta/mediaitem_add.html'), name="telemeta-item-add"),
-    url(r'^items/(?P<public_id>[A-Za-z0-9._-]+)/player/(?P<width>[0-9]+)x(?P<height>[0-9]+)/$', item_view.item_detail,
+    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/player/(?P<width>[0-9]+)x(?P<height>[0-9]+)/$', item_view.item_detail,
         dict(template='telemeta/mediaitem_player.html'), name="telemeta-item-player"),
-    url(r'^items/(?P<public_id>[A-Za-z0-9._-]+)/performances/$', item_view.item_performances_edit,
+    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/performances/$', item_view.item_performances_edit,
         dict(template='telemeta/mediaitem_performances_edit.html'), name="telemeta-item-performances_edit"),
-    url(r'^items/(?P<public_id>[A-Za-z0-9._-]+)/keywords/$', item_view.item_keywords_edit,
+    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/keywords/$', item_view.item_keywords_edit,
         dict(template='telemeta/mediaitem_keywords_edit.html'), name="telemeta-item-keywords_edit"),
-    url(r'^items/(?P<public_id>[A-Za-z0-9._-]+)/delete/$', item_view.item_delete, name="telemeta-item-delete"),
-    url(r'^items/(?P<item_public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)$', item_view.related_media_item_stream, name="telemeta-item-related"),
-    url(r'^items/(?P<public_id>[A-Za-z0-9._-]+)/related_edit/$', item_view.related_media_edit,  dict(template='telemeta/mediaitem_related_edit.html'), name="telemeta-item-related_edit"),
+    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/delete/$', item_view.item_delete, name="telemeta-item-delete"),
+    url(r'^archives/items/(?P<item_public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)$', item_view.related_media_item_stream, name="telemeta-item-related"),
+    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/related_edit/$', item_view.related_media_edit,  dict(template='telemeta/mediaitem_related_edit.html'), name="telemeta-item-related_edit"),
     # Markers
     url(r'^markers/(?P<marker_id>[A-Za-z0-9]+)/$', item_view.item_detail, name="telemeta-item-detail-marker"),
+    # FIXME: need all paths
+    url(r'^items/(?P<path>[A-Za-z0-9._-s/]+)/$', redirect_to, {'url': '/archives/items/%(path)s/', 'permanent': False}, name="telemeta-item-redir"),
         
     # collections
-    url(r'^collections/$', 'django.views.generic.list_detail.object_list',
+    url(r'^archives/collections/$', 'django.views.generic.list_detail.object_list',
         dict(all_collections, paginate_by=20, template_name="telemeta/collection_list.html"), name="telemeta-collections"),
     url(r'^collections_unpublished/$', 'django.views.generic.list_detail.object_list',
         dict(all_collections_unpublished, paginate_by=20, template_name="telemeta/collection_list.html"), name="telemeta-collections-unpublished"),
     url(r'^collections_published/$', 'django.views.generic.list_detail.object_list',
         dict(all_collections_published, paginate_by=20, template_name="telemeta/collection_list.html"), name="telemeta-collections-published"),
-    url(r'^collections/?page=(?P<page>[0-9]+)$', 
+    url(r'^archives/collections/?page=(?P<page>[0-9]+)$', 
         'django.views.generic.list_detail.object_list',
         dict(all_collections, paginate_by=20)),
-    url(r'^collections/(?P<public_id>[A-Za-z0-9._-]+)/$', collection_view.collection_detail,
+    url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/$', collection_view.collection_detail,
         dict(template="telemeta/collection_detail.html"), name="telemeta-collection-detail"),
-    url(r'^collections/(?P<public_id>[A-Za-z0-9._-]+)/dc/$', collection_view.collection_detail,
+    url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/dc/$', collection_view.collection_detail,
         dict(template="telemeta/collection_detail_dc.html"), name="telemeta-collection-dublincore"),
-    url(r'^collections/(?P<public_id>[A-Za-z0-9._-]+)/collection_xspf.xml$', 
+    url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/collection_xspf.xml$', 
         collection_view.collection_playlist, 
         dict(template="telemeta/collection_xspf.xml", mimetype="application/xspf+xml"),
         name="telemeta-collection-xspf"),
-    url(r'^collections/(?P<public_id>[A-Za-z0-9._-]+)/collection.m3u$',
+    url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/collection.m3u$',
         collection_view.collection_playlist, 
         dict(template="telemeta/collection.m3u", mimetype="audio/mpegurl"),
         name="telemeta-collection-m3u"),
-    url(r'^collections/(?P<public_id>[A-Za-z0-9._-]+)/edit/$', collection_view.collection_edit,
+    url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/edit/$', collection_view.collection_edit,
         dict(template='telemeta/collection_edit.html'), name="telemeta-collection-edit"),
-    url(r'^collections/(?P<public_id>[A-Za-z0-9._-]+)/copy/$', collection_view.collection_copy,
+    url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/copy/$', collection_view.collection_copy,
         dict(template='telemeta/collection_edit.html'), name="telemeta-collection-copy"),
     url(r'^collection/add/$', collection_view.collection_add,
         dict(template='telemeta/collection_add.html'), name="telemeta-collection-add"),
-    url(r'^collections/(?P<public_id>[A-Za-z0-9._-]+)/add_item/$', item_view.item_add,
+    url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/add_item/$', item_view.item_add,
         dict(template='telemeta/mediaitem_add.html'), name="telemeta-collection-additem"),
-    url(r'^collections/(?P<public_id>[A-Za-z0-9._-]+)/delete/$', collection_view.collection_delete, name="telemeta-collection-delete"),
-    url(r'^collections/(?P<collection_public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)$', collection_view.related_media_collection_stream, name="telemeta-collection-related"),
-    url(r'^collections/(?P<public_id>[A-Za-z0-9._-]+)/related_edit/$', collection_view.related_media_edit,  dict(template='telemeta/collection_related_edit.html'), name="telemeta-collection-related_edit"),
-    url(r'^collections_sound/$', 'django.views.generic.list_detail.object_list',
+    url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/delete/$', collection_view.collection_delete, name="telemeta-collection-delete"),
+    url(r'^archives/collections/(?P<collection_public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)$', collection_view.related_media_collection_stream, name="telemeta-collection-related"),
+    url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/related_edit/$', collection_view.related_media_edit,  dict(template='telemeta/collection_related_edit.html'), name="telemeta-collection-related_edit"),
+    url(r'^archives/collections_sound/$', 'django.views.generic.list_detail.object_list',
         dict(all_collections_sound, paginate_by=20, template_name="telemeta/collection_list.html"), name="telemeta-collections-sound"),
+    # FIXME: need all paths
+    url(r'^collections/(?P<path>[A-Za-z0-9._-s/]+)/$', redirect_to, {'url': '/archives/collections/%(path)s/', 'permanent': False}, name="telemeta-collection-redir"),
+    
+    # Corpus
+    url(r'^archives/corpus/$', 'django.views.generic.list_detail.object_list',
+        dict(all_corpus, paginate_by=20, template_name="telemeta/corpus_list.html"), name="telemeta-corpus"),
+        
+    # Funds
+    url(r'^archives/funds/$', 'django.views.generic.list_detail.object_list',
+        dict(all_funds, paginate_by=20, template_name="telemeta/fund_list.html"), name="telemeta-fund"),
         
     # search
     url(r'^search/$', general_view.search, name="telemeta-search"),

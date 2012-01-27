@@ -225,7 +225,7 @@ class GeneralView(object):
         else:
             template='telemeta/home.html'
             playlists = get_playlists(request)
-            revisions = get_revisions(15)
+            revisions = get_revisions(50)
             searches = Search.objects.filter(username=request.user)
             return render(request, template, {'playlists': playlists, 'searches': searches,
                                               'revisions': revisions,})
@@ -397,7 +397,7 @@ class CollectionView(object):
                     code = public_id
                 form.save()
                 collection.set_revision(request.user)
-                return HttpResponseRedirect('/collections/'+code)
+                return HttpResponseRedirect('/archives/collections/'+code)
         else:
             form = MediaCollectionForm(instance=collection)
 
@@ -414,7 +414,7 @@ class CollectionView(object):
                     code = public_id
                 form.save()
                 collection.set_revision(request.user)
-                return HttpResponseRedirect('/collections/'+code)
+                return HttpResponseRedirect('/archives/collections/'+code)
         else:
             form = MediaCollectionForm(instance=collection)
 
@@ -431,7 +431,7 @@ class CollectionView(object):
                     code = public_id
                 form.save()
                 collection.set_revision(request.user)
-                return HttpResponseRedirect('/collections/'+code)
+                return HttpResponseRedirect('/archives/collections/'+code)
         else:
             collection = MediaCollection.objects.get(public_id=public_id)
             form = MediaCollectionForm(instance=collection)
@@ -453,7 +453,7 @@ class CollectionView(object):
         """Delete a given collection"""
         collection = MediaCollection.objects.get(public_id=public_id)
         collection.delete()
-        return HttpResponseRedirect('/collections/')
+        return HttpResponseRedirect('/archives/collections/')
 
     def related_media_collection_stream(self, request, collection_public_id, media_id):
         collection = MediaCollection.objects.get(public_id=collection_public_id)
@@ -471,7 +471,7 @@ class CollectionView(object):
             if formset.is_valid():
                 formset.save()
                 collection.set_revision(request.user)
-                return HttpResponseRedirect('/collections/'+public_id)
+                return HttpResponseRedirect('/archives/collections/'+public_id)
         else:
             formset = MediaCollectionRelatedFormSet(instance=collection)
 
@@ -609,7 +609,7 @@ class ItemView(object):
                     for analysis in analyses:
                         analysis.delete()
                 item.set_revision(request.user)
-                return HttpResponseRedirect('/items/'+code)
+                return HttpResponseRedirect('/archives/items/'+code)
         else:
             form = MediaItemForm(instance=item)
 
@@ -636,7 +636,7 @@ class ItemView(object):
             if formset.is_valid():
                 formset.save()
                 item.set_revision(request.user)
-                return HttpResponseRedirect('/items/'+public_id)
+                return HttpResponseRedirect('/archives/items/'+public_id)
         else:
             formset = MediaItemRelatedFormSet(instance=item)
 
@@ -658,7 +658,7 @@ class ItemView(object):
                 code = form.cleaned_data['code']
                 if not code:
                     code = str(item.id)
-                return HttpResponseRedirect('/items/'+code)
+                return HttpResponseRedirect('/archives/items/'+code)
         else:
             form = MediaItemForm(instance=item)
 
@@ -692,7 +692,7 @@ class ItemView(object):
                     keyword.save()
 
                 item.set_revision(request.user)
-                return HttpResponseRedirect('/items/'+code)
+                return HttpResponseRedirect('/archives/items/'+code)
         else:
             item = MediaItem.objects.get(public_id=public_id)
             form = MediaItemForm(instance=item)
@@ -706,7 +706,7 @@ class ItemView(object):
         item = MediaItem.objects.get(public_id=public_id)
         collection = item.collection
         item.delete()
-        return HttpResponseRedirect('/collections/'+collection.code)
+        return HttpResponseRedirect('/archives/collections/'+collection.code)
 
     def item_analyze(self, item):
         analyses = MediaItemAnalysis.objects.filter(item=item)
@@ -908,7 +908,7 @@ class ItemView(object):
             formset = PerformanceFormSet(data=request.POST, instance=item)
             if formset.is_valid():
                 formset.save()
-                return HttpResponseRedirect('/items/'+public_id)
+                return HttpResponseRedirect('/archives/items/'+public_id)
         else:
             formset = PerformanceFormSet(instance=item)
         return render(request, template, {'item': item, 'formset': formset,})
@@ -921,7 +921,7 @@ class ItemView(object):
             formset = FormSet(data=request.POST, instance=item)
             if formset.is_valid():
                 formset.save()
-                return HttpResponseRedirect('/items/'+public_id)
+                return HttpResponseRedirect('/archives/items/'+public_id)
         else:
             formset = FormSet(instance=item)
         return render(request, template, {'item': item, 'formset': formset,})
@@ -1442,16 +1442,6 @@ class CorpusView(object):
             form = MediaCorpusForm(instance=corpus)
 
         return render(request, template, {'corpus': corpus, "form": form,})
-
-    def corpus_playlist(self, request, public_id, template, mimetype):
-        try:
-            corpus = MediaCorpus.objects.get(public_id=public_id)
-        except ObjectDoesNotExist:
-            raise Http404
-
-        template = loader.get_template(template)
-        context = RequestContext(request, {'corpus': corpus, 'host': request.META['HTTP_HOST']})
-        return HttpResponse(template.render(context), mimetype=mimetype)
 
     @method_decorator(permission_required('telemeta.delete_mediacorpus'))
     def corpus_delete(self, request, public_id):

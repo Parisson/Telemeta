@@ -201,6 +201,12 @@ a img { border: none; }
     max-height: 500px;
     overflow-y: scroll;
 }
+
+.vscroll {
+    max-height: 500px;
+    overflow-y: scroll;
+    width: 100%;
+}
     
 
 .analyzer-title {
@@ -475,6 +481,86 @@ form.login .submit {
 #menu .violet { border-bottom-color:  #A00020; }
 
 * html #menu :link, * html #menu :visited { background-position: 1px 0 }
+
+
+/* Drop Down Menus */
+.clear {clear:both} 
+
+#nav {
+    margin:0;
+    padding:0;
+    list-style:none;
+}  
+
+/* make the LI display inline */
+/* it's position relative so that position absolute */
+/* can be used in submenu */
+
+#nav li {
+display:inline-block; 
+position:relative;
+z-index:500;
+}
+    
+/* this is the parent menu */
+#nav li a {
+display:block;
+text-align:center;
+}
+
+/* you can make a different style for default selected value */
+#nav a.selected {
+color:#f00;
+}
+
+/* submenu, it's hidden by default */
+#nav ul {
+    position:absolute;
+    left:0;
+    display:none;
+    margin:0 0 0 -1px;
+    padding:0;
+    list-style:none;
+    border-left:2px solid #6a0307;
+    border-right:2px solid #6a0307;
+    border-bottom:2px solid #6a0307;
+    background-color: #6a0307;
+    color: #FFF;
+}
+    
+#nav ul li {
+    width:100px;
+    float:left;
+    border-bottom:0px solid #fff;
+}
+    
+/* display block will make the link fill the whole area of LI */
+#nav ul a {
+    display:block; 
+    height:15px;
+    padding: 5px 5px;
+    font-size: 11px;
+    text-align:left;
+    -webkit-border-top-left-radius:0px 0px;
+    moz-border-radius-topleft: 0px 0px;
+    border-top-left-radius: 0px 0px;
+    -webkit-border-top-right-radius:0px 0px;
+    moz-border-radius-topright: 0px 0px;
+    border-top-right-radius: 0px 0px;
+    border-bottom-width: 0px;
+}
+    
+#nav ul a:hover {
+    background-color: #FFF ;
+    color: #6a0307 ;
+}
+
+#nav ul a:active{
+    background-color: #FFF;
+    color: #6a0307 ;
+}
+
+
 
 /* Footer (borrowed from Trac) */
 #footer {
@@ -1178,3 +1264,5 @@ a:focus,div:focus{
 input,textarea{
     outline: none !important;
 }
+
+

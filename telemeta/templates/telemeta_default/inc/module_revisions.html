@@ -6,6 +6,7 @@
       <img src="{% url telemeta-images "rss.png" %}" alt="rss" style="vertical-align:middle" /></a>
       {% trans "Last changes" %}</h3>
       <a href="/rss" style="float:right" class="icon_rss">&nbsp;&nbsp;</a>
+    <div class="vscroll">
     <table class="listing" bgcolor="#FFFFFF" style="width: 100%">
       <tr>
         <th class="highlight">{% trans "Date" %}</th>
@@ -37,4 +38,5 @@
       </tr>
     {% endfor %}
     </table>
+    </div>
    </div>
