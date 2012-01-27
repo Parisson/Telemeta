@@ -1,0 +1,24 @@
+{% extends "telemeta/base.html" %}
+{% load telemeta_utils %}
+{% load i18n %}
+
+{% block head_title %}{% trans "Media Funds" %} - {{ block.super }}{% endblock %}
+
+{% block title%}
+ <img src="{% url telemeta-images "funds_red.png" %}" style="vertical-align:middle" /> {% trans "Media Funds" %}
+{% endblock %}
+
+{% block title_buttons %}
+     <a href="{% url telemeta-funds %}" class="component_icon button icon_filter">{% trans "All" %}</a>
+    {% if user.is_authenticated and perms.telemeta.add_mediafunds %}
+      <a href="{% url telemeta-funds-add %}" class="component_icon button icon_add">{% trans "Add" %}</a>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+{% with object_list as funds %}
+<div class="fullpage">
+{% include "telemeta/inc/fund_list.html" %}
+</div>
+{% endwith %}
+{% endblock %}

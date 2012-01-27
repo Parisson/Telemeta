@@ -1471,3 +1471,115 @@ class CorpusView(object):
             formset = MediaCorpusRelatedFormSet(instance=corpus)
 
         return render(request, template, {'corpus': corpus, 'formset': formset,})
+
+class CorpusView(object):
+    """Provide Corpuss web UI methods"""
+
+    def corpus_detail(self, request, public_id, template='telemeta/corpus_detail.html'):
+        corpus = MediaCorpus.objects.get(public_id=public_id)
+        collections = corpus.collections.enriched()
+        collections = collections.order_by('code')
+
+        if corpus.public_access == 'none' and not (request.user.is_staff or request.user.is_superuser):
+            mess = ugettext('Access not allowed')
+            title = ugettext('Corpus') + ' : ' + public_id + ' : ' + mess
+            description = ugettext('Please login or contact the website administator to get a private access.')
+            messages.error(request, title)
+            return render(request, 'telemeta/messages.html', {'description' : description})
+
+        related_media = MediaCorpusRelated.objects.filter(corpus=corpus)
+        check_related_media(related_media)
+        
+        return render(request, template, {'corpus': corpus, 'collections': collections, 'related_media': related_media})
+
+    @method_decorator(permission_required('telemeta.change_mediacorpus'))
+    def corpus_edit(self, request, public_id, template='telemeta/corpus_edit.html'):
+        corpus = MediaCorpus.objects.get(public_id=public_id)
+        if request.method == 'POST':
+            form = MediaCorpusForm(data=request.POST, files=request.FILES, instance=corpus)
+            if form.is_valid():
+                code = form.cleaned_data['code']
+                if not code:
+                    code = public_id
+                form.save()
+                corpus.set_revision(request.user)
+                return HttpResponseRedirect('/archives/corpus/'+code)
+        else:
+            form = MediaCorpusForm(instance=corpus)
+
+        return render(request, template, {'corpus': corpus, "form": form,})
+
+    @method_decorator(permission_required('telemeta.add_mediacorpus'))
+    def corpus_add(self, request, template='telemeta/corpus_add.html'):
+        corpus = MediaCorpus()
+        if request.method == 'POST':
+            form = MediaCorpusForm(data=request.POST, files=request.FILES, instance=corpus)
+            if form.is_valid():
+                code = form.cleaned_data['code']
+                if not code:
+                    code = public_id
+                form.save()
+                corpus.set_revision(request.user)
+                return HttpResponseRedirect('/archives/corps/'+code)
+        else:
+            form = MediaCorpusForm(instance=corpus)
+
+        return render(request, template, {'corpus': corpus, "form": form,})
+
+    @method_decorator(permission_required('telemeta.add_mediacorpus'))
+    def corpus_copy(self, request, public_id, template='telemeta/corpus_edit.html'):
+        if request.method == 'POST':
+            corpus = MediaCorpus()
+            form = MediaCorpusForm(data=request.POST, files=request.FILES, instance=corpus)
+            if form.is_valid():
+                code = form.cleaned_data['code']
+                if not code:
+                    code = public_id
+                form.save()
+                corpus.set_revision(request.user)
+                return HttpResponseRedirect('/archives/corpus/'+code)
+        else:
+            corpus = MediaCorpus.objects.get(public_id=public_id)
+            form = MediaCorpusForm(instance=corpus)
+
+        return render(request, template, {'corpus': corpus, "form": form,})
+
+    def corpus_playlist(self, request, public_id, template, mimetype):
+        try:
+            corpus = MediaCorpus.objects.get(public_id=public_id)
+        except ObjectDoesNotExist:
+            raise Http404
+
+        template = loader.get_template(template)
+        context = RequestContext(request, {'corpus': corpus, 'host': request.META['HTTP_HOST']})
+        return HttpResponse(template.render(context), mimetype=mimetype)
+
+    @method_decorator(permission_required('telemeta.delete_mediacorpus'))
+    def corpus_delete(self, request, public_id):
+        """Delete a given corpus"""
+        corpus = MediaCorpus.objects.get(public_id=public_id)
+        corpus.delete()
+        return HttpResponseRedirect('/archives/corpus/')
+
+    def related_media_corpus_stream(self, request, corpus_public_id, media_id):
+        corpus = MediaCorpus.objects.get(public_id=corpus_public_id)
+        media = MediaCorpusRelated.objects.get(corpus=corpus, id=media_id)
+        response = HttpResponse(stream_from_file(media.file.path), mimetype=media.mime_type)
+#        response['Content-Disposition'] = 'attachment'
+        return response
+
+    @method_decorator(permission_required('telemeta.change_mediacorpus'))
+    def related_media_edit(self, request, public_id, template):
+        corpus = MediaCorpus.objects.get(public_id=public_id)
+        MediaCorpusRelatedFormSet = inlineformset_factory(MediaCorpus, MediaCorpusRelated, form=MediaCorpusRelatedForm)
+        if request.method == 'POST':
+            formset = MediaCorpusRelatedFormSet(data=request.POST, files=request.FILES, instance=corpus)
+            if formset.is_valid():
+                formset.save()
+                corpus.set_revision(request.user)
+                return HttpResponseRedirect('/archives/corpus/'+public_id)
+        else:
+            formset = MediaCorpusRelatedFormSet(instance=corpus)
+
+        return render(request, template, {'corpus': corpus, 'formset': formset,})
+

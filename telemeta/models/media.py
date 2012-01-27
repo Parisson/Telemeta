@@ -89,11 +89,10 @@ class MediaResource(ModelCore):
 class MediaBaseResource(MediaResource):
     "Describe a base resource"
 
-    # General informations
-    reference             = CharField(_('reference'), unique=True, null=True)
     title                 = CharField(_('title'), required=True)
     description           = CharField(_('description'))
     code                  = CharField(_('code'), unique=True, required=True)
+    reference             = CharField(_('reference'), unique=True, null=True)
     public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES,
                                       max_length=16, default="metadata")
 

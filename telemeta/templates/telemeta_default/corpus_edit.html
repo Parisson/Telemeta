@@ -1,0 +1,34 @@
+{% extends "telemeta/corpus_detail.html" %}
+{% load i18n %}
+{% load telemeta_utils %}
+
+{% block title %}
+    <img src="{% url telemeta-images "corpus_red.png" %}" style="vertical-align:middle" /> Corpus : {{ corpus }}
+{% endblock %}
+{% block title_buttons %}
+    <a href="{% url telemeta-corpus-detail corpus.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+{% endblock %}
+
+{% block infos %}
+     <div class="infos">
+      <form method="post" id="_editCollectionForm" action="">{% csrf_token %}
+       <table>
+       <tr><td colspan="2">{% for error in form.non_field_errors %}<li class="error">{{ error }}</li>{% endfor %}</td></tr>
+       {% for field in form %}
+       <tr>
+            <tr><td class="error">{{ field.errors }}</td></tr>
+            <td>{{ field.label_tag }}:</td><td> {{ field }}</td>
+        </tr>
+       {% endfor %}
+       </table>
+        <div align="center" style="margin-top:3ex;">
+         <a href="{% url telemeta-corpus-detail corpus.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+         <a href="#" class="component_icon button icon_save"
+   onclick="document.getElementById('_editCollectionForm').submit(); return false;">{% trans "Save" %}</a>
+        </div>
+      </form>
+     </div>
+{% endblock infos%}
+
+{% block delete %}
+{% endblock %}
