@@ -1,8 +1,6 @@
-=======
-README
-=======
-
-Telemeta: an open web audio CMS
+=============================
+Telemeta: open web audio CMS
+=============================
 
 Introduction
 ============
