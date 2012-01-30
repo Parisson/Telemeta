@@ -119,11 +119,25 @@ def is_collection(resource):
     return isinstance(resource, models.MediaCollection)
 
 @register.filter
+def is_corpus(resource):
+    return isinstance(resource, models.MediaCorpus)
+
+@register.filter
+def is_fonds(resource):
+    return isinstance(resource, models.MediaFonds)
+
+@register.filter
+def is_resource(resource):
+    return is_fonds(resource) or is_corpus(resource)
+
+@register.filter
 def to_dublincore(resource):
     if isinstance(resource, models.MediaItem):
         return dc.express_item(resource)
-    else:
+    elif isinstance(resource, models.MediaCollection):
         return dc.express_collection(resource)
+    else:
+        return dc.express_generic_resource(resource)
 
 class DescriptionListFieldNode(template.Node):
     def __init__(self, model, attr, join_with = None, show_empty = False):

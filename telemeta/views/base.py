@@ -187,9 +187,8 @@ def check_related_media(medias):
         if not media.mime_type:
             media.set_mime_type()
             media.save()
-        if not media.title and media.url:
+        if not media.title and media.url and not 'https' in media.url:
             import lxml.etree
-            parser = lxml.etree.HTMLParser()
             parser = lxml.etree.HTMLParser()
             tree = lxml.etree.parse(media.url, parser)
             title = tree.find(".//title").text
@@ -1190,7 +1189,7 @@ class MarkerView(object):
         return marker.id
 
 class PlaylistView(object):
-    """Provide Collections web UI methods"""
+    """Provide Playlist web UI methods"""
 
     @jsonrpc_method('telemeta.add_playlist')
     def add_playlist(request, playlist):

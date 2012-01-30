@@ -7,11 +7,15 @@
         {% for element in resource.elements %}
         <dt><span>{{ element.name }}</span>{{ element.refinement|default:"&nbsp;" }}</dt>
         <dd>
-        {% if element.related|is_item or element.related|is_collection %}
+        {% if element.related|is_item or element.related|is_collection or element.related|is_resource %}
             {% if element.related|is_item %}
             <a href="{% url telemeta-item-dublincore element.related.public_id %}">{{ element.value }}</a>
-            {% else %}
+            {% endif %}
+            {% if element.related|is_collection %}
             <a href="{% url telemeta-collection-dublincore element.related.public_id %}">{{ element.value }}</a>
+            {% endif %}
+            {% if element.related|is_resource %}
+            <a href="{{element.value}}">{{ element.value }}</a>
             {% endif %}
         {% else %}
             {{ element.value }}

@@ -496,7 +496,7 @@ class Playlist(ModelCore):
 
 class PlaylistResource(ModelCore):
     "Playlist components"
-    RESOURCE_TYPE_CHOICES = (('item', 'item'), ('collection', 'collection'), ('marker', 'marker'))
+    RESOURCE_TYPE_CHOICES = (('item', 'item'), ('collection', 'collection'), ('marker', 'marker'), ('fonds', 'fonds'), ('corpus', 'corpus'))
     element_type = 'playlist_resource'
     public_id          = CharField(_('public_id'), required=True)
     playlist           = ForeignKey('Playlist', related_name="resources", verbose_name=_('playlist'))

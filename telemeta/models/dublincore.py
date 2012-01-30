@@ -33,7 +33,7 @@
 # Author: Olivier Guilyardi <olivier@samalyse.com>
 
 from telemeta.models.core import Duration
-from telemeta.models.media import MediaItem, MediaCollection, MediaItemAnalysis
+from telemeta.models.media import *
 from django.contrib.sites.models import Site
 from django.conf import settings
 
@@ -48,9 +48,9 @@ class Resource(object):
     def flatten(self):
         """Convert the resource to a dictionary with element names as keys.
 
-        Warnings: 
+        Warnings:
         - refinements are lost during this conversion,
-        - if there are several occurences of the same element, only the first is 
+        - if there are several occurences of the same element, only the first is
         used, others are lost.
         - all values are converted to strings
         """
@@ -76,7 +76,7 @@ class Resource(object):
             else:
                 try:
                     iter(e)
-                except TypeError: 
+                except TypeError:
                     raise Exception("add() only accepts elements or sequences of elements")
 
                 self.add(*e)
@@ -88,8 +88,8 @@ class Resource(object):
             if e.refinement:
                 key += u'.' + unicode(e.refinement)
             dump += u'%s:\t%s\n' % (key, unicode(e.value))
-        return dump            
-            
+        return dump
+
 
 class Element(object):
     "Represent a Dublin Core element"
@@ -130,8 +130,8 @@ class Date(Element):
             value = unicode(value) + '-01-01T00:00:00Z'
         elif value:
             value = value.strftime('%Y-%m-%dT%H:%M:%SZ')
-            
-        super(Date, self).__init__('date', value, refinement)            
+
+        super(Date, self).__init__('date', value, refinement)
 
 def media_access_rights(media):
     if media.public_access == 'full':
@@ -145,13 +145,18 @@ def media_identifier(media):
     domain = sites[0].domain
     return 'http://' + domain + '/' + media.element_type + 's/' + unicode(media.id)
 
+def media_generic_identifier(media):
+    sites = Site.objects.all()
+    domain = sites[0].domain
+    return 'http://' + domain + '/' + media.element_type + '/' + unicode(media.id)
+
 def express_collection(collection):
     "Express a collection as a Dublin Core resource"
 
     if collection.collector:
-        creator = (Element('creator', collection.collector), 
+        creator = (Element('creator', collection.collector),
                    Element('contributor', collection.creator))
-    else:                        
+    else:
         creator = Element('creator', collection.creator)
 
     duration = max(collection.approx_duration, collection.computed_duration())
@@ -189,27 +194,27 @@ def express_item(item):
     if item.collector:
         creator = (Element('creator', item.collector),
                    Element('contributor', item.collection.creator))
-    elif item.collection.collector:                   
+    elif item.collection.collector:
         creator = (Element('creator', item.collection.collector),
                    Element('contributor', item.collection.creator))
     else:
         creator = Element('creator', item.collection.creator)
-       
+
     if item.recorded_from_date:
         date = Date(item.recorded_from_date, item.recorded_to_date, refinement='created')
     else:
         date = Date(item.collection.recorded_from_year, item.collection.recorded_to_year, refinement='created'),
-        
+
     if item.title:
         title = item.title
     else:
         title = item.collection.title
         if item.track:
             title += u' - ' + item.track
-    
+
     try:
         analysis = MediaItemAnalysis.objects.get(item=item, analyzer_id='mime_type')
-        mime_type = analysis.value 
+        mime_type = analysis.value
     except:
         mime_type = ''
 
@@ -239,14 +244,36 @@ def express_item(item):
     )
 
     return resource
-    
+
+def express_generic_resource(resource):
+    "Express a media item as a Dublin Core resource"
+
+    parts = []
+    for child in resource.children.all():
+        id = media_generic_identifier(child)
+        if id:
+            parts.append(Element('relation', id, 'hasPart', child))
+
+    r = Resource(
+        Element('identifier',       media_generic_identifier(resource), related=resource),
+        Element('identifier',       resource.public_id, related=resource),
+        Element('type',             resource.element_type),
+        Element('title',            resource.title),
+        Element('description',      resource.description),
+        Element('publisher',        settings.TELEMETA_ORGANIZATION),
+        parts
+    )
+
+    return r
+
+
 def express_resource(res):
     if isinstance(res, MediaItem):
         return express_item(res)
     elif isinstance(res, MediaCollection):
         return express_collection(res)
 
-    raise Exception("Invalid resource type")        
+    raise Exception("Invalid resource type")
 
 def lookup_resource(media_id):
     try:
@@ -255,7 +282,7 @@ def lookup_resource(media_id):
         code = id[-1]
     except ValueError:
         raise MalformedMediaIdentifier("Media identifier must be in type:code format")
-    
+
     if (type == 'collection') or (type == 'collections'):
         try:
             return MediaCollection.objects.get(code=code)
@@ -274,6 +301,6 @@ def lookup_resource(media_id):
                     return None
     else:
         raise MalformedMediaIdentifier("No such type in media identifier: " + type)
-   
+
 class MalformedMediaIdentifier(Exception):
     pass

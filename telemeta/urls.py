@@ -188,6 +188,12 @@ urlpatterns = patterns('',
     url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/delete/$', resource_view.delete, name="telemeta-resource-delete"),
     url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)$', resource_view.related_stream, name="telemeta-resource-related"),
     url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/related_edit/$', resource_view.related_edit,  dict(template='telemeta/resource_related_edit.html'), name="telemeta-resource-related_edit"),
+    url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/dc/$', resource_view.detail,
+        {'template': 'telemeta/resource_detail_dc.html'},
+        name="telemeta-resource-dublincore"),
+    url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/dc/xml/$', resource_view.detail,
+        {'format': 'dublin_core_xml'},
+        name="telemeta-resource-dublincore-xml"),
 
     # search
     url(r'^search/$', general_view.search, name="telemeta-search"),
