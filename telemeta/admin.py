@@ -7,7 +7,7 @@ from telemeta.models.system import *
 from django.contrib import admin
 
 
-class MediaFundAdmin(admin.ModelAdmin):
+class MediaFondsAdmin(admin.ModelAdmin):
     search_fields = ['title', 'code']
     ordering = ['code']
 
@@ -71,7 +71,7 @@ class RevisionAdmin(admin.ModelAdmin):
     ordering = ['-time']
 
 
-admin.site.register(MediaFund, MediaFundAdmin)
+admin.site.register(MediaFonds, MediaFondsAdmin)
 admin.site.register(MediaCorpus, MediaCorpusAdmin)
 admin.site.register(MediaCollection, MediaCollectionAdmin)
 admin.site.register(MediaItem, MediaItemAdmin)

@@ -1,1 +1,20 @@
-{% extends "telemeta_default/mediaitem_detail_dc.html" %}
+{% extends "telemeta/mediaitem_detail.html" %}
+{% load telemeta_utils %}
+{% load i18n %}
+
+{% if item %}
+{% block title_buttons %}
+ <a class="component_icon button icon_previous" href="{% url telemeta-item-detail item.public_id %}">{% trans "Normal View" %}</a>
+{% endblock %}
+
+{% block infos %}
+{% with item|to_dublincore as resource %}
+{% include "telemeta/inc/dublincore.html" %}
+{% endwith %}
+{% endblock %}
+{% else %}
+    <p>{% trans "No such item" %}</p>
+{% endif %}
+
+{% block related %}
+{% endblock related %}

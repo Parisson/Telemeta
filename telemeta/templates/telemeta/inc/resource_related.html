@@ -20,19 +20,19 @@
                                 <dt>{% trans "Title" %}</dt>
                                 <dd>
                                     {% if media.url %}
-                                        <a href="{{ media.url }}" target="_blank">
+                                        <a href="{{ media.url }}">
                                         {% if media.title %}
                                             {{ media.title }}</a>
                                         {% else %}
                                             {{ media.url|get_filename }}</a>
                                         {% endif %}
                                     {% else %}
-                                        <a href="{% url telemeta-collection-related collection.public_id media.id %}" target="_blank">
+                                        <a href="{% url telemeta-resource-related type resource.public_id media.id %}">
                                         {% if media.title %}
                                             {{ media.title }}</a>
                                         {% else %}
                                             {{ media.file|get_filename }}</a>
-                                        {% endif %} 
+                                        {% endif %}
                                     {% endif %}
                                 </dd>
                                 <dt>{% trans "Description" %}</dt>
@@ -46,8 +46,8 @@
                                     <a href="{{ media.url }}" target="_blank">{{ media.url }}</a>
                                 {% else %}
                                     {% if media.file %}
-                                    <a href="{% url telemeta-collection-related collection.public_id media.id %}" target="_blank">
-                                    {% url telemeta-collection-related collection.public_id media.id %}
+                                    <a href="{% url telemeta-resource-related type resource.public_id media.id %}" target="_blank">
+                                    {% url telemeta-resource-related type resource.public_id media.id %}
                                     </a>
                                     {% endif %}
                                 {% endif %}
@@ -60,8 +60,8 @@
                                    <a href="{{ media.url }}">
                                    <img src="{{ media.url }}" style="max-width: 420px; max-height: 200px;" /></a>
                                   {% else %}
-                                   <a href="{% url telemeta-collection-related collection.public_id media.id %}">
-                                   <img src="{% url telemeta-collection-related collection.public_id media.id %}" style="max-width: 420px; max-height: 200px;" /></a>
+                                   <a href="{% url telemeta-resource-related type resource.public_id media.id %}">
+                                   <img src="{% url telemeta-resource-related type resource.public_id media.id %}" style="max-width: 420px; max-height: 200px;" /></a>
                                    {% endif %}
                                 {% else %}
                                 {% if media.url %}
@@ -77,7 +77,7 @@
                 </table>
             </div>
             {% endif %}
-            {% if user.is_authenticated and perms.telemeta.change_mediacollection %}
-                <br /><a href="{% url telemeta-collection-related_edit collection.public_id %}" class="component_icon button icon_edit">{% trans "Edit"%} {% trans "related media"%}</a>
+            {% if user.is_authenticated and perms.telemeta.change_mediaresource %}
+                <br /><a href="{% url telemeta-resource-related_edit type resource.public_id %}" class="component_icon button icon_edit">{% trans "Edit"%} {% trans "related media"%}</a>
             {% endif %}
         </div>

@@ -45,7 +45,7 @@ from django.forms import ModelForm
 
 class Revision(ModelCore):
     "Revision made by user"
-    ELEMENT_TYPE_CHOICES = (('collection', 'collection'), ('item', 'item'), ('part', 'part'), ('marker', 'marker'), ('media', 'media'))
+    ELEMENT_TYPE_CHOICES = (('collection', 'collection'), ('item', 'item'), ('part', 'part'), ('marker', 'marker'), ('media', 'media'), ('fonds', 'fonds'), ('corpus', 'corpus'))
     CHANGE_TYPE_CHOICES  = (('import', 'import'), ('create', 'create'), ('update', 'update'), ('delete','delete'))
 
     element_type         = CharField(_('element type'), choices=ELEMENT_TYPE_CHOICES, max_length=16, required=True)

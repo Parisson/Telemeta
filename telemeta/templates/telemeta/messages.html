@@ -1,1 +1,12 @@
-{% extends "telemeta_default/messages.html" %}
+{% extends "telemeta/base.html" %}
+{% load i18n %}
+
+{% block content %}
+{% if messages %}
+ {% for message in messages %}
+  <h1>{{ message }}</h1>
+  <p>{{ description }}
+ {% endfor %}
+{% endif %}
+{% endblock %}
+

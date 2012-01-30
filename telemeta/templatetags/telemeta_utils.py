@@ -15,6 +15,7 @@ import re
 import os
 import datetime
 from django.conf import settings
+from django.template.defaultfilters import stringfilter
 
 register = template.Library()
 
@@ -356,3 +357,8 @@ def get_youtube(link):
 @register.filter
 def to_utf8(word):
     return word.encode('utf-8')
+
+@register.filter
+@stringfilter
+def capitalize(value):
+    return value.capitalize()

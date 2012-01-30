@@ -36,20 +36,28 @@
 from django.forms import ModelForm
 from telemeta.models import *
 
-class MediaFundForm(ModelForm):
+class MediaFondsForm(ModelForm):
     class Meta:
-        model = MediaFund
+        model = MediaFonds
+
+class MediaFondsRelatedForm(ModelForm):
+    class Meta:
+        model = MediaFondsRelated
 
 class MediaCorpusForm(ModelForm):
     class Meta:
         model = MediaCorpus
-        
+
+class MediaCorpusRelatedForm(ModelForm):
+    class Meta:
+        model = MediaCorpusRelated
+
 class MediaCollectionForm(ModelForm):
     class Meta:
         model = MediaCollection
     def clean_doctype_code(self):
         return self.cleaned_data['doctype_code'] or 0
-        
+
 class MediaCollectionRelatedForm(ModelForm):
     class Meta:
         model = MediaCollectionRelated
@@ -63,7 +71,7 @@ class MediaItemForm(ModelForm):
 class MediaItemRelatedForm(ModelForm):
     class Meta:
         model = MediaItemRelated
-        
+
 class MediaItemKeywordForm(ModelForm):
     class Meta:
         model = MediaItemKeyword
@@ -71,7 +79,7 @@ class MediaItemKeywordForm(ModelForm):
 class MediaItemPerformanceForm(ModelForm):
     class Meta:
         model = MediaItemPerformance
-        
+
     def __init__(self, *args, **kwds):
         super(MediaItemPerformanceForm, self).__init__(*args, **kwds)
         self.fields['instrument'].queryset = Instrument.objects.order_by('name')

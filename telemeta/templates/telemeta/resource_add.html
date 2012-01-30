@@ -1,18 +1,19 @@
-{% extends "telemeta/fund_detail.html" %}
+{% extends "telemeta/resource_detail.html" %}
 {% load i18n %}
 {% load telemeta_utils %}
 
 {% block title %}
-    <img src="{% url telemeta-images "fund_red.png" %}" style="vertical-align:middle" /> Corpus : NEW
+    <img src="{% url telemeta-images "corpus_red.png" %}" style="vertical-align:middle" /> {{ type }} : {% trans "New" %}
 {% endblock %}
 
 {% block title_buttons %}
-     <a href="{% url telemeta-fund %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+    <a href="/archives/{{type}}/" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
 {% endblock %}
+
 
 {% block infos %}
         <div class="infos">
-        <form method="post" id ="_addCorpusForm" action="">{% csrf_token %}
+        <form method="post" id ="_addResourceForm" action="">{% csrf_token %}
         <table>
         <tr><td colspan="2">{% for error in form.non_field_errors %}<li class="error">{{ error }}</li>{% endfor %}</td></tr>
         {% for field in form %}
@@ -23,9 +24,9 @@
         {% endfor %}
         </table>
         <div align="center" style="margin-top:3ex;">
-            <a href="{% url telemeta-fund %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+            <a href="/archives/{{type}}/" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
             <a href="#" class="component_icon button icon_save"
-                onclick="document.getElementById('_addCorpusForm').submit(); return false;">{% trans "Save" %}</a>
+                onclick="document.getElementById('_addResourceForm').submit(); return false;">{% trans "Save" %}</a>
         </div>
         </form>
         </div>

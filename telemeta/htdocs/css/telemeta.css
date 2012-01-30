@@ -510,7 +510,7 @@ text-align:center;
 
 /* you can make a different style for default selected value */
 #nav a.selected {
-color:#f00;
+color:#FFF;
 }
 
 /* submenu, it's hidden by default */

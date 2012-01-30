@@ -1,1 +1,14 @@
-{% extends "telemeta_default/admin_users.html" %}
+{% extends "telemeta/admin.html" %}
+{% load telemeta_utils %}
+{% load i18n %}
+
+{% block tabcontents %}
+ <h4>{% trans "Users" %}</h4>
+
+ {% if users %}
+  {% include "telemeta/inc/user_list.html" %}
+ {% else %}
+    <p class="help">{% trans "No users" %}</p>
+ {% endif %}
+
+{% endblock %}

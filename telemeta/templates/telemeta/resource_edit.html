@@ -1,12 +1,12 @@
-{% extends "telemeta/corpus_detail.html" %}
+{% extends "telemeta/resource_detail.html" %}
 {% load i18n %}
 {% load telemeta_utils %}
 
 {% block title %}
-    <img src="{% url telemeta-images "corpus_red.png" %}" style="vertical-align:middle" /> Corpus : {{ corpus }}
+    <img src="{% url telemeta-images "corpus_red.png" %}" style="vertical-align:middle" /> {{ type }} : {{ resource }}
 {% endblock %}
 {% block title_buttons %}
-    <a href="{% url telemeta-corpus-detail corpus.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+    <a href="{% url telemeta-resource-detail type resource.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
 {% endblock %}
 
 {% block infos %}
@@ -22,7 +22,7 @@
        {% endfor %}
        </table>
         <div align="center" style="margin-top:3ex;">
-         <a href="{% url telemeta-corpus-detail corpus.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+         <a href="{% url telemeta-resource-detail type resource.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
          <a href="#" class="component_icon button icon_save"
    onclick="document.getElementById('_editCollectionForm').submit(); return false;">{% trans "Save" %}</a>
         </div>

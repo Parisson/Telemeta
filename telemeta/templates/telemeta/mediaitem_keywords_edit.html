@@ -1,1 +1,48 @@
-{% extends "telemeta_default/mediaitem_keywords_edit.html" %}
+{% extends "telemeta/mediaitem_detail.html" %}
+{% load i18n %}
+{% load telemeta_utils %}
+
+{% block extra_javascript %}
+{% endblock %}
+
+  {% block title %}
+    <img src="{% url telemeta-images "item.png" %}" alt="item" style="vertical-align:middle" /> <h1>Item : {{ item }}</h1>
+  {% endblock %}
+  {% block title_buttons %}
+   <a href="{% url telemeta-item-detail item.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+  {% endblock %}
+
+{% block content %}
+  {% block infos %}    
+    <div class="infos">
+     <form method="post" id="_editForm" action="">{% csrf_token %}
+
+    {{ formset.management_form }}
+    {% for form in formset.forms %}
+      <table>
+        <tr><td><b>{% trans "Keyword" %} :</b><td></td></tr>
+        {% for field in form %}
+        <tr>
+        {% if "item" in field.html_name or "id" in field.html_name %}
+            <td>{{ field.label_tag.as_hidden }}</td><td>{{ field.as_hidden }}</td>
+        {% else %}
+            <td>{{ field.label_tag }}: </td><td>{{ field }}</td>
+        {% endif %}
+        </tr>
+        {% endfor %}
+       </table>
+       <br />
+    {% endfor %}
+      
+      <div align="center">
+        <a href="{% url telemeta-item-detail item.public_id %}"
+           class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+        <a href="#" class="component_icon button icon_save"
+   onclick="document.getElementById('_editForm').submit(); return false;">{% trans "Save" %}</a>
+       </div>
+    
+     </form>
+    </div>
+       
+  {% endblock infos %}
+{% endblock content %}
