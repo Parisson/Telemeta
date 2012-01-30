@@ -14,8 +14,11 @@
             {% if element.related|is_collection %}
             <a href="{% url telemeta-collection-dublincore element.related.public_id %}">{{ element.value }}</a>
             {% endif %}
-            {% if element.related|is_resource %}
-            <a href="{{element.value}}">{{ element.value }}</a>
+            {% if element.related|is_corpus %}
+            <a href="{% url telemeta-resource-dublincore "corpus" element.related.public_id %}">{{ element.value }}</a>
+            {% endif %}
+            {% if element.related|is_fonds %}
+            <a href="{% url telemeta-resource-dublincore "fonds" element.related.public_id %}">{{ element.value }}</a>
             {% endif %}
         {% else %}
             {{ element.value }}

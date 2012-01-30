@@ -431,16 +431,6 @@ form.login .submit {
     width: 12%;
 }
 
-/* Navigation (borrowed from Trac) */
-.nav h2, .nav hr { display: none }
-.nav ul { font-size: 14px; list-style: none; margin: 0px; text-align: left; }
-.nav li {
-    display: inline;
-    padding: 0em;
-    white-space: nowrap;
-}
-.nav li.last { border-right: 1px solid #000000; }
-
 /* Main navigation bar  (borrowed from Trac) */
 #menu {
     background-color: #6a0307 ;
@@ -520,7 +510,7 @@ color:#FFF;
     display:none;
     margin:0 0 0 -1px;
     padding:0;
-    list-style:none;
+    list-style: none outside none;
     border-left:2px solid #6a0307;
     border-right:2px solid #6a0307;
     border-bottom:2px solid #6a0307;
