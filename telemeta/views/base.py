@@ -78,6 +78,8 @@ import telemeta.views.pages as pages
 from telemeta.forms import *
 
 
+# TOOLS
+
 def render(request, template, data = None, mimetype = None):
     return render_to_response(template, data, context_instance=RequestContext(request),
                               mimetype=mimetype)
@@ -194,6 +196,18 @@ def check_related_media(medias):
             title = tree.find(".//title").text
             media.title = title.replace('\n', '').strip()
             media.save()
+
+def auto_code(resources, base_code):
+    index = 1
+    while True:
+        code = base_code + '_' + str(index)
+        r = resources.filter(code=code)
+        if not r:
+            break
+        if index == 100:
+            break
+        index += 1
+    return code
 
 
 class GeneralView(object):
@@ -654,7 +668,9 @@ class ItemView(object):
         """Add an item"""
         if public_id:
             collection = MediaCollection.objects.get(public_id=public_id)
-            item = MediaItem(collection=collection)
+            items = MediaItem.objects.filter(collection=collection)
+            code = auto_code(items, collection.code)
+            item = MediaItem(collection=collection, code=code)
         else:
             item = MediaItem()
         if request.method == 'POST':
@@ -668,6 +684,7 @@ class ItemView(object):
                 return HttpResponseRedirect('/archives/items/'+code)
         else:
             form = MediaItemForm(instance=item)
+            
 
         return render(request, template, {'item': item, 'form': form})
 
