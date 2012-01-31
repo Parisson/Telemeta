@@ -540,6 +540,11 @@ color:#FFF;
     border-top-right-radius: 0px 0px;
     border-bottom-width: 0px;
 }
+    
+#nav ul a:hover {
+    background-color: #FFF ;
+    color: #6a0307 ;
+}
 
 
 /* Footer (borrowed from Trac) */

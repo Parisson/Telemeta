@@ -120,12 +120,13 @@
  <li><a href="{% url telemeta-users %}" class="red">{% trans "Users" %}</a></li>
  {% endif %}
  {% if user.is_staff %}
- <li><a href="{% url telemeta-admin %}" class="violet">{% trans "Admin" %}</a>
+ <li><a href="#admin#" class="violet">{% trans "Admin" %}</a>
  <ul>
  <li><a href="{% url telemeta-admin-general %}">{% trans "General" %}</a></li>
  <li><a href="{% url telemeta-admin-enumerations %}">{% trans "Enumerations" %}</a></li>
  <li><a href="{% url telemeta-instrument-edit %}">{% trans "Instruments" %}</a></li>
  </ul>
+ <div class="clear"></div>
  </li>
 {% endif %}
 </ul>
