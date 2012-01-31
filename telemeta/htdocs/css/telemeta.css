@@ -530,7 +530,7 @@ color:#FFF;
     display:block; 
     height:15px;
     padding: 5px 5px;
-    font-size: 12px;
+    font-size: 11px;
     text-align:left;
     -webkit-border-top-left-radius:0px 0px;
     moz-border-radius-topleft: 0px 0px;
@@ -545,6 +545,12 @@ color:#FFF;
     background-color: #FFF ;
     color: #6a0307 ;
 }
+
+#nav ul a:active {
+    background-color: #FFF;
+    color: #6a0307 ;
+}
+
 
 
 /* Footer (borrowed from Trac) */
