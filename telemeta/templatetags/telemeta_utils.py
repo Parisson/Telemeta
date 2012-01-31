@@ -362,7 +362,7 @@ def get_filename(object):
 @register.filter
 def get_youtube(link):
     link = link.split('&')
-    if "=" in link:
+    if "=" in link[0]:
         ref = link[0].split('=')[1]
     else:
         ref = link[0].split('/')[-1]

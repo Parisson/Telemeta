@@ -189,7 +189,9 @@ def check_related_media(medias):
         if not media.mime_type:
             media.set_mime_type()
             media.save()
-        if not media.title and media.url and not 'https' in media.url:
+        if not media.title and media.url:
+            if 'https' in media.url:
+                media.url = media.url.replace('https', 'http')
             import lxml.etree
             parser = lxml.etree.HTMLParser()
             tree = lxml.etree.parse(media.url, parser)
