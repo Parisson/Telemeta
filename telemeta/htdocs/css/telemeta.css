@@ -530,7 +530,7 @@ color:#FFF;
     display:block; 
     height:15px;
     padding: 5px 5px;
-    font-size: 11px;
+    font-size: 12px;
     text-align:left;
     -webkit-border-top-left-radius:0px 0px;
     moz-border-radius-topleft: 0px 0px;
@@ -540,13 +540,6 @@ color:#FFF;
     border-top-right-radius: 0px 0px;
     border-bottom-width: 0px;
 }
-    
-#nav ul a:hover {
-    background-color: #FFF ;
-    color: #6a0307 ;
-}
-
-
 
 
 /* Footer (borrowed from Trac) */

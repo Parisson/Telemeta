@@ -108,7 +108,7 @@ class MediaBaseResource(MediaResource):
 
     def get_fields(self):
         return MediaBaseResource._meta.fields
-        
+
     class Meta(MetaCore):
         abstract = True
         ordering = ['code']
@@ -628,6 +628,7 @@ class MediaCorpus(MediaBaseResource):
 
     element_type = 'corpus'
     children_type = 'collections'
+    icon = 'corpus.png'
 
     children = models.ManyToManyField(MediaCollection, related_name="corpus", verbose_name=_('collections'))
 
@@ -646,6 +647,7 @@ class MediaFonds(MediaBaseResource):
 
     element_type = 'fonds'
     children_type = 'corpus'
+    icon = 'fonds.png'
 
     children = models.ManyToManyField(MediaCorpus, related_name="fonds", verbose_name=_('corpus'))
 
