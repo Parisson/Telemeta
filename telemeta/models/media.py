@@ -106,6 +106,9 @@ class MediaBaseResource(MediaResource):
     def save(self, force_insert=False, force_update=False, user=None, code=None):
         super(MediaBaseResource, self).save(force_insert, force_update)
 
+    def get_fields(self):
+        return MediaBaseResource._meta.fields
+        
     class Meta(MetaCore):
         abstract = True
         ordering = ['code']

@@ -1255,4 +1255,6 @@ input,textarea{
     outline: none !important;
 }
 
-
+.related_media {
+    border-top: 1px dotted #6a0307;
+}

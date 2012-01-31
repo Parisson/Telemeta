@@ -204,8 +204,6 @@ def auto_code(resources, base_code):
         r = resources.filter(code=code)
         if not r:
             break
-        if index == 100:
-            break
         index += 1
     return code
 
@@ -1420,7 +1418,6 @@ class ResourceView(object):
         resource = self.model.objects.get(code=public_id)
         children = resource.children.all()
         children = children.order_by('code')
-
         related_media = self.related.objects.filter(resource=resource)
         check_related_media(related_media)
 

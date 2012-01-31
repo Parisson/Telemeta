@@ -36,10 +36,9 @@
         <div class="infos">
         {% block general_info %}
             <dl class="listing">
-                {% dl_field resource "reference" %}
-                {% dl_field resource "title"  %}
-                {% dl_field resource "description" %}
-                {% dl_field resource "code" %}
+              {% for field in resource.get_fields %}
+                {% dl_field resource field.name %}
+              {% endfor %}  
             </dl>
         {% endblock general_info %}
 
