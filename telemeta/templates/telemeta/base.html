@@ -94,8 +94,17 @@
 </ul>-->
 
 <ul id="nav">
- <li><a href="{% url telemeta-home %}" class="blue">{% trans "Home" %}</a></li>
-
+ {% if user.is_authenticated %}
+  <li><a href="{% url telemeta-lists %}" class="blue">{% trans "Desk" %}</a>
+   <ul>
+    <li><a href="{% url telemeta-lists %}">{% trans "Lists" %}</a></li>
+    <li><a href="{% url telemeta-profile-detail user.username %}">{% trans "Profile" %}</a></li>
+    <li><a href="{% url telemeta-home %}">{% trans "Home" %}</a></li>
+   </ul>
+  </li>
+ {% else %}
+  <li><a href="{% url telemeta-home %}" class="blue">{% trans "Home" %}</a></li>
+ {% endif %}
  <li><a href="{% url telemeta-archives %}" class="green">{% trans "Archives" %}</a>
   <ul>
      <li><a href="{% url telemeta-fonds %}">{% trans "Fonds" %}</a></li>

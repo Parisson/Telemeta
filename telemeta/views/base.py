@@ -212,43 +212,54 @@ class GeneralView(object):
     """Provide general web UI methods"""
 
     def index(self, request):
-        """Render the homepage"""
-        if not request.user.is_authenticated():
-            template = loader.get_template('telemeta/index.html')
+        """Render the index page"""
+        
+        template = loader.get_template('telemeta/index.html')
 
-            sound_items = MediaItem.objects.sound()
-            _sound_pub_items = []
-            for item in sound_items:
-                if get_public_access(item.public_access,  str(item.recorded_from_date).split('-')[0],
-                                                str(item.recorded_to_date).split('-')[0]):
-                    _sound_pub_items.append(item)
+        sound_items = MediaItem.objects.sound()
+        _sound_pub_items = []
+        for item in sound_items:
+            if get_public_access(item.public_access,  str(item.recorded_from_date).split('-')[0],
+                                            str(item.recorded_to_date).split('-')[0]):
+                _sound_pub_items.append(item)
 
-            random.shuffle(_sound_pub_items)
-            if len(_sound_pub_items) != 0:
-                sound_pub_item = _sound_pub_items[0]
-            else:
-                sound_pub_item = None
-            if len(_sound_pub_items) == 2:
-                sound_pub_items = [_sound_pub_items[1]]
-            elif len(_sound_pub_items) > 2:
-                sound_pub_items = _sound_pub_items[1:3]
-            else:
-                sound_pub_items = None
-
-            revisions = get_revisions(4)
-            context = RequestContext(request, {
-                        'page_content': pages.get_page_content(request, 'home', ignore_slash_issue=True),
-                        'revisions': revisions,  'sound_pub_items': sound_pub_items,
-                        'sound_pub_item': sound_pub_item })
-            return HttpResponse(template.render(context))
+        random.shuffle(_sound_pub_items)
+        if len(_sound_pub_items) != 0:
+            sound_pub_item = _sound_pub_items[0]
         else:
+            sound_pub_item = None
+        if len(_sound_pub_items) == 2:
+            sound_pub_items = [_sound_pub_items[1]]
+        elif len(_sound_pub_items) > 2:
+            sound_pub_items = _sound_pub_items[1:3]
+        else:
+            sound_pub_items = None
+
+        revisions = get_revisions(4)
+        context = RequestContext(request, {
+                    'page_content': pages.get_page_content(request, 'home', ignore_slash_issue=True),
+                    'revisions': revisions,  'sound_pub_items': sound_pub_items,
+                    'sound_pub_item': sound_pub_item })
+        return HttpResponse(template.render(context))
+
+    def lists(self, request):
+        """Render the home page"""
+        
+        if request.user.is_authenticated():
             template='telemeta/home.html'
             playlists = get_playlists(request)
-            revisions = get_revisions(50)
+            revisions = get_revisions(100)
             searches = Search.objects.filter(username=request.user)
             return render(request, template, {'playlists': playlists, 'searches': searches,
                                               'revisions': revisions,})
-
+        else:
+            template = 'telemeta/messages.html'
+            mess = ugettext('Access not allowed')
+            title = ugettext('Lists') + ' : ' + request.user + ' : ' + mess
+            description = ugettext('Please login or contact the website administator to get a private access.')
+            messages.error(request, title)
+            return render(request, template, {'description' : description})
+    
     def edit_search(self, request, criteria=None):
         year_min, year_max = MediaCollection.objects.all().recording_year_range()
         rec_years = year_min and year_max and range(year_min, year_max + 1) or []

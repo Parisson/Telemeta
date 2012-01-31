@@ -74,6 +74,7 @@ htdocs = os.path.dirname(__file__) + '/htdocs'
 
 urlpatterns = patterns('',
     url(r'^$', general_view.index, name="telemeta-home"),
+    url(r'^lists/$', general_view.lists, name="telemeta-lists"),
 
     # archives
     # TODO: make a real archives tree view
