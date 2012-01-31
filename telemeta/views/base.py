@@ -213,7 +213,7 @@ class GeneralView(object):
 
     def index(self, request):
         """Render the index page"""
-        
+
         template = loader.get_template('telemeta/index.html')
 
         sound_items = MediaItem.objects.sound()
@@ -244,7 +244,7 @@ class GeneralView(object):
 
     def lists(self, request):
         """Render the home page"""
-        
+
         if request.user.is_authenticated():
             template='telemeta/home.html'
             playlists = get_playlists(request)
@@ -255,11 +255,11 @@ class GeneralView(object):
         else:
             template = 'telemeta/messages.html'
             mess = ugettext('Access not allowed')
-            title = ugettext('Lists') + ' : ' + request.user + ' : ' + mess
+            title = ugettext('Lists') + ' : ' + mess
             description = ugettext('Please login or contact the website administator to get a private access.')
             messages.error(request, title)
             return render(request, template, {'description' : description})
-    
+
     def edit_search(self, request, criteria=None):
         year_min, year_max = MediaCollection.objects.all().recording_year_range()
         rec_years = year_min and year_max and range(year_min, year_max + 1) or []
@@ -693,7 +693,7 @@ class ItemView(object):
                 return HttpResponseRedirect('/archives/items/'+code)
         else:
             form = MediaItemForm(instance=item)
-            
+
 
         return render(request, template, {'item': item, 'form': form})
 

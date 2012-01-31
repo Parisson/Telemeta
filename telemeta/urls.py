@@ -74,12 +74,6 @@ htdocs = os.path.dirname(__file__) + '/htdocs'
 
 urlpatterns = patterns('',
     url(r'^$', general_view.index, name="telemeta-home"),
-    url(r'^lists/$', general_view.lists, name="telemeta-lists"),
-
-    # archives
-    # TODO: make a real archives tree view
-    url(r'^archives/$', redirect_to, {'url': '/archives/collections/'},
-        name="telemeta-archives"),
 
     # items
     url(r'^archives/items/$', 'django.views.generic.list_detail.object_list',
@@ -295,9 +289,15 @@ urlpatterns = patterns('',
     # Users
     url(r'^users/$', general_view.users, name="telemeta-users"),
 
+    # Desk
+    url(r'^desk/lists/$', general_view.lists, name="telemeta-desk-lists"),
+    url(r'^desk/profile/(?P<username>[A-Za-z0-9._-]+)/$', profile_view.profile_detail, name="telemeta-desk-profile"),
+    url(r'^desk/home/$', general_view.index, name="telemeta-desk-home"),
+
     # Profiles
     url(r'^users/(?P<username>[A-Za-z0-9._-]+)/profile/$', profile_view.profile_detail, name="telemeta-profile-detail"),
     url(r'^users/(?P<username>[A-Za-z0-9._-]+)/profile/edit/$', profile_view.profile_edit, name="telemeta-profile-edit"),
+
 
     # Registration
     url(r'^accounts/password_change/$', 'django.contrib.auth.views.password_change', {'template_name': 'telemeta/registration/password_change_form.html'}, name="telemeta-password-change"),

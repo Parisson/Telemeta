@@ -460,6 +460,7 @@ form.login .submit {
     background-color: #FFF;
     color: #6a0307;
 }
+
 #menu .darkblue { border-bottom-color: #0f3179; }
 #menu .blue { border-bottom-color:  #4f628a; }
 #menu .green { border-bottom-color:  #92b220; }
@@ -545,10 +546,6 @@ color:#FFF;
     color: #6a0307 ;
 }
 
-#nav ul a:active{
-    background-color: #FFF;
-    color: #6a0307 ;
-}
 
 
 
