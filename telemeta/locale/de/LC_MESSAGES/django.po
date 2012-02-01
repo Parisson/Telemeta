@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-31 16:50+0100\n"
+"POT-Creation-Date: 2012-02-01 12:42+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -242,11 +242,11 @@ msgstr ""
 msgid "depositor / contributor"
 msgstr ""
 
-#: models/media.py:175
+#: models/media.py:175 models/media.py:634
 msgid "recording year (from)"
 msgstr ""
 
-#: models/media.py:176
+#: models/media.py:176 models/media.py:635
 msgid "recording year (until)"
 msgstr ""
 
@@ -494,24 +494,24 @@ msgstr ""
 msgid "transcoded"
 msgstr ""
 
-#: models/media.py:632
+#: models/media.py:633
 msgid "collections"
 msgstr ""
 
-#: models/media.py:640 models/media.py:641 models/media.py:650
-#: models/media.py:665
+#: models/media.py:643 models/media.py:644 models/media.py:654
+#: models/media.py:669
 msgid "corpus"
 msgstr ""
 
-#: models/media.py:658 models/media.py:659 models/media.py:676
+#: models/media.py:662 models/media.py:663 models/media.py:680
 msgid "fonds"
 msgstr ""
 
-#: models/media.py:669 models/media.py:670
+#: models/media.py:673 models/media.py:674
 msgid "corpus related media"
 msgstr ""
 
-#: models/media.py:680 models/media.py:681
+#: models/media.py:684 models/media.py:685
 msgid "fonds related media"
 msgstr ""
 
@@ -536,23 +536,31 @@ msgid "Institution"
 msgstr ""
 
 #: models/system.py:85 templates/telemeta/profile_detail.html:37
-msgid "Function"
+msgid "Department"
 msgstr ""
 
 #: models/system.py:86 templates/telemeta/profile_detail.html:38
-msgid "Address"
+msgid "Function"
 msgstr ""
 
 #: models/system.py:87 templates/telemeta/profile_detail.html:39
+msgid "Attachment"
+msgstr ""
+
+#: models/system.py:88 templates/telemeta/profile_detail.html:40
+msgid "Address"
+msgstr ""
+
+#: models/system.py:89 templates/telemeta/profile_detail.html:41
 msgid "Telephone"
 msgstr ""
 
-#: models/system.py:88
+#: models/system.py:90
 msgid "Expiration_date"
 msgstr ""
 
 #: templates/admin/base.html:21 templates/telemeta/base.html:83
-#: templates/telemeta/base.html.py:102 templates/telemeta/base.html:106
+#: templates/telemeta/base.html.py:100 templates/telemeta/base.html:106
 msgid "Home"
 msgstr ""
 
@@ -611,7 +619,7 @@ msgstr ""
 msgid "Welcome"
 msgstr ""
 
-#: templates/telemeta/base.html:59 templates/telemeta/base.html.py:101
+#: templates/telemeta/base.html:59 templates/telemeta/base.html.py:102
 msgid "Profile"
 msgstr ""
 
@@ -656,7 +664,7 @@ msgstr ""
 msgid "Desk"
 msgstr ""
 
-#: templates/telemeta/base.html:100 views/base.py:258
+#: templates/telemeta/base.html:101 views/base.py:260
 msgid "Lists"
 msgstr ""
 
@@ -683,21 +691,21 @@ msgstr ""
 msgid "Instruments"
 msgstr ""
 
-#: templates/telemeta/base.html:158
+#: templates/telemeta/base.html:159
 msgid "Powered by"
 msgstr ""
 
-#: templates/telemeta/base.html:159
+#: templates/telemeta/base.html:160
 msgid "By"
 msgstr ""
 
-#: templates/telemeta/base.html:164
+#: templates/telemeta/base.html:165
 msgid ""
 "Usage of the archives in the respect of cultural heritage of the original "
 "communities."
 msgstr ""
 
-#: templates/telemeta/base.html:170
+#: templates/telemeta/base.html:171
 #: templates/telemeta/collection_detail.html:117
 msgid "Legal notices"
 msgstr ""
@@ -752,7 +760,7 @@ msgid "Save"
 msgstr ""
 
 #: templates/telemeta/collection_detail.html:5
-#: templates/telemeta/collection_detail_dc.html:5 views/base.py:405
+#: templates/telemeta/collection_detail_dc.html:5 views/base.py:407
 msgid "Collection"
 msgstr ""
 
@@ -764,7 +772,7 @@ msgstr ""
 #: templates/telemeta/mediaitem_detail_video.html:192
 #: templates/telemeta/mediaitem_detail_video.html:231
 #: templates/telemeta/mediaitem_detail_video.html:352
-#: templates/telemeta/profile_detail.html:63
+#: templates/telemeta/profile_detail.html:65
 #: templates/telemeta/resource_detail.html:21
 #: templates/telemeta/inc/collection_related.html:81
 #: templates/telemeta/inc/mediaitem_related.html:81
@@ -858,7 +866,7 @@ msgstr ""
 #: templates/telemeta/home.html:35
 #: templates/telemeta/mediaitem_detail.html:293
 #: templates/telemeta/mediaitem_detail_video.html:363
-#: templates/telemeta/resource_detail.html:65
+#: templates/telemeta/resource_detail.html:69
 msgid "Delete"
 msgstr ""
 
@@ -1071,7 +1079,7 @@ msgstr ""
 #: templates/telemeta/mediaitem_add.html:5
 #: templates/telemeta/mediaitem_copy.html:5
 #: templates/telemeta/mediaitem_detail.html:5
-#: templates/telemeta/mediaitem_detail_video.html:5 views/base.py:567
+#: templates/telemeta/mediaitem_detail_video.html:5 views/base.py:569
 msgid "Item"
 msgstr ""
 
@@ -1215,7 +1223,7 @@ msgstr ""
 msgid "User Profile"
 msgstr ""
 
-#: templates/telemeta/profile_detail.html:8 views/base.py:1335
+#: templates/telemeta/profile_detail.html:8 views/base.py:1337
 msgid "User profile"
 msgstr ""
 
@@ -1233,37 +1241,37 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: templates/telemeta/profile_detail.html:40
+#: templates/telemeta/profile_detail.html:42
 msgid "Expiration date"
 msgstr ""
 
-#: templates/telemeta/profile_detail.html:42
+#: templates/telemeta/profile_detail.html:44
 msgid "Is staff"
 msgstr ""
 
-#: templates/telemeta/profile_detail.html:43
+#: templates/telemeta/profile_detail.html:45
 msgid "Is superuser"
 msgstr ""
 
-#: templates/telemeta/profile_detail.html:44
+#: templates/telemeta/profile_detail.html:46
 msgid "Group"
 msgid_plural "Groups"
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/telemeta/profile_detail.html:45
+#: templates/telemeta/profile_detail.html:47
 msgid "Last login"
 msgstr ""
 
-#: templates/telemeta/profile_detail.html:47
+#: templates/telemeta/profile_detail.html:49
 msgid "Language"
 msgstr ""
 
-#: templates/telemeta/profile_detail.html:55
+#: templates/telemeta/profile_detail.html:57
 msgid "Apply"
 msgstr ""
 
-#: templates/telemeta/profile_detail.html:66
+#: templates/telemeta/profile_detail.html:68
 #: templates/telemeta/registration/password_change_done.html:3
 #: templates/telemeta/registration/password_change_form.html:4
 msgid "Change password"
@@ -1357,7 +1365,7 @@ msgstr ""
 msgid "No item"
 msgstr ""
 
-#: templates/telemeta/inc/module_revisions.html:7 views/base.py:1365
+#: templates/telemeta/inc/module_revisions.html:7 views/base.py:1367
 msgid "Last changes"
 msgstr ""
 
@@ -1551,13 +1559,13 @@ msgid_plural "%(count)d collections"
 msgstr[0] ""
 msgstr[1] ""
 
-#: views/base.py:257 views/base.py:404 views/base.py:566 views/base.py:860
-#: views/base.py:1334
+#: views/base.py:259 views/base.py:406 views/base.py:568 views/base.py:862
+#: views/base.py:1336
 msgid "Access not allowed"
 msgstr ""
 
-#: views/base.py:259 views/base.py:406 views/base.py:568 views/base.py:862
-#: views/base.py:1336
+#: views/base.py:261 views/base.py:408 views/base.py:570 views/base.py:864
+#: views/base.py:1338
 msgid ""
 "Please login or contact the website administator to get a private access."
 msgstr ""

@@ -45,7 +45,7 @@ Install the system dependencies
 Install Telemeta
 -----------------------------
 
-PIP style (recommended)
+Pip style (recommended)
 ++++++++++++++++++++++++
 
 We strongly advise you use the python package tool as it installs some good dependencies automatically::
@@ -53,7 +53,7 @@ We strongly advise you use the python package tool as it installs some good depe
     sudo aptitude install python-pip
     sudo pip install telemeta
 
-  or (deprecated)::
+or (deprecated)::
 
     sudo easy_install telemeta
 
