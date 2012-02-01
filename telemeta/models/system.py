@@ -82,7 +82,9 @@ class UserProfile(django.db.models.Model):
 
     user            = ForeignKey(User, unique=True, required=True)
     institution     = CharField(_('Institution'))
+    departement     = CharField(_('Department'))
     function        = CharField(_('Function'))
+    attachment      = CharField(_('Attachment'))
     address         = TextField(_('Address'))
     telephone       = CharField(_('Telephone'))
     expiration_date = DateField(_('Expiration_date'))

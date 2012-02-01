@@ -43,9 +43,12 @@ Install the system dependencies
 
 
 Install Telemeta
-------------------
+-----------------------------
 
-* The best is to use the python package tools (install MANY dependencies automatically)::
+PIP style (recommended)
+++++++++++++++++++++++++
+
+We strongly advise you use the python package tool as it installs some good dependencies automatically::
 
     sudo aptitude install python-pip
     sudo pip install telemeta
@@ -54,37 +57,61 @@ Install Telemeta
 
     sudo easy_install telemeta
 
-* Downloading the latest tar archive at http://telemeta.org. Uncompress it and install. For example::
+From sources
++++++++++++++
+
+Download the latest tar archive at http://telemeta.org.
+
+Uncompress and install it. For example::
 
     tar xzf telemeta-1.0.tar.gz
     cd telemeta-1.0
     sudo python setup.py install
 
+Libraries
++++++++++++
 
-Install TimeSide
------------------
+All those modules have been automatically installed if you used one of the previous methods to install Telemeta.
+In this case only, you can PASS this stage.
 
-The web audio components provided by the TimeSide module have been automatically installed if you used pip or setup.py to install Telemeta. In this case only, you can pass this stage.
+But, if you need to hack Telemeta without installing it (i.e. link it through your $PYTHONPATH), you need to install those libraries manually.
 
-Otherwise, you have to download and install it from source.
+TimeSide (web audio components)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-So, download the last archive at :
+Install it using pip::
+
+    sudo pip install timeside
+
+Or, download the last archive at :
 http://code.google.com/p/timeside/downloads/list
 
 Uncompress it and read README and INSTALL to install the dependencies
 and then the module.
 
+JSON-RPC server
+~~~~~~~~~~~~~~~~~~
 
-Install JSON-RPC server
-------------------------
+Install it using pip::
 
-The JSON module provided by django-json-rpc have been automatically installed if you used pip or setup.py to install Telemeta. In this case only, you can pass this stage.
+    sudo pip install django-json-rpc
 
-Otherwise, you have to download and install it from source::
+or, from source::
 
     git clone git://github.com/samuraisam/django-json-rpc.git
     cd django-json-rpc
     python setup.py install
+
+South (schema migration)
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Install it using pip::
+
+    sudo pip install south
+
+or, from source::
+
+    sudo easy_install South
 
 
 -------------------------
@@ -135,6 +162,7 @@ Set the app lists as follow::
     'django.contrib.admin',
     'telemeta',
     'jsonrpc',
+    'south'
     )
 
 Set the following languages::
@@ -192,14 +220,6 @@ You can find an example for settings.py there::
     example/sandbox/settings.py
 
 
-Initialize the database
---------------------------
-
-This synchronizes the DB with the model::
-
-    python manage.py syncdb
-
-
 Configure your urls
 ----------------------
 
@@ -230,6 +250,15 @@ Please also uncomment::
 You can find an example for url.py there::
 
     example/sandbox/urls.py
+
+
+Initialize the database
+--------------------------
+
+This synchronizes the DB with the model::
+
+    ./manage.py syncdb
+    ./manage.py migrate telemeta
 
 
 Start the project
