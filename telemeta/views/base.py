@@ -127,8 +127,11 @@ def get_public_access(access, year_from=None, year_to=None):
             public_access = False
     return public_access
 
-def get_revisions(nb):
-    last_revisions = Revision.objects.order_by('-time')[0:nb]
+def get_revisions(nb, user=None):
+    last_revisions = Revision.objects.order_by('-time')
+    if user:
+        last_revisions = last_revisions.filter(user=user)
+    last_revisions = last_revisions[0:nb]
     revisions = []
     for revision in last_revisions:
         if revision.element_type == 'item':
@@ -216,7 +219,7 @@ class GeneralView(object):
     def index(self, request):
         """Render the index page"""
 
-        template = loader.get_template('telemeta/index.html')
+        template = loader.get_template('telemeta/home.html')
 
         sound_items = MediaItem.objects.sound()
         _sound_pub_items = []
@@ -248,12 +251,13 @@ class GeneralView(object):
         """Render the home page"""
 
         if request.user.is_authenticated():
-            template='telemeta/home.html'
+            template='telemeta/lists.html'
             playlists = get_playlists(request)
             revisions = get_revisions(100)
             searches = Search.objects.filter(username=request.user)
+            user_revisions = get_revisions(25, request.user)
             return render(request, template, {'playlists': playlists, 'searches': searches,
-                                              'revisions': revisions,})
+                                              'revisions': revisions, 'user_revisions': user_revisions })
         else:
             template = 'telemeta/messages.html'
             mess = ugettext('Access not allowed')
@@ -1401,7 +1405,6 @@ class LastestRevisionsFeed(Feed):
         return link
 
 
-
 class ResourceView(object):
     """Provide Resource web UI methods"""
 
@@ -1436,6 +1439,8 @@ class ResourceView(object):
 
         return render(request, template, {'resource': resource, 'type': type, 'children': children, 'related_media': related_media})
 
+    @jsonrpc_method('telemeta.change_fonds')
+    @jsonrpc_method('telemeta.change_corpus')
     def edit(self, request, type, public_id, template='telemeta/resource_edit.html'):
         self.setup(type)
         resource = self.model.objects.get(code=public_id)
@@ -1452,6 +1457,8 @@ class ResourceView(object):
             form = self.form(instance=resource)
         return render(request, template, {'resource': resource, 'type': type, 'form': form,})
 
+    @jsonrpc_method('telemeta.add_fonds')
+    @jsonrpc_method('telemeta.add_corpus')
     def add(self, request, type, template='telemeta/resource_add.html'):
         self.setup(type)
         resource = self.model()
@@ -1468,6 +1475,8 @@ class ResourceView(object):
             form = self.form(instance=resource)
         return render(request, template, {'resource': resource, 'type': type, 'form': form,})
 
+    @jsonrpc_method('telemeta.add_fonds')
+    @jsonrpc_method('telemeta.add_corpus')
     def copy(self, request, type, public_id, template='telemeta/resource_edit.html'):
         self.setup(type)
         if request.method == 'POST':
@@ -1496,6 +1505,8 @@ class ResourceView(object):
         context = RequestContext(request, {'resource': resource, 'host': request.META['HTTP_HOST']})
         return HttpResponse(template.render(context), mimetype=mimetype)
 
+    @jsonrpc_method('telemeta.del_fonds')
+    @jsonrpc_method('telemeta.del_corpus')
     def delete(self, request, type, public_id):
         self.setup(type)
         resource = self.model.objects.get(code=public_id)
@@ -1509,6 +1520,8 @@ class ResourceView(object):
         response = HttpResponse(stream_from_file(media.file.path), mimetype=media.mime_type)
         return response
 
+    @jsonrpc_method('telemeta.add_fonds_related_media')
+    @jsonrpc_method('telemeta.add_corpus_related_media')
     def related_edit(self, request, type, public_id, template):
         self.setup(type)
         resource = self.model.objects.get(code=public_id)

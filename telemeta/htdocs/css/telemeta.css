@@ -203,7 +203,7 @@ a img { border: none; }
 }
 
 .vscroll {
-    max-height: 500px;
+    max-height: 300px;
     overflow-y: scroll;
     width: 100%;
 }

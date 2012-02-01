@@ -630,7 +630,7 @@ class MediaCorpus(MediaBaseResource):
     children_type = 'collections'
     icon = 'corpus.png'
 
-    children = models.ManyToManyField(MediaCollection, related_name="corpus", verbose_name=_('collections'))
+    children = models.ManyToManyField(MediaCollection, related_name="corpus", verbose_name=_('collections'),  blank=True, null=True)
     recorded_from_year    = IntegerField(_('recording year (from)'))
     recorded_to_year      = IntegerField(_('recording year (until)'))
 
@@ -651,7 +651,7 @@ class MediaFonds(MediaBaseResource):
     children_type = 'corpus'
     icon = 'fonds.png'
 
-    children = models.ManyToManyField(MediaCorpus, related_name="fonds", verbose_name=_('corpus'))
+    children = models.ManyToManyField(MediaCorpus, related_name="fonds", verbose_name=_('corpus'), blank=True, null=True)
 
     @property
     def public_id(self):

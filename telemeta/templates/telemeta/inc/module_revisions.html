@@ -19,6 +19,9 @@
         <td>{{ r.revision.time }}</td>
         <td>
         {% if r.element %}
+            {% if r.revision.element_type == "corpus" or r.revision.element_type == "fonds"%}
+            <a href="{% url telemeta-resource-detail r.revision.element_type r.element.public_id %}">{{ r.element.title }}</a>
+            {% endif %}
             {% if r.revision.element_type == "collection" %}
             <a href="{% url telemeta-collection-detail r.element.public_id %}">{{ r.element.title }}</a>
             {% endif %}

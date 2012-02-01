@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-01 13:22+0100\n"
+"POT-Creation-Date: 2012-02-01 14:33+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -586,7 +586,7 @@ msgid "Enumerations"
 msgstr ""
 
 #: templates/telemeta/admin_enumerations.html:14
-#: templates/telemeta/home.html:46 templates/telemeta/mediaitem_add.html:33
+#: templates/telemeta/lists.html:56 templates/telemeta/mediaitem_add.html:33
 #: templates/telemeta/mediaitem_copy.html:34
 #: templates/telemeta/mediaitem_detail_video.html:295
 #: templates/telemeta/mediaitem_edit.html:26
@@ -656,7 +656,7 @@ msgid "Items"
 msgstr ""
 
 #: templates/telemeta/base.html:86 templates/telemeta/base.html.py:117
-#: templates/telemeta/index.html:25
+#: templates/telemeta/home.html:25
 msgid "Geo Navigator"
 msgstr ""
 
@@ -672,7 +672,7 @@ msgstr ""
 msgid "Desk"
 msgstr ""
 
-#: templates/telemeta/base.html:101 views/base.py:260
+#: templates/telemeta/base.html:101 views/base.py:264
 msgid "Lists"
 msgstr ""
 
@@ -763,7 +763,7 @@ msgid "Save"
 msgstr ""
 
 #: templates/telemeta/collection_detail.html:5
-#: templates/telemeta/collection_detail_dc.html:5 views/base.py:407
+#: templates/telemeta/collection_detail_dc.html:5 views/base.py:411
 msgid "Collection"
 msgstr ""
 
@@ -806,7 +806,7 @@ msgid "Listen to this collection"
 msgstr ""
 
 #: templates/telemeta/collection_detail.html:95
-#: templates/telemeta/home.html:50
+#: templates/telemeta/lists.html:60
 #: templates/telemeta/inc/collection_list.html:17
 msgid "Recording period"
 msgstr ""
@@ -818,7 +818,7 @@ msgid "Geographic and cultural informations"
 msgstr ""
 
 #: templates/telemeta/collection_detail.html:122
-#: templates/telemeta/home.html:49
+#: templates/telemeta/lists.html:59
 #: templates/telemeta/inc/collection_list.html:16
 #: templates/telemeta/inc/mediaitem_list.html:16
 msgid "Recordist"
@@ -866,7 +866,7 @@ msgid "Number of items"
 msgstr ""
 
 #: templates/telemeta/collection_detail.html:207
-#: templates/telemeta/home.html:35
+#: templates/telemeta/lists.html:45
 #: templates/telemeta/mediaitem_detail.html:293
 #: templates/telemeta/mediaitem_detail_video.html:363
 #: templates/telemeta/resource_detail.html:69
@@ -911,8 +911,8 @@ msgid "Sounds"
 msgstr ""
 
 #: templates/telemeta/collection_list.html:17
-#: templates/telemeta/enumeration_edit.html:23 templates/telemeta/home.html:27
-#: templates/telemeta/instrument_edit.html:22
+#: templates/telemeta/enumeration_edit.html:23
+#: templates/telemeta/instrument_edit.html:22 templates/telemeta/lists.html:37
 #: templates/telemeta/mediaitem_list.html:15
 #: templates/telemeta/resource_list.html:13
 msgid "Add"
@@ -1011,46 +1011,11 @@ msgid_plural "%(counter)s items "
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/telemeta/home.html:25 templates/telemeta/profile_detail.html:16
-msgid "Playlists"
-msgstr ""
-
-#: templates/telemeta/home.html:47
-#: templates/telemeta/inc/module_revisions.html:14
-msgid "Type"
-msgstr ""
-
-#: templates/telemeta/home.html:48 templates/telemeta/mediaitem_add.html:34
-#: templates/telemeta/mediaitem_copy.html:35
-#: templates/telemeta/mediaitem_edit.html:27
-#: templates/telemeta/inc/children_list.html:17
-#: templates/telemeta/inc/collection_list.html:14
-#: templates/telemeta/inc/mediaitem_list.html:15
-#: templates/telemeta/inc/resource_list.html:15
-msgid "Code"
-msgstr ""
-
-#: templates/telemeta/home.html:51 templates/telemeta/search_criteria.html:130
-#: templates/telemeta/search_results.html:57
-#: templates/telemeta/inc/collection_list.html:18
-#: templates/telemeta/inc/mediaitem_list.html:23
-msgid "Sound"
-msgstr ""
-
-#: templates/telemeta/home.html:52
-msgid "Action"
-msgstr ""
-
-#: templates/telemeta/home.html:66
-#: templates/telemeta/inc/module_revisions.html:33
-msgid "deleted"
-msgstr ""
-
-#: templates/telemeta/index.html:14 templates/telemeta/index.html.py:57
+#: templates/telemeta/home.html:14 templates/telemeta/home.html.py:57
 msgid "Musical selection"
 msgstr ""
 
-#: templates/telemeta/index.html:27
+#: templates/telemeta/home.html:27
 msgid "Open the geographic navigator"
 msgstr ""
 
@@ -1062,6 +1027,42 @@ msgstr ""
 
 #: templates/telemeta/instrument_edit.html:48
 msgid "This instrument list is empty"
+msgstr ""
+
+#: templates/telemeta/lists.html:35 templates/telemeta/profile_detail.html:16
+msgid "Playlists"
+msgstr ""
+
+#: templates/telemeta/lists.html:57
+#: templates/telemeta/inc/module_revisions.html:14
+msgid "Type"
+msgstr ""
+
+#: templates/telemeta/lists.html:58 templates/telemeta/mediaitem_add.html:34
+#: templates/telemeta/mediaitem_copy.html:35
+#: templates/telemeta/mediaitem_edit.html:27
+#: templates/telemeta/inc/children_list.html:17
+#: templates/telemeta/inc/collection_list.html:14
+#: templates/telemeta/inc/mediaitem_list.html:15
+#: templates/telemeta/inc/resource_list.html:15
+msgid "Code"
+msgstr ""
+
+#: templates/telemeta/lists.html:61
+#: templates/telemeta/search_criteria.html:130
+#: templates/telemeta/search_results.html:57
+#: templates/telemeta/inc/collection_list.html:18
+#: templates/telemeta/inc/mediaitem_list.html:23
+msgid "Sound"
+msgstr ""
+
+#: templates/telemeta/lists.html:62
+msgid "Action"
+msgstr ""
+
+#: templates/telemeta/lists.html:76
+#: templates/telemeta/inc/module_revisions.html:36
+msgid "deleted"
 msgstr ""
 
 #: templates/telemeta/login.html:5
@@ -1079,7 +1080,7 @@ msgstr ""
 #: templates/telemeta/mediaitem_add.html:5
 #: templates/telemeta/mediaitem_copy.html:5
 #: templates/telemeta/mediaitem_detail.html:5
-#: templates/telemeta/mediaitem_detail_video.html:5 views/base.py:569
+#: templates/telemeta/mediaitem_detail_video.html:5 views/base.py:573
 msgid "Item"
 msgstr ""
 
@@ -1223,7 +1224,7 @@ msgstr ""
 msgid "User Profile"
 msgstr ""
 
-#: templates/telemeta/profile_detail.html:8 views/base.py:1337
+#: templates/telemeta/profile_detail.html:8 views/base.py:1341
 msgid "User profile"
 msgstr ""
 
@@ -1281,6 +1282,7 @@ msgstr ""
 msgid "New"
 msgstr ""
 
+#: templates/telemeta/resource_detail.html:75
 #: templates/telemeta/resource_detail_dc.html:16
 msgid "No such resource"
 msgstr ""
@@ -1365,7 +1367,7 @@ msgstr ""
 msgid "No item"
 msgstr ""
 
-#: templates/telemeta/inc/module_revisions.html:7 views/base.py:1367
+#: templates/telemeta/inc/module_revisions.html:7 views/base.py:1371
 msgid "Last changes"
 msgstr ""
 
@@ -1559,13 +1561,13 @@ msgid_plural "%(count)d collections"
 msgstr[0] ""
 msgstr[1] ""
 
-#: views/base.py:259 views/base.py:406 views/base.py:568 views/base.py:862
-#: views/base.py:1336
+#: views/base.py:263 views/base.py:410 views/base.py:572 views/base.py:866
+#: views/base.py:1340
 msgid "Access not allowed"
 msgstr ""
 
-#: views/base.py:261 views/base.py:408 views/base.py:570 views/base.py:864
-#: views/base.py:1338
+#: views/base.py:265 views/base.py:412 views/base.py:574 views/base.py:868
+#: views/base.py:1342
 msgid ""
 "Please login or contact the website administator to get a private access."
 msgstr ""

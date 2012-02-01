@@ -300,6 +300,7 @@ urlpatterns = patterns('',
     # Profiles
     url(r'^users/(?P<username>[A-Za-z0-9._-]+)/profile/$', profile_view.profile_detail, name="telemeta-profile-detail"),
     url(r'^users/(?P<username>[A-Za-z0-9._-]+)/profile/edit/$', profile_view.profile_edit, name="telemeta-profile-edit"),
+#    url(r'^users/(?P<username>[A-Za-z0-9._-]+)/profile/rss/$', profile_view.rss, name="telemeta-profile-rss"),
 
 
     # Registration
