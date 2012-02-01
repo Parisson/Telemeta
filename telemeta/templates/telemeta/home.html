@@ -27,7 +27,9 @@
     <img class="map-thumbnail" src="{% url telemeta-images "world2.png" %}" alt="{% trans "Open the geographic navigator" %}" style="width:398px" /></a>
 </div>
 
+{% with "Last changes" as title %}
 {% include "telemeta/inc/module_revisions.html" %}
+{% endwith %}
 
 {{ block.super }}
 <div id="module" class="module">

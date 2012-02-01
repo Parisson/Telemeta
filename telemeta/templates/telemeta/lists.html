@@ -18,13 +18,13 @@
 {% block content %}
 <div id="module-set" style="width: 33%">
     {% block module_user_revisions %}
-    {% with user_revisions as revisions %}
+    {% with user_revisions as revisions and "My last changes" as title %}
     {% include "telemeta/inc/module_revisions.html" %}
     {% endwith %}
     {% endblock %}
 
     {% block module_all_revisions %}
-    {% with revisions as revisions %}
+    {% with revisions as revisions and "All last changes" as title %}
     {% include "telemeta/inc/module_revisions.html" %}
     {% endwith %}
     {% endblock %}

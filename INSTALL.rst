@@ -258,6 +258,8 @@ Initialize the database
 This synchronizes the DB with the model::
 
     ./manage.py syncdb
+    ./manage.py schemamigration telemeta --initial
+    ./manage.py migrate telemeta --fake
     ./manage.py migrate telemeta
 
 

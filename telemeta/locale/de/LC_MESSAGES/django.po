@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-01 14:33+0100\n"
+"POT-Creation-Date: 2012-02-01 14:59+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1367,10 +1367,6 @@ msgstr ""
 msgid "No item"
 msgstr ""
 
-#: templates/telemeta/inc/module_revisions.html:7 views/base.py:1371
-msgid "Last changes"
-msgstr ""
-
 #: templates/telemeta/inc/module_revisions.html:12
 msgid "Date"
 msgstr ""
@@ -1561,6 +1557,14 @@ msgid_plural "%(count)d collections"
 msgstr[0] ""
 msgstr[1] ""
 
+#: util/locale_fix.py:5
+msgid "My last changes"
+msgstr ""
+
+#: util/locale_fix.py:6
+msgid "All last changes"
+msgstr ""
+
 #: views/base.py:263 views/base.py:410 views/base.py:572 views/base.py:866
 #: views/base.py:1340
 msgid "Access not allowed"
@@ -1570,4 +1574,8 @@ msgstr ""
 #: views/base.py:1342
 msgid ""
 "Please login or contact the website administator to get a private access."
+msgstr ""
+
+#: views/base.py:1371
+msgid "Last changes"
 msgstr ""
