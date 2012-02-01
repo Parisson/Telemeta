@@ -1,11 +1,8 @@
-{% extends "telemeta/admin.html" %}
+{% extends "telemeta/enumeration_edit.html" %}
 {% load i18n %}
 
-{% block head_title %}{% trans "Enumeration" %}: {{ enumeration_name|capfirst }} - {{ block.super }}{% endblock %}
-
 {% block tabcontents %}
- <h4>{% trans "Enumeration" %}: {{ enumeration_name|capfirst }}</h4>
-
+ <h4>{{ enumeration_name|capfirst }}</h4>
  <form class="mod" id="addenum" method="post"
     action="{% url telemeta-enumeration-record-update enumeration_id,enumeration_record.id %}">{% csrf_token %}
   <fieldset>

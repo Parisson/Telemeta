@@ -3,8 +3,11 @@
 
 {% block head_title %}{% trans "Instruments" %} - {{ block.super }}{% endblock %}
 
+{% block title %}
+<h1><img src="{% url telemeta-images "admin_red.png" %}" style="vertical-align:middle" /> {% trans "Administration" %} > {% trans "Instruments" %}</h1>
+{% endblock %}
+
 {% block tabcontents %}
- <h4>{% trans "Instruments" %}</h4>
  <form class="addnew" id="_addinstru" method="POST"
         action="{% url telemeta-instrument-add %}">{% csrf_token %}
   <fieldset>

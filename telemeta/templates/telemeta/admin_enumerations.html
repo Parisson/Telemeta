@@ -2,9 +2,11 @@
 {% load telemeta_utils %}
 {% load i18n %}
 
+{% block title %}
+<h1><img src="{% url telemeta-images "admin_red.png" %}" style="vertical-align:middle" /> {% trans "Administration" %} > {% trans "Enumerations" %}</h1>
+{% endblock %}
+
 {% block tabcontents %}
- <h4>{% trans "Enumerations" %}</h4>
- 
 {% if enumerations %}
 
   <table class="listing">

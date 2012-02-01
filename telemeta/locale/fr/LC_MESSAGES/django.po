@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-01 12:42+0100\n"
+"POT-Creation-Date: 2012-02-01 13:22+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Olivier Guilyardi <olivier samalyse com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -575,15 +575,19 @@ msgid "Telemeta administration"
 msgstr "Administration Telemeta"
 
 #: templates/telemeta/admin.html:11
+#: templates/telemeta/admin_enumerations.html:6
+#: templates/telemeta/admin_general.html:5
+#: templates/telemeta/enumeration_edit.html:7
+#: templates/telemeta/instrument_edit.html:7
 msgid "Administration"
 msgstr "Administration"
 
 #: templates/telemeta/admin_enumerations.html:6
-#: templates/telemeta/base.html:126
+#: templates/telemeta/base.html:126 templates/telemeta/enumeration_edit.html:7
 msgid "Enumerations"
 msgstr "Énumérations"
 
-#: templates/telemeta/admin_enumerations.html:12
+#: templates/telemeta/admin_enumerations.html:14
 #: templates/telemeta/home.html:46 templates/telemeta/mediaitem_add.html:33
 #: templates/telemeta/mediaitem_copy.html:34
 #: templates/telemeta/mediaitem_detail_video.html:295
@@ -601,9 +605,13 @@ msgstr "Énumérations"
 msgid "Title"
 msgstr "Titre"
 
-#: templates/telemeta/admin_enumerations.html:22
+#: templates/telemeta/admin_enumerations.html:24
 msgid "No enumerations"
 msgstr "Pas d'énumérations"
+
+#: templates/telemeta/admin_general.html:5 templates/telemeta/base.html:125
+msgid "General"
+msgstr "Générale"
 
 #: templates/telemeta/admin_instruments.html:6
 #: templates/telemeta/admin_users.html:6 templates/telemeta/base.html:89
@@ -682,14 +690,9 @@ msgstr ""
 msgid "Corpus"
 msgstr ""
 
-#: templates/telemeta/base.html:125
-msgid "General"
-msgstr ""
-
 #: templates/telemeta/base.html:127 templates/telemeta/instrument_edit.html:4
 #: templates/telemeta/instrument_edit.html:7
-#: templates/telemeta/instrument_edit_value.html:4
-#: templates/telemeta/instrument_edit_value.html:7
+#: templates/telemeta/instrument_edit_value.html:5
 msgid "Instruments"
 msgstr "Instruments"
 
@@ -720,8 +723,8 @@ msgstr "Mentions légales"
 #: templates/telemeta/collection_edit.html:29
 #: templates/telemeta/collection_related_edit.html:12
 #: templates/telemeta/collection_related_edit.html:39
-#: templates/telemeta/enumeration_edit_value.html:22
-#: templates/telemeta/instrument_edit_value.html:21
+#: templates/telemeta/enumeration_edit_value.html:19
+#: templates/telemeta/instrument_edit_value.html:19
 #: templates/telemeta/mediaitem_add.html:15
 #: templates/telemeta/mediaitem_add.html:45
 #: templates/telemeta/mediaitem_copy.html:16
@@ -748,8 +751,8 @@ msgstr "Annuler"
 #: templates/telemeta/collection_add.html:32
 #: templates/telemeta/collection_edit.html:31
 #: templates/telemeta/collection_related_edit.html:41
-#: templates/telemeta/enumeration_edit_value.html:20
-#: templates/telemeta/instrument_edit_value.html:19
+#: templates/telemeta/enumeration_edit_value.html:17
+#: templates/telemeta/instrument_edit_value.html:17
 #: templates/telemeta/mediaitem_add.html:47
 #: templates/telemeta/mediaitem_copy.html:47
 #: templates/telemeta/mediaitem_edit.html:40
@@ -912,8 +915,8 @@ msgid "Sounds"
 msgstr "Sonores"
 
 #: templates/telemeta/collection_list.html:17
-#: templates/telemeta/enumeration_edit.html:20 templates/telemeta/home.html:27
-#: templates/telemeta/instrument_edit.html:19
+#: templates/telemeta/enumeration_edit.html:23 templates/telemeta/home.html:27
+#: templates/telemeta/instrument_edit.html:22
 #: templates/telemeta/mediaitem_list.html:15
 #: templates/telemeta/resource_list.html:13
 msgid "Add"
@@ -938,36 +941,33 @@ msgid "Populations / Social groups"
 msgstr "Populations / Groupes sociaux"
 
 #: templates/telemeta/enumeration_edit.html:4
-#: templates/telemeta/enumeration_edit.html:7
-#: templates/telemeta/enumeration_edit_value.html:4
-#: templates/telemeta/enumeration_edit_value.html:7
 msgid "Enumeration"
 msgstr "Enumération"
 
-#: templates/telemeta/enumeration_edit.html:12
-#: templates/telemeta/instrument_edit.html:11
+#: templates/telemeta/enumeration_edit.html:15
+#: templates/telemeta/instrument_edit.html:14
 msgid "Add entry"
 msgstr "Ajouter une entrée"
 
-#: templates/telemeta/enumeration_edit.html:14
-#: templates/telemeta/enumeration_edit.html:28
-#: templates/telemeta/enumeration_edit_value.html:14
+#: templates/telemeta/enumeration_edit.html:17
+#: templates/telemeta/enumeration_edit.html:31
+#: templates/telemeta/enumeration_edit_value.html:11
 #: templates/telemeta/mediaitem_detail.html:137
 #: templates/telemeta/mediaitem_detail_video.html:136
 msgid "Value"
 msgstr "Valeur"
 
-#: templates/telemeta/enumeration_edit.html:44
-#: templates/telemeta/instrument_edit.html:41
+#: templates/telemeta/enumeration_edit.html:47
+#: templates/telemeta/instrument_edit.html:44
 msgid "Remove selected items"
 msgstr "Supprimer les éléments sélectionnés"
 
-#: templates/telemeta/enumeration_edit.html:48
+#: templates/telemeta/enumeration_edit.html:51
 msgid "This enumeration is empty"
 msgstr "Cette énumération est vide"
 
-#: templates/telemeta/enumeration_edit_value.html:12
-#: templates/telemeta/instrument_edit_value.html:11
+#: templates/telemeta/enumeration_edit_value.html:9
+#: templates/telemeta/instrument_edit_value.html:9
 msgid "Modify an entry"
 msgstr "Modification d'une entrée"
 
@@ -1058,13 +1058,13 @@ msgstr "Sélection musicale"
 msgid "Open the geographic navigator"
 msgstr "Accéder au navigateur géographique"
 
-#: templates/telemeta/instrument_edit.html:13
-#: templates/telemeta/instrument_edit.html:27
-#: templates/telemeta/instrument_edit_value.html:13
+#: templates/telemeta/instrument_edit.html:16
+#: templates/telemeta/instrument_edit.html:30
+#: templates/telemeta/instrument_edit_value.html:11
 msgid "Name"
 msgstr "Nom"
 
-#: templates/telemeta/instrument_edit.html:45
+#: templates/telemeta/instrument_edit.html:48
 msgid "This instrument list is empty"
 msgstr "Cette énumération est vide"
 

@@ -1,11 +1,14 @@
 {% extends "telemeta/admin.html" %}
 {% load i18n %}
 
-{% block head_title %}{% trans "Enumeration" %}: {{ enumeration_name|capfirst }} - {{ block.super }}{% endblock %}
+{% block head_title %}{% trans "Enumeration" %} : {{ enumeration_name|capfirst }} - {{ block.super }}{% endblock %}
+
+{% block title %}
+<h1><img src="{% url telemeta-images "admin_red.png" %}" style="vertical-align:middle" /> {% trans "Administration" %} > {% trans "Enumerations" %}</h1>
+{% endblock %}
 
 {% block tabcontents %}
- <h4>{% trans "Enumeration" %}: {{ enumeration_name|capfirst }}</h4>
-
+ <h4>{{ enumeration_name|capfirst }}</h4>
  <form class="addnew" id="_addenum" method="POST"
         action="{% url telemeta-enumeration-add enumeration_id %}">{% csrf_token %}
   <fieldset>
