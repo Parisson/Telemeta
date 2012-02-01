@@ -14,10 +14,10 @@ U{http://telemeta.org}
 __docformat__ = 'epytext en'
 __version__ = '1.4'
 __url__ = 'http://telemeta.org'
-__copyright__ = '(C) 2007-2011 Parisson'
+__copyright__ = '(C) 2007-2012 Parisson'
 __license__ = 'CeCILL-2'
 __license_long__ = """
-Copyright (C) Parisson SARL (2007-2011)
+Copyright (C) Parisson SARL (2007-2012)
 
 <yomguy@parisson.com>
 <olivier@samalyse.com>

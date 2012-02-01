@@ -37,7 +37,11 @@
         {% block general_info %}
             <dl class="listing">
               {% for field in resource.get_fields %}
+               {% if "id" in field.name %}
+                {{ field.label_tag.as_hidden }}{{ field.as_hidden }}
+               {% else %}
                 {% dl_field resource field.name %}
+               {% endif %}
               {% endfor %}  
             </dl>
         {% endblock general_info %}

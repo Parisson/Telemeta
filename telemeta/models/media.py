@@ -107,7 +107,7 @@ class MediaBaseResource(MediaResource):
         super(MediaBaseResource, self).save(force_insert, force_update)
 
     def get_fields(self):
-        return MediaBaseResource._meta.fields
+        return self._meta.fields
 
     class Meta(MetaCore):
         abstract = True
@@ -631,6 +631,8 @@ class MediaCorpus(MediaBaseResource):
     icon = 'corpus.png'
 
     children = models.ManyToManyField(MediaCollection, related_name="corpus", verbose_name=_('collections'))
+    recorded_from_year    = IntegerField(_('recording year (from)'))
+    recorded_to_year      = IntegerField(_('recording year (until)'))
 
     @property
     def public_id(self):

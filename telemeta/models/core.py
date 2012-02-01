@@ -35,8 +35,8 @@
 # Authors: Olivier Guilyardi <olivier@samalyse.com>
 #          Guillaume Pellerin <yomguy@parisson.com>
 
-__all__ = ['ModelCore', 'MetaCore', 'DurationField', 'Duration', 'WeakForeignKey', 
-           'EnhancedModel', 'CharField', 'TextField', 'IntegerField', 'BooleanField', 
+__all__ = ['ModelCore', 'MetaCore', 'DurationField', 'Duration', 'WeakForeignKey',
+           'EnhancedModel', 'CharField', 'TextField', 'IntegerField', 'BooleanField',
            'DateTimeField', 'FileField', 'ForeignKey', 'FloatField', 'DateField',
            'RequiredFieldError', 'CoreQuerySet', 'CoreManager', 'word_search_q']
 
@@ -50,8 +50,8 @@ import datetime
 from django.utils.translation import ugettext_lazy as _
 import re
 from django.core.exceptions import ObjectDoesNotExist
+from south.modelsinspector import add_introspection_rules
 
-    
 class Duration(object):
     """Represent a time duration"""
     def __init__(self, *args, **kwargs):
@@ -63,13 +63,13 @@ class Duration(object):
     def __decorate(self, method, other):
         if isinstance(other, Duration):
             res = method(other._delta)
-        else:    
+        else:
             res = method(other)
         if type(res) == datetime.timedelta:
             return Duration(res)
-        
+
         return res
-        
+
     def __add__(self, other):
         return self.__decorate(self._delta.__add__, other)
 
@@ -80,7 +80,7 @@ class Duration(object):
         hours   = self._delta.days * 24 + self._delta.seconds / 3600
         minutes = (self._delta.seconds % 3600) / 60
         seconds = self._delta.seconds % 60
-    
+
         return "%.2d:%.2d:%.2d" % (hours, minutes, seconds)
 
     @staticmethod
@@ -109,11 +109,11 @@ class Duration(object):
 
     def as_seconds(self):
         return self._delta.days * 24 * 3600 + self._delta.seconds
-            
+
 def normalize_field(args, default_value=None):
     """Normalize field constructor arguments, so that the field is marked blank=True
        and has a default value by default.
-       
+
        This behaviour can be disabled by passing the special argument required=True.
 
        The default value can also be overriden with the default=value argument.
@@ -132,14 +132,14 @@ def normalize_field(args, default_value=None):
             elif default_value is not None:
                 args['default'] = default_value
 
-    return args                
+    return args
 
 # The following is based on Django TimeField
 class DurationField(models.Field):
     """Duration Django model field. Essentially the same as a TimeField, but
     with values over 24h allowed.
-    
-    The constructor arguments are also normalized with normalize_field(). 
+
+    The constructor arguments are also normalized with normalize_field().
     """
 
     description = _("Duration")
@@ -174,7 +174,7 @@ class DurationField(models.Field):
             return Duration.fromstr(value)
         except ValueError:
             raise exceptions.ValidationError(self.error_messages['invalid'])
-            
+
     def get_prep_value(self, value):
         return self.to_python(value)
 
@@ -194,7 +194,7 @@ class DurationField(models.Field):
         defaults = {'form_class': forms.CharField}
         defaults.update(kwargs)
         return super(DurationField, self).formfield(**defaults)
-           
+
 class ForeignKey(models.ForeignKey):
     """The constructor arguments of this ForeignKey are normalized
     with normalize_field(), however the field is marked required by default
@@ -205,15 +205,15 @@ class ForeignKey(models.ForeignKey):
             if not kwargs.get('null'):
                 kwargs['required'] = True
 
-        super(ForeignKey, self).__init__(to, **normalize_field(kwargs, 0))                
+        super(ForeignKey, self).__init__(to, **normalize_field(kwargs, 0))
 
 class WeakForeignKey(ForeignKey):
     """A weak foreign key is the same as foreign key but without cascading
     delete. Instead the reference is set to null when the referenced record
     get deleted. This emulates the ON DELETE SET NULL sql behaviour.
-   
+
     This field is automatically allowed to be null, there's no need to pass
-    null=True. 
+    null=True.
 
     The constructor arguments are normalized with normalize_field() by the
     parent ForeignKey
@@ -224,7 +224,7 @@ class WeakForeignKey(ForeignKey):
     def __init__(self, to, **kwargs):
         kwargs['null'] = True
         super(WeakForeignKey, self).__init__(to, **kwargs)
-       
+
 class EnhancedQuerySet(models.query.QuerySet):
     """QuerySet with added functionalities such as WeakForeignKey handling"""
 
@@ -246,14 +246,14 @@ class EnhancedQuerySet(models.query.QuerySet):
                     q.delete()
 
                 i += CHUNK
-        
+
         super(EnhancedQuerySet, self).delete()
-             
+
 class EnhancedManager(models.Manager):
     """Manager which is bound to EnhancedQuerySet"""
     def get_query_set(self):
         return EnhancedQuerySet(self.model)
-    
+
 
 class EnhancedModel(models.Model):
     """Base model class with added functionality. See EnhancedQuerySet"""
@@ -263,14 +263,14 @@ class EnhancedModel(models.Model):
     def delete(self):
         if not self.pk:
             raise Exception("Can't delete without a primary key")
-        self.__class__.objects.filter(pk=self.pk).delete()            
+        self.__class__.objects.filter(pk=self.pk).delete()
 
     class Meta:
         abstract = True
 
 class CharField(models.CharField):
     """This is a CharField with a default max_length of 250.
-    
+
        The arguments are also normalized with normalize_field()"""
 
     def __init__(self, *args, **kwargs):
@@ -381,15 +381,15 @@ class ModelCore(EnhancedModel):
             element.appendChild(doc.createTextNode(value))
             top.appendChild(element)
         return doc
-    
-    def to_dict(self):  
+
+    def to_dict(self):
         "Return model fields as a dict of name/value pairs"
         fields_dict = {}
         for field in self._meta.fields:
             fields_dict[field.name] = getattr(self, field.name)
         return fields_dict
 
-    def to_list(self):  
+    def to_list(self):
         "Return model fields as a list"
         fields_list = []
         for field in self._meta.fields:
@@ -434,7 +434,7 @@ class CoreQuerySet(EnhancedQuerySet):
 
     def word_search(self, field, pattern):
         return self.filter(word_search_q(field, pattern))
-        
+
     def _by_change_time(self, type, from_time = None, until_time = None):
         "Search between two revision dates"
         table = self.model._meta.db_table
@@ -472,4 +472,18 @@ class CoreManager(EnhancedManager):
                 return super(CoreManager, self).get(**args)
 
         return super(CoreManager, self).get(**kwargs)
-                
+
+
+# South introspection rules
+add_introspection_rules([], ["^telemeta\.models\.core\.CharField"])
+add_introspection_rules([], ["^telemeta\.models\.core\.TextField"])
+add_introspection_rules([], ["^telemeta\.models\.core\.FileField"])
+add_introspection_rules([], ["^telemeta\.models\.core\.IntegerField"])
+add_introspection_rules([], ["^telemeta\.models\.core\.BooleanField"])
+add_introspection_rules([], ["^telemeta\.models\.core\.DateTimeField"])
+add_introspection_rules([], ["^telemeta\.models\.core\.DateField"])
+add_introspection_rules([], ["^telemeta\.models\.core\.FloatField"])
+add_introspection_rules([], ["^telemeta\.models\.core\.DurationField"])
+add_introspection_rules([], ["^telemeta\.models\.core\.ForeignKey"])
+add_introspection_rules([], ["^telemeta\.models\.core\.WeakForeignKey"])
+

@@ -104,6 +104,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'telemeta',
     'jsonrpc',
+    'south',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
