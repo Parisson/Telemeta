@@ -32,7 +32,7 @@
 #
 # Authors: Guillaume Pellerin <yomguy@parisson.com>
 
-
+import django.forms as forms
 from django.forms import ModelForm
 from telemeta.models import *
 
@@ -45,6 +45,8 @@ class MediaFondsRelatedForm(ModelForm):
         model = MediaFondsRelated
 
 class MediaCorpusForm(ModelForm):
+    children = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple, queryset=MediaCollection.objects.all())
+
     class Meta:
         model = MediaCorpus
 

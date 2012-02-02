@@ -589,7 +589,8 @@ class ItemView(object):
             grapher_id = 'waveform'
 
         previous, next = self.item_previous_next(item)
-        self.item_analyze(item)
+        mime_type = self.item_analyze(item)
+        print mime_type
         playlists = get_playlists(request)
         public_access = get_public_access(item.public_access, str(item.recorded_from_date).split('-')[0],
                                                 str(item.recorded_to_date).split('-')[0])
@@ -603,7 +604,7 @@ class ItemView(object):
                     'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True),
                     'previous' : previous, 'next' : next, 'marker': marker_id, 'playlists' : playlists,
                     'public_access': public_access, 'width': width, 'height': height,
-                    'related_media': related_media,
+                    'related_media': related_media, 'mime_type': mime_type,
                     })
 
     @method_decorator(permission_required('telemeta.change_mediaitem'))
@@ -626,7 +627,7 @@ class ItemView(object):
             grapher_id = 'waveform'
 
         previous, next = self.item_previous_next(item)
-        self.item_analyze(item)
+        mime_type = self.item_analyze(item)
 
         if request.method == 'POST':
             form = MediaItemForm(data=request.POST, files=request.FILES, instance=item)
@@ -653,7 +654,7 @@ class ItemView(object):
                     {'item': item, 'export_formats': formats,
                     'visualizers': graphers, 'visualizer_id': grapher_id,
                     'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True), "form": form,
-                    'previous' : previous, 'next' : next,
+                    'previous' : previous, 'next' : next, 'mime_type': mime_type,
                     })
 
     def related_media_item_stream(self, request, item_public_id, media_id):
@@ -749,17 +750,19 @@ class ItemView(object):
 
     def item_analyze(self, item):
         analyses = MediaItemAnalysis.objects.filter(item=item)
+        mime_type = ''
 
         if analyses:
-            if not item.approx_duration:
-                for analysis in analyses:
-                    if analysis.id == 'duration':
-                        value = analysis.value
-                        time = value.split(':')
-                        time[2] = time[2].split('.')[0]
-                        time = ':'.join(time)
-                        item.approx_duration = str(time)
-                        item.save()
+            for analysis in analyses:
+                if not item.approx_duration and analysis.analyzer_id == 'duration':
+                    value = analysis.value
+                    time = value.split(':')
+                    time[2] = time[2].split('.')[0]
+                    time = ':'.join(time)
+                    item.approx_duration = str(time)
+                    item.save()
+                if analysis.analyzer_id == 'mime_type':
+                    mime_type = analysis.value
         else:
             analyzers = []
             analyzers_sub = []
@@ -804,6 +807,8 @@ class ItemView(object):
                                                  analyzer_id=analyzer.id(),
                                                  unit=analyzer.unit(), value=str(value))
                     analysis.save()
+
+        return mime_type
 
     def item_analyze_xml(self, request, public_id):
         item = MediaItem.objects.get(public_id=public_id)
@@ -888,11 +893,10 @@ class ItemView(object):
         else:
             flag = flag[0]
 
-        analyzers = self.item_analyze(item)
-        if analyzers:
-            for analyzer in analyzers:
-                if analyzer['id'] == 'mime_type':
-                    format = analyzer['value']
+        mime_type = self.item_analyze(item)
+        if mime_type:
+            format = mime_type
+
         else:
             decoder = timeside.decoder.FileDecoder(audio)
             format = decoder.format()

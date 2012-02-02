@@ -376,3 +376,9 @@ def to_utf8(word):
 @stringfilter
 def capitalize(value):
     return value.capitalize()
+
+@register.filter
+@stringfilter
+def mime_to_ext(mime):
+    return mime.split('/')[1]
+

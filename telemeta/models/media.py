@@ -595,6 +595,11 @@ class DublinCoreToFormatMetadata(object):
                         'relation': 'album',
                         'all': 'all',
                        },
+                    'webm': {
+                        'creator': 'artist',
+                        'relation': 'album',
+                        'all': 'all',
+                       },
                     }
 
     def __init__(self, format):
