@@ -566,7 +566,7 @@ class DublinCoreToFormatMetadata(object):
     in various audio metadata format (MP3, OGG, etc...)"""
 
     #FIXME: should be given by timeside
-    unavailable_extensions = ['wav', 'aiff', 'aif', 'flac']
+    unavailable_extensions = ['wav', 'aiff', 'aif', 'flac', 'webm']
 
     metadata_mapping = {
                     'mp3' : {

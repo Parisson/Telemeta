@@ -75,6 +75,12 @@
             });
     {% endif %}
 </script>
+
+{% if "video" in mime_type %}
+<link href="http://vjs.zencdn.net/c/video-js.css" rel="stylesheet">
+<script src="http://vjs.zencdn.net/c/video.js"></script>
+{% endif %}
+
 {% endif %}
 {% endblock %}
 
@@ -122,10 +128,21 @@ Item : <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
 
     {% if "video" in mime_type %}
     <div>
-        <video width="362" controls="controls" preload="auto">
+    <video id="my_video_1" class="video-js vjs-default-skin" width="362" height="240" controls preload="auto" data-setup="{}">
+        <!-- Hello Chrome and Firefox (and Opera?) -->
         <source src="{% url telemeta-item-export item.public_id mime_type|mime_to_ext %}" type="{{ mime_type }}" />
         </video>
+        <div id="videotime"></div>
     </div>
+    <script>
+    (function(){
+        var v = document.getElementsByTagName('video')[0]
+        var t = document.getElementById('videotime');
+        v.addEventListener('timeupdate',function(event){
+            t.innerHTML = v.currentTime;
+            },false);
+            })();
+    </script>
     {% endif %}
 
         <!-- </div> -->

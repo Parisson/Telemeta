@@ -590,7 +590,6 @@ class ItemView(object):
 
         previous, next = self.item_previous_next(item)
         mime_type = self.item_analyze(item)
-        print mime_type
         playlists = get_playlists(request)
         public_access = get_public_access(item.public_access, str(item.recorded_from_date).split('-')[0],
                                                 str(item.recorded_to_date).split('-')[0])
@@ -759,7 +758,7 @@ class ItemView(object):
                     time = value.split(':')
                     time[2] = time[2].split('.')[0]
                     time = ':'.join(time)
-                    item.approx_duration = str(time)
+                    item.approx_duration = time
                     item.save()
                 if analysis.analyzer_id == 'mime_type':
                     mime_type = analysis.value
@@ -791,22 +790,20 @@ class ItemView(object):
                                              analyzer_id='resolution', unit='bits',
                                              value=unicode(decoder.audiowidth))
                 analysis.save()
+                analysis = MediaItemAnalysis(item=item, name='Duration',
+                                             analyzer_id='duration', unit='s',
+                                             value=unicode(datetime.timedelta(0,decoder.duration)))
+                analysis.save()
 
                 for analyzer in analyzers_sub:
                     value = analyzer.result()
-                    if analyzer.id() == 'duration':
-                        approx_value = int(round(value))
-                        item.approx_duration = approx_value
-                        try:
-                            item.save()
-                        except:
-                            pass
-                        value = datetime.timedelta(0,value)
-
                     analysis = MediaItemAnalysis(item=item, name=analyzer.name(),
                                                  analyzer_id=analyzer.id(),
                                                  unit=analyzer.unit(), value=str(value))
                     analysis.save()
+
+                #FIXME: parse tags on first load
+#                tags = decoder.tags
 
         return mime_type
 
@@ -893,14 +890,7 @@ class ItemView(object):
         else:
             flag = flag[0]
 
-        mime_type = self.item_analyze(item)
-        if mime_type:
-            format = mime_type
-
-        else:
-            decoder = timeside.decoder.FileDecoder(audio)
-            format = decoder.format()
-
+        format = self.item_analyze(item)
         dc_metadata = dublincore.express_item(item).to_list()
         mapping = DublinCoreToFormatMetadata(extension)
         metadata = mapping.get_metadata(dc_metadata)
