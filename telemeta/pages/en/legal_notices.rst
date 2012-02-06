@@ -1,46 +1,38 @@
-=====================
-Legal Notices
-=====================
+==================
+Legal notices
+==================
 
-**Site editor:**
+**Telemeta is edited by Parisson SARL**
 
- | Centre de Recherche en Ethnomusicologie (CREM - LESC UMR 7186 CNRS) 
- | MAE - 21, allée de l'Université
- | 92023 Nanterre cedex
- | France
-
-**Managing editor:**
-
- | Jean Lambert (director du CREM)
- | e-mail : lambert (at) mnhn.fr
-
-**Design and project manager:**
-
- | Joséphine Simonnot (CREM)
- | e-mail : josephine.simonnot (at) mae.u-paris10.fr
- 
-**Head of archives at CREM :**
-
- | Aude Da Cruz-Lima (CREM)
- | e-mail : aude.da-cruz-lima (at) mae.u-paris10.fr
- 
-**Design and head of development:**
-
- | Guillaume Pellerin (`Parisson <http://parisson.com>`_)
- | e-mail : guillaume.pellerin@parisson.com
-
-**Telemeta CREM uses GeoEthno:**
-
- | © CNRS
- | Responsable de GeoEthno: Isabelle Donze
- | Laboratoire d'ethnologie et de sociologie comparative
- | Bibliothèque Eric-de-Dampierre (Responsable : Marie-Dominique Mouton)
- | Maison de l'Archéologie et de l'Ethnologie
- | Université de Paris Ouest La Défense - 92023 Nanterre cedex - France
- | Contact : bibethno@mae.u-paris10.fr 
-
-| **AUDIO FILE COPYING FORBIDDEN IF NOT EXPLICITLY ALLOWED**
-| **COMMERCIAL USING OF THE ARCHIVES FORBIDDEN IF NOT EXPLICITLY ALLOWED**
-
-
+| Parisson SARL 
+| 16 rue Jacques Louvel-Tessier 75010 Paris, France
+| `http://parisson.com <http://parisson.com>`_
+|
+| Copyright (C) 2006-2011 Parisson SARL
+|
+| This software is governed by the CeCILL v2 license under French law and
+| abiding by the rules of distribution of free software.  You can  use, 
+| modify and/ or redistribute the software under the terms of the CeCILL v2
+| license as circulated by CEA, CNRS and INRIA at the following URL
+| `http://www.cecill.info <http://www.cecill.info>`_. 
+|
+| As a counterpart to the access to the source code and  rights to copy,
+| modify and redistribute granted by the license, users are provided only
+| with a limited warranty  and the software's author,  the holder of the
+| economic rights,  and the successive licensors  have only  limited
+| liability. 
+|
+| In this respect, the user's attention is drawn to the risks associated
+| with loading,  using,  modifying and/or developing or reproducing the
+| software by the user in light of its specific status of free software,
+| that may mean  that it is complicated to manipulate,  and  that  also
+| therefore means  that it is reserved for developers  and  experienced
+| professionals having in-depth computer knowledge. Users are therefore
+| encouraged to load and test the software's suitability as regards their
+| requirements in conditions enabling the security of their systems and/or 
+| data to be ensured and,  more generally, to use and operate it in the 
+| same conditions as regards security. 
+|
+| The fact that you are presently reading this means that you have had
+| knowledge of the CeCILL v2 license and that you accept its terms.
 

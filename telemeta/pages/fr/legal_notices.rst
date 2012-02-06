@@ -1,46 +1,38 @@
-=====================
-Mentions Légales
-=====================
+==================
+Mentions légales
+==================
 
-**Editeur du site :**
+**Telemeta est édité par la Société Parisson SARL**
 
- | Centre de Recherche en Ethnomusicologie (CREM - LESC UMR 7186 CNRS) 
- | MAE - 21, allée de l'Université
- | 92023 Nanterre cedex
- | France
-
-**Directeur de publication :**
-
- | Jean Lambert (directeur du CREM)
- | e-mail : lambert (at) mnhn.fr
-
-**Chef de projet et conception :**
-
- | Joséphine Simonnot (CREM)
- | e-mail : josephine.simonnot (at) mae.u-paris10.fr
- 
-**Responsable des archives du CREM :**
-
- | Aude Da Cruz-Lima (CREM)
- | e-mail : aude.da-cruz-lima (at) mae.u-paris10.fr
- 
-**Chef du développement et conception:**
-
- | Guillaume Pellerin (`Parisson <http://parisson.com>`_)
- | e-mail : guillaume.pellerin@parisson.com
-
-**Telemeta CREM utilise GeoEthno:**
-
- | © CNRS
- | Responsable de GeoEthno: Isabelle Donze
- | Laboratoire d'ethnologie et de sociologie comparative
- | Bibliothèque Eric-de-Dampierre (Responsable : Marie-Dominique Mouton)
- | Maison de l'Archéologie et de l'Ethnologie
- | Université de Paris Ouest La Défense - 92023 Nanterre cedex - France
- | Contact : bibethno@mae.u-paris10.fr 
-
-| **COPIE DES ARCHIVES SONORES INTERDITE SI PAS EXPLICITEMENT AUTORISÉ**
-| **UTILISATION COMMERCIALE DES ARCHIVES SONORES INTERDITE SI PAS EXPLICITEMENT AUTORISÉ**
-
-
-
+| Parisson SARL 
+| 16 rue Jacques Louvel-Tessier 75010 Paris, France
+| `http://parisson.com <http://parisson.com>`_
+|
+| Copyright (C) 2006-2011 Parisson SARL
+|
+| Ce logiciel est régi par la licence CeCILL v2 soumise au droit français et
+| respectant les principes de diffusion des logiciels libres. Vous pouvez
+| utiliser, modifier et/ou redistribuer ce programme sous les conditions
+| de la licence CeCILL v2 telle que diffusée par le CEA, le CNRS et l'INRIA 
+| sur le site `http://www.cecill.info <http://www.cecill.info>`_.
+|
+| En contrepartie de l'accessibilité au code source et des droits de copie,
+| de modification et de redistribution accordés par cette licence, il n'est
+| offert aux utilisateurs qu'une garantie limitée.  Pour les mêmes raisons,
+| seule une responsabilité restreinte pèse sur l'auteur du programme,  le
+| titulaire des droits patrimoniaux et les concédants successifs.
+|
+| A cet égard  l'attention de l'utilisateur est attirée sur les risques
+| associés au chargement,  à l'utilisation,  à la modification et/ou au
+| développement et à la reproduction du logiciel par l'utilisateur étant 
+| donné sa spécificité de logiciel libre, qui peut le rendre complexe à 
+| manipuler et qui le réserve donc à des développeurs et des professionnels
+| avertis possédant  des  connaissances  informatiques approfondies.  Les
+| utilisateurs sont donc invités à charger  et  tester  l'adéquation  du
+| logiciel à leurs besoins dans des conditions permettant d'assurer la
+| sécurité de leurs systèmes et ou de leurs données et, plus généralement, 
+| à l'utiliser et l'exploiter dans les mêmes conditions de sécurité. 
+|
+| Le fait que vous puissiez accéder à cet en-tête signifie que vous avez 
+| pris connaissance de la licence CeCILL v2, et que vous en avez accepté les
+| termes.
