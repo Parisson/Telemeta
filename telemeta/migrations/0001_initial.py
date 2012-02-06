@@ -180,7 +180,9 @@ class Migration(SchemaMigration):
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('user', self.gf('telemeta.models.core.ForeignKey')(to=orm['auth.User'], unique=True)),
             ('institution', self.gf('telemeta.models.core.CharField')(default='', max_length=250, blank=True)),
+            ('departement', self.gf('telemeta.models.core.CharField')(default='', max_length=250, blank=True)),
             ('function', self.gf('telemeta.models.core.CharField')(default='', max_length=250, blank=True)),
+            ('attachment', self.gf('telemeta.models.core.CharField')(default='', max_length=250, blank=True)),
             ('address', self.gf('telemeta.models.core.TextField')(default='', blank=True)),
             ('telephone', self.gf('telemeta.models.core.CharField')(default='', max_length=250, blank=True)),
             ('expiration_date', self.gf('telemeta.models.core.DateField')(default=None, null=True, blank=True)),
@@ -981,6 +983,8 @@ class Migration(SchemaMigration):
         'telemeta.userprofile': {
             'Meta': {'object_name': 'UserProfile', 'db_table': "'profiles'"},
             'address': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
+            'attachment': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
+            'departement': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
             'expiration_date': ('telemeta.models.core.DateField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
             'function': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
