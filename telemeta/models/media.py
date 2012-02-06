@@ -633,7 +633,6 @@ class MediaCorpus(MediaBaseResource):
 
     element_type = 'corpus'
     children_type = 'collections'
-    icon = 'corpus.png'
 
     children = models.ManyToManyField(MediaCollection, related_name="corpus", verbose_name=_('collections'),  blank=True, null=True)
     recorded_from_year    = IntegerField(_('recording year (from)'))
@@ -654,7 +653,6 @@ class MediaFonds(MediaBaseResource):
 
     element_type = 'fonds'
     children_type = 'corpus'
-    icon = 'fonds.png'
 
     children = models.ManyToManyField(MediaCorpus, related_name="fonds", verbose_name=_('corpus'), blank=True, null=True)
 

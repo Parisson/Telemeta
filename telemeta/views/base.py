@@ -735,7 +735,11 @@ class ItemView(object):
                 return HttpResponseRedirect('/archives/items/'+code)
         else:
             item = MediaItem.objects.get(public_id=public_id)
+            items = MediaItem.objects.filter(collection=item.collection)
+            item.code = auto_code(items, item.collection.code)
             form = MediaItemForm(instance=item)
+            form.code = item.code
+            form. d
             form.file = None
 
         return render(request, template, {'item': item, "form": form})
@@ -803,7 +807,7 @@ class ItemView(object):
                                                  unit=analyzer.unit(), value=str(value))
                     analysis.save()
 
-                #FIXME: parse tags on first load
+#                FIXME: parse tags on first load
 #                tags = decoder.tags
 
         return mime_type

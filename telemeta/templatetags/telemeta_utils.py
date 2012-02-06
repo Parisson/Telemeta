@@ -379,6 +379,14 @@ def capitalize(value):
 
 @register.filter
 @stringfilter
-def mime_to_ext(mime):
-    return mime.split('/')[1]
+def mime_to_ext(mime_type):
+    return mime_type.split('/')[1]
+
+@register.filter
+@stringfilter
+def mime_to_media_type(mime_type):
+    if 'video' in mime_type:
+        return 'Video'
+    else:
+        return 'Audio'
 
