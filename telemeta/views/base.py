@@ -578,7 +578,8 @@ class ItemView(object):
         # Get TimeSide processors
         formats = []
         for encoder in self.encoders:
-            formats.append({'name': encoder.format(), 'extension': encoder.file_extension()})
+            if encoder.file_extension() in settings.TELEMETA_DOWNLOAD_FORMATS:
+                formats.append({'name': encoder.format(), 'extension': encoder.file_extension()})
 
         graphers = []
         for grapher in self.graphers:
