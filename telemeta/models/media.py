@@ -51,13 +51,16 @@ from telemeta.models.enum import *
 from telemeta.models.language import *
 from django.db import models
 
-collection_published_code_regex   = '[A-Za-z0-9._-]*'
-collection_unpublished_code_regex = '[A-Za-z0-9._-]*'
+
+# Special code regex of collections for the branch
+collection_published_code_regex   = 'CNRSMH_E_[0-9]{4}(?:_[0-9]{3}){2}'
+collection_unpublished_code_regex = 'CNRSMH_I_[0-9]{4}_[0-9]{3}'
 collection_code_regex             = '(?:%s|%s)' % (collection_published_code_regex,
                                                     collection_unpublished_code_regex)
 
-item_published_code_regex    = '[A-Za-z0-9._-]*'
-item_unpublished_code_regex  = '[A-Za-z0-9._-]*'
+# Special code regex of items for the branch
+item_published_code_regex    = collection_published_code_regex + '(?:_[0-9]{2,3}){1,2}'
+item_unpublished_code_regex  = collection_unpublished_code_regex + '_[0-9]{2,3}(?:_[0-9]{2,3}){0,2}'
 item_code_regex              = '(?:%s|%s)' % (item_published_code_regex, item_unpublished_code_regex)
 
 PUBLIC_ACCESS_CHOICES = (('none', 'none'), ('metadata', 'metadata'), ('full', 'full'))
