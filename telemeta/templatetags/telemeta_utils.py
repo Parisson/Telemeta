@@ -15,6 +15,7 @@ import re
 import os
 import datetime
 from django.conf import settings
+from django.template.defaultfilters import stringfilter
 
 register = template.Library()
 
@@ -118,11 +119,25 @@ def is_collection(resource):
     return isinstance(resource, models.MediaCollection)
 
 @register.filter
+def is_corpus(resource):
+    return isinstance(resource, models.MediaCorpus)
+
+@register.filter
+def is_fonds(resource):
+    return isinstance(resource, models.MediaFonds)
+
+@register.filter
+def is_resource(resource):
+    return is_fonds(resource) or is_corpus(resource)
+
+@register.filter
 def to_dublincore(resource):
     if isinstance(resource, models.MediaItem):
         return dc.express_item(resource)
-    else:
+    elif isinstance(resource, models.MediaCollection):
         return dc.express_collection(resource)
+    else:
+        return dc.express_generic_resource(resource)
 
 class DescriptionListFieldNode(template.Node):
     def __init__(self, model, attr, join_with = None, show_empty = False):
@@ -347,7 +362,7 @@ def get_filename(object):
 @register.filter
 def get_youtube(link):
     link = link.split('&')
-    if "=" in link:
+    if "=" in link[0]:
         ref = link[0].split('=')[1]
     else:
         ref = link[0].split('/')[-1]
@@ -356,3 +371,22 @@ def get_youtube(link):
 @register.filter
 def to_utf8(word):
     return word.encode('utf-8')
+
+@register.filter
+@stringfilter
+def capitalize(value):
+    return value.capitalize()
+
+@register.filter
+@stringfilter
+def mime_to_ext(mime_type):
+    return mime_type.split('/')[1]
+
+@register.filter
+@stringfilter
+def mime_to_media_type(mime_type):
+    if 'video' in mime_type:
+        return 'Video'
+    else:
+        return 'Audio'
+

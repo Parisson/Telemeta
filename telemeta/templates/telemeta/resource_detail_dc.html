@@ -1,0 +1,20 @@
+{% extends "telemeta/resource_detail.html" %}
+{% load telemeta_utils %}
+{% load i18n %}
+
+{% if item %}
+{% block title_buttons %}
+ <a class="component_icon button icon_previous" href="{% url telemeta-resource-detail type resource.public_id %}">{% trans "Normal View" %}</a>
+{% endblock %}
+
+{% block infos %}
+{% with resource|to_dublincore as resource %}
+{% include "telemeta/inc/dublincore.html" %}
+{% endwith %}
+{% endblock %}
+{% else %}
+    <p>{% trans "No such resource" %}</p>
+{% endif %}
+
+{% block related %}
+{% endblock related %}

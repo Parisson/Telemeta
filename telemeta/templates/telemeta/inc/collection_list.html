@@ -1,1 +1,49 @@
-{% extends "telemeta_default/inc/collection_list.html" %}
+{% load telemeta_utils %}
+{% load i18n %}
+{% if collections %}
+{% if hits %}
+
+<p class="pagination">
+{% blocktrans %}Collections {{ first_on_page }} to {{ last_on_page }} on {{ hits }}{% endblocktrans %}
+| Pages : {% if pages == 1 %}1{% else %}{% if is_paginated %}{% load paginator %}{% paginator 5 %}{% endif %}{% endif %}
+</p>
+{% endif %}
+<table class="listing">
+<tr>
+    <th class="highlight">{% trans "Title" %}</th>
+    <th>{% trans "Code" %}</th>
+    <th>{% field_label "MediaCollection" "creator" %}</th>
+    <th>{% trans "Recordist" %}</th>
+    <th>{% trans "Recording period" %}</th>
+    <th>{% trans "Sound" %}</th>
+</tr>
+{% for collection in collections %}
+<tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
+    <td class="highlight">
+        <a href="{% url telemeta-collection-detail collection.public_id %}">{{ collection.title }}</a>
+    </td>
+    <td>
+        {{ collection.code|default:collection.old_code }}
+    </td>
+    <td>{{ collection.creator }}</td>
+    <td>{{ collection.apparent_collector }}</td>
+    <td>
+    {% if collection.recorded_from_year %}
+        {{ collection.recorded_from_year }}
+        {% if collection.recorded_to_year and not collection.recorded_to_year|equals:collection.recorded_from_year %}
+            - {{ collection.recorded_to_year }}
+        {% endif %}
+    {% endif %}
+    </td>
+    <td>
+      {% if collection.has_mediafile %}
+       <img src="images/ok.png" alt="yes" style="vertical-align:middle" />
+      {% endif %}
+    </td>
+</tr>
+{% endfor %}
+</table>
+{% else %}
+    <p>{% trans "No collection" %}</p>
+{% endif %}
+

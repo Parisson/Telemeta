@@ -1,1 +1,326 @@
-{% extends "telemeta_default/mediaitem_detail.html" %}
+{% extends "telemeta/base.html" %}
+{% load telemeta_utils %}
+{% load i18n %}
+
+{% block head_title %}{% trans "Item" %} : {% if item.title %}{{ item.title }}{% else %}{{ item.public_id}}{% endif %} - {{ block.super }}{% endblock %}
+
+{% block stylesheets %}
+{{ block.super }}
+      <link rel="stylesheet" type="text/css" href="{% url telemeta-timeside "skins/lab/style.css" %}" />
+      <link rel="stylesheet" type="text/css" href="{% url telemeta-css "player.css" %}" />
+{% endblock %}
+
+{% block extra_javascript %}
+{% if item %}
+
+{% if item.file %}
+{% if public_access or perms.telemeta.can_play_all_items %}
+<script src="{% url telemeta-timeside "js/libs/soundmanager2-nodebug-jsmin.js" %}" type="text/javascript"></script>
+<script src="{% url telemeta-timeside "js/timeside.js" %}" type="text/javascript"></script>
+{% endif %}
+{% endif %}
+
+<script src="{% url telemeta-js "popupdiv-min.js" %}" type="text/javascript"></script>
+<script src="{% url telemeta-js "playlist.js" %}" type="text/javascript"></script>
+
+{% if item.file %}
+{% if public_access or perms.telemeta.can_play_all_items %}
+<script src="{% url telemeta-js "playerLoader.js" %}" type="text/javascript"></script>
+<script src="{% url telemeta-js "divmarker.js" %}" type="text/javascript"></script>
+{% endif %}
+{% endif %}
+
+<script type="text/javascript">
+    {% if item.file %}
+    {% if public_access or perms.telemeta.can_play_all_items %}
+        //initializing soundManager default properties
+        soundManager.flashVersion = 9;
+        soundManager.url = "{% url telemeta-timeside "swf/" %}";
+        soundManager.debugMode = false;
+        soundManager.allowPolling = true;
+        soundManager.useHTML5Audio = true;
+        soundManager.preferFlash = true;
+
+        //initializing the visualizers to be passed to the player
+        var visualizers = {};
+        {% for v in visualizers %}
+            visualizers["{{v.name}}"] = "{% url telemeta-item-visualize item.public_id,v.id,"WIDTH","HEIGHT" %}";
+        {% endfor %}
+        {% if user.is_superuser %}
+             loadPlayer('{% url telemeta-item-analyze-xml item.public_id %}',
+              "{% url telemeta-item-export item.public_id,"mp3" %}", undefined, '{{item.id}}', visualizers,
+              CURRENT_USER_NAME,  //undefined if !user.is_authenticated
+              true); //true because superuser
+        {% else %}
+           loadPlayer('{% url telemeta-item-analyze-xml item.public_id %}',
+             "{% url telemeta-item-export item.public_id,"mp3" %}", undefined, '{{item.id}}', visualizers,
+             CURRENT_USER_NAME,  //undefined if !user.is_authenticated
+             false); //false because not superuser
+        {% endif %}
+    {% endif %}
+    {% endif %}
+    //playlists:
+    {% if user.is_authenticated %}
+        {% for playlist in playlists %}
+            playlistUtils.addPlaylist('{{ playlist.playlist.title }}','{{playlist.playlist.public_id}}');
+        {% endfor %}
+            jQuery(window).ready(function(){
+                var anchor = jQuery('#_add_to_playlist');
+                if(anchor.length){
+                    anchor.unbind('click').click(function(){
+                        playlistUtils.showAddResourceToPlaylist(anchor,'item','{{item.id}}',gettrans('item added to the selected playlist'));
+                        return false;
+                    });
+                }
+            });
+    {% endif %}
+</script>
+
+{% if "video" in mime_type %}
+<link href="http://vjs.zencdn.net/c/video-js.css" rel="stylesheet">
+<script src="http://vjs.zencdn.net/c/video.js"></script>
+{% endif %}
+
+{% endif %}
+{% endblock %}
+
+{% if item %}
+
+{% block title %}
+<img src="{% url telemeta-images "item.png" %}" alt="item" style="vertical-align:middle" />
+Item : <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
+{% endblock %}
+
+{% block title_buttons %}
+<div class="fixedWidthAsPlayer">
+    {% if user.is_authenticated and perms.telemeta.change_mediaitem %}
+    <a href="{% url telemeta-item-edit item.public_id %}" class="component_icon button icon_edit">{% trans "Edit" %}</a>
+    <a href="{% url telemeta-item-copy item.public_id %}" class="component_icon button icon_copy">{% trans "Copy" %}</a>
+    {% endif %}
+    {% if user.is_authenticated %}
+    <a id="_add_to_playlist" href='#' class="component_icon button icon_add_to_playlist">{% trans "Add to playlist" %}</a>
+    {% endif %}
+    <a href="{% url telemeta-item-detail previous %}" class="component_icon button icon_previous">{% trans "Previous" %}</a>
+    <a href="{% url telemeta-item-detail next %}" class="component_icon button icon_next">{% trans "Next" %}</a>
+    <a href="{% url telemeta-item-dublincore item.public_id %}" class="component_icon button icon_dublin_core">Dublin Core</a>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="{% if item.file %}{% if public_access or perms.telemeta.can_play_all_items %}with-rightcol{% endif %}{% endif %}">
+    {% if item.file %}
+
+
+    {% if public_access or perms.telemeta.can_play_all_items %}
+    <div id="player_maximized" class="ts-skin-lab">
+        <a href="#" class="toggle">Minimize</a>
+        <a href="#" class="embed_player_frame">&lt;/&gt;</a>
+        <div class="wazing"></div>
+    </div>
+    <div id="rightcol">
+        <div id="player_minimized" class="ts-skin-lab">
+            <a href="#" class="toggle">Maximize</a>
+            <a href="#" class="embed_player_frame">&lt;/&gt;</a>
+            <div class="wazing"></div>
+            <div id="player" class="ts-player">
+            </div>
+        </div>
+
+    {% if "video" in mime_type %}
+    <div>
+    <video id="my_video_1" class="video-js vjs-default-skin" width="362" height="240" controls preload="auto" data-setup="{}">
+        <!-- Hello Chrome and Firefox (and Opera?) -->
+        <source src="{% url telemeta-item-export item.public_id mime_type|mime_to_ext %}" type="{{ mime_type }}" />
+        </video>
+        <div id="videotime"></div>
+    </div>
+    <script>
+    (function(){
+        var v = document.getElementsByTagName('video')[0]
+        var t = document.getElementById('videotime');
+        v.addEventListener('timeupdate',function(event){
+            t.innerHTML = v.currentTime;
+            },false);
+            })();
+    </script>
+    {% endif %}
+
+        <!-- </div> -->
+        <div id="tabs_container">
+            <!-- this div will be hidden when everything is fully loaded-->
+            <span id="loading_span" href="#"><img style="vertical-align:middle" alt="wait" src="{% url telemeta-images "wait.gif" %}" />&nbsp;
+                <span id="loading_span_text">Loading...</span></span>
+            <a id="tab_analysis" style="display:none" class ="tab" href="#">{% trans "Analysis" %}</a><!--
+             do not let space here as it appears in the document!!!!!
+            --><a id="tab_markers" style="display:none" class="tab" href="#">{% trans "Markers" %}</a>
+        </div>
+
+        <div class="markers" id="markers_div_id"></div>
+
+        <div class="analyzer" id="analyzer_div_id">
+            <table width="100%">
+                <tr class="analyzer-title">
+                    <td>{% trans "Property" %}</td>
+                    <td>{% trans "Value" %}</td>
+                    <td>{% trans "Unit" %}</td>
+                </tr>
+            </table>
+        </div>
+        <!--</div>-->
+
+        {% if audio_export_enabled or perms.telemeta.can_download_all_items or user.is_superuser %}
+        <div class="exporter">
+            <p><img src="{% url telemeta-images "download.png" %}" alt="download" style="vertical-align:middle" /> {% trans "Download:" %}
+                {% for format in export_formats %}
+                <a href="{% url telemeta-item-export item.public_id,format.extension %}">
+                    <img src="images/{{ format.extension }}.png" style="vertical-align:middle" alt="{{ format.extension }}" /></a>
+                {% endfor %}</p>
+        </div>
+        {% endif %}
+
+    </div>
+    {% endif %}
+    {% endif %}
+
+    {% block infos %}
+    <div class="infos">
+        {% block general_info %}
+        <dl class="listing">
+            {% dl_field item "title" placeholder %}
+            {% dl_field item "alt_title" %}
+            {% dl_field item "collector" placeholder %}
+            <dt>{% field_label item "collection" %}</dt>
+            <dd><a href="{% url telemeta-collection-detail item.collection.public_id %}">{{ item.collection }}</a></dd>
+            <dt>{% trans "Recording date" %}</dt>
+
+            <dd>{% if item.recorded_from_date %}{{ item.recorded_from_date }}{% endif %}{% if item.recorded_from_date and item.recorded_to_date%} - {% endif %}{% if item.recorded_to_date %}{{ item.recorded_to_date}}{% endif %}</dd>
+
+        </dl>
+        {% endblock general_info %}
+    </div>
+    <div class="extraInfos">
+        {% block geoethnic_data %}
+        <div>
+            <h4><a href="#">{% trans "Geographic and cultural informations" %}</a></h4>
+            <dl class="listing">
+                <dt>{% trans "Location" %}</dt>
+                <dd>{% if item.location %}{{ item.location.fullnames|join:"<br/>" }}{% endif %}</dd>
+                {% dl_field item "location_comment" %}
+                {% dl_field item "cultural_area" %}
+                {% dl_field item "language" %}
+                {% if item.language_iso %}
+                <dt>{% trans "Language ISO" %}</dt>
+                <dd>{{ item.language_iso.name|to_utf8 }}</dd>
+                {% endif %}
+                {% dl_field item "ethnic_group" placeholder %}
+                <dt>{% trans "Ethnographic context" %}</dt>
+                <dd>{{ item.context_comment|html_line_break|safe }}</dd>
+                {% dl_field item "keywords" join with ", " %}
+            </dl>
+        </div>
+        {% endblock geoethnic_data %}
+    </div>
+    {% if user.is_authenticated and perms.telemeta.change_mediaitem %}
+    <a href="{% url telemeta-item-keywords_edit item.public_id %}" class="component_icon button icon_edit">{% trans "Edit" %} {% trans "keywords" %}</a>
+    {% endif %}
+    <div class="extraInfos">
+        {% block musical_data %}
+        <div>
+            <h4><a href="#">{% trans "Musical informations" %}</a></h4>
+            <dl class="listing">
+                {% dl_field item "vernacular_style" %}
+                {% dl_field item "generic_style" %}
+                {% dl_field item "author" %}
+            </dl>
+            {% if item.performances %}
+            <div class="instruments">
+                <table class="instruments">
+                    <thead>
+                        <tr>
+                            <td>{% field_label "MediaItemPerformance" "instruments_num" %}</td>
+                            <td>{% field_label "MediaItemPerformance" "instrument" %}</td>
+                            <td>{% field_label "MediaItemPerformance" "alias" %}</td>
+                            <td>{% field_label "MediaItemPerformance" "musicians" %}</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for performance in item.performances.all %}
+                        <tr>
+                            <td>{{ performance.instruments_num }}</td>
+                            <td>{{ performance.instrument|default:"" }}</td>
+                            <td>{{ performance.alias|default:"" }}</td>
+                            <td>{{ performance.musicians }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+        </div>
+        {% endblock musical_data %}
+    </div>
+    {% if user.is_authenticated and perms.telemeta.change_mediaitem %}
+    <a href="{% url telemeta-item-performances_edit item.public_id %}" class="component_icon button icon_edit">{% trans "Edit"%} {% trans "performance"%}</a>
+    {% endif %}
+    <div class="extraInfos">
+        {% block general_data %}
+        <div>
+            <h4><a href="#">{% trans "General informations" %}</a></h4>
+            <dl class="listing">
+                <dt>{% trans "Remarks" %}</dt>
+                <dd>{{ item.comment|html_line_break|safe }}</dd>
+                {% dl_field item "collector_selection" %}
+            </dl>
+        </div>
+        {% endblock general_data %}
+    </div>
+    <div class="extraInfos">
+        {% block archive_data %}
+        <div>
+            <h4><a href="#">{% trans "Archiving data" %}</a></h4>
+            <dl class="listing">
+                {% dl_field item "code" %}
+                {% dl_field item "old_code" %}
+                {% dl_field item "track" %}
+                {% dl_field item "creator_reference" %}
+                <dt>{% trans "Published references" %}</dt>
+                <dd>{{ item.external_references|html_line_break|safe }}</dd>
+                {% dl_field item "public_access_label" %}
+            </dl>
+        </div>
+        {% endblock archive_data %}
+    </div>
+    <div class="extraInfos">
+        {% block technical_data %}
+        <div>
+            <h4><a href="#">{% trans "Technical data" %}</a></h4>
+            <div>
+                <dl class="listing">
+                <dt>{% trans "Media type" %}</dt><dd>{% trans mime_type|mime_to_media_type %}</dd>
+                    {% dl_field item "approx_duration" %}
+                </dl>
+            </div>
+        </div>
+        {% endblock technical_data %}
+    </div>
+    {% endblock infos %}
+</div> <!-- with-rightcol -->
+
+<div class="extraInfos">
+    {% block related %}
+        {% include "telemeta/inc/mediaitem_related.html" %}
+    {% endblock related %}
+</div>
+
+{% endblock %}
+
+{% block delete %}
+{% if user.is_authenticated and perms.telemeta.delete_mediaitem %}
+ <a href="#" onclick="if(confirm(gettrans('delete the item permanently?'))){window.location.href='{% url telemeta-item-delete item.public_id %}';};return false;"
+        class="component_icon button icon_delete" style="float:right;margin-top:0.5em;margin-bottom:1em">{% trans "Delete" %}</a>
+{% endif %}
+{% endblock %}
+
+{% else %}
+<p>No such item</p>
+{% endif %}

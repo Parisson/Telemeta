@@ -1,1 +1,27 @@
-{% extends "telemeta_default/collection_list.html" %}
+{% extends "telemeta/base.html" %}
+{% load telemeta_utils %}
+{% load i18n %}
+
+{% block head_title %}{% trans "Media Collections" %} - {{ block.super }}{% endblock %}
+
+{% block title%}
+ <img src="{% url telemeta-images "collections_red.png" %}" style="vertical-align:middle" /> {% trans "Media Collections" %}
+{% endblock %}
+
+{% block title_buttons %}
+     <a href="{% url telemeta-collections %}" class="component_icon button icon_filter">{% trans "All" %}</a>
+     <a href="{% url telemeta-collections-unpublished %}" class="component_icon button icon_filter">{% trans "Unpublished" %}</a>
+     <a href="{% url telemeta-collections-published %}" class="component_icon button icon_filter">{% trans "Published" %}</a>
+     <a href="{% url telemeta-collections-sound %}" class="component_icon button icon_filter">{% trans "Sounds" %}</a>
+    {% if user.is_authenticated and perms.telemeta.add_mediacollection %}
+      <a href="{% url telemeta-collection-add %}" class="component_icon button icon_add">{% trans "Add" %}</a>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+{% with object_list as collections %}
+<div class="fullpage">
+{% include "telemeta/inc/collection_list.html" %}
+</div>
+{% endwith %}
+{% endblock %}

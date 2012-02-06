@@ -1,0 +1,23 @@
+{% extends "telemeta/base.html" %}
+{% load telemeta_utils %}
+{% load i18n %}
+
+{% block head_title %}{% trans type %} - {{ block.super }}{% endblock %}
+
+{% block title%}
+<img src="{% url telemeta-type-images type %}" style="vertical-align:middle" /> {{ type|capitalize }}
+{% endblock %}
+
+{% block title_buttons %}
+    {% if user.is_authenticated and perms.telemeta.add_mediacollection %}
+      <a href="{% url telemeta-resource-add type %}" class="component_icon button icon_add">{% trans "Add" %}</a>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+{% with object_list as resources and type as type %}
+<div class="fullpage">
+{% include "telemeta/inc/resource_list.html" %}
+</div>
+{% endwith %}
+{% endblock %}

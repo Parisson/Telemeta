@@ -1,1 +1,5 @@
-{% extends "telemeta_default/flatpage.html" %}
+{% extends "telemeta/base.html" %}
+{% load telemeta_utils %}
+{% block content %}
+{{ page_content|render_flatpage }}
+{% endblock %}

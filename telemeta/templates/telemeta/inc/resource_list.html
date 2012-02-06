@@ -1,0 +1,32 @@
+{% load telemeta_utils %}
+{% load i18n %}
+{% if resources %}
+{% if hits %}
+
+<p class="pagination">
+{{ type|capitalize }}{% blocktrans %} from {{ first_on_page }} to {{ last_on_page }} on {{ hits }}{% endblocktrans %}
+| Pages : {% if pages == 1 %}1{% else %}{% if is_paginated %}{% load paginator %}{% paginator 5 %}{% endif %}{% endif %}
+</p>
+{% endif %}
+<table class="listing">
+<tr>
+    <th class="highlight">{% trans "Title" %}</th>
+    <th>{% trans "Description" %}</th>
+    <th>{% trans "Code" %}</th>
+    <th>{% trans "Reference" %}</th>
+</tr>
+{% for resource in resources %}
+<tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
+    <td class="highlight">
+        <a href="{% url telemeta-resource-detail type resource.public_id %}">{{ resource.title }}</a>
+    </td>
+    <td>{{ resource.description }}</td>
+    <td>{{ resource.code }}</td>
+    <td>{{ resource.reference }}</td>
+</tr>
+{% endfor %}
+</table>
+{% else %}
+    <p>{% trans "No resource" %}</p>
+{% endif %}
+

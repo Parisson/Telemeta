@@ -1,14 +1,29 @@
+# -*- coding: utf-8 -*-
 from telemeta.models.media import *
 from telemeta.models.instrument import *
 from telemeta.models.location import *
 from telemeta.models.language import *
 from telemeta.models.system import *
 from django.contrib import admin
+from django.forms import CheckboxSelectMultiple
 
+class MediaFondsAdmin(admin.ModelAdmin):
+    search_fields = ['title', 'code']
+    ordering = ['code']
+
+class MediaCorpusAdmin(admin.ModelAdmin):
+    search_fields = ['title', 'code']
+    ordering = ['code']
+    formfield_overrides = {
+        models.ManyToManyField: {'widget': CheckboxSelectMultiple}
+        }
 
 class MediaCollectionAdmin(admin.ModelAdmin):
     search_fields = ['title', 'code']
     ordering = ['code']
+
+class MediaCollectionRelatedAdmin(admin.ModelAdmin):
+    search_fields = ['title', 'description']
 
 class MediaItemAdmin(admin.ModelAdmin):
     search_fields = ['title', 'code']
@@ -59,10 +74,14 @@ class RevisionAdmin(admin.ModelAdmin):
     ordering = ['-time']
 
 
+admin.site.register(MediaFonds, MediaFondsAdmin)
+admin.site.register(MediaCorpus, MediaCorpusAdmin)
 admin.site.register(MediaCollection, MediaCollectionAdmin)
 admin.site.register(MediaItem, MediaItemAdmin)
 admin.site.register(MediaPart, MediaPartAdmin)
+
 admin.site.register(MediaItemRelated, MediaItemRelatedAdmin)
+admin.site.register(MediaCollectionRelated, MediaCollectionRelatedAdmin)
 
 admin.site.register(Instrument, InstrumentAdmin)
 admin.site.register(InstrumentAlias, InstrumentAliasAdmin)

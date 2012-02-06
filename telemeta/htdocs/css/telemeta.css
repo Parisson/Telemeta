@@ -201,6 +201,12 @@ a img { border: none; }
     max-height: 500px;
     overflow-y: scroll;
 }
+
+.vscroll {
+    max-height: 300px;
+    overflow-y: scroll;
+    width: 100%;
+}
     
 
 .analyzer-title {
@@ -425,16 +431,6 @@ form.login .submit {
     width: 12%;
 }
 
-/* Navigation (borrowed from Trac) */
-.nav h2, .nav hr { display: none }
-.nav ul { font-size: 14px; list-style: none; margin: 0px; text-align: left; }
-.nav li {
-    display: inline;
-    padding: 0em;
-    white-space: nowrap;
-}
-.nav li.last { border-right: 1px solid #000000; }
-
 /* Main navigation bar  (borrowed from Trac) */
 #menu {
     background-color: #6a0307 ;
@@ -464,6 +460,7 @@ form.login .submit {
     background-color: #FFF;
     color: #6a0307;
 }
+
 #menu .darkblue { border-bottom-color: #0f3179; }
 #menu .blue { border-bottom-color:  #4f628a; }
 #menu .green { border-bottom-color:  #92b220; }
@@ -475,6 +472,86 @@ form.login .submit {
 #menu .violet { border-bottom-color:  #A00020; }
 
 * html #menu :link, * html #menu :visited { background-position: 1px 0 }
+
+
+/* Drop Down Menus */
+.clear {clear:both} 
+
+#nav {
+    margin:0;
+    padding:0;
+    list-style:none;
+}  
+
+/* make the LI display inline */
+/* it's position relative so that position absolute */
+/* can be used in submenu */
+
+#nav li {
+display:inline-block; 
+position:relative;
+z-index:500;
+}
+    
+/* this is the parent menu */
+#nav li a {
+display:block;
+text-align:center;
+}
+
+/* you can make a different style for default selected value */
+#nav a.selected {
+color:#FFF;
+}
+
+/* submenu, it's hidden by default */
+#nav ul {
+    position:absolute;
+    left:0;
+    display:none;
+    margin:0 0 0 -2px;
+    padding:0;
+    list-style: none outside none;
+    border-left:2px solid #6a0307;
+    border-right:2px solid #6a0307;
+    border-bottom:2px solid #6a0307;
+    background-color: #6a0307;
+    color: #FFF;
+}
+    
+#nav ul li {
+    width:100px;
+    float:left;
+    border-bottom:0px solid #fff;
+}
+    
+/* display block will make the link fill the whole area of LI */
+#nav ul a {
+    display:block; 
+    height:15px;
+    padding: 5px 5px;
+    font-size: 11px;
+    text-align:left;
+    -webkit-border-top-left-radius:0px 0px;
+    moz-border-radius-topleft: 0px 0px;
+    border-top-left-radius: 0px 0px;
+    -webkit-border-top-right-radius:0px 0px;
+    moz-border-radius-topright: 0px 0px;
+    border-top-right-radius: 0px 0px;
+    border-bottom-width: 0px;
+}
+    
+#nav ul a:hover {
+    background-color: #FFF ;
+    color: #6a0307 ;
+}
+
+#nav ul a:active {
+    background-color: #FFF;
+    color: #6a0307 ;
+}
+
+
 
 /* Footer (borrowed from Trac) */
 #footer {
@@ -1047,12 +1124,11 @@ a.image-link {
 
 .list_item, .list_item:visited, .list_item:hover{
     display:block;
-    color:#6A0307 !important;
+    color:#6A0307;
 }
 
 .list_item:hover{
-    background-color: #0f3179;
-    color:white !important;
+    font-weight: bold;
 }
 
 .icon_edit{
@@ -1178,4 +1254,8 @@ a:focus,div:focus{
 }
 input,textarea{
     outline: none !important;
+}
+
+.related_media {
+    border-top: 1px dotted #6a0307;
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007-2011 Parisson
+ * Copyright (C) 2007-2012 Guillaume Pellerin, Parisson
  * Copyright (c) 2011 Riccardo Zaccarelli <riccardo.zaccarelli@gmail.com>
  * Copyright (c) 2010 Olivier Guilyardi <olivier@samalyse.com>
  *
@@ -88,6 +88,13 @@ function setSelectedMenu(){
         //so we select only links whose link points EXACTLY to the origin (home link)
         var linkHref = normalize(this.href);
         var elm = $J(this);
+
+        if(linkHref.indexOf("#") != -1){
+            var reg = new RegExp("[#]+", "g");
+            var baseHref = linkHref.split(reg);
+            linkHref = pageOrigin + "/" + baseHref[1]
+        }
+
         if(pageOrigin===pageHref){
             if(pageHref == linkHref){
                 elm.addClass('active');
@@ -219,3 +226,21 @@ function consolelog(text){
         }
     }
 }
+
+// Drop down menus
+
+$(document).ready(function () {
+     
+    $('#nav li').hover(
+        function () {
+            //show its submenu
+            $('ul', this).slideDown(200);
+ 
+        },
+        function () {
+            //hide its submenu
+            $('ul', this).slideUp(100);        
+        }
+    );
+     
+});
