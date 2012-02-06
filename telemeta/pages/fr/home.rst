@@ -1,30 +1,21 @@
-===================================
-Telemeta : un CMS audio libre
-===================================
+============================================
+Archives sonores du CNRS - Musée de l'Homme 
+============================================
 
-`Telemeta <http://telemeta.org>`_ est une solution libre d'archivage et d'indexation audio basée sur une interface de type web. Elle offre des fonctions avancées d'édition, d'indexation, de transcodage, de publication et de sauvegarde d'archives audio et de leurs méta-données. Il donne accès aux ressources distantes publiées ou privatisés issues de collections numérisées (fichiers, CD audio, vinyl ou bandes magnétiques) par l'intermédiaire d'un simple navigateur ou d'une application dédiée en accord avec les standards du web.
+La constitution des archives sonores du `CREM <http://www.crem-cnrs.fr>`_ est l’aboutissement d’une longue histoire de la recherche scientifique sur la musique. Depuis la naissance de l’ethnomusicologie (alors « musicologie comparée »), qui coïncida avec l'invention des premiers appareils enregistreurs à la fin du XIXe siècle, l'enregistrement des documents musicaux, ainsi que leur classification et leur conservation occupent une place centrale dans notre connaissance de l’Homme musical.
 
-Liste des fonctionnalités principales:
+.. image:: home_img.jpg
+    :align: left
 
- * Edition, archivage pérenne sécurisé, indexation collaborative sur la base d'une application web
- * Interface utilisateur conforme aux standards ouverts du web
- * Moteur de recherche par mots clés ou par critères (géographiques, ethniques, etc...)
- * Lecteur audio avancé dynamique et paramétrable (tous formats audio et video supportés)
- * Moteur d'analyse et de visualisation audio basée sur une structure de modules paramétrables
- * Transcodage vers les formats FLAC, OGG, MP3 et WAV avec encapsulation des métadonnées à la volée
- * Gestion complète des droits et profils utilisateurs
- * Gestion de listes de lecture personnelles avec export CSV
- * Indexation temporelle à la volée (marqueurs textuels sur le lecteur web audio)
- * Base de données relationnelle (type MySQL)
- * Service d'accès aux données par le protocole OAI-PMH (moissonnage)
- * Compatibilité `DublinCore <http://dublincore.org/>`_
- * Service de moissonnage `OAI-PMH <http://www.openarchives.org/pmh/>`_ 
- * Geo-navigateur pour la géolocalisation audio (Google Maps)
- * Flux RSS dynamique des dernières modifications
- * Sauvegarde sérialisée des archives et de leurs métadonnées aux formats WAV + XML
- * Traduction complète anglais / français (détection automatique et/ou contrainte manuelle)
- 
-Ce CMS audio est exclusivement basé sur des modules open source et peut être installé sur tout système Linux ou Unix.
-Il est majoritairement écrit en Python et JavaScript.
+Avec l'ouverture de la Phonothèque au Musée d'Ethnographie du Trocadéro par André Schaeffner en 1932 (qui devint la Phonothèque du Musée de l’Homme en 1937) puis la création en 1967 du "Laboratoire d'analyse du son" à l'initiative de Gilbert Rouget, ainsi que la création d'une équipe de recherche du `CNRS <http://www.cnrs.fr/>`_ en 1968, tous deux au `Musée de l’Homme <http://www.museedelhomme.fr/>`_, la conservation de ce vaste fonds d'archives sonores fut plus étroitement liée à la recherche : celui-ci est alimenté par les missions de terrain des chercheurs sur tous les continents ; les collections permettent à la fois des recherches de laboratoire, des comparaisons diachroniques et synchroniques, la préparation de nouveaux terrains et la formation des doctorants. En 1985, le `CNRS <http://www.cnrs.fr/>`_ et le `Musée National d'Histoire Naturelle <http://www.mnhn.fr/>`_ décidèrent de joindre leurs efforts pour conserver ce vaste fonds d'archives, baptisé dès lors "Archives sonores CNRS - Musée de l'Homme". Une petite partie de ces archives a été publiée en disques 78 tours (Africa Vox, etc…), disques 33 tours  et en CD (Chant du Monde, Harmonia Mundi). Actuellement, les supports analogiques sont en cours de numérisation grâce à l'aide du Ministère de la Culture et de la Bibliothèque Nationale de France, Avec l’installation du `Centre de Recherche en Ethnomusicologie <http://www.crem-cnrs.fr>`_ (CREM, `Laboratoire d'Ethnologie et de Sociologie Comparative <http://www.u-paris10.fr/LESC/0/fiche___laboratoire/&RH=rec_lab>`_, UMR 7186) à l’Université de Paris Ouest - Nanterre La Défense en 2009, et l’ouverture de la plate-forme `Telemeta <http://telemeta.org>`_ en 2011, ce fonds d’archives sonores entre dans l’ère de l'internet.
+
+Les archives du CREM, parmi les plus importantes d’Europe, se distinguent par leur richesse :
+
+ * près de 3500 heures d'enregistrements de terrain non publiés.
+ * environ 3700 heures de documents publiés (plus de 5000 disques dont beaucoup sont très rares).
+
+La plateforme collaborative `Telemeta <http://telemeta.org>`_ vise à rendre ces archives accessibles aux chercheurs et, dans la mesure du possible, au public, dans le respect des droits intellectuels et moraux des musiciens et des collecteurs. Mise au point grâce au soutien du programme `TGE-Adonis <http://www.tge-adonis.fr/>`_ du `CNRS <http://www.cnrs.fr/>`_, elle permet aux chercheurs d'échanger les données en ligne, avec les communautés productrices de ces musiques dans leur pays d'origine, notamment au moyen d’outils collaboratifs comme des marqueurs temporels, des espaces de commentaires, etc... 
+
+La gestion de la plateforme est assurée par le `CREM <http://www.crem-cnrs.fr>`_. Le site accueille toutes les collaborations visant à enrichir et valoriser ce précieux patrimoine musical commun à toute l'Humanité. Actuellement, un millier d’heures est consultable en ligne avec un code d’accès, mais aussi `sur place au CREM (Université Paris-Ouest Nanterre-La Défense, bâtiment C, rez-de-chaussée, pièce 20) <http://goo.gl/maps/ZgHg>`_, ainsi qu’à la Bibliothèque centrale du Muséum National d’Histoire Naturelle, et à la Bibliothèque François Mitterand (rez de jardin).
 
 |
