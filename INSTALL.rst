@@ -26,7 +26,7 @@ Install the system dependencies
         python-ctypes python-setuptools python-support python-docutils \
         python-libxml2 python-django-registration python-lxml python-numpy \
         python-scipy python-imaging python-mutagen python-gobject python-gst0.10 \
-        gstreamer0.10-plugins-base gobject-introspection
+        gstreamer0.10-plugins-base gobject-introspection python-django-south
 
     To get MP3 reading and writing, just add these lines to your /etc/apt/sources-list::
 
