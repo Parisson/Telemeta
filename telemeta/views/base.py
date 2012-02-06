@@ -737,9 +737,9 @@ class ItemView(object):
             item = MediaItem.objects.get(public_id=public_id)
             items = MediaItem.objects.filter(collection=item.collection)
             item.code = auto_code(items, item.collection.code)
+            item.approx_duration = ''
             form = MediaItemForm(instance=item)
             form.code = item.code
-            form. d
             form.file = None
 
         return render(request, template, {'item': item, "form": form})
