@@ -19,7 +19,11 @@
         {% for field in form %}
          <tr>
             <tr><td class="error">{{ field.errors }}</td></tr>
+            {% if "children" in field.html_name %}
+            <td>{{ field.label_tag }}:</td><td><div class="vscroll">{{ field }}</div></td>
+            {% else %}
             <td>{{ field.label_tag }}:</td><td> {{ field }}</td>
+            {% endif %}
         </tr>
         {% endfor %}
         </table>
