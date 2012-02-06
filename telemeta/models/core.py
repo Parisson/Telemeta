@@ -180,7 +180,10 @@ class DurationField(models.Field):
 
     def get_db_prep_value(self, value, connection=None, prepared=False):
         # Casts times into the format expected by the backend
-        return value.as_seconds()
+        try:
+            return value.as_seconds()
+        except:
+            return value
 
     def value_to_string(self, obj):
         val = self._get_val_from_obj(obj)
