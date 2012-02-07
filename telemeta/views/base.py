@@ -308,16 +308,23 @@ class GeneralView(object):
         """Perform a search through collections and items metadata"""
         collections = MediaCollection.objects.enriched()
         items = MediaItem.objects.enriched()
+        corpus = MediaCorpus.objects.all()
+        fonds  = MediaFonds.objects.all()
         input = request.REQUEST
         criteria = {}
 
         switch = {
             'pattern': lambda value: (
                 collections.quick_search(value),
-                items.quick_search(value)),
+                items.quick_search(value),
+                corpus.quick_search(value),
+                fonds.quick_search(value),
+                ),
             'title': lambda value: (
                 collections.word_search('title', value),
-                items.by_title(value)),
+                items.by_title(value),
+                corpus.word_search('title', value),
+                fonds.word_search('title', value)),
             'location': lambda value: (
                 collections.by_location(Location.objects.get(name=value)),
                 items.by_location(Location.objects.get(name=value))),
@@ -353,13 +360,24 @@ class GeneralView(object):
             if func and value and value != "0":
                 try:
                     res = func(value)
-                    if len(res)  > 2:
+                    if len(res)  > 4:
+                        collections, items, corpus, fonds, value = res
+                    elif len(res) == 4:
+                        collections, items, corpus, fonds = res
+                    elif len(res) == 3:
                         collections, items, value = res
+                        corpus = corpus.none()
+                        fonds = fonds.none()
                     else:
                         collections, items = res
+                        corpus = corpus.none()
+                        fonds = fonds.none()
+
                 except ObjectDoesNotExist:
                     collections = collections.none()
                     items = items.none()
+                    corpus = corpus.none()
+                    fonds = fonds.none()
 
                 criteria[key] = value
 
@@ -371,13 +389,18 @@ class GeneralView(object):
 
         if type == 'items':
             objects = items
-        else:
+        elif type == 'collections':
             objects = collections
+        elif type == 'corpus':
+            objects = corpus
+        elif type == 'fonds':
+            objects = fonds
 
         return list_detail.object_list(request, objects,
             template_name='telemeta/search_results.html', paginate_by=20,
             extra_context={'criteria': criteria, 'collections_num': collections.count(),
-                'items_num': items.count(), 'type' : type})
+                'items_num': items.count(), 'corpus_num': corpus.count(), 'fonds_num': fonds.count(),
+                'type' : type,})
 
     def complete_location(self, request, with_items=True):
         input = request.REQUEST

@@ -417,27 +417,63 @@ class LocationManager(CoreManager):
     flatname_map.__doc__ = LocationQuerySet.flatname_map.__doc__
 
 
-class MediaResourceQuerySet(CoreQuerySet):
+class MediaCorpusQuerySet(CoreQuerySet):
     "Base class for all media resource query sets"
 
     def quick_search(self, pattern):
-        "Perform a quick search on code, title and description"
+        "Perform a quick search on text and char fields"
+        from telemeta.models.media import MediaCorpus
+        mod = MediaCorpus()
         pattern = pattern.strip()
+        q = Q(code__contains=pattern)
+        fields = mod.to_dict()
+        keys =  fields.keys()
 
-        q = ( Q(code__contains=pattern) |
-            word_search_q('title', pattern) |
-            word_search_q('description', pattern))
+        for field in keys:
+            field_str = str(mod._meta.get_field(field))
+            if 'CharField' in field_str or 'TextField' in field_str:
+                q = q | word_search_q(field, pattern)
 
         return self.filter(q)
 
 
-class MediaResourceManager(CoreManager):
+class MediaCorpusManager(CoreManager):
     "Manage media resource queries"
 
     def get_query_set(self):
-        "Return media query sets"
-        return MediaItemQuerySet(self.model)
+        "Return resource query sets"
+        return MediaCorpusQuerySet(self.model)
 
     def quick_search(self, *args, **kwargs):
         return self.get_query_set().quick_search(*args, **kwargs)
-    quick_search.__doc__ = MediaResourceQuerySet.quick_search.__doc__
+    quick_search.__doc__ = MediaCorpusQuerySet.quick_search.__doc__
+
+
+class MediaFondsQuerySet(CoreQuerySet):
+    "Base class for all media resource query sets"
+
+    def quick_search(self, pattern):
+        "Perform a quick search on text and char fields"
+        from telemeta.models.media import MediaFonds
+        mod = MediaFonds()
+        pattern = pattern.strip()
+        q = Q(code__contains=pattern)
+        fields = mod.to_dict()
+        keys =  fields.keys()
+        for field in keys:
+            field_str = str(mod._meta.get_field(field))
+            if 'CharField' in field_str or 'TextField' in field_str:
+                q = q | word_search_q(field, pattern)
+        return self.filter(q)
+
+
+class MediaFondsManager(CoreManager):
+    "Manage media resource queries"
+
+    def get_query_set(self):
+        "Return resource query sets"
+        return MediaFondsQuerySet(self.model)
+
+    def quick_search(self, *args, **kwargs):
+        return self.get_query_set().quick_search(*args, **kwargs)
+    quick_search.__doc__ = MediaFondsQuerySet.quick_search.__doc__

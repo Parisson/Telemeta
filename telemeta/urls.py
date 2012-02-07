@@ -196,6 +196,11 @@ urlpatterns = patterns('',
         name="telemeta-search-collections"),
     url(r'^search/items/$', general_view.search, {'type': 'items'},
         name="telemeta-search-items"),
+    url(r'^search/corpus/$', general_view.search, {'type': 'corpus'},
+        name="telemeta-search-corpus"),
+    url(r'^search/fonds/$', general_view.search, {'type': 'fonds'},
+        name="telemeta-search-fonds"),
+
     url(r'^search/criteria/$', general_view.edit_search, name="telemeta-search-criteria"),
     url(r'^complete_location/$', general_view.complete_location, name="telemeta-complete-location"),
 

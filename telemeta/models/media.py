@@ -638,6 +638,8 @@ class MediaCorpus(MediaBaseResource):
     recorded_from_year    = IntegerField(_('recording year (from)'))
     recorded_to_year      = IntegerField(_('recording year (until)'))
 
+    objects = MediaCorpusManager()
+
     @property
     def public_id(self):
         return self.code
@@ -655,6 +657,8 @@ class MediaFonds(MediaBaseResource):
     children_type = 'corpus'
 
     children = models.ManyToManyField(MediaCorpus, related_name="fonds", verbose_name=_('corpus'), blank=True, null=True)
+
+    objects = MediaFondsManager()
 
     @property
     def public_id(self):
