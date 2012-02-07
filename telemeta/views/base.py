@@ -216,7 +216,7 @@ def auto_code(resources, base_code):
 class GeneralView(object):
     """Provide general web UI methods"""
 
-    def index(self, request):
+    def home(self, request):
         """Render the index page"""
 
         template = loader.get_template('telemeta/home.html')
@@ -419,8 +419,9 @@ class CollectionView(object):
 
         related_media = MediaCollectionRelated.objects.filter(collection=collection)
         check_related_media(related_media)
+        parents = MediaCorpus.objects.filter(children=collection)
 
-        return render(request, template, {'collection': collection, 'playlists': playlists, 'public_access': public_access, 'items': items, 'related_media': related_media})
+        return render(request, template, {'collection': collection, 'playlists': playlists, 'public_access': public_access, 'items': items, 'related_media': related_media, 'parents': parents })
 
     @method_decorator(permission_required('telemeta.change_mediacollection'))
     def collection_edit(self, request, public_id, template='telemeta/collection_edit.html'):
@@ -1414,13 +1415,15 @@ class ResourceView(object):
                 {'model': MediaCorpus,
                 'form' : MediaCorpusForm,
                 'related': MediaCorpusRelated,
-                'related_form': MediaCorpusRelatedForm
+                'related_form': MediaCorpusRelatedForm,
+                'parent': MediaFonds,
                 },
             'fonds':
                 {'model': MediaFonds,
                 'form' : MediaFondsForm,
                 'related': MediaFondsRelated,
-                'related_form': MediaFondsRelatedForm
+                'related_form': MediaFondsRelatedForm,
+                'parent': None,
                 }
             }
 
@@ -1429,6 +1432,7 @@ class ResourceView(object):
         self.form = self.types[type]['form']
         self.related = self.types[type]['related']
         self.related_form = self.types[type]['related_form']
+        self.parent = self.types[type]['parent']
         self.type = type
 
     def detail(self, request, type, public_id, template='telemeta/resource_detail.html'):
@@ -1438,8 +1442,12 @@ class ResourceView(object):
         children = children.order_by('code')
         related_media = self.related.objects.filter(resource=resource)
         check_related_media(related_media)
+        if self.parent:
+            parents = self.parent.objects.filter(children=resource)
+        else:
+            parents = []
 
-        return render(request, template, {'resource': resource, 'type': type, 'children': children, 'related_media': related_media})
+        return render(request, template, {'resource': resource, 'type': type, 'children': children, 'related_media': related_media, 'parents': parents })
 
     @jsonrpc_method('telemeta.change_fonds')
     @jsonrpc_method('telemeta.change_corpus')

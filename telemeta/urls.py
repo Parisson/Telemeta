@@ -73,7 +73,7 @@ export_extensions = "|".join(item_view.list_export_extensions())
 htdocs = os.path.dirname(__file__) + '/htdocs'
 
 urlpatterns = patterns('',
-    url(r'^$', general_view.index, name="telemeta-home"),
+    url(r'^$', general_view.home, name="telemeta-home"),
 
     # items
     url(r'^archives/items/$', 'django.views.generic.list_detail.object_list',
@@ -295,7 +295,7 @@ urlpatterns = patterns('',
     # Desk
     url(r'^desk/lists/$', general_view.lists, name="telemeta-desk-lists"),
     url(r'^desk/profile/(?P<username>[A-Za-z0-9._-]+)/$', profile_view.profile_detail, name="telemeta-desk-profile"),
-    url(r'^desk/home/$', general_view.index, name="telemeta-desk-home"),
+    url(r'^desk/home/$', general_view.home, name="telemeta-desk-home"),
 
     # Profiles
     url(r'^users/(?P<username>[A-Za-z0-9._-]+)/profile/$', profile_view.profile_detail, name="telemeta-profile-detail"),

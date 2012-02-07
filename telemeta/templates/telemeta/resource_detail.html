@@ -42,7 +42,11 @@
                {% else %}
                 {% dl_field resource field.name %}
                {% endif %}
-              {% endfor %}  
+              {% endfor %}
+              {% for parent in parents %}
+              <dt>{% trans parent.element_type|capitalize %}</dt>
+              <dd><a href="{% url telemeta-resource-detail parent.element_type parent.public_id %}">{{ parent.title }}</a></dd>
+               {% endfor %}
             </dl>
         {% endblock general_info %}
 

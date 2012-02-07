@@ -416,3 +416,28 @@ class LocationManager(CoreManager):
         return self.get_query_set().flatname_map(*args, **kwargs)
     flatname_map.__doc__ = LocationQuerySet.flatname_map.__doc__
 
+
+class MediaResourceQuerySet(CoreQuerySet):
+    "Base class for all media resource query sets"
+
+    def quick_search(self, pattern):
+        "Perform a quick search on code, title and description"
+        pattern = pattern.strip()
+
+        q = ( Q(code__contains=pattern) |
+            word_search_q('title', pattern) |
+            word_search_q('description', pattern))
+
+        return self.filter(q)
+
+
+class MediaResourceManager(CoreManager):
+    "Manage media resource queries"
+
+    def get_query_set(self):
+        "Return media query sets"
+        return MediaItemQuerySet(self.model)
+
+    def quick_search(self, *args, **kwargs):
+        return self.get_query_set().quick_search(*args, **kwargs)
+    quick_search.__doc__ = MediaResourceQuerySet.quick_search.__doc__
