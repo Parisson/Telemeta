@@ -112,11 +112,16 @@ or, from source::
 
 
 -------------------------
-Testing (sandbox)
+Fast testing (sandbox)
 -------------------------
 
-If you just want to test Telemeta, a sandbox is available in the example/ directory.
-As Telemeta needs MySQL to work properly and fast, please create a database before editing setting.py
+If you just want to test Telemeta just now, a sandbox is available in the example/ directory::
+
+    cd example/sandbox_sqlite
+    ./manage.py syncdb
+    ./manage.py runserver 9000
+
+Now browse http://localhost:9000
 
 
 -------------------------------
