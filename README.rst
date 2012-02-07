@@ -25,13 +25,13 @@ This web audio CMS is exclusively based on open source modules and can be run on
 Installation, upgrade and usage
 ================================
 
-See `INSTALL.rst <http://telemeta.org/browser/INSTALL.rst>`_ and `telemeta.org <http://telemeta.org>`_ for more informations.
+See `INSTALL.rst </INSTALL.rst>`_ and `telemeta.org <http://telemeta.org>`_ for more informations.
 
 
 Changelog
 =========
 
-See `CHANGELOG <http://telemeta.org/browser/CHANGELOG>`_
+See `CHANGELOG </CHANGELOG>`_
 
 
 Development
