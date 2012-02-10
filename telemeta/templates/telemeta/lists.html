@@ -10,7 +10,13 @@
         var p = playlistUtils;
         var a = jQuery('#_new_playlist'); 
         a.unbind('click').click(function(){p.showAdd(a);return false;});
-    });
+        });
+
+    {% for playlist in playlists %}
+        playlistUtils.addEditPlaylist('{{playlist.playlist.public_id}}','{{ playlist.playlist.title }}','{{playlist.playlist.description}}');
+    {% endfor %}
+        
+
 </script>
 {% endblock %}
 
@@ -38,10 +44,11 @@
     <table class="listing" style="width:100%;margin-top: 3em">
         <tr>
             <td style="border-bottom:1px solid #6A0307;color:#6A0307;font-size: 100%">{{ playlist.playlist.title }}</td>
-            <td style="width:66ex; padding-right: 0; border-bottom:1px solid #6A0307; text-align:right">
+            <td style="width:86ex; padding-right: 0; border-bottom:1px solid #6A0307; text-align:right">
+            <a href="#" id="{{playlist.playlist.public_id}}" onclick="playlistUtils.showEdit(this, this.id); return false;" class="component_icon button icon_edit">{% trans "Edit" %}</a>
                 <a href="{% url telemeta-playlist-csv-export playlist.playlist.public_id 'collections' %}" class="component_icon button icon_csv">CSV Collections</a>
                 <a href="{% url telemeta-playlist-csv-export playlist.playlist.public_id 'items' %}" class="component_icon button icon_csv">CSV Items</a>
-                <a href="#" id="{{playlist.playlist.public_id}}" onclick="playlistUtils.remove(this.id);return false;" class="component_icon button icon_cancel">{% trans "Delete" %}</a>
+                <a href="#" id="{{playlist.playlist.public_id}}" onclick="if(confirm(gettrans('delete the playlist permanently?'))){playlistUtils.remove(this.id);};return false;" class="component_icon button icon_cancel">{% trans "Delete" %}</a>
             </td>
         </tr>
         {% if playlist.playlist.description %}
@@ -94,7 +101,7 @@
                 {% endif %}
             </td>
             <td style="vertical-align:middle">
-                <a href="#" onclick="playlistUtils.removeResource('{{resource.public_id}}');return false;" class="component_icon button icon_cancel" style="padding: 4px 12px;"></a>
+            <a href="#" onclick="if(confirm(gettrans('delete the resource from the playlist permanently?'))){playlistUtils.removeResource('{{resource.public_id}}');};return false;" class="component_icon button icon_cancel" style="padding: 4px 12px;"></a>
             </td>
         </tr>
         {% endfor %}

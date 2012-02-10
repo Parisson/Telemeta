@@ -1271,7 +1271,7 @@ class PlaylistView(object):
     def update_playlist(request, playlist):
         if isinstance(playlist, dict):
             m = Playlist.objects.get(public_id=playlist['public_id'])
-            m.title = float(playlist['title'])
+            m.title = playlist['title']
             m.description = playlist['description']
             m.save()
         else:

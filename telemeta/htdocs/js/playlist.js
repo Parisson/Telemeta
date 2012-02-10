@@ -44,10 +44,17 @@ var playlistUtils = {
     playlists : [],
 
     addPlaylist: function(name, id){
-        //this.playlists[name]=id;
         this.playlists.push({
             'name':name,
             'id':id
+        });
+    },
+
+    addEditPlaylist: function(id, title, description){
+        this.playlists.push({
+            'id': id,
+            'title': title,
+            'description': description,
         });
     },
 
@@ -111,10 +118,47 @@ var playlistUtils = {
         });
     },
 
-//     TODO: add edit fonction
+    update : function(dictionary){
+        json([dictionary],'telemeta.update_playlist',function(){
+        window.location.reload();
+        });
+    },
 
+    showEdit: function(anchorElement, id){
+
+        var t = gettrans('title');
+        var d = gettrans('description');
+        var dd = {};
+        var playlist = this;
+        
+        var playlists = this.playlists;
+        for (var i=0; i< playlists.length; i++){
+            if (playlists[i].id == id){
+                dd[t] = playlists[i].title;
+                dd[d] = playlists[i].description;
+            }
+        }
+        
+        new PopupDiv({
+            'content':dd,
+                    invoker:anchorElement,
+                    showOk:true,
+                    onOk:function(data){
+                        if(!data[t] && !data[d]){
+                            return;
+                        }
+                        //convert language
+                        playlist.update({
+                            'public_id': id,
+                            'title': data[t],
+                            'description': data[d],
+                        });
+                    }
+        }).show();
+    },
+    
     /*shows the popup for adding a resource to a playlist*/
-    showAddResourceToPlaylist: function(anchorElement,resourceType,objectId, optionalOkMessage){
+    showAddResourceToPlaylist: function(anchorElement, resourceType, objectId, optionalOkMessage){
         var ar = [];
         var playlists = this.playlists;
         for(var i=0; i< playlists.length; i++){
