@@ -97,9 +97,8 @@ var playlistUtils = {
         json([dictionary],'telemeta.add_playlist',function(){
             window.location.reload();
         });
-
-
     },
+    
     remove: function(id){
         json([id],'telemeta.del_playlist',function(){
             window.location.reload();
@@ -112,6 +111,7 @@ var playlistUtils = {
         });
     },
 
+//     TODO: add edit fonction
 
     /*shows the popup for adding a resource to a playlist*/
     showAddResourceToPlaylist: function(anchorElement,resourceType,objectId, optionalOkMessage){

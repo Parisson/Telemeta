@@ -11,7 +11,6 @@
         var a = jQuery('#_new_playlist'); 
         a.unbind('click').click(function(){p.showAdd(a);return false;});
     });
-   
 </script>
 {% endblock %}
 
@@ -33,7 +32,7 @@
 
 <div class="home-description">
     <h1><img src="{% url telemeta-images "playlist_title.png" %}" alt="playlists" style="vertical-align:middle" /> {% trans "Playlists" %}</h1>
-    <a href=# id="_new_playlist" style="float:right" class="component_icon button icon_add">
+    <a href="#" id="_new_playlist" style="float:right" class="component_icon button icon_add">
         {% trans "Add" %}</a>
     {% for playlist in playlists %}
     <table class="listing" style="width:100%;margin-top: 3em">
