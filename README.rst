@@ -10,7 +10,7 @@ Telemeta is a free and open source web audio archiving program which introduces 
 Here are the main features of Telemeta:
 
     * Secure archiving, editing and publishing of audio files over internet.
-    * User friendly web frontend including workflows and high level search methods
+    * User friendly and full HTML web frontend including workflows and high level search methods
     * Smart dynamical and skinnable audio player (thanks to Timeside and SoundManager2)
     * "On the fly" analyzing, transcoding and metadata embedding based on an easy plugin architecture
     * Multi-format support : FLAC, OGG, MP3, WAV and more
@@ -28,10 +28,29 @@ Installation, upgrade and usage
 See `INSTALL.rst <http://github.com/yomguy/Telemeta/blob/master/INSTALL.rst>`_ and `telemeta.org <http://telemeta.org>`_ for more informations.
 
 
-Changelog
-=========
+Changes
+========
 
-See `CHANGELOG <http://github.com/yomguy/Telemeta/blob/master/CHANGELOG>`_
+(from 1.3)
+
+For users:
+
+ * add a Desk providing links to home and personal data
+ * add Fonds, Corpus and their related media to the models and to the search engine
+ * add some fancy drop down menus for main tabs
+ * add video media handling (WebM formats only and with the last TimeSide master branch)
+ * add playlist metadata editor
+ * fix some sad bugs for YouTube related URLs and previews
+ * cleanup admin page
+ * many bugfixes !
+
+For developers and maintainers:
+
+ * a new setting parameter: TELEMETA_DOWNLOAD_FORMATS = ('wav', 'mp3', 'webm') or whatever
+ * before upgrading, you need to BACKUP and manually delete old wrong MediaCorpus and MediaCorpusRelated tables
+ * we now use South for data model migration (./manage.py migrate telemeta). Add it to your apps. See INSTALL.rst. Email me if any pb!
+
+Full changelog : see `CHANGELOG <http://github.com/yomguy/Telemeta/blob/master/CHANGELOG>`_
 
 
 Development
