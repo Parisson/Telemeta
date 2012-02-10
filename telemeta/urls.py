@@ -189,6 +189,7 @@ urlpatterns = patterns('',
     url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/dc/xml/$', resource_view.detail,
         {'format': 'dublin_core_xml'},
         name="telemeta-resource-dublincore-xml"),
+    url(r'^archives/$', general_view.search, name="telemeta-archives"),
 
     # search
     url(r'^search/$', general_view.search, name="telemeta-search"),

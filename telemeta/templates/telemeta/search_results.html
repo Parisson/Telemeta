@@ -12,7 +12,8 @@
     {% ifequal type 'items' %}
      <a href="{% url telemeta-search-items %}?{{criteria|with_no_sound|build_query_string}}" class="component_icon button icon_filter">{% trans "All" %}</a>
      <a href="{% url telemeta-search-items %}?{{criteria|with_sound|build_query_string}}" class="component_icon button icon_filter">{% trans "Sounds" %}</a>
-    {% else %}
+    {% endifequal %}
+    {% ifequal type 'collections' %}
      <a href="{% url telemeta-search-collections %}?{{criteria|with_no_sound|build_query_string}}" class="component_icon button icon_filter">{% trans "All" %}</a>
      <a href="{% url telemeta-search-collections %}?{{criteria|with_sound|build_query_string}}" class="component_icon button icon_filter">{% trans "Sounds" %}</a>
     {% endifequal %}

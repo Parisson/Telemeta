@@ -382,10 +382,10 @@ class GeneralView(object):
                 criteria[key] = value
 
         if type is None:
-            if collections.count():
-                type = 'collections'
-            else:
+            if items.count():
                 type = 'items'
+            else:
+                type = 'collections'
 
         if type == 'items':
             objects = items
