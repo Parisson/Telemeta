@@ -709,7 +709,7 @@ class ItemView(object):
         item = MediaItem.objects.get(public_id=item_public_id)
         media = MediaItemRelated.objects.get(item=item, id=media_id)
         response = HttpResponse(stream_from_file(media.file.path), mimetype=media.mime_type)
-#        response['Content-Disposition'] = 'attachment'
+#        response['Content-Disposition'] = 'attachment; '+'filename='+media.title+'.'+ext
         return response
 
     @method_decorator(permission_required('telemeta.change_mediaitem'))

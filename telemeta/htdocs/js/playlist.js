@@ -164,10 +164,12 @@ var playlistUtils = {
         for(var i=0; i< playlists.length; i++){
             ar.push(playlists[i].name);
         }
-        if(!ar.length){
-            return;
-        }
         var pl = this;
+        
+        if(!ar.length){
+            pl.showAdd(anchorElement);
+        }
+        
         //var addFcn = this.addResourceToPlaylist;
         new PopupDiv({
             invoker:anchorElement,
@@ -175,6 +177,7 @@ var playlistUtils = {
             onOk:function(data){
                 var val = data.selIndex;
                 var callbackok = undefined;
+                    
                 if(optionalOkMessage){
                     callbackok = function(){
                         var p =new PopupDiv({

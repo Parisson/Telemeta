@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-13 14:02+0100\n"
+"POT-Creation-Date: 2012-02-13 14:37+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Olivier Guilyardi <olivier samalyse com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1592,6 +1592,10 @@ msgstr "Toutes les dernières modifications"
 #: util/locale_fix.py:7
 msgid "My searches"
 msgstr "Mes recherches"
+
+#: util/locale_fix.py:8
+msgid "Children"
+msgstr "Enfants"
 
 #: views/base.py:264 views/base.py:454 views/base.py:617 views/base.py:921
 #: views/base.py:1387
