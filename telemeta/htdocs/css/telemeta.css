@@ -103,7 +103,7 @@ a img { border: none; }
 
 #header {
     padding: 0.2em 0;
-    background: url("../images/waves.png") 100% 0% no-repeat;
+/*     background: url("../images/waves.png") 100% 0% no-repeat; */
 }
 
 #content_header, #header{
@@ -917,7 +917,11 @@ img.align-left {
 #module-set .module h3 {
     color: #FFF;
     font-size: 1.1em;
-    font-weight: bold;
+    font-weight: bold; 
+}
+
+#module-set .module a:hover {
+    text-decoration: none;
 }
 
 a.image-link {
