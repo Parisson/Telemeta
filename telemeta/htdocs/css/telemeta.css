@@ -103,7 +103,7 @@ a img { border: none; }
 
 #header {
     padding: 0.2em 0;
-    background: url("../images/waves.png") 100% 0% no-repeat;
+/*     background: url("../images/waves.png") 100% 0% no-repeat; */
 }
 
 #content_header, #header{
