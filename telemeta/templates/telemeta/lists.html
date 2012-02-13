@@ -86,6 +86,9 @@
                 {% if resource.type == "marker" and not resource.element == None  %}
                 <a href="{% url telemeta-item-detail-marker resource.element.public_id %}">{{ resource.element }}</a>
                 {% endif %}
+                {% if resource.type == "corpus" or resource.type == "fonds" %}
+                <a href="{% url telemeta-resource-detail resource.type resource.element.public_id %}">{{ resource.element.title }}</a>
+                {% endif %}
                 {% if resource.element == None %}{% trans "deleted" %}{% endif %}
             </td>
             <td>{{ resource.type }}</td>

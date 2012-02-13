@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-13 14:37+0100\n"
+"POT-Creation-Date: 2012-02-13 16:36+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Olivier Guilyardi <olivier samalyse com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -670,7 +670,7 @@ msgstr "Recherche"
 msgid "Desk"
 msgstr "Bureau"
 
-#: templates/telemeta/base.html:86 views/base.py:265
+#: templates/telemeta/base.html:86 views/base.py:269
 msgid "Lists"
 msgstr "Listes"
 
@@ -783,7 +783,7 @@ msgid "Save"
 msgstr "Enregistrer"
 
 #: templates/telemeta/collection_detail.html:5
-#: templates/telemeta/collection_detail_dc.html:5 views/base.py:455
+#: templates/telemeta/collection_detail_dc.html:5 views/base.py:459
 msgid "Collection"
 msgstr "Collection"
 
@@ -797,7 +797,7 @@ msgstr "Collection"
 #: templates/telemeta/mediaitem_detail_video.html:231
 #: templates/telemeta/mediaitem_detail_video.html:352
 #: templates/telemeta/profile_detail.html:65
-#: templates/telemeta/resource_detail.html:21
+#: templates/telemeta/resource_detail.html:43
 #: templates/telemeta/inc/collection_related.html:81
 #: templates/telemeta/inc/mediaitem_related.html:81
 #: templates/telemeta/inc/resource_related.html:82
@@ -807,7 +807,7 @@ msgstr "Editer"
 #: templates/telemeta/collection_detail.html:45
 #: templates/telemeta/mediaitem_detail.html:98
 #: templates/telemeta/mediaitem_detail_video.html:91
-#: templates/telemeta/resource_detail.html:22
+#: templates/telemeta/resource_detail.html:44
 msgid "Copy"
 msgstr "Copier"
 
@@ -818,7 +818,7 @@ msgstr "Ajouter item"
 #: templates/telemeta/collection_detail.html:49
 #: templates/telemeta/mediaitem_detail.html:101
 #: templates/telemeta/mediaitem_detail_video.html:94
-#: templates/telemeta/resource_detail.html:25
+#: templates/telemeta/resource_detail.html:47
 msgid "Add to playlist"
 msgstr "Ajouter à la liste"
 
@@ -889,7 +889,7 @@ msgstr "Nombre d'items"
 #: templates/telemeta/lists.html:58
 #: templates/telemeta/mediaitem_detail.html:320
 #: templates/telemeta/mediaitem_detail_video.html:363
-#: templates/telemeta/resource_detail.html:73
+#: templates/telemeta/resource_detail.html:95
 msgid "Delete"
 msgstr "Supprimer"
 
@@ -1080,7 +1080,7 @@ msgstr "Sonore"
 msgid "Action"
 msgstr "Action"
 
-#: templates/telemeta/lists.html:89
+#: templates/telemeta/lists.html:92
 #: templates/telemeta/inc/module_revisions.html:40
 msgid "deleted"
 msgstr "supprimé"
@@ -1101,7 +1101,7 @@ msgstr "Mot de passe oublié"
 #: templates/telemeta/mediaitem_add.html:5
 #: templates/telemeta/mediaitem_copy.html:5
 #: templates/telemeta/mediaitem_detail.html:5
-#: templates/telemeta/mediaitem_detail_video.html:5 views/base.py:618
+#: templates/telemeta/mediaitem_detail_video.html:5 views/base.py:622
 msgid "Item"
 msgstr "Item"
 
@@ -1236,7 +1236,7 @@ msgstr "Formation"
 msgid "User Profile"
 msgstr "Profil utilisateur"
 
-#: templates/telemeta/profile_detail.html:8 views/base.py:1388
+#: templates/telemeta/profile_detail.html:8 views/base.py:1392
 msgid "User profile"
 msgstr "Profil utilisateur"
 
@@ -1298,7 +1298,7 @@ msgstr ""
 msgid "New"
 msgstr "Nouveau"
 
-#: templates/telemeta/resource_detail.html:79
+#: templates/telemeta/resource_detail.html:101
 #: templates/telemeta/resource_detail_dc.html:16
 msgid "No such resource"
 msgstr "Aucune ressource de ce type"
@@ -1333,7 +1333,7 @@ msgstr "Résultats de recherche"
 
 #: templates/telemeta/search_results.html:26
 msgid "Search pattern"
-msgstr "Recherche"
+msgstr "Mots clés"
 
 #: templates/telemeta/inc/children_list.html:8
 #, fuzzy, python-format
@@ -1395,7 +1395,7 @@ msgid "User"
 msgstr "Utilisateur"
 
 #: templates/telemeta/inc/module_searches.html:13
-msgid "Pattern"
+msgid "Criteria"
 msgstr ""
 
 #: templates/telemeta/inc/resource_list.html:7
@@ -1597,20 +1597,24 @@ msgstr "Mes recherches"
 msgid "Children"
 msgstr "Enfants"
 
-#: views/base.py:264 views/base.py:454 views/base.py:617 views/base.py:921
-#: views/base.py:1387
+#: util/locale_fix.py:9
+msgid "pattern"
+msgstr "mots clés"
+
+#: views/base.py:268 views/base.py:458 views/base.py:621 views/base.py:925
+#: views/base.py:1391
 msgid "Access not allowed"
 msgstr "Accès non autorisé"
 
-#: views/base.py:266 views/base.py:456 views/base.py:619 views/base.py:923
-#: views/base.py:1389
+#: views/base.py:270 views/base.py:460 views/base.py:623 views/base.py:927
+#: views/base.py:1393
 msgid ""
 "Please login or contact the website administator to get a private access."
 msgstr ""
 "Connectez-vous s'il vous plaît ou bien contactez l'administrateur du site "
 "pour obtenir un accès privé."
 
-#: views/base.py:1418
+#: views/base.py:1422
 msgid "Last changes"
 msgstr "Dernières modifications"
 

@@ -5,6 +5,28 @@
 {% block head_title %}{% trans type %}{{resource|prepend:' : '}} - {{ block.super }}{% endblock %}
 
 {% block extra_javascript %}
+<script src="{% url telemeta-js "popupdiv.js" %}" type="text/javascript"></script>
+<script src="{% url telemeta-js "playlist.js" %}" type="text/javascript"></script>
+<script>
+{% if user.is_authenticated %}
+jQuery(document).ready(function(){
+    var p = playlistUtils;
+    
+    {% for playlist in playlists %}
+    p.addPlaylist('{{ playlist.playlist.title }}','{{playlist.playlist.public_id}}');
+    {% endfor %}
+    
+    {% if resource %}
+    var anchor = jQuery('#_add_to_playlist');
+    if(anchor.length){
+        anchor.click(function(){
+            p.showAddResourceToPlaylist(anchor,'{{type}}','{{resource.id}}',gettrans('resource added to the selected playlist'));return false;
+            });
+            }
+    {% endif %}
+    });
+    {% endif %}
+    </script>
 {% endblock %}
 
 {% if resource %}

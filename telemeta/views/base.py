@@ -182,6 +182,10 @@ def get_playlists(request, user=None):
                         element = MediaCollection.objects.get(id=resource.resource_id)
                     if resource.resource_type == 'marker':
                         element = MediaItemMarker.objects.get(id=resource.resource_id)
+                    if resource.resource_type == 'corpus':
+                        element = MediaCorpus.objects.get(id=resource.resource_id)
+                    if resource.resource_type == 'fonds':
+                        element = MediaFonds.objects.get(id=resource.resource_id)
                 except:
                     element = None
                 resources.append({'element': element, 'type': resource.resource_type, 'public_id': resource.public_id })
@@ -1495,12 +1499,13 @@ class ResourceView(object):
         children = children.order_by('code')
         related_media = self.related.objects.filter(resource=resource)
         check_related_media(related_media)
+        playlists = get_playlists(request)
         if self.parent:
             parents = self.parent.objects.filter(children=resource)
         else:
             parents = []
 
-        return render(request, template, {'resource': resource, 'type': type, 'children': children, 'related_media': related_media, 'parents': parents })
+        return render(request, template, {'resource': resource, 'type': type, 'children': children, 'related_media': related_media, 'parents': parents, 'playlists': playlists })
 
     @jsonrpc_method('telemeta.change_fonds')
     @jsonrpc_method('telemeta.change_corpus')
