@@ -917,7 +917,11 @@ img.align-left {
 #module-set .module h3 {
     color: #FFF;
     font-size: 1.1em;
-    font-weight: bold;
+    font-weight: bold; 
+}
+
+#module-set .module a:hover {
+    text-decoration: none;
 }
 
 a.image-link {
