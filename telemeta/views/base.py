@@ -390,7 +390,14 @@ class GeneralView(object):
                 search.save()
                 if criteria:
                     for key in criteria.keys():
-                        criter = Criteria(key=key, value=criteria[key])
+                        value = criteria[key]
+                        if key == 'ethnic_group':
+                            try:
+                                group = EthnicGroup.objects.get(value=value)
+                                value = group.id
+                            except:
+                                value = ''
+                        criter = Criteria(key=key, value=value)
                         criter.save()
                         search.criteria.add(criter)
                     search.save()
