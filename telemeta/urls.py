@@ -39,7 +39,7 @@ from django.views.generic.simple import redirect_to
 from telemeta.models import MediaItem, MediaCollection, MediaItemMarker, MediaCorpus, MediaFonds
 from telemeta.views.base import GeneralView, AdminView, CollectionView, ItemView, \
                                 InstrumentView, PlaylistView, ProfileView, GeoView, \
-                                LastestRevisionsFeed, ResourceView
+                                LastestRevisionsFeed, ResourceView, UserRevisionsFeed
 from jsonrpc import jsonrpc_site
 import os.path
 import telemeta.config
@@ -306,8 +306,7 @@ urlpatterns = patterns('',
     # Profiles
     url(r'^users/(?P<username>[A-Za-z0-9._-]+)/profile/$', profile_view.profile_detail, name="telemeta-profile-detail"),
     url(r'^users/(?P<username>[A-Za-z0-9._-]+)/profile/edit/$', profile_view.profile_edit, name="telemeta-profile-edit"),
-#    url(r'^users/(?P<username>[A-Za-z0-9._-]+)/profile/rss/$', profile_view.rss, name="telemeta-profile-rss"),
-
+    url(r'^users/(?P<username>[A-Za-z0-9._-]+)/rss/$', UserRevisionsFeed(),  name="telemeta-user-rss"),
 
     # Registration
     url(r'^accounts/password_change/$', 'django.contrib.auth.views.password_change', {'template_name': 'telemeta/registration/password_change_form.html'}, name="telemeta-password-change"),

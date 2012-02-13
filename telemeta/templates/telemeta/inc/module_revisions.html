@@ -2,10 +2,14 @@
 {% load i18n %}
 
    <div class="module">
-    <h3><a href="{% url telemeta-rss %}">
-      <img src="{% url telemeta-images "rss.png" %}" alt="rss" style="vertical-align:middle" /></a>
-      {% trans title %}</h3>
-      <a href="/rss" style="float:right" class="icon_rss">&nbsp;&nbsp;</a>
+    
+    {% block rss_title %}
+      <a href="{% url telemeta-rss %}">
+      <img src="{% url telemeta-images "rss.png" %}" alt="rss" style="vertical-align:middle" />
+      <h3>{% trans title %}</h3></a>
+      <a href="{% url telemeta-rss %}" style="float:right" class="icon_rss">&nbsp;&nbsp;</a>
+    {% endblock rss_title %}
+    
     <div class="vscroll">
     <table class="listing" bgcolor="#FFFFFF" style="width: 100%">
       <tr>

@@ -51,8 +51,9 @@ from django.template import RequestContext, loader
 from django import template
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http import Http404
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.views.generic import list_detail
+from django.views.generic import DetailView
 from django.conf import settings
 from django.contrib import auth
 from django.contrib import messages
@@ -380,6 +381,19 @@ class GeneralView(object):
                     fonds = fonds.none()
 
                 criteria[key] = value
+
+        # Save the search
+        user = request.user
+        if user:
+            if user.is_authenticated():
+                search = Search(username=user)
+                search.save()
+                if criteria:
+                    for key in criteria.keys():
+                        criter = Criteria(key=key, value=criteria[key])
+                        criter.save()
+                        search.criteria.add(criter)
+                    search.save()
 
         if type is None:
             if items.count():
@@ -1429,6 +1443,15 @@ class LastestRevisionsFeed(Feed):
         element = r['element']
         link = '/' + revision.element_type + 's/' + str(element.public_id)
         return link
+
+
+class UserRevisionsFeed(LastestRevisionsFeed):
+
+    def get_object(self, request, username):
+        return get_object_or_404(User, username=username)
+
+    def items(self, obj):
+        return get_revisions(self.n_items, obj)
 
 
 class ResourceView(object):

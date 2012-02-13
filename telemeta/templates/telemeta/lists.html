@@ -24,7 +24,13 @@
 <div id="module-set" style="width: 33%">
     {% block module_user_revisions %}
     {% with user_revisions as revisions and "My last changes" as title %}
-    {% include "telemeta/inc/module_revisions.html" %}
+    {% include "telemeta/inc/module_user_revisions.html" %}
+    {% endwith %}
+    {% endblock %}
+
+    {% block module_searches %}
+    {% with searches as searches and "My searches" as title %}
+    {% include "telemeta/inc/module_searches.html" %}
     {% endwith %}
     {% endblock %}
 

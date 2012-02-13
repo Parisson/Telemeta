@@ -545,22 +545,6 @@ class MediaItemTranscodingFlag(ModelCore):
         db_table = 'media_transcoding'
 
 
-class Search(ModelCore):
-    "Keywork search"
-
-    element_type = 'search'
-
-    username = ForeignKey(User, related_name="searches", db_column="username")
-    keywords = CharField(_('keywords'), required=True)
-    date = DateField(_('date'), auto_now_add=True)
-
-    class Meta(MetaCore):
-        db_table = 'searches'
-
-    def __unicode__(self):
-        return self.keywords
-
-
 class DublinCoreToFormatMetadata(object):
     """ a mapping class to get item DublinCore metadata dictionaries
     in various audio metadata format (MP3, OGG, etc...)"""
