@@ -28,10 +28,10 @@ Installation, upgrade and usage
 See `INSTALL.rst <http://github.com/yomguy/Telemeta/blob/master/INSTALL.rst>`_ and `telemeta.org <http://telemeta.org>`_ for more informations.
 
 
-Changes
-========
+News
+======
 
-(from 1.3)
+(from 1.3 to 1.4)
 
 For users:
 
@@ -42,13 +42,22 @@ For users:
  * add playlist metadata editor
  * fix some sad bugs for YouTube related URLs and previews
  * cleanup admin page
+ * add auto saving now for all searches !
+ * add "My Searches" modules to user lists with search direct link
+ * add RSS feeds for last changes of all users
+ * better icon views
  * many bugfixes !
 
 For developers and maintainers:
 
  * a new setting parameter: TELEMETA_DOWNLOAD_FORMATS = ('wav', 'mp3', 'webm') or whatever
  * before upgrading, you need to BACKUP and manually delete old wrong MediaCorpus and MediaCorpusRelated tables
- * we now use South for data model migration (./manage.py migrate telemeta). Add it to your apps. See INSTALL.rst. Email me if any pb!
+ * we now use South for data model migration. Add 'south' to your apps and to do::
+
+    ./manage.py syncdb
+    ./manage.py migrate telemeta
+
+    See INSTALL.rst and email me if any pb! (you may, for example, not use 0002 migration)
 
 Full changelog : see `CHANGELOG <http://github.com/yomguy/Telemeta/blob/master/CHANGELOG>`_
 
