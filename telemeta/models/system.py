@@ -112,13 +112,14 @@ class Search(ModelCore):
     element_type = 'search'
 
     username = ForeignKey(User, related_name="searches", db_column="username")
-    date = DateField(_('date'), auto_now_add=True)
+    date = DateTimeField(_('date'), auto_now_add=True)
     description = CharField(_('Description'))
     criteria = models.ManyToManyField(Criteria, related_name="search",
                                       verbose_name=_('criteria'), blank=True, null=True)
 
     class Meta(MetaCore):
         db_table = 'searches'
+        ordering = ['-date']
 
     def __unicode__(self):
         return self.keywords
