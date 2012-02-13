@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-13 16:36+0100\n"
+"POT-Creation-Date: 2012-02-14 00:00+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Olivier Guilyardi <olivier samalyse com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -577,7 +577,7 @@ msgstr "Description"
 
 #: models/system.py:118
 msgid "criteria"
-msgstr ""
+msgstr "critères"
 
 #: templates/admin/base.html:21 templates/telemeta/base.html:88
 #: templates/telemeta/base.html.py:92
@@ -1396,7 +1396,7 @@ msgstr "Utilisateur"
 
 #: templates/telemeta/inc/module_searches.html:13
 msgid "Criteria"
-msgstr ""
+msgstr "Critères"
 
 #: templates/telemeta/inc/resource_list.html:7
 #, python-format
