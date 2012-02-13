@@ -548,22 +548,6 @@ class MediaItemTranscodingFlag(ModelCore):
         db_table = 'media_transcoding'
 
 
-class Search(ModelCore):
-    "Keywork search"
-
-    element_type = 'search'
-
-    username = ForeignKey(User, related_name="searches", db_column="username")
-    keywords = CharField(_('keywords'), required=True)
-    date = DateField(_('date'), auto_now_add=True)
-
-    class Meta(MetaCore):
-        db_table = 'searches'
-
-    def __unicode__(self):
-        return self.keywords
-
-
 class DublinCoreToFormatMetadata(object):
     """ a mapping class to get item DublinCore metadata dictionaries
     in various audio metadata format (MP3, OGG, etc...)"""
@@ -641,6 +625,8 @@ class MediaCorpus(MediaBaseResource):
     recorded_from_year    = IntegerField(_('recording year (from)'))
     recorded_to_year      = IntegerField(_('recording year (until)'))
 
+    objects = MediaCorpusManager()
+
     @property
     def public_id(self):
         return self.code
@@ -658,6 +644,8 @@ class MediaFonds(MediaBaseResource):
     children_type = 'corpus'
 
     children = models.ManyToManyField(MediaCorpus, related_name="fonds", verbose_name=_('corpus'), blank=True, null=True)
+
+    objects = MediaFondsManager()
 
     @property
     def public_id(self):

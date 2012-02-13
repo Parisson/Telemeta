@@ -72,6 +72,13 @@ def escapejs(value):
     return value
 
 @register.filter
+def build_pattern_string(criteria):
+    dict = {}
+    for c in criteria:
+        dict[c.key] = c.value
+    return dict
+
+@register.filter
 def build_query_string(vars):
     """Build an HTTP query string out of a dict"""
     if type(vars) == dict:

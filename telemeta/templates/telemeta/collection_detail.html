@@ -26,7 +26,7 @@
         }
         {% endif %}
     });
-        {% endif %}
+    {% endif %}
 </script>
 {% endblock %}
 
@@ -95,6 +95,10 @@
                 <dt>{% trans "Recording period" %}</dt>
                     <dd>{% if collection.recorded_from_year %}{{ collection.recorded_from_year }}{% endif %}{% if collection.recorded_from_year and collection.recorded_to_year %} - {% endif %}{% if  collection.recorded_to_year %}{{ collection.recorded_to_year}}{% endif %}</dd>
                 {% dl_field collection "year_published" placeholder %}
+                {% for parent in parents %}
+                <dt>{% trans parent.element_type|capitalize %}</dt>
+                <dd><a href="{% url telemeta-resource-detail parent.element_type parent.public_id %}">{{ parent.title }}</a></dd>
+                {% endfor %}
             </dl>
         {% endblock general_info %}
         </div>

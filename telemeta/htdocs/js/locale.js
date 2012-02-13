@@ -10,7 +10,9 @@ var localeStrings = {
     'author' : gettext('author'),
     'Paste HTML to embed player in website': gettext('Paste HTML to embed player in website'),
     'delete the item permanently?' : gettext('delete the item permanently?'),
-    'delete the collection permanently?' : gettext('delete the collection permanently?')
+    'delete the collection permanently?' : gettext('delete the collection permanently?'),
+    'delete the playlist permanently?' : gettext('delete the playlist permanently?'),
+    'delete the resource from the playlist permanently?' : gettext('delete the resource from the playlist permanently?'),
 };
 
 function gettrans(str){

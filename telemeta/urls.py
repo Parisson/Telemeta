@@ -39,7 +39,7 @@ from django.views.generic.simple import redirect_to
 from telemeta.models import MediaItem, MediaCollection, MediaItemMarker, MediaCorpus, MediaFonds
 from telemeta.views.base import GeneralView, AdminView, CollectionView, ItemView, \
                                 InstrumentView, PlaylistView, ProfileView, GeoView, \
-                                LastestRevisionsFeed, ResourceView
+                                LastestRevisionsFeed, ResourceView, UserRevisionsFeed
 from jsonrpc import jsonrpc_site
 import os.path
 import telemeta.config
@@ -73,7 +73,7 @@ export_extensions = "|".join(item_view.list_export_extensions())
 htdocs = os.path.dirname(__file__) + '/htdocs'
 
 urlpatterns = patterns('',
-    url(r'^$', general_view.index, name="telemeta-home"),
+    url(r'^$', general_view.home, name="telemeta-home"),
 
     # items
     url(r'^archives/items/$', 'django.views.generic.list_detail.object_list',
@@ -189,6 +189,7 @@ urlpatterns = patterns('',
     url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/dc/xml/$', resource_view.detail,
         {'format': 'dublin_core_xml'},
         name="telemeta-resource-dublincore-xml"),
+    url(r'^archives/$', general_view.search, name="telemeta-archives"),
 
     # search
     url(r'^search/$', general_view.search, name="telemeta-search"),
@@ -196,6 +197,11 @@ urlpatterns = patterns('',
         name="telemeta-search-collections"),
     url(r'^search/items/$', general_view.search, {'type': 'items'},
         name="telemeta-search-items"),
+    url(r'^search/corpus/$', general_view.search, {'type': 'corpus'},
+        name="telemeta-search-corpus"),
+    url(r'^search/fonds/$', general_view.search, {'type': 'fonds'},
+        name="telemeta-search-fonds"),
+
     url(r'^search/criteria/$', general_view.edit_search, name="telemeta-search-criteria"),
     url(r'^complete_location/$', general_view.complete_location, name="telemeta-complete-location"),
 
@@ -295,13 +301,12 @@ urlpatterns = patterns('',
     # Desk
     url(r'^desk/lists/$', general_view.lists, name="telemeta-desk-lists"),
     url(r'^desk/profile/(?P<username>[A-Za-z0-9._-]+)/$', profile_view.profile_detail, name="telemeta-desk-profile"),
-    url(r'^desk/home/$', general_view.index, name="telemeta-desk-home"),
+    url(r'^desk/home/$', general_view.home, name="telemeta-desk-home"),
 
     # Profiles
     url(r'^users/(?P<username>[A-Za-z0-9._-]+)/profile/$', profile_view.profile_detail, name="telemeta-profile-detail"),
     url(r'^users/(?P<username>[A-Za-z0-9._-]+)/profile/edit/$', profile_view.profile_edit, name="telemeta-profile-edit"),
-#    url(r'^users/(?P<username>[A-Za-z0-9._-]+)/profile/rss/$', profile_view.rss, name="telemeta-profile-rss"),
-
+    url(r'^users/(?P<username>[A-Za-z0-9._-]+)/rss/$', UserRevisionsFeed(),  name="telemeta-user-rss"),
 
     # Registration
     url(r'^accounts/password_change/$', 'django.contrib.auth.views.password_change', {'template_name': 'telemeta/registration/password_change_form.html'}, name="telemeta-password-change"),

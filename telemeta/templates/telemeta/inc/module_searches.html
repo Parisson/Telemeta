@@ -1,0 +1,29 @@
+{% load telemeta_utils %}
+{% load i18n %}
+
+   <div class="module">
+    <h3>
+      <img src="{% url telemeta-images "search_wh2.png" %}" alt="rss" style="vertical-align:middle" />
+      {% trans title %}</h3>
+      
+    <div class="vscroll">
+    <table class="listing" bgcolor="#FFFFFF" style="width: 100%">
+      <tr>
+        <th class="highlight">{% trans "Date" %}</th>
+        <th>{% trans "Criteria" %}</th>
+      </tr>
+    {% for s in searches %}
+     <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
+        <td>{{ s.date }}</td>
+        <td><a href="{% url telemeta-search-items %}?{{s.criteria.all|build_pattern_string|build_query_string}}">
+            {% for c in s.criteria.all %}
+                <li>{% trans c.key %} : {{ c.value}}</li>
+            {% endfor %}
+          </a>
+        </td>
+      </tr>
+    {% endfor %}
+    </table>
+    </div>
+   </div>
+

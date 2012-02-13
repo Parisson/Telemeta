@@ -51,8 +51,9 @@ from django.template import RequestContext, loader
 from django import template
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http import Http404
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.views.generic import list_detail
+from django.views.generic import DetailView
 from django.conf import settings
 from django.contrib import auth
 from django.contrib import messages
@@ -181,6 +182,10 @@ def get_playlists(request, user=None):
                         element = MediaCollection.objects.get(id=resource.resource_id)
                     if resource.resource_type == 'marker':
                         element = MediaItemMarker.objects.get(id=resource.resource_id)
+                    if resource.resource_type == 'corpus':
+                        element = MediaCorpus.objects.get(id=resource.resource_id)
+                    if resource.resource_type == 'fonds':
+                        element = MediaFonds.objects.get(id=resource.resource_id)
                 except:
                     element = None
                 resources.append({'element': element, 'type': resource.resource_type, 'public_id': resource.public_id })
@@ -216,7 +221,7 @@ def auto_code(resources, base_code):
 class GeneralView(object):
     """Provide general web UI methods"""
 
-    def index(self, request):
+    def home(self, request):
         """Render the index page"""
 
         template = loader.get_template('telemeta/home.html')
@@ -308,16 +313,23 @@ class GeneralView(object):
         """Perform a search through collections and items metadata"""
         collections = MediaCollection.objects.enriched()
         items = MediaItem.objects.enriched()
+        corpus = MediaCorpus.objects.all()
+        fonds  = MediaFonds.objects.all()
         input = request.REQUEST
         criteria = {}
 
         switch = {
             'pattern': lambda value: (
                 collections.quick_search(value),
-                items.quick_search(value)),
+                items.quick_search(value),
+                corpus.quick_search(value),
+                fonds.quick_search(value),
+                ),
             'title': lambda value: (
                 collections.word_search('title', value),
-                items.by_title(value)),
+                items.by_title(value),
+                corpus.word_search('title', value),
+                fonds.word_search('title', value)),
             'location': lambda value: (
                 collections.by_location(Location.objects.get(name=value)),
                 items.by_location(Location.objects.get(name=value))),
@@ -353,31 +365,67 @@ class GeneralView(object):
             if func and value and value != "0":
                 try:
                     res = func(value)
-                    if len(res)  > 2:
+                    if len(res)  > 4:
+                        collections, items, corpus, fonds, value = res
+                    elif len(res) == 4:
+                        collections, items, corpus, fonds = res
+                    elif len(res) == 3:
                         collections, items, value = res
+                        corpus = corpus.none()
+                        fonds = fonds.none()
                     else:
                         collections, items = res
+                        corpus = corpus.none()
+                        fonds = fonds.none()
+
                 except ObjectDoesNotExist:
                     collections = collections.none()
                     items = items.none()
+                    corpus = corpus.none()
+                    fonds = fonds.none()
 
                 criteria[key] = value
 
+        # Save the search
+        user = request.user
+        if user:
+            if user.is_authenticated():
+                search = Search(username=user)
+                search.save()
+                if criteria:
+                    for key in criteria.keys():
+                        value = criteria[key]
+                        if key == 'ethnic_group':
+                            try:
+                                group = EthnicGroup.objects.get(value=value)
+                                value = group.id
+                            except:
+                                value = ''
+                        criter = Criteria(key=key, value=value)
+                        criter.save()
+                        search.criteria.add(criter)
+                    search.save()
+
         if type is None:
-            if collections.count():
-                type = 'collections'
-            else:
+            if items.count():
                 type = 'items'
+            else:
+                type = 'collections'
 
         if type == 'items':
             objects = items
-        else:
+        elif type == 'collections':
             objects = collections
+        elif type == 'corpus':
+            objects = corpus
+        elif type == 'fonds':
+            objects = fonds
 
         return list_detail.object_list(request, objects,
             template_name='telemeta/search_results.html', paginate_by=20,
             extra_context={'criteria': criteria, 'collections_num': collections.count(),
-                'items_num': items.count(), 'type' : type})
+                'items_num': items.count(), 'corpus_num': corpus.count(), 'fonds_num': fonds.count(),
+                'type' : type,})
 
     def complete_location(self, request, with_items=True):
         input = request.REQUEST
@@ -419,8 +467,9 @@ class CollectionView(object):
 
         related_media = MediaCollectionRelated.objects.filter(collection=collection)
         check_related_media(related_media)
+        parents = MediaCorpus.objects.filter(children=collection)
 
-        return render(request, template, {'collection': collection, 'playlists': playlists, 'public_access': public_access, 'items': items, 'related_media': related_media})
+        return render(request, template, {'collection': collection, 'playlists': playlists, 'public_access': public_access, 'items': items, 'related_media': related_media, 'parents': parents })
 
     @method_decorator(permission_required('telemeta.change_mediacollection'))
     def collection_edit(self, request, public_id, template='telemeta/collection_edit.html'):
@@ -664,7 +713,7 @@ class ItemView(object):
         item = MediaItem.objects.get(public_id=item_public_id)
         media = MediaItemRelated.objects.get(item=item, id=media_id)
         response = HttpResponse(stream_from_file(media.file.path), mimetype=media.mime_type)
-#        response['Content-Disposition'] = 'attachment'
+#        response['Content-Disposition'] = 'attachment; '+'filename='+media.title+'.'+ext
         return response
 
     @method_decorator(permission_required('telemeta.change_mediaitem'))
@@ -1247,7 +1296,7 @@ class PlaylistView(object):
     def update_playlist(request, playlist):
         if isinstance(playlist, dict):
             m = Playlist.objects.get(public_id=playlist['public_id'])
-            m.title = float(playlist['title'])
+            m.title = playlist['title']
             m.description = playlist['description']
             m.save()
         else:
@@ -1407,6 +1456,15 @@ class LastestRevisionsFeed(Feed):
         return link
 
 
+class UserRevisionsFeed(LastestRevisionsFeed):
+
+    def get_object(self, request, username):
+        return get_object_or_404(User, username=username)
+
+    def items(self, obj):
+        return get_revisions(self.n_items, obj)
+
+
 class ResourceView(object):
     """Provide Resource web UI methods"""
 
@@ -1414,13 +1472,15 @@ class ResourceView(object):
                 {'model': MediaCorpus,
                 'form' : MediaCorpusForm,
                 'related': MediaCorpusRelated,
-                'related_form': MediaCorpusRelatedForm
+                'related_form': MediaCorpusRelatedForm,
+                'parent': MediaFonds,
                 },
             'fonds':
                 {'model': MediaFonds,
                 'form' : MediaFondsForm,
                 'related': MediaFondsRelated,
-                'related_form': MediaFondsRelatedForm
+                'related_form': MediaFondsRelatedForm,
+                'parent': None,
                 }
             }
 
@@ -1429,6 +1489,7 @@ class ResourceView(object):
         self.form = self.types[type]['form']
         self.related = self.types[type]['related']
         self.related_form = self.types[type]['related_form']
+        self.parent = self.types[type]['parent']
         self.type = type
 
     def detail(self, request, type, public_id, template='telemeta/resource_detail.html'):
@@ -1438,8 +1499,13 @@ class ResourceView(object):
         children = children.order_by('code')
         related_media = self.related.objects.filter(resource=resource)
         check_related_media(related_media)
+        playlists = get_playlists(request)
+        if self.parent:
+            parents = self.parent.objects.filter(children=resource)
+        else:
+            parents = []
 
-        return render(request, template, {'resource': resource, 'type': type, 'children': children, 'related_media': related_media})
+        return render(request, template, {'resource': resource, 'type': type, 'children': children, 'related_media': related_media, 'parents': parents, 'playlists': playlists })
 
     @jsonrpc_method('telemeta.change_fonds')
     @jsonrpc_method('telemeta.change_corpus')
