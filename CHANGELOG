@@ -9,6 +9,10 @@ For users:
  * add playlist metadata editor
  * fix some sad bugs for YouTube related URLs and previews
  * cleanup admin page
+ * add auto saving now for all searches !
+ * add "My Searches" modules to user lists with search direct link
+ * add RSS feeds for last changes of all users
+ * better icon views
  * many bugfixes !
 
 For developers and maintainers:
