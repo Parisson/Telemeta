@@ -102,11 +102,14 @@ or, from source::
 South (schema migration)
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
+It is strongly advised to use South and then enable data schema migrations between the models and the database.
+It will allow automatic DB updates when your / our models are modified. Because the first one you use is not only the best one...
+
 Install it using pip::
 
     sudo pip install south
 
-or, from source::
+or::
 
     sudo easy_install South
 
@@ -262,7 +265,7 @@ This synchronizes the DB with the model::
 
     ./manage.py syncdb
 
-If you want some data schema migrations (South needed)::
+If you want tu use the data schema migration system (South needed, see previous paragraph)::
 
     ./manage.py migrate telemeta
 
