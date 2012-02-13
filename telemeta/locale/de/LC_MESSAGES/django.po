@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-13 13:33+0100\n"
+"POT-Creation-Date: 2012-02-13 14:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -603,7 +603,7 @@ msgid "Enumerations"
 msgstr ""
 
 #: templates/telemeta/admin_enumerations.html:14
-#: templates/telemeta/lists.html:68 templates/telemeta/mediaitem_add.html:33
+#: templates/telemeta/lists.html:69 templates/telemeta/mediaitem_add.html:33
 #: templates/telemeta/mediaitem_copy.html:34
 #: templates/telemeta/mediaitem_detail_video.html:295
 #: templates/telemeta/mediaitem_edit.html:26
@@ -783,7 +783,7 @@ msgid "Collection"
 msgstr ""
 
 #: templates/telemeta/collection_detail.html:44
-#: templates/telemeta/lists.html:54
+#: templates/telemeta/lists.html:55
 #: templates/telemeta/mediaitem_detail.html:97
 #: templates/telemeta/mediaitem_detail.html:224
 #: templates/telemeta/mediaitem_detail.html:263
@@ -822,7 +822,7 @@ msgid "Listen to this collection"
 msgstr ""
 
 #: templates/telemeta/collection_detail.html:95
-#: templates/telemeta/lists.html:72
+#: templates/telemeta/lists.html:73
 #: templates/telemeta/inc/collection_list.html:17
 msgid "Recording period"
 msgstr ""
@@ -834,7 +834,7 @@ msgid "Geographic and cultural informations"
 msgstr ""
 
 #: templates/telemeta/collection_detail.html:126
-#: templates/telemeta/lists.html:71
+#: templates/telemeta/lists.html:72
 #: templates/telemeta/inc/collection_list.html:16
 #: templates/telemeta/inc/mediaitem_list.html:16
 msgid "Recordist"
@@ -881,7 +881,7 @@ msgid "Number of items"
 msgstr ""
 
 #: templates/telemeta/collection_detail.html:211
-#: templates/telemeta/lists.html:57
+#: templates/telemeta/lists.html:58
 #: templates/telemeta/mediaitem_detail.html:320
 #: templates/telemeta/mediaitem_detail_video.html:363
 #: templates/telemeta/resource_detail.html:73
@@ -927,7 +927,7 @@ msgstr ""
 
 #: templates/telemeta/collection_list.html:17
 #: templates/telemeta/enumeration_edit.html:23
-#: templates/telemeta/instrument_edit.html:22 templates/telemeta/lists.html:48
+#: templates/telemeta/instrument_edit.html:22 templates/telemeta/lists.html:49
 #: templates/telemeta/mediaitem_list.html:15
 #: templates/telemeta/resource_list.html:13
 msgid "Add"
@@ -1044,16 +1044,16 @@ msgstr ""
 msgid "This instrument list is empty"
 msgstr ""
 
-#: templates/telemeta/lists.html:46
+#: templates/telemeta/lists.html:47
 msgid "My playlists"
 msgstr ""
 
-#: templates/telemeta/lists.html:69
+#: templates/telemeta/lists.html:70
 #: templates/telemeta/inc/module_revisions.html:18
 msgid "Type"
 msgstr ""
 
-#: templates/telemeta/lists.html:70 templates/telemeta/mediaitem_add.html:34
+#: templates/telemeta/lists.html:71 templates/telemeta/mediaitem_add.html:34
 #: templates/telemeta/mediaitem_copy.html:35
 #: templates/telemeta/mediaitem_edit.html:27
 #: templates/telemeta/inc/children_list.html:17
@@ -1063,7 +1063,7 @@ msgstr ""
 msgid "Code"
 msgstr ""
 
-#: templates/telemeta/lists.html:73
+#: templates/telemeta/lists.html:74
 #: templates/telemeta/search_criteria.html:130
 #: templates/telemeta/search_results.html:58
 #: templates/telemeta/inc/collection_list.html:18
@@ -1071,11 +1071,11 @@ msgstr ""
 msgid "Sound"
 msgstr ""
 
-#: templates/telemeta/lists.html:74
+#: templates/telemeta/lists.html:75
 msgid "Action"
 msgstr ""
 
-#: templates/telemeta/lists.html:88
+#: templates/telemeta/lists.html:89
 #: templates/telemeta/inc/module_revisions.html:40
 msgid "deleted"
 msgstr ""
@@ -1342,7 +1342,8 @@ msgid "Reference"
 msgstr ""
 
 #: templates/telemeta/inc/children_list.html:35
-msgid "No resources"
+#: templates/telemeta/inc/resource_list.html:30
+msgid "No resource"
 msgstr ""
 
 #: templates/telemeta/inc/collection_list.html:7
@@ -1394,10 +1395,6 @@ msgstr ""
 #: templates/telemeta/inc/resource_list.html:7
 #, python-format
 msgid " from %(first_on_page)s to %(last_on_page)s on %(hits)s"
-msgstr ""
-
-#: templates/telemeta/inc/resource_list.html:30
-msgid "No resource"
 msgstr ""
 
 #: templates/telemeta/inc/user_list.html:9
