@@ -83,9 +83,9 @@
  {% if user.is_authenticated %}
   <li><a href="#desk#" class="blue">{% trans "Desk" %}</a></span>
    <ul>
-    <li><a href="{% url telemeta-desk-home %}">{% trans "Home" %}</a></li>
     <li><a href="{% url telemeta-desk-lists %}">{% trans "Lists" %}</a></li>
     <li><a href="{% url telemeta-desk-profile user.username %}">{% trans "Profile" %}</a></li>
+    <li><a href="{% url telemeta-desk-home %}">{% trans "Home" %}</a></li>
    </ul>
   </li>
  {% else %}
