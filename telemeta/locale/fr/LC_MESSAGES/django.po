@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-14 00:00+0100\n"
+"POT-Creation-Date: 2012-02-14 00:59+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Olivier Guilyardi <olivier samalyse com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -71,7 +71,6 @@ msgid "generic style"
 msgstr "style générique"
 
 #: models/enum.py:127 models/media.py:426
-#, fuzzy
 msgid "keyword"
 msgstr "Mot-clé"
 
@@ -670,7 +669,7 @@ msgstr "Recherche"
 msgid "Desk"
 msgstr "Bureau"
 
-#: templates/telemeta/base.html:86 views/base.py:269
+#: templates/telemeta/base.html:86 views/base.py:246
 msgid "Lists"
 msgstr "Listes"
 
@@ -783,7 +782,7 @@ msgid "Save"
 msgstr "Enregistrer"
 
 #: templates/telemeta/collection_detail.html:5
-#: templates/telemeta/collection_detail_dc.html:5 views/base.py:459
+#: templates/telemeta/collection_detail_dc.html:5 views/base.py:436
 msgid "Collection"
 msgstr "Collection"
 
@@ -1101,7 +1100,7 @@ msgstr "Mot de passe oublié"
 #: templates/telemeta/mediaitem_add.html:5
 #: templates/telemeta/mediaitem_copy.html:5
 #: templates/telemeta/mediaitem_detail.html:5
-#: templates/telemeta/mediaitem_detail_video.html:5 views/base.py:622
+#: templates/telemeta/mediaitem_detail_video.html:5 views/base.py:599
 msgid "Item"
 msgstr "Item"
 
@@ -1236,7 +1235,7 @@ msgstr "Formation"
 msgid "User Profile"
 msgstr "Profil utilisateur"
 
-#: templates/telemeta/profile_detail.html:8 views/base.py:1392
+#: templates/telemeta/profile_detail.html:8 views/base.py:1369
 msgid "User profile"
 msgstr "Profil utilisateur"
 
@@ -1601,20 +1600,20 @@ msgstr "Enfants"
 msgid "pattern"
 msgstr "mots clés"
 
-#: views/base.py:268 views/base.py:458 views/base.py:621 views/base.py:925
-#: views/base.py:1391
+#: views/base.py:245 views/base.py:435 views/base.py:598 views/base.py:902
+#: views/base.py:1368
 msgid "Access not allowed"
 msgstr "Accès non autorisé"
 
-#: views/base.py:270 views/base.py:460 views/base.py:623 views/base.py:927
-#: views/base.py:1393
+#: views/base.py:247 views/base.py:437 views/base.py:600 views/base.py:904
+#: views/base.py:1370
 msgid ""
 "Please login or contact the website administator to get a private access."
 msgstr ""
 "Connectez-vous s'il vous plaît ou bien contactez l'administrateur du site "
 "pour obtenir un accès privé."
 
-#: views/base.py:1422
+#: views/base.py:1399
 msgid "Last changes"
 msgstr "Dernières modifications"
 
