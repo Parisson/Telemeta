@@ -1,6 +1,6 @@
-===================================
-Telemeta : un CMS audio libre
-===================================
+================================================
+Telemeta : le CMS audio social, libre et ouvert
+================================================
 
 `Telemeta <http://telemeta.org>`_ est une solution libre d'archivage et d'indexation audio basée sur une interface de type web. Elle offre des fonctions avancées d'édition, d'indexation, de transcodage, de publication et de sauvegarde d'archives audio et de leurs méta-données. Il donne accès aux ressources distantes publiées ou privatisés issues de collections numérisées (fichiers, CD audio, vinyl ou bandes magnétiques) par l'intermédiaire d'un simple navigateur ou d'une application dédiée en accord avec les standards du web.
 
