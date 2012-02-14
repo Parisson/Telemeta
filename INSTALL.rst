@@ -1,6 +1,3 @@
-===========
-INSTALL
-===========
 
 Don't worry, Telemeta is easy to setup as any other Django app !
 
