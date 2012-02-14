@@ -78,6 +78,9 @@ from telemeta.cache import TelemetaCache
 import telemeta.views.pages as pages
 from telemeta.forms import *
 
+# Model type definition
+mods = {'item': MediaItem, 'collection': MediaCollection,
+        'corpus': MediaCorpus, 'fonds': MediaFonds, 'marker': MediaItemMarker, }
 
 # TOOLS
 
@@ -134,33 +137,14 @@ def get_revisions(nb, user=None):
         last_revisions = last_revisions.filter(user=user)
     last_revisions = last_revisions[0:nb]
     revisions = []
-    for revision in last_revisions:
-        if revision.element_type == 'item':
-            try:
-                element = MediaItem.objects.get(pk=revision.element_id)
-            except:
-                element = None
-        if revision.element_type == 'collection':
-            try:
-                element = MediaCollection.objects.get(pk=revision.element_id)
-            except:
-                element = None
-        if revision.element_type == 'marker':
-            try:
-                element = MediaItemMarker.objects.get(pk=revision.element_id)
-            except:
-                element = None
-        if revision.element_type == 'corpus':
-            try:
-                element = MediaCorpus.objects.get(pk=revision.element_id)
-            except:
-                element = None
-        if revision.element_type == 'fonds':
-            try:
-                element = MediaFonds.objects.get(pk=revision.element_id)
-            except:
-                element = None
 
+    for revision in last_revisions:
+        for type in mods.keys():
+            if revision.element_type == type:
+                try:
+                    element = mods[type].objects.get(pk=revision.element_id)
+                except:
+                    element = None
         if not element == None:
             revisions.append({'revision': revision, 'element': element})
     return revisions
@@ -176,16 +160,9 @@ def get_playlists(request, user=None):
             resources = []
             for resource in playlist_resources:
                 try:
-                    if resource.resource_type == 'item':
-                        element = MediaItem.objects.get(id=resource.resource_id)
-                    if resource.resource_type == 'collection':
-                        element = MediaCollection.objects.get(id=resource.resource_id)
-                    if resource.resource_type == 'marker':
-                        element = MediaItemMarker.objects.get(id=resource.resource_id)
-                    if resource.resource_type == 'corpus':
-                        element = MediaCorpus.objects.get(id=resource.resource_id)
-                    if resource.resource_type == 'fonds':
-                        element = MediaFonds.objects.get(id=resource.resource_id)
+                    for type in mods.keys():
+                        if resource.resource_type == type:
+                            element = mods[type].objects.get(id=resource.resource_id)
                 except:
                     element = None
                 resources.append({'element': element, 'type': resource.resource_type, 'public_id': resource.public_id })
