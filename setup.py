@@ -8,7 +8,7 @@ CLASSIFIERS = ['Environment :: Web Environment', 'Framework :: Django', 'Intende
 setup(
   name = "Telemeta",
   url = "http://telemeta.org",
-  description = "an open web audio CMS",
+  description = "open web audio CMS",
   long_description = open('README.rst').read(),
   author = "Guillaume Pellerin",
   author_email = "yomguy@parisson.com",
