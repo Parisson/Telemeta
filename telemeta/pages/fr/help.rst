@@ -1,8 +1,9 @@
+.. image:: images/help.png
+    :align: left
+
 ========================
 Pages d'aide de Telemeta
 ========================
-
-Bientôt publiées...
 
 Pour obtenir de l'aide, merci de vous inscrire à la mailing liste de Telemeta :
 
