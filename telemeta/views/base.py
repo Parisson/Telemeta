@@ -183,7 +183,7 @@ def check_related_media(medias):
             try:
                 title = tree.find(".//title").text
             except:
-                title = media_url
+                title = media.url
             media.title = title.replace('\n', '').strip()
             media.save()
 
