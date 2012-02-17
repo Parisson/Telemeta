@@ -9,16 +9,22 @@ Telemeta is a free and open source web audio archiving software which introduces
 
 Here are the main features of Telemeta:
 
-    * Secure archiving, editing and publishing of audio files over internet.
-    * User friendly and full HTML web frontend including workflows and high level search methods
-    * Smart dynamical and skinnable audio player (thanks to Timeside and SoundManager2)
-    * "On the fly" analyzing, transcoding and metadata embedding based on an easy plugin architecture
-    * Multi-format support : FLAC, OGG, MP3, WAV and more
-    * GEO Navigator for audio geolocalization
-    * DublinCore compatibility
-    * OAI-PMH data provider
-    * XML serialized backup
-    * Strong SQL backend
+ * Secure archiving, editing and publishing of audio files over internet.
+ * Pure HTML web user interface including dynamical forms and smart workflows
+ * Smart dynamical and skinnable audio player (thanks to  TimeSide and  SoundManager2)
+ * "On the fly" audio analyzing, transcoding and metadata embedding based on an easy plugin architecture
+ * Social cumulative indexing with semantic ontologies and timecoded markers
+ * Multi-format support : FLAC, OGG, MP3, WAV and more
+ * User management with individual desk, lists, profiles and rights
+ * Playlist management for all users with CSV data export
+ * Geo-Navigator for audio geolocalization
+ * High level search engine
+ * DublinCore compatibility
+ * OAI-PMH data provider
+ * RSS feed generators
+ * XML serialized backup
+ * Strong SQL or Oracle backend
+ * Multi-language support (now english and french)
 
 This web audio CMS is exclusively based on open source modules and can be run on any Unix or Linux system. It is mostly written in Python and JavaScript.
 
@@ -32,7 +38,13 @@ See `INSTALL.rst <http://github.com/yomguy/Telemeta/blob/master/INSTALL.rst>`_ a
 News
 ======
 
-(from 1.3 to 1.4)
+1.4.1
+++++++
+
+ Fix a bug for related media title parsing
+
+1.4
+++++++
 
 For users:
 
