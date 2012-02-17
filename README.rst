@@ -58,7 +58,7 @@ For developers and maintainers:
     ./manage.py syncdb
     ./manage.py migrate telemeta
 
-    See INSTALL.rst and email me if any pb! (you may, for example, not use 0002 migration)
+See INSTALL.rst and email me if any pb! (you may, for example, not use 0002 migration)
 
 Full changelog : see `CHANGELOG <http://github.com/yomguy/Telemeta/blob/master/CHANGELOG>`_
 

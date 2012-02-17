@@ -24,8 +24,8 @@ git push --tags github
 ssh vcs.parisson.com "cd /var/git/telemeta.git; git update-server-info"
 ssh vcs.parisson.org "cd /var/git/telemeta.git; git update-server-info"
 
-echo "Update jimi.parisson.com:"
-ssh jimi.parisson.com "cd /home/telemeta/telemeta; git pull origin production"
+#echo "Update jimi.parisson.com:"
+#ssh jimi.parisson.com "cd /home/telemeta/telemeta; git pull origin production"
 echo "Update angus.parisson.com:"
 ssh angus.parisson.com "cd /home/telemeta/telemeta-prod; git pull origin production; cd /home/telemeta/telemeta; git pull origin master "
 
