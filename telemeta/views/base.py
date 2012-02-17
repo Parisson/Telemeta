@@ -180,7 +180,10 @@ def check_related_media(medias):
             import lxml.etree
             parser = lxml.etree.HTMLParser()
             tree = lxml.etree.parse(media.url, parser)
-            title = tree.find(".//title").text
+            try:
+                title = tree.find(".//title").text
+            except:
+                title = media_url
             media.title = title.replace('\n', '').strip()
             media.save()
 
