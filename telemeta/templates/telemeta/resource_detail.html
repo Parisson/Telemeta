@@ -69,7 +69,12 @@ jQuery(document).ready(function(){
               <dt>{% trans parent.element_type|capitalize %}</dt>
               <dd><a href="{% url telemeta-resource-detail parent.element_type parent.public_id %}">{{ parent.title }}</a></dd>
                {% endfor %}
+              {% if last_revision %}
+               <dt>{% trans "Last modification" %}</dt>
+               <dd>{{ last_revision.time }}</dd>
+              {% endif %}
             </dl>
+            
         {% endblock general_info %}
 
         <div class="extraInfos">

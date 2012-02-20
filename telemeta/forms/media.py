@@ -37,6 +37,8 @@ from django.forms import ModelForm
 from telemeta.models import *
 
 class MediaFondsForm(ModelForm):
+    children = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple, queryset=MediaCorpus.objects.all())
+
     class Meta:
         model = MediaFonds
 
