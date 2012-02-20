@@ -629,6 +629,7 @@ class ItemView(object):
 
         related_media = MediaItemRelated.objects.filter(item=item)
         check_related_media(related_media)
+        last_revision = Revision.objects.filter(element_type='item', element_id=item.id).order_by('-time')[0]
 
         return render(request, template,
                     {'item': item, 'export_formats': formats,
@@ -636,7 +637,7 @@ class ItemView(object):
                     'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True),
                     'previous' : previous, 'next' : next, 'marker': marker_id, 'playlists' : playlists,
                     'public_access': public_access, 'width': width, 'height': height,
-                    'related_media': related_media, 'mime_type': mime_type,
+                    'related_media': related_media, 'mime_type': mime_type, 'last_revision': last_revision,
                     })
 
     @method_decorator(permission_required('telemeta.change_mediaitem'))

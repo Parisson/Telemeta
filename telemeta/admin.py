@@ -73,6 +73,8 @@ class RevisionAdmin(admin.ModelAdmin):
     search_fields = ['element_id', 'user']
     ordering = ['-time']
 
+class FormatAdmin(admin.ModelAdmin):
+    search_fields = ['code', 'vendor']
 
 admin.site.register(MediaFonds, MediaFondsAdmin)
 admin.site.register(MediaCorpus, MediaCorpusAdmin)
@@ -96,3 +98,5 @@ admin.site.register(LocationRelation, LocationRelationAdmin)
 admin.site.register(Language, LanguageAdmin)
 
 admin.site.register(Revision, RevisionAdmin)
+
+admin.site.register(Format, FormatAdmin)

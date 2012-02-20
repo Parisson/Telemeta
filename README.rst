@@ -85,7 +85,7 @@ To get the lastest development version, you need subversion and run::
 
     $ git clone http://vcs.parisson.com/git/telemeta.git
 
-Licence
+License
 =======
 
 CeCILL v2 (see LICENSE)

@@ -675,3 +675,33 @@ class MediaFondsRelated(MediaRelated):
         verbose_name = _('fonds related media')
         verbose_name_plural = _('fonds related media')
 
+
+class Format(ModelCore):
+    """ Physical format object as proposed by the LAM"""
+
+    item = ForeignKey(MediaItem, related_name="formats", verbose_name=_('item'))
+    original_code = CharField(_('original code'), required=True)
+    support_number = CharField(_('support number'))
+    status = CharField(_('status'))
+    conservation_state = CharField(_('conservation state'))
+    comments = TextField(_('comments'))
+
+    tape_length = WeakForeignKey(TapeLength, related_name="formats", verbose_name = _("tape length (cm)"))
+    tape_width  = WeakForeignKey(TapeWidth, related_name="formats", verbose_name = _("tape width (inch)"))
+    tape_speed = WeakForeignKey(TapeSpeed, related_name="formats", verbose_name = _("tape speed (m/s)"))
+    tape_vendor = WeakForeignKey(TapeVendor, related_name="formats")
+    tape_thickness = CharField(_('tape thickness (um)'))
+    tape_diameter = CharField(_('tape diameter (mm)'))
+    tape_reference = CharField(_('tape reference'))
+
+    class Meta(MetaCore):
+        db_table = 'media_formats'
+        verbose_name = _('format')
+
+    def __unicode__(self):
+        return self.original_code
+
+    @property
+    def public_id(self):
+        return self.original_code
+

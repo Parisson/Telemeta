@@ -195,6 +195,11 @@ Item : <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
 
             <dd>{% if item.recorded_from_date %}{{ item.recorded_from_date }}{% endif %}{% if item.recorded_from_date and item.recorded_to_date%} - {% endif %}{% if item.recorded_to_date %}{{ item.recorded_to_date}}{% endif %}</dd>
 
+            {% if last_revision %}
+            <dt>{% trans "Last modification" %}</dt>
+            <dd>{{ last_revision.time }}</dd>
+            {% endif %}
+            
         </dl>
         {% endblock general_info %}
     </div>
