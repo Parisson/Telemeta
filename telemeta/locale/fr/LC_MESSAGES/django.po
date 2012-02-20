@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-20 17:09+0100\n"
+"POT-Creation-Date: 2012-02-20 17:18+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Olivier Guilyardi <olivier samalyse com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -94,19 +94,19 @@ msgstr "nom"
 
 #: models/enum.py:171 models/media.py:689
 msgid "tape length (cm)"
-msgstr ""
+msgstr "longueur de bande (cm)"
 
 #: models/enum.py:178 models/media.py:690
 msgid "tape width (inch)"
-msgstr ""
+msgstr "largeur de bande (pouce)"
 
 #: models/enum.py:185 models/media.py:691
 msgid "tape speed (m/s)"
-msgstr ""
+msgstr "vitesse de bande (m/s)"
 
 #: models/enum.py:192
 msgid "tape vendor"
-msgstr ""
+msgstr "marque de bande"
 
 #: models/instrument.py:57
 msgid "instrument aliases"
@@ -550,11 +550,11 @@ msgstr "commentaires"
 
 #: models/media.py:693
 msgid "tape thickness (um)"
-msgstr ""
+msgstr "épaisseur de bande (um)"
 
 #: models/media.py:694
 msgid "tape diameter (mm)"
-msgstr ""
+msgstr "diamètre de bande (mm)"
 
 #: models/media.py:695
 msgid "tape reference"
