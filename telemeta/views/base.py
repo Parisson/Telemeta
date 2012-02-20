@@ -448,7 +448,12 @@ class CollectionView(object):
         related_media = MediaCollectionRelated.objects.filter(collection=collection)
         check_related_media(related_media)
         parents = MediaCorpus.objects.filter(children=collection)
-        last_revision = Revision.objects.filter(element_type='collection', element_id=collection.id).order_by('-time')[0]
+        revisions = Revision.objects.filter(element_type='collection',
+                                            element_id=collection.id).order_by('-time')
+        if revisions:
+            last_revision = revisions[0]
+        else:
+            last_revision = None
 
         return render(request, template, {'collection': collection, 'playlists': playlists,
                 'public_access': public_access, 'items': items, 'related_media': related_media,
@@ -632,7 +637,11 @@ class ItemView(object):
 
         related_media = MediaItemRelated.objects.filter(item=item)
         check_related_media(related_media)
-        last_revision = Revision.objects.filter(element_type='item', element_id=item.id).order_by('-time')[0]
+        revisions = Revision.objects.filter(element_type='item', element_id=item.id).order_by('-time')
+        if revisions:
+            last_revision = revisions[0]
+        else:
+            last_revision = None
 
         return render(request, template,
                     {'item': item, 'export_formats': formats,
@@ -1484,7 +1493,11 @@ class ResourceView(object):
         related_media = self.related.objects.filter(resource=resource)
         check_related_media(related_media)
         playlists = get_playlists(request)
-        last_revision = Revision.objects.filter(element_type=type, element_id=resource.id).order_by('-time')[0]
+        revisions = Revision.objects.filter(element_type=type, element_id=resource.id).order_by('-time')
+        if revisions:
+            last_revision = revisions[0]
+        else:
+            last_revision = None
         if self.parent:
             parents = self.parent.objects.filter(children=resource)
         else:
