@@ -77,7 +77,4 @@
                 </table>
             </div>
             {% endif %}
-            {% if user.is_authenticated and perms.telemeta.change_mediaitem %}
-                <br /><a href="{% url telemeta-item-related_edit item.public_id %}" class="component_icon button icon_edit">{% trans "Edit"%} {% trans "related media"%}</a>
-            {% endif %}
         </div>

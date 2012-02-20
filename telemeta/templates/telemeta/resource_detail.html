@@ -77,12 +77,14 @@ jQuery(document).ready(function(){
             
         {% endblock general_info %}
 
+        {% if related_media %}
         <div class="extraInfos">
             {% block related %}
                 {% include "telemeta/inc/resource_related.html" %}
             {% endblock related %}
         </div>
-
+        {% endif %}
+        
         <div class="extraInfos">
         <h4><img src="{% url telemeta-images "item_title.png" %}" style="vertical-align:middle" />{{resource.children_type|capitalize }} </h4>
         {% with resource.children.all as children %}

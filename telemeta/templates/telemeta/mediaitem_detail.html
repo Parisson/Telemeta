@@ -225,9 +225,7 @@ Item : <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
         </div>
         {% endblock geoethnic_data %}
     </div>
-    {% if user.is_authenticated and perms.telemeta.change_mediaitem %}
-    <a href="{% url telemeta-item-keywords_edit item.public_id %}" class="component_icon button icon_edit">{% trans "Edit" %} {% trans "keywords" %}</a>
-    {% endif %}
+
     <div class="extraInfos">
         {% block musical_data %}
         <div>
@@ -264,9 +262,7 @@ Item : <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
         </div>
         {% endblock musical_data %}
     </div>
-    {% if user.is_authenticated and perms.telemeta.change_mediaitem %}
-    <a href="{% url telemeta-item-performances_edit item.public_id %}" class="component_icon button icon_edit">{% trans "Edit"%} {% trans "performance"%}</a>
-    {% endif %}
+
     <div class="extraInfos">
         {% block general_data %}
         <div>
@@ -303,7 +299,24 @@ Item : <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
                 <dl class="listing">
                 <dt>{% trans "Media type" %}</dt><dd>{% trans mime_type|mime_to_media_type %}</dd>
                     {% dl_field item "approx_duration" %}
+
+                    {% if physical_format %}
+                     {% dl_field physical_format "original_code" %}
+                     {% dl_field physical_format "tape_number" %}
+                     {% dl_field physical_format "status" %}
+                     {% dl_field physical_format "conservation_state" %}
+                     {% dl_field physical_format "tape_length" %}
+                     {% dl_field physical_format "tape_width" %}
+                     {% dl_field physical_format "tape_speed" %}
+                     {% dl_field physical_format "tape_vendor" %}
+                     {% dl_field physical_format "tape_thickness" %}
+                     {% dl_field physical_format "tape_diameter" %}
+                     {% dl_field physical_format "tape_reference" %}
+                     <dt>{% trans "Remarks" %}</dt>
+                     <dd>{{ physical_format.comments|html_line_break|safe }}</dd>
+                    {% endif %}
                 </dl>
+
             </div>
         </div>
         {% endblock technical_data %}
@@ -311,11 +324,13 @@ Item : <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
     {% endblock infos %}
 </div> <!-- with-rightcol -->
 
+{% if related_media %}
 <div class="extraInfos">
     {% block related %}
         {% include "telemeta/inc/mediaitem_related.html" %}
     {% endblock related %}
 </div>
+{% endif %}
 
 {% endblock %}
 

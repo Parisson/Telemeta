@@ -34,11 +34,19 @@
     {% endfor %}
     </table>
     <div align="center" style="margin-top:3ex;">
-    <a href="{% url telemeta-item-detail item.public_id %}"
-        class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+    <a href="{% url telemeta-item-detail item.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+    {% if perms.telemeta.change_mediaitem %}
+    <a href="{% url telemeta-item-keywords_edit item.public_id %}" class="component_icon button icon_edit">{% trans "Edit" %} {% trans "keywords" %}</a>
+    {% endif %}
+    {% if perms.telemeta.change_mediaitem %}
+    <a href="{% url telemeta-item-performances_edit item.public_id %}" class="component_icon button icon_edit">{% trans "Edit"%} {% trans "performance"%}</a>
+    {% endif %}
+    {% if perms.telemeta.change_mediaitem %}
+    <a href="{% url telemeta-item-related_edit item.public_id %}" class="component_icon button icon_edit">{% trans "Edit"%} {% trans "related media"%}</a>
+    {% endif %}
     <a href="#" class="component_icon button icon_save" 
-onclick="var d=document; d.getElementById('wait-img').style.display='inline'; setTimeout(function(){d.getElementById('_editItemForm').submit();},300); return false;">{% trans "Save" %}</a>
-           <img id="wait-img" style="display:none" style="vertical-align:middle" alt="wait" src="{% url telemeta-images  "wait.gif" %}" />
+onclick="var d=document; d.getElementById('wait-img').style.display='inline'; setTimeout(function({d.getElementById('_editItemForm').submit();},300); return false;">{% trans "Save" %}</a>
+    <img id="wait-img" style="display:none" style="vertical-align:middle" alt="wait" src="{% url telemeta-images  "wait.gif" %}" />
     </div>
     </form>
 </div>

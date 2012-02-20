@@ -681,7 +681,7 @@ class Format(ModelCore):
 
     item = ForeignKey(MediaItem, related_name="formats", verbose_name=_('item'))
     original_code = CharField(_('original code'), required=True)
-    support_number = CharField(_('support number'))
+    tape_number = CharField(_('tape number'))
     status = CharField(_('status'))
     conservation_state = CharField(_('conservation state'))
     comments = TextField(_('comments'))

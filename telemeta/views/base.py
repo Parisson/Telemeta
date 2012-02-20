@@ -643,6 +643,10 @@ class ItemView(object):
         else:
             last_revision = None
 
+        physical_format = Format.objects.filter(item=item)
+        if physical_format:
+            physical_format = physical_format[0]
+
         return render(request, template,
                     {'item': item, 'export_formats': formats,
                     'visualizers': graphers, 'visualizer_id': grapher_id,
@@ -650,6 +654,7 @@ class ItemView(object):
                     'previous' : previous, 'next' : next, 'marker': marker_id, 'playlists' : playlists,
                     'public_access': public_access, 'width': width, 'height': height,
                     'related_media': related_media, 'mime_type': mime_type, 'last_revision': last_revision,
+                    'physical_format': physical_format,
                     })
 
     @method_decorator(permission_required('telemeta.change_mediaitem'))

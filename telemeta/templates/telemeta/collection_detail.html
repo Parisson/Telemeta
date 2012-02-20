@@ -191,12 +191,14 @@
             </div>
         {% endblock technical_data %}
         </div>
-        
+
+        {% if related_media %}
         <div class="extraInfos">
             {% block related %}
                 {% include "telemeta/inc/collection_related.html" %}
             {% endblock related %}
         </div>
+        {% endif %}
         
         <div class="extraInfos">
         <h4><img src="{% url telemeta-images "item_title.png" %}" style="vertical-align:middle" /> Items</h4>
