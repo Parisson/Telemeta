@@ -132,7 +132,7 @@ class MediaRelated(MediaResource):
         if self.url:
             url_types = ['.png', '.jpg', '.gif', '.jpeg']
             for type in url_types:
-                if type in self.url:
+                if type in self.url or type.upper() in self.url:
                     is_url_image = True
         return 'image' in self.mime_type or is_url_image
 
