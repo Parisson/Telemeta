@@ -69,15 +69,22 @@ jQuery(document).ready(function(){
               <dt>{% trans parent.element_type|capitalize %}</dt>
               <dd><a href="{% url telemeta-resource-detail parent.element_type parent.public_id %}">{{ parent.title }}</a></dd>
                {% endfor %}
+              {% if last_revision %}
+               <dt>{% trans "Last modification" %}</dt>
+               <dd>{{ last_revision.time }}</dd>
+              {% endif %}
             </dl>
+            
         {% endblock general_info %}
 
+        {% if related_media %}
         <div class="extraInfos">
             {% block related %}
                 {% include "telemeta/inc/resource_related.html" %}
             {% endblock related %}
         </div>
-
+        {% endif %}
+        
         <div class="extraInfos">
         <h4><img src="{% url telemeta-images "item_title.png" %}" style="vertical-align:middle" />{{resource.children_type|capitalize }} </h4>
         {% with resource.children.all as children %}

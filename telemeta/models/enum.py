@@ -39,7 +39,7 @@ from django.utils.translation import ugettext_lazy as _
 class Enumeration(ModelCore):
     "Abstract enumerations base class"
     value = CharField(_('value'), required=True, unique=True)
-    
+
     def __unicode__(self):
         return self.value
 
@@ -77,7 +77,7 @@ class MetadataAuthor(Enumeration):
         db_table = 'metadata_authors'
         verbose_name = _("record author")
 
-class MetadataWriter(Enumeration):  
+class MetadataWriter(Enumeration):
     "Collection metadata writer"
 
     class Meta(MetaEnumeration):
@@ -85,7 +85,7 @@ class MetadataWriter(Enumeration):
         verbose_name = _("record writer")
 
 class LegalRight(Enumeration):
-    "Collection legal rights" 
+    "Collection legal rights"
 
     class Meta(MetaEnumeration):
         db_table = 'legal_rights'
@@ -126,7 +126,7 @@ class ContextKeyword(Enumeration):
         db_table = 'context_keywords'
         verbose_name = _("keyword")
 
-class Publisher(Enumeration): 
+class Publisher(Enumeration):
     "Collection publisher"
 
     class Meta(MetaEnumeration):
@@ -153,7 +153,7 @@ class EthnicGroup(Enumeration):
         verbose_name = _('population / social group')
 
 class EthnicGroupAlias(ModelCore):
-    "Item ethnic group other name" 
+    "Item ethnic group other name"
     ethnic_group = ForeignKey('EthnicGroup', related_name="aliases", verbose_name=_('population / social group'))
     value        = CharField(_('name'), required=True)
 
@@ -162,4 +162,32 @@ class EthnicGroupAlias(ModelCore):
         unique_together = (('ethnic_group', 'value'),)
         ordering = ['ethnic_group__value']
 
+# Tape formats
+class TapeLength(Enumeration):
+    "Tape length (cm)"
+
+    class Meta(MetaEnumeration):
+        db_table = 'tape_length'
+        verbose_name = _("tape length (cm)")
+
+class TapeWidth(Enumeration):
+    "Tape width (inch)"
+
+    class Meta(MetaEnumeration):
+        db_table = 'tape_width'
+        verbose_name = _("tape width (inch)")
+
+class TapeSpeed(Enumeration):
+    "Tape speed (m/s)"
+
+    class Meta(MetaEnumeration):
+        db_table = 'tape_speed'
+        verbose_name = _("tape speed (m/s)")
+
+class TapeVendor(Enumeration):
+    "Tape vendor"
+
+    class Meta(MetaEnumeration):
+        db_table = 'tape_vendor'
+        verbose_name = _("tape vendor")
 

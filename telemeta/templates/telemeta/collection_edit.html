@@ -27,6 +27,9 @@
        </table>
         <div align="center" style="margin-top:3ex;">
          <a href="{% url telemeta-collection-detail collection.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+         {% if perms.telemeta.change_mediacollection %}
+         <a href="{% url telemeta-collection-related_edit collection.public_id %}" class="component_icon button icon_edit">{% trans "Edit"%} {% trans "related media"%}</a>
+         {% endif %}
          <a href="#" class="component_icon button icon_save"
    onclick="document.getElementById('_editCollectionForm').submit(); return false;">{% trans "Save" %}</a>
         </div>

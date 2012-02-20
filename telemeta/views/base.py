@@ -448,8 +448,16 @@ class CollectionView(object):
         related_media = MediaCollectionRelated.objects.filter(collection=collection)
         check_related_media(related_media)
         parents = MediaCorpus.objects.filter(children=collection)
+        revisions = Revision.objects.filter(element_type='collection',
+                                            element_id=collection.id).order_by('-time')
+        if revisions:
+            last_revision = revisions[0]
+        else:
+            last_revision = None
 
-        return render(request, template, {'collection': collection, 'playlists': playlists, 'public_access': public_access, 'items': items, 'related_media': related_media, 'parents': parents })
+        return render(request, template, {'collection': collection, 'playlists': playlists,
+                'public_access': public_access, 'items': items, 'related_media': related_media,
+                'parents': parents, 'last_revision': last_revision })
 
     @method_decorator(permission_required('telemeta.change_mediacollection'))
     def collection_edit(self, request, public_id, template='telemeta/collection_edit.html'):
@@ -629,6 +637,15 @@ class ItemView(object):
 
         related_media = MediaItemRelated.objects.filter(item=item)
         check_related_media(related_media)
+        revisions = Revision.objects.filter(element_type='item', element_id=item.id).order_by('-time')
+        if revisions:
+            last_revision = revisions[0]
+        else:
+            last_revision = None
+
+        physical_format = Format.objects.filter(item=item)
+        if physical_format:
+            physical_format = physical_format[0]
 
         return render(request, template,
                     {'item': item, 'export_formats': formats,
@@ -636,7 +653,8 @@ class ItemView(object):
                     'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True),
                     'previous' : previous, 'next' : next, 'marker': marker_id, 'playlists' : playlists,
                     'public_access': public_access, 'width': width, 'height': height,
-                    'related_media': related_media, 'mime_type': mime_type,
+                    'related_media': related_media, 'mime_type': mime_type, 'last_revision': last_revision,
+                    'physical_format': physical_format,
                     })
 
     @method_decorator(permission_required('telemeta.change_mediaitem'))
@@ -1480,12 +1498,19 @@ class ResourceView(object):
         related_media = self.related.objects.filter(resource=resource)
         check_related_media(related_media)
         playlists = get_playlists(request)
+        revisions = Revision.objects.filter(element_type=type, element_id=resource.id).order_by('-time')
+        if revisions:
+            last_revision = revisions[0]
+        else:
+            last_revision = None
         if self.parent:
             parents = self.parent.objects.filter(children=resource)
         else:
             parents = []
 
-        return render(request, template, {'resource': resource, 'type': type, 'children': children, 'related_media': related_media, 'parents': parents, 'playlists': playlists })
+        return render(request, template, {'resource': resource, 'type': type, 'children': children,
+                        'related_media': related_media, 'parents': parents, 'playlists': playlists,
+                        'last_revision': last_revision })
 
     @jsonrpc_method('telemeta.change_fonds')
     @jsonrpc_method('telemeta.change_corpus')
