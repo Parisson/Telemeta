@@ -5,6 +5,7 @@ var localeStrings = {
     'marker added to the selected playlist': gettext('marker added to the selected playlist'),
     'item added to the selected playlist': gettext('item added to the selected playlist'),
     'collection added to the selected playlist': gettext('collection added to the selected playlist'),
+    'resource added to the selected playlist': gettext('resource added to the selected playlist'),
     'there are unsaved or modified markers': gettext('there are unsaved or modified markers'),
     'If you exit the page you will loose your changes' : gettext('If you exit the page you will loose your changes'),
     'author' : gettext('author'),
