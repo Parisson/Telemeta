@@ -338,6 +338,9 @@ class GeneralView(object):
             'sound': lambda value: (
                 collections.sound(),
                 items.sound()),
+            'instrument': lambda value: (
+                collections.by_instrument(value),
+                items.by_instrument(value)),
         }
 
         for key, value in input.items():

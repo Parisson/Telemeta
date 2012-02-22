@@ -408,6 +408,24 @@ class MediaItem(MediaResource):
             title += ' ' + self.track
         return title
 
+    @property
+    def instruments(self):
+        "Return the instruments of the item"
+        instruments = []
+        performances = MediaItemPerformance.objects.filter(media_item=self)
+        for performance in performances:
+            instrument = performance.instrument
+            alias = performance.alias
+            if not instrument in instruments:
+                instruments.append(instrument)
+            if not alias in instruments:
+                instruments.append(alias)
+
+        instruments.sort(self.__name_cmp)
+        return instruments
+
+        instruments.verbose_name = _("instruments")
+
 
 class MediaItemRelated(MediaRelated):
     "Item related media"
