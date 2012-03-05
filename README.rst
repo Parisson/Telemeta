@@ -2,6 +2,12 @@
 Telemeta: open web audio CMS
 =============================
 
+For personal or collaborative media archiving projects,
+research laboratories and digital humanities,
+
+based on Django, Python, full DHTML, CSS and JavaScript.
+
+
 Introduction
 ============
 
@@ -25,6 +31,7 @@ Here are the main features of Telemeta:
  * XML serialized backup
  * Strong SQL or Oracle backend
  * Multi-language support (now english and french)
+ * Video support (EXPERIMENTAL, WebM only)
 
 This web audio CMS is exclusively based on open source modules and can be run on any Unix or Linux system. It is mostly written in Python and JavaScript.
 
