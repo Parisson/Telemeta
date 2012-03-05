@@ -38,6 +38,15 @@ See `INSTALL.rst <http://github.com/yomguy/Telemeta/blob/master/INSTALL.rst>`_ a
 News
 ======
 
+1.4.2
+++++++
+
+ * add user revisions to user profile
+ * move all edit buttons to main edit pages
+ * new Format object and various enumerations
+ * add last revision to item detail
+ * various bugfixes
+
 1.4.1
 ++++++
 
