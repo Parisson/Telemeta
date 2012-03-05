@@ -24,10 +24,17 @@
     {% endfor %}
     </ul>
    </div>
+
+    {% block module_user_revisions %}
+    {% with user_revisions as revisions and "Last changes" as title %}
+    {% include "telemeta/inc/module_user_revisions.html" %}
+    {% endwith %}
+    {% endblock %}
+
   {% endblock %}
  </div>
 
-    <div class="infos" style="padding-top: 1em;">
+   <div class="infos" style="padding-top: 1em; width: 66%">
      <dl class="listing">
       <dt>{% trans "First Name" %}</dt><dd>{{ usr.first_name }}</dd>
       <dt>{% trans "Last Name" %}</dt><dd>{{ usr.last_name }}</dd>

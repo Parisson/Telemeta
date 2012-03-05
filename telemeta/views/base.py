@@ -1377,7 +1377,10 @@ class ProfileView(object):
         except:
             profile = None
         playlists = get_playlists(request, user)
-        return render(request, template, {'profile' : profile, 'usr': user, 'playlists': playlists})
+        user_revisions = get_revisions(25, user)
+
+        return render(request, template, {'profile' : profile, 'usr': user, 'playlists': playlists,
+                                          'user_revisions': user_revisions})
 
     def profile_edit(self, request, username, template='telemeta/profile_edit.html'):
         if request.user.is_superuser:
@@ -1411,7 +1414,8 @@ class ProfileView(object):
             user_form = UserChangeForm(instance=user, prefix='user')
             profile_form = UserProfileForm(instance=profile, prefix='profile')
             forms = [user_form, profile_form]
-        return render(request, template, {'forms': forms, 'usr': user, 'user_hidden_fields': user_hidden_fields})
+        return render(request, template, {'forms': forms, 'usr': user,
+                                'user_hidden_fields': user_hidden_fields})
 
 
 class LastestRevisionsFeed(Feed):
