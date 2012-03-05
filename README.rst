@@ -3,9 +3,9 @@ Telemeta: open web audio CMS
 =============================
 
 For personal or collaborative media archiving projects,
-research laboratories and digital humanities,
+research laboratories and digital humanities.
 
-based on Django, Python, full DHTML, CSS and JavaScript.
+Based on Django, Python, full DHTML, CSS and JavaScript.
 
 
 Introduction
@@ -13,7 +13,7 @@ Introduction
 
 Telemeta is a free and open source web audio archiving software which introduces useful and secure methods to backup, index, transcode, analyse and publish any digitalized audio file with its metadata. It is dedicated to professionnals who wants to easily organize, backup and publish documented sound collections of audio files, CDs, digitalized vinyls and magnetic tapes over a strong database, in accordance with open web standards.
 
-Here are the main features of Telemeta:
+Main features:
 
  * Secure archiving, editing and publishing of audio files over internet.
  * Pure HTML web user interface including dynamical forms and smart workflows
