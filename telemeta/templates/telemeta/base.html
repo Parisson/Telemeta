@@ -84,6 +84,11 @@
   <li><a href="#desk#" class="blue">{% trans "Desk" %}</a></span>
    <ul>
     <li><a href="{% url telemeta-desk-lists %}">{% trans "Lists" %}</a></li>
+    {% if 'postman'|installed %}
+    {% load postman_tags %}
+    {% postman_unread as unread_count %}
+    <li><a href="{% url postman_inbox %}">{% trans "Messages" %}{% if unread_count %} <strong>({{ unread_count }})</strong>{% endif %}</a></li>
+    {% endif %}
     <li><a href="{% url telemeta-desk-profile user.username %}">{% trans "Profile" %}</a></li>
     <li><a href="{% url telemeta-desk-home %}">{% trans "Home" %}</a></li>
    </ul>
@@ -128,10 +133,15 @@
             <td class="leftcol"><h1>{% block title %}{% endblock %}</h1></td>
             <td class="rightcol">{% block title_buttons %}{% endblock %}</td>
     </tr></table>
-{% block content %}{% endblock %}
+    {% block content %}
+    {% endblock %}
 <div class="nett"></div>
+
 {% block delete %}{% endblock %}
 </div>
+
+{% block body %}
+{% endblock body %}
 
 {% block footer %}
 <div id="footer">
