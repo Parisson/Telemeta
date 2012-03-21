@@ -20,6 +20,8 @@
 <![endif]-->
 {% endblock %}
 
+{% block extra_stylesheets %}{% endblock %}
+
 {% block javascript %}
 <script src="{% url django.views.i18n.javascript_catalog %}" type="text/javascript"></script>
 <!--<script src="{% url telemeta-js "jquery-1.6.min.js" %}" type="text/javascript"></script>-->
@@ -91,6 +93,8 @@
  {% else %}
   <li><a href="{% url telemeta-home %}" class="blue">{% trans "Home" %}</a></li>
  {% endif %}
+
+ {% block archives %}
  <li><a href="#archives#" class="green">{% trans "Archives" %}</a>
   <ul>
     <li><a href="{% url telemeta-fonds %}">{% trans "Fonds" %}</a></li>
@@ -100,7 +104,12 @@
   </ul>
   <div class="clear"></div>
  </li>
+ {% endblock archives %}
+ 
+ {% block geonav %}
  <li><a href="{% url telemeta-geo-continents %}" class="yellow">{% trans "Geo Navigator" %}</a></li>
+ {% endblock geonav %}
+
  <li><a href="{% url telemeta-search-criteria %}" class="orange">{% trans "Advanced search" %}</a></li>
  {% if user.is_authenticated %}
  <li><a href="{% url telemeta-users %}" class="red">{% trans "Users" %}</a></li>

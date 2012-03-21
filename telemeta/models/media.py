@@ -87,7 +87,7 @@ class MediaResource(ModelCore):
 
 
 class MediaBaseResource(MediaResource):
-    "Describe a base resource"
+    "Describe a media base resource"
 
     title                 = CharField(_('title'), required=True)
     description           = CharField(_('description'))
