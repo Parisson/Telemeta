@@ -397,3 +397,6 @@ def mime_to_media_type(mime_type):
     else:
         return 'Audio'
 
+@register.filter
+def installed(app):
+    return app in settings.INSTALLED_APPS
