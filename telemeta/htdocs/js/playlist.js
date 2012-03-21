@@ -92,10 +92,11 @@ var playlistUtils = {
         var d = new Date();
         return new String(d.getTime() + '' + Math.floor(Math.random() * 1000000)).substr(0, 18);
     },
+
     add : function(dictionary){
 
         if(dictionary.public_id===undefined){
-            dictionary.public_id = this.uniqid(); //defined in application.js
+            dictionary.public_id = this.uniqid();
         }
         if(dictionary.user===undefined){
             dictionary.user = CURRENT_USER_NAME;
@@ -105,7 +106,7 @@ var playlistUtils = {
             window.location.reload();
         });
     },
-    
+
     remove: function(id){
         json([id],'telemeta.del_playlist',function(){
             window.location.reload();
@@ -130,7 +131,7 @@ var playlistUtils = {
         var d = gettrans('description');
         var dd = {};
         var playlist = this;
-        
+
         var playlists = this.playlists;
         for (var i=0; i< playlists.length; i++){
             if (playlists[i].id == id){
@@ -138,7 +139,7 @@ var playlistUtils = {
                 dd[d] = playlists[i].description;
             }
         }
-        
+
         new PopupDiv({
             'content':dd,
                     invoker:anchorElement,
@@ -156,7 +157,7 @@ var playlistUtils = {
                     }
         }).show();
     },
-    
+
     /*shows the popup for adding a resource to a playlist*/
     showAddResourceToPlaylist: function(anchorElement, resourceType, objectId, optionalOkMessage){
         var ar = [];
@@ -165,11 +166,11 @@ var playlistUtils = {
             ar.push(playlists[i].name);
         }
         var pl = this;
-        
+
         if(!ar.length){
             pl.showAdd(anchorElement);
         }
-        
+
         //var addFcn = this.addResourceToPlaylist;
         new PopupDiv({
             invoker:anchorElement,
@@ -177,7 +178,7 @@ var playlistUtils = {
             onOk:function(data){
                 var val = data.selIndex;
                 var callbackok = undefined;
-                    
+
                 if(optionalOkMessage){
                     callbackok = function(){
                         var p =new PopupDiv({

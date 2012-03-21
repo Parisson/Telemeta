@@ -1,0 +1,11 @@
+{% extends "postman/base_folder.html" %}
+{% load i18n %}
+{% block pm_folder_title %}{% trans "Deleted Messages" %}{% endblock %}
+{% block pm_delete_button %}{% endblock %}
+{% block pm_archive_button %}{% endblock %}
+{% block pm_subject %}{# no link #}
+     {% include "postman/inc_subject_ex.html" %}
+{% endblock %}
+{% block pm_footer_info %}
+<p>{% trans "Messages in this folder can be removed from time to time. For long term storage, use instead the archive folder." %}</p>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends "postman/base.html" %}
+{% load i18n postman_tags %}{% load pagination_tags %}
+{% block content %}
+<div id="postman">
+<h1>{% block pm_folder_title %}{% endblock %}</h1>
+{% autopaginate pm_messages %}
+{% if invalid_page %}
+<p>{% trans "Sorry, this page number is invalid." %}</p>
+{% else %}
+{% if pm_messages %}
+<br /><br />
+{% block pm_by_modes %}<div id="pm_by_modes">
+<a href="{{ by_conversation_url }}" class="component_icon button icon_filter">{% trans "by conversation" %}</a>
+<a href="{{ by_message_url }}" class="component_icon button icon_filter">{% trans "by message" %}</a>
+</div>{% endblock pm_by_modes %}
+<br />
+
+<form action="{% block pm_form_action %}{% endblock %}" method="post">{% csrf_token %}
+
+<table id="pm_messages" class="listing" >
+ <thead>
+  <tr>
+   <th>{% trans "Action" %}</th>
+{% block pm_sender_header %}   <th><a href="{% postman_order_by sender %}">{% trans "Sender" %}</a></th>{% endblock %}
+{% block pm_recipient_header %}   <th><a href="{% postman_order_by recipient %}">{% trans "Recipient" %}</a></th>{% endblock %}
+   <th><a href="{% postman_order_by subject %}">{% trans "Subject" %}</a></th>
+   <th><a href="{% postman_order_by date %}">{% block pm_date %}{% trans "Date" %}{% endblock %}</a></th>
+  </tr>
+ </thead>
+ <tbody>{% for message in pm_messages %}
+  <tr>
+   <td><input type="checkbox" {% if by_conversation and message.thread_id %}name="tpks" value="{{ message.thread_id }}"{% else %}name="pks" value="{{ message.pk }}"{% endif %} /></td>
+{% block pm_sender_cell %}   <td>{{ message.obfuscated_sender|or_me:user }}{% if message.count %} ({{ message.count }}){% endif %}</td>{% endblock %}
+{% block pm_recipient_cell %}   <td>{{ message.obfuscated_recipient|or_me:user }}{% if message.count %} ({{ message.count }}){% endif %}</td>{% endblock %}
+   <td>{% if message.is_new %}<strong>{% endif %}{% if message.is_replied %}<em>{% endif %}
+{% block pm_subject %}
+    <a href="{% if by_conversation and message.thread_id %}{% url postman_view_conversation message.thread_id %}{% else %}{{message.get_absolute_url }}{% endif %}?next={{ current_url|urlencode }}">
+    {% include "postman/inc_subject_ex.html" %}
+    </a>
+{% endblock %}
+   {% if message.is_replied %}</em>{% endif %}{% if message.is_new %}</strong>{% endif %}</td>
+   <td>{{ message.sent_at|compact_date:_("g:i A,M j,n/j/y") }}</td>
+  </tr>{% endfor %}
+ </tbody>
+</table>
+
+<br />
+{% block pm_form_buttons %}<span id="pm_buttons">
+{% block pm_delete_button %}<button type="submit" onclick="this.form.action='{% url postman_delete %}'">{% trans "Delete" %}</button>{% endblock %}
+{% block pm_archive_button %}<button type="submit" onclick="this.form.action='{% url postman_archive %}'">{% trans "Archive" %}</button>{% endblock %}
+{% block pm_undelete_button %}<button type="submit" onclick="this.form.action='{% url postman_undelete %}'">{% trans "Undelete" %}</button>{% endblock %}
+</span>{% endblock %}
+
+</form>
+{% paginate %}
+{% else %}
+<p>{% trans "No messages." %}</p>
+{% endif %}
+{% endif %}
+{% block pm_footer_info %}{% endblock %}
+</div>
+{% endblock content %}

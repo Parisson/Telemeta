@@ -5,19 +5,17 @@ from telemeta.models.location import *
 from telemeta.models.language import *
 from telemeta.models.system import *
 from django.contrib import admin
-from django.forms import CheckboxSelectMultiple
 
 class MediaFondsAdmin(admin.ModelAdmin):
     search_fields = ['title', 'code']
     ordering = ['code']
+    filter_horizontal = ['children']
 
 class MediaCorpusAdmin(admin.ModelAdmin):
     search_fields = ['title', 'code']
     ordering = ['code']
-    formfield_overrides = {
-        models.ManyToManyField: {'widget': CheckboxSelectMultiple}
-        }
-
+    filter_horizontal = ['children']
+    
 class MediaCollectionAdmin(admin.ModelAdmin):
     search_fields = ['title', 'code']
     ordering = ['code']

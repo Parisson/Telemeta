@@ -1,0 +1,23 @@
+{% extends "postman/base.html" %}
+{% load i18n %}
+{% block extrahead %}{{ block.super }}
+{% if is_autocompleted %}
+{# using the available admin jQuery is enough #}
+<script type="text/javascript" src="{% load adminmedia %}{% admin_media_prefix %}js/jquery.min.js"></script>
+{# <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.min.js"></script> #}
+<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.autocomplete.min.js"></script>
+<link href="{{ MEDIA_URL }}css/jquery.autocomplete.css" type="text/css" media="all" rel="stylesheet" />
+{% endif %}
+{% endblock %}
+{% block content %}
+<div id="postman">
+<h1>{% block pm_write_title %}{% endblock %}</h1>
+<form action="{% if next_url %}?next={{ next_url|urlencode }}{% endif %}" method="post">{% csrf_token %}
+<table>
+{% block pm_write_recipient %}{% endblock %}
+{{ form.as_table }}
+</table>
+<button type="submit">{% trans "Send" %}</button>
+</form>
+</div>
+{% endblock %}
