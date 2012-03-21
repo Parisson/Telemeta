@@ -22,6 +22,7 @@ setup(
         'django-pagination',
         'django-postman',
         'django-socialregistration',
+        'sorl-thumbnail',
   ],
   platforms=['OS Independent'],
   license='CeCILL v2',

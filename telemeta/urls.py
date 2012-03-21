@@ -35,6 +35,7 @@
 #          Guillaume Pellerin <yomguy@parisson.com>
 
 from django.conf.urls.defaults import *
+from django.conf import settings
 from django.views.generic.simple import redirect_to
 from telemeta.models import MediaItem, MediaCollection, MediaItemMarker, MediaCorpus, MediaFonds
 from telemeta.views.base import GeneralView, AdminView, CollectionView, ItemView, \
@@ -329,6 +330,10 @@ urlpatterns = patterns('',
     # RSS feeds
     url(r'^rss/$', LastestRevisionsFeed(), name="telemeta-rss"),
 
+    # Static media
+    # FIXME:need to move export dir from the cache
+    url(r'^media/cache/(?P<path>.*)$', 'django.views.static.serve', {
+            'document_root': settings.TELEMETA_CACHE_DIR,}),
 )
 
 
