@@ -12,7 +12,7 @@ U{http://telemeta.org}
 """
 
 __docformat__ = 'epytext en'
-__version__ = '1.4.2'
+__version__ = '1.4.3'
 __url__ = 'http://telemeta.org'
 __copyright__ = '(C) 2007-2012 Parisson'
 __license__ = 'CeCILL-2'
