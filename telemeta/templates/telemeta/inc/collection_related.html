@@ -60,13 +60,13 @@
                                 {% if media.is_image %}
                                 {% if media.file %}
                                 <a href="{% url telemeta-collection-related collection.public_id media.id %}">
-                                {% thumbnail media.file "420" as im %}
+                                {% thumbnail media.file "x200" as im %}
                                 <img src="{{ im.url }}" style="max-width: 420px; max-height: 200px;" />
                                 {% endthumbnail %}
                                 </a>
                                 {% else %}
                                 <a href="{{ media.url }}">
-                                {% thumbnail media.url "420" as im %}
+                                {% thumbnail media.url "x200" as im %}
                                 <img src="{{ im.url }}" style="max-width: 420px; max-height: 200px;" />
                                 {% endthumbnail %}
                                 </a>
