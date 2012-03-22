@@ -87,6 +87,7 @@ class UserProfile(models.Model):
     address         = TextField(_('Address'))
     telephone       = CharField(_('Telephone'))
     expiration_date = DateField(_('Expiration_date'))
+    init_password   = BooleanField(_('Password initialization'))
 
     class Meta(MetaCore):
         db_table = 'profiles'
