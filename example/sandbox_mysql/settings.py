@@ -102,6 +102,7 @@ INSTALLED_APPS = (
     'telemeta',
     'jsonrpc',
     'south',
+    'sorl.thumbnail',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
