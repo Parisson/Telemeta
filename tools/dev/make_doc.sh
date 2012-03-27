@@ -1,5 +1,10 @@
 #!/bin/sh
 # needs epydoc
 
-epydoc -n telemeta -u http://telemeta.org -o doc/html/ telemeta/
+app="telemeta"
+dir=/home/$USER/dev/$app/doc/
+server="doc.parisson.com"
+
+epydoc -n $app -u https://github.com/yomguy/DeeFuzzer -o $dir $app/
+rsync -a $dir $server:/var/www/files/doc/$app/
 
