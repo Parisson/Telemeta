@@ -102,7 +102,7 @@ a img { border: none; }
 #logo a, #logo a:hover { border: none; background: transparent; }
 
 #header {
-    padding: 0.2em 0;
+    padding: 0em;
 /*     background: url("../images/waves.png") 100% 0% no-repeat; */
 }
 
@@ -470,6 +470,7 @@ form.login .submit {
 #menu .black { border-bottom-color:  #000000; }
 #menu .red { border-bottom-color:  #DD0000; }
 #menu .violet { border-bottom-color:  #A00020; }
+#menu .origin { border-bottom-color: #6a0307; }
 
 * html #menu :link, * html #menu :visited { background-position: 1px 0 }
 
