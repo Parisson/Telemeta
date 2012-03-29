@@ -83,7 +83,7 @@
 
 <ul id="nav">
  {% if user.is_authenticated %}
-  <li><a href="#desk#" class="blue">{% trans "Desk" %}</a></span>
+  <li><a href="#desk#" class="blue">{% trans "Desk" %}</a>
    <ul>
     <li><a href="{% url telemeta-desk-lists %}">{% trans "Lists" %}</a></li>
     <li><a href="{% url telemeta-desk-profile user.username %}">{% trans "Profile" %}</a></li>
@@ -94,7 +94,6 @@
   <li><a href="{% url telemeta-home %}" class="blue">{% trans "Home" %}</a></li>
  {% endif %}
 
- {% block archives %}
  <li><a href="#archives#" class="green">{% trans "Archives" %}</a>
   <ul>
     <li><a href="{% url telemeta-fonds %}">{% trans "Fonds" %}</a></li>
@@ -102,13 +101,9 @@
     <li><a href="{% url telemeta-collections %}">{% trans "Collections" %}</a></li>
     <li><a href="{% url telemeta-items %}">{% trans "Items" %}</a></li>
   </ul>
-  <div class="clear"></div>
  </li>
- {% endblock archives %}
- 
- {% block geonav %}
+
  <li><a href="{% url telemeta-geo-continents %}" class="yellow">{% trans "Geo Navigator" %}</a></li>
- {% endblock geonav %}
 
  <li><a href="{% url telemeta-search-criteria %}" class="orange">{% trans "Advanced search" %}</a></li>
  {% if user.is_authenticated %}
@@ -121,13 +116,11 @@
  <li><a href="{% url telemeta-admin-enumerations %}">{% trans "Enumerations" %}</a></li>
  <li><a href="{% url telemeta-instrument-edit %}">{% trans "Instruments" %}</a></li>
  </ul>
- <div class="clear"></div>
  </li>
 {% endif %}
 </ul>
-<div class="clear"></div>
 
-{% endblock %}
+{% endblock menu %}
 </div>
 </div>
 {% endblock header %}
@@ -154,7 +147,7 @@
  <table width="100%">
   <tr>
    <td>
-    <a id="telemeta_powered" href="{% telemeta_url %}" target="_blank"><img src="{% url telemeta-images "logo_mini_2.png" %}" height="30" width="93"
+    <a id="telemeta_powered" href="{% telemeta_url %}" target="_blank"><img src="{% url telemeta-images "logo_mini_2.png" %}"
    alt="Telemeta Powered"/></a>
     <p class="left">
     {% trans "Powered by" %} <a href="{% telemeta_url %}" target="_blank"><strong>Telemeta {% telemeta_version %}</strong></a><br />

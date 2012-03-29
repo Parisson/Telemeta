@@ -292,6 +292,8 @@ urlpatterns = patterns('',
     # Authentication
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'telemeta/login.html'},
         name="telemeta-login"),
+    url(r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name': 'telemeta/login.html'},
+        name="telemeta-login"),
     #url(r'^login/$', 'ipauth.views.login', {'template_name': 'telemeta/login.html'},
     #    name="telemeta-login"),
     url(r'^logout/$', general_view.logout, name="telemeta-logout"),
