@@ -930,6 +930,14 @@ class ItemView(object):
             messages.error(request, title)
             return render(request, 'telemeta/messages.html', {'description' : description})
 
+        #FIXME: MP4 handling in TimeSide
+        if 'mp4' in extension:
+            mime_type = 'video/mp4'
+            video = item.file.path
+            response = HttpResponse(stream_from_file(video), mimetype = mime_type)
+            response['Content-Disposition'] = 'attachment'
+            return response
+
         for encoder in self.encoders:
             if encoder.file_extension() == extension:
                 break
