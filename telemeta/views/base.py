@@ -912,6 +912,8 @@ class ItemView(object):
         list = []
         for encoder in self.encoders:
             list.append(encoder.file_extension())
+        #FIXME: MP4
+        list.append('mp4')
         return list
 
     def item_export(self, request, public_id, extension):
