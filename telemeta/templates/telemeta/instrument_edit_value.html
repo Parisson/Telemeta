@@ -1,1 +1,24 @@
-{% extends "telemeta_default/instrument_edit_value.html" %}
+{% extends "telemeta/instrument_edit.html" %}
+{% load i18n %}
+
+{% block tabcontents %}
+ <h4>{% trans "Instruments" %}</h4>
+ <form class="mod" id="addinstru" method="post"
+    action="{% url telemeta-instrument-record-update instrument.id %}">{% csrf_token %}
+  <fieldset>
+   <legend>{% trans "Modify an entry" %}</legend>
+   <div class="field">
+    <label>{% trans "Name" %}: <input type="text" name="value" value="{{instrument.name}}" /></label>
+
+   </div>
+   <br />
+   <div class="buttons">
+        <a href="#" class="component_icon button icon_save"
+   onclick="document.getElementById('addinstru').submit(); return false;">{% trans "Save" %}</a>
+        <a href="{% url telemeta-instrument-edit %}"
+           class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+   </div>
+  </fieldset>
+ </form>
+  <br style="clear: right"/>
+{% endblock %}

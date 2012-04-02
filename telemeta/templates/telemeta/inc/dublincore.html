@@ -1,2 +1,28 @@
-{% extends "telemeta_default/inc/dublincore.html" %}
+{% load telemeta_utils %}
+{% load i18n %}
 
+    <h4 class="dublincore">{% trans "Dublin Core Metadata" %}</h4>
+    <dl class="dublincore">
+        <dt class="caption"><span>Element</span>Refinement</dt><dd class="caption">Value</dd>
+        {% for element in resource.elements %}
+        <dt><span>{{ element.name }}</span>{{ element.refinement|default:"&nbsp;" }}</dt>
+        <dd>
+        {% if element.related|is_item or element.related|is_collection or element.related|is_resource %}
+            {% if element.related|is_item %}
+            <a href="{% url telemeta-item-dublincore element.related.public_id %}">{{ element.value }}</a>
+            {% endif %}
+            {% if element.related|is_collection %}
+            <a href="{% url telemeta-collection-dublincore element.related.public_id %}">{{ element.value }}</a>
+            {% endif %}
+            {% if element.related|is_corpus %}
+            <a href="{% url telemeta-resource-dublincore "corpus" element.related.public_id %}">{{ element.value }}</a>
+            {% endif %}
+            {% if element.related|is_fonds %}
+            <a href="{% url telemeta-resource-dublincore "fonds" element.related.public_id %}">{{ element.value }}</a>
+            {% endif %}
+        {% else %}
+            {{ element.value }}
+        {% endif %}
+        </dd>
+        {% endfor %}
+    </dl>

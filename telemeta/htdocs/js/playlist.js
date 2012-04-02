@@ -44,10 +44,17 @@ var playlistUtils = {
     playlists : [],
 
     addPlaylist: function(name, id){
-        //this.playlists[name]=id;
         this.playlists.push({
             'name':name,
             'id':id
+        });
+    },
+
+    addEditPlaylist: function(id, title, description){
+        this.playlists.push({
+            'id': id,
+            'title': title,
+            'description': description,
         });
     },
 
@@ -85,10 +92,11 @@ var playlistUtils = {
         var d = new Date();
         return new String(d.getTime() + '' + Math.floor(Math.random() * 1000000)).substr(0, 18);
     },
+
     add : function(dictionary){
 
         if(dictionary.public_id===undefined){
-            dictionary.public_id = this.uniqid(); //defined in application.js
+            dictionary.public_id = this.uniqid();
         }
         if(dictionary.user===undefined){
             dictionary.user = CURRENT_USER_NAME;
@@ -97,9 +105,8 @@ var playlistUtils = {
         json([dictionary],'telemeta.add_playlist',function(){
             window.location.reload();
         });
-
-
     },
+
     remove: function(id){
         json([id],'telemeta.del_playlist',function(){
             window.location.reload();
@@ -112,18 +119,58 @@ var playlistUtils = {
         });
     },
 
+    update : function(dictionary){
+        json([dictionary],'telemeta.update_playlist',function(){
+        window.location.reload();
+        });
+    },
+
+    showEdit: function(anchorElement, id){
+
+        var t = gettrans('title');
+        var d = gettrans('description');
+        var dd = {};
+        var playlist = this;
+
+        var playlists = this.playlists;
+        for (var i=0; i< playlists.length; i++){
+            if (playlists[i].id == id){
+                dd[t] = playlists[i].title;
+                dd[d] = playlists[i].description;
+            }
+        }
+
+        new PopupDiv({
+            'content':dd,
+                    invoker:anchorElement,
+                    showOk:true,
+                    onOk:function(data){
+                        if(!data[t] && !data[d]){
+                            return;
+                        }
+                        //convert language
+                        playlist.update({
+                            'public_id': id,
+                            'title': data[t],
+                            'description': data[d],
+                        });
+                    }
+        }).show();
+    },
 
     /*shows the popup for adding a resource to a playlist*/
-    showAddResourceToPlaylist: function(anchorElement,resourceType,objectId, optionalOkMessage){
+    showAddResourceToPlaylist: function(anchorElement, resourceType, objectId, optionalOkMessage){
         var ar = [];
         var playlists = this.playlists;
         for(var i=0; i< playlists.length; i++){
             ar.push(playlists[i].name);
         }
-        if(!ar.length){
-            return;
-        }
         var pl = this;
+
+        if(!ar.length){
+            pl.showAdd(anchorElement);
+        }
+
         //var addFcn = this.addResourceToPlaylist;
         new PopupDiv({
             invoker:anchorElement,
@@ -131,6 +178,7 @@ var playlistUtils = {
             onOk:function(data){
                 var val = data.selIndex;
                 var callbackok = undefined;
+
                 if(optionalOkMessage){
                     callbackok = function(){
                         var p =new PopupDiv({

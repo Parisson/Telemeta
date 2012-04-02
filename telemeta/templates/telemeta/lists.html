@@ -1,0 +1,122 @@
+{% extends "telemeta/base.html" %}
+{% load telemeta_utils %}
+{% load i18n %}
+
+{% block extra_javascript %}
+<script src="{% url telemeta-js "popupdiv-min.js" %}" type="text/javascript"></script>
+<script src="{% url telemeta-js "playlist.js" %}" type="text/javascript"></script>
+<script>
+    jQuery(window).ready(function(){
+        var p = playlistUtils;
+        var a = jQuery('#_new_playlist'); 
+        a.unbind('click').click(function(){p.showAdd(a);return false;});
+        });
+
+    {% for playlist in playlists %}
+        playlistUtils.addEditPlaylist('{{playlist.playlist.public_id}}','{{ playlist.playlist.title }}','{{playlist.playlist.description}}');
+    {% endfor %}
+        
+
+</script>
+{% endblock %}
+
+{% block content %}
+<div id="module-set" style="width: 33%">
+
+    {% block module_searches %}
+    {% with searches as searches and "My searches" as title %}
+    {% include "telemeta/inc/module_searches.html" %}
+    {% endwith %}
+    {% endblock %}
+    
+    {% block module_user_revisions %}
+    {% with user_revisions as revisions and "My last changes" as title %}
+    {% include "telemeta/inc/module_user_revisions.html" %}
+    {% endwith %}
+    {% endblock %}
+
+    {% block module_all_revisions %}
+    {% with revisions as revisions and "All last changes" as title %}
+    {% include "telemeta/inc/module_revisions.html" %}
+    {% endwith %}
+    {% endblock %}
+    
+</div>
+
+<div class="home-description">
+    <h1><img src="{% url telemeta-images "playlist_title.png" %}" alt="playlists" style="vertical-align:middle" /> {% trans "My playlists" %}</h1>
+    <a href="#" id="_new_playlist" style="float:right" class="component_icon button icon_add">
+        {% trans "Add" %}</a>
+    {% for playlist in playlists %}
+    <table class="listing" style="width:100%;margin-top: 3em">
+        <tr>
+            <td style="border-bottom:1px solid #6A0307;color:#6A0307;font-size: 100%">{{ playlist.playlist.title }}</td>
+            <td style="width:86ex; padding-right: 0; border-bottom:1px solid #6A0307; text-align:right">
+            <a href="#" id="{{playlist.playlist.public_id}}" onclick="playlistUtils.showEdit(this, this.id); return false;" class="component_icon button icon_edit">{% trans "Edit" %}</a>
+                <a href="{% url telemeta-playlist-csv-export playlist.playlist.public_id 'collections' %}" class="component_icon button icon_csv">CSV Collections</a>
+                <a href="{% url telemeta-playlist-csv-export playlist.playlist.public_id 'items' %}" class="component_icon button icon_csv">CSV Items</a>
+                <a href="#" id="{{playlist.playlist.public_id}}" onclick="if(confirm(gettrans('delete the playlist permanently?'))){playlistUtils.remove(this.id);};return false;" class="component_icon button icon_cancel">{% trans "Delete" %}</a>
+            </td>
+        </tr>
+        {% if playlist.playlist.description %}
+         <tr>
+          <td colspan="2" style="border-bottom:1px solid #6A0307;color:#6A0307;font-size: 80%">{{ playlist.playlist.description }}</td>
+         </tr>
+        {% endif %}  
+    </table>
+    <table class="listing" width="100%">
+        <tr>
+            <th class="highlight">{% trans "Title" %}</th>
+            <th>{% trans "Type" %}</th>
+            <th>{% trans "Code" %}</th>
+            <th>{% trans "Recordist" %}</th>
+            <th>{% trans "Recording period" %}</th>
+            <th>{% trans "Sound" %}</th>
+            <th>{% trans "Action" %}</th>
+        </tr>
+        {% for resource in playlist.resources %}
+        <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
+            <td>
+                {% if resource.type == "item" and not resource.element == None %}
+                <a href="{% url telemeta-item-detail resource.element.public_id %}">{{ resource.element }}</a>
+                {% endif %}
+                {% if resource.type == "collection" and not resource.element == None %}
+                <a href="{% url telemeta-collection-detail resource.element.public_id %}">{% if resource.element.title %}{{ resource.element.title }}{% else %}{{ resource.element }}{% endif %}</a>
+                {% endif %}
+                {% if resource.type == "marker" and not resource.element == None  %}
+                <a href="{% url telemeta-item-detail-marker resource.element.public_id %}">{{ resource.element }}</a>
+                {% endif %}
+                {% if resource.type == "corpus" or resource.type == "fonds" %}
+                <a href="{% url telemeta-resource-detail resource.type resource.element.public_id %}">{{ resource.element.title }}</a>
+                {% endif %}
+                {% if resource.element == None %}{% trans "deleted" %}{% endif %}
+            </td>
+            <td>{{ resource.type }}</td>
+            <td>
+                {{ resource.element.public_id }}
+            </td>
+            <td>{{ resource.element.apparent_collector }}</td>
+
+            <td>
+                {% if resource.element.recorded_from_date %}
+                {{ resource.element.recorded_from_date.year }}
+                {% if resource.element.recorded_to_date and not resource.element.recorded_to_date.year|equals:resource.element.recorded_from_date.year %}
+                - {{ resource.element.recorded_to_date.year }}
+                {% endif %}
+                {% endif %}
+            </td>
+            <td align="center" style="vertical-align:middle">
+                {% if resource.element.file or resource.element.has_mediafile %}
+                <img src="{% url telemeta-images "ok.png" %}" alt="yes" style="vertical-align:middle" /></a>
+                {% endif %}
+            </td>
+            <td style="vertical-align:middle">
+            <a href="#" onclick="if(confirm(gettrans('delete the resource from the playlist permanently?'))){playlistUtils.removeResource('{{resource.public_id}}');};return false;" class="component_icon button icon_cancel" style="padding: 4px 12px;"></a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endfor %}
+</div>
+{% endblock %}
+

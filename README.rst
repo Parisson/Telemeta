@@ -1,39 +1,94 @@
-=======
-README
-=======
+=============================
+Telemeta: open web audio CMS
+=============================
 
-Telemeta: an open web audio CMS
+For personal or collaborative media archiving projects,
+research laboratories and digital humanities.
+
+Based on Django, Python, full DHTML, CSS and JavaScript.
+
 
 Introduction
 ============
 
-Telemeta is a free and open source web audio archiving program which introduces useful and secure methods to backup, index, transcode, analyse and publish any digitalized audio file with its metadata. It is dedicated to professionnals who wants to easily organize, backup and publish documented sound collections of audio files, CDs, digitalized vinyls and magnetic tapes over a strong database, in accordance with open web standards.
+Telemeta is a free and open source web audio archiving software which introduces useful and secure methods to backup, index, transcode, analyse and publish any digitalized audio file with its metadata. It is dedicated to professionnals who wants to easily organize, backup and publish documented sound collections of audio files, CDs, digitalized vinyls and magnetic tapes over a strong database, in accordance with open web standards.
 
-Here are the main features of Telemeta:
+Main features:
 
-    * Secure archiving, editing and publishing of audio files over internet.
-    * User friendly web frontend including workflows and high level search methods
-    * Smart dynamical and skinnable audio player (thanks to Timeside and SoundManager2)
-    * "On the fly" analyzing, transcoding and metadata embedding based on an easy plugin architecture
-    * Multi-format support : FLAC, OGG, MP3, WAV and more
-    * GEO Navigator for audio geolocalization
-    * DublinCore compatibility
-    * OAI-PMH data provider
-    * XML serialized backup
-    * Strong SQL backend
+ * Secure archiving, editing and publishing of audio files over internet.
+ * Pure HTML web user interface including dynamical forms and smart workflows
+ * Smart dynamical and skinnable audio player (thanks to  TimeSide and  SoundManager2)
+ * "On the fly" audio analyzing, transcoding and metadata embedding based on an easy plugin architecture
+ * Social cumulative indexing with semantic ontologies and timecoded markers
+ * Multi-format support : FLAC, OGG, MP3, WAV and more
+ * User management with individual desk, lists, profiles and rights
+ * Playlist management for all users with CSV data export
+ * Geo-Navigator for audio geolocalization
+ * High level search engine
+ * DublinCore compatibility
+ * OAI-PMH data provider
+ * RSS feed generators
+ * XML serialized backup
+ * Strong SQL or Oracle backend
+ * Multi-language support (now english and french)
+ * Video support (EXPERIMENTAL, WebM only)
 
 This web audio CMS is exclusively based on open source modules and can be run on any Unix or Linux system. It is mostly written in Python and JavaScript.
+
 
 Installation, upgrade and usage
 ================================
 
-See `INSTALL.rst <http://telemeta.org/browser/INSTALL.rst>`_ and `telemeta.org <http://telemeta.org>`_ for more informations.
+See `INSTALL.rst <http://github.com/yomguy/Telemeta/blob/master/INSTALL.rst>`_ and `telemeta.org <http://telemeta.org>`_ for more informations.
 
 
-Changelog
-=========
+News
+======
 
-See `CHANGELOG <http://telemeta.org/browser/CHANGELOG>`_
+1.4.2
+++++++
+
+ * add user revisions to user profile
+ * move all edit buttons to main edit pages
+ * new Format object and various enumerations
+ * add last revision to item detail
+ * various bugfixes
+
+1.4.1
+++++++
+
+ Fix a bug for related media title parsing
+
+1.4
+++++++
+
+For users:
+
+ * add a Desk providing links to home and personal data
+ * add Fonds, Corpus and their related media to the models and to the search engine
+ * add some fancy drop down menus for main tabs
+ * add video media handling (WebM formats only and with the last TimeSide master branch)
+ * add playlist metadata editor
+ * fix some sad bugs for YouTube related URLs and previews
+ * cleanup admin page
+ * add auto saving now for all searches !
+ * add "My Searches" modules to user lists with search direct link
+ * add RSS feeds for last changes of all users
+ * better icon views
+ * many bugfixes !
+
+For developers and maintainers:
+
+ * a new setting parameter: TELEMETA_DOWNLOAD_FORMATS = ('wav', 'mp3', 'webm') or whatever
+ * before upgrading, you need to BACKUP and manually delete old wrong MediaCorpus and MediaCorpusRelated tables
+ * we now use South for data model migration. Add 'south' to your apps and to do::
+
+    ./manage.py syncdb
+    ./manage.py migrate telemeta
+
+See INSTALL.rst and email me if any pb! (you may, for example, not use 0002 migration)
+
+Full changelog : see `CHANGELOG <http://github.com/yomguy/Telemeta/blob/master/CHANGELOG>`_
 
 
 Development
@@ -46,7 +101,7 @@ To get the lastest development version, you need subversion and run::
 
     $ git clone http://vcs.parisson.com/git/telemeta.git
 
-Licence
+License
 =======
 
 CeCILL v2 (see LICENSE)

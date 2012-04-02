@@ -1,1 +1,101 @@
-{% extends "telemeta_default/search_results.html" %}
+{% extends "telemeta/base.html" %}
+{% load telemeta_utils %}
+{% load i18n %}
+
+{% block head_title %}{% trans "Search Results" %} - {{ block.super }}{% endblock %}
+
+{% block title %}
+ <img src="{% url telemeta-images "search_red.png" %}" alt="search-results" style="vertical-align:middle" /> {% trans "Search Results" %}
+{% endblock %}
+
+{% block title_buttons %}
+    {% ifequal type 'items' %}
+     <a href="{% url telemeta-search-items %}?{{criteria|with_no_sound|build_query_string}}" class="component_icon button icon_filter">{% trans "All" %}</a>
+     <a href="{% url telemeta-search-items %}?{{criteria|with_sound|build_query_string}}" class="component_icon button icon_filter">{% trans "Sounds" %}</a>
+    {% endifequal %}
+    {% ifequal type 'collections' %}
+     <a href="{% url telemeta-search-collections %}?{{criteria|with_no_sound|build_query_string}}" class="component_icon button icon_filter">{% trans "All" %}</a>
+     <a href="{% url telemeta-search-collections %}?{{criteria|with_sound|build_query_string}}" class="component_icon button icon_filter">{% trans "Sounds" %}</a>
+    {% endifequal %}
+{% endblock %}
+
+{% block content %}
+{% if criteria %}
+<ul>
+  {% if criteria.pattern %}
+    <li><b>{% trans "Search pattern" %}:</b> {{criteria.pattern}}</li>
+  {% endif %}
+  {% if criteria.location %}
+    <li><b>{% field_label "Location" %}:</b> {{criteria.location}}</li>
+  {% endif %}
+  {% if criteria.ethnic_group %}
+    <li><b>{% field_label "EthnicGroup" %}:</b> {{criteria.ethnic_group}}</li>
+  {% endif %}
+  {% if criteria.creator %}
+    <li><b>{% field_label "MediaCollection" "creator" %}:</b> {{criteria.creator}}</li>
+  {% endif %}
+  {% if criteria.collector %}
+    <li><b>{% field_label "MediaCollection" "collector" %}:</b> {{criteria.collector}}</li>
+  {% endif %}
+  {% if criteria.title %}
+    <li><b>{% trans "Title" %}:</b> {{criteria.title}}</li>
+  {% endif %}
+  {% if criteria.rec_year_from %}
+    <li><b>{% trans "Year of recording" %}:</b> {{criteria.rec_year_from}}
+     {% ifnotequal criteria.rec_year_to criteria.rec_year_from %}
+     {% trans "to" %} {{criteria.rec_year_to}}
+     {% endifnotequal %}
+    </li>
+  {% endif %}
+  {% if criteria.pub_year_from %}
+    <li><b>{% trans "Year of publication" %}:</b> {{criteria.pub_year_from}}
+     {% ifnotequal criteria.pub_year_to criteria.pub_year_from %}
+     {% trans "to" %} {{criteria.pub_year_to}}
+     {% endifnotequal %}
+    </li>
+  {% endif %}
+    {% if criteria.sound %}
+    <li><b>{% trans "Sound" %}:</b> {{criteria.sound}}</li>
+  {% endif %}
+</ul>
+{% endif %}
+
+{% ifequal type 'items' %}
+<p><b>Items ({{items_num}}) | <a href="{% url telemeta-search-collections %}?{{criteria|build_query_string}}">Collections ({{collections_num}})</a> | <a href="{% url telemeta-search-corpus %}?{{criteria|build_query_string}}">Corpus ({{corpus_num}})</a> | <a href="{% url telemeta-search-fonds %}?{{criteria|build_query_string}}">Fonds ({{fonds_num}})</a></b></p>
+  {% with object_list as items %}
+   <div class="fullpage">
+      {% include "telemeta/inc/mediaitem_list.html" %}
+   </div>
+  {% endwith %}    
+{% endifequal %}
+  
+{% ifequal type 'collections' %}
+<p><b><a href="{% url telemeta-search-items %}?{{criteria|build_query_string}}">Items ({{items_num}})</a> | Collections ({{collections_num}}) | <a href="{% url telemeta-search-corpus %}?{{criteria|build_query_string}}">Corpus ({{corpus_num}})</a> | <a href="{% url telemeta-search-fonds %}?{{criteria|build_query_string}}">Fonds ({{fonds_num}})</a>
+  </b></p>
+  {% with object_list as collections %}
+   <div class="fullpage">
+      {% include "telemeta/inc/collection_list.html" %}
+   </div>
+  {% endwith %}
+{% endifequal %}
+
+{% if type == 'corpus' %}
+<p><b><a href="{% url telemeta-search-items %}?{{criteria|build_query_string}}">Items ({{items_num}})</a> | <a href="{% url telemeta-search-collections %}?{{criteria|build_query_string}}">Collections ({{collections_num}})</a> | Corpus ({{corpus_num}}) | <a href="{% url telemeta-search-fonds %}?{{criteria|build_query_string}}">Fonds ({{fonds_num}})</a>
+</b></p>
+{% endif %}
+
+{% if type == 'fonds' %}
+<p><b><a href="{% url telemeta-search-items %}?{{criteria|build_query_string}}">Items ({{items_num}})</a> | <a href="{% url telemeta-search-collections %}?{{criteria|build_query_string}}">Collections ({{collections_num}})</a> | <a href="{% url telemeta-search-corpus %}?{{criteria|build_query_string}}">Corpus ({{corpus_num}})</a> | Fonds ({{fonds_num}})
+</b></p>
+{% endif %}
+
+{% if type == 'corpus' or type == 'fonds' %}
+{% with object_list as resources and type as type %}
+<div class="fullpage">
+{% include "telemeta/inc/resource_list.html" %}
+</div>
+{% endwith %}
+{% endif %}
+
+
+{% endblock %}

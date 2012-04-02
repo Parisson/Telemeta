@@ -65,6 +65,7 @@ item_code_regex              = '(?:%s|%s)' % (item_published_code_regex, item_un
 
 PUBLIC_ACCESS_CHOICES = (('none', 'none'), ('metadata', 'metadata'), ('full', 'full'))
 
+
 class MediaResource(ModelCore):
     "Base class of all media objects"
 
@@ -87,6 +88,35 @@ class MediaResource(ModelCore):
     class Meta:
         abstract = True
 
+
+class MediaBaseResource(MediaResource):
+    "Describe a media base resource"
+
+    title                 = CharField(_('title'), required=True)
+    description           = CharField(_('description'))
+    code                  = CharField(_('code'), unique=True, required=True)
+    reference             = CharField(_('reference'), unique=True, null=True)
+    public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES,
+                                      max_length=16, default="metadata")
+
+    def __unicode__(self):
+        return self.code
+
+    @property
+    def public_id(self):
+        return self.code
+
+    def save(self, force_insert=False, force_update=False, user=None, code=None):
+        super(MediaBaseResource, self).save(force_insert, force_update)
+
+    def get_fields(self):
+        return self._meta.fields
+
+    class Meta(MetaCore):
+        abstract = True
+        ordering = ['code']
+
+
 class MediaRelated(MediaResource):
     "Related media"
 
@@ -105,7 +135,7 @@ class MediaRelated(MediaResource):
         if self.url:
             url_types = ['.png', '.jpg', '.gif', '.jpeg']
             for type in url_types:
-                if type in self.url:
+                if type in self.url or type.upper() in self.url:
                     is_url_image = True
         return 'image' in self.mime_type or is_url_image
 
@@ -125,51 +155,6 @@ class MediaRelated(MediaResource):
 
     class Meta:
         abstract = True
-
-
-class MediaCorpus(MediaResource):
-    "Describe a corpus of collections"
-
-    element_type = 'corpus'
-
-    # General informations
-    reference             = CharField(_('reference'), unique=True, null=True)
-    title                 = CharField(_('title'), required=True)
-    description           = CharField(_('description'))
-    code                  = CharField(_('code'), unique=True, required=True)
-    public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES,
-                                      max_length=16, default="metadata")
-
-    def __unicode__(self):
-        return self.code
-
-    @property
-    def public_id(self):
-        return self.code
-
-    def save(self, force_insert=False, force_update=False, user=None, code=None):
-        super(MediaCorpus, self).save(force_insert, force_update)
-
-    class Meta(MetaCore):
-        db_table = 'media_corpus'
-        ordering = ['code']
-
-
-class MediaCorpusCollectionRelation(ModelCore):
-    "Relations between Corpus and Collections"
-
-    collection        = ForeignKey('MediaCollection', related_name="parent_relation",
-                                   verbose_name=_('collection'))
-    corpus            = ForeignKey('MediaCorpus', related_name="child_relation",
-                                   verbose_name=_('corpus'))
-
-    class Meta(MetaCore):
-        db_table = 'media_corpus_collection_relations'
-        unique_together = (('collection', 'corpus'),)
-
-    def __unicode__(self):
-        sep = ' > '
-        return self.corpus.code + sep + self.collection.code
 
 
 class MediaCollection(MediaResource):
@@ -306,6 +291,7 @@ class MediaCollection(MediaResource):
     class Meta(MetaCore):
         db_table = 'media_collections'
         ordering = ['code']
+        verbose_name = _('collection')
 
 
 class MediaCollectionRelated(MediaRelated):
@@ -315,6 +301,8 @@ class MediaCollectionRelated(MediaRelated):
 
     class Meta(MetaCore):
         db_table = 'media_collection_related'
+        verbose_name = _('collection related media')
+        verbose_name_plural = _('collection related media')
 
 
 class MediaItem(MediaResource):
@@ -386,6 +374,7 @@ class MediaItem(MediaResource):
         db_table = 'media_items'
         permissions = (("can_play_all_items", "Can play all media items"),
                        ("can_download_all_items", "Can download all media items"), )
+        verbose_name = _('item')
 
     def is_valid_code(self, code):
         "Check if the item code is well formed"
@@ -430,6 +419,8 @@ class MediaItemRelated(MediaRelated):
 
     class Meta(MetaCore):
         db_table = 'media_item_related'
+        verbose_name = _('item related media')
+        verbose_name_plural = _('item related media')
 
 
 class MediaItemKeyword(ModelCore):
@@ -489,6 +480,7 @@ class MediaPart(MediaResource):
 
     class Meta(MetaCore):
         db_table = 'media_parts'
+        verbose_name = _('item part')
 
     def __unicode__(self):
         return self.title
@@ -510,7 +502,7 @@ class Playlist(ModelCore):
 
 class PlaylistResource(ModelCore):
     "Playlist components"
-    RESOURCE_TYPE_CHOICES = (('item', 'item'), ('collection', 'collection'), ('marker', 'marker'))
+    RESOURCE_TYPE_CHOICES = (('item', 'item'), ('collection', 'collection'), ('marker', 'marker'), ('fonds', 'fonds'), ('corpus', 'corpus'))
     element_type = 'playlist_resource'
     public_id          = CharField(_('public_id'), required=True)
     playlist           = ForeignKey('Playlist', related_name="resources", verbose_name=_('playlist'))
@@ -556,28 +548,12 @@ class MediaItemTranscodingFlag(ModelCore):
         db_table = 'media_transcoding'
 
 
-class Search(ModelCore):
-    "Keywork search"
-
-    element_type = 'search'
-
-    username = ForeignKey(User, related_name="searches", db_column="username")
-    keywords = CharField(_('keywords'), required=True)
-    date = DateField(_('date'), auto_now_add=True)
-
-    class Meta(MetaCore):
-        db_table = 'searches'
-
-    def __unicode__(self):
-        return self.keywords
-
-
 class DublinCoreToFormatMetadata(object):
     """ a mapping class to get item DublinCore metadata dictionaries
     in various audio metadata format (MP3, OGG, etc...)"""
 
     #FIXME: should be given by timeside
-    unavailable_extensions = ['wav', 'aiff', 'aif', 'flac']
+    unavailable_extensions = ['wav', 'aiff', 'aif', 'flac', 'webm']
 
     metadata_mapping = {
                     'mp3' : {
@@ -602,6 +578,11 @@ class DublinCoreToFormatMetadata(object):
                         'all': 'all',
                        },
                     'wav': {
+                        'creator': 'artist',
+                        'relation': 'album',
+                        'all': 'all',
+                       },
+                    'webm': {
                         'creator': 'artist',
                         'relation': 'album',
                         'all': 'all',
@@ -632,3 +613,98 @@ class DublinCoreToFormatMetadata(object):
                     metadata[key] = value.decode('utf-8')
                 keys_done.append(key)
         return metadata
+
+
+class MediaCorpus(MediaBaseResource):
+    "Describe a corpus"
+
+    element_type = 'corpus'
+    children_type = 'collections'
+
+    children = models.ManyToManyField(MediaCollection, related_name="corpus", verbose_name=_('collections'),  blank=True, null=True)
+    recorded_from_year    = IntegerField(_('recording year (from)'))
+    recorded_to_year      = IntegerField(_('recording year (until)'))
+
+    objects = MediaCorpusManager()
+
+    @property
+    def public_id(self):
+        return self.code
+
+    class Meta(MetaCore):
+        db_table = 'media_corpus'
+        verbose_name = _('corpus')
+        verbose_name_plural = _('corpus')
+
+
+class MediaFonds(MediaBaseResource):
+    "Describe fonds"
+
+    element_type = 'fonds'
+    children_type = 'corpus'
+
+    children = models.ManyToManyField(MediaCorpus, related_name="fonds", verbose_name=_('corpus'), blank=True, null=True)
+
+    objects = MediaFondsManager()
+
+    @property
+    def public_id(self):
+        return self.code
+
+    class Meta(MetaCore):
+        db_table = 'media_fonds'
+        verbose_name = _('fonds')
+        verbose_name_plural = _('fonds')
+
+
+class MediaCorpusRelated(MediaRelated):
+    "Corpus related media"
+
+    resource = ForeignKey(MediaCorpus, related_name="related", verbose_name=_('corpus'))
+
+    class Meta(MetaCore):
+        db_table = 'media_corpus_related'
+        verbose_name = _('corpus related media')
+        verbose_name_plural = _('corpus related media')
+
+
+class MediaFondsRelated(MediaRelated):
+    "Fonds related media"
+
+    resource = ForeignKey(MediaFonds, related_name="related", verbose_name=_('fonds'))
+
+    class Meta(MetaCore):
+        db_table = 'media_fonds_related'
+        verbose_name = _('fonds related media')
+        verbose_name_plural = _('fonds related media')
+
+
+class Format(ModelCore):
+    """ Physical format object as proposed by the LAM"""
+
+    item = ForeignKey(MediaItem, related_name="formats", verbose_name=_('item'))
+    original_code = CharField(_('original code'), required=True)
+    tape_number = CharField(_('tape number'))
+    status = CharField(_('status'))
+    conservation_state = CharField(_('conservation state'))
+    comments = TextField(_('comments'))
+
+    tape_length = WeakForeignKey(TapeLength, related_name="formats", verbose_name = _("tape length (cm)"))
+    tape_width  = WeakForeignKey(TapeWidth, related_name="formats", verbose_name = _("tape width (inch)"))
+    tape_speed = WeakForeignKey(TapeSpeed, related_name="formats", verbose_name = _("tape speed (m/s)"))
+    tape_vendor = WeakForeignKey(TapeVendor, related_name="formats")
+    tape_thickness = CharField(_('tape thickness (um)'))
+    tape_diameter = CharField(_('tape diameter (mm)'))
+    tape_reference = CharField(_('tape reference'))
+
+    class Meta(MetaCore):
+        db_table = 'media_formats'
+        verbose_name = _('format')
+
+    def __unicode__(self):
+        return self.original_code
+
+    @property
+    def public_id(self):
+        return self.original_code
+

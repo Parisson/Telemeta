@@ -1,0 +1,40 @@
+{% extends "telemeta/resource_detail.html" %}
+{% load i18n %}
+{% load telemeta_utils %}
+
+{% block title %}
+<img src="{% url telemeta-type-images type %}" style="vertical-align:middle" /> {{ type }} : {% trans "New" %}
+{% endblock %}
+
+{% block title_buttons %}
+    <a href="/archives/{{type}}/" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+{% endblock %}
+
+
+{% block infos %}
+        <div class="infos">
+        <form method="post" id ="_addResourceForm" action="">{% csrf_token %}
+        <table>
+        <tr><td colspan="2">{% for error in form.non_field_errors %}<li class="error">{{ error }}</li>{% endfor %}</td></tr>
+        {% for field in form %}
+         <tr>
+            <tr><td class="error">{{ field.errors }}</td></tr>
+            {% if "children" in field.html_name %}
+            <td>{{ field.label_tag }}:</td><td><div class="vscroll"> {{ field }}</div></td>
+            {% else %}
+            <td>{{ field.label_tag }}:</td><td> {{ field }}</td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+        </table>
+        <div align="center" style="margin-top:3ex;">
+            <a href="/archives/{{type}}/" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+            <a href="#" class="component_icon button icon_save"
+                onclick="document.getElementById('_addResourceForm').submit(); return false;">{% trans "Save" %}</a>
+        </div>
+        </form>
+        </div>
+{% endblock infos%}
+
+{% block delete %}
+{% endblock %}

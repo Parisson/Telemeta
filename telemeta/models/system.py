@@ -39,13 +39,14 @@ from django.contrib.auth.models import User
 from telemeta.models.core import *
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import ugettext_lazy as _
-import django.db.models
+import django.db.models as models
 from django.forms import ModelForm
 
 
 class Revision(ModelCore):
     "Revision made by user"
-    ELEMENT_TYPE_CHOICES = (('collection', 'collection'), ('item', 'item'), ('part', 'part'), ('marker', 'marker'), ('media', 'media'))
+
+    ELEMENT_TYPE_CHOICES = (('collection', 'collection'), ('item', 'item'), ('part', 'part'), ('marker', 'marker'), ('media', 'media'), ('fonds', 'fonds'), ('corpus', 'corpus'))
     CHANGE_TYPE_CHOICES  = (('import', 'import'), ('create', 'create'), ('update', 'update'), ('delete','delete'))
 
     element_type         = CharField(_('element type'), choices=ELEMENT_TYPE_CHOICES, max_length=16, required=True)
@@ -77,7 +78,7 @@ class Revision(ModelCore):
         db_table = 'revisions'
 
 
-class UserProfile(django.db.models.Model):
+class UserProfile(models.Model):
     "User profile extension"
 
     user            = ForeignKey(User, unique=True, required=True)
@@ -86,10 +87,41 @@ class UserProfile(django.db.models.Model):
     address         = TextField(_('Address'))
     telephone       = CharField(_('Telephone'))
     expiration_date = DateField(_('Expiration_date'))
+    init_password   = BooleanField(_('Password initialization'))
 
     class Meta(MetaCore):
         db_table = 'profiles'
 
-class UserProfileForm(ModelForm):
-    class Meta:
-        model = UserProfile
+
+class Criteria(ModelCore):
+    "Search criteria"
+
+    element_type = 'search_criteria'
+
+    key = CharField(_('key'), required=True)
+    value = CharField(_('value'), required=True)
+
+    class Meta(MetaCore):
+        db_table = 'search_criteria'
+
+
+class Search(ModelCore):
+    "Keywork search"
+
+    element_type = 'search'
+
+    username = ForeignKey(User, related_name="searches", db_column="username")
+    date = DateTimeField(_('date'), auto_now_add=True)
+    description = CharField(_('Description'))
+    criteria = models.ManyToManyField(Criteria, related_name="search",
+                                      verbose_name=_('criteria'), blank=True, null=True)
+
+    class Meta(MetaCore):
+        db_table = 'searches'
+        ordering = ['-date']
+
+    def __unicode__(self):
+        return self.keywords
+
+
+

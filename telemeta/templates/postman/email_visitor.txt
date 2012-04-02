@@ -1,0 +1,22 @@
+{% load i18n %}{% autoescape off %}{% trans "Dear visitor," %}
+{% if action == 'rejection' %}
+{% blocktrans with object.sent_at|date:"DATETIME_FORMAT" as date and object.recipient as recipient %}On {{ date }}, you asked to send a message to the user '{{ recipient }}'.{% endblocktrans %}
+
+{% trans "Your message has been rejected by the moderator" %}{% if object.moderation_reason %}{% trans ", for the following reason:" %}
+    {{ object.moderation_reason }}{% else %}.{% endif %}
+
+{% trans "As a reminder, please find below the content of your message." %}
+{% else %}{# 'acceptance' #}
+{% blocktrans with object.parent.sent_at|date:"DATETIME_FORMAT" as date and object.sender as sender %}On {{ date }}, you sent a message to the user '{{ sender }}'.{% endblocktrans %}
+{% trans "Please find below the answer from your correspondent." %}
+{% endif %}
+
+{% trans "Thank you again for your interest in our services." %}
+{% trans "For more comfort, we encourage you to open an account on the site." %}
+{% trans "The site administrator" %}
+
+{% blocktrans %}Note: This message is issued by an automated system.
+Do not reply, this would not be taken into account.{% endblocktrans %}
+-------------------------------------------------------
+{{ object.body }}
+-------------------------------------------------------{% endautoescape %}

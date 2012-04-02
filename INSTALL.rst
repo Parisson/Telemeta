@@ -1,6 +1,3 @@
-===========
-INSTALL
-===========
 
 Don't worry, Telemeta is easy to setup as any other Django app !
 
@@ -23,81 +20,113 @@ Install the system dependencies
     Install all dependencies like this::
 
         sudo aptitude install python python-dev python-django python-xml python-mysqldb mysql-server \
-        python-ctypes python-setuptools python-support python-docutils \
-        python-libxml2 python-django-registration python-lxml python-numpy \
-        python-scipy python-imaging python-mutagen python-gobject python-gst0.10 \
-        gstreamer0.10-plugins-base gobject-introspection
+            python-ctypes python-setuptools python-support python-docutils \
+            python-libxml2 python-django-registration python-lxml python-numpy \
+            python-scipy python-imaging python-mutagen python-gobject python-gst0.10 \
+            gstreamer0.10-plugins-base gobject-introspection python-django-south
 
-    To get MP3 reading and writing, just add these lines to your /etc/apt/sources-list::
+    To get MP3 reading and writing::
 
-        deb http://www.debian-multimedia.org stable main
-
-    Then::
-
+        echo 'deb http://www.debian-multimedia.org stable main' | sudo tee -a /etc/apt/sources-list
         sudo apt-get update
         sudo aptitude install gstreamer0.10-fluendo-mp3 gstreamer0.10-lame
 
 * On other linux platforms:
 
-    Please install all dependencies thanks to your application manager.
+    Please install all the equivalent dependencies thanks to your application manager or manually.
 
 
 Install Telemeta
-------------------
+-----------------------------
 
-* The best is to use the python package tools (install MANY dependencies automatically)::
+Pip method (highly recommended!)
++++++++++++++++++++++++++++++++++
+
+We strongly advise you use the python package tool as it installs some good dependencies automatically::
 
     sudo aptitude install python-pip
     sudo pip install telemeta
 
-  or (deprecated)::
+or (deprecated)::
 
     sudo easy_install telemeta
 
-* Downloading the latest tar archive at http://telemeta.org. Uncompress it and install. For example::
+From sources
++++++++++++++
+
+Download the latest tar archive at http://telemeta.org.
+
+Uncompress and install it. For example::
 
     tar xzf telemeta-1.0.tar.gz
     cd telemeta-1.0
     sudo python setup.py install
 
+Libraries
++++++++++++
 
-Install TimeSide
------------------
+All those modules have been automatically installed if you used one of the previous methods to install Telemeta.
+In this case only, you can PASS this stage.
 
-The web audio components provided by the TimeSide module have been automatically installed if you used pip or setup.py to install Telemeta. In this case only, you can pass this stage.
+But, if you need to hack Telemeta without installing it (i.e. link it through your $PYTHONPATH), you need to install those libraries manually.
 
-Otherwise, you have to download and install it from source.
+TimeSide (web audio components)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-So, download the last archive at :
+Install it using pip::
+
+    sudo pip install timeside
+
+Or, download the last archive at :
 http://code.google.com/p/timeside/downloads/list
 
 Uncompress it and read README and INSTALL to install the dependencies
 and then the module.
 
+JSON-RPC server
+~~~~~~~~~~~~~~~~~~
 
-Install JSON-RPC server
-------------------------
+Install it using pip::
 
-The JSON module provided by django-json-rpc have been automatically installed if you used pip or setup.py to install Telemeta. In this case only, you can pass this stage.
+    sudo pip install django-json-rpc
 
-Otherwise, you have to download and install it from source::
+or, from source::
 
     git clone git://github.com/samuraisam/django-json-rpc.git
     cd django-json-rpc
     python setup.py install
 
+South (schema migration)
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+It is strongly advised to use South and then enable data schema migrations between the models and the database.
+It will allow automatic DB updates when your / our models are modified. Because the first one you use is not only the best one...
+
+Install it using pip::
+
+    sudo pip install south
+
+or::
+
+    sudo easy_install South
+
 
 -------------------------
-Testing (sandbox)
+Fast testing (sandbox)
 -------------------------
 
-If you just want to test Telemeta, a sandbox is available in the example/ directory.
-As Telemeta needs MySQL to work properly and fast, please create a database before editing setting.py
+If you just want to test Telemeta just now, a sandbox is available in the example/ directory::
+
+    cd example/sandbox_sqlite
+    ./manage.py syncdb
+    ./manage.py runserver 9000
+
+Now browse http://localhost:9000
 
 
---------------------------
-Create a Django project
---------------------------
+-------------------------------
+Create a new Telemeta project
+-------------------------------
 
 Start the project
 ------------------
@@ -135,6 +164,7 @@ Set the app lists as follow::
     'django.contrib.admin',
     'telemeta',
     'jsonrpc',
+    'south'
     )
 
 Set the following languages::
@@ -167,7 +197,8 @@ Add the following variables::
     TELEMETA_CACHE_DIR =            absolute path to the cache directory that you just created
     TELEMETA_GMAP_KEY =             your Google Map API key
     TELEMETA_DOWNLOAD_ENABLED =     True to enable raw audio data download
-    TELEMETA_STREAMING_FORMATS =    tuple of authoized streaming formats. Ex : ('mp3', 'ogg')
+    TELEMETA_STREAMING_FORMATS =    tuple of authorized streaming formats. Ex: ('mp3', 'ogg')
+    TELEMETA_DOWNLOAD_FORMATS =     tuple of authorized download formats. Ex: ('wav', 'mp3', 'webm')
     TELEMETA_PUBLIC_ACCESS_PERIOD = number of years above which item files are automagically published
     EMAIL_HOST =                    your default SMTP server
     DEFAULT_FROM_EMAIL =            the default sending email address
@@ -181,7 +212,7 @@ Just paste the lines below::
     TELEMETA_DATA_CACHE_DIR = TELEMETA_CACHE_DIR + "/data"
     CACHE_BACKEND = "file://" + TELEMETA_CACHE_DIR + "/data"
 
-If you want some personal templates, for example::
+Optional: if you want some personal templates, for example::
 
     TEMPLATE_DIRS = (
     '/home/dev/telemeta/sandboxes/sandbox_generic/templates/',
@@ -190,14 +221,6 @@ If you want some personal templates, for example::
 You can find an example for settings.py there::
 
     example/sandbox/settings.py
-
-
-Initialize the database
---------------------------
-
-This synchronizes the DB with the model::
-
-    python manage.py syncdb
 
 
 Configure your urls
@@ -230,6 +253,18 @@ Please also uncomment::
 You can find an example for url.py there::
 
     example/sandbox/urls.py
+
+
+Initialize the database
+--------------------------
+
+This synchronizes the DB with the model::
+
+    ./manage.py syncdb
+
+If you want tu use the data schema migration system (South needed, see previous paragraph)::
+
+    ./manage.py migrate telemeta
 
 
 Start the project

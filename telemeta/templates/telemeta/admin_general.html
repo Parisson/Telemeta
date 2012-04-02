@@ -1,1 +1,10 @@
-{% extends "telemeta_default/admin_general.html" %}
+{% extends "telemeta/admin.html" %}
+{% load i18n %}
+
+{% block title %}
+<h1><img src="{% url telemeta-images "admin_red.png" %}" style="vertical-align:middle" /> {% trans "Administration" %} > {% trans "General" %}</h1>
+{% endblock %}
+
+{% block tabcontents %}
+ <iframe align="middle" frameborder="0" width="100%" height="600px"  src="{% url telemeta-home %}admin/django/" />
+{% endblock %}

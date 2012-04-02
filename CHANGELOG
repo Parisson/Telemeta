@@ -1,3 +1,28 @@
+telemeta (1.4-1) unstable; urgency=low
+
+For users:
+    
+ * add a Desk providing links to home and personal data
+ * add Fonds, Corpus and their related media to the models and to the search engine
+ * add some fancy drop down menus for main tabs
+ * add video media handling (WebM formats only and with the last TimeSide master branch)
+ * add playlist metadata editor
+ * fix some sad bugs for YouTube related URLs and previews
+ * cleanup admin page
+ * add auto saving now for all searches !
+ * add "My Searches" modules to user lists with search direct link
+ * add RSS feeds for last changes of all users
+ * better icon views
+ * many bugfixes !
+
+For developers and maintainers:
+
+ * a new setting parameter: TELEMETA_DOWNLOAD_FORMATS = ('wav', 'mp3', 'webm') or whatever
+ * before upgrading, you need to BACKUP and manually delete old wrong MediaCorpus and MediaCorpusRelated tables
+ * we now use South for data model migration (./manage.py migrate telemeta). Add it to your apps. See INSTALL.rst. Email me if any pb!
+
+-- Guillaume Pellerin <yomguy@parisson.com>  Fri, 10 Feb 2012 16:10:22 +0200
+
 telemeta (1.3-1) unstable; urgency=low
 
  * add related media objects to collections and items (mime type detection, image preview, URL only capable, YouTube URL detection and preview)

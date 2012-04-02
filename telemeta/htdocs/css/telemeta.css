@@ -87,7 +87,7 @@ a img { border: none; }
     color: #6a0307;
     font-weight: bold;
     display:  inline;
-    font-size: 120%; 
+    font-size: 120%;
 }
 #content h3 {
     color: #6a0307;
@@ -102,8 +102,8 @@ a img { border: none; }
 #logo a, #logo a:hover { border: none; background: transparent; }
 
 #header {
-    padding: 0.2em 0;
-    background: url("../images/waves.png") 100% 0% no-repeat;
+    padding: 0em;
+/*     background: url("../images/waves.png") 100% 0% no-repeat; */
 }
 
 #content_header, #header{
@@ -167,12 +167,12 @@ a img { border: none; }
 }
 
 #collection_player {
-    background: transparent; 
+    background: transparent;
     /*     background-image: url(../images/grid_bg.png); */
 }
 
 #collection_player .title {
-    padding: 2px 5px 7px 5px; 
+    padding: 2px 5px 7px 5px;
 }
 
 
@@ -201,7 +201,13 @@ a img { border: none; }
     max-height: 500px;
     overflow-y: scroll;
 }
-    
+
+.vscroll {
+    max-height: 300px;
+    overflow-y: scroll;
+    width: 100%;
+}
+
 
 .analyzer-title {
     background-color: #f2f2f2;
@@ -425,16 +431,6 @@ form.login .submit {
     width: 12%;
 }
 
-/* Navigation (borrowed from Trac) */
-.nav h2, .nav hr { display: none }
-.nav ul { font-size: 14px; list-style: none; margin: 0px; text-align: left; }
-.nav li {
-    display: inline;
-    padding: 0em;
-    white-space: nowrap;
-}
-.nav li.last { border-right: 1px solid #000000; }
-
 /* Main navigation bar  (borrowed from Trac) */
 #menu {
     background-color: #6a0307 ;
@@ -464,6 +460,7 @@ form.login .submit {
     background-color: #FFF;
     color: #6a0307;
 }
+
 #menu .darkblue { border-bottom-color: #0f3179; }
 #menu .blue { border-bottom-color:  #4f628a; }
 #menu .green { border-bottom-color:  #92b220; }
@@ -473,8 +470,89 @@ form.login .submit {
 #menu .black { border-bottom-color:  #000000; }
 #menu .red { border-bottom-color:  #DD0000; }
 #menu .violet { border-bottom-color:  #A00020; }
+#menu .origin { border-bottom-color: #6a0307; }
 
 * html #menu :link, * html #menu :visited { background-position: 1px 0 }
+
+
+/* Drop Down Menus */
+.clear {clear:both}
+
+#nav {
+    margin:0;
+    padding:0;
+    list-style:none;
+}
+
+/* make the LI display inline */
+/* it's position relative so that position absolute */
+/* can be used in submenu */
+
+#nav li {
+display:inline-block;
+position:relative;
+z-index:500;
+}
+
+/* this is the parent menu */
+#nav li a {
+display:block;
+text-align:center;
+}
+
+/* you can make a different style for default selected value */
+#nav a.selected {
+color:#FFF;
+}
+
+/* submenu, it's hidden by default */
+#nav ul {
+    position:absolute;
+    left:0;
+    display:none;
+    margin:0 0 0 -2px;
+    padding:0;
+    list-style: none outside none;
+    border-left:2px solid #6a0307;
+    border-right:2px solid #6a0307;
+    border-bottom:2px solid #6a0307;
+    background-color: #6a0307;
+    color: #FFF;
+}
+
+#nav ul li {
+    width:100px;
+    float:left;
+    border-bottom:0px solid #fff;
+}
+
+/* display block will make the link fill the whole area of LI */
+#nav ul a {
+    display:block;
+    height:15px;
+    padding: 5px 5px;
+    font-size: 11px;
+    text-align:left;
+    -webkit-border-top-left-radius:0px 0px;
+    moz-border-radius-topleft: 0px 0px;
+    border-top-left-radius: 0px 0px;
+    -webkit-border-top-right-radius:0px 0px;
+    moz-border-radius-topright: 0px 0px;
+    border-top-right-radius: 0px 0px;
+    border-bottom-width: 0px;
+}
+
+#nav ul a:hover {
+    background-color: #FFF ;
+    color: #6a0307 ;
+}
+
+#nav ul a:active {
+    background-color: #FFF;
+    color: #6a0307 ;
+}
+
+
 
 /* Footer (borrowed from Trac) */
 #footer {
@@ -773,12 +851,12 @@ table.listing tbody tr.odd { background-color: #f7f7f7 }
 table.listing tbody tr:hover { background: #f7f8fa !important }
 
 table td.error {
-    color: red; 
+    color: red;
     font-weight: bold;
 }
 
 .infos li.error{
-    color: red; 
+    color: red;
     font-weight: bold;
     font-size: 110%;
 }
@@ -841,6 +919,10 @@ img.align-left {
     color: #FFF;
     font-size: 1.1em;
     font-weight: bold;
+}
+
+#module-set .module a:hover {
+    text-decoration: none;
 }
 
 a.image-link {
@@ -994,7 +1076,7 @@ a.image-link {
     -moz-border-radius: 1ex;-webkit-border-radius: 1ex;border-radius: 1ex;
     background-image: url('../images/ok.png');
 }
-.markerdiv{ 
+.markerdiv{
     border: 1px solid #aaaaaa;
     margin-bottom: 1ex;
     -moz-border-radius: 1e;
@@ -1047,16 +1129,15 @@ a.image-link {
 
 .list_item, .list_item:visited, .list_item:hover{
     display:block;
-    color:#6A0307 !important;
+    color:#6A0307;
 }
 
 .list_item:hover{
-    background-color: #0f3179;
-    color:white !important;
+    font-weight: bold;
 }
 
 .icon_edit{
-    background-image: url('../images/edit_page.png'); 
+    background-image: url('../images/edit_page.png');
 }
 .icon_copy{
     background-image: url('../images/copy_page.png');
@@ -1178,4 +1259,8 @@ a:focus,div:focus{
 }
 input,textarea{
     outline: none !important;
+}
+
+.related_media {
+    border-top: 1px dotted #6a0307;
 }

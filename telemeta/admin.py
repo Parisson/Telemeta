@@ -1,14 +1,31 @@
+# -*- coding: utf-8 -*-
 from telemeta.models.media import *
 from telemeta.models.instrument import *
 from telemeta.models.location import *
 from telemeta.models.language import *
 from telemeta.models.system import *
 from django.contrib import admin
+from django.contrib.auth.models import User
+from django.contrib.auth.admin import UserAdmin
 
+admin.site.unregister(User)
+
+class MediaFondsAdmin(admin.ModelAdmin):
+    search_fields = ['title', 'code']
+    ordering = ['code']
+    filter_horizontal = ['children']
+
+class MediaCorpusAdmin(admin.ModelAdmin):
+    search_fields = ['title', 'code']
+    ordering = ['code']
+    filter_horizontal = ['children']
 
 class MediaCollectionAdmin(admin.ModelAdmin):
     search_fields = ['title', 'code']
     ordering = ['code']
+
+class MediaCollectionRelatedAdmin(admin.ModelAdmin):
+    search_fields = ['title', 'description']
 
 class MediaItemAdmin(admin.ModelAdmin):
     search_fields = ['title', 'code']
@@ -58,11 +75,23 @@ class RevisionAdmin(admin.ModelAdmin):
     search_fields = ['element_id', 'user']
     ordering = ['-time']
 
+class FormatAdmin(admin.ModelAdmin):
+    search_fields = ['code', 'vendor']
 
+class UserProfileInline(admin.StackedInline):
+	model = UserProfile
+
+class UserProfileAdmin(UserAdmin):
+	inlines = [UserProfileInline]
+
+admin.site.register(MediaFonds, MediaFondsAdmin)
+admin.site.register(MediaCorpus, MediaCorpusAdmin)
 admin.site.register(MediaCollection, MediaCollectionAdmin)
 admin.site.register(MediaItem, MediaItemAdmin)
 admin.site.register(MediaPart, MediaPartAdmin)
+
 admin.site.register(MediaItemRelated, MediaItemRelatedAdmin)
+admin.site.register(MediaCollectionRelated, MediaCollectionRelatedAdmin)
 
 admin.site.register(Instrument, InstrumentAdmin)
 admin.site.register(InstrumentAlias, InstrumentAliasAdmin)
@@ -77,3 +106,7 @@ admin.site.register(LocationRelation, LocationRelationAdmin)
 admin.site.register(Language, LanguageAdmin)
 
 admin.site.register(Revision, RevisionAdmin)
+
+admin.site.register(Format, FormatAdmin)
+
+admin.site.register(User, UserProfileAdmin)
