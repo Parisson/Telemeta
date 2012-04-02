@@ -1,0 +1,49 @@
+{% extends "telemeta/mediaitem_detail.html" %}
+{% load telemeta_utils %}
+{% load i18n %}
+
+
+{% block stylesheets %}
+{{ block.super }}
+    <style type="text/css">
+        #rightcol {
+            width: {{width}}px;
+            padding: 0px;
+            border: 0px solid #999;
+            background-color: transparent;
+        }
+        .ts-skin-lab .ts-player .ts-wave {
+            height: {{height}}px;
+        }
+        .ts-player {
+            margin-top: 0px;
+            border: 0px solid #999;
+            }
+
+    </style>
+{% endblock %}
+
+{% block title %}{% endblock %}
+{% block title_buttons %}{% endblock %}
+
+{% block layout %}
+{% block content %}
+<div>
+{% if item.file %}
+    {% if public_access or user.is_staff %}
+    <div id="rightcol" style="float: left; padding-bottom:0;">
+        <div id="player_minimized" class="ts-skin-lab">
+            <div class="wazing"></div>
+            <div id="player" class="ts-player">
+            </div>
+        </div>
+
+    </div>
+    {% endif %}
+{% endif %}
+</div>
+
+{% endblock content%}
+{% endblock layout %}
+
+{% block footer %}{% endblock %}
