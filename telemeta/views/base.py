@@ -631,6 +631,10 @@ class ItemView(object):
 
         previous, next = self.item_previous_next(item)
         mime_type = self.item_analyze(item)
+        #FIXME: use mimetypes.guess_type
+        if 'quicktime' in mime_type:
+            mime_type = 'video/mp4'
+
         playlists = get_playlists(request)
         public_access = get_public_access(item.public_access, str(item.recorded_from_date).split('-')[0],
                                                 str(item.recorded_to_date).split('-')[0])
