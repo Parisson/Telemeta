@@ -294,7 +294,7 @@ class Migration(SchemaMigration):
             ('conservation_site', self.gf('telemeta.models.core.CharField')(default='', max_length=250, blank=True)),
             ('code', self.gf('telemeta.models.core.CharField')(unique=True, max_length=250)),
             ('old_code', self.gf('telemeta.models.core.CharField')(default=None, max_length=250, null=True, blank=True)),
-            ('approx_duration', self.gf('telemeta.models.core.DurationField')(default='00:00', blank=True)),
+            ('approx_duration', self.gf('telemeta.models.core.DurationField')(default='0', blank=True)),
             ('physical_items_num', self.gf('telemeta.models.core.IntegerField')(default=0, blank=True)),
             ('physical_format', self.gf('telemeta.models.core.WeakForeignKey')(default=None, related_name='collections', null=True, blank=True, to=orm['telemeta.PhysicalFormat'])),
             ('ad_conversion', self.gf('telemeta.models.core.WeakForeignKey')(default=None, related_name='collections', null=True, blank=True, to=orm['telemeta.AdConversion'])),
@@ -348,7 +348,7 @@ class Migration(SchemaMigration):
             ('copied_from_item', self.gf('telemeta.models.core.WeakForeignKey')(default=None, related_name='copies', null=True, blank=True, to=orm['telemeta.MediaItem'])),
             ('public_access', self.gf('telemeta.models.core.CharField')(default='metadata', max_length=16, blank=True)),
             ('file', self.gf('telemeta.models.core.FileField')(default='', max_length=100, db_column='filename', blank=True)),
-            ('approx_duration', self.gf('telemeta.models.core.DurationField')(default='00:00', blank=True)),
+            ('approx_duration', self.gf('telemeta.models.core.DurationField')(default='0', blank=True)),
         ))
         db.send_create_signal('telemeta', ['MediaItem'])
 
@@ -752,7 +752,7 @@ class Migration(SchemaMigration):
             'ad_conversion': ('telemeta.models.core.WeakForeignKey', [], {'default': 'None', 'related_name': "'collections'", 'null': 'True', 'blank': 'True', 'to': "orm['telemeta.AdConversion']"}),
             'alt_ids': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
             'alt_title': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
-            'approx_duration': ('telemeta.models.core.DurationField', [], {'default': "'00:00'", 'blank': 'True'}),
+            'approx_duration': ('telemeta.models.core.DurationField', [], {'default': "'0'", 'blank': 'True'}),
             'booklet_author': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
             'booklet_description': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
             'cnrs_contributor': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
@@ -817,7 +817,7 @@ class Migration(SchemaMigration):
         'telemeta.mediaitem': {
             'Meta': {'object_name': 'MediaItem', 'db_table': "'media_items'"},
             'alt_title': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
-            'approx_duration': ('telemeta.models.core.DurationField', [], {'default': "'00:00'", 'blank': 'True'}),
+            'approx_duration': ('telemeta.models.core.DurationField', [], {'default': "'0'", 'blank': 'True'}),
             'author': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
             'code': ('telemeta.models.core.CharField', [], {'default': "''", 'unique': 'True', 'max_length': '250', 'blank': 'True'}),
             'collection': ('telemeta.models.core.ForeignKey', [], {'related_name': "'items'", 'to': "orm['telemeta.MediaCollection']"}),
