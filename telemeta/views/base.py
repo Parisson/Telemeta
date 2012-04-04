@@ -1468,7 +1468,11 @@ class LastestRevisionsFeed(Feed):
     def item_link(self, r):
         revision = r['revision']
         element = r['element']
-        link = '/' + revision.element_type + 's/' + str(element.public_id)
+        if revision.element_type[-1] == 's':
+            dir = revision.element_type
+        else:
+            dir = revision.element_type + 's'
+        link = '/archives/' + dir + '/' + str(element.public_id)
         return link
 
 
