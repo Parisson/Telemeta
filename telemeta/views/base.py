@@ -390,10 +390,10 @@ class GeneralView(object):
                     search.save()
 
         if type is None:
-            if items.count():
-                type = 'items'
-            else:
+            if collections.count():
                 type = 'collections'
+            else:
+                type = 'items'
 
         if type == 'items':
             objects = items
