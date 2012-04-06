@@ -101,7 +101,7 @@ def stream_from_processor(__decoder, __processor, __flag, metadata=None):
         yield __processor.chunk
 
 def stream_from_file(__file):
-    chunk_size = 0x10000
+    chunk_size = 0x100000
     f = open(__file, 'r')
     while True:
         __chunk = f.read(chunk_size)
@@ -682,6 +682,9 @@ class ItemView(object):
 
         previous, next = self.item_previous_next(item)
         mime_type = self.item_analyze(item)
+        #FIXME: use mimetypes.guess_type
+        if 'quicktime' in mime_type:
+            mime_type = 'video/mp4'
 
         if request.method == 'POST':
             form = MediaItemForm(data=request.POST, files=request.FILES, instance=item)
@@ -974,6 +977,8 @@ class ItemView(object):
                 except:
                     pass
             response = HttpResponse(stream_from_file(audio), mimetype = mime_type)
+#            fsock = open(audio, 'r')
+#            response = HttpResponse(fsock, mimetype = mime_type)
         else:
             media = self.cache_export.dir + os.sep + file
             if not self.cache_export.exists(file) or not flag.value:
