@@ -284,6 +284,9 @@ urlpatterns = patterns('',
     url(r'^timeside/(?P<path>.*)$', 'django.views.static.serve',
         {'document_root': htdocs+'/timeside'},
         name="telemeta-timeside"),
+    url(r'^video-js/(?P<path>.*)$','django.views.static.serve',
+        {'document_root': htdocs+'/video-js'},
+        name="telemeta-video-js"),
 
     # Flat pages
     url(r'^pages/(?P<path>.*)$', general_view.render_flatpage, name="telemeta-flatpage"),
