@@ -304,7 +304,7 @@ urlpatterns = patterns('',
     url(r'^logout/$', general_view.logout, name="telemeta-logout"),
 
     # Users
-    url(r'^accounts/', general_view.users, name="telemeta-users"),
+    url(r'^accounts/$', general_view.users, name="telemeta-users"),
 
     # Desk
     url(r'^desk/lists/$', general_view.lists, name="telemeta-desk-lists"),
