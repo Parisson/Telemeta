@@ -14,7 +14,7 @@ setup(
   author_email = "yomguy@parisson.com",
   version = telemeta.__version__,
   install_requires = [
-        'django>=1.3.1',
+        'django>=1.4',
         'django-registration',
         'django-json-rpc',
         'timeside',

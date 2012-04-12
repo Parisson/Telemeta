@@ -422,6 +422,7 @@ class GeneralView(object):
 
         return HttpResponse("\n".join(data))
 
+    @method_decorator(login_required)
     def users(self, request):
         users = User.objects.all()
         return render(request, 'telemeta/users.html', {'users': users})
@@ -1037,19 +1038,19 @@ class ItemView(object):
 class AdminView(object):
     """Provide Admin web UI methods"""
 
-    @method_decorator(permission_required('sites.change_site'))
+    @method_decorator(permission_required('is_superuser'))
     def admin_index(self, request):
         return render(request, 'telemeta/admin.html', self.__get_admin_context_vars())
 
-    @method_decorator(permission_required('sites.change_site'))
+    @method_decorator(permission_required('is_superuser'))
     def admin_general(self, request):
         return render(request, 'telemeta/admin_general.html', self.__get_admin_context_vars())
 
-    @method_decorator(permission_required('sites.change_site'))
+    @method_decorator(permission_required('is_superuser'))
     def admin_enumerations(self, request):
         return render(request, 'telemeta/admin_enumerations.html', self.__get_admin_context_vars())
 
-    @method_decorator(permission_required('sites.change_site'))
+    @method_decorator(permission_required('is_superuser'))
     def admin_users(self, request):
         users = User.objects.all()
         return render(request, 'telemeta/admin_users.html', {'users': users})
@@ -1398,6 +1399,7 @@ class ProfileView(object):
         return render(request, template, {'profile' : profile, 'usr': user, 'playlists': playlists,
                                           'user_revisions': user_revisions})
 
+    @method_decorator(login_required)
     def profile_edit(self, request, username, template='telemeta/profile_edit.html'):
         if request.user.is_superuser:
             user_hidden_fields = ['profile-user', 'user-password', 'user-last_login', 'user-date_joined']
