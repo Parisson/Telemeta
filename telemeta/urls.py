@@ -304,7 +304,7 @@ urlpatterns = patterns('',
     url(r'^logout/$', general_view.logout, name="telemeta-logout"),
 
     # Users
-    url(r'^users/$', general_view.users, name="telemeta-users"),
+    url(r'^accounts/', general_view.users, name="telemeta-users"),
 
     # Desk
     url(r'^desk/lists/$', general_view.lists, name="telemeta-desk-lists"),
@@ -312,9 +312,9 @@ urlpatterns = patterns('',
     url(r'^desk/home/$', general_view.home, name="telemeta-desk-home"),
 
     # Profiles
-    url(r'^users/(?P<username>[A-Za-z0-9._-]+)/profile/$', profile_view.profile_detail, name="telemeta-profile-detail"),
-    url(r'^users/(?P<username>[A-Za-z0-9._-]+)/profile/edit/$', profile_view.profile_edit, name="telemeta-profile-edit"),
-    url(r'^users/(?P<username>[A-Za-z0-9._-]+)/rss/$', UserRevisionsFeed(),  name="telemeta-user-rss"),
+    url(r'^accounts/(?P<username>[A-Za-z0-9._-]+)/profile/$', profile_view.profile_detail, name="telemeta-profile-detail"),
+    url(r'^accounts/(?P<username>[A-Za-z0-9._-]+)/profile/edit/$', profile_view.profile_edit, name="telemeta-profile-edit"),
+    url(r'^accounts/(?P<username>[A-Za-z0-9._-]+)/rss/$', UserRevisionsFeed(),  name="telemeta-user-rss"),
 
     # Registration
     url(r'^accounts/password_change/$', 'django.contrib.auth.views.password_change', {'template_name': 'telemeta/registration/password_change_form.html'}, name="telemeta-password-change"),

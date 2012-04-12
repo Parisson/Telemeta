@@ -111,7 +111,7 @@
     background-image: url('img/volumeoff.png');
     width:24px;
 }
-.ts-player .ts-control .ts-volume-bar-container { 
+.ts-player .ts-control .ts-volume-bar-container {
     background: url('img/controlbg-inverted.png');
     background-position: -3px left;
     background-repeat: repeat-x;
@@ -121,7 +121,7 @@
      -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     border-radius: 5px;
-    
+
 }
 .ts-player .ts-control .ts-volume-bar { /*width will be changed inside the code*/
     background-color: #e4eaf1;

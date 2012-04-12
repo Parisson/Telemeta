@@ -19,6 +19,6 @@
 <a href="#" class="component_icon button icon_login" style="float: right;"
                 onclick="document.getElementById('_loginForm').submit(); return false;">{% trans "Sign in" %}</a>
 <input type="hidden" name="next" value="{{ next }}" />
-<span style="align: right;"><a href="{% url telemeta-password-reset %}">{% trans "Password forgotten" %} ?</a></span>
+<span style="align: right; font-weight: bold;"><a href="{% url telemeta-password-reset %}">{% trans "Password forgotten" %} ?</a></span>
 </form>
 {% endblock %}
