@@ -256,11 +256,13 @@ class GeneralView(object):
         rec_years = year_min and year_max and range(year_min, year_max + 1) or []
         year_min, year_max = MediaCollection.objects.all().publishing_year_range()
         pub_years = year_min and year_max and range(year_min, year_max + 1) or []
+        searches = Search.objects.filter(username=request.user)
         return render(request, 'telemeta/search_criteria.html', {
             'rec_years': rec_years,
             'pub_years': pub_years,
             'ethnic_groups': MediaItem.objects.all().ethnic_groups(),
-            'criteria': criteria
+            'criteria': criteria,
+            'searches': searches,
         })
 
     def handle_oai_request(self, request):
