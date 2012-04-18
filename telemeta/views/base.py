@@ -256,11 +256,13 @@ class GeneralView(object):
         rec_years = year_min and year_max and range(year_min, year_max + 1) or []
         year_min, year_max = MediaCollection.objects.all().publishing_year_range()
         pub_years = year_min and year_max and range(year_min, year_max + 1) or []
+        searches = Search.objects.filter(username=request.user)
         return render(request, 'telemeta/search_criteria.html', {
             'rec_years': rec_years,
             'pub_years': pub_years,
             'ethnic_groups': MediaItem.objects.all().ethnic_groups(),
-            'criteria': criteria
+            'criteria': criteria,
+            'searches': searches,
         })
 
     def handle_oai_request(self, request):
@@ -422,6 +424,7 @@ class GeneralView(object):
 
         return HttpResponse("\n".join(data))
 
+    @method_decorator(login_required)
     def users(self, request):
         users = User.objects.all()
         return render(request, 'telemeta/users.html', {'users': users})
@@ -1037,19 +1040,19 @@ class ItemView(object):
 class AdminView(object):
     """Provide Admin web UI methods"""
 
-    @method_decorator(permission_required('sites.change_site'))
+    @method_decorator(permission_required('is_superuser'))
     def admin_index(self, request):
         return render(request, 'telemeta/admin.html', self.__get_admin_context_vars())
 
-    @method_decorator(permission_required('sites.change_site'))
+    @method_decorator(permission_required('is_superuser'))
     def admin_general(self, request):
         return render(request, 'telemeta/admin_general.html', self.__get_admin_context_vars())
 
-    @method_decorator(permission_required('sites.change_site'))
+    @method_decorator(permission_required('is_superuser'))
     def admin_enumerations(self, request):
         return render(request, 'telemeta/admin_enumerations.html', self.__get_admin_context_vars())
 
-    @method_decorator(permission_required('sites.change_site'))
+    @method_decorator(permission_required('is_superuser'))
     def admin_users(self, request):
         users = User.objects.all()
         return render(request, 'telemeta/admin_users.html', {'users': users})
@@ -1398,6 +1401,7 @@ class ProfileView(object):
         return render(request, template, {'profile' : profile, 'usr': user, 'playlists': playlists,
                                           'user_revisions': user_revisions})
 
+    @method_decorator(login_required)
     def profile_edit(self, request, username, template='telemeta/profile_edit.html'):
         if request.user.is_superuser:
             user_hidden_fields = ['profile-user', 'user-password', 'user-last_login', 'user-date_joined']
@@ -1425,7 +1429,7 @@ class ProfileView(object):
             if user_form.is_valid() and profile_form.is_valid():
                 user_form.save()
                 profile_form.save()
-                return HttpResponseRedirect('/users/'+username+'/profile/')
+                return HttpResponseRedirect('/accounts/'+username+'/profile/')
         else:
             user_form = UserChangeForm(instance=user, prefix='user')
             profile_form = UserProfileForm(instance=profile, prefix='profile')
