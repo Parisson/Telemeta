@@ -77,8 +77,8 @@
 </script>
 
 {% if "video" in mime_type %}
-<link href="http://vjs.zencdn.net/c/video-js.css" rel="stylesheet">
-<script src="http://vjs.zencdn.net/c/video.js"></script>
+<script src="{% url telemeta-video-js "video.js" %}"></script>
+<link href="{% url telemeta-video-js "video-js.css" %}" rel="stylesheet">
 {% endif %}
 
 {% endif %}
@@ -113,8 +113,10 @@ Item : <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
 
     {% if public_access or perms.telemeta.can_play_all_items %}
     <div id="player_maximized" class="ts-skin-lab">
+       <div id="player_header">
         <a href="#" class="toggle">Minimize</a>
         <a href="#" class="embed_player_frame">&lt;/&gt;</a>
+       </div>
         <div class="wazing"></div>
     </div>
     <div id="rightcol">
@@ -132,7 +134,7 @@ Item : <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
         <!-- Hello Chrome and Firefox (and Opera?) -->
         <source src="{% url telemeta-item-export item.public_id mime_type|mime_to_ext %}" type="{{ mime_type }}" />
         </video>
-        <div id="videotime"></div>
+        <!--<div id="videotime"></div>-->
     </div>
     <script>
     (function(){
@@ -199,7 +201,7 @@ Item : <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
             <dt>{% trans "Last modification" %}</dt>
             <dd>{{ last_revision.time }} {% if user.is_authenticated %}(<a href="{% url telemeta-profile-detail last_revision.user.username %}">{{last_revision.user.username}}</a>){% endif %}</dd>
             {% endif %}
-            
+
         </dl>
         {% endblock general_info %}
     </div>

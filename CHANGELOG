@@ -1,7 +1,28 @@
+telemeta (1.4.3-1) unstable; urgency=low
+
+ * add solr-thumbnail for automatic thumbnail handling of all related media images (please install)
+ * add static media handling for solr and all various telemeta public files
+ * fix some wrong user properties
+ * SECURITY: you need to move your TELEMETA_EXPORT_CACHE_DIR from TELEMETA_CACHE_DIR cache (see example/sandbox_sqlite/settings.py)
+ * EXPERIMENTAL: WebM and MP4 video handling for items, NO transcode but decode, add a nice video.js player
+ * RECOMMEND: install django-extensions
+
+telemeta (1.4.2-1) unstable; urgency=low
+
+ * add user revisions to user profile
+ * move all edit buttons to main edit pages
+ * new Format object and various enumerations
+ * add last revision to item detail
+ * various bugfixes
+
+telemeta (1.4.1-1) unstable; urgency=low
+
+ * Fix a bug for related media title parsing
+
 telemeta (1.4-1) unstable; urgency=low
 
 For users:
-    
+
  * add a Desk providing links to home and personal data
  * add Fonds, Corpus and their related media to the models and to the search engine
  * add some fancy drop down menus for main tabs

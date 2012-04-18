@@ -45,6 +45,16 @@ See `INSTALL.rst <http://github.com/yomguy/Telemeta/blob/master/INSTALL.rst>`_ a
 News
 ======
 
+1.4.3
+++++++
+
+ * add solr-thumbnail for automatic thumbnail handling of all related media images (please install)
+ * add static media handling for solr and all various telemeta public files
+ * fix some wrong user properties
+ * SECURITY: you need to move your TELEMETA_EXPORT_CACHE_DIR from TELEMETA_CACHE_DIR cache (see example/sandbox_sqlite/settings.py)
+ * EXPERIMENTAL: WebM and MP4 video handling for items, NO transcode but decode, add a nice video.js player
+ * RECOMMEND: install django-extensions
+
 1.4.2
 ++++++
 
@@ -88,23 +98,27 @@ For developers and maintainers:
 
 See INSTALL.rst and email me if any pb! (you may, for example, not use 0002 migration)
 
-Full changelog : see `CHANGELOG <http://github.com/yomguy/Telemeta/blob/master/CHANGELOG>`_
+Full changelog: see `CHANGELOG <http://github.com/yomguy/Telemeta/blob/master/CHANGELOG>`_
 
 
-Development
-===========
+Demo
+====
 
-To participate to the development of telemeta, you will need a login/password couple.
-You're welcome to email us to join and commit your great ideas ;)
+http://demo.telemeta.org
 
-To get the lastest development version, you need subversion and run::
+login: demo
+password: demo
 
-    $ git clone http://vcs.parisson.com/git/telemeta.git
 
-License
-=======
+Original Example
+=================
 
-CeCILL v2 (see LICENSE)
+`Sound archives <http://archives.crem-cnrs.fr>`_ of the French Ethnomusicology Research Center (CREM) et du Musée de l'Homme:
+
+ * a 100 year old world database migrated,
+ * more than 5000 geolocated collections,
+ * more than 32000 geolocated items,
+ * 700 Go of original ethnological music files accessible through the web.
 
 
 Bugs and feedback
@@ -122,7 +136,10 @@ And even if Telemeta suits you, please give us some feedback !
 Related projects
 ================
 
-TimeSide (Web Audio Components): http://code.google.com/p/timeside/
+`TimeSide <http://code.google.com/p/timeside/>`_ - Web Audio Components
+
+    a python library library to compute audio analysis, transcode, and streaming to browsers.
+
 
 
 Contact
@@ -140,6 +157,21 @@ Twitter:
 
  * http://twitter.com/telemeta
  * http://twitter.com/parisson_studio
+
+
+Development
+===========
+
+You are welcome to participate to the development of the Telemeta project.
+
+To get the lastest development version, you need subversion and run::
+
+    $ git clone http://vcs.parisson.com/git/telemeta.git
+
+License
+=======
+
+CeCILL v2, compatible with GPL v2 (see `LICENSE <http://github.com/yomguy/Telemeta/blob/master/LICENSE`_)
 
 
 Sponsors

@@ -385,10 +385,10 @@ class MediaItem(MediaResource):
             return True
         return False
 
-    def clean(self):
-        if self.code and not self.is_valid_code(self.code):
-            raise ValidationError("%s is not a valid item code for collection %s"
-                                        % (self.code, self.collection.code))
+    #def clean(self):
+        #if self.code and not self.is_valid_code(self.code):
+            #raise ValidationError("%s is not a valid item code for collection %s"
+                                        #% (self.code, self.collection.code))
 
     def save(self, force_insert=False, force_update=False):
         super(MediaItem, self).save(force_insert, force_update)
