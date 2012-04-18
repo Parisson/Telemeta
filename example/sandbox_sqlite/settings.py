@@ -65,7 +65,7 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = '/data/telemeta/static/'
+STATIC_ROOT = '/home/dev/telemeta/static/'
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -132,6 +132,9 @@ INSTALLED_APPS = (
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
     'django.contrib.auth.context_processors.auth',
+    "django.core.context_processors.i18n",
+    "django.core.context_processors.media",
+    'django.core.context_processors.static',
 )
 
 TELEMETA_ORGANIZATION = 'Parisson'
