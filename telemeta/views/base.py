@@ -1444,7 +1444,7 @@ class LastestRevisionsFeed(Feed):
     organization = settings.TELEMETA_ORGANIZATION
     subjects = settings.TELEMETA_SUBJECTS
     tags = ['title', 'description', 'comment']
-    title = organization + ' - Telemeta - ' + ugettext('Last changes')
+    title = organization.decode('utf8') + ' - Telemeta - ' + ugettext('Last changes')
     link = ""
     description = ' '.join([subject.decode('utf-8') for subject in subjects])
     n_items = 100
