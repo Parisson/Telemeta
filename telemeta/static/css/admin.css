@@ -1,0 +1,41 @@
+/* Shamelessly stolen from trac's admin.css... */
+
+.tabs {
+ border: 1px solid #6a0307;
+ /* border-color: gray black black gray;*/
+ margin: 0em 0;
+ padding: .3em 0 0 .5em;
+ float: left;
+ width: 15em;
+ color: #6a0307;
+ font-size: 14px;
+ font-weight: bold;
+ -moz-border-radius: 8px 8px 8px 8px;
+ -webkit-border-radius: 8px 8px 8px 8px;
+ border-radius: 8px 8px 8px 8px;
+}
+.tabs ul { list-style: none; margin: 0 0 .5em; padding: 0 }
+.tabs li { margin: 0; padding: 0.1em .5em }
+.tabs li li { margin: 0 -0.5em; padding-left: 1.5em }
+.tabs li li.active { background: #ccb; }
+.tabs :link, .tabs :visited { border: none; display: block }
+.tabs :link:hover, .tabs :visited:hover { background: transparent }
+
+.tabcontents {
+ padding: 0em 2em;
+ margin-left: 1em;
+ min-height: 300px;
+}
+p.help { color: #666; font-size: 90%; margin: 1em .5em .5em }
+
+form.addnew { clear: right; float: right; margin: -2em 0 4em; width: 33% }
+form.mod { margin-top: 1em; }
+form.mod .field { margin: .5em 0; }
+form .field em { color: #888; font-size: smaller }
+form .field .disabled em { color: #d7d7d7 }
+
+table.listing { clear: none; width: 64% }
+table.listing .sel, table.listing .default { text-align: center; width: 1% }
+
+
+
