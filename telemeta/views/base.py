@@ -630,7 +630,10 @@ class ItemView(object):
         if request.REQUEST.has_key('grapher_id'):
             grapher_id = request.REQUEST['grapher_id']
         else:
-            grapher_id = 'waveform'
+            try:
+                grapher_id = settings.TELEMETA_DEFAULT_GRAPHER_ID
+            except:
+                grapher_id = 'waveform'
 
         previous, next = self.item_previous_next(item)
         mime_type = self.item_analyze(item)
@@ -681,7 +684,10 @@ class ItemView(object):
         if request.REQUEST.has_key('grapher_id'):
             grapher_id = request.REQUEST['grapher_id']
         else:
-            grapher_id = 'waveform'
+            try:
+                grapher_id = settings.TELEMETA_DEFAULT_GRAPHER_ID
+            except:
+                grapher_id = 'waveform'
 
         previous, next = self.item_previous_next(item)
         mime_type = self.item_analyze(item)
@@ -830,14 +836,39 @@ class ItemView(object):
         else:
             analyzers = []
             analyzers_sub = []
+            graphers_sub = []
+
             if item.file:
                 decoder  = timeside.decoder.FileDecoder(item.file.path)
                 pipe = decoder
+
                 for analyzer in self.analyzers:
                     subpipe = analyzer()
                     analyzers_sub.append(subpipe)
                     pipe = pipe | subpipe
+
+                try:
+                    sizes = settings.TELEMETA_DEFAULT_GRAPHER_SIZES
+                except:
+                    sizes = ['360x130', ]
+
+                for grapher in self.graphers:
+                    for size in sizes:
+                        width = size.split('x')[0]
+                        height = size.split('x')[1]
+                        image_file = '.'.join([item.public_id, grapher.id(), size.replace('x', '_'), 'png'])
+                        path = self.cache_data.dir + os.sep + image_file
+                        graph = grapher(width = int(width), height = int(height))
+                        graphers_sub.append({'graph' : graph, 'path': path})
+                        pipe = pipe | graph
+
                 pipe.run()
+
+                for grapher in graphers_sub:
+                    grapher['graph'].watermark('timeside', opacity=.6, margin=(5,5))
+                    f = open(grapher['path'], 'w')
+                    grapher['graph'].render(grapher['path'])
+                    f.close()
 
                 mime_type = decoder.format()
                 analysis = MediaItemAnalysis(item=item, name='MIME type',

@@ -1,0 +1,17 @@
+dl.listing, #rightcol {
+    margin-top: .4em;
+}
+dl.listing dd {
+    margin-top: .2em;
+}
+dl dd {
+    border-color: #fff;
+}
+dl.dublincore dd.caption {
+    margin-top: -.1em;
+}
+div.instruments {
+    margin-left: -.1em;
+    margin-right: .9em;
+}
+
