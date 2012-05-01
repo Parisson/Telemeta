@@ -256,7 +256,7 @@ class GeneralView(object):
         rec_years = year_min and year_max and range(year_min, year_max + 1) or []
         year_min, year_max = MediaCollection.objects.all().publishing_year_range()
         pub_years = year_min and year_max and range(year_min, year_max + 1) or []
-        if request.user.is_authenticated:
+        if request.user.is_authenticated():
             searches = Search.objects.filter(username=request.user)
         else:
             searches = []
