@@ -429,7 +429,7 @@ class GeneralView(object):
 
     @method_decorator(login_required)
     def users(self, request):
-        users = User.objects.all()
+        users = User.objects.all().order_by('last_name')
         return render(request, 'telemeta/users.html', {'users': users})
 
 class CollectionView(object):
