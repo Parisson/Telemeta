@@ -256,7 +256,10 @@ class GeneralView(object):
         rec_years = year_min and year_max and range(year_min, year_max + 1) or []
         year_min, year_max = MediaCollection.objects.all().publishing_year_range()
         pub_years = year_min and year_max and range(year_min, year_max + 1) or []
-        searches = Search.objects.filter(username=request.user)
+        if request.user:
+            searches = Search.objects.filter(username=request.user)
+        else:
+            searches = []
         return render(request, 'telemeta/search_criteria.html', {
             'rec_years': rec_years,
             'pub_years': pub_years,
