@@ -82,7 +82,7 @@ class Format(ModelCore):
         verbose_name = _('format')
 
     def __unicode__(self):
-        return self.original_code
+        return self.original_format
 
     @property
     def public_id(self):
