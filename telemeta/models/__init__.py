@@ -42,4 +42,5 @@ from system import *
 from query import *
 from dublincore import *
 from language import *
+from format import *
 

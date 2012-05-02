@@ -256,7 +256,10 @@ class GeneralView(object):
         rec_years = year_min and year_max and range(year_min, year_max + 1) or []
         year_min, year_max = MediaCollection.objects.all().publishing_year_range()
         pub_years = year_min and year_max and range(year_min, year_max + 1) or []
-        searches = Search.objects.filter(username=request.user)
+        if request.user.is_authenticated():
+            searches = Search.objects.filter(username=request.user)
+        else:
+            searches = []
         return render(request, 'telemeta/search_criteria.html', {
             'rec_years': rec_years,
             'pub_years': pub_years,
@@ -426,7 +429,7 @@ class GeneralView(object):
 
     @method_decorator(login_required)
     def users(self, request):
-        users = User.objects.all()
+        users = User.objects.all().order_by('last_name')
         return render(request, 'telemeta/users.html', {'users': users})
 
 class CollectionView(object):
@@ -653,9 +656,7 @@ class ItemView(object):
         else:
             last_revision = None
 
-        physical_format = Format.objects.filter(item=item)
-        if physical_format:
-            physical_format = physical_format[0]
+        physical_format = item.format.physical_format
 
         return render(request, template,
                     {'item': item, 'export_formats': formats,
