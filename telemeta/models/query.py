@@ -200,6 +200,10 @@ class MediaItemQuerySet(CoreQuerySet):
     def sound(self):
         return self.filter(file__contains='/')
 
+    def by_instrument(self, instrument):
+        "Find items by instrument"
+        return self.filter(instruments__in=instrument)
+
 
 class MediaItemManager(CoreManager):
     "Manage media items queries"
@@ -243,6 +247,10 @@ class MediaItemManager(CoreManager):
     def sound(self, *args, **kwargs):
         return self.get_query_set().sound(*args, **kwargs)
     sound.__doc__ = MediaItemQuerySet.sound.__doc__
+
+    def by_instrument(self, *args, **kwargs):
+        return self.get_query_set().by_instrument(*args, **kwargs)
+    by_instrument.__doc__ = MediaItemQuerySet.by_instrument.__doc__
 
 
 class MediaCollectionQuerySet(CoreQuerySet):
@@ -331,6 +339,10 @@ class MediaCollectionQuerySet(CoreQuerySet):
     def sound(self):
         return self.filter(items__file__contains='/').distinct()
 
+    def by_instrument(self, instrument):
+        "Find collections by instrument"
+        return self.filter(items__instruments__in=instrument).distinct()
+
 
 class MediaCollectionManager(CoreManager):
     "Manage collection queries"
@@ -374,6 +386,10 @@ class MediaCollectionManager(CoreManager):
     def sound(self, *args, **kwargs):
         return self.get_query_set().sound(*args, **kwargs)
     sound.__doc__ = MediaCollectionQuerySet.sound.__doc__
+
+    def by_instrument(self, *args, **kwargs):
+        return self.get_query_set().by_instrument(*args, **kwargs)
+    by_instrument.__doc__ = MediaCollectionQuerySet.by_instrument.__doc__
 
 
 class LocationQuerySet(CoreQuerySet):
@@ -477,3 +493,33 @@ class MediaFondsManager(CoreManager):
     def quick_search(self, *args, **kwargs):
         return self.get_query_set().quick_search(*args, **kwargs)
     quick_search.__doc__ = MediaFondsQuerySet.quick_search.__doc__
+
+
+class InstrumentQuerySet(CoreQuerySet):
+    "Base class for all media instrument query sets"
+
+    def quick_search(self, pattern):
+        "Perform a quick search on text and char fields"
+        from telemeta.models.instrument import Instrument
+        mod = Instrument()
+        pattern = pattern.strip()
+        q = Q(code__contains=pattern)
+        fields = mod.to_dict()
+        keys =  fields.keys()
+        for field in keys:
+            field_str = str(mod._meta.get_field(field))
+            if 'CharField' in field_str or 'TextField' in field_str:
+                q = q | word_search_q(field, pattern)
+        return self.filter(q)
+
+
+class InstrumentManager(CoreManager):
+    "Manage instrument queries"
+
+    def get_query_set(self):
+        "Return instrument query sets"
+        return InstrumentQuerySet(self.model)
+
+    def quick_search(self, *args, **kwargs):
+        return self.get_query_set().quick_search(*args, **kwargs)
+    quick_search.__doc__ = InstrumentQuerySet.quick_search.__doc__

@@ -343,6 +343,9 @@ class GeneralView(object):
             'sound': lambda value: (
                 collections.sound(),
                 items.sound()),
+            'instrument': lambda value: (
+                collections.by_instrument(value),
+                items.by_instrument(value)),
         }
 
         for key, value in input.items():
@@ -656,7 +659,7 @@ class ItemView(object):
         else:
             last_revision = None
 
-        physical_format = item.format.physical_format
+        physical_format = item.original_format.original_format
 
         return render(request, template,
                     {'item': item, 'export_formats': formats,
@@ -1476,7 +1479,7 @@ class LastestRevisionsFeed(Feed):
     organization = settings.TELEMETA_ORGANIZATION
     subjects = settings.TELEMETA_SUBJECTS
     tags = ['title', 'description', 'comment']
-    title = organization + ' - Telemeta - ' + ugettext('Last changes')
+    title = organization.decode('utf8') + ' - Telemeta - ' + ugettext('Last changes')
     link = ""
     description = ' '.join([subject.decode('utf-8') for subject in subjects])
     n_items = 100

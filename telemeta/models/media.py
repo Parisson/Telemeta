@@ -351,7 +351,7 @@ class MediaItem(MediaResource):
     track                 = CharField(_('item number'))
     creator_reference     = CharField(_('reference'))
     original_format       = ForeignKey(Format, related_name="item",
-                                       verbose_name=_('orinal format'), blank=True,
+                                       verbose_name=_('original format'), blank=True,
                                         null=True, on_delete=models.SET_NULL)
     external_references   = TextField(_('published references'))
     copied_from_item      = WeakForeignKey('self', related_name="copies", verbose_name=_('copy of'))
@@ -414,6 +414,24 @@ class MediaItem(MediaResource):
         if self.track:
             title += ' ' + self.track
         return title
+
+    @property
+    def instruments(self):
+        "Return the instruments of the item"
+        instruments = []
+        performances = MediaItemPerformance.objects.filter(media_item=self)
+        for performance in performances:
+            instrument = performance.instrument
+            alias = performance.alias
+            if not instrument in instruments:
+                instruments.append(instrument)
+            if not alias in instruments:
+                instruments.append(alias)
+
+        instruments.sort(self.__name_cmp)
+        return instruments
+
+        instruments.verbose_name = _("instruments")
 
 
 class MediaItemRelated(MediaRelated):
