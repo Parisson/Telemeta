@@ -59,7 +59,7 @@ class Format(ModelCore):
     original_code = CharField(_('original code'), required=True)
     original_format_number = CharField(_('original format number'))
     status = CharField(_('status'))
-    conservation_state = CharField(_('technical properties / conservation state'))
+    conservation_state = TextField(_('technical properties / conservation state'))
     comments = TextField(_('comments / notes'))
 
     # Tapes

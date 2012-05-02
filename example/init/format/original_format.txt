@@ -1,0 +1,38 @@
+Bande magnétique 6,25mm (1/4')
+Bande magnétique mini-Nagra 3,81mm 
+Cassette analogique 
+Cassette analogique Type I (Fe)
+Cassette analogique Type II (CrO2)
+Cassette analogique Type IV (Metal)
+Cylindre de cire à gravure directe
+Cylindre de cire édité
+Fil magnétique
+Disque à gravure directe
+Disque 78 tours
+Disque 45 tours
+Disque 33 tours
+Cassette audionumérique PCM F1 Betamax
+Cassette audionumérique PCM 1610/1630 U-Matic
+Cassette audionumérique DAT
+Cassette audionumérique DAT 48 kHz
+Cassette audionumérique DAT 44,1 kHz
+Cassette audionumérique DAT 32 kHz
+Bande magnétique audionumérique 1/4" (DASH, ProDigi, EIAJ-C, Nagra-D)
+Mini-Disc
+CD-A (Audio édité)
+CD-R Audio
+CD-RW Audio
+CD-R Data
+CD-ROM édité
+CD-RW Data
+DVD-R Data
+DVD+R Data
+DVD-ROM édité
+DVD-RW Data
+DVD+RW Data
+BD-ROM édité (Blu-ray)
+BD-R (Blu-ray enregistrable)
+BD-RE (Blu-ray réinscriptible)
+Disque dur (HDD)
+Carte mémoire
+SSD

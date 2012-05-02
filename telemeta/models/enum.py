@@ -162,6 +162,7 @@ class EthnicGroupAlias(ModelCore):
         unique_together = (('ethnic_group', 'value'),)
         ordering = ['ethnic_group__value']
 
+
 # Tape formats
 class WheelDiameter(Enumeration):
     "Tape wheel diameter (cm)"
@@ -199,7 +200,7 @@ class TapeVendor(Enumeration):
         verbose_name = _("tape vendor")
 
 class OriginalFormat(Enumeration):
-    "Original format"
+    "Item original format"
 
     class Meta(MetaEnumeration):
         db_table = 'original_format'
