@@ -83,6 +83,8 @@ class UserProfile(models.Model):
 
     user            = ForeignKey(User, unique=True, required=True)
     institution     = CharField(_('Institution'))
+    department      = CharField(_('Department'))
+    attachment      = CharField(_('attachment'))
     function        = CharField(_('Function'))
     address         = TextField(_('Address'))
     telephone       = CharField(_('Telephone'))

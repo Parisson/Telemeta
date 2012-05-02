@@ -41,4 +41,9 @@ from system import *
 from query import *
 from dublincore import *
 from language import *
+<<<<<<< HEAD
 from media import *
+=======
+from format import *
+
+>>>>>>> 20ef7d80a27aceda8f8266b7404d0b37a7ecf7ca

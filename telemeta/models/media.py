@@ -35,20 +35,21 @@
 #          David LIPSZYC <davidlipszyc@gmail.com>
 #          Guillaume Pellerin <yomguy@parisson.com>
 
+import re
+import mimetypes
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ValidationError
 from telemeta.models.core import *
 from telemeta.models.enum import ContextKeyword
 from telemeta.util.unaccent import unaccent_icmp
-import re
-import mimetypes
 from telemeta.models.location import LocationRelation, Location
 from telemeta.models.system import Revision
 from telemeta.models.query import *
 from telemeta.models.instrument import *
 from telemeta.models.enum import *
 from telemeta.models.language import *
+from telemeta.models.format import *
 from django.db import models
 
 collection_published_code_regex   = '[A-Za-z0-9._-]*'
@@ -346,6 +347,9 @@ class MediaItem(MediaResource):
     old_code              = CharField(_('old code'), unique=False, blank=True)
     track                 = CharField(_('item number'))
     creator_reference     = CharField(_('reference'))
+    original_format       = ForeignKey(Format, related_name="item",
+                                       verbose_name=_('orinal format'), blank=True,
+                                        null=True, on_delete=models.SET_NULL)
     external_references   = TextField(_('published references'))
     copied_from_item      = WeakForeignKey('self', related_name="copies", verbose_name=_('copy of'))
     public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES, max_length=16, default="metadata")
@@ -407,6 +411,24 @@ class MediaItem(MediaResource):
         if self.track:
             title += ' ' + self.track
         return title
+
+    @property
+    def instruments(self):
+        "Return the instruments of the item"
+        instruments = []
+        performances = MediaItemPerformance.objects.filter(media_item=self)
+        for performance in performances:
+            instrument = performance.instrument
+            alias = performance.alias
+            if not instrument in instruments:
+                instruments.append(instrument)
+            if not alias in instruments:
+                instruments.append(alias)
+
+        instruments.sort(self.__name_cmp)
+        return instruments
+
+        instruments.verbose_name = _("instruments")
 
 
 class MediaItemRelated(MediaRelated):
@@ -674,34 +696,4 @@ class MediaFondsRelated(MediaRelated):
         db_table = 'media_fonds_related'
         verbose_name = _('fonds related media')
         verbose_name_plural = _('fonds related media')
-
-
-class Format(ModelCore):
-    """ Physical format object as proposed by the LAM"""
-
-    item = ForeignKey(MediaItem, related_name="formats", verbose_name=_('item'))
-    original_code = CharField(_('original code'), required=True)
-    tape_number = CharField(_('tape number'))
-    status = CharField(_('status'))
-    conservation_state = CharField(_('conservation state'))
-    comments = TextField(_('comments'))
-
-    tape_length = WeakForeignKey(TapeLength, related_name="formats", verbose_name = _("tape length (cm)"))
-    tape_width  = WeakForeignKey(TapeWidth, related_name="formats", verbose_name = _("tape width (inch)"))
-    tape_speed = WeakForeignKey(TapeSpeed, related_name="formats", verbose_name = _("tape speed (m/s)"))
-    tape_vendor = WeakForeignKey(TapeVendor, related_name="formats")
-    tape_thickness = CharField(_('tape thickness (um)'))
-    tape_diameter = CharField(_('tape diameter (mm)'))
-    tape_reference = CharField(_('tape reference'))
-
-    class Meta(MetaCore):
-        db_table = 'media_formats'
-        verbose_name = _('format')
-
-    def __unicode__(self):
-        return self.original_code
-
-    @property
-    def public_id(self):
-        return self.original_code
 

@@ -28,6 +28,9 @@
   {% if criteria.location %}
     <li><b>{% field_label "Location" %}:</b> {{criteria.location}}</li>
   {% endif %}
+  {% if criteria.instrument %}
+  <li><b>{% field_label "Instrument" %}:</b> {{criteria.instrument}}</li>
+  {% endif %}
   {% if criteria.ethnic_group %}
     <li><b>{% field_label "EthnicGroup" %}:</b> {{criteria.ethnic_group}}</li>
   {% endif %}
