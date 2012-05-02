@@ -163,6 +163,13 @@ class EthnicGroupAlias(ModelCore):
         ordering = ['ethnic_group__value']
 
 # Tape formats
+class WheelDiameter(Enumeration):
+    "Tape wheel diameter (cm)"
+
+    class Meta(MetaEnumeration):
+        db_table = 'tape_wheel_diameter'
+        verbose_name = _("tape wheel diameter (cm)")
+
 class TapeLength(Enumeration):
     "Tape length (cm)"
 
@@ -190,4 +197,11 @@ class TapeVendor(Enumeration):
     class Meta(MetaEnumeration):
         db_table = 'tape_vendor'
         verbose_name = _("tape vendor")
+
+class OriginalFormat(Enumeration):
+    "Original format"
+
+    class Meta(MetaEnumeration):
+        db_table = 'original_format'
+        verbose_name = _("original format")
 

@@ -49,6 +49,7 @@ from telemeta.models.query import *
 from telemeta.models.instrument import *
 from telemeta.models.enum import *
 from telemeta.models.language import *
+from telemeta.models.format import *
 from django.db import models
 
 collection_published_code_regex   = '[A-Za-z0-9._-]*'
@@ -346,6 +347,9 @@ class MediaItem(MediaResource):
     old_code              = CharField(_('old code'), unique=False, blank=True)
     track                 = CharField(_('item number'))
     creator_reference     = CharField(_('reference'))
+    original_format       = ForeignKey(Format, related_name="item",
+                                       verbose_name=_('orinal format'), blank=True,
+                                        null=True, on_delete=models.SET_NULL)
     external_references   = TextField(_('published references'))
     copied_from_item      = WeakForeignKey('self', related_name="copies", verbose_name=_('copy of'))
     public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES, max_length=16, default="metadata")
@@ -674,34 +678,4 @@ class MediaFondsRelated(MediaRelated):
         db_table = 'media_fonds_related'
         verbose_name = _('fonds related media')
         verbose_name_plural = _('fonds related media')
-
-
-class Format(ModelCore):
-    """ Physical format object as proposed by the LAM"""
-
-    item = ForeignKey(MediaItem, related_name="formats", verbose_name=_('item'))
-    original_code = CharField(_('original code'), required=True)
-    tape_number = CharField(_('tape number'))
-    status = CharField(_('status'))
-    conservation_state = CharField(_('conservation state'))
-    comments = TextField(_('comments'))
-
-    tape_length = WeakForeignKey(TapeLength, related_name="formats", verbose_name = _("tape length (cm)"))
-    tape_width  = WeakForeignKey(TapeWidth, related_name="formats", verbose_name = _("tape width (inch)"))
-    tape_speed = WeakForeignKey(TapeSpeed, related_name="formats", verbose_name = _("tape speed (m/s)"))
-    tape_vendor = WeakForeignKey(TapeVendor, related_name="formats")
-    tape_thickness = CharField(_('tape thickness (um)'))
-    tape_diameter = CharField(_('tape diameter (mm)'))
-    tape_reference = CharField(_('tape reference'))
-
-    class Meta(MetaCore):
-        db_table = 'media_formats'
-        verbose_name = _('format')
-
-    def __unicode__(self):
-        return self.original_code
-
-    @property
-    def public_id(self):
-        return self.original_code
 
