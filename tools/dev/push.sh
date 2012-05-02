@@ -21,8 +21,8 @@ ssh vcs.parisson.com "cd /var/git/telemeta.git; git update-server-info"
 
 #echo "Update jimi.parisson.com:"
 echo "Update angus.parisson.com:"
-ssh angus.parisson.com "cd /home/telemeta/telemeta-prod; git pull origin production; \
-                        cd /home/telemeta/telemeta; git pull origin master; \
+ssh angus.parisson.com "cd /home/telemeta/telemeta-master; git pull origin master; \
+                        cd /home/telemeta/telemeta-develop; git pull origin develop; \
                         cd /home/telemeta/demo/; ./manage.py migrate telemeta --delete-ghost-migrations;
                         cd /home/telemeta/sandbox/; ./manage.py migrate telemeta --delete-ghost-migrations; 
                         cd /home/telemeta/parisson/; ./manage.py migrate telemeta --delete-ghost-migrations; "
