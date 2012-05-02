@@ -190,3 +190,4 @@ The Telemeta project is developed by Parisson. It is sponsored by :
     http://www.musee-europemediterranee.org
   * MMSH : Maison Méditerranéenne des Sciences de l'Homme
     http://www.mmsh.univ-aix.fr/
+
