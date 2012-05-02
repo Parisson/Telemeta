@@ -659,7 +659,7 @@ class ItemView(object):
         else:
             last_revision = None
 
-        physical_format = item.format.physical_format
+        physical_format = item.original_format.original_format
 
         return render(request, template,
                     {'item': item, 'export_formats': formats,
