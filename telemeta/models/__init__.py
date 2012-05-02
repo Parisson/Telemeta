@@ -34,6 +34,7 @@
 # Author: Olivier Guilyardi <olivier@samalyse.com>
 #         Guillaume Pellerin <yomguy@parisson.com>
 
+from media import *
 from location import *
 from instrument import *
 from enum import *
@@ -41,9 +42,5 @@ from system import *
 from query import *
 from dublincore import *
 from language import *
-<<<<<<< HEAD
-from media import *
-=======
 from format import *
 
->>>>>>> 20ef7d80a27aceda8f8266b7404d0b37a7ecf7ca
