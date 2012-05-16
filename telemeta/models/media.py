@@ -358,7 +358,31 @@ class MediaItem(MediaResource):
     # Technical data
     approx_duration       = DurationField(_('approximative duration'))
 
-    # All
+    original_format       = WeakForeignKey(OriginalFormat, related_name="item",
+                                     verbose_name = _("original format"))
+    original_code         = CharField(_('original code'), required=True)
+    original_number       = CharField(_('original number'))
+    original_status       = CharField(_('status'))
+    original_state        = TextField(_('technical properties / conservation state'))
+    original_comments     = TextField(_('comments / notes'))
+    original_location     = WeakForeignKey(OriginalLocation, related_name="item",
+                                        verbose_name = _("original location"))
+    original_channels            = IntegerField(_("number of channels"))
+    audio_quality       = TextField(_('audio quality'))
+    recording_system    = CharField(_('recording system'))
+
+    # Tapes
+    tape_wheel_diameter = WeakForeignKey(WheelDiameter, related_name="item",
+                                        verbose_name = _("tape wheel diameter (cm)"))
+    tape_thickness      = CharField(_('tape thickness (um)'))
+    tape_speed          = WeakForeignKey(TapeSpeed, related_name="item",
+                                        verbose_name = _("tape speed (m/s)"))
+    tape_vendor         = WeakForeignKey(TapeVendor, related_name="item",
+                                        verbose_name = _("tape vendor"))
+    tape_reference      = CharField(_('tape reference'))
+    sticker_presence    = BooleanField(_('sticker presence'))
+
+    # Manager
     objects               = MediaItemManager()
 
     def keywords(self):
