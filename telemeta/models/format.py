@@ -54,8 +54,8 @@ from django.db import models
 class Format(ModelCore):
     """ Physical format object as proposed by the LAM"""
 
-    item            = ForeignKey(Item, related_name="format", verbose_name = _("item"))
-    original_format       = WeakForeignKey(OriginalFormat, related_name="item",
+    item                  = ForeignKey('MediaItem', related_name="format", verbose_name = _("item"))
+    original_format       = WeakForeignKey(OriginalFormat, related_name="format",
                                      verbose_name = _("original format"))
     original_code         = CharField(_('original code'), required=True)
     original_number       = CharField(_('original number'))
@@ -64,9 +64,9 @@ class Format(ModelCore):
     original_comments     = TextField(_('comments / notes'))
     original_location     = WeakForeignKey(OriginalLocation, related_name="format",
                                         verbose_name = _("original location"))
-    original_channels            = IntegerField(_("number of channels"))
-    audio_quality       = TextField(_('audio quality'))
-    recording_system    = CharField(_('recording system'))
+    original_channels     = IntegerField(_("number of channels"))
+    original_audio_quality = TextField(_('audio quality'))
+    recording_system      = CharField(_('recording system'))
 
     # Tapes
     tape_wheel_diameter = WeakForeignKey(WheelDiameter, related_name="format",
