@@ -39,10 +39,9 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ValidationError
 from telemeta.models.core import *
-from telemeta.models.enum import ContextKeyword
 from telemeta.util.unaccent import unaccent_icmp
-from telemeta.models.location import LocationRelation, Location
-from telemeta.models.system import Revision
+from telemeta.models.location import *
+from telemeta.models.system import *
 from telemeta.models.query import *
 from telemeta.models.instrument import *
 from telemeta.models.enum import *

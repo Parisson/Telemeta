@@ -347,9 +347,6 @@ class MediaItem(MediaResource):
     old_code              = CharField(_('old code'), unique=False, blank=True)
     track                 = CharField(_('item number'))
     creator_reference     = CharField(_('reference'))
-    original_format       = ForeignKey(Format, related_name="item",
-                                       verbose_name=_('original format'), blank=True,
-                                        null=True, on_delete=models.SET_NULL)
     external_references   = TextField(_('published references'))
     copied_from_item      = WeakForeignKey('self', related_name="copies", verbose_name=_('copy of'))
     public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES,
