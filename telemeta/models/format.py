@@ -54,6 +54,8 @@ from django.db import models
 class Format(ModelCore):
     """ Physical format object as proposed by the LAM"""
 
+    item            = ForeignKey(Item, related_name="format",
+                                     verbose_name = _("item") )
     original_format = WeakForeignKey(OriginalFormat, related_name="format",
                                      verbose_name = _("original format"))
     original_code = CharField(_('original code'), required=True)
