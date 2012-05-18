@@ -1,4 +1,3 @@
-
 Don't worry, Telemeta is easy to setup as any other Django app !
 
 -----------------
@@ -118,7 +117,7 @@ Fast testing (sandbox)
 If you just want to test Telemeta just now, a sandbox is available in the example/ directory::
 
     cd example/sandbox_sqlite
-    ./manage.py syncdb
+    ./manage.py syncdb --migrate
     ./manage.py runserver 9000
 
 Now browse http://localhost:9000
