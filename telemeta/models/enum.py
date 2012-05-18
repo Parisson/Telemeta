@@ -206,3 +206,9 @@ class OriginalFormat(Enumeration):
         db_table = 'original_format'
         verbose_name = _("original format")
 
+class OriginalLocation(Enumeration):
+    "Item original location"
+
+    class Meta(MetaEnumeration):
+        db_table = 'original_location'
+        verbose_name = _("original location")
