@@ -801,12 +801,18 @@ class ItemView(object):
         if request.method == 'POST':
             source_item = MediaItem.objects.get(public_id=public_id)
             item = MediaItem()
-            form = MediaItemForm(data=request.POST, files=request.FILES, instance=item)
-            if form.is_valid():
-                form.save()
-                code = form.cleaned_data['code']
+            format = Format()
+            item_form = MediaItemForm(data=request.POST, files=request.FILES, instance=item, prefix='item')
+            format_form = FormatForm(data=request.POST, instance=format, prefix='format')
+
+            if item_form.is_valid():
+                item_form.save()
+                code = item_form.cleaned_data['code']
                 if not code:
                     code = str(item.id)
+                if format_form.is_valid():
+                    format.item = item
+                    format_form.save()
 
                 performances = MediaItemPerformance.objects.filter(media_item=source_item)
                 for performance in performances:
@@ -829,11 +835,16 @@ class ItemView(object):
             items = MediaItem.objects.filter(collection=item.collection)
             item.code = auto_code(items, item.collection.code)
             item.approx_duration = ''
-            form = MediaItemForm(instance=item)
-            form.code = item.code
-            form.file = None
+            item_form = MediaItemForm(instance=item, prefix='item')
+            format, created = Format.objects.get_or_create(item=item)
+            format_form = FormatForm(instance=format, prefix='format')
+            item_form.code = item.code
+            item_form.file = None
 
-        return render(request, template, {'item': item, "form": form})
+        forms = [item_form, format_form]
+        hidden_fields = ['item-copied_from_item', 'format-item']
+
+        return render(request, template, {'item': item, "forms": forms, 'hidden_fields': hidden_fields,})
 
     @method_decorator(permission_required('telemeta.delete_mediaitem'))
     def item_delete(self, request, public_id):
