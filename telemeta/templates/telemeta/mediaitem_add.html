@@ -22,9 +22,10 @@
      <form method="post" id="_addItemForm" action="" enctype="multipart/form-data">{% csrf_token %}
        <ul>{% for error in form.non_field_errors %}<li class="error">{{ error }}</li>{% endfor %}</ul>
        <table>
+       {% for form in forms %}
         {% for field in form %}
             <tr>
-            {% if field.html_name == "copied_from_item" %}
+            {% if field.html_name in hidden_fields %}
                 <td>{{ field.label_tag.as_hidden }}{{ field.as_hidden }}</td>
             {% else %}
                 <tr><td class="error">{{ field.errors }}</td></tr>
@@ -38,7 +39,8 @@
                     {% endif %}
             {% endif %}
             </tr>
-    {% endfor %}
+        {% endfor %}
+       {% endfor %}
        </table>
        <div align="center" style="margin-top:3ex;">
         <a href="{% url telemeta-items %}"

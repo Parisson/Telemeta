@@ -309,6 +309,7 @@ Item : <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
                      {% dl_field format "original_status" %}
                      {% dl_field format "original_location" %}
                      {% dl_field format "original_state" %}
+                     {% dl_field format "original_audio_quality" %}
                      <dt>{% trans "Comments" %}</dt>
                      <dd>{{ format.original_comments|html_line_break|safe }}</dd>
                      {% dl_field format "tape_wheel_diameter" %}

@@ -726,8 +726,8 @@ class ItemView(object):
         else:
             item_form = MediaItemForm(instance=item, prefix='item')
             format_form = FormatForm(instance=format, prefix='format')
-            forms = [item_form, format_form]
 
+        forms = [item_form, format_form]
         hidden_fields = ['item-copied_from_item', 'format-item']
 
         return render(request, template,
@@ -768,22 +768,32 @@ class ItemView(object):
             items = MediaItem.objects.filter(collection=collection)
             code = auto_code(items, collection.code)
             item = MediaItem(collection=collection, code=code)
+            format, created = Format.objects.get_or_create(item=item)
         else:
             item = MediaItem()
+            format = Format()
+
         if request.method == 'POST':
-            form = MediaItemForm(data=request.POST, files=request.FILES, instance=item)
-            if form.is_valid():
-                form.save()
+            item_form = MediaItemForm(data=request.POST, files=request.FILES, instance=item, prefix='item')
+            format_form = FormatForm(data=request.POST, instance=format, prefix='format')
+            if item_form.is_valid():
+                item_form.save()
                 item.set_revision(request.user)
-                code = form.cleaned_data['code']
+                code = item_form.cleaned_data['code']
                 if not code:
                     code = str(item.id)
+                if format_form.is_valid():
+                    format.item = item
+                    format_form.save()
                 return HttpResponseRedirect('/archives/items/'+code)
         else:
-            form = MediaItemForm(instance=item)
+            item_form = MediaItemForm(instance=item, prefix='item')
+            format_form = FormatForm(instance=format, prefix='format')
 
+        forms = [item_form, format_form]
+        hidden_fields = ['item-copied_from_item', 'format-item']
 
-        return render(request, template, {'item': item, 'form': form})
+        return render(request, template, {'item': item, 'forms': forms, 'hidden_fields': hidden_fields,})
 
     @method_decorator(permission_required('telemeta.add_mediaitem'))
     def item_copy(self, request, public_id, template='telemeta/mediaitem_copy.html'):
