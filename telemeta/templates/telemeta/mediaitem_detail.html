@@ -302,20 +302,21 @@ Item : <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
                 <dt>{% trans "Media type" %}</dt><dd>{% trans mime_type|mime_to_media_type %}</dd>
                     {% dl_field item "approx_duration" %}
 
-                    {% if physical_format %}
-                     {% dl_field physical_format "original_code" %}
-                     {% dl_field physical_format "tape_number" %}
-                     {% dl_field physical_format "status" %}
-                     {% dl_field physical_format "conservation_state" %}
-                     {% dl_field physical_format "tape_length" %}
-                     {% dl_field physical_format "tape_width" %}
-                     {% dl_field physical_format "tape_speed" %}
-                     {% dl_field physical_format "tape_vendor" %}
-                     {% dl_field physical_format "tape_thickness" %}
-                     {% dl_field physical_format "tape_diameter" %}
-                     {% dl_field physical_format "tape_reference" %}
-                     <dt>{% trans "Remarks" %}</dt>
-                     <dd>{{ physical_format.comments|html_line_break|safe }}</dd>
+                    {% if format %}
+                     {% dl_field format "original_format" %}
+                     {% dl_field format "original_code" %}
+                     {% dl_field format "original_number" %}
+                     {% dl_field format "original_status" %}
+                     {% dl_field format "original_location" %}
+                     {% dl_field format "original_state" %}
+                     <dt>{% trans "Comments" %}</dt>
+                     <dd>{{ format.original_comments|html_line_break|safe }}</dd>
+                     {% dl_field format "tape_wheel_diameter" %}
+                     {% dl_field format "tape_thickness" %}
+                     {% dl_field format "tape_speed" %}
+                     {% dl_field format "tape_vendor" %}
+                     {% dl_field format "tape_reference" %}
+                     {% dl_field format "sticker_presence" %}
                     {% endif %}
                 </dl>
 

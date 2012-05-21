@@ -56,9 +56,9 @@ class Format(ModelCore):
     item                  = ForeignKey('MediaItem', related_name="format", verbose_name = _("item"))
     original_format       = WeakForeignKey(OriginalFormat, related_name="format",
                                      verbose_name = _("original format"))
-    original_code         = CharField(_('original code'), required=True)
+    original_code         = CharField(_('original code'))
     original_number       = CharField(_('original number'))
-    original_status       = CharField(_('status'))
+    original_status       = CharField(_('original status'))
     original_state        = TextField(_('technical properties / conservation state'))
     original_comments     = TextField(_('comments / notes'))
     original_location     = WeakForeignKey(OriginalLocation, related_name="format",
@@ -78,13 +78,15 @@ class Format(ModelCore):
     tape_reference      = CharField(_('tape reference'))
     sticker_presence    = BooleanField(_('sticker presence'))
 
-
     class Meta(MetaCore):
         db_table = 'media_formats'
         verbose_name = _('format')
 
     def __unicode__(self):
-        return self.original_format
+        if self.original_format:
+            return self.original_format
+        else:
+            return 'unknown'
 
     @property
     def public_id(self):
