@@ -776,15 +776,14 @@ class ItemView(object):
         if request.method == 'POST':
             item_form = MediaItemForm(data=request.POST, files=request.FILES, instance=item, prefix='item')
             format_form = FormatForm(data=request.POST, instance=format, prefix='format')
-            if item_form.is_valid():
+            if item_form.is_valid() and format_form.is_valid():
                 item_form.save()
                 item.set_revision(request.user)
+                format.item = item
+                format_form.save()
                 code = item_form.cleaned_data['code']
                 if not code:
                     code = str(item.id)
-                if format_form.is_valid():
-                    format.item = item
-                    format_form.save()
                 return HttpResponseRedirect('/archives/items/'+code)
         else:
             item_form = MediaItemForm(instance=item, prefix='item')
