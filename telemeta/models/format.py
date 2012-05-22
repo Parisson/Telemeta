@@ -55,8 +55,8 @@ class Format(ModelCore):
 
     item                  = ForeignKey('MediaItem', related_name="format", verbose_name = _("item"),
                                        blank=True, null=True, on_delete=models.SET_NULL)
-    original_format       = WeakForeignKey(OriginalFormat, related_name="format",
-                                     verbose_name = _("original format"))
+    physical_format       = WeakForeignKey(PhysicalFormat, related_name="format",
+                                     verbose_name = _("physical format"))
     original_code         = CharField(_('original code'))
     original_number       = CharField(_('original number'))
     original_status       = CharField(_('original status'))
@@ -64,7 +64,7 @@ class Format(ModelCore):
     original_comments     = TextField(_('comments / notes'))
     original_location     = WeakForeignKey(OriginalLocation, related_name="format",
                                         verbose_name = _("original location"))
-    original_channels     = WeakForeignKey(ChannelNumber, related_name="format",
+    original_channels     = WeakForeignKey(NumberOfChannels, related_name="format",
                                         verbose_name = _("number of channels"))
     original_audio_quality = TextField(_('audio quality'))
     recording_system      = CharField(_('recording system'))

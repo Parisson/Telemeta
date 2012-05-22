@@ -199,25 +199,15 @@ class TapeVendor(Enumeration):
         db_table = 'tape_vendor'
         verbose_name = _("tape vendor")
 
-
-# Original
-
-class ChannelNumber(Enumeration):
-    "Channel number"
+class NumberOfChannels(Enumeration):
+    "Number of channels"
 
     class Meta(MetaEnumeration):
         db_table = 'original_channel_number'
         verbose_name = _("number of channels")
 
-class OriginalFormat(Enumeration):
-    "Item original format"
-
-    class Meta(MetaEnumeration):
-        db_table = 'original_format'
-        verbose_name = _("original format")
-
 class OriginalLocation(Enumeration):
-    "Item original location"
+    "Location of th original item or collection"
 
     class Meta(MetaEnumeration):
         db_table = 'original_location'
