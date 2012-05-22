@@ -64,12 +64,13 @@ class Format(ModelCore):
     original_comments     = TextField(_('comments / notes'))
     original_location     = WeakForeignKey(OriginalLocation, related_name="format",
                                         verbose_name = _("original location"))
-    original_channels     = IntegerField(_("number of channels"))
+    original_channels     = WeakForeignKey(ChannelNumber, related_name="format",
+                                        verbose_name = _("number of channels"))
     original_audio_quality = TextField(_('audio quality'))
     recording_system      = CharField(_('recording system'))
 
     # Tapes
-    tape_wheel_diameter = WeakForeignKey(WheelDiameter, related_name="format",
+    tape_wheel_diameter = WeakForeignKey(TapeWheelDiameter, related_name="format",
                                         verbose_name = _("tape wheel diameter (cm)"))
     tape_thickness      = CharField(_('tape thickness (um)'))
     tape_speed          = WeakForeignKey(TapeSpeed, related_name="format",

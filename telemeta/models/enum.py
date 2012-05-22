@@ -164,7 +164,7 @@ class EthnicGroupAlias(ModelCore):
 
 
 # Tape formats
-class WheelDiameter(Enumeration):
+class TapeWheelDiameter(Enumeration):
     "Tape wheel diameter (cm)"
 
     class Meta(MetaEnumeration):
@@ -198,6 +198,16 @@ class TapeVendor(Enumeration):
     class Meta(MetaEnumeration):
         db_table = 'tape_vendor'
         verbose_name = _("tape vendor")
+
+
+# Original
+
+class ChannelNumber(Enumeration):
+    "Channel number"
+
+    class Meta(MetaEnumeration):
+        db_table = 'original_channel_number'
+        verbose_name = _("number of channels")
 
 class OriginalFormat(Enumeration):
     "Item original format"
