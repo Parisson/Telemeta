@@ -519,7 +519,8 @@ class Playlist(ModelCore):
 
 class PlaylistResource(ModelCore):
     "Playlist components"
-    RESOURCE_TYPE_CHOICES = (('item', 'item'), ('collection', 'collection'), ('marker', 'marker'), ('fonds', 'fonds'), ('corpus', 'corpus'))
+    RESOURCE_TYPE_CHOICES = (('item', 'item'), ('collection', 'collection'),
+                             ('marker', 'marker'), ('fonds', 'fonds'), ('corpus', 'corpus'))
     element_type = 'playlist_resource'
     public_id          = CharField(_('public_id'), required=True)
     playlist           = ForeignKey('Playlist', related_name="resources", verbose_name=_('playlist'))
@@ -638,7 +639,8 @@ class MediaCorpus(MediaBaseResource):
     element_type = 'corpus'
     children_type = 'collections'
 
-    children = models.ManyToManyField(MediaCollection, related_name="corpus", verbose_name=_('collections'),  blank=True, null=True)
+    children = models.ManyToManyField(MediaCollection, related_name="corpus",
+                                      verbose_name=_('collections'),  blank=True, null=True)
     recorded_from_year    = IntegerField(_('recording year (from)'))
     recorded_to_year      = IntegerField(_('recording year (until)'))
 
@@ -660,7 +662,8 @@ class MediaFonds(MediaBaseResource):
     element_type = 'fonds'
     children_type = 'corpus'
 
-    children = models.ManyToManyField(MediaCorpus, related_name="fonds", verbose_name=_('corpus'), blank=True, null=True)
+    children = models.ManyToManyField(MediaCorpus, related_name="fonds",
+                                      verbose_name=_('corpus'), blank=True, null=True)
 
     objects = MediaFondsManager()
 
