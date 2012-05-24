@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-22 09:45+0200\n"
+"POT-Creation-Date: 2012-05-24 15:16+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -113,22 +113,22 @@ msgstr ""
 msgid "tape vendor"
 msgstr ""
 
-#: models/enum.py:210
-msgid "channel number"
+#: models/enum.py:207 models/format.py:68
+msgid "number of channels"
 msgstr ""
 
-#: models/enum.py:217 models/format.py:59
-msgid "original format"
-msgstr ""
-
-#: models/enum.py:224 models/format.py:66
+#: models/enum.py:214 models/format.py:66
 msgid "original location"
 msgstr ""
 
 #: models/format.py:56 models/media.py:376 models/media.py:435
 #: models/media.py:445 models/media.py:456 models/media.py:472
-#: models/media.py:493 models/media.py:538 models/media.py:559
+#: models/media.py:493 models/media.py:539 models/media.py:560
 msgid "item"
+msgstr ""
+
+#: models/format.py:59
+msgid "physical format"
 msgstr ""
 
 #: models/format.py:60
@@ -149,10 +149,6 @@ msgstr ""
 
 #: models/format.py:64
 msgid "comments / notes"
-msgstr ""
-
-#: models/format.py:68
-msgid "number of channels"
 msgstr ""
 
 #: models/format.py:69
@@ -283,12 +279,12 @@ msgstr ""
 
 #: models/media.py:93 models/media.py:123 models/media.py:171
 #: models/media.py:312 models/media.py:494 models/media.py:510
-#: models/media.py:541
+#: models/media.py:542
 msgid "title"
 msgstr ""
 
 #: models/media.py:94 models/media.py:125 models/media.py:511
-#: models/media.py:543
+#: models/media.py:544
 msgid "description"
 msgstr ""
 
@@ -300,12 +296,12 @@ msgstr ""
 msgid "reference"
 msgstr ""
 
-#: models/media.py:124 models/media.py:542 models/media.py:561
+#: models/media.py:124 models/media.py:543 models/media.py:562
 #: models/system.py:115
 msgid "date"
 msgstr ""
 
-#: models/media.py:126 models/media.py:560
+#: models/media.py:126 models/media.py:561
 msgid "mime_type"
 msgstr ""
 
@@ -329,11 +325,11 @@ msgstr ""
 msgid "depositor / contributor"
 msgstr ""
 
-#: models/media.py:176 models/media.py:642
+#: models/media.py:176 models/media.py:644
 msgid "recording year (from)"
 msgstr ""
 
-#: models/media.py:177 models/media.py:643
+#: models/media.py:177 models/media.py:645
 msgid "recording year (until)"
 msgstr ""
 
@@ -549,52 +545,52 @@ msgstr ""
 msgid "item part"
 msgstr ""
 
-#: models/media.py:508 models/media.py:524 models/media.py:539
+#: models/media.py:508 models/media.py:525 models/media.py:540
 msgid "public_id"
 msgstr ""
 
-#: models/media.py:525
+#: models/media.py:526
 msgid "playlist"
 msgstr ""
 
-#: models/media.py:526
+#: models/media.py:527
 msgid "resource_type"
 msgstr ""
 
-#: models/media.py:527
+#: models/media.py:528
 msgid "resource_id"
 msgstr ""
 
-#: models/media.py:540 models/system.py:55
+#: models/media.py:541 models/system.py:55
 msgid "time"
 msgstr ""
 
-#: models/media.py:544
+#: models/media.py:545
 msgid "author"
 msgstr ""
 
-#: models/media.py:562
+#: models/media.py:563
 msgid "transcoded"
 msgstr ""
 
-#: models/media.py:641
+#: models/media.py:643
 msgid "collections"
 msgstr ""
 
-#: models/media.py:653 models/media.py:654 models/media.py:663
-#: models/media.py:680
+#: models/media.py:655 models/media.py:656 models/media.py:666
+#: models/media.py:683
 msgid "corpus"
 msgstr ""
 
-#: models/media.py:673 models/media.py:674 models/media.py:691
+#: models/media.py:676 models/media.py:677 models/media.py:694
 msgid "fonds"
 msgstr ""
 
-#: models/media.py:684 models/media.py:685
+#: models/media.py:687 models/media.py:688
 msgid "corpus related media"
 msgstr ""
 
-#: models/media.py:695 models/media.py:696
+#: models/media.py:698 models/media.py:699
 msgid "fonds related media"
 msgstr ""
 
