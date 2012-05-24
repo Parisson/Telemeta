@@ -85,10 +85,10 @@ class Format(ModelCore):
         verbose_name = _('format')
 
     def __unicode__(self):
-        if self.original_format:
-            return self.original_format
+        if self.physical_format:
+            return self.physical_format.value
         else:
-            return 'unknown'
+            return 'Unknown'
 
     @property
     def public_id(self):
