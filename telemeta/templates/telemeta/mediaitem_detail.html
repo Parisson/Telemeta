@@ -190,12 +190,17 @@ Item : <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
         <dl class="listing">
             {% dl_field item "title" placeholder %}
             {% dl_field item "alt_title" %}
+
+
             {% dl_field item "collector" placeholder %}
             <dt>{% field_label item "collection" %}</dt>
             <dd><a href="{% url telemeta-collection-detail item.collection.public_id %}">{{ item.collection }}</a></dd>
             <dt>{% trans "Recording date" %}</dt>
 
             <dd>{% if item.recorded_from_date %}{{ item.recorded_from_date }}{% endif %}{% if item.recorded_from_date and item.recorded_to_date%} - {% endif %}{% if item.recorded_to_date %}{{ item.recorded_to_date}}{% endif %}</dd>
+
+            <dt>{% trans "Remarks" %}</dt>
+            <dd>{{ item.comment|html_line_break|safe }}</dd>
 
             {% if last_revision %}
             <dt>{% trans "Last modification" %}</dt>
@@ -270,9 +275,7 @@ Item : <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
         <div>
             <h4><a href="#">{% trans "General informations" %}</a></h4>
             <dl class="listing">
-                <dt>{% trans "Remarks" %}</dt>
-                <dd>{{ item.comment|html_line_break|safe }}</dd>
-                {% dl_field item "collector_selection" %}
+
             </dl>
         </div>
         {% endblock general_data %}
