@@ -53,6 +53,8 @@ from django.db import models
 class Format(ModelCore):
     """ Physical format object as proposed by the LAM"""
 
+    element_type          = 'format'
+
     item                  = ForeignKey('MediaItem', related_name="format", verbose_name = _("item"),
                                        blank=True, null=True, on_delete=models.SET_NULL)
     physical_format       = WeakForeignKey(PhysicalFormat, related_name="format",
