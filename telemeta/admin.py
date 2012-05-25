@@ -76,7 +76,7 @@ class RevisionAdmin(admin.ModelAdmin):
     ordering = ['-time']
 
 class FormatAdmin(admin.ModelAdmin):
-    search_fields = ['code', 'vendor']
+    search_fields = ['code', 'vendor', 'item__code']
 
 class UserProfileInline(admin.StackedInline):
 	model = UserProfile

@@ -17,8 +17,8 @@ class Command(BaseCommand):
         path = args[0]
         file = open(path, 'r')
         for format in file.readlines():
-            if not OriginalFormat.objects.filter(value=format):
-                format = OriginalFormat(value=format)
+            if not PhysicalFormat.objects.filter(value=format):
+                format = PhysicalFormat(value=format)
                 format.save()
 
 
