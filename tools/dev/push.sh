@@ -9,13 +9,13 @@ do
 
     if [[ $branch == *master* ]]; then
         echo "Push $branch to github:"
-        git push github $branch
+        git push hub $branch
     fi
 
 done
 
 git push --tags
-git push --tags github
+git push --tags hub
 
 ssh vcs.parisson.com "cd /var/git/telemeta.git; git update-server-info"
 
