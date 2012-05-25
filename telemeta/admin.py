@@ -99,7 +99,7 @@ admin.site.register(InstrumentRelation, InstrumentRelationAdmin)
 admin.site.register(InstrumentAliasRelation, InstrumentAliasRelationAdmin)
 
 admin.site.register(Location, LocationAdmin)
-#admin.site.register(LocationType)
+admin.site.register(LocationType)
 admin.site.register(LocationAlias, LocationAliasAdmin)
 admin.site.register(LocationRelation, LocationRelationAdmin)
 

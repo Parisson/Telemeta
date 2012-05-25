@@ -206,9 +206,16 @@ class NumberOfChannels(Enumeration):
         db_table = 'original_channel_number'
         verbose_name = _("number of channels")
 
-class OriginalLocation(Enumeration):
-    "Location of th original item or collection"
+class Organization(Enumeration):
+    "Organization"
 
     class Meta(MetaEnumeration):
-        db_table = 'original_location'
-        verbose_name = _("original location")
+        db_table = 'organization'
+        verbose_name = _("organization")
+
+class Rights(Enumeration):
+    "Archive rights"
+
+    class Meta(MetaEnumeration):
+        db_table = 'rights'
+        verbose_name = _("rights")

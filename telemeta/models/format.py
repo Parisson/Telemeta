@@ -62,8 +62,9 @@ class Format(ModelCore):
     original_status       = CharField(_('original status'))
     original_state        = TextField(_('technical properties / conservation state'))
     original_comments     = TextField(_('comments / notes'))
-    original_location     = WeakForeignKey(OriginalLocation, related_name="format",
-                                        verbose_name = _("original location"))
+    original_location     = ForeignKey('Location', related_name="format",
+                                       verbose_name = _("original location"),
+                                       blank=True, null=True, on_delete=models.SET_NULL)
     original_channels     = WeakForeignKey(NumberOfChannels, related_name="format",
                                         verbose_name = _("number of channels"))
     original_audio_quality = TextField(_('audio quality'))
