@@ -87,7 +87,8 @@ class Format(ModelCore):
 
     def __unicode__(self):
         if self.physical_format:
-            return self.physical_format.value
+            return ' - '.join([self.physical_format.value, self.original_code,
+                               self.item.public_id])
         else:
             return 'Unknown'
 
