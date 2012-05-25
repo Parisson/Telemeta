@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-25 16:47+0200\n"
+"POT-Creation-Date: 2012-05-25 17:03+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -802,7 +802,7 @@ msgstr ""
 #: templates/postman/base_folder.html:49 templates/postman/view.html:25
 #: templates/telemeta/collection_detail.html:217
 #: templates/telemeta/lists.html:58
-#: templates/telemeta/mediaitem_detail.html:344
+#: templates/telemeta/mediaitem_detail.html:345
 #: templates/telemeta/resource_detail.html:102
 msgid "Delete"
 msgstr ""
@@ -1200,7 +1200,7 @@ msgid "Related documentation"
 msgstr ""
 
 #: templates/telemeta/collection_detail.html:162
-#: templates/telemeta/mediaitem_detail.html:313
+#: templates/telemeta/mediaitem_detail.html:314
 msgid "Comments"
 msgstr ""
 

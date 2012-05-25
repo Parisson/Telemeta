@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-25 16:48+0200\n"
+"POT-Creation-Date: 2012-05-25 17:03+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Olivier Guilyardi <olivier samalyse com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -94,7 +94,7 @@ msgstr "nom"
 
 #: models/enum.py:172 models/format.py:75
 msgid "tape wheel diameter (cm)"
-msgstr "diamètre de moyeu de bande (cm)"
+msgstr "diamètre de roue (cm)"
 
 #: models/enum.py:179
 msgid "tape length (cm)"
@@ -148,7 +148,7 @@ msgstr "status"
 
 #: models/format.py:63
 msgid "technical properties / conservation state"
-msgstr "Qualité technique / état de conservation"
+msgstr "état de conservation"
 
 #: models/format.py:64
 msgid "comments / notes"
@@ -803,7 +803,7 @@ msgstr ""
 #: templates/postman/base_folder.html:49 templates/postman/view.html:25
 #: templates/telemeta/collection_detail.html:217
 #: templates/telemeta/lists.html:58
-#: templates/telemeta/mediaitem_detail.html:344
+#: templates/telemeta/mediaitem_detail.html:345
 #: templates/telemeta/resource_detail.html:102
 msgid "Delete"
 msgstr "Supprimer"
@@ -1205,7 +1205,7 @@ msgid "Related documentation"
 msgstr "Documentation associée"
 
 #: templates/telemeta/collection_detail.html:162
-#: templates/telemeta/mediaitem_detail.html:313
+#: templates/telemeta/mediaitem_detail.html:314
 msgid "Comments"
 msgstr "Commentaires"
 
