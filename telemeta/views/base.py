@@ -225,7 +225,7 @@ class GeneralView(object):
         else:
             sound_pub_items = None
 
-        revisions = get_revisions(4)
+        revisions = get_revisions(25)
         context = RequestContext(request, {
                     'page_content': pages.get_page_content(request, 'home', ignore_slash_issue=True),
                     'revisions': revisions,  'sound_pub_items': sound_pub_items,
