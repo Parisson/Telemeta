@@ -53,6 +53,8 @@ from django.db import models
 class Format(ModelCore):
     """ Physical format object as proposed by the LAM"""
 
+    element_type          = 'format'
+
     item                  = ForeignKey('MediaItem', related_name="format", verbose_name = _("item"),
                                        blank=True, null=True, on_delete=models.SET_NULL)
     physical_format       = WeakForeignKey(PhysicalFormat, related_name="format",
@@ -87,7 +89,8 @@ class Format(ModelCore):
 
     def __unicode__(self):
         if self.physical_format:
-            return self.physical_format.value
+            return ' - '.join([self.physical_format.value, self.original_code,
+                               self.item.public_id])
         else:
             return 'Unknown'
 

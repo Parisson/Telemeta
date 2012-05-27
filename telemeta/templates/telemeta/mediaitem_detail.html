@@ -190,8 +190,6 @@ Item : <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
         <dl class="listing">
             {% dl_field item "title" placeholder %}
             {% dl_field item "alt_title" %}
-
-
             {% dl_field item "collector" placeholder %}
             <dt>{% field_label item "collection" %}</dt>
             <dd><a href="{% url telemeta-collection-detail item.collection.public_id %}">{{ item.collection }}</a></dd>
