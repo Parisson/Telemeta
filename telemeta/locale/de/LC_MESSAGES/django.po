@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-25 17:03+0200\n"
+"POT-Creation-Date: 2012-05-30 10:27+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -93,7 +93,7 @@ msgstr ""
 msgid "name"
 msgstr ""
 
-#: models/enum.py:172 models/format.py:75
+#: models/enum.py:172 models/format.py:77
 msgid "tape wheel diameter (cm)"
 msgstr ""
 
@@ -105,15 +105,15 @@ msgstr ""
 msgid "tape width (inch)"
 msgstr ""
 
-#: models/enum.py:193 models/format.py:78
-msgid "tape speed (m/s)"
+#: models/enum.py:193
+msgid "tape speed (cm/s)"
 msgstr ""
 
-#: models/enum.py:200 models/format.py:80
+#: models/enum.py:200 models/format.py:82
 msgid "tape vendor"
 msgstr ""
 
-#: models/enum.py:207 models/format.py:69
+#: models/enum.py:207 models/format.py:71
 msgid "number of channels"
 msgstr ""
 
@@ -125,61 +125,65 @@ msgstr ""
 msgid "rights"
 msgstr ""
 
-#: models/format.py:56 models/media.py:390 models/media.py:449
+#: models/format.py:58 models/media.py:390 models/media.py:449
 #: models/media.py:459 models/media.py:470 models/media.py:486
 #: models/media.py:507 models/media.py:553 models/media.py:574
 msgid "item"
 msgstr ""
 
-#: models/format.py:59
+#: models/format.py:61
 msgid "physical format"
 msgstr ""
 
-#: models/format.py:60 models/media.py:354
+#: models/format.py:62 models/media.py:354
 msgid "original code"
 msgstr ""
 
-#: models/format.py:61
+#: models/format.py:63
 msgid "original number"
 msgstr ""
 
-#: models/format.py:62
+#: models/format.py:64
 msgid "original status"
 msgstr ""
 
-#: models/format.py:63
+#: models/format.py:65
 msgid "technical properties / conservation state"
 msgstr ""
 
-#: models/format.py:64
+#: models/format.py:66
 msgid "comments / notes"
 msgstr ""
 
-#: models/format.py:66
+#: models/format.py:68
 msgid "original location"
 msgstr ""
 
-#: models/format.py:70
+#: models/format.py:72
 msgid "audio quality"
 msgstr ""
 
-#: models/format.py:71
+#: models/format.py:73
 msgid "recording system"
 msgstr ""
 
-#: models/format.py:76
+#: models/format.py:78
 msgid "tape thickness (um)"
 msgstr ""
 
-#: models/format.py:81
+#: models/format.py:80
+msgid "tape speed (m/s)"
+msgstr ""
+
+#: models/format.py:83
 msgid "tape reference"
 msgstr ""
 
-#: models/format.py:82
+#: models/format.py:84
 msgid "sticker presence"
 msgstr ""
 
-#: models/format.py:86
+#: models/format.py:88
 msgid "format"
 msgstr ""
 
@@ -802,7 +806,7 @@ msgstr ""
 #: templates/postman/base_folder.html:49 templates/postman/view.html:25
 #: templates/telemeta/collection_detail.html:217
 #: templates/telemeta/lists.html:58
-#: templates/telemeta/mediaitem_detail.html:345
+#: templates/telemeta/mediaitem_detail.html:346
 #: templates/telemeta/resource_detail.html:102
 msgid "Delete"
 msgstr ""
@@ -1169,13 +1173,13 @@ msgid "Recording period"
 msgstr ""
 
 #: templates/telemeta/collection_detail.html:103
-#: templates/telemeta/mediaitem_detail.html:201
+#: templates/telemeta/mediaitem_detail.html:202
 #: templates/telemeta/resource_detail.html:73
 msgid "Last modification"
 msgstr ""
 
 #: templates/telemeta/collection_detail.html:112
-#: templates/telemeta/mediaitem_detail.html:211
+#: templates/telemeta/mediaitem_detail.html:212
 msgid "Geographic and cultural informations"
 msgstr ""
 
@@ -1191,7 +1195,7 @@ msgid "Bibliographic references"
 msgstr ""
 
 #: templates/telemeta/collection_detail.html:152
-#: templates/telemeta/mediaitem_detail.html:283
+#: templates/telemeta/mediaitem_detail.html:284
 msgid "Archiving data"
 msgstr ""
 
@@ -1200,17 +1204,17 @@ msgid "Related documentation"
 msgstr ""
 
 #: templates/telemeta/collection_detail.html:162
-#: templates/telemeta/mediaitem_detail.html:314
+#: templates/telemeta/mediaitem_detail.html:315
 msgid "Comments"
 msgstr ""
 
 #: templates/telemeta/collection_detail.html:176
-#: templates/telemeta/mediaitem_detail.html:299
+#: templates/telemeta/mediaitem_detail.html:300
 msgid "Technical data"
 msgstr ""
 
 #: templates/telemeta/collection_detail.html:181
-#: templates/telemeta/mediaitem_detail.html:302
+#: templates/telemeta/mediaitem_detail.html:303
 msgid "Media type"
 msgstr ""
 
@@ -1463,36 +1467,36 @@ msgstr ""
 msgid "Download:"
 msgstr ""
 
-#: templates/telemeta/mediaitem_detail.html:196
+#: templates/telemeta/mediaitem_detail.html:197
 msgid "Recording date"
 msgstr ""
 
-#: templates/telemeta/mediaitem_detail.html:213
+#: templates/telemeta/mediaitem_detail.html:214
 #: templates/telemeta/inc/mediaitem_list.html:18
 msgid "Location"
 msgstr ""
 
-#: templates/telemeta/mediaitem_detail.html:219
+#: templates/telemeta/mediaitem_detail.html:220
 msgid "Language ISO"
 msgstr ""
 
-#: templates/telemeta/mediaitem_detail.html:223
+#: templates/telemeta/mediaitem_detail.html:224
 msgid "Ethnographic context"
 msgstr ""
 
-#: templates/telemeta/mediaitem_detail.html:234
+#: templates/telemeta/mediaitem_detail.html:235
 msgid "Musical informations"
 msgstr ""
 
-#: templates/telemeta/mediaitem_detail.html:271
+#: templates/telemeta/mediaitem_detail.html:272
 msgid "General informations"
 msgstr ""
 
-#: templates/telemeta/mediaitem_detail.html:273
+#: templates/telemeta/mediaitem_detail.html:274
 msgid "Remarks"
 msgstr ""
 
-#: templates/telemeta/mediaitem_detail.html:289
+#: templates/telemeta/mediaitem_detail.html:290
 msgid "Published references"
 msgstr ""
 

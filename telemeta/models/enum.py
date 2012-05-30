@@ -186,11 +186,11 @@ class TapeWidth(Enumeration):
         verbose_name = _("tape width (inch)")
 
 class TapeSpeed(Enumeration):
-    "Tape speed (m/s)"
+    "Tape speed (cm/s)"
 
     class Meta(MetaEnumeration):
         db_table = 'tape_speed'
-        verbose_name = _("tape speed (m/s)")
+        verbose_name = _("tape speed (cm/s)")
 
 class TapeVendor(Enumeration):
     "Tape vendor"
