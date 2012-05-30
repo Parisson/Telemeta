@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-30 10:27+0200\n"
+"POT-Creation-Date: 2012-05-30 11:37+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Olivier Guilyardi <olivier samalyse com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -123,6 +123,10 @@ msgstr "organisation"
 #: models/enum.py:221 models/media.py:350
 msgid "rights"
 msgstr "droits"
+
+#: models/enum.py:228 models/media.py:320
+msgid "domain"
+msgstr "discipline"
 
 #: models/format.py:58 models/media.py:390 models/media.py:449
 #: models/media.py:459 models/media.py:470 models/media.py:486
@@ -473,10 +477,6 @@ msgstr "date d'enregistrement (jusqu'à)"
 #: models/media.py:319
 msgid "scientist"
 msgstr "reponsable scientifique"
-
-#: models/media.py:320
-msgid "domain"
-msgstr "discipline"
 
 #: models/media.py:321
 msgid "summary"
