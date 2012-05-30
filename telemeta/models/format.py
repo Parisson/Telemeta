@@ -77,7 +77,7 @@ class Format(ModelCore):
                                         verbose_name = _("tape wheel diameter (cm)"))
     tape_thickness      = CharField(_('tape thickness (um)'))
     tape_speed          = WeakForeignKey(TapeSpeed, related_name="format",
-                                        verbose_name = _("tape speed (m/s)"))
+                                        verbose_name = _("tape speed (cm/s)"))
     tape_vendor         = WeakForeignKey(TapeVendor, related_name="format",
                                         verbose_name = _("tape vendor"))
     tape_reference      = CharField(_('tape reference'))

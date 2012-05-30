@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-30 11:45+0200\n"
+"POT-Creation-Date: 2012-05-30 13:14+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -105,7 +105,7 @@ msgstr ""
 msgid "tape width (inch)"
 msgstr ""
 
-#: models/enum.py:193
+#: models/enum.py:193 models/format.py:80
 msgid "tape speed (cm/s)"
 msgstr ""
 
@@ -173,10 +173,6 @@ msgstr ""
 
 #: models/format.py:78
 msgid "tape thickness (um)"
-msgstr ""
-
-#: models/format.py:80
-msgid "tape speed (m/s)"
 msgstr ""
 
 #: models/format.py:83

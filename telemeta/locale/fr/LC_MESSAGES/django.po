@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-30 11:46+0200\n"
+"POT-Creation-Date: 2012-05-30 13:14+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Olivier Guilyardi <olivier samalyse com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -104,7 +104,7 @@ msgstr "longueur de bande (cm)"
 msgid "tape width (inch)"
 msgstr "largeur de bande (pouce)"
 
-#: models/enum.py:193
+#: models/enum.py:193 models/format.py:80
 msgid "tape speed (cm/s)"
 msgstr "vitesse de bande (cm/s)"
 
@@ -173,11 +173,6 @@ msgstr "système d'enregistrement"
 #: models/format.py:78
 msgid "tape thickness (um)"
 msgstr "épaisseur de bande (um)"
-
-#: models/format.py:80
-#, fuzzy
-msgid "tape speed (m/s)"
-msgstr "vitesse de bande (cm/s)"
 
 #: models/format.py:83
 msgid "tape reference"
