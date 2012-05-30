@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-30 10:27+0200\n"
+"POT-Creation-Date: 2012-05-30 11:37+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -123,6 +123,10 @@ msgstr ""
 
 #: models/enum.py:221 models/media.py:350
 msgid "rights"
+msgstr ""
+
+#: models/enum.py:228 models/media.py:320
+msgid "domain"
 msgstr ""
 
 #: models/format.py:58 models/media.py:390 models/media.py:449
@@ -471,10 +475,6 @@ msgstr ""
 
 #: models/media.py:319
 msgid "scientist"
-msgstr ""
-
-#: models/media.py:320
-msgid "domain"
 msgstr ""
 
 #: models/media.py:321

@@ -219,3 +219,10 @@ class Rights(Enumeration):
     class Meta(MetaEnumeration):
         db_table = 'rights'
         verbose_name = _("rights")
+
+class Domain(Enumeration):
+    "Domain"
+
+    class Meta(MetaEnumeration):
+        db_table = 'domain'
+        verbose_name = _("domain")
