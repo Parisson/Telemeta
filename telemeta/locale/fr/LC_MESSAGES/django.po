@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-30 11:37+0200\n"
+"POT-Creation-Date: 2012-05-30 11:46+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Olivier Guilyardi <olivier samalyse com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -125,7 +125,7 @@ msgid "rights"
 msgstr "droits"
 
 #: models/enum.py:228 models/media.py:320
-msgid "domain"
+msgid "subject"
 msgstr "discipline"
 
 #: models/format.py:58 models/media.py:390 models/media.py:449
@@ -1179,13 +1179,13 @@ msgid "Recording period"
 msgstr "Période d'enregistrement"
 
 #: templates/telemeta/collection_detail.html:103
-#: templates/telemeta/mediaitem_detail.html:202
+#: templates/telemeta/mediaitem_detail.html:204
 #: templates/telemeta/resource_detail.html:73
 msgid "Last modification"
 msgstr "Dernière modification"
 
 #: templates/telemeta/collection_detail.html:112
-#: templates/telemeta/mediaitem_detail.html:212
+#: templates/telemeta/mediaitem_detail.html:214
 msgid "Geographic and cultural informations"
 msgstr "Indications géographiques et culturelles"
 
@@ -1474,34 +1474,34 @@ msgstr "Unité"
 msgid "Download:"
 msgstr "Téléchargement:"
 
-#: templates/telemeta/mediaitem_detail.html:197
+#: templates/telemeta/mediaitem_detail.html:196
 msgid "Recording date"
 msgstr "Date d'enregistrement"
 
-#: templates/telemeta/mediaitem_detail.html:214
+#: templates/telemeta/mediaitem_detail.html:200
+msgid "Remarks"
+msgstr "Remarques"
+
+#: templates/telemeta/mediaitem_detail.html:216
 #: templates/telemeta/inc/mediaitem_list.html:18
 msgid "Location"
 msgstr "Lieu"
 
-#: templates/telemeta/mediaitem_detail.html:220
+#: templates/telemeta/mediaitem_detail.html:222
 msgid "Language ISO"
 msgstr "Langue ISO"
 
-#: templates/telemeta/mediaitem_detail.html:224
+#: templates/telemeta/mediaitem_detail.html:226
 msgid "Ethnographic context"
 msgstr "Contexte ethnographique"
 
-#: templates/telemeta/mediaitem_detail.html:235
+#: templates/telemeta/mediaitem_detail.html:237
 msgid "Musical informations"
 msgstr "Informations sur la musique"
 
-#: templates/telemeta/mediaitem_detail.html:272
+#: templates/telemeta/mediaitem_detail.html:274
 msgid "General informations"
 msgstr "Informations générales"
-
-#: templates/telemeta/mediaitem_detail.html:274
-msgid "Remarks"
-msgstr "Remarques"
 
 #: templates/telemeta/mediaitem_detail.html:290
 msgid "Published references"
@@ -1930,6 +1930,9 @@ msgstr ""
 #: views/base.py:1513
 msgid "Last changes"
 msgstr "Dernières modifications"
+
+#~ msgid "domain"
+#~ msgstr "discipline"
 
 #, fuzzy
 #~ msgid "channel number"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-30 11:37+0200\n"
+"POT-Creation-Date: 2012-05-30 11:45+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -126,7 +126,7 @@ msgid "rights"
 msgstr ""
 
 #: models/enum.py:228 models/media.py:320
-msgid "domain"
+msgid "subject"
 msgstr ""
 
 #: models/format.py:58 models/media.py:390 models/media.py:449
@@ -1173,13 +1173,13 @@ msgid "Recording period"
 msgstr ""
 
 #: templates/telemeta/collection_detail.html:103
-#: templates/telemeta/mediaitem_detail.html:202
+#: templates/telemeta/mediaitem_detail.html:204
 #: templates/telemeta/resource_detail.html:73
 msgid "Last modification"
 msgstr ""
 
 #: templates/telemeta/collection_detail.html:112
-#: templates/telemeta/mediaitem_detail.html:212
+#: templates/telemeta/mediaitem_detail.html:214
 msgid "Geographic and cultural informations"
 msgstr ""
 
@@ -1467,33 +1467,33 @@ msgstr ""
 msgid "Download:"
 msgstr ""
 
-#: templates/telemeta/mediaitem_detail.html:197
+#: templates/telemeta/mediaitem_detail.html:196
 msgid "Recording date"
 msgstr ""
 
-#: templates/telemeta/mediaitem_detail.html:214
+#: templates/telemeta/mediaitem_detail.html:200
+msgid "Remarks"
+msgstr ""
+
+#: templates/telemeta/mediaitem_detail.html:216
 #: templates/telemeta/inc/mediaitem_list.html:18
 msgid "Location"
 msgstr ""
 
-#: templates/telemeta/mediaitem_detail.html:220
+#: templates/telemeta/mediaitem_detail.html:222
 msgid "Language ISO"
 msgstr ""
 
-#: templates/telemeta/mediaitem_detail.html:224
+#: templates/telemeta/mediaitem_detail.html:226
 msgid "Ethnographic context"
 msgstr ""
 
-#: templates/telemeta/mediaitem_detail.html:235
+#: templates/telemeta/mediaitem_detail.html:237
 msgid "Musical informations"
 msgstr ""
 
-#: templates/telemeta/mediaitem_detail.html:272
-msgid "General informations"
-msgstr ""
-
 #: templates/telemeta/mediaitem_detail.html:274
-msgid "Remarks"
+msgid "General informations"
 msgstr ""
 
 #: templates/telemeta/mediaitem_detail.html:290
