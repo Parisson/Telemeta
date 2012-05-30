@@ -189,95 +189,71 @@ Item : <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
         {% block general_info %}
         <dl class="listing">
             {% dl_field item "title" placeholder %}
-            {% dl_field item "alt_title" %}
+
+            <dt>{% trans "Instruments" %}</dt>
+            <dd>
+            {% if item.performances %}
+             {% for performance in item.performances.all %}{{ performance.instrument|default:"" }}, {% endfor %}
+            {% endif %}
+            </dd>
+
+            <dt>{% trans "Recording date" %}</dt>
+            <dd>{% if item.recorded_from_date %}{{ item.recorded_from_date }}{% endif %}{% if item.recorded_from_date and item.recorded_to_date%} - {% endif %}{% if item.recorded_to_date %}{{ item.recorded_to_date}}{% endif %}</dd>
+
             {% dl_field item "collector" placeholder %}
+
             <dt>{% field_label item "collection" %}</dt>
             <dd><a href="{% url telemeta-collection-detail item.collection.public_id %}">{{ item.collection }}</a></dd>
-            <dt>{% trans "Recording date" %}</dt>
 
-            <dd>{% if item.recorded_from_date %}{{ item.recorded_from_date }}{% endif %}{% if item.recorded_from_date and item.recorded_to_date%} - {% endif %}{% if item.recorded_to_date %}{{ item.recorded_to_date}}{% endif %}</dd>
+            <dt>{% trans "Location" %}</dt>
+            <dd>{% if item.location %}{{ item.location.fullnames|join:"<br/>" }}{% endif %}</dd>
+
+            {% dl_field item "summary" %}
+            {% dl_field item "scientist" %}
+            {% dl_field item "contributor" %}
+
+            <dt>{% trans "Interprets" %}</dt>
+            {% if item.performances %}
+             <dd>{% for performance in item.performances.all %}{{ performance.musicians|default:"" }}, {% endfor %}</dd>
+            {% endif %}
+
+            {% dl_field item "author" %}
+            {% dl_field item "subject" %}
 
             <dt>{% trans "Remarks" %}</dt>
             <dd>{{ item.comment|html_line_break|safe }}</dd>
 
-            {% if last_revision %}
-            <dt>{% trans "Last modification" %}</dt>
-            <dd>{{ last_revision.time }} {% if user.is_authenticated %}(<a href="{% url telemeta-profile-detail last_revision.user.username %}">{{last_revision.user.username}}</a>){% endif %}</dd>
-            {% endif %}
+            <dt>{% trans "Media type" %}</dt>
+            <dd>{% trans mime_type|mime_to_media_type %}</dd>
 
+            {% if last_revision %}
+                <dt>{% trans "Last modification" %}</dt>
+                <dd>{{ last_revision.time }} {% if user.is_authenticated %}(<a href="{% url telemeta-profile-detail last_revision.user.username %}">{{last_revision.user.username}}</a>){% endif %}</dd>
+            {% endif %}
         </dl>
         {% endblock general_info %}
     </div>
-    <div class="extraInfos">
-        {% block geoethnic_data %}
-        <div>
-            <h4><a href="#">{% trans "Geographic and cultural informations" %}</a></h4>
-            <dl class="listing">
-                <dt>{% trans "Location" %}</dt>
-                <dd>{% if item.location %}{{ item.location.fullnames|join:"<br/>" }}{% endif %}</dd>
-                {% dl_field item "location_comment" %}
-                {% dl_field item "cultural_area" %}
-                {% dl_field item "language" %}
-                {% if item.language_iso %}
-                <dt>{% trans "Language ISO" %}</dt>
-                <dd>{{ item.language_iso.name|to_utf8 }}</dd>
-                {% endif %}
-                {% dl_field item "ethnic_group" placeholder %}
-                <dt>{% trans "Ethnographic context" %}</dt>
-                <dd>{{ item.context_comment|html_line_break|safe }}</dd>
-                {% dl_field item "keywords" join with ", " %}
-            </dl>
-        </div>
-        {% endblock geoethnic_data %}
-    </div>
+
 
     <div class="extraInfos">
-        {% block musical_data %}
+        {% block legal_mentions %}
         <div>
-            <h4><a href="#">{% trans "Musical informations" %}</a></h4>
+            <h4><a href="#">{% trans "Legal mentions" %}</a></h4>
             <dl class="listing">
-                {% dl_field item "vernacular_style" %}
-                {% dl_field item "generic_style" %}
-                {% dl_field item "author" %}
-            </dl>
-            {% if item.performances %}
-            <div class="instruments">
-                <table class="instruments">
-                    <thead>
-                        <tr>
-                            <td>{% field_label "MediaItemPerformance" "instruments_num" %}</td>
-                            <td>{% field_label "MediaItemPerformance" "instrument" %}</td>
-                            <td>{% field_label "MediaItemPerformance" "alias" %}</td>
-                            <td>{% field_label "MediaItemPerformance" "musicians" %}</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for performance in item.performances.all %}
-                        <tr>
-                            <td>{{ performance.instruments_num }}</td>
-                            <td>{{ performance.instrument|default:"" }}</td>
-                            <td>{{ performance.alias|default:"" }}</td>
-                            <td>{{ performance.musicians }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            {% endif %}
-        </div>
-        {% endblock musical_data %}
-    </div>
-
-    <div class="extraInfos">
-        {% block general_data %}
-        <div>
-            <h4><a href="#">{% trans "General informations" %}</a></h4>
-            <dl class="listing">
-
+             <dt>{% trans "Organization" %}</dt>
+             <dd>{% organization %}</dd>
+             {% dl_field item "public_access_label" %}
+             {% dl_field item "depositor" %}
+             <dt>{% trans "Rights" %}</dt>
+             <dd>{% if item.performances %}
+             {% for performance in item.performances.all %}{{ performance.instrument|default:"" }}, {% endfor %}
+             {% endif %}{{ item.author }}
+            </dd>
             </dl>
         </div>
-        {% endblock general_data %}
+        {% endblock legal_mentions %}
     </div>
+
     <div class="extraInfos">
         {% block archive_data %}
         <div>
@@ -285,41 +261,46 @@ Item : <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
             <dl class="listing">
                 {% dl_field item "code" %}
                 {% dl_field item "old_code" %}
-                {% dl_field item "track" %}
+                {% if format %}
+                 {% dl_field format "original_status" %}
+                 {% dl_field format "original_number" %}
+                {% endif %}
+                {% dl_field item "recordist" %}
+                {% if format %}
+                {% dl_field format "original_location" %}
+                {% endif %}
                 {% dl_field item "creator_reference" %}
                 <dt>{% trans "Published references" %}</dt>
                 <dd>{{ item.external_references|html_line_break|safe }}</dd>
-                {% dl_field item "public_access_label" %}
+                {% dl_field item "digitalist" %}
+                {% dl_field item "digitization_date" %}
+                {% dl_field item "publishing_date" %}
             </dl>
         </div>
         {% endblock archive_data %}
     </div>
+
     <div class="extraInfos">
         {% block technical_data %}
         <div>
             <h4><a href="#">{% trans "Technical data" %}</a></h4>
             <div>
                 <dl class="listing">
-                    <dt>{% trans "Media type" %}</dt>
-                    <dd>{% trans mime_type|mime_to_media_type %}</dd>
                     {% dl_field item "approx_duration" %}
-
                     {% if format %}
                      {% dl_field format "physical_format" %}
-                     {% dl_field format "original_code" %}
-                     {% dl_field format "original_number" %}
-                     {% dl_field format "original_status" %}
-                     {% dl_field format "original_location" %}
-                     {% dl_field format "original_state" %}
-                     {% dl_field format "original_audio_quality" %}
-                     <dt>{% trans "Comments" %}</dt>
-                     <dd>{{ format.original_comments|html_line_break|safe }}</dd>
-                     {% dl_field format "tape_wheel_diameter" %}
-                     {% dl_field format "tape_thickness" %}
+                     {% dl_field format "recording_system" %}
+                     {% dl_field format "original_channels" %}
                      {% dl_field format "tape_speed" %}
+                     {% dl_field format "tape_wheel_diameter" %}
                      {% dl_field format "tape_vendor" %}
                      {% dl_field format "tape_reference" %}
+                     <dt>{% trans "Comments" %}</dt>
+                     <dd>{{ format.original_comments|html_line_break|safe }}</dd>
+                     {% dl_field format "tape_thickness" %}
                      {% dl_field format "sticker_presence" %}
+                     {% dl_field format "original_state" %}
+                     {% dl_field format "original_audio_quality" %}
                     {% endif %}
                 </dl>
 
