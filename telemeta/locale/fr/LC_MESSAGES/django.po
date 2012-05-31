@@ -1489,7 +1489,7 @@ msgstr "Remarques"
 
 #: templates/telemeta/mediaitem_detail.html:243
 msgid "Organization"
-msgstr "Organization"
+msgstr "Organisation"
 
 #: templates/telemeta/mediaitem_detail.html:247
 msgid "Rights"
