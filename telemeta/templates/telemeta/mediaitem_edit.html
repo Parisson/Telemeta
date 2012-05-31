@@ -16,6 +16,8 @@
     <table>
     {% for form in forms %}
     <tr><td colspan="2">{% for error in form.non_field_errors %}<li class="error">{{ error }}</li>{% endfor %}</td></tr>
+    <tr><td colspan="2"><h2>{{ form.prefix|capitalize }}</h2><hr /></td></tr>
+
     {% for field in form %}
     <tr>
     {% if field.html_name in hidden_fields %}
@@ -35,6 +37,7 @@
     {% endfor %}
     {% endfor %}
     </table>
+    <hr />
     <div align="center" style="margin-top:3ex;">
     <a href="{% url telemeta-item-detail item.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
     {% if perms.telemeta.change_mediaitem %}
