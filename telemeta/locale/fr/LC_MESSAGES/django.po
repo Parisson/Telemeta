@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-31 15:25+0200\n"
+"POT-Creation-Date: 2012-05-31 15:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Olivier Guilyardi <olivier samalyse com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1481,7 +1481,7 @@ msgstr "Lieu"
 
 #: templates/telemeta/mediaitem_detail.html:215
 msgid "Interprets"
-msgstr "interprètes"
+msgstr "Interprètes"
 
 #: templates/telemeta/mediaitem_detail.html:223
 msgid "Remarks"
