@@ -51,10 +51,10 @@ class Location(ModelCore):
     name             = CharField(_('name'), unique=True, max_length=150, required=True)
     type             = IntegerField(_('type'), choices=TYPE_CHOICES, default=OTHER_TYPE, db_index=True)
     complete_type    = ForeignKey('LocationType', related_name="locations", verbose_name=_('complete type'))
-    current_location = WeakForeignKey('self', related_name="past_names", 
-                                      verbose_name=_('current location')) 
-    latitude         = FloatField(null=True)                                    
-    longitude        = FloatField(null=True)                                    
+    current_location = WeakForeignKey('self', related_name="past_names",
+                                      verbose_name=_('current location'))
+    latitude         = FloatField(null=True)
+    longitude        = FloatField(null=True)
     is_authoritative = BooleanField(_('authoritative'))
 
     objects = LocationManager()
@@ -71,18 +71,18 @@ class Location(ModelCore):
         q = Q(descendant_relations__location=self)
         if direct:
             q &= Q(descendant_relations__is_direct=True)
-        return Location.objects.filter(q)           
+        return Location.objects.filter(q)
 
     def descendants(self, direct=False):
         q = Q(ancestor_relations__ancestor_location=self)
         if direct:
             q &= Q(ancestor_relations__is_direct=True)
-        return Location.objects.filter(q)           
+        return Location.objects.filter(q)
 
     def apparented(self):
         return Location.objects.filter(
-                Q(pk=self.id) | 
-                Q(ancestor_relations__ancestor_location=self) | 
+                Q(pk=self.id) |
+                Q(ancestor_relations__ancestor_location=self) |
                 Q(current_location=self.id)).distinct()
 
     def add_child(self, other):
@@ -90,7 +90,7 @@ class Location(ModelCore):
         for location in self.ancestors():
             #FIXME: might raise Duplicate Entry
             LocationRelation.objects.create(location=other, ancestor_location=location)
-            
+
     def add_parent(self, other):
         LocationRelation.objects.create(location=self, ancestor_location=other, is_direct=True)
         for location in self.descendants():
@@ -125,7 +125,7 @@ class Location(ModelCore):
             if self.id == map[flatname]:
                 return flatname
 
-        return None                    
+        return None
 
     def paths(self):
         #FIXME: need to handle multiple (polyhierarchical) paths
@@ -144,7 +144,7 @@ class Location(ModelCore):
         for path in self.paths():
             names.append(u', '.join([unicode(l) for l in path]))
         return names
-        
+
     def listnames(self):
         names = []
         for path in self.paths():
@@ -159,10 +159,11 @@ class LocationType(ModelCore):
 
     def __unicode__(self):
         return self.name
-        
+
     class Meta(MetaCore):
         db_table = 'location_types'
         ordering = ['name']
+        verbose_name_plural = _('lieux types')
 
 class LocationAlias(ModelCore):
     "Location aliases"
@@ -178,7 +179,7 @@ class LocationAlias(ModelCore):
         unique_together = (('location', 'alias'),)
         verbose_name_plural = _('location aliases')
         ordering = ['alias']
-    
+
 class LocationRelation(ModelCore):
     "Location relations"
     location             = ForeignKey('Location', related_name="ancestor_relations", verbose_name=_('location'))
@@ -190,11 +191,12 @@ class LocationRelation(ModelCore):
         db_table = 'location_relations'
         unique_together = ('location', 'ancestor_location')
         ordering = ['ancestor_location__name']
+        verbose_name_plural = _('location relations')
 
     def __unicode__(self):
         sep = ' > '
         if not self.is_direct:
-            sep = ' >..> ' 
+            sep = ' >..> '
         return unicode(self.ancestor_location) + sep + unicode(self.location)
 
 
@@ -205,4 +207,4 @@ class LocationForm(ModelForm):
     def __init__(self, *args, **kwds):
         super(LocationForm, self).__init__(*args, **kwds)
 #        self.fields['name'].queryset = Location.objects.order_by('name')
-        
+

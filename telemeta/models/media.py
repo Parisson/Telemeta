@@ -311,11 +311,15 @@ class MediaItem(MediaResource):
     # Main Informations
     title                 = CharField(_('title'))
     alt_title             = CharField(_('original title / translation'))
-    collector             = CharField(_('recordist'))
     collection            = ForeignKey('MediaCollection', related_name="items",
                                        verbose_name=_('collection'))
     recorded_from_date    = DateField(_('recording date (from)'))
     recorded_to_date      = DateField(_('recording date (until)'))
+
+    scientist             = CharField(_('scientist'))
+    subject               = WeakForeignKey('Subject', verbose_name=_('subject'))
+    summary               = TextField(_('summary'))
+    comment               = TextField(_('remarks'))
 
     # Geographic and cultural informations
     location              = WeakForeignKey('Location', verbose_name=_('location'))
@@ -336,29 +340,37 @@ class MediaItem(MediaResource):
     generic_style         = WeakForeignKey('GenericStyle', related_name="items",
                                            verbose_name=_('generic style'))
     author                = CharField(_('author / compositor'))
+    contributor           = CharField(_('contributor'))
 
-    # General informations
-    comment               = TextField(_('remarks'))
-    collector_selection   = CharField(_('recordist selection'))
-    collector_from_collection = BooleanField(_('recordist as in collection'))
+    # Legal mentions
+    organization          = WeakForeignKey('Organization', verbose_name=_('organization'))
+    public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES,
+                                      max_length=16, default="metadata")
+    depositor             = CharField(_('depositor'))
+    rights                = WeakForeignKey('Rights', verbose_name=_('rights'))
 
     # Archiving data
     code                  = CharField(_('code'), unique=True, blank=True)
-    old_code              = CharField(_('old code'), unique=False, blank=True)
+    old_code              = CharField(_('original code'), unique=False, blank=True)
     track                 = CharField(_('item number'))
-    creator_reference     = CharField(_('reference'))
-    original_format       = ForeignKey(Format, related_name="item",
-                                       verbose_name=_('original format'), blank=True,
-                                        null=True, on_delete=models.SET_NULL)
+    recordist             = CharField(_('recordist'))
+    digitalist            = CharField(_('digitalist'))
+    collector             = CharField(_('collector'))
+    collector_selection   = CharField(_('collector selection'))
+    collector_from_collection = BooleanField(_('collector as in collection'))
+    digitization_date        = DateField(_('digitization date'))
+    publishing_date       = DateField(_('publishing date'))
+    creator_reference     = CharField(_('creator reference'))
     external_references   = TextField(_('published references'))
     copied_from_item      = WeakForeignKey('self', related_name="copies", verbose_name=_('copy of'))
-    public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES, max_length=16, default="metadata")
+
+    # Media
     file                  = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename")
 
     # Technical data
     approx_duration       = DurationField(_('approximative duration'))
 
-    # All
+    # Manager
     objects               = MediaItemManager()
 
     def keywords(self):
@@ -521,7 +533,8 @@ class Playlist(ModelCore):
 
 class PlaylistResource(ModelCore):
     "Playlist components"
-    RESOURCE_TYPE_CHOICES = (('item', 'item'), ('collection', 'collection'), ('marker', 'marker'), ('fonds', 'fonds'), ('corpus', 'corpus'))
+    RESOURCE_TYPE_CHOICES = (('item', 'item'), ('collection', 'collection'),
+                             ('marker', 'marker'), ('fonds', 'fonds'), ('corpus', 'corpus'))
     element_type = 'playlist_resource'
     public_id          = CharField(_('public_id'), required=True)
     playlist           = ForeignKey('Playlist', related_name="resources", verbose_name=_('playlist'))
@@ -640,7 +653,8 @@ class MediaCorpus(MediaBaseResource):
     element_type = 'corpus'
     children_type = 'collections'
 
-    children = models.ManyToManyField(MediaCollection, related_name="corpus", verbose_name=_('collections'),  blank=True, null=True)
+    children = models.ManyToManyField(MediaCollection, related_name="corpus",
+                                      verbose_name=_('collections'),  blank=True, null=True)
     recorded_from_year    = IntegerField(_('recording year (from)'))
     recorded_to_year      = IntegerField(_('recording year (until)'))
 
@@ -662,7 +676,8 @@ class MediaFonds(MediaBaseResource):
     element_type = 'fonds'
     children_type = 'corpus'
 
-    children = models.ManyToManyField(MediaCorpus, related_name="fonds", verbose_name=_('corpus'), blank=True, null=True)
+    children = models.ManyToManyField(MediaCorpus, related_name="fonds",
+                                      verbose_name=_('corpus'), blank=True, null=True)
 
     objects = MediaFondsManager()
 

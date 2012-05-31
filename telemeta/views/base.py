@@ -225,7 +225,7 @@ class GeneralView(object):
         else:
             sound_pub_items = None
 
-        revisions = get_revisions(4)
+        revisions = get_revisions(25)
         context = RequestContext(request, {
                     'page_content': pages.get_page_content(request, 'home', ignore_slash_issue=True),
                     'revisions': revisions,  'sound_pub_items': sound_pub_items,
@@ -659,7 +659,9 @@ class ItemView(object):
         else:
             last_revision = None
 
-        physical_format = item.original_format
+        format = ''
+        if Format.objects.filter(item=item):
+            format = item.format.get()
 
         return render(request, template,
                     {'item': item, 'export_formats': formats,
@@ -668,7 +670,7 @@ class ItemView(object):
                     'previous' : previous, 'next' : next, 'marker': marker_id, 'playlists' : playlists,
                     'public_access': public_access, 'width': width, 'height': height,
                     'related_media': related_media, 'mime_type': mime_type, 'last_revision': last_revision,
-                    'physical_format': physical_format,
+                    'format': format,
                     })
 
     @method_decorator(permission_required('telemeta.change_mediaitem'))
@@ -699,14 +701,18 @@ class ItemView(object):
         if 'quicktime' in mime_type:
             mime_type = 'video/mp4'
 
+        format, created = Format.objects.get_or_create(item=item)
+
         if request.method == 'POST':
-            form = MediaItemForm(data=request.POST, files=request.FILES, instance=item)
-            if form.is_valid():
-                form.save()
-                code = form.cleaned_data['code']
+            item_form = MediaItemForm(data=request.POST, files=request.FILES, instance=item, prefix='item')
+            format_form = FormatForm(data=request.POST, instance=format, prefix='format')
+            if item_form.is_valid() and format_form.is_valid():
+                item_form.save()
+                format_form.save()
+                code = item_form.cleaned_data['code']
                 if not code:
                     code = str(item.id)
-                if form.files:
+                if item_form.files:
                     self.cache_data.delete_item_data(code)
                     self.cache_export.delete_item_data(code)
                     flags = MediaItemTranscodingFlag.objects.filter(item=item)
@@ -718,13 +724,18 @@ class ItemView(object):
                 item.set_revision(request.user)
                 return HttpResponseRedirect('/archives/items/'+code)
         else:
-            form = MediaItemForm(instance=item)
+            item_form = MediaItemForm(instance=item, prefix='item')
+            format_form = FormatForm(instance=format, prefix='format')
+
+        forms = [item_form, format_form]
+        hidden_fields = ['item-copied_from_item', 'format-item']
 
         return render(request, template,
                     {'item': item, 'export_formats': formats,
                     'visualizers': graphers, 'visualizer_id': grapher_id,
-                    'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True), "form": form,
-                    'previous' : previous, 'next' : next, 'mime_type': mime_type,
+                    'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True),
+                    'forms': forms, 'previous' : previous, 'next' : next, 'mime_type': mime_type,
+                    'hidden_fields': hidden_fields,
                     })
 
     def related_media_item_stream(self, request, item_public_id, media_id):
@@ -757,22 +768,31 @@ class ItemView(object):
             items = MediaItem.objects.filter(collection=collection)
             code = auto_code(items, collection.code)
             item = MediaItem(collection=collection, code=code)
+            format, created = Format.objects.get_or_create(item=item)
         else:
             item = MediaItem()
+            format = Format()
+
         if request.method == 'POST':
-            form = MediaItemForm(data=request.POST, files=request.FILES, instance=item)
-            if form.is_valid():
-                form.save()
+            item_form = MediaItemForm(data=request.POST, files=request.FILES, instance=item, prefix='item')
+            format_form = FormatForm(data=request.POST, instance=format, prefix='format')
+            if item_form.is_valid() and format_form.is_valid():
+                item_form.save()
                 item.set_revision(request.user)
-                code = form.cleaned_data['code']
+                format.item = item
+                format_form.save()
+                code = item_form.cleaned_data['code']
                 if not code:
                     code = str(item.id)
                 return HttpResponseRedirect('/archives/items/'+code)
         else:
-            form = MediaItemForm(instance=item)
+            item_form = MediaItemForm(instance=item, prefix='item')
+            format_form = FormatForm(instance=format, prefix='format')
 
+        forms = [item_form, format_form]
+        hidden_fields = ['item-copied_from_item', 'format-item']
 
-        return render(request, template, {'item': item, 'form': form})
+        return render(request, template, {'item': item, 'forms': forms, 'hidden_fields': hidden_fields,})
 
     @method_decorator(permission_required('telemeta.add_mediaitem'))
     def item_copy(self, request, public_id, template='telemeta/mediaitem_copy.html'):
@@ -780,12 +800,18 @@ class ItemView(object):
         if request.method == 'POST':
             source_item = MediaItem.objects.get(public_id=public_id)
             item = MediaItem()
-            form = MediaItemForm(data=request.POST, files=request.FILES, instance=item)
-            if form.is_valid():
-                form.save()
-                code = form.cleaned_data['code']
+            format = Format()
+            item_form = MediaItemForm(data=request.POST, files=request.FILES, instance=item, prefix='item')
+            format_form = FormatForm(data=request.POST, instance=format, prefix='format')
+
+            if item_form.is_valid():
+                item_form.save()
+                code = item_form.cleaned_data['code']
                 if not code:
                     code = str(item.id)
+                if format_form.is_valid():
+                    format.item = item
+                    format_form.save()
 
                 performances = MediaItemPerformance.objects.filter(media_item=source_item)
                 for performance in performances:
@@ -808,11 +834,16 @@ class ItemView(object):
             items = MediaItem.objects.filter(collection=item.collection)
             item.code = auto_code(items, item.collection.code)
             item.approx_duration = ''
-            form = MediaItemForm(instance=item)
-            form.code = item.code
-            form.file = None
+            item_form = MediaItemForm(instance=item, prefix='item')
+            format, created = Format.objects.get_or_create(item=item)
+            format_form = FormatForm(instance=format, prefix='format')
+            item_form.code = item.code
+            item_form.file = None
 
-        return render(request, template, {'item': item, "form": form})
+        forms = [item_form, format_form]
+        hidden_fields = ['item-copied_from_item', 'format-item']
+
+        return render(request, template, {'item': item, "forms": forms, 'hidden_fields': hidden_fields,})
 
     @method_decorator(permission_required('telemeta.delete_mediaitem'))
     def item_delete(self, request, public_id):

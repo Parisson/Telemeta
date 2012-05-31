@@ -164,7 +164,7 @@ class EthnicGroupAlias(ModelCore):
 
 
 # Tape formats
-class WheelDiameter(Enumeration):
+class TapeWheelDiameter(Enumeration):
     "Tape wheel diameter (cm)"
 
     class Meta(MetaEnumeration):
@@ -186,11 +186,11 @@ class TapeWidth(Enumeration):
         verbose_name = _("tape width (inch)")
 
 class TapeSpeed(Enumeration):
-    "Tape speed (m/s)"
+    "Tape speed (cm/s)"
 
     class Meta(MetaEnumeration):
         db_table = 'tape_speed'
-        verbose_name = _("tape speed (m/s)")
+        verbose_name = _("tape speed (cm/s)")
 
 class TapeVendor(Enumeration):
     "Tape vendor"
@@ -199,10 +199,30 @@ class TapeVendor(Enumeration):
         db_table = 'tape_vendor'
         verbose_name = _("tape vendor")
 
-class OriginalFormat(Enumeration):
-    "Item original format"
+class NumberOfChannels(Enumeration):
+    "Number of channels"
 
     class Meta(MetaEnumeration):
-        db_table = 'original_format'
-        verbose_name = _("original format")
+        db_table = 'original_channel_number'
+        verbose_name = _("number of channels")
 
+class Organization(Enumeration):
+    "Organization"
+
+    class Meta(MetaEnumeration):
+        db_table = 'organization'
+        verbose_name = _("organization")
+
+class Rights(Enumeration):
+    "Archive rights"
+
+    class Meta(MetaEnumeration):
+        db_table = 'rights'
+        verbose_name = _("rights")
+
+class Subject(Enumeration):
+    "Scientific subject"
+
+    class Meta(MetaEnumeration):
+        db_table = 'subject'
+        verbose_name = _("subject")

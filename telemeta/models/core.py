@@ -346,12 +346,12 @@ class ModelCore(EnhancedModel):
                 required.append(field)
         return required
 
-    def save(self, force_insert=False, force_update=False):
+    def save(self, force_insert=False, force_update=False, *args, **kwargs):
         required = self.required_fields()
         for field in required:
             if not getattr(self, field.name):
                 raise RequiredFieldError(self, field)
-        super(ModelCore, self).save(force_insert, force_update)
+        super(ModelCore, self).save(force_insert, force_update, *args, **kwargs)
 
     @classmethod
     def get_dom_name(cls):
