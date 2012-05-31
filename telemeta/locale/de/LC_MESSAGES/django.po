@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-30 18:09+0200\n"
+"POT-Creation-Date: 2012-05-31 15:23+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1074,6 +1074,7 @@ msgstr ""
 
 #: templates/telemeta/base.html:165
 #: templates/telemeta/collection_detail.html:125
+#: templates/telemeta/mediaitem_detail.html:241
 msgid "Legal notices"
 msgstr ""
 
@@ -1478,10 +1479,6 @@ msgstr ""
 
 #: templates/telemeta/mediaitem_detail.html:223
 msgid "Remarks"
-msgstr ""
-
-#: templates/telemeta/mediaitem_detail.html:241
-msgid "Legal mentions"
 msgstr ""
 
 #: templates/telemeta/mediaitem_detail.html:243

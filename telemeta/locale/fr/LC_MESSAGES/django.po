@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-30 18:09+0200\n"
+"POT-Creation-Date: 2012-05-31 15:23+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Olivier Guilyardi <olivier samalyse com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1079,6 +1079,7 @@ msgstr ""
 
 #: templates/telemeta/base.html:165
 #: templates/telemeta/collection_detail.html:125
+#: templates/telemeta/mediaitem_detail.html:241
 msgid "Legal notices"
 msgstr "Mentions légales"
 
@@ -1479,7 +1480,6 @@ msgid "Location"
 msgstr "Lieu"
 
 #: templates/telemeta/mediaitem_detail.html:215
-#, fuzzy
 msgid "Interprets"
 msgstr "interprètes"
 
@@ -1487,20 +1487,13 @@ msgstr "interprètes"
 msgid "Remarks"
 msgstr "Remarques"
 
-#: templates/telemeta/mediaitem_detail.html:241
-#, fuzzy
-msgid "Legal mentions"
-msgstr "Mentions légales"
-
 #: templates/telemeta/mediaitem_detail.html:243
-#, fuzzy
 msgid "Organization"
-msgstr "organisation"
+msgstr "Organization"
 
 #: templates/telemeta/mediaitem_detail.html:247
-#, fuzzy
 msgid "Rights"
-msgstr "droits"
+msgstr "Droits"
 
 #: templates/telemeta/mediaitem_detail.html:273
 msgid "Published references"
