@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-30 13:14+0200\n"
+"POT-Creation-Date: 2012-05-30 18:09+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Olivier Guilyardi <olivier samalyse com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -803,7 +803,7 @@ msgstr ""
 #: templates/postman/base_folder.html:49 templates/postman/view.html:25
 #: templates/telemeta/collection_detail.html:217
 #: templates/telemeta/lists.html:58
-#: templates/telemeta/mediaitem_detail.html:346
+#: templates/telemeta/mediaitem_detail.html:327
 #: templates/telemeta/resource_detail.html:102
 msgid "Delete"
 msgstr "Supprimer"
@@ -1057,6 +1057,7 @@ msgstr "Admin"
 #: templates/telemeta/base.html:117 templates/telemeta/instrument_edit.html:4
 #: templates/telemeta/instrument_edit.html:7
 #: templates/telemeta/instrument_edit_value.html:5
+#: templates/telemeta/mediaitem_detail.html:193
 msgid "Instruments"
 msgstr "Instruments"
 
@@ -1174,13 +1175,12 @@ msgid "Recording period"
 msgstr "Période d'enregistrement"
 
 #: templates/telemeta/collection_detail.html:103
-#: templates/telemeta/mediaitem_detail.html:204
+#: templates/telemeta/mediaitem_detail.html:230
 #: templates/telemeta/resource_detail.html:73
 msgid "Last modification"
 msgstr "Dernière modification"
 
 #: templates/telemeta/collection_detail.html:112
-#: templates/telemeta/mediaitem_detail.html:214
 msgid "Geographic and cultural informations"
 msgstr "Indications géographiques et culturelles"
 
@@ -1196,7 +1196,7 @@ msgid "Bibliographic references"
 msgstr "Références bibliographiques"
 
 #: templates/telemeta/collection_detail.html:152
-#: templates/telemeta/mediaitem_detail.html:284
+#: templates/telemeta/mediaitem_detail.html:260
 msgid "Archiving data"
 msgstr "Données d'archivage"
 
@@ -1205,17 +1205,17 @@ msgid "Related documentation"
 msgstr "Documentation associée"
 
 #: templates/telemeta/collection_detail.html:162
-#: templates/telemeta/mediaitem_detail.html:315
+#: templates/telemeta/mediaitem_detail.html:298
 msgid "Comments"
 msgstr "Commentaires"
 
 #: templates/telemeta/collection_detail.html:176
-#: templates/telemeta/mediaitem_detail.html:300
+#: templates/telemeta/mediaitem_detail.html:286
 msgid "Technical data"
 msgstr "Données techniques"
 
 #: templates/telemeta/collection_detail.html:181
-#: templates/telemeta/mediaitem_detail.html:303
+#: templates/telemeta/mediaitem_detail.html:226
 msgid "Media type"
 msgstr "Type de media"
 
@@ -1469,36 +1469,40 @@ msgstr "Unité"
 msgid "Download:"
 msgstr "Téléchargement:"
 
-#: templates/telemeta/mediaitem_detail.html:196
+#: templates/telemeta/mediaitem_detail.html:200
 msgid "Recording date"
 msgstr "Date d'enregistrement"
 
-#: templates/telemeta/mediaitem_detail.html:200
-msgid "Remarks"
-msgstr "Remarques"
-
-#: templates/telemeta/mediaitem_detail.html:216
+#: templates/telemeta/mediaitem_detail.html:208
 #: templates/telemeta/inc/mediaitem_list.html:18
 msgid "Location"
 msgstr "Lieu"
 
-#: templates/telemeta/mediaitem_detail.html:222
-msgid "Language ISO"
-msgstr "Langue ISO"
+#: templates/telemeta/mediaitem_detail.html:215
+#, fuzzy
+msgid "Interprets"
+msgstr "interprètes"
 
-#: templates/telemeta/mediaitem_detail.html:226
-msgid "Ethnographic context"
-msgstr "Contexte ethnographique"
+#: templates/telemeta/mediaitem_detail.html:223
+msgid "Remarks"
+msgstr "Remarques"
 
-#: templates/telemeta/mediaitem_detail.html:237
-msgid "Musical informations"
-msgstr "Informations sur la musique"
+#: templates/telemeta/mediaitem_detail.html:241
+#, fuzzy
+msgid "Legal mentions"
+msgstr "Mentions légales"
 
-#: templates/telemeta/mediaitem_detail.html:274
-msgid "General informations"
-msgstr "Informations générales"
+#: templates/telemeta/mediaitem_detail.html:243
+#, fuzzy
+msgid "Organization"
+msgstr "organisation"
 
-#: templates/telemeta/mediaitem_detail.html:290
+#: templates/telemeta/mediaitem_detail.html:247
+#, fuzzy
+msgid "Rights"
+msgstr "droits"
+
+#: templates/telemeta/mediaitem_detail.html:273
 msgid "Published references"
 msgstr "Références éditées"
 
@@ -1925,6 +1929,18 @@ msgstr ""
 #: views/base.py:1513
 msgid "Last changes"
 msgstr "Dernières modifications"
+
+#~ msgid "Language ISO"
+#~ msgstr "Langue ISO"
+
+#~ msgid "Ethnographic context"
+#~ msgstr "Contexte ethnographique"
+
+#~ msgid "Musical informations"
+#~ msgstr "Informations sur la musique"
+
+#~ msgid "General informations"
+#~ msgstr "Informations générales"
 
 #~ msgid "domain"
 #~ msgstr "discipline"
