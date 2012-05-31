@@ -236,9 +236,9 @@ Item : <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
 
 
     <div class="extraInfos">
-        {% block legal_mentions %}
+        {% block legal_notices %}
         <div>
-            <h4><a href="#">{% trans "Legal mentions" %}</a></h4>
+            <h4><a href="#">{% trans "Legal notices" %}</a></h4>
             <dl class="listing">
              <dt>{% trans "Organization" %}</dt>
              <dd>{% organization %}</dd>
@@ -251,7 +251,7 @@ Item : <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
             </dd>
             </dl>
         </div>
-        {% endblock legal_mentions %}
+        {% endblock legal_notices %}
     </div>
 
     <div class="extraInfos">

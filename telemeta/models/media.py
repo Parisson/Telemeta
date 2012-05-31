@@ -342,7 +342,7 @@ class MediaItem(MediaResource):
     author                = CharField(_('author / compositor'))
     contributor           = CharField(_('contributor'))
 
-    # Legal mentions
+    # Legal notices
     organization          = WeakForeignKey('Organization', verbose_name=_('organization'))
     public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES,
                                       max_length=16, default="metadata")
