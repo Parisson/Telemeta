@@ -317,7 +317,7 @@ class MediaItem(MediaResource):
     recorded_to_date      = DateField(_('recording date (until)'))
 
     scientist             = CharField(_('scientist'))
-    subject               = WeakForeignKey('Subject', verbose_name=_('subject'))
+    topic                 = WeakForeignKey('Topic', verbose_name=_('topic'))
     summary               = TextField(_('summary'))
     comment               = TextField(_('remarks'))
 
