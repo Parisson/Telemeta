@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-30 13:14+0200\n"
+"POT-Creation-Date: 2012-06-07 10:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Olivier Guilyardi <olivier samalyse com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -125,7 +125,7 @@ msgid "rights"
 msgstr "droits"
 
 #: models/enum.py:228 models/media.py:320
-msgid "subject"
+msgid "topic"
 msgstr "discipline"
 
 #: models/format.py:58 models/media.py:390 models/media.py:449
@@ -268,9 +268,8 @@ msgid "locations"
 msgstr "lieux"
 
 #: models/location.py:166
-#, fuzzy
-msgid "lieux types"
-msgstr "lieux types"
+msgid "location types"
+msgstr "types de lieux"
 
 #: models/location.py:180
 msgid "location aliases"
@@ -1925,6 +1924,13 @@ msgstr ""
 #: views/base.py:1513
 msgid "Last changes"
 msgstr "Dernières modifications"
+
+#, fuzzy
+#~ msgid "lieux types"
+#~ msgstr "lieux types"
+
+#~ msgid "subject"
+#~ msgstr "discipline"
 
 #~ msgid "domain"
 #~ msgstr "discipline"
