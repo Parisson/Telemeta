@@ -163,7 +163,7 @@ class LocationType(ModelCore):
     class Meta(MetaCore):
         db_table = 'location_types'
         ordering = ['name']
-        verbose_name_plural = _('lieux types')
+        verbose_name_plural = _('location types')
 
 class LocationAlias(ModelCore):
     "Location aliases"
