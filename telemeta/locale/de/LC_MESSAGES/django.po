@@ -8,11 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-<<<<<<< HEAD
-"POT-Creation-Date: 2012-05-31 15:31+0200\n"
-=======
-"POT-Creation-Date: 2012-06-07 10:02+0200\n"
->>>>>>> dev
+"POT-Creation-Date: 2012-06-07 10:11+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -806,7 +802,7 @@ msgstr ""
 #: templates/postman/base_folder.html:49 templates/postman/view.html:25
 #: templates/telemeta/collection_detail.html:217
 #: templates/telemeta/lists.html:58
-#: templates/telemeta/mediaitem_detail.html:327
+#: templates/telemeta/mediaitem_detail.html:346
 #: templates/telemeta/resource_detail.html:102
 msgid "Delete"
 msgstr ""
@@ -1058,7 +1054,6 @@ msgstr ""
 #: templates/telemeta/base.html:117 templates/telemeta/instrument_edit.html:4
 #: templates/telemeta/instrument_edit.html:7
 #: templates/telemeta/instrument_edit_value.html:5
-#: templates/telemeta/mediaitem_detail.html:193
 msgid "Instruments"
 msgstr ""
 
@@ -1078,7 +1073,6 @@ msgstr ""
 
 #: templates/telemeta/base.html:165
 #: templates/telemeta/collection_detail.html:125
-#: templates/telemeta/mediaitem_detail.html:241
 msgid "Legal notices"
 msgstr ""
 
@@ -1175,12 +1169,13 @@ msgid "Recording period"
 msgstr ""
 
 #: templates/telemeta/collection_detail.html:103
-#: templates/telemeta/mediaitem_detail.html:230
+#: templates/telemeta/mediaitem_detail.html:204
 #: templates/telemeta/resource_detail.html:73
 msgid "Last modification"
 msgstr ""
 
 #: templates/telemeta/collection_detail.html:112
+#: templates/telemeta/mediaitem_detail.html:214
 msgid "Geographic and cultural informations"
 msgstr ""
 
@@ -1196,7 +1191,7 @@ msgid "Bibliographic references"
 msgstr ""
 
 #: templates/telemeta/collection_detail.html:152
-#: templates/telemeta/mediaitem_detail.html:260
+#: templates/telemeta/mediaitem_detail.html:284
 msgid "Archiving data"
 msgstr ""
 
@@ -1205,17 +1200,17 @@ msgid "Related documentation"
 msgstr ""
 
 #: templates/telemeta/collection_detail.html:162
-#: templates/telemeta/mediaitem_detail.html:298
+#: templates/telemeta/mediaitem_detail.html:315
 msgid "Comments"
 msgstr ""
 
 #: templates/telemeta/collection_detail.html:176
-#: templates/telemeta/mediaitem_detail.html:286
+#: templates/telemeta/mediaitem_detail.html:300
 msgid "Technical data"
 msgstr ""
 
 #: templates/telemeta/collection_detail.html:181
-#: templates/telemeta/mediaitem_detail.html:226
+#: templates/telemeta/mediaitem_detail.html:303
 msgid "Media type"
 msgstr ""
 
@@ -1468,32 +1463,36 @@ msgstr ""
 msgid "Download:"
 msgstr ""
 
-#: templates/telemeta/mediaitem_detail.html:200
+#: templates/telemeta/mediaitem_detail.html:196
 msgid "Recording date"
 msgstr ""
 
-#: templates/telemeta/mediaitem_detail.html:208
+#: templates/telemeta/mediaitem_detail.html:200
+msgid "Remarks"
+msgstr ""
+
+#: templates/telemeta/mediaitem_detail.html:216
 #: templates/telemeta/inc/mediaitem_list.html:18
 msgid "Location"
 msgstr ""
 
-#: templates/telemeta/mediaitem_detail.html:215
-msgid "Interprets"
+#: templates/telemeta/mediaitem_detail.html:222
+msgid "Language ISO"
 msgstr ""
 
-#: templates/telemeta/mediaitem_detail.html:223
-msgid "Remarks"
+#: templates/telemeta/mediaitem_detail.html:226
+msgid "Ethnographic context"
 msgstr ""
 
-#: templates/telemeta/mediaitem_detail.html:243
-msgid "Organization"
+#: templates/telemeta/mediaitem_detail.html:237
+msgid "Musical informations"
 msgstr ""
 
-#: templates/telemeta/mediaitem_detail.html:247
-msgid "Rights"
+#: templates/telemeta/mediaitem_detail.html:274
+msgid "General informations"
 msgstr ""
 
-#: templates/telemeta/mediaitem_detail.html:273
+#: templates/telemeta/mediaitem_detail.html:290
 msgid "Published references"
 msgstr ""
 
