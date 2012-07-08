@@ -65,7 +65,11 @@ class Resource(object):
            [(key, value), ...]"""
         result = []
         for element in self.elements:
-            result.append((element.name, unicode(element.value)))
+            if isinstance(element.value, str):
+                value = element.value.decode('utf8')
+            else:
+                value = element.value
+            result.append((element.name, unicode(value)))
         return result
 
     def add(self, *elements):

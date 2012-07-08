@@ -215,7 +215,8 @@ class MediaCollection(MediaResource):
     conservation_site     = CharField(_('conservation site'))
 
     # Technical data
-    code                  = CharField(_('code'), unique=True, required=True, validators=[is_valid_collection_code])
+    code                  = CharField(_('code'), unique=True, required=True,
+                                      validators=[is_valid_collection_code])
     old_code              = CharField(_('old code'), unique=False, null=True, blank=True)
     approx_duration       = DurationField(_('approximative duration'))
     physical_items_num    = IntegerField(_('number of components (medium / piece)'))
@@ -381,7 +382,7 @@ class MediaItem(MediaResource):
     def public_id(self):
         if self.code:
             return self.code
-        return self.id
+        return str(self.id)
 
     class Meta(MetaCore):
         db_table = 'media_items'
