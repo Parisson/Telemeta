@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-07 10:11+0200\n"
+"POT-Creation-Date: 2012-07-09 01:17+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -864,6 +864,7 @@ msgid "Thank you again for your interest in our services."
 msgstr ""
 
 #: templates/postman/email_user.txt:17 templates/postman/email_visitor.txt:16
+#: templates/telemeta/registration/password_reset_email.html:13
 msgid "The site administrator"
 msgstr ""
 
@@ -1823,30 +1824,33 @@ msgid ""
 "address you submitted. You should be receiving it shortly."
 msgstr ""
 
-#: templates/telemeta/registration/password_reset_email.html:2
-msgid "You're receiving this e-mail because you requested a password reset"
+#: templates/telemeta/registration/password_reset_email.html:1
+msgid "Hello"
 msgstr ""
 
 #: templates/telemeta/registration/password_reset_email.html:3
+msgid "You're receiving this e-mail because you requested a password reset"
+msgstr ""
+
+#: templates/telemeta/registration/password_reset_email.html:4
 #, python-format
 msgid "for your user account at %(site_name)s"
 msgstr ""
 
-#: templates/telemeta/registration/password_reset_email.html:5
+#: templates/telemeta/registration/password_reset_email.html:6
 msgid "Please go to the following page and choose a new password:"
 msgstr ""
 
-#: templates/telemeta/registration/password_reset_email.html:9
+#: templates/telemeta/registration/password_reset_email.html:10
 msgid "Your username, in case you've forgotten:"
 msgstr ""
 
-#: templates/telemeta/registration/password_reset_email.html:11
-msgid "Thanks for using our site!"
+#: templates/telemeta/registration/password_reset_email.html:12
+msgid "Best regards"
 msgstr ""
 
 #: templates/telemeta/registration/password_reset_email.html:13
-#, python-format
-msgid "The %(site_name)s team"
+msgid "of the"
 msgstr ""
 
 #: templates/telemeta/registration/password_reset_form.html:7
