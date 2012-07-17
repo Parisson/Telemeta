@@ -366,7 +366,7 @@ class MediaItem(MediaResource):
     copied_from_item      = WeakForeignKey('self', related_name="copies", verbose_name=_('copy of'))
 
     # Media
-    file                  = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename")
+    file                  = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename", max_length=255)
 
     # Technical data
     approx_duration       = DurationField(_('approximative duration'))
