@@ -1012,6 +1012,13 @@ class ItemView(object):
             response['Content-Disposition'] = 'attachment'
             return response
 
+        if 'webm' in extension:
+            mime_type = 'video/webm'
+            video = item.file.path
+            response = HttpResponse(stream_from_file(video), mimetype = mime_type)
+            response['Content-Disposition'] = 'attachment'
+            return response
+
         for encoder in self.encoders:
             if encoder.file_extension() == extension:
                 break
