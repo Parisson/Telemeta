@@ -398,6 +398,12 @@ def mime_to_media_type(mime_type):
     else:
         return 'Audio'
 
+@register.filter
+def installed(app):
+    if app in settings.INSTALLED_APPS:
+        return app
+    else:
+        return ''
 
 def do_ifloaded(parser, token):
     bits = token.split_contents()[1:]
