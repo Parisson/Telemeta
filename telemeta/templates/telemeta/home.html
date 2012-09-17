@@ -10,7 +10,7 @@
 
 {% if sound_pub_item %}
 <div id="module" class="module">
-    <h3><img src="{% url telemeta-images "module_playlist.png" %}" alt="playlist" style="vertical-align:middle" />
+    <h3><img src="{{ STATIC_URL }}telemeta/images/module_playlist.png" alt="playlist" style="vertical-align:middle" />
     {% trans "Musical selection" %}</h3>
     <ul class="playlist">
     <li><a href="{% url telemeta-item-detail sound_pub_item.public_id %}"><b>{{ sound_pub_item }}</b></a>{% if sound_pub_item.alt_title %} ({{ sound_pub_item.alt_title }}){% endif %}<br /><span style="font-size: 90%">{{ sound_pub_item.location.fullnames|to_string }}</span><br />
@@ -21,10 +21,10 @@
 {% endif %}
 
 <div class="module">
-    <h3><img src="{% url telemeta-images "module_world.png" %}" alt="world" style="vertical-align:middle" />
+    <h3><img src="{{ STATIC_URL }}telemeta/images/module_world.png" alt="world" style="vertical-align:middle" />
     {% trans "Geo Navigator" %}</h3>
     <a class="image-link" href="{% url telemeta-geo-continents %}">
-    <img class="map-thumbnail" src="{% url telemeta-images "world2.png" %}" alt="{% trans "Open the geographic navigator" %}" style="width:398px" /></a>
+    <img class="map-thumbnail" src="{{ STATIC_URL }}telemeta/images/world2.png" alt="{% trans "Open the geographic navigator" %}" style="width:398px" /></a>
 </div>
 
 {% with "Last changes" as title %}
@@ -36,11 +36,11 @@
     <h3><img src="/images/module_playlist.png" style="vertical-align:middle" />
     Partenaires</h3><br />
     <div style="background-color: white; padding: 1ex;" align="center">
-    <a href="http://www.cnrs.fr"><img class="image-link" src="{% url telemeta-images "logo-CNRS.png" %}" alt="CNRS"></a>&nbsp;&nbsp;&nbsp;
-    <a href="http://www.culture.gouv.fr"><img class="image-link" src="{% url telemeta-images "logo_mcc_2.png" %}" alt="MCC"></a>&nbsp;&nbsp;
-    <a href="http://www.mnhn.fr"><img class="image-link" src="{% url telemeta-images "logo-mnhn.gif" %}" alt="MNHN"></a>
+    <a href="http://www.cnrs.fr"><img class="image-link" src="{{ STATIC_URL }}telemeta/images/logo-CNRS.png" alt="CNRS"></a>&nbsp;&nbsp;&nbsp;
+    <a href="http://www.culture.gouv.fr"><img class="image-link" src="{{ STATIC_URL }}telemeta/images/logo_mcc_2.png" alt="MCC"></a>&nbsp;&nbsp;
+    <a href="http://www.mnhn.fr"><img class="image-link" src="{{ STATIC_URL }}telemeta/images/logo-mnhn.gif" alt="MNHN"></a>
     <br /><br />
-    <a href="http://www.tge-adonis.fr"><img class="image-link" src="{% url telemeta-images "logo-adonis.jpg" %}" alt="TGE Adonis"></a>
+    <a href="http://www.tge-adonis.fr"><img class="image-link" src="{{ STATIC_URL }}telemeta/images/logo-adonis.jpg" alt="TGE Adonis"></a>
     </div>
 </div>
 
@@ -49,14 +49,14 @@
 </div>
 
 <div class="home-description">
-<img class="align-left" src="{% url telemeta-images "vox.png" %}" alt="vox" style="vertical-align:middle;" />
+<img class="align-left" src="{{ STATIC_URL }}telemeta/images/vox.png" alt="vox" style="vertical-align:middle;" />
 {{ page_content|render_flatpage }}
 </div>
 
 {% if sound_pub_items %}
 <div style="margin-top: 1ex;font-size: 90%; width: 66%;">
 <div>
-<h1><img src="{% url telemeta-images "playlist_title.png" %}" alt="playlists" style="vertical-align:middle" />
+<h1><img src="{{ STATIC_URL }}telemeta/images/playlist_title.png" alt="playlists" style="vertical-align:middle" />
     {% trans "Musical selection" %}</h1>
 </div>
 {% for item in sound_pub_items %}
