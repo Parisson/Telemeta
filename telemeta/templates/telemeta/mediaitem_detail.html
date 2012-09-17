@@ -35,7 +35,7 @@
     {% if public_access or perms.telemeta.can_play_all_items %}
         //initializing soundManager default properties
         soundManager.flashVersion = 9;
-        soundManager.url = "{% url telemeta-timeside "swf/" %}";
+        soundManager.url = "{{ STATIC_URL }}timeside/swf/";
         soundManager.debugMode = false;
         soundManager.allowPolling = true;
         soundManager.useHTML5Audio = true;
