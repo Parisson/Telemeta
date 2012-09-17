@@ -4,7 +4,7 @@
 {% block head_title %}{% trans "Instruments" %} - {{ block.super }}{% endblock %}
 
 {% block title %}
-<h1><img src="{% url telemeta-images "admin_red.png" %}" style="vertical-align:middle" /> {% trans "Administration" %} > {% trans "Instruments" %}</h1>
+<h1><img src="{{ STATIC_URL }}telemeta/images/admin_red.png" style="vertical-align:middle" /> {% trans "Administration" %} > {% trans "Instruments" %}</h1>
 {% endblock %}
 
 {% block tabcontents %}

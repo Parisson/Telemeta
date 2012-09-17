@@ -1,18 +1,18 @@
 {% extends "telemeta/base.html" %}
 {% load i18n %}
 {% load telemeta_utils %}
-        
+
 {% block head_title %}{% trans "User Profile" %} : {{ usr.username }}{% endblock %}
 
 {% block title %}
- <img src="{% url telemeta-images "user_red.png" %}" alt="user" style="vertical-align:middle" /> {% trans "User profile" %} : {{ usr.username }}
+ <img src="{{ STATIC_URL }}telemeta/images/user_red.png" alt="user" style="vertical-align:middle" /> {% trans "User profile" %} : {{ usr.username }}
 {% endblock %}
 
 {% block content %}
   <div id="module-set" style="width: 33%">
   {% block modules %}
   <div class="module">
-    <h3><img src="{% url telemeta-images "module_playlist.png" %}" alt="playlists" style="vertical-align:middle" />
+    <h3><img src="{{ STATIC_URL }}telemeta/images/module_playlist.png" alt="playlists" style="vertical-align:middle" />
     {% trans "Playlists" %}</h3>
     <ul class="playlist">
     {% for p in playlists %}
@@ -39,7 +39,7 @@
       <dt>{% trans "First Name" %}</dt><dd>{{ usr.first_name }}</dd>
       <dt>{% trans "Last Name" %}</dt><dd>{{ usr.last_name }}</dd>
       <dt>{% trans "Email" %}</dt><dd>{{ usr.email }}</dd>
-      
+
       <dt>{% trans "Institution" %}</dt><dd>{% if profile %}{{ profile.institution }}{% endif %}</dd>
       <dt>{% trans "Department" %}</dt><dd>{% if profile %}{{ profile.department }}{% endif %}</dd>
       <dt>{% trans "Function" %}</dt><dd>{% if profile %}{{ profile.function }}{% endif %}</dd>
@@ -47,7 +47,7 @@
       <dt>{% trans "Address" %}</dt><dd>{% if profile %}{{ profile.address }}{% endif %}</dd>
       <dt>{% trans "Telephone" %}</dt><dd>{% if profile %}{{ profile.telephone }}{% endif %}</dd>
       <dt>{% trans "Expiration date" %}</dt><dd>{% if profile %}{{ profile.expiration_date }}{% endif %}</dd>
-      
+
       <dt>{% trans "Is staff" %}</dt><dd>{{ usr.is_staff }}</dd>
       <dt>{% trans "Is superuser" %}</dt><dd>{{ usr.is_superuser }}</dd>
       <dt>{% blocktrans count user.groups.all.count as counter %}Group{% plural %}Groups{% endblocktrans %}</dt><dd>{% for group in usr.groups.all %}{{ group }} {% endfor %}</dd>
@@ -60,21 +60,21 @@
              <option {% if lang.0 == LANGUAGE_CODE %}selected{% endif %} value="{{ lang.0 }}">{{ lang.1 }}</option>
             {% endfor %}
           </select>
-          <a href="#" class="component_icon button icon_ok" 
+          <a href="#" class="component_icon button icon_ok"
             onclick="document.getElementById('setlang').submit(); return false;">{% trans "Apply" %}</a>
          </form>
         </dd>
       {%  endif %}
      </dl>
     </div>
-        
+
     {% if user.is_authenticated and user.username == usr.username or user.is_staff %}
     <a href="{% url telemeta-profile-edit usr.username %}" class="component_icon button icon_edit">{% trans "Edit" %}</a>
     {%  endif %}
     {% if user.is_authenticated and user.username == usr.username %}
     <a href="{% url telemeta-password-change %}" class="component_icon button icon_login">{% trans "Change password" %}</a>
     {%  endif %}
- 
+
   </div>
 {% endblock %}
 
