@@ -32,7 +32,6 @@
 
 # Authors: Guillaume Pellerin <yomguy@parisson.com>
 
-from telemeta.views.core import *
 from telemeta.views.home import *
 from telemeta.views.item import *
 from telemeta.views.collection import *
