@@ -65,6 +65,7 @@ from django.utils.translation import ugettext
 from django.contrib.auth.forms import UserChangeForm
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.syndication.views import Feed
+from django.core.servers.basehttp import FileWrapper
 
 from telemeta.models import *
 import telemeta.models
@@ -83,6 +84,22 @@ mods = {'item': MediaItem, 'collection': MediaCollection,
         'corpus': MediaCorpus, 'fonds': MediaFonds, 'marker': MediaItemMarker, }
 
 # TOOLS
+
+class FixedFileWrapper(FileWrapper):
+    def __iter__(self):
+        self.filelike.seek(0)
+        return self
+
+def send_file(request, filename, content_type='image/jpeg'):
+    """
+    Send a file through Django without loading the whole file into
+    memory at once. The FileWrapper will turn the file object into an
+    iterator for chunks of 8KB.
+    """
+    wrapper = FixedFileWrapper(file(filename, 'rb'))
+    response = HttpResponse(wrapper, content_type=content_type)
+    response['Content-Length'] = os.path.getsize(filename)
+    return response
 
 def render(request, template, data = None, mimetype = None):
     return render_to_response(template, data, context_instance=RequestContext(request),
