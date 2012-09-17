@@ -3,19 +3,19 @@
 {% load i18n %}
 
 {% block extra_javascript %}
-<script src="{% url telemeta-js "popupdiv-min.js" %}" type="text/javascript"></script>
-<script src="{% url telemeta-js "playlist.js" %}" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}telemeta/js/popupdiv-min.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}telemeta/js/playlist.js" type="text/javascript"></script>
 <script>
     jQuery(window).ready(function(){
         var p = playlistUtils;
-        var a = jQuery('#_new_playlist'); 
+        var a = jQuery('#_new_playlist');
         a.unbind('click').click(function(){p.showAdd(a);return false;});
         });
 
     {% for playlist in playlists %}
         playlistUtils.addEditPlaylist('{{playlist.playlist.public_id}}','{{ playlist.playlist.title }}','{{playlist.playlist.description}}');
     {% endfor %}
-        
+
 
 </script>
 {% endblock %}
@@ -28,7 +28,7 @@
     {% include "telemeta/inc/module_searches.html" %}
     {% endwith %}
     {% endblock %}
-    
+
     {% block module_user_revisions %}
     {% with user_revisions as revisions and "My last changes" as title %}
     {% include "telemeta/inc/module_user_revisions.html" %}
@@ -40,11 +40,11 @@
     {% include "telemeta/inc/module_revisions.html" %}
     {% endwith %}
     {% endblock %}
-    
+
 </div>
 
 <div class="home-description">
-    <h1><img src="{% url telemeta-images "playlist_title.png" %}" alt="playlists" style="vertical-align:middle" /> {% trans "My playlists" %}</h1>
+    <h1><img src="{{ STATIC_URL }}telemeta/images/playlist_title.png" alt="playlists" style="vertical-align:middle" /> {% trans "My playlists" %}</h1>
     <a href="#" id="_new_playlist" style="float:right" class="component_icon button icon_add">
         {% trans "Add" %}</a>
     {% for playlist in playlists %}
@@ -62,7 +62,7 @@
          <tr>
           <td colspan="2" style="border-bottom:1px solid #6A0307;color:#6A0307;font-size: 80%">{{ playlist.playlist.description }}</td>
          </tr>
-        {% endif %}  
+        {% endif %}
     </table>
     <table class="listing" width="100%">
         <tr>
@@ -107,7 +107,7 @@
             </td>
             <td align="center" style="vertical-align:middle">
                 {% if resource.element.file or resource.element.has_mediafile %}
-                <img src="{% url telemeta-images "ok.png" %}" alt="yes" style="vertical-align:middle" /></a>
+                <img src="{{ STATIC_URL }}telemeta/images/ok.png" alt="yes" style="vertical-align:middle" /></a>
                 {% endif %}
             </td>
             <td style="vertical-align:middle">

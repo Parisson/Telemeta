@@ -48,7 +48,7 @@ import telemeta.config
 telemeta.config.check()
 
 # initialization
-general_view = HomeView()
+home_view = HomeView()
 admin_view = AdminView()
 collection_view = CollectionView()
 item_view = ItemView()
@@ -71,10 +71,10 @@ all_fonds = { 'queryset': MediaFonds.objects.all().order_by('title') }
 # ID's regular expressions
 export_extensions = "|".join(item_view.list_export_extensions())
 
-htdocs = os.path.dirname(__file__) + '/htdocs'
+htdocs = os.path.dirname(__file__) + '/static/telemeta'
 
 urlpatterns = patterns('',
-    url(r'^$', general_view.home, name="telemeta-home"),
+    url(r'^$', home_view.home, name="telemeta-home"),
 
     # items
     url(r'^archives/items/$', 'django.views.generic.list_detail.object_list',
@@ -194,21 +194,21 @@ urlpatterns = patterns('',
     url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/dc/xml/$', resource_view.detail,
         {'format': 'dublin_core_xml'},
         name="telemeta-resource-dublincore-xml"),
-    url(r'^archives/$', general_view.search, name="telemeta-archives"),
+    url(r'^archives/$', home_view.search, name="telemeta-archives"),
 
     # search
-    url(r'^search/$', general_view.search, name="telemeta-search"),
-    url(r'^search/collections/$', general_view.search, {'type': 'collections'},
+    url(r'^search/$', home_view.search, name="telemeta-search"),
+    url(r'^search/collections/$', home_view.search, {'type': 'collections'},
         name="telemeta-search-collections"),
-    url(r'^search/items/$', general_view.search, {'type': 'items'},
+    url(r'^search/items/$', home_view.search, {'type': 'items'},
         name="telemeta-search-items"),
-    url(r'^search/corpus/$', general_view.search, {'type': 'corpus'},
+    url(r'^search/corpus/$', home_view.search, {'type': 'corpus'},
         name="telemeta-search-corpus"),
-    url(r'^search/fonds/$', general_view.search, {'type': 'fonds'},
+    url(r'^search/fonds/$', home_view.search, {'type': 'fonds'},
         name="telemeta-search-fonds"),
 
-    url(r'^search/criteria/$', general_view.edit_search, name="telemeta-search-criteria"),
-    url(r'^complete_location/$', general_view.complete_location, name="telemeta-complete-location"),
+    url(r'^search/criteria/$', home_view.edit_search, name="telemeta-search-criteria"),
+    url(r'^complete_location/$', home_view.complete_location, name="telemeta-complete-location"),
 
     # administration
     url(r'^admin/$', admin_view.admin_index, name="telemeta-admin"),
@@ -291,10 +291,10 @@ urlpatterns = patterns('',
         name="telemeta-video-js"),
 
     # Flat pages
-    url(r'^pages/(?P<path>.*)$', general_view.render_flatpage, name="telemeta-flatpage"),
+    url(r'^pages/(?P<path>.*)$', home_view.render_flatpage, name="telemeta-flatpage"),
 
     # OAI-PMH Data Provider
-    url(r'^oai/.*$', general_view.handle_oai_request, name="telemeta-oai"),
+    url(r'^oai/.*$', home_view.handle_oai_request, name="telemeta-oai"),
 
     # Authentication
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'telemeta/login.html'},
@@ -303,15 +303,15 @@ urlpatterns = patterns('',
         name="telemeta-login"),
     #url(r'^login/$', 'ipauth.views.login', {'template_name': 'telemeta/login.html'},
     #    name="telemeta-login"),
-    url(r'^logout/$', general_view.logout, name="telemeta-logout"),
+    url(r'^logout/$', home_view.logout, name="telemeta-logout"),
 
     # Users
-    url(r'^accounts/$', general_view.users, name="telemeta-users"),
+    url(r'^accounts/$', home_view.users, name="telemeta-users"),
 
     # Desk
-    url(r'^desk/lists/$', general_view.lists, name="telemeta-desk-lists"),
+    url(r'^desk/lists/$', home_view.lists, name="telemeta-desk-lists"),
     url(r'^desk/profile/(?P<username>[A-Za-z0-9._-]+)/$', profile_view.profile_detail, name="telemeta-desk-profile"),
-    url(r'^desk/home/$', general_view.home, name="telemeta-desk-home"),
+    url(r'^desk/home/$', home_view.home, name="telemeta-desk-home"),
 
     # Profiles
     url(r'^accounts/(?P<username>[A-Za-z0-9._-]+)/profile/$', profile_view.profile_detail, name="telemeta-profile-detail"),

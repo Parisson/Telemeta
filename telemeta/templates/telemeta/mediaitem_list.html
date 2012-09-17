@@ -5,7 +5,7 @@
 {% block head_title %}{% trans "Media Items" %} - {{ block.super }}{% endblock %}
 
 {% block title %}
- <img src="{% url telemeta-images "item.png" %}" alt="item" style="vertical-align:middle" /> {% trans "Media Items" %}
+ <img src="{{ STATIC_URL }}telemeta/images/item.png" alt="item" style="vertical-align:middle" /> {% trans "Media Items" %}
 {% endblock %}
 
 {% block title_buttons %}
