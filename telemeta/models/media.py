@@ -63,6 +63,8 @@ item_code_regex              = '(?:%s|%s)' % (item_published_code_regex, item_un
 
 PUBLIC_ACCESS_CHOICES = (('none', 'none'), ('metadata', 'metadata'), ('full', 'full'))
 
+mimetypes.add_type('video/webm','.webm')
+
 
 class MediaResource(ModelCore):
     "Base class of all media objects"
@@ -126,7 +128,8 @@ class MediaRelated(MediaResource):
     mime_type       = CharField(_('mime_type'), null=True)
     url             = CharField(_('url'), max_length=500)
     credits         = CharField(_('credits'))
-    file            = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename")
+    file            = FileField(_('file'), upload_to='items/%Y/%m/%d',
+                                db_column="filename", max_length=255)
 
     def is_image(self):
         is_url_image = False
@@ -215,7 +218,8 @@ class MediaCollection(MediaResource):
     conservation_site     = CharField(_('conservation site'))
 
     # Technical data
-    code                  = CharField(_('code'), unique=True, required=True, validators=[is_valid_collection_code])
+    code                  = CharField(_('code'), unique=True, required=True,
+                                      validators=[is_valid_collection_code])
     old_code              = CharField(_('old code'), unique=False, null=True, blank=True)
     approx_duration       = DurationField(_('approximative duration'))
     physical_items_num    = IntegerField(_('number of components (medium / piece)'))
@@ -364,6 +368,9 @@ class MediaItem(MediaResource):
     external_references   = TextField(_('published references'))
     copied_from_item      = WeakForeignKey('self', related_name="copies", verbose_name=_('copy of'))
 
+    # Media
+    file                  = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename", max_length=255)
+
     # Technical data
     approx_duration       = DurationField(_('approximative duration'))
 
@@ -381,7 +388,14 @@ class MediaItem(MediaResource):
     def public_id(self):
         if self.code:
             return self.code
-        return self.id
+        return str(self.id)
+
+    @property
+    def mime_type(self):
+        if self.file:
+            return mimetypes.guess_type(self.file.path)[0]
+        else:
+            return _('none')
 
     class Meta(MetaCore):
         db_table = 'media_items'

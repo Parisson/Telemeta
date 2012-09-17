@@ -42,10 +42,13 @@
         soundManager.preferFlash = true;
 
         //initializing the visualizers to be passed to the player
+        {% block graphers %}
         var visualizers = {};
         {% for v in visualizers %}
             visualizers["{{v.name}}"] = "{% url telemeta-item-visualize item.public_id,v.id,"WIDTH","HEIGHT" %}";
         {% endfor %}
+        {% endblock graphers %}
+
         {% if user.is_superuser %}
              loadPlayer('{% url telemeta-item-analyze-xml item.public_id %}',
               "{% url telemeta-item-export item.public_id,"mp3" %}", undefined, '{{item.id}}', visualizers,

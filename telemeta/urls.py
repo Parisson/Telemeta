@@ -38,7 +38,7 @@ from django.conf.urls.defaults import *
 from django.conf import settings
 from django.views.generic.simple import redirect_to
 from telemeta.models import MediaItem, MediaCollection, MediaItemMarker, MediaCorpus, MediaFonds
-from telemeta.views.base import GeneralView, AdminView, CollectionView, ItemView, \
+from telemeta.views import HomeView, AdminView, CollectionView, ItemView, \
                                 InstrumentView, PlaylistView, ProfileView, GeoView, \
                                 LastestRevisionsFeed, ResourceView, UserRevisionsFeed
 from jsonrpc import jsonrpc_site
@@ -48,7 +48,7 @@ import telemeta.config
 telemeta.config.check()
 
 # initialization
-general_view = GeneralView()
+general_view = HomeView()
 admin_view = AdminView()
 collection_view = CollectionView()
 item_view = ItemView()
@@ -114,6 +114,8 @@ urlpatterns = patterns('',
         dict(template='telemeta/mediaitem_player.html'), name="telemeta-item-player"),
     url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/player/(?P<width>[0-9]+)x(?P<height>[0-9]+)/simple/$', item_view.item_detail,
         dict(template='telemeta/mediaitem_player_simple.html'), name="telemeta-item-player-simple"),
+    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/player/(?P<width>[0-9]+)x(?P<height>[0-9]+)/countour/$', item_view.item_detail,
+        dict(template='telemeta/mediaitem_player_contour.html'), name="telemeta-item-player-contour"),
     url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/performances/$', item_view.item_performances_edit,
         dict(template='telemeta/mediaitem_performances_edit.html'), name="telemeta-item-performances_edit"),
     url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/keywords/$', item_view.item_keywords_edit,
