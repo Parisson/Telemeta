@@ -172,7 +172,7 @@ To get the lastest development version, you need subversion and run::
 License
 =======
 
-CeCILL v2, compatible with GPL v2 (see `LICENSE <http://github.com/yomguy/Telemeta/blob/master/LICENSE`_)
+CeCILL v2, compatible with GPL v2 (see `LICENSE <http://github.com/yomguy/Telemeta/blob/master/LICENSE>`_)
 
 
 Sponsors
