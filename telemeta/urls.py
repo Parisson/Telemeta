@@ -38,7 +38,7 @@ from django.conf.urls.defaults import *
 from django.conf import settings
 from django.views.generic.simple import redirect_to
 from telemeta.models import MediaItem, MediaCollection, MediaItemMarker, MediaCorpus, MediaFonds
-from telemeta.views.base import GeneralView, AdminView, CollectionView, ItemView, \
+from telemeta.views import HomeView, AdminView, CollectionView, ItemView, \
                                 InstrumentView, PlaylistView, ProfileView, GeoView, \
                                 LastestRevisionsFeed, ResourceView, UserRevisionsFeed
 from jsonrpc import jsonrpc_site
@@ -48,7 +48,7 @@ import telemeta.config
 telemeta.config.check()
 
 # initialization
-general_view = GeneralView()
+general_view = HomeView()
 admin_view = AdminView()
 collection_view = CollectionView()
 item_view = ItemView()

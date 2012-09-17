@@ -63,6 +63,8 @@ item_code_regex              = '(?:%s|%s)' % (item_published_code_regex, item_un
 
 PUBLIC_ACCESS_CHOICES = (('none', 'none'), ('metadata', 'metadata'), ('full', 'full'))
 
+mimetypes.add_type('video/webm','.webm')
+
 
 class MediaResource(ModelCore):
     "Base class of all media objects"
