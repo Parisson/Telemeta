@@ -221,7 +221,7 @@ Item : <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
             {% endif %}
 
             {% dl_field item "author" %}
-            {% dl_field item "subject" %}
+            {% dl_field item "topic" %}
 
             <dt>{% trans "Remarks" %}</dt>
             <dd>{{ item.comment|html_line_break|safe }}</dd>
@@ -245,7 +245,7 @@ Item : <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
             <dl class="listing">
              <dt>{% trans "Organization" %}</dt>
              <dd>{% organization %}</dd>
-             {% dl_field item "public_access_label" %}
+             {% dl_field item "public_access" %}
              {% dl_field item "depositor" %}
              <dt>{% trans "Rights" %}</dt>
              <dd>{% if item.performances %}

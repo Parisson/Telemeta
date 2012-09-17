@@ -69,6 +69,10 @@ class MediaCollectionRelatedForm(ModelForm):
 class MediaItemForm(ModelForm):
     class Meta:
         model = MediaItem
+        fields = ('title', 'recorded_from_date', 'recorded_to_date', 'collector',
+                  'collection', 'summary', 'scientist', 'contributor', 'author',
+                  'topic', 'comment', 'public_access')
+
     def clean_code(self):
         return self.cleaned_data['code'] or None
 
