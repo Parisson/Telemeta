@@ -61,7 +61,7 @@
 <a href="{% url telemeta-profile-detail user.username %}">{% trans "Profile" %}</a> |
 <a href="{% url telemeta-flatpage "help" %}">{% trans "Help" %}</a> |
 <a href="{% url telemeta-logout %}">{% trans "Sign out" %}
-<img src="{% url telemeta-images "logout.png" %}" alt="logout" style="vertical-align:middle" /></a>
+<img src="{{ STATIC_URL }}telemeta/images/logout.png" alt="logout" style="vertical-align:middle" /></a>
 {% else %}
 <a href="{% url telemeta-flatpage "help" %}">{% trans "Help" %}</a> |
 <a href="{% url telemeta-login %}">{% trans "Sign in" %}</a>
@@ -147,7 +147,7 @@
  <table width="100%">
   <tr>
    <td>
-    <a id="telemeta_powered" href="{% telemeta_url %}" target="_blank"><img src="{% url telemeta-images "logo_mini_2.png" %}"
+    <a id="telemeta_powered" href="{% telemeta_url %}" target="_blank"><img src="{{ STATIC_URL }}telemeta/images/logo_mini_2.png"
    alt="Telemeta Powered"/></a>
     <p class="left">
     {% trans "Powered by" %} <a href="{% telemeta_url %}" target="_blank"><strong>Telemeta {% telemeta_version %}</strong></a><br />
