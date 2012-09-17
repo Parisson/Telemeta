@@ -5,14 +5,14 @@
 {% block head_title %}{% trans "Collection" %}{{collection|prepend:' : '}} - {{ block.super }}{% endblock %}
 
 {% block extra_javascript %}
-<script src="{% url telemeta-js "swfobject.js" %}" type="text/javascript"></script>
-<script src="{% url telemeta-js "popupdiv.js" %}" type="text/javascript"></script>
-<script src="{% url telemeta-js "playlist.js" %}" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}telemeta/js/swfobject.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}telemeta/js/popupdiv.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}telemeta/js/playlist.js" type="text/javascript"></script>
 <script>
     {% if user.is_authenticated %}
     jQuery(document).ready(function(){
         var p = playlistUtils;
-        
+
         {% for playlist in playlists %}
         p.addPlaylist('{{ playlist.playlist.title }}','{{playlist.playlist.public_id}}');
         {% endfor %}
@@ -33,8 +33,8 @@
 {% if collection %}
 
 {% block title %}
-    <img src="{% url telemeta-images "collections_red.png" %}" style="vertical-align:middle" /> 
-    Collection : 
+    <img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" />
+    Collection :
     <a href="{% url telemeta-collection-detail collection.public_id %}">{{ collection.title }}</a>
 {% endblock %}
 
@@ -63,26 +63,26 @@
               (<a href="{% url telemeta-collection-m3u collection.public_id %}">M3U</a>,
               <a href="{% url telemeta-collection-xspf collection.public_id %}">XSPF</a>)</h3>
              </div>
-                <!-- This is Jeroen Wijering's Flash MP3 Player, 
+                <!-- This is Jeroen Wijering's Flash MP3 Player,
                   under CC Attribution-NonCommercial-ShareAlike 2.0 license
                   from: http://www.jeroenwijering.com/?item=Flash_MP3_Player-->
                 <p id="collection_player_c">
                   <a href="http://www.macromedia.com/go/getflashplayer">Get Flash</a> to see this player.
                 </p>
                 <script type="text/javascript">
-                  var so = new SWFObject('{% url telemeta-swf "mp3player.swf" %}','playlist','362','200','7');
+                  var so = new SWFObject('{{ STATIC_URL }}telemeta/swf/mp3player.swf','playlist','362','200','7');
                   so.addVariable("file","{% url telemeta-collection-xspf collection.public_id %}");
                   so.addVariable("displayheight","0");
                   so.addParam("wmode", "opaque");
                   so.write('collection_player_c');
-                </script> 
+                </script>
             </div>
         </div>
         {% endif %}
         {% endif %}
       {% block infos %}
         <div class="intro">
-            <span><img src="{% url telemeta-images "item_title.png" %}" style="vertical-align:middle" /> {% if collection.items.count %}{{ collection.items.count }} {% ifequal collection.items.count 1 %}item{% else %}items{% endifequal %}{% else %}No item{% endif %}</span>
+            <span><img src="{{ STATIC_URL }}telemeta/images/item_title.png" style="vertical-align:middle" /> {% if collection.items.count %}{{ collection.items.count }} {% ifequal collection.items.count 1 %}item{% else %}items{% endifequal %}{% else %}No item{% endif %}</span>
         </div>
         <div class="infos">
         {% block general_info %}
@@ -199,9 +199,9 @@
             {% endblock related %}
         </div>
         {% endif %}
-        
+
         <div class="extraInfos">
-        <h4><img src="{% url telemeta-images "item_title.png" %}" style="vertical-align:middle" /> Items</h4>
+        <h4><img src="{{ STATIC_URL }}telemeta/images/item_title.png" style="vertical-align:middle" /> Items</h4>
         {% with "1" as location_name %}
             {% include "telemeta/inc/mediaitem_list.html" %}
         {% endwith %}

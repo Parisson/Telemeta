@@ -39,10 +39,9 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ValidationError
 from telemeta.models.core import *
-from telemeta.models.enum import ContextKeyword
 from telemeta.util.unaccent import unaccent_icmp
-from telemeta.models.location import LocationRelation, Location
-from telemeta.models.system import Revision
+from telemeta.models.location import *
+from telemeta.models.system import *
 from telemeta.models.query import *
 from telemeta.models.instrument import *
 from telemeta.models.enum import *
@@ -54,35 +53,46 @@ from django.db import models
 class Format(ModelCore):
     """ Physical format object as proposed by the LAM"""
 
-    original_format = WeakForeignKey(OriginalFormat, related_name="format",
-                                     verbose_name = _("original format"))
-    original_code = CharField(_('original code'), required=True)
-    original_format_number = CharField(_('original format number'))
-    status = CharField(_('status'))
-    conservation_state = TextField(_('technical properties / conservation state'))
-    comments = TextField(_('comments / notes'))
+    element_type          = 'format'
+
+    item                  = ForeignKey('MediaItem', related_name="format", verbose_name = _("item"),
+                                       blank=True, null=True, on_delete=models.SET_NULL)
+    physical_format       = WeakForeignKey(PhysicalFormat, related_name="format",
+                                     verbose_name = _("physical format"))
+    original_code         = CharField(_('original code'))
+    original_number       = CharField(_('original number'))
+    original_status       = CharField(_('original status'))
+    original_state        = TextField(_('technical properties / conservation state'))
+    original_comments     = TextField(_('comments / notes'))
+    original_location     = ForeignKey('Location', related_name="format",
+                                       verbose_name = _("original location"),
+                                       blank=True, null=True, on_delete=models.SET_NULL)
+    original_channels     = WeakForeignKey(NumberOfChannels, related_name="format",
+                                        verbose_name = _("number of channels"))
+    original_audio_quality = TextField(_('audio quality'))
+    recording_system      = CharField(_('recording system'))
 
     # Tapes
-    wheel_diameter = WeakForeignKey(WheelDiameter, related_name="format",
-                                    verbose_name = _("tape wheel diameter"))
-    tape_width  = WeakForeignKey(TapeWidth, related_name="format",
-                                 verbose_name = _("tape width (inch)"))
-    tape_thickness = CharField(_('tape thickness (um)'))
-    tape_diameter = CharField(_('tape diameter (mm)'))
-    tape_speed = WeakForeignKey(TapeSpeed, related_name="format", verbose_name = _("tape speed (m/s)"))
-    tape_vendor = WeakForeignKey(TapeVendor, related_name="format", verbose_name = _("tape vendor"))
-    tape_reference = CharField(_('tape reference'))
-    sticker_presence = BooleanField(_('sticker presence'))
-    recording_system = CharField(_('recording system'))
-    channels = IntegerField(_("number of channels"))
-    audio_quality = TextField(_('audio quality'))
+    tape_wheel_diameter = WeakForeignKey(TapeWheelDiameter, related_name="format",
+                                        verbose_name = _("tape wheel diameter (cm)"))
+    tape_thickness      = CharField(_('tape thickness (um)'))
+    tape_speed          = WeakForeignKey(TapeSpeed, related_name="format",
+                                        verbose_name = _("tape speed (cm/s)"))
+    tape_vendor         = WeakForeignKey(TapeVendor, related_name="format",
+                                        verbose_name = _("tape vendor"))
+    tape_reference      = CharField(_('tape reference'))
+    sticker_presence    = BooleanField(_('sticker presence'))
 
     class Meta(MetaCore):
         db_table = 'media_formats'
         verbose_name = _('format')
 
     def __unicode__(self):
-        return self.original_format
+        if self.physical_format:
+            return ' - '.join([self.physical_format.value, self.original_code,
+                               self.item.public_id])
+        else:
+            return 'Unknown'
 
     @property
     def public_id(self):

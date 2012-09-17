@@ -54,6 +54,7 @@ News
  * SECURITY: you need to move your TELEMETA_EXPORT_CACHE_DIR from TELEMETA_CACHE_DIR cache (see example/sandbox_sqlite/settings.py)
  * EXPERIMENTAL: WebM and MP4 video handling for items, NO transcode but decode, add a nice video.js player
  * RECOMMEND: install django-extensions
+ * transitional package to 1.5 (maybe 1.4.4 *soon*)
 
 1.4.2
 ++++++
@@ -171,7 +172,7 @@ To get the lastest development version, you need subversion and run::
 License
 =======
 
-CeCILL v2, compatible with GPL v2 (see `LICENSE <http://github.com/yomguy/Telemeta/blob/master/LICENSE`_)
+CeCILL v2, compatible with GPL v2 (see `LICENSE <http://github.com/yomguy/Telemeta/blob/master/LICENSE>`_)
 
 
 Sponsors

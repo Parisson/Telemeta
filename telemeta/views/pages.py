@@ -17,7 +17,7 @@ class PageTextContent(object):
             yield line.rstrip('\r\n')
         file.close()
 
-    def __unicode__(self):        
+    def __unicode__(self):
         file = open(self.filename, 'r')
         data = file.read()
         file.close()
@@ -59,7 +59,7 @@ def project_dir():
     if project_directory == os.curdir or not project_directory:
         project_directory = os.getcwd()
 
-    return project_directory        
+    return project_directory
 
 def resolve_page_file(root, relative_path, ignore_slash_issue=False):
     root = os.path.realpath(root)
@@ -101,18 +101,18 @@ def resolve_page_file(root, relative_path, ignore_slash_issue=False):
 
     return None
 
-def get_page_content(request, relative_path, ignore_slash_issue=False):     
+def get_page_content(request, relative_path, ignore_slash_issue=False):
     lang = language_code(request)
     userroot = os.path.join(project_dir(), 'telemeta-pages')
-    rootlist = [os.path.join(userroot, lang), os.path.join(userroot, 'default'), 
+    rootlist = [os.path.join(userroot, lang), os.path.join(userroot, 'default'),
                 os.path.join(PAGES_ROOT, lang), os.path.join(PAGES_ROOT, 'default')]
     for root in rootlist:
         content = resolve_page_file(root, relative_path, ignore_slash_issue=ignore_slash_issue)
         if content:
             return content
 
-    return None            
-    
+    return None
+
 class MalformedPagePath(Exception):
     pass
 

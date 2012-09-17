@@ -76,7 +76,7 @@ class RevisionAdmin(admin.ModelAdmin):
     ordering = ['-time']
 
 class FormatAdmin(admin.ModelAdmin):
-    search_fields = ['code', 'vendor']
+    search_fields = ['original_code', 'tape_reference']
 
 class UserProfileInline(admin.StackedInline):
 	model = UserProfile
@@ -99,7 +99,7 @@ admin.site.register(InstrumentRelation, InstrumentRelationAdmin)
 admin.site.register(InstrumentAliasRelation, InstrumentAliasRelationAdmin)
 
 admin.site.register(Location, LocationAdmin)
-#admin.site.register(LocationType)
+admin.site.register(LocationType)
 admin.site.register(LocationAlias, LocationAliasAdmin)
 admin.site.register(LocationRelation, LocationRelationAdmin)
 

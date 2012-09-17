@@ -3,21 +3,24 @@
 {% load telemeta_utils %}
 
 {% block title %}
-<img src="{% url telemeta-images "item.png" %}" style="vertical-align:middle" /> Item : {{ item }}
+<img src="{{ STATIC_URL }}telemeta/images/item.png" style="vertical-align:middle" /> Item : {{ item }}
 {% endblock %}
 
 {% block title_buttons %}
 <a href="{% url telemeta-item-detail item.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
 {% endblock %}
 
-{% block infos %}    
+{% block infos %}
 <div class="infos">
-    <form enctype="multipart/form-data" id="_editItemForm" method="post" action="">{% csrf_token %}   
+    <form enctype="multipart/form-data" id="_editItemForm" method="post" action="">{% csrf_token %}
     <table>
+    {% for form in forms %}
     <tr><td colspan="2">{% for error in form.non_field_errors %}<li class="error">{{ error }}</li>{% endfor %}</td></tr>
+    <tr><td colspan="2"><h2>{{ form.prefix|capitalize }}</h2><hr /></td></tr>
+
     {% for field in form %}
     <tr>
-    {% if field.html_name == "copied_from_item" %}
+    {% if field.html_name in hidden_fields %}
         <td>{{ field.label_tag.as_hidden }}{{ field.as_hidden }}</td>
     {% else %}
         <tr><td class="error">{{ field.errors }}</td></tr>
@@ -32,7 +35,9 @@
     {% endif %}
     </tr>
     {% endfor %}
+    {% endfor %}
     </table>
+    <hr />
     <div align="center" style="margin-top:3ex;">
     <a href="{% url telemeta-item-detail item.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
     {% if perms.telemeta.change_mediaitem %}
@@ -45,13 +50,13 @@
     <a href="{% url telemeta-item-related_edit item.public_id %}" class="component_icon button icon_edit">{% trans "Edit"%} {% trans "related media"%}</a>
     {% endif %}
     <a href="#" class="component_icon button icon_save" onclick="var d=document; d.getElementById('wait-img').style.display='inline'; setTimeout(function(){d.getElementById('_editItemForm').submit();},300); return false;">{% trans "Save" %}</a>
-    <img id="wait-img" style="display:none" style="vertical-align:middle" alt="wait" src="{% url telemeta-images  "wait.gif" %}" />
+    <img id="wait-img" style="display:none" style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />
     </div>
     </form>
 </div>
 {% endblock infos %}
 
-{% block related %} 
+{% block related %}
 {% endblock %}
 
 {% block delete %}
