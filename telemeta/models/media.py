@@ -371,7 +371,7 @@ class MediaItem(MediaResource):
 
     # Media
     file                  = FileField(_('file'), upload_to='items/%Y/%m/%d',
-                                      db_column="filename", max_length=255)
+                                      db_column="filename", max_length=1024)
 
     # Technical data
     approx_duration       = DurationField(_('approximative duration'))
