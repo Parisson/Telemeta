@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-25 12:26+0200\n"
+"POT-Creation-Date: 2012-09-25 14:22+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -557,7 +557,7 @@ msgstr ""
 msgid "copy of"
 msgstr ""
 
-#: models/media.py:384 templates/telemeta/mediaitem_edit.html:49
+#: models/media.py:384 templates/telemeta/mediaitem_edit.html:45
 msgid "keywords"
 msgstr ""
 
@@ -963,7 +963,7 @@ msgstr ""
 #: templates/telemeta/admin_enumerations.html:14
 #: templates/telemeta/lists.html:69 templates/telemeta/mediaitem_add.html:34
 #: templates/telemeta/mediaitem_copy.html:35
-#: templates/telemeta/mediaitem_edit.html:34
+#: templates/telemeta/mediaitem_edit.html:31
 #: templates/telemeta/search_criteria.html:83
 #: templates/telemeta/search_results.html:44
 #: templates/telemeta/inc/children_list.html:15
@@ -1096,7 +1096,7 @@ msgstr ""
 #: templates/telemeta/mediaitem_copy.html:16
 #: templates/telemeta/mediaitem_copy.html:47
 #: templates/telemeta/mediaitem_edit.html:10
-#: templates/telemeta/mediaitem_edit.html:47
+#: templates/telemeta/mediaitem_edit.html:43
 #: templates/telemeta/mediaitem_keywords_edit.html:12
 #: templates/telemeta/mediaitem_keywords_edit.html:39
 #: templates/telemeta/mediaitem_performances_edit.html:12
@@ -1121,7 +1121,7 @@ msgstr ""
 #: templates/telemeta/instrument_edit_value.html:17
 #: templates/telemeta/mediaitem_add.html:49
 #: templates/telemeta/mediaitem_copy.html:49
-#: templates/telemeta/mediaitem_edit.html:57
+#: templates/telemeta/mediaitem_edit.html:53
 #: templates/telemeta/mediaitem_keywords_edit.html:41
 #: templates/telemeta/mediaitem_performances_edit.html:45
 #: templates/telemeta/mediaitem_related_edit.html:41
@@ -1140,9 +1140,9 @@ msgstr ""
 #: templates/telemeta/collection_detail.html:44
 #: templates/telemeta/collection_edit.html:31 templates/telemeta/lists.html:55
 #: templates/telemeta/mediaitem_detail.html:100
-#: templates/telemeta/mediaitem_edit.html:49
-#: templates/telemeta/mediaitem_edit.html:52
-#: templates/telemeta/mediaitem_edit.html:55
+#: templates/telemeta/mediaitem_edit.html:45
+#: templates/telemeta/mediaitem_edit.html:48
+#: templates/telemeta/mediaitem_edit.html:51
 #: templates/telemeta/profile_detail.html:72
 #: templates/telemeta/resource_detail.html:43
 #: templates/telemeta/resource_edit.html:31
@@ -1240,7 +1240,7 @@ msgid "No such collection"
 msgstr ""
 
 #: templates/telemeta/collection_edit.html:31
-#: templates/telemeta/mediaitem_edit.html:55
+#: templates/telemeta/mediaitem_edit.html:51
 #: templates/telemeta/resource_edit.html:31
 msgid "related media"
 msgstr ""
@@ -1400,7 +1400,7 @@ msgstr ""
 
 #: templates/telemeta/lists.html:71 templates/telemeta/mediaitem_add.html:35
 #: templates/telemeta/mediaitem_copy.html:36
-#: templates/telemeta/mediaitem_edit.html:35
+#: templates/telemeta/mediaitem_edit.html:32
 #: templates/telemeta/inc/children_list.html:17
 #: templates/telemeta/inc/collection_list.html:14
 #: templates/telemeta/inc/mediaitem_list.html:15
@@ -1502,7 +1502,7 @@ msgstr ""
 msgid "No such item"
 msgstr ""
 
-#: templates/telemeta/mediaitem_edit.html:52
+#: templates/telemeta/mediaitem_edit.html:48
 msgid "performance"
 msgstr ""
 
@@ -1898,12 +1898,12 @@ msgstr ""
 msgid "pattern"
 msgstr ""
 
-#: views/collection.py:49 views/home.py:87 views/item.py:96 views/item.py:479
+#: views/collection.py:49 views/home.py:87 views/item.py:96 views/item.py:477
 #: views/profile.py:68
 msgid "Access not allowed"
 msgstr ""
 
-#: views/collection.py:51 views/home.py:89 views/item.py:98 views/item.py:481
+#: views/collection.py:51 views/home.py:89 views/item.py:98 views/item.py:479
 #: views/profile.py:70
 msgid ""
 "Please login or contact the website administator to get a private access."
