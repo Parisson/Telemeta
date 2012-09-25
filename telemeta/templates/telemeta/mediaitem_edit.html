@@ -20,10 +20,7 @@
 
     {% for field in form %}
     <tr>
-    {% if field.html_name in hidden_fields %}
-        <td>{{ field.label_tag.as_hidden }}{{ field.as_hidden }}</td>
-    {% else %}
-        <tr><td class="error">{{ field.errors }}</td></tr>
+    <tr><td class="error">{{ field.errors }}</td></tr>
         <td>{% if field.required %}
                 <span style="font-weight:bold">{{ field.label_tag }}:</span>
             {% else %}
@@ -37,7 +34,6 @@
             {% else %}
             <td>{{ field }}</td>
             {% endif %}
-    {% endif %}
     </tr>
     {% endfor %}
     {% endfor %}

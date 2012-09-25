@@ -206,14 +206,12 @@ class ItemView(object):
             format_form = FormatForm(instance=format, prefix='format')
 
         forms = [item_form, format_form]
-        hidden_fields = ['item-copied_from_item', 'format-item']
 
         return render(request, template,
                     {'item': item, 'export_formats': formats,
                     'visualizers': graphers, 'visualizer_id': grapher_id,
                     'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True),
                     'forms': forms, 'previous' : previous, 'next' : next, 'mime_type': mime_type,
-                    'hidden_fields': hidden_fields,
                     })
 
     def related_media_item_stream(self, request, item_public_id, media_id):
