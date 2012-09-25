@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-25 14:22+0200\n"
+"POT-Creation-Date: 2012-09-25 14:45+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -806,7 +806,7 @@ msgstr ""
 #: templates/postman/base_folder.html:49 templates/postman/view.html:25
 #: templates/telemeta/collection_detail.html:217
 #: templates/telemeta/lists.html:58
-#: templates/telemeta/mediaitem_detail.html:330
+#: templates/telemeta/mediaitem_detail.html:332
 #: templates/telemeta/resource_detail.html:102
 msgid "Delete"
 msgstr ""
@@ -1079,7 +1079,7 @@ msgstr ""
 
 #: templates/telemeta/base.html:165
 #: templates/telemeta/collection_detail.html:125
-#: templates/telemeta/mediaitem_detail.html:244
+#: templates/telemeta/mediaitem_detail.html:246
 msgid "Legal notices"
 msgstr ""
 
@@ -1176,7 +1176,7 @@ msgid "Recording period"
 msgstr ""
 
 #: templates/telemeta/collection_detail.html:103
-#: templates/telemeta/mediaitem_detail.html:233
+#: templates/telemeta/mediaitem_detail.html:235
 #: templates/telemeta/resource_detail.html:73
 msgid "Last modification"
 msgstr ""
@@ -1197,7 +1197,7 @@ msgid "Bibliographic references"
 msgstr ""
 
 #: templates/telemeta/collection_detail.html:152
-#: templates/telemeta/mediaitem_detail.html:263
+#: templates/telemeta/mediaitem_detail.html:265
 msgid "Archiving data"
 msgstr ""
 
@@ -1206,17 +1206,17 @@ msgid "Related documentation"
 msgstr ""
 
 #: templates/telemeta/collection_detail.html:162
-#: templates/telemeta/mediaitem_detail.html:301
+#: templates/telemeta/mediaitem_detail.html:303
 msgid "Comments"
 msgstr ""
 
 #: templates/telemeta/collection_detail.html:176
-#: templates/telemeta/mediaitem_detail.html:289
+#: templates/telemeta/mediaitem_detail.html:291
 msgid "Technical data"
 msgstr ""
 
 #: templates/telemeta/collection_detail.html:181
-#: templates/telemeta/mediaitem_detail.html:229
+#: templates/telemeta/mediaitem_detail.html:231
 msgid "Media type"
 msgstr ""
 
@@ -1486,15 +1486,15 @@ msgstr ""
 msgid "Remarks"
 msgstr ""
 
-#: templates/telemeta/mediaitem_detail.html:246
+#: templates/telemeta/mediaitem_detail.html:248
 msgid "Organization"
 msgstr ""
 
-#: templates/telemeta/mediaitem_detail.html:250
+#: templates/telemeta/mediaitem_detail.html:252
 msgid "Rights"
 msgstr ""
 
-#: templates/telemeta/mediaitem_detail.html:276
+#: templates/telemeta/mediaitem_detail.html:278
 msgid "Published references"
 msgstr ""
 
