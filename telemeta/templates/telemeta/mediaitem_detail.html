@@ -226,6 +226,8 @@ Item : <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
             <dt>{% trans "Remarks" %}</dt>
             <dd>{{ item.comment|html_line_break|safe }}</dd>
 
+            {% dl_field item "keywords" join with ", " %}
+
             <dt>{% trans "Media type" %}</dt>
             <dd>{% trans mime_type|mime_to_media_type %}</dd>
 
