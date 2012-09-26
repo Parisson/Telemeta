@@ -206,14 +206,12 @@ class ItemView(object):
             format_form = FormatForm(instance=format, prefix='format')
 
         forms = [item_form, format_form]
-        hidden_fields = ['item-copied_from_item', 'format-item']
 
         return render(request, template,
                     {'item': item, 'export_formats': formats,
                     'visualizers': graphers, 'visualizer_id': grapher_id,
                     'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True),
                     'forms': forms, 'previous' : previous, 'next' : next, 'mime_type': mime_type,
-                    'hidden_fields': hidden_fields,
                     })
 
     def related_media_item_stream(self, request, item_public_id, media_id):
@@ -232,7 +230,7 @@ class ItemView(object):
             if formset.is_valid():
                 formset.save()
                 item.set_revision(request.user)
-                return HttpResponseRedirect('/archives/items/'+public_id)
+                return redirect('telemeta-item-edit', item.public_id)
         else:
             formset = MediaItemRelatedFormSet(instance=item)
 
@@ -569,7 +567,7 @@ class ItemView(object):
             formset = PerformanceFormSet(data=request.POST, instance=item)
             if formset.is_valid():
                 formset.save()
-                return HttpResponseRedirect('/archives/items/'+public_id)
+                return redirect('telemeta-item-edit', item.public_id)
         else:
             formset = PerformanceFormSet(instance=item)
         return render(request, template, {'item': item, 'formset': formset,})
@@ -582,7 +580,7 @@ class ItemView(object):
             formset = FormSet(data=request.POST, instance=item)
             if formset.is_valid():
                 formset.save()
-                return HttpResponseRedirect('/archives/items/'+public_id)
+                return redirect('telemeta-item-edit', item.public_id)
         else:
             formset = FormSet(instance=item)
         return render(request, template, {'item': item, 'formset': formset,})
