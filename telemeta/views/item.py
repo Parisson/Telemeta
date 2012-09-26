@@ -230,7 +230,7 @@ class ItemView(object):
             if formset.is_valid():
                 formset.save()
                 item.set_revision(request.user)
-                return HttpResponseRedirect('/archives/items/'+public_id)
+                return redirect('telemeta-item-edit', item.public_id)
         else:
             formset = MediaItemRelatedFormSet(instance=item)
 
@@ -567,7 +567,7 @@ class ItemView(object):
             formset = PerformanceFormSet(data=request.POST, instance=item)
             if formset.is_valid():
                 formset.save()
-                return HttpResponseRedirect('/archives/items/'+public_id)
+                return redirect('telemeta-item-edit', item.public_id)
         else:
             formset = PerformanceFormSet(instance=item)
         return render(request, template, {'item': item, 'formset': formset,})
@@ -580,7 +580,7 @@ class ItemView(object):
             formset = FormSet(data=request.POST, instance=item)
             if formset.is_valid():
                 formset.save()
-                return HttpResponseRedirect('/archives/items/'+public_id)
+                return redirect('telemeta-item-edit', item.public_id)
         else:
             formset = FormSet(instance=item)
         return render(request, template, {'item': item, 'formset': formset,})

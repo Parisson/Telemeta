@@ -66,6 +66,7 @@ from django.contrib.auth.forms import UserChangeForm
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.syndication.views import Feed
 from django.core.servers.basehttp import FileWrapper
+from django.core.urlresolvers import reverse, reverse_lazy
 
 from telemeta.models import *
 import telemeta.models

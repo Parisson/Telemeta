@@ -12,10 +12,13 @@
 {% endblock %}
 
 {% block title_buttons %}
+<div class="fixedWidthAsPlayer">
     <a href="{% url telemeta-items %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
-    <a href="#" class="component_icon button icon_save" onclick="var d=document; d.getElementById('wait-img').style.display='block'; setTimeout(function(){d.getElementById('_mediaItemCopyForm').submit();},300); return false;">{% trans "Save" %}</a>
-    <br /><br />
+    {% if perms.telemeta.add_mediaitem %}
+    <a href="#" class="component_icon button icon_save" onclick="var d=document; d.getElementById('wait-img').style.display='inline'; setTimeout(function(){d.getElementById('_mediaItemCopyForm').submit();},300); return false;">{% trans "Save" %}</a>
+    {% endif %}
     <img id="wait-img" style="display:none" style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />
+</div>
 {% endblock %}
 
 {% block content %}
@@ -46,8 +49,7 @@
        </table>
        <div align="center" style="margin-top:3ex;">
          <a href="{% url telemeta-items %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
-         <a href="#" class="component_icon button icon_save" onclick="var d=document; d.getElementById('wait-img2').style.display='block'; setTimeout(function(){d.getElementById('_mediaItemCopyForm').submit();},300); return false;">{% trans "Save" %}</a>
-        <br /><br />
+         <a href="#" class="component_icon button icon_save" onclick="var d=document; d.getElementById('wait-img2').style.display='inline'; setTimeout(function(){d.getElementById('_mediaItemCopyForm').submit();},300); return false;">{% trans "Save" %}</a>
         <img id="wait-img2" style="display:none" style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />
        </div>
      </form>
