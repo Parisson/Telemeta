@@ -107,12 +107,11 @@ def render(request, template, data = None, mimetype = None):
                               mimetype=mimetype)
 
 def stream_from_processor(__decoder, __processor, __flag, metadata=None):
+    if metadata:
+        __processor.set_metadata(metadata)
     while True:
         __frames, __eodproc = __processor.process(*__decoder.process())
         if __eodproc or not len(__frames):
-            if metadata:
-                __processor.set_metadata(metadata)
-                __processor.write_metadata()
             __flag.value = True
             __flag.save()
             break
