@@ -12,9 +12,10 @@
 {% endblock %}
 
 {% block title_buttons %}
-    {% if user.is_authenticated and perms.telemeta.add_mediaitem %}
-    <a href="{% url telemeta-item-detail item.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
-    {% endif %}
+    <a href="{% url telemeta-items %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+    <a href="#" class="component_icon button icon_save" onclick="var d=document; d.getElementById('wait-img').style.display='block'; setTimeout(function(){d.getElementById('_mediaItemCopyForm').submit();},300); return false;">{% trans "Save" %}</a>
+    <br /><br />
+    <img id="wait-img" style="display:none" style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />
 {% endblock %}
 
 {% block content %}
@@ -31,7 +32,7 @@
             {% else %}
                 <tr><td class="error">{{ field.errors }}</td></tr>
                 <td>{{ field.label_tag }}:</td>
-                    {% if field.html_name == "collection" %}
+                    {% if field.html_name == "item-collection" %}
                     <td>&nbsp;{% trans "Title" %} : {{ item.collection.title }}<br />
                         &nbsp;{% trans "Code" %} : {{ item.collection.code }}<br />
                         {{ field }}</td>
@@ -44,9 +45,10 @@
        {% endfor %}
        </table>
        <div align="center" style="margin-top:3ex;">
-           <a href="{% url telemeta-item-detail item.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
-         <a href="#" class="component_icon button icon_save"
-            onclick="document.getElementById('_mediaItemCopyForm').submit(); return false;">{% trans "Save" %}</a>
+         <a href="{% url telemeta-items %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+         <a href="#" class="component_icon button icon_save" onclick="var d=document; d.getElementById('wait-img2').style.display='block'; setTimeout(function(){d.getElementById('_mediaItemCopyForm').submit();},300); return false;">{% trans "Save" %}</a>
+        <br /><br />
+        <img id="wait-img2" style="display:none" style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />
        </div>
      </form>
     </div>

@@ -8,6 +8,9 @@
 
 {% block title_buttons %}
 <a href="{% url telemeta-item-detail item.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+<a href="#" class="component_icon button icon_save" onclick="var d=document; d.getElementById('wait-img').style.display='block'; setTimeout(function(){d.getElementById('_editItemForm').submit();},300); return false;">{% trans "Save" %}</a>
+<br /><br />
+<img id="wait-img" style="display:none" style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />
 {% endblock %}
 
 {% block infos %}
@@ -21,13 +24,13 @@
     {% for field in form %}
     <tr>
     <tr><td class="error">{{ field.errors }}</td></tr>
-        <td>{% if field.required %}
+        <td>{% if field.blank %}
                 <span style="font-weight:bold">{{ field.label_tag }}:</span>
             {% else %}
                 {{ field.label_tag }}:
             {% endif %}
             </td>
-            {% if field.html_name == "collection" %}
+            {% if field.html_name == "item-collection" %}
             <td>&nbsp;{% trans "Title" %} : {{ item.collection.title }}<br />
                 &nbsp;{% trans "Code" %} : {{ item.collection.code }}<br />
                 {{ field }}</td>
@@ -50,8 +53,9 @@
     {% if perms.telemeta.change_mediaitem %}
     <a href="{% url telemeta-item-related_edit item.public_id %}" class="component_icon button icon_edit">{% trans "Edit"%} {% trans "related media"%}</a>
     {% endif %}
-    <a href="#" class="component_icon button icon_save" onclick="var d=document; d.getElementById('wait-img').style.display='inline'; setTimeout(function(){d.getElementById('_editItemForm').submit();},300); return false;">{% trans "Save" %}</a>
-    <img id="wait-img" style="display:none" style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />
+    <a href="#" class="component_icon button icon_save" onclick="var d=document; d.getElementById('wait-img2').style.display='block'; setTimeout(function(){d.getElementById('_editItemForm').submit();},300); return false;">{% trans "Save" %}</a>
+    <br /><br />
+    <img id="wait-img2" style="display:none" style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />
     </div>
     </form>
 </div>

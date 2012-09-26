@@ -77,6 +77,11 @@ class MediaItemForm(ModelForm):
     def clean_code(self):
         return self.cleaned_data['code'] or None
 
+    def __init__(self,*args,**kwargs):
+        super(MediaItemForm, self).__init__(*args, **kwargs)
+        self.fields.insert(2, 'code', self.fields['code'])
+        self.fields.insert(3, 'file', self.fields['file'])
+
 class MediaItemRelatedForm(ModelForm):
     class Meta:
         model = MediaItemRelated
