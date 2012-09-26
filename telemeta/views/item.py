@@ -538,8 +538,7 @@ class ItemView(object):
                 decoder = timeside.decoder.FileDecoder(audio)
                 decoder.setup()
                 proc = encoder(media, streaming=True)
-                proc.setup(channels=decoder.channels(), samplerate=decoder.samplerate(),
-                           nframes=decoder.nframes())
+                proc.setup(channels=decoder.channels(), samplerate=decoder.samplerate())
                 if extension in mapping.unavailable_extensions:
                     metadata=None
                 response = HttpResponse(stream_from_processor(decoder, proc, flag, metadata=metadata), mimetype = mime_type)
