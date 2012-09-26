@@ -106,16 +106,15 @@ def render(request, template, data = None, mimetype = None):
     return render_to_response(template, data, context_instance=RequestContext(request),
                               mimetype=mimetype)
 
-def stream_from_processor(__decoder, __processor, __flag, metadata=None):
+def stream_from_processor(_decoder, _proc, _flag, metadata=None):
     if metadata:
-        __processor.set_metadata(metadata)
-    while True:
-        __frames, __eodproc = __processor.process(*__decoder.process())
-        if __eodproc or not len(__frames):
-            __flag.value = True
-            __flag.save()
-            break
-        yield __processor.chunk
+        _proc.set_metadata(metadata)
+    _eod = False
+    while not _eod:
+        _frames, _eod = _proc.process(*_decoder.process())
+        yield _proc.chunk
+    _flag.value = True
+    _flag.save()
 
 def stream_from_file(__file):
     chunk_size = 0x100000
