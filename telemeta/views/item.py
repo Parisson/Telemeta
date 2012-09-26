@@ -529,8 +529,6 @@ class ItemView(object):
                 except:
                     pass
             response = HttpResponse(stream_from_file(audio), mimetype = mime_type)
-#            fsock = open(audio, 'r')
-#            response = HttpResponse(fsock, mimetype = mime_type)
         else:
             media = self.cache_export.dir + os.sep + file
             if not self.cache_export.exists(file) or not flag.value:
