@@ -60,7 +60,7 @@ class HomeView(object):
         if len(_sound_pub_items) == 2:
             sound_pub_items = [_sound_pub_items[1]]
         elif len(_sound_pub_items) > 2:
-            sound_pub_items = _sound_pub_items[1:4]
+            sound_pub_items = _sound_pub_items[1:5]
         else:
             sound_pub_items = None
 
