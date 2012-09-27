@@ -106,7 +106,7 @@ def render(request, template, data = None, mimetype = None):
     return render_to_response(template, data, context_instance=RequestContext(request),
                               mimetype=mimetype)
 
-def stream_from_processor(_decoder, proc, flag, metadata=None):
+def stream_from_processor(decoder, proc, flag, metadata=None):
     if metadata:
         proc.set_metadata(metadata)
     eod = False
