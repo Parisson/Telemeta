@@ -908,11 +908,11 @@ img.align-left {
 #module-set .module {
     border: 1px solid #000;
     background-image: url(../images/grid_bg.png);
-    padding: 0.3em 0.8em 0.8em 0.8em;
+    padding: 0.2em;
     margin: 0 0 1.5em 1.5em;
-    -moz-border-radius: 8px 8px 8px 8px;
-    -webkit-border-radius: 8px 8px 8px 8px;
-    border-radius: 8px 8px 8px 8px;
+    -moz-border-radius: 8px 0px 11px 11px;
+    -webkit-border-radius: 8px 0px 11px 11px;
+    border-radius: 11px 0px 11px 11px;
 }
 
 #module-set .module h3 {
@@ -924,6 +924,24 @@ img.align-left {
 #module-set .module a:hover {
     text-decoration: none;
 }
+
+#module-set .module div {
+        -moz-border-radius: 8px 0px 8px 8px;
+        -webkit-border-radius: 8px 0px 8px 8px;
+        border-radius: 8px 0px 8px 8px;
+       }
+
+#module-set .module img {
+        -moz-border-radius: 8px 0px 8px 8px;
+        -webkit-border-radius: 8px 0px 8px 8px;
+        border-radius: 8px 0px 8px 8px;
+       }
+
+#module-set .module ul, li {
+        -moz-border-radius: 8px 0px 8px 8px;
+        -webkit-border-radius: 8px 0px 8px 8px;
+        border-radius: 8px 0px 8px 8px;
+       }
 
 a.image-link {
     border: none;
