@@ -387,11 +387,11 @@ class ItemView(object):
                 analysis.save()
                 analysis = MediaItemAnalysis(item=item, name='Channels',
                                              analyzer_id='channels',
-                                             unit='', value=decoder.channels())
+                                             unit='', value=decoder.input_channels)
                 analysis.save()
                 analysis = MediaItemAnalysis(item=item, name='Samplerate',
                                              analyzer_id='samplerate', unit='Hz',
-                                             value=unicode(decoder.samplerate()))
+                                             value=unicode(decoder.input_samplerate))
                 analysis.save()
                 analysis = MediaItemAnalysis(item=item, name='Resolution',
                                              analyzer_id='resolution', unit='bits',
