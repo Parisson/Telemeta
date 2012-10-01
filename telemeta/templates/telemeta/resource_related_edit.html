@@ -10,6 +10,7 @@
 
 {% block title_buttons %}
  <a href="{% url telemeta-resource-detail type resource.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+ <a href="#" class="component_icon button icon_save" onclick="document.getElementById('_editMediaRelatedFileForm').submit(); return false;">{% trans "Save" %}</a>
 {% endblock %}
 
 {% block content %}
@@ -37,8 +38,7 @@
       <div align="center">
         <a href="{% url telemeta-resource-detail type resource.public_id %}"
            class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
-        <a href="#" class="component_icon button icon_save"
-   onclick="document.getElementById('_editMediaRelatedFileForm').submit(); return false;">{% trans "Save" %}</a>
+        <a href="#" class="component_icon button icon_save" onclick="document.getElementById('_editMediaRelatedFileForm').submit(); return false;">{% trans "Save" %}</a>
        </div>
      </form>
     </div>

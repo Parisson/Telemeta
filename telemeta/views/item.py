@@ -200,7 +200,7 @@ class ItemView(object):
                     for analysis in analyses:
                         analysis.delete()
                 item.set_revision(request.user)
-                return HttpResponseRedirect('/archives/items/'+code)
+                return redirect('telemeta-item-detail', code)
         else:
             item_form = MediaItemForm(instance=item, prefix='item')
             format_form = FormatForm(instance=format, prefix='format')
@@ -260,7 +260,7 @@ class ItemView(object):
                 code = item_form.cleaned_data['code']
                 if not code:
                     code = str(item.id)
-                return HttpResponseRedirect('/archives/items/'+code)
+                return redirect('telemeta-item-detail', code)
         else:
             item_form = MediaItemForm(instance=item, prefix='item')
             format_form = FormatForm(instance=format, prefix='format')
@@ -304,7 +304,7 @@ class ItemView(object):
                     keyword.save()
 
                 item.set_revision(request.user)
-                return HttpResponseRedirect('/archives/items/'+code)
+                return redirect('telemeta-item-detail', code)
         else:
             item = MediaItem.objects.get(public_id=public_id)
             items = MediaItem.objects.filter(collection=item.collection)
@@ -327,7 +327,7 @@ class ItemView(object):
         item = MediaItem.objects.get(public_id=public_id)
         collection = item.collection
         item.delete()
-        return HttpResponseRedirect('/archives/collections/'+collection.code)
+        return redirect('telemeta-collection-detail', collection.code)
 
     def item_analyze(self, item):
         analyses = MediaItemAnalysis.objects.filter(item=item)
