@@ -230,7 +230,7 @@ class ItemView(object):
             if formset.is_valid():
                 formset.save()
                 item.set_revision(request.user)
-                return redirect('telemeta-item-edit', item.public_id)
+                return redirect('telemeta-item-edit', public_id)
         else:
             formset = MediaItemRelatedFormSet(instance=item)
 

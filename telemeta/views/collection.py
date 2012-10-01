@@ -81,7 +81,7 @@ class CollectionView(object):
                     code = public_id
                 form.save()
                 collection.set_revision(request.user)
-                return HttpResponseRedirect('/archives/collections/'+code)
+                return redirect('telemeta-collection-detail', code)
         else:
             form = MediaCollectionForm(instance=collection)
 
@@ -98,7 +98,7 @@ class CollectionView(object):
                     code = public_id
                 form.save()
                 collection.set_revision(request.user)
-                return HttpResponseRedirect('/archives/collections/'+code)
+                return redirect('telemeta-collection-detail', code)
         else:
             form = MediaCollectionForm(instance=collection)
 
@@ -115,7 +115,7 @@ class CollectionView(object):
                     code = public_id
                 form.save()
                 collection.set_revision(request.user)
-                return HttpResponseRedirect('/archives/collections/'+code)
+                return redirect('telemeta-collection-detail', code)
         else:
             collection = MediaCollection.objects.get(public_id=public_id)
             form = MediaCollectionForm(instance=collection)
@@ -137,7 +137,7 @@ class CollectionView(object):
         """Delete a given collection"""
         collection = MediaCollection.objects.get(public_id=public_id)
         collection.delete()
-        return HttpResponseRedirect('/archives/collections/')
+        return redirect('telemeta-collections')
 
     def related_media_collection_stream(self, request, collection_public_id, media_id):
         collection = MediaCollection.objects.get(public_id=collection_public_id)
@@ -155,7 +155,7 @@ class CollectionView(object):
             if formset.is_valid():
                 formset.save()
                 collection.set_revision(request.user)
-                return HttpResponseRedirect('/archives/collections/'+public_id)
+                return redirect('telemeta-collection-edit', public_id)
         else:
             formset = MediaCollectionRelatedFormSet(instance=collection)
 
