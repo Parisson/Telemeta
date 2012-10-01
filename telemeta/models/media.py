@@ -369,16 +369,15 @@ class MediaItem(MediaResource):
     publishing_date       = DateField(_('publishing date'))
     creator_reference     = CharField(_('creator reference'))
     external_references   = TextField(_('published references'))
-    copied_from_item      = WeakForeignKey('self', related_name="copies", verbose_name=_('copy of'))
+    copied_from_item      = WeakForeignKey('self', related_name="copies",
+                                           verbose_name=_('copy of'))
 
     # Media
-    file                  = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename", max_length=255)
+    file                  = FileField(_('file'), upload_to='items/%Y/%m/%d',
+                                      db_column="filename", max_length=1024)
 
     # Technical data
     approx_duration       = DurationField(_('approximative duration'))
-
-    # Media
-    file                  = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename")
 
     # Manager
     objects               = MediaItemManager()

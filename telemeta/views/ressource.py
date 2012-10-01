@@ -100,7 +100,7 @@ class ResourceView(object):
                     code = public_id
                 form.save()
                 resource.set_revision(request.user)
-                return HttpResponseRedirect('/archives/'+self.type+'/'+code)
+                return redirect('telemeta-resource-detail', self.type, code)
         else:
             form = self.form(instance=resource)
         return render(request, template, {'resource': resource, 'type': type, 'form': form,})
@@ -118,7 +118,7 @@ class ResourceView(object):
                     code = public_id
                 form.save()
                 resource.set_revision(request.user)
-                return HttpResponseRedirect('/archives/'+self.type +'/'+code)
+                return redirect('telemeta-resource-detail', self.type, code)
         else:
             form = self.form(instance=resource)
         return render(request, template, {'resource': resource, 'type': type, 'form': form,})
@@ -136,7 +136,7 @@ class ResourceView(object):
                     code = public_id
                 resource.save()
                 resource.set_revision(request.user)
-                return HttpResponseRedirect('/archives/'+self.type +'/'+code)
+                return redirect('telemeta-resource-detail', self.type, code)
         else:
             resource = self.model.objects.get(code=public_id)
             form = self.form(instance=resource)
@@ -179,7 +179,7 @@ class ResourceView(object):
             if formset.is_valid():
                 formset.save()
                 resource.set_revision(request.user)
-                return HttpResponseRedirect('/archives/'+self.type+'/'+public_id)
+                return redirect('telemeta-resource-edit', self.type, public_id)
         else:
             formset = ResourceRelatedFormSet(instance=resource)
         return render(request, template, {'resource': resource, 'type': type, 'formset': formset,})

@@ -170,6 +170,7 @@ urlpatterns = patterns('',
     # Corpus list
     url(r'^archives/corpus/$', 'django.views.generic.list_detail.object_list',
         dict(all_corpus, paginate_by=20, template_name="telemeta/resource_list.html", extra_context={'type':'corpus'}), name="telemeta-corpus"),
+
     # Fonds list
     url(r'^archives/fonds/$', 'django.views.generic.list_detail.object_list',
         dict(all_fonds, paginate_by=20, template_name="telemeta/resource_list.html", extra_context={'type':'fonds'}), name="telemeta-fonds"),
