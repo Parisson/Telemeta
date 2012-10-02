@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block title_buttons %}
-    {% if user.is_authenticated and perms.telemeta.add_mediacollection %}
+    {% if perms.telemeta.add_mediacorpus or perms.telemeta.add_mediafonds %}
       <a href="{% url telemeta-resource-add type %}" class="component_icon button icon_add">{% trans "Add" %}</a>
     {% endif %}
 {% endblock %}

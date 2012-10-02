@@ -106,27 +106,25 @@ def render(request, template, data = None, mimetype = None):
     return render_to_response(template, data, context_instance=RequestContext(request),
                               mimetype=mimetype)
 
-def stream_from_processor(__decoder, __processor, __flag, metadata=None):
-    while True:
-        __frames, __eodproc = __processor.process(*__decoder.process())
-        if __eodproc or not len(__frames):
-            if metadata:
-                __processor.set_metadata(metadata)
-                __processor.write_metadata()
-            __flag.value = True
-            __flag.save()
-            break
-        yield __processor.chunk
+def stream_from_processor(decoder, proc, flag, metadata=None):
+    if metadata:
+        proc.set_metadata(metadata)
+    eod = False
+    while not eod:
+        frames, eod = proc.process(*decoder.process())
+        yield proc.chunk
+    flag.value = True
+    flag.save()
 
-def stream_from_file(__file):
+def stream_from_file(file):
     chunk_size = 0x100000
-    f = open(__file, 'r')
+    f = open(file, 'r')
     while True:
-        __chunk = f.read(chunk_size)
-        if not len(__chunk):
+        chunk = f.read(chunk_size)
+        if not len(chunk):
             f.close()
             break
-        yield __chunk
+        yield chunk
 
 def get_public_access(access, year_from=None, year_to=None):
     # Rolling publishing date : public access is given when time between recorded year
