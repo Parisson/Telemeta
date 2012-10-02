@@ -34,7 +34,7 @@
 # Authors: Olivier Guilyardi <olivier@samalyse.com>
 #          Guillaume Pellerin <yomguy@parisson.com>
 
-
+import mimetypes
 from telemeta.views.core import *
 
 class ItemView(object):
@@ -200,20 +200,18 @@ class ItemView(object):
                     for analysis in analyses:
                         analysis.delete()
                 item.set_revision(request.user)
-                return HttpResponseRedirect('/archives/items/'+code)
+                return redirect('telemeta-item-detail', code)
         else:
             item_form = MediaItemForm(instance=item, prefix='item')
             format_form = FormatForm(instance=format, prefix='format')
 
         forms = [item_form, format_form]
-        hidden_fields = ['item-copied_from_item', 'format-item']
 
         return render(request, template,
                     {'item': item, 'export_formats': formats,
                     'visualizers': graphers, 'visualizer_id': grapher_id,
                     'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True),
                     'forms': forms, 'previous' : previous, 'next' : next, 'mime_type': mime_type,
-                    'hidden_fields': hidden_fields,
                     })
 
     def related_media_item_stream(self, request, item_public_id, media_id):
@@ -232,7 +230,7 @@ class ItemView(object):
             if formset.is_valid():
                 formset.save()
                 item.set_revision(request.user)
-                return HttpResponseRedirect('/archives/items/'+public_id)
+                return redirect('telemeta-item-edit', public_id)
         else:
             formset = MediaItemRelatedFormSet(instance=item)
 
@@ -262,7 +260,7 @@ class ItemView(object):
                 code = item_form.cleaned_data['code']
                 if not code:
                     code = str(item.id)
-                return HttpResponseRedirect('/archives/items/'+code)
+                return redirect('telemeta-item-detail', code)
         else:
             item_form = MediaItemForm(instance=item, prefix='item')
             format_form = FormatForm(instance=format, prefix='format')
@@ -306,7 +304,7 @@ class ItemView(object):
                     keyword.save()
 
                 item.set_revision(request.user)
-                return HttpResponseRedirect('/archives/items/'+code)
+                return redirect('telemeta-item-detail', code)
         else:
             item = MediaItem.objects.get(public_id=public_id)
             items = MediaItem.objects.filter(collection=item.collection)
@@ -329,7 +327,7 @@ class ItemView(object):
         item = MediaItem.objects.get(public_id=public_id)
         collection = item.collection
         item.delete()
-        return HttpResponseRedirect('/archives/collections/'+collection.code)
+        return redirect('telemeta-collection-detail', collection.code)
 
     def item_analyze(self, item):
         analyses = MediaItemAnalysis.objects.filter(item=item)
@@ -383,25 +381,25 @@ class ItemView(object):
                     grapher['graph'].render(grapher['path'])
                     f.close()
 
-                mime_type = decoder.format()
+                mime_type = mimetypes.guess_type(item.file.path)[0]
                 analysis = MediaItemAnalysis(item=item, name='MIME type',
                                              analyzer_id='mime_type', unit='', value=mime_type)
                 analysis.save()
                 analysis = MediaItemAnalysis(item=item, name='Channels',
                                              analyzer_id='channels',
-                                             unit='', value=decoder.channels())
+                                             unit='', value=decoder.input_channels)
                 analysis.save()
                 analysis = MediaItemAnalysis(item=item, name='Samplerate',
                                              analyzer_id='samplerate', unit='Hz',
-                                             value=unicode(decoder.audiorate))
+                                             value=unicode(decoder.input_samplerate))
                 analysis.save()
                 analysis = MediaItemAnalysis(item=item, name='Resolution',
                                              analyzer_id='resolution', unit='bits',
-                                             value=unicode(decoder.audiowidth))
+                                             value=unicode(decoder.input_width))
                 analysis.save()
                 analysis = MediaItemAnalysis(item=item, name='Duration',
                                              analyzer_id='duration', unit='s',
-                                             value=unicode(datetime.timedelta(0,decoder.duration)))
+                                             value=unicode(datetime.timedelta(0,decoder.input_duration)))
                 analysis.save()
 
                 for analyzer in analyzers_sub:
@@ -445,10 +443,9 @@ class ItemView(object):
         if not self.cache_data.exists(image_file):
             if item.file:
                 path = self.cache_data.dir + os.sep + image_file
-                decoder  = timeside.decoder.FileDecoder(item.file.path)
+                decoder  = self.decoders[0](item.file.path)
                 graph = grapher(width = int(width), height = int(height))
-                pipe = decoder | graph
-                pipe.run()
+                (decoder | graph).run()
                 graph.watermark('timeside', opacity=.6, margin=(5,5))
                 f = open(path, 'w')
                 graph.render(path)
@@ -531,13 +528,11 @@ class ItemView(object):
                 except:
                     pass
             response = HttpResponse(stream_from_file(audio), mimetype = mime_type)
-#            fsock = open(audio, 'r')
-#            response = HttpResponse(fsock, mimetype = mime_type)
         else:
             media = self.cache_export.dir + os.sep + file
             if not self.cache_export.exists(file) or not flag.value:
                 # source > encoder > stream
-                decoder = timeside.decoder.FileDecoder(audio)
+                decoder = self.decoders[0](audio)
                 decoder.setup()
                 proc = encoder(media, streaming=True)
                 proc.setup(channels=decoder.channels(), samplerate=decoder.samplerate())
@@ -569,7 +564,7 @@ class ItemView(object):
             formset = PerformanceFormSet(data=request.POST, instance=item)
             if formset.is_valid():
                 formset.save()
-                return HttpResponseRedirect('/archives/items/'+public_id)
+                return redirect('telemeta-item-edit', item.public_id)
         else:
             formset = PerformanceFormSet(instance=item)
         return render(request, template, {'item': item, 'formset': formset,})
@@ -582,7 +577,7 @@ class ItemView(object):
             formset = FormSet(data=request.POST, instance=item)
             if formset.is_valid():
                 formset.save()
-                return HttpResponseRedirect('/archives/items/'+public_id)
+                return redirect('telemeta-item-edit', item.public_id)
         else:
             formset = FormSet(instance=item)
         return render(request, template, {'item': item, 'formset': formset,})

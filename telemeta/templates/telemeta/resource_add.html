@@ -8,6 +8,10 @@
 
 {% block title_buttons %}
     <a href="/archives/{{type}}/" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+    {% if perms.telemeta.add_mediacorpus or perms.telemeta.add_mediafonds %}
+    <a href="#" class="component_icon button icon_save" onclick="document.getElementById('_addResourceForm').submit(); return false;">{% trans "Save" %}</a>
+    {% endif %}
+
 {% endblock %}
 
 
@@ -29,8 +33,9 @@
         </table>
         <div align="center" style="margin-top:3ex;">
             <a href="/archives/{{type}}/" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
-            <a href="#" class="component_icon button icon_save"
-                onclick="document.getElementById('_addResourceForm').submit(); return false;">{% trans "Save" %}</a>
+            {% if perms.telemeta.add_mediacorpus or perms.telemeta.add_mediafonds %}
+            <a href="#" class="component_icon button icon_save" onclick="document.getElementById('_addResourceForm').submit(); return false;">{% trans "Save" %}</a>
+            {% endif %}
         </div>
         </form>
         </div>

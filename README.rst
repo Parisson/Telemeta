@@ -2,18 +2,17 @@
 Telemeta: open web audio CMS
 =============================
 
-For personal or collaborative media archiving projects,
-research laboratories and digital humanities.
+For personal or collaborative media archiving projects, research laboratories and digital humanities.
 
-Based on Django, Python, full DHTML, CSS and JavaScript.
+Based on Django, Python, HTML5, CSS and JavaScript.
 
 
-Introduction
-============
+Overview
+=========
 
 Telemeta is a free and open source web audio archiving software which introduces useful and secure methods to backup, index, transcode, analyse and publish any digitalized audio file with its metadata. It is dedicated to professionnals who wants to easily organize, backup and publish documented sound collections of audio files, CDs, digitalized vinyls and magnetic tapes over a strong database, in accordance with open web standards.
 
-Main features:
+Key features:
 
  * Secure archiving, editing and publishing of audio files over internet.
  * Pure HTML web user interface including dynamical forms and smart workflows
@@ -29,11 +28,12 @@ Main features:
  * OAI-PMH data provider
  * RSS feed generators
  * XML serialized backup
- * Strong SQL or Oracle backend
+ * SQLite, MySQL, PostgreSQL or Oracle DB backends
  * Multi-language support (now english and french)
  * Video support (EXPERIMENTAL, WebM only)
 
-This web audio CMS is exclusively based on open source modules and can be run on any Unix or Linux system. It is mostly written in Python and JavaScript.
+This web audio CMS is exclusively based on open source modules and can be run on any Unix or Linux system.
+It is mostly written in Python and JavaScript.
 
 
 Installation, upgrade and usage
@@ -44,6 +44,15 @@ See `INSTALL.rst <http://github.com/yomguy/Telemeta/blob/master/INSTALL.rst>`_ a
 
 News
 ======
+
+1.4.4
++++++
+
+ * no new fancy functions
+ * full using of static files which are now in static/ (htdocs/ is now deprecated)
+ * IMPORTANT : upgrade TimeSide to 0.4.1, add 'timeside' to INSTALLED_APPS and do: ./manage.py collectstatic
+ * add various buttons, various bugfixes
+ * after upgrading, always do: ./manage.py migrate
 
 1.4.3
 ++++++
@@ -97,7 +106,7 @@ For developers and maintainers:
     ./manage.py syncdb
     ./manage.py migrate telemeta
 
-See INSTALL.rst and email me if any pb! (you may, for example, not use 0002 migration)
+See INSTALL.rst and email me if any pb!
 
 Full changelog: see `CHANGELOG <http://github.com/yomguy/Telemeta/blob/master/CHANGELOG>`_
 
@@ -111,15 +120,25 @@ login: demo
 password: demo
 
 
-Original Example
+Original Examples
 =================
 
-`Sound archives <http://archives.crem-cnrs.fr>`_ of the French Ethnomusicology Research Center (CREM) et du Musée de l'Homme:
+`Sound archives of the French Ethnomusicology Research Center (CREM) and the Musée de l'Homme <http://archives.crem-cnrs.fr>`_ :
 
  * a 100 year old world database migrated,
  * more than 5000 geolocated collections,
  * more than 32000 geolocated items,
+ * more than 11000 sounds included
  * 700 Go of original ethnological music files accessible through the web.
+
+`Sound archives of the team "Lutherie, Acoustique et Musique" (LAM) of the IJLRDA institute - University Pierre et Marie Curie (Paris 6) <http://telemeta.lam.jussieu.fr>`_ :
+
+ * various musical instruments recorded for research purposes
+ * started in sept. 2012
+
+`Sound archives Parisson <http://parisson.telemeta.org>`_ :
+
+ * various electronic sounds and original electronic music produced by Parisson
 
 
 Bugs and feedback
@@ -137,10 +156,9 @@ And even if Telemeta suits you, please give us some feedback !
 Related projects
 ================
 
-`TimeSide <http://code.google.com/p/timeside/>`_ - Web Audio Components
+`TimeSide <http://code.google.com/p/timeside/>`_ - open and fast web audio components
 
-    a python library library to compute audio analysis, transcode, and streaming to browsers.
-
+    a python library to compute audio analysis, transcode, and streaming to browsers.
 
 
 Contact
@@ -158,16 +176,22 @@ Twitter:
 
  * http://twitter.com/telemeta
  * http://twitter.com/parisson_studio
-
+ * http://twitter.com/yomguy
 
 Development
 ===========
 
 You are welcome to participate to the development of the Telemeta project.
+The official project site is `telemeta.org <http://telemeta.org>`_ but you can find a mirror on `GitHub <https://github.com/yomguy/Telemeta>`_.
 
-To get the lastest development version, you need subversion and run::
+To get the lastest development version, you need Git and run::
 
     $ git clone http://vcs.parisson.com/git/telemeta.git
+
+or::
+
+    $ git clone git://github.com/yomguy/Telemeta.git
+
 
 License
 =======

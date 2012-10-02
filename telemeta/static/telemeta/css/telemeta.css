@@ -908,11 +908,11 @@ img.align-left {
 #module-set .module {
     border: 1px solid #000;
     background-image: url(../images/grid_bg.png);
-    padding: 0.3em 0.8em 0.8em 0.8em;
+    padding: 0.2em;
     margin: 0 0 1.5em 1.5em;
-    -moz-border-radius: 8px 8px 8px 8px;
-    -webkit-border-radius: 8px 8px 8px 8px;
-    border-radius: 8px 8px 8px 8px;
+    -moz-border-radius: 8px 0px 11px 11px;
+    -webkit-border-radius: 8px 0px 11px 11px;
+    border-radius: 11px 0px 11px 11px;
 }
 
 #module-set .module h3 {
@@ -924,6 +924,24 @@ img.align-left {
 #module-set .module a:hover {
     text-decoration: none;
 }
+
+#module-set .module div {
+        -moz-border-radius: 8px 0px 8px 8px;
+        -webkit-border-radius: 8px 0px 8px 8px;
+        border-radius: 8px 0px 8px 8px;
+       }
+
+#module-set .module img {
+        -moz-border-radius: 8px 0px 8px 8px;
+        -webkit-border-radius: 8px 0px 8px 8px;
+        border-radius: 8px 0px 8px 8px;
+       }
+
+#module-set .module ul, li {
+        -moz-border-radius: 8px 0px 8px 8px;
+        -webkit-border-radius: 8px 0px 8px 8px;
+        border-radius: 8px 0px 8px 8px;
+       }
 
 a.image-link {
     border: none;
@@ -1200,55 +1218,55 @@ a.image-link {
 }
 
 /* FORMS */
-#id_title {
+#id_item-title {
     width: 500px;
 }
-#id_alt_title {
+#id_item-alt_title {
     width: 500px;
 }
-#id_collector {
+#id_item-collector {
     width: 500px;
 }
-#id_creator {
+#id_item-creator {
     width: 500px;
 }
-#id_cultural_area {
+#id_item-cultural_area {
     width: 500px;
 }
-#id_location_comment {
+#id_item-location_comment {
     width: 500px;
 }
-#id_old_code {
+#id_item-old_code {
     width: 500px;
 }
-#id_code {
+#id_item-code {
     width: 500px;
 }
-#id_author {
+#id_item-author {
     width: 500px;
 }
-#id_collector_selection {
+#id_item-collector_selection {
     width: 500px;
 }
-#id_booklet_author {
+#id_item-booklet_author {
     width: 500px;
 }
-#id_alt_ids {
+#id_item-alt_ids {
     width: 500px;
 }
-#id_travail {
+#id_item-travail {
     width: 500px;
 }
-#id_value_add {
+#id_item-value_add {
     width: 200px;
 }
-#id_value_edit {
+#id_item-value_edit {
     width: 500px;
 }
-#id_file {
+#id_item-file {
     width: 500px;
 }
-#id_conservation_site {
+#id_item-conservation_site {
     width: 500px;
 }
 

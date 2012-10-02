@@ -42,5 +42,5 @@ from telemeta.views.marker import *
 from telemeta.views.playlist import *
 from telemeta.views.profile import *
 from telemeta.views.feed import *
-from telemeta.views.ressource import *
+from telemeta.views.resource import *
 

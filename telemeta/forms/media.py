@@ -69,6 +69,9 @@ class MediaCollectionRelatedForm(ModelForm):
 class MediaItemForm(ModelForm):
     class Meta:
         model = MediaItem
+
+        exclude = ('copied_from_item')
+
     def clean_code(self):
         return self.cleaned_data['code'] or None
 
@@ -92,3 +95,4 @@ class MediaItemPerformanceForm(ModelForm):
 class PlaylistForm(ModelForm):
     class Meta:
         model = Playlist
+

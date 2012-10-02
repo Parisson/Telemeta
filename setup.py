@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from setuptools import setup, find_packages
 import os
-import telemeta
 
 CLASSIFIERS = ['Environment :: Web Environment', 'Framework :: Django', 'Intended Audience :: Science/Research', 'Intended Audience :: Education', 'Programming Language :: Python', 'Programming Language :: JavaScript', 'Topic :: Internet :: WWW/HTTP :: Dynamic Content', 'Topic :: Internet :: WWW/HTTP :: WSGI :: Application', 'Topic :: Multimedia :: Sound/Audio', 'Topic :: Multimedia :: Sound/Audio :: Analysis', 'Topic :: Multimedia :: Sound/Audio :: Players', 'Topic :: Scientific/Engineering :: Information Analysis', 'Topic :: System :: Archiving',  ]
 
@@ -12,7 +11,7 @@ setup(
   long_description = open('README.rst').read(),
   author = "Guillaume Pellerin",
   author_email = "yomguy@parisson.com",
-  version = telemeta.__version__,
+  version = '1.4.4',
   install_requires = [
         'django>=1.4',
         'django-registration',
@@ -20,9 +19,6 @@ setup(
         'timeside',
         'south',
         'sorl-thumbnail',
-        'django-pagination',
-        'django-postman',
-        'django-socialregistration',
         'django-extensions',
   ],
   platforms=['OS Independent'],
