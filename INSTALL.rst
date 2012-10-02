@@ -162,6 +162,7 @@ Set the app lists as follow::
     'django.contrib.messages',
     'django.contrib.admin',
     'telemeta',
+    'timeside',
     'jsonrpc',
     'south'
     )
@@ -264,6 +265,7 @@ This synchronizes the DB with the model::
 If you want tu use the data schema migration system (South needed, see previous paragraph)::
 
     ./manage.py migrate telemeta
+    ./manage.py collectstatic
 
 
 Start the project
