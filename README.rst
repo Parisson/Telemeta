@@ -50,7 +50,7 @@ News
 
  * no new fancy functions
  * full using of static files which are now in static/ (htdocs/ is now deprecated)
- * IMPORTANT : update TimeSide to 0.4.1 and do: ./manage.py collectstatic
+ * IMPORTANT : update TimeSide to 0.4.1, add 'timeside' to INSTALLED_APPS and do: ./manage.py collectstatic
  * add various buttons, various bugfixes
  * after upgrading, always do: ./manage.py migrate
 
