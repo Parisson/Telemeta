@@ -60,3 +60,4 @@ class Language(ModelCore):
     class Meta(MetaCore):
         db_table = 'languages'
         ordering = ['name']
+        verbose_name_plural = _('languages')

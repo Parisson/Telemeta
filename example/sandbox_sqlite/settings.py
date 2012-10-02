@@ -2,6 +2,7 @@
 # Django settings for sandbox project.
 
 import os
+from django.core.urlresolvers import reverse_lazy
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -65,7 +66,7 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = '/data/telemeta/static/'
+STATIC_ROOT = '/home/dev/telemeta/static/'
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -132,6 +133,9 @@ INSTALLED_APPS = (
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
     'django.contrib.auth.context_processors.auth',
+    "django.core.context_processors.i18n",
+    "django.core.context_processors.media",
+    'django.core.context_processors.static',
 )
 
 TELEMETA_ORGANIZATION = 'Parisson'
@@ -146,8 +150,13 @@ TELEMETA_DOWNLOAD_ENABLED = True
 TELEMETA_STREAMING_FORMATS = ('mp3', 'webm')
 TELEMETA_DOWNLOAD_FORMATS = ('wav', 'mp3', 'webm')
 TELEMETA_PUBLIC_ACCESS_PERIOD = 51
+TELEMETA_DEFAULT_WAVEFORM_SIZES = ['360x130', '640x130']
+
 AUTH_PROFILE_MODULE = 'telemeta.userprofile'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = reverse_lazy('telemeta-desk-lists')
 
 EMAIL_HOST = 'localhost'
 DEFAULT_FROM_EMAIL = 'webmaster@parisson.com'

@@ -35,20 +35,21 @@
 #          David LIPSZYC <davidlipszyc@gmail.com>
 #          Guillaume Pellerin <yomguy@parisson.com>
 
+import re
+import mimetypes
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ValidationError
 from telemeta.models.core import *
 from telemeta.models.enum import ContextKeyword
 from telemeta.util.unaccent import unaccent_icmp
-import re
-import mimetypes
 from telemeta.models.location import LocationRelation, Location
 from telemeta.models.system import Revision
 from telemeta.models.query import *
 from telemeta.models.instrument import *
 from telemeta.models.enum import *
 from telemeta.models.language import *
+from telemeta.models.format import *
 from django.db import models
 
 
@@ -64,6 +65,8 @@ item_unpublished_code_regex  = collection_unpublished_code_regex + '_[0-9]{2,3}(
 item_code_regex              = '(?:%s|%s)' % (item_published_code_regex, item_unpublished_code_regex)
 
 PUBLIC_ACCESS_CHOICES = (('none', 'none'), ('metadata', 'metadata'), ('full', 'full'))
+
+mimetypes.add_type('video/webm','.webm')
 
 
 class MediaResource(ModelCore):
@@ -128,7 +131,8 @@ class MediaRelated(MediaResource):
     mime_type       = CharField(_('mime_type'), null=True)
     url             = CharField(_('url'), max_length=500)
     credits         = CharField(_('credits'))
-    file            = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename")
+    file            = FileField(_('file'), upload_to='items/%Y/%m/%d',
+                                db_column="filename", max_length=255)
 
     def is_image(self):
         is_url_image = False
@@ -217,7 +221,8 @@ class MediaCollection(MediaResource):
     conservation_site     = CharField(_('conservation site'))
 
     # Technical data
-    code                  = CharField(_('code'), unique=True, required=True, validators=[is_valid_collection_code])
+    code                  = CharField(_('code'), unique=True, required=True,
+                                      validators=[is_valid_collection_code])
     old_code              = CharField(_('old code'), unique=False, null=True, blank=True)
     approx_duration       = DurationField(_('approximative duration'))
     physical_items_num    = IntegerField(_('number of components (medium / piece)'))
@@ -313,11 +318,15 @@ class MediaItem(MediaResource):
     # Main Informations
     title                 = CharField(_('title'))
     alt_title             = CharField(_('original title / translation'))
-    collector             = CharField(_('recordist'))
     collection            = ForeignKey('MediaCollection', related_name="items",
                                        verbose_name=_('collection'))
     recorded_from_date    = DateField(_('recording date (from)'))
     recorded_to_date      = DateField(_('recording date (until)'))
+
+    scientist             = CharField(_('scientist'))
+    topic                 = WeakForeignKey('Topic', verbose_name=_('topic'))
+    summary               = TextField(_('summary'))
+    comment               = TextField(_('remarks'))
 
     # Geographic and cultural informations
     location              = WeakForeignKey('Location', verbose_name=_('location'))
@@ -338,26 +347,40 @@ class MediaItem(MediaResource):
     generic_style         = WeakForeignKey('GenericStyle', related_name="items",
                                            verbose_name=_('generic style'))
     author                = CharField(_('author / compositor'))
+    contributor           = CharField(_('contributor'))
 
-    # General informations
-    comment               = TextField(_('remarks'))
-    collector_selection   = CharField(_('recordist selection'))
-    collector_from_collection = BooleanField(_('recordist as in collection'))
+    # Legal mentions
+    organization          = WeakForeignKey('Organization', verbose_name=_('organization'))
+    public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES,
+                                      max_length=16, default="metadata")
+    depositor             = CharField(_('depositor'))
+    rights                = WeakForeignKey('Rights', verbose_name=_('rights'))
 
     # Archiving data
     code                  = CharField(_('code'), unique=True, blank=True)
-    old_code              = CharField(_('old code'), unique=False, blank=True)
+    old_code              = CharField(_('original code'), unique=False, blank=True)
     track                 = CharField(_('item number'))
-    creator_reference     = CharField(_('reference'))
+    recordist             = CharField(_('recordist'))
+    digitalist            = CharField(_('digitalist'))
+    collector             = CharField(_('collector'))
+    collector_selection   = CharField(_('collector selection'))
+    collector_from_collection = BooleanField(_('collector as in collection'))
+    digitization_date        = DateField(_('digitization date'))
+    publishing_date       = DateField(_('publishing date'))
+    creator_reference     = CharField(_('creator reference'))
     external_references   = TextField(_('published references'))
     copied_from_item      = WeakForeignKey('self', related_name="copies", verbose_name=_('copy of'))
-    public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES, max_length=16, default="metadata")
-    file                  = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename")
+
+    # Media
+    file                  = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename", max_length=255)
 
     # Technical data
     approx_duration       = DurationField(_('approximative duration'))
 
-    # All
+    # Media
+    file                  = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename")
+
+    # Manager
     objects               = MediaItemManager()
 
     def keywords(self):
@@ -368,7 +391,14 @@ class MediaItem(MediaResource):
     def public_id(self):
         if self.code:
             return self.code
-        return self.id
+        return str(self.id)
+
+    @property
+    def mime_type(self):
+        if self.file:
+            return mimetypes.guess_type(self.file.path)[0]
+        else:
+            return _('none')
 
     class Meta(MetaCore):
         db_table = 'media_items'
@@ -410,6 +440,24 @@ class MediaItem(MediaResource):
         if self.track:
             title += ' ' + self.track
         return title
+
+    @property
+    def instruments(self):
+        "Return the instruments of the item"
+        instruments = []
+        performances = MediaItemPerformance.objects.filter(media_item=self)
+        for performance in performances:
+            instrument = performance.instrument
+            alias = performance.alias
+            if not instrument in instruments:
+                instruments.append(instrument)
+            if not alias in instruments:
+                instruments.append(alias)
+
+        instruments.sort(self.__name_cmp)
+        return instruments
+
+        instruments.verbose_name = _("instruments")
 
 
 class MediaItemRelated(MediaRelated):
@@ -502,7 +550,8 @@ class Playlist(ModelCore):
 
 class PlaylistResource(ModelCore):
     "Playlist components"
-    RESOURCE_TYPE_CHOICES = (('item', 'item'), ('collection', 'collection'), ('marker', 'marker'), ('fonds', 'fonds'), ('corpus', 'corpus'))
+    RESOURCE_TYPE_CHOICES = (('item', 'item'), ('collection', 'collection'),
+                             ('marker', 'marker'), ('fonds', 'fonds'), ('corpus', 'corpus'))
     element_type = 'playlist_resource'
     public_id          = CharField(_('public_id'), required=True)
     playlist           = ForeignKey('Playlist', related_name="resources", verbose_name=_('playlist'))
@@ -621,7 +670,8 @@ class MediaCorpus(MediaBaseResource):
     element_type = 'corpus'
     children_type = 'collections'
 
-    children = models.ManyToManyField(MediaCollection, related_name="corpus", verbose_name=_('collections'),  blank=True, null=True)
+    children = models.ManyToManyField(MediaCollection, related_name="corpus",
+                                      verbose_name=_('collections'),  blank=True, null=True)
     recorded_from_year    = IntegerField(_('recording year (from)'))
     recorded_to_year      = IntegerField(_('recording year (until)'))
 
@@ -643,7 +693,8 @@ class MediaFonds(MediaBaseResource):
     element_type = 'fonds'
     children_type = 'corpus'
 
-    children = models.ManyToManyField(MediaCorpus, related_name="fonds", verbose_name=_('corpus'), blank=True, null=True)
+    children = models.ManyToManyField(MediaCorpus, related_name="fonds",
+                                      verbose_name=_('corpus'), blank=True, null=True)
 
     objects = MediaFondsManager()
 
@@ -677,34 +728,4 @@ class MediaFondsRelated(MediaRelated):
         db_table = 'media_fonds_related'
         verbose_name = _('fonds related media')
         verbose_name_plural = _('fonds related media')
-
-
-class Format(ModelCore):
-    """ Physical format object as proposed by the LAM"""
-
-    item = ForeignKey(MediaItem, related_name="formats", verbose_name=_('item'))
-    original_code = CharField(_('original code'), required=True)
-    tape_number = CharField(_('tape number'))
-    status = CharField(_('status'))
-    conservation_state = CharField(_('conservation state'))
-    comments = TextField(_('comments'))
-
-    tape_length = WeakForeignKey(TapeLength, related_name="formats", verbose_name = _("tape length (cm)"))
-    tape_width  = WeakForeignKey(TapeWidth, related_name="formats", verbose_name = _("tape width (inch)"))
-    tape_speed = WeakForeignKey(TapeSpeed, related_name="formats", verbose_name = _("tape speed (m/s)"))
-    tape_vendor = WeakForeignKey(TapeVendor, related_name="formats")
-    tape_thickness = CharField(_('tape thickness (um)'))
-    tape_diameter = CharField(_('tape diameter (mm)'))
-    tape_reference = CharField(_('tape reference'))
-
-    class Meta(MetaCore):
-        db_table = 'media_formats'
-        verbose_name = _('format')
-
-    def __unicode__(self):
-        return self.original_code
-
-    @property
-    def public_id(self):
-        return self.original_code
 

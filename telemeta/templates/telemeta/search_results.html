@@ -5,7 +5,7 @@
 {% block head_title %}{% trans "Search Results" %} - {{ block.super }}{% endblock %}
 
 {% block title %}
- <img src="{% url telemeta-images "search_red.png" %}" alt="search-results" style="vertical-align:middle" /> {% trans "Search Results" %}
+ <img src="{{ STATIC_URL }}telemeta/images/search_red.png" alt="search-results" style="vertical-align:middle" /> {% trans "Search Results" %}
 {% endblock %}
 
 {% block title_buttons %}
@@ -27,6 +27,9 @@
   {% endif %}
   {% if criteria.location %}
     <li><b>{% field_label "Location" %}:</b> {{criteria.location}}</li>
+  {% endif %}
+  {% if criteria.instrument %}
+  <li><b>{% field_label "Instrument" %}:</b> {{criteria.instrument}}</li>
   {% endif %}
   {% if criteria.ethnic_group %}
     <li><b>{% field_label "EthnicGroup" %}:</b> {{criteria.ethnic_group}}</li>
@@ -66,9 +69,9 @@
    <div class="fullpage">
       {% include "telemeta/inc/mediaitem_list.html" %}
    </div>
-  {% endwith %}    
+  {% endwith %}
 {% endifequal %}
-  
+
 {% ifequal type 'collections' %}
 <p><b><a href="{% url telemeta-search-items %}?{{criteria|build_query_string}}">Items ({{items_num}})</a> | Collections ({{collections_num}}) | <a href="{% url telemeta-search-corpus %}?{{criteria|build_query_string}}">Corpus ({{corpus_num}})</a> | <a href="{% url telemeta-search-fonds %}?{{criteria|build_query_string}}">Fonds ({{fonds_num}})</a>
   </b></p>

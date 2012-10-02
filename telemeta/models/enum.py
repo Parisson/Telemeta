@@ -162,7 +162,15 @@ class EthnicGroupAlias(ModelCore):
         unique_together = (('ethnic_group', 'value'),)
         ordering = ['ethnic_group__value']
 
+
 # Tape formats
+class TapeWheelDiameter(Enumeration):
+    "Tape wheel diameter (cm)"
+
+    class Meta(MetaEnumeration):
+        db_table = 'tape_wheel_diameter'
+        verbose_name = _("tape wheel diameter (cm)")
+
 class TapeLength(Enumeration):
     "Tape length (cm)"
 
@@ -178,11 +186,11 @@ class TapeWidth(Enumeration):
         verbose_name = _("tape width (inch)")
 
 class TapeSpeed(Enumeration):
-    "Tape speed (m/s)"
+    "Tape speed (cm/s)"
 
     class Meta(MetaEnumeration):
         db_table = 'tape_speed'
-        verbose_name = _("tape speed (m/s)")
+        verbose_name = _("tape speed (cm/s)")
 
 class TapeVendor(Enumeration):
     "Tape vendor"
@@ -191,3 +199,30 @@ class TapeVendor(Enumeration):
         db_table = 'tape_vendor'
         verbose_name = _("tape vendor")
 
+class NumberOfChannels(Enumeration):
+    "Number of channels"
+
+    class Meta(MetaEnumeration):
+        db_table = 'original_channel_number'
+        verbose_name = _("number of channels")
+
+class Organization(Enumeration):
+    "Organization"
+
+    class Meta(MetaEnumeration):
+        db_table = 'organization'
+        verbose_name = _("organization")
+
+class Rights(Enumeration):
+    "Archive rights"
+
+    class Meta(MetaEnumeration):
+        db_table = 'rights'
+        verbose_name = _("rights")
+
+class Topic(Enumeration):
+    "Topic, subject of the study, research, etc.."
+
+    class Meta(MetaEnumeration):
+        db_table = 'topic'
+        verbose_name = _("topic")
