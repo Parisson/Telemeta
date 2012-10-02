@@ -66,7 +66,7 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = '/home/dev/telemeta/static/'
+STATIC_ROOT = '/var/www/static/'
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -125,6 +125,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django_extensions',
     'telemeta',
+    'timeside',
     'jsonrpc',
     'south',
     'sorl.thumbnail',
@@ -142,9 +143,9 @@ TELEMETA_ORGANIZATION = 'Parisson'
 TELEMETA_SUBJECTS = ('test', 'telemeta', 'sandbox')
 TELEMETA_DESCRIPTION = "Telemeta TEST sandbox"
 TELEMETA_GMAP_KEY = 'ABQIAAAArg7eSfnfTkBRma8glnGrlxRVbMrhnNNvToCbZQtWdaMbZTA_3RRGObu5PDoiBImgalVnnLU2yN4RMA'
-TELEMETA_CACHE_DIR = MEDIA_ROOT + 'cache'
-TELEMETA_EXPORT_CACHE_DIR = MEDIA_ROOT + 'export'
-TELEMETA_DATA_CACHE_DIR = TELEMETA_CACHE_DIR + "/data"
+TELEMETA_CACHE_DIR = MEDIA_ROOT + 'cache/'
+TELEMETA_EXPORT_CACHE_DIR = MEDIA_ROOT + 'export/'
+TELEMETA_DATA_CACHE_DIR = TELEMETA_CACHE_DIR + "data/"
 
 TELEMETA_DOWNLOAD_ENABLED = True
 TELEMETA_STREAMING_FORMATS = ('mp3', 'webm')

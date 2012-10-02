@@ -161,31 +161,6 @@ digraph name {
     </TABLE>
     >]
 
-    django_contrib_auth_models_Message [label=<
-    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
-     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
-     ><FONT FACE="Helvetica Bold" COLOR="white"
-     >Message</FONT></TD></TR>
-    
-        
-        <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">id</FONT
-        ></TD>
-        <TD ALIGN="LEFT"
-        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">AutoField</FONT
-        ></TD></TR>
-        
-        <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Helvetica Bold">message</FONT
-        ></TD>
-        <TD ALIGN="LEFT"
-        ><FONT FACE="Helvetica Bold">TextField</FONT
-        ></TD></TR>
-        
-    
-    </TABLE>
-    >]
-
 
 
 
@@ -356,6 +331,9 @@ digraph name {
     
     </TABLE>
     >]
+
+
+
 
 
 
@@ -884,6 +862,31 @@ digraph name {
     </TABLE>
     >]
 
+    telemeta_models_enum_TapeWheelDiameter [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >TapeWheelDiameter<BR/>&lt;<FONT FACE="Helvetica Italic">Enumeration</FONT>&gt;</FONT></TD></TR>
+    
+        
+        <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">id</FONT
+        ></TD>
+        <TD ALIGN="LEFT"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">AutoField</FONT
+        ></TD></TR>
+        
+        <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Helvetica Italic">value</FONT
+        ></TD>
+        <TD ALIGN="LEFT"
+        ><FONT FACE="Helvetica Italic">CharField</FONT
+        ></TD></TR>
+        
+    
+    </TABLE>
+    >]
+
     telemeta_models_enum_TapeLength [label=<
     <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
      <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
@@ -964,6 +967,106 @@ digraph name {
      <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
      ><FONT FACE="Helvetica Bold" COLOR="white"
      >TapeVendor<BR/>&lt;<FONT FACE="Helvetica Italic">Enumeration</FONT>&gt;</FONT></TD></TR>
+    
+        
+        <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">id</FONT
+        ></TD>
+        <TD ALIGN="LEFT"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">AutoField</FONT
+        ></TD></TR>
+        
+        <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Helvetica Italic">value</FONT
+        ></TD>
+        <TD ALIGN="LEFT"
+        ><FONT FACE="Helvetica Italic">CharField</FONT
+        ></TD></TR>
+        
+    
+    </TABLE>
+    >]
+
+    telemeta_models_enum_NumberOfChannels [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >NumberOfChannels<BR/>&lt;<FONT FACE="Helvetica Italic">Enumeration</FONT>&gt;</FONT></TD></TR>
+    
+        
+        <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">id</FONT
+        ></TD>
+        <TD ALIGN="LEFT"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">AutoField</FONT
+        ></TD></TR>
+        
+        <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Helvetica Italic">value</FONT
+        ></TD>
+        <TD ALIGN="LEFT"
+        ><FONT FACE="Helvetica Italic">CharField</FONT
+        ></TD></TR>
+        
+    
+    </TABLE>
+    >]
+
+    telemeta_models_enum_Organization [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >Organization<BR/>&lt;<FONT FACE="Helvetica Italic">Enumeration</FONT>&gt;</FONT></TD></TR>
+    
+        
+        <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">id</FONT
+        ></TD>
+        <TD ALIGN="LEFT"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">AutoField</FONT
+        ></TD></TR>
+        
+        <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Helvetica Italic">value</FONT
+        ></TD>
+        <TD ALIGN="LEFT"
+        ><FONT FACE="Helvetica Italic">CharField</FONT
+        ></TD></TR>
+        
+    
+    </TABLE>
+    >]
+
+    telemeta_models_enum_Rights [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >Rights<BR/>&lt;<FONT FACE="Helvetica Italic">Enumeration</FONT>&gt;</FONT></TD></TR>
+    
+        
+        <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">id</FONT
+        ></TD>
+        <TD ALIGN="LEFT"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">AutoField</FONT
+        ></TD></TR>
+        
+        <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Helvetica Italic">value</FONT
+        ></TD>
+        <TD ALIGN="LEFT"
+        ><FONT FACE="Helvetica Italic">CharField</FONT
+        ></TD></TR>
+        
+    
+    </TABLE>
+    >]
+
+    telemeta_models_enum_Topic [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >Topic<BR/>&lt;<FONT FACE="Helvetica Italic">Enumeration</FONT>&gt;</FONT></TD></TR>
     
         
         <TR><TD ALIGN="LEFT" BORDER="0"
@@ -1201,6 +1304,20 @@ digraph name {
         ></TD></TR>
         
         <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">department</FONT
+        ></TD>
+        <TD ALIGN="LEFT"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">CharField</FONT
+        ></TD></TR>
+        
+        <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">attachment</FONT
+        ></TD>
+        <TD ALIGN="LEFT"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">CharField</FONT
+        ></TD></TR>
+        
+        <TR><TD ALIGN="LEFT" BORDER="0"
         ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">function</FONT
         ></TD>
         <TD ALIGN="LEFT"
@@ -1226,13 +1343,6 @@ digraph name {
         ></TD>
         <TD ALIGN="LEFT"
         ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">DateField</FONT
-        ></TD></TR>
-        
-        <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">init_password</FONT
-        ></TD>
-        <TD ALIGN="LEFT"
-        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">BooleanField</FONT
         ></TD></TR>
         
     
@@ -1457,6 +1567,94 @@ digraph name {
         ></TD>
         <TD ALIGN="LEFT"
         ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">TextField</FONT
+        ></TD></TR>
+        
+    
+    </TABLE>
+    >]
+
+    telemeta_models_format_Format [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >Format<BR/>&lt;<FONT FACE="Helvetica Italic">ModelCore</FONT>&gt;</FONT></TD></TR>
+    
+        
+        <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">id</FONT
+        ></TD>
+        <TD ALIGN="LEFT"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">AutoField</FONT
+        ></TD></TR>
+        
+        <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">original_code</FONT
+        ></TD>
+        <TD ALIGN="LEFT"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">CharField</FONT
+        ></TD></TR>
+        
+        <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">original_number</FONT
+        ></TD>
+        <TD ALIGN="LEFT"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">CharField</FONT
+        ></TD></TR>
+        
+        <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">original_status</FONT
+        ></TD>
+        <TD ALIGN="LEFT"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">CharField</FONT
+        ></TD></TR>
+        
+        <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">original_state</FONT
+        ></TD>
+        <TD ALIGN="LEFT"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">TextField</FONT
+        ></TD></TR>
+        
+        <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">original_comments</FONT
+        ></TD>
+        <TD ALIGN="LEFT"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">TextField</FONT
+        ></TD></TR>
+        
+        <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">original_audio_quality</FONT
+        ></TD>
+        <TD ALIGN="LEFT"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">TextField</FONT
+        ></TD></TR>
+        
+        <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">recording_system</FONT
+        ></TD>
+        <TD ALIGN="LEFT"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">CharField</FONT
+        ></TD></TR>
+        
+        <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">tape_thickness</FONT
+        ></TD>
+        <TD ALIGN="LEFT"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">CharField</FONT
+        ></TD></TR>
+        
+        <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">tape_reference</FONT
+        ></TD>
+        <TD ALIGN="LEFT"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">CharField</FONT
+        ></TD></TR>
+        
+        <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">sticker_presence</FONT
+        ></TD>
+        <TD ALIGN="LEFT"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">BooleanField</FONT
         ></TD></TR>
         
     
@@ -1773,13 +1971,6 @@ digraph name {
         ></TD></TR>
         
         <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">collector</FONT
-        ></TD>
-        <TD ALIGN="LEFT"
-        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">CharField</FONT
-        ></TD></TR>
-        
-        <TR><TD ALIGN="LEFT" BORDER="0"
         ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">recorded_from_date</FONT
         ></TD>
         <TD ALIGN="LEFT"
@@ -1791,6 +1982,27 @@ digraph name {
         ></TD>
         <TD ALIGN="LEFT"
         ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">DateField</FONT
+        ></TD></TR>
+        
+        <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">scientist</FONT
+        ></TD>
+        <TD ALIGN="LEFT"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">CharField</FONT
+        ></TD></TR>
+        
+        <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">summary</FONT
+        ></TD>
+        <TD ALIGN="LEFT"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">TextField</FONT
+        ></TD></TR>
+        
+        <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">comment</FONT
+        ></TD>
+        <TD ALIGN="LEFT"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">TextField</FONT
         ></TD></TR>
         
         <TR><TD ALIGN="LEFT" BORDER="0"
@@ -1836,24 +2048,24 @@ digraph name {
         ></TD></TR>
         
         <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">comment</FONT
-        ></TD>
-        <TD ALIGN="LEFT"
-        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">TextField</FONT
-        ></TD></TR>
-        
-        <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">collector_selection</FONT
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">contributor</FONT
         ></TD>
         <TD ALIGN="LEFT"
         ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">CharField</FONT
         ></TD></TR>
         
         <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">collector_from_collection</FONT
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">public_access</FONT
         ></TD>
         <TD ALIGN="LEFT"
-        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">BooleanField</FONT
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">CharField</FONT
+        ></TD></TR>
+        
+        <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">depositor</FONT
+        ></TD>
+        <TD ALIGN="LEFT"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">CharField</FONT
         ></TD></TR>
         
         <TR><TD ALIGN="LEFT" BORDER="0"
@@ -1878,6 +2090,55 @@ digraph name {
         ></TD></TR>
         
         <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">recordist</FONT
+        ></TD>
+        <TD ALIGN="LEFT"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">CharField</FONT
+        ></TD></TR>
+        
+        <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">digitalist</FONT
+        ></TD>
+        <TD ALIGN="LEFT"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">CharField</FONT
+        ></TD></TR>
+        
+        <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">collector</FONT
+        ></TD>
+        <TD ALIGN="LEFT"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">CharField</FONT
+        ></TD></TR>
+        
+        <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">collector_selection</FONT
+        ></TD>
+        <TD ALIGN="LEFT"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">CharField</FONT
+        ></TD></TR>
+        
+        <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">collector_from_collection</FONT
+        ></TD>
+        <TD ALIGN="LEFT"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">BooleanField</FONT
+        ></TD></TR>
+        
+        <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">digitization_date</FONT
+        ></TD>
+        <TD ALIGN="LEFT"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">DateField</FONT
+        ></TD></TR>
+        
+        <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">publishing_date</FONT
+        ></TD>
+        <TD ALIGN="LEFT"
+        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">DateField</FONT
+        ></TD></TR>
+        
+        <TR><TD ALIGN="LEFT" BORDER="0"
         ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">creator_reference</FONT
         ></TD>
         <TD ALIGN="LEFT"
@@ -1889,13 +2150,6 @@ digraph name {
         ></TD>
         <TD ALIGN="LEFT"
         ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">TextField</FONT
-        ></TD></TR>
-        
-        <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">public_access</FONT
-        ></TD>
-        <TD ALIGN="LEFT"
-        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">CharField</FONT
         ></TD></TR>
         
         <TR><TD ALIGN="LEFT" BORDER="0"
@@ -2542,80 +2796,6 @@ digraph name {
     </TABLE>
     >]
 
-    telemeta_models_media_Format [label=<
-    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
-     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
-     ><FONT FACE="Helvetica Bold" COLOR="white"
-     >Format<BR/>&lt;<FONT FACE="Helvetica Italic">ModelCore</FONT>&gt;</FONT></TD></TR>
-    
-        
-        <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">id</FONT
-        ></TD>
-        <TD ALIGN="LEFT"
-        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">AutoField</FONT
-        ></TD></TR>
-        
-        <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Helvetica Bold">original_code</FONT
-        ></TD>
-        <TD ALIGN="LEFT"
-        ><FONT FACE="Helvetica Bold">CharField</FONT
-        ></TD></TR>
-        
-        <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">tape_number</FONT
-        ></TD>
-        <TD ALIGN="LEFT"
-        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">CharField</FONT
-        ></TD></TR>
-        
-        <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">status</FONT
-        ></TD>
-        <TD ALIGN="LEFT"
-        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">CharField</FONT
-        ></TD></TR>
-        
-        <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">conservation_state</FONT
-        ></TD>
-        <TD ALIGN="LEFT"
-        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">CharField</FONT
-        ></TD></TR>
-        
-        <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">comments</FONT
-        ></TD>
-        <TD ALIGN="LEFT"
-        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">TextField</FONT
-        ></TD></TR>
-        
-        <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">tape_thickness</FONT
-        ></TD>
-        <TD ALIGN="LEFT"
-        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">CharField</FONT
-        ></TD></TR>
-        
-        <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">tape_diameter</FONT
-        ></TD>
-        <TD ALIGN="LEFT"
-        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">CharField</FONT
-        ></TD></TR>
-        
-        <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">tape_reference</FONT
-        ></TD>
-        <TD ALIGN="LEFT"
-        ><FONT COLOR="#7B7B7B" FACE="Helvetica Bold">CharField</FONT
-        ></TD></TR>
-        
-    
-    </TABLE>
-    >]
-
 
 
 
@@ -2710,12 +2890,6 @@ digraph name {
   [label="user_permissions (user)"] [arrowhead=dot arrowtail=dot, dir=both];
   
 
-  
-  
-  django_contrib_auth_models_Message -> django_contrib_auth_models_User
-  [label="user (_message_set)"] [arrowhead=none, arrowtail=dot];
-  
-
 
   
 
@@ -2736,6 +2910,7 @@ digraph name {
   django_contrib_admin_models_LogEntry -> django_contrib_contenttypes_models_ContentType
   [label="content_type (logentry)"] [arrowhead=none, arrowtail=dot];
   
+
 
 
 
@@ -2785,6 +2960,16 @@ digraph name {
   
   telemeta_models_enum_EthnicGroupAlias -> telemeta_models_enum_EthnicGroup
   [label="ethnic_group (aliases)"] [arrowhead=none, arrowtail=dot];
+  
+
+  
+
+  
+
+  
+
+  
+
   
 
   
@@ -2875,6 +3060,36 @@ digraph name {
 
   
   
+  telemeta_models_format_Format -> telemeta_models_media_MediaItem
+  [label="item (format)"] [arrowhead=none, arrowtail=dot];
+  
+  
+  telemeta_models_format_Format -> telemeta_models_enum_PhysicalFormat
+  [label="physical_format (format)"] [arrowhead=none, arrowtail=dot];
+  
+  
+  telemeta_models_format_Format -> telemeta_models_location_Location
+  [label="original_location (format)"] [arrowhead=none, arrowtail=dot];
+  
+  
+  telemeta_models_format_Format -> telemeta_models_enum_NumberOfChannels
+  [label="original_channels (format)"] [arrowhead=none, arrowtail=dot];
+  
+  
+  telemeta_models_format_Format -> telemeta_models_enum_TapeWheelDiameter
+  [label="tape_wheel_diameter (format)"] [arrowhead=none, arrowtail=dot];
+  
+  
+  telemeta_models_format_Format -> telemeta_models_enum_TapeSpeed
+  [label="tape_speed (format)"] [arrowhead=none, arrowtail=dot];
+  
+  
+  telemeta_models_format_Format -> telemeta_models_enum_TapeVendor
+  [label="tape_vendor (format)"] [arrowhead=none, arrowtail=dot];
+  
+
+  
+  
   telemeta_models_media_MediaCollection -> telemeta_models_enum_RecordingContext
   [label="recording_context (collections)"] [arrowhead=none, arrowtail=dot];
   
@@ -2927,6 +3142,10 @@ digraph name {
   [label="collection (items)"] [arrowhead=none, arrowtail=dot];
   
   
+  telemeta_models_media_MediaItem -> telemeta_models_enum_Topic
+  [label="topic (mediaitem)"] [arrowhead=none, arrowtail=dot];
+  
+  
   telemeta_models_media_MediaItem -> telemeta_models_location_Location
   [label="location (mediaitem)"] [arrowhead=none, arrowtail=dot];
   
@@ -2945,6 +3164,14 @@ digraph name {
   
   telemeta_models_media_MediaItem -> telemeta_models_enum_GenericStyle
   [label="generic_style (items)"] [arrowhead=none, arrowtail=dot];
+  
+  
+  telemeta_models_media_MediaItem -> telemeta_models_enum_Organization
+  [label="organization (mediaitem)"] [arrowhead=none, arrowtail=dot];
+  
+  
+  telemeta_models_media_MediaItem -> telemeta_models_enum_Rights
+  [label="rights (mediaitem)"] [arrowhead=none, arrowtail=dot];
   
   
   telemeta_models_media_MediaItem -> telemeta_models_media_MediaItem
@@ -3043,28 +3270,6 @@ digraph name {
   
   telemeta_models_media_MediaFondsRelated -> telemeta_models_media_MediaFonds
   [label="resource (related)"] [arrowhead=none, arrowtail=dot];
-  
-
-  
-  
-  telemeta_models_media_Format -> telemeta_models_media_MediaItem
-  [label="item (formats)"] [arrowhead=none, arrowtail=dot];
-  
-  
-  telemeta_models_media_Format -> telemeta_models_enum_TapeLength
-  [label="tape_length (formats)"] [arrowhead=none, arrowtail=dot];
-  
-  
-  telemeta_models_media_Format -> telemeta_models_enum_TapeWidth
-  [label="tape_width (formats)"] [arrowhead=none, arrowtail=dot];
-  
-  
-  telemeta_models_media_Format -> telemeta_models_enum_TapeSpeed
-  [label="tape_speed (formats)"] [arrowhead=none, arrowtail=dot];
-  
-  
-  telemeta_models_media_Format -> telemeta_models_enum_TapeVendor
-  [label="tape_vendor (formats)"] [arrowhead=none, arrowtail=dot];
   
 
 
