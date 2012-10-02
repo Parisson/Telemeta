@@ -10,6 +10,8 @@
 
 {% block title_buttons %}
  <a href="{% url telemeta-collection-detail collection.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+ <a href="#" class="component_icon button icon_save"
+   onclick="document.getElementById('_editMediaCollectionRelatedFileForm').submit(); return false;">{% trans "Save" %}</a>
 {% endblock %}
 
 {% block content %}

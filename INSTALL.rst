@@ -23,12 +23,13 @@ Install the system dependencies
             python-libxml2 python-django-registration python-lxml python-numpy \
             python-scipy python-imaging python-mutagen python-gobject python-gst0.10 \
             gstreamer0.10-plugins-base gobject-introspection python-django-south
+            python-pip gir1.0-gstreamer-0.10 gstreamer0.10-plugins-good gstreamer0.10-plugins-bad
 
-    To get MP3 reading and writing::
+    To get non-free (MP3, MP4, AAC, etc) decoding and encoding features, add Debian Multimedia repository and install the modules::
 
-        echo 'deb http://www.debian-multimedia.org stable main' | sudo tee -a /etc/apt/sources-list
+        echo "deb http://www.deb-multimedia.org stable main non-free" | sudo tee -a /etc/apt/sources.list
         sudo apt-get update
-        sudo aptitude install gstreamer0.10-fluendo-mp3 gstreamer0.10-lame
+        sudo apt-get install gstreamer0.10-lame gstreamer0.10-plugins-really-bad gstreamer0.10-plugins-ugly
 
 * On other linux platforms:
 
@@ -43,7 +44,6 @@ Pip method (highly recommended!)
 
 We strongly advise you use the python package tool as it installs some good dependencies automatically::
 
-    sudo aptitude install python-pip
     sudo pip install telemeta
 
 or (deprecated)::
@@ -72,7 +72,7 @@ But, if you need to hack Telemeta without installing it (i.e. link it through yo
 TimeSide (web audio components)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Install it using pip::
+I should be install with the pip method, otherwise install it manually::
 
     sudo pip install timeside
 
@@ -162,6 +162,7 @@ Set the app lists as follow::
     'django.contrib.messages',
     'django.contrib.admin',
     'telemeta',
+    'timeside',
     'jsonrpc',
     'south'
     )
@@ -264,6 +265,7 @@ This synchronizes the DB with the model::
 If you want tu use the data schema migration system (South needed, see previous paragraph)::
 
     ./manage.py migrate telemeta
+    ./manage.py collectstatic
 
 
 Start the project
