@@ -39,7 +39,7 @@ jQuery(document).ready(function(){
 
 {% block title_buttons %}
   <div class="fixedWidthAsPlayer">
-    {% if user.is_authenticated and perms.telemeta.change_mediaresource %}
+    {% if perms.telemeta.add_mediacorpus or perms.telemeta.add_mediafonds %}
       <a href="{% url telemeta-resource-edit type resource.public_id %}" class="component_icon button icon_edit">{% trans "Edit" %}</a>
       <a href="{% url telemeta-resource-copy type resource.public_id %}" class="component_icon button icon_copy">{% trans "Copy" %}</a>
      {% endif %}
