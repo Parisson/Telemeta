@@ -164,7 +164,8 @@ Set the app lists as follow::
     'telemeta',
     'timeside',
     'jsonrpc',
-    'south'
+    'south',
+    'sorl.thumbnail',
     )
 
 Set the following languages::
