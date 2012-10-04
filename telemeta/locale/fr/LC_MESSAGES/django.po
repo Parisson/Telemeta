@@ -546,7 +546,7 @@ msgstr "date de création du support édité"
 
 #: models/media.py:370
 msgid "creator reference"
-msgstr "référence du créateur"
+msgstr "référence"
 
 #: models/media.py:371
 msgid "published references"
