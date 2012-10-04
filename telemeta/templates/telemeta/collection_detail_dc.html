@@ -16,8 +16,17 @@
 {% with collection|to_dublincore as resource %}
 {% include "telemeta/inc/dublincore.html" %}
 {% endwith %}
-
 {% endblock %}
+
+{% block delete %}
+<a href="{% url telemeta-collection-dublincore collection.public_id %}" style="float:left;margin-top:0.5em;margin-bottom:1em" class="component_icon button icon_dublin_core">Dublin Core</a>
+{% if user.is_authenticated and perms.telemeta.delete_mediacollection %}
+ <a href="#" onclick="if(confirm(gettrans('delete the collection permanently?'))){window.location.href='{% url telemeta-collection-delete collection.public_id %}';};return false;"
+        class="component_icon button icon_delete" style="float:right;margin-top:0.5em;margin-bottom:1em">{% trans "Delete" %}</a>
+{% endif %}
+{% endblock %}
+
 {% else %}
     <p>{% trans "No such collection" %}</p>
 {% endif %}
+

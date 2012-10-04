@@ -105,7 +105,6 @@ Item : <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
     {% endif %}
     <a href="{% url telemeta-item-detail previous %}" class="component_icon button icon_previous">{% trans "Previous" %}</a>
     <a href="{% url telemeta-item-detail next %}" class="component_icon button icon_next">{% trans "Next" %}</a>
-    <a href="{% url telemeta-item-dublincore item.public_id %}" class="component_icon button icon_dublin_core">Dublin Core</a>
 </div>
 {% endblock %}
 
@@ -326,7 +325,9 @@ Item : <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
 
 {% endblock %}
 
+
 {% block delete %}
+<a href="{% url telemeta-item-dublincore item.public_id %}" style="float:left;margin-top:0.5em;margin-bottom:1em" class="component_icon button icon_dublin_core">Dublin Core</a>
 {% if user.is_authenticated and perms.telemeta.delete_mediaitem %}
  <a href="#" onclick="if(confirm(gettrans('delete the item permanently?'))){window.location.href='{% url telemeta-item-delete item.public_id %}';};return false;"
         class="component_icon button icon_delete" style="float:right;margin-top:0.5em;margin-bottom:1em">{% trans "Delete" %}</a>

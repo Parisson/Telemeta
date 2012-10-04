@@ -48,7 +48,6 @@
     {% if user.is_authenticated %}
     <a href=# id ="_add_to_playlist" class="component_icon button icon_add_to_playlist">{% trans "Add to playlist" %}</a>
     {% endif %}
-    <a href="{% url telemeta-collection-dublincore collection.public_id %}" class="component_icon button icon_dublin_core">Dublin Core</a>
    </div>
 {% endblock %}
 
@@ -212,11 +211,11 @@
 {% endblock %}
 
 {% block delete %}
+<a href="{% url telemeta-collection-dublincore collection.public_id %}" style="float:left;margin-top:0.5em;margin-bottom:1em" class="component_icon button icon_dublin_core">Dublin Core</a>
 {% if user.is_authenticated and perms.telemeta.delete_mediacollection %}
  <a href="#" onclick="if(confirm(gettrans('delete the collection permanently?'))){window.location.href='{% url telemeta-collection-delete collection.public_id %}';};return false;"
         class="component_icon button icon_delete" style="float:right;margin-top:0.5em;margin-bottom:1em">{% trans "Delete" %}</a>
 {% endif %}
-
 {% endblock %}
 
 {% else %}
