@@ -186,7 +186,7 @@ Set the following Middlewares::
         'django.middleware.locale.LocaleMiddleware',
     )
 
-Add the following variables::
+and the following processors::
 
     TEMPLATE_CONTEXT_PROCESSORS = (
         'django.core.context_processors.request',
@@ -194,6 +194,8 @@ Add the following variables::
         'django.core.context_processors.i18n',
         'django.core.context_processors.media',
         'django.core.context_processors.static',)
+
+Add the following variables::
 
     TELEMETA_ORGANIZATION =         name of the organization which hosts this installation
     TELEMETA_SUBJECTS =             tuple of subject keywords (used for Dublin Core), such as "Ethnology", etc...
