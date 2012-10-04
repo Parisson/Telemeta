@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-04 10:20+0200\n"
+"POT-Creation-Date: 2012-10-04 11:53+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Guillaume Pellerin <yomguy@parisson.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1189,13 +1189,13 @@ msgid "Recording period"
 msgstr "Période d'enregistrement"
 
 #: templates/telemeta/collection_detail.html:103
-#: templates/telemeta/mediaitem_detail.html:207
+#: templates/telemeta/mediaitem_detail.html:204
 #: templates/telemeta/resource_detail.html:73
 msgid "Last modification"
 msgstr "Dernière modification"
 
 #: templates/telemeta/collection_detail.html:112
-#: templates/telemeta/mediaitem_detail.html:217
+#: templates/telemeta/mediaitem_detail.html:214
 msgid "Geographic and cultural informations"
 msgstr "Indications géographiques et culturelles"
 
@@ -1211,7 +1211,7 @@ msgid "Bibliographic references"
 msgstr "Références bibliographiques"
 
 #: templates/telemeta/collection_detail.html:152
-#: templates/telemeta/mediaitem_detail.html:277
+#: templates/telemeta/mediaitem_detail.html:274
 msgid "Archiving data"
 msgstr "Données d'archivage"
 
@@ -1496,30 +1496,30 @@ msgstr "Téléchargement:"
 msgid "Recording date"
 msgstr "Date d'enregistrement"
 
-#: templates/telemeta/mediaitem_detail.html:203
-msgid "Remarks"
-msgstr "Remarques"
-
-#: templates/telemeta/mediaitem_detail.html:219
+#: templates/telemeta/mediaitem_detail.html:216
 #: templates/telemeta/inc/mediaitem_list.html:18
 msgid "Location"
 msgstr "Lieu"
 
-#: templates/telemeta/mediaitem_detail.html:225
+#: templates/telemeta/mediaitem_detail.html:222
 msgid "Language ISO"
 msgstr "Langue ISO"
 
-#: templates/telemeta/mediaitem_detail.html:229
+#: templates/telemeta/mediaitem_detail.html:226
 msgid "Ethnographic context"
 msgstr "Contexte ethnographique"
 
-#: templates/telemeta/mediaitem_detail.html:240
+#: templates/telemeta/mediaitem_detail.html:237
 msgid "Musical informations"
 msgstr "Informations sur la musique"
 
-#: templates/telemeta/mediaitem_detail.html:283
+#: templates/telemeta/mediaitem_detail.html:280
 msgid "Published references"
 msgstr "Références éditées"
+
+#: templates/telemeta/mediaitem_detail.html:284
+msgid "Remarks"
+msgstr "Remarques"
 
 #: templates/telemeta/mediaitem_detail_dc.html:16
 msgid "No such item"
