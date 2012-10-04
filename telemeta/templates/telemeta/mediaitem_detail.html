@@ -200,9 +200,6 @@ Item : <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
 
             <dd>{% if item.recorded_from_date %}{{ item.recorded_from_date }}{% endif %}{% if item.recorded_from_date and item.recorded_to_date%} - {% endif %}{% if item.recorded_to_date %}{{ item.recorded_to_date}}{% endif %}</dd>
 
-            <dt>{% trans "Remarks" %}</dt>
-            <dd>{{ item.comment|html_line_break|safe }}</dd>
-
             {% if last_revision %}
             <dt>{% trans "Last modification" %}</dt>
             <dd>{{ last_revision.time }} {% if user.is_authenticated %}(<a href="{% url telemeta-profile-detail last_revision.user.username %}">{{last_revision.user.username}}</a>){% endif %}</dd>
@@ -283,6 +280,9 @@ Item : <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
                 <dt>{% trans "Published references" %}</dt>
                 <dd>{{ item.external_references|html_line_break|safe }}</dd>
                 {% dl_field item "public_access_label" %}
+
+                <dt>{% trans "Remarks" %}</dt>
+                <dd>{{ item.comment|html_line_break|safe }}</dd>
             </dl>
         </div>
         {% endblock archive_data %}

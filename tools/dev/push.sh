@@ -4,13 +4,13 @@ git branch | tr -d \* | while read line
 do
     branch=${line/#\ }
 
-    echo "Push $branch to origin:"
     git push origin $branch
-
-    if [[ $branch == *master* ]]; then
-        echo "Push $branch to github:"
-        git push hub $branch
-    fi
+    git push hub $branch
+ 
+#    if [[ $branch == *master* ]]; then
+#        echo "Push $branch to github:"
+#        git push hub $branch
+#    fi
 
 done
 
