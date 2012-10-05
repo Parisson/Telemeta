@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-04 11:53+0200\n"
+"POT-Creation-Date: 2012-10-05 10:46+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Guillaume Pellerin <yomguy@parisson.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -805,9 +805,12 @@ msgstr ""
 
 #: templates/postman/base_folder.html:49 templates/postman/view.html:25
 #: templates/telemeta/collection_detail.html:217
+#: templates/telemeta/collection_detail_dc.html:25
 #: templates/telemeta/lists.html:58
-#: templates/telemeta/mediaitem_detail.html:339
+#: templates/telemeta/mediaitem_detail.html:340
+#: templates/telemeta/mediaitem_detail_dc.html:20
 #: templates/telemeta/resource_detail.html:102
+#: templates/telemeta/resource_detail_dc.html:17
 msgid "Delete"
 msgstr "Supprimer"
 
@@ -1080,7 +1083,7 @@ msgstr ""
 "communautés d'origine."
 
 #: templates/telemeta/base.html:165
-#: templates/telemeta/collection_detail.html:125
+#: templates/telemeta/collection_detail.html:124
 msgid "Legal notices"
 msgstr "Mentions légales"
 
@@ -1178,78 +1181,78 @@ msgstr "Ajouter item"
 msgid "Add to playlist"
 msgstr "Ajouter à la liste"
 
-#: templates/telemeta/collection_detail.html:62
+#: templates/telemeta/collection_detail.html:61
 msgid "Listen to this collection"
 msgstr "Écouter la collection"
 
-#: templates/telemeta/collection_detail.html:95
+#: templates/telemeta/collection_detail.html:94
 #: templates/telemeta/lists.html:73
 #: templates/telemeta/inc/collection_list.html:17
 msgid "Recording period"
 msgstr "Période d'enregistrement"
 
-#: templates/telemeta/collection_detail.html:103
-#: templates/telemeta/mediaitem_detail.html:204
-#: templates/telemeta/resource_detail.html:73
+#: templates/telemeta/collection_detail.html:102
+#: templates/telemeta/mediaitem_detail.html:203
+#: templates/telemeta/resource_detail.html:72
 msgid "Last modification"
 msgstr "Dernière modification"
 
-#: templates/telemeta/collection_detail.html:112
-#: templates/telemeta/mediaitem_detail.html:214
+#: templates/telemeta/collection_detail.html:111
+#: templates/telemeta/mediaitem_detail.html:213
 msgid "Geographic and cultural informations"
 msgstr "Indications géographiques et culturelles"
 
-#: templates/telemeta/collection_detail.html:130
+#: templates/telemeta/collection_detail.html:129
 #: templates/telemeta/lists.html:72
 #: templates/telemeta/inc/collection_list.html:16
 #: templates/telemeta/inc/mediaitem_list.html:16
 msgid "Recordist"
 msgstr "Collecteur"
 
-#: templates/telemeta/collection_detail.html:139
+#: templates/telemeta/collection_detail.html:138
 msgid "Bibliographic references"
 msgstr "Références bibliographiques"
 
-#: templates/telemeta/collection_detail.html:152
-#: templates/telemeta/mediaitem_detail.html:274
+#: templates/telemeta/collection_detail.html:151
+#: templates/telemeta/mediaitem_detail.html:273
 msgid "Archiving data"
 msgstr "Données d'archivage"
 
-#: templates/telemeta/collection_detail.html:158
+#: templates/telemeta/collection_detail.html:157
 msgid "Related documentation"
 msgstr "Documentation associée"
 
-#: templates/telemeta/collection_detail.html:162
-#: templates/telemeta/mediaitem_detail.html:308
+#: templates/telemeta/collection_detail.html:161
+#: templates/telemeta/mediaitem_detail.html:307
 msgid "Comments"
 msgstr "Commentaires"
 
-#: templates/telemeta/collection_detail.html:176
-#: templates/telemeta/mediaitem_detail.html:293
+#: templates/telemeta/collection_detail.html:175
+#: templates/telemeta/mediaitem_detail.html:292
 msgid "Technical data"
 msgstr "Données techniques"
 
-#: templates/telemeta/collection_detail.html:181
-#: templates/telemeta/mediaitem_detail.html:296
+#: templates/telemeta/collection_detail.html:180
+#: templates/telemeta/mediaitem_detail.html:295
 msgid "Media type"
 msgstr "Type de media"
 
-#: templates/telemeta/collection_detail.html:181
+#: templates/telemeta/collection_detail.html:180
 msgid "Audio"
 msgstr "Audio"
 
-#: templates/telemeta/collection_detail.html:186
+#: templates/telemeta/collection_detail.html:185
 #: templates/telemeta/geo_countries.html:16
 msgid "Number of items"
 msgstr "Nombre d'items"
 
 #: templates/telemeta/collection_detail_dc.html:12
-#: templates/telemeta/mediaitem_detail_dc.html:7
-#: templates/telemeta/resource_detail_dc.html:7
+#: templates/telemeta/mediaitem_detail_dc.html:17
+#: templates/telemeta/resource_detail_dc.html:14
 msgid "Normal View"
 msgstr "Vue normale"
 
-#: templates/telemeta/collection_detail_dc.html:22
+#: templates/telemeta/collection_detail_dc.html:30
 msgid "No such collection"
 msgstr "Aucune collection de ce type"
 
@@ -1332,7 +1335,7 @@ msgstr "Ajouter une entrée"
 #: templates/telemeta/enumeration_edit.html:17
 #: templates/telemeta/enumeration_edit.html:31
 #: templates/telemeta/enumeration_edit_value.html:11
-#: templates/telemeta/mediaitem_detail.html:169
+#: templates/telemeta/mediaitem_detail.html:168
 msgid "Value"
 msgstr "Valeur"
 
@@ -1472,56 +1475,56 @@ msgstr "Précédent"
 msgid "Next"
 msgstr "Suivant"
 
-#: templates/telemeta/mediaitem_detail.html:158
+#: templates/telemeta/mediaitem_detail.html:157
 msgid "Analysis"
 msgstr "Analyse"
 
-#: templates/telemeta/mediaitem_detail.html:160
+#: templates/telemeta/mediaitem_detail.html:159
 msgid "Markers"
 msgstr "Marqueurs"
 
-#: templates/telemeta/mediaitem_detail.html:168
+#: templates/telemeta/mediaitem_detail.html:167
 msgid "Property"
 msgstr "Propriété"
 
-#: templates/telemeta/mediaitem_detail.html:170
+#: templates/telemeta/mediaitem_detail.html:169
 msgid "Unit"
 msgstr "Unité"
 
-#: templates/telemeta/mediaitem_detail.html:178
+#: templates/telemeta/mediaitem_detail.html:177
 msgid "Download:"
 msgstr "Téléchargement:"
 
-#: templates/telemeta/mediaitem_detail.html:199
+#: templates/telemeta/mediaitem_detail.html:198
 msgid "Recording date"
 msgstr "Date d'enregistrement"
 
-#: templates/telemeta/mediaitem_detail.html:216
+#: templates/telemeta/mediaitem_detail.html:215
 #: templates/telemeta/inc/mediaitem_list.html:18
 msgid "Location"
 msgstr "Lieu"
 
-#: templates/telemeta/mediaitem_detail.html:222
+#: templates/telemeta/mediaitem_detail.html:221
 msgid "Language ISO"
 msgstr "Langue ISO"
 
-#: templates/telemeta/mediaitem_detail.html:226
+#: templates/telemeta/mediaitem_detail.html:225
 msgid "Ethnographic context"
 msgstr "Contexte ethnographique"
 
-#: templates/telemeta/mediaitem_detail.html:237
+#: templates/telemeta/mediaitem_detail.html:236
 msgid "Musical informations"
 msgstr "Informations sur la musique"
 
-#: templates/telemeta/mediaitem_detail.html:280
+#: templates/telemeta/mediaitem_detail.html:279
 msgid "Published references"
 msgstr "Références éditées"
 
-#: templates/telemeta/mediaitem_detail.html:284
+#: templates/telemeta/mediaitem_detail.html:283
 msgid "Remarks"
 msgstr "Remarques"
 
-#: templates/telemeta/mediaitem_detail_dc.html:16
+#: templates/telemeta/mediaitem_detail_dc.html:13
 msgid "No such item"
 msgstr "Item introuvable"
 
@@ -1613,8 +1616,8 @@ msgstr ""
 msgid "New"
 msgstr "Nouveau"
 
-#: templates/telemeta/resource_detail.html:108
-#: templates/telemeta/resource_detail_dc.html:16
+#: templates/telemeta/resource_detail.html:107
+#: templates/telemeta/resource_detail_dc.html:22
 msgid "No such resource"
 msgstr "Aucune ressource de ce type"
 
