@@ -156,12 +156,6 @@ class ItemView(object):
         """Edit a given item"""
         item = MediaItem.objects.get(public_id=public_id)
 
-        formats = []
-        for encoder in self.encoders:
-            #FIXME: timeside cannot encode to FLAC and OGG now :'(
-            if encoder.file_extension() != 'ogg' and encoder.file_extension() != 'flac':
-                formats.append({'name': encoder.format(), 'extension': encoder.file_extension()})
-
         graphers = []
         for grapher in self.graphers:
             graphers.append({'name':grapher.name(), 'id': grapher.id()})
@@ -172,6 +166,9 @@ class ItemView(object):
                 grapher_id = settings.TELEMETA_DEFAULT_GRAPHER_ID
             except:
                 grapher_id = 'waveform'
+
+        export_enabled = getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True)
+        export_formats = getattr(settings, 'TELEMETA_DOWNLOAD_FORMATS', ('mp3', 'wav'))
 
         previous, next = self.item_previous_next(item)
         mime_type = self.item_analyze(item)
@@ -208,10 +205,12 @@ class ItemView(object):
         forms = [item_form, format_form]
 
         return render(request, template,
-                    {'item': item, 'export_formats': formats,
+                    {'item': item,
+                     'export_formats': export_formats,
                     'visualizers': graphers, 'visualizer_id': grapher_id,
-                    'audio_export_enabled': getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True),
-                    'forms': forms, 'previous' : previous, 'next' : next, 'mime_type': mime_type,
+                    'audio_export_enabled': export_enabled,
+                    'forms': forms, 'previous' : previous,
+                    'next' : next, 'mime_type': mime_type,
                     })
 
     def related_media_item_stream(self, request, item_public_id, media_id):
