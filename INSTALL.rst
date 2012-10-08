@@ -52,7 +52,6 @@ or (deprecated)::
 
 From sources
 +++++++++++++
-
 Download the latest tar archive at http://telemeta.org.
 
 Uncompress and install it. For example::
@@ -116,21 +115,21 @@ Fast testing (sandbox)
 
 If you just want to test Telemeta just now, a sandbox is available in the example/ directory::
 
-    cd example/sandbox_sqlite
-    ./manage.py syncdb --migrate
+    cd example/sandbox
+    ./manage.py syncdb
+    ./manage.py migrate
     ./manage.py runserver 9000
 
 Now browse http://localhost:9000
-
 
 -------------------------------
 Create a new Telemeta project
 -------------------------------
 
-Start the project
+Start your project
 ------------------
 
-If you haven't already done it, start a new django project::
+For example::
 
     cd ~/my_projects
     django-admin startproject mysite
@@ -140,6 +139,7 @@ Create the database
 ------------------------
 
 Telemeta needs MySQL to work well and fast. So you need to create a MySQL database before trying it.
+But you can also use SQLite, PostgreSQL or Oracle DB.
 
 
 Configure the telemeta project
@@ -164,7 +164,8 @@ Set the app lists as follow::
     'telemeta',
     'timeside',
     'jsonrpc',
-    'south'
+    'south',
+    'sorl.thumbnail',
     )
 
 Set the following languages::
@@ -185,11 +186,16 @@ Set the following Middlewares::
         'django.middleware.locale.LocaleMiddleware',
     )
 
-Add the following variables::
+and the following processors::
 
     TEMPLATE_CONTEXT_PROCESSORS = (
         'django.core.context_processors.request',
-        'django.contrib.auth.context_processors.auth',)
+        'django.contrib.auth.context_processors.auth',
+        'django.core.context_processors.i18n',
+        'django.core.context_processors.media',
+        'django.core.context_processors.static',)
+
+Add the following variables::
 
     TELEMETA_ORGANIZATION =         name of the organization which hosts this installation
     TELEMETA_SUBJECTS =             tuple of subject keywords (used for Dublin Core), such as "Ethnology", etc...
