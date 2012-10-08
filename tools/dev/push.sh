@@ -6,11 +6,6 @@ do
 
     git push origin $branch
     git push hub $branch
- 
-#    if [[ $branch == *master* ]]; then
-#        echo "Push $branch to github:"
-#        git push hub $branch
-#    fi
 
 done
 
