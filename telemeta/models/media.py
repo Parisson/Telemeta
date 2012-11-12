@@ -368,6 +368,7 @@ class MediaItem(MediaResource):
     external_references   = TextField(_('published references'))
     copied_from_item      = WeakForeignKey('self', related_name="copies",
                                            verbose_name=_('copy of'))
+    mimetype              = CharField(_('mime type'), max_length=255, blank=True)
 
     # Media
     file                  = FileField(_('file'), upload_to='items/%Y/%m/%d',
@@ -392,9 +393,12 @@ class MediaItem(MediaResource):
     @property
     def mime_type(self):
         if self.file:
-            return mimetypes.guess_type(self.file.path)[0]
+            if not self.mimetype:
+                self.mimetype = mimetypes.guess_type(self.file.path)[0]
+                self.save()
+            return self.mimetype
         else:
-            return _('none')
+            return _('None')
 
     class Meta(MetaCore):
         db_table = 'media_items'
