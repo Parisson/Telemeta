@@ -394,9 +394,12 @@ class MediaItem(MediaResource):
     def mime_type(self):
         if self.file:
             if not self.mimetype:
-                self.mimetype = mimetypes.guess_type(self.file.path)[0]
-                self.save()
-            return self.mimetype
+                if os.path.exists(self.file.path):
+                    self.mimetype = mimetypes.guess_type(self.file.path)[0]
+                    self.save()
+                    return self.mimetype
+                else:
+                    return _('None')        
         else:
             return _('None')
 
@@ -439,7 +442,7 @@ class MediaItem(MediaResource):
             title = unicode(self.collection)
         if self.track:
             title += ' ' + self.track
-        return title
+        return title + ' - ' + self.mime_type 
 
     @property
     def instruments(self):
