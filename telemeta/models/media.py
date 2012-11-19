@@ -61,7 +61,8 @@ item_published_code_regex    = '[A-Za-z0-9._-]*'
 item_unpublished_code_regex  = '[A-Za-z0-9._-]*'
 item_code_regex              = '(?:%s|%s)' % (item_published_code_regex, item_unpublished_code_regex)
 
-PUBLIC_ACCESS_CHOICES = (('none', 'none'), ('metadata', 'metadata'), ('full', 'full'))
+PUBLIC_ACCESS_CHOICES = (('none', _('none')), ('metadata', _('metadata')),
+                         ('partial', _('partial')), ('full', _('full')))
 
 mimetypes.add_type('video/webm','.webm')
 
@@ -399,9 +400,9 @@ class MediaItem(MediaResource):
                     self.save()
                     return self.mimetype
                 else:
-                    return _('None')        
+                    return 'none'        
         else:
-            return _('None')
+            return 'none'
 
     class Meta(MetaCore):
         db_table = 'media_items'
