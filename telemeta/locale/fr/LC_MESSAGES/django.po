@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-05 10:46+0200\n"
+"POT-Creation-Date: 2012-12-18 11:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Guillaume Pellerin <yomguy@parisson.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1461,7 +1461,7 @@ msgstr "Mot de passe oublié"
 
 #: templates/telemeta/mediaitem_add.html:5
 #: templates/telemeta/mediaitem_copy.html:5
-#: templates/telemeta/mediaitem_detail.html:5 views/item.py:97
+#: templates/telemeta/mediaitem_detail.html:5 views/item.py:108
 msgid "Item"
 msgstr "Item"
 
@@ -1930,12 +1930,12 @@ msgstr "Enfants"
 msgid "pattern"
 msgstr "mots clés"
 
-#: views/collection.py:49 views/home.py:87 views/item.py:96 views/item.py:476
+#: views/collection.py:49 views/home.py:87 views/item.py:107 views/item.py:474
 #: views/profile.py:68
 msgid "Access not allowed"
 msgstr "Accès non autorisé"
 
-#: views/collection.py:51 views/home.py:89 views/item.py:98 views/item.py:478
+#: views/collection.py:51 views/home.py:89 views/item.py:109 views/item.py:476
 #: views/profile.py:70
 msgid ""
 "Please login or contact the website administator to get a private access."
