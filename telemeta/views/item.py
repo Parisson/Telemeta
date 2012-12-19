@@ -37,6 +37,7 @@
 import mimetypes
 from telemeta.views.core import *
 
+
 class ItemView(object):
     """Provide Collections web UI methods"""
 

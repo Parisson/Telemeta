@@ -35,7 +35,7 @@
 #          David LIPSZYC <davidlipszyc@gmail.com>
 #          Guillaume Pellerin <yomguy@parisson.com>
 
-import re
+import re, os
 import mimetypes
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
@@ -61,7 +61,8 @@ item_published_code_regex    = '[A-Za-z0-9._-]*'
 item_unpublished_code_regex  = '[A-Za-z0-9._-]*'
 item_code_regex              = '(?:%s|%s)' % (item_published_code_regex, item_unpublished_code_regex)
 
-PUBLIC_ACCESS_CHOICES = (('none', 'none'), ('metadata', 'metadata'), ('full', 'full'))
+PUBLIC_ACCESS_CHOICES = (('none', _('none')), ('metadata', _('metadata')),
+                         ('partial', _('partial')), ('full', _('full')))
 
 mimetypes.add_type('video/webm','.webm')
 
@@ -368,6 +369,7 @@ class MediaItem(MediaResource):
     external_references   = TextField(_('published references'))
     copied_from_item      = WeakForeignKey('self', related_name="copies",
                                            verbose_name=_('copy of'))
+    mimetype              = CharField(_('mime type'), max_length=255, blank=True)
 
     # Media
     file                  = FileField(_('file'), upload_to='items/%Y/%m/%d',
@@ -391,10 +393,19 @@ class MediaItem(MediaResource):
 
     @property
     def mime_type(self):
-        if self.file:
-            return mimetypes.guess_type(self.file.path)[0]
+        if not self.mimetype:
+            if self.file:
+                if not self.mimetype:
+                    if os.path.exists(self.file.path):
+                        self.mimetype = mimetypes.guess_type(self.file.path)[0]
+                        self.save()
+                        return self.mimetype
+                    else:
+                        return 'none'
+            else:
+                return 'none'
         else:
-            return _('none')
+            return self.mimetype
 
     class Meta(MetaCore):
         db_table = 'media_items'
@@ -435,7 +446,7 @@ class MediaItem(MediaResource):
             title = unicode(self.collection)
         if self.track:
             title += ' ' + self.track
-        return title
+        return title + ' - ' + self.mime_type
 
     @property
     def instruments(self):
