@@ -459,7 +459,7 @@ class MediaItem(MediaResource):
             title = unicode(self.collection)
         if self.track:
             title += ' ' + self.track
-        return title + ' - ' + self.mime_type
+        return title
 
     @property
     def instruments(self):
