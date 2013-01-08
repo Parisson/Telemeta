@@ -35,7 +35,7 @@
 #          David LIPSZYC <davidlipszyc@gmail.com>
 #          Guillaume Pellerin <yomguy@parisson.com>
 
-import re, os
+import re, os, random
 import mimetypes
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
@@ -50,6 +50,7 @@ from telemeta.models.instrument import *
 from telemeta.models.enum import *
 from telemeta.models.language import *
 from telemeta.models.format import *
+from telemeta.util.kdenlive.session import *
 from django.db import models
 
 collection_published_code_regex   = '[A-Za-z0-9._-]*'
@@ -64,8 +65,18 @@ item_code_regex              = '(?:%s|%s)' % (item_published_code_regex, item_un
 PUBLIC_ACCESS_CHOICES = (('none', _('none')), ('metadata', _('metadata')),
                          ('partial', _('partial')), ('full', _('full')))
 
+ITEM_TRANSODING_STATUS = ((0, _('broken')), (1, _('pending')), (2, _('processing')),
+                         (3, _('done')), (5, _('ready')))
+
 mimetypes.add_type('video/webm','.webm')
 
+app_name = 'telemeta'
+
+
+def get_random_hash():
+    hash = random.getrandbits(64)
+    return "%016x" % hash
+    
 
 class MediaResource(ModelCore):
     "Base class of all media objects"
@@ -141,12 +152,15 @@ class MediaRelated(MediaResource):
                     is_url_image = True
         return 'image' in self.mime_type or is_url_image
 
-    def save(self, force_insert=False, force_update=False):
-        super(MediaRelated, self).save(force_insert, force_update)
+    def save(self, force_insert=False, force_update=False, author=None):
+        super(MediaRelated, self).save(force_insert, force_update)        
 
     def set_mime_type(self):
         if self.file:
             self.mime_type = mimetypes.guess_type(self.file.path)[0]
+
+    def is_kdenlive_session(self):
+        return '.kdenlive' in self.file.path
 
     def __unicode__(self):
         if self.title and not re.match('^ *N *$', self.title):
@@ -395,13 +409,12 @@ class MediaItem(MediaResource):
     def mime_type(self):
         if not self.mimetype:
             if self.file:
-                if not self.mimetype:
-                    if os.path.exists(self.file.path):
-                        self.mimetype = mimetypes.guess_type(self.file.path)[0]
-                        self.save()
-                        return self.mimetype
-                    else:
-                        return 'none'
+                if os.path.exists(self.file.path):
+                    self.mimetype = mimetypes.guess_type(self.file.path)[0]
+                    self.save()
+                    return self.mimetype
+                else:
+                    return 'none'
             else:
                 return 'none'
         else:
@@ -446,7 +459,7 @@ class MediaItem(MediaResource):
             title = unicode(self.collection)
         if self.track:
             title += ' ' + self.track
-        return title + ' - ' + self.mime_type
+        return title
 
     @property
     def instruments(self):
@@ -471,6 +484,26 @@ class MediaItemRelated(MediaRelated):
     "Item related media"
 
     item            = ForeignKey('MediaItem', related_name="related", verbose_name=_('item'))
+
+    def save(self, force_insert=False, force_update=False, author=None):
+        super(MediaItemRelated, self).save(force_insert, force_update)        
+
+        # Parse KDEnLive session (first marker is the title of the item, 
+        # marker author given as a keyword)
+        if self.is_kdenlive_session():
+            session = KDEnLiveSession(self.file.path)
+            markers = session.markers_relative()
+            i = 0
+            for marker in markers:
+                if i == 0:
+                    self.item.title = marker['comment']
+                    self.item.save()
+                m = MediaItemMarker(item=self.item)
+                m.public_id = get_random_hash()
+                m.time = float(marker['time'])
+                m.title = marker['comment']
+                m.save()
+                i += 1
 
     class Meta(MetaCore):
         db_table = 'media_item_related'
@@ -570,26 +603,64 @@ class PlaylistResource(ModelCore):
 
 
 class MediaItemMarker(MediaResource):
-    "2D marker object : text value vs. time"
+    "2D marker object : text value vs. time (in seconds)"
 
     element_type = 'marker'
 
     item            = ForeignKey('MediaItem', related_name="markers", verbose_name=_('item'))
     public_id       = CharField(_('public_id'), required=True)
-    time            = FloatField(_('time'))
+    time            = FloatField(_('time (s)'))
     title           = CharField(_('title'))
     date            = DateTimeField(_('date'), auto_now=True)
     description     = TextField(_('description'))
-    author          = ForeignKey(User, related_name="markers", verbose_name=_('author'))
+    author          = ForeignKey(User, related_name="markers", verbose_name=_('author'), 
+                                 blank=True, null=True)
 
     class Meta(MetaCore):
         db_table = 'media_markers'
+        ordering = ['time']
 
     def __unicode__(self):
         if self.title:
             return self.title
         else:
             return self.public_id
+
+
+class MediaItemTranscoded(MediaResource):
+    "Item file transcoded"
+
+    element_type = 'transcoded item'
+
+    item            = models.ForeignKey('MediaItem', related_name="transcoded", verbose_name=_('item'))
+    mimetype        = models.CharField(_('mime_type'), max_length=255, blank=True)
+    date_added      = DateTimeField(_('date'), auto_now_add=True)
+    status          = models.IntegerField(_('status'), choices=ITEM_TRANSODING_STATUS, default=1)
+    file            = models.FileField(_('file'), upload_to='items/%Y/%m/%d', max_length=1024, blank=True)
+
+    @property
+    def mime_type(self):
+        if not self.mimetype:
+            if self.file:
+                if os.path.exists(self.file.path):
+                    self.mimetype = mimetypes.guess_type(self.file.path)[0]
+                    self.save()
+                    return self.mimetype
+                else:
+                    return 'none'
+            else:
+                return 'none'
+        else:
+            return self.mimetype
+
+    def __unicode__(self):
+        if self.item.title:
+            return self.item.title + ' - ' + self.mime_type
+        else:
+            return self.item.public_id + ' - ' + self.mime_type
+
+    class Meta(MetaCore):
+        db_table = app_name + '_media_transcoded'
 
 
 class MediaItemTranscodingFlag(ModelCore):
