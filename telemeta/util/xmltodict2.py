@@ -173,17 +173,17 @@ def xmltodict(xml, attsToSkip=[], addCodeFile=False):
 		try:
 			ret = parser.ParseFromFile(xml)
 		except expat.ExpatError, e:
-			errmsg = _("The XML in '%s' is not well-formed and cannot be parsed: %s") % (xml, e)
+			errmsg = "The XML in '%s' is not well-formed and cannot be parsed: %s" % (xml, e)
 	else:
 		# argument must have been raw xml:
 		if not xml.strip().startswith("<?xml "):
 			# it's a bad file name
-			errmsg = _("The file '%s' could not be found") % xml
+			errmsg = "The file '%s' could not be found" % xml
 		else:
 			try:
 				ret = parser.Parse(xml)
 			except expat.ExpatError:
-				errmsg = _("An invalid XML string was encountered")
+				errmsg = "An invalid XML string was encountered"
 	if errmsg:
 		raise dabo.dException.XmlException, errmsg
 	if addCodeFile and isPath:
