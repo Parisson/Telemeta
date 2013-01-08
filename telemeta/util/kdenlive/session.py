@@ -75,8 +75,3 @@ class KDEnLiveSession(object):
 								at['attributes']['time'] = time
 				 				markers.append(at['attributes'])
 		return markers
-
-
-
-		
-
