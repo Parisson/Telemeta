@@ -60,7 +60,8 @@ class ItemView(object):
         return formats
 
     def item_previous_next(self, item):
-        # Get previous and next items
+        """Get previous and next items inside the collection of the item"""
+
         pks = []
         items = MediaItem.objects.filter(collection=item.collection)
         items = items.order_by('code', 'old_code')
@@ -96,15 +97,17 @@ class ItemView(object):
                         template='telemeta/mediaitem_detail.html'):
         """Show the details of a given item"""
 
+        # get item with one of its given marker_id
         if not public_id and marker_id:
             marker = MediaItemMarker.objects.get(public_id=marker_id)
             item_id = marker.item_id
             item = MediaItem.objects.get(id=item_id)
         else:
-            item = MediaItem.objects.get(public_id=public_id)
+            item = MediaItem.objects.get(public_id=public_id)    
 
-        item_public_access = item.public_access != 'none' or item.collection.public_access != 'none'
-        if not item_public_access and not (request.user.is_staff or request.user.is_superuser):
+        access = get_item_access(item, request.user)
+
+        if access == 'none':
             mess = ugettext('Access not allowed')
             title = ugettext('Item') + ' : ' + public_id + ' : ' + mess
             description = ugettext('Please login or contact the website administator to get a private access.')
@@ -123,15 +126,14 @@ class ItemView(object):
                 grapher_id = 'waveform'
 
         previous, next = self.item_previous_next(item)
+        
         mime_type = self.item_analyze(item)
+        
         #FIXME: use mimetypes.guess_type
         if 'quicktime' in mime_type:
             mime_type = 'video/mp4'
 
         playlists = get_playlists(request)
-        public_access = get_public_access(item.public_access, str(item.recorded_from_date).split('-')[0],
-                                                str(item.recorded_to_date).split('-')[0])
-
         related_media = MediaItemRelated.objects.filter(item=item)
         check_related_media(related_media)
         revisions = Revision.objects.filter(element_type='item', element_id=item.id).order_by('-time')
@@ -149,7 +151,7 @@ class ItemView(object):
                     'visualizers': graphers, 'visualizer_id': grapher_id,
                     'audio_export_enabled': self.export_enabled,
                     'previous' : previous, 'next' : next, 'marker': marker_id, 'playlists' : playlists,
-                    'public_access': public_access, 'width': width, 'height': height,
+                    'access': access, 'width': width, 'height': height,
                     'related_media': related_media, 'mime_type': mime_type, 'last_revision': last_revision,
                     'format': format,
                     })

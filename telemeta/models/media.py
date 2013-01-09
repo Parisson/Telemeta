@@ -63,7 +63,7 @@ item_unpublished_code_regex  = '[A-Za-z0-9._-]*'
 item_code_regex              = '(?:%s|%s)' % (item_published_code_regex, item_unpublished_code_regex)
 
 PUBLIC_ACCESS_CHOICES = (('none', _('none')), ('metadata', _('metadata')),
-                         ('partial', _('partial')), ('full', _('full')))
+                         ('mixed', _('mixed')), ('full', _('full')))
 
 ITEM_TRANSODING_STATUS = ((0, _('broken')), (1, _('pending')), (2, _('processing')),
                          (3, _('done')), (5, _('ready')))
@@ -383,7 +383,8 @@ class MediaItem(MediaResource):
     external_references   = TextField(_('published references'))
     copied_from_item      = WeakForeignKey('self', related_name="copies",
                                            verbose_name=_('copy of'))
-    mimetype              = CharField(_('mime type'), max_length=255, blank=True)
+    mimetype              = CharField(_('mime type'), max_length=255, blank=True) 
+    auto_period_access    = BooleanField(_('automatic access after a rolling period'), default=True)
 
     # Media
     file                  = FileField(_('file'), upload_to='items/%Y/%m/%d',

@@ -136,26 +136,52 @@ def stream_from_file(file):
             break
         yield chunk
 
-def get_public_access(access, year_from=None, year_to=None):
-    # Rolling publishing date : public access is given when time between recorded year
-    # and current year is over the settings value PUBLIC_ACCESS_PERIOD
-    if year_from and not year_from == 0:
-        year = year_from
-    elif year_to and not year_to == 0:
-        year = year_to
-    else:
-        year = 0
-    if access == 'full':
-        public_access = True
-    else:
-        public_access = False
+def get_item_access(item, user):
+    # Item access rules according to this workflow:
+    # https://docs.google.com/spreadsheet/ccc?key=0ArKCjajoOT-fdDhJSDZoaUhqdDJvVkY5U3BXUWpNT0E#gid=0
+
+    # Rolling publishing date : public access is automaticcaly given when time between recorded year
+    # and current year is over the settings value PUBLIC_ACCESS_PERIOD and if item.auto_period_access == True
+    
+    if user.is_staff or user.is_superuser or user.has_perm('telemeta.can_play_all_items'):
+        access = 'full'
+
+    elif user.is_authenticated() and item.collection.public_access != 'mixed':
+        if item.collection.public_access == 'metadata' and item.auto_period_access:
+            access = 'full'
+        else:
+            access = item.collection.public_access
+
+    elif user.is_authenticated() and item.collection.public_access == 'mixed':
+        if item.public_access == 'metadata' and item.auto_period_access:
+            access = 'full'
+        else:
+            access = item.public_access
+
+    elif not user.is_authenticated() and item.collection.public_access != 'mixed':
+        access = item.collection.public_access
+
+    elif not user.is_authenticated() and item.collection.public_access == 'mixed':
+        access = item.public_access        
+
+    # Auto publish after slipping period (settings.TELEMETA_PUBLIC_ACCESS_PERIOD)
+    if access != 'full' and item.auto_period_access:
+        year_from = str(item.recorded_from_date).split('-')[0]
+        year_to = str(item.recorded_to_date).split('-')[0])
+
+        if year_from and not year_from == 0:
+            year = year_from
+        elif year_to and not year_to == 0:
+            year = year_to
+        else:
+            year = 0
+
         if year and not year == 'None':
             year_now = datetime.datetime.now().strftime("%Y")
             if int(year_now) - int(year) >= settings.TELEMETA_PUBLIC_ACCESS_PERIOD:
-                public_access = True
-        else:
-            public_access = False
-    return public_access
+                access = 'full'
+            
+    return access
 
 def get_revisions(nb, user=None):
     last_revisions = Revision.objects.order_by('-time')
