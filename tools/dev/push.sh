@@ -7,10 +7,8 @@ do
     echo "Push $branch to origin:"
     git push origin $branch
 
-    if [[ $branch == *master* ]]; then
-        echo "Push $branch to github:"
-        git push hub $branch
-    fi
+    echo "Push $branch to github:"
+    git push hub $branch
 
 done
 
