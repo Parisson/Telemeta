@@ -1,5 +1,5 @@
 ============================================
-Archives sonores du CNRS - Musée de l'Homme 
+Archives sonores du CNRS - Musée de l'Homme
 ============================================
 
 La constitution des archives sonores du `CREM <http://www.crem-cnrs.fr>`_ est l’aboutissement d’une longue histoire de la recherche scientifique sur la musique. Depuis la naissance de l’ethnomusicologie (alors « musicologie comparée »), qui coïncida avec l'invention des premiers appareils enregistreurs à la fin du XIXe siècle, l'enregistrement des documents musicaux, ainsi que leur classification et leur conservation occupent une place centrale dans notre connaissance de l’Homme musical.
@@ -14,6 +14,6 @@ Les archives du CREM, parmi les plus importantes d’Europe, se distinguent par 
  * près de 3500 heures d'enregistrements de terrain non publiés.
  * environ 3700 heures de documents publiés (plus de 5000 disques dont beaucoup sont très rares).
 
-La plateforme collaborative `Telemeta <http://telemeta.org>`_ vise à rendre ces archives accessibles aux chercheurs et, dans la mesure du possible, au public, dans le respect des droits intellectuels et moraux des musiciens et des collecteurs. Mise au point grâce au soutien du programme `TGE-Adonis <http://www.tge-adonis.fr/>`_ du `CNRS <http://www.cnrs.fr/>`_, elle permet aux chercheurs d'échanger les données en ligne, avec les communautés productrices de ces musiques dans leur pays d'origine, notamment au moyen d’outils collaboratifs comme des marqueurs temporels, des espaces de commentaires, etc... 
+La plateforme collaborative `Telemeta <http://telemeta.org>`_ vise à rendre ces archives accessibles aux chercheurs et, dans la mesure du possible, au public, dans le respect des droits intellectuels et moraux des musiciens et des collecteurs. Mise au point grâce au soutien du programme `TGE-Adonis <http://www.tge-adonis.fr/>`_ du `CNRS <http://www.cnrs.fr/>`_, elle permet aux chercheurs d'échanger les données en ligne, avec les communautés productrices de ces musiques dans leur pays d'origine, notamment au moyen d’outils collaboratifs comme des marqueurs temporels, des espaces de commentaires, etc...
 
 La gestion de la plateforme est assurée par le `CREM <http://www.crem-cnrs.fr>`_. Le site accueille toutes les collaborations visant à enrichir et valoriser ce précieux patrimoine musical commun à toute l'Humanité. Actuellement, un millier d’heures est consultable en ligne avec un code d’accès, mais aussi `sur place au CREM (Université Paris-Ouest Nanterre-La Défense, bâtiment C, rez-de-chaussée, pièce 20) <http://goo.gl/maps/ZgHg>`_, ainsi qu’à la Bibliothèque centrale du Muséum National d’Histoire Naturelle, et à la Bibliothèque François Mitterand (rez de jardin).
