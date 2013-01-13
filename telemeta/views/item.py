@@ -468,11 +468,9 @@ class ItemView(object):
         """Export a given media item in the specified format (OGG, FLAC, ...)"""
 
         item = MediaItem.objects.get(public_id=public_id)
-        public_access = get_public_access(item.public_access,
-                                          str(item.recorded_from_date).split('-')[0],
-                                          str(item.recorded_to_date).split('-')[0])
+        public_access = get_item_access(item, request.user)
 
-        if (not public_access or not extension in settings.TELEMETA_STREAMING_FORMATS) and \
+        if (not public_access == 'full' or not extension in settings.TELEMETA_STREAMING_FORMATS) and \
                     not (request.user.has_perm('telemeta.can_play_all_items') or request.user.is_superuser):
             mess = ugettext('Access not allowed')
             title = 'Item file : ' + public_id + '.' + extension + ' : ' + mess

@@ -52,9 +52,9 @@
 {% endblock %}
 
 {% block content %}
-    <div class="{% if collection.has_mediafile %}{% if public_access or perms.telemeta.can_play_all_items %}with-rightcol{% endif %}{% endif %}">
+    <div class="{% if collection.has_mediafile %}{% if public_access == 'full' or perms.telemeta.can_play_all_items %}with-rightcol{% endif %}{% endif %}">
         {% if collection.has_mediafile %}
-        {% if public_access or perms.telemeta.can_play_all_items %}
+        {% if public_access == 'full' or perms.telemeta.can_play_all_items %}
         <div id="rightcol">
             <div id="collection_player">
              <div class="title">

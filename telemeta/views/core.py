@@ -167,7 +167,7 @@ def get_item_access(item, user):
     # Auto publish after slipping period (settings.TELEMETA_PUBLIC_ACCESS_PERIOD)
     if access != 'full' and item.auto_period_access:
         year_from = str(item.recorded_from_date).split('-')[0]
-        year_to = str(item.recorded_to_date).split('-')[0])
+        year_to = str(item.recorded_to_date).split('-')[0]
 
         if year_from and not year_from == 0:
             year = year_from

@@ -49,8 +49,7 @@ class HomeView(object):
         sound_items = MediaItem.objects.sound()
         _sound_pub_items = []
         for item in sound_items:
-            if get_public_access(item.public_access,  str(item.recorded_from_date).split('-')[0],
-                                            str(item.recorded_to_date).split('-')[0]):
+            if get_item_access(item, request.user) == 'full':
                 _sound_pub_items.append(item)
 
         random.shuffle(_sound_pub_items)
