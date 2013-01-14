@@ -485,11 +485,11 @@ class MediaItemRelated(MediaRelated):
 
     item            = ForeignKey('MediaItem', related_name="related", verbose_name=_('item'))
 
-    def save(self, force_insert=False, force_update=False, author=None):
-        super(MediaItemRelated, self).save(force_insert, force_update)        
+    def save(self, force_insert=False, force_update=False, using=False):
+        super(MediaItemRelated, self).save(force_insert, force_update)
 
+    def parse(self):
         # Parse KDEnLive session (first marker is the title of the item, 
-        # marker author given as a keyword)
         if self.is_kdenlive_session():
             session = KDEnLiveSession(self.file.path)
             markers = session.markers_relative()
