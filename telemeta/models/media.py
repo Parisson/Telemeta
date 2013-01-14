@@ -160,7 +160,10 @@ class MediaRelated(MediaResource):
             self.mime_type = mimetypes.guess_type(self.file.path)[0]
 
     def is_kdenlive_session(self):
-        return '.kdenlive' in self.file.path
+        if self.file:
+            return '.kdenlive' in self.file
+        else:
+            return False
 
     def __unicode__(self):
         if self.title and not re.match('^ *N *$', self.title):
