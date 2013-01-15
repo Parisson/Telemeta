@@ -161,7 +161,7 @@ class MediaRelated(MediaResource):
 
     def is_kdenlive_session(self):
         if self.file:
-            return '.kdenlive' in self.file
+            return '.kdenlive' in self.file.path
         else:
             return False
 
@@ -491,22 +491,18 @@ class MediaItemRelated(MediaRelated):
     def save(self, force_insert=False, force_update=False, using=False):
         super(MediaItemRelated, self).save(force_insert, force_update)
 
-    def parse(self):
-        # Parse KDEnLive session (first marker is the title of the item, 
+    def parse_markers(self):
+        # Parse KDEnLive session
         if self.is_kdenlive_session():
             session = KDEnLiveSession(self.file.path)
             markers = session.markers_relative()
-            i = 0
             for marker in markers:
-                if i == 0:
-                    self.item.title = marker['comment']
-                    self.item.save()
                 m = MediaItemMarker(item=self.item)
                 m.public_id = get_random_hash()
                 m.time = float(marker['time'])
                 m.title = marker['comment']
                 m.save()
-                i += 1
+            return markers
 
     class Meta(MetaCore):
         db_table = 'media_item_related'
