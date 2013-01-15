@@ -68,7 +68,7 @@ class KDEnLiveSession(object):
 		for attr in self.session['children']:
 			if 'kdenlivedoc' in attr['name']:
 				for att in attr['children']:
-					if 'markers' in att['name']:
+					if 'markers' in att['name'] and 'children' in att.keys():
 						for at in att['children']:
 							if 'marker' in at['name']:
 								time = float(at['attributes']['time'].replace(',','.')) - first_frame_seconds
