@@ -112,13 +112,11 @@ class KDEnLiveSession(object):
 	def markers_relative(self, offset=0):
 		markers = []
 		entries = self.entries_video_seconds()
-		print entries
 		for attr in self.session['children']:
 			if 'kdenlivedoc' in attr['name']:
 				for att in attr['children']:
 					if 'markers' in att['name'] and 'children' in att.keys():
 						for at in att['children']:
-
 							if 'marker' in at['name']:
 								rel_time = float(at['attributes']['time'].replace(',','.'))
 								id = at['attributes']['id']
@@ -127,7 +125,6 @@ class KDEnLiveSession(object):
 								for entry in entries:
 									if rel_time > entry['in'] and rel_time < entry['out'] and id == entry['id']:
 										abs_time = entry['t'] + (rel_time - entry['in'])
-										print abs_time
 										break
 
 								at['attributes']['time'] = abs_time
