@@ -33,6 +33,7 @@
 # Authors: Guillaume Pellerin <yomguy@parisson.com>
 
 
+import time
 from telemeta.util.xmltodict2 import *
 
 
@@ -50,16 +51,37 @@ class KDEnLiveSession(object):
 						entries.append(att['attributes'])
 		return entries
 
+	def video_entries(self):
+		entries = []
+		for attr in self.session['children']:
+			if 'playlist' in attr['name'] and 'children' in attr:
+				for att in attr['children']:
+					if 'entry' in att['name'] and att['attributes']['producer'] != 'black' \
+							and 'video' in att['attributes']['producer']:
+						entries.append(att['attributes'])
+		return entries
+
+
 	def entries_sorted(self):
 		return sorted(self.entries(), key=lambda k: int(k['in']), reverse=False)
 
 	def entries_video_seconds(self):
 		fps = float(self.profile()['frame_rate_num'])
-		entries = []
-		for entry in self.entries_sorted():
-			if 'video' in entry['producer']:
-				entries.append({'in': int(entry['in'])/fps, 'out': int(entry['out'])/fps })
-		return entries
+		list = []
+		entries = self.video_entries()
+		for i in range(0,len(entries)-1):
+			id = entries[i]['producer'].split('_')[0]
+			t_in = int(entries[i]['in'])/fps
+			t_out = int(entries[i]['out'])/fps
+
+			if i == 0:
+				t = 0
+			else:
+				t = list[i-1]['t'] + int(entries[i-1]['out'])/fps - int(entries[i-1]['in'])/fps
+
+			list.append({'id' : id, 't': t, 'in': t_in , 'out': t_out })
+
+		return list
 
 	def cuts(self, entries):
 		i = 0
@@ -78,12 +100,9 @@ class KDEnLiveSession(object):
 			if 'profile' in attr['name']:
 				return attr['attributes']
 
-	def markers_relative(self):
+	def markers_relative(self, offset=0):
 		markers = []
-		fps = float(self.profile()['frame_rate_num'])
-		first_frame_seconds = self.first_video_frame()/fps
 		entries = self.entries_video_seconds()
-		cuts = self.cuts(entries)
 
 		for attr in self.session['children']:
 			if 'kdenlivedoc' in attr['name']:
@@ -91,17 +110,19 @@ class KDEnLiveSession(object):
 					if 'markers' in att['name'] and 'children' in att.keys():
 						for at in att['children']:
 							if 'marker' in at['name']:
-								time = float(at['attributes']['time'].replace(',','.'))
+								rel_time = float(at['attributes']['time'].replace(',','.'))
+								id = at['attributes']['id']
 								j = 0
-								offset = 0
+								abs_time = 0
 								for entry in entries:
-									if time > entry['in'] and time < entry['out']:
+									if rel_time > entry['in'] and rel_time < entry['out'] and id == entry['id']:
 										if j != 0:
-											offset = cuts[j]
+											abs_time = entry['t'] + (rel_time - entry['in'])
+											print abs_time
 											break
 									j += 1
-								time = time - entries[0]['in'] - offset
-								at['attributes']['time'] = time
+								at['attributes']['time'] = abs_time
+								at['attributes']['session_timecode'] = time.strftime('%H:%M:%S', time.gmtime(abs_time+offset))
 				 				markers.append(at['attributes'])
 
 		return markers
