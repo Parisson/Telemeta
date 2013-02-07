@@ -47,7 +47,8 @@ class MediaFondsRelatedForm(ModelForm):
         model = MediaFondsRelated
 
 class MediaCorpusForm(ModelForm):
-    children = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple, queryset=MediaCollection.objects.all())
+    children = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple,
+                                              queryset=MediaCollection.objects.all())
 
     class Meta:
         model = MediaCorpus

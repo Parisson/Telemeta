@@ -53,6 +53,23 @@ class KDEnLiveSession(object):
 	def entries_sorted(self):
 		return sorted(self.entries(), key=lambda k: int(k['in']), reverse=False)
 
+	def entries_video_seconds(self):
+		fps = float(self.profile()['frame_rate_num'])
+		entries = []
+		for entry in self.entries_sorted():
+			if 'video' in entry['producer']:
+				entries.append({'in': int(entry['in'])/fps, 'out': int(entry['out'])/fps })
+		return entries
+
+	def cuts(self, entries):
+		i = 0
+		cuts = [0, ]
+		for entry in entries:
+			if i > 0:
+				cuts.append(cuts[i-1] + int(entries[i]['in'])-int(entries[i-1]['out']))
+			i += 1
+		return cuts
+
 	def first_video_frame(self):
 		return int(self.entries_sorted()[0]['in'])
 
@@ -65,13 +82,27 @@ class KDEnLiveSession(object):
 		markers = []
 		fps = float(self.profile()['frame_rate_num'])
 		first_frame_seconds = self.first_video_frame()/fps
+		entries = self.entries_video_seconds()
+		cuts = self.cuts(entries)
+
 		for attr in self.session['children']:
 			if 'kdenlivedoc' in attr['name']:
 				for att in attr['children']:
 					if 'markers' in att['name'] and 'children' in att.keys():
 						for at in att['children']:
 							if 'marker' in at['name']:
-								time = float(at['attributes']['time'].replace(',','.')) - first_frame_seconds
+								time = float(at['attributes']['time'].replace(',','.'))
+								j = 0
+								offset = 0
+								for entry in entries:
+									if time > entry['in'] and time < entry['out']:
+										if j != 0:
+											offset = cuts[j]
+											break
+									j += 1
+								time = time - entries[0]['in'] - offset
 								at['attributes']['time'] = time
 				 				markers.append(at['attributes'])
+
 		return markers
+
