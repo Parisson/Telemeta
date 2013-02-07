@@ -69,7 +69,7 @@ class KDEnLiveSession(object):
 		fps = float(self.profile()['frame_rate_num'])
 		list = []
 		entries = self.video_entries()
-		for i in range(0,len(entries)-1):
+		for i in range(0,len(entries)):
 			id = entries[i]['producer'].split('_')[0]
 			t_in = int(entries[i]['in'])/fps
 			t_out = int(entries[i]['out'])/fps
@@ -112,25 +112,23 @@ class KDEnLiveSession(object):
 	def markers_relative(self, offset=0):
 		markers = []
 		entries = self.entries_video_seconds()
-
+		print entries
 		for attr in self.session['children']:
 			if 'kdenlivedoc' in attr['name']:
 				for att in attr['children']:
 					if 'markers' in att['name'] and 'children' in att.keys():
 						for at in att['children']:
+
 							if 'marker' in at['name']:
 								rel_time = float(at['attributes']['time'].replace(',','.'))
 								id = at['attributes']['id']
-								j = 0
 								abs_time = 0
 
 								for entry in entries:
 									if rel_time > entry['in'] and rel_time < entry['out'] and id == entry['id']:
-										if j != 0:
-											abs_time = entry['t'] + (rel_time - entry['in'])
-											print abs_time
-											break
-									j += 1
+										abs_time = entry['t'] + (rel_time - entry['in'])
+										print abs_time
+										break
 
 								at['attributes']['time'] = abs_time
 								at['attributes']['session_timecode'] = time.strftime('%H:%M:%S', time.gmtime(abs_time+offset))
