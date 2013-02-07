@@ -100,6 +100,15 @@ class KDEnLiveSession(object):
 			if 'profile' in attr['name']:
 				return attr['attributes']
 
+	def fix_text(self, text):
+		try:
+			s = text.split(' ')
+			i = int(s[1])
+			s.insert(2, ':')
+			return ' '.join(s)
+		except:
+			return text
+
 	def markers_relative(self, offset=0):
 		markers = []
 		entries = self.entries_video_seconds()
@@ -114,6 +123,7 @@ class KDEnLiveSession(object):
 								id = at['attributes']['id']
 								j = 0
 								abs_time = 0
+
 								for entry in entries:
 									if rel_time > entry['in'] and rel_time < entry['out'] and id == entry['id']:
 										if j != 0:
@@ -121,8 +131,10 @@ class KDEnLiveSession(object):
 											print abs_time
 											break
 									j += 1
+
 								at['attributes']['time'] = abs_time
 								at['attributes']['session_timecode'] = time.strftime('%H:%M:%S', time.gmtime(abs_time+offset))
+								at['attributes']['comment'] = self.fix_text(at['attributes']['comment'])
 				 				markers.append(at['attributes'])
 
 		return markers
