@@ -109,7 +109,7 @@ class KDEnLiveSession(object):
 		except:
 			return text
 
-	def markers_relative(self, offset=0, from_first_marker=False):
+	def markers(self, offset=0, from_first_marker=False):
 		""" by default return a dict of markers with timecodes relative to an origin
 
 		    if from_first_marker=False: the origin is the first entry timecode
