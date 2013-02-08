@@ -76,7 +76,7 @@ app_name = 'telemeta'
 def get_random_hash():
     hash = random.getrandbits(64)
     return "%016x" % hash
-    
+
 
 class MediaResource(ModelCore):
     "Base class of all media objects"
@@ -153,7 +153,7 @@ class MediaRelated(MediaResource):
         return 'image' in self.mime_type or is_url_image
 
     def save(self, force_insert=False, force_update=False, author=None):
-        super(MediaRelated, self).save(force_insert, force_update)        
+        super(MediaRelated, self).save(force_insert, force_update)
 
     def set_mime_type(self):
         if self.file:
@@ -491,11 +491,11 @@ class MediaItemRelated(MediaRelated):
     def save(self, force_insert=False, force_update=False, using=False):
         super(MediaItemRelated, self).save(force_insert, force_update)
 
-    def parse_markers(self):
+    def parse_markers(self, **kwargs):
         # Parse KDEnLive session
         if self.is_kdenlive_session():
             session = KDEnLiveSession(self.file.path)
-            markers = session.markers_relative()
+            markers = session.markers(**kwargs)
             for marker in markers:
                 m = MediaItemMarker(item=self.item)
                 m.public_id = get_random_hash()
@@ -612,7 +612,7 @@ class MediaItemMarker(MediaResource):
     title           = CharField(_('title'))
     date            = DateTimeField(_('date'), auto_now=True)
     description     = TextField(_('description'))
-    author          = ForeignKey(User, related_name="markers", verbose_name=_('author'), 
+    author          = ForeignKey(User, related_name="markers", verbose_name=_('author'),
                                  blank=True, null=True)
 
     class Meta(MetaCore):
