@@ -109,28 +109,45 @@ class KDEnLiveSession(object):
 		except:
 			return text
 
-	def markers_relative(self, offset=0):
+	def markers_relative(self, offset=0, from_first_marker=False):
+		""" by default return a dict of markers with timecodes relative to an origin
+
+		    if from_first_marker=False: the origin is the first entry timecode
+		    if from_first_marker=True: the origin is the first entry timecode before the first marker
+
+		    offset: general origin offset
+		"""
+
+		abs_time = 0
 		markers = []
+		i = 0
 		entries = self.entries_video_seconds()
+
 		for attr in self.session['children']:
 			if 'kdenlivedoc' in attr['name']:
+
 				for att in attr['children']:
 					if 'markers' in att['name'] and 'children' in att.keys():
+
 						for at in att['children']:
 							if 'marker' in at['name']:
-								rel_time = float(at['attributes']['time'].replace(',','.'))
+
+								marker_time = float(at['attributes']['time'].replace(',','.'))
 								id = at['attributes']['id']
-								abs_time = 0
+								rel_time = 0
 
 								for entry in entries:
-									if rel_time > entry['in'] and rel_time < entry['out'] and id == entry['id']:
-										abs_time = entry['t'] + (rel_time - entry['in'])
+									if marker_time >= entry['in'] and marker_time <= entry['out'] and id == entry['id']:
+										if i == 0 and from_first_marker:
+											abs_time = entry['t']
+										rel_time = entry['t'] + (marker_time - entry['in']) - abs_time + offset
 										break
 
-								at['attributes']['time'] = abs_time
-								at['attributes']['session_timecode'] = time.strftime('%H:%M:%S', time.gmtime(abs_time+offset))
+								at['attributes']['time'] = rel_time
+								at['attributes']['session_timecode'] = time.strftime('%H:%M:%S', time.gmtime(rel_time))
 								at['attributes']['comment'] = self.fix_text(at['attributes']['comment'])
 				 				markers.append(at['attributes'])
 
+				 			i += 1
 		return markers
 
