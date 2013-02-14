@@ -1911,13 +1911,13 @@ msgstr "Bonjour"
 #: templates/telemeta/registration/password_reset_email.html:3
 msgid "You're receiving this e-mail because you requested a password reset"
 msgstr ""
-"Vous recevez cet e-mail car vous avez demandé une demande de "
-"réinitialisation de mot de passe"
+"Vous recevez cet e-mail car vous avez fait une demande de "
+"réinitialisation du mot de passe"
 
 #: templates/telemeta/registration/password_reset_email.html:4
 #, python-format
 msgid "for your user account at %(site_name)s"
-msgstr "pour votre compte utilisateur du site %(site_name)s"
+msgstr "de votre compte utilisateur du site %(site_name)s"
 
 #: templates/telemeta/registration/password_reset_email.html:6
 msgid "Please go to the following page and choose a new password:"
