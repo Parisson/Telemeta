@@ -107,8 +107,8 @@ def nginx_media_accel(request, filename):
 
     response = HttpResponse()
     url = settings.MEDIA_URL + filename
-    # let nginx determine the correct content type 
-    response['Content-Type'] = ""     
+    # let nginx determine the correct content type
+    response['Content-Type'] = ""
     response['X-Accel-Redirect'] = url
     return response
 
@@ -142,7 +142,7 @@ def get_item_access(item, user):
 
     # Rolling publishing date : public access is automaticcaly given when time between recorded year
     # and current year is over the settings value PUBLIC_ACCESS_PERIOD and if item.auto_period_access == True
-    
+
     if user.is_staff or user.is_superuser or user.has_perm('telemeta.can_play_all_items'):
         access = 'full'
 
@@ -162,9 +162,9 @@ def get_item_access(item, user):
         access = item.collection.public_access
 
     elif not user.is_authenticated() and item.collection.public_access == 'mixed':
-        access = item.public_access        
+        access = item.public_access
 
-    # Auto publish after slipping period (settings.TELEMETA_PUBLIC_ACCESS_PERIOD)
+    # Auto publish after a period given at settings.TELEMETA_PUBLIC_ACCESS_PERIOD
     if access != 'full' and item.auto_period_access:
         year_from = str(item.recorded_from_date).split('-')[0]
         year_to = str(item.recorded_to_date).split('-')[0]
@@ -180,7 +180,7 @@ def get_item_access(item, user):
             year_now = datetime.datetime.now().strftime("%Y")
             if int(year_now) - int(year) >= settings.TELEMETA_PUBLIC_ACCESS_PERIOD:
                 access = 'full'
-            
+
     return access
 
 def get_revisions(nb, user=None):
