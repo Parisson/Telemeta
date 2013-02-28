@@ -111,3 +111,5 @@ admin.site.register(Revision, RevisionAdmin)
 admin.site.register(Format, FormatAdmin)
 
 admin.site.register(User, UserProfileAdmin)
+
+admin.site.register(PublisherCollection)
