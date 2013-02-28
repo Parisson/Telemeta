@@ -488,6 +488,7 @@ class MediaItemRelated(MediaRelated):
 
     item            = ForeignKey('MediaItem', related_name="related", verbose_name=_('item'))
 
+<<<<<<< HEAD
     def save(self, force_insert=False, force_update=False, using=False):
         super(MediaItemRelated, self).save(force_insert, force_update)
 
@@ -503,6 +504,28 @@ class MediaItemRelated(MediaRelated):
                 m.title = marker['comment']
                 m.save()
             return markers
+=======
+    def save(self, force_insert=False, force_update=False, author=None):
+        super(MediaItemRelated, self).save(force_insert, force_update)
+
+        # Parse KDEnLive session (first marker is the title of the item,
+        # marker author given as a keyword)
+        if self.file:
+            if self.is_kdenlive_session():
+                session = KDEnLiveSession(self.file.path)
+                markers = session.markers_relative()
+                i = 0
+                for marker in markers:
+                    if i == 0:
+                        self.item.title = marker['comment']
+                        self.item.save()
+                    m = MediaItemMarker(item=self.item)
+                    m.public_id = get_random_hash()
+                    m.time = float(marker['time'])
+                    m.title = marker['comment']
+                    m.save()
+                    i += 1
+>>>>>>> ee1246c... fix related media parsing when no file (closes: #106)
 
     class Meta(MetaCore):
         db_table = 'media_item_related'
