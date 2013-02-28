@@ -38,7 +38,7 @@ import mimetypes
 from telemeta.views.core import *
 
 class ItemView(object):
-    """Provide Collections web UI methods"""
+    """Provide Item web UI methods"""
 
     graphers = timeside.core.processors(timeside.api.IGrapher)
     decoders = timeside.core.processors(timeside.api.IDecoder)

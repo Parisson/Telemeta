@@ -78,7 +78,7 @@ app_name = 'telemeta'
 def get_random_hash():
     hash = random.getrandbits(64)
     return "%016x" % hash
-    
+
 
 class MediaResource(ModelCore):
     "Base class of all media objects"
@@ -155,14 +155,17 @@ class MediaRelated(MediaResource):
         return 'image' in self.mime_type or is_url_image
 
     def save(self, force_insert=False, force_update=False, author=None):
-        super(MediaRelated, self).save(force_insert, force_update)        
+        super(MediaRelated, self).save(force_insert, force_update)
 
     def set_mime_type(self):
         if self.file:
             self.mime_type = mimetypes.guess_type(self.file.path)[0]
 
     def is_kdenlive_session(self):
-        return '.kdenlive' in self.file.path
+        if self.file:
+            return '.kdenlive' in self.file.path
+        else:
+            return False
 
     def __unicode__(self):
         if self.title and not re.match('^ *N *$', self.title):
@@ -486,25 +489,22 @@ class MediaItemRelated(MediaRelated):
 
     item            = ForeignKey('MediaItem', related_name="related", verbose_name=_('item'))
 
-    def save(self, force_insert=False, force_update=False, author=None):
-        super(MediaItemRelated, self).save(force_insert, force_update)        
+    def save(self, force_insert=False, force_update=False, using=False):
+        super(MediaItemRelated, self).save(force_insert, force_update)
 
-        # Parse KDEnLive session (first marker is the title of the item, 
-        # marker author given as a keyword)
-        if self.is_kdenlive_session():
-            session = KDEnLiveSession(self.file.path)
-            markers = session.markers_relative()
-            i = 0
-            for marker in markers:
-                if i == 0:
-                    self.item.title = marker['comment']
-                    self.item.save()
-                m = MediaItemMarker(item=self.item)
-                m.public_id = get_random_hash()
-                m.time = float(marker['time'])
-                m.title = marker['comment']
-                m.save()
-                i += 1
+    def parse_markers(self, **kwargs):
+        # Parse KDEnLive session
+        if self.file:
+            if self.is_kdenlive_session():
+                session = KDEnLiveSession(self.file.path)
+                markers = session.markers(**kwargs)
+                for marker in markers:
+                    m = MediaItemMarker(item=self.item)
+                    m.public_id = get_random_hash()
+                    m.time = float(marker['time'])
+                    m.title = marker['comment']
+                    m.save()
+                return markers
 
     class Meta(MetaCore):
         db_table = 'media_item_related'
@@ -614,7 +614,7 @@ class MediaItemMarker(MediaResource):
     title           = CharField(_('title'))
     date            = DateTimeField(_('date'), auto_now=True)
     description     = TextField(_('description'))
-    author          = ForeignKey(User, related_name="markers", verbose_name=_('author'), 
+    author          = ForeignKey(User, related_name="markers", verbose_name=_('author'),
                                  blank=True, null=True)
 
     class Meta(MetaCore):

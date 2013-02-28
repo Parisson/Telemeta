@@ -157,7 +157,7 @@ class MediaItemQuerySet(CoreQuerySet):
         from telemeta.models import Location
         for f in args:
             if f == 'apparent_collector':
-                if not 'sqlite3' in engine:
+                if not 'sqlite3' in engine and not 'postgresql_psycopg2':
                     related.append('collection')
                     qs = qs.extra(select={f:
                         'IF(collector_from_collection, '
@@ -167,7 +167,7 @@ class MediaItemQuerySet(CoreQuerySet):
                             'media_items.collector)'})
             elif f == 'country_or_continent':
                 related.append('location')
-                if not 'sqlite3' in engine:
+                if not 'sqlite3' in engine and not 'postgresql_psycopg2':
                     qs = qs.extra(select={f:
                         'IF(locations.type = ' + str(Location.COUNTRY) + ' '
                         'OR locations.type = ' + str(Location.CONTINENT) + ','
