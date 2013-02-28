@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-28 11:14+0100\n"
+"POT-Creation-Date: 2013-02-28 11:51+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Guillaume Pellerin <yomguy@parisson.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -383,7 +383,7 @@ msgstr "année de parution"
 
 #: models/media.py:207 models/media.py:380
 msgid "recordist"
-msgstr "opérateur d'enregistrement"
+msgstr "collecteur"
 
 #: models/media.py:211
 msgid "publisher collection"
