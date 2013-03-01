@@ -493,16 +493,17 @@ class MediaItemRelated(MediaRelated):
 
     def parse_markers(self, **kwargs):
         # Parse KDEnLive session
-        if self.is_kdenlive_session():
-            session = KDEnLiveSession(self.file.path)
-            markers = session.markers(**kwargs)
-            for marker in markers:
-                m = MediaItemMarker(item=self.item)
-                m.public_id = get_random_hash()
-                m.time = float(marker['time'])
-                m.title = marker['comment']
-                m.save()
-            return markers
+        if self.file:
+            if self.is_kdenlive_session():
+                session = KDEnLiveSession(self.file.path)
+                markers = session.markers(**kwargs)
+                for marker in markers:
+                    m = MediaItemMarker(item=self.item)
+                    m.public_id = get_random_hash()
+                    m.time = float(marker['time'])
+                    m.title = marker['comment']
+                    m.save()
+                return markers
 
     class Meta(MetaCore):
         db_table = 'media_item_related'
