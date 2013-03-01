@@ -533,7 +533,7 @@ class ItemView(object):
                 # source > encoder > stream
                 decoder = self.decoders[0](audio)
                 decoder.setup()
-                proc = encoder(media, streaming=True)
+                proc = encoder(media, streaming=True, overwrite=True)
                 proc.setup(channels=decoder.channels(), samplerate=decoder.samplerate())
                 if extension in mapping.unavailable_extensions:
                     metadata=None
