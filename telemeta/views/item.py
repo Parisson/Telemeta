@@ -519,7 +519,7 @@ class ItemView(object):
         if mime_type in format:
             # source > stream
             if not extension in mapping.unavailable_extensions:
-                proc = encoder(audio)
+                proc = encoder(audio, overwrite=True)
                 proc.set_metadata(metadata)
                 try:
                     proc.write_metadata()
