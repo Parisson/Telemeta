@@ -102,7 +102,6 @@ def send_file(request, filename, content_type='image/jpeg'):
     response['Content-Length'] = os.path.getsize(filename)
     return response
 
-<<<<<<< HEAD
 def nginx_media_accel(request, filename):
     """Send a protected medie file through nginx with X-Accel-Redirect"""
 
@@ -113,8 +112,6 @@ def nginx_media_accel(request, filename):
     response['X-Accel-Redirect'] = url
     return response
 
-=======
->>>>>>> crem
 def render(request, template, data = None, mimetype = None):
     return render_to_response(template, data, context_instance=RequestContext(request),
                               mimetype=mimetype)
@@ -148,24 +145,31 @@ def get_item_access(item, user):
 
     if user.is_staff or user.is_superuser or user.has_perm('telemeta.can_play_all_items'):
         access = 'full'
+        print '1'
 
     elif user.is_authenticated() and item.collection.public_access != 'mixed':
         if item.collection.public_access == 'metadata' and item.auto_period_access:
             access = 'full'
+            print '2'
         else:
             access = item.collection.public_access
+            print '3'
 
     elif user.is_authenticated() and item.collection.public_access == 'mixed':
         if item.public_access == 'metadata' and item.auto_period_access:
             access = 'full'
+            print '4'
         else:
             access = item.public_access
+            print '5'
 
     elif not user.is_authenticated() and item.collection.public_access != 'mixed':
         access = item.collection.public_access
+        print '6'
 
     elif not user.is_authenticated() and item.collection.public_access == 'mixed':
         access = item.public_access
+        print '7'
 
     # Auto publish after a period given at settings.TELEMETA_PUBLIC_ACCESS_PERIOD
     if access != 'full' and item.auto_period_access:
@@ -183,6 +187,7 @@ def get_item_access(item, user):
             year_now = datetime.datetime.now().strftime("%Y")
             if int(year_now) - int(year) >= settings.TELEMETA_PUBLIC_ACCESS_PERIOD:
                 access = 'full'
+        print '8'
 
     return access
 
