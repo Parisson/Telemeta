@@ -91,7 +91,7 @@ class FixedFileWrapper(FileWrapper):
         self.filelike.seek(0)
         return self
 
-def send_file(request, filename, content_type=None):
+def send_file(request, filename, content_type='image/jpeg'):
     """
     Send a file through Django without loading the whole file into
     memory at once. The FileWrapper will turn the file object into an
@@ -102,6 +102,7 @@ def send_file(request, filename, content_type=None):
     response['Content-Length'] = os.path.getsize(filename)
     return response
 
+<<<<<<< HEAD
 def nginx_media_accel(request, filename):
     """Send a protected medie file through nginx with X-Accel-Redirect"""
 
@@ -112,6 +113,8 @@ def nginx_media_accel(request, filename):
     response['X-Accel-Redirect'] = url
     return response
 
+=======
+>>>>>>> crem
 def render(request, template, data = None, mimetype = None):
     return render_to_response(template, data, context_instance=RequestContext(request),
                               mimetype=mimetype)

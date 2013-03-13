@@ -37,7 +37,6 @@
 
 from telemeta.views.core import *
 
-
 class InstrumentView(object):
     """Provide Instrument web UI methods"""
 

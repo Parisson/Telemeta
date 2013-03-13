@@ -37,7 +37,6 @@
 
 from telemeta.views.core import *
 
-
 class HomeView(object):
     """Provide general web UI methods"""
 
@@ -72,7 +71,7 @@ class HomeView(object):
         return HttpResponse(template.render(context))
 
     def lists(self, request):
-        """Render the list page"""
+        """Render the home page"""
 
         if request.user.is_authenticated():
             template='telemeta/lists.html'

@@ -37,7 +37,6 @@
 import mimetypes
 from telemeta.views.core import *
 
-
 class ItemView(object):
     """Provide Item web UI methods"""
 
@@ -520,7 +519,7 @@ class ItemView(object):
         if mime_type in format:
             # source > stream
             if not extension in mapping.unavailable_extensions:
-                proc = encoder(audio)
+                proc = encoder(audio, overwrite=True)
                 proc.set_metadata(metadata)
                 try:
                     proc.write_metadata()
@@ -533,7 +532,7 @@ class ItemView(object):
                 # source > encoder > stream
                 decoder = self.decoders[0](audio)
                 decoder.setup()
-                proc = encoder(media, streaming=True)
+                proc = encoder(media, streaming=True, overwrite=True)
                 proc.setup(channels=decoder.channels(), samplerate=decoder.samplerate())
                 if extension in mapping.unavailable_extensions:
                     metadata=None
