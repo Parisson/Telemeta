@@ -145,34 +145,27 @@ def get_item_access(item, user):
 
     if user.is_staff or user.is_superuser or user.has_perm('telemeta.can_play_all_items'):
         access = 'full'
-        print '1'
 
-    elif user.is_authenticated() and item.collection.public_access != 'mixed':
-        if item.collection.public_access == 'metadata' and item.auto_period_access:
-            access = 'full'
-            print '2'
+    elif item.collection.public_access != 'mixed':
+        if user.is_authenticated() :
+            if item.collection.public_access == 'metadata' and item.auto_period_access:
+                access = 'full'
+            else:
+                access = item.collection.public_access
         else:
             access = item.collection.public_access
-            print '3'
 
-    elif user.is_authenticated() and item.collection.public_access == 'mixed':
-        if item.public_access == 'metadata' and item.auto_period_access:
-            access = 'full'
-            print '4'
+    elif item.collection.public_access == 'mixed':
+        if user.is_authenticated() :
+            if item.public_access == 'metadata' and item.auto_period_access:
+                access = 'full'
+            else:
+                access = item.public_access
         else:
             access = item.public_access
-            print '5'
-
-    elif not user.is_authenticated() and item.collection.public_access != 'mixed':
-        access = item.collection.public_access
-        print '6'
-
-    elif not user.is_authenticated() and item.collection.public_access == 'mixed':
-        access = item.public_access
-        print '7'
 
     # Auto publish after a period given at settings.TELEMETA_PUBLIC_ACCESS_PERIOD
-    if access != 'full' and item.auto_period_access:
+    if access != 'full' and access != 'none' and item.auto_period_access:
         year_from = str(item.recorded_from_date).split('-')[0]
         year_to = str(item.recorded_to_date).split('-')[0]
 
@@ -187,7 +180,6 @@ def get_item_access(item, user):
             year_now = datetime.datetime.now().strftime("%Y")
             if int(year_now) - int(year) >= settings.TELEMETA_PUBLIC_ACCESS_PERIOD:
                 access = 'full'
-        print '8'
 
     return access
 
