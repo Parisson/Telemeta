@@ -148,7 +148,7 @@ def get_item_access(item, user):
 
     elif item.collection.public_access != 'mixed':
         if user.is_authenticated() :
-            if item.collection.public_access == 'metadata' and item.auto_period_access:
+            if item.collection.public_access == 'metadata' and item.collection.auto_period_access:
                 access = 'full'
             else:
                 access = item.collection.public_access
@@ -165,7 +165,7 @@ def get_item_access(item, user):
             access = item.public_access
 
     # Auto publish after a period given at settings.TELEMETA_PUBLIC_ACCESS_PERIOD
-    if access != 'full' and access != 'none' and item.auto_period_access:
+    if access != 'full' and access != 'none' and (item.auto_period_access or item.collection.auto_period_access):
         year_from = str(item.recorded_from_date).split('-')[0]
         year_to = str(item.recorded_to_date).split('-')[0]
 
