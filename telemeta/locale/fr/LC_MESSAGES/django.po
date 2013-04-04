@@ -646,9 +646,8 @@ msgid "resource_id"
 msgstr "ressource"
 
 #: models/media.py:613
-#, fuzzy
 msgid "time (s)"
-msgstr "heure"
+msgstr "temps (s)"
 
 #: models/media.py:617
 msgid "author"
@@ -656,7 +655,7 @@ msgstr "auteur"
 
 #: models/media.py:673
 msgid "transcoded"
-msgstr ""
+msgstr "transcodé"
 
 #: models/media.py:753
 msgid "collections"
@@ -1684,11 +1683,11 @@ msgid "Search pattern"
 msgstr "Mots clés"
 
 #: templates/telemeta/inc/children_list.html:8
-#, fuzzy, python-format
 msgid ""
 "%(resource.children_type|capitalize)s %(first_on_page)s to %(last_on_page)s "
 "on %(hits)s"
-msgstr "Collections %(first_on_page)s à %(last_on_page)s sur %(hits)s"
+msgstr "%(resource.children_type|capitalize)s %(first_on_page)s à %(last_on_page)s "
+"sur %(hits)s"
 
 #: templates/telemeta/inc/children_list.html:18
 #: templates/telemeta/inc/resource_list.html:16
