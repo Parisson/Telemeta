@@ -274,18 +274,22 @@ class ItemView(object):
         """Copy a given item"""
         if request.method == 'POST':
             source_item = MediaItem.objects.get(public_id=public_id)
-            item = MediaItem()
-            format = Format()
 
+            format = Format()
+            format_form = FormatForm(data=request.POST, instance=format, prefix='format')
+
+            item = MediaItem()
             if request.FILES:
                 item_form = MediaItemForm(data=request.POST, files=request.FILES, instance=item, prefix='item')
             else:
                 item_form = MediaItemForm(data=request.POST, instance=item, prefix='item')
 
-            format_form = FormatForm(data=request.POST, instance=format, prefix='format')
-
             if item_form.is_valid():
                 item_form.save()
+                if not request.FILES:
+                    item.file = source_item.file
+                    item.save()
+
                 code = item_form.cleaned_data['code']
                 if not code:
                     code = str(item.id)
