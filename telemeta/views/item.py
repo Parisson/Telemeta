@@ -277,7 +277,12 @@ class ItemView(object):
             source_item = MediaItem.objects.get(public_id=public_id)
             item = MediaItem()
             format = Format()
-            item_form = MediaItemForm(data=request.POST, files=request.FILES, instance=item, prefix='item')
+
+            if request.FILES:
+                item_form = MediaItemForm(data=request.POST, files=request.FILES, instance=item, prefix='item')
+            else:
+                item_form = MediaItemForm(data=request.POST, instance=item, prefix='item')
+
             format_form = FormatForm(data=request.POST, instance=format, prefix='format')
 
             if item_form.is_valid():
