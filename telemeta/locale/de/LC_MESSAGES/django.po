@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-08 17:12+0200\n"
+"POT-Creation-Date: 2013-04-08 17:15+0200\n"
 "PO-Revision-Date: 2012-12-22 21:24+0100\n"
 "Last-Translator: Patrik Tschudin <patsch@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1555,7 +1555,7 @@ msgid "Download:"
 msgstr "herunterladen:"
 
 #: templates/telemeta/mediaitem_detail.html:185
-msgid "You don't have access to the sound of this item."
+msgid "You don't have access to the media of this item."
 msgstr ""
 
 #: templates/telemeta/mediaitem_detail.html:185
