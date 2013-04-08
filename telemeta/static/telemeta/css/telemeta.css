@@ -142,8 +142,8 @@ a img { border: none; }
     position: relative;
     z-index: 1;
     float: right;
-    border: 1px solid #999;
-    background-color: #eee;
+    border: 1px solid #e1e1e1;
+    background-color: #f9f9f9;
     -moz-border-radius: 8px 8px 8px 8px;
     -webkit-border-radius: 8px 8px 8px 8px;
     border-radius: 8px 8px 8px 8px;
@@ -190,7 +190,7 @@ a img { border: none; }
 .analyzer, .markers {
     background-color: #fff;
     color: #000;
-    border: 1px solid #adadad;
+    border: 1px solid #e1e1e1;
     width: 356px;
     padding: 2px;
     /* margin: 5px 0 0; */
@@ -988,9 +988,9 @@ a.image-link {
     background-color: #ffffff;
     color: #000000;
     font-weight: bold;
-    border-top: 1px solid #999999;
-    border-right: 1px solid #999999;
-    border-left: 1px solid #999999;
+    border-top: 1px solid #e1e1e1;
+    border-right: 1px solid #e1e1e1;
+    border-left: 1px solid #e1e1e1;
     border-bottom: 1px solid #ffffff;
 
 }
@@ -1281,4 +1281,8 @@ input,textarea{
 
 .related_media {
     border-top: 1px dotted #6a0307;
+}
+
+#no-sound-access {
+    background-color: #f9f9f9;
 }

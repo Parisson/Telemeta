@@ -105,8 +105,8 @@ Item : <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
 
 {% block content %}
 <div class="{% if item.file %}{% if access == 'full' or perms.telemeta.can_play_all_items %}with-rightcol{% endif %}{% endif %}">
-    {% if item.file %}
 
+    {% if item.file %}
 
     {% if access == 'full' or perms.telemeta.can_play_all_items %}
     <div id="player_maximized" class="ts-skin-lab">
@@ -178,6 +178,14 @@ Item : <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
         {% endif %}
 
     </div>
+    {% else %}
+
+    <div id="rightcol">
+        <div id="no-sound-access">
+            {% trans "You don't have access to the sound of this item. Please contact the administrators to get more rights." %}
+        </div>
+    </div>
+
     {% endif %}
     {% endif %}
 
