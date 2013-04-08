@@ -1,6 +1,6 @@
 
 import os, sys
-from fade import AutoFade
+from telemeta.util.kdenlive.fade import AutoFade
 
 if __name__ == '__main__':
     dir = sys.argv[-2]
