@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-04 11:55+0200\n"
+"POT-Creation-Date: 2013-04-08 17:12+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Guillaume Pellerin <yomguy@parisson.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -422,13 +422,12 @@ msgid "document type"
 msgstr "type de document"
 
 #: models/media.py:217 models/media.py:373
-#, fuzzy
 msgid "access status"
-msgstr "état"
+msgstr "status d'accès"
 
 #: models/media.py:219 models/media.py:377
 msgid "automatic access after a rolling period"
-msgstr ""
+msgstr "Accès automatique après la data glissante"
 
 #: models/media.py:226
 msgid "CNRS depositor"
@@ -858,7 +857,7 @@ msgstr ""
 #: templates/telemeta/collection_detail.html:217
 #: templates/telemeta/collection_detail_dc.html:25
 #: templates/telemeta/lists.html:58
-#: templates/telemeta/mediaitem_detail.html:335
+#: templates/telemeta/mediaitem_detail.html:343
 #: templates/telemeta/mediaitem_detail_dc.html:20
 #: templates/telemeta/resource_detail.html:104
 #: templates/telemeta/resource_detail_dc.html:17
@@ -1243,13 +1242,13 @@ msgid "Recording period"
 msgstr "Période d'enregistrement"
 
 #: templates/telemeta/collection_detail.html:102
-#: templates/telemeta/mediaitem_detail.html:198
+#: templates/telemeta/mediaitem_detail.html:206
 #: templates/telemeta/resource_detail.html:74
 msgid "Last modification"
 msgstr "Dernière modification"
 
 #: templates/telemeta/collection_detail.html:111
-#: templates/telemeta/mediaitem_detail.html:208
+#: templates/telemeta/mediaitem_detail.html:216
 msgid "Geographic and cultural informations"
 msgstr "Indications géographiques et culturelles"
 
@@ -1265,7 +1264,7 @@ msgid "Bibliographic references"
 msgstr "Références bibliographiques"
 
 #: templates/telemeta/collection_detail.html:151
-#: templates/telemeta/mediaitem_detail.html:268
+#: templates/telemeta/mediaitem_detail.html:276
 msgid "Archiving data"
 msgstr "Données d'archivage"
 
@@ -1274,17 +1273,17 @@ msgid "Related documentation"
 msgstr "Documentation associée"
 
 #: templates/telemeta/collection_detail.html:161
-#: templates/telemeta/mediaitem_detail.html:302
+#: templates/telemeta/mediaitem_detail.html:310
 msgid "Comments"
 msgstr "Commentaires"
 
 #: templates/telemeta/collection_detail.html:175
-#: templates/telemeta/mediaitem_detail.html:287
+#: templates/telemeta/mediaitem_detail.html:295
 msgid "Technical data"
 msgstr "Données techniques"
 
 #: templates/telemeta/collection_detail.html:180
-#: templates/telemeta/mediaitem_detail.html:290
+#: templates/telemeta/mediaitem_detail.html:298
 msgid "Media type"
 msgstr "Type de media"
 
@@ -1550,32 +1549,44 @@ msgstr "Unité"
 msgid "Download:"
 msgstr "Téléchargement:"
 
-#: templates/telemeta/mediaitem_detail.html:193
+#: templates/telemeta/mediaitem_detail.html:185
+msgid "You don't have access to the sound of this item."
+msgstr "Vous n'avez pas accès au son de cet item."
+
+#: templates/telemeta/mediaitem_detail.html:185
+msgid "Please contact the administrators to get more rights."
+msgstr "Contactez les administrateurs du site pour obtenir plus de droits."
+
+#: templates/telemeta/mediaitem_detail.html:185
+msgid "Click here"
+msgstr "Cliquez ici"
+
+#: templates/telemeta/mediaitem_detail.html:201
 msgid "Recording date"
 msgstr "Date d'enregistrement"
 
-#: templates/telemeta/mediaitem_detail.html:210
+#: templates/telemeta/mediaitem_detail.html:218
 #: templates/telemeta/inc/mediaitem_list.html:18
 msgid "Location"
 msgstr "Lieu"
 
-#: templates/telemeta/mediaitem_detail.html:216
+#: templates/telemeta/mediaitem_detail.html:224
 msgid "Language ISO"
 msgstr "Langue ISO"
 
-#: templates/telemeta/mediaitem_detail.html:220
+#: templates/telemeta/mediaitem_detail.html:228
 msgid "Ethnographic context"
 msgstr "Contexte ethnographique"
 
-#: templates/telemeta/mediaitem_detail.html:231
+#: templates/telemeta/mediaitem_detail.html:239
 msgid "Musical informations"
 msgstr "Informations sur la musique"
 
-#: templates/telemeta/mediaitem_detail.html:274
+#: templates/telemeta/mediaitem_detail.html:282
 msgid "Published references"
 msgstr "Références éditées"
 
-#: templates/telemeta/mediaitem_detail.html:278
+#: templates/telemeta/mediaitem_detail.html:286
 msgid "Remarks"
 msgstr "Remarques"
 
@@ -1987,12 +1998,12 @@ msgstr "Enfants"
 msgid "pattern"
 msgstr "mots clés"
 
-#: views/collection.py:49 views/home.py:90 views/item.py:110 views/item.py:474
+#: views/collection.py:49 views/home.py:90 views/item.py:110 views/item.py:483
 #: views/profile.py:68
 msgid "Access not allowed"
 msgstr "Accès non autorisé"
 
-#: views/collection.py:51 views/home.py:92 views/item.py:112 views/item.py:476
+#: views/collection.py:51 views/home.py:92 views/item.py:112 views/item.py:485
 #: views/profile.py:70
 msgid ""
 "Please login or contact the website administator to get a private access."

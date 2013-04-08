@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-04 11:55+0200\n"
+"POT-Creation-Date: 2013-04-08 17:12+0200\n"
 "PO-Revision-Date: 2012-12-22 21:24+0100\n"
 "Last-Translator: Patrik Tschudin <patsch@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -859,7 +859,7 @@ msgstr "g:i A,M j,n/j/y"
 #: templates/telemeta/collection_detail.html:217
 #: templates/telemeta/collection_detail_dc.html:25
 #: templates/telemeta/lists.html:58
-#: templates/telemeta/mediaitem_detail.html:335
+#: templates/telemeta/mediaitem_detail.html:343
 #: templates/telemeta/mediaitem_detail_dc.html:20
 #: templates/telemeta/resource_detail.html:104
 #: templates/telemeta/resource_detail_dc.html:17
@@ -1248,13 +1248,13 @@ msgid "Recording period"
 msgstr "Aufnahmeperiode"
 
 #: templates/telemeta/collection_detail.html:102
-#: templates/telemeta/mediaitem_detail.html:198
+#: templates/telemeta/mediaitem_detail.html:206
 #: templates/telemeta/resource_detail.html:74
 msgid "Last modification"
 msgstr "Letzte Änderung"
 
 #: templates/telemeta/collection_detail.html:111
-#: templates/telemeta/mediaitem_detail.html:208
+#: templates/telemeta/mediaitem_detail.html:216
 msgid "Geographic and cultural informations"
 msgstr "geographische und kulturelle Informationen"
 
@@ -1270,7 +1270,7 @@ msgid "Bibliographic references"
 msgstr "bibliographische Referenzen"
 
 #: templates/telemeta/collection_detail.html:151
-#: templates/telemeta/mediaitem_detail.html:268
+#: templates/telemeta/mediaitem_detail.html:276
 msgid "Archiving data"
 msgstr "Archivdaten"
 
@@ -1279,17 +1279,17 @@ msgid "Related documentation"
 msgstr "damit zusammenhängende Dokumentation"
 
 #: templates/telemeta/collection_detail.html:161
-#: templates/telemeta/mediaitem_detail.html:302
+#: templates/telemeta/mediaitem_detail.html:310
 msgid "Comments"
 msgstr "Kommentare"
 
 #: templates/telemeta/collection_detail.html:175
-#: templates/telemeta/mediaitem_detail.html:287
+#: templates/telemeta/mediaitem_detail.html:295
 msgid "Technical data"
 msgstr "technische Daten"
 
 #: templates/telemeta/collection_detail.html:180
-#: templates/telemeta/mediaitem_detail.html:290
+#: templates/telemeta/mediaitem_detail.html:298
 msgid "Media type"
 msgstr "Medientyp"
 
@@ -1554,35 +1554,50 @@ msgstr "Einheit"
 msgid "Download:"
 msgstr "herunterladen:"
 
-#: templates/telemeta/mediaitem_detail.html:193
+#: templates/telemeta/mediaitem_detail.html:185
+msgid "You don't have access to the sound of this item."
+msgstr ""
+
+#: templates/telemeta/mediaitem_detail.html:185
+#, fuzzy
+msgid "Please contact the administrators to get more rights."
+msgstr ""
+"Bitte loggen Sie sich ein oder kontaktieren Sie den Administrator der "
+"Website, um einen privaten Zugang zu erhalten."
+
+#: templates/telemeta/mediaitem_detail.html:185
+msgid "Click here"
+msgstr ""
+
+#: templates/telemeta/mediaitem_detail.html:201
 msgid "Recording date"
 msgstr "Aufnahmedatum"
 
-#: templates/telemeta/mediaitem_detail.html:210
+#: templates/telemeta/mediaitem_detail.html:218
 #: templates/telemeta/inc/mediaitem_list.html:18
 msgid "Location"
 msgstr "Aufnahmeort"
 
-#: templates/telemeta/mediaitem_detail.html:216
+#: templates/telemeta/mediaitem_detail.html:224
 #, fuzzy
 msgid "Language ISO"
 msgstr "Sprache"
 
-#: templates/telemeta/mediaitem_detail.html:220
+#: templates/telemeta/mediaitem_detail.html:228
 #, fuzzy
 msgid "Ethnographic context"
 msgstr "Kommentare / ethnographischer Kontext"
 
-#: templates/telemeta/mediaitem_detail.html:231
+#: templates/telemeta/mediaitem_detail.html:239
 #, fuzzy
 msgid "Musical informations"
 msgstr "physisches Format"
 
-#: templates/telemeta/mediaitem_detail.html:274
+#: templates/telemeta/mediaitem_detail.html:282
 msgid "Published references"
 msgstr "publizierte Referenzen"
 
-#: templates/telemeta/mediaitem_detail.html:278
+#: templates/telemeta/mediaitem_detail.html:286
 msgid "Remarks"
 msgstr "Bemerkungen"
 
@@ -2003,12 +2018,12 @@ msgstr "Kinder"
 msgid "pattern"
 msgstr "Muster"
 
-#: views/collection.py:49 views/home.py:90 views/item.py:110 views/item.py:474
+#: views/collection.py:49 views/home.py:90 views/item.py:110 views/item.py:483
 #: views/profile.py:68
 msgid "Access not allowed"
 msgstr "Zugang verboten"
 
-#: views/collection.py:51 views/home.py:92 views/item.py:112 views/item.py:476
+#: views/collection.py:51 views/home.py:92 views/item.py:112 views/item.py:485
 #: views/profile.py:70
 msgid ""
 "Please login or contact the website administator to get a private access."
