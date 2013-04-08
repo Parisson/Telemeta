@@ -20,7 +20,7 @@
 # Author: Guillaume Pellerin <yomguy@parisson.com>
 
 
-from xmltodict2 import *
+from telemeta.util.xmltodict2 import *
 
 
 class AutoFade(object):
