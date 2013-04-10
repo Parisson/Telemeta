@@ -65,7 +65,7 @@ class HomeView(object):
         elif count > 2:
             indexes = random.sample(range(count-1), N)
             sound_pub_item = sound_items[indexes[0]]
-            sound_pub_items = [sound_items[indexes[i]] for i in range(0, N-1)]
+            sound_pub_items = [sound_items[indexes[i]] for i in range(1, N)]
 
         revisions = get_revisions(25)
         context = RequestContext(request, {
