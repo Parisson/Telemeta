@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 from setuptools import setup, find_packages
 import os
 
@@ -12,7 +11,7 @@ setup(
   long_description = open('README.rst').read(),
   author = "Guillaume Pellerin",
   author_email = "yomguy@parisson.com",
-  version = '1.4.4',
+  version = '1.4.5',
   install_requires = [
         'django>=1.4',
         'django-registration',
