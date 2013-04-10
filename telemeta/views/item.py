@@ -102,7 +102,7 @@ class ItemView(object):
             item_id = marker.item_id
             item = MediaItem.objects.get(id=item_id)
         else:
-            item = MediaItem.objects.get(public_id=public_id)    
+            item = MediaItem.objects.get(public_id=public_id)
 
         access = get_item_access(item, request.user)
 
@@ -125,9 +125,9 @@ class ItemView(object):
                 grapher_id = 'waveform'
 
         previous, next = self.item_previous_next(item)
-        
+
         mime_type = self.item_analyze(item)
-        
+
         #FIXME: use mimetypes.guess_type
         if 'quicktime' in mime_type:
             mime_type = 'video/mp4'
@@ -159,6 +159,7 @@ class ItemView(object):
     def item_edit(self, request, public_id, template='telemeta/mediaitem_edit.html'):
         """Edit a given item"""
         item = MediaItem.objects.get(public_id=public_id)
+        access = get_item_access(item, request.user)
 
         graphers = []
         for grapher in self.graphers:
@@ -211,7 +212,7 @@ class ItemView(object):
                     'visualizers': graphers, 'visualizer_id': grapher_id,
                     'audio_export_enabled': self.export_enabled,
                     'forms': forms, 'previous' : previous,
-                    'next' : next, 'mime_type': mime_type,
+                    'next' : next, 'mime_type': mime_type, 'access': access,
                     })
 
     def related_media_item_stream(self, request, item_public_id, media_id):
@@ -239,12 +240,15 @@ class ItemView(object):
     @method_decorator(permission_required('telemeta.add_mediaitem'))
     def item_add(self, request, public_id=None, template='telemeta/mediaitem_add.html'):
         """Add an item"""
+        access = ''
+
         if public_id:
             collection = MediaCollection.objects.get(public_id=public_id)
             items = MediaItem.objects.filter(collection=collection)
             code = auto_code(items, collection.code)
             item = MediaItem(collection=collection, code=code)
             format, created = Format.objects.get_or_create(item=item)
+            access = get_item_access(item, request.user)
         else:
             item = MediaItem()
             format = Format()
@@ -268,7 +272,8 @@ class ItemView(object):
         forms = [item_form, format_form]
         hidden_fields = ['item-copied_from_item', 'format-item']
 
-        return render(request, template, {'item': item, 'forms': forms, 'hidden_fields': hidden_fields,})
+        return render(request, template, {'item': item, 'forms': forms, 'hidden_fields': hidden_fields,
+                                            'access': access, })
 
     @method_decorator(permission_required('telemeta.add_mediaitem'))
     def item_copy(self, request, public_id, template='telemeta/mediaitem_copy.html'):
@@ -325,10 +330,12 @@ class ItemView(object):
             item_form.code = item.code
             item_form.file = None
 
+        access = get_item_access(item, request.user)
         forms = [item_form, format_form]
         hidden_fields = ['item-copied_from_item', 'format-item']
 
-        return render(request, template, {'item': item, "forms": forms, 'hidden_fields': hidden_fields,})
+        return render(request, template, {'item': item, "forms": forms, 'hidden_fields': hidden_fields,
+                                            'access': access, })
 
     @method_decorator(permission_required('telemeta.delete_mediaitem'))
     def item_delete(self, request, public_id):
@@ -358,7 +365,7 @@ class ItemView(object):
             analyzers_sub = []
             graphers_sub = []
 
-            if item.file:
+            if item.file and os.path.exists(item.file.path):
                 decoder  = timeside.decoder.FileDecoder(item.file.path)
                 pipe = decoder
 

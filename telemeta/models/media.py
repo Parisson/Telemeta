@@ -68,6 +68,9 @@ item_code_regex              = '(?:%s|%s)' % (item_published_code_regex, item_un
 PUBLIC_ACCESS_CHOICES = (('none', _('none')), ('metadata', _('metadata')),
                          ('mixed', _('mixed')), ('full', _('full')))
 
+ITEM_PUBLIC_ACCESS_CHOICES = (('none', _('none')), ('metadata', _('metadata')),
+                         ('full', _('full')))
+
 ITEM_TRANSODING_STATUS = ((0, _('broken')), (1, _('pending')), (2, _('processing')),
                          (3, _('done')), (5, _('ready')))
 
@@ -370,7 +373,7 @@ class MediaItem(MediaResource):
 
     # Legal mentions
     organization          = WeakForeignKey('Organization', verbose_name=_('organization'))
-    public_access         = CharField(_('access status'), choices=PUBLIC_ACCESS_CHOICES,
+    public_access         = CharField(_('access status'), choices=ITEM_PUBLIC_ACCESS_CHOICES,
                                       max_length=16, default="metadata")
     depositor             = CharField(_('depositor'))
     rights                = WeakForeignKey('Rights', verbose_name=_('rights'))

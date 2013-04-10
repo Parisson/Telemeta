@@ -281,8 +281,6 @@ Item : <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
                 {% dl_field item "creator_reference" %}
                 <dt>{% trans "Published references" %}</dt>
                 <dd>{{ item.external_references|html_line_break|safe }}</dd>
-                {% dl_field item "public_access_label" %}
-
                 <dt>{% trans "Remarks" %}</dt>
                 <dd>{{ item.comment|html_line_break|safe }}</dd>
             </dl>
