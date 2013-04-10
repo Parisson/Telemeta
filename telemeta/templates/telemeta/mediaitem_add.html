@@ -35,8 +35,8 @@
                 <td>{{ field.label_tag }}:</td>
                 {% if field.html_name == "item-public_access" %}
                 <td>
-                &nbsp;{% trans "Collection access status" %} : {{ item.collection.public_access }}<br />
-                &nbsp;{% trans "Context access status" %} : {{ access }}<br />
+                &nbsp;{% trans "Collection access status" %} : {% trans item.collection.public_access %}<br />
+                &nbsp;{% trans "Context access status" %} : {% trans access %}<br />
                 &nbsp;{% trans "Item access status" %} :<br />
                 {{ field }}
                 </td>
