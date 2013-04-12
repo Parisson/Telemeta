@@ -44,7 +44,8 @@
                       &nbsp;{% trans "Collection access status" %} : {% trans item.collection.public_access %}<br />
                       &nbsp;{% trans "Context access status" %} : {% trans access %}<br />
                       &nbsp;{% trans "Item access status" %} :<br />
-                    {{ field }}
+                      {{ field }}
+                    </td>
                     {% else %}
                     <td>{{ field }}</td>
                     {% endif %}
