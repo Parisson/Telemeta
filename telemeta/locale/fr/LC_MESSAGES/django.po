@@ -286,7 +286,7 @@ msgstr "lieux relations"
 
 #: models/media.py:68 models/media.py:71 models/media.py:432
 msgid "none"
-msgstr "aucun"
+msgstr "accès réservé"
 
 #: models/media.py:68 models/media.py:71
 msgid "metadata"
@@ -294,7 +294,7 @@ msgstr "métadonnées"
 
 #: models/media.py:69
 msgid "mixed"
-msgstr "mixé"
+msgstr "mixte"
 
 #: models/media.py:69 models/media.py:72
 msgid "full"
@@ -1527,7 +1527,7 @@ msgstr "Statut d'accès de la collection"
 #: templates/telemeta/mediaitem_copy.html:45
 #: templates/telemeta/mediaitem_edit.html:43
 msgid "Context access status"
-msgstr "Statut d'accès contextuel"
+msgstr "Statut d'accès selon le profil"
 
 #: templates/telemeta/mediaitem_add.html:40
 #: templates/telemeta/mediaitem_copy.html:46
