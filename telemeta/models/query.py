@@ -352,7 +352,7 @@ class MediaCollectionQuerySet(CoreQuerySet):
     def by_instrument(self, name):
         "Find collections by instrument"
         from telemeta.models.instrument import Instrument
-        instruments = Instrument.objects.filter(name=name)
+        instruments = Instrument.objects.filter(name__contains=name)
         items = []
         for instrument in instruments:
             performances = instrument.performances.all()
