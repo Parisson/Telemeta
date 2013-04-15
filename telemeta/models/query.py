@@ -200,17 +200,19 @@ class MediaItemQuerySet(CoreQuerySet):
     def sound(self):
         return self.filter(file__contains='/')
 
-    def by_instrument(self, instrument):
+    def sound_public(self):
+        return self.filter(file__contains='/', public_access='full', collection__public_access='full')
+
+    def by_instrument(self, name):
         "Find items by instrument"
         from telemeta.models.instrument import Instrument
-        from telemeta.models.media import MediaItemPerformance
-        instruments = Instrument.objects.filter(name__contains=name)
-        perf = []
-        if instruments:
-            performances = MediaItemPerformance.objects.filter(instrument__in=instruments)
+        instruments = Instrument.objects.filter(name=name)
+        items = []
+        for instrument in instruments:
+            performances = instrument.performances.all()
             for performance in performances:
-                perf.append(performance)
-        return self.filter(performances__in=perf).distinct()
+                items.append(performance.media_item)
+        return items
 
 class MediaItemManager(CoreManager):
     "Manage media items queries"
@@ -346,9 +348,16 @@ class MediaCollectionQuerySet(CoreQuerySet):
     def sound(self):
         return self.filter(items__file__contains='/').distinct()
 
-    def by_instrument(self, instrument):
+    def by_instrument(self, name):
         "Find collections by instrument"
-        return self.filter(items__instruments__in=instrument).distinct()
+        from telemeta.models.instrument import Instrument
+        instruments = Instrument.objects.filter(name=name)
+        items = []
+        for instrument in instruments:
+            performances = instrument.performances.all()
+            for performance in performances:
+                items.append(performance.media_item)
+        return self.filter(items__in=items).distinct()
 
 
 class MediaCollectionManager(CoreManager):

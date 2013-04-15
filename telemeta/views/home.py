@@ -252,7 +252,7 @@ class HomeView(object):
         return list_detail.object_list(request, objects,
             template_name='telemeta/search_results.html', paginate_by=20,
             extra_context={'criteria': criteria, 'collections_num': collections.count(),
-                'items_num': items.count(), 'corpus_num': corpus.count(), 'fonds_num': fonds.count(),
+                'items_num': len(items), 'corpus_num': corpus.count(), 'fonds_num': fonds.count(),
                 'type' : type,})
 
     def complete_location(self, request, with_items=True):
