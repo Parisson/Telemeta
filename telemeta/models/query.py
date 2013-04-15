@@ -206,14 +206,15 @@ class MediaItemQuerySet(CoreQuerySet):
     def by_instrument(self, name):
         "Find items by instrument"
         from telemeta.models.instrument import Instrument
-        instruments = Instrument.objects.filter(name=name)
-        items = []
-        for instrument in instruments:
-            performances = instrument.performances.all()
+        from telemeta.models.media import MediaItemPerformance
+        instruments = Instrument.objects.filter(name__contains=name)
+        print instruments
+        if instruments:
+            perf = []
+            performances = MediaItemPerformance.objects.filter(instrument__in=instruments)
             for performance in performances:
-                items.append(performance.media_item)
-        return items
-
+                perf.append(performance)
+            return self.filter(performances__in=perf).distinct()
 
 class MediaItemManager(CoreManager):
     "Manage media items queries"
@@ -356,7 +357,7 @@ class MediaCollectionQuerySet(CoreQuerySet):
     def by_instrument(self, name):
         "Find collections by instrument"
         from telemeta.models.instrument import Instrument
-        instruments = Instrument.objects.filter(name=name)
+        instruments = Instrument.objects.filter(name__contains=name)
         items = []
         for instrument in instruments:
             performances = instrument.performances.all()
