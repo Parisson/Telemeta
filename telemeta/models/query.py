@@ -258,6 +258,10 @@ class MediaItemManager(CoreManager):
         return self.get_query_set().sound(*args, **kwargs)
     sound.__doc__ = MediaItemQuerySet.sound.__doc__
 
+    def sound_public(self, *args, **kwargs):
+        return self.get_query_set().sound_public(*args, **kwargs)
+    sound_public.__doc__ = MediaItemQuerySet.sound_public.__doc__
+
     def by_instrument(self, *args, **kwargs):
         return self.get_query_set().by_instrument(*args, **kwargs)
     by_instrument.__doc__ = MediaItemQuerySet.by_instrument.__doc__
