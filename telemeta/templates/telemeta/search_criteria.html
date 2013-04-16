@@ -48,6 +48,14 @@ $(document).ready(function () {
     });
 });
 
+$(document).ready(function() {
+    $(this).keydown(function(e) {
+        if (e.keyCode == '13') {
+            $("#searchform").submit();
+        }
+    });
+});
+
 </script>
 {% endblock %}
 
