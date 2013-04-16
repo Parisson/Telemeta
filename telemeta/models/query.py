@@ -49,17 +49,17 @@ class MediaItemQuerySet(CoreQuerySet):
 
     def quick_search(self, pattern):
         "Perform a quick search on code, title and collector name"
-        pattern = pattern.strip()
 
-#        from telemeta.models.media import MediaItem
-#        mod = MediaItem()
-#        fields = mod.to_dict()
-#        keys =  fields.keys()
-#        q = self.by_fuzzy_collector_q(pattern)
-#        for field in keys:
-#            field_str = str(mod._meta.get_field(field))
-#            if 'CharField' in field_str:
-#                q = q | word_search_q(field)
+        # from telemeta.models.media import MediaItem
+        # pattern = pattern.strip()
+        # mod = MediaItem()
+        # fields = mod.to_dict()
+        # keys =  fields.keys()
+        # q = self.by_fuzzy_collector_q(pattern)
+        # for field in keys:
+        #     field_str = str(mod._meta.get_field(field))
+        #     if 'CharField' in field_str or 'TextField' in field_str:
+        #         q = q | word_search_q(field, pattern)
 
         q = ( Q(code__contains=pattern) |
             Q(old_code__contains=pattern) |
