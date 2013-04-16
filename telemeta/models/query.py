@@ -205,12 +205,13 @@ class MediaItemQuerySet(CoreQuerySet):
 
     def by_instrument(self, name):
         "Find items by instrument"
-        from telemeta.models.instrument import Instrument
+        from telemeta.models.instrument import Instrument, InstrumentAlias
         from telemeta.models.media import MediaItemPerformance
         instruments = Instrument.objects.filter(name__icontains=name)
+        aliases = InstrumentAlias.objects.filter(name__icontains=name)
         perf = []
-        if instruments:
-            performances = MediaItemPerformance.objects.filter(instrument__in=instruments)
+        if instruments or aliases:
+            performances = MediaItemPerformance.objects.filter(Q(instrument__in=instruments) | Q(alias__in=aliases))
             for performance in performances:
                 perf.append(performance)
         return self.filter(performances__in=perf).distinct()
