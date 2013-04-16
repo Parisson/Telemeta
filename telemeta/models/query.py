@@ -210,10 +210,9 @@ class MediaItemQuerySet(CoreQuerySet):
         instruments = Instrument.objects.filter(name__icontains=name)
         aliases = InstrumentAlias.objects.filter(name__icontains=name)
         perf = []
-        if instruments or aliases:
-            performances = MediaItemPerformance.objects.filter(Q(instrument__in=instruments) | Q(alias__in=aliases))
-            for performance in performances:
-                perf.append(performance)
+        performances = MediaItemPerformance.objects.filter(Q(instrument__in=instruments) | Q(alias__in=aliases))
+        for performance in performances:
+            perf.append(performance)
         return self.filter(performances__in=perf).distinct()
 
 class MediaItemManager(CoreManager):
@@ -258,10 +257,6 @@ class MediaItemManager(CoreManager):
     def sound(self, *args, **kwargs):
         return self.get_query_set().sound(*args, **kwargs)
     sound.__doc__ = MediaItemQuerySet.sound.__doc__
-
-    def sound_public(self, *args, **kwargs):
-        return self.get_query_set().sound_public(*args, **kwargs)
-    sound_public.__doc__ = MediaItemQuerySet.sound_public.__doc__
 
     def by_instrument(self, *args, **kwargs):
         return self.get_query_set().by_instrument(*args, **kwargs)
@@ -356,15 +351,15 @@ class MediaCollectionQuerySet(CoreQuerySet):
 
     def by_instrument(self, name):
         "Find collections by instrument"
-        from telemeta.models.instrument import Instrument
+        from telemeta.models.media import MediaItemPerformance
+        from telemeta.models.instrument import Instrument, InstrumentAlias
         instruments = Instrument.objects.filter(name__icontains=name)
+        aliases = InstrumentAlias.objects.filter(name__icontains=name)
         items = []
-        for instrument in instruments:
-            performances = instrument.performances.all()
-            for performance in performances:
-                items.append(performance.media_item)
+        performances = MediaItemPerformance.objects.filter(Q(instrument__in=instruments) | Q(alias__in=aliases))
+        for performance in performances:
+            items.append(performance.media_item)
         return self.filter(items__in=items).distinct()
-
 
 class MediaCollectionManager(CoreManager):
     "Manage collection queries"
