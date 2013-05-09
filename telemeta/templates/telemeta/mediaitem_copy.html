@@ -39,6 +39,13 @@
                     <td>&nbsp;{% trans "Title" %} : {{ item.collection.title }}<br />
                         &nbsp;{% trans "Code" %} : {{ item.collection.code }}<br />
                         {{ field }}</td>
+                    {% elif field.html_name == "item-public_access" %}
+                    <td>
+                      &nbsp;{% trans "Collection access status" %} : {% trans item.collection.public_access %}<br />
+                      &nbsp;{% trans "Context access status" %} : {% trans access %}<br />
+                      &nbsp;{% trans "Item access status" %} :<br />
+                      {{ field }}
+                    </td>
                     {% else %}
                     <td>{{ field }}</td>
                     {% endif %}

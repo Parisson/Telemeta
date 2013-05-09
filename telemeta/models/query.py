@@ -49,17 +49,17 @@ class MediaItemQuerySet(CoreQuerySet):
 
     def quick_search(self, pattern):
         "Perform a quick search on code, title and collector name"
-        pattern = pattern.strip()
 
-#        from telemeta.models.media import MediaItem
-#        mod = MediaItem()
-#        fields = mod.to_dict()
-#        keys =  fields.keys()
-#        q = self.by_fuzzy_collector_q(pattern)
-#        for field in keys:
-#            field_str = str(mod._meta.get_field(field))
-#            if 'CharField' in field_str:
-#                q = q | word_search_q(field)
+        # from telemeta.models.media import MediaItem
+        # pattern = pattern.strip()
+        # mod = MediaItem()
+        # fields = mod.to_dict()
+        # keys =  fields.keys()
+        # q = self.by_fuzzy_collector_q(pattern)
+        # for field in keys:
+        #     field_str = str(mod._meta.get_field(field))
+        #     if 'CharField' in field_str or 'TextField' in field_str:
+        #         q = q | word_search_q(field, pattern)
 
         q = ( Q(code__contains=pattern) |
             Q(old_code__contains=pattern) |
@@ -200,10 +200,20 @@ class MediaItemQuerySet(CoreQuerySet):
     def sound(self):
         return self.filter(file__contains='/')
 
-    def by_instrument(self, instrument):
-        "Find items by instrument"
-        return self.filter(instruments__in=instrument)
+    def sound_public(self):
+        return self.filter(file__contains='/', public_access='full', collection__public_access='full')
 
+    def by_instrument(self, name):
+        "Find items by instrument"
+        from telemeta.models.instrument import Instrument, InstrumentAlias
+        from telemeta.models.media import MediaItemPerformance
+        instruments = Instrument.objects.filter(name__icontains=name)
+        aliases = InstrumentAlias.objects.filter(name__icontains=name)
+        perf = []
+        performances = MediaItemPerformance.objects.filter(Q(instrument__in=instruments) | Q(alias__in=aliases))
+        for performance in performances:
+            perf.append(performance)
+        return self.filter(performances__in=perf).distinct()
 
 class MediaItemManager(CoreManager):
     "Manage media items queries"
@@ -247,6 +257,10 @@ class MediaItemManager(CoreManager):
     def sound(self, *args, **kwargs):
         return self.get_query_set().sound(*args, **kwargs)
     sound.__doc__ = MediaItemQuerySet.sound.__doc__
+
+    def sound_public(self, *args, **kwargs):
+        return self.get_query_set().sound_public(*args, **kwargs)
+    sound_public.__doc__ = MediaItemQuerySet.sound_public.__doc__
 
     def by_instrument(self, *args, **kwargs):
         return self.get_query_set().by_instrument(*args, **kwargs)
@@ -339,10 +353,17 @@ class MediaCollectionQuerySet(CoreQuerySet):
     def sound(self):
         return self.filter(items__file__contains='/').distinct()
 
-    def by_instrument(self, instrument):
+    def by_instrument(self, name):
         "Find collections by instrument"
-        return self.filter(items__instruments__in=instrument).distinct()
-
+        from telemeta.models.media import MediaItemPerformance
+        from telemeta.models.instrument import Instrument, InstrumentAlias
+        instruments = Instrument.objects.filter(name__icontains=name)
+        aliases = InstrumentAlias.objects.filter(name__icontains=name)
+        items = []
+        performances = MediaItemPerformance.objects.filter(Q(instrument__in=instruments) | Q(alias__in=aliases))
+        for performance in performances:
+            items.append(performance.media_item)
+        return self.filter(items__in=items).distinct()
 
 class MediaCollectionManager(CoreManager):
     "Manage collection queries"

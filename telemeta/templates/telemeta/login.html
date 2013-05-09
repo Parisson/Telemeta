@@ -6,6 +6,15 @@
 {% endblock %}
 
 {% block content %}
+<script>
+$(document).ready(function() {
+    $(this).keydown(function(e) {
+        if (e.keyCode == '13') {
+            $("#_loginForm").submit();
+        }
+    });
+});
+</script>
 {% if form.errors %}
 <p class="login-error">{% trans "Your username and password didn't match. Please try again." %}</p>
 {% endif %}
@@ -16,8 +25,7 @@
 {{ form.password.label_tag }}
 {{ form.password }}
 </p>
-<a href="#" class="component_icon button icon_login" style="float: right;"
-                onclick="document.getElementById('_loginForm').submit(); return false;">{% trans "Sign in" %}</a>
+<a href="#" class="component_icon button icon_login" style="float: right;" onclick="document.getElementById('_loginForm').submit(); return false;">{% trans "Sign in" %}</a>
 <input type="hidden" name="next" value="{{ next }}" />
 <span style="align: right; font-weight: bold;"><a href="{% url telemeta-password-reset %}">{% trans "Password forgotten" %} ?</a></span>
 </form>

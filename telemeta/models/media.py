@@ -65,7 +65,11 @@ item_published_code_regex    = collection_published_code_regex + '(?:_[0-9]{2,3}
 item_unpublished_code_regex  = collection_unpublished_code_regex + '_[0-9]{2,3}(?:_[0-9]{2,3}){0,2}'
 item_code_regex              = '(?:%s|%s)' % (item_published_code_regex, item_unpublished_code_regex)
 
-PUBLIC_ACCESS_CHOICES = (('none', 'none'), ('metadata', 'metadata'), ('full', 'full'))
+PUBLIC_ACCESS_CHOICES = (('none', _('none')), ('metadata', _('metadata')),
+                         ('mixed', _('mixed')), ('full', _('full')))
+
+ITEM_PUBLIC_ACCESS_CHOICES = (('none', _('none')), ('metadata', _('metadata')),
+                         ('full', _('full')))
 
 ITEM_TRANSODING_STATUS = ((0, _('broken')), (1, _('pending')), (2, _('processing')),
                          (3, _('done')), (5, _('ready')))
@@ -213,8 +217,9 @@ class MediaCollection(MediaResource):
     booklet_author        = CharField(_('author of published notice'))
     external_references   = TextField(_('bibliographic references'))
     doctype_code          = IntegerField(_('document type'))
-    public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES,
+    public_access         = CharField(_('access status'), choices=PUBLIC_ACCESS_CHOICES,
                                       max_length=16, default="metadata")
+    auto_period_access    = BooleanField(_('automatic access after a rolling period'), default=True)
     legal_rights          = WeakForeignKey('LegalRight', related_name="collections",
                                            verbose_name=_('legal rights'))
 
@@ -368,10 +373,11 @@ class MediaItem(MediaResource):
 
     # Legal mentions
     organization          = WeakForeignKey('Organization', verbose_name=_('organization'))
-    public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES,
+    public_access         = CharField(_('access status'), choices=ITEM_PUBLIC_ACCESS_CHOICES,
                                       max_length=16, default="metadata")
     depositor             = CharField(_('depositor'))
     rights                = WeakForeignKey('Rights', verbose_name=_('rights'))
+    auto_period_access    = BooleanField(_('automatic access after a rolling period'), default=True)
 
     # Archiving data
     code                  = CharField(_('code'), unique=True, blank=True)
@@ -388,6 +394,7 @@ class MediaItem(MediaResource):
     external_references   = TextField(_('published references'))
     copied_from_item      = WeakForeignKey('self', related_name="copies",
                                            verbose_name=_('copy of'))
+    mimetype              = CharField(_('mime type'), max_length=255, blank=True)
 
     # Media
     file                  = FileField(_('file'), upload_to='items/%Y/%m/%d',

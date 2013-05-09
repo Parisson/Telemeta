@@ -33,7 +33,14 @@
             <tr>
                 <tr><td class="error">{{ field.errors }}</td></tr>
                 <td>{{ field.label_tag }}:</td>
-                <td>{{ field }}</td>
+                <td>
+                {% if field.html_name == "item-public_access" %}
+                &nbsp;{% trans "Collection access status" %} : {% trans item.collection.public_access %}<br />
+                &nbsp;{% trans "Context access status" %} : {% trans access %}<br />
+                &nbsp;{% trans "Item access status" %} :<br />
+                {% endif %}
+                {{ field }}
+                </td>
             </tr>
         {% endfor %}
        {% endfor %}
