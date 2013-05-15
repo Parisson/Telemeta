@@ -53,17 +53,23 @@ from telemeta.models.format import *
 from telemeta.util.kdenlive.session import *
 from django.db import models
 
-collection_published_code_regex   = '[A-Za-z0-9._-]*'
-collection_unpublished_code_regex = '[A-Za-z0-9._-]*'
+
+# Special code regex of collections for the branch
+collection_published_code_regex   = 'CNRSMH_E_[0-9]{4}(?:_[0-9]{3}){2}'
+collection_unpublished_code_regex = 'CNRSMH_I_[0-9]{4}_[0-9]{3}'
 collection_code_regex             = '(?:%s|%s)' % (collection_published_code_regex,
                                                     collection_unpublished_code_regex)
 
-item_published_code_regex    = '[A-Za-z0-9._-]*'
-item_unpublished_code_regex  = '[A-Za-z0-9._-]*'
+# Special code regex of items for the branch
+item_published_code_regex    = collection_published_code_regex + '(?:_[0-9]{2,3}){1,2}'
+item_unpublished_code_regex  = collection_unpublished_code_regex + '_[0-9]{2,3}(?:_[0-9]{2,3}){0,2}'
 item_code_regex              = '(?:%s|%s)' % (item_published_code_regex, item_unpublished_code_regex)
 
 PUBLIC_ACCESS_CHOICES = (('none', _('none')), ('metadata', _('metadata')),
-                         ('partial', _('partial')), ('full', _('full')))
+                         ('mixed', _('mixed')), ('full', _('full')))
+
+ITEM_PUBLIC_ACCESS_CHOICES = (('none', _('none')), ('metadata', _('metadata')),
+                         ('full', _('full')))
 
 ITEM_TRANSODING_STATUS = ((0, _('broken')), (1, _('pending')), (2, _('processing')),
                          (3, _('done')), (5, _('ready')))
@@ -211,8 +217,9 @@ class MediaCollection(MediaResource):
     booklet_author        = CharField(_('author of published notice'))
     external_references   = TextField(_('bibliographic references'))
     doctype_code          = IntegerField(_('document type'))
-    public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES,
+    public_access         = CharField(_('access status'), choices=PUBLIC_ACCESS_CHOICES,
                                       max_length=16, default="metadata")
+    auto_period_access    = BooleanField(_('automatic access after a rolling period'), default=True)
     legal_rights          = WeakForeignKey('LegalRight', related_name="collections",
                                            verbose_name=_('legal rights'))
 
@@ -366,10 +373,11 @@ class MediaItem(MediaResource):
 
     # Legal mentions
     organization          = WeakForeignKey('Organization', verbose_name=_('organization'))
-    public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES,
+    public_access         = CharField(_('access status'), choices=ITEM_PUBLIC_ACCESS_CHOICES,
                                       max_length=16, default="metadata")
     depositor             = CharField(_('depositor'))
     rights                = WeakForeignKey('Rights', verbose_name=_('rights'))
+    auto_period_access    = BooleanField(_('automatic access after a rolling period'), default=True)
 
     # Archiving data
     code                  = CharField(_('code'), unique=True, blank=True)
@@ -421,7 +429,7 @@ class MediaItem(MediaResource):
             else:
                 return 'none'
         else:
-            return self.mimetype
+            return _('none')
 
     class Meta(MetaCore):
         db_table = 'media_items'
@@ -441,10 +449,10 @@ class MediaItem(MediaResource):
             return True
         return False
 
-    #def clean(self):
-        #if self.code and not self.is_valid_code(self.code):
-            #raise ValidationError("%s is not a valid item code for collection %s"
-                                        #% (self.code, self.collection.code))
+    def clean(self):
+        if self.code and not self.is_valid_code(self.code):
+            raise ValidationError("%s is not a valid item code for collection %s"
+                                        % (self.code, self.collection.code))
 
     def save(self, force_insert=False, force_update=False):
         super(MediaItem, self).save(force_insert, force_update)

@@ -52,9 +52,9 @@
 {% endblock %}
 
 {% block content %}
-    <div class="{% if collection.has_mediafile %}{% if public_access or perms.telemeta.can_play_all_items %}with-rightcol{% endif %}{% endif %}">
+    <div class="{% if collection.has_mediafile %}{% if public_access == 'full' or perms.telemeta.can_play_all_items %}with-rightcol{% endif %}{% endif %}">
         {% if collection.has_mediafile %}
-        {% if public_access or perms.telemeta.can_play_all_items %}
+        {% if public_access == 'full' or perms.telemeta.can_play_all_items %}
         <div id="rightcol">
             <div id="collection_player">
              <div class="title">
@@ -147,7 +147,7 @@
         </div>
         <div class="extraInfos">
         {% block archive_data %}
-            <div>
+            <div class="folded">
                 <h4><a href="#">{% trans "Archiving data" %}</a></h4>
                 <div>
                     <dl class="listing">
@@ -171,7 +171,7 @@
         </div>
         <div class="extraInfos">
         {% block technical_data %}
-            <div>
+            <div class="folded">
                 <h4><a href="#">{% trans "Technical data" %}</a></h4>
                 <div>
                     <dl class="listing">
