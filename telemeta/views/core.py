@@ -41,6 +41,8 @@ import csv
 import time
 import random
 import datetime
+import tempfile
+import zipfile
 import timeside
 
 from jsonrpc import jsonrpc_method
@@ -107,8 +109,8 @@ def nginx_media_accel(request, filename):
 
     response = HttpResponse()
     url = settings.MEDIA_URL + filename
-    # let nginx determine the correct content type 
-    response['Content-Type'] = ""     
+    # let nginx determine the correct content type
+    response['Content-Type'] = ""
     response['X-Accel-Redirect'] = url
     return response
 

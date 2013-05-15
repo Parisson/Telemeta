@@ -160,3 +160,29 @@ class CollectionView(object):
             formset = MediaCollectionRelatedFormSet(instance=collection)
 
         return render(request, template, {'collection': collection, 'formset': formset,})
+
+
+class CollectionPackageView(DetailView):
+
+    model = MediaCollection
+
+    def render_to_reponse(self, context):
+        """
+        Create a ZIP file on disk and transmit it in chunks of 8KB,
+        without loading the whole file into memory. A similar approach can
+        be used for large dynamic PDF files.
+        """
+        collection = self.get_object()
+        temp = tempfile.TemporaryFile()
+        archive = zipfile.ZipFile(temp, 'w', zipfile.ZIP_DEFLATED)
+        for item in collection.items.all():
+            ext = item.file.path.splitext()[1]
+            archive.write(item.file, '%s.%s' % (code, ext))
+        archive.close()
+        wrapper = FileWrapper(temp)
+        response = HttpResponse(wrapper, content_type='application/zip')
+        response['Content-Disposition'] = "attachment; filename=%s.%s" % \
+                                             (item.code, 'zip')
+        response['Content-Length'] = temp.tell()
+        temp.seek(0)
+        return response
