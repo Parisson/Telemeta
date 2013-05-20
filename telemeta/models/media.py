@@ -52,18 +52,28 @@ from telemeta.models.language import *
 from telemeta.models.format import *
 from telemeta.util.kdenlive.session import *
 from django.db import models
+from django.conf import settings
 
 
 # Special code regex of collections for the branch
-collection_published_code_regex   = 'CNRSMH_E_[0-9]{4}(?:_[0-9]{3}){2}'
-collection_unpublished_code_regex = 'CNRSMH_I_[0-9]{4}_[0-9]{3}'
-collection_code_regex             = '(?:%s|%s)' % (collection_published_code_regex,
-                                                    collection_unpublished_code_regex)
+collection_published_code_regex = getattr(settings, 'COLLECTION_PUBLISHED_CODE_REGEX', '[A-Za-z0-9._-]*')
+collection_unpublished_code_regex = getattr(settings, 'COLLECTION_UNPUBLISHED_CODE_REGEX', '[A-Za-z0-9._-]*')
 
-# Special code regex of items for the branch
-item_published_code_regex    = collection_published_code_regex + '(?:_[0-9]{2,3}){1,2}'
-item_unpublished_code_regex  = collection_unpublished_code_regex + '_[0-9]{2,3}(?:_[0-9]{2,3}){0,2}'
-item_code_regex              = '(?:%s|%s)' % (item_published_code_regex, item_unpublished_code_regex)
+# CREM
+#collection_published_code_regex   = 'CNRSMH_E_[0-9]{4}(?:_[0-9]{3}){2}'
+#collection_unpublished_code_regex = 'CNRSMH_I_[0-9]{4}_[0-9]{3}'
+
+collection_code_regex = '(?:%s|%s)' % (collection_published_code_regex,
+                                       collection_unpublished_code_regex)
+
+item_published_code_regex = getattr(settings, 'ITEM_PUBLISHED_CODE_REGEX', '[A-Za-z0-9._-]*')
+item_unpublished_code_regex = getattr(settings, 'ITEM_UNPUBLISHED_CODE_REGEX', '[A-Za-z0-9._-]*')
+
+# CREM
+# item_published_code_regex    = collection_published_code_regex + '(?:_[0-9]{2,3}){1,2}'
+# item_unpublished_code_regex  = collection_unpublished_code_regex + '_[0-9]{2,3}(?:_[0-9]{2,3}){0,2}'
+
+item_code_regex = '(?:%s|%s)' % (item_published_code_regex, item_unpublished_code_regex)
 
 PUBLIC_ACCESS_CHOICES = (('none', _('none')), ('metadata', _('metadata')),
                          ('mixed', _('mixed')), ('full', _('full')))
