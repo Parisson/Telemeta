@@ -41,6 +41,8 @@ import csv
 import time
 import random
 import datetime
+import tempfile
+import zipfile
 import timeside
 
 from jsonrpc import jsonrpc_method
