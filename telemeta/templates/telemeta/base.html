@@ -53,7 +53,7 @@
 {% if user.is_authenticated %}
 <img src="{{ STATIC_URL }}telemeta/images/user.png" alt="user" style="vertical-align:middle" />
 {% trans "Welcome" %},
-{% if user.first_name and user.last_name %}
+{% if user.first_name or user.last_name %}
 {{ user.first_name }} {{ user.last_name }} |
 {% else %}
 {{ user.username }} |
