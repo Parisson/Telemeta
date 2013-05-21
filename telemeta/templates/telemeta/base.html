@@ -58,7 +58,7 @@
 {% else %}
 {{ user.username }} |
 {% endif %}
-{% if not perms.telemeta.cannot_view_users_and_profiles %}
+{% if not perms.telemeta.can_not_view_users_and_profiles %}
 <a href="{% url telemeta-profile-detail user.username %}">{% trans "Profile" %}</a> |
 {% endif %}
 <a href="{% url telemeta-flatpage "help" %}">{% trans "Help" %}</a> |
@@ -108,7 +108,7 @@
  <li><a href="{% url telemeta-geo-continents %}" class="yellow">{% trans "Geo Navigator" %}</a></li>
 
  <li><a href="{% url telemeta-search-criteria %}" class="orange">{% trans "Advanced search" %}</a></li>
- {% if user.is_authenticated and not perms.telemeta.cannot_view_users_and_profiles %}
+ {% if user.is_authenticated and not perms.telemeta.can_not_view_users_and_profiles %}
  <li><a href="{% url telemeta-users %}" class="red">{% trans "Users" %}</a></li>
  {% endif %}
  {% if user.is_staff %}
