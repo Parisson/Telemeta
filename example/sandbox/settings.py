@@ -106,7 +106,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.locale.LocaleMiddleware',
 )
 
-ROOT_URLCONF = 'sandbox_sqlite.urls'
+ROOT_URLCONF = 'sandbox.urls'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
