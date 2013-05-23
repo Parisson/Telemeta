@@ -84,7 +84,7 @@
 {# spaces between li and a elements breaks layout #}
 
 <ul id="nav">
- {% if user.is_authenticated %}
+ {% if user.is_authenticated and not perms.telemeta.can_not_view_users_and_profiles %}
   <li><a href="#desk#" class="blue">{% trans "Desk" %}</a>
    <ul>
     <li><a href="{% url telemeta-desk-lists %}">{% trans "Lists" %}</a></li>
