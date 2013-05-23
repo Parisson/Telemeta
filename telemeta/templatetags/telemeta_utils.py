@@ -17,6 +17,7 @@ import datetime
 from django.conf import settings
 from django.template.defaultfilters import stringfilter
 from django.template import NodeList
+from telemeta.views.core import get_item_access
 
 register = template.Library()
 
@@ -446,3 +447,9 @@ class IfLoadedNode(template.Node):
             if str(app) == str(self.var):
                 return self.nodelist_true.render(context)
         return self.nodelist_false.render(context)
+
+
+@register.filter
+def has_access(user, item):
+    return get_item_access(item, user)
+
