@@ -92,6 +92,7 @@ class UserProfile(models.Model):
 
     class Meta(MetaCore):
         db_table = 'profiles'
+        permissions = (("can_not_view_users_and_profiles", "Cannot view other users and any profile"),)
 
 
 class Criteria(ModelCore):

@@ -53,12 +53,14 @@
 {% if user.is_authenticated %}
 <img src="{{ STATIC_URL }}telemeta/images/user.png" alt="user" style="vertical-align:middle" />
 {% trans "Welcome" %},
-{% if user.first_name and user.last_name %}
+{% if user.first_name or user.last_name %}
 {{ user.first_name }} {{ user.last_name }} |
 {% else %}
 {{ user.username }} |
 {% endif %}
+{% if not perms.telemeta.can_not_view_users_and_profiles %}
 <a href="{% url telemeta-profile-detail user.username %}">{% trans "Profile" %}</a> |
+{% endif %}
 <a href="{% url telemeta-flatpage "help" %}">{% trans "Help" %}</a> |
 <a href="{% url telemeta-logout %}">{% trans "Sign out" %}
 <img src="{{ STATIC_URL }}telemeta/images/logout.png" alt="logout" style="vertical-align:middle" /></a>
@@ -106,7 +108,7 @@
  <li><a href="{% url telemeta-geo-continents %}" class="yellow">{% trans "Geo Navigator" %}</a></li>
 
  <li><a href="{% url telemeta-search-criteria %}" class="orange">{% trans "Advanced search" %}</a></li>
- {% if user.is_authenticated %}
+ {% if user.is_authenticated and not perms.telemeta.can_not_view_users_and_profiles %}
  <li><a href="{% url telemeta-users %}" class="red">{% trans "Users" %}</a></li>
  {% endif %}
  {% if user.is_staff %}
