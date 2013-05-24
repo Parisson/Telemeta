@@ -55,16 +55,16 @@
   <img src="{{ STATIC_URL }}telemeta/images/user.png" alt="user" style="vertical-align:middle" />
   {% trans "Welcome" %},
 {% if user.first_name or user.last_name %}
-  {{ user.first_name }} {{ user.last_name }} |
+  {{ user.first_name }} {{ user.last_name }}
 {% else %}
-  {{ user.username }} |
+  {{ user.username }}
 {% endif %}
 {% if perms.telemeta.can_view_users_and_profiles %}
-  <a href="{% url telemeta-profile-detail user.username %}">{% trans "Profile" %}</a> |
+ | <a href="{% url telemeta-profile-detail user.username %}">{% trans "Profile" %}</a>
 {% endif %}
-  <a href="{% url telemeta-flatpage "help" %}">{% trans "Help" %}</a> |
+ | <a href="{% url telemeta-flatpage "help" %}">{% trans "Help" %}</a>
 {% if perms.telemeta.can_view_users_and_profiles %}
-  <a href="{% url telemeta-logout %}">{% trans "Sign out" %}
+ | <a href="{% url telemeta-logout %}">{% trans "Sign out" %}
   <img src="{{ STATIC_URL }}telemeta/images/logout.png" alt="logout" style="vertical-align:middle" /></a>
 {% endif %}
 
