@@ -118,10 +118,11 @@ class Logger:
 
 class CremCollection:
 
-    def __init__(self, dir):
+    def __init__(self, dir, logger):
         self.dir = dir
         self.dir_name = self.dir.split(os.sep)[-1]
         self.file_list = os.listdir(self.dir)
+        self.logger = logger
 
     def xls_list(self):
         file_list = []
@@ -140,6 +141,8 @@ class CremCollection:
             ext = os.path.splitext(file)[1]
             if not '.' == filename[0] and (ext == '.wav' or ext == '.WAV'):
                 list.append(file)
+            elif '.' == filename[0]:
+                self.logger.write_error(file, 'Warning : fichier caché présent !')
         return list
 
 
@@ -227,9 +230,9 @@ class CremCheck:
 
     def check(self):
         for dir in self.dir_list:
-            collection = CremCollection(self.root_dir + dir)
             msg = '************************ ' + collection.dir_name + ' ******************************'
             self.logger.write_info(collection.dir, msg[:70])
+            collection = CremCollection(self.root_dir + dir, self.logger)
             xls_list = collection.xls_list()
             wav_list = collection.wav_list()
 
@@ -326,7 +329,7 @@ def main():
 
     c = CremCheck(root_dir, log_tmp)
     c.check()
-    
+
     date = datetime.datetime.now().strftime("%x-%X").replace('/','_')
     shutil.copy(log_tmp,log_file+'-'+date+'.log')
     shutil.move(log_tmp,log_file)

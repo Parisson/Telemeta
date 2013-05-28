@@ -128,7 +128,7 @@ class TelemetaWavImport:
             audio_files = []
             for file in collection_files:
                 ext = ['WAV', 'wav']
-                if file.split('.')[-1] in ext:
+                if file.split('.')[-1] in ext and file[0] != '.':
                     audio_files.append(file)
 
             audio_files.sort()
