@@ -64,21 +64,21 @@ class TelemetaWavImport:
         else:
             msg = item.code + ' : fichier audio ' + filename + ' inexistant dans le dossier !'
             self.logger.error('item', msg)
-            
+
     def wav_import(self):
         from telemeta.models import MediaItem,  MediaCollection
-        
+
         collections = []
         for collection in self.collections:
             collection_dir = self.source_dir + os.sep + collection
             collection_files = os.listdir(collection_dir)
-            
-            
+
+
             if not '/.' in collection_dir and self.pattern in collection_dir:
                 collection_name = collection.split(os.sep)[-1]
                 collections.append(collection_name)
                 c = MediaCollection.objects.filter(code=collection_name)
-                
+
                 if not c and collection + '.csv' in collection_files:
                     msg = collection + ' collection NON présente dans la base de données, SORTIE '
                     self.logger.error(collection, msg)
@@ -92,7 +92,7 @@ class TelemetaWavImport:
                 else:
                     msg = 'collection présente dans la base de données, SELECTION'
                     self.logger.info(collection, msg)
-                    
+
         for collection in collections:
             collection_dir = self.source_dir + os.sep + collection
             collection_name = collection
@@ -102,7 +102,7 @@ class TelemetaWavImport:
             overwrite = True
             csv_file = ''
             rows = {}
-            
+
             if collection + '.csv' in collection_files:
                 csv_file = self.source_dir + os.sep + collection + os.sep + collection + '.csv'
                 csv_data = csv.reader(open(csv_file), delimiter=';')
@@ -113,7 +113,7 @@ class TelemetaWavImport:
             else:
                 msg = collection + ' pas de fichier CSV dans la collection'
                 self.logger.info(collection, msg[:70])
-            
+
             c = MediaCollection.objects.filter(code=collection_name)
             if not c:
                 c = MediaCollection(code=collection_name)
@@ -124,29 +124,29 @@ class TelemetaWavImport:
                 c = c[0]
                 msg = ' id = '+str(c.id)
                 self.logger.info(c.code, msg)
-            
+
             audio_files = []
             for file in collection_files:
                 ext = ['WAV', 'wav']
                 if file.split('.')[-1] in ext:
                     audio_files.append(file)
-            
+
             audio_files.sort()
             nb_items = c.items.count()
             counter = 0
-            
+
             for file in audio_files:
                 code = file.split('.')[0]
                 wav_file = self.source_dir + os.sep + collection + os.sep + file
-                
+
                 if len(audio_files) <= nb_items:
                     items = MediaItem.objects.filter(code=code)
-                    
+
                     old_ref = ''
                     if code in rows and not items:
                         old_ref = rows[code]
                         items = MediaItem.objects.filter(old_code=old_ref)
-                        
+
                     if items:
                         item = items[0]
                         msg = code + ' : ' + item.old_code + ' : Cas 1 ou 2 : id = ' + str(item.id)
@@ -157,9 +157,9 @@ class TelemetaWavImport:
                         item = MediaItem(code=code, collection=c)
                         msg = code + ' : ' + old_ref + ' : Cas 1 ou 2 : item NON présent dans la base de données, CREATION'
                         self.logger.info('item', msg)
-                    
+
                     self.write_file(item, wav_file, overwrite)
-                    
+
                 elif nb_items == 1 and len(audio_files) > 1:
                     if counter == 0:
                         msg = code + ' : Cas 3a : item n°01 présent dans la base de données, PASSE'
@@ -169,20 +169,20 @@ class TelemetaWavImport:
                         msg = code + ' : Cas 3a : item NON présent dans la base de données, CREATION'
                         self.logger.info('item', msg)
                         self.write_file(item, wav_file, overwrite)
-                
+
                 elif nb_items > 1 and nb_items < len(audio_files):
                     msg = code + ' : Cas 3b : nb items < nb de fichiers audio, PAS de creation'
                     self.logger.info('item', msg)
 
                 counter += 1
-        
+
         msg = 'Liste des URLs des collections importées :'
         self.logger.info('INFO', msg)
         for collection in collections:
-            msg = 'http://'+self.domain+'/collections/'+collection
+            msg = 'http://'+self.domain+'/archives/collections/'+collection
             self.logger.info(collection, msg)
-            
-        
+
+
 def print_usage(tool_name):
     print "Usage: "+tool_name+" <project_dir> <source_dir> <pattern> <log_file> <domain>"
     print "  project_dir: the directory of the Django project which hosts Telemeta"
