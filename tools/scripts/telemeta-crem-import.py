@@ -86,7 +86,7 @@ class TelemetaWavImport:
                 elif not c:
                     msg = 'collection NON présente dans la base de données, CREATION '
                     self.logger.info(collection, msg)
-                    c = MediaCollection(code=collection_name)
+                    c = MediaCollection(code=collection_name, title=collection_name)
                     c.save()
                     c.set_revision(self.user)
                 else:
