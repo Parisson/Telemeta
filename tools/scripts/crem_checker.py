@@ -230,9 +230,10 @@ class CremCheck:
 
     def check(self):
         for dir in self.dir_list:
+            collection = CremCollection(self.root_dir + dir, self.logger)
             msg = '************************ ' + collection.dir_name + ' ******************************'
             self.logger.write_info(collection.dir, msg[:70])
-            collection = CremCollection(self.root_dir + dir, self.logger)
+
             xls_list = collection.xls_list()
             wav_list = collection.wav_list()
 
