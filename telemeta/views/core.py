@@ -241,13 +241,7 @@ def check_related_media(medias):
             media.title = title.replace('\n', '').strip()
             media.save()
 
-def auto_code(resources, base_code):
-    index = 1
-    while True:
-        code = base_code + '_' + str(index)
-        r = resources.filter(code=code)
-        if not r:
-            break
-        index += 1
-    return code
+def auto_code(collection):
+    suffixes = [int(item.code.split('_')[-1]) for item in collection.items.all()]
+    return collection.code + '_' + str(max(suffixes)+1)
 
