@@ -242,6 +242,24 @@ def check_related_media(medias):
             media.save()
 
 def auto_code(collection):
-    suffixes = [int(item.code.split('_')[-1]) for item in collection.items.all()]
-    return collection.code + '_' + str(max(suffixes)+1)
+    items = collection.items.all()
+    suffixes = []
+
+    if items:
+        for item in items:
+            if '_' in item.public_id:
+                try:
+                    split = item.public_id.split('_')
+                    suffix = int(split[-1])
+                    prefix = split[:-1]
+                except:
+                    suffix = 999
+
+                suffixes.append(suffix)
+
+    if suffixes:
+        return collection.code + '_' + str(max(suffixes)+1)
+    else:
+        return collection.code + '_'
+
 
