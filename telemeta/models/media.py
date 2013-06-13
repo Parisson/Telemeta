@@ -418,18 +418,19 @@ class MediaItem(MediaResource):
 
     @property
     def mime_type(self):
-        if not self.mimetype:
+        if not self.mimetype or self.mimetype == 'none':
             if self.file:
+                print self.file.path
                 if os.path.exists(self.file.path):
                     self.mimetype = mimetypes.guess_type(self.file.path)[0]
                     self.save()
                     return self.mimetype
                 else:
-                    return 'none'
+                    return ''
             else:
-                return 'none'
+                return ''
         else:
-            return _('none')
+            return self.mimetype
 
     class Meta(MetaCore):
         db_table = 'media_items'

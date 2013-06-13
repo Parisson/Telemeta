@@ -34,8 +34,9 @@
 # Authors: Olivier Guilyardi <olivier@samalyse.com>
 #          Guillaume Pellerin <yomguy@parisson.com>
 
-import mimetypes
+
 from telemeta.views.core import *
+
 
 class ItemView(object):
     """Provide Item web UI methods"""
@@ -126,11 +127,10 @@ class ItemView(object):
 
         previous, next = self.item_previous_next(item)
 
-        mime_type = self.item_analyze(item)
-
-        #FIXME: use mimetypes.guess_type
-        if 'quicktime' in mime_type:
-            mime_type = 'video/mp4'
+        mime_type = item.mime_type
+        if mime_type and mime_type != 'none' :
+            if 'quicktime' in mime_type:
+                mime_type = 'video/mp4'
 
         playlists = get_playlists(request)
         related_media = MediaItemRelated.objects.filter(item=item)
@@ -173,10 +173,11 @@ class ItemView(object):
                 grapher_id = 'waveform'
 
         previous, next = self.item_previous_next(item)
-        mime_type = self.item_analyze(item)
-        #FIXME: use mimetypes.guess_type
-        if 'quicktime' in mime_type:
-            mime_type = 'video/mp4'
+
+        mime_type = item.mime_type
+        if mime_type:
+            if 'quicktime' in mime_type:
+                mime_type = 'video/mp4'
 
         format, created = Format.objects.get_or_create(item=item)
 
@@ -245,7 +246,7 @@ class ItemView(object):
         if public_id:
             collection = MediaCollection.objects.get(public_id=public_id)
             items = MediaItem.objects.filter(collection=collection)
-            code = auto_code(items, collection.code)
+            code = auto_code(collection)
             item = MediaItem(collection=collection, code=code)
             format, created = Format.objects.get_or_create(item=item)
             access = get_item_access(item, request.user)
@@ -318,11 +319,12 @@ class ItemView(object):
                     keyword.save()
 
                 item.set_revision(request.user)
+
                 return redirect('telemeta-item-detail', code)
         else:
             item = MediaItem.objects.get(public_id=public_id)
             items = MediaItem.objects.filter(collection=item.collection)
-            item.code = auto_code(items, item.collection.code)
+            item.code = auto_code(item.collection)
             item.approx_duration = ''
             item_form = MediaItemForm(instance=item, prefix='item')
             format, created = Format.objects.get_or_create(item=item)
@@ -347,7 +349,6 @@ class ItemView(object):
 
     def item_analyze(self, item):
         analyses = MediaItemAnalysis.objects.filter(item=item)
-        mime_type = ''
 
         if analyses:
             for analysis in analyses:
@@ -358,8 +359,9 @@ class ItemView(object):
                     time = ':'.join(time)
                     item.approx_duration = time
                     item.save()
-                if analysis.analyzer_id == 'mime_type':
-                    mime_type = analysis.value
+                elif not analysis.value and analysis.analyzer_id == 'mime_type' :
+                    analysis.value = item.mime_type
+                    analysis.save()
         else:
             analyzers = []
             analyzers_sub = []
@@ -374,32 +376,10 @@ class ItemView(object):
                     analyzers_sub.append(subpipe)
                     pipe = pipe | subpipe
 
-                try:
-                    sizes = settings.TELEMETA_DEFAULT_GRAPHER_SIZES
-                except:
-                    sizes = ['360x130', ]
-
-                for grapher in self.graphers:
-                    for size in sizes:
-                        width = size.split('x')[0]
-                        height = size.split('x')[1]
-                        image_file = '.'.join([item.public_id, grapher.id(), size.replace('x', '_'), 'png'])
-                        path = self.cache_data.dir + os.sep + image_file
-                        graph = grapher(width = int(width), height = int(height))
-                        graphers_sub.append({'graph' : graph, 'path': path})
-                        pipe = pipe | graph
-
                 pipe.run()
 
-                for grapher in graphers_sub:
-                    grapher['graph'].watermark('timeside', opacity=.6, margin=(5,5))
-                    f = open(grapher['path'], 'w')
-                    grapher['graph'].render(grapher['path'])
-                    f.close()
-
-                mime_type = mimetypes.guess_type(item.file.path)[0]
                 analysis = MediaItemAnalysis(item=item, name='MIME type',
-                                             analyzer_id='mime_type', unit='', value=mime_type)
+                                             analyzer_id='mime_type', unit='', value=item.mime_type)
                 analysis.save()
                 analysis = MediaItemAnalysis(item=item, name='Channels',
                                              analyzer_id='channels',
@@ -425,14 +405,16 @@ class ItemView(object):
                                                  unit=analyzer.unit(), value=str(value))
                     analysis.save()
 
-#                FIXME: parse tags on first load
+                analyses = MediaItemAnalysis.objects.filter(item=item)
+
+#                TODO: parse tags on first load
 #                tags = decoder.tags
 
-        return mime_type
+        return analyses
 
     def item_analyze_xml(self, request, public_id):
         item = MediaItem.objects.get(public_id=public_id)
-        analyses = MediaItemAnalysis.objects.filter(item=item)
+        analyses = self.item_analyze(item)
         analyzers = []
         for analysis in analyses:
             analyzers.append(analysis.to_dict())
@@ -527,7 +509,7 @@ class ItemView(object):
         else:
             flag = flag[0]
 
-        format = self.item_analyze(item)
+        format = item.mime_type
         dc_metadata = dublincore.express_item(item).to_list()
         mapping = DublinCoreToFormatMetadata(extension)
         metadata = mapping.get_metadata(dc_metadata)

@@ -51,20 +51,26 @@
 
 <div id="auth_info">
 {% if user.is_authenticated %}
-<img src="{{ STATIC_URL }}telemeta/images/user.png" alt="user" style="vertical-align:middle" />
-{% trans "Welcome" %},
-{% if user.first_name and user.last_name %}
-{{ user.first_name }} {{ user.last_name }} |
+
+  <img src="{{ STATIC_URL }}telemeta/images/user.png" alt="user" style="vertical-align:middle" />
+  {% trans "Welcome" %},
+{% if user.first_name or user.last_name %}
+  {{ user.first_name }} {{ user.last_name }}
 {% else %}
-{{ user.username }} |
+  {{ user.username }}
 {% endif %}
-<a href="{% url telemeta-profile-detail user.username %}">{% trans "Profile" %}</a> |
-<a href="{% url telemeta-flatpage "help" %}">{% trans "Help" %}</a> |
-<a href="{% url telemeta-logout %}">{% trans "Sign out" %}
-<img src="{{ STATIC_URL }}telemeta/images/logout.png" alt="logout" style="vertical-align:middle" /></a>
+{% if perms.telemeta.can_view_users_and_profiles %}
+ | <a href="{% url telemeta-profile-detail user.username %}">{% trans "Profile" %}</a>
+{% endif %}
+ | <a href="{% url telemeta-flatpage "help" %}">{% trans "Help" %}</a>
+{% if perms.telemeta.can_view_users_and_profiles %}
+ | <a href="{% url telemeta-logout %}">{% trans "Sign out" %}
+  <img src="{{ STATIC_URL }}telemeta/images/logout.png" alt="logout" style="vertical-align:middle" /></a>
+{% endif %}
+
 {% else %}
-<a href="{% url telemeta-flatpage "help" %}">{% trans "Help" %}</a> |
-<a href="{% url telemeta-login %}">{% trans "Sign in" %}</a>
+  <a href="{% url telemeta-flatpage "help" %}">{% trans "Help" %}</a>
+  <a href="{% url telemeta-login %}">{% trans "Sign in" %}</a>
 {% endif %}
 </div>
 
@@ -82,7 +88,7 @@
 {# spaces between li and a elements breaks layout #}
 
 <ul id="nav">
- {% if user.is_authenticated %}
+ {% if user.is_authenticated and perms.telemeta.can_view_users_and_profiles %}
   <li><a href="#desk#" class="blue">{% trans "Desk" %}</a>
    <ul>
     <li><a href="{% url telemeta-desk-lists %}">{% trans "Lists" %}</a></li>
@@ -106,7 +112,7 @@
  <li><a href="{% url telemeta-geo-continents %}" class="yellow">{% trans "Geo Navigator" %}</a></li>
 
  <li><a href="{% url telemeta-search-criteria %}" class="orange">{% trans "Advanced search" %}</a></li>
- {% if user.is_authenticated %}
+ {% if user.is_authenticated and perms.telemeta.can_view_users_and_profiles %}
  <li><a href="{% url telemeta-users %}" class="red">{% trans "Users" %}</a></li>
  {% endif %}
  {% if user.is_staff %}

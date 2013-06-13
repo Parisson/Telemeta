@@ -41,6 +41,8 @@ import csv
 import time
 import random
 import datetime
+import tempfile
+import zipfile
 import timeside
 
 from jsonrpc import jsonrpc_method
@@ -239,13 +241,25 @@ def check_related_media(medias):
             media.title = title.replace('\n', '').strip()
             media.save()
 
-def auto_code(resources, base_code):
-    index = 1
-    while True:
-        code = base_code + '_' + str(index)
-        r = resources.filter(code=code)
-        if not r:
-            break
-        index += 1
-    return code
+def auto_code(collection):
+    items = collection.items.all()
+    suffixes = []
+
+    if items:
+        for item in items:
+            if '_' in item.public_id:
+                try:
+                    split = item.public_id.split('_')
+                    suffix = int(split[-1])
+                    prefix = split[:-1]
+                except:
+                    suffix = 999
+
+                suffixes.append(suffix)
+
+    if suffixes:
+        return collection.code + '_' + str(max(suffixes)+1)
+    else:
+        return collection.code + '_'
+
 
