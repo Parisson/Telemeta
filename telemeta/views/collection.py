@@ -160,27 +160,44 @@ class CollectionView(object):
         return render(request, template, {'collection': collection, 'formset': formset,})
 
 
-class CollectionPackageView(DetailView):
+class CollectionPackageView(View):
 
     model = MediaCollection
 
-    def render_to_reponse(self, context):
+    def get_object(self):
+        return MediaCollection.objects.get(public_id=self.kwargs['public_id'])
+
+    def get(self, request, *args, **kwargs):
         """
         Create a ZIP file on disk and transmit it in chunks of 8KB,
         without loading the whole file into memory. A similar approach can
         be used for large dynamic PDF files.
         """
+        from telemeta.views import MarkerView
+        from telemeta.backup import CollectionSerializer
+        import json
+
         collection = self.get_object()
         temp = tempfile.TemporaryFile()
         archive = zipfile.ZipFile(temp, 'w', zipfile.ZIP_DEFLATED)
+        serializer = CollectionSerializer(collection)
+        archive.writestr('%s/%s%s' % (collection.code, collection.code, '.xml'),
+                         serializer.get_xml().encode("utf-8"))
+
         for item in collection.items.all():
-            ext = item.file.path.splitext()[1]
-            archive.write(item.file, '%s.%s' % (code, ext))
+            ext = os.path.splitext(item.file.path)[1]
+            archive.write(item.file.path, '%s/%s%s' % (collection.code, item.code, ext))
+            marker_view = MarkerView()
+            markers = marker_view.get_markers(item.id)
+            if markers:
+                archive.writestr('%s/%s%s' % (collection.code, item.code, '.json'), json.dumps(markers))
+
         archive.close()
-        wrapper = FileWrapper(temp)
+        wrapper = FixedFileWrapper(temp)
         response = HttpResponse(wrapper, content_type='application/zip')
+
         response['Content-Disposition'] = "attachment; filename=%s.%s" % \
-                                             (item.code, 'zip')
+                                             (collection.code, 'zip')
         response['Content-Length'] = temp.tell()
         temp.seek(0)
         return response
