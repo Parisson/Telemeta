@@ -185,12 +185,13 @@ class CollectionPackageView(View):
                          serializer.get_xml().encode("utf-8"))
 
         for item in collection.items.all():
-            ext = os.path.splitext(item.file.path)[1]
-            archive.write(item.file.path, '%s/%s%s' % (collection.code, item.code, ext))
-            marker_view = MarkerView()
-            markers = marker_view.get_markers(item.id)
-            if markers:
-                archive.writestr('%s/%s%s' % (collection.code, item.code, '.json'), json.dumps(markers))
+            if item.file:
+                ext = os.path.splitext(item.file.path)[1]
+                archive.write(item.file.path, '%s/%s%s' % (collection.code, item.code, ext))
+                marker_view = MarkerView()
+                markers = marker_view.get_markers(item.id)
+                if markers:
+                    archive.writestr('%s/%s%s' % (collection.code, item.code, '.json'), json.dumps(markers))
 
         archive.close()
         wrapper = FixedFileWrapper(temp)
