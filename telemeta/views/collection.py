@@ -179,7 +179,7 @@ class CollectionPackageView(View):
 
         collection = self.get_object()
         temp = tempfile.TemporaryFile(prefix=settings.FILE_UPLOAD_TEMP_DIR+os.sep)
-        archive = zipfile.ZipFile(temp, 'w', zipfile.ZIP_DEFLATED)
+        archive = zipfile.ZipFile(temp, 'w', zipfile.ZIP_DEFLATED, allowZip64=True)
         serializer = CollectionSerializer(collection)
         archive.writestr('%s/%s%s' % (collection.code, collection.code, '.xml'),
                          serializer.get_xml().encode("utf-8"))
