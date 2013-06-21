@@ -11,6 +11,7 @@ if __name__ == '__main__':
         path = dir + os.sep + filename
         flag = path + '.faded'
         if ext in extension and not os.path.exists(flag):
+            os.system('cp ' + path + ' ' + path + '.bak')
             fade = AutoFade(path)
             data = fade.run()
             f = open(path, 'w')

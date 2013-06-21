@@ -24,7 +24,8 @@ if __name__ == '__main__':
                             local_path = root + os.sep + local_file
                             local_flag = local_path + '.faded'
                             if not os.path.exists(local_flag):
-                                os.system('cp ' + path + ' ' + path + '.bak')
+                                print 'fading :	' + local_path 
+                                os.system('cp ' + local_path + ' ' + local_path + '.bak')
                                 fade = AutoFade(local_path)
                                 data = fade.run()
                                 f = open(local_path, 'w')
@@ -32,5 +33,6 @@ if __name__ == '__main__':
                                 f.close()
                                 os.system('touch ' + local_flag)
 
+                print 'processing :	' + path
                 os.system('nice -n 19 ' + path)
                 os.system('touch ' + flag)
