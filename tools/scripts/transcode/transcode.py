@@ -3,6 +3,7 @@
 import os, sys, string
 import logging
 
+
 class Logger:
     """A logging object"""
 
@@ -14,22 +15,20 @@ class Logger:
         self.logger.addHandler(self.hdlr)
         self.logger.setLevel(logging.INFO)
 
-log_file = 'transcoding.log'
-logger = Logger(log_file)
-root_dir = sys.argv[-1]
-args = sys.argv[1:-1]
+
 source_format = 'webm'
-done = []
-ffmpeg_args = {'mp3' : ' -vn -acodec libmp3lame -aq 6 -ac 1 ',
-               'ogg' : ' -vn -acodec copy ',
-               'mp4' : ' -vcodec libx264 -r 24 -b 512k -threads 6 -acodec libfaac -ar 48000 -ab 96k -ac 1 ',
+preview_tc = '00:00:05'
+
+ffmpeg_args = {'mp3' : ' -i %i -vn -acodec libmp3lame -aq 6 -ac 1',
+               'ogg' : ' -i %i -vn -acodec copy',
+               'mp4' : ' -i %i -vcodec libx264 -r 24 -b 512k -threads 6 -acodec libfaac -ar 48000 -ab 96k -ac 1',
+               'png' : ' -ss ' + preview_tc + '-i %i',
               }
 
-if os.path.exists(log_file):
-    f = open(log_file, 'r')
-    for line in f.readlines():
-        done.append(line[:-1])
-    f.close()
+logger = Logger(log_file)
+args = sys.argv[1:]
+log_file = args[-1]
+root_dir = args[-2]
 
 for root, dirs, files in os.walk(root_dir):
     for file in files:
@@ -37,10 +36,12 @@ for root, dirs, files in os.walk(root_dir):
         name, ext = os.path.splitext(file)
         if ext[1:] == source_format:
             for format in ffmpeg_args.keys():
-                dest = os.path.abspath(root + os.sep + name + '.' + format)
-                if not dest in done or '--force' in args:
-                    command = 'ffmpeg -i ' + path + ffmpeg_args[format] + ' -y ' + dest
-                    os.system(command)
-                    logger.logger.info(dest)
+                local_file = name + '.' + format
+                dest = os.path.abspath(root + os.sep + local_file)
+                local_files = os.listdir(root)
+                if not local_file in local_files or '--force' in args:
+                    command = ffmpeg_args[format] % path + ' -y ' + dest
+                    logger.logger.info(command)
+                    if not '--dry-run' in args:
+                        os.system(command)
 
-print "DONE!"
