@@ -726,7 +726,7 @@ dl.dublincore dd.caption {
     color: #6a0307 !important;
     text-decoration: none;
     margin: 0;
-    background: #fff url(/static/telemeta/images/more.png) no-repeat left top;
+    background: #fff url(../images/more.png) no-repeat left top;
     background-position: 0 -16px;
     padding-bottom: 2px;
     padding-left: 16px;

@@ -72,8 +72,6 @@ all_fonds = { 'queryset': MediaFonds.objects.all().order_by('title') }
 # ID's regular expressions
 export_extensions = "|".join(item_view.list_export_extensions())
 
-htdocs = os.path.dirname(__file__) + '/static/telemeta'
-
 urlpatterns = patterns('',
     url(r'^$', home_view.home, name="telemeta-home"),
 
@@ -269,29 +267,6 @@ urlpatterns = patterns('',
         name="telemeta-geo-country-items"),
     url(r'^geo/country_info/(?P<id>[0-9a-z]+)/$',
         geo_view.country_info, name="telemeta-country-info"),
-
-    # CSS+Images (FIXME: for developement only)
-    url(r'^css/(?P<path>.*)$', 'django.views.static.serve',
-        {'document_root': htdocs+'/css'},
-        name="telemeta-css"),
-    url(r'images/(?P<path>.*)$', 'django.views.static.serve',
-        {'document_root': htdocs+'/images'},
-        name="telemeta-images"),
-    url(r'images/(?P<path>.*).png$', 'django.views.static.serve',
-        {'document_root': htdocs+'/images'},
-        name="telemeta-type-images"),
-    url(r'^js/(?P<path>.*)$', 'django.views.static.serve',
-        {'document_root': htdocs+'/js'},
-        name="telemeta-js"),
-    url(r'^swf/(?P<path>.*)$', 'django.views.static.serve',
-        {'document_root': htdocs+'/swf'},
-        name="telemeta-swf"),
-    url(r'^timeside/(?P<path>.*)$', 'django.views.static.serve',
-        {'document_root': htdocs+'/timeside'},
-        name="telemeta-timeside"),
-    url(r'^video-js/(?P<path>.*)$','django.views.static.serve',
-        {'document_root': htdocs+'/video-js'},
-        name="telemeta-video-js"),
 
     # Flat pages
     url(r'^pages/(?P<path>.*)$', home_view.render_flatpage, name="telemeta-flatpage"),
