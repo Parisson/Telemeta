@@ -18,12 +18,12 @@ Install the system dependencies
 
     Install all dependencies like this::
 
-        sudo aptitude install python python-dev python-django python-xml python-mysqldb mysql-server \
+        sudo aptitude install python python-dev python-django python-xml \
             python-ctypes python-setuptools python-support python-docutils \
             python-libxml2 python-django-registration python-lxml python-numpy \
             python-scipy python-imaging python-mutagen python-gobject python-gst0.10 \
             gstreamer0.10-plugins-base gobject-introspection python-django-south
-            python-pip gir1.0-gstreamer-0.10 gstreamer0.10-plugins-good gstreamer0.10-plugins-bad
+            python-pip gir1.2-gstreamer-0.10 gstreamer0.10-plugins-good gstreamer0.10-plugins-bad
 
     To get non-free (MP3, MP4, AAC, etc) decoding and encoding features, add Debian Multimedia repository and install the modules::
 
