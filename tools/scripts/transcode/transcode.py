@@ -18,10 +18,11 @@ class Logger:
 
 source_format = 'webm'
 preview_tc = '00:00:05'
+threads = 4
 
 ffmpeg_args = {'mp3' : '-i %s -vn -acodec libmp3lame -aq 6 -ac 1',
                'ogg' : '-i %s -vn -acodec copy',
-               'mp4' : '-i %s -vcodec libx264 -r 24 -b 512k -threads 6 -acodec libfaac -ar 48000 -ab 96k -ac 1',
+               'mp4' : '-i %s -vcodec libx264 -r 24 -b 512k -threads ' + str(threads) + ' -acodec libfaac -ar 48000 -ab 96k -ac 1',
                'png' : '-ss ' + preview_tc + ' -i %s',
               }
 
@@ -44,4 +45,3 @@ for root, dirs, files in os.walk(root_dir):
                     logger.logger.info(command)
                     if not '--dry-run' in args:
                         os.system(command)
-
