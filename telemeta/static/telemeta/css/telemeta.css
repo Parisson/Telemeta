@@ -1202,6 +1202,9 @@ a.image-link {
 .icon_delete{
     background-image: url('../images/delete.png');
 }
+.icon_zip{
+    background-image: url('../images/zip.png');
+}
 .icon_rss,.icon_rss:hover{
     background: url('../images/feed-icon-14x14.png') no-repeat;
     background-position: 0ex .8ex;

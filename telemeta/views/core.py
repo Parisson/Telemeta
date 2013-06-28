@@ -55,7 +55,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.http import Http404
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.views.generic import list_detail
-from django.views.generic import DetailView
+from django.views.generic import DetailView, View
+from django.views.generic.detail import SingleObjectMixin
 from django.conf import settings
 from django.contrib import auth
 from django.contrib import messages
@@ -261,5 +262,4 @@ def auto_code(collection):
         return collection.code + '_' + str(max(suffixes)+1)
     else:
         return collection.code + '_'
-
 
