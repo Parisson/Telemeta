@@ -6,9 +6,9 @@ from ebml.utils.ebml_data import *
 
 class FixCheckMedia(object):
 
-    def __init__(self, dir):
+    def __init__(self, dir, tmp_dir):
         self.dir = dir
-        self.tmp_dir = '/home/telecaster/tmp/'
+        self.tmp_dir = tmp_dir
         if not os.path.exists(self.tmp_dir):
             os.makedirs(self.tmp_dir)
 
@@ -95,7 +95,8 @@ def get_pids(name, args=None):
                     pids.append(proc.pid)
     return pids
 
-dir = sys.argv[-1]
+dir = sys.argv[-2]
+tmp_dir = sys.argv[-1]
 
 path =  os.path.abspath(__file__)
 pids = get_pids('python2.6',args=path)
@@ -103,8 +104,9 @@ pids = get_pids('python2.6',args=path)
 print datetime.datetime.now()
 if len(pids) <= 1:
     print 'starting process...'
-    f = FixCheckMedia(dir)
+    f = FixCheckMedia(dir, tmp_dir)
     f.process()
     print 'process finished.\n'
 else:
     print 'already started !\n'
+
