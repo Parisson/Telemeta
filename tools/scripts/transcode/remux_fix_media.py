@@ -51,7 +51,7 @@ class FixCheckMedia(object):
     def hard_fix_webm(self, path):
         try:
             tmp_file = self.tmp_dir + 'out.webm '
-            command = 'ffmpeg -loglevel 0 -i '+ path + ' -vcodec libvpx -vb 500k -acodec libvorbis -aq 7 -f webm -y ' + tmp_file + ' > /dev/null'
+            command = 'ffmpeg -loglevel 0 -i "'+ path + '" -vcodec libvpx -vb 500k -acodec libvorbis -aq 7 -f webm -y "' + tmp_file + '" > /dev/null'
             print command
             os.system(command)
             command = 'mv '  + tmp_file + path
@@ -63,12 +63,12 @@ class FixCheckMedia(object):
     def fix_webm(self, path):
         try:
             tmp_file = self.tmp_dir + 'out.webm'
-            command = '/usr/local/bin/ffmpeg -loglevel 0 -i ' + path + ' -vcodec copy -acodec copy -f webm -y ' + tmp_file + ' > /dev/null'
+            command = '/usr/local/bin/ffmpeg -loglevel 0 -i "' + path + '" -vcodec copy -acodec copy -f webm -y "' + tmp_file + '" > /dev/null'
             print command
             os.system(command)
             ebml_obj = EBMLData(tmp_file)
             offset = ebml_obj.get_first_cluster_seconds()
-            command = '/usr/local/bin/ffmpeg -loglevel 0 -ss ' + str(offset) + ' -i ' + tmp_file + ' -vcodec copy -acodec copy -f webm -y ' + path + ' > /dev/null'
+            command = '/usr/local/bin/ffmpeg -loglevel 0 -ss ' + str(offset) + ' -i "' + tmp_file + '" -vcodec copy -acodec copy -f webm -y "' + path + '" > /dev/null'
             print command
             os.system(command)
         except:
@@ -76,7 +76,7 @@ class FixCheckMedia(object):
 
     def fix_mp3(self, source, path):
         try:
-            command = '/usr/local/bin/ffmpeg -loglevel 0 -i '+ source + ' -vn -aq 6 -y ' + path + ' > /dev/null'
+            command = '/usr/local/bin/ffmpeg -loglevel 0 -i "'+ source + '" -vn -aq 6 -y "' + path + '" > /dev/null'
             print command
             os.system(command)
         except:

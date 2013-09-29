@@ -20,9 +20,10 @@ source_format = 'webm'
 preview_tc = '00:00:05'
 threads = 4
 
-ffmpeg_args = {'mp3' : '-i "%s" -vn -acodec libmp3lame -aq 6 -ac 1',
+ffmpeg_args = {
+               'mp3' : '-i "%s" -vn -acodec libmp3lame -aq 6 -ac 1',
                'ogg' : '-i "%s" -vn -acodec copy',
-               'mp4' : '-i "%s" -vcodec libx264 -r 24 -b 512k -threads ' + str(threads) + ' -acodec libfaac -ar 48000 -ab 96k -ac 1',
+               'mp4' : '-i "%s" -vcodec libx264 -r 30 -b 1024k -threads ' + str(threads) + ' -acodec libfaac -ar 48000 -ab 96k -ac 1',
                'png' : '-ss ' + preview_tc + ' -i "%s"',
               }
 
@@ -41,7 +42,7 @@ for root, dirs, files in os.walk(root_dir):
                 dest = os.path.abspath(root + os.sep + local_file)
                 local_files = os.listdir(root)
                 if not local_file in local_files or '--force' in args:
-                    command = 'ffmpeg ' + ffmpeg_args[format] % path + ' -y ' + dest
+                    command = 'ffmpeg -loglevel 0 ' + ffmpeg_args[format] % path + ' -y "' + dest + '"'
                     logger.logger.info(command)
                     if not '--dry-run' in args:
                         os.system(command)
