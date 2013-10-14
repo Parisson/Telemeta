@@ -32,7 +32,7 @@ jQuery(document).ready(function(){
 {% if resource %}
 
 {% block title %}
-    <img src="{% url telemeta-type-images type %}" style="vertical-align:middle" />
+    <img src="{{ STATIC_URL }}telemeta/images/{{ type }}.png" style="vertical-align:middle" />
     {{ type|capitalize }} :
     <a href="{% url telemeta-resource-detail type resource.public_id %}">{{ resource.title }}</a>
 {% endblock %}
