@@ -178,7 +178,10 @@ class CollectionPackageView(View):
         import json
 
         collection = self.get_object()
-        temp = tempfile.TemporaryFile(prefix=settings.FILE_UPLOAD_TEMP_DIR+os.sep)
+        tmp_dir = getattr(settings, "FILE_UPLOAD_TEMP_DIR")
+        if not tmp_dir:
+            tmp_dir = '/tmp'
+        temp = tempfile.TemporaryFile(prefix=tmp_dir+os.sep)
         archive = zipfile.ZipFile(temp, 'w', zipfile.ZIP_DEFLATED, allowZip64=True)
         serializer = CollectionSerializer(collection)
         archive.writestr('%s/%s%s' % (collection.code, collection.code, '.xml'),

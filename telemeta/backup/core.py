@@ -56,14 +56,14 @@ class CollectionSerializer(object):
             if len(buffer) == 0:
                 break
             hash.update(buffer)
-        file.close()            
+        file.close()
         return hash.hexdigest()
 
     def __get_media_filename(self, item):
         return str(item.id) + ".wav"
 
     def store(self, dest_dir):
-        """Serialize and store the collection with related items and media 
+        """Serialize and store the collection with related items and media
         files into a subdirectory of the provided directory
         """
         coll_dir = dest_dir + "/" + str(self.collection.id)
@@ -89,7 +89,7 @@ class CollectionSerializer(object):
             md5_file.close()
 
     def get_xml(self):
-        """Return a string containing the XML representation of the collection 
+        """Return a string containing the XML representation of the collection
         and related items
         """
         impl = getDOMImplementation()
@@ -117,5 +117,5 @@ class CollectionSerializer(object):
         tree.free()
 
         return xml
-        
+
 
