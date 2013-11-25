@@ -54,7 +54,6 @@ class Command(BaseCommand):
     """
         Import CREM collections
         
-        options: "--no-write" and/or "--overwrite" 
         source_dir: the directory containing the wav files to include
         pattern: a pattern to match the collection names
         log_file: a log file to write logs
@@ -64,29 +63,55 @@ class Command(BaseCommand):
     args = 'source_dir pattern log_file'
     admin_email = 'webmaster@parisson.com'
 
-    def write_file(self, item, wave_file):
+    option_list = BaseCommand.option_list + (
+          make_option('-d', '--dry-run',
+            action='store_true',
+            dest='dry-run',
+            help='Do NOT write anything'),
+          make_option('-f', '--force',
+            action='store_true',
+            dest='force',
+            help='Force overwrite data'),
+          make_option('-s', '--source',
+            dest='source_dir',
+            help='define the source directory'),
+          make_option('-l', '--log',
+            dest='log',
+            help='define log file'),
+          make_option('-p', '--pattern',
+            dest='pattern',
+            help='define the pattern'),
+    )
+
+
+    def write_file(self, item, wav_file):
         filename = wav_file.split(os.sep)[-1]
         if os.path.exists(wav_file):
-            if (not item.file and not '--no-write' in self.options) or '--overwrite' in self.options:
-                f = open(wav_file, 'r')
-                file_content = ContentFile(f.read())
-                item.file.save(filename, file_content)
-                f.close()
-                item.save()
-                item.set_revision(self.user)
+            if not item.file or self.force:
+                if not self.dry_run:
+                    f = open(wav_file, 'r')
+                    file_content = ContentFile(f.read())
+                    item.file.save(filename, file_content)
+                    f.close()
+                    item.save()
+                    item.set_revision(self.user)
+                else:
+                    msg = item.code + " : pas d'écriture, utiliser l'option --write "
+                    self.logger.info('item', msg)
             else:
-                msg = item.code + ' : fichier ' + item.file.name + ' deja inscrit dans la base de donnees !'
-                self.logger.error('item', msg)
+                msg = item.code + ' : fichier ' + item.file.name + ' deja inscrit dans la base de donnees et pas de forcage !'
+                self.logger.info('item', msg)
         else:
             msg = item.code + ' : fichier audio ' + filename + ' inexistant dans le dossier !'
             self.logger.error('item', msg)
 
-    def handle(self, *args, **options):
-        self.logger = Logger(args[-1])
-        self.pattern = args[-2]
-        self.source_dir = args[-3]
-        self.options = options
-        
+    def handle(self, *args, **kwargs):
+        self.logger = Logger(kwargs.get('log'))
+        self.pattern = kwargs.get('pattern')
+        self.source_dir = kwargs.get('source_dir')
+        self.dry_run =  kwargs.get('dry-run')
+        self.force = kwargs.get('force')
+
         self.domain = Site.objects.all()[0].domain
         self.user = User.objects.filter(username='admin')[0]
         self.collections = os.listdir(self.source_dir)
@@ -174,7 +199,6 @@ class Command(BaseCommand):
                         msg = code + ' : ' + item.old_code + ' : Cas 1 ou 2 : id = ' + str(item.id)
                         self.logger.info('item', msg)
                         item.code = code
-                        item.save()
                     else:
                         item = MediaItem(code=code, collection=c)
                         msg = code + ' : ' + old_ref + ' : Cas 1 ou 2 : item NON présent dans la base de données, CREATION'
