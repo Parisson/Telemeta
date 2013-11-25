@@ -82,11 +82,10 @@ class Command(BaseCommand):
             self.logger.error('item', msg)
 
     def handle(self, *args, **options):
-        self.domain = args[-1]
-        self.logger = Logger(args[-2])
-        self.pattern = args[-3]
-        self.source_dir = args[-4]
-        self.options = args[1:-5]
+        self.logger = Logger(args[-1])
+        self.pattern = args[-2]
+        self.source_dir = args[-3]
+        self.options = args[1:-4]
         
         self.domain = Site.objects.all()[0].domain
         self.user = User.objects.filter(username='admin')[0]
