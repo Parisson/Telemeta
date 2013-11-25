@@ -11,13 +11,6 @@
 # Author: Guillaume Pellerin <yomguy@parisson.com>
 #
 
-from optparse import make_option
-from django.conf import settings
-from django.core.management.base import BaseCommand, CommandError
-from django.contrib.auth.models import User
-from django.template.defaultfilters import slugify
-from telemeta.models import *
-from telemeta.util.unaccent import unaccent
 import logging
 import codecs
 import os
@@ -25,11 +18,19 @@ import sys
 import csv
 import logging
 import datetime
+from optparse import make_option
+
+from django.conf import settings
+from django.core.management.base import BaseCommand, CommandError
+from django.contrib.auth.models import User
 from django.core.management import setup_environ
 from django.core.files.base import ContentFile
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
-from telemeta.models import MediaItem,  MediaCollection
+from django.template.defaultfilters import slugify
+
+from telemeta.models import *
+from telemeta.util.unaccent import unaccent
 
 
 class Logger:
@@ -51,12 +52,8 @@ class Logger:
 
 class Command(BaseCommand):
     
-    """
-        Import CREM collections
-        
-        source_dir: the directory containing the wav files to include
-        pattern: a pattern to match the collection names
-        log_file: a log file to write logs
+    """Import CREM collections from collection directories containing media files 
+    and eventually a XLS files representing the relation between old codes and new codes
     """
 
     help = "import CREM collections"
@@ -84,12 +81,12 @@ class Command(BaseCommand):
     )
 
 
-    def write_file(self, item, wav_file):
-        filename = wav_file.split(os.sep)[-1]
-        if os.path.exists(wav_file):
+    def write_file(self, item, media):
+        filename = media.split(os.sep)[-1]
+        if os.path.exists(media):
             if not item.file or self.force:
                 if not self.dry_run:
-                    f = open(wav_file, 'r')
+                    f = open(media, 'r')
                     file_content = ContentFile(f.read())
                     item.file.save(filename, file_content)
                     f.close()
@@ -134,9 +131,10 @@ class Command(BaseCommand):
                 elif not c:
                     msg = 'collection NON présente dans la base de données, CREATION '
                     self.logger.info(collection, msg)
-                    c = MediaCollection(code=collection_name, title=collection_name)
-                    c.save()
-                    c.set_revision(self.user)
+                    if not self.dry_run:
+                        c = MediaCollection(code=collection_name, title=collection_name)
+                        c.save()
+                        c.set_revision(self.user)
                 else:
                     msg = 'collection présente dans la base de données, SELECTION'
                     self.logger.info(collection, msg)
@@ -163,8 +161,9 @@ class Command(BaseCommand):
 
             c = MediaCollection.objects.filter(code=collection_name)
             if not c:
-                c = MediaCollection(code=collection_name)
-                c.save()
+                if not self.dry_run:
+                    c = MediaCollection(code=collection_name)
+                    c.save()
                 msg = ' collection NON présente dans la BDD, CREATION '
                 self.logger.info(c.code, msg)
             else:
