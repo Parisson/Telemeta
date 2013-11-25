@@ -61,7 +61,7 @@ class Command(BaseCommand):
     """
 
     help = "import CREM collections"
-    args = 'options source_dir pattern log_file'
+    args = 'source_dir pattern log_file'
     admin_email = 'webmaster@parisson.com'
 
     def write_file(self, item, wave_file):
@@ -85,7 +85,7 @@ class Command(BaseCommand):
         self.logger = Logger(args[-1])
         self.pattern = args[-2]
         self.source_dir = args[-3]
-        self.options = args[1:-4]
+        self.options = options
         
         self.domain = Site.objects.all()[0].domain
         self.user = User.objects.filter(username='admin')[0]
