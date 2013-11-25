@@ -61,10 +61,11 @@ class Command(BaseCommand):
     """
 
     help = "import CREM collections"
-    args = 'options project_dir source_dir pattern log_file domain'
+    args = 'options source_dir pattern log_file'
     admin_email = 'webmaster@parisson.com'
 
-    def write_file(self, item, wa      filename = wav_file.split(os.sep)[-1]
+    def write_file(self, item, wave_file):
+        filename = wav_file.split(os.sep)[-1]
         if os.path.exists(wav_file):
             if (not item.file and not '--no-write' in self.options) or '--overwrite' in self.options:
                 f = open(wav_file, 'r')
