@@ -150,3 +150,17 @@ class AdminView(object):
 
         return self.edit_enumeration(request, enumeration_id)
 
+    @method_decorator(permission_required('telemeta.change_keyword'))
+    def replace_enumeration_value(self, request, enumeration_id, value_id):
+
+        if request.method == 'POST':
+            enumeration  = self.__get_enumeration(enumeration_id)
+            if enumeration == None:
+                raise Http404
+
+            record = enumeration.objects.get(id__exact=value_id)
+            record.value = request.POST["value"]
+            record.save()
+
+        return self.edit_enumeration(request, enumeration_id)
+
