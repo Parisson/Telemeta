@@ -21,10 +21,10 @@ preview_tc = '00:00:05'
 threads = 4
 
 ffmpeg_args = {
-#               'mp3' : '-i "%s" -vn -acodec libmp3lame -aq 6 -ac 1',
+               'mp3' : '-i "%s" -vn -acodec libmp3lame -aq 6 -ac 1',
                'ogg' : '-i "%s" -vn -acodec copy',
                'mp4' : '-i "%s" -vcodec libx264 -r 30 -b 1024k -threads ' + str(threads) + ' -acodec libfaac -ar 48000 -ab 96k -ac 1',
-#               'png' : '-ss ' + preview_tc + ' -i "%s"',
+               'png' : '-ss ' + preview_tc + ' -i "%s"',
               }
 
 args = sys.argv[1:]
