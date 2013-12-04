@@ -314,7 +314,7 @@ class MediaCollectionQuerySet(CoreQuerySet):
         qs = self
         for f in args:
             if f == 'apparent_collector':
-                if not 'sqlite3' in engine:
+                if not 'sqlite3' in engine and not 'postgresql_psycopg2' in engine:
                     qs = qs.extra(select={f: 'IF(media_collections.collector_is_creator, '
                                          'media_collections.creator, media_collections.collector)'})
             else:
