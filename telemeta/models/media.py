@@ -53,13 +53,13 @@ from telemeta.models.format import *
 from telemeta.util.kdenlive.session import *
 from django.db import models
 
-collection_published_code_regex   = '[A-Za-z0-9._-]*'
-collection_unpublished_code_regex = '[A-Za-z0-9._-]*'
+collection_published_code_regex   = '[A-Za-z0-9._+-]*'
+collection_unpublished_code_regex = '[A-Za-z0-9._+-]*'
 collection_code_regex             = '(?:%s|%s)' % (collection_published_code_regex,
                                                     collection_unpublished_code_regex)
 
-item_published_code_regex    = '[A-Za-z0-9._-]*'
-item_unpublished_code_regex  = '[A-Za-z0-9._-]*'
+item_published_code_regex    = '[A-Za-z0-9._+-]*'
+item_unpublished_code_regex  = '[A-Za-z0-9._+-]*'
 item_code_regex              = '(?:%s|%s)' % (item_published_code_regex, item_unpublished_code_regex)
 
 PUBLIC_ACCESS_CHOICES = (('none', _('none')), ('metadata', _('metadata')),
