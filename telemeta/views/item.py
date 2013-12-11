@@ -114,6 +114,7 @@ class ItemView(object):
         graphers = []
         for grapher in self.graphers:
             graphers.append({'name':grapher.name(), 'id': grapher.id()})
+            
         if request.REQUEST.has_key('grapher_id'):
             grapher_id = request.REQUEST['grapher_id']
         else:
@@ -453,7 +454,7 @@ class ItemView(object):
                 (decoder | graph).run()
                 graph.watermark('timeside', opacity=.6, margin=(5,5))
                 f = open(path, 'w')
-                graph.render(path)
+                graph.render(output=path)
                 f.close()
 
         response = HttpResponse(self.cache_data.read_stream_bin(image_file), mimetype=mime_type)
