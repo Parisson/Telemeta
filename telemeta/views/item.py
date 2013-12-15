@@ -117,10 +117,7 @@ class ItemView(object):
         if request.REQUEST.has_key('grapher_id'):
             grapher_id = request.REQUEST['grapher_id']
         else:
-            try:
-                grapher_id = settings.TELEMETA_DEFAULT_GRAPHER_ID
-            except:
-                grapher_id = 'waveform'
+            grapher_id = getattr(settings, 'TELEMETA_DEFAULT_GRAPHER_ID', 'waveform')
 
         previous, next = self.item_previous_next(item)
         mime_type = self.item_analyze(item)
