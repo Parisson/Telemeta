@@ -1149,7 +1149,8 @@ msgstr "juristische Hinweise"
 #: templates/telemeta/collection_edit.html:35
 #: templates/telemeta/collection_related_edit.html:12
 #: templates/telemeta/collection_related_edit.html:41
-#: templates/telemeta/enumeration_edit_value.html:19
+#: templates/telemeta/enumeration_edit_value.html:18
+#: templates/telemeta/enumeration_edit_value.html:40
 #: templates/telemeta/instrument_edit_value.html:19
 #: templates/telemeta/mediaitem_add.html:14
 #: templates/telemeta/mediaitem_add.html:50
@@ -1180,7 +1181,7 @@ msgstr "abbrechen"
 #: templates/telemeta/collection_edit.html:37
 #: templates/telemeta/collection_related_edit.html:14
 #: templates/telemeta/collection_related_edit.html:43
-#: templates/telemeta/enumeration_edit_value.html:17
+#: templates/telemeta/enumeration_edit_value.html:16
 #: templates/telemeta/instrument_edit_value.html:17
 #: templates/telemeta/mediaitem_add.html:16
 #: templates/telemeta/mediaitem_add.html:53
@@ -1308,6 +1309,7 @@ msgid "Number of items"
 msgstr "Anzahl Elemente"
 
 #: templates/telemeta/collection_detail_dc.html:12
+#: templates/telemeta/collection_detail_dc.html:22
 #: templates/telemeta/mediaitem_detail_dc.html:17
 #: templates/telemeta/resource_detail_dc.html:14
 msgid "Normal View"
@@ -1413,6 +1415,20 @@ msgstr "Diese Aufzählung ist leer"
 #: templates/telemeta/instrument_edit_value.html:9
 msgid "Modify an entry"
 msgstr "Eintrag verändern"
+
+#: templates/telemeta/enumeration_edit_value.html:26
+#, fuzzy
+msgid "Replace by"
+msgstr "antworten"
+
+#: templates/telemeta/enumeration_edit_value.html:33
+msgid "delete value after replacing"
+msgstr ""
+
+#: templates/telemeta/enumeration_edit_value.html:38
+#, fuzzy
+msgid "Replace"
+msgstr "antworten"
 
 #: templates/telemeta/geo_continents.html:5
 #: templates/telemeta/geo_continents.html:20

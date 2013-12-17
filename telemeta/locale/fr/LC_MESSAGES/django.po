@@ -1141,7 +1141,8 @@ msgstr "Mentions légales"
 #: templates/telemeta/collection_edit.html:35
 #: templates/telemeta/collection_related_edit.html:12
 #: templates/telemeta/collection_related_edit.html:41
-#: templates/telemeta/enumeration_edit_value.html:19
+#: templates/telemeta/enumeration_edit_value.html:18
+#: templates/telemeta/enumeration_edit_value.html:40
 #: templates/telemeta/instrument_edit_value.html:19
 #: templates/telemeta/mediaitem_add.html:14
 #: templates/telemeta/mediaitem_add.html:50
@@ -1172,7 +1173,7 @@ msgstr "Annuler"
 #: templates/telemeta/collection_edit.html:37
 #: templates/telemeta/collection_related_edit.html:14
 #: templates/telemeta/collection_related_edit.html:43
-#: templates/telemeta/enumeration_edit_value.html:17
+#: templates/telemeta/enumeration_edit_value.html:16
 #: templates/telemeta/instrument_edit_value.html:17
 #: templates/telemeta/mediaitem_add.html:16
 #: templates/telemeta/mediaitem_add.html:53
@@ -1299,6 +1300,7 @@ msgid "Number of items"
 msgstr "Nombre d'items"
 
 #: templates/telemeta/collection_detail_dc.html:12
+#: templates/telemeta/collection_detail_dc.html:22
 #: templates/telemeta/mediaitem_detail_dc.html:17
 #: templates/telemeta/resource_detail_dc.html:14
 msgid "Normal View"
@@ -1404,6 +1406,18 @@ msgstr "Cette énumération est vide"
 #: templates/telemeta/instrument_edit_value.html:9
 msgid "Modify an entry"
 msgstr "Modification d'une entrée"
+
+#: templates/telemeta/enumeration_edit_value.html:26
+msgid "Replace by"
+msgstr "Remplacer par"
+
+#: templates/telemeta/enumeration_edit_value.html:33
+msgid "delete value after replacing"
+msgstr "effacer la valeur après remplacement"
+
+#: templates/telemeta/enumeration_edit_value.html:38
+msgid "Replace"
+msgstr "Remplacement"
 
 #: templates/telemeta/geo_continents.html:5
 #: templates/telemeta/geo_continents.html:20
@@ -1834,13 +1848,11 @@ msgstr ""
 
 #: templates/telemeta/registration/password_change_done.html:3
 #: templates/telemeta/registration/password_change_form.html:4
-#, fuzzy
 msgid "Documentation"
-msgstr "documentation associée"
+msgstr "Documentation associée"
 
 #: templates/telemeta/registration/password_change_done.html:3
 #: templates/telemeta/registration/password_change_form.html:4
-#, fuzzy
 msgid "Log out"
 msgstr "Déconnexion"
 
@@ -1853,9 +1865,8 @@ msgid "Your password was changed."
 msgstr ""
 
 #: templates/telemeta/registration/password_change_form.html:6
-#, fuzzy
 msgid "Password change"
-msgstr "Mot de passe oublié"
+msgstr "Modification de mot de passe"
 
 #: templates/telemeta/registration/password_change_form.html:14
 msgid "Please correct the error below."
@@ -1878,7 +1889,6 @@ msgid "New password"
 msgstr ""
 
 #: templates/telemeta/registration/password_change_form.html:34
-#, fuzzy
 msgid "Password (again)"
 msgstr "Mot de passe (encore)"
 
@@ -1901,7 +1911,6 @@ msgstr ""
 
 #: templates/telemeta/registration/password_reset_confirm.html:4
 #: templates/telemeta/registration/password_reset_form.html:4
-#, fuzzy
 msgid "Password reset"
 msgstr "Mot de passe oublié"
 
