@@ -134,6 +134,8 @@ class AdminView(object):
         vars["enumeration_id"] = enumeration._meta.module_name
         vars["enumeration_name"] = enumeration._meta.verbose_name
         vars["enumeration_record"] = enumeration.objects.get(id__exact=value_id)
+        vars["enumeration_records"] = enumeration.objects.all()
+
         return render(request, 'telemeta/enumeration_edit_value.html', vars)
 
     @method_decorator(permission_required('telemeta.change_keyword'))
@@ -152,15 +154,34 @@ class AdminView(object):
 
     @method_decorator(permission_required('telemeta.change_keyword'))
     def replace_enumeration_value(self, request, enumeration_id, value_id):
-
         if request.method == 'POST':
-            enumeration  = self.__get_enumeration(enumeration_id)
-            if enumeration == None:
-                raise Http404
+            enumeration = self.__get_enumeration(enumeration_id)
+            to_value_id = request.POST["value"]
+            delete = False
+            if 'delete' in request.POST.keys():
+                delete = True
 
-            record = enumeration.objects.get(id__exact=value_id)
-            record.value = request.POST["value"]
-            record.save()
+        if enumeration == None:
+            raise Http404
+
+        from_record = enumeration.objects.get(id__exact=value_id)
+        to_record = enumeration.objects.get(id__exact=to_value_id)
+        links = [rel.get_accessor_name() for rel in from_record._meta.get_all_related_objects()]
+
+        for link in links:
+            objects = getattr(from_record, link).all()
+            for obj in objects:
+                for name in obj._meta.get_all_field_names():
+                    try: 
+                        field = obj._meta.get_field(name)
+                        if type(field) == WeakForeignKey:
+                            if field.rel.to == enumeration:
+                                setattr(obj, name, to_record)
+                                obj.save()
+                    except:
+                        continue
+        if delete:
+            from_record.delete()
 
         return self.edit_enumeration(request, enumeration_id)
 
