@@ -18,7 +18,7 @@
        <tr><td colspan="2">{% for error in form.non_field_errors %}<li class="error">{{ error }}</li>{% endfor %}</td></tr>
        {% for field in form %}
        <tr>
-        {% if field.html_name == "copied_from_item" or field.html_name == "doctype_code" %}
+        {% if field.html_name == "copied_from_item" %}
             <td>{{ field.label_tag.as_hidden }}</td><td>{{ field.as_hidden }}</td>
         {% else %}
             <tr><td class="error">{{ field.errors }}</td></tr>
