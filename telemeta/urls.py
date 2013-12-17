@@ -254,6 +254,10 @@ urlpatterns = patterns('',
         + r'(?P<value_id>[0-9]+)/update/$',
         admin_view.update_enumeration_value,
         name="telemeta-enumeration-record-update"),
+    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/'
+        + r'(?P<value_id>[0-9]+)/replace/$',
+        admin_view.replace_enumeration_value,
+        name="telemeta-enumeration-replace"),
 
     # Geographic browsing
     url(r'^geo/$', geo_view.list_continents, name="telemeta-geo-continents"),
