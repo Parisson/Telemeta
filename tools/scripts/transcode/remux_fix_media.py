@@ -6,9 +6,9 @@ from ebml.utils.ebml_data import *
 
 class FixCheckMedia(object):
 
-    def __init__(self, dir):
+    def __init__(self, dir, tmp_dir):
         self.dir = dir
-        self.tmp_dir = '/home/telecaster/tmp/'
+        self.tmp_dir = tmp_dir
         if not os.path.exists(self.tmp_dir):
             os.makedirs(self.tmp_dir)
 
@@ -44,14 +44,15 @@ class FixCheckMedia(object):
                                 self.fix_mp3(source, dest)
                                 f = open(root + os.sep + mp3_fixed_log, 'w')
                                 f.close()
-                                os.remove(root + os.sep + mp3_tofix_log)
+                                if os.path.exists(root + os.sep + mp3_tofix_log):
+                                    os.remove(root + os.sep + mp3_tofix_log)
                                 #break
 
 
     def hard_fix_webm(self, path):
         try:
             tmp_file = self.tmp_dir + 'out.webm '
-            command = 'ffmpeg -loglevel 0 -i '+ path + ' -vcodec libvpx -vb 500k -acodec libvorbis -aq 7 -f webm -y ' + tmp_file + ' > /dev/null'
+            command = 'ffmpeg -loglevel 0 -i "'+ path + '" -vcodec libvpx -vb 500k -acodec libvorbis -aq 7 -f webm -y "' + tmp_file + '" > /dev/null'
             print command
             os.system(command)
             command = 'mv '  + tmp_file + path
@@ -63,12 +64,12 @@ class FixCheckMedia(object):
     def fix_webm(self, path):
         try:
             tmp_file = self.tmp_dir + 'out.webm'
-            command = '/usr/local/bin/ffmpeg -loglevel 0 -i ' + path + ' -vcodec copy -acodec copy -f webm -y ' + tmp_file + ' > /dev/null'
+            command = '/usr/local/bin/ffmpeg -loglevel 0 -i "' + path + '" -vcodec copy -acodec copy -f webm -y "' + tmp_file + '" > /dev/null'
             print command
             os.system(command)
             ebml_obj = EBMLData(tmp_file)
             offset = ebml_obj.get_first_cluster_seconds()
-            command = '/usr/local/bin/ffmpeg -loglevel 0 -ss ' + str(offset) + ' -i ' + tmp_file + ' -vcodec copy -acodec copy -f webm -y ' + path + ' > /dev/null'
+            command = '/usr/local/bin/ffmpeg -loglevel 0 -ss ' + str(offset) + ' -i "' + tmp_file + '" -vcodec copy -acodec copy -f webm -y "' + path + '" > /dev/null'
             print command
             os.system(command)
         except:
@@ -76,7 +77,7 @@ class FixCheckMedia(object):
 
     def fix_mp3(self, source, path):
         try:
-            command = '/usr/local/bin/ffmpeg -loglevel 0 -i '+ source + ' -vn -aq 6 -y ' + path + ' > /dev/null'
+            command = '/usr/local/bin/ffmpeg -loglevel 0 -i "'+ source + '" -vn -aq 6 -y "' + path + '" > /dev/null'
             print command
             os.system(command)
         except:
@@ -95,7 +96,8 @@ def get_pids(name, args=None):
                     pids.append(proc.pid)
     return pids
 
-dir = sys.argv[-1]
+dir = sys.argv[-2]
+tmp_dir = sys.argv[-1]
 
 path =  os.path.abspath(__file__)
 pids = get_pids('python2.6',args=path)
@@ -103,8 +105,9 @@ pids = get_pids('python2.6',args=path)
 print datetime.datetime.now()
 if len(pids) <= 1:
     print 'starting process...'
-    f = FixCheckMedia(dir)
+    f = FixCheckMedia(dir, tmp_dir)
     f.process()
     print 'process finished.\n'
 else:
     print 'already started !\n'
+
