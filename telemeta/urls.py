@@ -60,6 +60,8 @@ resource_view = ResourceView()
 
 # query sets for Django generic views
 all_items = { 'queryset': MediaItem.objects.enriched().order_by('code', 'old_code') }
+all_items_unpublished = { 'queryset': MediaItem.objects.filter(code__contains='_I_'), }
+all_items_published = { 'queryset': MediaItem.objects.filter(code__contains='_E_'), }
 all_items_sound = { 'queryset': MediaItem.objects.sound().order_by('code', 'old_code') }
 all_collections = { 'queryset': MediaCollection.objects.enriched(), }
 all_collections_unpublished = { 'queryset': MediaCollection.objects.filter(code__contains='_I_'), }
@@ -125,6 +127,10 @@ urlpatterns = patterns('',
     url(r'^archives/markers/(?P<marker_id>[A-Za-z0-9]+)/$', item_view.item_detail, name="telemeta-item-detail-marker"),
     # FIXME: need all paths
     url(r'^items/(?P<path>[A-Za-z0-9._-s/]+)/$', redirect_to, {'url': '/archives/items/%(path)s/', 'permanent': False}, name="telemeta-item-redir"),
+    url(r'^archives/items_unpublished/$', 'django.views.generic.list_detail.object_list',
+        dict(all_items_unpublished, paginate_by=20, template_name="telemeta/mediaitem_list.html"), name="telemeta-items-unpublished"),
+    url(r'^archives/items_published/$', 'django.views.generic.list_detail.object_list',
+        dict(all_items_published, paginate_by=20, template_name="telemeta/mediaitem_list.html"), name="telemeta-items-published"),
 
     # collections
     url(r'^archives/collections/$', 'django.views.generic.list_detail.object_list',
