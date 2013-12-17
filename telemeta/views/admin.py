@@ -130,11 +130,14 @@ class AdminView(object):
         if enumeration == None:
             raise Http404
 
+        record = enumeration.objects.get(id__exact=value_id)
+        
         vars = self.__get_admin_context_vars()
         vars["enumeration_id"] = enumeration._meta.module_name
         vars["enumeration_name"] = enumeration._meta.verbose_name
-        vars["enumeration_record"] = enumeration.objects.get(id__exact=value_id)
+        vars["enumeration_record"] = record
         vars["enumeration_records"] = enumeration.objects.all()
+        vars["enumeration_notes"] = record.notes.all()
 
         return render(request, 'telemeta/enumeration_edit_value.html', vars)
 

@@ -16,6 +16,7 @@
     <th>{% trans "Description" %}</th>
     <th>{% trans "Code" %}</th>
     <th>{% trans "Reference" %}</th>
+    <th>{% trans "Sound" %}</th>
 </tr>
 {% for child in children %}
 {% if child.code %}
@@ -26,6 +27,11 @@
     <td>{{ child.description }}</td>
     <td>{{ child.code }}</td>
     <td>{{ child.reference }}</td>
+    <td>
+      {% if child.has_mediafile %}
+       <img src="{{ STATIC_URL }}telemeta/images/ok.png" alt="yes" style="vertical-align:middle" />
+      {% endif %}
+    </td>
 </tr>
 {% endif %}
 {% endfor %}
