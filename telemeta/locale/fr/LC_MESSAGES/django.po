@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-13 19:23+0200\n"
+"POT-Creation-Date: 2013-12-17 18:20+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Guillaume Pellerin <yomguy@parisson.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2027,12 +2027,12 @@ msgstr "Enfants"
 msgid "pattern"
 msgstr "mots clés"
 
-#: views/collection.py:49 views/home.py:90 views/item.py:111 views/item.py:472
+#: views/collection.py:49 views/home.py:90 views/item.py:111 views/item.py:470
 #: views/profile.py:68
 msgid "Access not allowed"
 msgstr "Accès non autorisé"
 
-#: views/collection.py:51 views/home.py:92 views/item.py:113 views/item.py:474
+#: views/collection.py:51 views/home.py:92 views/item.py:113 views/item.py:472
 #: views/profile.py:70
 msgid ""
 "Please login or contact the website administator to get a private access."
