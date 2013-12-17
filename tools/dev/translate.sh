@@ -1,7 +1,7 @@
 #!/bin/sh
 
 cd telemeta
-django-admin makemessages -a
-django-admin makemessages -d djangojs -a
-django-admin compilemessages
+django-admin.py makemessages -a
+django-admin.py makemessages -d djangojs -a
+django-admin.py compilemessages
 cd ..
