@@ -67,8 +67,8 @@ all_collections = { 'queryset': MediaCollection.objects.enriched(), }
 all_collections_unpublished = { 'queryset': MediaCollection.objects.filter(code__contains='_I_'), }
 all_collections_published = { 'queryset': MediaCollection.objects.filter(code__contains='_E_'), }
 all_collections_sound = { 'queryset': MediaCollection.objects.sound().order_by('code', 'old_code') }
-all_corpus = { 'queryset': MediaCorpus.objects.all().order_by('title') }
-all_fonds = { 'queryset': MediaFonds.objects.all().order_by('title') }
+all_corpus = { 'queryset': MediaCorpus.objects.all().order_by('code') }
+all_fonds = { 'queryset': MediaFonds.objects.all().order_by('code') }
 
 # ID's regular expressions
 export_extensions = "|".join(item_view.list_export_extensions())
