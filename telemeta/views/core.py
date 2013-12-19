@@ -70,6 +70,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.syndication.views import Feed
 from django.core.servers.basehttp import FileWrapper
 from django.core.urlresolvers import reverse, reverse_lazy
+from django.contrib.contenttypes.models import ContentType
 
 from telemeta.models import *
 import telemeta.models
@@ -82,6 +83,7 @@ from telemeta.util.unicode import UnicodeWriter
 from telemeta.cache import TelemetaCache
 import pages
 from telemeta.forms import *
+import jqchat.models
 
 # Model type definition
 mods = {'item': MediaItem, 'collection': MediaCollection,
@@ -263,3 +265,15 @@ def auto_code(collection):
     else:
         return collection.code + '_'
 
+
+def get_room(content_type=None, id=None, name=None):
+    rooms = jqchat.models.Room.objects.filter(content_type=content_type,
+                                                object_id=id)
+    if not rooms:
+        room = jqchat.models.Room.objects.create(content_type=content_type,
+                                          object_id=id,
+                                          name=name[:20])
+    else:
+        room = rooms[0]
+    return room
+    

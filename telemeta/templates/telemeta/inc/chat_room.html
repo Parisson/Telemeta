@@ -1,0 +1,19 @@
+{% load i18n %}
+{% load telemeta_utils %}
+
+<script src="{{ STATIC_URL }}jqchat/jqchat.js" type="text/javascript" ></script>
+
+<div class="module">
+        <h3><img src="{{STATIC_URL}}telemeta/images/vox_wh.png" %}" alt="rss" style="vertical-align:middle" />{% trans title %}</h3>
+        <div style="background: transparent;">
+        <div id="chatwindow"><span id="loading">Loading...</span></div>
+        <form id="chatform">{% csrf_token %}
+        <label for="msg"></label>
+        <div class="msg">
+        <input type="text" id="msg" size="42" />
+        <input type="submit" value="{% trans "Send" %}" />
+        </div>
+        </form>
+<!--         <script type="text/javascript">document.getElementById("msg").focus();</script> -->
+        </div>
+</div>

@@ -35,10 +35,10 @@
 
 from telemeta.models.core import *
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.contenttypes import generic
 
 
 class Enumeration(ModelCore):
+
     "Abstract enumerations base class"
     value = CharField(_('value'), required=True, unique=True)
 
