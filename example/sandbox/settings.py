@@ -129,6 +129,7 @@ INSTALLED_APPS = (
     'jsonrpc',
     'south',
     'sorl.thumbnail',
+    'notes',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (

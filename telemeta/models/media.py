@@ -53,13 +53,13 @@ from telemeta.models.format import *
 from telemeta.util.kdenlive.session import *
 from django.db import models
 
-collection_published_code_regex   = '[A-Za-z0-9._-]*'
-collection_unpublished_code_regex = '[A-Za-z0-9._-]*'
+collection_published_code_regex   = '[A-Za-z0-9._+-]*'
+collection_unpublished_code_regex = '[A-Za-z0-9._+-]*'
 collection_code_regex             = '(?:%s|%s)' % (collection_published_code_regex,
                                                     collection_unpublished_code_regex)
 
-item_published_code_regex    = '[A-Za-z0-9._-]*'
-item_unpublished_code_regex  = '[A-Za-z0-9._-]*'
+item_published_code_regex    = '[A-Za-z0-9._+-]*'
+item_unpublished_code_regex  = '[A-Za-z0-9._+-]*'
 item_code_regex              = '(?:%s|%s)' % (item_published_code_regex, item_unpublished_code_regex)
 
 PUBLIC_ACCESS_CHOICES = (('none', _('none')), ('metadata', _('metadata')),
@@ -107,7 +107,6 @@ class MediaBaseResource(MediaResource):
     title                 = CharField(_('title'), required=True)
     description           = CharField(_('description'))
     code                  = CharField(_('code'), unique=True, required=True)
-    reference             = CharField(_('reference'), unique=True, null=True)
     public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES,
                                       max_length=16, default="metadata")
 
@@ -210,7 +209,7 @@ class MediaCollection(MediaResource):
     publisher_serial      = CharField(_('publisher serial number'))
     booklet_author        = CharField(_('author of published notice'))
     external_references   = TextField(_('bibliographic references'))
-    doctype_code          = IntegerField(_('document type'))
+    doctype_code          = IntegerField(_('document type'), null=True, blank=True)
     public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES,
                                       max_length=16, default="metadata")
     legal_rights          = WeakForeignKey('LegalRight', related_name="collections",

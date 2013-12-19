@@ -44,7 +44,8 @@ class FixCheckMedia(object):
                                 self.fix_mp3(source, dest)
                                 f = open(root + os.sep + mp3_fixed_log, 'w')
                                 f.close()
-                                os.remove(root + os.sep + mp3_tofix_log)
+                                if os.path.exists(root + os.sep + mp3_tofix_log):
+                                    os.remove(root + os.sep + mp3_tofix_log)
                                 #break
 
 

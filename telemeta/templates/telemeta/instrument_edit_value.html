@@ -20,5 +20,30 @@
    </div>
   </fieldset>
  </form>
+
+<form class="mod" id="replinstru" method="post"
+    action="{% url telemeta-instrument-record-replace instrument.id %}">{% csrf_token %}
+  <fieldset>
+   <legend>{% trans "Replace by" %}</legend>
+   <div class="field">
+    <select name="value">
+    {% for record in instruments %}
+      <option value="{{ record.id }}" />{{ record.name }}</option>
+    {% endfor %}
+    </select>
+    <input type="checkbox" name="delete" value="delete"> {% trans "delete value after replacing" %}
+   </div>
+   <br />
+   <div class="buttons">
+        <a href="#" class="component_icon button icon_save"
+   onclick="document.getElementById('replinstru').submit(); return false;">{% trans "Replace" %}</a>
+        <a href="{% url telemeta-instrument-edit %}"
+           class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+   </div>
+  </fieldset>
+ </form>
+ 
+
+
   <br style="clear: right"/>
 {% endblock %}

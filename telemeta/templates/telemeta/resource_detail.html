@@ -32,17 +32,19 @@ jQuery(document).ready(function(){
 {% if resource %}
 
 {% block title %}
-    <img src="{% url telemeta-type-images type %}" style="vertical-align:middle" />
+    <img src="{{ STATIC_URL }}telemeta/images/{{ type }}.png" style="vertical-align:middle" />
     {{ type|capitalize }} :
     <a href="{% url telemeta-resource-detail type resource.public_id %}">{{ resource.title }}</a>
 {% endblock %}
 
 {% block title_buttons %}
   <div class="fixedWidthAsPlayer">
-    {% if perms.telemeta.add_mediacorpus or perms.telemeta.add_mediafonds %}
+    {% if perms.telemeta.change_mediacorpus or perms.telemeta.change_mediafonds %}
       <a href="{% url telemeta-resource-edit type resource.public_id %}" class="component_icon button icon_edit">{% trans "Edit" %}</a>
+    {% endif %}
+    {% if perms.telemeta.add_mediacorpus or perms.telemeta.add_mediafonds %}
       <a href="{% url telemeta-resource-copy type resource.public_id %}" class="component_icon button icon_copy">{% trans "Copy" %}</a>
-     {% endif %}
+    {% endif %}
     {% if user.is_authenticated %}
     <a href="#" id ="_add_to_playlist" class="component_icon button icon_add_to_playlist">{% trans "Add to playlist" %}</a>
     {% endif %}

@@ -21,6 +21,7 @@ setup(
         'sorl-thumbnail',
         'django-extensions',
         'docutils',
+        'django-notes',
   ],
   platforms=['OS Independent'],
   license='CeCILL v2',

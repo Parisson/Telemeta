@@ -114,13 +114,11 @@ class ItemView(object):
         graphers = []
         for grapher in self.graphers:
             graphers.append({'name':grapher.name(), 'id': grapher.id()})
+            
         if request.REQUEST.has_key('grapher_id'):
             grapher_id = request.REQUEST['grapher_id']
         else:
-            try:
-                grapher_id = settings.TELEMETA_DEFAULT_GRAPHER_ID
-            except:
-                grapher_id = 'waveform'
+            grapher_id = getattr(settings, 'TELEMETA_DEFAULT_GRAPHER_ID', 'waveform')
 
         previous, next = self.item_previous_next(item)
         mime_type = self.item_analyze(item)
@@ -456,7 +454,7 @@ class ItemView(object):
                 (decoder | graph).run()
                 graph.watermark('timeside', opacity=.6, margin=(5,5))
                 f = open(path, 'w')
-                graph.render(path)
+                graph.render(output=path)
                 f.close()
 
         response = HttpResponse(self.cache_data.read_stream_bin(image_file), mimetype=mime_type)
