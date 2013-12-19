@@ -84,7 +84,6 @@ class InstrumentView(object):
 
         return self.edit_instrument(request)
 
-
     @method_decorator(permission_required('telemeta.change_instrument'))
     def replace_instrument_value(self, request, value_id):
         if request.method == 'POST':
@@ -93,11 +92,7 @@ class InstrumentView(object):
             if 'delete' in request.POST.keys():
                 delete = True
 
-        if from_record == None:
-            raise Http404
-
         obj_type = Instrument
-        field_type = ForeignKey
         from_record = Instrument.objects.get(id__exact=value_id)
         to_record = Instrument.objects.get(id__exact=to_value_id)
         links = [rel.get_accessor_name() for rel in from_record._meta.get_all_related_objects()]
@@ -108,14 +103,13 @@ class InstrumentView(object):
                 for name in obj._meta.get_all_field_names():
                     try: 
                         field = obj._meta.get_field(name)
-                        if type(field) == field_type:
-                            if field.rel.to == obj_type:
-                                setattr(obj, name, to_record)
-                                obj.save()
+                        if field.rel.to == obj_type:
+                            setattr(obj, name, to_record)
+                            obj.save()
                     except:
                         continue
+
         if delete:
             from_record.delete()
 
         return self.edit_instrument(request)
-
