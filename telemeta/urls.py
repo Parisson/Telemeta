@@ -333,6 +333,8 @@ urlpatterns = patterns('',
     # FIXME:need to move export dir from the cache
     url(r'^media/cache/(?P<path>.*)$', 'django.views.static.serve', {
             'document_root': settings.TELEMETA_CACHE_DIR,}),
+
+    url(r'^', include('jqchat.urls')),
 )
 
 

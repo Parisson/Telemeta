@@ -1282,3 +1282,32 @@ input,textarea{
 .related_media {
     border-top: 1px dotted #6a0307;
 }
+
+
+#chatwindow {
+    min-height: 10em;
+    max-height: 42em;
+    border-bottom: 1px solid;
+    padding: 0.8em;
+    overflow: auto;
+    background-color: white;
+    font-size: 0.8125em;
+    -moz-border-radius: 8px 0px 8px 8px;
+     -webkit-border-radius: 8px 0px 8px 8px;
+     border-radius: 8px 0px 8px 8px;
+}
+
+.msg {
+    font-size: 0.9em;
+    }
+
+.msg input {
+    -moz-border-radius: 8px 8px 8px 8px;
+     -webkit-border-radius: 8px 8px 8px 8px;
+     border-radius: 8px 8px 8px 8px;
+    }
+
+.mod {
+    width: 66%;
+    float: left;
+}
