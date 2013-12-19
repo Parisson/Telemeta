@@ -239,6 +239,10 @@ urlpatterns = patterns('',
         + r'(?P<value_id>[0-9]+)/update/$',
         instrument_view.update_instrument_value,
         name="telemeta-instrument-record-update"),
+    url(r'^admin/instruments/'
+        + r'(?P<value_id>[0-9]+)/replace/$',
+        instrument_view.replace_instrument_value,
+        name="telemeta-instrument-record-replace"),
 
     # enumerations administration
     url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/$',

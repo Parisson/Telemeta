@@ -69,8 +69,10 @@ class InstrumentView(object):
     @method_decorator(permission_required('telemeta.change_instrument'))
     def edit_instrument_value(self, request, value_id):
         instrument = Instrument.objects.get(id__exact=value_id)
+        instruments = Instrument.objects.all().order_by('name')
 
-        return render(request, 'telemeta/instrument_edit_value.html', {'instrument': instrument})
+        return render(request, 'telemeta/instrument_edit_value.html', 
+                    {'instrument': instrument, 'instruments': instruments})
 
     @method_decorator(permission_required('telemeta.change_instrument'))
     def update_instrument_value(self, request, value_id):
@@ -81,3 +83,39 @@ class InstrumentView(object):
             instrument.save()
 
         return self.edit_instrument(request)
+
+
+    @method_decorator(permission_required('telemeta.change_instrument'))
+    def replace_instrument_value(self, request, value_id):
+        if request.method == 'POST':
+            to_value_id = request.POST["value"]
+            delete = False
+            if 'delete' in request.POST.keys():
+                delete = True
+
+        if from_record == None:
+            raise Http404
+
+        obj_type = Instrument
+        field_type = ForeignKey
+        from_record = Instrument.objects.get(id__exact=value_id)
+        to_record = Instrument.objects.get(id__exact=to_value_id)
+        links = [rel.get_accessor_name() for rel in from_record._meta.get_all_related_objects()]
+
+        for link in links:
+            objects = getattr(from_record, link).all()
+            for obj in objects:
+                for name in obj._meta.get_all_field_names():
+                    try: 
+                        field = obj._meta.get_field(name)
+                        if type(field) == field_type:
+                            if field.rel.to == obj_type:
+                                setattr(obj, name, to_record)
+                                obj.save()
+                    except:
+                        continue
+        if delete:
+            from_record.delete()
+
+        return self.edit_instrument(request)
+

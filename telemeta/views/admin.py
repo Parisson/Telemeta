@@ -170,6 +170,7 @@ class AdminView(object):
         from_record = enumeration.objects.get(id__exact=value_id)
         to_record = enumeration.objects.get(id__exact=to_value_id)
         links = [rel.get_accessor_name() for rel in from_record._meta.get_all_related_objects()]
+        field_type = WeakForeignKey
 
         for link in links:
             objects = getattr(from_record, link).all()
@@ -177,7 +178,7 @@ class AdminView(object):
                 for name in obj._meta.get_all_field_names():
                     try: 
                         field = obj._meta.get_field(name)
-                        if type(field) == WeakForeignKey:
+                        if type(field) == field_type:
                             if field.rel.to == enumeration:
                                 setattr(obj, name, to_record)
                                 obj.save()
