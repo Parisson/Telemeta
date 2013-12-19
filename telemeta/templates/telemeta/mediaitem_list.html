@@ -10,6 +10,8 @@
 
 {% block title_buttons %}
     <a href="{% url telemeta-items %}" class="component_icon button icon_filter">{% trans "All" %}</a>
+    <a href="{% url telemeta-items-unpublished %}" class="component_icon button icon_filter">{% trans "Unpublished" %}</a>
+    <a href="{% url telemeta-items-published %}" class="component_icon button icon_filter">{% trans "Published" %}</a>
     <a href="{% url telemeta-items-sound %}" class="component_icon button icon_filter">{% trans "Sounds" %}</a>
     {% if user.is_authenticated and perms.telemeta.add_mediaitem %}
       <a href="{% url telemeta-item-add %}" class="component_icon button icon_add">{% trans "Add" %}</a>

@@ -138,7 +138,9 @@
                         {% dl_field collection "booklet_author" %}
                         <dt>{% trans "Bibliographic references" %}</dt>
                         <dd>{{ collection.external_references|html_line_break|safe }}</dd>
-                        {% dl_field collection "doctype_code" %}
+                        {% if collection.doctype_code %}
+                         {% dl_field collection "doctype_code" %}
+                        {% endif %}
                         {% dl_field collection "public_access_label" %}
                         {% dl_field collection "legal_rights" %}
                     </dl>
