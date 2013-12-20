@@ -1220,66 +1220,16 @@ a.image-link {
     top: 0;
 }
 
-/* FORMS */
-#id_item-title {
-    width: 500px;
-}
-#id_item-alt_title {
-    width: 500px;
-}
-#id_item-collector {
-    width: 500px;
-}
-#id_item-creator {
-    width: 500px;
-}
-#id_item-cultural_area {
-    width: 500px;
-}
-#id_item-location_comment {
-    width: 500px;
-}
-#id_item-old_code {
-    width: 500px;
-}
-#id_item-code {
-    width: 500px;
-}
-#id_item-author {
-    width: 500px;
-}
-#id_item-collector_selection {
-    width: 500px;
-}
-#id_item-booklet_author {
-    width: 500px;
-}
-#id_item-alt_ids {
-    width: 500px;
-}
-#id_item-travail {
-    width: 500px;
-}
-#id_item-value_add {
-    width: 200px;
-}
-#id_item-value_edit {
-    width: 500px;
-}
-#id_item-file {
-    width: 500px;
-}
-#id_item-conservation_site {
-    width: 500px;
-}
 
 /*focus on elements*/
 a:focus,div:focus{
     -moz-outline: 1px dotted #999  !important;
     outline: #999 dotted 1px;  /*!important;*/
 }
-input,textarea{
+
+input, textarea{
     outline: none !important;
+    width: 600px;
 }
 
 .related_media {
