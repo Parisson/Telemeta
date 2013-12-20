@@ -23,7 +23,6 @@ setup(
         'docutils',
         'django-timezones',
         'django-jqchat',
-        'timeside',
   ],
   platforms=['OS Independent'],
   license='CeCILL v2',

@@ -1227,7 +1227,7 @@ a:focus,div:focus{
     outline: #999 dotted 1px;  /*!important;*/
 }
 
-input, textarea{
+.infos input, .infos textarea{
     outline: none !important;
     width: 600px;
 }
