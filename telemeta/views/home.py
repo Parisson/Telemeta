@@ -37,7 +37,6 @@
 
 from telemeta.views.core import *
 
-
 class HomeView(object):
     """Provide general web UI methods"""
 
@@ -46,24 +45,27 @@ class HomeView(object):
 
         template = loader.get_template('telemeta/home.html')
 
-        sound_items = MediaItem.objects.sound()
-        _sound_pub_items = []
-        for item in sound_items:
-            if get_public_access(item.public_access,  str(item.recorded_from_date).split('-')[0],
-                                            str(item.recorded_to_date).split('-')[0]):
-                _sound_pub_items.append(item)
+        N = 3   # max number of pub items
 
-        random.shuffle(_sound_pub_items)
-        if len(_sound_pub_items) != 0:
-            sound_pub_item = _sound_pub_items[0]
-        else:
+        sound_items = MediaItem.objects.sound_public()
+        count = sound_items.count()
+
+        if count == 0:
             sound_pub_item = None
-        if len(_sound_pub_items) == 2:
-            sound_pub_items = [_sound_pub_items[1]]
-        elif len(_sound_pub_items) > 2:
-            sound_pub_items = _sound_pub_items[1:3]
-        else:
             sound_pub_items = None
+
+        elif count == 1:
+            sound_pub_item = sound_items[0]
+            sound_pub_items = [sound_items[0], sound_items[0]]
+
+        elif count == 2:
+            sound_pub_item = sound_items[0]
+            sound_pub_items = [sound_items[0], sound_items[1]]
+
+        elif count > 2:
+            indexes = random.sample(range(count-1), N)
+            sound_pub_item = sound_items[indexes[0]]
+            sound_pub_items = [sound_items[indexes[i]] for i in range(1, N)]
 
         revisions = get_revisions(25)
         context = RequestContext(request, {
@@ -73,7 +75,7 @@ class HomeView(object):
         return HttpResponse(template.render(context))
 
     def lists(self, request):
-        """Render the list page"""
+        """Render the home page"""
 
         if request.user.is_authenticated():
             template='telemeta/lists.html'
