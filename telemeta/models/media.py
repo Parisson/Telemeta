@@ -209,7 +209,7 @@ class MediaCollection(MediaResource):
     publisher_serial      = CharField(_('publisher serial number'))
     booklet_author        = CharField(_('author of published notice'))
     external_references   = TextField(_('bibliographic references'))
-    doctype_code          = IntegerField(_('document type'), null=True, blank=True)
+    doctype_code          = IntegerField(_('document type'), blank=True)
     public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES,
                                       max_length=16, default="metadata")
     legal_rights          = WeakForeignKey('LegalRight', related_name="collections",
