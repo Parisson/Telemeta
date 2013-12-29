@@ -37,7 +37,6 @@
 
 from telemeta.views.core import *
 
-
 class InstrumentView(object):
     """Provide Instrument web UI methods"""
 
@@ -70,9 +69,15 @@ class InstrumentView(object):
     def edit_instrument_value(self, request, value_id):
         instrument = Instrument.objects.get(id__exact=value_id)
         instruments = Instrument.objects.all().order_by('name')
-
-        return render(request, 'telemeta/instrument_edit_value.html', 
-                    {'instrument': instrument, 'instruments': instruments})
+        
+        content_type = ContentType.objects.get(app_label="telemeta", model='instrument')        
+        context = {}
+        context['instrument'] = instrument
+        context['instruments'] = instruments
+        context['room'] = get_room(name=instrument._meta.verbose_name, content_type=content_type,
+                                   id=instrument.id)
+        
+        return render(request, 'telemeta/instrument_edit_value.html', context)
 
     @method_decorator(permission_required('telemeta.change_instrument'))
     def update_instrument_value(self, request, value_id):

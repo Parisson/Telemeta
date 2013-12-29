@@ -35,11 +35,10 @@
 
 from telemeta.models.core import *
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.contenttypes import generic
-from notes.models import Note
 
 
 class Enumeration(ModelCore):
+
     "Abstract enumerations base class"
     value = CharField(_('value'), required=True, unique=True)
 
@@ -55,16 +54,12 @@ class MetaEnumeration(MetaCore):
 class PhysicalFormat(Enumeration):
     "Collection physical format"
 
-    notes = generic.GenericRelation(Note)
-
     class Meta(MetaEnumeration):
         db_table = 'physical_formats'
         verbose_name = _("archive format")
 
 class PublishingStatus(Enumeration):
     "Collection publishing status"
-
-    notes = generic.GenericRelation(Note)
 
     class Meta(MetaEnumeration):
         db_table = 'publishing_status'
@@ -73,16 +68,13 @@ class PublishingStatus(Enumeration):
 class AcquisitionMode(Enumeration):
     "Mode of acquisition of the collection"
 
-    notes = generic.GenericRelation(Note)
-
     class Meta(MetaEnumeration):
         db_table = 'acquisition_modes'
         verbose_name = _("mode of acquisition")
 
 class MetadataAuthor(Enumeration):
     "Collection metadata author"
-    
-    notes = generic.GenericRelation(Note)
+   
 
     class Meta(MetaEnumeration):
         db_table = 'metadata_authors'
@@ -91,16 +83,12 @@ class MetadataAuthor(Enumeration):
 class MetadataWriter(Enumeration):
     "Collection metadata writer"
 
-    notes = generic.GenericRelation(Note)
-
     class Meta(MetaEnumeration):
         db_table = 'metadata_writers'
         verbose_name = _("record writer")
 
 class LegalRight(Enumeration):
     "Collection legal rights"
-
-    notes = generic.GenericRelation(Note)
 
     class Meta(MetaEnumeration):
         db_table = 'legal_rights'
@@ -109,16 +97,12 @@ class LegalRight(Enumeration):
 class RecordingContext(Enumeration):
     "Collection recording context"
 
-    notes = generic.GenericRelation(Note)
-
     class Meta(MetaEnumeration):
         db_table = 'recording_contexts'
         verbose_name = _("recording context")
 
 class AdConversion(Enumeration):
     "Collection digital to analog conversion status"
-
-    notes = generic.GenericRelation(Note)
 
     class Meta(MetaEnumeration):
         db_table = 'ad_conversions'
@@ -127,16 +111,12 @@ class AdConversion(Enumeration):
 class VernacularStyle(Enumeration):
     "Item vernacular style"
 
-    notes = generic.GenericRelation(Note)
-
     class Meta(MetaEnumeration):
         db_table = 'vernacular_styles'
         verbose_name = _("vernacular style")
 
 class GenericStyle(Enumeration):
     "Item generic style"
-
-    notes = generic.GenericRelation(Note)
 
     class Meta(MetaEnumeration):
         db_table = 'generic_styles'
@@ -145,16 +125,12 @@ class GenericStyle(Enumeration):
 class ContextKeyword(Enumeration):
     "Keyword"
 
-    notes = generic.GenericRelation(Note)
-
     class Meta(MetaEnumeration):
         db_table = 'context_keywords'
         verbose_name = _("keyword")
 
 class Publisher(Enumeration):
     "Collection publisher"
-
-    notes = generic.GenericRelation(Note)
 
     class Meta(MetaEnumeration):
         db_table = 'publishers'
@@ -166,8 +142,7 @@ class PublisherCollection(ModelCore):
     
     publisher = ForeignKey('Publisher', related_name="publisher_collections", verbose_name=_('publisher'))
     value     = CharField(_('value'), required=True)
-    notes     = generic.GenericRelation(Note)
-
+  
     def __unicode__(self):
         return self.value
 
@@ -179,8 +154,6 @@ class PublisherCollection(ModelCore):
 class EthnicGroup(Enumeration):
     "Item ethnic group"
 
-    notes = generic.GenericRelation(Note)
-
     class Meta(MetaEnumeration):
         db_table = 'ethnic_groups'
         verbose_name = _('population / social group')
@@ -191,8 +164,7 @@ class EthnicGroupAlias(ModelCore):
     
     ethnic_group = ForeignKey('EthnicGroup', related_name="aliases", verbose_name=_('population / social group'))
     value        = CharField(_('name'), required=True)
-    notes        = generic.GenericRelation(Note)
-
+  
     class Meta(MetaCore):
         db_table = 'ethnic_group_aliases'
         unique_together = (('ethnic_group', 'value'),)

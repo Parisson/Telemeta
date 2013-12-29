@@ -131,14 +131,15 @@ class AdminView(object):
             raise Http404
 
         record = enumeration.objects.get(id__exact=value_id)
-        
+        content_type = ContentType.objects.get(app_label="telemeta", model=enumeration_id)
+
         vars = self.__get_admin_context_vars()
         vars["enumeration_id"] = enumeration._meta.module_name
         vars["enumeration_name"] = enumeration._meta.verbose_name
         vars["enumeration_record"] = record
         vars["enumeration_records"] = enumeration.objects.all()
-        vars["enumeration_notes"] = record.notes.all()
-
+        vars['room'] = get_room(name=record._meta.verbose_name, content_type=content_type,
+                                   id=record.id)
         return render(request, 'telemeta/enumeration_edit_value.html', vars)
 
     @method_decorator(permission_required('telemeta.change_keyword'))

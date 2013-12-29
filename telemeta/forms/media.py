@@ -71,10 +71,14 @@ class MediaItemForm(ModelForm):
     class Meta:
         model = MediaItem
 
-        exclude = ('copied_from_item')
+        exclude = ('copied_from_item',)
 
     def clean_code(self):
         return self.cleaned_data['code'] or None
+
+    def __init__(self,*args,**kwargs):
+        super(MediaItemForm, self).__init__(*args, **kwargs)
+        self.fields.insert(18, 'comment', self.fields['comment'])
 
 class MediaItemRelatedForm(ModelForm):
     class Meta:

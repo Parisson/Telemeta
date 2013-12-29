@@ -35,8 +35,9 @@ import re
 import sys
 import csv
 import xlrd
+import datetime
 import logging
-import scikits.audiolab as audiolab
+import shutil
 
 COLLECTION_OLD_PATTERN = [
         { 'format': 'BM.aaa.nnn.mmm',           'regex': r'^(BM)\.([0-9]{3})\.([0-9]{3})\.([0-9]{3})$'},
@@ -77,7 +78,7 @@ ITEM_NEW_PATTERN = [
         { 'format': 'CNRSMH_I_aaaa_nnn_mmm_tt',        'regex': r'^(CNRSMH)_I_([0-9]{4})_([0-9]{3})_([0-9]{3})_([0-9]{2})$'},
         { 'format': 'CNRSMH_I_aaaa_nnn_mmm_tt_pp',     'regex': r'^(CNRSMH)_I_([0-9]{4})_([0-9]{3})_([0-9]{3})_([0-9]{2})_([0-9]{2})$'},
         { 'format': 'CNRSMH_E_aaaa_nnn_mmm_tt',        'regex': r'^(CNRSMH)_E_([0-9]{4})_([0-9]{3})_([0-9]{3})_([0-9]{2})$'},
-        { 'format': 'CNRSMH_E_aaaa_nnn_mmm_tt_pp',     'regex': r'^(CNRSMH)_E_([0-9]{4})_([0-9]{3})_([0-9]{3})_([0-9]{2})_([0-9]{2})$'},
+        { 'format': 'CNRSMH_E_aaaa_nnn_mmm_tt_pp',     'regex': r'^(CNRSMH)_E_([0-9]{4})_([0-9]{3})_([0-9]{3})_([0-9]{2,3})_([0-9]{2})$'},
 
         # yomguy
         { 'format': 'CNRSMH_I_aaaa_nnn_mm',           'regex': r'^(CNRSMH)_I_([0-9]{4})_([0-9]{3})_([0-9]{2})$'},
@@ -125,16 +126,19 @@ class CremCollection:
     def xls_list(self):
         file_list = []
         for file in self.file_list:
+            filename = os.path.basename(file)
             ext = os.path.splitext(file)[1]
-            if ext == '.xls' or ext == '.XLS':
+            if not '.' == filename[0] and (ext == '.xls' or ext == '.XLS'):
                 file_list.append(file)
+        print file_list
         return file_list
 
     def wav_list(self):
         list = []
         for file in self.file_list:
+            filename = os.path.basename(file)
             ext = os.path.splitext(file)[1]
-            if ext == '.wav' or ext == '.WAV':
+            if not '.' == filename[0] and (ext == '.wav' or ext == '.WAV'):
                 list.append(file)
         return list
 
@@ -197,14 +201,6 @@ class CremItemFile:
     def set_media(self, media):
         self.media = media
 
-    def is_wav(self):
-        try:
-            audio_file = audiolab.Sndfile(self.media, 'r')
-            if audio_file.nframes and audio_file.nframes != 0:
-                return True
-        except IOError:
-            return False
-
     def properties(self):
         self.frames = self.audio_file.get_nframes()
         self.samplerate = self.audio_file.get_samplerate()
@@ -224,10 +220,6 @@ class CremCheck:
            if not dir[0] == '.':
                list.append(dir)
         self.dir_list = list
-
-
-    def check_wav(self):
-        pass
 
     def check_new_refs(self):
         for name in self.new_refs:
@@ -300,7 +292,7 @@ class CremCheck:
                         self.logger.write_error(collection.dir, msg)
                         error = True
 
-                    if item[0:17] != collection.dir_name :
+                    if not collection.dir_name in item:
                         msg = 'Ligne ' + str(i+xls.first_row+1) + ' : la référence d\'item ' + item.encode('utf8') + ' ne correspond pas à celle de la collection'
                         self.logger.write_error(collection.dir, msg)
                         error = True
@@ -310,9 +302,9 @@ class CremCheck:
                         self.logger.write_error(collection.dir, 'Le fichier ' + item.encode('utf8') + '.wav n\'existe pas')
                     else:
                         item_file.set_media(collection.dir + os.sep + name_wav)
-                        if not item_file.is_wav():
-                            self.logger.write_error(collection.dir, 'Le fichier ' + item.encode('utf8') + '.wav n\'est pas valide')
-                            error = True
+                        #if not item_file.is_wav():
+                        #    self.logger.write_error(collection.dir, 'Le fichier ' + item.encode('utf8') + '.wav n\'est pas valide')
+                        #    error = True
 
                     if not error:
                         csv_file.csv.writerow([xls.original_refs[i], xls.new_refs[i]])
@@ -328,8 +320,16 @@ class CremCheck:
 
 
 def main():
-    c = CremCheck(sys.argv[-2], sys.argv[-1])
+    log_file = sys.argv[-1]
+    root_dir = sys.argv[-2]
+    log_tmp = log_file+'.tmp'
+
+    c = CremCheck(root_dir, log_tmp)
     c.check()
+    
+    date = datetime.datetime.now().strftime("%x-%X").replace('/','_')
+    shutil.copy(log_tmp,log_file+'-'+date+'.log')
+    shutil.move(log_tmp,log_file)
 
 if __name__ == '__main__':
     main()

@@ -35,7 +35,7 @@
 {% block content %}
 <div>
 {% if item.file %}
-    {% if public_access or user.is_staff %}
+    {% if access or user.is_staff %}
     <div id="rightcol" style="float: left; padding-bottom:0;">
         <div id="player_minimized" class="ts-skin-lab">
             <div class="wazing"></div>

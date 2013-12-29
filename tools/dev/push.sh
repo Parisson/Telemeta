@@ -4,10 +4,7 @@ git branch | tr -d \* | while read line
 do
     branch=${line/#\ }
 
-    echo "Push $branch to origin:"
     git push origin $branch
-
-    echo "Push $branch to github:"
     git push hub $branch
 
 done

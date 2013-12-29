@@ -37,7 +37,6 @@
 import mimetypes
 from telemeta.views.core import *
 
-
 class ItemView(object):
     """Provide Item web UI methods"""
 
@@ -60,7 +59,8 @@ class ItemView(object):
         return formats
 
     def item_previous_next(self, item):
-        # Get previous and next items
+        """Get previous and next items inside the collection of the item"""
+
         pks = []
         items = MediaItem.objects.filter(collection=item.collection)
         items = items.order_by('code', 'old_code')
@@ -96,6 +96,7 @@ class ItemView(object):
                         template='telemeta/mediaitem_detail.html'):
         """Show the details of a given item"""
 
+        # get item with one of its given marker_id
         if not public_id and marker_id:
             marker = MediaItemMarker.objects.get(public_id=marker_id)
             item_id = marker.item_id
@@ -103,8 +104,9 @@ class ItemView(object):
         else:
             item = MediaItem.objects.get(public_id=public_id)
 
-        item_public_access = item.public_access != 'none' or item.collection.public_access != 'none'
-        if not item_public_access and not (request.user.is_staff or request.user.is_superuser):
+        access = get_item_access(item, request.user)
+
+        if access == 'none':
             mess = ugettext('Access not allowed')
             title = ugettext('Item') + ' : ' + public_id + ' : ' + mess
             description = ugettext('Please login or contact the website administator to get a private access.')
@@ -121,15 +123,14 @@ class ItemView(object):
             grapher_id = getattr(settings, 'TELEMETA_DEFAULT_GRAPHER_ID', 'waveform')
 
         previous, next = self.item_previous_next(item)
+
         mime_type = self.item_analyze(item)
+
         #FIXME: use mimetypes.guess_type
         if 'quicktime' in mime_type:
             mime_type = 'video/mp4'
 
         playlists = get_playlists(request)
-        public_access = get_public_access(item.public_access, str(item.recorded_from_date).split('-')[0],
-                                                str(item.recorded_to_date).split('-')[0])
-
         related_media = MediaItemRelated.objects.filter(item=item)
         check_related_media(related_media)
         revisions = Revision.objects.filter(element_type='item', element_id=item.id).order_by('-time')
@@ -147,7 +148,7 @@ class ItemView(object):
                     'visualizers': graphers, 'visualizer_id': grapher_id,
                     'audio_export_enabled': self.export_enabled,
                     'previous' : previous, 'next' : next, 'marker': marker_id, 'playlists' : playlists,
-                    'public_access': public_access, 'width': width, 'height': height,
+                    'access': access, 'width': width, 'height': height,
                     'related_media': related_media, 'mime_type': mime_type, 'last_revision': last_revision,
                     'format': format,
                     })
@@ -156,6 +157,7 @@ class ItemView(object):
     def item_edit(self, request, public_id, template='telemeta/mediaitem_edit.html'):
         """Edit a given item"""
         item = MediaItem.objects.get(public_id=public_id)
+        access = get_item_access(item, request.user)
 
         graphers = []
         for grapher in self.graphers:
@@ -208,7 +210,7 @@ class ItemView(object):
                     'visualizers': graphers, 'visualizer_id': grapher_id,
                     'audio_export_enabled': self.export_enabled,
                     'forms': forms, 'previous' : previous,
-                    'next' : next, 'mime_type': mime_type,
+                    'next' : next, 'mime_type': mime_type, 'access': access,
                     })
 
     def related_media_item_stream(self, request, item_public_id, media_id):
@@ -236,12 +238,15 @@ class ItemView(object):
     @method_decorator(permission_required('telemeta.add_mediaitem'))
     def item_add(self, request, public_id=None, template='telemeta/mediaitem_add.html'):
         """Add an item"""
+        access = ''
+
         if public_id:
             collection = MediaCollection.objects.get(public_id=public_id)
             items = MediaItem.objects.filter(collection=collection)
             code = auto_code(items, collection.code)
             item = MediaItem(collection=collection, code=code)
             format, created = Format.objects.get_or_create(item=item)
+            access = get_item_access(item, request.user)
         else:
             item = MediaItem()
             format = Format()
@@ -265,7 +270,8 @@ class ItemView(object):
         forms = [item_form, format_form]
         hidden_fields = ['item-copied_from_item', 'format-item']
 
-        return render(request, template, {'item': item, 'forms': forms, 'hidden_fields': hidden_fields,})
+        return render(request, template, {'item': item, 'forms': forms, 'hidden_fields': hidden_fields,
+                                            'access': access, })
 
     @method_decorator(permission_required('telemeta.add_mediaitem'))
     def item_copy(self, request, public_id, template='telemeta/mediaitem_copy.html'):
@@ -322,10 +328,12 @@ class ItemView(object):
             item_form.code = item.code
             item_form.file = None
 
+        access = get_item_access(item, request.user)
         forms = [item_form, format_form]
         hidden_fields = ['item-copied_from_item', 'format-item']
 
-        return render(request, template, {'item': item, "forms": forms, 'hidden_fields': hidden_fields,})
+        return render(request, template, {'item': item, "forms": forms, 'hidden_fields': hidden_fields,
+                                            'access': access, })
 
     @method_decorator(permission_required('telemeta.delete_mediaitem'))
     def item_delete(self, request, public_id):
@@ -355,7 +363,7 @@ class ItemView(object):
             analyzers_sub = []
             graphers_sub = []
 
-            if item.file:
+            if item.file and os.path.exists(item.file.path):
                 decoder  = timeside.decoder.FileDecoder(item.file.path)
                 pipe = decoder
 
@@ -473,11 +481,9 @@ class ItemView(object):
         """Export a given media item in the specified format (OGG, FLAC, ...)"""
 
         item = MediaItem.objects.get(public_id=public_id)
-        public_access = get_public_access(item.public_access,
-                                          str(item.recorded_from_date).split('-')[0],
-                                          str(item.recorded_to_date).split('-')[0])
+        public_access = get_item_access(item, request.user)
 
-        if (not public_access or not extension in settings.TELEMETA_STREAMING_FORMATS) and \
+        if (not public_access == 'full' or not extension in settings.TELEMETA_STREAMING_FORMATS) and \
                     not (request.user.has_perm('telemeta.can_play_all_items') or request.user.is_superuser):
             mess = ugettext('Access not allowed')
             title = 'Item file : ' + public_id + '.' + extension + ' : ' + mess
