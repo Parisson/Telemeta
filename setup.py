@@ -21,7 +21,11 @@ setup(
         'sorl-thumbnail',
         'django-extensions',
         'docutils',
-        'django-notes',
+        'django-timezones',
+        'django-jqchat',
+        'psutil',
+        'pyyaml',
+        'python-ebml'
   ],
   platforms=['OS Independent'],
   license='CeCILL v2',

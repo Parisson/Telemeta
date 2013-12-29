@@ -210,10 +210,9 @@ class MediaItemQuerySet(CoreQuerySet):
         instruments = Instrument.objects.filter(name__icontains=name)
         aliases = InstrumentAlias.objects.filter(name__icontains=name)
         perf = []
-        if instruments or aliases:
-            performances = MediaItemPerformance.objects.filter(Q(instrument__in=instruments) | Q(alias__in=aliases))
-            for performance in performances:
-                perf.append(performance)
+        performances = MediaItemPerformance.objects.filter(Q(instrument__in=instruments) | Q(alias__in=aliases))
+        for performance in performances:
+            perf.append(performance)
         return self.filter(performances__in=perf).distinct()
 
 class MediaItemManager(CoreManager):
@@ -356,15 +355,15 @@ class MediaCollectionQuerySet(CoreQuerySet):
 
     def by_instrument(self, name):
         "Find collections by instrument"
-        from telemeta.models.instrument import Instrument
+        from telemeta.models.media import MediaItemPerformance
+        from telemeta.models.instrument import Instrument, InstrumentAlias
         instruments = Instrument.objects.filter(name__icontains=name)
+        aliases = InstrumentAlias.objects.filter(name__icontains=name)
         items = []
-        for instrument in instruments:
-            performances = instrument.performances.all()
-            for performance in performances:
-                items.append(performance.media_item)
+        performances = MediaItemPerformance.objects.filter(Q(instrument__in=instruments) | Q(alias__in=aliases))
+        for performance in performances:
+            items.append(performance.media_item)
         return self.filter(items__in=items).distinct()
-
 
 class MediaCollectionManager(CoreManager):
     "Manage collection queries"

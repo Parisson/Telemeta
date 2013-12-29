@@ -1,7 +1,7 @@
 {% extends "telemeta/base_xspf.xml" %}
 {% load telemeta_utils %}
 
-{% block listinfo %} 
+{% block listinfo %}
 {% with collection.to_dublincore.flatten as dc %}
   <creator>{{ dc.creator }}</creator>
   <title>{{ dc.title }}</title>
@@ -11,6 +11,8 @@
 
 {% block tracklist %}
 {% for item in collection.items.all %}
+ {% if item.file %}
+ {% if user|has_access:item == 'full' or perms.telemeta.can_play_all_items %}
     <track>
       <title>{{ item }}</title>
       <meta rel="type">mp3</meta>
@@ -18,6 +20,8 @@
       <duration>{{ item.computed_duration.as_seconds|mul:1000 }}</duration>
       <info>http://{{ host }}{% url telemeta-item-detail item.public_id %}</info>
     </track>
+ {% endif %}
+ {% endif %}
 {% endfor %}
 {% endblock %}
 

@@ -69,6 +69,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.syndication.views import Feed
 from django.core.servers.basehttp import FileWrapper
 from django.core.urlresolvers import reverse, reverse_lazy
+from django.contrib.contenttypes.models import ContentType
 
 from telemeta.models import *
 import telemeta.models
@@ -81,6 +82,7 @@ from telemeta.util.unicode import UnicodeWriter
 from telemeta.cache import TelemetaCache
 import pages
 from telemeta.forms import *
+import jqchat.models
 
 # Model type definition
 mods = {'item': MediaItem, 'collection': MediaCollection,
@@ -93,7 +95,7 @@ class FixedFileWrapper(FileWrapper):
         self.filelike.seek(0)
         return self
 
-def send_file(request, filename, content_type=None):
+def send_file(request, filename, content_type='image/jpeg'):
     """
     Send a file through Django without loading the whole file into
     memory at once. The FileWrapper will turn the file object into an
@@ -138,26 +140,52 @@ def stream_from_file(file):
             break
         yield chunk
 
-def get_public_access(access, year_from=None, year_to=None):
-    # Rolling publishing date : public access is given when time between recorded year
-    # and current year is over the settings value PUBLIC_ACCESS_PERIOD
-    if year_from and not year_from == 0:
-        year = year_from
-    elif year_to and not year_to == 0:
-        year = year_to
-    else:
-        year = 0
-    if access == 'full':
-        public_access = True
-    else:
-        public_access = False
+def get_item_access(item, user):
+    # Item access rules according to this workflow:
+    # https://docs.google.com/spreadsheet/ccc?key=0ArKCjajoOT-fdDhJSDZoaUhqdDJvVkY5U3BXUWpNT0E#gid=0
+
+    # Rolling publishing date : public access is automaticcaly given when time between recorded year
+    # and current year is over the settings value PUBLIC_ACCESS_PERIOD and if item.auto_period_access == True
+
+    if user.is_staff or user.is_superuser or user.has_perm('telemeta.can_play_all_items'):
+        access = 'full'
+
+    elif item.collection.public_access != 'mixed':
+        if user.is_authenticated() :
+            if item.collection.public_access == 'metadata' and item.collection.auto_period_access:
+                access = 'full'
+            else:
+                access = item.collection.public_access
+        else:
+            access = item.collection.public_access
+
+    elif item.collection.public_access == 'mixed':
+        if user.is_authenticated() :
+            if item.public_access == 'metadata' and item.auto_period_access:
+                access = 'full'
+            else:
+                access = item.public_access
+        else:
+            access = item.public_access
+
+    # Auto publish after a period given at settings.TELEMETA_PUBLIC_ACCESS_PERIOD
+    if access != 'full' and access != 'none' and (item.auto_period_access or item.collection.auto_period_access):
+        year_from = str(item.recorded_from_date).split('-')[0]
+        year_to = str(item.recorded_to_date).split('-')[0]
+
+        if year_from and not year_from == 0:
+            year = year_from
+        elif year_to and not year_to == 0:
+            year = year_to
+        else:
+            year = 0
+
         if year and not year == 'None':
             year_now = datetime.datetime.now().strftime("%Y")
             if int(year_now) - int(year) >= settings.TELEMETA_PUBLIC_ACCESS_PERIOD:
-                public_access = True
-        else:
-            public_access = False
-    return public_access
+                access = 'full'
+
+    return access
 
 def get_revisions(nb, user=None):
     last_revisions = Revision.objects.order_by('-time')
@@ -225,3 +253,15 @@ def auto_code(resources, base_code):
         index += 1
     return code
 
+
+def get_room(content_type=None, id=None, name=None):
+    rooms = jqchat.models.Room.objects.filter(content_type=content_type,
+                                                object_id=id)
+    if not rooms:
+        room = jqchat.models.Room.objects.create(content_type=content_type,
+                                          object_id=id,
+                                          name=name[:20])
+    else:
+        room = rooms[0]
+    return room
+    

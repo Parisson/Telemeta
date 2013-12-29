@@ -60,8 +60,8 @@ resource_view = ResourceView()
 
 # query sets for Django generic views
 all_items = { 'queryset': MediaItem.objects.enriched().order_by('code', 'old_code') }
-all_items_unpublished = { 'queryset': MediaItem.objects.filter(code__contains='_I_'), }
-all_items_published = { 'queryset': MediaItem.objects.filter(code__contains='_E_'), }
+all_items_unpublished = { 'queryset': MediaItem.objects.filter(collection__code__contains='_I_').order_by('code', 'old_code'), }
+all_items_published = { 'queryset': MediaItem.objects.filter(collection__code__contains='_E_').order_by('code', 'old_code'), }
 all_items_sound = { 'queryset': MediaItem.objects.sound().order_by('code', 'old_code') }
 all_collections = { 'queryset': MediaCollection.objects.enriched(), }
 all_collections_unpublished = { 'queryset': MediaCollection.objects.filter(code__contains='_I_'), }
@@ -333,6 +333,8 @@ urlpatterns = patterns('',
     # FIXME:need to move export dir from the cache
     url(r'^media/cache/(?P<path>.*)$', 'django.views.static.serve', {
             'document_root': settings.TELEMETA_CACHE_DIR,}),
+
+    url(r'^', include('jqchat.urls')),
 )
 
 

@@ -52,8 +52,6 @@ class CollectionView(object):
             messages.error(request, title)
             return render(request, 'telemeta/messages.html', {'description' : description})
 
-        public_access = get_public_access(collection.public_access, collection.recorded_from_year,
-                                                collection.recorded_to_year)
         playlists = get_playlists(request)
 
         related_media = MediaCollectionRelated.objects.filter(collection=collection)
@@ -67,7 +65,7 @@ class CollectionView(object):
             last_revision = None
 
         return render(request, template, {'collection': collection, 'playlists': playlists,
-                'public_access': public_access, 'items': items, 'related_media': related_media,
+                'items': items, 'related_media': related_media,
                 'parents': parents, 'last_revision': last_revision })
 
     @method_decorator(permission_required('telemeta.change_mediacollection'))
