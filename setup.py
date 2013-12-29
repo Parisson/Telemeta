@@ -23,6 +23,9 @@ setup(
         'docutils',
         'django-timezones',
         'django-jqchat',
+        'psutil',
+        'pyyaml',
+        'python-ebml'
   ],
   platforms=['OS Independent'],
   license='CeCILL v2',
