@@ -302,7 +302,7 @@ urlpatterns = patterns('',
 
     # Desk
     url(r'^desk/lists/$', home_view.lists, name="telemeta-desk-lists"),
-    url(r'^desk/profile/(?P<username>[A-Za-z0-9._-]+)/$', profile_view.profile_detail, name="telemeta-desk-profile"),
+    url(r'^desk/profile/(?P<username>[A-Za-z0-9@+._-]+)/$', profile_view.profile_detail, name="telemeta-desk-profile"),
     url(r'^desk/home/$', home_view.home, name="telemeta-desk-home"),
 
     # Profiles

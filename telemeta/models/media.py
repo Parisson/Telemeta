@@ -52,6 +52,7 @@ from telemeta.models.language import *
 from telemeta.models.format import *
 from telemeta.util.kdenlive.session import *
 from django.db import models
+from django.conf import settings
 
 
 # Special code regex of collections for the branch
