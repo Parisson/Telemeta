@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-17 18:20+0100\n"
+"POT-Creation-Date: 2013-12-30 23:15+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Guillaume Pellerin <yomguy@parisson.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,36 +25,36 @@ msgstr "Durée"
 msgid "Enter a valid duration in HH:MM[:ss] format."
 msgstr "Entrez une durée valide au format HH:MM[:ss]"
 
-#: models/enum.py:41 models/enum.py:139 models/media.py:555
+#: models/enum.py:43 models/enum.py:144 models/media.py:555
 #: models/system.py:104
 msgid "value"
 msgstr "valeur"
 
-#: models/enum.py:59 models/media.py:261
+#: models/enum.py:59 models/media.py:252
 msgid "archive format"
 msgstr "format du support"
 
-#: models/enum.py:66 models/media.py:243
+#: models/enum.py:66 models/media.py:234
 msgid "secondary edition"
 msgstr "réédition"
 
-#: models/enum.py:73 models/media.py:237
+#: models/enum.py:73 models/media.py:228
 msgid "mode of acquisition"
 msgstr "mode d'acquisition"
 
-#: models/enum.py:81 models/media.py:240
+#: models/enum.py:81 models/media.py:231
 msgid "record author"
 msgstr "rédacteur fiche"
 
-#: models/enum.py:88 models/media.py:247
+#: models/enum.py:88 models/media.py:238
 msgid "record writer"
 msgstr "saisie fiche"
 
-#: models/enum.py:95 models/media.py:233
+#: models/enum.py:95 models/media.py:224
 msgid "legal rights"
 msgstr "droit d'utilisation"
 
-#: models/enum.py:102 models/media.py:211
+#: models/enum.py:102 models/media.py:202
 msgid "recording context"
 msgstr "contexte d'enregistrement"
 
@@ -62,19 +62,19 @@ msgstr "contexte d'enregistrement"
 msgid "A/D conversion"
 msgstr "Conversion A/N"
 
-#: models/enum.py:116 models/media.py:377
+#: models/enum.py:116 models/media.py:368
 msgid "vernacular style"
 msgstr "style vernaculaire"
 
-#: models/enum.py:123 models/media.py:379
+#: models/enum.py:123 models/media.py:370
 msgid "generic style"
 msgstr "style générique"
 
-#: models/enum.py:127 models/media.py:526
+#: models/enum.py:130 models/media.py:526
 msgid "keyword"
 msgstr "Mot-clé"
 
-#: models/enum.py:137 models/media.py:222
+#: models/enum.py:137 models/media.py:213
 msgid "publisher / status"
 msgstr "éditeur / statut"
 
@@ -82,7 +82,7 @@ msgstr "éditeur / statut"
 msgid "publisher"
 msgstr "éditeur"
 
-#: models/enum.py:159 models/enum.py:165 models/media.py:367
+#: models/enum.py:159 models/enum.py:165 models/media.py:358
 msgid "population / social group"
 msgstr "population / groupe social"
 
@@ -116,15 +116,15 @@ msgstr "marque de bande"
 msgid "number of channels"
 msgstr "Nombre de pistes"
 
-#: models/enum.py:222 models/media.py:384
+#: models/enum.py:222 models/media.py:375
 msgid "organization"
 msgstr "organisation"
 
-#: models/enum.py:229 models/media.py:388
+#: models/enum.py:229 models/media.py:379
 msgid "rights"
 msgstr "droits"
 
-#: models/enum.py:236 models/media.py:358
+#: models/enum.py:236 models/media.py:349
 msgid "topic"
 msgstr "discipline"
 
@@ -139,7 +139,7 @@ msgstr "item"
 msgid "physical format"
 msgstr "nature du support original"
 
-#: models/format.py:62 models/media.py:393
+#: models/format.py:62 models/media.py:384
 msgid "original code"
 msgstr "cote originale"
 
@@ -227,7 +227,7 @@ msgstr "cadre"
 msgid "type"
 msgstr "type"
 
-#: models/language.py:55 models/media.py:245
+#: models/language.py:55 models/media.py:236
 msgid "comment"
 msgstr "commentaire"
 
@@ -260,7 +260,7 @@ msgid "authoritative"
 msgstr "officiel"
 
 #: models/location.py:112 models/location.py:170 models/location.py:185
-#: models/media.py:363
+#: models/media.py:354
 msgid "location"
 msgstr "lieu"
 
@@ -284,76 +284,72 @@ msgstr "lieu ancêtre"
 msgid "location relations"
 msgstr "lieux relations"
 
-#: models/media.py:68 models/media.py:71
+#: models/media.py:69 models/media.py:72
 msgid "none"
 msgstr "accès réservé"
 
-#: models/media.py:78 models/media.py:81
+#: models/media.py:69 models/media.py:72
 msgid "metadata"
 msgstr "métadonnées"
 
-#: models/media.py:79
+#: models/media.py:70
 msgid "mixed"
 msgstr "mixte"
 
-#: models/media.py:79 models/media.py:82
+#: models/media.py:70 models/media.py:73
 msgid "full"
 msgstr "complet"
 
-#: models/media.py:84
+#: models/media.py:75
 msgid "broken"
 msgstr "cassé"
 
-#: models/media.py:84
+#: models/media.py:75
 msgid "pending"
 msgstr "en attente"
 
-#: models/media.py:84
+#: models/media.py:75
 msgid "processing"
 msgstr "en cours"
 
-#: models/media.py:85
+#: models/media.py:76
 msgid "done"
 msgstr "fait"
 
-#: models/media.py:85
+#: models/media.py:76
 msgid "ready"
 msgstr "prêt"
 
-#: models/media.py:102
+#: models/media.py:93
 msgid "Metadata only"
 msgstr "Métadonnées uniquement"
 
-#: models/media.py:104
+#: models/media.py:95
 msgid "Sound and metadata"
 msgstr "Son et métadonnées"
 
-#: models/media.py:106
+#: models/media.py:97
 msgid "Private data"
 msgstr "Données privées"
 
-#: models/media.py:107 models/media.py:126
+#: models/media.py:98 models/media.py:117 models/media.py:220
 msgid "public access"
 msgstr "accès public"
 
-#: models/media.py:113 models/media.py:143 models/media.py:198
+#: models/media.py:114 models/media.py:143 models/media.py:198
 #: models/media.py:341 models/media.py:574 models/media.py:590
 #: models/media.py:622
 msgid "title"
 msgstr "titre"
 
-#: models/media.py:114 models/media.py:145 models/media.py:591
+#: models/media.py:115 models/media.py:145 models/media.py:591
 #: models/media.py:624
 msgid "description"
 msgstr "description"
 
-#: models/media.py:125 models/media.py:255 models/media.py:392
+#: models/media.py:116 models/media.py:246 models/media.py:383
 msgid "code"
 msgstr "cote"
-
-#: models/media.py:116 models/media.py:197
-msgid "reference"
-msgstr "référence"
 
 #: models/media.py:144 models/media.py:623 models/media.py:646
 #: models/media.py:680 models/system.py:116
@@ -364,11 +360,11 @@ msgstr ""
 msgid "mime_type"
 msgstr "type mime"
 
-#: models/media.py:156
+#: models/media.py:147
 msgid "url"
 msgstr ""
 
-#: models/media.py:157
+#: models/media.py:148
 msgid "credits"
 msgstr "crédits"
 
@@ -376,15 +372,15 @@ msgstr "crédits"
 msgid "file"
 msgstr "fichier"
 
-#: models/media.py:206
+#: models/media.py:197
 msgid "reference"
 msgstr "référence"
 
-#: models/media.py:208 models/media.py:351
+#: models/media.py:199 models/media.py:342
 msgid "original title / translation"
 msgstr "titre original / traduction"
 
-#: models/media.py:209
+#: models/media.py:200
 msgid "depositor / contributor"
 msgstr "déposant / contributeur"
 
@@ -396,87 +392,83 @@ msgstr "année d'enregistrement (depuis)"
 msgid "recording year (until)"
 msgstr "année d'enregistrement (jusqu'à)"
 
-#: models/media.py:214
+#: models/media.py:205
 msgid "year published"
 msgstr "année de parution"
 
-#: models/media.py:220 models/media.py:395
+#: models/media.py:211 models/media.py:386
 msgid "recordist"
 msgstr "collecteur"
 
-#: models/media.py:224
+#: models/media.py:215
 msgid "publisher collection"
 msgstr "collection éditeur"
 
-#: models/media.py:225
+#: models/media.py:216
 msgid "publisher serial number"
 msgstr "numéro dans la série"
 
-#: models/media.py:226
+#: models/media.py:217
 msgid "author of published notice"
 msgstr "auteur de la notice éditée"
 
-#: models/media.py:227
+#: models/media.py:218
 msgid "bibliographic references"
 msgstr "références bibliographiques"
 
-#: models/media.py:228
+#: models/media.py:219
 msgid "document type"
 msgstr "type de document"
 
-#: models/media.py:229 models/media.py:385
-msgid "access status"
-msgstr "statut d'accès"
-
-#: models/media.py:231 models/media.py:389
+#: models/media.py:222 models/media.py:380
 msgid "automatic access after a rolling period"
 msgstr "Accès automatique après la data glissante"
 
-#: models/media.py:238
+#: models/media.py:229
 msgid "CNRS depositor"
 msgstr "déposant CNRS"
 
-#: models/media.py:241
+#: models/media.py:232
 msgid "related documentation"
 msgstr "documentation associée"
 
-#: models/media.py:244
+#: models/media.py:235
 msgid "copies"
 msgstr "autres exemplaires"
 
-#: models/media.py:248
+#: models/media.py:239
 msgid "archiver notes"
 msgstr "notes de l'archiviste"
 
-#: models/media.py:249
+#: models/media.py:240
 msgid "items finished"
 msgstr "fiches items faites"
 
-#: models/media.py:250
+#: models/media.py:241
 msgid "recordist identical to depositor"
 msgstr "collecteur identique au déposant"
 
-#: models/media.py:251
+#: models/media.py:242
 msgid "published"
 msgstr "édité"
 
-#: models/media.py:252
+#: models/media.py:243
 msgid "conservation site"
 msgstr "lieu de conservation"
 
-#: models/media.py:257
+#: models/media.py:248
 msgid "old code"
 msgstr "ancienne cote"
 
-#: models/media.py:258 models/media.py:413
+#: models/media.py:249 models/media.py:404
 msgid "approximative duration"
 msgstr "durée"
 
-#: models/media.py:259
+#: models/media.py:250
 msgid "number of components (medium / piece)"
 msgstr "nb de composants (support / pièce)"
 
-#: models/media.py:263
+#: models/media.py:254
 msgid "digitization"
 msgstr "numérisation"
 
@@ -484,15 +476,15 @@ msgstr "numérisation"
 msgid "status"
 msgstr "état"
 
-#: models/media.py:265
+#: models/media.py:256
 msgid "a_informer_07_03"
 msgstr "a_informer_07_03"
 
-#: models/media.py:300
+#: models/media.py:291
 msgid "states / nations"
 msgstr "états / nations"
 
-#: models/media.py:314
+#: models/media.py:305
 msgid "populations / social groups"
 msgstr "populations / groupes sociaux"
 
@@ -500,107 +492,111 @@ msgstr "populations / groupes sociaux"
 msgid "computed duration"
 msgstr "durée calculée"
 
-#: models/media.py:330 models/media.py:336 models/media.py:353
+#: models/media.py:321 models/media.py:327 models/media.py:344
 msgid "collection"
 msgstr "collection"
 
-#: models/media.py:340 models/media.py:341
+#: models/media.py:331 models/media.py:332
 msgid "collection related media"
 msgstr "média associés à la collection"
 
-#: models/media.py:354
+#: models/media.py:345
 msgid "recording date (from)"
 msgstr "date d'enregistrement (depuis)"
 
-#: models/media.py:355
+#: models/media.py:346
 msgid "recording date (until)"
 msgstr "date d'enregistrement (jusqu'à)"
 
-#: models/media.py:357
+#: models/media.py:348
 msgid "scientist"
 msgstr "reponsable scientifique"
 
-#: models/media.py:359
+#: models/media.py:350
 msgid "summary"
 msgstr "résumé"
 
-#: models/media.py:360
+#: models/media.py:351
 msgid "remarks"
 msgstr "remarques"
 
-#: models/media.py:364
+#: models/media.py:355
 msgid "location details"
 msgstr "précisions lieu"
 
-#: models/media.py:365
+#: models/media.py:356
 msgid "cultural area"
 msgstr "aire culturelle"
 
-#: models/media.py:368
+#: models/media.py:359
 msgid "language"
 msgstr "langue"
 
-#: models/media.py:370
+#: models/media.py:361
 msgid "ISO language"
 msgstr "Langue ISO"
 
-#: models/media.py:372
+#: models/media.py:363
 msgid "comments / ethnographic context"
 msgstr "commentaires / contexte ethnographique"
 
-#: models/media.py:373
+#: models/media.py:364
 msgid "moda_execut"
 msgstr "moda_execut"
 
-#: models/media.py:380
+#: models/media.py:371
 msgid "author / compositor"
 msgstr "auteur / compositeur"
 
-#: models/media.py:381
+#: models/media.py:372
 msgid "contributor"
 msgstr "intervenant"
 
-#: models/media.py:387
+#: models/media.py:376
+msgid "access status"
+msgstr "statut d'accès"
+
+#: models/media.py:378
 msgid "depositor"
 msgstr "déposant"
 
-#: models/media.py:394
+#: models/media.py:385
 msgid "item number"
 msgstr "n° de l'item"
 
-#: models/media.py:396
+#: models/media.py:387
 msgid "digitalist"
 msgstr "opérateur de numérisation"
 
-#: models/media.py:397
+#: models/media.py:388
 msgid "collector"
 msgstr "collecteur"
 
-#: models/media.py:398
+#: models/media.py:389
 msgid "collector selection"
 msgstr "sélection collecteur"
 
-#: models/media.py:399
+#: models/media.py:390
 msgid "collector as in collection"
 msgstr "collecteur identique à la collection"
 
-#: models/media.py:400
+#: models/media.py:391
 msgid "digitization date"
 msgstr "date de numérisation"
 
-#: models/media.py:401
+#: models/media.py:392
 msgid "publishing date"
 msgstr "date de création du support édité"
 
-#: models/media.py:402
+#: models/media.py:393
 msgid "creator reference"
 msgstr "référence"
 
-#: models/media.py:403
+#: models/media.py:394
 msgid "published references"
 msgstr "références éditées"
 
-#: models/media.py:405
+#: models/media.py:396
 msgid "copy of"
 msgstr "copie de"
 
@@ -856,7 +852,7 @@ msgid "g:i A,M j,n/j/y"
 msgstr ""
 
 #: templates/postman/base_folder.html:49 templates/postman/view.html:25
-#: templates/telemeta/collection_detail.html:218
+#: templates/telemeta/collection_detail.html:220
 #: templates/telemeta/collection_detail_dc.html:25
 #: templates/telemeta/lists.html:58
 #: templates/telemeta/mediaitem_detail.html:341
@@ -1014,7 +1010,7 @@ msgid "Administration"
 msgstr "Administration"
 
 #: templates/telemeta/admin.html:14 templates/telemeta/admin_general.html:5
-#: templates/telemeta/base.html:117
+#: templates/telemeta/base.html:121
 msgid "General"
 msgstr "Générale"
 
@@ -1042,10 +1038,6 @@ msgstr "Titre"
 #: templates/telemeta/admin_enumerations.html:24
 msgid "No enumerations"
 msgstr "Aucune énumération"
-
-#: templates/telemeta/admin_general.html:5 templates/telemeta/base.html:121
-msgid "General"
-msgstr "Générale"
 
 #: templates/telemeta/admin_instruments.html:6
 #: templates/telemeta/admin_users.html:6 templates/telemeta/base.html:116
@@ -1090,19 +1082,23 @@ msgstr "Bureau"
 msgid "Lists"
 msgstr "Listes"
 
-#: templates/telemeta/base.html:105
+#: templates/telemeta/base.html:105 templates/telemeta/breadcrumbs.html:4
+#: templates/telemeta/inc/breadcrumbs.html:5
 msgid "Fonds"
 msgstr ""
 
-#: templates/telemeta/base.html:106
+#: templates/telemeta/base.html:106 templates/telemeta/breadcrumbs.html:5
+#: templates/telemeta/inc/breadcrumbs.html:6
 msgid "Corpus"
 msgstr ""
 
-#: templates/telemeta/base.html:107
+#: templates/telemeta/base.html:107 templates/telemeta/breadcrumbs.html:6
+#: templates/telemeta/inc/breadcrumbs.html:7
 msgid "Collections"
 msgstr "Collections"
 
-#: templates/telemeta/base.html:108
+#: templates/telemeta/base.html:108 templates/telemeta/breadcrumbs.html:7
+#: templates/telemeta/inc/breadcrumbs.html:8
 msgid "Items"
 msgstr "Items"
 
@@ -1277,35 +1273,35 @@ msgstr "Collecteur"
 msgid "Bibliographic references"
 msgstr "Références bibliographiques"
 
-#: templates/telemeta/collection_detail.html:152
+#: templates/telemeta/collection_detail.html:154
 #: templates/telemeta/mediaitem_detail.html:276
 msgid "Archiving data"
 msgstr "Données d'archivage"
 
-#: templates/telemeta/collection_detail.html:158
+#: templates/telemeta/collection_detail.html:160
 msgid "Related documentation"
 msgstr "Documentation associée"
 
-#: templates/telemeta/collection_detail.html:162
+#: templates/telemeta/collection_detail.html:164
 #: templates/telemeta/mediaitem_detail.html:308
 msgid "Comments"
 msgstr "Commentaires"
 
-#: templates/telemeta/collection_detail.html:176
+#: templates/telemeta/collection_detail.html:178
 #: templates/telemeta/mediaitem_detail.html:293
 msgid "Technical data"
 msgstr "Données techniques"
 
-#: templates/telemeta/collection_detail.html:181
+#: templates/telemeta/collection_detail.html:183
 #: templates/telemeta/mediaitem_detail.html:296
 msgid "Media type"
 msgstr "Type de media"
 
-#: templates/telemeta/collection_detail.html:181
+#: templates/telemeta/collection_detail.html:183
 msgid "Audio"
 msgstr "Audio"
 
-#: templates/telemeta/collection_detail.html:186
+#: templates/telemeta/collection_detail.html:188
 #: templates/telemeta/geo_countries.html:16
 msgid "Number of items"
 msgstr "Nombre d'items"
