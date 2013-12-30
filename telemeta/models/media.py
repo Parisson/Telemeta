@@ -775,6 +775,13 @@ class MediaCorpus(MediaBaseResource):
     @property
     def public_id(self):
         return self.code
+    
+    @property
+    def has_mediafile(self):
+        for child in self.children.all():
+            if child.has_mediafile:
+                return True
+        return False
 
     class Meta(MetaCore):
         db_table = 'media_corpus'
@@ -796,6 +803,13 @@ class MediaFonds(MediaBaseResource):
     @property
     def public_id(self):
         return self.code
+
+    @property
+    def has_mediafile(self):
+        for child in self.children.all():
+            if child.has_mediafile:
+                return True
+        return False
 
     class Meta(MetaCore):
         db_table = 'media_fonds'
