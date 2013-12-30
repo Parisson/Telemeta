@@ -138,8 +138,9 @@ class AdminView(object):
         vars["enumeration_name"] = enumeration._meta.verbose_name
         vars["enumeration_record"] = record
         vars["enumeration_records"] = enumeration.objects.all()
-        vars['room'] = get_room(name=record._meta.verbose_name, content_type=content_type,
-                                   id=record.id)
+        vars['room'] = get_room(content_type=content_type,
+                                   id=record.id,
+                                   name=record.value)
         return render(request, 'telemeta/enumeration_edit_value.html', vars)
 
     @method_decorator(permission_required('telemeta.change_keyword'))

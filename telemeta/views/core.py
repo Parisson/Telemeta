@@ -260,7 +260,7 @@ def get_room(content_type=None, id=None, name=None):
     if not rooms:
         room = jqchat.models.Room.objects.create(content_type=content_type,
                                           object_id=id,
-                                          name=name[:20])
+                                          name=name[:254])
     else:
         room = rooms[0]
     return room

@@ -270,6 +270,11 @@ input[type=text], input[type=password], input.textwidget { padding: .25em .1em }
 input[type=text]:focus, input[type=password]:focus, input.textwidget:focus, textarea:focus {
     border-color: #aaa;
 }
+.infos input[type=text], .field input[type=text], .infos textarea{
+    outline: none !important;
+    width: 600px;
+}
+
 option { border-bottom: 1px dotted #d7d7d7; }
 fieldset { border: 1px solid #d7d7d7; padding: .5em; margin: 0 }
 fieldset.iefix { background: transparent; border: none; padding: 0; margin: 0 }
@@ -1222,11 +1227,6 @@ a.image-link {
 a:focus,div:focus{
     -moz-outline: 1px dotted #999  !important;
     outline: #999 dotted 1px;  /*!important;*/
-}
-
-.infos input, .infos textarea{
-    outline: none !important;
-    width: 600px;
 }
 
 .related_media {
