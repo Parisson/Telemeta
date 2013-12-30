@@ -13,7 +13,7 @@
     <th class="highlight">{% trans "Title" %}</th>
     <th>{% trans "Description" %}</th>
     <th>{% trans "Code" %}</th>
-    <th>{% trans "Reference" %}</th>
+    <th>{% trans "Sound" %}</th>
 </tr>
 {% for resource in resources %}
 <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
@@ -22,7 +22,10 @@
     </td>
     <td>{{ resource.description }}</td>
     <td>{{ resource.code }}</td>
-    <td>{{ resource.reference }}</td>
+    <td>{% if resource.has_mediafile %}
+       <img src="{{ STATIC_URL }}telemeta/images/ok.png" alt="yes" style="vertical-align:middle" />
+      {% endif %}
+    </td>
 </tr>
 {% endfor %}
 </table>
