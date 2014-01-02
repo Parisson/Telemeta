@@ -279,8 +279,10 @@ Item : <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
                 {% dl_field item "old_code" %}
                 {% dl_field item "track" %}
                 {% dl_field item "creator_reference" %}
-                <dt>{% trans "Published references" %}</dt>
-                <dd>{{ item.external_references|html_line_break|safe }}</dd>
+                {% if item.external_references %}
+                 <dt>{% trans "Published references" %}</dt>
+                 <dd>{{ item.external_references|html_line_break|safe }}</dd>
+                {% endif %}
                 <dt>{% trans "Remarks" %}</dt>
                 <dd>{{ item.comment|html_line_break|safe }}</dd>
             </dl>
