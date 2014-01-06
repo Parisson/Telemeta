@@ -15,7 +15,6 @@
     <th class="highlight">{% trans "Title" %}</th>
     <th>{% trans "Description" %}</th>
     <th>{% trans "Code" %}</th>
-    <th>{% trans "Reference" %}</th>
     <th>{% trans "Sound" %}</th>
 </tr>
 {% for child in children %}
@@ -26,7 +25,6 @@
     </td>
     <td>{{ child.description }}</td>
     <td>{{ child.code }}</td>
-    <td>{{ child.reference }}</td>
     <td>
       {% if child.has_mediafile %}
        <img src="{{ STATIC_URL }}telemeta/images/ok.png" alt="yes" style="vertical-align:middle" />
