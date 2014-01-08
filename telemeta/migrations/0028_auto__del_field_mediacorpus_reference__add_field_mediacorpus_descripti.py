@@ -24,6 +24,15 @@ class Migration(SchemaMigration):
                       self.gf('telemeta.models.core.TextField')(default='', blank=True),
                       keep_default=False)
 
+        if not db.dry_run:
+            from telemeta.models import MediaFonds, MediaCorpus
+            for corpus in MediaCorpus.objects.all():
+                corpus.descriptions = corpus.description
+                corpus.save()
+
+            for fonds in MediaFonds.objects.all():
+                fonds.descriptions = fonds.description
+                fonds.save()
 
     def backwards(self, orm):
         # Adding field 'MediaCorpus.reference'
@@ -562,3 +571,5 @@ class Migration(SchemaMigration):
     }
 
     complete_apps = ['telemeta']
+
+
