@@ -20,7 +20,7 @@
     <td class="highlight">
         <a href="{% url telemeta-resource-detail type resource.public_id %}">{{ resource.title }}</a>
     </td>
-    <td>{{ resource.description }}</td>
+    <td>{{ resource.descriptions }}</td>
     <td>{{ resource.code }}</td>
     <td>{% if resource.has_mediafile %}
        <img src="{{ STATIC_URL }}telemeta/images/ok.png" alt="yes" style="vertical-align:middle" />

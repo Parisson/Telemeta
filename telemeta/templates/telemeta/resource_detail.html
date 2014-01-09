@@ -60,7 +60,7 @@ jQuery(document).ready(function(){
         {% block general_info %}
             <dl class="listing">
               {% for field in resource.get_fields %}
-               {% if "id" in field.name %}
+               {% if "id" in field.name or "description" == field.name %}
                 {{ field.label_tag.as_hidden }}{{ field.as_hidden }}
                {% else %}
                 {% dl_field resource field.name %}
