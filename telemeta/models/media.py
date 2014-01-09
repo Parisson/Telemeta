@@ -56,15 +56,24 @@ from django.conf import settings
 
 
 # Special code regex of collections for the branch
-collection_published_code_regex   = 'CNRSMH_E_[0-9]{4}(?:_[0-9]{3}){2}'
-collection_unpublished_code_regex = 'CNRSMH_I_[0-9]{4}_[0-9]{3}'
-collection_code_regex             = '(?:%s|%s)' % (collection_published_code_regex,
-                                                    collection_unpublished_code_regex)
+collection_published_code_regex = getattr(settings, 'COLLECTION_PUBLISHED_CODE_REGEX', '[A-Za-z0-9._-]*')
+collection_unpublished_code_regex = getattr(settings, 'COLLECTION_UNPUBLISHED_CODE_REGEX', '[A-Za-z0-9._-]*')
 
-# Special code regex of items for the branch
-item_published_code_regex    = collection_published_code_regex + '(?:_[0-9]{2,3}){1,2}'
-item_unpublished_code_regex  = collection_unpublished_code_regex + '_[0-9]{2,3}(?:_[0-9]{2,3}){0,2}'
-item_code_regex              = '(?:%s|%s)' % (item_published_code_regex, item_unpublished_code_regex)
+# CREM
+#collection_published_code_regex   = 'CNRSMH_E_[0-9]{4}(?:_[0-9]{3}){2}'
+#collection_unpublished_code_regex = 'CNRSMH_I_[0-9]{4}_[0-9]{3}'
+
+collection_code_regex = '(?:%s|%s)' % (collection_published_code_regex,
+                                       collection_unpublished_code_regex)
+
+item_published_code_regex = getattr(settings, 'ITEM_PUBLISHED_CODE_REGEX', '[A-Za-z0-9._-]*')
+item_unpublished_code_regex = getattr(settings, 'ITEM_UNPUBLISHED_CODE_REGEX', '[A-Za-z0-9._-]*')
+
+# CREM
+# item_published_code_regex    = collection_published_code_regex + '(?:_[0-9]{2,3}){1,2}'
+# item_unpublished_code_regex  = collection_unpublished_code_regex + '_[0-9]{2,3}(?:_[0-9]{2,3}){0,2}'
+
+item_code_regex = '(?:%s|%s)' % (item_published_code_regex, item_unpublished_code_regex)
 
 PUBLIC_ACCESS_CHOICES = (('none', _('none')), ('metadata', _('metadata')),
                          ('mixed', _('mixed')), ('full', _('full')))
@@ -112,7 +121,8 @@ class MediaBaseResource(MediaResource):
     "Describe a media base resource"
 
     title                 = CharField(_('title'), required=True)
-    description           = TextField(_('description'))
+    description           = CharField(_('description_old'))
+    descriptions          = TextField(_('description'))
     code                  = CharField(_('code'), unique=True, required=True)
     public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES,
                                       max_length=16, default="metadata")
@@ -216,8 +226,8 @@ class MediaCollection(MediaResource):
     publisher_serial      = CharField(_('publisher serial number'))
     booklet_author        = CharField(_('author of published notice'))
     external_references   = TextField(_('bibliographic references'))
-    doctype_code          = IntegerField(_('document type'), null=True, blank=True)
-    public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES,
+    doctype_code          = IntegerField(_('document type'))
+    public_access         = CharField(_('access status'), choices=PUBLIC_ACCESS_CHOICES,
                                       max_length=16, default="metadata")
     auto_period_access    = BooleanField(_('automatic access after a rolling period'), default=True)
     legal_rights          = WeakForeignKey('LegalRight', related_name="collections",
@@ -418,19 +428,18 @@ class MediaItem(MediaResource):
 
     @property
     def mime_type(self):
-        if not self.mimetype or self.mimetype == 'none':
+        if not self.mimetype:
             if self.file:
-                print self.file.path
                 if os.path.exists(self.file.path):
                     self.mimetype = mimetypes.guess_type(self.file.path)[0]
                     self.save()
                     return self.mimetype
                 else:
-                    return ''
+                    return 'none'
             else:
-                return ''
+                return 'none'
         else:
-            return self.mimetype
+            return _('none')
 
     class Meta(MetaCore):
         db_table = 'media_items'
