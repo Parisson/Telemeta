@@ -121,7 +121,8 @@ class MediaBaseResource(MediaResource):
     "Describe a media base resource"
 
     title                 = CharField(_('title'), required=True)
-    description           = TextField(_('description'))
+    description           = CharField(_('description_old'))
+    descriptions          = TextField(_('description'))
     code                  = CharField(_('code'), unique=True, required=True)
     public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES,
                                       max_length=16, default="metadata")
