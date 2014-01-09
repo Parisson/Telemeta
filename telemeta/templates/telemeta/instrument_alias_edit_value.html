@@ -1,0 +1,68 @@
+{% extends "telemeta/instrument_alias_edit.html" %}
+{% load i18n %}
+
+{% block extra_javascript %}
+<script type="text/javascript">
+$(document).ready(function(){
+    InitChatWindow("{% url jqchat_ajax room.id %}", null);
+    });
+</script>
+{% endblock extra_javascript %}
+
+{% block tabcontents %}
+
+{% block chat %}
+  <div id="module-set" style="width: 33%;">
+      {% if room %}
+        {% with "Notes" as title %}
+          {% include "telemeta/inc/chat_room.html" %}
+        {% endwith %}
+      {% endif %}
+ </div>
+{% endblock chat %}
+
+ <h4>{% trans "Instruments" %}</h4>
+ <form class="mod" id="addinstru" method="post"
+    action="{% url telemeta-instrument-alias-record-update instrument.id %}">{% csrf_token %}
+  <fieldset>
+   <legend>{% trans "Modify an entry" %}</legend>
+   <div class="field">
+    <label>{% trans "Name" %}: <input type="text" name="value" value="{{instrument.name}}" /></label>
+
+   </div>
+   <br />
+   <div class="buttons">
+        <a href="#" class="component_icon button icon_save"
+   onclick="document.getElementById('addinstru').submit(); return false;">{% trans "Save" %}</a>
+        <a href="{% url telemeta-instrument-alias-edit %}"
+           class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+   </div>
+  </fieldset>
+ </form>
+
+<form class="mod" id="replinstru" method="post"
+    action="{% url telemeta-instrument-alias-record-replace instrument.id %}">{% csrf_token %}
+  <fieldset>
+   <legend>{% trans "Replace by" %}</legend>
+   <div class="field">
+    <select name="value">
+    {% for record in instruments %}
+      <option value="{{ record.id }}" />{{ record.name }}</option>
+    {% endfor %}
+    </select>
+    <input type="checkbox" name="delete" value="delete"> {% trans "delete value after replacing" %}
+   </div>
+   <br />
+   <div class="buttons">
+        <a href="#" class="component_icon button icon_save"
+   onclick="document.getElementById('replinstru').submit(); return false;">{% trans "Replace" %}</a>
+        <a href="{% url telemeta-instrument-alias-edit %}"
+           class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+   </div>
+  </fieldset>
+ </form>
+ 
+
+
+  <br style="clear: right"/>
+{% endblock %}

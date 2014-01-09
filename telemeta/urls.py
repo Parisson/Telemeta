@@ -39,7 +39,7 @@ from django.conf import settings
 from django.views.generic.simple import redirect_to
 from telemeta.models import MediaItem, MediaCollection, MediaItemMarker, MediaCorpus, MediaFonds
 from telemeta.views import HomeView, AdminView, CollectionView, ItemView, \
-                                InstrumentView, PlaylistView, ProfileView, GeoView, \
+                                InstrumentView, InstrumentAliasView, PlaylistView, ProfileView, GeoView, \
                                 LastestRevisionsFeed, ResourceView, UserRevisionsFeed
 from jsonrpc import jsonrpc_site
 import os.path
@@ -53,6 +53,7 @@ admin_view = AdminView()
 collection_view = CollectionView()
 item_view = ItemView()
 instrument_view = InstrumentView()
+instrument_alias_view = InstrumentAliasView()
 playlist_view = PlaylistView()
 profile_view = ProfileView()
 geo_view = GeoView()
@@ -243,6 +244,29 @@ urlpatterns = patterns('',
         + r'(?P<value_id>[0-9]+)/replace/$',
         instrument_view.replace_instrument_value,
         name="telemeta-instrument-record-replace"),
+
+    # instruments aliases administration
+    url(r'^admin/instrument_aliases/$',
+        instrument_alias_view.edit_instrument ,
+        name="telemeta-instrument-alias-edit"),
+    url(r'^admin/instrument_aliases/add/$',
+        instrument_alias_view.add_to_instrument,
+        name="telemeta-instrument-alias-add"),
+    url(r'^admin/instrument_aliases/update/$',
+        instrument_alias_view.update_instrument,
+        name="telemeta-instrument-alias-update"),
+    url(r'^admin/instrument_aliases/'
+        + r'(?P<value_id>[0-9]+)/$',
+        instrument_alias_view.edit_instrument_value,
+        name="telemeta-instrument-alias-record-edit"),
+    url(r'^admin/instrument_aliases/'
+        + r'(?P<value_id>[0-9]+)/update/$',
+        instrument_alias_view.update_instrument_value,
+        name="telemeta-instrument-alias-record-update"),
+    url(r'^admin/instrument_aliases/'
+        + r'(?P<value_id>[0-9]+)/replace/$',
+        instrument_alias_view.replace_instrument_value,
+        name="telemeta-instrument-alias-record-replace"),
 
     # enumerations administration
     url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/$',
