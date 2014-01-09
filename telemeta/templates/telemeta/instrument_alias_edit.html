@@ -1,0 +1,52 @@
+{% extends "telemeta/admin.html" %}
+{% load i18n %}
+
+{% block head_title %}{% trans "Instrument aliases" %} - {{ block.super }}{% endblock %}
+
+{% block title %}
+<h1><img src="{{ STATIC_URL }}telemeta/images/admin_red.png" style="vertical-align:middle" /> {% trans "Administration" %} > {% trans "Instrument aliases" %}</h1>
+{% endblock %}
+
+{% block tabcontents %}
+ <form class="addnew" id="_addinstru" method="POST"
+        action="{% url telemeta-instrument-alias-add %}">{% csrf_token %}
+  <fieldset>
+   <legend>{% trans "Add entry" %}</legend>
+   <div class="field">
+    <label>{% trans "Name" %}: <input type="text" name="value"></label>
+
+   </div>
+   <div class="buttons">
+    <br />
+    <a href="#" class="component_icon button icon_add"
+      onclick="document.getElementById('_addinstru').submit(); return false;">{% trans "Add" %}</a>
+   </div>
+  </fieldset>
+ </form>
+ {% if instruments %}
+ <form id="_updateinstru" method="POST" action="{% url telemeta-instrument-alias-update %}">{% csrf_token %}
+  <table class="listing">
+   <thead>
+    <tr><th class="sel">&nbsp;</th><th>{% trans "Name"%}</th></tr>
+   </thead><tbody>
+    {% for record in instruments %}
+    <tr>
+     <td><input type="checkbox" name="sel" value="{{record.id}}" /></td>
+     <td><a href="{% url telemeta-instrument-alias-record-edit record.id %}">
+        {{record.name}}</a></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  <div class="buttons">
+   <br />
+   <a href="#" class="component_icon button icon_cancel"
+      onclick="document.getElementById('_updateinstru').submit(); return false;">{% trans "Remove selected items" %}</a>
+  </div>
+ </form>
+ {% else %}
+    <p class="help">{% trans "This instrument list is empty" %}</p>
+ {% endif %}
+
+  <br style="clear: right"/>
+{% endblock %}

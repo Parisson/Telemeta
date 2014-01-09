@@ -78,7 +78,7 @@ class InstrumentAliasRelation(ModelCore):
     "Instrument family other name"
     alias      = ForeignKey('InstrumentAlias', related_name="other_name", 
                             verbose_name=_('alias'))
-    instrument = ForeignKey('InstrumentAlias', related_name="relation", 
+    instrument = ForeignKey('Instrument', related_name="relation", 
                             verbose_name=_('instrument'))
 
     def __unicode__(self):
