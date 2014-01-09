@@ -160,7 +160,7 @@
                         <dt>{% trans "Related documentation" %}</dt>
                         <dd>{{ collection.booklet_description|html_line_break|safe }}</dd>
                         {% dl_field collection "publishing_status" %}
-                        {% if collection.alt_ids and 'sous-table' in collection.alt_ids %}
+                        {% if collection.alt_ids %}
                          {% dl_field collection "alt_ids" %}
                         {% endif %}
                         <dt>{% trans "Comments" %}</dt>
