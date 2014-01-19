@@ -128,6 +128,6 @@ class TelemetaCache(object):
             node.setAttribute('name', name)
             node.setAttribute('id', id)
             node.setAttribute('unit', unit)
-            node.setAttribute('value', str(value))
+            node.setAttribute('value', unicode(value))
             root.appendChild(node)
         return xml.dom.minidom.Document.toprettyxml(doc)
