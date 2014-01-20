@@ -188,7 +188,7 @@ class CollectionPackageView(View):
         filename = collection.public_id + '.xml'
         cache_data.write_bin(data, filename)
         path = cache_data.dir + os.sep + filename
-        z.write(path, collection.public_id + os.sep + filename)
+        z.write(path, arcname=collection.public_id + os.sep + filename)
 
         for item in collection.items.all():
             filename = item.file.path.split(os.sep)[-1]
