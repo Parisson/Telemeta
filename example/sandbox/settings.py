@@ -129,7 +129,8 @@ INSTALLED_APPS = (
     'jsonrpc',
     'south',
     'sorl.thumbnail',
-    'notes',
+    'timezones',
+    'jqchat',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (

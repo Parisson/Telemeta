@@ -60,7 +60,6 @@ News
  * Please check the new dependencies in setup.py
  * As always after upgrading: ./manage.py migrate telemeta
 
-
 1.4.4
 +++++
 
