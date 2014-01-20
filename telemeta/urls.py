@@ -39,8 +39,8 @@ from django.conf import settings
 from django.views.generic.simple import redirect_to
 from telemeta.models import MediaItem, MediaCollection, MediaItemMarker, MediaCorpus, MediaFonds
 from telemeta.views import HomeView, AdminView, CollectionView, ItemView, \
-                                InstrumentView, InstrumentAliasView, PlaylistView, ProfileView, GeoView, \
-                                LastestRevisionsFeed, ResourceView, UserRevisionsFeed
+                            InstrumentView, InstrumentAliasView, PlaylistView, ProfileView, GeoView, \
+                            LastestRevisionsFeed, ResourceView, UserRevisionsFeed, CollectionPackageView
 from jsonrpc import jsonrpc_site
 import os.path
 import telemeta.config
@@ -170,7 +170,8 @@ urlpatterns = patterns('',
         dict(all_collections_sound, paginate_by=20, template_name="telemeta/collection_list.html"), name="telemeta-collections-sound"),
     # FIXME: need all paths
     url(r'^collections/(?P<path>[A-Za-z0-9._-s/]+)/$', redirect_to, {'url': '/archives/collections/%(path)s/', 'permanent': False}, name="telemeta-collection-redir"),
-
+    url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/package/$', CollectionPackageView.as_view(),
+        name="telemeta-collection-package"),
     # RESOURCES
     # Corpus list
     url(r'^archives/corpus/$', 'django.views.generic.list_detail.object_list',
@@ -359,6 +360,10 @@ urlpatterns = patterns('',
             'document_root': settings.TELEMETA_CACHE_DIR,}),
 
     url(r'^', include('jqchat.urls')),
+
 )
 
-
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += patterns('',
+    url(r'^__debug__/', include(debug_toolbar.urls)),)
