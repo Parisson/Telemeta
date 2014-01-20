@@ -363,11 +363,8 @@ urlpatterns = patterns('',
 
 )
 
-if settings.DEBUG:
-    try:
-        import debug_toolbar
-        urlpatterns += patterns('',
-        url(r'^__debug__/', include(debug_toolbar.urls)),)
-    except:
-        pass
-
+if settings.DEBUG and 'debug_toolbar' in settings.INSTALLED_APPS:
+    import debug_toolbar
+    urlpatterns += patterns('',
+    url(r'^__debug__/', include(debug_toolbar.urls)),)
+    
