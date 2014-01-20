@@ -73,7 +73,7 @@ TimeSide (web audio components)
 
 I should be install with the pip method, otherwise install it manually::
 
-    sudo pip install timeside
+    sudo pip install timeside==0.4.6
 
 Or, download the last archive at :
 http://code.google.com/p/timeside/downloads/list
@@ -166,6 +166,8 @@ Set the app lists as follow::
     'jsonrpc',
     'south',
     'sorl.thumbnail',
+    'timezones',
+    'jqchat',
     )
 
 Set the following languages::

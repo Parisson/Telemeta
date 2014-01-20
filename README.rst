@@ -1,16 +1,16 @@
-=============================
-Telemeta: open web audio CMS
-=============================
+===============================================
+Telemeta: open web audio server with semantics
+===============================================
 
-For personal or collaborative media archiving projects, research laboratories and digital humanities.
+For personal or collaborative media archiving projects, research laboratories and digital humanities, especially in ethnomusicological use cases.
 
-Based on Django, Python, HTML5, CSS and JavaScript.
+Based on Python, Django, HTML5, CSS and JavaScript.
 
 
 Overview
 =========
 
-Telemeta is a free and open source web audio archiving software which introduces useful and secure methods to backup, index, transcode, analyse and publish any digitalized audio file with its metadata. It is dedicated to professionnals who wants to easily organize, backup and publish documented sound collections of audio files, CDs, digitalized vinyls and magnetic tapes over a strong database, in accordance with open web standards.
+Telemeta is a free and open source web audio archiving software which introduces useful and secure methods to backup, index, transcode, analyse and publish any digitalized audio file with all its metadata. It is dedicated to professionnals who wants to easily organize, backup and publish documented sound collections of audio files, CDs, digitalized vinyls and magnetic tapes over a strong database, in accordance with open web standards.
 
 Key features:
 
@@ -44,6 +44,21 @@ See `INSTALL.rst <http://github.com/yomguy/Telemeta/blob/master/INSTALL.rst>`_ a
 
 News
 ======
+
+1.4.5
++++++
+
+ * Collection and Item regex in settings allowed
+ * Change resource list filtering rules
+ * Add KdenLive session parsers and auto faders to auto tag audio or video timeline
+ * Add ffmpeg based transcoding tools
+ * Add enumerations replacing methods
+ * Add chat rooms for enumerations
+ * Cleanup some useless model properties
+ * Many, many and many bugfixes
+ * Last version compatible with TimeSide 0.4.x
+ * Please check the new dependencies in setup.py
+ * As always after upgrading: ./manage.py migrate telemeta
 
 1.4.4
 +++++

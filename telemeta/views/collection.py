@@ -167,7 +167,37 @@ class CollectionPackageView(View):
     def get_object(self):
         return MediaCollection.objects.get(public_id=self.kwargs['public_id'])
 
-    def get(self, request, *args, **kwargs):
+    def get_stream(self, request, *args, **kwargs):
+        """
+        Stream a ZIP file of collection data
+        without loading the whole file into memory.
+        Based on ZipStream
+        """
+        from telemeta.views import MarkerView
+        from telemeta.backup import CollectionSerializer
+        import json
+        import zipstream
+        
+        z = zipstream.ZipFile()        
+        collection = MediaCollection.objects.get(public_id=public_id)
+        z.write(collection.code)
+        
+        for item in collection.items.all():
+            z.write(item.file.path)
+
+        try:
+            from django.http import StreamingHttpResponse
+            response = StreamingHttpResponse(z, content_type='application/zip')
+        except:
+            response = HttpResponse(z, content_type='application/zip')
+
+        response['Content-Disposition'] = "attachment; filename=%s.%s" % \
+                                             (item.code, 'zip')
+        return response
+    
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(CollectionPackageView, self).dispatch(*args, **kwargs)
         """
         Create a ZIP file on disk and transmit it in chunks of 8KB,
         without loading the whole file into memory. A similar approach can

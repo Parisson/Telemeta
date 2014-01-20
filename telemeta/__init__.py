@@ -12,15 +12,16 @@ U{http://telemeta.org}
 """
 
 __docformat__ = 'epytext en'
-__version__ = '1.4.5'
+__version__ = '1.4.6'
 __url__ = 'http://telemeta.org'
 __copyright__ = '(C) 2007-2012 Parisson'
 __license__ = 'CeCILL-2'
 __license_long__ = """
-Copyright (C) Parisson SARL (2007-2012)
+Copyright (C) Parisson SARL (2007-2014)
 
 <yomguy@parisson.com>
 <olivier@samalyse.com>
+<davidlipszyc@gmail.com>
 <riccardo.zaccarelli@gmail.com>
 
 This software is a computer program whose purpose is to backup, analyse,

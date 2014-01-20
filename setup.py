@@ -2,7 +2,20 @@
 from setuptools import setup, find_packages
 import os
 
-CLASSIFIERS = ['Environment :: Web Environment', 'Framework :: Django', 'Intended Audience :: Science/Research', 'Intended Audience :: Education', 'Programming Language :: Python', 'Programming Language :: JavaScript', 'Topic :: Internet :: WWW/HTTP :: Dynamic Content', 'Topic :: Internet :: WWW/HTTP :: WSGI :: Application', 'Topic :: Multimedia :: Sound/Audio', 'Topic :: Multimedia :: Sound/Audio :: Analysis', 'Topic :: Multimedia :: Sound/Audio :: Players', 'Topic :: Scientific/Engineering :: Information Analysis', 'Topic :: System :: Archiving',  ]
+CLASSIFIERS = ['Environment :: Web Environment', 
+'Framework :: Django', 
+'Intended Audience :: Science/Research', 
+'Intended Audience :: Education', 
+'Programming Language :: Python', 
+'Programming Language :: JavaScript', 
+'Topic :: Internet :: WWW/HTTP :: Dynamic Content', 
+'Topic :: Internet :: WWW/HTTP :: WSGI :: Application', 
+'Topic :: Multimedia :: Sound/Audio', 
+'Topic :: Multimedia :: Sound/Audio :: Analysis', 
+'Topic :: Multimedia :: Sound/Audio :: Players', 
+'Topic :: Scientific/Engineering :: Information Analysis', 
+'Topic :: System :: Archiving',  ]
+
 
 setup(
   name = "Telemeta",
@@ -11,7 +24,7 @@ setup(
   long_description = open('README.rst').read(),
   author = "Guillaume Pellerin",
   author_email = "yomguy@parisson.com",
-  version = '1.4.5',
+  version = '1.4.6',
   install_requires = [
         'django==1.4.5',
         'django-registration',
@@ -23,6 +36,11 @@ setup(
         'docutils',
         'django-timezones',
         'django-jqchat',
+        'psutil',
+        'pyyaml',
+        'python-ebml'
+        'zipstream',
+        'debug_toolbar',
   ],
   platforms=['OS Independent'],
   license='CeCILL v2',

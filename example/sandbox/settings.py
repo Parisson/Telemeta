@@ -104,6 +104,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
 ROOT_URLCONF = 'sandbox.urls'
@@ -129,7 +130,9 @@ INSTALLED_APPS = (
     'jsonrpc',
     'south',
     'sorl.thumbnail',
-    'notes',
+    'timezones',
+    'jqchat',
+    'debug_toolbar',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -149,8 +152,8 @@ TELEMETA_EXPORT_CACHE_DIR = MEDIA_ROOT + 'export/'
 TELEMETA_DATA_CACHE_DIR = TELEMETA_CACHE_DIR + "data/"
 
 TELEMETA_DOWNLOAD_ENABLED = True
-TELEMETA_STREAMING_FORMATS = ('mp3', 'webm')
-TELEMETA_DOWNLOAD_FORMATS = ('wav', 'mp3', 'webm')
+TELEMETA_STREAMING_FORMATS = ('mp3', 'ogg')
+TELEMETA_DOWNLOAD_FORMATS = ('wav', 'mp3', 'ogg', 'flac')
 TELEMETA_PUBLIC_ACCESS_PERIOD = 51
 TELEMETA_DEFAULT_WAVEFORM_SIZES = ['360x130', '640x130']
 
@@ -162,5 +165,3 @@ LOGIN_REDIRECT_URL = reverse_lazy('telemeta-desk-lists')
 
 EMAIL_HOST = 'localhost'
 DEFAULT_FROM_EMAIL = 'webmaster@parisson.com'
-
-FILE_UPLOAD_TEMP_DIR = '/tmp'
