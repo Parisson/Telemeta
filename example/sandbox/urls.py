@@ -27,8 +27,3 @@ urlpatterns = patterns('',
     (r'^i18n/', include('django.conf.urls.i18n')),    
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
     )
-
-if settings.DEBUG and 'debug_toolbar' in settings.INSTALLED_APPS:
-    import debug_toolbar
-    urlpatterns += patterns('',
-    url(r'^__debug__/', include(debug_toolbar.urls)),)
