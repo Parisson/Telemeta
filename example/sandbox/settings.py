@@ -130,7 +130,8 @@ INSTALLED_APPS = (
     'jsonrpc',
     'south',
     'sorl.thumbnail',
-    'notes',
+    'timezones',
+    'jqchat',
     'debug_toolbar',
 )
 
