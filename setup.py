@@ -38,7 +38,7 @@ setup(
         'django-jqchat',
         'psutil',
         'pyyaml',
-        'python-ebml'
+        'python-ebml',
   ],
   platforms=['OS Independent'],
   license='CeCILL v2',
