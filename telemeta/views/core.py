@@ -44,6 +44,7 @@ import datetime
 import tempfile
 import zipfile
 import timeside
+import mimetypes
 
 from jsonrpc import jsonrpc_method
 

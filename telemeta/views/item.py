@@ -34,8 +34,9 @@
 # Authors: Olivier Guilyardi <olivier@samalyse.com>
 #          Guillaume Pellerin <yomguy@parisson.com>
 
-import mimetypes
+
 from telemeta.views.core import *
+
 
 class ItemView(object):
     """Provide Item web UI methods"""
@@ -44,13 +45,12 @@ class ItemView(object):
     decoders = timeside.core.processors(timeside.api.IDecoder)
     encoders = timeside.core.processors(timeside.api.IEncoder)
     analyzers = timeside.core.processors(timeside.api.IAnalyzer)
+    value_analyzers = timeside.core.processors(timeside.api.IValueAnalyzer)
     cache_data = TelemetaCache(settings.TELEMETA_DATA_CACHE_DIR)
     cache_export = TelemetaCache(settings.TELEMETA_EXPORT_CACHE_DIR)
 
     export_enabled = getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True)
     export_formats = getattr(settings, 'TELEMETA_DOWNLOAD_FORMATS', ('mp3', 'wav'))
-
-    default_analyzers = ['mean_dc_shift', 'level']
 
     def get_export_formats(self):
         formats = []
@@ -369,11 +369,10 @@ class ItemView(object):
                 decoder  = timeside.decoder.FileDecoder(item.file.path)
                 pipe = decoder
 
-                for analyzer in self.analyzers:
-                    if analyzer.id() in self.default_analyzers:
-                        subpipe = analyzer()
-                        analyzers_sub.append(subpipe)
-                        pipe = pipe | subpipe
+                for analyzer in self.value_analyzers:
+                    subpipe = analyzer()
+                    analyzers_sub.append(subpipe)
+                    pipe = pipe | subpipe
 
                 try:
                     sizes = settings.TELEMETA_DEFAULT_GRAPHER_SIZES
