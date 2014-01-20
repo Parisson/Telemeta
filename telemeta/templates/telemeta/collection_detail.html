@@ -46,7 +46,10 @@
       <a href="{% url telemeta-collection-additem collection.public_id %}" class="component_icon button icon_add">{% trans "Add item" %}</a>
      {% endif %}
     {% if user.is_authenticated %}
-    <a href=# id ="_add_to_playlist" class="component_icon button icon_add_to_playlist">{% trans "Add to playlist" %}</a>
+     <a href=# id="_add_to_playlist" class="component_icon button icon_add_to_playlist">{% trans "Add to playlist" %}</a>
+    {% if audio_export_enabled or perms.telemeta.can_download_all_items or user.is_superuser %}
+     <a href="{% url telemeta-collection-package collection.public_id %}" id="zip_package" class="component_icon button icon_zip">{% trans "Download" %} ZIP</a>
+    {% endif %}
     {% endif %}
    </div>
 {% endblock %}

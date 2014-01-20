@@ -26,6 +26,8 @@ setup(
         'psutil',
         'pyyaml',
         'python-ebml'
+        'zipstream',
+        'debug_toolbar',
   ],
   platforms=['OS Independent'],
   license='CeCILL v2',
