@@ -2,7 +2,20 @@
 from setuptools import setup, find_packages
 import os
 
-CLASSIFIERS = ['Environment :: Web Environment', 'Framework :: Django', 'Intended Audience :: Science/Research', 'Intended Audience :: Education', 'Programming Language :: Python', 'Programming Language :: JavaScript', 'Topic :: Internet :: WWW/HTTP :: Dynamic Content', 'Topic :: Internet :: WWW/HTTP :: WSGI :: Application', 'Topic :: Multimedia :: Sound/Audio', 'Topic :: Multimedia :: Sound/Audio :: Analysis', 'Topic :: Multimedia :: Sound/Audio :: Players', 'Topic :: Scientific/Engineering :: Information Analysis', 'Topic :: System :: Archiving',  ]
+CLASSIFIERS = ['Environment :: Web Environment', 
+'Framework :: Django', 
+'Intended Audience :: Science/Research', 
+'Intended Audience :: Education', 
+'Programming Language :: Python', 
+'Programming Language :: JavaScript', 
+'Topic :: Internet :: WWW/HTTP :: Dynamic Content', 
+'Topic :: Internet :: WWW/HTTP :: WSGI :: Application', 
+'Topic :: Multimedia :: Sound/Audio', 
+'Topic :: Multimedia :: Sound/Audio :: Analysis', 
+'Topic :: Multimedia :: Sound/Audio :: Players', 
+'Topic :: Scientific/Engineering :: Information Analysis', 
+'Topic :: System :: Archiving',  ]
+
 
 setup(
   name = "Telemeta",

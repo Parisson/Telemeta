@@ -5,7 +5,7 @@
 {% block extra_javascript %}{% endblock %}
 
 {% block title %}
- <img src="{{ STATIC_URL }}telemeta/images/item.png" style="vertical-align:middle" /> {{ type|capitalize }} : {{ resource }}
+<img src="{{ STATIC_URL }}telemeta/images/{{ type }}.png" style="vertical-align:middle" /> {{ type|capitalize }} : {{ resource }}
 {% endblock %}
 
 {% block title_buttons %}
