@@ -34,8 +34,9 @@
 # Authors: Olivier Guilyardi <olivier@samalyse.com>
 #          Guillaume Pellerin <yomguy@parisson.com>
 
-import mimetypes
+
 from telemeta.views.core import *
+
 
 class ItemView(object):
     """Provide Item web UI methods"""
@@ -44,6 +45,7 @@ class ItemView(object):
     decoders = timeside.core.processors(timeside.api.IDecoder)
     encoders = timeside.core.processors(timeside.api.IEncoder)
     analyzers = timeside.core.processors(timeside.api.IAnalyzer)
+    value_analyzers = timeside.core.processors(timeside.api.IValueAnalyzer)
     cache_data = TelemetaCache(settings.TELEMETA_DATA_CACHE_DIR)
     cache_export = TelemetaCache(settings.TELEMETA_EXPORT_CACHE_DIR)
 
@@ -346,7 +348,7 @@ class ItemView(object):
     def item_analyze(self, item):
         analyses = MediaItemAnalysis.objects.filter(item=item)
         mime_type = ''
-
+        
         if analyses:
             for analysis in analyses:
                 if not item.approx_duration and analysis.analyzer_id == 'duration':
@@ -367,7 +369,7 @@ class ItemView(object):
                 decoder  = timeside.decoder.FileDecoder(item.file.path)
                 pipe = decoder
 
-                for analyzer in self.analyzers:
+                for analyzer in self.value_analyzers:
                     subpipe = analyzer()
                     analyzers_sub.append(subpipe)
                     pipe = pipe | subpipe
@@ -415,13 +417,16 @@ class ItemView(object):
                                              analyzer_id='duration', unit='s',
                                              value=unicode(datetime.timedelta(0,decoder.input_duration)))
                 analysis.save()
-
+                
                 for analyzer in analyzers_sub:
-                    value = analyzer.result()
-                    analysis = MediaItemAnalysis(item=item, name=analyzer.name(),
-                                                 analyzer_id=analyzer.id(),
-                                                 unit=analyzer.unit(), value=str(value))
-                    analysis.save()
+                    for key in analyzer.results.keys():
+                        result = analyzer.results[key]
+                        value = result.data_object.value
+                        if value.shape[0] == 1:
+                            value = value[0]
+                        analysis = MediaItemAnalysis(item=item, name=result.name,
+                                analyzer_id=result.id, unit=result.unit, value = unicode(value))
+                        analysis.save()
 
 #                FIXME: parse tags on first load
 #                tags = decoder.tags
@@ -544,10 +549,11 @@ class ItemView(object):
             media = self.cache_export.dir + os.sep + file
             if not self.cache_export.exists(file) or not flag.value:
                 # source > encoder > stream
-                decoder = self.decoders[0](audio)
+                decoder = timeside.decoder.FileDecoder(audio)
                 decoder.setup()
                 proc = encoder(media, streaming=True, overwrite=True)
-                proc.setup(channels=decoder.channels(), samplerate=decoder.samplerate())
+                proc.setup(channels=decoder.channels(), samplerate=decoder.samplerate(),
+                            blocksize=decoder.blocksize(), totalframes=decoder.totalframes())
                 if extension in mapping.unavailable_extensions:
                     metadata=None
                 response = HttpResponse(stream_from_processor(decoder, proc, flag, metadata=metadata), mimetype = mime_type)
