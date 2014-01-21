@@ -31,10 +31,9 @@ SABIOD is a `CNRS Big Data Interdisciplinary project <http://www.cnrs.fr/mi/spip
 **Laboratories** :  `LSIS <http://www.lsis.org/>`_, `LIP6 <http://www.lip6.fr/>`_, `CNPS <http://www.cnps.u-psud.fr/>`_, `MNHN <http://www.mnhn.fr/>`_, `LIG <http://www.liglab.fr/>`_, `Géoazur <https://geoazur.oca.eu/>`_
 
 .. image:: logos_partenaires.png
-	   
-**Telemeta** is developped as an open-source project by `Parisson SARL <http://parisson.com/>`_.
+   :width: 75%
 
-.. image:: logo_parisson_com.png
-    :align: right
+
+	
 
 

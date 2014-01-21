@@ -11,7 +11,7 @@
 {% if sound_pub_item %}
 <div id="module" class="module">
     <h3><img src="{{ STATIC_URL }}telemeta/images/module_playlist.png" alt="playlist" style="vertical-align:middle" />
-    {% trans "Musical selection" %}</h3>
+    {% trans "Sound selection" %}</h3>
     <div style="background-color: white; align: center; padding: 1em;">
     <span style="font-size: 80%; "><a href="{% url telemeta-item-detail sound_pub_item.public_id %}"><b>{{ sound_pub_item }}</b></a>{% if sound_pub_item.alt_title %} ({{ sound_pub_item.alt_title }}){% endif %}<br /><span style="font-size: 90%; padding: 1ex;">{{ sound_pub_item.location.fullnames|to_string }}</span></span>
     <iframe style="margin-top: 1ex;" width='376' height='220' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='/archives/items/{{ sound_pub_item.public_id }}/player/362x130/'></iframe>
@@ -36,14 +36,17 @@
 {{ block.super }}
 <div id="module" class="module">
     <h3><img src="{{ STATIC_URL }}telemeta/images/module_playlist.png" style="vertical-align:middle" />
-    {% trans "Partners" %}</h3><br />
+    {% trans "Telemeta Partners" %}</h3><br />
     <div style="background-color: white; padding: 1ex;" align="center">
     <a href="http://www.cnrs.fr"><img class="image-link" src="{{ STATIC_URL }}telemeta/images/logo-CNRS.png" alt="CNRS"></a>&nbsp;&nbsp;&nbsp;
     <a href="http://www.culture.gouv.fr"><img class="image-link" src="{{ STATIC_URL }}telemeta/images/logo_mcc_2.png" alt="MCC"></a>&nbsp;&nbsp;
     <a href="http://www.mnhn.fr"><img class="image-link" src="{{ STATIC_URL }}telemeta/images/logo-mnhn.gif" alt="MNHN"></a>
     <br /><br />
     <a href="http://www.tge-adonis.fr"><img class="image-link" src="{{ STATIC_URL }}telemeta/images/logo-adonis.jpg" alt="TGE Adonis"></a>
-    </div>
+    <br>
+    Telemeta is open-source and developped by Parisson SARL.
+      <a href="http://www.parisson.com"><img class="image-link" src="{{ STATIC_URL }}telemeta/images/logo_parisson_com.png" alt="Parisson.com"></a>
+      </div>
 </div>
 
 {% endblock %}
@@ -59,7 +62,7 @@
 <div style="margin-top: 1ex;font-size: 90%; width: 66%;">
 <div>
 <h1><img src="{{ STATIC_URL }}telemeta/images/playlist_title.png" alt="playlists" style="vertical-align:middle" />
-    {% trans "Musical selection" %}</h1>
+    {% trans "Sounds selection" %}</h1>
 </div>
 {% for item in sound_pub_items %}
 <div style="float: left; margin: 3px; width: 48%" align="center"><a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>{% if item.alt_title %} ({{ item.alt_title }}){% endif %}<br /><span style="font-size: 80%">{{ item.location.fullnames|to_string }}</span><br />
