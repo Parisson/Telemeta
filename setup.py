@@ -29,6 +29,7 @@ setup(
         'django==1.4.5',
         'django-registration',
         'django-json-rpc',
+        'numpy',
         'timeside',
         'south',
         'sorl-thumbnail',
@@ -40,7 +41,7 @@ setup(
         'pyyaml',
         'python-ebml'
         'zipstream',
-        'debug_toolbar',
+        'django-debug-toolbar',
   ],
   platforms=['OS Independent'],
   license='CeCILL v2',
