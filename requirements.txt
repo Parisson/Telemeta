@@ -12,5 +12,6 @@ django-timezones
 django-jqchat
 psutil
 pyyaml
-python-ebm
+python-ebml
 zipstream
+django-debug-toolbar
