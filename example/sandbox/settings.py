@@ -157,9 +157,6 @@ TELEMETA_DOWNLOAD_FORMATS = ('wav', 'mp3', 'ogg', 'flac')
 TELEMETA_PUBLIC_ACCESS_PERIOD = 51
 TELEMETA_DEFAULT_WAVEFORM_SIZES = ['360x130', '640x130']
 
-TIMESIDE_DEFAULT_GRAPHER_ID = 'waveform_centroid'
-TIMESIDE_AUTO_ZOOM = True
-
 AUTH_PROFILE_MODULE = 'telemeta.userprofile'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
@@ -169,3 +166,5 @@ LOGIN_REDIRECT_URL = reverse_lazy('telemeta-desk-lists')
 EMAIL_HOST = 'localhost'
 DEFAULT_FROM_EMAIL = 'webmaster@parisson.com'
 
+TIMESIDE_DEFAULT_GRAPHER_ID = 'waveform_centroid'
+TIMESIDE_AUTO_ZOOM = True
