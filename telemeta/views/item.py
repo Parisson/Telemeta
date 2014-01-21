@@ -51,6 +51,7 @@ class ItemView(object):
 
     export_enabled = getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True)
     export_formats = getattr(settings, 'TELEMETA_DOWNLOAD_FORMATS', ('mp3', 'wav'))
+    default_grapher = getattr(settings, 'TIMESIDE_DEFAULT_GRAPHER_ID', ('waveform_simple'))
 
     def get_export_formats(self):
         formats = []
@@ -94,6 +95,15 @@ class ItemView(object):
 
         return previous, next
 
+    def get_graphers(self):
+        graphers = []
+        for grapher in self.graphers:
+            if grapher.id() == self.default_grapher:
+                graphers.insert(0, {'name':grapher.name(), 'id': grapher.id()})
+            else:
+                graphers.append({'name':grapher.name(), 'id': grapher.id()})
+        return graphers
+        
     def item_detail(self, request, public_id=None, marker_id=None, width=None, height=None,
                         template='telemeta/mediaitem_detail.html'):
         """Show the details of a given item"""
@@ -114,15 +124,6 @@ class ItemView(object):
             description = ugettext('Please login or contact the website administator to get a private access.')
             messages.error(request, title)
             return render(request, 'telemeta/messages.html', {'description' : description})
-
-        graphers = []
-        for grapher in self.graphers:
-            graphers.append({'name':grapher.name(), 'id': grapher.id()})
-            
-        if request.REQUEST.has_key('grapher_id'):
-            grapher_id = request.REQUEST['grapher_id']
-        else:
-            grapher_id = getattr(settings, 'TELEMETA_DEFAULT_GRAPHER_ID', 'waveform')
 
         previous, next = self.item_previous_next(item)
 
@@ -147,7 +148,7 @@ class ItemView(object):
 
         return render(request, template,
                     {'item': item, 'export_formats': self.get_export_formats(),
-                    'visualizers': graphers, 'visualizer_id': grapher_id,
+                    'visualizers': self.get_graphers(),
                     'audio_export_enabled': self.export_enabled,
                     'previous' : previous, 'next' : next, 'marker': marker_id, 'playlists' : playlists,
                     'access': access, 'width': width, 'height': height,
@@ -161,19 +162,10 @@ class ItemView(object):
         item = MediaItem.objects.get(public_id=public_id)
         access = get_item_access(item, request.user)
 
-        graphers = []
-        for grapher in self.graphers:
-            graphers.append({'name':grapher.name(), 'id': grapher.id()})
-        if request.REQUEST.has_key('grapher_id'):
-            grapher_id = request.REQUEST['grapher_id']
-        else:
-            try:
-                grapher_id = settings.TELEMETA_DEFAULT_GRAPHER_ID
-            except:
-                grapher_id = 'waveform'
-
         previous, next = self.item_previous_next(item)
+
         mime_type = self.item_analyze(item)
+
         #FIXME: use mimetypes.guess_type
         if 'quicktime' in mime_type:
             mime_type = 'video/mp4'
@@ -209,7 +201,7 @@ class ItemView(object):
         return render(request, template,
                     {'item': item,
                      'export_formats': self.get_export_formats(),
-                    'visualizers': graphers, 'visualizer_id': grapher_id,
+                    'visualizers': self.get_graphers(),
                     'audio_export_enabled': self.export_enabled,
                     'forms': forms, 'previous' : previous,
                     'next' : next, 'mime_type': mime_type, 'access': access,
