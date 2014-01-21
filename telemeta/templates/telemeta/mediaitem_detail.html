@@ -333,8 +333,13 @@ Item : <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
 </div>
 {% endif %}
 
-{% endblock %}
+{% if auto_zoom %}
+<script type="text/javascript">
+ togglePlayerMaximization();
+</script>
+{% endif %}
 
+{% endblock %}
 
 {% block delete %}
 <a href="{% url telemeta-item-dublincore item.public_id %}" style="float:left;margin-top:0.5em;margin-bottom:1em" class="component_icon button icon_dublin_core">Dublin Core</a>

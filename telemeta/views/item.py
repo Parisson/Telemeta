@@ -52,6 +52,7 @@ class ItemView(object):
     export_enabled = getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True)
     export_formats = getattr(settings, 'TELEMETA_DOWNLOAD_FORMATS', ('mp3', 'wav'))
     default_grapher = getattr(settings, 'TIMESIDE_DEFAULT_GRAPHER_ID', ('waveform_simple'))
+    auto_zoom = getattr(settings, 'TIMESIDE_AUTO_ZOOM', False)
 
     def get_export_formats(self):
         formats = []
@@ -148,7 +149,7 @@ class ItemView(object):
 
         return render(request, template,
                     {'item': item, 'export_formats': self.get_export_formats(),
-                    'visualizers': self.get_graphers(),
+                    'visualizers': self.get_graphers(), 'auto_zoom': self.auto_zoom,
                     'audio_export_enabled': self.export_enabled,
                     'previous' : previous, 'next' : next, 'marker': marker_id, 'playlists' : playlists,
                     'access': access, 'width': width, 'height': height,
