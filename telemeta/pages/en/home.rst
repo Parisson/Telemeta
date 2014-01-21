@@ -1,21 +1,40 @@
 ==============================================
-Sound archives of the CNRS - Musée de l'Homme
+SABIOD - Scaled Acoustic BIODiversity platform
 ==============================================
+Bioacoustic signaling is a primary mode of communication and exploration for most of the animals. It enables quick load and transfer of information without any visible contact with the target, tackling the reduced visibility of deep forest (insect, frogs, birds, mammals...), cave or night activities (insects, bats), and/or the long distances like in ocean (krill, fishes, whales...).
+Bioacoustics is also one of the factors in optimizing natural selection, playing a significant role in signalling resource qualities to potential partners.
 
-The establishment of the `CREM <http://www.crem-cnrs.fr>`_’s audio archives is the result of a long history of scientific research on music. Since the birth of ethnomusicology (then "comparative musicology"), which coincided with the invention of the first recorders in the late nineteenth century, recording music materials and their classification and preservation are central in our knowledge of the musical Man.
+The SABIOD project aims to detect, cluster, classify and index bioacoustic big data in various ecosystems, at different space and time scales, in order to reveal informations on the complex sensori-motor loop, and on the health of an ecosystem, yielding to new biodiversity insights.
+
+**Keywords** : Acoustics, Signal Analysis, Machine Learning
 
 .. image:: home_img.jpg
     :align: left
 
-With the foundation of the Sound Archive at the Musée d’Ethnographie du Trocadéro by André Schaeffner in 1932 (which became the Sound Archive of the Musée de l’Homme in 1937) and the creation in 1967 of "Laboratoire d’Analyse sonore" on Gilbert Rouget initiative and the creation of a research team from the `CNRS <http://www.cnrs.fr/>`_ (Scientific Research National Center in France) in 1968, both at the `Musée de l’Homme <http://www.museedelhomme.fr/>`_, the conservation of this vast archives collection was more closely related to research : it is powered by the fieldworks of researchers on all continents; collections can serve for research, diachronic and synchronic comparisons, the preparation of new fieldworks and the training of Ph.D students. In 1985, the `CNRS <http://www.cnrs.fr/>`_ and the `Musée National d'Histoire Naturelle <http://www.mnhn.fr/>`_ (National Museum of Natural History) decided to join efforts to preserve this vast archives, therefore called "Sound Archives of CNRS - Musée de l'Homme". A small portion of these archives has been published in 78s (Vox Africa, etc ...), 33 rpm discs and CD (Chant du Monde, Harmonia Mundi). Currently, analogic media are being digitalized with the assistance of the Ministry of Culture and National Library of France. With the installation of the `Center for Research in Ethnomusicology <http://www.crem-cnrs.fr>`_ (CREM, Department of Ethnology and Comparative Sociology, CNRS UMR 7186) at the University of Paris Ouest-Nanterre in 2009, and the opening of the `Telemeta <http://telemeta.org>`_ platform in 2010, this collection sound archives from the era of the Internet.
 
-The archives of CREM, the most important in Europe, are distinguished by their wealth:
+NEWS
+====
+* `Internatinal Workshop on Neural Information Scaled to Bioacoustics (joint to NIPS 2013) <http://sabiod.univ-tln.fr/nips4b>`_ 10th dec - deadline ext. abstract 13th oct.
+* `IEEE ATSIP'14 last CFP - Special session on Bioacoustics Int. conf. on Ad. Tech. for Signal & Image Processing <http://sabiod.univ-tln.fr/ATSIP4B>`_
 
- * Nearly 3,500 hours of recordings of unpublished field.
- * Approximately 3700 hours of material published (more than 5000 discs, many of which are very rare).
 
-The collaborative platform `Telemeta <http://telemeta.org>`_ aims to make these archives available to researchers and to the extent possible, the public, in compliance with the intellectual and moral rights of musicians and collectors. Developed with the support of the program `TGE-Adonis <http://www.tge-adonis.fr/>`_ of the `CNRS <http://www.cnrs.fr/>`_, allows researchers to exchange data online with communities producing their music in their home countries, including through collaborative tools like markers , spaces, comments, etc...
+The Telemeta Platform
+=====================
+       
+The collaborative platform `Telemeta <http://telemeta.org>`_ aims to make sound archives available to researchers and to the extent possible, the public, in compliance with the intellectual and moral rights of collectors. Developed with the support of the program `TGE-Adonis <http://www.tge-adonis.fr/>`_ of the `CNRS <http://www.cnrs.fr/>`_, allows researchers to exchange data online with communities, including through collaborative tools like markers , spaces, comments, etc...
 
-This site is managed by the `CREM <http://www.crem-cnrs.fr>`_. All collaborations are welcome to enrich and enhance this precious musical heritage common to all humanity. Currently, a thousand hours is searchable by code or `access on site and CREM (Université Paris Ouest - Nanterre - La Défense, Building C, Ground Floor, Room 20) <http://goo.gl/maps/ZgHg>`_, and the Central Library Muséum National d'Histoire Naturelle, and the Bibliothèque François Mitterand (garden).
 
-|
+CREDITS
+=======
+SABIOD is a `CNRS Big Data Interdisciplinary project <http://www.cnrs.fr/mi/spip.php?article53>`_ 2012-2014
+
+**Laboratories** :  `LSIS <http://www.lsis.org/>`_, `LIP6 <http://www.lip6.fr/>`_, `CNPS <http://www.cnps.u-psud.fr/>`_, `MNHN <http://www.mnhn.fr/>`_, `LIG <http://www.liglab.fr/>`_, `Géoazur <https://geoazur.oca.eu/>`_
+
+.. image:: logos_partenaires.png
+	   
+**Telemeta** is developped as an open-source project by `Parisson SARL <http://parisson.com/>`_.
+
+.. image:: logo_parisson_com.png
+    :align: right
+
+
