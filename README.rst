@@ -45,6 +45,12 @@ See `INSTALL.rst <http://github.com/yomguy/Telemeta/blob/master/INSTALL.rst>`_ a
 News
 ======
 
+1.4.6
++++++
+
+ * Dratically improve collection zip packaqe streaming thanks to zipstream (NEW deps)
+ * Add minor migrations
+
 1.4.5
 +++++
 
