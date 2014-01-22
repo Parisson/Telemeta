@@ -71,6 +71,7 @@ from django.contrib.syndication.views import Feed
 from django.core.servers.basehttp import FileWrapper
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib.contenttypes.models import ContentType
+from django.views.decorators.http import condition
 
 from telemeta.models import *
 import telemeta.models
@@ -130,6 +131,8 @@ def stream_from_processor(decoder, proc, flag, metadata=None):
         yield proc.chunk
     flag.value = True
     flag.save()
+    decoder.release()
+    proc.release()
 
 def stream_from_file(file):
     chunk_size = 0x100000
