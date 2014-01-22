@@ -36,7 +36,7 @@ class Command(BaseCommand):
                 if not items:
                     item = MediaItem(collection=collection, code=name)
                     item.title = name
-                    item.file.path = path
+                    item.file = path
                     item.public_access = 'full'
                     item.save()
                     print 'item created: ' + item.code
