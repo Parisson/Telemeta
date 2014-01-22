@@ -13,9 +13,10 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         collection_code = args[-2]
-        media_dir = args[-1]
-
-        if not settings.MEDIA_ROOT in os.path.abspath(media_dir):
+        import_dir = os.path.abspath(args[-1])
+        media_dir = os.path.normpath(settings.MEDIA_ROOT)
+        
+        if not media_dir in import_dir:
             sys.exit('This directory is not in the MEDIA_ROOT directory')
 
         collections = MediaCollection.objects.filter(code=collection_code)
@@ -28,11 +29,13 @@ class Command(BaseCommand):
             collection = collections[0]
             print 'using collection: ' + collection.code
 
-        for root, dirs, files in os.walk(media_dir):
+        for root, dirs, files in os.walk(import_dir):
             for filename in files:
                 path = root + os.sep + filename
+                path = path[len(media_dir)+1:]
                 name, ext = os.path.splitext(filename)
-                items = MediaItem.objects.filter(code=name)
+                name = collection_code + '_' + name
+                items = MediaItem.objects.filter(collection=collection, code=name)
                 if not items:
                     item = MediaItem(collection=collection, code=name)
                     item.title = name
