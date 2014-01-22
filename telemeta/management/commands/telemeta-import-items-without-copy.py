@@ -15,7 +15,7 @@ class Command(BaseCommand):
         collection_code = args[-2]
         media_dir = args[-1]
 
-        if not media_dir in settings.MEDIA_ROOT:
+        if not settings.MEDIA_ROOT in os.path.abspath(media_dir):
             sys.exit('This directory is not in the MEDIA_ROOT directory')
 
         collections = MediaCollection.objects.filter(code=collection_code)
