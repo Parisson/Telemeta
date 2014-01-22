@@ -6,6 +6,16 @@ from telemeta.models import *
 from telemeta.util.unaccent import unaccent
 import os, sys
 
+try:
+    from django.utils.text import slugify
+except ImportError:
+    def slugify(string):
+        killed_chars = re.sub('[\(\),]', '', string)
+        return re.sub(' ', '_', killed_chars)
+
+def beautify(string):
+    return os.path.splitext(string)[0].replace('_',' ')
+
 
 class Command(BaseCommand):
     help = "import media files from a directory in the media directory into a collection (no file copy)"
@@ -34,7 +44,7 @@ class Command(BaseCommand):
                 path = root + os.sep + filename
                 path = path[len(media_dir)+1:]
                 name, ext = os.path.splitext(filename)
-                name = collection_code + '_' + name
+                name = slugify(collection_code + '_' + name)
                 items = MediaItem.objects.filter(collection=collection, code=name)
                 if not items:
                     item = MediaItem(collection=collection, code=name)
