@@ -52,6 +52,7 @@ from telemeta.models.language import *
 from telemeta.models.format import *
 from telemeta.util.kdenlive.session import *
 from django.db import models
+from django.db.models import URLField
 from django.conf import settings
 
 
@@ -409,6 +410,7 @@ class MediaItem(MediaResource):
     # Media
     file                  = FileField(_('file'), upload_to='items/%Y/%m/%d',
                                       db_column="filename", max_length=1024)
+    url                   = URLField(_('URL'), max_length=512, blank=True)
 
     # Technical data
     approx_duration       = DurationField(_('approximative duration'))
@@ -481,6 +483,14 @@ class MediaItem(MediaResource):
         if self.track:
             title += ' ' + self.track
         return title
+
+    def get_source(self):
+        source = None
+        if self.file and os.path.exists(self.file.path):
+            source = self.file.path
+        elif self.url:
+            source = self.url
+        return source
 
     @property
     def instruments(self):

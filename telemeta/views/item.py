@@ -358,8 +358,9 @@ class ItemView(object):
             analyzers_sub = []
             graphers_sub = []
 
-            if item.file and os.path.exists(item.file.path):
-                decoder  = timeside.decoder.FileDecoder(item.file.path)
+            source = item.get_source()
+            if source:
+                decoder  = timeside.decoder.FileDecoder(source)
                 pipe = decoder
 
                 for analyzer in self.value_analyzers:
@@ -390,7 +391,7 @@ class ItemView(object):
                     grapher['graph'].render(grapher['path'])
                     f.close()
 
-                mime_type = mimetypes.guess_type(item.file.path)[0]
+                mime_type = mimetypes.guess_type(source)[0]
                 analysis = MediaItemAnalysis(item=item, name='MIME type',
                                              analyzer_id='mime_type', unit='', value=mime_type)
                 analysis.save()
@@ -453,9 +454,10 @@ class ItemView(object):
         image_file = '.'.join([public_id, grapher_id, size, 'png'])
 
         if not self.cache_data.exists(image_file):
-            if item.file:
+            source = item.get_source()
+            if source:
                 path = self.cache_data.dir + os.sep + image_file
-                decoder  = self.decoders[0](item.file.path)
+                decoder  = timeside.decoder.FileDecoder(source)
                 graph = grapher(width = int(width), height = int(height))
                 (decoder | graph).run()
                 graph.watermark('timeside', opacity=.6, margin=(5,5))
@@ -513,7 +515,7 @@ class ItemView(object):
 
         mime_type = encoder.mime_type()
         file = public_id + '.' + encoder.file_extension()
-        audio = item.file.path
+        source = item.get_source()
 
         flag = MediaItemTranscodingFlag.objects.filter(item=item, mime_type=mime_type)
         if not flag:
@@ -531,18 +533,18 @@ class ItemView(object):
         if mime_type in format:
             # source > stream
             if not extension in mapping.unavailable_extensions:
-                proc = encoder(audio, overwrite=True)
+                proc = encoder(source, overwrite=True)
                 proc.set_metadata(metadata)
                 try:
                     proc.write_metadata()
                 except:
                     pass
-            response = HttpResponse(stream_from_file(audio), mimetype = mime_type)
+            response = HttpResponse(stream_from_file(source), mimetype = mime_type)
         else:
             media = self.cache_export.dir + os.sep + file
             if not self.cache_export.exists(file) or not flag.value:
                 # source > encoder > stream
-                decoder = timeside.decoder.FileDecoder(audio)
+                decoder = timeside.decoder.FileDecoder(source)
                 decoder.setup()
                 proc = encoder(media, streaming=True, overwrite=True)
                 proc.setup(channels=decoder.channels(), samplerate=decoder.samplerate(),
