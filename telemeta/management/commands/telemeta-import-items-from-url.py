@@ -14,8 +14,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         collection_code = args[0]
-        prefix = args[2]
-        url = args[3]
+        prefix = args[1]
+        url = args[2]
 
         parser = URLMediaParser(url)
         urls = parser.get_urls()
