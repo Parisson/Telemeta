@@ -9,12 +9,13 @@ import os
 
 
 class Command(BaseCommand):
-    help = "import media files from a URL directory into a collection"
+    help = "import media files from a URL directory into a collection with a given prefix"
     args = "collection_code URL"
 
     def handle(self, *args, **options):
-        collection_code = args[-2]
-        url = args[-1]
+        collection_code = args[0]
+        prefix = args[2]
+        url = args[3]
 
         parser = URLMediaParser(url)
         urls = parser.get_urls()
@@ -32,8 +33,9 @@ class Command(BaseCommand):
             filename = url.split('/')[-1]
             name, ext = os.path.splitext(filename)
             items = MediaItem.objects.filter(code=name)
-            if not items:
-                item = MediaItem(collection=collection, code=name)
+            if not items and prefix in name:
+                code = collection.code + '_' + name
+                item = MediaItem(collection=collection, code=code)
                 item.title = name
                 item.url = url
                 item.public_access = 'full'
