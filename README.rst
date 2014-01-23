@@ -49,6 +49,7 @@ News
 +++++
 
  * Dratically improve collection zip packaqe streaming thanks to zipstream (NEW deps)
+ * Add URL field to item so that a external sound can be indexed and streamed
  * Add minor migrations
 
 1.4.5
