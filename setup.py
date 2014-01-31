@@ -39,7 +39,7 @@ setup(
         'django-jqchat',
         'psutil',
         'pyyaml',
-        'python-ebml'
+        'python-ebml',
         'zipstream',
         'django-debug-toolbar',
   ],
