@@ -16,7 +16,7 @@
 <script src="{{ STATIC_URL }}telemeta/js/popupdiv-min.js" type="text/javascript"></script>
 <script src="{{ STATIC_URL }}telemeta/js/playlist.js" type="text/javascript"></script>
 
-{% if item.file %}
+{% if item.file or item.url %}
  {% if access == 'full' or perms.telemeta.can_play_all_items %}
     <script src="{{ STATIC_URL }}timeside/js/libs/soundmanager2-nodebug-jsmin.js" type="text/javascript"></script>
     <script src="{{ STATIC_URL }}timeside/js/timeside.js" type="text/javascript"></script>
@@ -26,7 +26,7 @@
 {% endif %}
 
 <script type="text/javascript">
-    {% if item.file %}
+    {% if item.file or item.url %}
     {% if access == 'full' or perms.telemeta.can_play_all_items %}
         //initializing soundManager default properties
         soundManager.flashVersion = 9;
@@ -106,7 +106,7 @@ Item : <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
 {% block content %}
 <div class="{% if item.file %}{% if access == 'full' or perms.telemeta.can_play_all_items %}with-rightcol{% endif %}{% endif %}">
 
-    {% if item.file %}
+    {% if item.file or item.url %}
 
     {% if access == 'full' or perms.telemeta.can_play_all_items %}
     <div id="player_maximized" class="ts-skin-lab">
@@ -333,8 +333,13 @@ Item : <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
 </div>
 {% endif %}
 
-{% endblock %}
+{% if auto_zoom %}
+<script type="text/javascript">
+ togglePlayerMaximization();
+</script>
+{% endif %}
 
+{% endblock %}
 
 {% block delete %}
 <a href="{% url telemeta-item-dublincore item.public_id %}" style="float:left;margin-top:0.5em;margin-bottom:1em" class="component_icon button icon_dublin_core">Dublin Core</a>

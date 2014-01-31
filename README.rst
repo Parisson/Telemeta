@@ -27,13 +27,15 @@ Key features:
  * DublinCore compatibility
  * OAI-PMH data provider
  * RSS feed generators
- * XML serialized backup
+ * XML and ZIP serialized backups
  * SQLite, MySQL, PostgreSQL or Oracle DB backends
  * Multi-language support (now english and french)
  * Video support (EXPERIMENTAL, WebM only)
 
 This web audio CMS is exclusively based on open source modules and can be run on any Unix or Linux system.
 It is mostly written in Python and JavaScript.
+
+The processing engine of Telemeta is a separate project called `TimeSide <https://github.com/yomguy/timeside/>`_ as an open web audio pocessing framework written in Python.
 
 
 Installation, upgrade and usage
@@ -44,6 +46,16 @@ See `INSTALL.rst <http://github.com/yomguy/Telemeta/blob/master/INSTALL.rst>`_ a
 
 News
 ======
+
+1.4.6
++++++
+
+ * Dratically improve collection zip packaqe streaming thanks to zipstream (check NEW dependencies)
+ * Compatible with TimeSide >= 0.5.2
+ * Add URL field to item so that a external sound can be indexed and streamed
+ * Add TIMESIDE_AUTO_ZOOM in settings to auto toggle the player in zooming mode
+ * Add TIMESIDE_DEFAULT_GRAPHER_ID in settings to select the default grapher in the player
+ * Add minor migrations
 
 1.4.5
 +++++
@@ -135,25 +147,28 @@ login: demo
 password: demo
 
 
-Original Examples
+Serious Examples
 =================
 
-`Sound archives of the French Ethnomusicology Research Center (CREM) and the Musée de l'Homme <http://archives.crem-cnrs.fr>`_ :
+* `Sound archives of the French Ethnomusicology Research Center (CREM) and the Musée de l'Homme <http://archives.crem-cnrs.fr>`_ :
 
  * a 100 year old world database migrated,
  * more than 5000 geolocated collections,
  * more than 32000 geolocated items,
  * more than 11000 sounds included
- * 700 Go of original ethnological music files accessible through the web.
+ * 700 Go of original ethnic music files accessible through the web.
+ * started in june 2011
 
-`Sound archives of the team "Lutherie, Acoustique et Musique" (LAM) of the IJLRDA institute - University Pierre et Marie Curie (Paris 6) <http://telemeta.lam.jussieu.fr>`_ :
+* `Sound archives of the team "Lutherie, Acoustique et Musique" (LAM) of the IJLRDA institute - University Pierre et Marie Curie (Paris 6) <http://telemeta.lam.jussieu.fr>`_ :
 
  * various musical instruments recorded for research purposes
  * started in sept. 2012
 
-`Sound archives Parisson <http://parisson.telemeta.org>`_ :
+* `Sound archives Parisson <http://parisson.telemeta.org>`_ :
 
- * various electronic sounds and original electronic music produced by Parisson
+* `Scaled BIOdiversity (SABIOD) <http://sabiod.telemeta.org>`
+
+* Various electronic sounds and original electronic music produced by Parisson
 
 
 Bugs and feedback
@@ -166,15 +181,7 @@ http://telemeta.org/newticket
 
 You can also leave a ticket to request some new interesting features for the next versions.
 And even if Telemeta suits you, please give us some feedback !
-
-
-Related projects
-================
-
-`TimeSide <http://code.google.com/p/timeside/>`_ - open and fast web audio components
-
-    a python library to compute audio analysis, transcode, and streaming to browsers.
-
+ 
 
 Contact
 =======
@@ -184,6 +191,7 @@ Homepage: http://telemeta.org
 E-mails:
 
  * Guillaume Pellerin <yomguy@parisson.com>,
+ * Thomas Fillon <thomas@parisson.com>
  * Olivier Guilyardi <olivier@samalyse.com>,
  * Riccardo Zaccarelli <riccardo.zaccarelli@gmail.com>
 
@@ -192,6 +200,7 @@ Twitter:
  * http://twitter.com/telemeta
  * http://twitter.com/parisson_studio
  * http://twitter.com/yomguy
+
 
 Development
 ===========
@@ -230,4 +239,7 @@ The Telemeta project is developed by Parisson. It is sponsored by :
     http://www.musee-europemediterranee.org
   * MMSH : Maison Méditerranéenne des Sciences de l'Homme
     http://www.mmsh.univ-aix.fr/
+  * MNHN : Museum d'Histoire Naturelle (Paris, France)
+    http://www.mnhn.fr
+
 
