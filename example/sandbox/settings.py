@@ -2,7 +2,7 @@
 # Django settings for sandbox project.
 
 import os
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse_lazy, reverse
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -113,7 +113,6 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '',
 )
 
 INSTALLED_APPS = (
@@ -161,7 +160,7 @@ AUTH_PROFILE_MODULE = 'telemeta.userprofile'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
 LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = reverse_lazy('telemeta-desk-lists')
+LOGIN_REDIRECT_URL = '/desk/lists/'
 
 EMAIL_HOST = 'localhost'
 DEFAULT_FROM_EMAIL = 'webmaster@parisson.com'
