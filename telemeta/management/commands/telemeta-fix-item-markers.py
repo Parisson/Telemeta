@@ -12,7 +12,7 @@ class Command(BaseCommand):
     args = "code"
 
     def handle(self, *args, **options):
-        code = args[-2]
+        code = args[-1]
 
         items = MediaItem.objects.filter(code__contains=code)
         if items:
