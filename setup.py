@@ -40,7 +40,7 @@ setup(
         'pyyaml',
         'python-ebml',
         'zipstream',
-        'debug_toolbar',
+        'django-debug-toolbar',
   ],
   platforms=['OS Independent'],
   license='CeCILL v2',
