@@ -51,7 +51,8 @@ class ItemView(object):
 
     export_enabled = getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True)
     export_formats = getattr(settings, 'TELEMETA_DOWNLOAD_FORMATS', ('mp3', 'wav'))
-    default_grapher = getattr(settings, 'TIMESIDE_DEFAULT_GRAPHER_ID', ('waveform_simple'))
+    default_grapher_id = getattr(settings, 'TIMESIDE_DEFAULT_GRAPHER_ID', ('waveform_simple'))
+    default_grapher_sizes = getattr(settings, 'TELEMETA_DEFAULT_GRAPHER_SIZES', ['360x130', ])
     auto_zoom = getattr(settings, 'TIMESIDE_AUTO_ZOOM', False)
 
     def get_export_formats(self):
@@ -99,12 +100,18 @@ class ItemView(object):
     def get_graphers(self):
         graphers = []
         for grapher in self.graphers:
-            if grapher.id() == self.default_grapher:
+            if grapher.id() == self.default_grapher_id:
                 graphers.insert(0, {'name':grapher.name(), 'id': grapher.id()})
             else:
                 graphers.append({'name':grapher.name(), 'id': grapher.id()})
         return graphers
         
+    def get_grapher(self, id):
+        for grapher in self.graphers:
+            if grapher.id() == id:
+                break        
+        return grapher
+
     def item_detail(self, request, public_id=None, marker_id=None, width=None, height=None,
                         template='telemeta/mediaitem_detail.html'):
         """Show the details of a given item"""
@@ -367,21 +374,16 @@ class ItemView(object):
                     subpipe = analyzer()
                     analyzers_sub.append(subpipe)
                     pipe = pipe | subpipe
-
-                try:
-                    sizes = settings.TELEMETA_DEFAULT_GRAPHER_SIZES
-                except:
-                    sizes = ['360x130', ]
-
-                for grapher in self.graphers:
-                    for size in sizes:
-                        width = size.split('x')[0]
-                        height = size.split('x')[1]
-                        image_file = '.'.join([item.public_id, grapher.id(), size.replace('x', '_'), 'png'])
-                        path = self.cache_data.dir + os.sep + image_file
-                        graph = grapher(width = int(width), height = int(height))
-                        graphers_sub.append({'graph' : graph, 'path': path})
-                        pipe = pipe | graph
+                
+                default_grapher = self.get_grapher(self.default_grapher_id)                
+                for size in self.default_grapher_sizes:
+                    width = size.split('x')[0]
+                    height = size.split('x')[1]
+                    image_file = '.'.join([item.public_id, self.default_grapher_id, size.replace('x', '_'), 'png'])
+                    path = self.cache_data.dir + os.sep + image_file
+                    graph = default_grapher(width = int(width), height = int(height))
+                    graphers_sub.append({'graph' : graph, 'path': path})
+                    pipe = pipe | graph
 
                 pipe.run()
 
@@ -438,15 +440,11 @@ class ItemView(object):
         response['Content-Disposition'] = 'attachment; filename='+public_id+'.xml'
         return response
 
-    def item_visualize(self, request, public_id, visualizer_id, width, height):
+    def item_visualize(self, request, public_id, grapher_id, width, height):
         item = MediaItem.objects.get(public_id=public_id)
         mime_type = 'image/png'
-        grapher_id = visualizer_id
-
-        for grapher in self.graphers:
-            if grapher.id() == grapher_id:
-                break
-
+        grapher = self.get_grapher(grapher_id)                
+        
         if grapher.id() != grapher_id:
             raise Http404
 
