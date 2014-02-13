@@ -534,6 +534,7 @@ class ItemView(object):
                 proc = encoder(source, overwrite=True)
                 proc.set_metadata(metadata)
                 try:
+                    #FIXME: should test if metadata writer is available
                     proc.write_metadata()
                 except:
                     pass
@@ -543,13 +544,12 @@ class ItemView(object):
             if not self.cache_export.exists(file) or not flag.value:
                 # source > encoder > stream
                 decoder = timeside.decoder.FileDecoder(source)
-                decoder.setup()
                 proc = encoder(media, streaming=True, overwrite=True)
-                proc.setup(channels=decoder.channels(), samplerate=decoder.samplerate(),
-                            blocksize=decoder.blocksize(), totalframes=decoder.totalframes())
                 if extension in mapping.unavailable_extensions:
                     metadata=None
-                response = HttpResponse(stream_from_processor(decoder, proc, flag, metadata=metadata), mimetype = mime_type)
+                proc.set_metadata(metadata)
+                
+                response = HttpResponse(stream_from_processor(decoder, proc, flag), mimetype = mime_type)
             else:
                 # cache > stream
                 response = HttpResponse(self.cache_export.read_stream_bin(file), mimetype = mime_type)
