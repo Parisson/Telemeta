@@ -1,5 +1,5 @@
 setuptools
-django==1.4.5
+django==1.4.10
 django-registration
 django-json-rpc
 numpy
@@ -13,5 +13,3 @@ django-jqchat
 psutil
 pyyaml
 python-ebml
-zipstream
-django-debug-toolbar
