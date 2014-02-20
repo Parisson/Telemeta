@@ -26,7 +26,7 @@ setup(
   author_email = "yomguy@parisson.com",
   version = '1.4.6',
   install_requires = [
-        'django==1.4.5',
+        'django==1.4.10',
         'django-registration',
         'django-json-rpc',
         'numpy',
@@ -40,9 +40,10 @@ setup(
         'psutil',
         'pyyaml',
         'python-ebml',
-        'zipstream',
-        'django-debug-toolbar',
   ],
+  dependency_links=[
+        "git+ssh://git@github.com:yomguy/python-zipstream.git@1.0.3#egg=zipstream=1.0.3"
+    ]
   platforms=['OS Independent'],
   license='CeCILL v2',
   classifiers = CLASSIFIERS,
