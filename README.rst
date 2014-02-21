@@ -1,5 +1,5 @@
 ===============================================
-Telemeta: open web audio server with semantics
+Telemeta: open web audio app with semantics
 ===============================================
 
 For personal or collaborative media archiving projects, research laboratories and digital humanities, especially in ethnomusicological use cases.
