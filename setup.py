@@ -42,8 +42,8 @@ setup(
         'python-ebml',
   ],
   dependency_links=[
-        "git+ssh://git@github.com:yomguy/python-zipstream.git@1.0.3#egg=zipstream=1.0.3"
-    ]
+        "git+ssh://git@github.com:yomguy/python-zipstream.git@1.0.3#egg=zipstream=1.0.3",
+  ],
   platforms=['OS Independent'],
   license='CeCILL v2',
   classifiers = CLASSIFIERS,
