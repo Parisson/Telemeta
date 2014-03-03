@@ -42,7 +42,7 @@ setup(
         'python-ebml',
   ],
   dependency_links=[
-        "git+ssh://git@github.com:yomguy/python-zipstream.git@1.0.3#egg=zipstream=1.0.3",
+        "https://github.com/yomguy/python-zipstream/zipball/master",
   ],
   platforms=['OS Independent'],
   license='CeCILL v2',
