@@ -431,7 +431,7 @@ class ItemView(object):
 
     def item_analyze_xml(self, request, public_id):
         item = MediaItem.objects.get(public_id=public_id)
-        analyses = MediaItemAnalysis.objects.filter(item=item)
+        analyses = item.analysis.all()
         analyzers = []
         for analysis in analyses:
             analyzers.append(analysis.to_dict())
