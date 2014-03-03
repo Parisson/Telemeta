@@ -346,7 +346,7 @@ class ItemView(object):
         return redirect('telemeta-collection-detail', collection.code)
 
     def item_analyze(self, item):
-        analyses = MediaItemAnalysis.objects.filter(item=item)
+        analyses = item.analysis.all()
         mime_type = ''
         
         if analyses:
