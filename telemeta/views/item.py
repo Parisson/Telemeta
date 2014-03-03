@@ -443,13 +443,18 @@ class ItemView(object):
     def item_visualize(self, request, public_id, grapher_id, width, height):
         item = MediaItem.objects.get(public_id=public_id)
         mime_type = 'image/png'
-        grapher = self.get_grapher(grapher_id)                
+        grapher = self.get_grapher(grapher_id)
         
         if grapher.id() != grapher_id:
             raise Http404
 
         size = width + '_' + height
         image_file = '.'.join([public_id, grapher_id, size, 'png'])
+
+        # FIX waveform grapher name change
+        old_image_file = '.'.join([public_id, 'waveform', size, 'png'])
+        if 'waveform_centroid' in grapher_id and self.cache_data.exists(old_image_file):
+            image_file = old_image_file
 
         if not self.cache_data.exists(image_file):
             source = item.get_source()
