@@ -18,7 +18,7 @@ Install the system dependencies
 
     Install all dependencies like this::
 
-        sudo aptitude install python python-dev python-django python-xml \
+        sudo aptitude install gcc python python-dev python-django python-xml \
             python-ctypes python-setuptools python-support python-docutils \
             python-libxml2 python-django-registration python-lxml python-numpy \
             python-scipy python-imaging python-mutagen python-gobject python-gst0.10 \
@@ -52,62 +52,24 @@ or (deprecated)::
 
 From sources
 +++++++++++++
+
 Download the latest tar archive at http://telemeta.org.
 
-Uncompress and install it. For example::
+Uncompress and install it like this::
 
     tar xzf telemeta-1.0.tar.gz
     cd telemeta-1.0
     sudo python setup.py install
 
-Libraries
-+++++++++++
+For development
+++++++++++++++++
 
-All those modules have been automatically installed if you used one of the previous methods to install Telemeta.
-In this case only, you can PASS this stage.
+Download the latest tar archive at http://telemeta.org and::
 
-But, if you need to hack Telemeta without installing it (i.e. link it through your $PYTHONPATH), you need to install those libraries manually.
-
-TimeSide (web audio components)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-I should be install with the pip method, otherwise install it manually::
-
-    sudo pip install timeside==0.4.6
-
-Or, download the last archive at :
-http://code.google.com/p/timeside/downloads/list
-
-Uncompress it and read README and INSTALL to install the dependencies
-and then the module.
-
-JSON-RPC server
-~~~~~~~~~~~~~~~~~~
-
-Install it using pip::
-
-    sudo pip install django-json-rpc
-
-or, from source::
-
-    git clone git://github.com/samuraisam/django-json-rpc.git
-    cd django-json-rpc
-    python setup.py install
-
-South (schema migration)
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-It is strongly advised to use South and then enable data schema migrations between the models and the database.
-It will allow automatic DB updates when your / our models are modified. Because the first one you use is not only the best one...
-
-Install it using pip::
-
-    sudo pip install south
-
-or::
-
-    sudo easy_install South
-
+    tar xzf telemeta-1.0.tar.gz
+    cd telemeta-1.0
+    sudo pip install -e .
+    export PYTHONPATH=$PYTHONPATH:`pwd`
 
 -------------------------
 Fast testing (sandbox)
