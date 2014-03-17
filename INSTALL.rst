@@ -1,15 +1,8 @@
-Don't worry, Telemeta is easy to setup as any other Django app !
-
 -----------------
 Requirements
 -----------------
 
-Telemeta is designed to run on Linux and other UNIX based architectures.
-It depends on several python librairies like Django (version >= 1.3.1).
-See http://djangoproject.com.
-
-Other needed librairies are listed below.
-
+Don't worry, Telemeta is easy to setup as any other Django app but requires some extra apps and modules to run. It is designed to run on Linux and other UNIX based architectures.
 
 Install the system dependencies
 --------------------------------
@@ -96,18 +89,19 @@ For example::
     cd ~/my_projects
     django-admin startproject mysite
 
-
 Create the database
 ------------------------
 
 Telemeta needs MySQL to work well and fast. So you need to create a MySQL database before trying it.
 But you can also use SQLite, PostgreSQL or Oracle DB.
 
-
 Configure the telemeta project
 ----------------------------------
 
-Edit the file settings.py in a text editor.
+Edit the file settings.py in a text editor. You can find (even copy) an example there::
+
+    example/sandbox/settings.py
+
 Modifiy the following variables::
 
     ADMINS =            telemeta requires that you indicate an administrator here
@@ -137,7 +131,6 @@ Set the following languages::
     LANGUAGES = [ ('fr', 'French'),
                   ('en', 'English'),
     ]
-
 
 Set the following Middlewares::
 
@@ -188,13 +181,13 @@ Optional: if you want some personal templates, for example::
     '/home/dev/telemeta/sandboxes/sandbox_generic/templates/',
     )
 
-You can find an example for settings.py there::
-
-    example/sandbox/settings.py
-
 
 Configure your urls
 ----------------------
+
+You can find (even copy) an example of url.py there::
+
+    example/sandbox/urls.py
 
 Add this dictionary to get Javascript translation::
 
@@ -220,10 +213,6 @@ Please also uncomment::
     from django.contrib import admin
     admin.autodiscover()
 
-You can find an example for url.py there::
-
-    example/sandbox/urls.py
-
 
 Initialize the database
 --------------------------
@@ -235,6 +224,9 @@ This synchronizes the DB with the model::
 If you want tu use the data schema migration system (South needed, see previous paragraph)::
 
     ./manage.py migrate telemeta
+
+Then::
+
     ./manage.py collectstatic
 
 
@@ -336,4 +328,3 @@ Contact / More infos
 -------------------------
 
 See README.rst and http://telemeta.org.
-
