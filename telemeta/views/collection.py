@@ -191,8 +191,8 @@ class CollectionPackageView(View):
         z.write(path, arcname=collection.public_id + os.sep + filename)
 
         for item in collection.items.all():
-            filename = item.file.path.split(os.sep)[-1]
-            z.write(item.file.path, arcname=collection.public_id + os.sep + filename)
+            filename, ext = os.splitext(item.file.path.split(os.sep)[-1])
+            z.write(item.file.path, arcname=collection.public_id + os.sep + item.code + ext)
             marker_view = MarkerView()
             markers = marker_view.get_markers(item.id)
             if markers:
