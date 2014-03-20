@@ -175,8 +175,8 @@ class CollectionPackageView(View):
         """
         from telemeta.views import MarkerView
         from telemeta.backup import CollectionSerializer
+        from telemeta.util import zipstream
         import json
-        import zipstream
         
         z = zipstream.ZipFile()        
         cache_data = TelemetaCache(settings.TELEMETA_DATA_CACHE_DIR)

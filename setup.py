@@ -41,9 +41,6 @@ setup(
         'pyyaml',
         'python-ebml',
   ],
-  dependency_links=[
-        "https://github.com/yomguy/python-zipstream/zipball/master",
-  ],
   platforms=['OS Independent'],
   license='CeCILL v2',
   classifiers = CLASSIFIERS,
