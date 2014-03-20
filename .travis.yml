@@ -7,10 +7,6 @@ before_install:
  - sudo apt-get -qq update
  - sudo apt-get install -qq python-h5py
 
-# command to install dependencies
-install: 
- - "pip install -r requirements.txt"
-
 # command to run tests
 script:
  - "python setup.py install"
