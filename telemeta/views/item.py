@@ -105,11 +105,11 @@ class ItemView(object):
             else:
                 graphers.append({'name':grapher.name(), 'id': grapher.id()})
         return graphers
-        
+
     def get_grapher(self, id):
         for grapher in self.graphers:
             if grapher.id() == id:
-                break        
+                break
         return grapher
 
     def item_detail(self, request, public_id=None, marker_id=None, width=None, height=None,
@@ -356,7 +356,7 @@ class ItemView(object):
     def item_analyze(self, item):
         analyses = item.analysis.all()
         mime_type = ''
-        
+
         if analyses:
             for analysis in analyses:
                 if not item.approx_duration and analysis.analyzer_id == 'duration':
@@ -375,15 +375,15 @@ class ItemView(object):
 
             source = item.get_source()
             if source:
-                decoder  = timeside.decoder.FileDecoder(source)
+                decoder  = timeside.decoder.file.FileDecoder(source)
                 pipe = decoder
 
                 for analyzer in self.value_analyzers:
                     subpipe = analyzer()
                     analyzers_sub.append(subpipe)
                     pipe = pipe | subpipe
-                
-                default_grapher = self.get_grapher(self.default_grapher_id)                
+
+                default_grapher = self.get_grapher(self.default_grapher_id)
                 for size in self.default_grapher_sizes:
                     width = size.split('x')[0]
                     height = size.split('x')[1]
@@ -421,7 +421,7 @@ class ItemView(object):
                                              analyzer_id='duration', unit='s',
                                              value=unicode(datetime.timedelta(0,decoder.input_duration)))
                 analysis.save()
-                
+
                 for analyzer in analyzers_sub:
                     for key in analyzer.results.keys():
                         result = analyzer.results[key]
@@ -452,7 +452,7 @@ class ItemView(object):
         item = MediaItem.objects.get(public_id=public_id)
         mime_type = 'image/png'
         grapher = self.get_grapher(grapher_id)
-        
+
         if grapher.id() != grapher_id:
             raise Http404
 
@@ -468,8 +468,9 @@ class ItemView(object):
             source = item.get_source()
             if source:
                 path = self.cache_data.dir + os.sep + image_file
-                decoder  = timeside.decoder.FileDecoder(source)
+                decoder  = timeside.decoder.file.FileDecoder(source)
                 graph = grapher(width = int(width), height = int(height))
+                print graph.id()
                 (decoder | graph).run()
                 graph.watermark('timeside', opacity=.6, margin=(5,5))
                 f = open(path, 'w')
@@ -556,12 +557,12 @@ class ItemView(object):
             media = self.cache_export.dir + os.sep + file
             if not self.cache_export.exists(file) or not flag.value:
                 # source > encoder > stream
-                decoder = timeside.decoder.FileDecoder(source)
+                decoder = timeside.decoder.file.FileDecoder(source)
                 proc = encoder(media, streaming=True, overwrite=True)
                 if extension in mapping.unavailable_extensions:
                     metadata=None
                 proc.set_metadata(metadata)
-                
+
                 response = HttpResponse(stream_from_processor(decoder, proc, flag), mimetype = mime_type)
             else:
                 # cache > stream
