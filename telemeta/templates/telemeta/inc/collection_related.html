@@ -33,7 +33,7 @@
                                             {{ media.title }}</a>
                                         {% else %}
                                             {{ media.file|get_filename }}</a>
-                                        {% endif %} 
+                                        {% endif %}
                                     {% endif %}
                                 </dd>
                                 <dt>{% trans "Description" %}</dt>
@@ -41,18 +41,14 @@
                                 <dt>{% trans "Credits" %}</dt>
                                 <dd>{{ media.credits }}</dd>
                                 {% dl_field media "mime_type" %}
-                                <dt>{% trans "URL" %}</dt>
+                                {% if media.file %}
+                                <dt>{% trans "Download" %}</dt>
                                 <dd>
-                                {% if media.url %}
-                                    <a href="{{ media.url }}" target="_blank">{{ media.url }}</a>
-                                {% else %}
-                                    {% if media.file %}
-                                    <a href="{% url telemeta-collection-related collection.public_id media.id %}" target="_blank">
-                                    {% url telemeta-collection-related collection.public_id media.id %}
+                                    <a href="{% url telemeta-item-related-download item.public_id media.id %}">
+                                     {{ media.file|get_filename }}
                                     </a>
-                                    {% endif %}
-                                {% endif %}
                                 </dd>
+                                {% endif %}
                             </dl>
                             </td>
 
