@@ -41,15 +41,14 @@
                                 <dt>{% trans "Credits" %}</dt>
                                 <dd>{{ media.credits }}</dd>
                                 {% dl_field media "mime_type" %}
+                                {% if media.file %}
                                 <dt>{% trans "Download" %}</dt>
                                 <dd>
-                                    {% if media.file %}
-                                        <a href="{% url telemeta-item-related-download item.public_id media.id %}" target="_blank">
-                                        {{ media.file|get_filename }}
+                                    <a href="{% url telemeta-item-related-download item.public_id media.id %}">
+                                     {{ media.file|get_filename }}
                                     </a>
-                                    {% endif %}
-                                {% endif %}
                                 </dd>
+                                {% endif %}
                             </dl>
                             </td>
 
