@@ -144,6 +144,14 @@ class CollectionView(object):
 #        response['Content-Disposition'] = 'attachment'
         return response
 
+    def related_media_collection_download(self, request, collection_public_id, media_id):
+        collection = MediaCollection.objects.get(public_id=collection_public_id)
+        media = MediaCollectionRelated.objects.get(collection=collection, id=media_id)
+        filename = media.file.path.split(os.sep)[-1]
+        response = HttpResponse(stream_from_file(media.file.path), mimetype=media.mime_type)
+        response['Content-Disposition'] = 'attachment; ' + 'filename=' + filename
+        return response
+
     @method_decorator(permission_required('telemeta.change_mediacollection'))
     def related_media_edit(self, request, public_id, template):
         collection = MediaCollection.objects.get(public_id=public_id)
@@ -177,10 +185,10 @@ class CollectionPackageView(View):
         from telemeta.backup import CollectionSerializer
         from telemeta.util import zipstream
         import json
-        
-        z = zipstream.ZipFile()        
+
+        z = zipstream.ZipFile()
         cache_data = TelemetaCache(settings.TELEMETA_DATA_CACHE_DIR)
-        
+
         collection = self.get_object()
         serializer = CollectionSerializer(collection)
 

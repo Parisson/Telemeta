@@ -168,6 +168,15 @@ class ResourceView(object):
         response = HttpResponse(stream_from_file(media.file.path), mimetype=media.mime_type)
         return response
 
+    def related_download(self, request, type, public_id, media_id):
+        self.setup(type)
+        resource = self.model.objects.get(code=public_id)
+        media = self.related.objects.get(resource=resource, id=media_id)
+        filename = media.file.path.split(os.sep)[-1]
+        response = HttpResponse(stream_from_file(media.file.path), mimetype=media.mime_type)
+        response['Content-Disposition'] = 'attachment; ' + 'filename=' + filename
+        return response
+
     @jsonrpc_method('telemeta.add_fonds_related_media')
     @jsonrpc_method('telemeta.add_corpus_related_media')
     def related_edit(self, request, type, public_id, template):

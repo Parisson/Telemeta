@@ -44,11 +44,12 @@
                                 {% if media.file %}
                                 <dt>{% trans "Download" %}</dt>
                                 <dd>
-                                    <a href="{% url telemeta-item-related-download item.public_id media.id %}">
+                                    <a href="{% url telemeta-resource-related-download type resource.code media.id %}">
                                      {{ media.file|get_filename }}
                                     </a>
                                 </dd>
                                 {% endif %}
+                                </dd>
                             </dl>
                             </td>
 
