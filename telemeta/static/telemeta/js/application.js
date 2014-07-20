@@ -190,7 +190,7 @@ var json = function(param,method,onSuccessFcn,onErrorFcn){
         type: "POST",
         url: 'json/',
         contentType: "application/json",
-        async : false;
+        async : false,
         data: data2send,
         dataType: "json",
         success: function(data, textStatus, jqXHR){
