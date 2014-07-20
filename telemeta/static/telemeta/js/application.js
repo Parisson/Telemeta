@@ -65,16 +65,16 @@ function setSelectedMenu(){
     var menus = $J('#menu a');
     //build collections/items from http:/site/collections/items,
     //being http:/site/ = window.location.origin
-    
+
     //function for normalizing paths (removes last n occurrences of the slash)
     var normalize = function(str){
         return str.replace(/\/+#*$/,"");
     }
-    
+
     var host = window.location.host;
     var protocol = window.location.protocol
     var href = normalize(window.location.href);
-     
+
     if(!(host) || !(protocol) || !(href)){
         return;
     }
@@ -110,7 +110,7 @@ function setSelectedMenu(){
                 elm.removeClass('active');
             }
         }
-        
+
     })
 }
 
@@ -176,20 +176,21 @@ var json = function(param,method,onSuccessFcn,onErrorFcn){
         }
         return string;
     };
-    
-    //creating the string to send. 
+
+    //creating the string to send.
     var param2string = toString_(param);
     var data2send = '{"id":"jsonrpc", "params":';
     data2send+=param2string;
     data2send+=', "method":"'
     data2send+=method;
     data2send+='","jsonrpc":"1.0"}';
-    
+
     var $J = jQuery;
     $J.ajax({
         type: "POST",
         url: 'json/',
         contentType: "application/json",
+        async : false;
         data: data2send,
         dataType: "json",
         success: function(data, textStatus, jqXHR){
@@ -209,7 +210,7 @@ var json = function(param,method,onSuccessFcn,onErrorFcn){
                 jqXHR.statusText+")\n\nDetails (request responseText):\n"+jqXHR.responseText;
             }
             alert("ERROR: Failed to save"+details);
-            
+
         }
     });
 
@@ -230,17 +231,17 @@ function consolelog(text){
 // Drop down menus
 
 $(document).ready(function () {
-     
+
     $('#nav li').hover(
         function () {
             //show its submenu
             $('ul', this).slideDown(200);
- 
+
         },
         function () {
             //hide its submenu
-            $('ul', this).slideUp(100);        
+            $('ul', this).slideUp(100);
         }
     );
-     
+
 });
