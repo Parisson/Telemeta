@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Telemeta 1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-01 14:33+0200\n"
+"POT-Creation-Date: 2014-09-02 17:48+0200\n"
 "PO-Revision-Date: 2014-09-02 16:18+2\n"
 "Last-Translator: Zaichao XIA <xiazaichao@gmail.com>\n"
 "Language-Team: zh_CN <LL@li.org>\n"
@@ -780,7 +780,8 @@ msgid "Home"
 msgstr "首页"
 
 #: templates/admin/base_site.html:4
-msgid "Telemeta site admin"
+#, fuzzy
+msgid "Telemta site admin"
 msgstr "Telemeta网站管理员"
 
 #: templates/admin/base_site.html:7
@@ -894,7 +895,7 @@ msgstr "亲爱的用户，"
 #: templates/postman/email_user.txt:3 templates/postman/email_visitor.txt:3
 #, python-format
 msgid "On %(date)s, you asked to send a message to the user '%(recipient)s'."
-msgstr "在%（日期），您向用户‘%（收件人）’发送了一条消息。"
+msgstr "在%(date)s，您向用户‘%(recipient)s’发送了一条消息。"
 
 #: templates/postman/email_user.txt:5 templates/postman/email_visitor.txt:5
 msgid "Your message has been rejected by the moderator"
@@ -907,7 +908,7 @@ msgstr "，原因如下："
 #: templates/postman/email_user.txt:9 templates/postman/email_visitor.txt:10
 #, python-format
 msgid "On %(date)s, you sent a message to the user '%(sender)s'."
-msgstr "在%（日期），您向用户‘%（发件人）’发送了一条消息。"
+msgstr "在%(date)s，您向用户‘%(sender)s’发送了一条消息。"
 
 #: templates/postman/email_user.txt:10
 msgid "Your correspondent has given you an answer."
@@ -916,12 +917,12 @@ msgstr "您的联系人已回复。"
 #: templates/postman/email_user.txt:11
 #, python-format
 msgid "You have received a copy of a response from the user '%(sender)s'."
-msgstr "您收到了一个来自用户‘%（发件人）’的回复副本。"
+msgstr "您收到了一个来自用户‘%(sender)s’的回复副本。"
 
 #: templates/postman/email_user.txt:13
 #, python-format
 msgid "You have received a message from the user '%(sender)s'."
-msgstr "您收到了来自用户‘%（发件人）’的消息。"
+msgstr "您收到了来自用户‘%(sender)s’的消息。"
 
 #: templates/postman/email_user.txt:16 templates/postman/email_visitor.txt:14
 msgid "Thank you again for your interest in our services."
@@ -944,7 +945,7 @@ msgstr ""
 #: templates/postman/email_visitor_subject.txt:1
 #, python-format
 msgid "Message \"%(subject)s\" on the site %(sitename)s"
-msgstr "消息\"%(主题)\"在%（网站名）网站上"
+msgstr "消息\"%(subject)s\"在%(sitename)s网站上"
 
 #: templates/postman/email_visitor.txt:1
 msgid "Dear visitor,"
@@ -987,8 +988,7 @@ msgstr "已删除的消息"
 msgid ""
 "Messages in this folder can be removed from time to time. For long term "
 "storage, use instead the archive folder."
-msgstr ""
-"该文件夹中的消息有时会被移除。请使用档案文件夹作为长期存储。"
+msgstr "该文件夹中的消息有时会被移除。请使用档案文件夹作为长期存储。"
 
 #: templates/postman/view.html:5
 msgid "Conversation"
@@ -1150,8 +1150,7 @@ msgstr "通过"
 msgid ""
 "Usage of the archives in the respect of cultural heritage of the original "
 "communities."
-msgstr ""
-"档案的使用尊重文化遗产的原始所有者。"
+msgstr "档案的使用尊重文化遗产的原始所有者。"
 
 #: templates/telemeta/base.html:167
 #: templates/telemeta/collection_detail.html:125
@@ -1505,7 +1504,7 @@ msgid_plural "%(counter)s items "
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/telemeta/home.html:14 templates/telemeta/home.html.py:64
+#: templates/telemeta/home.html:14 templates/telemeta/home.html.py:65
 msgid "Musical selection"
 msgstr "音乐选择"
 
@@ -1913,7 +1912,8 @@ msgid ""
 "Please enter your old password, for security's sake, and then enter your new "
 "password twice so we can verify you typed it in correctly."
 msgstr ""
-"请输入您的旧密码，为了安全起见，请接着输入两次新密码以方便我们验证您是否正确输入。"
+"请输入您的旧密码，为了安全起见，请接着输入两次新密码以方便我们验证您是否正确"
+"输入。"
 
 #: templates/telemeta/registration/password_change_form.html:24
 msgid "Old password"
@@ -1981,7 +1981,9 @@ msgstr "密码重置成功"
 msgid ""
 "We've e-mailed you instructions for setting your password to the e-mail "
 "address you submitted. You should be receiving it shortly."
-msgstr "我们已经向您的注册邮箱发送相关提示以方便您设置密码。您将很快收到，请注意查收。"
+msgstr ""
+"我们已经向您的注册邮箱发送相关提示以方便您设置密码。您将很快收到，请注意查"
+"收。"
 
 #: templates/telemeta/registration/password_reset_email.html:1
 msgid "Hello"
@@ -1994,7 +1996,7 @@ msgstr "您收到了该邮件，由于您申请了密码重置"
 #: templates/telemeta/registration/password_reset_email.html:4
 #, python-format
 msgid "for your user account at %(site_name)s"
-msgstr "为您在%（网站名）的用户账户"
+msgstr "为您在%(site_name)s的用户账户"
 
 #: templates/telemeta/registration/password_reset_email.html:6
 msgid "Please go to the following page and choose a new password:"
@@ -2016,7 +2018,9 @@ msgstr "的"
 msgid ""
 "Forgotten your password? Enter your e-mail address below, and we'll e-mail "
 "instructions for setting a new one."
-msgstr "忘记密码？请在下方输入您的邮箱地址，我们将给您的邮箱发送设置新密码的相关提示。"
+msgstr ""
+"忘记密码？请在下方输入您的邮箱地址，我们将给您的邮箱发送设置新密码的相关提"
+"示。"
 
 #: templates/telemeta/registration/password_reset_form.html:11
 msgid "E-mail address:"
@@ -2069,8 +2073,7 @@ msgstr "不允许访问"
 #: views/profile.py:70
 msgid ""
 "Please login or contact the website administator to get a private access."
-msgstr ""
-"请登录或联系网站管理员以获得私人访问权限。"
+msgstr "请登录或联系网站管理员以获得私人访问权限。"
 
 #: views/feed.py:45
 msgid "Last changes"
