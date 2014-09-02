@@ -1,79 +1,78 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Chinese translation
+# Copyright (C) 2014 Zaichao Xia
+# This file is distributed under the same license as the Telemeta package.
+# Zaichao Xia <xiazaichao@gmail.com>, 2014.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: Telemeta 1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-01 14:34+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
-"MIME-Version: 1.0\n"
+"POT-Creation-Date: 2014-07-01 14:33+0200\n"
+"PO-Revision-Date: 2014-09-02 16:18+2\n"
+"Last-Translator: Zaichao XIA <xiazaichao@gmail.com>\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Language: zh_CN\n""MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
 #: static/telemeta/js/locale.js:2
 msgid "title"
-msgstr ""
+msgstr "标题"
 
 #: static/telemeta/js/locale.js:3
 msgid "description"
-msgstr ""
+msgstr "描述"
 
 #: static/telemeta/js/locale.js:4
 msgid "delete the marker permanently?"
-msgstr ""
+msgstr "永久删除书签？"
 
 #: static/telemeta/js/locale.js:5
 msgid "marker added to the selected playlist"
-msgstr ""
+msgstr "选中播放列表添加的书签"
 
 #: static/telemeta/js/locale.js:6
 msgid "item added to the selected playlist"
-msgstr ""
+msgstr "选中播放列表中添加的项"
 
 #: static/telemeta/js/locale.js:7
 msgid "collection added to the selected playlist"
-msgstr ""
+msgstr "选中播放列表中添加的选集"
 
 #: static/telemeta/js/locale.js:8
 msgid "resource added to the selected playlist"
-msgstr ""
+msgstr "选中播放列表中添加的资源"
 
 #: static/telemeta/js/locale.js:9
 msgid "there are unsaved or modified markers"
-msgstr ""
+msgstr "书签未保存或者已修改"
 
 #: static/telemeta/js/locale.js:10
 msgid "If you exit the page you will loose your changes"
-msgstr ""
+msgstr "如果离开本页面您将丢失之前的修改"
 
 #: static/telemeta/js/locale.js:11
 msgid "author"
-msgstr ""
+msgstr "作者"
 
 #: static/telemeta/js/locale.js:12
 msgid "Paste HTML to embed player in website"
-msgstr ""
+msgstr "将HTML粘贴到网站中嵌入的播放器"
 
 #: static/telemeta/js/locale.js:13
 msgid "delete the item permanently?"
-msgstr ""
+msgstr "永久删除该项？"
 
 #: static/telemeta/js/locale.js:14
 msgid "delete the collection permanently?"
-msgstr ""
+msgstr "永久删除该选集？"
 
 #: static/telemeta/js/locale.js:15
 msgid "delete the playlist permanently?"
-msgstr ""
+msgstr "永久删除该播放列表？"
 
 #: static/telemeta/js/locale.js:16
 msgid "delete the resource from the playlist permanently?"
-msgstr ""
+msgstr "永久地从播放列表中删除该资源？"
