@@ -39,9 +39,10 @@ from django.conf import settings
 from django.views.generic import RedirectView
 from django.views.generic.list import ListView
 from telemeta.models import MediaItem, MediaCollection, MediaItemMarker, MediaCorpus, MediaFonds
-from telemeta.views import HomeView, AdminView, CollectionView, ItemView, \
-                            InstrumentView, InstrumentAliasView, PlaylistView, ProfileView, GeoView, \
-                            LastestRevisionsFeed, ResourceView, UserRevisionsFeed, CollectionPackageView
+from telemeta.views import *
+#from telemeta.views import HomeView, AdminView, CollectionView, ItemView, \
+#                            InstrumentView, InstrumentAliasView, PlaylistView, ProfileView, GeoView, \
+#                            LastestRevisionsFeed, ResourceView, UserRevisionsFeed, CollectionPackageView
 from jsonrpc import jsonrpc_site
 import os.path
 import telemeta.config
@@ -60,30 +61,19 @@ profile_view = ProfileView()
 geo_view = GeoView()
 resource_view = ResourceView()
 
-# query sets for Django generic views
-all_items = { 'queryset': MediaItem.objects.enriched().order_by('code', 'old_code') }
-all_items_unpublished = { 'queryset': MediaItem.objects.filter(collection__code__contains='_I_').order_by('code', 'old_code'), }
-all_items_published = { 'queryset': MediaItem.objects.filter(collection__code__contains='_E_').order_by('code', 'old_code'), }
-all_items_sound = { 'queryset': MediaItem.objects.sound().order_by('code', 'old_code') }
-all_collections = { 'queryset': MediaCollection.objects.enriched(), }
-all_collections_unpublished = { 'queryset': MediaCollection.objects.filter(code__contains='_I_'), }
-all_collections_published = { 'queryset': MediaCollection.objects.filter(code__contains='_E_'), }
-all_collections_sound = { 'queryset': MediaCollection.objects.sound().order_by('code', 'old_code') }
-all_corpus = { 'queryset': MediaCorpus.objects.all().order_by('code') }
-all_fonds = { 'queryset': MediaFonds.objects.all().order_by('code') }
-
 # ID's regular expressions
 export_extensions = "|".join(item_view.list_export_extensions())
+
 
 urlpatterns = patterns('',
     url(r'^$', home_view.home, name="telemeta-home"),
 
     # items
-    url(r'^archives/items/$', ListView.as_view(queryset=MediaItem.objects.enriched().order_by('code', 'old_code')),
-        dict(paginate_by=20, template_name="telemeta/mediaitem_list.html"),
-        name="telemeta-items"),
-    url(r'^archives/items_sound/$', ListView.as_view(),
-        dict(all_items_sound, paginate_by=20, template_name="telemeta/mediaitem_list.html"), name="telemeta-items-sound"),
+    url(r'^archives/items/$', ItemListView.as_view(), name="telemeta-items"),
+    url(r'^archives/items_sound/$', ItemSoundListView.as_view(), name="telemeta-items-sound"),
+    url(r'^archives/items_unpublished/$', ItemUnpublishedListView.as_view(), name="telemeta-items-unpublished"),
+    url(r'^archives/items_published/$', ItemPublishedListView.as_view(), name="telemeta-items-published"),
+
     url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/$', item_view.item_detail,
         name="telemeta-item-detail"),
     url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/dc/$', item_view.item_detail,
@@ -130,20 +120,13 @@ urlpatterns = patterns('',
     url(r'^archives/markers/(?P<marker_id>[A-Za-z0-9]+)/$', item_view.item_detail, name="telemeta-item-detail-marker"),
     # FIXME: need all paths
     url(r'^items/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(), {'url': '/archives/items/%(path)s/', 'permanent': False}, name="telemeta-item-redir"),
-    url(r'^archives/items_unpublished/$', ListView.as_view(),
-        dict(all_items_unpublished, paginate_by=20, template_name="telemeta/mediaitem_list.html"), name="telemeta-items-unpublished"),
-    url(r'^archives/items_published/$', ListView.as_view(),
-        dict(all_items_published, paginate_by=20, template_name="telemeta/mediaitem_list.html"), name="telemeta-items-published"),
 
     # collections
-    url(r'^archives/collections/$', ListView.as_view(),
-        dict(all_collections, paginate_by=20, template_name="telemeta/collection_list.html"), name="telemeta-collections"),
-    url(r'^archives/collections_unpublished/$', ListView.as_view(),
-        dict(all_collections_unpublished, paginate_by=20, template_name="telemeta/collection_list.html"), name="telemeta-collections-unpublished"),
-    url(r'^archives/collections_published/$', ListView.as_view(),
-        dict(all_collections_published, paginate_by=20, template_name="telemeta/collection_list.html"), name="telemeta-collections-published"),
-    url(r'^archives/collections/?page=(?P<page>[0-9]+)$', ListView.as_view(),
-        dict(all_collections, paginate_by=20)),
+    url(r'^archives/collections/$', CollectionListView.as_view(), name="telemeta-collections"),
+    url(r'^archives/collections_unpublished/$', CollectionUnpublishedListView.as_view(), name="telemeta-collections-unpublished"),
+    url(r'^archives/collections_published/$', CollectionPublishedListView.as_view(), name="telemeta-collections-published"),
+    url(r'^archives/collections_sound/$', CollectionSoundListView.as_view(), name="telemeta-collections-sound"),
+
     url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/$', collection_view.collection_detail,
         dict(template="telemeta/collection_detail.html"), name="telemeta-collection-detail"),
     url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/dc/$', collection_view.collection_detail,
@@ -167,22 +150,15 @@ urlpatterns = patterns('',
     url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/delete/$', collection_view.collection_delete, name="telemeta-collection-delete"),
     url(r'^archives/collections/(?P<collection_public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)/view/$', collection_view.related_media_collection_stream, name="telemeta-collection-related"),
     url(r'^archives/collections/(?P<collection_public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)/download/$', collection_view.related_media_collection_download, name="telemeta-collection-related-download"),
-
     url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/related_edit/$', collection_view.related_media_edit,  dict(template='telemeta/collection_related_edit.html'), name="telemeta-collection-related_edit"),
-    url(r'^archives/collections_sound/$', ListView.as_view(),
-        dict(all_collections_sound, paginate_by=20, template_name="telemeta/collection_list.html"), name="telemeta-collections-sound"),
     # FIXME: need all paths
     url(r'^collections/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(), {'url': '/archives/collections/%(path)s/', 'permanent': False}, name="telemeta-collection-redir"),
     url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/package/$', CollectionPackageView.as_view(),
         name="telemeta-collection-package"),
-    # RESOURCES
-    # Corpus list
-    url(r'^archives/corpus/$', ListView.as_view(),
-        dict(all_corpus, paginate_by=20, template_name="telemeta/resource_list.html", extra_context={'type':'corpus'}), name="telemeta-corpus"),
 
-    # Fonds list
-    url(r'^archives/fonds/$', ListView.as_view(),
-        dict(all_fonds, paginate_by=20, template_name="telemeta/resource_list.html", extra_context={'type':'fonds'}), name="telemeta-fonds"),
+    # RESOURCES
+    url(r'^archives/corpus/$', CorpusListView.as_view(), name="telemeta-corpus"),
+    url(r'^archives/fonds/$', FondsListView.as_view(), name="telemeta-fonds"),
 
     # Generic resource
     url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/$', resource_view.detail,

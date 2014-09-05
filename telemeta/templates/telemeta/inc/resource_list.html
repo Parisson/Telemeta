@@ -1,13 +1,10 @@
 {% load telemeta_utils %}
 {% load i18n %}
-{% if resources %}
-{% if hits %}
+{% load pagination_tags %}
 
-<p class="pagination">
-{{ type|capitalize }}{% blocktrans %} from {{ first_on_page }} to {{ last_on_page }} on {{ hits }}{% endblocktrans %}
-| Pages : {% if pages == 1 %}1{% else %}{% if is_paginated %}{% load paginator %}{% paginator 5 %}{% endif %}{% endif %}
-</p>
-{% endif %}
+{% if resources %}
+{% paginate %}
+
 <table class="listing">
 <tr>
     <th class="highlight">{% trans "Title" %}</th>

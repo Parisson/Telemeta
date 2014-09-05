@@ -194,3 +194,25 @@ class ResourceView(object):
         return render(request, template, {'resource': resource, 'type': type, 'formset': formset,})
 
 
+
+class CorpusListView(ListView):
+    model = MediaCorpus
+    template_name = "telemeta/resource_list.html"
+    paginate_by = 20
+    queryset = MediaCorpus.objects.all().order_by('code')
+
+    def get_context_data(self, **kwargs):
+        context = super(CorpusListView, self).get_context_data(**kwargs)
+        context['type'] = 'corpus'
+        return context
+
+class FondsListView(ListView):
+    model = MediaFonds
+    template_name = "telemeta/resource_list.html"
+    paginate_by = 20
+    queryset = MediaFonds.objects.all().order_by('code')
+
+    def get_context_data(self, **kwargs):
+        context = super(FondsListView, self).get_context_data(**kwargs)
+        context['type'] = 'fonds'
+        return context

@@ -607,3 +607,22 @@ class ItemView(object):
             formset = FormSet(instance=item)
         return render(request, template, {'item': item, 'formset': formset,})
 
+
+class ItemListView(ListView):
+    model = MediaItem
+    template_name = "telemeta/mediaitem_list.html"
+    paginate_by = 20
+    queryset = MediaItem.objects.enriched().order_by('code', 'old_code')
+
+
+class ItemUnpublishedListView(ItemListView):
+    queryset = MediaItem.objects.filter(collection__code__contains='_I_').order_by('code', 'old_code')
+
+
+class ItemPublishedListView(ItemListView):
+    queryset = MediaItem.objects.filter(collection__code__contains='_E_').order_by('code', 'old_code')
+
+
+class ItemSoundListView(ItemListView):
+    queryset = MediaItem.objects.sound().order_by('code', 'old_code')
+
