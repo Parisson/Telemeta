@@ -227,6 +227,7 @@ class CollectionPackageView(View):
 
 
 class CollectionListView(ListView):
+
     model = MediaCollection
     template_name = "telemeta/collection_list.html"
     paginate_by = 20
@@ -234,13 +235,16 @@ class CollectionListView(ListView):
 
 
 class CollectionUnpublishedListView(CollectionListView):
+
     queryset = MediaCollection.objects.filter(code__contains='_I_')
 
 
 class CollectionPublishedListView(CollectionListView):
+
     queryset = MediaCollection.objects.filter(code__contains='_E_')
 
 
 class CollectionSoundListView(CollectionListView):
+
     queryset = MediaCollection.objects.sound().order_by('code', 'old_code')
 

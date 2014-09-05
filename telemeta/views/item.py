@@ -609,6 +609,7 @@ class ItemView(object):
 
 
 class ItemListView(ListView):
+
     model = MediaItem
     template_name = "telemeta/mediaitem_list.html"
     paginate_by = 20
@@ -616,13 +617,16 @@ class ItemListView(ListView):
 
 
 class ItemUnpublishedListView(ItemListView):
+
     queryset = MediaItem.objects.filter(collection__code__contains='_I_').order_by('code', 'old_code')
 
 
 class ItemPublishedListView(ItemListView):
+
     queryset = MediaItem.objects.filter(collection__code__contains='_E_').order_by('code', 'old_code')
 
 
 class ItemSoundListView(ItemListView):
+
     queryset = MediaItem.objects.sound().order_by('code', 'old_code')
 

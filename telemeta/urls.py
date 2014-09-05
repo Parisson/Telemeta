@@ -161,8 +161,7 @@ urlpatterns = patterns('',
     url(r'^archives/fonds/$', FondsListView.as_view(), name="telemeta-fonds"),
 
     # Generic resource
-    url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/$', resource_view.detail,
-        dict(template="telemeta/resource_detail.html"), name="telemeta-resource-detail"),
+    url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/$', CorpusDetailView.as_view(), name="telemeta-resource-detail"),
     url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/dc/$', resource_view.detail,
         dict(template="telemeta/resource_detail_dc.html"), name="telemeta-resource-dublincore"),
     url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/edit/$', resource_view.edit,

@@ -196,23 +196,70 @@ class ResourceView(object):
 
 
 class CorpusListView(ListView):
+
     model = MediaCorpus
+    queryset = MediaCorpus.objects.all().order_by('code')
     template_name = "telemeta/resource_list.html"
     paginate_by = 20
-    queryset = MediaCorpus.objects.all().order_by('code')
 
     def get_context_data(self, **kwargs):
         context = super(CorpusListView, self).get_context_data(**kwargs)
         context['type'] = 'corpus'
         return context
 
+
 class FondsListView(ListView):
+
     model = MediaFonds
+    queryset = MediaFonds.objects.all().order_by('code')
     template_name = "telemeta/resource_list.html"
     paginate_by = 20
-    queryset = MediaFonds.objects.all().order_by('code')
 
     def get_context_data(self, **kwargs):
         context = super(FondsListView, self).get_context_data(**kwargs)
         context['type'] = 'fonds'
         return context
+
+
+class CorpusDetailView(DetailView):
+
+    model = MediaCorpus
+    template_name = "telemeta/resource_detail.html"
+    parent = MediaFonds
+    related = MediaCorpusRelated
+
+    def get_object(self):
+        self.type = self.kwargs['type']
+        self.pk = self.model.objects.get(code=self.kwargs['public_id']).pk
+        return get_object_or_404(self.model, pk=self.pk)
+
+    def get_context_data(self, **kwargs):
+        context = super(CorpusDetailView, self).get_context_data(**kwargs)
+        resource = self.object
+        related_media = self.related.objects.filter(resource=self.object)
+        check_related_media(related_media)
+        playlists = get_playlists(self.request)
+        revisions = Revision.objects.filter(element_type=self.type, element_id=self.pk).order_by('-time')
+
+        context['resource'] = resource
+        context['type'] = self.type
+        context['related_media'] = related_media
+        context['revisions'] = revisions
+        if revisions:
+            context['last_revision'] = revisions[0]
+        else:
+            context['last_revision'] = None
+        if self.parent:
+            context['parents'] = self.parent.objects.filter(children=resource)
+        else:
+            context['parents'] = []
+
+        return context
+
+
+class FondsDetailView(CorpusDetailView):
+
+    model = MediaFonds
+    template_name = "telemeta/resource_detail.html"
+    parent = None
+    related = MediaFondsRelated
