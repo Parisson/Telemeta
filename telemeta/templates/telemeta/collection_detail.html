@@ -35,20 +35,20 @@
 {% block title %}
     <img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" />
     Collection :
-    <a href="{% url telemeta-collection-detail collection.public_id %}">{{ collection.title }}</a>
+    <a href="{% url "telemeta-collection-detail" collection.public_id %}">{{ collection.title }}</a>
 {% endblock %}
 
 {% block title_buttons %}
   <div class="fixedWidthAsPlayer">
     {% if user.is_authenticated and perms.telemeta.change_mediacollection %}
-      <a href="{% url telemeta-collection-edit collection.public_id %}" class="component_icon button icon_edit">{% trans "Edit" %}</a>
-      <a href="{% url telemeta-collection-copy collection.public_id %}" class="component_icon button icon_copy">{% trans "Copy" %}</a>
-      <a href="{% url telemeta-collection-additem collection.public_id %}" class="component_icon button icon_add">{% trans "Add item" %}</a>
+      <a href="{% url "telemeta-collection-edit" collection.public_id %}" class="component_icon button icon_edit">{% trans "Edit" %}</a>
+      <a href="{% url "telemeta-collection-copy" collection.public_id %}" class="component_icon button icon_copy">{% trans "Copy" %}</a>
+      <a href="{% url "telemeta-collection-additem" collection.public_id %}" class="component_icon button icon_add">{% trans "Add item" %}</a>
      {% endif %}
     {% if user.is_authenticated %}
      <a href=# id="_add_to_playlist" class="component_icon button icon_add_to_playlist">{% trans "Add to playlist" %}</a>
     {% if audio_export_enabled or perms.telemeta.can_download_all_items or user.is_superuser %}
-     <a href="{% url telemeta-collection-package collection.public_id %}" id="zip_package" class="component_icon button icon_zip">{% trans "Download" %} ZIP</a>
+     <a href="{% url "telemeta-collection-package" collection.public_id %}" id="zip_package" class="component_icon button icon_zip">{% trans "Download" %} ZIP</a>
     {% endif %}
     {% endif %}
    </div>
@@ -61,8 +61,8 @@
             <div id="collection_player">
              <div class="title">
               <h3><b>{% trans "Listen to this collection" %}</b>
-              (<a href="{% url telemeta-collection-m3u collection.public_id %}">M3U</a>,
-              <a href="{% url telemeta-collection-xspf collection.public_id %}">XSPF</a>)</h3>
+              (<a href="{% url "telemeta-collection-m3u" collection.public_id %}">M3U</a>,
+              <a href="{% url "telemeta-collection-xspf" collection.public_id %}">XSPF</a>)</h3>
              </div>
                 <!-- This is Jeroen Wijering's Flash MP3 Player,
                   under CC Attribution-NonCommercial-ShareAlike 2.0 license
@@ -72,7 +72,7 @@
                 </p>
                 <script type="text/javascript">
                   var so = new SWFObject('{{ STATIC_URL }}telemeta/swf/mp3player.swf','playlist','362','200','7');
-                  so.addVariable("file","{% url telemeta-collection-xspf collection.public_id %}");
+                  so.addVariable("file","{% url "telemeta-collection-xspf" collection.public_id %}");
                   so.addVariable("displayheight","0");
                   so.addParam("wmode", "opaque");
                   so.write('collection_player_c');
@@ -97,11 +97,11 @@
                 {% dl_field collection "year_published" placeholder %}
                 {% for parent in parents %}
                 <dt>{% trans parent.element_type|capitalize %}</dt>
-                <dd><a href="{% url telemeta-resource-detail parent.element_type parent.public_id %}">{{ parent.title }}</a></dd>
+                <dd><a href="{% url "telemeta-resource-detail" parent.element_type parent.public_id %}">{{ parent.title }}</a></dd>
                 {% endfor %}
                 {% if last_revision %}
                 <dt>{% trans "Last modification" %}</dt>
-                <dd>{{ last_revision.time }} {% if user.is_authenticated %}(<a href="{% url telemeta-profile-detail last_revision.user.username %}">{{last_revision.user.username}}</a>){% endif %}</dd>
+                <dd>{{ last_revision.time }} {% if user.is_authenticated %}(<a href="{% url "telemeta-profile-detail" last_revision.user.username %}">{{last_revision.user.username}}</a>){% endif %}</dd>
                 {% endif %}
             </dl>
         {% endblock general_info %}
@@ -216,9 +216,9 @@
 {% endblock %}
 
 {% block delete %}
-<a href="{% url telemeta-collection-dublincore collection.public_id %}" style="float:left;margin-top:0.5em;margin-bottom:1em" class="component_icon button icon_dublin_core">Dublin Core</a>
+<a href="{% url "telemeta-collection-dublincore" collection.public_id %}" style="float:left;margin-top:0.5em;margin-bottom:1em" class="component_icon button icon_dublin_core">Dublin Core</a>
 {% if user.is_authenticated and perms.telemeta.delete_mediacollection %}
- <a href="#" onclick="if(confirm(gettrans('delete the collection permanently?'))){window.location.href='{% url telemeta-collection-delete collection.public_id %}';};return false;"
+ <a href="#" onclick="if(confirm(gettrans('delete the collection permanently?'))){window.location.href='{% url "telemeta-collection-delete" collection.public_id %}';};return false;"
         class="component_icon button icon_delete" style="float:right;margin-top:0.5em;margin-bottom:1em">{% trans "Delete" %}</a>
 {% endif %}
 {% endblock %}

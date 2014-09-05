@@ -10,12 +10,12 @@
 
 {% block title_buttons %}
     {% ifequal type 'items' %}
-     <a href="{% url telemeta-search-items %}?{{criteria|with_no_sound|build_query_string}}" class="component_icon button icon_filter">{% trans "All" %}</a>
-     <a href="{% url telemeta-search-items %}?{{criteria|with_sound|build_query_string}}" class="component_icon button icon_filter">{% trans "Sounds" %}</a>
+     <a href="{% url "telemeta-search-items" %}?{{criteria|with_no_sound|build_query_string}}" class="component_icon button icon_filter">{% trans "All" %}</a>
+     <a href="{% url "telemeta-search-items" %}?{{criteria|with_sound|build_query_string}}" class="component_icon button icon_filter">{% trans "Sounds" %}</a>
     {% endifequal %}
     {% ifequal type 'collections' %}
-     <a href="{% url telemeta-search-collections %}?{{criteria|with_no_sound|build_query_string}}" class="component_icon button icon_filter">{% trans "All" %}</a>
-     <a href="{% url telemeta-search-collections %}?{{criteria|with_sound|build_query_string}}" class="component_icon button icon_filter">{% trans "Sounds" %}</a>
+     <a href="{% url "telemeta-search-collections" %}?{{criteria|with_no_sound|build_query_string}}" class="component_icon button icon_filter">{% trans "All" %}</a>
+     <a href="{% url "telemeta-search-collections" %}?{{criteria|with_sound|build_query_string}}" class="component_icon button icon_filter">{% trans "Sounds" %}</a>
     {% endifequal %}
 {% endblock %}
 
@@ -64,7 +64,7 @@
 {% endif %}
 
 {% ifequal type 'items' %}
-<p><b>Items ({{items_num}}) | <a href="{% url telemeta-search-collections %}?{{criteria|build_query_string}}">Collections ({{collections_num}})</a> | <a href="{% url telemeta-search-corpus %}?{{criteria|build_query_string}}">Corpus ({{corpus_num}})</a> | <a href="{% url telemeta-search-fonds %}?{{criteria|build_query_string}}">Fonds ({{fonds_num}})</a></b></p>
+<p><b>Items ({{items_num}}) | <a href="{% url "telemeta-search-collections" %}?{{criteria|build_query_string}}">Collections ({{collections_num}})</a> | <a href="{% url "telemeta-search-corpus" %}?{{criteria|build_query_string}}">Corpus ({{corpus_num}})</a> | <a href="{% url "telemeta-search-fonds" %}?{{criteria|build_query_string}}">Fonds ({{fonds_num}})</a></b></p>
   {% with object_list as items %}
    <div class="fullpage">
       {% include "telemeta/inc/mediaitem_list.html" %}
@@ -73,7 +73,7 @@
 {% endifequal %}
 
 {% ifequal type 'collections' %}
-<p><b><a href="{% url telemeta-search-items %}?{{criteria|build_query_string}}">Items ({{items_num}})</a> | Collections ({{collections_num}}) | <a href="{% url telemeta-search-corpus %}?{{criteria|build_query_string}}">Corpus ({{corpus_num}})</a> | <a href="{% url telemeta-search-fonds %}?{{criteria|build_query_string}}">Fonds ({{fonds_num}})</a>
+<p><b><a href="{% url "telemeta-search-items" %}?{{criteria|build_query_string}}">Items ({{items_num}})</a> | Collections ({{collections_num}}) | <a href="{% url "telemeta-search-corpus" %}?{{criteria|build_query_string}}">Corpus ({{corpus_num}})</a> | <a href="{% url "telemeta-search-fonds" %}?{{criteria|build_query_string}}">Fonds ({{fonds_num}})</a>
   </b></p>
   {% with object_list as collections %}
    <div class="fullpage">
@@ -83,12 +83,12 @@
 {% endifequal %}
 
 {% if type == 'corpus' %}
-<p><b><a href="{% url telemeta-search-items %}?{{criteria|build_query_string}}">Items ({{items_num}})</a> | <a href="{% url telemeta-search-collections %}?{{criteria|build_query_string}}">Collections ({{collections_num}})</a> | Corpus ({{corpus_num}}) | <a href="{% url telemeta-search-fonds %}?{{criteria|build_query_string}}">Fonds ({{fonds_num}})</a>
+<p><b><a href="{% url "telemeta-search-items" %}?{{criteria|build_query_string}}">Items ({{items_num}})</a> | <a href="{% url "telemeta-search-collections" %}?{{criteria|build_query_string}}">Collections ({{collections_num}})</a> | Corpus ({{corpus_num}}) | <a href="{% url "telemeta-search-fonds" %}?{{criteria|build_query_string}}">Fonds ({{fonds_num}})</a>
 </b></p>
 {% endif %}
 
 {% if type == 'fonds' %}
-<p><b><a href="{% url telemeta-search-items %}?{{criteria|build_query_string}}">Items ({{items_num}})</a> | <a href="{% url telemeta-search-collections %}?{{criteria|build_query_string}}">Collections ({{collections_num}})</a> | <a href="{% url telemeta-search-corpus %}?{{criteria|build_query_string}}">Corpus ({{corpus_num}})</a> | Fonds ({{fonds_num}})
+<p><b><a href="{% url "telemeta-search-items" %}?{{criteria|build_query_string}}">Items ({{items_num}})</a> | <a href="{% url "telemeta-search-collections" %}?{{criteria|build_query_string}}">Collections ({{collections_num}})</a> | <a href="{% url "telemeta-search-corpus" %}?{{criteria|build_query_string}}">Corpus ({{corpus_num}})</a> | Fonds ({{fonds_num}})
 </b></p>
 {% endif %}
 

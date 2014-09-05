@@ -8,7 +8,7 @@
 
 {% block title_buttons %}
 <div class="fixedWidthAsPlayer">
-    <a href="{% url telemeta-item-detail item.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+    <a href="{% url "telemeta-item-detail" item.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
     {% if perms.telemeta.change_mediaitem %}
     <a href="#" class="component_icon button icon_save" onclick="var d=document; d.getElementById('wait-img').style.display='inline'; setTimeout(function(){d.getElementById('_editItemForm').submit();},300); return false;">{% trans "Save" %}</a>
     {% endif %}
@@ -51,16 +51,16 @@
     {% if form.prefix == "item" and forloop.last %}
     <tr>
       <td style="padding-top: 1em">{% trans "Keywords" %}:</td>
-      <td style="padding-top: 1em"><a href="{% url telemeta-item-keywords_edit item.public_id %}" class="component_icon button icon_edit">{% trans "Edit" %} {% trans "keywords" %}</a></td>
+      <td style="padding-top: 1em"><a href="{% url "telemeta-item-keywords_edit" item.public_id %}" class="component_icon button icon_edit">{% trans "Edit" %} {% trans "keywords" %}</a></td>
     </tr>
     <tr>
       <td style="padding-top: 1em">{% trans "Performance" %}:</td>
-      <td style="padding-top: 1em"><a href="{% url telemeta-item-performances_edit item.public_id %}" class="component_icon button icon_edit">{% trans "Edit"%} {% trans "performance"%}</a></td>
+      <td style="padding-top: 1em"><a href="{% url "telemeta-item-performances_edit" item.public_id %}" class="component_icon button icon_edit">{% trans "Edit"%} {% trans "performance"%}</a></td>
     </tr>
 
     <tr>
       <td style="padding-top: 1em">{% trans "Related media" %}:</td>
-      <td style="padding-top: 1em"><a href="{% url telemeta-item-related_edit item.public_id %}" class="component_icon button icon_edit">{% trans "Edit"%} {% trans "related media"%}</a></td>
+      <td style="padding-top: 1em"><a href="{% url "telemeta-item-related_edit" item.public_id %}" class="component_icon button icon_edit">{% trans "Edit"%} {% trans "related media"%}</a></td>
     </tr>
     {% endif %}
     {% endfor %}
@@ -68,7 +68,7 @@
     </table>
     <hr />
     <div align="center" style="margin-top:3ex;">
-    <a href="{% url telemeta-item-detail item.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+    <a href="{% url "telemeta-item-detail" item.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
     {% if perms.telemeta.change_mediaitem %}
     <a href="#" class="component_icon button icon_save" onclick="var d=document; d.getElementById('wait-img2').style.display='inline';  setTimeout(function(){d.getElementById('_editItemForm').submit();},300); return false;">{% trans "Save" %}</a>
     {% endif %}

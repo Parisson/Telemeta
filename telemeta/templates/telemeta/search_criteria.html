@@ -32,7 +32,7 @@ function update_period(source, from_field, to_field) {
 }
 
 $(document).ready(function () {
-    $('#location').autocomplete('{% url telemeta-complete-location %}', {
+    $('#location').autocomplete('{% url "telemeta-complete-location" %}', {
         max: 20,
         formatResult: function(data) {
             return data[0].replace(/ *\([0-9]+.*\) *$/, '');
@@ -64,7 +64,7 @@ $(document).ready(function() {
 {% endblock %}
 
 {% block content %}
-<form action="{% url telemeta-search %}" id="searchform">{% csrf_token %}
+<form action="{% url "telemeta-search" %}" id="searchform">{% csrf_token %}
 <fieldset>
 
     <p>

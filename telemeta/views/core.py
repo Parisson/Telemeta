@@ -55,7 +55,6 @@ from django import template
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http import Http404
 from django.shortcuts import render_to_response, redirect, get_object_or_404
-from django.views.generic import list_detail
 from django.views.generic import *
 from django.conf import settings
 from django.contrib import auth
@@ -263,4 +262,4 @@ def get_room(content_type=None, id=None, name=None):
     else:
         room = rooms[0]
     return room
-    
+

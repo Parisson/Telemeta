@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block title_buttons %}
-      <a href="{% url telemeta-items %}"
+      <a href="{% url "telemeta-items" %}"
            class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
     {% if perms.telemeta.add_mediaitem %}
       <a href="#" class="component_icon button icon_save" onclick="var d=document; d.getElementById('wait-img').style.display='inline'; setTimeout(function(){d.getElementById('_addItemForm').submit();},300); return false;">{% trans "Save" %}</a>
@@ -46,7 +46,7 @@
        {% endfor %}
        </table>
        <div align="center" style="margin-top:3ex;">
-        <a href="{% url telemeta-items %}"
+        <a href="{% url "telemeta-items" %}"
            class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
         {% if perms.telemeta.add_mediaitem %}
         <a href="#" class="component_icon button icon_save"

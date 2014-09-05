@@ -30,7 +30,7 @@
             </div>
         </div>
        <div>
-        <span style="font-size:65%; float:left">{% organization %} - Item : <a href="{% url telemeta-item-detail item.public_id %}" target="_blank">{% if item.code %}{{ item.code }}{% else %}{{ item.old_code }}{% endif %}</a></span>
+        <span style="font-size:65%; float:left">{% organization %} - Item : <a href="{% url "telemeta-item-detail" item.public_id %}" target="_blank">{% if item.code %}{{ item.code }}{% else %}{{ item.old_code }}{% endif %}</a></span>
         <span style="font-size:65%; float:right"><a href="http://telemeta.org" target="_blank">Telemeta</a> powered</span>
        </div>
     </div>

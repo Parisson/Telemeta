@@ -11,9 +11,9 @@
 {% endblock %}
 
 {% block delete %}
- <a class="component_icon button icon_previous" style="float:left;margin-top:0.5em;margin-bottom:1em" href="{% url telemeta-resource-detail type resource.public_id %}">{% trans "Normal View" %}</a>
+ <a class="component_icon button icon_previous" style="float:left;margin-top:0.5em;margin-bottom:1em" href="{% url "telemeta-resource-detail" type resource.public_id %}">{% trans "Normal View" %}</a>
 {% if user.is_authenticated and perms.telemeta.delete_mediaresource %}
- <a href="#" onclick="if(confirm(gettrans('delete the resource permanently?'))){window.location.href='{% url telemeta-resource-delete type resource.public_id %}';};return false;"
+ <a href="#" onclick="if(confirm(gettrans('delete the resource permanently?'))){window.location.href='{% url "telemeta-resource-delete" type resource.public_id %}';};return false;"
         class="component_icon button icon_delete" style="float:right;margin-top:0.5em;margin-bottom:1em">{% trans "Delete" %}</a>
 {% endif %}
 {% endblock %}

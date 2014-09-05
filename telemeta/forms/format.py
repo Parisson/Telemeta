@@ -6,4 +6,4 @@ from telemeta.models import *
 class FormatForm(ModelForm):
     class Meta:
         model = Format
-        exclude = ('item')
+        exclude = ('item',)

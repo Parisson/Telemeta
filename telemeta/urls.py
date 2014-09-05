@@ -34,9 +34,10 @@
 # Authors: Olivier Guilyardi <olivier@samalyse.com>
 #          Guillaume Pellerin <yomguy@parisson.com>
 
-from django.conf.urls.defaults import *
+from django.conf.urls import patterns, url, include
 from django.conf import settings
-from django.views.generic.simple import redirect_to
+from django.views.generic import RedirectView
+from django.views.generic.list import ListView
 from telemeta.models import MediaItem, MediaCollection, MediaItemMarker, MediaCorpus, MediaFonds
 from telemeta.views import HomeView, AdminView, CollectionView, ItemView, \
                             InstrumentView, InstrumentAliasView, PlaylistView, ProfileView, GeoView, \
@@ -78,10 +79,10 @@ urlpatterns = patterns('',
     url(r'^$', home_view.home, name="telemeta-home"),
 
     # items
-    url(r'^archives/items/$', 'django.views.generic.list_detail.object_list',
-        dict(all_items, paginate_by=20, template_name="telemeta/mediaitem_list.html"),
+    url(r'^archives/items/$', ListView.as_view(queryset=MediaItem.objects.enriched().order_by('code', 'old_code')),
+        dict(paginate_by=20, template_name="telemeta/mediaitem_list.html"),
         name="telemeta-items"),
-    url(r'^archives/items_sound/$', 'django.views.generic.list_detail.object_list',
+    url(r'^archives/items_sound/$', ListView.as_view(),
         dict(all_items_sound, paginate_by=20, template_name="telemeta/mediaitem_list.html"), name="telemeta-items-sound"),
     url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/$', item_view.item_detail,
         name="telemeta-item-detail"),
@@ -128,21 +129,20 @@ urlpatterns = patterns('',
     # Markers
     url(r'^archives/markers/(?P<marker_id>[A-Za-z0-9]+)/$', item_view.item_detail, name="telemeta-item-detail-marker"),
     # FIXME: need all paths
-    url(r'^items/(?P<path>[A-Za-z0-9._-s/]+)/$', redirect_to, {'url': '/archives/items/%(path)s/', 'permanent': False}, name="telemeta-item-redir"),
-    url(r'^archives/items_unpublished/$', 'django.views.generic.list_detail.object_list',
+    url(r'^items/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(), {'url': '/archives/items/%(path)s/', 'permanent': False}, name="telemeta-item-redir"),
+    url(r'^archives/items_unpublished/$', ListView.as_view(),
         dict(all_items_unpublished, paginate_by=20, template_name="telemeta/mediaitem_list.html"), name="telemeta-items-unpublished"),
-    url(r'^archives/items_published/$', 'django.views.generic.list_detail.object_list',
+    url(r'^archives/items_published/$', ListView.as_view(),
         dict(all_items_published, paginate_by=20, template_name="telemeta/mediaitem_list.html"), name="telemeta-items-published"),
 
     # collections
-    url(r'^archives/collections/$', 'django.views.generic.list_detail.object_list',
+    url(r'^archives/collections/$', ListView.as_view(),
         dict(all_collections, paginate_by=20, template_name="telemeta/collection_list.html"), name="telemeta-collections"),
-    url(r'^archives/collections_unpublished/$', 'django.views.generic.list_detail.object_list',
+    url(r'^archives/collections_unpublished/$', ListView.as_view(),
         dict(all_collections_unpublished, paginate_by=20, template_name="telemeta/collection_list.html"), name="telemeta-collections-unpublished"),
-    url(r'^archives/collections_published/$', 'django.views.generic.list_detail.object_list',
+    url(r'^archives/collections_published/$', ListView.as_view(),
         dict(all_collections_published, paginate_by=20, template_name="telemeta/collection_list.html"), name="telemeta-collections-published"),
-    url(r'^archives/collections/?page=(?P<page>[0-9]+)$',
-        'django.views.generic.list_detail.object_list',
+    url(r'^archives/collections/?page=(?P<page>[0-9]+)$', ListView.as_view(),
         dict(all_collections, paginate_by=20)),
     url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/$', collection_view.collection_detail,
         dict(template="telemeta/collection_detail.html"), name="telemeta-collection-detail"),
@@ -169,19 +169,19 @@ urlpatterns = patterns('',
     url(r'^archives/collections/(?P<collection_public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)/download/$', collection_view.related_media_collection_download, name="telemeta-collection-related-download"),
 
     url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/related_edit/$', collection_view.related_media_edit,  dict(template='telemeta/collection_related_edit.html'), name="telemeta-collection-related_edit"),
-    url(r'^archives/collections_sound/$', 'django.views.generic.list_detail.object_list',
+    url(r'^archives/collections_sound/$', ListView.as_view(),
         dict(all_collections_sound, paginate_by=20, template_name="telemeta/collection_list.html"), name="telemeta-collections-sound"),
     # FIXME: need all paths
-    url(r'^collections/(?P<path>[A-Za-z0-9._-s/]+)/$', redirect_to, {'url': '/archives/collections/%(path)s/', 'permanent': False}, name="telemeta-collection-redir"),
+    url(r'^collections/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(), {'url': '/archives/collections/%(path)s/', 'permanent': False}, name="telemeta-collection-redir"),
     url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/package/$', CollectionPackageView.as_view(),
         name="telemeta-collection-package"),
     # RESOURCES
     # Corpus list
-    url(r'^archives/corpus/$', 'django.views.generic.list_detail.object_list',
+    url(r'^archives/corpus/$', ListView.as_view(),
         dict(all_corpus, paginate_by=20, template_name="telemeta/resource_list.html", extra_context={'type':'corpus'}), name="telemeta-corpus"),
 
     # Fonds list
-    url(r'^archives/fonds/$', 'django.views.generic.list_detail.object_list',
+    url(r'^archives/fonds/$', ListView.as_view(),
         dict(all_fonds, paginate_by=20, template_name="telemeta/resource_list.html", extra_context={'type':'fonds'}), name="telemeta-fonds"),
 
     # Generic resource
@@ -351,7 +351,7 @@ urlpatterns = patterns('',
     # JSON RPC
     url(r'json/$', jsonrpc_site.dispatch, name='jsonrpc_mountpoint'),
     # for the graphical browser/web console only, omissible
-    # url(r'json/browse/', 'jsonrpc.views.browse', name="jsonrpc_browser"),
+    #url(r'json/browse/', 'jsonrpc.views.browse', name="jsonrpc_browser"),
 
     # Playlists
     url(r'^playlists/(?P<public_id>[a-zA-Z0-9]+)/(?P<resource_type>[a-zA-Z0-9]+)/csv/$', playlist_view.playlist_csv_export, name="telemeta-playlist-csv-export"),

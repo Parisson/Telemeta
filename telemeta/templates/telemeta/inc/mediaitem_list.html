@@ -25,7 +25,7 @@
 {% for item in items %}
 <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
     <td class="highlight">
-        <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
+        <a href="{% url "telemeta-item-detail" item.public_id %}">{{ item }}</a>
     </td>
     <td>
         {{ item.code|default:item.old_code }}
@@ -46,7 +46,7 @@
     </td>
     <td align="center">
         {% if item.file %}
-         <a href="{% url telemeta-item-detail item.public_id %}">
+         <a href="{% url "telemeta-item-detail" item.public_id %}">
           <img src="{{ STATIC_URL }}telemeta/images/ok.png" alt="yes" style="vertical-align:middle" /></a>
         {% endif %}
     </td>
