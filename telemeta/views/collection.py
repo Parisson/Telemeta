@@ -248,3 +248,41 @@ class CollectionSoundListView(CollectionListView):
 
     queryset = MediaCollection.objects.sound().order_by('code', 'old_code')
 
+
+class CollectionViewMixin(object):
+
+    model = MediaCollection
+    type = 'collection'
+
+
+class CollectionDetailView(CollectionViewMixin, DetailView):
+
+
+    def get_object(self):
+        return self.model.objects.get(code=self.kwargs['public_id'])
+
+    def get_context_data(self, **kwargs):
+        context = super(CollectionDetailView, self).get_context_data(**kwargs)
+        collection = self.get_object()
+        items = collection.items.enriched()
+        items = items.order_by('code', 'old_code')
+
+        if collection.public_access == 'none' and not (request.user.is_staff or request.user.is_superuser):
+            mess = ugettext('Access not allowed')
+            title = ugettext('Collection') + ' : ' + public_id + ' : ' + mess
+            description = ugettext('Please login or contact the website administator to get a private access.')
+            messages.error(request, title)
+            return render(request, 'telemeta/messages.html', {'description' : description})
+
+        playlists = get_playlists(self.request)
+        related_media = MediaCollectionRelated.objects.filter(collection=collection)
+        check_related_media(related_media)
+        parents = MediaCorpus.objects.filter(children=collection)
+        revisions = Revision.objects.filter(element_type='collection',
+                                            element_id=collection.id).order_by('-time')
+        if revisions:
+            last_revision = revisions[0]
+        else:
+            last_revision = None
+
+        return context

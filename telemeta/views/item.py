@@ -38,8 +38,7 @@
 from telemeta.views.core import *
 
 
-class ItemView(object):
-    """Provide Item web UI methods"""
+class ItemBaseMixin(object):
 
     graphers = timeside.core.processors(timeside.api.IGrapher)
     decoders = timeside.core.processors(timeside.api.IDecoder)
@@ -54,6 +53,10 @@ class ItemView(object):
     default_grapher_id = getattr(settings, 'TIMESIDE_DEFAULT_GRAPHER_ID', ('waveform_simple'))
     default_grapher_sizes = getattr(settings, 'TELEMETA_DEFAULT_GRAPHER_SIZES', ['360x130', ])
     auto_zoom = getattr(settings, 'TIMESIDE_AUTO_ZOOM', False)
+
+
+class ItemView(ItemBaseMixin):
+    """Provide Item web UI methods"""
 
     def get_export_formats(self):
         formats = []

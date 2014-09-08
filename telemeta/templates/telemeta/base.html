@@ -97,8 +97,8 @@
 
  <li><a href="#archives#" class="green">{% trans "Archives" %}</a>
   <ul>
-    <li><a href="{% url "telemeta-fonds" %}">{% trans "Fonds" %}</a></li>
-    <li><a href="{% url "telemeta-corpus" %}">{% trans "Corpus" %}</a></li>
+    <li><a href="{% url "telemeta-resource-list" "fonds" %}">{% trans "Fonds" %}</a></li>
+    <li><a href="{% url "telemeta-resource-list" "corpus" %}">{% trans "Corpus" %}</a></li>
     <li><a href="{% url "telemeta-collections" %}">{% trans "Collections" %}</a></li>
     <li><a href="{% url "telemeta-items" %}">{% trans "Items" %}</a></li>
   </ul>

@@ -194,17 +194,46 @@ class ResourceView(object):
         return render(request, template, {'resource': resource, 'type': type, 'formset': formset,})
 
 
+class ResourceMixin(object):
 
-class CorpusListView(ListView):
+    types = {'corpus':
+                {'model': MediaCorpus,
+                'form' : MediaCorpusForm,
+                'related': MediaCorpusRelated,
+                'related_form': MediaCorpusRelatedForm,
+                'parent': MediaFonds,
+                },
+            'fonds':
+                {'model': MediaFonds,
+                'form' : MediaFondsForm,
+                'related': MediaFondsRelated,
+                'related_form': MediaFondsRelatedForm,
+                'parent': None,
+                }
+            }
 
-    model = MediaCorpus
-    queryset = MediaCorpus.objects.all().order_by('code')
+    def setup(self, type):
+        self.model = self.types[type]['model']
+        self.form = self.types[type]['form']
+        self.related = self.types[type]['related']
+        self.related_form = self.types[type]['related_form']
+        self.parent = self.types[type]['parent']
+        self.type = type
+
+
+class ResourceListView(ResourceMixin, ListView):
+
     template_name = "telemeta/resource_list.html"
     paginate_by = 20
 
+    def get_queryset(self):
+        self.type = self.kwargs['type']
+        self.setup(self.type)
+        return self.model.objects.all().order_by('code')
+
     def get_context_data(self, **kwargs):
-        context = super(CorpusListView, self).get_context_data(**kwargs)
-        context['type'] = 'corpus'
+        context = super(ResourceListView, self).get_context_data(**kwargs)
+        context['type'] = self.type
         return context
 
 
@@ -221,20 +250,21 @@ class FondsListView(ListView):
         return context
 
 
-class CorpusDetailView(DetailView):
 
-    model = MediaCorpus
+
+class ResourceDetailView(ResourceMixin, DetailView):
+
     template_name = "telemeta/resource_detail.html"
-    parent = MediaFonds
-    related = MediaCorpusRelated
 
     def get_object(self):
+        # super(CorpusDetailView, self).get_object()
         self.type = self.kwargs['type']
+        self.setup(self.type)
         self.pk = self.model.objects.get(code=self.kwargs['public_id']).pk
         return get_object_or_404(self.model, pk=self.pk)
 
     def get_context_data(self, **kwargs):
-        context = super(CorpusDetailView, self).get_context_data(**kwargs)
+        context = super(ResourceDetailView, self).get_context_data(**kwargs)
         resource = self.object
         related_media = self.related.objects.filter(resource=self.object)
         check_related_media(related_media)
@@ -253,13 +283,4 @@ class CorpusDetailView(DetailView):
             context['parents'] = self.parent.objects.filter(children=resource)
         else:
             context['parents'] = []
-
         return context
-
-
-class FondsDetailView(CorpusDetailView):
-
-    model = MediaFonds
-    template_name = "telemeta/resource_detail.html"
-    parent = None
-    related = MediaFondsRelated
