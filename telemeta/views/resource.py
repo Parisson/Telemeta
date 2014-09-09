@@ -36,6 +36,8 @@
 
 
 from telemeta.views.core import *
+from django.utils.translation import ugettext_lazy as _
+from django.forms.models import model_to_dict
 
 
 class ResourceView(object):
@@ -194,7 +196,7 @@ class ResourceView(object):
         return render(request, template, {'resource': resource, 'type': type, 'formset': formset,})
 
 
-class ResourceMixin(object):
+class ResourceMixin(View):
 
     types = {'corpus':
                 {'model': MediaCorpus,
@@ -220,41 +222,20 @@ class ResourceMixin(object):
         self.parent = self.types[type]['parent']
         self.type = type
 
-
-class ResourceListView(ResourceMixin, ListView):
-
-    template_name = "telemeta/resource_list.html"
-    paginate_by = 20
-
-    def get_queryset(self):
+    def get_object(self):
+        # super(CorpusDetailView, self).get_object()
         self.type = self.kwargs['type']
         self.setup(self.type)
-        return self.model.objects.all().order_by('code')
+        self.pk = self.model.objects.get(code=self.kwargs['public_id']).pk
+        return get_object_or_404(self.model, pk=self.pk)
 
     def get_context_data(self, **kwargs):
-        context = super(ResourceListView, self).get_context_data(**kwargs)
+        context = super(ResourceMixin, self).get_context_data(**kwargs)
         context['type'] = self.type
         return context
 
 
-class FondsListView(ListView):
-
-    model = MediaFonds
-    queryset = MediaFonds.objects.all().order_by('code')
-    template_name = "telemeta/resource_list.html"
-    paginate_by = 20
-
-    def get_context_data(self, **kwargs):
-        context = super(FondsListView, self).get_context_data(**kwargs)
-        context['type'] = 'fonds'
-        return context
-
-
-
-
-class ResourceDetailView(ResourceMixin, DetailView):
-
-    template_name = "telemeta/resource_detail.html"
+class ResourceSingleMixin(ResourceMixin):
 
     def get_object(self):
         # super(CorpusDetailView, self).get_object()
@@ -264,13 +245,12 @@ class ResourceDetailView(ResourceMixin, DetailView):
         return get_object_or_404(self.model, pk=self.pk)
 
     def get_context_data(self, **kwargs):
-        context = super(ResourceDetailView, self).get_context_data(**kwargs)
-        resource = self.object
-        related_media = self.related.objects.filter(resource=self.object)
+        context = super(ResourceMixin, self).get_context_data(**kwargs)
+        resource = self.get_object()
+        related_media = self.related.objects.filter(resource=resource)
         check_related_media(related_media)
         playlists = get_playlists(self.request)
         revisions = Revision.objects.filter(element_type=self.type, element_id=self.pk).order_by('-time')
-
         context['resource'] = resource
         context['type'] = self.type
         context['related_media'] = related_media
@@ -284,3 +264,68 @@ class ResourceDetailView(ResourceMixin, DetailView):
         else:
             context['parents'] = []
         return context
+
+
+class ResourceListView(ResourceMixin, ListView):
+
+    template_name = "telemeta/resource_list.html"
+    paginate_by = 20
+
+    def get_queryset(self):
+        self.type = self.kwargs['type']
+        self.setup(self.type)
+        return self.model.objects.all().order_by('code')
+
+
+class ResourceDetailView(ResourceSingleMixin, DetailView):
+
+    template_name = "telemeta/resource_detail.html"
+
+
+class ResourceDetailDCView(ResourceDetailView):
+
+    template_name = "telemeta/resource_detail_dc.html"
+
+
+class ResourceEditView(ResourceSingleMixin, UpdateView):
+
+    template_name = 'telemeta/resource_edit.html'
+
+    def get_form_class(self):
+        self.type = self.kwargs['type']
+        self.setup(self.type)
+        return self.form
+
+    def form_valid(self, form):
+        messages.info(self.request, _("You have successfully updated your resource."))
+        return super(ResourceEditView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('telemeta-resource-detail', kwargs={'type':self.kwargs['type'], 'public_id':self.kwargs['public_id']})
+
+
+class ResourceAddView(ResourceMixin, CreateView):
+
+    template_name = 'telemeta/resource_add.html'
+
+    def get_queryset(self):
+        self.type = self.kwargs['type']
+        self.setup(self.type)
+        return self
+
+    def get_success_url(self):
+        return reverse_lazy('telemeta-resource-list', kwargs={'type':self.kwargs['type']})
+
+
+class ResourceCopyView(ResourceSingleMixin, ResourceAddView):
+
+    template_name = 'telemeta/resource_edit.html'
+
+    def get_initial(self):
+        resource = self.model.objects.get(code=self.kwargs['public_id'])
+        return model_to_dict(resource)
+
+    def get_success_url(self):
+        return reverse_lazy('telemeta-resource-list', kwargs={'type':self.kwargs['type']})
+        # return reverse_lazy('telemeta-resource-detail', kwargs={'type':self.kwargs['type'], 'public_id':self.kwargs['public_id']})
+
