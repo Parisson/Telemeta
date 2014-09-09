@@ -38,6 +38,7 @@
 from telemeta.views.core import *
 from django.utils.translation import ugettext_lazy as _
 from django.forms.models import model_to_dict
+from django.views.generic.edit import DeletionMixin, BaseDeleteView
 
 
 class ResourceView(object):
@@ -328,4 +329,12 @@ class ResourceCopyView(ResourceSingleMixin, ResourceAddView):
     def get_success_url(self):
         return reverse_lazy('telemeta-resource-list', kwargs={'type':self.kwargs['type']})
         # return reverse_lazy('telemeta-resource-detail', kwargs={'type':self.kwargs['type'], 'public_id':self.kwargs['public_id']})
+
+
+class ResourceDeleteView(ResourceSingleMixin, DeleteView):
+
+    template_name = 'telemeta/resource_confirm_delete.html'
+
+    def get_success_url(self):
+         return reverse_lazy('telemeta-resource-list', kwargs={'type':self.kwargs['type']})
 
