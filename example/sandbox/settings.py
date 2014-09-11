@@ -104,7 +104,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
 ROOT_URLCONF = 'sandbox.urls'
@@ -131,7 +130,6 @@ INSTALLED_APPS = (
     'sorl.thumbnail',
     'timezones',
     'jqchat',
-    'debug_toolbar',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (

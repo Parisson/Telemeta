@@ -51,7 +51,8 @@ class ItemView(object):
 
     export_enabled = getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True)
     export_formats = getattr(settings, 'TELEMETA_DOWNLOAD_FORMATS', ('mp3', 'wav'))
-    default_grapher = getattr(settings, 'TIMESIDE_DEFAULT_GRAPHER_ID', ('waveform_simple'))
+    default_grapher_id = getattr(settings, 'TIMESIDE_DEFAULT_GRAPHER_ID', ('waveform_simple'))
+    default_grapher_sizes = getattr(settings, 'TELEMETA_DEFAULT_GRAPHER_SIZES', ['360x130', ])
     auto_zoom = getattr(settings, 'TIMESIDE_AUTO_ZOOM', False)
 
     def get_export_formats(self):
@@ -99,12 +100,18 @@ class ItemView(object):
     def get_graphers(self):
         graphers = []
         for grapher in self.graphers:
-            if grapher.id() == self.default_grapher:
+            if grapher.id() == self.default_grapher_id:
                 graphers.insert(0, {'name':grapher.name(), 'id': grapher.id()})
             else:
                 graphers.append({'name':grapher.name(), 'id': grapher.id()})
         return graphers
-        
+
+    def get_grapher(self, id):
+        for grapher in self.graphers:
+            if grapher.id() == id:
+                break
+        return grapher
+
     def item_detail(self, request, public_id=None, marker_id=None, width=None, height=None,
                         template='telemeta/mediaitem_detail.html'):
         """Show the details of a given item"""
@@ -211,8 +218,16 @@ class ItemView(object):
     def related_media_item_stream(self, request, item_public_id, media_id):
         item = MediaItem.objects.get(public_id=item_public_id)
         media = MediaItemRelated.objects.get(item=item, id=media_id)
+        filename = media.file.path.split(os.sep)[-1]
         response = HttpResponse(stream_from_file(media.file.path), mimetype=media.mime_type)
-#        response['Content-Disposition'] = 'attachment; '+'filename='+media.title+'.'+ext
+        return response
+
+    def related_media_item_download(self, request, item_public_id, media_id):
+        item = MediaItem.objects.get(public_id=item_public_id)
+        media = MediaItemRelated.objects.get(item=item, id=media_id)
+        filename = media.file.path.split(os.sep)[-1]
+        response = HttpResponse(stream_from_file(media.file.path), mimetype=media.mime_type)
+        response['Content-Disposition'] = 'attachment; ' + 'filename=' + filename
         return response
 
     @method_decorator(permission_required('telemeta.change_mediaitem'))
@@ -339,9 +354,9 @@ class ItemView(object):
         return redirect('telemeta-collection-detail', collection.code)
 
     def item_analyze(self, item):
-        analyses = MediaItemAnalysis.objects.filter(item=item)
+        analyses = item.analysis.all()
         mime_type = ''
-        
+
         if analyses:
             for analysis in analyses:
                 if not item.approx_duration and analysis.analyzer_id == 'duration':
@@ -360,7 +375,7 @@ class ItemView(object):
 
             source = item.get_source()
             if source:
-                decoder  = timeside.decoder.FileDecoder(source)
+                decoder  = timeside.decoder.file.FileDecoder(source)
                 pipe = decoder
 
                 for analyzer in self.value_analyzers:
@@ -368,20 +383,15 @@ class ItemView(object):
                     analyzers_sub.append(subpipe)
                     pipe = pipe | subpipe
 
-                try:
-                    sizes = settings.TELEMETA_DEFAULT_GRAPHER_SIZES
-                except:
-                    sizes = ['360x130', ]
-
-                for grapher in self.graphers:
-                    for size in sizes:
-                        width = size.split('x')[0]
-                        height = size.split('x')[1]
-                        image_file = '.'.join([item.public_id, grapher.id(), size.replace('x', '_'), 'png'])
-                        path = self.cache_data.dir + os.sep + image_file
-                        graph = grapher(width = int(width), height = int(height))
-                        graphers_sub.append({'graph' : graph, 'path': path})
-                        pipe = pipe | graph
+                default_grapher = self.get_grapher(self.default_grapher_id)
+                for size in self.default_grapher_sizes:
+                    width = size.split('x')[0]
+                    height = size.split('x')[1]
+                    image_file = '.'.join([item.public_id, self.default_grapher_id, size.replace('x', '_'), 'png'])
+                    path = self.cache_data.dir + os.sep + image_file
+                    graph = default_grapher(width = int(width), height = int(height))
+                    graphers_sub.append({'graph' : graph, 'path': path})
+                    pipe = pipe | graph
 
                 pipe.run()
 
@@ -411,7 +421,7 @@ class ItemView(object):
                                              analyzer_id='duration', unit='s',
                                              value=unicode(datetime.timedelta(0,decoder.input_duration)))
                 analysis.save()
-                
+
                 for analyzer in analyzers_sub:
                     for key in analyzer.results.keys():
                         result = analyzer.results[key]
@@ -429,7 +439,7 @@ class ItemView(object):
 
     def item_analyze_xml(self, request, public_id):
         item = MediaItem.objects.get(public_id=public_id)
-        analyses = MediaItemAnalysis.objects.filter(item=item)
+        analyses = item.analysis.all()
         analyzers = []
         for analysis in analyses:
             analyzers.append(analysis.to_dict())
@@ -438,14 +448,10 @@ class ItemView(object):
         response['Content-Disposition'] = 'attachment; filename='+public_id+'.xml'
         return response
 
-    def item_visualize(self, request, public_id, visualizer_id, width, height):
+    def item_visualize(self, request, public_id, grapher_id, width, height):
         item = MediaItem.objects.get(public_id=public_id)
         mime_type = 'image/png'
-        grapher_id = visualizer_id
-
-        for grapher in self.graphers:
-            if grapher.id() == grapher_id:
-                break
+        grapher = self.get_grapher(grapher_id)
 
         if grapher.id() != grapher_id:
             raise Http404
@@ -453,12 +459,18 @@ class ItemView(object):
         size = width + '_' + height
         image_file = '.'.join([public_id, grapher_id, size, 'png'])
 
+        # FIX waveform grapher name change
+        old_image_file = '.'.join([public_id, 'waveform', size, 'png'])
+        if 'waveform_centroid' in grapher_id and self.cache_data.exists(old_image_file):
+            image_file = old_image_file
+
         if not self.cache_data.exists(image_file):
             source = item.get_source()
             if source:
                 path = self.cache_data.dir + os.sep + image_file
-                decoder  = timeside.decoder.FileDecoder(source)
+                decoder  = timeside.decoder.file.FileDecoder(source)
                 graph = grapher(width = int(width), height = int(height))
+                print graph.id()
                 (decoder | graph).run()
                 graph.watermark('timeside', opacity=.6, margin=(5,5))
                 f = open(path, 'w')
@@ -536,6 +548,7 @@ class ItemView(object):
                 proc = encoder(source, overwrite=True)
                 proc.set_metadata(metadata)
                 try:
+                    #FIXME: should test if metadata writer is available
                     proc.write_metadata()
                 except:
                     pass
@@ -544,14 +557,13 @@ class ItemView(object):
             media = self.cache_export.dir + os.sep + file
             if not self.cache_export.exists(file) or not flag.value:
                 # source > encoder > stream
-                decoder = timeside.decoder.FileDecoder(source)
-                decoder.setup()
+                decoder = timeside.decoder.file.FileDecoder(source)
                 proc = encoder(media, streaming=True, overwrite=True)
-                proc.setup(channels=decoder.channels(), samplerate=decoder.samplerate(),
-                            blocksize=decoder.blocksize(), totalframes=decoder.totalframes())
                 if extension in mapping.unavailable_extensions:
                     metadata=None
-                response = HttpResponse(stream_from_processor(decoder, proc, flag, metadata=metadata), mimetype = mime_type)
+                proc.set_metadata(metadata)
+
+                response = HttpResponse(stream_from_processor(decoder, proc, flag), mimetype = mime_type)
             else:
                 # cache > stream
                 response = HttpResponse(self.cache_export.read_stream_bin(file), mimetype = mime_type)

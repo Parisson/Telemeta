@@ -65,16 +65,16 @@ function setSelectedMenu(){
     var menus = $J('#menu a');
     //build collections/items from http:/site/collections/items,
     //being http:/site/ = window.location.origin
-    
+
     //function for normalizing paths (removes last n occurrences of the slash)
     var normalize = function(str){
         return str.replace(/\/+#*$/,"");
     }
-    
+
     var host = window.location.host;
     var protocol = window.location.protocol
     var href = normalize(window.location.href);
-     
+
     if(!(host) || !(protocol) || !(href)){
         return;
     }
@@ -110,7 +110,7 @@ function setSelectedMenu(){
                 elm.removeClass('active');
             }
         }
-        
+
     })
 }
 
@@ -176,15 +176,15 @@ var json = function(param,method,onSuccessFcn,onErrorFcn){
         }
         return string;
     };
-    
-    //creating the string to send. 
+
+    //creating the string to send.
     var param2string = toString_(param);
     var data2send = '{"id":"jsonrpc", "params":';
     data2send+=param2string;
     data2send+=', "method":"'
     data2send+=method;
     data2send+='","jsonrpc":"1.0"}';
-    
+
     var $J = jQuery;
     $J.ajax({
         type: "POST",
@@ -209,11 +209,87 @@ var json = function(param,method,onSuccessFcn,onErrorFcn){
                 jqXHR.statusText+")\n\nDetails (request responseText):\n"+jqXHR.responseText;
             }
             alert("ERROR: Failed to save"+details);
-            
+
         }
     });
 
 };
+
+
+
+var json_sync = function(param,method,onSuccessFcn,onErrorFcn){
+    //this function converts a javascript object to a string
+    var toString_ = function(string){
+        if(typeof string == "string"){
+            //escapes newlines quotes and backslashes
+            string = string.replace(/\\/g,"\\\\")
+            .replace(/\n/g,"\\n")
+            .replace(/"/g,"\\\"");
+        }
+        var array; //used for arrays and objects (see below)
+        if(typeof string == "boolean" || typeof string== "number" || typeof string == "string"){
+            string = '"'+string+'"';
+        }else if(string instanceof Array){
+            array = [];
+            for(var i = 0;i <string.length ; i++){
+                array.push(toString_(string[i])); //recursive invocation
+            }
+            string='[';
+            string+=array.join(",");
+            string+=']';
+        }else{
+            array = [];
+            for(var k in string){
+                array.push(toString_(k)+":"+toString_(string[k])); //recursive invocation
+            }
+            string='{';
+            string+=array.join(",");
+            string+='}';
+        }
+        return string;
+    };
+
+    //creating the string to send.
+    var param2string = toString_(param);
+    var data2send = '{"id":"jsonrpc", "params":';
+    data2send+=param2string;
+    data2send+=', "method":"'
+    data2send+=method;
+    data2send+='","jsonrpc":"1.0"}';
+
+    var $J = jQuery;
+    $J.ajax({
+        type: "POST",
+        url: 'json/',
+        contentType: "application/json",
+        async : false,
+        data: data2send,
+        dataType: "json",
+        success: function(data, textStatus, jqXHR){
+            if(onSuccessFcn){
+                onSuccessFcn(data, textStatus, jqXHR);
+            }
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+            if(onErrorFcn){
+                onErrorFcn(jqXHR, textStatus, errorThrown);
+                return;
+            }
+            //default:
+            var details = "\n(no further info available)";
+            if(jqXHR) {
+                details="\nThe server responded witha status of "+jqXHR.status+" ("+
+                jqXHR.statusText+")\n\nDetails (request responseText):\n"+jqXHR.responseText;
+            }
+            alert("ERROR: Failed to save"+details);
+
+        }
+    });
+
+};
+
+
+
 
 /**
  * function for writing to the console. Catches errors, if any (eg, console == undefined) and does nothing in case
@@ -230,17 +306,17 @@ function consolelog(text){
 // Drop down menus
 
 $(document).ready(function () {
-     
+
     $('#nav li').hover(
         function () {
             //show its submenu
             $('ul', this).slideDown(200);
- 
+
         },
         function () {
             //hide its submenu
-            $('ul', this).slideUp(100);        
+            $('ul', this).slideUp(100);
         }
     );
-     
+
 });

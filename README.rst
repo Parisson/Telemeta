@@ -1,5 +1,5 @@
 ===============================================
-Telemeta: open web audio server with semantics
+Telemeta: open web audio app with semantics
 ===============================================
 
 For personal or collaborative media archiving projects, research laboratories and digital humanities, especially in ethnomusicological use cases.
@@ -50,7 +50,7 @@ News
 1.4.6
 +++++
 
- * Dratically improve collection zip packaqe streaming thanks to zipstream (check NEW dependencies)
+ * Drastically improve collection zip packaqe streaming thanks to zipstream (check NEW dependencies)
  * Compatible with TimeSide >= 0.5.2
  * Add URL field to item so that a external sound can be indexed and streamed
  * Add TIMESIDE_AUTO_ZOOM in settings to auto toggle the player in zooming mode
@@ -147,7 +147,7 @@ login: demo
 password: demo
 
 
-Serious Examples
+Serious Usecases
 =================
 
 * `Sound archives of the French Ethnomusicology Research Center (CREM) and the Musée de l'Homme <http://archives.crem-cnrs.fr>`_ :
@@ -181,7 +181,7 @@ http://telemeta.org/newticket
 
 You can also leave a ticket to request some new interesting features for the next versions.
 And even if Telemeta suits you, please give us some feedback !
- 
+
 
 Contact
 =======

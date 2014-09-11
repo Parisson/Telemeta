@@ -26,7 +26,7 @@ setup(
   author_email = "yomguy@parisson.com",
   version = '1.4.6',
   install_requires = [
-        'django==1.4.5',
+        'django==1.4.10',
         'django-registration',
         'django-json-rpc',
         'numpy',
@@ -40,8 +40,6 @@ setup(
         'psutil',
         'pyyaml',
         'python-ebml',
-        'zipstream',
-        'django-debug-toolbar',
   ],
   platforms=['OS Independent'],
   license='CeCILL v2',
