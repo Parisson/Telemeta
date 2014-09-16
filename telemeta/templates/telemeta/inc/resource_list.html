@@ -7,10 +7,10 @@
 
 <table class="listing">
 <tr>
-    <th class="highlight">{% trans "Title" %}</th>
+    <th class="highlight" width="15%">{% trans "Title" %}</th>
     <th>{% trans "Description" %}</th>
-    <th>{% trans "Code" %}</th>
-    <th>{% trans "Sound" %}</th>
+    <th width="15%">{% trans "Code" %}</th>
+    <th width="5%">{% trans "Sound" %}</th>
 </tr>
 {% for resource in resources %}
 <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>

@@ -159,6 +159,7 @@ urlpatterns = patterns('',
     # Generic resources
     url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/$', ResourceListView.as_view(), name="telemeta-resource-list"),
     url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/$', ResourceDetailView.as_view(), name="telemeta-resource-detail"),
+    url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/edit2/$', ResourceFormSetView.as_view(), name="telemeta-resource-detail2"),
     url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/dc/$', ResourceDetailDCView.as_view(), name="telemeta-resource-dublincore"),
     url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/edit/$', ResourceEditView.as_view(), name="telemeta-resource-edit"),
     url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/copy/$', ResourceCopyView.as_view(), name="telemeta-resource-copy"),
@@ -167,12 +168,10 @@ urlpatterns = patterns('',
     url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)/view/$', resource_view.related_stream, name="telemeta-resource-related"),
     url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)/download/$', resource_view.related_download, name="telemeta-resource-related-download"),
     url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/related_edit/$', resource_view.related_edit,  dict(template='telemeta/resource_related_edit.html'), name="telemeta-resource-related_edit"),
-    url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/dc/xml/$', resource_view.detail,
-        {'format': 'dublin_core_xml'},
-        name="telemeta-resource-dublincore-xml"),
-    url(r'^archives/$', home_view.search, name="telemeta-archives"),
+
 
     # search
+    # url(r'^archives/$', home_view.search, name="telemeta-archives"),
     url(r'^search/$', home_view.search, name="telemeta-search"),
     url(r'^search/collections/$', home_view.search, {'type': 'collections'},
         name="telemeta-search-collections"),

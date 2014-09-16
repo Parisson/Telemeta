@@ -1,15 +1,28 @@
 body {margin: 0; padding: 0;}
+
 a {text-decoration: none; color: #969696;}
+
 a img {border: none;}
-html, input, select, textarea, h1, h2, h3, h4, h5, h6 {
-    font-size: 100%;
-}
+
 body {
-    font: 0.8125em/1em Verdana, sans-serif;
+    font: 0.8125em/1em verdana, sans-serif;
     line-height: 1.3em;
     color: #333;
     background: #FFF;
     margin: 0em;
+    text-rendering: optimizeLegibility;
+}
+
+table, caption, tbody, tfoot, thead, tr, th, td {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: transparent;
+    /*width: auto;
+    height: auto;*/
 }
 
 /*a:link, a:visited {
@@ -297,7 +310,7 @@ label.disabled { color: #d7d7d7 }
 /* Quick search */
 #quick_search {
     position: absolute;
-    top: 1.7em;
+    top: 1.2em;
     left: 35%;
     background-color: #6a0307;
     padding: 0.3em 0em 0.3em 0.3em;
@@ -305,36 +318,29 @@ label.disabled { color: #d7d7d7 }
     -webkit-border-radius: 8px 8px 8px 8px;
     border-radius: 8px 8px 8px 8px;
 }
+
 #quick_search form {
     float: left;
     margin-right: 12px;
 }
-#quick_search p {
-    margin-top: .3em;
-    clear: left;
-}
 
-#quick_search a {
-    font-size: .8em;
-    font-weight: bold;
-    vertical-align: middle;
-}
 
 #quick_search input {
     vertical-align: middle;
-    font-size: .8em;
-    margin-right: 0;
+    font-size: .9em;
+    margin-right: 0.5em;
     -moz-border-radius: 5px 5px 5px 5px;
     -webkit-border-radius: 5px 5px 5px 5px;
     border-radius: 5px 5px 5px 5px;
 }
+
 #quick_search_pattern {
     background: #FFF url(search_bg.png) no-repeat;
     padding: .4em .1em;
-    padding-left: 25px;
     width: 180px;
     color: #555;
     font-weight: bold;
+    float: left;
 }
 
 /* Authentication */
@@ -359,15 +365,23 @@ label.disabled { color: #d7d7d7 }
     font-weight: bold;
 }
 
+
 form.login {
-    font-size: 0.8em;
+    font-size: 0.9em;
     float: left;
     margin-top: 2em;
     margin-bottom: 4em;
-    padding: .5em;
-    border: 1px dotted #888;
+    border: 0px dotted #888;
+    padding: 1em;
+    background-color: #FFF;
+    -moz-border-radius: 8px 0px 8px 8px;
+    -webkit-border-radius: 8px 0px 8px 8px;
+    border-radius: 8px 0px 8px 8px;
 }
 
+.login-text{
+    background-color: white;
+}
 .login-error {
     color: #BB0000;
 }
@@ -439,7 +453,6 @@ form.login .submit {
 /* Main navigation bar  (borrowed from Trac) */
 #menu {
     background-color: #6a0307 ;
-    font: normal verdana,'Bitstream Vera Sans',helvetica,arial,sans-serif;
     border-top: .25em solid #6a0307;
     padding-left:26px;
 }
@@ -458,7 +471,7 @@ form.login .submit {
     moz-border-radius-topright: 5px 5px;
     border-top-right-radius: 5px 5px;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 15px;
     padding: .5em 1em;
 }
 #menu a:hover, #menu a.active{
@@ -566,7 +579,7 @@ color:#FFF;
     color: #FFF;
     font-size: 10px;
     border-top: 1px solid;
-    height: 31px;
+    height: 42px;
     padding: 0.5em 0.5em 1.1em 0.5em;
     margin-top: 2.5em;
 }
@@ -910,7 +923,12 @@ img.align-left {
     clear: right;
 }
 
-#module-set .module {
+#module-set-left {
+    float: left;
+    clear: left;
+}
+
+.module {
     border: 1px solid #000;
     background-image: url(../images/grid_bg.png);
     padding: 0.2em;
@@ -920,29 +938,36 @@ img.align-left {
     border-radius: 11px 0px 11px 11px;
 }
 
-#module-set .module h3 {
-    color: #FFF;
+.module h3 {
+    color: white;
     font-size: 1.1em;
     font-weight: bold;
 }
 
-#module-set .module a:hover {
+.module-title {
+    color: white;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+
+.module a:hover {
     text-decoration: none;
 }
 
-#module-set .module div {
+.module div {
         -moz-border-radius: 8px 0px 8px 8px;
         -webkit-border-radius: 8px 0px 8px 8px;
         border-radius: 8px 0px 8px 8px;
        }
 
-#module-set .module img {
+.module img {
         -moz-border-radius: 8px 0px 8px 8px;
         -webkit-border-radius: 8px 0px 8px 8px;
         border-radius: 8px 0px 8px 8px;
        }
 
-#module-set .module ul, li {
+.module ul, li {
         -moz-border-radius: 8px 0px 8px 8px;
         -webkit-border-radius: 8px 0px 8px 8px;
         border-radius: 8px 0px 8px 8px;
@@ -1123,6 +1148,7 @@ a.image-link {
     color:#444;
     text-decoration: none;
     margin:0;
+    font: 0.9em/1.2em sans-serif;
 }
 .component + .component, .component + .component_icon, .component_icon + .component ,
 .component_icon + .component_icon{

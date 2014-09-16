@@ -7,11 +7,17 @@
 
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="alternate" href="/rss" title="RSS 2.0" type="application/rss+xml" />
+
 <title>{%block head_title %}{% description %} - Telemeta{% endblock %}</title>
 
 {% block stylesheets %}
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/css/app.css" />
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/css/telemeta.css" />
-<link rel="alternate" href="/rss" title="RSS 2.0" type="application/rss+xml" />
+
+
 <!--[if IE]>
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/css/telemeta_ie.css" />
 <![endif]-->
@@ -24,9 +30,10 @@
 
 {% block javascript %}
 <script src="{% url "django.views.i18n.javascript_catalog" %}" type="text/javascript"></script>
-<script src="{{ STATIC_URL }}timeside/js/libs/jquery-1.6.min.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}telemeta/bower_components/jquery/dist/jquery.min.js" type="text/javascript"></script>
 <script src="{{ STATIC_URL }}telemeta/js/locale.js" type="text/javascript"></script>
 <script src="{{ STATIC_URL }}telemeta/js/application.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}telemeta/bower_components/modernizr/modernizr.js"></script>
 {% if user.is_authenticated %}
 <script type='text/javascript'>var CURRENT_USER_NAME="{{ user.username }}";</script>
 {% else %}
@@ -72,8 +79,7 @@
 <div id="quick_search">
 <form action="{% url "telemeta-search" %}" id="_quickSearchForm" method="get">
 <input type="text" id="quick_search_pattern" name="pattern" />
-<a href="#" class="component button"
-                onclick="document.getElementById('_quickSearchForm').submit(); return false;">{% trans "Search" %}</a>
+<a href="#" class="component button" onclick="document.getElementById('_quickSearchForm').submit();">{% trans "Search" %}</a>
 </form>
 </div>
 
@@ -130,14 +136,24 @@
 {% block postman_menu %}
 {% endblock postman_menu %}
 
+{% if breadcrumbs %}
+<ul class="breadcrumbs">
+  <li><a href="#">Home</a></li>
+  <li><a href="#">Features</a></li>
+  <li class="unavailable"><a href="#">Gene Splicing</a></li>
+  <li class="current"><a href="#">Cloning</a></li>
+</ul>
+{% endif %}
+
 <div id="content">
     <table id="content_header"><tr>
             <td class="leftcol"><h1>{% block title %}{% endblock %}</h1></td>
             <td class="rightcol">{% block title_buttons %}{% endblock %}</td>
     </tr></table>
-{% block content %}{% endblock %}
-<div class="nett"></div>
-{% block delete %}{% endblock %}
+
+  {% block content %}{% endblock %}
+  {% block delete %}{% endblock %}
+
 </div>
 
 {% block body %}
@@ -146,29 +162,22 @@
 {% block footer %}
 <div id="footer">
  <hr />
- <table width="100%">
-  <tr>
-   <td>
+ <div class="row">
+  <div class="small-2 columns">
     <a id="telemeta_powered" href="{% telemeta_url %}" target="_blank"><img src="{{ STATIC_URL }}telemeta/images/logo_mini_2.png"
    alt="Telemeta Powered"/></a>
-    <p class="left">
-    {% trans "Powered by" %} <a href="{% telemeta_url %}" target="_blank"><strong>Telemeta {% telemeta_version %}</strong></a><br />
-    {% trans "By" %} <a href="http://www.parisson.com/">Parisson SARL</a>
-    </p>
-   </td>
-   <td>
-    <p class="center">
+   <span style="font-weight: bold;"><br />&nbsp;v{% telemeta_version %}</span>
+  </div>
+  <div class="small-8 columns">
+    <center>
     {% trans "Usage of the archives in the respect of cultural heritage of the original communities." %}
-    </p>
-   </td>
-   <td>
-    <p class="right">
+    </center>
+  </div>
+  <div class="small-2 columns">
     Copyright &copy; {% current_year %} {% organization %}<br />
     <a href="{% url "telemeta-flatpage" "legal_notices" %}">{% trans "Legal notices" %}</a>
-    </p>
-   </td>
-  </tr>
- </table>
+  </div>
+ </div>
 </div>
 {% endblock %}
 </div>
@@ -177,5 +186,9 @@
 {% block analytics %}
 {% endblock analytics %}
 
+<script src="{{ STATIC_URL }}telemeta/bower_components/jquery/dist/jquery.min.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}telemeta/bower_components/fastclick/lib/fastclick.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}telemeta/bower_components/foundation/js/foundation.min.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}telemeta/js/app.js" type="text/javascript"></script>
 </body>
 </html>

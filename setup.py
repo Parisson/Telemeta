@@ -40,8 +40,13 @@ setup(
         'psutil',
         'pyyaml',
         'python-ebml',
+        'django-extra-views',
+        'django-ajax-selects',
+        'django-breadcrumbs',
   ],
-  dependency_links = ['https://github.com/yomguy/django-json-rpc/tarball/0.6.2',]
+  dependency_links = ['https://github.com/yomguy/django-json-rpc/tarball/0.6.2',
+                      'https://github.com/elo80ka/django-dynamic-formset/tarball/master',
+                      ]
   platforms=['OS Independent'],
   license='CeCILL v2',
   classifiers = CLASSIFIERS,

@@ -90,8 +90,6 @@ class ResourceView(object):
                         'related_media': related_media, 'parents': parents, 'playlists': playlists,
                         'last_revision': last_revision })
 
-    @jsonrpc_method('telemeta.change_fonds')
-    @jsonrpc_method('telemeta.change_corpus')
     def edit(self, request, type, public_id, template='telemeta/resource_edit.html'):
         self.setup(type)
         resource = self.model.objects.get(code=public_id)
@@ -108,8 +106,6 @@ class ResourceView(object):
             form = self.form(instance=resource)
         return render(request, template, {'resource': resource, 'type': type, 'form': form,})
 
-    @jsonrpc_method('telemeta.add_fonds')
-    @jsonrpc_method('telemeta.add_corpus')
     def add(self, request, type, template='telemeta/resource_add.html'):
         self.setup(type)
         resource = self.model()
@@ -126,8 +122,6 @@ class ResourceView(object):
             form = self.form(instance=resource)
         return render(request, template, {'resource': resource, 'type': type, 'form': form,})
 
-    @jsonrpc_method('telemeta.add_fonds')
-    @jsonrpc_method('telemeta.add_corpus')
     def copy(self, request, type, public_id, template='telemeta/resource_edit.html'):
         self.setup(type)
         if request.method == 'POST':
@@ -156,8 +150,6 @@ class ResourceView(object):
         context = RequestContext(request, {'resource': resource, 'host': request.META['HTTP_HOST']})
         return HttpResponse(template.render(context), mimetype=mimetype)
 
-    @jsonrpc_method('telemeta.del_fonds')
-    @jsonrpc_method('telemeta.del_corpus')
     def delete(self, request, type, public_id):
         self.setup(type)
         resource = self.model.objects.get(code=public_id)
@@ -205,6 +197,7 @@ class ResourceMixin(View):
                 'related': MediaCorpusRelated,
                 'related_form': MediaCorpusRelatedForm,
                 'parent': MediaFonds,
+                'inlines': [CorpusRelatedInline,]
                 },
             'fonds':
                 {'model': MediaFonds,
@@ -212,15 +205,18 @@ class ResourceMixin(View):
                 'related': MediaFondsRelated,
                 'related_form': MediaFondsRelatedForm,
                 'parent': None,
+                'inlines': [FondsRelatedInline,]
                 }
             }
 
     def setup(self, type):
         self.model = self.types[type]['model']
         self.form = self.types[type]['form']
+        self.form_class = self.types[type]['form']
         self.related = self.types[type]['related']
         self.related_form = self.types[type]['related_form']
         self.parent = self.types[type]['parent']
+        self.inlines = self.types[type]['inlines']
         self.type = type
 
     def get_object(self):
@@ -238,6 +234,11 @@ class ResourceMixin(View):
 
 class ResourceSingleMixin(ResourceMixin):
 
+    def get_queryset(self):
+        self.type = self.kwargs['type']
+        self.setup(self.type)
+        return self
+
     def get_object(self):
         # super(CorpusDetailView, self).get_object()
         self.type = self.kwargs['type']
@@ -250,7 +251,7 @@ class ResourceSingleMixin(ResourceMixin):
         resource = self.get_object()
         related_media = self.related.objects.filter(resource=resource)
         check_related_media(related_media)
-        playlists = get_playlists(self.request)
+        playlists = get_playlists_names(self.request)
         revisions = Revision.objects.filter(element_type=self.type, element_id=self.pk).order_by('-time')
         context['resource'] = resource
         context['type'] = self.type
@@ -338,3 +339,11 @@ class ResourceDeleteView(ResourceSingleMixin, DeleteView):
     def get_success_url(self):
          return reverse_lazy('telemeta-resource-list', kwargs={'type':self.kwargs['type']})
 
+
+
+class ResourceFormSetView(ResourceSingleMixin, UpdateWithInlinesView):
+
+    template_name = 'telemeta/resource_edit2.html'
+
+    def get_success_url(self):
+        return reverse_lazy('telemeta-resource-detail', kwargs={'type':self.kwargs['type'], 'public_id':self.kwargs['public_id']})

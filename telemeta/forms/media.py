@@ -35,6 +35,9 @@
 import django.forms as forms
 from django.forms import ModelForm
 from telemeta.models import *
+from extra_views import CreateWithInlinesView, UpdateWithInlinesView, InlineFormSet
+from extra_views.generic import GenericInlineFormSet
+
 
 class MediaFondsForm(ModelForm):
     children = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple, queryset=MediaCorpus.objects.all())
@@ -42,20 +45,23 @@ class MediaFondsForm(ModelForm):
     class Meta:
         model = MediaFonds
 
+
 class MediaFondsRelatedForm(ModelForm):
     class Meta:
         model = MediaFondsRelated
 
+
 class MediaCorpusForm(ModelForm):
     children = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple,
                                               queryset=MediaCollection.objects.all())
-
     class Meta:
         model = MediaCorpus
+
 
 class MediaCorpusRelatedForm(ModelForm):
     class Meta:
         model = MediaCorpusRelated
+
 
 class MediaCollectionForm(ModelForm):
     class Meta:
@@ -63,9 +69,11 @@ class MediaCollectionForm(ModelForm):
     def clean_doctype_code(self):
         return self.cleaned_data['doctype_code'] or 0
 
+
 class MediaCollectionRelatedForm(ModelForm):
     class Meta:
         model = MediaCollectionRelated
+
 
 class MediaItemForm(ModelForm):
     class Meta:
@@ -80,13 +88,16 @@ class MediaItemForm(ModelForm):
         super(MediaItemForm, self).__init__(*args, **kwargs)
         self.fields.insert(18, 'comment', self.fields['comment'])
 
+
 class MediaItemRelatedForm(ModelForm):
     class Meta:
         model = MediaItemRelated
 
+
 class MediaItemKeywordForm(ModelForm):
     class Meta:
         model = MediaItemKeyword
+
 
 class MediaItemPerformanceForm(ModelForm):
     class Meta:
@@ -97,7 +108,16 @@ class MediaItemPerformanceForm(ModelForm):
         self.fields['instrument'].queryset = Instrument.objects.order_by('name')
         self.fields['alias'].queryset = InstrumentAlias.objects.order_by('name')
 
+
 class PlaylistForm(ModelForm):
     class Meta:
         model = Playlist
+
+
+class FondsRelatedInline(InlineFormSet):
+    model = MediaFondsRelated
+
+
+class CorpusRelatedInline(InlineFormSet):
+    model = MediaCorpusRelated
 

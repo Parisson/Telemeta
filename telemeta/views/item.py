@@ -144,7 +144,7 @@ class ItemView(ItemBaseMixin):
         if 'quicktime' in mime_type:
             mime_type = 'video/mp4'
 
-        playlists = get_playlists(request)
+        playlists = get_playlists_names(request)
         related_media = MediaItemRelated.objects.filter(item=item)
         check_related_media(related_media)
         revisions = Revision.objects.filter(element_type='item', element_id=item.id).order_by('-time')
@@ -632,4 +632,3 @@ class ItemPublishedListView(ItemListView):
 class ItemSoundListView(ItemListView):
 
     queryset = MediaItem.objects.sound().order_by('code', 'old_code')
-

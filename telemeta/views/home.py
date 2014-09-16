@@ -37,6 +37,7 @@
 
 from telemeta.views.core import *
 
+
 class HomeView(object):
     """Provide general web UI methods"""
 

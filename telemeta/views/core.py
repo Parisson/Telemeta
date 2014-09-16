@@ -223,6 +223,18 @@ def get_playlists(request, user=None):
             playlists.append({'playlist': playlist, 'resources': resources})
     return playlists
 
+
+def get_playlists_names(request, user=None):
+    if not user:
+        user = request.user
+    playlists = []
+    if user.is_authenticated():
+        user_playlists = user.playlists.all()
+        for playlist in user_playlists:
+            playlists.append({'playlist': playlist})
+    return playlists
+
+
 def check_related_media(medias):
     for media in medias:
         if not media.mime_type:
