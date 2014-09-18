@@ -43,6 +43,7 @@ setup(
         'django-extra-views',
         'django-ajax-selects',
         'django-breadcrumbs',
+        'django-pagination',
   ],
   dependency_links = ['https://github.com/yomguy/django-json-rpc/tarball/0.6.2',
                       'https://github.com/elo80ka/django-dynamic-formset/tarball/master',

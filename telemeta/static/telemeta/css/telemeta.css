@@ -1,11 +1,10 @@
 body {margin: 0; padding: 0;}
-
 a {text-decoration: none; color: #969696;}
 
 a img {border: none;}
 
 body {
-    font: 0.8125em/1em verdana, sans-serif;
+    font: 0.9em/1em verdana, sans-serif;
     line-height: 1.3em;
     color: #333;
     background: #FFF;
@@ -51,6 +50,12 @@ a img { border: none; }
     font-weight: bold;
     color: #353535;
 }
+
+.rst-content p {
+    font-size: 0.9em;
+    text-align: justify;
+}
+
 .nett {
     clear: both;
     height: 5px;
@@ -69,16 +74,14 @@ a img { border: none; }
 #content {
     /*margin-top: 1em;*/
     margin-bottom: 0em;
-}
-
-#content {
     position: relative;
     margin-left: 2em;
     margin-right: 2em;
+    /*font-size: 1.3em;*/
+
 }
 
-
-#content ul, #content ul ul, #content ol {
+/*#content ul, #content ul ul, #content ol {
     list-style: square;
     padding: .7em;
     padding-left: 2em;
@@ -96,21 +99,27 @@ a img { border: none; }
 #content li a {
     padding: .1em 0;
 }
+
+*/
+
 #content h1 {
     color: #6a0307;
     font-weight: bold;
     display:  inline;
     font-size: 120%;
 }
-#content h3 {
-    color: #6a0307;
-    font-weight: bold;
-    display:  inline;
-}
 
 #content h2 {
     color: #6a0307;
 }
+
+#content h3 {
+    color: #6a0307;
+    font-weight: bold;
+    display:  inline;
+    font-size: 1.2em;
+}
+
 
 #logo a, #logo a:hover { border: none; background: transparent; }
 
@@ -335,12 +344,16 @@ label.disabled { color: #d7d7d7 }
 }
 
 #quick_search_pattern {
-    background: #FFF url(search_bg.png) no-repeat;
+    background-color: white;
     padding: .4em .1em;
     width: 180px;
     color: #555;
     font-weight: bold;
     float: left;
+}
+
+#quick-search-button{
+    float: right;
 }
 
 /* Authentication */
@@ -648,7 +661,7 @@ dl.listing dt.group {
 }
 dl.listing dd {
     margin-left: 19.4em;
-    font-weight: bold;
+    /*font-weight: bold;*/
 }
 
 /* dublin core display */
@@ -710,12 +723,11 @@ dl.dublincore dd.caption {
 
 .infos dl, .infos table {
     position: relative;
-    font-size: 105%;
 }
 
 .extraInfos dl, .extraInfos table {
     position: relative;
-    font-size: 105%;
+
 }
 
 .extraInfos div {
@@ -1148,7 +1160,7 @@ a.image-link {
     color:#444;
     text-decoration: none;
     margin:0;
-    font: 0.9em/1.2em sans-serif;
+    font: 0.8em/1.2em sans-serif;
 }
 .component + .component, .component + .component_icon, .component_icon + .component ,
 .component_icon + .component_icon{
@@ -1295,3 +1307,4 @@ a:focus,div:focus{
     width: 66%;
     float: left;
 }
+

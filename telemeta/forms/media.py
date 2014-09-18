@@ -34,16 +34,20 @@
 
 import django.forms as forms
 from django.forms import ModelForm
+from django.contrib.admin.widgets import FilteredSelectMultiple
 from telemeta.models import *
 from extra_views import CreateWithInlinesView, UpdateWithInlinesView, InlineFormSet
 from extra_views.generic import GenericInlineFormSet
 
 
 class MediaFondsForm(ModelForm):
-    children = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple, queryset=MediaCorpus.objects.all())
+    widget = FilteredSelectMultiple("Verbose name", is_stacked=False)
+    field = forms.ModelMultipleChoiceField(queryset=MediaCorpus.objects.all())
+    children = forms.ModelMultipleChoiceField(widget=widget, queryset=field)
 
     class Meta:
         model = MediaFonds
+        exclude = ['description',]
 
 
 class MediaFondsRelatedForm(ModelForm):
@@ -52,10 +56,18 @@ class MediaFondsRelatedForm(ModelForm):
 
 
 class MediaCorpusForm(ModelForm):
-    children = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple,
-                                              queryset=MediaCollection.objects.all())
+    # queryset = MediaCollection.objects.all()
+    # widget = FilteredSelectMultiple('children', False)
+    # # # field = forms.ModelMultipleChoiceField(queryset=MediaCorpus.objects.all())
+    # children = forms.ModelMultipleChoiceField(widget=widget, queryset=queryset, required=True)
+
     class Meta:
         model = MediaCorpus
+        exclude = ['description',]
+
+    class Media:
+        css = {'all': ('/static/admin/css/widgets.css',),}
+        js = ('/admin/django/jsi18n/',)
 
 
 class MediaCorpusRelatedForm(ModelForm):

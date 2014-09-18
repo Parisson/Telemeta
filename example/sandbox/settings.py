@@ -66,7 +66,7 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = '/var/www/static/'
+STATIC_ROOT = ''
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -104,9 +104,10 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    # 'pagination.middleware.PaginationMiddleware',
 )
 
-ROOT_URLCONF = 'sandbox.urls'
+ROOT_URLCONF = 'urls'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -130,6 +131,12 @@ INSTALLED_APPS = (
     'sorl.thumbnail',
     'timezones',
     'jqchat',
+    'extra_views',
+    # 'pagination',
+    # 'breadcrumbs',
+    'debug_toolbar',
+    'bootstrap3',
+    'pure_pagination',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -138,6 +145,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.i18n",
     "django.core.context_processors.media",
     'django.core.context_processors.static',
+    'django.contrib.messages.context_processors.messages',
 )
 
 TELEMETA_ORGANIZATION = 'Parisson'
@@ -165,3 +173,18 @@ DEFAULT_FROM_EMAIL = 'webmaster@parisson.com'
 
 TIMESIDE_DEFAULT_GRAPHER_ID = 'waveform_centroid'
 TIMESIDE_AUTO_ZOOM = True
+
+# Settings for django-bootstrap3
+BOOTSTRAP3 = {
+    'set_required': False,
+    'error_css_class': 'bootstrap3-error',
+    'required_css_class': 'bootstrap3-required',
+    'javascript_in_head': True,
+}
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
+PAGINATION_SETTINGS = {
+    'PAGE_RANGE_DISPLAYED': 10,
+    'MARGIN_PAGES_DISPLAYED': 2,
+}

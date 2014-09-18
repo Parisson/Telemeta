@@ -1,9 +1,8 @@
 {% load telemeta_utils %}
 {% load i18n %}
-{% load pagination_tags %}
 
 {% if resources %}
-{% paginate %}
+{% include "pure_pagination/pagination.html" %}
 
 <table class="listing">
 <tr>

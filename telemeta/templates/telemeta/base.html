@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 {% load i18n %}
-{% load telemeta_utils %}
+{% load telemeta_utils %}{# Load the tag library #}
+{% load bootstrap3 %}
 {% get_current_language as LANGUAGE_CODE %}
 {% get_available_languages as LANGUAGES %}
 <html xmlns="http://www.w3.org/1999/xhtml" lang="{{ LANGUAGE_CODE }}" xml:lang="{{ LANGUAGE_CODE }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
@@ -14,9 +15,8 @@
 <title>{%block head_title %}{% description %} - Telemeta{% endblock %}</title>
 
 {% block stylesheets %}
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/css/app.css" />
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/css/telemeta.css" />
-
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/lib/bootstrap/dist/css/bootstrap.css" />
 
 <!--[if IE]>
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/css/telemeta_ie.css" />
@@ -30,10 +30,12 @@
 
 {% block javascript %}
 <script src="{% url "django.views.i18n.javascript_catalog" %}" type="text/javascript"></script>
-<script src="{{ STATIC_URL }}telemeta/bower_components/jquery/dist/jquery.min.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}telemeta/lib/jquery/dist/jquery.min.js" type="text/javascript"></script>
 <script src="{{ STATIC_URL }}telemeta/js/locale.js" type="text/javascript"></script>
 <script src="{{ STATIC_URL }}telemeta/js/application.js" type="text/javascript"></script>
-<script src="{{ STATIC_URL }}telemeta/bower_components/modernizr/modernizr.js"></script>
+<script src="{{ STATIC_URL }}telemeta/lib/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+
+
 {% if user.is_authenticated %}
 <script type='text/javascript'>var CURRENT_USER_NAME="{{ user.username }}";</script>
 {% else %}
@@ -78,9 +80,13 @@
 
 <div id="quick_search">
 <form action="{% url "telemeta-search" %}" id="_quickSearchForm" method="get">
-<input type="text" id="quick_search_pattern" name="pattern" />
-<a href="#" class="component button" onclick="document.getElementById('_quickSearchForm').submit();">{% trans "Search" %}</a>
+<div class="row">
+ <div class="col-md-6">
+  <input type="text" id="quick_search_pattern" name="pattern" />
+ </div>
+  <div class="col-md-6"><a href="#" id="quick-search-button" class="component button" onclick="document.getElementById('_quickSearchForm').submit();">{% trans "Search" %}</a></div>
 </form>
+</div>
 </div>
 
 <div id="menu">
@@ -163,17 +169,17 @@
 <div id="footer">
  <hr />
  <div class="row">
-  <div class="small-2 columns">
+  <div class="col-md-2">
     <a id="telemeta_powered" href="{% telemeta_url %}" target="_blank"><img src="{{ STATIC_URL }}telemeta/images/logo_mini_2.png"
    alt="Telemeta Powered"/></a>
    <span style="font-weight: bold;"><br />&nbsp;v{% telemeta_version %}</span>
   </div>
-  <div class="small-8 columns">
+  <div class="col-md-8">
     <center>
     {% trans "Usage of the archives in the respect of cultural heritage of the original communities." %}
     </center>
   </div>
-  <div class="small-2 columns">
+  <div class="col-md-2">
     Copyright &copy; {% current_year %} {% organization %}<br />
     <a href="{% url "telemeta-flatpage" "legal_notices" %}">{% trans "Legal notices" %}</a>
   </div>
@@ -186,9 +192,5 @@
 {% block analytics %}
 {% endblock analytics %}
 
-<script src="{{ STATIC_URL }}telemeta/bower_components/jquery/dist/jquery.min.js" type="text/javascript"></script>
-<script src="{{ STATIC_URL }}telemeta/bower_components/fastclick/lib/fastclick.js" type="text/javascript"></script>
-<script src="{{ STATIC_URL }}telemeta/bower_components/foundation/js/foundation.min.js" type="text/javascript"></script>
-<script src="{{ STATIC_URL }}telemeta/js/app.js" type="text/javascript"></script>
 </body>
 </html>
