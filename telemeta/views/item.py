@@ -637,3 +637,100 @@ class ItemPublishedListView(ItemListView):
 class ItemSoundListView(ItemListView):
 
     queryset = MediaItem.objects.sound().order_by('code', 'old_code')
+
+
+class ItemViewMixin(ItemBaseMixin):
+
+    model = MediaItem
+
+    def get_export_formats(self):
+        formats = []
+        for encoder in self.encoders:
+            if encoder.file_extension() in self.export_formats:
+                formats.append({'name': encoder.format(),
+                                    'extension': encoder.file_extension()})
+        return formats
+
+    def item_previous_next(self, item):
+        """Get previous and next items inside the collection of the item"""
+
+        pks = []
+        items = MediaItem.objects.filter(collection=item.collection)
+        items = items.order_by('code', 'old_code')
+
+        if len(items) > 1:
+            for it in items:
+                pks.append(it.pk)
+            for pk in pks:
+                if pk == item.pk:
+                    if pk == pks[0]:
+                        previous_pk = pks[-1]
+                        next_pk = pks[1]
+                    elif pk == pks[-1]:
+                        previous_pk = pks[-2]
+                        next_pk = pks[0]
+                    else:
+                        previous_pk = pks[pks.index(pk)-1]
+                        next_pk = pks[pks.index(pk)+1]
+                    for it in items:
+                        if it.pk == previous_pk:
+                            previous = it
+                        if it.pk == next_pk:
+                            next = it
+                    previous = previous.public_id
+                    next = next.public_id
+        else:
+             previous = item.public_id
+             next = item.public_id
+
+        return previous, next
+
+    def get_graphers(self):
+        graphers = []
+        for grapher in self.graphers:
+            if grapher.id() == self.default_grapher_id:
+                graphers.insert(0, {'name':grapher.name(), 'id': grapher.id()})
+            else:
+                graphers.append({'name':grapher.name(), 'id': grapher.id()})
+        return graphers
+
+    def get_grapher(self, id):
+        for grapher in self.graphers:
+            if grapher.id() == id:
+                break
+        return grapher
+
+
+    def get_object(self):
+        if 'public_id' in self.kwargs.keys():
+            self.pk = self.model.objects.get(code=self.kwargs['public_id']).pk
+            return get_object_or_404(self.model, pk=self.pk)
+        else:
+            return get_object_or_404(self.model, pk=self.kwargs['pk'])
+
+
+class ItemEditView(ItemViewMixin, UpdateWithInlinesView):
+
+    template_name = 'telemeta/mediaitem_edit.html'
+    inlines = [ItemRelatedInline, ItemPerformanceInline, ItemKeywordInline, ItemFormatInline]
+
+    def form_valid(self, form):
+        messages.info(self.request, _("You have successfully updated your item."))
+        return super(ItemEditView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('telemeta-item-detail', kwargs={'public_id':self.get_object().code})
+
+    def get_context_data(self, **kwargs):
+        context = super(ItemEditView, self).get_context_data(**kwargs)
+        item = self.get_object()
+        context['item'] = item
+        context['access'] = get_item_access(item, self.request.user)
+        context['previous'], context['next'] = self.item_previous_next(item)
+        #FIXME
+        context['mime_type'] = 'audio/mp3'
+        context['export_formats'] = self.get_export_formats()
+        context['visualizers'] = self.get_graphers()
+        context['audio_export_enabled'] = self.export_enabled
+        return context
+

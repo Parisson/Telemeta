@@ -101,7 +101,6 @@ class MediaItemForm(ModelForm):
 
     class Meta:
         model = MediaItem
-
         exclude = ('copied_from_item',)
 
     def clean_code(self):
@@ -159,4 +158,19 @@ class CollectionRelatedInline(InlineFormSet):
 class ItemRelatedInline(InlineFormSet):
 
     model = MediaItemRelated
+
+
+class ItemPerformanceInline(InlineFormSet):
+
+    model = MediaItemPerformance
+
+
+class ItemKeywordInline(InlineFormSet):
+
+    model = MediaItemKeyword
+
+
+class ItemFormatInline(InlineFormSet):
+
+    model = Format
 

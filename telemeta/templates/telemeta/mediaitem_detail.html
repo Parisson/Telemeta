@@ -92,7 +92,7 @@ Item : <a href="{% url "telemeta-item-detail" item.public_id %}">{{ item }}</a>
 {% block title_buttons %}
 <div class="fixedWidthAsPlayer">
     {% if user.is_authenticated and perms.telemeta.change_mediaitem %}
-    <a href="{% url "telemeta-item-edit" item.public_id %}" class="component_icon button icon_edit">{% trans "Edit" %}</a>
+    <a href="{% url "telemeta-item-edit" item.id %}" class="component_icon button icon_edit">{% trans "Edit" %}</a>
     <a href="{% url "telemeta-item-copy" item.public_id %}" class="component_icon button icon_copy">{% trans "Copy" %}</a>
     {% endif %}
     {% if user.is_authenticated %}

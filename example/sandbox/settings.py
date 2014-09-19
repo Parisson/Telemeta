@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 # Django settings for sandbox project.
 
-import os
+import os, sys
 from django.core.urlresolvers import reverse_lazy, reverse
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+sys.dont_write_bytecode = True
 
 ADMINS = (
     ('Guillaume Pellerin', 'yomguy@parisson.com'),
@@ -125,18 +126,17 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django_extensions',
     'telemeta',
-    'timeside',
+    'timeside.player',
     'jsonrpc',
     'south',
     'sorl.thumbnail',
     'timezones',
     'jqchat',
     'extra_views',
-    # 'pagination',
     # 'breadcrumbs',
     'debug_toolbar',
     'bootstrap3',
-    'pure_pagination',
+    'bootstrap_pagination',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -183,6 +183,15 @@ BOOTSTRAP3 = {
 }
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
+# Settings for django-bootstrap3
+
+BOOTSTRAP3 = {
+    'set_required': False,
+    'error_css_class': 'bootstrap3-error',
+    'required_css_class': 'bootstrap3-required',
+    'javascript_in_head': True,
+}
 
 PAGINATION_SETTINGS = {
     'PAGE_RANGE_DISPLAYED': 10,
