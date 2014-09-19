@@ -618,6 +618,11 @@ class ItemListView(ListView):
     paginate_by = 20
     queryset = MediaItem.objects.enriched().order_by('code', 'old_code')
 
+    def get_context_data(self, **kwargs):
+        context = super(ItemListView, self).get_context_data(**kwargs)
+        context['count'] = self.object_list.count()
+        return context
+
 
 class ItemUnpublishedListView(ItemListView):
 

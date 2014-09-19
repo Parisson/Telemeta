@@ -1,8 +1,7 @@
 {% load telemeta_utils %}
 {% load i18n %}
 
-{% if resources %}
-{% include "pure_pagination/pagination.html" %}
+{% if object_list %}
 
 <table class="listing">
 <tr>
@@ -11,7 +10,7 @@
     <th width="15%">{% trans "Code" %}</th>
     <th width="5%">{% trans "Sound" %}</th>
 </tr>
-{% for resource in resources %}
+{% for resource in object_list %}
 <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
     <td class="highlight">
         <a href="{% url "telemeta-resource-detail" type resource.public_id %}">{{ resource.title }}</a>
@@ -25,6 +24,7 @@
 </tr>
 {% endfor %}
 </table>
+
 {% else %}
     <p>{% trans "No resource" %}</p>
 {% endif %}

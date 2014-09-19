@@ -39,7 +39,6 @@ from telemeta.views.core import *
 from django.utils.translation import ugettext_lazy as _
 from django.forms.models import model_to_dict
 from django.views.generic.edit import DeletionMixin, BaseDeleteView
-from pure_pagination.mixins import PaginationMixin
 
 
 class ResourceView(object):
@@ -269,7 +268,7 @@ class ResourceSingleMixin(ResourceMixin):
         return context
 
 
-class ResourceListView(ResourceMixin, PaginationMixin, ListView):
+class ResourceListView(ResourceMixin, ListView):
 
     template_name = "telemeta/resource_list.html"
     paginate_by = 20
@@ -279,6 +278,10 @@ class ResourceListView(ResourceMixin, PaginationMixin, ListView):
         self.setup(self.type)
         return self.model.objects.all().order_by('code')
 
+    def get_context_data(self, **kwargs):
+        context = super(ResourceListView, self).get_context_data(**kwargs)
+        context['count'] = self.object_list.count()
+        return context
 
 class ResourceDetailView(ResourceSingleMixin, DetailView):
 

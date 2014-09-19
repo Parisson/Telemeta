@@ -4,7 +4,7 @@ a {text-decoration: none; color: #969696;}
 a img {border: none;}
 
 body {
-    font: 0.9em/1em verdana, sans-serif;
+    font: 0.8125em/1em verdana, sans-serif;
     line-height: 1.3em;
     color: #333;
     background: #FFF;
@@ -484,7 +484,7 @@ form.login .submit {
     moz-border-radius-topright: 5px 5px;
     border-top-right-radius: 5px 5px;
     font-weight: bold;
-    font-size: 15px;
+    font-size: 14px;
     padding: .5em 1em;
 }
 #menu a:hover, #menu a.active{
@@ -661,7 +661,7 @@ dl.listing dt.group {
 }
 dl.listing dd {
     margin-left: 19.4em;
-    /*font-weight: bold;*/
+    font-weight: bold;
 }
 
 /* dublin core display */
@@ -723,11 +723,12 @@ dl.dublincore dd.caption {
 
 .infos dl, .infos table {
     position: relative;
+    font-size: 105%;
 }
 
 .extraInfos dl, .extraInfos table {
     position: relative;
-
+    font-size: 105%;
 }
 
 .extraInfos div {
@@ -778,19 +779,18 @@ dl.dublincore dd.caption {
 
 /* Pagination */
 .pagination {
-    margin-top: .7em;
-    margin-bottom: .3em;
+    margin-top: 0em;
+    margin-bottom: 0em;
     padding: .3em 0;
-    font-size: 1em;
+    font-size: 0.7em;
     background-color: #fff;
-    border-bottom: 1px solid #aaa;
+    /*border-bottom: 1px solid #aaa;*/
     color: #333;
     font-weight: bold;
 }
 .pagination a {
     background-color: #fff;
     border-bottom: none;
-    font-size: 1em;
     padding: .3em;
 }
 
@@ -1160,7 +1160,7 @@ a.image-link {
     color:#444;
     text-decoration: none;
     margin:0;
-    font: 0.8em/1.2em sans-serif;
+    font: 1em/1.2em Verdana, sans-serif;
 }
 .component + .component, .component + .component_icon, .component_icon + .component ,
 .component_icon + .component_icon{

@@ -1,9 +1,7 @@
 {% load telemeta_utils %}
 {% load i18n %}
-{% load pagination_tags %}
 
-{% if collections %}
-{% paginate %}
+{% if object_list %}
 
 <table class="listing">
 <tr>
@@ -14,7 +12,7 @@
     <th>{% trans "Recording period" %}</th>
     <th>{% trans "Sound" %}</th>
 </tr>
-{% for collection in collections %}
+{% for collection in object_list %}
 <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
     <td class="highlight">
         <a href="{% url "telemeta-collection-detail" collection.public_id %}">{{ collection.title }}</a>

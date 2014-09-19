@@ -41,25 +41,31 @@ from extra_views.generic import GenericInlineFormSet
 
 
 class MediaFondsForm(ModelForm):
-    widget = FilteredSelectMultiple("Verbose name", is_stacked=False)
-    field = forms.ModelMultipleChoiceField(queryset=MediaCorpus.objects.all())
-    children = forms.ModelMultipleChoiceField(widget=widget, queryset=field)
+
+    widget = FilteredSelectMultiple("Corpus", True,)
+    queryset = queryset=MediaCorpus.objects.all()
+    children = forms.ModelMultipleChoiceField(widget=widget, queryset=queryset, label='Corpus')
 
     class Meta:
         model = MediaFonds
         exclude = ['description',]
 
+    class Media:
+        css = {'all': ['/static/admin/css/widgets.css',],}
+        js = ['/admin/django/jsi18n/',]
+
 
 class MediaFondsRelatedForm(ModelForm):
+
     class Meta:
         model = MediaFondsRelated
 
 
 class MediaCorpusForm(ModelForm):
-    # queryset = MediaCollection.objects.all()
-    # widget = FilteredSelectMultiple('children', False)
-    # # # field = forms.ModelMultipleChoiceField(queryset=MediaCorpus.objects.all())
-    # children = forms.ModelMultipleChoiceField(widget=widget, queryset=queryset, required=True)
+
+    queryset = MediaCollection.objects.all()
+    widget = FilteredSelectMultiple('Collections', False)
+    children = forms.ModelMultipleChoiceField(widget=widget, queryset=queryset,label='Collections')
 
     class Meta:
         model = MediaCorpus
@@ -71,23 +77,28 @@ class MediaCorpusForm(ModelForm):
 
 
 class MediaCorpusRelatedForm(ModelForm):
+
     class Meta:
         model = MediaCorpusRelated
 
 
 class MediaCollectionForm(ModelForm):
+
     class Meta:
         model = MediaCollection
+
     def clean_doctype_code(self):
         return self.cleaned_data['doctype_code'] or 0
 
 
 class MediaCollectionRelatedForm(ModelForm):
+
     class Meta:
         model = MediaCollectionRelated
 
 
 class MediaItemForm(ModelForm):
+
     class Meta:
         model = MediaItem
 
@@ -102,16 +113,19 @@ class MediaItemForm(ModelForm):
 
 
 class MediaItemRelatedForm(ModelForm):
+
     class Meta:
         model = MediaItemRelated
 
 
 class MediaItemKeywordForm(ModelForm):
+
     class Meta:
         model = MediaItemKeyword
 
 
 class MediaItemPerformanceForm(ModelForm):
+
     class Meta:
         model = MediaItemPerformance
 
@@ -122,14 +136,17 @@ class MediaItemPerformanceForm(ModelForm):
 
 
 class PlaylistForm(ModelForm):
+
     class Meta:
         model = Playlist
 
 
 class FondsRelatedInline(InlineFormSet):
+
     model = MediaFondsRelated
 
 
 class CorpusRelatedInline(InlineFormSet):
+
     model = MediaCorpusRelated
 

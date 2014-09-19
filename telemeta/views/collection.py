@@ -225,13 +225,17 @@ class CollectionPackageView(View):
         return super(CollectionPackageView, self).dispatch(*args, **kwargs)
 
 
-
 class CollectionListView(ListView):
 
     model = MediaCollection
     template_name = "telemeta/collection_list.html"
     paginate_by = 20
     queryset = MediaCollection.objects.enriched()
+
+    def get_context_data(self, **kwargs):
+        context = super(CollectionListView, self).get_context_data(**kwargs)
+        context['count'] = self.object_list.count()
+        return context
 
 
 class CollectionUnpublishedListView(CollectionListView):
