@@ -150,3 +150,13 @@ class CorpusRelatedInline(InlineFormSet):
 
     model = MediaCorpusRelated
 
+
+class CollectionRelatedInline(InlineFormSet):
+
+    model = MediaCollectionRelated
+
+
+class ItemRelatedInline(InlineFormSet):
+
+    model = MediaItemRelated
+

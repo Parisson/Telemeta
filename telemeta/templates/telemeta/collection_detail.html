@@ -64,19 +64,6 @@
               (<a href="{% url "telemeta-collection-m3u" collection.public_id %}">M3U</a>,
               <a href="{% url "telemeta-collection-xspf" collection.public_id %}">XSPF</a>)</h3>
              </div>
-                <!-- This is Jeroen Wijering's Flash MP3 Player,
-                  under CC Attribution-NonCommercial-ShareAlike 2.0 license
-                  from: http://www.jeroenwijering.com/?item=Flash_MP3_Player-->
-                <p id="collection_player_c">
-                  <a href="http://www.macromedia.com/go/getflashplayer">Get Flash</a> to see this player.
-                </p>
-                <script type="text/javascript">
-                  var so = new SWFObject('{{ STATIC_URL }}telemeta/swf/mp3player.swf','playlist','362','200','7');
-                  so.addVariable("file","{% url "telemeta-collection-xspf" collection.public_id %}");
-                  so.addVariable("displayheight","0");
-                  so.addParam("wmode", "opaque");
-                  so.write('collection_player_c');
-                </script>
             </div>
         </div>
         {% endif %}

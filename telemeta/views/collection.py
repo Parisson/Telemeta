@@ -52,7 +52,7 @@ class CollectionView(object):
             messages.error(request, title)
             return render(request, 'telemeta/messages.html', {'description' : description})
 
-        playlists = get_playlists(request)
+        playlists = get_playlists_names(request)
 
         related_media = MediaCollectionRelated.objects.filter(collection=collection)
         check_related_media(related_media)
@@ -225,6 +225,15 @@ class CollectionPackageView(View):
         return super(CollectionPackageView, self).dispatch(*args, **kwargs)
 
 
+class CollectionViewMixin(object):
+
+    model = MediaCollection
+
+    def get_object(self):
+        self.pk = self.model.objects.get(code=self.kwargs['public_id']).pk
+        return get_object_or_404(self.model, pk=self.pk)
+
+
 class CollectionListView(ListView):
 
     model = MediaCollection
@@ -253,40 +262,48 @@ class CollectionSoundListView(CollectionListView):
     queryset = MediaCollection.objects.sound().order_by('code', 'old_code')
 
 
-class CollectionViewMixin(object):
-
-    model = MediaCollection
-    type = 'collection'
-
-
 class CollectionDetailView(CollectionViewMixin, DetailView):
 
-
-    def get_object(self):
-        return self.model.objects.get(code=self.kwargs['public_id'])
+    template_name = 'telemeta/collection_detail.html'
 
     def get_context_data(self, **kwargs):
         context = super(CollectionDetailView, self).get_context_data(**kwargs)
         collection = self.get_object()
         items = collection.items.enriched()
-        items = items.order_by('code', 'old_code')
+        context['collection'] = collection
+        context['items'] = items.order_by('code', 'old_code')
 
         if collection.public_access == 'none' and not (request.user.is_staff or request.user.is_superuser):
             mess = ugettext('Access not allowed')
             title = ugettext('Collection') + ' : ' + public_id + ' : ' + mess
             description = ugettext('Please login or contact the website administator to get a private access.')
             messages.error(request, title)
-            return render(request, 'telemeta/messages.html', {'description' : description})
+            return render(self.request, 'telemeta/messages.html', {'description' : description})
 
-        playlists = get_playlists(self.request)
-        related_media = MediaCollectionRelated.objects.filter(collection=collection)
-        check_related_media(related_media)
-        parents = MediaCorpus.objects.filter(children=collection)
+        context['playlists'] = get_playlists_names(self.request)
+        context['related_media'] = MediaCollectionRelated.objects.filter(collection=collection)
+        check_related_media(context['related_media'])
+        context['parents'] = MediaCorpus.objects.filter(children=collection)
         revisions = Revision.objects.filter(element_type='collection',
                                             element_id=collection.id).order_by('-time')
         if revisions:
-            last_revision = revisions[0]
+            context['last_revision'] = revisions[0]
         else:
-            last_revision = None
+            context['last_revision'] = None
 
         return context
+
+
+class CollectionEditView(CollectionViewMixin, UpdateWithInlinesView):
+
+    template_name = 'telemeta/collection_edit.html'
+    inlines = [CollectionRelatedInline, ]
+
+    def form_valid(self, form):
+        messages.info(self.request, _("You have successfully updated your collection."))
+        return super(CollectionEditView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('telemeta-collection-detail', kwargs={'public_id':self.kwargs['public_id']})
+
+

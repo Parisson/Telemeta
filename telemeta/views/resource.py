@@ -293,23 +293,6 @@ class ResourceDetailDCView(ResourceDetailView):
     template_name = "telemeta/resource_detail_dc.html"
 
 
-class ResourceEditView(ResourceSingleMixin, UpdateView):
-
-    template_name = 'telemeta/resource_edit.html'
-
-    def get_form_class(self):
-        self.type = self.kwargs['type']
-        self.setup(self.type)
-        return self.form
-
-    def form_valid(self, form):
-        messages.info(self.request, _("You have successfully updated your resource."))
-        return super(ResourceEditView, self).form_valid(form)
-
-    def get_success_url(self):
-        return reverse_lazy('telemeta-resource-detail', kwargs={'type':self.kwargs['type'], 'public_id':self.kwargs['public_id']})
-
-
 class ResourceAddView(ResourceMixin, CreateView):
 
     template_name = 'telemeta/resource_add.html'
@@ -344,10 +327,9 @@ class ResourceDeleteView(ResourceSingleMixin, DeleteView):
          return reverse_lazy('telemeta-resource-list', kwargs={'type':self.kwargs['type']})
 
 
+class ResourceEditView(ResourceSingleMixin, UpdateWithInlinesView):
 
-class ResourceFormSetView(ResourceSingleMixin, UpdateWithInlinesView):
-
-    template_name = 'telemeta/resource_edit2.html'
+    template_name = 'telemeta/resource_edit.html'
 
     def get_success_url(self):
         return reverse_lazy('telemeta-resource-detail', kwargs={'type':self.kwargs['type'], 'public_id':self.kwargs['public_id']})

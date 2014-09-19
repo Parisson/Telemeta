@@ -32,13 +32,14 @@
   </ul>
 </div>
 
-   {% if user.is_authenticated and perms.telemeta.add_mediacollection %}
+    {% if user.is_authenticated and perms.telemeta.add_mediacollection %}
       <a href="{% url "telemeta-collection-add" %}" class="component_icon button icon_add">{% trans "Add" %}</a>
-   {% endif %}
+    {% endif %}
 {% endblock %}
 
 {% block content %}
 <div class="fullpage">
+{% with object_list as collections %}
 {% include "telemeta/inc/collection_list.html" %}
-</div>
+{% endwith %}
 {% endblock %}
