@@ -35,7 +35,6 @@
 <script src="{{ STATIC_URL }}telemeta/js/application.js" type="text/javascript"></script>
 <script src="{{ STATIC_URL }}telemeta/lib/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
 
-
 {% if user.is_authenticated %}
 <script type='text/javascript'>var CURRENT_USER_NAME="{{ user.username }}";</script>
 {% else %}
@@ -80,13 +79,16 @@
 
 <div id="quick_search">
 <form action="{% url "telemeta-search" %}" id="_quickSearchForm" method="get">
-<div class="row">
- <div class="col-md-6">
-  <input type="text" id="quick_search_pattern" name="pattern" />
- </div>
-  <div class="col-md-6"><a href="#" id="quick-search-button" class="component button" onclick="document.getElementById('_quickSearchForm').submit();">{% trans "Search" %}</a></div>
+
+    <div class="input-group">
+      <input type="text" class="form-control">
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="button" onclick="document.getElementById('_quickSearchForm').submit();"><span class="glyphicon glyphicon-search"></span></button>
+      </span>
+    </div><!-- /input-group -->
+
 </form>
-</div>
+
 </div>
 
 <div id="menu">

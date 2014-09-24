@@ -30,12 +30,11 @@
 </script>
 {% endblock %}
 
-{% if collection %}
+{% if object %}
 
 {% block title %}
     <img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" />
-    Collection :
-    <a href="{% url "telemeta-collection-detail" collection.public_id %}">{{ collection.title }}</a>
+    Collection : {{ object.title }}
 {% endblock %}
 
 {% block title_buttons %}
@@ -119,15 +118,14 @@
                         {% else %}
                         {% dl_field collection "collector" %}
                         {% endif %}
+                        {% if collection.publisher %}
                         {% dl_field collection "publisher" %}
+                        {% endif %}
                         {% dl_field collection "publisher_collection" %}
                         {% dl_field collection "publisher_serial" %}
                         {% dl_field collection "booklet_author" %}
                         <dt>{% trans "Bibliographic references" %}</dt>
                         <dd>{{ collection.external_references|html_line_break|safe }}</dd>
-                        {% if collection.doctype_code %}
-                         {% dl_field collection "doctype_code" %}
-                        {% endif %}
                         {% dl_field collection "public_access_label" %}
                         {% dl_field collection "legal_rights" %}
                     </dl>

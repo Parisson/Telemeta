@@ -4,7 +4,7 @@
 {% load bootstrap3 %}
 
 {% block title %}
-    <img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" /> Collection : {{ collection }}
+    <img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" /> Collection : {{ object.title }}
 {% endblock %}
 
 {% block title_buttons %}
@@ -27,17 +27,19 @@
         <script type="text/javascript" src="/static/admin/js/jquery.min.js"></script>
         <script type="text/javascript" src="/static/admin/js/jquery.init.js"></script>
         <script type="text/javascript" src="/static/admin/js/actions.min.js"></script>
-
         {{ form.media }}
-        {% bootstrap_form form %}
+        <div class="block-grey">
+          {% bootstrap_form form %}
+        </div>
       </div>
 
       <div class="tab-pane" id="related">
         {% for formset in inlines %}
           {{ formset.management_form }}
           {% for form in formset %}
-           <hr />
-           {% bootstrap_form form %}
+           <div class="block-grey">
+             {% bootstrap_form form %}
+          </div>
           {# {{ form.as_table }} #}
           {% endfor %}
         {% endfor %}

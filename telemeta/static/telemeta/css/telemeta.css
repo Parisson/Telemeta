@@ -114,10 +114,10 @@ a img { border: none; }
 }
 
 #content h3 {
-    color: #6a0307;
+    color: white;
     font-weight: bold;
     display:  inline;
-    font-size: 1.2em;
+    font-size: 1.1em;
 }
 
 
@@ -322,25 +322,24 @@ label.disabled { color: #d7d7d7 }
     top: 1.2em;
     left: 35%;
     background-color: #6a0307;
-    padding: 0.3em 0em 0.3em 0.3em;
+    padding: 0.3em;
     -moz-border-radius: 8px 8px 8px 8px;
     -webkit-border-radius: 8px 8px 8px 8px;
     border-radius: 8px 8px 8px 8px;
+    width: 270px;
 }
 
 #quick_search form {
     float: left;
-    margin-right: 12px;
 }
-
 
 #quick_search input {
     vertical-align: middle;
     font-size: .9em;
-    margin-right: 0.5em;
-    -moz-border-radius: 5px 5px 5px 5px;
-    -webkit-border-radius: 5px 5px 5px 5px;
-    border-radius: 5px 5px 5px 5px;
+    -moz-border-radius: 5px 0px 0px 5px;
+    -webkit-border-radius: 5px 0px 0px 5px;
+    border-radius: 5px 0px 0px 5px;
+    width: 215px;
 }
 
 #quick_search_pattern {
@@ -352,16 +351,13 @@ label.disabled { color: #d7d7d7 }
     float: left;
 }
 
-#quick-search-button{
-    float: right;
-}
 
 /* Authentication */
 #auth_info {
     color: #FFF;
     font-weight: bold;
     position: absolute;
-    top: 1.5em;
+    top: 1.2em;
     right: 1.1em;
     margin-right: 1em;
     font-size: 0.9em;
@@ -1306,5 +1302,14 @@ a:focus,div:focus{
 .mod {
     width: 66%;
     float: left;
+}
+
+.block-grey {
+    background-color: #f1f1f1;
+    padding: 1em;
+    margin-bottom: 1em;
+    -moz-border-radius: 8px 0px 8px 8px;
+    -webkit-border-radius: 8px 0px 8px 8px;
+    border-radius: 8px 0px 8px 8px;
 }
 

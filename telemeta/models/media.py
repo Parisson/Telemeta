@@ -786,7 +786,7 @@ class MediaCorpus(MediaBaseResource):
     @property
     def public_id(self):
         return self.code
-    
+
     @property
     def has_mediafile(self):
         for child in self.children.all():
