@@ -711,7 +711,7 @@ class ItemViewMixin(ItemBaseMixin):
 
 class ItemEditView(ItemViewMixin, UpdateWithInlinesView):
 
-    form = MediaItemForm
+    form_class = MediaItemForm
     template_name = 'telemeta/mediaitem_edit.html'
     inlines = [ItemRelatedInline, ItemPerformanceInline, ItemKeywordInline, ItemFormatInline]
 
