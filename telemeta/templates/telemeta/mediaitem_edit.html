@@ -46,8 +46,9 @@
       <div class="tab-pane" id="{{ formset.prefix }}">
           {{ formset.management_form }}
           {% for form in formset %}
-           <hr />
+           <div class="block-grey">
            {% bootstrap_form form %}
+           </div>
           {# {{ form.as_table }} #}
           {% endfor %}
       </div>
