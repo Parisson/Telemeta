@@ -182,17 +182,6 @@ BOOTSTRAP3 = {
     'javascript_in_head': True,
 }
 
-SESSION_EXPIRE_AT_BROWSER_CLOSE = False
-
-# Settings for django-bootstrap3
-
-BOOTSTRAP3 = {
-    'set_required': False,
-    'error_css_class': 'bootstrap3-error',
-    'required_css_class': 'bootstrap3-required',
-    'javascript_in_head': True,
-}
-
 PAGINATION_SETTINGS = {
     'PAGE_RANGE_DISPLAYED': 10,
     'MARGIN_PAGES_DISPLAYED': 2,

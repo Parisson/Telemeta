@@ -15,19 +15,19 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('telemeta', ['CopyType'])
 
-        # Adding model 'MediaType'
-        db.create_table('media_type', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('value', self.gf('telemeta.models.core.CharField')(unique=True, max_length=250)),
-        ))
-        db.send_create_signal('telemeta', ['MediaType'])
-
         # Adding model 'Status'
         db.create_table('media_status', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('value', self.gf('telemeta.models.core.CharField')(unique=True, max_length=250)),
         ))
         db.send_create_signal('telemeta', ['Status'])
+
+        # Adding model 'MediaType'
+        db.create_table('media_type', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('value', self.gf('telemeta.models.core.CharField')(unique=True, max_length=250)),
+        ))
+        db.send_create_signal('telemeta', ['MediaType'])
 
         # Adding field 'MediaItem.url'
         db.add_column('media_items', 'url',
@@ -84,16 +84,15 @@ class Migration(SchemaMigration):
                 if trig:
                     collection.save()
 
-
     def backwards(self, orm):
         # Deleting model 'CopyType'
         db.delete_table('copy_type')
 
-        # Deleting model 'MediaType'
-        db.delete_table('media_type')
-
         # Deleting model 'Status'
         db.delete_table('media_status')
+
+        # Deleting model 'MediaType'
+        db.delete_table('media_type')
 
         # Deleting field 'MediaItem.url'
         db.delete_column('media_items', 'url')
