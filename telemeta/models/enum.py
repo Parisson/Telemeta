@@ -74,7 +74,7 @@ class AcquisitionMode(Enumeration):
 
 class MetadataAuthor(Enumeration):
     "Collection metadata author"
-   
+
 
     class Meta(MetaEnumeration):
         db_table = 'metadata_authors'
@@ -139,10 +139,10 @@ class Publisher(Enumeration):
 
 class PublisherCollection(ModelCore):
     "Collection which belongs to publisher"
-    
+
     publisher = ForeignKey('Publisher', related_name="publisher_collections", verbose_name=_('publisher'))
     value     = CharField(_('value'), required=True)
-  
+
     def __unicode__(self):
         return self.value
 
@@ -161,10 +161,10 @@ class EthnicGroup(Enumeration):
 
 class EthnicGroupAlias(ModelCore):
     "Item ethnic group other name"
-    
+
     ethnic_group = ForeignKey('EthnicGroup', related_name="aliases", verbose_name=_('population / social group'))
     value        = CharField(_('name'), required=True)
-  
+
     class Meta(MetaCore):
         db_table = 'ethnic_group_aliases'
         unique_together = (('ethnic_group', 'value'),)
@@ -234,3 +234,28 @@ class Topic(Enumeration):
     class Meta(MetaEnumeration):
         db_table = 'topic'
         verbose_name = _("topic")
+
+
+class CopyType(Enumeration):
+    "Type of the copy"
+
+    class Meta(MetaEnumeration):
+        db_table = 'copy_type'
+        verbose_name = _("copy type")
+
+
+class MediaType(Enumeration):
+    "Type of the media"
+
+    class Meta(MetaEnumeration):
+        db_table = 'media_type'
+        verbose_name = _("media type")
+
+
+class Status(Enumeration):
+    "Resource status"
+
+    class Meta(MetaEnumeration):
+        db_table = 'media_status'
+        verbose_name = _("status")
+
