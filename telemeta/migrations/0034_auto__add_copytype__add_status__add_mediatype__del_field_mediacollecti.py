@@ -29,11 +29,6 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('telemeta', ['MediaType'])
 
-        # Adding field 'MediaItem.url'
-        db.add_column('media_items', 'url',
-                      self.gf('django.db.models.fields.URLField')(default='', max_length=512, blank=True),
-                      keep_default=False)
-
         # Deleting field 'MediaCollection.a_informer_07_03'
         db.delete_column('media_collections', 'a_informer_07_03')
 
@@ -70,7 +65,6 @@ class Migration(SchemaMigration):
                       self.gf('telemeta.models.core.WeakForeignKey')(default=None, related_name='collections', null=True, blank=True, to=orm['telemeta.MediaType']),
                       keep_default=False)
 
-
         if not db.dry_run:
             from telemeta.models import MediaCollection
             for collection in MediaCollection.objects.all():
@@ -93,9 +87,6 @@ class Migration(SchemaMigration):
 
         # Deleting model 'MediaType'
         db.delete_table('media_type')
-
-        # Deleting field 'MediaItem.url'
-        db.delete_column('media_items', 'url')
 
         # Adding field 'MediaCollection.a_informer_07_03'
         db.add_column('media_collections', 'a_informer_07_03',
