@@ -213,9 +213,9 @@ class MediaCollection(MediaResource):
     description           = TextField(_('description'))
     recording_context     = WeakForeignKey('RecordingContext', related_name="collections",
                                            verbose_name=_('recording context'))
-    recorded_from_year    = IntegerField(_('recording year (from)'))
-    recorded_to_year      = IntegerField(_('recording year (until)'))
-    year_published        = IntegerField(_('year published'))
+    recorded_from_year    = IntegerField(_('recording year (from)'), help_text='AAAA')
+    recorded_to_year      = IntegerField(_('recording year (until)'), help_text='AAAA')
+    year_published        = IntegerField(_('year published'), help_text='AAAA')
     public_access         = CharField(_('access status'), choices=PUBLIC_ACCESS_CHOICES,
                                       max_length=16, default="metadata")
 
@@ -266,7 +266,7 @@ class MediaCollection(MediaResource):
     old_code              = CharField(_('old code'), unique=False, null=True, blank=True)
     media_type            = WeakForeignKey('MediaType', related_name="collections",
                                            verbose_name=_('media type'))
-    approx_duration       = DurationField(_('approximative duration'))
+    approx_duration       = DurationField(_('approximative duration'), help_text='hh:mm:ss')
     physical_items_num    = IntegerField(_('number of components (medium / piece)'))
     physical_format       = WeakForeignKey('PhysicalFormat', related_name="collections",
                                            verbose_name=_('archive format'))
@@ -360,8 +360,8 @@ class MediaItem(MediaResource):
     alt_title             = CharField(_('original title / translation'))
     collection            = ForeignKey('MediaCollection', related_name="items",
                                        verbose_name=_('collection'))
-    recorded_from_date    = DateField(_('recording date (from)'))
-    recorded_to_date      = DateField(_('recording date (until)'))
+    recorded_from_date    = DateField(_('recording date (from)'), help_text='AAAA-MM-JJ')
+    recorded_to_date      = DateField(_('recording date (until)'), help_text='AAAA-MM-JJ')
 
     scientist             = CharField(_('scientist'), help_text='First name, Last name')
     topic                 = WeakForeignKey('Topic', verbose_name=_('topic'))
@@ -420,7 +420,7 @@ class MediaItem(MediaResource):
     url                   = URLField(_('URL'), max_length=512, blank=True)
 
     # Technical data
-    approx_duration       = DurationField(_('approximative duration'))
+    approx_duration       = DurationField(_('approximative duration'), help_text='hh:mm:ss')
 
     # Manager
     objects               = MediaItemManager()
