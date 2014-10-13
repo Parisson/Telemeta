@@ -250,17 +250,11 @@ class MediaCollection(MediaResource):
                                            verbose_name=_('secondary edition'))
     status                = WeakForeignKey('Status', related_name="collections",
                                            verbose_name=_('collection status'))
-
-    alt_ids               = CharField(_('copies'))
     alt_copies            = TextField(_('copies'))
-
     comment               = TextField(_('comment'))
     metadata_writer       = WeakForeignKey('MetadataWriter', related_name="collections",
                                            verbose_name=_('record writer'))
-
-    travail               = CharField(_('archiver notes'))
     archiver_notes        = TextField(_('archiver notes'))
-
     items_done            = CharField(_('items finished'))
     collector_is_creator  = BooleanField(_('recordist identical to depositor'))
     is_published          = BooleanField(_('published'))
