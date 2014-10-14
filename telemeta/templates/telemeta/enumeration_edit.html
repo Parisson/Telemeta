@@ -35,7 +35,7 @@
     {% for record in enumeration_values %}
     <tr>
      <td><input type="checkbox" name="sel" value="{{record.id}}" /></td>
-     <td><a href="{% url "telemeta-enumeration-record-edit" enumeration_id,record.id %}">
+     <td><a href="{% url "telemeta-enumeration-record-edit" enumeration_id record.id %}">
         {{record.value}}</a></td>
     </tr>
     {% endfor %}

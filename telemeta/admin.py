@@ -25,6 +25,7 @@ class MediaCollectionRelatedInline(admin.StackedInline):
 
 class MediaCollectionIdentifierInline(admin.StackedInline):
     model = MediaCollectionIdentifier
+    max_num = 1
 
 class MediaCollectionAdmin(admin.ModelAdmin):
     search_fields = ['title', 'code']
@@ -43,6 +44,7 @@ class MediaItemTranscodedInline(admin.StackedInline):
 
 class MediaItemIdentifierInline(admin.StackedInline):
     model = MediaItemIdentifier
+    max_num = 1
 
 class MediaItemAdmin(admin.ModelAdmin):
     search_fields = ['title', 'code']

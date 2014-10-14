@@ -860,7 +860,7 @@ class MediaFondsRelated(MediaRelated):
 class Identifier(ModelCore):
     """Resource identifier"""
 
-    identifier = CharField(_('identifier'), max_length=1024, blank=True)
+    identifier = CharField(_('identifier'), max_length=1024, blank=True, unique=True)
     type = WeakForeignKey('IdentifierType', verbose_name=_('type'))
     date_first = DateTimeField(_('date of first attribution'), auto_now_add=True)
     date_last = DateTimeField(_('date of last attribution'))
@@ -880,6 +880,7 @@ class MediaItemIdentifier(Identifier):
         db_table = 'media_item_identifier'
         verbose_name = _('item identifier')
         verbose_name_plural = _('item identifiers')
+        unique_together = ('identifier', 'item')
 
 
 class MediaCollectionIdentifier(Identifier):
@@ -891,4 +892,5 @@ class MediaCollectionIdentifier(Identifier):
         db_table = 'media_collection_identifier'
         verbose_name = _('collection identifier')
         verbose_name_plural = _('collection identifiers')
+        unique_together = ('identifier', 'collection')
 
