@@ -6,6 +6,7 @@
 {% block title %}
 <img src="{{ STATIC_URL }}telemeta/images/{{ type }}.png" style="vertical-align:middle" /> {{ type }} : {{ resource }}
 {% endblock %}
+
 {% block title_buttons %}
     <a href="{% url "telemeta-resource-detail" type resource.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
 {% endblock %}
@@ -46,13 +47,13 @@
 
     </div>
 
-
     <div align="center" style="margin-top:3ex;">
-           <a href="{% url "telemeta-resource-detail" type resource.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
-           {% if perms.telemeta.change_mediacorpus or perms.telemeta.change_mediafonds %}
-            <input type="submit" value="Enregistrer" class="default" name="_save"/>
-           {% endif %}
-           {# <a href="#" class="component_icon button icon_save" id="submit_button">{% trans "Save" %}</a> #}
+      {% block cancel %}
+       <a href="{% url "telemeta-resource-detail" type resource.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+       {% endblock %}
+       {% if perms.telemeta.change_mediacorpus or perms.telemeta.change_mediafonds %}
+        <input type="submit" value="{% trans "Save" %}" class="default" name="_save"/>
+       {% endif %}
     </div>
 
    </form>

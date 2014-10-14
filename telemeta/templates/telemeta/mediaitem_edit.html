@@ -25,7 +25,7 @@
 
     <ul class="nav nav-tabs" role="tablist">
       <li class="active"><a href="#general" role="tab" data-toggle="tab">{% trans "General" %}</a></li>
-      <li><a href="#player" role="tab" data-toggle="tab">{% trans "Player" %}</a></li>
+{#       <li><a href="#player" role="tab" data-toggle="tab">{% trans "Player" %}</a></li> #}
       <li><a href="#related" role="tab" data-toggle="tab">{% trans "Related media" %}</a></li>
       <li><a href="#keyword_relations" role="tab" data-toggle="tab">{% trans "Keywords" %}</a></li>
       <li><a href="#performances" role="tab" data-toggle="tab">{% trans "Performance" %}</a></li>
@@ -41,11 +41,11 @@
         {{ form.media }}
         {% bootstrap_form form %}
       </div>
-
+{#
       <div class="tab-pane fade in active" id="player">
 
       </div>
-
+ #}
       {% for formset in inlines %}
       <div class="tab-pane" id="{{ formset.prefix }}">
           {{ formset.management_form }}
@@ -62,11 +62,13 @@
 
 
     <div align="center" style="margin-top:3ex;">
-           <a href="{% url "telemeta-collection-detail" object.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
-           {% if perms.telemeta.change_mediaitem %}
-            <input type="submit" value="Enregistrer" class="default" name="_save" onclick="var d=document; d.getElementById('wait-img').style.display='inline'; setTimeout(function(){d.getElementById('_editItemForm').submit();},300); return false;"/>
-            <img id="wait-img" style="display:none" style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />
-           {% endif %}
+    {% block cancel %}
+     <a href="{% url "telemeta-collection-detail" object.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+     {% endblock %}
+     {% if perms.telemeta.change_mediaitem %}
+      <input type="submit" value="Enregistrer" class="default" name="_save" onclick="var d=document; d.getElementById('wait-img').style.display='inline'; setTimeout(function(){d.getElementById('_editItemForm').submit();},300); return false;"/>
+      <img id="wait-img" style="display:none" style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />
+     {% endif %}
     </div>
 
    </form>

@@ -48,7 +48,7 @@ class MediaFondsForm(ModelForm):
 
     class Meta:
         model = MediaFonds
-        exclude = ['description',]
+        exclude = ['description']
 
     class Media:
         css = {'all': ['/static/admin/css/widgets.css',],}
@@ -69,7 +69,7 @@ class MediaCorpusForm(ModelForm):
 
     class Meta:
         model = MediaCorpus
-        exclude = ['description',]
+        exclude = ['description']
 
     class Media:
         css = {'all': ('/static/admin/css/widgets.css',),}

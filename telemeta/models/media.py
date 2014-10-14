@@ -122,7 +122,6 @@ class MediaBaseResource(MediaResource):
     "Describe a media base resource"
 
     title                 = CharField(_('title'), required=True)
-    description           = CharField(_('description_old'))
     descriptions          = TextField(_('description'))
     code                  = CharField(_('code'), unique=True, required=True)
     public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES,
@@ -785,8 +784,8 @@ class MediaCorpus(MediaBaseResource):
 
     children = models.ManyToManyField(MediaCollection, related_name="corpus",
                                       verbose_name=_('collections'),  blank=True, null=True)
-    recorded_from_year    = IntegerField(_('recording year (from)'))
-    recorded_to_year      = IntegerField(_('recording year (until)'))
+    recorded_from_year    = IntegerField(_('recording year (from)'), help_text='YYYY')
+    recorded_to_year      = IntegerField(_('recording year (until)'), help_text='YYYY')
 
     objects = MediaCorpusManager()
 

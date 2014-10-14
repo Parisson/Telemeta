@@ -47,13 +47,13 @@
 
     </div>
 
-
     <div align="center" style="margin-top:3ex;">
-           <a href="{% url "telemeta-collection-detail" object.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
-           {% if perms.telemeta.change_mediacollection %}
-            <input type="submit" value="Enregistrer" class="default" name="_save"/>
-           {% endif %}
-           {# <a href="#" class="component_icon button icon_save" id="submit_button">{% trans "Save" %}</a> #}
+      {% block cancel %}
+       <a href="{% url "telemeta-collection-detail" object.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+      {% endblock %}
+       {% if perms.telemeta.change_mediacollection %}
+        <input type="submit" value="Enregistrer" class="default" name="_save"/>
+       {% endif %}
     </div>
 
    </form>
