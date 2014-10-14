@@ -8,31 +8,77 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding unique constraint on 'MediaItemIdentifier', fields ['identifier']
-        db.create_unique('media_item_identifier', ['identifier'])
+        # Adding model 'MediaItemIdentifier'
+        db.create_table('media_item_identifier', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('identifier', self.gf('telemeta.models.core.CharField')(default='', unique=True, max_length=255, blank=True)),
+            ('type', self.gf('telemeta.models.core.WeakForeignKey')(default=None, to=orm['telemeta.IdentifierType'], null=True, blank=True)),
+            ('date_first', self.gf('telemeta.models.core.DateTimeField')(default=None, auto_now_add=True, null=True, blank=True)),
+            ('date_last', self.gf('telemeta.models.core.DateTimeField')(default=None, null=True, blank=True)),
+            ('date_modified', self.gf('telemeta.models.core.DateTimeField')(default=None, auto_now=True, null=True, blank=True)),
+            ('notes', self.gf('telemeta.models.core.TextField')(default='', blank=True)),
+            ('item', self.gf('telemeta.models.core.ForeignKey')(related_name='identifiers', to=orm['telemeta.MediaItem'])),
+        ))
+        db.send_create_signal('telemeta', ['MediaItemIdentifier'])
 
         # Adding unique constraint on 'MediaItemIdentifier', fields ['identifier', 'item']
         db.create_unique('media_item_identifier', ['identifier', 'item_id'])
 
-        # Adding unique constraint on 'MediaCollectionIdentifier', fields ['identifier']
-        db.create_unique('media_collection_identifier', ['identifier'])
+        # Adding model 'MediaCollectionIdentifier'
+        db.create_table('media_collection_identifier', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('identifier', self.gf('telemeta.models.core.CharField')(default='', unique=True, max_length=255, blank=True)),
+            ('type', self.gf('telemeta.models.core.WeakForeignKey')(default=None, to=orm['telemeta.IdentifierType'], null=True, blank=True)),
+            ('date_first', self.gf('telemeta.models.core.DateTimeField')(default=None, auto_now_add=True, null=True, blank=True)),
+            ('date_last', self.gf('telemeta.models.core.DateTimeField')(default=None, null=True, blank=True)),
+            ('date_modified', self.gf('telemeta.models.core.DateTimeField')(default=None, auto_now=True, null=True, blank=True)),
+            ('notes', self.gf('telemeta.models.core.TextField')(default='', blank=True)),
+            ('collection', self.gf('telemeta.models.core.ForeignKey')(related_name='identifiers', to=orm['telemeta.MediaCollection'])),
+        ))
+        db.send_create_signal('telemeta', ['MediaCollectionIdentifier'])
 
         # Adding unique constraint on 'MediaCollectionIdentifier', fields ['identifier', 'collection']
         db.create_unique('media_collection_identifier', ['identifier', 'collection_id'])
+
+        # Adding model 'IdentifierType'
+        db.create_table('identifier_type', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('value', self.gf('telemeta.models.core.CharField')(unique=True, max_length=250)),
+        ))
+        db.send_create_signal('telemeta', ['IdentifierType'])
+
+        # Deleting field 'MediaCorpus.description'
+        db.delete_column('media_corpus', 'description')
+
+        # Deleting field 'MediaFonds.description'
+        db.delete_column('media_fonds', 'description')
 
 
     def backwards(self, orm):
         # Removing unique constraint on 'MediaCollectionIdentifier', fields ['identifier', 'collection']
         db.delete_unique('media_collection_identifier', ['identifier', 'collection_id'])
 
-        # Removing unique constraint on 'MediaCollectionIdentifier', fields ['identifier']
-        db.delete_unique('media_collection_identifier', ['identifier'])
-
         # Removing unique constraint on 'MediaItemIdentifier', fields ['identifier', 'item']
         db.delete_unique('media_item_identifier', ['identifier', 'item_id'])
 
-        # Removing unique constraint on 'MediaItemIdentifier', fields ['identifier']
-        db.delete_unique('media_item_identifier', ['identifier'])
+        # Deleting model 'MediaItemIdentifier'
+        db.delete_table('media_item_identifier')
+
+        # Deleting model 'MediaCollectionIdentifier'
+        db.delete_table('media_collection_identifier')
+
+        # Deleting model 'IdentifierType'
+        db.delete_table('identifier_type')
+
+        # Adding field 'MediaCorpus.description'
+        db.add_column('media_corpus', 'description',
+                      self.gf('telemeta.models.core.CharField')(default='', max_length=250, blank=True),
+                      keep_default=False)
+
+        # Adding field 'MediaFonds.description'
+        db.add_column('media_fonds', 'description',
+                      self.gf('telemeta.models.core.CharField')(default='', max_length=250, blank=True),
+                      keep_default=False)
 
 
     models = {
@@ -263,7 +309,7 @@ class Migration(SchemaMigration):
             'date_last': ('telemeta.models.core.DateTimeField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
             'date_modified': ('telemeta.models.core.DateTimeField', [], {'default': 'None', 'auto_now': 'True', 'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'identifier': ('telemeta.models.core.CharField', [], {'default': "''", 'unique': 'True', 'max_length': '1024', 'blank': 'True'}),
+            'identifier': ('telemeta.models.core.CharField', [], {'default': "''", 'unique': 'True', 'max_length': '255', 'blank': 'True'}),
             'notes': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
             'type': ('telemeta.models.core.WeakForeignKey', [], {'default': 'None', 'to': "orm['telemeta.IdentifierType']", 'null': 'True', 'blank': 'True'})
         },
@@ -283,7 +329,6 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'MediaCorpus', 'db_table': "'media_corpus'"},
             'children': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'corpus'", 'null': 'True', 'symmetrical': 'False', 'to': "orm['telemeta.MediaCollection']"}),
             'code': ('telemeta.models.core.CharField', [], {'unique': 'True', 'max_length': '250'}),
-            'description': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
             'descriptions': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'public_access': ('telemeta.models.core.CharField', [], {'default': "'metadata'", 'max_length': '16', 'blank': 'True'}),
@@ -307,7 +352,6 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'MediaFonds', 'db_table': "'media_fonds'"},
             'children': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'fonds'", 'null': 'True', 'symmetrical': 'False', 'to': "orm['telemeta.MediaCorpus']"}),
             'code': ('telemeta.models.core.CharField', [], {'unique': 'True', 'max_length': '250'}),
-            'description': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
             'descriptions': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'public_access': ('telemeta.models.core.CharField', [], {'default': "'metadata'", 'max_length': '16', 'blank': 'True'}),
@@ -387,7 +431,7 @@ class Migration(SchemaMigration):
             'date_last': ('telemeta.models.core.DateTimeField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
             'date_modified': ('telemeta.models.core.DateTimeField', [], {'default': 'None', 'auto_now': 'True', 'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'identifier': ('telemeta.models.core.CharField', [], {'default': "''", 'unique': 'True', 'max_length': '1024', 'blank': 'True'}),
+            'identifier': ('telemeta.models.core.CharField', [], {'default': "''", 'unique': 'True', 'max_length': '255', 'blank': 'True'}),
             'item': ('telemeta.models.core.ForeignKey', [], {'related_name': "'identifiers'", 'to': "orm['telemeta.MediaItem']"}),
             'notes': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
             'type': ('telemeta.models.core.WeakForeignKey', [], {'default': 'None', 'to': "orm['telemeta.IdentifierType']", 'null': 'True', 'blank': 'True'})
