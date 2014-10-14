@@ -859,7 +859,7 @@ class MediaFondsRelated(MediaRelated):
 class Identifier(ModelCore):
     """Resource identifier"""
 
-    identifier = CharField(_('identifier'), max_length=1024, blank=True, unique=True)
+    identifier = CharField(_('identifier'), max_length=255, blank=True, unique=True)
     type = WeakForeignKey('IdentifierType', verbose_name=_('type'))
     date_first = DateTimeField(_('date of first attribution'), auto_now_add=True)
     date_last = DateTimeField(_('date of last attribution'))
