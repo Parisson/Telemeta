@@ -25,6 +25,7 @@
 
     <ul class="nav nav-tabs" role="tablist">
       <li class="active"><a href="#general" role="tab" data-toggle="tab">{% trans "General" %}</a></li>
+      <li><a href="#player" role="tab" data-toggle="tab">{% trans "Player" %}</a></li>
       <li><a href="#related" role="tab" data-toggle="tab">{% trans "Related media" %}</a></li>
       <li><a href="#keyword_relations" role="tab" data-toggle="tab">{% trans "Keywords" %}</a></li>
       <li><a href="#performances" role="tab" data-toggle="tab">{% trans "Performance" %}</a></li>
@@ -41,8 +42,11 @@
         {% bootstrap_form form %}
       </div>
 
-      {% for formset in inlines %}
+      <div class="tab-pane fade in active" id="player">
 
+      </div>
+
+      {% for formset in inlines %}
       <div class="tab-pane" id="{{ formset.prefix }}">
           {{ formset.management_form }}
           {% for form in formset %}

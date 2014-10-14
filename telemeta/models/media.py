@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Copyright (C) 2007-2010 Samalyse SARL
-# Copyright (C) 2010-2011 Parisson SARL
+# Copyright (C) 2010-2014 Parisson SARL
 
 # This software is a computer program whose purpose is to backup, analyse,
 # transcode and stream any audio content with its metadata over a web frontend.
@@ -855,4 +855,40 @@ class MediaFondsRelated(MediaRelated):
         db_table = 'media_fonds_related'
         verbose_name = _('fonds related media')
         verbose_name_plural = _('fonds related media')
+
+
+class Identifier(ModelCore):
+    """Resource identifier"""
+
+    identifier = CharField(_('identifier'), max_length=1024, blank=True)
+    type = WeakForeignKey('IdentifierType', verbose_name=_('type'))
+    date_first = DateTimeField(_('date of first attribution'), auto_now_add=True)
+    date_last = DateTimeField(_('date of last attribution'))
+    date_modified = DateTimeField(_('date of last modification'), auto_now=True)
+    notes = TextField(_('notes'))
+
+    class Meta(MetaCore):
+        abstract = True
+
+
+class MediaItemIdentifier(Identifier):
+    """Item identifier"""
+
+    item = ForeignKey(MediaItem, related_name="identifiers", verbose_name=_('item'))
+
+    class Meta(MetaCore):
+        db_table = 'media_item_identifier'
+        verbose_name = _('item identifier')
+        verbose_name_plural = _('item identifiers')
+
+
+class MediaCollectionIdentifier(Identifier):
+    """Collection identifier"""
+
+    collection = ForeignKey(MediaCollection, related_name="identifiers", verbose_name=_('collection'))
+
+    class Meta(MetaCore):
+        db_table = 'media_collection_identifier'
+        verbose_name = _('collection identifier')
+        verbose_name_plural = _('collection identifiers')
 

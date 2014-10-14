@@ -259,3 +259,11 @@ class Status(Enumeration):
         db_table = 'media_status'
         verbose_name = _("status")
 
+
+class IdentifierType(Enumeration):
+    "Identifier type"
+
+    class Meta(MetaEnumeration):
+        db_table = 'identifier_type'
+        verbose_name = _("identifier type")
+
