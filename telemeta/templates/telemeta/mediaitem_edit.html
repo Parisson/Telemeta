@@ -10,22 +10,15 @@
 {% block title_buttons %}
 <div class="fixedWidthAsPlayer">
     <a href="{% url "telemeta-item-detail" item.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
-    {% if perms.telemeta.change_mediaitem %}
-    <a href="#" class="component_icon button icon_save" onclick="var d=document; d.getElementById('wait-img').style.display='inline'; setTimeout(function(){d.getElementById('_editItemForm').submit();},300); return false;">{% trans "Save" %}</a>
-    {% endif %}
-    <img id="wait-img" style="display:none" style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />
 </div>
 {% endblock %}
 
 {% block infos %}
-
-
   <div>
     <form enctype="multipart/form-data" id="_editItemForm" method="post" action="">{% csrf_token %}
 
     <ul class="nav nav-tabs" role="tablist">
       <li class="active"><a href="#general" role="tab" data-toggle="tab">{% trans "General" %}</a></li>
-{#       <li><a href="#player" role="tab" data-toggle="tab">{% trans "Player" %}</a></li> #}
       <li><a href="#related" role="tab" data-toggle="tab">{% trans "Related media" %}</a></li>
       <li><a href="#keyword_relations" role="tab" data-toggle="tab">{% trans "Keywords" %}</a></li>
       <li><a href="#performances" role="tab" data-toggle="tab">{% trans "Performance" %}</a></li>
@@ -39,13 +32,11 @@
         <script type="text/javascript" src="/static/admin/js/jquery.init.js"></script>
         <script type="text/javascript" src="/static/admin/js/actions.min.js"></script>
         {{ form.media }}
+        <div class="block-grey">
         {% bootstrap_form form %}
+        </div>
       </div>
-{#
-      <div class="tab-pane fade in active" id="player">
 
-      </div>
- #}
       {% for formset in inlines %}
       <div class="tab-pane" id="{{ formset.prefix }}">
           {{ formset.management_form }}
@@ -60,13 +51,13 @@
 
     </div>
 
-
     <div align="center" style="margin-top:3ex;">
-    {% block cancel %}
-     <a href="{% url "telemeta-collection-detail" object.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+     {% block cancel %}
+     <a href="{% url "telemeta-item-detail" item.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
      {% endblock %}
+
      {% if perms.telemeta.change_mediaitem %}
-      <input type="submit" value="Enregistrer" class="default" name="_save" onclick="var d=document; d.getElementById('wait-img').style.display='inline'; setTimeout(function(){d.getElementById('_editItemForm').submit();},300); return false;"/>
+      <input type="submit" value="{% trans "Save" %}" class="default" name="_save" onclick="var d=document; d.getElementById('wait-img').style.display='inline'; setTimeout(function(){d.getElementById('_editItemForm').submit();},300); return false;"/>
       <img id="wait-img" style="display:none" style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />
      {% endif %}
     </div>

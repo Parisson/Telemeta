@@ -84,6 +84,8 @@ class MediaCorpusRelatedForm(ModelForm):
 
 class MediaCollectionForm(ModelForm):
 
+    required_css_class = 'required'
+
     class Meta:
         model = MediaCollection
 

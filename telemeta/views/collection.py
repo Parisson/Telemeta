@@ -307,3 +307,12 @@ class CollectionEditView(CollectionViewMixin, UpdateWithInlinesView):
         return reverse_lazy('telemeta-collection-detail', kwargs={'public_id':self.kwargs['public_id']})
 
 
+class CollectionAddView(CollectionViewMixin, CreateWithInlinesView):
+
+    template_name = 'telemeta/collection_add.html'
+    inlines = [CollectionRelatedInline, ]
+
+    def get_success_url(self):
+        return reverse_lazy('telemeta-collections')
+
+

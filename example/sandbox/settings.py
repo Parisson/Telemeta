@@ -176,9 +176,10 @@ TIMESIDE_AUTO_ZOOM = True
 
 # Settings for django-bootstrap3
 BOOTSTRAP3 = {
-    'set_required': False,
-    'error_css_class': 'bootstrap3-error',
-    'required_css_class': 'bootstrap3-required',
+    'set_required': True,
+    'set_placeholder': False,
+    'error_css_class': 'has-error',
+    'required_css_class': 'has-warning',
     'javascript_in_head': True,
 }
 

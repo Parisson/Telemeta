@@ -735,3 +735,13 @@ class ItemEditView(ItemViewMixin, UpdateWithInlinesView):
         context['audio_export_enabled'] = self.export_enabled
         return context
 
+
+class ItemAddView(ItemViewMixin, CreateWithInlinesView):
+
+    form_class = MediaItemForm
+    template_name = 'telemeta/mediaitem_add.html'
+    inlines = [ItemRelatedInline, ItemPerformanceInline, ItemKeywordInline, ItemFormatInline]
+
+    def get_success_url(self):
+        return reverse_lazy('telemeta-items')
+

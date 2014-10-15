@@ -397,7 +397,7 @@ class MediaItem(MediaResource):
     auto_period_access    = BooleanField(_('automatic access after a rolling period'), default=True)
 
     # Archiving data
-    code                  = CharField(_('code'), unique=True, blank=True)
+    code                  = CharField(_('code'), unique=True, blank=True, required=True, help_text='CollectionCode-ItemCode')
     old_code              = CharField(_('original code'), unique=False, blank=True)
     track                 = CharField(_('item number'))
     recordist             = CharField(_('recordist'))

@@ -52,7 +52,7 @@
        <a href="{% url "telemeta-collection-detail" object.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
       {% endblock %}
        {% if perms.telemeta.change_mediacollection %}
-        <input type="submit" value="Enregistrer" class="default" name="_save"/>
+        <input type="submit" value="{% trans "Save" %}" class="default" name="_save"/>
        {% endif %}
     </div>
 

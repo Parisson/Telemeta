@@ -69,10 +69,10 @@ class Migration(SchemaMigration):
             from telemeta.models import MediaCollection
             for collection in MediaCollection.objects.all():
                 trig = False
-                if collection.alt_ids:
+                if hasattr(collection, 'alt_ids'):
                     collection.alt_copy = collection.alt_ids
                     trig = True
-                if collection.travail:
+                if hasattr(collection, 'travail'):
                     collection.archiver_notes = collection.travail
                     trig = True
                 if trig:
