@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-17 19:43+0200\n"
+"POT-Creation-Date: 2014-10-17 19:45+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Guillaume Pellerin <yomguy@parisson.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -536,7 +536,7 @@ msgstr "date d'enregistrement (depuis)"
 
 #: models/media.py:361 models/media.py:362
 msgid "YYYY-MM-DD"
-msgstr ""
+msgstr "AAAA-MM-JJ"
 
 #: models/media.py:362
 msgid "recording date (until)"
