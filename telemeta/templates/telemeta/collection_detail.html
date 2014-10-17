@@ -167,12 +167,12 @@
                     <dl class="listing">
                         {% dl_field collection "code" %}
                         {% dl_field collection "old_code" %}
-                        <dt>{% trans "Media type" %}</dt><dd>{% trans "Audio" %}</dd>
                         {% dl_field collection "approx_duration" %}
                         {% dl_field collection "computed_duration" %}
                         {% dl_field collection "physical_items_num" %}
                         <div class="wazing"></div>
                         <dt>{% trans "Number of items" %}</dt><dd>{{ collection.items.count }}</dd>
+                        {% dl_field collection "media_type" %}
                         {% dl_field collection "physical_format" %}
                         {% dl_field collection "ad_conversion" %}
                     </dl>

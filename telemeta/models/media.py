@@ -206,14 +206,14 @@ class MediaCollection(MediaResource):
     # General informations
     title                 = CharField(_('title'), required=True)
     alt_title             = CharField(_('original title / translation'))
-    creator               = CharField(_('depositor / contributor'), help_text='First name, Last name; First name, Last name')
+    creator               = CharField(_('depositor / contributor'), help_text=_('First name, Last name; First name, Last name'))
     doctype_code          = IntegerField(_('document type'))
     description           = TextField(_('description'))
     recording_context     = WeakForeignKey('RecordingContext', related_name="collections",
                                            verbose_name=_('recording context'))
-    recorded_from_year    = IntegerField(_('recording year (from)'), help_text='YYYY')
-    recorded_to_year      = IntegerField(_('recording year (until)'), help_text='YYYY')
-    year_published        = IntegerField(_('year published'), help_text='YYYY')
+    recorded_from_year    = IntegerField(_('recording year (from)'), help_text=_('YYYY'))
+    recorded_to_year      = IntegerField(_('recording year (until)'), help_text=_('YYYY'))
+    year_published        = IntegerField(_('year published'), help_text=_('YYYY'))
     public_access         = CharField(_('access status'), choices=PUBLIC_ACCESS_CHOICES,
                                       max_length=16, default="metadata")
 
@@ -221,7 +221,7 @@ class MediaCollection(MediaResource):
     # See "countries" and "ethnic_groups" methods below
 
     # Legal notices
-    collector             = CharField(_('recordist'), help_text='First name, Last name; First name, Last name')
+    collector             = CharField(_('recordist'), help_text=_('First name, Last name; First name, Last name'))
     publisher             = WeakForeignKey('Publisher', related_name="collections",
                                            verbose_name=_('publisher'))
     publisher_collection  = WeakForeignKey('PublisherCollection', related_name="collections",
@@ -357,12 +357,11 @@ class MediaItem(MediaResource):
     # Main Informations
     title                 = CharField(_('title'))
     alt_title             = CharField(_('original title / translation'))
-    collection            = ForeignKey('MediaCollection', related_name="items",
-                                       verbose_name=_('collection'))
-    recorded_from_date    = DateField(_('recording date (from)'), help_text='YYYY-MM-DD')
-    recorded_to_date      = DateField(_('recording date (until)'), help_text='YYYY-MM-DD')
-
-    scientist             = CharField(_('scientist'), help_text='First name, Last name')
+    collection            = ForeignKey('MediaCollection', related_name="items", verbose_name=_('collection'))
+    recorded_from_date    = DateField(_('recording date (from)'), help_text=_('YYYY-MM-DD'))
+    recorded_to_date      = DateField(_('recording date (until)'), help_text=_('YYYY-MM-DD'))
+    public_access         = CharField(_('access status'), choices=ITEM_PUBLIC_ACCESS_CHOICES, max_length=16, default="metadata")
+    scientist             = CharField(_('scientist'), help_text=_('First name, Last name; First name, Last name'))
     topic                 = WeakForeignKey('Topic', verbose_name=_('topic'))
     summary               = TextField(_('summary'))
     comment               = TextField(_('remarks'))
@@ -371,33 +370,26 @@ class MediaItem(MediaResource):
     location              = WeakForeignKey('Location', verbose_name=_('location'))
     location_comment      = CharField(_('location details'))
     cultural_area         = CharField(_('cultural area'))
-    ethnic_group          = WeakForeignKey('EthnicGroup', related_name="items",
-                                           verbose_name=_('population / social group'))
+    ethnic_group          = WeakForeignKey('EthnicGroup', related_name="items", verbose_name=_('population / social group'))
     language              = CharField(_('language'))
-    language_iso          = ForeignKey('Language', related_name="items",
-                                       verbose_name=_('ISO language'), blank=True,
-                                        null=True, on_delete=models.SET_NULL)
+    language_iso          = ForeignKey('Language', related_name="items", verbose_name=_('ISO language'), blank=True, null=True, on_delete=models.SET_NULL)
     context_comment       = TextField(_('comments / ethnographic context'))
-    moda_execut           = CharField(_('moda_execut'))
+    moda_execut           = CharField(_('implementing rules'))
 
     # Musical informations
-    vernacular_style      = WeakForeignKey('VernacularStyle', related_name="items",
-                                           verbose_name=_('vernacular style'))
-    generic_style         = WeakForeignKey('GenericStyle', related_name="items",
-                                           verbose_name=_('generic style'))
-    author                = CharField(_('author / compositor'))
+    vernacular_style      = WeakForeignKey('VernacularStyle', related_name="items", verbose_name=_('vernacular style'))
+    generic_style         = WeakForeignKey('GenericStyle', related_name="items", verbose_name=_('generic style'))
+    author                = CharField(_('author / compositor'), help_text=_('First name, Last name; First name, Last name'))
     contributor           = CharField(_('contributor'))
 
     # Legal mentions
     organization          = WeakForeignKey('Organization', verbose_name=_('organization'))
-    public_access         = CharField(_('access status'), choices=ITEM_PUBLIC_ACCESS_CHOICES,
-                                      max_length=16, default="metadata")
     depositor             = CharField(_('depositor'))
     rights                = WeakForeignKey('Rights', verbose_name=_('rights'))
     auto_period_access    = BooleanField(_('automatic access after a rolling period'), default=True)
 
     # Archiving data
-    code                  = CharField(_('code'), unique=True, blank=True, required=True, help_text='CollectionCode-ItemCode')
+    code                  = CharField(_('code'), unique=True, blank=True, required=True, help_text=_('CollectionCode-ItemCode'))
     old_code              = CharField(_('original code'), unique=False, blank=True)
     track                 = CharField(_('item number'))
     recordist             = CharField(_('recordist'))
@@ -409,23 +401,22 @@ class MediaItem(MediaResource):
     publishing_date       = DateField(_('publishing date'))
     creator_reference     = CharField(_('creator reference'))
     external_references   = TextField(_('published references'))
-    copied_from_item      = WeakForeignKey('self', related_name="copies",
-                                           verbose_name=_('copy of'))
+    copied_from_item      = WeakForeignKey('self', related_name="copies", verbose_name=_('copy of'))
     mimetype              = CharField(_('mime type'), max_length=255, blank=True)
 
     # Media
-    file                  = FileField(_('file'), upload_to='items/%Y/%m/%d',
-                                      db_column="filename", max_length=1024)
+    file                  = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename", max_length=1024)
     url                   = URLField(_('URL'), max_length=512, blank=True)
 
     # Technical data
-    approx_duration       = DurationField(_('approximative duration'), help_text='hh:mm:ss')
+    approx_duration       = DurationField(_('approximative duration'), help_text=_('hh:mm:ss'))
 
     # Manager
     objects               = MediaItemManager()
 
     def keywords(self):
         return ContextKeyword.objects.filter(item_relations__item = self)
+
     keywords.verbose_name = _('keywords')
 
     @property

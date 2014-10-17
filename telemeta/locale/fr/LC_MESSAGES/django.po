@@ -76,7 +76,7 @@ msgstr "Mot-clé"
 
 #: models/enum.py:137
 msgid "publisher / status"
-msgstr "éditeur / statut"
+msgstr "statut"
 
 #: models/enum.py:143 models/media.py:226
 msgid "publisher"
@@ -129,23 +129,20 @@ msgid "topic"
 msgstr "discipline"
 
 #: models/enum.py:244
-#, fuzzy
 msgid "copy type"
-msgstr "type complet"
+msgstr "type d'exemplaire'"
 
 #: models/enum.py:252 models/media.py:267
-#, fuzzy
 msgid "media type"
-msgstr "Type de media"
+msgstr "support original"
 
 #: models/enum.py:260 models/media.py:672
 msgid "status"
 msgstr "état"
 
 #: models/enum.py:268
-#, fuzzy
 msgid "identifier type"
-msgstr "identifiant"
+msgstr "type d'identifiant"
 
 #: models/format.py:58 models/media.py:456 models/media.py:523
 #: models/media.py:550 models/media.py:561 models/media.py:577
@@ -417,7 +414,7 @@ msgstr "année de parution"
 
 #: models/media.py:217 models/media.py:393
 msgid "access status"
-msgstr "statut d'accès"
+msgstr "type d'accès"
 
 #: models/media.py:224 models/media.py:403
 msgid "recordist"
@@ -454,16 +451,15 @@ msgstr "déposant CNRS"
 
 #: models/media.py:244
 msgid "type of copy"
-msgstr ""
+msgstr "type de copie"
 
 #: models/media.py:247
 msgid "related documentation"
 msgstr "documentation associée"
 
 #: models/media.py:251
-#, fuzzy
 msgid "collection status"
-msgstr "collections"
+msgstr "status de la collection"
 
 #: models/media.py:252
 msgid "copies"
@@ -564,11 +560,11 @@ msgstr "Langue ISO"
 
 #: models/media.py:380
 msgid "comments / ethnographic context"
-msgstr "commentaires / contexte ethnographique"
+msgstr "contexte ethnographique"
 
 #: models/media.py:381
-msgid "moda_execut"
-msgstr "moda_execut"
+msgid "implementing rules"
+msgstr "modalités d'exécution"
 
 #: models/media.py:388
 msgid "author / compositor"
@@ -729,41 +725,35 @@ msgstr "média associés"
 
 #: models/media.py:864
 msgid "date of first attribution"
-msgstr ""
+msgstr "date de dpremière attribution"
 
 #: models/media.py:865
-#, fuzzy
 msgid "date of last attribution"
-msgstr "mode d'acquisition"
+msgstr "date de dernière attribution"
 
 #: models/media.py:866
-#, fuzzy
 msgid "date of last modification"
-msgstr "Dernière modification"
+msgstr "date de dernière modification"
 
 #: models/media.py:867
 msgid "notes"
-msgstr ""
+msgstr "notes"
 
 #: models/media.py:880
-#, fuzzy
 msgid "item identifier"
-msgstr "identifiant"
+msgstr "identifiant de l'item"
 
 #: models/media.py:881
-#, fuzzy
 msgid "item identifiers"
-msgstr "identifiant"
+msgstr "identifiants de l'item"
 
 #: models/media.py:892
-#, fuzzy
 msgid "collection identifier"
-msgstr "identifiant de l'élément"
+msgstr "identifiant de la collection"
 
 #: models/media.py:893
-#, fuzzy
 msgid "collection identifiers"
-msgstr "identifiant de l'élément"
+msgstr "identifiants de la collection"
 
 #: models/system.py:52
 msgid "element type"
@@ -927,18 +917,16 @@ msgid "Delete"
 msgstr "Supprimer"
 
 #: templates/postman/base_folder.html:50 templates/postman/view.html:26
-#, fuzzy
 msgid "Archive"
-msgstr "Archives"
+msgstr "Archive"
 
 #: templates/postman/base_folder.html:51
-#, fuzzy
 msgid "Undelete"
-msgstr "supprimé"
+msgstr "Récupéré"
 
 #: templates/postman/base_folder.html:57
 msgid "No messages."
-msgstr ""
+msgstr "Pas de messages"
 
 #: templates/postman/base_write.html:20
 #: templates/telemeta/inc/chat_room.html:14
@@ -1281,9 +1269,8 @@ msgstr "Ajouter à la liste"
 #: templates/telemeta/inc/collection_related.html:45
 #: templates/telemeta/inc/mediaitem_related.html:45
 #: templates/telemeta/inc/resource_related.html:45
-#, fuzzy
 msgid "Download"
-msgstr "Téléchargement:"
+msgstr "Téléchargement"
 
 #: templates/telemeta/collection_detail.html:68
 #: templates/telemeta/geo_continents.html:26
@@ -1330,7 +1317,7 @@ msgstr "Commentaires"
 #: templates/telemeta/mediaitem_detail.html:206
 #: templates/telemeta/resource_detail.html:74
 msgid "Last modification"
-msgstr "Dernière modification"
+msgstr "Dernière modification de la fiche"
 
 #: templates/telemeta/collection_detail.html:165
 #: templates/telemeta/mediaitem_detail.html:295
@@ -1372,9 +1359,8 @@ msgstr "Média associés"
 
 #: templates/telemeta/collection_edit.html:22
 #: templates/telemeta/mediaitem_edit.html:26
-#, fuzzy
 msgid "Identifier"
-msgstr "identifiant"
+msgstr "Identifiant"
 
 #: templates/telemeta/collection_edit.html:53
 #: templates/telemeta/collection_related_edit.html:14
@@ -1719,9 +1705,8 @@ msgid "Performance"
 msgstr "Composition"
 
 #: templates/telemeta/mediaitem_edit.html:25
-#, fuzzy
 msgid "Format"
-msgstr "format"
+msgstr "Format"
 
 #: templates/telemeta/mediaitem_keywords_edit.html:24
 msgid "Keyword"

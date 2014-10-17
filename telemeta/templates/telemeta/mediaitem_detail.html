@@ -197,16 +197,13 @@ Item : <a href="{% url "telemeta-item-detail" item.public_id %}">{{ item }}</a>
             {% dl_field item "alt_title" %}
             {% dl_field item "collector" placeholder %}
             <dt>{% field_label item "collection" %}</dt>
-            <dd><a href="{% url "telemeta-collection-detail" item.collection.public_id %}">{{ item.collection }}</a></dd>
+            <dd><a href="{% url "telemeta-collection-detail" item.collection.public_id %}">{{ item.collection.title }}</a></dd>
             <dt>{% trans "Recording date" %}</dt>
-
             <dd>{% if item.recorded_from_date %}{{ item.recorded_from_date }}{% endif %}{% if item.recorded_from_date and item.recorded_to_date%} - {% endif %}{% if item.recorded_to_date %}{{ item.recorded_to_date}}{% endif %}</dd>
-
-            {% if last_revision %}
-            <dt>{% trans "Last modification" %}</dt>
-            <dd>{{ last_revision.time }} {% if user.is_authenticated %}(<a href="{% url "telemeta-profile-detail" last_revision.user.username %}">{{last_revision.user.username}}</a>){% endif %}</dd>
+            {% dl_field item "public_access" %}
+            {% if item.moda_exec %}
+            {% dl_field item "moda_exec" %}
             {% endif %}
-
         </dl>
         {% endblock general_info %}
     </div>
@@ -285,6 +282,10 @@ Item : <a href="{% url "telemeta-item-detail" item.public_id %}">{{ item }}</a>
                 {% endif %}
                 <dt>{% trans "Remarks" %}</dt>
                 <dd>{{ item.comment|html_line_break|safe }}</dd>
+                {% if last_revision %}
+                <dt>{% trans "Last modification" %}</dt>
+                <dd>{{ last_revision.time }} {% if user.is_authenticated %}(<a href="{% url "telemeta-profile-detail" last_revision.user.username %}">{{last_revision.user.username}}</a>){% endif %}</dd>
+                {% endif %}
             </dl>
         </div>
         {% endblock archive_data %}
