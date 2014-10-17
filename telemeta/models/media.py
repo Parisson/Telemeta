@@ -204,17 +204,16 @@ class MediaCollection(MediaResource):
             raise ValidationError(u'%s is not a valid collection code' % value)
 
     # General informations
-    reference             = CharField(_('reference'), unique=True, null=True)
     title                 = CharField(_('title'), required=True)
     alt_title             = CharField(_('original title / translation'))
-    creator               = CharField(_('depositor / contributor'), help_text='First name, Last name')
+    creator               = CharField(_('depositor / contributor'), help_text='First name, Last name; First name, Last name')
     doctype_code          = IntegerField(_('document type'))
     description           = TextField(_('description'))
     recording_context     = WeakForeignKey('RecordingContext', related_name="collections",
                                            verbose_name=_('recording context'))
-    recorded_from_year    = IntegerField(_('recording year (from)'), help_text='AAAA')
-    recorded_to_year      = IntegerField(_('recording year (until)'), help_text='AAAA')
-    year_published        = IntegerField(_('year published'), help_text='AAAA')
+    recorded_from_year    = IntegerField(_('recording year (from)'), help_text='YYYY')
+    recorded_to_year      = IntegerField(_('recording year (until)'), help_text='YYYY')
+    year_published        = IntegerField(_('year published'), help_text='YYYY')
     public_access         = CharField(_('access status'), choices=PUBLIC_ACCESS_CHOICES,
                                       max_length=16, default="metadata")
 
@@ -222,13 +221,14 @@ class MediaCollection(MediaResource):
     # See "countries" and "ethnic_groups" methods below
 
     # Legal notices
-    collector             = CharField(_('recordist'))
+    collector             = CharField(_('recordist'), help_text='First name, Last name; First name, Last name')
     publisher             = WeakForeignKey('Publisher', related_name="collections",
                                            verbose_name=_('publisher'))
     publisher_collection  = WeakForeignKey('PublisherCollection', related_name="collections",
                                             verbose_name=_('publisher collection'))
     publisher_serial      = CharField(_('publisher serial number'))
     booklet_author        = CharField(_('publisher references'), blank=True)
+    reference             = CharField(_('reference'))
     external_references   = TextField(_('bibliographic references'))
 
 
@@ -359,8 +359,8 @@ class MediaItem(MediaResource):
     alt_title             = CharField(_('original title / translation'))
     collection            = ForeignKey('MediaCollection', related_name="items",
                                        verbose_name=_('collection'))
-    recorded_from_date    = DateField(_('recording date (from)'), help_text='AAAA-MM-JJ')
-    recorded_to_date      = DateField(_('recording date (until)'), help_text='AAAA-MM-JJ')
+    recorded_from_date    = DateField(_('recording date (from)'), help_text='YYYY-MM-DD')
+    recorded_to_date      = DateField(_('recording date (until)'), help_text='YYYY-MM-DD')
 
     scientist             = CharField(_('scientist'), help_text='First name, Last name')
     topic                 = WeakForeignKey('Topic', verbose_name=_('topic'))

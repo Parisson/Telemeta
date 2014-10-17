@@ -31,9 +31,6 @@
   </ul>
 </div>
 
-    {% if user.is_authenticated and perms.telemeta.add_mediaitem %}
-      <a href="{% url "telemeta-item-add" %}" class="component_icon button icon_add">{% trans "Add" %}</a>
-    {% endif %}
 {% endblock %}
 
 {% block content %}

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-02 17:48+0200\n"
+"POT-Creation-Date: 2014-10-17 16:59+0200\n"
 "PO-Revision-Date: 2012-12-19 08:20+0100\n"
 "Last-Translator: Patrik Tschudin <patsch@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,62 +18,62 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: static/telemeta/js/locale.js:2
+#: static/bak/telemeta/js/locale.js:2 static/telemeta/js/locale.js:2
 msgid "title"
 msgstr "Titel"
 
-#: static/telemeta/js/locale.js:3
+#: static/bak/telemeta/js/locale.js:3 static/telemeta/js/locale.js:3
 msgid "description"
 msgstr "Beschreibung"
 
-#: static/telemeta/js/locale.js:4
+#: static/bak/telemeta/js/locale.js:4 static/telemeta/js/locale.js:4
 msgid "delete the marker permanently?"
 msgstr "Die Markierung definitiv löschen?"
 
-#: static/telemeta/js/locale.js:5
+#: static/bak/telemeta/js/locale.js:5 static/telemeta/js/locale.js:5
 msgid "marker added to the selected playlist"
 msgstr "Markierung zu gewählter Wiedergabeliste hinzugefügt"
 
-#: static/telemeta/js/locale.js:6
+#: static/bak/telemeta/js/locale.js:6 static/telemeta/js/locale.js:6
 msgid "item added to the selected playlist"
 msgstr "Element zur gewählten Wiedergabeliste hinzugefügt"
 
-#: static/telemeta/js/locale.js:7
+#: static/bak/telemeta/js/locale.js:7 static/telemeta/js/locale.js:7
 msgid "collection added to the selected playlist"
 msgstr "Sammlung zu gewählter Wiedergabeliste hinzugefügt"
 
-#: static/telemeta/js/locale.js:8
+#: static/bak/telemeta/js/locale.js:8 static/telemeta/js/locale.js:8
 msgid "resource added to the selected playlist"
 msgstr "Ressource zu gewählter Wiedergabeliste hinzugefügt"
 
-#: static/telemeta/js/locale.js:9
+#: static/bak/telemeta/js/locale.js:9 static/telemeta/js/locale.js:9
 msgid "there are unsaved or modified markers"
 msgstr "Es gibt unabgespeicherte oder veränderte Markierungen"
 
-#: static/telemeta/js/locale.js:10
+#: static/bak/telemeta/js/locale.js:10 static/telemeta/js/locale.js:10
 msgid "If you exit the page you will loose your changes"
 msgstr "Wenn Sie die Seite verlassen, verlieren Sie Ihre Veränderungen"
 
-#: static/telemeta/js/locale.js:11
+#: static/bak/telemeta/js/locale.js:11 static/telemeta/js/locale.js:11
 msgid "author"
 msgstr "Autor"
 
-#: static/telemeta/js/locale.js:12
+#: static/bak/telemeta/js/locale.js:12 static/telemeta/js/locale.js:12
 msgid "Paste HTML to embed player in website"
 msgstr "HTML einfügen, um Wiedergabemöglichkeit in Website einzubetten"
 
-#: static/telemeta/js/locale.js:13
+#: static/bak/telemeta/js/locale.js:13 static/telemeta/js/locale.js:13
 msgid "delete the item permanently?"
 msgstr "Das Element definitiv löschen?"
 
-#: static/telemeta/js/locale.js:14
+#: static/bak/telemeta/js/locale.js:14 static/telemeta/js/locale.js:14
 msgid "delete the collection permanently?"
 msgstr "Die Sammlung definitiv löschen?"
 
-#: static/telemeta/js/locale.js:15
+#: static/bak/telemeta/js/locale.js:15 static/telemeta/js/locale.js:15
 msgid "delete the playlist permanently?"
 msgstr "Die Wiedergabeliste definitiv löschen?"
 
-#: static/telemeta/js/locale.js:16
+#: static/bak/telemeta/js/locale.js:16 static/telemeta/js/locale.js:16
 msgid "delete the resource from the playlist permanently?"
 msgstr "Die Ressource definitiv aus der Wiedergabeliste löschen?"
