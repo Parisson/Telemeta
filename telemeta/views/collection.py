@@ -297,7 +297,7 @@ class CollectionDetailView(CollectionViewMixin, DetailView):
 class CollectionEditView(CollectionViewMixin, UpdateWithInlinesView):
 
     template_name = 'telemeta/collection_edit.html'
-    inlines = [CollectionRelatedInline, ]
+    inlines = [CollectionRelatedInline, CollectionIdentifierInline]
 
     def form_valid(self, form):
         messages.info(self.request, _("You have successfully updated your collection."))
@@ -310,9 +310,19 @@ class CollectionEditView(CollectionViewMixin, UpdateWithInlinesView):
 class CollectionAddView(CollectionViewMixin, CreateWithInlinesView):
 
     template_name = 'telemeta/collection_add.html'
-    inlines = [CollectionRelatedInline, ]
+    inlines = [CollectionRelatedInline, CollectionIdentifierInline]
 
     def get_success_url(self):
         return reverse_lazy('telemeta-collections')
 
 
+class CollectionCopyView(CollectionAddView):
+
+    template_name = 'telemeta/collection_add.html'
+
+    def get_initial(self):
+        resource = self.model.objects.get(code=self.kwargs['public_id'])
+        return model_to_dict(resource)
+
+    def get_success_url(self):
+        return reverse_lazy('telemeta-collections')

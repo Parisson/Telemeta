@@ -23,6 +23,7 @@
       <li><a href="#keyword_relations" role="tab" data-toggle="tab">{% trans "Keywords" %}</a></li>
       <li><a href="#performances" role="tab" data-toggle="tab">{% trans "Performance" %}</a></li>
       <li><a href="#format" role="tab" data-toggle="tab">{% trans "Format" %}</a></li>
+      <li><a href="#identifiers" role="tab" data-toggle="tab">{% trans "Identifier" %}</a></li>
     </ul>
 
     <div class="tab-content">
@@ -34,6 +35,8 @@
         {{ form.media }}
         <div class="block-grey">
         {% bootstrap_form form %}
+        {% trans "Collection access status" %} : {% trans item.collection.public_access %}<br />
+        {% trans "Context access status" %} : {% trans access %}<br />
         </div>
       </div>
 

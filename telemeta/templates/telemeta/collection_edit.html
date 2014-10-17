@@ -17,8 +17,9 @@
   <form method="post" id="_editForm" action="">{% csrf_token %}
 
     <ul class="nav nav-tabs" role="tablist">
-      <li class="active"><a href="#general" role="tab" data-toggle="tab">General</a></li>
-      <li><a href="#related" role="tab" data-toggle="tab">Related media</a></li>
+      <li class="active"><a href="#general" role="tab" data-toggle="tab">{% trans "General" %}</a></li>
+      <li><a href="#related" role="tab" data-toggle="tab">{% trans "Related media" %}</a></li>
+      <li><a href="#identifiers" role="tab" data-toggle="tab">{% trans "Identifier" %}</a></li>
     </ul>
 
     <div class="tab-content">
@@ -33,19 +34,16 @@
         </div>
       </div>
 
-      <div class="tab-pane" id="related">
-        {% for formset in inlines %}
+      {% for formset in inlines %}
+      <div class="tab-pane" id="{{ formset.prefix }}">
           {{ formset.management_form }}
           {% for form in formset %}
            <div class="block-grey">
-             {% bootstrap_form form %}
-          </div>
-          {# {{ form.as_table }} #}
+           {% bootstrap_form form %}
+           </div>
           {% endfor %}
-        {% endfor %}
       </div>
-
-    </div>
+      {% endfor %}
 
     <div align="center" style="margin-top:3ex;">
       {% block cancel %}

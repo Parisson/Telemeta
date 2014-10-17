@@ -71,6 +71,10 @@ from django.core.servers.basehttp import FileWrapper
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib.contenttypes.models import ContentType
 from django.views.decorators.http import condition
+from django.utils.translation import ugettext_lazy as _
+from django.forms.models import model_to_dict
+from django.views.generic.edit import DeletionMixin, BaseDeleteView
+
 
 from telemeta.models import *
 import telemeta.models

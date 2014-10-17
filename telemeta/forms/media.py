@@ -157,6 +157,12 @@ class CollectionRelatedInline(InlineFormSet):
     model = MediaCollectionRelated
 
 
+class CollectionIdentifierInline(InlineFormSet):
+
+    model = MediaCollectionIdentifier
+    max_num = 1
+
+
 class ItemRelatedInline(InlineFormSet):
 
     model = MediaItemRelated
@@ -175,4 +181,10 @@ class ItemKeywordInline(InlineFormSet):
 class ItemFormatInline(InlineFormSet):
 
     model = Format
+
+
+class ItemIdentifierInline(InlineFormSet):
+
+    model = MediaItemIdentifier
+    max_num = 1
 
