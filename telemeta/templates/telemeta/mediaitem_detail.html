@@ -169,11 +169,10 @@ Item : <a href="{% url "telemeta-item-detail" item.public_id %}">{{ item }}</a>
 
         {% if audio_export_enabled or perms.telemeta.can_download_all_items or user.is_superuser %}
         <div class="exporter">
-            <p><img src="{{ STATIC_URL }}telemeta/images/download.png" alt="download" style="vertical-align:middle" /> {% trans "Download:" %}
                 {% for format in export_formats %}
                 <a href="{% url "telemeta-item-export" item.public_id format.extension %}">
                     <img src="{{ STATIC_URL }}telemeta/images/{{ format.extension }}.png" style="vertical-align:middle" alt="{{ format.extension }}" /></a>
-                {% endfor %}</p>
+                {% endfor %}
         </div>
         {% endif %}
 
