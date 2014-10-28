@@ -35,6 +35,7 @@
 #          David LIPSZYC <davidlipszyc@gmail.com>
 #          Guillaume Pellerin <yomguy@parisson.com>
 
+from __future__ import division
 import re, os, random
 import mimetypes
 from django.contrib.auth.models import User
@@ -325,8 +326,15 @@ class MediaCollection(MediaResource):
         for item in self.items.all():
             duration += item.computed_duration()
         return duration
-
     computed_duration.verbose_name = _('computed duration')
+
+    def computed_size(self):
+        "Return the total size of a collection in Mo"
+        size = 0
+        for item in self.items.all():
+            size += item.size()
+        return round(size/1024**2,2)
+    computed_size.verbose_name = _('collection size (Mo)')
 
     def save(self, force_insert=False, force_update=False, user=None, code=None):
         super(MediaCollection, self).save(force_insert, force_update)
@@ -505,6 +513,12 @@ class MediaItem(MediaResource):
         return instruments
 
         instruments.verbose_name = _("instruments")
+
+    def size(self):
+        if self.file:
+            return self.file.size
+        else:
+            return 0
 
 
 class MediaItemRelated(MediaRelated):
