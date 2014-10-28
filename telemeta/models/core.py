@@ -285,7 +285,7 @@ class CharField(models.CharField):
 
     def __init__(self, *args, **kwargs):
         if not kwargs.has_key('max_length'):
-            kwargs['max_length'] = 512
+            kwargs['max_length'] = 250
         super(CharField, self).__init__(*args, **normalize_field(kwargs, ''))
 
 
