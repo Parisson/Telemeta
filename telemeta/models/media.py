@@ -231,7 +231,6 @@ class MediaCollection(MediaResource):
     reference             = CharField(_('reference'))
     external_references   = TextField(_('bibliographic references'))
 
-
     auto_period_access    = BooleanField(_('automatic access after a rolling period'), default=True)
     legal_rights          = WeakForeignKey('LegalRight', related_name="collections",
                                            verbose_name=_('legal rights'))
