@@ -75,6 +75,15 @@
                 {% if collection.creator %}
                 {% dl_field collection "creator" placeholder %}
                 {% endif %}
+                <dt>{% trans "Document status" %}</dt>
+                {% if '_I_' in collection.public_id %}
+                 <dd>{% trans 'unpublished' %}</dd>
+                {% elif '_E_' in collection.public_id %}
+                 <dd>{% trans 'published' %}</dd>
+                {% endif %}
+                {% if collection.description %}
+                {% dl_field collection "description" %}
+                {% endif %}
                 {% dl_field collection "recording_context" %}
                 <dt>{% trans "Recording period" %}</dt>
                     <dd>{% if collection.recorded_from_year %}{{ collection.recorded_from_year }}{% endif %}{% if collection.recorded_from_year and collection.recorded_to_year %} - {% endif %}{% if  collection.recorded_to_year %}{{ collection.recorded_to_year}}{% endif %}</dd>
@@ -119,8 +128,10 @@
                         {% dl_field collection "publisher_serial" %}
                         {% dl_field collection "booklet_author" %}
                         {% dl_field collection "reference" %}
+                        {% if collection.external_references %}
                         <dt>{% trans "Bibliographic references" %}</dt>
                         <dd>{{ collection.external_references|html_line_break|safe }}</dd>
+                        {% endif %}
                         {% dl_field collection "public_access_label" %}
                         {% dl_field collection "legal_rights" %}
                     </dl>
@@ -138,8 +149,10 @@
                         {% dl_field collection "cnrs_contributor" %}
                         {% dl_field collection "copy_type" %}
                         {% dl_field collection "metadata_author" %}
-                        <dt>{% trans "Related documentation" %}</dt>
-                        <dd>{{ collection.booklet_description|html_line_break|safe }}</dd>
+                        {% if collection.booklet_description %}
+                         <dt>{% trans "Related documentation" %}</dt>
+                         <dd>{{ collection.booklet_description|html_line_break|safe }}</dd>
+                        {% endif %}
                         {% dl_field collection "publishing_status" %}
                         {% if collection.alt_ids %}
                          {% dl_field collection "alt_ids" %}
@@ -173,7 +186,9 @@
                         <div class="wazing"></div>
                         <dt>{% trans "Number of items" %}</dt><dd>{{ collection.items.count }}</dd>
                         {% dl_field collection "media_type" %}
+                        {% if collection.physical_format %}
                         {% dl_field collection "physical_format" %}
+                        {% endif %}
                         {% dl_field collection "ad_conversion" %}
                     </dl>
                 </div>

@@ -75,7 +75,6 @@ class AcquisitionMode(Enumeration):
 class MetadataAuthor(Enumeration):
     "Collection metadata author"
 
-
     class Meta(MetaEnumeration):
         db_table = 'metadata_authors'
         verbose_name = _("record author")
@@ -134,7 +133,7 @@ class Publisher(Enumeration):
 
     class Meta(MetaEnumeration):
         db_table = 'publishers'
-        verbose_name = _("publisher / status")
+        verbose_name = _("publisher")
 
 
 class PublisherCollection(ModelCore):

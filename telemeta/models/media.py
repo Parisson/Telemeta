@@ -214,7 +214,7 @@ class MediaCollection(MediaResource):
     recorded_from_year    = IntegerField(_('recording year (from)'), help_text=_('YYYY'))
     recorded_to_year      = IntegerField(_('recording year (until)'), help_text=_('YYYY'))
     year_published        = IntegerField(_('year published'), help_text=_('YYYY'))
-    public_access         = CharField(_('access status'), choices=PUBLIC_ACCESS_CHOICES,
+    public_access         = CharField(_('access type'), choices=PUBLIC_ACCESS_CHOICES,
                                       max_length=16, default="metadata")
 
     # Geographic and cultural informations
@@ -264,7 +264,7 @@ class MediaCollection(MediaResource):
     old_code              = CharField(_('old code'), unique=False, null=True, blank=True)
     media_type            = WeakForeignKey('MediaType', related_name="collections",
                                            verbose_name=_('media type'))
-    approx_duration       = DurationField(_('approximative duration'), help_text='hh:mm:ss')
+    approx_duration       = DurationField(_('estimated duration'), help_text='hh:mm:ss')
     physical_items_num    = IntegerField(_('number of components (medium / piece)'))
     physical_format       = WeakForeignKey('PhysicalFormat', related_name="collections",
                                            verbose_name=_('archive format'))
@@ -359,7 +359,7 @@ class MediaItem(MediaResource):
     collection            = ForeignKey('MediaCollection', related_name="items", verbose_name=_('collection'))
     recorded_from_date    = DateField(_('recording date (from)'), help_text=_('YYYY-MM-DD'))
     recorded_to_date      = DateField(_('recording date (until)'), help_text=_('YYYY-MM-DD'))
-    public_access         = CharField(_('access status'), choices=ITEM_PUBLIC_ACCESS_CHOICES, max_length=16, default="metadata")
+    public_access         = CharField(_('access type'), choices=ITEM_PUBLIC_ACCESS_CHOICES, max_length=16, default="metadata")
     scientist             = CharField(_('scientist'), help_text=_('First name, Last name; First name, Last name'))
     topic                 = WeakForeignKey('Topic', verbose_name=_('topic'))
     summary               = TextField(_('summary'))
