@@ -224,8 +224,6 @@ urlpatterns = patterns('',
 
     # JSON RPC
     url(r'json/$', jsonrpc_site.dispatch, name='jsonrpc_mountpoint'),
-    # for the graphical browser/web console only, omissible
-    #url(r'json/browse/', 'jsonrpc.views.browse', name="jsonrpc_browser"),
 
     # Playlists
     url(r'^playlists/(?P<public_id>[a-zA-Z0-9]+)/(?P<resource_type>[a-zA-Z0-9]+)/csv/$', playlist_view.playlist_csv_export, name="telemeta-playlist-csv-export"),
@@ -245,4 +243,6 @@ if settings.DEBUG and 'debug_toolbar' in settings.INSTALLED_APPS:
     import debug_toolbar
     urlpatterns += patterns('',
     url(r'^__debug__/', include(debug_toolbar.urls)),)
+    # for the graphical browser/web console only, omissible
+    url(r'json/browse/', 'jsonrpc.views.browse', name="jsonrpc_browser"),
 
