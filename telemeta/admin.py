@@ -20,20 +20,40 @@ class MediaCorpusAdmin(admin.ModelAdmin):
     ordering = ['code']
     filter_horizontal = ['children']
 
+class MediaCollectionRelatedInline(admin.StackedInline):
+    model = MediaCollectionRelated
+
+class MediaCollectionIdentifierInline(admin.StackedInline):
+    model = MediaCollectionIdentifier
+    max_num = 1
+
 class MediaCollectionAdmin(admin.ModelAdmin):
     search_fields = ['title', 'code']
     ordering = ['code']
+    inlines = [MediaCollectionIdentifierInline,
+                MediaCollectionRelatedInline]
 
-class MediaCollectionRelatedAdmin(admin.ModelAdmin):
-    search_fields = ['title', 'description']
+class MediaItemRelatedInline(admin.StackedInline):
+    model = MediaItemRelated
+
+class MediaItemMarkerInline(admin.StackedInline):
+    model = MediaItemMarker
+
+class MediaItemTranscodedInline(admin.StackedInline):
+    model = MediaItemTranscoded
+
+class MediaItemIdentifierInline(admin.StackedInline):
+    model = MediaItemIdentifier
+    max_num = 1
 
 class MediaItemAdmin(admin.ModelAdmin):
     search_fields = ['title', 'code']
     ordering = ['code']
     exclude = ('copied_from_item', )
-
-class MediaItemRelatedAdmin(admin.ModelAdmin):
-    search_fields = ['title', 'description']
+    inlines = [MediaItemIdentifierInline,
+                MediaItemRelatedInline,
+                MediaItemTranscodedInline,
+                MediaItemMarkerInline]
 
 class MediaPartAdmin(admin.ModelAdmin):
     search_fields = ['title', 'item__code']
@@ -89,10 +109,6 @@ admin.site.register(MediaCorpus, MediaCorpusAdmin)
 admin.site.register(MediaCollection, MediaCollectionAdmin)
 admin.site.register(MediaItem, MediaItemAdmin)
 admin.site.register(MediaPart, MediaPartAdmin)
-
-admin.site.register(MediaItemRelated, MediaItemRelatedAdmin)
-admin.site.register(MediaCollectionRelated, MediaCollectionRelatedAdmin)
-admin.site.register(MediaItemTranscoded)
 
 admin.site.register(Instrument, InstrumentAdmin)
 admin.site.register(InstrumentAlias, InstrumentAliasAdmin)

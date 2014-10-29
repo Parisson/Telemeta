@@ -34,43 +34,75 @@
 
 import django.forms as forms
 from django.forms import ModelForm
+from django.contrib.admin.widgets import FilteredSelectMultiple
 from telemeta.models import *
+from extra_views import CreateWithInlinesView, UpdateWithInlinesView, InlineFormSet
+from extra_views.generic import GenericInlineFormSet
+
 
 class MediaFondsForm(ModelForm):
-    children = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple, queryset=MediaCorpus.objects.all())
+
+    widget = FilteredSelectMultiple("Corpus", True,)
+    queryset = queryset=MediaCorpus.objects.all()
+    children = forms.ModelMultipleChoiceField(widget=widget, queryset=queryset, label='Corpus')
 
     class Meta:
         model = MediaFonds
+        exclude = ['description']
+
+    class Media:
+        css = {'all': ['/static/admin/css/widgets.css',],}
+        js = ['/admin/django/jsi18n/',]
+
 
 class MediaFondsRelatedForm(ModelForm):
+
     class Meta:
         model = MediaFondsRelated
 
+
 class MediaCorpusForm(ModelForm):
-    children = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple,
-                                              queryset=MediaCollection.objects.all())
+
+    queryset = MediaCollection.objects.all()
+    widget = FilteredSelectMultiple('Collections', False)
+    children = forms.ModelMultipleChoiceField(widget=widget, queryset=queryset,label='Collections')
 
     class Meta:
         model = MediaCorpus
+        exclude = ['description']
+
+    class Media:
+        css = {'all': ('/static/admin/css/widgets.css',),}
+        js = ('/admin/django/jsi18n/',)
+
 
 class MediaCorpusRelatedForm(ModelForm):
+
     class Meta:
         model = MediaCorpusRelated
 
+
 class MediaCollectionForm(ModelForm):
+
+    required_css_class = 'required'
+
     class Meta:
         model = MediaCollection
+
     def clean_doctype_code(self):
         return self.cleaned_data['doctype_code'] or 0
 
+
 class MediaCollectionRelatedForm(ModelForm):
+
     class Meta:
         model = MediaCollectionRelated
 
+
 class MediaItemForm(ModelForm):
+
     class Meta:
         model = MediaItem
-
         exclude = ('copied_from_item',)
 
     def clean_code(self):
@@ -80,15 +112,21 @@ class MediaItemForm(ModelForm):
         super(MediaItemForm, self).__init__(*args, **kwargs)
         self.fields.insert(18, 'comment', self.fields['comment'])
 
+
 class MediaItemRelatedForm(ModelForm):
+
     class Meta:
         model = MediaItemRelated
 
+
 class MediaItemKeywordForm(ModelForm):
+
     class Meta:
         model = MediaItemKeyword
 
+
 class MediaItemPerformanceForm(ModelForm):
+
     class Meta:
         model = MediaItemPerformance
 
@@ -97,7 +135,56 @@ class MediaItemPerformanceForm(ModelForm):
         self.fields['instrument'].queryset = Instrument.objects.order_by('name')
         self.fields['alias'].queryset = InstrumentAlias.objects.order_by('name')
 
+
 class PlaylistForm(ModelForm):
+
     class Meta:
         model = Playlist
+
+
+class FondsRelatedInline(InlineFormSet):
+
+    model = MediaFondsRelated
+
+
+class CorpusRelatedInline(InlineFormSet):
+
+    model = MediaCorpusRelated
+
+
+class CollectionRelatedInline(InlineFormSet):
+
+    model = MediaCollectionRelated
+
+
+class CollectionIdentifierInline(InlineFormSet):
+
+    model = MediaCollectionIdentifier
+    max_num = 1
+
+
+class ItemRelatedInline(InlineFormSet):
+
+    model = MediaItemRelated
+
+
+class ItemPerformanceInline(InlineFormSet):
+
+    model = MediaItemPerformance
+
+
+class ItemKeywordInline(InlineFormSet):
+
+    model = MediaItemKeyword
+
+
+class ItemFormatInline(InlineFormSet):
+
+    model = Format
+
+
+class ItemIdentifierInline(InlineFormSet):
+
+    model = MediaItemIdentifier
+    max_num = 1
 

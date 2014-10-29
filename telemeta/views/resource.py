@@ -87,8 +87,6 @@ class ResourceView(object):
                         'related_media': related_media, 'parents': parents, 'playlists': playlists,
                         'last_revision': last_revision })
 
-    @jsonrpc_method('telemeta.change_fonds')
-    @jsonrpc_method('telemeta.change_corpus')
     def edit(self, request, type, public_id, template='telemeta/resource_edit.html'):
         self.setup(type)
         resource = self.model.objects.get(code=public_id)
@@ -105,8 +103,6 @@ class ResourceView(object):
             form = self.form(instance=resource)
         return render(request, template, {'resource': resource, 'type': type, 'form': form,})
 
-    @jsonrpc_method('telemeta.add_fonds')
-    @jsonrpc_method('telemeta.add_corpus')
     def add(self, request, type, template='telemeta/resource_add.html'):
         self.setup(type)
         resource = self.model()
@@ -123,8 +119,6 @@ class ResourceView(object):
             form = self.form(instance=resource)
         return render(request, template, {'resource': resource, 'type': type, 'form': form,})
 
-    @jsonrpc_method('telemeta.add_fonds')
-    @jsonrpc_method('telemeta.add_corpus')
     def copy(self, request, type, public_id, template='telemeta/resource_edit.html'):
         self.setup(type)
         if request.method == 'POST':
@@ -153,8 +147,6 @@ class ResourceView(object):
         context = RequestContext(request, {'resource': resource, 'host': request.META['HTTP_HOST']})
         return HttpResponse(template.render(context), mimetype=mimetype)
 
-    @jsonrpc_method('telemeta.del_fonds')
-    @jsonrpc_method('telemeta.del_corpus')
     def delete(self, request, type, public_id):
         self.setup(type)
         resource = self.model.objects.get(code=public_id)
@@ -166,6 +158,15 @@ class ResourceView(object):
         resource = self.model.objects.get(code=public_id)
         media = self.related.objects.get(resource=resource, id=media_id)
         response = HttpResponse(stream_from_file(media.file.path), mimetype=media.mime_type)
+        return response
+
+    def related_download(self, request, type, public_id, media_id):
+        self.setup(type)
+        resource = self.model.objects.get(code=public_id)
+        media = self.related.objects.get(resource=resource, id=media_id)
+        filename = media.file.path.split(os.sep)[-1]
+        response = HttpResponse(stream_from_file(media.file.path), mimetype=media.mime_type)
+        response['Content-Disposition'] = 'attachment; ' + 'filename=' + filename
         return response
 
     @jsonrpc_method('telemeta.add_fonds_related_media')
@@ -185,3 +186,147 @@ class ResourceView(object):
         return render(request, template, {'resource': resource, 'type': type, 'formset': formset,})
 
 
+class ResourceMixin(View):
+
+    types = {'corpus':
+                {'model': MediaCorpus,
+                'form' : MediaCorpusForm,
+                'related': MediaCorpusRelated,
+                'related_form': MediaCorpusRelatedForm,
+                'parent': MediaFonds,
+                'inlines': [CorpusRelatedInline,]
+                },
+            'fonds':
+                {'model': MediaFonds,
+                'form' : MediaFondsForm,
+                'related': MediaFondsRelated,
+                'related_form': MediaFondsRelatedForm,
+                'parent': None,
+                'inlines': [FondsRelatedInline,]
+                }
+            }
+
+    def setup(self, type):
+        self.model = self.types[type]['model']
+        self.form = self.types[type]['form']
+        self.form_class = self.types[type]['form']
+        self.related = self.types[type]['related']
+        self.related_form = self.types[type]['related_form']
+        self.parent = self.types[type]['parent']
+        self.inlines = self.types[type]['inlines']
+        self.type = type
+
+    def get_object(self):
+        # super(CorpusDetailView, self).get_object()
+        self.type = self.kwargs['type']
+        self.setup(self.type)
+        self.pk = self.model.objects.get(code=self.kwargs['public_id']).pk
+        return get_object_or_404(self.model, pk=self.pk)
+
+    def get_context_data(self, **kwargs):
+        context = super(ResourceMixin, self).get_context_data(**kwargs)
+        context['type'] = self.type
+        return context
+
+
+class ResourceSingleMixin(ResourceMixin):
+
+    def get_queryset(self):
+        self.type = self.kwargs['type']
+        self.setup(self.type)
+        return self
+
+    def get_object(self):
+        # super(CorpusDetailView, self).get_object()
+        self.type = self.kwargs['type']
+        self.setup(self.type)
+        self.pk = self.model.objects.get(code=self.kwargs['public_id']).pk
+        return get_object_or_404(self.model, pk=self.pk)
+
+    def get_context_data(self, **kwargs):
+        context = super(ResourceMixin, self).get_context_data(**kwargs)
+        resource = self.get_object()
+        related_media = self.related.objects.filter(resource=resource)
+        check_related_media(related_media)
+        playlists = get_playlists_names(self.request)
+        revisions = Revision.objects.filter(element_type=self.type, element_id=self.pk).order_by('-time')
+        context['resource'] = resource
+        context['type'] = self.type
+        context['related_media'] = related_media
+        context['revisions'] = revisions
+        if revisions:
+            context['last_revision'] = revisions[0]
+        else:
+            context['last_revision'] = None
+        if self.parent:
+            context['parents'] = self.parent.objects.filter(children=resource)
+        else:
+            context['parents'] = []
+        return context
+
+
+class ResourceListView(ResourceMixin, ListView):
+
+    template_name = "telemeta/resource_list.html"
+    paginate_by = 20
+
+    def get_queryset(self):
+        self.type = self.kwargs['type']
+        self.setup(self.type)
+        return self.model.objects.all().order_by('code')
+
+    def get_context_data(self, **kwargs):
+        context = super(ResourceListView, self).get_context_data(**kwargs)
+        context['count'] = self.object_list.count()
+        return context
+
+class ResourceDetailView(ResourceSingleMixin, DetailView):
+
+    template_name = "telemeta/resource_detail.html"
+
+
+class ResourceDetailDCView(ResourceDetailView):
+
+    template_name = "telemeta/resource_detail_dc.html"
+
+
+class ResourceAddView(ResourceMixin, CreateView):
+
+    template_name = 'telemeta/resource_add.html'
+
+    def get_queryset(self):
+        self.type = self.kwargs['type']
+        self.setup(self.type)
+        return self
+
+    def get_success_url(self):
+        return reverse_lazy('telemeta-resource-list', kwargs={'type':self.kwargs['type']})
+
+
+class ResourceCopyView(ResourceSingleMixin, ResourceAddView):
+
+    template_name = 'telemeta/resource_edit.html'
+
+    def get_initial(self):
+        resource = self.model.objects.get(code=self.kwargs['public_id'])
+        return model_to_dict(resource)
+
+    def get_success_url(self):
+        return reverse_lazy('telemeta-resource-list', kwargs={'type':self.kwargs['type']})
+        # return reverse_lazy('telemeta-resource-detail', kwargs={'type':self.kwargs['type'], 'public_id':self.kwargs['public_id']})
+
+
+class ResourceDeleteView(ResourceSingleMixin, DeleteView):
+
+    template_name = 'telemeta/resource_confirm_delete.html'
+
+    def get_success_url(self):
+         return reverse_lazy('telemeta-resource-list', kwargs={'type':self.kwargs['type']})
+
+
+class ResourceEditView(ResourceSingleMixin, UpdateWithInlinesView):
+
+    template_name = 'telemeta/resource_edit.html'
+
+    def get_success_url(self):
+        return reverse_lazy('telemeta-resource-detail', kwargs={'type':self.kwargs['type'], 'public_id':self.kwargs['public_id']})

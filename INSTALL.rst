@@ -1,113 +1,39 @@
-Don't worry, Telemeta is easy to setup as any other Django app !
+--------
+Install
+--------
 
------------------
-Requirements
------------------
+Telemeta is designed first to run on Linux platforms.
 
-Telemeta is designed to run on Linux and other UNIX based architectures.
-It depends on several python librairies like Django (version >= 1.3.1).
-See http://djangoproject.com.
+* On Debian and Ubuntu operating systems, please install all binary dependencies like this::
 
-Other needed librairies are listed below.
+    sudo aptitude install gcc python python-dev python-pip python-django python-xml \
+        python-ctypes python-setuptools python-support python-docutils \
+        python-libxml2 python-django-registration python-lxml python-numpy \
+        python-scipy python-imaging python-mutagen python-gobject python-gst0.10 \
+        python-django-south
 
-
-Install the system dependencies
---------------------------------
-
-* On Debian (Squeeze recommended) or Ubuntu Lucid:
-
-    Install all dependencies like this::
-
-        sudo aptitude install python python-dev python-django python-xml \
-            python-ctypes python-setuptools python-support python-docutils \
-            python-libxml2 python-django-registration python-lxml python-numpy \
-            python-scipy python-imaging python-mutagen python-gobject python-gst0.10 \
-            gstreamer0.10-plugins-base gobject-introspection python-django-south
-            python-pip gir1.2-gstreamer-0.10 gstreamer0.10-plugins-good gstreamer0.10-plugins-bad
-
-    To get non-free (MP3, MP4, AAC, etc) decoding and encoding features, add Debian Multimedia repository and install the modules::
-
-        echo "deb http://www.deb-multimedia.org stable main non-free" | sudo tee -a /etc/apt/sources.list
-        sudo apt-get update
-        sudo apt-get install gstreamer0.10-lame gstreamer0.10-plugins-really-bad gstreamer0.10-plugins-ugly
-
-* On other linux platforms:
-
-    Please install all the equivalent dependencies thanks to your application manager or manually.
-
-
-Install Telemeta
------------------------------
-
-Pip method (highly recommended!)
-+++++++++++++++++++++++++++++++++
-
-We strongly advise you use the python package tool as it installs some good dependencies automatically::
+ then do::
 
     sudo pip install telemeta
 
-or (deprecated)::
+* On other Linux platforms:
 
-    sudo easy_install telemeta
+    Please install all the equivalent dependencies above thanks to your application manager.
 
-From sources
-+++++++++++++
-Download the latest tar archive at http://telemeta.org.
+* OSX install procedure will be soon provided.
 
-Uncompress and install it. For example::
+* Windows plaforms are not officialy supported but possible.
 
-    tar xzf telemeta-1.0.tar.gz
-    cd telemeta-1.0
-    sudo python setup.py install
 
-Libraries
-+++++++++++
+----------------
+Development
+----------------
 
-All those modules have been automatically installed if you used one of the previous methods to install Telemeta.
-In this case only, you can PASS this stage.
-
-But, if you need to hack Telemeta without installing it (i.e. link it through your $PYTHONPATH), you need to install those libraries manually.
-
-TimeSide (web audio components)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-I should be install with the pip method, otherwise install it manually::
-
-    sudo pip install timeside==0.4.6
-
-Or, download the last archive at :
-http://code.google.com/p/timeside/downloads/list
-
-Uncompress it and read README and INSTALL to install the dependencies
-and then the module.
-
-JSON-RPC server
-~~~~~~~~~~~~~~~~~~
-
-Install it using pip::
-
-    sudo pip install django-json-rpc
-
-or, from source::
-
-    git clone git://github.com/samuraisam/django-json-rpc.git
-    cd django-json-rpc
-    python setup.py install
-
-South (schema migration)
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-It is strongly advised to use South and then enable data schema migrations between the models and the database.
-It will allow automatic DB updates when your / our models are modified. Because the first one you use is not only the best one...
-
-Install it using pip::
-
-    sudo pip install south
-
-or::
-
-    sudo easy_install South
-
+    sudo aptitude install git
+    git clone https://github.com/yomguy/Telemeta.git
+    cd Telemeta
+    sudo pip install -e .
+    export PYTHONPATH=$PYTHONPATH:`pwd`
 
 -------------------------
 Fast testing (sandbox)
@@ -134,18 +60,19 @@ For example::
     cd ~/my_projects
     django-admin startproject mysite
 
-
 Create the database
 ------------------------
 
 Telemeta needs MySQL to work well and fast. So you need to create a MySQL database before trying it.
 But you can also use SQLite, PostgreSQL or Oracle DB.
 
-
 Configure the telemeta project
 ----------------------------------
 
-Edit the file settings.py in a text editor.
+Edit the file settings.py in a text editor. You can find (even copy) an example there::
+
+    example/sandbox/settings.py
+
 Modifiy the following variables::
 
     ADMINS =            telemeta requires that you indicate an administrator here
@@ -175,7 +102,6 @@ Set the following languages::
     LANGUAGES = [ ('fr', 'French'),
                   ('en', 'English'),
     ]
-
 
 Set the following Middlewares::
 
@@ -226,13 +152,13 @@ Optional: if you want some personal templates, for example::
     '/home/dev/telemeta/sandboxes/sandbox_generic/templates/',
     )
 
-You can find an example for settings.py there::
-
-    example/sandbox/settings.py
-
 
 Configure your urls
 ----------------------
+
+You can find (even copy) an example of url.py there::
+
+    example/sandbox/urls.py
 
 Add this dictionary to get Javascript translation::
 
@@ -258,10 +184,6 @@ Please also uncomment::
     from django.contrib import admin
     admin.autodiscover()
 
-You can find an example for url.py there::
-
-    example/sandbox/urls.py
-
 
 Initialize the database
 --------------------------
@@ -273,6 +195,9 @@ This synchronizes the DB with the model::
 If you want tu use the data schema migration system (South needed, see previous paragraph)::
 
     ./manage.py migrate telemeta
+
+Then::
+
     ./manage.py collectstatic
 
 
@@ -374,4 +299,3 @@ Contact / More infos
 -------------------------
 
 See README.rst and http://telemeta.org.
-

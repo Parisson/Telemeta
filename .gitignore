@@ -4,7 +4,7 @@
 # Packages
 *.egg
 *.egg-info
-dist
+#dist
 build
 eggs
 parts
@@ -23,7 +23,7 @@ pip-log.txt
 .tox
 
 #Translations
-*.mo
+#*.mo
 
 #Mr Developer
 .mr.developer.cfg

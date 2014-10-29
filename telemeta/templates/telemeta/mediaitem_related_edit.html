@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block title_buttons %}
- <a href="{% url telemeta-item-edit item.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+ <a href="{% url "telemeta-item-edit" item.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
  <a href="#" class="component_icon button icon_save" onclick="document.getElementById('_editMediaItemRelatedFileForm').submit(); return false;">{% trans "Save" %}</a>
 {% endblock %}
 
@@ -36,7 +36,7 @@
        <br />
     {% endfor %}
       <div align="center">
-        <a href="{% url telemeta-item-detail item.public_id %}"
+        <a href="{% url "telemeta-item-detail" item.public_id %}"
            class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
         <a href="#" class="component_icon button icon_save" onclick="document.getElementById('_editMediaItemRelatedFileForm').submit(); return false;">{% trans "Save" %}</a>
        </div>

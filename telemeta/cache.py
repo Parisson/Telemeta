@@ -58,12 +58,13 @@ class TelemetaCache(object):
         return list
 
     def exists(self, file):
-        self.files = self.get_files()
+        if not file in self.files:
+            self.files = self.get_files()
         return file in self.files
 
     def delete_item_data(self, public_id):
         # public_id is the public_id of an item
-        for file in self.get_files():
+        for file in self.files:
             if public_id in file:
                 os.remove(self.dir + os.sep + file)
 

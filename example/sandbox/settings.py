@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 # Django settings for sandbox project.
 
-import os
-from django.core.urlresolvers import reverse_lazy
+import os, sys
+from django.core.urlresolvers import reverse_lazy, reverse
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+sys.dont_write_bytecode = True
 
 ADMINS = (
     ('Guillaume Pellerin', 'yomguy@parisson.com'),
@@ -66,7 +67,7 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = '/var/www/static/'
+STATIC_ROOT = ''
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -104,16 +105,15 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    # 'pagination.middleware.PaginationMiddleware',
 )
 
-ROOT_URLCONF = 'sandbox.urls'
+ROOT_URLCONF = 'urls'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '',
 )
 
 INSTALLED_APPS = (
@@ -126,13 +126,17 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django_extensions',
     'telemeta',
-    'timeside',
+    'timeside.player',
     'jsonrpc',
     'south',
     'sorl.thumbnail',
     'timezones',
     'jqchat',
+    'extra_views',
+    # 'breadcrumbs',
     'debug_toolbar',
+    'bootstrap3',
+    'bootstrap_pagination',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -141,6 +145,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.i18n",
     "django.core.context_processors.media",
     'django.core.context_processors.static',
+    'django.contrib.messages.context_processors.messages',
 )
 
 TELEMETA_ORGANIZATION = 'Parisson'
@@ -161,7 +166,24 @@ AUTH_PROFILE_MODULE = 'telemeta.userprofile'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
 LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = reverse_lazy('telemeta-desk-lists')
+LOGIN_REDIRECT_URL = '/desk/lists/'
 
 EMAIL_HOST = 'localhost'
 DEFAULT_FROM_EMAIL = 'webmaster@parisson.com'
+
+TIMESIDE_DEFAULT_GRAPHER_ID = 'waveform_centroid'
+TIMESIDE_AUTO_ZOOM = True
+
+# Settings for django-bootstrap3
+BOOTSTRAP3 = {
+    'set_required': True,
+    'set_placeholder': False,
+    'error_css_class': 'has-error',
+    'required_css_class': 'has-warning',
+    'javascript_in_head': True,
+}
+
+PAGINATION_SETTINGS = {
+    'PAGE_RANGE_DISPLAYED': 10,
+    'MARGIN_PAGES_DISPLAYED': 2,
+}

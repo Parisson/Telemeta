@@ -37,6 +37,7 @@
 
 from telemeta.views.core import *
 
+
 class HomeView(object):
     """Provide general web UI methods"""
 
@@ -276,3 +277,4 @@ class HomeView(object):
     def users(self, request):
         users = User.objects.all().order_by('last_name')
         return render(request, 'telemeta/users.html', {'users': users})
+

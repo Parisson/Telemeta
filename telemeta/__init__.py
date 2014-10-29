@@ -6,15 +6,17 @@ Telemeta
 U{http://telemeta.org}
 
 @author: Guillaume Pellerin <pellerin@parisson.com>
+@author: Paul Brossier <piem@piem.org>
+@author: Thomas Fillon <thomas@parisson.com>
+@author: Riccardo Zaccarelli <riccardo.zaccarelli@gmail.com>
 @author: Olivier Guilyardi <olivier@samalyse.com>
 @author: David Lipszyc <davidlipszyc@gmail.com>
-@author: Riccardo Zaccarelli <riccardo.zaccarelli@gmail.com>
 """
 
 __docformat__ = 'epytext en'
-__version__ = '1.4.6'
+__version__ = '1.5'
 __url__ = 'http://telemeta.org'
-__copyright__ = '(C) 2007-2012 Parisson'
+__copyright__ = '(C) 2007-2014 Parisson'
 __license__ = 'CeCILL-2'
 __license_long__ = """
 Copyright (C) Parisson SARL (2007-2014)

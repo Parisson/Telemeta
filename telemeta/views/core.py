@@ -55,7 +55,6 @@ from django import template
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http import Http404
 from django.shortcuts import render_to_response, redirect, get_object_or_404
-from django.views.generic import list_detail
 from django.views.generic import *
 from django.conf import settings
 from django.contrib import auth
@@ -71,6 +70,11 @@ from django.contrib.syndication.views import Feed
 from django.core.servers.basehttp import FileWrapper
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib.contenttypes.models import ContentType
+from django.views.decorators.http import condition
+from django.utils.translation import ugettext_lazy as _
+from django.forms.models import model_to_dict
+from django.views.generic.edit import DeletionMixin, BaseDeleteView
+
 
 from telemeta.models import *
 import telemeta.models
@@ -121,13 +125,10 @@ def render(request, template, data = None, mimetype = None):
     return render_to_response(template, data, context_instance=RequestContext(request),
                               mimetype=mimetype)
 
-def stream_from_processor(decoder, proc, flag, metadata=None):
-    if metadata:
-        proc.set_metadata(metadata)
-    eod = False
-    while not eod:
-        frames, eod = proc.process(*decoder.process())
-        yield proc.chunk
+def stream_from_processor(decoder, encoder, flag):
+    pipe = decoder | encoder
+    for chunk in pipe.stream():
+        yield chunk
     flag.value = True
     flag.save()
 
@@ -226,6 +227,18 @@ def get_playlists(request, user=None):
             playlists.append({'playlist': playlist, 'resources': resources})
     return playlists
 
+
+def get_playlists_names(request, user=None):
+    if not user:
+        user = request.user
+    playlists = []
+    if user.is_authenticated():
+        user_playlists = user.playlists.all()
+        for playlist in user_playlists:
+            playlists.append({'playlist': playlist})
+    return playlists
+
+
 def check_related_media(medias):
     for media in medias:
         if not media.mime_type:
@@ -276,4 +289,4 @@ def get_room(content_type=None, id=None, name=None):
     else:
         room = rooms[0]
     return room
-    
+

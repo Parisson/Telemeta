@@ -169,13 +169,14 @@ class AutoFade(object):
     def run(self):
         audio_count = 0
         video_count = 0
-
+        
         for attr in self.session['children']:
             if 'playlist' in attr['name'] and 'children' in attr:
                 for att in attr['children']:
-                    if 'producer' in att['attributes']:
+                    if 'producer' in att['attributes'] and not 'children' in att:                        
                         producer = att['attributes']['producer']
                         if producer != 'black':
+                        
                             frame_in = att['attributes']['in']
                             frame_out = att['attributes']['out']
 

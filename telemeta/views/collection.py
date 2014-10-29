@@ -52,7 +52,7 @@ class CollectionView(object):
             messages.error(request, title)
             return render(request, 'telemeta/messages.html', {'description' : description})
 
-        playlists = get_playlists(request)
+        playlists = get_playlists_names(request)
 
         related_media = MediaCollectionRelated.objects.filter(collection=collection)
         check_related_media(related_media)
@@ -144,6 +144,14 @@ class CollectionView(object):
 #        response['Content-Disposition'] = 'attachment'
         return response
 
+    def related_media_collection_download(self, request, collection_public_id, media_id):
+        collection = MediaCollection.objects.get(public_id=collection_public_id)
+        media = MediaCollectionRelated.objects.get(collection=collection, id=media_id)
+        filename = media.file.path.split(os.sep)[-1]
+        response = HttpResponse(stream_from_file(media.file.path), mimetype=media.mime_type)
+        response['Content-Disposition'] = 'attachment; ' + 'filename=' + filename
+        return response
+
     @method_decorator(permission_required('telemeta.change_mediacollection'))
     def related_media_edit(self, request, public_id, template):
         collection = MediaCollection.objects.get(public_id=public_id)
@@ -175,12 +183,12 @@ class CollectionPackageView(View):
         """
         from telemeta.views import MarkerView
         from telemeta.backup import CollectionSerializer
+        from telemeta.util import zipstream
         import json
-        import zipstream
-        
-        z = zipstream.ZipFile()        
+
+        z = zipstream.ZipFile()
         cache_data = TelemetaCache(settings.TELEMETA_DATA_CACHE_DIR)
-        
+
         collection = self.get_object()
         serializer = CollectionSerializer(collection)
 
@@ -191,8 +199,8 @@ class CollectionPackageView(View):
         z.write(path, arcname=collection.public_id + os.sep + filename)
 
         for item in collection.items.all():
-            filename = item.file.path.split(os.sep)[-1]
-            z.write(item.file.path, arcname=collection.public_id + os.sep + filename)
+            filename, ext = os.path.splitext(item.file.path.split(os.sep)[-1])
+            z.write(item.file.path, arcname=collection.public_id + os.sep + item.code + ext)
             marker_view = MarkerView()
             markers = marker_view.get_markers(item.id)
             if markers:
@@ -215,3 +223,106 @@ class CollectionPackageView(View):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(CollectionPackageView, self).dispatch(*args, **kwargs)
+
+
+class CollectionViewMixin(object):
+
+    model = MediaCollection
+
+    def get_object(self):
+        self.pk = self.model.objects.get(code=self.kwargs['public_id']).pk
+        return get_object_or_404(self.model, pk=self.pk)
+
+
+class CollectionListView(ListView):
+
+    model = MediaCollection
+    template_name = "telemeta/collection_list.html"
+    paginate_by = 20
+    queryset = MediaCollection.objects.enriched()
+
+    def get_context_data(self, **kwargs):
+        context = super(CollectionListView, self).get_context_data(**kwargs)
+        context['count'] = self.object_list.count()
+        return context
+
+
+class CollectionUnpublishedListView(CollectionListView):
+
+    queryset = MediaCollection.objects.filter(code__contains='_I_')
+
+
+class CollectionPublishedListView(CollectionListView):
+
+    queryset = MediaCollection.objects.filter(code__contains='_E_')
+
+
+class CollectionSoundListView(CollectionListView):
+
+    queryset = MediaCollection.objects.sound().order_by('code', 'old_code')
+
+
+class CollectionDetailView(CollectionViewMixin, DetailView):
+
+    template_name = 'telemeta/collection_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(CollectionDetailView, self).get_context_data(**kwargs)
+        collection = self.get_object()
+        items = collection.items.enriched()
+        context['collection'] = collection
+        context['items'] = items.order_by('code', 'old_code')
+
+        if collection.public_access == 'none' and not (request.user.is_staff or request.user.is_superuser):
+            mess = ugettext('Access not allowed')
+            title = ugettext('Collection') + ' : ' + public_id + ' : ' + mess
+            description = ugettext('Please login or contact the website administator to get a private access.')
+            messages.error(request, title)
+            return render(self.request, 'telemeta/messages.html', {'description' : description})
+
+        context['playlists'] = get_playlists_names(self.request)
+        context['related_media'] = MediaCollectionRelated.objects.filter(collection=collection)
+        check_related_media(context['related_media'])
+        context['parents'] = MediaCorpus.objects.filter(children=collection)
+        revisions = Revision.objects.filter(element_type='collection',
+                                            element_id=collection.id).order_by('-time')
+        if revisions:
+            context['last_revision'] = revisions[0]
+        else:
+            context['last_revision'] = None
+
+        return context
+
+
+class CollectionEditView(CollectionViewMixin, UpdateWithInlinesView):
+
+    template_name = 'telemeta/collection_edit.html'
+    inlines = [CollectionRelatedInline, CollectionIdentifierInline]
+
+    def form_valid(self, form):
+        messages.info(self.request, _("You have successfully updated your collection."))
+        return super(CollectionEditView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('telemeta-collection-detail', kwargs={'public_id':self.kwargs['public_id']})
+
+
+class CollectionAddView(CollectionViewMixin, CreateWithInlinesView):
+
+    template_name = 'telemeta/collection_add.html'
+    inlines = [CollectionRelatedInline, CollectionIdentifierInline]
+
+    def get_success_url(self):
+        return reverse_lazy('telemeta-collections')
+
+
+class CollectionCopyView(CollectionAddView):
+
+    template_name = 'telemeta/collection_add.html'
+
+    def get_initial(self):
+        resource = self.model.objects.get(code=self.kwargs['public_id'])
+        return model_to_dict(resource)
+
+    def get_success_url(self):
+        return reverse_lazy('telemeta-collections')

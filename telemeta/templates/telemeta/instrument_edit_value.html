@@ -4,7 +4,7 @@
 {% block extra_javascript %}
 <script type="text/javascript">
 $(document).ready(function(){
-    InitChatWindow("{% url jqchat_ajax room.id %}", null);
+    InitChatWindow("{% url "jqchat_ajax" room.id %}", null);
     });
 </script>
 {% endblock extra_javascript %}
@@ -23,7 +23,7 @@ $(document).ready(function(){
 
  <h4>{% trans "Instruments" %}</h4>
  <form class="mod" id="addinstru" method="post"
-    action="{% url telemeta-instrument-record-update instrument.id %}">{% csrf_token %}
+    action="{% url "telemeta-instrument-record-update" instrument.id %}">{% csrf_token %}
   <fieldset>
    <legend>{% trans "Modify an entry" %}</legend>
    <div class="field">
@@ -34,14 +34,14 @@ $(document).ready(function(){
    <div class="buttons">
         <a href="#" class="component_icon button icon_save"
    onclick="document.getElementById('addinstru').submit(); return false;">{% trans "Save" %}</a>
-        <a href="{% url telemeta-instrument-edit %}"
+        <a href="{% url "telemeta-instrument-edit" %}"
            class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
    </div>
   </fieldset>
  </form>
 
 <form class="mod" id="replinstru" method="post"
-    action="{% url telemeta-instrument-record-replace instrument.id %}">{% csrf_token %}
+    action="{% url "telemeta-instrument-record-replace" instrument.id %}">{% csrf_token %}
   <fieldset>
    <legend>{% trans "Replace by" %}</legend>
    <div class="field">
@@ -56,7 +56,7 @@ $(document).ready(function(){
    <div class="buttons">
         <a href="#" class="component_icon button icon_save"
    onclick="document.getElementById('replinstru').submit(); return false;">{% trans "Replace" %}</a>
-        <a href="{% url telemeta-instrument-edit %}"
+        <a href="{% url "telemeta-instrument-edit" %}"
            class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
    </div>
   </fieldset>

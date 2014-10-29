@@ -198,10 +198,11 @@ class MediaItemQuerySet(CoreQuerySet):
         return self.filter(self.by_fuzzy_collector_q(pattern))
 
     def sound(self):
-        return self.filter(file__contains='/')
+        return self.filter(Q(file__contains='/') | Q(url__contains='/'))
 
     def sound_public(self):
-        return self.filter(file__contains='/', public_access='full', collection__public_access='full')
+        return self.filter(Q(file__contains='/') | Q(url__contains='/'), 
+                public_access='full', collection__public_access='full')
 
     def by_instrument(self, name):
         "Find items by instrument"
@@ -351,7 +352,7 @@ class MediaCollectionQuerySet(CoreQuerySet):
         return self.filter(self.by_fuzzy_collector_q(pattern))
 
     def sound(self):
-        return self.filter(items__file__contains='/').distinct()
+        return self.filter(Q(items__file__contains='/') | Q(items__url__contains='/')).distinct()
 
     def by_instrument(self, name):
         "Find collections by instrument"
