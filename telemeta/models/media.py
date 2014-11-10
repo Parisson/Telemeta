@@ -498,7 +498,7 @@ class MediaItem(MediaResource):
         instruments.verbose_name = _("instruments")
 
     def size(self):
-        if self.file:
+        if self.file and os.path.exists(self.file.path):
             return self.file.size
         else:
             return 0
