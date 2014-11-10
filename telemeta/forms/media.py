@@ -48,7 +48,7 @@ class MediaFondsForm(ModelForm):
 
     class Meta:
         model = MediaFonds
-        exclude = ['description']
+        exclude = ['description', 'public_access']
 
     class Media:
         css = {'all': ['/static/admin/css/widgets.css',],}
@@ -59,6 +59,7 @@ class MediaFondsRelatedForm(ModelForm):
 
     class Meta:
         model = MediaFondsRelated
+        exclude = ('mime_type',)
 
 
 class MediaCorpusForm(ModelForm):
@@ -69,7 +70,7 @@ class MediaCorpusForm(ModelForm):
 
     class Meta:
         model = MediaCorpus
-        exclude = ['description']
+        exclude = ['description', 'public_access']
 
     class Media:
         css = {'all': ('/static/admin/css/widgets.css',),}
@@ -80,6 +81,7 @@ class MediaCorpusRelatedForm(ModelForm):
 
     class Meta:
         model = MediaCorpusRelated
+        exclude = ('mime_type',)
 
 
 class MediaCollectionForm(ModelForm):
@@ -97,13 +99,15 @@ class MediaCollectionRelatedForm(ModelForm):
 
     class Meta:
         model = MediaCollectionRelated
+        exclude = ('mime_type',)
 
 
 class MediaItemForm(ModelForm):
 
     class Meta:
         model = MediaItem
-        exclude = ('copied_from_item',)
+        exclude = ('copied_from_item', 'mimetype', 'url', 'contributor',
+                    'organization', 'depositor', 'rights', )
 
     def clean_code(self):
         return self.cleaned_data['code'] or None
@@ -117,6 +121,7 @@ class MediaItemRelatedForm(ModelForm):
 
     class Meta:
         model = MediaItemRelated
+        exclude = ('mime_type',)
 
 
 class MediaItemKeywordForm(ModelForm):

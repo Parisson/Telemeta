@@ -38,8 +38,9 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class Enumeration(ModelCore):
-
     "Abstract enumerations base class"
+
+    hidden = False
     value = CharField(_('value'), required=True, unique=True)
 
     def __unicode__(self):
@@ -174,12 +175,16 @@ class EthnicGroupAlias(ModelCore):
 class TapeWheelDiameter(Enumeration):
     "Tape wheel diameter (cm)"
 
+    hidden = True
+
     class Meta(MetaEnumeration):
         db_table = 'tape_wheel_diameter'
         verbose_name = _("tape wheel diameter (cm)")
 
 class TapeLength(Enumeration):
     "Tape length (cm)"
+
+    hidden = True
 
     class Meta(MetaEnumeration):
         db_table = 'tape_length'
@@ -188,12 +193,16 @@ class TapeLength(Enumeration):
 class TapeWidth(Enumeration):
     "Tape width (inch)"
 
+    hidden = True
+
     class Meta(MetaEnumeration):
         db_table = 'tape_width'
         verbose_name = _("tape width (inch)")
 
 class TapeSpeed(Enumeration):
     "Tape speed (cm/s)"
+
+    hidden = True
 
     class Meta(MetaEnumeration):
         db_table = 'tape_speed'
@@ -202,33 +211,47 @@ class TapeSpeed(Enumeration):
 class TapeVendor(Enumeration):
     "Tape vendor"
 
+    hidden = True
+
     class Meta(MetaEnumeration):
         db_table = 'tape_vendor'
-        verbose_name = _("tape vendor")
+        verbose_name = _("tape brand")
+
 
 class NumberOfChannels(Enumeration):
     "Number of channels"
+
+    hidden = True
 
     class Meta(MetaEnumeration):
         db_table = 'original_channel_number'
         verbose_name = _("number of channels")
 
+
 class Organization(Enumeration):
     "Organization"
+
+    hidden = True
 
     class Meta(MetaEnumeration):
         db_table = 'organization'
         verbose_name = _("organization")
 
+
 class Rights(Enumeration):
     "Archive rights"
+
+    hidden = True
 
     class Meta(MetaEnumeration):
         db_table = 'rights'
         verbose_name = _("rights")
 
+
 class Topic(Enumeration):
     "Topic, subject of the study, research, etc.."
+
+    hidden = True
 
     class Meta(MetaEnumeration):
         db_table = 'topic'
@@ -249,6 +272,14 @@ class MediaType(Enumeration):
     class Meta(MetaEnumeration):
         db_table = 'media_type'
         verbose_name = _("media type")
+
+
+class OriginalFormat(Enumeration):
+    "Original format"
+
+    class Meta(MetaEnumeration):
+        db_table = 'original_format'
+        verbose_name = _("original format")
 
 
 class Status(Enumeration):

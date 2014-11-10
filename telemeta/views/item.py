@@ -642,6 +642,9 @@ class ItemSoundListView(ItemListView):
 class ItemViewMixin(ItemBaseMixin):
 
     model = MediaItem
+    inlines = [ItemPerformanceInline, ItemKeywordInline, ItemRelatedInline, ItemIdentifierInline]
+    # inlines = [ItemPerformanceInline, ItemKeywordInline, ItemRelatedInline,
+    #             ItemFormatInline, ItemIdentifierInline]
 
     def get_export_formats(self):
         formats = []
@@ -713,8 +716,6 @@ class ItemEditView(ItemViewMixin, UpdateWithInlinesView):
 
     form_class = MediaItemForm
     template_name = 'telemeta/mediaitem_edit.html'
-    inlines = [ItemRelatedInline, ItemPerformanceInline, ItemKeywordInline,
-                ItemFormatInline, ItemIdentifierInline]
 
     def form_valid(self, form):
         messages.info(self.request, _("You have successfully updated your item."))
@@ -741,8 +742,6 @@ class ItemAddView(ItemViewMixin, CreateWithInlinesView):
 
     form_class = MediaItemForm
     template_name = 'telemeta/mediaitem_add.html'
-    inlines = [ItemRelatedInline, ItemPerformanceInline, ItemKeywordInline,
-                ItemFormatInline, ItemIdentifierInline]
 
     def get_success_url(self):
         return reverse_lazy('telemeta-items')
@@ -752,8 +751,6 @@ class ItemCopyView(ItemAddView):
 
     form_class = MediaItemForm
     template_name = 'telemeta/mediaitem_add.html'
-    inlines = [ItemRelatedInline, ItemPerformanceInline, ItemKeywordInline,
-                ItemFormatInline, ItemIdentifierInline]
 
     def get_initial(self):
         resource = self.model.objects.get(code=self.kwargs['public_id'])

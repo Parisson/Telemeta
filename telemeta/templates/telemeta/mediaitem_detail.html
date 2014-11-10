@@ -151,7 +151,7 @@ Item : <a href="{% url "telemeta-item-detail" item.public_id %}">{{ item }}</a>
             <!-- this div will be hidden when everything is fully loaded-->
             <span id="loading_span" href="#"><img style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />&nbsp;
                 <span id="loading_span_text">Loading...</span></span>
-            <a id="tab_analysis" style="display:none" class ="tab" href="#">{% trans "Analysis" %}</a><!--
+            <a id="tab_analysis" style="display:none" class ="tab" href="#">{% trans "File" %}</a><!--
              do not let space here as it appears in the document!!!!!
             --><a id="tab_markers" style="display:none" class="tab" href="#">{% trans "Markers" %}</a>
         </div>
@@ -205,9 +205,6 @@ Item : <a href="{% url "telemeta-item-detail" item.public_id %}">{{ item }}</a>
             <dt>{% trans "Recording date" %}</dt>
             <dd>{% if item.recorded_from_date %}{{ item.recorded_from_date }}{% endif %}{% if item.recorded_from_date and item.recorded_to_date%} - {% endif %}{% if item.recorded_to_date %}{{ item.recorded_to_date}}{% endif %}</dd>
             {% dl_field item "public_access" %}
-            {% if item.moda_exec %}
-            {% dl_field item "moda_exec" %}
-            {% endif %}
         </dl>
         {% endblock general_info %}
     </div>
@@ -238,6 +235,9 @@ Item : <a href="{% url "telemeta-item-detail" item.public_id %}">{{ item }}</a>
         {% block musical_data %}
         <div>
             <h4><a href="#">{% trans "Musical informations" %}</a></h4>
+            {% if item.moda_exec %}
+            {% dl_field item "moda_exec" %}
+            {% endif %}
             <dl class="listing">
                 {% dl_field item "vernacular_style" %}
                 {% dl_field item "generic_style" %}
@@ -279,6 +279,7 @@ Item : <a href="{% url "telemeta-item-detail" item.public_id %}">{{ item }}</a>
                 {% dl_field item "code" %}
                 {% dl_field item "old_code" %}
                 {% dl_field item "track" %}
+                {% dl_field item "collector_selection" %}
                 {% dl_field item "creator_reference" %}
                 {% if item.external_references %}
                  <dt>{% trans "Published references" %}</dt>
@@ -300,11 +301,9 @@ Item : <a href="{% url "telemeta-item-detail" item.public_id %}">{{ item }}</a>
             <h4><a href="#">{% trans "Technical data" %}</a></h4>
             <div>
                 <dl class="listing">
-                    <dt>{% trans "Media type" %}</dt>
-                    <dd>{% trans mime_type|mime_to_media_type %}</dd>
+                    {% dl_field format "media_type" %}
                     {% dl_field item "approx_duration" %}
-
-                    {% if format %}
+                    {# {% if format %}
                      {% dl_field format "physical_format" %}
                      {% dl_field format "original_code" %}
                      {% dl_field format "original_number" %}
@@ -320,7 +319,7 @@ Item : <a href="{% url "telemeta-item-detail" item.public_id %}">{{ item }}</a>
                      {% dl_field format "tape_vendor" %}
                      {% dl_field format "tape_reference" %}
                      {% dl_field format "sticker_presence" %}
-                    {% endif %}
+                    {% endif %} #}
                 </dl>
 
             </div>

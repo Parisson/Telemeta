@@ -60,12 +60,13 @@ jQuery(document).ready(function(){
         {% block general_info %}
             <dl class="listing">
               {% for field in resource.get_fields %}
-               {% if "id" in field.name or "description" == field.name %}
+               {% if "id" in field.name or "description" == field.name or "public_access" == field.name %}
                 {{ field.label_tag.as_hidden }}{{ field.as_hidden }}
                {% else %}
                 {% dl_field resource field.name %}
                {% endif %}
               {% endfor %}
+              {% dl_field resource "computed_duration" %}
               {% for parent in parents %}
               <dt>{% trans parent.element_type|capitalize %}</dt>
               <dd><a href="{% url "telemeta-resource-detail" parent.element_type parent.public_id %}">{{ parent.title }}</a></dd>

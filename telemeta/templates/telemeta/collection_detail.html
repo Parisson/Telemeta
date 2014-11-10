@@ -65,7 +65,7 @@
         {% endif %}
       {% block infos %}
         <div class="intro">
-            <span><img src="{{ STATIC_URL }}telemeta/images/item_title.png" style="vertical-align:middle" /> {% if collection.items.count %}{{ collection.items.count }} {% ifequal collection.items.count 1 %}item{% else %}items{% endifequal %} : <a href="#item_list">{% trans "List" %}</a>{% else %}No item{% endif %}</span>
+            <span><img src="{{ STATIC_URL }}telemeta/images/item_title.png" style="vertical-align:middle" /> {% if collection.items.count %}{{ collection.items.count }} {% ifequal collection.items.count 1 %}item{% else %}items{% endifequal %} : <a href="#item_list">{% trans "View list" %}</a>{% else %}No item{% endif %}</span>
         </div>
         <div class="infos">
         {% block general_info %}
@@ -87,7 +87,10 @@
                 {% dl_field collection "recording_context" %}
                 <dt>{% trans "Recording period" %}</dt>
                     <dd>{% if collection.recorded_from_year %}{{ collection.recorded_from_year }}{% endif %}{% if collection.recorded_from_year and collection.recorded_to_year %} - {% endif %}{% if  collection.recorded_to_year %}{{ collection.recorded_to_year}}{% endif %}</dd>
+                {% if '_E_' in collection.public_id %}
                 {% dl_field collection "year_published" placeholder %}
+                {% endif %}
+                {% dl_field collection "public_access_label" %}
                 {% for parent in parents %}
                 <dt>{% trans parent.element_type|capitalize %}</dt>
                 <dd><a href="{% url "telemeta-resource-detail" parent.element_type parent.public_id %}">{{ parent.title }}</a></dd>
@@ -127,12 +130,13 @@
                         {% dl_field collection "publisher_collection" %}
                         {% dl_field collection "publisher_serial" %}
                         {% dl_field collection "booklet_author" %}
+                        {% if '_E_' in collection.public_id %}
                         {% dl_field collection "reference" %}
+                        {% endif %}
                         {% if collection.external_references %}
                         <dt>{% trans "Bibliographic references" %}</dt>
                         <dd>{{ collection.external_references|html_line_break|safe }}</dd>
                         {% endif %}
-                        {% dl_field collection "public_access_label" %}
                         {% dl_field collection "legal_rights" %}
                     </dl>
                 </div>
@@ -154,6 +158,7 @@
                          <dd>{{ collection.booklet_description|html_line_break|safe }}</dd>
                         {% endif %}
                         {% dl_field collection "publishing_status" %}
+                        {% dl_field collection "status" %}
                         {% if collection.alt_ids %}
                          {% dl_field collection "alt_ids" %}
                         {% endif %}
@@ -164,7 +169,7 @@
                         <dt>{% trans "Last modification" %}</dt>
                         <dd>{{ last_revision.time }} {% if user.is_authenticated %}(<a href="{% url "telemeta-profile-detail" last_revision.user.username %}">{{last_revision.user.username}}</a>){% endif %}</dd>
                         {% endif %}
-                        {% dl_field collection "travail" %}
+                        {% dl_field collection "archiver_notes" %}
                         {% dl_field collection "items_done" %}
                         {% dl_field collection "conservation_site" %}
                     </dl>
@@ -180,16 +185,19 @@
                     <dl class="listing">
                         {% dl_field collection "code" %}
                         {% dl_field collection "old_code" %}
+                        {% dl_field collection "media_type" %}
+                        {% if collection.computed_duration %}
                         {% dl_field collection "approx_duration" %}
+                        {% endif %}
                         {% dl_field collection "computed_duration" %}
                         {% dl_field collection "computed_size" %}
                         {% dl_field collection "physical_items_num" %}
                         <div class="wazing"></div>
                         <dt>{% trans "Number of items" %}</dt><dd>{{ collection.items.count }}</dd>
-                        {% dl_field collection "media_type" %}
                         {% if collection.physical_format %}
                         {% dl_field collection "physical_format" %}
                         {% endif %}
+                        {% dl_field collection "original_format" %}
                         {% dl_field collection "ad_conversion" %}
                     </dl>
                 </div>

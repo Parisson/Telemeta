@@ -14,8 +14,10 @@
     <tr><th>{% trans "Title"%}</th></tr>
    </thead><tbody>
     {% for enum in enumerations %}
+      {% if not enum.hidden %}
          <tr><td><a href="{% url "telemeta-enumeration-edit" enum.id %}">
                 {% trans enum.name|capfirst %}</a></td></tr>
+      {% endif %}
     {% endfor %}
     </tbody>
   </table>
