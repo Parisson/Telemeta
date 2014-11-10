@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Telemeta 1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-10 16:01+0100\n"
+"POT-Creation-Date: 2014-11-10 17:21+0100\n"
 "PO-Revision-Date: 2014-09-02 16:18+2\n"
 "Last-Translator: Zaichao XIA <xiazaichao@gmail.com>\n"
 "Language-Team: zh_CN <LL@li.org>\n"
@@ -495,7 +495,7 @@ msgstr "已完成项"
 msgid "recordist identical to depositor"
 msgstr "录音者与寄存者相同"
 
-#: models/media.py:245 templates/telemeta/collection_detail.html:82
+#: models/media.py:245 templates/telemeta/collection_detail.html:73
 msgid "published"
 msgstr "已出版的"
 
@@ -672,6 +672,12 @@ msgstr "关键词"
 #: models/media.py:498
 msgid "instruments"
 msgstr "仪器"
+
+#: models/media.py:505
+#, fuzzy
+#| msgid "collections"
+msgid "item size (Mo)"
+msgstr "选集"
 
 #: models/media.py:531 models/media.py:532
 msgid "item related media"
@@ -957,10 +963,10 @@ msgid "g:i A,M j,n/j/y"
 msgstr ""
 
 #: templates/postman/base_folder.html:49 templates/postman/view.html:25
-#: templates/telemeta/collection_detail.html:231
+#: templates/telemeta/collection_detail.html:222
 #: templates/telemeta/collection_detail_dc.html:25
 #: templates/telemeta/lists.html:58
-#: templates/telemeta/mediaitem_detail.html:352
+#: templates/telemeta/mediaitem_detail.html:353
 #: templates/telemeta/mediaitem_detail_dc.html:20
 #: templates/telemeta/resource_detail.html:105
 #: templates/telemeta/resource_detail_dc.html:17
@@ -1202,6 +1208,7 @@ msgid "Collections"
 msgstr "选集"
 
 #: templates/telemeta/base.html:117 templates/telemeta/breadcrumbs.html:7
+#: templates/telemeta/collection_detail.html:62
 #: templates/telemeta/inc/breadcrumbs.html:8
 #: templates/telemeta/mediaitem_list.html:11
 msgid "Items"
@@ -1240,7 +1247,7 @@ msgid ""
 msgstr "档案的使用尊重文化遗产的原始所有者。"
 
 #: templates/telemeta/base.html:186
-#: templates/telemeta/collection_detail.html:117
+#: templates/telemeta/collection_detail.html:108
 msgid "Legal notices"
 msgstr "合法通知"
 
@@ -1322,70 +1329,70 @@ msgstr "添加到播放列表"
 msgid "Download"
 msgstr "下载"
 
-#: templates/telemeta/collection_detail.html:68
+#: templates/telemeta/collection_detail.html:63
 msgid "View list"
 msgstr ""
 
-#: templates/telemeta/collection_detail.html:78
+#: templates/telemeta/collection_detail.html:69
 #, fuzzy
 #| msgid "Documentation"
 msgid "Document status"
 msgstr "文献"
 
-#: templates/telemeta/collection_detail.html:80
+#: templates/telemeta/collection_detail.html:71
 #, fuzzy
 #| msgid "Unpublished"
 msgid "unpublished"
 msgstr "未出版的"
 
-#: templates/telemeta/collection_detail.html:88
+#: templates/telemeta/collection_detail.html:79
 #: templates/telemeta/inc/collection_list.html:12
 #: templates/telemeta/lists.html:73
 msgid "Recording period"
 msgstr "录音时段"
 
-#: templates/telemeta/collection_detail.html:104
+#: templates/telemeta/collection_detail.html:95
 #: templates/telemeta/mediaitem_detail.html:214
 msgid "Geographic and cultural informations"
 msgstr "地理和文化信息"
 
-#: templates/telemeta/collection_detail.html:122
+#: templates/telemeta/collection_detail.html:113
 #: templates/telemeta/inc/collection_list.html:11
 #: templates/telemeta/inc/mediaitem_list.html:10
 #: templates/telemeta/lists.html:72
 msgid "Recordist"
 msgstr "录音员"
 
-#: templates/telemeta/collection_detail.html:137
+#: templates/telemeta/collection_detail.html:128
 msgid "Bibliographic references"
 msgstr "参考文献"
 
-#: templates/telemeta/collection_detail.html:149
+#: templates/telemeta/collection_detail.html:140
 #: templates/telemeta/mediaitem_detail.html:277
 msgid "Archiving data"
 msgstr "存档数据"
 
-#: templates/telemeta/collection_detail.html:157
+#: templates/telemeta/collection_detail.html:148
 msgid "Related documentation"
 msgstr "相关文献"
 
-#: templates/telemeta/collection_detail.html:165
-#: templates/telemeta/mediaitem_detail.html:314
+#: templates/telemeta/collection_detail.html:156
+#: templates/telemeta/mediaitem_detail.html:315
 msgid "Comments"
 msgstr "注解"
 
-#: templates/telemeta/collection_detail.html:169
+#: templates/telemeta/collection_detail.html:160
 #: templates/telemeta/mediaitem_detail.html:291
 #: templates/telemeta/resource_detail.html:75
 msgid "Last modification"
 msgstr "上次修改"
 
-#: templates/telemeta/collection_detail.html:183
+#: templates/telemeta/collection_detail.html:174
 #: templates/telemeta/mediaitem_detail.html:301
 msgid "Technical data"
 msgstr "专业数据"
 
-#: templates/telemeta/collection_detail.html:196
+#: templates/telemeta/collection_detail.html:187
 #: templates/telemeta/geo_countries.html:16
 msgid "Number of items"
 msgstr "项数目"

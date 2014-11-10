@@ -502,7 +502,7 @@ class MediaItem(MediaResource):
             return self.file.size
         else:
             return 0
-
+    size.verbose_name = _('item size (Mo)')
 
 class MediaItemRelated(MediaRelated):
     "Item related media"
