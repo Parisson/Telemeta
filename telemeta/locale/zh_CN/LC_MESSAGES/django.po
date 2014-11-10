@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Telemeta 1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-10 17:21+0100\n"
+"POT-Creation-Date: 2014-11-10 17:26+0100\n"
 "PO-Revision-Date: 2014-09-02 16:18+2\n"
 "Last-Translator: Zaichao XIA <xiazaichao@gmail.com>\n"
 "Language-Team: zh_CN <LL@li.org>\n"
@@ -673,10 +673,10 @@ msgstr "关键词"
 msgid "instruments"
 msgstr "仪器"
 
-#: models/media.py:505
+#: models/media.py:505 templates/telemeta/mediaitem_detail.html:305
 #, fuzzy
 #| msgid "collections"
-msgid "item size (Mo)"
+msgid "item size"
 msgstr "选集"
 
 #: models/media.py:531 models/media.py:532
@@ -966,7 +966,7 @@ msgstr ""
 #: templates/telemeta/collection_detail.html:222
 #: templates/telemeta/collection_detail_dc.html:25
 #: templates/telemeta/lists.html:58
-#: templates/telemeta/mediaitem_detail.html:353
+#: templates/telemeta/mediaitem_detail.html:354
 #: templates/telemeta/mediaitem_detail_dc.html:20
 #: templates/telemeta/resource_detail.html:105
 #: templates/telemeta/resource_detail_dc.html:17
@@ -1377,7 +1377,7 @@ msgid "Related documentation"
 msgstr "相关文献"
 
 #: templates/telemeta/collection_detail.html:156
-#: templates/telemeta/mediaitem_detail.html:315
+#: templates/telemeta/mediaitem_detail.html:316
 msgid "Comments"
 msgstr "注解"
 
