@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-10 17:26+0100\n"
+"POT-Creation-Date: 2014-11-10 17:31+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Guillaume Pellerin <yomguy@parisson.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -518,7 +518,9 @@ msgid "computed duration"
 msgstr "durée calculée"
 
 #: models/media.py:320
-msgid "collection size (Mo)"
+#, fuzzy
+#| msgid "collection size (Mo)"
+msgid "collection size"
 msgstr "volume de la collection (Mo)"
 
 #: models/media.py:328 models/media.py:334 models/media.py:351
@@ -654,7 +656,7 @@ msgstr "mots-clés"
 msgid "instruments"
 msgstr "instruments"
 
-#: models/media.py:505 templates/telemeta/mediaitem_detail.html:305
+#: models/media.py:505
 msgid "item size"
 msgstr "taille de l'item"
 
@@ -934,10 +936,10 @@ msgid "g:i A,M j,n/j/y"
 msgstr ""
 
 #: templates/postman/base_folder.html:49 templates/postman/view.html:25
-#: templates/telemeta/collection_detail.html:222
+#: templates/telemeta/collection_detail.html:224
 #: templates/telemeta/collection_detail_dc.html:25
 #: templates/telemeta/lists.html:58
-#: templates/telemeta/mediaitem_detail.html:354
+#: templates/telemeta/mediaitem_detail.html:356
 #: templates/telemeta/mediaitem_detail_dc.html:20
 #: templates/telemeta/resource_detail.html:105
 #: templates/telemeta/resource_detail_dc.html:17
@@ -1344,7 +1346,7 @@ msgid "Related documentation"
 msgstr "Documentation associée"
 
 #: templates/telemeta/collection_detail.html:156
-#: templates/telemeta/mediaitem_detail.html:316
+#: templates/telemeta/mediaitem_detail.html:318
 msgid "Comments"
 msgstr "Commentaires"
 
@@ -1359,7 +1361,11 @@ msgstr "Dernière modification de la fiche"
 msgid "Technical data"
 msgstr "Données techniques"
 
-#: templates/telemeta/collection_detail.html:187
+#: templates/telemeta/collection_detail.html:184
+msgid "Collection size"
+msgstr "Volume de la collection"
+
+#: templates/telemeta/collection_detail.html:188
 #: templates/telemeta/geo_countries.html:16
 msgid "Number of items"
 msgstr "Nombre d'items"
@@ -1787,6 +1793,12 @@ msgstr "Références éditées"
 #: templates/telemeta/mediaitem_detail.html:288
 msgid "Remarks"
 msgstr "Remarques"
+
+#: templates/telemeta/mediaitem_detail.html:306
+#, fuzzy
+#| msgid "item size"
+msgid "Item size"
+msgstr "taille de l'item"
 
 #: templates/telemeta/mediaitem_detail_dc.html:13
 msgid "No such item"

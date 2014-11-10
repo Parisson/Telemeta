@@ -303,7 +303,7 @@ Item : <a href="{% url "telemeta-item-detail" item.public_id %}">{{ item }}</a>
                 <dl class="listing">
                     {% dl_field item "approx_duration" %}
                     {% if item.size %}
-                    <dt>{% trans "item size" %}</dt>
+                    <dt>{% trans "Item size" %}</dt>
                      <dd>{{ item.size|filesizeformat }}</dd>
                     {% endif %}
                     <!-- {% if format %}

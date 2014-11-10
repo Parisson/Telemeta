@@ -312,12 +312,12 @@ class MediaCollection(MediaResource):
     computed_duration.verbose_name = _('computed duration')
 
     def computed_size(self):
-        "Return the total size of a collection in Mo"
+        "Return the total size of a collection"
         size = 0
         for item in self.items.all():
             size += item.size()
-        return round(size/1024**2,2)
-    computed_size.verbose_name = _('collection size (Mo)')
+        return size
+    computed_size.verbose_name = _('collection size')
 
     def save(self, force_insert=False, force_update=False, user=None, code=None):
         super(MediaCollection, self).save(force_insert, force_update)

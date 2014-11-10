@@ -181,10 +181,12 @@
                         {% dl_field collection "approx_duration" %}
                         {% endif %}
                         {% dl_field collection "computed_duration" %}
-                        {% dl_field collection "computed_size" %}
+                        <dt>{% trans "Collection size" %}</dt>
+                            <dd>{{ collection.computed_size|filesizeformat }}</dd>
                         {% dl_field collection "physical_items_num" %}
                         <div class="wazing"></div>
-                        <dt>{% trans "Number of items" %}</dt><dd>{{ collection.items.count }}</dd>
+                        <dt>{% trans "Number of items" %}</dt>
+                            <dd>{{ collection.items.count }}</dd>
                         {% if collection.physical_format %}
                         {% dl_field collection "physical_format" %}
                         {% endif %}

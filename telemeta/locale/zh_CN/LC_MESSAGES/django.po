@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Telemeta 1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-10 17:26+0100\n"
+"POT-Creation-Date: 2014-11-10 17:31+0100\n"
 "PO-Revision-Date: 2014-09-02 16:18+2\n"
 "Last-Translator: Zaichao XIA <xiazaichao@gmail.com>\n"
 "Language-Team: zh_CN <LL@li.org>\n"
@@ -536,7 +536,7 @@ msgstr "计算估计时长"
 #: models/media.py:320
 #, fuzzy
 #| msgid "collections"
-msgid "collection size (Mo)"
+msgid "collection size"
 msgstr "选集"
 
 #: models/media.py:328 models/media.py:334 models/media.py:351
@@ -673,7 +673,7 @@ msgstr "关键词"
 msgid "instruments"
 msgstr "仪器"
 
-#: models/media.py:505 templates/telemeta/mediaitem_detail.html:305
+#: models/media.py:505
 #, fuzzy
 #| msgid "collections"
 msgid "item size"
@@ -963,10 +963,10 @@ msgid "g:i A,M j,n/j/y"
 msgstr ""
 
 #: templates/postman/base_folder.html:49 templates/postman/view.html:25
-#: templates/telemeta/collection_detail.html:222
+#: templates/telemeta/collection_detail.html:224
 #: templates/telemeta/collection_detail_dc.html:25
 #: templates/telemeta/lists.html:58
-#: templates/telemeta/mediaitem_detail.html:354
+#: templates/telemeta/mediaitem_detail.html:356
 #: templates/telemeta/mediaitem_detail_dc.html:20
 #: templates/telemeta/resource_detail.html:105
 #: templates/telemeta/resource_detail_dc.html:17
@@ -1377,7 +1377,7 @@ msgid "Related documentation"
 msgstr "相关文献"
 
 #: templates/telemeta/collection_detail.html:156
-#: templates/telemeta/mediaitem_detail.html:316
+#: templates/telemeta/mediaitem_detail.html:318
 msgid "Comments"
 msgstr "注解"
 
@@ -1392,7 +1392,13 @@ msgstr "上次修改"
 msgid "Technical data"
 msgstr "专业数据"
 
-#: templates/telemeta/collection_detail.html:187
+#: templates/telemeta/collection_detail.html:184
+#, fuzzy
+#| msgid "Collections"
+msgid "Collection size"
+msgstr "选集"
+
+#: templates/telemeta/collection_detail.html:188
 #: templates/telemeta/geo_countries.html:16
 msgid "Number of items"
 msgstr "项数目"
@@ -1818,6 +1824,12 @@ msgstr "已出版参考资料"
 #: templates/telemeta/mediaitem_detail.html:288
 msgid "Remarks"
 msgstr "评论"
+
+#: templates/telemeta/mediaitem_detail.html:306
+#, fuzzy
+#| msgid "collections"
+msgid "Item size"
+msgstr "选集"
 
 #: templates/telemeta/mediaitem_detail_dc.html:13
 msgid "No such item"

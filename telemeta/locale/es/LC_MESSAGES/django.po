@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-10 17:26+0100\n"
+"POT-Creation-Date: 2014-11-10 17:31+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -519,7 +519,7 @@ msgid "computed duration"
 msgstr ""
 
 #: models/media.py:320
-msgid "collection size (Mo)"
+msgid "collection size"
 msgstr ""
 
 #: models/media.py:328 models/media.py:334 models/media.py:351
@@ -655,7 +655,7 @@ msgstr ""
 msgid "instruments"
 msgstr ""
 
-#: models/media.py:505 templates/telemeta/mediaitem_detail.html:305
+#: models/media.py:505
 msgid "item size"
 msgstr ""
 
@@ -934,10 +934,10 @@ msgid "g:i A,M j,n/j/y"
 msgstr ""
 
 #: templates/postman/base_folder.html:49 templates/postman/view.html:25
-#: templates/telemeta/collection_detail.html:222
+#: templates/telemeta/collection_detail.html:224
 #: templates/telemeta/collection_detail_dc.html:25
 #: templates/telemeta/lists.html:58
-#: templates/telemeta/mediaitem_detail.html:354
+#: templates/telemeta/mediaitem_detail.html:356
 #: templates/telemeta/mediaitem_detail_dc.html:20
 #: templates/telemeta/resource_detail.html:105
 #: templates/telemeta/resource_detail_dc.html:17
@@ -1342,7 +1342,7 @@ msgid "Related documentation"
 msgstr ""
 
 #: templates/telemeta/collection_detail.html:156
-#: templates/telemeta/mediaitem_detail.html:316
+#: templates/telemeta/mediaitem_detail.html:318
 msgid "Comments"
 msgstr ""
 
@@ -1357,7 +1357,11 @@ msgstr ""
 msgid "Technical data"
 msgstr ""
 
-#: templates/telemeta/collection_detail.html:187
+#: templates/telemeta/collection_detail.html:184
+msgid "Collection size"
+msgstr ""
+
+#: templates/telemeta/collection_detail.html:188
 #: templates/telemeta/geo_countries.html:16
 msgid "Number of items"
 msgstr ""
@@ -1781,6 +1785,10 @@ msgstr ""
 
 #: templates/telemeta/mediaitem_detail.html:288
 msgid "Remarks"
+msgstr ""
+
+#: templates/telemeta/mediaitem_detail.html:306
+msgid "Item size"
 msgstr ""
 
 #: templates/telemeta/mediaitem_detail_dc.html:13
