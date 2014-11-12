@@ -10,7 +10,7 @@ before_install:
  - sudo apt-get install -qq python-numpy python-scipy
  # Add Parisson packages repository for ubuntu precise and install TimeSide
  - sudo gpg --keyserver pgpkeys.mit.edu --recv-key E3298399DF14BB7C
- - sudo gpg -a --export E3298399DF14BB7C | apt-key add -
+ - sudo gpg -a --export E3298399DF14BB7C | sudo apt-key add -
  - sudo echo "deb http://debian.parisson.com/debian/ precise main" | \
     tee -a /etc/apt/sources.list.d/parisson.list
  - sudo echo "deb-src http://debian.parisson.com/debian/ precise main" | \
