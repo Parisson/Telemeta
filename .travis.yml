@@ -8,6 +8,16 @@ before_install:
  - sudo apt-get install -qq libhdf5-serial-dev
  - sudo apt-get install -qq libatlas-dev libatlas-base-dev gfortran
  - sudo apt-get install -qq python-numpy python-scipy
+ # Add Parisson packages repository for ubuntu precise and install TimeSide
+ - sudo gpg --keyserver pgpkeys.mit.edu --recv-key E3298399DF14BB7C && \
+    gpg -a --export E3298399DF14BB7C | apt-key add - && \
+    echo "deb http://debian.parisson.com/debian/ precise main" | \
+    tee -a /etc/apt/sources.list.d/parisson.list && \
+    echo "deb-src http://debian.parisson.com/debian/ precise main" | \
+    tee -a /etc/apt/sources.list.d/parisson.list
+  - sudo apt-get update
+  - sudo apt-get install -y python-timeside
+
 
 
 # command to install dependencies
