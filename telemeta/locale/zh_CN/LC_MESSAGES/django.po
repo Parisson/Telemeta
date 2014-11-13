@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Telemeta 1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-13 11:15+0100\n"
+"POT-Creation-Date: 2014-11-13 11:34+0100\n"
 "PO-Revision-Date: 2014-09-02 16:18+2\n"
 "Last-Translator: Zaichao XIA <xiazaichao@gmail.com>\n"
 "Language-Team: zh_CN <LL@li.org>\n"
@@ -866,10 +866,10 @@ msgstr "过期日期"
 msgid "key"
 msgstr "键"
 
-#: models/system.py:117 templates/telemeta/inc/children_list.html:16
+#: models/system.py:117 templates/telemeta/inc/children_list.html:17
 #: templates/telemeta/inc/collection_related.html:39
 #: templates/telemeta/inc/mediaitem_related.html:39
-#: templates/telemeta/inc/resource_list.html:9
+#: templates/telemeta/inc/resource_list.html:10
 #: templates/telemeta/inc/resource_related.html:39
 msgid "Description"
 msgstr "描述"
@@ -1594,7 +1594,7 @@ msgid_plural "%(counter)s items "
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/telemeta/home.html:14 templates/telemeta/home.html.py:65
+#: templates/telemeta/home.html:14 templates/telemeta/home.html.py:67
 msgid "Musical selection"
 msgstr "音乐选择"
 
@@ -1602,7 +1602,7 @@ msgstr "音乐选择"
 msgid "Open the geographic navigator"
 msgstr "打开地图导航"
 
-#: templates/telemeta/home.html:39
+#: templates/telemeta/home.html:41
 msgid "Partners"
 msgstr "合作伙伴"
 
@@ -1613,30 +1613,27 @@ msgid ""
 "on %(hits)s"
 msgstr ""
 
-#: templates/telemeta/inc/children_list.html:17
+#: templates/telemeta/inc/children_list.html:16
 #: templates/telemeta/inc/collection_list.html:9
 #: templates/telemeta/inc/mediaitem_list.html:9
-#: templates/telemeta/inc/resource_list.html:10
-#: templates/telemeta/lists.html:71 templates/telemeta/mediaitem_copy.html:40
-msgid "Code"
-msgstr "密码"
+#: templates/telemeta/inc/resource_list.html:9
+msgid "Digitized"
+msgstr ""
 
 #: templates/telemeta/inc/children_list.html:18
 #: templates/telemeta/inc/collection_list.html:13
 #: templates/telemeta/inc/mediaitem_list.html:17
 #: templates/telemeta/inc/resource_list.html:11
-#: templates/telemeta/lists.html:74
-#: templates/telemeta/search_criteria.html:143
-#: templates/telemeta/search_results.html:70
-msgid "Sound"
-msgstr "声音"
+#: templates/telemeta/lists.html:71 templates/telemeta/mediaitem_copy.html:40
+msgid "Code"
+msgstr "密码"
 
 #: templates/telemeta/inc/children_list.html:39
-#: templates/telemeta/inc/resource_list.html:29
+#: templates/telemeta/inc/resource_list.html:31
 msgid "No resource"
 msgstr "无资源"
 
-#: templates/telemeta/inc/collection_list.html:42
+#: templates/telemeta/inc/collection_list.html:43
 msgid "No collection"
 msgstr "无选集"
 
@@ -1671,7 +1668,7 @@ msgstr "国家/洲"
 msgid "Year of recording"
 msgstr "录音年份"
 
-#: templates/telemeta/inc/mediaitem_list.html:52
+#: templates/telemeta/inc/mediaitem_list.html:53
 msgid "No item"
 msgstr "无项目"
 
@@ -1729,6 +1726,12 @@ msgstr "该仪器列表为空"
 #: templates/telemeta/lists.html:47
 msgid "My playlists"
 msgstr "我的播放列表"
+
+#: templates/telemeta/lists.html:74
+#: templates/telemeta/search_criteria.html:143
+#: templates/telemeta/search_results.html:70
+msgid "Sound"
+msgstr "声音"
 
 #: templates/telemeta/login.html:21
 msgid "User authentication"

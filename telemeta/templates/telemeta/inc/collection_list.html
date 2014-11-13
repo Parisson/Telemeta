@@ -6,11 +6,11 @@
 <table class="listing">
 <tr>
     <th class="highlight">{% trans "Title" %}</th>
-    <th>{% trans "Code" %}</th>
+    <th>{% trans "Digitized" %}</th>
     <th>{% field_label "MediaCollection" "creator" %}</th>
     <th>{% trans "Recordist" %}</th>
     <th>{% trans "Recording period" %}</th>
-    <th>{% trans "Sound" %}</th>
+    <th>{% trans "Code" %}</th>
 </tr>
 {% for collection in collections %}
 <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
@@ -18,8 +18,11 @@
         <a href="{% url "telemeta-collection-detail" collection.public_id %}">{{ collection.title }}</a>
     </td>
     <td>
-        {{ collection.code|default:collection.old_code }}
+      {% if collection.has_mediafile %}
+       <center><span class="glyphicon glyphicon-volume-up" style="font-size: 1.3em;"></span></center>
+      {% endif %}
     </td>
+
     <td>{{ collection.creator }}</td>
     <td>{{ collection.apparent_collector }}</td>
     <td>
@@ -31,9 +34,7 @@
     {% endif %}
     </td>
     <td>
-      {% if collection.has_mediafile %}
-       <img src="{{ STATIC_URL }}telemeta/images/ok.png" alt="yes" style="vertical-align:middle" />
-      {% endif %}
+        {{ collection.code|default:collection.old_code }}
     </td>
 </tr>
 {% endfor %}
