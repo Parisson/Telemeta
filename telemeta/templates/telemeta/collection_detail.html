@@ -177,7 +177,7 @@
                         {% dl_field collection "code" %}
                         {% dl_field collection "old_code" %}
                         {% dl_field collection "media_type" %}
-                        {% if collection.computed_duration %}
+                        {% if not collection.computed_duration %}
                         {% dl_field collection "approx_duration" %}
                         {% endif %}
                         {% dl_field collection "computed_duration" %}

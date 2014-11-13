@@ -424,6 +424,9 @@ class ItemView(ItemBaseMixin):
                                              analyzer_id='duration', unit='s',
                                              value=unicode(datetime.timedelta(0,decoder.input_duration)))
                 analysis.save()
+                analysis = MediaItemAnalysis(item=item, name='Size',
+                                             analyzer_id='size', unit='', value=item.size())
+                analysis.save()
 
                 for analyzer in analyzers_sub:
                     for key in analyzer.results.keys():
@@ -642,6 +645,7 @@ class ItemSoundListView(ItemListView):
 class ItemViewMixin(ItemBaseMixin):
 
     model = MediaItem
+    form_class = MediaItemForm
     inlines = [ItemPerformanceInline, ItemKeywordInline, ItemRelatedInline, ItemIdentifierInline]
     # inlines = [ItemPerformanceInline, ItemKeywordInline, ItemRelatedInline,
     #             ItemFormatInline, ItemIdentifierInline]

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-10 17:31+0100\n"
+"POT-Creation-Date: 2014-11-13 10:46+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,7 +31,7 @@ msgstr ""
 msgid "value"
 msgstr ""
 
-#: models/enum.py:60 models/media.py:254
+#: models/enum.py:60 models/media.py:255
 msgid "archive format"
 msgstr ""
 
@@ -133,7 +133,7 @@ msgstr ""
 msgid "media type"
 msgstr ""
 
-#: models/enum.py:282 models/media.py:255
+#: models/enum.py:282 models/media.py:254
 msgid "original format"
 msgstr ""
 
@@ -405,8 +405,8 @@ msgstr ""
 msgid "depositor / contributor"
 msgstr ""
 
-#: models/media.py:208 models/media.py:220 models/media.py:369
-#: models/media.py:399
+#: models/media.py:208 models/media.py:220 models/media.py:350
+#: models/media.py:369 models/media.py:399
 msgid "First name, Last name ; First name, Last name"
 msgstr ""
 
@@ -848,8 +848,7 @@ msgstr ""
 msgid "criteria"
 msgstr ""
 
-#: templates/admin/base.html:21 templates/telemeta/base.html:105
-#: templates/telemeta/base.html.py:109
+#: templates/admin/base.html:21 templates/telemeta/base.html:98
 msgid "Home"
 msgstr ""
 
@@ -887,7 +886,7 @@ msgstr ""
 msgid "Write"
 msgstr ""
 
-#: templates/postman/base.html:15 templates/telemeta/base.html:112
+#: templates/postman/base.html:15 templates/telemeta/base.html:101
 msgid "Archives"
 msgstr ""
 
@@ -937,7 +936,7 @@ msgstr ""
 #: templates/telemeta/collection_detail.html:224
 #: templates/telemeta/collection_detail_dc.html:25
 #: templates/telemeta/lists.html:58
-#: templates/telemeta/mediaitem_detail.html:356
+#: templates/telemeta/mediaitem_detail.html:357
 #: templates/telemeta/mediaitem_detail_dc.html:20
 #: templates/telemeta/resource_detail.html:105
 #: templates/telemeta/resource_detail_dc.html:17
@@ -1091,13 +1090,14 @@ msgid "Administration"
 msgstr ""
 
 #: templates/telemeta/admin.html:14 templates/telemeta/admin_general.html:5
-#: templates/telemeta/base.html:130 templates/telemeta/collection_edit.html:20
+#: templates/telemeta/base.html:119 templates/telemeta/collection_edit.html:20
 #: templates/telemeta/mediaitem_edit.html:21
+#: templates/telemeta/resource_edit.html:20
 msgid "General"
 msgstr ""
 
 #: templates/telemeta/admin_enumerations.html:6
-#: templates/telemeta/base.html:131 templates/telemeta/enumeration_edit.html:7
+#: templates/telemeta/base.html:120 templates/telemeta/enumeration_edit.html:7
 msgid "Enumerations"
 msgstr ""
 
@@ -1112,7 +1112,7 @@ msgstr ""
 #: templates/telemeta/inc/resource_related.html:21
 #: templates/telemeta/lists.html:69 templates/telemeta/mediaitem_copy.html:39
 #: templates/telemeta/search_criteria.html:91
-#: templates/telemeta/search_results.html:44
+#: templates/telemeta/search_results.html:53
 msgid "Title"
 msgstr ""
 
@@ -1121,7 +1121,7 @@ msgid "No enumerations"
 msgstr ""
 
 #: templates/telemeta/admin_instruments.html:6
-#: templates/telemeta/admin_users.html:6 templates/telemeta/base.html:125
+#: templates/telemeta/admin_users.html:6 templates/telemeta/base.html:114
 #: templates/telemeta/users.html:5 templates/telemeta/users.html.py:8
 msgid "Users"
 msgstr ""
@@ -1135,67 +1135,59 @@ msgstr ""
 msgid "Welcome"
 msgstr ""
 
-#: templates/telemeta/base.html:69 templates/telemeta/base.html.py:104
-msgid "Profile"
-msgstr ""
-
-#: templates/telemeta/base.html:71 templates/telemeta/base.html.py:75
+#: templates/telemeta/base.html:69 templates/telemeta/base.html.py:73
 msgid "Help"
 msgstr ""
 
-#: templates/telemeta/base.html:72
+#: templates/telemeta/base.html:70
 msgid "Sign out"
 msgstr ""
 
-#: templates/telemeta/base.html:76 templates/telemeta/login.html:41
+#: templates/telemeta/base.html:74 templates/telemeta/login.html:41
 msgid "Sign in"
 msgstr ""
 
-#: templates/telemeta/base.html:101
+#: templates/telemeta/base.html:96
 msgid "Desk"
 msgstr ""
 
-#: templates/telemeta/base.html:103 views/home.py:92
-msgid "Lists"
-msgstr ""
-
-#: templates/telemeta/base.html:114 templates/telemeta/breadcrumbs.html:4
+#: templates/telemeta/base.html:103 templates/telemeta/breadcrumbs.html:4
 #: templates/telemeta/inc/breadcrumbs.html:5
 msgid "Fonds"
 msgstr ""
 
-#: templates/telemeta/base.html:115 templates/telemeta/breadcrumbs.html:5
+#: templates/telemeta/base.html:104 templates/telemeta/breadcrumbs.html:5
 #: templates/telemeta/inc/breadcrumbs.html:6
 msgid "Corpus"
 msgstr ""
 
-#: templates/telemeta/base.html:116 templates/telemeta/breadcrumbs.html:6
+#: templates/telemeta/base.html:105 templates/telemeta/breadcrumbs.html:6
 #: templates/telemeta/collection_list.html:6
 #: templates/telemeta/collection_list.html:11
 #: templates/telemeta/inc/breadcrumbs.html:7
 msgid "Collections"
 msgstr ""
 
-#: templates/telemeta/base.html:117 templates/telemeta/breadcrumbs.html:7
+#: templates/telemeta/base.html:106 templates/telemeta/breadcrumbs.html:7
 #: templates/telemeta/collection_detail.html:62
 #: templates/telemeta/inc/breadcrumbs.html:8
 #: templates/telemeta/mediaitem_list.html:11
 msgid "Items"
 msgstr ""
 
-#: templates/telemeta/base.html:121 templates/telemeta/home.html:25
+#: templates/telemeta/base.html:110 templates/telemeta/home.html:25
 msgid "Geo Navigator"
 msgstr ""
 
-#: templates/telemeta/base.html:123
+#: templates/telemeta/base.html:112
 msgid "Advanced search"
 msgstr ""
 
-#: templates/telemeta/base.html:128
+#: templates/telemeta/base.html:117
 msgid "Admin"
 msgstr ""
 
-#: templates/telemeta/base.html:132
+#: templates/telemeta/base.html:121
 #: templates/telemeta/instrument_alias_edit_value.html:24
 #: templates/telemeta/instrument_edit.html:4
 #: templates/telemeta/instrument_edit.html:7
@@ -1203,19 +1195,19 @@ msgstr ""
 msgid "Instruments"
 msgstr ""
 
-#: templates/telemeta/base.html:133
+#: templates/telemeta/base.html:122
 #: templates/telemeta/instrument_alias_edit.html:4
 #: templates/telemeta/instrument_alias_edit.html:7
 msgid "Instrument aliases"
 msgstr ""
 
-#: templates/telemeta/base.html:181
+#: templates/telemeta/base.html:170
 msgid ""
 "Usage of the archives in the respect of cultural heritage of the original "
 "communities."
 msgstr ""
 
-#: templates/telemeta/base.html:186
+#: templates/telemeta/base.html:175
 #: templates/telemeta/collection_detail.html:108
 msgid "Legal notices"
 msgstr ""
@@ -1263,7 +1255,7 @@ msgstr ""
 
 #: templates/telemeta/collection_detail.html:5
 #: templates/telemeta/collection_detail_dc.html:5 views/collection.py:50
-#: views/collection.py:278
+#: views/collection.py:287
 msgid "Collection"
 msgstr ""
 
@@ -1342,7 +1334,7 @@ msgid "Related documentation"
 msgstr ""
 
 #: templates/telemeta/collection_detail.html:156
-#: templates/telemeta/mediaitem_detail.html:318
+#: templates/telemeta/mediaitem_detail.html:319
 msgid "Comments"
 msgstr ""
 
@@ -1382,6 +1374,7 @@ msgstr ""
 #: templates/telemeta/inc/mediaitem_related.html:6
 #: templates/telemeta/inc/resource_related.html:6
 #: templates/telemeta/mediaitem_edit.html:22
+#: templates/telemeta/resource_edit.html:21
 msgid "Related media"
 msgstr ""
 
@@ -1419,8 +1412,8 @@ msgstr ""
 
 #: templates/telemeta/collection_list.html:28
 #: templates/telemeta/mediaitem_list.html:27
-#: templates/telemeta/search_results.html:13
-#: templates/telemeta/search_results.html:17
+#: templates/telemeta/search_results.html:22
+#: templates/telemeta/search_results.html:26
 msgid "All"
 msgstr ""
 
@@ -1436,8 +1429,8 @@ msgstr ""
 
 #: templates/telemeta/collection_list.html:31
 #: templates/telemeta/mediaitem_list.html:30
-#: templates/telemeta/search_results.html:14
-#: templates/telemeta/search_results.html:18
+#: templates/telemeta/search_results.html:23
+#: templates/telemeta/search_results.html:27
 msgid "Sounds"
 msgstr ""
 
@@ -1594,7 +1587,7 @@ msgstr ""
 #: templates/telemeta/inc/resource_list.html:11
 #: templates/telemeta/lists.html:74
 #: templates/telemeta/search_criteria.html:143
-#: templates/telemeta/search_results.html:61
+#: templates/telemeta/search_results.html:70
 msgid "Sound"
 msgstr ""
 
@@ -1634,7 +1627,7 @@ msgstr ""
 
 #: templates/telemeta/inc/mediaitem_list.html:16
 #: templates/telemeta/search_criteria.html:107
-#: templates/telemeta/search_results.html:47
+#: templates/telemeta/search_results.html:56
 msgid "Year of recording"
 msgstr ""
 
@@ -1787,7 +1780,7 @@ msgstr ""
 msgid "Remarks"
 msgstr ""
 
-#: templates/telemeta/mediaitem_detail.html:306
+#: templates/telemeta/mediaitem_detail.html:307
 msgid "Item size"
 msgstr ""
 
@@ -2045,13 +2038,13 @@ msgstr ""
 
 #: templates/telemeta/search_criteria.html:114
 #: templates/telemeta/search_criteria.html:133
-#: templates/telemeta/search_results.html:49
-#: templates/telemeta/search_results.html:56
+#: templates/telemeta/search_results.html:58
+#: templates/telemeta/search_results.html:65
 msgid "to"
 msgstr ""
 
 #: templates/telemeta/search_criteria.html:126
-#: templates/telemeta/search_results.html:54
+#: templates/telemeta/search_results.html:63
 msgid "Year of publication"
 msgstr ""
 
@@ -2059,12 +2052,12 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: templates/telemeta/search_results.html:5
-#: templates/telemeta/search_results.html:8
+#: templates/telemeta/search_results.html:6
+#: templates/telemeta/search_results.html:11
 msgid "Search Results"
 msgstr ""
 
-#: templates/telemeta/search_results.html:26
+#: templates/telemeta/search_results.html:35
 msgid "Search pattern"
 msgstr ""
 
@@ -2102,18 +2095,18 @@ msgstr ""
 msgid "pattern"
 msgstr ""
 
-#: views/collection.py:49 views/collection.py:277 views/home.py:91
-#: views/item.py:133 views/item.py:503 views/profile.py:68
+#: views/collection.py:49 views/collection.py:286 views/home.py:91
+#: views/item.py:133 views/item.py:506 views/profile.py:68
 msgid "Access not allowed"
 msgstr ""
 
-#: views/collection.py:51 views/collection.py:279 views/home.py:93
-#: views/item.py:135 views/item.py:505 views/profile.py:70
+#: views/collection.py:51 views/collection.py:288 views/home.py:93
+#: views/item.py:135 views/item.py:508 views/profile.py:70
 msgid ""
 "Please login or contact the website administator to get a private access."
 msgstr ""
 
-#: views/collection.py:303
+#: views/collection.py:312
 msgid "You have successfully updated your collection."
 msgstr ""
 
@@ -2121,6 +2114,10 @@ msgstr ""
 msgid "Last changes"
 msgstr ""
 
-#: views/item.py:721
+#: views/home.py:92
+msgid "Lists"
+msgstr ""
+
+#: views/item.py:733
 msgid "You have successfully updated your item."
 msgstr ""

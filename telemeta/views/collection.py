@@ -228,6 +228,7 @@ class CollectionPackageView(View):
 class CollectionViewMixin(object):
 
     model = MediaCollection
+    form_class = MediaCollectionForm
 
     def get_object(self):
         obj = self.model.objects.filter(code=self.kwargs['public_id'])

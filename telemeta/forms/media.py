@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2011 Parisson SARL
+# Copyright (C) 2011-2014 Parisson SARL
 
 # This software is a computer program whose purpose is to backup, analyse,
 # transcode and stream any audio content with its metadata over a web frontend.
@@ -38,6 +38,7 @@ from django.contrib.admin.widgets import FilteredSelectMultiple
 from telemeta.models import *
 from extra_views import CreateWithInlinesView, UpdateWithInlinesView, InlineFormSet
 from extra_views.generic import GenericInlineFormSet
+from django.forms.widgets import HiddenInput
 
 
 class MediaFondsForm(ModelForm):
@@ -88,6 +89,13 @@ class MediaCollectionForm(ModelForm):
 
     required_css_class = 'required'
 
+    def __init__(self, *args, **kwargs):
+        super(MediaCollectionForm, self).__init__(*args, **kwargs)
+        if '_I_' in self.instance.code:
+            self.fields["reference"].widget = HiddenInput()
+        if self.computed_duration:
+            self.fields["approx_duration"].widget = HiddenInput()
+
     class Meta:
         model = MediaCollection
 
@@ -107,14 +115,10 @@ class MediaItemForm(ModelForm):
     class Meta:
         model = MediaItem
         exclude = ('copied_from_item', 'mimetype', 'url', 'contributor',
-                    'organization', 'depositor', 'rights', )
+                    'organization', 'depositor', 'rights', 'topic')
 
     def clean_code(self):
         return self.cleaned_data['code'] or None
-
-    def __init__(self,*args,**kwargs):
-        super(MediaItemForm, self).__init__(*args, **kwargs)
-        self.fields.insert(18, 'comment', self.fields['comment'])
 
 
 class MediaItemRelatedForm(ModelForm):

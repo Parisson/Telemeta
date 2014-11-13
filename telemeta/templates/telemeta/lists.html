@@ -9,7 +9,7 @@
     jQuery(window).ready(function(){
         var p = playlistUtils;
         var a = jQuery('#_new_playlist');
-        a.unbind('click').click(function(){p.showAdd(a);return false;});
+        a.unbind('click').click(function(){p.showAdd(a);});
         });
 
     {% for playlist in playlists %}

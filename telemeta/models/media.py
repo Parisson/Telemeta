@@ -251,8 +251,8 @@ class MediaCollection(MediaResource):
     media_type            = WeakForeignKey('MediaType', related_name="collections", verbose_name=_('media type'))
     approx_duration       = DurationField(_('estimated duration'), help_text='hh:mm:ss')
     physical_items_num    = IntegerField(_('number of components (medium / piece)'))
-    physical_format       = WeakForeignKey('PhysicalFormat', related_name="collections", verbose_name=_('archive format'))
     original_format       = WeakForeignKey('OriginalFormat', related_name="collections", verbose_name=_('original format'))
+    physical_format       = WeakForeignKey('PhysicalFormat', related_name="collections", verbose_name=_('archive format'))
     ad_conversion         = WeakForeignKey('AdConversion', related_name='collections', verbose_name=_('digitization'))
 
     # All
@@ -347,7 +347,7 @@ class MediaItem(MediaResource):
     # Main Informations
     title                 = CharField(_('title'))
     alt_title             = CharField(_('original title / translation'))
-    collector             = CharField(_('collector'))
+    collector             = CharField(_('collector'), help_text=_('First name, Last name ; First name, Last name'))
     collection            = ForeignKey('MediaCollection', related_name="items", verbose_name=_('collection'))
     recorded_from_date    = DateField(_('recording date (from)'), help_text=_('YYYY-MM-DD'))
     recorded_to_date      = DateField(_('recording date (until)'), help_text=_('YYYY-MM-DD'))

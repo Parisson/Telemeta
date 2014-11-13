@@ -17,8 +17,8 @@
   <form method="post" id="_editForm" action="">{% csrf_token %}
 
     <ul class="nav nav-tabs" role="tablist">
-      <li class="active"><a href="#general" role="tab" data-toggle="tab">General</a></li>
-      <li><a href="#related" role="tab" data-toggle="tab">Related media</a></li>
+      <li class="active"><a href="#general" role="tab" data-toggle="tab">{% trans "General" %}</a></li>
+      <li><a href="#related" role="tab" data-toggle="tab">{% trans "Related media" %}</a></li>
     </ul>
 
     <div class="tab-content">

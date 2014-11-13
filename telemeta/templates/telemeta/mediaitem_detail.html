@@ -301,6 +301,7 @@ Item : <a href="{% url "telemeta-item-detail" item.public_id %}">{{ item }}</a>
             <h4><a href="#">{% trans "Technical data" %}</a></h4>
             <div>
                 <dl class="listing">
+                    {% dl_field item "media_type" %}
                     {% dl_field item "approx_duration" %}
                     {% if item.size %}
                     <dt>{% trans "Item size" %}</dt>
