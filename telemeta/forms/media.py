@@ -87,8 +87,6 @@ class MediaCorpusRelatedForm(ModelForm):
 
 class MediaCollectionForm(ModelForm):
 
-    required_css_class = 'required'
-
     def __init__(self, *args, **kwargs):
         super(MediaCollectionForm, self).__init__(*args, **kwargs)
         if '_I_' in self.instance.code:
@@ -114,8 +112,11 @@ class MediaItemForm(ModelForm):
 
     class Meta:
         model = MediaItem
-        exclude = ('copied_from_item', 'mimetype', 'url', 'contributor',
-                    'organization', 'depositor', 'rights', 'topic')
+        exclude = ('copied_from_item', 'mimetype', 'url',
+                    'organization', 'depositor', 'rights',
+                    'recordist', 'digitalist', 'digitization_date',
+                    'publishing_date', 'scientist', 'topic',
+                    'summary', 'contributor', )
 
     def clean_code(self):
         return self.cleaned_data['code'] or None

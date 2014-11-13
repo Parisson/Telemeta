@@ -282,11 +282,11 @@ class CollectionDetailView(CollectionViewMixin, DetailView):
         context['collection'] = collection
         context['items'] = items.order_by('code', 'old_code')
 
-        if collection.public_access == 'none' and not (request.user.is_staff or request.user.is_superuser):
+        if collection.public_access == 'none' and not (self.request.user.is_staff or self.request.user.is_superuser):
             mess = ugettext('Access not allowed')
-            title = ugettext('Collection') + ' : ' + public_id + ' : ' + mess
+            title = ugettext('Collection') + ' : ' + collection.public_id + ' : ' + mess
             description = ugettext('Please login or contact the website administator to get a private access.')
-            messages.error(request, title)
+            messages.error(self.request, title)
             return render(self.request, 'telemeta/messages.html', {'description' : description})
 
         context['playlists'] = get_playlists_names(self.request)
@@ -301,6 +301,11 @@ class CollectionDetailView(CollectionViewMixin, DetailView):
             context['last_revision'] = None
 
         return context
+
+
+class CollectionDetailViewDC(CollectionDetailView):
+
+    template_name = "telemeta/collection_detail_dc.html"
 
 
 class CollectionEditView(CollectionViewMixin, UpdateWithInlinesView):

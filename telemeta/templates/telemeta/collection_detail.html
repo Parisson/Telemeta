@@ -150,7 +150,7 @@
                         {% endif %}
                         {% dl_field collection "publishing_status" %}
                         {% dl_field collection "status" %}
-                        {% if collection.alt_ids %}
+                        {% if collection.alt_copies %}
                          {% dl_field collection "alt_copies" %}
                         {% endif %}
                         <dt>{% trans "Comments" %}</dt>
@@ -187,10 +187,10 @@
                         <div class="wazing"></div>
                         <dt>{% trans "Number of items" %}</dt>
                             <dd>{{ collection.items.count }}</dd>
+                        {% dl_field collection "original_format" %}
                         {% if collection.physical_format %}
                         {% dl_field collection "physical_format" %}
                         {% endif %}
-                        {% dl_field collection "original_format" %}
                         {% dl_field collection "ad_conversion" %}
                     </dl>
                 </div>

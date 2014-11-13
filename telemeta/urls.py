@@ -107,7 +107,7 @@ urlpatterns = patterns('',
     url(r'^archives/collections_sound/$', CollectionSoundListView.as_view(), name="telemeta-collections-sound"),
 
     url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/$', CollectionDetailView.as_view(), name="telemeta-collection-detail"),
-    url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/dc/$', collection_view.collection_detail, dict(template="telemeta/collection_detail_dc.html"), name="telemeta-collection-dublincore"),
+    url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/dc/$', CollectionDetailViewDC.as_view(), name="telemeta-collection-dublincore"),
     url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/collection_xspf.xml$', collection_view.collection_playlist, dict(template="telemeta/collection_xspf.xml", mimetype="application/xspf+xml"), name="telemeta-collection-xspf"),
     url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/collection.m3u$', collection_view.collection_playlist, dict(template="telemeta/collection.m3u", mimetype="audio/mpegurl"), name="telemeta-collection-m3u"),
     url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/edit/$', CollectionEditView.as_view(), name="telemeta-collection-edit"),

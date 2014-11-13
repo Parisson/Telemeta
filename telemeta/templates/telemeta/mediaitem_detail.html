@@ -235,10 +235,10 @@ Item : <a href="{% url "telemeta-item-detail" item.public_id %}">{{ item }}</a>
         {% block musical_data %}
         <div>
             <h4><a href="#">{% trans "Musical informations" %}</a></h4>
-            {% if item.moda_execut %}
-            {% dl_field item "moda_execut" %}
-            {% endif %}
             <dl class="listing">
+                {% if item.moda_execut %}
+                {% dl_field item "moda_execut" %}
+                {% endif %}
                 {% dl_field item "vernacular_style" %}
                 {% dl_field item "generic_style" %}
                 {% dl_field item "author" %}
