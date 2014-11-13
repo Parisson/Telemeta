@@ -176,8 +176,8 @@ urlpatterns = patterns('',
     # Geographic browsing
     url(r'^geo/$', geo_view.list_continents, name="telemeta-geo-continents"),
     url(r'^geo/(?P<continent>[a-z_]+)/$', geo_view.list_countries, name="telemeta-geo-countries"),
-    url(r'^geo/collections/(?P<continent>[a-z_]+)/(?P<country>[a-z_]+)/$', geo_view.list_country_collections, name="telemeta-geo-country-collections"),
-    url(r'^geo/items/(?P<continent>[a-z_]+)/(?P<country>[a-z_]+)/$', geo_view.list_country_items, name="telemeta-geo-country-items"),
+    url(r'^geo/collections/(?P<continent>[a-z_]+)/(?P<country>[a-z_]+)/$', GeoCountryCollectionView.as_view(), name="telemeta-geo-country-collections"),
+    url(r'^geo/items/(?P<continent>[a-z_]+)/(?P<country>[a-z_]+)/$', GeoCountryItemView.as_view() , name="telemeta-geo-country-items"),
     url(r'^geo/country_info/(?P<id>[0-9a-z]+)/$', geo_view.country_info, name="telemeta-country-info"),
 
     # Flat pages
