@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-13 10:46+0100\n"
+"POT-Creation-Date: 2014-11-13 10:56+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Guillaume Pellerin <yomguy@parisson.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1786,7 +1786,6 @@ msgid "Remarks"
 msgstr "Remarques"
 
 #: templates/telemeta/mediaitem_detail.html:307
-#| msgid "item size"
 msgid "Item size"
 msgstr "taille de l'item"
 
