@@ -1188,8 +1188,12 @@ a.image-link {
     border-right:  1px solid #999 !important;
     background-color:  #f4f4f4; /*#e9e9d9;*/
     color: #000; /*#6A0307;*/
+    text-decoration: none;
 }
 
+.button a:hover{
+    text-decoration: none;
+}
 
 .list_item, .list_item:visited, .list_item:hover{
     display:block;
