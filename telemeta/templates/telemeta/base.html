@@ -60,13 +60,11 @@
 {% if user.is_authenticated %}
 <img src="{{ STATIC_URL }}telemeta/images/user.png" alt="user" style="vertical-align:middle" />
 {% trans "Welcome" %},
+<a href="{% url "telemeta-profile-detail" user.username %}">
 {% if user.first_name or user.last_name %}
-{{ user.first_name }} {{ user.last_name }} |
+{{ user.first_name }} {{ user.last_name }}</a> |
 {% else %}
 {{ user.username }} |
-{% endif %}
-{% if not perms.telemeta.can_not_view_users_and_profiles %}
-<a href="{% url "telemeta-profile-detail" user.username %}">{% trans "Profile" %}</a> |
 {% endif %}
 <a href="{% url "telemeta-flatpage" "help" %}">{% trans "Help" %}</a> |
 <a href="{% url "telemeta-logout" %}">{% trans "Sign out" %}
@@ -95,13 +93,7 @@
 
 <ul id="nav">
  {% if user.is_authenticated %}
-  <li><a href="#desk#" class="blue">{% trans "Desk" %}</a>
-   <ul>
-    <li><a href="{% url "telemeta-desk-lists" %}">{% trans "Lists" %}</a></li>
-    <li><a href="{% url "telemeta-desk-profile" user.username %}">{% trans "Profile" %}</a></li>
-    <li><a href="{% url "telemeta-desk-home" %}">{% trans "Home" %}</a></li>
-   </ul>
-  </li>
+  <li><a href="{% url "telemeta-desk-lists" %}" class="blue">{% trans "Desk" %}</a></li>
  {% else %}
   <li><a href="{% url "telemeta-home" %}" class="blue">{% trans "Home" %}</a></li>
  {% endif %}
