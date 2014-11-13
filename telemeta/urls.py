@@ -136,7 +136,6 @@ urlpatterns = patterns('',
     url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)/download/$', resource_view.related_download, name="telemeta-resource-related-download"),
     url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/related_edit/$', resource_view.related_edit,  dict(template='telemeta/resource_related_edit.html'), name="telemeta-resource-related_edit"),
 
-
     # search
     # url(r'^archives/$', home_view.search, name="telemeta-archives"),
     url(r'^search/$', SearchView.as_view(), name="telemeta-search"),

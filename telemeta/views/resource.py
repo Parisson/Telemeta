@@ -220,7 +220,15 @@ class ResourceMixin(View):
         # super(CorpusDetailView, self).get_object()
         self.type = self.kwargs['type']
         self.setup(self.type)
-        self.pk = self.model.objects.get(code=self.kwargs['public_id']).pk
+        obj = self.model.objects.filter(code=self.kwargs['public_id'])
+        if not obj:
+            try:
+                obj = self.model.objects.get(id=self.kwargs['public_id'])
+            except:
+                pass
+        else:
+            obj = obj[0]
+        self.pk = obj.pk
         return get_object_or_404(self.model, pk=self.pk)
 
     def get_context_data(self, **kwargs):
@@ -240,7 +248,15 @@ class ResourceSingleMixin(ResourceMixin):
         # super(CorpusDetailView, self).get_object()
         self.type = self.kwargs['type']
         self.setup(self.type)
-        self.pk = self.model.objects.get(code=self.kwargs['public_id']).pk
+        obj = self.model.objects.filter(code=self.kwargs['public_id'])
+        if not obj:
+            try:
+                obj = self.model.objects.get(id=self.kwargs['public_id'])
+            except:
+                pass
+        else:
+            obj = obj[0]
+        self.pk = obj.pk
         return get_object_or_404(self.model, pk=self.pk)
 
     def get_context_data(self, **kwargs):
@@ -308,8 +324,7 @@ class ResourceCopyView(ResourceSingleMixin, ResourceAddView):
     template_name = 'telemeta/resource_edit.html'
 
     def get_initial(self):
-        resource = self.model.objects.get(code=self.kwargs['public_id'])
-        return model_to_dict(resource)
+        return model_to_dict(self.get_object())
 
     def get_success_url(self):
         return reverse_lazy('telemeta-resource-list', kwargs={'type':self.kwargs['type']})

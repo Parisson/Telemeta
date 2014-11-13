@@ -706,7 +706,15 @@ class ItemViewMixin(ItemBaseMixin):
 
     def get_object(self):
         if 'public_id' in self.kwargs.keys():
-            self.pk = self.model.objects.get(code=self.kwargs['public_id']).pk
+            obj = self.model.objects.filter(code=self.kwargs['public_id'])
+            if not obj:
+                try:
+                    obj = self.model.objects.get(id=self.kwargs['public_id'])
+                except:
+                    pass
+            else:
+                obj = obj[0]
+            self.pk = obj.pk
             return get_object_or_404(self.model, pk=self.pk)
         else:
             return get_object_or_404(self.model, pk=self.kwargs['pk'])
@@ -753,8 +761,7 @@ class ItemCopyView(ItemAddView):
     template_name = 'telemeta/mediaitem_add.html'
 
     def get_initial(self):
-        resource = self.model.objects.get(code=self.kwargs['public_id'])
-        return model_to_dict(resource)
+        return model_to_dict(self.get_object())
 
     def get_success_url(self):
         return reverse_lazy('telemeta-items')
