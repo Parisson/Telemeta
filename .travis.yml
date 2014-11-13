@@ -18,6 +18,7 @@ before_install:
 
 # command to install dependencies
 install:
+ - pip install -v timeside
  - pip install -v --no-install -e . 
  - python setup.py install
 
