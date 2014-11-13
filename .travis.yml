@@ -5,9 +5,8 @@ python:
 
 before_install:
  - sudo apt-get -qq update
- - sudo apt-get install -qq libhdf5-serial-dev
- - sudo apt-get install -qq libatlas-dev libatlas-base-dev gfortran
- - sudo apt-get install -qq python-numpy python-scipy
+ - sudo apt-get install -qq libhdf5-serial-dev libatlas-dev libatlas-base-dev gfortran
+ - sudo apt-get install -qq python-setuptools python-numpy python-scipy python-tables
  - gpg --keyserver pgpkeys.mit.edu --recv-key E3298399DF14BB7C
  - gpg -a --export E3298399DF14BB7C | sudo apt-key add -
  - echo "deb http://debian.parisson.com/debian/ precise main" | sudo tee -a /etc/apt/sources.list.d/parisson.list
