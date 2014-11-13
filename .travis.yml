@@ -17,10 +17,12 @@ before_install:
  - sudo apt-get install -y python-timeside
 
 # command to install dependencies
-#install:
-# - "sudo pip install -e ."
+install:
+ - pip install -v timeside>=0.6
+ - pip install -v --no-install -e . 
+ - python setup.py install
 
 # command to run tests
 script:
- - "sudo python setup.py install"
+
 # - "python tests/testcomponent.py"
