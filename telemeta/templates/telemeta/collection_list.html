@@ -31,7 +31,6 @@
     <li><a href="{% url "telemeta-collections-sound" %}">{% trans "Digitized" %}</a></li>
   </ul>
 </div>
-
     {% if user.is_authenticated and perms.telemeta.add_mediacollection %}
     <a href="{% url "telemeta-collection-add" %}">
     <button type="button" class="btn btn-default">

@@ -71,6 +71,8 @@
                  <dd>{% trans 'unpublished' %}</dd>
                 {% elif '_E_' in collection.public_id %}
                  <dd>{% trans 'published' %}</dd>
+                {% else %}
+                 <dd>&nbsp;</dd>
                 {% endif %}
                 {% if collection.description %}
                 {% dl_field collection "description" %}
@@ -81,7 +83,8 @@
                 {% if '_E_' in collection.public_id %}
                 {% dl_field collection "year_published" placeholder %}
                 {% endif %}
-                {% dl_field collection "public_access_label" %}
+                <dt>{% trans "Access type" %}</dt>
+                <dd>{% trans collection.public_access %}</dd>
                 {% for parent in parents %}
                 <dt>{% trans parent.element_type|capitalize %}</dt>
                 <dd><a href="{% url "telemeta-resource-detail" parent.element_type parent.public_id %}">{{ parent.title }}</a></dd>
