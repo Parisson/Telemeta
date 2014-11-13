@@ -93,7 +93,7 @@ class MediaCollectionForm(ModelForm):
         super(MediaCollectionForm, self).__init__(*args, **kwargs)
         if '_I_' in self.instance.code:
             self.fields["reference"].widget = HiddenInput()
-        if self.computed_duration:
+        if self.instance.computed_duration:
             self.fields["approx_duration"].widget = HiddenInput()
 
     class Meta:

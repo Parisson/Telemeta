@@ -33,7 +33,9 @@
 </div>
 
     {% if user.is_authenticated and perms.telemeta.add_mediacollection %}
-      <a href="{% url "telemeta-collection-add" %}" class="component_icon button icon_add">{% trans "Add" %}</a>
+    <button type="button" class="btn btn-default">
+      <a href="{% url "telemeta-collection-add" %}"><span class="glyphicon glyphicon-plus"></span> {% trans "Add" %}</span></a>
+    </button>
     {% endif %}
 {% endblock %}
 
