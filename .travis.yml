@@ -18,7 +18,7 @@ before_install:
 
 # command to install dependencies
 install:
- #- "sudo pip install -e ."
+ - pip install -v --no-install -e . 
  - python setup.py install
 
 # command to run tests
