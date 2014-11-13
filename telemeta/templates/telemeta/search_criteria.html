@@ -64,7 +64,7 @@ $(document).ready(function() {
 {% endblock %}
 
 {% block content %}
-<form action="{% url "telemeta-search" %}" id="searchform">{% csrf_token %}
+<form action="{% url "telemeta-search" %}" id="searchform" method="get">
 <fieldset>
 
     <p>

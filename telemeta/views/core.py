@@ -75,7 +75,6 @@ from django.utils.translation import ugettext_lazy as _
 from django.forms.models import model_to_dict
 from django.views.generic.edit import DeletionMixin, BaseDeleteView
 
-
 from telemeta.models import *
 import telemeta.models
 import telemeta.interop.oai as oai
