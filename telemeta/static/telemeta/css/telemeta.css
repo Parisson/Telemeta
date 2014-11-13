@@ -923,7 +923,7 @@ img.align-left {
 
 #content .rst-content ul,  #content .rst-content ol {
     clear: none;
-    font-size: 1em;
+    font-size: 0.8125em;
     margin-left: 0.4em;
 }
 
