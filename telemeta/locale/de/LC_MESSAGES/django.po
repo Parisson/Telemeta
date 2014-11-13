@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-13 11:34+0100\n"
+"POT-Creation-Date: 2014-11-13 11:50+0100\n"
 "PO-Revision-Date: 2012-12-22 21:24+0100\n"
 "Last-Translator: Patrik Tschudin <patsch@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1477,11 +1477,13 @@ msgid "Published"
 msgstr "veröffentlicht"
 
 #: templates/telemeta/collection_list.html:31
+#: templates/telemeta/inc/children_list.html:16
+#: templates/telemeta/inc/collection_list.html:9
+#: templates/telemeta/inc/mediaitem_list.html:9
+#: templates/telemeta/inc/resource_list.html:9
 #: templates/telemeta/mediaitem_list.html:30
-#: templates/telemeta/search_results.html:23
-#: templates/telemeta/search_results.html:27
-msgid "Sounds"
-msgstr "Töne"
+msgid "Digitized"
+msgstr ""
 
 #: templates/telemeta/collection_list.html:36
 #: templates/telemeta/enumeration_edit.html:23
@@ -1625,13 +1627,6 @@ msgid ""
 msgstr ""
 "%(resource.children_type|capitalize)s %(first_on_page)s bis %(last_on_page)s "
 "von %(hits)s"
-
-#: templates/telemeta/inc/children_list.html:16
-#: templates/telemeta/inc/collection_list.html:9
-#: templates/telemeta/inc/mediaitem_list.html:9
-#: templates/telemeta/inc/resource_list.html:9
-msgid "Digitized"
-msgstr ""
 
 #: templates/telemeta/inc/children_list.html:18
 #: templates/telemeta/inc/collection_list.html:13
@@ -2134,6 +2129,11 @@ msgstr "Suche"
 #: templates/telemeta/search_results.html:11
 msgid "Search Results"
 msgstr "Suchergebnis"
+
+#: templates/telemeta/search_results.html:23
+#: templates/telemeta/search_results.html:27
+msgid "Sounds"
+msgstr "Töne"
 
 #: templates/telemeta/search_results.html:35
 msgid "Search pattern"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Telemeta 1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-13 11:34+0100\n"
+"POT-Creation-Date: 2014-11-13 11:50+0100\n"
 "PO-Revision-Date: 2014-09-02 16:18+2\n"
 "Last-Translator: Zaichao XIA <xiazaichao@gmail.com>\n"
 "Language-Team: zh_CN <LL@li.org>\n"
@@ -1468,11 +1468,13 @@ msgid "Published"
 msgstr "已出版的"
 
 #: templates/telemeta/collection_list.html:31
+#: templates/telemeta/inc/children_list.html:16
+#: templates/telemeta/inc/collection_list.html:9
+#: templates/telemeta/inc/mediaitem_list.html:9
+#: templates/telemeta/inc/resource_list.html:9
 #: templates/telemeta/mediaitem_list.html:30
-#: templates/telemeta/search_results.html:23
-#: templates/telemeta/search_results.html:27
-msgid "Sounds"
-msgstr "声音"
+msgid "Digitized"
+msgstr ""
 
 #: templates/telemeta/collection_list.html:36
 #: templates/telemeta/enumeration_edit.html:23
@@ -1611,13 +1613,6 @@ msgstr "合作伙伴"
 msgid ""
 "%(resource.children_type|capitalize)s %(first_on_page)s to %(last_on_page)s "
 "on %(hits)s"
-msgstr ""
-
-#: templates/telemeta/inc/children_list.html:16
-#: templates/telemeta/inc/collection_list.html:9
-#: templates/telemeta/inc/mediaitem_list.html:9
-#: templates/telemeta/inc/resource_list.html:9
-msgid "Digitized"
 msgstr ""
 
 #: templates/telemeta/inc/children_list.html:18
@@ -2104,6 +2099,11 @@ msgstr "搜索"
 #: templates/telemeta/search_results.html:11
 msgid "Search Results"
 msgstr "搜索结果"
+
+#: templates/telemeta/search_results.html:23
+#: templates/telemeta/search_results.html:27
+msgid "Sounds"
+msgstr "声音"
 
 #: templates/telemeta/search_results.html:35
 msgid "Search pattern"

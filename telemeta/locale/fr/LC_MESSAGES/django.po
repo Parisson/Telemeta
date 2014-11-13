@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-13 11:34+0100\n"
+"POT-Creation-Date: 2014-11-13 11:50+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Guillaume Pellerin <yomguy@parisson.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1410,7 +1410,7 @@ msgstr "Enregistrer"
 #: templates/telemeta/collection_list.html:25
 #: templates/telemeta/mediaitem_list.html:24
 msgid "Filters"
-msgstr ""
+msgstr "Filtres"
 
 #: templates/telemeta/collection_list.html:28
 #: templates/telemeta/mediaitem_list.html:27
@@ -1430,11 +1430,13 @@ msgid "Published"
 msgstr "Éditées"
 
 #: templates/telemeta/collection_list.html:31
+#: templates/telemeta/inc/children_list.html:16
+#: templates/telemeta/inc/collection_list.html:9
+#: templates/telemeta/inc/mediaitem_list.html:9
+#: templates/telemeta/inc/resource_list.html:9
 #: templates/telemeta/mediaitem_list.html:30
-#: templates/telemeta/search_results.html:23
-#: templates/telemeta/search_results.html:27
-msgid "Sounds"
-msgstr "Sonores"
+msgid "Digitized"
+msgstr "Numérisé"
 
 #: templates/telemeta/collection_list.html:36
 #: templates/telemeta/enumeration_edit.html:23
@@ -1576,13 +1578,6 @@ msgid ""
 msgstr ""
 "%(resource.children_type|capitalize)s %(first_on_page)s à %(last_on_page)s "
 "sur %(hits)s"
-
-#: templates/telemeta/inc/children_list.html:16
-#: templates/telemeta/inc/collection_list.html:9
-#: templates/telemeta/inc/mediaitem_list.html:9
-#: templates/telemeta/inc/resource_list.html:9
-msgid "Digitized"
-msgstr "Numérisé"
 
 #: templates/telemeta/inc/children_list.html:18
 #: templates/telemeta/inc/collection_list.html:13
@@ -2062,6 +2057,11 @@ msgstr "Recherche"
 #: templates/telemeta/search_results.html:11
 msgid "Search Results"
 msgstr "Résultats de recherche"
+
+#: templates/telemeta/search_results.html:23
+#: templates/telemeta/search_results.html:27
+msgid "Sounds"
+msgstr "Sonores"
 
 #: templates/telemeta/search_results.html:35
 msgid "Search pattern"
