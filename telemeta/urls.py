@@ -141,10 +141,6 @@ urlpatterns = patterns('',
     # url(r'^archives/$', home_view.search, name="telemeta-archives"),
     url(r'^search/$', SearchView.as_view(), name="telemeta-search"),
     url(r'^search/(?P<type>[A-Za-z0-9._-]+)/$', SearchView.as_view(), name="telemeta-search-type"),
-    # url(r'^search/items/$', home_view.search, {'type': 'items'}, name="telemeta-search-items"),
-    # url(r'^search/corpus/$', home_view.search, {'type': 'corpus'}, name="telemeta-search-corpus"),
-    # url(r'^search/fonds/$', home_view.search, {'type': 'fonds'}, name="telemeta-search-fonds"),
-
     url(r'^search_criteria/$', home_view.edit_search, name="telemeta-search-criteria"),
     url(r'^complete_location/$', home_view.complete_location, name="telemeta-complete-location"),
 
