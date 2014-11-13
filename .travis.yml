@@ -22,5 +22,5 @@ before_install:
 
 # command to run tests
 script:
- - "sudo python setup.py install"
+ - python setup.py install
 # - "python tests/testcomponent.py"
