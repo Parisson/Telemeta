@@ -89,7 +89,7 @@ class PlaylistView(object):
     def playlist_csv_export(self, request, public_id, resource_type):
         playlist = Playlist.objects.get(public_id=public_id, author=request.user)
         resources = PlaylistResource.objects.filter(playlist=playlist)
-        response = HttpResponse(mimetype='text/csv')
+        response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename='+playlist.title+'_'+resource_type+'.csv'
         writer = UnicodeWriter(response)
 
@@ -127,5 +127,6 @@ class PlaylistView(object):
                 for tag in tags:
                     data.append(element[tag])
                 writer.writerow(data)
+
         return response
 
