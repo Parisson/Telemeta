@@ -1290,7 +1290,7 @@ msgstr "Ajouter à la liste"
 #: templates/telemeta/inc/mediaitem_related.html:45
 #: templates/telemeta/inc/resource_related.html:45
 msgid "Download"
-msgstr "Téléchargement"
+msgstr "Télécharger"
 
 #: templates/telemeta/collection_detail.html:63
 msgid "View list"

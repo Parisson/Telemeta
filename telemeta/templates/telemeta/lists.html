@@ -45,8 +45,13 @@
 
 <div class="home-description">
     <h1><img src="{{ STATIC_URL }}telemeta/images/playlist_title.png" alt="playlists" style="vertical-align:middle" /> {% trans "My playlists" %}</h1>
-    <a href="#" id="_new_playlist" style="float:right" class="component_icon button icon_add">
-        {% trans "Add" %}</a>
+
+    <a href="#" id="_new_playlist" style="float:right">
+    <button type="button" class="btn btn-default">
+      <span class="glyphicon glyphicon-plus"></span> {% trans "Add" %}</span>
+    </button>
+    </a>
+
     {% for playlist in playlists %}
     <table class="listing" style="width:100%;margin-top: 3em">
         <tr>
