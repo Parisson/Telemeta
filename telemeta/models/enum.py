@@ -287,7 +287,7 @@ class Status(Enumeration):
 
     class Meta(MetaEnumeration):
         db_table = 'media_status'
-        verbose_name = _("status")
+        verbose_name = _("collection status")
 
 
 class IdentifierType(Enumeration):

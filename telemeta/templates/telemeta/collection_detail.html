@@ -151,7 +151,7 @@
                         {% dl_field collection "publishing_status" %}
                         {% dl_field collection "status" %}
                         {% if collection.alt_ids %}
-                         {% dl_field collection "alt_ids" %}
+                         {% dl_field collection "alt_copies" %}
                         {% endif %}
                         <dt>{% trans "Comments" %}</dt>
                         <dd>{{ collection.comment|html_line_break|safe }}</dd>

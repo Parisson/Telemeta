@@ -358,7 +358,7 @@ class MediaItem(MediaResource):
     location_comment      = CharField(_('location details'))
     cultural_area         = CharField(_('cultural area'))
     language              = CharField(_('language'))
-    language_iso          = ForeignKey('Language', related_name="items", verbose_name=_('ISO language'), blank=True, null=True, on_delete=models.SET_NULL)
+    language_iso          = ForeignKey('Language', related_name="items", verbose_name=_('Language (ISO norm)'), blank=True, null=True, on_delete=models.SET_NULL)
     ethnic_group          = WeakForeignKey('EthnicGroup', related_name="items", verbose_name=_('population / social group'))
     context_comment       = TextField(_('Ethnographic context'))
 

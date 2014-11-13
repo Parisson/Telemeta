@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-13 10:58+0100\n"
+"POT-Creation-Date: 2014-11-13 11:15+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Guillaume Pellerin <yomguy@parisson.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -126,7 +126,7 @@ msgstr "discipline"
 
 #: models/enum.py:266 models/media.py:234
 msgid "copy type"
-msgstr "type d'exemplaire'"
+msgstr "type d'exemplaire"
 
 #: models/enum.py:274 models/media.py:251 models/media.py:388
 msgid "media type"
@@ -136,9 +136,9 @@ msgstr "type de média"
 msgid "original format"
 msgstr "support original"
 
-#: models/enum.py:290 models/media.py:656
-msgid "status"
-msgstr "état"
+#: models/enum.py:290 models/media.py:238
+msgid "collection status"
+msgstr "statut de la collection"
 
 #: models/enum.py:298
 msgid "identifier type"
@@ -461,10 +461,6 @@ msgstr "déposant CNRS"
 msgid "related documentation"
 msgstr "documentation associée"
 
-#: models/media.py:238
-msgid "collection status"
-msgstr "statut de la collection"
-
 #: models/media.py:239
 msgid "copies"
 msgstr "autres exemplaires"
@@ -558,9 +554,9 @@ msgstr "aire culturelle"
 msgid "language"
 msgstr "langue"
 
-#: models/media.py:361
-msgid "ISO language"
-msgstr "Langue ISO"
+#: models/media.py:361 templates/telemeta/mediaitem_detail.html:222
+msgid "Language (ISO norm)"
+msgstr "Langue (norme ISO)"
 
 #: models/media.py:363 templates/telemeta/mediaitem_detail.html:226
 msgid "Ethnographic context"
@@ -721,6 +717,10 @@ msgstr "temps (s)"
 #: models/media.py:634
 msgid "author"
 msgstr "auteur"
+
+#: models/media.py:656
+msgid "status"
+msgstr "état"
 
 #: models/media.py:690
 msgid "transcoded"
@@ -1769,10 +1769,6 @@ msgstr "Cliquez ici"
 msgid "Recording date"
 msgstr "Date d'enregistrement"
 
-#: templates/telemeta/mediaitem_detail.html:222
-msgid "Language ISO"
-msgstr "Langue ISO"
-
 #: templates/telemeta/mediaitem_detail.html:237
 msgid "Musical informations"
 msgstr "Informations sur la musique"
@@ -2130,6 +2126,12 @@ msgstr "Listes"
 #: views/item.py:733
 msgid "You have successfully updated your item."
 msgstr ""
+
+#~ msgid "Language ISO"
+#~ msgstr "Langue ISO"
+
+#~ msgid "ISO language"
+#~ msgstr "Langue ISO"
 
 #~ msgid "Profile"
 #~ msgstr "Profil"

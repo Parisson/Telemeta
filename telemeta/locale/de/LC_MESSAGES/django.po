@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-13 10:58+0100\n"
+"POT-Creation-Date: 2014-11-13 11:15+0100\n"
 "PO-Revision-Date: 2012-12-22 21:24+0100\n"
 "Last-Translator: Patrik Tschudin <patsch@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -143,9 +143,10 @@ msgstr "Medientyp"
 msgid "original format"
 msgstr "Herkunftsort"
 
-#: models/enum.py:290 models/media.py:656
-msgid "status"
-msgstr "Status"
+#: models/enum.py:290 models/media.py:238
+#, fuzzy
+msgid "collection status"
+msgstr "Sammlungen"
 
 #: models/enum.py:298
 #, fuzzy
@@ -473,11 +474,6 @@ msgstr "CNRS HinterlegerIn"
 msgid "related documentation"
 msgstr "verwandte Dokumentation"
 
-#: models/media.py:238
-#, fuzzy
-msgid "collection status"
-msgstr "Sammlungen"
-
 #: models/media.py:239
 msgid "copies"
 msgstr "Kopien"
@@ -575,9 +571,10 @@ msgstr "Kulturraum"
 msgid "language"
 msgstr "Sprache"
 
-#: models/media.py:361
-msgid "ISO language"
-msgstr "ISO Sprache"
+#: models/media.py:361 templates/telemeta/mediaitem_detail.html:222
+#, fuzzy
+msgid "Language (ISO norm)"
+msgstr "Sprache"
 
 #: models/media.py:363 templates/telemeta/mediaitem_detail.html:226
 #, fuzzy
@@ -743,6 +740,10 @@ msgstr "Zeit"
 #: models/media.py:634
 msgid "author"
 msgstr "AutorIn"
+
+#: models/media.py:656
+msgid "status"
+msgstr "Status"
 
 #: models/media.py:690
 msgid "transcoded"
@@ -1822,11 +1823,6 @@ msgstr ""
 msgid "Recording date"
 msgstr "Aufnahmedatum"
 
-#: templates/telemeta/mediaitem_detail.html:222
-#, fuzzy
-msgid "Language ISO"
-msgstr "Sprache"
-
 #: templates/telemeta/mediaitem_detail.html:237
 #, fuzzy
 msgid "Musical informations"
@@ -2202,6 +2198,13 @@ msgstr "Listen"
 #: views/item.py:733
 msgid "You have successfully updated your item."
 msgstr ""
+
+#, fuzzy
+#~ msgid "Language ISO"
+#~ msgstr "Sprache"
+
+#~ msgid "ISO language"
+#~ msgstr "ISO Sprache"
 
 #~ msgid "Profile"
 #~ msgstr "Profil"

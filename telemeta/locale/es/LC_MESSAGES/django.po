@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-13 10:58+0100\n"
+"POT-Creation-Date: 2014-11-13 11:15+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -137,8 +137,8 @@ msgstr ""
 msgid "original format"
 msgstr ""
 
-#: models/enum.py:290 models/media.py:656
-msgid "status"
+#: models/enum.py:290 models/media.py:238
+msgid "collection status"
 msgstr ""
 
 #: models/enum.py:298
@@ -462,10 +462,6 @@ msgstr ""
 msgid "related documentation"
 msgstr ""
 
-#: models/media.py:238
-msgid "collection status"
-msgstr ""
-
 #: models/media.py:239
 msgid "copies"
 msgstr ""
@@ -559,8 +555,8 @@ msgstr ""
 msgid "language"
 msgstr ""
 
-#: models/media.py:361
-msgid "ISO language"
+#: models/media.py:361 templates/telemeta/mediaitem_detail.html:222
+msgid "Language (ISO norm)"
 msgstr ""
 
 #: models/media.py:363 templates/telemeta/mediaitem_detail.html:226
@@ -721,6 +717,10 @@ msgstr ""
 
 #: models/media.py:634
 msgid "author"
+msgstr ""
+
+#: models/media.py:656
+msgid "status"
 msgstr ""
 
 #: models/media.py:690
@@ -1762,10 +1762,6 @@ msgstr ""
 
 #: templates/telemeta/mediaitem_detail.html:205
 msgid "Recording date"
-msgstr ""
-
-#: templates/telemeta/mediaitem_detail.html:222
-msgid "Language ISO"
 msgstr ""
 
 #: templates/telemeta/mediaitem_detail.html:237

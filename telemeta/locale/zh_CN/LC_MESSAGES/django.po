@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Telemeta 1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-13 10:58+0100\n"
+"POT-Creation-Date: 2014-11-13 11:15+0100\n"
 "PO-Revision-Date: 2014-09-02 16:18+2\n"
 "Last-Translator: Zaichao XIA <xiazaichao@gmail.com>\n"
 "Language-Team: zh_CN <LL@li.org>\n"
@@ -143,9 +143,10 @@ msgstr "媒体类型"
 msgid "original format"
 msgstr "原始位置"
 
-#: models/enum.py:290 models/media.py:656
-msgid "status"
-msgstr "状态"
+#: models/enum.py:290 models/media.py:238
+#, fuzzy
+msgid "collection status"
+msgstr "选集"
 
 #: models/enum.py:298
 #, fuzzy
@@ -474,11 +475,6 @@ msgstr "CNRS寄存者"
 msgid "related documentation"
 msgstr "相关文献"
 
-#: models/media.py:238
-#, fuzzy
-msgid "collection status"
-msgstr "选集"
-
 #: models/media.py:239
 msgid "copies"
 msgstr "副本"
@@ -576,8 +572,10 @@ msgstr "文化区域"
 msgid "language"
 msgstr "语言"
 
-#: models/media.py:361
-msgid "ISO language"
+#: models/media.py:361 templates/telemeta/mediaitem_detail.html:222
+#, fuzzy
+#| msgid "Language ISO"
+msgid "Language (ISO norm)"
 msgstr "ISO语言"
 
 #: models/media.py:363 templates/telemeta/mediaitem_detail.html:226
@@ -742,6 +740,10 @@ msgstr "时间"
 #: models/media.py:634
 msgid "author"
 msgstr "作者"
+
+#: models/media.py:656
+msgid "status"
+msgstr "状态"
 
 #: models/media.py:690
 msgid "transcoded"
@@ -1802,10 +1804,6 @@ msgstr "点击这里"
 msgid "Recording date"
 msgstr "录音日期"
 
-#: templates/telemeta/mediaitem_detail.html:222
-msgid "Language ISO"
-msgstr "ISO语言"
-
 #: templates/telemeta/mediaitem_detail.html:237
 msgid "Musical informations"
 msgstr "音乐信息"
@@ -2168,6 +2166,12 @@ msgstr "列表"
 #: views/item.py:733
 msgid "You have successfully updated your item."
 msgstr ""
+
+#~ msgid "Language ISO"
+#~ msgstr "ISO语言"
+
+#~ msgid "ISO language"
+#~ msgstr "ISO语言"
 
 #~ msgid "Profile"
 #~ msgstr "资料"

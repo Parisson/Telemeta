@@ -219,7 +219,7 @@ Item : <a href="{% url "telemeta-item-detail" item.public_id %}">{{ item }}</a>
                 {% dl_field item "cultural_area" %}
                 {% dl_field item "language" %}
                 {% if item.language_iso %}
-                <dt>{% trans "Language ISO" %}</dt>
+                <dt>{% trans "Language (ISO norm)" %}</dt>
                 <dd>{{ item.language_iso.name|to_utf8 }}</dd>
                 {% endif %}
                 {% dl_field item "ethnic_group" placeholder %}
@@ -235,8 +235,8 @@ Item : <a href="{% url "telemeta-item-detail" item.public_id %}">{{ item }}</a>
         {% block musical_data %}
         <div>
             <h4><a href="#">{% trans "Musical informations" %}</a></h4>
-            {% if item.moda_exec %}
-            {% dl_field item "moda_exec" %}
+            {% if item.moda_execut %}
+            {% dl_field item "moda_execut" %}
             {% endif %}
             <dl class="listing">
                 {% dl_field item "vernacular_style" %}
