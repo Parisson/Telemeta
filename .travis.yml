@@ -18,7 +18,7 @@ before_install:
 
 # command to install dependencies
 install:
- - pip install -v timeside>=0.6
+ - pip install -v timeside==0.6.1
  - pip install -v --no-install -e . 
  - python setup.py install
 
