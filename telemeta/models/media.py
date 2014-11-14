@@ -229,6 +229,7 @@ class MediaCollection(MediaResource):
     legal_rights          = WeakForeignKey('LegalRight', related_name="collections", verbose_name=_('legal rights'))
 
     # Archiving data
+    code                  = CharField(_('code'), unique=True, required=True, validators=[is_valid_collection_code])
     acquisition_mode      = WeakForeignKey('AcquisitionMode', related_name="collections", verbose_name=_('mode of acquisition'))
     cnrs_contributor      = CharField(_('CNRS depositor'))
     copy_type             = WeakForeignKey('CopyType', related_name="collections", verbose_name=_('copy type'))
@@ -246,7 +247,6 @@ class MediaCollection(MediaResource):
     conservation_site     = CharField(_('conservation site'))
 
     # Technical data
-    code                  = CharField(_('code'), unique=True, required=True, validators=[is_valid_collection_code])
     old_code              = CharField(_('old code'), unique=False, null=True, blank=True)
     media_type            = WeakForeignKey('MediaType', related_name="collections", verbose_name=_('media type'))
     approx_duration       = DurationField(_('estimated duration'), help_text='hh:mm:ss')

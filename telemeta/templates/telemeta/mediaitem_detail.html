@@ -101,7 +101,7 @@
       </button>
     </a>
     {% if user.is_authenticated and perms.telemeta.change_mediaitem %}
-    <a href="{% url "telemeta-item-edit" item.id %}">
+    <a href="{% url "telemeta-item-edit" item.public_id %}">
       <button type="button" class="btn btn-default">
         <span class="glyphicon glyphicon-edit"></span> {% trans "Edit" %}
       </button>
