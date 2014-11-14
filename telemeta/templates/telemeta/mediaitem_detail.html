@@ -204,7 +204,8 @@ Item : <a href="{% url "telemeta-item-detail" item.public_id %}">{{ item }}</a>
             <dd><a href="{% url "telemeta-collection-detail" item.collection.public_id %}">{{ item.collection.title }}</a></dd>
             <dt>{% trans "Recording date" %}</dt>
             <dd>{% if item.recorded_from_date %}{{ item.recorded_from_date }}{% endif %}{% if item.recorded_from_date and item.recorded_to_date%} - {% endif %}{% if item.recorded_to_date %}{{ item.recorded_to_date}}{% endif %}</dd>
-            {% dl_field item "public_access" %}
+            <dt>{% trans "Access type" %}</dt>
+            <dd>{% trans item.public_access %}</dd>
         </dl>
         {% endblock general_info %}
     </div>
