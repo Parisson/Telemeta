@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-13 11:50+0100\n"
+"POT-Creation-Date: 2014-11-13 16:52+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -906,7 +906,7 @@ msgstr ""
 msgid "by message"
 msgstr ""
 
-#: templates/postman/base_folder.html:23 templates/telemeta/lists.html:75
+#: templates/postman/base_folder.html:23 templates/telemeta/lists.html:80
 msgid "Action"
 msgstr ""
 
@@ -933,9 +933,9 @@ msgid "g:i A,M j,n/j/y"
 msgstr ""
 
 #: templates/postman/base_folder.html:49 templates/postman/view.html:25
-#: templates/telemeta/collection_detail.html:224
+#: templates/telemeta/collection_detail.html:227
 #: templates/telemeta/collection_detail_dc.html:25
-#: templates/telemeta/lists.html:58
+#: templates/telemeta/lists.html:63
 #: templates/telemeta/mediaitem_detail.html:357
 #: templates/telemeta/mediaitem_detail_dc.html:20
 #: templates/telemeta/resource_detail.html:105
@@ -1110,7 +1110,7 @@ msgstr ""
 #: templates/telemeta/inc/module_revisions.html:17
 #: templates/telemeta/inc/resource_list.html:8
 #: templates/telemeta/inc/resource_related.html:21
-#: templates/telemeta/lists.html:69 templates/telemeta/mediaitem_copy.html:39
+#: templates/telemeta/lists.html:74 templates/telemeta/mediaitem_copy.html:39
 #: templates/telemeta/search_criteria.html:91
 #: templates/telemeta/search_results.html:53
 msgid "Title"
@@ -1208,7 +1208,7 @@ msgid ""
 msgstr ""
 
 #: templates/telemeta/base.html:175
-#: templates/telemeta/collection_detail.html:108
+#: templates/telemeta/collection_detail.html:111
 msgid "Legal notices"
 msgstr ""
 
@@ -1260,7 +1260,7 @@ msgid "Collection"
 msgstr ""
 
 #: templates/telemeta/collection_detail.html:43
-#: templates/telemeta/lists.html:55
+#: templates/telemeta/lists.html:60
 #: templates/telemeta/mediaitem_detail.html:95
 #: templates/telemeta/profile_detail.html:72
 #: templates/telemeta/resource_detail.html:43
@@ -1302,58 +1302,62 @@ msgstr ""
 msgid "unpublished"
 msgstr ""
 
-#: templates/telemeta/collection_detail.html:79
+#: templates/telemeta/collection_detail.html:81
 #: templates/telemeta/inc/collection_list.html:12
-#: templates/telemeta/lists.html:73
+#: templates/telemeta/lists.html:78
 msgid "Recording period"
 msgstr ""
 
-#: templates/telemeta/collection_detail.html:95
+#: templates/telemeta/collection_detail.html:86
+msgid "Access type"
+msgstr ""
+
+#: templates/telemeta/collection_detail.html:98
 #: templates/telemeta/mediaitem_detail.html:214
 msgid "Geographic and cultural informations"
 msgstr ""
 
-#: templates/telemeta/collection_detail.html:113
+#: templates/telemeta/collection_detail.html:116
 #: templates/telemeta/inc/collection_list.html:11
 #: templates/telemeta/inc/mediaitem_list.html:10
-#: templates/telemeta/lists.html:72
+#: templates/telemeta/lists.html:77
 msgid "Recordist"
 msgstr ""
 
-#: templates/telemeta/collection_detail.html:128
+#: templates/telemeta/collection_detail.html:131
 msgid "Bibliographic references"
 msgstr ""
 
-#: templates/telemeta/collection_detail.html:140
+#: templates/telemeta/collection_detail.html:143
 #: templates/telemeta/mediaitem_detail.html:277
 msgid "Archiving data"
 msgstr ""
 
-#: templates/telemeta/collection_detail.html:148
+#: templates/telemeta/collection_detail.html:151
 msgid "Related documentation"
 msgstr ""
 
-#: templates/telemeta/collection_detail.html:156
+#: templates/telemeta/collection_detail.html:159
 #: templates/telemeta/mediaitem_detail.html:319
 msgid "Comments"
 msgstr ""
 
-#: templates/telemeta/collection_detail.html:160
+#: templates/telemeta/collection_detail.html:163
 #: templates/telemeta/mediaitem_detail.html:291
 #: templates/telemeta/resource_detail.html:75
 msgid "Last modification"
 msgstr ""
 
-#: templates/telemeta/collection_detail.html:174
+#: templates/telemeta/collection_detail.html:177
 #: templates/telemeta/mediaitem_detail.html:301
 msgid "Technical data"
 msgstr ""
 
-#: templates/telemeta/collection_detail.html:184
+#: templates/telemeta/collection_detail.html:187
 msgid "Collection size"
 msgstr ""
 
-#: templates/telemeta/collection_detail.html:188
+#: templates/telemeta/collection_detail.html:191
 #: templates/telemeta/geo_countries.html:16
 msgid "Number of items"
 msgstr ""
@@ -1436,11 +1440,11 @@ msgstr ""
 msgid "Digitized"
 msgstr ""
 
-#: templates/telemeta/collection_list.html:36
+#: templates/telemeta/collection_list.html:38
 #: templates/telemeta/enumeration_edit.html:23
 #: templates/telemeta/instrument_alias_edit.html:22
-#: templates/telemeta/instrument_edit.html:22 templates/telemeta/lists.html:49
-#: templates/telemeta/resource_list.html:22
+#: templates/telemeta/instrument_edit.html:22 templates/telemeta/lists.html:51
+#: templates/telemeta/resource_list.html:24
 msgid "Add"
 msgstr ""
 
@@ -1579,7 +1583,7 @@ msgstr ""
 #: templates/telemeta/inc/collection_list.html:13
 #: templates/telemeta/inc/mediaitem_list.html:17
 #: templates/telemeta/inc/resource_list.html:11
-#: templates/telemeta/lists.html:71 templates/telemeta/mediaitem_copy.html:40
+#: templates/telemeta/lists.html:76 templates/telemeta/mediaitem_copy.html:40
 msgid "Code"
 msgstr ""
 
@@ -1628,7 +1632,7 @@ msgid "No item"
 msgstr ""
 
 #: templates/telemeta/inc/module_revisions.html:18
-#: templates/telemeta/lists.html:70
+#: templates/telemeta/lists.html:75
 msgid "Type"
 msgstr ""
 
@@ -1638,7 +1642,7 @@ msgid "User"
 msgstr ""
 
 #: templates/telemeta/inc/module_revisions.html:40
-#: templates/telemeta/lists.html:92
+#: templates/telemeta/lists.html:97
 msgid "deleted"
 msgstr ""
 
@@ -1682,7 +1686,7 @@ msgstr ""
 msgid "My playlists"
 msgstr ""
 
-#: templates/telemeta/lists.html:74
+#: templates/telemeta/lists.html:79
 #: templates/telemeta/search_criteria.html:143
 #: templates/telemeta/search_results.html:70
 msgid "Sound"
@@ -2105,7 +2109,7 @@ msgid ""
 "Please login or contact the website administator to get a private access."
 msgstr ""
 
-#: views/collection.py:312
+#: views/collection.py:317
 msgid "You have successfully updated your collection."
 msgstr ""
 

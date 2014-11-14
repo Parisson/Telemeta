@@ -45,6 +45,11 @@ a:hover {
 
 a img { border: none; }
 
+svg {
+    width: 100%;
+    height: 100%;
+}
+
 .rst-content h1 {
     font-size: 1.2em;
     font-weight: bold;
@@ -1107,23 +1112,42 @@ a.image-link {
     display: inline-block; /*otherwise width and height do not work*/
     background-repeat: no-repeat;
     text-decoration: none;
-
 }
 .markerdiv .markersdivOffset, .markerdiv .markersdivOffset:hover, .markerdiv .markersdivOffset:visited{
     color: #000;
 }
 .markerdiv .ts-marker, .markerdiv .ts-marker:hover, .markerdiv .ts-marker:visited{
-    font-family: monospace; background: #e65911;color: #FFF;padding-left: .3ex; padding-right:.3ex;
+    font-family: monospace;
+    background: #e65911;
+    color: #FFF;
+    padding-left: .3ex;
+    padding-right:.3ex;
 }
-.markersdivDelete{    background-image: url('../images/del_marker.png');width:15px;height:2ex;background-repeat: no-repeat;}
+.markersdivDelete{
+    background-image: url('../images/del_marker.png');
+    width:15px;
+    height:2ex;
+    background-repeat: no-repeat;
+    padding-left: 13px;
+    padding-right: 2px;
+}
 /*backfround-repeat is redundant with .markerDiv a,.. defined above but this way .markersDivDelete is re-usable in other context (eg popupdiv*/
-.markersdivAddPlaylist{    background-image: url('../images/add_playlist_marker.png');width:13px;height:2ex; }
-.markersdivTitle{    font-weight:bold;}
+.markersdivAddPlaylist{
+    background-image: url('../images/add_playlist_marker.png');
+    width:13px;
+    height:2ex;
+    padding-left: 13px;
+    padding-right: 2px;
+}
+.markersdivTitle{
+    font-weight:bold;
+}
 .markersdivEdit, .markersdivEdit:hover, .markersdivEdit:visited{
     line-height: normal;
     color:#000;
     background-position: -2px center;
-    padding-left: 13px; padding-right: 2px;
+    padding-left: 13px;
+    padding-right: 2px;
     font-size: 65%;
     border:2px solid #666;
     background-color: #fff;
