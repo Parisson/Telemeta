@@ -36,7 +36,7 @@ setup(
         'django-breadcrumbs',
         'django-bootstrap3',
         'django-bootstrap-pagination',
-        'timeside',
+        'timeside>=0.5.6',
         'south',
         'sorl-thumbnail',
         'docutils',
