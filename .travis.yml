@@ -19,7 +19,7 @@ before_install:
 
 # command to install dependencies
 install:
- - pip install -v -v -v -e . 
+ - pip install -v -e . --no-install --no-download 
  - python setup.py install
 
 # command to run tests
