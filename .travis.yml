@@ -18,7 +18,7 @@ before_install:
 
 # command to install dependencies
 install:
- - pip install -U timeside
+ - pip install -U timeside --nodeps
  - pip install -e . 
 
 # command to run tests
