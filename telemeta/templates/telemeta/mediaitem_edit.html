@@ -106,7 +106,6 @@
       </div>
       {% endfor %}
 
-        <!-- </div> -->
         <div class="tab-pane" id="tabs_container">
             <!-- this div will be hidden when everything is fully loaded-->
             <span id="loading_span" href="#"><img style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />&nbsp;
@@ -114,11 +113,10 @@
             <a id="tab_analysis" style="display:none" class ="tab" href="#">{% trans "File" %}</a><!--
              do not let space here as it appears in the document!!!!!
             --><a id="tab_markers" style="display:none" class="tab" href="#">{% trans "Markers" %}</a>
-        </div>
 
-        <div class="markers" id="markers_div_id"></div>
+          <div class="markers" id="markers_div_id"></div>
 
-        <div class="analyzer" id="analyzer_div_id">
+          <div class="analyzer" id="analyzer_div_id">
             <table width="100%">
                 <tr class="analyzer-title">
                     <td>{% trans "Property" %}</td>
@@ -127,9 +125,8 @@
                 </tr>
             </table>
 
+          </div>
         </div>
-        <!--</div>-->
-
     </div>
 
     <div align="center" style="margin-top:3ex;">
