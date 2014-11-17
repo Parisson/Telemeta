@@ -18,9 +18,8 @@ before_install:
 
 # command to install dependencies
 install:
- - pip install -v timeside==0.6.1
- - pip install -v --no-install -e . 
- - python setup.py install
+ - pip install -U --no-deps timeside 
+ - pip install -e . 
 
 # command to run tests
 script:
