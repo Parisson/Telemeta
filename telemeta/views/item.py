@@ -51,7 +51,7 @@ class ItemBaseMixin(object):
     export_enabled = getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True)
     export_formats = getattr(settings, 'TELEMETA_DOWNLOAD_FORMATS', ('mp3', 'wav'))
     default_grapher_id = getattr(settings, 'TIMESIDE_DEFAULT_GRAPHER_ID', ('waveform_simple'))
-    default_grapher_sizes = getattr(settings, 'TELEMETA_DEFAULT_GRAPHER_SIZES', ['360x130', ])
+    default_grapher_sizes = getattr(settings, 'TIMESIDE_DEFAULT_GRAPHER_SIZES', ['360x130', ])
     auto_zoom = getattr(settings, 'TIMESIDE_AUTO_ZOOM', False)
 
 
@@ -707,21 +707,18 @@ class ItemViewMixin(ItemBaseMixin):
                 break
         return grapher
 
-
     def get_object(self):
-        if 'public_id' in self.kwargs.keys():
-            obj = self.model.objects.filter(code=self.kwargs['public_id'])
-            if not obj:
+        item = self.model()
+        if 'public_id' in self.kwargs:
+            items = self.model.objects.filter(code=self.kwargs['public_id'])
+            if not items:
                 try:
-                    obj = self.model.objects.get(id=self.kwargs['public_id'])
+                    item = self.model.objects.get(id=self.kwargs['public_id'])
                 except:
                     pass
             else:
-                obj = obj[0]
-            self.pk = obj.pk
-            return get_object_or_404(self.model, pk=self.pk)
-        else:
-            return get_object_or_404(self.model, pk=self.kwargs['pk'])
+                item = items[0]
+        return item
 
 
 class ItemEditView(ItemViewMixin, UpdateWithInlinesView):
@@ -747,6 +744,7 @@ class ItemEditView(ItemViewMixin, UpdateWithInlinesView):
         context['export_formats'] = self.get_export_formats()
         context['visualizers'] = self.get_graphers()
         context['audio_export_enabled'] = self.export_enabled
+        context['auto_zoom'] = True
         return context
 
 
@@ -756,15 +754,17 @@ class ItemAddView(ItemViewMixin, CreateWithInlinesView):
     template_name = 'telemeta/mediaitem_add.html'
 
     def get_initial(self):
-        obj = MediaItem()
+        item = self.model()
         # new item for a specific collection
         if 'public_id' in self.kwargs:
             public_id = self.kwargs['public_id']
             collections = MediaCollection.objects.filter(code=public_id)
             if collections:
                 collection = collections[0]
-                obj.collection = collection
-        return model_to_dict(obj)
+                item.collection = collection
+                items = MediaItem.objects.filter(collection=collection)
+                item.code = auto_code(items, collection.code)
+        return model_to_dict(item)
 
     def get_success_url(self):
         return reverse_lazy('telemeta-items')
