@@ -15,12 +15,11 @@ before_install:
  - echo "deb-src http://debian.parisson.com/debian/ precise main" | sudo tee -a /etc/apt/sources.list.d/parisson.list
  - sudo apt-get update
  - sudo apt-get install -y python-timeside
- - python -c "import timeside; print timeside.__version__"
 
 # command to install dependencies
 install:
- - pip install -v -e . --no-install --no-download 
- - python setup.py install
+ - pip install -U timeside
+ - pip install -e . 
 
 # command to run tests
 script:

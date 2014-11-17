@@ -26,7 +26,7 @@ setup(
   author_email = "yomguy@parisson.com",
   version = '1.5',
   install_requires = [
-        'django==1.6.7',
+        'django==1.6.8',
         'django-registration',
         'django-extensions',
         'django-timezones',
