@@ -755,6 +755,17 @@ class ItemAddView(ItemViewMixin, CreateWithInlinesView):
     form_class = MediaItemForm
     template_name = 'telemeta/mediaitem_add.html'
 
+    def get_initial(self):
+        obj = MediaItem()
+        # new item for a specific collection
+        if 'public_id' in self.kwargs:
+            public_id = self.kwargs['public_id']
+            collections = MediaCollection.objects.filter(code=public_id)
+            if collections:
+                collection = collections[0]
+                obj.collection = collection
+        return model_to_dict(obj)
+
     def get_success_url(self):
         return reverse_lazy('telemeta-items')
 

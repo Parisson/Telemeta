@@ -37,6 +37,7 @@
 
 from telemeta.views.core import *
 
+
 class CollectionView(object):
     """Provide Collections web UI methods"""
 
@@ -239,8 +240,7 @@ class CollectionViewMixin(object):
                 pass
         else:
             obj = obj[0]
-        self.pk = obj.pk
-        return get_object_or_404(self.model, pk=self.pk)
+        return obj
 
 
 class CollectionListView(ListView):
