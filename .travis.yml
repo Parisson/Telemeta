@@ -22,5 +22,6 @@ install:
  - pip install -e .
 
 # command to run tests
-# script:
+script:
+ - python tests/test_import.py
 # - "python tests/testcomponent.py"
