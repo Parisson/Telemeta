@@ -18,10 +18,9 @@ before_install:
 
 # command to install dependencies
 install:
- - pip install -U --no-deps timeside 
- - pip install -e . 
+ - pip install -U --no-deps timeside
+ - pip install -e .
 
 # command to run tests
-script:
-
+# script:
 # - "python tests/testcomponent.py"
