@@ -25,4 +25,4 @@ install:
 before_script:
 - pip install -U pytest-cov pytest-django
 script:
- - py.test -v --cov telemeta
+ - python setup.py test

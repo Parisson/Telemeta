@@ -1,6 +1,20 @@
 # -*- coding: utf-8 -*-
 from setuptools import setup, find_packages
+from setuptools.command.test import test as TestCommand
 import os
+
+
+class PyTest(TestCommand):
+    def finalize_options(self):
+        TestCommand.finalize_options(self)
+        self.test_args = ['--strict', '--verbose', '--tb=long', 'tests' ,  
+                          '--cov' 'telemeta']
+        self.test_suite = True
+    def run_tests(self):
+        import pytest
+        errno = pytest.main(self.test_args)
+        sys.exit(errno)
+
 
 CLASSIFIERS = ['Environment :: Web Environment',
 'Framework :: Django',
@@ -44,6 +58,8 @@ setup(
         'pyyaml',
         'python-ebml',
   ],
+  cmdclass={'test': PyTest},
+  tests_require=['pytest'],
   dependency_links = ['https://github.com/yomguy/django-json-rpc/tarball/0.6.2',
                       'https://github.com/yomguy/django-dynamic-formset/tarball/master',
                       ],
