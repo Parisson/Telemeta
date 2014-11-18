@@ -2,7 +2,7 @@
 Telemeta: open web audio app with semantics
 ===============================================
 
-|version| |downloads| |travis_master| |coveralls_master|
+|version| |downloads| |travis_master|
 
 .. |travis_master| image:: https://secure.travis-ci.org/Parisson/Telemeta.png?branch=master
     :target: https://travis-ci.org/Parisson/Telemeta/
