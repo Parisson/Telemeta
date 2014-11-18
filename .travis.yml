@@ -23,6 +23,6 @@ install:
 
 # command to run tests
 before_script:
-- pip install pytest-cov pytest-django
+- pip install -U pytest-cov pytest-django
 script:
  - py.test -v --cov telemeta
