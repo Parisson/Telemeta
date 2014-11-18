@@ -65,6 +65,7 @@ News
  * Add TIMESIDE_AUTO_ZOOM in settings to auto toggle the player in zooming mode
  * Add TIMESIDE_DEFAULT_GRAPHER_ID in settings to select the default grapher in the player
  * Add minor migrations
+ * Fix marker display bug
 
 1.4.5
 +++++
