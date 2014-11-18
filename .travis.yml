@@ -23,5 +23,4 @@ install:
 
 # command to run tests
 script:
-
-# - "python tests/testcomponent.py"
+ - py.test -v --cov telemeta
