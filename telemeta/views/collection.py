@@ -281,14 +281,6 @@ class CollectionDetailView(CollectionViewMixin, DetailView):
         items = collection.items.enriched()
         context['collection'] = collection
         context['items'] = items.order_by('code', 'old_code')
-
-        if collection.public_access == 'none' and not (self.request.user.is_staff or self.request.user.is_superuser):
-            mess = ugettext('Access not allowed')
-            title = ugettext('Collection') + ' : ' + collection.public_id + ' : ' + mess
-            description = ugettext('Please login or contact the website administator to get a private access.')
-            messages.error(self.request, title)
-            return render(self.request, 'telemeta/messages.html', {'description' : description})
-
         context['playlists'] = get_playlists_names(self.request)
         context['related_media'] = MediaCollectionRelated.objects.filter(collection=collection)
         check_related_media(context['related_media'])

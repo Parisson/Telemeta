@@ -476,7 +476,6 @@ class ItemView(ItemBaseMixin):
                 path = self.cache_data.dir + os.sep + image_file
                 decoder  = timeside.decoder.file.FileDecoder(source)
                 graph = grapher(width = int(width), height = int(height))
-                print graph.id()
                 (decoder | graph).run()
                 graph.watermark('timeside', opacity=.6, margin=(5,5))
                 f = open(path, 'w')
@@ -781,3 +780,160 @@ class ItemCopyView(ItemAddView):
     def get_success_url(self):
         return reverse_lazy('telemeta-items')
 
+
+class ItemDetailView(ItemViewMixin, DetailView):
+
+    template_name = 'telemeta/mediaitem_detail.html'
+
+    def item_analyze(self, item):
+        analyses = item.analysis.all()
+        mime_type = ''
+
+        if analyses:
+            for analysis in analyses:
+                if not item.approx_duration and analysis.analyzer_id == 'duration':
+                    value = analysis.value
+                    time = value.split(':')
+                    time[2] = time[2].split('.')[0]
+                    time = ':'.join(time)
+                    item.approx_duration = time
+                    item.save()
+                if analysis.analyzer_id == 'mime_type':
+                    mime_type = analysis.value
+        else:
+            analyzers = []
+            analyzers_sub = []
+            graphers_sub = []
+
+            source = item.get_source()
+            if source:
+                decoder  = timeside.decoder.file.FileDecoder(source)
+                pipe = decoder
+
+                for analyzer in self.value_analyzers:
+                    subpipe = analyzer()
+                    analyzers_sub.append(subpipe)
+                    pipe = pipe | subpipe
+
+                default_grapher = self.get_grapher(self.default_grapher_id)
+                for size in self.default_grapher_sizes:
+                    width = size.split('x')[0]
+                    height = size.split('x')[1]
+                    image_file = '.'.join([item.public_id, self.default_grapher_id, size.replace('x', '_'), 'png'])
+                    path = self.cache_data.dir + os.sep + image_file
+                    graph = default_grapher(width = int(width), height = int(height))
+                    graphers_sub.append({'graph' : graph, 'path': path})
+                    pipe = pipe | graph
+
+                pipe.run()
+
+                for grapher in graphers_sub:
+                    grapher['graph'].watermark('timeside', opacity=.6, margin=(5,5))
+                    f = open(grapher['path'], 'w')
+                    grapher['graph'].render(grapher['path'])
+                    f.close()
+
+                mime_type = mimetypes.guess_type(source)[0]
+                analysis = MediaItemAnalysis(item=item, name='MIME type',
+                                             analyzer_id='mime_type', unit='', value=mime_type)
+                analysis.save()
+                analysis = MediaItemAnalysis(item=item, name='Channels',
+                                             analyzer_id='channels',
+                                             unit='', value=decoder.input_channels)
+                analysis.save()
+                analysis = MediaItemAnalysis(item=item, name='Samplerate',
+                                             analyzer_id='samplerate', unit='Hz',
+                                             value=unicode(decoder.input_samplerate))
+                analysis.save()
+                analysis = MediaItemAnalysis(item=item, name='Resolution',
+                                             analyzer_id='resolution', unit='bits',
+                                             value=unicode(decoder.input_width))
+                analysis.save()
+                analysis = MediaItemAnalysis(item=item, name='Duration',
+                                             analyzer_id='duration', unit='s',
+                                             value=unicode(datetime.timedelta(0,decoder.input_duration)))
+                analysis.save()
+                analysis = MediaItemAnalysis(item=item, name='Size',
+                                             analyzer_id='size', unit='', value=item.size())
+                analysis.save()
+
+                for analyzer in analyzers_sub:
+                    for key in analyzer.results.keys():
+                        result = analyzer.results[key]
+                        value = result.data_object.value
+                        if value.shape[0] == 1:
+                            value = value[0]
+                        analysis = MediaItemAnalysis(item=item, name=result.name,
+                                analyzer_id=result.id, unit=result.unit, value = unicode(value))
+                        analysis.save()
+
+#                FIXME: parse tags on first load
+#                tags = decoder.tags
+
+        self.mime_type = mime_type
+
+    def get_context_data(self, **kwargs):
+        context = super(ItemDetailView, self).get_context_data(**kwargs)
+
+        public_id = get_kwargs_or_none('public_id', self.kwargs)
+        marker_id = get_kwargs_or_none('marker_id', self.kwargs)
+        width = get_kwargs_or_none('width', self.kwargs)
+        height = get_kwargs_or_none('height', self.kwargs)
+
+        # get item with one of its given marker_id
+        if not public_id and marker_id:
+            marker = MediaItemMarker.objects.get(public_id=marker_id)
+            item_id = marker.item_id
+            item = MediaItem.objects.get(id=item_id)
+        else:
+            item = MediaItem.objects.get(public_id=public_id)
+
+        access = get_item_access(item, self.request.user)
+
+        if access == 'none':
+            mess = ugettext('Access not allowed.')
+            title = ugettext('Item') + ' : ' + public_id + ' : ' + mess
+            description = ugettext('Please login or contact the website administator to get a private access.')
+            message = title + '\n' + description
+            messages.error(self.request, title)
+            context['access'] = None
+
+        previous, next = self.item_previous_next(item)
+
+        self.item_analyze(item)
+
+        #FIXME: use mimetypes.guess_type
+        if 'quicktime' in self.mime_type:
+            self.mime_type = 'video/mp4'
+
+        playlists = get_playlists_names(self.request)
+        related_media = MediaItemRelated.objects.filter(item=item)
+        check_related_media(related_media)
+        revisions = Revision.objects.filter(element_type='item', element_id=item.id).order_by('-time')
+        if revisions:
+            last_revision = revisions[0]
+        else:
+            last_revision = None
+
+        format = ''
+        if Format.objects.filter(item=item):
+            format = item.format.get()
+
+        context['item'] = item
+        context['export_formats'] = self.get_export_formats()
+        context['visualizers'] = self.get_graphers()
+        context['auto_zoom'] = self.auto_zoom
+        context['audio_export_enabled'] = self.export_enabled
+        context['previous'] = previous
+        context['next'] = next
+        context['marker'] = marker_id
+        context['playlists'] = playlists
+        context['access'] = access
+        context['width'] = width
+        context['height'] = height
+        context['related_media'] = related_media
+        context['mime_type'] = self.mime_type
+        context['last_revision'] = last_revision
+        context['format'] = format
+
+        return context

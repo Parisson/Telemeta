@@ -74,7 +74,7 @@ urlpatterns = patterns('',
     url(r'^archives/items_unpublished/$', ItemUnpublishedListView.as_view(), name="telemeta-items-unpublished"),
     url(r'^archives/items_published/$', ItemPublishedListView.as_view(), name="telemeta-items-published"),
 
-    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/$', item_view.item_detail, name="telemeta-item-detail"),
+    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/$', ItemDetailView.as_view(), name="telemeta-item-detail"),
     url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/dc/$', item_view.item_detail, {'template': 'telemeta/mediaitem_detail_dc.html'}, name="telemeta-item-dublincore"),
     url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/dc/xml/$', item_view.item_detail, {'format': 'dublin_core_xml'}, name="telemeta-item-dublincore-xml"),
     url(r'^archives/items/download/(?P<public_id>[A-Za-z0-9._-]+)\.(?P<extension>' + export_extensions + ')$', item_view.item_export, name="telemeta-item-export"),
