@@ -1,3 +1,47 @@
+1.5
++++++
+
+ * Compatible with Django 1.6.x
+ * Huge refactor of all forms, detail and edit views
+ * Main styles are now based Bootstrap 3.x
+ * Update models thanks to the CREM needs
+ * Compatible with TimeSide 0.6.x
+
+1.4.6
++++++
+
+ * Drastically improve collection zip packaqe streaming thanks to zipstream (check NEW dependencies)
+ * Compatible with TimeSide >= 0.5.2
+ * Add URL field to item so that a external sound can be indexed and streamed
+ * Add TIMESIDE_AUTO_ZOOM in settings to auto toggle the player in zooming mode
+ * Add TIMESIDE_DEFAULT_GRAPHER_ID in settings to select the default grapher in the player
+ * Add minor migrations
+ * Fix marker display bug
+
+1.4.5
++++++
+
+ * Collection and Item regex in settings allowed
+ * Change resource list filtering rules
+ * Add KdenLive session parsers and auto faders to auto tag audio or video timeline
+ * Add ffmpeg based transcoding tools
+ * Add enumerations replacing methods
+ * Add chat rooms for enumerations
+ * Cleanup some useless model properties
+ * Many, many and many bugfixes
+ * Last version compatible with TimeSide 0.4.x
+ * Please check the new dependencies in setup.py
+ * As always after upgrading: ./manage.py migrate telemeta
+
+1.4.4
++++++
+
+ * no new fancy functions
+ * full using of static files which are now in static/ (htdocs/ is now deprecated)
+ * IMPORTANT : upgrade TimeSide to 0.4.1, add 'timeside' to INSTALLED_APPS and do: ./manage.py collectstatic
+ * add various buttons, various bugfixes
+ * after upgrading, always do: ./manage.py migrate
+
 telemeta (1.4.3-1) unstable; urgency=low
 
  * add solr-thumbnail for automatic thumbnail handling of all related media images (please install)
