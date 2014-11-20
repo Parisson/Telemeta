@@ -8,8 +8,12 @@ recursive-include doc *
 recursive-include example *
 recursive-include telemeta/locale *
 recursive-include telemeta/templates *
-recursive-include telemeta/static *
-recursive-exclude telemeta/static/lib *
+recursive-include telemeta/static/video-js *
+recursive-include telemeta/static/telemeta/css *
+recursive-include telemeta/static/telemeta/images *
+recursive-include telemeta/static/telemeta/js *
+recursive-include telemeta/static/telemeta/swf *
+recursive-exclude telemeta/static/telemeta/lib *
 recursive-include telemeta/backup *
 recursive-include telemeta/pages *
 recursive-exclude example/sandbox/media *
