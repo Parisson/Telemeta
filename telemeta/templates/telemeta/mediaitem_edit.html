@@ -13,6 +13,60 @@
 </div>
 {% endblock %}
 
+    {% block player %}
+
+    {% if access == 'full' or perms.telemeta.can_play_all_items %}
+    <div id="player_maximized" class="ts-skin-lab">
+       <div id="player_header">
+        <a href="#" class="toggle">Minimize</a>
+        <a href="#" class="embed_player_frame">&lt;/&gt;</a>
+       </div>
+        <div class="wazing"></div>
+    </div>
+    <div id="rightcol">
+        <div id="player_minimized" class="ts-skin-lab">
+            <a href="#" class="toggle">Maximize</a>
+            <a href="#" class="embed_player_frame">&lt;/&gt;</a>
+            <div class="wazing"></div>
+            <div id="player" class="ts-player">
+            </div>
+        </div>
+
+    {% if "video" in mime_type %}
+    <div>
+    <video id="my_video_1" class="video-js vjs-default-skin" width="362" height="240" controls preload="auto" data-setup="{}">
+        <!-- Hello Chrome and Firefox (and Opera?) -->
+        <source src="{% url "telemeta-item-export" item.public_id mime_type|mime_to_ext %}" type="{{ mime_type }}" />
+        </video>
+        <!--<div id="videotime"></div>-->
+    </div>
+    <script>
+    (function(){
+        var v = document.getElementsByTagName('video')[0]
+        var t = document.getElementById('videotime');
+        v.addEventListener('timeupdate',function(event){
+            t.innerHTML = v.currentTime;
+            },false);
+            })();
+    </script>
+    {% endif %}
+
+    </div>
+
+    {% else %}
+
+    <div id="rightcol">
+        <div id="no-sound-access">
+            {% trans "You don't have access to the media of this item." %} {% trans "Please contact the administrators to get more rights." %} <a href="{% url "telemeta-flatpage" 'legal_notices' %}" target="_blank">{% trans "Click here" %}</a>
+        </div>
+    </div>
+
+    {% endif %}
+
+    {% endblock player %}
+
+
+
 {% block infos %}
   <div>
     <form enctype="multipart/form-data" id="_editItemForm" method="post" action="">{% csrf_token %}
@@ -24,6 +78,7 @@
       <li><a href="#performances" role="tab" data-toggle="tab">{% trans "Performance" %}</a></li>
       <!-- <li><a href="#format" role="tab" data-toggle="tab">{% trans "Format" %}</a></li> -->
       <li><a href="#identifiers" role="tab" data-toggle="tab">{% trans "Identifier" %}</a></li>
+      <li><a href="#tabs_container" role="tab" data-toggle="tab">{% trans "Markers" %}</a></li>
     </ul>
 
     <div class="tab-content">
@@ -51,6 +106,27 @@
       </div>
       {% endfor %}
 
+        <div class="tab-pane" id="tabs_container">
+            <!-- this div will be hidden when everything is fully loaded-->
+            <span id="loading_span" href="#"><img style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />&nbsp;
+                <span id="loading_span_text">Loading...</span></span>
+            <a id="tab_analysis" style="display:none" class ="tab" href="#">{% trans "File" %}</a><!--
+             do not let space here as it appears in the document!!!!!
+            --><a id="tab_markers" style="display:none" class="tab" href="#">{% trans "Markers" %}</a>
+
+          <div class="markers" id="markers_div_id"></div>
+
+          <div class="analyzer" id="analyzer_div_id">
+            <table width="100%">
+                <tr class="analyzer-title">
+                    <td>{% trans "Property" %}</td>
+                    <td>{% trans "Value" %}</td>
+                    <td>{% trans "Unit" %}</td>
+                </tr>
+            </table>
+
+          </div>
+        </div>
     </div>
 
     <div align="center" style="margin-top:3ex;">

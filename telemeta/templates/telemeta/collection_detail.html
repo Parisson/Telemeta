@@ -30,11 +30,11 @@
 </script>
 {% endblock %}
 
-{% if object %}
+{% if collection %}
 
 {% block title %}
     <img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" />
-    Collection : {{ object.title }}
+    Collection : {{ collection.title }}
 {% endblock %}
 
 {% block title_buttons %}
@@ -120,7 +120,7 @@
                 <h4><a href="#">{% trans "Geographic and cultural informations" %}</a></h4>
                 <div>
                     <dl class="listing">
-                        {% dl_field collection "countries" join with ", " %}
+                        {% dl_field collection "main_countries" join with ", " %}
                         {% dl_field collection "ethnic_groups" join with ", " placeholder %}
                     </dl>
                 </div>
@@ -166,6 +166,7 @@
                 <div>
                     <dl class="listing">
                         {% dl_field collection "code" %}
+                        {% dl_field collection "old_code" %}
                         {% dl_field collection "acquisition_mode" %}
                         {% dl_field collection "cnrs_contributor" %}
                         {% dl_field collection "copy_type" %}
@@ -200,7 +201,6 @@
                 <h4><a href="#">{% trans "Technical data" %}</a></h4>
                 <div>
                     <dl class="listing">
-                        {% dl_field collection "old_code" %}
                         {% dl_field collection "media_type" %}
                         {% if not collection.computed_duration %}
                         {% dl_field collection "approx_duration" %}

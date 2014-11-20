@@ -37,6 +37,7 @@
 
 from telemeta.views.core import *
 
+
 class CollectionView(object):
     """Provide Collections web UI methods"""
 
@@ -239,8 +240,7 @@ class CollectionViewMixin(object):
                 pass
         else:
             obj = obj[0]
-        self.pk = obj.pk
-        return get_object_or_404(self.model, pk=self.pk)
+        return obj
 
 
 class CollectionListView(ListView):
@@ -281,14 +281,6 @@ class CollectionDetailView(CollectionViewMixin, DetailView):
         items = collection.items.enriched()
         context['collection'] = collection
         context['items'] = items.order_by('code', 'old_code')
-
-        if collection.public_access == 'none' and not (self.request.user.is_staff or self.request.user.is_superuser):
-            mess = ugettext('Access not allowed')
-            title = ugettext('Collection') + ' : ' + collection.public_id + ' : ' + mess
-            description = ugettext('Please login or contact the website administator to get a private access.')
-            messages.error(self.request, title)
-            return render(self.request, 'telemeta/messages.html', {'description' : description})
-
         context['playlists'] = get_playlists_names(self.request)
         context['related_media'] = MediaCollectionRelated.objects.filter(collection=collection)
         check_related_media(context['related_media'])
@@ -327,15 +319,15 @@ class CollectionAddView(CollectionViewMixin, CreateWithInlinesView):
     inlines = [CollectionRelatedInline, CollectionIdentifierInline]
 
     def get_success_url(self):
-        return reverse_lazy('telemeta-collections')
+        return reverse_lazy('telemeta-collection-detail', kwargs={'public_id':self.object.code})
 
 
 class CollectionCopyView(CollectionAddView):
 
-    template_name = 'telemeta/collection_add.html'
+    template_name = 'telemeta/collection_edit.html'
 
     def get_initial(self):
         return model_to_dict(self.get_object())
 
     def get_success_url(self):
-        return reverse_lazy('telemeta-collections')
+        return reverse_lazy('telemeta-collection-detail', kwargs={'public_id':self.object.code})

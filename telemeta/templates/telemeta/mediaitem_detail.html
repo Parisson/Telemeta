@@ -11,6 +11,7 @@
 {% endblock %}
 
 {% block extra_javascript %}
+
 {% if item %}
 
 <script src="{{ STATIC_URL }}telemeta/js/popupdiv-min.js" type="text/javascript"></script>
@@ -27,7 +28,7 @@
 
 <script type="text/javascript">
     {% if item.file or item.url %}
-    {% if access == 'full' or perms.telemeta.can_play_all_items %}
+     {% if access == 'full' or perms.telemeta.can_play_all_items %}
         //initializing soundManager default properties
         soundManager.flashVersion = 9;
         soundManager.url = "{{ STATIC_URL }}timeside/swf/";
@@ -55,7 +56,7 @@
              CURRENT_USER_NAME,  //undefined if !user.is_authenticated
              false); //false because not superuser
         {% endif %}
-    {% endif %}
+     {% endif %}
     {% endif %}
     //playlists:
     {% if user.is_authenticated %}
@@ -136,6 +137,7 @@
     {% block player %}
 
     {% if access == 'full' or perms.telemeta.can_play_all_items %}
+
     <div id="player_maximized" class="ts-skin-lab">
        <div id="player_header">
         <a href="#" class="toggle">Minimize</a>
@@ -204,6 +206,7 @@
         {% endif %}
 
     </div>
+
     {% else %}
 
     <div id="rightcol">
@@ -240,7 +243,7 @@
             <h4><a href="#">{% trans "Geographic and cultural informations" %}</a></h4>
             <dl class="listing">
                 <dt>{% trans "Location" %}</dt>
-                <dd>{% if item.location %}{{ item.location.fullnames|join:"<br/>" }}{% endif %}</dd>
+                <dd>{% if item.location %}{{ item.location.name }}{% endif %}</dd>
                 {% dl_field item "location_comment" %}
                 {% dl_field item "cultural_area" %}
                 {% dl_field item "language" %}
@@ -328,7 +331,9 @@
             <div>
                 <dl class="listing">
                     {% dl_field item "media_type" %}
+                    {% if not item.file %}
                     {% dl_field item "approx_duration" %}
+                    {% endif %}
                     {% if item.size %}
                     <dt>{% trans "Item size" %}</dt>
                      <dd>{{ item.size|filesizeformat }}</dd>

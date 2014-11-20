@@ -278,3 +278,9 @@ def get_room(content_type=None, id=None, name=None):
         room = rooms[0]
     return room
 
+
+def get_kwargs_or_none(key, kwargs):
+    if key in kwargs.keys():
+        return kwargs[key]
+    else:
+        return None

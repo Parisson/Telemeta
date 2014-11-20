@@ -2,15 +2,24 @@
 Telemeta: open web audio app with semantics
 ===============================================
 
-For personal or collaborative media archiving projects, research laboratories and digital humanities, especially in ethnomusicological use cases.
+|version| |downloads| |travis_master|
 
-Based on Python, Django, HTML5, CSS and JavaScript.
+.. |travis_master| image:: https://secure.travis-ci.org/Parisson/Telemeta.png?branch=master
+    :target: https://travis-ci.org/Parisson/Telemeta/
+
+.. |version| image:: https://pypip.in/version/Telemeta/badge.png
+  :target: https://pypi.python.org/pypi/Telemeta/
+  :alt: Version
+
+.. |downloads| image:: https://pypip.in/download/Telemeta/badge.svg
+    :target: https://pypi.python.org/pypi/Telemeta/
+    :alt: Downloads
 
 
 Overview
 =========
 
-Telemeta is a free and open source web audio archiving software which introduces useful and secure methods to backup, index, transcode, analyse and publish any digitalized audio file with all its metadata. It is dedicated to professionnals who wants to easily organize, backup and publish documented sound collections of audio files, CDs, digitalized vinyls and magnetic tapes over a strong database, in accordance with open web standards.
+Telemeta is a free and open source web audio archiving software which introduces useful and secure methods to backup, index, transcode, analyse and publish any digitalized audio file with extensive metadata. It is dedicated to collaborative media archiving projects, research laboratories and digital humanities - and especially in ethnomusicological use cases - who wants to easily organize, backup and publish documented sound collections of audio files, CDs, digitalized vinyls and magnetic tapes over a strong database, in accordance with open web standards.
 
 Key features:
 
