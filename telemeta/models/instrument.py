@@ -44,6 +44,7 @@ class Instrument(ModelCore):
 
     class Meta(MetaCore):
         db_table = 'instruments'
+        ordering = ['name']
 
     def __unicode__(self):
         return self.name
@@ -55,36 +56,37 @@ class InstrumentAlias(ModelCore):
     class Meta(MetaCore):
         db_table = 'instrument_aliases'
         verbose_name_plural = _('instrument aliases')
+        ordering = ['name']
 
     def __unicode__(self):
         return self.name
 
 class InstrumentRelation(ModelCore):
     "Instrument family"
-    instrument        = ForeignKey('Instrument', related_name="parent_relation", 
+    instrument        = ForeignKey('Instrument', related_name="parent_relation",
                                    verbose_name=_('instrument'))
-    parent_instrument = ForeignKey('Instrument', related_name="child_relation", 
+    parent_instrument = ForeignKey('Instrument', related_name="child_relation",
                                    verbose_name=_('parent instrument'))
 
     class Meta(MetaCore):
         db_table = 'instrument_relations'
         unique_together = (('instrument', 'parent_instrument'),)
-    
+
     def __unicode__(self):
         sep = ' > '
         return self.parent_instrument.name + sep + self.instrument.name
 
 class InstrumentAliasRelation(ModelCore):
     "Instrument family other name"
-    alias      = ForeignKey('InstrumentAlias', related_name="other_name", 
+    alias      = ForeignKey('InstrumentAlias', related_name="other_name",
                             verbose_name=_('alias'))
-    instrument = ForeignKey('Instrument', related_name="relation", 
+    instrument = ForeignKey('Instrument', related_name="relation",
                             verbose_name=_('instrument'))
 
     def __unicode__(self):
         sep = ' : '
         return self.alias.name + sep + self.instrument.name
-        
+
     class Meta(MetaCore):
         db_table = 'instrument_alias_relations'
         unique_together = (('alias', 'instrument'),)

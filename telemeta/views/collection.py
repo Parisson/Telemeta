@@ -37,6 +37,7 @@
 
 from telemeta.views.core import *
 
+
 class CollectionView(object):
     """Provide Collections web UI methods"""
 
@@ -52,7 +53,7 @@ class CollectionView(object):
             messages.error(request, title)
             return render(request, 'telemeta/messages.html', {'description' : description})
 
-        playlists = get_playlists(request)
+        playlists = get_playlists_names(request)
 
         related_media = MediaCollectionRelated.objects.filter(collection=collection)
         check_related_media(related_media)
@@ -223,3 +224,110 @@ class CollectionPackageView(View):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(CollectionPackageView, self).dispatch(*args, **kwargs)
+
+
+class CollectionViewMixin(object):
+
+    model = MediaCollection
+    form_class = MediaCollectionForm
+
+    def get_object(self):
+        obj = self.model.objects.filter(code=self.kwargs['public_id'])
+        if not obj:
+            try:
+                obj = self.model.objects.get(id=self.kwargs['public_id'])
+            except:
+                pass
+        else:
+            obj = obj[0]
+        return obj
+
+
+class CollectionListView(ListView):
+
+    model = MediaCollection
+    template_name = "telemeta/collection_list.html"
+    paginate_by = 20
+    queryset = MediaCollection.objects.enriched()
+
+    def get_context_data(self, **kwargs):
+        context = super(CollectionListView, self).get_context_data(**kwargs)
+        context['count'] = self.object_list.count()
+        return context
+
+
+class CollectionUnpublishedListView(CollectionListView):
+
+    queryset = MediaCollection.objects.filter(code__contains='_I_')
+
+
+class CollectionPublishedListView(CollectionListView):
+
+    queryset = MediaCollection.objects.filter(code__contains='_E_')
+
+
+class CollectionSoundListView(CollectionListView):
+
+    queryset = MediaCollection.objects.sound().order_by('code', 'old_code')
+
+
+class CollectionDetailView(CollectionViewMixin, DetailView):
+
+    template_name = 'telemeta/collection_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(CollectionDetailView, self).get_context_data(**kwargs)
+        collection = self.get_object()
+        items = collection.items.enriched()
+        context['collection'] = collection
+        context['items'] = items.order_by('code', 'old_code')
+        context['playlists'] = get_playlists_names(self.request)
+        context['related_media'] = MediaCollectionRelated.objects.filter(collection=collection)
+        check_related_media(context['related_media'])
+        context['parents'] = MediaCorpus.objects.filter(children=collection)
+        revisions = Revision.objects.filter(element_type='collection',
+                                            element_id=collection.id).order_by('-time')
+        if revisions:
+            context['last_revision'] = revisions[0]
+        else:
+            context['last_revision'] = None
+
+        return context
+
+
+class CollectionDetailViewDC(CollectionDetailView):
+
+    template_name = "telemeta/collection_detail_dc.html"
+
+
+class CollectionEditView(CollectionViewMixin, UpdateWithInlinesView):
+
+    template_name = 'telemeta/collection_edit.html'
+    inlines = [CollectionRelatedInline, CollectionIdentifierInline]
+
+    def form_valid(self, form):
+        messages.info(self.request, _("You have successfully updated your collection."))
+        return super(CollectionEditView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('telemeta-collection-detail', kwargs={'public_id':self.kwargs['public_id']})
+
+
+class CollectionAddView(CollectionViewMixin, CreateWithInlinesView):
+
+    template_name = 'telemeta/collection_add.html'
+    inlines = [CollectionRelatedInline, CollectionIdentifierInline]
+
+    def get_success_url(self):
+        return reverse_lazy('telemeta-collection-detail', kwargs={'public_id':self.object.code})
+
+
+class CollectionCopyView(CollectionAddView):
+
+    template_name = 'telemeta/collection_edit.html'
+
+    def get_initial(self):
+        return model_to_dict(self.get_object())
+
+    def get_success_url(self):
+        return reverse_lazy('telemeta-collection-detail', kwargs={'public_id':self.object.code})

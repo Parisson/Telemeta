@@ -34,7 +34,7 @@
 {% block pm_recipient_cell %}   <td>{{ message.obfuscated_recipient|or_me:user }}{% if message.count %} ({{ message.count }}){% endif %}</td>{% endblock %}
    <td>{% if message.is_new %}<strong>{% endif %}{% if message.is_replied %}<em>{% endif %}
 {% block pm_subject %}
-    <a href="{% if by_conversation and message.thread_id %}{% url postman_view_conversation message.thread_id %}{% else %}{{message.get_absolute_url }}{% endif %}?next={{ current_url|urlencode }}">
+    <a href="{% if by_conversation and message.thread_id %}{% url "postman_view_conversation" message.thread_id %}{% else %}{{message.get_absolute_url }}{% endif %}?next={{ current_url|urlencode }}">
     {% include "postman/inc_subject_ex.html" %}
     </a>
 {% endblock %}
@@ -46,9 +46,9 @@
 
 <br />
 {% block pm_form_buttons %}<span id="pm_buttons">
-{% block pm_delete_button %}<button type="submit" onclick="this.form.action='{% url postman_delete %}'">{% trans "Delete" %}</button>{% endblock %}
-{% block pm_archive_button %}<button type="submit" onclick="this.form.action='{% url postman_archive %}'">{% trans "Archive" %}</button>{% endblock %}
-{% block pm_undelete_button %}<button type="submit" onclick="this.form.action='{% url postman_undelete %}'">{% trans "Undelete" %}</button>{% endblock %}
+{% block pm_delete_button %}<button type="submit" onclick="this.form.action='{% url "postman_delete" %}'">{% trans "Delete" %}</button>{% endblock %}
+{% block pm_archive_button %}<button type="submit" onclick="this.form.action='{% url "postman_archive" %}'">{% trans "Archive" %}</button>{% endblock %}
+{% block pm_undelete_button %}<button type="submit" onclick="this.form.action='{% url "postman_undelete" %}'">{% trans "Undelete" %}</button>{% endblock %}
 </span>{% endblock %}
 
 </form>

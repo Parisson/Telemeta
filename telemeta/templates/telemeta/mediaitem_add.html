@@ -1,68 +1,25 @@
-{% extends "telemeta/base.html" %}
+{% extends "telemeta/mediaitem_edit.html" %}
 {% load telemeta_utils %}
 {% load i18n %}
 
 {% block head_title %}{% trans "Item" %}- {{ block.super }}{% endblock %}
 
-{% if item %}
 {% block title %}
-    <img src="{{ STATIC_URL }}telemeta/images/item.png" alt="item" style="vertical-align:middle" /> Item : NEW
+    <img src="{{ STATIC_URL }}telemeta/images/item.png" alt="item" style="vertical-align:middle" /> Item : {% trans "New" %}
 {% endblock %}
 
-{% block title_buttons %}
-      <a href="{% url telemeta-items %}"
-           class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
-    {% if perms.telemeta.add_mediaitem %}
-      <a href="#" class="component_icon button icon_save" onclick="var d=document; d.getElementById('wait-img').style.display='inline'; setTimeout(function(){d.getElementById('_addItemForm').submit();},300); return false;">{% trans "Save" %}</a>
-    {% endif %}
-      <br /><br />
-      <img id="wait-img" style="display:none" style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />
-{% endblock %}
+    {% block cancel %}
+    <a id="cancel" href="{% url "telemeta-items" %}">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-remove"></span> {% trans "Cancel" %}
+      </button>
+    </a>
+    {% endblock %}
 
-{% block content %}
-    {% block infos %}
-    <div class="infos">
-     <form method="post" id="_addItemForm" action="" enctype="multipart/form-data">{% csrf_token %}
-       <ul>{% for error in form.non_field_errors %}<li class="error">{{ error }}</li>{% endfor %}</ul>
-       <table>
-       {% for form in forms %}
-       <tr><td colspan="2">{% for error in form.non_field_errors %}<li class="error">{{ error }}</li>{% endfor %}</td></tr>
-       <tr><td colspan="2"><h2>{{ form.prefix|capitalize }}</h2><hr /></td></tr>
-
-        {% for field in form %}
-            <tr>
-                <tr><td class="error">{{ field.errors }}</td></tr>
-                <td>{{ field.label_tag }}:</td>
-                <td>
-                {% if field.html_name == "item-public_access" %}
-                &nbsp;{% trans "Collection access status" %} : {% trans item.collection.public_access %}<br />
-                &nbsp;{% trans "Context access status" %} : {% trans access %}<br />
-                &nbsp;{% trans "Item access status" %} :<br />
-                {% endif %}
-                {{ field }}
-                </td>
-            </tr>
-        {% endfor %}
-       {% endfor %}
-       </table>
-       <div align="center" style="margin-top:3ex;">
-        <a href="{% url telemeta-items %}"
-           class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
-        {% if perms.telemeta.add_mediaitem %}
-        <a href="#" class="component_icon button icon_save"
-   onclick="var d=document; d.getElementById('wait-img2').style.display='inline'; setTimeout(function(){d.getElementById('_addItemForm').submit();},300); return false;">{% trans "Save" %}</a>
-       {% endif %}
-       <img id="wait-img2" style="display:none" style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />
-       </div>
-     </form>
-    </div>
-  {% endblock infos %}
-</div> <!-- with-rightcol -->
-{% endblock %}
-
-{% block delete %}
-{% endblock %}
-
-{% else %}
-<p>No such item</p>
-{% endif %}
+     {% block cancel2 %}
+     <a id="cancel" href="{% url "telemeta-items" %}">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-remove"></span> {% trans "Cancel" %}
+      </button>
+     </a>
+     {% endblock %}

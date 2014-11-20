@@ -64,8 +64,9 @@ class AdminView(object):
         enumerations = []
         for model in models:
             if issubclass(model, Enumeration):
-                enumerations.append({"name": model._meta.verbose_name,
-                    "id": model._meta.module_name})
+                if not model.hidden:
+                    enumerations.append({"name": model._meta.verbose_name,
+                                         "id": model._meta.module_name})
 
         cmp = lambda obj1, obj2: unaccent_icmp(obj1['name'], obj2['name'])
         enumerations.sort(cmp)
@@ -178,7 +179,7 @@ class AdminView(object):
             objects = getattr(from_record, link).all()
             for obj in objects:
                 for name in obj._meta.get_all_field_names():
-                    try: 
+                    try:
                         field = obj._meta.get_field(name)
                         if type(field) == field_type:
                             if field.rel.to == enumeration:

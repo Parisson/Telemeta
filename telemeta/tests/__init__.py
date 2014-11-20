@@ -33,5 +33,5 @@
 # Authors: Olivier Guilyardi <olivier@samalyse.com>
 #          David LIPSZYC <davidlipszyc@gmail.com>
 
-from model_tests import *
-from util_tests import *
+#from model_tests import *
+#from util_tests import *

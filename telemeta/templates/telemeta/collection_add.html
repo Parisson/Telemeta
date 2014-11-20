@@ -1,41 +1,24 @@
-{% extends "telemeta/collection_detail.html" %}
+{% extends "telemeta/collection_edit.html" %}
 {% load i18n %}
 {% load telemeta_utils %}
 
 {% block title %}
-    <img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" /> Collection : NEW
+    <img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" /> Collection : {% trans "New" %}
 {% endblock %}
 
-{% block title_buttons %}
-     <a href="{% url telemeta-collections %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
-     <a href="#" class="component_icon button icon_save"
-                onclick="document.getElementById('_addCollectionForm').submit(); return false;">{% trans "Save" %}</a>
-{% endblock %}
+    {% block cancel %}
+    <a id="cancel" href="{% url "telemeta-collections" %}">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-remove"></span> {% trans "Cancel" %}
+      </button>
+    </a>
+    {% endblock %}
 
-{% block infos %}
-        <div class="infos">
-        <form method="post" id ="_addCollectionForm" action="">{% csrf_token %}
-        <table>
-        <tr><td colspan="2">{% for error in form.non_field_errors %}<li class="error">{{ error }}</li>{% endfor %}</td></tr>
-        {% for field in form %}
-         <tr>
-        {% if field.html_name == "copied_from_item" or field.html_name == "doctype_code" %}
-            <td>{{ field.label_tag.as_hidden }}</td><td>{{ field.as_hidden }}</td>
-        {% else %}
-            <tr><td class="error">{{ field.errors }}</td></tr>
-            <td>{{ field.label_tag }}:</td><td> {{ field }}</td>
-        {% endif %}
-        </tr>
-        {% endfor %}
-        </table>
-        <div align="center" style="margin-top:3ex;">
-            <a href="{% url telemeta-collections %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
-            <a href="#" class="component_icon button icon_save"
-                onclick="document.getElementById('_addCollectionForm').submit(); return false;">{% trans "Save" %}</a>
-        </div>
-        </form>
-        </div>
-{% endblock infos%}
+     {% block cancel2 %}
+     <a id="cancel" href="{% url "telemeta-collections" %}">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-remove"></span> {% trans "Cancel" %}
+      </button>
+     </a>
+     {% endblock %}
 
-{% block delete %}
-{% endblock %}

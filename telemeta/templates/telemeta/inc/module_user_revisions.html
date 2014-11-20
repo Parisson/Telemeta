@@ -3,9 +3,9 @@
 {% load i18n %}
 
 {% block rss_title %}
-<a href="{% url telemeta-user-rss user.username %}">
+<a href="{% url "telemeta-user-rss" user.username %}">
 <img src="{{ STATIC_URL }}telemeta/images/rss.png" alt="rss" style="vertical-align:middle" />
 <h3>{% trans title %}</h3></a>
-<a href="{% url telemeta-user-rss user.username %}" style="float:right" class="icon_rss">&nbsp;&nbsp;</a>
+<a href="{% url "telemeta-user-rss" user.username %}" style="float:right" class="icon_rss">&nbsp;&nbsp;</a>
 {% endblock rss_title %}
 

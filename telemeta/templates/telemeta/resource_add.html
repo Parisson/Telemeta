@@ -1,45 +1,24 @@
-{% extends "telemeta/resource_detail.html" %}
+{% extends "telemeta/resource_edit.html" %}
 {% load i18n %}
 {% load telemeta_utils %}
+{% load bootstrap3 %}
 
 {% block title %}
 <img src="{{ STATIC_URL }}telemeta/images/{{ type }}.png" style="vertical-align:middle" /> {{ type }} : {% trans "New" %}
 {% endblock %}
 
-{% block title_buttons %}
-    <a href="/archives/{{type}}/" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
-    {% if perms.telemeta.add_mediacorpus or perms.telemeta.add_mediafonds %}
-    <a href="#" class="component_icon button icon_save" onclick="document.getElementById('_addResourceForm').submit(); return false;">{% trans "Save" %}</a>
-    {% endif %}
+    {% block cancel %}
+    <a id="cancel" href="{% url "telemeta-resource-list" type %}">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-remove"></span> {% trans "Cancel" %}
+      </button>
+    </a>
+    {% endblock %}
 
-{% endblock %}
-
-
-{% block infos %}
-        <div class="infos">
-        <form method="post" id ="_addResourceForm" action="">{% csrf_token %}
-        <table>
-        <tr><td colspan="2">{% for error in form.non_field_errors %}<li class="error">{{ error }}</li>{% endfor %}</td></tr>
-        {% for field in form %}
-         <tr>
-            <tr><td class="error">{{ field.errors }}</td></tr>
-            {% if "children" in field.html_name %}
-            <td>{{ field.label_tag }}:</td><td><div class="vscroll"> {{ field }}</div></td>
-            {% else %}
-            <td>{{ field.label_tag }}:</td><td> {{ field }}</td>
-            {% endif %}
-        </tr>
-        {% endfor %}
-        </table>
-        <div align="center" style="margin-top:3ex;">
-            <a href="/archives/{{type}}/" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
-            {% if perms.telemeta.add_mediacorpus or perms.telemeta.add_mediafonds %}
-            <a href="#" class="component_icon button icon_save" onclick="document.getElementById('_addResourceForm').submit(); return false;">{% trans "Save" %}</a>
-            {% endif %}
-        </div>
-        </form>
-        </div>
-{% endblock infos%}
-
-{% block delete %}
-{% endblock %}
+     {% block cancel2 %}
+     <a id="cancel" href="{% url "telemeta-resource-list" type %}">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-remove"></span> {% trans "Cancel" %}
+      </button>
+     </a>
+     {% endblock %}

@@ -5,7 +5,7 @@
 {% block head_title %}{{ continent }} - {% trans "Geographic Navigator" %} - {{ block.super }}{% endblock %}
 
 {% block title %}
- <img src="{{ STATIC_URL }}telemeta/images/world_red.png" alt="geo-countries" style="vertical-align:middle" /> <a href="{% url telemeta-geo-continents %}">{% trans "World" %}</a> / {{ continent }}
+ <img src="{{ STATIC_URL }}telemeta/images/world_red.png" alt="geo-countries" style="vertical-align:middle" /> <a href="{% url "telemeta-geo-continents" %}">{% trans "World" %}</a> / {{ continent }}
 {% endblock title %}
 
 {% block content %}
@@ -20,14 +20,14 @@
     <td>{{ country }}</td>
     <td>
     {% with country.collections.count as num %}
-    <a href="{% url telemeta-geo-country-collections continent.flatname,country.flatname %}">
+    <a href="{% url "telemeta-geo-country-collections" continent.flatname country.flatname %}">
     {% blocktrans count num as counter %}1 collection{% plural %}{{ counter }} collections{% endblocktrans %}
     </a>
     {% endwith %}
     </td>
     <td>
     {% with country.items.count as num %}
-    <a href="{% url telemeta-geo-country-items continent.flatname,country.flatname %}">
+    <a href="{% url "telemeta-geo-country-items" continent.flatname country.flatname %}">
     {% blocktrans count num as counter %}1 item{% plural %}{{ counter }} items {% endblocktrans %}
     </a>
     {% endwith %}

@@ -8,22 +8,20 @@
 
 {% block tabcontents %}
 {% if enumerations %}
-
   <table class="listing">
    <thead>
     <tr><th>{% trans "Title"%}</th></tr>
    </thead><tbody>
     {% for enum in enumerations %}
-         <tr><td><a href="{% url telemeta-enumeration-edit enum.id %}">
-                {% trans enum.name|capfirst %}</a></td></tr>
+    <tr><td>
+      <a href="{% url "telemeta-enumeration-edit" enum.id %}">{% trans enum.name|capfirst %}</a>
+    </td></tr>
     {% endfor %}
-    </tbody>
+   </tbody>
   </table>
-
   {% else %}
     <p class="help">{% trans "No enumerations" %}</p>
  {% endif %}
-
 {% endblock %}
 
 

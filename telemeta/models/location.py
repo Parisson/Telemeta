@@ -41,6 +41,7 @@ from django.utils.translation import ugettext_lazy as _
 from telemeta.models.query import *
 from django.forms import ModelForm
 
+
 class Location(ModelCore):
     "Locations"
     OTHER_TYPE  = 0
@@ -151,6 +152,7 @@ class Location(ModelCore):
             for l in path:
                 names.append(unicode(l))
         return names
+
 
 class LocationType(ModelCore):
     "Location types"

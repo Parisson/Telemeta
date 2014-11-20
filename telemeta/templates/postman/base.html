@@ -9,10 +9,10 @@
 {% block title_buttons %}
 <div id="postman_menu" style="padding-left: 20px;">
 {% postman_unread as unread_count %}
-<a href="{% url postman_inbox %}" class="component_icon button icon_edit">{% trans "Inbox" %}{% if unread_count %} <strong>({{ unread_count }})</strong>{% endif %}</a></li>
-<a href="{% url postman_sent %}" class="component_icon button icon_edit">{% trans "Sent Messages" %}</a>
-<a href="{% url postman_write %}" class="component_icon button icon_edit">{% trans "Write" %}</a>
-<a href="{% url postman_archives %}" class="component_icon button icon_edit">{% trans "Archives" %}</a>
-<a href="{% url postman_trash %}" class="component_icon button icon_edit">{% trans "Trash" %}</a>
+<a href="{% url "postman_inbox" %}" class="component_icon button icon_edit">{% trans "Inbox" %}{% if unread_count %} <strong>({{ unread_count }})</strong>{% endif %}</a></li>
+<a href="{% url "postman_sent" %}" class="component_icon button icon_edit">{% trans "Sent Messages" %}</a>
+<a href="{% url "postman_write" %}" class="component_icon button icon_edit">{% trans "Write" %}</a>
+<a href="{% url "postman_archives" %}" class="component_icon button icon_edit">{% trans "Archives" %}</a>
+<a href="{% url "postman_trash" %}" class="component_icon button icon_edit">{% trans "Trash" %}</a>
 </div>
 {% endblock %}

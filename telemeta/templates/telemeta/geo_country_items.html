@@ -5,8 +5,8 @@
 {% block head_title %}{{ country }} - {% trans "Geographic Navigator" %} - {{ block.super }}{% endblock %}
 
 {% block title %}
-<a href="{% url telemeta-geo-continents %}">{% trans "World" %}</a> /
-  <a href="{% url telemeta-geo-countries continent.flatname %}">{{ continent }}</a> 
+<a href="{% url "telemeta-geo-continents" %}">{% trans "World" %}</a> /
+  <a href="{% url "telemeta-geo-countries" continent.flatname %}">{{ continent }}</a>
   / {{ country }}
 {% endblock title %}
 
