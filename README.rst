@@ -80,85 +80,8 @@ News
  * Add minor migrations
  * Fix marker display bug
 
-1.4.5
-+++++
 
- * Collection and Item regex in settings allowed
- * Change resource list filtering rules
- * Add KdenLive session parsers and auto faders to auto tag audio or video timeline
- * Add ffmpeg based transcoding tools
- * Add enumerations replacing methods
- * Add chat rooms for enumerations
- * Cleanup some useless model properties
- * Many, many and many bugfixes
- * Last version compatible with TimeSide 0.4.x
- * Please check the new dependencies in setup.py
- * As always after upgrading: ./manage.py migrate telemeta
-
-1.4.4
-+++++
-
- * no new fancy functions
- * full using of static files which are now in static/ (htdocs/ is now deprecated)
- * IMPORTANT : upgrade TimeSide to 0.4.1, add 'timeside' to INSTALLED_APPS and do: ./manage.py collectstatic
- * add various buttons, various bugfixes
- * after upgrading, always do: ./manage.py migrate
-
-1.4.3
-++++++
-
- * add solr-thumbnail for automatic thumbnail handling of all related media images (please install)
- * add static media handling for solr and all various telemeta public files
- * fix some wrong user properties
- * SECURITY: you need to move your TELEMETA_EXPORT_CACHE_DIR from TELEMETA_CACHE_DIR cache (see example/sandbox_sqlite/settings.py)
- * EXPERIMENTAL: WebM and MP4 video handling for items, NO transcode but decode, add a nice video.js player
- * RECOMMEND: install django-extensions
- * transitional package to 1.5 (maybe 1.4.4 *soon*)
-
-1.4.2
-++++++
-
- * add user revisions to user profile
- * move all edit buttons to main edit pages
- * new Format object and various enumerations
- * add last revision to item detail
- * various bugfixes
-
-1.4.1
-++++++
-
- Fix a bug for related media title parsing
-
-1.4
-++++++
-
-For users:
-
- * add a Desk providing links to home and personal data
- * add Fonds, Corpus and their related media to the models and to the search engine
- * add some fancy drop down menus for main tabs
- * add video media handling (WebM formats only and with the last TimeSide master branch)
- * add playlist metadata editor
- * fix some sad bugs for YouTube related URLs and previews
- * cleanup admin page
- * add auto saving now for all searches !
- * add "My Searches" modules to user lists with search direct link
- * add RSS feeds for last changes of all users
- * better icon views
- * many bugfixes !
-
-For developers and maintainers:
-
- * a new setting parameter: TELEMETA_DOWNLOAD_FORMATS = ('wav', 'mp3', 'webm') or whatever
- * before upgrading, you need to BACKUP and manually delete old wrong MediaCorpus and MediaCorpusRelated tables
- * we now use South for data model migration. Add 'south' to your apps and to do::
-
-    ./manage.py syncdb
-    ./manage.py migrate telemeta
-
-See INSTALL.rst and email me if any pb!
-
-Full changelog: see `CHANGELOG <http://github.com/yomguy/Telemeta/blob/master/CHANGELOG>`_
+See also the `full changelog <http://github.com/yomguy/Telemeta/blob/master/CHANGELOG.rst>`_.
 
 
 Demo
