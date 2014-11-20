@@ -1,6 +1,28 @@
 # -*- coding: utf-8 -*-
+import multiprocessing
 from setuptools import setup, find_packages
+from setuptools.command.test import test as TestCommand
 
+import sys
+
+
+class PyTest(TestCommand):
+    user_options = [('pytest-args=', 'a', "Arguments to pass to py.test")]
+
+    def initialize_options(self):
+        TestCommand.initialize_options(self)
+        self.pytest_args = []
+
+    def finalize_options(self):
+        TestCommand.finalize_options(self)
+        self.test_args = []
+        self.test_suite = True
+
+    def run_tests(self):
+        #import here, cause outside the eggs aren't loaded
+        import pytest
+        errno = pytest.main(self.pytest_args)
+        sys.exit(errno)
 
 CLASSIFIERS = ['Environment :: Web Environment',
 'Framework :: Django',
@@ -45,8 +67,9 @@ setup(
         'pyyaml',
         'python-ebml',
     ],
-  test_suite='setuptest.setuptest.SetupTestSuite',
-  tests_require=['django-setuptest'],
+  tests_require=['pytest-django', 'pytest-cov', 'pytest-pep8'],
+  # Provide a test command through django-setuptest
+  cmdclass={'test': PyTest},
   dependency_links = ['https://github.com/yomguy/django-json-rpc/tarball/0.6.2#egg=django-json-rpc-0.6.2'],
   platforms=['OS Independent'],
   license='CeCILL v2',

@@ -42,9 +42,11 @@ import pytest
 
 pytestmark = pytest.mark.django_db
 
+
 @pytest.mark.django_db
 class CollectionItemTestCase(unittest.TestCase):
     pytestmark = pytest.mark.django_db
+
     def setUp(self):
         "Create a test database based on objects created in Django"
 
@@ -75,46 +77,46 @@ class CollectionItemTestCase(unittest.TestCase):
             creator="Abraham LINCOLN", collector="Friedrich HEINZ", year_published=2009, is_published=True,
             recorded_from_year=1970, recorded_to_year=1980)
 
-        self.persepolis.save_with_revision(self.david)
+        self.persepolis.set_revision(self.david)
 
         self.volonte = MediaCollection(id=2, reference="A2",  code="CNRSMH_I_1960_001", title="Volonté de puissance",
             creator="Friedrich NIETZSCHE", collector="Jean AMORA", year_published=1999,
             recorded_from_year=1960, recorded_to_year=2000)
 
-        self.volonte.save_with_revision(self.olivier)
+        self.volonte.set_revision(self.olivier)
 
         self.nicolas = MediaCollection(id=3, reference="A3",  code="CNRSMH_I_1967_123", title="petit nicolas",
             creator="Georgette McKenic", collector="Paul MAILLE",  year_published=1999,
             recorded_from_year=1967, recorded_to_year=1968)
 
-        self.nicolas.save_with_revision(self.olivier)
+        self.nicolas.set_revision(self.olivier)
 
         self.item_1 = MediaItem(id=1, collection=self.persepolis, code="CNRSMH_E_1970_001_002_44",
             recorded_from_date="1971-01-12", recorded_to_date="1971-02-24", location=self.paris,
             ethnic_group=self.a, title="item 1", author="Mickael SHEPHERD", collector="Charles PREMIER",
             comment="comment 1")
 
-        self.item_1.save_with_revision(self.david)
+        self.item_1.set_revision(self.david)
 
         self.item_2 = MediaItem(id=2, collection=self.volonte, code="CNRSMH_I_1960_001_129",
             recorded_from_date="1981-01-12", recorded_to_date="1991-02-24", location=self.france,
             ethnic_group=self.a, title="item 2", author="Rick ROLL", comment="comment 2")
 
-        self.item_2.save_with_revision(self.david)
+        self.item_2.set_revision(self.david)
 
         self.item_3 = MediaItem(id=3, collection=self.nicolas, code="CNRSMH_I_1967_123_456_01",
             recorded_from_date="1968-01-12", recorded_to_date="1968-02-24", location=self.belgique,
             ethnic_group=self.b, title="item 3", author="John SMITH", collector="Paul CARLOS",
             comment="comment 3",  )
 
-        self.item_3.save_with_revision(self.olivier)
+        self.item_3.set_revision(self.olivier)
 
         self.item_4 = MediaItem(id=4, collection=self.persepolis, code="CNRSMH_E_1970_001_002_22_33",
             recorded_from_date="1972-01-12", recorded_to_date="1972-02-24", location=self.europe,
             ethnic_group=self.a, title="item 4", alt_title="I4", author="Keanu REAVES",
             collector="Christina BARCELONA", comment="comment 4")
 
-        self.item_4.save_with_revision(self.olivier)
+        self.item_4.set_revision(self.olivier)
 
         self.item_5 = MediaItem(id=5, collection=self.volonte,code="CNRSMH_I_1960_001_789_85_22",
             approx_duration="00:05:00", recorded_from_date="1978-01-12", recorded_to_date="1978-02-24",
@@ -122,14 +124,14 @@ class CollectionItemTestCase(unittest.TestCase):
             author="Simon PAUL", collector="Javier BARDEM",
             comment="comment 5")
 
-        self.item_5.save_with_revision(self.olivier)
+        self.item_5.set_revision(self.olivier)
 
         self.item_6 = MediaItem(id=6, collection=self.persepolis, code="CNRSMH_E_1970_001_002_90",
             recorded_from_date="1968-01-12", recorded_to_date="1968-02-11", location=self.france,
             ethnic_group=self.b, title="item 6", author="Paul ANDERSON",
             collector="Jim CARLSON", comment="comment 10000")
 
-        self.item_6.save_with_revision(self.david)
+        self.item_6.set_revision(self.david)
 
         self.collections = MediaCollection.objects.all()
         self.items       = MediaItem.objects.all()
@@ -252,6 +254,8 @@ class CollectionItemTestCase(unittest.TestCase):
     def testByChangeTimeOnCollection(self):
         "Test by_change_time property of MediaCollection class"
         now = datetime.now()
+        print self.collections.all()
+        print MediaCollection.objects.all()
         result = self.collections.by_change_time(now - timedelta(hours=1), now).order_by("title")
         self.assertEquals(result[0], self.persepolis)
 
@@ -269,7 +273,7 @@ class CollectionItemTestCase(unittest.TestCase):
         "Test that a proper failure occur when a collection code isn't provided"
         c = MediaCollection()
         try:
-            c.save_with_revision(self.olivier)
+            c.set_revision(self.olivier)
         except RequiredFieldError, e:
             self.assertEquals(e.field.name, 'code')
         else:
