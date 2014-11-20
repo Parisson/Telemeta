@@ -1278,7 +1278,7 @@ msgstr "Copier"
 #: templates/telemeta/geo_continents.html:26
 #: templates/telemeta/mediaitem_detail.html:119
 msgid "List"
-msgstr "Liste"
+msgstr "Lister"
 
 #: templates/telemeta/collection_detail.html:64
 msgid "Add item"
