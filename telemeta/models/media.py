@@ -153,7 +153,7 @@ class MediaRelated(MediaResource):
     title           = CharField(_('title'))
     date            = DateTimeField(_('date'), auto_now=True)
     description     = TextField(_('description'))
-    mime_type       = CharField(_('mime_type'), null=True)
+    mime_type       = CharField(_('mime_type'))
     url             = CharField(_('url'), max_length=500)
     credits         = CharField(_('credits'))
     file            = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename", max_length=255)
