@@ -9,6 +9,7 @@ recursive-include example *
 recursive-include telemeta/locale *
 recursive-include telemeta/templates *
 recursive-include telemeta/static *
+recursive-exclude telemeta/static/lib *
 recursive-include telemeta/backup *
 recursive-include telemeta/pages *
 recursive-exclude example/sandbox/media *
