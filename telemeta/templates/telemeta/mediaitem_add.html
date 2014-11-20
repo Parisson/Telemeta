@@ -8,10 +8,18 @@
     <img src="{{ STATIC_URL }}telemeta/images/item.png" alt="item" style="vertical-align:middle" /> Item : {% trans "New" %}
 {% endblock %}
 
-{% block title_buttons %}
-      <a href="{% url "telemeta-items" %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
-{% endblock %}
+    {% block cancel %}
+    <a id="cancel" href="{% url "telemeta-items" %}">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-remove"></span> {% trans "Cancel" %}
+      </button>
+    </a>
+    {% endblock %}
 
-     {% block cancel %}
-     <a href="{% url "telemeta-items" %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+     {% block cancel2 %}
+     <a id="cancel" href="{% url "telemeta-items" %}">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-remove"></span> {% trans "Cancel" %}
+      </button>
+     </a>
      {% endblock %}

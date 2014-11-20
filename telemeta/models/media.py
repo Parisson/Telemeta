@@ -384,7 +384,7 @@ class MediaItem(MediaResource):
     rights                = WeakForeignKey('Rights', verbose_name=_('rights'))
 
     # Archiving data
-    code                  = CharField(_('code'), unique=True, blank=True, required=True, help_text=_('CollectionCode-ItemCode'))
+    code                  = CharField(_('code'), unique=True, blank=True, required=True, help_text=_('CollectionCode_ItemCode'))
     old_code              = CharField(_('original code'), unique=False, blank=True)
     track                 = CharField(_('item number'))
     collector_selection   = CharField(_('collector selection'))

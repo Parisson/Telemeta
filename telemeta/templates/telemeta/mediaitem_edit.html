@@ -9,7 +9,21 @@
 
 {% block title_buttons %}
 <div class="fixedWidthAsPlayer">
-    <a href="{% url "telemeta-item-detail" item.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+    <img id="wait-img" style="display:none" style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />
+    {% block cancel %}
+    <a id="cancel" href="{% url "telemeta-item-detail" item.public_id %}">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-remove"></span> {% trans "Cancel" %}
+      </button>
+    </a>
+    {% endblock %}
+    {% if perms.telemeta.change_mediaitem %}
+    <a id="save" href="#" onclick="var d=document; d.getElementById('wait-img').style.display='inline'; $('#_editForm').submit();">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-floppy-disk"></span> {% trans "Save" %}
+      </button>
+    </a>
+    {% endif %}
 </div>
 {% endblock %}
 
@@ -65,11 +79,9 @@
 
     {% endblock player %}
 
-
-
 {% block infos %}
   <div>
-    <form enctype="multipart/form-data" id="_editItemForm" method="post" action="">{% csrf_token %}
+    <form enctype="multipart/form-data" id="_editForm" method="post" action="">{% csrf_token %}
 
     <ul class="nav nav-tabs" role="tablist">
       <li class="active"><a href="#general" role="tab" data-toggle="tab">{% trans "General" %}</a></li>
@@ -130,13 +142,19 @@
     </div>
 
     <div align="center" style="margin-top:3ex;">
-     {% block cancel %}
-     <a href="{% url "telemeta-item-detail" item.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+     {% block cancel2 %}
+     <a id="cancel" href="{% url "telemeta-item-detail" item.public_id %}">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-remove"></span> {% trans "Cancel" %}
+      </button>
+     </a>
      {% endblock %}
-
      {% if perms.telemeta.change_mediaitem %}
-      <input type="submit" value="{% trans "Save" %}" class="default" name="_save" onclick="var d=document; d.getElementById('wait-img').style.display='inline'; setTimeout(function(){d.getElementById('_editItemForm').submit();},300); return false;"/>
-      <img id="wait-img" style="display:none" style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />
+     <a id="save" href="#" onclick="var d=document; d.getElementById('wait-img').style.display='inline'; $('#_editForm').submit();">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-floppy-disk"></span> {% trans "Save" %}
+      </button>
+     </a>
      {% endif %}
     </div>
 

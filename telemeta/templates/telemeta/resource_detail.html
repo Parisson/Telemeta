@@ -38,17 +38,28 @@ jQuery(document).ready(function(){
 {% endblock %}
 
 {% block title_buttons %}
-  <div class="fixedWidthAsPlayer">
+<div class="fixedWidthAsPlayer">
     {% if perms.telemeta.change_mediacorpus or perms.telemeta.change_mediafonds %}
-      <a href="{% url "telemeta-resource-edit" type resource.public_id %}" class="component_icon button icon_edit">{% trans "Edit" %}</a>
-    {% endif %}
-    {% if perms.telemeta.add_mediacorpus or perms.telemeta.add_mediafonds %}
-      <a href="{% url "telemeta-resource-copy" type resource.public_id %}" class="component_icon button icon_copy">{% trans "Copy" %}</a>
+    <a href="{% url "telemeta-resource-edit" type resource.public_id %}">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-edit"></span> {% trans "Edit" %}
+      </button>
+    </a>
+    <a href="{% url "telemeta-resource-copy" type resource.public_id %}">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-new-window"></span> {% trans "Copy" %}
+      </button>
+    </a>
     {% endif %}
     {% if user.is_authenticated %}
-    <a href="#" id ="_add_to_playlist" class="component_icon button icon_add_to_playlist">{% trans "Add to playlist" %}</a>
+    <a id="_add_to_playlist" href='#'>
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-pushpin"></span> {% trans "List" %}
+      </button>
+    </a>
     {% endif %}
-   </div>
+
+</div>
 {% endblock %}
 
 {% block content %}
