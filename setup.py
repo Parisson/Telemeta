@@ -67,7 +67,7 @@ setup(
         'pyyaml',
         'python-ebml',
     ],
-  tests_require=['pytest-django', 'pytest-cov', 'pytest-pep8'],
+  tests_require=['pytest-django', 'pytest-cov'],
   # Provide a test command through django-setuptest
   cmdclass={'test': PyTest},
   dependency_links = ['https://github.com/yomguy/django-json-rpc/tarball/0.6.2#egg=django-json-rpc-0.6.2'],

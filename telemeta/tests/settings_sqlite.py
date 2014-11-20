@@ -1,4 +1,4 @@
-from telemeta.settings_base import *
+from telemeta.settings_base import SECRET_KEY
 
 
 DATABASES = {
