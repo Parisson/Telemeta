@@ -35,14 +35,21 @@
 
 from django.contrib.auth.models import User
 import unittest
-from telemeta.models import *
+from telemeta.models import LocationType, Location, EthnicGroup, Publisher
+from telemeta.models import MediaCollection, MediaItem
 from datetime import datetime, timedelta
+import pytest
 
+pytestmark = pytest.mark.django_db
+
+
+@pytest.mark.django_db
 class CollectionItemTestCase(unittest.TestCase):
+    pytestmark = pytest.mark.django_db
 
     def setUp(self):
         "Create a test database based on objects created in Django"
-   
+
 #        self.david   = User.objects.create(username="david", level="user")
 #        self.olivier = User.objects.create(username="olivier", level="admin")
         self.david   = User.objects.create_user(username="david")
@@ -66,76 +73,76 @@ class CollectionItemTestCase(unittest.TestCase):
         self.c = EthnicGroup.objects.create(value="c")
         self.d = EthnicGroup.objects.create(value="d")
 
-        self.persepolis = MediaCollection(id=1, code="CNRSMH_E_1970_001_002", reference="A1", title="persepolis", 
+        self.persepolis = MediaCollection(id=1, code="CNRSMH_E_1970_001_002", reference="A1", title="persepolis",
             creator="Abraham LINCOLN", collector="Friedrich HEINZ", year_published=2009, is_published=True,
             recorded_from_year=1970, recorded_to_year=1980)
-        
-        self.persepolis.save_with_revision(self.david)
 
-        self.volonte = MediaCollection(id=2, reference="A2",  code="CNRSMH_I_1960_001", title="Volonté de puissance", 
-            creator="Friedrich NIETZSCHE", collector="Jean AMORA", year_published=1999,  
+        self.persepolis.set_revision(self.david)
+
+        self.volonte = MediaCollection(id=2, reference="A2",  code="CNRSMH_I_1960_001", title="Volonté de puissance",
+            creator="Friedrich NIETZSCHE", collector="Jean AMORA", year_published=1999,
             recorded_from_year=1960, recorded_to_year=2000)
 
-        self.volonte.save_with_revision(self.olivier)
+        self.volonte.set_revision(self.olivier)
 
-        self.nicolas = MediaCollection(id=3, reference="A3",  code="CNRSMH_I_1967_123", title="petit nicolas", 
-            creator="Georgette McKenic", collector="Paul MAILLE",  year_published=1999,  
+        self.nicolas = MediaCollection(id=3, reference="A3",  code="CNRSMH_I_1967_123", title="petit nicolas",
+            creator="Georgette McKenic", collector="Paul MAILLE",  year_published=1999,
             recorded_from_year=1967, recorded_to_year=1968)
-                                   
-        self.nicolas.save_with_revision(self.olivier)
-     
-        self.item_1 = MediaItem(id=1, collection=self.persepolis, code="CNRSMH_E_1970_001_002_44", 
-            recorded_from_date="1971-01-12", recorded_to_date="1971-02-24", location=self.paris, 
-            ethnic_group=self.a, title="item 1", author="Mickael SHEPHERD", collector="Charles PREMIER",  
-            comment="comment 1") 
 
-        self.item_1.save_with_revision(self.david)
+        self.nicolas.set_revision(self.olivier)
 
-        self.item_2 = MediaItem(id=2, collection=self.volonte, code="CNRSMH_I_1960_001_129", 
-            recorded_from_date="1981-01-12", recorded_to_date="1991-02-24", location=self.france, 
-            ethnic_group=self.a, title="item 2", author="Rick ROLL", comment="comment 2") 
+        self.item_1 = MediaItem(id=1, collection=self.persepolis, code="CNRSMH_E_1970_001_002_44",
+            recorded_from_date="1971-01-12", recorded_to_date="1971-02-24", location=self.paris,
+            ethnic_group=self.a, title="item 1", author="Mickael SHEPHERD", collector="Charles PREMIER",
+            comment="comment 1")
 
-        self.item_2.save_with_revision(self.david)
+        self.item_1.set_revision(self.david)
 
-        self.item_3 = MediaItem(id=3, collection=self.nicolas, code="CNRSMH_I_1967_123_456_01", 
-            recorded_from_date="1968-01-12", recorded_to_date="1968-02-24", location=self.belgique, 
+        self.item_2 = MediaItem(id=2, collection=self.volonte, code="CNRSMH_I_1960_001_129",
+            recorded_from_date="1981-01-12", recorded_to_date="1991-02-24", location=self.france,
+            ethnic_group=self.a, title="item 2", author="Rick ROLL", comment="comment 2")
+
+        self.item_2.set_revision(self.david)
+
+        self.item_3 = MediaItem(id=3, collection=self.nicolas, code="CNRSMH_I_1967_123_456_01",
+            recorded_from_date="1968-01-12", recorded_to_date="1968-02-24", location=self.belgique,
             ethnic_group=self.b, title="item 3", author="John SMITH", collector="Paul CARLOS",
             comment="comment 3",  )
 
-        self.item_3.save_with_revision(self.olivier)
+        self.item_3.set_revision(self.olivier)
 
-        self.item_4 = MediaItem(id=4, collection=self.persepolis, code="CNRSMH_E_1970_001_002_22_33", 
-            recorded_from_date="1972-01-12", recorded_to_date="1972-02-24", location=self.europe, 
-            ethnic_group=self.a, title="item 4", alt_title="I4", author="Keanu REAVES", 
+        self.item_4 = MediaItem(id=4, collection=self.persepolis, code="CNRSMH_E_1970_001_002_22_33",
+            recorded_from_date="1972-01-12", recorded_to_date="1972-02-24", location=self.europe,
+            ethnic_group=self.a, title="item 4", alt_title="I4", author="Keanu REAVES",
             collector="Christina BARCELONA", comment="comment 4")
 
-        self.item_4.save_with_revision(self.olivier)
+        self.item_4.set_revision(self.olivier)
 
-        self.item_5 = MediaItem(id=5, collection=self.volonte,code="CNRSMH_I_1960_001_789_85_22", 
-            approx_duration="00:05:00", recorded_from_date="1978-01-12", recorded_to_date="1978-02-24", 
-            location=self.belgique, ethnic_group=self.a, title="item 5", alt_title="I5", 
-            author="Simon PAUL", collector="Javier BARDEM", 
+        self.item_5 = MediaItem(id=5, collection=self.volonte,code="CNRSMH_I_1960_001_789_85_22",
+            approx_duration="00:05:00", recorded_from_date="1978-01-12", recorded_to_date="1978-02-24",
+            location=self.belgique, ethnic_group=self.a, title="item 5", alt_title="I5",
+            author="Simon PAUL", collector="Javier BARDEM",
             comment="comment 5")
 
-        self.item_5.save_with_revision(self.olivier)
+        self.item_5.set_revision(self.olivier)
 
-        self.item_6 = MediaItem(id=6, collection=self.persepolis, code="CNRSMH_E_1970_001_002_90", 
-            recorded_from_date="1968-01-12", recorded_to_date="1968-02-11", location=self.france, 
-            ethnic_group=self.b, title="item 6", author="Paul ANDERSON", 
+        self.item_6 = MediaItem(id=6, collection=self.persepolis, code="CNRSMH_E_1970_001_002_90",
+            recorded_from_date="1968-01-12", recorded_to_date="1968-02-11", location=self.france,
+            ethnic_group=self.b, title="item 6", author="Paul ANDERSON",
             collector="Jim CARLSON", comment="comment 10000")
-        
-        self.item_6.save_with_revision(self.david)
+
+        self.item_6.set_revision(self.david)
 
         self.collections = MediaCollection.objects.all()
         self.items       = MediaItem.objects.all()
 
     def tearDown(self):
-        User.objects.all().delete() 
+        User.objects.all().delete()
         LocationType.objects.all().delete()
-        Location.objects.all().delete()        
+        Location.objects.all().delete()
         EthnicGroup.objects.all().delete()
         MediaCollection.objects.all().delete()
-        MediaItem.objects.all().delete()        
+        MediaItem.objects.all().delete()
 
     def testQuickSearchOnCollections(self):
         "Test quick_search property of MediaCollection class"
@@ -166,7 +173,7 @@ class CollectionItemTestCase(unittest.TestCase):
         self.assertEquals(result[0], self.volonte)
         result = self.collections.quick_search("puissance volonte")
         self.assertEquals(result[0], self.volonte)
-        
+
     def testLocationSearch(self):
         "Test by_country and by_continent properties of MediaCollection class"
         self.assertEquals(self.collections.by_location(self.france)[0], self.persepolis)
@@ -174,19 +181,19 @@ class CollectionItemTestCase(unittest.TestCase):
         self.assertEquals(self.collections.by_location(self.belgique).order_by("title")[0], self.nicolas)
         self.assertEquals(self.collections.by_location(self.belgique).order_by("title")[1], self.volonte)
 
-    def testRecordingYear(self): 
+    def testRecordingYear(self):
         "Test by_recording_year property of MediaCollection class"
         self.assertEquals(self.collections.by_recording_year(1970, 1980)[0], self.persepolis)
         result = self.collections.by_recording_year(1975).order_by("title")
         self.assertEquals(result[0], self.persepolis)
         self.assertEquals(result[1], self.volonte)
-    
+
     def testPublishYearOnCollection(self):
         "Test by_publish_year property of MediaCollection class"
         result=self.collections.by_publish_year(1999).order_by("title")
         self.assertEquals(result[0], self.nicolas)
         self.assertEquals(result[1], self.volonte)
-        
+
     def testEthnicGroup(self):
         "Test by_ethnic_group property of MediaCollection class"
         result=self.collections.by_ethnic_group(self.a).order_by("title")
@@ -230,7 +237,7 @@ class CollectionItemTestCase(unittest.TestCase):
         self.assertEquals(result[0], self.item_2)
         self.assertEquals(result[1], self.item_3)
         self.assertEquals(result[2], self.item_5)
-    
+
     def testWordSearchCore(self):
         "Test word_search property of CoreQuerySet class"
         self.assertEquals(self.collections.word_search("title", "volonté")[0], self.volonte)
@@ -243,10 +250,12 @@ class CollectionItemTestCase(unittest.TestCase):
         self.assertEquals(result[3], self.item_4)
         self.assertEquals(result[4], self.item_5)
         self.assertEquals(result[5], self.item_6)
-    
+
     def testByChangeTimeOnCollection(self):
         "Test by_change_time property of MediaCollection class"
         now = datetime.now()
+        print self.collections.all()
+        print MediaCollection.objects.all()
         result = self.collections.by_change_time(now - timedelta(hours=1), now).order_by("title")
         self.assertEquals(result[0], self.persepolis)
 
@@ -264,12 +273,12 @@ class CollectionItemTestCase(unittest.TestCase):
         "Test that a proper failure occur when a collection code isn't provided"
         c = MediaCollection()
         try:
-            c.save_with_revision(self.olivier)
+            c.set_revision(self.olivier)
         except RequiredFieldError, e:
             self.assertEquals(e.field.name, 'code')
         else:
             self.fail("No exception raised")
-       
+
     def testDomForeignKey(self):
         "Test DOM foreign key embedding"
         doc = self.item_4.to_dom()
@@ -286,13 +295,17 @@ class CollectionItemTestCase(unittest.TestCase):
         "Test the MediaCollection.countries() method"
         self.assertEquals(self.volonte.countries(), [self.belgique, self.france])
 
-        
+pytestmark = pytest.mark.django_db
+
+@pytest.mark.django_db
 class RelatedDeleteTestCase(unittest.TestCase):
+    pytestmark = pytest.mark.django_db
+
     def setUp(self):
         self.publisher1 = Publisher.objects.create(id=1, value='publisher1')
         self.publisher2 = Publisher.objects.create(id=2, value='publisher2')
         self.pubcollection1 = PublisherCollection.objects.create(publisher=self.publisher1, value='pub1_collection1')
-   
+
         self.rights1 = LegalRight.objects.create(id=1, value='right1')
 
         MediaCollection.objects.create(id=1, code='CNRSMH_I_1256_456', title='Collection1',
@@ -336,5 +349,5 @@ class RelatedDeleteTestCase(unittest.TestCase):
         self.assertEquals(PublisherCollection.objects.count(), 0)
         self.assertEquals(MediaCollection.objects.count(), 2)
 
-        
+
 
