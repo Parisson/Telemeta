@@ -243,7 +243,7 @@
             <h4><a href="#">{% trans "Geographic and cultural informations" %}</a></h4>
             <dl class="listing">
                 <dt>{% trans "Location" %}</dt>
-                <dd>{% if item.location %}{{ item.location.fullnames|join:"<br/>" }}{% endif %}</dd>
+                <dd>{% if item.location %}{{ item.location.name }}{% endif %}</dd>
                 {% dl_field item "location_comment" %}
                 {% dl_field item "cultural_area" %}
                 {% dl_field item "language" %}
@@ -331,7 +331,9 @@
             <div>
                 <dl class="listing">
                     {% dl_field item "media_type" %}
+                    {% if not item.file %}
                     {% dl_field item "approx_duration" %}
+                    {% endif %}
                     {% if item.size %}
                     <dt>{% trans "Item size" %}</dt>
                      <dd>{{ item.size|filesizeformat }}</dd>

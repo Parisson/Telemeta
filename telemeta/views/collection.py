@@ -324,7 +324,7 @@ class CollectionAddView(CollectionViewMixin, CreateWithInlinesView):
 
 class CollectionCopyView(CollectionAddView):
 
-    template_name = 'telemeta/collection_add.html'
+    template_name = 'telemeta/collection_edit.html'
 
     def get_initial(self):
         return model_to_dict(self.get_object())

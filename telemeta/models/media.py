@@ -230,6 +230,7 @@ class MediaCollection(MediaResource):
 
     # Archiving data
     code                  = CharField(_('code'), unique=True, required=True, validators=[is_valid_collection_code])
+    old_code              = CharField(_('old code'), unique=False, null=True, blank=True)
     acquisition_mode      = WeakForeignKey('AcquisitionMode', related_name="collections", verbose_name=_('mode of acquisition'))
     cnrs_contributor      = CharField(_('CNRS depositor'))
     copy_type             = WeakForeignKey('CopyType', related_name="collections", verbose_name=_('copy type'))
@@ -247,7 +248,6 @@ class MediaCollection(MediaResource):
     conservation_site     = CharField(_('conservation site'))
 
     # Technical data
-    old_code              = CharField(_('old code'), unique=False, null=True, blank=True)
     media_type            = WeakForeignKey('MediaType', related_name="collections", verbose_name=_('media type'))
     approx_duration       = DurationField(_('estimated duration'), help_text='hh:mm:ss')
     physical_items_num    = IntegerField(_('number of components (medium / piece)'))
@@ -284,11 +284,21 @@ class MediaCollection(MediaResource):
             for country in item.location.countries():
                 if not country in countries:
                     countries.append(country)
-
         countries.sort(self.__name_cmp)
-
         return countries
     countries.verbose_name = _("states / nations")
+
+
+    def main_countries(self):
+        "Return the main countries of the items (no aliases or ancestors)"
+        countries = []
+        for item in self.items.filter(location__isnull=False):
+            if not item.location in countries:
+                countries.append(item.location)
+        countries.sort(self.__name_cmp)
+        return countries
+
+    main_countries.verbose_name = _("states / nations")
 
     def ethnic_groups(self):
         "Return the ethnic groups of the items"

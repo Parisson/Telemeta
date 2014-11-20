@@ -422,13 +422,13 @@ form.login .submit {
 #searchform fieldset {
     padding: 0;
     padding: .5em;
-    width: 650px;
+    width: 750px;
     border: none;
     border: 1px solid #6a0307;
     margin-bottom: 1em;
-    -moz-border-radius: 8px 8px 8px 8px;
-    -webkit-border-radius: 8px 8px 8px 8px;
-    border-radius: 8px 8px 8px 8px;
+    -moz-border-radius: 8px 0px 8px 8px;
+    -webkit-border-radius: 0px 8px 8px 8px;
+    border-radius: 8px 0px 8px 8px;
 }
 #searchform p {
     background-color: #fff;
@@ -976,12 +976,6 @@ img.align-left {
         background-color: white;
        }
 
-.module img {
-        -moz-border-radius: 8px 0px 8px 8px;
-        -webkit-border-radius: 8px 0px 8px 8px;
-        border-radius: 8px 0px 8px 8px;
-       }
-
 .module ul, li {
         -moz-border-radius: 8px 0px 8px 8px;
         -webkit-border-radius: 8px 0px 8px 8px;
@@ -995,10 +989,18 @@ a.image-link {
 .logo {
     border: none;
     vertical-align:middle;
+    -moz-border-radius: 0px 0px 0px 0px;
+    -webkit-border-radius: 0px 0px 0px 0px;
+    border-radius: 0px 0px 0px 0px;
+
 }
 
 .map-thumbnail {
     border: solid 1px #999;
+    -moz-border-radius: 8px 0px 8px 8px;
+    -webkit-border-radius: 8px 0px 8px 8px;
+    border-radius: 8px 0px 8px 8px;
+    width: 396%;
 }
 
 .home-content .module {

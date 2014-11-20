@@ -772,7 +772,7 @@ class ItemAddView(ItemViewMixin, CreateWithInlinesView):
 class ItemCopyView(ItemAddView):
 
     form_class = MediaItemForm
-    template_name = 'telemeta/mediaitem_add.html'
+    template_name = 'telemeta/mediaitem_edit.html'
 
     def get_initial(self):
         return model_to_dict(self.get_object())
