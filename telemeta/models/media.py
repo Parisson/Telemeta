@@ -396,7 +396,7 @@ class MediaItem(MediaResource):
 
     # Technical data
     media_type            = WeakForeignKey('MediaType', related_name="items", verbose_name=_('media type'))
-    approx_duration       = DurationField(_('approximative duration'), help_text=_('hh:mm:ss'))
+    approx_duration       = DurationField(_('approximative duration'), blank=True, help_text=_('hh:mm:ss'))
     mimetype              = CharField(_('mime type'), max_length=255, blank=True)
     file                  = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename", max_length=1024)
     url                   = URLField(_('URL'), max_length=512, blank=True)
