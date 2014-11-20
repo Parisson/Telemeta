@@ -45,14 +45,12 @@ class ResourceView(object):
                 {'model': MediaCorpus,
                 'form' : MediaCorpusForm,
                 'related': MediaCorpusRelated,
-                'related_form': MediaCorpusRelatedForm,
                 'parent': MediaFonds,
                 },
             'fonds':
                 {'model': MediaFonds,
                 'form' : MediaFondsForm,
                 'related': MediaFondsRelated,
-                'related_form': MediaFondsRelatedForm,
                 'parent': None,
                 }
             }
@@ -192,7 +190,6 @@ class ResourceMixin(View):
                 {'model': MediaCorpus,
                 'form' : MediaCorpusForm,
                 'related': MediaCorpusRelated,
-                'related_form': MediaCorpusRelatedForm,
                 'parent': MediaFonds,
                 'inlines': [CorpusRelatedInline,]
                 },
@@ -200,7 +197,6 @@ class ResourceMixin(View):
                 {'model': MediaFonds,
                 'form' : MediaFondsForm,
                 'related': MediaFondsRelated,
-                'related_form': MediaFondsRelatedForm,
                 'parent': None,
                 'inlines': [FondsRelatedInline,]
                 }

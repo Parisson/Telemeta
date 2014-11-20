@@ -56,13 +56,6 @@ class MediaFondsForm(ModelForm):
         js = ['/admin/django/jsi18n/',]
 
 
-class MediaFondsRelatedForm(ModelForm):
-
-    class Meta:
-        model = MediaFondsRelated
-        exclude = ('mime_type',)
-
-
 class MediaCorpusForm(ModelForm):
 
     queryset = MediaCollection.objects.all()
@@ -76,13 +69,6 @@ class MediaCorpusForm(ModelForm):
     class Media:
         css = {'all': ('/static/admin/css/widgets.css',),}
         js = ('/admin/django/jsi18n/',)
-
-
-class MediaCorpusRelatedForm(ModelForm):
-
-    class Meta:
-        model = MediaCorpusRelated
-        exclude = ('mime_type',)
 
 
 class MediaCollectionForm(ModelForm):
@@ -101,13 +87,6 @@ class MediaCollectionForm(ModelForm):
         return self.cleaned_data['doctype_code'] or 0
 
 
-class MediaCollectionRelatedForm(ModelForm):
-
-    class Meta:
-        model = MediaCollectionRelated
-        exclude = ('mime_type',)
-
-
 class MediaItemForm(ModelForm):
 
     class Meta:
@@ -122,30 +101,6 @@ class MediaItemForm(ModelForm):
         return self.cleaned_data['code'] or None
 
 
-class MediaItemRelatedForm(ModelForm):
-
-    class Meta:
-        model = MediaItemRelated
-        exclude = ('mime_type',)
-
-
-class MediaItemKeywordForm(ModelForm):
-
-    class Meta:
-        model = MediaItemKeyword
-
-
-class MediaItemPerformanceForm(ModelForm):
-
-    class Meta:
-        model = MediaItemPerformance
-
-    def __init__(self, *args, **kwds):
-        super(MediaItemPerformanceForm, self).__init__(*args, **kwds)
-        self.fields['instrument'].queryset = Instrument.objects.order_by('name')
-        self.fields['alias'].queryset = InstrumentAlias.objects.order_by('name')
-
-
 class PlaylistForm(ModelForm):
 
     class Meta:
@@ -155,27 +110,31 @@ class PlaylistForm(ModelForm):
 class FondsRelatedInline(InlineFormSet):
 
     model = MediaFondsRelated
+    exclude = ['mime_type']
 
 
 class CorpusRelatedInline(InlineFormSet):
 
     model = MediaCorpusRelated
+    exclude = ['mime_type']
 
 
 class CollectionRelatedInline(InlineFormSet):
 
     model = MediaCollectionRelated
+    exclude = ['mime_type']
+
+
+class ItemRelatedInline(InlineFormSet):
+
+    model = MediaItemRelated
+    exclude = ['mime_type']
 
 
 class CollectionIdentifierInline(InlineFormSet):
 
     model = MediaCollectionIdentifier
     max_num = 1
-
-
-class ItemRelatedInline(InlineFormSet):
-
-    model = MediaItemRelated
 
 
 class ItemPerformanceInline(InlineFormSet):
