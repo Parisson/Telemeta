@@ -2,20 +2,6 @@
 Telemeta: open web audio app with semantics
 ===============================================
 
-|version| |downloads| |travis_master| |coveralls_master|
-
-.. |travis_master| image:: https://secure.travis-ci.org/Parisson/Telemeta.png?branch=master
-    :target: https://travis-ci.org/Parisson/Telemeta/
-
-.. |version| image:: https://pypip.in/version/Telemeta/badge.png
-  :target: https://pypi.python.org/pypi/Telemeta/
-  :alt: Version
-
-.. |downloads| image:: https://pypip.in/download/Telemeta/badge.svg
-    :target: https://pypi.python.org/pypi/Telemeta/
-    :alt: Downloads
-
-
 Overview
 =========
 
