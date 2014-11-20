@@ -319,7 +319,7 @@ class CollectionAddView(CollectionViewMixin, CreateWithInlinesView):
     inlines = [CollectionRelatedInline, CollectionIdentifierInline]
 
     def get_success_url(self):
-        return reverse_lazy('telemeta-collections')
+        return reverse_lazy('telemeta-collection-detail', kwargs={'public_id':self.object.code})
 
 
 class CollectionCopyView(CollectionAddView):
@@ -330,4 +330,4 @@ class CollectionCopyView(CollectionAddView):
         return model_to_dict(self.get_object())
 
     def get_success_url(self):
-        return reverse_lazy('telemeta-collections')
+        return reverse_lazy('telemeta-collection-detail', kwargs={'public_id':self.object.code})

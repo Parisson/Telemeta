@@ -11,6 +11,7 @@
 {% endblock %}
 
 {% block extra_javascript %}
+
 {% if item %}
 
 <script src="{{ STATIC_URL }}telemeta/js/popupdiv-min.js" type="text/javascript"></script>
@@ -27,7 +28,7 @@
 
 <script type="text/javascript">
     {% if item.file or item.url %}
-    {% if access == 'full' or perms.telemeta.can_play_all_items %}
+     {% if access == 'full' or perms.telemeta.can_play_all_items %}
         //initializing soundManager default properties
         soundManager.flashVersion = 9;
         soundManager.url = "{{ STATIC_URL }}timeside/swf/";
@@ -55,7 +56,7 @@
              CURRENT_USER_NAME,  //undefined if !user.is_authenticated
              false); //false because not superuser
         {% endif %}
-    {% endif %}
+     {% endif %}
     {% endif %}
     //playlists:
     {% if user.is_authenticated %}
@@ -136,6 +137,7 @@
     {% block player %}
 
     {% if access == 'full' or perms.telemeta.can_play_all_items %}
+
     <div id="player_maximized" class="ts-skin-lab">
        <div id="player_header">
         <a href="#" class="toggle">Minimize</a>

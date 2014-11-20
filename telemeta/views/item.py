@@ -730,7 +730,7 @@ class ItemEditView(ItemViewMixin, UpdateWithInlinesView):
         return super(ItemEditView, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('telemeta-item-detail', kwargs={'public_id':self.get_object().code})
+        return reverse_lazy('telemeta-item-detail', kwargs={'public_id':self.object.code})
 
     def get_context_data(self, **kwargs):
         context = super(ItemEditView, self).get_context_data(**kwargs)
@@ -766,7 +766,7 @@ class ItemAddView(ItemViewMixin, CreateWithInlinesView):
         return model_to_dict(item)
 
     def get_success_url(self):
-        return reverse_lazy('telemeta-items')
+        return reverse_lazy('telemeta-item-detail', kwargs={'public_id':self.object.code})
 
 
 class ItemCopyView(ItemAddView):
@@ -778,7 +778,7 @@ class ItemCopyView(ItemAddView):
         return model_to_dict(self.get_object())
 
     def get_success_url(self):
-        return reverse_lazy('telemeta-items')
+        return reverse_lazy('telemeta-item-detail', kwargs={'public_id':self.object.code})
 
 
 class ItemDetailView(ItemViewMixin, DetailView):
