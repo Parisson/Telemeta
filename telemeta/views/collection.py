@@ -331,3 +331,9 @@ class CollectionCopyView(CollectionAddView):
 
     def get_success_url(self):
         return reverse_lazy('telemeta-collection-detail', kwargs={'public_id':self.object.code})
+
+    def get_context_data(self, **kwargs):
+        context = super(CollectionCopyView, self).get_context_data(**kwargs)
+        collection = self.get_object()
+        context['collection'] = collection
+        return context

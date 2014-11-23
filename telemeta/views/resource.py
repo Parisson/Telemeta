@@ -59,7 +59,6 @@ class ResourceView(object):
         self.model = self.types[type]['model']
         self.form = self.types[type]['form']
         self.related = self.types[type]['related']
-        self.related_form = self.types[type]['related_form']
         self.parent = self.types[type]['parent']
         self.type = type
 
@@ -167,22 +166,6 @@ class ResourceView(object):
         response['Content-Disposition'] = 'attachment; ' + 'filename=' + filename
         return response
 
-    @jsonrpc_method('telemeta.add_fonds_related_media')
-    @jsonrpc_method('telemeta.add_corpus_related_media')
-    def related_edit(self, request, type, public_id, template):
-        self.setup(type)
-        resource = self.model.objects.get(code=public_id)
-        ResourceRelatedFormSet = inlineformset_factory(self.model, self.related, form=self.related_form)
-        if request.method == 'POST':
-            formset = ResourceRelatedFormSet(data=request.POST, files=request.FILES, instance=resource)
-            if formset.is_valid():
-                formset.save()
-                resource.set_revision(request.user)
-                return redirect('telemeta-resource-edit', self.type, public_id)
-        else:
-            formset = ResourceRelatedFormSet(instance=resource)
-        return render(request, template, {'resource': resource, 'type': type, 'formset': formset,})
-
 
 class ResourceMixin(View):
 
@@ -207,7 +190,6 @@ class ResourceMixin(View):
         self.form = self.types[type]['form']
         self.form_class = self.types[type]['form']
         self.related = self.types[type]['related']
-        self.related_form = self.types[type]['related_form']
         self.parent = self.types[type]['parent']
         self.inlines = self.types[type]['inlines']
         self.type = type
@@ -291,6 +273,7 @@ class ResourceListView(ResourceMixin, ListView):
         context = super(ResourceListView, self).get_context_data(**kwargs)
         context['count'] = self.object_list.count()
         return context
+
 
 class ResourceDetailView(ResourceSingleMixin, DetailView):
 

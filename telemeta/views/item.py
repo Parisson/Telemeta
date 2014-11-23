@@ -777,8 +777,47 @@ class ItemCopyView(ItemAddView):
     def get_initial(self):
         return model_to_dict(self.get_object())
 
+    def form_valid(self, form):
+        item = MediaItem()
+        if self.request.FILES:
+            item_form = MediaItemForm(data=self.request.POST, files=self.request.FILES, instance=item, prefix='item')
+        else:
+            item_form = MediaItemForm(data=self.request.POST, instance=item, prefix='item')
+
+        if item_form.is_valid():
+            item_form.save()
+            if not self.request.FILES:
+                item.file = source_item.file
+                item.save()
+
+            code = item_form.cleaned_data['code']
+            if not code:
+                code = str(item.id)
+            if format_form.is_valid():
+                format.item = item
+                format_form.save()
+
+            performances = MediaItemPerformance.objects.filter(media_item=source_item)
+            for performance in performances:
+                performance.pk = None
+                performance.id = None
+                performance.media_item = item
+                performance.save()
+
+            keywords = MediaItemKeyword.objects.filter(item=source_item)
+            for keyword in keywords:
+                keyword.pk = None
+                keyword.id = None
+                keyword.item = item
+                keyword.save()
+
+            item.set_revision(self.request.user)
+
+        self.code = form.cleaned_data['code']
+        return super(ItemCopyView, self).form_valid(form)
+
     def get_success_url(self):
-        return reverse_lazy('telemeta-item-detail', kwargs={'public_id':self.object.code})
+        return reverse_lazy('telemeta-item-detail', kwargs={'public_id':self.code})
 
 
 class ItemDetailView(ItemViewMixin, DetailView):
