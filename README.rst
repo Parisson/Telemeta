@@ -15,8 +15,8 @@ Telemeta: open web audio app with semantics
    :target: https://pypi.python.org/pypi/Telemeta/
    :alt: Downloads
 
-.. |coverage| image:: https://img.shields.io/coveralls/Parisson/Telemeta.svg
-   :target: https://coveralls.io/r/Parisson/Telemeta?branch=dj1.6
+.. |coverage| image:: https://coveralls.io/repos/Parisson/Telemeta/badge.png?branch=dev
+   :target: https://coveralls.io/r/Parisson/Telemeta?branch=dev
    :alt: Coverage
 
 
