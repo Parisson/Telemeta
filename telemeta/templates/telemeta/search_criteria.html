@@ -80,7 +80,12 @@ $(document).ready(function() {
 {% endblock %}
 
 {% block title %}
- <img src="{{ STATIC_URL }}telemeta/images/adv_search_red.png" alt="advanced-search" style="vertical-align:middle" /> {% trans "Advanced Search" %}
+<div class='row'>
+    <div class="col-md-12">
+     <img src="{{ STATIC_URL }}telemeta/images/adv_search_red.png" alt="advanced-search" style="vertical-align:middle" /> {% trans "Advanced Search" %}
+    </div>
+</div>
+
 {% endblock %}
 
 {% block content %}
