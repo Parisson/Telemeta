@@ -422,7 +422,7 @@ form.login .submit {
 #searchform fieldset {
     padding: 0;
     padding: .5em;
-    width: 750px;
+    width: 850px;
     border: none;
     border: 1px solid #6a0307;
     margin-bottom: 1em;
@@ -435,7 +435,7 @@ form.login .submit {
     padding: .5em 0;
 }
 #searchform label {
-    font-size: 0.8em;
+    font-size: 0.9em;
     display: block;
     float: left;
     width: 30%;
@@ -444,7 +444,7 @@ form.login .submit {
     line-height: 1.8em;
     font-weight: bold;
     color: #333;
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
 }
 #searchform select {
     width: 59%;
@@ -453,7 +453,7 @@ form.login .submit {
     width: 56%;
 }
 #searchform select, #searchform fieldset input {
-    font-size: 0.8em;
+    font-size: 0.9em;
 }
 #searchform .submit {
     padding: 0;
