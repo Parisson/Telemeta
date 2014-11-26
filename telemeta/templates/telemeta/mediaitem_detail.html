@@ -88,10 +88,9 @@
 {% block title %}
 <div class='row'>
     <div class="col-md-12">
-     <img src="{{ STATIC_URL }}telemeta/images/item.png" alt="item" style="vertical-align:middle" /> Item : <a href="{% url "telemeta-item-detail" item.public_id %}">{{ item }}</a>
+     <img src="{{ STATIC_URL }}telemeta/images/item.png" alt="item" style="vertical-align:middle" /> Item : {{ item }}
     </div>
 </div>
-
 {% endblock %}
 
 {% block title_buttons %}
