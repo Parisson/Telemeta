@@ -11,7 +11,7 @@
 <div class="fixedWidthAsPlayer">
     <img id="wait-img" style="display:none" style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />
     {% block cancel %}
-    <a id="cancel" href="{% url "telemeta-collection-detail" collection.code %}">
+    <a id="cancel" href="{% url "telemeta-collection-detail" collection.public_id %}">
       <button type="button" class="btn btn-default">
         <span class="glyphicon glyphicon-remove"></span> {% trans "Cancel" %}
       </button>
@@ -63,7 +63,7 @@
 
     <div align="center" style="margin-top:3ex;">
     {% block cancel2 %}
-    <a id="cancel" href="{% url "telemeta-collection-detail" collection.code %}">
+    <a id="cancel" href="{% url "telemeta-collection-detail" collection.public_id %}">
       <button type="button" class="btn btn-default">
         <span class="glyphicon glyphicon-remove"></span> {% trans "Cancel" %}
       </button>

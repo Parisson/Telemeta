@@ -778,8 +778,8 @@ class MediaCorpus(MediaBaseResource):
 
     children = models.ManyToManyField(MediaCollection, related_name="corpus",
                                       verbose_name=_('collections'),  blank=True, null=True)
-    recorded_from_year    = IntegerField(_('recording year (from)'), help_text='YYYY')
-    recorded_to_year      = IntegerField(_('recording year (until)'), help_text='YYYY')
+    recorded_from_year    = IntegerField(_('recording year (from)'), help_text=_('YYYY'))
+    recorded_to_year      = IntegerField(_('recording year (until)'), help_text=_('YYYY'))
 
     objects = MediaCorpusManager()
 
