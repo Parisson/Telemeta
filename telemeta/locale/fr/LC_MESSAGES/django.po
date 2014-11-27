@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-27 10:43+0100\n"
+"POT-Creation-Date: 2014-11-27 10:52+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Guillaume Pellerin <yomguy@parisson.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1739,13 +1739,9 @@ msgid "Published"
 msgstr "Édités"
 
 #: templates/telemeta/mediaitem_list.html:30
-#: templates/telemeta/search_criteria.html:168
-#: templates/telemeta/inc/children_list.html:16
-#: templates/telemeta/inc/collection_list.html:9
-#: templates/telemeta/inc/mediaitem_list.html:9
-#: templates/telemeta/inc/resource_list.html:9
+msgctxt "item list"
 msgid "Digitized"
-msgstr "Numérisé"
+msgstr "Numérisés"
 
 #: templates/telemeta/paginator.html:5
 msgid "Previous"
@@ -1856,6 +1852,14 @@ msgstr "à"
 #: templates/telemeta/search_results.html:63
 msgid "Year of publication"
 msgstr "Année de publication"
+
+#: templates/telemeta/search_criteria.html:168
+#: templates/telemeta/inc/children_list.html:16
+#: templates/telemeta/inc/collection_list.html:9
+#: templates/telemeta/inc/mediaitem_list.html:9
+#: templates/telemeta/inc/resource_list.html:9
+msgid "Digitized"
+msgstr "Numérisé"
 
 #: templates/telemeta/search_criteria.html:176
 msgid "Search"

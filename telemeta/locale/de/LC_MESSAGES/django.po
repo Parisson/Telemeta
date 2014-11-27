@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-27 10:43+0100\n"
+"POT-Creation-Date: 2014-11-27 10:52+0100\n"
 "PO-Revision-Date: 2012-12-22 21:24+0100\n"
 "Last-Translator: Patrik Tschudin <patsch@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1789,11 +1789,7 @@ msgid "Published"
 msgstr "veröffentlicht"
 
 #: templates/telemeta/mediaitem_list.html:30
-#: templates/telemeta/search_criteria.html:168
-#: templates/telemeta/inc/children_list.html:16
-#: templates/telemeta/inc/collection_list.html:9
-#: templates/telemeta/inc/mediaitem_list.html:9
-#: templates/telemeta/inc/resource_list.html:9
+msgctxt "item list"
 msgid "Digitized"
 msgstr ""
 
@@ -1906,6 +1902,14 @@ msgstr "bis"
 #: templates/telemeta/search_results.html:63
 msgid "Year of publication"
 msgstr "Publikationsjahr"
+
+#: templates/telemeta/search_criteria.html:168
+#: templates/telemeta/inc/children_list.html:16
+#: templates/telemeta/inc/collection_list.html:9
+#: templates/telemeta/inc/mediaitem_list.html:9
+#: templates/telemeta/inc/resource_list.html:9
+msgid "Digitized"
+msgstr ""
 
 #: templates/telemeta/search_criteria.html:176
 msgid "Search"
