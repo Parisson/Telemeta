@@ -6,7 +6,9 @@ from django.core.urlresolvers import reverse_lazy, reverse
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+# ALLOWED_HOSTS = ('localhost',)
 sys.dont_write_bytecode = True
+
 
 ADMINS = (
     ('Guillaume Pellerin', 'yomguy@parisson.com'),

@@ -234,10 +234,13 @@ class CollectionViewMixin(object):
     def get_object(self):
         obj = self.model.objects.filter(code=self.kwargs['public_id'])
         if not obj:
-            try:
-                obj = self.model.objects.get(id=self.kwargs['public_id'])
-            except:
-                pass
+            if self.kwargs['public_id'].isdigit():
+                try:
+                    obj = self.model.objects.get(id=self.kwargs['public_id'])
+                except self.model.DoesNotExist:
+                    raise Http404
+            else:
+                raise Http404
         else:
             obj = obj[0]
         return obj

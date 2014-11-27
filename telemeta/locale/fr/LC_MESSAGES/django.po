@@ -754,7 +754,7 @@ msgstr "média associés"
 
 #: models/media.py:872
 msgid "date of first attribution"
-msgstr "date de dpremière attribution"
+msgstr "date de première attribution"
 
 #: models/media.py:873
 msgid "date of last attribution"

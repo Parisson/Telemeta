@@ -869,9 +869,10 @@ class Identifier(ModelCore):
 
     identifier = CharField(_('identifier'), max_length=255, blank=True, unique=True)
     type = WeakForeignKey('IdentifierType', verbose_name=_('type'))
-    date_first = DateTimeField(_('date of first attribution'), auto_now_add=True)
+    date_add = DateTimeField(_('date added'), auto_now_add=True)
+    date_first = DateTimeField(_('date of first attribution'))
     date_last = DateTimeField(_('date of last attribution'))
-    date_modified = DateTimeField(_('date of last modification'), auto_now=True)
+    date_modified = DateTimeField(_('date modified'), auto_now=True)
     notes = TextField(_('notes'))
 
     class Meta(MetaCore):

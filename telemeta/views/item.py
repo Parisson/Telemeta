@@ -707,17 +707,18 @@ class ItemViewMixin(ItemBaseMixin):
         return grapher
 
     def get_object(self):
-        item = self.model()
-        if 'public_id' in self.kwargs:
-            items = self.model.objects.filter(code=self.kwargs['public_id'])
-            if not items:
+        obj = self.model.objects.filter(code=self.kwargs['public_id'])
+        if not obj:
+            if self.kwargs['public_id'].isdigit():
                 try:
-                    item = self.model.objects.get(id=self.kwargs['public_id'])
-                except:
-                    pass
+                    obj = self.model.objects.get(id=self.kwargs['public_id'])
+                except self.model.DoesNotExist:
+                    raise Http404
             else:
-                item = items[0]
-        return item
+                raise Http404
+        else:
+            obj = obj[0]
+        return obj
 
 
 class ItemEditView(ItemViewMixin, UpdateWithInlinesView):
@@ -925,7 +926,7 @@ class ItemDetailView(ItemViewMixin, DetailView):
             item_id = marker.item_id
             item = MediaItem.objects.get(id=item_id)
         else:
-            item = MediaItem.objects.get(public_id=public_id)
+            item = get_object_or_404(MediaItem, code=public_id)
 
         access = get_item_access(item, self.request.user)
 

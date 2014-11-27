@@ -89,7 +89,9 @@
       <li><a href="#performances" role="tab" data-toggle="tab">{% trans "Performance" %}</a></li>
       <li><a href="#tabs_container" role="tab" data-toggle="tab">{% trans "Markers" %}</a></li>
       <li><a href="#related" role="tab" data-toggle="tab">{% trans "Related media" %}</a></li>
+      {% if perms.telemeta.change_mediaitemidentifier %}
       <li><a href="#identifiers" role="tab" data-toggle="tab">{% trans "Identifier" %}</a></li>
+      {% endif %}
  <!-- <li><a href="#format" role="tab" data-toggle="tab">{% trans "Format" %}</a></li> -->
     </ul>
 
