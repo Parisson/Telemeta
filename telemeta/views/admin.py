@@ -107,7 +107,8 @@ class AdminView(object):
         if enumeration == None:
             raise Http404
 
-        enumeration_value = enumeration(value=request.POST['value'])
+        enumeration_value = enumeration(value=request.POST['value'],
+                                        comments=request.POST["comments"])
         enumeration_value.save()
 
         return self.edit_enumeration(request, enumeration_id)
