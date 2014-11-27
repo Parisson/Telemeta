@@ -127,8 +127,16 @@
 </div>
 {% endblock title_buttons %}
 
-
 {% block content %}
+
+{% if access == 'none' and not perms.telemeta.can_play_all_items %}
+
+<div>
+{% trans "This archive is not available online, please contact the CREM. Thank you."%}
+</div>
+
+{% else %}
+
 <div class="{% if item.file %}{% if access == 'full' or perms.telemeta.can_play_all_items %}with-rightcol{% endif %}{% endif %}">
 
     {% if item.file or item.url %}
@@ -378,10 +386,13 @@
 </script>
 {% endif %}
 
-{% endblock %}
+<a href="{% url "telemeta-item-dublincore" item.public_id %}" style="float:left;margin-top:0.5em;margin-bottom:1em" class="component_icon button icon_dublin_core">Dublin Core</a>
+
+{% endif %}
+
+{% endblock content %}
 
 {% block delete %}
-<a href="{% url "telemeta-item-dublincore" item.public_id %}" style="float:left;margin-top:0.5em;margin-bottom:1em" class="component_icon button icon_dublin_core">Dublin Core</a>
 {% if user.is_authenticated and perms.telemeta.delete_mediaitem %}
  <a href="#" onclick="if(confirm(gettrans('delete the item permanently?'))){window.location.href='{% url "telemeta-item-delete" item.public_id %}';};return false;"
         class="component_icon button icon_delete" style="float:right;margin-top:0.5em;margin-bottom:1em">{% trans "Delete" %}</a>

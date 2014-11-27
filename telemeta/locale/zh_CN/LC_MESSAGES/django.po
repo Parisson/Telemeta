@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Telemeta 1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-27 10:52+0100\n"
+"POT-Creation-Date: 2014-11-27 16:19+0100\n"
 "PO-Revision-Date: 2014-09-02 16:18+2\n"
 "Last-Translator: Zaichao XIA <xiazaichao@gmail.com>\n"
 "Language-Team: zh_CN <LL@li.org>\n"
@@ -567,12 +567,12 @@ msgstr "文化区域"
 msgid "language"
 msgstr "语言"
 
-#: models/media.py:371 templates/telemeta/mediaitem_detail.html:250
+#: models/media.py:371 templates/telemeta/mediaitem_detail.html:258
 #, fuzzy
 msgid "Language (ISO norm)"
 msgstr "ISO语言"
 
-#: models/media.py:373 templates/telemeta/mediaitem_detail.html:254
+#: models/media.py:373 templates/telemeta/mediaitem_detail.html:262
 msgid "Ethnographic context"
 msgstr "人种文本"
 
@@ -959,7 +959,7 @@ msgstr ""
 #: templates/telemeta/collection_detail.html:249
 #: templates/telemeta/collection_detail_dc.html:25
 #: templates/telemeta/lists.html:63
-#: templates/telemeta/mediaitem_detail.html:387
+#: templates/telemeta/mediaitem_detail.html:398
 #: templates/telemeta/mediaitem_detail_dc.html:20
 #: templates/telemeta/resource_detail.html:115
 #: templates/telemeta/resource_detail_dc.html:17
@@ -1328,13 +1328,13 @@ msgstr "文献"
 #: templates/telemeta/collection_detail.html:93
 #, fuzzy
 msgctxt "collection"
-msgid "unpublished"
+msgid "Unpublished"
 msgstr "未出版的"
 
 #: templates/telemeta/collection_detail.html:95
 #, fuzzy
 msgctxt "collection"
-msgid "published"
+msgid "Published"
 msgstr "已出版的"
 
 #: templates/telemeta/collection_detail.html:103
@@ -1344,13 +1344,13 @@ msgid "Recording period"
 msgstr "录音时段"
 
 #: templates/telemeta/collection_detail.html:108
-#: templates/telemeta/mediaitem_detail.html:234
+#: templates/telemeta/mediaitem_detail.html:242
 #, fuzzy
 msgid "Access type"
 msgstr "访问状态"
 
 #: templates/telemeta/collection_detail.html:120
-#: templates/telemeta/mediaitem_detail.html:242
+#: templates/telemeta/mediaitem_detail.html:250
 msgid "Geographic and cultural informations"
 msgstr "地理和文化信息"
 
@@ -1366,7 +1366,7 @@ msgid "Bibliographic references"
 msgstr "参考文献"
 
 #: templates/telemeta/collection_detail.html:165
-#: templates/telemeta/mediaitem_detail.html:305
+#: templates/telemeta/mediaitem_detail.html:313
 msgid "Archiving data"
 msgstr "存档数据"
 
@@ -1375,18 +1375,18 @@ msgid "Related documentation"
 msgstr "相关文献"
 
 #: templates/telemeta/collection_detail.html:183
-#: templates/telemeta/mediaitem_detail.html:349
+#: templates/telemeta/mediaitem_detail.html:357
 msgid "Comments"
 msgstr "注解"
 
 #: templates/telemeta/collection_detail.html:187
-#: templates/telemeta/mediaitem_detail.html:319
+#: templates/telemeta/mediaitem_detail.html:327
 #: templates/telemeta/resource_detail.html:85
 msgid "Last modification"
 msgstr "上次修改"
 
 #: templates/telemeta/collection_detail.html:201
-#: templates/telemeta/mediaitem_detail.html:329
+#: templates/telemeta/mediaitem_detail.html:337
 msgid "Technical data"
 msgstr "专业数据"
 
@@ -1517,7 +1517,7 @@ msgstr "添加记录"
 #: templates/telemeta/enumeration_edit.html:17
 #: templates/telemeta/enumeration_edit.html:31
 #: templates/telemeta/enumeration_edit_value.html:30
-#: templates/telemeta/mediaitem_detail.html:191
+#: templates/telemeta/mediaitem_detail.html:199
 #: templates/telemeta/mediaitem_edit.html:135
 msgid "Value"
 msgstr "价值"
@@ -1662,68 +1662,72 @@ msgstr "忘记密码"
 
 #: templates/telemeta/mediaitem_add.html:5
 #: templates/telemeta/mediaitem_detail.html:5 views/item.py:134
-#: views/item.py:934
 msgid "Item"
 msgstr "项"
 
-#: templates/telemeta/mediaitem_detail.html:180
+#: templates/telemeta/mediaitem_detail.html:135
+msgid ""
+"This archive is not available online, please contact the CREM. Thank you."
+msgstr ""
+
+#: templates/telemeta/mediaitem_detail.html:188
 #: templates/telemeta/mediaitem_edit.html:125
 msgid "File"
 msgstr ""
 
-#: templates/telemeta/mediaitem_detail.html:182
+#: templates/telemeta/mediaitem_detail.html:190
 #: templates/telemeta/mediaitem_edit.html:90
 #: templates/telemeta/mediaitem_edit.html:127
 msgid "Markers"
 msgstr "书签"
 
-#: templates/telemeta/mediaitem_detail.html:190
+#: templates/telemeta/mediaitem_detail.html:198
 #: templates/telemeta/mediaitem_edit.html:134
 msgid "Property"
 msgstr "性能"
 
-#: templates/telemeta/mediaitem_detail.html:192
+#: templates/telemeta/mediaitem_detail.html:200
 #: templates/telemeta/mediaitem_edit.html:136
 msgid "Unit"
 msgstr "单元"
 
-#: templates/telemeta/mediaitem_detail.html:213
+#: templates/telemeta/mediaitem_detail.html:221
 #: templates/telemeta/mediaitem_edit.html:74
 msgid "You don't have access to the media of this item."
 msgstr "您无权访问该项的媒体"
 
-#: templates/telemeta/mediaitem_detail.html:213
+#: templates/telemeta/mediaitem_detail.html:221
 #: templates/telemeta/mediaitem_edit.html:74
 msgid "Please contact the administrators to get more rights."
 msgstr "请联系管理员以获得跟多权限。"
 
-#: templates/telemeta/mediaitem_detail.html:213
+#: templates/telemeta/mediaitem_detail.html:221
 #: templates/telemeta/mediaitem_edit.html:74
 msgid "Click here"
 msgstr "点击这里"
 
-#: templates/telemeta/mediaitem_detail.html:232
+#: templates/telemeta/mediaitem_detail.html:240
 msgid "Recording date"
 msgstr "录音日期"
 
-#: templates/telemeta/mediaitem_detail.html:244
+#: templates/telemeta/mediaitem_detail.html:252
 #: templates/telemeta/inc/mediaitem_list.html:12
 msgid "Location"
 msgstr "位置"
 
-#: templates/telemeta/mediaitem_detail.html:265
+#: templates/telemeta/mediaitem_detail.html:273
 msgid "Musical informations"
 msgstr "音乐信息"
 
-#: templates/telemeta/mediaitem_detail.html:313
+#: templates/telemeta/mediaitem_detail.html:321
 msgid "Published references"
 msgstr "已出版参考资料"
 
-#: templates/telemeta/mediaitem_detail.html:316
+#: templates/telemeta/mediaitem_detail.html:324
 msgid "Remarks"
 msgstr "评论"
 
-#: templates/telemeta/mediaitem_detail.html:337
+#: templates/telemeta/mediaitem_detail.html:345
 #, fuzzy
 msgid "Item size"
 msgstr "选集"
@@ -2173,7 +2177,7 @@ msgid "Access not allowed"
 msgstr "不允许访问"
 
 #: views/collection.py:52 views/home.py:93 views/item.py:135 views/item.py:507
-#: views/item.py:935 views/profile.py:70
+#: views/profile.py:70
 msgid ""
 "Please login or contact the website administator to get a private access."
 msgstr "请登录或联系网站管理员以获得私人访问权限。"
@@ -2194,10 +2198,19 @@ msgstr "列表"
 msgid "You have successfully updated your item."
 msgstr ""
 
-#: views/item.py:933
 #, fuzzy
-msgid "Access not allowed."
-msgstr "不允许访问"
+#~ msgctxt "collection"
+#~ msgid "unpublished"
+#~ msgstr "未出版的"
+
+#, fuzzy
+#~ msgctxt "collection"
+#~ msgid "published"
+#~ msgstr "已出版的"
+
+#, fuzzy
+#~ msgid "Access not allowed."
+#~ msgstr "不允许访问"
 
 #, fuzzy
 #~ msgctxt "edit"

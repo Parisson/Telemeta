@@ -929,14 +929,6 @@ class ItemDetailView(ItemViewMixin, DetailView):
 
         access = get_item_access(item, self.request.user)
 
-        if access == 'none':
-            mess = ugettext('Access not allowed.')
-            title = ugettext('Item') + ' : ' + public_id + ' : ' + mess
-            description = ugettext('Please login or contact the website administator to get a private access.')
-            message = title + '\n' + description
-            messages.error(self.request, title)
-            context['access'] = None
-
         previous, next = self.item_previous_next(item)
 
         self.item_analyze(item)

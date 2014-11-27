@@ -90,9 +90,9 @@
                 {% endif %}
                 <dt>{% trans "Document status" %}</dt>
                 {% if '_I_' in collection.public_id %}
-                 <dd>{% trans 'unpublished' context "collection" %}</dd>
+                 <dd>{% trans 'Unpublished' context "collection" %}</dd>
                 {% elif '_E_' in collection.public_id %}
-                 <dd>{% trans 'published' context "collection" %}</dd>
+                 <dd>{% trans 'Published' context "collection" %}</dd>
                 {% else %}
                  <dd>&nbsp;</dd>
                 {% endif %}

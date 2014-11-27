@@ -1,6 +1,3 @@
-.. image:: images/help.png
-    :align: left
-
 ========================
 Pages d'aide de Telemeta
 ========================
