@@ -42,6 +42,7 @@ class Enumeration(ModelCore):
 
     hidden = False
     value = CharField(_('value'), required=True, unique=True)
+    comments = TextField(_('comments'))
 
     def __unicode__(self):
         return self.value

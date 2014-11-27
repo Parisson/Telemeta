@@ -154,6 +154,7 @@ class AdminView(object):
 
             record = enumeration.objects.get(id__exact=value_id)
             record.value = request.POST["value"]
+            record.comments = request.POST["comments"]
             record.save()
 
         return self.edit_enumeration(request, enumeration_id)
