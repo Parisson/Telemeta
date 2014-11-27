@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Telemeta 1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-20 18:01+0100\n"
+"POT-Creation-Date: 2014-11-27 10:43+0100\n"
 "PO-Revision-Date: 2014-09-02 16:18+2\n"
 "Last-Translator: Zaichao XIA <xiazaichao@gmail.com>\n"
 "Language-Team: zh_CN <LL@li.org>\n"
@@ -107,7 +107,6 @@ msgstr "录音带转速（厘米/秒）"
 
 #: models/enum.py:218
 #, fuzzy
-#| msgid "tape vendor"
 msgid "tape brand"
 msgstr "录音带卖主"
 
@@ -139,7 +138,6 @@ msgstr "媒体类型"
 
 #: models/enum.py:282 models/media.py:254
 #, fuzzy
-#| msgid "original location"
 msgid "original format"
 msgstr "原始位置"
 
@@ -363,7 +361,6 @@ msgstr "私有数据"
 
 #: models/media.py:109 models/media.py:214 models/media.py:364
 #, fuzzy
-#| msgid "access status"
 msgid "access type"
 msgstr "访问状态"
 
@@ -425,6 +422,7 @@ msgid "recording year (from)"
 msgstr "录音年份（起）"
 
 #: models/media.py:211 models/media.py:212 models/media.py:213
+#: models/media.py:781 models/media.py:782
 msgid "YYYY"
 msgstr ""
 
@@ -450,7 +448,6 @@ msgstr "出版序列号"
 
 #: models/media.py:224
 #, fuzzy
-#| msgid "author"
 msgid "booklet author"
 msgstr "作者"
 
@@ -495,7 +492,7 @@ msgstr "已完成项"
 msgid "recordist identical to depositor"
 msgstr "录音者与寄存者相同"
 
-#: models/media.py:247 templates/telemeta/collection_detail.html:95
+#: models/media.py:247
 msgid "published"
 msgstr "已出版的"
 
@@ -505,7 +502,6 @@ msgstr "保存网站"
 
 #: models/media.py:252
 #, fuzzy
-#| msgid "computed duration"
 msgid "estimated duration"
 msgstr "计算估计时长"
 
@@ -531,7 +527,6 @@ msgstr "计算估计时长"
 
 #: models/media.py:330
 #, fuzzy
-#| msgid "collections"
 msgid "collection size"
 msgstr "选集"
 
@@ -572,13 +567,12 @@ msgstr "文化区域"
 msgid "language"
 msgstr "语言"
 
-#: models/media.py:371 templates/telemeta/mediaitem_detail.html:251
+#: models/media.py:371 templates/telemeta/mediaitem_detail.html:250
 #, fuzzy
-#| msgid "Language ISO"
 msgid "Language (ISO norm)"
 msgstr "ISO语言"
 
-#: models/media.py:373 templates/telemeta/mediaitem_detail.html:255
+#: models/media.py:373 templates/telemeta/mediaitem_detail.html:254
 msgid "Ethnographic context"
 msgstr "人种文本"
 
@@ -673,7 +667,6 @@ msgstr "仪器"
 
 #: models/media.py:515
 #, fuzzy
-#| msgid "collections"
 msgid "item size"
 msgstr "选集"
 
@@ -755,7 +748,6 @@ msgstr "选集"
 
 #: models/media.py:802 models/media.py:837
 #, fuzzy
-#| msgid "computed duration"
 msgid "total available duration"
 msgstr "计算估计时长"
 
@@ -967,9 +959,9 @@ msgstr ""
 #: templates/telemeta/collection_detail.html:249
 #: templates/telemeta/collection_detail_dc.html:25
 #: templates/telemeta/lists.html:63
-#: templates/telemeta/mediaitem_detail.html:388
+#: templates/telemeta/mediaitem_detail.html:387
 #: templates/telemeta/mediaitem_detail_dc.html:20
-#: templates/telemeta/resource_detail.html:116
+#: templates/telemeta/resource_detail.html:115
 #: templates/telemeta/resource_detail_dc.html:17
 msgid "Delete"
 msgstr "删除"
@@ -1123,7 +1115,7 @@ msgid "Administration"
 msgstr "管理"
 
 #: templates/telemeta/admin.html:14 templates/telemeta/admin_general.html:5
-#: templates/telemeta/base.html:119 templates/telemeta/collection_edit.html:36
+#: templates/telemeta/collection_edit.html:36
 #: templates/telemeta/mediaitem_edit.html:87
 #: templates/telemeta/resource_edit.html:38
 msgid "General"
@@ -1135,6 +1127,9 @@ msgid "Enumerations"
 msgstr "计数/列举"
 
 #: templates/telemeta/admin_enumerations.html:13
+#: templates/telemeta/lists.html:74
+#: templates/telemeta/search_criteria.html:116
+#: templates/telemeta/search_results.html:53
 #: templates/telemeta/inc/children_list.html:15
 #: templates/telemeta/inc/collection_list.html:8
 #: templates/telemeta/inc/collection_related.html:21
@@ -1143,8 +1138,6 @@ msgstr "计数/列举"
 #: templates/telemeta/inc/module_revisions.html:17
 #: templates/telemeta/inc/resource_list.html:8
 #: templates/telemeta/inc/resource_related.html:21
-#: templates/telemeta/lists.html:74 templates/telemeta/search_criteria.html:91
-#: templates/telemeta/search_results.html:53
 msgid "Title"
 msgstr "标题"
 
@@ -1175,7 +1168,7 @@ msgstr "帮助"
 msgid "Sign out"
 msgstr "注销"
 
-#: templates/telemeta/base.html:74 templates/telemeta/login.html:41
+#: templates/telemeta/base.html:74 templates/telemeta/login.html:42
 msgid "Sign in"
 msgstr "登陆"
 
@@ -1202,8 +1195,8 @@ msgstr "选集"
 
 #: templates/telemeta/base.html:106 templates/telemeta/breadcrumbs.html:7
 #: templates/telemeta/collection_detail.html:84
-#: templates/telemeta/inc/breadcrumbs.html:8
 #: templates/telemeta/mediaitem_list.html:11
+#: templates/telemeta/inc/breadcrumbs.html:8
 msgid "Items"
 msgstr "项"
 
@@ -1218,6 +1211,12 @@ msgstr "高级搜索"
 #: templates/telemeta/base.html:117
 msgid "Admin"
 msgstr "管理员"
+
+#: templates/telemeta/base.html:119
+#, fuzzy
+msgctxt "admin"
+msgid "General"
+msgstr "通用"
 
 #: templates/telemeta/base.html:121
 #: templates/telemeta/instrument_alias_edit_value.html:24
@@ -1290,22 +1289,22 @@ msgstr "选集"
 
 #: templates/telemeta/collection_detail.html:45
 #: templates/telemeta/lists.html:60
-#: templates/telemeta/mediaitem_detail.html:107
+#: templates/telemeta/mediaitem_detail.html:106
 #: templates/telemeta/profile_detail.html:72
-#: templates/telemeta/resource_detail.html:45
+#: templates/telemeta/resource_detail.html:44
 msgid "Edit"
 msgstr "编辑"
 
 #: templates/telemeta/collection_detail.html:50
-#: templates/telemeta/mediaitem_detail.html:112
-#: templates/telemeta/resource_detail.html:50
+#: templates/telemeta/mediaitem_detail.html:111
+#: templates/telemeta/resource_detail.html:49
 msgid "Copy"
 msgstr "复制"
 
 #: templates/telemeta/collection_detail.html:57
 #: templates/telemeta/geo_continents.html:26
-#: templates/telemeta/mediaitem_detail.html:119
-#: templates/telemeta/resource_detail.html:57
+#: templates/telemeta/mediaitem_detail.html:118
+#: templates/telemeta/resource_detail.html:56
 msgid "List"
 msgstr "列表"
 
@@ -1323,38 +1322,42 @@ msgstr ""
 
 #: templates/telemeta/collection_detail.html:91
 #, fuzzy
-#| msgid "Documentation"
 msgid "Document status"
 msgstr "文献"
 
 #: templates/telemeta/collection_detail.html:93
 #, fuzzy
-#| msgid "Unpublished"
+msgctxt "collection"
 msgid "unpublished"
 msgstr "未出版的"
 
+#: templates/telemeta/collection_detail.html:95
+#, fuzzy
+msgctxt "collection"
+msgid "published"
+msgstr "已出版的"
+
 #: templates/telemeta/collection_detail.html:103
-#: templates/telemeta/inc/collection_list.html:12
 #: templates/telemeta/lists.html:78
+#: templates/telemeta/inc/collection_list.html:12
 msgid "Recording period"
 msgstr "录音时段"
 
 #: templates/telemeta/collection_detail.html:108
-#: templates/telemeta/mediaitem_detail.html:235
+#: templates/telemeta/mediaitem_detail.html:234
 #, fuzzy
-#| msgid "access status"
 msgid "Access type"
 msgstr "访问状态"
 
 #: templates/telemeta/collection_detail.html:120
-#: templates/telemeta/mediaitem_detail.html:243
+#: templates/telemeta/mediaitem_detail.html:242
 msgid "Geographic and cultural informations"
 msgstr "地理和文化信息"
 
 #: templates/telemeta/collection_detail.html:138
+#: templates/telemeta/lists.html:77
 #: templates/telemeta/inc/collection_list.html:11
 #: templates/telemeta/inc/mediaitem_list.html:10
-#: templates/telemeta/lists.html:77
 msgid "Recordist"
 msgstr "录音员"
 
@@ -1363,7 +1366,7 @@ msgid "Bibliographic references"
 msgstr "参考文献"
 
 #: templates/telemeta/collection_detail.html:165
-#: templates/telemeta/mediaitem_detail.html:306
+#: templates/telemeta/mediaitem_detail.html:305
 msgid "Archiving data"
 msgstr "存档数据"
 
@@ -1372,24 +1375,23 @@ msgid "Related documentation"
 msgstr "相关文献"
 
 #: templates/telemeta/collection_detail.html:183
-#: templates/telemeta/mediaitem_detail.html:350
+#: templates/telemeta/mediaitem_detail.html:349
 msgid "Comments"
 msgstr "注解"
 
 #: templates/telemeta/collection_detail.html:187
-#: templates/telemeta/mediaitem_detail.html:320
-#: templates/telemeta/resource_detail.html:86
+#: templates/telemeta/mediaitem_detail.html:319
+#: templates/telemeta/resource_detail.html:85
 msgid "Last modification"
 msgstr "上次修改"
 
 #: templates/telemeta/collection_detail.html:201
-#: templates/telemeta/mediaitem_detail.html:330
+#: templates/telemeta/mediaitem_detail.html:329
 msgid "Technical data"
 msgstr "专业数据"
 
 #: templates/telemeta/collection_detail.html:209
 #, fuzzy
-#| msgid "Collections"
 msgid "Collection size"
 msgstr "选集"
 
@@ -1434,11 +1436,11 @@ msgid "Save"
 msgstr "保存"
 
 #: templates/telemeta/collection_edit.html:37
+#: templates/telemeta/mediaitem_edit.html:91
+#: templates/telemeta/resource_edit.html:39
 #: templates/telemeta/inc/collection_related.html:6
 #: templates/telemeta/inc/mediaitem_related.html:6
 #: templates/telemeta/inc/resource_related.html:6
-#: templates/telemeta/mediaitem_edit.html:88
-#: templates/telemeta/resource_edit.html:39
 msgid "Related media"
 msgstr "相关媒体"
 
@@ -1461,21 +1463,19 @@ msgid "All"
 msgstr "所有"
 
 #: templates/telemeta/collection_list.html:29
-#: templates/telemeta/mediaitem_list.html:28
+#, fuzzy
+msgctxt "collection list"
 msgid "Unpublished"
 msgstr "未出版的"
 
 #: templates/telemeta/collection_list.html:30
-#: templates/telemeta/mediaitem_list.html:29
+#, fuzzy
+msgctxt "collection list"
 msgid "Published"
 msgstr "已出版的"
 
 #: templates/telemeta/collection_list.html:31
-#: templates/telemeta/inc/children_list.html:16
-#: templates/telemeta/inc/collection_list.html:9
-#: templates/telemeta/inc/mediaitem_list.html:9
-#: templates/telemeta/inc/resource_list.html:9
-#: templates/telemeta/mediaitem_list.html:30
+msgctxt "collection list"
 msgid "Digitized"
 msgstr ""
 
@@ -1488,11 +1488,11 @@ msgid "Add"
 msgstr "添加"
 
 #: templates/telemeta/collection_related_edit.html:25
+#: templates/telemeta/mediaitem_related_edit.html:24
+#: templates/telemeta/resource_related_edit.html:24
 #: templates/telemeta/inc/collection_related.html:12
 #: templates/telemeta/inc/mediaitem_related.html:12
 #: templates/telemeta/inc/resource_related.html:12
-#: templates/telemeta/mediaitem_related_edit.html:24
-#: templates/telemeta/resource_related_edit.html:24
 msgid "Media"
 msgstr "媒体"
 
@@ -1517,7 +1517,7 @@ msgstr "添加记录"
 #: templates/telemeta/enumeration_edit.html:17
 #: templates/telemeta/enumeration_edit.html:31
 #: templates/telemeta/enumeration_edit_value.html:30
-#: templates/telemeta/mediaitem_detail.html:192
+#: templates/telemeta/mediaitem_detail.html:191
 #: templates/telemeta/mediaitem_edit.html:135
 msgid "Value"
 msgstr "价值"
@@ -1608,108 +1608,6 @@ msgstr "打开地图导航"
 msgid "Partners"
 msgstr "合作伙伴"
 
-#: templates/telemeta/inc/children_list.html:8
-#, python-format
-msgid ""
-"%(resource.children_type|capitalize)s %(first_on_page)s to %(last_on_page)s "
-"on %(hits)s"
-msgstr ""
-
-#: templates/telemeta/inc/children_list.html:18
-#: templates/telemeta/inc/collection_list.html:13
-#: templates/telemeta/inc/mediaitem_list.html:17
-#: templates/telemeta/inc/resource_list.html:11
-#: templates/telemeta/lists.html:76
-msgid "Code"
-msgstr "密码"
-
-#: templates/telemeta/inc/children_list.html:39
-#: templates/telemeta/inc/resource_list.html:31
-msgid "No resource"
-msgstr "无资源"
-
-#: templates/telemeta/inc/collection_list.html:43
-msgid "No collection"
-msgstr "无选集"
-
-#: templates/telemeta/inc/collection_related.html:13
-#: templates/telemeta/inc/mediaitem_related.html:13
-#: templates/telemeta/inc/resource_related.html:13
-msgid "Preview"
-msgstr "预览"
-
-#: templates/telemeta/inc/collection_related.html:41
-#: templates/telemeta/inc/mediaitem_related.html:41
-#: templates/telemeta/inc/resource_related.html:41
-msgid "Credits"
-msgstr "工作人员"
-
-#: templates/telemeta/inc/collection_related.html:45
-#: templates/telemeta/inc/mediaitem_related.html:45
-#: templates/telemeta/inc/resource_related.html:45
-msgid "Download"
-msgstr "下载"
-
-#: templates/telemeta/inc/dublincore.html:4
-msgid "Dublin Core Metadata"
-msgstr "都柏林核心元数据"
-
-#: templates/telemeta/inc/mediaitem_list.html:12
-#: templates/telemeta/mediaitem_detail.html:245
-msgid "Location"
-msgstr "位置"
-
-#: templates/telemeta/inc/mediaitem_list.html:14
-msgid "Country/Continent"
-msgstr "国家/洲"
-
-#: templates/telemeta/inc/mediaitem_list.html:16
-#: templates/telemeta/search_criteria.html:107
-#: templates/telemeta/search_results.html:56
-msgid "Year of recording"
-msgstr "录音年份"
-
-#: templates/telemeta/inc/mediaitem_list.html:53
-msgid "No item"
-msgstr "无项目"
-
-#: templates/telemeta/inc/module_revisions.html:18
-#: templates/telemeta/lists.html:75
-msgid "Type"
-msgstr "类型"
-
-#: templates/telemeta/inc/module_revisions.html:19
-#: templates/telemeta/inc/user_list.html:6
-msgid "User"
-msgstr "用户"
-
-#: templates/telemeta/inc/module_revisions.html:40
-#: templates/telemeta/lists.html:97
-msgid "deleted"
-msgstr "已删除"
-
-#: templates/telemeta/inc/module_searches.html:13
-msgid "Criteria"
-msgstr "标准"
-
-#: templates/telemeta/inc/user_list.html:7
-#: templates/telemeta/profile_detail.html:39
-msgid "First Name"
-msgstr "名"
-
-#: templates/telemeta/inc/user_list.html:8
-#: templates/telemeta/profile_detail.html:40
-msgid "Last Name"
-msgstr "姓"
-
-#: templates/telemeta/inc/user_list.html:9
-msgid "E-mail"
-msgstr "邮箱"
-
-#: templates/telemeta/inc/user_list.html:10
-msgid "Groups"
-msgstr "群组"
-
 #: templates/telemeta/instrument_alias_edit.html:16
 #: templates/telemeta/instrument_alias_edit.html:30
 #: templates/telemeta/instrument_alias_edit_value.html:30
@@ -1728,11 +1626,27 @@ msgstr "该仪器列表为空"
 msgid "My playlists"
 msgstr "我的播放列表"
 
-#: templates/telemeta/lists.html:79
-#: templates/telemeta/search_criteria.html:143
-#: templates/telemeta/search_results.html:70
+#: templates/telemeta/lists.html:75
+#: templates/telemeta/inc/module_revisions.html:18
+msgid "Type"
+msgstr "类型"
+
+#: templates/telemeta/lists.html:76
+#: templates/telemeta/inc/children_list.html:18
+#: templates/telemeta/inc/collection_list.html:13
+#: templates/telemeta/inc/mediaitem_list.html:17
+#: templates/telemeta/inc/resource_list.html:11
+msgid "Code"
+msgstr "密码"
+
+#: templates/telemeta/lists.html:79 templates/telemeta/search_results.html:70
 msgid "Sound"
 msgstr "声音"
+
+#: templates/telemeta/lists.html:97
+#: templates/telemeta/inc/module_revisions.html:40
+msgid "deleted"
+msgstr "已删除"
 
 #: templates/telemeta/login.html:21
 msgid "User authentication"
@@ -1742,71 +1656,75 @@ msgstr "用户认证"
 msgid "Your username and password didn't match. Please try again."
 msgstr "您的用户名和密码不匹配。请重试。"
 
-#: templates/telemeta/login.html:45
+#: templates/telemeta/login.html:44
 msgid "Password forgotten"
 msgstr "忘记密码"
 
 #: templates/telemeta/mediaitem_add.html:5
 #: templates/telemeta/mediaitem_detail.html:5 views/item.py:134
-#: views/item.py:895
+#: views/item.py:934
 msgid "Item"
 msgstr "项"
 
-#: templates/telemeta/mediaitem_detail.html:181
+#: templates/telemeta/mediaitem_detail.html:180
 #: templates/telemeta/mediaitem_edit.html:125
 msgid "File"
 msgstr ""
 
-#: templates/telemeta/mediaitem_detail.html:183
-#: templates/telemeta/mediaitem_edit.html:93
+#: templates/telemeta/mediaitem_detail.html:182
+#: templates/telemeta/mediaitem_edit.html:90
 #: templates/telemeta/mediaitem_edit.html:127
 msgid "Markers"
 msgstr "书签"
 
-#: templates/telemeta/mediaitem_detail.html:191
+#: templates/telemeta/mediaitem_detail.html:190
 #: templates/telemeta/mediaitem_edit.html:134
 msgid "Property"
 msgstr "性能"
 
-#: templates/telemeta/mediaitem_detail.html:193
+#: templates/telemeta/mediaitem_detail.html:192
 #: templates/telemeta/mediaitem_edit.html:136
 msgid "Unit"
 msgstr "单元"
 
-#: templates/telemeta/mediaitem_detail.html:214
+#: templates/telemeta/mediaitem_detail.html:213
 #: templates/telemeta/mediaitem_edit.html:74
 msgid "You don't have access to the media of this item."
 msgstr "您无权访问该项的媒体"
 
-#: templates/telemeta/mediaitem_detail.html:214
+#: templates/telemeta/mediaitem_detail.html:213
 #: templates/telemeta/mediaitem_edit.html:74
 msgid "Please contact the administrators to get more rights."
 msgstr "请联系管理员以获得跟多权限。"
 
-#: templates/telemeta/mediaitem_detail.html:214
+#: templates/telemeta/mediaitem_detail.html:213
 #: templates/telemeta/mediaitem_edit.html:74
 msgid "Click here"
 msgstr "点击这里"
 
-#: templates/telemeta/mediaitem_detail.html:233
+#: templates/telemeta/mediaitem_detail.html:232
 msgid "Recording date"
 msgstr "录音日期"
 
-#: templates/telemeta/mediaitem_detail.html:266
+#: templates/telemeta/mediaitem_detail.html:244
+#: templates/telemeta/inc/mediaitem_list.html:12
+msgid "Location"
+msgstr "位置"
+
+#: templates/telemeta/mediaitem_detail.html:265
 msgid "Musical informations"
 msgstr "音乐信息"
 
-#: templates/telemeta/mediaitem_detail.html:314
+#: templates/telemeta/mediaitem_detail.html:313
 msgid "Published references"
 msgstr "已出版参考资料"
 
-#: templates/telemeta/mediaitem_detail.html:317
+#: templates/telemeta/mediaitem_detail.html:316
 msgid "Remarks"
 msgstr "评论"
 
-#: templates/telemeta/mediaitem_detail.html:338
+#: templates/telemeta/mediaitem_detail.html:337
 #, fuzzy
-#| msgid "collections"
 msgid "Item size"
 msgstr "选集"
 
@@ -1814,16 +1732,16 @@ msgstr "选集"
 msgid "No such item"
 msgstr "无该项"
 
-#: templates/telemeta/mediaitem_edit.html:89
+#: templates/telemeta/mediaitem_edit.html:88
 msgid "Keywords"
 msgstr "关键词"
 
-#: templates/telemeta/mediaitem_edit.html:90
+#: templates/telemeta/mediaitem_edit.html:89
 #: templates/telemeta/mediaitem_performances_edit.html:25
 msgid "Performance"
 msgstr "性能"
 
-#: templates/telemeta/mediaitem_edit.html:91
+#: templates/telemeta/mediaitem_edit.html:93
 #, fuzzy
 msgid "Format"
 msgstr "格式"
@@ -1844,6 +1762,23 @@ msgstr "关键字"
 msgid "Media Items"
 msgstr "媒体项"
 
+#: templates/telemeta/mediaitem_list.html:28
+msgid "Unpublished"
+msgstr "未出版的"
+
+#: templates/telemeta/mediaitem_list.html:29
+msgid "Published"
+msgstr "已出版的"
+
+#: templates/telemeta/mediaitem_list.html:30
+#: templates/telemeta/search_criteria.html:168
+#: templates/telemeta/inc/children_list.html:16
+#: templates/telemeta/inc/collection_list.html:9
+#: templates/telemeta/inc/mediaitem_list.html:9
+#: templates/telemeta/inc/resource_list.html:9
+msgid "Digitized"
+msgstr ""
+
 #: templates/telemeta/paginator.html:5
 msgid "Previous"
 msgstr "前一个"
@@ -1863,6 +1798,16 @@ msgstr "用户资料"
 #: templates/telemeta/profile_detail.html:16
 msgid "Playlists"
 msgstr "播放列表"
+
+#: templates/telemeta/profile_detail.html:39
+#: templates/telemeta/inc/user_list.html:7
+msgid "First Name"
+msgstr "名"
+
+#: templates/telemeta/profile_detail.html:40
+#: templates/telemeta/inc/user_list.html:8
+msgid "Last Name"
+msgstr "姓"
 
 #: templates/telemeta/profile_detail.html:41
 msgid "Email"
@@ -1903,6 +1848,127 @@ msgstr "应用"
 #: templates/telemeta/registration/password_change_form.html:4
 msgid "Change password"
 msgstr "更改密码"
+
+#: templates/telemeta/resource_confirm_delete.html:20
+msgid "Delete the resource permanently?"
+msgstr ""
+
+#: templates/telemeta/resource_confirm_delete.html:26
+msgid "No"
+msgstr ""
+
+#: templates/telemeta/resource_confirm_delete.html:28
+msgid "Yes"
+msgstr ""
+
+#: templates/telemeta/resource_detail.html:120
+#: templates/telemeta/resource_detail_dc.html:22
+msgid "No such resource"
+msgstr "该资源不存在"
+
+#: templates/telemeta/search_criteria.html:5
+#: templates/telemeta/search_criteria.html:85
+msgid "Advanced Search"
+msgstr "高级搜索"
+
+#: templates/telemeta/search_criteria.html:132
+#: templates/telemeta/search_results.html:56
+#: templates/telemeta/inc/mediaitem_list.html:16
+msgid "Year of recording"
+msgstr "录音年份"
+
+#: templates/telemeta/search_criteria.html:139
+#: templates/telemeta/search_criteria.html:158
+#: templates/telemeta/search_results.html:58
+#: templates/telemeta/search_results.html:65
+msgid "to"
+msgstr "给"
+
+#: templates/telemeta/search_criteria.html:151
+#: templates/telemeta/search_results.html:63
+msgid "Year of publication"
+msgstr "出版年份"
+
+#: templates/telemeta/search_criteria.html:176
+msgid "Search"
+msgstr "搜索"
+
+#: templates/telemeta/search_results.html:6
+#: templates/telemeta/search_results.html:11
+msgid "Search Results"
+msgstr "搜索结果"
+
+#: templates/telemeta/search_results.html:23
+#: templates/telemeta/search_results.html:27
+msgid "Sounds"
+msgstr "声音"
+
+#: templates/telemeta/search_results.html:35
+msgid "Search pattern"
+msgstr "搜索样板"
+
+#: templates/telemeta/inc/children_list.html:8
+#, python-format
+msgid ""
+"%(resource.children_type|capitalize)s %(first_on_page)s to %(last_on_page)s "
+"on %(hits)s"
+msgstr ""
+
+#: templates/telemeta/inc/children_list.html:39
+#: templates/telemeta/inc/resource_list.html:31
+msgid "No resource"
+msgstr "无资源"
+
+#: templates/telemeta/inc/collection_list.html:43
+msgid "No collection"
+msgstr "无选集"
+
+#: templates/telemeta/inc/collection_related.html:13
+#: templates/telemeta/inc/mediaitem_related.html:13
+#: templates/telemeta/inc/resource_related.html:13
+msgid "Preview"
+msgstr "预览"
+
+#: templates/telemeta/inc/collection_related.html:41
+#: templates/telemeta/inc/mediaitem_related.html:41
+#: templates/telemeta/inc/resource_related.html:41
+msgid "Credits"
+msgstr "工作人员"
+
+#: templates/telemeta/inc/collection_related.html:45
+#: templates/telemeta/inc/mediaitem_related.html:45
+#: templates/telemeta/inc/resource_related.html:45
+msgid "Download"
+msgstr "下载"
+
+#: templates/telemeta/inc/dublincore.html:4
+msgid "Dublin Core Metadata"
+msgstr "都柏林核心元数据"
+
+#: templates/telemeta/inc/mediaitem_list.html:14
+msgid "Country/Continent"
+msgstr "国家/洲"
+
+#: templates/telemeta/inc/mediaitem_list.html:53
+msgid "No item"
+msgstr "无项目"
+
+#: templates/telemeta/inc/module_revisions.html:19
+#: templates/telemeta/inc/user_list.html:6
+msgid "User"
+msgstr "用户"
+
+#: templates/telemeta/inc/module_searches.html:13
+msgid "Criteria"
+msgstr "标准"
+
+#: templates/telemeta/inc/user_list.html:9
+msgid "E-mail"
+msgstr "邮箱"
+
+#: templates/telemeta/inc/user_list.html:10
+msgid "Groups"
+msgstr "群组"
 
 #: templates/telemeta/registration/logged_out.html:6
 msgid "Thanks for spending some quality time with the Web site today."
@@ -2063,58 +2129,6 @@ msgstr "邮箱地址："
 msgid "Reset my password"
 msgstr "重置我的密码"
 
-#: templates/telemeta/resource_confirm_delete.html:20
-msgid "Delete the resource permanently?"
-msgstr ""
-
-#: templates/telemeta/resource_confirm_delete.html:26
-msgid "No"
-msgstr ""
-
-#: templates/telemeta/resource_confirm_delete.html:28
-msgid "Yes"
-msgstr ""
-
-#: templates/telemeta/resource_detail.html:121
-#: templates/telemeta/resource_detail_dc.html:22
-msgid "No such resource"
-msgstr "该资源不存在"
-
-#: templates/telemeta/search_criteria.html:5
-#: templates/telemeta/search_criteria.html:63
-msgid "Advanced Search"
-msgstr "高级搜索"
-
-#: templates/telemeta/search_criteria.html:114
-#: templates/telemeta/search_criteria.html:133
-#: templates/telemeta/search_results.html:58
-#: templates/telemeta/search_results.html:65
-msgid "to"
-msgstr "给"
-
-#: templates/telemeta/search_criteria.html:126
-#: templates/telemeta/search_results.html:63
-msgid "Year of publication"
-msgstr "出版年份"
-
-#: templates/telemeta/search_criteria.html:151
-msgid "Search"
-msgstr "搜索"
-
-#: templates/telemeta/search_results.html:6
-#: templates/telemeta/search_results.html:11
-msgid "Search Results"
-msgstr "搜索结果"
-
-#: templates/telemeta/search_results.html:23
-#: templates/telemeta/search_results.html:27
-msgid "Sounds"
-msgstr "声音"
-
-#: templates/telemeta/search_results.html:35
-msgid "Search pattern"
-msgstr "搜索样板"
-
 #: templatetags/telemeta_utils.py:259
 #, python-format
 msgid "%(count)d item"
@@ -2155,7 +2169,7 @@ msgid "Access not allowed"
 msgstr "不允许访问"
 
 #: views/collection.py:52 views/home.py:93 views/item.py:135 views/item.py:507
-#: views/item.py:896 views/profile.py:70
+#: views/item.py:935 views/profile.py:70
 msgid ""
 "Please login or contact the website administator to get a private access."
 msgstr "请登录或联系网站管理员以获得私人访问权限。"
@@ -2176,11 +2190,15 @@ msgstr "列表"
 msgid "You have successfully updated your item."
 msgstr ""
 
-#: views/item.py:894
+#: views/item.py:933
 #, fuzzy
-#| msgid "Access not allowed"
 msgid "Access not allowed."
 msgstr "不允许访问"
+
+#, fuzzy
+#~ msgctxt "edit"
+#~ msgid "General"
+#~ msgstr "通用"
 
 #~ msgid "Add to playlist"
 #~ msgstr "添加到播放列表"

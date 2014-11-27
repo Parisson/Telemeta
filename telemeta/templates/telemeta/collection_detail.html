@@ -38,7 +38,7 @@
 {% endblock %}
 
 {% block title_buttons %}
-  <div class="fixedWidthAsPlayer">
+  <div>
     {% if user.is_authenticated and perms.telemeta.change_mediaitem %}
     <a href="{% url "telemeta-collection-edit" collection.public_id %}">
       <button type="button" class="btn btn-default">
@@ -90,9 +90,9 @@
                 {% endif %}
                 <dt>{% trans "Document status" %}</dt>
                 {% if '_I_' in collection.public_id %}
-                 <dd>{% trans 'unpublished' %}</dd>
+                 <dd>{% trans 'unpublished' context "collection" %}</dd>
                 {% elif '_E_' in collection.public_id %}
-                 <dd>{% trans 'published' %}</dd>
+                 <dd>{% trans 'published' context "collection" %}</dd>
                 {% else %}
                  <dd>&nbsp;</dd>
                 {% endif %}

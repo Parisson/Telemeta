@@ -172,7 +172,7 @@ EMAIL_HOST = 'localhost'
 DEFAULT_FROM_EMAIL = 'webmaster@parisson.com'
 
 TIMESIDE_DEFAULT_GRAPHER_ID = 'waveform_centroid'
-TIMESIDE_AUTO_ZOOM = True
+TIMESIDE_AUTO_ZOOM = False
 
 # Settings for django-bootstrap3
 BOOTSTRAP3 = {

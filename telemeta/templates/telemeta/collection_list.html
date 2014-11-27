@@ -26,9 +26,9 @@
   </button>
   <ul class="dropdown-menu" role="menu">
     <li><a href="{% url "telemeta-collections" %}" class="">{% trans "All" %}</a></li>
-    <li><a href="{% url "telemeta-collections-unpublished" %}">{% trans "Unpublished" %}</a></li>
-    <li><a href="{% url "telemeta-collections-published" %}">{% trans "Published" %}</a></li>
-    <li><a href="{% url "telemeta-collections-sound" %}">{% trans "Digitized" %}</a></li>
+    <li><a href="{% url "telemeta-collections-unpublished" %}">{% trans "Unpublished" context "collection list" %}</a></li>
+    <li><a href="{% url "telemeta-collections-published" %}">{% trans "Published" context "collection list" %}</a></li>
+    <li><a href="{% url "telemeta-collections-sound" %}">{% trans "Digitized" context "collection list" %}</a></li>
   </ul>
 </div>
     {% if user.is_authenticated and perms.telemeta.add_mediacollection %}

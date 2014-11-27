@@ -28,7 +28,7 @@
        <center><span class="glyphicon glyphicon-volume-up" style="font-size: 1.3em;"></span></center>
       {% endif %}
     </td>
-    <td>{{ child.descriptions }}</td>
+    <td>{% if child.descriptions %}{{ child.descriptions }}{% else %}{{ child.description }}{% endif %}</td>
     <td>{{ child.code }}</td>
 </tr>
 {% endif %}
