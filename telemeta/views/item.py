@@ -901,7 +901,7 @@ class ItemDetailView(ItemViewMixin, DetailView):
             item_id = marker.item_id
             item = MediaItem.objects.get(id=item_id)
         else:
-            item = get_object_or_404(MediaItem, code=public_id)
+            item = self.get_object()
 
         access = get_item_access(item, self.request.user)
 
