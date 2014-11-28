@@ -2,7 +2,7 @@
 Telemeta: open web audio app with semantics
 ===============================================
 
-|version| |downloads| |travis_master| |coverage|
+|version| |downloads| |travis_master| |coverage_master|
 
 .. |travis_master| image:: https://secure.travis-ci.org/Parisson/Telemeta.png?branch=master
    :target: https://travis-ci.org/Parisson/Telemeta/
@@ -16,8 +16,8 @@ Telemeta: open web audio app with semantics
    :target: https://pypi.python.org/pypi/Telemeta/
    :alt: Downloads
 
-.. |coverage| image:: https://coveralls.io/repos/yomguy/Telemeta/badge.png?branch=master
-   :target: https://coveralls.io/r/yomguy/Telemeta?branch=master
+.. |coverage_master| image:: https://coveralls.io/repos/Parisson/Telemeta/badge.png?branch=master
+   :target: https://coveralls.io/r/Parisson/Telemeta?branch=master
    :alt: Coverage
 
 
@@ -131,14 +131,14 @@ API / Documentation
 Development
 ===========
 
-|travis_dev| |coverage|
+|travis_dev| |coverage_dev|
 
 .. |travis_dev| image:: https://secure.travis-ci.org/Parisson/Telemeta.png?branch=dev
    :target: https://travis-ci.org/Parisson/Telemeta/
    :alt: Travis
 
-.. |coverage_dev| image:: https://coveralls.io/repos/yomguy/Telemeta/badge.png?branch=dev
-   :target: https://coveralls.io/r/yomguy/Telemeta?branch=dev
+.. |coverage_dev| image:: https://coveralls.io/repos/Parisson/Telemeta/badge.png?branch=dev
+   :target: https://coveralls.io/r/Parisson/Telemeta?branch=dev
    :alt: Coverage
 
 
