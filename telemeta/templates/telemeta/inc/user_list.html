@@ -3,10 +3,12 @@
 
   <table class="listing" width="100%">
    <thead>
+    <tr>
     <th>{% trans "Last Name"%}</th>
     <th>{% trans "First Name"%}</th>
-    <tr><th>{% trans "User"%}</th>
+    <th>{% trans "User"%}</th>
     <th>{% trans "E-mail"%}</th>
+    <th>{% trans "Date added"%}</th>
     <th>{% trans "Groups"%}</th>
     </tr>
    </thead><tbody>
@@ -16,6 +18,7 @@
      <td>{{ user.first_name }}</td>
      <td><a href="{% url "telemeta-profile-detail" user.username %}">{{user.username}}</a></td>
      <td><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
+     <td>{{ user.date_joined }}</td>
      <td>{% for group in user.groups.all %}{{ group }} {% endfor %}</td>
     </tr>
     {% endfor %}
