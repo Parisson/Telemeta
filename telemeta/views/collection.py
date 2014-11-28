@@ -316,7 +316,7 @@ class CollectionEditView(CollectionViewMixin, UpdateWithInlinesView):
         return reverse_lazy('telemeta-collection-detail', kwargs={'public_id':self.kwargs['public_id']})
 
     def get_context_data(self, **kwargs):
-        context = super(CollectionCopyView, self).get_context_data(**kwargs)
+        context = super(CollectionEditView, self).get_context_data(**kwargs)
         collection = self.get_object()
         context['collection'] = collection
         return context
