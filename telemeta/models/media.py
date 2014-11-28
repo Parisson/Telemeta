@@ -440,6 +440,7 @@ class MediaItem(MediaResource):
         else:
             return _('none')
 
+
     class Meta(MetaCore):
         db_table = 'media_items'
         permissions = (("can_play_all_items", "Can play all media items"),
@@ -794,6 +795,10 @@ class MediaCorpus(MediaBaseResource):
                 return True
         return False
 
+    @property
+    def sorted_children(self):
+        return self.children.order_by('code')
+
     def computed_duration(self):
         duration = Duration()
         for child in self.children.all():
@@ -828,6 +833,10 @@ class MediaFonds(MediaBaseResource):
             if child.has_mediafile:
                 return True
         return False
+
+    @property
+    def sorted_children(self):
+        return self.children.order_by('code')
 
     def computed_duration(self):
         duration = Duration()
