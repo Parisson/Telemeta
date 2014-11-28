@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Telemeta 1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-28 00:20+0100\n"
+"POT-Creation-Date: 2014-11-28 01:51+0100\n"
 "PO-Revision-Date: 2014-09-02 16:18+2\n"
 "Last-Translator: Zaichao XIA <xiazaichao@gmail.com>\n"
 "Language-Team: zh_CN <LL@li.org>\n"
@@ -1467,9 +1467,8 @@ msgid "Filters"
 msgstr ""
 
 #: templates/telemeta/collection_list.html:28
-#: templates/telemeta/mediaitem_list.html:27
-#: templates/telemeta/search_results.html:22
-#: templates/telemeta/search_results.html:26
+#, fuzzy
+msgctxt "collection list"
 msgid "All"
 msgstr "所有"
 
@@ -1776,6 +1775,12 @@ msgstr "关键字"
 #: templates/telemeta/mediaitem_list.html:6
 msgid "Media Items"
 msgstr "媒体项"
+
+#: templates/telemeta/mediaitem_list.html:27
+#: templates/telemeta/search_results.html:22
+#: templates/telemeta/search_results.html:26
+msgid "All"
+msgstr "所有"
 
 #: templates/telemeta/mediaitem_list.html:28
 msgid "Unpublished"

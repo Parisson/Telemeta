@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-28 00:20+0100\n"
+"POT-Creation-Date: 2014-11-28 01:51+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Guillaume Pellerin <yomguy@parisson.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -759,7 +759,7 @@ msgstr "média associés"
 
 #: models/media.py:872
 msgid "date added"
-msgstr ""
+msgstr "date d'ajout"
 
 #: models/media.py:873
 msgid "date of first attribution"
@@ -1439,11 +1439,9 @@ msgid "Filters"
 msgstr "Filtres"
 
 #: templates/telemeta/collection_list.html:28
-#: templates/telemeta/mediaitem_list.html:27
-#: templates/telemeta/search_results.html:22
-#: templates/telemeta/search_results.html:26
+msgctxt "collection list"
 msgid "All"
-msgstr "Tous"
+msgstr "Toutes"
 
 #: templates/telemeta/collection_list.html:29
 msgctxt "collection list"
@@ -1747,6 +1745,12 @@ msgstr "Mot-clé"
 #: templates/telemeta/mediaitem_list.html:6
 msgid "Media Items"
 msgstr "Items"
+
+#: templates/telemeta/mediaitem_list.html:27
+#: templates/telemeta/search_results.html:22
+#: templates/telemeta/search_results.html:26
+msgid "All"
+msgstr "Tous"
 
 #: templates/telemeta/mediaitem_list.html:28
 msgid "Unpublished"

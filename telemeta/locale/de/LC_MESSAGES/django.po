@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-28 00:20+0100\n"
+"POT-Creation-Date: 2014-11-28 01:51+0100\n"
 "PO-Revision-Date: 2012-12-22 21:24+0100\n"
 "Last-Translator: Patrik Tschudin <patsch@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1477,9 +1477,8 @@ msgid "Filters"
 msgstr ""
 
 #: templates/telemeta/collection_list.html:28
-#: templates/telemeta/mediaitem_list.html:27
-#: templates/telemeta/search_results.html:22
-#: templates/telemeta/search_results.html:26
+#, fuzzy
+msgctxt "collection list"
 msgid "All"
 msgstr "Alles"
 
@@ -1794,6 +1793,12 @@ msgstr "Schlüsselwort"
 #: templates/telemeta/mediaitem_list.html:6
 msgid "Media Items"
 msgstr "Medienelemente"
+
+#: templates/telemeta/mediaitem_list.html:27
+#: templates/telemeta/search_results.html:22
+#: templates/telemeta/search_results.html:26
+msgid "All"
+msgstr "Alles"
 
 #: templates/telemeta/mediaitem_list.html:28
 msgid "Unpublished"
