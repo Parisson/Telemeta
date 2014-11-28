@@ -135,6 +135,9 @@ class CollectionView(object):
     def collection_delete(self, request, public_id):
         """Delete a given collection"""
         collection = MediaCollection.objects.get(public_id=public_id)
+        revisions = Revision.objects.filter(element_type='collection', element_id=collection.id)
+        for revision in revisions:
+            revision.delete()
         collection.delete()
         return redirect('telemeta-collections')
 

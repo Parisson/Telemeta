@@ -147,6 +147,9 @@ class ResourceView(object):
     def delete(self, request, type, public_id):
         self.setup(type)
         resource = self.model.objects.get(code=public_id)
+        revisions = Revision.objects.filter(element_type='resource', element_id=resource.id)
+        for revision in revisions:
+            revision.delete()
         resource.delete()
         return HttpResponseRedirect('/archives/'+self.type+'/')
 

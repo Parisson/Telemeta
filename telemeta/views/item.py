@@ -352,6 +352,9 @@ class ItemView(ItemBaseMixin):
     def item_delete(self, request, public_id):
         """Delete a given item"""
         item = MediaItem.objects.get(public_id=public_id)
+        revisions = Revision.objects.filter(element_type='item', element_id=item.id)
+        for revision in revisions:
+            revision.delete()
         collection = item.collection
         item.delete()
         return redirect('telemeta-collection-detail', collection.code)
