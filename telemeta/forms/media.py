@@ -43,8 +43,8 @@ from django.forms.widgets import HiddenInput
 
 class MediaFondsForm(ModelForm):
 
+    queryset = MediaCorpus.objects.all()
     widget = FilteredSelectMultiple("Corpus", True,)
-    queryset = queryset=MediaCorpus.objects.all()
     children = forms.ModelMultipleChoiceField(widget=widget, queryset=queryset, label='Corpus')
 
     class Meta:

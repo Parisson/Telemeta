@@ -142,7 +142,6 @@ class MediaBaseResource(MediaResource):
 
     class Meta(MetaCore):
         abstract = True
-        ordering = ['code']
 
 
 class MediaRelated(MediaResource):
@@ -515,6 +514,7 @@ class MediaItem(MediaResource):
             return 0
     size.verbose_name = _('item size')
 
+
 class MediaItemRelated(MediaRelated):
     "Item related media"
 
@@ -795,10 +795,6 @@ class MediaCorpus(MediaBaseResource):
                 return True
         return False
 
-    @property
-    def sorted_children(self):
-        return self.children.order_by('code')
-
     def computed_duration(self):
         duration = Duration()
         for child in self.children.all():
@@ -810,6 +806,7 @@ class MediaCorpus(MediaBaseResource):
         db_table = 'media_corpus'
         verbose_name = _('corpus')
         verbose_name_plural = _('corpus')
+        ordering = ['code']
 
 
 class MediaFonds(MediaBaseResource):
@@ -834,10 +831,6 @@ class MediaFonds(MediaBaseResource):
                 return True
         return False
 
-    @property
-    def sorted_children(self):
-        return self.children.order_by('code')
-
     def computed_duration(self):
         duration = Duration()
         for child in self.children.all():
@@ -849,6 +842,7 @@ class MediaFonds(MediaBaseResource):
         db_table = 'media_fonds'
         verbose_name = _('fonds')
         verbose_name_plural = _('fonds')
+        ordering = ['code']
 
 
 class MediaCorpusRelated(MediaRelated):

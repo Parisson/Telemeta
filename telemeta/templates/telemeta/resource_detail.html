@@ -99,7 +99,7 @@ jQuery(document).ready(function(){
 
         <div class="extraInfos">
         <h4><img src="{{ STATIC_URL }}telemeta/images/item_title.png" style="vertical-align:middle" />{{resource.children_type|capitalize }} </h4>
-        {% with resource.sorted_children.all as children %}
+        {% with resource.children.all as children %}
             {% include "telemeta/inc/children_list.html" %}
         {% endwith %}
         </div>
