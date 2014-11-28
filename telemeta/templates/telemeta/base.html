@@ -159,18 +159,18 @@
 {% block footer %}
 <div id="footer">
  <hr>
- <div class="row">
+ <div class="row" style="margin-left: 0; margin-right: 0;">
   <div class="col-md-2">
     <a id="telemeta_powered" href="{% telemeta_url %}" target="_blank"><img src="{{ STATIC_URL }}telemeta/images/logo_mini_2.png"
    alt="Telemeta Powered"/></a>
    <span style="font-weight: bold;"><br />&nbsp;v{% telemeta_version %}</span>
   </div>
-  <div class="col-md-8">
+  <div class="col-md-8" style="margin-top: 8px;">
     <center>
     {% trans "Usage of the archives in the respect of cultural heritage of the original communities." %}
     </center>
   </div>
-  <div class="col-md-2">
+  <div class="col-md-2" style="text-align: right;">
     Copyright &copy; {% current_year %} {% organization %}<br>
     <a href="{% url "telemeta-flatpage" "legal_notices" %}">{% trans "Legal notices" %}</a>
   </div>
