@@ -552,7 +552,7 @@ function PopupDiv() {
         //we add the centralDiv cause, if scrollbars are present, then moving the scrollbars sets the focus to the
         //centralDiv in IE and therefore the popup would hide
 
-        
+
         var focusNameSpace = "blur."+this.getId();
         if(!value){
             elementsWithFocus.each(function(i,elm){
@@ -584,7 +584,7 @@ function PopupDiv() {
                 //otherwise execute callback
                 setTimeout(function(){
                     var v = doc_.activeElement;
-                    
+
                     if((v && $(v).attr(focusAttr)) || me.__isClosing){
                         //if we are closing, we will call back this method which removes the focus attributes, bt meanwhile the
                         //timeout should execute
@@ -624,8 +624,8 @@ function PopupDiv() {
             return; //show(), when called, will update size and other stuff written in this method here bwloe
         }
         this.setBounds();
-        
-        
+
+
         if(focusable){
             this.getFirstFocusableElement().focus();
         }
@@ -638,7 +638,7 @@ function PopupDiv() {
         var text = subdiv.contents().filter(function() {
             return this.nodeType == 3;
         });
-        
+
         var node = text.get(0);
         if(!title){
             //if title is the empty string, apparently the text node seems to be "deleted", so resetting
@@ -676,7 +676,7 @@ function PopupDiv() {
             div.css(this.popupCss);
             this.popupCss = ''; //override prototype property
         }
-        
+
 
         this.setFocusCycleRoot(this.focusable);
 
@@ -734,7 +734,7 @@ function PopupDiv() {
             div.appendTo('body');
         }
 
-        
+
         if(isClickElement){
             //storing click events, when showing clicking on an event must give the focus to the popup
             //old handlers will be restored in close()
@@ -743,7 +743,7 @@ function PopupDiv() {
             if(focusElm){
                 var oldHandlers = [];
                 var type = 'click';
-                var clickEvents =invoker.data("events")[type];
+                var clickEvents = $._data(invoker[0], "events")[type];
                 $.each(clickEvents, function(key, value) {
                     oldHandlers.push(value);
                 });
@@ -767,7 +767,7 @@ function PopupDiv() {
 
         }
         this.setBounds();
-       
+
         var shadow = this._getShadow();
         var place = this.setOffset;
         var postShowFcn = function(){
@@ -804,7 +804,7 @@ function PopupDiv() {
                     v.focus();
                 }
             }
-            
+
         };
 
         div.show(this.fadInTime,function(){
@@ -873,7 +873,7 @@ function PopupDiv() {
         var spaceLeft = invokerOffset.left + invokerOuterWidth - windowRectangle.x;
         var placeLeft = spaceLeft > spaceRight && div.outerWidth(false) + shadowOffset > spaceRight;
 
-        
+
         this.setMaxSize({
             height : (placeAbove ? spaceAbove : spaceBelow),
             width: (placeLeft ? spaceLeft : spaceRight)
@@ -889,7 +889,7 @@ function PopupDiv() {
         //however, we want CH to change even if a new maxHeight greater than CH is set
         });
 
-        
+
         this.postSizeFcn();
 
     };
@@ -904,18 +904,18 @@ function PopupDiv() {
         var boundsExact = this.boundsExact;
 
         var div = this.getDiv();
-        
+
         this.preSizeFcn();
-        
+
         var bounds = this.getBoundsOf(parent);
-       
-        
+
+
         var x=bounds.x;
         var y = bounds.y;
         var w = bounds.width;
         var h = bounds.height;
 
-        
+
         var pInt = parseInt;
         //rebuilding:
 
@@ -942,7 +942,7 @@ function PopupDiv() {
             'width':w-padding['left']-padding['right']+this.shadowOffset,
             'height':h-padding['top']-padding['bottom']+this.shadowOffset
         };
-        
+
         this.setMaxSize({
             width:maxSize.width,
             height:maxSize.height
@@ -958,7 +958,7 @@ function PopupDiv() {
 
         this.postSizeFcn();
     };
-    
+
     p.preSizeFcn = function(){
         var div = this.getDiv();
         var subdivs = div.children();
@@ -1014,9 +1014,9 @@ function PopupDiv() {
     //            console.log('width: '+bottomDiv.width()+' css-minWidth: ' +bottomDiv.css('minWidth')+' css-width: ' +bottomDiv.css('width')+' css-maxWidth: ' +bottomDiv.css('maxWidth'));
     //            console.log(' ' );
     };
-    
+
     p.postSizeFcn = function(){
-        
+
         //set title and close button to span whole width, if necessary
         //closeButton.outerWidth should be zero if this.showClose = false
         //titleInput.outerWidth(true) should be equal to titleInput.width(), as margins borders and padding are zero, however we want to calculate it safely
@@ -1029,21 +1029,21 @@ function PopupDiv() {
         var bottomDiv = subdivs.eq(2);
         //set central div height. We could set the central div height only if necessary, or the central div max height,
         //but this has side effect in IE
-       
+
         var maxHeight = (div.height()-topDiv.outerHeight(true)-bottomDiv.outerHeight(true)-
             (centralDiv.outerHeight(true)-centralDiv.height()));
-       
+
         //setting centralDiv maxHeight or height is actually the same, we use height to be sure...
         if(maxHeight>0){
             centralDiv.css('height',maxHeight+'px');
         }
-       
+
         //to be put AT THE END otherwise bug in IE7
         centralDiv.css('overflow','auto');
         //after the command above, centralDiv.hegith is set to zero in IE7.
         //It might be a refresh problem cause if we display an alert then the size is properly set.
         //However, put it at the end
-        
+
 
         //                console.log('postsize');
         //                console.log('width: '+ topDiv.width()+' css-minWidth: ' +topDiv.css('minWidth')+' css-width: ' +topDiv.css('width')+' css-maxWidth: ' +topDiv.css('maxWidth'));
@@ -1051,7 +1051,7 @@ function PopupDiv() {
         //                console.log('width: '+bottomDiv.width()+' css-minWidth: ' +bottomDiv.css('minWidth')+' css-width: ' +bottomDiv.css('width')+' css-maxWidth: ' +bottomDiv.css('maxWidth'));
         //                console.log(' ' );
 
-        
+
         this.setOffset();
 
     };
@@ -1091,10 +1091,10 @@ function PopupDiv() {
     };
 
     p._setOffsetInside = function(){
-       
+
         var div = this.getDiv();
 
-        
+
         var parent = this.invoker;
         var bounds = this.getBoundsOf(parent);
         var pd = this.bounds;
@@ -1183,7 +1183,7 @@ function PopupDiv() {
     //getDiv must be sizable (preShowFcn must have been called)
     p.setMaxSize = function(size){
         var div = this.getDiv();
-        
+
         this._convertSize(div, size);
         var css;
         if(size.hasOwnProperty('width')){
@@ -1206,7 +1206,7 @@ function PopupDiv() {
     //getDiv must be sizable (preShowFcn must have been called)
     p.setMinSize = function(size){
         var div = this.getDiv();
-        
+
         this._convertSize(div, size);
         var css;
         if(size.hasOwnProperty('width')){
