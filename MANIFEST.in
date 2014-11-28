@@ -1,4 +1,4 @@
-exclude *.cfg
+global-exclude *.pyc
 prune dist
 prune build
 include AUTHORS
@@ -16,6 +16,7 @@ recursive-include telemeta/backup *
 recursive-include telemeta/pages *
 recursive-include telemeta/locale *
 recursive-include telemeta/templates *
+recursive-include telemeta/tests *
 recursive-include telemeta/static/video-js *
 recursive-include telemeta/static/telemeta/css *
 recursive-include telemeta/static/telemeta/images *
