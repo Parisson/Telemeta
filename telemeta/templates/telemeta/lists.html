@@ -76,7 +76,7 @@
             <th>{% trans "Code" %}</th>
             <th>{% trans "Recordist" %}</th>
             <th>{% trans "Recording period" %}</th>
-            <th>{% trans "Sound" %}</th>
+            <th>{% trans "Digitized" %}</th>
             <th>{% trans "Action" %}</th>
         </tr>
         {% for resource in playlist.resources %}
@@ -110,9 +110,9 @@
                 {% endif %}
                 {% endif %}
             </td>
-            <td align="center" style="vertical-align:middle">
+            <td align="left" style="vertical-align:middle;">
                 {% if resource.element.file or resource.element.has_mediafile %}
-                <img src="{{ STATIC_URL }}telemeta/images/ok.png" alt="yes" style="vertical-align:middle" /></a>
+                <span class="glyphicon glyphicon-volume-up" style="font-size: 1.3em;"></span>
                 {% endif %}
             </td>
             <td style="vertical-align:middle">
