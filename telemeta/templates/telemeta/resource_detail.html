@@ -107,12 +107,25 @@ jQuery(document).ready(function(){
       </div>
     {% endblock infos %}
 
+    {% block dublincore %}
+    <a href="{% url "telemeta-resource-dublincore" type resource.public_id %}" style="float:left;margin-top:0.5em;margin-bottom:1em">
+      <button type="button" class="btn btn-default">
+        <img src="{{ STATIC_URL}}telemeta/images/dublin_core.png" /> Dublin Core
+      </button>
+    </a>
+    {% endblock dublincore %}
+
 {% endblock content %}
 
 {% block delete %}
-<a href="{% url "telemeta-resource-dublincore" type resource.public_id %}" style="float:left;margin-top:0.5em;margin-bottom:1em" class="component_icon button icon_dublin_core">Dublin Core</a>
 {% if user.is_authenticated and perms.telemeta.delete_mediaresource %}
- <a href="{% url "telemeta-resource-delete" type resource.public_id %}" class="component_icon button icon_delete" style="float:right;margin-top:0.5em;margin-bottom:1em">{% trans "Delete" %}</a>
+
+    <a href="#" onclick="if(confirm(gettrans('delete the item permanently?'))){window.location.href='{% url "telemeta-resource-delete" type resource.public_id %}';};return false;" style="float:right;margin-top:0.5em;margin-bottom:1em">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-trash"></span> {% trans "Delete" %}
+      </button>
+    </a>
+
 {% endif %}
 {% endblock delete %}
 
