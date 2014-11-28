@@ -6,6 +6,7 @@ Telemeta: open web audio app with semantics
 
 .. |travis_master| image:: https://secure.travis-ci.org/Parisson/Telemeta.png?branch=master
    :target: https://travis-ci.org/Parisson/Telemeta/
+   :alt: Travis
 
 .. |version| image:: https://pypip.in/version/Telemeta/badge.png
    :target: https://pypi.python.org/pypi/Telemeta/
@@ -15,8 +16,8 @@ Telemeta: open web audio app with semantics
    :target: https://pypi.python.org/pypi/Telemeta/
    :alt: Downloads
 
-.. |coverage| image:: https://coveralls.io/repos/Parisson/Telemeta/badge.png?branch=dev
-   :target: https://coveralls.io/r/Parisson/Telemeta?branch=dev
+.. |coverage| image:: https://coveralls.io/repos/Parisson/Telemeta/badge.png?branch=devmaster
+   :target: https://coveralls.io/r/Parisson/Telemeta?branch=master
    :alt: Coverage
 
 
@@ -51,12 +52,6 @@ It is mostly written in Python and JavaScript.
 The processing engine of Telemeta is a separate project called `TimeSide <https://github.com/yomguy/timeside/>`_ as an open web audio pocessing framework written in Python.
 
 
-Installation, upgrade and usage
-================================
-
-See `INSTALL.rst <http://github.com/yomguy/Telemeta/blob/master/INSTALL.rst>`_ and `telemeta.org <http://telemeta.org>`_ for more informations.
-
-
 News
 ======
 
@@ -64,10 +59,11 @@ News
 +++++
 
  * Compatible with Django 1.6.x
- * Huge refactor of all forms, detail and edit views
- * Main styles are now based Bootstrap 3.x
- * Update models thanks to the CREM needs
  * Compatible with TimeSide 0.6.x
+ * Huge refactor of all forms, detail and edit views
+ * Main styles (buttons, tabs) are now based Bootstrap 3 and JQuery 2.1
+ * Update models and views as needed by the CREM
+ * New depedencies
 
 1.4.6
 +++++
@@ -117,15 +113,57 @@ Serious Usecases
 * Various electronic sounds and original electronic music produced by Parisson
 
 
+Install
+=======
+
+See `INSTALL.rst <http://github.com/yomguy/Telemeta/blob/master/INSTALL.rst>`_ and `telemeta.org <http://telemeta.org>`_ for more informations.
+
+
+API / Documentation
+====================
+
+* Publications : https://github.com/Parisson/Telemeta-doc
+* API : http://files.parisson.com/doc/telemeta/
+* Player : https://github.com/Parisson/TimeSide/
+* Example : http://archives.crem-cnrs.fr/archives/items/CNRSMH_E_2004_017_001_01/
+
+
+Development
+===========
+
+|travis_dev| |coverage|
+
+.. |travis_dev| image:: https://secure.travis-ci.org/Parisson/Telemeta.png?branch=dev
+   :target: https://travis-ci.org/Parisson/Telemeta/
+   :alt: Travis
+
+.. |coverage_dev| image:: https://coveralls.io/repos/Parisson/Telemeta/badge.png?branch=dev
+   :target: https://coveralls.io/r/Parisson/Telemeta?branch=dev
+   :alt: Coverage
+
+
+You are welcome to participate to the development of the Telemeta project.
+The official project site is `telemeta.org <http://telemeta.org>`_ but you can find a mirror on `GitHub <https://github.com/Parisson/Telemeta>`_.
+
+To get and run the lastest development version::
+
+    sudo apt-get install git
+    git clone https://github.com/Parisson/Telemeta.git
+    cd Telemeta
+    sudo pip install -e .
+    export PYTHONPATH=$PYTHONPATH:`pwd`
+
+
 Bugs and feedback
 =================
 
 You are welcome to freely use this application in accordance with its licence.
 If you find some bugs, PLEASE leave a ticket on this page:
 
-http://telemeta.org/newticket
+https://github.com/Parisson/Telemeta/issues/new
 
-You can also leave a ticket to request some new interesting features for the next versions.
+You can also leave some ticket to request some new interesting features for the next versions and tweet your ideas to `@telemeta <https://twitter.com/telemeta>`_.
+
 And even if Telemeta suits you, please give us some feedback !
 
 
@@ -146,21 +184,6 @@ Twitter:
  * http://twitter.com/telemeta
  * http://twitter.com/parisson_studio
  * http://twitter.com/yomguy
-
-
-Development
-===========
-
-You are welcome to participate to the development of the Telemeta project.
-The official project site is `telemeta.org <http://telemeta.org>`_ but you can find a mirror on `GitHub <https://github.com/yomguy/Telemeta>`_.
-
-To get the lastest development version, you need Git and run::
-
-    $ git clone http://vcs.parisson.com/git/telemeta.git
-
-or::
-
-    $ git clone git://github.com/yomguy/Telemeta.git
 
 
 License
