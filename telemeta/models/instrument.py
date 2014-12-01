@@ -40,7 +40,8 @@ from django.utils.translation import ugettext_lazy as _
 
 class Instrument(ModelCore):
     "Instrument used in the item"
-    name    = CharField(_('name'), required=True)
+    name = CharField(_('name'), required=True)
+    notes = TextField(_('notes'))
 
     class Meta(MetaCore):
         db_table = 'instruments'
@@ -52,6 +53,7 @@ class Instrument(ModelCore):
 class InstrumentAlias(ModelCore):
     "Instrument other name"
     name = CharField(_('name'), required=True)
+    notes = TextField(_('notes'))
 
     class Meta(MetaCore):
         db_table = 'instrument_aliases'
@@ -63,7 +65,7 @@ class InstrumentAlias(ModelCore):
 
 class InstrumentRelation(ModelCore):
     "Instrument family"
-    instrument        = ForeignKey('Instrument', related_name="parent_relation",
+    instrument = ForeignKey('Instrument', related_name="parent_relation",
                                    verbose_name=_('instrument'))
     parent_instrument = ForeignKey('Instrument', related_name="child_relation",
                                    verbose_name=_('parent instrument'))
@@ -78,7 +80,7 @@ class InstrumentRelation(ModelCore):
 
 class InstrumentAliasRelation(ModelCore):
     "Instrument family other name"
-    alias      = ForeignKey('InstrumentAlias', related_name="other_name",
+    alias = ForeignKey('InstrumentAlias', related_name="other_name",
                             verbose_name=_('alias'))
     instrument = ForeignKey('Instrument', related_name="relation",
                             verbose_name=_('instrument'))

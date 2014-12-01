@@ -108,7 +108,7 @@ class AdminView(object):
             raise Http404
 
         enumeration_value = enumeration(value=request.POST['value'],
-                                        comments=request.POST["comments"])
+                                        notes=request.POST["notes"])
         enumeration_value.save()
 
         return self.edit_enumeration(request, enumeration_id)
@@ -155,7 +155,7 @@ class AdminView(object):
 
             record = enumeration.objects.get(id__exact=value_id)
             record.value = request.POST["value"]
-            record.comments = request.POST["comments"]
+            record.notes = request.POST["notes"]
             record.save()
 
         return self.edit_enumeration(request, enumeration_id)
