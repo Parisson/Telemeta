@@ -78,11 +78,13 @@
 {% block content %}
     <div class="{% if collection.has_mediafile %}{% if public_access == 'full' or perms.telemeta.can_play_all_items %}with-rightcol{% endif %}{% endif %}">
       {% block infos %}
+        <div class="intro">
+            <span><img src="{{ STATIC_URL }}telemeta/images/item_title.png" style="vertical-align:middle" /> {% if collection.items.count %}{{ collection.items.count }} {% ifequal collection.items.count 1 %}item{% else %}items{% endifequal %} (<a href="#item_list">{% trans "View list" %}</a>){% else %}No item{% endif %}</span>
+        </div>
+
         <div class="infos">
         {% block general_info %}
             <dl class="listing">
-                <dt>{% trans "Items" %}</dt>
-                 <dd> {% if collection.items.count %}{{ collection.items.count }} (<a href="#item_list">{% trans "View list" %}</a>){% else %}No item{% endif %}</dd>
                 {% dl_field collection "title"  %}
                 {% dl_field collection "alt_title" %}
                 {% if collection.creator %}
