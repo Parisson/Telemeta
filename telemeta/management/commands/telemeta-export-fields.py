@@ -17,6 +17,7 @@ class Command(BaseCommand):
     admin_email = 'webmaster@parisson.com'
     language_codes = ['en_US', 'fr_FR', 'de_DE']
     models = [MediaFonds, MediaCorpus, MediaCollection, MediaItem]
+    width = 256
 
     def handle(self, *args, **options):
         self.file = args[0]
@@ -24,12 +25,12 @@ class Command(BaseCommand):
         for model in self.models:
             self.sheet = self.book.add_sheet(model.element_type)
             self.sheet.write(0, 0, 'Field')
-            self.sheet.col(0).width = 256*32
+            self.sheet.col(0).width = self.width*32
 
             k = 1
             for language_code in self.language_codes:
                 self.sheet.write(0, k, language_code)
-                self.sheet.col(k).width = 256*32
+                self.sheet.col(k).width = self.width*32
                 k += 1
 
             i = 1
