@@ -6,9 +6,7 @@ from django.core.urlresolvers import reverse_lazy, reverse
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
-# ALLOWED_HOSTS = ('localhost',)
 sys.dont_write_bytecode = True
-
 
 ADMINS = (
     ('Guillaume Pellerin', 'yomguy@parisson.com'),
@@ -174,7 +172,7 @@ EMAIL_HOST = 'localhost'
 DEFAULT_FROM_EMAIL = 'webmaster@parisson.com'
 
 TIMESIDE_DEFAULT_GRAPHER_ID = 'waveform_centroid'
-TIMESIDE_AUTO_ZOOM = False
+TIMESIDE_AUTO_ZOOM = True
 
 # Settings for django-bootstrap3
 BOOTSTRAP3 = {

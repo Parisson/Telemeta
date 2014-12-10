@@ -24,17 +24,6 @@ Telemeta is designed first to run on Linux platforms.
 
 * Windows plaforms are not officialy supported but possible.
 
-
-----------------
-Development
-----------------
-
-    sudo aptitude install git
-    git clone https://github.com/yomguy/Telemeta.git
-    cd Telemeta
-    sudo pip install -e .
-    export PYTHONPATH=$PYTHONPATH:`pwd`
-
 -------------------------
 Fast testing (sandbox)
 -------------------------
@@ -57,21 +46,20 @@ Start your project
 
 For example::
 
-    cd ~/my_projects
-    django-admin startproject mysite
+    cd ~/projects
+    django-admin startproject newproject
 
 Create the database
 ------------------------
 
-Telemeta needs MySQL to work well and fast. So you need to create a MySQL database before trying it.
-But you can also use SQLite, PostgreSQL or Oracle DB.
+Telemeta needs MySQL to work well and fast in production. So you need to create a MySQL database before trying it. But you can also use SQLite, PostgreSQL or Oracle DB.
 
-Configure the telemeta project
+Configure the project
 ----------------------------------
 
-Edit the file settings.py in a text editor. You can find (even copy) an example there::
+Edit the file newproject/settings.py in a text editor.
 
-    example/sandbox/settings.py
+You can find and even copy the example in the sandbox (example/sandbox/settings.py)
 
 Modifiy the following variables::
 

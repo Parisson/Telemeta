@@ -4,11 +4,27 @@
 {% load bootstrap3 %}
 
 {% block title %}
-    <img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" /> Collection : {{ object.title }}
+    <img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" /> Collection : {{ collection.title }}
 {% endblock %}
 
 {% block title_buttons %}
-    <a href="{% url "telemeta-collection-detail" object.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+<div class="fixedWidthAsPlayer">
+    <img id="wait-img" style="display:none" style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />
+    {% block cancel %}
+    <a id="cancel" href="{% url "telemeta-collection-detail" collection.public_id %}">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-remove"></span> {% trans "Cancel" %}
+      </button>
+    </a>
+    {% endblock %}
+    {% if perms.telemeta.change_mediacollection %}
+    <a id="save" href="#" onclick="var d=document; d.getElementById('wait-img').style.display='inline'; $('#_editForm').submit();">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-floppy-disk"></span> {% trans "Save" %}
+      </button>
+    </a>
+    {% endif %}
+</div>
 {% endblock %}
 
 {% block infos %}
@@ -19,7 +35,9 @@
     <ul class="nav nav-tabs" role="tablist">
       <li class="active"><a href="#general" role="tab" data-toggle="tab">{% trans "General" %}</a></li>
       <li><a href="#related" role="tab" data-toggle="tab">{% trans "Related media" %}</a></li>
+      {% if perms.telemeta.change_mediacollectionidentifier %}
       <li><a href="#identifiers" role="tab" data-toggle="tab">{% trans "Identifier" %}</a></li>
+      {% endif %}
     </ul>
 
     <div class="tab-content">
@@ -46,18 +64,30 @@
       {% endfor %}
 
     <div align="center" style="margin-top:3ex;">
-      {% block cancel %}
-       <a href="{% url "telemeta-collection-detail" object.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
-      {% endblock %}
-       {% if perms.telemeta.change_mediacollection %}
-        <input type="submit" value="{% trans "Save" %}" class="default" name="_save"/>
-       {% endif %}
+    {% block cancel2 %}
+    <a id="cancel" href="{% url "telemeta-collection-detail" collection.public_id %}">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-remove"></span> {% trans "Cancel" %}
+      </button>
+    </a>
+    {% endblock %}
+    {% if perms.telemeta.change_mediacollection %}
+    <a id="save" href="#" onclick="var d=document; d.getElementById('wait-img').style.display='inline'; $('#_editForm').submit();">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-floppy-disk"></span> {% trans "Save" %}
+      </button>
+    </a>
+    {% endif %}
+
     </div>
 
    </form>
   </div>
 
 {% endblock infos%}
+
+{% block dublincore %}
+{% endblock %}
 
 {% block delete %}
 {% endblock %}

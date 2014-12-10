@@ -14,7 +14,7 @@ $(document).ready(function(){
 {% block chat %}
   <div id="module-set" style="width: 33%;">
       {% if room %}
-        {% with "Notes" as title %}
+        {% with "Comments" as title %}
           {% include "telemeta/inc/chat_room.html" %}
         {% endwith %}
       {% endif %}
@@ -27,9 +27,11 @@ $(document).ready(function(){
   <fieldset>
    <legend>{% trans "Modify an entry" %}</legend>
    <div class="field">
-    <label>{% trans "Value" %}: <input id="id_value_edit" type="text" name="value" value="{{enumeration_record.value}}" /></label>
+    <label>{% trans "Value" %}</label>: <input id="id_value_edit" type="text" name="value" value="{{enumeration_record.value}}" />
+    <br><br>
+    <label>{% trans "Notes" %}</label>: <textarea id="id_notes_edit" name="notes" rows="4" cols="74" form="addenum">{{enumeration_record.notes}}</textarea>
    </div>
-   <br />
+   <br>
    <div class="buttons">
         <a href="#" class="component_icon button icon_save"
    onclick="document.getElementById('addenum').submit(); return false;">{% trans "Save" %}</a>

@@ -35,7 +35,7 @@ var resourceMap = new ResourceMap('.continents', {
     <ul>
     {% for country in group.countries %}
       <li id="resource-{{country.id}}" class="country_name resourcemap-element">
-        <a href="{% url "telemeta-geo-country-collections" group.continent.flatname,country.flatname %}">
+        <a href="{% url "telemeta-geo-country-collections" group.continent.flatname country.flatname %}">
           <span class="resourcemap-name">{{ country }}</span></a>
         {% if not country.latitude|is_none and not country.longitude|is_none %}
         <input type="hidden" class="resourcemap-lat" value="{{country.latitude}}" />

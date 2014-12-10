@@ -70,14 +70,14 @@ class InstrumentView(object):
     def edit_instrument_value(self, request, value_id):
         instrument = Instrument.objects.get(id__exact=value_id)
         instruments = Instrument.objects.all().order_by('name')
-        
-        content_type = ContentType.objects.get(app_label="telemeta", model='instrument')        
+
+        content_type = ContentType.objects.get(app_label="telemeta", model='instrument')
         context = {}
         context['instrument'] = instrument
         context['instruments'] = instruments
         context['room'] = get_room(name=instrument._meta.verbose_name, content_type=content_type,
                                    id=instrument.id)
-        
+
         return render(request, 'telemeta/instrument_edit_value.html', context)
 
     @method_decorator(permission_required('telemeta.change_instrument'))
@@ -107,7 +107,7 @@ class InstrumentView(object):
             objects = getattr(from_record, link).all()
             for obj in objects:
                 for name in obj._meta.get_all_field_names():
-                    try: 
+                    try:
                         field = obj._meta.get_field(name)
                         if field.rel.to == obj_type:
                             setattr(obj, name, to_record)
@@ -153,14 +153,14 @@ class InstrumentAliasView(object):
     def edit_instrument_value(self, request, value_id):
         instrument = InstrumentAlias.objects.get(id__exact=value_id)
         instruments = InstrumentAlias.objects.all().order_by('name')
-        
-        content_type = ContentType.objects.get(app_label="telemeta", model='instrument')        
+
+        content_type = ContentType.objects.get(app_label="telemeta", model='instrument')
         context = {}
         context['instrument'] = instrument
         context['instruments'] = instruments
         context['room'] = get_room(name=instrument._meta.verbose_name, content_type=content_type,
                                    id=instrument.id)
-        
+
         return render(request, 'telemeta/instrument_alias_edit_value.html', context)
 
     @method_decorator(permission_required('telemeta.change_instrumentalias'))
@@ -190,7 +190,7 @@ class InstrumentAliasView(object):
             objects = getattr(from_record, link).all()
             for obj in objects:
                 for name in obj._meta.get_all_field_names():
-                    try: 
+                    try:
                         field = obj._meta.get_field(name)
                         if field.rel.to == obj_type:
                             setattr(obj, name, to_record)

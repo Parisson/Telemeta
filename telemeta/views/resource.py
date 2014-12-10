@@ -45,14 +45,12 @@ class ResourceView(object):
                 {'model': MediaCorpus,
                 'form' : MediaCorpusForm,
                 'related': MediaCorpusRelated,
-                'related_form': MediaCorpusRelatedForm,
                 'parent': MediaFonds,
                 },
             'fonds':
                 {'model': MediaFonds,
                 'form' : MediaFondsForm,
                 'related': MediaFondsRelated,
-                'related_form': MediaFondsRelatedForm,
                 'parent': None,
                 }
             }
@@ -61,7 +59,6 @@ class ResourceView(object):
         self.model = self.types[type]['model']
         self.form = self.types[type]['form']
         self.related = self.types[type]['related']
-        self.related_form = self.types[type]['related_form']
         self.parent = self.types[type]['parent']
         self.type = type
 
@@ -150,6 +147,9 @@ class ResourceView(object):
     def delete(self, request, type, public_id):
         self.setup(type)
         resource = self.model.objects.get(code=public_id)
+        revisions = Revision.objects.filter(element_type='resource', element_id=resource.id)
+        for revision in revisions:
+            revision.delete()
         resource.delete()
         return HttpResponseRedirect('/archives/'+self.type+'/')
 
@@ -169,22 +169,6 @@ class ResourceView(object):
         response['Content-Disposition'] = 'attachment; ' + 'filename=' + filename
         return response
 
-    @jsonrpc_method('telemeta.add_fonds_related_media')
-    @jsonrpc_method('telemeta.add_corpus_related_media')
-    def related_edit(self, request, type, public_id, template):
-        self.setup(type)
-        resource = self.model.objects.get(code=public_id)
-        ResourceRelatedFormSet = inlineformset_factory(self.model, self.related, form=self.related_form)
-        if request.method == 'POST':
-            formset = ResourceRelatedFormSet(data=request.POST, files=request.FILES, instance=resource)
-            if formset.is_valid():
-                formset.save()
-                resource.set_revision(request.user)
-                return redirect('telemeta-resource-edit', self.type, public_id)
-        else:
-            formset = ResourceRelatedFormSet(instance=resource)
-        return render(request, template, {'resource': resource, 'type': type, 'formset': formset,})
-
 
 class ResourceMixin(View):
 
@@ -192,7 +176,6 @@ class ResourceMixin(View):
                 {'model': MediaCorpus,
                 'form' : MediaCorpusForm,
                 'related': MediaCorpusRelated,
-                'related_form': MediaCorpusRelatedForm,
                 'parent': MediaFonds,
                 'inlines': [CorpusRelatedInline,]
                 },
@@ -200,7 +183,6 @@ class ResourceMixin(View):
                 {'model': MediaFonds,
                 'form' : MediaFondsForm,
                 'related': MediaFondsRelated,
-                'related_form': MediaFondsRelatedForm,
                 'parent': None,
                 'inlines': [FondsRelatedInline,]
                 }
@@ -211,7 +193,6 @@ class ResourceMixin(View):
         self.form = self.types[type]['form']
         self.form_class = self.types[type]['form']
         self.related = self.types[type]['related']
-        self.related_form = self.types[type]['related_form']
         self.parent = self.types[type]['parent']
         self.inlines = self.types[type]['inlines']
         self.type = type
@@ -220,7 +201,15 @@ class ResourceMixin(View):
         # super(CorpusDetailView, self).get_object()
         self.type = self.kwargs['type']
         self.setup(self.type)
-        self.pk = self.model.objects.get(code=self.kwargs['public_id']).pk
+        obj = self.model.objects.filter(code=self.kwargs['public_id'])
+        if not obj:
+            try:
+                obj = self.model.objects.get(id=self.kwargs['public_id'])
+            except:
+                pass
+        else:
+            obj = obj[0]
+        self.pk = obj.pk
         return get_object_or_404(self.model, pk=self.pk)
 
     def get_context_data(self, **kwargs):
@@ -240,7 +229,15 @@ class ResourceSingleMixin(ResourceMixin):
         # super(CorpusDetailView, self).get_object()
         self.type = self.kwargs['type']
         self.setup(self.type)
-        self.pk = self.model.objects.get(code=self.kwargs['public_id']).pk
+        obj = self.model.objects.filter(code=self.kwargs['public_id'])
+        if not obj:
+            try:
+                obj = self.model.objects.get(id=self.kwargs['public_id'])
+            except:
+                pass
+        else:
+            obj = obj[0]
+        self.pk = obj.pk
         return get_object_or_404(self.model, pk=self.pk)
 
     def get_context_data(self, **kwargs):
@@ -280,6 +277,7 @@ class ResourceListView(ResourceMixin, ListView):
         context['count'] = self.object_list.count()
         return context
 
+
 class ResourceDetailView(ResourceSingleMixin, DetailView):
 
     template_name = "telemeta/resource_detail.html"
@@ -308,8 +306,7 @@ class ResourceCopyView(ResourceSingleMixin, ResourceAddView):
     template_name = 'telemeta/resource_edit.html'
 
     def get_initial(self):
-        resource = self.model.objects.get(code=self.kwargs['public_id'])
-        return model_to_dict(resource)
+        return model_to_dict(self.get_object())
 
     def get_success_url(self):
         return reverse_lazy('telemeta-resource-list', kwargs={'type':self.kwargs['type']})

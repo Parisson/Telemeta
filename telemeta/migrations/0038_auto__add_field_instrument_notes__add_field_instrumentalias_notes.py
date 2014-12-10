@@ -8,23 +8,23 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Deleting field 'MediaCollection.travail'
-        db.delete_column('media_collections', 'travail')
+        # Adding field 'Instrument.notes'
+        db.add_column('instruments', 'notes',
+                      self.gf('telemeta.models.core.TextField')(default='', blank=True),
+                      keep_default=False)
 
-        # Deleting field 'MediaCollection.alt_ids'
-        db.delete_column('media_collections', 'alt_ids')
+        # Adding field 'InstrumentAlias.notes'
+        db.add_column('instrument_aliases', 'notes',
+                      self.gf('telemeta.models.core.TextField')(default='', blank=True),
+                      keep_default=False)
 
 
     def backwards(self, orm):
-        # Adding field 'MediaCollection.travail'
-        db.add_column('media_collections', 'travail',
-                      self.gf('telemeta.models.core.CharField')(default='', max_length=250, blank=True),
-                      keep_default=False)
+        # Deleting field 'Instrument.notes'
+        db.delete_column('instruments', 'notes')
 
-        # Adding field 'MediaCollection.alt_ids'
-        db.add_column('media_collections', 'alt_ids',
-                      self.gf('telemeta.models.core.CharField')(default='', max_length=250, blank=True),
-                      keep_default=False)
+        # Deleting field 'InstrumentAlias.notes'
+        db.delete_column('instrument_aliases', 'notes')
 
 
     models = {
@@ -67,21 +67,25 @@ class Migration(SchemaMigration):
         'telemeta.acquisitionmode': {
             'Meta': {'ordering': "['value']", 'object_name': 'AcquisitionMode', 'db_table': "'acquisition_modes'"},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'notes': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
             'value': ('telemeta.models.core.CharField', [], {'unique': 'True', 'max_length': '250'})
         },
         'telemeta.adconversion': {
             'Meta': {'ordering': "['value']", 'object_name': 'AdConversion', 'db_table': "'ad_conversions'"},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'notes': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
             'value': ('telemeta.models.core.CharField', [], {'unique': 'True', 'max_length': '250'})
         },
         'telemeta.contextkeyword': {
             'Meta': {'ordering': "['value']", 'object_name': 'ContextKeyword', 'db_table': "'context_keywords'"},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'notes': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
             'value': ('telemeta.models.core.CharField', [], {'unique': 'True', 'max_length': '250'})
         },
         'telemeta.copytype': {
             'Meta': {'ordering': "['value']", 'object_name': 'CopyType', 'db_table': "'copy_type'"},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'notes': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
             'value': ('telemeta.models.core.CharField', [], {'unique': 'True', 'max_length': '250'})
         },
         'telemeta.criteria': {
@@ -93,6 +97,7 @@ class Migration(SchemaMigration):
         'telemeta.ethnicgroup': {
             'Meta': {'ordering': "['value']", 'object_name': 'EthnicGroup', 'db_table': "'ethnic_groups'"},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'notes': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
             'value': ('telemeta.models.core.CharField', [], {'unique': 'True', 'max_length': '250'})
         },
         'telemeta.ethnicgroupalias': {
@@ -125,17 +130,26 @@ class Migration(SchemaMigration):
         'telemeta.genericstyle': {
             'Meta': {'ordering': "['value']", 'object_name': 'GenericStyle', 'db_table': "'generic_styles'"},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'notes': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
+            'value': ('telemeta.models.core.CharField', [], {'unique': 'True', 'max_length': '250'})
+        },
+        'telemeta.identifiertype': {
+            'Meta': {'ordering': "['value']", 'object_name': 'IdentifierType', 'db_table': "'identifier_type'"},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'notes': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
             'value': ('telemeta.models.core.CharField', [], {'unique': 'True', 'max_length': '250'})
         },
         'telemeta.instrument': {
-            'Meta': {'object_name': 'Instrument', 'db_table': "'instruments'"},
+            'Meta': {'ordering': "['name']", 'object_name': 'Instrument', 'db_table': "'instruments'"},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('telemeta.models.core.CharField', [], {'max_length': '250'})
+            'name': ('telemeta.models.core.CharField', [], {'max_length': '250'}),
+            'notes': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'})
         },
         'telemeta.instrumentalias': {
-            'Meta': {'object_name': 'InstrumentAlias', 'db_table': "'instrument_aliases'"},
+            'Meta': {'ordering': "['name']", 'object_name': 'InstrumentAlias', 'db_table': "'instrument_aliases'"},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('telemeta.models.core.CharField', [], {'max_length': '250'})
+            'name': ('telemeta.models.core.CharField', [], {'max_length': '250'}),
+            'notes': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'})
         },
         'telemeta.instrumentaliasrelation': {
             'Meta': {'unique_together': "(('alias', 'instrument'),)", 'object_name': 'InstrumentAliasRelation', 'db_table': "'instrument_alias_relations'"},
@@ -164,6 +178,7 @@ class Migration(SchemaMigration):
         'telemeta.legalright': {
             'Meta': {'ordering': "['value']", 'object_name': 'LegalRight', 'db_table': "'legal_rights'"},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'notes': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
             'value': ('telemeta.models.core.CharField', [], {'unique': 'True', 'max_length': '250'})
         },
         'telemeta.location': {
@@ -218,7 +233,6 @@ class Migration(SchemaMigration):
             'copy_type': ('telemeta.models.core.WeakForeignKey', [], {'default': 'None', 'related_name': "'collections'", 'null': 'True', 'blank': 'True', 'to': "orm['telemeta.CopyType']"}),
             'creator': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
             'description': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
-            'doctype_code': ('telemeta.models.core.IntegerField', [], {'default': '0', 'blank': 'True'}),
             'external_references': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'is_published': ('telemeta.models.core.BooleanField', [], {'default': 'False'}),
@@ -228,6 +242,7 @@ class Migration(SchemaMigration):
             'metadata_author': ('telemeta.models.core.WeakForeignKey', [], {'default': 'None', 'related_name': "'collections'", 'null': 'True', 'blank': 'True', 'to': "orm['telemeta.MetadataAuthor']"}),
             'metadata_writer': ('telemeta.models.core.WeakForeignKey', [], {'default': 'None', 'related_name': "'collections'", 'null': 'True', 'blank': 'True', 'to': "orm['telemeta.MetadataWriter']"}),
             'old_code': ('telemeta.models.core.CharField', [], {'default': 'None', 'max_length': '250', 'null': 'True', 'blank': 'True'}),
+            'original_format': ('telemeta.models.core.WeakForeignKey', [], {'default': 'None', 'related_name': "'collections'", 'null': 'True', 'blank': 'True', 'to': "orm['telemeta.OriginalFormat']"}),
             'physical_format': ('telemeta.models.core.WeakForeignKey', [], {'default': 'None', 'related_name': "'collections'", 'null': 'True', 'blank': 'True', 'to': "orm['telemeta.PhysicalFormat']"}),
             'physical_items_num': ('telemeta.models.core.IntegerField', [], {'default': '0', 'blank': 'True'}),
             'public_access': ('telemeta.models.core.CharField', [], {'default': "'metadata'", 'max_length': '16', 'blank': 'True'}),
@@ -238,10 +253,22 @@ class Migration(SchemaMigration):
             'recorded_from_year': ('telemeta.models.core.IntegerField', [], {'default': '0', 'blank': 'True'}),
             'recorded_to_year': ('telemeta.models.core.IntegerField', [], {'default': '0', 'blank': 'True'}),
             'recording_context': ('telemeta.models.core.WeakForeignKey', [], {'default': 'None', 'related_name': "'collections'", 'null': 'True', 'blank': 'True', 'to': "orm['telemeta.RecordingContext']"}),
-            'reference': ('telemeta.models.core.CharField', [], {'default': 'None', 'max_length': '250', 'unique': 'True', 'null': 'True', 'blank': 'True'}),
+            'reference': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
             'status': ('telemeta.models.core.WeakForeignKey', [], {'default': 'None', 'related_name': "'collections'", 'null': 'True', 'blank': 'True', 'to': "orm['telemeta.Status']"}),
             'title': ('telemeta.models.core.CharField', [], {'max_length': '250'}),
             'year_published': ('telemeta.models.core.IntegerField', [], {'default': '0', 'blank': 'True'})
+        },
+        'telemeta.mediacollectionidentifier': {
+            'Meta': {'unique_together': "(('identifier', 'collection'),)", 'object_name': 'MediaCollectionIdentifier', 'db_table': "'media_collection_identifier'"},
+            'collection': ('telemeta.models.core.ForeignKey', [], {'related_name': "'identifiers'", 'to': "orm['telemeta.MediaCollection']"}),
+            'date_add': ('telemeta.models.core.DateTimeField', [], {'default': 'None', 'auto_now_add': 'True', 'null': 'True', 'blank': 'True'}),
+            'date_first': ('telemeta.models.core.DateTimeField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
+            'date_last': ('telemeta.models.core.DateTimeField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
+            'date_modified': ('telemeta.models.core.DateTimeField', [], {'default': 'None', 'auto_now': 'True', 'null': 'True', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'identifier': ('telemeta.models.core.CharField', [], {'default': "''", 'unique': 'True', 'max_length': '255', 'blank': 'True'}),
+            'notes': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
+            'type': ('telemeta.models.core.WeakForeignKey', [], {'default': 'None', 'to': "orm['telemeta.IdentifierType']", 'null': 'True', 'blank': 'True'})
         },
         'telemeta.mediacollectionrelated': {
             'Meta': {'object_name': 'MediaCollectionRelated', 'db_table': "'media_collection_related'"},
@@ -251,15 +278,14 @@ class Migration(SchemaMigration):
             'description': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
             'file': ('telemeta.models.core.FileField', [], {'default': "''", 'max_length': '255', 'db_column': "'filename'", 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'mime_type': ('telemeta.models.core.CharField', [], {'default': 'None', 'max_length': '250', 'null': 'True', 'blank': 'True'}),
+            'mime_type': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
             'title': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
             'url': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '500', 'blank': 'True'})
         },
         'telemeta.mediacorpus': {
-            'Meta': {'object_name': 'MediaCorpus', 'db_table': "'media_corpus'"},
+            'Meta': {'ordering': "['code']", 'object_name': 'MediaCorpus', 'db_table': "'media_corpus'"},
             'children': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'corpus'", 'null': 'True', 'symmetrical': 'False', 'to': "orm['telemeta.MediaCollection']"}),
             'code': ('telemeta.models.core.CharField', [], {'unique': 'True', 'max_length': '250'}),
-            'description': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
             'descriptions': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'public_access': ('telemeta.models.core.CharField', [], {'default': "'metadata'", 'max_length': '16', 'blank': 'True'}),
@@ -274,16 +300,15 @@ class Migration(SchemaMigration):
             'description': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
             'file': ('telemeta.models.core.FileField', [], {'default': "''", 'max_length': '255', 'db_column': "'filename'", 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'mime_type': ('telemeta.models.core.CharField', [], {'default': 'None', 'max_length': '250', 'null': 'True', 'blank': 'True'}),
+            'mime_type': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
             'resource': ('telemeta.models.core.ForeignKey', [], {'related_name': "'related'", 'to': "orm['telemeta.MediaCorpus']"}),
             'title': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
             'url': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '500', 'blank': 'True'})
         },
         'telemeta.mediafonds': {
-            'Meta': {'object_name': 'MediaFonds', 'db_table': "'media_fonds'"},
+            'Meta': {'ordering': "['code']", 'object_name': 'MediaFonds', 'db_table': "'media_fonds'"},
             'children': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'fonds'", 'null': 'True', 'symmetrical': 'False', 'to': "orm['telemeta.MediaCorpus']"}),
             'code': ('telemeta.models.core.CharField', [], {'unique': 'True', 'max_length': '250'}),
-            'description': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
             'descriptions': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'public_access': ('telemeta.models.core.CharField', [], {'default': "'metadata'", 'max_length': '16', 'blank': 'True'}),
@@ -296,7 +321,7 @@ class Migration(SchemaMigration):
             'description': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
             'file': ('telemeta.models.core.FileField', [], {'default': "''", 'max_length': '255', 'db_column': "'filename'", 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'mime_type': ('telemeta.models.core.CharField', [], {'default': 'None', 'max_length': '250', 'null': 'True', 'blank': 'True'}),
+            'mime_type': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
             'resource': ('telemeta.models.core.ForeignKey', [], {'related_name': "'related'", 'to': "orm['telemeta.MediaFonds']"}),
             'title': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
             'url': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '500', 'blank': 'True'})
@@ -307,7 +332,7 @@ class Migration(SchemaMigration):
             'approx_duration': ('telemeta.models.core.DurationField', [], {'default': "'0'", 'blank': 'True'}),
             'author': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
             'auto_period_access': ('telemeta.models.core.BooleanField', [], {'default': 'True'}),
-            'code': ('telemeta.models.core.CharField', [], {'default': "''", 'unique': 'True', 'max_length': '250', 'blank': 'True'}),
+            'code': ('telemeta.models.core.CharField', [], {'unique': 'True', 'max_length': '250'}),
             'collection': ('telemeta.models.core.ForeignKey', [], {'related_name': "'items'", 'to': "orm['telemeta.MediaCollection']"}),
             'collector': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
             'collector_from_collection': ('telemeta.models.core.BooleanField', [], {'default': 'False'}),
@@ -315,7 +340,6 @@ class Migration(SchemaMigration):
             'comment': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
             'context_comment': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
             'contributor': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
-            'copied_from_item': ('telemeta.models.core.WeakForeignKey', [], {'default': 'None', 'related_name': "'copies'", 'null': 'True', 'blank': 'True', 'to': "orm['telemeta.MediaItem']"}),
             'creator_reference': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
             'cultural_area': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
             'depositor': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
@@ -330,6 +354,7 @@ class Migration(SchemaMigration):
             'language_iso': ('telemeta.models.core.ForeignKey', [], {'related_name': "'items'", 'on_delete': 'models.SET_NULL', 'default': 'None', 'to': "orm['telemeta.Language']", 'blank': 'True', 'null': 'True'}),
             'location': ('telemeta.models.core.WeakForeignKey', [], {'default': 'None', 'to': "orm['telemeta.Location']", 'null': 'True', 'blank': 'True'}),
             'location_comment': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
+            'media_type': ('telemeta.models.core.WeakForeignKey', [], {'default': 'None', 'related_name': "'items'", 'null': 'True', 'blank': 'True', 'to': "orm['telemeta.MediaType']"}),
             'mimetype': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '255', 'blank': 'True'}),
             'moda_execut': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
             'old_code': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
@@ -356,6 +381,18 @@ class Migration(SchemaMigration):
             'name': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
             'unit': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
             'value': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '250', 'blank': 'True'})
+        },
+        'telemeta.mediaitemidentifier': {
+            'Meta': {'unique_together': "(('identifier', 'item'),)", 'object_name': 'MediaItemIdentifier', 'db_table': "'media_item_identifier'"},
+            'date_add': ('telemeta.models.core.DateTimeField', [], {'default': 'None', 'auto_now_add': 'True', 'null': 'True', 'blank': 'True'}),
+            'date_first': ('telemeta.models.core.DateTimeField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
+            'date_last': ('telemeta.models.core.DateTimeField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
+            'date_modified': ('telemeta.models.core.DateTimeField', [], {'default': 'None', 'auto_now': 'True', 'null': 'True', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'identifier': ('telemeta.models.core.CharField', [], {'default': "''", 'unique': 'True', 'max_length': '255', 'blank': 'True'}),
+            'item': ('telemeta.models.core.ForeignKey', [], {'related_name': "'identifiers'", 'to': "orm['telemeta.MediaItem']"}),
+            'notes': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
+            'type': ('telemeta.models.core.WeakForeignKey', [], {'default': 'None', 'to': "orm['telemeta.IdentifierType']", 'null': 'True', 'blank': 'True'})
         },
         'telemeta.mediaitemkeyword': {
             'Meta': {'unique_together': "(('item', 'keyword'),)", 'object_name': 'MediaItemKeyword', 'db_table': "'media_item_keywords'"},
@@ -391,7 +428,7 @@ class Migration(SchemaMigration):
             'file': ('telemeta.models.core.FileField', [], {'default': "''", 'max_length': '255', 'db_column': "'filename'", 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'item': ('telemeta.models.core.ForeignKey', [], {'related_name': "'related'", 'to': "orm['telemeta.MediaItem']"}),
-            'mime_type': ('telemeta.models.core.CharField', [], {'default': 'None', 'max_length': '250', 'null': 'True', 'blank': 'True'}),
+            'mime_type': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
             'title': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
             'url': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '500', 'blank': 'True'})
         },
@@ -423,31 +460,43 @@ class Migration(SchemaMigration):
         'telemeta.mediatype': {
             'Meta': {'ordering': "['value']", 'object_name': 'MediaType', 'db_table': "'media_type'"},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'notes': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
             'value': ('telemeta.models.core.CharField', [], {'unique': 'True', 'max_length': '250'})
         },
         'telemeta.metadataauthor': {
             'Meta': {'ordering': "['value']", 'object_name': 'MetadataAuthor', 'db_table': "'metadata_authors'"},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'notes': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
             'value': ('telemeta.models.core.CharField', [], {'unique': 'True', 'max_length': '250'})
         },
         'telemeta.metadatawriter': {
             'Meta': {'ordering': "['value']", 'object_name': 'MetadataWriter', 'db_table': "'metadata_writers'"},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'notes': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
             'value': ('telemeta.models.core.CharField', [], {'unique': 'True', 'max_length': '250'})
         },
         'telemeta.numberofchannels': {
             'Meta': {'ordering': "['value']", 'object_name': 'NumberOfChannels', 'db_table': "'original_channel_number'"},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'notes': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
             'value': ('telemeta.models.core.CharField', [], {'unique': 'True', 'max_length': '250'})
         },
         'telemeta.organization': {
             'Meta': {'ordering': "['value']", 'object_name': 'Organization', 'db_table': "'organization'"},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'notes': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
+            'value': ('telemeta.models.core.CharField', [], {'unique': 'True', 'max_length': '250'})
+        },
+        'telemeta.originalformat': {
+            'Meta': {'ordering': "['value']", 'object_name': 'OriginalFormat', 'db_table': "'original_format'"},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'notes': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
             'value': ('telemeta.models.core.CharField', [], {'unique': 'True', 'max_length': '250'})
         },
         'telemeta.physicalformat': {
             'Meta': {'ordering': "['value']", 'object_name': 'PhysicalFormat', 'db_table': "'physical_formats'"},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'notes': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
             'value': ('telemeta.models.core.CharField', [], {'unique': 'True', 'max_length': '250'})
         },
         'telemeta.playlist': {
@@ -469,6 +518,7 @@ class Migration(SchemaMigration):
         'telemeta.publisher': {
             'Meta': {'ordering': "['value']", 'object_name': 'Publisher', 'db_table': "'publishers'"},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'notes': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
             'value': ('telemeta.models.core.CharField', [], {'unique': 'True', 'max_length': '250'})
         },
         'telemeta.publishercollection': {
@@ -480,11 +530,13 @@ class Migration(SchemaMigration):
         'telemeta.publishingstatus': {
             'Meta': {'ordering': "['value']", 'object_name': 'PublishingStatus', 'db_table': "'publishing_status'"},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'notes': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
             'value': ('telemeta.models.core.CharField', [], {'unique': 'True', 'max_length': '250'})
         },
         'telemeta.recordingcontext': {
             'Meta': {'ordering': "['value']", 'object_name': 'RecordingContext', 'db_table': "'recording_contexts'"},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'notes': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
             'value': ('telemeta.models.core.CharField', [], {'unique': 'True', 'max_length': '250'})
         },
         'telemeta.revision': {
@@ -499,6 +551,7 @@ class Migration(SchemaMigration):
         'telemeta.rights': {
             'Meta': {'ordering': "['value']", 'object_name': 'Rights', 'db_table': "'rights'"},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'notes': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
             'value': ('telemeta.models.core.CharField', [], {'unique': 'True', 'max_length': '250'})
         },
         'telemeta.search': {
@@ -512,36 +565,43 @@ class Migration(SchemaMigration):
         'telemeta.status': {
             'Meta': {'ordering': "['value']", 'object_name': 'Status', 'db_table': "'media_status'"},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'notes': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
             'value': ('telemeta.models.core.CharField', [], {'unique': 'True', 'max_length': '250'})
         },
         'telemeta.tapelength': {
             'Meta': {'ordering': "['value']", 'object_name': 'TapeLength', 'db_table': "'tape_length'"},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'notes': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
             'value': ('telemeta.models.core.CharField', [], {'unique': 'True', 'max_length': '250'})
         },
         'telemeta.tapespeed': {
             'Meta': {'ordering': "['value']", 'object_name': 'TapeSpeed', 'db_table': "'tape_speed'"},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'notes': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
             'value': ('telemeta.models.core.CharField', [], {'unique': 'True', 'max_length': '250'})
         },
         'telemeta.tapevendor': {
             'Meta': {'ordering': "['value']", 'object_name': 'TapeVendor', 'db_table': "'tape_vendor'"},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'notes': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
             'value': ('telemeta.models.core.CharField', [], {'unique': 'True', 'max_length': '250'})
         },
         'telemeta.tapewheeldiameter': {
             'Meta': {'ordering': "['value']", 'object_name': 'TapeWheelDiameter', 'db_table': "'tape_wheel_diameter'"},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'notes': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
             'value': ('telemeta.models.core.CharField', [], {'unique': 'True', 'max_length': '250'})
         },
         'telemeta.tapewidth': {
             'Meta': {'ordering': "['value']", 'object_name': 'TapeWidth', 'db_table': "'tape_width'"},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'notes': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
             'value': ('telemeta.models.core.CharField', [], {'unique': 'True', 'max_length': '250'})
         },
         'telemeta.topic': {
             'Meta': {'ordering': "['value']", 'object_name': 'Topic', 'db_table': "'topic'"},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'notes': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
             'value': ('telemeta.models.core.CharField', [], {'unique': 'True', 'max_length': '250'})
         },
         'telemeta.userprofile': {
@@ -559,6 +619,7 @@ class Migration(SchemaMigration):
         'telemeta.vernacularstyle': {
             'Meta': {'ordering': "['value']", 'object_name': 'VernacularStyle', 'db_table': "'vernacular_styles'"},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'notes': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
             'value': ('telemeta.models.core.CharField', [], {'unique': 'True', 'max_length': '250'})
         }
     }

@@ -75,3 +75,46 @@ class GeoView(object):
         return list_detail.object_list(request, objects,
             template_name='telemeta/geo_country_items.html', paginate_by=20,
             extra_context={'country': country, 'continent': continent})
+
+
+class GeoCountryCollectionView(ListView):
+
+    model = MediaCollection
+    template_name = 'telemeta/geo_country_collections.html'
+    paginate_by = 20
+
+    def get_queryset(self):
+        country = self.kwargs['country']
+        continent = self.kwargs['continent']
+        self.continent = Location.objects.by_flatname(continent)[0]
+        self.country = Location.objects.by_flatname(country)[0]
+        return MediaCollection.objects.enriched().by_location(self.country)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(GeoCountryCollectionView, self).get_context_data(*args, **kwargs)
+        context['country'] = self.country
+        context['continent'] =  self.continent
+        return context
+
+
+
+class GeoCountryItemView(ListView):
+
+    model = MediaItem
+    template_name = 'telemeta/geo_country_collections.html'
+    paginate_by = 20
+
+    def get_queryset(self):
+        country = self.kwargs['country']
+        continent = self.kwargs['continent']
+        self.continent = Location.objects.by_flatname(continent)[0]
+        self.country = Location.objects.by_flatname(country)[0]
+        return MediaItem.objects.enriched().by_location(self.country)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(GeoCountryItemView, self).get_context_data(*args, **kwargs)
+        context['country'] = self.country
+        context['continent'] =  self.continent
+        return context
+
+

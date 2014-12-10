@@ -64,8 +64,9 @@ class AdminView(object):
         enumerations = []
         for model in models:
             if issubclass(model, Enumeration):
-                enumerations.append({"name": model._meta.verbose_name,
-                    "id": model._meta.module_name})
+                if not model.hidden:
+                    enumerations.append({"name": model._meta.verbose_name,
+                                         "id": model._meta.module_name})
 
         cmp = lambda obj1, obj2: unaccent_icmp(obj1['name'], obj2['name'])
         enumerations.sort(cmp)
@@ -106,7 +107,8 @@ class AdminView(object):
         if enumeration == None:
             raise Http404
 
-        enumeration_value = enumeration(value=request.POST['value'])
+        enumeration_value = enumeration(value=request.POST['value'],
+                                        notes=request.POST["notes"])
         enumeration_value.save()
 
         return self.edit_enumeration(request, enumeration_id)
@@ -153,6 +155,7 @@ class AdminView(object):
 
             record = enumeration.objects.get(id__exact=value_id)
             record.value = request.POST["value"]
+            record.notes = request.POST["notes"]
             record.save()
 
         return self.edit_enumeration(request, enumeration_id)
@@ -178,7 +181,7 @@ class AdminView(object):
             objects = getattr(from_record, link).all()
             for obj in objects:
                 for name in obj._meta.get_all_field_names():
-                    try: 
+                    try:
                         field = obj._meta.get_field(name)
                         if type(field) == field_type:
                             if field.rel.to == enumeration:

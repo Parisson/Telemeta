@@ -58,19 +58,16 @@
 
 <div id="auth_info">
 {% if user.is_authenticated %}
-
-  <img src="{{ STATIC_URL }}telemeta/images/user.png" alt="user" style="vertical-align:middle" />
-  {% trans "Welcome" %},
+<img src="{{ STATIC_URL }}telemeta/images/user.png" alt="user" style="vertical-align:middle" />
+{% trans "Welcome" %},
+<a href="{% url "telemeta-profile-detail" user.username %}">
 {% if user.first_name or user.last_name %}
-  {{ user.first_name }} {{ user.last_name }}
+{{ user.first_name }} {{ user.last_name }}</a> |
 {% else %}
   {{ user.username }}
 {% endif %}
 {% if perms.telemeta.can_view_users_and_profiles %}
  | <a href="{% url telemeta-profile-detail user.username %}">{% trans "Profile" %}</a>
-{% endif %}
-{% if not perms.telemeta.can_not_view_users_and_profiles %}
-<a href="{% url "telemeta-profile-detail" user.username %}">{% trans "Profile" %}</a> |
 {% endif %}
 <a href="{% url "telemeta-flatpage" "help" %}">{% trans "Help" %}</a> |
 <a href="{% url "telemeta-logout" %}">{% trans "Sign out" %}
@@ -83,16 +80,13 @@
 
 <div id="quick_search">
 <form action="{% url "telemeta-search" %}" id="_quickSearchForm" method="get">
-
     <div class="input-group">
-      <input type="text" class="form-control">
+      <input type="text" class="form-control" name="pattern">
       <span class="input-group-btn">
-        <button class="btn btn-default" type="button" onclick="document.getElementById('_quickSearchForm').submit();"><span class="glyphicon glyphicon-search"></span></button>
+        <button class="btn btn-default" type="button" onclick="$('#_quickSearchForm').submit();"><span class="glyphicon glyphicon-search"></span></button>
       </span>
-    </div><!-- /input-group -->
-
+    </div>
 </form>
-
 </div>
 
 <div id="menu">
@@ -101,14 +95,8 @@
 {# spaces between li and a elements breaks layout #}
 
 <ul id="nav">
- {% if user.is_authenticated and perms.telemeta.can_view_users_and_profiles %}
-  <li><a href="#desk#" class="blue">{% trans "Desk" %}</a>
-   <ul>
-    <li><a href="{% url "telemeta-desk-lists" %}">{% trans "Lists" %}</a></li>
-    <li><a href="{% url "telemeta-desk-profile" user.username %}">{% trans "Profile" %}</a></li>
-    <li><a href="{% url "telemeta-desk-home" %}">{% trans "Home" %}</a></li>
-   </ul>
-  </li>
+ {% if user.is_authenticated %}
+  <li><a href="{% url "telemeta-desk-lists" %}" class="blue">{% trans "Desk" %}</a></li>
  {% else %}
   <li><a href="{% url "telemeta-home" %}" class="blue">{% trans "Home" %}</a></li>
  {% endif %}
@@ -125,13 +113,15 @@
  <li><a href="{% url "telemeta-geo-continents" %}" class="yellow">{% trans "Geo Navigator" %}</a></li>
 
  <li><a href="{% url "telemeta-search-criteria" %}" class="orange">{% trans "Advanced search" %}</a></li>
- {% if user.is_authenticated and not perms.telemeta.can_not_view_users_and_profiles %}
- <li><a href="{% url "telemeta-users" %}" class="red">{% trans "Users" %}</a></li>
+ {% if user.is_authenticated %}
+  {% if user.is_staff or not perms.telemeta.can_not_view_users_and_profiles %}
+  <li><a href="{% url "telemeta-users" %}" class="red">{% trans "Users" %}</a></li>
+  {% endif %}
  {% endif %}
  {% if user.is_staff %}
  <li><a href="#admin#" class="violet">{% trans "Admin" %}</a>
  <ul>
- <li><a href="{% url "telemeta-admin-general" %}">{% trans "General" %}</a></li>
+ <li><a href="{% url "telemeta-admin-general" %}">{% trans "General" context "admin" %}</a></li>
  <li><a href="{% url "telemeta-admin-enumerations" %}">{% trans "Enumerations" %}</a></li>
  <li><a href="{% url "telemeta-instrument-edit" %}">{% trans "Instruments" %}</a></li>
  <li><a href="{% url "telemeta-instrument-alias-edit" %}">{% trans "Instrument aliases" %}</a></li>
@@ -173,20 +163,20 @@
 
 {% block footer %}
 <div id="footer">
- <hr />
- <div class="row">
+ <hr>
+ <div class="row" style="margin-left: 0; margin-right: 0;">
   <div class="col-md-2">
     <a id="telemeta_powered" href="{% telemeta_url %}" target="_blank"><img src="{{ STATIC_URL }}telemeta/images/logo_mini_2.png"
    alt="Telemeta Powered"/></a>
    <span style="font-weight: bold;"><br />&nbsp;v{% telemeta_version %}</span>
   </div>
-  <div class="col-md-8">
+  <div class="col-md-8" style="margin-top: 8px;">
     <center>
     {% trans "Usage of the archives in the respect of cultural heritage of the original communities." %}
     </center>
   </div>
-  <div class="col-md-2">
-    Copyright &copy; {% current_year %} {% organization %}<br />
+  <div class="col-md-2" style="text-align: right;">
+    Copyright &copy; {% current_year %} {% organization %}<br>
     <a href="{% url "telemeta-flatpage" "legal_notices" %}">{% trans "Legal notices" %}</a>
   </div>
  </div>

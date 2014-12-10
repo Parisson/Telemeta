@@ -45,6 +45,11 @@ a:hover {
 
 a img { border: none; }
 
+svg {
+    width: 100%;
+    height: 100%;
+}
+
 .rst-content h1 {
     font-size: 1.2em;
     font-weight: bold;
@@ -417,20 +422,20 @@ form.login .submit {
 #searchform fieldset {
     padding: 0;
     padding: .5em;
-    width: 650px;
+    width: 850px;
     border: none;
     border: 1px solid #6a0307;
     margin-bottom: 1em;
-    -moz-border-radius: 8px 8px 8px 8px;
-    -webkit-border-radius: 8px 8px 8px 8px;
-    border-radius: 8px 8px 8px 8px;
+    -moz-border-radius: 8px 0px 8px 8px;
+    -webkit-border-radius: 0px 8px 8px 8px;
+    border-radius: 8px 0px 8px 8px;
 }
 #searchform p {
     background-color: #fff;
     padding: .5em 0;
 }
 #searchform label {
-    font-size: 0.8em;
+    font-size: 0.9em;
     display: block;
     float: left;
     width: 30%;
@@ -439,7 +444,7 @@ form.login .submit {
     line-height: 1.8em;
     font-weight: bold;
     color: #333;
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
 }
 #searchform select {
     width: 59%;
@@ -448,7 +453,7 @@ form.login .submit {
     width: 56%;
 }
 #searchform select, #searchform fieldset input {
-    font-size: 0.8em;
+    font-size: 0.9em;
 }
 #searchform .submit {
     padding: 0;
@@ -923,7 +928,7 @@ img.align-left {
 
 #content .rst-content ul,  #content .rst-content ol {
     clear: none;
-    font-size: 1em;
+    font-size: 0.8125em;
     margin-left: 0.4em;
 }
 
@@ -968,12 +973,7 @@ img.align-left {
         -moz-border-radius: 8px 0px 8px 8px;
         -webkit-border-radius: 8px 0px 8px 8px;
         border-radius: 8px 0px 8px 8px;
-       }
-
-.module img {
-        -moz-border-radius: 8px 0px 8px 8px;
-        -webkit-border-radius: 8px 0px 8px 8px;
-        border-radius: 8px 0px 8px 8px;
+        background-color: white;
        }
 
 .module ul, li {
@@ -989,10 +989,18 @@ a.image-link {
 .logo {
     border: none;
     vertical-align:middle;
+    -moz-border-radius: 0px 0px 0px 0px;
+    -webkit-border-radius: 0px 0px 0px 0px;
+    border-radius: 0px 0px 0px 0px;
+
 }
 
 .map-thumbnail {
     border: solid 1px #999;
+    -moz-border-radius: 8px 0px 8px 8px;
+    -webkit-border-radius: 8px 0px 8px 8px;
+    border-radius: 8px 0px 8px 8px;
+    width: 396%;
 }
 
 .home-content .module {
@@ -1106,23 +1114,42 @@ a.image-link {
     display: inline-block; /*otherwise width and height do not work*/
     background-repeat: no-repeat;
     text-decoration: none;
-
 }
 .markerdiv .markersdivOffset, .markerdiv .markersdivOffset:hover, .markerdiv .markersdivOffset:visited{
     color: #000;
 }
 .markerdiv .ts-marker, .markerdiv .ts-marker:hover, .markerdiv .ts-marker:visited{
-    font-family: monospace; background: #e65911;color: #FFF;padding-left: .3ex; padding-right:.3ex;
+    font-family: monospace;
+    background: #e65911;
+    color: #FFF;
+    padding-left: .3ex;
+    padding-right:.3ex;
 }
-.markersdivDelete{    background-image: url('../images/del_marker.png');width:15px;height:2ex;background-repeat: no-repeat;}
+.markersdivDelete{
+    background-image: url('../images/del_marker.png');
+    width:15px;
+    height:2ex;
+    background-repeat: no-repeat;
+    padding-left: 13px;
+    padding-right: 2px;
+}
 /*backfround-repeat is redundant with .markerDiv a,.. defined above but this way .markersDivDelete is re-usable in other context (eg popupdiv*/
-.markersdivAddPlaylist{    background-image: url('../images/add_playlist_marker.png');width:13px;height:2ex; }
-.markersdivTitle{    font-weight:bold;}
+.markersdivAddPlaylist{
+    background-image: url('../images/add_playlist_marker.png');
+    width:13px;
+    height:2ex;
+    padding-left: 13px;
+    padding-right: 2px;
+}
+.markersdivTitle{
+    font-weight:bold;
+}
 .markersdivEdit, .markersdivEdit:hover, .markersdivEdit:visited{
     line-height: normal;
     color:#000;
     background-position: -2px center;
-    padding-left: 13px; padding-right: 2px;
+    padding-left: 13px;
+    padding-right: 2px;
     font-size: 65%;
     border:2px solid #666;
     background-color: #fff;
@@ -1187,8 +1214,12 @@ a.image-link {
     border-right:  1px solid #999 !important;
     background-color:  #f4f4f4; /*#e9e9d9;*/
     color: #000; /*#6A0307;*/
+    text-decoration: none;
 }
 
+.button a:hover{
+    text-decoration: none;
+}
 
 .list_item, .list_item:visited, .list_item:hover{
     display:block;
@@ -1313,4 +1344,3 @@ a:focus,div:focus{
     -webkit-border-radius: 8px 0px 8px 8px;
     border-radius: 8px 0px 8px 8px;
 }
-

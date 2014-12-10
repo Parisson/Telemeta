@@ -1,20 +1,32 @@
 language: python
 python:
-  - "2.6"
   - "2.7"
+
+virtualenv:
+  system_site_packages: true
 
 before_install:
  - sudo apt-get -qq update
- - sudo apt-get install -qq libhdf5-serial-dev
- - sudo apt-get install -qq libatlas-dev libatlas-base-dev gfortran
- - sudo apt-get install -qq python-numpy python-scipy
-
+ - sudo apt-get install -qq libhdf5-serial-dev libatlas-dev libatlas-base-dev gfortran
+ - sudo apt-get install -qq python-setuptools python-numpy python-scipy python-tables
+ - gpg --keyserver pgpkeys.mit.edu --recv-key E3298399DF14BB7C
+ - gpg -a --export E3298399DF14BB7C | sudo apt-key add -
+ - echo "deb http://debian.parisson.com/debian/ precise main" | sudo tee -a /etc/apt/sources.list.d/parisson.list
+ - echo "deb-src http://debian.parisson.com/debian/ precise main" | sudo tee -a /etc/apt/sources.list.d/parisson.list
+ - sudo apt-get update
+ - sudo apt-get install -y python-timeside
 
 # command to install dependencies
-#install: 
-# - "pip install -r requirements.txt"
+install:
+ - pip install -U --no-deps timeside 
+ - pip install --process-dependency-links -e . 
 
 # command to run tests
+before_script:
+- pip install -U pytest-cov pytest-django
 script:
- - "python setup.py install"
-# - "python tests/testcomponent.py"
+ - python setup.py test -a "--cov telemeta"
+
+after_success:
+ - pip install coveralls
+ - coveralls

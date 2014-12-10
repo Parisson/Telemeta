@@ -453,3 +453,7 @@ class IfLoadedNode(template.Node):
 def has_access(user, item):
     return get_item_access(item, user)
 
+
+@register.filter
+def get_attr(obj, val):
+    return getattr(obj, val)

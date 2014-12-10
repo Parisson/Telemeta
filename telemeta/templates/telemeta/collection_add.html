@@ -6,10 +6,19 @@
     <img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" /> Collection : {% trans "New" %}
 {% endblock %}
 
-{% block title_buttons %}
-     <a href="{% url "telemeta-collections" %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
-{% endblock %}
-
     {% block cancel %}
-            <a href="{% url "telemeta-collections" %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+    <a id="cancel" href="{% url "telemeta-collections" %}">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-remove"></span> {% trans "Cancel" %}
+      </button>
+    </a>
     {% endblock %}
+
+     {% block cancel2 %}
+     <a id="cancel" href="{% url "telemeta-collections" %}">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-remove"></span> {% trans "Cancel" %}
+      </button>
+     </a>
+     {% endblock %}
+

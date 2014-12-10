@@ -37,6 +37,7 @@
 
 from telemeta.views.core import *
 
+
 class CollectionView(object):
     """Provide Collections web UI methods"""
 
@@ -134,6 +135,9 @@ class CollectionView(object):
     def collection_delete(self, request, public_id):
         """Delete a given collection"""
         collection = MediaCollection.objects.get(public_id=public_id)
+        revisions = Revision.objects.filter(element_type='collection', element_id=collection.id)
+        for revision in revisions:
+            revision.delete()
         collection.delete()
         return redirect('telemeta-collections')
 
@@ -228,10 +232,21 @@ class CollectionPackageView(View):
 class CollectionViewMixin(object):
 
     model = MediaCollection
+    form_class = MediaCollectionForm
 
     def get_object(self):
-        self.pk = self.model.objects.get(code=self.kwargs['public_id']).pk
-        return get_object_or_404(self.model, pk=self.pk)
+        obj = self.model.objects.filter(code=self.kwargs['public_id'])
+        if not obj:
+            if self.kwargs['public_id'].isdigit():
+                try:
+                    obj = self.model.objects.get(id=self.kwargs['public_id'])
+                except self.model.DoesNotExist:
+                    raise Http404
+            else:
+                raise Http404
+        else:
+            obj = obj[0]
+        return obj
 
 
 class CollectionListView(ListView):
@@ -272,14 +287,6 @@ class CollectionDetailView(CollectionViewMixin, DetailView):
         items = collection.items.enriched()
         context['collection'] = collection
         context['items'] = items.order_by('code', 'old_code')
-
-        if collection.public_access == 'none' and not (request.user.is_staff or request.user.is_superuser):
-            mess = ugettext('Access not allowed')
-            title = ugettext('Collection') + ' : ' + public_id + ' : ' + mess
-            description = ugettext('Please login or contact the website administator to get a private access.')
-            messages.error(request, title)
-            return render(self.request, 'telemeta/messages.html', {'description' : description})
-
         context['playlists'] = get_playlists_names(self.request)
         context['related_media'] = MediaCollectionRelated.objects.filter(collection=collection)
         check_related_media(context['related_media'])
@@ -294,6 +301,11 @@ class CollectionDetailView(CollectionViewMixin, DetailView):
         return context
 
 
+class CollectionDetailViewDC(CollectionDetailView):
+
+    template_name = "telemeta/collection_detail_dc.html"
+
+
 class CollectionEditView(CollectionViewMixin, UpdateWithInlinesView):
 
     template_name = 'telemeta/collection_edit.html'
@@ -306,6 +318,12 @@ class CollectionEditView(CollectionViewMixin, UpdateWithInlinesView):
     def get_success_url(self):
         return reverse_lazy('telemeta-collection-detail', kwargs={'public_id':self.kwargs['public_id']})
 
+    def get_context_data(self, **kwargs):
+        context = super(CollectionEditView, self).get_context_data(**kwargs)
+        collection = self.get_object()
+        context['collection'] = collection
+        return context
+
 
 class CollectionAddView(CollectionViewMixin, CreateWithInlinesView):
 
@@ -313,16 +331,21 @@ class CollectionAddView(CollectionViewMixin, CreateWithInlinesView):
     inlines = [CollectionRelatedInline, CollectionIdentifierInline]
 
     def get_success_url(self):
-        return reverse_lazy('telemeta-collections')
+        return reverse_lazy('telemeta-collection-detail', kwargs={'public_id':self.object.code})
 
 
 class CollectionCopyView(CollectionAddView):
 
-    template_name = 'telemeta/collection_add.html'
+    template_name = 'telemeta/collection_edit.html'
 
     def get_initial(self):
-        resource = self.model.objects.get(code=self.kwargs['public_id'])
-        return model_to_dict(resource)
+        return model_to_dict(self.get_object())
 
     def get_success_url(self):
-        return reverse_lazy('telemeta-collections')
+        return reverse_lazy('telemeta-collection-detail', kwargs={'public_id':self.object.code})
+
+    def get_context_data(self, **kwargs):
+        context = super(CollectionCopyView, self).get_context_data(**kwargs)
+        collection = self.get_object()
+        context['collection'] = collection
+        return context

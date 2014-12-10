@@ -1,15 +1,2 @@
 setuptools
-django==1.4.10
-django-registration
-django-json-rpc
-numpy
-timeside
-south
-sorl-thumbnail
-django-extensions
-docutils
-django-timezones
-django-jqchat
-psutil
-pyyaml
-python-ebml
+-e .

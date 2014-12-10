@@ -17,8 +17,9 @@ $(document).ready(function() {
 {{ block.super }}
 <div class="large-4 columns">&nbsp;</div>
 <div class="module large-4 columns">
-    <span class="module-title"><img src="{{ STATIC_URL }}telemeta/images/user_red.png" style="vertical-align:middle" />
-    {% trans "User authentication" %}</span>
+    <span class="module-title">
+    <img src="{{ STATIC_URL }}telemeta/images/user_tr.png" width="30px" style="margin: 3px;" alt="rss" style="vertical-align:middle" />
+    &nbsp;<h3>{% trans "User authentication" %}</h3></span>
 
 <div style="background-color: white; align: center; padding: 1em;">
 
@@ -28,20 +29,25 @@ $(document).ready(function() {
 <p class="login-error">{% trans "Your username and password didn't match. Please try again." %}</p>
 {% endif %}
 
-<p>
-<label>
-{{ form.username.label_tag }}
-{{ form.username }}
-</label>
-<label>
-{{ form.password.label_tag }}
-{{ form.password }}
-</label>
+<table>
+<tr>
+	<td><label>{{ form.username.label_tag }}</label></td>
+	<td>{{ form.username }}</td>
+</tr>
+<tr>
+	<td><label>{{ form.password.label_tag }}</label></td>
+	<td>{{ form.password }}</td>
+</tr>
+</table>
 
-<a href="#" class="component_icon button icon_login" style="float: right;" onclick="$('#_loginForm').submit();">{% trans "Sign in" %}</a>
+<p style="margin-top: 0.5em;">
+<a href="#" onclick="$('#_loginForm').submit();" style="float: right;">
+  <button type="button" class="btn btn-default">
+    <span class="glyphicon glyphicon-log-in"></span> {% trans "Sign in" %}
+  </button>
+</a>
 
 <input type="hidden" name="next" value="{{ next }}" />
-
 <span><a href="{% url "telemeta-password-reset" %}">{% trans "Password forgotten" %} ?</a></span>
 </p>
 
