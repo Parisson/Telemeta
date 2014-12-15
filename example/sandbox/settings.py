@@ -124,6 +124,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
+    'suit',
+    # 'grappelli',
     'django.contrib.admin',
     'django.contrib.staticfiles',
     'django_extensions',
@@ -188,4 +190,8 @@ BOOTSTRAP3 = {
 PAGINATION_SETTINGS = {
     'PAGE_RANGE_DISPLAYED': 10,
     'MARGIN_PAGES_DISPLAYED': 2,
+}
+
+SUIT_CONFIG = {
+    'ADMIN_NAME': 'Telemeta Admin'
 }

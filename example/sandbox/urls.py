@@ -19,6 +19,7 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     (r'^admin/django/', include(admin.site.urls)),
+    #(r'^grappelli/', include('grappelli.urls')), # grappelli URLS
 
     # Telemeta
     (r'^', include('telemeta.urls')),

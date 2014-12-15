@@ -59,6 +59,7 @@ setup(
         'django-bootstrap3',
         'django-bootstrap-pagination',
         'django-json-rpc==0.6.2',
+        'django-suit',
         'timeside>=0.5.6',
         'south',
         'sorl-thumbnail',
