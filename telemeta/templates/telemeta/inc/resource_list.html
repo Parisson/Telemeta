@@ -1,34 +1,32 @@
 {% load telemeta_utils %}
 {% load i18n %}
-{% if resources %}
-{% if hits %}
 
-<p class="pagination">
-{{ type|capitalize }}{% blocktrans %} from {{ first_on_page }} to {{ last_on_page }} on {{ hits }}{% endblocktrans %}
-| Pages : {% if pages == 1 %}1{% else %}{% if is_paginated %}{% load paginator %}{% paginator 5 %}{% endif %}{% endif %}
-</p>
-{% endif %}
+{% if object_list %}
+
 <table class="listing">
 <tr>
-    <th class="highlight">{% trans "Title" %}</th>
+    <th class="highlight" width="15%">{% trans "Title" %}</th>
+    <th width="5%">{% trans "Digitized" %}</th>
     <th>{% trans "Description" %}</th>
-    <th>{% trans "Code" %}</th>
-    <th>{% trans "Sound" %}</th>
+    <th width="15%">{% trans "Code" %}</th>
+
 </tr>
-{% for resource in resources %}
+{% for resource in object_list %}
 <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
     <td class="highlight">
-        <a href="{% url telemeta-resource-detail type resource.public_id %}">{{ resource.title }}</a>
+        <a href="{% url "telemeta-resource-detail" type resource.public_id %}">{{ resource.title }}</a>
+    </td>
+    <td>{% if resource.has_mediafile %}
+       <center><span class="glyphicon glyphicon-volume-up" style="font-size: 1.3em;"></span></center>
+      {% endif %}
     </td>
     <td>{{ resource.descriptions }}</td>
     <td>{{ resource.code }}</td>
-    <td>{% if resource.has_mediafile %}
-       <img src="{{ STATIC_URL }}telemeta/images/ok.png" alt="yes" style="vertical-align:middle" />
-      {% endif %}
-    </td>
+
 </tr>
 {% endfor %}
 </table>
+
 {% else %}
     <p>{% trans "No resource" %}</p>
 {% endif %}

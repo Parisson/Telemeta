@@ -13,23 +13,23 @@
 <table class="listing">
 <tr>
     <th class="highlight">{% trans "Title" %}</th>
+    <th width="5%">{% trans "Digitized" %}</th>
     <th>{% trans "Description" %}</th>
     <th>{% trans "Code" %}</th>
-    <th>{% trans "Sound" %}</th>
 </tr>
 {% for child in children %}
 {% if child.code %}
 <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
     <td class="highlight">
-        <a href="{% url telemeta-resource-detail resource.children_type child.public_id %}">{{ child.title }}</a>
+        <a href="{% url "telemeta-resource-detail" resource.children_type child.public_id %}">{{ child.title }}</a>
     </td>
-    <td>{{ child.descriptions }}</td>
-    <td>{{ child.code }}</td>
     <td>
       {% if child.has_mediafile %}
-       <img src="{{ STATIC_URL }}telemeta/images/ok.png" alt="yes" style="vertical-align:middle" />
+       <center><span class="glyphicon glyphicon-volume-up" style="font-size: 1.3em;"></span></center>
       {% endif %}
     </td>
+    <td>{% if child.descriptions %}{{ child.descriptions }}{% else %}{{ child.description }}{% endif %}</td>
+    <td>{{ child.code }}</td>
 </tr>
 {% endif %}
 {% endfor %}

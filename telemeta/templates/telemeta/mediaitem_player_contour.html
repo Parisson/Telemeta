@@ -25,7 +25,7 @@
 {% block graphers %}
         //initializing the visualizers to be passed to the player
         var visualizers = {};
-        visualizers["{{visualizer_id}}"] = "{% url telemeta-item-visualize item.public_id,visualizer_id,"WIDTH","HEIGHT" %}";
+        visualizers["{{visualizer_id}}"] = "{% url "telemeta-item-visualize" item.public_id,visualizer_id,"WIDTH","HEIGHT" %}";
 {% endblock graphers %}
 
 {% block title %}{% endblock %}

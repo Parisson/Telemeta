@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.conf.urls.defaults import *
+from django.conf.urls import patterns, url, include
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -19,11 +19,12 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     (r'^admin/django/', include(admin.site.urls)),
-    
+    #(r'^grappelli/', include('grappelli.urls')), # grappelli URLS
+
     # Telemeta
     (r'^', include('telemeta.urls')),
-    
+
     # Languages
-    (r'^i18n/', include('django.conf.urls.i18n')),    
+    (r'^i18n/', include('django.conf.urls.i18n')),
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
     )

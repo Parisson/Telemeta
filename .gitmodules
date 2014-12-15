@@ -1,0 +1,6 @@
+[submodule "telemeta/pages"]
+	path = telemeta/pages
+	url = https://github.com/Parisson/Telemeta-pages.git
+[submodule "telemeta/locale"]
+	path = telemeta/locale
+	url = https://github.com/Parisson/Telemeta-locales.git

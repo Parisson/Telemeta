@@ -1,21 +1,36 @@
 {% extends "telemeta/base.html" %}
 {% load i18n %}
 {% load telemeta_utils %}
+{% load bootstrap_pagination %}
 
 {% block head_title %}{% trans "Media Items" %} - {{ block.super }}{% endblock %}
 
 {% block title %}
- <img src="{{ STATIC_URL }}telemeta/images/item.png" alt="item" style="vertical-align:middle" /> {% trans "Media Items" %}
+<div class='row'>
+<div class="col-md-4">
+ <img src="{{ STATIC_URL }}telemeta/images/item.png" alt="item" style="vertical-align:middle" /> {% trans "Items" %} ({{ page_obj.start_index }} - {{ page_obj.end_index }} / {{ count }})
+</div>
+<div class="col-md-8">
+{% bootstrap_paginate page_obj range=10 show_first_last="True" %}
+</div>
+<div class="col-md-0">&nbsp;</div>
+</div>
 {% endblock %}
 
 {% block title_buttons %}
-    <a href="{% url telemeta-items %}" class="component_icon button icon_filter">{% trans "All" %}</a>
-    <a href="{% url telemeta-items-unpublished %}" class="component_icon button icon_filter">{% trans "Unpublished" %}</a>
-    <a href="{% url telemeta-items-published %}" class="component_icon button icon_filter">{% trans "Published" %}</a>
-    <a href="{% url telemeta-items-sound %}" class="component_icon button icon_filter">{% trans "Sounds" %}</a>
-    {% if user.is_authenticated and perms.telemeta.add_mediaitem %}
-      <a href="{% url telemeta-item-add %}" class="component_icon button icon_add">{% trans "Add" %}</a>
-    {% endif %}
+
+<div class="btn-group">
+  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+    <span class="glyphicon glyphicon-filter"></span> {% trans "Filters" %} <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" role="menu">
+    <li><a href="{% url "telemeta-items" %}" class="">{% trans "All" %}</a></li>
+    <li><a href="{% url "telemeta-items-unpublished" %}">{% trans "Unpublished" %}</a></li>
+    <li><a href="{% url "telemeta-items-published" %}">{% trans "Published" %}</a></li>
+    <li><a href="{% url "telemeta-items-sound" %}">{% trans "Digitized" context "item list" %}</a></li>
+  </ul>
+</div>
+
 {% endblock %}
 
 {% block content %}

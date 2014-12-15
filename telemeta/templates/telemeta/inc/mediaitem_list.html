@@ -1,18 +1,12 @@
 {% load telemeta_utils %}
 {% load i18n %}
-{% if items %}
 
-{% if hits %}
-<p class="pagination">
-{% blocktrans %}Items {{ first_on_page }} to {{ last_on_page }} on {{ hits }}{% endblocktrans %}
-| Pages : {% if pages == 1 %}1{% else %}{% if is_paginated %}{% load paginator %}{% paginator 5 %}{% endif %}{% endif %}
-</p>
-{% endif %}
+{% if items %}
 
 <table class="listing">
 <tr>
     <th class="highlight">{% trans "Title" %}</th>
-    <th>{% trans "Code" %}</th>
+    <th>{% trans "Digitized" %}</th>
     <th>{% trans "Recordist" %}</th>
     {% if location_name %}
     <th>{% trans "Location" %}</th>
@@ -20,16 +14,20 @@
     <th>{% trans "Country/Continent" %}</th>
     {% endif %}
     <th>{% trans "Year of recording" %}</th>
-    <th>{% trans "Sound" %}</th>
+    <th>{% trans "Code" %}</th>
 </tr>
 {% for item in items %}
 <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
     <td class="highlight">
-        <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
+        <a href="{% url "telemeta-item-detail" item.public_id %}">{{ item }}</a>
     </td>
-    <td>
-        {{ item.code|default:item.old_code }}
+    <td align="center">
+        {% if item.file %}
+         <a href="{% url "telemeta-item-detail" item.public_id %}">
+          <center><span class="glyphicon glyphicon-volume-up" style="font-size: 1.3em;"></span></center>
+        {% endif %}
     </td>
+
     <td>{{ item.collector }}</td>
     {% if location_name %}
     <td>{{ item.location.name }}</td>
@@ -44,11 +42,8 @@
         {% endif %}
     {% endif %}
     </td>
-    <td align="center">
-        {% if item.file %}
-         <a href="{% url telemeta-item-detail item.public_id %}">
-          <img src="{{ STATIC_URL }}telemeta/images/ok.png" alt="yes" style="vertical-align:middle" /></a>
-        {% endif %}
+    <td>
+        {{ item.code|default:item.old_code }}
     </td>
 </tr>
 {% endfor %}

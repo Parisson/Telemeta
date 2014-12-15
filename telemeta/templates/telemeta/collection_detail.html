@@ -10,7 +10,7 @@
 <script src="{{ STATIC_URL }}telemeta/js/playlist.js" type="text/javascript"></script>
 <script>
     {% if user.is_authenticated %}
-    jQuery(document).ready(function(){
+    $(document).ready(function(){
         var p = playlistUtils;
 
         {% for playlist in playlists %}
@@ -18,7 +18,7 @@
         {% endfor %}
 
         {% if collection %}
-        var anchor = jQuery('#_add_to_playlist');
+        var anchor = $('#_add_to_playlist');
         if(anchor.length){
         anchor.click(function(){
             p.showAddResourceToPlaylist(anchor,'collection','{{collection.id}}',gettrans('collection added to the selected playlist'));return false;
@@ -34,21 +34,42 @@
 
 {% block title %}
     <img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" />
-    Collection :
-    <a href="{% url telemeta-collection-detail collection.public_id %}">{{ collection.title }}</a>
+    Collection : {{ collection.title }}
 {% endblock %}
 
 {% block title_buttons %}
-  <div class="fixedWidthAsPlayer">
-    {% if user.is_authenticated and perms.telemeta.change_mediacollection %}
-      <a href="{% url telemeta-collection-edit collection.public_id %}" class="component_icon button icon_edit">{% trans "Edit" %}</a>
-      <a href="{% url telemeta-collection-copy collection.public_id %}" class="component_icon button icon_copy">{% trans "Copy" %}</a>
-      <a href="{% url telemeta-collection-additem collection.public_id %}" class="component_icon button icon_add">{% trans "Add item" %}</a>
-     {% endif %}
+  <div>
+    {% if user.is_authenticated and perms.telemeta.change_mediaitem %}
+    <a href="{% url "telemeta-collection-edit" collection.public_id %}">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-edit"></span> {% trans "Edit" %}
+      </button>
+    </a>
+    <a href="{% url "telemeta-collection-copy" collection.public_id %}">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-new-window"></span> {% trans "Copy" %}
+      </button>
+    </a>
+    {% endif %}
     {% if user.is_authenticated %}
-     <a href=# id="_add_to_playlist" class="component_icon button icon_add_to_playlist">{% trans "Add to playlist" %}</a>
+    <a id="_add_to_playlist" href='#'>
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-pushpin"></span> {% trans "List" %}
+      </button>
+    </a>
+    {% endif %}
+    {% if user.is_authenticated and perms.telemeta.change_mediacollection %}
+    <a href="{% url "telemeta-collection-additem" collection.public_id %}">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-plus"></span> {% trans "Add item" %}
+      </button>
+    </a>
     {% if audio_export_enabled or perms.telemeta.can_download_all_items or user.is_superuser %}
-     <a href="{% url telemeta-collection-package collection.public_id %}" id="zip_package" class="component_icon button icon_zip">{% trans "Download" %} ZIP</a>
+    <a href="{% url "telemeta-collection-package" collection.public_id %}" id="zip_package">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-compressed"></span> {% trans "Zip" %}
+      </button>
+    </a>
     {% endif %}
     {% endif %}
    </div>
@@ -56,53 +77,42 @@
 
 {% block content %}
     <div class="{% if collection.has_mediafile %}{% if public_access == 'full' or perms.telemeta.can_play_all_items %}with-rightcol{% endif %}{% endif %}">
-        {% if collection.has_mediafile %}
-        <div id="rightcol">
-            <div id="collection_player">
-             <div class="title">
-              <h3><b>{% trans "Listen to this collection" %}</b>
-              (<a href="{% url telemeta-collection-m3u collection.public_id %}">M3U</a>,
-              <a href="{% url telemeta-collection-xspf collection.public_id %}">XSPF</a>)</h3>
-             </div>
-                <!-- This is Jeroen Wijering's Flash MP3 Player,
-                  under CC Attribution-NonCommercial-ShareAlike 2.0 license
-                  from: http://www.jeroenwijering.com/?item=Flash_MP3_Player-->
-                <p id="collection_player_c">
-                  <a href="http://www.macromedia.com/go/getflashplayer">Get Flash</a> to see this player.
-                </p>
-                <script type="text/javascript">
-                  var so = new SWFObject('{{ STATIC_URL }}telemeta/swf/mp3player.swf','playlist','362','200','7');
-                  so.addVariable("file","{% url telemeta-collection-xspf collection.public_id %}");
-                  so.addVariable("displayheight","0");
-                  so.addParam("wmode", "opaque");
-                  so.write('collection_player_c');
-                </script>
-            </div>
-        </div>
-        {% endif %}
       {% block infos %}
         <div class="intro">
-            <span><img src="{{ STATIC_URL }}telemeta/images/item_title.png" style="vertical-align:middle" /> {% if collection.items.count %}{{ collection.items.count }} {% ifequal collection.items.count 1 %}item{% else %}items{% endifequal %}{% else %}No item{% endif %}</span>
+            <span><img src="{{ STATIC_URL }}telemeta/images/item_title.png" style="vertical-align:middle" /> {% if collection.items.count %}{{ collection.items.count }} {% ifequal collection.items.count 1 %}item{% else %}items{% endifequal %} (<a href="#item_list">{% trans "View list" %}</a>){% else %}No item{% endif %}</span>
         </div>
+
         <div class="infos">
         {% block general_info %}
             <dl class="listing">
-                {% dl_field collection "reference" %}
                 {% dl_field collection "title"  %}
                 {% dl_field collection "alt_title" %}
+                {% if collection.creator %}
                 {% dl_field collection "creator" placeholder %}
+                {% endif %}
+                <dt>{% trans "Document status" %}</dt>
+                {% if '_I_' in collection.public_id %}
+                 <dd>{% trans 'Unpublished' context "collection" %}</dd>
+                {% elif '_E_' in collection.public_id %}
+                 <dd>{% trans 'Published' context "collection" %}</dd>
+                {% else %}
+                 <dd>&nbsp;</dd>
+                {% endif %}
+                {% if collection.description %}
+                {% dl_field collection "description" %}
+                {% endif %}
                 {% dl_field collection "recording_context" %}
                 <dt>{% trans "Recording period" %}</dt>
                     <dd>{% if collection.recorded_from_year %}{{ collection.recorded_from_year }}{% endif %}{% if collection.recorded_from_year and collection.recorded_to_year %} - {% endif %}{% if  collection.recorded_to_year %}{{ collection.recorded_to_year}}{% endif %}</dd>
+                {% if '_E_' in collection.public_id %}
                 {% dl_field collection "year_published" placeholder %}
+                {% endif %}
+                <dt>{% trans "Access type" %}</dt>
+                <dd>{% trans collection.public_access %}</dd>
                 {% for parent in parents %}
                 <dt>{% trans parent.element_type|capitalize %}</dt>
-                <dd><a href="{% url telemeta-resource-detail parent.element_type parent.public_id %}">{{ parent.title }}</a></dd>
+                <dd><a href="{% url "telemeta-resource-detail" parent.element_type parent.public_id %}">{{ parent.title }}</a></dd>
                 {% endfor %}
-                {% if last_revision %}
-                <dt>{% trans "Last modification" %}</dt>
-                <dd>{{ last_revision.time }} {% if user.is_authenticated %}(<a href="{% url telemeta-profile-detail last_revision.user.username %}">{{last_revision.user.username}}</a>){% endif %}</dd>
-                {% endif %}
             </dl>
         {% endblock general_info %}
         </div>
@@ -112,7 +122,7 @@
                 <h4><a href="#">{% trans "Geographic and cultural informations" %}</a></h4>
                 <div>
                     <dl class="listing">
-                        {% dl_field collection "countries" join with ", " %}
+                        {% dl_field collection "main_countries" join with ", " %}
                         {% dl_field collection "ethnic_groups" join with ", " placeholder %}
                     </dl>
                 </div>
@@ -132,16 +142,19 @@
                         {% else %}
                         {% dl_field collection "collector" %}
                         {% endif %}
+                        {% if collection.publisher %}
                         {% dl_field collection "publisher" %}
+                        {% endif %}
                         {% dl_field collection "publisher_collection" %}
                         {% dl_field collection "publisher_serial" %}
                         {% dl_field collection "booklet_author" %}
+                        {% if '_E_' in collection.public_id %}
+                        {% dl_field collection "reference" %}
+                        {% endif %}
+                        {% if collection.external_references %}
                         <dt>{% trans "Bibliographic references" %}</dt>
                         <dd>{{ collection.external_references|html_line_break|safe }}</dd>
-                        {% if collection.doctype_code %}
-                         {% dl_field collection "doctype_code" %}
                         {% endif %}
-                        {% dl_field collection "public_access_label" %}
                         {% dl_field collection "legal_rights" %}
                     </dl>
                 </div>
@@ -154,19 +167,29 @@
                 <h4><a href="#">{% trans "Archiving data" %}</a></h4>
                 <div>
                     <dl class="listing">
+                        {% dl_field collection "code" %}
+                        {% dl_field collection "old_code" %}
                         {% dl_field collection "acquisition_mode" %}
                         {% dl_field collection "cnrs_contributor" %}
+                        {% dl_field collection "copy_type" %}
                         {% dl_field collection "metadata_author" %}
-                        <dt>{% trans "Related documentation" %}</dt>
-                        <dd>{{ collection.booklet_description|html_line_break|safe }}</dd>
+                        {% if collection.booklet_description %}
+                         <dt>{% trans "Related documentation" %}</dt>
+                         <dd>{{ collection.booklet_description|html_line_break|safe }}</dd>
+                        {% endif %}
                         {% dl_field collection "publishing_status" %}
-                        {% if collection.alt_ids %}
-                         {% dl_field collection "alt_ids" %}
+                        {% dl_field collection "status" %}
+                        {% if collection.alt_copies %}
+                         {% dl_field collection "alt_copies" %}
                         {% endif %}
                         <dt>{% trans "Comments" %}</dt>
                         <dd>{{ collection.comment|html_line_break|safe }}</dd>
                         {% dl_field collection "metadata_writer" %}
-                        {% dl_field collection "travail" %}
+                        {% if last_revision %}
+                        <dt>{% trans "Last modification" %}</dt>
+                        <dd>{{ last_revision.time }} {% if user.is_authenticated %}(<a href="{% url "telemeta-profile-detail" last_revision.user.username %}">{{last_revision.user.username}}</a>){% endif %}</dd>
+                        {% endif %}
+                        {% dl_field collection "archiver_notes" %}
                         {% dl_field collection "items_done" %}
                         {% dl_field collection "conservation_site" %}
                     </dl>
@@ -180,15 +203,21 @@
                 <h4><a href="#">{% trans "Technical data" %}</a></h4>
                 <div>
                     <dl class="listing">
-                        {% dl_field collection "code" %}
-                        {% dl_field collection "old_code" %}
-                        <dt>{% trans "Media type" %}</dt><dd>{% trans "Audio" %}</dd>
+                        {% dl_field collection "media_type" %}
+                        {% if not collection.computed_duration %}
                         {% dl_field collection "approx_duration" %}
+                        {% endif %}
                         {% dl_field collection "computed_duration" %}
+                        <dt>{% trans "Collection size" %}</dt>
+                            <dd>{{ collection.computed_size|filesizeformat }}</dd>
                         {% dl_field collection "physical_items_num" %}
                         <div class="wazing"></div>
-                        <dt>{% trans "Number of items" %}</dt><dd>{{ collection.items.count }}</dd>
+                        <dt>{% trans "Number of items" %}</dt>
+                            <dd>{{ collection.items.count }}</dd>
+                        {% dl_field collection "original_format" %}
+                        {% if collection.physical_format %}
                         {% dl_field collection "physical_format" %}
+                        {% endif %}
                         {% dl_field collection "ad_conversion" %}
                     </dl>
                 </div>
@@ -204,7 +233,7 @@
         </div>
         {% endif %}
 
-        <div class="extraInfos">
+        <div class="extraInfos" id="item_list">
         <h4><img src="{{ STATIC_URL }}telemeta/images/item_title.png" style="vertical-align:middle" /> Items</h4>
         {% with "1" as location_name %}
             {% include "telemeta/inc/mediaitem_list.html" %}
@@ -213,13 +242,26 @@
 
         {% endblock infos %}
     </div>
-{% endblock %}
+
+    {% block dublincore %}
+    <a href="{% url "telemeta-collection-dublincore" collection.public_id %}" style="float:left;margin-top:0.5em;margin-bottom:1em">
+      <button type="button" class="btn btn-default">
+        <img src="{{ STATIC_URL}}telemeta/images/dublin_core.png" /> Dublin Core
+      </button>
+    </a>
+    {% endblock dublincore %}
+
+{% endblock content %}
 
 {% block delete %}
-<a href="{% url telemeta-collection-dublincore collection.public_id %}" style="float:left;margin-top:0.5em;margin-bottom:1em" class="component_icon button icon_dublin_core">Dublin Core</a>
 {% if user.is_authenticated and perms.telemeta.delete_mediacollection %}
- <a href="#" onclick="if(confirm(gettrans('delete the collection permanently?'))){window.location.href='{% url telemeta-collection-delete collection.public_id %}';};return false;"
-        class="component_icon button icon_delete" style="float:right;margin-top:0.5em;margin-bottom:1em">{% trans "Delete" %}</a>
+
+    <a href="#" onclick="if(confirm(gettrans('delete the collection permanently?'))){window.location.href='{% url "telemeta-collection-delete" collection.public_id %}';};return false;" style="float:right;margin-top:0.5em;margin-bottom:1em">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-trash"></span> {% trans "Delete" %}
+      </button>
+    </a>
+
 {% endif %}
 {% endblock %}
 

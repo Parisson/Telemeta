@@ -4,18 +4,18 @@
 {% block head_title %}{% trans "Enumeration" %} : {{ enumeration_name|capfirst }} - {{ block.super }}{% endblock %}
 
 {% block title %}
-<h1><img src="{{ STATIC_URL }}telemeta/images/admin_red.png" style="vertical-align:middle" /> <a href="{% url telemeta-admin-general %}">{% trans "Administration" %}</a> > <a href="{% url telemeta-admin-enumerations %}">{% trans "Enumerations" %}</a></h1>
+<h1><img src="{{ STATIC_URL }}telemeta/images/admin_red.png" style="vertical-align:middle" /> <a href="{% url "telemeta-admin-general" %}">{% trans "Administration" %}</a> > <a href="{% url "telemeta-admin-enumerations" %}">{% trans "Enumerations" %}</a></h1>
 {% endblock %}
 
 {% block tabcontents %}
  <h4>{{ enumeration_name|capfirst }}</h4>
  <form class="addnew" id="_addenum" method="POST"
-        action="{% url telemeta-enumeration-add enumeration_id %}">{% csrf_token %}
+        action="{% url "telemeta-enumeration-add" enumeration_id %}">{% csrf_token %}
   <fieldset>
    <legend>{% trans "Add entry" %}</legend>
    <div class="field">
     <label>{% trans "Value" %}: <input id="id_value_add" type="text" name="value"></label>
-
+    <label>{% trans "Notes" %}: <textarea id="id_notes_edit" name="notes" rows="4" cols="40"></textarea></label>
    </div>
    <div class="buttons">
     <br />
@@ -25,7 +25,7 @@
   </fieldset>
  </form>
  {% if enumeration_values %}
- <form id="_updateenum" method="POST" action="{% url telemeta-enumeration-update enumeration_id %}">{% csrf_token %}
+ <form id="_updateenum" method="POST" action="{% url "telemeta-enumeration-update" enumeration_id %}">{% csrf_token %}
   <table class="listing">
    <thead>
     <tr><th class="sel">&nbsp;</th><th>{% trans "Value"%}</th>
@@ -35,7 +35,7 @@
     {% for record in enumeration_values %}
     <tr>
      <td><input type="checkbox" name="sel" value="{{record.id}}" /></td>
-     <td><a href="{% url telemeta-enumeration-record-edit enumeration_id,record.id %}">
+     <td><a href="{% url "telemeta-enumeration-record-edit" enumeration_id record.id %}">
         {{record.value}}</a></td>
     </tr>
     {% endfor %}

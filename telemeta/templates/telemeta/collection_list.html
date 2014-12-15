@@ -1,27 +1,49 @@
 {% extends "telemeta/base.html" %}
 {% load telemeta_utils %}
 {% load i18n %}
+{% load bootstrap_pagination %}
 
-{% block head_title %}{% trans "Media Collections" %} - {{ block.super }}{% endblock %}
+{% block head_title %}{% trans "Collections" %} - {{ block.super }}{% endblock %}
 
 {% block title%}
- <img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" /> {% trans "Media Collections" %}
+<div class='row'>
+<div class="col-md-4">
+ <img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" /> {% trans "Collections" %} ({{ page_obj.start_index }} - {{ page_obj.end_index }} / {{ count }})
+</div>
+<div class="col-md-8">
+{% bootstrap_paginate page_obj range=10 show_first_last="True" %}
+</div>
+<div class="col-md-0">&nbsp;</div>
+</div>
 {% endblock %}
 
 {% block title_buttons %}
-     <a href="{% url telemeta-collections %}" class="component_icon button icon_filter">{% trans "All" %}</a>
-     <a href="{% url telemeta-collections-unpublished %}" class="component_icon button icon_filter">{% trans "Unpublished" %}</a>
-     <a href="{% url telemeta-collections-published %}" class="component_icon button icon_filter">{% trans "Published" %}</a>
-     <a href="{% url telemeta-collections-sound %}" class="component_icon button icon_filter">{% trans "Sounds" %}</a>
+
+<!-- Single button -->
+<div class="btn-group">
+  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+    <span class="glyphicon glyphicon-filter"></span> {% trans "Filters" %} <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" role="menu">
+    <li><a href="{% url "telemeta-collections" %}" class="">{% trans "All" context "collection list" %}</a></li>
+    <li><a href="{% url "telemeta-collections-unpublished" %}">{% trans "Unpublished" context "collection list" %}</a></li>
+    <li><a href="{% url "telemeta-collections-published" %}">{% trans "Published" context "collection list" %}</a></li>
+    <li><a href="{% url "telemeta-collections-sound" %}">{% trans "Digitized" context "collection list" %}</a></li>
+  </ul>
+</div>
     {% if user.is_authenticated and perms.telemeta.add_mediacollection %}
-      <a href="{% url telemeta-collection-add %}" class="component_icon button icon_add">{% trans "Add" %}</a>
+    <a href="{% url "telemeta-collection-add" %}">
+    <button type="button" class="btn btn-default">
+      <span class="glyphicon glyphicon-plus"></span> {% trans "Add" %}</span>
+    </button>
+    </a>
     {% endif %}
 {% endblock %}
 
 {% block content %}
-{% with object_list as collections %}
 <div class="fullpage">
+{% with object_list as collections %}
 {% include "telemeta/inc/collection_list.html" %}
-</div>
 {% endwith %}
+</div>
 {% endblock %}

@@ -3,8 +3,8 @@
 
 app="telemeta"
 dir=/home/$USER/dev/$app/doc/
-server="angus.parisson.com"
+server="git.parisson.com"
 
-epydoc -n $app -u https://github.com/yomguy/DeeFuzzer -o $dir $app/
-rsync -a --delete $dir $server:/var/www/files/doc/$app/
+epydoc -n $app -u https://github.com/Parisson/Telemeta -o $dir $app/
+rsync -a $dir $server:/var/www/files/doc/$app/
 

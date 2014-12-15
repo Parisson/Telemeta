@@ -4,10 +4,10 @@
    <div class="module">
 
     {% block rss_title %}
-      <a href="{% url telemeta-rss %}">
+      <a href="{% url "telemeta-rss" %}">
       <img src="{{ STATIC_URL }}telemeta/images/rss.png" alt="rss" style="vertical-align:middle" />
       <h3>{% trans title %}</h3></a>
-      <a href="{% url telemeta-rss %}" style="float:right" class="icon_rss">&nbsp;&nbsp;</a>
+      <a href="{% url "telemeta-rss" %}" style="float:right" class="icon_rss">&nbsp;&nbsp;</a>
     {% endblock rss_title %}
 
     <div class="vscroll">
@@ -24,24 +24,24 @@
         <td>
         {% if r.element %}
             {% if r.revision.element_type == "corpus" or r.revision.element_type == "fonds"%}
-            <a href="{% url telemeta-resource-detail r.revision.element_type r.element.public_id %}">{{ r.element.title }}</a>
+            <a href="{% url "telemeta-resource-detail" r.revision.element_type r.element.public_id %}">{{ r.element.title }}</a>
             {% endif %}
             {% if r.revision.element_type == "collection" %}
-            <a href="{% url telemeta-collection-detail r.element.public_id %}">{{ r.element.title }}</a>
+            <a href="{% url "telemeta-collection-detail" r.element.public_id %}">{{ r.element.title }}</a>
             {% endif %}
             {% if r.revision.element_type == "item" %}
-            <a href="{% url telemeta-item-detail r.element.public_id %}">
+            <a href="{% url "telemeta-item-detail" r.element.public_id %}">
             {% if r.element.title != '' %}{{ r.element.title }}{% else %}{{ r.element.collection.title }} - {{ r.element.track }}{% endif %}</a>
             {% endif %}
             {% if r.revision.element_type == "marker" %}
-            <a href="{% url telemeta-item-detail-marker r.element.public_id %}">{{ r.element.title }}</a>
+            <a href="{% url "telemeta-item-detail-marker" r.element.public_id %}">{{ r.element.title }}</a>
             {% endif %}
         {% else %}
             {% trans "deleted" %}
         {% endif %}
         </td>
         <td>{{ r.revision.element_type }}</td>
-        <td>{% if r.revision.user %}<a href="{% url telemeta-profile-detail r.revision.user.username %}">{{ r.revision.user.username }}</a>{% endif %}</td>
+        <td>{% if r.revision.user %}<a href="{% url "telemeta-profile-detail" r.revision.user.username %}">{{ r.revision.user.username }}</a>{% endif %}</td>
       </tr>
     {% endfor %}
     </table>

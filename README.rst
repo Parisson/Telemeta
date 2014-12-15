@@ -2,6 +2,25 @@
 Telemeta: open web audio app with semantics
 ===============================================
 
+|version| |downloads| |travis_master| |coverage_master|
+
+.. |travis_master| image:: https://secure.travis-ci.org/Parisson/Telemeta.png?branch=master
+   :target: https://travis-ci.org/Parisson/Telemeta/
+   :alt: Travis
+
+.. |version| image:: https://pypip.in/version/Telemeta/badge.png
+   :target: https://pypi.python.org/pypi/Telemeta/
+   :alt: Version
+
+.. |downloads| image:: https://pypip.in/download/Telemeta/badge.svg
+   :target: https://pypi.python.org/pypi/Telemeta/
+   :alt: Downloads
+
+.. |coverage_master| image:: https://coveralls.io/repos/Parisson/Telemeta/badge.png?branch=master
+   :target: https://coveralls.io/r/Parisson/Telemeta?branch=master
+   :alt: Coverage
+
+
 Overview
 =========
 
@@ -33,14 +52,18 @@ It is mostly written in Python and JavaScript.
 The processing engine of Telemeta is a separate project called `TimeSide <https://github.com/yomguy/timeside/>`_ as an open web audio pocessing framework written in Python.
 
 
-Installation, upgrade and usage
-================================
-
-See `INSTALL.rst <http://github.com/yomguy/Telemeta/blob/master/INSTALL.rst>`_ and `telemeta.org <http://telemeta.org>`_ for more informations.
-
-
 News
 ======
+
+1.5
++++++
+
+ * Compatible with Django 1.6.x
+ * Compatible with TimeSide 0.6.x
+ * Huge refactor of all forms, detail and edit views
+ * Main styles (buttons, tabs) are now based Bootstrap 3 and JQuery 2.1
+ * Update models and views as needed by the CREM
+ * New depedencies
 
 1.4.6
 +++++
@@ -53,85 +76,8 @@ News
  * Add minor migrations
  * Fix marker display bug
 
-1.4.5
-+++++
 
- * Collection and Item regex in settings allowed
- * Change resource list filtering rules
- * Add KdenLive session parsers and auto faders to auto tag audio or video timeline
- * Add ffmpeg based transcoding tools
- * Add enumerations replacing methods
- * Add chat rooms for enumerations
- * Cleanup some useless model properties
- * Many, many and many bugfixes
- * Last version compatible with TimeSide 0.4.x
- * Please check the new dependencies in setup.py
- * As always after upgrading: ./manage.py migrate telemeta
-
-1.4.4
-+++++
-
- * no new fancy functions
- * full using of static files which are now in static/ (htdocs/ is now deprecated)
- * IMPORTANT : upgrade TimeSide to 0.4.1, add 'timeside' to INSTALLED_APPS and do: ./manage.py collectstatic
- * add various buttons, various bugfixes
- * after upgrading, always do: ./manage.py migrate
-
-1.4.3
-++++++
-
- * add solr-thumbnail for automatic thumbnail handling of all related media images (please install)
- * add static media handling for solr and all various telemeta public files
- * fix some wrong user properties
- * SECURITY: you need to move your TELEMETA_EXPORT_CACHE_DIR from TELEMETA_CACHE_DIR cache (see example/sandbox_sqlite/settings.py)
- * EXPERIMENTAL: WebM and MP4 video handling for items, NO transcode but decode, add a nice video.js player
- * RECOMMEND: install django-extensions
- * transitional package to 1.5 (maybe 1.4.4 *soon*)
-
-1.4.2
-++++++
-
- * add user revisions to user profile
- * move all edit buttons to main edit pages
- * new Format object and various enumerations
- * add last revision to item detail
- * various bugfixes
-
-1.4.1
-++++++
-
- Fix a bug for related media title parsing
-
-1.4
-++++++
-
-For users:
-
- * add a Desk providing links to home and personal data
- * add Fonds, Corpus and their related media to the models and to the search engine
- * add some fancy drop down menus for main tabs
- * add video media handling (WebM formats only and with the last TimeSide master branch)
- * add playlist metadata editor
- * fix some sad bugs for YouTube related URLs and previews
- * cleanup admin page
- * add auto saving now for all searches !
- * add "My Searches" modules to user lists with search direct link
- * add RSS feeds for last changes of all users
- * better icon views
- * many bugfixes !
-
-For developers and maintainers:
-
- * a new setting parameter: TELEMETA_DOWNLOAD_FORMATS = ('wav', 'mp3', 'webm') or whatever
- * before upgrading, you need to BACKUP and manually delete old wrong MediaCorpus and MediaCorpusRelated tables
- * we now use South for data model migration. Add 'south' to your apps and to do::
-
-    ./manage.py syncdb
-    ./manage.py migrate telemeta
-
-See INSTALL.rst and email me if any pb!
-
-Full changelog: see `CHANGELOG <http://github.com/yomguy/Telemeta/blob/master/CHANGELOG>`_
+See also the `full changelog <http://github.com/yomguy/Telemeta/blob/master/CHANGELOG.rst>`_.
 
 
 Demo
@@ -167,15 +113,57 @@ Serious Usecases
 * Various electronic sounds and original electronic music produced by Parisson
 
 
+Install
+=======
+
+See `INSTALL.rst <http://github.com/yomguy/Telemeta/blob/master/INSTALL.rst>`_ and `telemeta.org <http://telemeta.org>`_ for more informations.
+
+
+API / Documentation
+====================
+
+* Publications : https://github.com/Parisson/Telemeta-doc
+* API : http://files.parisson.com/doc/telemeta/
+* Player : https://github.com/Parisson/TimeSide/
+* Example : http://archives.crem-cnrs.fr/archives/items/CNRSMH_E_2004_017_001_01/
+
+
+Development
+===========
+
+|travis_dev| |coverage_dev|
+
+.. |travis_dev| image:: https://secure.travis-ci.org/Parisson/Telemeta.png?branch=dev
+   :target: https://travis-ci.org/Parisson/Telemeta/
+   :alt: Travis
+
+.. |coverage_dev| image:: https://coveralls.io/repos/Parisson/Telemeta/badge.png?branch=dev
+   :target: https://coveralls.io/r/Parisson/Telemeta?branch=dev
+   :alt: Coverage
+
+
+You are welcome to participate to the development of the Telemeta project.
+The official project site is `telemeta.org <http://telemeta.org>`_ but you can find a mirror on `GitHub <https://github.com/Parisson/Telemeta>`_.
+
+To get and run the lastest development version::
+
+    sudo apt-get install git
+    git clone https://github.com/Parisson/Telemeta.git
+    cd Telemeta
+    sudo pip install -e .
+    export PYTHONPATH=$PYTHONPATH:`pwd`
+
+
 Bugs and feedback
 =================
 
 You are welcome to freely use this application in accordance with its licence.
 If you find some bugs, PLEASE leave a ticket on this page:
 
-http://telemeta.org/newticket
+https://github.com/Parisson/Telemeta/issues/new
 
-You can also leave a ticket to request some new interesting features for the next versions.
+You can also leave some ticket to request some new interesting features for the next versions and tweet your ideas to `@telemeta <https://twitter.com/telemeta>`_.
+
 And even if Telemeta suits you, please give us some feedback !
 
 
@@ -196,21 +184,6 @@ Twitter:
  * http://twitter.com/telemeta
  * http://twitter.com/parisson_studio
  * http://twitter.com/yomguy
-
-
-Development
-===========
-
-You are welcome to participate to the development of the Telemeta project.
-The official project site is `telemeta.org <http://telemeta.org>`_ but you can find a mirror on `GitHub <https://github.com/yomguy/Telemeta>`_.
-
-To get the lastest development version, you need Git and run::
-
-    $ git clone http://vcs.parisson.com/git/telemeta.git
-
-or::
-
-    $ git clone git://github.com/yomguy/Telemeta.git
 
 
 License

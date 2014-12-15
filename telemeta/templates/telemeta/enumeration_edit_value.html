@@ -4,7 +4,7 @@
 {% block extra_javascript %}
 <script type="text/javascript">
 $(document).ready(function(){
-    InitChatWindow("{% url jqchat_ajax room.id %}", null);
+    InitChatWindow("{% url "jqchat_ajax" room.id %}", null);
     });
 </script>
 {% endblock extra_javascript %}
@@ -14,7 +14,7 @@ $(document).ready(function(){
 {% block chat %}
   <div id="module-set" style="width: 33%;">
       {% if room %}
-        {% with "Notes" as title %}
+        {% with "Comments" as title %}
           {% include "telemeta/inc/chat_room.html" %}
         {% endwith %}
       {% endif %}
@@ -23,24 +23,26 @@ $(document).ready(function(){
 
  <h4>{{ enumeration_name|capfirst }}</h4>
  <form class="mod" id="addenum" method="post"
-    action="{% url telemeta-enumeration-record-update enumeration_id,enumeration_record.id %}">{% csrf_token %}
+    action="{% url "telemeta-enumeration-record-update" enumeration_id enumeration_record.id %}">{% csrf_token %}
   <fieldset>
    <legend>{% trans "Modify an entry" %}</legend>
    <div class="field">
-    <label>{% trans "Value" %}: <input id="id_value_edit" type="text" name="value" value="{{enumeration_record.value}}" /></label>
+    <label>{% trans "Value" %}</label>: <input id="id_value_edit" type="text" name="value" value="{{enumeration_record.value}}" />
+    <br><br>
+    <label>{% trans "Notes" %}</label>: <textarea id="id_notes_edit" name="notes" rows="4" cols="74" form="addenum">{{enumeration_record.notes}}</textarea>
    </div>
-   <br />
+   <br>
    <div class="buttons">
         <a href="#" class="component_icon button icon_save"
    onclick="document.getElementById('addenum').submit(); return false;">{% trans "Save" %}</a>
-        <a href="{% url telemeta-enumeration-edit enumeration_id %}"
+        <a href="{% url "telemeta-enumeration-edit" enumeration_id %}"
            class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
    </div>
   </fieldset>
  </form>
 
  <form class="mod" id="replenum" method="post"
-    action="{% url telemeta-enumeration-replace enumeration_id,enumeration_record.id %}">{% csrf_token %}
+    action="{% url "telemeta-enumeration-replace" enumeration_id enumeration_record.id %}">{% csrf_token %}
   <fieldset>
    <legend>{% trans "Replace by" %}</legend>
    <div class="field">
@@ -55,12 +57,12 @@ $(document).ready(function(){
    <div class="buttons">
         <a href="#" class="component_icon button icon_save"
    onclick="document.getElementById('replenum').submit(); return false;">{% trans "Replace" %}</a>
-        <a href="{% url telemeta-enumeration-edit enumeration_id %}"
+        <a href="{% url "telemeta-enumeration-edit" enumeration_id %}"
            class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
    </div>
   </fieldset>
  </form>
- 
+
 <br style="clear: right"/>
 
 {% endblock %}

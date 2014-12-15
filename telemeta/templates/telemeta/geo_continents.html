@@ -31,11 +31,11 @@ var resourceMap = new ResourceMap('.continents', {
 {% if continents %}
 <ul class="continents">
 {% for group in continents %}
-  <li class="name {% if not forloop.counter0|divisibleby:"2" %}odd{% endif %}"><b><a href="{% url telemeta-geo-countries group.continent.flatname %}">{{ group.continent }}</a></b>
+  <li class="name {% if not forloop.counter0|divisibleby:"2" %}odd{% endif %}"><b><a href="{% url "telemeta-geo-countries" group.continent.flatname %}">{{ group.continent }}</a></b>
     <ul>
     {% for country in group.countries %}
       <li id="resource-{{country.id}}" class="country_name resourcemap-element">
-        <a href="{% url telemeta-geo-country-collections group.continent.flatname,country.flatname %}">
+        <a href="{% url "telemeta-geo-country-collections" group.continent.flatname country.flatname %}">
           <span class="resourcemap-name">{{ country }}</span></a>
         {% if not country.latitude|is_none and not country.longitude|is_none %}
         <input type="hidden" class="resourcemap-lat" value="{{country.latitude}}" />

@@ -1,23 +1,34 @@
 {% extends "telemeta/base.html" %}
 {% load telemeta_utils %}
 {% load i18n %}
+{% load bootstrap_pagination %}
 
 {% block head_title %}{% trans type %} - {{ block.super }}{% endblock %}
 
 {% block title%}
-<img src="{{ STATIC_URL }}telemeta/images/{{ type }}.png" style="vertical-align:middle" /> {{ type|capitalize }}
+<div class='row'>
+<div class="col-md-4">
+<img src="{{ STATIC_URL }}telemeta/images/{{ type }}.png" style="vertical-align:middle" /> {{ all_resource }} {{ type|capitalize }} ({{ page_obj.start_index }} - {{ page_obj.end_index }} / {{ count }})
+</div>
+<div class="col-md-6">
+{% bootstrap_paginate page_obj range=10 show_first_last="True" %}
+</div>
+<div class="col-md-2">&nbsp;</div>
+</div>
 {% endblock %}
 
 {% block title_buttons %}
-    {% if perms.telemeta.add_mediacorpus or perms.telemeta.add_mediafonds %}
-      <a href="{% url telemeta-resource-add type %}" class="component_icon button icon_add">{% trans "Add" %}</a>
+    {% if perms.telemeta.add_mediacorpus or perms.telemeta.add_mediafonds or user.is_superuser or user.is_staff %}
+    <a href="{% url "telemeta-resource-add" type %}">
+    <button type="button" class="btn btn-default">
+      <span class="glyphicon glyphicon-plus"></span> {% trans "Add" %}</span>
+    </button>
+    </a>
     {% endif %}
 {% endblock %}
 
 {% block content %}
-{% with object_list as resources and type as type %}
-<div class="fullpage">
-{% include "telemeta/inc/resource_list.html" %}
-</div>
-{% endwith %}
+	<div class="fullpage">
+		{% include "telemeta/inc/resource_list.html" %}
+	</div>
 {% endblock %}

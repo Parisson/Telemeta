@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2011 Parisson SARL
+# Copyright (C) 2011-2014 Parisson SARL
 
 # This software is a computer program whose purpose is to backup, analyse,
 # transcode and stream any audio content with its metadata over a web frontend.
@@ -34,70 +34,126 @@
 
 import django.forms as forms
 from django.forms import ModelForm
+from django.contrib.admin.widgets import FilteredSelectMultiple
 from telemeta.models import *
+from extra_views import CreateWithInlinesView, UpdateWithInlinesView, InlineFormSet
+from extra_views.generic import GenericInlineFormSet
+from django.forms.widgets import HiddenInput
+
 
 class MediaFondsForm(ModelForm):
-    children = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple, queryset=MediaCorpus.objects.all())
+
+    queryset = MediaCorpus.objects.all()
+    widget = FilteredSelectMultiple("Corpus", True,)
+    children = forms.ModelMultipleChoiceField(widget=widget, queryset=queryset, label='Corpus')
 
     class Meta:
         model = MediaFonds
+        exclude = ['description', 'public_access']
 
-class MediaFondsRelatedForm(ModelForm):
-    class Meta:
-        model = MediaFondsRelated
+    class Media:
+        css = {'all': ['/static/admin/css/widgets.css',],}
+        js = ['/admin/django/jsi18n/',]
+
 
 class MediaCorpusForm(ModelForm):
-    children = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple,
-                                              queryset=MediaCollection.objects.all())
+
+    queryset = MediaCollection.objects.all()
+    widget = FilteredSelectMultiple('Collections', False)
+    children = forms.ModelMultipleChoiceField(widget=widget, queryset=queryset,label='Collections')
 
     class Meta:
         model = MediaCorpus
+        exclude = ['description', 'public_access']
 
-class MediaCorpusRelatedForm(ModelForm):
-    class Meta:
-        model = MediaCorpusRelated
+    class Media:
+        css = {'all': ('/static/admin/css/widgets.css',),}
+        js = ('/admin/django/jsi18n/',)
+
 
 class MediaCollectionForm(ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(MediaCollectionForm, self).__init__(*args, **kwargs)
+        if '_I_' in self.instance.code:
+            self.fields["reference"].widget = HiddenInput()
+        if self.instance.computed_duration:
+            self.fields["approx_duration"].widget = HiddenInput()
+
     class Meta:
         model = MediaCollection
+
     def clean_doctype_code(self):
         return self.cleaned_data['doctype_code'] or 0
 
-class MediaCollectionRelatedForm(ModelForm):
-    class Meta:
-        model = MediaCollectionRelated
 
 class MediaItemForm(ModelForm):
+
     class Meta:
         model = MediaItem
-
-        exclude = ('copied_from_item',)
+        exclude = ('copied_from_item', 'mimetype', 'url',
+                    'organization', 'depositor', 'rights',
+                    'recordist', 'digitalist', 'digitization_date',
+                    'publishing_date', 'scientist', 'topic',
+                    'summary', 'contributor', )
 
     def clean_code(self):
         return self.cleaned_data['code'] or None
 
-    def __init__(self,*args,**kwargs):
-        super(MediaItemForm, self).__init__(*args, **kwargs)
-        self.fields.insert(18, 'comment', self.fields['comment'])
-
-class MediaItemRelatedForm(ModelForm):
-    class Meta:
-        model = MediaItemRelated
-
-class MediaItemKeywordForm(ModelForm):
-    class Meta:
-        model = MediaItemKeyword
-
-class MediaItemPerformanceForm(ModelForm):
-    class Meta:
-        model = MediaItemPerformance
-
-    def __init__(self, *args, **kwds):
-        super(MediaItemPerformanceForm, self).__init__(*args, **kwds)
-        self.fields['instrument'].queryset = Instrument.objects.order_by('name')
-        self.fields['alias'].queryset = InstrumentAlias.objects.order_by('name')
 
 class PlaylistForm(ModelForm):
+
     class Meta:
         model = Playlist
+
+
+class FondsRelatedInline(InlineFormSet):
+
+    model = MediaFondsRelated
+    exclude = ['mime_type']
+
+
+class CorpusRelatedInline(InlineFormSet):
+
+    model = MediaCorpusRelated
+    exclude = ['mime_type']
+
+
+class CollectionRelatedInline(InlineFormSet):
+
+    model = MediaCollectionRelated
+    exclude = ['mime_type']
+
+
+class ItemRelatedInline(InlineFormSet):
+
+    model = MediaItemRelated
+    exclude = ['mime_type']
+
+
+class CollectionIdentifierInline(InlineFormSet):
+
+    model = MediaCollectionIdentifier
+    max_num = 1
+
+
+class ItemPerformanceInline(InlineFormSet):
+
+    model = MediaItemPerformance
+
+
+class ItemKeywordInline(InlineFormSet):
+
+    model = MediaItemKeyword
+
+
+class ItemFormatInline(InlineFormSet):
+
+    model = Format
+
+
+class ItemIdentifierInline(InlineFormSet):
+
+    model = MediaItemIdentifier
+    max_num = 1
 

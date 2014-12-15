@@ -10,7 +10,7 @@
                     <thead>
                         <tr>
                             <td>{% trans "Media" %}</td>
-                            <td>{% trans "Preview" %}</td>
+                            <td width="25%">{% trans "Preview" %}</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -28,7 +28,7 @@
                                             {{ media.url|get_filename }}</a>
                                         {% endif %}
                                     {% else %}
-                                        <a href="{% url telemeta-resource-related type resource.code media.id %}">
+                                        <a href="{% url "telemeta-resource-related" type resource.code media.id %}">
                                         {% if media.title %}
                                             {{ media.title }}</a>
                                         {% else %}
@@ -44,7 +44,7 @@
                                 {% if media.file %}
                                 <dt>{% trans "Download" %}</dt>
                                 <dd>
-                                    <a href="{% url telemeta-resource-related-download type resource.code media.id %}">
+                                    <a href="{% url "telemeta-resource-related-download" type resource.code media.id %}">
                                      {{ media.file|get_filename }}
                                     </a>
                                 </dd>
@@ -56,7 +56,7 @@
                             <td style="padding-bottom: 1em;">
                                 {% if media.is_image %}
                                   {% if media.file %}
-                                  <a href="{% url telemeta-resource-related type resource.code media.id %}">
+                                  <a href="{% url "telemeta-resource-related" type resource.code media.id %}">
                                    {% thumbnail media.file "x200" as im %}
                                     <img src="{{ im.url }}" style="max-width: 420px; max-height: 200px;" />
                                    {% endthumbnail %}

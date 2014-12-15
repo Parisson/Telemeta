@@ -1,46 +1,97 @@
 {% extends "telemeta/resource_detail.html" %}
 {% load i18n %}
 {% load telemeta_utils %}
+{% load bootstrap3 %}
 
 {% block title %}
 <img src="{{ STATIC_URL }}telemeta/images/{{ type }}.png" style="vertical-align:middle" /> {{ type }} : {{ resource }}
 {% endblock %}
+
 {% block title_buttons %}
-    <a href="{% url telemeta-resource-detail type resource.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
-    {% if perms.telemeta.add_mediacorpus or perms.telemeta.add_mediafonds %}
-    <a href="#" class="component_icon button icon_save" onclick="document.getElementById('_editForm').submit(); return false;">{% trans "Save" %}</a>
+<div class="fixedWidthAsPlayer">
+    <img id="wait-img" style="display:none" style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />
+    {% block cancel %}
+    <a id="cancel" href="{% url "telemeta-resource-detail" type resource.public_id %}">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-remove"></span> {% trans "Cancel" %}
+      </button>
+    </a>
+    {% endblock %}
+    <!--
+    {% if perms.telemeta.change_mediaresource %}
+    <a id="save" href="#" onclick="var d=document; d.getElementById('wait-img').style.display='inline'; $('#_editForm').submit();">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-floppy-disk"></span> {% trans "Save" %}
+      </button>
+    </a>
     {% endif %}
+    -->
+</div>
 {% endblock %}
 
 {% block infos %}
-     <div class="infos">
-      <form method="post" id="_editForm" action="">{% csrf_token %}
-       <table>
-       <tr><td colspan="2">{% for error in form.non_field_errors %}<li class="error">{{ error }}</li>{% endfor %}</td></tr>
-       {% for field in form %}
-       <tr>
-            <tr><td class="error">{{ field.errors }}</td></tr>
-            {% if "children" in field.html_name %}
-            <td>{% trans field.label_tag %}:</td><td><div class="vscroll"> {{ field }}</div></td>
-            {% elif not 'description' == field.name %}
-             <td>{{ field.label_tag }}:</td><td> {{ field }}</td>
-            {% endif %}
-        </tr>
-       {% endfor %}
-      <tr>
-          <td style="padding-top: 1em">{% trans "Related media" %}:</td>
-          <td style="padding-top: 1em"><a href="{% url telemeta-resource-related_edit type resource.public_id %}" class="component_icon button icon_edit">{% trans "Edit"%} {% trans "related media"%}</a></td>
-      </tr>
-       </table>
-        <div align="center" style="margin-top:3ex;">
-         <a href="{% url telemeta-resource-detail type resource.public_id %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
-         {% if perms.telemeta.add_mediacorpus or perms.telemeta.add_mediafonds %}
-         <a href="#" class="component_icon button icon_save" onclick="document.getElementById('_editForm').submit(); return false;">{% trans "Save" %}</a>
-         {% endif %}
+
+  <div>
+  <form method="post" id="_editForm" action="">{% csrf_token %}
+
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="active"><a href="#general" role="tab" data-toggle="tab">{% trans "General" %}</a></li>
+      <li><a href="#related" role="tab" data-toggle="tab">{% trans "Related media" %}</a></li>
+    </ul>
+
+    <div class="tab-content">
+
+      <div class="tab-pane fade in active" id="general">
+        <script type="text/javascript" src="/static/admin/js/jquery.min.js"></script>
+        <script type="text/javascript" src="/static/admin/js/jquery.init.js"></script>
+        <script type="text/javascript" src="/static/admin/js/actions.min.js"></script>
+        {{ form.media }}
+        <div class="block-grey">
+        {% bootstrap_form form %}
         </div>
-      </form>
-     </div>
-{% endblock infos%}
+      </div>
+
+      <div class="tab-pane" id="related">
+        {% for formset in inlines %}
+          {{ formset.management_form }}
+          {% for form in formset %}
+           <div class="block-grey">
+           {% bootstrap_form form %}
+           </div>
+          {# {{ form.as_table }} #}
+          {% endfor %}
+        {% endfor %}
+      </div>
+
+    </div>
+
+    <div align="center" style="margin-top:3ex;">
+     {% block cancel2 %}
+     <a id="cancel" href="{% url "telemeta-resource-detail" type resource.public_id %}">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-remove"></span> {% trans "Cancel" %}
+      </button>
+     </a>
+     {% endblock %}
+     {% if perms.telemeta.change_mediacorpus or perms.telemeta.change_mediafonds %}
+     <input type="submit" value="{% trans "Save" %}" class="default" name="_save"/>
+     <!--
+     <a id="save" href="#" onclick="var d=document; d.getElementById('wait-img').style.display='inline'; $('#_editForm').submit();">
+      <button type="submit" class="btn btn-default" name="_save">
+        <span class="glyphicon glyphicon-floppy-disk"></span> {% trans "Save" %}
+      </button>
+     </a>
+     -->
+     {% endif %}
+    </div>
+
+   </form>
+  </div>
+
+{% endblock infos %}
+
+{% block dublincore %}
+{% endblock dublincore %}
 
 {% block delete %}
 {% endblock %}

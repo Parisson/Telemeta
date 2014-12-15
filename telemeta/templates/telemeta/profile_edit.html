@@ -3,7 +3,7 @@
 {% load telemeta_utils %}
 
 {% block title_buttons %}
- <a href="{% url telemeta-profile-detail usr.username %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+ <a href="{% url "telemeta-profile-detail" usr.username %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
 {% endblock %}
 
 {% block content %}
@@ -26,7 +26,7 @@
         {% endfor %}
         </table>
         <div align="center">
-         <a href="{% url telemeta-profile-detail usr.username %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
+         <a href="{% url "telemeta-profile-detail" usr.username %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>
          <a href="#" class="component_icon button icon_save"
    onclick="document.getElementById('_editUserProfileForm').submit(); return false;">{% trans "Save" %}</a>
         </div>

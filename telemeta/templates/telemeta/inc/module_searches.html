@@ -15,7 +15,7 @@
     {% for s in searches %}
      <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
         <td>{{ s.date }}</td>
-        <td><a href="{% url telemeta-search-items %}?{{s.criteria.all|build_pattern_string|build_query_string}}">
+        <td><a href="{% url "telemeta-search" %}?{{s.criteria.all|build_pattern_string|build_query_string}}">
             {% for c in s.criteria.all %}
                 <li>{% trans c.key %} : {{ c.value}}</li>
             {% endfor %}

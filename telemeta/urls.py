@@ -34,13 +34,15 @@
 # Authors: Olivier Guilyardi <olivier@samalyse.com>
 #          Guillaume Pellerin <yomguy@parisson.com>
 
-from django.conf.urls.defaults import *
+from django.conf.urls import patterns, url, include
 from django.conf import settings
-from django.views.generic.simple import redirect_to
+from django.views.generic import RedirectView
+from django.views.generic.list import ListView
 from telemeta.models import MediaItem, MediaCollection, MediaItemMarker, MediaCorpus, MediaFonds
-from telemeta.views import HomeView, AdminView, CollectionView, ItemView, \
-                            InstrumentView, InstrumentAliasView, PlaylistView, ProfileView, GeoView, \
-                            LastestRevisionsFeed, ResourceView, UserRevisionsFeed, CollectionPackageView
+from telemeta.views import *
+#from telemeta.views import HomeView, AdminView, CollectionView, ItemView, \
+#                            InstrumentView, InstrumentAliasView, PlaylistView, ProfileView, GeoView, \
+#                            LastestRevisionsFeed, ResourceView, UserRevisionsFeed, CollectionPackageView
 from jsonrpc import jsonrpc_site
 import os.path
 import telemeta.config
@@ -59,166 +61,80 @@ profile_view = ProfileView()
 geo_view = GeoView()
 resource_view = ResourceView()
 
-# query sets for Django generic views
-all_items = { 'queryset': MediaItem.objects.enriched().order_by('code', 'old_code') }
-all_items_unpublished = { 'queryset': MediaItem.objects.filter(collection__code__contains='_I_').order_by('code', 'old_code'), }
-all_items_published = { 'queryset': MediaItem.objects.filter(collection__code__contains='_E_').order_by('code', 'old_code'), }
-all_items_sound = { 'queryset': MediaItem.objects.sound().order_by('code', 'old_code') }
-all_collections = { 'queryset': MediaCollection.objects.enriched(), }
-all_collections_unpublished = { 'queryset': MediaCollection.objects.filter(code__contains='_I_'), }
-all_collections_published = { 'queryset': MediaCollection.objects.filter(code__contains='_E_'), }
-all_collections_sound = { 'queryset': MediaCollection.objects.sound().order_by('code', 'old_code') }
-all_corpus = { 'queryset': MediaCorpus.objects.all().order_by('code') }
-all_fonds = { 'queryset': MediaFonds.objects.all().order_by('code') }
-
 # ID's regular expressions
 export_extensions = "|".join(item_view.list_export_extensions())
+
 
 urlpatterns = patterns('',
     url(r'^$', home_view.home, name="telemeta-home"),
 
     # items
-    url(r'^archives/items/$', 'django.views.generic.list_detail.object_list',
-        dict(all_items, paginate_by=20, template_name="telemeta/mediaitem_list.html"),
-        name="telemeta-items"),
-    url(r'^archives/items_sound/$', 'django.views.generic.list_detail.object_list',
-        dict(all_items_sound, paginate_by=20, template_name="telemeta/mediaitem_list.html"), name="telemeta-items-sound"),
-    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/$', item_view.item_detail,
-        name="telemeta-item-detail"),
-    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/dc/$', item_view.item_detail,
-        {'template': 'telemeta/mediaitem_detail_dc.html'},
-        name="telemeta-item-dublincore"),
-    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/dc/xml/$', item_view.item_detail,
-        {'format': 'dublin_core_xml'},
-        name="telemeta-item-dublincore-xml"),
-    url(r'^archives/items/download/(?P<public_id>[A-Za-z0-9._-]+)\.(?P<extension>'
-            + export_extensions + ')$',
-        item_view.item_export,
-        name="telemeta-item-export"),
-    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/visualize/(?P<grapher_id>[0-9a-z_]+)/(?P<width>[0-9A-Z]+)x(?P<height>[0-9A-Z]+)/$',
-        item_view.item_visualize,
-        name="telemeta-item-visualize"),
-    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/analyze/xml/$',
-        item_view.item_analyze_xml,
-        name="telemeta-item-analyze-xml"),
-    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/item_xspf.xml$',
-        item_view.item_playlist,
-        dict(template="telemeta/mediaitem_xspf.xml", mimetype="application/xspf+xml"),
-        name="telemeta-item-xspf"),
-    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/edit/$', item_view.item_edit,
-        dict(template='telemeta/mediaitem_edit.html'), name="telemeta-item-edit"),
-    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/copy/$', item_view.item_copy,
-        dict(template='telemeta/mediaitem_copy.html'), name="telemeta-item-copy"),
-    url(r'^archives/item_new/add/$', item_view.item_add,
-        dict(template='telemeta/mediaitem_add.html'), name="telemeta-item-add"),
-    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/player/(?P<width>[0-9]+)x(?P<height>[0-9]+)/$', item_view.item_detail,
-        dict(template='telemeta/mediaitem_player.html'), name="telemeta-item-player"),
-    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/player/(?P<width>[0-9]+)x(?P<height>[0-9]+)/simple/$', item_view.item_detail,
-        dict(template='telemeta/mediaitem_player_simple.html'), name="telemeta-item-player-simple"),
-    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/player/(?P<width>[0-9]+)x(?P<height>[0-9]+)/countour/$', item_view.item_detail,
-        dict(template='telemeta/mediaitem_player_contour.html'), name="telemeta-item-player-contour"),
-    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/performances/$', item_view.item_performances_edit,
-        dict(template='telemeta/mediaitem_performances_edit.html'), name="telemeta-item-performances_edit"),
-    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/keywords/$', item_view.item_keywords_edit,
-        dict(template='telemeta/mediaitem_keywords_edit.html'), name="telemeta-item-keywords_edit"),
+    url(r'^archives/items/$', ItemListView.as_view(), name="telemeta-items"),
+    url(r'^archives/items_sound/$', ItemSoundListView.as_view(), name="telemeta-items-sound"),
+    url(r'^archives/items_unpublished/$', ItemUnpublishedListView.as_view(), name="telemeta-items-unpublished"),
+    url(r'^archives/items_published/$', ItemPublishedListView.as_view(), name="telemeta-items-published"),
+
+    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/$', ItemDetailView.as_view(), name="telemeta-item-detail"),
+    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/dc/$', item_view.item_detail, {'template': 'telemeta/mediaitem_detail_dc.html'}, name="telemeta-item-dublincore"),
+    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/dc/xml/$', item_view.item_detail, {'format': 'dublin_core_xml'}, name="telemeta-item-dublincore-xml"),
+    url(r'^archives/items/download/(?P<public_id>[A-Za-z0-9._-]+)\.(?P<extension>' + export_extensions + ')$', item_view.item_export, name="telemeta-item-export"),
+    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/visualize/(?P<grapher_id>[0-9a-z_]+)/(?P<width>[0-9A-Z]+)x(?P<height>[0-9A-Z]+)/$', item_view.item_visualize, name="telemeta-item-visualize"),
+    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/analyze/xml/$', item_view.item_analyze_xml, name="telemeta-item-analyze-xml"),
+    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/item_xspf.xml$', item_view.item_playlist, dict(template="telemeta/mediaitem_xspf.xml", mimetype="application/xspf+xml"), name="telemeta-item-xspf"),
+    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/edit/$', ItemEditView.as_view(), name="telemeta-item-edit"),
+    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/copy/$', ItemCopyView.as_view(), name="telemeta-item-copy"),
+    url(r'^archives/items_add/$', ItemAddView.as_view(), name="telemeta-item-add"),
+    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/player/(?P<width>[0-9]+)x(?P<height>[0-9]+)/$', item_view.item_detail, dict(template='telemeta/mediaitem_player.html'), name="telemeta-item-player"),
+    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/player/(?P<width>[0-9]+)x(?P<height>[0-9]+)/simple/$', item_view.item_detail, dict(template='telemeta/mediaitem_player_simple.html'), name="telemeta-item-player-simple"),
+    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/player/(?P<width>[0-9]+)x(?P<height>[0-9]+)/countour/$', item_view.item_detail, dict(template='telemeta/mediaitem_player_contour.html'), name="telemeta-item-player-contour"),
     url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/delete/$', item_view.item_delete, name="telemeta-item-delete"),
     url(r'^archives/items/(?P<item_public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)/view/$', item_view.related_media_item_stream, name="telemeta-item-related"),
     url(r'^archives/items/(?P<item_public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)/download/$', item_view.related_media_item_download, name="telemeta-item-related-download"),
-    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/related_edit/$', item_view.related_media_edit,  dict(template='telemeta/mediaitem_related_edit.html'), name="telemeta-item-related_edit"),
+
     # Markers
     url(r'^archives/markers/(?P<marker_id>[A-Za-z0-9]+)/$', item_view.item_detail, name="telemeta-item-detail-marker"),
+
     # FIXME: need all paths
-    url(r'^items/(?P<path>[A-Za-z0-9._-s/]+)/$', redirect_to, {'url': '/archives/items/%(path)s/', 'permanent': False}, name="telemeta-item-redir"),
-    url(r'^archives/items_unpublished/$', 'django.views.generic.list_detail.object_list',
-        dict(all_items_unpublished, paginate_by=20, template_name="telemeta/mediaitem_list.html"), name="telemeta-items-unpublished"),
-    url(r'^archives/items_published/$', 'django.views.generic.list_detail.object_list',
-        dict(all_items_published, paginate_by=20, template_name="telemeta/mediaitem_list.html"), name="telemeta-items-published"),
+    url(r'^items/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(), {'url': '/archives/items/%(path)s/', 'permanent': False}, name="telemeta-item-redir"),
 
     # collections
-    url(r'^archives/collections/$', 'django.views.generic.list_detail.object_list',
-        dict(all_collections, paginate_by=20, template_name="telemeta/collection_list.html"), name="telemeta-collections"),
-    url(r'^archives/collections_unpublished/$', 'django.views.generic.list_detail.object_list',
-        dict(all_collections_unpublished, paginate_by=20, template_name="telemeta/collection_list.html"), name="telemeta-collections-unpublished"),
-    url(r'^archives/collections_published/$', 'django.views.generic.list_detail.object_list',
-        dict(all_collections_published, paginate_by=20, template_name="telemeta/collection_list.html"), name="telemeta-collections-published"),
-    url(r'^archives/collections/?page=(?P<page>[0-9]+)$',
-        'django.views.generic.list_detail.object_list',
-        dict(all_collections, paginate_by=20)),
-    url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/$', collection_view.collection_detail,
-        dict(template="telemeta/collection_detail.html"), name="telemeta-collection-detail"),
-    url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/dc/$', collection_view.collection_detail,
-        dict(template="telemeta/collection_detail_dc.html"), name="telemeta-collection-dublincore"),
-    url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/collection_xspf.xml$',
-        collection_view.collection_playlist,
-        dict(template="telemeta/collection_xspf.xml", mimetype="application/xspf+xml"),
-        name="telemeta-collection-xspf"),
-    url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/collection.m3u$',
-        collection_view.collection_playlist,
-        dict(template="telemeta/collection.m3u", mimetype="audio/mpegurl"),
-        name="telemeta-collection-m3u"),
-    url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/edit/$', collection_view.collection_edit,
-        dict(template='telemeta/collection_edit.html'), name="telemeta-collection-edit"),
-    url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/copy/$', collection_view.collection_copy,
-        dict(template='telemeta/collection_edit.html'), name="telemeta-collection-copy"),
-    url(r'^archives/collection_new/add/$', collection_view.collection_add,
-        dict(template='telemeta/collection_add.html'), name="telemeta-collection-add"),
-    url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/add_item/$', item_view.item_add,
-        dict(template='telemeta/mediaitem_add.html'), name="telemeta-collection-additem"),
+    url(r'^archives/collections/$', CollectionListView.as_view(), name="telemeta-collections"),
+    url(r'^archives/collections_unpublished/$', CollectionUnpublishedListView.as_view(), name="telemeta-collections-unpublished"),
+    url(r'^archives/collections_published/$', CollectionPublishedListView.as_view(), name="telemeta-collections-published"),
+    url(r'^archives/collections_sound/$', CollectionSoundListView.as_view(), name="telemeta-collections-sound"),
+    url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/$', CollectionDetailView.as_view(), name="telemeta-collection-detail"),
+    url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/dc/$', CollectionDetailViewDC.as_view(), name="telemeta-collection-dublincore"),
+    # url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/collection_xspf.xml$', collection_view.collection_playlist, dict(template="telemeta/collection_xspf.xml", mimetype="application/xspf+xml"), name="telemeta-collection-xspf"),
+    # url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/collection.m3u$', collection_view.collection_playlist, dict(template="telemeta/collection.m3u", mimetype="audio/mpegurl"), name="telemeta-collection-m3u"),
+    url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/edit/$', CollectionEditView.as_view(), name="telemeta-collection-edit"),
+    url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/copy/$', CollectionCopyView.as_view(), name="telemeta-collection-copy"),
+    url(r'^archives/collections_add/$', CollectionAddView.as_view(), name="telemeta-collection-add"),
+    url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/add_item/$', ItemAddView.as_view(), name="telemeta-collection-additem"),
     url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/delete/$', collection_view.collection_delete, name="telemeta-collection-delete"),
     url(r'^archives/collections/(?P<collection_public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)/view/$', collection_view.related_media_collection_stream, name="telemeta-collection-related"),
     url(r'^archives/collections/(?P<collection_public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)/download/$', collection_view.related_media_collection_download, name="telemeta-collection-related-download"),
 
-    url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/related_edit/$', collection_view.related_media_edit,  dict(template='telemeta/collection_related_edit.html'), name="telemeta-collection-related_edit"),
-    url(r'^archives/collections_sound/$', 'django.views.generic.list_detail.object_list',
-        dict(all_collections_sound, paginate_by=20, template_name="telemeta/collection_list.html"), name="telemeta-collections-sound"),
     # FIXME: need all paths
-    url(r'^collections/(?P<path>[A-Za-z0-9._-s/]+)/$', redirect_to, {'url': '/archives/collections/%(path)s/', 'permanent': False}, name="telemeta-collection-redir"),
+    url(r'^collections/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(), {'url': '/archives/collections/%(path)s/', 'permanent': False}, name="telemeta-collection-redir"),
     url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/package/$', CollectionPackageView.as_view(),
         name="telemeta-collection-package"),
-    # RESOURCES
-    # Corpus list
-    url(r'^archives/corpus/$', 'django.views.generic.list_detail.object_list',
-        dict(all_corpus, paginate_by=20, template_name="telemeta/resource_list.html", extra_context={'type':'corpus'}), name="telemeta-corpus"),
 
-    # Fonds list
-    url(r'^archives/fonds/$', 'django.views.generic.list_detail.object_list',
-        dict(all_fonds, paginate_by=20, template_name="telemeta/resource_list.html", extra_context={'type':'fonds'}), name="telemeta-fonds"),
-
-    # Generic resource
-    url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/$', resource_view.detail,
-        dict(template="telemeta/resource_detail.html"), name="telemeta-resource-detail"),
-    url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/dc/$', resource_view.detail,
-        dict(template="telemeta/resource_detail_dc.html"), name="telemeta-resource-dublincore"),
-    url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/edit/$', resource_view.edit,
-        dict(template='telemeta/resource_edit.html'), name="telemeta-resource-edit"),
-    url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/copy/$', resource_view.copy,
-        dict(template='telemeta/resource_edit.html'), name="telemeta-resource-copy"),
-    url(r'^archives/(?P<type>[A-Za-z0-9._-]+)_add$', resource_view.add,
-        dict(template='telemeta/resource_add.html'), name="telemeta-resource-add"),
-    url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/delete/$', resource_view.delete, name="telemeta-resource-delete"),
+    # Generic resources
+    url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/$', ResourceListView.as_view(), name="telemeta-resource-list"),
+    url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/$', ResourceDetailView.as_view(), name="telemeta-resource-detail"),
+    url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/edit/$', ResourceEditView.as_view(), name="telemeta-resource-edit"),
+    url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/dc/$', ResourceDetailDCView.as_view(), name="telemeta-resource-dublincore"),
+    url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/copy/$', ResourceCopyView.as_view(), name="telemeta-resource-copy"),
+    url(r'^archives/(?P<type>[A-Za-z0-9._-]+)_add$', ResourceAddView.as_view(), name="telemeta-resource-add"),
+    url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/delete/$', ResourceDeleteView.as_view(), name="telemeta-resource-delete"),
     url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)/view/$', resource_view.related_stream, name="telemeta-resource-related"),
     url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)/download/$', resource_view.related_download, name="telemeta-resource-related-download"),
-    url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/related_edit/$', resource_view.related_edit,  dict(template='telemeta/resource_related_edit.html'), name="telemeta-resource-related_edit"),
-    url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/dc/$', resource_view.detail,
-        {'template': 'telemeta/resource_detail_dc.html'},
-        name="telemeta-resource-dublincore"),
-    url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/dc/xml/$', resource_view.detail,
-        {'format': 'dublin_core_xml'},
-        name="telemeta-resource-dublincore-xml"),
-    url(r'^archives/$', home_view.search, name="telemeta-archives"),
 
     # search
-    url(r'^search/$', home_view.search, name="telemeta-search"),
-    url(r'^search/collections/$', home_view.search, {'type': 'collections'},
-        name="telemeta-search-collections"),
-    url(r'^search/items/$', home_view.search, {'type': 'items'},
-        name="telemeta-search-items"),
-    url(r'^search/corpus/$', home_view.search, {'type': 'corpus'},
-        name="telemeta-search-corpus"),
-    url(r'^search/fonds/$', home_view.search, {'type': 'fonds'},
-        name="telemeta-search-fonds"),
-
-    url(r'^search/criteria/$', home_view.edit_search, name="telemeta-search-criteria"),
+    # url(r'^archives/$', home_view.search, name="telemeta-archives"),
+    url(r'^search/$', SearchView.as_view(), name="telemeta-search"),
+    url(r'^search/(?P<type>[A-Za-z0-9._-]+)/$', SearchView.as_view(), name="telemeta-search-type"),
+    url(r'^search_criteria/$', home_view.edit_search, name="telemeta-search-criteria"),
     url(r'^complete_location/$', home_view.complete_location, name="telemeta-complete-location"),
 
     # administration
@@ -228,86 +144,35 @@ urlpatterns = patterns('',
     url(r'^admin/users/$', admin_view.admin_users, name="telemeta-admin-users"),
 
     # instruments administration
-    url(r'^admin/instruments/$',
-        instrument_view.edit_instrument ,
-        name="telemeta-instrument-edit"),
-    url(r'^admin/instruments/add/$',
-        instrument_view.add_to_instrument,
-        name="telemeta-instrument-add"),
-    url(r'^admin/instruments/update/$',
-        instrument_view.update_instrument,
-        name="telemeta-instrument-update"),
-    url(r'^admin/instruments/'
-        + r'(?P<value_id>[0-9]+)/$',
-        instrument_view.edit_instrument_value,
-        name="telemeta-instrument-record-edit"),
-    url(r'^admin/instruments/'
-        + r'(?P<value_id>[0-9]+)/update/$',
-        instrument_view.update_instrument_value,
-        name="telemeta-instrument-record-update"),
-    url(r'^admin/instruments/'
-        + r'(?P<value_id>[0-9]+)/replace/$',
-        instrument_view.replace_instrument_value,
-        name="telemeta-instrument-record-replace"),
+    url(r'^admin/instruments/$', instrument_view.edit_instrument , name="telemeta-instrument-edit"),
+    url(r'^admin/instruments/add/$', instrument_view.add_to_instrument, name="telemeta-instrument-add"),
+    url(r'^admin/instruments/update/$', instrument_view.update_instrument, name="telemeta-instrument-update"),
+    url(r'^admin/instruments/' + r'(?P<value_id>[0-9]+)/$', instrument_view.edit_instrument_value, name="telemeta-instrument-record-edit"),
+    url(r'^admin/instruments/' + r'(?P<value_id>[0-9]+)/update/$', instrument_view.update_instrument_value, name="telemeta-instrument-record-update"),
+    url(r'^admin/instruments/' + r'(?P<value_id>[0-9]+)/replace/$', instrument_view.replace_instrument_value, name="telemeta-instrument-record-replace"),
 
     # instruments aliases administration
-    url(r'^admin/instrument_aliases/$',
-        instrument_alias_view.edit_instrument ,
-        name="telemeta-instrument-alias-edit"),
-    url(r'^admin/instrument_aliases/add/$',
-        instrument_alias_view.add_to_instrument,
-        name="telemeta-instrument-alias-add"),
-    url(r'^admin/instrument_aliases/update/$',
-        instrument_alias_view.update_instrument,
-        name="telemeta-instrument-alias-update"),
-    url(r'^admin/instrument_aliases/'
-        + r'(?P<value_id>[0-9]+)/$',
-        instrument_alias_view.edit_instrument_value,
-        name="telemeta-instrument-alias-record-edit"),
-    url(r'^admin/instrument_aliases/'
-        + r'(?P<value_id>[0-9]+)/update/$',
-        instrument_alias_view.update_instrument_value,
-        name="telemeta-instrument-alias-record-update"),
-    url(r'^admin/instrument_aliases/'
-        + r'(?P<value_id>[0-9]+)/replace/$',
-        instrument_alias_view.replace_instrument_value,
-        name="telemeta-instrument-alias-record-replace"),
+    url(r'^admin/instrument_aliases/$', instrument_alias_view.edit_instrument, name="telemeta-instrument-alias-edit"),
+    url(r'^admin/instrument_aliases/add/$', instrument_alias_view.add_to_instrument, name="telemeta-instrument-alias-add"),
+    url(r'^admin/instrument_aliases/update/$', instrument_alias_view.update_instrument, name="telemeta-instrument-alias-update"),
+    url(r'^admin/instrument_aliases/' + r'(?P<value_id>[0-9]+)/$', instrument_alias_view.edit_instrument_value, name="telemeta-instrument-alias-record-edit"),
+    url(r'^admin/instrument_aliases/' + r'(?P<value_id>[0-9]+)/update/$', instrument_alias_view.update_instrument_value, name="telemeta-instrument-alias-record-update"),
+    url(r'^admin/instrument_aliases/' + r'(?P<value_id>[0-9]+)/replace/$', instrument_alias_view.replace_instrument_value, name="telemeta-instrument-alias-record-replace"),
 
     # enumerations administration
-    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/$',
-        admin_view.edit_enumeration ,
-        name="telemeta-enumeration-edit"),
-    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/add/$',
-        admin_view.add_to_enumeration,
-        name="telemeta-enumeration-add"),
-    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/update/$',
-        admin_view.update_enumeration,
-        name="telemeta-enumeration-update"),
-    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/'
-        + r'(?P<value_id>[0-9]+)/$',
-        admin_view.edit_enumeration_value,
-        name="telemeta-enumeration-record-edit"),
-    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/'
-        + r'(?P<value_id>[0-9]+)/update/$',
-        admin_view.update_enumeration_value,
-        name="telemeta-enumeration-record-update"),
-    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/'
-        + r'(?P<value_id>[0-9]+)/replace/$',
-        admin_view.replace_enumeration_value,
-        name="telemeta-enumeration-replace"),
+    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/$', admin_view.edit_enumeration , name="telemeta-enumeration-edit"),
+    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/add/$', admin_view.add_to_enumeration, name="telemeta-enumeration-add"),
+    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/update/$', admin_view.update_enumeration, name="telemeta-enumeration-update"),
+    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/' + r'(?P<value_id>[0-9]+)/$', admin_view.edit_enumeration_value, name="telemeta-enumeration-record-edit"),
+    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/' + r'(?P<value_id>[0-9]+)/update/$', admin_view.update_enumeration_value, name="telemeta-enumeration-record-update"),
+    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/' + r'(?P<value_id>[0-9]+)/replace/$', admin_view.replace_enumeration_value, name="telemeta-enumeration-replace"),
 
     # Geographic browsing
     url(r'^geo/$', geo_view.list_continents, name="telemeta-geo-continents"),
-    url(r'^geo/(?P<continent>[a-z_]+)/$', geo_view.list_countries,
-        name="telemeta-geo-countries"),
-    url(r'^geo/collections/(?P<continent>[a-z_]+)/(?P<country>[a-z_]+)/$',
-        geo_view.list_country_collections,
-        name="telemeta-geo-country-collections"),
-    url(r'^geo/items/(?P<continent>[a-z_]+)/(?P<country>[a-z_]+)/$',
-        geo_view.list_country_items,
-        name="telemeta-geo-country-items"),
-    url(r'^geo/country_info/(?P<id>[0-9a-z]+)/$',
-        geo_view.country_info, name="telemeta-country-info"),
+    url(r'^geo/(?P<continent>[a-z_]+)/$', geo_view.list_countries, name="telemeta-geo-countries"),
+    url(r'^geo/collections/(?P<continent>[a-z_]+)/(?P<country>[a-z_]+)/$', GeoCountryCollectionView.as_view(), name="telemeta-geo-country-collections"),
+    url(r'^geo/items/(?P<continent>[a-z_]+)/(?P<country>[a-z_]+)/$', GeoCountryItemView.as_view() , name="telemeta-geo-country-items"),
+    url(r'^geo/country_info/(?P<id>[0-9a-z]+)/$', geo_view.country_info, name="telemeta-country-info"),
 
     # Flat pages
     url(r'^pages/(?P<path>.*)$', home_view.render_flatpage, name="telemeta-flatpage"),
@@ -316,10 +181,8 @@ urlpatterns = patterns('',
     url(r'^oai/.*$', home_view.handle_oai_request, name="telemeta-oai"),
 
     # Authentication
-    url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'telemeta/login.html'},
-        name="telemeta-login"),
-    url(r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name': 'telemeta/login.html'},
-        name="telemeta-login"),
+    url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'telemeta/login.html'}, name="telemeta-login"),
+    url(r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name': 'telemeta/login.html'}, name="telemeta-login"),
     #url(r'^login/$', 'ipauth.views.login', {'template_name': 'telemeta/login.html'},
     #    name="telemeta-login"),
     url(r'^logout/$', home_view.logout, name="telemeta-logout"),
@@ -350,8 +213,6 @@ urlpatterns = patterns('',
 
     # JSON RPC
     url(r'json/$', jsonrpc_site.dispatch, name='jsonrpc_mountpoint'),
-    # for the graphical browser/web console only, omissible
-    # url(r'json/browse/', 'jsonrpc.views.browse', name="jsonrpc_browser"),
 
     # Playlists
     url(r'^playlists/(?P<public_id>[a-zA-Z0-9]+)/(?P<resource_type>[a-zA-Z0-9]+)/csv/$', playlist_view.playlist_csv_export, name="telemeta-playlist-csv-export"),
@@ -361,8 +222,7 @@ urlpatterns = patterns('',
 
     # Static media
     # FIXME:need to move export dir from the cache
-    url(r'^media/cache/(?P<path>.*)$', 'django.views.static.serve', {
-            'document_root': settings.TELEMETA_CACHE_DIR,}),
+    url(r'^media/cache/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.TELEMETA_CACHE_DIR,}),
 
     url(r'^', include('jqchat.urls')),
 
@@ -372,4 +232,6 @@ if settings.DEBUG and 'debug_toolbar' in settings.INSTALLED_APPS:
     import debug_toolbar
     urlpatterns += patterns('',
     url(r'^__debug__/', include(debug_toolbar.urls)),)
+    # for the graphical browser/web console only, omissible
+    url(r'json/browse/', 'jsonrpc.views.browse', name="jsonrpc_browser"),
 

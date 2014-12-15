@@ -23,10 +23,15 @@ class MediaCorpusAdmin(admin.ModelAdmin):
 class MediaCollectionRelatedInline(admin.StackedInline):
     model = MediaCollectionRelated
 
+class MediaCollectionIdentifierInline(admin.StackedInline):
+    model = MediaCollectionIdentifier
+    max_num = 1
+
 class MediaCollectionAdmin(admin.ModelAdmin):
     search_fields = ['title', 'code']
     ordering = ['code']
-    inlines = [MediaCollectionRelatedInline]
+    inlines = [MediaCollectionIdentifierInline,
+                MediaCollectionRelatedInline]
 
 class MediaItemRelatedInline(admin.StackedInline):
     model = MediaItemRelated
@@ -37,11 +42,16 @@ class MediaItemMarkerInline(admin.StackedInline):
 class MediaItemTranscodedInline(admin.StackedInline):
     model = MediaItemTranscoded
 
+class MediaItemIdentifierInline(admin.StackedInline):
+    model = MediaItemIdentifier
+    max_num = 1
+
 class MediaItemAdmin(admin.ModelAdmin):
     search_fields = ['title', 'code']
     ordering = ['code']
     exclude = ('copied_from_item', )
-    inlines = [MediaItemRelatedInline, 
+    inlines = [MediaItemIdentifierInline,
+                MediaItemRelatedInline,
                 MediaItemTranscodedInline,
                 MediaItemMarkerInline]
 

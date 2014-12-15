@@ -3,13 +3,13 @@
 {% load i18n %}
 
 {% block extra_javascript %}
-<script src="{{ STATIC_URL }}telemeta/js/popupdiv-min.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}telemeta/js/popupdiv.js" type="text/javascript"></script>
 <script src="{{ STATIC_URL }}telemeta/js/playlist.js" type="text/javascript"></script>
 <script>
     jQuery(window).ready(function(){
         var p = playlistUtils;
         var a = jQuery('#_new_playlist');
-        a.unbind('click').click(function(){p.showAdd(a);return false;});
+        a.unbind('click').click(function(){p.showAdd(a);});
         });
 
     {% for playlist in playlists %}
@@ -45,16 +45,21 @@
 
 <div class="home-description">
     <h1><img src="{{ STATIC_URL }}telemeta/images/playlist_title.png" alt="playlists" style="vertical-align:middle" /> {% trans "My playlists" %}</h1>
-    <a href="#" id="_new_playlist" style="float:right" class="component_icon button icon_add">
-        {% trans "Add" %}</a>
+
+    <a href="#" id="_new_playlist" style="float:right">
+    <button type="button" class="btn btn-default">
+      <span class="glyphicon glyphicon-plus"></span> {% trans "Add" %}</span>
+    </button>
+    </a>
+
     {% for playlist in playlists %}
     <table class="listing" style="width:100%;margin-top: 3em">
         <tr>
             <td style="border-bottom:1px solid #6A0307;color:#6A0307;font-size: 100%">{{ playlist.playlist.title }}</td>
             <td style="width:86ex; padding-right: 0; border-bottom:1px solid #6A0307; text-align:right">
             <a href="#" id="{{playlist.playlist.public_id}}" onclick="playlistUtils.showEdit(this, this.id); return false;" class="component_icon button icon_edit">{% trans "Edit" %}</a>
-                <a href="{% url telemeta-playlist-csv-export playlist.playlist.public_id 'collections' %}" class="component_icon button icon_csv">CSV Collections</a>
-                <a href="{% url telemeta-playlist-csv-export playlist.playlist.public_id 'items' %}" class="component_icon button icon_csv">CSV Items</a>
+                <a href="{% url "telemeta-playlist-csv-export" playlist.playlist.public_id 'collections' %}" class="component_icon button icon_csv">CSV Collections</a>
+                <a href="{% url "telemeta-playlist-csv-export" playlist.playlist.public_id 'items' %}" class="component_icon button icon_csv">CSV Items</a>
                 <a href="#" id="{{playlist.playlist.public_id}}" onclick="if(confirm(gettrans('delete the playlist permanently?'))){playlistUtils.remove(this.id);};return false;" class="component_icon button icon_cancel">{% trans "Delete" %}</a>
             </td>
         </tr>
@@ -71,23 +76,23 @@
             <th>{% trans "Code" %}</th>
             <th>{% trans "Recordist" %}</th>
             <th>{% trans "Recording period" %}</th>
-            <th>{% trans "Sound" %}</th>
+            <th>{% trans "Digitized" %}</th>
             <th>{% trans "Action" %}</th>
         </tr>
         {% for resource in playlist.resources %}
         <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
             <td>
                 {% if resource.type == "item" and not resource.element == None %}
-                <a href="{% url telemeta-item-detail resource.element.public_id %}">{{ resource.element }}</a>
+                <a href="{% url "telemeta-item-detail" resource.element.public_id %}">{{ resource.element }}</a>
                 {% endif %}
                 {% if resource.type == "collection" and not resource.element == None %}
-                <a href="{% url telemeta-collection-detail resource.element.public_id %}">{% if resource.element.title %}{{ resource.element.title }}{% else %}{{ resource.element }}{% endif %}</a>
+                <a href="{% url "telemeta-collection-detail" resource.element.public_id %}">{% if resource.element.title %}{{ resource.element.title }}{% else %}{{ resource.element }}{% endif %}</a>
                 {% endif %}
                 {% if resource.type == "marker" and not resource.element == None  %}
-                <a href="{% url telemeta-item-detail-marker resource.element.public_id %}">{{ resource.element }}</a>
+                <a href="{% url "telemeta-item-detail-marker" resource.element.public_id %}">{{ resource.element }}</a>
                 {% endif %}
                 {% if resource.type == "corpus" or resource.type == "fonds" %}
-                <a href="{% url telemeta-resource-detail resource.type resource.element.public_id %}">{{ resource.element.title }}</a>
+                <a href="{% url "telemeta-resource-detail" resource.type resource.element.public_id %}">{{ resource.element.title }}</a>
                 {% endif %}
                 {% if resource.element == None %}{% trans "deleted" %}{% endif %}
             </td>
@@ -105,9 +110,9 @@
                 {% endif %}
                 {% endif %}
             </td>
-            <td align="center" style="vertical-align:middle">
+            <td align="center" style="vertical-align:middle;">
                 {% if resource.element.file or resource.element.has_mediafile %}
-                <img src="{{ STATIC_URL }}telemeta/images/ok.png" alt="yes" style="vertical-align:middle" /></a>
+                <span class="glyphicon glyphicon-volume-up" style="font-size: 1.3em;"></span>
                 {% endif %}
             </td>
             <td style="vertical-align:middle">

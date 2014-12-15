@@ -1,0 +1,36 @@
+{% extends "telemeta/resource_detail.html" %}
+{% load i18n %}
+{% load telemeta_utils %}
+
+{% block title %}
+<img src="{{ STATIC_URL }}telemeta/images/{{ type }}.png" style="vertical-align:middle" /> {{ type }} : {{ resource }}
+{% endblock %}
+
+{% block title_buttons %}
+{% endblock %}
+
+{% block infos %}
+     <div class="infos">
+      <form method="post" id="_editForm" action="">{% csrf_token %}
+       <table>
+       <tr><td colspan="2">{% for error in form.non_field_errors %}<li class="error">{{ error }}</li>{% endfor %}</td></tr>
+
+       <h4>
+       <center>
+       {% trans 'Delete the resource permanently?' %}
+       </center>
+       </h4>
+
+       </table>
+        <div align="center" style="margin-top:3ex;">
+         <a href="{% url "telemeta-resource-detail" type resource.public_id %}" class="component_icon button icon_cancel">{% trans "No" %}</a>
+         {% if perms.telemeta.add_mediacorpus or perms.telemeta.add_mediafonds %}
+         <a href="#" class="component_icon button icon_ok" onclick="document.getElementById('_editForm').submit(); return false;">{% trans "Yes" %}</a>
+         {% endif %}
+        </div>
+      </form>
+     </div>
+{% endblock infos%}
+
+{% block delete %}
+{% endblock %}

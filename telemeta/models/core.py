@@ -52,6 +52,7 @@ import re
 from django.core.exceptions import ObjectDoesNotExist
 from south.modelsinspector import add_introspection_rules
 
+
 class Duration(object):
     """Represent a time duration"""
     def __init__(self, *args, **kwargs):
@@ -110,6 +111,7 @@ class Duration(object):
     def as_seconds(self):
         return self._delta.days * 24 * 3600 + self._delta.seconds
 
+
 def normalize_field(args, default_value=None):
     """Normalize field constructor arguments, so that the field is marked blank=True
        and has a default value by default.
@@ -134,10 +136,10 @@ def normalize_field(args, default_value=None):
 
     return args
 
-# The following is based on Django TimeField
+
 class DurationField(models.Field):
-    """Duration Django model field. Essentially the same as a TimeField, but
-    with values over 24h allowed.
+    """Duration Django model field based on Django TimeField.
+    Essentially the same as a TimeField, but with values over 24h allowed.
 
     The constructor arguments are also normalized with normalize_field().
     """
@@ -198,6 +200,7 @@ class DurationField(models.Field):
         defaults.update(kwargs)
         return super(DurationField, self).formfield(**defaults)
 
+
 class ForeignKey(models.ForeignKey):
     """The constructor arguments of this ForeignKey are normalized
     with normalize_field(), however the field is marked required by default
@@ -209,6 +212,7 @@ class ForeignKey(models.ForeignKey):
                 kwargs['required'] = True
 
         super(ForeignKey, self).__init__(to, **normalize_field(kwargs, 0))
+
 
 class WeakForeignKey(ForeignKey):
     """A weak foreign key is the same as foreign key but without cascading
@@ -227,6 +231,7 @@ class WeakForeignKey(ForeignKey):
     def __init__(self, to, **kwargs):
         kwargs['null'] = True
         super(WeakForeignKey, self).__init__(to, **kwargs)
+
 
 class EnhancedQuerySet(models.query.QuerySet):
     """QuerySet with added functionalities such as WeakForeignKey handling"""
@@ -252,6 +257,7 @@ class EnhancedQuerySet(models.query.QuerySet):
 
         super(EnhancedQuerySet, self).delete()
 
+
 class EnhancedManager(models.Manager):
     """Manager which is bound to EnhancedQuerySet"""
     def get_query_set(self):
@@ -271,6 +277,7 @@ class EnhancedModel(models.Model):
     class Meta:
         abstract = True
 
+
 class CharField(models.CharField):
     """This is a CharField with a default max_length of 250.
 
@@ -281,11 +288,13 @@ class CharField(models.CharField):
             kwargs['max_length'] = 250
         super(CharField, self).__init__(*args, **normalize_field(kwargs, ''))
 
+
 class IntegerField(models.IntegerField):
     """IntegerField normalized with normalize_field()"""
 
     def __init__(self, *args, **kwargs):
         super(IntegerField, self).__init__(*args, **normalize_field(kwargs, 0))
+
 
 class BooleanField(models.BooleanField):
     """BooleanField normalized with normalize_field()"""
@@ -293,11 +302,13 @@ class BooleanField(models.BooleanField):
     def __init__(self, *args, **kwargs):
         super(BooleanField, self).__init__(*args, **normalize_field(kwargs, False))
 
+
 class TextField(models.TextField):
     """TextField normalized with normalize_field()"""
 
     def __init__(self, *args, **kwargs):
         super(TextField, self).__init__(*args, **normalize_field(kwargs, ''))
+
 
 class DateTimeField(models.DateTimeField):
     """DateTimeField normalized with normalize_field(). This field is allowed to
@@ -308,17 +319,20 @@ class DateTimeField(models.DateTimeField):
             kwargs['null'] = True
         super(DateTimeField, self).__init__(*args, **normalize_field(kwargs))
 
+
 class FileField(models.FileField):
     """FileField normalized with normalize_field()"""
 
     def __init__(self, *args, **kwargs):
         super(FileField, self).__init__(*args, **normalize_field(kwargs, ''))
 
+
 class FloatField(models.FloatField):
     """FloatField normalized with normalize_field()"""
 
     def __init__(self, *args, **kwargs):
         super(FloatField, self).__init__(*args, **normalize_field(kwargs, 0))
+
 
 class DateField(models.DateField):
     """DateField normalized with normalize_field(). This field is allowed to
@@ -329,11 +343,13 @@ class DateField(models.DateField):
             kwargs['null'] = True
         super(DateField, self).__init__(*args, **normalize_field(kwargs))
 
+
 class RequiredFieldError(Exception):
     def __init__(self, model, field):
         self.model = model
         self.field = field
         super(Exception, self).__init__('%s.%s is required' % (model._meta.object_name, field.name))
+
 
 class ModelCore(EnhancedModel):
 
@@ -414,8 +430,10 @@ class ModelCore(EnhancedModel):
     class Meta:
         abstract = True
 
+
 class MetaCore:
     app_label = 'telemeta'
+
 
 def word_search_q(field, pattern):
     words = re.split("[ .*-]+", pattern)
@@ -426,6 +444,7 @@ def word_search_q(field, pattern):
             q &= Q(**kwargs)
 
     return q
+
 
 class CoreQuerySet(EnhancedQuerySet):
     "Base class for all query sets"
@@ -452,6 +471,7 @@ class CoreQuerySet(EnhancedQuerySet):
             qs = qs.extra(where = [" AND ".join(where)],
                             tables = ['revisions']).distinct()
         return qs
+
 
 class CoreManager(EnhancedManager):
     "Base class for all models managers"

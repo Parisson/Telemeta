@@ -8,11 +8,11 @@
 {% endblock %}
 
 {% block title %}
-<h1><img src="{{ STATIC_URL }}telemeta/images/admin_red.png" style="vertical-align:middle" /> <a href="{% url telemeta-admin-general %}">{% trans "Administration" %}</a></h1>
+<h1><img src="{{ STATIC_URL }}telemeta/images/admin_red.png" style="vertical-align:middle" /> <a href="{% url "telemeta-admin-general" %}">{% trans "Administration" %}</a></h1>
 {% endblock %}
 
  <li>{% trans "General" %}</a></li>
- 
+
 {% block content %}
 
 <div class="tabcontents">
