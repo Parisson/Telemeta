@@ -1,5 +1,5 @@
 ===============================================
-Telemeta: open web audio app with semantics
+Telemeta: open web audio platform with semantics
 ===============================================
 
 |version| |downloads| |travis_master| |coverage_master|

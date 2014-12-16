@@ -51,13 +51,14 @@ svg {
 }
 
 .rst-content h1 {
-    font-size: 1.2em;
+    font-size: 1.3em;
     font-weight: bold;
     color: #353535;
+    margin-bottom: 1em;
 }
 
 .rst-content p {
-    font-size: 0.9em;
+    font-size: 1em;
     text-align: justify;
 }
 

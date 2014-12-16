@@ -294,7 +294,7 @@ def render_flatpage(content):
                 i = -1
             if i == 0:
                 line += reverse(urlname)
-            elif urlname[:1] != '/':
+            elif urlname[:1] != '/' and urlname[:4] != 'http':
                 line += reverse('telemeta-flatpage', args=[path + '/../' + urlname])
             else:
                 line += urlname
@@ -303,6 +303,7 @@ def render_flatpage(content):
 
     parts = publish_parts(source=smart_str(parsed), writer_name="html4css1", settings_overrides={})
     return mark_safe('<div class="rst-content">\n' + force_unicode(parts["html_body"]) + '</div>')
+
 render_flatpage.is_safe = True
 
 @register.simple_tag

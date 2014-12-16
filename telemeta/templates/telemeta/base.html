@@ -52,7 +52,7 @@
 <div id="header">
 <div id="logo">
 {% block logo %}
-<a href="{% url "telemeta-home" %}"><img src="{{ STATIC_URL }}telemeta/images/logo_crem.png" alt="Telemeta" /></a>
+<a href="{% url "telemeta-home" %}"><img src="{{ STATIC_URL }}telemeta/images/logo_telemeta_2.png" alt="Telemeta" /></a>
 {% endblock %}
 </div>
 
@@ -65,9 +65,6 @@
 {{ user.first_name }} {{ user.last_name }}</a> |
 {% else %}
   {{ user.username }}
-{% endif %}
-{% if perms.telemeta.can_view_users_and_profiles %}
- | <a href="{% url telemeta-profile-detail user.username %}">{% trans "Profile" %}</a>
 {% endif %}
 <a href="{% url "telemeta-flatpage" "help" %}">{% trans "Help" %}</a> |
 <a href="{% url "telemeta-logout" %}">{% trans "Sign out" %}
