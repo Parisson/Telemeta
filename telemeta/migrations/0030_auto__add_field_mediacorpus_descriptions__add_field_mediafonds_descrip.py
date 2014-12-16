@@ -20,10 +20,12 @@ class Migration(SchemaMigration):
 
         if not db.dry_run:
             from telemeta.models import MediaFonds, MediaCorpus
-            for corpus in MediaCorpus.objects.all():
-                corpus.descriptions = corpus.description
-                corpus.save()
+            if hasattr(MediaCorpus, 'description'):
+                for corpus in MediaCorpus.objects.all():
+                    corpus.descriptions = corpus.description
+                    corpus.save()
 
+            if hasattr(MediaFonds, 'description'):
             for fonds in MediaFonds.objects.all():
                 fonds.descriptions = fonds.description
                 fonds.save()

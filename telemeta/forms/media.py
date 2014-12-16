@@ -82,6 +82,7 @@ class MediaCollectionForm(ModelForm):
 
     class Meta:
         model = MediaCollection
+        exclude = ['alt_ids', 'travail']
 
     def clean_doctype_code(self):
         return self.cleaned_data['doctype_code'] or 0
