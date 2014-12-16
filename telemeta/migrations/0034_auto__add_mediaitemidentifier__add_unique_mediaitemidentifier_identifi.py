@@ -8,8 +8,242 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
+        # Removing unique constraint on 'MediaCollection', fields ['reference']
+        db.delete_unique('media_collections', ['reference'])
+
+        # Adding model 'MediaItemIdentifier'
+        db.create_table('media_item_identifier', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('identifier', self.gf('telemeta.models.core.CharField')(default='', unique=True, max_length=255, blank=True)),
+            ('type', self.gf('telemeta.models.core.WeakForeignKey')(default=None, to=orm['telemeta.IdentifierType'], null=True, blank=True)),
+            ('date_add', self.gf('telemeta.models.core.DateTimeField')(default=None, auto_now_add=True, null=True, blank=True)),
+            ('date_first', self.gf('telemeta.models.core.DateTimeField')(default=None, null=True, blank=True)),
+            ('date_last', self.gf('telemeta.models.core.DateTimeField')(default=None, null=True, blank=True)),
+            ('date_modified', self.gf('telemeta.models.core.DateTimeField')(default=None, auto_now=True, null=True, blank=True)),
+            ('notes', self.gf('telemeta.models.core.TextField')(default='', blank=True)),
+            ('item', self.gf('telemeta.models.core.ForeignKey')(related_name='identifiers', to=orm['telemeta.MediaItem'])),
+        ))
+        db.send_create_signal('telemeta', ['MediaItemIdentifier'])
+
+        # Adding unique constraint on 'MediaItemIdentifier', fields ['identifier', 'item']
+        db.create_unique('media_item_identifier', ['identifier', 'item_id'])
+
+        # Adding model 'OriginalFormat'
+        db.create_table('original_format', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('value', self.gf('telemeta.models.core.CharField')(unique=True, max_length=250)),
+            ('notes', self.gf('telemeta.models.core.TextField')(default='', blank=True)),
+        ))
+        db.send_create_signal('telemeta', ['OriginalFormat'])
+
+        # Adding model 'MediaType'
+        db.create_table('media_type', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('value', self.gf('telemeta.models.core.CharField')(unique=True, max_length=250)),
+            ('notes', self.gf('telemeta.models.core.TextField')(default='', blank=True)),
+        ))
+        db.send_create_signal('telemeta', ['MediaType'])
+
+        # Adding model 'CopyType'
+        db.create_table('copy_type', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('value', self.gf('telemeta.models.core.CharField')(unique=True, max_length=250)),
+            ('notes', self.gf('telemeta.models.core.TextField')(default='', blank=True)),
+        ))
+        db.send_create_signal('telemeta', ['CopyType'])
+
+        # Adding model 'MediaCollectionIdentifier'
+        db.create_table('media_collection_identifier', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('identifier', self.gf('telemeta.models.core.CharField')(default='', unique=True, max_length=255, blank=True)),
+            ('type', self.gf('telemeta.models.core.WeakForeignKey')(default=None, to=orm['telemeta.IdentifierType'], null=True, blank=True)),
+            ('date_add', self.gf('telemeta.models.core.DateTimeField')(default=None, auto_now_add=True, null=True, blank=True)),
+            ('date_first', self.gf('telemeta.models.core.DateTimeField')(default=None, null=True, blank=True)),
+            ('date_last', self.gf('telemeta.models.core.DateTimeField')(default=None, null=True, blank=True)),
+            ('date_modified', self.gf('telemeta.models.core.DateTimeField')(default=None, auto_now=True, null=True, blank=True)),
+            ('notes', self.gf('telemeta.models.core.TextField')(default='', blank=True)),
+            ('collection', self.gf('telemeta.models.core.ForeignKey')(related_name='identifiers', to=orm['telemeta.MediaCollection'])),
+        ))
+        db.send_create_signal('telemeta', ['MediaCollectionIdentifier'])
+
+        # Adding unique constraint on 'MediaCollectionIdentifier', fields ['identifier', 'collection']
+        db.create_unique('media_collection_identifier', ['identifier', 'collection_id'])
+
+        # Adding model 'Status'
+        db.create_table('media_status', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('value', self.gf('telemeta.models.core.CharField')(unique=True, max_length=250)),
+            ('notes', self.gf('telemeta.models.core.TextField')(default='', blank=True)),
+        ))
+        db.send_create_signal('telemeta', ['Status'])
+
+        # Adding model 'IdentifierType'
+        db.create_table('identifier_type', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('value', self.gf('telemeta.models.core.CharField')(unique=True, max_length=250)),
+            ('notes', self.gf('telemeta.models.core.TextField')(default='', blank=True)),
+        ))
+        db.send_create_signal('telemeta', ['IdentifierType'])
+
+        # Adding field 'RecordingContext.notes'
+        db.add_column('recording_contexts', 'notes',
+                      self.gf('telemeta.models.core.TextField')(default='', blank=True),
+                      keep_default=False)
+
+        # Adding field 'PublishingStatus.notes'
+        db.add_column('publishing_status', 'notes',
+                      self.gf('telemeta.models.core.TextField')(default='', blank=True),
+                      keep_default=False)
+
+        # Adding field 'NumberOfChannels.notes'
+        db.add_column('original_channel_number', 'notes',
+                      self.gf('telemeta.models.core.TextField')(default='', blank=True),
+                      keep_default=False)
+
+
+        # Changing field 'MediaItemRelated.mime_type'
+        db.alter_column('media_item_related', 'mime_type', self.gf('telemeta.models.core.CharField')(max_length=250))
+        # Adding field 'TapeVendor.notes'
+        db.add_column('tape_vendor', 'notes',
+                      self.gf('telemeta.models.core.TextField')(default='', blank=True),
+                      keep_default=False)
+
+        # Adding field 'LegalRight.notes'
+        db.add_column('legal_rights', 'notes',
+                      self.gf('telemeta.models.core.TextField')(default='', blank=True),
+                      keep_default=False)
+
+        # Adding field 'TapeSpeed.notes'
+        db.add_column('tape_speed', 'notes',
+                      self.gf('telemeta.models.core.TextField')(default='', blank=True),
+                      keep_default=False)
+
+
+        # Changing field 'MediaFondsRelated.mime_type'
+        db.alter_column('media_fonds_related', 'mime_type', self.gf('telemeta.models.core.CharField')(max_length=250))
+        # Adding field 'AcquisitionMode.notes'
+        db.add_column('acquisition_modes', 'notes',
+                      self.gf('telemeta.models.core.TextField')(default='', blank=True),
+                      keep_default=False)
+
+        # Adding field 'Organization.notes'
+        db.add_column('organization', 'notes',
+                      self.gf('telemeta.models.core.TextField')(default='', blank=True),
+                      keep_default=False)
+
+        # Adding field 'AdConversion.notes'
+        db.add_column('ad_conversions', 'notes',
+                      self.gf('telemeta.models.core.TextField')(default='', blank=True),
+                      keep_default=False)
+
+        # Deleting field 'MediaItem.copied_from_item'
+        db.delete_column('media_items', 'copied_from_item_id')
+
+        # Adding field 'MediaItem.media_type'
+        db.add_column('media_items', 'media_type',
+                      self.gf('telemeta.models.core.WeakForeignKey')(default=None, related_name='items', null=True, blank=True, to=orm['telemeta.MediaType']),
+                      keep_default=False)
+
+        # Adding field 'ContextKeyword.notes'
+        db.add_column('context_keywords', 'notes',
+                      self.gf('telemeta.models.core.TextField')(default='', blank=True),
+                      keep_default=False)
+
+        # Adding field 'VernacularStyle.notes'
+        db.add_column('vernacular_styles', 'notes',
+                      self.gf('telemeta.models.core.TextField')(default='', blank=True),
+                      keep_default=False)
+
+        # Adding field 'TapeWheelDiameter.notes'
+        db.add_column('tape_wheel_diameter', 'notes',
+                      self.gf('telemeta.models.core.TextField')(default='', blank=True),
+                      keep_default=False)
+
+        # Adding field 'Topic.notes'
+        db.add_column('topic', 'notes',
+                      self.gf('telemeta.models.core.TextField')(default='', blank=True),
+                      keep_default=False)
+
+        # Adding field 'TapeWidth.notes'
+        db.add_column('tape_width', 'notes',
+                      self.gf('telemeta.models.core.TextField')(default='', blank=True),
+                      keep_default=False)
+
+        # Deleting field 'MediaCollection.a_informer_07_03'
+        db.delete_column('media_collections', 'a_informer_07_03')
+
+        # Deleting field 'MediaCollection.doctype_code'
+        db.delete_column('media_collections', 'doctype_code')
+
+        # Deleting field 'MediaCollection.state'
+        db.delete_column('media_collections', 'state')
+
+        # Adding field 'MediaCollection.description'
+        db.add_column('media_collections', 'description',
+                      self.gf('telemeta.models.core.TextField')(default='', blank=True),
+                      keep_default=False)
+
+        # Adding field 'MediaCollection.copy_type'
+        db.add_column('media_collections', 'copy_type',
+                      self.gf('telemeta.models.core.WeakForeignKey')(default=None, related_name='collections', null=True, blank=True, to=orm['telemeta.CopyType']),
+                      keep_default=False)
+
+        # Adding field 'MediaCollection.status'
+        db.add_column('media_collections', 'status',
+                      self.gf('telemeta.models.core.WeakForeignKey')(default=None, related_name='collections', null=True, blank=True, to=orm['telemeta.Status']),
+                      keep_default=False)
+
+        # Adding field 'MediaCollection.alt_copies'
+        db.add_column('media_collections', 'alt_copies',
+                      self.gf('telemeta.models.core.TextField')(default='', blank=True),
+                      keep_default=False)
+
+        # Adding field 'MediaCollection.archiver_notes'
+        db.add_column('media_collections', 'archiver_notes',
+                      self.gf('telemeta.models.core.TextField')(default='', blank=True),
+                      keep_default=False)
+
+        # Adding field 'MediaCollection.media_type'
+        db.add_column('media_collections', 'media_type',
+                      self.gf('telemeta.models.core.WeakForeignKey')(default=None, related_name='collections', null=True, blank=True, to=orm['telemeta.MediaType']),
+                      keep_default=False)
+
+        # Adding field 'MediaCollection.original_format'
+        db.add_column('media_collections', 'original_format',
+                      self.gf('telemeta.models.core.WeakForeignKey')(default=None, related_name='collections', null=True, blank=True, to=orm['telemeta.OriginalFormat']),
+                      keep_default=False)
+
+
+        # Changing field 'MediaCollection.reference'
+        db.alter_column('media_collections', 'reference', self.gf('telemeta.models.core.CharField')(max_length=250))
+        # Adding field 'MetadataAuthor.notes'
+        db.add_column('metadata_authors', 'notes',
+                      self.gf('telemeta.models.core.TextField')(default='', blank=True),
+                      keep_default=False)
+
+        # Adding field 'Rights.notes'
+        db.add_column('rights', 'notes',
+                      self.gf('telemeta.models.core.TextField')(default='', blank=True),
+                      keep_default=False)
+
+
+        # Changing field 'MediaCorpusRelated.mime_type'
+        db.alter_column('media_corpus_related', 'mime_type', self.gf('telemeta.models.core.CharField')(max_length=250))
         # Adding field 'Instrument.notes'
         db.add_column('instruments', 'notes',
+                      self.gf('telemeta.models.core.TextField')(default='', blank=True),
+                      keep_default=False)
+
+        # Adding field 'TapeLength.notes'
+        db.add_column('tape_length', 'notes',
+                      self.gf('telemeta.models.core.TextField')(default='', blank=True),
+                      keep_default=False)
+
+
+        # Changing field 'MediaCollectionRelated.mime_type'
+        db.alter_column('media_collection_related', 'mime_type', self.gf('telemeta.models.core.CharField')(max_length=250))
+        # Adding field 'MetadataWriter.notes'
+        db.add_column('metadata_writers', 'notes',
                       self.gf('telemeta.models.core.TextField')(default='', blank=True),
                       keep_default=False)
 
@@ -18,13 +252,200 @@ class Migration(SchemaMigration):
                       self.gf('telemeta.models.core.TextField')(default='', blank=True),
                       keep_default=False)
 
+        # Adding field 'PhysicalFormat.notes'
+        db.add_column('physical_formats', 'notes',
+                      self.gf('telemeta.models.core.TextField')(default='', blank=True),
+                      keep_default=False)
+
+        # Adding field 'Publisher.notes'
+        db.add_column('publishers', 'notes',
+                      self.gf('telemeta.models.core.TextField')(default='', blank=True),
+                      keep_default=False)
+
+        # Adding field 'GenericStyle.notes'
+        db.add_column('generic_styles', 'notes',
+                      self.gf('telemeta.models.core.TextField')(default='', blank=True),
+                      keep_default=False)
+
+        # Adding field 'EthnicGroup.notes'
+        db.add_column('ethnic_groups', 'notes',
+                      self.gf('telemeta.models.core.TextField')(default='', blank=True),
+                      keep_default=False)
+
+        if not db.dry_run:
+            from telemeta.models import MediaCollection
+            for collection in MediaCollection.objects.all():
+                trig = False
+                if hasattr(MediaCollection, 'alt_ids'):
+                    collection.alt_copies = collection.alt_ids
+                    trig = True
+                if hasattr(MediaCollection, 'travail'):
+                    collection.archiver_notes = collection.travail
+                    trig = True
+                if trig:
+                    collection.save()
 
     def backwards(self, orm):
+        # Removing unique constraint on 'MediaCollectionIdentifier', fields ['identifier', 'collection']
+        db.delete_unique('media_collection_identifier', ['identifier', 'collection_id'])
+
+        # Removing unique constraint on 'MediaItemIdentifier', fields ['identifier', 'item']
+        db.delete_unique('media_item_identifier', ['identifier', 'item_id'])
+
+        # Deleting model 'MediaItemIdentifier'
+        db.delete_table('media_item_identifier')
+
+        # Deleting model 'OriginalFormat'
+        db.delete_table('original_format')
+
+        # Deleting model 'MediaType'
+        db.delete_table('media_type')
+
+        # Deleting model 'CopyType'
+        db.delete_table('copy_type')
+
+        # Deleting model 'MediaCollectionIdentifier'
+        db.delete_table('media_collection_identifier')
+
+        # Deleting model 'Status'
+        db.delete_table('media_status')
+
+        # Deleting model 'IdentifierType'
+        db.delete_table('identifier_type')
+
+        # Deleting field 'RecordingContext.notes'
+        db.delete_column('recording_contexts', 'notes')
+
+        # Deleting field 'PublishingStatus.notes'
+        db.delete_column('publishing_status', 'notes')
+
+        # Deleting field 'NumberOfChannels.notes'
+        db.delete_column('original_channel_number', 'notes')
+
+
+        # Changing field 'MediaItemRelated.mime_type'
+        db.alter_column('media_item_related', 'mime_type', self.gf('telemeta.models.core.CharField')(max_length=250, null=True))
+        # Deleting field 'TapeVendor.notes'
+        db.delete_column('tape_vendor', 'notes')
+
+        # Deleting field 'LegalRight.notes'
+        db.delete_column('legal_rights', 'notes')
+
+        # Deleting field 'TapeSpeed.notes'
+        db.delete_column('tape_speed', 'notes')
+
+
+        # Changing field 'MediaFondsRelated.mime_type'
+        db.alter_column('media_fonds_related', 'mime_type', self.gf('telemeta.models.core.CharField')(max_length=250, null=True))
+        # Deleting field 'AcquisitionMode.notes'
+        db.delete_column('acquisition_modes', 'notes')
+
+        # Deleting field 'Organization.notes'
+        db.delete_column('organization', 'notes')
+
+        # Deleting field 'AdConversion.notes'
+        db.delete_column('ad_conversions', 'notes')
+
+        # Adding field 'MediaItem.copied_from_item'
+        db.add_column('media_items', 'copied_from_item',
+                      self.gf('telemeta.models.core.WeakForeignKey')(default=None, related_name='copies', null=True, to=orm['telemeta.MediaItem'], blank=True),
+                      keep_default=False)
+
+        # Deleting field 'MediaItem.media_type'
+        db.delete_column('media_items', 'media_type_id')
+
+        # Deleting field 'ContextKeyword.notes'
+        db.delete_column('context_keywords', 'notes')
+
+        # Deleting field 'VernacularStyle.notes'
+        db.delete_column('vernacular_styles', 'notes')
+
+        # Deleting field 'TapeWheelDiameter.notes'
+        db.delete_column('tape_wheel_diameter', 'notes')
+
+        # Deleting field 'Topic.notes'
+        db.delete_column('topic', 'notes')
+
+        # Deleting field 'TapeWidth.notes'
+        db.delete_column('tape_width', 'notes')
+
+        # Adding field 'MediaCollection.a_informer_07_03'
+        db.add_column('media_collections', 'a_informer_07_03',
+                      self.gf('telemeta.models.core.CharField')(default='', max_length=250, blank=True),
+                      keep_default=False)
+
+        # Adding field 'MediaCollection.doctype_code'
+        db.add_column('media_collections', 'doctype_code',
+                      self.gf('telemeta.models.core.IntegerField')(default=0, blank=True),
+                      keep_default=False)
+
+        # Adding field 'MediaCollection.state'
+        db.add_column('media_collections', 'state',
+                      self.gf('telemeta.models.core.TextField')(default='', blank=True),
+                      keep_default=False)
+
+        # Deleting field 'MediaCollection.description'
+        db.delete_column('media_collections', 'description')
+
+        # Deleting field 'MediaCollection.copy_type'
+        db.delete_column('media_collections', 'copy_type_id')
+
+        # Deleting field 'MediaCollection.status'
+        db.delete_column('media_collections', 'status_id')
+
+        # Deleting field 'MediaCollection.alt_copies'
+        db.delete_column('media_collections', 'alt_copies')
+
+        # Deleting field 'MediaCollection.archiver_notes'
+        db.delete_column('media_collections', 'archiver_notes')
+
+        # Deleting field 'MediaCollection.media_type'
+        db.delete_column('media_collections', 'media_type_id')
+
+        # Deleting field 'MediaCollection.original_format'
+        db.delete_column('media_collections', 'original_format_id')
+
+
+        # Changing field 'MediaCollection.reference'
+        db.alter_column('media_collections', 'reference', self.gf('telemeta.models.core.CharField')(unique=True, max_length=250, null=True))
+        # Adding unique constraint on 'MediaCollection', fields ['reference']
+        db.create_unique('media_collections', ['reference'])
+
+        # Deleting field 'MetadataAuthor.notes'
+        db.delete_column('metadata_authors', 'notes')
+
+        # Deleting field 'Rights.notes'
+        db.delete_column('rights', 'notes')
+
+
+        # Changing field 'MediaCorpusRelated.mime_type'
+        db.alter_column('media_corpus_related', 'mime_type', self.gf('telemeta.models.core.CharField')(max_length=250, null=True))
         # Deleting field 'Instrument.notes'
         db.delete_column('instruments', 'notes')
 
+        # Deleting field 'TapeLength.notes'
+        db.delete_column('tape_length', 'notes')
+
+
+        # Changing field 'MediaCollectionRelated.mime_type'
+        db.alter_column('media_collection_related', 'mime_type', self.gf('telemeta.models.core.CharField')(max_length=250, null=True))
+        # Deleting field 'MetadataWriter.notes'
+        db.delete_column('metadata_writers', 'notes')
+
         # Deleting field 'InstrumentAlias.notes'
         db.delete_column('instrument_aliases', 'notes')
+
+        # Deleting field 'PhysicalFormat.notes'
+        db.delete_column('physical_formats', 'notes')
+
+        # Deleting field 'Publisher.notes'
+        db.delete_column('publishers', 'notes')
+
+        # Deleting field 'GenericStyle.notes'
+        db.delete_column('generic_styles', 'notes')
+
+        # Deleting field 'EthnicGroup.notes'
+        db.delete_column('ethnic_groups', 'notes')
 
 
     models = {
@@ -218,6 +639,7 @@ class Migration(SchemaMigration):
             'acquisition_mode': ('telemeta.models.core.WeakForeignKey', [], {'default': 'None', 'related_name': "'collections'", 'null': 'True', 'blank': 'True', 'to': "orm['telemeta.AcquisitionMode']"}),
             'ad_conversion': ('telemeta.models.core.WeakForeignKey', [], {'default': 'None', 'related_name': "'collections'", 'null': 'True', 'blank': 'True', 'to': "orm['telemeta.AdConversion']"}),
             'alt_copies': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
+            'alt_ids': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
             'alt_title': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
             'approx_duration': ('telemeta.models.core.DurationField', [], {'default': "'0'", 'blank': 'True'}),
             'archiver_notes': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
@@ -256,6 +678,7 @@ class Migration(SchemaMigration):
             'reference': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
             'status': ('telemeta.models.core.WeakForeignKey', [], {'default': 'None', 'related_name': "'collections'", 'null': 'True', 'blank': 'True', 'to': "orm['telemeta.Status']"}),
             'title': ('telemeta.models.core.CharField', [], {'max_length': '250'}),
+            'travail': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
             'year_published': ('telemeta.models.core.IntegerField', [], {'default': '0', 'blank': 'True'})
         },
         'telemeta.mediacollectionidentifier': {
@@ -286,6 +709,7 @@ class Migration(SchemaMigration):
             'Meta': {'ordering': "['code']", 'object_name': 'MediaCorpus', 'db_table': "'media_corpus'"},
             'children': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'corpus'", 'null': 'True', 'symmetrical': 'False', 'to': "orm['telemeta.MediaCollection']"}),
             'code': ('telemeta.models.core.CharField', [], {'unique': 'True', 'max_length': '250'}),
+            'description': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
             'descriptions': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'public_access': ('telemeta.models.core.CharField', [], {'default': "'metadata'", 'max_length': '16', 'blank': 'True'}),
@@ -309,6 +733,7 @@ class Migration(SchemaMigration):
             'Meta': {'ordering': "['code']", 'object_name': 'MediaFonds', 'db_table': "'media_fonds'"},
             'children': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'fonds'", 'null': 'True', 'symmetrical': 'False', 'to': "orm['telemeta.MediaCorpus']"}),
             'code': ('telemeta.models.core.CharField', [], {'unique': 'True', 'max_length': '250'}),
+            'description': ('telemeta.models.core.CharField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
             'descriptions': ('telemeta.models.core.TextField', [], {'default': "''", 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'public_access': ('telemeta.models.core.CharField', [], {'default': "'metadata'", 'max_length': '16', 'blank': 'True'}),

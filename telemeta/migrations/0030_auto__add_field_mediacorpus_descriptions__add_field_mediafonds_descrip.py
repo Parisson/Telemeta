@@ -26,9 +26,9 @@ class Migration(SchemaMigration):
                     corpus.save()
 
             if hasattr(MediaFonds, 'description'):
-            for fonds in MediaFonds.objects.all():
-                fonds.descriptions = fonds.description
-                fonds.save()
+                for fonds in MediaFonds.objects.all():
+                    fonds.descriptions = fonds.description
+                    fonds.save()
 
     def backwards(self, orm):
         # Deleting field 'MediaCorpus.descriptions'
