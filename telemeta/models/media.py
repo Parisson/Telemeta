@@ -123,6 +123,7 @@ class MediaBaseResource(MediaResource):
     "Describe a media base resource"
 
     title                 = CharField(_('title'), required=True)
+    description           = CharField(_('description_old'))
     descriptions          = TextField(_('description'))
     code                  = CharField(_('code'), unique=True, required=True)
     public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES, max_length=16, default="metadata")
@@ -253,6 +254,10 @@ class MediaCollection(MediaResource):
     original_format       = WeakForeignKey('OriginalFormat', related_name="collections", verbose_name=_('original format'))
     physical_format       = WeakForeignKey('PhysicalFormat', related_name="collections", verbose_name=_('archive format'))
     ad_conversion         = WeakForeignKey('AdConversion', related_name='collections', verbose_name=_('digitization'))
+
+    # No more used old fields
+    alt_ids               = CharField(_('copies (obsolete field)'))
+    travail               = CharField(_('archiver notes (obsolete field)'))
 
     # All
     objects               = MediaCollectionManager()
