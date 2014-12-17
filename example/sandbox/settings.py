@@ -39,8 +39,11 @@ TIME_ZONE = 'Europe/Paris'
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
 #LANGUAGE_CODE = 'fr_FR'
+
 LANGUAGES = [ ('fr', 'French'),
               ('en', 'English'),
+              ('de', 'German'),
+              ('zh', 'Chinese'),
 ]
 
 SITE_ID = 1
@@ -125,7 +128,6 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'suit',
-    # 'grappelli',
     'django.contrib.admin',
     'django.contrib.staticfiles',
     'django_extensions',
@@ -137,7 +139,6 @@ INSTALLED_APPS = (
     'timezones',
     'jqchat',
     'extra_views',
-    # 'breadcrumbs',
     'debug_toolbar',
     'bootstrap3',
     'bootstrap_pagination',
@@ -151,6 +152,14 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.static',
     'django.contrib.messages.context_processors.messages',
 )
+
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'ipauth.backend.RangeBackend',
+)
+
+SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
 
 TELEMETA_ORGANIZATION = 'Parisson'
 TELEMETA_SUBJECTS = ('test', 'telemeta', 'sandbox')
@@ -191,6 +200,22 @@ PAGINATION_SETTINGS = {
     'PAGE_RANGE_DISPLAYED': 10,
     'MARGIN_PAGES_DISPLAYED': 2,
 }
+
+DEBUG_TOOLBAR_PATCH_SETTINGS = False
+DEBUG_TOOLBAR_PANELS = [
+    'debug_toolbar.panels.versions.VersionsPanel',
+    'debug_toolbar.panels.timer.TimerPanel',
+    'debug_toolbar.panels.settings.SettingsPanel',
+    'debug_toolbar.panels.headers.HeadersPanel',
+    'debug_toolbar.panels.request.RequestPanel',
+    'debug_toolbar.panels.sql.SQLPanel',
+    'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+    'debug_toolbar.panels.templates.TemplatesPanel',
+    'debug_toolbar.panels.cache.CachePanel',
+    'debug_toolbar.panels.signals.SignalsPanel',
+    'debug_toolbar.panels.logging.LoggingPanel',
+    'debug_toolbar.panels.redirects.RedirectsPanel',
+]
 
 SUIT_CONFIG = {
     'ADMIN_NAME': 'Telemeta Admin'
