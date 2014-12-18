@@ -8,15 +8,26 @@
 {% with resource|to_dublincore as resource %}
 {% include "telemeta/inc/dublincore.html" %}
 {% endwith %}
+
+    {% block dublincore %}
+    <a href="{% url "telemeta-resource-detail" type resource.public_id %}" style="float:left;margin-top:0.5em;margin-bottom:1em">
+      <button type="button" class="btn btn-default">
+         <span class="glyphicon glyphicon-arrow-left"></span> {% trans "Normal View" %}
+      </button>
+    </a>
+    {% endblock dublincore %}
+
 {% endblock %}
 
 {% block delete %}
- <a class="component_icon button icon_previous" style="float:left;margin-top:0.5em;margin-bottom:1em" href="{% url "telemeta-resource-detail" type resource.public_id %}">{% trans "Normal View" %}</a>
 {% if user.is_authenticated and perms.telemeta.delete_mediaresource %}
- <a href="#" onclick="if(confirm(gettrans('delete the resource permanently?'))){window.location.href='{% url "telemeta-resource-delete" type resource.public_id %}';};return false;"
-        class="component_icon button icon_delete" style="float:right;margin-top:0.5em;margin-bottom:1em">{% trans "Delete" %}</a>
+    <a href="#" onclick="if(confirm(gettrans('delete the item permanently?'))){window.location.href='{% url "telemeta-resource-delete" type resource.public_id %}';};return false;" style="float:right;margin-top:0.5em;margin-bottom:1em">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-trash"></span> {% trans "Delete" %}
+      </button>
+    </a>
 {% endif %}
-{% endblock %}
+{% endblock delete %}
 
 {% else %}
     <p>{% trans "No such resource" %}</p>

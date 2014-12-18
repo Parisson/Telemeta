@@ -18,14 +18,26 @@
 {% endblock %}
 
 {% block title_buttons %}
+  <div class="btn-group">
     {% ifequal type 'items' %}
-     <a href="{% url "telemeta-search-type" "items" %}?{{criteria|with_no_sound|build_query_string}}" class="component_icon button icon_filter">{% trans "All" %}</a>
-     <a href="{% url "telemeta-search-type" "items" %}?{{criteria|with_sound|build_query_string}}" class="component_icon button icon_filter">{% trans "Sounds" %}</a>
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+      <span class="glyphicon glyphicon-filter"></span> {% trans "Filters" %} <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+      <li><a href="{% url "telemeta-search-type" "items" %}?{{criteria|with_no_sound|build_query_string}}" class="">{% trans "All" %}</a></li>
+      <li><a href="{% url "telemeta-search-type" "items" %}?{{criteria|with_sound|build_query_string}}">{% trans "Sounds" %}</a></li>
+    </ul>
     {% endifequal %}
     {% ifequal type 'collections' %}
-     <a href="{% url "telemeta-search-type" "collections" %}?{{criteria|with_no_sound|build_query_string}}" class="component_icon button icon_filter">{% trans "All" %}</a>
-     <a href="{% url "telemeta-search-type" "collections" %}?{{criteria|with_sound|build_query_string}}" class="component_icon button icon_filter">{% trans "Sounds" %}</a>
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+      <span class="glyphicon glyphicon-filter"></span> {% trans "Filters" %} <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+      <li><a href="{% url "telemeta-search-type" "collections" %}?{{criteria|with_no_sound|build_query_string}}" class="">{% trans "All" %}</a></li>
+      <li><a href="{% url "telemeta-search-type" "collections" %}?{{criteria|with_sound|build_query_string}}">{% trans "Sounds" %}</a></li>
+    </ul>
     {% endifequal %}
+  </div>
 {% endblock %}
 
 {% block content %}
