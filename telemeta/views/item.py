@@ -462,13 +462,9 @@ class ItemView(ItemBaseMixin):
 
     def item_visualize(self, request, public_id, grapher_id, width, height):
         if not isinstance(width, int) or not isinstance(height, int):
-            if settings.TELEMETA_DEFAULT_WAVEFORM_SIZES:
-                default_size = settings.TELEMETA_DEFAULT_WAVEFORM_SIZES[0].split('x')
-                width = default_size[0]
-                height = default_size[1]
-            else:
-                width = 360
-                height = 130
+            size = self.default_grapher_sizes
+            width = size.split('x')[0]
+            height = size.split('x')[1]
 
         item = MediaItem.objects.get(public_id=public_id)
         mime_type = 'image/png'
