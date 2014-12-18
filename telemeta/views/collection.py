@@ -221,7 +221,7 @@ class CollectionPackageView(View):
             response = HttpResponse(z, content_type='application/zip')
 
         response['Content-Disposition'] = "attachment; filename=%s.%s" % \
-                                             (item.code, 'zip')
+                                             (collection.code, 'zip')
         return response
 
     @method_decorator(login_required)

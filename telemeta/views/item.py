@@ -769,7 +769,7 @@ class ItemAddView(ItemViewMixin, CreateWithInlinesView):
                 collection = collections[0]
                 item.collection = collection
                 items = MediaItem.objects.filter(collection=collection)
-                item.code = auto_code(items, collection.code)
+                item.code = auto_code(collection)
         return model_to_dict(item)
 
     def get_success_url(self):

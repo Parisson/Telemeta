@@ -4,11 +4,14 @@
 import os, sys
 from django.core.urlresolvers import reverse_lazy, reverse
 
-DEBUG = True
-TEMPLATE_DEBUG = DEBUG
-# ALLOWED_HOSTS = ('localhost',)
 sys.dont_write_bytecode = True
 
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+
+DEBUG = True
+TEMPLATE_DEBUG = DEBUG
+
+ALLOWED_HOSTS = ['*']
 
 ADMINS = (
     ('Guillaume Pellerin', 'yomguy@parisson.com'),
@@ -58,10 +61,10 @@ USE_L10N = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = os.path.join(os.path.dirname(__file__), 'media/')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 if not os.path.exists(MEDIA_ROOT):
-	os.mkdir(MEDIA_ROOT)
+    os.mkdir(MEDIA_ROOT)
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -164,10 +167,13 @@ SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
 TELEMETA_ORGANIZATION = 'Parisson'
 TELEMETA_SUBJECTS = ('test', 'telemeta', 'sandbox')
 TELEMETA_DESCRIPTION = "Telemeta TEST sandbox"
+TELEMETA_LOGO = STATIC_URL + 'telemeta/images/logo_telemeta_2.png'
+
 TELEMETA_GMAP_KEY = 'ABQIAAAArg7eSfnfTkBRma8glnGrlxRVbMrhnNNvToCbZQtWdaMbZTA_3RRGObu5PDoiBImgalVnnLU2yN4RMA'
-TELEMETA_CACHE_DIR = MEDIA_ROOT + 'cache/'
-TELEMETA_EXPORT_CACHE_DIR = MEDIA_ROOT + 'export/'
-TELEMETA_DATA_CACHE_DIR = TELEMETA_CACHE_DIR + "data/"
+
+TELEMETA_CACHE_DIR = os.path.join(MEDIA_ROOT, 'cache')
+TELEMETA_EXPORT_CACHE_DIR = os.path.join(MEDIA_ROOT, 'export')
+TELEMETA_DATA_CACHE_DIR = os.path.join(TELEMETA_CACHE_DIR, 'data')
 
 TELEMETA_DOWNLOAD_ENABLED = True
 TELEMETA_STREAMING_FORMATS = ('mp3', 'ogg')
@@ -220,3 +226,28 @@ DEBUG_TOOLBAR_PANELS = [
 SUIT_CONFIG = {
     'ADMIN_NAME': 'Telemeta Admin'
 }
+
+
+# LOG_DIR = os.path.join(BASE_DIR, 'log')
+
+# if not os.path.exists(LOG_DIR):
+#     os.mkdir(LOG_DIR)
+
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'file': {
+#             'level': 'DEBUG',
+#             'class': 'logging.FileHandler',
+#             'filename': os.path.join(LOG_DIR, 'debug.log')
+#         },
+#     },
+#     'loggers': {
+#         'django.request': {
+#             'handlers': ['file'],
+#             'level': 'DEBUG',
+#             'propagate': True,
+#         },
+#     },
+# }
