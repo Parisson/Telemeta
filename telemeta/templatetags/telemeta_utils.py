@@ -454,7 +454,12 @@ class IfLoadedNode(template.Node):
 def has_access(user, item):
     return get_item_access(item, user)
 
-
 @register.filter
 def get_attr(obj, val):
     return getattr(obj, val)
+
+@register.simple_tag
+def logo_url():
+    static_url = getattr(settings, 'STATIC_URL', '/static/')
+    return getattr(settings, 'TELEMETA_LOGO', static_url + '/telemeta/images/logo_telemeta_2.png')
+
