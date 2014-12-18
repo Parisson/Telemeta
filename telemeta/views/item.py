@@ -806,7 +806,7 @@ class ItemCopyView(ItemAddView):
         context['previous'], context['next'] = self.item_previous_next(item)
         #FIXME
         context['mime_type'] = 'audio/mp3'
-        context['export_formats'] = sel.fget_export_formats()
+        context['export_formats'] = self.get_export_formats()
         context['visualizers'] = self.get_graphers()
         context['audio_export_enabled'] = self.export_enabled
         context['auto_zoom'] = True
