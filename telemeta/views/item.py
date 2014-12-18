@@ -461,10 +461,16 @@ class ItemView(ItemBaseMixin):
         return response
 
     def item_visualize(self, request, public_id, grapher_id, width, height):
+        try:
+            width = int(width)
+            height = int(height)
+        except:
+            pass
+
         if not isinstance(width, int) or not isinstance(height, int):
             size = self.default_grapher_sizes[0]
-            width = size.split('x')[0]
-            height = size.split('x')[1]
+            width = int(size.split('x')[0])
+            height = int(size.split('x')[1])
 
         item = MediaItem.objects.get(public_id=public_id)
         mime_type = 'image/png'
@@ -473,7 +479,7 @@ class ItemView(ItemBaseMixin):
         if grapher.id() != grapher_id:
             raise Http404
 
-        size = width + '_' + height
+        size = str(width) + '_' + str(height)
         image_file = '.'.join([public_id, grapher_id, size, 'png'])
 
         # FIX waveform grapher name change
@@ -486,7 +492,7 @@ class ItemView(ItemBaseMixin):
             if source:
                 path = self.cache_data.dir + os.sep + image_file
                 decoder  = timeside.decoder.file.FileDecoder(source)
-                graph = grapher(width = int(width), height = int(height))
+                graph = grapher(width=width, height=height)
                 (decoder | graph).run()
                 graph.watermark('timeside', opacity=.6, margin=(5,5))
                 f = open(path, 'w')
@@ -800,7 +806,7 @@ class ItemCopyView(ItemAddView):
         context['previous'], context['next'] = self.item_previous_next(item)
         #FIXME
         context['mime_type'] = 'audio/mp3'
-        context['export_formats'] = self.get_export_formats()
+        context['export_formats'] = sel.fget_export_formats()
         context['visualizers'] = self.get_graphers()
         context['audio_export_enabled'] = self.export_enabled
         context['auto_zoom'] = True
