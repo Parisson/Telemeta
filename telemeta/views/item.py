@@ -462,7 +462,7 @@ class ItemView(ItemBaseMixin):
 
     def item_visualize(self, request, public_id, grapher_id, width, height):
         if not isinstance(width, int) or not isinstance(height, int):
-            size = self.default_grapher_sizes
+            size = self.default_grapher_sizes[0]
             width = size.split('x')[0]
             height = size.split('x')[1]
 
