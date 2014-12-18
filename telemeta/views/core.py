@@ -275,7 +275,7 @@ def auto_code(collection):
     if suffixes:
         return collection.code + '_' + str(max(suffixes)+1)
     else:
-        return collection.code + '_'
+        return collection.code + '_001'
 
 
 def get_room(content_type=None, id=None, name=None):

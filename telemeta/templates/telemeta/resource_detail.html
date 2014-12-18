@@ -122,13 +122,11 @@ jQuery(document).ready(function(){
 
 {% block delete %}
 {% if user.is_authenticated and perms.telemeta.delete_mediaresource %}
-
     <a href="#" onclick="if(confirm(gettrans('delete the item permanently?'))){window.location.href='{% url "telemeta-resource-delete" type resource.public_id %}';};return false;" style="float:right;margin-top:0.5em;margin-bottom:1em">
       <button type="button" class="btn btn-default">
         <span class="glyphicon glyphicon-trash"></span> {% trans "Delete" %}
       </button>
     </a>
-
 {% endif %}
 {% endblock delete %}
 
