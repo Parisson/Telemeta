@@ -92,7 +92,7 @@ class MediaItemForm(ModelForm):
 
     class Meta:
         model = MediaItem
-        exclude = ('mimetype', 'url',
+        exclude = ('copied_from_item', 'mimetype', 'url',
                     'organization', 'depositor', 'rights',
                     'recordist', 'digitalist', 'digitization_date',
                     'publishing_date', 'scientist', 'topic',
