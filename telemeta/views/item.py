@@ -585,10 +585,10 @@ class ItemView(ItemBaseMixin):
                     metadata=None
                 proc.set_metadata(metadata)
 
-                response = HttpResponse(stream_from_processor(decoder, proc, flag), mimetype=mime_type)
+                response = StreamingHttpResponse(stream_from_processor(decoder, proc, flag), content_type=mime_type)
             else:
                 # cache > stream
-                response = HttpResponse(self.cache_export.read_stream_bin(file), mimetype=mime_type)
+                response = StreamingHttpResponse(self.cache_export.read_stream_bin(file), content_type=mime_type)
 
         response['Content-Disposition'] = 'attachment'
         return response
