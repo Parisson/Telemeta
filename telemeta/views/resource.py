@@ -300,6 +300,11 @@ class ResourceAddView(ResourceMixin, CreateView):
     def get_success_url(self):
         return reverse_lazy('telemeta-resource-list', kwargs={'type':self.kwargs['type']})
 
+    @method_decorator(permission_required('telemeta.add_mediacorpus'))
+    @method_decorator(permission_required('telemeta.add_mediafonds'))
+    def dispatch(self, *args, **kwargs):
+        return super(ResourceAddView, self).dispatch(*args, **kwargs)
+
 
 class ResourceCopyView(ResourceSingleMixin, ResourceAddView):
 
@@ -312,6 +317,11 @@ class ResourceCopyView(ResourceSingleMixin, ResourceAddView):
         return reverse_lazy('telemeta-resource-list', kwargs={'type':self.kwargs['type']})
         # return reverse_lazy('telemeta-resource-detail', kwargs={'type':self.kwargs['type'], 'public_id':self.kwargs['public_id']})
 
+    @method_decorator(permission_required('telemeta.add_mediacorpus'))
+    @method_decorator(permission_required('telemeta.add_mediafonds'))
+    def dispatch(self, *args, **kwargs):
+        return super(ResourceCopyView, self).dispatch(*args, **kwargs)
+
 
 class ResourceDeleteView(ResourceSingleMixin, DeleteView):
 
@@ -320,6 +330,11 @@ class ResourceDeleteView(ResourceSingleMixin, DeleteView):
     def get_success_url(self):
          return reverse_lazy('telemeta-resource-list', kwargs={'type':self.kwargs['type']})
 
+    @method_decorator(permission_required('telemeta.delete_mediacorpus'))
+    @method_decorator(permission_required('telemeta.delete_mediafonds'))
+    def dispatch(self, *args, **kwargs):
+        return super(ResourceDeleteView, self).dispatch(*args, **kwargs)
+
 
 class ResourceEditView(ResourceSingleMixin, UpdateWithInlinesView):
 
@@ -327,3 +342,9 @@ class ResourceEditView(ResourceSingleMixin, UpdateWithInlinesView):
 
     def get_success_url(self):
         return reverse_lazy('telemeta-resource-detail', kwargs={'type':self.kwargs['type'], 'public_id':self.kwargs['public_id']})
+
+    @method_decorator(permission_required('telemeta.change_mediacorpus'))
+    @method_decorator(permission_required('telemeta.change_mediafonds'))
+    def dispatch(self, *args, **kwargs):
+        return super(ResourceEditView, self).dispatch(*args, **kwargs)
+

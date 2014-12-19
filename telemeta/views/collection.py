@@ -324,6 +324,10 @@ class CollectionEditView(CollectionViewMixin, UpdateWithInlinesView):
         context['collection'] = collection
         return context
 
+    @method_decorator(permission_required('telemeta.change_mediacollection'))
+    def dispatch(self, *args, **kwargs):
+        return super(CollectionEditView, self).dispatch(*args, **kwargs)
+
 
 class CollectionAddView(CollectionViewMixin, CreateWithInlinesView):
 
@@ -332,6 +336,10 @@ class CollectionAddView(CollectionViewMixin, CreateWithInlinesView):
 
     def get_success_url(self):
         return reverse_lazy('telemeta-collection-detail', kwargs={'public_id':self.object.code})
+
+    @method_decorator(permission_required('telemeta.add_mediacollection'))
+    def dispatch(self, *args, **kwargs):
+        return super(CollectionAddView, self).dispatch(*args, **kwargs)
 
 
 class CollectionCopyView(CollectionAddView):
@@ -349,3 +357,8 @@ class CollectionCopyView(CollectionAddView):
         collection = self.get_object()
         context['collection'] = collection
         return context
+
+    @method_decorator(permission_required('telemeta.add_mediacollection'))
+    def dispatch(self, *args, **kwargs):
+        return super(CollectionCopyView, self).dispatch(*args, **kwargs)
+
