@@ -585,10 +585,10 @@ class ItemView(ItemBaseMixin):
                     metadata=None
                 proc.set_metadata(metadata)
 
-                response = HttpResponse(stream_from_processor(decoder, proc, flag), mimetype = mime_type)
+                response = HttpResponse(stream_from_processor(decoder, proc, flag), mimetype=mime_type)
             else:
                 # cache > stream
-                response = HttpResponse(self.cache_export.read_stream_bin(file), mimetype = mime_type)
+                response = HttpResponse(self.cache_export.read_stream_bin(file), mimetype=mime_type)
 
         response['Content-Disposition'] = 'attachment'
         return response
@@ -764,6 +764,10 @@ class ItemEditView(ItemViewMixin, UpdateWithInlinesView):
         context['auto_zoom'] = True
         return context
 
+    @method_decorator(permission_required('telemeta.change_mediaitem'))
+    def dispatch(self, *args, **kwargs):
+        return super(ItemEditView, self).dispatch(*args, **kwargs)
+
 
 class ItemAddView(ItemViewMixin, CreateWithInlinesView):
 
@@ -785,6 +789,10 @@ class ItemAddView(ItemViewMixin, CreateWithInlinesView):
 
     def get_success_url(self):
         return reverse_lazy('telemeta-item-detail', kwargs={'public_id':self.object.code})
+
+    @method_decorator(permission_required('telemeta.add_mediaitem'))
+    def dispatch(self, *args, **kwargs):
+        return super(ItemAddView, self).dispatch(*args, **kwargs)
 
 
 class ItemCopyView(ItemAddView):
@@ -811,6 +819,10 @@ class ItemCopyView(ItemAddView):
         context['audio_export_enabled'] = self.export_enabled
         context['auto_zoom'] = True
         return context
+
+    @method_decorator(permission_required('telemeta.add_mediaitem'))
+    def dispatch(self, *args, **kwargs):
+        return super(ItemCopyView, self).dispatch(*args, **kwargs)
 
 
 class ItemDetailView(ItemViewMixin, DetailView):
