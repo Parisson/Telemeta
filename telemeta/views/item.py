@@ -708,12 +708,14 @@ class ItemViewMixin(ItemBaseMixin):
 
         return previous, next
 
-    def get_graphers(self):
+    def get_graphers(self, user):
         graphers = []
         for grapher in self.graphers:
             if grapher.id() == self.default_grapher_id:
                 graphers.insert(0, {'name':grapher.name(), 'id': grapher.id()})
-            else:
+            elif not hasattr(grapher, '_staging'):
+                graphers.append({'name':grapher.name(), 'id': grapher.id()})
+            elif not grapher._staging:
                 graphers.append({'name':grapher.name(), 'id': grapher.id()})
         return graphers
 
@@ -759,7 +761,7 @@ class ItemEditView(ItemViewMixin, UpdateWithInlinesView):
         #FIXME
         context['mime_type'] = 'audio/mp3'
         context['export_formats'] = self.get_export_formats()
-        context['visualizers'] = self.get_graphers()
+        context['visualizers'] = self.get_graphers(self.request.user)
         context['audio_export_enabled'] = self.export_enabled
         context['auto_zoom'] = True
         return context
@@ -815,7 +817,7 @@ class ItemCopyView(ItemAddView):
         #FIXME
         context['mime_type'] = 'audio/mp3'
         context['export_formats'] = self.get_export_formats()
-        context['visualizers'] = self.get_graphers()
+        context['visualizers'] = self.get_graphers(self.request.user)
         context['audio_export_enabled'] = self.export_enabled
         context['auto_zoom'] = True
         return context
@@ -957,7 +959,7 @@ class ItemDetailView(ItemViewMixin, DetailView):
 
         context['item'] = item
         context['export_formats'] = self.get_export_formats()
-        context['visualizers'] = self.get_graphers()
+        context['visualizers'] = self.get_graphers(self.request.user)
         context['auto_zoom'] = self.auto_zoom
         context['audio_export_enabled'] = self.export_enabled
         context['previous'] = previous

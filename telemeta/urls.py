@@ -232,9 +232,7 @@ urlpatterns = patterns('',
 if settings.DEBUG and 'debug_toolbar' in settings.INSTALLED_APPS:
     import debug_toolbar
     urlpatterns += patterns('',
-    url(r'^__debug__/', include(debug_toolbar.urls)),)
+    url(r'^__debug__/', include(debug_toolbar.urls)),
     # for the graphical browser/web console only, omissible
     url(r'json/browse/', 'jsonrpc.views.browse', name="jsonrpc_browser"),
-
-
-    (r'^robots\.txt$', lambda r: HttpResponse(robots_file.read(), mimetype="text/plain")),
+    )
