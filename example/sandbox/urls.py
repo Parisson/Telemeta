@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.conf.urls import patterns, url, include
+from django.http import HttpResponse
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -8,6 +9,8 @@ admin.autodiscover()
 js_info_dict = {
     'packages': ('telemeta',),
 }
+
+robots_file = open('robots.txt', 'r')
 
 urlpatterns = patterns('',
     # Example:
@@ -27,4 +30,6 @@ urlpatterns = patterns('',
     # Languages
     (r'^i18n/', include('django.conf.urls.i18n')),
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
+    (r'^robots\.txt$', lambda r: HttpResponse(robots_file.read(), mimetype="text/plain")),
+
     )

@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /*/download/*$
+Disallow: /*/visualize/*$
+Disallow: /*/analyze/*$
+

@@ -192,7 +192,7 @@ EMAIL_HOST = 'localhost'
 DEFAULT_FROM_EMAIL = 'webmaster@parisson.com'
 
 TIMESIDE_DEFAULT_GRAPHER_ID = 'waveform_centroid'
-TIMESIDE_DEFAULT_WAVEFORM_SIZES = ['360x130', '640x130']
+TIMESIDE_DEFAULT_WAVEFORM_SIZES = ['346x130', '640x130']
 TIMESIDE_AUTO_ZOOM = False
 
 # Settings for django-bootstrap3
