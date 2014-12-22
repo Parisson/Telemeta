@@ -146,6 +146,7 @@ INSTALLED_APPS = (
     'debug_toolbar',
     'bootstrap3',
     'bootstrap_pagination',
+    'googletools',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (

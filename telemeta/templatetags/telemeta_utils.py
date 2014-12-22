@@ -400,12 +400,9 @@ def mime_to_media_type(mime_type):
     else:
         return 'Audio'
 
-@register.filter
-def installed(app):
-    if app in settings.INSTALLED_APPS:
-        return app
-    else:
-        return ''
+@register.simple_tag
+def is_installed(app):
+    return app in settings.INSTALLED_APPS
 
 def do_ifloaded(parser, token):
     bits = token.split_contents()[1:]
@@ -462,4 +459,8 @@ def get_attr(obj, val):
 def logo_url():
     static_url = getattr(settings, 'STATIC_URL', '/static/')
     return getattr(settings, 'TELEMETA_LOGO', static_url + '/telemeta/images/logo_telemeta_2.png')
+
+@register.assignment_tag
+def get_googletools():
+    return 'googletools' in settings.INSTALLED_APPS
 

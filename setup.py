@@ -60,6 +60,7 @@ setup(
         'django-bootstrap-pagination',
         'django-json-rpc==0.6.2',
         'django-suit',
+        'django-google-tools',
         'timeside>=0.5.6',
         'south',
         'sorl-thumbnail',
