@@ -464,3 +464,7 @@ def logo_url():
 def get_googletools():
     return 'googletools' in settings.INSTALLED_APPS
 
+@register.assignment_tag
+def settings_value(name):
+    return getattr(settings, name, "")
+

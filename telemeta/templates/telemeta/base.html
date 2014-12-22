@@ -2,7 +2,8 @@
 {% load i18n %}
 {% load telemeta_utils %}
 {% load bootstrap3 %}
-{% if get_googletools %}
+{% settings_value 'INSTALLED_APPS' as INSTALLED_APPS %}
+{% if 'googletools' in INSTALLED_APPS %}
 {% load googletools %}
 {% endif %}
 
@@ -14,6 +15,13 @@
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+{% block analytics %}
+{% if 'googletools' in INSTALLED_APPS %}
+{% site_verification_code %}
+{% analytics_code %}
+{% endif %}
+{% endblock analytics %}
 
 <link rel="alternate" href="/rss" title="RSS 2.0" type="application/rss+xml" />
 
@@ -186,13 +194,6 @@
 {% endblock %}
 </div>
 {% endblock layout %}
-
-{% block analytics %}
-{% if get_googletools %}
-{% site_verification_code %}
-{% analytics_code %}
-{% endif %}
-{% endblock analytics %}
 
 </body>
 </html>
