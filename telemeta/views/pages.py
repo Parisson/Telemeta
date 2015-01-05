@@ -50,7 +50,7 @@ def language_code(request=None):
     return code.lower()
 
 def project_dir():
-    import settings as settings_mod
+    from django.conf import settings as settings_mod
     if '__init__.py' in settings_mod.__file__:
         p = os.path.dirname(settings_mod.__file__)
     else:
