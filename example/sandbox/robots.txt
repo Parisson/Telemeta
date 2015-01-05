@@ -1,5 +1,4 @@
 User-agent: *
-Disallow: /*/download/*$
-Disallow: /*/visualize/*$
-Disallow: /*/analyze/*$
-
+Disallow: *.mp3$
+Disallow: */WIDTHxHEIGHT/
+Disallow: */xml/
