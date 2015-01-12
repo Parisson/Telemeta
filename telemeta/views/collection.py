@@ -292,7 +292,7 @@ class CollectionDetailView(CollectionViewMixin, DetailView):
         check_related_media(context['related_media'])
         context['parents'] = MediaCorpus.objects.filter(children=collection)
         revisions = Revision.objects.filter(element_type='collection',
-                                            element_id=collection.id).order_by('-time')
+                                            element_id=collection.id)
         if revisions:
             context['last_revision'] = revisions[0]
         else:
@@ -316,6 +316,8 @@ class CollectionEditView(CollectionViewMixin, UpdateWithInlinesView):
         return super(CollectionEditView, self).form_valid(form)
 
     def get_success_url(self):
+        #FIXME should be in form_valid but doesn't work with extra_views
+        self.get_object().set_revision(self.request.user)
         return reverse_lazy('telemeta-collection-detail', kwargs={'public_id':self.kwargs['public_id']})
 
     def get_context_data(self, **kwargs):

@@ -55,6 +55,8 @@ from telemeta.util.kdenlive.session import *
 from django.db import models
 from django.db.models import URLField
 from django.conf import settings
+from django.core.urlresolvers import reverse, reverse_lazy
+from django.contrib.sites.models import Site
 
 
 # Special code regex of collections for the branch
@@ -94,6 +96,9 @@ app_name = 'telemeta'
 def get_random_hash():
     hash = random.getrandbits(64)
     return "%016x" % hash
+
+def get_full_url(path):
+    return 'http://' + Site.objects.get_current().domain + path
 
 
 class MediaResource(ModelCore):
@@ -196,6 +201,7 @@ class MediaCollection(MediaResource):
 
     element_type = 'collection'
 
+
     def is_valid_collection_code(value):
         "Check if the collection code is well formed"
         regex = '^' + collection_code_regex + '$'
@@ -262,8 +268,16 @@ class MediaCollection(MediaResource):
     # All
     objects               = MediaCollectionManager()
 
+    class Meta(MetaCore):
+        db_table = 'media_collections'
+        ordering = ['code']
+        verbose_name = _('collection')
+
     def __unicode__(self):
         return self.code
+
+    def save(self, force_insert=False, force_update=False, user=None, code=None):
+        super(MediaCollection, self).save(force_insert, force_update)
 
     @property
     def public_id(self):
@@ -292,7 +306,6 @@ class MediaCollection(MediaResource):
         return countries
     countries.verbose_name = _("states / nations")
 
-
     def main_countries(self):
         "Return the main countries of the items (no aliases or ancestors)"
         countries = []
@@ -301,7 +314,6 @@ class MediaCollection(MediaResource):
                 countries.append(item.location)
         countries.sort(self.__name_cmp)
         return countries
-
     main_countries.verbose_name = _("states / nations")
 
     def ethnic_groups(self):
@@ -333,13 +345,50 @@ class MediaCollection(MediaResource):
         return size
     computed_size.verbose_name = _('collection size')
 
-    def save(self, force_insert=False, force_update=False, user=None, code=None):
-        super(MediaCollection, self).save(force_insert, force_update)
+    def document_status(self):
+        if '_I_' in self.public_id:
+            return _('Unpublished')
+        elif '_E_' in self.public_id:
+            return _('Published')
+        else:
+            return ''
 
-    class Meta(MetaCore):
-        db_table = 'media_collections'
-        ordering = ['code']
-        verbose_name = _('collection')
+    def last_revision(self):
+        revisions = Revision.objects.filter(element_type=self.element_type, element_id = self.id)
+        if revisions:
+            return revisions[0]
+        else:
+            return Revision()
+
+    def to_dict_with_more(self):
+        metadata = self.to_dict()
+        metadata['url'] = get_full_url(reverse('telemeta-collection-detail', kwargs={'public_id':self.pk}))
+        metadata['doc_status'] = self.document_status()
+        metadata['countries'] = ';'.join(self.main_countries())
+        metadata['ethnic_groups'] = ';'.join(self.ethnic_groups())
+        metadata['last_modification_date'] = unicode(self.last_revision().time)
+        metadata['computed_duration'] = unicode(self.computed_duration())
+        metadata['computed_size'] = unicode(self.computed_size())
+        metadata['number_of_items'] = unicode(self.items.all().count())
+
+        i = 0
+        for media in self.related.all():
+            metadata['related_media_title' + '_' + str(i)] = media.title
+            if media.url:
+                metadata['related_media_url' + '_' + str(i)] = media.url
+            else:
+                metadata['related_media_url' + '_' + str(i)] = get_full_url(reverse('telemeta-collection-related',
+                                            kwargs={'public_id': self.public_id, 'media_id': media.id}))
+            i += 1
+
+        i = 0
+        for indentifier in self.identifiers.all():
+            metadata['identifier' + '_' + str(i)] = identifier.identifier
+            metadata['identifier_type' + '_' + str(i)] = identifier.type
+            metadata['identifier_date_last' + '_' + str(i)] = unicode(identifier.date_last)
+            metadata['identifier_notes' + '_' + str(i)] = identifier.notes
+            i += 1
+        return metadata
 
 
 class MediaCollectionRelated(MediaRelated):
@@ -519,6 +568,10 @@ class MediaItem(MediaResource):
             return 0
     size.verbose_name = _('item size')
 
+    def to_dict_with_more(self):
+        metadata = self.to_dict()
+        metadata['url'] = reverse_lazy('telemeta-item-detail', kwargs={'public_id':self.pk})
+        return metadata
 
 class MediaItemRelated(MediaRelated):
     "Item related media"

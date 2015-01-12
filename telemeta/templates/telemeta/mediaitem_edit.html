@@ -81,7 +81,7 @@
 
 {% block infos %}
   <div>
-    <form enctype="multipart/form-data" id="_editForm" method="post" action="">{% csrf_token %}
+    <form id="_editForm" method="post" action="" enctype="multipart/form-data" data-ajax="false">{% csrf_token %}
 
     <ul class="nav nav-tabs" role="tablist">
       <li class="active"><a href="#general" role="tab" data-toggle="tab">{% trans "General" %}</a></li>

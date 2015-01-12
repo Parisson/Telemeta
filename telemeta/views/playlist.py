@@ -111,7 +111,7 @@ class PlaylistView(object):
                     elements.append(collection)
 
         if elements:
-            element = elements[0].to_dict()
+            element = elements[0].to_dict_with_more()
             tags = element.keys()
             # code and title on the two first column
             tags.remove('code')
@@ -123,7 +123,7 @@ class PlaylistView(object):
 
             for element in elements:
                 data = []
-                element = element.to_dict()
+                element = element.to_dict_with_more()
                 for tag in tags:
                     data.append(element[tag])
                 writer.writerow(data)

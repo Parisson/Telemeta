@@ -118,8 +118,8 @@ urlpatterns = patterns('',
     url(r'^archives/collections_add/$', CollectionAddView.as_view(), name="telemeta-collection-add"),
     url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/add_item/$', ItemAddView.as_view(), name="telemeta-collection-additem"),
     url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/delete/$', collection_view.collection_delete, name="telemeta-collection-delete"),
-    url(r'^archives/collections/(?P<collection_public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)/view/$', collection_view.related_media_collection_stream, name="telemeta-collection-related"),
-    url(r'^archives/collections/(?P<collection_public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)/download/$', collection_view.related_media_collection_download, name="telemeta-collection-related-download"),
+    url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)/view/$', collection_view.related_media_collection_stream, name="telemeta-collection-related"),
+    url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)/download/$', collection_view.related_media_collection_download, name="telemeta-collection-related-download"),
 
     # FIXME: need all paths
     url(r'^collections/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(), {'url': '/archives/collections/%(path)s/', 'permanent': False}, name="telemeta-collection-redir"),
