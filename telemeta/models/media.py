@@ -376,7 +376,7 @@ class MediaCollection(MediaResource):
             metadata['related_media_title' + '_' + str(i)] = media.title
             if media.url:
                 metadata['related_media_url' + '_' + str(i)] = media.url
-            else:
+            elif media.url:
                 metadata['related_media_url' + '_' + str(i)] = get_full_url(reverse('telemeta-collection-related',
                                             kwargs={'public_id': self.public_id, 'media_id': media.id}))
             i += 1
