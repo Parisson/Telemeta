@@ -975,3 +975,4 @@ class ItemDetailView(ItemViewMixin, DetailView):
         context['format'] = format
 
         return context
+

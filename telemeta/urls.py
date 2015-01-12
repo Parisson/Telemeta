@@ -36,7 +36,7 @@
 
 from django.conf.urls import patterns, url, include
 from django.conf import settings
-from django.views.generic import RedirectView
+from django.views.generic.base import RedirectView
 from django.views.generic.list import ListView
 from telemeta.models import MediaItem, MediaCollection, MediaItemMarker, MediaCorpus, MediaFonds
 from telemeta.views import *
@@ -94,8 +94,15 @@ urlpatterns = patterns('',
     # Markers
     url(r'^archives/markers/(?P<marker_id>[A-Za-z0-9]+)/$', item_view.item_detail, name="telemeta-item-detail-marker"),
 
-    # FIXME: need all paths
-    url(r'^items/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(), {'url': '/archives/items/%(path)s/', 'permanent': False}, name="telemeta-item-redir"),
+    # Redirections to old URLs
+    url(r'^items/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(url='/archives/items/%(path)s/',
+                                                 permanent= True), name="telemeta-item-redir"),
+    url(r'^collections/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(url='/archives/collections/%(path)s/',
+                                                 permanent= True), name="telemeta-collection-redir"),
+    url(r'^corpus/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(url='/archives/corpus/%(path)s/',
+                                                 permanent= True), name="telemeta-corpus-redir"),
+    url(r'^fonds/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(url='/archives/fonds/%(path)s/',
+                                                 permanent= True), name="telemeta-fonds-redir"),
 
     # collections
     url(r'^archives/collections/$', CollectionListView.as_view(), name="telemeta-collections"),
