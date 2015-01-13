@@ -97,13 +97,17 @@ class PlaylistView(object):
         for resource in resources:
             if resource_type == 'items':
                 if resource.resource_type == 'collection':
-                    collection = MediaCollection.objects.get(id=resource.resource_id)
-                    collection_items = MediaItem.objects.filter(collection=collection)
-                    for item in collection_items:
-                        elements.append(item)
+                    collections = MediaCollection.objects.filter(id=resource.resource_id)
+                    if collections:
+                        collection = collections[0]
+                        collection_items = MediaItem.objects.filter(collection=collection)
+                        for item in collection_items:
+                            elements.append(item)
                 elif resource.resource_type == 'item':
-                    item = MediaItem.objects.get(id=resource.resource_id)
-                    elements.append(item)
+                    items = MediaItem.objects.filter(id=resource.resource_id)
+                    if items:
+                        item = items[0]
+                        elements.append(item)
 
             elif resource_type == 'collections':
                 if resource.resource_type == 'collection':
