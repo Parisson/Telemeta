@@ -569,7 +569,7 @@ class MediaItem(MediaResource):
 
         keywords = []
         for keyword in self.keywords():
-            keywords.append(keyword.name)
+            keywords.append(keyword.value)
         metadata['keywords'] = ';'.join(keywords)
 
         i = 0
