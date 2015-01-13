@@ -588,24 +588,22 @@ class MediaItem(MediaResource):
                                             kwargs={'public_id': self.public_id, 'media_id': media.id}))
             i += 1
 
-        i = 0
+
+        instruments = []
+        instrument_vernacular_names = []
+        performers = []
+
         for performance in self.performances.all():
-            tag = 'instrument_name' + '_' + str(i)
             if performance.instrument:
-                metadata[tag] = performance.instrument.name
-            else:
-                metadata[tag] = ''
+                instruments.append(performance.instrument.name)
             if performance.alias:
-                tag = 'vernacular_name' + '_' + str(i)
-                metadata[tag] = performance.alias.name
-            else:
-                metadata[tag] = ''
+                instrument_vernacular_names.append(performance.alias.name)
             if performance.musicians:
-                tag = 'musicians' + '_' + str(i)
-                metadata[tag] = performance.musicians
-            else:
-                metadata[tag] = ''
-            i += 1
+                performers.append(performance.musicians.replace('et', ';'))
+
+        metadata['instruments'] = ';'.join(instruments)
+        metadata['instrument_vernacular_names'] = ';'.join(instrument_vernacular_names)
+        metadata['performers'] = ';'.join(performers)
 
         i = 0
         for indentifier in self.identifiers.all():
