@@ -111,9 +111,9 @@ class PlaylistView(object):
                     elements.append(collection)
 
         if elements:
-            element = elements[0].to_dict_with_more()
-            tags = element.keys()
-            for e in elements:
+            tags = []
+            element_dicts = [e.to_dict_with_more() for e in elements]
+            for e in element_dicts:
                 for key in e.keys():
                     if not key in tags:
                         tags.append(key)
@@ -125,11 +125,13 @@ class PlaylistView(object):
             tags.insert(0, 'code')
             writer.writerow(tags)
 
-            for element in elements:
+            for element in element_dicts:
                 data = []
-                element = element.to_dict_with_more()
                 for tag in tags:
-                    data.append(element[tag])
+                    if tag in element.keys():
+                        data.append(element[tag])
+                    else:
+                        data.append('')
                 writer.writerow(data)
 
         return response
