@@ -82,7 +82,7 @@ class MediaCollectionForm(ModelForm):
 
     class Meta:
         model = MediaCollection
-        exclude = ['alt_ids', 'travail']
+        exclude = model.exclude
 
     def clean_doctype_code(self):
         return self.cleaned_data['doctype_code'] or 0
@@ -92,11 +92,7 @@ class MediaItemForm(ModelForm):
 
     class Meta:
         model = MediaItem
-        exclude = ('copied_from_item', 'mimetype', 'url',
-                    'organization', 'depositor', 'rights',
-                    'recordist', 'digitalist', 'digitization_date',
-                    'publishing_date', 'scientist', 'topic',
-                    'summary', 'contributor', )
+        exclude = model.exclude
 
     def clean_code(self):
         return self.cleaned_data['code'] or None

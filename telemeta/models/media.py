@@ -40,6 +40,7 @@ import re, os, random
 import mimetypes
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext
 from django.core.exceptions import ValidationError
 from telemeta.models.core import *
 from telemeta.models.enum import ContextKeyword
@@ -57,6 +58,7 @@ from django.db.models import URLField
 from django.conf import settings
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib.sites.models import Site
+from django.forms.models import model_to_dict
 
 
 # Special code regex of collections for the branch
@@ -201,7 +203,6 @@ class MediaCollection(MediaResource):
 
     element_type = 'collection'
 
-
     def is_valid_collection_code(value):
         "Check if the collection code is well formed"
         regex = '^' + collection_code_regex + '$'
@@ -267,6 +268,8 @@ class MediaCollection(MediaResource):
 
     # All
     objects               = MediaCollectionManager()
+
+    exclude = ['alt_ids', 'travail']
 
     class Meta(MetaCore):
         db_table = 'media_collections'
@@ -347,14 +350,14 @@ class MediaCollection(MediaResource):
 
     def document_status(self):
         if '_I_' in self.public_id:
-            return _('Unpublished')
+            return ugettext('Unpublished')
         elif '_E_' in self.public_id:
-            return _('Published')
+            return ugettext('Published')
         else:
             return ''
 
     def to_dict_with_more(self):
-        metadata = self.to_dict()
+        metadata = model_to_dict(self, fields=[], exclude=self.exclude)
         metadata['url'] = get_full_url(reverse('telemeta-collection-detail', kwargs={'public_id':self.pk}))
         metadata['doc_status'] = self.document_status()
         metadata['countries'] = ';'.join([location.name for location in self.main_countries()])
@@ -461,6 +464,12 @@ class MediaItem(MediaResource):
     # Manager
     objects               = MediaItemManager()
 
+    exclude = ['copied_from_item', 'mimetype', 'url',
+                    'organization', 'depositor', 'rights',
+                    'recordist', 'digitalist', 'digitization_date',
+                    'publishing_date', 'scientist', 'topic',
+                    'summary', 'contributor', ]
+
     def keywords(self):
         return ContextKeyword.objects.filter(item_relations__item = self)
     keywords.verbose_name = _('keywords')
@@ -562,11 +571,11 @@ class MediaItem(MediaResource):
     size.verbose_name = _('item size')
 
     def to_dict_with_more(self):
-        metadata = self.to_dict()
+        metadata = model_to_dict(self, fields=[], exclude=self.exclude)
         metadata['url'] = get_full_url(reverse('telemeta-item-detail', kwargs={'public_id':self.pk}))
         metadata['last_modification_date'] = unicode(self.get_revision().time)
         # metadata['computed_duration'] = unicode(self.computed_duration())
-        metadata['computed_size'] = unicode(self.size())
+        metadata['file_size'] = unicode(self.size())
 
         keywords = []
         for keyword in self.keywords():
