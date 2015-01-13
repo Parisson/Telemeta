@@ -72,6 +72,7 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib.contenttypes.models import ContentType
 from django.views.decorators.http import condition
 from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy
 from django.forms.models import model_to_dict
 from django.views.generic.edit import DeletionMixin, BaseDeleteView
 from django.contrib.sites.models import Site

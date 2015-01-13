@@ -745,11 +745,15 @@ class ItemEditView(ItemViewMixin, UpdateWithInlinesView):
     form_class = MediaItemForm
     template_name = 'telemeta/mediaitem_edit.html'
 
-    def form_valid(self, form):
-        messages.info(self.request, _("You have successfully updated your item."))
-        return super(ItemEditView, self).form_valid(form)
+    def forms_valid(self, form, inlines):
+        messages.info(self.request, ugettext_lazy("You have successfully updated your item."))
+        obj = form.save()
+        obj.set_revision(self.request.user)
+        return super(ItemEditView, self).forms_valid(form, inlines)
 
     def get_success_url(self):
+        #FIXME should be in form_valid but doesn't work with extra_views
+        self.get_object().set_revision(self.request.user)
         return reverse_lazy('telemeta-item-detail', kwargs={'public_id':self.object.code})
 
     def get_context_data(self, **kwargs):
@@ -789,7 +793,15 @@ class ItemAddView(ItemViewMixin, CreateWithInlinesView):
                 item.code = auto_code(collection)
         return model_to_dict(item)
 
+    def forms_valid(self, form, inlines):
+        messages.info(self.request, ugettext_lazy("You have successfully added your item."))
+        obj = form.save()
+        obj.set_revision(self.request.user)
+        return super(ItemAddView, self).forms_valid(form, inlines)
+
     def get_success_url(self):
+        #FIXME should be in form_valid but doesn't work with extra_views
+        self.get_object().set_revision(self.request.user)
         return reverse_lazy('telemeta-item-detail', kwargs={'public_id':self.object.code})
 
     @method_decorator(permission_required('telemeta.add_mediaitem'))
@@ -806,6 +818,8 @@ class ItemCopyView(ItemAddView):
         return model_to_dict(self.get_object())
 
     def get_success_url(self):
+        #FIXME should be in form_valid but doesn't work with extra_views
+        self.get_object().set_revision(self.request.user)
         return reverse_lazy('telemeta-item-detail', kwargs={'public_id':self.object.code})
 
     def get_context_data(self, **kwargs):

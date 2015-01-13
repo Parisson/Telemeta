@@ -353,20 +353,13 @@ class MediaCollection(MediaResource):
         else:
             return ''
 
-    def last_revision(self):
-        revisions = Revision.objects.filter(element_type=self.element_type, element_id = self.id)
-        if revisions:
-            return revisions[0]
-        else:
-            return Revision()
-
     def to_dict_with_more(self):
         metadata = self.to_dict()
         metadata['url'] = get_full_url(reverse('telemeta-collection-detail', kwargs={'public_id':self.pk}))
         metadata['doc_status'] = self.document_status()
         metadata['countries'] = ';'.join([location.name for location in self.main_countries()])
         metadata['ethnic_groups'] = ';'.join([group.value for group in self.ethnic_groups()])
-        metadata['last_modification_date'] = unicode(self.last_revision().time)
+        metadata['last_modification_date'] = unicode(self.get_revision().time)
         metadata['computed_duration'] = unicode(self.computed_duration())
         metadata['computed_size'] = unicode(self.computed_size())
         metadata['number_of_items'] = unicode(self.items.all().count())
@@ -469,7 +462,6 @@ class MediaItem(MediaResource):
 
     def keywords(self):
         return ContextKeyword.objects.filter(item_relations__item = self)
-
     keywords.verbose_name = _('keywords')
 
     @property
@@ -570,8 +562,42 @@ class MediaItem(MediaResource):
 
     def to_dict_with_more(self):
         metadata = self.to_dict()
-        metadata['url'] = reverse_lazy('telemeta-item-detail', kwargs={'public_id':self.pk})
+        metadata['url'] = get_full_url(reverse('telemeta-item-detail', kwargs={'public_id':self.pk}))
+        metadata['last_modification_date'] = unicode(self.get_revision().time)
+        # metadata['computed_duration'] = unicode(self.computed_duration())
+        metadata['computed_size'] = unicode(self.size())
+
+        keywords = []
+        for keyword in self.keywords():
+            keywords.append(keyword.name)
+        metadata['keywords'] = ';'.join(keywords)
+
+        i = 0
+        for media in self.related.all():
+            metadata['related_media_title' + '_' + str(i)] = media.title
+            if media.url:
+                metadata['related_media_url' + '_' + str(i)] = media.url
+            elif media.url:
+                metadata['related_media_url' + '_' + str(i)] = get_full_url(reverse('telemeta-collection-related',
+                                            kwargs={'public_id': self.public_id, 'media_id': media.id}))
+            i += 1
+
+        i = 0
+        for performance in self.performances.all():
+            metadata['instrument_name' + '_' + str(i)] = performance.instrument.name
+            metadata['vernacular_name' + '_' + str(i)] = performance.alias.name
+            metadata['musicians' + '_' + str(i)] = performance.musicians
+            i += 1
+
+        i = 0
+        for indentifier in self.identifiers.all():
+            metadata['identifier' + '_' + str(i)] = identifier.identifier
+            metadata['identifier_type' + '_' + str(i)] = identifier.type
+            metadata['identifier_date_last' + '_' + str(i)] = unicode(identifier.date_last)
+            metadata['identifier_notes' + '_' + str(i)] = identifier.notes
+            i += 1
         return metadata
+
 
 class MediaItemRelated(MediaRelated):
     "Item related media"

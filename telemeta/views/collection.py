@@ -311,13 +311,13 @@ class CollectionEditView(CollectionViewMixin, UpdateWithInlinesView):
     template_name = 'telemeta/collection_edit.html'
     inlines = [CollectionRelatedInline, CollectionIdentifierInline]
 
-    def form_valid(self, form):
-        messages.info(self.request, _("You have successfully updated your collection."))
-        return super(CollectionEditView, self).form_valid(form)
+    def forms_valid(self, form, inlines):
+        messages.info(self.request, ugettext_lazy("You have successfully updated your collection."))
+        obj = form.save()
+        obj.set_revision(self.request.user)
+        return super(CollectionEditView, self).forms_valid(form, inlines)
 
     def get_success_url(self):
-        #FIXME should be in form_valid but doesn't work with extra_views
-        self.get_object().set_revision(self.request.user)
         return reverse_lazy('telemeta-collection-detail', kwargs={'public_id':self.kwargs['public_id']})
 
     def get_context_data(self, **kwargs):
@@ -336,6 +336,12 @@ class CollectionAddView(CollectionViewMixin, CreateWithInlinesView):
     template_name = 'telemeta/collection_add.html'
     inlines = [CollectionRelatedInline, CollectionIdentifierInline]
 
+    def forms_valid(self, form, inlines):
+        messages.info(self.request, ugettext_lazy("You have successfully added your collection."))
+        obj = form.save()
+        obj.set_revision(self.request.user)
+        return super(CollectionAddView, self).forms_valid(form, inlines)
+
     def get_success_url(self):
         return reverse_lazy('telemeta-collection-detail', kwargs={'public_id':self.object.code})
 
@@ -350,9 +356,6 @@ class CollectionCopyView(CollectionAddView):
 
     def get_initial(self):
         return model_to_dict(self.get_object())
-
-    def get_success_url(self):
-        return reverse_lazy('telemeta-collection-detail', kwargs={'public_id':self.object.code})
 
     def get_context_data(self, **kwargs):
         context = super(CollectionCopyView, self).get_context_data(**kwargs)
