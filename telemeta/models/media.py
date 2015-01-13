@@ -585,8 +585,14 @@ class MediaItem(MediaResource):
         i = 0
         for performance in self.performances.all():
             metadata['instrument_name' + '_' + str(i)] = performance.instrument.name
-            metadata['vernacular_name' + '_' + str(i)] = performance.alias.name
-            metadata['musicians' + '_' + str(i)] = performance.musicians
+            if performance.alias:
+                metadata['vernacular_name' + '_' + str(i)] = performance.alias.name
+            else:
+                metadata['vernacular_name' + '_' + str(i)] = ''
+            if if performance.musicians:
+                metadata['musicians' + '_' + str(i)] = performance.musicians
+            else:
+                metadata['musicians' + '_' + str(i)] = ''
             i += 1
 
         i = 0
