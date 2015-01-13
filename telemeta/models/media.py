@@ -368,9 +368,10 @@ class MediaCollection(MediaResource):
         for media in self.related.all():
             metadata['related_media_title' + '_' + str(i)] = media.title
             if media.url:
-                metadata['related_media_url' + '_' + str(i)] = media.url
+                tag = 'related_media_url' + '_' + str(i)
+                metadata[tag] = media.url
             elif media.url:
-                metadata['related_media_url' + '_' + str(i)] = get_full_url(reverse('telemeta-collection-related',
+                metadata[tag] = get_full_url(reverse('telemeta-collection-related',
                                             kwargs={'public_id': self.public_id, 'media_id': media.id}))
             i += 1
 
@@ -574,25 +575,36 @@ class MediaItem(MediaResource):
 
         i = 0
         for media in self.related.all():
-            metadata['related_media_title' + '_' + str(i)] = media.title
+            if media.title:
+                tag = 'related_media_title' + '_' + str(i)
+                metadata[tag] = media.title
+            else:
+                metadata[tag] = ''
             if media.url:
-                metadata['related_media_url' + '_' + str(i)] = media.url
+                tag = 'related_media_url' + '_' + str(i)
+                metadata[tag] = media.url
             elif media.url:
-                metadata['related_media_url' + '_' + str(i)] = get_full_url(reverse('telemeta-collection-related',
+                metadata[tag] = get_full_url(reverse('telemeta-collection-related',
                                             kwargs={'public_id': self.public_id, 'media_id': media.id}))
             i += 1
 
         i = 0
         for performance in self.performances.all():
-            metadata['instrument_name' + '_' + str(i)] = performance.instrument.name
+            tag = 'instrument_name' + '_' + str(i)
+            if performance.instrument:
+                metadata[tag] = performance.instrument.name
+            else:
+                metadata[tag] = ''
             if performance.alias:
-                metadata['vernacular_name' + '_' + str(i)] = performance.alias.name
+                tag = 'vernacular_name' + '_' + str(i)
+                metadata[tag] = performance.alias.name
             else:
-                metadata['vernacular_name' + '_' + str(i)] = ''
+                metadata[tag] = ''
             if performance.musicians:
-                metadata['musicians' + '_' + str(i)] = performance.musicians
+                tag = 'musicians' + '_' + str(i)
+                metadata[tag] = performance.musicians
             else:
-                metadata['musicians' + '_' + str(i)] = ''
+                metadata[tag] = ''
             i += 1
 
         i = 0
