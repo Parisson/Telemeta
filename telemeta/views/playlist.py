@@ -111,8 +111,12 @@ class PlaylistView(object):
                     elements.append(collection)
 
         if elements:
-            element = elements[0].to_dict_with_more()
+            element = elements_base[0].to_dict_with_more()
             tags = element.keys()
+            for e in elements:
+                for key in e.keys():
+                    if not key in tags:
+                        tags.append(key)
             # code and title on the two first column
             tags.remove('code')
             tags.remove('title')
