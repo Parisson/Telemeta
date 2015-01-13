@@ -589,7 +589,7 @@ class MediaItem(MediaResource):
                 metadata['vernacular_name' + '_' + str(i)] = performance.alias.name
             else:
                 metadata['vernacular_name' + '_' + str(i)] = ''
-            if if performance.musicians:
+            if performance.musicians:
                 metadata['musicians' + '_' + str(i)] = performance.musicians
             else:
                 metadata['musicians' + '_' + str(i)] = ''
