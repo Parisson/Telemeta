@@ -111,7 +111,7 @@ class PlaylistView(object):
                     elements.append(collection)
 
         if elements:
-            element = elements_base[0].to_dict_with_more()
+            element = elements[0].to_dict_with_more()
             tags = element.keys()
             for e in elements:
                 for key in e.keys():
