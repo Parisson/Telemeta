@@ -356,6 +356,9 @@ class MediaCollection(MediaResource):
         else:
             return ''
 
+    def get_url(self):
+        return get_full_url(reverse('telemeta-collection-detail', kwargs={'public_id':self.pk}))
+
     def to_dict_with_more(self):
         metadata = model_to_dict(self, fields=[], exclude=self.exclude)
         metadata['url'] = get_full_url(reverse('telemeta-collection-detail', kwargs={'public_id':self.pk}))
@@ -570,12 +573,16 @@ class MediaItem(MediaResource):
             return 0
     size.verbose_name = _('item size')
 
+    def get_url(self):
+        return get_full_url(reverse('telemeta-item-detail', kwargs={'public_id':self.pk}))
+
     def to_dict_with_more(self):
         metadata = model_to_dict(self, fields=[], exclude=self.exclude)
-        metadata['url'] = get_full_url(reverse('telemeta-item-detail', kwargs={'public_id':self.pk}))
+        metadata['url'] = self.get_url()
         metadata['last_modification_date'] = unicode(self.get_revision().time)
         # metadata['computed_duration'] = unicode(self.computed_duration())
         metadata['file_size'] = unicode(self.size())
+        metadata['collection'] = self.collection.get_url()
 
         keywords = []
         for keyword in self.keywords():
