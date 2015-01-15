@@ -648,7 +648,7 @@ class MediaItem(MediaResource):
             metadata['identifier_notes' + '_' + str(i)] = identifier.notes
             i += 1
 
-        analyzers = ['channels', 'samplerate', 'duration', 'resolution', 'mimetype']
+        analyzers = ['channels', 'samplerate', 'duration', 'resolution', 'mime_type']
         for analyzer_id in analyzers:
             analysis = MediaItemAnalysis.objects.filter(item=self, analyzer_id=analyzer_id)
             if analysis:
