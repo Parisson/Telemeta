@@ -363,7 +363,7 @@ class MediaCollection(MediaResource):
         # metadata = model_to_dict(self, fields=[], exclude=self.exclude)
         metadata = self.to_dict()
         for key in self.exclude:
-            if key in metadata.key():
+            if key in metadata.keys():
                 del metadata[key]
 
         metadata['url'] = get_full_url(reverse('telemeta-collection-detail', kwargs={'public_id':self.pk}))
@@ -596,7 +596,7 @@ class MediaItem(MediaResource):
         # metadata = model_to_dict(self, fields=[], exclude=self.exclude)
         metadata = self.to_dict()
         for key in self.exclude:
-            if key in metadata.key():
+            if key in metadata.keys():
                 del metadata[key]
 
         metadata['url'] = self.get_url()
