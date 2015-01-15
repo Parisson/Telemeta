@@ -627,10 +627,12 @@ class MediaItem(MediaResource):
             metadata['identifier_notes' + '_' + str(i)] = identifier.notes
             i += 1
 
-        metadata['channels'] = MediaItemAnalysis.objects.get(item=self, analyzer_id='channels').value
-        metadata['samplerate'] = MediaItemAnalysis.objects.get(item=self, analyzer_id='samplerate').value
-        metadata['duration'] = MediaItemAnalysis.objects.get(item=self, analyzer_id='duration').value
-        metadata['resolution'] = MediaItemAnalysis.objects.get(item=self, analyzer_id='resolution').value
+        analyzers = ['channels', 'samplerate', 'duration', 'resolution']
+        for analyzer_id in analyzers:
+            analysis = MediaItemAnalysis.objects.filter(item=self, analyzer_id=analyzer_id)
+            if analysis:
+                metadata[analyzer_id] = analysis[0].value
+
         metadata['file_size'] = unicode(self.size())
         metadata['thumbnail'] = get_full_url(reverse('telemeta-item-visualize',
                                             kwargs={'public_id': self.public_id,
