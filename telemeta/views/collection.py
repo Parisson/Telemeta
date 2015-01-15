@@ -141,15 +141,15 @@ class CollectionView(object):
         collection.delete()
         return redirect('telemeta-collections')
 
-    def related_media_collection_stream(self, request, collection_public_id, media_id):
-        collection = MediaCollection.objects.get(public_id=collection_public_id)
+    def related_media_collection_stream(self, request, public_id, media_id):
+        collection = MediaCollection.objects.get(public_id=public_id)
         media = MediaCollectionRelated.objects.get(collection=collection, id=media_id)
         response = HttpResponse(stream_from_file(media.file.path), mimetype=media.mime_type)
 #        response['Content-Disposition'] = 'attachment'
         return response
 
-    def related_media_collection_download(self, request, collection_public_id, media_id):
-        collection = MediaCollection.objects.get(public_id=collection_public_id)
+    def related_media_collection_download(self, request, public_id, media_id):
+        collection = MediaCollection.objects.get(public_id=public_id)
         media = MediaCollectionRelated.objects.get(collection=collection, id=media_id)
         filename = media.file.path.split(os.sep)[-1]
         response = HttpResponse(stream_from_file(media.file.path), mimetype=media.mime_type)
