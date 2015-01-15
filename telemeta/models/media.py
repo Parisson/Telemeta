@@ -648,7 +648,7 @@ class MediaItem(MediaResource):
             metadata['identifier_notes' + '_' + str(i)] = identifier.notes
             i += 1
 
-        analyzers = ['channels', 'samplerate', 'duration', 'resolution']
+        analyzers = ['channels', 'samplerate', 'duration', 'resolution', 'mimetype']
         for analyzer_id in analyzers:
             analysis = MediaItemAnalysis.objects.filter(item=self, analyzer_id=analyzer_id)
             if analysis:
@@ -657,7 +657,7 @@ class MediaItem(MediaResource):
         metadata['file_size'] = unicode(self.size())
         metadata['thumbnail'] = get_full_url(reverse('telemeta-item-visualize',
                                             kwargs={'public_id': self.public_id,
-                                                    'grapher_id': 'waveform_spectral',
+                                                    'grapher_id': 'waveform_centroid',
                                                     'width': 346,
                                                     'height': 130}))
 
