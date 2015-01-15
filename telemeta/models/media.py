@@ -624,7 +624,7 @@ class MediaItem(MediaResource):
             if performance.alias:
                 instrument_vernacular_names.append(performance.alias.name)
             if performance.musicians:
-                performers.append(performance.musicians.replace('et', ';'))
+                performers.append(performance.musicians.replace(' et ', ';'))
 
         metadata['instruments'] = ';'.join(instruments)
         metadata['instrument_vernacular_names'] = ';'.join(instrument_vernacular_names)
