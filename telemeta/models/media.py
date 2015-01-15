@@ -381,13 +381,24 @@ class MediaCollection(MediaResource):
                                             kwargs={'public_id': self.public_id, 'media_id': media.id}))
             i += 1
 
-        i = 0
-        for indentifier in self.identifiers.all():
-            metadata['identifier' + '_' + str(i)] = identifier.identifier
-            metadata['identifier_type' + '_' + str(i)] = identifier.type
-            metadata['identifier_date_last' + '_' + str(i)] = unicode(identifier.date_last)
-            metadata['identifier_notes' + '_' + str(i)] = identifier.notes
-            i += 1
+        # One ID only
+        identifiers = self.identifiers.all()
+        if identifiers:
+            identifier = identifiers[0]
+            metadata['identifier_id'] = identifier.identifier
+            metadata['identifier_type'] = identifier.type
+            metadata['identifier_date'] = unicode(identifier.date_last)
+            metadata['identifier_note'] = identifier.notes
+
+        # All IDs
+        # i = 0
+        # for indentifier in self.identifiers.all():
+        #     metadata['identifier' + '_' + str(i)] = identifier.identifier
+        #     metadata['identifier_type' + '_' + str(i)] = identifier.type
+        #     metadata['identifier_date_last' + '_' + str(i)] = unicode(identifier.date_last)
+        #     metadata['identifier_notes' + '_' + str(i)] = identifier.notes
+        #     i += 1
+
         return metadata
 
 
@@ -639,6 +650,16 @@ class MediaItem(MediaResource):
                                                     'grapher_id': 'waveform_spectral',
                                                     'width': 346,
                                                     'height': 130}))
+
+        # One ID only
+        identifiers = self.identifiers.all()
+        if identifiers:
+            identifier = identifiers[0]
+            metadata['identifier_id'] = identifier.identifier
+            metadata['identifier_type'] = identifier.type
+            metadata['identifier_date'] = unicode(identifier.date_last)
+            metadata['identifier_note'] = identifier.notes
+
         return metadata
 
 
@@ -1007,6 +1028,7 @@ class Identifier(ModelCore):
 
     class Meta(MetaCore):
         abstract = True
+        ordering = ['-date_last']
 
 
 class MediaItemIdentifier(Identifier):
