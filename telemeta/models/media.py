@@ -580,8 +580,6 @@ class MediaItem(MediaResource):
         metadata = model_to_dict(self, fields=[], exclude=self.exclude)
         metadata['url'] = self.get_url()
         metadata['last_modification_date'] = unicode(self.get_revision().time)
-        # metadata['computed_duration'] = unicode(self.computed_duration())
-        metadata['file_size'] = unicode(self.size())
         metadata['collection'] = self.collection.get_url()
 
         keywords = []
@@ -628,6 +626,17 @@ class MediaItem(MediaResource):
             metadata['identifier_date_last' + '_' + str(i)] = unicode(identifier.date_last)
             metadata['identifier_notes' + '_' + str(i)] = identifier.notes
             i += 1
+
+        metadata['channels'] = MediaItemAnalysis.objects.get(item=self, analyzer_id='channels').value
+        metadata['samplerate'] = MediaItemAnalysis.objects.get(item=self, analyzer_id='samplerate').value
+        metadata['duration'] = MediaItemAnalysis.objects.get(item=self, analyzer_id='duration').value
+        metadata['resolution'] = MediaItemAnalysis.objects.get(item=self, analyzer_id='resolution').value
+        metadata['file_size'] = unicode(self.size())
+        metadata['thumbnail'] = get_full_url(reverse('telemeta-item-visualize',
+                                            kwargs={'public_id': self.public_id,
+                                                    'grapher_id': 'waveform_spectral',
+                                                    'width': 346,
+                                                    'height': 130}))
         return metadata
 
 
