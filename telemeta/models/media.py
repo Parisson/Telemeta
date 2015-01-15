@@ -363,7 +363,9 @@ class MediaCollection(MediaResource):
         # metadata = model_to_dict(self, fields=[], exclude=self.exclude)
         metadata = self.to_dict()
         for key in self.exclude:
-            del metadata[key]
+            if key in metadata.key():
+                del metadata[key]
+
         metadata['url'] = get_full_url(reverse('telemeta-collection-detail', kwargs={'public_id':self.pk}))
         metadata['doc_status'] = self.document_status()
         metadata['countries'] = ';'.join([location.name for location in self.main_countries()])
@@ -594,7 +596,9 @@ class MediaItem(MediaResource):
         # metadata = model_to_dict(self, fields=[], exclude=self.exclude)
         metadata = self.to_dict()
         for key in self.exclude:
-            del metadata[key]
+            if key in metadata.key():
+                del metadata[key]
+
         metadata['url'] = self.get_url()
         metadata['last_modification_date'] = unicode(self.get_revision().time)
         metadata['collection'] = self.collection.get_url()
