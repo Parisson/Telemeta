@@ -36,15 +36,16 @@
 
 
 from telemeta.views.core import *
+import timeside.core
 
 
 class ItemBaseMixin(object):
 
-    graphers = timeside.core.processors(timeside.api.IGrapher)
-    decoders = timeside.core.processors(timeside.api.IDecoder)
-    encoders = timeside.core.processors(timeside.api.IEncoder)
-    analyzers = timeside.core.processors(timeside.api.IAnalyzer)
-    value_analyzers = timeside.core.processors(timeside.api.IValueAnalyzer)
+    graphers = timeside.core.processor.processors(timeside.core.api.IGrapher)
+    decoders = timeside.core.processor.processors(timeside.core.api.IDecoder)
+    encoders = timeside.core.processor.processors(timeside.core.api.IEncoder)
+    analyzers = timeside.core.processor.processors(timeside.core.api.IAnalyzer)
+    value_analyzers = timeside.core.processor.processors(timeside.core.api.IValueAnalyzer)
     cache_data = TelemetaCache(settings.TELEMETA_DATA_CACHE_DIR)
     cache_export = TelemetaCache(settings.TELEMETA_EXPORT_CACHE_DIR)
 
@@ -382,7 +383,7 @@ class ItemView(ItemBaseMixin):
 
             source = item.get_source()
             if source:
-                decoder  = timeside.decoder.file.FileDecoder(source)
+                decoder = timeside.core.get_processor('file_decoder')(source)
                 pipe = decoder
 
                 for analyzer in self.value_analyzers:
@@ -491,7 +492,7 @@ class ItemView(ItemBaseMixin):
             source = item.get_source()
             if source:
                 path = self.cache_data.dir + os.sep + image_file
-                decoder  = timeside.decoder.file.FileDecoder(source)
+                decoder = timeside.core.get_processor('file_decoder')(source)
                 graph = grapher(width=width, height=height)
                 (decoder | graph).run()
                 graph.watermark('timeside', opacity=.6, margin=(5,5))
@@ -579,7 +580,7 @@ class ItemView(ItemBaseMixin):
             media = self.cache_export.dir + os.sep + file
             if not self.cache_export.exists(file) or not flag.value:
                 # source > encoder > stream
-                decoder = timeside.decoder.file.FileDecoder(source)
+                decoder = timeside.core.get_processor('file_decoder')(source)
                 proc = encoder(media, streaming=True, overwrite=True)
                 if extension in mapping.unavailable_extensions:
                     metadata=None
@@ -867,7 +868,7 @@ class ItemDetailView(ItemViewMixin, DetailView):
 
             source = item.get_source()
             if source:
-                decoder  = timeside.decoder.file.FileDecoder(source)
+                decoder  = timeside.core.get_processor('file_decoder')(source)
                 pipe = decoder
 
                 for analyzer in self.value_analyzers:

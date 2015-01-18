@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2007-2010 Samalyse SARL
+# Copyright (C) 2010 Samalyse SARL
 # Copyright (C) 2010-2014 Parisson SARL
 
 # This software is a computer program whose purpose is to backup, analyse,
@@ -60,6 +60,8 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib.sites.models import Site
 from django.forms.models import model_to_dict
 
+
+strict_code = getattr(settings, 'TELEMETA_STRICT_CODE', False)
 
 # Special code regex of collections for the branch
 collection_published_code_regex = getattr(settings, 'COLLECTION_PUBLISHED_CODE_REGEX', '[A-Za-z0-9._-]*')
@@ -534,9 +536,10 @@ class MediaItem(MediaResource):
         return False
 
     def clean(self):
-        if self.code and not self.is_valid_code(self.code):
-            raise ValidationError("%s is not a valid item code for collection %s"
-                                        % (self.code, self.collection.code))
+        if strict_code:
+            if self.code and not self.is_valid_code(self.code):
+                raise ValidationError("%s is not a valid item code for collection %s"
+                                            % (self.code, self.collection.code))
 
     def save(self, force_insert=False, force_update=False):
         super(MediaItem, self).save(force_insert, force_update)
