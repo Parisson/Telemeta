@@ -144,7 +144,7 @@ class CollectionView(object):
     def related_media_collection_stream(self, request, public_id, media_id):
         collection = MediaCollection.objects.get(public_id=public_id)
         media = MediaCollectionRelated.objects.get(collection=collection, id=media_id)
-        response = HttpResponse(stream_from_file(media.file.path), mimetype=media.mime_type)
+        response = StreamingHttpResponse(stream_from_file(media.file.path), mimetype=media.mime_type)
 #        response['Content-Disposition'] = 'attachment'
         return response
 
@@ -152,7 +152,7 @@ class CollectionView(object):
         collection = MediaCollection.objects.get(public_id=public_id)
         media = MediaCollectionRelated.objects.get(collection=collection, id=media_id)
         filename = media.file.path.split(os.sep)[-1]
-        response = HttpResponse(stream_from_file(media.file.path), mimetype=media.mime_type)
+        response = StreamingHttpResponse(stream_from_file(media.file.path), mimetype=media.mime_type)
         response['Content-Disposition'] = 'attachment; ' + 'filename=' + filename
         return response
 
@@ -214,12 +214,7 @@ class CollectionPackageView(View):
                 path = cache_data.dir + os.sep + filename
                 z.write(path, arcname=collection.public_id + os.sep + filename)
 
-        try:
-            from django.http import StreamingHttpResponse
-            response = StreamingHttpResponse(z, content_type='application/zip')
-        except:
-            response = HttpResponse(z, content_type='application/zip')
-
+        response = StreamingHttpResponse(z, content_type='application/zip')
         response['Content-Disposition'] = "attachment; filename=%s.%s" % \
                                              (collection.code, 'zip')
         return response

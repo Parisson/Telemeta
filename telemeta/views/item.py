@@ -222,14 +222,14 @@ class ItemView(ItemBaseMixin):
         item = MediaItem.objects.get(public_id=item_public_id)
         media = MediaItemRelated.objects.get(item=item, id=media_id)
         filename = media.file.path.split(os.sep)[-1]
-        response = HttpResponse(stream_from_file(media.file.path), mimetype=media.mime_type)
+        response = StreamingHttpResponse(stream_from_file(media.file.path), mimetype=media.mime_type)
         return response
 
     def related_media_item_download(self, request, item_public_id, media_id):
         item = MediaItem.objects.get(public_id=item_public_id)
         media = MediaItemRelated.objects.get(item=item, id=media_id)
         filename = media.file.path.split(os.sep)[-1]
-        response = HttpResponse(stream_from_file(media.file.path), mimetype=media.mime_type)
+        response = StreamingHttpResponse(stream_from_file(media.file.path), mimetype=media.mime_type)
         response['Content-Disposition'] = 'attachment; ' + 'filename=' + filename
         return response
 
@@ -500,7 +500,7 @@ class ItemView(ItemBaseMixin):
                 graph.render(output=path)
                 f.close()
 
-        response = HttpResponse(self.cache_data.read_stream_bin(image_file), mimetype=mime_type)
+        response = StreamingHttpResponse(self.cache_data.read_stream_bin(image_file), mimetype=mime_type)
         return response
 
     def list_export_extensions(self):
@@ -530,14 +530,14 @@ class ItemView(ItemBaseMixin):
         if 'mp4' in extension:
             mime_type = 'video/mp4'
             video = item.file.path
-            response = HttpResponse(stream_from_file(video), mimetype = mime_type)
+            response = StreamingHttpResponse(stream_from_file(video), mimetype = mime_type)
             response['Content-Disposition'] = 'attachment'
             return response
 
         if 'webm' in extension:
             mime_type = 'video/webm'
             video = item.file.path
-            response = HttpResponse(stream_from_file(video), mimetype = mime_type)
+            response = StreamingHttpResponse(stream_from_file(video), mimetype = mime_type)
             response['Content-Disposition'] = 'attachment'
             return response
 
@@ -575,7 +575,7 @@ class ItemView(ItemBaseMixin):
                     proc.write_metadata()
                 except:
                     pass
-            response = HttpResponse(stream_from_file(source), mimetype = mime_type)
+            response = StreamingHttpResponse(stream_from_file(source), mimetype = mime_type)
         else:
             media = self.cache_export.dir + os.sep + file
             if not self.cache_export.exists(file) or not flag.value:
