@@ -129,7 +129,7 @@ class CollectionView(object):
 
         template = loader.get_template(template)
         context = RequestContext(request, {'collection': collection, 'host': request.META['HTTP_HOST']})
-        return HttpResponse(template.render(context), mimetype=mimetype)
+        return HttpResponse(template.render(context), content_type=mimetype)
 
     @method_decorator(permission_required('telemeta.delete_mediacollection'))
     def collection_delete(self, request, public_id):
@@ -144,7 +144,7 @@ class CollectionView(object):
     def related_media_collection_stream(self, request, public_id, media_id):
         collection = MediaCollection.objects.get(public_id=public_id)
         media = MediaCollectionRelated.objects.get(collection=collection, id=media_id)
-        response = StreamingHttpResponse(stream_from_file(media.file.path), mimetype=media.mime_type)
+        response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
 #        response['Content-Disposition'] = 'attachment'
         return response
 
@@ -152,7 +152,7 @@ class CollectionView(object):
         collection = MediaCollection.objects.get(public_id=public_id)
         media = MediaCollectionRelated.objects.get(collection=collection, id=media_id)
         filename = media.file.path.split(os.sep)[-1]
-        response = StreamingHttpResponse(stream_from_file(media.file.path), mimetype=media.mime_type)
+        response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
         response['Content-Disposition'] = 'attachment; ' + 'filename=' + filename
         return response
 

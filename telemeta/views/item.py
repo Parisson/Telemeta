@@ -222,14 +222,14 @@ class ItemView(ItemBaseMixin):
         item = MediaItem.objects.get(public_id=item_public_id)
         media = MediaItemRelated.objects.get(item=item, id=media_id)
         filename = media.file.path.split(os.sep)[-1]
-        response = StreamingHttpResponse(stream_from_file(media.file.path), mimetype=media.mime_type)
+        response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
         return response
 
     def related_media_item_download(self, request, item_public_id, media_id):
         item = MediaItem.objects.get(public_id=item_public_id)
         media = MediaItemRelated.objects.get(item=item, id=media_id)
         filename = media.file.path.split(os.sep)[-1]
-        response = StreamingHttpResponse(stream_from_file(media.file.path), mimetype=media.mime_type)
+        response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
         response['Content-Disposition'] = 'attachment; ' + 'filename=' + filename
         return response
 
@@ -457,7 +457,7 @@ class ItemView(ItemBaseMixin):
         for analysis in analyses:
             analyzers.append(analysis.to_dict())
         mime_type = 'text/xml'
-        response = HttpResponse(self.cache_data.get_analyzer_xml(analyzers), mimetype=mime_type)
+        response = HttpResponse(self.cache_data.get_analyzer_xml(analyzers), content_type=mime_type)
         response['Content-Disposition'] = 'attachment; filename='+public_id+'.xml'
         return response
 
@@ -500,7 +500,7 @@ class ItemView(ItemBaseMixin):
                 graph.render(output=path)
                 f.close()
 
-        response = StreamingHttpResponse(self.cache_data.read_stream_bin(image_file), mimetype=mime_type)
+        response = StreamingHttpResponse(self.cache_data.read_stream_bin(image_file), content_type=mime_type)
         return response
 
     def list_export_extensions(self):
@@ -602,7 +602,7 @@ class ItemView(ItemBaseMixin):
 
         template = loader.get_template(template)
         context = RequestContext(request, {'item': item, 'host': request.META['HTTP_HOST']})
-        return HttpResponse(template.render(context), mimetype=mimetype)
+        return HttpResponse(template.render(context), content_type=mimetype)
 
     @method_decorator(permission_required('telemeta.change_mediaitem'))
     def item_performances_edit(self, request, public_id, template):
