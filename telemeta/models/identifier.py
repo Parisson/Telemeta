@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2007-2010 Samalyse SARL
-# Copyright (C) 2010-2011 Parisson SARL
+# Copyright (C) 2010 Samalyse SARL
+# Copyright (C) 2010-2014 Parisson SARL
 
 # This software is a computer program whose purpose is to backup, analyse,
 # transcode and stream any audio content with its metadata over a web frontend.
@@ -35,62 +35,23 @@
 #          David LIPSZYC <davidlipszyc@gmail.com>
 #          Guillaume Pellerin <yomguy@parisson.com>
 
+
 from telemeta.models.core import *
+from telemeta.models.fields import *
 from django.utils.translation import ugettext_lazy as _
 
 
-class Instrument(ModelCore):
-    "Instrument used in the item"
-    name = CharField(_('name'), required=True)
+class Identifier(ModelCore):
+    """Resource identifier"""
+
+    identifier = CharField(_('identifier'), max_length=255, blank=True, unique=True)
+    type = WeakForeignKey('IdentifierType', verbose_name=_('type'))
+    date_add = DateTimeField(_('date added'), auto_now_add=True)
+    date_first = DateTimeField(_('date of first attribution'))
+    date_last = DateTimeField(_('date of last attribution'))
+    date_modified = DateTimeField(_('date modified'), auto_now=True)
     notes = TextField(_('notes'))
 
     class Meta(MetaCore):
-        db_table = 'instruments'
-        ordering = ['name']
-
-    def __unicode__(self):
-        return self.name
-
-class InstrumentAlias(ModelCore):
-    "Instrument other name"
-    name = CharField(_('name'), required=True)
-    notes = TextField(_('notes'))
-
-    class Meta(MetaCore):
-        db_table = 'instrument_aliases'
-        verbose_name_plural = _('instrument aliases')
-        ordering = ['name']
-
-    def __unicode__(self):
-        return self.name
-
-class InstrumentRelation(ModelCore):
-    "Instrument family"
-    instrument = ForeignKey('Instrument', related_name="parent_relation",
-                                   verbose_name=_('instrument'))
-    parent_instrument = ForeignKey('Instrument', related_name="child_relation",
-                                   verbose_name=_('parent instrument'))
-
-    class Meta(MetaCore):
-        db_table = 'instrument_relations'
-        unique_together = (('instrument', 'parent_instrument'),)
-
-    def __unicode__(self):
-        sep = ' > '
-        return self.parent_instrument.name + sep + self.instrument.name
-
-class InstrumentAliasRelation(ModelCore):
-    "Instrument family other name"
-    alias = ForeignKey('InstrumentAlias', related_name="other_name",
-                            verbose_name=_('alias'))
-    instrument = ForeignKey('Instrument', related_name="relation",
-                            verbose_name=_('instrument'))
-
-    def __unicode__(self):
-        sep = ' : '
-        return self.alias.name + sep + self.instrument.name
-
-    class Meta(MetaCore):
-        db_table = 'instrument_alias_relations'
-        unique_together = (('alias', 'instrument'),)
-
+        abstract = True
+        ordering = ['-date_last']

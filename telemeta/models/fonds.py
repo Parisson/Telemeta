@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2007-2010 Samalyse SARL
-# Copyright (C) 2010-2011 Parisson SARL
+# Copyright (C) 2010 Samalyse SARL
+# Copyright (C) 2010-2014 Parisson SARL
 
 # This software is a computer program whose purpose is to backup, analyse,
 # transcode and stream any audio content with its metadata over a web frontend.
@@ -35,62 +35,57 @@
 #          David LIPSZYC <davidlipszyc@gmail.com>
 #          Guillaume Pellerin <yomguy@parisson.com>
 
-from telemeta.models.core import *
+from __future__ import division
 from django.utils.translation import ugettext_lazy as _
+from telemeta.models.core import *
+from telemeta.models.resource import *
+from telemeta.models.corpus import *
 
 
-class Instrument(ModelCore):
-    "Instrument used in the item"
-    name = CharField(_('name'), required=True)
-    notes = TextField(_('notes'))
+class MediaFonds(MediaBaseResource):
+    "Describe fonds"
 
-    class Meta(MetaCore):
-        db_table = 'instruments'
-        ordering = ['name']
+    element_type = 'fonds'
+    children_type = 'corpus'
 
-    def __unicode__(self):
-        return self.name
+    children = models.ManyToManyField(MediaCorpus, related_name="fonds",
+                                      verbose_name=_('corpus'), blank=True, null=True)
 
-class InstrumentAlias(ModelCore):
-    "Instrument other name"
-    name = CharField(_('name'), required=True)
-    notes = TextField(_('notes'))
+    objects = MediaFondsManager()
 
-    class Meta(MetaCore):
-        db_table = 'instrument_aliases'
-        verbose_name_plural = _('instrument aliases')
-        ordering = ['name']
+    @property
+    def public_id(self):
+        return self.code
 
-    def __unicode__(self):
-        return self.name
+    @property
+    def has_mediafile(self):
+        for child in self.children.all():
+            if child.has_mediafile:
+                return True
+        return False
 
-class InstrumentRelation(ModelCore):
-    "Instrument family"
-    instrument = ForeignKey('Instrument', related_name="parent_relation",
-                                   verbose_name=_('instrument'))
-    parent_instrument = ForeignKey('Instrument', related_name="child_relation",
-                                   verbose_name=_('parent instrument'))
-
-    class Meta(MetaCore):
-        db_table = 'instrument_relations'
-        unique_together = (('instrument', 'parent_instrument'),)
-
-    def __unicode__(self):
-        sep = ' > '
-        return self.parent_instrument.name + sep + self.instrument.name
-
-class InstrumentAliasRelation(ModelCore):
-    "Instrument family other name"
-    alias = ForeignKey('InstrumentAlias', related_name="other_name",
-                            verbose_name=_('alias'))
-    instrument = ForeignKey('Instrument', related_name="relation",
-                            verbose_name=_('instrument'))
-
-    def __unicode__(self):
-        sep = ' : '
-        return self.alias.name + sep + self.instrument.name
+    def computed_duration(self):
+        duration = Duration()
+        for child in self.children.all():
+            duration += child.computed_duration()
+        return duration
+    computed_duration.verbose_name = _('total available duration')
 
     class Meta(MetaCore):
-        db_table = 'instrument_alias_relations'
-        unique_together = (('alias', 'instrument'),)
+        db_table = 'media_fonds'
+        verbose_name = _('fonds')
+        verbose_name_plural = _('fonds')
+        ordering = ['code']
+
+
+class MediaFondsRelated(MediaRelated):
+    "Fonds related media"
+
+    resource = ForeignKey(MediaFonds, related_name="related", verbose_name=_('fonds'))
+
+    class Meta(MetaCore):
+        db_table = 'media_fonds_related'
+        verbose_name = _('fonds related media')
+        verbose_name_plural = _('fonds related media')
+
 

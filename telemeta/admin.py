@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
-from telemeta.models.media import *
+from telemeta.models.fonds import *
+from telemeta.models.corpus import *
+from telemeta.models.collection import *
+from telemeta.models.item import *
 from telemeta.models.instrument import *
 from telemeta.models.location import *
 from telemeta.models.language import *
 from telemeta.models.system import *
+from telemeta.models.format import *
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin

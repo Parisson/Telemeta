@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2007 Samalyse SARL
-# Copyright (C) 2008-2011 Parisson SARL
+# Copyright (C) 2010 Samalyse SARL
+# Copyright (C) 2010-2014 Parisson SARL
 
 # This software is a computer program whose purpose is to backup, analyse,
 # transcode and stream any audio content with its metadata over a web frontend.
@@ -31,23 +31,42 @@
 # The fact that you are presently reading this means that you have had
 # knowledge of the CeCILL license and that you accept its terms.
 #
-# Author: Olivier Guilyardi <olivier@samalyse.com>
-#         Guillaume Pellerin <yomguy@parisson.com>
+# Authors: Olivier Guilyardi <olivier@samalyse.com>
+#          David LIPSZYC <davidlipszyc@gmail.com>
+#          Guillaume Pellerin <yomguy@parisson.com>
 
 
-from identifier import *
-from location import *
-from instrument import *
-from enum import *
-from system import *
-from query import *
-from dublincore import *
-from language import *
-from format import *
-from identifier import *
-from fonds import *
-from corpus import *
-from collection import *
-from item import *
-from resource import *
-from playlist import *
+from __future__ import division
+from django.utils.translation import ugettext_lazy as _
+from telemeta.models.core import *
+
+
+class Playlist(ModelCore):
+    "Item, collection or marker playlist"
+    element_type = 'playlist'
+    public_id      = CharField(_('public_id'), required=True)
+    author         = ForeignKey(User, related_name="playlists", db_column="author")
+    title          = CharField(_('title'), required=True)
+    description    = TextField(_('description'))
+
+    class Meta(MetaCore):
+        db_table = 'playlists'
+
+    def __unicode__(self):
+        return self.title
+
+
+class PlaylistResource(ModelCore):
+    "Playlist components"
+    RESOURCE_TYPE_CHOICES = (('item', 'item'), ('collection', 'collection'),
+                             ('marker', 'marker'), ('fonds', 'fonds'), ('corpus', 'corpus'))
+    element_type       = 'playlist_resource'
+    public_id          = CharField(_('public_id'), required=True)
+    playlist           = ForeignKey('Playlist', related_name="resources", verbose_name=_('playlist'))
+    resource_type      = CharField(_('resource_type'), choices=RESOURCE_TYPE_CHOICES, required=True)
+    resource_id        = CharField(_('resource_id'), required=True)
+
+    class Meta(MetaCore):
+        db_table = 'playlist_resources'
+
+

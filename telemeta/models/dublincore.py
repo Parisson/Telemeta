@@ -32,8 +32,9 @@
 #
 # Author: Olivier Guilyardi <olivier@samalyse.com>
 
-from telemeta.models.core import Duration
-from telemeta.models.media import *
+from telemeta.models.core import *
+from telemeta.models.item import *
+from telemeta.models.collection import *
 from django.contrib.sites.models import Site
 from django.conf import settings
 
