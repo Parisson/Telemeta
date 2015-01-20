@@ -309,3 +309,4 @@ def lookup_resource(media_id):
 
 class MalformedMediaIdentifier(Exception):
     pass
+

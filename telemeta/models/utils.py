@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 # Copyright (C) 2010-2014 Parisson SARL
 
+import random, re
+from django.db.models import Q
+from django.contrib.sites.models import Site
+
 
 def get_random_hash():
     hash = random.getrandbits(64)
