@@ -107,7 +107,7 @@ def send_file(request, filename, content_type='image/jpeg'):
     iterator for chunks of 8KB.
     """
     wrapper = FixedFileWrapper(file(filename, 'rb'))
-    response = HttpResponse(wrapper, content_type=content_type)
+    response = StreamingHttpResponse(wrapper, content_type=content_type)
     response['Content-Length'] = os.path.getsize(filename)
     return response
 
