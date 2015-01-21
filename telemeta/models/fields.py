@@ -42,7 +42,7 @@ __all__ = ['DurationField', 'Duration', 'WeakForeignKey',
            'DateTimeField', 'FileField', 'ForeignKey', 'FloatField', 'DateField',
            'RequiredFieldError',]
 
-import datetime
+import datetime, re
 from django import forms
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
