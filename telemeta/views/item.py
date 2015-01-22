@@ -991,3 +991,70 @@ class ItemDetailView(ItemViewMixin, DetailView):
 
         return context
 
+
+class DublinCoreToFormatMetadata(object):
+    """ a mapping class to get item DublinCore metadata dictionaries
+    in various audio metadata format (MP3, OGG, etc...)"""
+
+    #FIXME: should be given by timeside
+    unavailable_extensions = ['wav', 'aiff', 'aif', 'flac', 'webm']
+
+    metadata_mapping = {
+                    'mp3' : {
+                         'title': 'TIT2', #title2
+                         'creator': 'TCOM', #composer
+                         'creator': 'TPE1', #lead
+                         'identifier': 'UFID', #unique ID
+                         'relation': 'TALB', #album
+                         'type': 'TCON', #genre
+                         'publisher': 'TPUB', #publisher
+                         'date': 'TDRC', #year
+#                         'coverage': 'COMM',  #comment
+                         },
+                    'ogg': {
+                        'creator': 'artist',
+                        'relation': 'album',
+                        'all': 'all',
+                       },
+                    'flac': {
+                        'creator': 'artist',
+                        'relation': 'album',
+                        'all': 'all',
+                       },
+                    'wav': {
+                        'creator': 'artist',
+                        'relation': 'album',
+                        'all': 'all',
+                       },
+                    'webm': {
+                        'creator': 'artist',
+                        'relation': 'album',
+                        'all': 'all',
+                       },
+                    }
+
+    def __init__(self, format):
+        self.format = format
+
+    def get_metadata(self, dc_metadata):
+        mapp = self.metadata_mapping[self.format]
+        metadata = {}
+        keys_done = []
+        for data in dc_metadata:
+            key = data[0]
+            value = data[1].encode('utf-8')
+            if value:
+                if key == 'date':
+                    value = value.split(';')[0].split('=')
+                    if len(value) > 1:
+                        value  = value[1]
+                        value = value.split('-')[0]
+                    else:
+                        value = value[0].split('-')[0]
+                if key in mapp:
+                    metadata[mapp[key]] = value.decode('utf-8')
+                elif 'all' in mapp.keys():
+                    metadata[key] = value.decode('utf-8')
+                keys_done.append(key)
+        return metadata
+        
