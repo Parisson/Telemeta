@@ -92,3 +92,5 @@ class MarkerView(object):
     def get_marker_id(request, public_id):
         marker = MediaItemMarker.objects.get(public_id=public_id)
         return marker.id
+
+

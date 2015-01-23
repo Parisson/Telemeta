@@ -36,6 +36,7 @@
 
 
 from telemeta.views.core import *
+from telemeta.views.marker import *
 import timeside.core
 
 
@@ -1057,4 +1058,23 @@ class DublinCoreToFormatMetadata(object):
                     metadata[key] = value.decode('utf-8')
                 keys_done.append(key)
         return metadata
-        
+
+
+
+class ItemMarkerJsonView(View):
+
+    model = MediaItem
+
+    def get(self, request, *args, **kwargs):
+        code = self.kwargs['public_id']
+        marker_view = MarkerView()
+        item = MediaItem.objects.get(code=code)
+        markers = marker_view.get_markers(item.id)
+        if markers:
+            data = json.dumps(markers)
+        else:
+            data = ''
+        response = HttpResponse(data, content_type='application/json')
+        response['Content-Disposition'] = "attachment; filename=%s.%s" % \
+                                             (item.code, 'json')
+        return response
