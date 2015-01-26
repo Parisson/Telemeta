@@ -993,6 +993,7 @@ class ItemDetailView(ItemViewMixin, DetailView):
         return context
 
 
+
 class DublinCoreToFormatMetadata(object):
     """ a mapping class to get item DublinCore metadata dictionaries
     in various audio metadata format (MP3, OGG, etc...)"""
@@ -1078,3 +1079,9 @@ class ItemMarkerJsonView(View):
         response['Content-Disposition'] = "attachment; filename=%s.%s" % \
                                              (item.code, 'json')
         return response
+
+
+class ItemPlayerDefaultView(ItemDetailView):
+
+    template_name = 'telemeta/mediaitem_player.html'
+
