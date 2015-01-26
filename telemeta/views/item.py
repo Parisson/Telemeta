@@ -36,22 +36,24 @@
 
 
 from telemeta.views.core import *
+from telemeta.views.marker import *
+import timeside.core
 
 
 class ItemBaseMixin(object):
 
-    graphers = timeside.core.processors(timeside.api.IGrapher)
-    decoders = timeside.core.processors(timeside.api.IDecoder)
-    encoders = timeside.core.processors(timeside.api.IEncoder)
-    analyzers = timeside.core.processors(timeside.api.IAnalyzer)
-    value_analyzers = timeside.core.processors(timeside.api.IValueAnalyzer)
+    graphers = timeside.core.processor.processors(timeside.core.api.IGrapher)
+    decoders = timeside.core.processor.processors(timeside.core.api.IDecoder)
+    encoders = timeside.core.processor.processors(timeside.core.api.IEncoder)
+    analyzers = timeside.core.processor.processors(timeside.core.api.IAnalyzer)
+    value_analyzers = timeside.core.processor.processors(timeside.core.api.IValueAnalyzer)
     cache_data = TelemetaCache(settings.TELEMETA_DATA_CACHE_DIR)
     cache_export = TelemetaCache(settings.TELEMETA_EXPORT_CACHE_DIR)
 
     export_enabled = getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True)
     export_formats = getattr(settings, 'TELEMETA_DOWNLOAD_FORMATS', ('mp3', 'wav'))
     default_grapher_id = getattr(settings, 'TIMESIDE_DEFAULT_GRAPHER_ID', ('waveform_simple'))
-    default_grapher_sizes = getattr(settings, 'TIMESIDE_DEFAULT_GRAPHER_SIZES', ['360x130', ])
+    default_grapher_sizes = getattr(settings, 'TIMESIDE_DEFAULT_GRAPHER_SIZES', ['346x130', ])
     auto_zoom = getattr(settings, 'TIMESIDE_AUTO_ZOOM', False)
 
 
@@ -221,14 +223,14 @@ class ItemView(ItemBaseMixin):
         item = MediaItem.objects.get(public_id=item_public_id)
         media = MediaItemRelated.objects.get(item=item, id=media_id)
         filename = media.file.path.split(os.sep)[-1]
-        response = HttpResponse(stream_from_file(media.file.path), mimetype=media.mime_type)
+        response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
         return response
 
     def related_media_item_download(self, request, item_public_id, media_id):
         item = MediaItem.objects.get(public_id=item_public_id)
         media = MediaItemRelated.objects.get(item=item, id=media_id)
         filename = media.file.path.split(os.sep)[-1]
-        response = HttpResponse(stream_from_file(media.file.path), mimetype=media.mime_type)
+        response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
         response['Content-Disposition'] = 'attachment; ' + 'filename=' + filename
         return response
 
@@ -382,7 +384,7 @@ class ItemView(ItemBaseMixin):
 
             source = item.get_source()
             if source:
-                decoder  = timeside.decoder.file.FileDecoder(source)
+                decoder = timeside.core.get_processor('file_decoder')(source)
                 pipe = decoder
 
                 for analyzer in self.value_analyzers:
@@ -456,7 +458,7 @@ class ItemView(ItemBaseMixin):
         for analysis in analyses:
             analyzers.append(analysis.to_dict())
         mime_type = 'text/xml'
-        response = HttpResponse(self.cache_data.get_analyzer_xml(analyzers), mimetype=mime_type)
+        response = HttpResponse(self.cache_data.get_analyzer_xml(analyzers), content_type=mime_type)
         response['Content-Disposition'] = 'attachment; filename='+public_id+'.xml'
         return response
 
@@ -491,7 +493,7 @@ class ItemView(ItemBaseMixin):
             source = item.get_source()
             if source:
                 path = self.cache_data.dir + os.sep + image_file
-                decoder  = timeside.decoder.file.FileDecoder(source)
+                decoder = timeside.core.get_processor('file_decoder')(source)
                 graph = grapher(width=width, height=height)
                 (decoder | graph).run()
                 graph.watermark('timeside', opacity=.6, margin=(5,5))
@@ -499,7 +501,7 @@ class ItemView(ItemBaseMixin):
                 graph.render(output=path)
                 f.close()
 
-        response = HttpResponse(self.cache_data.read_stream_bin(image_file), mimetype=mime_type)
+        response = StreamingHttpResponse(self.cache_data.read_stream_bin(image_file), content_type=mime_type)
         return response
 
     def list_export_extensions(self):
@@ -529,14 +531,14 @@ class ItemView(ItemBaseMixin):
         if 'mp4' in extension:
             mime_type = 'video/mp4'
             video = item.file.path
-            response = HttpResponse(stream_from_file(video), mimetype = mime_type)
+            response = StreamingHttpResponse(stream_from_file(video), mimetype = mime_type)
             response['Content-Disposition'] = 'attachment'
             return response
 
         if 'webm' in extension:
             mime_type = 'video/webm'
             video = item.file.path
-            response = HttpResponse(stream_from_file(video), mimetype = mime_type)
+            response = StreamingHttpResponse(stream_from_file(video), mimetype = mime_type)
             response['Content-Disposition'] = 'attachment'
             return response
 
@@ -574,21 +576,20 @@ class ItemView(ItemBaseMixin):
                     proc.write_metadata()
                 except:
                     pass
-            response = HttpResponse(stream_from_file(source), mimetype = mime_type)
+            response = StreamingHttpResponse(stream_from_file(source), mimetype = mime_type)
         else:
             media = self.cache_export.dir + os.sep + file
             if not self.cache_export.exists(file) or not flag.value:
                 # source > encoder > stream
-                decoder = timeside.decoder.file.FileDecoder(source)
+                decoder = timeside.core.get_processor('file_decoder')(source)
                 proc = encoder(media, streaming=True, overwrite=True)
                 if extension in mapping.unavailable_extensions:
                     metadata=None
                 proc.set_metadata(metadata)
-
-                response = HttpResponse(stream_from_processor(decoder, proc, flag), mimetype=mime_type)
+                response = StreamingHttpResponse(stream_from_processor(decoder, proc, flag), content_type=mime_type)
             else:
                 # cache > stream
-                response = HttpResponse(self.cache_export.read_stream_bin(file), mimetype=mime_type)
+                response = StreamingHttpResponse(self.cache_export.read_stream_bin(file), content_type=mime_type)
 
         response['Content-Disposition'] = 'attachment'
         return response
@@ -601,7 +602,7 @@ class ItemView(ItemBaseMixin):
 
         template = loader.get_template(template)
         context = RequestContext(request, {'item': item, 'host': request.META['HTTP_HOST']})
-        return HttpResponse(template.render(context), mimetype=mimetype)
+        return HttpResponse(template.render(context), content_type=mimetype)
 
     @method_decorator(permission_required('telemeta.change_mediaitem'))
     def item_performances_edit(self, request, public_id, template):
@@ -708,12 +709,14 @@ class ItemViewMixin(ItemBaseMixin):
 
         return previous, next
 
-    def get_graphers(self):
+    def get_graphers(self, user):
         graphers = []
         for grapher in self.graphers:
             if grapher.id() == self.default_grapher_id:
                 graphers.insert(0, {'name':grapher.name(), 'id': grapher.id()})
-            else:
+            elif not hasattr(grapher, '_staging'):
+                graphers.append({'name':grapher.name(), 'id': grapher.id()})
+            elif not grapher._staging:
                 graphers.append({'name':grapher.name(), 'id': grapher.id()})
         return graphers
 
@@ -743,11 +746,15 @@ class ItemEditView(ItemViewMixin, UpdateWithInlinesView):
     form_class = MediaItemForm
     template_name = 'telemeta/mediaitem_edit.html'
 
-    def form_valid(self, form):
-        messages.info(self.request, _("You have successfully updated your item."))
-        return super(ItemEditView, self).form_valid(form)
+    def forms_valid(self, form, inlines):
+        messages.info(self.request, ugettext_lazy("You have successfully updated your item."))
+        obj = form.save()
+        obj.set_revision(self.request.user)
+        return super(ItemEditView, self).forms_valid(form, inlines)
 
     def get_success_url(self):
+        #FIXME should be in form_valid but doesn't work with extra_views
+        self.get_object().set_revision(self.request.user)
         return reverse_lazy('telemeta-item-detail', kwargs={'public_id':self.object.code})
 
     def get_context_data(self, **kwargs):
@@ -759,7 +766,7 @@ class ItemEditView(ItemViewMixin, UpdateWithInlinesView):
         #FIXME
         context['mime_type'] = 'audio/mp3'
         context['export_formats'] = self.get_export_formats()
-        context['visualizers'] = self.get_graphers()
+        context['visualizers'] = self.get_graphers(self.request.user)
         context['audio_export_enabled'] = self.export_enabled
         context['auto_zoom'] = True
         return context
@@ -787,7 +794,15 @@ class ItemAddView(ItemViewMixin, CreateWithInlinesView):
                 item.code = auto_code(collection)
         return model_to_dict(item)
 
+    def forms_valid(self, form, inlines):
+        messages.info(self.request, ugettext_lazy("You have successfully added your item."))
+        obj = form.save()
+        obj.set_revision(self.request.user)
+        return super(ItemAddView, self).forms_valid(form, inlines)
+
     def get_success_url(self):
+        #FIXME should be in form_valid but doesn't work with extra_views
+        self.get_object().set_revision(self.request.user)
         return reverse_lazy('telemeta-item-detail', kwargs={'public_id':self.object.code})
 
     @method_decorator(permission_required('telemeta.add_mediaitem'))
@@ -804,6 +819,8 @@ class ItemCopyView(ItemAddView):
         return model_to_dict(self.get_object())
 
     def get_success_url(self):
+        #FIXME should be in form_valid but doesn't work with extra_views
+        self.get_object().set_revision(self.request.user)
         return reverse_lazy('telemeta-item-detail', kwargs={'public_id':self.object.code})
 
     def get_context_data(self, **kwargs):
@@ -815,7 +832,7 @@ class ItemCopyView(ItemAddView):
         #FIXME
         context['mime_type'] = 'audio/mp3'
         context['export_formats'] = self.get_export_formats()
-        context['visualizers'] = self.get_graphers()
+        context['visualizers'] = self.get_graphers(self.request.user)
         context['audio_export_enabled'] = self.export_enabled
         context['auto_zoom'] = True
         return context
@@ -851,7 +868,7 @@ class ItemDetailView(ItemViewMixin, DetailView):
 
             source = item.get_source()
             if source:
-                decoder  = timeside.decoder.file.FileDecoder(source)
+                decoder  = timeside.core.get_processor('file_decoder')(source)
                 pipe = decoder
 
                 for analyzer in self.value_analyzers:
@@ -957,7 +974,7 @@ class ItemDetailView(ItemViewMixin, DetailView):
 
         context['item'] = item
         context['export_formats'] = self.get_export_formats()
-        context['visualizers'] = self.get_graphers()
+        context['visualizers'] = self.get_graphers(self.request.user)
         context['auto_zoom'] = self.auto_zoom
         context['audio_export_enabled'] = self.export_enabled
         context['previous'] = previous
@@ -973,3 +990,97 @@ class ItemDetailView(ItemViewMixin, DetailView):
         context['format'] = format
 
         return context
+
+
+
+class DublinCoreToFormatMetadata(object):
+    """ a mapping class to get item DublinCore metadata dictionaries
+    in various audio metadata format (MP3, OGG, etc...)"""
+
+    #FIXME: should be given by timeside
+    unavailable_extensions = ['wav', 'aiff', 'aif', 'flac', 'webm']
+
+    metadata_mapping = {
+                    'mp3' : {
+                         'title': 'TIT2', #title2
+                         'creator': 'TCOM', #composer
+                         'creator': 'TPE1', #lead
+                         'identifier': 'UFID', #unique ID
+                         'relation': 'TALB', #album
+                         'type': 'TCON', #genre
+                         'publisher': 'TPUB', #publisher
+                         'date': 'TDRC', #year
+#                         'coverage': 'COMM',  #comment
+                         },
+                    'ogg': {
+                        'creator': 'artist',
+                        'relation': 'album',
+                        'all': 'all',
+                       },
+                    'flac': {
+                        'creator': 'artist',
+                        'relation': 'album',
+                        'all': 'all',
+                       },
+                    'wav': {
+                        'creator': 'artist',
+                        'relation': 'album',
+                        'all': 'all',
+                       },
+                    'webm': {
+                        'creator': 'artist',
+                        'relation': 'album',
+                        'all': 'all',
+                       },
+                    }
+
+    def __init__(self, format):
+        self.format = format
+
+    def get_metadata(self, dc_metadata):
+        mapp = self.metadata_mapping[self.format]
+        metadata = {}
+        keys_done = []
+        for data in dc_metadata:
+            key = data[0]
+            value = data[1].encode('utf-8')
+            if value:
+                if key == 'date':
+                    value = value.split(';')[0].split('=')
+                    if len(value) > 1:
+                        value  = value[1]
+                        value = value.split('-')[0]
+                    else:
+                        value = value[0].split('-')[0]
+                if key in mapp:
+                    metadata[mapp[key]] = value.decode('utf-8')
+                elif 'all' in mapp.keys():
+                    metadata[key] = value.decode('utf-8')
+                keys_done.append(key)
+        return metadata
+
+
+
+class ItemMarkerJsonView(View):
+
+    model = MediaItem
+
+    def get(self, request, *args, **kwargs):
+        code = self.kwargs['public_id']
+        marker_view = MarkerView()
+        item = MediaItem.objects.get(code=code)
+        markers = marker_view.get_markers(item.id)
+        if markers:
+            data = json.dumps(markers)
+        else:
+            data = ''
+        response = HttpResponse(data, content_type='application/json')
+        response['Content-Disposition'] = "attachment; filename=%s.%s" % \
+                                             (item.code, 'json')
+        return response
+
+
+class ItemPlayerDefaultView(ItemDetailView):
+
+    template_name = 'telemeta/mediaitem_player.html'
+

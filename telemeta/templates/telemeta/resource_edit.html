@@ -32,7 +32,7 @@
 {% block infos %}
 
   <div>
-  <form method="post" id="_editForm" action="">{% csrf_token %}
+  <form id="_editForm" method="post" action="" enctype="multipart/form-data">{% csrf_token %}
 
     <ul class="nav nav-tabs" role="tablist">
       <li class="active"><a href="#general" role="tab" data-toggle="tab">{% trans "General" %}</a></li>

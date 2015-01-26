@@ -40,13 +40,8 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ValidationError
 from telemeta.models.core import *
 from telemeta.util.unaccent import unaccent_icmp
-from telemeta.models.location import *
-from telemeta.models.system import *
-from telemeta.models.query import *
-from telemeta.models.instrument import *
 from telemeta.models.enum import *
 from telemeta.models.language import *
-from telemeta.models.media import *
 from django.db import models
 
 

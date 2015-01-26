@@ -97,13 +97,17 @@ class PlaylistView(object):
         for resource in resources:
             if resource_type == 'items':
                 if resource.resource_type == 'collection':
-                    collection = MediaCollection.objects.get(id=resource.resource_id)
-                    collection_items = MediaItem.objects.filter(collection=collection)
-                    for item in collection_items:
-                        elements.append(item)
+                    collections = MediaCollection.objects.filter(id=resource.resource_id)
+                    if collections:
+                        collection = collections[0]
+                        collection_items = MediaItem.objects.filter(collection=collection)
+                        for item in collection_items:
+                            elements.append(item)
                 elif resource.resource_type == 'item':
-                    item = MediaItem.objects.get(id=resource.resource_id)
-                    elements.append(item)
+                    items = MediaItem.objects.filter(id=resource.resource_id)
+                    if items:
+                        item = items[0]
+                        elements.append(item)
 
             elif resource_type == 'collections':
                 if resource.resource_type == 'collection':
@@ -111,8 +115,12 @@ class PlaylistView(object):
                     elements.append(collection)
 
         if elements:
-            element = elements[0].to_dict()
-            tags = element.keys()
+            tags = []
+            element_dicts = [e.to_dict_with_more() for e in elements]
+            for e in element_dicts:
+                for key in e.keys():
+                    if not key in tags:
+                        tags.append(key)
             # code and title on the two first column
             tags.remove('code')
             tags.remove('title')
@@ -121,11 +129,13 @@ class PlaylistView(object):
             tags.insert(0, 'code')
             writer.writerow(tags)
 
-            for element in elements:
+            for element in element_dicts:
                 data = []
-                element = element.to_dict()
                 for tag in tags:
-                    data.append(element[tag])
+                    if tag in element.keys():
+                        data.append(element[tag])
+                    else:
+                        data.append('')
                 writer.writerow(data)
 
         return response

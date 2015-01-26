@@ -43,8 +43,8 @@ import random
 import datetime
 import tempfile
 import zipfile
-import timeside
 import mimetypes
+import json
 
 from jsonrpc import jsonrpc_method
 
@@ -72,8 +72,10 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib.contenttypes.models import ContentType
 from django.views.decorators.http import condition
 from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy
 from django.forms.models import model_to_dict
 from django.views.generic.edit import DeletionMixin, BaseDeleteView
+from django.contrib.sites.models import Site
 
 from telemeta.models import *
 import telemeta.models
@@ -106,7 +108,7 @@ def send_file(request, filename, content_type='image/jpeg'):
     iterator for chunks of 8KB.
     """
     wrapper = FixedFileWrapper(file(filename, 'rb'))
-    response = HttpResponse(wrapper, content_type=content_type)
+    response = StreamingHttpResponse(wrapper, content_type=content_type)
     response['Content-Length'] = os.path.getsize(filename)
     return response
 
@@ -295,3 +297,4 @@ def get_kwargs_or_none(key, kwargs):
         return kwargs[key]
     else:
         return None
+

@@ -146,6 +146,7 @@ INSTALLED_APPS = (
     'debug_toolbar',
     'bootstrap3',
     'bootstrap_pagination',
+    'googletools',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -181,6 +182,8 @@ TELEMETA_STREAMING_FORMATS = ('mp3', 'ogg')
 TELEMETA_DOWNLOAD_FORMATS = ('wav', 'mp3', 'ogg', 'flac')
 TELEMETA_PUBLIC_ACCESS_PERIOD = 51
 
+TELEMETA_STRICT_CODE = False
+
 AUTH_PROFILE_MODULE = 'telemeta.userprofile'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
@@ -191,7 +194,7 @@ EMAIL_HOST = 'localhost'
 DEFAULT_FROM_EMAIL = 'webmaster@parisson.com'
 
 TIMESIDE_DEFAULT_GRAPHER_ID = 'waveform_centroid'
-TIMESIDE_DEFAULT_WAVEFORM_SIZES = ['360x130', '640x130']
+TIMESIDE_DEFAULT_WAVEFORM_SIZES = ['346x130', '640x130']
 TIMESIDE_AUTO_ZOOM = False
 
 # Settings for django-bootstrap3

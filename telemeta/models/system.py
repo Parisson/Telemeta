@@ -76,6 +76,7 @@ class Revision(ModelCore):
 
     class Meta(MetaCore):
         db_table = 'revisions'
+        ordering = ['-time']
 
 
 class UserProfile(models.Model):
@@ -124,6 +125,4 @@ class Search(ModelCore):
 
     def __unicode__(self):
         return self.keywords
-
-
 

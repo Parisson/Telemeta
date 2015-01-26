@@ -91,13 +91,7 @@
                 {% dl_field collection "creator" placeholder %}
                 {% endif %}
                 <dt>{% trans "Document status" %}</dt>
-                {% if '_I_' in collection.public_id %}
-                 <dd>{% trans 'Unpublished' context "collection" %}</dd>
-                {% elif '_E_' in collection.public_id %}
-                 <dd>{% trans 'Published' context "collection" %}</dd>
-                {% else %}
-                 <dd>&nbsp;</dd>
-                {% endif %}
+                <dd>{{ collection.document_status }}</dd>
                 {% if collection.description %}
                 {% dl_field collection "description" %}
                 {% endif %}

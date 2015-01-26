@@ -129,7 +129,7 @@ class CollectionView(object):
 
         template = loader.get_template(template)
         context = RequestContext(request, {'collection': collection, 'host': request.META['HTTP_HOST']})
-        return HttpResponse(template.render(context), mimetype=mimetype)
+        return HttpResponse(template.render(context), content_type=mimetype)
 
     @method_decorator(permission_required('telemeta.delete_mediacollection'))
     def collection_delete(self, request, public_id):
@@ -141,18 +141,18 @@ class CollectionView(object):
         collection.delete()
         return redirect('telemeta-collections')
 
-    def related_media_collection_stream(self, request, collection_public_id, media_id):
-        collection = MediaCollection.objects.get(public_id=collection_public_id)
+    def related_media_collection_stream(self, request, public_id, media_id):
+        collection = MediaCollection.objects.get(public_id=public_id)
         media = MediaCollectionRelated.objects.get(collection=collection, id=media_id)
-        response = HttpResponse(stream_from_file(media.file.path), mimetype=media.mime_type)
+        response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
 #        response['Content-Disposition'] = 'attachment'
         return response
 
-    def related_media_collection_download(self, request, collection_public_id, media_id):
-        collection = MediaCollection.objects.get(public_id=collection_public_id)
+    def related_media_collection_download(self, request, public_id, media_id):
+        collection = MediaCollection.objects.get(public_id=public_id)
         media = MediaCollectionRelated.objects.get(collection=collection, id=media_id)
         filename = media.file.path.split(os.sep)[-1]
-        response = HttpResponse(stream_from_file(media.file.path), mimetype=media.mime_type)
+        response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
         response['Content-Disposition'] = 'attachment; ' + 'filename=' + filename
         return response
 
@@ -203,8 +203,9 @@ class CollectionPackageView(View):
         z.write(path, arcname=collection.public_id + os.sep + filename)
 
         for item in collection.items.all():
-            filename, ext = os.path.splitext(item.file.path.split(os.sep)[-1])
-            z.write(item.file.path, arcname=collection.public_id + os.sep + item.code + ext)
+            if item.file:
+                filename, ext = os.path.splitext(item.file.path.split(os.sep)[-1])
+                z.write(item.file.path, arcname=collection.public_id + os.sep + item.code + ext)
             marker_view = MarkerView()
             markers = marker_view.get_markers(item.id)
             if markers:
@@ -214,12 +215,7 @@ class CollectionPackageView(View):
                 path = cache_data.dir + os.sep + filename
                 z.write(path, arcname=collection.public_id + os.sep + filename)
 
-        try:
-            from django.http import StreamingHttpResponse
-            response = StreamingHttpResponse(z, content_type='application/zip')
-        except:
-            response = HttpResponse(z, content_type='application/zip')
-
+        response = StreamingHttpResponse(z, content_type='application/zip')
         response['Content-Disposition'] = "attachment; filename=%s.%s" % \
                                              (collection.code, 'zip')
         return response
@@ -292,7 +288,7 @@ class CollectionDetailView(CollectionViewMixin, DetailView):
         check_related_media(context['related_media'])
         context['parents'] = MediaCorpus.objects.filter(children=collection)
         revisions = Revision.objects.filter(element_type='collection',
-                                            element_id=collection.id).order_by('-time')
+                                            element_id=collection.id)
         if revisions:
             context['last_revision'] = revisions[0]
         else:
@@ -311,9 +307,11 @@ class CollectionEditView(CollectionViewMixin, UpdateWithInlinesView):
     template_name = 'telemeta/collection_edit.html'
     inlines = [CollectionRelatedInline, CollectionIdentifierInline]
 
-    def form_valid(self, form):
-        messages.info(self.request, _("You have successfully updated your collection."))
-        return super(CollectionEditView, self).form_valid(form)
+    def forms_valid(self, form, inlines):
+        messages.info(self.request, ugettext_lazy("You have successfully updated your collection."))
+        obj = form.save()
+        obj.set_revision(self.request.user)
+        return super(CollectionEditView, self).forms_valid(form, inlines)
 
     def get_success_url(self):
         return reverse_lazy('telemeta-collection-detail', kwargs={'public_id':self.kwargs['public_id']})
@@ -334,6 +332,12 @@ class CollectionAddView(CollectionViewMixin, CreateWithInlinesView):
     template_name = 'telemeta/collection_add.html'
     inlines = [CollectionRelatedInline, CollectionIdentifierInline]
 
+    def forms_valid(self, form, inlines):
+        messages.info(self.request, ugettext_lazy("You have successfully added your collection."))
+        obj = form.save()
+        obj.set_revision(self.request.user)
+        return super(CollectionAddView, self).forms_valid(form, inlines)
+
     def get_success_url(self):
         return reverse_lazy('telemeta-collection-detail', kwargs={'public_id':self.object.code})
 
@@ -348,9 +352,6 @@ class CollectionCopyView(CollectionAddView):
 
     def get_initial(self):
         return model_to_dict(self.get_object())
-
-    def get_success_url(self):
-        return reverse_lazy('telemeta-collection-detail', kwargs={'public_id':self.object.code})
 
     def get_context_data(self, **kwargs):
         context = super(CollectionCopyView, self).get_context_data(**kwargs)

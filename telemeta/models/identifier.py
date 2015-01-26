@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2007 Samalyse SARL
-# Copyright (C) 2008-2011 Parisson SARL
+# Copyright (C) 2010 Samalyse SARL
+# Copyright (C) 2010-2014 Parisson SARL
 
 # This software is a computer program whose purpose is to backup, analyse,
 # transcode and stream any audio content with its metadata over a web frontend.
@@ -31,24 +31,27 @@
 # The fact that you are presently reading this means that you have had
 # knowledge of the CeCILL license and that you accept its terms.
 #
-# Author: Olivier Guilyardi <olivier@samalyse.com>
-#         Guillaume Pellerin <yomguy@parisson.com>
+# Authors: Olivier Guilyardi <olivier@samalyse.com>
+#          David LIPSZYC <davidlipszyc@gmail.com>
+#          Guillaume Pellerin <yomguy@parisson.com>
 
 
-from identifier import *
-from location import *
-from instrument import *
-from enum import *
-from system import *
-from query import *
-from dublincore import *
-from language import *
-from format import *
-from identifier import *
-from fonds import *
-from corpus import *
-from collection import *
-from item import *
-from resource import *
-from playlist import *
+from telemeta.models.core import *
+from telemeta.models.fields import *
+from django.utils.translation import ugettext_lazy as _
 
+
+class Identifier(ModelCore):
+    """Resource identifier"""
+
+    identifier = CharField(_('identifier'), max_length=255, blank=True, unique=True)
+    type = WeakForeignKey('IdentifierType', verbose_name=_('type'))
+    date_add = DateTimeField(_('date added'), auto_now_add=True)
+    date_first = DateTimeField(_('date of first attribution'))
+    date_last = DateTimeField(_('date of last attribution'))
+    date_modified = DateTimeField(_('date modified'), auto_now=True)
+    notes = TextField(_('notes'))
+
+    class Meta(MetaCore):
+        abstract = True
+        ordering = ['-date_last']

@@ -48,7 +48,7 @@ setup(
   author_email = "yomguy@parisson.com",
   version = '1.5',
   install_requires = [
-        'django==1.6.8',
+        'django==1.6.10',
         'django-registration',
         'django-extensions',
         'django-timezones',
@@ -60,7 +60,8 @@ setup(
         'django-bootstrap-pagination',
         'django-json-rpc==0.6.2',
         'django-suit',
-        'timeside>=0.5.6',
+        'django-google-tools',
+        'timeside>=0.7',
         'south',
         'sorl-thumbnail',
         'docutils',

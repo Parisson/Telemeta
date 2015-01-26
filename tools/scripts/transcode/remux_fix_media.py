@@ -28,14 +28,14 @@ class FixCheckMedia(object):
                     dir_files = os.listdir(root)
 
                     if not webm_fixed_log in dir_files:
-                        print source    
+                        print source
                         self.fix_webm(source)
                         f = open(root + os.sep + webm_fixed_log, 'w')
                         f.close()
                         if os.path.exists(root + os.sep + webm_tofix_log):
                             os.remove(root + os.sep + webm_tofix_log)
-            
-                    if mp3_tofix_log in dir_files and not mp3_fixed_log in dir_files:
+
+                    if mp3_tofix_log in dir_files or not mp3_fixed_log in dir_files:
                         for file in dir_files:
                             dest_ext = os.path.splitext(file)[1][1:]
                             if dest_ext == 'mp3':

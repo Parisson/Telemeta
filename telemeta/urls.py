@@ -36,7 +36,7 @@
 
 from django.conf.urls import patterns, url, include
 from django.conf import settings
-from django.views.generic import RedirectView
+from django.views.generic.base import RedirectView
 from django.views.generic.list import ListView
 from telemeta.models import MediaItem, MediaCollection, MediaItemMarker, MediaCorpus, MediaFonds
 from telemeta.views import *
@@ -84,18 +84,24 @@ urlpatterns = patterns('',
     url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/edit/$', ItemEditView.as_view(), name="telemeta-item-edit"),
     url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/copy/$', ItemCopyView.as_view(), name="telemeta-item-copy"),
     url(r'^archives/items_add/$', ItemAddView.as_view(), name="telemeta-item-add"),
-    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/player/(?P<width>[0-9]+)x(?P<height>[0-9]+)/$', item_view.item_detail, dict(template='telemeta/mediaitem_player.html'), name="telemeta-item-player"),
-    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/player/(?P<width>[0-9]+)x(?P<height>[0-9]+)/simple/$', item_view.item_detail, dict(template='telemeta/mediaitem_player_simple.html'), name="telemeta-item-player-simple"),
-    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/player/(?P<width>[0-9]+)x(?P<height>[0-9]+)/countour/$', item_view.item_detail, dict(template='telemeta/mediaitem_player_contour.html'), name="telemeta-item-player-contour"),
+    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/player/(?P<width>[0-9]+)x(?P<height>[0-9]+)/$', ItemPlayerDefaultView.as_view(), name="telemeta-item-player"),
     url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/delete/$', item_view.item_delete, name="telemeta-item-delete"),
     url(r'^archives/items/(?P<item_public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)/view/$', item_view.related_media_item_stream, name="telemeta-item-related"),
     url(r'^archives/items/(?P<item_public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)/download/$', item_view.related_media_item_download, name="telemeta-item-related-download"),
+    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/markers/json/$', ItemMarkerJsonView.as_view(), name="telemeta-item-markers-json"),
 
     # Markers
     url(r'^archives/markers/(?P<marker_id>[A-Za-z0-9]+)/$', item_view.item_detail, name="telemeta-item-detail-marker"),
 
-    # FIXME: need all paths
-    url(r'^items/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(), {'url': '/archives/items/%(path)s/', 'permanent': False}, name="telemeta-item-redir"),
+    # Redirections to old URLs
+    url(r'^items/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(url='/archives/items/%(path)s/',
+                                                 permanent= True), name="telemeta-item-redir"),
+    url(r'^collections/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(url='/archives/collections/%(path)s/',
+                                                 permanent= True), name="telemeta-collection-redir"),
+    url(r'^corpus/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(url='/archives/corpus/%(path)s/',
+                                                 permanent= True), name="telemeta-corpus-redir"),
+    url(r'^fonds/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(url='/archives/fonds/%(path)s/',
+                                                 permanent= True), name="telemeta-fonds-redir"),
 
     # collections
     url(r'^archives/collections/$', CollectionListView.as_view(), name="telemeta-collections"),
@@ -111,8 +117,8 @@ urlpatterns = patterns('',
     url(r'^archives/collections_add/$', CollectionAddView.as_view(), name="telemeta-collection-add"),
     url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/add_item/$', ItemAddView.as_view(), name="telemeta-collection-additem"),
     url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/delete/$', collection_view.collection_delete, name="telemeta-collection-delete"),
-    url(r'^archives/collections/(?P<collection_public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)/view/$', collection_view.related_media_collection_stream, name="telemeta-collection-related"),
-    url(r'^archives/collections/(?P<collection_public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)/download/$', collection_view.related_media_collection_download, name="telemeta-collection-related-download"),
+    url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)/view/$', collection_view.related_media_collection_stream, name="telemeta-collection-related"),
+    url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)/download/$', collection_view.related_media_collection_download, name="telemeta-collection-related-download"),
 
     # FIXME: need all paths
     url(r'^collections/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(), {'url': '/archives/collections/%(path)s/', 'permanent': False}, name="telemeta-collection-redir"),
@@ -228,10 +234,11 @@ urlpatterns = patterns('',
 
 )
 
+
 if settings.DEBUG and 'debug_toolbar' in settings.INSTALLED_APPS:
     import debug_toolbar
     urlpatterns += patterns('',
-    url(r'^__debug__/', include(debug_toolbar.urls)),)
+    url(r'^__debug__/', include(debug_toolbar.urls)),
     # for the graphical browser/web console only, omissible
     url(r'json/browse/', 'jsonrpc.views.browse', name="jsonrpc_browser"),
-
+    )

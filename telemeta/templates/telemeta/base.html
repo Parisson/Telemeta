@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 {% load i18n %}
-{% load telemeta_utils %}{# Load the tag library #}
+{% load telemeta_utils %}
 {% load bootstrap3 %}
+{% settings_value 'INSTALLED_APPS' as INSTALLED_APPS %}
+{% if 'googletools' in INSTALLED_APPS %}
+{% load googletools %}
+{% endif %}
+
 {% get_current_language as LANGUAGE_CODE %}
 {% get_available_languages as LANGUAGES %}
 <html xmlns="http://www.w3.org/1999/xhtml" lang="{{ LANGUAGE_CODE }}" xml:lang="{{ LANGUAGE_CODE }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
@@ -10,6 +15,14 @@
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+{% block analytics %}
+{% if 'googletools' in INSTALLED_APPS %}
+{% site_verification_code %}
+{% analytics_code %}
+{% endif %}
+{% endblock analytics %}
+
 <link rel="alternate" href="/rss" title="RSS 2.0" type="application/rss+xml" />
 
 <title>{%block head_title %}{% description %} - Telemeta{% endblock %}</title>
@@ -181,9 +194,6 @@
 {% endblock %}
 </div>
 {% endblock layout %}
-
-{% block analytics %}
-{% endblock analytics %}
 
 </body>
 </html>
