@@ -1,6 +1,6 @@
-===============================================
+=================================================
 Telemeta: open web audio platform with semantics
-===============================================
+=================================================
 
 |version| |downloads| |travis_master| |coverage_master|
 
@@ -59,7 +59,7 @@ News
 +++++
 
  * Compatible with Django 1.6.x
- * Compatible with TimeSide 0.6.x
+ * Compatible with TimeSide 0.7.x
  * Huge refactor of all forms, detail and edit views
  * Main styles (buttons, tabs) are now based Bootstrap 3 and JQuery 2.1
  * Update models and views as needed by the CREM
