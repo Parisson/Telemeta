@@ -1,9 +1,9 @@
 global-exclude *.pyc
 prune dist
 prune build
-include AUTHORS
-include LICENSE
-include CHANGELOG
+include AUTHORS.txt
+include LICENSE.txt
+include CHANGELOG.rst
 include README.rst
 include INSTALL.rst
 include requirements.txt
