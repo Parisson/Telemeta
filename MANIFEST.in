@@ -10,6 +10,8 @@ include requirements.txt
 recursive-include doc *
 recursive-include example *
 recursive-exclude example/sandbox/media *
+recursive-exclude example/sandbox/cache *
+recursive-exclude example/sandbox/items *
 recursive-include tests *
 recursive-include tools *
 recursive-include telemeta/backup *
