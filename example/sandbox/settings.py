@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse_lazy, reverse
 
 sys.dont_write_bytecode = True
 
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+BASE_DIR = os.path.dirname(__file__)
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG

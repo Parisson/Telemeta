@@ -802,8 +802,6 @@ class ItemAddView(ItemViewMixin, CreateWithInlinesView):
         return super(ItemAddView, self).forms_valid(form, inlines)
 
     def get_success_url(self):
-        #FIXME should be in form_valid but doesn't work with extra_views
-        self.get_object().set_revision(self.request.user)
         return reverse_lazy('telemeta-item-detail', kwargs={'public_id':self.object.code})
 
     @method_decorator(permission_required('telemeta.add_mediaitem'))
