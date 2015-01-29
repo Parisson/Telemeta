@@ -169,7 +169,7 @@ svg {
     padding: 6px; /**if u change this, change also width #content_header td.rightcol, see above*/
     position: relative;
     z-index: 1;
-    float: right;
+    /*float: right;*/
     border: 1px solid #999;
     background-color: #eee;
     -moz-border-radius: 8px 8px 8px 8px;
@@ -365,7 +365,7 @@ label.disabled { color: #d7d7d7 }
     font-weight: bold;
     position: absolute;
     top: 1.2em;
-    right: 1.1em;
+    /*right: 1.1em;*/
     margin-right: 1em;
     font-size: 0.9em;
     background-color: #6a0307;
