@@ -46,8 +46,8 @@ TIME_ZONE = 'Europe/Paris'
 LANGUAGES = [ ('fr', 'French'),
               ('en', 'English'),
               ('de', 'German'),
-              ('zh', 'Chinese'),
-              ('ar', 'Arab'),
+              ('zh_CN', 'Simplified Chinese'),
+              ('ar_TN', 'Arabic'),
 ]
 
 SITE_ID = 1
