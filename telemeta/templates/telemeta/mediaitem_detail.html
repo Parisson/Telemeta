@@ -152,7 +152,7 @@
        </div>
         <div class="wazing"></div>
     </div>
-    <div id="rightcol">
+    <div id="rightcol" {% if LANGUAGE_BIDI %}style="float : left; padding-bottom:0;"{% else %}style="float : right; padding-bottom:0;"{% endif %}>
         <div id="player_minimized" class="ts-skin-lab">
             <a href="#" class="toggle">Maximize</a>
             <a href="#" class="embed_player_frame">&lt;/&gt;</a>
