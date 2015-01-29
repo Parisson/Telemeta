@@ -69,7 +69,7 @@
 {% endblock %}
 </div>
 
-<div id="auth_info"  {% if LANGUAGE_BIDI %}style="left : 1.1em;"{% else %}style="right : 1.1em;"{% endif %}>
+<div id="auth_info">
 {% if user.is_authenticated %}
 <img src="{{ STATIC_URL }}telemeta/images/user.png" alt="user" style="vertical-align:middle" />
 {% trans "Welcome" %},
@@ -160,7 +160,7 @@
 <div id="content">
     <table id="content_header"><tr>
             <td class="leftcol"><h1>{% block title %}{% endblock %}</h1></td>
-            <td class="rightcol" {% if LANGUAGE_BIDI %}style="float : left;"{% else %}style="float : right;"{% endif %}>{% block title_buttons %}{% endblock %}</td>
+            <td class="rightcol">{% block title_buttons %}{% endblock %}</td>
     </tr></table>
 
   {% block content %}{% endblock %}
