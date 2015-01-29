@@ -36,7 +36,7 @@
 <div>
 {% if item.file %}
     {% if access or user.is_staff %}
-    <div id="rightcol" style="float: left; padding-bottom:0;">
+    <div id="rightcol" {% if LANGUAGE_BIDI %}style="float : left; padding-bottom:0;"{% else %}style="float : right; padding-bottom:0;"{% endif %}>
         <div id="player_minimized" class="ts-skin-lab">
             <div class="wazing"></div>
             <div id="player" class="ts-player">
