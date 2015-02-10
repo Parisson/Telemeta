@@ -63,14 +63,20 @@ from xml.dom.minidom import getDOMImplementation
 PUBLIC_ACCESS_CHOICES = (('none', _('none')), ('metadata', _('metadata')),
                          ('mixed', _('mixed')), ('full', _('full')))
 
-mimetypes.add_type('video/webm','.webm')
-mimetypes.add_type("text/xml", ".eaf")
+extra_types = {
+    '.webm': 'video/webm',
+    '.eaf': 'text/xml',  # ELAN Annotation Format
+    '.trs':  'text/xml', # Trancriber Annotation Format
+    '.svl':  'text/xml',  # Sonic Visualiser layer file
+    '.TextGrid': 'text/praat-textgrid',  # Praat TextGrid annotation file
+}
+
+for ext,mime_type in extra_types.items():
+    mimetypes.add_type(mime_type, ext)
 
 app_name = 'telemeta'
 
 strict_code = getattr(settings, 'TELEMETA_STRICT_CODE', False)
-
-
 
 
 class EnhancedQuerySet(models.query.QuerySet):
