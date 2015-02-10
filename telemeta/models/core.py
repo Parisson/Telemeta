@@ -64,6 +64,7 @@ PUBLIC_ACCESS_CHOICES = (('none', _('none')), ('metadata', _('metadata')),
                          ('mixed', _('mixed')), ('full', _('full')))
 
 mimetypes.add_type('video/webm','.webm')
+mimetypes.add_type("text/xml", ".eaf")
 
 app_name = 'telemeta'
 
