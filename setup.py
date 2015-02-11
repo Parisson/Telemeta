@@ -58,7 +58,7 @@ setup(
         'django-breadcrumbs',
         'django-bootstrap3',
         'django-bootstrap-pagination',
-        'django-json-rpc==0.6.2',
+        'django-json-rpc',
         'django-suit',
         'django-google-tools',
         'timeside>=0.7',
@@ -68,6 +68,7 @@ setup(
         'psutil',
         'pyyaml',
         'python-ebml',
+        'mysql',
     ],
   tests_require=['pytest-django', 'pytest-cov', 'factory-boy'],
   # Provide a test command through django-setuptest
