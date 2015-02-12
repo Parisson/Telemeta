@@ -414,5 +414,5 @@ class SearchView(ListView):
         context['corpus_num']  = self.corpus.count()
         context['fonds_num'] = self.fonds.count()
         context['type'] = self.type
-        context['count'] = self.object_list.count()
+        context['count'] = self.object.count()
         return context
