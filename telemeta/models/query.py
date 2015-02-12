@@ -201,13 +201,13 @@ class MediaItemQuerySet(CoreQuerySet):
         return self.filter(Q(file__contains='/') | Q(url__contains='/'))
 
     def sound_public(self):
-        return self.filter(Q(file__contains='/') | Q(url__contains='/'), 
+        return self.filter(Q(file__contains='/') | Q(url__contains='/'),
                 public_access='full', collection__public_access='full')
 
     def by_instrument(self, name):
         "Find items by instrument"
         from telemeta.models.instrument import Instrument, InstrumentAlias
-        from telemeta.models.media import MediaItemPerformance
+        from telemeta.models.item import MediaItemPerformance
         instruments = Instrument.objects.filter(name__icontains=name)
         aliases = InstrumentAlias.objects.filter(name__icontains=name)
         perf = []
@@ -272,7 +272,7 @@ class MediaCollectionQuerySet(CoreQuerySet):
 
     def quick_search(self, pattern):
         "Perform a quick search on code, title and collector name"
-        from telemeta.models.media import MediaCollection
+        from telemeta.models.collection import MediaCollection
         pattern = pattern.strip()
         mod = MediaCollection()
         fields = mod.to_dict()
@@ -356,7 +356,7 @@ class MediaCollectionQuerySet(CoreQuerySet):
 
     def by_instrument(self, name):
         "Find collections by instrument"
-        from telemeta.models.media import MediaItemPerformance
+        from telemeta.models.item import MediaItemPerformance
         from telemeta.models.instrument import Instrument, InstrumentAlias
         instruments = Instrument.objects.filter(name__icontains=name)
         aliases = InstrumentAlias.objects.filter(name__icontains=name)
@@ -460,7 +460,7 @@ class MediaCorpusQuerySet(CoreQuerySet):
 
     def quick_search(self, pattern):
         "Perform a quick search on text and char fields"
-        from telemeta.models.media import MediaCorpus
+        from telemeta.models.corpus import MediaCorpus
         mod = MediaCorpus()
         pattern = pattern.strip()
         q = Q(code__contains=pattern)
@@ -492,7 +492,7 @@ class MediaFondsQuerySet(CoreQuerySet):
 
     def quick_search(self, pattern):
         "Perform a quick search on text and char fields"
-        from telemeta.models.media import MediaFonds
+        from telemeta.models.fonds import MediaFonds
         mod = MediaFonds()
         pattern = pattern.strip()
         q = Q(code__contains=pattern)
