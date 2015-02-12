@@ -749,14 +749,12 @@ class ItemEditView(ItemViewMixin, UpdateWithInlinesView):
 
     def forms_valid(self, form, inlines):
         messages.info(self.request, ugettext_lazy("You have successfully updated your item."))
-        obj = form.save()
-        obj.set_revision(self.request.user)
+        item = form.save()
+        item.set_revision(self.request.user)
         return super(ItemEditView, self).forms_valid(form, inlines)
 
     def get_success_url(self):
-        #FIXME should be in form_valid but doesn't work with extra_views
-        self.get_object().set_revision(self.request.user)
-        return reverse_lazy('telemeta-item-detail', kwargs={'public_id':self.object.code})
+        return reverse_lazy('telemeta-item-detail', kwargs={'public_id':self.get_object().code})
 
     def get_context_data(self, **kwargs):
         context = super(ItemEditView, self).get_context_data(**kwargs)
