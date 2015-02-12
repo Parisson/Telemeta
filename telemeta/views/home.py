@@ -404,6 +404,7 @@ class SearchView(ListView):
         elif self.type == 'fonds':
             objects = self.fonds
 
+        self.objects = objects
         return objects
 
     def get_context_data(self, *args, **kwargs):
@@ -414,5 +415,5 @@ class SearchView(ListView):
         context['corpus_num']  = self.corpus.count()
         context['fonds_num'] = self.fonds.count()
         context['type'] = self.type
-        context['count'] = self.object.count()
+        context['count'] = self.objects.count()
         return context
