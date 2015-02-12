@@ -815,11 +815,27 @@ class ItemCopyView(ItemAddView):
     template_name = 'telemeta/mediaitem_edit.html'
 
     def get_initial(self):
-        return model_to_dict(self.get_object())
+         return model_to_dict(self.get_object())
+
+    def forms_valid(self, form, inlines):
+        messages.info(self.request, ugettext_lazy("You have successfully updated your item."))
+        item = form.save()
+        item.set_revision(self.request.user)
+        if not MediaItemPerformance.objects.filter(media_item=item):
+            for performance in MediaItemPerformance.objects.filter(media_item=self.get_object()):
+                performance.pk = None
+                performance.id = None
+                performance.media_item = item
+                performance.save()
+        if not MediaItemKeyword.objects.filter(item=item):
+            for keyword in MediaItemKeyword.objects.filter(item=self.get_object()):
+                keyword.pk = None
+                keyword.id = None
+                keyword.item = item
+                keyword.save()
+        return super(ItemCopyView, self).forms_valid(form, inlines)
 
     def get_success_url(self):
-        #FIXME should be in form_valid but doesn't work with extra_views
-        self.get_object().set_revision(self.request.user)
         return reverse_lazy('telemeta-item-detail', kwargs={'public_id':self.object.code})
 
     def get_context_data(self, **kwargs):
@@ -1057,7 +1073,6 @@ class DublinCoreToFormatMetadata(object):
                     metadata[key] = value.decode('utf-8')
                 keys_done.append(key)
         return metadata
-
 
 
 class ItemMarkerJsonView(View):
