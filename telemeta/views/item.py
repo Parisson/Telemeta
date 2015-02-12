@@ -750,6 +750,15 @@ class ItemEditView(ItemViewMixin, UpdateWithInlinesView):
     def forms_valid(self, form, inlines):
         messages.info(self.request, ugettext_lazy("You have successfully updated your item."))
         item = form.save()
+        if form.files:
+            self.cache_data.delete_item_data(item.code)
+            self.cache_export.delete_item_data(item.code)
+            flags = MediaItemTranscodingFlag.objects.filter(item=item)
+            analyses = MediaItemAnalysis.objects.filter(item=item)
+            for flag in flags:
+                flag.delete()
+            for analysis in analyses:
+                analysis.delete()
         item.set_revision(self.request.user)
         return super(ItemEditView, self).forms_valid(form, inlines)
 
