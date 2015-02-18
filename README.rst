@@ -80,6 +80,28 @@ News
 See also the `full changelog <http://github.com/yomguy/Telemeta/blob/master/CHANGELOG.rst>`_.
 
 
+Examples
+========
+
+* `Sound archives of the French Ethnomusicology Research Center (CREM) and the Musée de l'Homme <http://archives.crem-cnrs.fr>`_ :
+
+ * a 120 year old ethnomusicologic database,
+ * more than 5000 geolocated collections,
+ * more than 32000 geolocated items,
+ * more than 11000 sounds included
+ * 1.5 To of original music files accessible online.
+ * started in june 2011
+
+* `Sound archives of the team "Lutherie, Acoustique et Musique" (LAM) of the IJLRDA institute - University Pierre et Marie Curie (Paris 6) <http://telemeta.lam.jussieu.fr>`_ :
+
+ * original musical instruments recorded for research purposes
+ * started in sept. 2012
+
+* `Sound archives of Parisson Studio <http://parisson.telemeta.org>`_
+
+* `Scaled BIOdiversity (SABIOD) <http://sabiod.telemeta.org>`_
+
+
 Demo
 ====
 
@@ -87,30 +109,6 @@ http://demo.telemeta.org
 
 login: demo
 password: demo
-
-
-Serious Usecases
-=================
-
-* `Sound archives of the French Ethnomusicology Research Center (CREM) and the Musée de l'Homme <http://archives.crem-cnrs.fr>`_ :
-
- * a 100 year old world database migrated,
- * more than 5000 geolocated collections,
- * more than 32000 geolocated items,
- * more than 11000 sounds included
- * 700 Go of original ethnic music files accessible through the web.
- * started in june 2011
-
-* `Sound archives of the team "Lutherie, Acoustique et Musique" (LAM) of the IJLRDA institute - University Pierre et Marie Curie (Paris 6) <http://telemeta.lam.jussieu.fr>`_ :
-
- * various musical instruments recorded for research purposes
- * started in sept. 2012
-
-* `Sound archives Parisson <http://parisson.telemeta.org>`_ :
-
-* `Scaled BIOdiversity (SABIOD) <http://sabiod.telemeta.org>`
-
-* Various electronic sounds and original electronic music produced by Parisson
 
 
 Install
@@ -126,6 +124,14 @@ API / Documentation
 * API : http://files.parisson.com/doc/telemeta/
 * Player : https://github.com/Parisson/TimeSide/
 * Example : http://archives.crem-cnrs.fr/archives/items/CNRSMH_E_2004_017_001_01/
+
+
+Related software projects
+==========================
+
+ * `TimeSide <https://github.com/yomguy/timeside/>`_: high level python audio processing framework
+ * `Diadems <http://www.irit.fr/recherches/SAMOVA/DIADEMS/fr/welcome/&cultureKey=en>`_ Description, Indexation, Access to Sound and Ethnomusicological Documents, funded by the French Research Agency (ANR CONTINT 2012)
+ * `TimeSide-Diadems <https://github.com/ANR-DIADEMS/timeside-diadems>`_: a set of Timeside plugins developed during the Diadems project
 
 
 Development
@@ -192,7 +198,7 @@ Twitter:
 License
 =======
 
-CeCILL v2, compatible with GPL v2 (see `LICENSE <http://github.com/yomguy/Telemeta/blob/master/LICENSE>`_)
+CeCILL v2, compatible with GPL v2 (see `LICENSE <http://github.com/yomguy/Telemeta/blob/master/LICENSE.txt>`_)
 
 
 Sponsors
@@ -213,5 +219,4 @@ The Telemeta project is developed by Parisson. It is sponsored by :
     http://www.mmsh.univ-aix.fr/
   * MNHN : Museum d'Histoire Naturelle (Paris, France)
     http://www.mnhn.fr
-
 
