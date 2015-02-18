@@ -6,7 +6,7 @@
  * Fix performance and keywords copy during item copy
  * Add various annotation mime types (ELAN, Trancriber, Sonic Visualizer)
  * Add arabic translations through Telemeta-locales (thanks to @AnasGhrab)
- * Fix arabic and chinese codes
+ * Fix arabic and chinese codes in sandbox
  * Better locale / pages management
  * A better management of RTL for arabic page style
 
