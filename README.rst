@@ -55,6 +55,18 @@ The processing engine of Telemeta is a separate project called `TimeSide <https:
 News
 ======
 
+1.5.1
+++++++
+
+ * Fix geo-navigator lists and pagination
+ * Fix item analyses cleanup after file edit
+ * Fix performance and keywords copy during item copy
+ * Add various annotation mime types (ELAN, Trancriber, Sonic Visualizer)
+ * Add arabic translations through Telemeta-locales (thanks to @AnasGhrab)
+ * Fix arabic and chinese codes
+ * Better locale / pages management
+ * A better management of RTL for arabic page style
+
 1.5
 +++++
 
@@ -181,18 +193,19 @@ Contact
 
 Homepage: http://telemeta.org
 
-E-mails:
+Emails:
 
  * Guillaume Pellerin <yomguy@parisson.com>,
  * Thomas Fillon <thomas@parisson.com>
+ * Anas Ghrab <anas.ghrab@gmail.com>
  * Olivier Guilyardi <olivier@samalyse.com>,
  * Riccardo Zaccarelli <riccardo.zaccarelli@gmail.com>
 
 Twitter:
 
- * http://twitter.com/telemeta
- * http://twitter.com/parisson_studio
- * http://twitter.com/yomguy
+ * https://twitter.com/telemeta
+ * https://twitter.com/parisson_studio
+ * https://twitter.com/yomguy
 
 
 License
