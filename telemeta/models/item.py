@@ -475,7 +475,6 @@ class MediaItemIdentifier(Identifier):
         unique_together = ('identifier', 'item')
 
 
-
 class MediaPart(MediaResource):
     "Describe an item part"
     element_type = 'part'

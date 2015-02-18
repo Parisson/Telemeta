@@ -46,7 +46,7 @@ setup(
   long_description = open('README.rst').read(),
   author = "Guillaume Pellerin",
   author_email = "yomguy@parisson.com",
-  version = '1.5',
+  version = '1.5.1',
   install_requires = [
         'django==1.6.10',
         'django-registration',
@@ -58,7 +58,7 @@ setup(
         'django-breadcrumbs',
         'django-bootstrap3',
         'django-bootstrap-pagination',
-        'django-json-rpc==0.6.2',
+        'django-json-rpc',
         'django-suit',
         'django-google-tools',
         'timeside>=0.7',
@@ -68,6 +68,7 @@ setup(
         'psutil',
         'pyyaml',
         'python-ebml',
+        'mysql',
     ],
   tests_require=['pytest-django', 'pytest-cov', 'factory-boy'],
   # Provide a test command through django-setuptest

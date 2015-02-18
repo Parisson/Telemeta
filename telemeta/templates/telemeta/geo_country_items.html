@@ -1,13 +1,21 @@
 {% extends "telemeta/base.html" %}
-{% load telemeta_utils %}
 {% load i18n %}
+{% load telemeta_utils %}
+{% load bootstrap_pagination %}
 
 {% block head_title %}{{ country }} - {% trans "Geographic Navigator" %} - {{ block.super }}{% endblock %}
 
 {% block title %}
-<a href="{% url "telemeta-geo-continents" %}">{% trans "World" %}</a> /
-  <a href="{% url "telemeta-geo-countries" continent.flatname %}">{{ continent }}</a>
-  / {{ country }}
+<div class='row'>
+ <div class="col-md-6">
+  <img src="{{ STATIC_URL }}telemeta/images/world_red.png" alt="geo-country" style="vertical-align:middle" /> <a href="{% url "telemeta-geo-continents" %}">{% trans "World" %}</a> /
+  <a href="{% url "telemeta-geo-countries" continent.flatname %}">{{ continent }}</a> / {{ country }} ({{ page_obj.start_index }} - {{ page_obj.end_index }} / {{ count }})
+ </div>
+<div class="col-md-6">
+{% bootstrap_paginate page_obj range=10 show_first_last="True" %}
+</div>
+<div class="col-md-0">&nbsp;</div>
+</div>
 {% endblock title %}
 
 {% block content %}

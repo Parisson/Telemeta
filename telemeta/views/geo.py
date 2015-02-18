@@ -94,8 +94,8 @@ class GeoCountryCollectionView(ListView):
         context = super(GeoCountryCollectionView, self).get_context_data(*args, **kwargs)
         context['country'] = self.country
         context['continent'] =  self.continent
+        context['count'] = self.object_list.count()
         return context
-
 
 
 class GeoCountryItemView(ListView):
@@ -115,6 +115,7 @@ class GeoCountryItemView(ListView):
         context = super(GeoCountryItemView, self).get_context_data(*args, **kwargs)
         context['country'] = self.country
         context['continent'] =  self.continent
+        context['count'] = self.object_list.count()
         return context
 
 
