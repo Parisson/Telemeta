@@ -72,7 +72,7 @@
     <a href="{% url "telemeta-profile-edit" usr.username %}" class="component_icon button icon_edit">{% trans "Edit" %}</a>
     {%  endif %}
     {% if user.is_authenticated and user.username == usr.username %}
-    <a href="{% url "telemeta-password-change" %}" class="component_icon button icon_login">{% trans "Change password" %}</a>
+    <a href="{% url "password_change" %}" class="component_icon button icon_login">{% trans "Change password" %}</a>
     {%  endif %}
 
   </div>

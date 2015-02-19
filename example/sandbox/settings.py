@@ -148,6 +148,7 @@ INSTALLED_APPS = (
     'bootstrap3',
     'bootstrap_pagination',
     'googletools',
+    'registration',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
