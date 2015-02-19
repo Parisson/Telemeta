@@ -1,0 +1,26 @@
+{% extends "telemeta/registration/registration_base.html" %}
+{% load i18n %}
+{% load telemeta_utils %}
+{% load teleforma_tags %}
+
+{% block title %}<center>{% trans "Registration" %} - {% description %}</center>{% endblock %}
+
+{% block content %}
+<center>
+    <form class="register" id="_registerForm" method="post" action="" enctype="multipart/form-data" data-ajax="false">{% csrf_token %}
+    <table>
+        {{ form }}
+        {% for formset in inlines %}
+          {{ formset.management_form }}
+          {% for form in formset %}
+           {{form }}
+          {% endfor %}
+        {% endfor %}
+    </table>
+    <br><br>
+    <a href="#" class="component_icon button" id="action_green" onclick="$('#_registerForm').submit();"><img src="{{STATIC_URL}}telemeta/images/next.png" alt="" style="vertical-align:middle" />&nbsp;{% trans "Submit" %}</a>
+    </form>
+</center>
+{% endblock %}
+
+
