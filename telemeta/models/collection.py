@@ -264,6 +264,20 @@ class MediaCollection(MediaResource):
         return metadata
 
 
+    def epub(self, filename):
+        from epub.models import EPub
+        e = EPub()
+        e.metadata.title = self.title
+        # e.metadata.add_creator(self.metadata_author)
+        e.metadata.description = self.description
+        e.metadata.publisher = self.publisher
+        e.metadata.language = 'fr-FR'
+        for item in self.items.all():
+            e.add_article(item.title, item.comment)
+        e.generate_epub(filename)
+
+
+
 class MediaCollectionRelated(MediaRelated):
     "Collection related media"
 

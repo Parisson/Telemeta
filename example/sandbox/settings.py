@@ -149,6 +149,7 @@ INSTALLED_APPS = (
     'bootstrap_pagination',
     'googletools',
     'registration',
+    'epub',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
