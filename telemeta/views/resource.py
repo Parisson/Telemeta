@@ -348,3 +348,83 @@ class ResourceEditView(ResourceSingleMixin, UpdateWithInlinesView):
     def dispatch(self, *args, **kwargs):
         return super(ResourceEditView, self).dispatch(*args, **kwargs)
 
+
+
+class CorpusEpubView(View):
+
+    model = MediaCorpus
+
+    def get_object(self):
+        return MediaCorpus.objects.get(public_id=self.kwargs['public_id'])
+
+    def get(self, request, *args, **kwargs):
+        """
+        Stream an Epub file of collection data
+        """
+        from ebooklib import epub
+        from django.template.loader import render_to_string
+
+        book = epub.EpubBook()
+        corpus = self.get_object()
+        local_path = os.path.dirname(__file__)
+        css = os.sep.join([local_path, '..', 'static', 'telemeta', 'css', 'telemeta_epub.css'])
+        collection_template = os.sep.join([local_path, '..', 'templates', 'telemeta', 'collection_epub.html'])
+        site = Site.objects.get_current()
+
+        # add metadata
+        book.set_identifier(corpus.public_id)
+        book.set_title(corpus.title)
+        book.set_language('fr')
+
+        book.add_author(corpus.descriptions)
+
+        # add cover image
+        for media in corpus.related.all():
+            if 'cover' in media.title or 'Cover' in media.title:
+                book.set_cover("cover.jpg", open(media.file.path, 'r').read())
+                break
+
+        chapters = []
+        for collection in corpus.children.all():
+            context = {'collection': collection, 'site': site}
+            c = epub.EpubHtml(title=collection.title, file_name=collection.code + '.xhtml', lang='fr')
+            c.content = render_to_string(collection_template, context)
+            print c.content
+            chapters.append(c)
+            # add chapters to the book
+            book.add_item(c)
+
+        # create table of contents
+        # - add manual link
+        # - add section
+        # - add auto created links to chaptersfesse
+
+        book.toc = (( chapters ))
+
+        # add navigation files
+        book.add_item(epub.EpubNcx())
+        book.add_item(epub.EpubNav())
+
+        # define css style
+        style = open(css, 'r')
+        nav_css = epub.EpubItem(uid="style_nav", file_name="style/nav.css", media_type="text/css", content=style.read())
+        book.add_item(nav_css)
+
+        # create spin, add cover page as first page
+        chapters.insert(0,'nav')
+        chapters.insert(0,'cover')
+        book.spine = chapters
+
+        # create epub file
+        filename = '/tmp/test.epub'
+        epub.write_epub(filename, book, {})
+        epub_file = open(filename, 'r')
+
+        response = StreamingHttpResponse(epub_file.read(), content_type='application/epub+zip')
+        response['Content-Disposition'] = "attachment; filename=%s.%s" % \
+                                             (collection.code, 'epub')
+        return response
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(CorpusEpubView, self).dispatch(*args, **kwargs)
