@@ -10,6 +10,14 @@ h2 {
      font-weight: 200;
 }
 
+
+h3 {
+     text-align: left;
+     font-weight: 1em;
+     margin-top: 0px;
+}
+
+
 ol {
         list-style-type: none;
 }

@@ -1,8 +1,20 @@
 
 {% for item in collection.items.all %}
-<p>
- {{ item.title }}
- <br>
- <audio src="http://{{ site.domain }}{% url "telemeta-item-export" item.public_id 'mp3' %}" controls="controls"/>
-</p>
+
+ <div class="item-title">
+ <h3>{{ item.title }}</h3>
+ </div>
+
+ <div class="item-audio">
+  <audio src="{{ item.file }}" controls="controls"/>
+ </div>
+
+ {% for image in item.related.all %}
+  {% if 'image' in image.mime_type %}
+     <div class="item-image">
+      <img src="{{ image.file }}"/>
+     </div>
+  {% endif %}
+ {% endfor %}
+
 {% endfor %}

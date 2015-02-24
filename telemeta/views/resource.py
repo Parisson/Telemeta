@@ -349,7 +349,6 @@ class ResourceEditView(ResourceSingleMixin, UpdateWithInlinesView):
         return super(ResourceEditView, self).dispatch(*args, **kwargs)
 
 
-
 class CorpusEpubView(View):
 
     model = MediaCorpus
@@ -379,13 +378,23 @@ class CorpusEpubView(View):
         book.add_author(corpus.descriptions)
 
         # add cover image
-        for media in corpus.related.all():
-            if 'cover' in media.title or 'Cover' in media.title:
-                book.set_cover("cover.jpg", open(media.file.path, 'r').read())
-                break
+        # for media in corpus.related.all():
+        #     if 'cover' in media.title or 'Cover' in media.title:
+        #         book.set_cover("cover.jpg", open(media.file.path, 'r').read())
+        #         break
 
         chapters = []
         for collection in corpus.children.all():
+            for item in collection.items.all():
+                if item.file:
+                    audio = open(item.file.path, 'r')
+                    epub_item = epub.EpubItem(file_name=str(item.file), content=audio.read())
+                    book.add_item(epub_item)
+                for related in item.related.all():
+                    if 'image' in related.mime_type:
+                        image = open(related.file.path, 'r')
+                        epub_item = epub.EpubItem(file_name=str(related.file), content=image.read())
+                        book.add_item(epub_item)
             context = {'collection': collection, 'site': site}
             c = epub.EpubHtml(title=collection.title, file_name=collection.code + '.xhtml', lang='fr')
             c.content = render_to_string(collection_template, context)
@@ -401,7 +410,7 @@ class CorpusEpubView(View):
 
         book.toc = (( chapters ))
 
-        # add navigation files
+            # add navigation files
         book.add_item(epub.EpubNcx())
         book.add_item(epub.EpubNav())
 
@@ -420,7 +429,7 @@ class CorpusEpubView(View):
         epub.write_epub(filename, book, {})
         epub_file = open(filename, 'r')
 
-        response = StreamingHttpResponse(epub_file.read(), content_type='application/epub+zip')
+        response = HttpResponse(epub_file.read(), content_type='application/epub+zip')
         response['Content-Disposition'] = "attachment; filename=%s.%s" % \
                                              (collection.code, 'epub')
         return response
