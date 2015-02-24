@@ -393,7 +393,7 @@ class CorpusEpubView(View):
                      id = id[1]
                  items[item] = int(id.split('.')[1])
             items = OrderedDict(sorted(items.items(), key=lambda t: t[1]))
-            # items = collection.items.all().order_by('old_code')
+
             for item in items:
                 if item.file:
                     audio = open(item.file.path, 'r')
