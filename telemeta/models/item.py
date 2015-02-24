@@ -182,8 +182,8 @@ class MediaItem(MediaResource):
                 raise ValidationError("%s is not a valid item code for collection %s"
                                             % (self.code, self.collection.code))
 
-    def save(self, force_insert=False, force_update=False):
-        super(MediaItem, self).save(force_insert, force_update)
+    def save(self, *args, **kwargs):
+        super(MediaItem, self).save(*args, **kwargs)
 
     def computed_duration(self):
         "Tell the length in seconds of this item media data"
@@ -321,9 +321,6 @@ class MediaItemRelated(MediaRelated):
     "Item related media"
 
     item = ForeignKey('MediaItem', related_name="related", verbose_name=_('item'))
-
-    def save(self, force_insert=False, force_update=False, using=False):
-        super(MediaItemRelated, self).save(force_insert, force_update)
 
     def parse_markers(self, **kwargs):
         # Parse KDEnLive session

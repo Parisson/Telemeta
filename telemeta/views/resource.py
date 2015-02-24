@@ -360,6 +360,7 @@ class CorpusEpubView(View):
         """
         Stream an Epub file of collection data
         """
+        from collections import OrderedDict
         from ebooklib import epub
         from django.template.loader import render_to_string
 
@@ -374,8 +375,8 @@ class CorpusEpubView(View):
         book.set_identifier(corpus.public_id)
         book.set_title(corpus.title)
         book.set_language('fr')
-
         book.add_author(corpus.descriptions)
+
 
         # add cover image
         # for media in corpus.related.all():
@@ -385,7 +386,15 @@ class CorpusEpubView(View):
 
         chapters = []
         for collection in corpus.children.all():
+            items = {}
             for item in collection.items.all():
+                 id = item.old_code.split(' ')
+                 if len(id) > 1:
+                     id = id[1]
+                 items[item] = int(id.split('.')[1])
+            items = OrderedDict(sorted(items.items(), key=lambda t: t[1]))
+            # items = collection.items.all().order_by('old_code')
+            for item in items:
                 if item.file:
                     audio = open(item.file.path, 'r')
                     epub_item = epub.EpubItem(file_name=str(item.file), content=audio.read())
@@ -395,10 +404,9 @@ class CorpusEpubView(View):
                         image = open(related.file.path, 'r')
                         epub_item = epub.EpubItem(file_name=str(related.file), content=image.read())
                         book.add_item(epub_item)
-            context = {'collection': collection, 'site': site}
+            context = {'collection': collection, 'site': site, 'items': items}
             c = epub.EpubHtml(title=collection.title, file_name=collection.code + '.xhtml', lang='fr')
             c.content = render_to_string(collection_template, context)
-            print c.content
             chapters.append(c)
             # add chapters to the book
             book.add_item(c)
@@ -414,7 +422,8 @@ class CorpusEpubView(View):
         book.add_item(epub.EpubNcx())
         book.add_item(epub.EpubNav())
 
-        # define css style
+
+        # add css style
         style = open(css, 'r')
         nav_css = epub.EpubItem(uid="style_nav", file_name="style/nav.css", media_type="text/css", content=style.read())
         book.add_item(nav_css)

@@ -136,9 +136,6 @@ class MediaCollection(MediaResource):
     def __unicode__(self):
         return self.code
 
-    def save(self, force_insert=False, force_update=False, user=None, code=None):
-        super(MediaCollection, self).save(force_insert, force_update)
-
     @property
     def public_id(self):
         return self.code
@@ -262,19 +259,6 @@ class MediaCollection(MediaResource):
         #     i += 1
 
         return metadata
-
-
-    def epub(self, filename):
-        from epub.models import EPub
-        e = EPub()
-        e.metadata.title = self.title
-        # e.metadata.add_creator(self.metadata_author)
-        e.metadata.description = self.description
-        e.metadata.publisher = self.publisher
-        e.metadata.language = 'fr-FR'
-        for item in self.items.all():
-            e.add_article(item.title, item.comment)
-        e.generate_epub(filename)
 
 
 
