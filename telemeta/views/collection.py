@@ -196,7 +196,13 @@ class CollectionPackageView(View):
         collection = self.get_object()
         serializer = CollectionSerializer(collection)
 
-        data = serializer.get_xml().encode("utf-8")
+        data = collection.get_json().encode('utf-8')
+        filename = collection.public_id + '.json'
+        cache_data.write_bin(data, filename)
+        path = cache_data.dir + os.sep + filename
+        z.write(path, arcname=collection.public_id + os.sep + filename)
+
+        data = serializer.get_xml().encode('utf-8')
         filename = collection.public_id + '.xml'
         cache_data.write_bin(data, filename)
         path = cache_data.dir + os.sep + filename

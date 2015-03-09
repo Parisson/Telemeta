@@ -80,6 +80,9 @@ class Duration(object):
 
         return "%.2d:%.2d:%.2d" % (hours, minutes, seconds)
 
+    def __unicode__(self):
+        return self.__str__()
+
     @staticmethod
     def fromstr(str):
         if not str:
