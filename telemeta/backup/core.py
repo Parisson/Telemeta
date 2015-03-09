@@ -44,11 +44,8 @@ from telemeta.models import MediaItem
 class CollectionSerializer(object):
     """Provide backup-related features"""
 
-    def __init__(self, collection, dest_dir='.'):
+    def __init__(self, collection, dest_dir='/tmp/'):
         self.collection = collection
-        self.coll_dir = dest_dir + "/" + str(self.collection.id)
-        if not os.path.exists(self.coll_dir):
-            os.makedirs(self.coll_dir)
 
     def __get_file_md5(self, path):
         "Compute the MD5 hash of a file (Python version of md5sum)"
@@ -64,6 +61,14 @@ class CollectionSerializer(object):
 
     def __get_media_filename(self, item):
         return str(item.id) + ".wav"
+
+    def backup(self, dest_dir):
+        self.coll_dir = dest_dir + "/" + str(self.collection.id)
+        if not os.path.exists(self.coll_dir):
+            os.makedirs(self.coll_dir)
+        self.store_json()
+        self.store_xml()
+        self.store_files()
 
     def store_files(self):
         if self.collection.has_mediafile():

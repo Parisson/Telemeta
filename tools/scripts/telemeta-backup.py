@@ -75,7 +75,7 @@ def backup(dest_dir):
             % (i, count, i*100/count, collection.id),
         sys.stdout.flush()
         serializer = CollectionSerializer(collection)
-        serializer.store(set_dir)
+        serializer.backup(set_dir)
         print "Done"
 
 def run():
@@ -89,6 +89,6 @@ def run():
         import settings
         setup_environ(settings)
         backup(backup_dir)
-        
+
 if __name__ == '__main__':
     run()
