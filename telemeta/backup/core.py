@@ -34,7 +34,6 @@
 # Author: Olivier Guilyardi <olivier@samalyse.com>
 
 import os
-import libxml2
 from xml.dom.minidom import getDOMImplementation, Node
 import shutil
 import md5
