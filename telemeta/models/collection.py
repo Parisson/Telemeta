@@ -235,8 +235,6 @@ class MediaCollection(MediaResource):
         metadata['number_of_items'] = unicode(self.items.all().count())
         metadata['approx_duration'] = unicode(self.approx_duration)
 
-        print metadata
-
         i = 0
         for media in self.related.all():
             metadata['related_media_title' + '_' + str(i)] = media.title
