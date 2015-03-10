@@ -187,10 +187,11 @@ class CollectionPackageView(View):
         """
         from telemeta.views import MarkerView
         from telemeta.backup import CollectionSerializer
-        from telemeta.util import zipstream
+        import zipstream
+        from zipfile import ZIP_DEFLATED
         import json
 
-        z = zipstream.ZipFile()
+        zip_file = zipstream.ZipFile(mode='w', compression=ZIP_DEFLATED)
         cache_data = TelemetaCache(settings.TELEMETA_DATA_CACHE_DIR)
 
         collection = self.get_object()
@@ -200,18 +201,18 @@ class CollectionPackageView(View):
         filename = collection.public_id + '.json'
         cache_data.write_bin(data, filename)
         path = cache_data.dir + os.sep + filename
-        z.write(path, arcname=collection.public_id + os.sep + filename)
+        zip_file.write(path, arcname=collection.public_id + os.sep + filename)
 
         data = serializer.get_xml().encode('utf-8')
         filename = collection.public_id + '.xml'
         cache_data.write_bin(data, filename)
         path = cache_data.dir + os.sep + filename
-        z.write(path, arcname=collection.public_id + os.sep + filename)
+        zip_file.write(path, arcname=collection.public_id + os.sep + filename)
 
         for item in collection.items.all():
             if item.file:
                 filename, ext = os.path.splitext(item.file.path.split(os.sep)[-1])
-                z.write(item.file.path, arcname=collection.public_id + os.sep + item.code + ext)
+                zip_file.write(item.file.path, arcname=collection.public_id + os.sep + item.code + ext)
             marker_view = MarkerView()
             markers = marker_view.get_markers(item.id)
             if markers:
@@ -219,9 +220,9 @@ class CollectionPackageView(View):
                 filename = item.code + '.json'
                 cache_data.write_bin(data, filename)
                 path = cache_data.dir + os.sep + filename
-                z.write(path, arcname=collection.public_id + os.sep + filename)
+                zip_file.write(path, arcname=collection.public_id + os.sep + filename)
 
-        response = StreamingHttpResponse(z, content_type='application/zip')
+        response = StreamingHttpResponse(zip_file, content_type='application/zip')
         response['Content-Disposition'] = "attachment; filename=%s.%s" % \
                                              (collection.code, 'zip')
         return response
