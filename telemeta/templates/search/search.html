@@ -1,7 +1,13 @@
 {% extends 'telemeta/base.html' %}
+{% load telemeta_utils %}
+{% load i18n %}
+
+
+{% block title %}
+{% trans "Search" %}
+{% endblock %}
 
 {% block content %}
-    <h2>Search</h2>
 
     <form method="get" action=".">
         <table>
@@ -9,7 +15,7 @@
             <tr>
                 <td>&nbsp;</td>
                 <td>
-                    <input type="submit" value="Search">
+                    <input type="submit" value="{% trans "Search" %}">
                 </td>
             </tr>
         </table>

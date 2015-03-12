@@ -142,7 +142,7 @@ urlpatterns = patterns('',
     url(r'^search/(?P<type>[A-Za-z0-9._-]+)/$', SearchView.as_view(), name="telemeta-search-type"),
     url(r'^search_criteria/$', home_view.edit_search, name="telemeta-search-criteria"),
     url(r'^complete_location/$', home_view.complete_location, name="telemeta-complete-location"),
-    url(r'^search_haystack/', include('haystack.urls')),
+    url(r'^haystack/', include('haystack.urls')),
 
     # administration
     url(r'^admin/$', admin_view.admin_index, name="telemeta-admin"),
