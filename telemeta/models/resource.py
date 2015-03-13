@@ -134,7 +134,7 @@ class MediaRelated(MediaResource):
             return self.title
         elif self.file:
             return unicode(self.file.path.split(os.sep)[-1])
-        elif url:
+        elif self.url:
             return unicode(self.url.split('/')[-1])
         else:
             return '_'
