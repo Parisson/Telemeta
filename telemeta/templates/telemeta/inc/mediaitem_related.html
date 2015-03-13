@@ -22,18 +22,12 @@
                                 <dd>
                                     {% if media.url %}
                                         <a href="{{ media.url }}" target="_blank">
-                                        {% if media.title %}
-                                            {{ media.title }}</a>
-                                        {% else %}
-                                            {{ media.url|get_filename }}</a>
-                                        {% endif %}
+                                         {% firstof media.title media.url|get_filename '_' %}
+                                        </a>
                                     {% else %}
                                         <a href="{% url "telemeta-item-related" item.public_id media.id %}" target="_blank">
-                                        {% if media.title %}
-                                            {{ media.title }}</a>
-                                        {% else %}
-                                            {{ media.file|get_filename }}</a>
-                                        {% endif %}
+                                         {% firstof media.title media.file|get_filename '_' %}
+                                        </a>
                                     {% endif %}
                                 </dd>
                                 <dt>{% trans "Description" %}</dt>
