@@ -21,13 +21,9 @@
                                 <dt>{% trans "Title" %}</dt>
                                 <dd>
                                     {% if media.url %}
-                                        <a href="{{ media.url }}" target="_blank">
-                                         {% firstof media.title media.url|get_filename '_' %}
-                                        </a>
+                                        <a href="{{ media.url }}" target="_blank">{{ media }}</a>
                                     {% else %}
-                                        <a href="{% url "telemeta-item-related" item.public_id media.id %}" target="_blank">
-                                         {% firstof media.title media.file|get_filename '_' %}
-                                        </a>
+                                        <a href="{% url "telemeta-item-related" item.public_id media.id %}" target="_blank">{{ media }}</a>
                                     {% endif %}
                                 </dd>
                                 <dt>{% trans "Description" %}</dt>
@@ -38,9 +34,11 @@
                                 {% if media.file %}
                                 <dt>{% trans "Download" %}</dt>
                                 <dd>
+                                    {% if media.file %}
                                     <a href="{% url "telemeta-item-related-download" item.public_id media.id %}">
                                      {{ media.file|get_filename }}
                                     </a>
+                                    {% endif %}
                                 </dd>
                                 {% endif %}
                             </dl>
