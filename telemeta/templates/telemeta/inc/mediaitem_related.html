@@ -15,6 +15,7 @@
                     </thead>
                     <tbody>
                         {% for media in related_media %}
+                        {% if not media.mime_type in private_extra_types %}
                         <tr>
                             <td style="font-size: 1em;">
                             <dl class="listing">
@@ -68,6 +69,7 @@
                                 {% endif %}
                             </td>
                         </tr>
+                        {% endif %}
                         {% endfor %}
                     </tbody>
                 </table>

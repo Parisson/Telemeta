@@ -1010,13 +1010,12 @@ class ItemDetailView(ItemViewMixin, DetailView):
         context['mime_type'] = self.mime_type
         context['last_revision'] = last_revision
         context['format'] = format
-
+        context['private_extra_types'] = private_extra_types.values()
         return context
 
 
-
 class DublinCoreToFormatMetadata(object):
-    """ a mapping class to get item DublinCore metadata dictionaries
+    """a mapping class to get item DublinCore metadata dictionaries
     in various audio metadata format (MP3, OGG, etc...)"""
 
     #FIXME: should be given by timeside
