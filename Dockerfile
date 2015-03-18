@@ -26,9 +26,4 @@ WORKDIR /opt/Telemeta
 # Install deps
 RUN pip install -r requirements.txt
 
-# Sandbox setup
-RUN /opt/Telemeta/examples/sandbox/manage.py syncdb --noinput
-RUN /opt/Telemeta/examples/sandbox/manage.py migrate --noinput
-RUN /opt/Telemeta/examples/sandbox/manage.py collectstatic --noinput
-
 EXPOSE 8000

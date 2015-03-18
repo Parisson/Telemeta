@@ -22,12 +22,20 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': os.path.join(PROJECT_ROOT, 'sandbox.sql'), # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        # SQLite config
+        # 'ENGINE': 'django.db.backends.sqlite',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        # 'NAME': os.path.join(PROJECT_ROOT, 'telemeta.sql'),  # Or path to database file if using sqlite3.
+        # 'OPTIONS': {
+        #     'timeout': 60,
+        # }
+
+        # MySQL config
+        'ENGINE': 'django.db.backends.mysql',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'USER': 'root',      # Not used with sqlite3.
+        'PASSWORD': 'mysecretpassword',  # Not used with sqlite3.
+        'NAME': 'timeside',
+        'HOST': 'db',      # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '3306',      # Set to empty string for default. Not used with sqlite3.
     }
 }
 
@@ -138,6 +146,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'telemeta',
     'timeside.player',
+    'timeside.server',
     'jsonrpc',
     'south',
     'sorl.thumbnail',
@@ -150,6 +159,8 @@ INSTALLED_APPS = (
     'bootstrap_pagination',
     'googletools',
     'registration',
+    'rest_framework',
+    'djcelery',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -235,26 +246,41 @@ SUIT_CONFIG = {
 }
 
 
-# LOG_DIR = os.path.join(BASE_DIR, 'log')
+# A sample logging configuration. The only tangible logging
+# performed by this configuration is to send an email to
+# the site admins on every HTTP 500 error when DEBUG=False.
+# See http://docs.djangoproject.com/en/dev/topics/logging for
+# more details on how to customize your logging configuration.
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
+    'handlers': {
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        }
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    }
+}
 
-# if not os.path.exists(LOG_DIR):
-#     os.mkdir(LOG_DIR)
+# replace rabbitmq by localhost if you start your app outside docker-compose
+BROKER_URL = 'amqp://guest:guest@rabbitmq//'
 
-# LOGGING = {
-#     'version': 1,
-#     'disable_existing_loggers': False,
-#     'handlers': {
-#         'file': {
-#             'level': 'DEBUG',
-#             'class': 'logging.FileHandler',
-#             'filename': os.path.join(LOG_DIR, 'debug.log')
-#         },
-#     },
-#     'loggers': {
-#         'django.request': {
-#             'handlers': ['file'],
-#             'level': 'DEBUG',
-#             'propagate': True,
-#         },
-#     },
-# }
+CELERY_IMPORTS = ("timeside.server.tasks",)
+CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
+CELERY_TASK_SERIALIZER = "json"
+CELERY_ACCEPT_CONTENT = ['application/json']
+
+from celery_app import app
