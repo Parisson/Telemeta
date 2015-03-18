@@ -230,6 +230,8 @@ urlpatterns = patterns('',
 
     url(r'^', include('jqchat.urls')),
 
+    url(r'^timeside/', include('timeside.server.urls')),
+
 )
 
 

@@ -72,7 +72,7 @@ worker:
   build: .
   volumes_from:
     - home
-  command: /bin/sh /opt/TimeSide/examples/deploy/celery_app.sh
+  command: /bin/sh /opt/Telemeta/examples/deploy/celery_app.sh
   links:
     - rabbitmq
     - db
