@@ -166,11 +166,9 @@ The official project site is `telemeta.org <http://telemeta.org>`_ but you can f
 To get and run the lastest development version::
 
     sudo apt-get install git
-    git clone https://github.com/Parisson/Telemeta.git
+    git clone --recursive https://github.com/Parisson/Telemeta.git
     cd Telemeta
     git checkout dev
-    git submodule foreach git fetch --tags
-    git submodule update --init --recursive
     sudo pip install -e .
     export PYTHONPATH=$PYTHONPATH:`pwd`
 

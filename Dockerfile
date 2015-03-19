@@ -14,7 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM parisson/timeside-diadems:latest-dev
+# FROM parisson/timeside:latest-dev
+FROM parisson/timeside:latest-dev
 
 MAINTAINER Guillaume Pellerin <yomguy@parisson.com>, Thomas fillon <thomas@parisson.com>
 
@@ -25,10 +26,5 @@ WORKDIR /opt/Telemeta
 
 # Install deps
 RUN pip install -r requirements.txt
-
-# Sandbox setup
-RUN /opt/Telemeta/examples/sandbox/manage.py syncdb --noinput
-RUN /opt/Telemeta/examples/sandbox/manage.py migrate --noinput
-RUN /opt/Telemeta/examples/sandbox/manage.py collectstatic --noinput
 
 EXPOSE 8000
