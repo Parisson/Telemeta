@@ -16,8 +16,6 @@ python $manage collectstatic --noinput
 python $manage telemeta-create-admin-user
 
 # static files auto update
-pip install watchdog
-
 watchmedo shell-command --patterns="*.js;*.css" --recursive \
     --command='python '$manage' collectstatic --noinput' $static &
 

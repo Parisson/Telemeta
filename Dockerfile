@@ -15,7 +15,7 @@
 # limitations under the License.
 
 # FROM parisson/timeside:latest-dev
-FROM timeside_app
+FROM parisson/timeside:latest-dev
 
 MAINTAINER Guillaume Pellerin <yomguy@parisson.com>, Thomas fillon <thomas@parisson.com>
 
