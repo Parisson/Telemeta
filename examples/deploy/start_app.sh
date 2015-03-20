@@ -14,7 +14,7 @@ python $manage syncdb --noinput
 python $manage migrate --noinput
 python $manage collectstatic --noinput
 python $manage telemeta-create-admin-user
-python $manage timeside-create-boilerplate
+python $manage telemeta-create-boilerplate
 
 # static files auto update
 watchmedo shell-command --patterns="*.js;*.css" --recursive \
