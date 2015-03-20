@@ -19,7 +19,7 @@
 
 {% if item.file or item.url %}
  {% if access == 'full' or perms.telemeta.can_play_all_items %}
-    <script src="{{ STATIC_URL }}timeside/js/libs/soundmanager2-nodebug-jsmin.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}timeside/lib/sm2/soundmanager2-nodebug-jsmin.js" type="text/javascript"></script>
     <script src="{{ STATIC_URL }}timeside/js/timeside.js" type="text/javascript"></script>
     <script src="{{ STATIC_URL }}telemeta/js/playerLoader.js" type="text/javascript"></script>
     <script src="{{ STATIC_URL }}telemeta/js/divmarker.js" type="text/javascript"></script>

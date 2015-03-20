@@ -188,7 +188,7 @@ var json = function(param,method,onSuccessFcn,onErrorFcn){
     var $J = jQuery;
     $J.ajax({
         type: "POST",
-        url: 'json/',
+        url: 'jsonrpc/',
         contentType: "application/json",
         data: data2send,
         dataType: "json",
@@ -260,7 +260,7 @@ var json_sync = function(param,method,onSuccessFcn,onErrorFcn){
     var $J = jQuery;
     $J.ajax({
         type: "POST",
-        url: 'json/',
+        url: 'jsonrpc/',
         contentType: "application/json",
         async : false,
         data: data2send,

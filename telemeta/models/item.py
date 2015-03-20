@@ -182,8 +182,8 @@ class MediaItem(MediaResource):
                 raise ValidationError("%s is not a valid item code for collection %s"
                                             % (self.code, self.collection.code))
 
-    def save(self, force_insert=False, force_update=False):
-        super(MediaItem, self).save(force_insert, force_update)
+    def save(self, force_insert=False, force_update=False, *args, **kwargs):
+        super(MediaItem, self).save(force_insert, force_update, *args, **kwargs)
 
     def computed_duration(self):
         "Tell the length in seconds of this item media data"
