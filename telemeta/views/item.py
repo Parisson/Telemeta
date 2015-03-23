@@ -256,7 +256,6 @@ class ItemView(ItemBaseMixin):
         #FIXME: MP4 handling in TimeSide
         if 'mp4' in extension:
             mime_type = 'video/mp4'
-            print 'ok'
             video = item.file.path
             response = StreamingHttpResponse(stream_from_file(video), mimetype = mime_type)
             response['Content-Disposition'] = 'attachment'

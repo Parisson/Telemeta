@@ -163,12 +163,12 @@
 
     {% if "video" in mime_type %}
     <div>
-    <video id="my_video_1" class="video-js vjs-default-skin" width="348" height="240" controls preload="auto" data-setup="{}">
-        <!-- Hello Chrome and Firefox (and Opera?) -->
+    <video width="348" height="240" controls preload="none">
         <source src="{% url "telemeta-item-export" item.public_id mime_type|mime_to_ext %}" type="{{ mime_type }}" />
-        </video>
-        <!--<div id="videotime"></div>-->
+    </video>
+    <!--<div id="videotime"></div>-->
     </div>
+
     <script>
     (function(){
         var v = document.getElementsByTagName('video')[0]
@@ -178,6 +178,7 @@
             },false);
             })();
     </script>
+
     {% endif %}
 
         <!-- </div> -->
