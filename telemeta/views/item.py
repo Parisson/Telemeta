@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
+
+# Copyright (C) 2010-2015 Parisson SARL
 # Copyright (C) 2007-2010 Samalyse SARL
-# Copyright (C) 2010-2012 Parisson SARL
 
 # This software is a computer program whose purpose is to backup, analyse,
 # transcode and stream any audio content with its metadata over a web frontend.
@@ -255,6 +256,7 @@ class ItemView(ItemBaseMixin):
         #FIXME: MP4 handling in TimeSide
         if 'mp4' in extension:
             mime_type = 'video/mp4'
+            print 'ok'
             video = item.file.path
             response = StreamingHttpResponse(stream_from_file(video), mimetype = mime_type)
             response['Content-Disposition'] = 'attachment'
