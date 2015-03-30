@@ -1,0 +1,3 @@
+[submodule "themes/pelican-bootstrap3"]
+	path = themes/pelican-bootstrap3
+	url = git@github.com:DandyDev/pelican-bootstrap3.git
