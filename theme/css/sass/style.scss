@@ -1,0 +1,389 @@
+@import "normalize";
+@import url(http://fonts.googleapis.com/css?family=Bitter|Open+Sans|Gudea|Montserrat);
+//Setting color variables
+//Bodybg defines the background color for the body
+$bodybg: #F3F2ED;
+
+//Primary color is for homepage banner, sidebar, and footer
+$primary: #373737;
+
+//Secondary color is for nav menu and download bar
+$secondary: #f3f2ed;//#c34500;
+
+//Code background color
+$code: #ddd;
+
+//Accent is for 
+$accent: #c34500;
+$links: #C9C0B7; 
+
+//And then we have text colors
+$darktext: #333;
+$lighttext: #fff;
+
+//Height of top navigation bar
+$navheight: 70px;
+
+//Fonts
+$sans: 'Montserrat', sans-serif;
+
+body{
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    background: $bodybg;
+}
+
+html{
+    color: $darktext;
+    background: $bodybg;
+}
+
+/*Universal styles*/
+ul{
+    list-style-type: none;
+}
+
+a{
+    text-decoration: none;
+}
+
+/*Header and main navigation CSS*/
+#page-header {
+    width: 100%;
+    background: rgba(243, 242, 237, .8); 
+    top:0px;
+    position: fixed;
+    z-index:99;
+    height: $navheight;
+
+    #logo {
+        display: inline-block;
+        float:left !important;
+
+        img{
+            vertical-align: middle;
+        }
+    }
+
+    a{
+        display:inline-block;
+        font-size: 1.7em;
+        color: $darktext;
+        margin: 0px 10px;
+        float: right;
+        line-height: $navheight;
+        vertical-align: middle;
+        height: 100%;
+        max-height: $navheight;
+    }
+
+    a:hover{
+        color: $accent;
+    }
+}
+
+.spacer{
+    height: $navheight;
+}
+
+/*Index page Styles*/
+#indexpage{
+    background: $primary;
+    text-align: center;
+    height: 70vh;
+    min-height: 500px;
+    display: inline-block;
+    clear: both;
+
+    p{
+        font-size: 1.7em;
+        color: $lighttext;
+        padding: 20px;
+        width: 30%;
+        margin: 0px;
+        display: inline-block;
+        vertical-align: middle;
+    }
+}
+
+#indexpage:before{
+    content:'';
+    display: inline-block;
+    height:100%;
+    vertical-align: middle;
+}
+
+
+
+#welcome-image {
+    margin-right: auto;
+    margin-left: auto;
+    display: inline-block;
+    max-width: 60%;
+    max-height: 80%;
+    vertical-align: middle;
+
+    img{
+        max-width: 100%;
+    }
+}
+
+#downloadRibbon{
+    width: 100%;
+    background: $secondary;
+    text-align: center;
+    margin: 0px;
+    padding: 0px;
+
+    h2{
+        margin: 0px;
+        padding: 0px;
+        line-height: 100px;
+        font-size: 64px;
+        vertical-align: middle;
+        display:inline-block;
+    }
+
+    a{
+        color: $darktext;
+    }
+
+    a:hover{
+        color: $accent;
+    }
+}
+
+/*Main content CSS*/
+.main-content {
+    position:relative;/*absolute*/
+    width: 100%;
+    border:2px solid #ddd;
+    background: $primary;
+
+    ul{
+        padding:0;
+        margin:0px;
+        list-style: none;
+    }
+
+    #welcome-message {
+        width: 60%;
+        vertical-align: top;
+        background: $bodybg;
+        padding: 1.7em;
+        min-height:600px;
+        display: inline-block;
+
+        a{
+            color: $accent;
+        }
+
+        a:hover{
+            color: $links;
+        }
+    }
+
+    /*Sidebar Styles*/
+    .sidebar {
+        background: $primary;
+        width: 30%;
+        display: inline-block;
+
+        h5{
+            color: $lighttext;
+            text-align: center;
+            padding: 5px;
+        }
+
+        p, li {
+            color: $lighttext;
+            text-align: center;
+        }
+
+        ul{
+            list-style-type: none;
+        }
+    }
+}
+/*Footer CSS*/
+footer {
+    background: $primary;
+    padding-bottom: 20px;
+
+    p {
+        color:#fff;
+    }
+}
+
+#footerRow{
+    width: 80vw;
+    max-width: 80em;
+    margin: 0px auto;
+    text-align: center;
+
+    li {
+        color: $lighttext;
+        text-align: center;
+        display: inline-block;
+        padding: 0px 10px;
+
+    }
+}
+
+.footerDiv{
+    display: inline-block;
+    padding: 10px;
+    margin: 0px;
+    width: 200px !important;
+}
+
+#osuosl-logo {
+}
+
+footer img{
+    width: 100%;
+    height: auto;
+    padding: 10px;
+    margin: 0px;
+}
+
+.donate {
+    text-align:right;
+}
+
+#footer-text{
+    text-align:center;
+    padding: 16px 0px 0px;
+}
+
+/* * * *
+Typography
+ * * * */
+h1, h2, h3, h4, h5, p, a, li, dt{
+    font-family: $sans;
+    padding:0px;
+    margin:0px;
+    line-height: 1.8em;
+}
+
+h1{
+    font-size: 48px;
+}
+
+h2{
+    font-size: 42px;
+}
+
+h3{
+    font-size: 36px;
+}
+
+h4{
+    font-size: 30px;
+}
+
+h5{
+    font-size: 24px;
+}
+
+p{
+    font-size: 18px;
+}
+
+a{
+    color: $secondary;
+}
+
+a:hover{
+    color: $accent;
+}
+
+ol {
+    padding:0 0 0 emCalc(25px);
+    margin:0px;
+}
+
+ol li {
+    margin:0px;
+    padding: 0px;
+}
+
+ol li:first-child {
+    padding:emCalc(2px) 0 0 0;
+}
+
+strong {
+    font-style: normal;
+    font-weight: 600;
+}
+
+.code {
+    background-color: $code;
+    color: $darktext;
+    line-height: 1.6em;
+    vertical-align: middle;
+    font-family: 'Consolas', monospace;
+    display: inline;
+    padding: 2px;
+    border-radius: 3px;
+    border: 1px solid #bbb;
+}
+
+@media only screen and (max-width: 980px) {
+    footer {
+        margin:0px;
+        padding:20px 0;
+    }
+
+    .download p {
+        font-size:1.2em;
+    }
+
+    #footer-text {
+        text-align:center;
+        padding:16px 0 0 0;
+    }
+
+    #osu-logo {
+        padding-bottom:16px;
+    }
+
+    .logo {
+        text-align:center;
+    }
+
+    .main-content{
+    width: 95vw;}
+
+}
+
+@media only screen and (max-width: 840px){
+    .sidebar{
+        display:none;
+    }
+
+    .download{
+        width: 50%;
+        margin: 0px;
+    padding: 0px;}
+
+    #welcome-message{
+        margin-right: auto 0;
+    margin-left: auto 0;}
+
+    #footer-text{
+    width: 100%;}
+}
+
+@media only screen and (max-width: 380px){
+    #footer-text{
+        display: block;
+    }
+    .footerDiv{
+        float: none !important;
+        width:100%;
+    }
+    .download{
+    width: 100%;}
+}

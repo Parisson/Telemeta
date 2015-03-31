@@ -1,0 +1,12 @@
+Sensible blue:
+    bodybg = #f3f2ed
+    primarycolor = #424242
+    secondarycolor = #5d87a1
+    code: #ddd
+    accent= #ee5d1a
+    darktext = #000
+    lighttext = #fff
+    navheight = 70px
+
+
+
