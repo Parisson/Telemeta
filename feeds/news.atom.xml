@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Telemeta.org</title><link href="http://parisson.github.io/Telemeta/" rel="alternate"></link><link href="http://parisson.github.io/Telemeta/feeds/news.atom.xml" rel="self"></link><id>http://parisson.github.io/Telemeta/</id><updated>2015-01-26T10:42:00+01:00</updated><entry><title>Telemeta 1.5 is out!</title><link href="http://parisson.github.io/Telemeta/telemeta-15-is-out.html" rel="alternate"></link><updated>2015-01-26T10:42:00+01:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2015-01-26:Telemeta/telemeta-15-is-out.html</id><summary type="html">&lt;p&gt;After months of hard work we are pleased to release a big update to Telemeta communities. It represents a huge milestone that makes Telemeta now compatible with more modern web technologies.&lt;/p&gt;
+&lt;p&gt;Changelog:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Django 1.6.x compatibility&lt;/li&gt;
+&lt;li&gt;TimeSide 0.7.x compatibility&lt;/li&gt;
+&lt;li&gt;Huge refactoring of all forms, detail and edit views based on class based views&lt;/li&gt;
+&lt;li&gt;Main styles (buttons, tabs) are now based Bootstrap 3 and JQuery 2.1&lt;/li&gt;
+&lt;li&gt;Update of models and views as needed by the CREM&lt;/li&gt;
+&lt;li&gt;WARNING! Be careful to the new dependencies before updating&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Download&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.4.6.tar.gz"&gt;http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.4.6.tar.gz&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</summary></entry><entry><title>Telemeta 1.4.6 is out!</title><link href="http://parisson.github.io/Telemeta/telemeta-146-is-out.html" rel="alternate"></link><updated>2014-11-24T12:44:00+01:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2014-11-24:Telemeta/telemeta-146-is-out.html</id><summary type="html">&lt;p&gt;Changelog:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Drastically improve collection zip packaqe streaming thanks to zipstream (check NEW dependencies)&lt;/li&gt;
+&lt;li&gt;Compatible with TimeSide &amp;gt;= 0.5.2&lt;/li&gt;
+&lt;li&gt;Add URL field to item so that a external sound can be indexed and streamed&lt;/li&gt;
+&lt;li&gt;Add TIMESIDE_AUTO_ZOOM in settings to auto toggle the player in zooming mode&lt;/li&gt;
+&lt;li&gt;Add TIMESIDE_DEFAULT_GRAPHER_ID in settings to select the default grapher in the player&lt;/li&gt;
+&lt;li&gt;Add minor migrations&lt;/li&gt;
+&lt;li&gt;Fix marker display bug&lt;/li&gt;
+&lt;li&gt;This is a transitional, minor release because 1.5 will be released soon.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Download&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.4.6.tar.gz"&gt;http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.4.6.tar.gz&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</summary></entry><entry><title>Telemeta at QMUL</title><link href="http://parisson.github.io/Telemeta/telemeta-at-qmul.html" rel="alternate"></link><updated>2014-07-08T01:42:00+02:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2014-07-08:Telemeta/telemeta-at-qmul.html</id><summary type="html">&lt;p&gt;We presented TimeSide, the open web audio processing framework, at the Queen Mary University of London (ArtsOne Lecture Theatre) for the &lt;a class="reference external" href="http://soundsoftware.ac.uk/soundsoftware2014"&gt;third Workshop on Software and Data for Audio and Music Research&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="​https://github.com/Parisson/Telemeta-doc/raw/master/Workshops/SoundSoftware_2014/TimeSide_SoundSoftware_2014_07.pdf"&gt;Slides&lt;/a&gt;&lt;/p&gt;
+</summary></entry></feed>
