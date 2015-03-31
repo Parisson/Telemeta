@@ -4,3 +4,6 @@
 [submodule "telemeta/locale"]
 	path = telemeta/locale
 	url = https://github.com/Parisson/Telemeta-locales.git
+[submodule "doc/blog/themes/pelican-bootstrap3"]
+	path = doc/blog/themes/pelican-bootstrap3
+	url = https://github.com/yomguy/pelican-bootstrap3.git
