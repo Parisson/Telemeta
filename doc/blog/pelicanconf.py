@@ -49,5 +49,5 @@ SOCIAL = (('Twitter', 'https://twitter.com/telemeta/'),
 # PLUGINS = ['pin_to_top']
 
 STATIC_PATHS = ['images', 'css']
-CUSTOM_CSS = '/css/custom.css'
+CUSTOM_CSS = 'css/custom.css'
 # SITELOGO = '/images/logo_telemeta_2.png'

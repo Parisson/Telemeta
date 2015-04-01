@@ -7,7 +7,7 @@ Telemeta: open web audio platform with semantics
 :URL:
 :save_as: index.html
 
-.. image:: /images/logo_telemeta_2.png
+.. image:: images/logo_telemeta_2.png
     :alt: Telemeta logo
 
 Overview
