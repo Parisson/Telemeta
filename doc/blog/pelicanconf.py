@@ -3,11 +3,11 @@
 from __future__ import unicode_literals
 
 AUTHOR = u'Parisson Sarl'
-SITENAME = u'Telemeta.org'
+SITENAME = u'Telemeta'
 #SITEURL = ''
 RELATIVE_URLS = True
 
-PATH = 'content'
+PATH = 'content/'
 
 THEME = 'themes/pelican-bootstrap3'
 BOOTSTRAP_THEME = 'united'
@@ -29,7 +29,6 @@ TRANSLATION_FEED_ATOM = None
 AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
 
-
 # Blogroll
 LINKS =  (('Pelican', 'http://getpelican.com/'),
           ('Python', 'http://python.org/'),
@@ -49,4 +48,6 @@ SOCIAL = (('Twitter', 'https://twitter.com/telemeta/'),
 # PLUGIN_PATHS = ['plugins']
 # PLUGINS = ['pin_to_top']
 
-CUSTOM_CSS = 'theme/css/custom.css'
+STATIC_PATHS = ['images', 'css']
+CUSTOM_CSS = '/css/custom.css'
+# SITELOGO = '/images/logo_telemeta_2.png'

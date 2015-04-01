@@ -7,16 +7,8 @@ Telemeta: open web audio platform with semantics
 :URL:
 :save_as: index.html
 
-|version| |downloads|
-
-.. |version| image:: https://pypip.in/version/Telemeta/badge.png
-   :target: https://pypi.python.org/pypi/Telemeta/
-   :alt: Version
-
-.. |downloads| image:: https://pypip.in/download/Telemeta/badge.png
-   :target: https://pypi.python.org/pypi/Telemeta/
-   :alt: Downloads
-
+.. image:: /images/logo_telemeta_2.png
+    :alt: Telemeta logo
 
 Overview
 =========
