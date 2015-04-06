@@ -1,0 +1,243 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>telemeta.util.unaccent &mdash; Telemeta 1.5.2 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Telemeta 1.5.2 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="../../../index.html" class="fa fa-home"> Telemeta</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../telemeta.html">telemeta package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../telemeta.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../telemeta.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../telemeta.html#telemeta-admin-module">telemeta.admin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../telemeta.html#module-telemeta.cache">telemeta.cache module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../telemeta.html#module-telemeta.config">telemeta.config module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../telemeta.html#module-telemeta.core">telemeta.core module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../telemeta.html#module-telemeta.settings_base">telemeta.settings_base module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../telemeta.html#telemeta-urls-module">telemeta.urls module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../telemeta.html#module-telemeta">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">Telemeta</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      
+    <li>telemeta.util.unaccent</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <h1>Source code for telemeta.util.unaccent</h1><div class="highlight"><pre>
+<span class="c"># This file by Fredrik Lundh from:</span>
+<span class="c"># http://effbot.org/zone/unicode-convert.htm</span>
+<span class="c"># http://effbot.python-hosting.com/file/stuff/sandbox/text/unaccent.py</span>
+
+<span class="c"># use a dynamically populated translation dictionary to remove accents</span>
+<span class="c"># from a string</span>
+
+<span class="kn">import</span> <span class="nn">unicodedata</span><span class="o">,</span> <span class="nn">sys</span>
+
+<span class="n">CHAR_REPLACEMENT</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c"># latin-1 characters that don&#39;t have a unicode decomposition</span>
+    <span class="mh">0xc6</span><span class="p">:</span> <span class="s">u&quot;AE&quot;</span><span class="p">,</span> <span class="c"># LATIN CAPITAL LETTER AE</span>
+    <span class="mh">0xd0</span><span class="p">:</span> <span class="s">u&quot;D&quot;</span><span class="p">,</span>  <span class="c"># LATIN CAPITAL LETTER ETH</span>
+    <span class="mh">0xd8</span><span class="p">:</span> <span class="s">u&quot;OE&quot;</span><span class="p">,</span> <span class="c"># LATIN CAPITAL LETTER O WITH STROKE</span>
+    <span class="mh">0xde</span><span class="p">:</span> <span class="s">u&quot;Th&quot;</span><span class="p">,</span> <span class="c"># LATIN CAPITAL LETTER THORN</span>
+    <span class="mh">0xdf</span><span class="p">:</span> <span class="s">u&quot;ss&quot;</span><span class="p">,</span> <span class="c"># LATIN SMALL LETTER SHARP S</span>
+    <span class="mh">0xe6</span><span class="p">:</span> <span class="s">u&quot;ae&quot;</span><span class="p">,</span> <span class="c"># LATIN SMALL LETTER AE</span>
+    <span class="mh">0xf0</span><span class="p">:</span> <span class="s">u&quot;d&quot;</span><span class="p">,</span>  <span class="c"># LATIN SMALL LETTER ETH</span>
+    <span class="mh">0xf8</span><span class="p">:</span> <span class="s">u&quot;oe&quot;</span><span class="p">,</span> <span class="c"># LATIN SMALL LETTER O WITH STROKE</span>
+    <span class="mh">0xfe</span><span class="p">:</span> <span class="s">u&quot;th&quot;</span><span class="p">,</span> <span class="c"># LATIN SMALL LETTER THORN</span>
+    <span class="p">}</span>
+
+<span class="c">##</span>
+<span class="c"># Translation dictionary.  Translation entries are added to this</span>
+<span class="c"># dictionary as needed.</span>
+
+<div class="viewcode-block" id="UnaccentedMap"><a class="viewcode-back" href="../../../telemeta.util.html#telemeta.util.unaccent.UnaccentedMap">[docs]</a><span class="k">class</span> <span class="nc">UnaccentedMap</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+
+    <span class="c">##</span>
+    <span class="c"># Maps a unicode character code (the key) to a replacement code</span>
+    <span class="c"># (either a character code or a unicode string).</span>
+
+<div class="viewcode-block" id="UnaccentedMap.mapchar"><a class="viewcode-back" href="../../../telemeta.util.html#telemeta.util.unaccent.UnaccentedMap.mapchar">[docs]</a>    <span class="k">def</span> <span class="nf">mapchar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="n">ch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ch</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ch</span>
+        <span class="n">de</span> <span class="o">=</span> <span class="n">unicodedata</span><span class="o">.</span><span class="n">decomposition</span><span class="p">(</span><span class="nb">unichr</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">de</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">ch</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">de</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">IndexError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+                <span class="n">ch</span> <span class="o">=</span> <span class="n">key</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ch</span> <span class="o">=</span> <span class="n">CHAR_REPLACEMENT</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">ch</span>
+        <span class="k">return</span> <span class="n">ch</span>
+</div>
+    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version</span> <span class="o">&gt;=</span> <span class="s">&quot;2.5&quot;</span><span class="p">:</span>
+        <span class="c"># use __missing__ where available</span>
+        <span class="n">__missing__</span> <span class="o">=</span> <span class="n">mapchar</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c"># otherwise, use standard __getitem__ hook (this is slower,</span>
+        <span class="c"># since it&#39;s called for each character)</span>
+        <span class="n">__getitem__</span> <span class="o">=</span> <span class="n">mapchar</span>
+
+</div>
+<span class="n">_map</span> <span class="o">=</span> <span class="n">UnaccentedMap</span><span class="p">()</span>
+
+<div class="viewcode-block" id="unaccent"><a class="viewcode-back" href="../../../telemeta.util.html#telemeta.util.unaccent.unaccent">[docs]</a><span class="k">def</span> <span class="nf">unaccent</span><span class="p">(</span><span class="nb">str</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">_map</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="unaccent_icmp"><a class="viewcode-back" href="../../../telemeta.util.html#telemeta.util.unaccent.unaccent_icmp">[docs]</a><span class="k">def</span> <span class="nf">unaccent_icmp</span><span class="p">(</span><span class="n">str1</span><span class="p">,</span> <span class="n">str2</span><span class="p">):</span>
+    <span class="n">str1</span> <span class="o">=</span> <span class="n">unaccent</span><span class="p">(</span><span class="n">str1</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">str2</span> <span class="o">=</span> <span class="n">unaccent</span><span class="p">(</span><span class="n">str2</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">str1</span> <span class="o">&gt;</span> <span class="n">str2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="n">str1</span> <span class="o">&lt;</span> <span class="n">str2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+
+    <span class="k">return</span> <span class="mi">0</span>        </div>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Author.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.5.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

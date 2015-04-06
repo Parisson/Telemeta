@@ -1,0 +1,513 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>telemeta.util package &mdash; Telemeta 1.5.2 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Telemeta 1.5.2 documentation" href="index.html"/>
+        <link rel="up" title="telemeta package" href="telemeta.html"/>
+        <link rel="next" title="telemeta.util.kdenlive package" href="telemeta.util.kdenlive.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="index.html" class="fa fa-home"> Telemeta</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="telemeta.html">telemeta package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="telemeta.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="telemeta.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="telemeta.html#telemeta-admin-module">telemeta.admin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="telemeta.html#module-telemeta.cache">telemeta.cache module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="telemeta.html#module-telemeta.config">telemeta.config module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="telemeta.html#module-telemeta.core">telemeta.core module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="telemeta.html#module-telemeta.settings_base">telemeta.settings_base module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="telemeta.html#telemeta-urls-module">telemeta.urls module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="telemeta.html#module-telemeta">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">Telemeta</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="telemeta.html">telemeta package</a> &raquo;</li>
+      
+    <li>telemeta.util package</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/telemeta.util.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="telemeta-util-package">
+<h1>telemeta.util package<a class="headerlink" href="#telemeta-util-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="telemeta.util.kdenlive.html">telemeta.util.kdenlive package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="telemeta.util.kdenlive.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="telemeta.util.kdenlive.html#telemeta-util-kdenlive-auto-fade-module">telemeta.util.kdenlive.auto_fade module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="telemeta.util.kdenlive.html#module-telemeta.util.kdenlive.auto_fade_batch">telemeta.util.kdenlive.auto_fade_batch module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="telemeta.util.kdenlive.html#module-telemeta.util.kdenlive.fade">telemeta.util.kdenlive.fade module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="telemeta.util.kdenlive.html#module-telemeta.util.kdenlive.mlt_process_batch">telemeta.util.kdenlive.mlt_process_batch module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="telemeta.util.kdenlive.html#module-telemeta.util.kdenlive.session">telemeta.util.kdenlive.session module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="telemeta.util.kdenlive.html#module-telemeta.util.kdenlive">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-telemeta.util.locale_fix">
+<span id="telemeta-util-locale-fix-module"></span><h2>telemeta.util.locale_fix module<a class="headerlink" href="#module-telemeta.util.locale_fix" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-telemeta.util.logger">
+<span id="telemeta-util-logger-module"></span><h2>telemeta.util.logger module<a class="headerlink" href="#module-telemeta.util.logger" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="telemeta.util.logger.Logger">
+<em class="property">class </em><code class="descclassname">telemeta.util.logger.</code><code class="descname">Logger</code><span class="sig-paren">(</span><em>file</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemeta/util/logger.html#Logger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemeta.util.logger.Logger" title="Permalink to this definition">¶</a></dt>
+<dd><p>A logging object</p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#telemeta.util.logger.Logger.debug" title="telemeta.util.logger.Logger.debug"><code class="xref py py-obj docutils literal"><span class="pre">debug</span></code></a>(msg)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="telemeta.util.logger.Logger.debug">
+<code class="descname">debug</code><span class="sig-paren">(</span><em>msg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemeta/util/logger.html#Logger.debug"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemeta.util.logger.Logger.debug" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-telemeta.util.unaccent">
+<span id="telemeta-util-unaccent-module"></span><h2>telemeta.util.unaccent module<a class="headerlink" href="#module-telemeta.util.unaccent" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="telemeta.util.unaccent.UnaccentedMap">
+<em class="property">class </em><code class="descclassname">telemeta.util.unaccent.</code><code class="descname">UnaccentedMap</code><a class="reference internal" href="_modules/telemeta/util/unaccent.html#UnaccentedMap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemeta.util.unaccent.UnaccentedMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">dict</span></code></p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">clear</span></code>(()&nbsp;-&gt;&nbsp;None.&nbsp;&nbsp;Remove&nbsp;all&nbsp;items&nbsp;from&nbsp;D.)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">copy</span></code>(()&nbsp;-&gt;&nbsp;a&nbsp;shallow&nbsp;copy&nbsp;of&nbsp;D)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">fromkeys</span></code>(...)</td>
+<td>v defaults to None.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">get</span></code>((k[,d])&nbsp;-&gt;&nbsp;D[k]&nbsp;if&nbsp;k&nbsp;in&nbsp;D,&nbsp;...)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">has_key</span></code>((k)&nbsp;-&gt;&nbsp;True&nbsp;if&nbsp;D&nbsp;has&nbsp;a&nbsp;key&nbsp;k,&nbsp;else&nbsp;False)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">items</span></code>(()&nbsp;-&gt;&nbsp;list&nbsp;of&nbsp;D&#8217;s&nbsp;(key,&nbsp;value)&nbsp;pairs,&nbsp;...)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">iteritems</span></code>(()&nbsp;-&gt;&nbsp;an&nbsp;iterator&nbsp;over&nbsp;the&nbsp;(key,&nbsp;...)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">iterkeys</span></code>(()&nbsp;-&gt;&nbsp;an&nbsp;iterator&nbsp;over&nbsp;the&nbsp;keys&nbsp;of&nbsp;D)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">itervalues</span></code>(...)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">keys</span></code>(()&nbsp;-&gt;&nbsp;list&nbsp;of&nbsp;D&#8217;s&nbsp;keys)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#telemeta.util.unaccent.UnaccentedMap.mapchar" title="telemeta.util.unaccent.UnaccentedMap.mapchar"><code class="xref py py-obj docutils literal"><span class="pre">mapchar</span></code></a>(key)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">pop</span></code>((k[,d])&nbsp;-&gt;&nbsp;v,&nbsp;...)</td>
+<td>If key is not found, d is returned if given, otherwise KeyError is raised</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">popitem</span></code>(()&nbsp;-&gt;&nbsp;(k,&nbsp;v),&nbsp;...)</td>
+<td>2-tuple; but raise KeyError if D is empty.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">setdefault</span></code>((k[,d])&nbsp;-&gt;&nbsp;D.get(k,d),&nbsp;...)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">update</span></code>(([E,&nbsp;...)</td>
+<td>If E present and has a .keys() method, does:     for k in E: D[k] = E[k]</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">values</span></code>(()&nbsp;-&gt;&nbsp;list&nbsp;of&nbsp;D&#8217;s&nbsp;values)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">viewitems</span></code>(...)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">viewkeys</span></code>(...)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">viewvalues</span></code>(...)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="telemeta.util.unaccent.UnaccentedMap.mapchar">
+<code class="descname">mapchar</code><span class="sig-paren">(</span><em>key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemeta/util/unaccent.html#UnaccentedMap.mapchar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemeta.util.unaccent.UnaccentedMap.mapchar" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="telemeta.util.unaccent.unaccent">
+<code class="descclassname">telemeta.util.unaccent.</code><code class="descname">unaccent</code><span class="sig-paren">(</span><em>str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemeta/util/unaccent.html#unaccent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemeta.util.unaccent.unaccent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="telemeta.util.unaccent.unaccent_icmp">
+<code class="descclassname">telemeta.util.unaccent.</code><code class="descname">unaccent_icmp</code><span class="sig-paren">(</span><em>str1</em>, <em>str2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemeta/util/unaccent.html#unaccent_icmp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemeta.util.unaccent.unaccent_icmp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-telemeta.util.unicode">
+<span id="telemeta-util-unicode-module"></span><h2>telemeta.util.unicode module<a class="headerlink" href="#module-telemeta.util.unicode" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="telemeta.util.unicode.UnicodeWriter">
+<em class="property">class </em><code class="descclassname">telemeta.util.unicode.</code><code class="descname">UnicodeWriter</code><span class="sig-paren">(</span><em>f</em>, <em>dialect=&lt;class csv.excel at 0x2a7abb0&gt;</em>, <em>encoding='utf-8'</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemeta/util/unicode.html#UnicodeWriter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemeta.util.unicode.UnicodeWriter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#telemeta.util.unicode.UnicodeWriter.writerow" title="telemeta.util.unicode.UnicodeWriter.writerow"><code class="xref py py-obj docutils literal"><span class="pre">writerow</span></code></a>(row)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#telemeta.util.unicode.UnicodeWriter.writerows" title="telemeta.util.unicode.UnicodeWriter.writerows"><code class="xref py py-obj docutils literal"><span class="pre">writerows</span></code></a>(rows)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="telemeta.util.unicode.UnicodeWriter.writerow">
+<code class="descname">writerow</code><span class="sig-paren">(</span><em>row</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemeta/util/unicode.html#UnicodeWriter.writerow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemeta.util.unicode.UnicodeWriter.writerow" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="telemeta.util.unicode.UnicodeWriter.writerows">
+<code class="descname">writerows</code><span class="sig-paren">(</span><em>rows</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemeta/util/unicode.html#UnicodeWriter.writerows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemeta.util.unicode.UnicodeWriter.writerows" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-telemeta.util.url">
+<span id="telemeta-util-url-module"></span><h2>telemeta.util.url module<a class="headerlink" href="#module-telemeta.util.url" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="telemeta.util.url.URLMediaParser">
+<em class="property">class </em><code class="descclassname">telemeta.util.url.</code><code class="descname">URLMediaParser</code><span class="sig-paren">(</span><em>url</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemeta/util/url.html#URLMediaParser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemeta.util.url.URLMediaParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#telemeta.util.url.URLMediaParser.get_formats" title="telemeta.util.url.URLMediaParser.get_formats"><code class="xref py py-obj docutils literal"><span class="pre">get_formats</span></code></a>()</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#telemeta.util.url.URLMediaParser.get_urls" title="telemeta.util.url.URLMediaParser.get_urls"><code class="xref py py-obj docutils literal"><span class="pre">get_urls</span></code></a>()</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="telemeta.util.url.URLMediaParser.formats">
+<code class="descname">formats</code><em class="property"> = ['mp3', 'wav', 'ogg', 'flac', 'aac', 'mp4', 'webm']</em><a class="headerlink" href="#telemeta.util.url.URLMediaParser.formats" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="telemeta.util.url.URLMediaParser.get_formats">
+<code class="descname">get_formats</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemeta/util/url.html#URLMediaParser.get_formats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemeta.util.url.URLMediaParser.get_formats" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="telemeta.util.url.URLMediaParser.get_urls">
+<code class="descname">get_urls</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemeta/util/url.html#URLMediaParser.get_urls"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemeta.util.url.URLMediaParser.get_urls" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-telemeta.util.xmltodict2">
+<span id="telemeta-util-xmltodict2-module"></span><h2>telemeta.util.xmltodict2 module<a class="headerlink" href="#module-telemeta.util.xmltodict2" title="Permalink to this headline">¶</a></h2>
+<p>xmltodict(): convert xml into tree of Python dicts.</p>
+<dl class="docutils">
+<dt>This was copied and modified from John Bair&#8217;s recipe at aspn.activestate.com:</dt>
+<dd><a class="reference external" href="http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/149368">http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/149368</a></dd>
+</dl>
+<dl class="class">
+<dt id="telemeta.util.xmltodict2.Xml2Obj">
+<em class="property">class </em><code class="descclassname">telemeta.util.xmltodict2.</code><code class="descname">Xml2Obj</code><a class="reference internal" href="_modules/telemeta/util/xmltodict2.html#Xml2Obj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemeta.util.xmltodict2.Xml2Obj" title="Permalink to this definition">¶</a></dt>
+<dd><p>XML to Object</p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#telemeta.util.xmltodict2.Xml2Obj.CharacterData" title="telemeta.util.xmltodict2.Xml2Obj.CharacterData"><code class="xref py py-obj docutils literal"><span class="pre">CharacterData</span></code></a>(data)</td>
+<td>SAX character data event handler</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#telemeta.util.xmltodict2.Xml2Obj.EndElement" title="telemeta.util.xmltodict2.Xml2Obj.EndElement"><code class="xref py py-obj docutils literal"><span class="pre">EndElement</span></code></a>(name)</td>
+<td>SAX end element event handler</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#telemeta.util.xmltodict2.Xml2Obj.Parse" title="telemeta.util.xmltodict2.Xml2Obj.Parse"><code class="xref py py-obj docutils literal"><span class="pre">Parse</span></code></a>(xml)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#telemeta.util.xmltodict2.Xml2Obj.ParseFromFile" title="telemeta.util.xmltodict2.Xml2Obj.ParseFromFile"><code class="xref py py-obj docutils literal"><span class="pre">ParseFromFile</span></code></a>(filename)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#telemeta.util.xmltodict2.Xml2Obj.StartElement" title="telemeta.util.xmltodict2.Xml2Obj.StartElement"><code class="xref py py-obj docutils literal"><span class="pre">StartElement</span></code></a>(name,&nbsp;attributes)</td>
+<td>SAX start element even handler</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="telemeta.util.xmltodict2.Xml2Obj.CharacterData">
+<code class="descname">CharacterData</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemeta/util/xmltodict2.html#Xml2Obj.CharacterData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemeta.util.xmltodict2.Xml2Obj.CharacterData" title="Permalink to this definition">¶</a></dt>
+<dd><p>SAX character data event handler</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemeta.util.xmltodict2.Xml2Obj.EndElement">
+<code class="descname">EndElement</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemeta/util/xmltodict2.html#Xml2Obj.EndElement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemeta.util.xmltodict2.Xml2Obj.EndElement" title="Permalink to this definition">¶</a></dt>
+<dd><p>SAX end element event handler</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="telemeta.util.xmltodict2.Xml2Obj.Parse">
+<code class="descname">Parse</code><span class="sig-paren">(</span><em>xml</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemeta/util/xmltodict2.html#Xml2Obj.Parse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemeta.util.xmltodict2.Xml2Obj.Parse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="telemeta.util.xmltodict2.Xml2Obj.ParseFromFile">
+<code class="descname">ParseFromFile</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemeta/util/xmltodict2.html#Xml2Obj.ParseFromFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemeta.util.xmltodict2.Xml2Obj.ParseFromFile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="telemeta.util.xmltodict2.Xml2Obj.StartElement">
+<code class="descname">StartElement</code><span class="sig-paren">(</span><em>name</em>, <em>attributes</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemeta/util/xmltodict2.html#Xml2Obj.StartElement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemeta.util.xmltodict2.Xml2Obj.StartElement" title="Permalink to this definition">¶</a></dt>
+<dd><p>SAX start element even handler</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="telemeta.util.xmltodict2.addInheritedInfo">
+<code class="descclassname">telemeta.util.xmltodict2.</code><code class="descname">addInheritedInfo</code><span class="sig-paren">(</span><em>src</em>, <em>super</em>, <em>updateCode=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemeta/util/xmltodict2.html#addInheritedInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemeta.util.xmltodict2.addInheritedInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called recursively on the class container structure, modifying
+the attributes to incorporate superclass information. When the
+&#8216;updateCode&#8217; parameter is True, superclass code is added to the
+object&#8217;s code</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="telemeta.util.xmltodict2.dicttoxml">
+<code class="descclassname">telemeta.util.xmltodict2.</code><code class="descname">dicttoxml</code><span class="sig-paren">(</span><em>dct</em>, <em>level=0</em>, <em>header=None</em>, <em>linesep=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemeta/util/xmltodict2.html#dicttoxml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemeta.util.xmltodict2.dicttoxml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a Python dictionary, return an xml string.</p>
+<p>The dictionary must be in the format returned by dicttoxml(), with keys
+on &#8220;attributes&#8221;, &#8220;code&#8221;, &#8220;cdata&#8221;, &#8220;name&#8221;, and &#8220;children&#8221;.</p>
+<p>Send your own XML header, otherwise a default one will be used.</p>
+<p>The linesep argument is a dictionary, with keys on levels, allowing the
+developer to add extra whitespace depending on the level.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="telemeta.util.xmltodict2.escQuote">
+<code class="descclassname">telemeta.util.xmltodict2.</code><code class="descname">escQuote</code><span class="sig-paren">(</span><em>val</em>, <em>noEscape=False</em>, <em>noQuote=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemeta/util/xmltodict2.html#escQuote"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemeta.util.xmltodict2.escQuote" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add surrounding quotes to the string, and escape
+any illegal XML characters.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="telemeta.util.xmltodict2.flattenClassDict">
+<code class="descclassname">telemeta.util.xmltodict2.</code><code class="descname">flattenClassDict</code><span class="sig-paren">(</span><em>cd</em>, <em>retDict=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemeta/util/xmltodict2.html#flattenClassDict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemeta.util.xmltodict2.flattenClassDict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a dict containing a series of nested objects such as would
+be created by restoring from a cdxml file, returns a dict with all classIDs
+as keys, and a dict as the corresponding value. The dict value will have
+keys for the attributes and/or code, depending on what was in the original
+dict. The end result is to take a nested dict structure and return a flattened
+dict with all objects at the top level.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="telemeta.util.xmltodict2.xmltodict">
+<code class="descclassname">telemeta.util.xmltodict2.</code><code class="descname">xmltodict</code><span class="sig-paren">(</span><em>xml</em>, <em>attsToSkip=[]</em>, <em>addCodeFile=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/telemeta/util/xmltodict2.html#xmltodict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#telemeta.util.xmltodict2.xmltodict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given an xml string or file, return a Python dictionary.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-telemeta.util">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-telemeta.util" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="telemeta.util.kdenlive.html" class="btn btn-neutral float-right" title="telemeta.util.kdenlive package">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Author.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.5.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
