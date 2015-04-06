@@ -7,3 +7,6 @@
 [submodule "doc/blog/themes/pelican-bootstrap3"]
 	path = doc/blog/themes/pelican-bootstrap3
 	url = https://github.com/DandyDev/pelican-bootstrap3.git
+[submodule "doc/pelican-bootstrap3"]
+	path = doc/themes/pelican-bootstrap3
+	url = https://github.com/DandyDev/pelican-bootstrap3.git
