@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en"
+>
+<head>
+    <title>Telemeta</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+<link rel="canonical" href=".">
+        <meta name="author" content="Parisson Sarl" />
+
+    <!-- Open Graph tags -->
+        <meta property="og:site_name" content="Telemeta" />
+        <meta property="og:type" content="website"/>
+        <meta property="og:title" content="Telemeta"/>
+        <meta property="og:url" content="."/>
+        <meta property="og:description" content="Telemeta"/>
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="./theme/css/bootstrap.united.min.css" type="text/css"/>
+    <link href="./theme/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="./theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="./theme/css/style.css" type="text/css"/>
+        <link href="./css/custom.css" rel="stylesheet">
+
+        <link href="./feeds/all.atom.xml" type="application/atom+xml" rel="alternate"
+              title="Telemeta ATOM Feed"/>
+
+</head>
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="./" class="navbar-brand">
+Telemeta            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                        <li >
+                            <a href="./category/about.html">About</a>
+                        </li>
+                        <li >
+                            <a href="./category/news.html">News</a>
+                        </li>
+                        <li >
+                            <a href="./category/news-development.html">News, development</a>
+                        </li>
+                        <li >
+                            <a href="./category/news-release.html">News, release</a>
+                        </li>
+                        <li >
+                            <a href="./category/news-research.html">News, research</a>
+                        </li>
+                        <li >
+                            <a href="./category/tips.html">Tips</a>
+                        </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="./archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+<!-- Banner -->
+<!-- End Banner -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+
+            <article>
+                <h2><a href="./telemeta-144-is-out.html">Telemeta 1.4.4 is out !</a></h2>
+                <div class="summary"><p>Changes:</p>
+<ul class="simple">
+<li>no new fancy functions</li>
+<li>full using of static files which are now in static/ (htdocs/ is now deprecated)</li>
+<li>IMPORTANT : upgrade TimeSide to 0.4.1, add 'timeside' to INSTALLED_APPS and do: ./manage.py collectstatic</li>
+<li>add various buttons, various bugfixes</li>
+<li>after upgrading, always do: ./manage.py migrate</li>
+</ul>
+<p>Upgrade:</p>
+<pre class="literal-block">
+sudo pip install --upgrade telemeta
+</pre>
+<p>Please first read README.rst and INSTALL.rst to get all informations about the news. Apply new rules, dependencies, modules and settings from your old version to the new one.</p>
+<p>or <a class="reference external" href="​​http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.4.4.tar.gz">download</a> (MD5: 47b8d7a6fa8340388ff72be58aaff59c)</p>
+<p>Enjoy ;)</p>
+
+                    <a class="btn btn-default btn-xs" href="./telemeta-144-is-out.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
+                <h2><a href="./telemeta-143-has-been-released.html">Telemeta 1.4.3 has been released !</a></h2>
+                <div class="summary"><p>Changes:</p>
+<ul class="simple">
+<li>add solr-thumbnail for automatic thumbnail handling of all related media images (please install)</li>
+<li>add static media handling for solr and all various telemeta public files</li>
+<li>fix some wrong user properties</li>
+<li>SECURITY: you need to move your TELEMETA_EXPORT_CACHE_DIR from TELEMETA_CACHE_DIR cache (see example/sandbox_sqlite/settings.py)</li>
+<li>EXPERIMENTAL: WebM and MP4 video handling for items, NO transcode but decode, add a nice video.js player</li>
+<li>RECOMMEND: install django-extensions</li>
+<li>add user revisions to user profile</li>
+<li>move all edit buttons to main edit pages</li>
+<li>new Format object and various enumerations</li>
+<li>add last revision to item detail</li>
+<li>various bugfixes</li>
+<li>Fix a bug for related media title parsing</li>
+</ul>
+<p>Upgrade:</p>
+<pre class="literal-block">
+sudo pip install --upgrade telemeta
+</pre>
+<p>or <a class="reference external" href="​​http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.4.3.tar.gz">download</a> (MD5: ceec77f9b5e637cf1e2cb9b9fad21183)</p>
+<p>As usual, please first read README.rst and INSTALL.rst to get all informations ...</p>
+                    <a class="btn btn-default btn-xs" href="./telemeta-143-has-been-released.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
+                <h2><a href="./telemeta-14-is-out.html">Telemeta 1.4 is out!</a></h2>
+                <div class="summary"><p>Changes:</p>
+<ul class="simple">
+<li>add a Desk providing links to home and personal data</li>
+<li>add Fonds, Corpus and their related media to the models and to the search engine</li>
+<li>add some fancy drop down menus for main tabs</li>
+<li>add video media handling (WebM formats only and with the last TimeSide master branch)</li>
+<li>add playlist metadata editor</li>
+<li>fix some sad bugs for YouTube related URLs and previews</li>
+<li>cleanup admin page</li>
+<li>add auto saving now for all searches !</li>
+<li>add &quot;My Searches&quot; modules to user lists with search direct link</li>
+<li>add RSS feeds for last changes of all users</li>
+<li>better icon views</li>
+<li>many bugfixes !</li>
+</ul>
+<p>For developers and maintainers:</p>
+<ul>
+<li><p class="first">a new setting parameter: TELEMETA_DOWNLOAD_FORMATS = ('wav', 'mp3', 'webm') or whatever</p>
+</li>
+<li><p class="first">before upgrading, you need to BACKUP and manually delete old wrong MediaCorpus? and MediaCorpusRelated? tables ...</p></li></ul>
+                    <a class="btn btn-default btn-xs" href="./telemeta-14-is-out.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
+                <h2><a href="./telemeta-13-has-been-released.html">Telemeta 1.3 has been released !</a></h2>
+                <div class="summary"><p>Changes:</p>
+<ul class="simple">
+<li>add related media objects to collections and items (mime type detection, image preview, URL only capable, YouTube? URL detection and preview)</li>
+<li>add &quot;Sound&quot; filters to collection lists and search results</li>
+<li>add a scrollbar to marker lists</li>
+<li>add dependencies to setup.py</li>
+<li>various bugfixes</li>
+<li>developers now use Git</li>
+</ul>
+<p>Upgrade:</p>
+<pre class="literal-block">
+sudo pip install --upgrade telemeta
+</pre>
+<p>or <a class="reference external" href="​​http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.3.tar.gz">download</a> (MD5: 1ff126714ca9f38201b77efa06040671)</p>
+<p>You can upgrade from 1.2 safely. Tell me if anything goes wrong.</p>
+
+                    <a class="btn btn-default btn-xs" href="./telemeta-13-has-been-released.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
+                <h2><a href="./telemeta-12-is-out.html">Telemeta 1.2 is out!</a></h2>
+                <div class="summary"><p>Changes:</p>
+<ul class="simple">
+<li>fix OAI repository names, coverages and headers in according with TGE Adonis specs</li>
+<li>replace home (index) playlist by 3 random nice embedded players (public items only)</li>
+<li>add &quot;Sound&quot; filter to the item list for easier access to sound items</li>
+<li>fix various bugs</li>
+<li>fix the whole setup</li>
+</ul>
+<p>Upgrade:</p>
+<pre class="literal-block">
+sudo pip install --upgrade telemeta
+</pre>
+<p>or <a class="reference external" href="​​http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.2.tar.gz">download</a> (MD5: 43cd98b492d39772a73164986ac0eefd)</p>
+
+                    <a class="btn btn-default btn-xs" href="./telemeta-12-is-out.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
+                <h2><a href="./telemeta-project-now-uses-git-for-development.html">Telemeta project now uses Git for development</a></h2>
+                <div class="summary"><p>Ten months ago, I started to look at other version control systems because I was fed up with the Subversion centralized model. It tested Git, Mercurial, Bazaar, etc.. Bazaar was the good choice because it allowed the dev teams to make branches easily in a decentralized environment, to push commits to the old subversion repository, to keep an easy syntax, etc...</p>
+<p>Now there are few reasons to switch back to Git:</p>
+<p>we want to checkout and test branches faster without managing dozens of repositories,
+we do not want to upload 500 ko of data for a 1 line commit,
+we want to push the generic Telemeta to GitHub.
+Sorry Bzr folks, I like your stuff, but Git is more appropriate now for this project.</p>
+<p>Developers, please ​`update ...</p>
+                    <a class="btn btn-default btn-xs" href="./telemeta-project-now-uses-git-for-development.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
+                <h2><a href="./communique-de-presse-du-crem-pour-le-projet-telemeta.html">Communiqué de presse du CREM pour le projet Telemeta</a></h2>
+                <div class="summary"><p>Le Centre de Recherche en Ethnomusicologie a publié <a class="reference external" href="http://files.parisson.com/telemeta/ArticleTelemetSept2011.pdf">un communiqué de presse</a> pour la publication officiel du site <a class="reference external" href="http://archives.crem-cnrs.fr">http://archives.crem-cnrs.fr</a>.</p>
+
+                    <a class="btn btn-default btn-xs" href="./communique-de-presse-du-crem-pour-le-projet-telemeta.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
+                <h2><a href="./twitter-account-for-telemeta.html">Twitter account for Telemeta</a></h2>
+                <div class="summary"><p>You can now follow the Telemeta project on <a class="reference external" href="http://twitter.com/telemeta">twitter</a></p>
+
+                    <a class="btn btn-default btn-xs" href="./twitter-account-for-telemeta.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+
+        <ul class="pagination">
+                <li class="prev"><a href="./index.html">&laquo;</a>
+                </li>
+                    <li class=""><a
+                            href="./index.html">1</a></li>
+                    <li class="active"><a
+                            href="./index2.html">2</a></li>
+                <li class="next disabled"><a href="#">&raquo;</a></li>
+        </ul>
+        </div>
+        <div class="col-sm-3" id="sidebar">
+            <aside>
+
+<section class="well well-sm">
+    <ul class="list-group list-group-flush">
+            <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+              <ul class="list-group" id="social">
+                <li class="list-group-item"><a href="https://twitter.com/telemeta/"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
+                <li class="list-group-item"><a href="https://plus.google.com/+Parisson"><i class="fa fa-google-plus-square fa-lg"></i> Google+</a></li>
+                <li class="list-group-item"><a href="http://www.linkedin.com/in/Parisson"><i class="fa fa-linkedin-square fa-lg"></i> LinkedIn</a></li>
+                <li class="list-group-item"><a href="https://github.com/Parisson/"><i class="fa fa-github-square fa-lg"></i> GitHub</a></li>
+              </ul>
+            </li>
+
+
+
+            <li class="list-group-item"><a href="./"><h4><i class="fa fa-tags fa-lg"></i><span class="icon-label">Tags</span></h4></a>
+                <ul class="list-group " id="tags">
+                    <li class="list-group-item tag-4">
+                        <a href="./tag/iso.html">
+                            iso
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-4">
+                        <a href="./tag/music.html">
+                            music
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-4">
+                        <a href="./tag/acoustics.html">
+                            acoustics
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-4">
+                        <a href="./tag/language.html">
+                            language
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-4">
+                        <a href="./tag/folk.html">
+                            folk
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-4">
+                        <a href="./tag/ecology.html">
+                            ecology
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-4">
+                        <a href="./tag/authentification.html">
+                            authentification
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-4">
+                        <a href="./tag/analysis.html">
+                            analysis
+                        </a>
+                    </li>
+                </ul>
+            </li>
+    <li class="list-group-item"><h4><i class="fa fa-external-link-square fa-lg"></i><span class="icon-label">Links</span></h4>
+      <ul class="list-group" id="links">
+        <li class="list-group-item">
+            <a href="http://getpelican.com/" target="_blank">
+                Pelican
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://python.org/" target="_blank">
+                Python
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="https://www.djangoproject.com/" target="_blank">
+                Django
+            </a>
+        </li>
+      </ul>
+    </li>
+    </ul>
+</section>
+            </aside>
+        </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2015 Parisson Sarl
+            &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="./theme/js/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="./theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="./theme/js/respond.min.js"></script>
+
+
+</body>
+</html>

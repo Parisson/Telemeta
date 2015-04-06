@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Telemeta</title><link href="http://parisson.github.io/Telemeta/" rel="alternate"></link><link href="http://parisson.github.io/Telemeta/feeds/news-development.atom.xml" rel="self"></link><id>http://parisson.github.io/Telemeta/</id><updated>2011-10-26T06:53:00+02:00</updated><entry><title>Telemeta project now uses Git for development</title><link href="http://parisson.github.io/Telemeta/telemeta-project-now-uses-git-for-development.html" rel="alternate"></link><updated>2011-10-26T06:53:00+02:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2011-10-26:Telemeta/telemeta-project-now-uses-git-for-development.html</id><summary type="html">&lt;p&gt;Ten months ago, I started to look at other version control systems because I was fed up with the Subversion centralized model. It tested Git, Mercurial, Bazaar, etc.. Bazaar was the good choice because it allowed the dev teams to make branches easily in a decentralized environment, to push commits to the old subversion repository, to keep an easy syntax, etc...&lt;/p&gt;
+&lt;p&gt;Now there are few reasons to switch back to Git:&lt;/p&gt;
+&lt;p&gt;we want to checkout and test branches faster without managing dozens of repositories,
+we do not want to upload 500 ko of data for a 1 line commit,
+we want to push the generic Telemeta to GitHub.
+Sorry Bzr folks, I like your stuff, but Git is more appropriate now for this project.&lt;/p&gt;
+&lt;p&gt;Developers, please ​`update your skills &amp;lt;&lt;a class="reference external" href="http://schacon.github.com/git/gittutorial.html"&gt;http://schacon.github.com/git/gittutorial.html&lt;/a&gt;&amp;gt;`_ :)&lt;/p&gt;
+&lt;p&gt;What you need to do with the new repository:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p class="first"&gt;Get the lastest development version to try the lastest useful features&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+git clone http://vcs.parisson.com/git/telemeta.git
+&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;To get the CREM's branch:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+git clone http://vcs.parisson.com/git/telemeta.git
+git checkout crem
+&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;You can also ​follow / fork the &lt;a class="reference external" href="https://github.com/yomguy/Telemeta"&gt;project on GitHub&lt;/a&gt; !&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;To get write access to the main repository (i.e. ​git+ssh://vcs.parisson.com/var/git/telemeta.git), please contact us by email.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;NB : ​This is the good method to convert a Bzr repo.&lt;/p&gt;
+</summary></entry></feed>

@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Telemeta</title><link href="http://parisson.github.io/Telemeta/" rel="alternate"></link><link href="http://parisson.github.io/Telemeta/feeds/all.atom.xml" rel="self"></link><id>http://parisson.github.io/Telemeta/</id><updated>2015-04-01T02:37:56+02:00</updated><entry><title>Telemeta: open web audio platform with semantics</title><link href="http://parisson.github.io/Telemeta/telemeta-open-web-audio-platform-with-semantics.html" rel="alternate"></link><updated>2015-04-01T02:37:56+02:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2015-04-01:Telemeta/telemeta-open-web-audio-platform-with-semantics.html</id><summary type="html">&lt;img alt="Telemeta logo" src="images/logo_telemeta_2.png" /&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Telemeta</title><link href="http://parisson.github.io/Telemeta/" rel="alternate"></link><link href="http://parisson.github.io/Telemeta/feeds/all.atom.xml" rel="self"></link><id>http://parisson.github.io/Telemeta/</id><updated>2015-04-01T17:26:57+02:00</updated><entry><title>IP based authorization</title><link href="http://parisson.github.io/Telemeta/ip-based-authorization.html" rel="alternate"></link><updated>2015-04-01T17:26:57+02:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2015-04-01:Telemeta/ip-based-authorization.html</id><summary type="html">&lt;p&gt;It is possible to login automatically an IP range of machines to Telemeta thanks to the django-ipauth module:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+sudo pip install django-ipauth
+&lt;/pre&gt;
+&lt;p&gt;See &lt;a class="reference external" href="http://pypi.python.org/pypi/django-ipauth/"&gt;http://pypi.python.org/pypi/django-ipauth/&lt;/a&gt; for setup.&lt;/p&gt;
+</summary><category term="authentification"></category></entry><entry><title>Import ISO 639-3 languages</title><link href="http://parisson.github.io/Telemeta/import-iso-639-3-languages.html" rel="alternate"></link><updated>2015-04-01T17:25:53+02:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2015-04-01:Telemeta/import-iso-639-3-languages.html</id><summary type="html">&lt;p&gt;From Telemeta 1.4, an ISO 639-3 language model has been implemented.&lt;/p&gt;
+&lt;p&gt;The ISO language table content can be initialized with the official code set.
+Here is a import example where telemeta_crem5 is the SQL database:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+wget http://www.sil.org/iso639-3/iso-639-3_20110525.tab
+mysql -u root -p
+load data infile 'iso-639-3_20110525.tab' into table telemeta_crem5.languages CHARACTER SET UTF8 ignore 1 lines (identifier, part2B, part2T, part1, scope, type, name, comment);
+&lt;/pre&gt;
+&lt;p&gt;If you upgraded Telemeta from a version previous or equal to 1.3, please update the media_items table as follow:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+mysql -u root -p
+use telemeta_crem5
+ALTER TABLE media_items ADD COLUMN 'language_iso_id' integer;
+ALTER TABLE 'media_items' ADD CONSTRAINT 'language_iso_id_refs_id_80b221' FOREIGN KEY ('language_iso_id') REFERENCES 'languages' ('id');
+&lt;/pre&gt;
+</summary><category term="language"></category><category term="iso"></category></entry><entry><title>Telemeta: open web audio platform with semantics</title><link href="http://parisson.github.io/Telemeta/telemeta-open-web-audio-platform-with-semantics.html" rel="alternate"></link><updated>2015-04-01T02:37:56+02:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2015-04-01:Telemeta/telemeta-open-web-audio-platform-with-semantics.html</id><summary type="html">&lt;img alt="Telemeta logo" src="images/logo_telemeta_2.png" /&gt;
 &lt;div class="section" id="overview"&gt;
 &lt;h2&gt;Overview&lt;/h2&gt;
 &lt;p&gt;Telemeta is a free and open source web audio archiving software which introduces useful and secure methods to backup, index, transcode, analyse and publish any digitalized audio file with extensive metadata. It is dedicated to collaborative media archiving projects, research laboratories and digital humanities - and especially in ethnomusicological use cases - who wants to easily organize, backup and publish documented sound collections of audio files, CDs, digitalized vinyls and magnetic tapes over a strong database, in accordance with open web standards.&lt;/p&gt;
@@ -232,4 +252,213 @@ If you find some bugs, PLEASE leave a ticket on this page:&lt;/p&gt;
 &lt;/ul&gt;
 </summary></entry><entry><title>Telemeta at QMUL</title><link href="http://parisson.github.io/Telemeta/telemeta-at-qmul.html" rel="alternate"></link><updated>2014-07-08T01:42:00+02:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2014-07-08:Telemeta/telemeta-at-qmul.html</id><summary type="html">&lt;p&gt;We presented TimeSide, the open web audio processing framework, at the Queen Mary University of London (ArtsOne Lecture Theatre) for the &lt;a class="reference external" href="http://soundsoftware.ac.uk/soundsoftware2014"&gt;third Workshop on Software and Data for Audio and Music Research&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;a class="reference external" href="​https://github.com/Parisson/Telemeta-doc/raw/master/Workshops/SoundSoftware_2014/TimeSide_SoundSoftware_2014_07.pdf"&gt;Slides&lt;/a&gt;&lt;/p&gt;
+</summary></entry><entry><title>Telemeta at the 1st Symposium: "Ecology and acoustics"</title><link href="http://parisson.github.io/Telemeta/telemeta-at-the-1st-symposium-ecology-and-acoustics.html" rel="alternate"></link><updated>2014-06-13T17:40:00+02:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2014-06-13:Telemeta/telemeta-at-the-1st-symposium-ecology-and-acoustics.html</id><summary type="html">&lt;p&gt;Meet Guillaume Pellerin and Thomas Fillon at the first Symposium on “Ecology and acoustics: emergent properties from community to landscape” from june the 16th to 18th 2014 at MNHN, Paris, France&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://ecoacoustics.sciencesconf.org"&gt;http://ecoacoustics.sciencesconf.org&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;We will present Telemeta, an open and collaborative web audio platform for digital sound archives management.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://ecoacoustics.sciencesconf.org/42166"&gt;http://ecoacoustics.sciencesconf.org/42166&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Because ecology needs sounds!&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://www.dropbox.com/s/15rgx5varc7l4jj/Telemeta_EcoAcoustics_2014_06.pdf"&gt;Slides&lt;/a&gt;&lt;/p&gt;
+</summary><category term="ecology"></category><category term="acoustics"></category></entry><entry><title>Telemeta at the 4th international workshop of Folk Music Analysis 2014</title><link href="http://parisson.github.io/Telemeta/telemeta-at-the-4th-international-workshop-of-folk-music-analysis-2014.html" rel="alternate"></link><updated>2014-06-13T17:36:00+02:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2014-06-13:Telemeta/telemeta-at-the-4th-international-workshop-of-folk-music-analysis-2014.html</id><summary type="html">&lt;p&gt;Thomas Fillon will be at the 4th international workshop of Folk Music Analysis in Istanbul, Turkey, from june the 12th to 13th 2014, Turkey for the Telemeta project.&lt;/p&gt;
+&lt;p&gt;Title of the poster: &amp;quot;An open web audio platform for ethnomusicological sound archives management and automatic analysis&amp;quot;&lt;/p&gt;
+&lt;p&gt;​http://www.cmpe.boun.edu.tr/fma2014/program.html&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://www.dropbox.com/s/15rgx5varc7l4jj/Telemeta_EcoAcoustics_2014_06.pdf"&gt;Slides&lt;/a&gt;&lt;/p&gt;
+</summary><category term="folk"></category><category term="music"></category><category term="analysis"></category></entry><entry><title>Telemeta 1.4.5 has been released!</title><link href="http://parisson.github.io/Telemeta/telemeta-145-has-been-released.html" rel="alternate"></link><updated>2014-01-20T22:48:00+01:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2014-01-20:Telemeta/telemeta-145-has-been-released.html</id><summary type="html">&lt;p&gt;After a long debugging and producing period, Telemeta reaches a nice stable version.&lt;/p&gt;
+&lt;p&gt;Changelog:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Collection and Item regex in settings allowed&lt;/li&gt;
+&lt;li&gt;Change resource list filtering rules&lt;/li&gt;
+&lt;li&gt;Add KdenLive session parsers and auto faders to auto tag audio or video timeline&lt;/li&gt;
+&lt;li&gt;Add ffmpeg based transcoding tools&lt;/li&gt;
+&lt;li&gt;Add enumerations replacing methods&lt;/li&gt;
+&lt;li&gt;Add chat rooms for enumerations&lt;/li&gt;
+&lt;li&gt;Cleanup some useless model properties&lt;/li&gt;
+&lt;li&gt;Many, many and many bugfixes&lt;/li&gt;
+&lt;li&gt;Last version compatible with ​TimeSide 0.4.x&lt;/li&gt;
+&lt;li&gt;Please check the new dependencies in setup.py&lt;/li&gt;
+&lt;li&gt;As always after upgrading: ./manage.py migrate telemeta&lt;/li&gt;
+&lt;li&gt;Download: ​http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.4.5.tar.gz&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.4.6.tar.gz"&gt;Download&lt;/a&gt;&lt;/p&gt;
+</summary></entry><entry><title>The DIADEMS project has started!</title><link href="http://parisson.github.io/Telemeta/the-diadems-project-has-started.html" rel="alternate"></link><updated>2014-01-20T22:48:00+01:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2014-01-20:Telemeta/the-diadems-project-has-started.html</id><summary type="html">&lt;p&gt;Telemeta is in the center of a new &lt;a class="reference external" href="http://www.irit.fr/recherches/SAMOVA/DIADEMS/fr/welcome/&amp;amp;cultureKey=en"&gt;DIADEMS project&lt;/a&gt; sponsored by the french research agency ANR. It has started on january 2013 and will be effective during 3 years.&lt;/p&gt;
+&lt;p&gt;DIADEMS stands for: Description, Indexation, Accès aux Documents Ethnomusicologiques et Sonores (Description, Indexation, Access to Sound and Ethnomusicological Documents)&lt;/p&gt;
+&lt;p&gt;The academic laboratories envolved:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;IRIT (Institut de Recherche en Informatique de Toulouse)&lt;/li&gt;
+&lt;li&gt;LIMSI&lt;/li&gt;
+&lt;li&gt;LAM (IJLRDA)&lt;/li&gt;
+&lt;li&gt;CREM (LESC)&lt;/li&gt;
+&lt;li&gt;LABRI&lt;/li&gt;
+&lt;li&gt;MNHN&lt;/li&gt;
+&lt;li&gt;The corporate development partner:&lt;/li&gt;
+&lt;li&gt;Parisson&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The persons envolved (non exhausive list):&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Julien Pinquier&lt;/li&gt;
+&lt;li&gt;Jérôme Farinas&lt;/li&gt;
+&lt;li&gt;Maxime Le Coz&lt;/li&gt;
+&lt;li&gt;Aude JULIEN-DA-CRUZ-LIMA&lt;/li&gt;
+&lt;li&gt;Aurore MONOD&lt;/li&gt;
+&lt;li&gt;Boris Doval&lt;/li&gt;
+&lt;li&gt;Claude Barras&lt;/li&gt;
+&lt;li&gt;Emeline LECHAUX&lt;/li&gt;
+&lt;li&gt;Guillaume Pellerin&lt;/li&gt;
+&lt;li&gt;Hugues Genevois&lt;/li&gt;
+&lt;li&gt;Hélène Lachambre&lt;/li&gt;
+&lt;li&gt;Jean Lambert&lt;/li&gt;
+&lt;li&gt;Jean-Luc Rouas&lt;/li&gt;
+&lt;li&gt;Joséphine Simonnot&lt;/li&gt;
+&lt;li&gt;Leonidas Ioannidis&lt;/li&gt;
+&lt;li&gt;Marie CHOSSON&lt;/li&gt;
+&lt;li&gt;Marie-France Mifune&lt;/li&gt;
+&lt;li&gt;Martine Adda&lt;/li&gt;
+&lt;li&gt;Marwa Thlithi&lt;/li&gt;
+&lt;li&gt;Matthias Robine&lt;/li&gt;
+&lt;li&gt;Pascal Le Saec&lt;/li&gt;
+&lt;li&gt;Patrice Guyot&lt;/li&gt;
+&lt;li&gt;Pierre Hanna&lt;/li&gt;
+&lt;li&gt;Régine André-Obrecht&lt;/li&gt;
+&lt;li&gt;Susanne Fürniss&lt;/li&gt;
+&lt;li&gt;Sylvie LE BOMIN&lt;/li&gt;
+&lt;li&gt;Valentina Vapnarsky&lt;/li&gt;
+&lt;/ul&gt;
+</summary></entry><entry><title>Telemeta 1.4.4 is out !</title><link href="http://parisson.github.io/Telemeta/telemeta-144-is-out.html" rel="alternate"></link><updated>2012-10-04T16:52:00+02:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2012-10-04:Telemeta/telemeta-144-is-out.html</id><summary type="html">&lt;p&gt;Changes:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;no new fancy functions&lt;/li&gt;
+&lt;li&gt;full using of static files which are now in static/ (htdocs/ is now deprecated)&lt;/li&gt;
+&lt;li&gt;IMPORTANT : upgrade TimeSide to 0.4.1, add 'timeside' to INSTALLED_APPS and do: ./manage.py collectstatic&lt;/li&gt;
+&lt;li&gt;add various buttons, various bugfixes&lt;/li&gt;
+&lt;li&gt;after upgrading, always do: ./manage.py migrate&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Upgrade:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+sudo pip install --upgrade telemeta
+&lt;/pre&gt;
+&lt;p&gt;Please first read README.rst and INSTALL.rst to get all informations about the news. Apply new rules, dependencies, modules and settings from your old version to the new one.&lt;/p&gt;
+&lt;p&gt;or &lt;a class="reference external" href="​​http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.4.4.tar.gz"&gt;download&lt;/a&gt; (MD5: 47b8d7a6fa8340388ff72be58aaff59c)&lt;/p&gt;
+&lt;p&gt;Enjoy ;)&lt;/p&gt;
+</summary></entry><entry><title>Telemeta 1.4.3 has been released !</title><link href="http://parisson.github.io/Telemeta/telemeta-143-has-been-released.html" rel="alternate"></link><updated>2012-05-31T22:57:00+02:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2012-05-31:Telemeta/telemeta-143-has-been-released.html</id><summary type="html">&lt;p&gt;Changes:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;add solr-thumbnail for automatic thumbnail handling of all related media images (please install)&lt;/li&gt;
+&lt;li&gt;add static media handling for solr and all various telemeta public files&lt;/li&gt;
+&lt;li&gt;fix some wrong user properties&lt;/li&gt;
+&lt;li&gt;SECURITY: you need to move your TELEMETA_EXPORT_CACHE_DIR from TELEMETA_CACHE_DIR cache (see example/sandbox_sqlite/settings.py)&lt;/li&gt;
+&lt;li&gt;EXPERIMENTAL: WebM and MP4 video handling for items, NO transcode but decode, add a nice video.js player&lt;/li&gt;
+&lt;li&gt;RECOMMEND: install django-extensions&lt;/li&gt;
+&lt;li&gt;add user revisions to user profile&lt;/li&gt;
+&lt;li&gt;move all edit buttons to main edit pages&lt;/li&gt;
+&lt;li&gt;new Format object and various enumerations&lt;/li&gt;
+&lt;li&gt;add last revision to item detail&lt;/li&gt;
+&lt;li&gt;various bugfixes&lt;/li&gt;
+&lt;li&gt;Fix a bug for related media title parsing&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Upgrade:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+sudo pip install --upgrade telemeta
+&lt;/pre&gt;
+&lt;p&gt;or &lt;a class="reference external" href="​​http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.4.3.tar.gz"&gt;download&lt;/a&gt; (MD5: ceec77f9b5e637cf1e2cb9b9fad21183)&lt;/p&gt;
+&lt;p&gt;As usual, please first read README.rst and INSTALL.rst to get all informations about the news. Apply new rules, dependencies, modules and settings from your old version to the new one.&lt;/p&gt;
+&lt;p&gt;For example, you now need sorl-thumbnail to get image thumbnails:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+sudo pip install sorl-thumbnail
+&lt;/pre&gt;
+&lt;p&gt;and add 'sorl.thumbnail' to your INSTALLED_APPS list in settings.py.&lt;/p&gt;
+&lt;p&gt;When all new settings seem OK, use ​South for a clean data migration from previous model versions:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+./manage.py syncdb
+./manage.py migrate telemeta
+&lt;/pre&gt;
+&lt;p&gt;email me or tweet to &amp;#64;telemeta if any problem.&lt;/p&gt;
+&lt;p&gt;Enjoy!&lt;/p&gt;
+</summary></entry><entry><title>Telemeta 1.4 is out!</title><link href="http://parisson.github.io/Telemeta/telemeta-14-is-out.html" rel="alternate"></link><updated>2012-02-14T16:29:00+01:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2012-02-14:Telemeta/telemeta-14-is-out.html</id><summary type="html">&lt;p&gt;Changes:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;add a Desk providing links to home and personal data&lt;/li&gt;
+&lt;li&gt;add Fonds, Corpus and their related media to the models and to the search engine&lt;/li&gt;
+&lt;li&gt;add some fancy drop down menus for main tabs&lt;/li&gt;
+&lt;li&gt;add video media handling (WebM formats only and with the last TimeSide master branch)&lt;/li&gt;
+&lt;li&gt;add playlist metadata editor&lt;/li&gt;
+&lt;li&gt;fix some sad bugs for YouTube related URLs and previews&lt;/li&gt;
+&lt;li&gt;cleanup admin page&lt;/li&gt;
+&lt;li&gt;add auto saving now for all searches !&lt;/li&gt;
+&lt;li&gt;add &amp;quot;My Searches&amp;quot; modules to user lists with search direct link&lt;/li&gt;
+&lt;li&gt;add RSS feeds for last changes of all users&lt;/li&gt;
+&lt;li&gt;better icon views&lt;/li&gt;
+&lt;li&gt;many bugfixes !&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;For developers and maintainers:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p class="first"&gt;a new setting parameter: TELEMETA_DOWNLOAD_FORMATS = ('wav', 'mp3', 'webm') or whatever&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;before upgrading, you need to BACKUP and manually delete old wrong MediaCorpus? and MediaCorpusRelated? tables&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;we now use South for data model migration. Add 'south' to your apps and to do:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+./manage.py syncdb
+./manage.py migrate telemeta
+&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Upgrade:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+sudo pip install --upgrade telemeta
+&lt;/pre&gt;
+&lt;p&gt;or &lt;a class="reference external" href="​​http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.4.tar.gz"&gt;download&lt;/a&gt; (MD5: ec51039d0b749f8322309c64e9415090)&lt;/p&gt;
+&lt;p&gt;Please first read README.rst and INSTALL.rst to get all informations about the news. Apply new rules, dependencies, modules and settings from your old version to the new one.&lt;/p&gt;
+&lt;p&gt;Enjoy!&lt;/p&gt;
+</summary></entry><entry><title>Telemeta 1.3 has been released !</title><link href="http://parisson.github.io/Telemeta/telemeta-13-has-been-released.html" rel="alternate"></link><updated>2011-12-06T23:06:00+01:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2011-12-06:Telemeta/telemeta-13-has-been-released.html</id><summary type="html">&lt;p&gt;Changes:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;add related media objects to collections and items (mime type detection, image preview, URL only capable, YouTube? URL detection and preview)&lt;/li&gt;
+&lt;li&gt;add &amp;quot;Sound&amp;quot; filters to collection lists and search results&lt;/li&gt;
+&lt;li&gt;add a scrollbar to marker lists&lt;/li&gt;
+&lt;li&gt;add dependencies to setup.py&lt;/li&gt;
+&lt;li&gt;various bugfixes&lt;/li&gt;
+&lt;li&gt;developers now use Git&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Upgrade:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+sudo pip install --upgrade telemeta
+&lt;/pre&gt;
+&lt;p&gt;or &lt;a class="reference external" href="​​http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.3.tar.gz"&gt;download&lt;/a&gt; (MD5: 1ff126714ca9f38201b77efa06040671)&lt;/p&gt;
+&lt;p&gt;You can upgrade from 1.2 safely. Tell me if anything goes wrong.&lt;/p&gt;
+</summary></entry><entry><title>Telemeta 1.2 is out!</title><link href="http://parisson.github.io/Telemeta/telemeta-12-is-out.html" rel="alternate"></link><updated>2011-10-31T14:39:00+01:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2011-10-31:Telemeta/telemeta-12-is-out.html</id><summary type="html">&lt;p&gt;Changes:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;fix OAI repository names, coverages and headers in according with TGE Adonis specs&lt;/li&gt;
+&lt;li&gt;replace home (index) playlist by 3 random nice embedded players (public items only)&lt;/li&gt;
+&lt;li&gt;add &amp;quot;Sound&amp;quot; filter to the item list for easier access to sound items&lt;/li&gt;
+&lt;li&gt;fix various bugs&lt;/li&gt;
+&lt;li&gt;fix the whole setup&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Upgrade:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+sudo pip install --upgrade telemeta
+&lt;/pre&gt;
+&lt;p&gt;or &lt;a class="reference external" href="​​http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.2.tar.gz"&gt;download&lt;/a&gt; (MD5: 43cd98b492d39772a73164986ac0eefd)&lt;/p&gt;
+</summary></entry><entry><title>Telemeta project now uses Git for development</title><link href="http://parisson.github.io/Telemeta/telemeta-project-now-uses-git-for-development.html" rel="alternate"></link><updated>2011-10-26T06:53:00+02:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2011-10-26:Telemeta/telemeta-project-now-uses-git-for-development.html</id><summary type="html">&lt;p&gt;Ten months ago, I started to look at other version control systems because I was fed up with the Subversion centralized model. It tested Git, Mercurial, Bazaar, etc.. Bazaar was the good choice because it allowed the dev teams to make branches easily in a decentralized environment, to push commits to the old subversion repository, to keep an easy syntax, etc...&lt;/p&gt;
+&lt;p&gt;Now there are few reasons to switch back to Git:&lt;/p&gt;
+&lt;p&gt;we want to checkout and test branches faster without managing dozens of repositories,
+we do not want to upload 500 ko of data for a 1 line commit,
+we want to push the generic Telemeta to GitHub.
+Sorry Bzr folks, I like your stuff, but Git is more appropriate now for this project.&lt;/p&gt;
+&lt;p&gt;Developers, please ​`update your skills &amp;lt;&lt;a class="reference external" href="http://schacon.github.com/git/gittutorial.html"&gt;http://schacon.github.com/git/gittutorial.html&lt;/a&gt;&amp;gt;`_ :)&lt;/p&gt;
+&lt;p&gt;What you need to do with the new repository:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p class="first"&gt;Get the lastest development version to try the lastest useful features&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+git clone http://vcs.parisson.com/git/telemeta.git
+&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;To get the CREM's branch:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+git clone http://vcs.parisson.com/git/telemeta.git
+git checkout crem
+&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;You can also ​follow / fork the &lt;a class="reference external" href="https://github.com/yomguy/Telemeta"&gt;project on GitHub&lt;/a&gt; !&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;To get write access to the main repository (i.e. ​git+ssh://vcs.parisson.com/var/git/telemeta.git), please contact us by email.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;NB : ​This is the good method to convert a Bzr repo.&lt;/p&gt;
+</summary></entry><entry><title>Communiqué de presse du CREM pour le projet Telemeta</title><link href="http://parisson.github.io/Telemeta/communique-de-presse-du-crem-pour-le-projet-telemeta.html" rel="alternate"></link><updated>2011-10-13T19:57:00+02:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2011-10-13:Telemeta/communique-de-presse-du-crem-pour-le-projet-telemeta.html</id><summary type="html">&lt;p&gt;Le Centre de Recherche en Ethnomusicologie a publié &lt;a class="reference external" href="http://files.parisson.com/telemeta/ArticleTelemetSept2011.pdf"&gt;un communiqué de presse&lt;/a&gt; pour la publication officiel du site &lt;a class="reference external" href="http://archives.crem-cnrs.fr"&gt;http://archives.crem-cnrs.fr&lt;/a&gt;.&lt;/p&gt;
+</summary></entry><entry><title>Twitter account for Telemeta</title><link href="http://parisson.github.io/Telemeta/twitter-account-for-telemeta.html" rel="alternate"></link><updated>2011-09-13T12:47:00+02:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2011-09-13:Telemeta/twitter-account-for-telemeta.html</id><summary type="html">&lt;p&gt;You can now follow the Telemeta project on &lt;a class="reference external" href="http://twitter.com/telemeta"&gt;twitter&lt;/a&gt;&lt;/p&gt;
 </summary></entry></feed>

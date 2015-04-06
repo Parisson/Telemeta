@@ -2,7 +2,7 @@
 <html lang="en"
 >
 <head>
-    <title>News - Telemeta</title>
+    <title>Articles by Parisson Sarl - Telemeta</title>
     <!-- Using the latest rendering mode for IE -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="utf-8">
@@ -11,8 +11,7 @@
 
 
 
-    <meta name="author" content="Parisson Sarl" />
-    <meta name="keywords" content="News" />
+        <meta name="author" content="Parisson Sarl" />
 
     <!-- Open Graph tags -->
         <meta property="og:site_name" content="Telemeta" />
@@ -53,7 +52,7 @@ Telemeta            </a>
                         <li >
                             <a href="../category/about.html">About</a>
                         </li>
-                        <li class="active">
+                        <li >
                             <a href="../category/news.html">News</a>
                         </li>
                         <li >
@@ -83,54 +82,132 @@ Telemeta            </a>
         <div class="col-sm-9">
 
             <article>
-                <h2><a href="../telemeta-15-is-out.html">Telemeta 1.5 is out!</a></h2>
-                <div class="summary"><p>After months of hard work we are pleased to release a big update to Telemeta communities. It represents a huge milestone that makes Telemeta now compatible with more modern web technologies.</p>
-<p>Changelog:</p>
+                <h2><a href="../telemeta-144-is-out.html">Telemeta 1.4.4 is out !</a></h2>
+                <div class="summary"><p>Changes:</p>
 <ul class="simple">
-<li>Django 1.6.x compatibility</li>
-<li>TimeSide 0.7.x compatibility</li>
-<li>Huge refactoring of all forms, detail and edit views based on class based views</li>
-<li>Main styles (buttons, tabs) are now based Bootstrap 3 and JQuery 2.1</li>
-<li>Update of models and views as needed by the CREM</li>
-<li>WARNING! Be careful to the new dependencies before updating</li>
+<li>no new fancy functions</li>
+<li>full using of static files which are now in static/ (htdocs/ is now deprecated)</li>
+<li>IMPORTANT : upgrade TimeSide to 0.4.1, add 'timeside' to INSTALLED_APPS and do: ./manage.py collectstatic</li>
+<li>add various buttons, various bugfixes</li>
+<li>after upgrading, always do: ./manage.py migrate</li>
 </ul>
-<p>Download</p>
-<ul class="simple">
-<li><a class="reference external" href="http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.4.6.tar.gz">http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.4.6.tar.gz</a></li>
-</ul>
+<p>Upgrade:</p>
+<pre class="literal-block">
+sudo pip install --upgrade telemeta
+</pre>
+<p>Please first read README.rst and INSTALL.rst to get all informations about the news. Apply new rules, dependencies, modules and settings from your old version to the new one.</p>
+<p>or <a class="reference external" href="​​http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.4.4.tar.gz">download</a> (MD5: 47b8d7a6fa8340388ff72be58aaff59c)</p>
+<p>Enjoy ;)</p>
 
-                    <a class="btn btn-default btn-xs" href="../telemeta-15-is-out.html">more ...</a>
+                    <a class="btn btn-default btn-xs" href="../telemeta-144-is-out.html">more ...</a>
                 </div>
             </article>
             <hr/>
             <article>
-                <h2><a href="../telemeta-146-is-out.html">Telemeta 1.4.6 is out!</a></h2>
-                <div class="summary"><p>Changelog:</p>
+                <h2><a href="../telemeta-143-has-been-released.html">Telemeta 1.4.3 has been released !</a></h2>
+                <div class="summary"><p>Changes:</p>
 <ul class="simple">
-<li>Drastically improve collection zip packaqe streaming thanks to zipstream (check NEW dependencies)</li>
-<li>Compatible with TimeSide &gt;= 0.5.2</li>
-<li>Add URL field to item so that a external sound can be indexed and streamed</li>
-<li>Add TIMESIDE_AUTO_ZOOM in settings to auto toggle the player in zooming mode</li>
-<li>Add TIMESIDE_DEFAULT_GRAPHER_ID in settings to select the default grapher in the player</li>
-<li>Add minor migrations</li>
-<li>Fix marker display bug</li>
-<li>This is a transitional, minor release because 1.5 will be released soon.</li>
+<li>add solr-thumbnail for automatic thumbnail handling of all related media images (please install)</li>
+<li>add static media handling for solr and all various telemeta public files</li>
+<li>fix some wrong user properties</li>
+<li>SECURITY: you need to move your TELEMETA_EXPORT_CACHE_DIR from TELEMETA_CACHE_DIR cache (see example/sandbox_sqlite/settings.py)</li>
+<li>EXPERIMENTAL: WebM and MP4 video handling for items, NO transcode but decode, add a nice video.js player</li>
+<li>RECOMMEND: install django-extensions</li>
+<li>add user revisions to user profile</li>
+<li>move all edit buttons to main edit pages</li>
+<li>new Format object and various enumerations</li>
+<li>add last revision to item detail</li>
+<li>various bugfixes</li>
+<li>Fix a bug for related media title parsing</li>
 </ul>
-<p>Download</p>
-<ul class="simple">
-<li><a class="reference external" href="http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.4.6.tar.gz">http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.4.6.tar.gz</a></li>
-</ul>
-
-                    <a class="btn btn-default btn-xs" href="../telemeta-146-is-out.html">more ...</a>
+<p>Upgrade:</p>
+<pre class="literal-block">
+sudo pip install --upgrade telemeta
+</pre>
+<p>or <a class="reference external" href="​​http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.4.3.tar.gz">download</a> (MD5: ceec77f9b5e637cf1e2cb9b9fad21183)</p>
+<p>As usual, please first read README.rst and INSTALL.rst to get all informations ...</p>
+                    <a class="btn btn-default btn-xs" href="../telemeta-143-has-been-released.html">more ...</a>
                 </div>
             </article>
             <hr/>
             <article>
-                <h2><a href="../telemeta-at-qmul.html">Telemeta at QMUL</a></h2>
-                <div class="summary"><p>We presented TimeSide, the open web audio processing framework, at the Queen Mary University of London (ArtsOne Lecture Theatre) for the <a class="reference external" href="http://soundsoftware.ac.uk/soundsoftware2014">third Workshop on Software and Data for Audio and Music Research</a>.</p>
-<p><a class="reference external" href="​https://github.com/Parisson/Telemeta-doc/raw/master/Workshops/SoundSoftware_2014/TimeSide_SoundSoftware_2014_07.pdf">Slides</a></p>
+                <h2><a href="../telemeta-14-is-out.html">Telemeta 1.4 is out!</a></h2>
+                <div class="summary"><p>Changes:</p>
+<ul class="simple">
+<li>add a Desk providing links to home and personal data</li>
+<li>add Fonds, Corpus and their related media to the models and to the search engine</li>
+<li>add some fancy drop down menus for main tabs</li>
+<li>add video media handling (WebM formats only and with the last TimeSide master branch)</li>
+<li>add playlist metadata editor</li>
+<li>fix some sad bugs for YouTube related URLs and previews</li>
+<li>cleanup admin page</li>
+<li>add auto saving now for all searches !</li>
+<li>add &quot;My Searches&quot; modules to user lists with search direct link</li>
+<li>add RSS feeds for last changes of all users</li>
+<li>better icon views</li>
+<li>many bugfixes !</li>
+</ul>
+<p>For developers and maintainers:</p>
+<ul>
+<li><p class="first">a new setting parameter: TELEMETA_DOWNLOAD_FORMATS = ('wav', 'mp3', 'webm') or whatever</p>
+</li>
+<li><p class="first">before upgrading, you need to BACKUP and manually delete old wrong MediaCorpus? and MediaCorpusRelated? tables ...</p></li></ul>
+                    <a class="btn btn-default btn-xs" href="../telemeta-14-is-out.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
+                <h2><a href="../telemeta-13-has-been-released.html">Telemeta 1.3 has been released !</a></h2>
+                <div class="summary"><p>Changes:</p>
+<ul class="simple">
+<li>add related media objects to collections and items (mime type detection, image preview, URL only capable, YouTube? URL detection and preview)</li>
+<li>add &quot;Sound&quot; filters to collection lists and search results</li>
+<li>add a scrollbar to marker lists</li>
+<li>add dependencies to setup.py</li>
+<li>various bugfixes</li>
+<li>developers now use Git</li>
+</ul>
+<p>Upgrade:</p>
+<pre class="literal-block">
+sudo pip install --upgrade telemeta
+</pre>
+<p>or <a class="reference external" href="​​http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.3.tar.gz">download</a> (MD5: 1ff126714ca9f38201b77efa06040671)</p>
+<p>You can upgrade from 1.2 safely. Tell me if anything goes wrong.</p>
 
-                    <a class="btn btn-default btn-xs" href="../telemeta-at-qmul.html">more ...</a>
+                    <a class="btn btn-default btn-xs" href="../telemeta-13-has-been-released.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
+                <h2><a href="../telemeta-12-is-out.html">Telemeta 1.2 is out!</a></h2>
+                <div class="summary"><p>Changes:</p>
+<ul class="simple">
+<li>fix OAI repository names, coverages and headers in according with TGE Adonis specs</li>
+<li>replace home (index) playlist by 3 random nice embedded players (public items only)</li>
+<li>add &quot;Sound&quot; filter to the item list for easier access to sound items</li>
+<li>fix various bugs</li>
+<li>fix the whole setup</li>
+</ul>
+<p>Upgrade:</p>
+<pre class="literal-block">
+sudo pip install --upgrade telemeta
+</pre>
+<p>or <a class="reference external" href="​​http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.2.tar.gz">download</a> (MD5: 43cd98b492d39772a73164986ac0eefd)</p>
+
+                    <a class="btn btn-default btn-xs" href="../telemeta-12-is-out.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
+                <h2><a href="../telemeta-project-now-uses-git-for-development.html">Telemeta project now uses Git for development</a></h2>
+                <div class="summary"><p>Ten months ago, I started to look at other version control systems because I was fed up with the Subversion centralized model. It tested Git, Mercurial, Bazaar, etc.. Bazaar was the good choice because it allowed the dev teams to make branches easily in a decentralized environment, to push commits to the old subversion repository, to keep an easy syntax, etc...</p>
+<p>Now there are few reasons to switch back to Git:</p>
+<p>we want to checkout and test branches faster without managing dozens of repositories,
+we do not want to upload 500 ko of data for a 1 line commit,
+we want to push the generic Telemeta to GitHub.
+Sorry Bzr folks, I like your stuff, but Git is more appropriate now for this project.</p>
+<p>Developers, please ​`update ...</p>
+                    <a class="btn btn-default btn-xs" href="../telemeta-project-now-uses-git-for-development.html">more ...</a>
                 </div>
             </article>
             <hr/>
@@ -151,6 +228,15 @@ Telemeta            </a>
             </article>
             <hr/>
 
+        <ul class="pagination">
+                <li class="prev"><a href="../author/parisson-sarl.html">&laquo;</a>
+                </li>
+                    <li class=""><a
+                            href="../author/parisson-sarl.html">1</a></li>
+                    <li class="active"><a
+                            href="../author/parisson-sarl2.html">2</a></li>
+                <li class="next disabled"><a href="#">&raquo;</a></li>
+        </ul>
         </div>
         <div class="col-sm-3" id="sidebar">
             <aside>
