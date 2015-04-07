@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
+
+# Copyright (C) 2010-2015 Parisson SARL
 # Copyright (C) 2007-2010 Samalyse SARL
-# Copyright (C) 2010-2012 Parisson SARL
 
 # This software is a computer program whose purpose is to backup, analyse,
 # transcode and stream any audio content with its metadata over a web frontend.
@@ -68,40 +69,6 @@ class ItemView(ItemBaseMixin):
                                     'extension': encoder.file_extension()})
         return formats
 
-    def item_previous_next(self, item):
-        """Get previous and next items inside the collection of the item"""
-
-        pks = []
-        items = MediaItem.objects.filter(collection=item.collection)
-        items = items.order_by('code', 'old_code')
-
-        if len(items) > 1:
-            for it in items:
-                pks.append(it.pk)
-            for pk in pks:
-                if pk == item.pk:
-                    if pk == pks[0]:
-                        previous_pk = pks[-1]
-                        next_pk = pks[1]
-                    elif pk == pks[-1]:
-                        previous_pk = pks[-2]
-                        next_pk = pks[0]
-                    else:
-                        previous_pk = pks[pks.index(pk)-1]
-                        next_pk = pks[pks.index(pk)+1]
-                    for it in items:
-                        if it.pk == previous_pk:
-                            previous = it
-                        if it.pk == next_pk:
-                            next = it
-                    previous = previous.public_id
-                    next = next.public_id
-        else:
-             previous = item.public_id
-             next = item.public_id
-
-        return previous, next
-
     def get_graphers(self):
         graphers = []
         for grapher in self.graphers:
@@ -168,57 +135,6 @@ class ItemView(ItemBaseMixin):
                     'format': format,
                     })
 
-    @method_decorator(permission_required('telemeta.change_mediaitem'))
-    def item_edit(self, request, public_id, template='telemeta/mediaitem_edit.html'):
-        """Edit a given item"""
-        item = MediaItem.objects.get(public_id=public_id)
-        access = get_item_access(item, request.user)
-
-        previous, next = self.item_previous_next(item)
-
-        mime_type = self.item_analyze(item)
-
-        #FIXME: use mimetypes.guess_type
-        if 'quicktime' in mime_type:
-            mime_type = 'video/mp4'
-
-        format, created = Format.objects.get_or_create(item=item)
-
-        if request.method == 'POST':
-            item_form = MediaItemForm(data=request.POST, files=request.FILES, instance=item, prefix='item')
-            format_form = FormatForm(data=request.POST, instance=format, prefix='format')
-            if item_form.is_valid() and format_form.is_valid():
-                item_form.save()
-                format_form.save()
-                code = item_form.cleaned_data['code']
-                if not code:
-                    code = str(item.id)
-                if item_form.files:
-                    self.cache_data.delete_item_data(code)
-                    self.cache_export.delete_item_data(code)
-                    flags = MediaItemTranscodingFlag.objects.filter(item=item)
-                    analyses = MediaItemAnalysis.objects.filter(item=item)
-                    for flag in flags:
-                        flag.delete()
-                    for analysis in analyses:
-                        analysis.delete()
-                item.set_revision(request.user)
-                return redirect('telemeta-item-detail', code)
-        else:
-            item_form = MediaItemForm(instance=item, prefix='item')
-            format_form = FormatForm(instance=format, prefix='format')
-
-        forms = [item_form, format_form]
-
-        return render(request, template,
-                    {'item': item,
-                     'export_formats': self.get_export_formats(),
-                    'visualizers': self.get_graphers(),
-                    'audio_export_enabled': self.export_enabled,
-                    'forms': forms, 'previous' : previous,
-                    'next' : next, 'mime_type': mime_type, 'access': access,
-                    })
-
     def related_media_item_stream(self, request, item_public_id, media_id):
         item = MediaItem.objects.get(public_id=item_public_id)
         media = MediaItemRelated.objects.get(item=item, id=media_id)
@@ -249,106 +165,6 @@ class ItemView(ItemBaseMixin):
 
         return render(request, template, {'item': item, 'formset': formset,})
 
-    @method_decorator(permission_required('telemeta.add_mediaitem'))
-    def item_add(self, request, public_id=None, template='telemeta/mediaitem_add.html'):
-        """Add an item"""
-        access = ''
-
-        if public_id:
-            collection = MediaCollection.objects.get(public_id=public_id)
-            items = MediaItem.objects.filter(collection=collection)
-            code = auto_code(collection)
-            item = MediaItem(collection=collection, code=code)
-            format, created = Format.objects.get_or_create(item=item)
-            access = get_item_access(item, request.user)
-        else:
-            item = MediaItem()
-            format = Format()
-
-        if request.method == 'POST':
-            item_form = MediaItemForm(data=request.POST, files=request.FILES, instance=item, prefix='item')
-            format_form = FormatForm(data=request.POST, instance=format, prefix='format')
-            if item_form.is_valid() and format_form.is_valid():
-                item_form.save()
-                item.set_revision(request.user)
-                format.item = item
-                format_form.save()
-                code = item_form.cleaned_data['code']
-                if not code:
-                    code = str(item.id)
-                return redirect('telemeta-item-detail', code)
-        else:
-            item_form = MediaItemForm(instance=item, prefix='item')
-            format_form = FormatForm(instance=format, prefix='format')
-
-        forms = [item_form, format_form]
-        hidden_fields = ['item-copied_from_item', 'format-item']
-
-        return render(request, template, {'item': item, 'forms': forms, 'hidden_fields': hidden_fields,
-                                            'access': access, })
-
-    @method_decorator(permission_required('telemeta.add_mediaitem'))
-    def item_copy(self, request, public_id, template='telemeta/mediaitem_copy.html'):
-        """Copy a given item"""
-        if request.method == 'POST':
-            source_item = MediaItem.objects.get(public_id=public_id)
-
-            format = Format()
-            format_form = FormatForm(data=request.POST, instance=format, prefix='format')
-
-            item = MediaItem()
-            if request.FILES:
-                item_form = MediaItemForm(data=request.POST, files=request.FILES, instance=item, prefix='item')
-            else:
-                item_form = MediaItemForm(data=request.POST, instance=item, prefix='item')
-
-            if item_form.is_valid():
-                item_form.save()
-                if not request.FILES:
-                    item.file = source_item.file
-                    item.save()
-
-                code = item_form.cleaned_data['code']
-                if not code:
-                    code = str(item.id)
-                if format_form.is_valid():
-                    format.item = item
-                    format_form.save()
-
-                performances = MediaItemPerformance.objects.filter(media_item=source_item)
-                for performance in performances:
-                    performance.pk = None
-                    performance.id = None
-                    performance.media_item = item
-                    performance.save()
-
-                keywords = MediaItemKeyword.objects.filter(item=source_item)
-                for keyword in keywords:
-                    keyword.pk = None
-                    keyword.id = None
-                    keyword.item = item
-                    keyword.save()
-
-                item.set_revision(request.user)
-
-                return redirect('telemeta-item-detail', code)
-        else:
-            item = MediaItem.objects.get(public_id=public_id)
-            items = MediaItem.objects.filter(collection=item.collection)
-            item.code = auto_code(item.collection)
-            item.approx_duration = ''
-            item_form = MediaItemForm(instance=item, prefix='item')
-            format, created = Format.objects.get_or_create(item=item)
-            format_form = FormatForm(instance=format, prefix='format')
-            item_form.code = item.code
-            item_form.file = None
-
-        access = get_item_access(item, request.user)
-        forms = [item_form, format_form]
-        hidden_fields = ['item-copied_from_item', 'format-item']
-
-        return render(request, template, {'item': item, "forms": forms, 'hidden_fields': hidden_fields,
-                                            'access': access, })
 
     @method_decorator(permission_required('telemeta.delete_mediaitem'))
     def item_delete(self, request, public_id):
@@ -360,96 +176,6 @@ class ItemView(ItemBaseMixin):
         collection = item.collection
         item.delete()
         return redirect('telemeta-collection-detail', collection.code)
-
-    def item_analyze(self, item):
-        analyses = item.analysis.all()
-        mime_type = ''
-
-        if analyses:
-            for analysis in analyses:
-                if not item.approx_duration and analysis.analyzer_id == 'duration':
-                    value = analysis.value
-                    time = value.split(':')
-                    time[2] = time[2].split('.')[0]
-                    time = ':'.join(time)
-                    item.approx_duration = time
-                    item.save()
-                elif not analysis.value and analysis.analyzer_id == 'mime_type' :
-                    analysis.value = item.mime_type
-                    analysis.save()
-        else:
-            analyzers = []
-            analyzers_sub = []
-            graphers_sub = []
-
-            source = item.get_source()
-            if source:
-                decoder = timeside.core.get_processor('file_decoder')(source)
-                pipe = decoder
-
-                for analyzer in self.value_analyzers:
-                    subpipe = analyzer()
-                    analyzers_sub.append(subpipe)
-                    pipe = pipe | subpipe
-
-                default_grapher = self.get_grapher(self.default_grapher_id)
-                for size in self.default_grapher_sizes:
-                    width = size.split('x')[0]
-                    height = size.split('x')[1]
-                    image_file = '.'.join([item.public_id, self.default_grapher_id, size.replace('x', '_'), 'png'])
-                    path = self.cache_data.dir + os.sep + image_file
-                    graph = default_grapher(width = int(width), height = int(height))
-                    graphers_sub.append({'graph' : graph, 'path': path})
-                    pipe = pipe | graph
-
-                pipe.run()
-
-                for grapher in graphers_sub:
-                    grapher['graph'].watermark('timeside', opacity=.6, margin=(5,5))
-                    f = open(grapher['path'], 'w')
-                    grapher['graph'].render(grapher['path'])
-                    f.close()
-
-                mime_type = mimetypes.guess_type(source)[0]
-                analysis = MediaItemAnalysis(item=item, name='MIME type',
-                                             analyzer_id='mime_type', unit='', value=item.mime_type)
-                analysis.save()
-                analysis = MediaItemAnalysis(item=item, name='Channels',
-                                             analyzer_id='channels',
-                                             unit='', value=decoder.input_channels)
-                analysis.save()
-                analysis = MediaItemAnalysis(item=item, name='Samplerate',
-                                             analyzer_id='samplerate', unit='Hz',
-                                             value=unicode(decoder.input_samplerate))
-                analysis.save()
-                analysis = MediaItemAnalysis(item=item, name='Resolution',
-                                             analyzer_id='resolution', unit='bits',
-                                             value=unicode(decoder.input_width))
-                analysis.save()
-                analysis = MediaItemAnalysis(item=item, name='Duration',
-                                             analyzer_id='duration', unit='s',
-                                             value=unicode(datetime.timedelta(0,decoder.input_duration)))
-                analysis.save()
-                analysis = MediaItemAnalysis(item=item, name='Size',
-                                             analyzer_id='size', unit='', value=item.size())
-                analysis.save()
-
-                for analyzer in analyzers_sub:
-                    for key in analyzer.results.keys():
-                        result = analyzer.results[key]
-                        value = result.data_object.value
-                        if value.shape[0] == 1:
-                            value = value[0]
-                        analysis = MediaItemAnalysis(item=item, name=result.name,
-                                analyzer_id=result.id, unit=result.unit, value = unicode(value))
-                        analysis.save()
-
-                analyses = MediaItemAnalysis.objects.filter(item=item)
-
-#                TODO: parse tags on first load
-#                tags = decoder.tags
-
-        return analyses
 
     def item_analyze_xml(self, request, public_id):
         item = MediaItem.objects.get(public_id=public_id)
@@ -1010,13 +736,12 @@ class ItemDetailView(ItemViewMixin, DetailView):
         context['mime_type'] = self.mime_type
         context['last_revision'] = last_revision
         context['format'] = format
-
+        context['private_extra_types'] = private_extra_types.values()
         return context
 
 
-
 class DublinCoreToFormatMetadata(object):
-    """ a mapping class to get item DublinCore metadata dictionaries
+    """a mapping class to get item DublinCore metadata dictionaries
     in various audio metadata format (MP3, OGG, etc...)"""
 
     #FIXME: should be given by timeside

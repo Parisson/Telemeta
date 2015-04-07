@@ -136,8 +136,8 @@ class MediaCollection(MediaResource):
     def __unicode__(self):
         return self.code
 
-    def save(self, force_insert=False, force_update=False, user=None, code=None):
-        super(MediaCollection, self).save(force_insert, force_update)
+    def save(self, force_insert=False, force_update=False, *args, **kwargs):
+        super(MediaCollection, self).save(force_insert, force_update, *args, **kwargs)
 
     @property
     def public_id(self):

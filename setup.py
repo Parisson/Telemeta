@@ -24,6 +24,7 @@ class PyTest(TestCommand):
         errno = pytest.main(self.pytest_args)
         sys.exit(errno)
 
+
 CLASSIFIERS = ['Environment :: Web Environment',
 'Framework :: Django',
 'Intended Audience :: Science/Research',
@@ -61,6 +62,8 @@ setup(
         'django-json-rpc',
         'django-suit',
         'django-google-tools',
+        'django-ipauth',
+        'django-celery',
         'timeside>=0.7',
         'south',
         'sorl-thumbnail',
@@ -68,13 +71,11 @@ setup(
         'psutil',
         'pyyaml',
         'python-ebml',
-        'mysql',
         'zipstream',
     ],
   tests_require=['pytest-django', 'pytest-cov', 'factory-boy'],
   # Provide a test command through django-setuptest
   cmdclass={'test': PyTest},
-  dependency_links = ['https://github.com/yomguy/django-json-rpc/tarball/0.6.2#egg=django-json-rpc-0.6.2'],
   platforms=['OS Independent'],
   license='CeCILL v2',
   classifiers = CLASSIFIERS,

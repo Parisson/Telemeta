@@ -131,10 +131,13 @@ class MediaRelated(MediaResource):
 
     def __unicode__(self):
         if self.title and not re.match('^ *N *$', self.title):
-            title = self.title
+            return self.title
+        elif self.file:
+            return unicode(self.file.path.split(os.sep)[-1])
+        elif self.url:
+            return unicode(self.url.split('/')[-1])
         else:
-            title = unicode(self.item)
-        return title
+            return '_'
 
     class Meta:
         abstract = True
