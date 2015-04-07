@@ -1,7 +1,7 @@
 The DIADEMS project has started!
 #################################
 
-:category: News, Release
+:category: Projects
 :date: 2014-01-20 22:48
 
 Telemeta is in the center of a new `DIADEMS project <http://www.irit.fr/recherches/SAMOVA/DIADEMS/fr/welcome/&cultureKey=en>`_ sponsored by the french research agency ANR. It has started on january 2013 and will be effective during 3 years.

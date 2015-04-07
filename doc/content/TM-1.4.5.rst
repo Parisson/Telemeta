@@ -1,7 +1,7 @@
 Telemeta 1.4.5 has been released!
 #################################
 
-:category: News, Release
+:category: Release
 :date: 2014-01-20 22:48
 
 After a long debugging and producing period, Telemeta reaches a nice stable version.

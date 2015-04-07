@@ -1,7 +1,7 @@
 Telemeta 1.4 is out!
 #####################
 
-:category: News, Release
+:category: Release
 :date: 2012-02-14 16:29
 
 Changes:

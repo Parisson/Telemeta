@@ -1,7 +1,7 @@
 Telemeta 1.5 is out!
 ####################
 
-:category: News
+:category: Release
 :date: 2015-01-26 10:42
 
 After months of hard work we are pleased to release a big update to Telemeta communities. It represents a huge milestone that makes Telemeta now compatible with more modern web technologies.
