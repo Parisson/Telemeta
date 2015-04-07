@@ -289,7 +289,7 @@ from celery_app import app
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-        'URL': 'http://broker:9200/',
+        'URL': 'http://search:9200/',
         'INDEX_NAME': 'haystack',
     },
 }
