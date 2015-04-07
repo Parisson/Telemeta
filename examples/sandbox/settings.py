@@ -159,12 +159,9 @@ INSTALLED_APPS = (
     'bootstrap_pagination',
     'googletools',
     'registration',
-<<<<<<< HEAD:example/sandbox/settings.py
-    'haystack',
-=======
     'rest_framework',
     'djcelery',
->>>>>>> dev:examples/sandbox/settings.py
+    'haystack',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
