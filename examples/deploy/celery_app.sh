@@ -6,6 +6,10 @@ sandbox='/home/sandbox'
 manage=$sandbox'/manage.py'
 wsgi=$sandbox'/wsgi.py'
 
+# stating apps
+pip install django-haystack elasticsearch
+
+# waiting for other services
 sh $app_dir/examples/deploy/wait.sh
 
 # Starting celery worker with the --autoreload option will enable the worker to watch for file system changes

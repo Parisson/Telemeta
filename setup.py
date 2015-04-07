@@ -64,6 +64,7 @@ setup(
         'django-google-tools',
         'django-ipauth',
         'django-celery',
+        'django-haystack',
         'timeside>=0.7',
         'south',
         'sorl-thumbnail',
@@ -72,7 +73,7 @@ setup(
         'pyyaml',
         'python-ebml',
         'zipstream',
-        'django-haystack'
+        'elasticsearch',
     ],
   tests_require=['pytest-django', 'pytest-cov', 'factory-boy'],
   # Provide a test command through django-setuptest
