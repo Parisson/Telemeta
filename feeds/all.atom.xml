@@ -433,6 +433,35 @@ sudo pip install --upgrade telemeta
 sudo pip install --upgrade telemeta
 &lt;/pre&gt;
 &lt;p&gt;or &lt;a class="reference external" href="​​http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.2.tar.gz"&gt;download&lt;/a&gt; (MD5: 43cd98b492d39772a73164986ac0eefd)&lt;/p&gt;
+</summary></entry><entry><title>Partners</title><link href="http://parisson.github.io/Telemeta/partners.html" rel="alternate"></link><updated>2011-10-26T06:53:00+02:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2011-10-26:Telemeta/partners.html</id><summary type="html">&lt;p&gt;Telemeta is sponsored by:&lt;/p&gt;
+&lt;p&gt;​* &lt;a class="reference external" href="http://parisson.com"&gt;Parisson&lt;/a&gt; : R&amp;amp;D for custom media solutions
+​* CNRS : Centre National de la Recherche Scientifique (the french Natianal Research and Scientific Center)
+​* MCC : Ministère de la Culture et de la Communication (the french Ministry of the Culture and Communication)
+​* CREM : Centre de Recherche en Ethnomusicology (the french Ethnomusicology Research Center)
+​* HumaNum : TGIR des humanités numériques&lt;/p&gt;
+&lt;p&gt;Telemeta is part of the ​DIADEMS project granted by the ANR (French Research Agency). The academic laboratories involved are:&lt;/p&gt;
+&lt;p&gt;​* IRIT
+​* LIMSI
+​* LAM (IJLRDA)
+​* CREM (LESC)
+​* LABRI
+​* MNHN&lt;/p&gt;
+&lt;p&gt;Telemeta is supported by :&lt;/p&gt;
+&lt;p&gt;​* LAM : Equipe Lutherie, Acoustique et Musique de l'Université Pierre et Marie Curie de Paris (Instrument design, Acoustic and Music team of the Pierre &amp;amp; Marie Curie University, Paris)
+​* MMSH : Maison Méditerranéenne des Sciences de l'Homme&lt;/p&gt;
+&lt;p&gt;The Telemeta project is managed by :&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Guillaume Pellerin &amp;lt;yomguy (at) parisson.com&amp;gt;&lt;/li&gt;
+&lt;li&gt;Joséphine Simonnot &amp;lt;josephine.simonnot (at) mae.u-paris10.fr&amp;gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The Telemeta application is or has been developed by :&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Guillaume Pellerin (​Parisson)&lt;/li&gt;
+&lt;li&gt;Thomas Fillon (​UPMC, ​Parisson)&lt;/li&gt;
+&lt;li&gt;Paul Brossier (​Parisson)&lt;/li&gt;
+&lt;li&gt;Riccardo Zaccarelli (​Parisson)&lt;/li&gt;
+&lt;li&gt;Olivier Guilyardi (​Samalyse)&lt;/li&gt;
+&lt;/ul&gt;
 </summary></entry><entry><title>Telemeta project now uses Git for development</title><link href="http://parisson.github.io/Telemeta/telemeta-project-now-uses-git-for-development.html" rel="alternate"></link><updated>2011-10-26T06:53:00+02:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2011-10-26:Telemeta/telemeta-project-now-uses-git-for-development.html</id><summary type="html">&lt;p&gt;Ten months ago, I started to look at other version control systems because I was fed up with the Subversion centralized model. It tested Git, Mercurial, Bazaar, etc.. Bazaar was the good choice because it allowed the dev teams to make branches easily in a decentralized environment, to push commits to the old subversion repository, to keep an easy syntax, etc...&lt;/p&gt;
 &lt;p&gt;Now there are few reasons to switch back to Git:&lt;/p&gt;
 &lt;p&gt;we want to checkout and test branches faster without managing dozens of repositories,

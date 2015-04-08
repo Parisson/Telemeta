@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Telemeta</title><link href="http://parisson.github.io/Telemeta/" rel="alternate"></link><link href="http://parisson.github.io/Telemeta/feeds/partners.atom.xml" rel="self"></link><id>http://parisson.github.io/Telemeta/</id><updated>2011-10-26T06:53:00+02:00</updated><entry><title>Partners</title><link href="http://parisson.github.io/Telemeta/partners.html" rel="alternate"></link><updated>2011-10-26T06:53:00+02:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2011-10-26:Telemeta/partners.html</id><summary type="html">&lt;p&gt;Telemeta is sponsored by:&lt;/p&gt;
+&lt;p&gt;​* &lt;a class="reference external" href="http://parisson.com"&gt;Parisson&lt;/a&gt; : R&amp;amp;D for custom media solutions
+​* CNRS : Centre National de la Recherche Scientifique (the french Natianal Research and Scientific Center)
+​* MCC : Ministère de la Culture et de la Communication (the french Ministry of the Culture and Communication)
+​* CREM : Centre de Recherche en Ethnomusicology (the french Ethnomusicology Research Center)
+​* HumaNum : TGIR des humanités numériques&lt;/p&gt;
+&lt;p&gt;Telemeta is part of the ​DIADEMS project granted by the ANR (French Research Agency). The academic laboratories involved are:&lt;/p&gt;
+&lt;p&gt;​* IRIT
+​* LIMSI
+​* LAM (IJLRDA)
+​* CREM (LESC)
+​* LABRI
+​* MNHN&lt;/p&gt;
+&lt;p&gt;Telemeta is supported by :&lt;/p&gt;
+&lt;p&gt;​* LAM : Equipe Lutherie, Acoustique et Musique de l'Université Pierre et Marie Curie de Paris (Instrument design, Acoustic and Music team of the Pierre &amp;amp; Marie Curie University, Paris)
+​* MMSH : Maison Méditerranéenne des Sciences de l'Homme&lt;/p&gt;
+&lt;p&gt;The Telemeta project is managed by :&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Guillaume Pellerin &amp;lt;yomguy (at) parisson.com&amp;gt;&lt;/li&gt;
+&lt;li&gt;Joséphine Simonnot &amp;lt;josephine.simonnot (at) mae.u-paris10.fr&amp;gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The Telemeta application is or has been developed by :&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Guillaume Pellerin (​Parisson)&lt;/li&gt;
+&lt;li&gt;Thomas Fillon (​UPMC, ​Parisson)&lt;/li&gt;
+&lt;li&gt;Paul Brossier (​Parisson)&lt;/li&gt;
+&lt;li&gt;Riccardo Zaccarelli (​Parisson)&lt;/li&gt;
+&lt;li&gt;Olivier Guilyardi (​Samalyse)&lt;/li&gt;
+&lt;/ul&gt;
+</summary></entry></feed>
