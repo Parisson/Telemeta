@@ -206,4 +206,20 @@ sudo pip install --upgrade telemeta
 &lt;p&gt;The Telemeta project of course continues. It will be optimized and improved to reach a generic version soon. If you want special developments or support / sponsor this project, please contact us through the mailing list or this email address : support&amp;#64;…&lt;/p&gt;
 &lt;p&gt;Enjoy the Bell ;)&lt;/p&gt;
 &lt;/div&gt;
+</summary></entry><entry><title>Telemeta 0.9.4 has been released!</title><link href="http://parisson.github.io/Telemeta/telemeta-094-has-been-released.html" rel="alternate"></link><updated>2011-06-01T13:15:00+02:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2011-06-01:Telemeta/telemeta-094-has-been-released.html</id><summary type="html">&lt;p&gt;It is one of the biggest release since 0.5.1 because it includes tons of bugfixes, a new theme and MANY new features which were targeted for 1.0.&lt;/p&gt;
+&lt;p&gt;Changes:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;New visual theme&lt;/li&gt;
+&lt;li&gt;Playing all kinds of audio files thanks to &lt;a class="reference external" href="https://github.com/Parisson/TimeSide"&gt;​TimeSide&lt;/a&gt; (even video files !)&lt;/li&gt;
+&lt;li&gt;Editing items, collections and all lists&lt;/li&gt;
+&lt;li&gt;Managing temporal markers to get time description of the archives&lt;/li&gt;
+&lt;li&gt;Userspace playlist management&lt;/li&gt;
+&lt;li&gt;Admin User management and profiling&lt;/li&gt;
+&lt;li&gt;Password retrieval and management&lt;/li&gt;
+&lt;li&gt;CSV export of user playlists&lt;/li&gt;
+&lt;li&gt;RSS feeds for last changes&lt;/li&gt;
+&lt;li&gt;Full french and english localization (interface, forms)&lt;/li&gt;
+&lt;li&gt;Optimization of audio analysis&lt;/li&gt;
+&lt;li&gt;MANY bugfixes&lt;/li&gt;
+&lt;/ul&gt;
 </summary></entry></feed>
