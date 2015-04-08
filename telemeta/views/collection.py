@@ -188,10 +188,11 @@ class CollectionPackageView(View):
         from telemeta.views import MarkerView
         from telemeta.backup import CollectionSerializer
         import zipstream
-        from zipfile import ZIP_DEFLATED
+        from zipfile import ZIP_DEFLATED, ZIP_STORED
         import json
 
-        zip_file = zipstream.ZipFile(mode='w', compression=ZIP_DEFLATED)
+        zip_file = zipstream.ZipFile(mode='w', compression=ZIP_STORED,
+                                     allowZip64=True)
         cache_data = TelemetaCache(settings.TELEMETA_DATA_CACHE_DIR)
 
         collection = self.get_object()
