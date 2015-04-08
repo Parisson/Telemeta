@@ -2,7 +2,7 @@
 <html lang="en"
 >
 <head>
-    <title>Import ISO 639-3 languages - Telemeta</title>
+    <title>Import ISO 639-3 languages - Telemeta project</title>
     <!-- Using the latest rendering mode for IE -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="utf-8">
@@ -16,7 +16,7 @@
         <meta name="keywords" content="language,iso" />
         <meta name="description" content="From Telemeta 1.4, an ISO 639-3 language model has been implemented. The ISO language table content can be initialized with the official code set. Here is a import example where telemeta_crem5 is the SQL database: wget http://www.sil.org/iso639-3/iso-639-3_20110525.tab mysql -u root -p load data infile &#39;iso-639-3_20110525.tab&#39; into table telemeta_crem5.languages CHARACTER SET UTF8 ignore 1 lines (identifier, part2B, part2T, part1, scope, type, name, comment); If you upgraded Telemeta from a version previous or equal to 1.3, please update the media_items table as follow: mysql -u root -p use telemeta_crem5 ALTER TABLE media_items ADD COLUMN &#39;language_iso_id&#39; integer; ALTER TABLE &#39;media_items&#39; ADD CONSTRAINT &#39;language_iso_id_refs_id_80b221&#39; FOREIGN KEY (&#39;language_iso_id&#39;) REFERENCES &#39;languages&#39; (&#39;id&#39;);" />
 
-        <meta property="og:site_name" content="Telemeta" />
+        <meta property="og:site_name" content="Telemeta project" />
         <meta property="og:type" content="article"/>
         <meta property="og:title" content="Import ISO 639-3 languages"/>
         <meta property="og:url" content="./import-iso-639-3-languages.html"/>
@@ -37,7 +37,7 @@
         <link href="./css/custom.css" rel="stylesheet">
 
         <link href="./feeds/all.atom.xml" type="application/atom+xml" rel="alternate"
-              title="Telemeta ATOM Feed"/>
+              title="Telemeta project ATOM Feed"/>
 
 </head>
 <body>
@@ -52,7 +52,7 @@
                 <span class="icon-bar"></span>
             </button>
             <a href="./" class="navbar-brand">
-Telemeta            </a>
+Telemeta project            </a>
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
@@ -161,33 +161,8 @@ ALTER TABLE 'media_items' ADD CONSTRAINT 'language_iso_id_refs_id_80b221' FOREIG
             <li class="list-group-item"><a href="./"><h4><i class="fa fa-tags fa-lg"></i><span class="icon-label">Tags</span></h4></a>
                 <ul class="list-group " id="tags">
                     <li class="list-group-item tag-4">
-                        <a href="./tag/ecology.html">
-                            ecology
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-4">
-                        <a href="./tag/iso.html">
-                            iso
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-4">
-                        <a href="./tag/acoustics.html">
-                            acoustics
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-4">
-                        <a href="./tag/language.html">
-                            language
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-4">
-                        <a href="./tag/music.html">
-                            music
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-4">
-                        <a href="./tag/analysis.html">
-                            analysis
+                        <a href="./tag/folk.html">
+                            folk
                         </a>
                     </li>
                     <li class="list-group-item tag-4">
@@ -196,8 +171,33 @@ ALTER TABLE 'media_items' ADD CONSTRAINT 'language_iso_id_refs_id_80b221' FOREIG
                         </a>
                     </li>
                     <li class="list-group-item tag-4">
-                        <a href="./tag/folk.html">
-                            folk
+                        <a href="./tag/music.html">
+                            music
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-4">
+                        <a href="./tag/ecology.html">
+                            ecology
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-4">
+                        <a href="./tag/language.html">
+                            language
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-4">
+                        <a href="./tag/acoustics.html">
+                            acoustics
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-4">
+                        <a href="./tag/iso.html">
+                            iso
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-4">
+                        <a href="./tag/analysis.html">
+                            analysis
                         </a>
                     </li>
                 </ul>
