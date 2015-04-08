@@ -1,25 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Telemeta project</title><link href="http://parisson.github.io/Telemeta/" rel="alternate"></link><link href="http://parisson.github.io/Telemeta/feeds/parisson-sarl.atom.xml" rel="self"></link><id>http://parisson.github.io/Telemeta/</id><updated>2015-04-07T12:40:24+02:00</updated><entry><title>Import ISO 639-3 languages</title><link href="http://parisson.github.io/Telemeta/import-iso-639-3-languages.html" rel="alternate"></link><updated>2015-04-07T12:40:24+02:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2015-04-07:Telemeta/import-iso-639-3-languages.html</id><summary type="html">&lt;p&gt;From Telemeta 1.4, an ISO 639-3 language model has been implemented.&lt;/p&gt;
-&lt;p&gt;The ISO language table content can be initialized with the official code set.
-Here is a import example where telemeta_crem5 is the SQL database:&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-wget http://www.sil.org/iso639-3/iso-639-3_20110525.tab
-mysql -u root -p
-load data infile 'iso-639-3_20110525.tab' into table telemeta_crem5.languages CHARACTER SET UTF8 ignore 1 lines (identifier, part2B, part2T, part1, scope, type, name, comment);
-&lt;/pre&gt;
-&lt;p&gt;If you upgraded Telemeta from a version previous or equal to 1.3, please update the media_items table as follow:&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-mysql -u root -p
-use telemeta_crem5
-ALTER TABLE media_items ADD COLUMN 'language_iso_id' integer;
-ALTER TABLE 'media_items' ADD CONSTRAINT 'language_iso_id_refs_id_80b221' FOREIGN KEY ('language_iso_id') REFERENCES 'languages' ('id');
-&lt;/pre&gt;
-</summary><category term="language"></category><category term="iso"></category></entry><entry><title>IP based authorization</title><link href="http://parisson.github.io/Telemeta/ip-based-authorization.html" rel="alternate"></link><updated>2015-04-07T12:40:24+02:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2015-04-07:Telemeta/ip-based-authorization.html</id><summary type="html">&lt;p&gt;It is possible to login automatically an IP range of machines to Telemeta thanks to the django-ipauth module:&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-sudo pip install django-ipauth
-&lt;/pre&gt;
-&lt;p&gt;See &lt;a class="reference external" href="http://pypi.python.org/pypi/django-ipauth/"&gt;http://pypi.python.org/pypi/django-ipauth/&lt;/a&gt; for setup.&lt;/p&gt;
-</summary><category term="authentification"></category></entry><entry><title>Telemeta: open web audio platform with semantics</title><link href="http://parisson.github.io/Telemeta/telemeta-open-web-audio-platform-with-semantics.html" rel="alternate"></link><updated>2015-04-07T12:40:24+02:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2015-04-07:Telemeta/telemeta-open-web-audio-platform-with-semantics.html</id><summary type="html">&lt;img alt="Telemeta logo" src="images/logo_telemeta_2.png" /&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Telemeta project</title><link href="http://parisson.github.io/Telemeta/" rel="alternate"></link><link href="http://parisson.github.io/Telemeta/feeds/parisson-sarl.atom.xml" rel="self"></link><id>http://parisson.github.io/Telemeta/</id><updated>2015-04-08T15:59:43+02:00</updated><entry><title>Telemeta: open web audio platform with semantics</title><link href="http://parisson.github.io/Telemeta/telemeta-open-web-audio-platform-with-semantics.html" rel="alternate"></link><updated>2015-04-08T15:59:43+02:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2015-04-08:Telemeta/telemeta-open-web-audio-platform-with-semantics.html</id><summary type="html">&lt;img alt="Telemeta logo" src="images/logo_telemeta_2.png" /&gt;
 &lt;div class="section" id="overview"&gt;
 &lt;h2&gt;Overview&lt;/h2&gt;
 &lt;p&gt;Telemeta is a free and open source web audio archiving software which introduces useful and secure methods to backup, index, transcode, analyse and publish any digitalized audio file with extensive metadata. It is dedicated to collaborative media archiving projects, research laboratories and digital humanities - and especially in ethnomusicological use cases - who wants to easily organize, backup and publish documented sound collections of audio files, CDs, digitalized vinyls and magnetic tapes over a strong database, in accordance with open web standards.&lt;/p&gt;
@@ -221,7 +201,27 @@ If you find some bugs, PLEASE leave a ticket on this page:&lt;/p&gt;
 &lt;/ul&gt;
 &lt;/blockquote&gt;
 &lt;/div&gt;
-</summary></entry><entry><title>Telemeta 1.5 is out!</title><link href="http://parisson.github.io/Telemeta/telemeta-15-is-out.html" rel="alternate"></link><updated>2015-01-26T10:42:00+01:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2015-01-26:Telemeta/telemeta-15-is-out.html</id><summary type="html">&lt;p&gt;After months of hard work we are pleased to release a big update to Telemeta communities. It represents a huge milestone that makes Telemeta now compatible with more modern web technologies.&lt;/p&gt;
+</summary></entry><entry><title>Import ISO 639-3 languages</title><link href="http://parisson.github.io/Telemeta/import-iso-639-3-languages.html" rel="alternate"></link><updated>2015-04-07T12:40:24+02:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2015-04-07:Telemeta/import-iso-639-3-languages.html</id><summary type="html">&lt;p&gt;From Telemeta 1.4, an ISO 639-3 language model has been implemented.&lt;/p&gt;
+&lt;p&gt;The ISO language table content can be initialized with the official code set.
+Here is a import example where telemeta_crem5 is the SQL database:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+wget http://www.sil.org/iso639-3/iso-639-3_20110525.tab
+mysql -u root -p
+load data infile 'iso-639-3_20110525.tab' into table telemeta_crem5.languages CHARACTER SET UTF8 ignore 1 lines (identifier, part2B, part2T, part1, scope, type, name, comment);
+&lt;/pre&gt;
+&lt;p&gt;If you upgraded Telemeta from a version previous or equal to 1.3, please update the media_items table as follow:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+mysql -u root -p
+use telemeta_crem5
+ALTER TABLE media_items ADD COLUMN 'language_iso_id' integer;
+ALTER TABLE 'media_items' ADD CONSTRAINT 'language_iso_id_refs_id_80b221' FOREIGN KEY ('language_iso_id') REFERENCES 'languages' ('id');
+&lt;/pre&gt;
+</summary><category term="language"></category><category term="iso"></category></entry><entry><title>IP based authorization</title><link href="http://parisson.github.io/Telemeta/ip-based-authorization.html" rel="alternate"></link><updated>2015-04-07T12:40:24+02:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2015-04-07:Telemeta/ip-based-authorization.html</id><summary type="html">&lt;p&gt;It is possible to login automatically an IP range of machines to Telemeta thanks to the django-ipauth module:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+sudo pip install django-ipauth
+&lt;/pre&gt;
+&lt;p&gt;See &lt;a class="reference external" href="http://pypi.python.org/pypi/django-ipauth/"&gt;http://pypi.python.org/pypi/django-ipauth/&lt;/a&gt; for setup.&lt;/p&gt;
+</summary><category term="authentification"></category></entry><entry><title>Telemeta 1.5 is out!</title><link href="http://parisson.github.io/Telemeta/telemeta-15-is-out.html" rel="alternate"></link><updated>2015-01-26T10:42:00+01:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2015-01-26:Telemeta/telemeta-15-is-out.html</id><summary type="html">&lt;p&gt;After months of hard work we are pleased to release a big update to Telemeta communities. It represents a huge milestone that makes Telemeta now compatible with more modern web technologies.&lt;/p&gt;
 &lt;p&gt;Changelog:&lt;/p&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;Django 1.6.x compatibility&lt;/li&gt;
