@@ -190,28 +190,13 @@ Telemeta project            </a>
             <li class="list-group-item"><a href="./"><h4><i class="fa fa-tags fa-lg"></i><span class="icon-label">Tags</span></h4></a>
                 <ul class="list-group " id="tags">
                     <li class="list-group-item tag-4">
+                        <a href="./tag/analysis.html">
+                            analysis
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-4">
                         <a href="./tag/iso.html">
                             iso
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-4">
-                        <a href="./tag/language.html">
-                            language
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-4">
-                        <a href="./tag/ecology.html">
-                            ecology
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-4">
-                        <a href="./tag/music.html">
-                            music
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-4">
-                        <a href="./tag/folk.html">
-                            folk
                         </a>
                     </li>
                     <li class="list-group-item tag-4">
@@ -225,12 +210,33 @@ Telemeta project            </a>
                         </a>
                     </li>
                     <li class="list-group-item tag-4">
-                        <a href="./tag/analysis.html">
-                            analysis
+                        <a href="./tag/language.html">
+                            language
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-4">
+                        <a href="./tag/folk.html">
+                            folk
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-4">
+                        <a href="./tag/ecology.html">
+                            ecology
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-4">
+                        <a href="./tag/music.html">
+                            music
                         </a>
                     </li>
                 </ul>
             </li>
+
+    <li class="list-group-item"><h4><i class="fa fa-github fa-lg"></i><span class="icon-label">GitHub Repos</span></h4>
+        <div id="gh_repos">
+            <p class="list-group-item">Status updating...</p>
+        </div>
+    </li>
 
     <li class="list-group-item"><h4><i class="fa fa-twitter fa-lg"></i><span class="icon-label">Latest Tweets</span></h4></li>
     <div id="twitter_timeline">
@@ -293,6 +299,27 @@ Telemeta project            </a>
 <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
 <script src="./theme/js/respond.min.js"></script>
 
+    <!-- GitHub JS -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if (!window.jXHR) {
+                var jxhr = document.createElement('script');
+                jxhr.type = 'text/javascript';
+                jxhr.src = './theme/js/jXHR.js';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(jxhr, s);
+            }
+
+            github.showRepos({
+                user: 'Parisson',
+                count: 5,
+                skip_forks: false,
+                target: '#gh_repos'
+            });
+        });
+    </script>
+    <script src="./theme/js/github.js" type="text/javascript"></script>
+    <!-- End GitHub JS Code -->
     <!-- Disqus -->
     <script type="text/javascript">
         /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
