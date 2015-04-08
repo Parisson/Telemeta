@@ -17,8 +17,10 @@
 &lt;li&gt;MNHN&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Telemeta is supported by:&lt;/p&gt;
-&lt;p&gt;​* LAM : Equipe Lutherie, Acoustique et Musique de l'Université Pierre et Marie Curie de Paris (Instrument design, Acoustic and Music team of the Pierre &amp;amp; Marie Curie University, Paris)
-* MMSH : Maison Méditerranéenne des Sciences de l'Homme&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;LAM : Equipe Lutherie, Acoustique et Musique de l'Université Pierre et Marie Curie de Paris (Instrument design, Acoustic and Music team of the Pierre &amp;amp; Marie Curie University, Paris)&lt;/li&gt;
+&lt;li&gt;MMSH : Maison Méditerranéenne des Sciences de l'Homme&lt;/li&gt;
+&lt;/ul&gt;
 &lt;p&gt;The Telemeta project is managed by:&lt;/p&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;Guillaume Pellerin &amp;lt;yomguy (at) parisson.com&amp;gt;&lt;/li&gt;
