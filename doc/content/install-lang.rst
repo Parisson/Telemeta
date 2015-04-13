@@ -3,6 +3,7 @@ Import ISO 639-3 languages
 
 :category: Tips
 :tags: language, iso
+:date: 2014-06-23 11:42
 
 From Telemeta 1.4, an ISO 639-3 language model has been implemented.
 

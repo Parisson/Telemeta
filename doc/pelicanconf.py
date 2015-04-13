@@ -35,10 +35,10 @@ LINKS =  (('Python', 'http://python.org/'),
           )
 
 # Social widget
-SOCIAL = (('Twitter', 'https://twitter.com/telemeta/'),
+SOCIAL = (('GitHub', 'https://github.com/Parisson/Telemeta'),
+          ('Twitter', 'https://twitter.com/telemeta/'),
           ('Google+', 'https://plus.google.com/+Parisson'),
           ('LinkedIn', 'http://www.linkedin.com/in/Parisson'),
-          ('GitHub', 'https://github.com/Parisson/'),
           )
 
 # Uncomment following line if you want document-relative URLs when developing
@@ -49,13 +49,16 @@ PLUGINS = ['pin_to_top']
 
 STATIC_PATHS = ['images', 'css']
 CUSTOM_CSS = 'css/custom.css'
-# SITELOGO = '/images/logo_telemeta_2.png'
-EXTRA_PATH_METADATA = {
-    #'robots.txt': {'path': 'robots.txt'},
-    'images/favicon.ico': {'path': 'favicon.ico'}
-}
 
-DISQUS_SITENAME='telemetaorg'
+# SITELOGO = '/images/logo_telemeta_2.png'
+
+# EXTRA_PATH_METADATA = {
+     # 'robots.txt': {'path': 'robots.txt'},
+# }
+
+FAVICON = 'images/favicon.ico'
+
+DISQUS_SITENAME = 'telemetaorg'
 
 TWITTER_CARDS = True
 TWITTER_USERNAME = 'telemeta'
