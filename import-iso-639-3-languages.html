@@ -21,7 +21,7 @@
         <meta property="og:title" content="Import ISO 639-3 languages"/>
         <meta property="og:url" content="./import-iso-639-3-languages.html"/>
         <meta property="og:description" content="From Telemeta 1.4, an ISO 639-3 language model has been implemented. The ISO language table content can be initialized with the official code set. Here is a import example where telemeta_crem5 is the SQL database: wget http://www.sil.org/iso639-3/iso-639-3_20110525.tab mysql -u root -p load data infile &#39;iso-639-3_20110525.tab&#39; into table telemeta_crem5.languages CHARACTER SET UTF8 ignore 1 lines (identifier, part2B, part2T, part1, scope, type, name, comment); If you upgraded Telemeta from a version previous or equal to 1.3, please update the media_items table as follow: mysql -u root -p use telemeta_crem5 ALTER TABLE media_items ADD COLUMN &#39;language_iso_id&#39; integer; ALTER TABLE &#39;media_items&#39; ADD CONSTRAINT &#39;language_iso_id_refs_id_80b221&#39; FOREIGN KEY (&#39;language_iso_id&#39;) REFERENCES &#39;languages&#39; (&#39;id&#39;);"/>
-        <meta property="article:published_time" content="2015-04-07" />
+        <meta property="article:published_time" content="2014-06-23" />
             <meta property="article:section" content="Tips" />
             <meta property="article:tag" content="language" />
             <meta property="article:tag" content="iso" />
@@ -112,7 +112,7 @@ Telemeta project            </a>
 <footer class="post-info">
     <span class="label label-default">Date</span>
     <span class="published">
-        <i class="fa fa-calendar"></i><time datetime="2015-04-07T12:40:24.994350+02:00"> mar. 07 avril 2015</time>
+        <i class="fa fa-calendar"></i><time datetime="2014-06-23T11:42:00+02:00"> lun. 23 juin 2014</time>
     </span>
 
 
@@ -195,13 +195,8 @@ ALTER TABLE 'media_items' ADD CONSTRAINT 'language_iso_id_refs_id_80b221' FOREIG
             <li class="list-group-item"><a href="./"><h4><i class="fa fa-tags fa-lg"></i><span class="icon-label">Tags</span></h4></a>
                 <ul class="list-group " id="tags">
                     <li class="list-group-item tag-4">
-                        <a href="./tag/music.html">
-                            music
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-4">
-                        <a href="./tag/iso.html">
-                            iso
+                        <a href="./tag/authentification.html">
+                            authentification
                         </a>
                     </li>
                     <li class="list-group-item tag-4">
@@ -210,13 +205,23 @@ ALTER TABLE 'media_items' ADD CONSTRAINT 'language_iso_id_refs_id_80b221' FOREIG
                         </a>
                     </li>
                     <li class="list-group-item tag-4">
+                        <a href="./tag/language.html">
+                            language
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-4">
+                        <a href="./tag/iso.html">
+                            iso
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-4">
                         <a href="./tag/folk.html">
                             folk
                         </a>
                     </li>
                     <li class="list-group-item tag-4">
-                        <a href="./tag/ecology.html">
-                            ecology
+                        <a href="./tag/music.html">
+                            music
                         </a>
                     </li>
                     <li class="list-group-item tag-4">
@@ -225,13 +230,8 @@ ALTER TABLE 'media_items' ADD CONSTRAINT 'language_iso_id_refs_id_80b221' FOREIG
                         </a>
                     </li>
                     <li class="list-group-item tag-4">
-                        <a href="./tag/language.html">
-                            language
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-4">
-                        <a href="./tag/authentification.html">
-                            authentification
+                        <a href="./tag/ecology.html">
+                            ecology
                         </a>
                     </li>
                 </ul>
