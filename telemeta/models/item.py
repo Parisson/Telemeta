@@ -126,7 +126,7 @@ class MediaItem(MediaResource):
     # Manager
     objects               = MediaItemManager()
 
-    exclude = ['copied_from_item', 'mimetype', 'url',
+    exclude = ['copied_from_item', 'mimetype',
                     'organization', 'depositor', 'rights',
                     'recordist', 'digitalist', 'digitization_date',
                     'publishing_date', 'scientist', 'topic',
