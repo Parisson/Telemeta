@@ -58,7 +58,11 @@ class MediaResource(ModelCore):
         Revision.touch(self, user)
 
     def get_revision(self):
-        return Revision.objects.filter(element_type=self.element_type, element_id=self.id).order_by('-time')[0]
+        revisions = Revision.objects.filter(element_type=self.element_type, element_id=self.id).order_by('-time')
+        if revisions:
+            return revisions[0]
+        else:
+            return None
 
     class Meta:
         abstract = True
@@ -127,10 +131,13 @@ class MediaRelated(MediaResource):
 
     def __unicode__(self):
         if self.title and not re.match('^ *N *$', self.title):
-            title = self.title
+            return self.title
+        elif self.file:
+            return unicode(self.file.path.split(os.sep)[-1])
+        elif self.url:
+            return unicode(self.url.split('/')[-1])
         else:
-            title = unicode(self.item)
-        return title
+            return '_'
 
     class Meta:
         abstract = True

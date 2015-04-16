@@ -7,13 +7,13 @@
     {% for image in item.related.all %}
       {% if 'image' in image.mime_type %}
          <div class="item-image">
-          <img width="100%" src="{{ image.file }}"/>
+          <img width="100" src="{{ image.file }}"/>
          </div>
       {% endif %}
      {% endfor %}
 
   </td>
-  <td width="75%">
+  <td width="75">
   <span style="font-size:0.8em;">
   <b>{{ item.old_code }}</b> : {{ item.title }} (p. {{ item.track }})
   </span>

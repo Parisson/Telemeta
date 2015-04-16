@@ -1,0 +1,14 @@
+Telemeta at the 4th international workshop of Folk Music Analysis 2014
+#######################################################################
+
+:category: Research
+:date: 2014-06-13 17:36
+:tags: folk, music, analysis
+
+Thomas Fillon will be at the 4th international workshop of Folk Music Analysis in Istanbul, Turkey, from june the 12th to 13th 2014, Turkey for the Telemeta project.
+
+Title of the poster: "An open web audio platform for ethnomusicological sound archives management and automatic analysis"
+
+​http://www.cmpe.boun.edu.tr/fma2014/program.html
+
+`Slides <https://www.dropbox.com/s/15rgx5varc7l4jj/Telemeta_EcoAcoustics_2014_06.pdf>`_

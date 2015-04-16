@@ -217,7 +217,7 @@ urlpatterns = patterns('',
     url(r'^accounts/password_reset_complete/$', 'django.contrib.auth.views.password_reset_complete', {'template_name': 'telemeta/registration/password_reset_complete.html'}, name="password_reset_complete"),
 
     # JSON RPC
-    url(r'json/$', jsonrpc_site.dispatch, name='jsonrpc_mountpoint'),
+    url(r'jsonrpc/$', jsonrpc_site.dispatch, name='jsonrpc_mountpoint'),
 
     # Playlists
     url(r'^playlists/(?P<public_id>[a-zA-Z0-9]+)/(?P<resource_type>[a-zA-Z0-9]+)/csv/$', playlist_view.playlist_csv_export, name="telemeta-playlist-csv-export"),
@@ -230,6 +230,8 @@ urlpatterns = patterns('',
     url(r'^media/cache/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.TELEMETA_CACHE_DIR,}),
 
     url(r'^', include('jqchat.urls')),
+
+    url(r'^timeside/', include('timeside.server.urls')),
 
 )
 

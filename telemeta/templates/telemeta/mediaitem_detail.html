@@ -19,7 +19,7 @@
 
 {% if item.file or item.url %}
  {% if access == 'full' or perms.telemeta.can_play_all_items %}
-    <script src="{{ STATIC_URL }}timeside/js/libs/soundmanager2-nodebug-jsmin.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}timeside/lib/sm2/soundmanager2-nodebug-jsmin.js" type="text/javascript"></script>
     <script src="{{ STATIC_URL }}timeside/js/timeside.js" type="text/javascript"></script>
     <script src="{{ STATIC_URL }}telemeta/js/playerLoader.js" type="text/javascript"></script>
     <script src="{{ STATIC_URL }}telemeta/js/divmarker.js" type="text/javascript"></script>
@@ -152,7 +152,7 @@
        </div>
         <div class="wazing"></div>
     </div>
-    <div id="rightcol" {% if LANGUAGE_BIDI %}style="float : left; padding-bottom:0;"{% else %}style="float : right; padding-bottom:0;"{% endif %}>
+    <div id="rightcol" style="{% if LANGUAGE_BIDI %}float: left;{% else %}float: right;{% endif %}padding-bottom:0;">
         <div id="player_minimized" class="ts-skin-lab">
             <a href="#" class="toggle">Maximize</a>
             <a href="#" class="embed_player_frame">&lt;/&gt;</a>
@@ -163,12 +163,12 @@
 
     {% if "video" in mime_type %}
     <div>
-    <video id="my_video_1" class="video-js vjs-default-skin" width="362" height="240" controls preload="auto" data-setup="{}">
-        <!-- Hello Chrome and Firefox (and Opera?) -->
+    <video width="348" height="240" controls preload="none">
         <source src="{% url "telemeta-item-export" item.public_id mime_type|mime_to_ext %}" type="{{ mime_type }}" />
-        </video>
-        <!--<div id="videotime"></div>-->
+    </video>
+    <!--<div id="videotime"></div>-->
     </div>
+
     <script>
     (function(){
         var v = document.getElementsByTagName('video')[0]
@@ -178,6 +178,7 @@
             },false);
             })();
     </script>
+
     {% endif %}
 
         <!-- </div> -->
