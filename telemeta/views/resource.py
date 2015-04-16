@@ -395,7 +395,7 @@ class CorpusEpubView(View):
         for collection in corpus.children.all():
             items = {}
             for item in collection.items.all():
-                 id = item.old_code.split(' ')
+                 id = item.old_code.split('_')
                  if len(id) > 1:
                      id = id[1]
                  items[item] = int(id.split('.')[1])
@@ -405,12 +405,12 @@ class CorpusEpubView(View):
                 if item.file:
                     audio = open(item.file.path, 'r')
                     filename = str(item.file)
-                    epub_item = epub.EpubItem(file_name=cleanup_path(str(item.file)), content=audio.read())
+                    epub_item = epub.EpubItem(file_name=str(item.file), content=audio.read())
                     book.add_item(epub_item)
                 for related in item.related.all():
                     if 'image' in related.mime_type:
                         image = open(related.file.path, 'r')
-                        epub_item = epub.EpubItem(file_name=cleanup_path((str(related.file)), content=image.read())
+                        epub_item = epub.EpubItem(file_name=str(related.file), content=image.read())
                         book.add_item(epub_item)
             context = {'collection': collection, 'site': site, 'items': items}
             c = epub.EpubHtml(title=collection.title, file_name=collection.code + '.xhtml', lang='fr')

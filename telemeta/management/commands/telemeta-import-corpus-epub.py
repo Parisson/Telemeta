@@ -16,6 +16,15 @@ except ImportError:
 def beautify(string):
     return os.path.splitext(string)[0].replace('_',' ')
 
+def remove_dir_spaces(root_dir):
+    for resource in os.listdir(root_dir):
+        path = os.path.join(root_dir, resource)
+        if os.path.isdir(path):
+            new_path = path.replace(' ', '_')
+            if new_path != path:
+                os.rename(path, new_path)
+            remove_dir_spaces(new_path)
+
 def trim_list(list):
     new = []
     for item in list:
@@ -32,17 +41,26 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         root_dir = args[-1]
+        remove_dir_spaces(root_dir)
 
         for root, dirs, files in os.walk(root_dir):
             for media_file in files:
+                path = os.path.join(root, media_file)
+
+                if ' ' in media_file:
+                    new_media_file = media_file.replace(' ', '_')
+                    new_media_path = os.path.join(root, new_media_file)
+                    os.rename(path, new_media_path)
+                    media_file = new_media_file
+                    print media_file
+
                 media_name = os.path.splitext(media_file)[0]
                 media_ext = os.path.splitext(media_file)[1][1:]
 
                 if media_ext and media_ext in self.media_formats and media_name[0] != '.':
                     root_list = root.split(os.sep)
-
                     media_path = os.sep.join(root_list[-4:])  + os.sep + media_file
-                    print media_path
+
                     item_name = root_list[-1]
                     collection_name = root_list[-2]
                     corpus_name = root_list[-3]
@@ -74,7 +92,7 @@ class Command(BaseCommand):
 
                         if lines:
                              item.track = lines[2]
-                             item.title = lines[3]
+                             item.title = lines[3][:255]
                              item.save()
 
                         for related_file in os.listdir(root):
@@ -84,7 +102,7 @@ class Command(BaseCommand):
 
                             print related_path
                             if related_ext in self.image_formats:
-                                related, c = MediaItemRelated.objects.get_or_create(item=item, file=unicode(related_path))
+                                related, c = MediaItemRelated.objects.get_or_create(item=item, file=related_path)
                                 if c:
                                     if lines:
                                         related.title = lines[4]
