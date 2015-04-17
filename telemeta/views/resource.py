@@ -384,12 +384,11 @@ class CorpusEpubView(View):
         book.set_language('fr')
         book.add_author(corpus.descriptions)
 
-
         # add cover image
-        # for media in corpus.related.all():
-        #     if 'cover' in media.title or 'Cover' in media.title:
-        #         book.set_cover("cover.jpg", open(media.file.path, 'r').read())
-        #         break
+        for media in corpus.related.all():
+            if 'cover' in media.title or 'Cover' in media.title:
+                book.set_cover("cover.jpg", open(media.file.path, 'r').read())
+                break
 
         chapters = []
         for collection in corpus.children.all():
@@ -426,10 +425,9 @@ class CorpusEpubView(View):
 
         book.toc = (( chapters ))
 
-            # add navigation files
+        # add navigation files
         book.add_item(epub.EpubNcx())
         book.add_item(epub.EpubNav())
-
 
         # add css style
         style = open(css, 'r')

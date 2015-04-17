@@ -15,6 +15,7 @@ h3 {
      text-align: left;
      font-size: 0.8em;
      margin-top: 0px;
+     font-weight: normal;
 }
 
 
@@ -34,4 +35,16 @@ nav[epub|type~='toc'] > ol > li > ol  {
 
 nav[epub|type~='toc'] > ol > li > ol > li {
         margin-top: 0.3em;
+}
+
+.item {
+    page-break-after: always;
+}
+
+.item-image {
+    float: left;
+}
+
+.item-image {
+    float: left;
 }
