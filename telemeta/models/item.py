@@ -126,7 +126,7 @@ class MediaItem(MediaResource):
     # Manager
     objects               = MediaItemManager()
 
-    exclude = ['copied_from_item', 'mimetype', 'url',
+    exclude = ['copied_from_item', 'mimetype',
                     'organization', 'depositor', 'rights',
                     'recordist', 'digitalist', 'digitization_date',
                     'publishing_date', 'scientist', 'topic',
@@ -321,9 +321,6 @@ class MediaItemRelated(MediaRelated):
     "Item related media"
 
     item = ForeignKey('MediaItem', related_name="related", verbose_name=_('item'))
-
-    def save(self, force_insert=False, force_update=False, using=False):
-        super(MediaItemRelated, self).save(force_insert, force_update)
 
     def parse_markers(self, **kwargs):
         # Parse KDEnLive session

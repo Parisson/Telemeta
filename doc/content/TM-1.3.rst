@@ -1,7 +1,7 @@
 Telemeta 1.3 has been released !
 #################################
 
-:category: Release
+:category: Releases
 :date: 2011-12-06 23:06
 
 Changes:

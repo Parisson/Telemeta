@@ -90,3 +90,4 @@ class MediaCorpusRelated(MediaRelated):
         verbose_name = _('corpus related media')
         verbose_name_plural = _('corpus related media')
 
+

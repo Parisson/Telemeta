@@ -3,14 +3,25 @@ body {
 }
 
 .navbar-default {
-background-color: #6a0307;
-border-color: #5a0307;
+    background-color: #6a0307;
+    border-color: #5a0307;
 }
 
 blockquote {
     font-size: 14px;
 }
 
-a {
-    color: #6a0307;
+a, a:visited {
+    color: #BB0000;
+    text-decoration:none;
+}
+
+a:hover {
+    color: #BB0000;
+    background-color: transparent;
+    text-decoration: underline;
+}
+
+.tag-4 {
+    font-size: 12px;
 }

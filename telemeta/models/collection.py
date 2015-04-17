@@ -271,6 +271,7 @@ class MediaCollection(MediaResource):
         return json.dumps(self.to_dict_with_more())
 
 
+
 class MediaCollectionRelated(MediaRelated):
     "Collection related media"
 

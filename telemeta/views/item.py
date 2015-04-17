@@ -642,10 +642,15 @@ class ItemDetailView(ItemViewMixin, DetailView):
                     grapher['graph'].render(grapher['path'])
                     f.close()
 
-                mime_type = mimetypes.guess_type(source)[0]
-                analysis = MediaItemAnalysis(item=item, name='MIME type',
+                if os.path.exists(source):
+                    mime_type = mimetypes.guess_type(source)[0]
+                    analysis = MediaItemAnalysis(item=item, name='MIME type',
                                              analyzer_id='mime_type', unit='', value=mime_type)
-                analysis.save()
+                    analysis.save()
+                    analysis = MediaItemAnalysis(item=item, name='Size',
+                                             analyzer_id='size', unit='', value=item.size())
+                    analysis.save()
+
                 analysis = MediaItemAnalysis(item=item, name='Channels',
                                              analyzer_id='channels',
                                              unit='', value=decoder.input_channels)
@@ -661,9 +666,6 @@ class ItemDetailView(ItemViewMixin, DetailView):
                 analysis = MediaItemAnalysis(item=item, name='Duration',
                                              analyzer_id='duration', unit='s',
                                              value=unicode(datetime.timedelta(0,decoder.input_duration)))
-                analysis.save()
-                analysis = MediaItemAnalysis(item=item, name='Size',
-                                             analyzer_id='size', unit='', value=item.size())
                 analysis.save()
 
                 for analyzer in analyzers_sub:

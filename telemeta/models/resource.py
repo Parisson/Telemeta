@@ -84,8 +84,8 @@ class MediaBaseResource(MediaResource):
     def public_id(self):
         return self.code
 
-    def save(self, force_insert=False, force_update=False, user=None, code=None):
-        super(MediaBaseResource, self).save(force_insert, force_update)
+    def save(self, *args, **kwargs):
+        super(MediaBaseResource, self).save(*args, **kwargs)
 
     def get_fields(self):
         return self._meta.fields
@@ -116,8 +116,8 @@ class MediaRelated(MediaResource):
                     is_url_image = True
         return 'image' in self.mime_type or is_url_image
 
-    def save(self, force_insert=False, force_update=False, author=None):
-        super(MediaRelated, self).save(force_insert, force_update)
+    def save(self, *args, **kwargs):
+        super(MediaRelated, self).save(*args, **kwargs)
 
     def set_mime_type(self):
         if self.file:
