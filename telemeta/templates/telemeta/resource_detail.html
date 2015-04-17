@@ -57,7 +57,13 @@ jQuery(document).ready(function(){
       </button>
     </a>
     {% endif %}
-
+    {% if type == 'corpus' %}
+    <a id="_add_to_playlist" href="{% url "telemeta-corpus-epub" resource.public_id %}">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-book"></span> {% trans "Epub" %}
+      </button>
+    </a>
+    {% endif %}
 </div>
 {% endblock %}
 

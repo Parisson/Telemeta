@@ -76,6 +76,7 @@ from django.utils.translation import ugettext_lazy
 from django.forms.models import model_to_dict
 from django.views.generic.edit import DeletionMixin, BaseDeleteView
 from django.contrib.sites.models import Site
+from django.template.defaultfilters import slugify
 
 from telemeta.models import *
 import telemeta.models

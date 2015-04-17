@@ -371,3 +371,4 @@ class CollectionCopyView(CollectionAddView):
     def dispatch(self, *args, **kwargs):
         return super(CollectionCopyView, self).dispatch(*args, **kwargs)
 
+
