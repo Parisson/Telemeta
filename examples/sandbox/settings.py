@@ -162,6 +162,7 @@ INSTALLED_APPS = (
     'epub',
     'rest_framework',
     'djcelery',
+    'haystack',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -246,7 +247,6 @@ SUIT_CONFIG = {
     'ADMIN_NAME': 'Telemeta Admin'
 }
 
-
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
 # the site admins on every HTTP 500 error when DEBUG=False.
@@ -285,3 +285,12 @@ CELERY_TASK_SERIALIZER = "json"
 CELERY_ACCEPT_CONTENT = ['application/json']
 
 from celery_app import app
+
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': 'http://search:9200/',
+        'INDEX_NAME': 'haystack',
+    },
+}

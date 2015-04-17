@@ -7,6 +7,10 @@ sandbox='/home/sandbox'
 manage=$sandbox'/manage.py'
 wsgi=$sandbox'/wsgi.py'
 
+# stating apps
+pip install django-haystack elasticsearch
+
+# waiting for other services
 sh $app_dir/examples/deploy/wait.sh
 
 # django init
@@ -15,6 +19,7 @@ python $manage migrate --noinput
 python $manage collectstatic --noinput
 python $manage telemeta-create-admin-user
 python $manage telemeta-create-boilerplate
+python $manage update_index
 
 # static files auto update
 watchmedo shell-command --patterns="*.js;*.css" --recursive \
