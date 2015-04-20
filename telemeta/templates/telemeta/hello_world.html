@@ -1,0 +1,10 @@
+{% extends "telemeta/base.html" %}
+{% load telemeta_utils %}
+{% load i18n %}
+{% load bootstrap_pagination %}
+
+{% block content %}
+    <h1>Hello World</h1>
+    <p>Ceci est un test d'affichage</p>
+    <button type="button" id="btn" class="btn btn-default" onclick="location.href='{%url "telemeta-fullaccess-items"%}'"> <span class="glyphicon glyphicon-play" aria-hidden="true"></span> Accéder aux items en libre acces</a>
+{% endblock %}
