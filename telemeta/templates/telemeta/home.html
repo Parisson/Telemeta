@@ -57,7 +57,8 @@
 
 <div class="home-description">
 <img class="align-left" src="{{ STATIC_URL }}telemeta/images/vox.png" alt="vox" style="vertical-align:middle;" />
-{{ page_content|render_flatpage }}
+<button type="button" id="btn" class="btn btn-default" onclick="location.href='{%url "telemeta-fullaccess-items"%}'"> <span class="glyphicon glyphicon-play" aria-hidden="true"></span> Accéder aux items en libre acces</a>
+{#{{ page_content|render_flatpage }}#}
 </div>
 
 {% if sound_pub_items %}
@@ -66,10 +67,10 @@
 <h1><img src="{{ STATIC_URL }}telemeta/images/playlist_title.png" alt="playlists" style="vertical-align:middle" />
     {% trans "Musical selection" %}</h1>
 </div>
-{% for item in sound_pub_items %}
+{% for item in sound_pub_items %}
 <div style="float: left; margin: 3px; width: 48%" align="center"><a href="{% url "telemeta-item-detail" item.public_id %}">{{ item }}</a>{% if item.alt_title %} ({{ item.alt_title }}){% endif %}<br /><span style="font-size: 80%">{{ item.location.fullnames|to_string }}</span><br />
 <iframe width='376' height='220' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='/archives/items/{{ item.public_id }}/player/362x130/'></iframe></div>
-{% endfor %}
+{% endfor %}
 </div>
 {% endif %}
 

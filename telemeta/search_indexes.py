@@ -4,7 +4,8 @@ from telemeta.models import *
 
 class MediaItemIndex(indexes.SearchIndex, indexes.Indexable):
 
-    text = indexes.CharField(document=True)
+    text = indexes.NgramField(document=True, use_template=True)
+    #rec_date = indexes.DateTimeField(use_template=True, null=True)
 
     def get_model(self):
         return MediaItem

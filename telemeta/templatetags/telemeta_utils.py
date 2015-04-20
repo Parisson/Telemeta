@@ -112,6 +112,7 @@ def with_sound(vars):
             _vars['sound'] = True
     return _vars
 
+
 @register.filter
 def code_or_id(resource):
     if resource.code:

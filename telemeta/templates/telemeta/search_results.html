@@ -26,6 +26,10 @@
     <ul class="dropdown-menu" role="menu">
       <li><a href="{% url "telemeta-search-type" "items" %}?{{criteria|with_no_sound|build_query_string}}" class="">{% trans "All" %}</a></li>
       <li><a href="{% url "telemeta-search-type" "items" %}?{{criteria|with_sound|build_query_string}}">{% trans "Sounds" %}</a></li>
+      <li><a href="{% url "telemeta-search-published" "items" %}?{{criteria|with_no_sound|build_query_string}}">{% trans "Published" %}</a></li>
+      <li><a href="{% url "telemeta-search-unpublished" "items" %}?{{criteria|with_no_sound|build_query_string}}">{% trans "Unpublished" %}</a></li>
+      <li><a href="{% url "telemeta-search-full" "items" %}?{{criteria|with_no_sound|build_query_string}}">{% trans "Full" %}</a></li>
+      <li><a href="{% url "telemeta-search-none" "items" %}?{{criteria|with_no_sound|build_query_string}}">{% trans "None" %}</a></li>
     </ul>
     {% endifequal %}
     {% ifequal type 'collections' %}
@@ -35,6 +39,10 @@
     <ul class="dropdown-menu" role="menu">
       <li><a href="{% url "telemeta-search-type" "collections" %}?{{criteria|with_no_sound|build_query_string}}" class="">{% trans "All" %}</a></li>
       <li><a href="{% url "telemeta-search-type" "collections" %}?{{criteria|with_sound|build_query_string}}">{% trans "Sounds" %}</a></li>
+      <li><a href="{% url "telemeta-search-published" "collections" %}?{{criteria|with_no_sound|build_query_string}}">{% trans "Published" %}</a></li>
+      <li><a href="{% url "telemeta-search-unpublished" "collections" %}?{{criteria|with_no_sound|build_query_string}}">{% trans "Unpublished" %}</a></li>
+      <li><a href="{% url "telemeta-search-full" "collections" %}?{{criteria|with_no_sound|build_query_string}}">{% trans "Full" %}</a></li>
+      <li><a href="{% url "telemeta-search-none" "collections" %}?{{criteria|with_no_sound|build_query_string}}">{% trans "None" %}</a></li>
     </ul>
     {% endifequal %}
   </div>
@@ -85,22 +93,98 @@
 {% endif %}
 
 {% ifequal type 'items' %}
-<p><b>Items ({{items_num}}) | <a href="{% url "telemeta-search-type" "collections" %}?{{criteria|build_query_string}}">Collections ({{collections_num}})</a> | <a href="{% url "telemeta-search-type" "corpus" %}?{{criteria|build_query_string}}">Corpus ({{corpus_num}})</a> | <a href="{% url "telemeta-search-type" "fonds" %}?{{criteria|build_query_string}}">Fonds ({{fonds_num}})</a></b></p>
-  {% with object_list as items %}
-   <div class="fullpage">
-      {% include "telemeta/inc/mediaitem_list.html" %}
-   </div>
-  {% endwith %}
+    {% ifequal result_filter "published"%}
+        <p><b>Items ({{items_num}}) | <a href="{% url "telemeta-search-published" "collections" %}?{{criteria|build_query_string}}">Collections ({{collections_num}})</a> | <a href="{% url "telemeta-search-published" "corpus" %}?{{criteria|build_query_string}}">Corpus ({{corpus_num}})</a> | <a href="{% url "telemeta-search-published" "fonds" %}?{{criteria|build_query_string}}">Fonds ({{fonds_num}})</a></b></p>
+          {% with object_list as items %}
+           <div class="fullpage">
+              {% include "telemeta/inc/mediaitem_list.html" %}
+           </div>
+          {% endwith %}
+    {% else%}
+        {% ifequal result_filter "unpublished"%}
+            <p><b>Items ({{items_num}}) | <a href="{% url "telemeta-search-unpublished" "collections" %}?{{criteria|build_query_string}}">Collections ({{collections_num}})</a> | <a href="{% url "telemeta-search-unpublished" "corpus" %}?{{criteria|build_query_string}}">Corpus ({{corpus_num}})</a> | <a href="{% url "telemeta-search-unpublished" "fonds" %}?{{criteria|build_query_string}}">Fonds ({{fonds_num}})</a></b></p>
+              {% with object_list as items %}
+               <div class="fullpage">
+                  {% include "telemeta/inc/mediaitem_list.html" %}
+               </div>
+              {% endwith %}
+        {% else%}
+            {% ifequal result_filter "full"%}
+                <p><b>Items ({{items_num}}) | <a href="{% url "telemeta-search-full" "collections" %}?{{criteria|build_query_string}}">Collections ({{collections_num}})</a> | <a href="{% url "telemeta-search-full" "corpus" %}?{{criteria|build_query_string}}">Corpus ({{corpus_num}})</a> | <a href="{% url "telemeta-search-full" "fonds" %}?{{criteria|build_query_string}}">Fonds ({{fonds_num}})</a></b></p>
+                  {% with object_list as items %}
+                   <div class="fullpage">
+                      {% include "telemeta/inc/mediaitem_list.html" %}
+                   </div>
+                  {% endwith %}
+            {% else%}
+                {% ifequal result_filter "none"%}
+                    <p><b>Items ({{items_num}}) | <a href="{% url "telemeta-search-none" "collections" %}?{{criteria|build_query_string}}">Collections ({{collections_num}})</a> | <a href="{% url "telemeta-search-none" "corpus" %}?{{criteria|build_query_string}}">Corpus ({{corpus_num}})</a> | <a href="{% url "telemeta-search-none" "fonds" %}?{{criteria|build_query_string}}">Fonds ({{fonds_num}})</a></b></p>
+                      {% with object_list as items %}
+                       <div class="fullpage">
+                          {% include "telemeta/inc/mediaitem_list.html" %}
+                       </div>
+                      {% endwith %}
+                {% else%}
+                    <p><b>Items ({{items_num}}) | <a href="{% url "telemeta-search-type" "collections" %}?{{criteria|build_query_string}}">Collections ({{collections_num}})</a> | <a href="{% url "telemeta-search-type" "corpus" %}?{{criteria|build_query_string}}">Corpus ({{corpus_num}})</a> | <a href="{% url "telemeta-search-type" "fonds" %}?{{criteria|build_query_string}}">Fonds ({{fonds_num}})</a></b></p>
+                      {% with object_list as items %}
+                       <div class="fullpage">
+                          {% include "telemeta/inc/mediaitem_list.html" %}
+                       </div>
+                      {% endwith %}
+                {%endifequal%}
+            {%endifequal%}
+        {%endifequal%}
+    {% endifequal %}
 {% endifequal %}
 
 {% ifequal type 'collections' %}
-<p><b><a href="{% url "telemeta-search-type" "items" %}?{{criteria|build_query_string}}">Items ({{items_num}})</a> | Collections ({{collections_num}}) | <a href="{% url "telemeta-search-type" "corpus" %}?{{criteria|build_query_string}}">Corpus ({{corpus_num}})</a> | <a href="{% url "telemeta-search-type" "fonds" %}?{{criteria|build_query_string}}">Fonds ({{fonds_num}})</a>
-  </b></p>
-  {% with object_list as collections %}
-   <div class="fullpage">
-      {% include "telemeta/inc/collection_list.html" %}
-   </div>
-  {% endwith %}
+    {% ifequal result_filter "published"%}
+        <p><b><a href="{% url "telemeta-search-published" "items" %}?{{criteria|build_query_string}}">Items ({{items_num}})</a> | Collections ({{collections_num}}) | <a href="{% url "telemeta-search-published" "corpus" %}?{{criteria|build_query_string}}">Corpus ({{corpus_num}})</a> | <a href="{% url "telemeta-search-published" "fonds" %}?{{criteria|build_query_string}}">Fonds ({{fonds_num}})</a>
+          </b></p>
+          {% with object_list as collections %}
+           <div class="fullpage">
+              {% include "telemeta/inc/collection_list.html" %}
+           </div>
+          {% endwith %}
+    {% else %}
+        {%ifequal result_filter "unpublished"%}
+            <p><b><a href="{% url "telemeta-search-unpublished" "items" %}?{{criteria|build_query_string}}">Items ({{items_num}})</a> | Collections ({{collections_num}}) | <a href="{% url "telemeta-search-unpublished" "corpus" %}?{{criteria|build_query_string}}">Corpus ({{corpus_num}})</a> | <a href="{% url "telemeta-search-unpublished" "fonds" %}?{{criteria|build_query_string}}">Fonds ({{fonds_num}})</a>
+              </b></p>
+              {% with object_list as collections %}
+               <div class="fullpage">
+                  {% include "telemeta/inc/collection_list.html" %}
+               </div>
+               {% endwith %}
+        {%else%}
+            {%ifequal result_filter "full"%}
+                <p><b><a href="{% url "telemeta-search-full" "items" %}?{{criteria|build_query_string}}">Items ({{items_num}})</a> | Collections ({{collections_num}}) | <a href="{% url "telemeta-search-full" "corpus" %}?{{criteria|build_query_string}}">Corpus ({{corpus_num}})</a> | <a href="{% url "telemeta-search-full" "fonds" %}?{{criteria|build_query_string}}">Fonds ({{fonds_num}})</a>
+                  </b></p>
+                  {% with object_list as collections %}
+                   <div class="fullpage">
+                      {% include "telemeta/inc/collection_list.html" %}
+                   </div>
+                  {% endwith %}
+            {%else%}
+                {%ifequal result_filter "none"%}
+                    <p><b><a href="{% url "telemeta-search-none" "items" %}?{{criteria|build_query_string}}">Items ({{items_num}})</a> | Collections ({{collections_num}}) | <a href="{% url "telemeta-search-none" "corpus" %}?{{criteria|build_query_string}}">Corpus ({{corpus_num}})</a> | <a href="{% url "telemeta-search-none" "fonds" %}?{{criteria|build_query_string}}">Fonds ({{fonds_num}})</a>
+                      </b></p>
+                      {% with object_list as collections %}
+                       <div class="fullpage">
+                          {% include "telemeta/inc/collection_list.html" %}
+                       </div>
+                      {% endwith %}
+                {%else%}
+                    <p><b><a href="{% url "telemeta-search-type" "items" %}?{{criteria|build_query_string}}">Items ({{items_num}})</a> | Collections ({{collections_num}}) | <a href="{% url "telemeta-search-type" "corpus" %}?{{criteria|build_query_string}}">Corpus ({{corpus_num}})</a> | <a href="{% url "telemeta-search-type" "fonds" %}?{{criteria|build_query_string}}">Fonds ({{fonds_num}})</a>
+                      </b></p>
+                      {% with object_list as collections %}
+                       <div class="fullpage">
+                          {% include "telemeta/inc/collection_list.html" %}
+                       </div>
+                      {% endwith %}
+                {%endifequal%}
+            {%endifequal%}
+        {%endifequal%}
+    {%endifequal%}
 {% endifequal %}
 
 {% if type == 'corpus' %}

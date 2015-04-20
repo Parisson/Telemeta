@@ -1,2 +1,6 @@
 {{ object.title }}
+{{ object.recorded_from_date }}
+{{ object.recorded_to_date }}
+{{ object.code }}
+{{ object.location }}
 {{ object.body }}

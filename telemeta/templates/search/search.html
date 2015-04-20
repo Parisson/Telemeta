@@ -21,15 +21,10 @@
         </table>
 
         {% if query %}
-            <h3>Results</h3>
-
-            {% for result in page.object_list %}
-                <p>
-                    <a href="{{ result.object.get_absolute_url }}">{{ result.object.title }}</a>
-                </p>
-            {% empty %}
-                <p>No results found.</p>
-            {% endfor %}
+            <h1>{% trans "Results" %}</h1>
+	    <div class="fullpage">
+            	{% include "search/mediaitem_listhaystack.html" %}
+	    </div>
 
             {% if page.has_previous or page.has_next %}
                 <div>

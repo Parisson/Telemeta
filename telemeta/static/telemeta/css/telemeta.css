@@ -1222,6 +1222,22 @@ a.image-link {
     text-decoration: none;
 }
 
+#btn{
+    font-weight: bold;
+    color:#ffffff;
+    background-color:#6a0307;
+    border-color:#6a0307;
+    box-shadow: 5px 5px 5px #888888;
+}
+
+#btn:hover{
+    font-weight: bold;
+    color:#6a0307;
+    background-color:#ffffff;
+    border-color:#6a0307;
+    box-shadow: 5px 5px 5px #888888;
+}
+
 .list_item, .list_item:visited, .list_item:hover{
     display:block;
     color:#6A0307;
