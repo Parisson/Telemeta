@@ -124,5 +124,6 @@ class Search(ModelCore):
         ordering = ['-date']
 
     def __unicode__(self):
-        return self.keywords
+        return ' - '.join([self.username.username, unicode(self.date),
+                    ' - '.join([c.key for c in self.criteria.all()])])
 
