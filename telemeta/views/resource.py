@@ -394,10 +394,8 @@ class CorpusEpubView(View):
         for collection in corpus.children.all():
             items = {}
             for item in collection.items.all():
-                 id = item.old_code.split('_')
-                 if len(id) > 1:
-                     id = id[1]
-                 items[item] = int(id.split('.')[1])
+                id = item.old_code.split('.')[1].replace('a', '.1').replace('b', '.2')
+                items[item] = float(id)
             items = OrderedDict(sorted(items.items(), key=lambda t: t[1]))
 
             for item in items:
@@ -442,7 +440,7 @@ class CorpusEpubView(View):
         # create epub file
         filename = '/tmp/test.epub'
         epub.write_epub(filename, book, {})
-        epub_file = open(filename, 'r')
+        epub_file = open(filename, 'rb')
 
         response = HttpResponse(epub_file.read(), content_type='application/epub+zip')
         response['Content-Disposition'] = "attachment; filename=%s.%s" % \
