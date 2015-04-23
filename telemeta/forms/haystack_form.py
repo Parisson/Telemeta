@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-from django import forms
 from telemeta.models import *
-from haystack.inputs import AutoQuery, Exact, Clean
 from haystack.forms import *
 from haystack.query import SearchQuerySet
 
