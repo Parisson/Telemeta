@@ -24,7 +24,7 @@
         <a href="{% url "telemeta-item-detail" result.object.public_id %}">{{ result.object.title }}</a>
     </td>
     <td align="center">
-        {% if result.file %}
+        {% if result.object.file %}
          <a href="{% url "telemeta-item-detail" result.object.public_id %}">
           <center><span class="glyphicon glyphicon-volume-up" style="font-size: 1.3em;"></span></center>
         {% endif %}
