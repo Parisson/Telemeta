@@ -5,26 +5,26 @@ body {
 }
 
 h2 {
-     text-align: left;
-     text-transform: uppercase;
-     font-weight: 200;
+    text-align: left;
+    text-transform: uppercase;
+    font-weight: 200;
 }
 
 
 h3 {
-     text-align: left;
-     font-size: 0.8em;
-     margin-top: 0px;
-     font-weight: normal;
+    text-align: left;
+    font-size: 0.8em;
+    margin-top: 0px;
+    font-weight: normal;
 }
 
 
 ol {
-        list-style-type: none;
+    list-style-type: none;
 }
 
 ol > li:first-child {
-        margin-top: 0.3em;
+    margin-top: 0.3em;
 }
 
 
@@ -34,17 +34,21 @@ nav[epub|type~='toc'] > ol > li > ol  {
 
 
 nav[epub|type~='toc'] > ol > li > ol > li {
-        margin-top: 0.3em;
+    margin-top: 0.3em;
 }
 
 .item {
-    page-break-after: always;
+    page-break-before: always;
 }
 
 .item-image {
-    float: left;
+    text-align: center;
+}
+.item-audio{
+    page-break-after: avoid;
 }
 
-.item-image {
-    float: left;
+img {
+    text-align: center;
+    width: 50%;
 }
