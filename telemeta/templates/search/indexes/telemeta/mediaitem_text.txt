@@ -1,6 +1,12 @@
 {{ object.title }}
+{{ object.alt_title }}
 {{ object.recorded_from_date }}
 {{ object.recorded_to_date }}
 {{ object.code }}
+{{ object.old_code }}
 {{ object.location }}
+{{ object.comment }}
+{{ object.external_references }}
+{{ object.location_comment }}
+{{ object.cultural_area }}
 {{ object.body }}
