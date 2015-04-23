@@ -31,3 +31,18 @@ class HaySearchFormCollection(SearchForm):
 
         return sqs
 
+
+class HayAdvanceSearchForm(ModelSearchForm):
+
+    title = forms.CharField(required=False)
+
+    def search(self):
+        sqs=SearchQuerySet().load_all()
+
+        if not self.is_valid():
+            return sqs
+
+        if self.cleaned_data['q']:
+            sqs=sqs.filter(content__contains=self.cleaned_data['q'])
+
+        return sqs
