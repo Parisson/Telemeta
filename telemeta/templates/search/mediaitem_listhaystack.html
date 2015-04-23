@@ -37,11 +37,7 @@
     </td>
 
     <td>{{ result.object.collector }}</td>
-    {% if location_name %}
     <td>{{ result.object.location.name }}</td>
-    {% else %}
-    <td>{{ result.object.country_or_continent|default:'&nbsp;' }}</td>
-    {% endif %}
     <td>
     {% if result.object.recorded_from_date %}
         {{ result.object.recorded_from_date.year }}
