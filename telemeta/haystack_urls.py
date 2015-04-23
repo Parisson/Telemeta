@@ -8,7 +8,7 @@ from telemeta.forms.haystack_form import HaySearchFormItem, HaySearchFormCollect
 
 
 urlpatterns = patterns('',
-    url(r'^$', HaystackSearchItem(form_class=HaySearchFormItem), name='haystack_search_item'),
-    url(r'^item/$', HaystackSearchItem(form_class=HaySearchFormItem), name='haystack_search_item'),
-    url(r'^collection/$', HaystackSearchCollection(form_class=HaySearchFormCollection), name='haystack_search_collection'),
+    url(r'^$', HaystackSearch(form_class=HaySearchFormItem), name='haystack_search'),
+    url(r'^(?P<type>[A-Za-z0-9._-]+)/$', HaystackSearch(), name='haystack_search_type'),
+
 )

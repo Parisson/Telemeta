@@ -23,10 +23,10 @@
         {% if query %}
             <h1>{% trans "Results" %}</h1>
             {% ifequal type 'item' %}
-                 <p><b>Items ({{item_count}}) | <a href="{% url "haystack_search_collection" %}?q={{ query }}&amp;page=1">Collections ({{collection_count}})</a></b></p>
+                 <p><b>Items ({{item_count}}) | <a href="{% url "haystack_search_type" "collection" %}?q={{ query }}&amp;page=1">Collections ({{collection_count}})</a></b></p>
              {% else %}
                 {% ifequal type 'collection'%}
-                    <p><b><a href="{% url "haystack_search_item" %}?q={{ query }}&amp;page=1">Items ({{item_count}}) </a>| Collections ({{collection_count}})</b></p>
+                    <p><b><a href="{% url "haystack_search_type" "item" %}?q={{ query }}&amp;page=1">Items ({{item_count}}) </a>| Collections ({{collection_count}})</b></p>
                 {% endifequal %}
              {% endifequal %}
              {% with object_list as items %}
