@@ -30,3 +30,8 @@ class HaystackSearch(SearchView):
             extra['type']='item'
         return extra
 
+
+class HaystackAdvanceSearch(SearchView):
+
+    def get_query(self):
+        return super(HaystackAdvanceSearch, self).get_query()
