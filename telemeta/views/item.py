@@ -832,3 +832,8 @@ class ItemPlayerDefaultView(ItemDetailView):
 
     template_name = 'telemeta/mediaitem_player.html'
 
+
+class ItemDetailDCView(ItemDetailView):
+
+    template_name = 'telemeta/mediaitem_detail_dc.html'
+
