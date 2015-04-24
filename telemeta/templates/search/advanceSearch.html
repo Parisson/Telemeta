@@ -1,0 +1,48 @@
+{% extends 'telemeta/base.html' %}
+{% load telemeta_utils %}
+{% load i18n %}
+
+
+{% block title %}
+{% trans "Search" %}
+{% endblock %}
+
+{% block content %}
+    <form method="get" action=".">
+        <table>
+            {{ form.as_table }}
+            <tr>
+                <td>&nbsp;</td>
+                <td>
+                    <input type="submit" value="{% trans "Search" %}">
+                </td>
+            </tr>
+        </table>
+
+        {% if query %}
+            <h1>{% trans "Results" %}</h1>
+            {% ifequal type 'item' %}
+                 <p><b>Items ({{item_count}}) | <a href="{% url "haystack_advance_search_type" "collection" %}?q={{ query }}&cote={{ cote }}&location={{ location}}&amp;page=1">Collections ({{collection_count}})</a></b></p>
+             {% else %}
+                {% ifequal type 'collection'%}
+                    <p><b><a href="{% url "haystack_advance_search_type" "item" %}?q={{ query }}&cote={{ cote }}&location={{ location}}&amp;page=1">Items ({{item_count}}) </a>| Collections ({{collection_count}})</b></p>
+                {% endifequal %}
+             {% endifequal %}
+             {% with object_list as items %}
+                <div class="fullpage">
+                    {% include "search/mediaitem_listhaystack.html" %}
+                </div>
+
+                {% if page.has_previous or page.has_next %}
+                    <div>
+                        {% if page.has_previous %}<a href="?q={{ query }}&cote={{ cote }}&location={{ location}}&amp;page={{ page.previous_page_number }}">{% endif %}&laquo; Previous{% if page.has_previous %}</a>{% endif %}
+                        |
+                        {% if page.has_next %}<a href="?q={{ query }}&cote={{ cote }}&location={{ location}}&amp;page={{ page.next_page_number }}">{% endif %}Next &raquo;{% if page.has_next %}</a>{% endif %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+        {% else %}
+            {# Show some example queries to run, maybe query syntax, something else? #}
+        {% endif %}
+    </form>
+{% endblock %}
