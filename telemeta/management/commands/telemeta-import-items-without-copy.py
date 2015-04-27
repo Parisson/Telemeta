@@ -25,7 +25,7 @@ class Command(BaseCommand):
         collection_code = args[-2]
         import_dir = os.path.abspath(args[-1])
         media_dir = os.path.normpath(settings.MEDIA_ROOT)
-        
+
         if not media_dir in import_dir:
             sys.exit('This directory is not in the MEDIA_ROOT directory')
 
