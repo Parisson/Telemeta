@@ -1,9 +1,11 @@
 <link rel="stylesheet" type="text/css" href="style/nav.css" />
 
+<h2>{{ collection.title }}</h2>
+
 {% for item in items %}
 <div class="item">
   <h3>
-  <b>Son {{ item.old_code }}</b> : {{ item.title }}. {{ item.comment }} (fig. {{ item.track }}, p. )
+  <b>Son {{ item.old_code }}</b> : {{ item.title }}. {{ item.comment }} ({{ item.track }})
   </h3>
 
   <div class="item-audio">
