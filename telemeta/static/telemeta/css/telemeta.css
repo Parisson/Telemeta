@@ -209,7 +209,7 @@ svg {
     border: 1px solid #adadad;
     padding: 2px;
     height: 26px;
-    margin: 5px 0 0;
+    margin: 5px 0 5px;
     font-size: 0.9em;
     color: #000;
     font-weight: bold;
@@ -219,7 +219,7 @@ svg {
     background-color: #fff;
     color: #000;
     border: 1px solid #adadad;
-    width: 356px;
+    width: 348px;
     padding: 2px;
     /* margin: 5px 0 0; */
     font-size: 1em;
@@ -1001,7 +1001,7 @@ a.image-link {
     -moz-border-radius: 8px 0px 8px 8px;
     -webkit-border-radius: 8px 0px 8px 8px;
     border-radius: 8px 0px 8px 8px;
-    width: 396%;
+    width: 392px;
 }
 
 .home-content .module {

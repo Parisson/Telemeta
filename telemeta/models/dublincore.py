@@ -171,19 +171,27 @@ def express_collection(collection):
         if id:
             parts.append(Element('relation', id, 'hasPart', item))
 
+    titles = [Element('title', collection.title),]
+    if collection.alt_title:
+        titles.append(Element('title', collection.alt_title))
+
+    dates = []
+    if collection.recorded_from_year or collection.recorded_to_year:
+        dates.append(Date(collection.recorded_from_year, collection.recorded_to_year, refinement='created'))
+    if collection.year_published:
+        dates.append(Date(collection.year_published, refinement='issued'))
+
     resource = Resource(
         Element('identifier',       media_identifier(collection), related=collection),
         Element('identifier',       collection.public_id, related=collection),
         Element('type',             'Collection'),
-        Element('title',            collection.title),
-        Element('title',            collection.alt_title),
+        titles,
         creator,
         Element('contributor',      collection.metadata_author),
         Element.multiple('subject', settings.TELEMETA_SUBJECTS),
         Element('publisher',        collection.publisher),
         Element('publisher',        settings.TELEMETA_ORGANIZATION),
-        Date(collection.recorded_from_year, collection.recorded_to_year, refinement='created'),
-        Date(collection.year_published, refinement='issued'),
+        dates,
         Element('rights',           collection.legal_rights, 'license'),
         Element('rights',           media_access_rights(collection), 'accessRights'),
         Element('format',           duration, 'extent'),
@@ -205,17 +213,25 @@ def express_item(item):
     else:
         creator = Element('creator', item.collection.creator)
 
+    dates = []
     if item.recorded_from_date:
-        date = Date(item.recorded_from_date, item.recorded_to_date, refinement='created')
-    else:
-        date = Date(item.collection.recorded_from_year, item.collection.recorded_to_year, refinement='created'),
+        dates.append(Date(item.recorded_from_date, item.recorded_to_date, refinement='created'))
+    elif item.collection.recorded_from_year or item.collection.recorded_to_year:
+        dates.append(Date(item.collection.recorded_from_year, item.collection.recorded_to_year, refinement='created'))
+    if item.collection.year_published:
+        dates.append(Date(item.collection.year_published, refinement='issued'))
 
+    titles = []
     if item.title:
         title = item.title
     else:
         title = item.collection.title
         if item.track:
             title += u' - ' + item.track
+    titles.append(Element('title', item.title))
+
+    if item.alt_title:
+        titles.append(Element('title', item.alt_title))
 
     try:
         analysis = MediaItemAnalysis.objects.get(item=item, analyzer_id='mime_type')
@@ -227,8 +243,7 @@ def express_item(item):
         Element('identifier',       media_identifier(item), related=item),
         Element('identifier',       item.public_id, related=item),
         Element('type',             'Sound'),
-        Element('title',            title),
-        Element('title',            item.alt_title),
+        titles,
         creator,
         Element('contributor',      item.collection.metadata_author),
         Element.multiple('subject', settings.TELEMETA_SUBJECTS),
@@ -236,8 +251,7 @@ def express_item(item):
         Element('description',      item.context_comment, 'abstract'),
         Element('publisher',        item.collection.publisher),
         Element('publisher',        settings.TELEMETA_ORGANIZATION),
-        date,
-        Date(item.collection.year_published, refinement='issued'),
+        dates,
         Element.multiple('coverage', item.location and item.location.listnames(), 'spatial'),
         Element('coverage',         item.location_comment, 'spatial'),
         Element('rights',           item.collection.legal_rights, 'license'),

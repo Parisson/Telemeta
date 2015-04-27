@@ -136,8 +136,8 @@ class MediaCollection(MediaResource):
     def __unicode__(self):
         return self.code
 
-    def save(self, force_insert=False, force_update=False, user=None, code=None):
-        super(MediaCollection, self).save(force_insert, force_update)
+    def save(self, force_insert=False, force_update=False, *args, **kwargs):
+        super(MediaCollection, self).save(force_insert, force_update, *args, **kwargs)
 
     @property
     def public_id(self):
@@ -227,10 +227,13 @@ class MediaCollection(MediaResource):
         metadata['doc_status'] = self.document_status()
         metadata['countries'] = ';'.join([location.name for location in self.main_countries()])
         metadata['ethnic_groups'] = ';'.join([group.value for group in self.ethnic_groups()])
-        metadata['last_modification_date'] = unicode(self.get_revision().time)
+        revision = self.get_revision()
+        if revision:
+            metadata['last_modification_date'] = unicode(revision.time)
         metadata['computed_duration'] = unicode(self.computed_duration())
         metadata['computed_size'] = unicode(self.computed_size())
         metadata['number_of_items'] = unicode(self.items.all().count())
+        metadata['approx_duration'] = unicode(self.approx_duration)
 
         i = 0
         for media in self.related.all():
@@ -262,6 +265,11 @@ class MediaCollection(MediaResource):
         #     i += 1
 
         return metadata
+
+    def get_json(self):
+        import json
+        return json.dumps(self.to_dict_with_more())
+
 
 
 class MediaCollectionRelated(MediaRelated):

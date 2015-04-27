@@ -1,0 +1,8 @@
+
+{% for item in collection.items.all %}
+<p>
+ {{ item.title }}
+ <br>
+ <audio src="http://{{ site.domain }}{% url "telemeta-item-export" item.public_id 'mp3' %}" controls="controls"/>
+</p>
+{% endfor %}
