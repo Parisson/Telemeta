@@ -394,7 +394,11 @@ class CorpusEpubView(View):
         for collection in corpus.children.all():
             items = {}
             for item in collection.items.all():
-                id = item.old_code.split('.')[1].replace('a', '.1').replace('b', '.2')
+                if '.' in item.old_code:
+                    id = item.old_code.split('.')[1]
+                else:
+                    id = item.old_code
+                id = id.replace('a', '.1').replace('b', '.2')
                 items[item] = float(id)
             items = OrderedDict(sorted(items.items(), key=lambda t: t[1]))
 

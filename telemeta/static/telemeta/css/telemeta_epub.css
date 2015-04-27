@@ -51,4 +51,5 @@ nav[epub|type~='toc'] > ol > li > ol > li {
 img {
     text-align: center;
     width: 50%;
+    height: auto;
 }

@@ -64,9 +64,15 @@ class Command(BaseCommand):
                 path = os.path.join(chapter_dir, filename)
                 if os.path.isfile(path) and '.txt' == os.path.splitext(filename)[1]:
                     f = open(path, 'r')
+                    i = 0
                     for line in f.readlines():
                         data = re.split(r'\t+', line.rstrip('\t'))
-                        metadata[data[0]] = data[1:]
+                        if i == 0:
+                            chapter_title = data[1]
+                            print chapter_title
+                        else:
+                            metadata[data[0]] = data[1:]
+                        i += 1
                     print metadata
                     break
 
@@ -99,7 +105,9 @@ class Command(BaseCommand):
 
                         corpus, c = MediaCorpus.objects.get_or_create(code=corpus_id, title=corpus_name)
 
-                        collection, c = MediaCollection.objects.get_or_create(code=collection_id, title=collection_name)
+                        collection_title = collection_name.replace('_', ' ') + ' : ' + chapter_title
+                        print collection_title
+                        collection, c = MediaCollection.objects.get_or_create(code=collection_id, title=collection_title)
                         if not collection in corpus.children.all():
                             corpus.children.add(collection)
 
@@ -110,9 +118,10 @@ class Command(BaseCommand):
                             item.file = media_path
                             item.save()
 
-                            title = data[1].split('.')
+                            title = data[0].split('.')
                             item.title = title[0]
-                            item.track = data[2].replace('\n', '')
+                            print data
+                            item.track = data[1].replace('\n', '')
                             if len(title) > 1:
                                  item.comment = '. '.join(title[1:])
                             item.save()
