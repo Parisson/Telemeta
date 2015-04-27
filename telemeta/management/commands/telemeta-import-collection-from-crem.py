@@ -51,14 +51,14 @@ class Logger:
 
 
 class Command(BaseCommand):
-    
-    """Import CREM collections from collection directories containing media files 
+
+    """Import CREM collections from collection directories containing media files
     and eventually a XLS files representing the relation between old codes and new codes
     """
 
-    help = "import CREM collections"
-    args = 'source_dir pattern log_file'
+    help = "import CREM collections (special usecase)"
     admin_email = 'webmaster@parisson.com'
+    media_root = settings.MEDIA_ROOT
 
     option_list = BaseCommand.option_list + (
           make_option('-d', '--dry-run',
@@ -86,10 +86,14 @@ class Command(BaseCommand):
         if os.path.exists(media):
             if not item.file or self.force:
                 if not self.dry_run:
-                    f = open(media, 'r')
-                    file_content = ContentFile(f.read())
-                    item.file.save(filename, file_content)
-                    f.close()
+                    if not self.media_root in self.source_dir:
+                        f = open(media, 'r')
+                        file_content = ContentFile(f.read())
+                        item.file.save(filename, file_content)
+                        f.close()
+                    else:
+                        path = media[len(self.media_root)+1:]
+                        item.file = path
                     item.save()
                     item.set_revision(self.user)
                 else:
@@ -112,7 +116,7 @@ class Command(BaseCommand):
         self.domain = Site.objects.all()[0].domain
         self.user = User.objects.filter(username='admin')[0]
         self.collections = os.listdir(self.source_dir)
-        
+
         collections = []
         for collection in self.collections:
             collection_dir = self.source_dir + os.sep + collection

@@ -7,30 +7,52 @@ from telemeta.util.unaccent import unaccent
 from telemeta.cache import TelemetaCache
 import urllib
 
+try:
+    from django.utils.text import slugify
+except ImportError:
+    def slugify(string):
+        killed_chars = re.sub('[\(\),]', '', string)
+        return re.sub(' ', '_', killed_chars)
+
+def beautify(string):
+    return os.path.splitext(string)[0].replace('_',' ')
+
 class Command(BaseCommand):
-    help = "Test: download and import a test item"
-    args = "absolute paths of a local audio files"
-    code = 'test'
-    title = 'test'
-    urls = ['http://files.parisson.com/telemeta/tests/media/sweep.mp3',
-            'http://files.parisson.com/telemeta/tests/media/sweep.wav',
-            'http://files.parisson.com/telemeta/tests/media/test.ogg',
-            'http://files.parisson.com/telemeta/tests/media/test.flac',
-            'http://files.parisson.com/telemeta/tests/media/test4.mp3',
-            'http://files.parisson.com/telemeta/tests/media/test5.wav',
-            'http://files.parisson.com/telemeta/tests/media/test6.wav']
+    args = "<media_file1 [media_file2 ...]>"
+    help = "Download and import a media item"
+    option_list = BaseCommand.option_list + (
+            make_option('--collection-code',
+                action='store',
+                dest='code',
+                default='default',
+                metavar = '<code>',
+                help='collection code'),
+            make_option('--collection-title',
+                action='store',
+                dest='title',
+                default='default',
+                metavar = '<title>',
+                help='collection title'),
+            )
 
     cache_data = TelemetaCache(settings.TELEMETA_DATA_CACHE_DIR)
     cache_export = TelemetaCache(settings.TELEMETA_EXPORT_CACHE_DIR)
 
+    urls = []
+
     def handle(self, *args, **options):
-        if args:
-            self.urls = []
-            for file in args:
-                self.urls.append('file://' + file)
+        if len(args) < 1:
+            return
+        if options['title']:
+            self.title = options['title']
+        if options['code']:
+            self.code = options['code']
+        for file in args:
+            self.urls.append('file://' + file)
 
         collections = MediaCollection.objects.filter(code=self.code)
         if not collections:
+            # create a new collection
             collection = MediaCollection(code=self.code, title=self.title)
             collection.public_access = 'full'
             collection.save()
@@ -38,14 +60,15 @@ class Command(BaseCommand):
             collection = collections[0]
 
         for url in self.urls:
-            code = url.split('/')[-1]
-            code = code.replace(' ', '_')
+            basename = os.path.basename(url)
+            code = slugify(basename)
+            title = beautify(basename)
             items = MediaItem.objects.filter(code=code)
             if not items:
-                item = MediaItem(collection=collection, code=code, title=code)
+                item = MediaItem(collection=collection, code=code, title=title)
                 item.save()
             else:
-                print 'cleanup'
+                print 'cleaning up', code
                 item = items[0]
                 self.cache_data.delete_item_data(code)
                 self.cache_export.delete_item_data(code)
@@ -56,10 +79,13 @@ class Command(BaseCommand):
                 for analysis in analyses:
                     analysis.delete()
 
-            print 'downloading: ' + url
+            print 'fetching: ' + url
             file = urllib.urlopen(url)
             file_content = ContentFile(file.read())
+            item.title = title
             item.file.save(code, file_content)
             item.public_access = 'full'
             item.save()
-            print 'item created: ' + code
+            print 'item created: ', collection, code
+
+        print 'done importing', len(self.urls), 'items'
