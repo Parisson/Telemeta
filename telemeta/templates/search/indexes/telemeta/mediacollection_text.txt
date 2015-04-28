@@ -13,4 +13,5 @@
 {{ object.archiver_notes }}
 {{ object.items_done }}
 {{ object.conservation_site }}
+{{ object.location }}
 {{ object.body }}

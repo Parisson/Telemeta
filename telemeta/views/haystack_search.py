@@ -35,12 +35,18 @@ class HaystackAdvanceSearch(SearchView):
 
     def __call__(self, request, type=None):
         self.type = type
-        """if(self.type == 'collection'):
-            self.form_class = HayAdvanceFormCollection
-        else:
-            self.form_class = HayAdvanceFormItem"""
-        self.form_class = HayAdvanceForm
         return super(HaystackAdvanceSearch, self).__call__(request)
+
+    def get_query(self):
+        """
+        Returns the query provided by the user.
+
+        Returns an empty string if the query is invalid.
+        """
+        if self.form.is_valid():
+            return self.form.cleaned_data
+
+        return ''
 
     def get_results(self):
         if(self.type == 'collection'):
