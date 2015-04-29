@@ -3,7 +3,7 @@ from telemeta.models import *
 from haystack.forms import *
 from haystack.query import SearchQuerySet
 
-class HaySearchFormItem(SearchForm):
+class HaySearchForm(FacetedSearchForm):
 
     def search(self):
         sqs=SearchQuerySet().load_all()
@@ -12,22 +12,23 @@ class HaySearchFormItem(SearchForm):
             return sqs
 
         if self.cleaned_data['q']:
-            sqs=sqs.models(MediaItem).filter(content__contains=self.cleaned_data['q'])
+            sqs=sqs.filter(content__contains=self.cleaned_data['q']).facet('item_acces').facet('item_status').facet('digitized')
+
+        for facet in self.selected_facets:
+            if ":" not in facet:
+                continue
+
+            field, value = facet.split(":", 1)
+
+            if value:
+                if value == 'viewable':
+                    sqs = sqs.narrow('item_acces:full OR item_acces:metadata OR item_acces:mixed')
+                else:
+                    sqs = sqs.narrow(u'%s:"%s"' % (field, sqs.query.clean(value)))
 
         return sqs
 
-class HaySearchFormCollection(SearchForm):
 
-    def search(self):
-        sqs=SearchQuerySet().load_all()
-
-        if not self.is_valid():
-            return sqs
-
-        if self.cleaned_data['q']:
-            sqs=sqs.models(MediaCollection).filter(content__contains=self.cleaned_data['q'])
-
-        return sqs
 
 
 class HayAdvanceFormItem(SearchForm):
@@ -73,7 +74,6 @@ class HayAdvanceForm(SearchForm):
     q = forms.CharField(required=False, label=('Title'), widget=forms.TextInput(attrs={'type': 'search'}))
     cote = forms.CharField(required=False, label=('Cote'), widget=forms.TextInput(attrs={'type': 'search'}))
     location = forms.CharField(required=False, label=('Location'), widget=forms.TextInput(attrs={'type': 'search'}))
-
 
     def search(self):
         sqs = SearchQuerySet().load_all()

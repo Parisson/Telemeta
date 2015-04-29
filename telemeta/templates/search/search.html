@@ -21,17 +21,73 @@
         </table>
 
         {% if query %}
+
+
+
+
             <h1>{% trans "Results" %}</h1>
+
             {% ifequal type 'item' %}
-                 <p><b>Items ({{item_count}}) | <a href="{% url "haystack_search_type" "collection" %}?q={{ query }}&amp;page=1">Collections ({{collection_count}})</a></b></p>
+                 <p><b>Items ({{item_count}}) | <a href="{% url "haystack_search_type" "collection" %}?{{request.GET.urlencode}}">Collections ({{collection_count}})</a></b></p>
              {% else %}
                 {% ifequal type 'collection'%}
-                    <p><b><a href="{% url "haystack_search_type" "item" %}?q={{ query }}&amp;page=1">Items ({{item_count}}) </a>| Collections ({{collection_count}})</b></p>
+                    <p><b><a href="{% url "haystack_search_type" "item" %}?{{request.GET.urlencode}}">Items ({{item_count}}) </a>| Collections ({{collection_count}})</b></p>
                 {% endifequal %}
              {% endifequal %}
+            <div class="panel panel-default" style="font-weight:bold">
+                <div class="panel-heading" style="background-color:#6a0307;color:white;">Filters</div>
+                <table class="table" style="font-size:0.9em">
+                    <tr>
+                        {% if facets.fields.item_status %}
+                            <td>Item Status</td>
+                            {% for item_status in facets.fields.item_status %}
+                                <td><a href="{{ request.get_full_path }}&amp;selected_facets=item_status_exact:{{ item_status.0|urlencode }}">{{ item_status.0 }}</a> ({{ item_status.1 }})</td>
+                            {% endfor %}
+                        {% else %}
+                            <p>No acces facets.</p>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        {% if facets.fields.digitized %}
+                            <td>Player Status</td>
+                            {% for digitized in facets.fields.digitized %}
+                                {% ifequal digitized.0 'T' %}
+                                    <td><a href="{{ request.get_full_path }}&amp;selected_facets=digitized_exact:{{ digitized.0|urlencode }}">Sound</a> ({{ digitized.1 }})</td><td></td>
+                                {% endifequal %}
+                            {% endfor %}
+                        {% else %}
+                            <p>No acces facets.</p>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        {% if facets.fields.item_acces %}
+                            <td>Access Right</td>
+                            {% if viewable_count != 0 %}
+                                <td><a href="{{ request.get_full_path }}&amp;selected_facets=item_acces_exact:{{ 'viewable'|urlencode }}">viewable</a> ({{viewable_count}})</td><td></td>
+                            {% endif %}
+                            {% comment %}
+                                {% for item_acces in facets.fields.item_acces %}
+                                {# Faire un booleen dans la vue, le passer en contexte puis verifier si il est a true ou a false pour l'affichage' #}
+                                    {% ifequal item_acces.0 'none' %}
+                                        <td><a href="{{ request.get_full_path }}&amp;selected_facets=item_acces_exact:{{ item_acces.0|urlencode }}">{{ item_acces.0 }}</a> ({{ item_acces.1 }})</td>
+                                    {% endifequal %}
+                                {% endfor %}
+                            {%endcomment%}
+                        {% else %}
+                            <p>No acces facets.</p>
+                        {% endif %}
+                    </tr>
+                </table>
+            </div>
              {% with object_list as items %}
                 <div class="fullpage">
-                    {% include "search/mediaitem_listhaystack.html" %}
+                    {% ifequal type 'item' %}
+                        {% include "search/mediaitem_listhaystack.html" %}
+                    {% else %}
+                        {% ifequal type 'collection' %}
+                            {% include "search/mediacollection_listhaystack.html" %}
+                        {%endifequal%}
+                    {%endifequal%}
                 </div>
 
                 {% if page.has_previous or page.has_next %}
