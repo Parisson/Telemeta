@@ -68,16 +68,6 @@ class HaystackAdvanceSearch(SearchView):
 
     def extra_context(self):
         extra = super(HaystackAdvanceSearch, self).extra_context()
-
-        if self.request.GET.get('q'):
-            extra['title'] = self.request.GET['q']
-
-        if self.request.GET.get('code'):
-            extra['code'] = self.request.GET['code']
-
-        if self.request.GET.get('location'):
-            extra['location'] = self.request.GET['location']
-
         extra['collection_count'] = self.form.search().models(MediaCollection).count()
         extra['item_count'] = self.form.search().models(MediaItem).count()
         if self.type == 'collection':
