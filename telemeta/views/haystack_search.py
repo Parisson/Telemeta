@@ -72,8 +72,8 @@ class HaystackAdvanceSearch(SearchView):
         if self.request.GET.get('q'):
             extra['title'] = self.request.GET['q']
 
-        if self.request.GET.get('cote'):
-            extra['cote'] = self.request.GET['cote']
+        if self.request.GET.get('code'):
+            extra['code'] = self.request.GET['code']
 
         if self.request.GET.get('location'):
             extra['location'] = self.request.GET['location']

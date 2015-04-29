@@ -72,7 +72,7 @@ class HayAdvanceFormCollection(SearchForm):
 class HayAdvanceForm(SearchForm):
     #to replace de basic search form field
     q = forms.CharField(required=False, label=('Title'), widget=forms.TextInput(attrs={'type': 'search'}))
-    cote = forms.CharField(required=False, label=('Cote'), widget=forms.TextInput(attrs={'type': 'search'}))
+    code = forms.CharField(required=False, label=('Code'), widget=forms.TextInput(attrs={'type': 'search'}))
     location = forms.CharField(required=False, label=('Location'), widget=forms.TextInput(attrs={'type': 'search'}))
 
     def search(self):
@@ -84,8 +84,8 @@ class HayAdvanceForm(SearchForm):
         if self.cleaned_data.get('q'):
             sqs = sqs.filter(title__title__contains=self.cleaned_data['q'])
 
-        if self.cleaned_data.get('cote'):
-            sqs = sqs.filter(cote__cote__contains=self.cleaned_data['cote'])
+        if self.cleaned_data.get('code'):
+            sqs = sqs.filter(code__code__contains=self.cleaned_data['code'])
 
         if self.cleaned_data.get('location'):
             sqs = sqs.filter(location__location__contains=self.cleaned_data['location'])
