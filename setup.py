@@ -67,7 +67,6 @@ setup(
         'django-haystack',
         'timeside>=0.7',
         'south',
-        'sorl-thumbnail',
         'docutils',
         'psutil',
         'pyyaml',
@@ -77,6 +76,7 @@ setup(
         'ebooklib',
     ],
   tests_require=['pytest-django', 'pytest-cov', 'factory-boy'],
+  dependency_links = ['https://github.com/mariocesar/sorl-thumbnail/tarball/master#egg=sorl-thumbnail-12.2']
   # Provide a test command through django-setuptest
   cmdclass={'test': PyTest},
   platforms=['OS Independent'],
