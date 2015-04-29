@@ -3,16 +3,17 @@ from telemeta.models import *
 from haystack.forms import *
 from haystack.query import SearchQuerySet
 
+
 class HaySearchForm(FacetedSearchForm):
 
     def search(self):
-        sqs=SearchQuerySet().load_all()
+        sqs = SearchQuerySet().load_all()
 
         if not self.is_valid():
             return sqs
 
         if self.cleaned_data['q']:
-            sqs=sqs.filter(content__contains=self.cleaned_data['q']).facet('item_acces').facet('item_status').facet('digitized')
+            sqs = sqs.filter(content__contains=self.cleaned_data['q']).facet('item_acces').facet('item_status').facet('digitized')
 
         for facet in self.selected_facets:
             if ":" not in facet:
