@@ -50,11 +50,7 @@ class HaystackAdvanceSearch(SearchView):
         return super(HaystackAdvanceSearch, self).__call__(request)
 
     def get_query(self):
-        """
-        Returns the query provided by the user.
-
-        Returns an empty string if the query is invalid.
-        """
+        #overwrite the get_query for begin search with any form
         if self.form.is_valid():
             return self.form.cleaned_data
 

@@ -36,6 +36,10 @@ class HayAdvanceForm(SearchForm):
     code = forms.CharField(required=False, label=('Code'), widget=forms.TextInput(attrs={'type': 'search'}))
     location = forms.CharField(required=False, label=('Location'), widget=forms.TextInput(attrs={'type': 'search'}))
     ethnic_group = forms.CharField(required=False, label=('Population / social group'), widget=forms.TextInput(attrs={'type': 'search'}))
+    #waiting for docker update (django-haystack github version)
+    #list_ethnic = SearchQuerySet().load_all().models(MediaCollection).ethnic_groups().distinct
+    #ethnic_group = forms.ChoiceField(required=False, label=('Population / social group'), widget=forms.Select, choices = list_ethnic))
+    instruments = forms.CharField(required=False, label=('Instruments'), widget=forms.TextInput(attrs={'type': 'search'}))
 
     def search(self):
         sqs = SearchQuerySet().load_all()
@@ -54,5 +58,8 @@ class HayAdvanceForm(SearchForm):
 
         if self.cleaned_data.get('ethnic_group'):
             sqs = sqs.filter(ethnic_group__ethnic_group__contains=self.cleaned_data['ethnic_group'])
+
+        if self.cleaned_data.get('instruments'):
+            sqs = sqs.filter(instruments__instruments__contains=self.cleaned_data['instruments'])
 
         return sqs
