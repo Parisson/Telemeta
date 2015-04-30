@@ -2,7 +2,6 @@
 {% load telemeta_utils %}
 {% load i18n %}
 
-
 {% block title %}
 {% trans "Search" %}
 {% endblock %}
@@ -19,7 +18,7 @@
                 </td>
             </tr>
         </table>
-
+        <div><a href="{% url "haystack_advance_search" %}">&raquo; recherche avancée</a></div></br>
         {% if query %}
 
 
@@ -35,13 +34,13 @@
                 {% endifequal %}
              {% endifequal %}
             <div class="panel panel-default" style="font-weight:bold">
-                <div class="panel-heading" style="background-color:#6a0307;color:white;">Filters</div>
+                <div class="panel-heading" style="background-color:#6a0307;color:white;"><span class="glyphicon glyphicon-filter"></span> Filters</div>
                 <table class="table" style="font-size:0.9em">
                     <tr>
                         {% if facets.fields.item_status %}
                             <td>Item Status</td>
                             {% for item_status in facets.fields.item_status %}
-                                <td><a href="{{ request.get_full_path }}&amp;selected_facets=item_status_exact:{{ item_status.0|urlencode }}">{{ item_status.0 }}</a> ({{ item_status.1 }})</td>
+                                <td><a href="{{ request.get_full_path }}&amp;selected_facets=item_status_exact:{{ item_status.0|urlencode }}">{{ item_status.0 }}</a> <span style="background-color:#6a0307" class="badge">{{ item_status.1 }}</span></td>
                             {% endfor %}
                         {% else %}
                             <p>No acces facets.</p>
@@ -52,9 +51,12 @@
                             <td>Player Status</td>
                             {% for digitized in facets.fields.digitized %}
                                 {% ifequal digitized.0 'T' %}
-                                    <td><a href="{{ request.get_full_path }}&amp;selected_facets=digitized_exact:{{ digitized.0|urlencode }}">Sound</a> ({{ digitized.1 }})</td><td></td>
+                                    <td><a href="{{ request.get_full_path }}&amp;selected_facets=digitized_exact:{{ digitized.0|urlencode }}">Sound</a> <span style="background-color:#6a0307" class="badge">{{ digitized.1 }}</span></td><td></td>
                                 {% endifequal %}
                             {% endfor %}
+                            {% if digitized_count == 0 %}
+                                <td> Sound <span class="badge">0</span></td><td></td>
+                            {% endif %}
                         {% else %}
                             <p>No acces facets.</p>
                         {% endif %}
@@ -63,13 +65,16 @@
                         {% if facets.fields.item_acces %}
                             <td>Access Right</td>
                             {% if viewable_count != 0 %}
-                                <td><a href="{{ request.get_full_path }}&amp;selected_facets=item_acces_exact:{{ 'viewable'|urlencode }}">viewable</a> ({{viewable_count}})</td><td></td>
+                                <td><a href="{{ request.get_full_path }}&amp;selected_facets=item_acces_exact:{{ 'viewable'|urlencode }}">viewable</a> <span style="background-color:#6a0307" class="badge">{{viewable_count}}</span></td><td></td>
+                            {% endif %}
+                            {% if viewable_count == 0 %}
+                                <td>viewable <span class="badge">{{viewable_count}}</span></td><td></td>
                             {% endif %}
                             {% comment %}
                                 {% for item_acces in facets.fields.item_acces %}
                                 {# Faire un booleen dans la vue, le passer en contexte puis verifier si il est a true ou a false pour l'affichage' #}
                                     {% ifequal item_acces.0 'none' %}
-                                        <td><a href="{{ request.get_full_path }}&amp;selected_facets=item_acces_exact:{{ item_acces.0|urlencode }}">{{ item_acces.0 }}</a> ({{ item_acces.1 }})</td>
+                                        <td><a href="{{ request.get_full_path }}&amp;selected_facets=item_acces_exact:{{ item_acces.0|urlencode }}">{{ item_acces.0 }}</a> <span class="badge">{{ item_acces.1 }}</span></td>
                                     {% endifequal %}
                                 {% endfor %}
                             {%endcomment%}
@@ -78,6 +83,23 @@
                         {% endif %}
                     </tr>
                 </table>
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group" role="group" >
+                        <button type="button " class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="background-color:#6a0307;color:white;font-weight:bold">
+                            <span class="glyphicon glyphicon-chevron-down"></span> Other Filters <span class="glyphicon glyphicon-chevron-down"></span>
+                        </button>
+                        <div class="dropdown-menu" role="menu" style="width:100%">
+                            <table class="table" style="font-size:0.9em">
+                                <tr><td>Alzdqdzl</td><td><a href="{% url "telemeta-search-type" "items" %}" class="">All</a></td></tr>
+                                <tr><td>Azdqll</td><td><a href="{% url "telemeta-search-type" "items" %}">Sounds</a></td></tr>
+                                <tr><td>Azdqdll</td><td><a href="{% url "telemeta-search-published" "items" %">Published</a></td></tr>
+                                <tr><td>Alzfzl</td><td><a href="{% url "telemeta-search-unpublished" "items" %}">Unpublished</a></td></tr>
+                                <tr><td>Alefqsfl</td><td><a href="{% url "telemeta-search-full" "items" %}">Fu</a></td></tr>
+                                <tr><td>zfqfef</td><td><a href="{% url "telemeta-search-none" "items" %}">None</a></td></tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
              {% with object_list as items %}
                 <div class="fullpage">

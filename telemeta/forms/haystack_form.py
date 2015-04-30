@@ -22,7 +22,7 @@ class HaySearchForm(FacetedSearchForm):
 
             if value:
                 if value == 'viewable':
-                    sqs = sqs.narrow('item_acces:full OR item_acces:metadata OR item_acces:mixed')
+                    sqs = sqs.narrow('item_acces:full OR item_acces:mixed').narrow('digitized:T')
                 else:
                     sqs = sqs.narrow(u'%s:"%s"' % (field, sqs.query.clean(value)))
 

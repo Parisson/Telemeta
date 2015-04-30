@@ -35,7 +35,8 @@ class HaystackSearch(FacetedSearchView):
                 else:
                     viewable_total = viewable_total + viewable[1]
 
-            extra['viewable_count'] = self.get_results().narrow('item_acces:full OR item_acces:metadata OR item_acces:mixed').count()
+            extra['viewable_count'] = self.get_results().narrow('item_acces:full OR item_acces:mixed').narrow('digitized:T').count()
+            extra['digitized_count'] = self.get_results().narrow('digitized:T').count()
         if self.type == 'collection':
             extra['type'] = 'collection'
         else:
