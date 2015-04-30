@@ -15,6 +15,10 @@ class MediaItemIndex(indexes.SearchIndex, indexes.Indexable):
     location = indexes.NgramField(model_attr='location__name', default='')
     ethnic_group = indexes.NgramField(model_attr='ethnic_group', default='')
     instruments = indexes.NgramField(default='')
+    collectors = indexes.NgramField(model_attr='collector', default='')
+    recorded_from_date = indexes.DateField(model_attr='recorded_from_date', default='')
+    recorded_to_date = indexes.DateField(model_attr='recorded_to_date', default='')
+    year_published = indexes.IntegerField(model_attr='collection__year_published', default='')
 
     def prepare_digitized(self, obj):
         if obj.file.name:
@@ -35,6 +39,13 @@ class MediaItemIndex(indexes.SearchIndex, indexes.Indexable):
             instruments.append(material.alias)
         return "%s" % instruments
 
+    def prepare_collectors(self, obj):
+        collectors = []
+        collectors.append(obj.collection.creator)
+        collectors.append(obj.collection.collector)
+        collectors.append(obj.collector)
+        return "%s" % collectors
+
 
 class MediaCollectionIndex(indexes.SearchIndex, indexes.Indexable):
 
@@ -50,6 +61,10 @@ class MediaCollectionIndex(indexes.SearchIndex, indexes.Indexable):
     location = indexes.NgramField(default='')
     ethnic_group = indexes.NgramField(default='')
     instruments = indexes.NgramField(default='')
+    collectors = indexes.NgramField(default='')
+    recorded_from_date = indexes.DateField(model_attr='recorded_from_year', default='')
+    recorded_to_date = indexes.DateField(model_attr='recorded_to_year', default='')
+    year_published = indexes.IntegerField(model_attr='year_published', default='')
 
     def prepare_digitized(self, obj):
         return obj.has_mediafile
@@ -76,3 +91,9 @@ class MediaCollectionIndex(indexes.SearchIndex, indexes.Indexable):
                     instruments.append(material.alias)
 
         return "%s" % instruments
+
+    def prepare_collectors(self, obj):
+        collectors = []
+        collectors.append(obj.creator)
+        collectors.append(obj.collector)
+        return "%s" % collectors

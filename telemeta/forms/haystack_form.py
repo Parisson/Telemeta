@@ -40,6 +40,11 @@ class HayAdvanceForm(SearchForm):
     #list_ethnic = SearchQuerySet().load_all().models(MediaCollection).ethnic_groups().distinct
     #ethnic_group = forms.ChoiceField(required=False, label=('Population / social group'), widget=forms.Select, choices = list_ethnic))
     instruments = forms.CharField(required=False, label=('Instruments'), widget=forms.TextInput(attrs={'type': 'search'}))
+    collectors = forms.CharField(required=False, label=('Depositor / contributor'), widget=forms.TextInput(attrs={'type': 'search'}))
+    recorded_from_date = forms.DateField(required=False, label=('Recorded from'), widget=forms.DateInput(attrs={'type': 'search', 'placeholder': 'MM/DD/YYYY'}))
+    recorded_to_date = forms.DateField(required=False, label=('Recorded to'), widget=forms.DateInput(attrs={'type': 'search', 'placeholder': 'MM/DD/YYYY'}))
+    year_published_from = forms.IntegerField(required=False, label=('Year published from'), widget=forms.TextInput(attrs={'type': 'search', 'placeholder': '1234567890'}))
+    year_published_to = forms.IntegerField(required=False, label=('Year published to'), widget=forms.TextInput(attrs={'type': 'search', 'placeholder': '1234567890'}))
 
     def search(self):
         sqs = SearchQuerySet().load_all()
@@ -61,5 +66,20 @@ class HayAdvanceForm(SearchForm):
 
         if self.cleaned_data.get('instruments'):
             sqs = sqs.filter(instruments__instruments__contains=self.cleaned_data['instruments'])
+
+        if self.cleaned_data.get('collectors'):
+            sqs = sqs.filter(collectors__collectors__contains=self.cleaned_data['collectors'])
+
+        if self.cleaned_data['recorded_from_date']:
+            sqs = sqs.filter(recorded_from_date__gte=self.cleaned_data['recorded_from_date'])
+
+        if self.cleaned_data['recorded_to_date']:
+            sqs = sqs.filter(recorded_to_date__lte=self.cleaned_data['recorded_to_date'])
+
+        if self.cleaned_data['year_published_from']:
+            sqs = sqs.filter(year_published__gte=self.cleaned_data['year_published_from'])
+
+        if self.cleaned_data['year_published_to']:
+            sqs = sqs.filter(year_published__lte=self.cleaned_data['year_published_to'])
 
         return sqs
