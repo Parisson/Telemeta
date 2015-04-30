@@ -53,22 +53,22 @@ class HayAdvanceForm(SearchForm):
             return self.no_query_found()
 
         if self.cleaned_data.get('q'):
-            sqs = sqs.filter(title__title__contains=self.cleaned_data['q'])
+            sqs = sqs.filter(title__contains=self.cleaned_data['q'])
 
         if self.cleaned_data.get('code'):
-            sqs = sqs.filter(code__code__contains=self.cleaned_data['code'])
+            sqs = sqs.filter(code__contains=self.cleaned_data['code'])
 
         if self.cleaned_data.get('location'):
-            sqs = sqs.filter(location__location__contains=self.cleaned_data['location'])
+            sqs = sqs.filter(location__contains=self.cleaned_data['location'])
 
         if self.cleaned_data.get('ethnic_group'):
-            sqs = sqs.filter(ethnic_group__ethnic_group__contains=self.cleaned_data['ethnic_group'])
+            sqs = sqs.filter(ethnic_group__contains=self.cleaned_data['ethnic_group'])
 
         if self.cleaned_data.get('instruments'):
-            sqs = sqs.filter(instruments__instruments__contains=self.cleaned_data['instruments'])
+            sqs = sqs.filter(instruments__contains=self.cleaned_data['instruments'])
 
         if self.cleaned_data.get('collectors'):
-            sqs = sqs.filter(collectors__collectors__contains=self.cleaned_data['collectors'])
+            sqs = sqs.filter(collectors__contains=self.cleaned_data['collectors'])
 
         if self.cleaned_data['recorded_from_date']:
             sqs = sqs.filter(recorded_from_date__gte=self.cleaned_data['recorded_from_date'])
