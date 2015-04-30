@@ -25,6 +25,6 @@ ADD . /opt/Telemeta
 WORKDIR /opt/Telemeta
 
 # Install deps
-RUN pip install -r requirements.txt
+RUN pip install -r requirements.txt --src /opt/src
 
 EXPOSE 8000
