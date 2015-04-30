@@ -159,7 +159,6 @@ INSTALLED_APPS = (
     'bootstrap_pagination',
     'googletools',
     'registration',
-    'epub',
     'rest_framework',
     'djcelery',
     'haystack',
