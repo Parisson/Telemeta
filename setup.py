@@ -64,7 +64,6 @@ setup(
         'django-google-tools',
         'django-ipauth',
         'django-celery',
-        # 'django-haystack',
         'timeside>=0.7',
         'south',
         'docutils',
@@ -76,9 +75,6 @@ setup(
         'ebooklib',
     ],
   tests_require=['pytest-django', 'pytest-cov', 'factory-boy'],
-  dependency_links = ['https://github.com/mariocesar/sorl-thumbnail/tarball/master#egg=sorl-thumbnail-12.2',
-                      'https://github.com/django-haystack/django-haystack/tarball/master#egg=django-haystack-2.4',
-                      ],
   # Provide a test command through django-setuptest
   cmdclass={'test': PyTest},
   platforms=['OS Independent'],
