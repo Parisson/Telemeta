@@ -3,9 +3,9 @@ Telemeta: open web audio platform with semantics
 =================================================
 
 :category: About
-:save_as: index.html
+:pin_to_top: True
 
-.. image:: images/logo_telemeta_2.png
+.. image:: /Telemeta/images/logo_telemeta_2.png
     :alt: Telemeta logo
 
 Overview
@@ -45,38 +45,26 @@ News
 1.5.1
 ++++++
 
- * Fix geo-navigator lists and pagination
- * Fix item analyses cleanup after file edit
- * Fix performance and keywords copy during item copy
- * Add various annotation mime types (ELAN, Trancriber, Sonic Visualizer)
- * Add arabic translations through Telemeta-locales (thanks to @AnasGhrab)
- * Fix arabic and chinese codes in sandbox
- * Better locale / pages management
- * A better management of RTL for arabic page style
+* Fix geo-navigator lists and pagination
+* Fix item analyses cleanup after file edit
+* Fix performance and keywords copy during item copy
+* Add various annotation mime types (ELAN, Trancriber, Sonic Visualizer)
+* Add arabic translations through Telemeta-locales (thanks to @AnasGhrab)
+* Fix arabic and chinese codes in sandbox
+* Better locale / pages management
+* A better management of RTL for arabic page style
 
 1.5
 +++++
 
- * Compatible with Django 1.6.x
- * Compatible with TimeSide 0.7.x
- * Huge refactor of all forms, detail and edit views
- * Main styles (buttons, tabs) are now based Bootstrap 3 and JQuery 2.1
- * Update models and views as needed by the CREM
- * New depedencies
+* Compatible with Django 1.6.x
+* Compatible with TimeSide 0.7.x
+* Huge refactor of all forms, detail and edit views
+* Main styles (buttons, tabs) are now based Bootstrap 3 and JQuery 2.1
+* Update models and views as needed by the CREM
+* New depedencies
 
-1.4.6
-+++++
-
- * Drastically improve collection zip packaqe streaming thanks to zipstream (check NEW dependencies)
- * Compatible with TimeSide >= 0.5.2
- * Add URL field to item so that a external sound can be indexed and streamed
- * Add TIMESIDE_AUTO_ZOOM in settings to auto toggle the player in zooming mode
- * Add TIMESIDE_DEFAULT_GRAPHER_ID in settings to select the default grapher in the player
- * Add minor migrations
- * Fix marker display bug
-
-
-See also the `full changelog <http://github.com/yomguy/Telemeta/blob/master/CHANGELOG.rst>`_.
+See previous releases `here <https://github.com/Parisson/Telemeta/releases>`_.
 
 
 Examples

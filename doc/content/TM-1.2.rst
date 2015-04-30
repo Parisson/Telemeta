@@ -1,7 +1,7 @@
 Telemeta 1.2 is out!
 ######################
 
-:category: Release
+:category: Releases
 :date: 2011-10-31 14:39
 
 Changes:
