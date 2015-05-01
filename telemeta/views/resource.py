@@ -396,7 +396,9 @@ class CorpusEpubView(TelemetaBaseMixin, View):
                     id = item.old_code.split('.')[1]
                 else:
                     id = item.old_code
-                id = id.replace('a', '.1').replace('b', '.2')
+                for c in id:
+                    if c.isalpha():
+	                id = id.replace(c, '.' + str(ord(c)-96))
                 items[item] = float(id)
             items = OrderedDict(sorted(items.items(), key=lambda t: t[1]))
 
