@@ -444,7 +444,7 @@ class CorpusEpubView(TelemetaBaseMixin, View):
         # create epub file
         epub_name = corpus.code + '.epub'
         path = self.cache_data.dir + os.sep + epub_name
-        epub.write_epub(filename, book, {})
+        epub.write_epub(path, book, {})
         epub_file = open(path, 'rb')
 
         response = HttpResponse(epub_file.read(), content_type='application/epub+zip')
