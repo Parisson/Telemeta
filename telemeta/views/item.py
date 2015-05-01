@@ -41,15 +41,13 @@ from telemeta.views.marker import *
 import timeside.core
 
 
-class ItemBaseMixin(object):
+class ItemBaseMixin(TelemetaBaseMixin):
 
     graphers = timeside.core.processor.processors(timeside.core.api.IGrapher)
     decoders = timeside.core.processor.processors(timeside.core.api.IDecoder)
     encoders = timeside.core.processor.processors(timeside.core.api.IEncoder)
     analyzers = timeside.core.processor.processors(timeside.core.api.IAnalyzer)
     value_analyzers = timeside.core.processor.processors(timeside.core.api.IValueAnalyzer)
-    cache_data = TelemetaCache(settings.TELEMETA_DATA_CACHE_DIR)
-    cache_export = TelemetaCache(settings.TELEMETA_EXPORT_CACHE_DIR)
 
     export_enabled = getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True)
     export_formats = getattr(settings, 'TELEMETA_DOWNLOAD_FORMATS', ('mp3', 'wav'))

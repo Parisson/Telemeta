@@ -356,7 +356,8 @@ def cleanup_path(path):
     return os.sep.join(new_path)
 
 
-class CorpusEpubView(View):
+class CorpusEpubView(TelemetaBaseMixin, View):
+    "Download corpus data embedded in an EPUB3 file"
 
     model = MediaCorpus
 
@@ -364,9 +365,6 @@ class CorpusEpubView(View):
         return MediaCorpus.objects.get(public_id=self.kwargs['public_id'])
 
     def get(self, request, *args, **kwargs):
-        """
-        Stream an Epub file of collection data
-        """
         from collections import OrderedDict
         from ebooklib import epub
         from django.template.loader import render_to_string
@@ -442,15 +440,17 @@ class CorpusEpubView(View):
         book.spine = chapters
 
         # create epub file
-        filename = '/tmp/test.epub'
+        epub_name = corpus.code + '.epub'
+        path = self.cache_data.dir + os.sep + epub_name
         epub.write_epub(filename, book, {})
         epub_file = open(filename, 'rb')
 
         response = HttpResponse(epub_file.read(), content_type='application/epub+zip')
-        response['Content-Disposition'] = "attachment; filename=%s.%s" % \
-                                             (collection.code, 'epub')
+        response['Content-Disposition'] = "attachment; filename=%s" % epub_name
+
         return response
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(CorpusEpubView, self).dispatch(*args, **kwargs)
+

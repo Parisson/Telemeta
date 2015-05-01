@@ -95,7 +95,12 @@ import jqchat.models
 mods = {'item': MediaItem, 'collection': MediaCollection,
         'corpus': MediaCorpus, 'fonds': MediaFonds, 'marker': MediaItemMarker, }
 
-# TOOLS
+
+class TelemetaBaseMixin(object):
+
+    cache_data = TelemetaCache(settings.TELEMETA_DATA_CACHE_DIR)
+    cache_export = TelemetaCache(settings.TELEMETA_EXPORT_CACHE_DIR)
+
 
 class FixedFileWrapper(FileWrapper):
     def __iter__(self):
