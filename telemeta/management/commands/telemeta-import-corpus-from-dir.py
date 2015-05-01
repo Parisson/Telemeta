@@ -79,13 +79,16 @@ class Command(BaseCommand):
             for root, dirs, files in os.walk(chapter_dir):
                 for media_file in files:
                     path = os.path.join(root, media_file)
-
-                    if ' ' in media_file:
-                        new_media_file = media_file.replace(' ', '_')
+                    print path
+                    new_media_file = slugify(unicode(media_file.decode('utf8')))
+                    if new_media_file[-3] != '.':
+                        new_media_file = new_media_file[:-3] + '.' + new_media_file[-3:]
+                    print new_media_file
+                    if new_media_file != media_file:
                         new_media_path = os.path.join(root, new_media_file)
                         os.rename(path, new_media_path)
                         media_file = new_media_file
-                        print media_file
+                        print 'renaming: ' + media_file
 
                     media_name = os.path.splitext(media_file)[0]
                     media_ext = os.path.splitext(media_file)[1][1:]
@@ -119,11 +122,12 @@ class Command(BaseCommand):
                             item.save()
 
                             title = data[0].split('.')
-                            item.title = title[0]
+                            item.title = title[0].replace('\n', '')
                             print data
-                            item.track = data[1].replace('\n', '')
+                            if len(data) > 1:
+                                item.track = data[1].replace('\n', '')
                             if len(title) > 1:
-                                 item.comment = '. '.join(title[1:])
+                                item.comment = '. '.join(title[1:])
                             item.save()
 
                             for related_file in os.listdir(root):
