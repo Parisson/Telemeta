@@ -16,8 +16,8 @@ class MediaItemIndex(indexes.SearchIndex, indexes.Indexable):
     ethnic_group = indexes.NgramField(model_attr='ethnic_group', default='')
     instruments = indexes.NgramField(default='')
     collectors = indexes.NgramField(model_attr='collector', default='')
-    recorded_from_date = indexes.DateField(model_attr='recorded_from_date', default='')
-    recorded_to_date = indexes.DateField(model_attr='recorded_to_date', default='')
+    recorded_from_date = indexes.DateField(model_attr='recorded_from_date', null='None')
+    recorded_to_date = indexes.DateField(model_attr='recorded_to_date', null='None')
     year_published = indexes.IntegerField(model_attr='collection__year_published', default='')
 
     def prepare_digitized(self, obj):
@@ -62,8 +62,8 @@ class MediaCollectionIndex(indexes.SearchIndex, indexes.Indexable):
     ethnic_group = indexes.NgramField(default='')
     instruments = indexes.NgramField(default='')
     collectors = indexes.NgramField(default='')
-    recorded_from_date = indexes.DateField(model_attr='recorded_from_year', default='')
-    recorded_to_date = indexes.DateField(model_attr='recorded_to_year', default='')
+    recorded_from_date = indexes.DateField(model_attr='recorded_from_year', null='None')
+    recorded_to_date = indexes.DateField(model_attr='recorded_to_year', null='None')
     year_published = indexes.IntegerField(model_attr='year_published', default='')
 
     def prepare_digitized(self, obj):

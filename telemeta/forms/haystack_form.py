@@ -43,8 +43,9 @@ class HayAdvanceForm(SearchForm):
     collectors = forms.CharField(required=False, label=('Depositor / contributor'), widget=forms.TextInput(attrs={'type': 'search'}))
     recorded_from_date = forms.DateField(required=False, label=('Recorded from'), widget=forms.DateInput(attrs={'type': 'search', 'placeholder': 'MM/DD/YYYY'}))
     recorded_to_date = forms.DateField(required=False, label=('Recorded to'), widget=forms.DateInput(attrs={'type': 'search', 'placeholder': 'MM/DD/YYYY'}))
-    year_published_from = forms.IntegerField(required=False, label=('Year published from'), widget=forms.TextInput(attrs={'type': 'search', 'placeholder': '1234567890'}))
-    year_published_to = forms.IntegerField(required=False, label=('Year published to'), widget=forms.TextInput(attrs={'type': 'search', 'placeholder': '1234567890'}))
+    year_published_from = forms.IntegerField(required=False, label=('Year published from'), widget=forms.TextInput(attrs={'type': 'search', 'placeholder': 'YYYY', 'pattern': '[0-9]{4}'}))
+    year_published_to = forms.IntegerField(required=False, label=('Year published to'), widget=forms.TextInput(attrs={'type': 'search', 'placeholder': 'YYYY', 'pattern': '[0-9]{4}'}))
+    digitized = forms.BooleanField(required=False, label=('Digitized'))
 
     def search(self):
         sqs = SearchQuerySet().load_all()
@@ -81,5 +82,8 @@ class HayAdvanceForm(SearchForm):
 
         if self.cleaned_data['year_published_to']:
             sqs = sqs.filter(year_published__lte=self.cleaned_data['year_published_to'])
+
+        if self.cleaned_data['digitized']:
+            sqs = sqs.filter(digitized=True)
 
         return sqs
