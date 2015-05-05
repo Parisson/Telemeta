@@ -38,8 +38,15 @@ class HayAdvanceForm(SearchForm):
     ethnic_group = forms.CharField(required=False, label=('Population / social group'), widget=forms.TextInput(attrs={'type': 'search'}))
     #waiting for docker update (django-haystack github version)
     #list_ethnic = SearchQuerySet().load_all().models(MediaCollection).ethnic_groups().distinct
-    #ethnic_group = forms.ChoiceField(required=False, label=('Population / social group'), widget=forms.Select, choices = list_ethnic))
+    #ethnic_group = forms.ChoiceField(required=False, label=('Population / social group'), widget=forms.Select(choices = list_ethnic)))
     instruments = forms.CharField(required=False, label=('Instruments'), widget=forms.TextInput(attrs={'type': 'search'}))
+    collectors = forms.CharField(required=False, label=('Depositor / contributor'), widget=forms.TextInput(attrs={'type': 'search'}))
+    recorded_from_date = forms.DateField(required=False, label=('Recorded from'), widget=forms.DateInput(attrs={'type': 'search', 'placeholder': 'MM/DD/YYYY'}))
+    recorded_to_date = forms.DateField(required=False, label=('Recorded to'), widget=forms.DateInput(attrs={'type': 'search', 'placeholder': 'MM/DD/YYYY'}))
+    year_published_from = forms.IntegerField(required=False, label=('Year published from'), widget=forms.TextInput(attrs={'type': 'search', 'placeholder': 'YYYY', 'pattern': '[0-9]{4}'}))
+    year_published_to = forms.IntegerField(required=False, label=('Year published to'), widget=forms.TextInput(attrs={'type': 'search', 'placeholder': 'YYYY', 'pattern': '[0-9]{4}'}))
+    #digitized = forms.BooleanField(required=False, label=('Digitized'))
+    media_type = forms.CharField(required=False, label=('Media'), widget=forms.RadioSelect(choices=(('dig', 'digitized'), ('aud', 'audio'), ('vid', 'video'), ('nop', 'no preference'))))
 
     def search(self):
         sqs = SearchQuerySet().load_all()
@@ -48,18 +55,41 @@ class HayAdvanceForm(SearchForm):
             return self.no_query_found()
 
         if self.cleaned_data.get('q'):
-            sqs = sqs.filter(title__title__contains=self.cleaned_data['q'])
+            sqs = sqs.filter(title__contains=self.cleaned_data['q'])
 
         if self.cleaned_data.get('code'):
-            sqs = sqs.filter(code__code__contains=self.cleaned_data['code'])
+            sqs = sqs.filter(code__contains=self.cleaned_data['code'])
 
         if self.cleaned_data.get('location'):
-            sqs = sqs.filter(location__location__contains=self.cleaned_data['location'])
+            sqs = sqs.filter(location__contains=self.cleaned_data['location'])
 
         if self.cleaned_data.get('ethnic_group'):
-            sqs = sqs.filter(ethnic_group__ethnic_group__contains=self.cleaned_data['ethnic_group'])
+            sqs = sqs.filter(ethnic_group__contains=self.cleaned_data['ethnic_group'])
 
         if self.cleaned_data.get('instruments'):
-            sqs = sqs.filter(instruments__instruments__contains=self.cleaned_data['instruments'])
+            sqs = sqs.filter(instruments__contains=self.cleaned_data['instruments'])
+
+        if self.cleaned_data.get('collectors'):
+            sqs = sqs.filter(collectors__contains=self.cleaned_data['collectors'])
+
+        if self.cleaned_data['recorded_from_date']:
+            sqs = sqs.filter(recorded_from_date__gte=self.cleaned_data['recorded_from_date'])
+
+        if self.cleaned_data['recorded_to_date']:
+            sqs = sqs.filter(recorded_to_date__lte=self.cleaned_data['recorded_to_date'])
+
+        if self.cleaned_data['year_published_from']:
+            sqs = sqs.filter(year_published__gte=self.cleaned_data['year_published_from'])
+
+        if self.cleaned_data['year_published_to']:
+            sqs = sqs.filter(year_published__lte=self.cleaned_data['year_published_to'])
+
+        if self.cleaned_data['media_type']:
+            if self.cleaned_data.get('media_type') == 'dig':
+                sqs = sqs = sqs.filter(digitized=True)
+            if self.cleaned_data.get('media_type') == 'aud':
+                sqs = sqs = sqs.filter(digitized=True).filter(media_type='Audio')
+            if self.cleaned_data.get('media_type') == 'vid':
+                sqs = sqs = sqs.filter(digitized=True).filter(media_type='Video')
 
         return sqs
