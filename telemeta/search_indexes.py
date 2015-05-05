@@ -8,6 +8,7 @@ class MediaItemIndex(indexes.SearchIndex, indexes.Indexable):
     item_acces = indexes.CharField(model_attr='collection__public_access', faceted=True)
     item_status = indexes.CharField(model_attr='collection__document_status', faceted=True)
     digitized = indexes.BooleanField(default=False, faceted=True)
+    media_type = indexes.CharField(model_attr='media_type', null='None', faceted=True)
 
     #advance search
     title = indexes.NgramField(model_attr='title')
@@ -54,6 +55,7 @@ class MediaCollectionIndex(indexes.SearchIndex, indexes.Indexable):
     item_acces = indexes.CharField(model_attr='public_access', faceted=True)
     item_status = indexes.CharField(model_attr='document_status', faceted=True)
     digitized = indexes.BooleanField(default=False, faceted=True)
+    media_type = indexes.CharField(model_attr='media_type', null='None', faceted=True)
 
     #advance search
     title = indexes.NgramField(model_attr='title')

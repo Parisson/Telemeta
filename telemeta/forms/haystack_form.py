@@ -38,14 +38,15 @@ class HayAdvanceForm(SearchForm):
     ethnic_group = forms.CharField(required=False, label=('Population / social group'), widget=forms.TextInput(attrs={'type': 'search'}))
     #waiting for docker update (django-haystack github version)
     #list_ethnic = SearchQuerySet().load_all().models(MediaCollection).ethnic_groups().distinct
-    #ethnic_group = forms.ChoiceField(required=False, label=('Population / social group'), widget=forms.Select, choices = list_ethnic))
+    #ethnic_group = forms.ChoiceField(required=False, label=('Population / social group'), widget=forms.Select(choices = list_ethnic)))
     instruments = forms.CharField(required=False, label=('Instruments'), widget=forms.TextInput(attrs={'type': 'search'}))
     collectors = forms.CharField(required=False, label=('Depositor / contributor'), widget=forms.TextInput(attrs={'type': 'search'}))
     recorded_from_date = forms.DateField(required=False, label=('Recorded from'), widget=forms.DateInput(attrs={'type': 'search', 'placeholder': 'MM/DD/YYYY'}))
     recorded_to_date = forms.DateField(required=False, label=('Recorded to'), widget=forms.DateInput(attrs={'type': 'search', 'placeholder': 'MM/DD/YYYY'}))
     year_published_from = forms.IntegerField(required=False, label=('Year published from'), widget=forms.TextInput(attrs={'type': 'search', 'placeholder': 'YYYY', 'pattern': '[0-9]{4}'}))
     year_published_to = forms.IntegerField(required=False, label=('Year published to'), widget=forms.TextInput(attrs={'type': 'search', 'placeholder': 'YYYY', 'pattern': '[0-9]{4}'}))
-    digitized = forms.BooleanField(required=False, label=('Digitized'))
+    #digitized = forms.BooleanField(required=False, label=('Digitized'))
+    media_type = forms.CharField(required=False, label=('Media'), widget=forms.RadioSelect(choices=(('dig', 'digitized'), ('aud', 'audio'), ('vid', 'video'), ('nop', 'no preference'))))
 
     def search(self):
         sqs = SearchQuerySet().load_all()
@@ -83,7 +84,12 @@ class HayAdvanceForm(SearchForm):
         if self.cleaned_data['year_published_to']:
             sqs = sqs.filter(year_published__lte=self.cleaned_data['year_published_to'])
 
-        if self.cleaned_data['digitized']:
-            sqs = sqs.filter(digitized=True)
+        if self.cleaned_data['media_type']:
+            if self.cleaned_data.get('media_type') == 'dig':
+                sqs = sqs = sqs.filter(digitized=True)
+            if self.cleaned_data.get('media_type') == 'aud':
+                sqs = sqs = sqs.filter(digitized=True).filter(media_type='Audio')
+            if self.cleaned_data.get('media_type') == 'vid':
+                sqs = sqs = sqs.filter(digitized=True).filter(media_type='Video')
 
         return sqs
