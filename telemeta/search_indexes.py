@@ -32,6 +32,14 @@ class MediaItemIndex(indexes.SearchIndex, indexes.Indexable):
     def get_model(self):
         return MediaItem
 
+    def prepare_location(self, obj):
+        location = []
+        location.append(obj.location.name)
+        location_alias = LocationAlias.objects.filter(location__name=obj.location.name)
+        for alias in location_alias:
+            location.append(alias)
+        return "%s" % location
+
     def prepare_instruments(self, obj):
         item = MediaItemPerformance.objects.all().filter(media_item__title__contains=obj.title)
         instruments = []
