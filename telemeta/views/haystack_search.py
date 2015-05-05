@@ -11,6 +11,7 @@ class HaystackSearch(FacetedSearchView):
     def __call__(self, request, type=None):
         self.type = type
         self.form_class = HaySearchForm
+        self.selected_facet=self.selected_facet_list(request.GET.getlist('selected_facets', ['a']))
         return super(HaystackSearch, self).__call__(request)
 
     def get_query(self):
@@ -21,6 +22,22 @@ class HaystackSearch(FacetedSearchView):
             return super(HaystackSearch, self).get_results().models(MediaCollection)
         else:
             return super(HaystackSearch, self).get_results().models(MediaItem)
+
+    def selected_facet_list(self,selected_facets):
+        facet_list=[]
+        for facet in selected_facets:
+            if ":" not in facet:
+                continue
+
+            field, value = facet.split(":", 1)
+
+            if value and not value in facet_list:
+                if field=='digitized_exact':
+                    facet_list.append('Sound')
+                else:
+                    facet_list.append(value)
+
+        return facet_list
 
     def extra_context(self):
         extra = super(HaystackSearch, self).extra_context()
@@ -37,10 +54,13 @@ class HaystackSearch(FacetedSearchView):
 
             extra['viewable_count'] = self.get_results().narrow('item_acces:full OR item_acces:mixed').narrow('digitized:T').count()
             extra['digitized_count'] = self.get_results().narrow('digitized:T').count()
+
         if self.type == 'collection':
             extra['type'] = 'collection'
         else:
             extra['type'] = 'item'
+
+        extra['selected_facets']=self.selected_facet
         return extra
 
 

@@ -13,7 +13,7 @@ class HaySearchForm(FacetedSearchForm):
             return sqs
 
         if self.cleaned_data['q']:
-            sqs = sqs.filter(content__contains=self.cleaned_data['q']).facet('item_acces').facet('item_status').facet('digitized')
+            sqs = sqs.filter(content__contains=self.cleaned_data['q']).facet('item_acces').facet('item_status').facet('digitized').facet('recording_context').facet('physical_format')
 
         for facet in self.selected_facets:
             if ":" not in facet:

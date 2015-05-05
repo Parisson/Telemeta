@@ -1,6 +1,8 @@
 {{ object.title }}
 {{ object.alt_title }}
 {{ object.creator }}
+{{ object.recorded_from_year }}
+{{ object.recorded_to_year }}
 {{ object.description }}
 {{ object.collector }}
 {{ object.publisher_serial }}
