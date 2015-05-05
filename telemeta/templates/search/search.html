@@ -85,22 +85,52 @@
                 </table>
                 <div class="btn-group btn-group-justified">
                     <div class="btn-group" role="group" >
-                        <button type="button " class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="background-color:#6a0307;color:white;font-weight:bold">
-                            <span class="glyphicon glyphicon-chevron-down"></span> Other Filters <span class="glyphicon glyphicon-chevron-down"></span>
+                        <button type="button " class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="background-color:#6a0307;color:white;font-weight:bold;text-align:left">
+                            <span class="glyphicon glyphicon-chevron-down"></span> Other Filters
                         </button>
                         <div class="dropdown-menu" role="menu" style="width:100%">
                             <table class="table" style="font-size:0.9em">
-                                <tr><td>Alzdqdzl</td><td><a href="{% url "telemeta-search-type" "items" %}" class="">All</a></td></tr>
-                                <tr><td>Azdqll</td><td><a href="{% url "telemeta-search-type" "items" %}">Sounds</a></td></tr>
-                                <tr><td>Azdqdll</td><td><a href="{% url "telemeta-search-published" "items" %">Published</a></td></tr>
-                                <tr><td>Alzfzl</td><td><a href="{% url "telemeta-search-unpublished" "items" %}">Unpublished</a></td></tr>
-                                <tr><td>Alefqsfl</td><td><a href="{% url "telemeta-search-full" "items" %}">Fu</a></td></tr>
-                                <tr><td>zfqfef</td><td><a href="{% url "telemeta-search-none" "items" %}">None</a></td></tr>
+                                <tr>
+                                    {% if facets.fields.recording_context %}
+                                        <td>Recording Context</td>
+                                        {% for recording_context in facets.fields.recording_context %}
+                                            {% ifequal recording_context.0 'studio'%}
+                                                <td><a href="{{ request.get_full_path }}&amp;selected_facets=recording_context_exact:{{ recording_context.0|urlencode }}">{{ recording_context.0 }}</a> <span style="background-color:#6a0307" class="badge">{{ recording_context.1 }}</span></td>
+                                            {% endifequal %}
+                                            {% ifequal recording_context.0 'radio'%}
+                                                <td><a href="{{ request.get_full_path }}&amp;selected_facets=recording_context_exact:{{ recording_context.0|urlencode }}">{{ recording_context.0 }}</a> <span style="background-color:#6a0307" class="badge">{{ recording_context.1 }}</span></td>
+                                            {% endifequal %}
+                                            {% ifequal recording_context.0 'terrain'%}
+                                                <td><a href="{{ request.get_full_path }}&amp;selected_facets=recording_context_exact:{{ recording_context.0|urlencode }}">{{ recording_context.0 }}</a> <span style="background-color:#6a0307" class="badge">{{ recording_context.1 }}</span></td>
+                                            {% endifequal %}
+                                        {% endfor %}
+                                    {% endif %}
+                                </tr>
+                                <tr>
+                                    {% if facets.fields.physical_format %}
+                                        <td>Physical Format</td>
+                                        {% for physical_format in facets.fields.physical_format %}
+                                            {% ifequal physical_format.0 'CDR'%}
+                                                <td><a href="{{ request.get_full_path }}&amp;selected_facets=physical_format_exact:{{ physical_format.0|urlencode }}">{{ physical_format.0 }}</a> <span style="background-color:#6a0307" class="badge">{{ physical_format.1 }}</span></td>
+                                            {% endifequal %}
+                                            {% ifequal physical_format.0 'disque'%}
+                                                <td><a href="{{ request.get_full_path }}&amp;selected_facets=physical_format_exact:{{ physical_format.0|urlencode }}">{{ physical_format.0 }}</a> <span style="background-color:#6a0307" class="badge">{{ physical_format.1 }}</span></td>
+                                            {% endifequal %}
+                                            {% ifequal physical_format.0 'cylindre'%}
+                                                <td><a href="{{ request.get_full_path }}&amp;selected_facets=physical_format_exact:{{ physical_format.0|urlencode }}">{{ physical_format.0 }}</a> <span style="background-color:#6a0307" class="badge">{{ physical_format.1 }}</span></td>
+                                            {% endifequal %}
+                                        {% endfor %}
+                                    {% endif %}
+                                </tr>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
+            {% if selected_facets %}
+                 <p><b> &raquo; selected facets :
+                     {{selected_facets|join:" + "}}
+             {% endif %}</b></p>
              {% with object_list as items %}
                 <div class="fullpage">
                     {% ifequal type 'item' %}
