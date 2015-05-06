@@ -50,7 +50,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         # NOT4PROD!!
-        reset()
+        # reset()
 
         root_dir = args[-1]
         cleanup_dir(root_dir)
