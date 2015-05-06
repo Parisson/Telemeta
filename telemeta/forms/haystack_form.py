@@ -46,7 +46,9 @@ class HayAdvanceForm(SearchForm):
     year_published_from = forms.IntegerField(required=False, label=('Year published from'), widget=forms.TextInput(attrs={'type': 'search', 'placeholder': 'YYYY', 'pattern': '[0-9]{4}'}))
     year_published_to = forms.IntegerField(required=False, label=('Year published to'), widget=forms.TextInput(attrs={'type': 'search', 'placeholder': 'YYYY', 'pattern': '[0-9]{4}'}))
     #digitized = forms.BooleanField(required=False, label=('Digitized'))
-    media_type = forms.CharField(required=False, label=('Media'), widget=forms.RadioSelect(choices=(('dig', 'digitized'), ('aud', 'audio'), ('vid', 'video'), ('nop', 'no preference'))))
+    item_status = forms.CharField(required=False, label=('Media'), widget=forms.RadioSelect(choices=(('nop', 'no preference'), ('pub', 'Published'), ('unpub', 'Unpublished'))))
+    viewable = forms.BooleanField(required=False, label=('Viewable'))
+    media_type = forms.CharField(required=False, label=('Media'), widget=forms.RadioSelect(choices=(('nop', 'no preference'), ('aud', 'audio'), ('vid', 'video'), ('dig', 'digitized'))))
 
     def search(self):
         sqs = SearchQuerySet().load_all()
