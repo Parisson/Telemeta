@@ -9,7 +9,7 @@
   </h3>
 
   <div class="item-audio">
-   <audio src="{{ item.file }}" controls="controls"></audio>
+   <audio class="item-player" src="{{ item.file }}" controls="controls"></audio>
   </div>
 
   {% for image in item.related.all %}
