@@ -122,8 +122,10 @@ urlpatterns = patterns('',
 
     # FIXME: need all paths
     url(r'^collections/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(), {'url': '/archives/collections/%(path)s/', 'permanent': False}, name="telemeta-collection-redir"),
-    url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/package/$', CollectionPackageView.as_view(),
-        name="telemeta-collection-package"),
+    url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/zip/$', CollectionZipView.as_view(),
+        name="telemeta-collection-zip"),
+    url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/epub/$', CollectionEpubView.as_view(),
+        name="telemeta-collection-epub"),
 
     # Generic resources
     url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/$', ResourceListView.as_view(), name="telemeta-resource-list"),
