@@ -383,7 +383,8 @@ class CollectionEpubView(BaseEpubMixin, View):
     def get(self, request, *args, **kwargs):
         collection = self.get_object()
         corpus = collection.corpus.all()[0]
-        self.write_book(corpus, collection=collection)
+        name = corpus.title + ' - ' + collection.title
+        self.write_book(corpus, collection=collection, name=name)
         epub_file = open(self.path, 'rb')
         response = HttpResponse(epub_file.read(), content_type='application/epub+zip')
         response['Content-Disposition'] = "attachment; filename=%s" % self.name

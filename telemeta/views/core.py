@@ -313,7 +313,7 @@ class BaseEpubMixin(TelemetaBaseMixin):
     css = os.sep.join([local_path, '..', 'static', 'telemeta', 'css', 'telemeta_epub.css'])
     template = os.sep.join([local_path, '..', 'templates', 'telemeta', 'inc', 'collection_epub.html'])
 
-    def write_book(self, corpus, collection=None, path=None):
+    def write_book(self, corpus, collection=None, path=None, name=None):
         from collections import OrderedDict
         from ebooklib import epub
         from django.template.loader import render_to_string
@@ -322,12 +322,17 @@ class BaseEpubMixin(TelemetaBaseMixin):
         self.corpus = corpus
         site = Site.objects.get_current()
         self.chapters = []
-        self.name = self.corpus.code + '.epub'
+
+        if not name:
+            self.name = self.corpus.title + '.epub'
+        else:
+            self.name = name + '.epub'
+
         self.path = self.cache_data.dir + os.sep + self.name
 
         # add metadata
         self.book.set_identifier(self.corpus.public_id)
-        self.book.set_title(self.corpus.title)
+        self.book.set_title(self.name)
         self.book.set_language('fr')
         self.book.add_author(self.corpus.descriptions)
 
