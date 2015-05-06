@@ -38,10 +38,10 @@ class HayAdvanceForm(SearchForm):
     code = forms.CharField(required=False, label=('Code'), widget=forms.TextInput(attrs={'type': 'search'}))
     location = forms.CharField(required=False, label=('Location'), widget=forms.TextInput(attrs={'type': 'search'}))
 
-    # to create a dynamic list of etchnic group
+    # to create a dynamic list of ethnic group
     def list_ethnic_group():
         type_name = []
-        type_name.append(('', 'no preference'))
+        type_name.append(('1', 'no preference'))
         list_ethnic_group = EthnicGroup.objects.all()
         for ethnic in list_ethnic_group:
             type_name.append((ethnic.value, ethnic.value))
@@ -60,6 +60,7 @@ class HayAdvanceForm(SearchForm):
 
     item_status = forms.CharField(required=False, label=('Item Status'), widget=forms.RadioSelect(choices=(('1', 'no preference'), ('pub', 'Published'), ('unpub', 'Unpublished'))), initial=1)
 
+    #to create a dynamic list of media type
     def list_media_type():
         type_name = []
         type_name.append(('1', 'no preference'))
@@ -70,8 +71,16 @@ class HayAdvanceForm(SearchForm):
         return type_name
 
     media_type = forms.CharField(required=False, label=('Media'), widget=forms.RadioSelect(choices=(list_media_type())), initial=1)
-    #media_type = forms.CharField(required=False, label=('Media'), widget=forms.RadioSelect(choices=(('1', 'no preference'), ('aud', 'audio'), ('vid', 'video'), ('dig', 'digitized'))), initial=1)
-    #recording
+
+    #to create a dynamic list of recording context
+    def list_recording_context():
+        type_name = []
+        type_name.append(('', 'no preference'))
+        list_recording_context = RecordingContext.objects.all()
+        for context in list_recording_context:
+            type_name.append((context.value, context.value))
+        return type_name
+    #recording_context = forms.CharField(required=False, label=('Recording Context'), widget=forms.Select(choices=list_recording_context()))
 
     def search(self):
         sqs = SearchQuerySet().load_all()
@@ -89,7 +98,8 @@ class HayAdvanceForm(SearchForm):
             sqs = sqs.filter(location__contains=self.cleaned_data['location'])
 
         if self.cleaned_data['ethnic_group']:
-            sqs = sqs.filter(ethnic_group__contains=self.cleaned_data['ethnic_group'])
+            if self.cleaned_data.get('ethnic_group') != '1':
+                sqs = sqs.filter(ethnic_group__contains=self.cleaned_data['ethnic_group'])
 
         if self.cleaned_data.get('instruments'):
             sqs = sqs.filter(instruments__contains=self.cleaned_data['instruments'])
@@ -109,21 +119,22 @@ class HayAdvanceForm(SearchForm):
         if self.cleaned_data['year_published_to']:
             sqs = sqs.filter(year_published__lte=self.cleaned_data['year_published_to'])
 
+        if self.cleaned_data['viewable']:
+            sqs = sqs.filter(Q(item_acces='full') | Q(item_acces='mixed'))
+
         if self.cleaned_data['item_status']:
             if self.cleaned_data.get('item_status') == 'pub':
                 sqs = sqs = sqs.filter(item_status='Published')
             if self.cleaned_data.get('item_status') == 'unpub':
                 sqs = sqs = sqs.filter(item_status='Unpublished')
 
-        if self.cleaned_data['viewable']:
-            sqs = sqs.filter(Q(item_acces='full') | Q(item_acces='mixed'))
-
         if self.cleaned_data['media_type']:
-            if self.cleaned_data.get('media_type') == 'dig':
-                sqs = sqs.filter(digitized=True)
-            if self.cleaned_data.get('media_type') == 'Audio':
-                sqs = sqs.filter(digitized=True).filter(media_type='Audio')
-            if self.cleaned_data.get('media_type') == 'Video':
-                sqs = sqs.filter(digitized=True).filter(media_type='Video')
+            if self.cleaned_data.get('media_type') != '1':
+                if self.cleaned_data.get('media_type') == 'dig':
+                    sqs = sqs.filter(digitized=True)
+                else:
+                    sqs = sqs.filter(digitized=True).filter(media_type=self.cleaned_data['media_type'])
+            else:
+                sqs = sqs
 
         return sqs
