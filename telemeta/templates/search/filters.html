@@ -7,6 +7,12 @@
                         {% for item_status in facets.fields.item_status %}
                             <td><a href="{{ request.get_full_path }}&amp;selected_facets=item_status_exact:{{ item_status.0|urlencode }}">{{ item_status.0 }}</a> <span style="background-color:#6a0307" class="badge">{{ item_status.1 }}</span></td>
                         {% endfor %}
+                        {% if Published_count == 0 %}
+                            <td> Published <span class="badge">0</span></td><td></td>
+                        {% endif %}
+                        {% if Unpublished_count == 0 %}
+                            <td> Unpublished <span class="badge">0</span></td><td></td>
+                        {% endif %}
                     {% else %}
                         <td>Item Status</td>
                         <td>None</td>
@@ -69,8 +75,15 @@
                                     <td><a href="{{ request.get_full_path }}&amp;selected_facets=media_type_exact:{{ media_type.0|urlencode }}">{{ media_type.0 }}</a> <span style="background-color:#6a0307" class="badge">{{ media_type.1 }}</span></td>
                                 {% endifequal %}
                             {% endfor %}
+                            {% if Video_count == 0 %}
+                                <td> Video <span class="badge">0</span></td><td></td>
+                            {% endif %}
+                            {% if Audio_count == 0 %}
+                                <td> Audio <span class="badge">0</span></td><td></td>
+                            {% endif %}
                         {% endif %}
                     </tr>
+                    <tr>
                     <tr>
                         {% if facets.fields.recording_context %}
                             <td>Recording Context</td>
@@ -85,6 +98,15 @@
                                     <td><a href="{{ request.get_full_path }}&amp;selected_facets=recording_context_exact:{{ recording_context.0|urlencode }}">{{ recording_context.0 }}</a> <span style="background-color:#6a0307" class="badge">{{ recording_context.1 }}</span></td>
                                 {% endifequal %}
                             {% endfor %}
+                            {% if Terrain_count == 0 %}
+                                <td> Terrain <span class="badge">0</span></td><td></td>
+                            {% endif %}
+                            {% if Radio_count == 0 %}
+                                <td> Radio <span class="badge">0</span></td><td></td>
+                            {% endif %}
+                            {% if Studio_count == 0 %}
+                                <td> Studio <span class="badge">0</span></td><td></td>
+                            {% endif %}
                         {% endif %}
                     </tr>
                     <tr>
@@ -101,6 +123,15 @@
                                     <td><a href="{{ request.get_full_path }}&amp;selected_facets=physical_format_exact:{{ physical_format.0|urlencode }}">{{ physical_format.0 }}</a> <span style="background-color:#6a0307" class="badge">{{ physical_format.1 }}</span></td>
                                 {% endifequal %}
                             {% endfor %}
+                            {% if CDR_count == 0 %}
+                                <td> CDR <span class="badge">0</span></td><td></td>
+                            {% endif %}
+                            {% if Disque_count == 0 %}
+                                <td> Disque <span class="badge">0</span></td><td></td>
+                            {% endif %}
+                            {% if Cylindre_count == 0 %}
+                                <td> Cylindre <span class="badge">0</span></a></td><td></td>
+                            {% endif %}
                         {% endif %}
                     </tr>
                 </table>

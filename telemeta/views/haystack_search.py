@@ -52,9 +52,18 @@ class HaystackSearch(FacetedSearchView):
                 else:
                     viewable_total = viewable_total + viewable[1]
 
+            extra['Published_count']=self.get_results().narrow('item_status:Published').count()
+            extra['Unpublished_count']=self.get_results().narrow('item_status:Unpublished').count()
             extra['viewable_count'] = self.get_results().narrow('item_acces:full OR item_acces:mixed').narrow('digitized:T').count()
             extra['digitized_count'] = self.get_results().narrow('digitized:T').count()
-
+            extra['CDR_count']=self.get_results().narrow('physical_format:CDR').count()
+            extra['Disque_count']=self.get_results().narrow('physical_format:Disque').count()
+            extra['Cylindre_count']=self.get_results().narrow('physical_format:Cylindre').count()
+            extra['Studio_count']=self.get_results().narrow('recording_context:Studio').count()
+            extra['Terrain_count']=self.get_results().narrow('recording_context:Terrain').count()
+            extra['Radio_count']=self.get_results().narrow('recording_context:Radio').count()
+            extra['Video_count']=self.get_results().narrow('media_type:Video').count()
+            extra['Audio_count']=self.get_results().narrow('media_type:Audio').count()
         if self.type == 'collection':
             extra['type'] = 'collection'
         else:
