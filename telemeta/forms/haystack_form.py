@@ -45,10 +45,20 @@ class HayAdvanceForm(SearchForm):
     recorded_to_date = forms.DateField(required=False, label=('Recorded to'), widget=forms.DateInput(attrs={'type': 'search', 'placeholder': 'MM/DD/YYYY'}))
     year_published_from = forms.IntegerField(required=False, label=('Year published from'), widget=forms.TextInput(attrs={'type': 'search', 'placeholder': 'YYYY', 'pattern': '[0-9]{4}'}))
     year_published_to = forms.IntegerField(required=False, label=('Year published to'), widget=forms.TextInput(attrs={'type': 'search', 'placeholder': 'YYYY', 'pattern': '[0-9]{4}'}))
-    #digitized = forms.BooleanField(required=False, label=('Digitized'))
-    item_status = forms.CharField(required=False, label=('Media'), widget=forms.RadioSelect(choices=(('nop', 'no preference'), ('pub', 'Published'), ('unpub', 'Unpublished'))))
+    item_status = forms.CharField(required=False, label=('Media'), widget=forms.RadioSelect(choices=(('1', 'no preference'), ('pub', 'Published'), ('unpub', 'Unpublished'))), initial=1)
     viewable = forms.BooleanField(required=False, label=('Viewable'))
-    media_type = forms.CharField(required=False, label=('Media'), widget=forms.RadioSelect(choices=(('nop', 'no preference'), ('aud', 'audio'), ('vid', 'video'), ('dig', 'digitized'))))
+
+    def list_media_type():
+        type_name = []
+        type_name.append(('1', 'no preference'))
+        list_media_type = MediaType.objects.all()
+        for mt in list_media_type:
+            type_name.append((mt.value, mt.value))
+        return type_name
+
+    media_type = forms.CharField(required=False, label=('Media'), widget=forms.RadioSelect(choices=(list_media_type())), initial=1)
+    #media_type = forms.CharField(required=False, label=('Media'), widget=forms.RadioSelect(choices=(('1', 'no preference'), ('aud', 'audio'), ('vid', 'video'), ('dig', 'digitized'))), initial=1)
+    #recording
 
     def search(self):
         sqs = SearchQuerySet().load_all()
@@ -86,12 +96,21 @@ class HayAdvanceForm(SearchForm):
         if self.cleaned_data['year_published_to']:
             sqs = sqs.filter(year_published__lte=self.cleaned_data['year_published_to'])
 
+        if self.cleaned_data['item_status']:
+            if self.cleaned_data.get('item_status') == 'pub':
+                sqs = sqs = sqs.filter(item_status='Published')
+            if self.cleaned_data.get('item_status') == 'unpub':
+                sqs = sqs = sqs.filter(item_status='Unpublished')
+
+        if self.cleaned_data['viewable']:
+            sqs = sqs.filter(Q(item_acces='full') | Q(item_acces='mixed'))
+
         if self.cleaned_data['media_type']:
             if self.cleaned_data.get('media_type') == 'dig':
-                sqs = sqs = sqs.filter(digitized=True)
+                sqs = sqs.filter(digitized=True)
             if self.cleaned_data.get('media_type') == 'aud':
-                sqs = sqs = sqs.filter(digitized=True).filter(media_type='Audio')
+                sqs = sqs.filter(digitized=True).filter(media_type='Audio')
             if self.cleaned_data.get('media_type') == 'vid':
-                sqs = sqs = sqs.filter(digitized=True).filter(media_type='Video')
+                sqs = sqs.filter(digitized=True).filter(media_type='Video')
 
         return sqs
