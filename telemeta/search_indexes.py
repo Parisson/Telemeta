@@ -70,7 +70,7 @@ class MediaCollectionIndex(indexes.SearchIndex, indexes.Indexable):
     item_status = indexes.CharField(model_attr='document_status', faceted=True)
     digitized = indexes.BooleanField(default=False, faceted=True)
     media_type = indexes.CharField(model_attr='media_type', null='None', faceted=True)
-    recording_context = indexes.CharField(model_attr='recording_context', default='' ,faceted=True)
+    recording_context = indexes.CharField(model_attr='recording_context', default='', faceted=True)
     #original_format = indexes.CharField(model_attr='original_format', default='', faceted=True)
     physical_format = indexes.CharField(model_attr='physical_format', default='', faceted=True)
 

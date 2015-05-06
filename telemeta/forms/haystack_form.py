@@ -31,22 +31,47 @@ class HaySearchForm(FacetedSearchForm):
 
 
 class HayAdvanceForm(SearchForm):
+
     #to replace de basic search form field
     q = forms.CharField(required=False, label=('Title'), widget=forms.TextInput(attrs={'type': 'search'}))
+
     code = forms.CharField(required=False, label=('Code'), widget=forms.TextInput(attrs={'type': 'search'}))
     location = forms.CharField(required=False, label=('Location'), widget=forms.TextInput(attrs={'type': 'search'}))
-    ethnic_group = forms.CharField(required=False, label=('Population / social group'), widget=forms.TextInput(attrs={'type': 'search'}))
-    #waiting for docker update (django-haystack github version)
-    #list_ethnic = SearchQuerySet().load_all().models(MediaCollection).ethnic_groups().distinct
-    #ethnic_group = forms.ChoiceField(required=False, label=('Population / social group'), widget=forms.Select(choices = list_ethnic)))
+
+    # to create a dynamic list of etchnic group
+    def list_ethnic_group():
+        type_name = []
+        type_name.append(('', 'no preference'))
+        list_ethnic_group = EthnicGroup.objects.all()
+        for ethnic in list_ethnic_group:
+            type_name.append((ethnic.value, ethnic.value))
+        return type_name
+
+    ethnic_group = forms.CharField(required=False, label=('Population / social group'), widget=forms.Select(choices=list_ethnic_group()))
+
     instruments = forms.CharField(required=False, label=('Instruments'), widget=forms.TextInput(attrs={'type': 'search'}))
     collectors = forms.CharField(required=False, label=('Depositor / contributor'), widget=forms.TextInput(attrs={'type': 'search'}))
     recorded_from_date = forms.DateField(required=False, label=('Recorded from'), widget=forms.DateInput(attrs={'type': 'search', 'placeholder': 'MM/DD/YYYY'}))
     recorded_to_date = forms.DateField(required=False, label=('Recorded to'), widget=forms.DateInput(attrs={'type': 'search', 'placeholder': 'MM/DD/YYYY'}))
     year_published_from = forms.IntegerField(required=False, label=('Year published from'), widget=forms.TextInput(attrs={'type': 'search', 'placeholder': 'YYYY', 'pattern': '[0-9]{4}'}))
     year_published_to = forms.IntegerField(required=False, label=('Year published to'), widget=forms.TextInput(attrs={'type': 'search', 'placeholder': 'YYYY', 'pattern': '[0-9]{4}'}))
-    #digitized = forms.BooleanField(required=False, label=('Digitized'))
-    media_type = forms.CharField(required=False, label=('Media'), widget=forms.RadioSelect(choices=(('dig', 'digitized'), ('aud', 'audio'), ('vid', 'video'), ('nop', 'no preference'))))
+
+    viewable = forms.BooleanField(required=False, label=('Viewable'))
+
+    item_status = forms.CharField(required=False, label=('Item Status'), widget=forms.RadioSelect(choices=(('1', 'no preference'), ('pub', 'Published'), ('unpub', 'Unpublished'))), initial=1)
+
+    def list_media_type():
+        type_name = []
+        type_name.append(('1', 'no preference'))
+        type_name.append(('dig', 'Digitized'))
+        list_media_type = MediaType.objects.all()
+        for mt in list_media_type:
+            type_name.append((mt.value, mt.value))
+        return type_name
+
+    media_type = forms.CharField(required=False, label=('Media'), widget=forms.RadioSelect(choices=(list_media_type())), initial=1)
+    #media_type = forms.CharField(required=False, label=('Media'), widget=forms.RadioSelect(choices=(('1', 'no preference'), ('aud', 'audio'), ('vid', 'video'), ('dig', 'digitized'))), initial=1)
+    #recording
 
     def search(self):
         sqs = SearchQuerySet().load_all()
@@ -63,7 +88,7 @@ class HayAdvanceForm(SearchForm):
         if self.cleaned_data.get('location'):
             sqs = sqs.filter(location__contains=self.cleaned_data['location'])
 
-        if self.cleaned_data.get('ethnic_group'):
+        if self.cleaned_data['ethnic_group']:
             sqs = sqs.filter(ethnic_group__contains=self.cleaned_data['ethnic_group'])
 
         if self.cleaned_data.get('instruments'):
@@ -84,12 +109,21 @@ class HayAdvanceForm(SearchForm):
         if self.cleaned_data['year_published_to']:
             sqs = sqs.filter(year_published__lte=self.cleaned_data['year_published_to'])
 
+        if self.cleaned_data['item_status']:
+            if self.cleaned_data.get('item_status') == 'pub':
+                sqs = sqs = sqs.filter(item_status='Published')
+            if self.cleaned_data.get('item_status') == 'unpub':
+                sqs = sqs = sqs.filter(item_status='Unpublished')
+
+        if self.cleaned_data['viewable']:
+            sqs = sqs.filter(Q(item_acces='full') | Q(item_acces='mixed'))
+
         if self.cleaned_data['media_type']:
             if self.cleaned_data.get('media_type') == 'dig':
-                sqs = sqs = sqs.filter(digitized=True)
-            if self.cleaned_data.get('media_type') == 'aud':
-                sqs = sqs = sqs.filter(digitized=True).filter(media_type='Audio')
-            if self.cleaned_data.get('media_type') == 'vid':
-                sqs = sqs = sqs.filter(digitized=True).filter(media_type='Video')
+                sqs = sqs.filter(digitized=True)
+            if self.cleaned_data.get('media_type') == 'Audio':
+                sqs = sqs.filter(digitized=True).filter(media_type='Audio')
+            if self.cleaned_data.get('media_type') == 'Video':
+                sqs = sqs.filter(digitized=True).filter(media_type='Video')
 
         return sqs
