@@ -41,7 +41,7 @@ class HayAdvanceForm(SearchForm):
     # to create a dynamic list of etchnic group
     def list_ethnic_group():
         type_name = []
-        type_name.append(('1', 'no preference'))
+        type_name.append(('', 'no preference'))
         list_ethnic_group = EthnicGroup.objects.all()
         for ethnic in list_ethnic_group:
             type_name.append((ethnic.value, ethnic.value))
@@ -89,8 +89,7 @@ class HayAdvanceForm(SearchForm):
             sqs = sqs.filter(location__contains=self.cleaned_data['location'])
 
         if self.cleaned_data['ethnic_group']:
-            if self.cleaned_data.get('ethnic_group') != 1:
-                sqs = sqs.filter(ethnic_group__contains=self.cleaned_data['ethnic_group'])
+            sqs = sqs.filter(ethnic_group__contains=self.cleaned_data['ethnic_group'])
 
         if self.cleaned_data.get('instruments'):
             sqs = sqs.filter(instruments__contains=self.cleaned_data['instruments'])
