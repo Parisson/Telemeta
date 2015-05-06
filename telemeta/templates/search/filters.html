@@ -1,5 +1,5 @@
 <div class="panel panel-default" style="font-weight:bold">
-        <div class="panel-heading" style="background-color:#6a0307;color:white;"><span class="glyphicon glyphicon-filter"></span> Filters</div>
+        <div class="panel-heading" style="background-color:#6a0307;color:white;"><span class="glyphicon glyphicon-filter"></span> Filters<a href="{% url "haystack_search_type" "type" %}?q={{ query }}&amp;page=1" class="pull-right" style="color:white">&raquo; Remove All Filters</a></div>
             <table class="table" style="font-size:0.9em">
                 <tr>
                     {% if facets.fields.item_status %}
@@ -62,10 +62,10 @@
                         {% if facets.fields.media_type %}
                             <td>Media Type</td>
                             {% for media_type in facets.fields.media_type %}
-                                {% ifequal media_type.0 'audio'%}
+                                {% ifequal media_type.0 'Audio'%}
                                     <td><a href="{{ request.get_full_path }}&amp;selected_facets=media_type_exact:{{ media_type.0|urlencode }}">{{ media_type.0 }}</a> <span style="background-color:#6a0307" class="badge">{{ media_type.1 }}</span></td>
                                 {% endifequal %}
-                                {% ifequal media_type.0 'video'%}
+                                {% ifequal media_type.0 'Video'%}
                                     <td><a href="{{ request.get_full_path }}&amp;selected_facets=media_type_exact:{{ media_type.0|urlencode }}">{{ media_type.0 }}</a> <span style="background-color:#6a0307" class="badge">{{ media_type.1 }}</span></td>
                                 {% endifequal %}
                             {% endfor %}
@@ -75,13 +75,13 @@
                         {% if facets.fields.recording_context %}
                             <td>Recording Context</td>
                             {% for recording_context in facets.fields.recording_context %}
-                                {% ifequal recording_context.0 'studio'%}
+                                {% ifequal recording_context.0 'Studio'%}
                                     <td><a href="{{ request.get_full_path }}&amp;selected_facets=recording_context_exact:{{ recording_context.0|urlencode }}">{{ recording_context.0 }}</a> <span style="background-color:#6a0307" class="badge">{{ recording_context.1 }}</span></td>
                                 {% endifequal %}
-                                {% ifequal recording_context.0 'radio'%}
+                                {% ifequal recording_context.0 'Radio'%}
                                     <td><a href="{{ request.get_full_path }}&amp;selected_facets=recording_context_exact:{{ recording_context.0|urlencode }}">{{ recording_context.0 }}</a> <span style="background-color:#6a0307" class="badge">{{ recording_context.1 }}</span></td>
                                 {% endifequal %}
-                                {% ifequal recording_context.0 'terrain'%}
+                                {% ifequal recording_context.0 'Terrain'%}
                                     <td><a href="{{ request.get_full_path }}&amp;selected_facets=recording_context_exact:{{ recording_context.0|urlencode }}">{{ recording_context.0 }}</a> <span style="background-color:#6a0307" class="badge">{{ recording_context.1 }}</span></td>
                                 {% endifequal %}
                             {% endfor %}
@@ -94,10 +94,10 @@
                                 {% ifequal physical_format.0 'CDR'%}
                                     <td><a href="{{ request.get_full_path }}&amp;selected_facets=physical_format_exact:{{ physical_format.0|urlencode }}">{{ physical_format.0 }}</a> <span style="background-color:#6a0307" class="badge">{{ physical_format.1 }}</span></td>
                                 {% endifequal %}
-                                {% ifequal physical_format.0 'disque'%}
+                                {% ifequal physical_format.0 'Disque'%}
                                     <td><a href="{{ request.get_full_path }}&amp;selected_facets=physical_format_exact:{{ physical_format.0|urlencode }}">{{ physical_format.0 }}</a> <span style="background-color:#6a0307" class="badge">{{ physical_format.1 }}</span></td>
                                 {% endifequal %}
-                                {% ifequal physical_format.0 'cylindre'%}
+                                {% ifequal physical_format.0 'Cylindre'%}
                                     <td><a href="{{ request.get_full_path }}&amp;selected_facets=physical_format_exact:{{ physical_format.0|urlencode }}">{{ physical_format.0 }}</a> <span style="background-color:#6a0307" class="badge">{{ physical_format.1 }}</span></td>
                                 {% endifequal %}
                             {% endfor %}
