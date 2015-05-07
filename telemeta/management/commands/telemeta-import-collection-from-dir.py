@@ -63,20 +63,22 @@ class Command(BaseCommand):
         filename = media.split(os.sep)[-1]
         if os.path.exists(media):
             if not item.file or self.force:
-                if not self.dry_run:
-                    if not self.media_root in self.source_dir:
-                        print "file not in MEDIA_ROOT, copying..."
-                        f = open(media, 'r')
+                if not self.media_root in self.source_dir:
+                    print "file not in MEDIA_ROOT, copying..."
+                    f = open(media, 'r')
+                    if not self.dry_run:
                         file_content = ContentFile(f.read())
                         item.file.save(filename, file_content)
-                        f.close()
-                    else:
-                        print "file in MEDIA_ROOT, linking..."
-                        path = media[len(self.media_root)+1:]
+                        item.save()
+                    f.close()
+                else:
+                    print "file in MEDIA_ROOT, linking..."
+                    path = media[len(self.media_root)+1:]
+                    if not self.dry_run:
                         item.file = path
-                    item.save()
-                    if self.user:
-                        item.set_revision(self.user)
+                        item.save()
+                if self.user:
+                    item.set_revision(self.user)
 
     def handle(self, *args, **options):
         self.source_dir = os.path.abspath(options.get('source_dir'))
@@ -84,18 +86,19 @@ class Command(BaseCommand):
         self.collection_title = options.get('collection_title')
         self.dry_run = options.get('dry-run')
         self.user = None
+        self.pattern = options.get('pattern')
+        self.force = options.get('force')
+
         users = User.objects.filter(username=options.get('username'))
         if users:
             self.user = users[0]
 
-        collections = MediaCollection.objects.filter(code=self.collection_code)
-        if not collections:
-            collection = MediaCollection(code=self.collection_code, title=self.collection_code)
+        collection, c = MediaCollection.objects.get_or_create(code=self.collection_code, title=self.collection_code)
+        if c:
             collection.public_access = 'full'
             collection.save()
             print 'Collection created: ' + self.collection_code
         else:
-            collection = collections[0]
             print 'Using collection: ' + collection.code
 
         for root, dirs, files in os.walk(self.source_dir):

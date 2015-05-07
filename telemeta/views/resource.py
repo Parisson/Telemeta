@@ -356,7 +356,8 @@ def cleanup_path(path):
     return os.sep.join(new_path)
 
 
-class CorpusEpubView(View):
+class CorpusEpubView(BaseEpubMixin, View):
+    "Download corpus data embedded in an EPUB3 file"
 
     model = MediaCorpus
 
@@ -364,93 +365,13 @@ class CorpusEpubView(View):
         return MediaCorpus.objects.get(public_id=self.kwargs['public_id'])
 
     def get(self, request, *args, **kwargs):
-        """
-        Stream an Epub file of collection data
-        """
-        from collections import OrderedDict
-        from ebooklib import epub
-        from django.template.loader import render_to_string
-
-        book = epub.EpubBook()
-        corpus = self.get_object()
-        local_path = os.path.dirname(__file__)
-        css = os.sep.join([local_path, '..', 'static', 'telemeta', 'css', 'telemeta_epub.css'])
-        collection_template = os.sep.join([local_path, '..', 'templates', 'telemeta', 'collection_epub.html'])
-        site = Site.objects.get_current()
-
-        # add metadata
-        book.set_identifier(corpus.public_id)
-        book.set_title(corpus.title)
-        book.set_language('fr')
-        book.add_author(corpus.descriptions)
-
-        # add cover image
-        for media in corpus.related.all():
-            if 'cover' in media.title or 'Cover' in media.title:
-                book.set_cover("cover.jpg", open(media.file.path, 'r').read())
-                break
-
-        chapters = []
-        for collection in corpus.children.all():
-            items = {}
-            for item in collection.items.all():
-                if '.' in item.old_code:
-                    id = item.old_code.split('.')[1]
-                else:
-                    id = item.old_code
-                id = id.replace('a', '.1').replace('b', '.2')
-                items[item] = float(id)
-            items = OrderedDict(sorted(items.items(), key=lambda t: t[1]))
-
-            for item in items:
-                if item.file:
-                    audio = open(item.file.path, 'r')
-                    filename = str(item.file)
-                    epub_item = epub.EpubItem(file_name=str(item.file), content=audio.read())
-                    book.add_item(epub_item)
-                for related in item.related.all():
-                    if 'image' in related.mime_type:
-                        image = open(related.file.path, 'r')
-                        epub_item = epub.EpubItem(file_name=str(related.file), content=image.read())
-                        book.add_item(epub_item)
-            context = {'collection': collection, 'site': site, 'items': items}
-            c = epub.EpubHtml(title=collection.title, file_name=collection.code + '.xhtml', lang='fr')
-            c.content = render_to_string(collection_template, context)
-            chapters.append(c)
-            # add chapters to the book
-            book.add_item(c)
-
-        # create table of contents
-        # - add manual link
-        # - add section
-        # - add auto created links to chaptersfesse
-
-        book.toc = (( chapters ))
-
-        # add navigation files
-        book.add_item(epub.EpubNcx())
-        book.add_item(epub.EpubNav())
-
-        # add css style
-        style = open(css, 'r')
-        nav_css = epub.EpubItem(uid="style_nav", file_name="style/nav.css", media_type="text/css", content=style.read())
-        book.add_item(nav_css)
-
-        # create spin, add cover page as first page
-        chapters.insert(0,'nav')
-        chapters.insert(0,'cover')
-        book.spine = chapters
-
-        # create epub file
-        filename = '/tmp/test.epub'
-        epub.write_epub(filename, book, {})
-        epub_file = open(filename, 'rb')
-
+        self.write_book(self.get_object())
+        epub_file = open(self.path, 'rb')
         response = HttpResponse(epub_file.read(), content_type='application/epub+zip')
-        response['Content-Disposition'] = "attachment; filename=%s.%s" % \
-                                             (collection.code, 'epub')
+        response['Content-Disposition'] = "attachment; filename=%s" % self.filename + '.epub'
         return response
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(CorpusEpubView, self).dispatch(*args, **kwargs)
+

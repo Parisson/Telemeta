@@ -23,7 +23,6 @@ from optparse import make_option
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 from django.contrib.auth.models import User
-from django.core.management import setup_environ
 from django.core.files.base import ContentFile
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
@@ -80,25 +79,26 @@ class Command(BaseCommand):
             help='define the pattern'),
     )
 
-
     def write_file(self, item, media):
         filename = media.split(os.sep)[-1]
         if os.path.exists(media):
             if not item.file or self.force:
-                if not self.dry_run:
-                    if not self.media_root in self.source_dir:
-                        f = open(media, 'r')
+                if not self.media_root in self.source_dir:
+                    print "file not in MEDIA_ROOT, copying..."
+                    f = open(media, 'r')
+                    if not self.dry_run:
                         file_content = ContentFile(f.read())
                         item.file.save(filename, file_content)
-                        f.close()
-                    else:
-                        path = media[len(self.media_root)+1:]
-                        item.file = path
-                    item.save()
-                    item.set_revision(self.user)
+                        item.save()
+                    f.close()
                 else:
-                    msg = item.code + " : pas d'écriture, utiliser l'option --write "
-                    self.logger.info('item', msg)
+                    print "file in MEDIA_ROOT, linking..."
+                    path = media.replace(self.media_root, '')
+                    if not self.dry_run:
+                        item.file = path
+                        item.save()
+                if self.user:
+                    item.set_revision(self.user)
             else:
                 msg = item.code + ' : fichier ' + item.file.name + ' deja inscrit dans la base de donnees et pas de forcage !'
                 self.logger.info('item', msg)
@@ -109,7 +109,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         self.logger = Logger(kwargs.get('log'))
         self.pattern = kwargs.get('pattern')
-        self.source_dir = kwargs.get('source_dir')
+        self.source_dir = os.path.abspath(kwargs.get('source_dir'))
         self.dry_run =  kwargs.get('dry-run')
         self.force = kwargs.get('force')
 
@@ -121,7 +121,6 @@ class Command(BaseCommand):
         for collection in self.collections:
             collection_dir = self.source_dir + os.sep + collection
             collection_files = os.listdir(collection_dir)
-
 
             if not '/.' in collection_dir and self.pattern in collection_dir:
                 collection_name = collection.split(os.sep)[-1]

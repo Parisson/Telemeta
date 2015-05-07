@@ -44,8 +44,13 @@ nav[epub|type~='toc'] > ol > li > ol > li {
 .item-image {
     text-align: center;
 }
+
 .item-audio{
     page-break-after: avoid;
+}
+
+.item-player {
+    width: 100%;
 }
 
 img {

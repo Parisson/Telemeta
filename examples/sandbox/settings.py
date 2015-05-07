@@ -18,7 +18,8 @@ ADMINS = (
 MANAGERS = ADMINS
 
 # Full filesystem path to the project.
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+#PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = '/home/sandbox'
 
 DATABASES = {
     'default': {
@@ -159,7 +160,6 @@ INSTALLED_APPS = (
     'bootstrap_pagination',
     'googletools',
     'registration',
-    'epub',
     'rest_framework',
     'djcelery',
     'haystack',

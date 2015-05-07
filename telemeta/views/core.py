@@ -95,7 +95,12 @@ import jqchat.models
 mods = {'item': MediaItem, 'collection': MediaCollection,
         'corpus': MediaCorpus, 'fonds': MediaFonds, 'marker': MediaItemMarker, }
 
-# TOOLS
+
+class TelemetaBaseMixin(object):
+
+    cache_data = TelemetaCache(settings.TELEMETA_DATA_CACHE_DIR)
+    cache_export = TelemetaCache(settings.TELEMETA_EXPORT_CACHE_DIR)
+
 
 class FixedFileWrapper(FileWrapper):
     def __iter__(self):
@@ -298,4 +303,104 @@ def get_kwargs_or_none(key, kwargs):
         return kwargs[key]
     else:
         return None
+
+
+class BaseEpubMixin(TelemetaBaseMixin):
+    "Download corpus data embedded in an EPUB3 file"
+
+    abstract = True
+    local_path = os.path.dirname(__file__)
+    css = os.sep.join([local_path, '..', 'static', 'telemeta', 'css', 'telemeta_epub.css'])
+    template = os.sep.join([local_path, '..', 'templates', 'telemeta', 'inc', 'collection_epub.html'])
+
+    def write_book(self, corpus, collection=None, path=None):
+        from collections import OrderedDict
+        from ebooklib import epub
+        from django.template.loader import render_to_string
+
+        self.book = epub.EpubBook()
+        self.corpus = corpus
+        site = Site.objects.get_current()
+        self.chapters = []
+
+        if not collection:
+            self.filename = self.corpus.code
+            self.book.set_title(corpus.title)
+        else:
+            self.filename = collection.code
+            self.book.set_title(corpus.title + ' - ' + collection.title)
+
+        self.path = self.cache_data.dir + os.sep + self.filename + '.epub'
+
+        # add metadata
+        self.book.set_identifier(corpus.public_id)
+        #self.book.set_title(corpus.title + ' - ' + collection.title)
+        self.book.set_language('fr')
+        self.book.add_author(corpus.descriptions)
+
+        # add cover image
+        for media in self.corpus.related.all():
+            if 'cover' in media.title or 'Cover' in media.title:
+                self.book.set_cover("cover.jpg", open(media.file.path, 'r').read())
+                break
+
+        if collection:
+            self.collections = [collection]
+        else:
+            self.collections = self.corpus.children.all()
+
+        for collection in self.collections:
+            items = {}
+            for item in collection.items.all():
+                if '.' in item.old_code:
+                    id = item.old_code.split('.')[1]
+                else:
+                    id = item.old_code
+                for c in id:
+                    if c.isalpha():
+                        id = id.replace(c, '.' + str(ord(c)-96))
+                items[item] = float(id)
+            items = OrderedDict(sorted(items.items(), key=lambda t: t[1]))
+
+            for item in items:
+                if item.file:
+                    audio = open(item.file.path, 'r')
+                    filename = str(item.file)
+                    epub_item = epub.EpubItem(file_name=str(item.file), content=audio.read())
+                    self.book.add_item(epub_item)
+                for related in item.related.all():
+                    if 'image' in related.mime_type:
+                        image = open(related.file.path, 'r')
+                        epub_item = epub.EpubItem(file_name=str(related.file), content=image.read())
+                        self.book.add_item(epub_item)
+            context = {'collection': collection, 'site': site, 'items': items}
+            c = epub.EpubHtml(title=collection.title, file_name=collection.code + '.xhtml', lang='fr')
+            c.content = render_to_string(self.template, context)
+            self.chapters.append(c)
+            # add self.chapters to the self.book
+            self.book.add_item(c)
+
+        # create table of contents
+        # - add manual link
+        # - add section
+        # - add auto created links to chaptersfesse
+
+        self.book.toc = (( self.chapters ))
+
+        # add navigation files
+        self.book.add_item(epub.EpubNcx())
+        self.book.add_item(epub.EpubNav())
+
+        # add css style
+        style = open(self.css, 'r')
+        nav_css = epub.EpubItem(uid="style_nav", file_name="style/nav.css", media_type="text/css", content=style.read())
+        self.book.add_item(nav_css)
+
+        # create spin, add cover page as first page
+        self.chapters.insert(0,'nav')
+        self.chapters.insert(0,'cover')
+        self.book.spine = self.chapters
+
+        # write epub file
+        epub.write_epub(self.path, self.book, {})
 
