@@ -41,7 +41,7 @@ class HayAdvanceForm(SearchForm):
     # to create a dynamic list of ethnic group
     def list_ethnic_group():
         type_name = []
-        type_name.append(('1', 'no preference'))
+        type_name.append(('', 'no preference'))
         list_ethnic_group = EthnicGroup.objects.all()
         for ethnic in list_ethnic_group:
             type_name.append((ethnic.value, ethnic.value))
@@ -55,7 +55,6 @@ class HayAdvanceForm(SearchForm):
     recorded_to_date = forms.DateField(required=False, label=('Recorded to'), widget=forms.DateInput(attrs={'type': 'search', 'placeholder': 'MM/DD/YYYY'}))
     year_published_from = forms.IntegerField(required=False, label=('Year published from'), widget=forms.TextInput(attrs={'type': 'search', 'placeholder': 'YYYY', 'pattern': '[0-9]{4}'}))
     year_published_to = forms.IntegerField(required=False, label=('Year published to'), widget=forms.TextInput(attrs={'type': 'search', 'placeholder': 'YYYY', 'pattern': '[0-9]{4}'}))
-
     viewable = forms.BooleanField(required=False, label=('Viewable'))
 
     item_status = forms.CharField(required=False, label=('Item Status'), widget=forms.RadioSelect(choices=(('1', 'no preference'), ('pub', 'Published'), ('unpub', 'Unpublished'))), initial=1)
@@ -80,7 +79,19 @@ class HayAdvanceForm(SearchForm):
         for context in list_recording_context:
             type_name.append((context.value, context.value))
         return type_name
-    #recording_context = forms.CharField(required=False, label=('Recording Context'), widget=forms.Select(choices=list_recording_context()))
+
+    recording_context = forms.CharField(required=False, label=('Recording Context'), widget=forms.Select(choices=list_recording_context()))
+
+    #to create a dynamic list of physical format
+    def list_physical_format():
+        type_name = []
+        type_name.append(('', 'no preference'))
+        list_physical_format = PhysicalFormat.objects.all()
+        for physical_format in list_physical_format:
+            type_name.append((physical_format.value, physical_format.value))
+        return type_name
+
+    physical_format = forms.CharField(required=False, label=('Physical Format'), widget=forms.Select(choices=list_physical_format()))
 
     def search(self):
         sqs = SearchQuerySet().load_all()
@@ -98,7 +109,7 @@ class HayAdvanceForm(SearchForm):
             sqs = sqs.filter(location__contains=self.cleaned_data['location'])
 
         if self.cleaned_data['ethnic_group']:
-            if self.cleaned_data.get('ethnic_group') != '1':
+            if self.cleaned_data.get('ethnic_group') != '':
                 sqs = sqs.filter(ethnic_group__contains=self.cleaned_data['ethnic_group'])
 
         if self.cleaned_data.get('instruments'):
@@ -134,7 +145,13 @@ class HayAdvanceForm(SearchForm):
                     sqs = sqs.filter(digitized=True)
                 else:
                     sqs = sqs.filter(digitized=True).filter(media_type=self.cleaned_data['media_type'])
-            else:
-                sqs = sqs
+
+        if self.cleaned_data['recording_context']:
+            if self.cleaned_data.get('recording_context') != '':
+                sqs = sqs.filter(recording_context=self.cleaned_data['recording_context'])
+
+        if self.cleaned_data['physical_format']:
+            if self.cleaned_data.get('physical_formate') != '':
+                sqs = sqs.filter(physical_format=self.cleaned_data['physical_format'])
 
         return sqs
