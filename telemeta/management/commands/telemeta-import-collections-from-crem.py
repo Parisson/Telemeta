@@ -93,7 +93,7 @@ class Command(BaseCommand):
                     f.close()
                 else:
                     print "file in MEDIA_ROOT, linking..."
-                    path = media[len(self.media_root)+1:]
+                    path = media[len(self.media_root):]
                     if not self.dry_run:
                         item.file = path
                         item.save()
