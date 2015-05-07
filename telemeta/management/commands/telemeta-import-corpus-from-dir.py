@@ -146,30 +146,26 @@ class Command(BaseCommand):
                             corpus.children.add(collection)
 
                         item, c = MediaItem.objects.get_or_create(collection=collection, code=item_id)
-                        if c:
-                            item.old_code = item_name
-                            self.write_file(item, media_path)
-                            item.save()
+                        item.old_code = item_name
+                        self.write_file(item, media_path)
+                        title = data[0].split('.')
+                        item.title = title[0].replace('\n', '')
+                        print data
+                        if len(data) > 1:
+                            item.track = data[1].replace('\n', '')
+                        if len(title) > 1:
+                            item.comment = '. '.join(title[1:])
+                        item.save()
 
-                            title = data[0].split('.')
-                            item.title = title[0].replace('\n', '')
-                            print data
-                            if len(data) > 1:
-                                item.track = data[1].replace('\n', '')
-                            if len(title) > 1:
-                                item.comment = '. '.join(title[1:])
-                            item.save()
+                        for related_file in os.listdir(root):
+                            related_path = os.sep.join(root_list[-4:]) + os.sep + related_file
+                            related_name = os.path.splitext(related_file)[0]
+                            related_ext = os.path.splitext(related_file)[1][1:]
 
-                            for related_file in os.listdir(root):
-                                related_path = os.sep.join(root_list[-4:]) + os.sep + related_file
-                                related_name = os.path.splitext(related_file)[0]
-                                related_ext = os.path.splitext(related_file)[1][1:]
-
-                                if related_ext in self.image_formats:
-                                    related, c = MediaItemRelated.objects.get_or_create(item=item, file=related_path)
-                                    if c:
-                                        if len(data) > 2:
-                                            related.title = item.track
-                                        related.set_mime_type()
-                                        related.save()
+                            if related_ext in self.image_formats:
+                                related, c = MediaItemRelated.objects.get_or_create(item=item, file=related_path)
+                                if len(data) > 2:
+                                    related.title = item.track
+                                related.set_mime_type()
+                                related.save()
 
