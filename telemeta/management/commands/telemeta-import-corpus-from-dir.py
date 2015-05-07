@@ -154,7 +154,7 @@ class Command(BaseCommand):
                         if len(data) > 1:
                             item.track = data[1].replace('\n', '')
                         if len(title) > 1:
-                            item.comment = '. '.join(title[1:])
+                            item.descriptions = '. '.join(title[1:])
                         item.save()
 
                         for related_file in os.listdir(root):
