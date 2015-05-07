@@ -9,16 +9,13 @@
 {% block content %}
 
     <form method="get" action=".">
-        <table>
-            {{ form.as_table }}
-            <tr>
-                <td>&nbsp;</td>
-                <td>
-                    <input type="submit" value="{% trans "Search" %}">
-                </td>
-            </tr>
-        </table>
-        <div><a href="{% url "haystack_advance_search" %}">&raquo; recherche avancée</a></div></br>
+        <div class="input-group col-md-3">
+            {{ form.q.errors }}
+            <span class="input-group-addon" id="sizing-addon1" style="background-color:#6a0307;color:white;border-color:#6a0307;" ><span class="glyphicon glyphicon-search"></span></span>{{form.q}}
+        </div>
+        <button style="margin-top:10px" type="submit" id="btn" class="btn btn-default">{% trans "Search" %}</button>
+        <div ><a href="{% url "haystack_advance_search" %}">&raquo; recherche avancée</a></div></br>
+    </form>
         {% if query %}
 
 

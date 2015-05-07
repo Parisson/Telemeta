@@ -1227,7 +1227,7 @@ a.image-link {
     color:#ffffff;
     background-color:#6a0307;
     border-color:#6a0307;
-    box-shadow: 5px 5px 5px #888888;
+
 }
 
 #btn:hover{
@@ -1235,9 +1235,50 @@ a.image-link {
     color:#6a0307;
     background-color:#ffffff;
     border-color:#6a0307;
-    box-shadow: 5px 5px 5px #888888;
+
 }
 
+textarea:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="date"]:focus,
+input[type="month"]:focus,
+input[type="time"]:focus,
+input[type="week"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="color"]:focus,
+.uneditable-input:focus {
+  border-color: rgba(106, 3, 7, 0.8);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(106, 3, 7, 0.6);
+  outline: 0 none;
+}
+
+.form-control::-moz-placeholder {
+  color: #6a0307;
+  opacity: 1;
+}
+.form-control:-ms-input-placeholder {
+  color: #6a0307;
+}
+.form-control::-webkit-input-placeholder {
+  color: #6a0307;
+}
+.form-control[disabled],
+.form-control[readonly],
+fieldset[disabled] .form-control {
+  cursor: not-allowed;
+  background-color: #6a0307;
+  opacity: 1;
+}
+textarea.form-control {
+  height: auto;
+}
 
 .list_item, .list_item:visited, .list_item:hover{
     display:block;

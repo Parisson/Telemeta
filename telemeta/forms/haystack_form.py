@@ -5,7 +5,7 @@ from haystack.query import SearchQuerySet
 
 
 class HaySearchForm(FacetedSearchForm):
-
+    q = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'type' : 'text'}))
     def search(self):
         sqs = SearchQuerySet().load_all()
 
@@ -33,7 +33,7 @@ class HaySearchForm(FacetedSearchForm):
 class HayAdvanceForm(SearchForm):
 
     #to replace de basic search form field
-    q = forms.CharField(required=False, label=('Title'), widget=forms.TextInput(attrs={'type': 'search'}))
+    q = forms.CharField(required=False, widget=forms.TextInput(attrs={'type': 'search'}))
 
     code = forms.CharField(required=False, label=('Code'), widget=forms.TextInput(attrs={'type': 'search'}))
     location = forms.CharField(required=False, label=('Location'), widget=forms.TextInput(attrs={'type': 'search'}))
