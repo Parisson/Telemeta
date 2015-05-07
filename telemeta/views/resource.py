@@ -368,7 +368,7 @@ class CorpusEpubView(BaseEpubMixin, View):
         self.write_book(self.get_object())
         epub_file = open(self.path, 'rb')
         response = HttpResponse(epub_file.read(), content_type='application/epub+zip')
-        response['Content-Disposition'] = "attachment; filename=%s" % self.name
+        response['Content-Disposition'] = "attachment; filename=%s" % self.filename + '.epub'
         return response
 
     @method_decorator(login_required)

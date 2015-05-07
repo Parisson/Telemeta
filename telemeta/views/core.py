@@ -313,7 +313,7 @@ class BaseEpubMixin(TelemetaBaseMixin):
     css = os.sep.join([local_path, '..', 'static', 'telemeta', 'css', 'telemeta_epub.css'])
     template = os.sep.join([local_path, '..', 'templates', 'telemeta', 'inc', 'collection_epub.html'])
 
-    def write_book(self, corpus, collection=None, path=None, name=None):
+    def write_book(self, corpus, collection=None, path=None):
         from collections import OrderedDict
         from ebooklib import epub
         from django.template.loader import render_to_string
@@ -323,18 +323,20 @@ class BaseEpubMixin(TelemetaBaseMixin):
         site = Site.objects.get_current()
         self.chapters = []
 
-        if not name:
-            self.name = self.corpus.title + '.epub'
+        if not collection:
+            self.filename = self.corpus.code
+            self.book.set_title(corpus.title)
         else:
-            self.name = name + '.epub'
+            self.filename = collection.code
+            self.book.set_title(corpus.title + ' - ' + collection.title)
 
-        self.path = self.cache_data.dir + os.sep + self.name
+        self.path = self.cache_data.dir + os.sep + self.filename + '.epub'
 
         # add metadata
-        self.book.set_identifier(self.corpus.public_id)
-        self.book.set_title(self.name)
+        self.book.set_identifier(corpus.public_id)
+        #self.book.set_title(corpus.title + ' - ' + collection.title)
         self.book.set_language('fr')
-        self.book.add_author(self.corpus.descriptions)
+        self.book.add_author(corpus.descriptions)
 
         # add cover image
         for media in self.corpus.related.all():

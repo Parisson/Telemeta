@@ -2,6 +2,7 @@ from optparse import make_option
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 from django.core.files.base import ContentFile
+from django.contrib.auth.models import User
 from telemeta.models import *
 from telemeta.util.unaccent import unaccent
 import os, re
@@ -47,9 +48,13 @@ class Command(BaseCommand):
     media_formats = ['mp3']
     image_formats = ['png', 'jpg']
     text_formats = ['txt']
+    media_root = settings.MEDIA_ROOT
+    dry_run = False
+    user = User.objects.get(username='admin')
 
     def write_file(self, item, media):
         filename = media.split(os.sep)[-1]
+        print media
         if os.path.exists(media):
             if not item.file or self.force:
                 if not self.media_root in self.source_dir:
@@ -71,14 +76,17 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         # NOT4PROD!!
-        # reset()
+        reset()
 
         root_dir = args[-1]
-        cleanup_dir(root_dir)
-        chapters = os.listdir(root_dir)
+        self.source_dir = root_dir
+        print self.source_dir
+        print self.media_root
+        cleanup_dir(self.source_dir)
+        chapters = os.listdir(self.source_dir)
 
         for chapter in chapters:
-            chapter_dir = os.path.join(root_dir, chapter)
+            chapter_dir = os.path.join(self.source_dir, chapter)
             metadata = {}
 
             for filename in os.listdir(chapter_dir):
@@ -126,13 +134,16 @@ class Command(BaseCommand):
                         corpus_id = slugify(unicode(corpus_name))
                         collection_id = corpus_id + '_' + slugify(unicode(collection_name))
                         item_id = collection_id + '_' + slugify(unicode(item_name))
-
-                        corpus, c = MediaCorpus.objects.get_or_create(code=corpus_id)
-                        if c:
+                        
+                        cc = MediaCorpus.objects.filter(code=corpus_id)
+                        if cc:
+                            corpus = cc[0]
+                        else:
+                            corpus = MediaCorpus(code=corpus_id)
                             corpus.title = corpus_name
                             corpus.save()
 
-                        collection_title = collection_name.replace('_', ' ') + ' : ' + chapter_title
+                        collection_title = collection_name.replace('_', ' ') + ' - ' + chapter_title
                         print collection_title
                         cc = MediaCollection.objects.filter(code=collection_id, title=collection_title)
                         if cc:
@@ -147,14 +158,14 @@ class Command(BaseCommand):
 
                         item, c = MediaItem.objects.get_or_create(collection=collection, code=item_id)
                         item.old_code = item_name
-                        self.write_file(item, media_path)
+                        self.write_file(item, path)
                         title = data[0].split('.')
                         item.title = title[0].replace('\n', '')
                         print data
                         if len(data) > 1:
                             item.track = data[1].replace('\n', '')
                         if len(title) > 1:
-                            item.descriptions = '. '.join(title[1:])
+                            item.comment = '. '.join(title[1:])
                         item.save()
 
                         for related_file in os.listdir(root):
