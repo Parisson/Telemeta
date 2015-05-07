@@ -106,11 +106,17 @@ class Command(BaseCommand):
                         collection_id = corpus_id + '_' + slugify(unicode(collection_name))
                         item_id = collection_id + '_' + slugify(unicode(item_name))
 
-                        corpus, c = MediaCorpus.objects.get_or_create(code=corpus_id, title=corpus_name)
+                        corpus, c = MediaCorpus.objects.get_or_create(code=corpus_id)
+                        if c:
+                            corpus.title = corpus_name
+                            corpus.save()
 
                         collection_title = collection_name.replace('_', ' ') + ' : ' + chapter_title
                         print collection_title
-                        collection, c = MediaCollection.objects.get_or_create(code=collection_id, title=collection_title)
+                        collection, c = MediaCollection.objects.get_or_create(code=collection_id)
+                        if c:
+                            collection.title = collection_title
+                            collection.save()
                         if not collection in corpus.children.all():
                             corpus.children.add(collection)
 
