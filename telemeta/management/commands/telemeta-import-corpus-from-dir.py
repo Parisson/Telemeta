@@ -48,6 +48,27 @@ class Command(BaseCommand):
     image_formats = ['png', 'jpg']
     text_formats = ['txt']
 
+    def write_file(self, item, media):
+        filename = media.split(os.sep)[-1]
+        if os.path.exists(media):
+            if not item.file or self.force:
+                if not self.media_root in self.source_dir:
+                    print "file not in MEDIA_ROOT, copying..."
+                    f = open(media, 'r')
+                    if not self.dry_run:
+                        file_content = ContentFile(f.read())
+                        item.file.save(filename, file_content)
+                        item.save()
+                    f.close()
+                else:
+                    print "file in MEDIA_ROOT, linking..."
+                    path = media.replace(self.media_root, '')
+                    if not self.dry_run:
+                        item.file = path
+                        item.save()
+                if self.user:
+                    item.set_revision(self.user)
+
     def handle(self, *args, **options):
         # NOT4PROD!!
         # reset()
@@ -113,18 +134,21 @@ class Command(BaseCommand):
 
                         collection_title = collection_name.replace('_', ' ') + ' : ' + chapter_title
                         print collection_title
-                        collection, c = MediaCollection.objects.get_or_create(code=collection_id)
-                        if c:
+                        cc = MediaCollection.objects.filter(code=collection_id, title=collection_title)
+                        if cc:
+                            collection = cc[0]
+                        else:
+                            collection = MediaCollection(code=collection_id)
                             collection.title = collection_title
                             collection.save()
+
                         if not collection in corpus.children.all():
                             corpus.children.add(collection)
 
                         item, c = MediaItem.objects.get_or_create(collection=collection, code=item_id)
                         if c:
                             item.old_code = item_name
-                            # item.track = item_name
-                            item.file = media_path
+                            self.write_file(item, media_path)
                             item.save()
 
                             title = data[0].split('.')
