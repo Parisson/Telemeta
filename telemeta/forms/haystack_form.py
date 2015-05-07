@@ -31,6 +31,7 @@ class HaySearchForm(FacetedSearchForm):
 
 
 class HayAdvanceForm(SearchForm):
+#begin create field
 
     #to replace de basic search form field
     q = forms.CharField(required=False, widget=forms.TextInput(attrs={'type': 'search'}))
@@ -53,8 +54,35 @@ class HayAdvanceForm(SearchForm):
     collectors = forms.CharField(required=False, label=('Depositor / contributor'), widget=forms.TextInput(attrs={'type': 'search'}))
     recorded_from_date = forms.DateField(required=False, label=('Recorded from'), widget=forms.DateInput(attrs={'type': 'search', 'placeholder': 'MM/DD/YYYY'}))
     recorded_to_date = forms.DateField(required=False, label=('Recorded to'), widget=forms.DateInput(attrs={'type': 'search', 'placeholder': 'MM/DD/YYYY'}))
-    year_published_from = forms.IntegerField(required=False, label=('Year published from'), widget=forms.TextInput(attrs={'type': 'search', 'placeholder': 'YYYY', 'pattern': '[0-9]{4}'}))
-    year_published_to = forms.IntegerField(required=False, label=('Year published to'), widget=forms.TextInput(attrs={'type': 'search', 'placeholder': 'YYYY', 'pattern': '[0-9]{4}'}))
+
+    #to create a dynamic list of publish year
+    def list_publish_year():
+        list_all_year = []
+        list_collect = MediaCollection.objects.all()
+        for collect in list_collect:
+            if collect.year_published != '0' and not collect.year_published in list_all_year:
+                list_all_year.append(collect.year_published)
+        list_all_year.sort()
+        if len(list_all_year) >= 2:
+            min_year = list_all_year[len(list_all_year) - 1]
+            max_year = list_all_year[len(list_all_year) - 1]
+            for year in list_all_year:
+                if year != 0:
+                    if year < min_year:
+                        min_year = year
+                    if year > max_year:
+                        max_year = year
+            list_all_year = range(min_year, max_year + 1)
+        list_year = []
+        list_year.append((0, ''))
+        for year in list_all_year:
+            list_year.append((year, year))
+        return list_year
+
+    year_published_from = forms.IntegerField(required=False, label=('Year published from'), widget=forms.Select(choices=list_publish_year()))
+    year_published_to = forms.IntegerField(required=False, label=('Year published to'), widget=forms.Select(choices=list_publish_year()))
+    #year_published_from = forms.IntegerField(required=False, label=('Year published from'), widget=forms.TextInput(attrs={'type': 'search', 'placeholder': 'YYYY', 'pattern': '[0-9]{4}'}))
+    #year_published_to = forms.IntegerField(required=False, label=('Year published to'), widget=forms.TextInput(attrs={'type': 'search', 'placeholder': 'YYYY', 'pattern': '[0-9]{4}'}))
     viewable = forms.BooleanField(required=False, label=('Viewable'))
 
     item_status = forms.CharField(required=False, label=('Item Status'), widget=forms.RadioSelect(choices=(('1', 'no preference'), ('pub', 'Published'), ('unpub', 'Unpublished'))), initial=1)
@@ -92,6 +120,7 @@ class HayAdvanceForm(SearchForm):
         return type_name
 
     physical_format = forms.CharField(required=False, label=('Physical Format'), widget=forms.Select(choices=list_physical_format()))
+#end
 
     def search(self):
         sqs = SearchQuerySet().load_all()
