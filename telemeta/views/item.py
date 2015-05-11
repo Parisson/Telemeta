@@ -459,6 +459,7 @@ class ItemEditView(ItemViewMixin, UpdateWithInlinesView):
     def forms_valid(self, form, inlines):
         messages.info(self.request, ugettext_lazy("You have successfully updated your item."))
         item = form.save()
+        self.code = item.code
         if form.files:
             self.cache_data.delete_item_data(item.code)
             self.cache_export.delete_item_data(item.code)
@@ -472,7 +473,7 @@ class ItemEditView(ItemViewMixin, UpdateWithInlinesView):
         return super(ItemEditView, self).forms_valid(form, inlines)
 
     def get_success_url(self):
-        return reverse_lazy('telemeta-item-detail', kwargs={'public_id':self.get_object().code})
+        return reverse_lazy('telemeta-item-detail', kwargs={'public_id':self.code})
 
     def get_context_data(self, **kwargs):
         context = super(ItemEditView, self).get_context_data(**kwargs)
