@@ -55,9 +55,30 @@ class ItemBaseMixin(TelemetaBaseMixin):
     default_grapher_sizes = getattr(settings, 'TIMESIDE_DEFAULT_GRAPHER_SIZES', ['346x130', ])
     auto_zoom = getattr(settings, 'TIMESIDE_AUTO_ZOOM', False)
 
+    def get_export_formats(self):
+        formats = []
+        for encoder in self.encoders:
+            if encoder.file_extension() in self.export_formats:
+                formats.append({'name': encoder.format(),
+                                    'extension': encoder.file_extension()})
+        return formats
 
-class ItemView(ItemBaseMixin):
-    """Provide Item web UI methods"""
+    def get_graphers(self, user):
+        graphers = []
+        for grapher in self.graphers:
+            if grapher.id() == self.default_grapher_id:
+                graphers.insert(0, {'name':grapher.name(), 'id': grapher.id()})
+            elif not hasattr(grapher, '_staging'):
+                graphers.append({'name':grapher.name(), 'id': grapher.id()})
+            elif not grapher._staging:
+                graphers.append({'name':grapher.name(), 'id': grapher.id()})
+        return graphers
+
+    def get_grapher(self, id):
+        for grapher in self.graphers:
+            if grapher.id() == id:
+                break
+        return grapher
 
     def get_export_formats(self):
         formats = []
@@ -67,20 +88,43 @@ class ItemView(ItemBaseMixin):
                                     'extension': encoder.file_extension()})
         return formats
 
-    def get_graphers(self):
-        graphers = []
-        for grapher in self.graphers:
-            if grapher.id() == self.default_grapher_id:
-                graphers.insert(0, {'name':grapher.name(), 'id': grapher.id()})
-            else:
-                graphers.append({'name':grapher.name(), 'id': grapher.id()})
-        return graphers
+    def item_previous_next(self, item):
+        """Get previous and next items inside the collection of the item"""
 
-    def get_grapher(self, id):
-        for grapher in self.graphers:
-            if grapher.id() == id:
-                break
-        return grapher
+        pks = []
+        items = MediaItem.objects.filter(collection=item.collection)
+        items = items.order_by('code', 'old_code')
+
+        if len(items) > 1:
+            for it in items:
+                pks.append(it.pk)
+            for pk in pks:
+                if pk == item.pk:
+                    if pk == pks[0]:
+                        previous_pk = pks[-1]
+                        next_pk = pks[1]
+                    elif pk == pks[-1]:
+                        previous_pk = pks[-2]
+                        next_pk = pks[0]
+                    else:
+                        previous_pk = pks[pks.index(pk)-1]
+                        next_pk = pks[pks.index(pk)+1]
+                    for it in items:
+                        if it.pk == previous_pk:
+                            previous = it
+                        if it.pk == next_pk:
+                            next = it
+                    previous = previous.public_id
+                    next = next.public_id
+        else:
+             previous = item.public_id
+             next = item.public_id
+
+        return previous, next
+
+
+class ItemView(ItemBaseMixin):
+    """Provide Item web UI methods"""
 
     def item_detail(self, request, public_id=None, marker_id=None, width=None, height=None,
                         template='telemeta/mediaitem_detail.html'):
@@ -391,65 +435,6 @@ class ItemViewMixin(ItemBaseMixin):
     inlines = [ItemPerformanceInline, ItemKeywordInline, ItemRelatedInline, ItemIdentifierInline]
     # inlines = [ItemPerformanceInline, ItemKeywordInline, ItemRelatedInline,
     #             ItemFormatInline, ItemIdentifierInline]
-
-    def get_export_formats(self):
-        formats = []
-        for encoder in self.encoders:
-            if encoder.file_extension() in self.export_formats:
-                formats.append({'name': encoder.format(),
-                                    'extension': encoder.file_extension()})
-        return formats
-
-    def item_previous_next(self, item):
-        """Get previous and next items inside the collection of the item"""
-
-        pks = []
-        items = MediaItem.objects.filter(collection=item.collection)
-        items = items.order_by('code', 'old_code')
-
-        if len(items) > 1:
-            for it in items:
-                pks.append(it.pk)
-            for pk in pks:
-                if pk == item.pk:
-                    if pk == pks[0]:
-                        previous_pk = pks[-1]
-                        next_pk = pks[1]
-                    elif pk == pks[-1]:
-                        previous_pk = pks[-2]
-                        next_pk = pks[0]
-                    else:
-                        previous_pk = pks[pks.index(pk)-1]
-                        next_pk = pks[pks.index(pk)+1]
-                    for it in items:
-                        if it.pk == previous_pk:
-                            previous = it
-                        if it.pk == next_pk:
-                            next = it
-                    previous = previous.public_id
-                    next = next.public_id
-        else:
-             previous = item.public_id
-             next = item.public_id
-
-        return previous, next
-
-    def get_graphers(self, user):
-        graphers = []
-        for grapher in self.graphers:
-            if grapher.id() == self.default_grapher_id:
-                graphers.insert(0, {'name':grapher.name(), 'id': grapher.id()})
-            elif not hasattr(grapher, '_staging'):
-                graphers.append({'name':grapher.name(), 'id': grapher.id()})
-            elif not grapher._staging:
-                graphers.append({'name':grapher.name(), 'id': grapher.id()})
-        return graphers
-
-    def get_grapher(self, id):
-        for grapher in self.graphers:
-            if grapher.id() == id:
-                break
-        return grapher
 
     def get_object(self):
         obj = self.model.objects.filter(code=self.kwargs['public_id'])
