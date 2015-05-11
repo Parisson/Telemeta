@@ -34,7 +34,7 @@ class HayAdvanceForm(SearchForm):
 #begin create field
 
     #to replace de basic search form field
-    q = forms.CharField(required=False, widget=forms.TextInput(attrs={'type': 'search'}))
+    q = forms.CharField(required=False, label=('Title'), widget=forms.TextInput(attrs={'type': 'search'}))
 
     code = forms.CharField(required=False, label=('Code'), widget=forms.TextInput(attrs={'type': 'search'}))
     location = forms.CharField(required=False, label=('Location'), widget=forms.TextInput(attrs={'type': 'search'}))
