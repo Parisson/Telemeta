@@ -5,7 +5,9 @@
 {% block title %}
 {% trans "Search" %}
 {% endblock %}
-
+{% block extra_stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/css/jquery-ui.css" />
+{% endblock %}
 {% block content %}
 
     <form method="get" action=".">
@@ -31,6 +33,7 @@
                 {% endifequal %}
              {% endifequal %}
              {% include "search/filters.html" %}
+
              {% with object_list as items %}
                 <div class="fullpage">
                     {% ifequal type 'item' %}
@@ -54,4 +57,24 @@
             {# Show some example queries to run, maybe query syntax, something else? #}
         {% endif %}
     </form>
+{% endblock %}
+{% block extra_javascript %}
+    <script src="{{ STATIC_URL }}telemeta/js/jquery.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}telemeta/js/jquery-ui.min.js" type="text/javascript"></script>
+    <script>
+        $(document).ready(function() {
+            var nouvellesIcones = {
+                header : 'ui-icon-carat-1-e',
+                activeHeader : 'ui-icon-carat-1-s',
+
+
+            };
+
+            $("#accordeon").accordion({
+                collapsible : true,
+                icons : nouvellesIcones,
+            });
+            $( "#datepicker").datepicker();
+        });
+    </script>
 {% endblock %}
