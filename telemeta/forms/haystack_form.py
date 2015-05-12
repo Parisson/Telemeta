@@ -36,7 +36,6 @@ class HayAdvanceForm(SearchForm):
     #to replace de basic search form field
     q = forms.CharField(required=False, label=('Title'), widget=forms.TextInput(attrs={'type': 'search'}))
 
-    code = forms.CharField(required=False, label=('Code'), widget=forms.TextInput(attrs={'type': 'search'}))
     location = forms.CharField(required=False, label=('Location'), widget=forms.TextInput(attrs={'type': 'search'}))
 
     # to create a dynamic list of ethnic group
@@ -51,7 +50,7 @@ class HayAdvanceForm(SearchForm):
     ethnic_group = forms.CharField(required=False, label=('Population / social group'), widget=forms.Select(choices=list_ethnic_group()))
 
     instruments = forms.CharField(required=False, label=('Instruments'), widget=forms.TextInput(attrs={'type': 'search'}))
-    collectors = forms.CharField(required=False, label=('Depositor / contributor'), widget=forms.TextInput(attrs={'type': 'search'}))
+    collectors = forms.CharField(required=False, label=('Recordist'), widget=forms.TextInput(attrs={'type': 'search'}))
     recorded_from_date = forms.DateField(required=False, label=('Recorded from'), widget=forms.DateInput(attrs={'type': 'search', 'placeholder': 'MM/DD/YYYY'}))
     recorded_to_date = forms.DateField(required=False, label=('Recorded to'), widget=forms.DateInput(attrs={'type': 'search', 'placeholder': 'MM/DD/YYYY'}))
 
@@ -83,7 +82,8 @@ class HayAdvanceForm(SearchForm):
     year_published_to = forms.IntegerField(required=False, label=('Year published to'), widget=forms.Select(choices=list_publish_year()))
     #year_published_from = forms.IntegerField(required=False, label=('Year published from'), widget=forms.TextInput(attrs={'type': 'search', 'placeholder': 'YYYY', 'pattern': '[0-9]{4}'}))
     #year_published_to = forms.IntegerField(required=False, label=('Year published to'), widget=forms.TextInput(attrs={'type': 'search', 'placeholder': 'YYYY', 'pattern': '[0-9]{4}'}))
-    viewable = forms.BooleanField(required=False, label=('Viewable'))
+    viewable_choice = (('1', 'no preference'), ('2', 'fichier dans le player + full'), ('3', 'fichier dans le player(j\'ai un compte)'))
+    viewable = forms.CharField(required=False, label=('Viewable'), widget=forms.RadioSelect(choices=viewable_choice), initial=1)
 
     item_status = forms.CharField(required=False, label=('Item Status'), widget=forms.RadioSelect(choices=(('1', 'no preference'), ('pub', 'Published'), ('unpub', 'Unpublished'))), initial=1)
 
@@ -91,7 +91,6 @@ class HayAdvanceForm(SearchForm):
     def list_media_type():
         type_name = []
         type_name.append(('1', 'no preference'))
-        type_name.append(('dig', 'Digitized'))
         list_media_type = MediaType.objects.all()
         for mt in list_media_type:
             type_name.append((mt.value, mt.value))
@@ -120,6 +119,8 @@ class HayAdvanceForm(SearchForm):
         return type_name
 
     physical_format = forms.CharField(required=False, label=('Physical Format'), widget=forms.Select(choices=list_physical_format()))
+
+    code = forms.CharField(required=False, label=('Code'), widget=forms.TextInput(attrs={'type': 'search'}))
 #end
 
     def search(self):
@@ -160,7 +161,10 @@ class HayAdvanceForm(SearchForm):
             sqs = sqs.filter(year_published__lte=self.cleaned_data['year_published_to'])
 
         if self.cleaned_data['viewable']:
-            sqs = sqs.filter(Q(item_acces='full') | Q(item_acces='mixed'))
+            if self.cleaned_data.get('viewable') == '2':
+                sqs = sqs.filter(digitized=True).filter(Q(item_acces='full') | Q(item_acces='mixed'))
+            if self.cleaned_data.get('viewable') == '3':
+                sqs = sqs.filter(digitized=True)
 
         if self.cleaned_data['item_status']:
             if self.cleaned_data.get('item_status') == 'pub':
@@ -170,10 +174,7 @@ class HayAdvanceForm(SearchForm):
 
         if self.cleaned_data['media_type']:
             if self.cleaned_data.get('media_type') != '1':
-                if self.cleaned_data.get('media_type') == 'dig':
-                    sqs = sqs.filter(digitized=True)
-                else:
-                    sqs = sqs.filter(digitized=True).filter(media_type=self.cleaned_data['media_type'])
+                    sqs = sqs.filter(media_type=self.cleaned_data['media_type'])
 
         if self.cleaned_data['recording_context']:
             if self.cleaned_data.get('recording_context') != '':

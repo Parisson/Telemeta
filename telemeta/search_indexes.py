@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from haystack import indexes
 from telemeta.models import *
 
@@ -14,8 +15,8 @@ class MediaItemIndex(indexes.SearchIndex, indexes.Indexable):
 
     #advance search
     title = indexes.NgramField(model_attr='title')
-    code = indexes.NgramField(model_attr='code')
-    location = indexes.NgramField(model_attr='location__name', default='')
+    code = indexes.NgramField(model_attr='code', default='')
+    location = indexes.NgramField(model_attr='location__name', default='', null='None')
     ethnic_group = indexes.NgramField(model_attr='ethnic_group', default='')
     instruments = indexes.NgramField(default='')
     collectors = indexes.NgramField(model_attr='collector', default='')
@@ -55,7 +56,6 @@ class MediaItemIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_collectors(self, obj):
         collectors = []
-        collectors.append(obj.collection.creator)
         collectors.append(obj.collection.collector)
         collectors.append(obj.collector)
         return "%s" % collectors
@@ -73,11 +73,11 @@ class MediaCollectionIndex(indexes.SearchIndex, indexes.Indexable):
 
     #advance search
     title = indexes.NgramField(model_attr='title')
-    code = indexes.NgramField(model_attr='code')
+    code = indexes.NgramField(model_attr='code', default='')
     location = indexes.NgramField(default='')
     ethnic_group = indexes.NgramField(default='')
     instruments = indexes.NgramField(default='')
-    collectors = indexes.NgramField(default='')
+    collectors = indexes.NgramField(model_attr='collector', default='')
     recorded_from_date = indexes.DateField(model_attr='recorded_from_year', null='None')
     recorded_to_date = indexes.DateField(model_attr='recorded_to_year', null='None')
     year_published = indexes.IntegerField(model_attr='year_published', default='')
@@ -120,9 +120,3 @@ class MediaCollectionIndex(indexes.SearchIndex, indexes.Indexable):
                     instruments.append(material.alias)
 
         return "%s" % instruments
-
-    def prepare_collectors(self, obj):
-        collectors = []
-        collectors.append(obj.creator)
-        collectors.append(obj.collector)
-        return "%s" % collectors
