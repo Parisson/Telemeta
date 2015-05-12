@@ -51,6 +51,57 @@ class HayAdvanceForm(SearchForm):
 
     instruments = forms.CharField(required=False, label=('Instruments'), widget=forms.TextInput(attrs={'type': 'search'}))
     collectors = forms.CharField(required=False, label=('Recordist'), widget=forms.TextInput(attrs={'type': 'search'}))
+
+    #to create a dynamic list of publish year
+    def list_recorded_from_year():
+        list_all_year = []
+        list_collect = MediaCollection.objects.all()
+        for collect in list_collect:
+            if collect.year_published != '0' and not collect.year_published in list_all_year:
+                list_all_year.append(collect.year_published)
+        list_all_year.sort()
+        if len(list_all_year) >= 2:
+            min_year = list_all_year[len(list_all_year) - 1]
+            max_year = list_all_year[len(list_all_year) - 1]
+            for year in list_all_year:
+                if year != 0:
+                    if year < min_year:
+                        min_year = year
+                    if year > max_year:
+                        max_year = year
+            list_all_year = range(min_year, max_year + 1)
+        list_year = []
+        list_year.append((0, ''))
+        for year in list_all_year:
+            list_year.append((year, year))
+        return list_year
+
+    def list_recorded_to_year():
+        list_all_year = []
+        list_collect = MediaCollection.objects.all()
+        for collect in list_collect:
+            if collect.year_published != '0' and not collect.year_published in list_all_year:
+                list_all_year.append(collect.year_published)
+        list_all_year.sort()
+        if len(list_all_year) >= 2:
+            min_year = list_all_year[len(list_all_year) - 1]
+            max_year = list_all_year[len(list_all_year) - 1]
+            for year in list_all_year:
+                if year != 0:
+                    if year < min_year:
+                        min_year = year
+                    if year > max_year:
+                        max_year = year
+            list_all_year = range(min_year, max_year + 1)
+        list_year = []
+        list_year.append((0, ''))
+        for year in list_all_year:
+            list_year.append((year, year))
+        return list_year
+
+    #recorded_from_date = forms.IntegerField(required=False, label=('Recorded from'), widget=forms.Select(choices=list_recorded_year()))
+    #recorded_to_date = forms.IntegerField(required=False, label=('Recorded to'), widget=forms.Select(choices=list_recorded_year()))
+
     recorded_from_date = forms.DateField(required=False, label=('Recorded from'), widget=forms.DateInput(attrs={'type': 'search', 'placeholder': 'MM/DD/YYYY'}))
     recorded_to_date = forms.DateField(required=False, label=('Recorded to'), widget=forms.DateInput(attrs={'type': 'search', 'placeholder': 'MM/DD/YYYY'}))
 
