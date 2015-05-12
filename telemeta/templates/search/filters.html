@@ -1,6 +1,9 @@
-<div class="panel panel-default" style="font-weight:bold">
-        <div class="panel-heading" style="background-color:#6a0307;color:white;"><span class="glyphicon glyphicon-filter"></span> Filters<a href="{% url "haystack_search_type" "type" %}?q={{ query }}&amp;page=1" class="pull-right" style="color:white">&raquo; Remove All Filters</a></div>
-            <table class="table" style="font-size:0.9em">
+
+
+<div id="accordeon" style="margin-bottom:20px">
+    <div><a href="#">Filters</a></div>
+    <div>
+        <table class="table" style="font-size:0.9em">
                 <tr>
                     {% if facets.fields.item_status %}
                         <td>Item Status</td>
@@ -57,13 +60,11 @@
                 {% endif %}
             </tr>
         </table>
-    <div class="btn-group btn-group-justified">
-        <div class="btn-group" role="group" >
-            <button type="button " class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="background-color:#6a0307;color:white;font-weight:bold;text-align:left">
-                    <span class="glyphicon glyphicon-chevron-down"></span> Other Filters
-            </button>
-            <div class="dropdown-menu" role="menu" style="width:100%">
-                <table class="table" style="font-size:0.9em">
+    </div>
+
+    <div><a href="#">Other Filters</a></div>
+    <div>
+        <table class="table" style="font-size:0.9em">
                     <tr>
                         {% if facets.fields.media_type %}
                             <td>Media Type</td>
@@ -135,11 +136,15 @@
                         {% endif %}
                     </tr>
                 </table>
-            </div>
-        </div>
     </div>
+
 </div>
+
 {% if selected_facets %}
-     <p> <span class="glyphicon glyphicon-filter"/> selected filters :
-         {{selected_facets|join:" + "}}</b></p>
+     <p> <span class="glyphicon glyphicon-filter"> selected filters :
+         {{selected_facets|join:" + "}}</b></span><a class="pull-right" href="{% url "haystack_search_type" "type" %}?q={{ query }}&amp;page=1">&raquo; Remove All Filters</a></p>
  {% endif %}
+
+
+
+
