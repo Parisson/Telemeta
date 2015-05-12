@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from haystack import indexes
 from telemeta.models import *
 
@@ -14,14 +15,14 @@ class MediaItemIndex(indexes.SearchIndex, indexes.Indexable):
 
     #advance search
     title = indexes.NgramField(model_attr='title')
-    code = indexes.NgramField(model_attr='code')
-    location = indexes.NgramField(model_attr='location__name', default='')
+    code = indexes.NgramField(model_attr='code', default='')
+    location = indexes.NgramField(model_attr='location__name', default='', null='None')
     ethnic_group = indexes.NgramField(model_attr='ethnic_group', default='')
-    instruments = indexes.NgramField(default='')
-    collectors = indexes.NgramField(model_attr='collector', default='')
-    recorded_from_date = indexes.DateField(model_attr='recorded_from_date', null='None')
-    recorded_to_date = indexes.DateField(model_attr='recorded_to_date', null='None')
-    year_published = indexes.IntegerField(model_attr='collection__year_published', default='')
+    #instruments = indexes.NgramField(default='')
+    #collectors = indexes.NgramField(model_attr='collector', default='')
+    #recorded_from_date = indexes.DateField(model_attr='recorded_from_date', null='None')
+    #recorded_to_date = indexes.DateField(model_attr='recorded_to_date', null='None')
+    #year_published = indexes.IntegerField(model_attr='collection__year_published', default='')
 
     def prepare_digitized(self, obj):
         if obj.file.name:
@@ -45,20 +46,19 @@ class MediaItemIndex(indexes.SearchIndex, indexes.Indexable):
             location.append(alias)
         return "%s" % location
 
-    def prepare_instruments(self, obj):
-        item = MediaItemPerformance.objects.all().filter(media_item__title__contains=obj.title)
-        instruments = []
-        for material in item:
-            instruments.append(material.instrument)
-            instruments.append(material.alias)
-        return "%s" % instruments
+    #def prepare_instruments(self, obj):
+        #item = MediaItemPerformance.objects.all().filter(media_item__title__contains=obj.title)
+        #instruments = []
+        #for material in item:
+            #instruments.append(material.instrument)
+            #instruments.append(material.alias)
+        #return "%s" % instruments
 
-    def prepare_collectors(self, obj):
-        collectors = []
-        collectors.append(obj.collection.creator)
-        collectors.append(obj.collection.collector)
-        collectors.append(obj.collector)
-        return "%s" % collectors
+    #def prepare_collectors(self, obj):
+        #collectors = []
+        #collectors.append(obj.collection.collector)
+        #collectors.append(obj.collector)
+        #return "%s" % collectors
 
 
 class MediaCollectionIndex(indexes.SearchIndex, indexes.Indexable):
@@ -73,14 +73,14 @@ class MediaCollectionIndex(indexes.SearchIndex, indexes.Indexable):
 
     #advance search
     title = indexes.NgramField(model_attr='title')
-    code = indexes.NgramField(model_attr='code')
+    code = indexes.NgramField(model_attr='code', default='')
     location = indexes.NgramField(default='')
     ethnic_group = indexes.NgramField(default='')
-    instruments = indexes.NgramField(default='')
-    collectors = indexes.NgramField(default='')
-    recorded_from_date = indexes.DateField(model_attr='recorded_from_year', null='None')
-    recorded_to_date = indexes.DateField(model_attr='recorded_to_year', null='None')
-    year_published = indexes.IntegerField(model_attr='year_published', default='')
+    #instruments = indexes.NgramField(default='')
+    #collectors = indexes.NgramField(model_attr='collector', default='')
+    #recorded_from_date = indexes.DateField(model_attr='recorded_from_year', null='None')
+    #recorded_to_date = indexes.DateField(model_attr='recorded_to_year', null='None')
+    #year_published = indexes.IntegerField(model_attr='year_published', default='')
 
     def prepare_digitized(self, obj):
         return obj.has_mediafile
@@ -104,25 +104,19 @@ class MediaCollectionIndex(indexes.SearchIndex, indexes.Indexable):
                     collec_location.append(name)
         return "%s" % collec_location
 
-    def prepare_ethnic_group(self, obj):
-        return "%s" % obj.ethnic_groups()
+    #def prepare_ethnic_group(self, obj):
+        #return "%s" % obj.ethnic_groups()
 
-    def prepare_instruments(self, obj):
-        instruments = []
-        items = obj.items.all()
-        for item in items:
-            materials = MediaItemPerformance.objects.all().filter(media_item__title__exact=item.title)
-            for material in materials:
-                if material.instrument and not material.instrument in instruments:
-                    instruments.append(material.instrument)
+    #def prepare_instruments(self, obj):
+        #instruments = []
+        #items = obj.items.all()
+        #for item in items:
+            #materials = MediaItemPerformance.objects.all().filter(media_item__title__exact=item.title)
+            #for material in materials:
+                #if material.instrument and not material.instrument in instruments:
+                    #instruments.append(material.instrument)
 
-                if material.alias and not material.alias in instruments:
-                    instruments.append(material.alias)
+                #if material.alias and not material.alias in instruments:
+                    #instruments.append(material.alias)
 
-        return "%s" % instruments
-
-    def prepare_collectors(self, obj):
-        collectors = []
-        collectors.append(obj.creator)
-        collectors.append(obj.collector)
-        return "%s" % collectors
+        #return "%s" % instruments
