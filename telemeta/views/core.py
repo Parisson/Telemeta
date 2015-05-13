@@ -341,7 +341,7 @@ class BaseEpubMixin(TelemetaBaseMixin):
         # add cover image
         for media in self.corpus.related.all():
             if 'cover' in media.title or 'Cover' in media.title:
-                self.book.set_cover("cover.jpg", open(media.file.path, 'r').read())
+                self.book.set_cover("cover.png", open(media.file.path, 'r').read())
                 break
 
         if collection:
