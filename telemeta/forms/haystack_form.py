@@ -107,8 +107,7 @@ class HayAdvanceForm(SearchForm):
 
     year_published_from = forms.IntegerField(required=False, label=('Year published from'), widget=forms.Select(choices=list_publish_year()))
     year_published_to = forms.IntegerField(required=False, label=('Year published to'), widget=forms.Select(choices=list_publish_year()))
-    #year_published_from = forms.IntegerField(required=False, label=('Year published from'), widget=forms.TextInput(attrs={'type': 'search', 'placeholder': 'YYYY', 'pattern': '[0-9]{4}'}))
-    #year_published_to = forms.IntegerField(required=False, label=('Year published to'), widget=forms.TextInput(attrs={'type': 'search', 'placeholder': 'YYYY', 'pattern': '[0-9]{4}'}))
+
     viewable_choice = (('1', 'no preference'), ('2', 'fichier dans le player + full'), ('3', 'fichier dans le player(j\'ai un compte)'))
     viewable = forms.CharField(required=False, label=('Viewable'), widget=forms.RadioSelect(choices=viewable_choice), initial=1)
 

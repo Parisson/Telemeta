@@ -16,8 +16,8 @@ class MediaItemIndex(indexes.SearchIndex, indexes.Indexable):
     #advance search
     title = indexes.NgramField(model_attr='title')
     code = indexes.NgramField(model_attr='code', default='')
-    location = indexes.NgramField(model_attr='location__name', default='', null='None')
-    ethnic_group = indexes.NgramField(model_attr='ethnic_group', default='')
+    location = indexes.CharField(model_attr='location__name', default='', null='None')
+    ethnic_group = indexes.CharField(model_attr='ethnic_group', default='')
     instruments = indexes.NgramField(default='')
     collectors = indexes.NgramField(model_attr='collector', default='')
     recorded_from_date = indexes.DateField(model_attr='recorded_from_date', null='None')
@@ -47,7 +47,7 @@ class MediaItemIndex(indexes.SearchIndex, indexes.Indexable):
         return "%s" % location
 
     def prepare_instruments(self, obj):
-        item = MediaItemPerformance.objects.all().filter(media_item__title__contains=obj.title)
+        item = MediaItemPerformance.objects.all().filter(media_item__exact=obj)
         instruments = []
         for material in item:
             instruments.append(material.instrument)
@@ -63,7 +63,7 @@ class MediaItemIndex(indexes.SearchIndex, indexes.Indexable):
 
 class MediaCollectionIndex(indexes.SearchIndex, indexes.Indexable):
 
-    text = indexes.NgramField(document=True, use_template=True)
+    text = indexes.CharField(document=True, use_template=True)
     item_acces = indexes.CharField(model_attr='public_access', faceted=True)
     item_status = indexes.CharField(model_attr='document_status', faceted=True)
     digitized = indexes.BooleanField(default=False, faceted=True)
@@ -74,8 +74,8 @@ class MediaCollectionIndex(indexes.SearchIndex, indexes.Indexable):
     #advance search
     title = indexes.NgramField(model_attr='title')
     code = indexes.NgramField(model_attr='code', default='')
-    location = indexes.NgramField(default='')
-    ethnic_group = indexes.NgramField(default='')
+    location = indexes.CharField(default='')
+    ethnic_group = indexes.CharField(default='')
     instruments = indexes.NgramField(default='')
     collectors = indexes.NgramField(model_attr='collector', default='')
     recorded_from_date = indexes.DateField(model_attr='recorded_from_year', null='None')
@@ -111,7 +111,7 @@ class MediaCollectionIndex(indexes.SearchIndex, indexes.Indexable):
         instruments = []
         items = obj.items.all()
         for item in items:
-            materials = MediaItemPerformance.objects.all().filter(media_item__title__exact=item.title)
+            materials = MediaItemPerformance.objects.all().filter(media_item__exact=item)
             for material in materials:
                 if material.instrument and not material.instrument in instruments:
                     instruments.append(material.instrument)
