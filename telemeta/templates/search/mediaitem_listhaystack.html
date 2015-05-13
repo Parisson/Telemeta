@@ -22,7 +22,7 @@
 {% for result in page.object_list %}
 <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
     <td class="highlight">
-        <a href="{% url "telemeta-item-detail" result.object.public_id %}">{{ result.object.title }}</a></br>
+        <a href="{% url "telemeta-item-detail" result.object.public_id %}">{{ result.object }}</a></br>
     </td>
     <td align="center">
         {% if result.object.file %}
