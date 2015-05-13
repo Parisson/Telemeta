@@ -73,13 +73,13 @@ class HayAdvanceForm(SearchForm):
                         max_year = year
             list_all_year = range(min_year, max_year + 1)
         list_year = []
-        list_year.append((0, ''))
+        list_year.append(('', '----'))
         for year in list_all_year:
             list_year.append(("01/01/" + str(year), year))
         return list_year
 
-    recorded_from_date = forms.IntegerField(required=False, label=('Recorded from'), widget=forms.Select(choices=list_recorded_year()))
-    recorded_to_date = forms.IntegerField(required=False, label=('Recorded to'), widget=forms.Select(choices=list_recorded_year()))
+    recorded_from_date = forms.DateField(required=False, label=('Recorded from'), widget=forms.Select(choices=list_recorded_year()))
+    recorded_to_date = forms.DateField(required=False, label=('Recorded to'), widget=forms.Select(choices=list_recorded_year()))
 
     #to create a dynamic list of publish year
     def list_publish_year():
@@ -100,7 +100,7 @@ class HayAdvanceForm(SearchForm):
                         max_year = year
             list_all_year = range(min_year, max_year + 1)
         list_year = []
-        list_year.append((0, ''))
+        list_year.append((0, '----'))
         for year in list_all_year:
             list_year.append((year, year))
         return list_year
