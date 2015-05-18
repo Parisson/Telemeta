@@ -917,6 +917,33 @@ body .ui-tooltip {
 	font-weight: normal;
 	color: #ffffff;
 }
+
+/*added by afilsaime*/
+.ui-button.ui-state-default{
+	background:none;
+	background-color:white;
+	color:#6a0307;
+}
+
+.ui-button.ui-state-active {
+	background:none;
+	background-color:#6a0307;
+	color:white;
+	border-color:#6a0307;
+}
+
+li {
+	display:inline;
+}
+
+.ui-button.ui-state-hover {
+	background:none;
+	background-color:#6a0307;
+	color:white;
+	border-color:#6a0307;
+
+}
+
 .ui-state-active a,
 .ui-state-active a:link,
 .ui-state-active a:visited {

@@ -6,18 +6,133 @@
 {% block title %}
 {% trans "Search" %}
 {% endblock %}
-
+{% block extra_stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/css/jquery-ui.css" />
+{% endblock %}
 {% block content %}
     <form method="get" action=".">
-        <table>
-            {{ form.as_table }}
-            <tr>
-                <td>&nbsp;</td>
-                <td>
-                    <input type="submit" value="{% trans "Search" %}">
-                </td>
-            </tr>
-        </table>
+        <div class="row">
+            <div class="col-md-5" id="left-form">
+                <div class="fieldWrapper">
+                    {{form.q.errors}}
+                    {{form.q.label_tag}}</br>
+                    {{form.q}}
+                </div>
+                <div class="fieldWrapper">
+                    {{form.location.errors}}
+                    {{form.location.label_tag}}</br>
+                    {{form.location}}
+                </div>
+                <div class="fieldWrapper">
+                    {{form.ethnic_group.errors}}
+                    {{form.ethnic_group.label_tag}}</br>
+                    {{form.ethnic_group}}
+                </div>
+                <div class="fieldWrapper">
+                    {{form.instruments.errors}}
+                    {{form.instruments.label_tag}}</br>
+                    {{form.instruments}}
+                </div>
+                <div class="fieldWrapper">
+                    {{form.year_published_from.errors}} {{form.year_published_to.errors}}
+                    <label>Year Published :</label></br>
+                    {{form.year_published_from}} - {{form.year_published_to}}
+                </div>
+                <div class="fieldWrapper">
+                    {{form.media_type.errors}}
+                    <label>Media Type :</label></br>
+                    <ul id="id_media_type" style="margin-left:-40px">
+                        {%ifequal query.media_type 'audio'%}
+                            <li><label for="id_media_type_0">no preference</label><input id="id_media_type_0" type="radio" value="1" name="media_type"></input></li>
+                            <li><label for="id_media_type_1">audio</label><input id="id_media_type_1" type="radio" value="audio" name="media_type" checked="checked"></input></li>
+                            <li><label for="id_media_type_2">video</label><input id="id_media_type_2" type="radio" value="video" name="media_type"></input></li>
+                        {%else%}
+                            {%ifequal query.media_type 'video'%}
+                                <li><label for="id_media_type_0">no preference</label><input id="id_media_type_0" type="radio" value="1" name="media_type"></input></li>
+                                <li><label for="id_media_type_1">audio</label><input id="id_media_type_1" type="radio" value="audio" name="media_type"></input></li>
+                                <li><label for="id_media_type_2">video</label><input id="id_media_type_2" type="radio" value="video" name="media_type" checked="checked"></input></li>
+                            {%else%}
+                                <li><label for="id_media_type_0">no preference</label><input id="id_media_type_0" type="radio" value="1" name="media_type" checked="checked"></input></li>
+                                <li><label for="id_media_type_1">audio</label><input id="id_media_type_1" type="radio" value="audio" name="media_type"></input></li>
+                                <li><label for="id_media_type_2">video</label><input id="id_media_type_2" type="radio" value="video" name="media_type"></input></li>
+                            {%endifequal%}
+                        {%endifequal%}
+                    </ul>
+
+                </div>
+                <div class="fieldWrapper">
+                    {{form.viewable_errors}}
+                    <label>Viewable : </label></br>
+                    <ul id="id_viewable" style="margin-left:-40px">
+                        {%ifequal query.viewable '2'%}
+                            <li><label for="id_viewable_0">no preference</label><input id="id_viewable_0" type="radio" value="1" name="viewable"></input></li>
+                            <li><label for="id_viewable_1">fichier dans le player + full</label><input id="id_viewable_1" type="radio" value="2" name="viewable" checked="checked"></input></li>
+                            <li><label for="id_viewable_2">fichier dans le player (j'ai un compte)</label><input id="id_viewable_2" type="radio" value="3" name="viewable"></input></li>
+                        {%else%}
+                            {%ifequal query.viewable '3'%}
+                                <li><label for="id_viewable_0">no preference</label><input id="id_viewable_0" type="radio" value="1" name="viewable"></input></li>
+                                <li><label for="id_viewable_1">fichier dans le player + full</label><input id="id_viewable_1" type="radio" value="2" name="viewable"></input></li>
+                                <li><label for="id_viewable_2">fichier dans le player (j'ai un compte)</label><input id="id_viewable_2" type="radio" value="3" name="viewable" checked="checked"></input></li>
+                            {%else%}
+                                <li><label for="id_viewable_0">no preference</label><input id="id_viewable_0" type="radio" value="1" name="viewable" checked="checked"></input></li>
+                                <li><label for="id_viewable_1">fichier dans le player + full</label><input id="id_viewable_1" type="radio" value="2" name="viewable"></input></li>
+                                <li><label for="id_viewable_2">fichier dans le player (j'ai un compte) </label><input id="id_viewable_2" type="radio" value="3" name="viewable"></input></li>
+                            {%endifequal%}
+                        {%endifequal%}
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-5" id="right-form" style="margin-left:13%">
+                <div class="fieldWrapper">
+                    {{form.collectors.errors}}
+                    {{form.collectors.label_tag}}</br>
+                    {{form.collectors}}
+                </div>
+                <div class="fieldWrapper">
+                    {{form.recorded_from_date.errors}} {{form.recorded_to_date.errors}}
+                    <label>Recording date:</label></br>
+                    {{form.recorded_from_date}} - {{form.recorded_to_date}}
+                </div>
+                <div class="fieldWrapper">
+                    {{form.item_status_errors}}
+                    <label>Item status : </label></br>
+                    <ul id="id_item_status" style="margin-left:-40px">
+                        {%ifequal query.item_status 'pub'%}
+                            <li><label for="id_item_status_0">no preference</label><input id="id_item_status_0" type="radio" value="1" name="item_status"></input></li>
+                            <li><label for="id_item_status_1">Published</label><input id="id_item_status_1" type="radio" value="pub" name="item_status" checked="checked"></input></li>
+                            <li><label for="id_item_status_2">Unpublished</label><input id="id_item_status_2" type="radio" value="unpub" name="item_status"></input></li>
+                        {%else%}
+                            {%ifequal query.item_status 'unpub'%}
+                                <li><label for="id_item_status_0">no preference</label><input id="id_item_status_0" type="radio" value="1" name="item_status"></input></li>
+                                <li><label for="id_item_status_1">Published</label><input id="id_item_status_1" type="radio" value="pub" name="item_status"></input></li>
+                                <li><label for="id_item_status_2">Unpublished</label><input id="id_item_status_2" type="radio" value="unpub" name="item_status" checked="checked"></input></li>
+                            {%else%}
+                                <li><label for="id_item_status_0">no preference</label><input id="id_item_status_0" type="radio" value="1" name="item_status" checked="checked"></input></li>
+                                <li><label for="id_item_status_1">Published</label><input id="id_item_status_1" type="radio" value="pub" name="item_status"></input></li>
+                                <li><label for="id_item_status_2">Unpublished</label><input id="id_item_status_2" type="radio" value="unpub" name="item_status"></input></li>
+                            {%endifequal%}
+                        {%endifequal%}
+                    </ul>
+                </div>
+                <div class="fieldWrapper">
+                    {{form.recording_context.errors}}
+                    {{form.recording_context.label_tag}}</br>
+                    {{form.recording_context}}
+                </div>
+                <div class="fieldWrapper">
+                    {{form.physical_format.errors}}
+                    {{form.physical_format.label_tag}}</br>
+                    {{form.physical_format}}
+                </div>
+                <div class="fieldWrapper">
+                    {{form.code.errors}}
+                    {{form.code.label_tag}}</br>
+                    {{form.code}}
+                </div>
+            </div>
+        </div></br>
+        <input type="submit" value="{% trans "Search" %}"/></br></br>
+
 
         {% if query %}
             <h1>{% trans "Results" %}</h1>
@@ -51,4 +166,27 @@
             {# Show some example queries to run, maybe query syntax, something else? #}
         {% endif %}
     </form>
+{% endblock %}
+{% block extra_javascript %}
+    <script src="{{ STATIC_URL }}telemeta/js/jquery.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}telemeta/js/jquery-ui.min.js" type="text/javascript"></script>
+    <script>
+        $(document).ready(function() {
+            var nouvellesIcones = {
+                header : 'ui-icon-carat-1-e',
+                activeHeader : 'ui-icon-carat-1-s',
+
+
+            };
+
+            $("#accordeon").accordion({
+                collapsible : true,
+                icons : nouvellesIcones,
+            });
+            $( "#datepicker").datepicker();
+            $("#id_media_type").buttonset();
+            $("#id_viewable").buttonset();
+            $("#id_item_status").buttonset();
+        });
+    </script>
 {% endblock %}

@@ -34,9 +34,9 @@ class HayAdvanceForm(SearchForm):
 #begin create field
 
     #to replace de basic search form field
-    q = forms.CharField(required=False, label=('Title'), widget=forms.TextInput(attrs={'type': 'search'}))
+    q = forms.CharField(required=False, label=('Title'), widget=forms.TextInput(attrs={'class': 'form-control','type': 'search'}))
 
-    location = forms.CharField(required=False, label=('Location'), widget=forms.TextInput(attrs={'type': 'search'}))
+    location = forms.CharField(required=False, label=('Location'), widget=forms.TextInput(attrs={'class': 'form-control','type': 'search'}))
 
     # to create a dynamic list of ethnic group
     def list_ethnic_group():
@@ -49,8 +49,8 @@ class HayAdvanceForm(SearchForm):
 
     ethnic_group = forms.CharField(required=False, label=('Population / social group'), widget=forms.Select(choices=list_ethnic_group()))
 
-    instruments = forms.CharField(required=False, label=('Instruments'), widget=forms.TextInput(attrs={'type': 'search'}))
-    collectors = forms.CharField(required=False, label=('Recordist'), widget=forms.TextInput(attrs={'type': 'search'}))
+    instruments = forms.CharField(required=False, label=('Instruments'), widget=forms.TextInput(attrs={'class': 'form-control','type': 'search'}))
+    collectors = forms.CharField(required=False, label=('Recordist'), widget=forms.TextInput(attrs={'class': 'form-control','type': 'search'}))
 
     #to create a dynamic list of publish year
     def list_recorded_year():
@@ -146,7 +146,7 @@ class HayAdvanceForm(SearchForm):
 
     physical_format = forms.CharField(required=False, label=('Physical Format'), widget=forms.Select(choices=list_physical_format()))
 
-    code = forms.CharField(required=False, label=('Code'), widget=forms.TextInput(attrs={'type': 'search'}))
+    code = forms.CharField(required=False, label=('Code'), widget=forms.TextInput(attrs={'class': 'form-control','type': 'search'}))
 #end
 
     def search(self):
