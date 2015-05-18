@@ -63,7 +63,7 @@ class ItemBaseMixin(TelemetaBaseMixin):
                                     'extension': encoder.file_extension()})
         return formats
 
-    def get_graphers(self, user):
+    def get_graphers(self):
         graphers = []
         for grapher in self.graphers:
             if grapher.id() == self.default_grapher_id:
