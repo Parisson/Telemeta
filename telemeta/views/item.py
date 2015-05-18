@@ -484,7 +484,7 @@ class ItemEditView(ItemViewMixin, UpdateWithInlinesView):
         #FIXME
         context['mime_type'] = 'audio/mp3'
         context['export_formats'] = self.get_export_formats()
-        context['visualizers'] = self.get_graphers(self.request.user)
+        context['visualizers'] = self.get_graphers()
         context['audio_export_enabled'] = self.export_enabled
         context['auto_zoom'] = True
         return context
@@ -564,7 +564,7 @@ class ItemCopyView(ItemAddView):
         #FIXME
         context['mime_type'] = 'audio/mp3'
         context['export_formats'] = self.get_export_formats()
-        context['visualizers'] = self.get_graphers(self.request.user)
+        context['visualizers'] = self.get_graphers()
         context['audio_export_enabled'] = self.export_enabled
         context['auto_zoom'] = True
         return context
@@ -708,7 +708,7 @@ class ItemDetailView(ItemViewMixin, DetailView):
 
         context['item'] = item
         context['export_formats'] = self.get_export_formats()
-        context['visualizers'] = self.get_graphers(self.request.user)
+        context['visualizers'] = self.get_graphers()
         context['auto_zoom'] = self.auto_zoom
         context['audio_export_enabled'] = self.export_enabled
         context['previous'] = previous
