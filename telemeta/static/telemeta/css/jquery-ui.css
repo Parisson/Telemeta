@@ -932,7 +932,7 @@ body .ui-tooltip {
 	border-color:#6a0307;
 }
 
-li {
+.ui-buttonset li {
 	display:inline;
 }
 

@@ -8,6 +8,51 @@
 {% endblock %}
 {% block extra_stylesheets %}
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/css/jquery-ui.css" />
+    <style>
+        .overflow{
+            max-height:200px;
+        }
+
+        .module ul, li {
+            border-radius: 0px 0px 0px 0px;
+        }
+
+        .ui-selectmenu-button.ui-widget.ui-state-default{
+            background-image:none;
+            background-color:#6a0307;
+            border-color:#6a0307;
+            color:white;
+        }
+        .ui-selectmenu-button.ui-widget.ui-state-hover{
+            background-image:none;
+            background-color:#6a0307;
+            border-color:#6a0307;
+            color:white;
+        }
+
+        .ui-selectmenu-button.ui-widget.ui-state-focus{
+            background-image:none;
+            background-color:#6a0307;
+            border-color:#6a0307;
+            color:white;
+        }
+
+        .ui-selectmenu-button.ui-widget.ui-state-default .ui-icon{
+            background-image:url("{{ STATIC_URL }}telemeta/css/images/ui-icons_ffffff_256x240.png");
+        }
+
+        .ui-menu-item{
+            background-color:white;
+        }
+
+        .ui-menu-item.ui-state-focus{
+            background-image:none;
+            background-color:#6a0307;
+            border-color:#6a0307;
+            color:white;
+        }
+
+    </style>
 {% endblock %}
 {% block content %}
     <form method="get" action=".">
@@ -36,7 +81,7 @@
                 <div class="fieldWrapper">
                     {{form.year_published_from.errors}} {{form.year_published_to.errors}}
                     <label>Year Published :</label></br>
-                    {{form.year_published_from}} - {{form.year_published_to}}
+                    {{form.year_published_from}} <span style="font-size:3em" aria-hidden="true">-</span> {{form.year_published_to}}
                 </div>
                 <div class="fieldWrapper">
                     {{form.media_type.errors}}
@@ -91,7 +136,7 @@
                 <div class="fieldWrapper">
                     {{form.recorded_from_date.errors}} {{form.recorded_to_date.errors}}
                     <label>Recording date:</label></br>
-                    {{form.recorded_from_date}} - {{form.recorded_to_date}}
+                    {{form.recorded_from_date}} <span style="font-size:3em" aria-hidden="true">-</span> {{form.recorded_to_date}}
                 </div>
                 <div class="fieldWrapper">
                     {{form.item_status_errors}}
@@ -187,6 +232,28 @@
             $("#id_media_type").buttonset();
             $("#id_viewable").buttonset();
             $("#id_item_status").buttonset();
+            $("#id_ethnic_group").selectmenu({
+                icons : {button: "ui-icon-carat-2-n-s"}
+            }).selectmenu("menuWidget").addClass("overflow");
+            $("#id_year_published_from").selectmenu({
+                icons : {button: "ui-icon-carat-2-n-s"}
+            }).selectmenu("menuWidget").addClass("overflow");
+            $("#id_year_published_to").selectmenu({
+                icons : {button: "ui-icon-carat-2-n-s"}
+            }).selectmenu("menuWidget").addClass("overflow");
+            $("#id_recorded_from_date").selectmenu({
+                icons : {button: "ui-icon-carat-2-n-s"}
+            }).selectmenu("menuWidget").addClass("overflow");
+            $("#id_recorded_to_date").selectmenu({
+                icons : {button: "ui-icon-carat-2-n-s"}
+            }).selectmenu("menuWidget").addClass("overflow");
+            $("#id_recording_context").selectmenu({
+                icons : {button: "ui-icon-carat-2-n-s"}
+            }).selectmenu("menuWidget").addClass("overflow");
+            $("#id_physical_format").selectmenu({
+                icons : {button: "ui-icon-carat-2-n-s"}
+            }).selectmenu("menuWidget").addClass("overflow");
+
         });
     </script>
 {% endblock %}
