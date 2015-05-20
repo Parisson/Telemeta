@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Telemeta project</title><link>http://parisson.github.io/Telemeta/</link><description></description><atom:link href="http://parisson.github.io/Telemeta/feeds/parisson-sarl.rss.xml" rel="self"></atom:link><lastBuildDate>Mon, 13 Apr 2015 12:14:04 +0200</lastBuildDate><item><title>Telemeta: open web audio platform with semantics</title><link>http://parisson.github.io/Telemeta/telemeta-open-web-audio-platform-with-semantics.html</link><description>&lt;img alt="Telemeta logo" src="/Telemeta/images/logo_telemeta_2.png" /&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Telemeta project</title><link>http://parisson.github.io/Telemeta/</link><description></description><atom:link href="http://parisson.github.io/Telemeta/feeds/parisson-sarl.rss.xml" rel="self"></atom:link><lastBuildDate>Thu, 07 May 2015 19:23:05 +0200</lastBuildDate><item><title>Telemeta: open web audio platform with semantics</title><link>http://parisson.github.io/Telemeta/telemeta-open-web-audio-platform-with-semantics.html</link><description>&lt;img alt="Telemeta logo" src="/Telemeta/images/logo_telemeta_2.png" /&gt;
 &lt;div class="section" id="overview"&gt;
 &lt;h2&gt;Overview&lt;/h2&gt;
 &lt;p&gt;Telemeta is a free and open source web audio archiving software which introduces useful and secure methods to backup, index, transcode, analyse and publish any digitalized audio file with extensive metadata. It is dedicated to collaborative media archiving projects, research laboratories and digital humanities - and especially in ethnomusicological use cases - who wants to easily organize, backup and publish documented sound collections of audio files, CDs, digitalized vinyls and magnetic tapes over a strong database, in accordance with open web standards.&lt;/p&gt;
@@ -183,7 +183,7 @@ If you find some bugs, PLEASE leave a ticket on this page:&lt;/p&gt;
 &lt;/ul&gt;
 &lt;/blockquote&gt;
 &lt;/div&gt;
-</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Parisson Sarl</dc:creator><pubDate>Mon, 13 Apr 2015 12:14:04 +0200</pubDate><guid>tag:parisson.github.io,2015-04-13:Telemeta/telemeta-open-web-audio-platform-with-semantics.html</guid></item><item><title>Telemeta 1.5 is out!</title><link>http://parisson.github.io/Telemeta/telemeta-15-is-out.html</link><description>&lt;p&gt;After months of hard work we are pleased to release a big update to Telemeta communities. It represents a huge milestone that makes Telemeta now compatible with more modern web technologies.&lt;/p&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Parisson Sarl</dc:creator><pubDate>Thu, 07 May 2015 19:23:05 +0200</pubDate><guid>tag:parisson.github.io,2015-05-07:Telemeta/telemeta-open-web-audio-platform-with-semantics.html</guid></item><item><title>Telemeta 1.5 is out!</title><link>http://parisson.github.io/Telemeta/telemeta-15-is-out.html</link><description>&lt;p&gt;After months of hard work we are pleased to release a big update to Telemeta communities. It represents a huge milestone that makes Telemeta now compatible with more modern web technologies.&lt;/p&gt;
 &lt;p&gt;Changelog:&lt;/p&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;Django 1.6.x compatibility&lt;/li&gt;
@@ -195,7 +195,7 @@ If you find some bugs, PLEASE leave a ticket on this page:&lt;/p&gt;
 &lt;/ul&gt;
 &lt;p&gt;Download&lt;/p&gt;
 &lt;ul class="simple"&gt;
-&lt;li&gt;&lt;a class="reference external" href="http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.4.6.tar.gz"&gt;http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.4.6.tar.gz&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.5.1.tar.gz"&gt;http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.5.1.tar.gz&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Parisson Sarl</dc:creator><pubDate>Mon, 26 Jan 2015 10:42:00 +0100</pubDate><guid>tag:parisson.github.io,2015-01-26:Telemeta/telemeta-15-is-out.html</guid></item><item><title>Telemeta 1.4.6 is out!</title><link>http://parisson.github.io/Telemeta/telemeta-146-is-out.html</link><description>&lt;p&gt;Changelog:&lt;/p&gt;
 &lt;ul class="simple"&gt;
@@ -217,7 +217,14 @@ If you find some bugs, PLEASE leave a ticket on this page:&lt;/p&gt;
 sudo pip install django-ipauth
 &lt;/pre&gt;
 &lt;p&gt;See &lt;a class="reference external" href="http://pypi.python.org/pypi/django-ipauth/"&gt;http://pypi.python.org/pypi/django-ipauth/&lt;/a&gt; for setup.&lt;/p&gt;
-</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Parisson Sarl</dc:creator><pubDate>Thu, 23 Oct 2014 10:44:00 +0200</pubDate><guid>tag:parisson.github.io,2014-10-23:Telemeta/ip-based-authorization.html</guid><category>authentification</category></item><item><title>Telemeta at QMUL</title><link>http://parisson.github.io/Telemeta/telemeta-at-qmul.html</link><description>&lt;p&gt;We presented TimeSide, the open web audio processing framework, at the Queen Mary University of London (ArtsOne Lecture Theatre) for the &lt;a class="reference external" href="http://soundsoftware.ac.uk/soundsoftware2014"&gt;third Workshop on Software and Data for Audio and Music Research&lt;/a&gt;.&lt;/p&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Parisson Sarl</dc:creator><pubDate>Thu, 23 Oct 2014 10:44:00 +0200</pubDate><guid>tag:parisson.github.io,2014-10-23:Telemeta/ip-based-authorization.html</guid><category>authentification</category></item><item><title>Telemeta is now on GitHub</title><link>http://parisson.github.io/Telemeta/telemeta-is-now-on-github.html</link><description>&lt;p&gt;We now use GitHub for the development process of all Telemeta related projects:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://github.com/Parisson/Telemeta"&gt;https://github.com/Parisson/Telemeta&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://github.com/Parisson/Telemeta"&gt;https://github.com/Parisson/Telemeta&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://github.com/ANR-DIADEMS/timeside-diadems"&gt;https://github.com/ANR-DIADEMS/timeside-diadems&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Feel free to post issues and good ideas to help us improving the platform.&lt;/p&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Parisson Sarl</dc:creator><pubDate>Fri, 10 Oct 2014 10:53:00 +0200</pubDate><guid>tag:parisson.github.io,2014-10-10:Telemeta/telemeta-is-now-on-github.html</guid></item><item><title>Telemeta at QMUL</title><link>http://parisson.github.io/Telemeta/telemeta-at-qmul.html</link><description>&lt;p&gt;We presented TimeSide, the open web audio processing framework, at the Queen Mary University of London (ArtsOne Lecture Theatre) for the &lt;a class="reference external" href="http://soundsoftware.ac.uk/soundsoftware2014"&gt;third Workshop on Software and Data for Audio and Music Research&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;a class="reference external" href="​https://github.com/Parisson/Telemeta-doc/raw/master/Workshops/SoundSoftware_2014/TimeSide_SoundSoftware_2014_07.pdf"&gt;Slides&lt;/a&gt;&lt;/p&gt;
 </description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Parisson Sarl</dc:creator><pubDate>Tue, 08 Jul 2014 01:42:00 +0200</pubDate><guid>tag:parisson.github.io,2014-07-08:Telemeta/telemeta-at-qmul.html</guid></item><item><title>Import ISO 639-3 languages</title><link>http://parisson.github.io/Telemeta/import-iso-639-3-languages.html</link><description>&lt;p&gt;From Telemeta 1.4, an ISO 639-3 language model has been implemented.&lt;/p&gt;
 &lt;p&gt;The ISO language table content can be initialized with the official code set.
