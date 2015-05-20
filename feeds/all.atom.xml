@@ -217,7 +217,7 @@ If you find some bugs, PLEASE leave a ticket on this page:&lt;/p&gt;
 sudo pip install django-ipauth
 &lt;/pre&gt;
 &lt;p&gt;See &lt;a class="reference external" href="http://pypi.python.org/pypi/django-ipauth/"&gt;http://pypi.python.org/pypi/django-ipauth/&lt;/a&gt; for setup.&lt;/p&gt;
-</summary><category term="authentification"></category></entry><entry><title>Telemeta is now on GitHub</title><link href="http://parisson.github.io/Telemeta/telemeta-is-now-on-github.html" rel="alternate"></link><updated>2014-10-10T10:53:00+02:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2014-10-10:Telemeta/telemeta-is-now-on-github.html</id><summary type="html">&lt;p&gt;We now use GitHub for the development process of all Telemeta related projects:&lt;/p&gt;
+</summary><category term="authentification"></category></entry><entry><title>Telemeta on GitHub</title><link href="http://parisson.github.io/Telemeta/telemeta-on-github.html" rel="alternate"></link><updated>2014-10-10T10:53:00+02:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2014-10-10:Telemeta/telemeta-on-github.html</id><summary type="html">&lt;p&gt;We now use GitHub for the development process of all Telemeta related projects:&lt;/p&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;&lt;a class="reference external" href="https://github.com/Parisson/Telemeta"&gt;https://github.com/Parisson/Telemeta&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="reference external" href="https://github.com/Parisson/Telemeta"&gt;https://github.com/Parisson/Telemeta&lt;/a&gt;&lt;/li&gt;
