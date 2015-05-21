@@ -40,9 +40,6 @@ from django.views.generic.base import RedirectView
 from django.views.generic.list import ListView
 from telemeta.models import MediaItem, MediaCollection, MediaItemMarker, MediaCorpus, MediaFonds
 from telemeta.views import *
-#from telemeta.views import HomeView, AdminView, CollectionView, ItemView, \
-#                            InstrumentView, InstrumentAliasView, PlaylistView, ProfileView, GeoView, \
-#                            LastestRevisionsFeed, ResourceView, UserRevisionsFeed, CollectionPackageView
 from jsonrpc import jsonrpc_site
 import os.path
 import telemeta.config

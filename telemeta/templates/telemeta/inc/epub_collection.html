@@ -1,12 +1,13 @@
-<link rel="stylesheet" type="text/css" href="style/nav.css" />
+<link rel="stylesheet" type="text/css" href="style/epub.css" />
 
-<h2>{{ collection.title }}</h2>
+<h2>{{ title }}</h2>
+<h3>{{ subtitle }}</h3>
 
 {% for item in items %}
 <div class="item">
-  <h3>
+  <p>
   <b>Son {{ item.old_code }}</b> : {{ item.title }}. {{ item.comment }} ({{ item.track }})
-  </h3>
+  </p>
 
   <div class="item-audio">
    <audio class="item-player" src="{{ item.file }}" controls="controls"></audio>

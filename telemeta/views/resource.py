@@ -342,30 +342,3 @@ class ResourceEditView(ResourceSingleMixin, UpdateWithInlinesView):
     def dispatch(self, *args, **kwargs):
         return super(ResourceEditView, self).dispatch(*args, **kwargs)
 
-
-def cleanup_path(path):
-    new_path = []
-    for dir in path.split(os.sep):
-        new_path.append(slugify(dir))
-    return os.sep.join(new_path)
-
-
-class CorpusEpubView(BaseEpubMixin, View):
-    "Download corpus data embedded in an EPUB3 file"
-
-    model = MediaCorpus
-
-    def get_object(self):
-        return MediaCorpus.objects.get(public_id=self.kwargs['public_id'])
-
-    def get(self, request, *args, **kwargs):
-        self.write_book(self.get_object())
-        epub_file = open(self.path, 'rb')
-        response = HttpResponse(epub_file.read(), content_type='application/epub+zip')
-        response['Content-Disposition'] = "attachment; filename=%s" % self.filename + '.epub'
-        return response
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super(CorpusEpubView, self).dispatch(*args, **kwargs)
-

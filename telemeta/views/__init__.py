@@ -43,4 +43,5 @@ from telemeta.views.playlist import *
 from telemeta.views.profile import *
 from telemeta.views.feed import *
 from telemeta.views.resource import *
+from telemeta.views.epub import *
 
