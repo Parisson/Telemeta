@@ -226,19 +226,13 @@ class ResourceSingleMixin(ResourceMixin):
         return self
 
     def get_object(self):
-        # super(CorpusDetailView, self).get_object()
         self.type = self.kwargs['type']
         self.setup(self.type)
         obj = self.model.objects.filter(code=self.kwargs['public_id'])
         if not obj:
-            try:
-                obj = self.model.objects.get(id=self.kwargs['public_id'])
-            except:
-                pass
+            return get_object_or_404(self.model, id=self.kwargs['public_id'])
         else:
-            obj = obj[0]
-        self.pk = obj.pk
-        return get_object_or_404(self.model, pk=self.pk)
+            return obj[0]
 
     def get_context_data(self, **kwargs):
         context = super(ResourceMixin, self).get_context_data(**kwargs)
@@ -246,7 +240,7 @@ class ResourceSingleMixin(ResourceMixin):
         related_media = self.related.objects.filter(resource=resource)
         check_related_media(related_media)
         playlists = get_playlists_names(self.request)
-        revisions = Revision.objects.filter(element_type=self.type, element_id=self.pk).order_by('-time')
+        revisions = Revision.objects.filter(element_type=self.type, element_id=resource.pk).order_by('-time')
         context['resource'] = resource
         context['type'] = self.type
         context['related_media'] = related_media
