@@ -119,7 +119,6 @@ class ItemBaseMixin(TelemetaBaseMixin):
         else:
              previous = item.public_id
              next = item.public_id
-
         return previous, next
 
 
@@ -178,15 +177,15 @@ class ItemView(ItemBaseMixin):
                     })
 
     def related_media_item_stream(self, request, item_public_id, media_id):
-        item = MediaItem.objects.get(public_id=item_public_id)
-        media = MediaItemRelated.objects.get(item=item, id=media_id)
+        item = get_object_or_404(MediaItem, public_id=item_public_id)
+        media = get_object_or_404(MediaItemRelated, item=item, id=media_id)
         filename = media.file.path.split(os.sep)[-1]
         response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
         return response
 
     def related_media_item_download(self, request, item_public_id, media_id):
-        item = MediaItem.objects.get(public_id=item_public_id)
-        media = MediaItemRelated.objects.get(item=item, id=media_id)
+        item = get_object_or_404(MediaItem, public_id=item_public_id)
+        media = get_object_or_404(MediaItemRelated, item=item, id=media_id)
         filename = media.file.path.split(os.sep)[-1]
         response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
         response['Content-Disposition'] = 'attachment; ' + 'filename=' + filename
@@ -194,7 +193,7 @@ class ItemView(ItemBaseMixin):
 
     @method_decorator(permission_required('telemeta.change_mediaitem'))
     def related_media_edit(self, request, public_id, template):
-        item = MediaItem.objects.get(public_id=public_id)
+        item = get_object_or_404(MediaItem, public_id=public_id)
         MediaItemRelatedFormSet = inlineformset_factory(MediaItem, MediaItemRelated, form=MediaItemRelatedForm)
         if request.method == 'POST':
             formset = MediaItemRelatedFormSet(data=request.POST, files=request.FILES, instance=item)
@@ -204,7 +203,6 @@ class ItemView(ItemBaseMixin):
                 return redirect('telemeta-item-edit', public_id)
         else:
             formset = MediaItemRelatedFormSet(instance=item)
-
         return render(request, template, {'item': item, 'formset': formset,})
 
 
