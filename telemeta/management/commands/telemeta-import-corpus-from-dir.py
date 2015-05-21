@@ -134,7 +134,7 @@ class Command(BaseCommand):
                         corpus_id = slugify(unicode(corpus_name))
                         collection_id = corpus_id + '_' + slugify(unicode(collection_name))
                         item_id = collection_id + '_' + slugify(unicode(item_name))
-                        
+
                         cc = MediaCorpus.objects.filter(code=corpus_id)
                         if cc:
                             corpus = cc[0]

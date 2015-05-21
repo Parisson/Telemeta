@@ -132,11 +132,11 @@ class ItemView(ItemBaseMixin):
 
         # get item with one of its given marker_id
         if not public_id and marker_id:
-            marker = MediaItemMarker.objects.get(public_id=marker_id)
+            marker = get_object_or_404(MediaItemMarker, public_id=marker_id)
             item_id = marker.item_id
             item = MediaItem.objects.get(id=item_id)
         else:
-            item = MediaItem.objects.get(public_id=public_id)
+            item = get_object_or_404(MediaItem, public_id=public_id)
 
         access = get_item_access(item, request.user)
 

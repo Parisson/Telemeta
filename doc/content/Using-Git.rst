@@ -3,6 +3,7 @@ Telemeta project now uses Git for development
 
 :category: Development
 :date: 2011-10-26 06:53
+:tags: git
 
 Ten months ago, I started to look at other version control systems because I was fed up with the Subversion centralized model. It tested Git, Mercurial, Bazaar, etc.. Bazaar was the good choice because it allowed the dev teams to make branches easily in a decentralized environment, to push commits to the old subversion repository, to keep an easy syntax, etc...
 
