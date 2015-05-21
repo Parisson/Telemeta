@@ -9,17 +9,17 @@ before_install:
  - sudo apt-get -qq update
  - sudo apt-get install -qq libhdf5-serial-dev libatlas-dev libatlas-base-dev gfortran
  - sudo apt-get install -qq python-setuptools python-numpy python-scipy python-tables
- - gpg --keyserver pgpkeys.mit.edu --recv-key E3298399DF14BB7C
- - gpg -a --export E3298399DF14BB7C | sudo apt-key add -
+ # - gpg --keyserver pgpkeys.mit.edu --recv-key E3298399DF14BB7C
+ # - gpg -a --export E3298399DF14BB7C | sudo apt-key add -
  - echo "deb http://debian.parisson.com/debian/ precise main" | sudo tee -a /etc/apt/sources.list.d/parisson.list
  - echo "deb-src http://debian.parisson.com/debian/ precise main" | sudo tee -a /etc/apt/sources.list.d/parisson.list
  - sudo apt-get update
- - sudo apt-get install -y python-timeside
+ - sudo apt-get install -qqy python-timeside
 
 # command to install dependencies
 install:
- - pip install -U --no-deps timeside 
- - pip install --process-dependency-links -e . 
+ - pip install -U --no-deps timeside
+ - pip install --process-dependency-links -e .
 
 # command to run tests
 #before_script:
