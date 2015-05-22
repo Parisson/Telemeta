@@ -87,10 +87,9 @@ class BaseEpubMixin(TelemetaBaseMixin):
 
         # add cover image
         for media in instance.related.all():
-            if 'cover' in media.title or 'Cover' in media.title:
-                filename = os.path.split(media.file.path)[-1]
-                self.book.set_cover(filename, open(media.file.path, 'r').read())
-                break
+            filename = os.path.split(media.file.path)[-1]
+            self.book.set_cover(filename, open(media.file.path, 'r').read())
+            break
 
         context = {}
         preamble = epub.EpubHtml(title='Preamble', file_name='preamble' + '.xhtml', lang='fr')
