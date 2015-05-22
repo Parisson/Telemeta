@@ -5,7 +5,7 @@ from django.core.files.base import ContentFile
 from django.contrib.auth.models import User
 from telemeta.models import *
 from telemeta.util.unaccent import unaccent
-import os, re
+import os, re, glob
 
 try:
     from django.utils.text import slugify
@@ -113,25 +113,27 @@ class Command(BaseCommand):
                             metadata[data[0]] = data[1:]
                         i += 1
                     print metadata
-                    collection_name = chapter
-                    collection_id = corpus_id + '_' + slugify(unicode(collection_name))
-                    collection_title = collection_name.replace('_', ' ') + ' - ' + chapter_title
-                    print collection_title
-                    cc = MediaCollection.objects.filter(code=collection_id, title=collection_title)
-                    if cc:
-                        collection = cc[0]
-                    else:
-                        collection = MediaCollection(code=collection_id)
-                        collection.title = collection_title
-                        collection.save()
-                    if not collection in corpus.children.all():
-                        corpus.children.add(collection)
 
+            collection_name = chapter
+            collection_id = corpus_id + '_' + slugify(unicode(collection_name))
+            collection_title = collection_name.replace('_', ' ') + ' - ' + chapter_title
+            print collection_title
+            cc = MediaCollection.objects.filter(code=collection_id, title=collection_title)
+            if cc:
+                collection = cc[0]
+            else:
+                collection = MediaCollection(code=collection_id)
+                collection.title = collection_title
+                collection.save()
+            if not collection in corpus.children.all():
+                corpus.children.add(collection)
+
+            for filename in os.listdir(chapter_dir):
+                path = os.path.join(chapter_dir, filename)
                 if os.path.isfile(path) and '.jpg' == os.path.splitext(filename)[1]:
                     related_path = path.replace(self.media_root, '')
                     related, c = MediaCollectionRelated.objects.get_or_create(collection=collection,
                                     file=related_path)
-
 
             for root, dirs, files in os.walk(chapter_dir):
                 for media_file in files:
