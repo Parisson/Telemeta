@@ -84,7 +84,6 @@ class Command(BaseCommand):
         print self.media_root
         cleanup_dir(self.source_dir)
         chapters = os.listdir(self.source_dir)
-
         corpus_name = os.path.split(root_dir)[-1]
         corpus_id = slugify(unicode(corpus_name))
 
@@ -99,6 +98,20 @@ class Command(BaseCommand):
         for chapter in chapters:
             chapter_dir = os.path.join(self.source_dir, chapter)
             metadata = {}
+            collection_name = chapter
+            collection_id = corpus_id + '_' + slugify(unicode(collection_name))
+            collection_title = collection_name.replace('_', ' ') + ' - ' + chapter_title
+            print collection_title
+            cc = MediaCollection.objects.filter(code=collection_id, title=collection_title)
+            if cc:
+                collection = cc[0]
+            else:
+                collection = MediaCollection(code=collection_id)
+                collection.title = collection_title
+                collection.save()
+
+            if not collection in corpus.children.all():
+                corpus.children.add(collection)
 
             for filename in os.listdir(chapter_dir):
                 path = os.path.join(chapter_dir, filename)
@@ -140,26 +153,9 @@ class Command(BaseCommand):
                     if media_ext and media_ext in self.media_formats and media_name[0] != '.':
                         root_list = root.split(os.sep)
                         media_path = os.sep.join(root_list[-4:])  + os.sep + media_file
-
                         item_name = root_list[-1]
-                        collection_name = root_list[-2]
-                        data = metadata[item_name]
-
-                        collection_id = corpus_id + '_' + slugify(unicode(collection_name))
                         item_id = collection_id + '_' + slugify(unicode(item_name))
-                        collection_title = collection_name.replace('_', ' ') + ' - ' + chapter_title
-                        print collection_title
-                        cc = MediaCollection.objects.filter(code=collection_id, title=collection_title)
-                        if cc:
-                            collection = cc[0]
-                        else:
-                            collection = MediaCollection(code=collection_id)
-                            collection.title = collection_title
-                            collection.save()
-
-                        if not collection in corpus.children.all():
-                            corpus.children.add(collection)
-
+                        data = metadata[item_name]
                         item, c = MediaItem.objects.get_or_create(collection=collection, code=item_id)
                         item.old_code = item_name
                         self.write_file(item, path)
@@ -171,7 +167,6 @@ class Command(BaseCommand):
                         if len(title) > 1:
                             item.comment = '. '.join(title[1:])
                         item.save()
-
                         for related_file in os.listdir(root):
                             related_path = os.sep.join(root_list[-4:]) + os.sep + related_file
                             related_name = os.path.splitext(related_file)[0]
