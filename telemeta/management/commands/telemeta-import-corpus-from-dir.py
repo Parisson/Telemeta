@@ -114,7 +114,11 @@ class Command(BaseCommand):
                             metadata[data[0]] = data[1:]
                         i += 1
                     print metadata
-                    break
+
+                if os.path.isfile(path) and '.jpg' == os.path.splitext(filename)[1]:
+                    related_path = path.replace(self.media_root, '')
+                    related, c = MediaCollectionRelated.objects.get_or_create(collection=collection,
+                                    file=related_path)
 
             for root, dirs, files in os.walk(chapter_dir):
                 for media_file in files:
