@@ -45,6 +45,7 @@ class BaseEpubMixin(TelemetaBaseMixin):
 
     local_path = os.path.dirname(__file__)
     css = os.sep.join([local_path, '..', 'static', 'telemeta', 'css', 'telemeta_epub.css'])
+    default_image = os.sep.join([local_path, '..', 'static', 'telemeta', 'images', 'cul_de_lampe.jpg'])
     template = os.sep.join([local_path, '..', 'templates', 'telemeta', 'inc', 'epub_collection.html'])
     template_preamble = os.sep.join([local_path, '..', 'templates', 'telemeta', 'inc', 'epub_preamble.html'])
 
@@ -53,6 +54,7 @@ class BaseEpubMixin(TelemetaBaseMixin):
         self.corpus = corpus
         site = Site.objects.get_current()
         self.chapters = []
+        default_image_added = False
 
         if not collection:
             self.filename = self.corpus.code
@@ -65,7 +67,7 @@ class BaseEpubMixin(TelemetaBaseMixin):
 
         # add metadata
         self.book.set_identifier(corpus.public_id)
-        #self.book.set_title(corpus.title + ' - ' + collection.title)
+        self.book.set_title(corpus.title + ' - ' + collection.title)
         self.book.set_language('fr')
         self.book.add_author(corpus.descriptions)
 
@@ -74,8 +76,17 @@ class BaseEpubMixin(TelemetaBaseMixin):
         css = epub.EpubItem(uid="style_nav", file_name="style/epub.css", media_type="text/css", content=style.read())
         self.book.add_item(css)
 
+        if collection:
+            self.collections = [collection]
+            mode_single = True
+            instance = collection
+        else:
+            self.collections = self.corpus.children.all()
+            mode_single = False
+            instance = self.corpus
+
         # add cover image
-        for media in self.corpus.related.all():
+        for media in instance.related.all():
             if 'cover' in media.title or 'Cover' in media.title:
                 filename = os.path.split(media.file.path)[-1]
                 self.book.set_cover(filename, open(media.file.path, 'r').read())
@@ -84,15 +95,9 @@ class BaseEpubMixin(TelemetaBaseMixin):
         context = {}
         preamble = epub.EpubHtml(title='Preamble', file_name='preamble' + '.xhtml', lang='fr')
         preamble.content = render_to_string(self.template_preamble, context)
+        preamble.is_chapter = False
         self.book.add_item(preamble)
         self.chapters.append(preamble)
-
-        if collection:
-            self.collections = [collection]
-            mode_single = True
-        else:
-            self.collections = self.corpus.children.all()
-            mode_single = False
 
         for collection in self.collections:
             items = {}
@@ -113,11 +118,22 @@ class BaseEpubMixin(TelemetaBaseMixin):
                     filename = str(item.file)
                     epub_item = epub.EpubItem(file_name=str(item.file), content=audio.read())
                     self.book.add_item(epub_item)
-                for related in item.related.all():
-                    if 'image' in related.mime_type:
-                        image = open(related.file.path, 'r')
-                        epub_item = epub.EpubItem(file_name=str(related.file), content=image.read())
-                        self.book.add_item(epub_item)
+
+                related_all = item.related.all()
+                if related_all:
+                    for related in related_all:
+                        if 'image' in related.mime_type:
+                            image = open(related.file.path, 'r')
+                            epub_item = epub.EpubItem(file_name=str(related.file), content=image.read())
+                            self.book.add_item(epub_item)
+                elif not default_image_added:
+                    image = open(self.default_image, 'r')
+                    default_image_relative_path = 'images' + os.sep + os.path.split(self.default_image)[-1]
+                    epub_item = epub.EpubItem(file_name=default_image_relative_path,
+                                        content=image.read())
+                    self.book.add_item(epub_item)
+                    default_image_added = True
+
 
             title_split = collection.title.split(' - ')
             if len(title_split) > 1:
@@ -132,7 +148,7 @@ class BaseEpubMixin(TelemetaBaseMixin):
                 subtitle = ''
 
             context = {'collection': collection, 'title': title, 'subtitle': subtitle,
-                        'site': site, 'items': items}
+                        'site': site, 'items': items, 'default_image': default_image_relative_path}
             c = epub.EpubHtml(title=' - '.join([title, subtitle]), file_name=collection.code + '.xhtml', lang='fr')
             c.content = render_to_string(self.template, context)
             self.chapters.append(c)

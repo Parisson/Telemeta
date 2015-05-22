@@ -13,6 +13,7 @@
    <audio class="item-player" src="{{ item.file }}" controls="controls"></audio>
   </div>
 
+  {% if item.related.all %}
   {% for image in item.related.all %}
     {% if 'image' in image.mime_type %}
        <div class="item-image">
@@ -20,6 +21,12 @@
        </div>
     {% endif %}
    {% endfor %}
+  {% else %}
+   <div class="item-image">
+        <img src="{{ default_image }}"/>
+   </div>
+  {% endif %}
+
 
 </div>
 {% endfor %}

@@ -85,6 +85,17 @@ class Command(BaseCommand):
         cleanup_dir(self.source_dir)
         chapters = os.listdir(self.source_dir)
 
+        corpus_name = os.path.split(root_dir)[-1]
+        corpus_id = slugify(unicode(corpus_name))
+
+        cc = MediaCorpus.objects.filter(code=corpus_id)
+        if cc:
+            corpus = cc[0]
+        else:
+            corpus = MediaCorpus(code=corpus_id)
+            corpus.title = corpus_name
+            corpus.save()
+
         for chapter in chapters:
             chapter_dir = os.path.join(self.source_dir, chapter)
             metadata = {}
@@ -128,21 +139,10 @@ class Command(BaseCommand):
 
                         item_name = root_list[-1]
                         collection_name = root_list[-2]
-                        corpus_name = root_list[-3]
                         data = metadata[item_name]
 
-                        corpus_id = slugify(unicode(corpus_name))
                         collection_id = corpus_id + '_' + slugify(unicode(collection_name))
                         item_id = collection_id + '_' + slugify(unicode(item_name))
-
-                        cc = MediaCorpus.objects.filter(code=corpus_id)
-                        if cc:
-                            corpus = cc[0]
-                        else:
-                            corpus = MediaCorpus(code=corpus_id)
-                            corpus.title = corpus_name
-                            corpus.save()
-
                         collection_title = collection_name.replace('_', ' ') + ' - ' + chapter_title
                         print collection_title
                         cc = MediaCollection.objects.filter(code=collection_id, title=collection_title)
