@@ -102,6 +102,7 @@ class BaseEpubMixin(TelemetaBaseMixin):
         for collection in self.collections:
             items = {}
             default_image_added = False
+            default_image_relative_path = ''
 
             for item in collection.items.all():
                 if '.' in item.old_code:
