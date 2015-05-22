@@ -101,6 +101,8 @@ class BaseEpubMixin(TelemetaBaseMixin):
 
         for collection in self.collections:
             items = {}
+            default_image_added = False
+
             for item in collection.items.all():
                 if '.' in item.old_code:
                     id = item.old_code.split('.')[1]
