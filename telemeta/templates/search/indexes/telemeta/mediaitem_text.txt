@@ -3,7 +3,6 @@
 {{ object.recorded_from_date }}
 {{ object.recorded_to_date }}
 {{ object.code }}
-{{ object.old_code }}
 {{ object.location }}
 {{ object.location.name }}
 {{ object.comment }}

@@ -34,9 +34,9 @@ class HayAdvanceForm(SearchForm):
 #begin create field
 
     #to replace de basic search form field
-    q = forms.CharField(required=False, label=('Title'), widget=forms.TextInput(attrs={'class': 'form-control','type': 'search'}))
+    q = forms.CharField(required=False, label=('Title'), widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'search'}))
 
-    location = forms.CharField(required=False, label=('Location'), widget=forms.TextInput(attrs={'class': 'form-control','type': 'search'}))
+    location = forms.CharField(required=False, label=('Location'), widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'search'}))
 
     # to create a dynamic list of ethnic group
     def list_ethnic_group():
@@ -47,10 +47,10 @@ class HayAdvanceForm(SearchForm):
             type_name.append((ethnic.value, ethnic.value))
         return type_name
 
-    ethnic_group = forms.CharField(required=False, label=('Population / social group'), widget=forms.Select(attrs={'style' : 'width:100%' }, choices=list_ethnic_group()))
+    ethnic_group = forms.CharField(required=False, label=('Population / social group'), widget=forms.Select(attrs={'style': 'width:100%'}, choices=list_ethnic_group()))
 
-    instruments = forms.CharField(required=False, label=('Instruments'), widget=forms.TextInput(attrs={'class': 'form-control','type': 'search'}))
-    collectors = forms.CharField(required=False, label=('Recordist'), widget=forms.TextInput(attrs={'class': 'form-control','type': 'search'}))
+    instruments = forms.CharField(required=False, label=('Instruments'), widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'search'}))
+    collectors = forms.CharField(required=False, label=('Recordist'), widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'search'}))
 
     #to create a dynamic list of publish year
     def list_recorded_year():
@@ -75,11 +75,11 @@ class HayAdvanceForm(SearchForm):
         list_year = []
         list_year.append(('', '----'))
         for year in list_all_year:
-            list_year.append(("01/01/" + str(year), year))
+            list_year.append((str(year), year))
         return list_year
 
-    recorded_from_date = forms.DateField(required=False, label=('Recorded from'), widget=forms.Select(attrs={'style':'width:47%'},choices=list_recorded_year()))
-    recorded_to_date = forms.DateField(required=False, label=('Recorded to'), widget=forms.Select(attrs={'style':'width:47%'},choices=list_recorded_year()))
+    recorded_from_date = forms.IntegerField(required=False, label=('Recorded from'), widget=forms.Select(attrs={'style': 'width:47%'}, choices=list_recorded_year()))
+    recorded_to_date = forms.IntegerField(required=False, label=('Recorded to'), widget=forms.Select(attrs={'style': 'width:47%'}, choices=list_recorded_year()))
 
     #to create a dynamic list of publish year
     def list_publish_year():
@@ -105,8 +105,8 @@ class HayAdvanceForm(SearchForm):
             list_year.append((year, year))
         return list_year
 
-    year_published_from = forms.IntegerField(required=False, label=('Year published from'), widget=forms.Select(attrs={'style':'width:47%'},choices=list_publish_year()))
-    year_published_to = forms.IntegerField(required=False, label=('Year published to'), widget=forms.Select(attrs={'style':'width:47%'},choices=list_publish_year()))
+    year_published_from = forms.IntegerField(required=False, label=('Year published from'), widget=forms.Select(attrs={'style': 'width:47%'}, choices=list_publish_year()))
+    year_published_to = forms.IntegerField(required=False, label=('Year published to'), widget=forms.Select(attrs={'style': 'width:47%'}, choices=list_publish_year()))
 
     viewable_choice = (('1', 'no preference'), ('2', 'fichier dans le player + full'), ('3', 'fichier dans le player(j\'ai un compte)'))
     viewable = forms.CharField(required=False, label=('Viewable'), widget=forms.RadioSelect(choices=viewable_choice), initial=1)
@@ -133,7 +133,7 @@ class HayAdvanceForm(SearchForm):
             type_name.append((context.value, context.value))
         return type_name
 
-    recording_context = forms.CharField(required=False, label=('Recording Context'), widget=forms.Select(attrs={'style':'width:100%'},choices=list_recording_context()))
+    recording_context = forms.CharField(required=False, label=('Recording Context'), widget=forms.Select(attrs={'style': 'width:100%'}, choices=list_recording_context()))
 
     #to create a dynamic list of physical format
     def list_physical_format():
@@ -144,9 +144,9 @@ class HayAdvanceForm(SearchForm):
             type_name.append((physical_format.value, physical_format.value))
         return type_name
 
-    physical_format = forms.CharField(required=False, label=('Physical Format'), widget=forms.Select(attrs={'style':'width:100%'},choices=list_physical_format()))
+    physical_format = forms.CharField(required=False, label=('Physical Format'), widget=forms.Select(attrs={'style': 'width:100%'}, choices=list_physical_format()))
 
-    code = forms.CharField(required=False, label=('Code'), widget=forms.TextInput(attrs={'class': 'form-control','type': 'search'}))
+    code = forms.CharField(required=False, label=('Code'), widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'search'}))
 #end
 
     def search(self):
