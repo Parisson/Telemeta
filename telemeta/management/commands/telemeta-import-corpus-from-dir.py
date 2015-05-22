@@ -98,20 +98,6 @@ class Command(BaseCommand):
         for chapter in chapters:
             chapter_dir = os.path.join(self.source_dir, chapter)
             metadata = {}
-            collection_name = chapter
-            collection_id = corpus_id + '_' + slugify(unicode(collection_name))
-            collection_title = collection_name.replace('_', ' ') + ' - ' + chapter_title
-            print collection_title
-            cc = MediaCollection.objects.filter(code=collection_id, title=collection_title)
-            if cc:
-                collection = cc[0]
-            else:
-                collection = MediaCollection(code=collection_id)
-                collection.title = collection_title
-                collection.save()
-
-            if not collection in corpus.children.all():
-                corpus.children.add(collection)
 
             for filename in os.listdir(chapter_dir):
                 path = os.path.join(chapter_dir, filename)
@@ -127,11 +113,25 @@ class Command(BaseCommand):
                             metadata[data[0]] = data[1:]
                         i += 1
                     print metadata
+                    collection_name = chapter
+                    collection_id = corpus_id + '_' + slugify(unicode(collection_name))
+                    collection_title = collection_name.replace('_', ' ') + ' - ' + chapter_title
+                    print collection_title
+                    cc = MediaCollection.objects.filter(code=collection_id, title=collection_title)
+                    if cc:
+                        collection = cc[0]
+                    else:
+                        collection = MediaCollection(code=collection_id)
+                        collection.title = collection_title
+                        collection.save()
+                    if not collection in corpus.children.all():
+                        corpus.children.add(collection)
 
                 if os.path.isfile(path) and '.jpg' == os.path.splitext(filename)[1]:
                     related_path = path.replace(self.media_root, '')
                     related, c = MediaCollectionRelated.objects.get_or_create(collection=collection,
                                     file=related_path)
+
 
             for root, dirs, files in os.walk(chapter_dir):
                 for media_file in files:
@@ -171,7 +171,6 @@ class Command(BaseCommand):
                             related_path = os.sep.join(root_list[-4:]) + os.sep + related_file
                             related_name = os.path.splitext(related_file)[0]
                             related_ext = os.path.splitext(related_file)[1][1:]
-
                             if related_ext in self.image_formats:
                                 related, c = MediaItemRelated.objects.get_or_create(item=item, file=related_path)
                                 if len(data) > 2:
