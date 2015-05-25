@@ -230,15 +230,6 @@ class ResourceSingleMixin(ResourceMixin):
         self.setup(self.type)
         return self
 
-    def get_object(self):
-        self.type = self.kwargs['type']
-        self.setup(self.type)
-        obj = self.model.objects.filter(code=self.kwargs['public_id'])
-        if not obj:
-            return get_object_or_404(self.model, id=self.kwargs['public_id'])
-        else:
-            return obj[0]
-
     def get_context_data(self, **kwargs):
         context = super(ResourceMixin, self).get_context_data(**kwargs)
         resource = self.get_object()
