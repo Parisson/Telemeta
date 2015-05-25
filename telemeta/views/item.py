@@ -700,9 +700,7 @@ class ItemDetailView(ItemViewMixin, DetailView):
         else:
             last_revision = None
 
-        format = ''
-        if Format.objects.filter(item=item):
-            format = item.format.get()
+        formats = item.format.all()
 
         context['item'] = item
         context['export_formats'] = self.get_export_formats()
@@ -719,7 +717,7 @@ class ItemDetailView(ItemViewMixin, DetailView):
         context['related_media'] = related_media
         context['mime_type'] = self.mime_type
         context['last_revision'] = last_revision
-        context['format'] = format
+        context['formats'] = formats
         context['private_extra_types'] = private_extra_types.values()
         return context
 
