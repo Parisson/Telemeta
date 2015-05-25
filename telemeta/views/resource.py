@@ -207,16 +207,15 @@ class ResourceMixin(View):
         # super(CorpusDetailView, self).get_object()
         self.type = self.kwargs['type']
         self.setup(self.type)
-        obj = self.model.objects.filter(code=self.kwargs['public_id'])
-        if not obj:
+        objs = self.model.objects.filter(code=self.kwargs['public_id'])
+        if not objs:
             try:
                 obj = self.model.objects.get(id=self.kwargs['public_id'])
             except:
-                pass
+                raise Http404
         else:
-            obj = obj[0]
-        self.pk = obj.pk
-        return get_object_or_404(self.model, pk=self.pk)
+            obj = objs[0]
+        return obj
 
     def get_context_data(self, **kwargs):
         context = super(ResourceMixin, self).get_context_data(**kwargs)
