@@ -179,16 +179,23 @@ class ItemView(ItemBaseMixin):
     def related_media_item_stream(self, request, item_public_id, media_id):
         item = get_object_or_404(MediaItem, code=item_public_id)
         media = get_object_or_404(MediaItemRelated, item=item, id=media_id)
-        filename = media.file.path.split(os.sep)[-1]
-        response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
+        if media.file:
+            response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
+            filename = media.file.path.split(os.sep)[-1]
+            response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
+        else:
+            raise Http404
         return response
 
     def related_media_item_download(self, request, item_public_id, media_id):
         item = get_object_or_404(MediaItem, code=item_public_id)
         media = get_object_or_404(MediaItemRelated, item=item, id=media_id)
-        filename = media.file.path.split(os.sep)[-1]
-        response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
-        response['Content-Disposition'] = 'attachment; ' + 'filename=' + filename
+        if media_file:
+            filename = media.file.path.split(os.sep)[-1]
+            response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
+            response['Content-Disposition'] = 'attachment; ' + 'filename=' + filename
+        else:
+            raise Http404
         return response
 
     @method_decorator(permission_required('telemeta.change_mediaitem'))
