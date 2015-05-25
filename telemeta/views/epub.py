@@ -67,7 +67,6 @@ class BaseEpubMixin(TelemetaBaseMixin):
 
         # add metadata
         self.book.set_identifier(corpus.public_id)
-        self.book.set_title(corpus.title + ' - ' + collection.title)
         self.book.set_language('fr')
         self.book.add_author(corpus.descriptions)
 
