@@ -157,16 +157,22 @@ class ResourceView(object):
         self.setup(type)
         resource = self.model.objects.get(code=public_id)
         media = self.related.objects.get(resource=resource, id=media_id)
-        response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
+        if media.file:
+            response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
+        else:
+            raise Http404
         return response
 
     def related_download(self, request, type, public_id, media_id):
         self.setup(type)
         resource = self.model.objects.get(code=public_id)
         media = self.related.objects.get(resource=resource, id=media_id)
-        filename = media.file.path.split(os.sep)[-1]
-        response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
-        response['Content-Disposition'] = 'attachment; ' + 'filename=' + filename
+        if media.file:
+            filename = media.file.path.split(os.sep)[-1]
+            response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
+            response['Content-Disposition'] = 'attachment; ' + 'filename=' + filename
+        else:
+            raise Http404
         return response
 
 
