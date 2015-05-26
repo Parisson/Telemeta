@@ -190,7 +190,7 @@ class ItemView(ItemBaseMixin):
     def related_media_item_download(self, request, item_public_id, media_id):
         item = get_object_or_404(MediaItem, code=item_public_id)
         media = get_object_or_404(MediaItemRelated, item=item, id=media_id)
-        if media_file:
+        if media.file:
             filename = media.file.path.split(os.sep)[-1]
             response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
             response['Content-Disposition'] = 'attachment; ' + 'filename=' + filename
