@@ -148,6 +148,7 @@ class Command(BaseCommand):
                         os.rename(path, new_media_path)
                         media_file = new_media_file
                         print 'renaming: ' + media_file
+                        path = new_media_path
 
                     media_name = os.path.splitext(media_file)[0]
                     media_ext = os.path.splitext(media_file)[1][1:]
