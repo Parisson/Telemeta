@@ -20,7 +20,7 @@ h3 {
 
 p {
     text-align: left;
-    font-size: 0.9em;
+    font-size: 0.8em;
     margin-top: 0px;
     font-weight: normal;
 }
@@ -42,7 +42,7 @@ nav[epub|type~='toc'] > ol > li > ol > li {
 }
 
 .item {
-    page-break-after: always;
+    page-break-before: always;
 }
 
 .item-image {
@@ -51,6 +51,7 @@ nav[epub|type~='toc'] > ol > li > ol > li {
 
 .item-player {
     width: 100%;
+    page-break-after: avoid;
 }
 
 img {
