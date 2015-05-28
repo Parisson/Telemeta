@@ -90,7 +90,7 @@ class BaseEpubMixin(TelemetaBaseMixin):
             self.book.set_cover(filename, open(media.file.path, 'r').read())
             break
 
-        context = {'mode_single': mode_single}
+        context = {}
         preamble = epub.EpubHtml(title='Preamble', file_name='preamble' + '.xhtml', lang='fr')
         preamble.content = render_to_string(self.template_preamble, context)
         preamble.is_chapter = False
@@ -147,7 +147,7 @@ class BaseEpubMixin(TelemetaBaseMixin):
                 title = collection.title
                 subtitle = ''
 
-            context = {'collection': collection, 'title': title, 'subtitle': subtitle,
+            context = {'collection': collection, 'title': title, 'subtitle': subtitle, 'mode_single': mode_single,
                         'site': site, 'items': items, 'default_image': default_image_relative_path}
             c = epub.EpubHtml(title=' - '.join([title, subtitle]), file_name=collection.code + '.xhtml', lang='fr')
             c.content = render_to_string(self.template, context)
