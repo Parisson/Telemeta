@@ -5,6 +5,8 @@
 {% block extra_javascript %}
 <script src="{{ STATIC_URL }}telemeta/js/popupdiv.js" type="text/javascript"></script>
 <script src="{{ STATIC_URL }}telemeta/js/playlist.js" type="text/javascript"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}telemeta/js/jquery-latest.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}telemeta/js/jquery.tablesorter.min.js"></script>
 <script>
     jQuery(window).ready(function(){
         var p = playlistUtils;
@@ -16,8 +18,18 @@
         playlistUtils.addEditPlaylist('{{playlist.playlist.public_id}}','{{ playlist.playlist.title }}','{{playlist.playlist.description}}');
     {% endfor %}
 
-
 </script>
+
+{% comment "added by Killian Mary" %}{% endcomment %}
+<script>
+$(document).ready(function(){
+    {% for playlist in playlists %}
+        $("#{{playlist.playlist.public_id}}tb").tablesorter( {sortList: [[2,0]]}, {headers: {6:{sorter:false}}} );
+    {% endfor %}
+});
+</script>
+{% comment "added by Killian Mary" %}end{% endcomment %}
+
 {% endblock %}
 
 {% block content %}
@@ -69,7 +81,9 @@
          </tr>
         {% endif %}
     </table>
-    <table class="listing" width="100%">
+    {% comment "added by Killian Mary, for sort table" %}{% endcomment %}
+    <table id="{{playlist.playlist.public_id}}tb" class="listing" width="100%">
+        <thead>
         <tr>
             <th class="highlight">{% trans "Title" %}</th>
             <th>{% trans "Type" %}</th>
@@ -79,6 +93,8 @@
             <th>{% trans "Digitized" %}</th>
             <th>{% trans "Action" %}</th>
         </tr>
+        </thead>
+        <tbody>
         {% for resource in playlist.resources %}
         <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
             <td>
@@ -120,6 +136,7 @@
             </td>
         </tr>
         {% endfor %}
+        </tbody>
     </table>
     {% endfor %}
 </div>
