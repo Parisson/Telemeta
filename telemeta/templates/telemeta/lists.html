@@ -23,12 +23,13 @@
 {% comment "added by Killian Mary" %}{% endcomment %}
 <script>
 $(document).ready(function(){
+    $.tablesorter.defaults.sortList = [[2,0]];
     {% for playlist in playlists %}
-        $("#{{playlist.playlist.public_id}}tb").tablesorter( {sortList: [[2,0]]}, {headers: {6:{sorter:false}}} );
+        $("#{{playlist.playlist.public_id}}tb").tablesorter({headers: {6:{sorter:false}}} );
     {% endfor %}
 });
 </script>
-{% comment "added by Killian Mary" %}end{% endcomment %}
+{% comment "added by Killian Mary end" %}{% endcomment %}
 
 {% endblock %}
 
