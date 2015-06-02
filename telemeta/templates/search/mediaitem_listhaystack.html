@@ -8,7 +8,8 @@
 
 <table class="listing">
 <tr>
-    <th class="highlight">{% trans "Title" %}</th>
+    <th class="highlight"><input id="selectAll" type="checkbox"/> select all </th>
+    <th>{% trans "Title" %}</th>
     <th>{% trans "Digitized" %}</th>
     <th>{% trans "Recordist" %}</th>
     {% if location_name %}
@@ -21,7 +22,8 @@
 </tr>
 {% for result in page.object_list %}
 <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
-    <td class="highlight">
+    <td class="highlight"><input type="checkbox" class="check1"/></td>
+    <td>
         <a href="{% url "telemeta-item-detail" result.object.public_id %}">{{ result.object }}</a></br>
     </td>
     <td align="center">
