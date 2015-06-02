@@ -1,0 +1,13 @@
+{% extends 'telemeta/base.html' %}
+{% load telemeta_utils %}
+{% load i18n %}
+
+{% block title %}
+{% trans "Add to playlist" %}
+{% endblock %}
+{% block extra_stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/css/jquery-ui.css" />
+{% endblock %}
+{% block content %}
+{{ selected_items_list }}
+{% endblock %}
