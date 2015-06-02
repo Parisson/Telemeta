@@ -227,6 +227,8 @@ def get_playlists(request, user=None):
                     element = None
                 resources.append({'element': element, 'type': resource.resource_type, 'public_id': resource.public_id })
             playlists.append({'playlist': playlist, 'resources': resources})
+        #add by Killian Mary for sort list by title
+        playlists.sort(key=lambda x: x['playlist'].title)
     return playlists
 
 
