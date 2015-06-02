@@ -34,6 +34,7 @@
              {% endifequal %}
              {% include "search/filters.html" %}
 
+            <form method="GET" action="{% url "haystack_playlist"%} ">
              {% with object_list as items %}
                 <div class="fullpage">
                     {% ifequal type 'item' %}
@@ -53,6 +54,8 @@
                     </div>
                 {% endif %}
             {% endwith %}
+            <button style="margin-top:10px" type="submit" id="btn" class="btn btn-default">{% trans "Add to playlist" %}</button>
+            </form>
         {% else %}
             {# Show some example queries to run, maybe query syntax, something else? #}
         {% endif %}
@@ -62,7 +65,7 @@
     <script src="{{ STATIC_URL }}telemeta/js/jquery.js" type="text/javascript"></script>
     <script src="{{ STATIC_URL }}telemeta/js/jquery-ui.min.js" type="text/javascript"></script>
     <script>
-        $(document).ready(function() {
+        $(function() {
             var nouvellesIcones = {
                 header : 'ui-icon-carat-1-e',
                 activeHeader : 'ui-icon-carat-1-s',
@@ -75,6 +78,18 @@
                 icons : nouvellesIcones,
             });
             $( "#datepicker").datepicker();
+            $("#selectAll").click(function(){
+                if(this.checked){
+                    $(".check1").each(function(){
+                        this.checked=true;
+                    });
+                }
+                else{
+                    $(".check1").each(function(){
+                        this.checked=false;
+                    });
+                }
+            });
         });
     </script>
 {% endblock %}
