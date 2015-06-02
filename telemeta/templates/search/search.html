@@ -34,6 +34,7 @@
              {% endifequal %}
              {% include "search/filters.html" %}
 
+            <form method="GET" action="{% url "haystack_playlist"%} ">
              {% with object_list as items %}
                 <div class="fullpage">
                     {% ifequal type 'item' %}
@@ -53,6 +54,8 @@
                     </div>
                 {% endif %}
             {% endwith %}
+            <button style="margin-top:10px" type="submit" id="btn" class="btn btn-default">{% trans "Add to playlist" %}</button>
+            </form>
         {% else %}
             {# Show some example queries to run, maybe query syntax, something else? #}
         {% endif %}

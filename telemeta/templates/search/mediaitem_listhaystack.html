@@ -27,7 +27,7 @@
 {% if user.is_authenticated %}
     {% for result in page.object_list %}
     <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
-        <td class="highlight"><input type="checkbox" class="check1"/></td>
+        <td class="highlight"><input type="checkbox" class="check1" name="selected_items_list" value="{{ result.object.id }}"/></td>
         <td>
             <a href="{% url "telemeta-item-detail" result.object.public_id %}">{{ result.object }}</a></br>
         </td>

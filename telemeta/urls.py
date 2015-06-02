@@ -68,6 +68,7 @@ export_extensions = "|".join(item_view.list_export_extensions())
 urlpatterns = patterns('',
     url(r'^$', home_view.home, name="telemeta-home"),
     url(r'^test', TemplateView.as_view(template_name = "telemeta/hello_world.html")),
+
     # items
     url(r'^archives/items/$', ItemListView.as_view(), name="telemeta-items"),
     url(r'^archives/full_access_items/$', ItemListViewFullAccess.as_view(), name="telemeta-fullaccess-items"),
