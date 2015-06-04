@@ -7,7 +7,88 @@
 {% endblock %}
 {% block extra_stylesheets %}
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/css/jquery-ui.css" />
+    <style>
+        .overflow{
+            max-height:200px;
+        }
+
+        .module ul, li {
+            border-radius: 0px 0px 0px 0px;
+        }
+
+        .ui-selectmenu-button.ui-widget.ui-state-default{
+            background-image:none;
+            background-color:#6a0307;
+            border-color:#6a0307;
+            color:white;
+        }
+        .ui-selectmenu-button.ui-widget.ui-state-hover{
+            background-image:none;
+            background-color:#6a0307;
+            border-color:#6a0307;
+            color:white;
+        }
+
+        .ui-selectmenu-button.ui-widget.ui-state-focus{
+            background-image:none;
+            background-color:#6a0307;
+            border-color:#6a0307;
+            color:white;
+        }
+
+        .ui-selectmenu-button.ui-widget.ui-state-default .ui-icon{
+            background-image:url("{{ STATIC_URL }}telemeta/css/images/ui-icons_ffffff_256x240.png");
+        }
+
+        .ui-menu-item{
+            background-color:white;
+        }
+
+        .ui-menu-item.ui-state-focus{
+            background-image:none;
+            background-color:#6a0307;
+            border-color:#6a0307;
+            color:white;
+        }
+
+    </style>
 {% endblock %}
 {% block content %}
-{{ selected_items_list }}
+    <form method="POST" action="{%url "add_confirmation"%}">{% csrf_token %}
+        <select name="playlist_id" style="min-width:200px" id="selection">
+            {% for playlist in existing_playlists %}
+                <option value="{{playlist.id}}">{{playlist.title}}</option>
+            {% endfor %}
+        </select>
+        <table class="listing">
+       <thead>
+        <tr><th>{% trans "Title"%}</th>
+
+        </tr>
+       </thead><tbody>
+        {% for item in selected_items_list %}
+        <tr>
+
+         <td><a href="#">
+            {{item.title}}</a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      {% for item in selected_items_list %}
+          <input type="hidden" name="item_id" value="{{item.id}}"/>
+      {% endfor %}
+      <input type="submit" value="add to playlist"/>
+  </form>
+{% endblock %}
+{% block extra_javascript %}
+    <script src="{{ STATIC_URL }}telemeta/js/jquery.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}telemeta/js/jquery-ui.min.js" type="text/javascript"></script>
+    <script>
+        $(document).ready(function() {
+            $("#selection").selectmenu({
+                icons : {button: "ui-icon-carat-2-n-s"}
+            }).selectmenu("menuWidget").addClass("overflow");
+        });
+    </script>
 {% endblock %}

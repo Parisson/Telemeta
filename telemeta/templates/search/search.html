@@ -34,7 +34,7 @@
              {% endifequal %}
              {% include "search/filters.html" %}
 
-            <form method="GET" action="{% url "haystack_playlist"%} ">
+            <form method="POST" action="{% url "haystack_playlist"%} ">{% csrf_token %}
              {% with object_list as items %}
                 <div class="fullpage">
                     {% ifequal type 'item' %}

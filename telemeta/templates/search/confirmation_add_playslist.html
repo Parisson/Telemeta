@@ -1,0 +1,11 @@
+{% extends 'telemeta/base.html' %}
+{% load telemeta_utils %}
+{% load i18n %}
+
+{% block title %}
+{% trans "Playlist Confirmation" %}
+{% endblock %}
+{% block content %}
+    {{existing_playlists}}
+    <h1>Added to PlayList</h1>
+{% endblock %}
