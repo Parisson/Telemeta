@@ -14,7 +14,8 @@ class NewPlaylistView(object):
             itemlist.append(MediaItem.objects.all().get(id=itemid))
         context = RequestContext(request, {
                 'selected_items_list': itemlist,
-                'existing_playlists': Playlist.objects.all().filter(author=request.user)})
+                'existing_playlists': Playlist.objects.all().filter(author=request.user),
+                'lastquerypath':request.POST.get('lastquerypath')})
         return HttpResponse(template_name.render(context))
 
     def addToPlaylist(self, request):
@@ -32,7 +33,8 @@ class NewPlaylistView(object):
             resource = PlaylistResource.objects.get_or_create(resource_type='item',public_id='4567891542',resource_id=item.id,playlist=selected_playlist)
 
         context = RequestContext(request, {
-                'existing_playlists': request.user.username})
+                'selected_items_list': itemlist,
+                'lastquerypath': request.POST.get('lastquerypath')})
         return HttpResponse(template_name.render(context))
 
 

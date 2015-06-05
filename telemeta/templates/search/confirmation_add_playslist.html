@@ -6,7 +6,20 @@
 {% trans "Playlist Confirmation" %}
 {% endblock %}
 {% block content %}
-    {{existing_playlists}}
-    {{user.username}}
-    <h1>Added to PlayList</h1>
+    <table class="listing" style="width:100%">
+       <thead>
+        <tr><th>{% trans "Added to playlist : "%}</th>
+
+        </tr>
+       </thead><tbody>
+        {% for item in selected_items_list %}
+        <tr>
+
+         <td><a href="#">
+            {{item.title}}</a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table></br>
+    <a style="margin-top:10px" href="{{lastquerypath}}" id="btn" class="btn btn-default">return to search results</a>
 {% endblock %}

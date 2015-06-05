@@ -209,6 +209,7 @@
                 {% endif %}
             {% endwith %}
             {% if user.is_authenticated %}
+                <input type="hidden" name="lastquerypath" value="{{request.get_full_path}}"/>
                 <button style="margin-top:10px" type="submit" id="btn" class="btn btn-default">{% trans "Add to playlist" %}</button>
             {% endif %}
             </form>
