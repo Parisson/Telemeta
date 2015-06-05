@@ -54,7 +54,9 @@
                     </div>
                 {% endif %}
             {% endwith %}
-            <button style="margin-top:10px" type="submit" id="btn" class="btn btn-default">{% trans "Add to playlist" %}</button>
+            {% if user.is_authenticated %}
+                <button style="margin-top:10px" type="submit" id="btn" class="btn btn-default">{% trans "Add to playlist" %}</button>
+            {% endif %}
             </form>
         {% else %}
             {# Show some example queries to run, maybe query syntax, something else? #}
