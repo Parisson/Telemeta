@@ -111,17 +111,17 @@
                     <ul id="id_viewable" style="margin-left:-40px">
                         {%ifequal query.viewable '2'%}
                             <li><label for="id_viewable_0">{% trans "no preference" %}</label><input id="id_viewable_0" type="radio" value="1" name="viewable"></input></li>
-                            <li><label for="id_viewable_1">{% trans "fichier dans le player + full" %}</label><input id="id_viewable_1" type="radio" value="2" name="viewable" checked="checked"></input></li>
-                            <li><label for="id_viewable_2">{% trans "fichier dans le player (j'ai un compte)" %}</label><input id="id_viewable_2" type="radio" value="3" name="viewable"></input></li>
+                            <li><label for="id_viewable_1">{% trans "online and public" %}</label><input id="id_viewable_1" type="radio" value="2" name="viewable" checked="checked"></input></li>
+                            <li><label for="id_viewable_2">{% trans "online and private (account required)" %}</label><input id="id_viewable_2" type="radio" value="3" name="viewable"></input></li>
                         {%else%}
                             {%ifequal query.viewable '3'%}
                                 <li><label for="id_viewable_0">{% trans "no preference" %}</label><input id="id_viewable_0" type="radio" value="1" name="viewable"></input></li>
-                                <li><label for="id_viewable_1">{% trans "fichier dans le player + full" %}</label><input id="id_viewable_1" type="radio" value="2" name="viewable"></input></li>
-                                <li><label for="id_viewable_2">{% trans "fichier dans le player (j'ai un compte)" %}</label><input id="id_viewable_2" type="radio" value="3" name="viewable" checked="checked"></input></li>
+                                <li><label for="id_viewable_1">{% trans "online and public" %}</label><input id="id_viewable_1" type="radio" value="2" name="viewable"></input></li>
+                                <li><label for="id_viewable_2">{% trans "online and private (account required)" %}</label><input id="id_viewable_2" type="radio" value="3" name="viewable" checked="checked"></input></li>
                             {%else%}
                                 <li><label for="id_viewable_0">{% trans "no preference" %}</label><input id="id_viewable_0" type="radio" value="1" name="viewable" checked="checked"></input></li>
-                                <li><label for="id_viewable_1">{% trans "fichier dans le player + full" %}</label><input id="id_viewable_1" type="radio" value="2" name="viewable"></input></li>
-                                <li><label for="id_viewable_2">{% trans "fichier dans le player (j'ai un compte)" %} </label><input id="id_viewable_2" type="radio" value="3" name="viewable"></input></li>
+                                <li><label for="id_viewable_1">{% trans "online and public" %}</label><input id="id_viewable_1" type="radio" value="2" name="viewable"></input></li>
+                                <li><label for="id_viewable_2">{% trans "online and private (account required)" %} </label><input id="id_viewable_2" type="radio" value="3" name="viewable"></input></li>
                             {%endifequal%}
                         {%endifequal%}
                     </ul>
