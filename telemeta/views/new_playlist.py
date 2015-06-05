@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from telemeta.views.core import *
 from telemeta.models import *
+import uuid
 
 class NewPlaylistView(object):
 
@@ -30,7 +31,8 @@ class NewPlaylistView(object):
             itemlist.append(MediaItem.objects.all().get(id=itemid))
 
         for item in itemlist:
-            resource = PlaylistResource.objects.get_or_create(resource_type='item',public_id='4567891542',resource_id=item.id,playlist=selected_playlist)
+            new_id = uuid.uuid4()
+            PlaylistResource.objects.get_or_create(resource_type='item',public_id=new_id,resource_id=item.id,playlist=selected_playlist)
 
         context = RequestContext(request, {
                 'selected_items_list': itemlist,
