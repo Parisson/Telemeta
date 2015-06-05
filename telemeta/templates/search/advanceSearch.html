@@ -60,46 +60,46 @@
             <div class="col-md-5" id="left-form">
                 <div class="fieldWrapper">
                     {{form.q.errors}}
-                    {{form.q.label_tag}}</br>
+                    {% trans form.q.label_tag %}</br>
                     {{form.q}}
                 </div>
                 <div class="fieldWrapper">
                     {{form.location.errors}}
-                    {{form.location.label_tag}}</br>
+                    {% trans form.location.label_tag %}</br>
                     {{form.location}}
                 </div>
                 <div class="fieldWrapper">
                     {{form.ethnic_group.errors}}
-                    {{form.ethnic_group.label_tag}}</br>
+                    {% trans form.ethnic_group.label_tag %}</br>
                     {{form.ethnic_group}}
                 </div>
                 <div class="fieldWrapper">
                     {{form.instruments.errors}}
-                    {{form.instruments.label_tag}}</br>
+                    {% trans form.instruments.label_tag %}</br>
                     {{form.instruments}}
                 </div>
                 <div class="fieldWrapper">
                     {{form.year_published_from.errors}} {{form.year_published_to.errors}}
-                    <label>Year Published :</label></br>
+                    <label> {% trans "Year Published" %} :</label></br>
                     {{form.year_published_from}} <span style="font-size:3em" aria-hidden="true">-</span> {{form.year_published_to}}
                 </div>
                 <div class="fieldWrapper">
                     {{form.media_type.errors}}
-                    <label>Media Type :</label></br>
+                    <label>{% trans "Media Type" %} :</label></br>
                     <ul id="id_media_type" style="margin-left:-40px">
                         {%ifequal query.media_type 'audio'%}
-                            <li><label for="id_media_type_0">no preference</label><input id="id_media_type_0" type="radio" value="1" name="media_type"></input></li>
-                            <li><label for="id_media_type_1">audio</label><input id="id_media_type_1" type="radio" value="audio" name="media_type" checked="checked"></input></li>
-                            <li><label for="id_media_type_2">video</label><input id="id_media_type_2" type="radio" value="video" name="media_type"></input></li>
+                            <li><label for="id_media_type_0">{% trans "no preference" %}</label><input id="id_media_type_0" type="radio" value="1" name="media_type"></input></li>
+                            <li><label for="id_media_type_1">{% trans "audio" %}</label><input id="id_media_type_1" type="radio" value="audio" name="media_type" checked="checked"></input></li>
+                            <li><label for="id_media_type_2">{% trans "video" %}</label><input id="id_media_type_2" type="radio" value="video" name="media_type"></input></li>
                         {%else%}
                             {%ifequal query.media_type 'video'%}
-                                <li><label for="id_media_type_0">no preference</label><input id="id_media_type_0" type="radio" value="1" name="media_type"></input></li>
-                                <li><label for="id_media_type_1">audio</label><input id="id_media_type_1" type="radio" value="audio" name="media_type"></input></li>
-                                <li><label for="id_media_type_2">video</label><input id="id_media_type_2" type="radio" value="video" name="media_type" checked="checked"></input></li>
+                                <li><label for="id_media_type_0">{% trans "no preference" %}</label><input id="id_media_type_0" type="radio" value="1" name="media_type"></input></li>
+                                <li><label for="id_media_type_1">{% trans "audio" %}</label><input id="id_media_type_1" type="radio" value="audio" name="media_type"></input></li>
+                                <li><label for="id_media_type_2">{% trans "video" %}</label><input id="id_media_type_2" type="radio" value="video" name="media_type" checked="checked"></input></li>
                             {%else%}
-                                <li><label for="id_media_type_0">no preference</label><input id="id_media_type_0" type="radio" value="1" name="media_type" checked="checked"></input></li>
-                                <li><label for="id_media_type_1">audio</label><input id="id_media_type_1" type="radio" value="audio" name="media_type"></input></li>
-                                <li><label for="id_media_type_2">video</label><input id="id_media_type_2" type="radio" value="video" name="media_type"></input></li>
+                                <li><label for="id_media_type_0">{% trans "no preference" %}</label><input id="id_media_type_0" type="radio" value="1" name="media_type" checked="checked"></input></li>
+                                <li><label for="id_media_type_1">{% trans "audio" %}</label><input id="id_media_type_1" type="radio" value="audio" name="media_type"></input></li>
+                                <li><label for="id_media_type_2">{% trans "video" %}</label><input id="id_media_type_2" type="radio" value="video" name="media_type"></input></li>
                             {%endifequal%}
                         {%endifequal%}
                     </ul>
@@ -107,21 +107,21 @@
                 </div>
                 <div class="fieldWrapper">
                     {{form.viewable_errors}}
-                    <label>Viewable : </label></br>
+                    <label>{% trans "Viewable" %} : </label></br>
                     <ul id="id_viewable" style="margin-left:-40px">
                         {%ifequal query.viewable '2'%}
-                            <li><label for="id_viewable_0">no preference</label><input id="id_viewable_0" type="radio" value="1" name="viewable"></input></li>
-                            <li><label for="id_viewable_1">fichier dans le player + full</label><input id="id_viewable_1" type="radio" value="2" name="viewable" checked="checked"></input></li>
-                            <li><label for="id_viewable_2">fichier dans le player (j'ai un compte)</label><input id="id_viewable_2" type="radio" value="3" name="viewable"></input></li>
+                            <li><label for="id_viewable_0">{% trans "no preference" %}</label><input id="id_viewable_0" type="radio" value="1" name="viewable"></input></li>
+                            <li><label for="id_viewable_1">{% trans "fichier dans le player + full" %}</label><input id="id_viewable_1" type="radio" value="2" name="viewable" checked="checked"></input></li>
+                            <li><label for="id_viewable_2">{% trans "fichier dans le player (j'ai un compte)" %}</label><input id="id_viewable_2" type="radio" value="3" name="viewable"></input></li>
                         {%else%}
                             {%ifequal query.viewable '3'%}
-                                <li><label for="id_viewable_0">no preference</label><input id="id_viewable_0" type="radio" value="1" name="viewable"></input></li>
-                                <li><label for="id_viewable_1">fichier dans le player + full</label><input id="id_viewable_1" type="radio" value="2" name="viewable"></input></li>
-                                <li><label for="id_viewable_2">fichier dans le player (j'ai un compte)</label><input id="id_viewable_2" type="radio" value="3" name="viewable" checked="checked"></input></li>
+                                <li><label for="id_viewable_0">{% trans "no preference" %}</label><input id="id_viewable_0" type="radio" value="1" name="viewable"></input></li>
+                                <li><label for="id_viewable_1">{% trans "fichier dans le player + full" %}</label><input id="id_viewable_1" type="radio" value="2" name="viewable"></input></li>
+                                <li><label for="id_viewable_2">{% trans "fichier dans le player (j'ai un compte)" %}</label><input id="id_viewable_2" type="radio" value="3" name="viewable" checked="checked"></input></li>
                             {%else%}
-                                <li><label for="id_viewable_0">no preference</label><input id="id_viewable_0" type="radio" value="1" name="viewable" checked="checked"></input></li>
-                                <li><label for="id_viewable_1">fichier dans le player + full</label><input id="id_viewable_1" type="radio" value="2" name="viewable"></input></li>
-                                <li><label for="id_viewable_2">fichier dans le player (j'ai un compte) </label><input id="id_viewable_2" type="radio" value="3" name="viewable"></input></li>
+                                <li><label for="id_viewable_0">{% trans "no preference" %}</label><input id="id_viewable_0" type="radio" value="1" name="viewable" checked="checked"></input></li>
+                                <li><label for="id_viewable_1">{% trans "fichier dans le player + full" %}</label><input id="id_viewable_1" type="radio" value="2" name="viewable"></input></li>
+                                <li><label for="id_viewable_2">{% trans "fichier dans le player (j'ai un compte)" %} </label><input id="id_viewable_2" type="radio" value="3" name="viewable"></input></li>
                             {%endifequal%}
                         {%endifequal%}
                     </ul>
@@ -130,48 +130,48 @@
             <div class="col-md-5" id="right-form" style="margin-left:13%">
                 <div class="fieldWrapper">
                     {{form.collectors.errors}}
-                    {{form.collectors.label_tag}}</br>
+                    {% trans form.collectors.label_tag %}</br>
                     {{form.collectors}}
                 </div>
                 <div class="fieldWrapper">
                     {{form.recorded_from_date.errors}} {{form.recorded_to_date.errors}}
-                    <label>Recording date:</label></br>
+                    <label>{% trans "Recording date" %}:</label></br>
                     {{form.recorded_from_date}} <span style="font-size:3em" aria-hidden="true">-</span> {{form.recorded_to_date}}
                 </div>
                 <div class="fieldWrapper">
                     {{form.item_status_errors}}
-                    <label>Item status : </label></br>
+                    <label>{% trans "Item status" %} : </label></br>
                     <ul id="id_item_status" style="margin-left:-40px">
                         {%ifequal query.item_status 'pub'%}
-                            <li><label for="id_item_status_0">no preference</label><input id="id_item_status_0" type="radio" value="1" name="item_status"></input></li>
-                            <li><label for="id_item_status_1">Published</label><input id="id_item_status_1" type="radio" value="pub" name="item_status" checked="checked"></input></li>
-                            <li><label for="id_item_status_2">Unpublished</label><input id="id_item_status_2" type="radio" value="unpub" name="item_status"></input></li>
+                            <li><label for="id_item_status_0">{% trans "no preference" %}</label><input id="id_item_status_0" type="radio" value="1" name="item_status"></input></li>
+                            <li><label for="id_item_status_1">{% trans "Published" %}</label><input id="id_item_status_1" type="radio" value="pub" name="item_status" checked="checked"></input></li>
+                            <li><label for="id_item_status_2">{% trans "Unpublished" %}</label><input id="id_item_status_2" type="radio" value="unpub" name="item_status"></input></li>
                         {%else%}
                             {%ifequal query.item_status 'unpub'%}
-                                <li><label for="id_item_status_0">no preference</label><input id="id_item_status_0" type="radio" value="1" name="item_status"></input></li>
-                                <li><label for="id_item_status_1">Published</label><input id="id_item_status_1" type="radio" value="pub" name="item_status"></input></li>
-                                <li><label for="id_item_status_2">Unpublished</label><input id="id_item_status_2" type="radio" value="unpub" name="item_status" checked="checked"></input></li>
+                                <li><label for="id_item_status_0">{% trans "no preference" %}</label><input id="id_item_status_0" type="radio" value="1" name="item_status"></input></li>
+                                <li><label for="id_item_status_1">{% trans "Published" %}</label><input id="id_item_status_1" type="radio" value="pub" name="item_status"></input></li>
+                                <li><label for="id_item_status_2">{% trans "Unpublished" %}</label><input id="id_item_status_2" type="radio" value="unpub" name="item_status" checked="checked"></input></li>
                             {%else%}
-                                <li><label for="id_item_status_0">no preference</label><input id="id_item_status_0" type="radio" value="1" name="item_status" checked="checked"></input></li>
-                                <li><label for="id_item_status_1">Published</label><input id="id_item_status_1" type="radio" value="pub" name="item_status"></input></li>
-                                <li><label for="id_item_status_2">Unpublished</label><input id="id_item_status_2" type="radio" value="unpub" name="item_status"></input></li>
+                                <li><label for="id_item_status_0">{% trans "no preference" %}</label><input id="id_item_status_0" type="radio" value="1" name="item_status" checked="checked"></input></li>
+                                <li><label for="id_item_status_1">{% trans "Published" %}</label><input id="id_item_status_1" type="radio" value="pub" name="item_status"></input></li>
+                                <li><label for="id_item_status_2">{% trans "Unpublished" %}</label><input id="id_item_status_2" type="radio" value="unpub" name="item_status"></input></li>
                             {%endifequal%}
                         {%endifequal%}
                     </ul>
                 </div>
                 <div class="fieldWrapper">
                     {{form.recording_context.errors}}
-                    {{form.recording_context.label_tag}}</br>
+                    {% trans form.recording_context.label_tag %}</br>
                     {{form.recording_context}}
                 </div>
                 <div class="fieldWrapper">
                     {{form.physical_format.errors}}
-                    {{form.physical_format.label_tag}}</br>
+                    {% trans form.physical_format.label_tag %}</br>
                     {{form.physical_format}}
                 </div>
                 <div class="fieldWrapper">
                     {{form.code.errors}}
-                    {{form.code.label_tag}}</br>
+                    {% trans form.code.label_tag %}</br>
                     {{form.code}}
                 </div>
             </div>
