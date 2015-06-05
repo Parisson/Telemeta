@@ -2,6 +2,7 @@
 from telemeta.models import *
 from haystack.forms import *
 from haystack.query import SearchQuerySet
+from datetime import date
 
 
 class HaySearchForm(FacetedSearchForm):
@@ -64,14 +65,11 @@ class HayAdvanceForm(SearchForm):
         list_all_year.sort()
         if len(list_all_year) >= 2:
             min_year = list_all_year[len(list_all_year) - 1]
-            max_year = list_all_year[len(list_all_year) - 1]
             for year in list_all_year:
                 if year != 0:
                     if year < min_year:
                         min_year = year
-                    if year > max_year:
-                        max_year = year
-            list_all_year = range(min_year, max_year + 1)
+            list_all_year = range(min_year, date.today().year + 1)
         list_year = []
         list_year.append(('', '----'))
         for year in list_all_year:
@@ -91,14 +89,11 @@ class HayAdvanceForm(SearchForm):
         list_all_year.sort()
         if len(list_all_year) >= 2:
             min_year = list_all_year[len(list_all_year) - 1]
-            max_year = list_all_year[len(list_all_year) - 1]
             for year in list_all_year:
                 if year != 0:
                     if year < min_year:
                         min_year = year
-                    if year > max_year:
-                        max_year = year
-            list_all_year = range(min_year, max_year + 1)
+            list_all_year = range(min_year, date.today().year + 1)
         list_year = []
         list_year.append((0, '----'))
         for year in list_all_year:
@@ -108,7 +103,7 @@ class HayAdvanceForm(SearchForm):
     year_published_from = forms.IntegerField(required=False, label=('Year published from'), widget=forms.Select(attrs={'style': 'width:47%'}, choices=list_publish_year()))
     year_published_to = forms.IntegerField(required=False, label=('Year published to'), widget=forms.Select(attrs={'style': 'width:47%'}, choices=list_publish_year()))
 
-    viewable_choice = (('1', 'no preference'), ('2', 'fichier dans le player + full'), ('3', 'fichier dans le player(j\'ai un compte)'))
+    viewable_choice = (('1', 'no preference'), ('2', 'online and public'), ('3', 'online (account required)'))
     viewable = forms.CharField(required=False, label=('Viewable'), widget=forms.RadioSelect(choices=viewable_choice), initial=1)
 
     item_status = forms.CharField(required=False, label=('Item Status'), widget=forms.RadioSelect(choices=(('1', 'no preference'), ('pub', 'Published'), ('unpub', 'Unpublished'))), initial=1)

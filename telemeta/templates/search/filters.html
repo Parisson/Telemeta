@@ -1,50 +1,51 @@
-
+{% load telemeta_utils %}
+{% load i18n %}
 
 <div id="accordeon" style="margin-bottom:20px">
-    <div><a href="#">Filters</a></div>
+    <div><a href="#">{% trans "Filters" %}</a></div>
     <div>
         <table class="table" style="font-size:0.9em">
                 <tr>
                     {% if facets.fields.item_status %}
-                        <td>Item Status</td>
+                        <td>{% trans "Item Status" %}</td>
                         {% for item_status in facets.fields.item_status %}
                             <td><a href="{{ request.get_full_path }}&amp;selected_facets=item_status_exact:{{ item_status.0|urlencode }}">{{ item_status.0 }}</a> <span style="background-color:#6a0307" class="badge">{{ item_status.1 }}</span></td>
                         {% endfor %}
                         {% if Published_count == 0 %}
-                            <td> Published <span class="badge">0</span></td><td></td>
+                            <td> {% trans "Published" %} <span class="badge">0</span></td><td></td>
                         {% endif %}
                         {% if Unpublished_count == 0 %}
-                            <td> Unpublished <span class="badge">0</span></td><td></td>
+                            <td> {% trans "Unpublished" %} <span class="badge">0</span></td><td></td>
                         {% endif %}
                     {% else %}
-                        <td>Item Status</td>
-                        <td>None</td>
+                        <td>{% trans "Item Status" %}</td>
+                        <td>{% trans "None" %}</td>
                     {% endif %}
                 </tr>
                 <tr>
                 {% if facets.fields.digitized %}
-                    <td>Player Status</td>
+                    <td>{% trans "Player Status" %}</td>
                     {% for digitized in facets.fields.digitized %}
                         {% ifequal digitized.0 'T' %}
                             <td><a href="{{ request.get_full_path }}&amp;selected_facets=digitized_exact:{{ digitized.0|urlencode }}">Sound</a> <span style="background-color:#6a0307" class="badge">{{ digitized.1 }}</span></td><td></td>
                         {% endifequal %}
                     {% endfor %}
                     {% if digitized_count == 0 %}
-                        <td> Sound <span class="badge">0</span></td><td></td>
+                        <td> {% trans "Sound" %} <span class="badge">0</span></td><td></td>
                     {% endif %}
                 {% else %}
-                    <td>Player Status</td>
-                    <td>None</td>
+                    <td>{% trans "Player Status" %}</td>
+                    <td>{% trans "None" %}</td>
                 {% endif %}
             </tr>
             <tr>
                 {% if facets.fields.item_acces %}
-                    <td>Access Right</td>
+                    <td>{% trans "Access Right" %}</td>
                     {% if viewable_count != 0 %}
                         <td><a href="{{ request.get_full_path }}&amp;selected_facets=item_acces_exact:{{ 'viewable'|urlencode }}">viewable</a> <span style="background-color:#6a0307" class="badge">{{viewable_count}}</span></td><td></td>
                     {% endif %}
                     {% if viewable_count == 0 %}
-                        <td>viewable <span class="badge">{{viewable_count}}</span></td><td></td>
+                        <td>{% trans "viewable" %} <span class="badge">{{viewable_count}}</span></td><td></td>
                     {% endif %}
                     {% comment %}
                         {% for item_acces in facets.fields.item_acces %}
@@ -55,19 +56,19 @@
                         {% endfor %}
                     {%endcomment%}
                 {% else %}
-                    <td>Access Right</td>
-                    <td>None</td>
+                    <td>{% trans "Access Right" %}</td>
+                    <td>{% trans "None" %}</td>
                 {% endif %}
             </tr>
         </table>
     </div>
 
-    <div><a href="#">Other Filters</a></div>
+    <div><a href="#">{% trans "Other Filters" %}</a></div>
     <div>
         <table class="table" style="font-size:0.9em">
                     <tr>
                         {% if facets.fields.media_type %}
-                            <td>Media Type</td>
+                            <td>{% trans "Media Type" %}</td>
                             {% for media_type in facets.fields.media_type %}
                                 {% ifequal media_type.0 'Audio'%}
                                     <td><a href="{{ request.get_full_path }}&amp;selected_facets=media_type_exact:{{ media_type.0|urlencode }}">{{ media_type.0 }}</a> <span style="background-color:#6a0307" class="badge">{{ media_type.1 }}</span></td>
@@ -77,17 +78,17 @@
                                 {% endifequal %}
                             {% endfor %}
                             {% if Video_count == 0 %}
-                                <td> Video <span class="badge">0</span></td><td></td>
+                                <td> {% trans "Video" %} <span class="badge">0</span></td><td></td>
                             {% endif %}
                             {% if Audio_count == 0 %}
-                                <td> Audio <span class="badge">0</span></td><td></td>
+                                <td> {% trans "Audio" %} <span class="badge">0</span></td><td></td>
                             {% endif %}
                         {% endif %}
                     </tr>
                     <tr>
                     <tr>
                         {% if facets.fields.recording_context %}
-                            <td>Recording Context</td>
+                            <td>{% trans "Recording Context" %}</td>
                             {% for recording_context in facets.fields.recording_context %}
                                 {% ifequal recording_context.0 'Studio'%}
                                     <td><a href="{{ request.get_full_path }}&amp;selected_facets=recording_context_exact:{{ recording_context.0|urlencode }}">{{ recording_context.0 }}</a> <span style="background-color:#6a0307" class="badge">{{ recording_context.1 }}</span></td>
@@ -100,19 +101,19 @@
                                 {% endifequal %}
                             {% endfor %}
                             {% if Terrain_count == 0 %}
-                                <td> Terrain <span class="badge">0</span></td><td></td>
+                                <td> {% trans "Terrain" %} <span class="badge">0</span></td><td></td>
                             {% endif %}
                             {% if Radio_count == 0 %}
-                                <td> Radio <span class="badge">0</span></td><td></td>
+                                <td> {% trans "Radio" %} <span class="badge">0</span></td><td></td>
                             {% endif %}
                             {% if Studio_count == 0 %}
-                                <td> Studio <span class="badge">0</span></td><td></td>
+                                <td> {% trans "Studio" %} <span class="badge">0</span></td><td></td>
                             {% endif %}
                         {% endif %}
                     </tr>
                     <tr>
                         {% if facets.fields.physical_format %}
-                            <td>Physical Format</td>
+                            <td>{% trans "Physical Format" %}</td>
                             {% for physical_format in facets.fields.physical_format %}
                                 {% ifequal physical_format.0 'CDR'%}
                                     <td><a href="{{ request.get_full_path }}&amp;selected_facets=physical_format_exact:{{ physical_format.0|urlencode }}">{{ physical_format.0 }}</a> <span style="background-color:#6a0307" class="badge">{{ physical_format.1 }}</span></td>
@@ -125,13 +126,13 @@
                                 {% endifequal %}
                             {% endfor %}
                             {% if CDR_count == 0 %}
-                                <td> CDR <span class="badge">0</span></td><td></td>
+                                <td> {% trans "CDR" %} <span class="badge">0</span></td><td></td>
                             {% endif %}
                             {% if Disque_count == 0 %}
-                                <td> Disque <span class="badge">0</span></td><td></td>
+                                <td> {% trans "Disque" %} <span class="badge">0</span></td><td></td>
                             {% endif %}
                             {% if Cylindre_count == 0 %}
-                                <td> Cylindre <span class="badge">0</span></a></td><td></td>
+                                <td> {% trans "Cylindre" %} <span class="badge">0</span></a></td><td></td>
                             {% endif %}
                         {% endif %}
                     </tr>
