@@ -103,7 +103,7 @@ class HayAdvanceForm(SearchForm):
     year_published_from = forms.IntegerField(required=False, label=('Year published from'), widget=forms.Select(attrs={'style': 'width:47%'}, choices=list_publish_year()))
     year_published_to = forms.IntegerField(required=False, label=('Year published to'), widget=forms.Select(attrs={'style': 'width:47%'}, choices=list_publish_year()))
 
-    viewable_choice = (('1', 'no preference'), ('2', 'online and public'), ('3', 'online and private (account required)'))
+    viewable_choice = (('1', 'no preference'), ('2', 'online and public'), ('3', 'online (account required)'))
     viewable = forms.CharField(required=False, label=('Viewable'), widget=forms.RadioSelect(choices=viewable_choice), initial=1)
 
     item_status = forms.CharField(required=False, label=('Item Status'), widget=forms.RadioSelect(choices=(('1', 'no preference'), ('pub', 'Published'), ('unpub', 'Unpublished'))), initial=1)
