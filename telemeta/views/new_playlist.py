@@ -29,8 +29,7 @@ class NewPlaylistView(object):
             itemlist.append(MediaItem.objects.all().get(id=itemid))
 
         for item in itemlist:
-            resource = PlaylistResource(resource_type='item',public_id='4567891542',resource_id=item.id,playlist=selected_playlist)
-            resource.save()
+            resource = PlaylistResource.objects.get_or_create(resource_type='item',public_id='4567891542',resource_id=item.id,playlist=selected_playlist)
 
         context = RequestContext(request, {
                 'existing_playlists': request.user.username})

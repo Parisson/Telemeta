@@ -78,7 +78,7 @@
       {% for item in selected_items_list %}
           <input type="hidden" name="item_id" value="{{item.id}}"/>
       {% endfor %}
-      <input type="submit" value="add to playlist"/>
+      <button style="margin-top:10px" type="submit" id="btn" class="btn btn-default">{% trans "Add to Playlist" %}</button>
   </form>
 {% endblock %}
 {% block extra_javascript %}
