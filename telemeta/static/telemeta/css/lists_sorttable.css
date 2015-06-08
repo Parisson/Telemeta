@@ -1,6 +1,6 @@
 /* tables */
 table.listing thead tr th, table.listing tfoot tr th {
-	padding-right: 15px;
+	
 }
 table.listing thead tr .header {
 	background-image: url(images/bg.gif);
