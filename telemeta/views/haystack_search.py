@@ -12,6 +12,10 @@ class HaystackSearch(FacetedSearchView):
         self.type = type
         self.form_class = HaySearchForm
         self.selected_facet=self.selected_facet_list(request.GET.getlist('selected_facets', ['a']))
+        if request.GET.get('results_page'):
+            self.results_per_page=int(request.GET.get('results_page'))
+        else:
+            self.results_per_page = 20
         return super(HaystackSearch, self).__call__(request)
 
     def get_query(self):
@@ -70,6 +74,8 @@ class HaystackSearch(FacetedSearchView):
             extra['type'] = 'item'
 
         extra['selected_facets']=self.selected_facet
+        extra['selected_facets_url']=self.request.GET.getlist('selected_facets')
+        extra['results_page']=self.results_per_page
         return extra
 
 
