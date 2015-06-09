@@ -48,6 +48,7 @@ class BaseEpubMixin(TelemetaBaseMixin):
     default_image = os.sep.join([local_path, '..', 'static', 'telemeta', 'images', 'cul_de_lampe.jpg'])
     template = os.sep.join([local_path, '..', 'templates', 'telemeta', 'inc', 'epub_collection.html'])
     template_preamble = os.sep.join([local_path, '..', 'templates', 'telemeta', 'inc', 'epub_preamble.html'])
+    template_cover = os.sep.join([local_path, '..', 'templates', 'telemeta', 'inc', 'epub_cover.html'])
 
     def write_book(self, corpus, collection=None, path=None):
         self.book = epub.EpubBook()
@@ -61,7 +62,12 @@ class BaseEpubMixin(TelemetaBaseMixin):
             self.book.set_title(corpus.title)
         else:
             self.filename = collection.code
-            self.book.set_title(corpus.title + ' - ' + collection.title)
+            short_title = collection.title.split(' ')
+            if not ' 0' in collection.title:
+                short_title = short_title[0][:4] + ' ' + short_title[1]
+            else:
+                short_title = 'Intro'
+            self.book.set_title(corpus.title[:15] + '... ' + short_title)
 
         self.path = self.cache_data.dir + os.sep + self.filename + '.epub'
 
@@ -79,21 +85,31 @@ class BaseEpubMixin(TelemetaBaseMixin):
             self.collections = [collection]
             mode_single = True
             instance = collection
+            if ' 0' in collection.title:
+                chap_num = "d'introduction"
+            else:
+                chap_num = collection.code.split('_')[-1]
+            context = {'title': 'chapitre ' + chap_num,
+                        'mode_single': mode_single}
         else:
             self.collections = self.corpus.children.all()
             mode_single = False
             instance = self.corpus
+            context = {'title': '', 'mode_single': mode_single}
 
         # add cover image
         for media in instance.related.all():
             filename = os.path.split(media.file.path)[-1]
-            self.book.set_cover(filename, open(media.file.path, 'r').read())
+            self.book.set_cover(filename, open(media.file.path, 'rb').read())
+            cover = epub.EpubHtml(title='cover-bis', file_name='cover-bis' + '.xhtml', lang='fr')
+            cover.content = render_to_string(self.template_cover, {'image': filename})
+            self.book.add_item(cover)
             break
 
-        context = {}
-        preamble = epub.EpubHtml(title='Preamble', file_name='preamble' + '.xhtml', lang='fr')
+
+        preamble = epub.EpubHtml(title='Copyright', file_name='copyright' + '.xhtml', lang='fr')
         preamble.content = render_to_string(self.template_preamble, context)
-        preamble.is_chapter = False
+        preamble.is_chapter = True
         default_image_added = False
         default_image_relative_path = ''
         self.book.add_item(preamble)
@@ -134,22 +150,24 @@ class BaseEpubMixin(TelemetaBaseMixin):
                     self.book.add_item(epub_item)
                     default_image_added = True
 
-
             title_split = collection.title.split(' - ')
             if len(title_split) > 1:
-                if '0' in title_split[0]:
-                    title = title_split[1]
-                    subtitle = ''
+                if ' 0' in title_split[0]:
+                    title = ''
+                    subtitle = title_split[1]
+                    chapter_title = subtitle
                 else:
                     title = title_split[0]
                     subtitle = title_split[1]
+                    chapter_title = ' - '.join([title, subtitle])
             else:
                 title = collection.title
                 subtitle = ''
+                chapter_title = title
 
             context = {'collection': collection, 'title': title, 'subtitle': subtitle, 'mode_single': mode_single,
                         'site': site, 'items': items, 'default_image': default_image_relative_path}
-            c = epub.EpubHtml(title=' - '.join([title, subtitle]), file_name=collection.code + '.xhtml', lang='fr')
+            c = epub.EpubHtml(title=chapter_title, file_name=collection.code + '.xhtml', lang='fr')
             c.content = render_to_string(self.template, context)
             self.chapters.append(c)
             # add self.chapters to the self.book
@@ -168,7 +186,7 @@ class BaseEpubMixin(TelemetaBaseMixin):
             self.chapters.insert(0,'nav')
 
         # create spin, add cover page as first page
-        self.chapters.insert(0,'cover')
+        self.chapters.insert(0, cover)
         self.book.spine = self.chapters
 
         # write epub file
@@ -193,7 +211,6 @@ class CorpusEpubView(BaseEpubMixin, View):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(CorpusEpubView, self).dispatch(*args, **kwargs)
-
 
 
 class CollectionEpubView(BaseEpubMixin, View):
