@@ -11,5 +11,5 @@ urlpatterns = patterns('',
     url(r'^advance/$', HaystackAdvanceSearch(form_class=HayAdvanceForm, template='search/advanceSearch.html'), name='haystack_advance_search'),
     url(r'^advance/(?P<type>[A-Za-z0-9._-]+)/$', HaystackAdvanceSearch(form_class=HayAdvanceForm, template='search/advanceSearch.html'), name='haystack_advance_search_type'),
     url(r'^playlist_add/(?P<type>[A-Za-z0-9._-]+)/$', NewPlaylistView().display, name='haystack_playlist'),
-    url(r'^playlist_confirmation/$',NewPlaylistView().addToPlaylist, name='add_confirmation'),
+    url(r'^playlist_confirmation/(?P<type>[A-Za-z0-9._-]+)/$',NewPlaylistView().addToPlaylist, name='add_confirmation'),
 )

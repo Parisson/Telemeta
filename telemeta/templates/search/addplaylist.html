@@ -54,7 +54,8 @@
     </style>
 {% endblock %}
 {% block content %}
-    <form method="POST" action="{%url "add_confirmation"%}">{% csrf_token %}
+
+    <form method="POST" action="{%url "add_confirmation" type %}">{% csrf_token %}
     <div class="row">
         <div class="col-md-4">
             <table class="listing" style="width:100%">

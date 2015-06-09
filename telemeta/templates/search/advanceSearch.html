@@ -1,6 +1,7 @@
 {% extends 'telemeta/base.html' %}
 {% load telemeta_utils %}
 {% load i18n %}
+{% load bootstrap_pagination %}
 
 
 {% block title %}
@@ -180,7 +181,17 @@
     </form>
 
         {% if query %}
-            <h1>{% trans "Results" %}</h1>
+
+            <div class="row">
+                <div class="col-md-3">
+                    <img src="{{ STATIC_URL }}telemeta/images/search_red.png" alt="search-results" style="vertical-align:middle" /> <h1>{% trans "Search Results" %}</h1>
+                </div>
+                <div class="col-md-7">
+                    {% bootstrap_paginate page range=10 show_first_last="True" %}
+                </div>
+                <div class="col-md-0">&nbsp;</div>
+            </div>
+
             {% ifequal type 'item' %}
                  <p><b>Items ({{item_count}}) | <a href="{% url "haystack_advance_search_type" "collection" %}?{{request.GET.urlencode}}">Collections ({{collection_count}})</a></b></p>
              {% else %}
@@ -188,7 +199,7 @@
                     <p><b><a href="{% url "haystack_advance_search_type" "item" %}?{{request.GET.urlencode}}">Items ({{item_count}}) </a>| Collections ({{collection_count}})</b></p>
                 {% endifequal %}
              {% endifequal %}
-             <form method="POST" action="{% url "haystack_playlist"%} ">{% csrf_token %}
+             <form method="POST" action="{% url "haystack_playlist" type%} ">{% csrf_token %}
              {% with object_list as items %}
                 <div class="fullpage">
                     {% ifequal type 'item' %}
@@ -200,13 +211,6 @@
                     {%endifequal%}
                 </div>
 
-                {% if page.has_previous or page.has_next %}
-                    <div>
-                        {% if page.has_previous %}<a href="?{{request.GET.urlencode}};page={{ page.previous_page_number }}">{% endif %}&laquo; Previous{% if page.has_previous %}</a>{% endif %}
-                        |
-                        {% if page.has_next %}<a href="?{{request.GET.urlencode}};page={{ page.next_page_number }}">{% endif %}Next &raquo;{% if page.has_next %}</a>{% endif %}
-                    </div>
-                {% endif %}
             {% endwith %}
             {% if user.is_authenticated %}
                 <input type="hidden" name="lastquerypath" value="{{request.get_full_path}}"/>
