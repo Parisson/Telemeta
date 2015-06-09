@@ -81,8 +81,8 @@
                  <div class="col-md-4 col-md-offset-4" >
                     <div class="pull-right"">
                         <label style="display:inline-block;vertical-align:middle">results per page:</label>
-                        <form style="display:inline-block;vertical-align:middle" method="GET" action=".">
-                            <select id="results-per-page" onchange="location='?q={{ query }}&amp;page=1&amp;selected_facets={{selected_facets_url|join:'&selected_facets='}}&results_page='+this.options[this.selectedIndex].value" name="results_page">
+                        <div style="display:inline-block;vertical-align:middle">
+                            <select id="results-per-page" name="results_page">
                                 <option {% ifequal results_page 20 %}selected{% endifequal %} value="20">20</option>
                                 <option {% ifequal results_page 1 %}selected{% endifequal %} value="1">1</option>
                                 <option {% ifequal results_page 50 %}selected{% endifequal %} value="50">50</option>
@@ -92,7 +92,7 @@
                                 <option {% ifequal results_page 1000 %}selected{% endifequal %} value="1000">1000</option>
                                 <option {% ifequal results_page 10000 %}selected{% endifequal %} value="10000">10000</option>
                             </select>
-                        </form>
+                        </div>
                     </div>
                  </div>
              </div>
@@ -144,7 +144,6 @@
                 collapsible : true,
                 icons : nouvellesIcones,
             });
-            $( "#datepicker").datepicker();
             $("#selectAll").click(function(){
                 if(this.checked){
                     $(".check1").each(function(){
@@ -157,10 +156,15 @@
                     });
                 }
             });
+
             $(document).ready(function() {
             $("#results-per-page").selectmenu({
-                icons : {button: "ui-icon-carat-2-n-s"}
+                icons : {button: "ui-icon-carat-2-n-s"},
+                change : function(){
+                    window.location = '?q={{ query }}&amp;page=1&amp;selected_facets={{selected_facets_url|join:'&selected_facets='}}&results_page='+$(this).val();
+                }
             }).selectmenu("menuWidget").addClass("overflow");
+
         });
         });
     </script>
