@@ -102,6 +102,7 @@ class BaseEpubMixin(TelemetaBaseMixin):
             filename = os.path.split(media.file.path)[-1]
             self.book.set_cover(filename, open(media.file.path, 'rb').read())
             cover = epub.EpubHtml(title='cover-bis', file_name='cover-bis' + '.xhtml', lang='fr')
+            cover.is_chapter = False
             cover.content = render_to_string(self.template_cover, {'image': filename})
             self.book.add_item(cover)
             break
