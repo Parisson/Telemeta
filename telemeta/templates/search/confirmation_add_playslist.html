@@ -12,13 +12,23 @@
 
         </tr>
        </thead><tbody>
-        {% for item in selected_items_list %}
-        <tr>
+       {% ifequal type "item" %}
+            {% for item in selected_items_list %}
+                <tr>
 
-         <td><a href="#">
-            {{item}}</a></td>
-        </tr>
-        {% endfor %}
+                 <td><a href="#">
+                    {{item}}</a></td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            {% for item in selected_items_list %}
+                <tr>
+
+                 <td><a href="#">
+                    {{item.title}}</a></td>
+                </tr>
+            {% endfor %}
+        {% endifequal %}
         </tbody>
     </table></br>
     <a style="margin-top:10px" href="{{lastquerypath}}" id="btn" class="btn btn-default">return to search results</a>

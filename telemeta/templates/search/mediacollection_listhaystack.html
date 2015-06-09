@@ -5,39 +5,74 @@
 
 <table class="listing">
 <tr>
-    <th class="highlight">{% trans "Title" %}</th>
+    {% if user.is_authenticated %}
+        <th class="highlight"><input id="selectAll" type="checkbox"/> select all </th>
+        <th>{% trans "Title" %}</th>
+    {% else %}
+        <th class="highlight">{% trans "Title" %}</th>
+    {% endif %}
     <th>{% trans "Digitized" %}</th>
     <th>{% field_label "MediaCollection" "creator" %}</th>
     <th>{% trans "Recordist" %}</th>
     <th>{% trans "Recording period" %}</th>
     <th>{% trans "Code" %}</th>
 </tr>
-{% for result in page.object_list %}
-<tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
-    <td class="highlight">
-        <a href="{% url "telemeta-collection-detail" result.object.public_id %}">{{ result.object.title }}</a>
-    </td>
-    <td>
-      {% if result.object.has_mediafile %}
-       <center><span class="glyphicon glyphicon-volume-up" style="font-size: 1.3em;"></span></center>
-      {% endif %}
-    </td>
+{% if user.is_authenticated %}
+    {% for result in page.object_list %}
+    <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
+        <td class="highlight"><input type="checkbox" class="check1" name="selected_items_list" value="{{ result.object.id }}"/></td>
+        <td>
+            <a href="{% url "telemeta-collection-detail" result.object.public_id %}">{{ result.object.title }}</a>
+        </td>
+        <td>
+          {% if result.object.has_mediafile %}
+           <center><span class="glyphicon glyphicon-volume-up" style="font-size: 1.3em;"></span></center>
+          {% endif %}
+        </td>
 
-    <td>{{ result.object.creator }}</td>
-    <td>{{ result.object.apparent_collector }}</td>
-    <td>
-    {% if result.object.recorded_from_year %}
-        {{ result.object.recorded_from_year }}
-        {% if result.object.recorded_to_year and not result.object.recorded_to_year|equals:result.object.recorded_from_year %}
-            - {{ result.object.recorded_to_year }}
+        <td>{{ result.object.creator }}</td>
+        <td>{{ result.object.apparent_collector }}</td>
+        <td>
+        {% if result.object.recorded_from_year %}
+            {{ result.object.recorded_from_year }}
+            {% if result.object.recorded_to_year and not result.object.recorded_to_year|equals:result.object.recorded_from_year %}
+                - {{ result.object.recorded_to_year }}
+            {% endif %}
         {% endif %}
-    {% endif %}
-    </td>
-    <td>
-        {{ result.object.code|default:result.object.old_code }}
-    </td>
-</tr>
-{% endfor %}
+        </td>
+        <td>
+            {{ result.object.code|default:result.object.old_code }}
+        </td>
+    </tr>
+    {% endfor %}
+{% else %}
+    {% for result in page.object_list %}
+    <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
+        <td class="highlight">
+            <a href="{% url "telemeta-collection-detail" result.object.public_id %}">{{ result.object.title }}</a>
+        </td>
+        <td>
+          {% if result.object.has_mediafile %}
+           <center><span class="glyphicon glyphicon-volume-up" style="font-size: 1.3em;"></span></center>
+          {% endif %}
+        </td>
+
+        <td>{{ result.object.creator }}</td>
+        <td>{{ result.object.apparent_collector }}</td>
+        <td>
+        {% if result.object.recorded_from_year %}
+            {{ result.object.recorded_from_year }}
+            {% if result.object.recorded_to_year and not result.object.recorded_to_year|equals:result.object.recorded_from_year %}
+                - {{ result.object.recorded_to_year }}
+            {% endif %}
+        {% endif %}
+        </td>
+        <td>
+            {{ result.object.code|default:result.object.old_code }}
+        </td>
+    </tr>
+    {% endfor %}
+{% endif %}
 </table>
 {% else %}
     <p>{% trans "No collection" %}</p>
