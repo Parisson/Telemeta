@@ -106,7 +106,6 @@ class BaseEpubMixin(TelemetaBaseMixin):
             self.book.add_item(cover)
             break
 
-
         preamble = epub.EpubHtml(title='Copyright', file_name='copyright' + '.xhtml', lang='fr')
         preamble.content = render_to_string(self.template_preamble, context)
         preamble.is_chapter = True
@@ -209,6 +208,7 @@ class CorpusEpubView(BaseEpubMixin, View):
         return response
 
     @method_decorator(login_required)
+    @method_decorator(permission_required('telemeta.can_download_corpus_epub'))
     def dispatch(self, *args, **kwargs):
         return super(CorpusEpubView, self).dispatch(*args, **kwargs)
 
@@ -231,6 +231,7 @@ class CollectionEpubView(BaseEpubMixin, View):
         return response
 
     @method_decorator(login_required)
+    @method_decorator(permission_required('telemeta.can_download_collection_epub'))
     def dispatch(self, *args, **kwargs):
         return super(CollectionEpubView, self).dispatch(*args, **kwargs)
 
