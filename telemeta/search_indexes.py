@@ -16,7 +16,7 @@ class MediaItemIndex(indexes.SearchIndex, indexes.Indexable):
     #advance search
     title = indexes.NgramField(model_attr='title')
     code = indexes.NgramField(model_attr='code', default='')
-    location = indexes.CharField(model_attr='location__name', default='', null='None')
+    location = indexes.NgramField(default='', null='None')
     ethnic_group = indexes.CharField(model_attr='ethnic_group', default='')
     instruments = indexes.NgramField(default='')
     collectors = indexes.NgramField(model_attr='collector', default='')
@@ -37,28 +37,31 @@ class MediaItemIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_location(self, obj):
         location = []
-        location.append(obj.location)
-        location_alias = LocationAlias.objects.filter(location__name=obj.location)
-        location_rela = LocationRelation.objects.filter(location__name=obj.location)
-        for rela in location_rela:
-            location.append(rela.ancestor_location)
-        for alias in location_alias:
-            location.append(alias)
-        return "%s" % location
+        if obj.location is not None:
+            location.append(obj.location.name)
+            location_alias = LocationAlias.objects.filter(location__name=obj.location)
+            location_rela = LocationRelation.objects.filter(location__name=obj.location)
+            for rela in location_rela:
+                location.append(rela.ancestor_location.name)
+            for alias in location_alias:
+                location.append(alias.alias)
+        return u"".join(' ' + local for local in location).encode("utf-8")
 
     def prepare_instruments(self, obj):
         item = MediaItemPerformance.objects.all().filter(media_item__exact=obj)
         instruments = []
         for material in item:
-            instruments.append(material.instrument)
-            instruments.append(material.alias)
-        return "%s" % instruments
+            if material.instrument is not None:
+                instruments.append(material.instrument.name)
+            if material.alias is not None:
+                instruments.append(material.alias.name)
+        return u"".join(' ' + instru for instru in instruments).encode("utf-8")
 
     def prepare_collectors(self, obj):
         collectors = []
         collectors.append(obj.collection.collector)
         collectors.append(obj.collector)
-        return "%s" % collectors
+        return u"".join(' ' + collector for collector in collectors).encode("utf-8")
 
 
 class MediaCollectionIndex(indexes.SearchIndex, indexes.Indexable):
@@ -92,17 +95,18 @@ class MediaCollectionIndex(indexes.SearchIndex, indexes.Indexable):
         collec_location = []
         for item in obj.items.all():
             location = []
-            location.append(item.location)
-            location_alias = LocationAlias.objects.filter(location__name=item.location)
-            location_rela = LocationRelation.objects.filter(location__name=item.location)
-            for rela in location_rela:
-                location.append(rela.ancestor_location)
-            for alias in location_alias:
-                location.append(alias)
-            for name in location:
-                if name and not name in collec_location:
-                    collec_location.append(name)
-        return "%s" % collec_location
+            if item.location is not None:
+                location.append(item.location.name)
+                location_alias = LocationAlias.objects.filter(location__name=item.location)
+                location_rela = LocationRelation.objects.filter(location__name=item.location)
+                for rela in location_rela:
+                    location.append(rela.ancestor_location.name)
+                for alias in location_alias:
+                    location.append(alias.alias)
+                for name in location:
+                    if name and not name in collec_location:
+                        collec_location.append(name)
+        return u"".join(' ' + location for location in collec_location).encode("utf-8")
 
     def prepare_ethnic_group(self, obj):
         return "%s" % obj.ethnic_groups()
@@ -114,12 +118,11 @@ class MediaCollectionIndex(indexes.SearchIndex, indexes.Indexable):
             materials = MediaItemPerformance.objects.all().filter(media_item__exact=item)
             for material in materials:
                 if material.instrument and not material.instrument in instruments:
-                    instruments.append(material.instrument)
+                    instruments.append(material.instrument.name)
 
                 if material.alias and not material.alias in instruments:
-                    instruments.append(material.alias)
-
-        return "%s" % instruments
+                    instruments.append(material.alias.name)
+        return u"".join(' ' + instru for instru in instruments).encode("utf-8")
 
     def prepare_recorded_from_date(self, obj):
         if obj.recorded_from_year != 0:
