@@ -186,7 +186,7 @@
                 <div class="col-md-3">
                     <img src="{{ STATIC_URL }}telemeta/images/search_red.png" alt="search-results" style="vertical-align:middle" /> <h1>{% trans "Search Results" %}</h1>
                 </div>
-                <div class="col-md-7">
+                <div class="col-md-7" id="results">
                     {% bootstrap_paginate page range=10 show_first_last="True" %}
                 </div>
                 <div class="col-md-0">&nbsp;</div>
@@ -221,7 +221,7 @@
             </div>
              <form method="POST" action="{% url "haystack_playlist" type%} ">{% csrf_token %}
              {% with object_list as items %}
-                <div class="fullpage" id="results" style="display:none">
+                <div class="fullpage" style="display:none">
                     {% ifequal type 'item' %}
                         {% include "search/mediaitem_listhaystack.html" %}
                     {% else %}
