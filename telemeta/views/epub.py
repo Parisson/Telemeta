@@ -99,12 +99,11 @@ class BaseEpubMixin(TelemetaBaseMixin):
 
         # add cover image
         for media in instance.related.all():
-            filename = os.path.split(media.file.path)[-1]
-            self.book.set_cover(filename, open(media.file.path, 'rb').read())
-            cover = epub.EpubHtml(title='cover-bis', file_name='cover-bis' + '.xhtml', lang='fr')
-            cover.is_chapter = False
-            cover.content = render_to_string(self.template_cover, {'image': filename})
-            self.book.add_item(cover)
+            cover_filename = os.path.split(media.file.path)[-1]
+            self.book.set_cover(cover_filename, open(media.file.path, 'rb').read())
+            # cover = epub.EpubHtml(title='cover-bis', file_name='cover-bis' + '.xhtml')
+            # cover.content = render_to_string(self.template_cover, {'image': cover_filename})
+            # self.book.add_item(cover)
             break
 
         preamble = epub.EpubHtml(title='Copyright', file_name='copyright' + '.xhtml', lang='fr')
@@ -169,9 +168,8 @@ class BaseEpubMixin(TelemetaBaseMixin):
                         'site': site, 'items': items, 'default_image': default_image_relative_path}
             c = epub.EpubHtml(title=chapter_title, file_name=collection.code + '.xhtml', lang='fr')
             c.content = render_to_string(self.template, context)
-            self.chapters.append(c)
-            # add self.chapters to the self.book
             self.book.add_item(c)
+            self.chapters.append(c)
 
         # create table of contents
         # - add manual link
@@ -186,7 +184,7 @@ class BaseEpubMixin(TelemetaBaseMixin):
             self.chapters.insert(0,'nav')
 
         # create spin, add cover page as first page
-        self.chapters.insert(0, cover)
+        self.chapters.insert(0, 'cover')
         self.book.spine = self.chapters
 
         # write epub file
