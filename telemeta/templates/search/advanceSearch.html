@@ -250,7 +250,7 @@
             {% endif %}
             </form>
         {% else %}
-            {# Show some example queries to run, maybe query syntax, something else? #}
+            <div id="results"></div>{# Show some example queries to run, maybe query syntax, something else? #}
         {% endif %}
 
 {% endblock %}
@@ -293,21 +293,37 @@
                 }
             };
 
+            function scrollToElement(ele) {
+                $(document).scrollTop(ele.offset().top).scrollLeft(ele.offset().left);
+            };
 
 
             var prev = getPrevUrlParameter("page");
             var curr = getCurrUrlParameter("page");
             if(prev<curr){
                 $(".fullpage").show( "slide", {direction:"right"} );
+                if($("#results")){
+                    scrollToElement($("#results"));
+                }
+
             }
             else if(!curr){
                 $(".fullpage").fadeIn(500);
+                if($("#results")){
+                    scrollToElement($("#results"));
+                }
             }
             else if(!prev){
                 $(".fullpage").show( "slide", {direction:"right"} );
+                if($("#results")){
+                    scrollToElement($("#results"));
+                }
             }
             else{
                 $(".fullpage").show( "slide", {direction:"left"} );
+                if($("#results")){
+                    scrollToElement($("#results"));
+                }
             };
 
             $("#id_media_type").buttonset();
