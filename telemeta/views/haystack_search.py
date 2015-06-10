@@ -83,6 +83,10 @@ class HaystackAdvanceSearch(SearchView):
 
     def __call__(self, request, type=None):
         self.type = type
+        if request.GET.get('results_page'):
+            self.results_per_page=int(request.GET.get('results_page'))
+        else:
+            self.results_per_page = 20
         return super(HaystackAdvanceSearch, self).__call__(request)
 
     def get_query(self):
@@ -106,4 +110,5 @@ class HaystackAdvanceSearch(SearchView):
             extra['type'] = 'collection'
         else:
             extra['type'] = 'item'
+        extra['results_page']=self.results_per_page
         return extra

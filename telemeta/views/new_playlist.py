@@ -13,7 +13,7 @@ class NewPlaylistView(object):
 
         idlist = request.POST.getlist('selected_items_list')
         itemlist = []
-        if self.type =="items":
+        if self.type =="item":
             for itemid in idlist:
                 itemlist.append(MediaItem.objects.all().get(id=itemid))
 
