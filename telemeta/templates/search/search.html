@@ -176,16 +176,16 @@
             var prev = getPrevUrlParameter("page");
             var curr = getCurrUrlParameter("page");
             if(prev<curr){
-                $(".fullpage").show( "slide", {direction:"left"} );
+                $(".fullpage").show( "slide", {direction:"right"} );
             }
             else if(!curr){
                 $(".fullpage").fadeIn(500);
             }
             else if(!prev){
-                $(".fullpage").show( "slide", {direction:"left"} );
+                $(".fullpage").show( "slide", {direction:"right"} );
             }
             else{
-                $(".fullpage").show( "slide", {direction:"right"} );
+                $(".fullpage").show( "slide", {direction:"left"} );
             };
 
             //alert("prev = "+ prev +" curr = "+ curr);
