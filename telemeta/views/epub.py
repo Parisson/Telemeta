@@ -101,9 +101,6 @@ class BaseEpubMixin(TelemetaBaseMixin):
         for media in instance.related.all():
             cover_filename = os.path.split(media.file.path)[-1]
             self.book.set_cover(cover_filename, open(media.file.path, 'rb').read())
-            # cover = epub.EpubHtml(title='cover-bis', file_name='cover-bis' + '.xhtml')
-            # cover.content = render_to_string(self.template_cover, {'image': cover_filename})
-            # self.book.add_item(cover)
             break
 
         preamble = epub.EpubHtml(title='Copyright', file_name='copyright' + '.xhtml', lang='fr')
@@ -176,16 +173,25 @@ class BaseEpubMixin(TelemetaBaseMixin):
         # - add section
         # - add auto created links to chapters
         self.book.toc = (( self.chapters ))
+        self.book.spine = self.chapters
 
         # add navigation files
         self.book.add_item(epub.EpubNcx())
         if not mode_single:
             self.book.add_item(epub.EpubNav())
-            self.chapters.insert(0,'nav')
+            self.book.spine.insert(0,'nav')
 
         # create spin, add cover page as first page
-        self.chapters.insert(0, 'cover')
-        self.book.spine = self.chapters
+        cover = epub.EpubHtml(title='cover-bis', file_name='cover-bis' + '.xhtml')
+        cover.content = render_to_string(self.template_cover, {'image': cover_filename})
+        self.book.add_item(cover)
+        self.book.spine.insert(0, cover)
+
+        self.book.guide.insert(0, {
+        "type"  : "cover",
+        "href"  : cover.file_name,
+        "title" : cover.title,
+        })
 
         # write epub file
         epub.write_epub(self.path, self.book, {})
