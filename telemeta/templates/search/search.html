@@ -4,7 +4,6 @@
 {% load bootstrap_pagination %}
 
 {% block title %}
-{% trans "Search" %}
 {% endblock %}
 {% block extra_stylesheets %}
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/css/jquery-ui.css" />
@@ -55,14 +54,6 @@
     </style>
 {% endblock %}
 {% block content %}
-
-    <form method="get" action=".">
-        <div class="input-group col-md-3">
-            {{ form.q.errors }}
-            {{form.q}}<span class="input-group-btn"><button type="submit" id="btn" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button></span>
-        </div>
-        <div ><a href="{% url "haystack_advance_search" %}">&raquo; recherche avancée</a></div></br>
-    </form>
         {% if query %}
 
 
