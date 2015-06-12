@@ -128,7 +128,7 @@
             {% endif %}
             </form>
         {% else %}
-            {# Show some example queries to run, maybe query syntax, something else? #}
+            <meta http-equiv="REFRESH" content="0;url={% url "haystack_search" %}?q=+">
         {% endif %}
     </form>
 {% endblock %}
