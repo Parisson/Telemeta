@@ -16,7 +16,8 @@ class MediaItemIndex(indexes.SearchIndex, indexes.Indexable):
     #advance search
     title = indexes.NgramField(model_attr='title')
     code = indexes.NgramField(model_attr='code', default='')
-    location = indexes.NgramField(default='', null='None')
+    #location = indexes.NgramField(default='', null='None')
+    location = indexes.MultiValueField()
     ethnic_group = indexes.CharField(model_attr='ethnic_group', default='')
     instruments = indexes.NgramField(default='')
     collectors = indexes.NgramField(model_attr='collector', default='')
@@ -45,7 +46,10 @@ class MediaItemIndex(indexes.SearchIndex, indexes.Indexable):
                 location.append(rela.ancestor_location.name)
             for alias in location_alias:
                 location.append(alias.alias)
-        return u"".join(' ' + local for local in location).encode("utf-8")
+            #print u"".join(' ' + local for local in location).encode("utf-8")
+            #print u"%s".encode("utf-8") % location
+            print [local for local in location]
+        return [local for local in location]
 
     def prepare_instruments(self, obj):
         item = MediaItemPerformance.objects.all().filter(media_item__exact=obj)

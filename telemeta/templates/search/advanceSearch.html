@@ -300,6 +300,8 @@
 
             var prev = getPrevUrlParameter("page");
             var curr = getCurrUrlParameter("page");
+            var prespage = getPrevUrlParameter("results_page");
+            var crespage = getCurrUrlParameter("results_page");
             if(prev<curr){
                 $(".fullpage").show( "slide", {direction:"right"} );
                 if($("#anchor")){
@@ -307,7 +309,7 @@
                 }
 
             }
-            else if(!curr){
+            else if(!curr || (prespage!=crespage)){
                 $(".fullpage").fadeIn(500);
                 if($("#anchor")){
                     scrollToElement($("#anchor"));
