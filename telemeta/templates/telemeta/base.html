@@ -92,12 +92,9 @@
 </div>
 
 <div id="quick_search">
-<form action="{% url "telemeta-search" %}" id="_quickSearchForm" method="get">
+<form action="{% url "haystack_search" %}" id="_quickSearchForm" method="get">
     <div class="input-group">
-      <input type="text" class="form-control" name="pattern">
-      <span class="input-group-btn">
-        <button class="btn btn-default" type="button" onclick="$('#_quickSearchForm').submit();"><span class="glyphicon glyphicon-search"></span></button>
-      </span>
+       <input class="form-control" id="id_q" name="q" type="text" /><span class="input-group-btn"><button type="submit" id="btn" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button></span>
     </div>
 </form>
 </div>
@@ -125,7 +122,7 @@
 
  <li><a href="{% url "telemeta-geo-continents" %}" class="yellow">{% trans "Geo Navigator" %}</a></li>
 
- <li><a href="{% url "telemeta-search-criteria" %}" class="orange">{% trans "Advanced search" %}</a></li>
+ <li><a href="{% url "haystack_advance_search" %}" class="orange">{% trans "Advanced search" %}</a></li>
  {% if user.is_authenticated %}
   {% if user.is_staff or not perms.telemeta.can_not_view_users_and_profiles %}
   <li><a href="{% url "telemeta-users" %}" class="red">{% trans "Users" %}</a></li>
