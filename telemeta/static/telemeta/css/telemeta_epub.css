@@ -69,4 +69,5 @@ img {
 
 .last-page {
     page-break-before: always;
+    text-align: center;
 }

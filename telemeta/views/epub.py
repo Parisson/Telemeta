@@ -113,7 +113,12 @@ class BaseEpubMixin(TelemetaBaseMixin):
         default_image_relative_path = ''
         self.book.add_item(preamble)
         self.chapters.append(preamble)
+
+        image = open(self.default_image_end, 'r')
         default_image_end_relative_path = 'images' + os.sep + os.path.split(self.default_image_end)[-1]
+        epub_last_image = epub.EpubItem(file_name=default_image_end_relative_path,
+                                        content=image.read())
+        self.book.add_item(epub_last_image)
         i = 1
 
         for collection in self.collections:
