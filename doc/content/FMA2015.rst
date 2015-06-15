@@ -1,0 +1,10 @@
+Telemeta at the 5th Folk Music Analysis workshop
+#################################################
+
+:category: Research
+
+Telemeta and the DIADEMS team participate to the `FMA conference 2015 <http://fma2015.sciencesconf.org/>`_ in Paris from the 10th to the 12th june 2015.
+
+The FMA workshop is intended for exchanging information that advances our understanding of oral tradition music and their importance in cultural events. The goal is to encourage interdisciplinary approaches to solve technical problems related to the study of ethnomusicology, especially the use of relevant sensors to get audio-video recordings from in-situ observations, the development of new theoretical approaches to analyze these recordings and the proposition of tools to be used for musical studies.
+
+The FMA workshop will held at the University Pierre et Marie Curie, in Paris, FRANCE
