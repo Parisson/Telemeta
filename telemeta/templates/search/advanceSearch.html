@@ -183,11 +183,11 @@
         {% if query %}
 
             <div class="row" >
-                <div class="col-md-3" >
+                <div class="col-md-2" >
                     <img src="{{ STATIC_URL }}telemeta/images/search_red.png" alt="search-results" style="vertical-align:middle" /> <h1>{% trans "Search Results" %}</h1>
                 </div>
-                <div class="col-md-7" >
-                    {% bootstrap_paginate page range=10 show_first_last="True" %}
+                <div class="col-md-8" >
+                    <center>{% bootstrap_paginate page range=10 show_first_last="True" %}</center>
                 </div>
                 <div class="col-md-0">&nbsp;</div>
             </div>
