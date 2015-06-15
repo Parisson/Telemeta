@@ -68,6 +68,7 @@ img {
 }
 
 .last-page {
+    padding-top : 18%;
     page-break-before: always;
     text-align: center;
 }
