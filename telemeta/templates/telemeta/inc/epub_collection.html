@@ -1,9 +1,9 @@
 <link rel="stylesheet" type="text/css" href="style/epub.css" />
 
-{% if not mode_single %}
-<h2>{{ title }}</h2>
-<h3>{{ subtitle }}</h3>
-{% endif %}
+<div class="title">
+ <h2>{{ title }}</h2>
+ <h3>{{ subtitle }}</h3>
+</div>
 
 {% for item in items %}
 <div class="item">
@@ -30,3 +30,9 @@
   {% endif %}
 </div>
 {% endfor %}
+
+{% if last_collection %}
+<div class="last-page">
+  <img src="{{ default_image_end }}"/>
+</div>
+{% endif %}

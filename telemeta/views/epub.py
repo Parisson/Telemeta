@@ -46,6 +46,7 @@ class BaseEpubMixin(TelemetaBaseMixin):
     local_path = os.path.dirname(__file__)
     css = os.sep.join([local_path, '..', 'static', 'telemeta', 'css', 'telemeta_epub.css'])
     default_image = os.sep.join([local_path, '..', 'static', 'telemeta', 'images', 'cul_de_lampe.jpg'])
+    default_image_end = os.sep.join([local_path, '..', 'static', 'telemeta', 'images', 'cul_de_lampe-fin_page.jpg'])
     template = os.sep.join([local_path, '..', 'templates', 'telemeta', 'inc', 'epub_collection.html'])
     template_preamble = os.sep.join([local_path, '..', 'templates', 'telemeta', 'inc', 'epub_preamble.html'])
     template_cover = os.sep.join([local_path, '..', 'templates', 'telemeta', 'inc', 'epub_cover.html'])
@@ -112,6 +113,8 @@ class BaseEpubMixin(TelemetaBaseMixin):
         default_image_relative_path = ''
         self.book.add_item(preamble)
         self.chapters.append(preamble)
+        default_image_end_relative_path = 'images' + os.sep + os.path.split(self.default_image_end)[-1]
+        i = 1
 
         for collection in self.collections:
             items = {}
@@ -163,12 +166,18 @@ class BaseEpubMixin(TelemetaBaseMixin):
                 subtitle = ''
                 chapter_title = title
 
+            last_collection = False
+            if i == len(self.collections):
+                last_collection = True
+
             context = {'collection': collection, 'title': title, 'subtitle': subtitle, 'mode_single': mode_single,
-                        'site': site, 'items': items, 'default_image': default_image_relative_path}
+                        'site': site, 'items': items, 'default_image': default_image_relative_path,
+                        'default_image_end': default_image_end_relative_path, 'last_collection': last_collection}
             c = epub.EpubHtml(title=chapter_title, file_name=collection.code + '.xhtml', lang='fr')
             c.content = render_to_string(self.template, context)
             self.book.add_item(c)
             self.chapters.append(c)
+            i += 1
 
         # create table of contents
         # - add manual link
@@ -178,9 +187,11 @@ class BaseEpubMixin(TelemetaBaseMixin):
         self.book.spine = self.chapters
 
         # add navigation files
-        self.book.add_item(epub.EpubNcx())
+        ncx = epub.EpubNcx()
+        self.book.add_item(ncx)
         if not mode_single:
-            self.book.add_item(epub.EpubNav())
+            nav = epub.EpubNav()
+            self.book.add_item(nav)
             self.book.spine.insert(0,'nav')
 
         # create spin, add cover page as first page
