@@ -56,6 +56,7 @@ class BaseEpubMixin(TelemetaBaseMixin):
         site = Site.objects.get_current()
         self.chapters = []
         default_image_added = False
+        full_title = corpus.title + ' - ' + collection.title
 
         if not collection:
             self.filename = self.corpus.code
@@ -182,7 +183,7 @@ class BaseEpubMixin(TelemetaBaseMixin):
             self.book.spine.insert(0,'nav')
 
         # create spin, add cover page as first page
-        cover = epub.EpubHtml(title='cover-bis', file_name='cover-bis' + '.xhtml')
+        cover = epub.EpubHtml(title=full_title, file_name='cover-bis' + '.xhtml')
         cover.content = render_to_string(self.template_cover, {'image': cover_filename})
         self.book.add_item(cover)
         self.book.spine.insert(0, cover)
