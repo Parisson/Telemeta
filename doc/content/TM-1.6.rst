@@ -2,6 +2,7 @@ Telemeta 1.6 has been released!
 ###############################
 
 :category: Releases
+:status: draft
 
 Changelog:
 
