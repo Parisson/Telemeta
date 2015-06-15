@@ -60,6 +60,7 @@ class BaseEpubMixin(TelemetaBaseMixin):
         if not collection:
             self.filename = corpus.code
             self.book.set_title(corpus.title)
+            full_title = corpus.title
         else:
             self.filename = collection.code
             short_title = collection.title.split(' ')
@@ -68,8 +69,8 @@ class BaseEpubMixin(TelemetaBaseMixin):
             else:
                 short_title = 'Intro'
             self.book.set_title(corpus.title[:15] + '... ' + short_title)
+            full_title = corpus.title + ' - ' + collection.title
 
-        full_title = corpus.title + ' - ' + collection.title
         self.path = self.cache_data.dir + os.sep + self.filename + '.epub'
 
         # add metadata
