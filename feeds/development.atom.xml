@@ -6,7 +6,7 @@
 &lt;li&gt;&lt;a class="reference external" href="https://github.com/ANR-DIADEMS/timeside-diadems"&gt;https://github.com/ANR-DIADEMS/timeside-diadems&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Feel free to post issues and good ideas to help us improving the platform.&lt;/p&gt;
-</summary></entry><entry><title>Telemeta project now uses Git for development</title><link href="http://parisson.github.io/Telemeta/telemeta-project-now-uses-git-for-development.html" rel="alternate"></link><updated>2011-10-26T06:53:00+02:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2011-10-26:Telemeta/telemeta-project-now-uses-git-for-development.html</id><summary type="html">&lt;p&gt;Ten months ago, I started to look at other version control systems because I was fed up with the Subversion centralized model. It tested Git, Mercurial, Bazaar, etc.. Bazaar was the good choice because it allowed the dev teams to make branches easily in a decentralized environment, to push commits to the old subversion repository, to keep an easy syntax, etc...&lt;/p&gt;
+</summary><category term="git"></category></entry><entry><title>Telemeta project now uses Git for development</title><link href="http://parisson.github.io/Telemeta/telemeta-project-now-uses-git-for-development.html" rel="alternate"></link><updated>2011-10-26T06:53:00+02:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2011-10-26:Telemeta/telemeta-project-now-uses-git-for-development.html</id><summary type="html">&lt;p&gt;Ten months ago, I started to look at other version control systems because I was fed up with the Subversion centralized model. It tested Git, Mercurial, Bazaar, etc.. Bazaar was the good choice because it allowed the dev teams to make branches easily in a decentralized environment, to push commits to the old subversion repository, to keep an easy syntax, etc...&lt;/p&gt;
 &lt;p&gt;Now there are few reasons to switch back to Git:&lt;/p&gt;
 &lt;p&gt;we want to checkout and test branches faster without managing dozens of repositories,
 we do not want to upload 500 ko of data for a 1 line commit,
@@ -32,4 +32,4 @@ git checkout crem
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;NB : ​This is the good method to convert a Bzr repo.&lt;/p&gt;
-</summary></entry></feed>
+</summary><category term="git"></category></entry></feed>

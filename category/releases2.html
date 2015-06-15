@@ -2,7 +2,7 @@
 <html lang="en"
 >
 <head>
-    <title>iso - Telemeta project</title>
+    <title>Releases - Telemeta project</title>
     <!-- Using the latest rendering mode for IE -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="utf-8">
@@ -13,7 +13,7 @@
 
 
     <meta name="author" content="Parisson Sarl" />
-    <meta name="keywords" content="iso" />
+    <meta name="keywords" content="Releases" />
 
     <!-- Open Graph tags -->
         <meta property="og:site_name" content="Telemeta project" />
@@ -67,7 +67,7 @@ Telemeta project            </a>
                         <li >
                             <a href="../category/projects.html">Projects</a>
                         </li>
-                        <li >
+                        <li class="active">
                             <a href="../category/releases.html">Releases</a>
                         </li>
                         <li >
@@ -91,28 +91,38 @@ Telemeta project            </a>
         <div class="col-sm-9">
 
             <article>
-                <h2><a href="../import-iso-639-3-languages.html">Import ISO 639-3 languages</a></h2>
-                <div class="summary"><p>From Telemeta 1.4, an ISO 639-3 language model has been implemented.</p>
-<p>The ISO language table content can be initialized with the official code set.
-Here is a import example where telemeta_crem5 is the SQL database:</p>
-<pre class="literal-block">
-wget http://www.sil.org/iso639-3/iso-639-3_20110525.tab
-mysql -u root -p
-load data infile 'iso-639-3_20110525.tab' into table telemeta_crem5.languages CHARACTER SET UTF8 ignore 1 lines (identifier, part2B, part2T, part1, scope, type, name, comment);
-</pre>
-<p>If you upgraded Telemeta from a version previous or equal to 1.3, please update the media_items table as follow:</p>
-<pre class="literal-block">
-mysql -u root -p
-use telemeta_crem5
-ALTER TABLE media_items ADD COLUMN 'language_iso_id' integer;
-ALTER TABLE 'media_items' ADD CONSTRAINT 'language_iso_id_refs_id_80b221' FOREIGN KEY ('language_iso_id') REFERENCES 'languages' ('id');
-</pre>
+                <h2><a href="../telemeta-094-has-been-released.html">Telemeta 0.9.4 has been released!</a></h2>
+                <div class="summary"><p>It is one of the biggest release since 0.5.1 because it includes tons of bugfixes, a new theme and MANY new features which were targeted for 1.0.</p>
+<p>Changes:</p>
+<ul class="simple">
+<li>New visual theme</li>
+<li>Playing all kinds of audio files thanks to <a class="reference external" href="https://github.com/Parisson/TimeSide">​TimeSide</a> (even video files !)</li>
+<li>Editing items, collections and all lists</li>
+<li>Managing temporal markers to get time description of the archives</li>
+<li>Userspace playlist management</li>
+<li>Admin User management and profiling</li>
+<li>Password retrieval and management</li>
+<li>CSV export of user playlists</li>
+<li>RSS feeds for last changes</li>
+<li>Full french and english localization (interface, forms)</li>
+<li>Optimization of audio analysis</li>
+<li>MANY bugfixes</li>
+</ul>
 
-                    <a class="btn btn-default btn-xs" href="../import-iso-639-3-languages.html">more ...</a>
+                    <a class="btn btn-default btn-xs" href="../telemeta-094-has-been-released.html">more ...</a>
                 </div>
             </article>
             <hr/>
 
+        <ul class="pagination">
+                <li class="prev"><a href="../category/releases.html">&laquo;</a>
+                </li>
+                    <li class=""><a
+                            href="../category/releases.html">1</a></li>
+                    <li class="active"><a
+                            href="../category/releases2.html">2</a></li>
+                <li class="next disabled"><a href="#">&raquo;</a></li>
+        </ul>
         </div>
         <div class="col-sm-3" id="sidebar">
             <aside>
@@ -227,7 +237,7 @@ ALTER TABLE 'media_items' ADD CONSTRAINT 'language_iso_id_refs_id_80b221' FOREIG
    <div class="container">
       <hr>
       <div class="row">
-         <div class="col-xs-10">&copy; 2014 Parisson Sarl
+         <div class="col-xs-10">&copy; 2015 Parisson Sarl
             &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
             <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
             <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>              <p><small>  <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by/4.0/80x15.png" /></a>

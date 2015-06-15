@@ -2,7 +2,7 @@
 <html lang="en"
 >
 <head>
-    <title>iso - Telemeta project</title>
+    <title>git - Telemeta project</title>
     <!-- Using the latest rendering mode for IE -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="utf-8">
@@ -13,7 +13,7 @@
 
 
     <meta name="author" content="Parisson Sarl" />
-    <meta name="keywords" content="iso" />
+    <meta name="keywords" content="git" />
 
     <!-- Open Graph tags -->
         <meta property="og:site_name" content="Telemeta project" />
@@ -91,24 +91,29 @@ Telemeta project            </a>
         <div class="col-sm-9">
 
             <article>
-                <h2><a href="../import-iso-639-3-languages.html">Import ISO 639-3 languages</a></h2>
-                <div class="summary"><p>From Telemeta 1.4, an ISO 639-3 language model has been implemented.</p>
-<p>The ISO language table content can be initialized with the official code set.
-Here is a import example where telemeta_crem5 is the SQL database:</p>
-<pre class="literal-block">
-wget http://www.sil.org/iso639-3/iso-639-3_20110525.tab
-mysql -u root -p
-load data infile 'iso-639-3_20110525.tab' into table telemeta_crem5.languages CHARACTER SET UTF8 ignore 1 lines (identifier, part2B, part2T, part1, scope, type, name, comment);
-</pre>
-<p>If you upgraded Telemeta from a version previous or equal to 1.3, please update the media_items table as follow:</p>
-<pre class="literal-block">
-mysql -u root -p
-use telemeta_crem5
-ALTER TABLE media_items ADD COLUMN 'language_iso_id' integer;
-ALTER TABLE 'media_items' ADD CONSTRAINT 'language_iso_id_refs_id_80b221' FOREIGN KEY ('language_iso_id') REFERENCES 'languages' ('id');
-</pre>
+                <h2><a href="../telemeta-on-github.html">Telemeta on GitHub</a></h2>
+                <div class="summary"><p>We now use GitHub for the development process of all Telemeta related projects:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/Parisson/Telemeta">https://github.com/Parisson/Telemeta</a></li>
+<li><a class="reference external" href="https://github.com/Parisson/Telemeta">https://github.com/Parisson/Telemeta</a></li>
+<li><a class="reference external" href="https://github.com/ANR-DIADEMS/timeside-diadems">https://github.com/ANR-DIADEMS/timeside-diadems</a></li>
+</ul>
+<p>Feel free to post issues and good ideas to help us improving the platform.</p>
 
-                    <a class="btn btn-default btn-xs" href="../import-iso-639-3-languages.html">more ...</a>
+                    <a class="btn btn-default btn-xs" href="../telemeta-on-github.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
+                <h2><a href="../telemeta-project-now-uses-git-for-development.html">Telemeta project now uses Git for development</a></h2>
+                <div class="summary"><p>Ten months ago, I started to look at other version control systems because I was fed up with the Subversion centralized model. It tested Git, Mercurial, Bazaar, etc.. Bazaar was the good choice because it allowed the dev teams to make branches easily in a decentralized environment, to push commits to the old subversion repository, to keep an easy syntax, etc...</p>
+<p>Now there are few reasons to switch back to Git:</p>
+<p>we want to checkout and test branches faster without managing dozens of repositories,
+we do not want to upload 500 ko of data for a 1 line commit,
+we want to push the generic Telemeta to GitHub.
+Sorry Bzr folks, I like your stuff, but Git is more appropriate now for this project.</p>
+<p>Developers, please ​`update ...</p>
+                    <a class="btn btn-default btn-xs" href="../telemeta-project-now-uses-git-for-development.html">more ...</a>
                 </div>
             </article>
             <hr/>
