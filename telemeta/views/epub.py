@@ -189,11 +189,11 @@ class BaseEpubMixin(TelemetaBaseMixin):
         self.book.add_item(cover)
         self.book.spine.insert(0, cover)
 
-        self.book.guide.insert(0, {
-        "type"  : "cover",
-        "href"  : cover.file_name,
-        "title" : cover.title,
-        })
+        # self.book.guide.insert(0, {
+        # "type"  : "cover",
+        # "href"  : cover.file_name,
+        # "title" : cover.title,
+        # })
 
         # write epub file
         epub.write_epub(self.path, self.book, {})
