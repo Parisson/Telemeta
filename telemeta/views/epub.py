@@ -194,9 +194,9 @@ class BaseEpubMixin(TelemetaBaseMixin):
         # add navigation files
         ncx = epub.EpubNcx()
         self.book.add_item(ncx)
+        nav = epub.EpubNav()
+        self.book.add_item(nav)
         if not mode_single:
-            nav = epub.EpubNav()
-            self.book.add_item(nav)
             self.book.spine.insert(0,'nav')
 
         # create spin, add cover page as first page
