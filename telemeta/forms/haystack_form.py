@@ -157,7 +157,7 @@ class HayAdvanceForm(SearchForm):
             sqs = sqs.filter(code__contains=self.cleaned_data['code'])
 
         if self.cleaned_data.get('location'):
-            sqs = sqs.filter(location__contains=self.cleaned_data['location'])
+            sqs = sqs.filter(location_principal__contains=self.cleaned_data['location']).filter_or(location_relation__contains=self.cleaned_data['location'])
 
         if self.cleaned_data['ethnic_group']:
             if self.cleaned_data.get('ethnic_group') != '':
