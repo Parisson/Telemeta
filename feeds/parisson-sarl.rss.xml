@@ -1,21 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Telemeta project</title><link>http://parisson.github.io/Telemeta/</link><description></description><atom:link href="http://parisson.github.io/Telemeta/feeds/parisson-sarl.rss.xml" rel="self"></atom:link><lastBuildDate>Tue, 16 Jun 2015 01:15:41 +0200</lastBuildDate><item><title>Telemeta 1.6 has been released!</title><link>http://parisson.github.io/Telemeta/telemeta-16-has-been-released.html</link><description>&lt;p&gt;Changelog:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p class="first"&gt;Installation have been dratiscally simplified with the help of &lt;strong&gt;Docker&lt;/strong&gt;.&lt;/p&gt;
-&lt;p&gt;One month after the publication of docker-compose, we have managed to build a composition which bundle all the dependencies, even for a production use case. From development tasks to testing and deployment, we provide now a DevBox that is compatible with all platforms.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p class="first"&gt;Add an EPUB3 audio book generator for corpus and collection&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p class="first"&gt;Add more 404 pages exceptions&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p class="first"&gt;&lt;strong&gt;Many&lt;/strong&gt; bugfixes&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Download:&lt;/p&gt;
-&lt;ul class="simple"&gt;
-&lt;li&gt;&lt;a class="reference external" href="http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.6.tar.gz"&gt;http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.6.tar.gz&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Parisson Sarl</dc:creator><pubDate>Tue, 16 Jun 2015 01:15:41 +0200</pubDate><guid>tag:parisson.github.io,2015-06-16:Telemeta/telemeta-16-has-been-released.html</guid></item><item><title>Telemeta at the 5th Folk Music Analysis workshop</title><link>http://parisson.github.io/Telemeta/telemeta-at-the-5th-folk-music-analysis-workshop.html</link><description>&lt;p&gt;Telemeta and the DIADEMS team participate to the &lt;a class="reference external" href="http://fma2015.sciencesconf.org/"&gt;FMA conference 2015&lt;/a&gt; in Paris from the 10th to the 12th june 2015.&lt;/p&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Telemeta project</title><link>http://parisson.github.io/Telemeta/</link><description></description><atom:link href="http://parisson.github.io/Telemeta/feeds/parisson-sarl.rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 10 Jun 2015 12:47:08 +0200</lastBuildDate><item><title>Telemeta at the 5th Folk Music Analysis workshop</title><link>http://parisson.github.io/Telemeta/telemeta-at-the-5th-folk-music-analysis-workshop.html</link><description>&lt;p&gt;Telemeta and the DIADEMS team participate to the &lt;a class="reference external" href="http://fma2015.sciencesconf.org/"&gt;FMA conference 2015&lt;/a&gt; in Paris from the 10th to the 12th june 2015.&lt;/p&gt;
 &lt;p&gt;The FMA workshop is intended for exchanging information that advances our understanding of oral tradition music and their importance in cultural events. The goal is to encourage interdisciplinary approaches to solve technical problems related to the study of ethnomusicology, especially the use of relevant sensors to get audio-video recordings from in-situ observations, the development of new theoretical approaches to analyze these recordings and the proposition of tools to be used for musical studies.&lt;/p&gt;
 &lt;p&gt;The FMA workshop will held at the University Pierre et Marie Curie, in Paris, FRANCE&lt;/p&gt;
 </description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Parisson Sarl</dc:creator><pubDate>Wed, 10 Jun 2015 12:47:08 +0200</pubDate><guid>tag:parisson.github.io,2015-06-10:Telemeta/telemeta-at-the-5th-folk-music-analysis-workshop.html</guid></item><item><title>Telemeta: open web audio platform with semantics</title><link>http://parisson.github.io/Telemeta/telemeta-open-web-audio-platform-with-semantics.html</link><description>&lt;img alt="Telemeta logo" src="/Telemeta/images/logo_telemeta_2.png" /&gt;

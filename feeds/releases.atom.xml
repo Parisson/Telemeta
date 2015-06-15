@@ -1,21 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Telemeta project</title><link href="http://parisson.github.io/Telemeta/" rel="alternate"></link><link href="http://parisson.github.io/Telemeta/feeds/releases.atom.xml" rel="self"></link><id>http://parisson.github.io/Telemeta/</id><updated>2015-06-16T01:15:41+02:00</updated><entry><title>Telemeta 1.6 has been released!</title><link href="http://parisson.github.io/Telemeta/telemeta-16-has-been-released.html" rel="alternate"></link><updated>2015-06-16T01:15:41+02:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2015-06-16:Telemeta/telemeta-16-has-been-released.html</id><summary type="html">&lt;p&gt;Changelog:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p class="first"&gt;Installation have been dratiscally simplified with the help of &lt;strong&gt;Docker&lt;/strong&gt;.&lt;/p&gt;
-&lt;p&gt;One month after the publication of docker-compose, we have managed to build a composition which bundle all the dependencies, even for a production use case. From development tasks to testing and deployment, we provide now a DevBox that is compatible with all platforms.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p class="first"&gt;Add an EPUB3 audio book generator for corpus and collection&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p class="first"&gt;Add more 404 pages exceptions&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p class="first"&gt;&lt;strong&gt;Many&lt;/strong&gt; bugfixes&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Download:&lt;/p&gt;
-&lt;ul class="simple"&gt;
-&lt;li&gt;&lt;a class="reference external" href="http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.6.tar.gz"&gt;http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.6.tar.gz&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</summary></entry><entry><title>Telemeta 1.5 is out!</title><link href="http://parisson.github.io/Telemeta/telemeta-15-is-out.html" rel="alternate"></link><updated>2015-01-26T10:42:00+01:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2015-01-26:Telemeta/telemeta-15-is-out.html</id><summary type="html">&lt;p&gt;After months of hard work we are pleased to release a big update to Telemeta communities. It represents a huge milestone that makes Telemeta now compatible with more modern web technologies.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Telemeta project</title><link href="http://parisson.github.io/Telemeta/" rel="alternate"></link><link href="http://parisson.github.io/Telemeta/feeds/releases.atom.xml" rel="self"></link><id>http://parisson.github.io/Telemeta/</id><updated>2015-01-26T10:42:00+01:00</updated><entry><title>Telemeta 1.5 is out!</title><link href="http://parisson.github.io/Telemeta/telemeta-15-is-out.html" rel="alternate"></link><updated>2015-01-26T10:42:00+01:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2015-01-26:Telemeta/telemeta-15-is-out.html</id><summary type="html">&lt;p&gt;After months of hard work we are pleased to release a big update to Telemeta communities. It represents a huge milestone that makes Telemeta now compatible with more modern web technologies.&lt;/p&gt;
 &lt;p&gt;Changelog:&lt;/p&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;Django 1.6.x compatibility&lt;/li&gt;
