@@ -327,7 +327,7 @@ label.disabled { color: #d7d7d7 }
     position: absolute;
     top: 1.2em;
     left: 35%;
-    background-color: #6a0307;
+
     padding: 0.3em;
     -moz-border-radius: 8px 8px 8px 8px;
     -webkit-border-radius: 8px 8px 8px 8px;
@@ -347,6 +347,7 @@ label.disabled { color: #d7d7d7 }
     border-radius: 5px 0px 0px 5px;
     width: 215px;
     padding-left: 0.5em;
+    border-color:#6a0307;
 }
 
 #quick_search_pattern {
