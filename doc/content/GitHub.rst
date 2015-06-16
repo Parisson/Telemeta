@@ -8,7 +8,7 @@ Telemeta on GitHub
 We now use GitHub for the development process of all Telemeta related projects:
 
 * https://github.com/Parisson/Telemeta
-* https://github.com/Parisson/Telemeta
+* https://github.com/Parisson/TimeSide
 * https://github.com/ANR-DIADEMS/timeside-diadems
 
 Feel free to post issues and good ideas to help us improving the platform.
