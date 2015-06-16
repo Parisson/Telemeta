@@ -431,7 +431,7 @@ sudo pip install --upgrade telemeta
 &lt;p&gt;or &lt;a class="reference external" href="​​http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.2.tar.gz"&gt;download&lt;/a&gt; (MD5: 43cd98b492d39772a73164986ac0eefd)&lt;/p&gt;
 </description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Parisson Sarl</dc:creator><pubDate>Mon, 31 Oct 2011 14:39:00 +0100</pubDate><guid>tag:parisson.github.io,2011-10-31:Telemeta/telemeta-12-is-out.html</guid></item><item><title>Partners</title><link>http://parisson.github.io/Telemeta/partners.html</link><description>&lt;p&gt;Telemeta is sponsored by:&lt;/p&gt;
 &lt;ul class="simple"&gt;
-&lt;li&gt;&lt;a class="reference external" href="http://parisson.com"&gt;Parisson&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://parisson.com"&gt;Parisson&lt;/a&gt;, french startup for open archives solutions&lt;/li&gt;
 &lt;li&gt;&lt;a class="reference external" href="http://www.cnrs.fr/"&gt;CNRS&lt;/a&gt;, Centre National de la Recherche Scientifique (French Natianal Research and Scientific Center)&lt;/li&gt;
 &lt;li&gt;&lt;a class="reference external" href="http://www.culturecommunication.gouv.fr/"&gt;MCC&lt;/a&gt;, Ministère de la Culture et de la Communication (French Ministry of Culture and Communication)&lt;/li&gt;
 &lt;li&gt;&lt;a class="reference external" href="http://crem-cnrs.fr/"&gt;CREM&lt;/a&gt;, LESC, Université de Nanterre, France (French Ethnomusicology Research Center)&lt;/li&gt;
@@ -448,7 +448,8 @@ sudo pip install --upgrade telemeta
 &lt;li&gt;Museum d'Histoire Naturelle, Paris, France&lt;/li&gt;
 &lt;li&gt;Musée de l'Homme, Paris, France&lt;/li&gt;
 &lt;li&gt;Musée d'Orsay, Paris, France&lt;/li&gt;
-&lt;li&gt;Bibliothèque Nationale de France, BNF, Paris, France&lt;/li&gt;
+&lt;li&gt;Bibliothèque Nationale de France (BNF) Paris, France&lt;/li&gt;
+&lt;li&gt;CMAM - ISMS, Tunis, Tunisie&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Management board:&lt;/p&gt;
 &lt;ul class="simple"&gt;
@@ -460,7 +461,7 @@ sudo pip install --upgrade telemeta
 &lt;li&gt;Guillaume Pellerin (​Parisson)&lt;/li&gt;
 &lt;li&gt;Thomas Fillon (​​Parisson)&lt;/li&gt;
 &lt;li&gt;Paul Brossier (​Parisson)&lt;/li&gt;
-&lt;li&gt;Anas Ghrab (CMAM - ISMS, Tunis)&lt;/li&gt;
+&lt;li&gt;Anas Ghrab (CMAM - ISMS)&lt;/li&gt;
 &lt;li&gt;Riccardo Zaccarelli (​Parisson)&lt;/li&gt;
 &lt;li&gt;Olivier Guilyardi (​Samalyse)&lt;/li&gt;
 &lt;/ul&gt;
