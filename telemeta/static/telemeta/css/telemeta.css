@@ -328,7 +328,7 @@ label.disabled { color: #d7d7d7 }
     top: 1.2em;
     left: 35%;
 
-    padding: 0.3em;
+    padding: 0.5em;
     -moz-border-radius: 8px 8px 8px 8px;
     -webkit-border-radius: 8px 8px 8px 8px;
     border-radius: 8px 8px 8px 8px;
