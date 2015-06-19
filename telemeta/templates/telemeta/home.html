@@ -54,11 +54,11 @@
 {% endblock %}
 
 </div>
-
+<button type="button" id="btn" class="btn btn-default" onclick="location.href='{%url "telemeta-fullaccess-items"%}'"> <span class="glyphicon glyphicon-play" aria-hidden="true"></span> Accéder aux items consultables en libre acces</a></button>
 <div class="home-description">
 <img class="align-left" src="{{ STATIC_URL }}telemeta/images/vox.png" alt="vox" style="vertical-align:middle;" />
-<button type="button" id="btn" class="btn btn-default" onclick="location.href='{%url "telemeta-fullaccess-items"%}'"> <span class="glyphicon glyphicon-play" aria-hidden="true"></span> Accéder aux items consultables en libre acces</a>
-{#{{ page_content|render_flatpage }}#}
+
+{{ page_content|render_flatpage }}
 </div>
 
 {% if sound_pub_items %}
