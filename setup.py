@@ -62,6 +62,7 @@ setup(
         'django-suit',
         'django-google-tools',
         'django-ipauth',
+        'django-haystack',
         'timeside>=0.7',
         'south',
         'docutils',
