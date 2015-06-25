@@ -1,2 +1,6 @@
+--index-url https://pypi.python.org/simple/
+
 setuptools
 -e .
+-e git+https://github.com/mariocesar/sorl-thumbnail#egg=sorl-thumbnail-12.2
+-e git+https://github.com/django-haystack/django-haystack#egg=django-haystack-2.4

@@ -69,6 +69,7 @@ class MediaItemQuerySet(CoreQuerySet):
 
         return self.filter(q)
 
+
     def without_collection(self):
         "Find items which do not belong to any collection"
         return self.extra(

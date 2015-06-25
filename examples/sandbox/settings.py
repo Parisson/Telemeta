@@ -159,7 +159,6 @@ INSTALLED_APPS = (
     'bootstrap_pagination',
     'googletools',
     'registration',
-    'epub',
     'rest_framework',
     'djcelery',
     'haystack',
@@ -294,3 +293,7 @@ HAYSTACK_CONNECTIONS = {
         'INDEX_NAME': 'haystack',
     },
 }
+
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
+HAYSTACK_SEARCH_RESULTS_PER_PAGE = 50

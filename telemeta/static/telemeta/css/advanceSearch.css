@@ -1,0 +1,43 @@
+.overflow{
+	max-height:200px;
+}
+
+.module ul, li {
+	border-radius: 0px 0px 0px 0px;
+}
+
+.ui-selectmenu-button.ui-widget.ui-state-default{
+	background-image:none;
+	background-color:#6a0307;
+	border-color:#6a0307;
+	color:white;
+}
+
+.ui-selectmenu-button.ui-widget.ui-state-hover{
+	background-image:none;
+	background-color:#6a0307;
+	border-color:#6a0307;
+	color:white;
+}
+
+.ui-selectmenu-button.ui-widget.ui-state-focus{
+	background-image:none;
+	background-color:#6a0307;
+	border-color:#6a0307;
+	color:white;
+}
+
+.ui-selectmenu-button.ui-widget.ui-state-default .ui-icon{
+	background-image:url("images/ui-icons_ffffff_256x240.png");
+}
+
+.ui-menu-item{
+	background-color:white;
+}
+
+.ui-menu-item.ui-state-focus{
+	background-image:none;
+	background-color:#6a0307;
+	border-color:#6a0307;
+	color:white;
+}

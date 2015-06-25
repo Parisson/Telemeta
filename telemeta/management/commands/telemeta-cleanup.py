@@ -9,24 +9,21 @@ import codecs
 
 class Command(BaseCommand):
     help = "Cleanup DB : multiple analyses, data cache, export cache, etc.."
-    args = "None"
-    cache_data = None
-    cache_export = None
+    args = "cache"
+    cache_data = TelemetaCache(settings.TELEMETA_DATA_CACHE_DIR)
+    cache_export = TelemetaCache(settings.TELEMETA_EXPORT_CACHE_DIR)
 
     def handle(self, *args, **options):
-        if 'cache' in args:
-            self.cache_data = TelemetaCache(settings.TELEMETA_DATA_CACHE_DIR)
-            self.cache_export = TelemetaCache(settings.TELEMETA_EXPORT_CACHE_DIR)
-            print "Cleaning all cache..."
-
         items = MediaItem.objects.all()
         a_counter = 0
 
-        print 'Cleaning multiple analyses per item...'
+        print 'cleaning multiple analyses per item...'
         for item in items:
-            if self.cache_data and self.cache_export:
+            if 'cache' in args::
+                print 'cleaning cache...'
                 self.cache_data.delete_item_data(item.code)
                 self.cache_export.delete_item_data(item.code)
+
             analyses = MediaItemAnalysis.objects.filter(item=item)
             ids = []
             for analysis in analyses:

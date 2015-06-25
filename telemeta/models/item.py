@@ -220,7 +220,7 @@ class MediaItem(MediaResource):
                 instruments.append(instrument)
             if not alias in instruments:
                 instruments.append(alias)
-
+        #no reference for __name_cmp anywhere
         instruments.sort(self.__name_cmp)
         return instruments
 

@@ -278,7 +278,6 @@ class HomeView(object):
         users = User.objects.all().order_by('last_name')
         return render(request, 'telemeta/users.html', {'users': users})
 
-
 class SearchView(ListView):
     """Perform a search through resources"""
 
@@ -416,4 +415,116 @@ class SearchView(ListView):
         context['fonds_num'] = self.fonds.count()
         context['type'] = self.type
         context['count'] = self.object_list.count()
+        return context
+
+
+
+class SearchViewPublished(SearchView):
+    """Perform a search through published resources"""
+
+    template_name='telemeta/search_results.html'
+    paginate_by = 20
+
+    def get_queryset(self):
+        self.type = None
+        if 'type' in self.kwargs:
+            self.type = self.kwargs['type']
+        if(self.type=='items'):
+            return SearchView.get_queryset(self).filter(collection__code__contains="_E_")
+        else:
+            return SearchView.get_queryset(self).filter(code__contains="_E_")
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(SearchView, self).get_context_data(*args, **kwargs)
+        context['criteria'] = self.criteria
+        context['collections_num'] =  self.collections.filter(code__contains="_E_").count()
+        context['items_num'] = self.items.filter(collection__code__contains="_E_").count()
+        context['corpus_num']  = self.corpus.filter(code__contains="_E_").count()
+        context['fonds_num'] = self.fonds.filter(code__contains="_E_").count()
+        context['type'] = self.type
+        context['count'] = self.object_list.count()
+        context['result_filter'] = "published"
+        return context
+
+class SearchViewUnpublished(SearchView):
+    """Perform a search through published resources"""
+
+    template_name='telemeta/search_results.html'
+    paginate_by = 20
+
+    def get_queryset(self):
+        self.type = None
+        if 'type' in self.kwargs:
+            self.type = self.kwargs['type']
+        if(self.type=='items'):
+            return SearchView.get_queryset(self).filter(collection__code__contains="_I_")
+        else:
+            return SearchView.get_queryset(self).filter(code__contains="_I_")
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(SearchView, self).get_context_data(*args, **kwargs)
+        context['criteria'] = self.criteria
+        context['collections_num'] =  self.collections.filter(code__contains="_I_").count()
+        context['items_num'] = self.items.filter(collection__code__contains="_I_").count()
+        context['corpus_num']  = self.corpus.filter(code__contains="_I_").count()
+        context['fonds_num'] = self.fonds.filter(code__contains="_I_").count()
+        context['type'] = self.type
+        context['count'] = self.object_list.count()
+        context['result_filter'] = "unpublished"
+        return context
+
+class SearchViewFullAccess(SearchView):
+    """Perform a search through published resources"""
+
+    template_name='telemeta/search_results.html'
+    paginate_by = 20
+
+    def get_queryset(self):
+        self.type = None
+        if 'type' in self.kwargs:
+            self.type = self.kwargs['type']
+        if(self.type=='items'):
+            search = SearchView.get_queryset(self).filter(Q(collection__public_access="full")|Q(public_access="full")).exclude(collection__public_access="none")
+            return search;
+        else :
+            return SearchView.get_queryset(self).filter(public_access="full")
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(SearchView, self).get_context_data(*args, **kwargs)
+        context['criteria'] = self.criteria
+        context['collections_num'] =  self.collections.filter(public_access="full").count()
+        context['items_num'] = self.items.filter(Q(collection__public_access="full")|Q(public_access="full")).exclude(collection__public_access="none").count()
+        context['corpus_num']  = self.corpus.filter(public_access="full").count()
+        context['fonds_num'] = self.fonds.filter(public_access="full").count()
+        context['type'] = self.type
+        context['count'] = self.object_list.count()
+        context['result_filter'] = "full"
+        return context
+
+class SearchViewRestrictedAccess(SearchView):
+    """Perform a search through published resources"""
+
+    template_name='telemeta/search_results.html'
+    paginate_by = 20
+
+    def get_queryset(self):
+        self.type = None
+        if 'type' in self.kwargs:
+            self.type = self.kwargs['type']
+        if(self.type=='items'):
+            search = SearchView.get_queryset(self).filter(Q(collection__public_access="none")|Q(public_access="none")).exclude(collection__public_access="full")
+            return search;
+        else :
+            return SearchView.get_queryset(self).filter(public_access="none")
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(SearchView, self).get_context_data(*args, **kwargs)
+        context['criteria'] = self.criteria
+        context['collections_num'] =  self.collections.filter(public_access="none").count()
+        context['items_num'] = self.items.filter(Q(collection__public_access="none")|Q(public_access="none")).exclude(collection__public_access="full").count()
+        context['corpus_num']  = self.corpus.filter(public_access="none").count()
+        context['fonds_num'] = self.fonds.filter(public_access="none").count()
+        context['type'] = self.type
+        context['count'] = self.object_list.count()
+        context['result_filter'] = "none"
         return context
