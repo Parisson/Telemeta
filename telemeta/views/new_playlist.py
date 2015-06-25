@@ -44,14 +44,14 @@ class NewPlaylistView(object):
 
             for item in itemlist:
                 new_id = uuid.uuid4()
-                PlaylistResource.objects.get_or_create(resource_type='item',public_id=new_id,resource_id=item.id,playlist=selected_playlist)
+                PlaylistResource.objects.get_or_create(resource_type='item',resource_id=item.id,playlist=selected_playlist,defaults={'public_id':new_id})
         else:
             for itemid in idlist:
                 itemlist.append(MediaCollection.objects.all().get(id=itemid))
 
             for item in itemlist:
                 new_id = uuid.uuid4()
-                PlaylistResource.objects.get_or_create(resource_type='collection',public_id=new_id,resource_id=item.id,playlist=selected_playlist)
+                PlaylistResource.objects.get_or_create(resource_type='collection',resource_id=item.id,playlist=selected_playlist,defaults={'public_id':new_id})
 
         context = RequestContext(request, {
                 'selected_items_list': itemlist,
