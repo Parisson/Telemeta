@@ -35,7 +35,7 @@ class HayAdvanceForm(SearchForm):
 #begin create field
 
     #to replace de basic search form field
-    q = forms.CharField(required=False, label=('Title'), widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'search'}))
+    q = forms.CharField(required=False, label=('title'), widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'search'}))
 
     location = forms.CharField(required=False, label=('Location'), widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'search'}))
 
@@ -189,9 +189,9 @@ class HayAdvanceForm(SearchForm):
 
         if self.cleaned_data['item_status']:
             if self.cleaned_data.get('item_status') == 'pub':
-                sqs = sqs = sqs.filter(item_status='Published')
+                sqs = sqs.filter(item_status='Published')
             if self.cleaned_data.get('item_status') == 'unpub':
-                sqs = sqs = sqs.filter(item_status='Unpublished')
+                sqs = sqs.filter(item_status='Unpublished')
 
         if self.cleaned_data['media_type']:
             if self.cleaned_data.get('media_type') != '1':

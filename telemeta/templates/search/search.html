@@ -7,51 +7,6 @@
 {% endblock %}
 {% block extra_stylesheets %}
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/css/jquery-ui.css" />
-    <style>
-        .overflow{
-            max-height:200px;
-        }
-
-        .module ul, li {
-            border-radius: 0px 0px 0px 0px;
-        }
-
-        .ui-selectmenu-button.ui-widget.ui-state-default{
-            background-image:none;
-            background-color:#6a0307;
-            border-color:#6a0307;
-            color:white;
-        }
-        .ui-selectmenu-button.ui-widget.ui-state-hover{
-            background-image:none;
-            background-color:#6a0307;
-            border-color:#6a0307;
-            color:white;
-        }
-
-        .ui-selectmenu-button.ui-widget.ui-state-focus{
-            background-image:none;
-            background-color:#6a0307;
-            border-color:#6a0307;
-            color:white;
-        }
-
-        .ui-selectmenu-button.ui-widget.ui-state-default .ui-icon{
-            background-image:url("{{ STATIC_URL }}telemeta/css/images/ui-icons_ffffff_256x240.png");
-        }
-
-        .ui-menu-item{
-            background-color:white;
-        }
-
-        .ui-menu-item.ui-state-focus{
-            background-image:none;
-            background-color:#6a0307;
-            border-color:#6a0307;
-            color:white;
-        }
-
-    </style>
 {% endblock %}
 {% block content %}
         {% if query %}
@@ -84,7 +39,6 @@
                         <div style="display:inline-block;vertical-align:middle">
                             <select id="results-per-page" name="results_page">
                                 <option {% ifequal results_page 20 %}selected{% endifequal %} value="20">20</option>
-                                <option {% ifequal results_page 1 %}selected{% endifequal %} value="1">1</option>
                                 <option {% ifequal results_page 50 %}selected{% endifequal %} value="50">50</option>
                                 <option {% ifequal results_page 100 %}selected{% endifequal %} value="100">100</option>
                                 <option {% ifequal results_page 250 %}selected{% endifequal %} value="250">250</option>
@@ -133,79 +87,14 @@
     </form>
 {% endblock %}
 {% block extra_javascript %}
-    <script src="{{ STATIC_URL }}telemeta/js/jquery.js" type="text/javascript"></script>
-    <script src="{{ STATIC_URL }}telemeta/js/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}telemeta/lib/jquery/jquery.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}telemeta/lib/jquery/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}telemeta/js/search.js" type="text/javascript"></script>
     <script>
-        $(function() {
-
-            function getPrevUrlParameter(sParam){
-                var sPageURL = document.referrer.substring(1);
-                var sURLVariables = sPageURL.split('&');
-                for (var i = 0; i < sURLVariables.length; i++)
-                {
-                    var sParameterName = sURLVariables[i].split('=');
-                    if (sParameterName[0] == sParam)
-                    {
-                        return sParameterName[1];
-                    }
-                }
-            };
-
-            function getCurrUrlParameter(sParam){
-                var sPageURL = window.location.search.substring(1);
-                var sURLVariables = sPageURL.split('&');
-                for (var i = 0; i < sURLVariables.length; i++)
-                {
-                    var sParameterName = sURLVariables[i].split('=');
-                    if (sParameterName[0] == sParam)
-                    {
-                        return sParameterName[1];
-                    }
-                }
-            };
-
-            var prev = getPrevUrlParameter("page");
-            var curr = getCurrUrlParameter("page");
-            if(prev<curr){
-                $(".fullpage").show( "slide", {direction:"right"} );
-            }
-            else if(!curr){
-                $(".fullpage").fadeIn(500);
-            }
-            else if(!prev){
-                $(".fullpage").show( "slide", {direction:"right"} );
-            }
-            else{
-                $(".fullpage").show( "slide", {direction:"left"} );
-            };
-
-            //alert("prev = "+ prev +" curr = "+ curr);
-
-            var nouvellesIcones = {
-                header : 'ui-icon-carat-1-e',
-                activeHeader : 'ui-icon-carat-1-s',
 
 
-            };
-
-            $("#accordeon").accordion({
-                collapsible : true,
-                icons : nouvellesIcones,
-            });
-            $("#selectAll").click(function(){
-                if(this.checked){
-                    $(".check1").each(function(){
-                        this.checked=true;
-                    });
-                }
-                else{
-                    $(".check1").each(function(){
-                        this.checked=false;
-                    });
-                }
-            });
-
-            $("#results-per-page").selectmenu({
+            $(function(){
+                $("#results-per-page").selectmenu({
                 icons : {button: "ui-icon-carat-2-n-s"},
                 change : function(){
                     window.location = '?q={{ query }}&amp;page=1&amp;selected_facets={{selected_facets_url|join:'&selected_facets='}}&results_page='+$(this).val();
