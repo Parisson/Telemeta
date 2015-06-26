@@ -3,7 +3,7 @@ from telemeta.models import *
 from haystack.forms import *
 from haystack.query import SearchQuerySet
 from datetime import date
-
+from django.utils.translation import ugettext_lazy as _
 
 class HaySearchForm(FacetedSearchForm):
     q = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'type' : 'text'}))
@@ -35,7 +35,7 @@ class HayAdvanceForm(SearchForm):
 #begin create field
 
     #to replace de basic search form field
-    q = forms.CharField(required=False, label=('title'), widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'search'}))
+    q = forms.CharField(required=False, label=(_('title')), widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'search'}))
 
     location = forms.CharField(required=False, label=('Location'), widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'search'}))
 

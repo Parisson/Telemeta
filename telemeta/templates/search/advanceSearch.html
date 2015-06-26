@@ -9,6 +9,7 @@
 {% endblock %}
 {% block extra_stylesheets %}
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/css/jquery-ui.css" />
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/css/search.css" />
 {% endblock %}
 {% block content %}
     <form method="get" action=".">
@@ -16,8 +17,13 @@
             <div class="col-md-5" id="left-form">
                 <div class="fieldWrapper">
                     {{form.q.errors}}
-                    {% trans form.q.label_tag %}</br>
+                    {{ form.q.label_tag }}</br>
                     {{form.q}}
+                </div>
+                <div class="fieldWrapper">
+                    {{form.collectors.errors}}
+                    {{ form.collectors.label_tag }}</br>
+                    {{form.collectors}}
                 </div>
                 <div class="fieldWrapper">
                     {{form.location.errors}}
@@ -34,11 +40,7 @@
                     {% trans form.instruments.label_tag %}</br>
                     {{form.instruments}}
                 </div>
-                <div class="fieldWrapper">
-                    {{form.year_published_from.errors}} {{form.year_published_to.errors}}
-                    <label> {% trans "Year Published" %} :</label></br>
-                    {{form.year_published_from}} <span style="font-size:3em" aria-hidden="true">-</span> {{form.year_published_to}}
-                </div>
+
                 <div class="fieldWrapper">
                     {{form.media_type.errors}}
                     <label>{% trans "Media Type" %} :</label></br>
@@ -85,11 +87,6 @@
             </div>
             <div class="col-md-5" id="right-form" style="margin-left:13%">
                 <div class="fieldWrapper">
-                    {{form.collectors.errors}}
-                    {% trans form.collectors.label_tag %}</br>
-                    {{form.collectors}}
-                </div>
-                <div class="fieldWrapper">
                     {{form.recorded_from_date.errors}} {{form.recorded_to_date.errors}}
                     <label>{% trans "Recording date" %}:</label></br>
                     {{form.recorded_from_date}} <span style="font-size:3em" aria-hidden="true">-</span> {{form.recorded_to_date}}
@@ -114,6 +111,11 @@
                             {%endifequal%}
                         {%endifequal%}
                     </ul>
+                </div>
+                <div class="fieldWrapper">
+                    {{form.year_published_from.errors}} {{form.year_published_to.errors}}
+                    <label> {% trans "Year Published" %} :</label></br>
+                    {{form.year_published_from}} <span style="font-size:3em" aria-hidden="true">-</span> {{form.year_published_to}}
                 </div>
                 <div class="fieldWrapper">
                     {{form.recording_context.errors}}
