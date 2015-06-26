@@ -128,6 +128,8 @@ class MediaCollection(MediaResource):
 
     exclude = ['alt_ids', 'travail']
 
+    permissions = (("can_download_collection_epub", "Can download collection EPUB"),)
+
     class Meta(MetaCore):
         db_table = 'media_collections'
         ordering = ['code']

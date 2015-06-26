@@ -372,24 +372,3 @@ class CollectionCopyView(CollectionAddView):
         return super(CollectionCopyView, self).dispatch(*args, **kwargs)
 
 
-class CollectionEpubView(BaseEpubMixin, View):
-    "Download collection data embedded in an EPUB3 file"
-
-    model = MediaCollection
-
-    def get_object(self):
-        return MediaCollection.objects.get(public_id=self.kwargs['public_id'])
-
-    def get(self, request, *args, **kwargs):
-        collection = self.get_object()
-        corpus = collection.corpus.all()[0]
-        self.write_book(corpus, collection=collection)
-        epub_file = open(self.path, 'rb')
-        response = HttpResponse(epub_file.read(), content_type='application/epub+zip')
-        response['Content-Disposition'] = "attachment; filename=%s" % self.filename + '.epub'
-        return response
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super(CollectionEpubView, self).dispatch(*args, **kwargs)
-

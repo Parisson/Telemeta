@@ -72,6 +72,7 @@ setup(
         'python-ebml',
         'zipstream',
         'elasticsearch',
+        'ebooklib',
     ],
   tests_require=['pytest-django', 'pytest-cov', 'factory-boy'],
   # Provide a test command through django-setuptest

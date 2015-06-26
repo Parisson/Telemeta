@@ -366,7 +366,7 @@ def to_string(list):
 def get_filename(object):
     if isinstance(object, unicode):
        return object.split('/')[-1]
-    elif object.path:
+    elif hasattr(object, 'path'):
         return object.path.split(os.sep)[-1]
     else:
         return ''

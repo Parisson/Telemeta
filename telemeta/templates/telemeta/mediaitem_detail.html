@@ -372,7 +372,8 @@
                     <dt>{% trans "Item size" %}</dt>
                      <dd>{{ item.size|filesizeformat }}</dd>
                     {% endif %}
-                    <!-- {% if format %}
+                    <!--
+                    {% for format in formats %}
                      {% dl_field format "media_type" %}
                      {% dl_field format "physical_format" %}
                      {% dl_field format "original_code" %}
@@ -389,7 +390,7 @@
                      {% dl_field format "tape_vendor" %}
                      {% dl_field format "tape_reference" %}
                      {% dl_field format "sticker_presence" %}
-                    {% endif %} -->
+                    {% endfor %} -->
                 </dl>
 
             </div>

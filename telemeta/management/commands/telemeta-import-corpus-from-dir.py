@@ -5,7 +5,7 @@ from django.core.files.base import ContentFile
 from django.contrib.auth.models import User
 from telemeta.models import *
 from telemeta.util.unaccent import unaccent
-import os, re
+import os, re, glob
 
 try:
     from django.utils.text import slugify
@@ -84,6 +84,16 @@ class Command(BaseCommand):
         print self.media_root
         cleanup_dir(self.source_dir)
         chapters = os.listdir(self.source_dir)
+        corpus_name = os.path.split(root_dir)[-1]
+        corpus_id = slugify(unicode(corpus_name))
+
+        cc = MediaCorpus.objects.filter(code=corpus_id)
+        if cc:
+            corpus = cc[0]
+        else:
+            corpus = MediaCorpus(code=corpus_id)
+            corpus.title = corpus_name
+            corpus.save()
 
         for chapter in chapters:
             chapter_dir = os.path.join(self.source_dir, chapter)
@@ -103,7 +113,27 @@ class Command(BaseCommand):
                             metadata[data[0]] = data[1:]
                         i += 1
                     print metadata
-                    break
+
+            collection_name = chapter
+            collection_id = corpus_id + '_' + slugify(unicode(collection_name))
+            collection_title = collection_name.replace('_', ' ') + ' - ' + chapter_title
+            print collection_title
+            cc = MediaCollection.objects.filter(code=collection_id, title=collection_title)
+            if cc:
+                collection = cc[0]
+            else:
+                collection = MediaCollection(code=collection_id)
+                collection.title = collection_title
+                collection.save()
+            if not collection in corpus.children.all():
+                corpus.children.add(collection)
+
+            for filename in os.listdir(chapter_dir):
+                path = os.path.join(chapter_dir, filename)
+                if os.path.isfile(path) and '.jpg' == os.path.splitext(filename)[1]:
+                    related_path = path.replace(self.media_root, '')
+                    related, c = MediaCollectionRelated.objects.get_or_create(collection=collection,
+                                    file=related_path)
 
             for root, dirs, files in os.walk(chapter_dir):
                 for media_file in files:
@@ -118,6 +148,7 @@ class Command(BaseCommand):
                         os.rename(path, new_media_path)
                         media_file = new_media_file
                         print 'renaming: ' + media_file
+                        path = new_media_path
 
                     media_name = os.path.splitext(media_file)[0]
                     media_ext = os.path.splitext(media_file)[1][1:]
@@ -125,37 +156,9 @@ class Command(BaseCommand):
                     if media_ext and media_ext in self.media_formats and media_name[0] != '.':
                         root_list = root.split(os.sep)
                         media_path = os.sep.join(root_list[-4:])  + os.sep + media_file
-
                         item_name = root_list[-1]
-                        collection_name = root_list[-2]
-                        corpus_name = root_list[-3]
-                        data = metadata[item_name]
-
-                        corpus_id = slugify(unicode(corpus_name))
-                        collection_id = corpus_id + '_' + slugify(unicode(collection_name))
                         item_id = collection_id + '_' + slugify(unicode(item_name))
-                        
-                        cc = MediaCorpus.objects.filter(code=corpus_id)
-                        if cc:
-                            corpus = cc[0]
-                        else:
-                            corpus = MediaCorpus(code=corpus_id)
-                            corpus.title = corpus_name
-                            corpus.save()
-
-                        collection_title = collection_name.replace('_', ' ') + ' - ' + chapter_title
-                        print collection_title
-                        cc = MediaCollection.objects.filter(code=collection_id, title=collection_title)
-                        if cc:
-                            collection = cc[0]
-                        else:
-                            collection = MediaCollection(code=collection_id)
-                            collection.title = collection_title
-                            collection.save()
-
-                        if not collection in corpus.children.all():
-                            corpus.children.add(collection)
-
+                        data = metadata[item_name]
                         item, c = MediaItem.objects.get_or_create(collection=collection, code=item_id)
                         item.old_code = item_name
                         self.write_file(item, path)
@@ -167,12 +170,10 @@ class Command(BaseCommand):
                         if len(title) > 1:
                             item.comment = '. '.join(title[1:])
                         item.save()
-
                         for related_file in os.listdir(root):
                             related_path = os.sep.join(root_list[-4:]) + os.sep + related_file
                             related_name = os.path.splitext(related_file)[0]
                             related_ext = os.path.splitext(related_file)[1][1:]
-
                             if related_ext in self.image_formats:
                                 related, c = MediaItemRelated.objects.get_or_create(item=item, file=related_path)
                                 if len(data) > 2:

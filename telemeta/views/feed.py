@@ -62,7 +62,7 @@ class LastestRevisionsFeed(Feed):
         revision = r['revision']
         element = r['element']
         description = '<b>modified by ' + revision.user.username + ' on ' + unicode(revision.time) + '</b><br /><br />'
-        dict = element.to_dict()
+        dict = element.__dict__
         for tag in dict.keys():
             try:
                 value = dict[tag]

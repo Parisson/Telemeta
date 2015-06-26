@@ -157,16 +157,22 @@ class ResourceView(object):
         self.setup(type)
         resource = self.model.objects.get(code=public_id)
         media = self.related.objects.get(resource=resource, id=media_id)
-        response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
+        if media.file:
+            response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
+        else:
+            raise Http404
         return response
 
     def related_download(self, request, type, public_id, media_id):
         self.setup(type)
         resource = self.model.objects.get(code=public_id)
         media = self.related.objects.get(resource=resource, id=media_id)
-        filename = media.file.path.split(os.sep)[-1]
-        response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
-        response['Content-Disposition'] = 'attachment; ' + 'filename=' + filename
+        if media.file:
+            filename = media.file.path.split(os.sep)[-1]
+            response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
+            response['Content-Disposition'] = 'attachment; ' + 'filename=' + filename
+        else:
+            raise Http404
         return response
 
 
@@ -201,16 +207,15 @@ class ResourceMixin(View):
         # super(CorpusDetailView, self).get_object()
         self.type = self.kwargs['type']
         self.setup(self.type)
-        obj = self.model.objects.filter(code=self.kwargs['public_id'])
-        if not obj:
+        objs = self.model.objects.filter(code=self.kwargs['public_id'])
+        if not objs:
             try:
                 obj = self.model.objects.get(id=self.kwargs['public_id'])
             except:
-                pass
+                raise Http404
         else:
-            obj = obj[0]
-        self.pk = obj.pk
-        return get_object_or_404(self.model, pk=self.pk)
+            obj = objs[0]
+        return obj
 
     def get_context_data(self, **kwargs):
         context = super(ResourceMixin, self).get_context_data(**kwargs)
@@ -225,28 +230,13 @@ class ResourceSingleMixin(ResourceMixin):
         self.setup(self.type)
         return self
 
-    def get_object(self):
-        # super(CorpusDetailView, self).get_object()
-        self.type = self.kwargs['type']
-        self.setup(self.type)
-        obj = self.model.objects.filter(code=self.kwargs['public_id'])
-        if not obj:
-            try:
-                obj = self.model.objects.get(id=self.kwargs['public_id'])
-            except:
-                pass
-        else:
-            obj = obj[0]
-        self.pk = obj.pk
-        return get_object_or_404(self.model, pk=self.pk)
-
     def get_context_data(self, **kwargs):
         context = super(ResourceMixin, self).get_context_data(**kwargs)
         resource = self.get_object()
         related_media = self.related.objects.filter(resource=resource)
         check_related_media(related_media)
         playlists = get_playlists_names(self.request)
-        revisions = Revision.objects.filter(element_type=self.type, element_id=self.pk).order_by('-time')
+        revisions = Revision.objects.filter(element_type=self.type, element_id=resource.pk).order_by('-time')
         context['resource'] = resource
         context['type'] = self.type
         context['related_media'] = related_media
@@ -347,31 +337,4 @@ class ResourceEditView(ResourceSingleMixin, UpdateWithInlinesView):
     @method_decorator(permission_required('telemeta.change_mediafonds'))
     def dispatch(self, *args, **kwargs):
         return super(ResourceEditView, self).dispatch(*args, **kwargs)
-
-
-def cleanup_path(path):
-    new_path = []
-    for dir in path.split(os.sep):
-        new_path.append(slugify(dir))
-    return os.sep.join(new_path)
-
-
-class CorpusEpubView(BaseEpubMixin, View):
-    "Download corpus data embedded in an EPUB3 file"
-
-    model = MediaCorpus
-
-    def get_object(self):
-        return MediaCorpus.objects.get(public_id=self.kwargs['public_id'])
-
-    def get(self, request, *args, **kwargs):
-        self.write_book(self.get_object())
-        epub_file = open(self.path, 'rb')
-        response = HttpResponse(epub_file.read(), content_type='application/epub+zip')
-        response['Content-Disposition'] = "attachment; filename=%s" % self.filename + '.epub'
-        return response
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super(CorpusEpubView, self).dispatch(*args, **kwargs)
 

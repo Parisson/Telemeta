@@ -38,7 +38,7 @@ LINKS =  (('Python', 'http://python.org/'),
 SOCIAL = (('GitHub', 'https://github.com/Parisson/Telemeta'),
           ('Twitter', 'https://twitter.com/telemeta/'),
           ('Google+', 'https://plus.google.com/+Parisson'),
-          ('LinkedIn', 'http://www.linkedin.com/in/Parisson'),
+          ('LinkedIn', 'https://www.linkedin.com/company/parisson'),
           )
 
 # Uncomment following line if you want document-relative URLs when developing
@@ -58,7 +58,7 @@ CUSTOM_CSS = 'css/custom.css'
 
 FAVICON = 'images/favicon.ico'
 
-DISQUS_SITENAME = 'telemetaorg'
+DISQUS_SITENAME = 'telemeta'
 
 TWITTER_CARDS = True
 TWITTER_USERNAME = 'telemeta'
