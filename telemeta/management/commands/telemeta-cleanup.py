@@ -19,7 +19,7 @@ class Command(BaseCommand):
 
         print 'cleaning multiple analyses per item...'
         for item in items:
-            if 'cache' in args::
+            if 'cache' in args:
                 print 'cleaning cache...'
                 self.cache_data.delete_item_data(item.code)
                 self.cache_export.delete_item_data(item.code)

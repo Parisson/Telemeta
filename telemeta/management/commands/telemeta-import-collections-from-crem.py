@@ -23,7 +23,6 @@ from optparse import make_option
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 from django.contrib.auth.models import User
-from django.core.management import setup_environ
 from django.core.files.base import ContentFile
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
@@ -94,7 +93,7 @@ class Command(BaseCommand):
                     f.close()
                 else:
                     print "file in MEDIA_ROOT, linking..."
-                    path = media[len(self.media_root)+1:]
+                    path = media.replace(self.media_root, '')
                     if not self.dry_run:
                         item.file = path
                         item.save()

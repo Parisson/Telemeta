@@ -4,20 +4,32 @@ body {
     font-family: Cambria, Liberation Serif, Bitstream Vera Serif, Georgia, Times, Times New Roman, serif;
 }
 
-h2 {
-    text-align: left;
-    text-transform: uppercase;
-    font-weight: 200;
+.title {
+    padding-top : 18%;
+    page-break-after:always;
 }
 
+h2 {
+    font-family : sans-serif;
+    text-align: left;
+    font-size:110%;
+    font-weight: bold;
+}
 
 h3 {
+    text-align: left;
+    font-size: 140%;
+    margin-top: 0px;
+    font-weight: bold;
+    color: #2B90AB;
+}
+
+p {
     text-align: left;
     font-size: 0.8em;
     margin-top: 0px;
     font-weight: normal;
 }
-
 
 ol {
     list-style-type: none;
@@ -27,11 +39,9 @@ ol > li:first-child {
     margin-top: 0.3em;
 }
 
-
 nav[epub|type~='toc'] > ol > li > ol  {
     list-style-type:square;
 }
-
 
 nav[epub|type~='toc'] > ol > li > ol > li {
     margin-top: 0.3em;
@@ -44,7 +54,9 @@ nav[epub|type~='toc'] > ol > li > ol > li {
 .item-image {
     text-align: center;
 }
-.item-audio{
+
+.item-player {
+    width: 100%;
     page-break-after: avoid;
 }
 
@@ -52,4 +64,10 @@ img {
     text-align: center;
     width: 50%;
     height: auto;
+}
+
+.last-page {
+    padding-top : 18%;
+    page-break-before: always;
+    text-align: center;
 }

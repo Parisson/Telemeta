@@ -7,35 +7,36 @@ Partners
 
 Telemeta is sponsored by:
 
-* `Parisson <http://parisson.com>`_ : R&D for custom media solution
-* CNRS : Centre National de la Recherche Scientifique (the french Natianal Research and Scientific Center)
-* MCC : Ministère de la Culture et de la Communication (the french Ministry of the Culture and Communication
-* CREM : Centre de Recherche en Ethnomusicology (the french Ethnomusicology Research Center)
-* HumaNum : TGIR des humanités numériques
+* `Parisson <http://parisson.com>`_, french startup for open archives solutions
+* `CNRS <http://www.cnrs.fr/>`_, Centre National de la Recherche Scientifique (French Natianal Research and Scientific Center)
+* `MCC <http://www.culturecommunication.gouv.fr/>`_, Ministère de la Culture et de la Communication (French Ministry of Culture and Communication)
+* `CREM <http://crem-cnrs.fr/>`_, LESC, Université de Nanterre, France (French Ethnomusicology Research Center)
+* `Huma-Num <http://www.huma-num.fr/>`_, TGIR des humanités numériques
+* `ANR <http://www.agence-nationale-recherche.fr/>`_, Agence Nationale de la Recherche (French Research Agency) through the ​DIADEMS project
 
-Telemeta is part of the ​DIADEMS project granted by the ANR (French Research Agency). The academic laboratories involved are:
+Partners:
 
-* IRIT
-* LIMSI
-* LAM (IJLRDA)
-* CREM (LESC)
-* LABRI
-* MNHN
+* LAM, Institut d'Alembert, Sorbonne Universités, France
+* IRIT, Université de Toulouse, France
+* LIMSI, Université Paris Sud, France
+* LABRI, Université de Bordeaux, France
+* CREM, LESC, Université de Nanterre, France
+* Museum d'Histoire Naturelle, Paris, France
+* Musée de l'Homme, Paris, France
+* Musée d'Orsay, Paris, France
+* Bibliothèque Nationale de France (BNF) Paris, France
+* CMAM - ISMS, Tunis, Tunisie
 
-Telemeta is supported by:
+Management board:
 
-* LAM : Equipe Lutherie, Acoustique et Musique de l'Université Pierre et Marie Curie de Paris / Sorbonne universités
-* MMSH : Maison Méditerranéenne des Sciences de l'Homme
-
-The Telemeta project is managed by:
-
-* Guillaume Pellerin <yomguy (at) parisson.com>
-* Joséphine Simonnot <josephine.simonnot (at) mae.u-paris10.fr>.
+* Guillaume Pellerin <guillaume.pellerin@parisson.com>
+* Joséphine Simonnot <josephine.simonnot@mae.u-paris10.fr>.
 
 The Telemeta application is or has been developed by :
 
 * Guillaume Pellerin (​Parisson)
-* Thomas Fillon (​UPMC, ​Parisson)
+* Thomas Fillon (​​Parisson)
 * Paul Brossier (​Parisson)
+* Anas Ghrab (CMAM - ISMS)
 * Riccardo Zaccarelli (​Parisson)
 * Olivier Guilyardi (​Samalyse)

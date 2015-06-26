@@ -4,17 +4,17 @@ Telemeta: open web audio platform with semantics
 
 |version| |downloads| |travis_master| |coverage_master|
 
-.. |travis_master| image:: https://secure.travis-ci.org/Parisson/Telemeta.png?branch=master
-   :target: https://travis-ci.org/Parisson/Telemeta/
-   :alt: Travis
-
-.. |version| image:: https://pypip.in/version/Telemeta/badge.png
+.. |version| image:: https://img.shields.io/pypi/v/telemeta.svg
    :target: https://pypi.python.org/pypi/Telemeta/
    :alt: Version
 
-.. |downloads| image:: https://pypip.in/download/Telemeta/badge.svg
+.. |downloads| image:: https://img.shields.io/pypi/dm/telemeta.svg
    :target: https://pypi.python.org/pypi/Telemeta/
    :alt: Downloads
+
+.. |travis_master| image:: https://secure.travis-ci.org/Parisson/Telemeta.png?branch=master
+   :target: https://travis-ci.org/Parisson/Telemeta/
+   :alt: Travis
 
 .. |coverage_master| image:: https://coveralls.io/repos/Parisson/Telemeta/badge.png?branch=master
    :target: https://coveralls.io/r/Parisson/Telemeta?branch=master

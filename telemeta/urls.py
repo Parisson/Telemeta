@@ -40,9 +40,6 @@ from django.views.generic.base import RedirectView, TemplateView
 from django.views.generic.list import ListView
 from telemeta.models import MediaItem, MediaCollection, MediaItemMarker, MediaCorpus, MediaFonds
 from telemeta.views import *
-#from telemeta.views import HomeView, AdminView, CollectionView, ItemView, \
-#                            InstrumentView, InstrumentAliasView, PlaylistView, ProfileView, GeoView, \
-#                            LastestRevisionsFeed, ResourceView, UserRevisionsFeed, CollectionPackageView
 from jsonrpc import jsonrpc_site
 import os.path
 import telemeta.config
@@ -124,8 +121,10 @@ urlpatterns = patterns('',
 
     # FIXME: need all paths
     url(r'^collections/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(), {'url': '/archives/collections/%(path)s/', 'permanent': False}, name="telemeta-collection-redir"),
-    url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/package/$', CollectionPackageView.as_view(),
-        name="telemeta-collection-package"),
+    url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/zip/$', CollectionZipView.as_view(),
+        name="telemeta-collection-zip"),
+    url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/epub/$', CollectionEpubView.as_view(),
+        name="telemeta-collection-epub"),
 
     # Generic resources
     url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/$', ResourceListView.as_view(), name="telemeta-resource-list"),
@@ -220,7 +219,7 @@ urlpatterns = patterns('',
     url(r'^accounts/password_change_done/$', 'django.contrib.auth.views.password_change_done', {'template_name': 'telemeta/registration/password_change_done.html'}, name="password_change_done"),
     url(r'^accounts/password_reset/$', 'django.contrib.auth.views.password_reset', {'template_name': 'telemeta/registration/password_reset_form.html', 'email_template_name': 'registration/password_reset_email.html'}, name="password_reset"),
     url(r'^accounts/password_reset_done/$', 'django.contrib.auth.views.password_reset_done', {'template_name': 'telemeta/registration/password_reset_done.html'}, name="password_reset_done"),
-    url(r'^accounts/password_reset_confirm/(?P<uidb36>[A-Za-z0-9._-]+)/(?P<token>[A-Za-z0-9._-]+)/$', 'django.contrib.auth.views.password_reset_confirm', {'template_name': 'telemeta/registration/password_reset_confirm.html'}, name="password_reset_confirm"),
+    url(r'^accounts/password_reset_confirm/(?P<uidb64>[A-Za-z0-9._-]+)/(?P<token>[A-Za-z0-9._-]+)/$', 'django.contrib.auth.views.password_reset_confirm', {'template_name': 'telemeta/registration/password_reset_confirm.html'}, name="password_reset_confirm"),
     url(r'^accounts/password_reset_complete/$', 'django.contrib.auth.views.password_reset_complete', {'template_name': 'telemeta/registration/password_reset_complete.html'}, name="password_reset_complete"),
 
     # JSON RPC

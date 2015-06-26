@@ -17,4 +17,4 @@ Changelog:
 
 Download
 
-* http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.4.6.tar.gz
+* http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.5.1.tar.gz

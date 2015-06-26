@@ -3,7 +3,7 @@ Telemeta: open web audio platform with semantics
 =================================================
 
 :category: About
-:pin_to_top: True
+:Pin: true
 
 .. image:: /Telemeta/images/logo_telemeta_2.png
     :alt: Telemeta logo

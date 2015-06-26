@@ -172,7 +172,7 @@ class CollectionView(object):
         return render(request, template, {'collection': collection, 'formset': formset,})
 
 
-class CollectionPackageView(View):
+class CollectionZipView(View):
 
     model = MediaCollection
 
@@ -230,7 +230,7 @@ class CollectionPackageView(View):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(CollectionPackageView, self).dispatch(*args, **kwargs)
+        return super(CollectionZipView, self).dispatch(*args, **kwargs)
 
 
 class CollectionViewMixin(object):

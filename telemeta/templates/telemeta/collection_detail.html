@@ -65,9 +65,16 @@
       </button>
     </a>
     {% if audio_export_enabled or perms.telemeta.can_download_all_items or user.is_superuser %}
-    <a href="{% url "telemeta-collection-package" collection.public_id %}" id="zip_package">
+    <a href="{% url "telemeta-collection-zip" collection.public_id %}" id="zip_package">
       <button type="button" class="btn btn-default">
         <span class="glyphicon glyphicon-compressed"></span> {% trans "Zip" %}
+      </button>
+    </a>
+    {% endif %}
+    {% if user.is_superuser %}
+    <a id="_export_epub" href="{% url "telemeta-collection-epub" collection.public_id %}">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-book"></span> {% trans "Epub" %}
       </button>
     </a>
     {% endif %}
