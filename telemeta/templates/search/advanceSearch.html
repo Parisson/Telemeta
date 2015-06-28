@@ -43,7 +43,7 @@
 
                 <div class="fieldWrapper">
                     {{form.media_type.errors}}
-                    <label>{% trans "Media Type" %} :</label></br>
+                    <label>{% trans "media type" %} :</label></br>
                     <ul id="id_media_type" style="margin-left:-40px">
                         {%ifequal query.media_type 'audio'%}
                             <li><label for="id_media_type_0">{% trans "no preference" %}</label><input id="id_media_type_0" type="radio" value="1" name="media_type"></input></li>
@@ -65,7 +65,7 @@
                 </div>
                 <div class="fieldWrapper">
                     {{form.viewable_errors}}
-                    <label>{% trans "Viewable" %} : </label></br>
+                    <label>{% trans "Available for consultation media" %} : </label></br>
                     <ul id="id_viewable" style="margin-left:-40px">
                         {%ifequal query.viewable '2'%}
                             <li><label for="id_viewable_0">{% trans "no preference" %}</label><input id="id_viewable_0" type="radio" value="1" name="viewable"></input></li>
@@ -93,7 +93,7 @@
                 </div>
                 <div class="fieldWrapper">
                     {{form.item_status_errors}}
-                    <label>{% trans "Item status" %} : </label></br>
+                    <label>{% trans "Document status" %} : </label></br>
                     <ul id="id_item_status" style="margin-left:-40px">
                         {%ifequal query.item_status 'pub'%}
                             <li><label for="id_item_status_0">{% trans "no preference" %}</label><input id="id_item_status_0" type="radio" value="1" name="item_status"></input></li>
@@ -114,22 +114,22 @@
                 </div>
                 <div class="fieldWrapper">
                     {{form.year_published_from.errors}} {{form.year_published_to.errors}}
-                    <label> {% trans "Year Published" %} :</label></br>
+                    <label> {% trans "year published" %} :</label></br>
                     {{form.year_published_from}} <span style="font-size:3em" aria-hidden="true">-</span> {{form.year_published_to}}
                 </div>
                 <div class="fieldWrapper">
                     {{form.recording_context.errors}}
-                    {% trans form.recording_context.label_tag %}</br>
+                    {{ form.recording_context.label_tag }}</br>
                     {{form.recording_context}}
                 </div>
                 <div class="fieldWrapper">
                     {{form.physical_format.errors}}
-                    {% trans form.physical_format.label_tag %}</br>
+                    {{ trans form.physical_format.label_tag }}</br>
                     {{form.physical_format}}
                 </div>
                 <div class="fieldWrapper">
                     {{form.code.errors}}
-                    {% trans form.code.label_tag %}</br>
+                    {{} trans form.code.label_tag }}</br>
                     {{form.code}}
                 </div>
             </div>
@@ -160,7 +160,7 @@
                  </div>
                  <div class="col-md-4 col-md-offset-4" >
                     <div class="pull-right"">
-                        <label style="display:inline-block;vertical-align:middle">results per page:</label>
+                        <label style="display:inline-block;vertical-align:middle">{% trans "results per page"%}:</label>
                         <div style="display:inline-block;vertical-align:middle">
                             <select id="results-per-page" name="results_page">
                                 <option {% ifequal results_page 20 %}selected{% endifequal %} value="20">20</option>
