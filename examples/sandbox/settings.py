@@ -58,6 +58,7 @@ LANGUAGES = [ ('fr', 'French'),
               ('de', 'German'),
               ('zh_CN', 'Simplified Chinese'),
               ('ar_TN', 'Arabic'),
+              ('pt_BR', 'Portuguese'),
 ]
 
 SITE_ID = 1
