@@ -37,7 +37,7 @@ class HayAdvanceForm(SearchForm):
     #to replace de basic search form field
     q = forms.CharField(required=False, label=(_('title')), widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'search'}))
 
-    location = forms.CharField(required=False, label=('Location'), widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'search'}))
+    location = forms.CharField(required=False, label=(_('location')), widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'search'}))
 
     # to create a dynamic list of ethnic group
     def list_ethnic_group():
@@ -48,10 +48,10 @@ class HayAdvanceForm(SearchForm):
             type_name.append((ethnic.value, ethnic.value))
         return type_name
 
-    ethnic_group = forms.CharField(required=False, label=('Population / social group'), widget=forms.Select(attrs={'style': 'width:100%'}, choices=list_ethnic_group()))
+    ethnic_group = forms.CharField(required=False, label=(_('population / social group')), widget=forms.Select(attrs={'style': 'width:100%'}, choices=list_ethnic_group()))
 
-    instruments = forms.CharField(required=False, label=('Instruments'), widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'search'}))
-    collectors = forms.CharField(required=False, label=('Recordist'), widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'search'}))
+    instruments = forms.CharField(required=False, label=(_('instruments')), widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'search'}))
+    collectors = forms.CharField(required=False, label=(_('recordist')), widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'search'}))
 
     #to create a dynamic list of publish year
     def list_recorded_year():
@@ -76,8 +76,8 @@ class HayAdvanceForm(SearchForm):
             list_year.append((str(year), year))
         return list_year
 
-    recorded_from_date = forms.IntegerField(required=False, label=('Recorded from'), widget=forms.Select(attrs={'style': 'width:47%'}, choices=list_recorded_year()))
-    recorded_to_date = forms.IntegerField(required=False, label=('Recorded to'), widget=forms.Select(attrs={'style': 'width:47%'}, choices=list_recorded_year()))
+    recorded_from_date = forms.IntegerField(required=False, label=(_('recording date (from)')), widget=forms.Select(attrs={'style': 'width:47%'}, choices=list_recorded_year()))
+    recorded_to_date = forms.IntegerField(required=False, label=(_('recording date (until')), widget=forms.Select(attrs={'style': 'width:47%'}, choices=list_recorded_year()))
 
     #to create a dynamic list of publish year
     def list_publish_year():
@@ -100,13 +100,13 @@ class HayAdvanceForm(SearchForm):
             list_year.append((year, year))
         return list_year
 
-    year_published_from = forms.IntegerField(required=False, label=('Year published from'), widget=forms.Select(attrs={'style': 'width:47%'}, choices=list_publish_year()))
-    year_published_to = forms.IntegerField(required=False, label=('Year published to'), widget=forms.Select(attrs={'style': 'width:47%'}, choices=list_publish_year()))
+    year_published_from = forms.IntegerField(required=False, label=(_('year published from')), widget=forms.Select(attrs={'style': 'width:47%'}, choices=list_publish_year()))
+    year_published_to = forms.IntegerField(required=False, label=(_('year published to')), widget=forms.Select(attrs={'style': 'width:47%'}, choices=list_publish_year()))
 
     viewable_choice = (('1', 'no preference'), ('2', 'online and public'), ('3', 'online (account required)'))
-    viewable = forms.CharField(required=False, label=('Viewable'), widget=forms.RadioSelect(choices=viewable_choice), initial=1)
+    viewable = forms.CharField(required=False, label=(_('viewable')), widget=forms.RadioSelect(choices=viewable_choice), initial=1)
 
-    item_status = forms.CharField(required=False, label=('Item Status'), widget=forms.RadioSelect(choices=(('1', 'no preference'), ('pub', 'Published'), ('unpub', 'Unpublished'))), initial=1)
+    item_status = forms.CharField(required=False, label=(_('Document status')), widget=forms.RadioSelect(choices=(('1', 'no preference'), ('pub', 'Published'), ('unpub', 'Unpublished'))), initial=1)
 
     #to create a dynamic list of media type
     def list_media_type():
@@ -117,7 +117,7 @@ class HayAdvanceForm(SearchForm):
             type_name.append((mt.value, mt.value))
         return type_name
 
-    media_type = forms.CharField(required=False, label=('Media'), widget=forms.RadioSelect(choices=(list_media_type())), initial=1)
+    media_type = forms.CharField(required=False, label=(_('media')), widget=forms.RadioSelect(choices=(list_media_type())), initial=1)
 
     #to create a dynamic list of recording context
     def list_recording_context():
@@ -128,7 +128,7 @@ class HayAdvanceForm(SearchForm):
             type_name.append((context.value, context.value))
         return type_name
 
-    recording_context = forms.CharField(required=False, label=('Recording Context'), widget=forms.Select(attrs={'style': 'width:100%'}, choices=list_recording_context()))
+    recording_context = forms.CharField(required=False, label=(_('recording context')), widget=forms.Select(attrs={'style': 'width:100%'}, choices=list_recording_context()))
 
     #to create a dynamic list of physical format
     def list_physical_format():
@@ -139,9 +139,9 @@ class HayAdvanceForm(SearchForm):
             type_name.append((physical_format.value, physical_format.value))
         return type_name
 
-    physical_format = forms.CharField(required=False, label=('Physical Format'), widget=forms.Select(attrs={'style': 'width:100%'}, choices=list_physical_format()))
+    physical_format = forms.CharField(required=False, label=(_('physical format')), widget=forms.Select(attrs={'style': 'width:100%'}, choices=list_physical_format()))
 
-    code = forms.CharField(required=False, label=('Code'), widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'search'}))
+    code = forms.CharField(required=False, label=(_('code')), widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'search'}))
 #end
 
     def search(self):
