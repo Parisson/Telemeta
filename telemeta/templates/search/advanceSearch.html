@@ -124,12 +124,12 @@
                 </div>
                 <div class="fieldWrapper">
                     {{form.physical_format.errors}}
-                    {{ trans form.physical_format.label_tag }}</br>
+                    {% trans form.physical_format.label_tag %}</br>
                     {{form.physical_format}}
                 </div>
                 <div class="fieldWrapper">
                     {{form.code.errors}}
-                    {{} trans form.code.label_tag }}</br>
+                    {% trans form.code.label_tag %}</br>
                     {{form.code}}
                 </div>
             </div>
