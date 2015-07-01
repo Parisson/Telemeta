@@ -11,7 +11,7 @@ class HaystackSearch(FacetedSearchView):
     def __call__(self, request, type=None):
         self.type = type
         self.form_class = HaySearchForm
-        self.selected_facet=self.selected_facet_list(request.GET.getlist('selected_facets', ['a']))
+        self.selected_facet = self.selected_facet_list(request.GET.getlist('selected_facets', ['a']))
         if request.GET.get('results_page'):
             self.results_per_page=int(request.GET.get('results_page'))
         else:
@@ -56,26 +56,26 @@ class HaystackSearch(FacetedSearchView):
                 else:
                     viewable_total = viewable_total + viewable[1]
 
-            extra['Published_count']=self.get_results().narrow('item_status:Published').count()
-            extra['Unpublished_count']=self.get_results().narrow('item_status:Unpublished').count()
+            extra['Published_count'] = self.get_results().narrow('item_status:Published').count()
+            extra['Unpublished_count'] = self.get_results().narrow('item_status:Unpublished').count()
             extra['viewable_count'] = self.get_results().narrow('item_acces:full OR item_acces:mixed').narrow('digitized:T').count()
             extra['digitized_count'] = self.get_results().narrow('digitized:T').count()
-            extra['CDR_count']=self.get_results().narrow('physical_format:CDR').count()
-            extra['Disque_count']=self.get_results().narrow('physical_format:Disque').count()
-            extra['Cylindre_count']=self.get_results().narrow('physical_format:Cylindre').count()
-            extra['Studio_count']=self.get_results().narrow('recording_context:Studio').count()
-            extra['Terrain_count']=self.get_results().narrow('recording_context:Terrain').count()
-            extra['Radio_count']=self.get_results().narrow('recording_context:Radio').count()
-            extra['Video_count']=self.get_results().narrow('media_type:Video').count()
-            extra['Audio_count']=self.get_results().narrow('media_type:Audio').count()
+            extra['CDR_count'] = self.get_results().narrow('physical_format:CDR').count()
+            extra['Disque_count'] = self.get_results().narrow('physical_format:Disque').count()
+            extra['Cylindre_count'] = self.get_results().narrow('physical_format:Cylindre').count()
+            extra['Studio_count'] = self.get_results().narrow('recording_context:Studio').count()
+            extra['Terrain_count'] = self.get_results().narrow('recording_context:Terrain').count()
+            extra['Radio_count'] = self.get_results().narrow('recording_context:Radio').count()
+            extra['Video_count'] = self.get_results().narrow('media_type:Video').count()
+            extra['Audio_count'] = self.get_results().narrow('media_type:Audio').count()
         if self.type == 'collection':
             extra['type'] = 'collection'
         else:
             extra['type'] = 'item'
 
-        extra['selected_facets']=self.selected_facet
-        extra['selected_facets_url']=self.request.GET.getlist('selected_facets')
-        extra['results_page']=self.results_per_page
+        extra['selected_facets'] = self.selected_facet
+        extra['selected_facets_url'] = self.request.GET.getlist('selected_facets')
+        extra['results_page'] = self.results_per_page
         return extra
 
 
@@ -110,5 +110,5 @@ class HaystackAdvanceSearch(SearchView):
             extra['type'] = 'collection'
         else:
             extra['type'] = 'item'
-        extra['results_page']=self.results_per_page
+        extra['results_page'] = self.results_per_page
         return extra

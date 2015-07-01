@@ -1,12 +1,50 @@
 # -*- coding: utf-8 -*-
+# Copyright (C) 2015 Parisson SARL
+
+# This software is a computer program whose purpose is to backup, analyse,
+# transcode and stream any audio content with its metadata over a web frontend.
+
+# This software is governed by the CeCILL  license under French law and
+# abiding by the rules of distribution of free software.  You can  use,
+# modify and/ or redistribute the software under the terms of the CeCILL
+# license as circulated by CEA, CNRS and INRIA at the following URL
+# "http://www.cecill.info".
+
+# As a counterpart to the access to the source code and  rights to copy,
+# modify and redistribute granted by the license, users are provided only
+# with a limited warranty  and the software's author,  the holder of the
+# economic rights,  and the successive licensors  have only  limited
+# liability.
+
+# In this respect, the user's attention is drawn to the risks associated
+# with loading,  using,  modifying and/or developing or reproducing the
+# software by the user in light of its specific status of free software,
+# that may mean  that it is complicated to manipulate,  and  that  also
+# therefore means  that it is reserved for developers  and  experienced
+# professionals having in-depth computer knowledge. Users are therefore
+# encouraged to load and test the software's suitability as regards their
+# requirements in conditions enabling the security of their systems and/or
+# data to be ensured and,  more generally, to use and operate it in the
+# same conditions as regards security.
+
+# The fact that you are presently reading this means that you have had
+# knowledge of the CeCILL license and that you accept its terms.
+#
+# Authors: Angy Fil-Aimé
+#          Killian Mary
+
+
 from telemeta.models import *
 from haystack.forms import *
 from haystack.query import SearchQuerySet
 from datetime import date
 from django.utils.translation import ugettext_lazy as _
 
+
 class HaySearchForm(FacetedSearchForm):
+
     q = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'type' : 'text'}))
+
     def search(self):
         sqs = SearchQuerySet().load_all()
 
@@ -32,7 +70,6 @@ class HaySearchForm(FacetedSearchForm):
 
 
 class HayAdvanceForm(SearchForm):
-#begin create field
 
     #to replace de basic search form field
     q = forms.CharField(required=False, label=(_('title')), widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'search'}))
@@ -49,11 +86,10 @@ class HayAdvanceForm(SearchForm):
         return type_name
 
     ethnic_group = forms.CharField(required=False, label=(_('population / social group')), widget=forms.Select(attrs={'style': 'width:100%'}, choices=list_ethnic_group()))
-
     instruments = forms.CharField(required=False, label=(_('instruments')), widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'search'}))
     collectors = forms.CharField(required=False, label=(_('recordist')), widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'search'}))
 
-    #to create a dynamic list of publish year
+    #to create a dynamic list of publishing years
     def list_recorded_year():
         list_all_year = []
         list_collect = MediaCollection.objects.all()
@@ -79,7 +115,7 @@ class HayAdvanceForm(SearchForm):
     recorded_from_date = forms.IntegerField(required=False, label=(_('recording date (from)')), widget=forms.Select(attrs={'style': 'width:47%'}, choices=list_recorded_year()))
     recorded_to_date = forms.IntegerField(required=False, label=(_('recording date (until')), widget=forms.Select(attrs={'style': 'width:47%'}, choices=list_recorded_year()))
 
-    #to create a dynamic list of publish year
+    #to create a dynamic list of publishing years
     def list_publish_year():
         list_all_year = []
         list_collect = MediaCollection.objects.all()
@@ -108,7 +144,7 @@ class HayAdvanceForm(SearchForm):
 
     item_status = forms.CharField(required=False, label=(_('Document status')), widget=forms.RadioSelect(choices=(('1', 'no preference'), ('pub', 'Published'), ('unpub', 'Unpublished'))), initial=1)
 
-    #to create a dynamic list of media type
+    #to create a dynamic list of media types
     def list_media_type():
         type_name = []
         type_name.append(('1', 'no preference'))
@@ -119,7 +155,7 @@ class HayAdvanceForm(SearchForm):
 
     media_type = forms.CharField(required=False, label=(_('media')), widget=forms.RadioSelect(choices=(list_media_type())), initial=1)
 
-    #to create a dynamic list of recording context
+    #to create a dynamic list of recording contexts
     def list_recording_context():
         type_name = []
         type_name.append(('', 'no preference'))
@@ -130,7 +166,7 @@ class HayAdvanceForm(SearchForm):
 
     recording_context = forms.CharField(required=False, label=(_('recording context')), widget=forms.Select(attrs={'style': 'width:100%'}, choices=list_recording_context()))
 
-    #to create a dynamic list of physical format
+    #to create a dynamic list of physical formats
     def list_physical_format():
         type_name = []
         type_name.append(('', 'no preference'))
@@ -140,9 +176,7 @@ class HayAdvanceForm(SearchForm):
         return type_name
 
     physical_format = forms.CharField(required=False, label=(_('physical format')), widget=forms.Select(attrs={'style': 'width:100%'}, choices=list_physical_format()))
-
     code = forms.CharField(required=False, label=(_('code')), widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'search'}))
-#end
 
     def search(self):
         sqs = SearchQuerySet().load_all()
