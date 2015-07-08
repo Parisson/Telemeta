@@ -132,6 +132,13 @@ class MediaItem(MediaResource):
                     'publishing_date', 'scientist', 'topic',
                     'summary', 'contributor', ]
 
+    restricted = ['copied_from_item', 'mimetype',
+                    'organization', 'depositor', 'rights',
+                    'recordist', 'digitalist', 'digitization_date',
+                    'publishing_date', 'scientist', 'topic',
+                    'summary', 'contributor', 'public_access']
+
+
     def keywords(self):
         return ContextKeyword.objects.filter(item_relations__item = self)
     keywords.verbose_name = _('keywords')
