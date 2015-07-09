@@ -55,6 +55,11 @@ The processing engine of Telemeta is a separate project called `TimeSide <https:
 Changes
 ========
 
+1.6
+++++
+
+*
+
 1.5.1
 ++++++
 

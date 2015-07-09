@@ -470,8 +470,13 @@ class ItemViewMixin(ItemBaseMixin):
 
 class ItemEditView(ItemViewMixin, UpdateWithInlinesView):
 
-    form_class = MediaItemForm
     template_name = 'telemeta/mediaitem_edit.html'
+
+    def get_form_class(self):
+        if self.request.user.is_staff:
+            return MediaItemForm
+        else:
+            return RestrictedMediaItemForm
 
     def forms_valid(self, form, inlines):
         messages.info(self.request, ugettext_lazy("You have successfully updated your item."))
