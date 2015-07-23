@@ -93,7 +93,6 @@ class MediaItemForm(ModelForm):
     class Meta:
         model = MediaItem
         exclude = model.exclude
-        # print exclude
 
     def clean_code(self):
         return self.cleaned_data['code'] or None
@@ -104,7 +103,6 @@ class RestrictedMediaItemForm(MediaItemForm):
     class Meta:
         model = MediaItem
         exclude = model.restricted
-        print exclude
 
 
 class PlaylistForm(ModelForm):
