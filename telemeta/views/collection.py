@@ -390,8 +390,8 @@ class CollectionEpubView(BaseEpubMixin, View):
         response['Content-Disposition'] = "attachment; filename=%s" % self.filename + '.epub'
         return response
 
-    @method_decorator(login_required)
-    @method_decorator(permission_required('telemeta.can_download_collection_epub'))
+    # @method_decorator(login_required)
+    # @method_decorator(permission_required('telemeta.can_download_collection_epub'))
     def dispatch(self, *args, **kwargs):
         return super(CollectionEpubView, self).dispatch(*args, **kwargs)
 
