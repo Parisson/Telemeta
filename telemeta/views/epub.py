@@ -38,6 +38,7 @@ from telemeta.models import *
 from collections import OrderedDict
 from ebooklib import epub
 from django.template.loader import render_to_string
+from django.utils.translation import ugettext_lazy as _
 
 
 class BaseEpubMixin(TelemetaBaseMixin):
@@ -215,46 +216,4 @@ class BaseEpubMixin(TelemetaBaseMixin):
         epub.write_epub(self.path, self.book, {})
 
 
-class CorpusEpubView(BaseEpubMixin, View):
-    "Download corpus data embedded in an EPUB3 file"
-
-    model = MediaCorpus
-
-    def get_object(self):
-        return MediaCorpus.objects.get(public_id=self.kwargs['public_id'])
-
-    def get(self, request, *args, **kwargs):
-        self.write_book(self.get_object())
-        epub_file = open(self.path, 'rb')
-        response = HttpResponse(epub_file.read(), content_type='application/epub+zip')
-        response['Content-Disposition'] = "attachment; filename=%s" % self.filename + '.epub'
-        return response
-
-    @method_decorator(login_required)
-    @method_decorator(permission_required('telemeta.can_download_corpus_epub'))
-    def dispatch(self, *args, **kwargs):
-        return super(CorpusEpubView, self).dispatch(*args, **kwargs)
-
-
-class CollectionEpubView(BaseEpubMixin, View):
-    "Download collection data embedded in an EPUB3 file"
-
-    model = MediaCollection
-
-    def get_object(self):
-        return MediaCollection.objects.get(public_id=self.kwargs['public_id'])
-
-    def get(self, request, *args, **kwargs):
-        collection = self.get_object()
-        corpus = collection.corpus.all()[0]
-        self.write_book(corpus, collection=collection)
-        epub_file = open(self.path, 'rb')
-        response = HttpResponse(epub_file.read(), content_type='application/epub+zip')
-        response['Content-Disposition'] = "attachment; filename=%s" % self.filename + '.epub'
-        return response
-
-    @method_decorator(login_required)
-    @method_decorator(permission_required('telemeta.can_download_collection_epub'))
-    def dispatch(self, *args, **kwargs):
-        return super(CollectionEpubView, self).dispatch(*args, **kwargs)
 

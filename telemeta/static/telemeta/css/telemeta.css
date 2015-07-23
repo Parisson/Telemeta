@@ -262,11 +262,12 @@ ul.continents ul li a { line-height: 1.8em; }
 /* Collection */
 #content .intro {
     font-size: 1em;
-    font-weight: bold;
+    /*font-weight: bold;*/
     color: #444;
     margin: 5px 0;
-    font-size: 0.8em;
+    width: 400px;
 }
+
 #content .intro span {
     padding: 3px;
 
