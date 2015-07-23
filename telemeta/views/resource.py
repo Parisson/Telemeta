@@ -36,6 +36,8 @@
 
 
 from telemeta.views.core import *
+from telemeta.views.epub import *
+from django.utils.translation import ugettext_lazy as _
 
 
 class ResourceView(object):
@@ -337,4 +339,45 @@ class ResourceEditView(ResourceSingleMixin, UpdateWithInlinesView):
     @method_decorator(permission_required('telemeta.change_mediafonds'))
     def dispatch(self, *args, **kwargs):
         return super(ResourceEditView, self).dispatch(*args, **kwargs)
+
+
+class ResourceEpubView(ResourceSingleMixin, BaseEpubMixin, View):
+    "Download corpus data embedded in an EPUB3 file"
+
+    def get(self, request, *args, **kwargs):
+        self.write_book(self.get_object())
+        epub_file = open(self.path, 'rb')
+        response = HttpResponse(epub_file.read(), content_type='application/epub+zip')
+        response['Content-Disposition'] = "attachment; filename=%s" % self.filename + '.epub'
+        return response
+
+    def dispatch(self, *args, **kwargs):
+        return super(ResourceEpubView, self).dispatch(*args, **kwargs)
+
+
+class ResourceEpubPasswordView(ResourceSingleMixin, FormView):
+
+    template_name = 'telemeta/resource_epub_password.html'
+    form_class = EpubPasswordForm
+
+    def get_success_url(self):
+        return reverse_lazy('telemeta-resource-epub-list', kwargs={'type': self.kwargs['type'], 'public_id': self.kwargs['public_id']})
+
+    def form_valid(self, form):
+        self.password = form.cleaned_data['password']
+        if self.password != unicode('melodie'):
+            messages.info(self.request, _("Bad password, please try again."))
+            return redirect('telemeta-resource-password-epub', self.kwargs['type'], self.kwargs['public_id'])
+        else:
+            return redirect('telemeta-resource-epub-list', self.kwargs['type'], self.kwargs['public_id'])
+
+        return super(ResourceEpubPasswordView, self).form_valid(form)
+
+    def dispatch(self, *args, **kwargs):
+        return super(ResourceEpubPasswordView, self).dispatch(*args, **kwargs)
+
+
+class ResourceEpubListView(ResourceDetailView):
+
+    template_name = 'telemeta/resource_epub_list.html'
 

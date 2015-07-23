@@ -91,6 +91,7 @@
 {% endif %}
 </div>
 
+{% block search %}
 <div id="quick_search">
 <form action="{% url "telemeta-search" %}" id="_quickSearchForm" method="get">
     <div class="input-group">
@@ -101,6 +102,7 @@
     </div>
 </form>
 </div>
+{% endblock search %}
 
 <div id="menu">
 {% block menu %}
@@ -163,7 +165,9 @@
 <div id="content">
     <table id="content_header"><tr>
             <td class="leftcol"><h1>{% block title %}{% endblock %}</h1></td>
+            {% block rightcol %}
             <td class="rightcol" {% if LANGUAGE_BIDI %}style="float : left;"{% else %}style="float : right;"{% endif %}>{% block title_buttons %}{% endblock %}</td>
+            {% endblock rightcol %}
     </tr></table>
 
   {% block content %}{% endblock %}
