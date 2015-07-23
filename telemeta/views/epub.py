@@ -107,8 +107,8 @@ class BaseEpubMixin(TelemetaBaseMixin):
 
         # add cover image
         for media in instance.related.all():
-            cover_filename = os.path.split(media.file.path)[-1]
-            self.book.set_cover(cover_filename, open(media.file.path, 'rb').read())
+            self.cover_filename = os.path.split(media.file.path)[-1]
+            self.book.set_cover(self.cover_filename, open(media.file.path, 'rb').read())
             break
 
         preamble = epub.EpubHtml(title='Copyright', file_name='copyright' + '.xhtml', lang='fr')
@@ -206,7 +206,7 @@ class BaseEpubMixin(TelemetaBaseMixin):
 
         # create spin, add cover page as first page
         cover = epub.EpubHtml(title=self.full_title, file_name='cover-bis' + '.xhtml')
-        cover.content = render_to_string(self.template_cover, {'image': cover_filename})
+        cover.content = render_to_string(self.template_cover, {'image': self.cover_filename})
         self.book.add_item(cover)
         self.book.spine.insert(0, cover)
 
