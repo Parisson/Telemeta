@@ -109,7 +109,6 @@ class RestrictedMediaItemForm(MediaItemForm):
     class Meta:
         model = MediaItem
         exclude = model.restricted
-        print exclude
 
 
 class PlaylistForm(ModelForm):

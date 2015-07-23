@@ -345,14 +345,13 @@ class ResourceEpubView(ResourceSingleMixin, BaseEpubMixin, View):
     "Download corpus data embedded in an EPUB3 file"
 
     def get(self, request, *args, **kwargs):
-        self.write_book(self.get_object())
+        self.setup_epub(self.get_object())
+        if not os.path.exists(self.path):
+            self.write_book()
         epub_file = open(self.path, 'rb')
         response = HttpResponse(epub_file.read(), content_type='application/epub+zip')
         response['Content-Disposition'] = "attachment; filename=%s" % self.filename + '.epub'
         return response
-
-    def dispatch(self, *args, **kwargs):
-        return super(ResourceEpubView, self).dispatch(*args, **kwargs)
 
 
 class ResourceEpubPasswordView(ResourceSingleMixin, FormView):
@@ -365,7 +364,7 @@ class ResourceEpubPasswordView(ResourceSingleMixin, FormView):
 
     def form_valid(self, form):
         self.password = form.cleaned_data['password']
-        if self.password != unicode('melodie'):
+        if self.password != unicode('mélodie'.decode('utf-8')):
             messages.info(self.request, _("Bad password, please try again."))
             return redirect('telemeta-resource-password-epub', self.kwargs['type'], self.kwargs['public_id'])
         else:
