@@ -345,7 +345,9 @@ class ResourceEpubView(ResourceSingleMixin, BaseEpubMixin, View):
     "Download corpus data embedded in an EPUB3 file"
 
     def get(self, request, *args, **kwargs):
-        self.write_book(self.get_object())
+        self.setup_epub(self.get_object())
+        if not os.path.exists(self.path):
+            self.write_book()
         epub_file = open(self.path, 'rb')
         response = HttpResponse(epub_file.read(), content_type='application/epub+zip')
         response['Content-Disposition'] = "attachment; filename=%s" % self.filename + '.epub'
