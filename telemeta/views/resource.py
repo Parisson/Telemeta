@@ -362,7 +362,7 @@ class ResourceEpubPasswordView(ResourceSingleMixin, FormView):
 
     def form_valid(self, form):
         self.password = form.cleaned_data['password']
-        if self.password != unicode('melodie'):
+        if self.password != unicode('mélodie'.decode('utf-8')):
             messages.info(self.request, _("Bad password, please try again."))
             return redirect('telemeta-resource-password-epub', self.kwargs['type'], self.kwargs['public_id'])
         else:
