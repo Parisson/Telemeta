@@ -351,9 +351,6 @@ class ResourceEpubView(ResourceSingleMixin, BaseEpubMixin, View):
         response['Content-Disposition'] = "attachment; filename=%s" % self.filename + '.epub'
         return response
 
-    def dispatch(self, *args, **kwargs):
-        return super(ResourceEpubView, self).dispatch(*args, **kwargs)
-
 
 class ResourceEpubPasswordView(ResourceSingleMixin, FormView):
 

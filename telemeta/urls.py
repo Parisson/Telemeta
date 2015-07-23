@@ -134,7 +134,7 @@ urlpatterns = patterns('',
     url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/delete/$', ResourceDeleteView.as_view(), name="telemeta-resource-delete"),
     url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)/view/$', resource_view.related_stream, name="telemeta-resource-related"),
     url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)/download/$', resource_view.related_download, name="telemeta-resource-related-download"),
-    url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/epub/download/$', ResourceEpubView.as_view(), name="telemeta-resource-epub"),
+    url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/epub/download/$', ResourceEpubView.as_view(), name="telemeta-resource-epub-download"),
     url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/epub/list/$', ResourceEpubListView.as_view(), name="telemeta-resource-epub-list"),
     url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/epub/$', ResourceEpubPasswordView.as_view(), name="telemeta-resource-password-epub"),
 

@@ -13,7 +13,7 @@
 {% block infos %}
         <div class="extraInfos">
         <h4><img src="{{ STATIC_URL }}telemeta/images/item_title.png" style="vertical-align:middle" />{% trans "Livre complet" %}</h4>
-        <a href="{% url "telemeta-resource-epub" type resource.public_id %}">
+        <a href="{% url "telemeta-resource-epub-download" type resource.public_id %}">
         <button type="button" class="btn btn-default">
             <span class="glyphicon glyphicon-book"></span> {% trans "Download" %}
         </button>
