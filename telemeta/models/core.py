@@ -174,7 +174,7 @@ class ModelCore(EnhancedModel):
             element = doc.createElement(self.get_dom_field_name(name))
             if isinstance(value, EnhancedModel):
                 element.setAttribute('key', str(value.pk))
-            value = unicode(value.decode('utf-8'))
+            value = unicode(value)
             element.appendChild(doc.createTextNode(value))
             top.appendChild(element)
         return doc
@@ -183,14 +183,14 @@ class ModelCore(EnhancedModel):
         "Return model fields as a dict of name/value pairs"
         fields_dict = {}
         for field in self._meta.fields:
-            fields_dict[field.name] = unicode(getattr(self, field.name).decode('utf-8'))
+            fields_dict[field.name] = unicode(getattr(self, field.name))
         return fields_dict
 
     def to_list(self):
         "Return model fields as a list"
         fields_list = []
         for field in self._meta.fields:
-            fields_list.append({'name': field.name, 'value': unicode(getattr(self, field.name).decode('utf-8'))})
+            fields_list.append({'name': field.name, 'value': unicode(getattr(self, field.name))})
         return fields_list
 
     @classmethod
