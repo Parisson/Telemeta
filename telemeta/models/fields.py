@@ -80,6 +80,9 @@ class Duration(object):
 
         return "%.2d:%.2d:%.2d" % (hours, minutes, seconds)
 
+    def __unicode__(self):
+        return self.__str__()
+
     @staticmethod
     def fromstr(str):
         if not str:
@@ -305,15 +308,15 @@ class RequiredFieldError(Exception):
 
 
 # South introspection rules
-add_introspection_rules([], ["^telemeta\.models\.core\.CharField"])
-add_introspection_rules([], ["^telemeta\.models\.core\.TextField"])
-add_introspection_rules([], ["^telemeta\.models\.core\.FileField"])
-add_introspection_rules([], ["^telemeta\.models\.core\.IntegerField"])
-add_introspection_rules([], ["^telemeta\.models\.core\.BooleanField"])
-add_introspection_rules([], ["^telemeta\.models\.core\.DateTimeField"])
-add_introspection_rules([], ["^telemeta\.models\.core\.DateField"])
-add_introspection_rules([], ["^telemeta\.models\.core\.FloatField"])
-add_introspection_rules([], ["^telemeta\.models\.core\.DurationField"])
-add_introspection_rules([], ["^telemeta\.models\.core\.ForeignKey"])
-add_introspection_rules([], ["^telemeta\.models\.core\.WeakForeignKey"])
+add_introspection_rules([], ["^telemeta\.models\.fields\.CharField"])
+add_introspection_rules([], ["^telemeta\.models\.fields\.TextField"])
+add_introspection_rules([], ["^telemeta\.models\.fields\.FileField"])
+add_introspection_rules([], ["^telemeta\.models\.fields\.IntegerField"])
+add_introspection_rules([], ["^telemeta\.models\.fields\.BooleanField"])
+add_introspection_rules([], ["^telemeta\.models\.fields\.DateTimeField"])
+add_introspection_rules([], ["^telemeta\.models\.fields\.DateField"])
+add_introspection_rules([], ["^telemeta\.models\.fields\.FloatField"])
+add_introspection_rules([], ["^telemeta\.models\.fields\.DurationField"])
+add_introspection_rules([], ["^telemeta\.models\.fields\.ForeignKey"])
+add_introspection_rules([], ["^telemeta\.models\.fields\.WeakForeignKey"])
 

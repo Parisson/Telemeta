@@ -9,6 +9,8 @@
 
 {% get_current_language as LANGUAGE_CODE %}
 {% get_available_languages as LANGUAGES %}
+{% get_current_language_bidi as LANGUAGE_BIDI %}
+
 <html xmlns="http://www.w3.org/1999/xhtml" lang="{{ LANGUAGE_CODE }}" xml:lang="{{ LANGUAGE_CODE }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
 
 <head>
@@ -24,6 +26,7 @@
 {% endblock analytics %}
 
 <link rel="alternate" href="/rss" title="RSS 2.0" type="application/rss+xml" />
+<link rel="icon" href="{{ STATIC_URL }}telemeta/images/favicon.ico"/>
 
 <title>{%block head_title %}{% description %} - Telemeta{% endblock %}</title>
 
@@ -88,6 +91,7 @@
 {% endif %}
 </div>
 
+{% block search %}
 <div id="quick_search">
 <form action="{% url "telemeta-search" %}" id="_quickSearchForm" method="get">
     <div class="input-group">
@@ -98,6 +102,7 @@
     </div>
 </form>
 </div>
+{% endblock search %}
 
 <div id="menu">
 {% block menu %}
@@ -160,7 +165,9 @@
 <div id="content">
     <table id="content_header"><tr>
             <td class="leftcol"><h1>{% block title %}{% endblock %}</h1></td>
+            {% block rightcol %}
             <td class="rightcol" {% if LANGUAGE_BIDI %}style="float : left;"{% else %}style="float : right;"{% endif %}>{% block title_buttons %}{% endblock %}</td>
+            {% endblock rightcol %}
     </tr></table>
 
   {% block content %}{% endblock %}

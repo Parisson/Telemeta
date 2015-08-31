@@ -34,17 +34,17 @@
 # Author: Olivier Guilyardi <olivier@samalyse.com>
 
 import os
-import libxml2
 from xml.dom.minidom import getDOMImplementation, Node
 import shutil
 import md5
 from django.conf import settings
 from telemeta.models import MediaItem
 
+
 class CollectionSerializer(object):
     """Provide backup-related features"""
 
-    def __init__(self, collection):
+    def __init__(self, collection, dest_dir='/tmp/'):
         self.collection = collection
 
     def __get_file_md5(self, path):
@@ -62,31 +62,48 @@ class CollectionSerializer(object):
     def __get_media_filename(self, item):
         return str(item.id) + ".wav"
 
-    def store(self, dest_dir):
-        """Serialize and store the collection with related items and media
-        files into a subdirectory of the provided directory
-        """
-        coll_dir = dest_dir + "/" + str(self.collection.id)
-        os.mkdir(coll_dir)
+    def backup(self, dest_dir):
+        self.coll_dir = dest_dir + "/" + str(self.collection.id)
+        if not os.path.exists(self.coll_dir):
+            os.makedirs(self.coll_dir)
+        self.store_json()
+        self.store_xml()
+        self.store_files()
 
-        xml = self.get_xml()
-        file = open(coll_dir + "/collection.xml", "wb")
-        file.write(xml.encode("utf-8"))
-        file.close()
-
+    def store_files(self):
         if self.collection.has_mediafile():
-            md5_file = open(coll_dir + "/MD5SUM", "wb")
+            md5_file = open(self.coll_dir + "/MD5SUM", "wb")
 
             items = self.collection.items.all()
             for item in items:
                 if item.file:
                     dst_basename = self.__get_media_filename(item)
-                    dst = coll_dir + "/" + dst_basename
+                    dst = self.coll_dir + "/" + dst_basename
                     shutil.copyfile(item.file.path, dst)
                     hash = self.__get_file_md5(dst)
                     md5_file.write(hash + "  " + dst_basename + "\n")
 
             md5_file.close()
+
+    def store_json(self, dest_dir):
+        """Serialize and store the collection with related items and media
+        files into a subdirectory of the provided directory
+        """
+        json = self.collection.get_json()
+        file = open(self.coll_dir + "/collection.json", "wb")
+        file.write(json)
+        file.close()
+        self.store_files()
+
+    def store_xml(self, dest_dir):
+        """Serialize and store the collection with related items and media
+        files into a subdirectory of the provided directory
+        """
+        xml = self.get_xml()
+        file = open(self.coll_dir + "/collection.xml", "wb")
+        file.write(xml.encode("utf-8"))
+        file.close()
+        self.store_files()
 
     def get_xml(self):
         """Return a string containing the XML representation of the collection
@@ -110,12 +127,6 @@ class CollectionSerializer(object):
             item_doc.unlink()
         doc.normalize()
 
-        # libxml2 has prettier output than xml.dom:
-        tree = libxml2.parseDoc(doc.toxml(encoding="utf-8"))
-        doc.unlink()
-        xml = unicode(tree.serialize(encoding="utf-8", format=1), "utf-8")
-        tree.free()
-
-        return xml
+        return doc.toxml()
 
 

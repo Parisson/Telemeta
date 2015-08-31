@@ -1,0 +1,31 @@
+{% extends "telemeta/resource_detail.html" %}
+{% load i18n %}
+{% load telemeta_utils %}
+
+
+{% block search %}
+{% endblock search %}
+
+{% block rightcol %}
+{% endblock rightcol %}
+
+{% block content %}
+{% block infos %}
+        <div class="extraInfos">
+        <h4><img src="{{ STATIC_URL }}telemeta/images/item_title.png" style="vertical-align:middle" />{% trans "Livre complet" %}</h4>
+        <a href="{% url "telemeta-resource-epub-download" type resource.public_id %}">
+        <button type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-book"></span> {% trans "Download" %}
+        </button>
+        </a>
+        </div>
+
+        <div class="extraInfos">
+        <h4><img src="{{ STATIC_URL }}telemeta/images/item_title.png" style="vertical-align:middle" />{% trans "Chapitres" %}</h4>
+        {% with resource.children.all as children %}
+            {% include "telemeta/inc/epub_list.html" %}
+        {% endwith %}
+        </div>
+
+{% endblock infos %}
+{% endblock %}

@@ -58,7 +58,11 @@ class MediaResource(ModelCore):
         Revision.touch(self, user)
 
     def get_revision(self):
-        return Revision.objects.filter(element_type=self.element_type, element_id=self.id).order_by('-time')[0]
+        revisions = Revision.objects.filter(element_type=self.element_type, element_id=self.id).order_by('-time')
+        if revisions:
+            return revisions[0]
+        else:
+            return None
 
     class Meta:
         abstract = True
@@ -80,8 +84,8 @@ class MediaBaseResource(MediaResource):
     def public_id(self):
         return self.code
 
-    def save(self, force_insert=False, force_update=False, user=None, code=None):
-        super(MediaBaseResource, self).save(force_insert, force_update)
+    def save(self, *args, **kwargs):
+        super(MediaBaseResource, self).save(*args, **kwargs)
 
     def get_fields(self):
         return self._meta.fields
@@ -112,8 +116,8 @@ class MediaRelated(MediaResource):
                     is_url_image = True
         return 'image' in self.mime_type or is_url_image
 
-    def save(self, force_insert=False, force_update=False, author=None):
-        super(MediaRelated, self).save(force_insert, force_update)
+    def save(self, *args, **kwargs):
+        super(MediaRelated, self).save(*args, **kwargs)
 
     def set_mime_type(self):
         if self.file:
@@ -127,10 +131,13 @@ class MediaRelated(MediaResource):
 
     def __unicode__(self):
         if self.title and not re.match('^ *N *$', self.title):
-            title = self.title
+            return self.title
+        elif self.file:
+            return unicode(self.file.path.split(os.sep)[-1])
+        elif self.url:
+            return unicode(self.url.split('/')[-1])
         else:
-            title = unicode(self.item)
-        return title
+            return '_'
 
     class Meta:
         abstract = True

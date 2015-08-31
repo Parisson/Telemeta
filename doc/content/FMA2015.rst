@@ -1,0 +1,10 @@
+Telemeta at the 5th Folk Music Analysis international workshop
+###############################################################
+
+:category: Research
+
+Telemeta, Parisson and the DIADEMS team participate to the `5th Folk Music Analysis international workshop <http://fma2015.sciencesconf.org/>`_ (FMA) at the University Pierre et Marie Curie in Paris from the 10th to the 12th june 2015.
+
+The FMA workshop is intended for exchanging information that advances our understanding of oral tradition music and their importance in cultural events. The goal is to encourage interdisciplinary approaches to solve technical problems related to the study of ethnomusicology, especially the use of relevant sensors to get audio-video recordings from in-situ observations, the development of new theoretical approaches to analyze these recordings and the proposition of tools to be used for musical studies.
+
+Guillaume Pellerin and Thomas Fillon present: `Web analysis tools for ethnomusicology <https://github.com/Parisson/Telemeta-doc/raw/master/Conferences/2015_FMA/slides_FMA_2015.pdf>`_.

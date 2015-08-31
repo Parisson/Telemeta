@@ -40,9 +40,6 @@ from django.views.generic.base import RedirectView
 from django.views.generic.list import ListView
 from telemeta.models import MediaItem, MediaCollection, MediaItemMarker, MediaCorpus, MediaFonds
 from telemeta.views import *
-#from telemeta.views import HomeView, AdminView, CollectionView, ItemView, \
-#                            InstrumentView, InstrumentAliasView, PlaylistView, ProfileView, GeoView, \
-#                            LastestRevisionsFeed, ResourceView, UserRevisionsFeed, CollectionPackageView
 from jsonrpc import jsonrpc_site
 import os.path
 import telemeta.config
@@ -75,7 +72,7 @@ urlpatterns = patterns('',
     url(r'^archives/items_published/$', ItemPublishedListView.as_view(), name="telemeta-items-published"),
 
     url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/$', ItemDetailView.as_view(), name="telemeta-item-detail"),
-    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/dc/$', item_view.item_detail, {'template': 'telemeta/mediaitem_detail_dc.html'}, name="telemeta-item-dublincore"),
+    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/dc/$', ItemDetailDCView.as_view(), name="telemeta-item-dublincore"),
     url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/dc/xml/$', item_view.item_detail, {'format': 'dublin_core_xml'}, name="telemeta-item-dublincore-xml"),
     url(r'^archives/items/download/(?P<public_id>[A-Za-z0-9._-]+)\.(?P<extension>' + export_extensions + ')$', item_view.item_export, name="telemeta-item-export"),
     url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/visualize/(?P<grapher_id>[0-9a-z_]+)/(?P<width>[0-9A-Z]+)x(?P<height>[0-9A-Z]+)/$', item_view.item_visualize, name="telemeta-item-visualize"),
@@ -122,8 +119,8 @@ urlpatterns = patterns('',
 
     # FIXME: need all paths
     url(r'^collections/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(), {'url': '/archives/collections/%(path)s/', 'permanent': False}, name="telemeta-collection-redir"),
-    url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/package/$', CollectionPackageView.as_view(),
-        name="telemeta-collection-package"),
+    url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/zip/$', CollectionZipView.as_view(), name="telemeta-collection-zip"),
+    url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/epub/$', CollectionEpubView.as_view(), name="telemeta-collection-epub"),
 
     # Generic resources
     url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/$', ResourceListView.as_view(), name="telemeta-resource-list"),
@@ -135,6 +132,9 @@ urlpatterns = patterns('',
     url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/delete/$', ResourceDeleteView.as_view(), name="telemeta-resource-delete"),
     url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)/view/$', resource_view.related_stream, name="telemeta-resource-related"),
     url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)/download/$', resource_view.related_download, name="telemeta-resource-related-download"),
+    url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/epub/download/$', ResourceEpubView.as_view(), name="telemeta-resource-epub-download"),
+    url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/epub/list/$', ResourceEpubListView.as_view(), name="telemeta-resource-epub-list"),
+    url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/epub/$', ResourceEpubPasswordView.as_view(), name="telemeta-resource-password-epub"),
 
     # search
     # url(r'^archives/$', home_view.search, name="telemeta-archives"),
@@ -142,6 +142,7 @@ urlpatterns = patterns('',
     url(r'^search/(?P<type>[A-Za-z0-9._-]+)/$', SearchView.as_view(), name="telemeta-search-type"),
     url(r'^search_criteria/$', home_view.edit_search, name="telemeta-search-criteria"),
     url(r'^complete_location/$', home_view.complete_location, name="telemeta-complete-location"),
+    url(r'^haystack/', include('haystack.urls')),
 
     # administration
     url(r'^admin/$', admin_view.admin_index, name="telemeta-admin"),
@@ -212,11 +213,11 @@ urlpatterns = patterns('',
     url(r'^accounts/password_change_done/$', 'django.contrib.auth.views.password_change_done', {'template_name': 'telemeta/registration/password_change_done.html'}, name="password_change_done"),
     url(r'^accounts/password_reset/$', 'django.contrib.auth.views.password_reset', {'template_name': 'telemeta/registration/password_reset_form.html', 'email_template_name': 'registration/password_reset_email.html'}, name="password_reset"),
     url(r'^accounts/password_reset_done/$', 'django.contrib.auth.views.password_reset_done', {'template_name': 'telemeta/registration/password_reset_done.html'}, name="password_reset_done"),
-    url(r'^accounts/password_reset_confirm/(?P<uidb36>[A-Za-z0-9._-]+)/(?P<token>[A-Za-z0-9._-]+)/$', 'django.contrib.auth.views.password_reset_confirm', {'template_name': 'telemeta/registration/password_reset_confirm.html'}, name="password_reset_confirm"),
+    url(r'^accounts/password_reset_confirm/(?P<uidb64>[A-Za-z0-9._-]+)/(?P<token>[A-Za-z0-9._-]+)/$', 'django.contrib.auth.views.password_reset_confirm', {'template_name': 'telemeta/registration/password_reset_confirm.html'}, name="password_reset_confirm"),
     url(r'^accounts/password_reset_complete/$', 'django.contrib.auth.views.password_reset_complete', {'template_name': 'telemeta/registration/password_reset_complete.html'}, name="password_reset_complete"),
 
     # JSON RPC
-    url(r'json/$', jsonrpc_site.dispatch, name='jsonrpc_mountpoint'),
+    url(r'jsonrpc/$', jsonrpc_site.dispatch, name='jsonrpc_mountpoint'),
 
     # Playlists
     url(r'^playlists/(?P<public_id>[a-zA-Z0-9]+)/(?P<resource_type>[a-zA-Z0-9]+)/csv/$', playlist_view.playlist_csv_export, name="telemeta-playlist-csv-export"),
@@ -229,6 +230,8 @@ urlpatterns = patterns('',
     url(r'^media/cache/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.TELEMETA_CACHE_DIR,}),
 
     url(r'^', include('jqchat.urls')),
+
+    url(r'^timeside/', include('timeside.server.urls')),
 
 )
 
