@@ -112,7 +112,7 @@ password: demo
 Install
 =======
 
-Thanks to Docker, Telemeta is now fully available as a docker image ready to work. The docker based composition bundles some powerfull applications and modern frameworks out-of-the-box like: Python, Numpy, Gstreamer, Django, Celery, MySQL, RabbitMQ, uWSGI, Nginx and many more.. The image includes all the necessary applications, modules and volumes to start your project in a few steps.
+Thanks to Docker, Telemeta is now fully available as a docker image ready to work. The docker based composition bundles some powerfull applications and modern frameworks out-of-the-box like: Python, Numpy, Gstreamer, Django, Celery, Haystack, ElasticSearch, MySQL, RabbitMQ, uWSGI, Nginx and many more...
 
 First install `Git <http://git-scm.com/downloads>`_, `Docker <https://docs.docker.com/installation/>`_ and `docker-compose <https://docs.docker.com/compose/install/>`_, then run these commands in a terminal::
 
@@ -120,7 +120,7 @@ First install `Git <http://git-scm.com/downloads>`_, `Docker <https://docs.docke
     cd Telemeta
     docker-compose up
 
-You can now browse http://localhost:8000 to get the web interface.
+You can now browse http://localhost:8000
 
 
 API / Documentation
