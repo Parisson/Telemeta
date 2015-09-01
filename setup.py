@@ -71,6 +71,7 @@ setup(
         'pyyaml',
         'python-ebml',
         'zipstream',
+        'django-haystack',
         'elasticsearch',
         'ebooklib',
     ],
