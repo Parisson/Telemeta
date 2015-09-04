@@ -28,7 +28,7 @@
 <link rel="alternate" href="/rss" title="RSS 2.0" type="application/rss+xml" />
 <link rel="icon" href="{{ STATIC_URL }}telemeta/images/favicon.ico"/>
 
-<title>{%block head_title %}{% description %} - Telemeta{% endblock %}</title>
+<title>{%block head_title %}{% organization %} - {% description %}{% endblock %}</title>
 
 {% block stylesheets %}
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/css/telemeta.css" />
