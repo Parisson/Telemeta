@@ -71,3 +71,7 @@ img {
     page-break-before: always;
     text-align: center;
 }
+
+.error {
+    color: red;
+}

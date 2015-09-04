@@ -58,7 +58,7 @@ jQuery(document).ready(function(){
     </a>
     {% endif %}
     {% if type == 'corpus' and user.is_superuser %}
-    <a id="_export_epub" href="{% url "telemeta-corpus-epub" resource.public_id %}">
+    <a id="_export_epub" href="{% url "telemeta-resource-password-epub" type resource.public_id %}">
       <button type="button" class="btn btn-default">
         <span class="glyphicon glyphicon-book"></span> {% trans "Epub" %}
       </button>

@@ -39,7 +39,7 @@ from telemeta.models import *
 from extra_views import CreateWithInlinesView, UpdateWithInlinesView, InlineFormSet
 from extra_views.generic import GenericInlineFormSet
 from django.forms.widgets import HiddenInput
-
+from django.utils.translation import ugettext_lazy as _
 
 class MediaFondsForm(ModelForm):
 
@@ -93,7 +93,6 @@ class MediaItemForm(ModelForm):
     class Meta:
         model = MediaItem
         exclude = model.exclude
-        # print exclude
 
     def clean_code(self):
         return self.cleaned_data['code'] or None
@@ -104,7 +103,6 @@ class RestrictedMediaItemForm(MediaItemForm):
     class Meta:
         model = MediaItem
         exclude = model.restricted
-        print exclude
 
 
 class PlaylistForm(ModelForm):
@@ -162,4 +160,9 @@ class ItemIdentifierInline(InlineFormSet):
 
     model = MediaItemIdentifier
     max_num = 1
+
+
+class EpubPasswordForm(forms.Form):
+
+    password = forms.CharField(label=_('password'))
 
