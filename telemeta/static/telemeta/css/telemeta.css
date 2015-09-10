@@ -1240,6 +1240,27 @@ a.image-link {
 
 }
 
+
+#btn-black{
+    font-weight: bold;
+    color:#ffffff;
+    background-color:black;
+    border-color:#black;
+
+}
+
+#btn-black:hover{
+    font-weight: bold;
+    color:black;
+    background-color:#ffffff;
+    border-color:black;
+
+}
+
+.btn-module {
+    margin: 0 0 1.5em 1.5em;
+}
+
 textarea:focus,
 input[type="text"]:focus,
 input[type="password"]:focus,
