@@ -1,13 +1,5 @@
 # -*- coding: utf-8 -*-
-from telemeta.models.fonds import *
-from telemeta.models.corpus import *
-from telemeta.models.collection import *
-from telemeta.models.item import *
-from telemeta.models.instrument import *
-from telemeta.models.location import *
-from telemeta.models.language import *
-from telemeta.models.system import *
-from telemeta.models.format import *
+from telemeta.models import *
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin
@@ -108,6 +100,9 @@ class UserProfileInline(admin.StackedInline):
 class UserProfileAdmin(UserAdmin):
 	inlines = [UserProfileInline]
 
+class PlaylistAdmin(admin.ModelAdmin):
+    search_fields = ['title', 'public_id']
+
 admin.site.register(MediaFonds, MediaFondsAdmin)
 admin.site.register(MediaCorpus, MediaCorpusAdmin)
 admin.site.register(MediaCollection, MediaCollectionAdmin)
@@ -133,3 +128,4 @@ admin.site.register(Format, FormatAdmin)
 admin.site.register(User, UserProfileAdmin)
 
 admin.site.register(PublisherCollection)
+admin.site.register(Playlist, PlaylistAdmin)

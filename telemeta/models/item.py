@@ -163,7 +163,7 @@ class MediaItem(MediaResource):
                 return 'none'
         else:
             return _('none')
-
+            
 
     class Meta(MetaCore):
         db_table = 'media_items'
@@ -227,7 +227,7 @@ class MediaItem(MediaResource):
                 instruments.append(instrument)
             if not alias in instruments:
                 instruments.append(alias)
-
+        #no reference for __name_cmp anywhere
         instruments.sort(self.__name_cmp)
         return instruments
 
@@ -261,19 +261,18 @@ class MediaItem(MediaResource):
 
         i = 0
         for media in self.related.all():
+            tag = 'related_media_title' + '_' + str(i)
             if media.title:
-                tag = 'related_media_title' + '_' + str(i)
                 metadata[tag] = media.title
             else:
                 metadata[tag] = ''
+            tag = 'related_media_url' + '_' + str(i)
             if media.url:
-                tag = 'related_media_url' + '_' + str(i)
                 metadata[tag] = media.url
             elif media.url:
                 metadata[tag] = get_full_url(reverse('telemeta-collection-related',
                                             kwargs={'public_id': self.public_id, 'media_id': media.id}))
             i += 1
-
 
         instruments = []
         instrument_vernacular_names = []

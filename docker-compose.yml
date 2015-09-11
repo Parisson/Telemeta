@@ -26,7 +26,7 @@ static:
   image: debian:wheezy
   volumes:
     - /var/www/static
-  command: true
+  command: "true"
 
 log:
   image: debian:wheezy
@@ -35,7 +35,7 @@ log:
     - /var/log/postgres
     - /var/log/uwsgi
     - /var/log/elasticsearch
-  command: /bin/true
+  command: "true"
 
 lib:
   image: debian:wheezy
@@ -43,14 +43,14 @@ lib:
     - /var/lib/rabbitmq
     - /var/lib/postgres
     - ./var/lib/mysql:/var/lib/mysql
-    - ./var/lib/elasticseach:/var/lib/elasticseach
-  command: /bin/true
+    - ./var/lib/elasticsearch:/var/lib/elasticsearch
+  command: "true"
 
 home:
   image: debian:wheezy
   volumes:
     - ./examples/sandbox:/home/sandbox
-  command: /bin/true
+  command: "true"
 
 db:
   image: mysql
@@ -112,4 +112,3 @@ nginx:
     - log
   links:
     - app
-

@@ -1,0 +1,35 @@
+{% extends 'telemeta/base.html' %}
+{% load telemeta_utils %}
+{% load i18n %}
+
+{% block title %}
+{% trans "Playlist Confirmation" %}
+{% endblock %}
+{% block content %}
+    <table class="listing" style="width:100%">
+       <thead>
+        <tr><th>{% trans "Added to playlist : "%}</th>
+
+        </tr>
+       </thead><tbody>
+       {% ifequal type "item" %}
+            {% for item in selected_items_list %}
+                <tr>
+
+                 <td><a href="#">
+                    {{item}}</a></td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            {% for item in selected_items_list %}
+                <tr>
+
+                 <td><a href="#">
+                    {{item.title}}</a></td>
+                </tr>
+            {% endfor %}
+        {% endifequal %}
+        </tbody>
+    </table></br>
+    <a style="margin-top:10px" href="{{lastquerypath}}" id="btn" class="btn btn-default">return to search results</a>
+{% endblock %}
