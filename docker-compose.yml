@@ -33,6 +33,7 @@ log:
   volumes:
     - /var/log/nginx
     - /var/log/postgres
+    - /var/log/mysql
     - /var/log/uwsgi
     - /var/log/elasticsearch
   command: "true"
@@ -54,6 +55,9 @@ home:
 
 db:
   image: mysql
+  volumes_from:
+    - lib
+    - log
   environment:
     - MYSQL_ROOT_PASSWORD=mysecretpassword
     - MYSQL_DATABASE=sandbox
