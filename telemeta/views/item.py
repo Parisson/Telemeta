@@ -449,9 +449,7 @@ class ItemViewMixin(ItemBaseMixin):
 
     model = MediaItem
     form_class = MediaItemForm
-    inlines = [ItemPerformanceInline, ItemKeywordInline, ItemRelatedInline, ItemIdentifierInline]
-    # inlines = [ItemPerformanceInline, ItemKeywordInline, ItemRelatedInline,
-    #             ItemFormatInline, ItemIdentifierInline]
+    inlines = [ItemPerformanceInline, ItemKeywordInline, ItemRelatedInline, ItemFormatInline, ItemIdentifierInline]
 
     def get_object(self):
         obj = self.model.objects.filter(code=self.kwargs['public_id'])
@@ -840,4 +838,3 @@ class ItemPlayerDefaultView(ItemDetailView):
 class ItemDetailDCView(ItemDetailView):
 
     template_name = 'telemeta/mediaitem_detail_dc.html'
-
