@@ -58,7 +58,10 @@ Changes
 1.6
 ++++
 
-*
+* Provide a docker image and composition for the full Telemeta bundle
+* Full refactoring of the search engine and interface using django-haystack with new faceting and filtering features
+* Add an EPUB3 ebook exporter for corpus and collections embedding metadata, image and audio materials.
+* Many bugfixes
 
 1.5.1
 ++++++
@@ -109,12 +112,21 @@ password: demo
 Install
 =======
 
-See `INSTALL.rst <http://github.com/yomguy/Telemeta/blob/master/INSTALL.rst>`_ and `telemeta.org <http://telemeta.org>`_ for more informations.
+Thanks to Docker, Telemeta is now fully available as a docker image ready to work. The docker based composition bundles some powerfull applications and modern frameworks out-of-the-box like: Python, Numpy, Gstreamer, Django, Celery, MySQL, RabbitMQ, uWSGI, Nginx and many more.. The image includes all the necessary applications, modules and volumes to start your project in a few steps.
+
+First install `Git <http://git-scm.com/downloads>`_, `Docker <https://docs.docker.com/installation/>`_ and `docker-compose <https://docs.docker.com/compose/install/>`_, then run these commands in a terminal::
+
+    git clone --recursive https://github.com/Parisson/Telemeta.git
+    cd Telemeta
+    docker-compose up
+
+You can now browse http://localhost:8000 to get the web interface.
 
 
 API / Documentation
 ====================
 
+* Official website: http://telemeta.org
 * Publications : https://github.com/Parisson/Telemeta-doc
 * API : http://files.parisson.com/doc/telemeta/
 * Player : https://github.com/Parisson/TimeSide/
@@ -143,24 +155,17 @@ Development
    :alt: Coverage
 
 
-You are welcome to participate to the development of the Telemeta project.
-The official project site is `telemeta.org <http://telemeta.org>`_ but you can find a mirror on `GitHub <https://github.com/Parisson/Telemeta>`_.
+You are welcome to participate to the development of the Telemeta project which is hosted on `GitHub <https://github.com/Parisson/Telemeta>`_.
 
-To get and run the lastest development version::
-
-    sudo apt-get install git
-    git clone --recursive https://github.com/Parisson/Telemeta.git
-    cd Telemeta
-    git checkout dev
-    sudo pip install -e .
-    export PYTHONPATH=$PYTHONPATH:`pwd`
+The development package and environment is available through our `DevBox <https://github.com/Parisson/DevBox>`_
 
 
 Bugs and feedback
 =================
 
 You are welcome to freely use this application in accordance with its licence.
-If you find some bugs, PLEASE leave a ticket on this page:
+
+If you find some bugs or have good ideas for enhancement, please leave a issue on GitHub with the right label:
 
 https://github.com/Parisson/Telemeta/issues/new
 
@@ -193,24 +198,3 @@ License
 =======
 
 CeCILL v2, compatible with GPL v2 (see `LICENSE <http://github.com/yomguy/Telemeta/blob/master/LICENSE.txt>`_)
-
-
-Sponsors
-========
-
-The Telemeta project is developed by Parisson. It is sponsored by :
-
-* CNRS : Centre National de la Recherche Scientifique (the french Natianal Research and Scientific Center)
-    http://cnrs.fr
-* CREM : Centre de Recherche en Ethnomusicology (the french Ethnomusicology Research Center)
-    http://www.crem-cnrs.fr
-* LAM : Equipe Lutherie, Acoustique et Musique de l'Université Pierre et Marie Curie de Paris
-    (Instrument design, Acoustic and Music team of the Pierre & Marie Curie University)
-    http://www.lam.jussieu.fr/
-* MuCEM : Musée des Civilisations de l'Europe et de la Méditerranée
-    http://www.musee-europemediterranee.org
-* MMSH : Maison Méditerranéenne des Sciences de l'Homme
-    http://www.mmsh.univ-aix.fr/
-* MNHN : Museum d'Histoire Naturelle (Paris, France)
-    http://www.mnhn.fr
-

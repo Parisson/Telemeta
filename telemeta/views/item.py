@@ -417,6 +417,18 @@ class ItemListView(ListView):
         context['count'] = self.object_list.count()
         return context
 
+class ItemListViewFullAccess(ListView):
+
+    model = MediaItem
+    template_name = "telemeta/mediaitem_list.html"
+    paginate_by = 20
+    queryset = MediaItem.objects.enriched().filter(Q(collection__public_access="full")|Q(public_access="full")).sound().exclude(collection__public_access="none").order_by('code', 'old_code')
+
+    def get_context_data(self, **kwargs):
+        context = super(ItemListViewFullAccess, self).get_context_data(**kwargs)
+        context['count'] = self.object_list.count()
+        return context
+
 
 class ItemUnpublishedListView(ItemListView):
 

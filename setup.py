@@ -47,7 +47,7 @@ setup(
   long_description = open('README.rst').read(),
   author = "Guillaume Pellerin",
   author_email = "yomguy@parisson.com",
-  version = '1.5.2',
+  version = '1.6',
   install_requires = [
         'django==1.6.11',
         'django-registration',
@@ -71,6 +71,7 @@ setup(
         'pyyaml',
         'python-ebml',
         'zipstream',
+        'django-haystack',
         'elasticsearch',
         'ebooklib',
     ],
