@@ -126,18 +126,9 @@ class MediaItem(MediaResource):
     # Manager
     objects               = MediaItemManager()
 
-    exclude = ['copied_from_item', 'mimetype',
-                    'organization', 'depositor', 'rights',
-                    'recordist', 'digitalist', 'digitization_date',
-                    'publishing_date', 'scientist', 'topic',
-                    'summary', 'contributor', ]
+    exclude = ['copied_from_item', 'mimetype',]
 
-    restricted = ['copied_from_item', 'mimetype',
-                    'organization', 'depositor', 'rights',
-                    'recordist', 'digitalist', 'digitization_date',
-                    'publishing_date', 'scientist', 'topic',
-                    'summary', 'contributor', 'public_access']
-
+    restricted = ['copied_from_item', 'mimetype', 'public_access']
 
     def keywords(self):
         return ContextKeyword.objects.filter(item_relations__item = self)
@@ -163,7 +154,7 @@ class MediaItem(MediaResource):
                 return 'none'
         else:
             return _('none')
-            
+
 
     class Meta(MetaCore):
         db_table = 'media_items'
