@@ -154,6 +154,7 @@ class ItemKeywordInline(InlineFormSet):
 class ItemFormatInline(InlineFormSet):
 
     model = Format
+    max_num = 1
 
 
 class ItemIdentifierInline(InlineFormSet):
@@ -165,4 +166,3 @@ class ItemIdentifierInline(InlineFormSet):
 class EpubPasswordForm(forms.Form):
 
     password = forms.CharField(label=_('password'))
-
