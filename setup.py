@@ -49,8 +49,8 @@ setup(
   author_email = "yomguy@parisson.com",
   version = '1.6',
   install_requires = [
-        'django==1.6.11',
-        'django-registration',
+        'django==1.8.4',
+        'django-registration-redux',
         'django-extensions',
         'django-timezones',
         'django-jqchat',
