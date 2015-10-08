@@ -113,7 +113,7 @@
         </dl>
         {% endblock general_info %}
         </div>
-        <div class="extraInfos">
+        <!--<div class="extraInfos">
         {% block geoethnic_data %}
             <div>
                 <h4><a href="#">{% trans "Geographic and cultural informations" %}</a></h4>
@@ -125,7 +125,7 @@
                 </div>
             </div>
         {% endblock geoethnic_data %}
-        </div>
+        </div>-->
         <div class="extraInfos">
         {% block legal_data %}
         <div>
@@ -143,7 +143,7 @@
                     {% dl_field collection "publisher_collection" %}
                     {% dl_field collection "publisher_serial" %}
                     {% dl_field collection "booklet_author" %}
-                    <dt>{% trans "Bibliographic references" %}</dt>
+                    <!--<dt>{% trans "Bibliographic references" %}</dt>-->
                     <dd>{{ collection.external_references|html_line_break|safe }}</dd>
                     {% dl_field collection "public_access_label" %}
                     {% dl_field collection "legal_rights" %}
@@ -159,10 +159,10 @@
             <div>
                 <dl class="listing">
                     {% dl_field collection "acquisition_mode" %}
-                    {% dl_field collection "cnrs_contributor" %}
+                    <!--{% dl_field collection "cnrs_contributor" %}
                     {% dl_field collection "metadata_author" %}
                     <dt>{% trans "Related documentation" %}</dt>
-                    <dd>{{ collection.booklet_description|html_line_break|safe }}</dd>
+                    <dd>{{ collection.booklet_description|html_line_break|safe }}</dd>-->
                     {% dl_field collection "publishing_status" %}
                     {% dl_field collection "alt_ids" %}
                     {% dl_field collection "metadata_writer" %}

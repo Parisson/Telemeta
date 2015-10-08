@@ -186,7 +186,7 @@ SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
 TELEMETA_ORGANIZATION = 'Telemeta'
 TELEMETA_SUBJECTS = ('Telemeta', 'web', 'platform', 'audio', 'semantics')
 TELEMETA_DESCRIPTION = "Open web audio platform with semantics"
-TELEMETA_LOGO = STATIC_URL + 'telemeta/images/logo_telemeta_2.png'
+TELEMETA_LOGO = STATIC_URL + 'telemeta/images/logo_lam3.png'
 
 TELEMETA_GMAP_KEY = 'ABQIAAAArg7eSfnfTkBRma8glnGrlxRVbMrhnNNvToCbZQtWdaMbZTA_3RRGObu5PDoiBImgalVnnLU2yN4RMA'
 
@@ -299,3 +299,5 @@ HAYSTACK_CONNECTIONS = {
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
 HAYSTACK_SEARCH_RESULTS_PER_PAGE = 50
+
+

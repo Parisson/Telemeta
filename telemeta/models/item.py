@@ -71,62 +71,55 @@ class MediaItem(MediaResource):
     alt_title             = CharField(_('original title / translation'))
     collector             = CharField(_('collector'), help_text=_('First name, Last name ; First name, Last name'))
     collection            = ForeignKey('MediaCollection', related_name="items", verbose_name=_('collection'))
+    code                  = CharField(_('code'), unique=True, blank=True, required=True, help_text=_('CollectionCode_ItemCode'))
+    #voir model format : original_number       = CharField(_('original number'))
+    topic                 = WeakForeignKey('Topic', verbose_name=_('topic'))
+    summary               = TextField(_('summary'))
+    comment               = TextField(_('remarks'))
     recorded_from_date    = DateField(_('recording date (from)'), help_text=_('YYYY-MM-DD'))
     recorded_to_date      = DateField(_('recording date (until)'), help_text=_('YYYY-MM-DD'))
-    public_access         = CharField(_('access type'), choices=ITEM_PUBLIC_ACCESS_CHOICES, max_length=16, default="metadata")
-
-    # Geographic and cultural informations
     location              = WeakForeignKey('Location', verbose_name=_('location'))
     location_comment      = CharField(_('location details'))
+    publishing_date       = DateField(_('publishing date'))
+    language_iso          = ForeignKey('Language', related_name="items", verbose_name=_('Language (ISO norm)'), blank=True, null=True, on_delete=models.SET_NULL)
+    file                  = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename", max_length=1024)
+    organization          = WeakForeignKey('Organization', verbose_name=_('organization'))
+    scientist             = CharField(_('scientist'), help_text=_('First name, Last name ; First name, Last name'))
+    collector_selection   = CharField(_('collector selection'))
+    collector_from_collection = BooleanField(_('collector as in collection'))
+    depositor             = CharField(_('depositor'))
+    contributor           = CharField(_('contributor'))
+    author                = CharField(_('author / compositor'), help_text=_('First name, Last name ; First name, Last name'))
+    recordist             = CharField(_('recordist'))
+    rights                = WeakForeignKey('Rights', verbose_name=_('rights'))
+    public_access         = CharField(_('access type'), choices=ITEM_PUBLIC_ACCESS_CHOICES, max_length=16, default="metadata")
+
     cultural_area         = CharField(_('cultural area'))
     language              = CharField(_('language'))
-    language_iso          = ForeignKey('Language', related_name="items", verbose_name=_('Language (ISO norm)'), blank=True, null=True, on_delete=models.SET_NULL)
     ethnic_group          = WeakForeignKey('EthnicGroup', related_name="items", verbose_name=_('population / social group'))
     context_comment       = TextField(_('Ethnographic context'))
-
-    # Musical informations
     moda_execut           = CharField(_('implementing rules'))
     vernacular_style      = WeakForeignKey('VernacularStyle', related_name="items", verbose_name=_('vernacular style'))
     generic_style         = WeakForeignKey('GenericStyle', related_name="items", verbose_name=_('generic style'))
-    author                = CharField(_('author / compositor'), help_text=_('First name, Last name ; First name, Last name'))
-
-    # Legal mentions
-    organization          = WeakForeignKey('Organization', verbose_name=_('organization'))
-    depositor             = CharField(_('depositor'))
-    rights                = WeakForeignKey('Rights', verbose_name=_('rights'))
-
-    # Archiving data
-    code                  = CharField(_('code'), unique=True, blank=True, required=True, help_text=_('CollectionCode_ItemCode'))
     old_code              = CharField(_('original code'), unique=False, blank=True)
+
     track                 = CharField(_('item number'))
-    collector_selection   = CharField(_('collector selection'))
-    collector_from_collection = BooleanField(_('collector as in collection'))
     creator_reference     = CharField(_('creator reference'))
     external_references   = TextField(_('published references'))
     auto_period_access    = BooleanField(_('automatic access after a rolling period'), default=True)
-    comment               = TextField(_('remarks'))
 
-    # Technical data
     media_type            = WeakForeignKey('MediaType', related_name="items", verbose_name=_('media type'))
+
     approx_duration       = DurationField(_('approximative duration'), blank=True, help_text=_('hh:mm:ss'))
     mimetype              = CharField(_('mime type'), max_length=255, blank=True)
-    file                  = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename", max_length=1024)
     url                   = URLField(_('URL'), max_length=512, blank=True)
 
-    # LAM
-    recordist             = CharField(_('recordist'))
     digitalist            = CharField(_('digitalist'))
     digitization_date     = DateField(_('digitization date'))
-    publishing_date       = DateField(_('publishing date'))
-    scientist             = CharField(_('scientist'), help_text=_('First name, Last name ; First name, Last name'))
-    topic                 = WeakForeignKey('Topic', verbose_name=_('topic'))
-    summary               = TextField(_('summary'))
-    contributor           = CharField(_('contributor'))
 
-    # Manager
     objects               = MediaItemManager()
 
-    exclude = ['copied_from_item', 'mimetype',]
+    exclude = ['collector', 'cultural_area', 'old_code', 'language','ethnic_group', 'moda_execut', 'vernacular_style', 'generic_style', 'url', 'creator_reference', 'media_type', 'copied_from_item', 'mimetype', 'context_comment', 'collector_selection', 'collector_from_collection']
 
     restricted = ['copied_from_item', 'mimetype', 'public_access']
 
