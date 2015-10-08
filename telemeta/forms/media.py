@@ -150,6 +150,7 @@ class CollectionIdentifierInline(InlineFormSet):
 class ItemPerformanceInline(InlineFormSet):
 
     model = MediaItemPerformance
+    exclude = ['alias']
 
 
 class ItemKeywordInline(InlineFormSet):

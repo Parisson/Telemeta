@@ -235,6 +235,9 @@
         <dl class="listing">
         {% dl_field item "title" placeholder %}
 
+        <dt>{% trans "Media type" %}</dt>
+        <dd>{% trans mime_type|mime_to_media_type %}</dd>
+
         <dt>{% trans "Instruments" %}</dt>
         <dd>
         {% if item.performances %}
@@ -245,7 +248,7 @@
         <dt>{% trans "Recording date" %}</dt>
         <dd>{% if item.recorded_from_date %}{{ item.recorded_from_date }}{% endif %}{% if item.recorded_from_date and item.recorded_to_date%} - {% endif %}{% if item.recorded_to_date %}{{ item.recorded_to_date}}{% endif %}</dd>
 
-        {% dl_field item "collector" placeholder %}
+        <!--{% dl_field item "collector" placeholder %}-->
 
         <dt>{% field_label item "collection" %}</dt>
         <dd><a href="{% url 'telemeta-collection-detail' item.collection.public_id %}">{{ item.collection }}</a></dd>
@@ -270,8 +273,6 @@
 
         {% dl_field item "keywords" join with ", " %}
 
-        <dt>{% trans "Media type" %}</dt>
-        <dd>{% trans mime_type|mime_to_media_type %}</dd>
 
         {% if last_revision %}
             <dt>{% trans "Last modification" %}</dt>

@@ -52,31 +52,33 @@ class Format(ModelCore):
 
     item                  = ForeignKey('MediaItem', related_name="format", verbose_name = _("item"),
                                        blank=True, null=True, on_delete=models.SET_NULL)
-    physical_format       = WeakForeignKey(PhysicalFormat, related_name="format",
-                                     verbose_name = _("physical format"))
     original_code         = CharField(_('original code'))
-    original_number       = CharField(_('original number'))
     original_status       = CharField(_('original status'))
-    original_state        = TextField(_('technical properties / conservation state'))
-    original_comments     = TextField(_('comments / notes'))
     original_location     = ForeignKey('Location', related_name="format",
                                        verbose_name = _("original location"),
                                        blank=True, null=True, on_delete=models.SET_NULL)
-    original_channels     = WeakForeignKey(NumberOfChannels, related_name="format",
-                                        verbose_name = _("number of channels"))
-    original_audio_quality = TextField(_('audio quality'))
-    recording_system      = CharField(_('recording system'))
-
-    # Tapes
-    tape_wheel_diameter = WeakForeignKey(TapeWheelDiameter, related_name="format",
-                                        verbose_name = _("tape wheel diameter (cm)"))
-    tape_thickness      = CharField(_('tape thickness (um)'))
-    tape_speed          = WeakForeignKey(TapeSpeed, related_name="format",
-                                        verbose_name = _("tape speed (cm/s)"))
+    physical_format       = WeakForeignKey(PhysicalFormat, related_name="format",
+                                     verbose_name = _("physical format"))
     tape_vendor         = WeakForeignKey(TapeVendor, related_name="format",
                                         verbose_name = _("tape vendor"))
     tape_reference      = CharField(_('tape reference'))
     sticker_presence    = BooleanField(_('sticker presence'))
+    tape_thickness      = CharField(_('tape thickness (um)'))
+    tape_wheel_diameter = WeakForeignKey(TapeWheelDiameter, related_name="format",
+                                        verbose_name = _("tape wheel diameter (cm)"))
+    original_state        = TextField(_('technical properties / conservation state'))
+    recording_system      = CharField(_('recording system'))
+    original_audio_quality = TextField(_('audio quality'))
+
+
+    original_number       = CharField(_('original number'))
+    original_comments     = TextField(_('comments / notes'))
+    original_channels     = WeakForeignKey(NumberOfChannels, related_name="format",
+                                        verbose_name = _("number of channels"))
+
+    # Tapes
+    tape_speed          = WeakForeignKey(TapeSpeed, related_name="format",
+                                        verbose_name = _("tape speed (cm/s)"))
 
     class Meta(MetaCore):
         db_table = 'media_formats'
