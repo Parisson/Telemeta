@@ -72,7 +72,7 @@ setup(
         'python-ebml',
         'zipstream',
         'django-haystack',
-        'elasticsearch<2.0.0',
+        'elasticsearch==1.6.0',
         'ebooklib',
     ],
   tests_require=['pytest-django', 'pytest-cov', 'factory-boy'],
