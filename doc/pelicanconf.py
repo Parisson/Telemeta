@@ -44,7 +44,7 @@ SOCIAL = (('GitHub', 'https://github.com/Parisson/Telemeta'),
 # Uncomment following line if you want document-relative URLs when developing
 #RELATIVE_URLS = True
 
-PLUGIN_PATHS = ['plugins']
+PLUGIN_PATHS = ['pelican-plugins']
 PLUGINS = ['pin_to_top']
 
 STATIC_PATHS = ['images', 'css']
@@ -68,4 +68,3 @@ GITHUB_USER = 'Parisson'
 
 # Content licensing: CC-BY
 CC_LICENSE = "CC-BY"
-
