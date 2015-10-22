@@ -65,6 +65,7 @@ PUBLIC_ACCESS_CHOICES = (('none', _('none')), ('metadata', _('metadata')),
 
 public_extra_types = {
     '.webm': 'video/webm',
+    '.mp4': 'video/mp4',
 }
 
 private_extra_types = {

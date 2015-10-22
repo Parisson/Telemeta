@@ -23,7 +23,7 @@ from optparse import make_option
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 from django.contrib.auth.models import User
-from django.core.management import setup_environ
+#from django.core.management import setup_environ
 from django.core.files.base import ContentFile
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
@@ -82,6 +82,7 @@ class Command(BaseCommand):
 
     def write_file(self, item, media):
         filename = media.split(os.sep)[-1]
+        print 'importing ' + filename
         if os.path.exists(media):
             if not item.file or self.force:
                 if not self.media_root in self.source_dir:
@@ -90,14 +91,13 @@ class Command(BaseCommand):
                     if not self.dry_run:
                         file_content = ContentFile(f.read())
                         item.file.save(filename, file_content)
-                        item.save()
                     f.close()
                 else:
                     print "file in MEDIA_ROOT, linking..."
-                    path = media[len(self.media_root)+1:]
+                    path = media[len(self.media_root):]
                     if not self.dry_run:
                         item.file = path
-                        item.save()
+                item.save()
                 if self.user:
                     item.set_revision(self.user)
             else:
