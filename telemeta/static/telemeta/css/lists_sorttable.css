@@ -1,0 +1,19 @@
+/* tables */
+table.listing thead tr th, table.listing tfoot tr th {
+	
+}
+table.listing thead tr .header {
+	background-image: url(images/bg.gif);
+	background-repeat: no-repeat;
+	background-position: right;
+	cursor: pointer;
+}
+table.listing thead tr .headerSortUp {
+	background-image: url(images/asc.gif);
+}
+table.listing thead tr .headerSortDown {
+	background-image: url(images/desc.gif);
+}
+table.listing thead tr .headerSortDown, table.listing thead tr .headerSortUp {
+	background-color: #8dbdd8;
+}

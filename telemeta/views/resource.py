@@ -36,6 +36,8 @@
 
 
 from telemeta.views.core import *
+from telemeta.views.epub import *
+from django.utils.translation import ugettext_lazy as _
 
 
 class ResourceView(object):
@@ -157,16 +159,22 @@ class ResourceView(object):
         self.setup(type)
         resource = self.model.objects.get(code=public_id)
         media = self.related.objects.get(resource=resource, id=media_id)
-        response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
+        if media.file:
+            response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
+        else:
+            raise Http404
         return response
 
     def related_download(self, request, type, public_id, media_id):
         self.setup(type)
         resource = self.model.objects.get(code=public_id)
         media = self.related.objects.get(resource=resource, id=media_id)
-        filename = media.file.path.split(os.sep)[-1]
-        response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
-        response['Content-Disposition'] = 'attachment; ' + 'filename=' + filename
+        if media.file:
+            filename = media.file.path.split(os.sep)[-1]
+            response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
+            response['Content-Disposition'] = 'attachment; ' + 'filename=' + filename
+        else:
+            raise Http404
         return response
 
 
@@ -201,16 +209,15 @@ class ResourceMixin(View):
         # super(CorpusDetailView, self).get_object()
         self.type = self.kwargs['type']
         self.setup(self.type)
-        obj = self.model.objects.filter(code=self.kwargs['public_id'])
-        if not obj:
+        objs = self.model.objects.filter(code=self.kwargs['public_id'])
+        if not objs:
             try:
                 obj = self.model.objects.get(id=self.kwargs['public_id'])
             except:
-                pass
+                raise Http404
         else:
-            obj = obj[0]
-        self.pk = obj.pk
-        return get_object_or_404(self.model, pk=self.pk)
+            obj = objs[0]
+        return obj
 
     def get_context_data(self, **kwargs):
         context = super(ResourceMixin, self).get_context_data(**kwargs)
@@ -225,28 +232,13 @@ class ResourceSingleMixin(ResourceMixin):
         self.setup(self.type)
         return self
 
-    def get_object(self):
-        # super(CorpusDetailView, self).get_object()
-        self.type = self.kwargs['type']
-        self.setup(self.type)
-        obj = self.model.objects.filter(code=self.kwargs['public_id'])
-        if not obj:
-            try:
-                obj = self.model.objects.get(id=self.kwargs['public_id'])
-            except:
-                pass
-        else:
-            obj = obj[0]
-        self.pk = obj.pk
-        return get_object_or_404(self.model, pk=self.pk)
-
     def get_context_data(self, **kwargs):
         context = super(ResourceMixin, self).get_context_data(**kwargs)
         resource = self.get_object()
         related_media = self.related.objects.filter(resource=resource)
         check_related_media(related_media)
         playlists = get_playlists_names(self.request)
-        revisions = Revision.objects.filter(element_type=self.type, element_id=self.pk).order_by('-time')
+        revisions = Revision.objects.filter(element_type=self.type, element_id=resource.pk).order_by('-time')
         context['resource'] = resource
         context['type'] = self.type
         context['related_media'] = related_media
@@ -349,108 +341,42 @@ class ResourceEditView(ResourceSingleMixin, UpdateWithInlinesView):
         return super(ResourceEditView, self).dispatch(*args, **kwargs)
 
 
-def cleanup_path(path):
-    new_path = []
-    for dir in path.split(os.sep):
-        new_path.append(slugify(dir))
-    return os.sep.join(new_path)
-
-
-class CorpusEpubView(View):
-
-    model = MediaCorpus
-
-    def get_object(self):
-        return MediaCorpus.objects.get(public_id=self.kwargs['public_id'])
+class ResourceEpubView(ResourceSingleMixin, BaseEpubMixin, View):
+    "Download corpus data embedded in an EPUB3 file"
 
     def get(self, request, *args, **kwargs):
-        """
-        Stream an Epub file of collection data
-        """
-        from collections import OrderedDict
-        from ebooklib import epub
-        from django.template.loader import render_to_string
-
-        book = epub.EpubBook()
-        corpus = self.get_object()
-        local_path = os.path.dirname(__file__)
-        css = os.sep.join([local_path, '..', 'static', 'telemeta', 'css', 'telemeta_epub.css'])
-        collection_template = os.sep.join([local_path, '..', 'templates', 'telemeta', 'collection_epub.html'])
-        site = Site.objects.get_current()
-
-        # add metadata
-        book.set_identifier(corpus.public_id)
-        book.set_title(corpus.title)
-        book.set_language('fr')
-        book.add_author(corpus.descriptions)
-
-        # add cover image
-        for media in corpus.related.all():
-            if 'cover' in media.title or 'Cover' in media.title:
-                book.set_cover("cover.jpg", open(media.file.path, 'r').read())
-                break
-
-        chapters = []
-        for collection in corpus.children.all():
-            items = {}
-            for item in collection.items.all():
-                if '.' in item.old_code:
-                    id = item.old_code.split('.')[1]
-                else:
-                    id = item.old_code
-                id = id.replace('a', '.1').replace('b', '.2')
-                items[item] = float(id)
-            items = OrderedDict(sorted(items.items(), key=lambda t: t[1]))
-
-            for item in items:
-                if item.file:
-                    audio = open(item.file.path, 'r')
-                    filename = str(item.file)
-                    epub_item = epub.EpubItem(file_name=str(item.file), content=audio.read())
-                    book.add_item(epub_item)
-                for related in item.related.all():
-                    if 'image' in related.mime_type:
-                        image = open(related.file.path, 'r')
-                        epub_item = epub.EpubItem(file_name=str(related.file), content=image.read())
-                        book.add_item(epub_item)
-            context = {'collection': collection, 'site': site, 'items': items}
-            c = epub.EpubHtml(title=collection.title, file_name=collection.code + '.xhtml', lang='fr')
-            c.content = render_to_string(collection_template, context)
-            chapters.append(c)
-            # add chapters to the book
-            book.add_item(c)
-
-        # create table of contents
-        # - add manual link
-        # - add section
-        # - add auto created links to chaptersfesse
-
-        book.toc = (( chapters ))
-
-        # add navigation files
-        book.add_item(epub.EpubNcx())
-        book.add_item(epub.EpubNav())
-
-        # add css style
-        style = open(css, 'r')
-        nav_css = epub.EpubItem(uid="style_nav", file_name="style/nav.css", media_type="text/css", content=style.read())
-        book.add_item(nav_css)
-
-        # create spin, add cover page as first page
-        chapters.insert(0,'nav')
-        chapters.insert(0,'cover')
-        book.spine = chapters
-
-        # create epub file
-        filename = '/tmp/test.epub'
-        epub.write_epub(filename, book, {})
-        epub_file = open(filename, 'rb')
-
+        self.setup_epub(self.get_object())
+        if not os.path.exists(self.path):
+            self.write_book()
+        epub_file = open(self.path, 'rb')
         response = HttpResponse(epub_file.read(), content_type='application/epub+zip')
-        response['Content-Disposition'] = "attachment; filename=%s.%s" % \
-                                             (collection.code, 'epub')
+        response['Content-Disposition'] = "attachment; filename=%s" % self.filename + '.epub'
         return response
 
-    @method_decorator(login_required)
+
+class ResourceEpubPasswordView(ResourceSingleMixin, FormView):
+
+    template_name = 'telemeta/resource_epub_password.html'
+    form_class = EpubPasswordForm
+
+    def get_success_url(self):
+        return reverse_lazy('telemeta-resource-epub-list', kwargs={'type': self.kwargs['type'], 'public_id': self.kwargs['public_id']})
+
+    def form_valid(self, form):
+        self.password = form.cleaned_data['password']
+        if self.password != unicode('mélodie'.decode('utf-8')):
+            messages.info(self.request, _("Bad password, please try again."))
+            return redirect('telemeta-resource-password-epub', self.kwargs['type'], self.kwargs['public_id'])
+        else:
+            return redirect('telemeta-resource-epub-list', self.kwargs['type'], self.kwargs['public_id'])
+
+        return super(ResourceEpubPasswordView, self).form_valid(form)
+
     def dispatch(self, *args, **kwargs):
-        return super(CorpusEpubView, self).dispatch(*args, **kwargs)
+        return super(ResourceEpubPasswordView, self).dispatch(*args, **kwargs)
+
+
+class ResourceEpubListView(ResourceDetailView):
+
+    template_name = 'telemeta/resource_epub_list.html'
+

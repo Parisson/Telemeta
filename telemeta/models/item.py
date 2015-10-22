@@ -132,6 +132,13 @@ class MediaItem(MediaResource):
                     'publishing_date', 'scientist', 'topic',
                     'summary', 'contributor', ]
 
+    restricted = ['copied_from_item', 'mimetype',
+                    'organization', 'depositor', 'rights',
+                    'recordist', 'digitalist', 'digitization_date',
+                    'publishing_date', 'scientist', 'topic',
+                    'summary', 'contributor', 'public_access']
+
+
     def keywords(self):
         return ContextKeyword.objects.filter(item_relations__item = self)
     keywords.verbose_name = _('keywords')
@@ -220,7 +227,7 @@ class MediaItem(MediaResource):
                 instruments.append(instrument)
             if not alias in instruments:
                 instruments.append(alias)
-
+        #no reference for __name_cmp anywhere
         instruments.sort(self.__name_cmp)
         return instruments
 
@@ -244,7 +251,12 @@ class MediaItem(MediaResource):
                 del metadata[key]
 
         metadata['url'] = self.get_url()
-        metadata['last_modification_date'] = unicode(self.get_revision().time)
+        revision = self.get_revision()
+        if revision:
+            time = unicode(revision.time)
+        else:
+            time = ''
+        metadata['last_modification_date'] = time
         metadata['collection'] = self.collection.get_url()
 
         keywords = []
@@ -254,19 +266,18 @@ class MediaItem(MediaResource):
 
         i = 0
         for media in self.related.all():
+            tag = 'related_media_title' + '_' + str(i)
             if media.title:
-                tag = 'related_media_title' + '_' + str(i)
                 metadata[tag] = media.title
             else:
                 metadata[tag] = ''
+            tag = 'related_media_url' + '_' + str(i)
             if media.url:
-                tag = 'related_media_url' + '_' + str(i)
                 metadata[tag] = media.url
             elif media.url:
-                metadata[tag] = get_full_url(reverse('telemeta-collection-related',
+                metadata[tag] = get_full_url(reverse('telemeta-item-related',
                                             kwargs={'public_id': self.public_id, 'media_id': media.id}))
             i += 1
-
 
         instruments = []
         instrument_vernacular_names = []
@@ -296,7 +307,13 @@ class MediaItem(MediaResource):
         for analyzer_id in analyzers:
             analysis = MediaItemAnalysis.objects.filter(item=self, analyzer_id=analyzer_id)
             if analysis:
-                metadata[analyzer_id] = analysis[0].value
+                if analyzer_id == 'duration':
+                    value = ':'.join([str('%.2d' % int(t)) for t in analysis[0].value.split(':')])
+                else:
+                    value = analysis[0].value
+                metadata[analyzer_id] = value
+            elif analyzer_id == 'duration':
+                metadata[analyzer_id] = self.approx_duration
 
         metadata['file_size'] = unicode(self.size())
         metadata['thumbnail'] = get_full_url(reverse('telemeta-item-visualize',
@@ -313,6 +330,17 @@ class MediaItem(MediaResource):
             metadata['identifier_type'] = identifier.type
             metadata['identifier_date'] = unicode(identifier.date_last)
             metadata['identifier_note'] = identifier.notes
+
+        # Collection
+        metadata['recording_context'] = self.collection.recording_context
+        metadata['description_collection'] = self.collection.description
+        metadata['status'] = self.collection.status
+        metadata['original_format'] = self.collection.original_format
+        metadata['physical_format'] = self.collection.physical_format
+        metadata['year_published'] = self.collection.year_published
+        metadata['publisher'] = self.collection.publisher
+        metadata['publisher_collection'] = self.collection.publisher_collection
+        metadata['reference_collection'] = self.collection.reference
 
         return metadata
 

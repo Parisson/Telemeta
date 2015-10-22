@@ -1,0 +1,88 @@
+{% load telemeta_utils %}
+{% load i18n %}
+
+{% if page.object_list %}
+
+<table class="listing">
+<tr>
+    {% if user.is_authenticated %}
+        <th class="highlight"><input id="selectAll" type="checkbox"/> select all </th>
+        <th>{% trans "title" %}</th>
+    {% else %}
+        <th class="highlight">{% trans "title" %}</th>
+    {% endif %}
+    <th>{% trans "Digitized" %}</th>
+    <th>{% trans "Recordist" %}</th>
+    {% if location_name %}
+    <th>{% trans "Location" %}</th>
+    {% else %}
+    <th>{% trans "Country/Continent" %}</th>
+    {% endif %}
+    <th>{% trans "Year of recording" %}</th>
+    <th>{% trans "Code" %}</th>
+</tr>
+{% if user.is_authenticated %}
+    {% for result in page.object_list %}
+    <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
+        <td class="highlight"><input type="checkbox" class="check1" name="selected_items_list" value="{{ result.object.id }}"/></td>
+        <td>
+            <a href="{% url "telemeta-item-detail" result.object.public_id %}">{{ result.object }}</a></br>
+        </td>
+        <td align="center">
+            {% if result.object.file %}
+             <a href="{% url "telemeta-item-detail" result.object.public_id %}">
+              <center><span class="glyphicon glyphicon-volume-up" style="font-size: 1.3em;"></span></center>
+            {% endif %}
+        </td>
+
+        <td>{{ result.object.collector }}</td>
+        <td>{{ result.object.location.name }}</td>
+        <td>
+        {% if result.object.recorded_from_date %}
+            {{ result.object.recorded_from_date.year }}
+            {% if result.object.recorded_to_date and not result.object.recorded_to_date.year|equals:result.object.recorded_from_date.year %}
+                - {{ result.object.recorded_to_date.year }}
+            {% endif %}
+        {% endif %}
+        </td>
+        <td>
+            {{ result.object.code|default:result.object.old_code }}
+        </td>
+    </tr>
+    {% endfor %}
+{% else %}
+    {% for result in page.object_list %}
+    <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
+        <td class="highlight">
+            <a href="{% url "telemeta-item-detail" result.object.public_id %}">{{ result.object }}</a></br>
+        </td>
+        <td align="center">
+            {% if result.object.file %}
+             <a href="{% url "telemeta-item-detail" result.object.public_id %}">
+              <center><span class="glyphicon glyphicon-volume-up" style="font-size: 1.3em;"></span></center>
+            {% endif %}
+        </td>
+
+        <td>{{ result.object.collector }}</td>
+        <td>{{ result.object.location.name }}</td>
+        <td>
+        {% if result.object.recorded_from_date %}
+            {{ result.object.recorded_from_date.year }}
+            {% if result.object.recorded_to_date and not result.object.recorded_to_date.year|equals:result.object.recorded_from_date.year %}
+                - {{ result.object.recorded_to_date.year }}
+            {% endif %}
+        {% endif %}
+        </td>
+        <td>
+            {{ result.object.code|default:result.object.old_code }}
+        </td>
+    </tr>
+    {% endfor %}
+{% endif %}
+
+</table>
+{% else %}
+    <p>{% trans "No results found" %}</p>
+{% endif %}
+
+

@@ -1,0 +1,38 @@
+<link rel="stylesheet" type="text/css" href="style/epub.css" />
+
+<div class="title">
+ <h2>{{ title }}</h2>
+ <h3>{{ subtitle }}</h3>
+</div>
+
+{% for item in items %}
+<div class="item">
+  <p>
+  <b>Son {{ item.old_code }}</b> : {{ item.title }}. {{ item.comment }} ({{ item.track }})
+  </p>
+
+  <div class="item-audio">
+   <audio class="item-player" src="{{ item.file }}" controls="controls"></audio>
+  </div>
+
+  {% if item.related.all %}
+  {% for image in item.related.all %}
+    {% if 'image' in image.mime_type %}
+       <div class="item-image">
+        <img src="{{ image.file }}"/>
+       </div>
+    {% endif %}
+   {% endfor %}
+  {% else %}
+   <div class="item-image">
+        <img src="{{ default_image }}"/>
+   </div>
+  {% endif %}
+</div>
+{% endfor %}
+
+{% if last_collection %}
+<div class="last-page">
+  <img src="{{ default_image_end }}"/>
+</div>
+{% endif %}

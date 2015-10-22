@@ -18,7 +18,8 @@ ADMINS = (
 MANAGERS = ADMINS
 
 # Full filesystem path to the project.
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+#PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = '/home/sandbox'
 
 DATABASES = {
     'default': {
@@ -57,6 +58,7 @@ LANGUAGES = [ ('fr', 'French'),
               ('de', 'German'),
               ('zh_CN', 'Simplified Chinese'),
               ('ar_TN', 'Arabic'),
+              ('pt_BR', 'Portuguese'),
 ]
 
 SITE_ID = 1
@@ -159,7 +161,6 @@ INSTALLED_APPS = (
     'bootstrap_pagination',
     'googletools',
     'registration',
-    'epub',
     'rest_framework',
     'djcelery',
     'haystack',
@@ -182,9 +183,9 @@ AUTHENTICATION_BACKENDS = (
 
 SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
 
-TELEMETA_ORGANIZATION = 'Parisson'
-TELEMETA_SUBJECTS = ('test', 'telemeta', 'sandbox')
-TELEMETA_DESCRIPTION = "Telemeta TEST sandbox"
+TELEMETA_ORGANIZATION = 'Telemeta'
+TELEMETA_SUBJECTS = ('Telemeta', 'web', 'platform', 'audio', 'semantics')
+TELEMETA_DESCRIPTION = "Open web audio platform with semantics"
 TELEMETA_LOGO = STATIC_URL + 'telemeta/images/logo_telemeta_2.png'
 
 TELEMETA_GMAP_KEY = 'ABQIAAAArg7eSfnfTkBRma8glnGrlxRVbMrhnNNvToCbZQtWdaMbZTA_3RRGObu5PDoiBImgalVnnLU2yN4RMA'
@@ -294,3 +295,7 @@ HAYSTACK_CONNECTIONS = {
         'INDEX_NAME': 'haystack',
     },
 }
+
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
+HAYSTACK_SEARCH_RESULTS_PER_PAGE = 50

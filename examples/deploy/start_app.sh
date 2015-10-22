@@ -8,7 +8,7 @@ manage=$sandbox'/manage.py'
 wsgi=$sandbox'/wsgi.py'
 
 # stating apps
-pip install django-haystack elasticsearch
+# pip install django-haystack elasticsearch
 
 # waiting for other services
 sh $app_dir/examples/deploy/wait.sh

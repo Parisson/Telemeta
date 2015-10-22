@@ -115,28 +115,7 @@ class PlaylistView(object):
                     elements.append(collection)
 
         if elements:
-            tags = []
-            element_dicts = [e.to_dict_with_more() for e in elements]
-            for e in element_dicts:
-                for key in e.keys():
-                    if not key in tags:
-                        tags.append(key)
-            # code and title on the two first column
-            tags.remove('code')
-            tags.remove('title')
-            tags.sort()
-            tags.insert(0, 'title')
-            tags.insert(0, 'code')
-            writer.writerow(tags)
-
-            for element in element_dicts:
-                data = []
-                for tag in tags:
-                    if tag in element.keys():
-                        data.append(element[tag])
-                    else:
-                        data.append('')
-                writer.writerow(data)
+            csv = CSVExport(writer)
+            csv.write(elements)
 
         return response
-

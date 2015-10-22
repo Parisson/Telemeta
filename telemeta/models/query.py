@@ -44,6 +44,7 @@ import re
 
 engine = settings.DATABASES['default']['ENGINE']
 
+
 class MediaItemQuerySet(CoreQuerySet):
     "Base class for all media item query sets"
 
@@ -68,6 +69,7 @@ class MediaItemQuerySet(CoreQuerySet):
             self.by_fuzzy_collector_q(pattern) )
 
         return self.filter(q)
+
 
     def without_collection(self):
         "Find items which do not belong to any collection"
@@ -366,6 +368,7 @@ class MediaCollectionQuerySet(CoreQuerySet):
             items.append(performance.media_item)
         return self.filter(items__in=items).distinct()
 
+
 class MediaCollectionManager(CoreManager):
     "Manage collection queries"
 
@@ -439,6 +442,7 @@ class LocationQuerySet(CoreQuerySet):
 
     def current(self):
         return self.filter(id__in=self.values_list('current_location_id', flat=True)).distinct()
+
 
 class LocationManager(CoreManager):
 

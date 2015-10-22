@@ -85,7 +85,7 @@ from telemeta.interop.oaidatasource import TelemetaOAIDataSource
 from telemeta.util.unaccent import unaccent
 from telemeta.util.unaccent import unaccent_icmp
 from telemeta.util.logger import Logger
-from telemeta.util.unicode import UnicodeWriter
+from telemeta.util.unicode import UnicodeWriter, CSVExport
 from telemeta.cache import TelemetaCache
 import pages
 from telemeta.forms import *
@@ -95,7 +95,12 @@ import jqchat.models
 mods = {'item': MediaItem, 'collection': MediaCollection,
         'corpus': MediaCorpus, 'fonds': MediaFonds, 'marker': MediaItemMarker, }
 
-# TOOLS
+
+class TelemetaBaseMixin(object):
+
+    cache_data = TelemetaCache(settings.TELEMETA_DATA_CACHE_DIR)
+    cache_export = TelemetaCache(settings.TELEMETA_EXPORT_CACHE_DIR)
+
 
 class FixedFileWrapper(FileWrapper):
     def __iter__(self):
@@ -227,6 +232,8 @@ def get_playlists(request, user=None):
                     element = None
                 resources.append({'element': element, 'type': resource.resource_type, 'public_id': resource.public_id })
             playlists.append({'playlist': playlist, 'resources': resources})
+        #add by Killian Mary for sort playlist by title
+        playlists.sort(key=lambda x: x['playlist'].title)
     return playlists
 
 
@@ -299,3 +306,9 @@ def get_kwargs_or_none(key, kwargs):
     else:
         return None
 
+
+def cleanup_path(path):
+    new_path = []
+    for dir in path.split(os.sep):
+        new_path.append(slugify(dir))
+    return os.sep.join(new_path)

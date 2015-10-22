@@ -41,25 +41,19 @@ from telemeta.views.marker import *
 import timeside.core
 
 
-class ItemBaseMixin(object):
+class ItemBaseMixin(TelemetaBaseMixin):
 
     graphers = timeside.core.processor.processors(timeside.core.api.IGrapher)
     decoders = timeside.core.processor.processors(timeside.core.api.IDecoder)
     encoders = timeside.core.processor.processors(timeside.core.api.IEncoder)
     analyzers = timeside.core.processor.processors(timeside.core.api.IAnalyzer)
     value_analyzers = timeside.core.processor.processors(timeside.core.api.IValueAnalyzer)
-    cache_data = TelemetaCache(settings.TELEMETA_DATA_CACHE_DIR)
-    cache_export = TelemetaCache(settings.TELEMETA_EXPORT_CACHE_DIR)
 
     export_enabled = getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True)
     export_formats = getattr(settings, 'TELEMETA_DOWNLOAD_FORMATS', ('mp3', 'wav'))
     default_grapher_id = getattr(settings, 'TIMESIDE_DEFAULT_GRAPHER_ID', ('waveform_simple'))
     default_grapher_sizes = getattr(settings, 'TIMESIDE_DEFAULT_GRAPHER_SIZES', ['346x130', ])
     auto_zoom = getattr(settings, 'TIMESIDE_AUTO_ZOOM', False)
-
-
-class ItemView(ItemBaseMixin):
-    """Provide Item web UI methods"""
 
     def get_export_formats(self):
         formats = []
@@ -74,7 +68,9 @@ class ItemView(ItemBaseMixin):
         for grapher in self.graphers:
             if grapher.id() == self.default_grapher_id:
                 graphers.insert(0, {'name':grapher.name(), 'id': grapher.id()})
-            else:
+            elif not hasattr(grapher, '_staging'):
+                graphers.append({'name':grapher.name(), 'id': grapher.id()})
+            elif not grapher._staging:
                 graphers.append({'name':grapher.name(), 'id': grapher.id()})
         return graphers
 
@@ -84,17 +80,62 @@ class ItemView(ItemBaseMixin):
                 break
         return grapher
 
+    def get_export_formats(self):
+        formats = []
+        for encoder in self.encoders:
+            if encoder.file_extension() in self.export_formats:
+                formats.append({'name': encoder.format(),
+                                    'extension': encoder.file_extension()})
+        return formats
+
+    def item_previous_next(self, item):
+        """Get previous and next items inside the collection of the item"""
+
+        pks = []
+        items = MediaItem.objects.filter(collection=item.collection)
+        items = items.order_by('code', 'old_code')
+
+        if len(items) > 1:
+            for it in items:
+                pks.append(it.pk)
+            for pk in pks:
+                if pk == item.pk:
+                    if pk == pks[0]:
+                        previous_pk = pks[-1]
+                        next_pk = pks[1]
+                    elif pk == pks[-1]:
+                        previous_pk = pks[-2]
+                        next_pk = pks[0]
+                    else:
+                        previous_pk = pks[pks.index(pk)-1]
+                        next_pk = pks[pks.index(pk)+1]
+                    for it in items:
+                        if it.pk == previous_pk:
+                            previous = it
+                        if it.pk == next_pk:
+                            next = it
+                    previous = previous.public_id
+                    next = next.public_id
+        else:
+             previous = item.public_id
+             next = item.public_id
+        return previous, next
+
+
+class ItemView(ItemBaseMixin):
+    """Provide Item web UI methods"""
+
     def item_detail(self, request, public_id=None, marker_id=None, width=None, height=None,
                         template='telemeta/mediaitem_detail.html'):
         """Show the details of a given item"""
 
         # get item with one of its given marker_id
         if not public_id and marker_id:
-            marker = MediaItemMarker.objects.get(public_id=marker_id)
+            marker = get_object_or_404(MediaItemMarker, public_id=marker_id)
             item_id = marker.item_id
             item = MediaItem.objects.get(id=item_id)
         else:
-            item = MediaItem.objects.get(public_id=public_id)
+            item = get_object_or_404(MediaItem, public_id=public_id)
 
         access = get_item_access(item, request.user)
 
@@ -136,23 +177,30 @@ class ItemView(ItemBaseMixin):
                     })
 
     def related_media_item_stream(self, request, item_public_id, media_id):
-        item = MediaItem.objects.get(public_id=item_public_id)
-        media = MediaItemRelated.objects.get(item=item, id=media_id)
-        filename = media.file.path.split(os.sep)[-1]
-        response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
+        item = get_object_or_404(MediaItem, code=item_public_id)
+        media = get_object_or_404(MediaItemRelated, item=item, id=media_id)
+        if media.file:
+            response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
+            filename = media.file.path.split(os.sep)[-1]
+            response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
+        else:
+            raise Http404
         return response
 
     def related_media_item_download(self, request, item_public_id, media_id):
-        item = MediaItem.objects.get(public_id=item_public_id)
-        media = MediaItemRelated.objects.get(item=item, id=media_id)
-        filename = media.file.path.split(os.sep)[-1]
-        response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
-        response['Content-Disposition'] = 'attachment; ' + 'filename=' + filename
+        item = get_object_or_404(MediaItem, code=item_public_id)
+        media = get_object_or_404(MediaItemRelated, item=item, id=media_id)
+        if media.file:
+            filename = media.file.path.split(os.sep)[-1]
+            response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
+            response['Content-Disposition'] = 'attachment; ' + 'filename=' + filename
+        else:
+            raise Http404
         return response
 
     @method_decorator(permission_required('telemeta.change_mediaitem'))
     def related_media_edit(self, request, public_id, template):
-        item = MediaItem.objects.get(public_id=public_id)
+        item = get_object_or_404(MediaItem, code=public_id)
         MediaItemRelatedFormSet = inlineformset_factory(MediaItem, MediaItemRelated, form=MediaItemRelatedForm)
         if request.method == 'POST':
             formset = MediaItemRelatedFormSet(data=request.POST, files=request.FILES, instance=item)
@@ -162,7 +210,6 @@ class ItemView(ItemBaseMixin):
                 return redirect('telemeta-item-edit', public_id)
         else:
             formset = MediaItemRelatedFormSet(instance=item)
-
         return render(request, template, {'item': item, 'formset': formset,})
 
 
@@ -370,6 +417,18 @@ class ItemListView(ListView):
         context['count'] = self.object_list.count()
         return context
 
+class ItemListViewFullAccess(ListView):
+
+    model = MediaItem
+    template_name = "telemeta/mediaitem_list.html"
+    paginate_by = 20
+    queryset = MediaItem.objects.enriched().filter(Q(collection__public_access="full")|Q(public_access="full")).sound().exclude(collection__public_access="none").order_by('code', 'old_code')
+
+    def get_context_data(self, **kwargs):
+        context = super(ItemListViewFullAccess, self).get_context_data(**kwargs)
+        context['count'] = self.object_list.count()
+        return context
+
 
 class ItemUnpublishedListView(ItemListView):
 
@@ -394,65 +453,6 @@ class ItemViewMixin(ItemBaseMixin):
     # inlines = [ItemPerformanceInline, ItemKeywordInline, ItemRelatedInline,
     #             ItemFormatInline, ItemIdentifierInline]
 
-    def get_export_formats(self):
-        formats = []
-        for encoder in self.encoders:
-            if encoder.file_extension() in self.export_formats:
-                formats.append({'name': encoder.format(),
-                                    'extension': encoder.file_extension()})
-        return formats
-
-    def item_previous_next(self, item):
-        """Get previous and next items inside the collection of the item"""
-
-        pks = []
-        items = MediaItem.objects.filter(collection=item.collection)
-        items = items.order_by('code', 'old_code')
-
-        if len(items) > 1:
-            for it in items:
-                pks.append(it.pk)
-            for pk in pks:
-                if pk == item.pk:
-                    if pk == pks[0]:
-                        previous_pk = pks[-1]
-                        next_pk = pks[1]
-                    elif pk == pks[-1]:
-                        previous_pk = pks[-2]
-                        next_pk = pks[0]
-                    else:
-                        previous_pk = pks[pks.index(pk)-1]
-                        next_pk = pks[pks.index(pk)+1]
-                    for it in items:
-                        if it.pk == previous_pk:
-                            previous = it
-                        if it.pk == next_pk:
-                            next = it
-                    previous = previous.public_id
-                    next = next.public_id
-        else:
-             previous = item.public_id
-             next = item.public_id
-
-        return previous, next
-
-    def get_graphers(self, user):
-        graphers = []
-        for grapher in self.graphers:
-            if grapher.id() == self.default_grapher_id:
-                graphers.insert(0, {'name':grapher.name(), 'id': grapher.id()})
-            elif not hasattr(grapher, '_staging'):
-                graphers.append({'name':grapher.name(), 'id': grapher.id()})
-            elif not grapher._staging:
-                graphers.append({'name':grapher.name(), 'id': grapher.id()})
-        return graphers
-
-    def get_grapher(self, id):
-        for grapher in self.graphers:
-            if grapher.id() == id:
-                break
-        return grapher
-
     def get_object(self):
         obj = self.model.objects.filter(code=self.kwargs['public_id'])
         if not obj:
@@ -470,12 +470,18 @@ class ItemViewMixin(ItemBaseMixin):
 
 class ItemEditView(ItemViewMixin, UpdateWithInlinesView):
 
-    form_class = MediaItemForm
     template_name = 'telemeta/mediaitem_edit.html'
+
+    def get_form_class(self):
+        if self.request.user.is_staff:
+            return MediaItemForm
+        else:
+            return RestrictedMediaItemForm
 
     def forms_valid(self, form, inlines):
         messages.info(self.request, ugettext_lazy("You have successfully updated your item."))
         item = form.save()
+        self.code = item.code
         if form.files:
             self.cache_data.delete_item_data(item.code)
             self.cache_export.delete_item_data(item.code)
@@ -489,7 +495,7 @@ class ItemEditView(ItemViewMixin, UpdateWithInlinesView):
         return super(ItemEditView, self).forms_valid(form, inlines)
 
     def get_success_url(self):
-        return reverse_lazy('telemeta-item-detail', kwargs={'public_id':self.get_object().code})
+        return reverse_lazy('telemeta-item-detail', kwargs={'public_id':self.code})
 
     def get_context_data(self, **kwargs):
         context = super(ItemEditView, self).get_context_data(**kwargs)
@@ -500,7 +506,7 @@ class ItemEditView(ItemViewMixin, UpdateWithInlinesView):
         #FIXME
         context['mime_type'] = 'audio/mp3'
         context['export_formats'] = self.get_export_formats()
-        context['visualizers'] = self.get_graphers(self.request.user)
+        context['visualizers'] = self.get_graphers()
         context['audio_export_enabled'] = self.export_enabled
         context['auto_zoom'] = True
         return context
@@ -580,7 +586,7 @@ class ItemCopyView(ItemAddView):
         #FIXME
         context['mime_type'] = 'audio/mp3'
         context['export_formats'] = self.get_export_formats()
-        context['visualizers'] = self.get_graphers(self.request.user)
+        context['visualizers'] = self.get_graphers()
         context['audio_export_enabled'] = self.export_enabled
         context['auto_zoom'] = True
         return context
@@ -718,13 +724,13 @@ class ItemDetailView(ItemViewMixin, DetailView):
         else:
             last_revision = None
 
-        format = ''
+        item_format = ''
         if Format.objects.filter(item=item):
-            format = item.format.get()
+            item_format = item.format.get()
 
         context['item'] = item
         context['export_formats'] = self.get_export_formats()
-        context['visualizers'] = self.get_graphers(self.request.user)
+        context['visualizers'] = self.get_graphers()
         context['auto_zoom'] = self.auto_zoom
         context['audio_export_enabled'] = self.export_enabled
         context['previous'] = previous
@@ -737,7 +743,7 @@ class ItemDetailView(ItemViewMixin, DetailView):
         context['related_media'] = related_media
         context['mime_type'] = self.mime_type
         context['last_revision'] = last_revision
-        context['format'] = format
+        context['format'] = item_format
         context['private_extra_types'] = private_extra_types.values()
         return context
 
@@ -836,4 +842,3 @@ class ItemPlayerDefaultView(ItemDetailView):
 class ItemDetailDCView(ItemDetailView):
 
     template_name = 'telemeta/mediaitem_detail_dc.html'
-

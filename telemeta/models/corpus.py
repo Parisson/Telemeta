@@ -55,6 +55,8 @@ class MediaCorpus(MediaBaseResource):
 
     objects = MediaCorpusManager()
 
+    permissions = (("can_download_corpus_epub", "Can download corpus EPUB"),)
+
     @property
     def public_id(self):
         return self.code
