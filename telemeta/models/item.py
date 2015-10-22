@@ -251,7 +251,12 @@ class MediaItem(MediaResource):
                 del metadata[key]
 
         metadata['url'] = self.get_url()
-        metadata['last_modification_date'] = unicode(self.get_revision().time)
+        revision = self.get_revision()
+        if revision:
+            time = unicode(revision.time)
+        else:
+            time = ''
+        metadata['last_modification_date'] = time
         metadata['collection'] = self.collection.get_url()
 
         keywords = []
