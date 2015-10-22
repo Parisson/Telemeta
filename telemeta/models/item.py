@@ -163,7 +163,7 @@ class MediaItem(MediaResource):
                 return 'none'
         else:
             return _('none')
-            
+
 
     class Meta(MetaCore):
         db_table = 'media_items'
@@ -270,7 +270,7 @@ class MediaItem(MediaResource):
             if media.url:
                 metadata[tag] = media.url
             elif media.url:
-                metadata[tag] = get_full_url(reverse('telemeta-collection-related',
+                metadata[tag] = get_full_url(reverse('telemeta-item-related',
                                             kwargs={'public_id': self.public_id, 'media_id': media.id}))
             i += 1
 
@@ -302,7 +302,13 @@ class MediaItem(MediaResource):
         for analyzer_id in analyzers:
             analysis = MediaItemAnalysis.objects.filter(item=self, analyzer_id=analyzer_id)
             if analysis:
-                metadata[analyzer_id] = analysis[0].value
+                if analyzer_id == 'duration':
+                    value = ':'.join([str('%.2d' % int(t)) for t in analysis[0].value.split(':')])
+                else:
+                    value = analysis[0].value
+                metadata[analyzer_id] = value
+            elif analyzer_id == 'duration':
+                metadata[analyzer_id] = self.approx_duration
 
         metadata['file_size'] = unicode(self.size())
         metadata['thumbnail'] = get_full_url(reverse('telemeta-item-visualize',
@@ -319,6 +325,17 @@ class MediaItem(MediaResource):
             metadata['identifier_type'] = identifier.type
             metadata['identifier_date'] = unicode(identifier.date_last)
             metadata['identifier_note'] = identifier.notes
+
+        # Collection
+        metadata['recording_context'] = self.collection.recording_context
+        metadata['description_collection'] = self.collection.description
+        metadata['status'] = self.collection.status
+        metadata['original_format'] = self.collection.original_format
+        metadata['physical_format'] = self.collection.physical_format
+        metadata['year_published'] = self.collection.year_published
+        metadata['publisher'] = self.collection.publisher
+        metadata['publisher_collection'] = self.collection.publisher_collection
+        metadata['reference_collection'] = self.collection.reference
 
         return metadata
 
