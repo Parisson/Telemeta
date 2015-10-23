@@ -308,7 +308,7 @@ class MediaItem(MediaResource):
             analysis = MediaItemAnalysis.objects.filter(item=self, analyzer_id=analyzer_id)
             if analysis:
                 if analyzer_id == 'duration':
-                    value = ':'.join([str('%.2d' % int(t)) for t in analysis[0].value.split(':')])
+                    value = ':'.join([str('%.2d' % int(float(t))) for t in analysis[0].value.split(':')])
                 else:
                     value = analysis[0].value
                 metadata[analyzer_id] = value
