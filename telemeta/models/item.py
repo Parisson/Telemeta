@@ -296,7 +296,7 @@ class MediaItem(MediaResource):
         metadata['performers'] = ';'.join(performers)
 
         i = 0
-        for indentifier in self.identifiers.all():
+        for identifier in self.identifiers.all():
             metadata['identifier' + '_' + str(i)] = identifier.identifier
             metadata['identifier_type' + '_' + str(i)] = identifier.type
             metadata['identifier_date_last' + '_' + str(i)] = unicode(identifier.date_last)

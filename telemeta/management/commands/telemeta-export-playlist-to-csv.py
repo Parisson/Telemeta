@@ -20,7 +20,12 @@ class Command(BaseCommand):
         public_id = args[-2]
         f = open(path, 'w')
         playlist = Playlist.objects.get(public_id=public_id)
-        elements = playlist.ressources.all()
+        elements = []
+        for resource in playlist.resources.all():
+            if resource.resource_type == "item":
+                elements.append(MediaItem.objects.get(public_id=resource.resource_id))
+            elif resource.resource_type == "collection":
+                elements.append(MediaCollection.objects.get(public_id=resource.resource_id))
         writer = UnicodeWriter(f)
         csv = CSVExport(writer)
         csv.write(elements)
