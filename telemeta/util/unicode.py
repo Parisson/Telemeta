@@ -50,46 +50,58 @@ def _stringify_list(l, encoding):
     return [_stringify(s, encoding) for s in l]
 
 
-class UnicodeWriter(object):
+class UnicodeCSVWriter(object):
     def __init__(self, f, dialect=csv.excel, encoding="utf-8", **kwds):
-        self.writer = csv.writer(f)
         self.dialect = dialect
         self.encoding = encoding
         self.writer = csv.writer(f, dialect=dialect, **kwds)
+        self.line = 0
+        self.tags = []
+
+    def write_tags(self, element):
+        element_dict = element.to_dict_with_more()
+
+        for key in element_dict.keys():
+            if not key in self.tags:
+                self.tags.append(key)
+
+        # code and title on the two first column
+        self.tags.remove('code')
+        self.tags.remove('title')
+        self.tags.sort()
+        self.tags.insert(0, 'title')
+        self.tags.insert(0, 'code')
+        self.writer.writerow(self.tags)
+        self.line += 1
+        print self.tags
+
+    def write_element(self, element):
+        if self.line == 0:
+            self.write_tags(element)
+        row = []
+        element_dict = element.to_dict_with_more()
+
+        for tag in self.tags:
+            if tag in element_dict.keys():
+                row.append(element_dict[tag])
+            else:
+                row.append('')
+        self.writerow(row)
+        print row
 
     def writerow(self, row):
         self.writer.writerow(_stringify_list(row, self.encoding))
+        self.line += 1
 
     def writerows(self, rows):
         for row in rows:
           self.writerow(row)
 
 
-class CSVExport(object):
-
-    def __init__(self, writer):
-        self.writer = writer
-
-    def write(self, elements):
-        tags = []
-        element_dicts = [e.to_dict_with_more() for e in elements]
-        for e in element_dicts:
-            for key in e.keys():
-                if not key in tags:
-                    tags.append(key)
-        # code and title on the two first column
-        tags.remove('code')
-        tags.remove('title')
-        tags.sort()
-        tags.insert(0, 'title')
-        tags.insert(0, 'code')
-        self.writer.writerow(tags)
-
-        for element in element_dicts:
-            data = []
-            for tag in tags:
-                if tag in element.keys():
-                    data.append(element[tag])
-                else:
-                    data.append('')
-            self.writer.writerow(data)
+class Echo(object):
+    """An object that implements just the write method of the file-like
+    interface.
+    """
+    def write(self, value):
+        """Write the value by returning it, instead of storing in a buffer."""
+        return value
