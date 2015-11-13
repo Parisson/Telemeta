@@ -268,7 +268,7 @@ class MediaItem(MediaResource):
         for media in self.related.all():
             if media.url:
                 related_media_urls.append(media.url)
-            elif media.url:
+            else:
                 related_media_urls.append(get_full_url(reverse('telemeta-item-related',
                                             kwargs={'public_id': self.public_id, 'media_id': media.id})))
         metadata['related_media_urls'] = ';'.join(related_media_urls)
@@ -286,14 +286,6 @@ class MediaItem(MediaResource):
         metadata['instruments'] = ';'.join(instruments)
         metadata['instrument_vernacular_names'] = ';'.join(instrument_vernacular_names)
         metadata['performers'] = ';'.join(performers)
-
-        identifiers = self.identifiers.all()
-        if identifiers:
-            identifier = identifiers[0]
-            metadata['identifier' + '_' + str(i)] = identifier.identifier
-            metadata['identifier_type' + '_' + str(i)] = identifier.type
-            metadata['identifier_date_last' + '_' + str(i)] = unicode(identifier.date_last)
-            metadata['identifier_notes' + '_' + str(i)] = identifier.notes
 
         analyzers = ['channels', 'samplerate', 'duration', 'resolution', 'mime_type']
         for analyzer_id in analyzers:
@@ -324,6 +316,11 @@ class MediaItem(MediaResource):
             metadata['identifier_type'] = identifier.type
             metadata['identifier_date'] = unicode(identifier.date_last)
             metadata['identifier_note'] = identifier.notes
+        else:
+            metadata['identifier_id'] = ''
+            metadata['identifier_type'] = ''
+            metadata['identifier_date'] = ''
+            metadata['identifier_note'] = ''
 
         # Collection
         metadata['recording_context'] = self.collection.recording_context
