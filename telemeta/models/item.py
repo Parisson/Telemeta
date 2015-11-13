@@ -269,8 +269,12 @@ class MediaItem(MediaResource):
             if media.url:
                 related_media_urls.append(media.url)
             else:
-                related_media_urls.append(get_full_url(reverse('telemeta-item-related',
-                                            kwargs={'public_id': self.public_id, 'media_id': media.id})))
+                try:
+                    url = get_full_url(reverse('telemeta-item-related',
+                                                kwargs={'public_id': self.public_id, 'media_id': media.id}))
+                except:
+                    url = ''
+                related_media_urls.append(url)
         metadata['related_media_urls'] = ';'.join(related_media_urls)
 
         instruments = []
