@@ -73,10 +73,10 @@ class CSVExport(object):
     def write(self, elements):
         tags = []
         element_dicts = [e.to_dict_with_more() for e in elements]
-        for e in element_dicts:
-            for key in e.keys():
-                if not key in tags:
-                    tags.append(key)
+        e = element_dicts[0]
+        for key in e.keys():
+            if not key in tags:
+                tags.append(key)
         # code and title on the two first column
         tags.remove('code')
         tags.remove('title')
