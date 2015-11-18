@@ -209,7 +209,7 @@ svg {
     border: 1px solid #adadad;
     padding: 2px;
     height: 26px;
-    margin: 5px 0 0;
+    margin: 5px 0 5px;
     font-size: 0.9em;
     color: #000;
     font-weight: bold;
@@ -219,7 +219,7 @@ svg {
     background-color: #fff;
     color: #000;
     border: 1px solid #adadad;
-    width: 356px;
+    width: 348px;
     padding: 2px;
     /* margin: 5px 0 0; */
     font-size: 1em;
@@ -262,11 +262,12 @@ ul.continents ul li a { line-height: 1.8em; }
 /* Collection */
 #content .intro {
     font-size: 1em;
-    font-weight: bold;
+    /*font-weight: bold;*/
     color: #444;
     margin: 5px 0;
-    font-size: 0.8em;
+    width: 400px;
 }
+
 #content .intro span {
     padding: 3px;
 
@@ -327,8 +328,8 @@ label.disabled { color: #d7d7d7 }
     position: absolute;
     top: 1.2em;
     left: 35%;
-    background-color: #6a0307;
-    padding: 0.3em;
+
+    padding: 0.5em;
     -moz-border-radius: 8px 8px 8px 8px;
     -webkit-border-radius: 8px 8px 8px 8px;
     border-radius: 8px 8px 8px 8px;
@@ -347,6 +348,7 @@ label.disabled { color: #d7d7d7 }
     border-radius: 5px 0px 0px 5px;
     width: 215px;
     padding-left: 0.5em;
+    border-color:#6a0307;
 }
 
 #quick_search_pattern {
@@ -1001,7 +1003,7 @@ a.image-link {
     -moz-border-radius: 8px 0px 8px 8px;
     -webkit-border-radius: 8px 0px 8px 8px;
     border-radius: 8px 0px 8px 8px;
-    width: 396%;
+    width: 392px;
 }
 
 .home-content .module {
@@ -1220,6 +1222,85 @@ a.image-link {
 
 .button a:hover{
     text-decoration: none;
+}
+
+#btn{
+    font-weight: bold;
+    color:#ffffff;
+    background-color:#6a0307;
+    border-color:#6a0307;
+
+}
+
+#btn:hover{
+    font-weight: bold;
+    color:#6a0307;
+    background-color:#ffffff;
+    border-color:#6a0307;
+
+}
+
+
+#btn-black{
+    font-weight: bold;
+    color:#ffffff;
+    background-color:black;
+    border-color:#black;
+
+}
+
+#btn-black:hover{
+    font-weight: bold;
+    color:black;
+    background-color:#ffffff;
+    border-color:black;
+
+}
+
+.btn-module {
+    margin: 0 0 1.5em 1.5em;
+}
+
+textarea:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="date"]:focus,
+input[type="month"]:focus,
+input[type="time"]:focus,
+input[type="week"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="color"]:focus,
+.uneditable-input:focus {
+  border-color: rgba(106, 3, 7, 0.8);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(106, 3, 7, 0.6);
+  outline: 0 none;
+}
+
+.form-control::-moz-placeholder {
+  color: #6a0307;
+  opacity: 1;
+}
+.form-control:-ms-input-placeholder {
+  color: #6a0307;
+}
+.form-control::-webkit-input-placeholder {
+  color: #6a0307;
+}
+.form-control[disabled],
+.form-control[readonly],
+fieldset[disabled] .form-control {
+  cursor: not-allowed;
+  background-color: #6a0307;
+  opacity: 1;
+}
+textarea.form-control {
+  height: auto;
 }
 
 .list_item, .list_item:visited, .list_item:hover{

@@ -85,14 +85,8 @@ class PlaylistView(object):
         m = PlaylistResource.objects.get(public_id=public_id)
         m.delete()
 
-
-    def playlist_csv_export(self, request, public_id, resource_type):
-        playlist = Playlist.objects.get(public_id=public_id, author=request.user)
+    def get_elements(self, playlist, resource_type):
         resources = PlaylistResource.objects.filter(playlist=playlist)
-        response = HttpResponse(content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename='+playlist.title+'_'+resource_type+'.csv'
-        writer = UnicodeWriter(response)
-
         elements = []
         for resource in resources:
             if resource_type == 'items':
@@ -113,30 +107,17 @@ class PlaylistView(object):
                 if resource.resource_type == 'collection':
                     collection = MediaCollection.objects.get(id=resource.resource_id)
                     elements.append(collection)
+        return elements
+
+    def playlist_csv_export(self, request, public_id, resource_type):
+        playlist = Playlist.objects.get(public_id=public_id, author=request.user)
+        elements = self.get_elements(playlist, resource_type)
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename='+playlist.title+'_'+resource_type+'.csv'
+        writer = UnicodeWriter(response)
 
         if elements:
-            tags = []
-            element_dicts = [e.to_dict_with_more() for e in elements]
-            for e in element_dicts:
-                for key in e.keys():
-                    if not key in tags:
-                        tags.append(key)
-            # code and title on the two first column
-            tags.remove('code')
-            tags.remove('title')
-            tags.sort()
-            tags.insert(0, 'title')
-            tags.insert(0, 'code')
-            writer.writerow(tags)
-
-            for element in element_dicts:
-                data = []
-                for tag in tags:
-                    if tag in element.keys():
-                        data.append(element[tag])
-                    else:
-                        data.append('')
-                writer.writerow(data)
+            csv = CSVExport(writer)
+            csv.write(elements)
 
         return response
-

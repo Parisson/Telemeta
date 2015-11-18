@@ -45,11 +45,11 @@ def _stringify(s, encoding):
     elif type(s) != str:
         s=str(s)
     return s
-    
+
 def _stringify_list(l, encoding):
     return [_stringify(s, encoding) for s in l]
-    
-    
+
+
 class UnicodeWriter(object):
     def __init__(self, f, dialect=csv.excel, encoding="utf-8", **kwds):
         self.writer = csv.writer(f)
@@ -63,3 +63,33 @@ class UnicodeWriter(object):
     def writerows(self, rows):
         for row in rows:
           self.writerow(row)
+
+
+class CSVExport(object):
+
+    def __init__(self, writer):
+        self.writer = writer
+
+    def write(self, elements):
+        tags = []
+        element_dicts = [e.to_dict_with_more() for e in elements]
+        e = element_dicts[0]
+        for key in e.keys():
+            if not key in tags:
+                tags.append(key)
+        # code and title on the two first column
+        tags.remove('code')
+        tags.remove('title')
+        tags.sort()
+        tags.insert(0, 'title')
+        tags.insert(0, 'code')
+        self.writer.writerow(tags)
+
+        for element in element_dicts:
+            data = []
+            for tag in tags:
+                if tag in element.keys():
+                    data.append(element[tag])
+                else:
+                    data.append('')
+            self.writer.writerow(data)

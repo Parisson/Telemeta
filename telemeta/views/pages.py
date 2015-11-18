@@ -104,8 +104,8 @@ def resolve_page_file(root, relative_path, ignore_slash_issue=False):
 def get_page_content(request, relative_path, ignore_slash_issue=False):
     lang = language_code(request)
     userroot = os.path.join(project_dir(), 'telemeta-pages')
-    rootlist = [os.path.join(userroot, lang), os.path.join(userroot, 'default'),
-                os.path.join(PAGES_ROOT, lang), os.path.join(PAGES_ROOT, 'default')]
+    rootlist = [os.path.join(userroot, lang), os.path.join(userroot, 'en'),
+                os.path.join(PAGES_ROOT, lang), os.path.join(PAGES_ROOT, 'en')]
     for root in rootlist:
         content = resolve_page_file(root, relative_path, ignore_slash_issue=ignore_slash_issue)
         if content:

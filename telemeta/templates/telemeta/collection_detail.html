@@ -65,9 +65,16 @@
       </button>
     </a>
     {% if audio_export_enabled or perms.telemeta.can_download_all_items or user.is_superuser %}
-    <a href="{% url "telemeta-collection-package" collection.public_id %}" id="zip_package">
+    <a href="{% url "telemeta-collection-zip" collection.public_id %}" id="zip_package">
       <button type="button" class="btn btn-default">
         <span class="glyphicon glyphicon-compressed"></span> {% trans "Zip" %}
+      </button>
+    </a>
+    {% endif %}
+    {% if user.is_superuser %}
+    <a id="_export_epub" href="{% url "telemeta-collection-epub" collection.public_id %}">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-book"></span> {% trans "Epub" %}
       </button>
     </a>
     {% endif %}
@@ -93,9 +100,10 @@
                 <dt>{% trans "Document status" %}</dt>
                 <dd>{{ collection.document_status }}</dd>
                 {% if collection.description %}
-                {% dl_field collection "description" %}
-                {% endif %}
-                {% dl_field collection "recording_context" %}
+ 		<dt>{% trans "Description" %}</dt>
+ 		<dd>{{ collection.description|html_line_break|safe }}</dd>
+		{% endif %}
+		{% dl_field collection "recording_context" %}
                 <dt>{% trans "Recording period" %}</dt>
                     <dd>{% if collection.recorded_from_year %}{{ collection.recorded_from_year }}{% endif %}{% if collection.recorded_from_year and collection.recorded_to_year %} - {% endif %}{% if  collection.recorded_to_year %}{{ collection.recorded_to_year}}{% endif %}</dd>
                 {% if '_E_' in collection.public_id %}

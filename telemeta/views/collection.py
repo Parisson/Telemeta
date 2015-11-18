@@ -36,7 +36,7 @@
 
 
 from telemeta.views.core import *
-
+from telemeta.views.epub import *
 
 class CollectionView(object):
     """Provide Collections web UI methods"""
@@ -172,7 +172,7 @@ class CollectionView(object):
         return render(request, template, {'collection': collection, 'formset': formset,})
 
 
-class CollectionPackageView(View):
+class CollectionZipView(View):
 
     model = MediaCollection
 
@@ -187,25 +187,33 @@ class CollectionPackageView(View):
         """
         from telemeta.views import MarkerView
         from telemeta.backup import CollectionSerializer
-        from telemeta.util import zipstream
+        import zipstream
+        from zipfile import ZIP_DEFLATED, ZIP_STORED
         import json
 
-        z = zipstream.ZipFile()
+        zip_file = zipstream.ZipFile(mode='w', compression=ZIP_STORED,
+                                     allowZip64=True)
         cache_data = TelemetaCache(settings.TELEMETA_DATA_CACHE_DIR)
 
         collection = self.get_object()
         serializer = CollectionSerializer(collection)
 
-        data = serializer.get_xml().encode("utf-8")
+        data = collection.get_json().encode('utf-8')
+        filename = collection.public_id + '.json'
+        cache_data.write_bin(data, filename)
+        path = cache_data.dir + os.sep + filename
+        zip_file.write(path, arcname=collection.public_id + os.sep + filename)
+
+        data = serializer.get_xml().encode('utf-8')
         filename = collection.public_id + '.xml'
         cache_data.write_bin(data, filename)
         path = cache_data.dir + os.sep + filename
-        z.write(path, arcname=collection.public_id + os.sep + filename)
+        zip_file.write(path, arcname=collection.public_id + os.sep + filename)
 
         for item in collection.items.all():
             if item.file:
                 filename, ext = os.path.splitext(item.file.path.split(os.sep)[-1])
-                z.write(item.file.path, arcname=collection.public_id + os.sep + item.code + ext)
+                zip_file.write(item.file.path, arcname=collection.public_id + os.sep + item.code + ext)
             marker_view = MarkerView()
             markers = marker_view.get_markers(item.id)
             if markers:
@@ -213,16 +221,16 @@ class CollectionPackageView(View):
                 filename = item.code + '.json'
                 cache_data.write_bin(data, filename)
                 path = cache_data.dir + os.sep + filename
-                z.write(path, arcname=collection.public_id + os.sep + filename)
+                zip_file.write(path, arcname=collection.public_id + os.sep + filename)
 
-        response = StreamingHttpResponse(z, content_type='application/zip')
+        response = StreamingHttpResponse(zip_file, content_type='application/zip')
         response['Content-Disposition'] = "attachment; filename=%s.%s" % \
                                              (collection.code, 'zip')
         return response
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(CollectionPackageView, self).dispatch(*args, **kwargs)
+        return super(CollectionZipView, self).dispatch(*args, **kwargs)
 
 
 class CollectionViewMixin(object):
@@ -362,4 +370,30 @@ class CollectionCopyView(CollectionAddView):
     @method_decorator(permission_required('telemeta.add_mediacollection'))
     def dispatch(self, *args, **kwargs):
         return super(CollectionCopyView, self).dispatch(*args, **kwargs)
+
+
+
+class CollectionEpubView(BaseEpubMixin, View):
+    "Download collection data embedded in an EPUB3 file"
+
+    model = MediaCollection
+
+    def get_object(self):
+        return MediaCollection.objects.get(public_id=self.kwargs['public_id'])
+
+    def get(self, request, *args, **kwargs):
+        collection = self.get_object()
+        corpus = collection.corpus.all()[0]
+        self.setup_epub(corpus, collection=collection)
+        if not os.path.exists(self.path):
+            self.write_book()
+        epub_file = open(self.path, 'rb')
+        response = HttpResponse(epub_file.read(), content_type='application/epub+zip')
+        response['Content-Disposition'] = "attachment; filename=%s" % self.filename + '.epub'
+        return response
+
+    # @method_decorator(login_required)
+    # @method_decorator(permission_required('telemeta.can_download_collection_epub'))
+    def dispatch(self, *args, **kwargs):
+        return super(CollectionEpubView, self).dispatch(*args, **kwargs)
 
