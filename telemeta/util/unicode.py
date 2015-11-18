@@ -58,7 +58,8 @@ class UnicodeCSVWriter(object):
         self.line = 0
         self.tags = []
 
-    def write_tags(self, element):
+
+    def get_tags(self, element):
         element_dict = element.to_dict_with_more()
 
         for key in element_dict.keys():
@@ -71,31 +72,23 @@ class UnicodeCSVWriter(object):
         self.tags.sort()
         self.tags.insert(0, 'title')
         self.tags.insert(0, 'code')
-        self.writer.writerow(self.tags)
-        self.line += 1
-        print self.tags
+        self.init_tags = True
 
-    def write_element(self, element):
-        if self.line == 0:
-            self.write_tags(element)
+    def get_row(self, element):
         row = []
         element_dict = element.to_dict_with_more()
-
         for tag in self.tags:
             if tag in element_dict.keys():
-                row.append(element_dict[tag])
+                    row.append(element_dict[tag])
             else:
                 row.append('')
-        self.writerow(row)
-        print row
+        return row
 
-    def writerow(self, row):
-        self.writer.writerow(_stringify_list(row, self.encoding))
-        self.line += 1
-
-    def writerows(self, rows):
-        for row in rows:
-          self.writerow(row)
+    def write_element(self, element):
+        if not self.tags:
+            yield self.writer.writerow(self.get_tags())
+        row = self.get_row(element)
+        yield self.writer.writerow(_stringify_list(row, self.encoding))
 
 
 class Echo(object):

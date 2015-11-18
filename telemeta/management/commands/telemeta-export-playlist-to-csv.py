@@ -10,7 +10,7 @@ from timeside.server.models import *
 from timeside.core.tools.test_samples import generateSamples
 from telemeta.models import *
 from telemeta.util.unicode import *
-
+from telemeta.views import PlaylistView
 
 class Command(BaseCommand):
     help = "Export all items or collections metadata to a CSV file"
@@ -18,9 +18,11 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         path = args[-1]
         public_id = args[-2]
+        resource_type = args[-3]
         f = open(path, 'w')
         playlist = Playlist.objects.get(public_id=public_id)
-        elements = playlist.ressources.all()
+        view = PlaylistView()
+        elements = view.get_elements(playlist, resource_type)
         writer = UnicodeWriter(f)
         csv = CSVExport(writer)
         csv.write(elements)
