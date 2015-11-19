@@ -103,6 +103,10 @@ class UserProfileAdmin(UserAdmin):
 class PlaylistAdmin(admin.ModelAdmin):
     search_fields = ['title', 'public_id']
 
+class AuthorityAdmin(admin.ModelAdmin):
+    search_fields = ['known_name','known_forename']
+    ordering = ['known_name']
+
 admin.site.register(MediaFonds, MediaFondsAdmin)
 admin.site.register(MediaCorpus, MediaCorpusAdmin)
 admin.site.register(MediaCollection, MediaCollectionAdmin)
@@ -129,3 +133,5 @@ admin.site.register(User, UserProfileAdmin)
 
 admin.site.register(PublisherCollection)
 admin.site.register(Playlist, PlaylistAdmin)
+
+admin.site.register(Authority, AuthorityAdmin)

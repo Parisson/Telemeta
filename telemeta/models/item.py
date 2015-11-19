@@ -89,7 +89,8 @@ class MediaItem(MediaResource):
     vernacular_style      = WeakForeignKey('VernacularStyle', related_name="items", verbose_name=_('vernacular style'))
     generic_style         = WeakForeignKey('GenericStyle', related_name="items", verbose_name=_('generic style'))
     author                = CharField(_('author / compositor'), help_text=_('First name, Last name ; First name, Last name'))
-
+    authority             = ForeignKey('Authority', blank=True,null=True)
+    
     # Legal mentions
     organization          = WeakForeignKey('Organization', verbose_name=_('organization'))
     depositor             = CharField(_('depositor'))

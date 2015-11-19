@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2007 Samalyse SARL
-# Copyright (C) 2008-2011 Parisson SARL
+# Copyright (C) 2007-2010 Samalyse SARL
+# Copyright (C) 2010-2011 Parisson SARL
 
 # This software is a computer program whose purpose is to backup, analyse,
 # transcode and stream any audio content with its metadata over a web frontend.
@@ -31,24 +31,33 @@
 # The fact that you are presently reading this means that you have had
 # knowledge of the CeCILL license and that you accept its terms.
 #
-# Author: Olivier Guilyardi <olivier@samalyse.com>
-#         Guillaume Pellerin <yomguy@parisson.com>
+# Authors: Anas Ghrab <anas.ghrab@gmail.com>
+#          Guillaume Pellerin <yomguy@parisson.com>
+
+from telemeta.models.core import *
+from django.utils.translation import ugettext_lazy as _
 
 
-from identifier import *
-from location import *
-from instrument import *
-from enum import *
-from system import *
-from query import *
-from dublincore import *
-from language import *
-from format import *
-from identifier import *
-from fonds import *
-from corpus import *
-from collection import *
-from item import *
-from resource import *
-from playlist import *
-from authority import *
+class Authority(ModelCore):
+    "Authority used in the item"
+    known_name = CharField(max_length=50)
+    known_forename = CharField(max_length=50, null=True, blank=True)
+    translitt_name = CharField(max_length=50, null=True, blank=True)
+    translitt_forename = CharField(max_length=50, null=True, blank=True)
+    origin_lang_name = CharField(max_length=50, null=True, blank=True)
+    origin_lang_forename = CharField(max_length=50, null=True, blank=True)
+    year_birth = DateField(null=True, blank=True)
+    year_death = DateField(null=True, blank=True)
+    city_birth = CharField(max_length=30, null=True, blank=True)
+    city_living = CharField(max_length=30, null=True, blank=True)
+    city_death = CharField(max_length=30, null=True, blank=True)
+    comments = TextField(null=True, blank=True)
+
+    class Meta(MetaCore):
+        db_table = 'authority'
+        ordering = ['known_name']
+        verbose_name = _('Authority')
+        verbose_name_plural = _('Authorities')
+
+    def __unicode__(self):
+        return self.known_name
