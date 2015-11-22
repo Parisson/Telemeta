@@ -50,7 +50,7 @@ setup(
   version = '1.6',
   install_requires = [
         'django==1.6.11',
-        'django-registration',
+        'django-registration==1.0',
         'django-extensions',
         'django-timezones',
         'django-jqchat',
