@@ -51,7 +51,7 @@ rabbitmq:
     - "15672:15672"
 
 search:
-  image: elasticsearch
+  image: elasticsearch:1
 
 app:
   build: .
