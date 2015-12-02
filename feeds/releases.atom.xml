@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Telemeta project</title><link href="http://parisson.github.io/Telemeta/" rel="alternate"></link><link href="http://parisson.github.io/Telemeta/feeds/releases.atom.xml" rel="self"></link><id>http://parisson.github.io/Telemeta/</id><updated>2015-01-26T10:42:00+01:00</updated><entry><title>Telemeta 1.5 is out!</title><link href="http://parisson.github.io/Telemeta/telemeta-15-is-out.html" rel="alternate"></link><updated>2015-01-26T10:42:00+01:00</updated><author><name>Parisson SARL</name></author><id>tag:parisson.github.io,2015-01-26:Telemeta/telemeta-15-is-out.html</id><summary type="html">&lt;p&gt;After months of hard work we are pleased to release a big update to Telemeta communities. It represents a huge milestone that makes Telemeta now compatible with more modern web technologies.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Telemeta project</title><link href="http://parisson.github.io/Telemeta/" rel="alternate"></link><link href="http://parisson.github.io/Telemeta/feeds/releases.atom.xml" rel="self"></link><id>http://parisson.github.io/Telemeta/</id><updated>2015-01-26T10:42:00+01:00</updated><entry><title>Telemeta 1.5 is out!</title><link href="http://parisson.github.io/Telemeta/telemeta-15-is-out.html" rel="alternate"></link><updated>2015-01-26T10:42:00+01:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2015-01-26:Telemeta/telemeta-15-is-out.html</id><summary type="html">&lt;p&gt;After months of hard work we are pleased to release a big update to Telemeta communities. It represents a huge milestone that makes Telemeta now compatible with more modern web technologies.&lt;/p&gt;
 &lt;p&gt;Changelog:&lt;/p&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;Django 1.6.x compatibility&lt;/li&gt;
@@ -13,7 +13,7 @@
 &lt;ul class="simple"&gt;
 &lt;li&gt;&lt;a class="reference external" href="http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.5.1.tar.gz"&gt;http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.5.1.tar.gz&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-</summary></entry><entry><title>Telemeta 1.4.6 is out!</title><link href="http://parisson.github.io/Telemeta/telemeta-146-is-out.html" rel="alternate"></link><updated>2014-11-24T12:44:00+01:00</updated><author><name>Parisson SARL</name></author><id>tag:parisson.github.io,2014-11-24:Telemeta/telemeta-146-is-out.html</id><summary type="html">&lt;p&gt;Changelog:&lt;/p&gt;
+</summary></entry><entry><title>Telemeta 1.4.6 is out!</title><link href="http://parisson.github.io/Telemeta/telemeta-146-is-out.html" rel="alternate"></link><updated>2014-11-24T12:44:00+01:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2014-11-24:Telemeta/telemeta-146-is-out.html</id><summary type="html">&lt;p&gt;Changelog:&lt;/p&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;Drastically improve collection zip packaqe streaming thanks to zipstream (check NEW dependencies)&lt;/li&gt;
 &lt;li&gt;Compatible with TimeSide &amp;gt;= 0.5.2&lt;/li&gt;
@@ -28,7 +28,7 @@
 &lt;ul class="simple"&gt;
 &lt;li&gt;&lt;a class="reference external" href="http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.4.6.tar.gz"&gt;http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.4.6.tar.gz&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-</summary></entry><entry><title>Telemeta 1.4.5 has been released!</title><link href="http://parisson.github.io/Telemeta/telemeta-145-has-been-released.html" rel="alternate"></link><updated>2014-01-20T22:48:00+01:00</updated><author><name>Parisson SARL</name></author><id>tag:parisson.github.io,2014-01-20:Telemeta/telemeta-145-has-been-released.html</id><summary type="html">&lt;p&gt;After a long debugging and producing period, Telemeta reaches a nice stable version.&lt;/p&gt;
+</summary></entry><entry><title>Telemeta 1.4.5 has been released!</title><link href="http://parisson.github.io/Telemeta/telemeta-145-has-been-released.html" rel="alternate"></link><updated>2014-01-20T22:48:00+01:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2014-01-20:Telemeta/telemeta-145-has-been-released.html</id><summary type="html">&lt;p&gt;After a long debugging and producing period, Telemeta reaches a nice stable version.&lt;/p&gt;
 &lt;p&gt;Changelog:&lt;/p&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;Collection and Item regex in settings allowed&lt;/li&gt;
@@ -45,7 +45,7 @@
 &lt;li&gt;Download: ​http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.4.5.tar.gz&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;a class="reference external" href="http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.4.6.tar.gz"&gt;Download&lt;/a&gt;&lt;/p&gt;
-</summary></entry><entry><title>Telemeta 1.4.4 is out !</title><link href="http://parisson.github.io/Telemeta/telemeta-144-is-out.html" rel="alternate"></link><updated>2012-10-04T16:52:00+02:00</updated><author><name>Parisson SARL</name></author><id>tag:parisson.github.io,2012-10-04:Telemeta/telemeta-144-is-out.html</id><summary type="html">&lt;p&gt;Changes:&lt;/p&gt;
+</summary></entry><entry><title>Telemeta 1.4.4 is out !</title><link href="http://parisson.github.io/Telemeta/telemeta-144-is-out.html" rel="alternate"></link><updated>2012-10-04T16:52:00+02:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2012-10-04:Telemeta/telemeta-144-is-out.html</id><summary type="html">&lt;p&gt;Changes:&lt;/p&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;no new fancy functions&lt;/li&gt;
 &lt;li&gt;full using of static files which are now in static/ (htdocs/ is now deprecated)&lt;/li&gt;
@@ -60,7 +60,7 @@ sudo pip install --upgrade telemeta
 &lt;p&gt;Please first read README.rst and INSTALL.rst to get all informations about the news. Apply new rules, dependencies, modules and settings from your old version to the new one.&lt;/p&gt;
 &lt;p&gt;or &lt;a class="reference external" href="​​http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.4.4.tar.gz"&gt;download&lt;/a&gt; (MD5: 47b8d7a6fa8340388ff72be58aaff59c)&lt;/p&gt;
 &lt;p&gt;Enjoy ;)&lt;/p&gt;
-</summary></entry><entry><title>Telemeta 1.4.3 has been released !</title><link href="http://parisson.github.io/Telemeta/telemeta-143-has-been-released.html" rel="alternate"></link><updated>2012-05-31T22:57:00+02:00</updated><author><name>Parisson SARL</name></author><id>tag:parisson.github.io,2012-05-31:Telemeta/telemeta-143-has-been-released.html</id><summary type="html">&lt;p&gt;Changes:&lt;/p&gt;
+</summary></entry><entry><title>Telemeta 1.4.3 has been released !</title><link href="http://parisson.github.io/Telemeta/telemeta-143-has-been-released.html" rel="alternate"></link><updated>2012-05-31T22:57:00+02:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2012-05-31:Telemeta/telemeta-143-has-been-released.html</id><summary type="html">&lt;p&gt;Changes:&lt;/p&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;add solr-thumbnail for automatic thumbnail handling of all related media images (please install)&lt;/li&gt;
 &lt;li&gt;add static media handling for solr and all various telemeta public files&lt;/li&gt;
@@ -93,7 +93,7 @@ sudo pip install sorl-thumbnail
 &lt;/pre&gt;
 &lt;p&gt;email me or tweet to &amp;#64;telemeta if any problem.&lt;/p&gt;
 &lt;p&gt;Enjoy!&lt;/p&gt;
-</summary></entry><entry><title>Telemeta 1.4 is out!</title><link href="http://parisson.github.io/Telemeta/telemeta-14-is-out.html" rel="alternate"></link><updated>2012-02-14T16:29:00+01:00</updated><author><name>Parisson SARL</name></author><id>tag:parisson.github.io,2012-02-14:Telemeta/telemeta-14-is-out.html</id><summary type="html">&lt;p&gt;Changes:&lt;/p&gt;
+</summary></entry><entry><title>Telemeta 1.4 is out!</title><link href="http://parisson.github.io/Telemeta/telemeta-14-is-out.html" rel="alternate"></link><updated>2012-02-14T16:29:00+01:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2012-02-14:Telemeta/telemeta-14-is-out.html</id><summary type="html">&lt;p&gt;Changes:&lt;/p&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;add a Desk providing links to home and personal data&lt;/li&gt;
 &lt;li&gt;add Fonds, Corpus and their related media to the models and to the search engine&lt;/li&gt;
@@ -128,7 +128,7 @@ sudo pip install --upgrade telemeta
 &lt;p&gt;or &lt;a class="reference external" href="​​http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.4.tar.gz"&gt;download&lt;/a&gt; (MD5: ec51039d0b749f8322309c64e9415090)&lt;/p&gt;
 &lt;p&gt;Please first read README.rst and INSTALL.rst to get all informations about the news. Apply new rules, dependencies, modules and settings from your old version to the new one.&lt;/p&gt;
 &lt;p&gt;Enjoy!&lt;/p&gt;
-</summary></entry><entry><title>Telemeta 1.3 has been released !</title><link href="http://parisson.github.io/Telemeta/telemeta-13-has-been-released.html" rel="alternate"></link><updated>2011-12-06T23:06:00+01:00</updated><author><name>Parisson SARL</name></author><id>tag:parisson.github.io,2011-12-06:Telemeta/telemeta-13-has-been-released.html</id><summary type="html">&lt;p&gt;Changes:&lt;/p&gt;
+</summary></entry><entry><title>Telemeta 1.3 has been released !</title><link href="http://parisson.github.io/Telemeta/telemeta-13-has-been-released.html" rel="alternate"></link><updated>2011-12-06T23:06:00+01:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2011-12-06:Telemeta/telemeta-13-has-been-released.html</id><summary type="html">&lt;p&gt;Changes:&lt;/p&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;add related media objects to collections and items (mime type detection, image preview, URL only capable, YouTube? URL detection and preview)&lt;/li&gt;
 &lt;li&gt;add &amp;quot;Sound&amp;quot; filters to collection lists and search results&lt;/li&gt;
@@ -143,7 +143,7 @@ sudo pip install --upgrade telemeta
 &lt;/pre&gt;
 &lt;p&gt;or &lt;a class="reference external" href="​​http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.3.tar.gz"&gt;download&lt;/a&gt; (MD5: 1ff126714ca9f38201b77efa06040671)&lt;/p&gt;
 &lt;p&gt;You can upgrade from 1.2 safely. Tell me if anything goes wrong.&lt;/p&gt;
-</summary></entry><entry><title>Telemeta 1.2 is out!</title><link href="http://parisson.github.io/Telemeta/telemeta-12-is-out.html" rel="alternate"></link><updated>2011-10-31T14:39:00+01:00</updated><author><name>Parisson SARL</name></author><id>tag:parisson.github.io,2011-10-31:Telemeta/telemeta-12-is-out.html</id><summary type="html">&lt;p&gt;Changes:&lt;/p&gt;
+</summary></entry><entry><title>Telemeta 1.2 is out!</title><link href="http://parisson.github.io/Telemeta/telemeta-12-is-out.html" rel="alternate"></link><updated>2011-10-31T14:39:00+01:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2011-10-31:Telemeta/telemeta-12-is-out.html</id><summary type="html">&lt;p&gt;Changes:&lt;/p&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;fix OAI repository names, coverages and headers in according with TGE Adonis specs&lt;/li&gt;
 &lt;li&gt;replace home (index) playlist by 3 random nice embedded players (public items only)&lt;/li&gt;
@@ -156,7 +156,7 @@ sudo pip install --upgrade telemeta
 sudo pip install --upgrade telemeta
 &lt;/pre&gt;
 &lt;p&gt;or &lt;a class="reference external" href="​​http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.2.tar.gz"&gt;download&lt;/a&gt; (MD5: 43cd98b492d39772a73164986ac0eefd)&lt;/p&gt;
-</summary></entry><entry><title>Telemeta 1.0 is out!</title><link href="http://parisson.github.io/Telemeta/telemeta-10-is-out.html" rel="alternate"></link><updated>2011-06-27T10:00:00+02:00</updated><author><name>Parisson SARL</name></author><id>tag:parisson.github.io,2011-06-27:Telemeta/telemeta-10-is-out.html</id><summary type="html">&lt;p&gt;After weeks of hard work, we are so pleased to release ​Telemeta 1.0 &amp;quot;Bell&amp;quot; which includes some significant improvements since 0.9.4 in overall performance, access right management and audio player functions.&lt;/p&gt;
+</summary></entry><entry><title>Telemeta 1.0 is out!</title><link href="http://parisson.github.io/Telemeta/telemeta-10-is-out.html" rel="alternate"></link><updated>2011-06-27T10:00:00+02:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2011-06-27:Telemeta/telemeta-10-is-out.html</id><summary type="html">&lt;p&gt;After weeks of hard work, we are so pleased to release ​Telemeta 1.0 &amp;quot;Bell&amp;quot; which includes some significant improvements since 0.9.4 in overall performance, access right management and audio player functions.&lt;/p&gt;
 &lt;div class="section" id="new-functions"&gt;
 &lt;h2&gt;New functions&lt;/h2&gt;
 &lt;ul class="simple"&gt;
@@ -206,7 +206,7 @@ sudo pip install --upgrade telemeta
 &lt;p&gt;The Telemeta project of course continues. It will be optimized and improved to reach a generic version soon. If you want special developments or support / sponsor this project, please contact us through the mailing list or this email address : support&amp;#64;…&lt;/p&gt;
 &lt;p&gt;Enjoy the Bell ;)&lt;/p&gt;
 &lt;/div&gt;
-</summary></entry><entry><title>Telemeta 0.9.4 has been released!</title><link href="http://parisson.github.io/Telemeta/telemeta-094-has-been-released.html" rel="alternate"></link><updated>2011-06-01T13:15:00+02:00</updated><author><name>Parisson SARL</name></author><id>tag:parisson.github.io,2011-06-01:Telemeta/telemeta-094-has-been-released.html</id><summary type="html">&lt;p&gt;It is one of the biggest release since 0.5.1 because it includes tons of bugfixes, a new theme and MANY new features which were targeted for 1.0.&lt;/p&gt;
+</summary></entry><entry><title>Telemeta 0.9.4 has been released!</title><link href="http://parisson.github.io/Telemeta/telemeta-094-has-been-released.html" rel="alternate"></link><updated>2011-06-01T13:15:00+02:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2011-06-01:Telemeta/telemeta-094-has-been-released.html</id><summary type="html">&lt;p&gt;It is one of the biggest release since 0.5.1 because it includes tons of bugfixes, a new theme and MANY new features which were targeted for 1.0.&lt;/p&gt;
 &lt;p&gt;Changes:&lt;/p&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;New visual theme&lt;/li&gt;
