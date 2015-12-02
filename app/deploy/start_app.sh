@@ -1,17 +1,18 @@
 #!/bin/sh
 
 # paths
-app_dir='/opt/Telemeta'
-static=$app_dir'/telemeta/static/'
-sandbox='/home/sandbox'
-manage=$sandbox'/manage.py'
-wsgi=$sandbox'/wsgi.py'
+
+
+app='/opt/app'
+manage=$app'/manage.py'
+wsgi=$app'/wsgi.py'
+static='/opt/static/'
 
 # stating apps
 pip install django-haystack elasticsearch
 
 # waiting for other services
-sh $app_dir/examples/deploy/wait.sh
+sh $app/deploy/wait.sh
 
 # django init
 python $manage syncdb --noinput
@@ -26,4 +27,4 @@ watchmedo shell-command --patterns="*.js;*.css" --recursive \
     --command='python '$manage' collectstatic --noinput' $static &
 
 # app start
-uwsgi --socket :8000 --wsgi-file $wsgi --chdir $sandbox --master --processes 4 --threads 2 --py-autoreload 3
+uwsgi --socket :8000 --wsgi-file $wsgi --chdir $app --master --processes 4 --threads 2 --py-autoreload 3

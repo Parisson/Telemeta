@@ -100,10 +100,10 @@
                 <dt>{% trans "Document status" %}</dt>
                 <dd>{{ collection.document_status }}</dd>
                 {% if collection.description %}
- 		<dt>{% trans "Description" %}</dt>
- 		<dd>{{ collection.description|html_line_break|safe }}</dd>
-		{% endif %}
-		{% dl_field collection "recording_context" %}
+                <dt>{% trans "Description" %}</dt>
+                <dd>{{ collection.description|html_line_break|safe }}</dd>
+                {% endif %}
+                {% dl_field collection "recording_context" %}
                 <dt>{% trans "Recording period" %}</dt>
                     <dd>{% if collection.recorded_from_year %}{{ collection.recorded_from_year }}{% endif %}{% if collection.recorded_from_year and collection.recorded_to_year %} - {% endif %}{% if  collection.recorded_to_year %}{{ collection.recorded_to_year}}{% endif %}</dd>
                 {% if '_E_' in collection.public_id %}
@@ -270,4 +270,3 @@
 {% else %}
     <p>No such collection</p>
 {% endif %}
-

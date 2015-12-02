@@ -22,16 +22,11 @@
 # Thomas Fillon <thomas@parisson.com>
 
 
-static:
+media:
   image: debian:wheezy
   volumes:
-    - /var/www/static
-  command: "true"
-
-home:
-  image: debian:wheezy
-  volumes:
-    - ./examples/sandbox:/home/sandbox
+     - ./media/:/opt/media
+     - ./static/:/opt/static
   command: "true"
 
 db:
@@ -45,7 +40,7 @@ db:
     - MYSQL_USER=telemeta
     - MYSQL_PASSWORD=iuvIlkyisFit2
 
-rabbitmq:
+broker:
   image: rabbitmq:3-management
   ports:
     - "15672:15672"
@@ -56,18 +51,16 @@ search:
 app:
   build: .
   volumes:
-    - .:/opt/Telemeta
-    - /var/log/uwsgi
+    - ./app/:/opt/app
   volumes_from:
-    - static
-    - home
-  command: /bin/sh /opt/Telemeta/examples/deploy/start_app.sh
+    - media
+  command: /bin/sh deploy/start_app.sh
   ports:
     - "9000:9000"
   expose:
     - "8000"
   links:
-    - rabbitmq
+    - broker
     - db
     - search
 
@@ -75,10 +68,9 @@ worker:
   build: .
   volumes_from:
     - app
-    - home
-  command: /bin/sh /opt/Telemeta/examples/deploy/celery_app.sh
+  command: /bin/sh deploy/celery_app.sh
   links:
-    - rabbitmq
+    - broker
     - db
 
 nginx:
@@ -86,10 +78,9 @@ nginx:
   ports:
     - "8000:80"
   volumes:
-    - ./examples/deploy/nginx-app.conf:/etc/nginx/conf.d/default.conf
-    - /var/log/nginx
+    - ./app/deploy/nginx-app.conf:/etc/nginx/conf.d/default.conf
+    - ./log/:/var/log/nginx
   volumes_from:
-    - static
-    - home
+    - media
   links:
     - app

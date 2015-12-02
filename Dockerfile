@@ -19,13 +19,17 @@ FROM parisson/timeside:latest-dev
 
 MAINTAINER Guillaume Pellerin <yomguy@parisson.com>, Thomas fillon <thomas@parisson.com>
 
-# Clone app
-RUN mkdir /opt/Telemeta
-ADD . /opt/Telemeta
-WORKDIR /opt/Telemeta
-
-# Install deps
+RUN mkdir /opt/app
 RUN mkdir /opt/src
+
+WORKDIR /opt/app
+
+ADD requirements.txt /opt/app/
+ADD requirements-dev.txt /opt/app/
+ADD setup.py /opt/app/
+ADD README.rst /opt/app/
+ADD telemeta /opt/app/
+
 RUN pip install -r requirements.txt
 RUN pip install -r requirements-dev.txt --src /opt/src
 

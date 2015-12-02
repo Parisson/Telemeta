@@ -19,7 +19,7 @@ MANAGERS = ADMINS
 
 # Full filesystem path to the project.
 #PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = '/home/sandbox'
+PROJECT_ROOT = '/opt/app/'
 
 DATABASES = {
     'default': {
@@ -73,10 +73,12 @@ USE_L10N = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = PROJECT_ROOT + '/media/'
+# MEDIA_ROOT = PROJECT_ROOT + '/media/'
+#
+# if not os.path.exists(MEDIA_ROOT):
+#     os.makedirs(MEDIA_ROOT)
 
-if not os.path.exists(MEDIA_ROOT):
-    os.makedirs(MEDIA_ROOT)
+MEDIA_ROOT = '/opt/media/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -87,7 +89,8 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = '/var/www/static'
+# STATIC_ROOT = '/var/www/static'
+STATIC_ROOT = '/opt/static/'
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -128,7 +131,7 @@ MIDDLEWARE_CLASSES = (
     # 'pagination.middleware.PaginationMiddleware',
 )
 
-ROOT_URLCONF = 'urls'
+ROOT_URLCONF = 'sandbox.urls'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -278,7 +281,7 @@ LOGGING = {
 }
 
 # replace rabbitmq by localhost if you start your app outside docker-compose
-BROKER_URL = 'amqp://guest:guest@rabbitmq//'
+BROKER_URL = 'amqp://guest:guest@broker//'
 
 CELERY_IMPORTS = ("timeside.server.tasks",)
 CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
@@ -299,5 +302,3 @@ HAYSTACK_CONNECTIONS = {
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
 HAYSTACK_SEARCH_RESULTS_PER_PAGE = 50
-
-
