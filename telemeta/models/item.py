@@ -339,6 +339,15 @@ class MediaItem(MediaResource):
 
         return metadata
 
+    def to_row(self):
+        row = []
+        _dict = self.to_dict_with_more()
+        for tag in _dict:
+            if tag in _dict.keys():
+                row.append(_dict[tag])
+            else:
+                row.append('')
+        return row
 
 class MediaItemRelated(MediaRelated):
     "Item related media"

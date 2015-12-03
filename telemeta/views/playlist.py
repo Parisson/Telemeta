@@ -102,7 +102,6 @@ class PlaylistView(object):
                     if items:
                         item = items[0]
                         elements.append(item)
-
             elif resource_type == 'collections':
                 if resource.resource_type == 'collection':
                     collection = MediaCollection.objects.get(id=resource.resource_id)
@@ -110,14 +109,10 @@ class PlaylistView(object):
         return elements
 
     def playlist_csv_export(self, request, public_id, resource_type):
-        playlist = Playlist.objects.get(public_id=public_id, author=request.user)
+        playlist = Playlist.objects.get(public_id=public_id)
         elements = self.get_elements(playlist, resource_type)
-        response = HttpResponse(content_type='text/csv')
+        pseudo_buffer = Echo()
+        writer = UnicodeCSVWriter(pseudo_buffer, elements)
+        response = StreamingHttpResponse(writer.output(), content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename='+playlist.title+'_'+resource_type+'.csv'
-        writer = UnicodeWriter(response)
-
-        if elements:
-            csv = CSVExport(writer)
-            csv.write(elements)
-
         return response
