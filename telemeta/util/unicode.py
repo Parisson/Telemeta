@@ -62,7 +62,8 @@ class UnicodeCSVWriter(object):
         self.line = 0
         self.elements = elements
         self.tags = []
-        self.get_tags(self.elements[0])
+        if self.elements:
+            self.get_tags(self.elements[0])
 
     def get_tags(self, element):
         _dict = element.to_dict_with_more()
