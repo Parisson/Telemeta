@@ -112,7 +112,7 @@ class PlaylistView(object):
         playlist = Playlist.objects.get(public_id=public_id)
         elements = self.get_elements(playlist, resource_type)
         pseudo_buffer = Echo()
-        writer = UnicodeCSVWriter(pseudo_buffer)
-        response = StreamingHttpResponse((writer.write_element(element) for element in elements), content_type='text/csv')
+        writer = UnicodeCSVWriter(pseudo_buffer, elements)
+        response = StreamingHttpResponse(writer.output(), content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename='+playlist.title+'_'+resource_type+'.csv'
         return response

@@ -273,6 +273,16 @@ class MediaCollection(MediaResource):
         return json.dumps(self.to_dict_with_more())
 
 
+    def to_row(self):
+        row = []
+        _dict = self.to_dict_with_more()
+        for tag in _dict:
+            if tag in _dict.keys():
+                row.append(_dict[tag])
+            else:
+                row.append('')
+        return row
+
 
 class MediaCollectionRelated(MediaRelated):
     "Collection related media"
@@ -295,4 +305,3 @@ class MediaCollectionIdentifier(Identifier):
         verbose_name = _('collection identifier')
         verbose_name_plural = _('collection identifiers')
         unique_together = ('identifier', 'collection')
-

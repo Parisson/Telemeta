@@ -50,19 +50,24 @@ def _stringify_list(l, encoding):
     return [_stringify(s, encoding) for s in l]
 
 
+class StreamCSVException(Exception):
+    pass
+
+
 class UnicodeCSVWriter(object):
-    def __init__(self, f, dialect=csv.excel, encoding="utf-8", **kwds):
+    def __init__(self, f, elements, dialect=csv.excel, encoding="utf-8", **kwds):
         self.dialect = dialect
         self.encoding = encoding
         self.writer = csv.writer(f, dialect=dialect, **kwds)
         self.line = 0
+        self.elements = elements
         self.tags = []
-
+        self.get_tags(self.elements[0])
 
     def get_tags(self, element):
-        element_dict = element.to_dict_with_more()
+        _dict = element.to_dict_with_more()
 
-        for key in element_dict.keys():
+        for key in _dict.keys():
             if not key in self.tags:
                 self.tags.append(key)
 
@@ -72,23 +77,11 @@ class UnicodeCSVWriter(object):
         self.tags.sort()
         self.tags.insert(0, 'title')
         self.tags.insert(0, 'code')
-        self.init_tags = True
 
-    def get_row(self, element):
-        row = []
-        element_dict = element.to_dict_with_more()
-        for tag in self.tags:
-            if tag in element_dict.keys():
-                    row.append(element_dict[tag])
-            else:
-                row.append('')
-        return row
-
-    def write_element(self, element):
-        if not self.tags:
-            yield self.writer.writerow(self.get_tags())
-        row = self.get_row(element)
-        yield self.writer.writerow(_stringify_list(row, self.encoding))
+    def output(self):
+        yield self.writer.writerow(self.tags)
+        for element in self.elements:
+            yield self.writer.writerow(_stringify_list(element.to_row(), self.encoding))
 
 
 class Echo(object):

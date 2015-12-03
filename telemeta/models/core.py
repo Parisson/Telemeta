@@ -264,5 +264,3 @@ class CoreManager(EnhancedManager):
                 return super(CoreManager, self).get(**args)
 
         return super(CoreManager, self).get(**kwargs)
-
-
