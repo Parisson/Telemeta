@@ -82,7 +82,7 @@ class UnicodeCSVWriter(object):
     def output(self):
         yield self.writer.writerow(self.tags)
         for element in self.elements:
-            yield self.writer.writerow(_stringify_list(element.to_row(), self.encoding))
+            yield self.writer.writerow(_stringify_list(element.to_row(self.tags), self.encoding))
 
 
 class Echo(object):

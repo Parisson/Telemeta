@@ -272,11 +272,10 @@ class MediaCollection(MediaResource):
         import json
         return json.dumps(self.to_dict_with_more())
 
-
-    def to_row(self):
+    def to_row(self, tags):
         row = []
         _dict = self.to_dict_with_more()
-        for tag in _dict:
+        for tag in tags:
             if tag in _dict.keys():
                 row.append(_dict[tag])
             else:

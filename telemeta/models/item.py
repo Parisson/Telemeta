@@ -311,7 +311,6 @@ class MediaItem(MediaResource):
                                                     'grapher_id': 'waveform_centroid',
                                                     'width': 346,
                                                     'height': 130}))
-
         # One ID only
         identifiers = self.identifiers.all()
         if identifiers:
@@ -339,10 +338,10 @@ class MediaItem(MediaResource):
 
         return metadata
 
-    def to_row(self):
+    def to_row(self, tags):
         row = []
         _dict = self.to_dict_with_more()
-        for tag in _dict:
+        for tag in tags:
             if tag in _dict.keys():
                 row.append(_dict[tag])
             else:
