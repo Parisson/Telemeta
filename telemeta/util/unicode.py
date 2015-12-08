@@ -50,10 +50,6 @@ def _stringify_list(l, encoding):
     return [_stringify(s, encoding) for s in l]
 
 
-class StreamCSVException(Exception):
-    pass
-
-
 class UnicodeCSVWriter(object):
     def __init__(self, f, elements, dialect=csv.excel, encoding="utf-8", **kwds):
         self.dialect = dialect
@@ -67,7 +63,6 @@ class UnicodeCSVWriter(object):
 
     def get_tags(self, element):
         _dict = element.to_dict_with_more()
-
         for key in _dict.keys():
             if not key in self.tags:
                 self.tags.append(key)
