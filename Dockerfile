@@ -21,16 +21,14 @@ MAINTAINER Guillaume Pellerin <yomguy@parisson.com>, Thomas fillon <thomas@paris
 
 RUN mkdir /opt/app
 RUN mkdir /opt/src
+RUN mkdir /opt/src/Telemeta
 
-WORKDIR /opt/app
-
-ADD requirements.txt /opt/app/
-ADD requirements-dev.txt /opt/app/
-ADD setup.py /opt/app/
-ADD README.rst /opt/app/
-ADD telemeta /opt/app/
-
+COPY . /opt/src/Telemeta
+WORKDIR /opt/src/Telemeta
 RUN pip install -r requirements.txt
 RUN pip install -r requirements-dev.txt --src /opt/src
+RUN python setup.py develop
+
+WORKDIR /opt/app
 
 EXPOSE 8000

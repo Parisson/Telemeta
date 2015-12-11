@@ -1,10 +1,9 @@
 from __future__ import absolute_import
-
-import os
-
+import os, sys
 from celery import Celery
-
 from django.conf import settings
+
+sys.path.append(os.path.dirname('sandbox'))
 
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')

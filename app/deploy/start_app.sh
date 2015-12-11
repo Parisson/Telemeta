@@ -1,8 +1,6 @@
 #!/bin/sh
 
 # paths
-
-
 app='/opt/app'
 manage=$app'/manage.py'
 wsgi=$app'/wsgi.py'

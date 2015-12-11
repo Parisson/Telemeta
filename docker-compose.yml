@@ -42,8 +42,6 @@ db:
 
 broker:
   image: rabbitmq:3-management
-  ports:
-    - "15672:15672"
 
 search:
   image: elasticsearch:1
@@ -52,6 +50,7 @@ app:
   build: .
   volumes:
     - ./app/:/opt/app
+    - ./:/opt/src/Telemeta
   volumes_from:
     - media
   command: /bin/sh deploy/start_app.sh
