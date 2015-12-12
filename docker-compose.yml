@@ -50,7 +50,7 @@ app:
   build: .
   volumes:
     - ./app/:/opt/app
-    - ./:/opt/src/Telemeta
+    - ./telemeta/:/opt/src/app/telemeta
   volumes_from:
     - media
   command: /bin/sh deploy/start_app.sh
