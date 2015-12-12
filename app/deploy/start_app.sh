@@ -7,7 +7,7 @@ wsgi=$app'/wsgi.py'
 static='/opt/static/'
 
 # stating apps
-pip install django-haystack elasticsearch
+# pip install django-haystack elasticsearch
 
 # waiting for other services
 sh $app/deploy/wait.sh
