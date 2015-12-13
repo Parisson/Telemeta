@@ -25,7 +25,7 @@
 media:
   image: debian:wheezy
   volumes:
-     - ./media/:/opt/media
+     - /home/parisson/apps/DevBox/home/sandbox/media/:/opt/media
      - ./static/:/opt/static
   command: "true"
 
@@ -55,7 +55,7 @@ app:
     - media
   command: /bin/sh deploy/start_app.sh
   ports:
-    - "9000:9000"
+    - "9001:9000"
   expose:
     - "8000"
   links:
@@ -75,7 +75,7 @@ worker:
 nginx:
   image: nginx
   ports:
-    - "8000:80"
+    - "8001:80"
   volumes:
     - ./app/deploy/nginx-app.conf:/etc/nginx/conf.d/default.conf
     - ./log/:/var/log/nginx

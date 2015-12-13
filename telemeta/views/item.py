@@ -273,7 +273,8 @@ class ItemView(ItemBaseMixin):
                 f = open(path, 'w')
                 graph.render(output=path)
                 f.close()
-
+                self.cache_data.add_file(image_file)
+                
         response = StreamingHttpResponse(self.cache_data.read_stream_bin(image_file), content_type=mime_type)
         return response
 
