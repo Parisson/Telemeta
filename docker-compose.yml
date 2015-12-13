@@ -25,7 +25,7 @@
 media:
   image: debian:wheezy
   volumes:
-     - /home/parisson/apps/DevBox/home/sandbox/media/:/opt/media
+     - ./media/:/opt/media
      - ./static/:/opt/static
   command: "true"
 
