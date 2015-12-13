@@ -27,13 +27,13 @@ media:
   volumes:
      - ./media/:/opt/media
      - ./static/:/opt/static
+     - ./backup/:/opt/backup
   command: "true"
 
 db:
   image: mysql
-  volumes:
-    - ./var/lib/mysql:/var/lib/mysql
-    - /var/log/mysql
+  volumes_from:
+    - media 
   environment:
     - MYSQL_ROOT_PASSWORD=ItCydyatzix8
     - MYSQL_DATABASE=telemeta
