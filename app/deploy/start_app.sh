@@ -6,6 +6,12 @@ manage=$app'/manage.py'
 wsgi=$app'/wsgi.py'
 static='/opt/static/'
 
+# uwsgi params
+port=8000
+processes=4
+threads=4
+autoreload=3
+
 # stating apps
 # pip install django-haystack elasticsearch
 
@@ -25,4 +31,4 @@ watchmedo shell-command --patterns="*.js;*.css" --recursive \
     --command='python '$manage' collectstatic --noinput' $static &
 
 # app start
-uwsgi --socket :8000 --wsgi-file $wsgi --chdir $app --master --processes 4 --threads 2 --py-autoreload 3
+uwsgi --socket :$port --wsgi-file $wsgi --chdir $app --master --processes $processes --threads $threads --py-autoreload $autoreload
