@@ -178,7 +178,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.messages.context_processors.messages',
 )
 
-
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'ipauth.backend.RangeBackend',
@@ -280,17 +279,15 @@ LOGGING = {
     }
 }
 
+from celery_app import app
 # replace rabbitmq by localhost if you start your app outside docker-compose
 # BROKER_URL = 'amqp://guest:guest@broker//'
 BROKER_URL = 'redis://broker:6379/0'
-
 CELERY_IMPORTS = ("timeside.server.tasks",)
 CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_ACCEPT_CONTENT = ['application/json']
-
-from celery_app import app
 
 
 HAYSTACK_CONNECTIONS = {
@@ -300,7 +297,5 @@ HAYSTACK_CONNECTIONS = {
         'INDEX_NAME': 'haystack',
     },
 }
-
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
-
 HAYSTACK_SEARCH_RESULTS_PER_PAGE = 50
