@@ -8,8 +8,8 @@ static='/opt/static/'
 
 # uwsgi params
 port=8000
-processes=16
-threads=2
+processes=8
+threads=8
 autoreload=3
 
 # stating apps
