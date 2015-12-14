@@ -6,7 +6,7 @@ manage=$app'/manage.py'
 wsgi=$app'/wsgi.py'
 
 # stating apps
-# pip install django-haystack elasticsearch
+pip install redis
 
 # waiting for other services
 sh $app/deploy/wait.sh

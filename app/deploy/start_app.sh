@@ -13,7 +13,7 @@ threads=2
 autoreload=3
 
 # stating apps
-# pip install django-haystack elasticsearch
+pip install redis
 
 # waiting for other services
 sh $app/deploy/wait.sh
