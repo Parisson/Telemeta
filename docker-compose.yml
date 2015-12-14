@@ -23,7 +23,7 @@
 
 
 media:
-  image: debian:wheezy
+  image: debian:jessie
   volumes:
      - ./media/:/opt/media
      - ./static/:/opt/static
