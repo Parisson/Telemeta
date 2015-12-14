@@ -8,7 +8,7 @@ static='/opt/static/'
 
 # uwsgi params
 port=8000
-processes=32
+processes=16
 threads=2
 autoreload=3
 
@@ -24,7 +24,7 @@ python $manage migrate --noinput
 python $manage collectstatic --noinput
 python $manage telemeta-create-admin-user
 python $manage telemeta-create-boilerplate
-python $manage update_index --workers $processes
+#python $manage update_index --workers $processes
 
 # static files auto update
 watchmedo shell-command --patterns="*.js;*.css" --recursive \
