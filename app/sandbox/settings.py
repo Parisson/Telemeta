@@ -77,7 +77,6 @@ USE_L10N = True
 #
 # if not os.path.exists(MEDIA_ROOT):
 #     os.makedirs(MEDIA_ROOT)
-
 MEDIA_ROOT = '/opt/media/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
@@ -288,7 +287,6 @@ CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_ACCEPT_CONTENT = ['application/json']
-
 
 HAYSTACK_CONNECTIONS = {
     'default': {
