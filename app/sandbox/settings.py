@@ -32,9 +32,9 @@ DATABASES = {
 
         # MySQL config
         'ENGINE': 'django.db.backends.mysql',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'USER': 'telemeta',      # Not used with sqlite3.
-        'PASSWORD': 'iuvIlkyisFit2',  # Not used with sqlite3.
-        'NAME': 'telemeta',
+        'USER': os.environ.get('DB_ENV_MYSQL_USER'),      # Not used with sqlite3.
+        'PASSWORD': os.environ.get('DB_ENV_MYSQL_PASSWORD'),  # Not used with sqlite3.
+        'NAME': os.environ.get('DB_ENV_MYSQL_DATABASE'),
         'HOST': 'db',      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '3306',      # Set to empty string for default. Not used with sqlite3.
     }
