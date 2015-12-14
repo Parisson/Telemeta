@@ -33,7 +33,7 @@ media:
 db:
   image: mysql
   volumes_from:
-    - media 
+    - media
   environment:
     - MYSQL_ROOT_PASSWORD=ItCydyatzix8
     - MYSQL_DATABASE=telemeta
@@ -41,7 +41,7 @@ db:
     - MYSQL_PASSWORD=iuvIlkyisFit2
 
 broker:
-  image: rabbitmq:3-management
+  image: redis
 
 search:
   image: elasticsearch:1
@@ -75,7 +75,7 @@ worker:
 nginx:
   image: nginx
   ports:
-    - "8001:80"
+    - "8000:80"
   volumes:
     - ./app/deploy/nginx-app.conf:/etc/nginx/conf.d/default.conf
     - ./log/:/var/log/nginx
