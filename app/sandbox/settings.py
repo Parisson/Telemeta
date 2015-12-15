@@ -19,7 +19,7 @@ MANAGERS = ADMINS
 
 # Full filesystem path to the project.
 #PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = '/opt/app/'
+PROJECT_ROOT = '/srv/app/'
 
 DATABASES = {
     'default': {
@@ -77,7 +77,7 @@ USE_L10N = True
 #
 # if not os.path.exists(MEDIA_ROOT):
 #     os.makedirs(MEDIA_ROOT)
-MEDIA_ROOT = '/opt/media/'
+MEDIA_ROOT = '/srv/media/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -89,7 +89,7 @@ MEDIA_URL = '/media/'
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
 # STATIC_ROOT = '/var/www/static'
-STATIC_ROOT = '/opt/static/'
+STATIC_ROOT = '/srv/static/'
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"

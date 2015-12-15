@@ -1,10 +1,10 @@
 #!/bin/sh
 
 # paths
-app='/opt/app'
+app='/srv/app'
 manage=$app'/manage.py'
 wsgi=$app'/wsgi.py'
-static='/opt/static/'
+static='/srv/static/'
 
 # uwsgi params
 port=8000

@@ -18,14 +18,14 @@ FROM parisson/timeside:latest-dev
 
 MAINTAINER Guillaume Pellerin <yomguy@parisson.com>, Thomas fillon <thomas@parisson.com>
 
-RUN mkdir /opt/app
-RUN mkdir /opt/src
-RUN mkdir /opt/src/app
+RUN mkdir /srv/app
+RUN mkdir /srv/src
+RUN mkdir /srv/src/app
 
-COPY . /opt/src/app
-WORKDIR /opt/src/app
+COPY . /srv/src/app
+WORKDIR /srv/src/app
 RUN pip install -r requirements.txt
-RUN pip install -r requirements-dev.txt --src /opt/src
-WORKDIR /opt/app
+RUN pip install -r requirements-dev.txt --src /srv/src
+WORKDIR /srv/app
 
 EXPOSE 8000

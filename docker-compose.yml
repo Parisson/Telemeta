@@ -25,9 +25,9 @@
 media:
   image: debian:jessie
   volumes:
-     - ./media/:/opt/media
-     - ./static/:/opt/static
-     - ./backup/:/opt/backup
+     - ./media/:/srv/media
+     - ./static/:/srv/static
+     - ./backup/:/srv/backup
   command: "true"
 
 db:
@@ -49,8 +49,8 @@ search:
 app:
   build: .
   volumes:
-    - ./app/:/opt/app
-    - ./telemeta/:/opt/src/app/telemeta
+    - ./app/:/srv/app
+    - ./telemeta/:/srv/src/app/telemeta
   volumes_from:
     - media
   command: /bin/sh deploy/start_app.sh
@@ -75,7 +75,7 @@ worker:
 nginx:
   image: nginx
   ports:
-    - "8001:80"
+    - "8000:80"
   volumes:
     - ./app/deploy/nginx-app.conf:/etc/nginx/conf.d/default.conf
     - ./log/:/var/log/nginx
