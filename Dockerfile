@@ -14,19 +14,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# FROM parisson/timeside:latest-dev
 FROM parisson/timeside:latest-dev
 
 MAINTAINER Guillaume Pellerin <yomguy@parisson.com>, Thomas fillon <thomas@parisson.com>
 
-# Clone app
-RUN mkdir /opt/Telemeta
-ADD . /opt/Telemeta
-WORKDIR /opt/Telemeta
+RUN mkdir /srv/app
+RUN mkdir /srv/src
+RUN mkdir /srv/src/app
 
-# Install deps
-RUN mkdir /opt/src
+COPY . /srv/src/app
+WORKDIR /srv/src/app
 RUN pip install -r requirements.txt
-RUN pip install -r requirements-dev.txt --src /opt/src
+RUN pip install -r requirements-dev.txt --src /srv/src
+WORKDIR /srv/app
 
 EXPOSE 8000

@@ -19,7 +19,7 @@ MANAGERS = ADMINS
 
 # Full filesystem path to the project.
 #PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = '/home/sandbox'
+PROJECT_ROOT = '/srv/app/'
 
 DATABASES = {
     'default': {
@@ -32,9 +32,9 @@ DATABASES = {
 
         # MySQL config
         'ENGINE': 'django.db.backends.mysql',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'USER': 'telemeta',      # Not used with sqlite3.
-        'PASSWORD': 'iuvIlkyisFit2',  # Not used with sqlite3.
-        'NAME': 'telemeta',
+        'USER': os.environ.get('DB_ENV_MYSQL_USER'),      # Not used with sqlite3.
+        'PASSWORD': os.environ.get('DB_ENV_MYSQL_PASSWORD'),  # Not used with sqlite3.
+        'NAME': os.environ.get('DB_ENV_MYSQL_DATABASE'),
         'HOST': 'db',      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '3306',      # Set to empty string for default. Not used with sqlite3.
     }
@@ -73,10 +73,11 @@ USE_L10N = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = PROJECT_ROOT + '/media/'
-
-if not os.path.exists(MEDIA_ROOT):
-    os.makedirs(MEDIA_ROOT)
+# MEDIA_ROOT = PROJECT_ROOT + '/media/'
+#
+# if not os.path.exists(MEDIA_ROOT):
+#     os.makedirs(MEDIA_ROOT)
+MEDIA_ROOT = '/srv/media/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -87,7 +88,8 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = '/var/www/static'
+# STATIC_ROOT = '/var/www/static'
+STATIC_ROOT = '/srv/static/'
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -128,7 +130,7 @@ MIDDLEWARE_CLASSES = (
     # 'pagination.middleware.PaginationMiddleware',
 )
 
-ROOT_URLCONF = 'urls'
+ROOT_URLCONF = 'sandbox.urls'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -174,7 +176,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.static',
     'django.contrib.messages.context_processors.messages',
 )
-
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
@@ -277,16 +278,15 @@ LOGGING = {
     }
 }
 
-# replace rabbitmq by localhost if you start your app outside docker-compose
-BROKER_URL = 'amqp://guest:guest@rabbitmq//'
-
-CELERY_IMPORTS = ("timeside.server.tasks",)
-CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
-CELERY_TASK_SERIALIZER = "json"
-CELERY_ACCEPT_CONTENT = ['application/json']
-
 from celery_app import app
-
+# replace rabbitmq by localhost if you start your app outside docker-compose
+# BROKER_URL = 'amqp://guest:guest@broker//'
+BROKER_URL = 'redis://broker:6379/0'
+CELERY_IMPORTS = ("timeside.server.tasks",)
+CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_ACCEPT_CONTENT = ['application/json']
 
 HAYSTACK_CONNECTIONS = {
     'default': {
@@ -295,9 +295,5 @@ HAYSTACK_CONNECTIONS = {
         'INDEX_NAME': 'haystack',
     },
 }
-
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
-
 HAYSTACK_SEARCH_RESULTS_PER_PAGE = 50
-
-
