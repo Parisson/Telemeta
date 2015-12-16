@@ -32,6 +32,8 @@ media:
 
 db:
   image: mysql
+  volumes:
+    - ./app/deploy/my.cnf:/etc/mysql/my.cnf
   volumes_from:
     - media
   environment:
@@ -83,3 +85,12 @@ nginx:
     - media
   links:
     - app
+
+phpmyadmin:
+    image: nazarpc/phpmyadmin
+    ports:
+      - 10000:80
+    links:
+      - db
+    environment:
+      - MYSQL_PORT_3306_TCP_ADDR=db
