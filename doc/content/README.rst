@@ -5,7 +5,7 @@ Telemeta: open web audio platform with semantics
 :category: About
 :Pin: true
 
-.. image:: /Telemeta/images/logo_telemeta_2.png
+.. image:: /images/logo_telemeta_2.png
     :alt: Telemeta logo
 
 Overview
@@ -205,4 +205,3 @@ The Telemeta project is developed by Parisson. It is sponsored by :
     http://www.mmsh.univ-aix.fr/
   * MNHN : Museum d'Histoire Naturelle (Paris, France)
     http://www.mnhn.fr
-

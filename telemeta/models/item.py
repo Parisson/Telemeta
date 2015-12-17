@@ -163,7 +163,7 @@ class MediaItem(MediaResource):
                 return 'none'
         else:
             return _('none')
-            
+
 
     class Meta(MetaCore):
         db_table = 'media_items'
@@ -251,7 +251,12 @@ class MediaItem(MediaResource):
                 del metadata[key]
 
         metadata['url'] = self.get_url()
-        metadata['last_modification_date'] = unicode(self.get_revision().time)
+        revision = self.get_revision()
+        if revision:
+            time = unicode(revision.time)
+        else:
+            time = ''
+        metadata['last_modification_date'] = time
         metadata['collection'] = self.collection.get_url()
 
         keywords = []
@@ -259,25 +264,22 @@ class MediaItem(MediaResource):
             keywords.append(keyword.value)
         metadata['keywords'] = ';'.join(keywords)
 
-        i = 0
+        related_media_urls = []
         for media in self.related.all():
-            tag = 'related_media_title' + '_' + str(i)
-            if media.title:
-                metadata[tag] = media.title
-            else:
-                metadata[tag] = ''
-            tag = 'related_media_url' + '_' + str(i)
             if media.url:
-                metadata[tag] = media.url
-            elif media.url:
-                metadata[tag] = get_full_url(reverse('telemeta-collection-related',
-                                            kwargs={'public_id': self.public_id, 'media_id': media.id}))
-            i += 1
+                related_media_urls.append(media.url)
+            else:
+                try:
+                    url = get_full_url(reverse('telemeta-item-related',
+                                                kwargs={'public_id': self.public_id, 'media_id': media.id}))
+                except:
+                    url = ''
+                related_media_urls.append(url)
+        metadata['related_media_urls'] = ';'.join(related_media_urls)
 
         instruments = []
         instrument_vernacular_names = []
         performers = []
-
         for performance in self.performances.all():
             if performance.instrument:
                 instruments.append(performance.instrument.name)
@@ -285,24 +287,23 @@ class MediaItem(MediaResource):
                 instrument_vernacular_names.append(performance.alias.name)
             if performance.musicians:
                 performers.append(performance.musicians.replace(' et ', ';'))
-
         metadata['instruments'] = ';'.join(instruments)
         metadata['instrument_vernacular_names'] = ';'.join(instrument_vernacular_names)
         metadata['performers'] = ';'.join(performers)
-
-        i = 0
-        for indentifier in self.identifiers.all():
-            metadata['identifier' + '_' + str(i)] = identifier.identifier
-            metadata['identifier_type' + '_' + str(i)] = identifier.type
-            metadata['identifier_date_last' + '_' + str(i)] = unicode(identifier.date_last)
-            metadata['identifier_notes' + '_' + str(i)] = identifier.notes
-            i += 1
 
         analyzers = ['channels', 'samplerate', 'duration', 'resolution', 'mime_type']
         for analyzer_id in analyzers:
             analysis = MediaItemAnalysis.objects.filter(item=self, analyzer_id=analyzer_id)
             if analysis:
-                metadata[analyzer_id] = analysis[0].value
+                if analyzer_id == 'duration':
+                    value = ':'.join([str('%.2d' % int(float(t))) for t in analysis[0].value.split(':')])
+                else:
+                    value = analysis[0].value
+                metadata[analyzer_id] = value
+            elif analyzer_id == 'duration':
+                metadata[analyzer_id] = self.approx_duration
+            else:
+                metadata[analyzer_id] = ''
 
         metadata['file_size'] = unicode(self.size())
         metadata['thumbnail'] = get_full_url(reverse('telemeta-item-visualize',
@@ -310,7 +311,6 @@ class MediaItem(MediaResource):
                                                     'grapher_id': 'waveform_centroid',
                                                     'width': 346,
                                                     'height': 130}))
-
         # One ID only
         identifiers = self.identifiers.all()
         if identifiers:
@@ -319,9 +319,34 @@ class MediaItem(MediaResource):
             metadata['identifier_type'] = identifier.type
             metadata['identifier_date'] = unicode(identifier.date_last)
             metadata['identifier_note'] = identifier.notes
+        else:
+            metadata['identifier_id'] = ''
+            metadata['identifier_type'] = ''
+            metadata['identifier_date'] = ''
+            metadata['identifier_note'] = ''
+
+        # Collection
+        metadata['recording_context'] = self.collection.recording_context
+        metadata['description_collection'] = self.collection.description
+        metadata['status'] = self.collection.status
+        metadata['original_format'] = self.collection.original_format
+        metadata['physical_format'] = self.collection.physical_format
+        metadata['year_published'] = self.collection.year_published
+        metadata['publisher'] = self.collection.publisher
+        metadata['publisher_collection'] = self.collection.publisher_collection
+        metadata['reference_collection'] = self.collection.reference
 
         return metadata
 
+    def to_row(self, tags):
+        row = []
+        _dict = self.to_dict_with_more()
+        for tag in tags:
+            if tag in _dict.keys():
+                row.append(_dict[tag])
+            else:
+                row.append('')
+        return row
 
 class MediaItemRelated(MediaRelated):
     "Item related media"

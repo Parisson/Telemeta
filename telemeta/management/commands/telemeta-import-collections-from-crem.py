@@ -81,6 +81,7 @@ class Command(BaseCommand):
 
     def write_file(self, item, media):
         filename = media.split(os.sep)[-1]
+        print 'importing ' + filename
         if os.path.exists(media):
             if not item.file or self.force:
                 if not self.media_root in self.source_dir:
@@ -89,14 +90,13 @@ class Command(BaseCommand):
                     if not self.dry_run:
                         file_content = ContentFile(f.read())
                         item.file.save(filename, file_content)
-                        item.save()
                     f.close()
                 else:
                     print "file in MEDIA_ROOT, linking..."
                     path = media.replace(self.media_root, '')
                     if not self.dry_run:
                         item.file = path
-                        item.save()
+                item.save()
                 if self.user:
                     item.set_revision(self.user)
             else:

@@ -45,21 +45,45 @@ def _stringify(s, encoding):
     elif type(s) != str:
         s=str(s)
     return s
-    
+
 def _stringify_list(l, encoding):
     return [_stringify(s, encoding) for s in l]
-    
-    
-class UnicodeWriter(object):
-    def __init__(self, f, dialect=csv.excel, encoding="utf-8", **kwds):
-        self.writer = csv.writer(f)
+
+
+class UnicodeCSVWriter(object):
+    def __init__(self, f, elements, dialect=csv.excel, encoding="utf-8", **kwds):
         self.dialect = dialect
         self.encoding = encoding
         self.writer = csv.writer(f, dialect=dialect, **kwds)
+        self.line = 0
+        self.elements = elements
+        self.tags = []
+        if self.elements:
+            self.get_tags(self.elements[0])
 
-    def writerow(self, row):
-        self.writer.writerow(_stringify_list(row, self.encoding))
+    def get_tags(self, element):
+        _dict = element.to_dict_with_more()
+        for key in _dict.keys():
+            if not key in self.tags:
+                self.tags.append(key)
 
-    def writerows(self, rows):
-        for row in rows:
-          self.writerow(row)
+        # code and title on the two first column
+        self.tags.remove('code')
+        self.tags.remove('title')
+        self.tags.sort()
+        self.tags.insert(0, 'title')
+        self.tags.insert(0, 'code')
+
+    def output(self):
+        yield self.writer.writerow(self.tags)
+        for element in self.elements:
+            yield self.writer.writerow(_stringify_list(element.to_row(self.tags), self.encoding))
+
+
+class Echo(object):
+    """An object that implements just the write method of the file-like
+    interface.
+    """
+    def write(self, value):
+        """Write the value by returning it, instead of storing in a buffer."""
+        return value

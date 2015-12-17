@@ -85,7 +85,7 @@ from telemeta.interop.oaidatasource import TelemetaOAIDataSource
 from telemeta.util.unaccent import unaccent
 from telemeta.util.unaccent import unaccent_icmp
 from telemeta.util.logger import Logger
-from telemeta.util.unicode import UnicodeWriter
+from telemeta.util.unicode import UnicodeCSVWriter, Echo
 from telemeta.cache import TelemetaCache
 import pages
 from telemeta.forms import *

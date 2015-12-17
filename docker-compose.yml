@@ -28,25 +28,6 @@ static:
     - /var/www/static
   command: "true"
 
-log:
-  image: debian:wheezy
-  volumes:
-    - /var/log/nginx
-    - /var/log/postgres
-    - /var/log/mysql
-    - /var/log/uwsgi
-    - /var/log/elasticsearch
-  command: "true"
-
-lib:
-  image: debian:wheezy
-  volumes:
-    - /var/lib/rabbitmq
-    - /var/lib/postgres
-    - ./var/lib/mysql:/var/lib/mysql
-    - ./var/lib/elasticsearch:/var/lib/elasticsearch
-  command: "true"
-
 home:
   image: debian:wheezy
   volumes:
@@ -55,14 +36,14 @@ home:
 
 db:
   image: mysql
-  volumes_from:
-    - lib
-    - log
+  volumes:
+    - ./var/lib/mysql:/var/lib/mysql
+    - /var/log/mysql
   environment:
-    - MYSQL_ROOT_PASSWORD=mysecretpassword
-    - MYSQL_DATABASE=sandbox
-    - MYSQL_USER=root
-    - MYSQL_PASSWORD=mysecretpassword
+    - MYSQL_ROOT_PASSWORD=ItCydyatzix8
+    - MYSQL_DATABASE=telemeta
+    - MYSQL_USER=telemeta
+    - MYSQL_PASSWORD=iuvIlkyisFit2
 
 rabbitmq:
   image: rabbitmq:3-management
@@ -70,19 +51,16 @@ rabbitmq:
     - "15672:15672"
 
 search:
-  image: elasticsearch
-  volumes_from:
-    - lib
-    - log
+  image: elasticsearch:1
 
 app:
   build: .
   volumes:
     - .:/opt/Telemeta
+    - /var/log/uwsgi
   volumes_from:
     - static
     - home
-    - log
   command: /bin/sh /opt/Telemeta/examples/deploy/start_app.sh
   ports:
     - "9000:9000"
@@ -98,7 +76,6 @@ worker:
   volumes_from:
     - app
     - home
-    - log
   command: /bin/sh /opt/Telemeta/examples/deploy/celery_app.sh
   links:
     - rabbitmq
@@ -110,9 +87,9 @@ nginx:
     - "8000:80"
   volumes:
     - ./examples/deploy/nginx-app.conf:/etc/nginx/conf.d/default.conf
+    - /var/log/nginx
   volumes_from:
     - static
     - home
-    - log
   links:
     - app

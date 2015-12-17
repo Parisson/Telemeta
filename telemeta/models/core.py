@@ -65,6 +65,7 @@ PUBLIC_ACCESS_CHOICES = (('none', _('none')), ('metadata', _('metadata')),
 
 public_extra_types = {
     '.webm': 'video/webm',
+    '.mp4': 'video/mp4',
 }
 
 private_extra_types = {
@@ -183,7 +184,7 @@ class ModelCore(EnhancedModel):
         "Return model fields as a dict of name/value pairs"
         fields_dict = {}
         for field in self._meta.fields:
-            fields_dict[field.name] = unicode(getattr(self, field.name))
+            fields_dict[field.name] = getattr(self, field.name)
         return fields_dict
 
     def to_list(self):
@@ -263,5 +264,3 @@ class CoreManager(EnhancedManager):
                 return super(CoreManager, self).get(**args)
 
         return super(CoreManager, self).get(**kwargs)
-
-
