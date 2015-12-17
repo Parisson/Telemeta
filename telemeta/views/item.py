@@ -359,7 +359,6 @@ class ItemView(ItemBaseMixin):
                 if extension in mapping.unavailable_extensions:
                     metadata=None
                 proc.set_metadata(metadata)
-
                 response = StreamingHttpResponse(stream_from_processor(decoder, proc, flag), content_type=mime_type)
             else:
                 # cache > stream
