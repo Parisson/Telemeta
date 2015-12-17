@@ -54,7 +54,6 @@ collection_unpublished_code_regex = getattr(settings, 'COLLECTION_UNPUBLISHED_CO
 collection_code_regex = '(?:%s|%s)' % (collection_published_code_regex,
                                        collection_unpublished_code_regex)
 
-
 class MediaCollection(MediaResource):
     "Describe a collection of items"
 
