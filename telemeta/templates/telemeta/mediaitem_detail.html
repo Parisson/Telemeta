@@ -76,8 +76,8 @@
 </script>
 
 {% if "video" in mime_type %}
- <script src="{{ STATIC_URL }}video-js/video.js" ></script>
- <link href="{{ STATIC_URL }}video-js/video-js.css" rel="stylesheet">
+<script src="{{ STATIC_URL }}video-js/video.js" ></script>
+<link href="{{ STATIC_URL }}video-js/video-js.css" rel="stylesheet">
 {% endif %}
 
 {% endif %}
@@ -94,7 +94,7 @@
 {% endblock %}
 
 {% block title_buttons %}
-<div class="fixedWidthAsPlayer">
+<div>
     <a href="{% url "telemeta-item-detail" previous %}">
       <button type="button" class="btn btn-default">
         <span class="glyphicon glyphicon-chevron-left"></span>
@@ -119,6 +119,11 @@
       </button>
     </a>
     {% endif %}
+    <a id="_share" href='#'>
+      <button type="button" class="btn btn-default" data-toggle="modal" data-target="#share">
+        <span class="glyphicon glyphicon-share"></span> {% trans "Share" %}
+      </button>
+    </a>
     <a href="{% url "telemeta-item-detail" next %}">
       <button type="button" class="btn btn-default">
         <span class="glyphicon glyphicon-chevron-right"></span>
@@ -162,30 +167,7 @@
         </div>
 
     {% if "video" in mime_type %}
-    <div>
-    <video width="348" height="240" controls preload="none">
-        <source src="{% url "telemeta-item-export" item.public_id mime_type|mime_to_ext %}" type="{{ mime_type }}" />
-    </video>
-    </div>
-
-    <button type="button" class="btn btn-default">
-      <span class="glyphicon glyphicon-share"></span> {% trans "Share" %}
-    </button>
-
-{% comment %}
-    <div id="videotime"></div>
-    <script>
-    (function(){
-        var v = document.getElementsByTagName('video')[0]
-        var t = document.getElementById('videotime');
-        v.addEventListener('timeupdate',function(event){
-            t.innerHTML = v.currentTime;
-            },false);
-            })();
-    </script>
-{% endcomment %}
-
-
+     {% include "telemeta/inc/mediaitem_video.html" %}
     {% endif %}
 
         <!-- </div> -->
@@ -417,6 +399,33 @@
     </a>
 
 {% endif %}
+
+{% block modal %}
+<div id="share" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><b>{% trans "Share" %}</b></h4>
+      </div>
+      <div class="modal-body">
+        <p><b>{% trans "Share the link"%}</b></p>
+         <input class="share" name="share_url" value="{{ site }}{% url "telemeta-item-detail" item.public_id %}" title="{% trans "Share the link"%}" onclick="this.focus();this.select()" size="68">
+        <br><br>
+        <p><b>{% trans "Share the audio player" %}</b></p>
+         <input class="share" name="share_audio_player" value="<iframe width='361' height='215' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='{{ site }}{% url "telemeta-item-player" item.public_id 346 130 %}'></iframe>" title="{% trans "Share the audio player" %}" onclick="this.focus();this.select()" size="68">
+        <br><br>
+        <p><b>{% trans "Share the video player" %}</b></p>
+         <input class="share" name="share_video_player" value="<iframe width='640' height='480' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='{{ site }}{% url "telemeta-item-video-player" item.public_id 640 480 %}'></iframe>" title="{% trans "Share the video player" %}" onclick="this.focus();this.select()" size="68">
+       </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
 {% endblock %}
 
 {% else %}
