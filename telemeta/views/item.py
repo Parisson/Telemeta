@@ -274,7 +274,7 @@ class ItemView(ItemBaseMixin):
                 graph.render(output=path)
                 f.close()
                 self.cache_data.add_file(image_file)
-                
+
         response = StreamingHttpResponse(self.cache_data.read_stream_bin(image_file), content_type=mime_type)
         return response
 
@@ -746,6 +746,7 @@ class ItemDetailView(ItemViewMixin, DetailView):
         context['last_revision'] = last_revision
         context['format'] = item_format
         context['private_extra_types'] = private_extra_types.values()
+        context['site'] = 'http://' + Site.objects.all()[0].name
         return context
 
 
@@ -843,3 +844,8 @@ class ItemPlayerDefaultView(ItemDetailView):
 class ItemDetailDCView(ItemDetailView):
 
     template_name = 'telemeta/mediaitem_detail_dc.html'
+
+
+class ItemVideoPlayerView(ItemDetailView):
+
+    template_name = 'telemeta/mediaitem_video_player.html'
