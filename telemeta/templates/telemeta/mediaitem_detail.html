@@ -415,11 +415,13 @@
         <p><b>{% trans "Share the audio player" %}</b></p>
          <input class="share" name="share_audio_player" value="<iframe width='361' height='215' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='{{ site }}{% url "telemeta-item-player" item.public_id 346 130 %}'></iframe>" title="{% trans "Share the audio player" %}" onclick="this.focus();this.select()" size="68">
         <br><br>
+        {% if "video" in mime_type %}
         <p><b>{% trans "Share the video player" %}</b></p>
          <input class="share" name="share_video_player" value="<iframe width='640' height='480' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='{{ site }}{% url "telemeta-item-video-player" item.public_id 640 480 %}'></iframe>" title="{% trans "Share the video player" %}" onclick="this.focus();this.select()" size="68">
+        {% endif %}
        </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Close" %}</button>
       </div>
     </div>
   </div>
