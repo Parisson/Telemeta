@@ -22,7 +22,7 @@
                 </div>
                 <div class="fieldWrapper">
                     {{form.collectors.errors}}
-                    {{ form.collectors.label_tag }}</br>
+                    {% trans form.collectors.label_tag %}</br>
                     {{form.collectors}}
                 </div>
                 <div class="fieldWrapper">
@@ -151,12 +151,20 @@
             <div class="row" style="margin-left:-15px">
                 <div class="col-md-4">
                     {% ifequal type 'item' %}
-                         <p><b>Items ({{item_count}}) | <a href="{% url "haystack_advance_search_type" "collection" %}?{{request.GET.urlencode}}">Collections ({{collection_count}})</a></b></p>
-                     {% else %}
-                        {% ifequal type 'collection'%}
-                            <p><b><a href="{% url "haystack_advance_search_type" "item" %}?{{request.GET.urlencode}}">Items ({{item_count}}) </a>| Collections ({{collection_count}})</b></p>
+                         <p><b>Items ({{item_count}}) | <a href="{% url "haystack_advance_search_type" "collection" %}?{{request.GET.urlencode}}">Collections ({{collection_count}})</a> | <a href="{% url "haystack_advance_search_type" "corpus" %}?{{request.GET.urlencode}}">Corpus ({{corpus_count}})</a> | <a href="{% url "haystack_advance_search_type" "fonds" %}?{{request.GET.urlencode}}">Fonds ({{fonds_count}})</a></b></p>
+                    {% else %}
+                        {% ifequal type 'corpus' %}
+                            <p><b><a href="{% url "haystack_advance_search_type" "item" %}?{{request.GET.urlencode}}">Items ({{item_count}}) </a>| <a href="{% url "haystack_advance_search_type" "collection" %}?{{request.GET.urlencode}}">Collections ({{collection_count}})</a> | Corpus ({{corpus_count}})</a> | <a href="{% url "haystack_advance_search_type" "fonds" %}?{{request.GET.urlencode}}">Fonds ({{fonds_count}})</a></b></p>
+                        {% else %}
+                            {% ifequal type 'fonds' %}
+                                <p><b><a href="{% url "haystack_advance_search_type" "item" %}?{{request.GET.urlencode}}">Items ({{item_count}}) </a>| <a href="{% url "haystack_advance_search_type" "collection" %}?{{request.GET.urlencode}}">Collections ({{collection_count}})</a> | <a href="{% url "haystack_advance_search_type" "corpus" %}?{{request.GET.urlencode}}">Corpus ({{corpus_count}})</a> | Fonds ({{fonds_count}})</b></p>
+                            {% else %}
+                                {% ifequal type 'collection'%}
+                                    <p><b><a href="{% url "haystack_advance_search_type" "item" %}?{{request.GET.urlencode}}">Items ({{item_count}}) </a>| Collections ({{collection_count}}) | <a href="{% url "haystack_advance_search_type" "corpus" %}?{{request.GET.urlencode}}">Corpus ({{corpus_count}})</a> | <a href="{% url "haystack_advance_search_type" "fonds" %}?{{request.GET.urlencode}}">Fonds ({{fonds_count}})</a></b></p>
+                                {% endifequal %}
+                            {% endifequal %}
                         {% endifequal %}
-                     {% endifequal %}
+                    {% endifequal %}
                  </div>
                  <div class="col-md-4 col-md-offset-4" >
                     <div class="pull-right"">
@@ -181,8 +189,16 @@
                     {% ifequal type 'item' %}
                         {% include "search/mediaitem_listhaystack.html" %}
                     {% else %}
-                        {% ifequal type 'collection' %}
-                            {% include "search/mediacollection_listhaystack.html" %}
+                        {% ifequal type 'corpus' %}
+                            {% include "search/mediacorpus_listhaystack.html" %}
+                        {% else %}
+                            {% ifequal type 'fonds' %}
+                                {% include "search/mediafonds_listhaystack.html" %}
+                            {% else %}
+                                {% ifequal type 'collection' %}
+                                    {% include "search/mediacollection_listhaystack.html" %}
+                                {%endifequal%}
+                            {%endifequal%}
                         {%endifequal%}
                     {%endifequal%}
                 </div>
@@ -191,8 +207,16 @@
                         {% ifequal type 'item' %}
                             {% include "search/mediaitem_listhaystack.html" %}
                         {% else %}
-                            {% ifequal type 'collection' %}
-                                {% include "search/mediacollection_listhaystack.html" %}
+                            {% ifequal type 'corpus' %}
+                                {% include "search/mediacorpus_listhaystack.html" %}
+                            {% else %}
+                                {% ifequal type 'fonds' %}
+                                    {% include "search/mediafonds_listhaystack.html" %}
+                                {% else %}
+                                    {% ifequal type 'collection' %}
+                                        {% include "search/mediacollection_listhaystack.html" %}
+                                    {%endifequal%}
+                                {%endifequal%}
                             {%endifequal%}
                         {%endifequal%}
                     </div>

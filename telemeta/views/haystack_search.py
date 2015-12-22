@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from haystack.views import *
-#from haystack.query import SearchQuerySet
+from haystack.query import SearchQuerySet
 from telemeta.models import *
 from telemeta.forms.haystack_form import *
 
@@ -13,7 +13,7 @@ class HaystackSearch(FacetedSearchView):
         self.form_class = HaySearchForm
         self.selected_facet = self.selected_facet_list(request.GET.getlist('selected_facets', ['a']))
         if request.GET.get('results_page'):
-            self.results_per_page=int(request.GET.get('results_page'))
+            self.results_per_page = int(request.GET.get('results_page'))
         else:
             self.results_per_page = 20
         return super(HaystackSearch, self).__call__(request)
@@ -22,13 +22,17 @@ class HaystackSearch(FacetedSearchView):
         return super(HaystackSearch, self).get_query()
 
     def get_results(self):
-        if(self.type == 'collection'):
-            return super(HaystackSearch, self).get_results().models(MediaCollection)
-        else:
+        if(self.type == 'item'):
             return super(HaystackSearch, self).get_results().models(MediaItem)
+        elif(self.type == 'corpus'):
+            return super(HaystackSearch, self).get_results().models(MediaCorpus)
+        elif(self.type == 'fonds'):
+            return super(HaystackSearch, self).get_results().models(MediaFonds)
+        else:
+            return super(HaystackSearch, self).get_results().models(MediaCollection)
 
-    def selected_facet_list(self,selected_facets):
-        facet_list=[]
+    def selected_facet_list(self, selected_facets):
+        facet_list = []
         for facet in selected_facets:
             if ":" not in facet:
                 continue
@@ -36,7 +40,7 @@ class HaystackSearch(FacetedSearchView):
             field, value = facet.split(":", 1)
 
             if value and not value in facet_list:
-                if field=='digitized_exact':
+                if field == 'digitized_exact':
                     facet_list.append('Sound')
                 else:
                     facet_list.append(value)
@@ -47,6 +51,8 @@ class HaystackSearch(FacetedSearchView):
         extra = super(HaystackSearch, self).extra_context()
         extra['collection_count'] = super(HaystackSearch, self).get_results().models(MediaCollection).count()
         extra['item_count'] = super(HaystackSearch, self).get_results().models(MediaItem).count()
+        extra['corpus_count'] = super(HaystackSearch, self).get_results().models(MediaCorpus).count()
+        extra['fonds_count'] = super(HaystackSearch, self).get_results().models(MediaFonds).count()
 
         if extra['facets']:
             viewable_total = 0
@@ -68,23 +74,31 @@ class HaystackSearch(FacetedSearchView):
             extra['Radio_count'] = self.get_results().narrow('recording_context:Radio').count()
             extra['Video_count'] = self.get_results().narrow('media_type:Video').count()
             extra['Audio_count'] = self.get_results().narrow('media_type:Audio').count()
-        if self.type == 'collection':
-            extra['type'] = 'collection'
-        else:
+        if self.type == 'item':
             extra['type'] = 'item'
+        elif self.type == 'fonds':
+            extra['type'] = 'fonds'
+        elif self.type == 'corpus':
+            extra['type'] = 'corpus'
+        else:
+            extra['type'] = 'collection'
 
         extra['selected_facets'] = self.selected_facet
         extra['selected_facets_url'] = self.request.GET.getlist('selected_facets')
         extra['results_page'] = self.results_per_page
         return extra
 
+    #def auto_complete(request):
+        #content = SearchQuerySet().autocomplete(content_auto=request.POST.get('seatch_text', ''))
+
+        #return render_to_response('', {'content' : content])
 
 class HaystackAdvanceSearch(SearchView):
 
     def __call__(self, request, type=None):
         self.type = type
         if request.GET.get('results_page'):
-            self.results_per_page=int(request.GET.get('results_page'))
+            self.results_per_page = int(request.GET.get('results_page'))
         else:
             self.results_per_page = 20
         return super(HaystackAdvanceSearch, self).__call__(request)
@@ -97,18 +111,30 @@ class HaystackAdvanceSearch(SearchView):
         return ''
 
     def get_results(self):
-        if(self.type == 'collection'):
-            return self.form.search().models(MediaCollection)
-        else:
+        if(self.type == 'item'):
             return self.form.search().models(MediaItem)
+        elif(self.type == 'collection'):
+            return self.form.search().models(MediaCollection)
+        elif(self.type == 'corpus'):
+            return self.form.search().models(MediaCorpus)
+        else:
+            return self.form.search().models(MediaFonds)
 
     def extra_context(self):
         extra = super(HaystackAdvanceSearch, self).extra_context()
+        extra['fonds_count'] = self.form.search().models(MediaFonds).count()
+        extra['corpus_count'] = self.form.search().models(MediaCorpus).count()
         extra['collection_count'] = self.form.search().models(MediaCollection).count()
         extra['item_count'] = self.form.search().models(MediaItem).count()
-        if self.type == 'collection':
-            extra['type'] = 'collection'
-        else:
+
+        if self.type == 'item':
             extra['type'] = 'item'
+        elif  self.type == 'collection':
+            extra['type'] = 'collection'
+        elif(self.type == 'corpus'):
+            extra['type'] = 'corpus'
+        else:
+            extra['type'] = 'fonds'
+
         extra['results_page'] = self.results_per_page
         return extra
