@@ -281,7 +281,7 @@ LOGGING = {
 BROKER_URL = 'amqp://guest:guest@rabbitmq//'
 
 CELERY_IMPORTS = ("timeside.server.tasks",)
-CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
+CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
 CELERY_TASK_SERIALIZER = "json"
 CELERY_ACCEPT_CONTENT = ['application/json']
 
@@ -293,6 +293,7 @@ HAYSTACK_CONNECTIONS = {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
         'URL': 'http://search:9200/',
         'INDEX_NAME': 'haystack',
+        'INLUDE_SPELLING': True,
     },
 }
 
