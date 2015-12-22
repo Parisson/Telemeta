@@ -171,11 +171,9 @@
      <script>
      (function(){
          var v = document.getElementsByTagName('video')[0]
-         // var t = document.getElementById('videotime');
-         var p = Timeside;
+         var t = Timeside;
          v.addEventListener('timeupdate',function(event){
-             // t.innerHTML = v.currentTime;
-             p.player.setSoundPosition(v.currentTime);
+             t.player.setSoundPosition(v.currentTime);
              },false);
              })();
      </script>
