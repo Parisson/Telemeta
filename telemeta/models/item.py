@@ -48,10 +48,6 @@ from telemeta.models.enum import *
 item_published_code_regex = getattr(settings, 'ITEM_PUBLISHED_CODE_REGEX', '[A-Za-z0-9._-]*')
 item_unpublished_code_regex = getattr(settings, 'ITEM_UNPUBLISHED_CODE_REGEX', '[A-Za-z0-9._-]*')
 
-# CREM
-# item_published_code_regex    = collection_published_code_regex + '(?:_[0-9]{2,3}){1,2}'
-# item_unpublished_code_regex  = collection_unpublished_code_regex + '_[0-9]{2,3}(?:_[0-9]{2,3}){0,2}'
-
 item_code_regex = '(?:%s|%s)' % (item_published_code_regex, item_unpublished_code_regex)
 
 ITEM_PUBLIC_ACCESS_CHOICES = (('none', _('none')), ('metadata', _('metadata')),
