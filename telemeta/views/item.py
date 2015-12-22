@@ -181,8 +181,6 @@ class ItemView(ItemBaseMixin):
         media = get_object_or_404(MediaItemRelated, item=item, id=media_id)
         if media.file:
             response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
-            filename = media.file.path.split(os.sep)[-1]
-            response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
         else:
             raise Http404
         return response
