@@ -168,6 +168,15 @@
 
     {% if "video" in mime_type %}
      {% include "telemeta/inc/mediaitem_video.html" %}
+     <script>
+     (function(){
+         var v = document.getElementsByTagName('video')[0]
+         var t = Timeside;
+         v.addEventListener('timeupdate',function(event){
+             t.player.setSoundPosition(v.currentTime);
+             },false);
+             })();
+     </script>
     {% endif %}
 
         <!-- </div> -->
