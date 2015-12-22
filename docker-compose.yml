@@ -91,6 +91,4 @@ nginx:
 phpmyadmin:
     image: nazarpc/phpmyadmin
     links:
-      - db
-    environment:
-      - MYSQL_PORT_3306_TCP_ADDR=db
+      - db:mysql
