@@ -103,12 +103,12 @@
     {% if user.is_authenticated and perms.telemeta.change_mediaitem %}
     <a href="{% url "telemeta-item-edit" item.public_id %}">
       <button type="button" class="btn btn-default">
-        <span class="glyphicon glyphicon-edit"></span> {% trans "Edit" %}
+        <span class="glyphicon glyphicon-pencil"></span> {% trans "Edit" %}
       </button>
     </a>
     <a href="{% url "telemeta-item-copy" item.public_id %}">
       <button type="button" class="btn btn-default">
-        <span class="glyphicon glyphicon-new-window"></span> {% trans "Copy" %}
+        <span class="glyphicon glyphicon-copy"></span> {% trans "Copy" %}
       </button>
     </a>
     {% endif %}
@@ -121,7 +121,7 @@
     {% endif %}
     <a id="_share" href='#'>
       <button type="button" class="btn btn-default" data-toggle="modal" data-target="#share">
-        <span class="glyphicon glyphicon-share"></span> {% trans "Share" %}
+        <span class="glyphicon glyphicon-share-alt"></span> {% trans "Share" %}
       </button>
     </a>
     <a href="{% url "telemeta-item-detail" next %}">
