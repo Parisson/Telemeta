@@ -387,17 +387,6 @@
 
 {% endif %}
 
-{% endblock content %}
-
-{% block delete %}
-{% if user.is_authenticated and perms.telemeta.delete_mediaitem %}
-    <a href="#" onclick="if(confirm(gettrans('delete the item permanently?'))){window.location.href='{% url "telemeta-item-delete" item.public_id %}';};return false;" style="float:right;margin-top:0.5em;margin-bottom:1em">
-      <button type="button" class="btn btn-default">
-        <span class="glyphicon glyphicon-trash"></span> {% trans "Delete" %}
-      </button>
-    </a>
-{% endif %}
-{% endblock %}
 
 {% block modal %}
 <div id="share" class="modal fade" role="dialog">
@@ -427,6 +416,18 @@
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% endblock content %}
+
+{% block delete %}
+{% if user.is_authenticated and perms.telemeta.delete_mediaitem %}
+    <a href="#" onclick="if(confirm(gettrans('delete the item permanently?'))){window.location.href='{% url "telemeta-item-delete" item.public_id %}';};return false;" style="float:right;margin-top:0.5em;margin-bottom:1em">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-trash"></span> {% trans "Delete" %}
+      </button>
+    </a>
+{% endif %}
 {% endblock %}
 
 {% else %}
