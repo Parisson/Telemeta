@@ -92,3 +92,4 @@ phpmyadmin:
     image: nazarpc/phpmyadmin
     links:
       - db:mysql
+    
