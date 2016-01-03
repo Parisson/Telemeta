@@ -23,6 +23,13 @@ python $manage syncdb --noinput
 python $manage migrate --noinput
 python $manage collectstatic --noinput
 
+if [ ! -f $app/.init ]; then
+ python $manage telemeta-create-admin-user
+ python $manage telemeta-create-boilerplate
+ python $manage update_index --workers $processes
+ touch $app/.init
+fi
+
 # static files auto update
 watchmedo shell-command --patterns="*.js;*.css" --recursive \
     --command='python '$manage' collectstatic --noinput' $static &

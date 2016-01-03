@@ -94,3 +94,5 @@ phpmyadmin:
       - "1234:80"
     links:
       - db:mysql
+    environment:
+      - ABSOLUTE_URI=http://localhost:8000/phpmyadmin/
