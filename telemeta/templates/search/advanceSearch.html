@@ -190,10 +190,10 @@
                         {% include "search/mediaitem_listhaystack.html" %}
                     {% else %}
                         {% ifequal type 'corpus' %}
-                            {% include "search/mediacorpus_listhaystack.html" %}
+                            {% include "search/mediaresource_listhaystack.html" %}
                         {% else %}
                             {% ifequal type 'fonds' %}
-                                {% include "search/mediafonds_listhaystack.html" %}
+                                {% include "search/mediaresource_listhaystack.html" %}
                             {% else %}
                                 {% ifequal type 'collection' %}
                                     {% include "search/mediacollection_listhaystack.html" %}
@@ -208,10 +208,10 @@
                             {% include "search/mediaitem_listhaystack.html" %}
                         {% else %}
                             {% ifequal type 'corpus' %}
-                                {% include "search/mediacorpus_listhaystack.html" %}
+                                {% include "search/mediaresource_listhaystack.html" %}
                             {% else %}
                                 {% ifequal type 'fonds' %}
-                                    {% include "search/mediafonds_listhaystack.html" %}
+                                    {% include "search/mediaresource_listhaystack.html" %}
                                 {% else %}
                                     {% ifequal type 'collection' %}
                                         {% include "search/mediacollection_listhaystack.html" %}
