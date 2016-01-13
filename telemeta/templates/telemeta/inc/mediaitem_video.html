@@ -23,15 +23,4 @@
     <source src="{{ MEDIA_URL }}{{ item.file }}#t=0" type="{{ mime_type }}" />
 </video>
 </div>
-
-<div id="videotime"></div>
-<script>
-(function(){
-    var v = document.getElementsByTagName('video')[0]
-    var t = document.getElementById('videotime');
-    v.addEventListener('timeupdate',function(event){
-        t.innerHTML = v.currentTime;
-        },false);
-        })();
-</script>
 {% endcomment %}

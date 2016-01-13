@@ -103,7 +103,7 @@
     {% if user.is_authenticated and perms.telemeta.change_mediaitem %}
     <a href="{% url "telemeta-item-edit" item.public_id %}">
       <button type="button" class="btn btn-default">
-        <span class="glyphicon glyphicon-edit"></span> {% trans "Edit" %}
+        <span class="glyphicon glyphicon-pencil"></span> {% trans "Edit" %}
       </button>
     </a>
     <a href="{% url "telemeta-item-copy" item.public_id %}">
@@ -121,7 +121,7 @@
     {% endif %}
     <a id="_share" href='#'>
       <button type="button" class="btn btn-default" data-toggle="modal" data-target="#share">
-        <span class="glyphicon glyphicon-share"></span> {% trans "Share" %}
+        <span class="glyphicon glyphicon-share-alt"></span> {% trans "Share" %}
       </button>
     </a>
     <a href="{% url "telemeta-item-detail" next %}">
@@ -168,6 +168,15 @@
 
     {% if "video" in mime_type %}
      {% include "telemeta/inc/mediaitem_video.html" %}
+     <script>
+     (function(){
+         var v = document.getElementsByTagName('video')[0]
+         var t = Timeside;
+         v.addEventListener('timeupdate',function(event){
+             t.player.setSoundPosition(v.currentTime);
+             },false);
+             })();
+     </script>
     {% endif %}
 
         <!-- </div> -->
@@ -387,20 +396,9 @@
 
 {% endif %}
 
-{% endblock content %}
-
-{% block delete %}
-{% if user.is_authenticated and perms.telemeta.delete_mediaitem %}
-
-    <a href="#" onclick="if(confirm(gettrans('delete the item permanently?'))){window.location.href='{% url "telemeta-item-delete" item.public_id %}';};return false;" style="float:right;margin-top:0.5em;margin-bottom:1em">
-      <button type="button" class="btn btn-default">
-        <span class="glyphicon glyphicon-trash"></span> {% trans "Delete" %}
-      </button>
-    </a>
-
-{% endif %}
 
 {% block modal %}
+{% if item %}
 <div id="share" class="modal fade" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -412,7 +410,7 @@
         <p><b>{% trans "Share the link"%}</b></p>
          <input class="share" name="share_url" value="{{ site }}{% url "telemeta-item-detail" item.public_id %}" title="{% trans "Share the link"%}" onclick="this.focus();this.select()" size="68">
         <br><br>
-        {% if item %}
+        {% if item.file %}
             <p><b>{% trans "Share the audio player" %}</b></p>
              <input class="share" name="share_audio_player" value="<iframe width='361' height='215' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='{{ site }}{% url "telemeta-item-player" item.public_id 346 130 %}'></iframe>" title="{% trans "Share the audio player" %}" onclick="this.focus();this.select()" size="68">
             <br><br>
@@ -428,8 +426,19 @@
     </div>
   </div>
 </div>
+{% endif %}
 {% endblock %}
 
+{% endblock content %}
+
+{% block delete %}
+{% if user.is_authenticated and perms.telemeta.delete_mediaitem %}
+    <a href="#" onclick="if(confirm(gettrans('delete the item permanently?'))){window.location.href='{% url "telemeta-item-delete" item.public_id %}';};return false;" style="float:right;margin-top:0.5em;margin-bottom:1em">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-trash"></span> {% trans "Delete" %}
+      </button>
+    </a>
+{% endif %}
 {% endblock %}
 
 {% else %}
