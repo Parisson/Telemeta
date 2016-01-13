@@ -398,6 +398,7 @@
 
 
 {% block modal %}
+{% if item %}
 <div id="share" class="modal fade" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -425,6 +426,7 @@
     </div>
   </div>
 </div>
+{% endif %}
 {% endblock %}
 
 {% endblock content %}
