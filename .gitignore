@@ -10,6 +10,7 @@ eggs
 parts
 bin
 var
+data
 sdist
 develop-eggs
 .installed.cfg
@@ -27,9 +28,3 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
-
-#app
-media
-static
-var
-

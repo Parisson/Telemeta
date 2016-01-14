@@ -4,10 +4,18 @@
 import os, sys
 from django.core.urlresolvers import reverse_lazy, reverse
 
-sys.dont_write_bytecode = True
+import environ
 
-DEBUG = True
+# set default values and casting
+env = environ.Env(DEBUG=(bool, False),
+                  CELERY_ALWAYS_EAGER=(bool, False),
+                  )
+
+# Django settings for server project.
+DEBUG = env('DEBUG') # False if not in os.environ
 TEMPLATE_DEBUG = DEBUG
+
+sys.dont_write_bytecode = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -23,18 +31,10 @@ PROJECT_ROOT = '/srv/app/'
 
 DATABASES = {
     'default': {
-        # SQLite config
-        # 'ENGINE': 'django.db.backends.sqlite',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        # 'NAME': os.path.join(PROJECT_ROOT, 'telemeta.sql'),  # Or path to database file if using sqlite3.
-        # 'OPTIONS': {
-        #     'timeout': 60,
-        # }
-
-        # MySQL config
-        'ENGINE': 'django.db.backends.mysql',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'USER': os.environ.get('DB_ENV_MYSQL_USER'),      # Not used with sqlite3.
-        'PASSWORD': os.environ.get('DB_ENV_MYSQL_PASSWORD'),  # Not used with sqlite3.
-        'NAME': os.environ.get('DB_ENV_MYSQL_DATABASE'),
+        'ENGINE': env('ENGINE'),  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'USER': env('MYSQL_USER'),      # Not used with sqlite3.
+        'PASSWORD': env('MYSQL_PASSWORD'),  # Not used with sqlite3.
+        'NAME': env('MYSQL_DATABASE'),
         'HOST': 'db',      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '3306',      # Set to empty string for default. Not used with sqlite3.
     }
@@ -284,15 +284,15 @@ LOGGING = {
     }
 }
 
-from celery_app import app
-# replace rabbitmq by localhost if you start your app outside docker-compose
-# BROKER_URL = 'amqp://guest:guest@broker//'
-BROKER_URL = 'redis://broker:6379/0'
+BROKER_URL = env('BROKER_URL')
+
 CELERY_IMPORTS = ("timeside.server.tasks",)
 CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_ACCEPT_CONTENT = ['application/json']
+
+from celery_app import app
 
 HAYSTACK_CONNECTIONS = {
     'default': {

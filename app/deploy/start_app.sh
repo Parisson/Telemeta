@@ -5,6 +5,9 @@ app='/srv/app'
 manage=$app'/manage.py'
 wsgi=$app'/wsgi.py'
 static='/srv/static/'
+media='/srv/media/'
+
+chown www-data:www-data $media
 
 # uwsgi params
 port=8000
@@ -15,7 +18,7 @@ uid='www-data'
 gid='www-data'
 
 # stating apps
-pip install redis
+# pip install redis
 
 # waiting for other services
 sh $app/deploy/wait.sh
