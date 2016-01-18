@@ -113,12 +113,12 @@ class HaystackAdvanceSearch(SearchView):
     def get_results(self):
         if(self.type == 'item'):
             return self.form.search().models(MediaItem)
-        elif(self.type == 'collection'):
-            return self.form.search().models(MediaCollection)
+        elif(self.type == 'fonds'):
+            return self.form.search().models(MediaFonds)
         elif(self.type == 'corpus'):
             return self.form.search().models(MediaCorpus)
         else:
-            return self.form.search().models(MediaFonds)
+            return self.form.search().models(MediaCollection)
 
     def extra_context(self):
         extra = super(HaystackAdvanceSearch, self).extra_context()
@@ -129,12 +129,12 @@ class HaystackAdvanceSearch(SearchView):
 
         if self.type == 'item':
             extra['type'] = 'item'
-        elif  self.type == 'collection':
-            extra['type'] = 'collection'
+        elif  self.type == 'fonds':
+            extra['type'] = 'fonds'
         elif(self.type == 'corpus'):
             extra['type'] = 'corpus'
         else:
-            extra['type'] = 'fonds'
+            extra['type'] = 'collection'
 
         extra['results_page'] = self.results_per_page
         return extra
