@@ -14,18 +14,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM parisson/timeside:latest-dev
+FROM timeside_app:latest
 
 MAINTAINER Guillaume Pellerin <yomguy@parisson.com>, Thomas fillon <thomas@parisson.com>
 
-RUN mkdir /srv/app
-RUN mkdir /srv/src
-RUN mkdir /srv/src/app
-
-COPY . /srv/src/app
-WORKDIR /srv/src/app
+RUN mkdir /srv/src/telemeta
+COPY . /srv/src/telemeta
+WORKDIR /srv/src/telemeta
 RUN pip install -r requirements.txt
 RUN pip install -r requirements-dev.txt --src /srv/src
-WORKDIR /srv/app
 
+WORKDIR /srv/app
 EXPOSE 8000
