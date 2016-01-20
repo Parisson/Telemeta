@@ -5,15 +5,20 @@ app='/srv/app'
 manage=$app'/manage.py'
 wsgi=$app'/wsgi.py'
 static='/srv/static/'
+media='/srv/media/'
+
+chown -R www-data:www-data $media
 
 # uwsgi params
 port=8000
 processes=8
 threads=8
 autoreload=3
+uid='www-data'
+gid='www-data'
 
 # stating apps
-pip install redis
+pip install django-environ
 
 # waiting for other services
 sh $app/deploy/wait.sh
@@ -32,7 +37,10 @@ fi
 
 # static files auto update
 watchmedo shell-command --patterns="*.js;*.css" --recursive \
-    --command='python '$manage' collectstatic --noinput' $static &  
+    --command='python '$manage' collectstatic --noinput' $static &
 
 # app start
-uwsgi --socket :$port --wsgi-file $wsgi --chdir $app --master --processes $processes --threads $threads --py-autoreload $autoreload
+uwsgi --socket :$port --wsgi-file $wsgi --chdir $app --master \
+    --processes $processes --threads $threads \
+    --uid $uid --gid $gid \
+    --py-autoreload $autoreload
