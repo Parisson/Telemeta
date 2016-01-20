@@ -18,7 +18,7 @@ uid='www-data'
 gid='www-data'
 
 # stating apps
-pip install environ
+pip install django-environ
 
 # waiting for other services
 sh $app/deploy/wait.sh
