@@ -31,7 +31,7 @@ python $manage collectstatic --noinput
 if [ ! -f $app/.init ]; then
  python $manage telemeta-create-admin-user
  python $manage telemeta-create-boilerplate
- python $manage update_index --workers $processes
+ python $manage update_index --workers $processes 
  touch $app/.init
 fi
 
