@@ -7,7 +7,7 @@ wsgi=$app'/wsgi.py'
 static='/srv/static/'
 media='/srv/media/'
 
-chown www-data:www-data $media
+chown -R www-data:www-data $media
 
 # uwsgi params
 port=8000
