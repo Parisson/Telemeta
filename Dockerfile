@@ -25,5 +25,9 @@ WORKDIR /srv/src/telemeta
 RUN pip install -r requirements.txt
 RUN pip install -r requirements-dev.txt --src /srv/src
 
+ENV PYTHON_EGG_CACHE=/srv/.python-eggs
+RUN mkdir $PYTHON_EGG_CACHE
+RUN chown www-data:www-data $PYTHON_EGG_CACHE
+
 WORKDIR /srv/app
 EXPOSE 8000
