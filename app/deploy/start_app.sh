@@ -18,7 +18,7 @@ uid='www-data'
 gid='www-data'
 
 # stating apps
-pip install django-environ
+pip install django-environ redis
 
 # waiting for other services
 sh $app/deploy/wait.sh
