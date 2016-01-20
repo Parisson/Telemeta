@@ -2,8 +2,10 @@
 
 import os
 
-path = os.getcwd()
-name = path.split(os.sep)[-1]
+path = os.sep.join(os.getcwd().split(os.sep)[:-2])
+name = path.split(os.sep)[-1].lower()
+conf = path + os.sep + 'docker-compose.yml'
+program = '/usr/local/bin/docker-compose'
 service = '/lib/systemd/system/' + name + '.service'
 
 print 'installing ' + name + '...'
@@ -19,12 +21,12 @@ Requires=docker.service
 After=docker.service
 
 [Service]
-ExecStart=/usr/local/bin/docker-compose -f %s/docker-compose.yml up -d
-ExecStop=/usr/local/bin/docker-compose -f %s/docker-compose.yml stop
+ExecStart=%s -f %s up -d
+ExecStop=%s -f %s stop
 
 [Install]
 WantedBy=local.target
-""" % (name, path, path)
+""" % (name, program, conf, program, conf)
 
 # print rules
 

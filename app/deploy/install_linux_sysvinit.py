@@ -2,10 +2,10 @@
 
 import os
 
-path = os.getcwd()
+path = os.sep.join(os.getcwd().split(os.sep)[:-2])
 name = path.split(os.sep)[-1].lower()
-service = '/etc/init.d/' + name
 conf = path + os.sep + 'docker-compose.yml'
+service = '/etc/init.d/' + name
 
 print 'installing ' + name + '...'
 
