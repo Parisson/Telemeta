@@ -3,8 +3,7 @@
 import os, sys
 import argparse
 
-sysvinit_script = """
-#!/bin/sh
+sysvinit_script = """#!/bin/sh
 
 ### BEGIN INIT INFO
 # Provides:	    %s
