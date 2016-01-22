@@ -100,7 +100,7 @@ WantedBy=local.target
 """
 
 
-class DockerComposeDaemonInstall(object):
+class DockerCompositionInstaller(object):
 
     docker = '/etc/init.d/docker'
     docker_compose = '/usr/local/bin/docker-compose'
@@ -116,8 +116,8 @@ class DockerComposeDaemonInstall(object):
         path = self.path
         while not self.config in os.listdir(path):
             path = os.sep.join(path.split(os.sep)[:-1])
-        if not path:
-            raise ValueError('The YAML docker composition was not found, please type "install.py -h" for more infos.')
+            if not path:
+                raise ValueError('The YAML docker composition was not found, please type "install.py -h" for more infos.')
         return path
 
     def install_docker(self):
@@ -149,7 +149,7 @@ class DockerComposeDaemonInstall(object):
         os.system('systemctl enable ' + service)
         os.system('systemctl daemon-reload')
 
-    def run(self):
+    def install(self):
         print 'Installing ' + self.name + ' composition as a daemon...'
         self.install_docker()
         if self.init_type == 'sysvinit':
@@ -169,7 +169,7 @@ class DockerComposeDaemonInstall(object):
         os.system('systemctl daemon-reload')
         os.system('rm ' + service)
 
-    def un(self):
+    def uninstall(self):
         print 'Uninstalling ' + self.name + ' composition as a daemon...'
         if self.init_type == 'sysvinit':
             self.uninstall_daemon_sysvinit()
@@ -179,11 +179,11 @@ class DockerComposeDaemonInstall(object):
 
 
 def main():
-    description ="""Install a docker composition as a daemon with boot init (SysVinit by default)."""
+    description ="""Install this docker composition program as a daemon with boot init (sysvinit by default)."""
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument('--uninstall', help='uninstall the daemon', action='store_true')
     parser.add_argument('--systemd', help='use systemd', action='store_true')
-    parser.add_argument('config_file', nargs='?', help='the path of the YAML composition to install')
+    parser.add_argument('composition_file', nargs='?', help='the path of the YAML composition file to use (optional)')
 
     config = 'docker-compose.yml'
     init_type = 'sysvinit'
@@ -191,15 +191,14 @@ def main():
 
     if args['systemd']:
         init_type = 'systemd'
-    if args['config_file']:
-        config = args['config_file']
+    if args['composition_file']:
+        config = args['composition_file']
 
-    print init_type, config
-    install = DockerComposeDaemonInstall(config, init_type)
+    installer = DockerCompositionInstaller(config, init_type)
     if args['uninstall']:
-        install.un()
+        installer.uninstall()
     else:
-        install.run()
+        installer.install()
 
 if __name__ == '__main__':
     if not 'Linux' in platform.system():
