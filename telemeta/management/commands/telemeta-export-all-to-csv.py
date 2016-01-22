@@ -9,7 +9,7 @@ import timeside.core
 from timeside.server.models import *
 from timeside.core.tools.test_samples import generateSamples
 from telemeta.models import *
-from telemeta.util.unicode import *
+from telemeta.util.unicode import Echo, UnicodeCSVWriter
 
 
 class Command(BaseCommand):
@@ -18,14 +18,17 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         path = args[-1]
         element_type = args[-2]
-        f = open(path, 'w')
+        pseudo_buffer = Echo()
+
         if element_type == "item":
             elements = MediaItem.objects.all().order_by('id')
         elif element_type == "collection":
             elements = MediaCollection.objects.all().order_by('id')
         else:
             raise TypeError('type should be "item" or "collection"')
-        writer = UnicodeWriter(f)
-        csv = CSVExport(writer)
-        csv.write(elements)
+
+        f = open(path, 'w')
+        writer = UnicodeCSVWriter(pseudo_buffer, elements)
+        for data in writer.output():
+            f.write(data)
         f.close()
