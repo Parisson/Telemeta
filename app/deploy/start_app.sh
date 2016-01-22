@@ -7,8 +7,6 @@ wsgi=$app'/wsgi.py'
 static='/srv/static/'
 media='/srv/media/'
 
-chown www-data:www-data $media
-
 # uwsgi params
 port=8000
 processes=8
@@ -18,7 +16,7 @@ uid='www-data'
 gid='www-data'
 
 # stating apps
-pip install django-environ
+pip install django-environ redis
 
 # waiting for other services
 sh $app/deploy/wait.sh
@@ -29,9 +27,10 @@ python $manage migrate --noinput
 python $manage collectstatic --noinput
 
 if [ ! -f $app/.init ]; then
+ chown -R www-data:www-data $media
  python $manage telemeta-create-admin-user
  python $manage telemeta-create-boilerplate
- python $manage update_index --workers $processes
+ python $manage update_index --workers $processes &
  touch $app/.init
 fi
 

@@ -20,9 +20,9 @@ class Command(BaseCommand):
         element_type = args[-2]
         f = open(path, 'w')
         if element_type == "item":
-            elements = MediaItem.objects.all()
+            elements = MediaItem.objects.all().order_by('id')
         elif element_type == "collection":
-            elements = MediaCollection.objects.all()
+            elements = MediaCollection.objects.all().order_by('id')
         else:
             raise TypeError('type should be "item" or "collection"')
         writer = UnicodeWriter(f)
