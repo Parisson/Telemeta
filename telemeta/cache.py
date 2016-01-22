@@ -57,9 +57,13 @@ class TelemetaCache(object):
                 list.append(file)
         return list
 
+    def add_file(self, file):
+        self.files.append(file)
+
+
     def exists(self, file):
-        if not file in self.files:
-            self.files = self.get_files()
+        #if not file in self.files:
+        #    self.files = self.get_files()
         return file in self.files
 
     def delete_item_data(self, public_id):

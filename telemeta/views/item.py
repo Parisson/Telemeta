@@ -181,8 +181,6 @@ class ItemView(ItemBaseMixin):
         media = get_object_or_404(MediaItemRelated, item=item, id=media_id)
         if media.file:
             response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
-            filename = media.file.path.split(os.sep)[-1]
-            response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
         else:
             raise Http404
         return response
@@ -273,6 +271,7 @@ class ItemView(ItemBaseMixin):
                 f = open(path, 'w')
                 graph.render(output=path)
                 f.close()
+                self.cache_data.add_file(image_file)
 
         response = StreamingHttpResponse(self.cache_data.read_stream_bin(image_file), content_type=mime_type)
         return response
@@ -359,6 +358,7 @@ class ItemView(ItemBaseMixin):
                 if extension in mapping.unavailable_extensions:
                     metadata=None
                 proc.set_metadata(metadata)
+                self.cache_export.add_file(file)
                 response = StreamingHttpResponse(stream_from_processor(decoder, proc, flag), content_type=mime_type)
             else:
                 # cache > stream
@@ -744,6 +744,7 @@ class ItemDetailView(ItemViewMixin, DetailView):
         context['last_revision'] = last_revision
         context['format'] = item_format
         context['private_extra_types'] = private_extra_types.values()
+        context['site'] = 'http://' + Site.objects.all()[0].name
         return context
 
 
@@ -841,3 +842,8 @@ class ItemPlayerDefaultView(ItemDetailView):
 class ItemDetailDCView(ItemDetailView):
 
     template_name = 'telemeta/mediaitem_detail_dc.html'
+
+
+class ItemVideoPlayerView(ItemDetailView):
+
+    template_name = 'telemeta/mediaitem_video_player.html'

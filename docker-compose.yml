@@ -22,74 +22,44 @@
 # Thomas Fillon <thomas@parisson.com>
 
 
-static:
-  image: debian:wheezy
+data:
+  image: debian:jessie
   volumes:
-    - /var/www/static
-  command: "true"
-
-log:
-  image: debian:wheezy
-  volumes:
-    - /var/log/nginx
-    - /var/log/postgres
-    - /var/log/mysql
-    - /var/log/uwsgi
-    - /var/log/elasticsearch
-  command: "true"
-
-lib:
-  image: debian:wheezy
-  volumes:
-    - /var/lib/rabbitmq
-    - /var/lib/postgres
-    - ./var/lib/mysql:/var/lib/mysql
-    - ./var/lib/elasticsearch:/var/lib/elasticsearch
-  command: "true"
-
-home:
-  image: debian:wheezy
-  volumes:
-    - ./examples/sandbox:/home/sandbox
+     - ./data/media/:/srv/media
+     - ./data/static/:/srv/static
+     - ./data/backup/:/srv/backup
   command: "true"
 
 db:
   image: mysql
+  volumes:
+    - ./data/var/lib/mysql/:/var/lib/mysql
+    - ./data/var/log/mysql/:/var/log/mysql
   volumes_from:
-    - lib
-    - log
-  environment:
-    - MYSQL_ROOT_PASSWORD=mysecretpassword
-    - MYSQL_DATABASE=sandbox
-    - MYSQL_USER=root
-    - MYSQL_PASSWORD=mysecretpassword
+    - data
+  env_file:
+    - app/sandbox/tm-docker-compose.env
 
-rabbitmq:
-  image: rabbitmq:3-management
-  ports:
-    - "15672:15672"
+broker:
+  image: redis
 
 search:
-  image: elasticsearch
-  volumes_from:
-    - lib
-    - log
+  image: elasticsearch:1
 
 app:
   build: .
   volumes:
-    - .:/opt/Telemeta
+    - ./app/:/srv/app
+    - ./telemeta/:/srv/src/telemeta/telemeta
   volumes_from:
-    - static
-    - home
-    - log
-  command: /bin/sh /opt/Telemeta/examples/deploy/start_app.sh
+    - data
+  env_file:
+    - app/sandbox/tm-docker-compose.env
+  command: /bin/sh deploy/start_app.sh
   ports:
-    - "9000:9000"
-  expose:
-    - "8000"
+    - "9001:9000"
   links:
-    - rabbitmq
+    - broker
     - db
     - search
 
@@ -97,22 +67,31 @@ worker:
   build: .
   volumes_from:
     - app
-    - home
-    - log
-  command: /bin/sh /opt/Telemeta/examples/deploy/celery_app.sh
+  env_file:
+    - app/sandbox/tm-docker-compose.env
+  command: /bin/sh deploy/celery_app.sh
   links:
-    - rabbitmq
+    - broker
     - db
 
 nginx:
   image: nginx
   ports:
-    - "8000:80"
+    - "8001:80"
   volumes:
-    - ./examples/deploy/nginx-app.conf:/etc/nginx/conf.d/default.conf
+    - ./app/deploy/nginx-app.conf:/etc/nginx/conf.d/default.conf
+    - ./var/log/nginx/:/var/log/nginx
   volumes_from:
-    - static
-    - home
-    - log
+    - data
   links:
     - app
+    - phpmyadmin
+
+phpmyadmin:
+    image: nazarpc/phpmyadmin
+    ports:
+      - "1234:80"
+    links:
+      - db:mysql
+    environment:
+      - ABSOLUTE_URI=http://localhost:8000/phpmyadmin/

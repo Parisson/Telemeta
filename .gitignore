@@ -10,6 +10,7 @@ eggs
 parts
 bin
 var
+data
 sdist
 develop-eggs
 .installed.cfg

@@ -4,10 +4,18 @@
 import os, sys
 from django.core.urlresolvers import reverse_lazy, reverse
 
-sys.dont_write_bytecode = True
+import environ
 
-DEBUG = True
+# set default values and casting
+env = environ.Env(DEBUG=(bool, False),
+                  CELERY_ALWAYS_EAGER=(bool, False),
+                  )
+
+# Django settings for server project.
+DEBUG = env('DEBUG') # False if not in os.environ
 TEMPLATE_DEBUG = DEBUG
+
+sys.dont_write_bytecode = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -19,22 +27,14 @@ MANAGERS = ADMINS
 
 # Full filesystem path to the project.
 #PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = '/home/sandbox'
+PROJECT_ROOT = '/srv/app/'
 
 DATABASES = {
     'default': {
-        # SQLite config
-        # 'ENGINE': 'django.db.backends.sqlite',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        # 'NAME': os.path.join(PROJECT_ROOT, 'telemeta.sql'),  # Or path to database file if using sqlite3.
-        # 'OPTIONS': {
-        #     'timeout': 60,
-        # }
-
-        # MySQL config
-        'ENGINE': 'django.db.backends.mysql',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'USER': 'root',      # Not used with sqlite3.
-        'PASSWORD': 'mysecretpassword',  # Not used with sqlite3.
-        'NAME': 'sandbox',
+        'ENGINE': env('ENGINE'),  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'USER': env('MYSQL_USER'),      # Not used with sqlite3.
+        'PASSWORD': env('MYSQL_PASSWORD'),  # Not used with sqlite3.
+        'NAME': env('MYSQL_DATABASE'),
         'HOST': 'db',      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '3306',      # Set to empty string for default. Not used with sqlite3.
     }
@@ -73,10 +73,11 @@ USE_L10N = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = PROJECT_ROOT + '/media/'
-
-if not os.path.exists(MEDIA_ROOT):
-    os.makedirs(MEDIA_ROOT)
+# MEDIA_ROOT = PROJECT_ROOT + '/media/'
+#
+# if not os.path.exists(MEDIA_ROOT):
+#     os.makedirs(MEDIA_ROOT)
+MEDIA_ROOT = '/srv/media/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -87,7 +88,8 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = '/var/www/static'
+# STATIC_ROOT = '/var/www/static'
+STATIC_ROOT = '/srv/static/'
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -128,7 +130,7 @@ MIDDLEWARE_CLASSES = (
     # 'pagination.middleware.PaginationMiddleware',
 )
 
-ROOT_URLCONF = 'urls'
+ROOT_URLCONF = 'sandbox.urls'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -175,7 +177,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.messages.context_processors.messages',
 )
 
-
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'ipauth.backend.RangeBackend',
@@ -193,6 +194,8 @@ TELEMETA_GMAP_KEY = 'ABQIAAAArg7eSfnfTkBRma8glnGrlxRVbMrhnNNvToCbZQtWdaMbZTA_3RR
 TELEMETA_CACHE_DIR = os.path.join(MEDIA_ROOT, 'cache')
 TELEMETA_EXPORT_CACHE_DIR = os.path.join(MEDIA_ROOT, 'export')
 TELEMETA_DATA_CACHE_DIR = os.path.join(TELEMETA_CACHE_DIR, 'data')
+FILE_UPLOAD_TEMP_DIR = os.path.join(MEDIA_ROOT, 'tmp')
+FILE_UPLOAD_PERMISSIONS = 0644
 
 TELEMETA_DOWNLOAD_ENABLED = True
 TELEMETA_STREAMING_FORMATS = ('mp3', 'ogg')
@@ -200,6 +203,10 @@ TELEMETA_DOWNLOAD_FORMATS = ('wav', 'mp3', 'ogg', 'flac')
 TELEMETA_PUBLIC_ACCESS_PERIOD = 51
 
 TELEMETA_STRICT_CODE = False
+COLLECTION_PUBLISHED_CODE_REGEX = '*'
+COLLECTION_UNPUBLISHED_CODE_REGEX = '*'
+ITEM_PUBLISHED_CODE_REGEX = COLLECTION_PUBLISHED_CODE_REGEX + ''
+ITEM_UNPUBLISHED_CODE_REGEX = COLLECTION_UNPUBLISHED_CODE_REGEX + ''
 
 AUTH_PROFILE_MODULE = 'telemeta.userprofile'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
@@ -277,16 +284,15 @@ LOGGING = {
     }
 }
 
-# replace rabbitmq by localhost if you start your app outside docker-compose
-BROKER_URL = 'amqp://guest:guest@rabbitmq//'
+BROKER_URL = env('BROKER_URL')
 
 CELERY_IMPORTS = ("timeside.server.tasks",)
-CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
-CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
 CELERY_ACCEPT_CONTENT = ['application/json']
 
 from celery_app import app
-
 
 HAYSTACK_CONNECTIONS = {
     'default': {
@@ -295,7 +301,5 @@ HAYSTACK_CONNECTIONS = {
         'INDEX_NAME': 'haystack',
     },
 }
-
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
-
 HAYSTACK_SEARCH_RESULTS_PER_PAGE = 50
