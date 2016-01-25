@@ -21,6 +21,9 @@ pip install django-environ redis
 # waiting for other services
 sh $app/deploy/wait.sh
 
+# waiting for available database
+python $app/wait.py
+
 # django init
 python $manage syncdb --noinput
 python $manage migrate --noinput
