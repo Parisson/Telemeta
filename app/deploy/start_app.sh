@@ -28,11 +28,11 @@ python $app/wait.py
 python $manage syncdb --noinput
 python $manage migrate --noinput
 python $manage collectstatic --noinput
+python $manage telemeta-create-admin-user
+python $manage telemeta-create-boilerplate
 
 if [ ! -f $app/.init ]; then
  chown -R www-data:www-data $media
- python $manage telemeta-create-admin-user
- python $manage telemeta-create-boilerplate
  python $manage update_index --workers $processes &
  touch $app/.init
 fi
