@@ -55,7 +55,7 @@ from django.utils.translation import ugettext
 from django.utils.translation import ugettext_lazy as _
 from telemeta.models.utils import *
 from telemeta.models.fields import *
-from telemeta.util.kdenlive.session import *
+from telemeta.util.kdenlive_session import *
 from telemeta.util.unaccent import unaccent_icmp
 from xml.dom.minidom import getDOMImplementation
 
