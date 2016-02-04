@@ -30,8 +30,9 @@
 # The fact that you are presently reading this means that you have had
 # knowledge of the CeCILL license and that you accept its terms.
 #
-# Authors: Angy Fil-Aimé
+# Authors: Angy Fils-Aimé
 #          Killian Mary
+#          Novembre 2015 : Raouf Benmansour
 
 
 from telemeta.models import *
@@ -52,7 +53,12 @@ class HaySearchForm(FacetedSearchForm):
             return sqs
 
         if self.cleaned_data['q']:
-            sqs = sqs.filter(content__contains=self.cleaned_data['q']).facet('item_acces').facet('item_status').facet('digitized').facet('recording_context').facet('physical_format').facet('media_type')
+            #search input of a code, contains at least '_YYYY_'
+            if not re.match('([a-zA-Z]*_?[EI])?_[0-9]{4}_([0-9]{3}_[0-9]{3})?', self.cleaned_data.get('q')):
+                sqs = sqs.filter(content__contains=self.cleaned_data['q']).facet('item_acces').facet('item_status').facet('digitized').facet('recording_context').facet('physical_format').facet('media_type')
+            else:
+                sqs = sqs.filter(code__exact=self.cleaned_data['q']).facet('item_acces').facet('item_status').facet('digitized').facet('recording_context').facet('physical_format').facet('media_type')
+                print(self.cleaned_data['q'])
 
         for facet in self.selected_facets:
             if ":" not in facet:
