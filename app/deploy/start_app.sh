@@ -32,7 +32,7 @@ python $manage telemeta-create-admin-user
 python $manage telemeta-create-boilerplate
 
 if [ ! -f $app/.init ]; then
- chown -R www-data:www-data $media
+ chown www-data:www-data $media
  python $manage update_index --workers $processes &
  touch $app/.init
 fi
