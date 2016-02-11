@@ -18,7 +18,7 @@ FROM parisson/timeside:latest
 
 MAINTAINER Guillaume Pellerin <yomguy@parisson.com>, Thomas fillon <thomas@parisson.com>
 
-RUN mkdir /srv/src/
+RUN if [ ! -d /srv/src/ ]; then mkdir /srv/src/; fi
 RUN mkdir /srv/src/telemeta
 COPY . /srv/src/telemeta
 WORKDIR /srv/src/telemeta
@@ -26,7 +26,7 @@ RUN pip install -r requirements.txt
 RUN pip install -r requirements-dev.txt --src /srv/src
 
 ENV PYTHON_EGG_CACHE=/srv/.python-eggs
-RUN mkdir $PYTHON_EGG_CACHE
+RUN if [ ! -d $PYTHON_EGG_CACHE ]; then mkdir $PYTHON_EGG_CACHE; fi
 RUN chown www-data:www-data $PYTHON_EGG_CACHE
 
 WORKDIR /srv/app

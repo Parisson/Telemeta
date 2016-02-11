@@ -123,6 +123,20 @@ First install `Git <http://git-scm.com/downloads>`_, `Docker <https://docs.docke
 You can now browse http://localhost:8000
 
 
+Restore / backup
+================
+
+To restore a backuped database, put your backup file in data/backup, then in another terminal::
+
+    docker-compose run db /srv/backup/restore_db.sh FILENAME
+
+where FILENAME is the backup filename (can be .sql or .sql.gz)
+
+To backup the database, just run in another terminal::
+
+    docker-compose run db /srv/backup/backup_db.sh
+
+
 API / Documentation
 ====================
 

@@ -21,15 +21,18 @@ pip install django-environ redis
 # waiting for other services
 sh $app/deploy/wait.sh
 
+# waiting for available database
+python $app/wait.py
+
 # django init
 python $manage syncdb --noinput
 python $manage migrate --noinput
 python $manage collectstatic --noinput
+python $manage telemeta-create-admin-user
+python $manage telemeta-create-boilerplate
 
 if [ ! -f $app/.init ]; then
- chown -R www-data:www-data $media
- python $manage telemeta-create-admin-user
- python $manage telemeta-create-boilerplate
+ chown www-data:www-data $media
  python $manage update_index --workers $processes &
  touch $app/.init
 fi
