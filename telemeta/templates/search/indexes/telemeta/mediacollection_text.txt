@@ -5,6 +5,8 @@
 {{ object.recorded_to_year }}
 {{ object.description }}
 {{ object.collector }}
+{{ object.publisher_id }}
+{{ object.publisher_collection_id }}
 {{ object.publisher_serial }}
 {{ object.booklet_author }}
 {{ object.external_references }}
@@ -16,4 +18,7 @@
 {{ object.items_done }}
 {{ object.conservation_site }}
 {{ object.location }}
+{{ object.code }}
+{{ object.countries }}
+{{ object.ethnic_groups }}
 {{ object.body }}
