@@ -6,6 +6,7 @@ manage=$app'/manage.py'
 wsgi=$app'/wsgi.py'
 static='/srv/static/'
 media='/srv/media/'
+src='/srv/src/'
 
 # uwsgi params
 port=8000
@@ -27,6 +28,7 @@ sh $app/deploy/wait.sh
 # django init
 python $manage syncdb --noinput
 python $manage migrate --noinput
+python $manage bower_install -- --allow-root
 python $manage collectstatic --noinput
 python $manage telemeta-create-admin-user
 python $manage telemeta-create-boilerplate
@@ -39,7 +41,7 @@ fi
 
 # static files auto update
 watchmedo shell-command --patterns="*.js;*.css" --recursive \
-    --command='python '$manage' collectstatic --noinput' $static &
+    --command='python '$manage' collectstatic --noinput' $src &
 
 # app start
 uwsgi --socket :$port --wsgi-file $wsgi --chdir $app --master \
