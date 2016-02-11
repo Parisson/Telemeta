@@ -168,6 +168,7 @@ INSTALLED_APPS = (
     'djcelery',
     'haystack',
     'djangobower',
+    'djangular',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -311,11 +312,20 @@ BOWER_COMPONENTS_ROOT = '/srv/bower/'
 BOWER_PATH = '/usr/local/bin/bower'
 BOWER_INSTALLED_APPS = (
     'jquery',
-    'jquery-ui',
+    'jquery-migrate#~1.2.1',
+    'underscore',
     'bootstrap',
-    'tablesorter',
+    'bootstrap-select#1.5.4',
     'font-awesome#~4.4.0',
+    'angular#1.2.26',
+    'angular-bootstrap-select',
+    'angular-resource#1.2.26',
+    'raphael',
     'soundmanager',
+    'https://github.com/Parisson/loaders.git',
+    'https://github.com/Parisson/ui.git',
+    'jquery-ui',
+    'tablesorter',
     'video.js',
     'sass-bootstrap-glyphicons',
 )
