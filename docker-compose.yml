@@ -25,7 +25,7 @@
 data:
   image: debian:jessie
   volumes:
-     - ./data/media/:/srv/media
+     - /home/parisson/CREM/Telemeta/media/:/srv/media
      - ./data/static/:/srv/static
      - ./data/backup/:/srv/backup
   command: "true"
@@ -57,7 +57,7 @@ app:
     - app/sandbox/tm-docker-compose.env
   command: /bin/sh deploy/start_app.sh
   ports:
-    - "9001:9000"
+    - "9003:9000"
   links:
     - broker
     - db
@@ -77,7 +77,7 @@ worker:
 nginx:
   image: nginx
   ports:
-    - "8001:80"
+    - "8003:80"
   volumes:
     - ./app/deploy/nginx-app.conf:/etc/nginx/conf.d/default.conf
     - ./var/log/nginx/:/var/log/nginx
@@ -90,7 +90,7 @@ nginx:
 phpmyadmin:
     image: nazarpc/phpmyadmin
     ports:
-      - "1234:80"
+      - "1236:80"
     links:
       - db:mysql
     environment:
