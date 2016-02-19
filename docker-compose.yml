@@ -28,6 +28,8 @@ data:
      - /home/parisson/CREM/Telemeta/media/:/srv/media
      - ./data/static/:/srv/static
      - ./data/backup/:/srv/backup
+     - /srv/static
+     - /srv/bower
   command: "true"
 
 db:

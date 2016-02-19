@@ -18,7 +18,7 @@ FROM parisson/timeside-diadems:latest
 
 MAINTAINER Guillaume Pellerin <yomguy@parisson.com>, Thomas fillon <thomas@parisson.com>
 
-RUN if [ ! -d /srv/src ]; then mkdir /srv/src/; fi
+RUN if [ ! -d /srv/src/ ]; then mkdir /srv/src/; fi
 RUN mkdir /srv/src/telemeta
 COPY . /srv/src/telemeta
 WORKDIR /srv/src/telemeta

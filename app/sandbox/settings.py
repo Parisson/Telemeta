@@ -107,6 +107,7 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
 'django.contrib.staticfiles.finders.FileSystemFinder',
 'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+'djangobower.finders.BowerFinder',
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 # Make this unique, and don't share it with anybody.
@@ -166,6 +167,8 @@ INSTALLED_APPS = (
     'rest_framework',
     'djcelery',
     'haystack',
+    'djangobower',
+    'djangular',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -299,7 +302,30 @@ HAYSTACK_CONNECTIONS = {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
         'URL': 'http://search:9200/',
         'INDEX_NAME': 'haystack',
+        'INLUDE_SPELLING': True,
     },
 }
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 HAYSTACK_SEARCH_RESULTS_PER_PAGE = 50
+
+BOWER_COMPONENTS_ROOT = '/srv/bower/'
+BOWER_PATH = '/usr/local/bin/bower'
+BOWER_INSTALLED_APPS = (
+    'jquery',
+    'jquery-migrate#~1.2.1',
+    'underscore',
+    'bootstrap',
+    'bootstrap-select#1.5.4',
+    'font-awesome#~4.4.0',
+    'angular#1.2.26',
+    'angular-bootstrap-select',
+    'angular-resource#1.2.26',
+    'raphael',
+    'soundmanager',
+    'https://github.com/Parisson/loaders.git',
+    'https://github.com/Parisson/ui.git',
+    'jquery-ui',
+    'tablesorter',
+    'video.js',
+    'sass-bootstrap-glyphicons',
+)

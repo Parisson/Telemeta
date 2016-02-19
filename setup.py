@@ -74,6 +74,8 @@ setup(
         'elasticsearch==1.6.0',
         'django-haystack',
         'ebooklib',
+        'django-environ',
+        'redis',
     ],
   tests_require=['pytest-django', 'pytest-cov', 'factory-boy'],
   # Provide a test command through django-setuptest
