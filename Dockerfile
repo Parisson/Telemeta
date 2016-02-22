@@ -14,10 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM parisson/timeside-diadems:latest
+FROM parisson/timeside-diadems:latest-dev
 
 MAINTAINER Guillaume Pellerin <yomguy@parisson.com>, Thomas fillon <thomas@parisson.com>
 
+RUN apt-get install libxml2-dev libxslt-dev
 RUN mkdir -p /srv/src/
 RUN mkdir /srv/src/telemeta
 COPY . /srv/src/telemeta
