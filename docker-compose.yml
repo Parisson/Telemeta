@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (c) 2015 Parisson SARL
+# Copyright (c) 2015-2016 Parisson SARL
 
 # This file is part of Telemeta.
 
@@ -9,7 +9,7 @@
 # the Free Software Foundation, either version 2 of the License, or
 # (at your option) any later version.
 
-# TimeSide is distributed in the hope that it will be useful,
+# Telemeta is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
@@ -28,6 +28,7 @@ data:
      - /home/parisson/CREM/Telemeta/media/:/srv/media
      - ./static/:/srv/static
      - /home/parisson/CREM/Telemeta/backup/:/srv/backup
+     - /srv/bower
   command: "true"
 
 db:
@@ -77,7 +78,7 @@ worker:
 nginx:
   image: nginx
   ports:
-    - "8001:80"
+    - "8000:80"
   volumes:
     - ./app/deploy/nginx-app.conf:/etc/nginx/conf.d/default.conf
     - ./var/log/nginx/:/var/log/nginx
