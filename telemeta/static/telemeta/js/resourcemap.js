@@ -73,7 +73,7 @@ function ResourceMap(list, cfg) {
         var re  = /^resource-/;
         var id  = resourceElement.attr('id').replace(re, '');
         var uri = that.cfg.countryInfoUri.replace('RESOURCEID', id);
-        
+
         $.get(uri, function(data) {
             info.html(data);
             //marker.openInfoWindowHtml(info.get(0));
@@ -99,14 +99,14 @@ function ResourceMap(list, cfg) {
                 that.map.addOverlay(marker);
             }
         });
-    }        
+    }
 
     that.createMap = function() {
         that.log("GMap loaded");
         if (google.maps.BrowserIsCompatible()) {
             that.map = new google.maps.Map2(that.container[0]);
             var bounds = new GLatLngBounds();
-            that.map.setCenter(new GLatLng(0, 0), that.map.getBoundsZoomLevel(bounds)); // France
+            that.map.setCenter(new GLatLng(46.0, 2.0), that.map.getBoundsZoomLevel(bounds)); // France
             that.map.setUIToDefault();
         } else {
             that.log("Browser isn't compatible with GMap ?!");
