@@ -91,7 +91,7 @@ nginx:
 phpmyadmin:
     image: nazarpc/phpmyadmin
     ports:
-      - "1234:80"
+      - "1235:80"
     links:
       - db:mysql
     environment:

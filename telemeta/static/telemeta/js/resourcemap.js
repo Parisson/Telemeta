@@ -99,6 +99,9 @@ function ResourceMap(list, cfg) {
                 that.map.addOverlay(marker);
             }
         });
+    var bounds = new GLatLngBounds();
+    that.map.setZoom(3.5);
+    that.map.setUIToDefault();
     }        
 
     that.createMap = function() {
@@ -106,7 +109,9 @@ function ResourceMap(list, cfg) {
         if (google.maps.BrowserIsCompatible()) {
             that.map = new google.maps.Map2(that.container[0]);
             var bounds = new GLatLngBounds();
-            that.map.setCenter(new GLatLng(0, 0), that.map.getBoundsZoomLevel(bounds)); // France
+            var latlng = new GLatLng(46.0, 2.0); // France
+            that.map.setCenter(latlng, that.map.getBoundsZoomLevel(bounds));
+            //that.map.setZoom(3.5);
             that.map.setUIToDefault();
         } else {
             that.log("Browser isn't compatible with GMap ?!");
