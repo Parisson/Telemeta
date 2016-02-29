@@ -25,8 +25,8 @@
 data:
   image: debian:jessie
   volumes:
-     - ./data/media/:/srv/media
-     - ./data/backup/:/srv/backup
+     - /home/parisson/CREM/Telemeta/media/:/srv/media
+     - /home/parisson/CREM/Telemeta/backup/:/srv/backup
      - /srv/static
      - /srv/bower
   command: "true"
