@@ -1,10 +1,13 @@
 #!/bin/bash
 
-file=$1
+PASSWORD=$1
+DIR=/srv/backup/
+FILE=`ls -t $DIR/*.sql* | head -1`
 
-if [[ $file == *".gz" ]]; then
-    echo 'ok'
-    gunzip < /srv/backup/$file | mysql -hdb -uroot -pmysecretpassword telemeta
+if [[ $FILE == *".gz" ]]; then
+    gunzip < $FILE | mysql -hdb -uroot -p$PASSWORD telemeta
 else
-    mysql -hdb -uroot -pmysecretpassword telemeta < /srv/backup/$file
+    mysql -hdb -uroot -p$PASSWORD telemeta < $FILE
 fi
+
+echo "backup restored : "$FILE
