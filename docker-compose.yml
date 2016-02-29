@@ -36,6 +36,7 @@ db:
   volumes:
     - ./data/var/lib/mysql/:/var/lib/mysql
     - ./data/var/log/mysql/:/var/log/mysql
+    - ./scripts/:/srv/scripts
   volumes_from:
     - data
   env_file:
