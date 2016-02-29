@@ -133,7 +133,7 @@
  {% if user.is_staff %}
  <li><a href="#admin#" class="violet">{% trans "Admin" %}</a>
  <ul>
- <li><a href="{% url "telemeta-admin-general" %}">{% trans "General" context "admin" %}</a></li>
+ <li><a href="{% url "telemeta-home" %}admin/django/" target="_blank">{% trans "General" context "admin" %}</a></li>
  <li><a href="{% url "telemeta-admin-enumerations" %}">{% trans "Enumerations" %}</a></li>
  <li><a href="{% url "telemeta-instrument-edit" %}">{% trans "Instruments" %}</a></li>
  <li><a href="{% url "telemeta-instrument-alias-edit" %}">{% trans "Instrument aliases" %}</a></li>

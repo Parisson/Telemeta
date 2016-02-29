@@ -107,6 +107,7 @@ function ResourceMap(list, cfg) {
             that.map = new google.maps.Map2(that.container[0]);
             var bounds = new GLatLngBounds();
             that.map.setCenter(new GLatLng(46.0, 2.0), that.map.getBoundsZoomLevel(bounds)); // France
+            //that.map.setZoom(3.5);
             that.map.setUIToDefault();
         } else {
             that.log("Browser isn't compatible with GMap ?!");
