@@ -1,4 +1,6 @@
 #!/bin/bash
 
-NOW=$(date +"%T-%m-%d-%Y")
-mysqldump -hdb -uroot -pmysecretpassword telemeta | gzip > /srv/backup/telemeta-$NOW.sql.gz
+PASSWORD=$1
+NOW=$(date +"%Y-%m-%d-%T")
+
+mysqldump -hdb -uroot -p$PASSWORD telemeta | gzip > /srv/backup/telemeta-$NOW.sql.gz
