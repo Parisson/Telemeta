@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (c) 2015 Parisson SARL
+# Copyright (c) 2015-2016 Parisson SARL
 
 # This file is part of Telemeta.
 
@@ -9,7 +9,7 @@
 # the Free Software Foundation, either version 2 of the License, or
 # (at your option) any later version.
 
-# TimeSide is distributed in the hope that it will be useful,
+# Telemeta is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
@@ -36,6 +36,7 @@ db:
   volumes:
     - ./data/var/lib/mysql/:/var/lib/mysql
     - ./data/var/log/mysql/:/var/log/mysql
+    - ./scripts/:/srv/scripts
   volumes_from:
     - data
   env_file:
