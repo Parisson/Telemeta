@@ -18,7 +18,8 @@ before_install:
 
 # command to install dependencies
 install:
- - pip install -U --no-deps timeside
+ #- pip install -U --no-deps timeside
+ - pip install --no-deps git+git://github.com/Parisson/TimeSide.git
  - pip install --process-dependency-links -e .
 
 # command to run tests
