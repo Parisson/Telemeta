@@ -1,34 +1,33 @@
 language: python
 python:
   - "2.7"
+ 
+sudo: required
 
-virtualenv:
-  system_site_packages: true
+services:
+  - docker
+
+env:
+  global:
+    - DOCKER_COMPOSE_VERSION: 1.5.2
 
 before_install:
- - sudo apt-get -qq update
- - sudo apt-get install -qq libhdf5-serial-dev libatlas-dev libatlas-base-dev gfortran
- - sudo apt-get install -qq python-setuptools python-numpy python-scipy python-tables
- # - gpg --keyserver pgpkeys.mit.edu --recv-key E3298399DF14BB7C
- # - gpg -a --export E3298399DF14BB7C | sudo apt-key add -
- - echo "deb http://debian.parisson.com/debian/ precise main" | sudo tee -a /etc/apt/sources.list.d/parisson.list
- - echo "deb-src http://debian.parisson.com/debian/ precise main" | sudo tee -a /etc/apt/sources.list.d/parisson.list
- - sudo apt-get update
- - sudo apt-get install -y --force-yes python-timeside
+  - docker-compose --version
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+  - docker-compose --version
+  - docker version
 
-# command to install dependencies
+
+# Install Telemeta
 install:
- #- pip install -U --no-deps timeside
- - pip install --no-deps git+git://github.com/Parisson/TimeSide.git
- - pip install --process-dependency-links -e .
+  - docker-compose -f docker-compose.yml build
 
-# command to run tests
-#before_script:
-#- pip install -U pytest-cov pytest-django
 script:
-# - python setup.py test -a "--cov telemeta"
-  - python -c "import telemeta"
+  - docker-compose up -d
+  - sleep 20
+  - curl --retry 10 --retry-delay 5  -v http://localhost:8000/
+  - docker-compose stop
 
-#after_success:#
-#- pip install coveralls
-# - coveralls
