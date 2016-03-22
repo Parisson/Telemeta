@@ -31,3 +31,5 @@ script:
   - curl --fail --retry 10 --retry-delay 5  -v http://localhost:8000/
   - docker-compose stop
 
+after_failure:
+  - docker-compose logs
