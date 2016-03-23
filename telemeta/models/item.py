@@ -83,30 +83,31 @@ class MediaItem(MediaResource):
     publishing_date       = DateField(_('publishing date'))
     language_iso          = ForeignKey('Language', related_name="items", verbose_name=_('Language (ISO norm)'), blank=True, null=True, on_delete=models.SET_NULL)
     file                  = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename", max_length=1024)
-    organization          = WeakForeignKey('Organization', verbose_name=_('organization'))
+    organization          = WeakForeignKey('Organization', verbose_name=_('Organization'))
     scientist             = CharField(_('scientist'), help_text=_('First name, Last name ; First name, Last name'))
+    associated_researchers             = CharField(_('associated researchers'), help_text=_('First name, Last name ; First name, Last name'))
     collector_selection   = CharField(_('collector selection'))
     collector_from_collection = BooleanField(_('collector as in collection'))
     depositor             = CharField(_('depositor'))
     contributor           = CharField(_('contributor'))
     author                = CharField(_('author / compositor'), help_text=_('First name, Last name ; First name, Last name'))
-    recordist             = CharField(_('recordist'))
-    rights                = WeakForeignKey('Rights', verbose_name=_('rights'))
+    recordist             = CharField(_('Recordist'))
+    rights                = WeakForeignKey('Rights', verbose_name=_('Rights'))
     public_access         = CharField(_('access type'), choices=ITEM_PUBLIC_ACCESS_CHOICES, max_length=16, default="metadata")
+    auto_period_access    = BooleanField(_('automatic access after a rolling period'), default=True)
 
     cultural_area         = CharField(_('cultural area'))
     language              = CharField(_('language'))
     ethnic_group          = WeakForeignKey('EthnicGroup', related_name="items", verbose_name=_('population / social group'))
     context_comment       = TextField(_('Ethnographic context'))
     moda_execut           = CharField(_('implementing rules'))
-    vernacular_style      = WeakForeignKey('VernacularStyle', related_name="items", verbose_name=_('vernacular style'))
+    #vernacular_style      = WeakForeignKey('VernacularStyle', related_name="items", verbose_name=_('vernacular style'))
     generic_style         = WeakForeignKey('GenericStyle', related_name="items", verbose_name=_('generic style'))
     old_code              = CharField(_('original code'), unique=False, blank=True)
 
     track                 = CharField(_('item number'))
     creator_reference     = CharField(_('creator reference'))
     external_references   = TextField(_('published references'))
-    auto_period_access    = BooleanField(_('automatic access after a rolling period'), default=True)
 
     media_type            = WeakForeignKey('MediaType', related_name="items", verbose_name=_('media type'))
 
@@ -119,7 +120,7 @@ class MediaItem(MediaResource):
 
     objects               = MediaItemManager()
 
-    exclude = ['collector', 'cultural_area', 'old_code', 'language','ethnic_group', 'moda_execut', 'vernacular_style', 'generic_style', 'url', 'creator_reference', 'media_type', 'copied_from_item', 'mimetype', 'context_comment', 'collector_selection', 'collector_from_collection']
+    exclude = ['collector', 'cultural_area', 'old_code', 'language','ethnic_group', 'moda_execut', 'generic_style', 'url', 'creator_reference', 'media_type', 'copied_from_item', 'mimetype', 'context_comment', 'collector_selection', 'collector_from_collection', 'track', 'comment', 'approx_duration']
 
     restricted = ['copied_from_item', 'mimetype', 'public_access']
 

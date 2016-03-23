@@ -44,6 +44,7 @@ from telemeta.models.enum import *
 from telemeta.models.language import *
 from django.db import models
 
+ITEM_ORIGINAL_STATUS_CHOICES = (('None', _('None')), ('original format', _('original format')), ('copies', _('copies')), ('secondary edition', _('secondary edition')))
 
 class Format(ModelCore):
     """ Physical format object as proposed by the LAM"""
@@ -53,10 +54,13 @@ class Format(ModelCore):
     item                  = ForeignKey('MediaItem', related_name="format", verbose_name = _("item"),
                                        blank=True, null=True, on_delete=models.SET_NULL)
     original_code         = CharField(_('original code'))
-    original_status       = CharField(_('original status'))
-    original_location     = ForeignKey('Location', related_name="format",
-                                       verbose_name = _("original location"),
-                                       blank=True, null=True, on_delete=models.SET_NULL)
+    #original_status       = CharField(_('original status'))
+    original_status       = CharField(_('original status'), choices=ITEM_ORIGINAL_STATUS_CHOICES, max_length=20, default="None")
+    #original_location     = ForeignKey('Organization', related_name="format",
+    #original_location     = ForeignKey('Location', related_name="format",
+    #                                   verbose_name = _("original location"),
+    #                                   blank=True, null=True, on_delete=models.SET_NULL)
+    original_location     = WeakForeignKey(ConservationSite, related_name="format", verbose_name=_('conservation site'))
     physical_format       = WeakForeignKey(PhysicalFormat, related_name="format",
                                      verbose_name = _("physical format"))
     tape_vendor         = WeakForeignKey(TapeVendor, related_name="format",

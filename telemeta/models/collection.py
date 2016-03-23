@@ -69,26 +69,24 @@ class MediaCollection(MediaResource):
     # General informations
     title                 = CharField(_('title'), required=True)
     alt_title             = CharField(_('original title / translation'))
-    code                  = CharField(_('code'), unique=True, required=True, validators=[is_valid_collection_code])
+    code                  = CharField(_('code'), unique=True, required=True, validators=[is_valid_collection_code], help_text=_('CorpusCode_CollectionNum'))
     creator               = CharField(_('depositor / contributor'), help_text=_('First name, Last name ; First name, Last name'))
     description           = TextField(_('description'))
     acquisition_mode      = WeakForeignKey('AcquisitionMode', related_name="collections", verbose_name=_('mode of acquisition'))
-    copy_type             = WeakForeignKey('CopyType', related_name="collections", verbose_name=_('copy type'))
     original_format       = WeakForeignKey('OriginalFormat', related_name="collections", verbose_name=_('original format'))
-    reference             = CharField(_('publisher reference'))
     recorded_from_year    = IntegerField(_('recording year (from)'), help_text=_('YYYY'))
     recorded_to_year      = IntegerField(_('recording year (until)'), help_text=_('YYYY'))
     year_published        = IntegerField(_('year published'), help_text=_('YYYY'))
     recording_context     = WeakForeignKey('RecordingContext', related_name="collections", verbose_name=_('recording context'))
     physical_items_num    = IntegerField(_('number of components (medium / piece)'))
-    collector             = CharField(_('recordist'), help_text=_('First name, Last name ; First name, Last name'))
-    public_access         = CharField(_('access type'), choices=PUBLIC_ACCESS_CHOICES, max_length=16, default="metadata")
-    auto_period_access    = BooleanField(_('automatic access after a rolling period'), default=True)
 
     # Geographic and cultural informations
     # See "countries" and "ethnic_groups" methods below
 
     # Legal notices
+    collector             = CharField(_('Recordist'), help_text=_('First name, Last name; First name, Last name; ...'))
+    public_access         = CharField(_('access type'), choices=PUBLIC_ACCESS_CHOICES, max_length=16, default="mixed")
+    auto_period_access    = BooleanField(_('automatic access after a rolling period'), default=True)
     publisher             = WeakForeignKey('Publisher', related_name="collections", verbose_name=_('publisher'))
     publisher_collection  = WeakForeignKey('PublisherCollection', related_name="collections", verbose_name=_('publisher collection'))
     publisher_serial      = CharField(_('publisher serial number'))
@@ -96,9 +94,12 @@ class MediaCollection(MediaResource):
     external_references   = TextField(_('bibliographic references'))
 
     legal_rights          = WeakForeignKey('LegalRight', related_name="collections", verbose_name=_('legal rights'))
-    conservation_site     = CharField(_('conservation site'))
+    #conservation_site     = CharField(_('conservation site'))
+    conservation_site     =  WeakForeignKey('ConservationSite', related_name="collections", verbose_name=_('conservation site'))
     archiver_notes        = TextField(_('archiver notes'))
     physical_format       = WeakForeignKey('PhysicalFormat', related_name="collections", verbose_name=_('archive format'))
+    copy_type             = WeakForeignKey('CopyType', related_name="collections", verbose_name=_('copy type'))
+    reference             = CharField(_('publisher reference'))
 
     # Archiving data
     old_code              = CharField(_('old code'), unique=False, null=True, blank=True)
@@ -115,7 +116,7 @@ class MediaCollection(MediaResource):
     is_published          = BooleanField(_('published'))
 
     # Technical data
-    media_type            = WeakForeignKey('MediaType', related_name="collections", verbose_name=_('media type'))
+    media_type            = WeakForeignKey('MediaType', related_name="collections", verbose_name=_('Media type'))
     approx_duration       = DurationField(_('estimated duration'), help_text='hh:mm:ss')
     ad_conversion         = WeakForeignKey('AdConversion', related_name='collections', verbose_name=_('digitization'))
 
@@ -126,7 +127,7 @@ class MediaCollection(MediaResource):
     # All
     objects               = MediaCollectionManager()
 
-    exclude = ['alt_ids', 'travail', 'publisher', 'publisher_collection', 'publisher_serial', 'booklet_author', 'external_references', 'old_code', 'cnrs_contributor', 'metadata_author', 'booklet_description', 'publishing_status', 'status', 'alt_copies', 'comment', 'ad_conversion', 'media_type', 'collector_is_creator' ]
+    exclude = ['alt_ids', 'travail', 'publisher', 'publisher_collection', 'publisher_serial', 'booklet_author', 'external_references', 'old_code', 'cnrs_contributor', 'metadata_author', 'booklet_description', 'publishing_status', 'status', 'alt_copies', 'comment', 'ad_conversion', 'collector_is_creator', 'items_done', 'original_format', 'media_type', 'legal_rights' ]
 
     permissions = (("can_download_collection_epub", "Can download collection EPUB"),)
 
