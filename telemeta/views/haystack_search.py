@@ -88,10 +88,31 @@ class HaystackSearch(FacetedSearchView):
         extra['results_page'] = self.results_per_page
         return extra
 
+    def save_search(self, request):
+        user = request.user
+        if user:
+            if user.is_authenticated():
+                search = Search(username=user)
+                search.save()
+                if criteria:
+                    for key in criteria.keys():
+                        value = criteria[key]
+                        if key == 'ethnic_group':
+                            try:
+                                group = EthnicGroup.objects.get(value=value)
+                                value = group.id
+                            except:
+                                value = ''
+                        criter = Criteria(key=key, value=value)
+                        criter.save()
+                        search.criteria.add(criter)
+                    search.save()
+
+
     #def auto_complete(request):
         #content = SearchQuerySet().autocomplete(content_auto=request.POST.get('seatch_text', ''))
-
         #return render_to_response('', {'content' : content])
+
 
 class HaystackAdvanceSearch(SearchView):
 
@@ -107,7 +128,6 @@ class HaystackAdvanceSearch(SearchView):
         #overwrite the get_query for begin search with any form
         if self.form.is_valid():
             return self.form.cleaned_data
-
         return ''
 
     def get_results(self):
