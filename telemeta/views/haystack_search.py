@@ -12,10 +12,13 @@ class HaystackSearch(FacetedSearchView):
         self.type = type
         self.form_class = HaySearchForm
         self.selected_facet = self.selected_facet_list(request.GET.getlist('selected_facets', ['a']))
+        print(self.selected_facet)
         if request.GET.get('results_page'):
             self.results_per_page = int(request.GET.get('results_page'))
         else:
             self.results_per_page = 20
+        self.request = request
+        self.save_search()
         return super(HaystackSearch, self).__call__(request)
 
     def get_query(self):
@@ -74,6 +77,7 @@ class HaystackSearch(FacetedSearchView):
             extra['Radio_count'] = self.get_results().narrow('recording_context:Radio').count()
             extra['Video_count'] = self.get_results().narrow('media_type:Video').count()
             extra['Audio_count'] = self.get_results().narrow('media_type:Audio').count()
+
         if self.type == 'item':
             extra['type'] = 'item'
         elif self.type == 'fonds':
@@ -88,26 +92,18 @@ class HaystackSearch(FacetedSearchView):
         extra['results_page'] = self.results_per_page
         return extra
 
-    def save_search(self, request):
-        user = request.user
+    def save_search(self):
+        user = self.request.user
         if user:
             if user.is_authenticated():
                 search = Search(username=user)
                 search.save()
-                if criteria:
-                    for key in criteria.keys():
-                        value = criteria[key]
-                        if key == 'ethnic_group':
-                            try:
-                                group = EthnicGroup.objects.get(value=value)
-                                value = group.id
-                            except:
-                                value = ''
-                        criter = Criteria(key=key, value=value)
-                        criter.save()
-                        search.criteria.add(criter)
-                    search.save()
-
+                q = self.get_query()
+                print(q)
+                criteria = Criteria(key=key, value=value)
+                criteria.save()
+                search.criteria.add(criter)
+                search.save()
 
     #def auto_complete(request):
         #content = SearchQuerySet().autocomplete(content_auto=request.POST.get('seatch_text', ''))

@@ -171,6 +171,7 @@ INSTALLED_APPS = (
     'haystack',
     'djangobower',
     'djng',
+    'saved_searches',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -297,7 +298,7 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_ACCEPT_CONTENT = ['application/json']
 
-from celery_app import app
+from worker import app
 
 HAYSTACK_CONNECTIONS = {
     'default': {

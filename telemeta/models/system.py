@@ -58,8 +58,7 @@ class Revision(ModelCore):
     @classmethod
     def touch(cls, element, user):
         "Create or update a revision"
-        revision = cls(element_type=element.element_type, element_id=element.pk,
-                       user=user, change_type='create')
+        revision = cls(element_type=element.element_type, element_id=element.pk, user=user, change_type='create')
         if element.pk:
             try:
                 element.__class__.objects.get(pk=element.pk)
@@ -116,14 +115,11 @@ class Search(ModelCore):
     username = ForeignKey(User, related_name="searches", db_column="username")
     date = DateTimeField(_('date'), auto_now_add=True)
     description = CharField(_('Description'))
-    criteria = models.ManyToManyField(Criteria, related_name="search",
-                                      verbose_name=_('criteria'), blank=True, null=True)
+    criteria = models.ManyToManyField(Criteria, related_name="search", verbose_name=_('criteria'), blank=True, null=True)
 
     class Meta(MetaCore):
         db_table = 'searches'
         ordering = ['-date']
 
     def __unicode__(self):
-        return ' - '.join([self.username.username, unicode(self.date),
-                    ' - '.join([c.key for c in self.criteria.all()])])
-
+        return ' - '.join([self.username.username, unicode(self.date), ' - '.join([c.key for c in self.criteria.all()])])
