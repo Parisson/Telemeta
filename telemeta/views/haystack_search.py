@@ -4,9 +4,10 @@ from haystack.views import *
 from haystack.query import SearchQuerySet
 from telemeta.models import *
 from telemeta.forms.haystack_form import *
+from saved_searches.views import SavedSearchView
 
 
-class HaystackSearch(FacetedSearchView):
+class HaystackSearch(FacetedSearchView, SavedSearchView):
 
     def __call__(self, request, type=None):
         self.type = type
@@ -17,8 +18,6 @@ class HaystackSearch(FacetedSearchView):
             self.results_per_page = int(request.GET.get('results_page'))
         else:
             self.results_per_page = 20
-        self.request = request
-        self.save_search()
         return super(HaystackSearch, self).__call__(request)
 
     def get_query(self):
@@ -92,25 +91,12 @@ class HaystackSearch(FacetedSearchView):
         extra['results_page'] = self.results_per_page
         return extra
 
-    def save_search(self):
-        user = self.request.user
-        if user:
-            if user.is_authenticated():
-                search = Search(username=user)
-                search.save()
-                q = self.get_query()
-                print(q)
-                criteria = Criteria(key=key, value=value)
-                criteria.save()
-                search.criteria.add(criter)
-                search.save()
-
     #def auto_complete(request):
         #content = SearchQuerySet().autocomplete(content_auto=request.POST.get('seatch_text', ''))
         #return render_to_response('', {'content' : content])
 
 
-class HaystackAdvanceSearch(SearchView):
+class HaystackAdvanceSearch(SavedSearchView):
 
     def __call__(self, request, type=None):
         self.type = type
