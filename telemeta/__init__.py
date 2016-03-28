@@ -11,6 +11,7 @@ U{http://telemeta.org}
 @author: Riccardo Zaccarelli <riccardo.zaccarelli@gmail.com>
 @author: Olivier Guilyardi <olivier@samalyse.com>
 @author: David Lipszyc <davidlipszyc@gmail.com>
+@author: Thomas Fillon <thomas.fillon@parisson.com>
 """
 
 __docformat__ = 'epytext en'
