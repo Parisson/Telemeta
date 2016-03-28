@@ -64,8 +64,8 @@ To fund the project and continue our fast development process, we need your expl
 Thanks for your help!
 
 
-Changes
-========
+News
+=====
 
 1.6
 ++++
@@ -93,23 +93,11 @@ Changes
 Examples
 ========
 
-* `Sound archives of the French Ethnomusicology Research Center (CREM) and the Musée de l'Homme <http://archives.crem-cnrs.fr>`_ :
-
-* a 120 year old ethnomusicologic database,
-* more than 5000 geolocated collections,
-* more than 32000 geolocated items,
-* more than 11000 sounds included
-* 1.5 To of original music files accessible online.
-* started in june 2011
-
-* `Sound archives of the team "Lutherie, Acoustique et Musique" (LAM) of the IJLRDA institute - University Pierre et Marie Curie (Paris 6) <http://telemeta.lam.jussieu.fr>`_ :
-
-* original musical instruments recorded for research purposes
-* started in sept. 2012
-
-* `Sound archives of Parisson Studio <http://parisson.telemeta.org>`_
-
+* `Sound archives of the French Ethnomusicology Research Center (CREM, CNRS) and the Musée de l'Homme <http://archives.crem-cnrs.fr>`_
+* `Sound archives of the team "Lutherie, Acoustique et Musique" (LAM) of the IJLRDA institute - University Pierre et Marie Curie (Paris 6) <http://telemeta.lam.jussieu.fr>`_
+* `Phonothèque Nationale du Centre des Musiques Arabes et Méditerranéennes <http://phonotheque.cmam.tn/>`_
 * `Scaled BIOdiversity (SABIOD) <http://sabiod.telemeta.org>`_
+* `Sound archives of Parisson Studio <http://parisson.telemeta.org>`_
 
 
 Demo
@@ -117,8 +105,8 @@ Demo
 
 http://demo.telemeta.org
 
-login: demo
-password: demo
+login: admin
+password: admin
 
 
 Install
@@ -176,10 +164,10 @@ API / Documentation
 * Example : http://archives.crem-cnrs.fr/archives/items/CNRSMH_E_2004_017_001_01/
 
 
-Related software projects
-==========================
+Related projects
+=================
 
-* `TimeSide <https://github.com/yomguy/timeside/>`_: high level python audio processing framework
+* TimeSide (audio processing framework and smart player) : https://github.com/Parisson/TimeSide/
 * `Diadems <http://www.irit.fr/recherches/SAMOVA/DIADEMS/fr/welcome/&cultureKey=en>`_ Description, Indexation, Access to Sound and Ethnomusicological Documents, funded by the French Research Agency (ANR CONTINT 2012)
 * `TimeSide-Diadems <https://github.com/ANR-DIADEMS/timeside-diadems>`_: a set of Timeside plugins developed during the Diadems project
 
@@ -224,25 +212,6 @@ https://github.com/Parisson/Telemeta/issues/new
 You can also leave some ticket to request some new interesting features for the next versions and tweet your ideas to `@telemeta <https://twitter.com/telemeta>`_.
 
 And remember: even if Telemeta suits you, please give us some feedback !
-
-
-Contact
-=======
-
-Homepage: http://telemeta.org
-
-Emails:
-
-* Guillaume Pellerin <yomguy@parisson.com>,
-* Thomas Fillon <thomas@parisson.com>
-* Anas Ghrab <anas.ghrab@gmail.com>
-* Olivier Guilyardi <olivier@samalyse.com>,
-* Riccardo Zaccarelli <riccardo.zaccarelli@gmail.com>
-
-Twitter:
-
-* https://twitter.com/telemeta
-* https://twitter.com/parisson_studio
 
 
 License
