@@ -40,6 +40,8 @@ from django.views.generic.base import RedirectView, TemplateView
 from django.views.generic.list import ListView
 from telemeta.models import MediaItem, MediaCollection, MediaItemMarker, MediaCorpus, MediaFonds
 from telemeta.views import *
+from haystack.forms import *
+
 from jsonrpc import jsonrpc_site
 import os.path
 import telemeta.config
@@ -94,14 +96,10 @@ urlpatterns = patterns('',
     url(r'^archives/markers/(?P<marker_id>[A-Za-z0-9]+)/$', item_view.item_detail, name="telemeta-item-detail-marker"),
 
     # Redirections to old URLs
-    url(r'^items/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(url='/archives/items/%(path)s/',
-                                                 permanent= True), name="telemeta-item-redir"),
-    url(r'^collections/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(url='/archives/collections/%(path)s/',
-                                                 permanent= True), name="telemeta-collection-redir"),
-    url(r'^corpus/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(url='/archives/corpus/%(path)s/',
-                                                 permanent= True), name="telemeta-corpus-redir"),
-    url(r'^fonds/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(url='/archives/fonds/%(path)s/',
-                                                 permanent= True), name="telemeta-fonds-redir"),
+    url(r'^items/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(url='/archives/items/%(path)s/', permanent= True), name="telemeta-item-redir"),
+    url(r'^collections/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(url='/archives/collections/%(path)s/', permanent= True), name="telemeta-collection-redir"),
+    url(r'^corpus/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(url='/archives/corpus/%(path)s/', permanent= True), name="telemeta-corpus-redir"),
+    url(r'^fonds/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(url='/archives/fonds/%(path)s/', permanent= True), name="telemeta-fonds-redir"),
 
     # collections
     url(r'^archives/collections/$', CollectionListView.as_view(), name="telemeta-collections"),
@@ -141,15 +139,15 @@ urlpatterns = patterns('',
 
     # search
     # url(r'^archives/$', home_view.search, name="telemeta-archives"),
-    url(r'^search/$', SearchView.as_view(), name="telemeta-search"),
-    url(r'^search_published/(?P<type>[A-Za-z0-9._-]+)/$', SearchViewPublished.as_view(), name="telemeta-search-published"),
-    url(r'^search_unpublished/(?P<type>[A-Za-z0-9._-]+)/$', SearchViewUnpublished.as_view(), name="telemeta-search-unpublished"),
-    url(r'^search_full/(?P<type>[A-Za-z0-9._-]+)/$', SearchViewFullAccess.as_view(), name="telemeta-search-full"),
-    url(r'^search_none/(?P<type>[A-Za-z0-9._-]+)/$', SearchViewRestrictedAccess.as_view(), name="telemeta-search-none"),
-    url(r'^search/(?P<type>[A-Za-z0-9._-]+)/$', SearchView.as_view(), name="telemeta-search-type"),
-    url(r'^search_criteria/$', home_view.edit_search, name="telemeta-search-criteria"),
+    url(r'^search/$', HaystackSearch(), name='haystack_search'),
+    url(r'^search/quick/(?P<type>[A-Za-z0-9._-]+)/$', HaystackSearch(), name='haystack_search_type'),
+    url(r'^search/advance/$', HaystackAdvanceSearch(form_class=HayAdvanceForm, template='search/advanceSearch.html'), name='haystack_advance_search'),
+    url(r'^search/advance/(?P<type>[A-Za-z0-9._-]+)/$', HaystackAdvanceSearch(form_class=HayAdvanceForm, template='search/advanceSearch.html'), name='haystack_advance_search_type'),
+
+    url(r'^search/playlist_add/(?P<type>[A-Za-z0-9._-]+)/$', NewPlaylistView().display, name='haystack_playlist'),
+    url(r'^search/playlist_confirmation/(?P<type>[A-Za-z0-9._-]+)/$',NewPlaylistView().addToPlaylist, name='add_confirmation'),
+
     url(r'^complete_location/$', home_view.complete_location, name="telemeta-complete-location"),
-    url(r'^haystack/', include('telemeta.haystack_urls')),
 
     # administration
     url(r'^admin/$', admin_view.admin_index, name="telemeta-admin"),
