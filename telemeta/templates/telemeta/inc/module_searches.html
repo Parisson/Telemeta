@@ -20,7 +20,6 @@
             {% elif s.search_key == 'advanced' %}
               {% with s.user_query|build_pattern_dict as queries %}
                 <a href="{% url "haystack_advance_search" %}?{{queries|build_query_string}}">
-
                 {% for k, v in queries.items %}
                  {% if v %}<li>{{ k }}: {{ v }}</li>{% endif %}
                 {% endfor %}

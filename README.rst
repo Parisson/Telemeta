@@ -112,29 +112,54 @@ password: demo
 Install
 =======
 
-Thanks to Docker, Telemeta is now fully available as a docker image ready to work. The docker based composition bundles some powerfull applications and modern frameworks out-of-the-box like: Python, Numpy, Gstreamer, Django, Celery, Haystack, ElasticSearch, MySQL, RabbitMQ, uWSGI, Nginx and many more...
+Thanks to Docker, Telemeta is now fully available as a docker composition ready to work. The docker based composition bundles some powerfull applications and modern frameworks out-of-the-box like: Python, Numpy, Gstreamer, Django, Celery, Haystack, ElasticSearch, MySQL, Redis, uWSGI, Nginx and many more.
 
-First install `Git <http://git-scm.com/downloads>`_, `Docker <https://docs.docker.com/installation/>`_ and `docker-compose <https://docs.docker.com/compose/install/>`_, then run these commands in a terminal::
+On Linux, first install `Git <http://git-scm.com/downloads>`_, `Docker engine <https://docs.docker.com/installation/>`_ and `docker-compose <https://docs.docker.com/compose/install/>`_ and open a terminal.
+
+On MacOSX or Windows install the `Docker Toolbox <https://www.docker.com/products/docker-toolbox>`_ and open a Docker Quickstart Terminal.
+
+Then run these commands::
 
     git clone --recursive https://github.com/Parisson/Telemeta.git
     cd Telemeta
-    docker-compose up
+    docker-compose up db
 
-You can now browse http://localhost:8000
+Press CTRL-C to exit (the last command is needed to init the database).
+
+Start
+=====
+
+For a production environment setup::
+
+     docker-compose up
+
+Then browse the app at http://localhost:8000/ (replacing 'localhost' by the IP given by the docker terminal on OSX or Windows)
+
+For a development environment setup::
+
+    docker-compose -f docker-compose.yml -f env/dev.yml up
+
+Then browse the app at http://localhost:9000/ (replacing 'localhost' by the IP given by the docker terminal on OSX or Windows)
+
+To start the application in DEBUG mode::
+
+    docker-compose -f docker-compose.yml -f env/debug.yml up
 
 
-Restore / backup
+Backup / Restore
 ================
 
-To restore a backuped database, put your backup file in data/backup, then in another terminal::
+To backup the database in the data/backup/ folder, run this in **another** terminal (or a Docker Quickstart Terminal)::
 
-    docker-compose run db /srv/backup/restore_db.sh FILENAME
+    docker-compose run db /srv/scripts/sql/backup_db.sh
 
-where FILENAME is the backup filename (can be .sql or .sql.gz)
+To restore the last backuped database from the data/backup/ folder, run this in **another** terminal (or a Docker Quickstart Terminal)::
 
-To backup the database, just run in another terminal::
+    docker-compose run db /srv/scripts/sql/restore_db.sh
 
-    docker-compose run db /srv/backup/backup_db.sh
+If the app is broken after a restore script, restart the composition with::
+
+    docker-compose restart
 
 
 API / Documentation
@@ -205,7 +230,6 @@ Twitter:
 
 * https://twitter.com/telemeta
 * https://twitter.com/parisson_studio
-* https://twitter.com/yomguy
 
 
 License
