@@ -1,5 +1,5 @@
 =================================================
-Telemeta: open web audio platform with semantics
+Collaborative multimedia asset management system
 =================================================
 
 |version| |downloads| |travis_master| |coverage_master|
@@ -24,7 +24,7 @@ Telemeta: open web audio platform with semantics
 Overview
 =========
 
-Telemeta is a free and open source web audio archiving software which introduces useful and secure methods to backup, index, transcode, analyse and publish any digitalized audio file with extensive metadata. It is dedicated to collaborative media archiving projects, research laboratories and digital humanities - and especially in ethnomusicological use cases - who wants to easily organize, backup and publish documented sound collections of audio files, CDs, digitalized vinyls and magnetic tapes over a strong database, in accordance with open web standards.
+Telemeta is a free and open source collaborative multimedia asset management software which introduces useful and secure methods to archive, backup, transcode, analyse,  annotate and publish any digitalized video or audio file with extensive metadata. It is dedicated to collaborative media archiving projects, research laboratories and digital humanities - especially in ethno-musicological use cases - who need to easily organize and publish documented sound collections of audio files, CDs, digitalized vinyls and magnetic tapes over a strong database, in a secure platform and in accordance with open web standards.
 
 Key features:
 
@@ -49,7 +49,7 @@ Key features:
 This web audio CMS is exclusively based on open source modules and can be run on any Unix or Linux system.
 It is mostly written in Python and JavaScript.
 
-The processing engine of Telemeta is a separate project called `TimeSide <https://github.com/yomguy/timeside/>`_ as an open web audio pocessing framework written in Python.
+The processing engine of Telemeta is provided by `TimeSide <https://github.com/yomguy/timeside/>`_, an open web audio processing framework written in Python.
 
 
 Changes
@@ -211,4 +211,8 @@ Twitter:
 License
 =======
 
-CeCILL v2, compatible with GPL v2 (see `LICENSE <http://github.com/yomguy/Telemeta/blob/master/LICENSE.txt>`_)
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.

@@ -4,17 +4,17 @@
 
 # This file is part of Telemeta.
 
-# TimeSide is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
 # the Free Software Foundation, either version 2 of the License, or
 # (at your option) any later version.
 
-# Telemeta is distributed in the hope that it will be useful,
+# TimeSide is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
+# GNU Affero General Public License for more details.
 
-# You should have received a copy of the GNU General Public License
+# You should have received a copy of the GNU Affero General Public License
 # along with TimeSide.  If not, see <http://www.gnu.org/licenses/>.
 
 # Authors:
@@ -34,13 +34,11 @@ data:
 db:
   image: mysql
   volumes:
-    - ./data/var/lib/mysql/:/var/lib/mysql
-    - ./data/var/log/mysql/:/var/log/mysql
     - ./scripts/:/srv/scripts
   volumes_from:
     - data
   env_file:
-    - app/sandbox/tm-docker-compose.env
+    - env/prod.env
 
 broker:
   image: redis
@@ -52,14 +50,11 @@ app:
   build: .
   volumes:
     - ./app/:/srv/app
-    - ./telemeta/:/srv/src/telemeta/telemeta
   volumes_from:
     - data
   env_file:
-    - app/sandbox/tm-docker-compose.env
-  command: /bin/sh deploy/start_app.sh
-  ports:
-    - "9002:9000"
+    - env/prod.env
+  command: /bin/sh deploy/app.sh
   links:
     - broker
     - db
@@ -70,8 +65,8 @@ worker:
   volumes_from:
     - app
   env_file:
-    - app/sandbox/tm-docker-compose.env
-  command: /bin/sh deploy/celery_app.sh
+    - env/prod.env
+  command: /bin/sh deploy/worker.sh
   links:
     - broker
     - db
@@ -81,8 +76,7 @@ nginx:
   ports:
     - "8002:80"
   volumes:
-    - ./app/deploy/nginx-app.conf:/etc/nginx/conf.d/default.conf
-    - ./var/log/nginx/:/var/log/nginx
+    - ./app/deploy/nginx.conf:/etc/nginx/conf.d/default.conf
   volumes_from:
     - data
   links:

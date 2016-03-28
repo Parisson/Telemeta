@@ -1,5 +1,5 @@
-{% load telemeta_utils %}
-{% load i18n %}
+{% load i18n telemeta_tags saved_searches_tags %}
+{% most_recent_searches as searches for_user request.user %}
 
    <div class="module">
     <h3>
@@ -9,21 +9,27 @@
     <div class="vscroll">
     <table class="listing" bgcolor="#FFFFFF" style="width: 100%">
       <tr>
-        <th class="highlight">{% trans "Date" %}</th>
-        <th>{% trans "Criteria" %}</th>
+        <th>{% trans "Date" %}</th>
+        <th>{% trans "Query" %}</th>
       </tr>
     {% for s in searches %}
      <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
-        <td>{{ s.date }}</td>
-        <td><a href="{% url "telemeta-search" %}?{{s.criteria.all|build_pattern_string|build_query_string}}">
-            {% for c in s.criteria.all %}
-                <li>{% trans c.key %} : {{ c.value}}</li>
-            {% endfor %}
-          </a>
+        <td>{{ s.created }}</td>
+        <td>{% if s.search_key == 'quick' %}
+                <a href="{% url "haystack_search" %}?q={{s.user_query}}">{{ s.user_query }}</a>
+            {% elif s.search_key == 'advanced' %}
+              {% with s.user_query|build_pattern_dict as queries %}
+                <a href="{% url "haystack_advance_search" %}?{{queries|build_query_string}}">
+
+                {% for k, v in queries.items %}
+                 {% if v %}<li>{{ k }}: {{ v }}</li>{% endif %}
+                {% endfor %}
+                </a>
+              {% endwith %}
+            {% endif %}
         </td>
       </tr>
     {% endfor %}
     </table>
     </div>
    </div>
-
