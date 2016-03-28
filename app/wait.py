@@ -14,6 +14,6 @@ while not up:
     except:
         i += 1
         print 'initialization...'
-        if i > 2:
+        if i > 10:
             raise
         time.sleep(1)

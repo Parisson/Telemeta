@@ -52,6 +52,18 @@ It is mostly written in Python and JavaScript.
 The processing engine of Telemeta is provided by `TimeSide <https://github.com/yomguy/timeside/>`_, an open web audio processing framework written in Python.
 
 
+Funding and support
+===================
+
+To fund the project and continue our fast development process, we need your explicit support. So if you use Telemeta in production or even in a development or experimental setup, please let us know by:
+
+* staring or forking the project on `GitHub <https://github.com/Parisson/TimeSide>`_
+* tweeting something to `@parisson_studio <https://twitter.com/parisson_studio>`_ or `@telemeta <https://twitter.com/telemeta>`_
+* drop us an email <support@parisson.com>
+
+Thanks for your help!
+
+
 Changes
 ========
 
@@ -118,13 +130,11 @@ On Linux, first install `Git <http://git-scm.com/downloads>`_, `Docker engine <h
 
 On MacOSX or Windows install the `Docker Toolbox <https://www.docker.com/products/docker-toolbox>`_ and open a Docker Quickstart Terminal.
 
-Then run these commands::
+Then clone Telemeta::
 
     git clone --recursive https://github.com/Parisson/Telemeta.git
     cd Telemeta
-    docker-compose up db
 
-Press CTRL-C to exit (the last command is needed to init the database).
 
 Start
 =====
@@ -134,12 +144,6 @@ For a production environment setup::
      docker-compose up
 
 Then browse the app at http://localhost:8000/ (replacing 'localhost' by the IP given by the docker terminal on OSX or Windows)
-
-For a development environment setup::
-
-    docker-compose -f docker-compose.yml -f env/dev.yml up
-
-Then browse the app at http://localhost:9000/ (replacing 'localhost' by the IP given by the docker terminal on OSX or Windows)
 
 To start the application in DEBUG mode::
 
@@ -194,15 +198,24 @@ Development
    :alt: Coverage
 
 
-You are welcome to participate to the development of the Telemeta project which is hosted on `GitHub <https://github.com/Parisson/Telemeta>`_.
+To start the application in a development environment setup::
 
-The development package and environment is available through our `DevBox <https://github.com/Parisson/DevBox>`_
+    cd Telemeta
+    git pull
+    git checkout dev
+    docker-compose -f docker-compose.yml -f env/dev.yml up
+
+Then browse the app at http://localhost:9000/ (replacing 'localhost' by the IP given by the docker terminal on OSX or Windows)
+
+You are welcome to participate to the development by forking the Telemeta project on `GitHub <https://github.com/Parisson/Telemeta>`_.
+
+To build your own composition::
+
+    docker-compose -f docker-compose.yml -f env/dev.yml -f env/build.yml build
 
 
-Bugs and feedback
-=================
-
-You are welcome to freely use this application in accordance with its licence.
+Bugs, issues, ideas
+===================
 
 If you find some bugs or have good ideas for enhancement, please leave a issue on GitHub with the right label:
 
@@ -210,7 +223,7 @@ https://github.com/Parisson/Telemeta/issues/new
 
 You can also leave some ticket to request some new interesting features for the next versions and tweet your ideas to `@telemeta <https://twitter.com/telemeta>`_.
 
-And even if Telemeta suits you, please give us some feedback !
+And remember: even if Telemeta suits you, please give us some feedback !
 
 
 Contact
