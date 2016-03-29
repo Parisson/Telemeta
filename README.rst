@@ -24,7 +24,7 @@ Collaborative multimedia asset management system
 Overview
 =========
 
-Telemeta is a free and open source collaborative multimedia asset management software which introduces useful and secure methods to archive, backup, transcode, analyse,  annotate and publish any digitalized video or audio file with extensive metadata. It is dedicated to collaborative media archiving projects, research laboratories and digital humanities - especially in ethno-musicological use cases - who need to easily organize and publish documented sound collections of audio files, CDs, digitalized vinyls and magnetic tapes over a strong database, in a secure platform and in accordance with open web standards.
+Telemeta is a free and open source collaborative multimedia asset management (MAM) software which introduces useful and secure methods to archive, backup, transcode, analyse,  annotate and publish any digitalized video or audio file with extensive metadata. It is dedicated to collaborative media archiving projects, research laboratories and digital humanities - especially in ethno-musicological use cases - who need to easily organize and publish documented sound collections of audio files, CDs, digitalized vinyls and magnetic tapes over a strong database, in a secure platform and in accordance with open web standards.
 
 Key features:
 
@@ -46,16 +46,13 @@ Key features:
 * Multi-language support (now english and french)
 * Video support (EXPERIMENTAL, WebM only)
 
-This web audio CMS is exclusively based on open source modules and can be run on any Unix or Linux system.
-It is mostly written in Python and JavaScript.
-
-The processing engine of Telemeta is provided by `TimeSide <https://github.com/yomguy/timeside/>`_, an open web audio processing framework written in Python.
+This MAM is based on 100% open source modules exclusively and can be run on any OS. It is mostly written in Python and JavaScript.
 
 
 Funding and support
 ===================
 
-To fund the project and continue our fast development process, we need your explicit support. So if you use Telemeta in production or even in a development or experimental setup, please let us know by:
+To fund this long time project and feed our agile development process, we need your explicit support. So if you use Telemeta in production or even in a development or experimental setup, please let us know by:
 
 * staring or forking the project on `GitHub <https://github.com/Parisson/TimeSide>`_
 * tweeting something to `@parisson_studio <https://twitter.com/parisson_studio>`_ or `@telemeta <https://twitter.com/telemeta>`_
@@ -106,6 +103,7 @@ Demo
 http://demo.telemeta.org
 
 login: admin
+
 password: admin
 
 
@@ -124,8 +122,8 @@ Then clone Telemeta::
     cd Telemeta
 
 
-Start
-=====
+Start it up
+===========
 
 For a production environment setup::
 
@@ -162,14 +160,6 @@ API / Documentation
 * API : http://files.parisson.com/doc/telemeta/
 * Player : https://github.com/Parisson/TimeSide/
 * Example : http://archives.crem-cnrs.fr/archives/items/CNRSMH_E_2004_017_001_01/
-
-
-Related projects
-=================
-
-* TimeSide (audio processing framework and smart player) : https://github.com/Parisson/TimeSide/
-* `Diadems <http://www.irit.fr/recherches/SAMOVA/DIADEMS/fr/welcome/&cultureKey=en>`_ Description, Indexation, Access to Sound and Ethnomusicological Documents, funded by the French Research Agency (ANR CONTINT 2012)
-* `TimeSide-Diadems <https://github.com/ANR-DIADEMS/timeside-diadems>`_: a set of Timeside plugins developed during the Diadems project
 
 
 Development
@@ -222,3 +212,66 @@ This program is free software: you can redistribute it and/or modify it under th
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more details.
 
 You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+
+Sponsors and partners
+======================
+
+  * CNRS_ : Centre National de la Recherche Scientifique (French Natianal Research and Scientific Center)
+  * MCC_ : Ministère de la Culture et de la Communication (the french Ministry of the Culture and Communication)
+  * ANR_ : Agence Nationale de la Recherche (French Research Agency)
+  * UPMC_ : University Pierre et Marie Curie (Paris 6, France)
+  * CREM_ : Centre de Recherche en Ethnomusicologie (Ethnomusicology Research Center)
+  * LAM_ : Equipe Lutherie, Acoustique et Musique de l'IJLRDA_
+  * IJLRDA_ : Institut Jean le Rond d'Alembert (Paris, France)
+  * Parisson_ : Open audio development agency for science and arts (Paris, France)
+  * MNHN_ : Museum National d'Histoire Naturelle (National Museum of Biology, Paris, France)
+  * U-Paris10_ : University Paris Oues Nanterre (Paris 10, France)
+  * MuseeDelHomme_ : Musée de l'Homme (Paris, France)
+  * DIADEMS_project_ : involving IRIT_, LIMSI_, LAM_, CREM_, LABRI_, MNHN_, Parisson_
+  * HumaNum_ : TGIR des humanités numériques
+  * IRCAM_ : Institut de Recherche et de Coordination Acoustique / Musique (Paris, France)
+
+
+Related projects
+=================
+
+* TimeSide_ : audio processing framework for the web
+* DIADEMS_ : Description, Indexation, Access to Sound and Ethnomusicological Documents, funded by the French Research Agency (ANR CONTINT 2012)
+* TimeSide-DIADEMS_ : a set of Timeside plugins developed during the Diadems project
+* DaCaRyH
+* Kamoulox
+* WASABI
+
+
+.. _Telemeta: http://telemeta.org
+.. _TimeSide: https://github.com/Parisson/TimeSide/
+.. _OAI-PMH: http://fr.wikipedia.org/wiki/Open_Archives_Initiative_Protocol_for_Metadata_Harvesting
+.. _Parisson: http://parisson.com
+.. _CNRS: http://www.cnrs.fr
+.. _MCC: http://www.culturecommunication.gouv.fr
+.. _CREM: http://www.crem-cnrs.fr
+.. _HumaNum: http://www.huma-num.fr
+.. _IRIT: http://www.irit.fr
+.. _LIMSI: http://www.limsi.fr/index.en.html
+.. _LAM: http://www.lam.jussieu.fr
+.. _LABRI: http://www.labri.fr
+.. _MNHN: http://www.mnhn.fr
+.. _MMSH: http://www.mmsh.univ-aix.fr
+.. _UPMC: http://www.upmc.fr
+.. _DIADEMS_project: http://www.irit.fr/recherches/SAMOVA/DIADEMS/fr/welcome/&cultureKey=en
+.. _ANR: http://www.agence-nationale-recherche.fr/
+.. _SABIOD: http://sabiod.telemeta.org
+.. _CHANGELOG: http://github.com/Parisson/Telemeta/blob/master/CHANGELOG.rst
+.. _Publications: https://github.com/Parisson/Telemeta-doc
+.. _API : http://files.parisson.com/doc/telemeta/
+.. _Player : https://github.com/Parisson/TimeSide/
+.. _Example : http://archives.crem-cnrs.fr/archives/items/CNRSMH_E_2004_017_001_01/
+.. _Homepage: http://telemeta.org
+.. _GitHub: https://github.com/Parisson/Telemeta/
+.. _IJLRDA: http://www.dalembert.upmc.fr/ijlrda/
+.. _Labex-Passé_Présent: http://passes-present.eu/
+.. _U-Paris10: http://www.u-paris10.fr/
+.. _MuseeDelHomme: http://www.museedelhomme.fr/
+.. _IRCAM: http://www.ircam.fr
+.. _TimeSide-DIADEMS: https://github.com/ANR-DIADEMS/timeside-diadems
