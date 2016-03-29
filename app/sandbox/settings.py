@@ -123,7 +123,7 @@ TEMPLATE_LOADERS = (
 
 MIDDLEWARE_CLASSES = (
     # Manage Django URLs for AngularJS with django-angular
-    'djng.middleware.AngularUrlMiddleware',
+    'djangular.middleware.DjangularUrlMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -170,8 +170,8 @@ INSTALLED_APPS = (
     'djcelery',
     'haystack',
     'djangobower',
-    'djng',
-    'saved_searches',
+    'djangular',
+    #'saved_searches',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
