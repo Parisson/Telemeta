@@ -8,6 +8,8 @@ static='/srv/static/'
 media='/srv/media/'
 src='/srv/src/'
 
+chown www-data:www-data $media
+
 # uwsgi params
 port=8000
 processes=8
