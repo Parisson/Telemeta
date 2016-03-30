@@ -193,9 +193,11 @@ class MediaItem(MediaResource):
         source = None
         if self.file and os.path.exists(self.file.path):
             source = self.file.path
+            source_type = 'file'
         elif self.url:
             source = self.url
-        return source
+            source_type = 'url'
+        return source, source_type
 
     @property
     def instruments(self):

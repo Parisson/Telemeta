@@ -394,6 +394,15 @@
     </a>
     {% endblock dublincore %}
 
+    {% block TimeSide %}
+    <a href="{% url "timeside-item-detail" ts_item_id %}">
+      <button type="button" class="btn btn-default" style="float:left;margin-top:0.5em;margin-bottom:1em">
+        TimeSide
+      </button>
+    {% endblock TimeSide %}
+    </a>
+
+
 {% endif %}
 
 

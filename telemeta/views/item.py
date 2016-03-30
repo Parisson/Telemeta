@@ -25,6 +25,8 @@
 from telemeta.views.core import *
 from telemeta.views.marker import *
 import timeside.core
+from timeside.server import models as TS_models
+import timeside.server.models as TS_models
 
 
 class ItemBaseMixin(TelemetaBaseMixin):
@@ -34,6 +36,8 @@ class ItemBaseMixin(TelemetaBaseMixin):
     encoders = timeside.core.processor.processors(timeside.core.api.IEncoder)
     analyzers = timeside.core.processor.processors(timeside.core.api.IAnalyzer)
     value_analyzers = timeside.core.processor.processors(timeside.core.api.IValueAnalyzer)
+
+
 
     export_enabled = getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True)
     export_formats = getattr(settings, 'TELEMETA_DOWNLOAD_FORMATS', ('mp3', 'wav'))
@@ -247,7 +251,7 @@ class ItemView(ItemBaseMixin):
             image_file = old_image_file
 
         if not self.cache_data.exists(image_file):
-            source = item.get_source()
+            source, _ = item.get_source()
             if source:
                 path = self.cache_data.dir + os.sep + image_file
                 decoder = timeside.core.get_processor('file_decoder')(source)
@@ -309,7 +313,7 @@ class ItemView(ItemBaseMixin):
 
         mime_type = encoder.mime_type()
         file = public_id + '.' + encoder.file_extension()
-        source = item.get_source()
+        source, _ = item.get_source()
 
         flag = MediaItemTranscodingFlag.objects.filter(item=item, mime_type=mime_type)
         if not flag:
@@ -605,10 +609,15 @@ class ItemDetailView(ItemViewMixin, DetailView):
             analyzers_sub = []
             graphers_sub = []
 
-            source = item.get_source()
+            source, _ = item.get_source()
+
             if source:
-                decoder  = timeside.core.get_processor('file_decoder')(source)
-                pipe = decoder
+                print '***************************'
+                print source
+                print '***************************'
+
+                decoder = timeside.core.get_processor('file_decoder')(source)
+                pipe = decoder = timeside.core.get_processor('file_decoder')(source)
 
                 for analyzer in self.value_analyzers:
                     subpipe = analyzer()
@@ -694,6 +703,14 @@ class ItemDetailView(ItemViewMixin, DetailView):
 
         previous, next = self.item_previous_next(item)
 
+        # Corresponding TimeSide Item
+        source, source_type = item.get_source()
+        if source:
+            ts_item, c = TS_models.Item.objects.get_or_create(**{source_type: source})
+            if c:
+                ts_item.title = item.title
+                ts_item.save()
+
         self.item_analyze(item)
 
         #FIXME: use mimetypes.guess_type
@@ -731,6 +748,11 @@ class ItemDetailView(ItemViewMixin, DetailView):
         context['format'] = item_format
         context['private_extra_types'] = private_extra_types.values()
         context['site'] = 'http://' + Site.objects.all()[0].name
+        if ts_item:
+            context['ts_item_id'] = ts_item.pk
+        else:
+            context['ts_item_id'] = None
+
         return context
 
 
