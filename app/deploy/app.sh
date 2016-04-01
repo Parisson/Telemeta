@@ -8,6 +8,8 @@ static='/srv/static/'
 media='/srv/media/'
 src='/srv/src/'
 
+chown www-data:www-data $media
+
 # uwsgi params
 port=8000
 processes=8
@@ -17,9 +19,7 @@ uid='www-data'
 gid='www-data'
 
 # stating apps
-pip install --upgrade pip
-pip install -U django==1.6.11 django-environ redis django-angular
-pip install -U git+https://github.com/Parisson/saved_searches.git#egg=saved_searches-2.0.0-beta
+# pip install django-angular
 
 # waiting for other services
 sh $app/deploy/wait.sh
@@ -42,7 +42,7 @@ fi
 
 if [ $1 = "--runserver" ]
 then
-    python $manage runserver 0.0.0.0:8000
+    python $manage runserver_plus 0.0.0.0:8000
 else
     # static files auto update
     watchmedo shell-command --patterns="*.js;*.css" --recursive \

@@ -6,7 +6,7 @@ manage=$app'/manage.py'
 wsgi=$app'/wsgi.py'
 
 # stating apps
-pip install django-environ redis
+# pip install django-environ redis
 
 # waiting for other services
 sh $app/deploy/wait.sh
