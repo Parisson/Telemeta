@@ -1,5 +1,5 @@
 =================================================
-Telemeta: open web audio platform with semantics
+Collaborative multimedia asset management system
 =================================================
 
 |version| |downloads| |travis_master| |coverage_master|
@@ -24,7 +24,7 @@ Telemeta: open web audio platform with semantics
 Overview
 =========
 
-Telemeta is a free and open source web audio archiving software which introduces useful and secure methods to backup, index, transcode, analyse and publish any digitalized audio file with extensive metadata. It is dedicated to collaborative media archiving projects, research laboratories and digital humanities - and especially in ethnomusicological use cases - who wants to easily organize, backup and publish documented sound collections of audio files, CDs, digitalized vinyls and magnetic tapes over a strong database, in accordance with open web standards.
+Telemeta is a free and open source collaborative multimedia asset management (MAM) software which introduces useful and secure methods to archive, backup, transcode, analyse,  annotate and publish any digitalized video or audio file with extensive metadata. It is dedicated to collaborative media archiving projects, research laboratories and digital humanities - especially in ethno-musicological use cases - who need to easily organize and publish documented sound collections of audio files, CDs, digitalized vinyls and magnetic tapes over a strong database, in a secure platform and in accordance with open web standards.
 
 Key features:
 
@@ -46,14 +46,23 @@ Key features:
 * Multi-language support (now english and french)
 * Video support (EXPERIMENTAL, WebM only)
 
-This web audio CMS is exclusively based on open source modules and can be run on any Unix or Linux system.
-It is mostly written in Python and JavaScript.
-
-The processing engine of Telemeta is a separate project called `TimeSide <https://github.com/yomguy/timeside/>`_ as an open web audio pocessing framework written in Python.
+This MAM is based on 100% open source modules exclusively and can be run on any OS. It is mostly written in Python and JavaScript.
 
 
-Changes
-========
+Funding and support
+===================
+
+To fund this long time project and feed our agile development process, we need your explicit support. So if you use Telemeta in production or even in a development or experimental setup, please let us know by:
+
+* staring or forking the project on `GitHub <https://github.com/Parisson/TimeSide>`_
+* tweeting something to `@parisson_studio <https://twitter.com/parisson_studio>`_ or `@telemeta <https://twitter.com/telemeta>`_
+* drop us an email <support@parisson.com>
+
+Thanks for your help!
+
+
+News
+=====
 
 1.6
 ++++
@@ -81,23 +90,11 @@ Changes
 Examples
 ========
 
-* `Sound archives of the French Ethnomusicology Research Center (CREM) and the Musée de l'Homme <http://archives.crem-cnrs.fr>`_ :
-
-* a 120 year old ethnomusicologic database,
-* more than 5000 geolocated collections,
-* more than 32000 geolocated items,
-* more than 11000 sounds included
-* 1.5 To of original music files accessible online.
-* started in june 2011
-
-* `Sound archives of the team "Lutherie, Acoustique et Musique" (LAM) of the IJLRDA institute - University Pierre et Marie Curie (Paris 6) <http://telemeta.lam.jussieu.fr>`_ :
-
-* original musical instruments recorded for research purposes
-* started in sept. 2012
-
-* `Sound archives of Parisson Studio <http://parisson.telemeta.org>`_
-
+* `Sound archives of the French Ethnomusicology Research Center (CREM, CNRS) and the Musée de l'Homme <http://archives.crem-cnrs.fr>`_
+* `Sound archives of the team "Lutherie, Acoustique et Musique" (LAM) of the IJLRDA institute - University Pierre et Marie Curie (Paris 6) <http://telemeta.lam.jussieu.fr>`_
+* `Phonothèque Nationale du Centre des Musiques Arabes et Méditerranéennes <http://phonotheque.cmam.tn/>`_
 * `Scaled BIOdiversity (SABIOD) <http://sabiod.telemeta.org>`_
+* `Sound archives of Parisson Studio <http://parisson.telemeta.org>`_
 
 
 Demo
@@ -105,36 +102,54 @@ Demo
 
 http://demo.telemeta.org
 
-login: demo
-password: demo
+login: admin
+
+password: admin
 
 
 Install
 =======
 
-Thanks to Docker, Telemeta is now fully available as a docker image ready to work. The docker based composition bundles some powerfull applications and modern frameworks out-of-the-box like: Python, Numpy, Gstreamer, Django, Celery, Haystack, ElasticSearch, MySQL, RabbitMQ, uWSGI, Nginx and many more...
+Thanks to Docker, Telemeta is now fully available as a docker composition ready to work. The docker based composition bundles some powerfull applications and modern frameworks out-of-the-box like: Python, Numpy, Gstreamer, Django, Celery, Haystack, ElasticSearch, MySQL, Redis, uWSGI, Nginx and many more.
 
-First install `Git <http://git-scm.com/downloads>`_, `Docker <https://docs.docker.com/installation/>`_ and `docker-compose <https://docs.docker.com/compose/install/>`_, then run these commands in a terminal::
+On Linux, first install `Git <http://git-scm.com/downloads>`_, `Docker engine <https://docs.docker.com/installation/>`_ and `docker-compose <https://docs.docker.com/compose/install/>`_ and open a terminal.
+
+On MacOSX or Windows install the `Docker Toolbox <https://www.docker.com/products/docker-toolbox>`_ and open a Docker Quickstart Terminal.
+
+Then clone Telemeta::
 
     git clone --recursive https://github.com/Parisson/Telemeta.git
     cd Telemeta
-    docker-compose up
-
-You can now browse http://localhost:8000
 
 
-Restore / backup
+Start it up
+===========
+
+For a production environment setup::
+
+     docker-compose up
+
+Then browse the app at http://localhost:8000/ (replacing 'localhost' by the IP given by the docker terminal on OSX or Windows)
+
+To start the application in DEBUG mode::
+
+    docker-compose -f docker-compose.yml -f env/debug.yml up
+
+
+Backup / Restore
 ================
 
-To restore a backuped database, put your backup file in data/backup, then in another terminal::
+To backup the database in the data/backup/ folder, run this in **another** terminal (or a Docker Quickstart Terminal)::
 
-    docker-compose run db /srv/backup/restore_db.sh FILENAME
+    docker-compose run db /srv/scripts/sql/backup_db.sh
 
-where FILENAME is the backup filename (can be .sql or .sql.gz)
+To restore the last backuped database from the data/backup/ folder, run this in **another** terminal (or a Docker Quickstart Terminal)::
 
-To backup the database, just run in another terminal::
+    docker-compose run db /srv/scripts/sql/restore_db.sh
 
-    docker-compose run db /srv/backup/backup_db.sh
+If the app is broken after a restore script, restart the composition with::
+
+    docker-compose restart
 
 
 API / Documentation
@@ -145,14 +160,6 @@ API / Documentation
 * API : http://files.parisson.com/doc/telemeta/
 * Player : https://github.com/Parisson/TimeSide/
 * Example : http://archives.crem-cnrs.fr/archives/items/CNRSMH_E_2004_017_001_01/
-
-
-Related software projects
-==========================
-
-* `TimeSide <https://github.com/yomguy/timeside/>`_: high level python audio processing framework
-* `Diadems <http://www.irit.fr/recherches/SAMOVA/DIADEMS/fr/welcome/&cultureKey=en>`_ Description, Indexation, Access to Sound and Ethnomusicological Documents, funded by the French Research Agency (ANR CONTINT 2012)
-* `TimeSide-Diadems <https://github.com/ANR-DIADEMS/timeside-diadems>`_: a set of Timeside plugins developed during the Diadems project
 
 
 Development
@@ -169,15 +176,24 @@ Development
    :alt: Coverage
 
 
-You are welcome to participate to the development of the Telemeta project which is hosted on `GitHub <https://github.com/Parisson/Telemeta>`_.
+To start the application in a development environment setup::
 
-The development package and environment is available through our `DevBox <https://github.com/Parisson/DevBox>`_
+    cd Telemeta
+    git pull
+    git checkout dev
+    docker-compose -f docker-compose.yml -f env/dev.yml up
+
+Then browse the app at http://localhost:9000/ (replacing 'localhost' by the IP given by the docker terminal on OSX or Windows)
+
+You are welcome to participate to the development by forking the Telemeta project on `GitHub <https://github.com/Parisson/Telemeta>`_.
+
+To build your own composition::
+
+    docker-compose -f docker-compose.yml -f env/dev.yml -f env/build.yml build
 
 
-Bugs and feedback
-=================
-
-You are welcome to freely use this application in accordance with its licence.
+Bugs, issues, ideas
+===================
 
 If you find some bugs or have good ideas for enhancement, please leave a issue on GitHub with the right label:
 
@@ -185,30 +201,77 @@ https://github.com/Parisson/Telemeta/issues/new
 
 You can also leave some ticket to request some new interesting features for the next versions and tweet your ideas to `@telemeta <https://twitter.com/telemeta>`_.
 
-And even if Telemeta suits you, please give us some feedback !
-
-
-Contact
-=======
-
-Homepage: http://telemeta.org
-
-Emails:
-
-* Guillaume Pellerin <yomguy@parisson.com>,
-* Thomas Fillon <thomas@parisson.com>
-* Anas Ghrab <anas.ghrab@gmail.com>
-* Olivier Guilyardi <olivier@samalyse.com>,
-* Riccardo Zaccarelli <riccardo.zaccarelli@gmail.com>
-
-Twitter:
-
-* https://twitter.com/telemeta
-* https://twitter.com/parisson_studio
-* https://twitter.com/yomguy
+And remember: even if Telemeta suits you, please give us some feedback !
 
 
 License
 =======
 
-CeCILL v2, compatible with GPL v2 (see `LICENSE <http://github.com/yomguy/Telemeta/blob/master/LICENSE.txt>`_)
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+
+Sponsors and partners
+======================
+
+  * CNRS_ : Centre National de la Recherche Scientifique (French Natianal Research and Scientific Center)
+  * MCC_ : Ministère de la Culture et de la Communication (the french Ministry of the Culture and Communication)
+  * ANR_ : Agence Nationale de la Recherche (French Research Agency)
+  * UPMC_ : University Pierre et Marie Curie (Paris 6, France)
+  * CREM_ : Centre de Recherche en Ethnomusicologie (Ethnomusicology Research Center)
+  * LAM_ : Equipe Lutherie, Acoustique et Musique de l'IJLRDA_
+  * IJLRDA_ : Institut Jean le Rond d'Alembert (Paris, France)
+  * Parisson_ : Open audio development agency for science and arts (Paris, France)
+  * MNHN_ : Museum National d'Histoire Naturelle (National Museum of Biology, Paris, France)
+  * U-Paris10_ : University Paris Oues Nanterre (Paris 10, France)
+  * MuseeDelHomme_ : Musée de l'Homme (Paris, France)
+  * DIADEMS_project_ : involving IRIT_, LIMSI_, LAM_, CREM_, LABRI_, MNHN_, Parisson_
+  * HumaNum_ : TGIR des humanités numériques
+  * IRCAM_ : Institut de Recherche et de Coordination Acoustique / Musique (Paris, France)
+
+
+Related projects
+=================
+
+* TimeSide_ : audio processing framework for the web
+* DIADEMS_ : Description, Indexation, Access to Sound and Ethnomusicological Documents, funded by the French Research Agency (ANR CONTINT 2012)
+* TimeSide-DIADEMS_ : a set of Timeside plugins developed during the Diadems project
+* DaCaRyH
+* Kamoulox
+* WASABI
+
+
+.. _Telemeta: http://telemeta.org
+.. _TimeSide: https://github.com/Parisson/TimeSide/
+.. _OAI-PMH: http://fr.wikipedia.org/wiki/Open_Archives_Initiative_Protocol_for_Metadata_Harvesting
+.. _Parisson: http://parisson.com
+.. _CNRS: http://www.cnrs.fr
+.. _MCC: http://www.culturecommunication.gouv.fr
+.. _CREM: http://www.crem-cnrs.fr
+.. _HumaNum: http://www.huma-num.fr
+.. _IRIT: http://www.irit.fr
+.. _LIMSI: http://www.limsi.fr/index.en.html
+.. _LAM: http://www.lam.jussieu.fr
+.. _LABRI: http://www.labri.fr
+.. _MNHN: http://www.mnhn.fr
+.. _MMSH: http://www.mmsh.univ-aix.fr
+.. _UPMC: http://www.upmc.fr
+.. _DIADEMS_project: http://www.irit.fr/recherches/SAMOVA/DIADEMS/fr/welcome/&cultureKey=en
+.. _ANR: http://www.agence-nationale-recherche.fr/
+.. _SABIOD: http://sabiod.telemeta.org
+.. _CHANGELOG: http://github.com/Parisson/Telemeta/blob/master/CHANGELOG.rst
+.. _Publications: https://github.com/Parisson/Telemeta-doc
+.. _API : http://files.parisson.com/doc/telemeta/
+.. _Player : https://github.com/Parisson/TimeSide/
+.. _Example : http://archives.crem-cnrs.fr/archives/items/CNRSMH_E_2004_017_001_01/
+.. _Homepage: http://telemeta.org
+.. _GitHub: https://github.com/Parisson/Telemeta/
+.. _IJLRDA: http://www.dalembert.upmc.fr/ijlrda/
+.. _Labex-Passé_Présent: http://passes-present.eu/
+.. _U-Paris10: http://www.u-paris10.fr/
+.. _MuseeDelHomme: http://www.museedelhomme.fr/
+.. _IRCAM: http://www.ircam.fr
+.. _TimeSide-DIADEMS: https://github.com/ANR-DIADEMS/timeside-diadems
