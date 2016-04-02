@@ -242,7 +242,7 @@ Sponsors and partners
   * LABRI_ : Laboratoire Bordelais de Recherche en Informatique
   * HumaNum_ : TGIR des humanités numériques
   * IRCAM_ : Institut de Recherche et de Coordination Acoustique / Musique (Paris, France)
-  * QMUL_ : Queen Mary University (London, UK)
+  * QMUL_ : `Centre for Digital Music`_ of Queen Mary University (London, UK)
 
 
 Related research projects
@@ -250,6 +250,7 @@ Related research projects
 
 * DIADEMS_ : Description, Indexation, Access to Sound and Ethnomusicological Documents, funded by the French Research Agency (ANR_ CONTINT 2012), involving IRIT_, CREM_, LAM_, LABRI_, LIMSI_, MNHN_, Parisson_
 * TimeSide-DIADEMS_ : a set of Timeside plugins developed during the DIADEMS_ project
+*
 * DaCaRyH_ : Le rythme calypso à travers l’histoire : une approche en sciences des données (AHRC_ “Care for the Future” et le Labex-Passé_Présent_ "Les passés dans le présent")
 * Kamoulox_ : Démixage en ligne de larges archives sonores (ANR_ Jeune Chercheur 2015)
 * WASABI_ : Web Audio Semantic Aggregated in the Browser for Indexation (ANR_ 2016, currently submitted)
@@ -270,7 +271,7 @@ Related research projects
 .. _MNHN: http://www.mnhn.fr
 .. _MMSH: http://www.mmsh.univ-aix.fr
 .. _UPMC: http://www.upmc.fr
-.. _DIADEMS_project: http://www.irit.fr/recherches/SAMOVA/DIADEMS/fr/welcome/&cultureKey=en
+.. _DIADEMS_: http://www.irit.fr/recherches/SAMOVA/DIADEMS/fr/welcome/&cultureKey=en
 .. _ANR: http://www.agence-nationale-recherche.fr/
 .. _SABIOD: http://sabiod.telemeta.org
 .. _CHANGELOG: http://github.com/Parisson/Telemeta/blob/master/CHANGELOG.rst
@@ -289,3 +290,6 @@ Related research projects
 .. _DaCaRyH:  http://archives.crem-cnrs.fr/archives/fonds/CNRSMH_DACARYH/
 .. _Kamoulox: http://www.agence-nationale-recherche.fr/?Projet=ANR-15-CE38-0003
 .. _AHRC: http://www.ahrc.ac.uk/
+.. _QMUL: http://www.qmul.ac.uk/
+.. _SoundSofware : http://soundsoftware.ac.uk/
+.. _Centre for Digital Music: http://c4dm.eecs.qmul.ac.uk/
