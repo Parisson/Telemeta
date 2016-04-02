@@ -212,8 +212,8 @@ You are welcome to participate to the development by forking the Telemeta projec
 Bugs, issues, ideas
 ===================
 
-If you find some bugs or have good ideas for enhancement, please leave a `issue on GitHub <https://github.com/Parisson/Telemeta/issues/new
->`_ with the right label or tweet it tweet it @telemeta_.
+If you find some bugs or have good ideas for enhancement, please `leave a issue on GitHub <https://github.com/Parisson/Telemeta/issues/new
+>`_ with the right label or tweet it `@telemeta <https://twitter.com/telemeta>`_.
 
 And remember: even if Telemeta suits you, please give us some feedback. We **need** your support!
 
@@ -298,4 +298,3 @@ Related research projects
 .. _Queen Mary University: http://www.qmul.ac.uk/
 .. _SoundSoftware : http://soundsoftware.ac.uk/
 .. _C4DM: http://c4dm.eecs.qmul.ac.uk/
-.. _@telemeta: https://twitter.com/telemeta
