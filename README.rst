@@ -74,13 +74,13 @@ News
 
 Telemeta is now usable on any OS, ready for development and for production use cases in 5 mn! B-)
 
-* Provide a docker image and composition for the full Telemeta application bundle.
-* Install new useful tools like Conda, Jupyter notebook and many other modules.
+* Provide a docker image and composition for the full Telemeta application bundle including more useful modules and apps.
 * Full refactoring of the search engine and interface using django-haystack and ElasticSearch with new faceting and smart filtering features
 * Add an automatic EPUB3 ebook exporter for corpus and collections embedding metadata, image and audio materials.
-* Upgrade of every dependency bundle in the composition
+* More inline forms and functional buttons
+* Add resource sharing links
 * Switch to Affero GPL licence
-* Many, many bugfixes
+* Many, many `bugfixes <https://github.com/Parisson/Telemeta/issues?q=is%3Aissue+is%3Aclosed>`_
 * Thanks to all partners for this **huge** release!
 
 1.5.1
@@ -212,8 +212,7 @@ You are welcome to participate to the development by forking the Telemeta projec
 Bugs, issues, ideas
 ===================
 
-If you find some bugs or have good ideas for enhancement, please `leave a issue on GitHub <https://github.com/Parisson/Telemeta/issues/new
->`_ with the right label or tweet it `@telemeta <https://twitter.com/telemeta>`_.
+If you find some bugs or have good ideas for enhancement, please `leave a issue on GitHub <https://github.com/Parisson/Telemeta/issues/new>`_ with the right label or tweet it `@telemeta <https://twitter.com/telemeta>`_.
 
 And remember: even if Telemeta suits you, please give us some feedback. We **need** your support!
 
