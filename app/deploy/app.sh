@@ -21,13 +21,11 @@ gid='www-data'
 # stating apps
 # pip install django-angular
 
-# waiting for other services
+# waiting for other network services
 sh $app/deploy/wait.sh
 
-# waiting for available database
-python $app/wait.py
-
-# django init
+# django setup
+python $manage wait-for-db
 python $manage syncdb --noinput
 python $manage migrate --noinput
 python $manage bower_install -- --allow-root
