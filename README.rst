@@ -24,16 +24,16 @@ Collaborative multimedia asset management system
 Overview
 =========
 
-Telemeta is a free and open source collaborative multimedia asset management (MAM) software which introduces useful and secure methods to archive, backup, transcode, analyse,  annotate and publish any digitalized video or audio file with extensive metadata. It is dedicated to collaborative media archiving projects, research laboratories and digital humanities - especially in ethno-musicological use cases - who need to easily organize and publish documented sound collections of audio files, CDs, digitalized vinyls and magnetic tapes over a strong database, in a secure platform and in accordance with open web standards.
+Telemeta is a free and open source collaborative multimedia asset management system (MAM) which introduces fast and secure methods to archive, backup, transcode, analyse,  annotate and publish any digitalized video or audio file with extensive metadata. It is dedicated to collaborative media archiving projects, research laboratories and digital humanities - especially in ethno-musicological use cases - who need to easily organize and publish documented sound collections of audio files, CDs, digitalized vinyls and magnetic tapes over a strong database, through a smart and secure platform, in accordance with open web standards.
 
 Key features:
 
 * Secure archiving, editing and publishing of audio files over internet.
 * Pure HTML web user interface including dynamical forms and smart workflows
-* Smart dynamical and skinnable audio player (thanks to  TimeSide and  SoundManager2)
-* "On the fly" audio analyzing, transcoding and metadata embedding based on an easy plugin architecture
-* Social cumulative indexing with semantic ontologies and timecoded markers
-* Multi-format support : FLAC, OGG, MP3, WAV and more
+* "On the fly" audio analyzing and transcoding thanks to TimeSide_
+* Smart dynamical and skinnable audio player with annotations
+* Collaborative indexing with semantic ontologies and timecoded markers
+* Multi-format support : FLAC, OGG, MP3, WAV, MP4, WebM (video) and more
 * User management with individual desk, lists, profiles and rights
 * Playlist management for all users with CSV data export
 * Geo-Navigator for audio geolocalization
@@ -42,23 +42,28 @@ Key features:
 * OAI-PMH data provider
 * RSS feed generators
 * XML and ZIP serialized backups
+* EPUB3 "audio book" collection exporter
 * SQLite, MySQL, PostgreSQL or Oracle DB backends
 * Multi-language support (now english and french)
-* Video support (EXPERIMENTAL, WebM only)
+* Run on any OS
 
-This MAM is based on 100% open source modules exclusively and can be run on any OS. It is mostly written in Python and JavaScript.
+Telemeta has been developed since 2006 and is based exclusively on 100% open source modules.
+
+It is mostly written in Python, HTML5 and JavaScript.
+
+The *Telemeta* name stands for *Tele* as "remote access" and *meta* for "metadata".
 
 
 Funding and support
 ===================
 
-To fund this long time project and feed our agile development process, we need your explicit support. So if you use Telemeta in production or even in a development or experimental setup, please let us know by:
+To fund this long time libre and open source project, we need your explicit support. So if you use Telemeta in production or even in a development or experimental setup, please let us know by:
 
 * staring or forking the project on `GitHub <https://github.com/Parisson/TimeSide>`_
 * tweeting something to `@parisson_studio <https://twitter.com/parisson_studio>`_ or `@telemeta <https://twitter.com/telemeta>`_
 * drop us an email <support@parisson.com>
 
-Thanks for your help!
+Thank you so much for your help!
 
 
 News
@@ -67,10 +72,15 @@ News
 1.6
 ++++
 
-* Provide a docker image and composition for the full Telemeta bundle
-* Full refactoring of the search engine and interface using django-haystack with new faceting and filtering features
-* Add an EPUB3 ebook exporter for corpus and collections embedding metadata, image and audio materials.
-* Many bugfixes
+Telemeta is now usable on any OS, ready for development and for production use cases in 5 mn! B-)
+
+* Provide a docker image and composition for the full Telemeta application bundle.
+* Install new useful tools and modules : Conda, Jupyter notebook,
+* Full refactoring of the search engine and interface using django-haystack and ElasticSearch with new faceting and smart filtering features
+* Add an automatic EPUB3 ebook exporter for corpus and collections embedding metadata, image and audio materials.
+* Upgrade of every dependency bundle in the composition
+* Many, many bugfixes
+* Thanks to all partners for this **huge** release!
 
 1.5.1
 ++++++
@@ -110,7 +120,7 @@ password: admin
 Install
 =======
 
-Thanks to Docker, Telemeta is now fully available as a docker composition ready to work. The docker based composition bundles some powerfull applications and modern frameworks out-of-the-box like: Python, Numpy, Gstreamer, Django, Celery, Haystack, ElasticSearch, MySQL, Redis, uWSGI, Nginx and many more.
+Thanks to Docker, Telemeta is now fully available as a docker composition ready to work. The docker based composition bundles some powerfull applications and modern frameworks out-of-the-box like: Python, Conda, Numpy, Jupyter, Gstreamer, Django, Celery, Haystack, ElasticSearch, MySQL, Redis, uWSGI, Nginx and many more.
 
 On Linux, first install `Git <http://git-scm.com/downloads>`_, `Docker engine <https://docs.docker.com/installation/>`_ and `docker-compose <https://docs.docker.com/compose/install/>`_ and open a terminal.
 
@@ -228,20 +238,21 @@ Sponsors and partners
   * MNHN_ : Museum National d'Histoire Naturelle (National Museum of Biology, Paris, France)
   * U-Paris10_ : University Paris Oues Nanterre (Paris 10, France)
   * MuseeDelHomme_ : Musée de l'Homme (Paris, France)
-  * DIADEMS_project_ : involving IRIT_, LIMSI_, LAM_, CREM_, LABRI_, MNHN_, Parisson_
+  * LIMSI_ : Laboratoire d'Informatique pour la Mécanique et les Sciences de l'Ingénieur
+  * LABRI_ : Laboratoire Bordelais de Recherche en Informatique
   * HumaNum_ : TGIR des humanités numériques
   * IRCAM_ : Institut de Recherche et de Coordination Acoustique / Musique (Paris, France)
+  * QMUL_ : Queen Mary University (London, UK)
 
 
-Related projects
-=================
+Related research projects
+==========================
 
-* TimeSide_ : audio processing framework for the web
-* DIADEMS_ : Description, Indexation, Access to Sound and Ethnomusicological Documents, funded by the French Research Agency (ANR CONTINT 2012)
-* TimeSide-DIADEMS_ : a set of Timeside plugins developed during the Diadems project
-* DaCaRyH
-* Kamoulox
-* WASABI
+* DIADEMS_ : Description, Indexation, Access to Sound and Ethnomusicological Documents, funded by the French Research Agency (ANR_ CONTINT 2012), involving IRIT_, CREM_, LAM_, LABRI_, LIMSI_, MNHN_, Parisson_
+* TimeSide-DIADEMS_ : a set of Timeside plugins developed during the DIADEMS_ project
+* DaCaRyH_ : Le rythme calypso à travers l’histoire : une approche en sciences des données (AHRC_ “Care for the Future” et le Labex-Passé_Présent_ "Les passés dans le présent")
+* Kamoulox_ : Démixage en ligne de larges archives sonores (ANR_ Jeune Chercheur 2015)
+* WASABI_ : Web Audio Semantic Aggregated in the Browser for Indexation (ANR_ 2016, currently submitted)
 
 
 .. _Telemeta: http://telemeta.org
@@ -275,3 +286,6 @@ Related projects
 .. _MuseeDelHomme: http://www.museedelhomme.fr/
 .. _IRCAM: http://www.ircam.fr
 .. _TimeSide-DIADEMS: https://github.com/ANR-DIADEMS/timeside-diadems
+.. _DaCaRyH:  http://archives.crem-cnrs.fr/archives/fonds/CNRSMH_DACARYH/
+.. _Kamoulox: http://www.agence-nationale-recherche.fr/?Projet=ANR-15-CE38-0003
+.. _AHRC: http://www.ahrc.ac.uk/
