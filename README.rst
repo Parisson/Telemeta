@@ -257,7 +257,7 @@ Related research projects
 * SoundSoftware_ : Sustainable Software of Audio and Music Research
 * DaCaRyH_ : Le rythme calypso à travers l’histoire : une approche en sciences des données (AHRC_ “Care for the Future” et le Labex-Passé_Présent_ "Les passés dans le présent")
 * Kamoulox_ : Démixage en ligne de larges archives sonores (ANR_ Jeune Chercheur 2015)
-* WASABI_ : Web Audio Semantic Aggregated in the Browser for Indexation (ANR_ 2016, currently submitted)
+* WASABI : Web Audio Semantic Aggregated in the Browser for Indexation (ANR_ 2016, currently being submitted)
 
 
 .. _Telemeta: http://telemeta.org
