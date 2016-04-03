@@ -27,6 +27,9 @@ sh $app/deploy/wait.sh
 # waiting for available database
 python $app/wait.py
 
+#fix contains haystack elasticsearch
+cd /opt/miniconda/lib/python2.7/site-packages/haystack/backends && sed -i "s/'contains': u'%s'/'contains': u'*%s*'/g" elasticsearch_backend.py && cd $app
+
 # django init
 python $manage syncdb --noinput
 python $manage migrate --noinput
@@ -34,6 +37,7 @@ python $manage bower_install -- --allow-root
 python $manage collectstatic --noinput
 python $manage telemeta-create-admin-user
 python $manage telemeta-create-boilerplate
+python $manage rebuild_index --noinput
 
 if [ $DEBUG = "False" ]
 then

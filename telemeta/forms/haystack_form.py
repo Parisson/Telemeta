@@ -27,7 +27,6 @@ from haystack.query import SearchQuerySet
 from datetime import date
 from django.utils.translation import ugettext_lazy as _
 
-
 class HaySearchForm(FacetedSearchForm):
 
     q = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'type' : 'text'}))
