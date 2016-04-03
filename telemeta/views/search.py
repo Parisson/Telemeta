@@ -19,10 +19,12 @@
 
 
 from haystack.views import *
-from haystack.query import SearchQuerySet
+from haystack.query import SearchQuerySet, SQ
 from telemeta.models import *
 from telemeta.forms.haystack_form import *
 from saved_searches.views import SavedSearchView
+import simplejson as json
+from django.http import HttpResponse
 
 
 class HaystackSearch(FacetedSearchView, SavedSearchView):
@@ -111,10 +113,6 @@ class HaystackSearch(FacetedSearchView, SavedSearchView):
         extra['results_page'] = self.results_per_page
         return extra
 
-    #def auto_complete(request):
-        #content = SearchQuerySet().autocomplete(content_auto=request.POST.get('seatch_text', ''))
-        #return render_to_response('', {'content' : content])
-
 
 class HaystackAdvanceSearch(SavedSearchView):
 
@@ -162,3 +160,25 @@ class HaystackAdvanceSearch(SavedSearchView):
 
         extra['results_page'] = self.results_per_page
         return extra
+
+def autocomplete(request):
+    sqs = SearchQuerySet().load_all()
+    print(type)
+    if request.GET.get('attr', '') == "q":
+        sqs = sqs.filter(title__contains=request.GET.get('q', ''))[:5]
+        suggestions = [result.title for result in sqs]
+    elif request.GET.get('attr', '') == "location":
+        sqs = sqs.filter(location_principal__contains=request.GET.get('q', ''))[:5]
+        suggestions = [result.location_principal for result in sqs]
+    elif request.GET.get('attr', '') == "code":
+        sqs = sqs.filter(code__contains=request.GET.get('q', ''))[:5]
+        suggestions = [result.code for result in sqs]
+    else:
+        suggestions = []
+
+    suggestions = list(set(suggestions))
+
+    the_data = json.dumps({
+        'results': suggestions
+    })
+    return HttpResponse(the_data, content_type='application/json')

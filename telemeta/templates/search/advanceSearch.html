@@ -247,5 +247,35 @@
             }).selectmenu("menuWidget").addClass("overflow");
 
         });
+
+</script>
+    <script>
+var liste = [
+    "Draggable",
+    "Droppable",
+    "Resizable",
+    "Selectable",
+    "Sortable"
+];
+$(function(){
+    $('#id_q[type="search"], #id_code, #id_location').each(function(){
+        var self = this;
+        $(this).autocomplete({
+            source : function(requete, reponse) {
+                $.ajax({
+                    url: '/search/autocomplete/',
+                    dataType: 'json',
+                     data: {
+                        q: $(self).val(),
+                        attr: $(self).attr('name')
+                     },
+                success: function (donnee) {
+                        reponse(donnee.results);
+                    }
+             });
+        }
+    });
+    });
+});
     </script>
 {% endblock %}

@@ -126,6 +126,7 @@ urlpatterns = patterns('',
     # search
     # url(r'^archives/$', home_view.search, name="telemeta-archives"),
     url(r'^search/$', HaystackSearch(), name='haystack_search'),
+    url(r'^search/autocomplete/$', autocomplete),
     url(r'^search/quick/(?P<type>[A-Za-z0-9._-]+)/$', HaystackSearch(), name='haystack_search_type'),
     url(r'^search/advance/$', HaystackAdvanceSearch(form_class=HayAdvanceForm, template='search/advanceSearch.html'), name='haystack_advance_search'),
     url(r'^search/advance/(?P<type>[A-Za-z0-9._-]+)/$', HaystackAdvanceSearch(form_class=HayAdvanceForm, template='search/advanceSearch.html'), name='haystack_advance_search_type'),
