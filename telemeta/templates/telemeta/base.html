@@ -83,32 +83,12 @@
   {{ user.username }}
 {% endif %}
 <a href="{% url "telemeta-flatpage" "help" %}">{% trans "Help" %}</a> |
-<a href="{% url "telemeta-logout" %}">{% trans "Sign out" %} |
+<a href="{% url "telemeta-logout" %}">{% trans "Sign out" %}
 <img src="{{ STATIC_URL }}telemeta/images/logout.png" alt="logout" style="vertical-align:middle" /></a>
 {% else %}
 <a href="{% url "telemeta-flatpage" "help" %}">{% trans "Help" %}</a> |
-<a href="{% url "telemeta-login" %}">{% trans "Sign in" %}</a> |
+<a href="{% url "telemeta-login" %}">{% trans "Sign in" %}</a>
 {% endif %}
-<form action="/i18n/setlang/" method="post" style="display:inline-block;">
-
-    {% csrf_token %}
-
-    <input name="next" type="hidden" value="{% url 'telemeta-home' %}" />
-
-    <select name="language" style="color:#6a0307">
-
-    {% for lang in LANGUAGES %}
-
-        <option value="{{ lang.0 }}">{{ lang.1 }}</option>
-
-    {% endfor %}
-
-    </select>
-
-
-    <input type="submit" value="Ok" />
-
-</form>
 
 </div>
 
@@ -162,6 +142,27 @@
  </li>
 {% endif %}
 </ul>
+<form id="formlang" action="/i18n/setlang/" method="post" style="display:inline-block;">
+
+    {% csrf_token %}
+
+    <input name="next" type="hidden" value="{% url 'telemeta-home' %}" />
+
+    <select name="language" style="color:#6a0307">
+
+    {% for lang in LANGUAGES %}
+
+        <option value="{{ lang.0 }}">{{ lang.1 }}</option>
+
+    {% endfor %}
+
+    </select>
+
+
+    <input type="submit" value="Ok" />
+
+</form>
+
 
 {% endblock menu %}
 </div>

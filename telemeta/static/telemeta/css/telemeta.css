@@ -473,6 +473,7 @@ form.login .submit {
     background-color: #6a0307 ;
     border-top: .25em solid #6a0307;
     padding-left:26px;
+    position:relative;
 }
 
 #menu a, #menu a:visited{
@@ -514,10 +515,18 @@ form.login .submit {
 /* Drop Down Menus */
 .clear {clear:both}
 
+#formlang{
+    display:inline-block;
+    position:absolute;
+    right:1%;
+    top:10%;
+}
+
 #nav {
     margin:0;
     padding:0;
     list-style:none;
+    display:inline-block;
 }
 
 /* make the LI display inline */
