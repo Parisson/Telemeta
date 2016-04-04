@@ -64,7 +64,7 @@ Funding and support
 
 To fund this long time libre and open source project, we need your explicit support. So if you use Telemeta in production or even in a development or experimental setup, please let us know by:
 
-* staring or forking the project on `GitHub <https://github.com/Parisson/TimeSide>`_
+* staring or forking the project on GitHub_
 * tweeting something to `@parisson_studio <https://twitter.com/parisson_studio>`_ or `@telemeta <https://twitter.com/telemeta>`_
 * drop us an email <support@parisson.com>
 
@@ -109,8 +109,8 @@ Telemeta is now usable on **any OS**, ready for development and for production i
 Examples
 ========
 
-* `Sound archives <http://archives.crem-cnrs.fr>`_ of the CREM_ - CNRS_  and `Musée de l'Homme`_
-* `Sound archives <http://telemeta.lam.jussieu.fr>`_ of the LAM_ of the IJLRDA_ at Université Pierre et Maris Curie (UPMC_)
+* `CREM Sound archives <http://archives.crem-cnrs.fr>`_ of the CREM_ - CNRS_  and MdH_
+* `LAM Sound archives <http://telemeta.lam.jussieu.fr>`_ of the LAM_ of the IJLRDA_ at Université Pierre et Maris Curie (UPMC_)
 * `Phonothèque Nationale <http://phonotheque.cmam.tn/>`_ du Centre des Musiques Arabes et Méditerranéennes (CMAM_)
 *  Scaled BIOdiversity (SABIOD_)
 
@@ -154,9 +154,9 @@ To start the application in DEBUG mode::
 
 Be **CAREFULL** in production:
 
- * The database is deleted when using `docker-compose rm`
- * Define your own passwords and secret keys in env/*.env files
- * Use a cron rule and the backup script to save your work periodically
+* The database is deleted when using `docker-compose rm`
+* Define your own passwords and secret keys in `env/*.env` files
+* Use a cron rule and the backup script to save your work periodically
 
 
 Backup / Restore
@@ -212,7 +212,7 @@ To build your own composition (if dependency tree is changed)::
 
     docker-compose -f docker-compose.yml -f env/dev.yml -f env/build.yml build
 
-You are welcome to participate to the development by forking the Telemeta project on `GitHub <https://github.com/Parisson/Telemeta>`_.
+You are welcome to participate to the development by forking the Telemeta project on GitHub_.
 
 
 Bugs, issues, ideas
@@ -236,24 +236,24 @@ You should have received a copy of the GNU Affero General Public License along w
 Sponsors and partners
 ======================
 
-  * CNRS_ : Centre National de la Recherche Scientifique (French Natianal Research and Scientific Center)
-  * MCC_ : Ministère de la Culture et de la Communication (the french Ministry of the Culture and Communication)
-  * ANR_ : Agence Nationale de la Recherche (French Research Agency)
-  * UPMC_ : University Pierre et Marie Curie (Paris 6, Sorbonne Universités, France)
-  * CREM_ : Centre de Recherche en Ethnomusicologie (Ethnomusicology Research Center, Paris, France)
-  * LAM_ : Equipe Lutherie, Acoustique et Musique de l'IJLRDA_ (Paris, France)
-  * IJLRDA_ : Institut Jean le Rond d'Alembert (Paris, France)
-  * Parisson_ : Open development agency for audio science and arts (Paris, France)
-  * MNHN_ : Museum National d'Histoire Naturelle (National Museum of Biology, Paris, France)
-  * U-Paris10_ : University Paris 10 Ouest Nanterre (Nanterre, France)
-  * Musée de l'Homme_ : Musée de l'Homme (Paris, France)
-  * IRIT_ : Institut de Recherche en Informatique de Toulouse (Toulouse, France)
-  * LIMSI_ : Laboratoire d'Informatique pour la Mécanique et les Sciences de l'Ingénieur (Orsay, France)
-  * LABRI_ : Laboratoire Bordelais de Recherche en Informatique (Bordeaux, France)
-  * C4DM_ : Centre for Digital Music at `Queen Mary University`_ (London, UK)
-  * HumaNum_ : TGIR des humanités numériques (Paris, France)
-  * CMAM_ : Centre des Musiques Arabes et Méditerranéennes (Tunis, Tunisia)
-  * IRCAM_ : Institut de Recherche et de Coordination Acoustique / Musique (Paris, France)
+* CNRS_ : Centre National de la Recherche Scientifique (French Natianal Research and Scientific Center)
+* MCC_ : Ministère de la Culture et de la Communication (the french Ministry of the Culture and Communication)
+* ANR_ : Agence Nationale de la Recherche (French Research Agency)
+* UPMC_ : University Pierre et Marie Curie (Paris 6, Sorbonne Universités, France)
+* CREM_ : Centre de Recherche en Ethnomusicologie (Ethnomusicology Research Center, Paris, France)
+* LAM_ : Equipe Lutherie, Acoustique et Musique de l'IJLRDA_ (Paris, France)
+* IJLRDA_ : Institut Jean le Rond d'Alembert (Paris, France)
+* Parisson_ : Open development agency for audio science and arts (Paris, France)
+* MNHN_ : Museum National d'Histoire Naturelle (National Museum of Biology, Paris, France)
+* U-Paris10_ : University Paris 10 Ouest Nanterre (Nanterre, France)
+* MdH_ : Musée de l'Homme (Paris, France)
+* IRIT_ : Institut de Recherche en Informatique de Toulouse (Toulouse, France)
+* LIMSI_ : Laboratoire d'Informatique pour la Mécanique et les Sciences de l'Ingénieur (Orsay, France)
+* LABRI_ : Laboratoire Bordelais de Recherche en Informatique (Bordeaux, France)
+* C4DM_ : Centre for Digital Music at `Queen Mary University`_ (London, UK)
+* HumaNum_ : TGIR des humanités numériques (Paris, France)
+* CMAM_ : Centre des Musiques Arabes et Méditerranéennes (Tunis, Tunisia)
+* IRCAM_ : Institut de Recherche et de Coordination Acoustique / Musique (Paris, France)
 
 
 Related research projects
@@ -282,7 +282,7 @@ Related research projects
 .. _MNHN: http://www.mnhn.fr
 .. _MMSH: http://www.mmsh.univ-aix.fr
 .. _UPMC: http://www.upmc.fr
-.. _DIADEMS_: http://www.irit.fr/recherches/SAMOVA/DIADEMS/fr/welcome/&cultureKey=en
+.. _DIADEMS: http://www.irit.fr/recherches/SAMOVA/DIADEMS/fr/welcome/&cultureKey=en
 .. _ANR: http://www.agence-nationale-recherche.fr/
 .. _SABIOD: http://sabiod.telemeta.org
 .. _CHANGELOG: http://github.com/Parisson/Telemeta/blob/master/CHANGELOG.rst
@@ -295,7 +295,7 @@ Related research projects
 .. _IJLRDA: http://www.dalembert.upmc.fr/ijlrda/
 .. _Labex-Passé_Présent: http://passes-present.eu/
 .. _U-Paris10: http://www.u-paris10.fr/
-.. _MuseeDelHomme: http://www.museedelhomme.fr/
+.. _MdH: http://www.museedelhomme.fr/
 .. _IRCAM: http://www.ircam.fr
 .. _TimeSide-DIADEMS: https://github.com/ANR-DIADEMS/timeside-diadems
 .. _DaCaRyH:  http://archives.crem-cnrs.fr/archives/fonds/CNRSMH_DACARYH/
