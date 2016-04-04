@@ -2,24 +2,8 @@
 Collaborative multimedia asset management system
 =================================================
 
-|version| |downloads| |travis_master| |coverage_master|
-
-.. |version| image:: https://img.shields.io/pypi/v/telemeta.svg
-   :target: https://pypi.python.org/pypi/Telemeta/
-   :alt: Version
-
-.. |downloads| image:: https://img.shields.io/pypi/dm/telemeta.svg
-   :target: https://pypi.python.org/pypi/Telemeta/
-   :alt: Downloads
-
-.. |travis_master| image:: https://secure.travis-ci.org/Parisson/Telemeta.png?branch=master
-   :target: https://travis-ci.org/Parisson/Telemeta/
-   :alt: Travis
-
-.. |coverage_master| image:: https://coveralls.io/repos/Parisson/Telemeta/badge.png?branch=master
-   :target: https://coveralls.io/r/Parisson/Telemeta?branch=master
-   :alt: Coverage
-
+.. image:: /images/logo_telemeta_2.png
+    :alt: Telemeta logo
 
 Overview
 =========
@@ -53,6 +37,24 @@ It is mostly written in Python, HTML5 and JavaScript.
 
 The *Telemeta* name stands for *Tele* as "remote access" and *meta* for "metadata".
 
+|version| |downloads| |travis_master| |coverage_master|
+
+.. |version| image:: https://img.shields.io/pypi/v/telemeta.svg
+   :target: https://pypi.python.org/pypi/Telemeta/
+   :alt: Version
+
+.. |downloads| image:: https://img.shields.io/pypi/dm/telemeta.svg
+   :target: https://pypi.python.org/pypi/Telemeta/
+   :alt: Downloads
+
+.. |travis_master| image:: https://secure.travis-ci.org/Parisson/Telemeta.png?branch=master
+   :target: https://travis-ci.org/Parisson/Telemeta/
+   :alt: Travis
+
+.. |coverage_master| image:: https://coveralls.io/repos/Parisson/Telemeta/badge.png?branch=master
+   :target: https://coveralls.io/r/Parisson/Telemeta?branch=master
+   :alt: Coverage
+
 
 Funding and support
 ===================
@@ -72,12 +74,13 @@ News
 1.6
 ++++
 
-Telemeta is now usable on any OS, ready for development and for production use cases in 5 mn! B-)
-
 * Provide a docker image and composition for the full Telemeta application bundle.
-* Install new useful tools and modules : Conda, Jupyter notebook,
+
+  One month after the publication of docker-compose around march 2015, we had managed to build a prototyped composition which bundled all the dependencies of Telemeta and TimeSide. It took almost one year to deeply investigate all the capabilities of Docker and various images to finally release a propoer composition which bundles all the necessary applications and modules. So we can say that Telemeta is now usable on **any OS** in 5 mn! B-)
+
 * Full refactoring of the search engine and interface using django-haystack and ElasticSearch with new faceting and smart filtering features
 * Add an automatic EPUB3 ebook exporter for corpus and collections embedding metadata, image and audio materials.
+* Install new useful tools and modules like Conda, Jupyter notebook and `many others <https://github.com/Parisson/TimeSide/blob/master/conda-requirements.txt>`_
 * Upgrade of every dependency bundle in the composition
 * Many, many bugfixes
 * Thanks to all partners for this **huge** release!
