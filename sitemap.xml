@@ -5,35 +5,35 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://parisson.github.io/Telemeta/</loc>
-<lastmod>2016-04-04T23:21:24-00:00</lastmod>
+<lastmod>2016-04-04T23:22:42-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://parisson.github.io/Telemeta/archives.html</loc>
-<lastmod>2016-04-04T23:21:24-00:00</lastmod>
+<lastmod>2016-04-04T23:22:42-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://parisson.github.io/Telemeta/tags.html</loc>
-<lastmod>2016-04-04T23:21:24-00:00</lastmod>
+<lastmod>2016-04-04T23:22:42-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://parisson.github.io/Telemeta/categories.html</loc>
-<lastmod>2016-04-04T23:21:24-00:00</lastmod>
+<lastmod>2016-04-04T23:22:42-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://parisson.github.io/Telemeta/telemeta-collaborative-multimedia-asset-management-system.html</loc>
-<lastmod>2016-04-04T23:20:49+02:00</lastmod>
+<lastmod>2016-04-04T23:22:40+02:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -229,7 +229,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://parisson.github.io/Telemeta/category/about.html</loc>
-<lastmod>2016-04-04T23:20:49+00:09</lastmod>
+<lastmod>2016-04-04T23:22:40+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -355,7 +355,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://parisson.github.io/Telemeta/author/parisson-sarl.html</loc>
-<lastmod>2016-04-04T23:20:49+00:09</lastmod>
+<lastmod>2016-04-04T23:22:40+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>

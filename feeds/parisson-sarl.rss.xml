@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Telemeta project</title><link>http://parisson.github.io/Telemeta/</link><description></description><atom:link href="http://parisson.github.io/Telemeta/feeds/parisson-sarl.rss.xml" rel="self"></atom:link><lastBuildDate>Mon, 04 Apr 2016 23:20:49 +0200</lastBuildDate><item><title>Telemeta : collaborative multimedia asset management system</title><link>http://parisson.github.io/Telemeta/telemeta-collaborative-multimedia-asset-management-system.html</link><description>&lt;img alt="Telemeta logo" src="/images/logo_telemeta_2.png" /&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Telemeta project</title><link>http://parisson.github.io/Telemeta/</link><description></description><atom:link href="http://parisson.github.io/Telemeta/feeds/parisson-sarl.rss.xml" rel="self"></atom:link><lastBuildDate>Mon, 04 Apr 2016 23:22:40 +0200</lastBuildDate><item><title>Telemeta : collaborative multimedia asset management system</title><link>http://parisson.github.io/Telemeta/telemeta-collaborative-multimedia-asset-management-system.html</link><description>&lt;img alt="Telemeta logo" src="/images/logo_telemeta_2.png" /&gt;
 &lt;div class="section" id="overview"&gt;
 &lt;h2&gt;Overview&lt;/h2&gt;
 &lt;p&gt;Telemeta is a free and open source collaborative multimedia asset management system (MAM) which introduces fast and secure methods to archive, backup, transcode, analyse,  annotate and publish any digitalized video or audio file with extensive metadata. It is dedicated to collaborative media archiving projects, research laboratories and digital humanities - especially in ethno-musicological use cases - who need to easily organize and publish documented sound collections of audio files, CDs, digitalized vinyls and magnetic tapes over a strong database, through a smart and secure platform, in accordance with open web standards.&lt;/p&gt;
@@ -176,7 +176,6 @@ docker-compose -f docker-compose.yml -f env/dev.yml -f env/build.yml build
 &lt;/div&gt;
 &lt;div class="section" id="sponsors-and-partners"&gt;
 &lt;h2&gt;Sponsors and partners&lt;/h2&gt;
-&lt;blockquote&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;&lt;a class="reference external" href="http://www.cnrs.fr"&gt;CNRS&lt;/a&gt; : Centre National de la Recherche Scientifique (French Natianal Research and Scientific Center)&lt;/li&gt;
 &lt;li&gt;&lt;a class="reference external" href="http://www.culturecommunication.gouv.fr"&gt;MCC&lt;/a&gt; : Ministère de la Culture et de la Communication (the french Ministry of the Culture and Communication)&lt;/li&gt;
@@ -197,7 +196,6 @@ docker-compose -f docker-compose.yml -f env/dev.yml -f env/build.yml build
 &lt;li&gt;&lt;a class="reference external" href="http://www.cmam.nat.tn/"&gt;CMAM&lt;/a&gt; : Centre des Musiques Arabes et Méditerranéennes (Tunis, Tunisia)&lt;/li&gt;
 &lt;li&gt;&lt;a class="reference external" href="http://www.ircam.fr"&gt;IRCAM&lt;/a&gt; : Institut de Recherche et de Coordination Acoustique / Musique (Paris, France)&lt;/li&gt;
 &lt;/ul&gt;
-&lt;/blockquote&gt;
 &lt;/div&gt;
 &lt;div class="section" id="related-research-projects"&gt;
 &lt;h2&gt;Related research projects&lt;/h2&gt;
@@ -210,7 +208,7 @@ docker-compose -f docker-compose.yml -f env/dev.yml -f env/build.yml build
 &lt;li&gt;WASABI : Web Audio Semantic Aggregated in the Browser for Indexation (&lt;a class="reference external" href="http://www.agence-nationale-recherche.fr/"&gt;ANR&lt;/a&gt; 2016, currently being submitted)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Parisson SARL</dc:creator><pubDate>Mon, 04 Apr 2016 23:20:49 +0200</pubDate><guid>tag:parisson.github.io,2016-04-04:Telemeta/telemeta-collaborative-multimedia-asset-management-system.html</guid></item><item><title>Telemeta 1.6 is finally out!</title><link>http://parisson.github.io/Telemeta/telemeta-16-is-finally-out.html</link><description>&lt;ul&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Parisson SARL</dc:creator><pubDate>Mon, 04 Apr 2016 23:22:40 +0200</pubDate><guid>tag:parisson.github.io,2016-04-04:Telemeta/telemeta-collaborative-multimedia-asset-management-system.html</guid></item><item><title>Telemeta 1.6 is finally out!</title><link>http://parisson.github.io/Telemeta/telemeta-16-is-finally-out.html</link><description>&lt;ul&gt;
 &lt;li&gt;&lt;p class="first"&gt;Provide a docker image and composition for the full Telemeta application bundle.&lt;/p&gt;
 &lt;p&gt;One month after the publication of docker-compose around march 2015, we had managed to build a prototyped composition which bundled all the dependencies of Telemeta and TimeSide. It took almost one year to deeply investigate all the capabilities of Docker and various images to finally release a propoer composition which bundles all the necessary applications and modules. So we can say that Telemeta is now usable on &lt;strong&gt;any OS&lt;/strong&gt; in 5 mn! B-)&lt;/p&gt;
 &lt;/li&gt;
