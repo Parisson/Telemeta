@@ -83,10 +83,12 @@ News
 
 * Full refactoring of the search engine and interface using django-haystack and ElasticSearch with new faceting and smart filtering features
 * Add an automatic EPUB3 ebook exporter for corpus and collections embedding metadata, image and audio materials.
+* More inline forms and functional buttons
 * Install new useful tools and modules like Conda, Jupyter notebook and `many others <https://github.com/Parisson/TimeSide/blob/master/conda-requirements.txt>`_
+* Add resource sharing links
+* Switch to Affero GPL licence
 * Upgrade of every dependency bundle in the composition
-* Many, many bugfixes
-* Thanks to all partners for this **huge** release!
+* Many, many `bugfixes <https://github.com/Parisson/Telemeta/issues?q=is%3Aissue+is%3Aclosed>`_
 
 1.5.1
 ++++++
