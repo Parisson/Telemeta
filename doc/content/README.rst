@@ -1,6 +1,6 @@
-=================================================
-Telemeta: open web audio platform with semantics
-=================================================
+============================================================
+Telemeta : collaborative multimedia asset management system
+============================================================
 
 :category: About
 :Pin: true
@@ -40,6 +40,24 @@ It is mostly written in Python, HTML5 and JavaScript.
 
 The *Telemeta* name stands for *Tele* as "remote access" and *meta* for "metadata".
 
+|version| |downloads| |travis_master| |coverage_master|
+
+.. |version| image:: https://img.shields.io/pypi/v/telemeta.svg
+   :target: https://pypi.python.org/pypi/Telemeta/
+   :alt: Version
+
+.. |downloads| image:: https://img.shields.io/pypi/dm/telemeta.svg
+   :target: https://pypi.python.org/pypi/Telemeta/
+   :alt: Downloads
+
+.. |travis_master| image:: https://secure.travis-ci.org/Parisson/Telemeta.png?branch=master
+   :target: https://travis-ci.org/Parisson/Telemeta/
+   :alt: Travis
+
+.. |coverage_master| image:: https://coveralls.io/repos/Parisson/Telemeta/badge.png?branch=master
+   :target: https://coveralls.io/r/Parisson/Telemeta?branch=master
+   :alt: Coverage
+
 
 Funding and support
 ===================
@@ -59,10 +77,10 @@ News
 1.6
 ++++
 
+Telemeta is now usable on **any OS**, ready for development and for production in 5 mn! B-)
+
 * Provide a docker image and composition for the full Telemeta application bundle.
-
-  One month after the publication of docker-compose around march 2015, we had managed to build a prototyped composition which bundled all the dependencies of Telemeta and TimeSide. It took almost one year to deeply investigate all the capabilities of Docker and various images to finally release a propoer composition which bundles all the necessary applications and modules. So we can say that Telemeta is now usable on **any OS** in 5 mn! B-)
-
+  One month after the publication of docker-compose around march 2015, we had managed to build a prototyped composition which bundled all the dependencies of Telemeta and TimeSide. It took almost one year to deeply investigate all the capabilities of Docker and various images to finally release a propoer composition which bundles all the necessary applications and modules.
 * Full refactoring of the search engine and interface using django-haystack and ElasticSearch with new faceting and smart filtering features
 * Add an automatic EPUB3 ebook exporter for corpus and collections embedding metadata, image and audio materials.
 * More inline forms and functional buttons
@@ -71,6 +89,7 @@ News
 * Switch to Affero GPL licence
 * Upgrade of every dependency bundle in the composition
 * Many, many `bugfixes <https://github.com/Parisson/Telemeta/issues?q=is%3Aissue+is%3Aclosed>`_
+* Thanks to all partners for this **huge** release!
 
 1.5.1
 ++++++
@@ -90,11 +109,10 @@ News
 Examples
 ========
 
-* `Sound archives of the French Ethnomusicology Research Center (CREM, CNRS) and the Musée de l'Homme <http://archives.crem-cnrs.fr>`_
-* `Sound archives of the team "Lutherie, Acoustique et Musique" (LAM) of the IJLRDA institute - University Pierre et Marie Curie (Paris 6) <http://telemeta.lam.jussieu.fr>`_
-* `Phonothèque Nationale du Centre des Musiques Arabes et Méditerranéennes <http://phonotheque.cmam.tn/>`_
-* `Scaled BIOdiversity (SABIOD) <http://sabiod.telemeta.org>`_
-* `Sound archives of Parisson Studio <http://parisson.telemeta.org>`_
+* `Sound archives <http://archives.crem-cnrs.fr>`_ of the CREM_ - CNRS_  and `Musée de l'Homme`_
+* `Sound archives <http://telemeta.lam.jussieu.fr>`_ of the LAM_ of the IJLRDA_ at Université Pierre et Maris Curie (UPMC_)
+* `Phonothèque Nationale <http://phonotheque.cmam.tn/>`_ du Centre des Musiques Arabes et Méditerranéennes (CMAM_)
+*  Scaled BIOdiversity (SABIOD_)
 
 
 Demo
@@ -102,9 +120,8 @@ Demo
 
 http://demo.telemeta.org
 
-login: admin
-
-password: admin
+ * login: admin
+ * password: admin
 
 
 Install
@@ -134,6 +151,12 @@ Then browse the app at http://localhost:8000/ (replacing 'localhost' by the IP g
 To start the application in DEBUG mode::
 
     docker-compose -f docker-compose.yml -f env/debug.yml up
+
+Be **CAREFULL** in production:
+
+ * The database is deleted when using `docker-compose rm`
+ * Define your own passwords and secret keys in env/*.env files
+ * Use a cron rule and the backup script to save your work periodically
 
 
 Backup / Restore
@@ -183,25 +206,21 @@ To start the application in a development environment setup::
     git checkout dev
     docker-compose -f docker-compose.yml -f env/dev.yml up
 
-Then browse the app at http://localhost:9000/ (replacing 'localhost' by the IP given by the docker terminal on OSX or Windows)
+Then browse the app at http://localhost:9000/ (replacing 'localhost' by the IP given by the docker terminal on OSX or Windows). Note the service will automatically when code is modified.
 
-You are welcome to participate to the development by forking the Telemeta project on `GitHub <https://github.com/Parisson/Telemeta>`_.
-
-To build your own composition::
+To build your own composition (if dependency tree is changed)::
 
     docker-compose -f docker-compose.yml -f env/dev.yml -f env/build.yml build
+
+You are welcome to participate to the development by forking the Telemeta project on `GitHub <https://github.com/Parisson/Telemeta>`_.
 
 
 Bugs, issues, ideas
 ===================
 
-If you find some bugs or have good ideas for enhancement, please leave a issue on GitHub with the right label:
+If you find some bugs or have good ideas for enhancement, please `leave a issue on GitHub <https://github.com/Parisson/Telemeta/issues/new>`_ with the right label or tweet it `@telemeta <https://twitter.com/telemeta>`_.
 
-https://github.com/Parisson/Telemeta/issues/new
-
-You can also leave some ticket to request some new interesting features for the next versions and tweet your ideas to `@telemeta <https://twitter.com/telemeta>`_.
-
-And remember: even if Telemeta suits you, please give us some feedback !
+And remember: even if Telemeta suits you, please give us some feedback. We **need** your support!
 
 
 License
@@ -220,29 +239,32 @@ Sponsors and partners
   * CNRS_ : Centre National de la Recherche Scientifique (French Natianal Research and Scientific Center)
   * MCC_ : Ministère de la Culture et de la Communication (the french Ministry of the Culture and Communication)
   * ANR_ : Agence Nationale de la Recherche (French Research Agency)
-  * UPMC_ : University Pierre et Marie Curie (Paris 6, France)
-  * CREM_ : Centre de Recherche en Ethnomusicologie (Ethnomusicology Research Center)
-  * LAM_ : Equipe Lutherie, Acoustique et Musique de l'IJLRDA_
+  * UPMC_ : University Pierre et Marie Curie (Paris 6, Sorbonne Universités, France)
+  * CREM_ : Centre de Recherche en Ethnomusicologie (Ethnomusicology Research Center, Paris, France)
+  * LAM_ : Equipe Lutherie, Acoustique et Musique de l'IJLRDA_ (Paris, France)
   * IJLRDA_ : Institut Jean le Rond d'Alembert (Paris, France)
-  * Parisson_ : Open audio development agency for science and arts (Paris, France)
+  * Parisson_ : Open development agency for audio science and arts (Paris, France)
   * MNHN_ : Museum National d'Histoire Naturelle (National Museum of Biology, Paris, France)
-  * U-Paris10_ : University Paris Oues Nanterre (Paris 10, France)
-  * MuseeDelHomme_ : Musée de l'Homme (Paris, France)
-  * LIMSI_ : Laboratoire d'Informatique pour la Mécanique et les Sciences de l'Ingénieur
-  * LABRI_ : Laboratoire Bordelais de Recherche en Informatique
-  * HumaNum_ : TGIR des humanités numériques
+  * U-Paris10_ : University Paris 10 Ouest Nanterre (Nanterre, France)
+  * Musée de l'Homme_ : Musée de l'Homme (Paris, France)
+  * IRIT_ : Institut de Recherche en Informatique de Toulouse (Toulouse, France)
+  * LIMSI_ : Laboratoire d'Informatique pour la Mécanique et les Sciences de l'Ingénieur (Orsay, France)
+  * LABRI_ : Laboratoire Bordelais de Recherche en Informatique (Bordeaux, France)
+  * C4DM_ : Centre for Digital Music at `Queen Mary University`_ (London, UK)
+  * HumaNum_ : TGIR des humanités numériques (Paris, France)
+  * CMAM_ : Centre des Musiques Arabes et Méditerranéennes (Tunis, Tunisia)
   * IRCAM_ : Institut de Recherche et de Coordination Acoustique / Musique (Paris, France)
-  * QMUL_ : Queen Mary University (London, UK)
 
 
 Related research projects
 ==========================
 
 * DIADEMS_ : Description, Indexation, Access to Sound and Ethnomusicological Documents, funded by the French Research Agency (ANR_ CONTINT 2012), involving IRIT_, CREM_, LAM_, LABRI_, LIMSI_, MNHN_, Parisson_
-* TimeSide-DIADEMS_ : a set of Timeside plugins developed during the DIADEMS_ project
+* TimeSide-DIADEMS_ : a set of Timeside plugins for hich level music analysis developed during the DIADEMS_ project
+* SoundSoftware_ : Sustainable Software of Audio and Music Research
 * DaCaRyH_ : Le rythme calypso à travers l’histoire : une approche en sciences des données (AHRC_ “Care for the Future” et le Labex-Passé_Présent_ "Les passés dans le présent")
 * Kamoulox_ : Démixage en ligne de larges archives sonores (ANR_ Jeune Chercheur 2015)
-* WASABI_ : Web Audio Semantic Aggregated in the Browser for Indexation (ANR_ 2016, currently submitted)
+* WASABI : Web Audio Semantic Aggregated in the Browser for Indexation (ANR_ 2016, currently being submitted)
 
 
 .. _Telemeta: http://telemeta.org
@@ -260,7 +282,7 @@ Related research projects
 .. _MNHN: http://www.mnhn.fr
 .. _MMSH: http://www.mmsh.univ-aix.fr
 .. _UPMC: http://www.upmc.fr
-.. _DIADEMS_project: http://www.irit.fr/recherches/SAMOVA/DIADEMS/fr/welcome/&cultureKey=en
+.. _DIADEMS_: http://www.irit.fr/recherches/SAMOVA/DIADEMS/fr/welcome/&cultureKey=en
 .. _ANR: http://www.agence-nationale-recherche.fr/
 .. _SABIOD: http://sabiod.telemeta.org
 .. _CHANGELOG: http://github.com/Parisson/Telemeta/blob/master/CHANGELOG.rst
@@ -279,3 +301,7 @@ Related research projects
 .. _DaCaRyH:  http://archives.crem-cnrs.fr/archives/fonds/CNRSMH_DACARYH/
 .. _Kamoulox: http://www.agence-nationale-recherche.fr/?Projet=ANR-15-CE38-0003
 .. _AHRC: http://www.ahrc.ac.uk/
+.. _Queen Mary University: http://www.qmul.ac.uk/
+.. _SoundSoftware : http://soundsoftware.ac.uk/
+.. _C4DM: http://c4dm.eecs.qmul.ac.uk/
+.. _CMAM: http://www.cmam.nat.tn/

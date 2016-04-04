@@ -1,6 +1,6 @@
-=================================================
-Collaborative multimedia asset management system
-=================================================
+============================================================
+Telemeta : collaborative multimedia asset management system
+============================================================
 
 .. image:: /telemeta/static/telemeta/images/logo_telemeta_2.png
     :alt: Telemeta logo
