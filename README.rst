@@ -2,7 +2,7 @@
 Collaborative multimedia asset management system
 =================================================
 
-.. image:: /images/logo_telemeta_2.png
+.. image:: telemeta/static/telemeta/images/logo_telemeta_2.png
     :alt: Telemeta logo
 
 Overview
