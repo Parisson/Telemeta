@@ -5,42 +5,49 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://parisson.github.io/Telemeta/</loc>
-<lastmod>2016-04-04T23:22:42-00:00</lastmod>
+<lastmod>2016-04-04T23:30:31-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://parisson.github.io/Telemeta/archives.html</loc>
-<lastmod>2016-04-04T23:22:42-00:00</lastmod>
+<lastmod>2016-04-04T23:30:31-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://parisson.github.io/Telemeta/tags.html</loc>
-<lastmod>2016-04-04T23:22:42-00:00</lastmod>
+<lastmod>2016-04-04T23:30:31-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://parisson.github.io/Telemeta/categories.html</loc>
-<lastmod>2016-04-04T23:22:42-00:00</lastmod>
+<lastmod>2016-04-04T23:30:31-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://parisson.github.io/Telemeta/telemeta-collaborative-multimedia-asset-management-system.html</loc>
-<lastmod>2016-04-04T23:22:40+02:00</lastmod>
+<loc>http://parisson.github.io/Telemeta/telemeta-at-the-21st-symposium-of-the-ictm-study-group-on-historical-sources-of-traditional-music.html</loc>
+<lastmod>2016-04-04T23:30:26+02:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://parisson.github.io/Telemeta/telemeta-16-is-finally-out.html</loc>
-<lastmod>2016-04-04T22:19:52+02:00</lastmod>
+<lastmod>2016-04-04T23:24:40+02:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://parisson.github.io/Telemeta/telemeta-collaborative-multimedia-asset-management-system.html</loc>
+<lastmod>2016-04-04T23:24:24+02:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -229,7 +236,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://parisson.github.io/Telemeta/category/about.html</loc>
-<lastmod>2016-04-04T23:22:40+00:09</lastmod>
+<lastmod>2016-04-04T23:24:24+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -257,14 +264,14 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://parisson.github.io/Telemeta/category/releases.html</loc>
-<lastmod>2016-04-04T22:19:52+00:09</lastmod>
+<lastmod>2016-04-04T23:24:40+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://parisson.github.io/Telemeta/category/research.html</loc>
-<lastmod>2016-04-04T22:04:39+00:09</lastmod>
+<lastmod>2016-04-04T23:30:26+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -355,7 +362,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://parisson.github.io/Telemeta/author/parisson-sarl.html</loc>
-<lastmod>2016-04-04T23:22:40+00:09</lastmod>
+<lastmod>2016-04-04T23:30:26+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>

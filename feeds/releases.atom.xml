@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Telemeta project</title><link href="http://parisson.github.io/Telemeta/" rel="alternate"></link><link href="http://parisson.github.io/Telemeta/feeds/releases.atom.xml" rel="self"></link><id>http://parisson.github.io/Telemeta/</id><updated>2016-04-04T22:19:52+02:00</updated><entry><title>Telemeta 1.6 is finally out!</title><link href="http://parisson.github.io/Telemeta/telemeta-16-is-finally-out.html" rel="alternate"></link><updated>2016-04-04T22:19:52+02:00</updated><author><name>Parisson SARL</name></author><id>tag:parisson.github.io,2016-04-04:Telemeta/telemeta-16-is-finally-out.html</id><summary type="html">&lt;ul&gt;
-&lt;li&gt;&lt;p class="first"&gt;Provide a docker image and composition for the full Telemeta application bundle.&lt;/p&gt;
-&lt;p&gt;One month after the publication of docker-compose around march 2015, we had managed to build a prototyped composition which bundled all the dependencies of Telemeta and TimeSide. It took almost one year to deeply investigate all the capabilities of Docker and various images to finally release a propoer composition which bundles all the necessary applications and modules. So we can say that Telemeta is now usable on &lt;strong&gt;any OS&lt;/strong&gt; in 5 mn! B-)&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p class="first"&gt;Full refactoring of the search engine and interface using django-haystack and ElasticSearch with new faceting and smart filtering features&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p class="first"&gt;Add an automatic EPUB3 ebook exporter for corpus and collections embedding metadata, image and audio materials.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p class="first"&gt;Install new useful tools and modules like Conda, Jupyter notebook and &lt;a class="reference external" href="https://github.com/Parisson/TimeSide/blob/master/conda-requirements.txt"&gt;many others&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p class="first"&gt;Upgrade of every dependency bundle in the composition&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p class="first"&gt;Many, many bugfixes&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p class="first"&gt;Thanks to all partners for this &lt;strong&gt;huge&lt;/strong&gt; release!&lt;/p&gt;
-&lt;/li&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Telemeta project</title><link href="http://parisson.github.io/Telemeta/" rel="alternate"></link><link href="http://parisson.github.io/Telemeta/feeds/releases.atom.xml" rel="self"></link><id>http://parisson.github.io/Telemeta/</id><updated>2016-04-04T23:24:40+02:00</updated><entry><title>Telemeta 1.6 is finally out!</title><link href="http://parisson.github.io/Telemeta/telemeta-16-is-finally-out.html" rel="alternate"></link><updated>2016-04-04T23:24:40+02:00</updated><author><name>Parisson SARL</name></author><id>tag:parisson.github.io,2016-04-04:Telemeta/telemeta-16-is-finally-out.html</id><summary type="html">&lt;p&gt;Telemeta is now usable on &lt;strong&gt;any OS&lt;/strong&gt;, ready for development and for production in 5 mn! B-)&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Provide a docker image and composition for the full Telemeta application bundle.
+One month after the publication of docker-compose around march 2015, we had managed to build a prototyped composition which bundled all the dependencies of Telemeta and TimeSide. It took almost one year to deeply investigate all the capabilities of Docker and various images to finally release a propoer composition which bundles all the necessary applications and modules.&lt;/li&gt;
+&lt;li&gt;Full refactoring of the search engine and interface using django-haystack and ElasticSearch with new faceting and smart filtering features&lt;/li&gt;
+&lt;li&gt;Add an automatic EPUB3 ebook exporter for corpus and collections embedding metadata, image and audio materials.&lt;/li&gt;
+&lt;li&gt;More inline forms and functional buttons&lt;/li&gt;
+&lt;li&gt;Install new useful tools and modules like Conda, Jupyter notebook and &lt;a class="reference external" href="https://github.com/Parisson/TimeSide/blob/master/conda-requirements.txt"&gt;many others&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Add resource sharing links&lt;/li&gt;
+&lt;li&gt;Switch to Affero GPL licence&lt;/li&gt;
+&lt;li&gt;Upgrade of every dependency bundle in the composition&lt;/li&gt;
+&lt;li&gt;Many, many &lt;a class="reference external" href="https://github.com/Parisson/Telemeta/issues?q=is%3Aissue+is%3Aclosed"&gt;bugfixes&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Thanks to all partners for this &lt;strong&gt;huge&lt;/strong&gt; release!&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Download:&lt;/p&gt;
 &lt;ul class="simple"&gt;
