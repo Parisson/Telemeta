@@ -2,7 +2,7 @@
 <html lang="en"
 >
 <head>
-    <title>Articles by Parisson Sarl - Telemeta project</title>
+    <title>Articles by Parisson SARL - Telemeta project</title>
     <!-- Using the latest rendering mode for IE -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="utf-8">
@@ -12,7 +12,7 @@
     <link href="../images/favicon.ico" rel="icon">
 
 
-        <meta name="author" content="Parisson Sarl" />
+        <meta name="author" content="Parisson SARL" />
 
     <!-- Open Graph tags -->
         <meta property="og:site_name" content="Telemeta project" />
@@ -89,6 +89,28 @@ Telemeta project            </a>
     <div class="row">
         <div class="col-sm-9">
 
+            <article>
+                <h2><a href="../import-iso-639-3-languages.html">Import ISO 639-3 languages</a></h2>
+                <div class="summary"><p>From Telemeta 1.4, an ISO 639-3 language model has been implemented.</p>
+<p>The ISO language table content can be initialized with the official code set.
+Here is a import example where telemeta_crem5 is the SQL database:</p>
+<pre class="literal-block">
+wget http://www.sil.org/iso639-3/iso-639-3_20110525.tab
+mysql -u root -p
+load data infile 'iso-639-3_20110525.tab' into table telemeta_crem5.languages CHARACTER SET UTF8 ignore 1 lines (identifier, part2B, part2T, part1, scope, type, name, comment);
+</pre>
+<p>If you upgraded Telemeta from a version previous or equal to 1.3, please update the media_items table as follow:</p>
+<pre class="literal-block">
+mysql -u root -p
+use telemeta_crem5
+ALTER TABLE media_items ADD COLUMN 'language_iso_id' integer;
+ALTER TABLE 'media_items' ADD CONSTRAINT 'language_iso_id_refs_id_80b221' FOREIGN KEY ('language_iso_id') REFERENCES 'languages' ('id');
+</pre>
+
+                    <a class="btn btn-default btn-xs" href="../import-iso-639-3-languages.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
             <article>
                 <h2><a href="../telemeta-at-the-1st-symposium-ecology-and-acoustics.html">Telemeta at the 1st Symposium: &quot;Ecology and acoustics&quot;</a></h2>
                 <div class="summary"><p>Meet Guillaume Pellerin and Thomas Fillon at the first Symposium on “Ecology and acoustics: emergent properties from community to landscape” from june the 16th to 18th 2014 at MNHN, Paris, France</p>
@@ -298,37 +320,6 @@ sudo pip install --upgrade telemeta
                 </div>
             </article>
             <hr/>
-            <article>
-                <h2><a href="../partners.html">Partners</a></h2>
-                <div class="summary"><p>Telemeta is sponsored by:</p>
-<ul class="simple">
-<li><a class="reference external" href="http://parisson.com">Parisson</a>, french startup for open archives solutions</li>
-<li><a class="reference external" href="http://www.cnrs.fr/">CNRS</a>, Centre National de la Recherche Scientifique (French Natianal Research and Scientific Center)</li>
-<li><a class="reference external" href="http://www.culturecommunication.gouv.fr/">MCC</a>, Ministère de la Culture et de la Communication (French Ministry of Culture and Communication)</li>
-<li><a class="reference external" href="http://crem-cnrs.fr/">CREM</a>, LESC, Université de Nanterre, France (French Ethnomusicology Research Center)</li>
-<li><a class="reference external" href="http://www.huma-num.fr/">Huma-Num</a>, TGIR des humanités numériques</li>
-<li><a class="reference external" href="http://www.agence-nationale-recherche.fr/">ANR</a>, Agence Nationale de la Recherche (French Research Agency) through the ​DIADEMS project</li>
-</ul>
-<p>Partners:</p>
-<ul class="simple">
-<li>LAM, Institut d'Alembert, Sorbonne Universités, France</li>
-<li>IRIT, Université de Toulouse, France</li>
-<li>LIMSI, Université Paris Sud, France</li>
-<li>LABRI, Université de Bordeaux, France</li>
-<li>CREM, LESC, Université de Nanterre, France</li>
-<li>Museum d'Histoire Naturelle, Paris, France</li>
-<li>Musée de l'Homme, Paris, France</li>
-<li>Musée d'Orsay, Paris, France</li>
-<li>Bibliothèque Nationale de France (BNF) Paris, France</li>
-<li>CMAM - ISMS, Tunis, Tunisie</li>
-</ul>
-<p>Management board:</p>
-<ul class="simple">
-<li>Guillaume ...</li></ul>
-                    <a class="btn btn-default btn-xs" href="../partners.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
 
         <ul class="pagination">
                 <li class="prev"><a href="../author/parisson-sarl.html">&laquo;</a>
@@ -411,7 +402,7 @@ sudo pip install --upgrade telemeta
    <div class="container">
       <hr>
       <div class="row">
-         <div class="col-xs-10">&copy; 2015 Parisson Sarl
+         <div class="col-xs-10">&copy; 2016 Parisson SARL
             &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
             <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
             <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>              <p><small>  <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by/4.0/80x15.png" /></a>

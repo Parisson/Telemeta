@@ -12,7 +12,7 @@
     <link href="./images/favicon.ico" rel="icon">
 
 <link rel="canonical" href=".">
-        <meta name="author" content="Parisson Sarl" />
+        <meta name="author" content="Parisson SARL" />
 
     <!-- Open Graph tags -->
         <meta property="og:site_name" content="Telemeta project" />
@@ -90,18 +90,33 @@ Telemeta project            </a>
         <div class="col-sm-9">
 
             <article>
-                <h2><a href="./telemeta-open-web-audio-platform-with-semantics.html">Telemeta: open web audio platform with semantics</a></h2>
+                <h2><a href="./telemeta-collaborative-multimedia-asset-management-system.html">Telemeta : collaborative multimedia asset management system</a></h2>
                 <div class="summary"><img alt="Telemeta logo" src="/images/logo_telemeta_2.png" />
 <div class="section" id="overview">
 <h2>Overview</h2>
-<p>Telemeta is a free and open source web audio archiving software which introduces useful and secure methods to backup, index, transcode, analyse and publish any digitalized audio file with extensive metadata. It is dedicated to collaborative media archiving projects, research laboratories and digital humanities - and especially in ethnomusicological use cases - who wants to easily organize, backup and publish documented sound collections of audio files, CDs, digitalized vinyls and magnetic tapes over a strong database, in accordance with open web standards.</p>
+<p>Telemeta is a free and open source collaborative multimedia asset management system (MAM) which introduces fast and secure methods to archive, backup, transcode, analyse,  annotate and publish any digitalized video or audio file with extensive metadata. It is dedicated to collaborative media archiving projects, research laboratories and digital humanities - especially in ethno-musicological use cases - who need to easily organize and publish documented sound collections of audio files, CDs, digitalized vinyls and magnetic tapes over a strong database, through a smart and secure platform, in accordance with open web standards.</p>
 <p>Key features:</p>
 <ul class="simple">
 <li>Secure archiving, editing and publishing of audio files over internet.</li>
 <li>Pure HTML web user interface including dynamical forms and smart workflows</li>
-<li>Smart dynamical and skinnable audio player (thanks to  TimeSide and  SoundManager2)</li>
-<li>&quot;On the fly&quot; audio analyzing, transcoding and metadata embedding based on an ...</li></ul></div>
-                    <a class="btn btn-default btn-xs" href="./telemeta-open-web-audio-platform-with-semantics.html">more ...</a>
+<li>&quot;On the fly&quot; audio analyzing and transcoding thanks to <a class="reference external" href="https://github.com/Parisson/TimeSide/">TimeSide</a></li>
+<li>Smart dynamical and skinnable ...</li></ul></div>
+                    <a class="btn btn-default btn-xs" href="./telemeta-collaborative-multimedia-asset-management-system.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
+                <h2><a href="./telemeta-16-is-finally-out.html">Telemeta 1.6 is finally out!</a></h2>
+                <div class="summary"><ul>
+<li><p class="first">Provide a docker image and composition for the full Telemeta application bundle.</p>
+<p>One month after the publication of docker-compose around march 2015, we had managed to build a prototyped composition which bundled all the dependencies of Telemeta and TimeSide. It took almost one year to deeply investigate all the capabilities of Docker and various images to finally release a propoer composition which bundles all the necessary applications and modules. So we can say that Telemeta is now usable on <strong>any OS</strong> in 5 mn! B-)</p>
+</li>
+<li><p class="first">Full refactoring of the search engine and interface using django-haystack and ElasticSearch with new faceting and smart filtering features</p>
+</li>
+<li><p class="first">Add an automatic EPUB3 ebook exporter for corpus and collections embedding metadata, image and audio materials.</p>
+</li>
+<li><p class="first">Install new useful tools and modules like ...</p></li></ul>
+                    <a class="btn btn-default btn-xs" href="./telemeta-16-is-finally-out.html">more ...</a>
                 </div>
             </article>
             <hr/>
@@ -214,28 +229,6 @@ sudo pip install django-ipauth
                 </div>
             </article>
             <hr/>
-            <article>
-                <h2><a href="./import-iso-639-3-languages.html">Import ISO 639-3 languages</a></h2>
-                <div class="summary"><p>From Telemeta 1.4, an ISO 639-3 language model has been implemented.</p>
-<p>The ISO language table content can be initialized with the official code set.
-Here is a import example where telemeta_crem5 is the SQL database:</p>
-<pre class="literal-block">
-wget http://www.sil.org/iso639-3/iso-639-3_20110525.tab
-mysql -u root -p
-load data infile 'iso-639-3_20110525.tab' into table telemeta_crem5.languages CHARACTER SET UTF8 ignore 1 lines (identifier, part2B, part2T, part1, scope, type, name, comment);
-</pre>
-<p>If you upgraded Telemeta from a version previous or equal to 1.3, please update the media_items table as follow:</p>
-<pre class="literal-block">
-mysql -u root -p
-use telemeta_crem5
-ALTER TABLE media_items ADD COLUMN 'language_iso_id' integer;
-ALTER TABLE 'media_items' ADD CONSTRAINT 'language_iso_id_refs_id_80b221' FOREIGN KEY ('language_iso_id') REFERENCES 'languages' ('id');
-</pre>
-
-                    <a class="btn btn-default btn-xs" href="./import-iso-639-3-languages.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
 
         <ul class="pagination">
                 <li class="prev disabled"><a href="#">&laquo;</a></li>
@@ -317,7 +310,7 @@ ALTER TABLE 'media_items' ADD CONSTRAINT 'language_iso_id_refs_id_80b221' FOREIG
    <div class="container">
       <hr>
       <div class="row">
-         <div class="col-xs-10">&copy; 2015 Parisson Sarl
+         <div class="col-xs-10">&copy; 2016 Parisson SARL
             &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
             <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
             <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>              <p><small>  <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by/4.0/80x15.png" /></a>

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Telemeta project</title><link href="http://parisson.github.io/Telemeta/" rel="alternate"></link><link href="http://parisson.github.io/Telemeta/feeds/about.atom.xml" rel="self"></link><id>http://parisson.github.io/Telemeta/</id><updated>2015-12-02T09:31:53+01:00</updated><entry><title>Telemeta: open web audio platform with semantics</title><link href="http://parisson.github.io/Telemeta/telemeta-open-web-audio-platform-with-semantics.html" rel="alternate"></link><updated>2015-12-02T09:31:53+01:00</updated><author><name>Parisson Sarl</name></author><id>tag:parisson.github.io,2015-12-02:Telemeta/telemeta-open-web-audio-platform-with-semantics.html</id><summary type="html">&lt;img alt="Telemeta logo" src="/images/logo_telemeta_2.png" /&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Telemeta project</title><link href="http://parisson.github.io/Telemeta/" rel="alternate"></link><link href="http://parisson.github.io/Telemeta/feeds/about.atom.xml" rel="self"></link><id>http://parisson.github.io/Telemeta/</id><updated>2016-04-04T23:20:49+02:00</updated><entry><title>Telemeta : collaborative multimedia asset management system</title><link href="http://parisson.github.io/Telemeta/telemeta-collaborative-multimedia-asset-management-system.html" rel="alternate"></link><updated>2016-04-04T23:20:49+02:00</updated><author><name>Parisson SARL</name></author><id>tag:parisson.github.io,2016-04-04:Telemeta/telemeta-collaborative-multimedia-asset-management-system.html</id><summary type="html">&lt;img alt="Telemeta logo" src="/images/logo_telemeta_2.png" /&gt;
 &lt;div class="section" id="overview"&gt;
 &lt;h2&gt;Overview&lt;/h2&gt;
-&lt;p&gt;Telemeta is a free and open source web audio archiving software which introduces useful and secure methods to backup, index, transcode, analyse and publish any digitalized audio file with extensive metadata. It is dedicated to collaborative media archiving projects, research laboratories and digital humanities - and especially in ethnomusicological use cases - who wants to easily organize, backup and publish documented sound collections of audio files, CDs, digitalized vinyls and magnetic tapes over a strong database, in accordance with open web standards.&lt;/p&gt;
+&lt;p&gt;Telemeta is a free and open source collaborative multimedia asset management system (MAM) which introduces fast and secure methods to archive, backup, transcode, analyse,  annotate and publish any digitalized video or audio file with extensive metadata. It is dedicated to collaborative media archiving projects, research laboratories and digital humanities - especially in ethno-musicological use cases - who need to easily organize and publish documented sound collections of audio files, CDs, digitalized vinyls and magnetic tapes over a strong database, through a smart and secure platform, in accordance with open web standards.&lt;/p&gt;
 &lt;p&gt;Key features:&lt;/p&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;Secure archiving, editing and publishing of audio files over internet.&lt;/li&gt;
 &lt;li&gt;Pure HTML web user interface including dynamical forms and smart workflows&lt;/li&gt;
-&lt;li&gt;Smart dynamical and skinnable audio player (thanks to  TimeSide and  SoundManager2)&lt;/li&gt;
-&lt;li&gt;&amp;quot;On the fly&amp;quot; audio analyzing, transcoding and metadata embedding based on an easy plugin architecture&lt;/li&gt;
-&lt;li&gt;Social cumulative indexing with semantic ontologies and timecoded markers&lt;/li&gt;
-&lt;li&gt;Multi-format support : FLAC, OGG, MP3, WAV and more&lt;/li&gt;
+&lt;li&gt;&amp;quot;On the fly&amp;quot; audio analyzing and transcoding thanks to &lt;a class="reference external" href="https://github.com/Parisson/TimeSide/"&gt;TimeSide&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Smart dynamical and skinnable audio player with annotations&lt;/li&gt;
+&lt;li&gt;Collaborative indexing with semantic ontologies and timecoded markers&lt;/li&gt;
+&lt;li&gt;Multi-format support : FLAC, OGG, MP3, WAV, MP4, WebM (video) and more&lt;/li&gt;
 &lt;li&gt;User management with individual desk, lists, profiles and rights&lt;/li&gt;
 &lt;li&gt;Playlist management for all users with CSV data export&lt;/li&gt;
 &lt;li&gt;Geo-Navigator for audio geolocalization&lt;/li&gt;
@@ -19,17 +19,46 @@
 &lt;li&gt;OAI-PMH data provider&lt;/li&gt;
 &lt;li&gt;RSS feed generators&lt;/li&gt;
 &lt;li&gt;XML and ZIP serialized backups&lt;/li&gt;
+&lt;li&gt;EPUB3 &amp;quot;audio book&amp;quot; collection exporter&lt;/li&gt;
 &lt;li&gt;SQLite, MySQL, PostgreSQL or Oracle DB backends&lt;/li&gt;
 &lt;li&gt;Multi-language support (now english and french)&lt;/li&gt;
-&lt;li&gt;Video support (EXPERIMENTAL, WebM only)&lt;/li&gt;
+&lt;li&gt;Run on any OS&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;This web audio CMS is exclusively based on open source modules and can be run on any Unix or Linux system.
-It is mostly written in Python and JavaScript.&lt;/p&gt;
-&lt;p&gt;The processing engine of Telemeta is a separate project called &lt;a class="reference external" href="https://github.com/yomguy/timeside/"&gt;TimeSide&lt;/a&gt; as an open web audio pocessing framework written in Python.&lt;/p&gt;
+&lt;p&gt;Telemeta has been developed since 2006 and is based exclusively on 100% open source modules.&lt;/p&gt;
+&lt;p&gt;It is mostly written in Python, HTML5 and JavaScript.&lt;/p&gt;
+&lt;p&gt;The &lt;em&gt;Telemeta&lt;/em&gt; name stands for &lt;em&gt;Tele&lt;/em&gt; as &amp;quot;remote access&amp;quot; and &lt;em&gt;meta&lt;/em&gt; for &amp;quot;metadata&amp;quot;.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://pypi.python.org/pypi/Telemeta/"&gt;&lt;object data="https://img.shields.io/pypi/v/telemeta.svg" type="image/svg+xml"&gt;Version&lt;/object&gt;&lt;/a&gt; &lt;a class="reference external" href="https://pypi.python.org/pypi/Telemeta/"&gt;&lt;object data="https://img.shields.io/pypi/dm/telemeta.svg" type="image/svg+xml"&gt;Downloads&lt;/object&gt;&lt;/a&gt; &lt;a class="reference external" href="https://travis-ci.org/Parisson/Telemeta/"&gt;&lt;img alt="Travis" src="https://secure.travis-ci.org/Parisson/Telemeta.png?branch=master" /&gt;&lt;/a&gt; &lt;a class="reference external" href="https://coveralls.io/r/Parisson/Telemeta?branch=master"&gt;&lt;img alt="Coverage" src="https://coveralls.io/repos/Parisson/Telemeta/badge.png?branch=master" /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="funding-and-support"&gt;
+&lt;h2&gt;Funding and support&lt;/h2&gt;
+&lt;p&gt;To fund this long time libre and open source project, we need your explicit support. So if you use Telemeta in production or even in a development or experimental setup, please let us know by:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;staring or forking the project on &lt;a class="reference external" href="https://github.com/Parisson/Telemeta/"&gt;GitHub&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;tweeting something to &lt;a class="reference external" href="https://twitter.com/parisson_studio"&gt;&amp;#64;parisson_studio&lt;/a&gt; or &lt;a class="reference external" href="https://twitter.com/telemeta"&gt;&amp;#64;telemeta&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;drop us an email &amp;lt;&lt;a class="reference external" href="mailto:support&amp;#64;parisson.com"&gt;support&amp;#64;parisson.com&lt;/a&gt;&amp;gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Thank you so much for your help!&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="section" id="news"&gt;
 &lt;h2&gt;News&lt;/h2&gt;
 &lt;div class="section" id="id1"&gt;
+&lt;h3&gt;1.6&lt;/h3&gt;
+&lt;p&gt;Telemeta is now usable on &lt;strong&gt;any OS&lt;/strong&gt;, ready for development and for production in 5 mn! B-)&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Provide a docker image and composition for the full Telemeta application bundle.
+One month after the publication of docker-compose around march 2015, we had managed to build a prototyped composition which bundled all the dependencies of Telemeta and TimeSide. It took almost one year to deeply investigate all the capabilities of Docker and various images to finally release a propoer composition which bundles all the necessary applications and modules.&lt;/li&gt;
+&lt;li&gt;Full refactoring of the search engine and interface using django-haystack and ElasticSearch with new faceting and smart filtering features&lt;/li&gt;
+&lt;li&gt;Add an automatic EPUB3 ebook exporter for corpus and collections embedding metadata, image and audio materials.&lt;/li&gt;
+&lt;li&gt;More inline forms and functional buttons&lt;/li&gt;
+&lt;li&gt;Install new useful tools and modules like Conda, Jupyter notebook and &lt;a class="reference external" href="https://github.com/Parisson/TimeSide/blob/master/conda-requirements.txt"&gt;many others&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Add resource sharing links&lt;/li&gt;
+&lt;li&gt;Switch to Affero GPL licence&lt;/li&gt;
+&lt;li&gt;Upgrade of every dependency bundle in the composition&lt;/li&gt;
+&lt;li&gt;Many, many &lt;a class="reference external" href="https://github.com/Parisson/Telemeta/issues?q=is%3Aissue+is%3Aclosed"&gt;bugfixes&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Thanks to all partners for this &lt;strong&gt;huge&lt;/strong&gt; release!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="section" id="id2"&gt;
 &lt;h3&gt;1.5.1&lt;/h3&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;Fix geo-navigator lists and pagination&lt;/li&gt;
@@ -41,146 +70,144 @@ It is mostly written in Python and JavaScript.&lt;/p&gt;
 &lt;li&gt;Better locale / pages management&lt;/li&gt;
 &lt;li&gt;A better management of RTL for arabic page style&lt;/li&gt;
 &lt;/ul&gt;
-&lt;/div&gt;
-&lt;div class="section" id="id2"&gt;
-&lt;h3&gt;1.5&lt;/h3&gt;
-&lt;ul class="simple"&gt;
-&lt;li&gt;Compatible with Django 1.6.x&lt;/li&gt;
-&lt;li&gt;Compatible with TimeSide 0.7.x&lt;/li&gt;
-&lt;li&gt;Huge refactor of all forms, detail and edit views&lt;/li&gt;
-&lt;li&gt;Main styles (buttons, tabs) are now based Bootstrap 3 and JQuery 2.1&lt;/li&gt;
-&lt;li&gt;Update models and views as needed by the CREM&lt;/li&gt;
-&lt;li&gt;New depedencies&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;See previous releases &lt;a class="reference external" href="https://github.com/Parisson/Telemeta/releases"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://parisson.github.io/Telemeta/category/releases.html"&gt;More changes&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class="section" id="examples"&gt;
 &lt;h2&gt;Examples&lt;/h2&gt;
 &lt;ul class="simple"&gt;
-&lt;li&gt;&lt;a class="reference external" href="http://archives.crem-cnrs.fr"&gt;Sound archives of the French Ethnomusicology Research Center (CREM) and the Musée de l'Homme&lt;/a&gt; :&lt;/li&gt;
-&lt;/ul&gt;
-&lt;blockquote&gt;
-&lt;ul class="simple"&gt;
-&lt;li&gt;a 120 year old ethnomusicologic database,&lt;/li&gt;
-&lt;li&gt;more than 5000 geolocated collections,&lt;/li&gt;
-&lt;li&gt;more than 32000 geolocated items,&lt;/li&gt;
-&lt;li&gt;more than 11000 sounds included&lt;/li&gt;
-&lt;li&gt;1.5 To of original music files accessible online.&lt;/li&gt;
-&lt;li&gt;started in june 2011&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/blockquote&gt;
-&lt;ul class="simple"&gt;
-&lt;li&gt;&lt;a class="reference external" href="http://telemeta.lam.jussieu.fr"&gt;Sound archives of the team &amp;quot;Lutherie, Acoustique et Musique&amp;quot; (LAM) of the IJLRDA institute - University Pierre et Marie Curie (Paris 6)&lt;/a&gt; :&lt;/li&gt;
-&lt;/ul&gt;
-&lt;blockquote&gt;
-&lt;ul class="simple"&gt;
-&lt;li&gt;original musical instruments recorded for research purposes&lt;/li&gt;
-&lt;li&gt;started in sept. 2012&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/blockquote&gt;
-&lt;ul class="simple"&gt;
-&lt;li&gt;&lt;a class="reference external" href="http://parisson.telemeta.org"&gt;Sound archives of Parisson Studio&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a class="reference external" href="http://sabiod.telemeta.org"&gt;Scaled BIOdiversity (SABIOD)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://archives.crem-cnrs.fr"&gt;CREM Sound archives&lt;/a&gt; of the &lt;a class="reference external" href="http://www.crem-cnrs.fr"&gt;CREM&lt;/a&gt; - &lt;a class="reference external" href="http://www.cnrs.fr"&gt;CNRS&lt;/a&gt;  and &lt;a class="reference external" href="http://www.museedelhomme.fr/"&gt;MdH&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://telemeta.lam.jussieu.fr"&gt;LAM Sound archives&lt;/a&gt; of the &lt;a class="reference external" href="http://www.lam.jussieu.fr"&gt;LAM&lt;/a&gt; of the &lt;a class="reference external" href="http://www.dalembert.upmc.fr/ijlrda/"&gt;IJLRDA&lt;/a&gt; at Université Pierre et Maris Curie (&lt;a class="reference external" href="http://www.upmc.fr"&gt;UPMC&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://phonotheque.cmam.tn/"&gt;Phonothèque Nationale&lt;/a&gt; du Centre des Musiques Arabes et Méditerranéennes (&lt;a class="reference external" href="http://www.cmam.nat.tn/"&gt;CMAM&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Scaled BIOdiversity (&lt;a class="reference external" href="http://sabiod.telemeta.org"&gt;SABIOD&lt;/a&gt;)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;div class="section" id="demo"&gt;
 &lt;h2&gt;Demo&lt;/h2&gt;
 &lt;p&gt;&lt;a class="reference external" href="http://demo.telemeta.org"&gt;http://demo.telemeta.org&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;login: demo
-password: demo&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;login: admin&lt;/li&gt;
+&lt;li&gt;password: admin&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
 &lt;/div&gt;
 &lt;div class="section" id="install"&gt;
 &lt;h2&gt;Install&lt;/h2&gt;
-&lt;p&gt;See &lt;a class="reference external" href="http://github.com/yomguy/Telemeta/blob/master/INSTALL.rst"&gt;INSTALL.rst&lt;/a&gt; and &lt;a class="reference external" href="http://telemeta.org"&gt;telemeta.org&lt;/a&gt; for more informations.&lt;/p&gt;
+&lt;p&gt;Thanks to Docker, Telemeta is now fully available as a docker composition ready to work. The docker based composition bundles some powerfull applications and modern frameworks out-of-the-box like: Python, Conda, Numpy, Jupyter, Gstreamer, Django, Celery, Haystack, ElasticSearch, MySQL, Redis, uWSGI, Nginx and many more.&lt;/p&gt;
+&lt;p&gt;On Linux, first install &lt;a class="reference external" href="http://git-scm.com/downloads"&gt;Git&lt;/a&gt;, &lt;a class="reference external" href="https://docs.docker.com/installation/"&gt;Docker engine&lt;/a&gt; and &lt;a class="reference external" href="https://docs.docker.com/compose/install/"&gt;docker-compose&lt;/a&gt; and open a terminal.&lt;/p&gt;
+&lt;p&gt;On MacOSX or Windows install the &lt;a class="reference external" href="https://www.docker.com/products/docker-toolbox"&gt;Docker Toolbox&lt;/a&gt; and open a Docker Quickstart Terminal.&lt;/p&gt;
+&lt;p&gt;Then clone Telemeta:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+git clone --recursive https://github.com/Parisson/Telemeta.git
+cd Telemeta
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div class="section" id="start-it-up"&gt;
+&lt;h2&gt;Start it up&lt;/h2&gt;
+&lt;p&gt;For a production environment setup:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+docker-compose up
+&lt;/pre&gt;
+&lt;p&gt;Then browse the app at &lt;a class="reference external" href="http://localhost:8000/"&gt;http://localhost:8000/&lt;/a&gt; (replacing 'localhost' by the IP given by the docker terminal on OSX or Windows)&lt;/p&gt;
+&lt;p&gt;To start the application in DEBUG mode:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+docker-compose -f docker-compose.yml -f env/debug.yml up
+&lt;/pre&gt;
+&lt;p&gt;Be &lt;strong&gt;CAREFULL&lt;/strong&gt; in production:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;The database is deleted when using &lt;cite&gt;docker-compose rm&lt;/cite&gt;&lt;/li&gt;
+&lt;li&gt;Define your own passwords and secret keys in &lt;cite&gt;env/*.env&lt;/cite&gt; files&lt;/li&gt;
+&lt;li&gt;Use a cron rule and the backup script to save your work periodically&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="section" id="backup-restore"&gt;
+&lt;h2&gt;Backup / Restore&lt;/h2&gt;
+&lt;p&gt;To backup the database in the data/backup/ folder, run this in &lt;strong&gt;another&lt;/strong&gt; terminal (or a Docker Quickstart Terminal):&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+docker-compose run db /srv/scripts/sql/backup_db.sh
+&lt;/pre&gt;
+&lt;p&gt;To restore the last backuped database from the data/backup/ folder, run this in &lt;strong&gt;another&lt;/strong&gt; terminal (or a Docker Quickstart Terminal):&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+docker-compose run db /srv/scripts/sql/restore_db.sh
+&lt;/pre&gt;
+&lt;p&gt;If the app is broken after a restore script, restart the composition with:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+docker-compose restart
+&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div class="section" id="api-documentation"&gt;
 &lt;h2&gt;API / Documentation&lt;/h2&gt;
 &lt;ul class="simple"&gt;
+&lt;li&gt;Official website: &lt;a class="reference external" href="http://telemeta.org"&gt;http://telemeta.org&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;Publications : &lt;a class="reference external" href="https://github.com/Parisson/Telemeta-doc"&gt;https://github.com/Parisson/Telemeta-doc&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;API : &lt;a class="reference external" href="http://files.parisson.com/doc/telemeta/"&gt;http://files.parisson.com/doc/telemeta/&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;Player : &lt;a class="reference external" href="https://github.com/Parisson/TimeSide/"&gt;https://github.com/Parisson/TimeSide/&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;Example : &lt;a class="reference external" href="http://archives.crem-cnrs.fr/archives/items/CNRSMH_E_2004_017_001_01/"&gt;http://archives.crem-cnrs.fr/archives/items/CNRSMH_E_2004_017_001_01/&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-&lt;div class="section" id="related-software-projects"&gt;
-&lt;h2&gt;Related software projects&lt;/h2&gt;
-&lt;blockquote&gt;
-&lt;ul class="simple"&gt;
-&lt;li&gt;&lt;a class="reference external" href="https://github.com/yomguy/timeside/"&gt;TimeSide&lt;/a&gt;: high level python audio processing framework&lt;/li&gt;
-&lt;li&gt;&lt;a class="reference external" href="http://www.irit.fr/recherches/SAMOVA/DIADEMS/fr/welcome/&amp;amp;cultureKey=en"&gt;Diadems&lt;/a&gt; Description, Indexation, Access to Sound and Ethnomusicological Documents, funded by the French Research Agency (ANR CONTINT 2012)&lt;/li&gt;
-&lt;li&gt;&lt;a class="reference external" href="https://github.com/ANR-DIADEMS/timeside-diadems"&gt;TimeSide-Diadems&lt;/a&gt;: a set of Timeside plugins developed during the Diadems project&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/blockquote&gt;
-&lt;/div&gt;
 &lt;div class="section" id="development"&gt;
 &lt;h2&gt;Development&lt;/h2&gt;
 &lt;p&gt;&lt;a class="reference external" href="https://travis-ci.org/Parisson/Telemeta/"&gt;&lt;img alt="Travis" src="https://secure.travis-ci.org/Parisson/Telemeta.png?branch=dev" /&gt;&lt;/a&gt; &lt;a class="reference external" href="https://coveralls.io/r/Parisson/Telemeta?branch=dev"&gt;&lt;img alt="Coverage" src="https://coveralls.io/repos/Parisson/Telemeta/badge.png?branch=dev" /&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;You are welcome to participate to the development of the Telemeta project.
-The official project site is &lt;a class="reference external" href="http://telemeta.org"&gt;telemeta.org&lt;/a&gt; but you can find a mirror on &lt;a class="reference external" href="https://github.com/Parisson/Telemeta"&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;To get and run the lastest development version:&lt;/p&gt;
+&lt;p&gt;To start the application in a development environment setup:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
-sudo apt-get install git
-git clone --recursive https://github.com/Parisson/Telemeta.git
 cd Telemeta
+git pull
 git checkout dev
-sudo pip install -e .
-export PYTHONPATH=$PYTHONPATH:`pwd`
+docker-compose -f docker-compose.yml -f env/dev.yml up
 &lt;/pre&gt;
+&lt;p&gt;Then browse the app at &lt;a class="reference external" href="http://localhost:9000/"&gt;http://localhost:9000/&lt;/a&gt; (replacing 'localhost' by the IP given by the docker terminal on OSX or Windows). Note the service will automatically when code is modified.&lt;/p&gt;
+&lt;p&gt;To build your own composition (if dependency tree is changed):&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+docker-compose -f docker-compose.yml -f env/dev.yml -f env/build.yml build
+&lt;/pre&gt;
+&lt;p&gt;You are welcome to participate to the development by forking the Telemeta project on &lt;a class="reference external" href="https://github.com/Parisson/Telemeta/"&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class="section" id="bugs-and-feedback"&gt;
-&lt;h2&gt;Bugs and feedback&lt;/h2&gt;
-&lt;p&gt;You are welcome to freely use this application in accordance with its licence.
-If you find some bugs, PLEASE leave a ticket on this page:&lt;/p&gt;
-&lt;p&gt;&lt;a class="reference external" href="https://github.com/Parisson/Telemeta/issues/new"&gt;https://github.com/Parisson/Telemeta/issues/new&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;You can also leave some ticket to request some new interesting features for the next versions and tweet your ideas to &lt;a class="reference external" href="https://twitter.com/telemeta"&gt;&amp;#64;telemeta&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;And even if Telemeta suits you, please give us some feedback !&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="section" id="contact"&gt;
-&lt;h2&gt;Contact&lt;/h2&gt;
-&lt;p&gt;Homepage: &lt;a class="reference external" href="http://telemeta.org"&gt;http://telemeta.org&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Emails:&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;ul class="simple"&gt;
-&lt;li&gt;Guillaume Pellerin &amp;lt;&lt;a class="reference external" href="mailto:yomguy&amp;#64;parisson.com"&gt;yomguy&amp;#64;parisson.com&lt;/a&gt;&amp;gt;,&lt;/li&gt;
-&lt;li&gt;Thomas Fillon &amp;lt;&lt;a class="reference external" href="mailto:thomas&amp;#64;parisson.com"&gt;thomas&amp;#64;parisson.com&lt;/a&gt;&amp;gt;&lt;/li&gt;
-&lt;li&gt;Anas Ghrab &amp;lt;&lt;a class="reference external" href="mailto:anas.ghrab&amp;#64;gmail.com"&gt;anas.ghrab&amp;#64;gmail.com&lt;/a&gt;&amp;gt;&lt;/li&gt;
-&lt;li&gt;Olivier Guilyardi &amp;lt;&lt;a class="reference external" href="mailto:olivier&amp;#64;samalyse.com"&gt;olivier&amp;#64;samalyse.com&lt;/a&gt;&amp;gt;,&lt;/li&gt;
-&lt;li&gt;Riccardo Zaccarelli &amp;lt;&lt;a class="reference external" href="mailto:riccardo.zaccarelli&amp;#64;gmail.com"&gt;riccardo.zaccarelli&amp;#64;gmail.com&lt;/a&gt;&amp;gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;Twitter:&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;ul class="simple"&gt;
-&lt;li&gt;&lt;a class="reference external" href="https://twitter.com/telemeta"&gt;https://twitter.com/telemeta&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a class="reference external" href="https://twitter.com/parisson_studio"&gt;https://twitter.com/parisson_studio&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a class="reference external" href="https://twitter.com/yomguy"&gt;https://twitter.com/yomguy&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/blockquote&gt;
+&lt;div class="section" id="bugs-issues-ideas"&gt;
+&lt;h2&gt;Bugs, issues, ideas&lt;/h2&gt;
+&lt;p&gt;If you find some bugs or have good ideas for enhancement, please &lt;a class="reference external" href="https://github.com/Parisson/Telemeta/issues/new"&gt;leave a issue on GitHub&lt;/a&gt; with the right label or tweet it &lt;a class="reference external" href="https://twitter.com/telemeta"&gt;&amp;#64;telemeta&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;And remember: even if Telemeta suits you, please give us some feedback. We &lt;strong&gt;need&lt;/strong&gt; your support!&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="section" id="license"&gt;
 &lt;h2&gt;License&lt;/h2&gt;
-&lt;p&gt;CeCILL v2, compatible with GPL v2 (see &lt;a class="reference external" href="http://github.com/yomguy/Telemeta/blob/master/LICENSE.txt"&gt;LICENSE&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.&lt;/p&gt;
+&lt;p&gt;This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more details.&lt;/p&gt;
+&lt;p&gt;You should have received a copy of the GNU Affero General Public License along with this program. If not, see &amp;lt;&lt;a class="reference external" href="http://www.gnu.org/licenses/"&gt;http://www.gnu.org/licenses/&lt;/a&gt;&amp;gt;.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class="section" id="sponsors"&gt;
-&lt;h2&gt;Sponsors&lt;/h2&gt;
-&lt;p&gt;The Telemeta project is developed by Parisson. It is sponsored by :&lt;/p&gt;
+&lt;div class="section" id="sponsors-and-partners"&gt;
+&lt;h2&gt;Sponsors and partners&lt;/h2&gt;
 &lt;blockquote&gt;
 &lt;ul class="simple"&gt;
-&lt;li&gt;CNRS : Centre National de la Recherche Scientifique (the french Natianal Research and Scientific Center)
-&lt;a class="reference external" href="http://cnrs.fr"&gt;http://cnrs.fr&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;CREM : Centre de Recherche en Ethnomusicology (the french Ethnomusicology Research Center)
-&lt;a class="reference external" href="http://www.crem-cnrs.fr"&gt;http://www.crem-cnrs.fr&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;LAM : Equipe Lutherie, Acoustique et Musique de l'Université Pierre et Marie Curie de Paris
-(Instrument design, Acoustic and Music team of the Pierre &amp;amp; Marie Curie University)
-&lt;a class="reference external" href="http://www.lam.jussieu.fr/"&gt;http://www.lam.jussieu.fr/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;MuCEM : Musée des Civilisations de l'Europe et de la Méditerranée
-&lt;a class="reference external" href="http://www.musee-europemediterranee.org"&gt;http://www.musee-europemediterranee.org&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;MMSH : Maison Méditerranéenne des Sciences de l'Homme
-&lt;a class="reference external" href="http://www.mmsh.univ-aix.fr/"&gt;http://www.mmsh.univ-aix.fr/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;MNHN : Museum d'Histoire Naturelle (Paris, France)
-&lt;a class="reference external" href="http://www.mnhn.fr"&gt;http://www.mnhn.fr&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.cnrs.fr"&gt;CNRS&lt;/a&gt; : Centre National de la Recherche Scientifique (French Natianal Research and Scientific Center)&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.culturecommunication.gouv.fr"&gt;MCC&lt;/a&gt; : Ministère de la Culture et de la Communication (the french Ministry of the Culture and Communication)&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.agence-nationale-recherche.fr/"&gt;ANR&lt;/a&gt; : Agence Nationale de la Recherche (French Research Agency)&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.upmc.fr"&gt;UPMC&lt;/a&gt; : University Pierre et Marie Curie (Paris 6, Sorbonne Universités, France)&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.crem-cnrs.fr"&gt;CREM&lt;/a&gt; : Centre de Recherche en Ethnomusicologie (Ethnomusicology Research Center, Paris, France)&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.lam.jussieu.fr"&gt;LAM&lt;/a&gt; : Equipe Lutherie, Acoustique et Musique de l'&lt;a class="reference external" href="http://www.dalembert.upmc.fr/ijlrda/"&gt;IJLRDA&lt;/a&gt; (Paris, France)&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.dalembert.upmc.fr/ijlrda/"&gt;IJLRDA&lt;/a&gt; : Institut Jean le Rond d'Alembert (Paris, France)&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://parisson.com"&gt;Parisson&lt;/a&gt; : Open development agency for audio science and arts (Paris, France)&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.mnhn.fr"&gt;MNHN&lt;/a&gt; : Museum National d'Histoire Naturelle (National Museum of Biology, Paris, France)&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.u-paris10.fr/"&gt;U-Paris10&lt;/a&gt; : University Paris 10 Ouest Nanterre (Nanterre, France)&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.museedelhomme.fr/"&gt;MdH&lt;/a&gt; : Musée de l'Homme (Paris, France)&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.irit.fr"&gt;IRIT&lt;/a&gt; : Institut de Recherche en Informatique de Toulouse (Toulouse, France)&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.limsi.fr/index.en.html"&gt;LIMSI&lt;/a&gt; : Laboratoire d'Informatique pour la Mécanique et les Sciences de l'Ingénieur (Orsay, France)&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.labri.fr"&gt;LABRI&lt;/a&gt; : Laboratoire Bordelais de Recherche en Informatique (Bordeaux, France)&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://c4dm.eecs.qmul.ac.uk/"&gt;C4DM&lt;/a&gt; : Centre for Digital Music at &lt;a class="reference external" href="http://www.qmul.ac.uk/"&gt;Queen Mary University&lt;/a&gt; (London, UK)&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.huma-num.fr"&gt;HumaNum&lt;/a&gt; : TGIR des humanités numériques (Paris, France)&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.cmam.nat.tn/"&gt;CMAM&lt;/a&gt; : Centre des Musiques Arabes et Méditerranéennes (Tunis, Tunisia)&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.ircam.fr"&gt;IRCAM&lt;/a&gt; : Institut de Recherche et de Coordination Acoustique / Musique (Paris, France)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/blockquote&gt;
+&lt;/div&gt;
+&lt;div class="section" id="related-research-projects"&gt;
+&lt;h2&gt;Related research projects&lt;/h2&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.irit.fr/recherches/SAMOVA/DIADEMS/fr/welcome/&amp;amp;cultureKey=en"&gt;DIADEMS&lt;/a&gt; : Description, Indexation, Access to Sound and Ethnomusicological Documents, funded by the French Research Agency (&lt;a class="reference external" href="http://www.agence-nationale-recherche.fr/"&gt;ANR&lt;/a&gt; CONTINT 2012), involving &lt;a class="reference external" href="http://www.irit.fr"&gt;IRIT&lt;/a&gt;, &lt;a class="reference external" href="http://www.crem-cnrs.fr"&gt;CREM&lt;/a&gt;, &lt;a class="reference external" href="http://www.lam.jussieu.fr"&gt;LAM&lt;/a&gt;, &lt;a class="reference external" href="http://www.labri.fr"&gt;LABRI&lt;/a&gt;, &lt;a class="reference external" href="http://www.limsi.fr/index.en.html"&gt;LIMSI&lt;/a&gt;, &lt;a class="reference external" href="http://www.mnhn.fr"&gt;MNHN&lt;/a&gt;, &lt;a class="reference external" href="http://parisson.com"&gt;Parisson&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://github.com/ANR-DIADEMS/timeside-diadems"&gt;TimeSide-DIADEMS&lt;/a&gt; : a set of Timeside plugins for hich level music analysis developed during the &lt;a class="reference external" href="http://www.irit.fr/recherches/SAMOVA/DIADEMS/fr/welcome/&amp;amp;cultureKey=en"&gt;DIADEMS&lt;/a&gt; project&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://soundsoftware.ac.uk/"&gt;SoundSoftware&lt;/a&gt; : Sustainable Software of Audio and Music Research&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://archives.crem-cnrs.fr/archives/fonds/CNRSMH_DACARYH/"&gt;DaCaRyH&lt;/a&gt; : Le rythme calypso à travers l’histoire : une approche en sciences des données (&lt;a class="reference external" href="http://www.ahrc.ac.uk/"&gt;AHRC&lt;/a&gt; “Care for the Future” et le &lt;a class="reference external" href="http://passes-present.eu/"&gt;Labex-Passé_Présent&lt;/a&gt; &amp;quot;Les passés dans le présent&amp;quot;)&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.agence-nationale-recherche.fr/?Projet=ANR-15-CE38-0003"&gt;Kamoulox&lt;/a&gt; : Démixage en ligne de larges archives sonores (&lt;a class="reference external" href="http://www.agence-nationale-recherche.fr/"&gt;ANR&lt;/a&gt; Jeune Chercheur 2015)&lt;/li&gt;
+&lt;li&gt;WASABI : Web Audio Semantic Aggregated in the Browser for Indexation (&lt;a class="reference external" href="http://www.agence-nationale-recherche.fr/"&gt;ANR&lt;/a&gt; 2016, currently being submitted)&lt;/li&gt;
+&lt;/ul&gt;
 &lt;/div&gt;
 </summary></entry></feed>

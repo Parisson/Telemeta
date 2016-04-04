@@ -13,7 +13,7 @@
 
 <link rel="canonical" href="./import-iso-639-3-languages.html">
 
-        <meta name="author" content="Parisson Sarl" />
+        <meta name="author" content="Parisson SARL" />
         <meta name="keywords" content="language,iso" />
         <meta name="description" content="From Telemeta 1.4, an ISO 639-3 language model has been implemented. The ISO language table content can be initialized with the official code set. Here is a import example where telemeta_crem5 is the SQL database: wget http://www.sil.org/iso639-3/iso-639-3_20110525.tab mysql -u root -p load data infile &#39;iso-639-3_20110525.tab&#39; into table telemeta_crem5.languages CHARACTER SET UTF8 ignore 1 lines (identifier, part2B, part2T, part1, scope, type, name, comment); If you upgraded Telemeta from a version previous or equal to 1.3, please update the media_items table as follow: mysql -u root -p use telemeta_crem5 ALTER TABLE media_items ADD COLUMN &#39;language_iso_id&#39; integer; ALTER TABLE &#39;media_items&#39; ADD CONSTRAINT &#39;language_iso_id_refs_id_80b221&#39; FOREIGN KEY (&#39;language_iso_id&#39;) REFERENCES &#39;languages&#39; (&#39;id&#39;);" />
 
@@ -26,7 +26,7 @@
             <meta property="article:section" content="Tips" />
             <meta property="article:tag" content="language" />
             <meta property="article:tag" content="iso" />
-            <meta property="article:author" content="Parisson Sarl" />
+            <meta property="article:author" content="Parisson SARL" />
 
     <meta name="twitter:card" content="summary">
         <meta name="twitter:site" content="@telemeta">
@@ -245,7 +245,7 @@ ALTER TABLE 'media_items' ADD CONSTRAINT 'language_iso_id_refs_id_80b221' FOREIG
    <div class="container">
       <hr>
       <div class="row">
-         <div class="col-xs-10">&copy; 2015 Parisson Sarl
+         <div class="col-xs-10">&copy; 2016 Parisson SARL
             &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
             <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
             <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>              <p><small>  <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by/4.0/80x15.png" /></a>
