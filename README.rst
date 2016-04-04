@@ -74,10 +74,10 @@ News
 1.6
 ++++
 
-Telemeta is now usable on any OS, ready for development and for production in 5 mn! B-)
+Telemeta is now usable on **any OS**, ready for development and for production in 5 mn! B-)
 
 * Provide a docker image and composition for the full Telemeta application bundle.
-  One month after the publication of docker-compose around march 2015, we had managed to build a prototyped composition which bundled all the dependencies of Telemeta and TimeSide. It took almost one year to deeply investigate all the capabilities of Docker and various images to finally release a propoer composition which bundles all the necessary applications and modules. So we can say that Telemeta is now usable on **any OS** B-)
+  One month after the publication of docker-compose around march 2015, we had managed to build a prototyped composition which bundled all the dependencies of Telemeta and TimeSide. It took almost one year to deeply investigate all the capabilities of Docker and various images to finally release a propoer composition which bundles all the necessary applications and modules.
 * Full refactoring of the search engine and interface using django-haystack and ElasticSearch with new faceting and smart filtering features
 * Add an automatic EPUB3 ebook exporter for corpus and collections embedding metadata, image and audio materials.
 * More inline forms and functional buttons
@@ -106,11 +106,10 @@ Telemeta is now usable on any OS, ready for development and for production in 5 
 Examples
 ========
 
-* `Sound archives of the French Ethnomusicology Research Center (CREM, CNRS) and the Musée de l'Homme <http://archives.crem-cnrs.fr>`_
-* `Sound archives of the team "Lutherie, Acoustique et Musique" (LAM) of the IJLRDA institute - University Pierre et Marie Curie (Paris 6) <http://telemeta.lam.jussieu.fr>`_
-* `Phonothèque Nationale du Centre des Musiques Arabes et Méditerranéennes <http://phonotheque.cmam.tn/>`_
-* `Scaled BIOdiversity (SABIOD) <http://sabiod.telemeta.org>`_
-* `Sound archives of Parisson Studio <http://parisson.telemeta.org>`_
+* `Sound archives <http://archives.crem-cnrs.fr>`_ of the CREM_ - CNRS_  and `Musée de l'Homme`_
+* `Sound archives <http://telemeta.lam.jussieu.fr>`_ of the LAM_ of the IJLRDA_ at Université Pierre et Maris Curie (UMPC_)
+* `Phonothèque Nationale <http://phonotheque.cmam.tn/>`_ du Centre des Musiques Arabes et Méditerranéennes (CMAM_)
+*  Scaled BIOdiversity (SABIOD_)
 
 
 Demo
@@ -118,9 +117,8 @@ Demo
 
 http://demo.telemeta.org
 
-login: admin
-
-password: admin
+ * login: admin
+ * password: admin
 
 
 Install
@@ -238,19 +236,20 @@ Sponsors and partners
   * CNRS_ : Centre National de la Recherche Scientifique (French Natianal Research and Scientific Center)
   * MCC_ : Ministère de la Culture et de la Communication (the french Ministry of the Culture and Communication)
   * ANR_ : Agence Nationale de la Recherche (French Research Agency)
-  * UPMC_ : University Pierre et Marie Curie (Paris 6, France)
-  * CREM_ : Centre de Recherche en Ethnomusicologie (Ethnomusicology Research Center)
-  * LAM_ : Equipe Lutherie, Acoustique et Musique de l'IJLRDA_
+  * UPMC_ : University Pierre et Marie Curie (Paris 6, Sorbonne Universités, France)
+  * CREM_ : Centre de Recherche en Ethnomusicologie (Ethnomusicology Research Center, Paris, France)
+  * LAM_ : Equipe Lutherie, Acoustique et Musique de l'IJLRDA_ (Paris, France)
   * IJLRDA_ : Institut Jean le Rond d'Alembert (Paris, France)
   * Parisson_ : Open development agency for audio science and arts (Paris, France)
   * MNHN_ : Museum National d'Histoire Naturelle (National Museum of Biology, Paris, France)
-  * UPMC_ : University Pierre et Marie Curie (Paris 6, Sorbonne Universités)
-  * U-Paris10_ : University Paris Ouest Nanterre (Paris 10, France)
-  * MuseeDelHomme_ : Musée de l'Homme (Paris, France)
-  * LIMSI_ : Laboratoire d'Informatique pour la Mécanique et les Sciences de l'Ingénieur
-  * LABRI_ : Laboratoire Bordelais de Recherche en Informatique
+  * U-Paris10_ : University Paris 10 Ouest Nanterre (Nanterre, France)
+  * Musée de l'Homme_ : Musée de l'Homme (Paris, France)
+  * IRIT_ : Institut de Recherche en Informatique de Toulouse (Toulouse, France)
+  * LIMSI_ : Laboratoire d'Informatique pour la Mécanique et les Sciences de l'Ingénieur (Orsay, France)
+  * LABRI_ : Laboratoire Bordelais de Recherche en Informatique (Bordeaux, France)
   * C4DM_ : Centre for Digital Music at `Queen Mary University`_ (London, UK)
-  * HumaNum_ : TGIR des humanités numériques
+  * HumaNum_ : TGIR des humanités numériques (Paris, France)
+  * CMAM_ : Centre des Musiques Arabes et Méditerranéennes (Tunis, Tunisia)
   * IRCAM_ : Institut de Recherche et de Coordination Acoustique / Musique (Paris, France)
 
 
@@ -302,3 +301,4 @@ Related research projects
 .. _Queen Mary University: http://www.qmul.ac.uk/
 .. _SoundSoftware : http://soundsoftware.ac.uk/
 .. _C4DM: http://c4dm.eecs.qmul.ac.uk/
+.. _CMAM: http://www.cmam.nat.tn/
