@@ -76,6 +76,7 @@ setup(
         'ebooklib',
         'django-environ',
         'redis',
+        'Werkzeug',
     ],
   tests_require=['pytest-django', 'pytest-cov', 'factory-boy'],
   # Provide a test command through django-setuptest
