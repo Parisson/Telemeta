@@ -40,24 +40,6 @@ It is mostly written in Python, HTML5 and JavaScript.
 
 The *Telemeta* name stands for *Tele* as "remote access" and *meta* for "metadata".
 
-|version| |downloads| |travis_master| |coverage_master|
-
-.. |version| image:: https://img.shields.io/pypi/v/telemeta.svg
-   :target: https://pypi.python.org/pypi/Telemeta/
-   :alt: Version
-
-.. |downloads| image:: https://img.shields.io/pypi/dm/telemeta.svg
-   :target: https://pypi.python.org/pypi/Telemeta/
-   :alt: Downloads
-
-.. |travis_master| image:: https://secure.travis-ci.org/Parisson/Telemeta.png?branch=master
-   :target: https://travis-ci.org/Parisson/Telemeta/
-   :alt: Travis
-
-.. |coverage_master| image:: https://coveralls.io/repos/Parisson/Telemeta/badge.png?branch=master
-   :target: https://coveralls.io/r/Parisson/Telemeta?branch=master
-   :alt: Coverage
-
 
 Funding and support
 ===================
