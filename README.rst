@@ -107,7 +107,7 @@ Examples
 ========
 
 * `Sound archives <http://archives.crem-cnrs.fr>`_ of the CREM_ - CNRS_  and `Musée de l'Homme`_
-* `Sound archives <http://telemeta.lam.jussieu.fr>`_ of the LAM_ of the IJLRDA_ at Université Pierre et Maris Curie (UMPC_)
+* `Sound archives <http://telemeta.lam.jussieu.fr>`_ of the LAM_ of the IJLRDA_ at Université Pierre et Maris Curie (UPMC_)
 * `Phonothèque Nationale <http://phonotheque.cmam.tn/>`_ du Centre des Musiques Arabes et Méditerranéennes (CMAM_)
 *  Scaled BIOdiversity (SABIOD_)
 
