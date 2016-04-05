@@ -21,16 +21,14 @@ gid='www-data'
 # stating apps
 # pip install django-angular
 
-# waiting for other services
+# waiting for other network services
 sh $app/deploy/wait.sh
-
-# waiting for available database
-python $app/wait.py
 
 #fix contains haystack elasticsearch
 cd /opt/miniconda/lib/python2.7/site-packages/haystack/backends && sed -i "s/'contains': u'%s'/'contains': u'*%s*'/g" elasticsearch_backend.py && cd $app
 
-# django init
+# django setup
+python $manage wait-for-db
 python $manage syncdb --noinput
 python $manage migrate --noinput
 python $manage bower_install -- --allow-root
