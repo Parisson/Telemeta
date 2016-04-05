@@ -1,28 +1,14 @@
 global-exclude *.pyc
 prune dist
 prune build
-include AUTHORS.txt
-include LICENSE.txt
-include CHANGELOG.rst
-include README.rst
-include INSTALL.rst
-include requirements.txt
-recursive-include doc *
-recursive-include example *
-recursive-exclude example/sandbox/media *
-recursive-exclude example/sandbox/cache *
-recursive-exclude example/sandbox/items *
+prune doc
+recursive-exclude app/data *
+include *.txt
+include *.py
+include *.rst
+include *.yml
+recursive-include app *
 recursive-include tests *
-recursive-include tools *
-recursive-include telemeta/backup *
-recursive-include telemeta/pages *
-recursive-include telemeta/locale *
-recursive-include telemeta/templates *
-recursive-include telemeta/tests *
-recursive-include telemeta/static/video-js *
-recursive-include telemeta/static/telemeta/css *
-recursive-include telemeta/static/telemeta/images *
-recursive-include telemeta/static/telemeta/js *
-recursive-include telemeta/static/telemeta/swf *
-recursive-include telemeta/static/telemeta/lib/bootstrap/dist *
-recursive-include telemeta/static/telemeta/lib/jquery/dist *
+recursive-include scripts *
+recursive-include env *
+recursive-include telemeta *
