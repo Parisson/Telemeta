@@ -5,28 +5,28 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://parisson.github.io/Telemeta/</loc>
-<lastmod>2016-04-07T01:14:16-00:00</lastmod>
+<lastmod>2016-04-07T01:14:41-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://parisson.github.io/Telemeta/archives.html</loc>
-<lastmod>2016-04-07T01:14:16-00:00</lastmod>
+<lastmod>2016-04-07T01:14:41-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://parisson.github.io/Telemeta/tags.html</loc>
-<lastmod>2016-04-07T01:14:16-00:00</lastmod>
+<lastmod>2016-04-07T01:14:41-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://parisson.github.io/Telemeta/categories.html</loc>
-<lastmod>2016-04-07T01:14:16-00:00</lastmod>
+<lastmod>2016-04-07T01:14:41-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
