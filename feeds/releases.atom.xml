@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Telemeta project</title><link href="http://parisson.github.io/Telemeta/" rel="alternate"></link><link href="http://parisson.github.io/Telemeta/feeds/releases.atom.xml" rel="self"></link><id>http://parisson.github.io/Telemeta/</id><updated>2016-04-04T23:24:40+02:00</updated><entry><title>Telemeta 1.6 is finally out!</title><link href="http://parisson.github.io/Telemeta/telemeta-16-is-finally-out.html" rel="alternate"></link><updated>2016-04-04T23:24:40+02:00</updated><author><name>Parisson SARL</name></author><id>tag:parisson.github.io,2016-04-04:Telemeta/telemeta-16-is-finally-out.html</id><summary type="html">&lt;p&gt;Telemeta is now usable on &lt;strong&gt;any OS&lt;/strong&gt;, ready for development and for production in 5 mn! B-)&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Telemeta project</title><link href="http://parisson.github.io/Telemeta/" rel="alternate"></link><link href="http://parisson.github.io/Telemeta/feeds/releases.atom.xml" rel="self"></link><id>http://parisson.github.io/Telemeta/</id><updated>2016-04-05T07:58:08+02:00</updated><entry><title>Telemeta 1.6 is finally out!</title><link href="http://parisson.github.io/Telemeta/telemeta-16-is-finally-out.html" rel="alternate"></link><updated>2016-04-05T07:58:08+02:00</updated><author><name>Parisson SARL</name></author><id>tag:parisson.github.io,2016-04-05:Telemeta/telemeta-16-is-finally-out.html</id><summary type="html">&lt;p&gt;Telemeta is now usable on &lt;strong&gt;any OS&lt;/strong&gt;, ready for development and for production in 5 mn! B-)&lt;/p&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;Provide a docker image and composition for the full Telemeta application bundle.
 One month after the publication of docker-compose around march 2015, we had managed to build a prototyped composition which bundled all the dependencies of Telemeta and TimeSide. It took almost one year to deeply investigate all the capabilities of Docker and various images to finally release a propoer composition which bundles all the necessary applications and modules.&lt;/li&gt;
@@ -13,10 +13,7 @@ One month after the publication of docker-compose around march 2015, we had mana
 &lt;li&gt;Many, many &lt;a class="reference external" href="https://github.com/Parisson/Telemeta/issues?q=is%3Aissue+is%3Aclosed"&gt;bugfixes&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;Thanks to all partners for this &lt;strong&gt;huge&lt;/strong&gt; release!&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;Download:&lt;/p&gt;
-&lt;ul class="simple"&gt;
-&lt;li&gt;&lt;a class="reference external" href="http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.6.tar.gz"&gt;http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.6.tar.gz&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;Get it: &lt;a class="reference external" href="https://github.com/Parisson/Telemeta#install"&gt;https://github.com/Parisson/Telemeta#install&lt;/a&gt;&lt;/p&gt;
 </summary></entry><entry><title>Telemeta 1.5 is out!</title><link href="http://parisson.github.io/Telemeta/telemeta-15-is-out.html" rel="alternate"></link><updated>2015-01-26T10:42:00+01:00</updated><author><name>Parisson SARL</name></author><id>tag:parisson.github.io,2015-01-26:Telemeta/telemeta-15-is-out.html</id><summary type="html">&lt;p&gt;After months of hard work we are pleased to release a big update to Telemeta communities. It represents a huge milestone that makes Telemeta now compatible with more modern web technologies.&lt;/p&gt;
 &lt;p&gt;Changelog:&lt;/p&gt;
 &lt;ul class="simple"&gt;
