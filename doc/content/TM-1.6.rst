@@ -1,4 +1,4 @@
-Telemeta 1.6 is finally out!
+    Telemeta 1.6 is finally out!
 ############################
 
 :category: Releases
