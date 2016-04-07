@@ -1,4 +1,4 @@
-Telemeta 1.6 is finally out!
+    Telemeta 1.6 is finally out!
 ############################
 
 :category: Releases
@@ -17,6 +17,4 @@ Telemeta is now usable on **any OS**, ready for development and for production i
 * Many, many `bugfixes <https://github.com/Parisson/Telemeta/issues?q=is%3Aissue+is%3Aclosed>`_
 * Thanks to all partners for this **huge** release!
 
-Download:
-
-* http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.6.tar.gz
+Get it: https://github.com/Parisson/Telemeta#install

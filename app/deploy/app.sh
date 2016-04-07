@@ -8,8 +8,6 @@ static='/srv/static/'
 media='/srv/media/'
 src='/srv/src/'
 
-chown www-data:www-data $media
-
 # uwsgi params
 port=8000
 processes=8
@@ -40,6 +38,11 @@ python $manage rebuild_index --noinput
 if [ $DEBUG = "False" ]
 then
     python $manage update_index --workers $processes &
+    if [ ! -f .init ]
+    then
+        chown -R www-data:www-data $media
+        touch .init
+    fi
 fi
 
 if [ $1 = "--runserver" ]

@@ -5,7 +5,7 @@ Telemeta : collaborative multimedia asset management system
 :category: About
 :Pin: true
 
-.. image:: /images/logo_telemeta_2.png
+.. image:: https://raw.githubusercontent.com/Parisson/Telemeta/master/telemeta/static/telemeta/images/logo_telemeta_2.png
     :alt: Telemeta logo
 
 Overview
