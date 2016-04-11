@@ -175,7 +175,7 @@ class HayAdvanceForm(SearchForm):
             return self.no_query_found()
 
         if self.cleaned_data.get('q'):
-            sqs = sqs.filter(title__contains=self.cleaned_data['q'])
+            sqs = sqs.filter(title__exact=self.cleaned_data['q'])
 
         if self.cleaned_data.get('code'):
             sqs = sqs.filter(code__contains=self.cleaned_data['code'])

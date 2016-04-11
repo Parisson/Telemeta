@@ -34,6 +34,7 @@ class MediaItemIndex(indexes.SearchIndex, indexes.Indexable):
 
     #advance search
     title = indexes.CharField(model_attr='title')
+    title_auto = indexes.NgramField(model_attr='title')
     code = indexes.CharField(model_attr='code', default='')
     location_principal = indexes.CharField(null='None', boost=1.05)
     location_relation = indexes.CharField()
@@ -105,6 +106,7 @@ class MediaCollectionIndex(indexes.SearchIndex, indexes.Indexable):
 
     #advance search
     title = indexes.CharField(model_attr='title')
+    title_auto = indexes.NgramField(model_attr='title')
     code = indexes.CharField(model_attr='code', default='')
     location_principal = indexes.CharField(default='', boost=1.05)
     location_relation = indexes.CharField()

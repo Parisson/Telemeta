@@ -165,13 +165,13 @@ def autocomplete(request):
     sqs = SearchQuerySet().load_all()
     print(type)
     if request.GET.get('attr', '') == "q":
-        sqs = sqs.filter(title__contains=request.GET.get('q', ''))[:5]
+        sqs = sqs.filter(title_auto__exact=request.GET.get('q', ''))[:10]
         suggestions = [result.title for result in sqs]
     elif request.GET.get('attr', '') == "location":
-        sqs = sqs.filter(location_principal__contains=request.GET.get('q', ''))[:5]
+        sqs = sqs.filter(location_principal__contains=request.GET.get('q', ''))[:10]
         suggestions = [result.location_principal for result in sqs]
     elif request.GET.get('attr', '') == "code":
-        sqs = sqs.filter(code__contains=request.GET.get('q', ''))[:5]
+        sqs = sqs.filter(code__contains=request.GET.get('q', ''))[:10]
         suggestions = [result.code for result in sqs]
     else:
         suggestions = []
