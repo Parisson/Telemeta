@@ -302,7 +302,7 @@ from worker import app
 
 HAYSTACK_CONNECTIONS = {
     'default': {
-        'ENGINE': 'telemeta.util.backend.CustomElasticEngine',
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
         'URL': 'http://search:9200/',
         'INDEX_NAME': 'haystack',
         'INLUDE_SPELLING': True,

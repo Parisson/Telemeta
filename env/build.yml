@@ -22,5 +22,5 @@
 # Thomas Fillon <thomas@parisson.com>
 
 app:
-	env_file:
-		./index.env
+    env_file:
+        env/index.env
