@@ -33,8 +33,8 @@ class MediaItemIndex(indexes.SearchIndex, indexes.Indexable):
     #content_auto = indexes.EdgeNgramField(model_attr='content')
 
     #advance search
-    title = indexes.NgramField(model_attr='title')
-    code = indexes.NgramField(model_attr='code', default='')
+    title = indexes.CharField(model_attr='title')
+    code = indexes.CharField(model_attr='code', default='')
     location_principal = indexes.CharField(null='None', boost=1.05)
     location_relation = indexes.CharField()
     ethnic_group = indexes.CharField(model_attr='ethnic_group', default='')
@@ -104,8 +104,8 @@ class MediaCollectionIndex(indexes.SearchIndex, indexes.Indexable):
     #content_auto = indexes.EdgeNgramField(model_attr='content')
 
     #advance search
-    title = indexes.NgramField(model_attr='title')
-    code = indexes.NgramField(model_attr='code', default='')
+    title = indexes.CharField(model_attr='title')
+    code = indexes.CharField(model_attr='code', default='')
     location_principal = indexes.CharField(default='', boost=1.05)
     location_relation = indexes.CharField()
     ethnic_group = indexes.CharField(default='')
