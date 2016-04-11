@@ -8,8 +8,6 @@ static='/srv/static/'
 media='/srv/media/'
 src='/srv/src/'
 
-chown www-data:www-data $media
-
 # uwsgi params
 port=8000
 processes=8
@@ -21,13 +19,11 @@ gid='www-data'
 # stating apps
 # pip install django-angular
 
-# waiting for other services
+# waiting for other network services
 sh $app/deploy/wait.sh
 
-# waiting for available database
-python $app/wait.py
-
-# django init
+# django setup
+python $manage wait-for-db
 python $manage syncdb --noinput
 python $manage migrate --noinput
 python $manage bower_install -- --allow-root
@@ -38,6 +34,11 @@ python $manage telemeta-create-boilerplate
 if [ $DEBUG = "False" ]
 then
     python $manage update_index --workers $processes &
+    if [ ! -f .init ]
+    then
+        chown -R www-data:www-data $media
+        touch .init
+    fi
 fi
 
 if [ $1 = "--runserver" ]
