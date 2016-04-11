@@ -22,7 +22,5 @@
 # Thomas Fillon <thomas@parisson.com>
 
 app:
-  build: .
-
-worker:
-  build: .
+	env_file:
+		./index.env
