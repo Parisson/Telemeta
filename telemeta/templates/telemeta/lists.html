@@ -45,7 +45,9 @@
 
         $.tablesorter.defaults.sortList = [[2,0]];
         {% for playlist in playlists %}
-            $("#{{playlist.playlist.public_id}}tb").tablesorter({headers: {6:{sorter:false}}} );
+        	{% if playlist.resources|length != 0 %}
+        		$("#{{playlist.playlist.public_id}}tb").tablesorter({headers: {6:{sorter:false}}} );
+        	{% endif %}
         {% endfor %}
     });
 </script>

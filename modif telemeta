@@ -1,16 +1,17 @@
 collecteur dans recherche indispo
 
-liste de lecture -> tableau de bord : periode enregistrement 
-
-tri dans les liste de lecture partiellement dispo (seulement les 4 premieres)
+liste de lecture -> tableau de bord : periode enregistrement
 
 tri dans recherche avancee/simple
 
 pas  assez d items dans recherche
 
-apres suppression collection dans liste de lecture : laisser ouvert par defaut celle qui a ete ouverte en dernier
-
 autocompletion sur instruments/collecteur
 
 date enregistrement : min 1900 mais date avant apparaissent
 
+FAIT :
+
+apres suppression collection dans liste de lecture : laisser ouvert par defaut celle qui a ete ouverte en dernier
+
+tri dans les liste de lecture partiellement dispo (seulement les 4 premieres)
