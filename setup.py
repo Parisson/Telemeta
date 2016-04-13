@@ -57,7 +57,7 @@ setup(
         'django-debug-toolbar==1.3.2',
         'django-extra-views',
         'django-breadcrumbs',
-        'django-bootstrap3',
+        'django-bootstrap3==6.2.1',
         'django-bootstrap-pagination',
         'django-json-rpc',
         'django-suit',
