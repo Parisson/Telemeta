@@ -31,7 +31,7 @@ python $manage collectstatic --noinput
 python $manage telemeta-create-admin-user
 python $manage telemeta-create-boilerplate
 
-if [ $DEBUG == "False" ]
+if [ $DEBUG = "False" ]
 then
     python $manage update_index --workers $processes &
     if [ ! -f .init ]
@@ -41,7 +41,7 @@ then
     fi
 fi
 
-if [ $1 == "--runserver" ]
+if [ $1 = "--runserver" ]
 then
     python $manage runserver_plus 0.0.0.0:8000
 else
