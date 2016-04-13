@@ -113,9 +113,9 @@ var playlistUtils = {
         });
     },
 
-    removeResource: function(id, id_playlist){
-        json([id, id_playlist],'telemeta.del_playlist_resource',function(data){
-        	var id = JSON.parse(data.result).result;
+    removeResource: function(id, range_playlist){
+        json([id, range_playlist],'telemeta.del_playlist_resource',function(data){
+        	var id = data.result;
         	window.location.pathname = '/desk/lists/open-list-' + id;
         });
     },

@@ -69,11 +69,10 @@ class PlaylistView(object):
             raise 'Error : Bad playlist_resource dictionnary'
 
     @jsonrpc_method('telemeta.del_playlist_resource')
-    def del_playlist_resource(request, public_id, playlist_id):
+    def del_playlist_resource(request, public_id, playlist_range):
         m = PlaylistResource.objects.get(public_id=public_id)
         m.delete()
-        reponse = {'result': playlist_id, "error":None, "id":"jsonrpc"}
-        return json.dumps(reponse)
+        return playlist_range
 
     def get_elements(self, playlist, resource_type):
         resources = PlaylistResource.objects.filter(playlist=playlist)
