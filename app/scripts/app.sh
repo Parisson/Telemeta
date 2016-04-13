@@ -29,20 +29,19 @@ python $manage migrate --noinput
 python $manage bower_install -- --allow-root
 python $manage collectstatic --noinput
 
-if [ $DEBUG = "False" ]
-then
-    python $manage update_index --workers $processes &
-    if [ ! -f .init ]
-    then
-        chown -R www-data:www-data $media
-        python $manage telemeta-create-admin-user
-        python $manage telemeta-create-boilerplate
-        touch .init
-    fi
+if [ ! -f .init ]; then
+    chown -R www-data:www-data $media
+    python $manage telemeta-create-admin-user
+    python $manage telemeta-create-boilerplate
+    touch .init
 fi
 
-if [ $1 = "--runserver" ]
-then
+if [ $DEBUG = "False" ]; then
+    python $manage update_index --workers $processes &
+fi
+
+
+if [ $1 = "--runserver" ]; then
     python $manage runserver_plus 0.0.0.0:8000
 else
     # static files auto update
