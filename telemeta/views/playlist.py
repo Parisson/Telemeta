@@ -20,6 +20,8 @@
 
 
 from telemeta.views.core import *
+import json
+from django.http import HttpResponse
 
 
 class PlaylistView(object):
@@ -67,9 +69,11 @@ class PlaylistView(object):
             raise 'Error : Bad playlist_resource dictionnary'
 
     @jsonrpc_method('telemeta.del_playlist_resource')
-    def del_playlist_resource(request, public_id):
+    def del_playlist_resource(request, public_id, playlist_id):
         m = PlaylistResource.objects.get(public_id=public_id)
         m.delete()
+        reponse = {'result': playlist_id, "error":None, "id":"jsonrpc"}
+        return json.dumps(reponse)
 
     def get_elements(self, playlist, resource_type):
         resources = PlaylistResource.objects.filter(playlist=playlist)

@@ -190,7 +190,7 @@ urlpatterns = patterns('',
     url(r'^accounts/$', home_view.users, name="telemeta-users"),
 
     # Desk
-    url(r'^desk/lists/$', home_view.lists, name="telemeta-desk-lists"),
+    url(r'^desk/lists/(?:open-list-(?P<id_playlist>[0-9]+)/)?$', home_view.lists, name="telemeta-desk-lists"),
     url(r'^desk/profile/(?P<username>[A-Za-z0-9@+._-]+)/$', profile_view.profile_detail, name="telemeta-desk-profile"),
     url(r'^desk/home/$', home_view.home, name="telemeta-desk-home"),
 

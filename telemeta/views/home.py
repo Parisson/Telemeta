@@ -62,7 +62,7 @@ class HomeView(object):
                     'sound_pub_item': sound_pub_item })
         return HttpResponse(template.render(context))
 
-    def lists(self, request):
+    def lists(self, request, id_playlist):
         """Render the home page"""
 
         if request.user.is_authenticated():
@@ -70,8 +70,9 @@ class HomeView(object):
             playlists = get_playlists(request)
             revisions = get_revisions(100)
             user_revisions = get_revisions(25, request.user)
+            last_playlist = id_playlist
             return render(request, template, {'playlists': playlists,
-                                              'revisions': revisions, 'user_revisions': user_revisions })
+                                              'revisions': revisions, 'user_revisions': user_revisions , 'last_playlist':last_playlist})
         else:
             template = 'telemeta/messages.html'
             mess = ugettext('Access not allowed')
