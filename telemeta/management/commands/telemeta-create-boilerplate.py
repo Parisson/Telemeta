@@ -26,7 +26,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         collection, c = MediaCollection.objects.get_or_create(title=self.code,
-                            code=self.code)
+                            code=self.code, public_access = 'full')
         selection, c = Selection.objects.get_or_create(title='Tests')
 
         if c:
@@ -59,8 +59,7 @@ class Command(BaseCommand):
                         result.delete()
                 mediaitem, c = MediaItem.objects.get_or_create(title=title,
                                     code=self.code + '-' + slugify(filename),
-                                    file=path, collection=collection)
-
+                                    file=path, collection=collection, public_access = 'full')
 
             experience, c = Experience.objects.get_or_create(title='All')
             for preset in presets:
