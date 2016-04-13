@@ -75,7 +75,7 @@ worker:
 nginx:
   image: nginx
   ports:
-    - "8000:80"
+    - "9000:80"
   volumes:
     - ./etc/nginx.conf:/etc/nginx/conf.d/default.conf
   volumes_from:
@@ -87,7 +87,7 @@ nginx:
 phpmyadmin:
     image: nazarpc/phpmyadmin
     ports:
-      - "1234:80"
+      - "9234:80"
     links:
       - db:mysql
     environment:
