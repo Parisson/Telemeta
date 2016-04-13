@@ -3,7 +3,8 @@
 
 {% if page.object_list %}
 
-<table class="listing">
+<table class="listing" id="searchtable">
+<thead>
 <tr>
     {% if user.is_authenticated %}
         <th class="highlight"><input id="selectAll" type="checkbox"/> select all </th>
@@ -21,7 +22,9 @@
     <th>{% trans "Year of recording" %}</th>
     <th>{% trans "Code" %}</th>
 </tr>
+</thead>
 {% if user.is_authenticated %}
+<tbody>
     {% for result in page.object_list %}
     <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
         <td class="highlight"><input type="checkbox" class="check1" name="selected_items_list" value="{{ result.object.id }}"/></td>
@@ -50,6 +53,7 @@
         </td>
     </tr>
     {% endfor %}
+    </tbody>
 {% else %}
     {% for result in page.object_list %}
     <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>

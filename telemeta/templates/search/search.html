@@ -7,6 +7,7 @@
 {% endblock %}
 {% block extra_stylesheets %}
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/css/jquery-ui.css" />
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/css/lists_sorttable.css" media="print, projection, screen"/>
 {% endblock %}
 {% block content %}
         {% if query %}
@@ -109,6 +110,7 @@
 {% block extra_javascript %}
     <script src="{{ STATIC_URL }}jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
     <script src="{{ STATIC_URL }}telemeta/js/search.js" type="text/javascript"></script>
+        <script src="{{ STATIC_URL }}tablesorter/jquery.tablesorter.min.js" type="text/javascript"></script>
     <script>
 
 
@@ -119,6 +121,11 @@
                     window.location = '?q={{ query }}&amp;page=1&amp;selected_facets={{selected_facets_url|join:'&selected_facets='}}&results_page='+$(this).val();
                 }
             }).selectmenu("menuWidget").addClass("overflow");
+            
+             $.tablesorter.defaults.sortList = [[1,0]];
+    
+    		$("#searchtable").tablesorter({headers: {0:{sorter:false}, 2:{sorter:false}}} );
+
 
         });
     </script>
