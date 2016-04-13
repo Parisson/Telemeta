@@ -299,6 +299,9 @@ th {
 .glyphicon-pencil:before {
   content: "\270f";
 }
+.glyphicon-copy:before {
+  content: "\e205";
+}
 .glyphicon-glass:before {
   content: "\e001";
 }

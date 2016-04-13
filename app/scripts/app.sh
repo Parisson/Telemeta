@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # paths
 app='/srv/app'
@@ -7,8 +7,6 @@ wsgi=$app'/wsgi.py'
 static='/srv/static/'
 media='/srv/media/'
 src='/srv/src/'
-
-chown www-data:www-data $media
 
 # uwsgi params
 port=8000
@@ -19,10 +17,10 @@ uid='www-data'
 gid='www-data'
 
 # stating apps
-# pip install django-angular
+# pip install django-bootstrap3==6.2.1
 
 # waiting for other network services
-sh $app/deploy/wait.sh
+sh $app/scripts/wait.sh
 
 # django setup
 python $manage wait-for-db
@@ -36,6 +34,11 @@ python $manage telemeta-create-boilerplate
 if [ $DEBUG = "False" ]
 then
     python $manage update_index --workers $processes &
+    if [ ! -f .init ]
+    then
+        chown -R www-data:www-data $media
+        touch .init
+    fi
 fi
 
 if [ $1 = "--runserver" ]
