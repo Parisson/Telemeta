@@ -17,7 +17,7 @@ uid='www-data'
 gid='www-data'
 
 # stating apps
-# pip install django-angular
+# pip install django-bootstrap3==6.2.1
 
 # waiting for other network services
 sh $app/scripts/wait.sh
