@@ -52,11 +52,12 @@ app:
   build: .
   volumes:
     - ./app/:/srv/app
+    - ./telemeta/:/srv/src/telemeta/telemeta
   volumes_from:
     - data
   env_file:
     - env/prod.env
-  command: /bin/sh deploy/app.sh
+  command: /bin/sh scripts/app.sh
   links:
     - broker
     - db
@@ -68,7 +69,7 @@ worker:
     - app
   env_file:
     - env/prod.env
-  command: /bin/sh deploy/worker.sh
+  command: /bin/sh scripts/worker.sh
   links:
     - broker
     - db
@@ -78,7 +79,7 @@ nginx:
   ports:
     - "8003:80"
   volumes:
-    - ./app/deploy/nginx.conf:/etc/nginx/conf.d/default.conf
+    - ./etc/nginx.conf:/etc/nginx/conf.d/default.conf
   volumes_from:
     - data
   links:
