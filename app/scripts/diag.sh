@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 app="telemeta"
 dir="../../doc/devel"

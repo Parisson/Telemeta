@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # paths
 app='/srv/app'
@@ -17,10 +17,10 @@ uid='www-data'
 gid='www-data'
 
 # stating apps
-# pip install django-angular
+# pip install django-bootstrap3==6.2.1
 
 # waiting for other network services
-sh $app/deploy/wait.sh
+sh $app/scripts/wait.sh
 
 # django setup
 python $manage wait-for-db
@@ -28,8 +28,6 @@ python $manage syncdb --noinput
 python $manage migrate --noinput
 python $manage bower_install -- --allow-root
 python $manage collectstatic --noinput
-python $manage telemeta-create-admin-user
-python $manage telemeta-create-boilerplate
 
 if [ $DEBUG = "False" ]
 then
@@ -37,6 +35,8 @@ then
     if [ ! -f .init ]
     then
         chown -R www-data:www-data $media
+        python $manage telemeta-create-admin-user
+        python $manage telemeta-create-boilerplate
         touch .init
     fi
 fi
