@@ -23,14 +23,11 @@
 
 
 app:
-  volumes:
-    - ./app/:/srv/app
-    - ./telemeta/:/srv/src/telemeta/telemeta
   env_file:
     - env/debug.env
   command: /bin/sh deploy/app.sh --runserver
   ports:
-    - 9000:8000
+    - 8000:8000
 
 worker:
   env_file:

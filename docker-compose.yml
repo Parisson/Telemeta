@@ -50,6 +50,7 @@ app:
   build: .
   volumes:
     - ./app/:/srv/app
+    - ./telemeta/:/srv/src/telemeta/telemeta
   volumes_from:
     - data
   env_file:
