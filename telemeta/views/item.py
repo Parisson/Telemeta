@@ -25,8 +25,7 @@
 from telemeta.views.core import *
 from telemeta.views.marker import *
 import timeside.core
-from timeside.server import models as TS_models
-import timeside.server.models as TS_models
+import timeside.server as ts
 
 
 class ItemBaseMixin(TelemetaBaseMixin):
@@ -237,6 +236,23 @@ class ItemView(ItemBaseMixin):
 
         item = MediaItem.objects.get(public_id=public_id)
         mime_type = 'image/png'
+
+        source, source_type = item.get_source()
+        if source:
+            ts_item, c = ts.models.Item.objects.get_or_create(**{source_type: source})
+            if c:
+                ts_item.title = item.title
+                ts_item.save()
+
+        ts_grapher, c = ts.models.Processor.objects.get_or_create(pid=grapher_id)
+        ts_preset, c = ts.models.Preset.objects.get_or_create(processor=ts_grapher,
+                                                              parameters={'width': width, 'height': height})
+        ts_experience = ts_preset.get_single_experience()
+        ts_selection = ts_item.get_single_selection()
+        ts_task, c = ts.models.Task.objects.get_or_create(experience=ts_experience,
+                                                   selection=ts_selection)
+        ts_task.run()
+
         grapher = self.get_grapher(grapher_id)
 
         if grapher.id() != grapher_id:
@@ -612,9 +628,6 @@ class ItemDetailView(ItemViewMixin, DetailView):
             source, _ = item.get_source()
 
             if source:
-                print '***************************'
-                print source
-                print '***************************'
 
                 decoder = timeside.core.get_processor('file_decoder')(source)
                 pipe = decoder = timeside.core.get_processor('file_decoder')(source)
@@ -706,7 +719,7 @@ class ItemDetailView(ItemViewMixin, DetailView):
         # Corresponding TimeSide Item
         source, source_type = item.get_source()
         if source:
-            ts_item, c = TS_models.Item.objects.get_or_create(**{source_type: source})
+            ts_item, c = ts.models.Item.objects.get_or_create(**{source_type: source})
             if c:
                 ts_item.title = item.title
                 ts_item.save()

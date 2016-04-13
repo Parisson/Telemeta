@@ -200,6 +200,7 @@
                 </tr>
             </table>
         </div>
+
         <!--</div>-->
 
         {% if audio_export_enabled or perms.telemeta.can_download_all_items or user.is_superuser %}
@@ -209,6 +210,16 @@
                     <img src="{{ STATIC_URL }}telemeta/images/{{ format.extension }}.png" style="vertical-align:middle" alt="{{ format.extension }}" /></a>
                 {% endfor %}
         </div>
+	{% block DIADEMS %}
+	<a href="{% url "timeside-item-diadems" ts_item_id %}">
+	  <button type="button" class="btn btn-primary" style="float:left;margin-top:0.5em;margin-bottom:1em;border-color: #ffffff; ">
+            <b>DIADEMS</b>
+	  </button>
+	</a>      
+	{% endblock DIADEMS %}
+
+
+
         {% endif %}
 
     </div>
@@ -393,15 +404,6 @@
       </button>
     </a>
     {% endblock dublincore %}
-
-    {% block TimeSide %}
-    <a href="{% url "timeside-item-detail" ts_item_id %}">
-      <button type="button" class="btn btn-default" style="float:left;margin-top:0.5em;margin-bottom:1em">
-        TimeSide
-      </button>
-    {% endblock TimeSide %}
-    </a>
-
 
 {% endif %}
 
