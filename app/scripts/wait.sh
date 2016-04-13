@@ -1,6 +1,6 @@
 #!/bin/sh
 
-apt-get install -y --force-yes netcat
+# apt-get install -y --force-yes netcat
 
 set -e
 

@@ -9,7 +9,7 @@ wsgi=$app'/wsgi.py'
 # pip install django-environ redis
 
 # waiting for other services
-sh $app/deploy/wait.sh
+sh $app/scripts/wait.sh
 
 # Starting celery worker with the --autoreload option will enable the worker to watch for file system changes
 # This is an experimental feature intended for use in development only

@@ -25,7 +25,7 @@
 app:
   env_file:
     - env/debug.env
-  command: /bin/sh deploy/app.sh --runserver
+  command: /bin/sh scripts/app.sh --runserver
   ports:
     - 8000:8000
 
