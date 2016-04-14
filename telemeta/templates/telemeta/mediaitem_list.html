@@ -3,14 +3,14 @@
 {% load telemeta_tags %}
 {% load bootstrap_pagination %}
 
-{% block head_title %}{% trans "Media Items" %} - {{ block.super }}{% endblock %}
+{% block head_title %}{% trans "Media Items" %} {% block instru_name %}{% endblock %}- {{ block.super }}{% endblock %}
 
 {% block title %}
 <div class='row'>
-<div class="col-md-4">
- <img src="{{ STATIC_URL }}telemeta/images/item.png" alt="item" style="vertical-align:middle" /> {% trans "Items" %} ({{ page_obj.start_index }} - {{ page_obj.end_index }} / {{ count }})
+<div class="col-md-5">
+ <img src="{{ STATIC_URL }}telemeta/images/item.png" alt="item" style="vertical-align:middle" /> {% trans "Items" %} {% block instru_name_h %}{% endblock %}({{ page_obj.start_index }} - {{ page_obj.end_index }} / {{ count }})
 </div>
-<div class="col-md-8">
+<div class="col-md-7">
 {% bootstrap_paginate page_obj range=10 show_first_last="True" %}
 </div>
 <div class="col-md-0">&nbsp;</div>
@@ -24,10 +24,10 @@
     <span class="glyphicon glyphicon-filter"></span> {% trans "Filters" %} <span class="caret"></span>
   </button>
   <ul class="dropdown-menu" role="menu">
-    <li><a href="{% url "telemeta-items" %}" class="">{% trans "All" %}</a></li>
-    <li><a href="{% url "telemeta-items-unpublished" %}">{% trans "Unpublished" %}</a></li>
-    <li><a href="{% url "telemeta-items-published" %}">{% trans "Published" %}</a></li>
-    <li><a href="{% url "telemeta-items-sound" %}">{% trans "Digitized" context "item list" %}</a></li>
+    <li><a href="{% block url_all %}{% url "telemeta-items" %}{% endblock %}" class="">{% trans "All" %}</a></li>
+    <li><a href="{% block url_unpublished %}{% url "telemeta-items-unpublished" %}{% endblock %}">{% trans "Unpublished" %}</a></li>
+    <li><a href="{% block url_published %}{% url "telemeta-items-published" %}{% endblock %}">{% trans "Published" %}</a></li>
+    <li><a href="{% block url_sound %}{% url "telemeta-items-sound" %}{% endblock %}">{% trans "Digitized" context "item list" %}</a></li>
   </ul>
 </div>
 

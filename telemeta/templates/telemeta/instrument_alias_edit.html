@@ -34,7 +34,7 @@
      <td><input type="checkbox" name="sel" value="{{record.id}}" /></td>
      <td><a href="{% url "telemeta-instrument-alias-record-edit" record.id %}">
         {{record.name}}</a></td>
-     <td>{{ record.num_items }}</td>
+     <td><a href="{% url "telemeta-alias-item-list" record.id %}">{{ record.num_items }}</a></td>
     </tr>
     {% endfor %}
     </tbody>

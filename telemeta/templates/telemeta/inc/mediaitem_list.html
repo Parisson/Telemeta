@@ -4,6 +4,7 @@
 {% if items %}
 
 <table class="listing">
+<thead>
 <tr>
     <th class="highlight">{% trans "Title" %}</th>
     <th>{% trans "Digitized" %}</th>
@@ -16,6 +17,8 @@
     <th>{% trans "Year of recording" %}</th>
     <th>{% trans "Code" %}</th>
 </tr>
+</thead>
+<tbody>
 {% for item in items %}
 <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
     <td class="highlight">
@@ -47,6 +50,7 @@
     </td>
 </tr>
 {% endfor %}
+</tbody>
 </table>
 
 {% else %}

@@ -429,7 +429,64 @@ class ItemSoundListView(ItemListView):
 
     queryset = MediaItem.objects.sound().order_by('code', 'old_code')
 
+class ItemInstrumentListView(ItemListView):
 
+    template_name = "telemeta/media_item_instrument_list.html"
+    
+    def get_queryset(self):
+        return MediaItem.objects.filter(performances__instrument__id=self.kwargs['value_id'])
+        
+    def get_context_data(self, **kwargs):
+        context = super(ItemInstrumentListView, self).get_context_data(**kwargs)
+        
+        context['nom']=Instrument.objects.get(id=self.kwargs['value_id']).name
+        context['id']=self.kwargs['value_id']
+        
+        return context
+        
+class ItemInstrumentPublishedListView(ItemInstrumentListView):
+    
+    def get_queryset(self):
+        return super(ItemInstrumentPublishedListView, self).get_queryset().filter(collection__code__contains='_E_').order_by('code', 'old_code')
+        
+class ItemInstrumentUnpublishedListView(ItemInstrumentListView):
+    
+    def get_queryset(self):
+        return super(ItemInstrumentUnpublishedListView, self).get_queryset().filter(collection__code__contains='_I_').order_by('code', 'old_code')
+
+class ItemInstrumentSoundListView(ItemInstrumentListView):
+     def get_queryset(self):
+        return super(ItemInstrumentSoundListView, self).get_queryset().sound().order_by('code', 'old_code')
+        
+class ItemAliasListView(ItemListView):
+
+    template_name = "telemeta/media_item_alias_list.html"
+    
+    def get_queryset(self):
+        return MediaItem.objects.filter(performances__alias__id=self.kwargs['value_id'])
+        
+    def get_context_data(self, **kwargs):
+        context = super(ItemAliasListView, self).get_context_data(**kwargs)
+        
+        context['nom']=InstrumentAlias.objects.get(id=self.kwargs['value_id']).name
+        context['id']=self.kwargs['value_id']
+        
+        return context
+        
+class ItemAliasPublishedListView(ItemAliasListView):
+    
+    def get_queryset(self):
+        return super(ItemAliasPublishedListView, self).get_queryset().filter(collection__code__contains='_E_').order_by('code', 'old_code')
+        
+class ItemAliasUnpublishedListView(ItemAliasListView):
+    
+    def get_queryset(self):
+        return super(ItemAliasUnpublishedListView, self).get_queryset().filter(collection__code__contains='_I_').order_by('code', 'old_code')
+
+class ItemAliasSoundListView(ItemAliasListView):
+     def get_queryset(self):
+        return super(ItemAliasSoundListView, self).get_queryset().sound().order_by('code', 'old_code')
+        
 class ItemViewMixin(ItemBaseMixin):
 
     model = MediaItem
