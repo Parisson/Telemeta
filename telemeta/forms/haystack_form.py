@@ -84,18 +84,11 @@ class HayAdvanceForm(SearchForm):
         list_all_year = []
         list_collect = MediaCollection.objects.all()
         for collect in list_collect:
-            if collect.recorded_from_year != '0' and not collect.recorded_from_year in list_all_year:
+            if collect.recorded_from_year != 0 and not collect.recorded_from_year in list_all_year:
                 list_all_year.append(collect.recorded_from_year)
-            if collect.recorded_to_year != '0' and not collect.recorded_to_year in list_all_year:
+            if collect.recorded_to_year != 0 and not collect.recorded_to_year in list_all_year:
                 list_all_year.append(collect.recorded_to_year)
         list_all_year.sort()
-        if len(list_all_year) >= 2:
-            min_year = list_all_year[len(list_all_year) - 1]
-            for year in list_all_year:
-                if year != 0:
-                    if year < min_year:
-                        min_year = year
-            list_all_year = range(min_year, date.today().year + 1)
         list_year = []
         list_year.append(('', '----'))
         for year in list_all_year:
@@ -110,16 +103,9 @@ class HayAdvanceForm(SearchForm):
         list_all_year = []
         list_collect = MediaCollection.objects.all()
         for collect in list_collect:
-            if collect.year_published != '0' and not collect.year_published in list_all_year:
+            if collect.year_published != 0 and not collect.year_published in list_all_year:
                 list_all_year.append(collect.year_published)
         list_all_year.sort()
-        if len(list_all_year) >= 2:
-            min_year = list_all_year[len(list_all_year) - 1]
-            for year in list_all_year:
-                if year != 0:
-                    if year < min_year:
-                        min_year = year
-            list_all_year = range(min_year, date.today().year + 1)
         list_year = []
         list_year.append((0, '----'))
         for year in list_all_year:
@@ -175,7 +161,7 @@ class HayAdvanceForm(SearchForm):
             return self.no_query_found()
 
         if self.cleaned_data.get('q'):
-            sqs = sqs.filter(title__exact=self.cleaned_data['q'])
+            sqs = sqs.filter(title__contains=self.cleaned_data['q'])
 
         if self.cleaned_data.get('code'):
             sqs = sqs.filter(code__contains=self.cleaned_data['code'])

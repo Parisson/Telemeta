@@ -1,18 +1,8 @@
-collecteur dans recherche indispo
-
-liste de lecture -> tableau de bord : periode enregistrement
-
 pas  assez d items dans recherche
 
-autocompletion sur instruments/collecteur (listes fermees)
-
-date enregistrement : min 1900 mais date avant apparaissent FAIT ???
-
-nb items qui ont instrument dans liste instruments + liste
-
-filtre inedits/edites pour les items : passer par la collection puis sa cote (I : inedit, E : edites)
-
 filtres apparait 1 fois sur 2
+
+nb items enum + liste
 
 FAIT :
 
@@ -23,3 +13,17 @@ tri dans les liste de lecture partiellement dispo (seulement les 4 premieres)
 tri dans recherche avancee/simple
 
 page 643 erreur
+
+nb items qui ont instrument dans liste instruments + liste
+
+liste de lecture -> tableau de bord : periode enregistrement
+
+collecteur dans recherche indispo
+
+date enregistrement : min 1900 mais date avant apparaissent
+
+autocompletion sur instruments/collecteur (listes fermees)
+
+VERIF PROD :
+
+filtre inedits/edites pour les items : passer par la collection puis sa cote (I : inedit, E : edites)

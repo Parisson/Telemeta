@@ -20,6 +20,8 @@
 from haystack import indexes
 from telemeta.models import *
 
+class InstrumentField(indexes.CharField):
+    field_type = 'instrument'
 
 class MediaItemIndex(indexes.SearchIndex, indexes.Indexable):
 
@@ -34,13 +36,12 @@ class MediaItemIndex(indexes.SearchIndex, indexes.Indexable):
 
     #advance search
     title = indexes.CharField(model_attr='title')
-    title_auto = indexes.NgramField(model_attr='title')
     code = indexes.CharField(model_attr='code', default='')
     location_principal = indexes.CharField(null='None', boost=1.05)
     location_relation = indexes.CharField()
     ethnic_group = indexes.CharField(model_attr='ethnic_group', default='')
-    instruments = indexes.NgramField(default='')
-    collectors = indexes.NgramField(model_attr='collector', default='')
+    instruments = InstrumentField(default='')
+    collectors = indexes.CharField(model_attr='collector', default='')
     recorded_from_date = indexes.DateField(model_attr='recorded_from_date', null='None')
     recorded_to_date = indexes.DateField(model_attr='recorded_to_date', null='None')
     year_published = indexes.IntegerField(model_attr='collection__year_published', default='')
@@ -84,7 +85,7 @@ class MediaItemIndex(indexes.SearchIndex, indexes.Indexable):
                 instruments.append(material.instrument.name)
             if material.alias is not None:
                 instruments.append(material.alias.name)
-        return u"".join(' ' + instru for instru in instruments)
+        return u"".join('|' + instru for instru in instruments)
 
     def prepare_collectors(self, obj):
         collectors = []
@@ -106,13 +107,12 @@ class MediaCollectionIndex(indexes.SearchIndex, indexes.Indexable):
 
     #advance search
     title = indexes.CharField(model_attr='title')
-    title_auto = indexes.NgramField(model_attr='title')
     code = indexes.CharField(model_attr='code', default='')
     location_principal = indexes.CharField(default='', boost=1.05)
     location_relation = indexes.CharField()
     ethnic_group = indexes.CharField(default='')
-    instruments = indexes.NgramField(default='')
-    collectors = indexes.NgramField(model_attr='collector', default='')
+    instruments = InstrumentField(default='')
+    collectors = indexes.CharField(model_attr='collector', default='')
     recorded_from_date = indexes.DateField(model_attr='recorded_from_year', null=True)
     recorded_to_date = indexes.DateField(model_attr='recorded_to_year', null=True)
     year_published = indexes.IntegerField(model_attr='year_published', default='')
@@ -161,7 +161,7 @@ class MediaCollectionIndex(indexes.SearchIndex, indexes.Indexable):
 
                 if material.alias and not material.alias in instruments:
                     instruments.append(material.alias.name)
-        return u"".join(' ' + instru for instru in instruments)
+        return u"".join('|' + instru for instru in instruments)
 
     def prepare_recorded_from_date(self, obj):
         if obj.recorded_from_year != 0:
@@ -188,8 +188,8 @@ class MediaCorpusIndex(indexes.SearchIndex, indexes.Indexable):
     #content_auto = indexes.EdgeNgramField(model_attr='content')
 
     #advance search
-    title = indexes.NgramField(model_attr='title')
-    code = indexes.NgramField(model_attr='code', default='')
+    title = indexes.CharField(model_attr='title')
+    code = indexes.CharField(model_attr='code', default='')
     #location_principal = indexes.CharField(default='', boost=1.05)
     #location_relation = indexes.CharField()
     #ethnic_group = indexes.CharField(default='')
@@ -218,8 +218,8 @@ class MediaFondsIndex(indexes.SearchIndex, indexes.Indexable):
     #content_auto = indexes.EdgeNgramField(model_attr='content')
 
     #advance search
-    title = indexes.NgramField(model_attr='title')
-    code = indexes.NgramField(model_attr='code', default='')
+    title = indexes.CharField(model_attr='title')
+    code = indexes.CharField(model_attr='code', default='')
     #location_principal = indexes.CharField(default='', boost=1.05)
     #location_relation = indexes.CharField()
     #ethnic_group = indexes.CharField(default='')

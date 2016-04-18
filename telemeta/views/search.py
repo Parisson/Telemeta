@@ -163,16 +163,21 @@ class HaystackAdvanceSearch(SavedSearchView):
 
 def autocomplete(request):
     sqs = SearchQuerySet().load_all()
-    print(type)
-    if request.GET.get('attr', '') == "q":
-        sqs = sqs.filter(title_auto__exact=request.GET.get('q', ''))[:10]
-        suggestions = [result.title for result in sqs]
-    elif request.GET.get('attr', '') == "location":
-        sqs = sqs.filter(location_principal__contains=request.GET.get('q', ''))[:10]
-        suggestions = [result.location_principal for result in sqs]
+    if request.GET.get('attr', '') == "instruments":
+        sqs = sqs.filter(instruments__contains=request.GET.get('q', ''))[:10]
+        instrus = [result.instruments for result in sqs]
+        suggestions = []
+        for chaine in instrus:
+            for word in chaine.split('|'):
+                if word != "" and escapeAccentAndLower(request.GET.get('q', '')) in escapeAccentAndLower(word):
+                    suggestions.append(word)
     elif request.GET.get('attr', '') == "code":
         sqs = sqs.filter(code__contains=request.GET.get('q', ''))[:10]
         suggestions = [result.code for result in sqs]
+
+    elif request.GET.get('attr', '') == "collectors":
+        sqs = sqs.filter(collectors__contains=request.GET.get('q', ''))[:10]
+        suggestions = [result.collectors for result in sqs]
     else:
         suggestions = []
 
@@ -182,3 +187,8 @@ def autocomplete(request):
         'results': suggestions
     })
     return HttpResponse(the_data, content_type='application/json')
+
+import unicodedata
+
+def escapeAccentAndLower(chaine):
+    return unicodedata.normalize('NFD', chaine).encode('ascii', 'ignore').lower()
