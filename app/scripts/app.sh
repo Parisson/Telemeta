@@ -28,8 +28,6 @@ python $manage syncdb --noinput
 python $manage migrate --noinput
 python $manage bower_install -- --allow-root
 python $manage collectstatic --noinput
-python $manage telemeta-create-admin-user
-python $manage telemeta-create-boilerplate
 
 if [ $DEBUG = "False" ]
 then
@@ -37,6 +35,8 @@ then
     if [ ! -f .init ]
     then
         chown -R www-data:www-data $media
+        python $manage telemeta-create-admin-user
+        python $manage telemeta-create-boilerplate
         touch .init
     fi
 fi
