@@ -11,6 +11,17 @@
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/css/jquery-ui.css" />
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/css/search.css" />
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/css/lists_sorttable.css" media="print, projection, screen"/>
+    <style>
+
+        form p{
+            display: inline-block;
+        }
+
+        .ui-front{
+            z-index: 1000;
+        }
+
+    </style>
 {% endblock %}
 {% block content %}
     <form method="get" action=".">
@@ -38,8 +49,9 @@
                 </div>
                 <div class="fieldWrapper">
                     {{form.instruments.errors}}
-                    {% trans form.instruments.label_tag %}</br>
+                    {% trans form.instruments.label_tag %}
                     {{form.instruments}}
+                    <a href="#" id="btn" class="col-md-5 btn btn-default" style="width: 100%; margin-top: 1%">Recherche booléenne</a>
                 </div>
 
                 <div class="fieldWrapper">
@@ -234,6 +246,35 @@
             <div id="results"></div>{# Show some example queries to run, maybe query syntax, something else? #}
         {% endif %}
 
+        <div id="dialog" title="Recherche booléenne">
+
+            <form>
+
+                {{ booleanForm.management_form}}
+                {% for form in booleanForm %}
+                    {% if forloop.counter0 == 0 %}
+                        <span style="margin-left: 18%">{{ form.startBracket }}</span>
+                        {{ form.textField }}
+                        {{ form.endBracket }}
+                    {% else %}
+                        {% if forloop.counter0 == 1 %}
+                        <div id="copy">
+                        {% endif %}
+                            {{ form.as_p }}
+                        {% if forloop.counter0 == 1 %}
+                        </div>
+                        {% endif %}
+                    {% endif %}
+
+                {% endfor %}
+                <a class="btn btn-default" id="ajout" href="#">Ajouter champ</a>
+                <br/><input type="submit" value="Valider la requête">
+
+
+            </form>
+
+        </div>
+
 {% endblock %}
 {% block extra_javascript %}
     <script src="{{ STATIC_URL }}jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
@@ -252,30 +293,63 @@
 
 </script>
     <script>
-$(function(){
-    $('#id_code, #id_instruments, #id_collectors').each(function(){
+$(function() {
+    function activerAutocompletion(selecteur, attribut) {
+
+    selecteur.each(function () {
         var self = this;
         $(this).autocomplete({
-            source : function(requete, reponse) {
+            source: function (requete, reponse) {
                 $.ajax({
                     url: '/search/autocomplete/',
                     dataType: 'json',
-                     data: {
+                    data: {
                         q: $(self).val(),
-                        attr: $(self).attr('name')
-                     },
-                success: function (donnee) {
+                        attr: ((attribut) ? attribut : $(self).attr('name'))
+                    },
+                    success: function (donnee) {
                         reponse(donnee.results);
                     }
-             });
-        }
+                });
+            }
+        });
     });
-    });
-    
+
+}
+
+    activerAutocompletion($('#id_code, #id_instruments, #id_collectors'));
+
     $.tablesorter.defaults.sortList = [[1,0]];
     
     $("#searchtable").tablesorter({headers: {0:{sorter:false}, 2:{sorter:false}}} );
-    
+
+    $('#dialog').dialog({
+        autoOpen: false,
+        width: '30%',
+    });
+
+    $('.fieldWrapper a').click(function(){
+        $('#dialog').dialog("open");
+    });
+
+    var supprButton = '<a class="btn btn-default" id="suppr" href="#">Supprimer champ</a><br/>';
+
+    function ajout(e) {
+        e.preventDefault();
+        var nombre = $('input[name*="textField"]').length;
+        var balise = $('#copy').clone().removeAttr('id').html().replace(/1/g, nombre);
+        if(nombre==2){
+            $('#ajout').after(supprButton);
+        }
+        $('#ajout').before(balise);
+        activerAutocompletion($('#id_form-'+nombre+'-textField'), 'instruments');
+
+    }
+
+
+
+    $('#ajout').click(ajout);
+
 });
     </script>
 {% endblock %}
