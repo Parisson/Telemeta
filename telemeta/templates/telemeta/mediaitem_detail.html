@@ -31,7 +31,7 @@
      {% if access == 'full' or perms.telemeta.can_play_all_items %}
         //initializing soundManager default properties
         soundManager.flashVersion = 9;
-        soundManager.url = "{{ STATIC_URL }}timeside/swf/";
+        soundManager.url = "{{ STATIC_URL }}SoundManager2/swf/";
         soundManager.debugMode = false;
         soundManager.allowPolling = true;
         soundManager.useHTML5Audio = false;
@@ -108,7 +108,7 @@
     </a>
     <a href="{% url "telemeta-item-copy" item.public_id %}">
       <button type="button" class="btn btn-default">
-        <span class="glyphicon glyphicon-new-window"></span> {% trans "Copy" %}
+        <span class="glyphicon glyphicon-copy"></span> {% trans "Copy" %}
       </button>
     </a>
     {% endif %}
@@ -200,6 +200,7 @@
                 </tr>
             </table>
         </div>
+
         <!--</div>-->
 
         {% if audio_export_enabled or perms.telemeta.can_download_all_items or user.is_superuser %}
@@ -209,6 +210,17 @@
                     <img src="{{ STATIC_URL }}telemeta/images/{{ format.extension }}.png" style="vertical-align:middle" alt="{{ format.extension }}" /></a>
                 {% endfor %}
         </div>
+
+    	{% block DIADEMS %}
+        {% if ts_item_id %}
+    	<a href="{% url "timeside-item-diadems" ts_item_id %}">
+    	  <button type="button" class="btn btn-primary" style="float:left;margin-top:0.5em;margin-bottom:1em;border-color: #ffffff; ">
+                <b>DIADEMS</b>
+    	  </button>
+    	</a>
+        {% endif %}
+    	{% endblock DIADEMS %}
+
         {% endif %}
 
     </div>
