@@ -15,6 +15,7 @@ threads=8
 autoreload=3
 uid='www-data'
 gid='www-data'
+patterns='*.js;*.css;*.jpg;*.jpeg;*.gif;*.png;*.svg;*.ttf;*.eot;*.woff;*.woff2'
 
 # stating apps
 # pip install django-bootstrap3==6.2.1
@@ -45,7 +46,7 @@ if [ $1 = "--runserver" ]; then
     python $manage runserver_plus 0.0.0.0:8000
 else
     # static files auto update
-    watchmedo shell-command --patterns="*.js;*.css" --recursive \
+    watchmedo shell-command --patterns="$patterns" --recursive \
         --command='python '$manage' collectstatic --noinput' $src &
 
     # app start
