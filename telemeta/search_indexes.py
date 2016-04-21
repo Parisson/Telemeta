@@ -20,9 +20,6 @@
 from haystack import indexes
 from telemeta.models import *
 
-class InstrumentField(indexes.CharField):
-    field_type = 'instrument'
-
 class MediaItemIndex(indexes.SearchIndex, indexes.Indexable):
 
     text = indexes.CharField(document=True, use_template=True)
@@ -40,7 +37,7 @@ class MediaItemIndex(indexes.SearchIndex, indexes.Indexable):
     location_principal = indexes.CharField(null='None', boost=1.05)
     location_relation = indexes.CharField()
     ethnic_group = indexes.CharField(model_attr='ethnic_group', default='')
-    instruments = InstrumentField(default='')
+    instruments = indexes.CharField(default='')
     collectors = indexes.CharField(model_attr='collector', default='')
     recorded_from_date = indexes.DateField(model_attr='recorded_from_date', null='None')
     recorded_to_date = indexes.DateField(model_attr='recorded_to_date', null='None')
@@ -111,7 +108,7 @@ class MediaCollectionIndex(indexes.SearchIndex, indexes.Indexable):
     location_principal = indexes.CharField(default='', boost=1.05)
     location_relation = indexes.CharField()
     ethnic_group = indexes.CharField(default='')
-    instruments = InstrumentField(default='')
+    instruments = indexes.CharField(default='')
     collectors = indexes.CharField(model_attr='collector', default='')
     recorded_from_date = indexes.DateField(model_attr='recorded_from_year', null=True)
     recorded_to_date = indexes.DateField(model_attr='recorded_to_year', null=True)
