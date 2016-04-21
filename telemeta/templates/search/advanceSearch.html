@@ -21,6 +21,10 @@
             z-index: 1000;
         }
 
+        select[name*="startBracket"]{
+            text-align: right;
+        }
+
     </style>
 {% endblock %}
 {% block content %}
@@ -253,7 +257,7 @@
                 {{ booleanForm.management_form}}
                 {% for form in booleanForm %}
                     {% if forloop.counter0 == 0 %}
-                        <span style="margin-left: 18%">{{ form.startBracket }}</span>
+                        <span style="margin-left: 13.5%">{{ form.startBracket }}</span>
                         {{ form.textField }}
                         {{ form.endBracket }}
                     {% else %}
@@ -272,6 +276,10 @@
 
 
             </form>
+
+        <p id="res"></p>
+
+        <p>Pour chaque champ : Mot-clé contenu dans l'instrument (ex "uita" pour "guitare") ou nom entier</p>
 
         </div>
 
@@ -325,7 +333,8 @@ $(function() {
 
     $('#dialog').dialog({
         autoOpen: false,
-        width: '30%',
+        width: '40%',
+        height: 600,
     });
 
     $('.fieldWrapper a').click(function(){
@@ -334,21 +343,74 @@ $(function() {
 
     var supprButton = '<a class="btn btn-default" id="suppr" href="#">Supprimer champ</a><br/>';
 
-    function ajout(e) {
+    var balise = $('#copy').clone();
+    $(balise).children().each(function () {
+        $(this).val('').prop('checked', false).prop('selected', false);
+    });
+
+    function suppression(e) {
         e.preventDefault();
         var nombre = $('input[name*="textField"]').length;
-        var balise = $('#copy').clone().removeAttr('id').html().replace(/1/g, nombre);
-        if(nombre==2){
-            $('#ajout').after(supprButton);
+        if(nombre==3){
+            $('#suppr').remove();
         }
-        $('#ajout').before(balise);
-        activerAutocompletion($('#id_form-'+nombre+'-textField'), 'instruments');
+        $('#bloc-'+(nombre-1)).remove();
+        $('#id_form-TOTAL_FORMS').attr('value', nombre-1);
 
     }
 
-
+    function ajout(e) {
+        e.preventDefault();
+        var nombre = $('input[name*="textField"]').length;
+        var bal = $(balise).clone().attr('id', 'bloc-'+nombre);
+        if(nombre==2){
+            $('#ajout').after(supprButton);
+            $('#suppr').click(suppression);
+        }
+        $('#ajout').before(bal);
+        $('#bloc-'+nombre).html($('#bloc-'+nombre).html().replace(/1/g, nombre));
+        activerAutocompletion($('#id_form-'+nombre+'-textField'), 'instruments');
+        $('#id_form-TOTAL_FORMS').attr('value', nombre+1);
+    }
 
     $('#ajout').click(ajout);
+
+    activerAutocompletion($('#id_form-0-textField, #id_form-1-textField'), 'instruments');
+
+    var interval = null;
+    var textInput = "";
+
+    $('#dialog form').on('submit change', function (e) {
+        if(e.type!='keypress') e.preventDefault();
+        $.ajax({
+            url: '/search/booleaninstru/',
+            dataType: 'json',
+            data: $(this).serialize(),
+            success: function(donnees){
+                if(e.type=='submit' && donnees.result.match(/Requête formée : /g)){
+                    $("#dialog").dialog("close");
+                    $('#id_instruments').val(donnees.result.substr(17));
+                }
+                $('#res').text(donnees.result);
+            },
+        });
+    });
+
+    $('#dialog input[type="text"]').on('focus', function () {
+        textInput = $(this).val();
+        var self = this;
+       interval = setInterval(function () {
+            if($(self).val()!= textInput){
+                textInput = $(self).val();
+                $('#dialog form').trigger('change');
+            }
+       }, 500);
+    });
+
+    $('#dialog input[type="text"]').on('blur', function () {
+       clearInterval(interval);
+        textInput = ""
+    });
 
 });
     </script>
