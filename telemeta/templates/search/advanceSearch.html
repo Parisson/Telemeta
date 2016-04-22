@@ -387,11 +387,11 @@ $(function() {
             dataType: 'json',
             data: $(this).serialize(),
             success: function(donnees){
-                if(e.type=='submit' && donnees.result.match(/Requête formée : /g)){
+                if(e.type=='submit' && !donnees.result.match(/\[ERROR\]/g)){
                     $("#dialog").dialog("close");
-                    $('#id_instruments').val(donnees.result.substr(17));
+                    $('#id_instruments').val(donnees.result);
                 }
-                $('#res').text(donnees.result);
+                $('#res').html("Requête formée :<br/><strong>"+donnees.result+'</strong>');
             },
         });
     });

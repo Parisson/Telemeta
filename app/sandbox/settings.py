@@ -5,7 +5,6 @@ import os, sys
 from django.core.urlresolvers import reverse_lazy, reverse
 
 import environ
-
 # set default values and casting
 env = environ.Env(DEBUG=(bool, False),
                   CELERY_ALWAYS_EAGER=(bool, False),

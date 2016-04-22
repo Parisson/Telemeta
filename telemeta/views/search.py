@@ -1,5 +1,4 @@
-# coding: utf-8
-
+# -*- coding: utf-8 -*-
 # Copyright (C) 2015 Angy Fils-Aimé, Killian Mary
 
 # This file is part of Telemeta.
@@ -27,8 +26,6 @@ import simplejson as json
 from django.http import HttpResponse
 from telemeta.forms.boolean_form import *
 from django.forms.formsets import formset_factory
-from django.utils.encoding import smart_str
-
 
 class HaystackSearch(FacetedSearchView, SavedSearchView):
 
@@ -201,7 +198,7 @@ class BooleanSearchView(object):
 
     form = formset_factory(BooleanSearch)
 
-    def getBooleanQuery(self, request):
+    def getBooleanQuery(self, request, type='json'):
         if request.method != 'GET':
             return HttpResponse(json.dumps({'result': '[ERROR]:Not Request GET'}), content_type='application/json')
 
@@ -218,25 +215,28 @@ class BooleanSearchView(object):
             try:
                 self.isCorrectQuery(query.strip())
             except Erreur as e:
-                return HttpResponse(json.dumps({'result': e.message}), content_type='application/json')
-            return HttpResponse(json.dumps({'result': u'Requête formée : '+query.strip()}), content_type='application/json')
+                if type=="json":
+                    return HttpResponse(json.dumps({'result': e.message}), content_type='application/json')
+            if type=="json":
+                return HttpResponse(json.dumps({'result': query.strip()}), content_type='application/json')
         else:
-            return HttpResponse(json.dumps({'result': 'Field(s) missing'}), content_type='application/json')
+            if type=="json":
+                return HttpResponse(json.dumps({'result': '[ERROR]Field(s) missing'}), content_type='application/json')
 
-    def isCorrectQuery(self, query):
+    def isCorrectQuery(self, query):#
         tabQuery = query.split()
         openBracket = 0
         boolean = False
         for mot in tabQuery:
-            if mot ==")":
+            if mot ==")":#
                 if openBracket == 0:
-                    raise Erreur("Open Bracket Is Missing !")
+                    raise Erreur("[ERROR]Open Bracket Is Missing !")
                 else:
                     openBracket -= 1
                     boolean = False
             elif mot=="ET" or mot=="OU":
                 if boolean:
-                    raise Erreur("Two boolean follow")
+                    raise Erreur("[ERROR]Two boolean follow")
                 else:
                     boolean = True
             elif mot == "(":
@@ -244,9 +244,9 @@ class BooleanSearchView(object):
             else:
                 boolean = False
         if boolean:
-            raise Erreur("Boolean at the end of query")
+            raise Erreur("[ERROR]Boolean at the end of query")
         elif openBracket != 0:
-            raise Erreur("Close Bracket Is Missing")
+            raise Erreur("[ERROR]Close Bracket Is Missing")
         else:
             return True
 
