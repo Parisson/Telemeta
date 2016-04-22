@@ -24,6 +24,8 @@ date enregistrement : min 1900 mais date avant apparaissent
 
 autocompletion sur instruments/collecteur (listes fermees)
 
+recherche booleenne sur les instruments
+
 VERIF PROD :
 
 filtre inedits/edites pour les items : passer par la collection puis sa cote (I : inedit, E : edites)

@@ -40,7 +40,12 @@
             collapsible : true,
             icons : nouvellesIcones,
             heightStyle: "content",
-            active: {{ last_playlist }},
+        {% if not last_playlist  %}
+            active: false,
+        {% else %}
+            active: {{ last_playlist }}
+        {% endif %}
+
         });
 
         $.tablesorter.defaults.sortList = [[2,0]];
