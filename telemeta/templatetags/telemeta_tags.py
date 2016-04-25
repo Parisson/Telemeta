@@ -13,6 +13,7 @@ from django.utils.safestring import mark_safe
 from django import db
 import re
 import os
+import ast
 import datetime
 from django.conf import settings
 from django.template.defaultfilters import stringfilter
@@ -74,11 +75,8 @@ def escapejs(value):
     return value
 
 @register.filter
-def build_pattern_string(criteria):
-    dict = {}
-    for c in criteria:
-        dict[c.key] = c.value
-    return dict
+def build_pattern_dict(query):
+    return ast.literal_eval(query.rstrip())
 
 @register.filter
 def build_query_string(vars):
@@ -92,8 +90,7 @@ def build_query_string(vars):
           elif not isinstance(v, basestring):
               v = unicode(v)
           args.append(urlquote(k) + '=' + urlquote(v))
-
-      return "&amp;".join(args)
+      return "&".join(args)
     return ''
 
 @register.filter
@@ -470,4 +467,3 @@ def get_googletools():
 @register.assignment_tag
 def settings_value(name):
     return getattr(settings, name, "")
-

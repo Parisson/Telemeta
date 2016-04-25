@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {% load i18n %}
-{% load telemeta_utils %}
+{% load telemeta_tags %}
 {% load bootstrap3 %}
 {% settings_value 'INSTALLED_APPS' as INSTALLED_APPS %}
 {% if 'googletools' in INSTALLED_APPS %}
@@ -32,7 +32,8 @@
 
 {% block stylesheets %}
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/css/telemeta.css" />
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/css/telemeta-more.css" />
 
 <!--[if IE]>
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/css/telemeta_ie.css" />

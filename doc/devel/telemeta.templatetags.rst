@@ -12,10 +12,10 @@ telemeta.templatetags.paginator module
     :undoc-members:
     :show-inheritance:
 
-telemeta.templatetags.telemeta_utils module
+telemeta.templatetags.telemeta_tags module
 -------------------------------------------
 
-.. automodule:: telemeta.templatetags.telemeta_utils
+.. automodule:: telemeta.templatetags.telemeta_tags
     :members:
     :undoc-members:
     :show-inheritance:

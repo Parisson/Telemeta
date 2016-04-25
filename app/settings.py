@@ -122,6 +122,8 @@ TEMPLATE_LOADERS = (
 
 
 MIDDLEWARE_CLASSES = (
+    # Manage Django URLs for AngularJS with django-angular
+    'djng.middleware.AngularUrlMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -131,7 +133,7 @@ MIDDLEWARE_CLASSES = (
     # 'pagination.middleware.PaginationMiddleware',
 )
 
-ROOT_URLCONF = 'sandbox.urls'
+ROOT_URLCONF = 'urls'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -168,7 +170,8 @@ INSTALLED_APPS = (
     'djcelery',
     'haystack',
     'djangobower',
-    'djangular',
+    'djng',
+    'saved_searches',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -296,7 +299,7 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_ACCEPT_CONTENT = ['application/json']
 
-from celery_app import app
+from worker import app
 
 HAYSTACK_CONNECTIONS = {
     'default': {
@@ -317,12 +320,12 @@ BOWER_INSTALLED_APPS = (
     'underscore',
     'bootstrap',
     'bootstrap-select#1.5.4',
-    'font-awesome#~4.4.0',
+    'font-awesome#4.4.0',
     'angular#1.2.26',
     'angular-bootstrap-select',
     'angular-resource#1.2.26',
     'raphael',
-    'soundmanager',
+    'soundmanager#V2.97a.20150601',
     'https://github.com/Parisson/loaders.git',
     'https://github.com/Parisson/ui.git',
     'jquery-ui',
