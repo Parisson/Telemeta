@@ -191,6 +191,7 @@ class MediaItem(MediaResource):
 
     def get_source(self):
         source = None
+        source_type = None
         if self.file and os.path.exists(self.file.path):
             source = self.file.path
         elif self.url:
