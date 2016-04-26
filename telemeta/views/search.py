@@ -177,7 +177,7 @@ def autocomplete(request):
         suggestions = [result.code for result in sqs]
 
     elif request.GET.get('attr', '') == "collectors":
-        sqs = sqs.filter(collectors__contains=request.GET.get('q', ''))[:10]
+        sqs = sqs.filter(collectors__startswith=request.GET.get('q', ''))[:10]
         suggestions = [result.collectors for result in sqs]
     else:
         suggestions = []
@@ -252,5 +252,5 @@ class BooleanSearchView(object):
 
 
 
-class Erreur(Exception):
-    pass
+class Erreur(Exception):#
+    pass#

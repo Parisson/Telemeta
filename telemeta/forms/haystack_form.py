@@ -193,13 +193,13 @@ class HayAdvanceForm(SearchForm):
             return self.no_query_found()
 
         if self.cleaned_data.get('q'):
-            sqs = sqs.filter(title__contains=self.cleaned_data['q'])
+            sqs = sqs.filter(title__startswith=self.cleaned_data['q'])
 
         if self.cleaned_data.get('code'):
             sqs = sqs.filter(code__contains=self.cleaned_data['code'])
 
         if self.cleaned_data.get('location'):
-            sqs = sqs.filter(location_principal__contains=self.cleaned_data['location']).filter_or(location_relation__contains=self.cleaned_data['location'])
+            sqs = sqs.filter(location_principal__startswith=self.cleaned_data['location']).filter_or(location_relation__startswith=self.cleaned_data['location'])
 
         if self.cleaned_data['ethnic_group']:
             if self.cleaned_data.get('ethnic_group') != '':
