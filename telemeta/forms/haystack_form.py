@@ -41,7 +41,7 @@ class HaySearchForm(FacetedSearchForm):
         if self.cleaned_data['q']:
             #search input of a code, contains at least '_YYYY_'
             if not re.match('([a-zA-Z]*_?[EI])?_[0-9]{4}_([0-9]{3}_[0-9]{3})?', self.cleaned_data.get('q')):
-                sqs = sqs.filter(content__contains=self.cleaned_data['q']).facet('item_acces').facet('item_status').facet('digitized').facet('recording_context').facet('physical_format').facet('media_type')
+                sqs = sqs.filter(content__startswith=self.cleaned_data['q']).facet('item_acces').facet('item_status').facet('digitized').facet('recording_context').facet('physical_format').facet('media_type')
             else:
                 sqs = sqs.filter(code__contains=self.cleaned_data['q']).facet('item_acces').facet('item_status').facet('digitized').facet('recording_context').facet('physical_format').facet('media_type')
 

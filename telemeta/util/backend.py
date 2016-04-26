@@ -12,6 +12,8 @@ class CustomElasticBackend(ElasticsearchSearchBackend):
             {"type": "custom", "tokenizer": "whitespace", "filter": ["lowercase", "asciifolding"]}
         eb.setup()
 
+
+import unicodedata
 class CustomElasticSearchQuery(ElasticsearchSearchQuery):
 
     def build_query_fragment(self, field, filter_type, value):
@@ -22,10 +24,10 @@ class CustomElasticSearchQuery(ElasticsearchSearchQuery):
 
     def build_query(self):
         valeur = super(CustomElasticSearchQuery, self).build_query()
-        print(valeur)
+        print (unicodedata.normalize('NFD', valeur).encode('ascii', 'ignore'))
         return valeur
 
 class CustomElasticEngine(ElasticsearchSearchEngine):
     backend = CustomElasticBackend
-    query = CustomElasticSearchQuery
+    query = CustomElasticSearchQuery#
 
