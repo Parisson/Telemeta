@@ -231,9 +231,9 @@ class HayAdvanceForm(SearchForm):
 
         if self.cleaned_data['item_status']:
             if self.cleaned_data.get('item_status') == 'pub':
-                sqs = sqs.filter(item_status='Published')
+                sqs = sqs.filter(item_status__exact='Published')
             if self.cleaned_data.get('item_status') == 'unpub':
-                sqs = sqs.filter(item_status='Unpublished')
+                sqs = sqs.filter(item_status__exact='Unpublished')
 
         if self.cleaned_data['media_type']:
             if self.cleaned_data.get('media_type') != '1':
