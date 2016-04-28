@@ -5,10 +5,15 @@ from haystack.backends.elasticsearch_backend import *
 class CustomElasticBackend(ElasticsearchSearchBackend):
 
     def setup(self):
-        DEFAULT_FIELD_MAPPING['analyzer']='snowball_asciifolding_analyzer'
+        DEFAULT_FIELD_MAPPING['analyzer']='whitespace_asciifolding_analyzer'
+        FIELD_MAPPINGS['keyword'] = {'type': 'string', 'analyzer':'lowercase_analyzer'}
         eb = super(CustomElasticBackend, self)
-        eb.DEFAULT_SETTINGS.get('settings').get('analysis').get('analyzer')['snowball_asciifolding_analyzer']=\
-            {"type": "custom", "tokenizer": "letter", "filter": ["lowercase", "stop",  "asciifolding"]}
+        eb.DEFAULT_SETTINGS.get('settings').get('analysis').get('tokenizer')['esc_scape_tokenizer']=\
+            {"type": "pattern", "pattern": "\\s|\\|"}
+        eb.DEFAULT_SETTINGS.get('settings').get('analysis').get('analyzer')['whitespace_asciifolding_analyzer']=\
+            {"type": "custom", "tokenizer": "esc_scape_tokenizer", "filter": ["lowercase", "word_delimiter", "asciifolding"]}
+        eb.DEFAULT_SETTINGS.get('settings').get('analysis').get('analyzer')['lowercase_analyzer'] = \
+            {"type": "custom", "tokenizer": "keyword", "filter": ["lowercase"]}
         eb.setup()
 
 

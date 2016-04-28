@@ -167,7 +167,7 @@ class HayAdvanceForm(SearchForm):
             term = queryTerms.pop(0)
             if term == "ET" or term == "OU":
                 if valeur != "":
-                    sqTab.append(('instruments__contains', valeur.strip()))
+                    sqTab.append(('instruments__startswith', valeur.strip()))
                     valeur = ""
                 if term != operateur:
                     sqTab = [SQ(filtre) for filtre in sqTab]
@@ -182,7 +182,7 @@ class HayAdvanceForm(SearchForm):
             else:
                 valeur += term + " "
         if valeur != "":
-            sqTab.append(('instruments__contains', valeur.strip()))
+            sqTab.append(('instruments__startswith', valeur.strip()))
         sqTab = [SQ(filtre) for filtre in sqTab]
         return SQ(reduce(operator.and_, sqTab) if operateur == "ET" else reduce(operator.or_, sqTab))
 

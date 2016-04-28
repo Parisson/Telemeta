@@ -165,7 +165,7 @@ class HaystackAdvanceSearch(SavedSearchView):
 def autocomplete(request):
     sqs = SearchQuerySet().load_all()
     if request.GET.get('attr', '') == "instruments":
-        sqs = sqs.filter(instruments__contains=request.GET.get('q', ''))[:10]
+        sqs = sqs.filter(instruments__startswith=request.GET.get('q', ''))
         instrus = [result.instruments for result in sqs]
         suggestions = []
         for chaine in instrus:
@@ -173,16 +173,25 @@ def autocomplete(request):
                 if word != "" and escapeAccentAndLower(request.GET.get('q', '')) in escapeAccentAndLower(word):
                     suggestions.append(word)
     elif request.GET.get('attr', '') == "code":
-        sqs = sqs.filter(code__contains=request.GET.get('q', ''))[:10]
+        sqs = sqs.filter(code__contains=request.GET.get('q', ''))
         suggestions = [result.code for result in sqs]
 
     elif request.GET.get('attr', '') == "collectors":
-        sqs = sqs.filter(collectors__startswith=request.GET.get('q', ''))[:10]
-        suggestions = [result.collectors for result in sqs]
+        sqs = sqs.filter(collectors__startswith=request.GET.get('q', ''))
+        collecteurs = [result.collectors for result in sqs]
+        suggestions = []
+        for chaine in collecteurs:
+            for word in chaine.split('; '):
+                if word != "" and escapeAccentAndLower(request.GET.get('q', '')) in escapeAccentAndLower(word):
+                    suggestions.append(word)
     else:
         suggestions = []
 
-    suggestions = list(set(suggestions))
+    if request.GET.get('attr', '') != 'code':
+        suggestions = list(set([word.strip().lower().title() for word in suggestions]))
+    else:
+        suggestions = list(set(suggestions))
+    suggestions.sort()
 
     the_data = json.dumps({
         'results': suggestions

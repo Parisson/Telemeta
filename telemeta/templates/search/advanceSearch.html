@@ -307,6 +307,7 @@ $(function() {
     selecteur.each(function () {
         var self = this;
         $(this).autocomplete({
+            minLength: 3,
             source: function (requete, reponse) {
                 $.ajax({
                     url: '/search/autocomplete/',
@@ -327,9 +328,34 @@ $(function() {
 
     activerAutocompletion($('#id_code, #id_instruments, #id_collectors'));
 
+
+    $.tablesorter.addParser({
+        id: 'numerised',
+        is:function (s) {
+            return false;
+        },
+        format: function(s, table, cell){
+            var _class = $(cell).find('center span').attr('class');
+            _class = _class == undefined ? 1 : 0
+            alert(_class);
+            return _class;
+        },
+        type: 'number'
+    });
+
     $.tablesorter.defaults.sortList = [[1,0]];
     
-    $("#searchtable").tablesorter({headers: {0:{sorter:false}, 2:{sorter:false}}} );
+    $("#searchtable").tablesorter({
+        debug: true,
+
+        headers: {
+
+            0:{sorter:false},
+            2: {sorter: 'numerised'}
+        }
+
+    });
+
 
     $('#dialog').dialog({
         autoOpen: false,
