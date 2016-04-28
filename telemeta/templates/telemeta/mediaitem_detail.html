@@ -211,6 +211,7 @@
                 {% endfor %}
         </div>
 
+        {% comment %}
     	{% block DIADEMS %}
         {% if ts_item_id %}
     	<a href="{% url "timeside-item-diadems" ts_item_id %}">
@@ -220,6 +221,7 @@
     	</a>
         {% endif %}
     	{% endblock DIADEMS %}
+        {% endcomment %}
 
         {% endif %}
 
