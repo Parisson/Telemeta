@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # paths
 app='/srv/app'
@@ -15,12 +15,13 @@ threads=8
 autoreload=3
 uid='www-data'
 gid='www-data'
+patterns='*.js;*.css;*.jpg;*.jpeg;*.gif;*.png;*.svg;*.ttf;*.eot;*.woff;*.woff2'
 
 # stating apps
-# pip install django-angular
+# pip install django-bootstrap3==6.2.1
 
 # waiting for other network services
-sh $app/deploy/wait.sh
+sh $app/scripts/wait.sh
 
 #fix contains haystack elasticsearch
 cd /opt/miniconda/lib/python2.7/site-packages/haystack/backends && sed -i "s/'contains': u'%s'/'contains': u'*%s*'/g" elasticsearch_backend.py && cd $app
@@ -31,30 +32,29 @@ python $manage syncdb --noinput
 python $manage migrate --noinput
 python $manage bower_install -- --allow-root
 python $manage collectstatic --noinput
-python $manage telemeta-create-admin-user
-python $manage telemeta-create-boilerplate
 
 if [ $REINDEX = "True" ]
 then
 python $manage rebuild_index --noinput
 fi
 
-if [ $DEBUG = "False" ]
-then
-    python $manage update_index --workers $processes &
-    if [ ! -f .init ]
-    then
-        chown -R www-data:www-data $media
-        touch .init
-    fi
+if [ ! -f .init ]; then
+    chown -R www-data:www-data $media
+    python $manage telemeta-create-admin-user
+    python $manage telemeta-create-boilerplate
+    touch .init
 fi
 
-if [ $1 = "--runserver" ]
-then
+if [ $DEBUG = "False" ]; then
+    python $manage update_index --workers $processes &
+fi
+
+
+if [ $1 = "--runserver" ]; then
     python $manage runserver_plus 0.0.0.0:8000
 else
     # static files auto update
-    watchmedo shell-command --patterns="*.js;*.css" --recursive \
+    watchmedo shell-command --patterns="$patterns" --recursive \
         --command='python '$manage' collectstatic --noinput' $src &
 
     # app start
