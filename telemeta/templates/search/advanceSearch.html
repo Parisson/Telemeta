@@ -337,7 +337,6 @@ $(function() {
         format: function(s, table, cell){
             var _class = $(cell).find('center span').attr('class');
             _class = _class == undefined ? 1 : 0
-            alert(_class);
             return _class;
         },
         type: 'number'
@@ -346,8 +345,6 @@ $(function() {
     $.tablesorter.defaults.sortList = [[1,0]];
     
     $("#searchtable").tablesorter({
-        debug: true,
-
         headers: {
 
             0:{sorter:false},
