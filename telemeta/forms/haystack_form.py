@@ -23,9 +23,10 @@
 
 from telemeta.models import *
 from haystack.forms import *
-from haystack.query import SearchQuerySet
+from haystack.query import SearchQuerySet, SQ
 from datetime import date
 from django.utils.translation import ugettext_lazy as _
+import operator
 
 class HaySearchForm(FacetedSearchForm):
 
@@ -40,7 +41,7 @@ class HaySearchForm(FacetedSearchForm):
         if self.cleaned_data['q']:
             #search input of a code, contains at least '_YYYY_'
             if not re.match('([a-zA-Z]*_?[EI])?_[0-9]{4}_([0-9]{3}_[0-9]{3})?', self.cleaned_data.get('q')):
-                sqs = sqs.filter(content__contains=self.cleaned_data['q']).facet('item_acces').facet('item_status').facet('digitized').facet('recording_context').facet('physical_format').facet('media_type')
+                sqs = sqs.filter(content__startswith=self.cleaned_data['q']).facet('item_acces').facet('item_status').facet('digitized').facet('recording_context').facet('physical_format').facet('media_type')
             else:
                 sqs = sqs.filter(code__contains=self.cleaned_data['q']).facet('item_acces').facet('item_status').facet('digitized').facet('recording_context').facet('physical_format').facet('media_type')
 
@@ -154,6 +155,37 @@ class HayAdvanceForm(SearchForm):
     physical_format = forms.CharField(required=False, label=(_('physical format')), widget=forms.Select(attrs={'style': 'width:100%'}, choices=list_physical_format()))
     code = forms.CharField(required=False, label=(_('code')), widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'search'}))
 
+    def filterInstru(self, query):
+        operateur = "ET"
+        if isinstance(query, list):
+            queryTerms = query
+        else:
+            queryTerms = query.split()
+        sqTab = []
+        valeur = ""
+        while len(queryTerms) != 0:
+            term = queryTerms.pop(0)
+            if term == "ET" or term == "OU":
+                if valeur != "":
+                    sqTab.append(('instruments__startswith', valeur.strip()))
+                    valeur = ""
+                if term != operateur:
+                    sqTab = [SQ(filtre) for filtre in sqTab]
+                    objet = reduce(operator.or_, sqTab) if operateur == "OU" else reduce(operator.and_, sqTab)
+                    del sqTab[:]
+                    sqTab.append(objet)
+                    operateur = "OU" if operateur == "ET" else "ET"
+            elif term == "(":
+                indexCloseBracket = getclosebracket(queryTerms)
+                sqTab.append(self.filterInstru(queryTerms[:indexCloseBracket]))
+                del queryTerms[:indexCloseBracket + 1]
+            else:
+                valeur += term + " "
+        if valeur != "":
+            sqTab.append(('instruments__startswith', valeur.strip()))
+        sqTab = [SQ(filtre) for filtre in sqTab]
+        return SQ(reduce(operator.and_, sqTab) if operateur == "ET" else reduce(operator.or_, sqTab))
+
     def search(self):
         sqs = SearchQuerySet().load_all()
 
@@ -161,20 +193,20 @@ class HayAdvanceForm(SearchForm):
             return self.no_query_found()
 
         if self.cleaned_data.get('q'):
-            sqs = sqs.filter(title__contains=self.cleaned_data['q'])
+            sqs = sqs.filter(title__startswith=self.cleaned_data['q'])
 
         if self.cleaned_data.get('code'):
             sqs = sqs.filter(code__contains=self.cleaned_data['code'])
 
         if self.cleaned_data.get('location'):
-            sqs = sqs.filter(location_principal__contains=self.cleaned_data['location']).filter_or(location_relation__contains=self.cleaned_data['location'])
+            sqs = sqs.filter(location_principal__startswith=self.cleaned_data['location']).filter_or(location_relation__startswith=self.cleaned_data['location'])
 
         if self.cleaned_data['ethnic_group']:
             if self.cleaned_data.get('ethnic_group') != '':
                 sqs = sqs.filter(ethnic_group__contains=self.cleaned_data['ethnic_group'])
 
         if self.cleaned_data.get('instruments'):
-            sqs = sqs.filter(instruments__contains=self.cleaned_data['instruments'])
+            sqs = sqs.filter(self.filterInstru(self.cleaned_data['instruments']))#
 
         if self.cleaned_data.get('collectors'):
             sqs = sqs.filter(collectors__contains=self.cleaned_data['collectors'])
@@ -199,9 +231,9 @@ class HayAdvanceForm(SearchForm):
 
         if self.cleaned_data['item_status']:
             if self.cleaned_data.get('item_status') == 'pub':
-                sqs = sqs.filter(item_status='Published')
+                sqs = sqs.filter(item_status__exact='Published')
             if self.cleaned_data.get('item_status') == 'unpub':
-                sqs = sqs.filter(item_status='Unpublished')
+                sqs = sqs.filter(item_status__exact='Unpublished')
 
         if self.cleaned_data['media_type']:
             if self.cleaned_data.get('media_type') != '1':
@@ -216,3 +248,17 @@ class HayAdvanceForm(SearchForm):
                 sqs = sqs.filter(physical_format=self.cleaned_data['physical_format'])
 
         return sqs
+
+
+def getclosebracket(tab):
+    index = 0
+    par = 1
+    while par != 0 and index<len(tab):
+        if tab[index]=="(":
+            par += 1
+        elif tab[index]==")":
+            par -= 1
+        if par !=0:
+            index+= 1
+    return index if par == 0 else -1
+#

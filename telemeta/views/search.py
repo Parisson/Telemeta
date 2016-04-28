@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright (C) 2015 Angy Fils-Aimé, Killian Mary
 
 # This file is part of Telemeta.
@@ -25,7 +24,8 @@ from telemeta.forms.haystack_form import *
 from saved_searches.views import SavedSearchView
 import simplejson as json
 from django.http import HttpResponse
-
+from telemeta.forms.boolean_form import *
+from django.forms.formsets import formset_factory
 
 class HaystackSearch(FacetedSearchView, SavedSearchView):
 
@@ -159,12 +159,13 @@ class HaystackAdvanceSearch(SavedSearchView):
             extra['type'] = 'collection'
 
         extra['results_page'] = self.results_per_page
+        extra['booleanForm'] = formset_factory(BooleanSearch, extra=2)
         return extra
 
 def autocomplete(request):
     sqs = SearchQuerySet().load_all()
     if request.GET.get('attr', '') == "instruments":
-        sqs = sqs.filter(instruments__contains=request.GET.get('q', ''))[:10]
+        sqs = sqs.filter(instruments__startswith=request.GET.get('q', ''))
         instrus = [result.instruments for result in sqs]
         suggestions = []
         for chaine in instrus:
@@ -172,16 +173,25 @@ def autocomplete(request):
                 if word != "" and escapeAccentAndLower(request.GET.get('q', '')) in escapeAccentAndLower(word):
                     suggestions.append(word)
     elif request.GET.get('attr', '') == "code":
-        sqs = sqs.filter(code__contains=request.GET.get('q', ''))[:10]
+        sqs = sqs.filter(code__contains=request.GET.get('q', ''))
         suggestions = [result.code for result in sqs]
 
     elif request.GET.get('attr', '') == "collectors":
-        sqs = sqs.filter(collectors__contains=request.GET.get('q', ''))[:10]
-        suggestions = [result.collectors for result in sqs]
+        sqs = sqs.filter(collectors__startswith=request.GET.get('q', ''))
+        collecteurs = [result.collectors for result in sqs]
+        suggestions = []
+        for chaine in collecteurs:
+            for word in chaine.split('; '):
+                if word != "" and escapeAccentAndLower(request.GET.get('q', '')) in escapeAccentAndLower(word):
+                    suggestions.append(word)
     else:
         suggestions = []
 
-    suggestions = list(set(suggestions))
+    if request.GET.get('attr', '') != 'code':
+        suggestions = list(set([word.strip().lower().title() for word in suggestions]))
+    else:
+        suggestions = list(set(suggestions))
+    suggestions.sort()
 
     the_data = json.dumps({
         'results': suggestions
@@ -192,3 +202,64 @@ import unicodedata
 
 def escapeAccentAndLower(chaine):
     return unicodedata.normalize('NFD', chaine).encode('ascii', 'ignore').lower()
+
+class BooleanSearchView(object):
+
+    form = formset_factory(BooleanSearch)
+
+    def getBooleanQuery(self, request, type='json'):
+        if request.method != 'GET':
+            return HttpResponse(json.dumps({'result': '[ERROR]:Not Request GET'}), content_type='application/json')
+
+        formset = self.form(request.GET)
+        if formset.is_valid():
+            query = ""
+            for i in range(len(formset.forms)):
+                formul = formset.forms[i]
+                if i!=0:
+                    query+=formul.cleaned_data["boolean"]+" "
+                query+=formul.cleaned_data["startBracket"]
+                query+=formul.cleaned_data["textField"].strip()+" "
+                query+=formul.cleaned_data["endBracket"]
+            try:
+                self.isCorrectQuery(query.strip())
+            except Erreur as e:
+                if type=="json":
+                    return HttpResponse(json.dumps({'result': e.message}), content_type='application/json')
+            if type=="json":
+                return HttpResponse(json.dumps({'result': query.strip()}), content_type='application/json')
+        else:
+            if type=="json":
+                return HttpResponse(json.dumps({'result': '[ERROR]Field(s) missing'}), content_type='application/json')
+
+    def isCorrectQuery(self, query):#
+        tabQuery = query.split()
+        openBracket = 0
+        boolean = False
+        for mot in tabQuery:
+            if mot ==")":#
+                if openBracket == 0:
+                    raise Erreur("[ERROR]Open Bracket Is Missing !")
+                else:
+                    openBracket -= 1
+                    boolean = False
+            elif mot=="ET" or mot=="OU":
+                if boolean:
+                    raise Erreur("[ERROR]Two boolean follow")
+                else:
+                    boolean = True
+            elif mot == "(":
+                openBracket += 1
+            else:
+                boolean = False
+        if boolean:
+            raise Erreur("[ERROR]Boolean at the end of query")
+        elif openBracket != 0:
+            raise Erreur("[ERROR]Close Bracket Is Missing")
+        else:
+            return True
+
+
+
+class Erreur(Exception):#
+    pass#

@@ -70,8 +70,8 @@ class HomeView(object):
             playlists = get_playlists(request)
             revisions = get_revisions(100)
             user_revisions = get_revisions(25, request.user)
-            if range_playlist is None:
-                range_playlist = 0
+            #if range_playlist is None:
+            #    range_playlist = 0
             return render(request, template, {'playlists': playlists,
                                               'revisions': revisions, 'user_revisions': user_revisions , 'last_playlist':range_playlist})
         else:
