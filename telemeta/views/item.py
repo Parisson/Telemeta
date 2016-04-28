@@ -630,7 +630,7 @@ class ItemDetailView(ItemViewMixin, DetailView):
             if source:
 
                 decoder = timeside.core.get_processor('file_decoder')(source)
-                pipe = decoder = timeside.core.get_processor('file_decoder')(source)
+                pipe = decoder
 
                 for analyzer in self.value_analyzers:
                     subpipe = analyzer()
