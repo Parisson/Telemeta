@@ -205,11 +205,12 @@ class HayAdvanceForm(SearchForm):
             if self.cleaned_data.get('ethnic_group') != '':
                 sqs = sqs.filter(ethnic_group__contains=self.cleaned_data['ethnic_group'])
 
-        if self.cleaned_data.get('instruments'):
-            sqs = sqs.filter(self.filterInstru(self.cleaned_data['instruments']))#
+        if self.cleaned_data.get('instruments'):#
+            print(self.filterInstru(self.cleaned_data['instruments']))
+            sqs = sqs.filter(self.filterInstru(self.cleaned_data['instruments']))
 
         if self.cleaned_data.get('collectors'):
-            sqs = sqs.filter(collectors__contains=self.cleaned_data['collectors'])
+            sqs = sqs.filter(collectors__startswith=self.cleaned_data['collectors'])
 
         if self.cleaned_data['recorded_from_date']:
             sqs = sqs.filter(recorded_from_date__gte=self.cleaned_data['recorded_from_date'])
