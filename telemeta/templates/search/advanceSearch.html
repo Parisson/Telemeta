@@ -55,7 +55,7 @@
                     {{form.instruments.errors}}
                     {% trans form.instruments.label_tag %}
                     {{form.instruments}}
-                    <a href="#" id="btn" class="col-md-5 btn btn-default" style="width: 100%; margin-top: 1%">Recherche booléenne</a>
+                    <a href="#" id="btn" class="col-md-5 btn btn-default" style="width: 100%; margin-top: 1%">Instruments : Recherche booléenne</a>
                 </div>
 
                 <div class="fieldWrapper">
@@ -250,7 +250,7 @@
             <div id="results"></div>{# Show some example queries to run, maybe query syntax, something else? #}
         {% endif %}
 
-        <div id="dialog" title="Recherche booléenne">
+        <div id="dialog" title="Instruments : Recherche booléenne">
 
             <form>
 
@@ -328,6 +328,8 @@ $(function() {
 
     activerAutocompletion($('#id_code, #id_instruments, #id_collectors'));
 
+    var colTri = [];
+
 
     $.tablesorter.addParser({
         id: 'numerised',
@@ -342,7 +344,30 @@ $(function() {
         type: 'number'
     });
 
-    $.tablesorter.defaults.sortList = [[1,0]];
+
+    if(sessionStorage['tri'] && sessionStorage['order']){
+        $.tablesorter.defaults.sortList = [[sessionStorage['tri'], sessionStorage['order']]];
+    }
+    else{
+        $.tablesorter.defaults.sortList = [[1,0]];
+    }
+
+    $('#searchtable th').each(function (index) {
+        colTri[index]=$(this).text();
+    });
+
+
+    $('#searchtable th').on('click', function () {
+        var index = colTri.indexOf($(this).text());
+        var order = $.tablesorter.defaults.headerList[index]['order'];
+        if(index!=sessionStorage['tri']){
+            sessionStorage['order']=0;
+        }
+        else{
+            sessionStorage['order']=(sessionStorage['order']==0)?1:0;
+        }
+        sessionStorage['tri']=index;
+    });
     
     $("#searchtable").tablesorter({
         headers: {
