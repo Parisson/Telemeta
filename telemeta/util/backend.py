@@ -26,12 +26,15 @@ import sys
 class CustomElasticSearchQuery(ElasticsearchSearchQuery):
 
     def build_query_fragment(self, field, filter_type, value):
-        value = re.sub(regexSpacePunc, " ", str(value))
-        print("Query fragment :"+ field+ ' '+ filter_type+ ' '+ value)
-        sys.stdout.flush()
+        if isinstance(value, bool):
+        	value = str(value)
+    	if field !='code':
+        	value = re.sub(regexSpacePunc, " ", value)
+        #print("Query fragment :"+ field+ ' '+ filter_type+ ' '+ value)
+        #sys.stdout.flush()
         valeur = super(CustomElasticSearchQuery, self).build_query_fragment(field, filter_type, value)
-        print("Query fragment result "+ valeur)
-        sys.stdout.flush()
+        #print("Query fragment result "+ valeur)
+        #sys.stdout.flush()
         return valeur
 
     def build_query(self):

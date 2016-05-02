@@ -61,7 +61,11 @@
     //playlists:
     {% if user.is_authenticated %}
         {% for playlist in playlists %}
-            playlistUtils.addPlaylist('{{ playlist.playlist.title }}','{{playlist.playlist.public_id}}');
+        	{% if forloop.counter0 in rang_item_playliste %}
+                	    playlistUtils.addPlaylist('{{ playlist.playlist.title }} (déjà listé)','{{playlist.playlist.public_id}}');
+        	{% else %}
+        	            playlistUtils.addPlaylist('{{ playlist.playlist.title }}','{{playlist.playlist.public_id}}');
+        	{% endif %}
         {% endfor %}
             jQuery(window).ready(function(){
                 var anchor = jQuery('#_add_to_playlist');
