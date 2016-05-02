@@ -26,7 +26,7 @@ import sys
 class CustomElasticSearchQuery(ElasticsearchSearchQuery):
 
     def build_query_fragment(self, field, filter_type, value):
-        value = re.sub(regexSpacePunc, " ", value)
+        value = re.sub(regexSpacePunc, " ", str(value))
         print("Query fragment :"+ field+ ' '+ filter_type+ ' '+ value)
         sys.stdout.flush()
         valeur = super(CustomElasticSearchQuery, self).build_query_fragment(field, filter_type, value)

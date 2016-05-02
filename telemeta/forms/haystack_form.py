@@ -226,9 +226,9 @@ class HayAdvanceForm(SearchForm):
 
         if self.cleaned_data['viewable']:
             if self.cleaned_data.get('viewable') == '2':
-                sqs = sqs.filter(digitized=True).filter(Q(item_acces='full') | Q(item_acces='mixed'))
+                sqs = sqs.filter(digitized__exact=True).filter(Q(item_acces='full') | Q(item_acces='mixed'))
             if self.cleaned_data.get('viewable') == '3':
-                sqs = sqs.filter(digitized=True)
+                sqs = sqs.filter(digitized__exact=True)
 
         if self.cleaned_data['item_status']:
             if self.cleaned_data.get('item_status') == 'pub':
