@@ -21,13 +21,17 @@ class CustomElasticBackend(ElasticsearchSearchBackend):
         eb.setup()
 
 
-import unicodedata#
-class CustomElasticSearchQuery(ElasticsearchSearchQuery):#
+import unicodedata
+import sys
+class CustomElasticSearchQuery(ElasticsearchSearchQuery):
 
     def build_query_fragment(self, field, filter_type, value):
+        value = re.sub(regexSpacePunc, " ", value)
         print("Query fragment :"+ field+ ' '+ filter_type+ ' '+ value)
+        sys.stdout.flush()
         valeur = super(CustomElasticSearchQuery, self).build_query_fragment(field, filter_type, value)
         print("Query fragment result "+ valeur)
+        sys.stdout.flush()
         return valeur
 
     def build_query(self):
