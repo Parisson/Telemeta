@@ -412,12 +412,15 @@ class ItemListView(ListView):
 
     model = MediaItem
     template_name = "telemeta/mediaitem_list.html"
-    paginate_by = 20
     queryset = MediaItem.objects.enriched().order_by('code', 'old_code')
+
+    def get_paginate_by(self, queryset):
+        return self.request.GET.get('results_page', 20)
 
     def get_context_data(self, **kwargs):
         context = super(ItemListView, self).get_context_data(**kwargs)
         context['count'] = self.object_list.count()
+        context['results_page'] = int(self.request.GET.get('results_page', 20))
         return context
 
 class ItemListViewFullAccess(ListView):
