@@ -26,6 +26,7 @@ import simplejson as json
 from django.http import HttpResponse
 from telemeta.forms.boolean_form import *
 from django.forms.formsets import formset_factory
+import re
 
 class HaystackSearch(FacetedSearchView, SavedSearchView):
 
@@ -124,6 +125,7 @@ class HaystackAdvanceSearch(SavedSearchView):
             self.results_per_page = int(request.GET.get('results_page'))
         else:
             self.results_per_page = 20
+        self.requestURL = re.sub('&page=\d+', '&page=1', request.GET.urlencode())
         return super(HaystackAdvanceSearch, self).__call__(request)
 
     def get_query(self):
@@ -160,6 +162,7 @@ class HaystackAdvanceSearch(SavedSearchView):
 
         extra['results_page'] = self.results_per_page
         extra['booleanForm'] = formset_factory(BooleanSearch, extra=2)
+        extra['request_url'] = self.requestURL
         return extra
 
 def autocomplete(request):

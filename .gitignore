@@ -17,7 +17,7 @@ sdist
 develop-eggs
 .installed.cfg
 *.directory
-.init
+app/.init
 
 # Installer logs
 pip-log.txt

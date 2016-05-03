@@ -5,7 +5,7 @@ import uuid
 
 class NewPlaylistView(object):
 
-    def display(self, request, type=None):
+    def display(self, request, type="item"):
 
         self.type=type
 
