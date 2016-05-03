@@ -72,9 +72,12 @@
                 if(anchor.length){
                     anchor.unbind('click').click(function(){
                         playlistUtils.showAddResourceToPlaylist(anchor,'item','{{item.id}}',gettrans('item added to the selected playlist'));
+                        //playlistUtils.showAddResourceToPlaylist(anchor,'item','{{item.id}}');
                         return false;
                     });
                 }
+
+                playlistUtils.messageOk();
             });
     {% endif %}
 </script>
