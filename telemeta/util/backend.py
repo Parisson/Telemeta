@@ -20,9 +20,6 @@ class CustomElasticBackend(ElasticsearchSearchBackend):
             {"type": "custom", "tokenizer": "keyword", "filter": ["lowercase"]}
         eb.setup()
 
-
-import unicodedata
-import sys
 class CustomElasticSearchQuery(ElasticsearchSearchQuery):
 
     def build_query_fragment(self, field, filter_type, value):
@@ -30,16 +27,7 @@ class CustomElasticSearchQuery(ElasticsearchSearchQuery):
         	value = str(value)
     	if field !='code':
         	value = re.sub(regexSpacePunc, " ", value)
-        #print("Query fragment :"+ field+ ' '+ filter_type+ ' '+ value)
-        #sys.stdout.flush()
         valeur = super(CustomElasticSearchQuery, self).build_query_fragment(field, filter_type, value)
-        #print("Query fragment result "+ valeur)
-        #sys.stdout.flush()
-        return valeur
-
-    def build_query(self):
-        valeur = super(CustomElasticSearchQuery, self).build_query()
-        print (unicodedata.normalize('NFD', valeur).encode('ascii', 'ignore'))
         return valeur
 
 class CustomElasticEngine(ElasticsearchSearchEngine):

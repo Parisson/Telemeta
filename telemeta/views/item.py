@@ -794,7 +794,7 @@ class ItemDetailView(ItemViewMixin, DetailView):
         rang = []
         for i in range(len(playlists)):
              for resource in playlists[i]['playlist'].resources.all():
-                  if resource.resource_id == item.public_id:
+                  if int(resource.resource_id) == item.id:
                       rang.append(i)
                       break
         related_media = MediaItemRelated.objects.filter(item=item)
