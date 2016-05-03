@@ -205,8 +205,7 @@ class HayAdvanceForm(SearchForm):
             if self.cleaned_data.get('ethnic_group') != '':
                 sqs = sqs.filter(ethnic_group__contains=self.cleaned_data['ethnic_group'])
 
-        if self.cleaned_data.get('instruments'):#
-            print(self.filterInstru(self.cleaned_data['instruments']))
+        if self.cleaned_data.get('instruments'):
             sqs = sqs.filter(self.filterInstru(self.cleaned_data['instruments']))
 
         if self.cleaned_data.get('collectors'):
@@ -245,7 +244,7 @@ class HayAdvanceForm(SearchForm):
                 sqs = sqs.filter(recording_context=self.cleaned_data['recording_context'])
 
         if self.cleaned_data['physical_format']:
-            if self.cleaned_data.get('physical_formate') != '':
+            if self.cleaned_data.get('physical_format') != '':
                 sqs = sqs.filter(physical_format=self.cleaned_data['physical_format'])
 
         return sqs
@@ -262,4 +261,3 @@ def getclosebracket(tab):
         if par !=0:
             index+= 1
     return index if par == 0 else -1
-#
