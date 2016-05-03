@@ -24,8 +24,7 @@ patterns='*.js;*.css;*.jpg;*.jpeg;*.gif;*.png;*.svg;*.ttf;*.eot;*.woff;*.woff2'
 sh $app/scripts/wait.sh
 
 #fix contains haystack elasticsearch
-sed -i "s/'contains': u'%s'/'contains': u'*%s*'/g" /opt/miniconda/lib/python2.7/site-packages/haystack/backends/elasticsearch_backend.py && cd $app
-cat /opt/miniconda/lib/python2.7/site-packages/haystack/backends | grep contains
+sed -i "s/'contains': u'%s'/'contains': u'*%s*'/g" /opt/miniconda/lib/python2.7/site-packages/haystack/backends/elasticsearch_backend.py
 
 # django setup
 python $manage wait-for-db
