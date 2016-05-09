@@ -198,7 +198,7 @@ class MediaCollection(MediaResource):
         elif '_E_' in self.public_id:
             return 'Published'
         else:
-            return ''
+            return 'Unknown'
 
     def get_url(self):
         return get_full_url(reverse('telemeta-collection-detail', kwargs={'public_id':self.pk}))
