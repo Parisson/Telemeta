@@ -194,9 +194,9 @@ class MediaCollection(MediaResource):
 
     def document_status(self):
         if '_I_' in self.public_id:
-            return ugettext('Unpublished')
+            return 'Unpublished'
         elif '_E_' in self.public_id:
-            return ugettext('Published')
+            return 'Published'
         else:
             return ''
 
