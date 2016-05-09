@@ -23,9 +23,6 @@ patterns='*.js;*.css;*.jpg;*.jpeg;*.gif;*.png;*.svg;*.ttf;*.eot;*.woff;*.woff2'
 # waiting for other network services
 sh $app/scripts/wait.sh
 
-#fix contains haystack elasticsearch
-sed -i "s/'contains': u'%s'/'contains': u'*%s*'/g" /opt/miniconda/lib/python2.7/site-packages/haystack/backends/elasticsearch_backend.py
-
 # django setup
 python $manage wait-for-db
 python $manage syncdb --noinput
