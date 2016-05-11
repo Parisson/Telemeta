@@ -239,7 +239,13 @@ class MediaFondsIndex(indexes.SearchIndex, indexes.Indexable):
     def get_model(self):
         return MediaFonds
 
-#class LocationIndex(indexes.SearchIndex, indexes.Indexable):
+class LocationIndex(indexes.SearchIndex, indexes.Indexable):
 
-#    text = indexes.CharField(document=True, use_template=True)
+    text = indexes.CharField(document=True, use_template=True)
+
+    def get_model(self):
+        return Location
+
+    def index_queryset(self, using=None):
+        return MediaItem.objects.all().locations()
 

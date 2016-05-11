@@ -306,6 +306,19 @@ HAYSTACK_CONNECTIONS = {
         'URL': 'http://search:9200/',
         'INDEX_NAME': 'haystack',
         'INLUDE_SPELLING': True,
+        'EXCLUDED_INDEXES': ['telemeta.search_indexes.LocationIndex']
+    },
+    'autocomplete': {
+        # 'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'ENGINE': 'telemeta.util.backend.CustomElasticEngine',
+        'URL': 'http://search:9200/',
+        'INDEX_NAME': 'haystackauto',
+        'INLUDE_SPELLING': True,
+        'EXCLUDED_INDEXES': ['telemeta.search_indexes.MediaItemIndex',
+                             'telemeta.search_indexes.MediaCollectionIndex',
+                             'telemeta.search_indexes.MediaCorpusIndex',
+                             'telemeta.search_indexes.MediaFondsIndex'
+                             ]
     },
 }
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'

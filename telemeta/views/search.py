@@ -167,14 +167,14 @@ class HaystackAdvanceSearch(SavedSearchView):
 
 def autocomplete(request):
     sqs = SearchQuerySet().load_all()
-    if request.GET.get('attr', '') == "instruments" or request.GET.get('attr', '') == "location":
+    if request.GET.get('attr', '') == "instruments":
         if request.GET.get('attr', '') == "instruments":
             sqs = sqs.filter(instruments__startswith=request.GET.get('q', ''))
             objets = [result.instruments for result in sqs]
             #instrus = [result.instruments for result in sqs]
-        elif request.GET.get('attr', '') == "location":
-             sqs = sqs.filter(SQ(location_principal__startswith=request.GET.get('q', ''))|SQ(location_relation__startswith=request.GET.get('q', '')))
-             objets = [result.location_principal+result.location_relation for result in sqs]
+        #elif request.GET.get('attr', '') == "location":
+        #     sqs = sqs.filter(SQ(location_principal__startswith=request.GET.get('q', ''))|SQ(location_relation__startswith=request.GET.get('q', '')))
+        #     objets = [result.location_principal+result.location_relation for result in sqs]
         suggestions = []
         for chaine in objets :
         #for chaine in instrus:
@@ -193,6 +193,9 @@ def autocomplete(request):
             for word in chaine.split('; '):
                 if word != "" and escapeAccentAndLower(request.GET.get('q', '')) in escapeAccentAndLower(word):
                     suggestions.append(word)
+    elif request.GET.get('attr', '') == "location":
+        sqs = SearchQuerySet().using('autocomplete').filter(content__startswith=request.GET.get('q', ''))
+        suggestions = [obj.text for obj in sqs]
     else:
         suggestions = []
 
