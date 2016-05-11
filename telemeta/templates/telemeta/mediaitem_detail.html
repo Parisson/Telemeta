@@ -211,15 +211,15 @@
                 {% endfor %}
         </div>
 
-    	{% block DIADEMS %}
+    	{% block EXPORT %}
         {% if ts_item_id %}
-    	<a href="{% url "timeside-item-diadems" ts_item_id %}">
+    	<a href="{% url "timeside-item-export" ts_item_id %}">
     	  <button type="button" class="btn btn-primary" style="float:left;margin-top:0.5em;margin-bottom:1em;border-color: #ffffff; ">
-                <b>DIADEMS</b>
+            <b>EXPORT</b>
     	  </button>
     	</a>
         {% endif %}
-    	{% endblock DIADEMS %}
+    	{% endblock EXPORT %}
 
         {% endif %}
 
