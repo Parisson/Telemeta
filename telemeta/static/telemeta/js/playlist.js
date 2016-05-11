@@ -158,6 +158,16 @@ var playlistUtils = {
         }).show();
     },
 
+    /*convert language*/
+    updateConvert: function(id, t, d) {
+        playlist = this;
+        playlist.update({
+            'public_id': id,
+            'title': t,
+            'description': d,
+        });
+    },
+
     /*shows the popup for adding a resource to a playlist*/
     showAddResourceToPlaylist: function(anchorElement, resourceType, objectId, optionalOkMessage){
         var ar = [];
