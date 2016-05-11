@@ -30,12 +30,14 @@ python $manage migrate --noinput
 python $manage bower_install -- --allow-root
 python $manage collectstatic --noinput
 
-if [ ! -f .init ]; then
-    chown -R www-data:www-data $media
-    python $manage telemeta-create-admin-user
-    python $manage telemeta-create-boilerplate
-    touch .init
-elif [ $REINDEX = "True" ]; then
+# telemeta setup
+if [ $DATASTART = "True" ]
+then
+python $manage telemeta-create-admin-user
+python $manage telemeta-create-boilerplate
+fi
+
+if [ $REINDEX = "True" ]; then
     python $manage rebuild_index --noinput
 fi
 
