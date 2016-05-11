@@ -26,6 +26,7 @@ from telemeta.views.core import *
 from telemeta.views.marker import *
 import timeside.core
 import timeside.server as ts
+import sys
 
 
 class ItemBaseMixin(TelemetaBaseMixin):
@@ -412,12 +413,15 @@ class ItemListView(ListView):
 
     model = MediaItem
     template_name = "telemeta/mediaitem_list.html"
-    paginate_by = 20
     queryset = MediaItem.objects.enriched().order_by('code', 'old_code')
+
+    def get_paginate_by(self, queryset):
+        return self.request.GET.get('results_page', 20)
 
     def get_context_data(self, **kwargs):
         context = super(ItemListView, self).get_context_data(**kwargs)
         context['count'] = self.object_list.count()
+        context['results_page'] = int(self.request.GET.get('results_page', 20))
         return context
 
 class ItemListViewFullAccess(ListView):
@@ -786,6 +790,13 @@ class ItemDetailView(ItemViewMixin, DetailView):
             self.mime_type = 'video/mp4'
 
         playlists = get_playlists_names(self.request)
+        
+        rang = []
+        for i in range(len(playlists)):
+             for resource in playlists[i]['playlist'].resources.all():
+                  if int(resource.resource_id) == item.id:
+                      rang.append(i)
+                      break
         related_media = MediaItemRelated.objects.filter(item=item)
         check_related_media(related_media)
         revisions = Revision.objects.filter(element_type='item', element_id=item.id).order_by('-time')
@@ -816,6 +827,7 @@ class ItemDetailView(ItemViewMixin, DetailView):
         context['format'] = item_format
         context['private_extra_types'] = private_extra_types.values()
         context['site'] = 'http://' + Site.objects.all()[0].name
+        context['rang_item_playliste']=rang
         # if ts_item:
         #     context['ts_item_id'] = ts_item.pk
         # else:

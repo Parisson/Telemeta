@@ -1,6 +1,18 @@
-pas  assez d items dans recherche
+message attente autoc.
 
-filtres apparait 1 fois sur 2
+verif format cote recherche (ex : _I_1995_ ) simple
+
+message erreur annee
+
+autoc lieu
+
+inedits/edites X2 filtres
+
+fin traduc (Maj + fonctions supp)
+
+verif req bool quand valid avancee
+
+completer form quand recherche avancee avec resultats
 
 nb items enum + liste
 
@@ -26,12 +38,22 @@ autocompletion sur instruments/collecteur (listes fermees)
 
 recherche booleenne sur les instruments
 
+date enreg -> periode enr
+
+en ligne /acces compte marche pas
+
+titre recherche bool
+
+item deja dans liste
+
+1893 annee fantome
+
+cahngement page : reste sur mm tri
+
+
+
 VERIF PROD :
 
 filtre inedits/edites pour les items : passer par la collection puis sa cote (I : inedit, E : edites)
-
-DERNIER COMMIT :
-11 avril :  Merge branch 'dev' into feature/ts-server 
-Prob : resolution url (commit 18 avril  Merge branch 'dev' of github.com:Parisson/Telemeta into dev )
 
 

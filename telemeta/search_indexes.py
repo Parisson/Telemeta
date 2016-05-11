@@ -75,7 +75,7 @@ class MediaItemIndex(indexes.SearchIndex, indexes.Indexable):
             #print u"".join(' ' + local for local in location).encode("utf-8")
             #print u"%s".encode("utf-8") % location
             #print [local for local in location]
-        return u"".join(' ' + local for local in location)
+        return u"".join('|' + local for local in location)
 
     def prepare_instruments(self, obj):
         item = MediaItemPerformance.objects.all().filter(media_item__exact=obj)
@@ -129,7 +129,7 @@ class MediaCollectionIndex(indexes.SearchIndex, indexes.Indexable):
             location = []
             if item.location is not None:
                 collec_location.append(item.location.name)
-        return u"".join(' ' + location for location in collec_location)
+        return u"".join('|' + location for location in collec_location)
 
     def prepare_location_relation(self, obj):
         collec_location = []
@@ -145,7 +145,7 @@ class MediaCollectionIndex(indexes.SearchIndex, indexes.Indexable):
                 for name in location:
                     if name and not name in collec_location:
                         collec_location.append(name)
-        return u"".join(' ' + location for location in collec_location)
+        return u"".join('|' + location for location in collec_location)
 
     def prepare_ethnic_group(self, obj):
         return "%s" % obj.ethnic_groups()

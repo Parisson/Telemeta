@@ -206,10 +206,10 @@ class HayAdvanceForm(SearchForm):
                 sqs = sqs.filter(ethnic_group__contains=self.cleaned_data['ethnic_group'])
 
         if self.cleaned_data.get('instruments'):
-            sqs = sqs.filter(self.filterInstru(self.cleaned_data['instruments']))#
+            sqs = sqs.filter(self.filterInstru(self.cleaned_data['instruments']))
 
         if self.cleaned_data.get('collectors'):
-            sqs = sqs.filter(collectors__contains=self.cleaned_data['collectors'])
+            sqs = sqs.filter(collectors__startswith=self.cleaned_data['collectors'])
 
         if self.cleaned_data['recorded_from_date']:
             sqs = sqs.filter(recorded_from_date__gte=self.cleaned_data['recorded_from_date'])
@@ -225,9 +225,9 @@ class HayAdvanceForm(SearchForm):
 
         if self.cleaned_data['viewable']:
             if self.cleaned_data.get('viewable') == '2':
-                sqs = sqs.filter(digitized=True).filter(Q(item_acces='full') | Q(item_acces='mixed'))
+                sqs = sqs.filter(digitized__exact=True).filter(Q(item_acces='full') | Q(item_acces='mixed'))
             if self.cleaned_data.get('viewable') == '3':
-                sqs = sqs.filter(digitized=True)
+                sqs = sqs.filter(digitized__exact=True)
 
         if self.cleaned_data['item_status']:
             if self.cleaned_data.get('item_status') == 'pub':
@@ -244,7 +244,7 @@ class HayAdvanceForm(SearchForm):
                 sqs = sqs.filter(recording_context=self.cleaned_data['recording_context'])
 
         if self.cleaned_data['physical_format']:
-            if self.cleaned_data.get('physical_formate') != '':
+            if self.cleaned_data.get('physical_format') != '':
                 sqs = sqs.filter(physical_format=self.cleaned_data['physical_format'])
 
         return sqs
@@ -261,4 +261,3 @@ def getclosebracket(tab):
         if par !=0:
             index+= 1
     return index if par == 0 else -1
-#

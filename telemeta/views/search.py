@@ -26,6 +26,7 @@ import simplejson as json
 from django.http import HttpResponse
 from telemeta.forms.boolean_form import *
 from django.forms.formsets import formset_factory
+import re
 
 class HaystackSearch(FacetedSearchView, SavedSearchView):
 
@@ -124,6 +125,7 @@ class HaystackAdvanceSearch(SavedSearchView):
             self.results_per_page = int(request.GET.get('results_page'))
         else:
             self.results_per_page = 20
+        self.requestURL = re.sub('&page=\d+', '&page=1', request.GET.urlencode())
         return super(HaystackAdvanceSearch, self).__call__(request)
 
     def get_query(self):
@@ -160,18 +162,25 @@ class HaystackAdvanceSearch(SavedSearchView):
 
         extra['results_page'] = self.results_per_page
         extra['booleanForm'] = formset_factory(BooleanSearch, extra=2)
+        extra['request_url'] = self.requestURL
         return extra
 
 def autocomplete(request):
     sqs = SearchQuerySet().load_all()
-    if request.GET.get('attr', '') == "instruments":
-        sqs = sqs.filter(instruments__startswith=request.GET.get('q', ''))
-        instrus = [result.instruments for result in sqs]
+    if request.GET.get('attr', '') == "instruments" or request.GET.get('attr', '') == "location":
+        if request.GET.get('attr', '') == "instruments":
+            sqs = sqs.filter(instruments__startswith=request.GET.get('q', ''))
+            objets = [result.instruments for result in sqs]
+            #instrus = [result.instruments for result in sqs]
+        elif request.GET.get('attr', '') == "location":
+             sqs = sqs.filter(location_principal__startswith=request.GET.get('q', '')).filter_or(location_relation__startswith=request.GET.get('q', ''))
+             objets = [result.location_principal for result in sqs]
         suggestions = []
-        for chaine in instrus:
+        for chaine in objets :
+        #for chaine in instrus:
             for word in chaine.split('|'):
                 if word != "" and escapeAccentAndLower(request.GET.get('q', '')) in escapeAccentAndLower(word):
-                    suggestions.append(word)
+                     suggestions.append(word)
     elif request.GET.get('attr', '') == "code":
         sqs = sqs.filter(code__contains=request.GET.get('q', ''))
         suggestions = [result.code for result in sqs]
