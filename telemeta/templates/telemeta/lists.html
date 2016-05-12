@@ -16,41 +16,6 @@
 <script src="{{ STATIC_URL }}jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
 <script>
 
-    /**
-      * Added by Thomas Balastegui :
-      * function that get variables from the Add popup
-      * and create a new playlist
-      */
-    var p = playlistUtils;
-    var ID = ""; // ID var: used to edit playlist
-    var title = "";
-    var description = "";
-
-    function addNewPlaylist() {
-        title = $('#titleAdd').val();
-        description = $('#descriptionAdd').val();
-        p.add({title,description});
-    }
-
-    // function to change global var ID (used when edit button is pressed)
-    function editVar(id) {
-        ID = id;
-        for (var i=0; i< p.playlists.length; i++){
-            if (p.playlists[i].id == id){
-                $('#titleEdit').val(p.playlists[i].title);
-                $('#descriptionEdit').val(p.playlists[i].description);
-            }
-        }
-    }
-
-    function editPlaylist() {
-        title = $('#titleEdit').val();
-        description = $('#descriptionEdit').val();
-        // Use of a function that convert params then use playlist.update
-        p.updateConvert(ID, title, description);
-        ID = ""; // init ID
-    }
-
     {% for playlist in playlists %}
         playlistUtils.addEditPlaylist('{{playlist.playlist.public_id}}','{{ playlist.playlist.title }}','{{playlist.playlist.description}}');
     {% endfor %}
@@ -85,7 +50,7 @@
 
 <!--
  Added by Thomas Balastegui :
- modal popup display and use of addNewPlaylist()
+ modal popup display and use of addNewPlaylist() and editPlaylist()
 -->
 {% block content %}
     {% block modal %}
@@ -105,7 +70,7 @@
              <br><br>
             </div>
             <div class="modal-footer">
-              <button type="submit" name="submit" value="submit" class="btn btn-default" onclick="addNewPlaylist()">{% trans "Ok" %}</button>
+              <button type="submit" name="submit" value="submit" class="btn btn-default" onclick="playlistUtils.addNewPlaylist()">{% trans "Ok" %}</button>
               <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Close" %}</button>
             </div>
         </div>
@@ -128,7 +93,7 @@
              <br><br>
             </div>
             <div class="modal-footer">
-              <button type="submit" name="submit" value="submit" class="btn btn-default" onclick="editPlaylist()">{% trans "Ok" %}</button>
+              <button type="submit" name="submit" value="submit" class="btn btn-default" onclick="playlistUtils.editPlaylist()">{% trans "Ok" %}</button>
               <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Close" %}</button>
             </div>
         </div>
@@ -180,7 +145,7 @@
             <tr>
                 <td style="border-bottom:1px solid #6A0307;color:#6A0307;font-size: 100%">{{ playlist.playlist.title }}</td>
                 <td style="width:86ex; padding-right: 0; border-bottom:1px solid #6A0307; text-align:right">
-                    <a href="#" id="{{playlist.playlist.public_id}}" onclick="editVar(this.id)" class="component_icon button icon_edit" data-toggle="modal" data-target="#edit">{% trans "Edit" %}</a>
+                    <a href="#" id="{{playlist.playlist.public_id}}" onclick="playlistUtils.editVar(this.id)" class="component_icon button icon_edit" data-toggle="modal" data-target="#edit">{% trans "Edit" %}</a>
                     <a href="{% url "telemeta-playlist-csv-export" playlist.playlist.public_id 'collections' %}" class="component_icon button icon_csv">CSV Collections</a>
                     <a href="{% url "telemeta-playlist-csv-export" playlist.playlist.public_id 'items' %}" class="component_icon button icon_csv">CSV Items</a>
                     <a href="#" id="{{playlist.playlist.public_id}}" onclick="if(confirm(gettrans('delete the playlist permanently?'))){playlistUtils.remove(this.id);};return false;" class="component_icon button icon_cancel">{% trans "Delete" %}</a>
