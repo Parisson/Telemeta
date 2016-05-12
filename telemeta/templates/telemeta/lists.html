@@ -31,6 +31,24 @@
         });
     }
 
+    var ID = ""; // ID var: used to edit playlist
+
+    // function to change global var ID (used when edit button is pressed)
+    function editVar(id) {
+        ID = id;
+    }
+
+    function editPlaylist() {
+        var title = document.getElementById('titleEdit').value;
+        var description = document.getElementById('descriptionEdit').value;
+        var p = playlistUtils;
+
+        // Use of a function that convert params then use playlist.update
+        p.updateConvert(ID, title, description);
+
+        ID = ""; // init ID
+    }
+
     {% for playlist in playlists %}
         playlistUtils.addEditPlaylist('{{playlist.playlist.public_id}}','{{ playlist.playlist.title }}','{{playlist.playlist.description}}');
     {% endfor %}
@@ -91,7 +109,31 @@
         </div>
       </div>
     </div>
-{% endblock %}
+
+    <div id="edit" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title"><b>{% trans "Edit" %} {% trans "playlist" %}</b></h4>
+          </div>
+            <div id="elementsEdit" class="modal-body">
+             <p><b>{% trans "Title"%}</b></p>
+              <input id="titleEdit" size="68">
+             <br><br>
+             <p><b>{% trans "Description"%}</b></p>
+              <input id="descriptionEdit" size="68">
+             <br><br>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" name="submit" value="submit" class="btn btn-default" onclick="editPlaylist()">{% trans "Ok" %}</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Close" %}</button>
+            </div>
+        </div>
+      </div>
+    </div>
+    {% endblock %}
+
 
 <div id="module-set" style="width: 33%">
 
@@ -136,7 +178,7 @@
             <tr>
                 <td style="border-bottom:1px solid #6A0307;color:#6A0307;font-size: 100%">{{ playlist.playlist.title }}</td>
                 <td style="width:86ex; padding-right: 0; border-bottom:1px solid #6A0307; text-align:right">
-                <a href="#" id="{{playlist.playlist.public_id}}" onclick="playlistUtils.showEdit(this, this.id); return false;" class="component_icon button icon_edit">{% trans "Edit" %}</a>
+                    <a href="#" id="{{playlist.playlist.public_id}}" onclick="editVar(this.id)" class="component_icon button icon_edit" data-toggle="modal" data-target="#edit">{% trans "Edit" %}</a>
                     <a href="{% url "telemeta-playlist-csv-export" playlist.playlist.public_id 'collections' %}" class="component_icon button icon_csv">CSV Collections</a>
                     <a href="{% url "telemeta-playlist-csv-export" playlist.playlist.public_id 'items' %}" class="component_icon button icon_csv">CSV Items</a>
                     <a href="#" id="{{playlist.playlist.public_id}}" onclick="if(confirm(gettrans('delete the playlist permanently?'))){playlistUtils.remove(this.id);};return false;" class="component_icon button icon_cancel">{% trans "Delete" %}</a>
@@ -195,7 +237,9 @@
                 </td>
                 <td align="center" style="vertical-align:middle;">
                     {% if resource.element.file or resource.element.has_mediafile %}
-                    <span class="glyphicon glyphicon-volume-up" style="font-size: 1.3em;"><p style="opacity:0;font-size:0">d</p></span>
+                        <!--<a class="playButton" href="javascript:">-->
+                            <span class="glyphicon glyphicon-volume-up" style="font-size: 1.3em;"><p style="opacity:0;font-size:0">d</p></span>
+                        <!--</a>-->
                     {% endif %}
                 </td>
                 <td style="vertical-align:middle">
