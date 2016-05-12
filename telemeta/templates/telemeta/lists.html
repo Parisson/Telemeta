@@ -21,31 +21,33 @@
       * function that get variables from the Add popup
       * and create a new playlist
       */
-    function addNewPlaylist() {
-        var title = document.getElementById('titleAdd').value;
-        var description = document.getElementById('descriptionAdd').value;
-        var p = playlistUtils;
-        p.add({
-         title,
-         description
-        });
-    }
-
+    var p = playlistUtils;
     var ID = ""; // ID var: used to edit playlist
+    var title = "";
+    var description = "";
+
+    function addNewPlaylist() {
+        title = $('#titleAdd').val();
+        description = $('#descriptionAdd').val();
+        p.add({title,description});
+    }
 
     // function to change global var ID (used when edit button is pressed)
     function editVar(id) {
         ID = id;
+        for (var i=0; i< p.playlists.length; i++){
+            if (p.playlists[i].id == id){
+                $('#titleEdit').val(p.playlists[i].title);
+                $('#descriptionEdit').val(p.playlists[i].description);
+            }
+        }
     }
 
     function editPlaylist() {
-        var title = document.getElementById('titleEdit').value;
-        var description = document.getElementById('descriptionEdit').value;
-        var p = playlistUtils;
-
+        title = $('#titleEdit').val();
+        description = $('#descriptionEdit').val();
         // Use of a function that convert params then use playlist.update
         p.updateConvert(ID, title, description);
-
         ID = ""; // init ID
     }
 
