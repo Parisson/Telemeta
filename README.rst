@@ -203,7 +203,7 @@ To start the application in a development environment setup::
     git checkout dev
     docker-compose -f docker-compose.yml -f env/dev.yml up
 
-Then browse the app at http://localhost:9000/ (replacing 'localhost' by the IP given by the docker terminal on OSX or Windows). Note the service will automatically when code is modified.
+Then browse the app at http://localhost:9000/ (replacing 'localhost' by the IP given by the docker terminal on OSX or Windows). Note the service will automatically be reloaded when code is modified.
 
 To build your own composition (if dependency tree is changed)::
 
