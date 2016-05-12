@@ -39,6 +39,9 @@ PopupDiv.defaultCloseOperation = 'remove';
 PopupDiv.focusable = true;
 PopupDiv.listItemClass = "component_icon list_item icon_playlist";
 
+var ID = ""; // ID var: used to edit playlist
+var TITLE = "";
+var DESCRIPTION = "";
 
 var playlistUtils = {
     playlists : [],
@@ -58,31 +61,43 @@ var playlistUtils = {
         });
     },
 
-    showAdd: function(anchorElement){
-
-        var t = gettrans('title');
-        var d = gettrans('description');
-        var dd = {};
-        dd[t]='';
-        dd[d]='';
+    addNewPlaylist: function(){
         var playlist = this;
-        new PopupDiv({
-            'content':dd,
-            invoker:anchorElement,
-            showOk:true,
-            onOk:function(data){
-                if(!data[t] && !data[d]){
-                    return;
-                }
-                //convert language
-                playlist.add({
-                    'title':data[t],
-                    'description':data[d]
-                });
-            }
-        }).show();
-
+        var t = $('#titleAdd').val();
+        var d = $('#descriptionAdd').val();
+        playlist.add({
+            'title': t,
+            'description': d,
+        });
     },
+
+    // function to change global var ID (used when edit button is pressed)
+    editVar: function(id){
+        ID = id;
+        playlists = this.playlists;
+        for (var i=0; i<playlists.length; i++){
+            if (playlists[i].id == id){
+                $('#titleEdit').val(playlists[i].title);
+                $('#descriptionEdit').val(playlists[i].description);
+            }
+
+        }
+    },
+
+    editPlaylist: function(){
+        var playlist = this;
+        TITLE = $('#titleEdit').val();
+        DESCRIPTION = $('#descriptionEdit').val();
+        // Use of a function that convert params then use playlist.update
+        //playlist.updateConvert(ID, TITLE, DESCRIPTION);
+        playlist.update({
+            'public_id': ID,
+            'title': TITLE,
+            'description': DESCRIPTION,
+        });
+        ID = ""; // init ID
+    },
+
     /**
      * Returns an uniqid by creating the current local time in millisecond + a random number. Used for markers and some json calls
      * Copied from Timeside.utils.uniqid (Timeside might NOT ALWAYS be loaded, see home.html when user is authenitcated)
@@ -122,49 +137,6 @@ var playlistUtils = {
     update : function(dictionary){
         json([dictionary],'telemeta.update_playlist',function(){
         window.location.reload();
-        });
-    },
-
-    showEdit: function(anchorElement, id){
-
-        var t = gettrans('title');
-        var d = gettrans('description');
-        var dd = {};
-        var playlist = this;
-
-        var playlists = this.playlists;
-        for (var i=0; i< playlists.length; i++){
-            if (playlists[i].id == id){
-                dd[t] = playlists[i].title;
-                dd[d] = playlists[i].description;
-            }
-        }
-
-        new PopupDiv({
-            'content':dd,
-                    invoker:anchorElement,
-                    showOk:true,
-                    onOk:function(data){
-                        if(!data[t] && !data[d]){
-                            return;
-                        }
-                        //convert language
-                        playlist.update({
-                            'public_id': id,
-                            'title': data[t],
-                            'description': data[d],
-                        });
-                    }
-        }).show();
-    },
-
-    /*convert language*/
-    updateConvert: function(id, t, d) {
-        playlist = this;
-        playlist.update({
-            'public_id': id,
-            'title': t,
-            'description': d,
         });
     },
 
