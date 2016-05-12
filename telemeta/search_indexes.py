@@ -19,6 +19,7 @@
 
 from haystack import indexes
 from telemeta.models import *
+from haystack.query import SearchQuerySet
 
 class KeywordField(indexes.CharField):
     field_type = 'keyword'
@@ -249,3 +250,14 @@ class LocationIndex(indexes.SearchIndex, indexes.Indexable):
     def index_queryset(self, using=None):
         return MediaItem.objects.all().locations()
 
+
+class LocationAliasIndex(indexes.SearchIndex, indexes.Indexable):
+
+    text = indexes.CharField(document=True, use_template=True)
+
+    def get_model(self):
+        return LocationAlias
+
+    def index_queryset(self, using=None):
+        l = MediaItem.objects.values('location')
+        return LocationAlias.objects.filter(location__in=l)

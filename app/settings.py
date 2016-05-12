@@ -306,7 +306,7 @@ HAYSTACK_CONNECTIONS = {
         'URL': 'http://search:9200/',
         'INDEX_NAME': 'haystack',
         'INLUDE_SPELLING': True,
-        'EXCLUDED_INDEXES': ['telemeta.search_indexes.LocationIndex']
+        'EXCLUDED_INDEXES': ['telemeta.search_indexes.LocationIndex', 'telemeta.search_indexes.LocationAliasIndex']
     },
     'autocomplete': {
         # 'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
@@ -321,7 +321,8 @@ HAYSTACK_CONNECTIONS = {
                              ]
     },
 }
-HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+#HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+HAYSTACK_SIGNAL_PROCESSOR = 'telemeta.util.search_signals.RealTimeCustomSignal'
 HAYSTACK_SEARCH_RESULTS_PER_PAGE = 50
 
 BOWER_COMPONENTS_ROOT = '/srv/bower/'

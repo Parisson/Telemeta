@@ -25,9 +25,9 @@
 from django.utils.translation import ugettext_lazy as _
 from telemeta.models.core import *
 from telemeta.models.system import *
+from dirtyfields import DirtyFieldsMixin
 
-
-class MediaResource(ModelCore):
+class MediaResource(ModelCore, DirtyFieldsMixin):
     "Base class of all media objects"
 
     def public_access_label(self):
