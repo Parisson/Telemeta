@@ -261,3 +261,27 @@ class LocationAliasIndex(indexes.SearchIndex, indexes.Indexable):
     def index_queryset(self, using=None):
         l = MediaItem.objects.values('location')
         return LocationAlias.objects.filter(location__in=l)
+
+
+class InstrumentIndex(indexes.SearchIndex, indexes.Indexable):
+
+    text = indexes.CharField(document=True, use_template=True)
+
+    def get_model(self):
+        return Instrument
+
+    def index_queryset(self, using=None):
+        instrus = MediaItemPerformance.objects.values('instrument')
+        return Instrument.objects.filter(pk__in=instrus)
+
+
+class InstrumentAliasIndex(indexes.SearchIndex, indexes.Indexable):
+
+    text = indexes.CharField(document=True, use_template=True)
+
+    def get_model(self):
+        return InstrumentAlias
+
+    def index_queryset(self, using=None):
+        instrualias = MediaItemPerformance.objects.values('alias')
+        return InstrumentAlias.objects.filter(pk__in=instrualias)

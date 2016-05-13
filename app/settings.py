@@ -306,7 +306,11 @@ HAYSTACK_CONNECTIONS = {
         'URL': 'http://search:9200/',
         'INDEX_NAME': 'haystack',
         'INLUDE_SPELLING': True,
-        'EXCLUDED_INDEXES': ['telemeta.search_indexes.LocationIndex', 'telemeta.search_indexes.LocationAliasIndex']
+        'EXCLUDED_INDEXES': ['telemeta.search_indexes.LocationIndex',
+                             'telemeta.search_indexes.LocationAliasIndex',
+                             'telemeta.search_indexes.InstrumentIndex',
+                             'telemeta.search_indexes.InstrumentAliasIndex'
+                             ]
     },
     'autocomplete': {
         # 'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',

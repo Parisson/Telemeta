@@ -166,26 +166,13 @@ class HaystackAdvanceSearch(SavedSearchView):
         return extra
 
 def autocomplete(request):
+    attribut = request.GET.get('attr', '')
     sqs = SearchQuerySet().load_all()
-    if request.GET.get('attr', '') == "instruments":
-        if request.GET.get('attr', '') == "instruments":
-            sqs = sqs.filter(instruments__startswith=request.GET.get('q', ''))
-            objets = [result.instruments for result in sqs]
-            #instrus = [result.instruments for result in sqs]
-        #elif request.GET.get('attr', '') == "location":
-        #     sqs = sqs.filter(SQ(location_principal__startswith=request.GET.get('q', ''))|SQ(location_relation__startswith=request.GET.get('q', '')))
-        #     objets = [result.location_principal+result.location_relation for result in sqs]
-        suggestions = []
-        for chaine in objets :
-        #for chaine in instrus:
-            for word in chaine.split('|'):
-                if word != "" and escapeAccentAndLower(request.GET.get('q', '')) in escapeAccentAndLower(word):
-                     suggestions.append(word)
-    elif request.GET.get('attr', '') == "code":
+    if attribut == "code":
         sqs = sqs.filter(code__contains=request.GET.get('q', ''))
         suggestions = [result.code for result in sqs]
 
-    elif request.GET.get('attr', '') == "collectors":
+    elif attribut == "collectors":
         sqs = sqs.filter(collectors__startswith=request.GET.get('q', ''))
         collecteurs = [result.collectors for result in sqs]
         suggestions = []
@@ -193,8 +180,14 @@ def autocomplete(request):
             for word in chaine.split('; '):
                 if word != "" and escapeAccentAndLower(request.GET.get('q', '')) in escapeAccentAndLower(word):
                     suggestions.append(word)
-    elif request.GET.get('attr', '') == "location":
-        sqs = SearchQuerySet().using('autocomplete').filter(content__startswith=request.GET.get('q', ''))
+    elif attribut == "location" or attribut == "instruments":
+        sqs = SearchQuerySet().using('autocomplete')
+
+        if attribut == "location":
+            sqs = sqs.models(Location, LocationAlias)
+        else:
+            sqs = sqs.models(Instrument, InstrumentAlias)
+        sqs = sqs.filter(content__startswith=request.GET.get('q', ''))
         suggestions = [obj.text for obj in sqs]
     else:
         suggestions = []
