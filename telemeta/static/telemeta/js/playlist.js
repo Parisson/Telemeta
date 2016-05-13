@@ -90,6 +90,26 @@ var playlistUtils = {
         this.id = ""; // init ID
     },
 
+    loadSong: function(id){
+        alert(id);
+        var player = $('#player').val();
+        var sourceOgg = $('#player').val();
+        var sourceMp3 = $('#player').val();
+        for (var i=0; i<this.playlists.length; i++){
+            if (this.playlists[i].id == id){
+                // for resource in playlist.resources
+                // if ID of the item then
+                /*
+                sourceOgg.src = this.playlists[i].sound;
+                sourceMp3.src = this.playlists[i].sound;
+                */
+            }
+        }
+        player.load(); //just start buffering (preload)
+        //player.play() doesn't work -> TODO: find another way
+        //player.play(); //start playing
+    },
+
     /**
      * Returns an uniqid by creating the current local time in millisecond + a random number. Used for markers and some json calls
      * Copied from Timeside.utils.uniqid (Timeside might NOT ALWAYS be loaded, see home.html when user is authenitcated)

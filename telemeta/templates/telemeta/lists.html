@@ -143,7 +143,10 @@
     <div>
         <table class="listing" style="width:100%;margin-top: 1em;">
             <tr>
-                <td style="border-bottom:1px solid #6A0307;color:#6A0307;font-size: 100%">{{ playlist.playlist.title }}</td>
+                <td style="border-bottom:1px solid #6A0307;color:#6A0307;font-size: 100%">
+                    {{ playlist.playlist.title }}
+                    <!-- Location for the button to listen the whole playlist -->
+                </td>
                 <td style="width:86ex; padding-right: 0; border-bottom:1px solid #6A0307; text-align:right">
                     <a href="#" id="{{playlist.playlist.public_id}}" onclick="playlistUtils.editVar(this.id)" class="component_icon button icon_edit" data-toggle="modal" data-target="#edit">{% trans "Edit" %}</a>
                     <a href="{% url "telemeta-playlist-csv-export" playlist.playlist.public_id 'collections' %}" class="component_icon button icon_csv">CSV Collections</a>
@@ -204,9 +207,17 @@
                 </td>
                 <td align="center" style="vertical-align:middle;">
                     {% if resource.element.file or resource.element.has_mediafile %}
-                        <!--<a class="playButton" href="javascript:">-->
+                        <!-- Coding: the simple player -->
+                        <!-- TODO: find the way to pass item's ID when clicked -->
+                        <!-- Problème with player, have to do it without but have to define "player"
+                        <audio id="player" controls="controls">
+                            <source id="sourceOgg" src="" type="audio/ogg" />
+                            <source id="sourceMp3" src="" type="audio/mp3" />
+                            Your browser does not support the audio element.
+                        </audio>-->
+                        <a id="{{playlist.playlist.public_id}}" onclick="playlistUtils.loadSong(this.id)">
                             <span class="glyphicon glyphicon-volume-up" style="font-size: 1.3em;"><p style="opacity:0;font-size:0">d</p></span>
-                        <!--</a>-->
+                        </a>
                     {% endif %}
                 </td>
                 <td style="vertical-align:middle">
