@@ -62,7 +62,7 @@
     {% if user.is_authenticated %}
         {% for playlist in playlists %}
         	{% if forloop.counter0 in rang_item_playliste %}
-                	    playlistUtils.addPlaylist('{{ playlist.playlist.title }} (déjà listé)','{{playlist.playlist.public_id}}');
+                	    playlistUtils.addPlaylist('{{ playlist.playlist.title }}'+ gettrans('(playlisted)'),'{{playlist.playlist.public_id}}');
         	{% else %}
         	            playlistUtils.addPlaylist('{{ playlist.playlist.title }}','{{playlist.playlist.public_id}}');
         	{% endif %}

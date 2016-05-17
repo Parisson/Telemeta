@@ -11,21 +11,6 @@
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/css/jquery-ui.css" />
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/css/search.css" />
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/css/lists_sorttable.css" media="print, projection, screen"/>
-    <style>
-
-        form p{
-            display: inline-block;
-        }
-
-        .ui-front{
-            z-index: 1000;
-        }
-
-        select[name*="startBracket"]{
-            text-align: right;
-        }
-
-    </style>
 {% endblock %}
 {% block content %}
     <form method="get" action=".">
@@ -55,7 +40,7 @@
                     {{form.instruments.errors}}
                     {% trans form.instruments.label_tag %}
                     {{form.instruments}}
-                    <a href="#" id="btn" class="col-md-5 btn btn-default" style="width: 100%; margin-top: 1%">Instruments : Recherche booléenne</a>
+                    <a href="#" id="btn" class="col-md-5 btn btn-default" style="width: 100%; margin-top: 1%">{% trans "Instruments : Boolean Search" %}</a>
                 </div>
 
                 <div class="fieldWrapper">
@@ -271,8 +256,8 @@
                     {% endif %}
 
                 {% endfor %}
-                <a class="btn btn-default" id="ajout" href="#">Ajouter champ</a>
-                <br/><input type="submit" value="Valider la requête">
+                <a class="btn btn-default" id="ajout" href="#">{% trans "Add field" %}</a>
+                <br/><input type="submit" value="{% trans "Validate the query" %}">
 
 
             </form>
@@ -387,7 +372,7 @@ $(function() {
         $('#dialog').dialog("open");
     });
 
-    var supprButton = '<a class="btn btn-default" id="suppr" href="#">Supprimer champ</a><br/>';
+    var supprButton = '<a class="btn btn-default" id="suppr" href="#">'+gettrans('delete field')+'</a><br/>';
 
     var balise = $('#copy').clone();
     $(balise).children().each(function () {
@@ -437,7 +422,7 @@ $(function() {
                     $("#dialog").dialog("close");
                     $('#id_instruments').val(donnees.result);
                 }
-                $('#res').html("Requête formée :<br/><strong>"+donnees.result+'</strong>');
+                $('#res').html(gettrans('final query')+" :<br/><strong>"+gettrans(donnees.result)+'</strong>');
             },
         });
     });

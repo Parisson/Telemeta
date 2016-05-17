@@ -25,7 +25,7 @@ class CustomElasticSearchQuery(ElasticsearchSearchQuery):
     def build_query_fragment(self, field, filter_type, value):
         if isinstance(value, bool):
         	value = str(value)
-    	if field !='code':
+    	if not isinstance(value, int) and field !='code':
         	value = re.sub(regexSpacePunc, " ", value)
         valeur = super(CustomElasticSearchQuery, self).build_query_fragment(field, filter_type, value)
         return valeur
