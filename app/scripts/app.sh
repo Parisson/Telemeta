@@ -35,7 +35,7 @@ python $manage telemeta-create-admin-user
 python $manage telemeta-create-boilerplate
 
 # fix media access rights
-chown www-data:www-data $media
+chown -R www-data:www-data $media
 for dir in $(ls $media); do
     if [ ! $(stat -c %U $media/$dir) = 'www-data' ]; then
         chown www-data:www-data $media/$dir
