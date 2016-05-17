@@ -30,6 +30,13 @@ class CustomElasticSearchQuery(ElasticsearchSearchQuery):
         valeur = super(CustomElasticSearchQuery, self).build_query_fragment(field, filter_type, value)
         return valeur
 
+    def build_query(self):
+        val = super(CustomElasticSearchQuery, self).build_query()
+        import sys
+        print(val)
+        sys.stdout.flush()
+        return val
+
 class CustomElasticEngine(ElasticsearchSearchEngine):
     backend = CustomElasticBackend
     query = CustomElasticSearchQuery

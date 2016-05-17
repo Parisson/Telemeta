@@ -156,6 +156,14 @@ class HayAdvanceForm(SearchForm):
     code = forms.CharField(required=False, label=(_('code')), widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'search'}))
 
     def filterInstru(self, query):
+
+        from telemeta.views.search import BooleanSearchView, Erreur
+
+        try:
+            BooleanSearchView().isCorrectQuery(query)
+        except Erreur:
+            return SQ(instruments__startswith=query)
+
         operateur = "ET"
         if isinstance(query, list):
             queryTerms = query
