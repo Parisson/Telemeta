@@ -90,23 +90,10 @@ var playlistUtils = {
         this.id = ""; // init ID
     },
 
-    loadSong: function(id){
-        var player = $('#player').val();
-        var sourceOgg = $('#player').val();
-        var sourceMp3 = $('#player').val();
-        for (var i=0; i<this.playlists.length; i++){
-            if (this.playlists[i].id == id){
-                // for resource in playlist.resources
-                // if ID of the item then
-                /*
-                sourceOgg.src = this.playlists[i].sound;
-                sourceMp3.src = this.playlists[i].sound;
-                */
-            }
-        }
-        player.load(); //just start buffering (preload)
-        //player.play() doesn't work -> TODO: find another way
-        //player.play(); //start playing
+    loadSong: function(resElem){
+        alert(resElem);
+        var audio = new Audio(resElem);
+        audio.play();
     },
 
     /**

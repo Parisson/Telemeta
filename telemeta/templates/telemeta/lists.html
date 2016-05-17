@@ -207,15 +207,7 @@
                 </td>
                 <td align="center" style="vertical-align:middle;">
                     {% if resource.element.file or resource.element.has_mediafile %}
-                        <!-- Coding: the simple player -->
-                        <!-- TODO: find the way to pass item's ID when clicked -->
-                        <!-- Problème with player, have to do it without but have to define "player"
-                        <audio id="player" controls="controls">
-                            <source id="sourceOgg" src="" type="audio/ogg" />
-                            <source id="sourceMp3" src="" type="audio/mp3" />
-                            Your browser does not support the audio element.
-                        </audio>-->
-                        <a id="{{playlist.playlist.public_id}}" onclick="playlistUtils.loadSong(this.id)">
+                        <a id="{{resource.element.file}}" onclick="playlistUtils.loadSong(this.id)">
                             <span class="glyphicon glyphicon-volume-up" style="font-size: 1.3em;"><p style="opacity:0;font-size:0">d</p></span>
                         </a>
                     {% endif %}
