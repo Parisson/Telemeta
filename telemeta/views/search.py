@@ -28,8 +28,8 @@ from telemeta.forms.boolean_form import *
 from django.forms.formsets import formset_factory
 import re
 
-class HaystackSearch(FacetedSearchView, SavedSearchView):
 
+class HaystackSearch(FacetedSearchView, SavedSearchView):
     search_key = 'quick'
 
     def __call__(self, request, type=None):
@@ -47,11 +47,11 @@ class HaystackSearch(FacetedSearchView, SavedSearchView):
         return super(HaystackSearch, self).get_query()
 
     def get_results(self):
-        if(self.type == 'item'):
+        if (self.type == 'item'):
             return super(HaystackSearch, self).get_results().models(MediaItem)
-        elif(self.type == 'corpus'):
+        elif (self.type == 'corpus'):
             return super(HaystackSearch, self).get_results().models(MediaCorpus)
-        elif(self.type == 'fonds'):
+        elif (self.type == 'fonds'):
             return super(HaystackSearch, self).get_results().models(MediaFonds)
         else:
             return super(HaystackSearch, self).get_results().models(MediaCollection)
@@ -89,7 +89,8 @@ class HaystackSearch(FacetedSearchView, SavedSearchView):
 
             extra['Published_count'] = self.get_results().narrow('item_status:Published').count()
             extra['Unpublished_count'] = self.get_results().narrow('item_status:Unpublished').count()
-            extra['viewable_count'] = self.get_results().narrow('item_acces:full OR item_acces:mixed').narrow('digitized:T').count()
+            extra['viewable_count'] = self.get_results().narrow('item_acces:full OR item_acces:mixed').narrow(
+                'digitized:T').count()
             extra['digitized_count'] = self.get_results().narrow('digitized:T').count()
             extra['CDR_count'] = self.get_results().narrow('physical_format:CDR').count()
             extra['Disque_count'] = self.get_results().narrow('physical_format:Disque').count()
@@ -116,7 +117,6 @@ class HaystackSearch(FacetedSearchView, SavedSearchView):
 
 
 class HaystackAdvanceSearch(SavedSearchView):
-
     search_key = 'advanced'
 
     def __call__(self, request, type=None):
@@ -129,17 +129,17 @@ class HaystackAdvanceSearch(SavedSearchView):
         return super(HaystackAdvanceSearch, self).__call__(request)
 
     def get_query(self):
-        #overwrite the get_query for begin search with any form
+        # overwrite the get_query for begin search with any form
         if self.form.is_valid():
             return self.form.cleaned_data
         return ''
 
     def get_results(self):
-        if(self.type == 'item'):
+        if (self.type == 'item'):
             return self.form.search().models(MediaItem)
-        elif(self.type == 'fonds'):
+        elif (self.type == 'fonds'):
             return self.form.search().models(MediaFonds)
-        elif(self.type == 'corpus'):
+        elif (self.type == 'corpus'):
             return self.form.search().models(MediaCorpus)
         else:
             return self.form.search().models(MediaCollection)
@@ -153,9 +153,9 @@ class HaystackAdvanceSearch(SavedSearchView):
 
         if self.type == 'item':
             extra['type'] = 'item'
-        elif  self.type == 'fonds':
+        elif self.type == 'fonds':
             extra['type'] = 'fonds'
-        elif(self.type == 'corpus'):
+        elif (self.type == 'corpus'):
             extra['type'] = 'corpus'
         else:
             extra['type'] = 'collection'
@@ -165,27 +165,15 @@ class HaystackAdvanceSearch(SavedSearchView):
         extra['request_url'] = self.requestURL
         return extra
 
+
 def autocomplete(request):
+    attribut = request.GET.get('attr', '')
     sqs = SearchQuerySet().load_all()
-    if request.GET.get('attr', '') == "instruments" or request.GET.get('attr', '') == "location":
-        if request.GET.get('attr', '') == "instruments":
-            sqs = sqs.filter(instruments__startswith=request.GET.get('q', ''))
-            objets = [result.instruments for result in sqs]
-            #instrus = [result.instruments for result in sqs]
-        elif request.GET.get('attr', '') == "location":
-             sqs = sqs.filter(location_principal__startswith=request.GET.get('q', '')).filter_or(location_relation__startswith=request.GET.get('q', ''))
-             objets = [result.location_principal for result in sqs]
-        suggestions = []
-        for chaine in objets :
-        #for chaine in instrus:
-            for word in chaine.split('|'):
-                if word != "" and escapeAccentAndLower(request.GET.get('q', '')) in escapeAccentAndLower(word):
-                     suggestions.append(word)
-    elif request.GET.get('attr', '') == "code":
+    if attribut == "code":
         sqs = sqs.filter(code__contains=request.GET.get('q', ''))
         suggestions = [result.code for result in sqs]
 
-    elif request.GET.get('attr', '') == "collectors":
+    elif attribut == "collectors":
         sqs = sqs.filter(collectors__startswith=request.GET.get('q', ''))
         collecteurs = [result.collectors for result in sqs]
         suggestions = []
@@ -193,6 +181,15 @@ def autocomplete(request):
             for word in chaine.split('; '):
                 if word != "" and escapeAccentAndLower(request.GET.get('q', '')) in escapeAccentAndLower(word):
                     suggestions.append(word)
+    elif attribut == "location" or attribut == "instruments":
+        sqs = SearchQuerySet().using('autocomplete')
+
+        if attribut == "location":
+            sqs = sqs.models(Location, LocationAlias)
+        else:
+            sqs = sqs.models(Instrument, InstrumentAlias)
+        sqs = sqs.filter(content__startswith=request.GET.get('q', ''))
+        suggestions = [obj.text for obj in sqs]
     else:
         suggestions = []
 
@@ -207,16 +204,18 @@ def autocomplete(request):
     })
     return HttpResponse(the_data, content_type='application/json')
 
+
 import unicodedata
+
 
 def escapeAccentAndLower(chaine):
     return unicodedata.normalize('NFD', chaine).encode('ascii', 'ignore').lower()
 
-class BooleanSearchView(object):
 
+class BooleanSearchView(object):
     form = formset_factory(BooleanSearch)
 
-    def getBooleanQuery(self, request, type='json'):
+    def getBooleanQuery(self, request):
         if request.method != 'GET':
             return HttpResponse(json.dumps({'result': '[ERROR]:Not Request GET'}), content_type='application/json')
 
@@ -225,34 +224,31 @@ class BooleanSearchView(object):
             query = ""
             for i in range(len(formset.forms)):
                 formul = formset.forms[i]
-                if i!=0:
-                    query+=formul.cleaned_data["boolean"]+" "
-                query+=formul.cleaned_data["startBracket"]
-                query+=formul.cleaned_data["textField"].strip()+" "
-                query+=formul.cleaned_data["endBracket"]
+                if i != 0:
+                    query += formul.cleaned_data["boolean"] + " "
+                query += formul.cleaned_data["startBracket"]
+                query += formul.cleaned_data["textField"].strip() + " "
+                query += formul.cleaned_data["endBracket"]
             try:
                 self.isCorrectQuery(query.strip())
             except Erreur as e:
-                if type=="json":
-                    return HttpResponse(json.dumps({'result': e.message}), content_type='application/json')
-            if type=="json":
-                return HttpResponse(json.dumps({'result': query.strip()}), content_type='application/json')
+                return HttpResponse(json.dumps({'result': e.message}), content_type='application/json')
+            return HttpResponse(json.dumps({'result': query.strip()}), content_type='application/json')
         else:
-            if type=="json":
-                return HttpResponse(json.dumps({'result': '[ERROR]Field(s) missing'}), content_type='application/json')
+            return HttpResponse(json.dumps({'result': '[ERROR]Field(s) missing'}), content_type='application/json')
 
-    def isCorrectQuery(self, query):#
+    def isCorrectQuery(self, query):
         tabQuery = query.split()
         openBracket = 0
         boolean = False
         for mot in tabQuery:
-            if mot ==")":#
+            if mot == ")":  #
                 if openBracket == 0:
                     raise Erreur("[ERROR]Open Bracket Is Missing !")
                 else:
                     openBracket -= 1
                     boolean = False
-            elif mot=="ET" or mot=="OU":
+            elif mot == "ET" or mot == "OU":
                 if boolean:
                     raise Erreur("[ERROR]Two boolean follow")
                 else:
@@ -269,6 +265,5 @@ class BooleanSearchView(object):
             return True
 
 
-
-class Erreur(Exception):#
-    pass#
+class Erreur(Exception):  #
+    pass  #

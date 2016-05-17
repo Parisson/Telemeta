@@ -40,10 +40,10 @@ class HaySearchForm(FacetedSearchForm):
 
         if self.cleaned_data['q']:
             #search input of a code, contains at least '_YYYY_'
-            if not re.match('([a-zA-Z]*_?[EI])?_[0-9]{4}_([0-9]{3}_[0-9]{3})?', self.cleaned_data.get('q')):
-                sqs = sqs.filter(content__startswith=self.cleaned_data['q']).facet('item_acces').facet('item_status').facet('digitized').facet('recording_context').facet('physical_format').facet('media_type')
-            else:
-                sqs = sqs.filter(code__contains=self.cleaned_data['q']).facet('item_acces').facet('item_status').facet('digitized').facet('recording_context').facet('physical_format').facet('media_type')
+            #if not re.match('([a-zA-Z]*_?[EI])?_[0-9]{4}_([0-9]{3}_[0-9]{3})?', self.cleaned_data.get('q')):
+            sqs = sqs.filter(content__startswith=self.cleaned_data['q']).facet('item_acces').facet('item_status').facet('digitized').facet('recording_context').facet('physical_format').facet('media_type')
+            #else:
+            #    sqs = sqs.filter(code__contains=self.cleaned_data['q']).facet('item_acces').facet('item_status').facet('digitized').facet('recording_context').facet('physical_format').facet('media_type')
 
         for facet in self.selected_facets:
             if ":" not in facet:
@@ -156,6 +156,14 @@ class HayAdvanceForm(SearchForm):
     code = forms.CharField(required=False, label=(_('code')), widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'search'}))
 
     def filterInstru(self, query):
+
+        from telemeta.views.search import BooleanSearchView, Erreur
+
+        try:
+            BooleanSearchView().isCorrectQuery(query)
+        except Erreur:
+            return SQ(instruments__startswith=query)
+
         operateur = "ET"
         if isinstance(query, list):
             queryTerms = query
@@ -199,7 +207,7 @@ class HayAdvanceForm(SearchForm):
             sqs = sqs.filter(code__contains=self.cleaned_data['code'])
 
         if self.cleaned_data.get('location'):
-            sqs = sqs.filter(location_principal__startswith=self.cleaned_data['location']).filter_or(location_relation__startswith=self.cleaned_data['location'])
+            sqs = sqs.filter(Q(location_principal__startswith=self.cleaned_data['location'])|Q(location_relation__startswith=self.cleaned_data['location']))
 
         if self.cleaned_data['ethnic_group']:
             if self.cleaned_data.get('ethnic_group') != '':

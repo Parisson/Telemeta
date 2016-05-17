@@ -41,12 +41,21 @@ if [ $REINDEX = "True" ]; then
     python $manage rebuild_index --noinput
 fi
 
-if [ $DEBUG = "False" ]; then
+# fix media access rights
+chown www-data:www-data $media
+for dir in $(ls $media); do
+    if [ ! $(stat -c %U $media/$dir) = 'www-data' ]; then
+        chown www-data:www-data $media/$dir
+    fi
+done
+
+# update haystack index in prod
+if [ "$DEBUG" = "False" ]; then
     python $manage update_index --workers $processes &
 fi
 
-
-if [ $1 = "--runserver" ]; then
+# choose dev or prod mode
+if [ "$1" = "--runserver" ]; then
     python $manage runserver_plus 0.0.0.0:8000
 else
     # static files auto update

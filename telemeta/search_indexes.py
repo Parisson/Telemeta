@@ -19,6 +19,7 @@
 
 from haystack import indexes
 from telemeta.models import *
+from haystack.query import SearchQuerySet
 
 class KeywordField(indexes.CharField):
     field_type = 'keyword'
@@ -72,6 +73,8 @@ class MediaItemIndex(indexes.SearchIndex, indexes.Indexable):
                 location.append(rela.ancestor_location.name)
             for alias in location_alias:
                 location.append(alias.alias)
+            if obj.location.current_location is not None:
+                location.append(obj.location.current_location.name)
             #print u"".join(' ' + local for local in location).encode("utf-8")
             #print u"%s".encode("utf-8") % location
             #print [local for local in location]
@@ -142,6 +145,8 @@ class MediaCollectionIndex(indexes.SearchIndex, indexes.Indexable):
                     location.append(rela.ancestor_location.name)
                 for alias in location_alias:
                     location.append(alias.alias)
+                if item.location.current_location is not None:
+                    location.append(item.location.current_location.name)
                 for name in location:
                     if name and not name in collec_location:
                         collec_location.append(name)
@@ -234,3 +239,49 @@ class MediaFondsIndex(indexes.SearchIndex, indexes.Indexable):
 
     def get_model(self):
         return MediaFonds
+
+class LocationIndex(indexes.SearchIndex, indexes.Indexable):
+
+    text = indexes.CharField(document=True, use_template=True)
+
+    def get_model(self):
+        return Location
+
+    def index_queryset(self, using=None):
+        return MediaItem.objects.all().locations()
+
+
+class LocationAliasIndex(indexes.SearchIndex, indexes.Indexable):
+
+    text = indexes.CharField(document=True, use_template=True)
+
+    def get_model(self):
+        return LocationAlias
+
+    def index_queryset(self, using=None):
+        l = MediaItem.objects.values('location')
+        return LocationAlias.objects.filter(location__in=l)
+
+
+class InstrumentIndex(indexes.SearchIndex, indexes.Indexable):
+
+    text = indexes.CharField(document=True, use_template=True)
+
+    def get_model(self):
+        return Instrument
+
+    def index_queryset(self, using=None):
+        instrus = MediaItemPerformance.objects.values('instrument')
+        return Instrument.objects.filter(pk__in=instrus)
+
+
+class InstrumentAliasIndex(indexes.SearchIndex, indexes.Indexable):
+
+    text = indexes.CharField(document=True, use_template=True)
+
+    def get_model(self):
+        return InstrumentAlias
+
+    def index_queryset(self, using=None):
+        instrualias = MediaItemPerformance.objects.values('alias')
+        return InstrumentAlias.objects.filter(pk__in=instrualias)
