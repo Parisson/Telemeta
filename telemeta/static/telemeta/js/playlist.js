@@ -91,7 +91,6 @@ var playlistUtils = {
     },
 
     loadSong: function(id){
-        alert(id);
         var player = $('#player').val();
         var sourceOgg = $('#player').val();
         var sourceMp3 = $('#player').val();
