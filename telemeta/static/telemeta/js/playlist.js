@@ -41,7 +41,10 @@ PopupDiv.listItemClass = "component_icon list_item icon_playlist";
 
 
 var playlistUtils = {
-    playlists: [],
+    playlists : [],
+    id: '', // ID var: used to edit playlist
+    title: '',
+    description: '',
 
     addPlaylist: function (name, id) {
         this.playlists.push({
@@ -58,31 +61,35 @@ var playlistUtils = {
         });
     },
 
-    showAdd: function (anchorElement) {
-
-        var t = gettrans('title');
-        var d = gettrans('description');
-        var dd = {};
-        dd[t] = '';
-        dd[d] = '';
-        var playlist = this;
-        new PopupDiv({
-            'content': dd,
-            invoker: anchorElement,
-            showOk: true,
-            onOk: function (data) {
-                if (!data[t] && !data[d]) {
-                    return;
-                }
-                //convert language
-                playlist.add({
-                    'title': data[t],
-                    'description': data[d]
-                });
-            }
-        }).show();
-
+    addNewPlaylist: function(){
+        this.add({
+            'title': $('#titleAdd').val(),
+            'description': $('#descriptionAdd').val(),
+        });
     },
+
+    // function to change global var ID (used when edit button is pressed)
+    editVar: function(id){
+        this.id = id;
+        for (var i=0; i<this.playlists.length; i++){
+            if (this.playlists[i].id == id){
+                $('#titleEdit').val(this.playlists[i].title);
+                $('#descriptionEdit').val(this.playlists[i].description);
+            }
+        }
+    },
+
+    editPlaylist: function(){
+        // Use of a function that convert params then use playlist.update
+        //playlist.updateConvert(ID, this.title, DESCRIPTION);
+        this.update({
+            'public_id': this.id,
+            'title': $('#titleEdit').val(),
+            'description': $('#descriptionEdit').val(),
+        });
+        this.id = ""; // init ID
+    },
+
     /**
      * Returns an uniqid by creating the current local time in millisecond + a random number. Used for markers and some json calls
      * Copied from Timeside.utils.uniqid (Timeside might NOT ALWAYS be loaded, see home.html when user is authenitcated)
@@ -126,50 +133,19 @@ var playlistUtils = {
         });
     },
 
-    showEdit: function (anchorElement, id) {
-
-        var t = gettrans('title');
-        var d = gettrans('description');
-        var dd = {};
-        var playlist = this;
-
-        var playlists = this.playlists;
-        for (var i = 0; i < playlists.length; i++) {
-            if (playlists[i].id == id) {
-                dd[t] = playlists[i].title;
-                dd[d] = playlists[i].description;
-            }
-        }
-
-        new PopupDiv({
-            'content': dd,
-            invoker: anchorElement,
-            showOk: true,
-            onOk: function (data) {
-                if (!data[t] && !data[d]) {
-                    return;
-                }
-                //convert language
-                playlist.update({
-                    'public_id': id,
-                    'title': data[t],
-                    'description': data[d],
-                });
-            }
-        }).show();
-    },
-
     /*shows the popup for adding a resource to a playlist*/
     showAddResourceToPlaylist: function (anchorElement, resourceType, objectId, optionalOkMessage) {
         var ar = [];
+        var pl = this;
         var playlists = this.playlists;
-        for (var i = 0; i < playlists.length; i++) {
+
+        for(var i=0; i< playlists.length; i++){
             ar.push(playlists[i].name);
         }
-        var pl = this;
 
-        if (!ar.length) {
-            pl.showAdd(anchorElement);
+
+        if(!ar.length){
+            this.showAdd(anchorElement);
         }
 
         //var addFcn = this.addResourceToPlaylist;
@@ -222,4 +198,3 @@ var playlistUtils = {
 
 
 }
-
