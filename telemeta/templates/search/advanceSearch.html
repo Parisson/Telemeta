@@ -235,7 +235,7 @@
             <div id="results"></div>{# Show some example queries to run, maybe query syntax, something else? #}
         {% endif %}
 
-        <div id="dialog" title="Instruments : Recherche booléenne">
+        <div id="dialog" title="{% trans "Instruments : Boolean Search" %}">
 
             <form>
 
@@ -256,7 +256,7 @@
                     {% endif %}
 
                 {% endfor %}
-                <a class="btn btn-default" id="ajout" href="#">{% trans "Add field" %}</a>
+                <a class="btn btn-default" id="add" href="#">{% trans "Add field" %}</a>
                 <br/><input type="submit" value="{% trans "Validate the query" %}">
 
 
@@ -285,22 +285,22 @@
 </script>
     <script>
 $(function() {
-    function activerAutocompletion(selecteur, attribut) {
+    function activate_autocomplete(selector, attribute) {
 
-    selecteur.each(function () {
+    selector.each(function () {
         var self = this;
         $(this).autocomplete({
             minLength: 3,
-            source: function (requete, reponse) {
+            source: function (request, response) {
                 $.ajax({
                     url: '/search/autocomplete/',
                     dataType: 'json',
                     data: {
                         q: $(self).val(),
-                        attr: ((attribut) ? attribut : $(self).attr('name'))
+                        attr: ((attribute) ? attribute : $(self).attr('name'))
                     },
-                    success: function (donnee) {
-                        reponse(donnee.results);
+                    success: function (data) {
+                        response(data.results);
                     }
                 });
             }
@@ -309,9 +309,9 @@ $(function() {
 
 }
 
-    activerAutocompletion($('#id_code, #id_instruments, #id_collectors, #id_location'));
+    activate_autocomplete($('#id_code, #id_instruments, #id_collectors, #id_location'));
 
-    var colTri = [];
+    var colSort = [];
 
 
     $.tablesorter.addParser({
@@ -321,35 +321,35 @@ $(function() {
         },
         format: function(s, table, cell){
             var _class = $(cell).find('center span').attr('class');
-            _class = _class == undefined ? 1 : 0
+            _class = _class == undefined ? 1 : 0;
             return _class;
         },
         type: 'number'
     });
 
 
-    if(sessionStorage['tri'] && sessionStorage['order']){
-        $.tablesorter.defaults.sortList = [[sessionStorage['tri'], sessionStorage['order']]];
+    if(sessionStorage['sort'] && sessionStorage['order']){
+        $.tablesorter.defaults.sortList = [[sessionStorage['sort'], sessionStorage['order']]];
     }
     else{
         $.tablesorter.defaults.sortList = [[1,0]];
     }
 
     $('#searchtable th').each(function (index) {
-        colTri[index]=$(this).text();
+        colSort[index]=$(this).text();
     });
 
 
     $('#searchtable th').on('click', function () {
-        var index = colTri.indexOf($(this).text());
+        var index = colSort.indexOf($(this).text());
         var order = $.tablesorter.defaults.headerList[index]['order'];
-        if(index!=sessionStorage['tri']){
+        if(index!=sessionStorage['sort']){
             sessionStorage['order']=0;
         }
         else{
             sessionStorage['order']=(sessionStorage['order']==0)?1:0;
         }
-        sessionStorage['tri']=index;
+        sessionStorage['sort']=index;
     });
     
     $("#searchtable").tablesorter({
@@ -372,41 +372,41 @@ $(function() {
         $('#dialog').dialog("open");
     });
 
-    var supprButton = '<a class="btn btn-default" id="suppr" href="#">'+gettrans('delete field')+'</a><br/>';
+    var deleteButton = '<a class="btn btn-default" id="del" href="#">'+gettrans('delete field')+'</a><br/>';
 
-    var balise = $('#copy').clone();
-    $(balise).children().each(function () {
+    var tag = $('#copy').clone();
+    $(tag).children().each(function () {
         $(this).val('').prop('checked', false).prop('selected', false);
     });
 
-    function suppression(e) {
+    function deleteField(e) {
         e.preventDefault();
         var nombre = $('input[name*="textField"]').length;
         if(nombre==3){
-            $('#suppr').remove();
+            $('#del').remove();
         }
         $('#bloc-'+(nombre-1)).remove();
         $('#id_form-TOTAL_FORMS').attr('value', nombre-1);
 
     }
 
-    function ajout(e) {
+    function addField(e) {
         e.preventDefault();
-        var nombre = $('input[name*="textField"]').length;
-        var bal = $(balise).clone().attr('id', 'bloc-'+nombre);
-        if(nombre==2){
-            $('#ajout').after(supprButton);
-            $('#suppr').click(suppression);
+        var number = $('input[name*="textField"]').length;
+        var tagField = $(tag).clone().attr('id', 'bloc-'+number);
+        if(number==2){
+            $('#add').after(deleteButton);
+            $('#del').click(deleteField);
         }
-        $('#ajout').before(bal);
-        $('#bloc-'+nombre).html($('#bloc-'+nombre).html().replace(/1/g, nombre));
-        activerAutocompletion($('#id_form-'+nombre+'-textField'), 'instruments');
-        $('#id_form-TOTAL_FORMS').attr('value', nombre+1);
+        $('#add').before(tagField);
+        $('#bloc-'+number).html($('#bloc-'+number).html().replace(/1/g, number));
+        activate_autocomplete($('#id_form-'+number+'-textField'), 'instruments');
+        $('#id_form-TOTAL_FORMS').attr('value', number+1);
     }
 
-    $('#ajout').click(ajout);
+    $('#add').click(addField);
 
-    activerAutocompletion($('#id_form-0-textField, #id_form-1-textField'), 'instruments');
+    activate_autocomplete($('#id_form-0-textField, #id_form-1-textField'), 'instruments');
 
     var interval = null;
     var textInput = "";
@@ -417,12 +417,12 @@ $(function() {
             url: '/search/booleaninstru/',
             dataType: 'json',
             data: $(this).serialize(),
-            success: function(donnees){
-                if(e.type=='submit' && !donnees.result.match(/\[ERROR\]/g)){
+            success: function(data){
+                if(e.type=='submit' && !data.result.match(/\[ERROR\]/g)){
                     $("#dialog").dialog("close");
-                    $('#id_instruments').val(donnees.result);
+                    $('#id_instruments').val(data.result);
                 }
-                $('#res').html(gettrans('final query')+" :<br/><strong>"+gettrans(donnees.result)+'</strong>');
+                $('#res').html(gettrans('final query')+" :<br/><strong>"+gettrans(data.result)+'</strong>');
             },
         });
     });

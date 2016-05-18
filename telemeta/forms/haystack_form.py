@@ -155,24 +155,24 @@ class HayAdvanceForm(SearchForm):
     physical_format = forms.CharField(required=False, label=(_('physical format')), widget=forms.Select(attrs={'style': 'width:100%'}, choices=list_physical_format()))
     code = forms.CharField(required=False, label=(_('code')), widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'search'}))
 
-    def filterInstru(self, query):
+    def filter_instru(self, query):
 
         from telemeta.views.search import BooleanSearchView, Erreur
-
-        try:
-            BooleanSearchView().isCorrectQuery(query)
-        except Erreur:
-            return SQ(instruments__startswith=query)
+        if isinstance(query, str):
+             try:
+                 BooleanSearchView().is_correct_query(query)
+             except Erreur:
+                 return SQ(instruments__startswith=query)
 
         operateur = "ET"
         if isinstance(query, list):
-            queryTerms = query
+            query_terms = query
         else:
-            queryTerms = query.split()
+            query_terms = query.split()
         sqTab = []
         valeur = ""
-        while len(queryTerms) != 0:
-            term = queryTerms.pop(0)
+        while len(query_terms) != 0:
+            term = query_terms.pop(0)
             if term == "ET" or term == "OU":
                 if valeur != "":
                     sqTab.append(('instruments__startswith', valeur.strip()))
@@ -184,9 +184,9 @@ class HayAdvanceForm(SearchForm):
                     sqTab.append(objet)
                     operateur = "OU" if operateur == "ET" else "ET"
             elif term == "(":
-                indexCloseBracket = getclosebracket(queryTerms)
-                sqTab.append(self.filterInstru(queryTerms[:indexCloseBracket]))
-                del queryTerms[:indexCloseBracket + 1]
+                indexCloseBracket = get_close_bracket(query_terms)
+                sqTab.append(self.filter_instru(query_terms[:indexCloseBracket]))
+                del query_terms[:indexCloseBracket + 1]
             else:
                 valeur += term + " "
         if valeur != "":
@@ -214,7 +214,7 @@ class HayAdvanceForm(SearchForm):
                 sqs = sqs.filter(ethnic_group__contains=self.cleaned_data['ethnic_group'])
 
         if self.cleaned_data.get('instruments'):
-            sqs = sqs.filter(self.filterInstru(self.cleaned_data['instruments']))
+            sqs = sqs.filter(self.filter_instru(self.cleaned_data['instruments']))
 
         if self.cleaned_data.get('collectors'):
             sqs = sqs.filter(collectors__startswith=self.cleaned_data['collectors'])
@@ -258,7 +258,7 @@ class HayAdvanceForm(SearchForm):
         return sqs
 
 
-def getclosebracket(tab):
+def get_close_bracket(tab):
     index = 0
     par = 1
     while par != 0 and index<len(tab):

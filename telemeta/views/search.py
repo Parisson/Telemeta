@@ -230,14 +230,14 @@ class BooleanSearchView(object):
                 query += formul.cleaned_data["textField"].strip() + " "
                 query += formul.cleaned_data["endBracket"]
             try:
-                self.isCorrectQuery(query.strip())
+                self.is_correct_query(query.strip())
             except Erreur as e:
                 return HttpResponse(json.dumps({'result': e.message}), content_type='application/json')
             return HttpResponse(json.dumps({'result': query.strip()}), content_type='application/json')
         else:
             return HttpResponse(json.dumps({'result': '[ERROR]Field(s) missing'}), content_type='application/json')
 
-    def isCorrectQuery(self, query):
+    def is_correct_query(self, query):
         tabQuery = query.split()
         openBracket = 0
         boolean = False
