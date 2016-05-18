@@ -31,11 +31,8 @@ python $manage bower_install -- --allow-root
 python $manage collectstatic --noinput
 
 # telemeta setup
-if [ $DATASTART = "True" ]
-then
 python $manage telemeta-create-admin-user
 python $manage telemeta-create-boilerplate
-fi
 
 if [ $REINDEX = "True" ]; then
     python $manage rebuild_index --noinput
