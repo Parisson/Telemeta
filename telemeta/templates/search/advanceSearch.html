@@ -381,12 +381,12 @@ $(function() {
 
     function deleteField(e) {
         e.preventDefault();
-        var nombre = $('input[name*="textField"]').length;
-        if(nombre==3){
+        var number = $('input[name*="textField"]').length;
+        if(number==3){
             $('#del').remove();
         }
-        $('#bloc-'+(nombre-1)).remove();
-        $('#id_form-TOTAL_FORMS').attr('value', nombre-1);
+        $('#bloc-'+(number-1)).remove();
+        $('#id_form-TOTAL_FORMS').attr('value', number-1);
 
     }
 

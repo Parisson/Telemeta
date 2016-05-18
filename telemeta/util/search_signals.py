@@ -4,7 +4,10 @@ from telemeta.models import *
 from telemeta.search_indexes import *
 from django.db.models import Q
 
-
+#Custom realtime signal in order to update the "autcomplete" index
+#when add/remove instruments/locations in items.
+#Differences of values of fields are checked by the tracker
+#of django-dirtyfields' module
 class RealTimeCustomSignal(signals.RealtimeSignalProcessor):
     handleFields = ('location', 'instrument', 'alias')
     handleModels = (MediaItem, MediaItemPerformance, )

@@ -27,6 +27,8 @@ from django.http import HttpResponse
 from telemeta.forms.boolean_form import *
 from django.forms.formsets import formset_factory
 import re
+import unicodedata
+
 
 
 class HaystackSearch(FacetedSearchView, SavedSearchView):
@@ -179,7 +181,7 @@ def autocomplete(request):
         suggestions = []
         for chaine in collecteurs:
             for word in chaine.split('; '):
-                if word != "" and escapeAccentAndLower(request.GET.get('q', '')) in escapeAccentAndLower(word):
+                if word != "" and escape_accent_and_lower(request.GET.get('q', '')) in escape_accent_and_lower(word):
                     suggestions.append(word)
     elif attribut == "location" or attribut == "instruments":
         sqs = SearchQuerySet().using('autocomplete')
@@ -204,18 +206,14 @@ def autocomplete(request):
     })
     return HttpResponse(the_data, content_type='application/json')
 
-
-import unicodedata
-
-
-def escapeAccentAndLower(chaine):
+def escape_accent_and_lower(chaine):
     return unicodedata.normalize('NFD', chaine).encode('ascii', 'ignore').lower()
 
 
 class BooleanSearchView(object):
     form = formset_factory(BooleanSearch)
 
-    def getBooleanQuery(self, request):
+    def get_boolean_query(self, request):
         if request.method != 'GET':
             return HttpResponse(json.dumps({'result': '[ERROR]:Not Request GET'}), content_type='application/json')
 
@@ -226,9 +224,9 @@ class BooleanSearchView(object):
                 formul = formset.forms[i]
                 if i != 0:
                     query += formul.cleaned_data["boolean"] + " "
-                query += formul.cleaned_data["startBracket"]
-                query += formul.cleaned_data["textField"].strip() + " "
-                query += formul.cleaned_data["endBracket"]
+                query += formul.cleaned_data["start_bracket"]
+                query += formul.cleaned_data["text_field"].strip() + " "
+                query += formul.cleaned_data["end_bracket"]
             try:
                 self.is_correct_query(query.strip())
             except Erreur as e:
@@ -238,15 +236,15 @@ class BooleanSearchView(object):
             return HttpResponse(json.dumps({'result': '[ERROR]Field(s) missing'}), content_type='application/json')
 
     def is_correct_query(self, query):
-        tabQuery = query.split()
-        openBracket = 0
+        tab_query = query.split()
+        open_bracket = 0
         boolean = False
-        for mot in tabQuery:
+        for mot in tab_query:
             if mot == ")":  #
-                if openBracket == 0:
+                if open_bracket == 0:
                     raise Erreur("[ERROR]Open Bracket Is Missing !")
                 else:
-                    openBracket -= 1
+                    open_bracket -= 1
                     boolean = False
             elif mot == "ET" or mot == "OU":
                 if boolean:
@@ -254,12 +252,12 @@ class BooleanSearchView(object):
                 else:
                     boolean = True
             elif mot == "(":
-                openBracket += 1
+                open_bracket += 1
             else:
                 boolean = False
         if boolean:
             raise Erreur("[ERROR]Boolean at the end of query")
-        elif openBracket != 0:
+        elif open_bracket != 0:
             raise Erreur("[ERROR]Close Bracket Is Missing")
         else:
             return True
