@@ -32,5 +32,5 @@ pip-log.txt
 #Mr Developer
 .mr.developer.cfg
 
-.idea/*
+.idea/
 data/backup
