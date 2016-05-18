@@ -28,26 +28,11 @@
         <ul class="dropdown-menu" role="menu">
             <li><a href="{% block url_all %}{% url "telemeta-items" %}{% endblock %}" class="">{% trans "All" %}</a>
             </li>
-            <li><a href="
-
-
-
-
-                    {% block url_unpublished %}{% url "telemeta-items-unpublished" %}{% endblock %}">{% trans "Unpublished" %}</a>
+            <li><a href="{% block url_unpublished %}{% url "telemeta-items-unpublished" %}{% endblock %}">{% trans "Unpublished" %}</a>
             </li>
-            <li><a href="
-
-
-
-
-                    {% block url_published %}{% url "telemeta-items-published" %}{% endblock %}">{% trans "Published" %}</a>
+            <li><a href="{% block url_published %}{% url "telemeta-items-published" %}{% endblock %}">{% trans "Published" %}</a>
             </li>
-            <li><a href="
-
-
-
-
-                    {% block url_sound %}{% url "telemeta-items-sound" %}{% endblock %}">{% trans "Digitized" context "item list" %}</a>
+            <li><a href="{% block url_sound %}{% url "telemeta-items-sound" %}{% endblock %}">{% trans "Digitized" context "item list" %}</a>
             </li>
         </ul>
 

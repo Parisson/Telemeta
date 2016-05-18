@@ -159,26 +159,15 @@
                             {% endif %}
                         </ul>
                         <form id="formlang" action="/i18n/setlang/" method="post" style="display:inline-block;">
-
                             {% csrf_token %}
-
                             <input name="next" type="hidden" value="{% url 'telemeta-home' %}"/>
-
                             <select name="language" style="color:#6a0307">
-
                                 {% for lang in LANGUAGES %}
-
                                     <option value="{{ lang.0 }}">{{ lang.1 }}</option>
-
                                 {% endfor %}
-
                             </select>
-
-
                             <input type="submit" value="Ok"/>
-
                         </form>
-
 
                     {% endblock menu %}
                 </div>
