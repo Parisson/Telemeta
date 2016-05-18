@@ -62,9 +62,6 @@ class RealTimeCustomSignal(signals.RealtimeSignalProcessor):
         InstrumentAliasIndex().remove_object(instance=instance.alias, using='autocomplete')
 
     def handle_save(self, sender, instance, **kwargs):
-        import sys
-        print(sender, self.update_fields)
-        sys.stdout.flush()
         if sender in self.handleModels:
             for field in self.update_fields:
                 getattr(self, "post_save_%s" % field)(instance)

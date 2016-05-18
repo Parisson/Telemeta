@@ -242,9 +242,9 @@
                 {{ booleanForm.management_form}}
                 {% for form in booleanForm %}
                     {% if forloop.counter0 == 0 %}
-                        <span style="margin-left: 13.5%">{{ form.startBracket }}</span>
-                        {{ form.textField }}
-                        {{ form.endBracket }}
+                        <span style="margin-left: 13.5%">{{ form.start_bracket }}</span>
+                        {{ form.text_field }}
+                        {{ form.end_bracket }}
                     {% else %}
                         {% if forloop.counter0 == 1 %}
                         <div id="copy">
@@ -269,8 +269,9 @@
 {% endblock %}
 {% block extra_javascript %}
     <script src="{{ STATIC_URL }}jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
-    <script src="{{ STATIC_URL }}telemeta/js/advanceSearch.js" type="text/javascript"></script>
     <script src="{{ STATIC_URL }}tablesorter/jquery.tablesorter.min.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}telemeta/js/advanceSearch.js" type="text/javascript"></script>
+
     <script>
         $(function(){
             $("#results-per-page").selectmenu({
@@ -283,166 +284,4 @@
         });
 
 </script>
-    <script>
-$(function() {
-    function activate_autocomplete(selector, attribute) {
-
-    selector.each(function () {
-        var self = this;
-        $(this).autocomplete({
-            minLength: 3,
-            source: function (request, response) {
-                $.ajax({
-                    url: '/search/autocomplete/',
-                    dataType: 'json',
-                    data: {
-                        q: $(self).val(),
-                        attr: ((attribute) ? attribute : $(self).attr('name'))
-                    },
-                    success: function (data) {
-                        response(data.results);
-                    }
-                });
-            }
-        });
-    });
-
-}
-
-    activate_autocomplete($('#id_code, #id_instruments, #id_collectors, #id_location'));
-
-    var colSort = [];
-
-
-    $.tablesorter.addParser({
-        id: 'numerised',
-        is:function (s) {
-            return false;
-        },
-        format: function(s, table, cell){
-            var _class = $(cell).find('center span').attr('class');
-            _class = _class == undefined ? 1 : 0;
-            return _class;
-        },
-        type: 'number'
-    });
-
-
-    if(sessionStorage['sort'] && sessionStorage['order']){
-        $.tablesorter.defaults.sortList = [[sessionStorage['sort'], sessionStorage['order']]];
-    }
-    else{
-        $.tablesorter.defaults.sortList = [[1,0]];
-    }
-
-    $('#searchtable th').each(function (index) {
-        colSort[index]=$(this).text();
-    });
-
-
-    $('#searchtable th').on('click', function () {
-        var index = colSort.indexOf($(this).text());
-        var order = $.tablesorter.defaults.headerList[index]['order'];
-        if(index!=sessionStorage['sort']){
-            sessionStorage['order']=0;
-        }
-        else{
-            sessionStorage['order']=(sessionStorage['order']==0)?1:0;
-        }
-        sessionStorage['sort']=index;
-    });
-    
-    $("#searchtable").tablesorter({
-        headers: {
-
-            0:{sorter:false},
-            2: {sorter: 'numerised'}
-        }
-
-    });
-
-
-    $('#dialog').dialog({
-        autoOpen: false,
-        width: '40%',
-        height: 600,
-    });
-
-    $('.fieldWrapper a').click(function(){
-        $('#dialog').dialog("open");
-    });
-
-    var deleteButton = '<a class="btn btn-default" id="del" href="#">'+gettrans('delete field')+'</a><br/>';
-
-    var tag = $('#copy').clone();
-    $(tag).children().each(function () {
-        $(this).val('').prop('checked', false).prop('selected', false);
-    });
-
-    function deleteField(e) {
-        e.preventDefault();
-        var number = $('input[name*="textField"]').length;
-        if(number==3){
-            $('#del').remove();
-        }
-        $('#bloc-'+(number-1)).remove();
-        $('#id_form-TOTAL_FORMS').attr('value', number-1);
-
-    }
-
-    function addField(e) {
-        e.preventDefault();
-        var number = $('input[name*="textField"]').length;
-        var tagField = $(tag).clone().attr('id', 'bloc-'+number);
-        if(number==2){
-            $('#add').after(deleteButton);
-            $('#del').click(deleteField);
-        }
-        $('#add').before(tagField);
-        $('#bloc-'+number).html($('#bloc-'+number).html().replace(/1/g, number));
-        activate_autocomplete($('#id_form-'+number+'-textField'), 'instruments');
-        $('#id_form-TOTAL_FORMS').attr('value', number+1);
-    }
-
-    $('#add').click(addField);
-
-    activate_autocomplete($('#id_form-0-textField, #id_form-1-textField'), 'instruments');
-
-    var interval = null;
-    var textInput = "";
-
-    $('#dialog form').on('submit change', function (e) {
-        if(e.type!='keypress') e.preventDefault();
-        $.ajax({
-            url: '/search/booleaninstru/',
-            dataType: 'json',
-            data: $(this).serialize(),
-            success: function(data){
-                if(e.type=='submit' && !data.result.match(/\[ERROR\]/g)){
-                    $("#dialog").dialog("close");
-                    $('#id_instruments').val(data.result);
-                }
-                $('#res').html(gettrans('final query')+" :<br/><strong>"+gettrans(data.result)+'</strong>');
-            },
-        });
-    });
-
-    $('#dialog input[type="text"]').on('focus', function () {
-        textInput = $(this).val();
-        var self = this;
-       interval = setInterval(function () {
-            if($(self).val()!= textInput){
-                textInput = $(self).val();
-                $('#dialog form').trigger('change');
-            }
-       }, 500);
-    });
-
-    $('#dialog input[type="text"]').on('blur', function () {
-       clearInterval(interval);
-        textInput = ""
-    });
-
-});
-    </script>
 {% endblock %}
