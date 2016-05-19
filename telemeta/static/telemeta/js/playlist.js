@@ -89,7 +89,6 @@ var playlistUtils = {
     },
 
     loadSong: function(resElem){
-        alert(resElem);
         var audio = new Audio(resElem);
         audio.play();
     },
