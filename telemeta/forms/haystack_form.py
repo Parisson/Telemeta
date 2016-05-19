@@ -27,7 +27,7 @@ from haystack.query import SearchQuerySet, SQ
 from datetime import date
 from django.utils.translation import ugettext_lazy as _
 import operator
-from telemeta.views.boolean_search import *
+#from telemeta.views.boolean_search import *
 
 class HaySearchForm(FacetedSearchForm):
 
@@ -156,42 +156,41 @@ class HayAdvanceForm(SearchForm):
     physical_format = forms.CharField(required=False, label=(_('physical format')), widget=forms.Select(attrs={'style': 'width:100%'}, choices=list_physical_format()))
     code = forms.CharField(required=False, label=(_('code')), widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'search'}))
 
-    def filter_instru(self, query):
-        if isinstance(query, str) or isinstance(query, unicode):
-             try:
-                 BooleanSearchView().is_correct_query(query)
-             except TelemetaError:
-                 return SQ(instruments__startswith=query)
-
-        operateur = "ET"
-        if isinstance(query, list):
-            query_terms = query
-        else:
-            query_terms = query.split()
-        sqTab = []
-        valeur = ""
-        while len(query_terms) != 0:
-            term = query_terms.pop(0)
-            if term == "ET" or term == "OU":
-                if valeur != "":
-                    sqTab.append(('instruments__startswith', valeur.strip()))
-                    valeur = ""
-                if term != operateur:
-                    sqTab = [SQ(filtre) for filtre in sqTab]
-                    objet = reduce(operator.or_, sqTab) if operateur == "OU" else reduce(operator.and_, sqTab)
-                    del sqTab[:]
-                    sqTab.append(objet)
-                    operateur = "OU" if operateur == "ET" else "ET"
-            elif term == "(":
-                indexCloseBracket = get_close_bracket(query_terms)
-                sqTab.append(self.filter_instru(query_terms[:indexCloseBracket]))
-                del query_terms[:indexCloseBracket + 1]
-            else:
-                valeur += term + " "
-        if valeur != "":
-            sqTab.append(('instruments__startswith', valeur.strip()))
-        sqTab = [SQ(filtre) for filtre in sqTab]
-        return SQ(reduce(operator.and_, sqTab) if operateur == "ET" else reduce(operator.or_, sqTab))
+    #def filter_instru(self, query):
+    #    if isinstance(query, str) or isinstance(query, unicode):
+    #         try:
+    #             BooleanSearchView().is_correct_query(query)
+    #         except TelemetaError:
+    #             return SQ(instruments__startswith=query)
+    #    operateur = "ET"
+    #    if isinstance(query, list):
+    #        query_terms = query
+    #    else:
+    #        query_terms = query.split()
+    #    sqTab = []
+    #    valeur = ""
+    #    while len(query_terms) != 0:
+    #        term = query_terms.pop(0)
+    #        if term == "ET" or term == "OU":
+    #            if valeur != "":
+    #                sqTab.append(('instruments__startswith', valeur.strip()))
+    #                valeur = ""
+    #            if term != operateur:
+    #                sqTab = [SQ(filtre) for filtre in sqTab]
+    #                objet = reduce(operator.or_, sqTab) if operateur == "OU" else reduce(operator.and_, sqTab)
+    #                del sqTab[:]
+    #                sqTab.append(objet)
+    #                operateur = "OU" if operateur == "ET" else "ET"
+    #        elif term == "(":
+    #            indexCloseBracket = get_close_bracket(query_terms)
+    #            sqTab.append(self.filter_instru(query_terms[:indexCloseBracket]))
+    #            del query_terms[:indexCloseBracket + 1]
+    #        else:
+    #            valeur += term + " "
+    #    if valeur != "":
+    #        sqTab.append(('instruments__startswith', valeur.strip()))
+    #    sqTab = [SQ(filtre) for filtre in sqTab]
+    #    return SQ(reduce(operator.and_, sqTab) if operateur == "ET" else reduce(operator.or_, sqTab))
 
     def search(self):
         sqs = SearchQuerySet().load_all()
@@ -213,7 +212,8 @@ class HayAdvanceForm(SearchForm):
                 sqs = sqs.filter(ethnic_group__contains=self.cleaned_data['ethnic_group'])
 
         if self.cleaned_data.get('instruments'):
-            sqs = sqs.filter(self.filter_instru(self.cleaned_data['instruments']))
+            #sqs = sqs.filter(self.filter_instru(self.cleaned_data['instruments']))
+            sqs = sqs.filter(instruments__startswith=self.cleaned_data['instruments'])
 
         if self.cleaned_data.get('collectors'):
             sqs = sqs.filter(collectors__startswith=self.cleaned_data['collectors'])

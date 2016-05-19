@@ -40,7 +40,7 @@
                     {{form.instruments.errors}}
                     {% trans form.instruments.label_tag %}
                     {{form.instruments}}
-                    <a href="#" id="btn" class="col-md-5 btn btn-default" style="width: 100%; margin-top: 1%">{% trans "Instruments : Boolean Search" %}</a>
+                    {% comment %}<a href="#" id="btn" class="col-md-5 btn btn-default" style="width: 100%; margin-top: 1%">{% trans "Instruments : Boolean Search" %}</a>{% endcomment %}
                 </div>
 
                 <div class="fieldWrapper">
@@ -235,6 +235,8 @@
             <div id="results"></div>{# Show some example queries to run, maybe query syntax, something else? #}
         {% endif %}
 
+    {% comment %}
+
         <div id="dialog" title="{% trans "Instruments : Boolean Search" %}">
 
             <form>
@@ -265,6 +267,8 @@
         <p id="res"></p>
 
         </div>
+
+        {% endcomment %}
 
 {% endblock %}
 {% block extra_javascript %}
