@@ -71,32 +71,6 @@
 {% block extra_javascript %}
 
     <script src="{{ STATIC_URL }}jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
-
-    <script>
-        $(function () {
-            $("#results-per-page").selectmenu({
-                icons: {button: "ui-icon-carat-2-n-s"},
-                change: function () {
-                    location.search = '?page=1&results_page=' + $(this).val();
-                }
-            }).selectmenu("menuWidget").addClass("overflow");
-
-            $("#selectAll").click(function () {
-                if (this.checked) {
-                    $(".check1").each(function () {
-                        this.checked = true;
-                    });
-                }
-                else {
-                    $(".check1").each(function () {
-                        this.checked = false;
-                    });
-                }
-            });
-
-        });
-
-
-    </script>
+    <script src="{{ STATIC_URL }}telemeta/js/mediaitem_list.js" type="application/javascript"></script>
 
 {% endblock %}
