@@ -27,6 +27,7 @@ from haystack.query import SearchQuerySet, SQ
 from datetime import date
 from django.utils.translation import ugettext_lazy as _
 import operator
+from telemeta.views.boolean_search import *
 
 class HaySearchForm(FacetedSearchForm):
 
@@ -156,12 +157,10 @@ class HayAdvanceForm(SearchForm):
     code = forms.CharField(required=False, label=(_('code')), widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'search'}))
 
     def filter_instru(self, query):
-
-        from telemeta.views.search import BooleanSearchView, Erreur
-        if isinstance(query, str):
+        if isinstance(query, str) or isinstance(query, unicode):
              try:
                  BooleanSearchView().is_correct_query(query)
-             except Erreur:
+             except TelemetaError:
                  return SQ(instruments__startswith=query)
 
         operateur = "ET"
@@ -256,16 +255,3 @@ class HayAdvanceForm(SearchForm):
                 sqs = sqs.filter(physical_format=self.cleaned_data['physical_format'])
 
         return sqs
-
-
-def get_close_bracket(tab):
-    index = 0
-    par = 1
-    while par != 0 and index<len(tab):
-        if tab[index]=="(":
-            par += 1
-        elif tab[index]==")":
-            par -= 1
-        if par !=0:
-            index+= 1
-    return index if par == 0 else -1

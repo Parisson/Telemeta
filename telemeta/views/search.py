@@ -22,13 +22,8 @@ from haystack.query import SearchQuerySet, SQ
 from telemeta.models import *
 from telemeta.forms.haystack_form import *
 from saved_searches.views import SavedSearchView
-import simplejson as json
-from django.http import HttpResponse
-from telemeta.forms.boolean_form import *
-from django.forms.formsets import formset_factory
 import re
 import unicodedata
-
 
 
 class HaystackSearch(FacetedSearchView, SavedSearchView):
@@ -208,60 +203,3 @@ def autocomplete(request):
 
 def escape_accent_and_lower(chaine):
     return unicodedata.normalize('NFD', chaine).encode('ascii', 'ignore').lower()
-
-
-class BooleanSearchView(object):
-    form = formset_factory(BooleanSearch)
-
-    def get_boolean_query(self, request):
-        if request.method != 'GET':
-            return HttpResponse(json.dumps({'result': '[ERROR]:Not Request GET'}), content_type='application/json')
-
-        formset = self.form(request.GET)
-        if formset.is_valid():
-            query = ""
-            for i in range(len(formset.forms)):
-                formul = formset.forms[i]
-                if i != 0:
-                    query += formul.cleaned_data["boolean"] + " "
-                query += formul.cleaned_data["start_bracket"]
-                query += formul.cleaned_data["text_field"].strip() + " "
-                query += formul.cleaned_data["end_bracket"]
-            try:
-                self.is_correct_query(query.strip())
-            except Erreur as e:
-                return HttpResponse(json.dumps({'result': e.message}), content_type='application/json')
-            return HttpResponse(json.dumps({'result': query.strip()}), content_type='application/json')
-        else:
-            return HttpResponse(json.dumps({'result': '[ERROR]Field(s) missing'}), content_type='application/json')
-
-    def is_correct_query(self, query):
-        tab_query = query.split()
-        open_bracket = 0
-        boolean = False
-        for mot in tab_query:
-            if mot == ")":  #
-                if open_bracket == 0:
-                    raise Erreur("[ERROR]Open Bracket Is Missing !")
-                else:
-                    open_bracket -= 1
-                    boolean = False
-            elif mot == "ET" or mot == "OU":
-                if boolean:
-                    raise Erreur("[ERROR]Two boolean follow")
-                else:
-                    boolean = True
-            elif mot == "(":
-                open_bracket += 1
-            else:
-                boolean = False
-        if boolean:
-            raise Erreur("[ERROR]Boolean at the end of query")
-        elif open_bracket != 0:
-            raise Erreur("[ERROR]Close Bracket Is Missing")
-        else:
-            return True
-
-
-class Erreur(Exception):  #
-    pass  #
