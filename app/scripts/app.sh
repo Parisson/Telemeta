@@ -31,18 +31,15 @@ python $manage bower_install -- --allow-root
 python $manage collectstatic --noinput
 
 # telemeta setup
-if [ $DATASTART = "True" ]
-then
 python $manage telemeta-create-admin-user
 python $manage telemeta-create-boilerplate
-fi
 
 if [ $REINDEX = "True" ]; then
     python $manage rebuild_index --noinput
 fi
 
 # fix media access rights
-chown www-data:www-data $media
+chown -R www-data:www-data $media
 for dir in $(ls $media); do
     if [ ! $(stat -c %U $media/$dir) = 'www-data' ]; then
         chown www-data:www-data $media/$dir

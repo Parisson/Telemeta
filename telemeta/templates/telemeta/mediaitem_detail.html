@@ -61,7 +61,7 @@
     //playlists:
     {% if user.is_authenticated %}
         {% for playlist in playlists %}
-        	{% if forloop.counter0 in rang_item_playliste %}
+        	{% if forloop.counter0 in rang_item_playlist %}
                 	    playlistUtils.addPlaylist('{{ playlist.playlist.title }}'+ gettrans('(playlisted)'),'{{playlist.playlist.public_id}}');
         	{% else %}
         	            playlistUtils.addPlaylist('{{ playlist.playlist.title }}','{{playlist.playlist.public_id}}');

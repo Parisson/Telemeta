@@ -2,7 +2,7 @@ from django import forms
 
 class BooleanSearch(forms.Form):
 
-    def getBrackets(dir):
+    def get_brackets(dir):
         list = []
         for i in range(4):
             brackets = ""
@@ -15,8 +15,8 @@ class BooleanSearch(forms.Form):
         return list
 
     boolean = forms.ChoiceField(choices=[('ET', 'ET',), ('OU', 'OU',)], label='', required=False)
-    startBracket = forms.ChoiceField(label='',choices=getBrackets('left'), required=False)
-    textField = forms.CharField(label='', widget=forms.TextInput(attrs={'required':''}))
-    endBracket = forms.ChoiceField(label='', choices=getBrackets('right'), required=False)
+    start_bracket = forms.ChoiceField(label='', choices=get_brackets('left'), required=False)
+    text_field = forms.CharField(label='', widget=forms.TextInput(attrs={'required': ''}))
+    end_bracket = forms.ChoiceField(label='', choices=get_brackets('right'), required=False)
 
 

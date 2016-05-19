@@ -45,7 +45,7 @@ playlist_view = PlaylistView()
 profile_view = ProfileView()
 geo_view = GeoView()
 resource_view = ResourceView()
-boolean_view = BooleanSearchView()
+#boolean_view = BooleanSearchView()
 
 # ID's regular expressions
 export_extensions = "|".join(item_view.list_export_extensions())
@@ -131,7 +131,7 @@ urlpatterns = patterns('',
     url(r'^search/quick/(?P<type>[A-Za-z0-9._-]+)/$', HaystackSearch(), name='haystack_search_type'),
     url(r'^search/advance/$', HaystackAdvanceSearch(form_class=HayAdvanceForm, template='search/advanceSearch.html'), name='haystack_advance_search'),
     url(r'^search/advance/(?P<type>[A-Za-z0-9._-]+)/$', HaystackAdvanceSearch(form_class=HayAdvanceForm, template='search/advanceSearch.html'), name='haystack_advance_search_type'),
-    url(r'^search/booleaninstru/$', boolean_view.getBooleanQuery),
+    #url(r'^search/booleaninstru/$', boolean_view.get_boolean_query),
 
     url(r'^search/playlist_add/(?P<type>[A-Za-z0-9._-]+)/$', NewPlaylistView().display, name='haystack_playlist'),
     url(r'^search/playlist_confirmation/(?P<type>[A-Za-z0-9._-]+)/$',NewPlaylistView().addToPlaylist, name='add_confirmation'),

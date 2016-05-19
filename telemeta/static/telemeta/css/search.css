@@ -50,7 +50,7 @@ form p {
     z-index: 1000;
 }
 
-select[name*="startBracket"] {
+select[name*="start_bracket"] {
     text-align: right;
 }
 

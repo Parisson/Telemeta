@@ -22,11 +22,10 @@ from haystack.query import SearchQuerySet, SQ
 from telemeta.models import *
 from telemeta.forms.haystack_form import *
 from saved_searches.views import SavedSearchView
+import re
+import unicodedata
 import simplejson as json
 from django.http import HttpResponse
-from telemeta.forms.boolean_form import *
-from django.forms.formsets import formset_factory
-import re
 
 
 class HaystackSearch(FacetedSearchView, SavedSearchView):
@@ -161,7 +160,7 @@ class HaystackAdvanceSearch(SavedSearchView):
             extra['type'] = 'collection'
 
         extra['results_page'] = self.results_per_page
-        extra['booleanForm'] = formset_factory(BooleanSearch, extra=2)
+        #extra['booleanForm'] = formset_factory(BooleanSearch, extra=2)
         extra['request_url'] = self.requestURL
         return extra
 
@@ -179,7 +178,7 @@ def autocomplete(request):
         suggestions = []
         for chaine in collecteurs:
             for word in chaine.split('; '):
-                if word != "" and escapeAccentAndLower(request.GET.get('q', '')) in escapeAccentAndLower(word):
+                if word != "" and escape_accent_and_lower(request.GET.get('q', '')) in escape_accent_and_lower(word):
                     suggestions.append(word)
     elif attribut == "location" or attribut == "instruments":
         sqs = SearchQuerySet().using('autocomplete')
@@ -204,66 +203,5 @@ def autocomplete(request):
     })
     return HttpResponse(the_data, content_type='application/json')
 
-
-import unicodedata
-
-
-def escapeAccentAndLower(chaine):
+def escape_accent_and_lower(chaine):
     return unicodedata.normalize('NFD', chaine).encode('ascii', 'ignore').lower()
-
-
-class BooleanSearchView(object):
-    form = formset_factory(BooleanSearch)
-
-    def getBooleanQuery(self, request):
-        if request.method != 'GET':
-            return HttpResponse(json.dumps({'result': '[ERROR]:Not Request GET'}), content_type='application/json')
-
-        formset = self.form(request.GET)
-        if formset.is_valid():
-            query = ""
-            for i in range(len(formset.forms)):
-                formul = formset.forms[i]
-                if i != 0:
-                    query += formul.cleaned_data["boolean"] + " "
-                query += formul.cleaned_data["startBracket"]
-                query += formul.cleaned_data["textField"].strip() + " "
-                query += formul.cleaned_data["endBracket"]
-            try:
-                self.isCorrectQuery(query.strip())
-            except Erreur as e:
-                return HttpResponse(json.dumps({'result': e.message}), content_type='application/json')
-            return HttpResponse(json.dumps({'result': query.strip()}), content_type='application/json')
-        else:
-            return HttpResponse(json.dumps({'result': '[ERROR]Field(s) missing'}), content_type='application/json')
-
-    def isCorrectQuery(self, query):
-        tabQuery = query.split()
-        openBracket = 0
-        boolean = False
-        for mot in tabQuery:
-            if mot == ")":  #
-                if openBracket == 0:
-                    raise Erreur("[ERROR]Open Bracket Is Missing !")
-                else:
-                    openBracket -= 1
-                    boolean = False
-            elif mot == "ET" or mot == "OU":
-                if boolean:
-                    raise Erreur("[ERROR]Two boolean follow")
-                else:
-                    boolean = True
-            elif mot == "(":
-                openBracket += 1
-            else:
-                boolean = False
-        if boolean:
-            raise Erreur("[ERROR]Boolean at the end of query")
-        elif openBracket != 0:
-            raise Erreur("[ERROR]Close Bracket Is Missing")
-        else:
-            return True
-
-
-class Erreur(Exception):  #
-    pass  #

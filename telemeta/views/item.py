@@ -827,7 +827,7 @@ class ItemDetailView(ItemViewMixin, DetailView):
         context['format'] = item_format
         context['private_extra_types'] = private_extra_types.values()
         context['site'] = 'http://' + Site.objects.all()[0].name
-        context['rang_item_playliste']=rang
+        context['rang_item_playlist']=rang
         # if ts_item:
         #     context['ts_item_id'] = ts_item.pk
         # else:
