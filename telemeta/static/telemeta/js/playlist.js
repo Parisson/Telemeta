@@ -39,12 +39,12 @@ PopupDiv.defaultCloseOperation = 'remove';
 PopupDiv.focusable = true;
 PopupDiv.listItemClass = "component_icon list_item icon_playlist";
 
-var ID = ""; // ID var: used to edit playlist
-var TITLE = "";
-var DESCRIPTION = "";
 
 var playlistUtils = {
     playlists : [],
+    id: '', // ID var: used to edit playlist
+    title: '',
+    description: '',
 
     addPlaylist: function(name, id){
         this.playlists.push({
@@ -62,40 +62,32 @@ var playlistUtils = {
     },
 
     addNewPlaylist: function(){
-        var playlist = this;
-        var t = $('#titleAdd').val();
-        var d = $('#descriptionAdd').val();
-        playlist.add({
-            'title': t,
-            'description': d,
+        this.add({
+            'title': $('#titleAdd').val(),
+            'description': $('#descriptionAdd').val(),
         });
     },
 
     // function to change global var ID (used when edit button is pressed)
     editVar: function(id){
-        ID = id;
-        playlists = this.playlists;
-        for (var i=0; i<playlists.length; i++){
-            if (playlists[i].id == id){
-                $('#titleEdit').val(playlists[i].title);
-                $('#descriptionEdit').val(playlists[i].description);
+        this.id = id;
+        for (var i=0; i<this.playlists.length; i++){
+            if (this.playlists[i].id == id){
+                $('#titleEdit').val(this.playlists[i].title);
+                $('#descriptionEdit').val(this.playlists[i].description);
             }
-
         }
     },
 
     editPlaylist: function(){
-        var playlist = this;
-        TITLE = $('#titleEdit').val();
-        DESCRIPTION = $('#descriptionEdit').val();
         // Use of a function that convert params then use playlist.update
-        //playlist.updateConvert(ID, TITLE, DESCRIPTION);
-        playlist.update({
-            'public_id': ID,
-            'title': TITLE,
-            'description': DESCRIPTION,
+        //playlist.updateConvert(ID, this.title, DESCRIPTION);
+        this.update({
+            'public_id': this.id,
+            'title': $('#titleEdit').val(),
+            'description': $('#descriptionEdit').val(),
         });
-        ID = ""; // init ID
+        this.id = ""; // init ID
     },
 
     /**
@@ -143,14 +135,16 @@ var playlistUtils = {
     /*shows the popup for adding a resource to a playlist*/
     showAddResourceToPlaylist: function(anchorElement, resourceType, objectId, optionalOkMessage){
         var ar = [];
+        var pl = this;
         var playlists = this.playlists;
+
         for(var i=0; i< playlists.length; i++){
             ar.push(playlists[i].name);
         }
-        var pl = this;
+
 
         if(!ar.length){
-            pl.showAdd(anchorElement);
+            this.showAdd(anchorElement);
         }
 
         //var addFcn = this.addResourceToPlaylist;
@@ -192,4 +186,3 @@ var playlistUtils = {
 
 
 }
-
