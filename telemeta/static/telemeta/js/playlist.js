@@ -80,14 +80,17 @@ var playlistUtils = {
     },
 
     editPlaylist: function(){
-        // Use of a function that convert params then use playlist.update
-        //playlist.updateConvert(ID, this.title, DESCRIPTION);
         this.update({
             'public_id': this.id,
             'title': $('#titleEdit').val(),
             'description': $('#descriptionEdit').val(),
         });
         this.id = ""; // init ID
+    },
+
+    loadSong: function(resElem){
+        var audio = new Audio(resElem);
+        audio.play();
     },
 
     /**
