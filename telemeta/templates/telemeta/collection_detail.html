@@ -92,20 +92,30 @@
         <div class="infos">
         {% block general_info %}
         <dl class="listing">
-            {% dl_field collection "reference" %}
             {% dl_field collection "title"  %}
             {% dl_field collection "alt_title" %}
-            {% dl_field collection "creator" placeholder %}
-            <dt>{% trans "Comments" %}</dt>
-            <dd>{{ collection.comment|html_line_break|safe }}</dd>
-            {% dl_field collection "recording_context" %}
-            <dt>{% trans "Recording period" %}</dt>
-                <dd>{% if collection.recorded_from_year %}{{ collection.recorded_from_year }}{% endif %}{% if collection.recorded_from_year and collection.recorded_to_year %} - {% endif %}{% if  collection.recorded_to_year %}{{ collection.recorded_to_year}}{% endif %}</dd>
-            {% dl_field collection "year_published" placeholder %}
+            <dt>{% trans "Media type" %}</dt>
+            <dd>{% trans mime_type|mime_to_media_type %}</dd>
+            {% dl_field collection "code" %}
+            {% if collection.creator %}
+              {% dl_field collection "creator" placeholder %}
+            {% endif %}
+            {% if collection.description %}
+              <dt>{% trans "Description" %}</dt>
+              <dd>{{ collection.description|html_line_break|safe }}</dd>
+            {% endif %}
             {% for parent in parents %}
             <dt>{% trans parent.element_type|capitalize %}</dt>
             <dd><a href="{% url 'telemeta-resource-detail' parent.element_type parent.public_id %}">{{ parent.title }}</a></dd>
             {% endfor %}
+            <dt>{% trans "Comments" %}</dt>
+            <dd>{{ collection.comment|html_line_break|safe }}</dd>
+            <dt>{% trans "Recording period" %}</dt>
+                <dd>{% if collection.recorded_from_year %}{{ collection.recorded_from_year }}{% endif %}{% if collection.recorded_from_year and collection.recorded_to_year %} - {% endif %}{% if  collection.recorded_to_year %}{{ collection.recorded_to_year}}{% endif %}</dd>
+            {% if collection.year_published != 0 %}
+              {% dl_field collection "year_published" placeholder %}
+            {% endif %}
+            {% dl_field collection "recording_context" %}
             {% if last_revision %}
             <dt>{% trans "Last modification" %}</dt>
             <dd>{{ last_revision.time }} {% if user.is_authenticated %}(<a href="{% url 'telemeta-profile-detail' last_revision.user.username %}">{{last_revision.user.username}}</a>){% endif %}</dd>
@@ -113,7 +123,7 @@
         </dl>
         {% endblock general_info %}
         </div>
-        <div class="extraInfos">
+        <!--<div class="extraInfos">
         {% block geoethnic_data %}
             <div>
                 <h4><a href="#">{% trans "Geographic and cultural informations" %}</a></h4>
@@ -125,7 +135,7 @@
                 </div>
             </div>
         {% endblock geoethnic_data %}
-        </div>
+        </div>-->
         <div class="extraInfos">
         {% block legal_data %}
         <div>
@@ -137,15 +147,15 @@
                       <dt>{% trans "Recordist" %}</dt><dd>{{ collection.creator }}</dd>
                       {% endif%}
                     {% else %}
-                    {% dl_field collection "collector" %}
+                      {% dl_field collection "collector" %}
                     {% endif %}
                     {% dl_field collection "publisher" %}
                     {% dl_field collection "publisher_collection" %}
                     {% dl_field collection "publisher_serial" %}
                     {% dl_field collection "booklet_author" %}
-                    <dt>{% trans "Bibliographic references" %}</dt>
+                    <!--<dt>{% trans "Bibliographic references" %}</dt>-->
                     <dd>{{ collection.external_references|html_line_break|safe }}</dd>
-                    {% dl_field collection "public_access_label" %}
+                    <!--{% dl_field collection "public_access_label" %}-->
                     {% dl_field collection "legal_rights" %}
                 </dl>
             </div>
@@ -158,11 +168,12 @@
             <h4><a href="#">{% trans "Archiving data" %}</a></h4>
             <div>
                 <dl class="listing">
+                    {% dl_field collection "reference" %}
                     {% dl_field collection "acquisition_mode" %}
-                    {% dl_field collection "cnrs_contributor" %}
+                    <!--{% dl_field collection "cnrs_contributor" %}
                     {% dl_field collection "metadata_author" %}
                     <dt>{% trans "Related documentation" %}</dt>
-                    <dd>{{ collection.booklet_description|html_line_break|safe }}</dd>
+                    <dd>{{ collection.booklet_description|html_line_break|safe }}</dd>-->
                     {% dl_field collection "publishing_status" %}
                     {% dl_field collection "alt_ids" %}
                     {% dl_field collection "metadata_writer" %}
@@ -180,16 +191,16 @@
             <h4><a href="#">{% trans "Technical data" %}</a></h4>
             <div>
                 <dl class="listing">
-                    {% dl_field collection "code" %}
+                    <!--{% dl_field collection "code" %}
                     {% dl_field collection "old_code" %}
-                    <dt>{% trans "Media type" %}</dt><dd>{% trans "Audio" %}</dd>
+		    <dt>{% trans "Media type" %}</dt><dd>{% trans "Audio" %}</dd>
                     {% dl_field collection "approx_duration" %}
                     {% dl_field collection "computed_duration" %}
                     {% dl_field collection "physical_items_num" %}
                     <div class="wazing"></div>
-                    <dt>{% trans "Number of items" %}</dt><dd>{{ collection.items.count }}</dd>
+                    <dt>{% trans "Number of items" %}</dt><dd>{{ collection.items.count }}</dd>-->
                     {% dl_field collection "physical_format" %}
-                    {% dl_field collection "ad_conversion" %}
+                    <!--{% dl_field collection "ad_conversion" %}-->
                 </dl>
             </div>
         </div>

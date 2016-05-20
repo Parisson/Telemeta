@@ -49,6 +49,8 @@ class PhysicalFormat(Enumeration):
 class PublishingStatus(Enumeration):
     "Collection publishing status"
 
+    hidden = True
+
     class Meta(MetaEnumeration):
         db_table = 'publishing_status'
         verbose_name = _("secondary edition")
@@ -62,6 +64,8 @@ class AcquisitionMode(Enumeration):
 
 class MetadataAuthor(Enumeration):
     "Collection metadata author"
+
+    hidden = True
 
     class Meta(MetaEnumeration):
         db_table = 'metadata_authors'
@@ -91,19 +95,16 @@ class RecordingContext(Enumeration):
 class AdConversion(Enumeration):
     "Collection digital to analog conversion status"
 
+    hidden = True
+
     class Meta(MetaEnumeration):
         db_table = 'ad_conversions'
         verbose_name = _("A/D conversion")
 
-class VernacularStyle(Enumeration):
-    "Item vernacular style"
-
-    class Meta(MetaEnumeration):
-        db_table = 'vernacular_styles'
-        verbose_name = _("vernacular style")
-
 class GenericStyle(Enumeration):
     "Item generic style"
+
+    hidden = True
 
     class Meta(MetaEnumeration):
         db_table = 'generic_styles'
@@ -118,6 +119,8 @@ class ContextKeyword(Enumeration):
 
 class Publisher(Enumeration):
     "Collection publisher"
+
+    hidden = True
 
     class Meta(MetaEnumeration):
         db_table = 'publishers'
@@ -141,6 +144,8 @@ class PublisherCollection(ModelCore):
 class EthnicGroup(Enumeration):
     "Item ethnic group"
 
+    hidden = True
+
     class Meta(MetaEnumeration):
         db_table = 'ethnic_groups'
         verbose_name = _('population / social group')
@@ -162,7 +167,6 @@ class EthnicGroupAlias(ModelCore):
 class TapeWheelDiameter(Enumeration):
     "Tape wheel diameter (cm)"
 
-    hidden = True
 
     class Meta(MetaEnumeration):
         db_table = 'tape_wheel_diameter'
@@ -198,7 +202,6 @@ class TapeSpeed(Enumeration):
 class TapeVendor(Enumeration):
     "Tape vendor"
 
-    hidden = True
 
     class Meta(MetaEnumeration):
         db_table = 'tape_vendor'
@@ -208,7 +211,6 @@ class TapeVendor(Enumeration):
 class NumberOfChannels(Enumeration):
     "Number of channels"
 
-    hidden = True
 
     class Meta(MetaEnumeration):
         db_table = 'original_channel_number'
@@ -218,11 +220,10 @@ class NumberOfChannels(Enumeration):
 class Organization(Enumeration):
     "Organization"
 
-    hidden = True
 
     class Meta(MetaEnumeration):
         db_table = 'organization'
-        verbose_name = _("organization")
+        verbose_name = _("Organization")
 
 
 class Rights(Enumeration):
@@ -237,8 +238,6 @@ class Rights(Enumeration):
 
 class Topic(Enumeration):
     "Topic, subject of the study, research, etc.."
-
-    hidden = True
 
     class Meta(MetaEnumeration):
         db_table = 'topic'
@@ -258,11 +257,13 @@ class MediaType(Enumeration):
 
     class Meta(MetaEnumeration):
         db_table = 'media_type'
-        verbose_name = _("media type")
+        verbose_name = _("Media type")
 
 
 class OriginalFormat(Enumeration):
     "Original format"
+
+    hidden = True
 
     class Meta(MetaEnumeration):
         db_table = 'original_format'
@@ -272,6 +273,8 @@ class OriginalFormat(Enumeration):
 class Status(Enumeration):
     "Resource status"
 
+    hidden = True
+
     class Meta(MetaEnumeration):
         db_table = 'media_status'
         verbose_name = _("collection status")
@@ -280,7 +283,15 @@ class Status(Enumeration):
 class IdentifierType(Enumeration):
     "Identifier type"
 
+    hidden = True
+
     class Meta(MetaEnumeration):
         db_table = 'identifier_type'
         verbose_name = _("identifier type")
 
+class ConservationSite(Enumeration):
+    "Conservation site"
+
+    class Meta(MetaEnumeration):
+        db_table = 'conservation_sites'
+        verbose_name = _("conservation site")
