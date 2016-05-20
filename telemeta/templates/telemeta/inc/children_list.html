@@ -1,4 +1,4 @@
-{% load telemeta_utils %}
+{% load telemeta_tags %}
 {% load i18n %}
 
 {% if children %}
@@ -28,7 +28,7 @@
        <center><span class="glyphicon glyphicon-volume-up" style="font-size: 1.3em;"></span></center>
       {% endif %}
     </td>
-    <td>{% if child.descriptions %}{{ child.descriptions }}{% else %}{{ child.description }}{% endif %}</td>
+    <td>{% if child.descriptions %}{{ child.descriptions|safe }}{% else %}{{ child.description|safe }}{% endif %}</td>
     <td>{{ child.code }}</td>
 </tr>
 {% endif %}

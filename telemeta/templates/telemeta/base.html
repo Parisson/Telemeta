@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {% load i18n %}
-{% load telemeta_utils %}
+{% load telemeta_tags %}
 {% load bootstrap3 %}
 {% settings_value 'INSTALLED_APPS' as INSTALLED_APPS %}
 {% if 'googletools' in INSTALLED_APPS %}
@@ -32,7 +32,8 @@
 
 {% block stylesheets %}
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/css/telemeta.css" />
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/lib/bootstrap/dist/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/css/telemeta-more.css" />
 
 <!--[if IE]>
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/css/telemeta_ie.css" />
@@ -46,10 +47,10 @@
 
 {% block javascript %}
 <script src="{% url "django.views.i18n.javascript_catalog" %}" type="text/javascript"></script>
-<script src="{{ STATIC_URL }}telemeta/lib/jquery/dist/jquery.min.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}jquery/dist/jquery.min.js" type="text/javascript"></script>
 <script src="{{ STATIC_URL }}telemeta/js/locale.js" type="text/javascript"></script>
 <script src="{{ STATIC_URL }}telemeta/js/application.js" type="text/javascript"></script>
-<script src="{{ STATIC_URL }}telemeta/lib/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
 
 {% if user.is_authenticated %}
 <script type='text/javascript'>var CURRENT_USER_NAME="{{ user.username }}";</script>
@@ -133,7 +134,7 @@
  {% if user.is_staff %}
  <li><a href="#admin#" class="violet">{% trans "Admin" %}</a>
  <ul>
- <li><a href="{% url "telemeta-admin-general" %}">{% trans "General" context "admin" %}</a></li>
+ <li><a href="{% url "telemeta-home" %}admin/django/" target="_blank">{% trans "General" context "admin" %}</a></li>
  <li><a href="{% url "telemeta-admin-enumerations" %}">{% trans "Enumerations" %}</a></li>
  <li><a href="{% url "telemeta-instrument-edit" %}">{% trans "Instruments" %}</a></li>
  <li><a href="{% url "telemeta-instrument-alias-edit" %}">{% trans "Instrument aliases" %}</a></li>

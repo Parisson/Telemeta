@@ -1,0 +1,22 @@
+{% extends "telemeta/mediaitem_detail.html" %}
+{% load telemeta_tags %}
+{% load i18n %}
+
+{% block extra_javascript %}{% endblock %}
+{% block title %}{% endblock %}
+{% block title_buttons %}{% endblock %}
+
+{% block layout %}
+{% block content %}
+<div>
+{% if item.file %}
+    {% if access or user.is_staff %}
+     {% include "telemeta/inc/mediaitem_video.html" %}
+    {% endif %}
+{% endif %}
+</div>
+
+{% endblock content%}
+{% endblock layout %}
+
+{% block footer %}{% endblock %}

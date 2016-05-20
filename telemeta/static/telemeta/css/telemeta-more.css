@@ -1,0 +1,22 @@
+a, a:visited {
+    color: #BB0000;
+    text-decoration:none;
+}
+a:hover {
+    background-color: transparent;
+    color: #BB0000;
+    text-decoration: underline;
+}
+
+.pagination > .active > a,
+.pagination > .active > span,
+.pagination > .active > a:hover,
+.pagination > .active > span:hover,
+.pagination > .active > a:focus,
+.pagination > .active > span:focus {
+  z-index: 2;
+  color: #fff;
+  cursor: default;
+  background-color: #6a0307;
+  border-color: #6a0307;
+}

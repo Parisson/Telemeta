@@ -50,7 +50,10 @@ def language_code(request=None):
     return code.lower()
 
 def project_dir():
-    import settings as settings_mod
+    try:
+        import sandbox.settings as settings_mod
+    except:
+        import settings as settings_mod
     if '__init__.py' in settings_mod.__file__:
         p = os.path.dirname(settings_mod.__file__)
     else:
@@ -115,4 +118,3 @@ def get_page_content(request, relative_path, ignore_slash_issue=False):
 
 class MalformedPagePath(Exception):
     pass
-
