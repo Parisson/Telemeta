@@ -164,7 +164,7 @@
         <table id="{{playlist.playlist.public_id}}tb" class="listing" width="100%">
             <thead>
             <tr>
-                <th class="highlight" style="max-width:200px">{% trans "Title" %}</th>
+                <th class="highlight" style="max-width:200px;">{% trans "Title" %}</th>
                 <th>{% trans "Type" %}</th>
                 <th style="max-width:200px">{% trans "Code" %}</th>
                 <th>{% trans "Recordist" %}</th>
@@ -207,7 +207,7 @@
                 </td>
                 <td align="center" style="vertical-align:middle;">
                     {% if resource.element.file or resource.element.has_mediafile %}
-                        <a id="{{resource.element.file}}" onclick="playlistUtils.loadSong(this.id)">
+                        <a href="#" id="{% url 'telemeta-item-export' resource.element.public_id 'mp3' %}" onclick="playlistUtils.loadSong(this.id)">
                             <span class="glyphicon glyphicon-volume-up" style="font-size: 1.3em;"><p style="opacity:0;font-size:0">d</p></span>
                         </a>
                     {% endif %}
