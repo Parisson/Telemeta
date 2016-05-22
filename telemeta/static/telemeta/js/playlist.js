@@ -89,7 +89,13 @@ var playlistUtils = {
     },
 
     loadSong: function(resElem){
-        var audio = new Audio(resElem);
+        var audio = new Audio();
+	//For old browsers that do not support mp3 files 
+        audio.onerror = function(){
+             this.src = this.src.replace("mp3", "ogg");
+             this.play();
+	};
+	audio.src = resElem;
         audio.play();
     },
 
