@@ -38,8 +38,6 @@ class ItemBaseMixin(TelemetaBaseMixin):
     analyzers = timeside.core.processor.processors(timeside.core.api.IAnalyzer)
     value_analyzers = timeside.core.processor.processors(timeside.core.api.IValueAnalyzer)
 
-
-
     export_enabled = getattr(settings, 'TELEMETA_DOWNLOAD_ENABLED', True)
     export_formats = getattr(settings, 'TELEMETA_DOWNLOAD_FORMATS', ('mp3', 'wav'))
     default_grapher_id = getattr(settings, 'TIMESIDE_DEFAULT_GRAPHER_ID', ('waveform_simple'))
@@ -259,7 +257,7 @@ class ItemView(ItemBaseMixin):
         while (status != ts.models._DONE):
             time.sleep(0.5)
             status = ts.models.Task.objects.get(id=ts_task.id).status
-            
+
         result = ts.models.Result.objects.get(preset=ts_preset, item=ts_item)
 
         response = StreamingHttpResponse(FileWrapper(open(result.file.name)), content_type=mime_type)
@@ -613,7 +611,7 @@ class ItemDetailView(ItemViewMixin, DetailView):
             if source:
 
                 decoder = timeside.core.get_processor('file_decoder')(source)
-                pipe = decoder = timeside.core.get_processor('file_decoder')(source)
+                pipe = decoder
 
                 for analyzer in self.value_analyzers:
                     subpipe = analyzer()
@@ -701,11 +699,11 @@ class ItemDetailView(ItemViewMixin, DetailView):
 
         # Corresponding TimeSide Item
         source, source_type = item.get_source()
-        if source:
-            ts_item, c = ts.models.Item.objects.get_or_create(**{source_type: source})
-            if c:
-                ts_item.title = item.title
-                ts_item.save()
+        # if source:
+        #     ts_item, c = ts.models.Item.objects.get_or_create(**{source_type: source})
+        #     if c:
+        #         ts_item.title = item.title
+        #         ts_item.save()
 
         self.item_analyze(item)
 
@@ -744,10 +742,10 @@ class ItemDetailView(ItemViewMixin, DetailView):
         context['format'] = item_format
         context['private_extra_types'] = private_extra_types.values()
         context['site'] = 'http://' + Site.objects.all()[0].name
-        if ts_item:
-            context['ts_item_id'] = ts_item.pk
-        else:
-            context['ts_item_id'] = None
+        # if ts_item:
+        #     context['ts_item_id'] = ts_item.pk
+        # else:
+        #     context['ts_item_id'] = None
 
         return context
 

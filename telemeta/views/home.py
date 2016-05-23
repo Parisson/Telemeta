@@ -55,10 +55,10 @@ class HomeView(object):
             sound_pub_item = sound_items[indexes[0]]
             sound_pub_items = [sound_items[indexes[i]] for i in range(1, N)]
 
-        revisions = get_revisions(25)
         context = RequestContext(request, {
-                    'page_content': pages.get_page_content(request, 'home', ignore_slash_issue=True),
-                    'revisions': revisions,  'sound_pub_items': sound_pub_items,
+                    'page_content': pages.get_page_content(request,
+                    'home', ignore_slash_issue=True),
+                    'sound_pub_items': sound_pub_items,
                     'sound_pub_item': sound_pub_item })
         return HttpResponse(template.render(context))
 

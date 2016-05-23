@@ -47,6 +47,8 @@ broker:
 
 search:
   image: elasticsearch:1
+  ports:
+    - "9200:9200"
 
 app:
   build: .
