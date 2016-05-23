@@ -194,10 +194,10 @@ class MediaItem(MediaResource):
         source_type = None
         if self.file and os.path.exists(self.file.path):
             source = self.file.path
-            source_type = 'file'
+            source_type = 'source_file'
         elif self.url:
             source = self.url
-            source_type = 'url'
+            source_type = 'source_url'
         return source, source_type
 
     @property
