@@ -205,15 +205,18 @@
                     {% endif %}
                     {% endif %}
                 </td>
-                <td align="center" style="vertical-align:middle;">
+                <td style="vertical-align:middle">
                     {% if resource.element.file or resource.element.has_mediafile %}
-                        <a href="#" id="{% url 'telemeta-item-export' resource.element.public_id 'mp3' %}" onclick="playlistUtils.loadSong(this.id)">
-                            <span class="glyphicon glyphicon-volume-up" style="font-size: 1.3em;"><p style="opacity:0;font-size:0">d</p></span>
-                        </a>
+                        <span class="glyphicon glyphicon-ok" style="font-size: 1.3em;color: green;"><p style="opacity:0;font-size:0">d</p></span>
                     {% endif %}
                 </td>
-                <td style="vertical-align:middle">
-                <a href="#" onclick="if(confirm(gettrans('delete the resource from the playlist permanently?'))){playlistUtils.removeResource('{{resource.public_id}}');};return false;" class="component_icon button icon_cancel" style="padding: 4px 12px;"></a>
+                <td align="center" style="vertical-align:middle;">
+                    {% if resource.element.file or resource.element.has_mediafile %}
+                        <a href="#" id="{% url 'telemeta-item-export' resource.element.public_id 'mp3' %}" onclick="playlistUtils.changeGlyph(this.id)" class="glyphicon glyphicon-play" style="font-size: 1.3em;text-decoration: none"><p style="opacity:0;font-size:0">d</p></a>
+                    {% endif %}
+                    <a href="#" onclick="if(confirm(gettrans('delete the resource from the playlist permanently?'))){playlistUtils.removeResource('{{resource.public_id}}');};return false;">
+                        <span class="glyphicon glyphicon-trash" style="font-size: 1.3em;color: black;"><p style="opacity:0;font-size:0">d</p></span>
+                    </a>
                 </td>
             </tr>
             {% endfor %}

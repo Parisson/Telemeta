@@ -45,6 +45,8 @@ var playlistUtils = {
     id: '', // ID var: used to edit playlist
     title: '',
     description: '',
+    state: 'stop', // state var: to state play or pause glyphicon
+    playing: '', // playing var: used to know if an audio is already playing or not
 
     addPlaylist: function(name, id){
         this.playlists.push({
@@ -88,15 +90,44 @@ var playlistUtils = {
         this.id = ""; // init ID
     },
 
-    loadSong: function(resElem){
+    loadAudio: function(resElem){
         var audio = new Audio();
-	//For old browsers that do not support mp3 files 
-        audio.onerror = function(){
-             this.src = this.src.replace("mp3", "ogg");
-             this.play();
-	};
-	audio.src = resElem;
+        //For old browsers that do not support mp3 files
+        /*audio.onerror = function(){
+            this.src = this.src.replace("mp3", "ogg");
+            this.play();
+        };*/
+        audio.src = resElem;
         audio.play();
+    },
+
+    stopAudio: function(resElem){
+        var audio = new Audio();
+        audio.src = resElem;
+        audio.pause();
+    },
+
+    changeGlyph: function(resElem){
+       if(this.playing === '' || this.playing === resElem){
+           if(this.state === 'stop'){
+               this.state = 'play';
+               document.getElementById(resElem).setAttribute("class", "glyphicon glyphicon-pause");
+               playlistUtils.loadAudio(resElem);
+           }
+           else if(this.state === 'play'){
+               this.state = 'stop';
+               document.getElementById(resElem).setAttribute("class", "glyphicon glyphicon-play");
+               playlistUtils.stopAudio(resElem);
+           }
+           this.playing = resElem;
+       }
+       else{
+           playlistUtils.stopAudio(this.playing);
+           this.state = 'stop';
+           document.getElementById(this.playing).setAttribute("class", "glyphicon glyphicon-play");
+           this.playing = '';
+           playlistUtils.changeGlyph(resElem);
+       }
     },
 
     /**
