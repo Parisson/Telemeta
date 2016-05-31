@@ -129,21 +129,6 @@ $(document).ready(function () {
 
     var colSort = [];
 
-
-    $.tablesorter.addParser({
-        id: 'numerised',
-        is: function (s) {
-            return false;
-        },
-        format: function (s, table, cell) {
-            var _class = $(cell).find('center span').attr('class');
-            _class = _class == undefined ? 1 : 0;
-            return _class;
-        },
-        type: 'number'
-    });
-
-
     if (sessionStorage['sort'] && sessionStorage['order']) {
         $.tablesorter.defaults.sortList = [[sessionStorage['sort'], sessionStorage['order']]];
     }
@@ -170,11 +155,8 @@ $(document).ready(function () {
 
     $("#searchtable").tablesorter({
         headers: {
-
             0: {sorter: false},
-            2: {sorter: 'numerised'}
         }
-
     });
 
 

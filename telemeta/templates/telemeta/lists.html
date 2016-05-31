@@ -46,7 +46,7 @@
         $.tablesorter.defaults.sortList = [[2,0]];
         {% for playlist in playlists %}
         	{% if playlist.resources|length != 0 %}
-        		$("#{{playlist.playlist.public_id}}tb").tablesorter({headers: {6:{sorter:false}}} );
+        		$("#{{playlist.playlist.public_id}}tb").tablesorter({headers: {0:{sorter:false}}} );
         	{% endif %}
         {% endfor %}
     });
@@ -149,7 +149,10 @@
     <div>
         <table class="listing" style="width:100%;margin-top: 1em;">
             <tr>
-                <td style="border-bottom:1px solid #6A0307;color:#6A0307;font-size: 100%">{{ playlist.playlist.title }}</td>
+                <td style="border-bottom:1px solid #6A0307;color:#6A0307;font-size: 100%">
+                    {{ playlist.playlist.title }}
+                    <!-- Location for the button to listen the whole playlist -->
+                </td>
                 <td style="width:86ex; padding-right: 0; border-bottom:1px solid #6A0307; text-align:right">
                     <a href="#" id="{{playlist.playlist.public_id}}" onclick="playlistUtils.editVar(this.id)" class="component_icon button icon_edit" data-toggle="modal" data-target="#edit">{% trans "Edit" %}</a>
                     <a href="{% url "telemeta-playlist-csv-export" playlist.playlist.public_id 'collections' %}" class="component_icon button icon_csv">CSV Collections</a>
@@ -167,7 +170,8 @@
         <table id="{{playlist.playlist.public_id}}tb" class="listing" width="100%">
             <thead>
             <tr>
-                <th class="highlight" style="max-width:200px">{% trans "Title" %}</th>
+                <th></th>
+                <th class="highlight" style="max-width:200px;">{% trans "Title" %}</th>
                 <th>{% trans "Type" %}</th>
                 <th style="max-width:200px">{% trans "Code" %}</th>
                 <th>{% trans "Recordist" %}</th>
@@ -179,6 +183,11 @@
             <tbody>
             {% for resource in playlist.resources %}
             <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
+                <td align="center" style="vertical-align:middle;">
+                    {% if resource.element.file or resource.element.has_mediafile %}
+                    <a href="#" id="{% url 'telemeta-item-export' resource.element.public_id 'mp3' %}" onclick="playlistUtils.changeGlyph(this.id)" class="glyphicon glyphicon-play" style="font-size: 1.3em;text-decoration: none"><p style="opacity:0;font-size:0">d</p></a>
+                    {% endif %}
+                </td>
                 <td style="max-width:200px">
                     {% if resource.type == "item" and not resource.element == None %}
                     <a href="{% url "telemeta-item-detail" resource.element.public_id %}">{{ resource.element }}</a>
@@ -210,13 +219,13 @@
                 </td>
                 <td align="center" style="vertical-align:middle;">
                     {% if resource.element.file or resource.element.has_mediafile %}
-                        <!--<a class="playButton" href="javascript:">-->
-                            <span class="glyphicon glyphicon-volume-up" style="font-size: 1.3em;"><p style="opacity:0;font-size:0">d</p></span>
-                        <!--</a>-->
+                        <span class="glyphicon glyphicon-ok" style="font-size: 1.3em;color: green;"><p style="opacity:0;font-size:0">d</p></span>
                     {% endif %}
                 </td>
-                <td style="vertical-align:middle">
-                <a href="#" onclick="if(confirm(gettrans('delete the resource from the playlist permanently?'))){playlistUtils.removeResource('{{resource.public_id}}', '{{ forloop.parentloop.counter0 }}');};return false;" class="component_icon button icon_cancel" style="padding: 4px 12px;"></a>
+                <td align="center" style="vertical-align:middle;">
+                <a href="#" onclick="if(confirm(gettrans('delete the resource from the playlist permanently?'))){playlistUtils.removeResource('{{resource.public_id}}', '{{ forloop.parentloop.counter0 }}');};return false;">
+                     <span class="glyphicon glyphicon-trash" style="font-size: 1.3em;color: black;"><p style="opacity:0;font-size:0">d</p></span>
+                </a>
                 </td>
             </tr>
             {% endfor %}

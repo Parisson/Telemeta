@@ -121,11 +121,6 @@
                     window.location = '?q={{ query }}&amp;page=1&amp;selected_facets={{selected_facets_url|join:'&selected_facets='}}&results_page='+$(this).val();
                 }
             }).selectmenu("menuWidget").addClass("overflow");
-            
-             $.tablesorter.defaults.sortList = [[1,0]];
-    
-    		$("#searchtable").tablesorter({headers: {0:{sorter:false}, 2:{sorter:false}}} );
-
 
         });
     </script>
