@@ -98,7 +98,7 @@
                 {% dl_field collection "creator" placeholder %}
                 {% endif %}
                 <dt>{% trans "Document status" %}</dt>
-                <dd>{{ collection.document_status }}</dd>
+                <dd>{% trans collection.document_status %}</dd>
                 {% if collection.description %}
                 <dt>{% trans "Description" %}</dt>
                 <dd>{{ collection.description|html_line_break|safe }}</dd>
