@@ -39,7 +39,7 @@ if [ $REINDEX = "True" ]; then
 fi
 
 # fix media access rights
-chown -R www-data:www-data $media
+chown www-data:www-data $media
 for dir in $(ls $media); do
     if [ ! $(stat -c %U $media/$dir) = 'www-data' ]; then
         chown www-data:www-data $media/$dir

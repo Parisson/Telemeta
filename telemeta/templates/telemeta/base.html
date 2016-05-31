@@ -158,17 +158,15 @@
                                 </li>
                             {% endif %}
                         </ul>
-                        <form id="formlang" action="/i18n/setlang/" method="post" style="display:inline-block;">
+                        <form id="formlang" action="/i18n/setlang/" method="post" style="display:inline-block;" onchange='this.submit();'>
                             {% csrf_token %}
                             <input name="next" type="hidden" value="{% url 'telemeta-home' %}"/>
                             <select name="language" style="color:#6a0307">
                                 {% for lang in LANGUAGES %}
-                                    <option value="{{ lang.0 }}">{{ lang.1 }}</option>
+                                    <option value="{{ lang.0 }}" {% if lang.0|slice:"2" == LANGUAGE_CODE|slice:"2" %}selected="selected"{% endif %}>{{ lang.0 }}</option>
                                 {% endfor %}
                             </select>
-                            <input type="submit" value="Ok"/>
                         </form>
-
                     {% endblock menu %}
                 </div>
             </div>
