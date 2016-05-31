@@ -27,7 +27,6 @@ from telemeta.views.marker import *
 import timeside.core
 import timeside.server as ts
 
-import time
 from wsgiref.util import FileWrapper
 
 class ItemBaseMixin(TelemetaBaseMixin):
@@ -251,12 +250,7 @@ class ItemView(ItemBaseMixin):
         ts_selection = ts_item.get_single_selection()
         ts_task, c = ts.models.Task.objects.get_or_create(experience=ts_experience,
                                                           selection=ts_selection)
-        ts_task.run()
-
-        status = ts.models.Task.objects.get(id=ts_task.id).status
-        while (status != ts.models._DONE):
-            time.sleep(0.5)
-            status = ts.models.Task.objects.get(id=ts_task.id).status
+        ts_task.run(wait=True)
 
         result = ts.models.Result.objects.get(preset=ts_preset, item=ts_item)
 
