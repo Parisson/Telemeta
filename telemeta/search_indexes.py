@@ -19,7 +19,10 @@
 
 from haystack import indexes
 from telemeta.models import *
+from haystack.query import SearchQuerySet
 
+class KeywordField(indexes.CharField):
+    field_type = 'keyword'
 
 class MediaItemIndex(indexes.SearchIndex, indexes.Indexable):
 
@@ -33,13 +36,13 @@ class MediaItemIndex(indexes.SearchIndex, indexes.Indexable):
     #content_auto = indexes.EdgeNgramField(model_attr='content')
 
     #advance search
-    title = indexes.NgramField(model_attr='title')
-    code = indexes.NgramField(model_attr='code', default='')
+    title = indexes.CharField(model_attr='title')
+    code = KeywordField(model_attr='code', default='')
     location_principal = indexes.CharField(null='None', boost=1.05)
     location_relation = indexes.CharField()
     ethnic_group = indexes.CharField(model_attr='ethnic_group', default='')
-    instruments = indexes.NgramField(default='')
-    collectors = indexes.NgramField(model_attr='collector', default='')
+    instruments = indexes.CharField(default='')
+    collectors = indexes.CharField(model_attr='collector', default='')
     recorded_from_date = indexes.DateField(model_attr='recorded_from_date', null='None')
     recorded_to_date = indexes.DateField(model_attr='recorded_to_date', null='None')
     year_published = indexes.IntegerField(model_attr='collection__year_published', default='')
@@ -70,10 +73,12 @@ class MediaItemIndex(indexes.SearchIndex, indexes.Indexable):
                 location.append(rela.ancestor_location.name)
             for alias in location_alias:
                 location.append(alias.alias)
+            if obj.location.current_location is not None:
+                location.append(obj.location.current_location.name)
             #print u"".join(' ' + local for local in location).encode("utf-8")
             #print u"%s".encode("utf-8") % location
             #print [local for local in location]
-        return u"".join(' ' + local for local in location)
+        return u"".join('|' + local for local in location)
 
     def prepare_instruments(self, obj):
         item = MediaItemPerformance.objects.all().filter(media_item__exact=obj)
@@ -83,13 +88,13 @@ class MediaItemIndex(indexes.SearchIndex, indexes.Indexable):
                 instruments.append(material.instrument.name)
             if material.alias is not None:
                 instruments.append(material.alias.name)
-        return u"".join(' ' + instru for instru in instruments)
+        return u"".join('|' + instru for instru in instruments)
 
     def prepare_collectors(self, obj):
         collectors = []
         collectors.append(obj.collection.collector)
         collectors.append(obj.collector)
-        return u"".join(' ' + collector for collector in collectors)
+        return u"".join('; ' + collector for collector in collectors)
 
 
 class MediaCollectionIndex(indexes.SearchIndex, indexes.Indexable):
@@ -104,13 +109,13 @@ class MediaCollectionIndex(indexes.SearchIndex, indexes.Indexable):
     #content_auto = indexes.EdgeNgramField(model_attr='content')
 
     #advance search
-    title = indexes.NgramField(model_attr='title')
-    code = indexes.NgramField(model_attr='code', default='')
+    title = indexes.CharField(model_attr='title')
+    code = KeywordField(model_attr='code', default='')
     location_principal = indexes.CharField(default='', boost=1.05)
     location_relation = indexes.CharField()
     ethnic_group = indexes.CharField(default='')
-    instruments = indexes.NgramField(default='')
-    collectors = indexes.NgramField(model_attr='collector', default='')
+    instruments = indexes.CharField(default='')
+    collectors = indexes.CharField(model_attr='collector', default='')
     recorded_from_date = indexes.DateField(model_attr='recorded_from_year', null=True)
     recorded_to_date = indexes.DateField(model_attr='recorded_to_year', null=True)
     year_published = indexes.IntegerField(model_attr='year_published', default='')
@@ -127,7 +132,7 @@ class MediaCollectionIndex(indexes.SearchIndex, indexes.Indexable):
             location = []
             if item.location is not None:
                 collec_location.append(item.location.name)
-        return u"".join(' ' + location for location in collec_location)
+        return u"".join('|' + location for location in collec_location)
 
     def prepare_location_relation(self, obj):
         collec_location = []
@@ -140,10 +145,12 @@ class MediaCollectionIndex(indexes.SearchIndex, indexes.Indexable):
                     location.append(rela.ancestor_location.name)
                 for alias in location_alias:
                     location.append(alias.alias)
+                if item.location.current_location is not None:
+                    location.append(item.location.current_location.name)
                 for name in location:
                     if name and not name in collec_location:
                         collec_location.append(name)
-        return u"".join(' ' + location for location in collec_location)
+        return u"".join('|' + location for location in collec_location)
 
     def prepare_ethnic_group(self, obj):
         return "%s" % obj.ethnic_groups()
@@ -159,7 +166,7 @@ class MediaCollectionIndex(indexes.SearchIndex, indexes.Indexable):
 
                 if material.alias and not material.alias in instruments:
                     instruments.append(material.alias.name)
-        return u"".join(' ' + instru for instru in instruments)
+        return u"".join('|' + instru for instru in instruments)
 
     def prepare_recorded_from_date(self, obj):
         if obj.recorded_from_year != 0:
@@ -186,8 +193,8 @@ class MediaCorpusIndex(indexes.SearchIndex, indexes.Indexable):
     #content_auto = indexes.EdgeNgramField(model_attr='content')
 
     #advance search
-    title = indexes.NgramField(model_attr='title')
-    code = indexes.NgramField(model_attr='code', default='')
+    title = indexes.CharField(model_attr='title')
+    code = KeywordField(model_attr='code', default='')
     #location_principal = indexes.CharField(default='', boost=1.05)
     #location_relation = indexes.CharField()
     #ethnic_group = indexes.CharField(default='')
@@ -216,8 +223,8 @@ class MediaFondsIndex(indexes.SearchIndex, indexes.Indexable):
     #content_auto = indexes.EdgeNgramField(model_attr='content')
 
     #advance search
-    title = indexes.NgramField(model_attr='title')
-    code = indexes.NgramField(model_attr='code', default='')
+    title = indexes.CharField(model_attr='title')
+    code = KeywordField(model_attr='code', default='')
     #location_principal = indexes.CharField(default='', boost=1.05)
     #location_relation = indexes.CharField()
     #ethnic_group = indexes.CharField(default='')
@@ -232,3 +239,49 @@ class MediaFondsIndex(indexes.SearchIndex, indexes.Indexable):
 
     def get_model(self):
         return MediaFonds
+
+class LocationIndex(indexes.SearchIndex, indexes.Indexable):
+
+    text = indexes.CharField(document=True, use_template=True)
+
+    def get_model(self):
+        return Location
+
+    def index_queryset(self, using=None):
+        return MediaItem.objects.all().locations()
+
+
+class LocationAliasIndex(indexes.SearchIndex, indexes.Indexable):
+
+    text = indexes.CharField(document=True, use_template=True)
+
+    def get_model(self):
+        return LocationAlias
+
+    def index_queryset(self, using=None):
+        l = MediaItem.objects.values('location')
+        return LocationAlias.objects.filter(location__in=l)
+
+
+class InstrumentIndex(indexes.SearchIndex, indexes.Indexable):
+
+    text = indexes.CharField(document=True, use_template=True)
+
+    def get_model(self):
+        return Instrument
+
+    def index_queryset(self, using=None):
+        instrus = MediaItemPerformance.objects.values('instrument')
+        return Instrument.objects.filter(pk__in=instrus)
+
+
+class InstrumentAliasIndex(indexes.SearchIndex, indexes.Indexable):
+
+    text = indexes.CharField(document=True, use_template=True)
+
+    def get_model(self):
+        return InstrumentAlias
+
+    def index_queryset(self, using=None):
+        instrualias = MediaItemPerformance.objects.values('alias')
+        return InstrumentAlias.objects.filter(pk__in=instrualias)

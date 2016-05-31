@@ -2,10 +2,20 @@
 {% load i18n %}
 
 {% if items %}
+    {% if user.is_authenticated %}
+
+<form action="{% url "playlist"%}" method="post">
+{% csrf_token %}
+
+{% endif %}
 
 <table class="listing">
+<thead>
 <tr>
-    <th class="highlight">{% trans "Title" %}</th>
+    {% if user.is_authenticated %}
+    <th class="highlight"><input id="selectAll" type="checkbox"/> select all </th>
+    {% endif %}
+    <th>{% trans "Title" %}</th>
     <th>{% trans "Digitized" %}</th>
     <th>{% trans "Recordist" %}</th>
     {% if location_name %}
@@ -16,9 +26,14 @@
     <th>{% trans "Year of recording" %}</th>
     <th>{% trans "Code" %}</th>
 </tr>
+</thead>
+<tbody>
 {% for item in items %}
 <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
-    <td class="highlight">
+    {% if user.is_authenticated %}
+    <td class="highlight"><input type="checkbox" class="check1" name="selected_items_list" value="{{ item.id }}"/></td>
+    {% endif %}
+    <td>
         <a href="{% url "telemeta-item-detail" item.public_id %}">{{ item }}</a>
     </td>
     <td align="center">
@@ -47,7 +62,16 @@
     </td>
 </tr>
 {% endfor %}
+</tbody>
 </table>
+
+    {% if user.is_authenticated %}
+
+    <button style="margin-top:10px" type="submit" id="btn" class="btn btn-default">{% trans "Add to playlist" %}</button>
+
+</form>
+
+        {% endif %}
 
 {% else %}
     <p>{% trans "No item" %}</p>
