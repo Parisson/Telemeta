@@ -160,7 +160,7 @@
                         </ul>
                         <form id="formlang" action="/i18n/setlang/" method="post" style="display:inline-block;" onchange='this.submit();'>
                             {% csrf_token %}
-                            <select name="language" style="color:#6a0307">
+                            <select name="language" class="form-control" id="language-selector">
                                 {% for lang in LANGUAGES %}
                                     <option value="{{ lang.0 }}" {% if lang.0|slice:"2" == LANGUAGE_CODE|slice:"2" %}selected="selected"{% endif %}>{{ lang.1 }}</option>
                                 {% endfor %}
