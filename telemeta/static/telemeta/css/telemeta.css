@@ -1439,3 +1439,10 @@ a:focus,div:focus{
     -webkit-border-radius: 8px 0px 8px 8px;
     border-radius: 8px 0px 8px 8px;
 }
+
+#language-selector {
+    color: #6a0307;
+    height: 2.2em;
+    font-size: 0.9em;
+    margin-top: 0.1em;
+}
