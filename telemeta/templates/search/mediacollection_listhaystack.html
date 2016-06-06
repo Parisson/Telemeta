@@ -22,7 +22,9 @@
     <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
         <td class="highlight"><input type="checkbox" class="check1" name="selected_items_list" value="{{ result.object.id }}"/></td>
         <td>
+           {% if result.object.public_id %}
             <a href="{% url "telemeta-collection-detail" result.object.public_id %}">{{ result.object.title }}</a>
+           {% endif %}
         </td>
         <td>
           {% if result.object.has_mediafile %}
@@ -49,7 +51,9 @@
     {% for result in page.object_list %}
     <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
         <td class="highlight">
+           {% if result.object.public_id %}
             <a href="{% url "telemeta-collection-detail" result.object.public_id %}">{{ result.object.title }}</a>
+           {% endif %}
         </td>
         <td>
           {% if result.object.has_mediafile %}
