@@ -26,6 +26,7 @@ from telemeta.views.core import *
 from telemeta.views.marker import *
 import timeside.core
 import timeside.server as ts
+import sys
 
 from wsgiref.util import FileWrapper
 
@@ -389,12 +390,15 @@ class ItemListView(ListView):
 
     model = MediaItem
     template_name = "telemeta/mediaitem_list.html"
-    paginate_by = 20
     queryset = MediaItem.objects.enriched().order_by('code', 'old_code')
+
+    def get_paginate_by(self, queryset):
+        return self.request.GET.get('results_page', 20)
 
     def get_context_data(self, **kwargs):
         context = super(ItemListView, self).get_context_data(**kwargs)
         context['count'] = self.object_list.count()
+        context['results_page'] = int(self.request.GET.get('results_page', 20))
         return context
 
 class ItemListViewFullAccess(ListView):
@@ -424,7 +428,64 @@ class ItemSoundListView(ItemListView):
 
     queryset = MediaItem.objects.sound().order_by('code', 'old_code')
 
+class ItemInstrumentListView(ItemListView):
 
+    template_name = "telemeta/media_item_instrument_list.html"
+    
+    def get_queryset(self):
+        return MediaItem.objects.filter(performances__instrument__id=self.kwargs['value_id'])
+        
+    def get_context_data(self, **kwargs):
+        context = super(ItemInstrumentListView, self).get_context_data(**kwargs)
+        
+        context['nom']=Instrument.objects.get(id=self.kwargs['value_id']).name
+        context['id']=self.kwargs['value_id']
+        
+        return context
+        
+class ItemInstrumentPublishedListView(ItemInstrumentListView):
+    
+    def get_queryset(self):
+        return super(ItemInstrumentPublishedListView, self).get_queryset().filter(collection__code__contains='_E_').order_by('code', 'old_code')
+        
+class ItemInstrumentUnpublishedListView(ItemInstrumentListView):
+    
+    def get_queryset(self):
+        return super(ItemInstrumentUnpublishedListView, self).get_queryset().filter(collection__code__contains='_I_').order_by('code', 'old_code')
+
+class ItemInstrumentSoundListView(ItemInstrumentListView):
+     def get_queryset(self):
+        return super(ItemInstrumentSoundListView, self).get_queryset().sound().order_by('code', 'old_code')
+        
+class ItemAliasListView(ItemListView):
+
+    template_name = "telemeta/media_item_alias_list.html"
+    
+    def get_queryset(self):
+        return MediaItem.objects.filter(performances__alias__id=self.kwargs['value_id'])
+        
+    def get_context_data(self, **kwargs):
+        context = super(ItemAliasListView, self).get_context_data(**kwargs)
+        
+        context['nom']=InstrumentAlias.objects.get(id=self.kwargs['value_id']).name
+        context['id']=self.kwargs['value_id']
+        
+        return context
+        
+class ItemAliasPublishedListView(ItemAliasListView):
+    
+    def get_queryset(self):
+        return super(ItemAliasPublishedListView, self).get_queryset().filter(collection__code__contains='_E_').order_by('code', 'old_code')
+        
+class ItemAliasUnpublishedListView(ItemAliasListView):
+    
+    def get_queryset(self):
+        return super(ItemAliasUnpublishedListView, self).get_queryset().filter(collection__code__contains='_I_').order_by('code', 'old_code')
+
+class ItemAliasSoundListView(ItemAliasListView):
+     def get_queryset(self):
+        return super(ItemAliasSoundListView, self).get_queryset().sound().order_by('code', 'old_code')
+        
 class ItemViewMixin(ItemBaseMixin):
 
     model = MediaItem
@@ -706,6 +767,13 @@ class ItemDetailView(ItemViewMixin, DetailView):
             self.mime_type = 'video/mp4'
 
         playlists = get_playlists_names(self.request)
+        
+        rang = []
+        for i in range(len(playlists)):
+             for resource in playlists[i]['playlist'].resources.all():
+                  if int(resource.resource_id) == item.id:
+                      rang.append(i)
+                      break
         related_media = MediaItemRelated.objects.filter(item=item)
         check_related_media(related_media)
         revisions = Revision.objects.filter(element_type='item', element_id=item.id).order_by('-time')
@@ -736,6 +804,7 @@ class ItemDetailView(ItemViewMixin, DetailView):
         context['format'] = item_format
         context['private_extra_types'] = private_extra_types.values()
         context['site'] = 'http://' + Site.objects.all()[0].name
+        context['rang_item_playlist']=rang
         # if ts_item:
         #     context['ts_item_id'] = ts_item.pk
         # else:

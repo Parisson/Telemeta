@@ -34,8 +34,12 @@ python $manage collectstatic --noinput
 python $manage telemeta-create-admin-user
 python $manage telemeta-create-boilerplate
 
+if [ $REINDEX = "True" ]; then
+    python $manage rebuild_index --noinput
+fi
+
 # fix media access rights
-#chown -R www-data:www-data $media
+chown www-data:www-data $media
 for dir in $(ls $media); do
     if [ ! $(stat -c %U $media/$dir) = 'www-data' ]; then
         chown www-data:www-data $media/$dir

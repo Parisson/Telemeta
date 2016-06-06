@@ -5,7 +5,6 @@ import os, sys
 from django.core.urlresolvers import reverse_lazy, reverse
 
 import environ
-
 # set default values and casting
 env = environ.Env(DEBUG=(bool, False),
                   CELERY_ALWAYS_EAGER=(bool, False),
@@ -303,13 +302,32 @@ from worker import app
 
 HAYSTACK_CONNECTIONS = {
     'default': {
-        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        #'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'ENGINE': 'telemeta.util.backend.CustomElasticEngine',
         'URL': 'http://search:9200/',
         'INDEX_NAME': 'haystack',
         'INLUDE_SPELLING': True,
+        'EXCLUDED_INDEXES': ['telemeta.search_indexes.LocationIndex',
+                             'telemeta.search_indexes.LocationAliasIndex',
+                             'telemeta.search_indexes.InstrumentIndex',
+                             'telemeta.search_indexes.InstrumentAliasIndex'
+                             ]
+    },
+    'autocomplete': {
+        # 'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'ENGINE': 'telemeta.util.backend.CustomElasticEngine',
+        'URL': 'http://search:9200/',
+        'INDEX_NAME': 'haystackauto',
+        'INLUDE_SPELLING': True,
+        'EXCLUDED_INDEXES': ['telemeta.search_indexes.MediaItemIndex',
+                             'telemeta.search_indexes.MediaCollectionIndex',
+                             'telemeta.search_indexes.MediaCorpusIndex',
+                             'telemeta.search_indexes.MediaFondsIndex'
+                             ]
     },
 }
-HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+#HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+HAYSTACK_SIGNAL_PROCESSOR = 'telemeta.util.search_signals.RealTimeCustomSignal'
 HAYSTACK_SEARCH_RESULTS_PER_PAGE = 50
 
 BOWER_COMPONENTS_ROOT = '/srv/bower/'

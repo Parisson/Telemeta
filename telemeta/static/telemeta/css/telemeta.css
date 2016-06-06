@@ -461,6 +461,7 @@ form.login .submit {
     background-color: #6a0307 ;
     border-top: .25em solid #6a0307;
     padding-left:26px;
+    position:relative;
 }
 
 #menu a, #menu a:visited{
@@ -502,10 +503,18 @@ form.login .submit {
 /* Drop Down Menus */
 .clear {clear:both}
 
+#formlang{
+    display:inline-block;
+    position:absolute;
+    right:1%;
+    top:10%;
+}
+
 #nav {
     margin:0;
     padding:0;
     list-style:none;
+    display:inline-block;
 }
 
 /* make the LI display inline */
@@ -1429,4 +1438,11 @@ a:focus,div:focus{
     -moz-border-radius: 8px 0px 8px 8px;
     -webkit-border-radius: 8px 0px 8px 8px;
     border-radius: 8px 0px 8px 8px;
+}
+
+#language-selector {
+    color: #6a0307;
+    height: 2.2em;
+    font-size: 0.9em;
+    margin-top: 0.1em;
 }
