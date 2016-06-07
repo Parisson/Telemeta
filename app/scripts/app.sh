@@ -18,7 +18,7 @@ gid='www-data'
 patterns='*.js;*.css;*.jpg;*.jpeg;*.gif;*.png;*.svg;*.ttf;*.eot;*.woff;*.woff2'
 
 # stating apps
-# pip install django-bootstrap3==6.2.1
+pip install django-bootstrap3==6.2.1 django-dirtyfields
 
 # waiting for other network services
 sh $app/scripts/wait.sh
