@@ -44,7 +44,7 @@ from telemeta.models.fields import *
 from telemeta.util.kdenlive_session import *
 from telemeta.util.unaccent import unaccent_icmp
 from xml.dom.minidom import getDOMImplementation
-
+from dirtyfields import DirtyFieldsMixin
 
 PUBLIC_ACCESS_CHOICES = (('none', _('none')), ('metadata', _('metadata')),
                          ('mixed', _('mixed')), ('full', _('full')))
@@ -117,7 +117,7 @@ class EnhancedModel(models.Model):
         abstract = True
 
 
-class ModelCore(EnhancedModel):
+class ModelCore(EnhancedModel, DirtyFieldsMixin):
 
     @classmethod
     def required_fields(cls):

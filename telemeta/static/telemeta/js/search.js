@@ -66,4 +66,39 @@ $(function() {
                     });
                 }
             });
+
+                var colSort = [];
+
+    if (sessionStorage['sort'] && sessionStorage['order']) {
+        $.tablesorter.defaults.sortList = [[sessionStorage['sort'], sessionStorage['order']]];
+    }
+    else {
+        $.tablesorter.defaults.sortList = [[1, 0]];
+    }
+
+    $('#searchtable th').each(function (index) {
+        colSort[index] = $(this).text();
+    });
+
+
+    $('#searchtable th').on('click', function () {
+        var index = colSort.indexOf($(this).text());
+        var order = $.tablesorter.defaults.headerList[index]['order'];
+        if (index != sessionStorage['sort']) {
+            sessionStorage['order'] = 0;
+        }
+        else {
+            sessionStorage['order'] = (sessionStorage['order'] == 0) ? 1 : 0;
+        }
+        sessionStorage['sort'] = index;
+    });
+
+    $("#searchtable").tablesorter({
+        headers: {
+
+            0: {sorter: false},
+        }
+
+    });
+
 	});

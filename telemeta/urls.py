@@ -45,6 +45,7 @@ playlist_view = PlaylistView()
 profile_view = ProfileView()
 geo_view = GeoView()
 resource_view = ResourceView()
+#boolean_view = BooleanSearchView()
 
 # ID's regular expressions
 export_extensions = "|".join(item_view.list_export_extensions())
@@ -126,9 +127,11 @@ urlpatterns = patterns('',
     # search
     # url(r'^archives/$', home_view.search, name="telemeta-archives"),
     url(r'^search/$', HaystackSearch(), name='haystack_search'),
+    url(r'^search/autocomplete/$', autocomplete),
     url(r'^search/quick/(?P<type>[A-Za-z0-9._-]+)/$', HaystackSearch(), name='haystack_search_type'),
     url(r'^search/advance/$', HaystackAdvanceSearch(form_class=HayAdvanceForm, template='search/advanceSearch.html'), name='haystack_advance_search'),
     url(r'^search/advance/(?P<type>[A-Za-z0-9._-]+)/$', HaystackAdvanceSearch(form_class=HayAdvanceForm, template='search/advanceSearch.html'), name='haystack_advance_search_type'),
+    #url(r'^search/booleaninstru/$', boolean_view.get_boolean_query),
 
     url(r'^search/playlist_add/(?P<type>[A-Za-z0-9._-]+)/$', NewPlaylistView().display, name='haystack_playlist'),
     url(r'^search/playlist_confirmation/(?P<type>[A-Za-z0-9._-]+)/$',NewPlaylistView().addToPlaylist, name='add_confirmation'),
@@ -146,6 +149,10 @@ urlpatterns = patterns('',
     url(r'^admin/instruments/add/$', instrument_view.add_to_instrument, name="telemeta-instrument-add"),
     url(r'^admin/instruments/update/$', instrument_view.update_instrument, name="telemeta-instrument-update"),
     url(r'^admin/instruments/' + r'(?P<value_id>[0-9]+)/$', instrument_view.edit_instrument_value, name="telemeta-instrument-record-edit"),
+    url(r'^admin/instruments/' + r'(?P<value_id>[0-9]+)/'+'list-items-published/$', ItemInstrumentPublishedListView.as_view(),name="telemeta-items-instrument-published"),
+    url(r'^admin/instruments/' + r'(?P<value_id>[0-9]+)/'+'list-items-unpublished/$', ItemInstrumentUnpublishedListView.as_view(),name="telemeta-items-instrument-unpublished"),
+    url(r'^admin/instruments/' + r'(?P<value_id>[0-9]+)/'+'list-items-sound/$', ItemInstrumentSoundListView.as_view(),name="telemeta-items-instrument-sound"),
+    url(r'^admin/instruments/' + r'(?P<value_id>[0-9]+)/'+'list-items/$', ItemInstrumentListView.as_view(), name="telemeta-instrument-item-list"),
     url(r'^admin/instruments/' + r'(?P<value_id>[0-9]+)/update/$', instrument_view.update_instrument_value, name="telemeta-instrument-record-update"),
     url(r'^admin/instruments/' + r'(?P<value_id>[0-9]+)/replace/$', instrument_view.replace_instrument_value, name="telemeta-instrument-record-replace"),
 
@@ -156,6 +163,10 @@ urlpatterns = patterns('',
     url(r'^admin/instrument_aliases/' + r'(?P<value_id>[0-9]+)/$', instrument_alias_view.edit_instrument_value, name="telemeta-instrument-alias-record-edit"),
     url(r'^admin/instrument_aliases/' + r'(?P<value_id>[0-9]+)/update/$', instrument_alias_view.update_instrument_value, name="telemeta-instrument-alias-record-update"),
     url(r'^admin/instrument_aliases/' + r'(?P<value_id>[0-9]+)/replace/$', instrument_alias_view.replace_instrument_value, name="telemeta-instrument-alias-record-replace"),
+    url(r'^admin/instrument_aliases/' + r'(?P<value_id>[0-9]+)/'+'list-item-published/$', ItemAliasPublishedListView.as_view(),name="telemeta-items-alias-published"),
+    url(r'^admin/instrument_aliases/' + r'(?P<value_id>[0-9]+)/'+'list-item-unpublished/$', ItemAliasUnpublishedListView.as_view(),name="telemeta-items-alias-unpublished"),
+    url(r'^admin/instrument_aliases/' + r'(?P<value_id>[0-9]+)/'+'list-item-sound/$', ItemAliasSoundListView.as_view(),name="telemeta-items-alias-sound"),
+    url(r'^admin/instrument_aliases/' + r'(?P<value_id>[0-9]+)/'+'list-items/$', ItemAliasListView.as_view(), name="telemeta-alias-item-list"),
 
     # enumerations administration
     url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/$', admin_view.edit_enumeration , name="telemeta-enumeration-edit"),
@@ -189,7 +200,7 @@ urlpatterns = patterns('',
     url(r'^accounts/$', home_view.users, name="telemeta-users"),
 
     # Desk
-    url(r'^desk/lists/$', home_view.lists, name="telemeta-desk-lists"),
+    url(r'^desk/lists/(?:(?P<range_playlist>[0-9]+)/)?$', home_view.lists, name="telemeta-desk-lists"),
     url(r'^desk/profile/(?P<username>[A-Za-z0-9@+._-]+)/$', profile_view.profile_detail, name="telemeta-desk-profile"),
     url(r'^desk/home/$', home_view.home, name="telemeta-desk-home"),
 
@@ -212,8 +223,9 @@ urlpatterns = patterns('',
 
     # Playlists
     url(r'^playlists/(?P<public_id>[a-zA-Z0-9]+)/(?P<resource_type>[a-zA-Z0-9]+)/csv/$', playlist_view.playlist_csv_export, name="telemeta-playlist-csv-export"),
+    url(r'^playlists/playlist_add/$', NewPlaylistView().display, name='playlist'),
 
-    # RSS feeds
+                       # RSS feeds
     url(r'^rss/$', LastestRevisionsFeed(), name="telemeta-rss"),
 
     # Static media

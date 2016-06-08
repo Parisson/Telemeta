@@ -31,5 +31,7 @@
         {% endifequal %}
         </tbody>
     </table></br>
+    {% if lastquerypath %}
     <a style="margin-top:10px" href="{{lastquerypath}}" id="btn" class="btn btn-default">return to search results</a>
+    {% endif %}
 {% endblock %}
