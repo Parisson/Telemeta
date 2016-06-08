@@ -291,7 +291,6 @@ LOGGING = {
 }
 
 BROKER_URL = env('BROKER_URL')
-
 CELERY_IMPORTS = ("timeside.server.tasks",)
 CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
 CELERY_TASK_SERIALIZER = 'json'
@@ -304,8 +303,8 @@ HAYSTACK_CONNECTIONS = {
     'default': {
         #'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
         'ENGINE': 'telemeta.util.backend.CustomElasticEngine',
-        'URL': 'http://search:9200/',
-        'INDEX_NAME': 'haystack',
+        'URL': env('HAYSTACK_URL'),
+        'INDEX_NAME': env('HAYSTACK_INDEX_NAME'),
         'INLUDE_SPELLING': True,
         'EXCLUDED_INDEXES': ['telemeta.search_indexes.LocationIndex',
                              'telemeta.search_indexes.LocationAliasIndex',
@@ -316,8 +315,8 @@ HAYSTACK_CONNECTIONS = {
     'autocomplete': {
         # 'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
         'ENGINE': 'telemeta.util.backend.CustomElasticEngine',
-        'URL': 'http://search:9200/',
-        'INDEX_NAME': 'haystackauto',
+        'URL': env('HAYSTACK_URL'),
+        'INDEX_NAME': env('HAYSTACK_INDEX_NAME_AUTOCOMPLETE'),
         'INLUDE_SPELLING': True,
         'EXCLUDED_INDEXES': ['telemeta.search_indexes.MediaItemIndex',
                              'telemeta.search_indexes.MediaCollectionIndex',
@@ -326,6 +325,7 @@ HAYSTACK_CONNECTIONS = {
                              ]
     },
 }
+
 #HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 HAYSTACK_SIGNAL_PROCESSOR = 'telemeta.util.search_signals.RealTimeCustomSignal'
 HAYSTACK_SEARCH_RESULTS_PER_PAGE = 50
