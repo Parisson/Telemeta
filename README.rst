@@ -138,7 +138,7 @@ Then clone Telemeta::
 Start it up
 ===========
 
-For a production environment setup::
+For a production environment setup, first read / edit `env/prod.env`, then::
 
      docker-compose up
 
@@ -195,7 +195,7 @@ Development
    :alt: Coverage
 
 
-To start the application in a development environment setup::
+To start the application in a development environment setup, first read / edit `env/debug.env`, then::
 
     cd Telemeta
     git pull

@@ -46,11 +46,6 @@ for dir in $(ls $media); do
     fi
 done
 
-# update haystack index in prod
-if [ "$DEBUG" = "False" ]; then
-    python $manage update_index --workers $processes &
-fi
-
 # choose dev or prod mode
 if [ "$1" = "--runserver" ]; then
     python $manage runserver_plus 0.0.0.0:8000
