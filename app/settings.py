@@ -343,7 +343,7 @@ BOWER_INSTALLED_APPS = (
     'angular-bootstrap-select#0.0.5',
     'angular-resource#1.2.26',
     'raphael#2.2.0',
-    'SoundManager2#V2.97a.20150601',
+    'soundmanager#V2.97a.20150601',
     'https://github.com/Parisson/loaders.git',
     'https://github.com/Parisson/ui.git',
     'jquery-ui#1.11.4',
