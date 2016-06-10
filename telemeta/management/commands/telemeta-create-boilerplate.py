@@ -6,7 +6,7 @@ from django.template.defaultfilters import slugify
 
 import os
 import timeside.core
-from timeside.server.models import *
+from timeside.server.models import Processor, Preset, Item, Selection, Result
 from timeside.core.tools.test_samples import generateSamples
 from telemeta.models import *
 
@@ -51,7 +51,7 @@ class Command(BaseCommand):
                 filename, path = sample
                 title = os.path.splitext(filename)[0]
                 path = media_dir + os.sep + filename
-                item, c = Item.objects.get_or_create(title=title, file=path)
+                item, c = Item.objects.get_or_create(title=title, source_file=path)
                 if not item in selection.items.all():
                     selection.items.add(item)
                 if self.cleanup:
