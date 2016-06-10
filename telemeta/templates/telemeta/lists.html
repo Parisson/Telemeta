@@ -144,7 +144,7 @@
     <div id="accordeon" style="margin-bottom:20px;">
 
     {% for playlist in playlists %}
-    	
+
     <div><a href="#">{{ playlist.playlist.title }}</a></div>
     <div>
         <table class="listing" style="width:100%;margin-top: 1em;">
@@ -218,7 +218,7 @@
                     {% endif %}
                 </td>
                 <td align="center" style="vertical-align:middle;">
-                    {% if resource.element.file or resource.element.has_mediafile %}
+                    {% if resource.element.file %}
                         <span class="glyphicon glyphicon-ok" style="font-size: 1.3em;color: green;"><p style="opacity:0;font-size:0">d</p></span>
                     {% endif %}
                 </td>
