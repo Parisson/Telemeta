@@ -140,7 +140,7 @@ Start it up
 
 For a production environment setup, first read / edit `env/prod.env`, then::
 
-     docker-compose up
+    docker-compose up
 
 Then browse the app at http://localhost:8000/ (replacing 'localhost' by the IP given by the docker terminal on OSX or Windows)
 

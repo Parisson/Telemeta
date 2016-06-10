@@ -58,6 +58,7 @@ LANGUAGES = [ ('fr', 'French'),
               ('zh_CN', 'Simplified Chinese'),
               ('ar_TN', 'Arabic'),
               ('pt_BR', 'Portuguese'),
+              ('es', 'Spanish'),
 ]
 
 SITE_ID = 1
@@ -326,8 +327,8 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
-#HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
-HAYSTACK_SIGNAL_PROCESSOR = 'telemeta.util.search_signals.RealTimeCustomSignal'
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+# HAYSTACK_SIGNAL_PROCESSOR = 'telemeta.util.search_signals.RealTimeCustomSignal'
 HAYSTACK_SEARCH_RESULTS_PER_PAGE = 50
 
 BOWER_COMPONENTS_ROOT = '/srv/bower/'
