@@ -333,7 +333,7 @@ HAYSTACK_SEARCH_RESULTS_PER_PAGE = 50
 BOWER_COMPONENTS_ROOT = '/srv/bower/'
 BOWER_PATH = '/usr/local/bin/bower'
 BOWER_INSTALLED_APPS = (
-    'jqueryjquery#2.2.4',
+    'jquery#2.2.4',
     'jquery-migrate#~1.2.1',
     'underscore#1.8.3',
     'bootstrap#3.3.6',
