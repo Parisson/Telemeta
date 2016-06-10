@@ -33,4 +33,4 @@ pip-log.txt
 .mr.developer.cfg
 
 .idea/
-data/backup
+data/
