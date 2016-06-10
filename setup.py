@@ -77,6 +77,7 @@ setup(
         'django-environ',
         'redis',
         'Werkzeug',
+        'django-dirtyfields'
     ],
   tests_require=['pytest-django', 'pytest-cov', 'factory-boy'],
   # Provide a test command through django-setuptest

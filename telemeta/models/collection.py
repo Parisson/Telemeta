@@ -194,11 +194,11 @@ class MediaCollection(MediaResource):
 
     def document_status(self):
         if '_I_' in self.public_id:
-            return ugettext('Unpublished')
+            return 'Unpublished'
         elif '_E_' in self.public_id:
-            return ugettext('Published')
+            return 'Published'
         else:
-            return ''
+            return 'Unknown'
 
     def get_url(self):
         return get_full_url(reverse('telemeta-collection-detail', kwargs={'public_id':self.pk}))

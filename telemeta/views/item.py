@@ -25,6 +25,8 @@
 from telemeta.views.core import *
 from telemeta.views.marker import *
 import timeside.core
+import timeside.server as ts
+import sys
 
 
 class ItemBaseMixin(TelemetaBaseMixin):
@@ -233,6 +235,23 @@ class ItemView(ItemBaseMixin):
 
         item = MediaItem.objects.get(public_id=public_id)
         mime_type = 'image/png'
+
+        source, source_type = item.get_source()
+        # if source:
+        #     ts_item, c = ts.models.Item.objects.get_or_create(**{source_type: source})
+        #     if c:
+        #         ts_item.title = item.title
+        #         ts_item.save()
+        #
+        # ts_grapher, c = ts.models.Processor.objects.get_or_create(pid=grapher_id)
+        # ts_preset, c = ts.models.Preset.objects.get_or_create(processor=ts_grapher,
+        #                                                       parameters={'width': width, 'height': height})
+        # ts_experience = ts_preset.get_single_experience()
+        # ts_selection = ts_item.get_single_selection()
+        # ts_task, c = ts.models.Task.objects.get_or_create(experience=ts_experience,
+        #                                            selection=ts_selection)
+        # ts_task.run()
+
         grapher = self.get_grapher(grapher_id)
 
         if grapher.id() != grapher_id:
@@ -247,7 +266,7 @@ class ItemView(ItemBaseMixin):
             image_file = old_image_file
 
         if not self.cache_data.exists(image_file):
-            source = item.get_source()
+            source, _ = item.get_source()
             if source:
                 path = self.cache_data.dir + os.sep + image_file
                 decoder = timeside.core.get_processor('file_decoder')(source)
@@ -309,7 +328,7 @@ class ItemView(ItemBaseMixin):
 
         mime_type = encoder.mime_type()
         file = public_id + '.' + encoder.file_extension()
-        source = item.get_source()
+        source, _ = item.get_source()
 
         flag = MediaItemTranscodingFlag.objects.filter(item=item, mime_type=mime_type)
         if not flag:
@@ -394,12 +413,15 @@ class ItemListView(ListView):
 
     model = MediaItem
     template_name = "telemeta/mediaitem_list.html"
-    paginate_by = 20
     queryset = MediaItem.objects.enriched().order_by('code', 'old_code')
+
+    def get_paginate_by(self, queryset):
+        return self.request.GET.get('results_page', 20)
 
     def get_context_data(self, **kwargs):
         context = super(ItemListView, self).get_context_data(**kwargs)
         context['count'] = self.object_list.count()
+        context['results_page'] = int(self.request.GET.get('results_page', 20))
         return context
 
 class ItemListViewFullAccess(ListView):
@@ -429,7 +451,64 @@ class ItemSoundListView(ItemListView):
 
     queryset = MediaItem.objects.sound().order_by('code', 'old_code')
 
+class ItemInstrumentListView(ItemListView):
 
+    template_name = "telemeta/media_item_instrument_list.html"
+    
+    def get_queryset(self):
+        return MediaItem.objects.filter(performances__instrument__id=self.kwargs['value_id'])
+        
+    def get_context_data(self, **kwargs):
+        context = super(ItemInstrumentListView, self).get_context_data(**kwargs)
+        
+        context['nom']=Instrument.objects.get(id=self.kwargs['value_id']).name
+        context['id']=self.kwargs['value_id']
+        
+        return context
+        
+class ItemInstrumentPublishedListView(ItemInstrumentListView):
+    
+    def get_queryset(self):
+        return super(ItemInstrumentPublishedListView, self).get_queryset().filter(collection__code__contains='_E_').order_by('code', 'old_code')
+        
+class ItemInstrumentUnpublishedListView(ItemInstrumentListView):
+    
+    def get_queryset(self):
+        return super(ItemInstrumentUnpublishedListView, self).get_queryset().filter(collection__code__contains='_I_').order_by('code', 'old_code')
+
+class ItemInstrumentSoundListView(ItemInstrumentListView):
+     def get_queryset(self):
+        return super(ItemInstrumentSoundListView, self).get_queryset().sound().order_by('code', 'old_code')
+        
+class ItemAliasListView(ItemListView):
+
+    template_name = "telemeta/media_item_alias_list.html"
+    
+    def get_queryset(self):
+        return MediaItem.objects.filter(performances__alias__id=self.kwargs['value_id'])
+        
+    def get_context_data(self, **kwargs):
+        context = super(ItemAliasListView, self).get_context_data(**kwargs)
+        
+        context['nom']=InstrumentAlias.objects.get(id=self.kwargs['value_id']).name
+        context['id']=self.kwargs['value_id']
+        
+        return context
+        
+class ItemAliasPublishedListView(ItemAliasListView):
+    
+    def get_queryset(self):
+        return super(ItemAliasPublishedListView, self).get_queryset().filter(collection__code__contains='_E_').order_by('code', 'old_code')
+        
+class ItemAliasUnpublishedListView(ItemAliasListView):
+    
+    def get_queryset(self):
+        return super(ItemAliasUnpublishedListView, self).get_queryset().filter(collection__code__contains='_I_').order_by('code', 'old_code')
+
+class ItemAliasSoundListView(ItemAliasListView):
+     def get_queryset(self):
+        return super(ItemAliasSoundListView, self).get_queryset().sound().order_by('code', 'old_code')
+        
 class ItemViewMixin(ItemBaseMixin):
 
     model = MediaItem
@@ -605,9 +684,11 @@ class ItemDetailView(ItemViewMixin, DetailView):
             analyzers_sub = []
             graphers_sub = []
 
-            source = item.get_source()
+            source, _ = item.get_source()
+
             if source:
-                decoder  = timeside.core.get_processor('file_decoder')(source)
+
+                decoder = timeside.core.get_processor('file_decoder')(source)
                 pipe = decoder
 
                 for analyzer in self.value_analyzers:
@@ -694,6 +775,14 @@ class ItemDetailView(ItemViewMixin, DetailView):
 
         previous, next = self.item_previous_next(item)
 
+        # Corresponding TimeSide Item
+        source, source_type = item.get_source()
+        # if source:
+        #     ts_item, c = ts.models.Item.objects.get_or_create(**{source_type: source})
+        #     if c:
+        #         ts_item.title = item.title
+        #         ts_item.save()
+
         self.item_analyze(item)
 
         #FIXME: use mimetypes.guess_type
@@ -701,6 +790,13 @@ class ItemDetailView(ItemViewMixin, DetailView):
             self.mime_type = 'video/mp4'
 
         playlists = get_playlists_names(self.request)
+        
+        rang = []
+        for i in range(len(playlists)):
+             for resource in playlists[i]['playlist'].resources.all():
+                  if int(resource.resource_id) == item.id:
+                      rang.append(i)
+                      break
         related_media = MediaItemRelated.objects.filter(item=item)
         check_related_media(related_media)
         revisions = Revision.objects.filter(element_type='item', element_id=item.id).order_by('-time')
@@ -731,6 +827,12 @@ class ItemDetailView(ItemViewMixin, DetailView):
         context['format'] = item_format
         context['private_extra_types'] = private_extra_types.values()
         context['site'] = 'http://' + Site.objects.all()[0].name
+        context['rang_item_playlist']=rang
+        # if ts_item:
+        #     context['ts_item_id'] = ts_item.pk
+        # else:
+        #     context['ts_item_id'] = None
+
         return context
 
 

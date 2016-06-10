@@ -32,3 +32,7 @@ app:
 worker:
   env_file:
     - env/debug.env
+
+db:
+  volumes:
+    - ./scripts/:/srv/scripts

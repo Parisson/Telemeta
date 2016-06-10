@@ -35,6 +35,7 @@ db:
   image: mysql
   volumes:
     - ./scripts/:/srv/scripts
+    - ./data/mysql/:/var/lib/mysql
   volumes_from:
     - data
   env_file:

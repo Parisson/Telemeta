@@ -61,16 +61,25 @@
     //playlists:
     {% if user.is_authenticated %}
         {% for playlist in playlists %}
-            playlistUtils.addPlaylist('{{ playlist.playlist.title }}','{{playlist.playlist.public_id}}');
+        	{% if forloop.counter0 in rang_item_playlist %}
+                	    playlistUtils.addPlaylist('{{ playlist.playlist.title }}'+ gettrans('(playlisted)'),'{{playlist.playlist.public_id}}');
+        	{% else %}
+        	            playlistUtils.addPlaylist('{{ playlist.playlist.title }}','{{playlist.playlist.public_id}}');
+        	{% endif %}
         {% endfor %}
             jQuery(window).ready(function(){
                 var anchor = jQuery('#_add_to_playlist');
                 if(anchor.length){
                     anchor.unbind('click').click(function(){
                         playlistUtils.showAddResourceToPlaylist(anchor,'item','{{item.id}}',gettrans('item added to the selected playlist'));
+                        //playlistUtils.showAddResourceToPlaylist(anchor,'item','{{item.id}}');
                         return false;
                     });
                 }
+
+                playlistUtils.messageOk();
+
+
             });
     {% endif %}
 </script>
@@ -94,6 +103,7 @@
 {% endblock %}
 
 {% block title_buttons %}
+
 <div>
     <a href="{% url "telemeta-item-detail" previous %}">
       <button type="button" class="btn btn-default">
@@ -200,6 +210,7 @@
                 </tr>
             </table>
         </div>
+
         <!--</div>-->
 
         {% if audio_export_enabled or perms.telemeta.can_download_all_items or user.is_superuser %}
@@ -209,6 +220,19 @@
                     <img src="{{ STATIC_URL }}telemeta/images/{{ format.extension }}.png" style="vertical-align:middle" alt="{{ format.extension }}" /></a>
                 {% endfor %}
         </div>
+
+        {% comment %}
+    	{% block DIADEMS %}
+        {% if ts_item_id %}
+    	<a href="{% url "timeside-item-diadems" ts_item_id %}">
+    	  <button type="button" class="btn btn-primary" style="float:left;margin-top:0.5em;margin-bottom:1em;border-color: #ffffff; ">
+                <b>DIADEMS</b>
+    	  </button>
+    	</a>
+        {% endif %}
+    	{% endblock DIADEMS %}
+        {% endcomment %}
+
         {% endif %}
 
     </div>

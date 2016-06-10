@@ -30,7 +30,6 @@ from telemeta.models.identifier import *
 from telemeta.models.resource import *
 from telemeta.models.enum import *
 
-
 item_published_code_regex = getattr(settings, 'ITEM_PUBLISHED_CODE_REGEX', '[A-Za-z0-9._-]*')
 item_unpublished_code_regex = getattr(settings, 'ITEM_UNPUBLISHED_CODE_REGEX', '[A-Za-z0-9._-]*')
 
@@ -120,7 +119,6 @@ class MediaItem(MediaResource):
                     'publishing_date', 'scientist', 'topic',
                     'summary', 'contributor', 'public_access']
 
-
     def keywords(self):
         return ContextKeyword.objects.filter(item_relations__item = self)
     keywords.verbose_name = _('keywords')
@@ -194,9 +192,11 @@ class MediaItem(MediaResource):
         source_type = None
         if self.file and os.path.exists(self.file.path):
             source = self.file.path
+            source_type = 'file'
         elif self.url:
             source = self.url
-        return source
+            source_type = 'url'
+        return source, source_type
 
     @property
     def instruments(self):
