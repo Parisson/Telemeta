@@ -3,6 +3,7 @@
 {% load telemeta_tags %}
 {% load bootstrap3 %}
 {% settings_value 'INSTALLED_APPS' as INSTALLED_APPS %}
+{% settings_value 'DEBUG' as DEBUG %}
 {% if 'googletools' in INSTALLED_APPS %}
     {% load googletools %}
 {% endif %}
