@@ -21,14 +21,11 @@
 
 </script>
 
-{% comment "added by Killian Mary" %}{% endcomment %}
-
 <script>
     $(document).ready(function() {
         var nouvellesIcones = {
             header : 'ui-icon-carat-1-e',
             activeHeader : 'ui-icon-carat-1-s',
-
         };
 
         $("#accordeon").accordion({
@@ -40,7 +37,6 @@
         {% else %}
             active: {{ last_playlist }}
         {% endif %}
-
         });
 
         $.tablesorter.defaults.sortList = [[2,0]];
@@ -53,11 +49,6 @@
 </script>
 {% endblock %}
 
-{% comment "added by Killian Mary end" %}{% endcomment %}
-<!--
- Added by Thomas Balastegui :
- modal popup display and use of addNewPlaylist() and editPlaylist()
--->
 {% block content %}
     {% block modal %}
     <div id="add" class="modal fade" role="dialog">
@@ -166,7 +157,6 @@
              </tr>
             {% endif %}
         </table>
-        {% comment "added by Killian Mary, for sort table" %}{% endcomment %}
         <table id="{{playlist.playlist.public_id}}tb" class="listing" width="100%">
             <thead>
             <tr>
