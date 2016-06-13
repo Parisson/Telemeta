@@ -175,7 +175,7 @@
             <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
                 <td align="center" style="vertical-align:middle;">
                     {% if resource.element.file %}
-                    <a href="#" id="{% url 'telemeta-item-export' resource.element.public_id 'mp3' %}" onclick="playlistUtils.changeGlyph(this.id)" class="glyphicon glyphicon-play" style="font-size: 1.3em;text-decoration: none"><p style="opacity:0;font-size:0">d</p></a>
+                    <a href="#" id="{{ resource.public_id }}" onclick="playlistUtils.changeGlyph(this.id)" class="glyphicon glyphicon-play" style="font-size: 1.3em;text-decoration: none"><p style="opacity:0;font-size:0">d</p></a>
                     {% endif %}
                 </td>
                 <td style="max-width:200px">
