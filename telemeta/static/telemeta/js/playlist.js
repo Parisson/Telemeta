@@ -101,8 +101,22 @@ var playlistUtils = {
     },
 
     changeGlyph: function(resElem){
+        //wait image element
+        var waitImg = "<img id='wait' src='"+static_url+"telemeta/images/wait.gif' style='width: 15px;'/>";
+        //load filepath when the elment id is the public_id of resource element.
+       if(resElem.indexOf("/")==-1){
+           $('#'+resElem).removeClass().append(waitImg);
+           json_sync([resElem, "mp3"], "telemeta.get_item_export_url", function (data) {
+               $('#'+resElem).attr('id', data.result);
+               resElem = data.result;
+           });
+       }
        if(this.playing === '' || this.playing === resElem){
            if(this.state === 'stop'){
+               //if wait image is not displayed
+               if($('#wait').length==0){
+                   $('[id="'+resElem+'"]').append(waitImg);
+               }
                this.state = 'play';
                document.getElementById(resElem).setAttribute("class", "glyphicon glyphicon-pause");
                playlistUtils.loadAudio(resElem);
@@ -229,6 +243,11 @@ var playlistUtils = {
         }
 
     }
-
-
 }
+
+$(function () {
+    //event in order to remove wait image when audio is playing
+    playlistUtils.audio.onplay = function () {
+        $('#wait').remove();
+    }
+})
