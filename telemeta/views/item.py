@@ -109,6 +109,10 @@ class ItemBaseMixin(TelemetaBaseMixin):
              next = item.public_id
         return previous, next
 
+    @jsonrpc_method('telemeta.get_item_export_url')
+    def get_item_file_url(request, public_id, extension):
+        return reverse('telemeta-item-export', kwargs={'public_id': public_id, 'extension': extension})
+
 
 class ItemView(ItemBaseMixin):
     """Provide Item web UI methods"""
@@ -454,61 +458,61 @@ class ItemSoundListView(ItemListView):
 class ItemInstrumentListView(ItemListView):
 
     template_name = "telemeta/media_item_instrument_list.html"
-    
+
     def get_queryset(self):
         return MediaItem.objects.filter(performances__instrument__id=self.kwargs['value_id'])
-        
+
     def get_context_data(self, **kwargs):
         context = super(ItemInstrumentListView, self).get_context_data(**kwargs)
-        
+
         context['nom']=Instrument.objects.get(id=self.kwargs['value_id']).name
         context['id']=self.kwargs['value_id']
-        
+
         return context
-        
+
 class ItemInstrumentPublishedListView(ItemInstrumentListView):
-    
+
     def get_queryset(self):
         return super(ItemInstrumentPublishedListView, self).get_queryset().filter(collection__code__contains='_E_').order_by('code', 'old_code')
-        
+
 class ItemInstrumentUnpublishedListView(ItemInstrumentListView):
-    
+
     def get_queryset(self):
         return super(ItemInstrumentUnpublishedListView, self).get_queryset().filter(collection__code__contains='_I_').order_by('code', 'old_code')
 
 class ItemInstrumentSoundListView(ItemInstrumentListView):
      def get_queryset(self):
         return super(ItemInstrumentSoundListView, self).get_queryset().sound().order_by('code', 'old_code')
-        
+
 class ItemAliasListView(ItemListView):
 
     template_name = "telemeta/media_item_alias_list.html"
-    
+
     def get_queryset(self):
         return MediaItem.objects.filter(performances__alias__id=self.kwargs['value_id'])
-        
+
     def get_context_data(self, **kwargs):
         context = super(ItemAliasListView, self).get_context_data(**kwargs)
-        
+
         context['nom']=InstrumentAlias.objects.get(id=self.kwargs['value_id']).name
         context['id']=self.kwargs['value_id']
-        
+
         return context
-        
+
 class ItemAliasPublishedListView(ItemAliasListView):
-    
+
     def get_queryset(self):
         return super(ItemAliasPublishedListView, self).get_queryset().filter(collection__code__contains='_E_').order_by('code', 'old_code')
-        
+
 class ItemAliasUnpublishedListView(ItemAliasListView):
-    
+
     def get_queryset(self):
         return super(ItemAliasUnpublishedListView, self).get_queryset().filter(collection__code__contains='_I_').order_by('code', 'old_code')
 
 class ItemAliasSoundListView(ItemAliasListView):
      def get_queryset(self):
         return super(ItemAliasSoundListView, self).get_queryset().sound().order_by('code', 'old_code')
-        
+
 class ItemViewMixin(ItemBaseMixin):
 
     model = MediaItem
@@ -618,7 +622,9 @@ class ItemCopyView(ItemAddView):
     template_name = 'telemeta/mediaitem_edit.html'
 
     def get_initial(self):
-         return model_to_dict(self.get_object())
+        item = self.get_object()
+        item.code = auto_code(item.collection)
+        return model_to_dict(item)
 
     def forms_valid(self, form, inlines):
         messages.info(self.request, ugettext_lazy("You have successfully updated your item."))
@@ -790,7 +796,7 @@ class ItemDetailView(ItemViewMixin, DetailView):
             self.mime_type = 'video/mp4'
 
         playlists = get_playlists_names(self.request)
-        
+
         rang = []
         for i in range(len(playlists)):
              for resource in playlists[i]['playlist'].resources.all():

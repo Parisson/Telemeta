@@ -58,6 +58,7 @@ LANGUAGES = [ ('fr', 'French'),
               ('zh_CN', 'Simplified Chinese'),
               ('ar_TN', 'Arabic'),
               ('pt_BR', 'Portuguese'),
+              ('es', 'Spanish'),
 ]
 
 SITE_ID = 1
@@ -129,6 +130,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     # 'pagination.middleware.PaginationMiddleware',
 )
 
@@ -239,7 +241,10 @@ PAGINATION_SETTINGS = {
     'PAGE_RANGE_DISPLAYED': 10,
     'MARGIN_PAGES_DISPLAYED': 2,
 }
-
+if DEBUG:
+    DEBUG_TOOLBAR_CONFIG = {
+        'SHOW_TOOLBAR_CALLBACK': lambda x : True
+    }
 DEBUG_TOOLBAR_PATCH_SETTINGS = False
 DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.versions.VersionsPanel',
@@ -325,27 +330,27 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
-#HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
-HAYSTACK_SIGNAL_PROCESSOR = 'telemeta.util.search_signals.RealTimeCustomSignal'
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+# HAYSTACK_SIGNAL_PROCESSOR = 'telemeta.util.search_signals.RealTimeCustomSignal'
 HAYSTACK_SEARCH_RESULTS_PER_PAGE = 50
 
 BOWER_COMPONENTS_ROOT = '/srv/bower/'
 BOWER_PATH = '/usr/local/bin/bower'
 BOWER_INSTALLED_APPS = (
-    'jquery',
+    'jquery#2.2.4',
     'jquery-migrate#~1.2.1',
-    'underscore',
-    'bootstrap',
+    'underscore#1.8.3',
+    'bootstrap#3.3.6',
     'bootstrap-select#1.5.4',
     'font-awesome#4.4.0',
     'angular#1.2.26',
-    'angular-bootstrap-select',
+    'angular-bootstrap-select#0.0.5',
     'angular-resource#1.2.26',
-    'raphael',
+    'raphael#2.2.0',
     'soundmanager#V2.97a.20150601',
     'https://github.com/Parisson/loaders.git',
     'https://github.com/Parisson/ui.git',
-    'jquery-ui',
+    'jquery-ui#1.11.4',
     'tablesorter',
     'video.js',
     'sass-bootstrap-glyphicons',
