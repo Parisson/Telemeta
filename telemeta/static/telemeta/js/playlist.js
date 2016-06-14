@@ -109,7 +109,6 @@ var playlistUtils = {
            json_sync([resElem, "mp3"], "telemeta.get_item_export_url", function (data) {
                $('#'+resElem).attr('id', data.result);
                resElem = data.result;
-               console.log(data.result);
            });
        }
        if(this.playing === '' || this.playing === resElem){
