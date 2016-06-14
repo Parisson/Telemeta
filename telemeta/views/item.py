@@ -109,6 +109,10 @@ class ItemBaseMixin(TelemetaBaseMixin):
              next = item.public_id
         return previous, next
 
+    @jsonrpc_method('telemeta.get_item_export_url')
+    def get_item_file_url(request, public_id, extension):
+        return reverse('telemeta-item-export', kwargs={'public_id': public_id, 'extension': extension})
+
 
 class ItemView(ItemBaseMixin):
     """Provide Item web UI methods"""
