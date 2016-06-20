@@ -159,7 +159,7 @@
                                 </li>
                             {% endif %}
                         </ul>
-                        <form id="formlang" action="/i18n/setlang/" method="post" style="display:inline-block;" onchange='this.submit();'>
+                        <form id="formlang" action="/i18n/setlang/" method="post" style="display:inline-block; {% if LANGUAGE_BIDI %}float: left;{% endif %}" onchange='this.submit();'>
                             {% csrf_token %}
                             <select name="language" class="form-control" id="language-selector">
                                 {% for lang in LANGUAGES %}
