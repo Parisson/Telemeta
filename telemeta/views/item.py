@@ -43,14 +43,6 @@ class ItemBaseMixin(TelemetaBaseMixin):
     default_grapher_sizes = getattr(settings, 'TIMESIDE_DEFAULT_GRAPHER_SIZES', ['346x130', ])
     auto_zoom = getattr(settings, 'TIMESIDE_AUTO_ZOOM', False)
 
-    def get_export_formats(self):
-        formats = []
-        for encoder in self.encoders:
-            if encoder.file_extension() in self.export_formats:
-                formats.append({'name': encoder.format(),
-                                    'extension': encoder.file_extension()})
-        return formats
-
     def get_graphers(self):
         graphers = []
         for grapher in self.graphers:
