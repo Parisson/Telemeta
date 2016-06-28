@@ -46,8 +46,6 @@ broker:
 
 search:
   image: elasticsearch:1
-  volumes:
-    - ./etc/elasticsearch.yml:/etc/elasticsearch/elasticsearch.yml
 
 app:
   build: .
