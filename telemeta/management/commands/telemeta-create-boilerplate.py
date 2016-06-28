@@ -27,11 +27,11 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         collections = MediaCollection.objects.filter(code=self.code)
         if collections:
-            collection = collection[0]
+            collection = collections[0]
         else:
             collection = MediaCollection(title=self.code, code=self.code, public_access='full')
             collection.save()
-            
+
         selection, c = Selection.objects.get_or_create(title='Tests')
 
         if c:
