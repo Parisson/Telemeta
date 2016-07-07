@@ -305,10 +305,11 @@ class CollectionEditView(CollectionViewMixin, UpdateWithInlinesView):
         messages.info(self.request, ugettext_lazy("You have successfully updated your collection."))
         obj = form.save()
         obj.set_revision(self.request.user)
+        self.code = obj.code
         return super(CollectionEditView, self).forms_valid(form, inlines)
 
     def get_success_url(self):
-        return reverse_lazy('telemeta-collection-detail', kwargs={'public_id':self.kwargs['public_id']})
+        return reverse_lazy('telemeta-collection-detail', kwargs={'public_id':self.code})
 
     def get_context_data(self, **kwargs):
         context = super(CollectionEditView, self).get_context_data(**kwargs)

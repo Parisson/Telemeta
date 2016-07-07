@@ -36,7 +36,7 @@ db:
   image: mysql
   volumes:
     - ./scripts/:/srv/scripts
-    - ./data/var/lib/mysql/:/var/lib/mysql
+    - ./data/mysql/:/var/lib/mysql
   volumes_from:
     - data
   env_file:
@@ -47,14 +47,15 @@ broker:
 
 search:
   image: elasticsearch:1
-  ports:
-    - "9200:9200"
+  volumes:
+    - ./etc/elasticsearch.yml:/etc/elasticsearch/elasticsearch.yml
 
 app:
   build: .
   volumes:
     - ./app/:/srv/app
     - ./telemeta/:/srv/src/telemeta/telemeta
+    - ./lib/TimeSide/:/srv/src/timeside
   volumes_from:
     - data
   env_file:

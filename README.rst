@@ -138,9 +138,9 @@ Then clone Telemeta::
 Start it up
 ===========
 
-For a production environment setup::
+For a production environment setup, first read / edit `env/prod.env`, then::
 
-     docker-compose up
+    docker-compose up
 
 Then browse the app at http://localhost:8000/ (replacing 'localhost' by the IP given by the docker terminal on OSX or Windows)
 
@@ -195,7 +195,7 @@ Development
    :alt: Coverage
 
 
-To start the application in a development environment setup::
+To start the application in a development environment setup, first read / edit `env/debug.env`, then::
 
     cd Telemeta
     git pull

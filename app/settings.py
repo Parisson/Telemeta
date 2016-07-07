@@ -5,7 +5,6 @@ import os, sys
 from django.core.urlresolvers import reverse_lazy, reverse
 
 import environ
-
 # set default values and casting
 env = environ.Env(DEBUG=(bool, False),
                   CELERY_ALWAYS_EAGER=(bool, False),
@@ -14,6 +13,7 @@ env = environ.Env(DEBUG=(bool, False),
 # Django settings for server project.
 DEBUG = env('DEBUG') # False if not in os.environ
 TEMPLATE_DEBUG = DEBUG
+DEBUG=True
 
 sys.dont_write_bytecode = True
 
@@ -59,6 +59,7 @@ LANGUAGES = [ ('fr', 'French'),
               ('zh_CN', 'Simplified Chinese'),
               ('ar_TN', 'Arabic'),
               ('pt_BR', 'Portuguese'),
+              ('es', 'Spanish'),
 ]
 
 SITE_ID = 1
@@ -291,7 +292,6 @@ LOGGING = {
 }
 
 BROKER_URL = env('BROKER_URL')
-
 CELERY_IMPORTS = ("timeside.server.tasks",)
 CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
 CELERY_TASK_SERIALIZER = 'json'
@@ -302,13 +302,33 @@ from worker import app
 
 HAYSTACK_CONNECTIONS = {
     'default': {
-        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-        'URL': 'http://search:9200/',
-        'INDEX_NAME': 'haystack',
+        #'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'ENGINE': 'telemeta.util.backend.CustomElasticEngine',
+        'URL': env('HAYSTACK_URL'),
+        'INDEX_NAME': env('HAYSTACK_INDEX_NAME'),
         'INLUDE_SPELLING': True,
+        'EXCLUDED_INDEXES': ['telemeta.search_indexes.LocationIndex',
+                             'telemeta.search_indexes.LocationAliasIndex',
+                             'telemeta.search_indexes.InstrumentIndex',
+                             'telemeta.search_indexes.InstrumentAliasIndex'
+                             ]
+    },
+    'autocomplete': {
+        # 'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'ENGINE': 'telemeta.util.backend.CustomElasticEngine',
+        'URL': env('HAYSTACK_URL'),
+        'INDEX_NAME': env('HAYSTACK_INDEX_NAME_AUTOCOMPLETE'),
+        'INLUDE_SPELLING': True,
+        'EXCLUDED_INDEXES': ['telemeta.search_indexes.MediaItemIndex',
+                             'telemeta.search_indexes.MediaCollectionIndex',
+                             'telemeta.search_indexes.MediaCorpusIndex',
+                             'telemeta.search_indexes.MediaFondsIndex'
+                             ]
     },
 }
+
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+# HAYSTACK_SIGNAL_PROCESSOR = 'telemeta.util.search_signals.RealTimeCustomSignal'
 HAYSTACK_SEARCH_RESULTS_PER_PAGE = 50
 
 BOWER_COMPONENTS_ROOT = '/srv/bower/'

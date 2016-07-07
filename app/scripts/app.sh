@@ -18,7 +18,7 @@ gid='www-data'
 patterns='*.js;*.css;*.jpg;*.jpeg;*.gif;*.png;*.svg;*.ttf;*.eot;*.woff;*.woff2'
 
 # stating apps
-# pip install django-bootstrap3==6.2.1
+pip install django-bootstrap3==6.2.1 django-dirtyfields
 
 # waiting for other network services
 sh $app/scripts/wait.sh
@@ -34,22 +34,21 @@ python $manage collectstatic --noinput
 python $manage telemeta-create-admin-user
 python $manage telemeta-create-boilerplate
 
+if [ $REINDEX = "True" ]; then
+    python $manage rebuild_index --noinput
+fi
+
 # fix media access rights
-chown -R www-data:www-data $media
+chown www-data:www-data $media
 for dir in $(ls $media); do
     if [ ! $(stat -c %U $media/$dir) = 'www-data' ]; then
         chown www-data:www-data $media/$dir
     fi
 done
 
-# update haystack index in prod
-if [ "$DEBUG" = "False" ]; then
-    python $manage update_index --workers $processes &
-fi
-
 # choose dev or prod mode
 if [ "$1" = "--runserver" ]; then
-    python $manage runserver_plus 0.0.0.0:8000
+    python $manage runserver 0.0.0.0:8000
 else
     # static files auto update
     watchmedo shell-command --patterns="$patterns" --recursive \
