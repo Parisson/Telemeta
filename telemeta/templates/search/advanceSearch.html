@@ -1,5 +1,5 @@
 {% extends 'telemeta/base.html' %}
-{% load telemeta_utils %}
+{% load telemeta_tags %}
 {% load i18n %}
 {% load bootstrap_pagination %}
 
@@ -10,6 +10,7 @@
 {% block extra_stylesheets %}
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/css/jquery-ui.css" />
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/css/search.css" />
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/css/lists_sorttable.css" media="print, projection, screen"/>
 {% endblock %}
 {% block content %}
     <form method="get" action=".">
@@ -22,7 +23,7 @@
                 </div>
                 <div class="fieldWrapper">
                     {{form.collectors.errors}}
-                    {{ form.collectors.label_tag }}</br>
+                    {% trans form.collectors.label_tag %}</br>
                     {{form.collectors}}
                 </div>
                 <div class="fieldWrapper">
@@ -37,8 +38,9 @@
                 </div>
                 <div class="fieldWrapper">
                     {{form.instruments.errors}}
-                    {% trans form.instruments.label_tag %}</br>
+                    {% trans form.instruments.label_tag %}
                     {{form.instruments}}
+                    {% comment %}<a href="#" id="btn" class="col-md-5 btn btn-default" style="width: 100%; margin-top: 1%">{% trans "Instruments : Boolean Search" %}</a>{% endcomment %}
                 </div>
 
                 <div class="fieldWrapper">
@@ -151,12 +153,20 @@
             <div class="row" style="margin-left:-15px">
                 <div class="col-md-4">
                     {% ifequal type 'item' %}
-                         <p><b>Items ({{item_count}}) | <a href="{% url "haystack_advance_search_type" "collection" %}?{{request.GET.urlencode}}">Collections ({{collection_count}})</a></b></p>
-                     {% else %}
-                        {% ifequal type 'collection'%}
-                            <p><b><a href="{% url "haystack_advance_search_type" "item" %}?{{request.GET.urlencode}}">Items ({{item_count}}) </a>| Collections ({{collection_count}})</b></p>
+                         <p><b>Items ({{item_count}}) | <a href="{% url "haystack_advance_search_type" "collection" %}?{{request_url}}">Collections ({{collection_count}})</a> | <a href="{% url "haystack_advance_search_type" "corpus" %}?{{request_url}}">Corpus ({{corpus_count}})</a> | <a href="{% url "haystack_advance_search_type" "fonds" %}?{{request_url}}">Fonds ({{fonds_count}})</a></b></p>
+                    {% else %}
+                        {% ifequal type 'corpus' %}
+                            <p><b><a href="{% url "haystack_advance_search_type" "item" %}?{{request_url}}">Items ({{item_count}}) </a>| <a href="{% url "haystack_advance_search_type" "collection" %}?{{request_url}}">Collections ({{collection_count}})</a> | Corpus ({{corpus_count}})</a> | <a href="{% url "haystack_advance_search_type" "fonds" %}?{{request_url}}">Fonds ({{fonds_count}})</a></b></p>
+                        {% else %}
+                            {% ifequal type 'fonds' %}
+                                <p><b><a href="{% url "haystack_advance_search_type" "item" %}?{{request_url}}">Items ({{item_count}}) </a>| <a href="{% url "haystack_advance_search_type" "collection" %}?{{request_url}}">Collections ({{collection_count}})</a> | <a href="{% url "haystack_advance_search_type" "corpus" %}?{{request_url}}">Corpus ({{corpus_count}})</a> | Fonds ({{fonds_count}})</b></p>
+                            {% else %}
+                                {% ifequal type 'collection'%}
+                                    <p><b><a href="{% url "haystack_advance_search_type" "item" %}?{{request_url}}">Items ({{item_count}}) </a>| Collections ({{collection_count}}) | <a href="{% url "haystack_advance_search_type" "corpus" %}?{{request_url}}">Corpus ({{corpus_count}})</a> | <a href="{% url "haystack_advance_search_type" "fonds" %}?{{request_url}}">Fonds ({{fonds_count}})</a></b></p>
+                                {% endifequal %}
+                            {% endifequal %}
                         {% endifequal %}
-                     {% endifequal %}
+                    {% endifequal %}
                  </div>
                  <div class="col-md-4 col-md-offset-4" >
                     <div class="pull-right"">
@@ -181,8 +191,16 @@
                     {% ifequal type 'item' %}
                         {% include "search/mediaitem_listhaystack.html" %}
                     {% else %}
-                        {% ifequal type 'collection' %}
-                            {% include "search/mediacollection_listhaystack.html" %}
+                        {% ifequal type 'corpus' %}
+                            {% include "search/mediaresource_listhaystack.html" %}
+                        {% else %}
+                            {% ifequal type 'fonds' %}
+                                {% include "search/mediaresource_listhaystack.html" %}
+                            {% else %}
+                                {% ifequal type 'collection' %}
+                                    {% include "search/mediacollection_listhaystack.html" %}
+                                {%endifequal%}
+                            {%endifequal%}
                         {%endifequal%}
                     {%endifequal%}
                 </div>
@@ -191,8 +209,16 @@
                         {% ifequal type 'item' %}
                             {% include "search/mediaitem_listhaystack.html" %}
                         {% else %}
-                            {% ifequal type 'collection' %}
-                                {% include "search/mediacollection_listhaystack.html" %}
+                            {% ifequal type 'corpus' %}
+                                {% include "search/mediaresource_listhaystack.html" %}
+                            {% else %}
+                                {% ifequal type 'fonds' %}
+                                    {% include "search/mediaresource_listhaystack.html" %}
+                                {% else %}
+                                    {% ifequal type 'collection' %}
+                                        {% include "search/mediacollection_listhaystack.html" %}
+                                    {%endifequal%}
+                                {%endifequal%}
                             {%endifequal%}
                         {%endifequal%}
                     </div>
@@ -209,11 +235,47 @@
             <div id="results"></div>{# Show some example queries to run, maybe query syntax, something else? #}
         {% endif %}
 
+    {% comment %}
+
+        <div id="dialog" title="{% trans "Instruments : Boolean Search" %}">
+
+            <form>
+
+                {{ booleanForm.management_form}}
+                {% for form in booleanForm %}
+                    {% if forloop.counter0 == 0 %}
+                        <span style="margin-left: 13.5%">{{ form.start_bracket }}</span>
+                        {{ form.text_field }}
+                        {{ form.end_bracket }}
+                    {% else %}
+                        {% if forloop.counter0 == 1 %}
+                        <div id="copy">
+                        {% endif %}
+                            {{ form.as_p }}
+                        {% if forloop.counter0 == 1 %}
+                        </div>
+                        {% endif %}
+                    {% endif %}
+
+                {% endfor %}
+                <a class="btn btn-default" id="add" href="#">{% trans "Add field" %}</a>
+                <br/><input type="submit" value="{% trans "Validate the query" %}">
+
+
+            </form>
+
+        <p id="res"></p>
+
+        </div>
+
+        {% endcomment %}
+
 {% endblock %}
 {% block extra_javascript %}
-    <script src="{{ STATIC_URL }}telemeta/lib/jquery/jquery.js" type="text/javascript"></script>
-    <script src="{{ STATIC_URL }}telemeta/lib/jquery/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}tablesorter/jquery.tablesorter.min.js" type="text/javascript"></script>
     <script src="{{ STATIC_URL }}telemeta/js/advanceSearch.js" type="text/javascript"></script>
+
     <script>
         $(function(){
             $("#results-per-page").selectmenu({
@@ -224,5 +286,6 @@
             }).selectmenu("menuWidget").addClass("overflow");
 
         });
-    </script>
+
+</script>
 {% endblock %}

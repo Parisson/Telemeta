@@ -2,34 +2,20 @@
 # Copyright (C) 2007 Samalyse SARL
 # Copyright (c) 2007-2011 Parisson SARL
 
-# This software is a computer program whose purpose is to backup, analyse,
-# transcode and stream any audio content with its metadata over a web frontend.
+# This file is part of Telemeta.
 
-# This software is governed by the CeCILL  license under French law and
-# abiding by the rules of distribution of free software.  You can  use,
-# modify and/ or redistribute the software under the terms of the CeCILL
-# license as circulated by CEA, CNRS and INRIA at the following URL
-# "http://www.cecill.info".
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
 
-# As a counterpart to the access to the source code and  rights to copy,
-# modify and redistribute granted by the license, users are provided only
-# with a limited warranty  and the software's author,  the holder of the
-# economic rights,  and the successive licensors  have only  limited
-# liability.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
 
-# In this respect, the user's attention is drawn to the risks associated
-# with loading,  using,  modifying and/or developing or reproducing the
-# software by the user in light of its specific status of free software,
-# that may mean  that it is complicated to manipulate,  and  that  also
-# therefore means  that it is reserved for developers  and  experienced
-# professionals having in-depth computer knowledge. Users are therefore
-# encouraged to load and test the software's suitability as regards their
-# requirements in conditions enabling the security of their systems and/or
-# data to be ensured and,  more generally, to use and operate it in the
-# same conditions as regards security.
-
-# The fact that you are presently reading this means that you have had
-# knowledge of the CeCILL license and that you accept its terms.
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 # Authors: Olivier Guilyardi <olivier@samalyse.com>
 #          Guillaume Pellerin <yomguy@parisson.com>
@@ -40,6 +26,8 @@ from django.views.generic.base import RedirectView, TemplateView
 from django.views.generic.list import ListView
 from telemeta.models import MediaItem, MediaCollection, MediaItemMarker, MediaCorpus, MediaFonds
 from telemeta.views import *
+from haystack.forms import *
+
 from jsonrpc import jsonrpc_site
 import os.path
 import telemeta.config
@@ -57,6 +45,7 @@ playlist_view = PlaylistView()
 profile_view = ProfileView()
 geo_view = GeoView()
 resource_view = ResourceView()
+#boolean_view = BooleanSearchView()
 
 # ID's regular expressions
 export_extensions = "|".join(item_view.list_export_extensions())
@@ -84,6 +73,7 @@ urlpatterns = patterns('',
     url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/copy/$', ItemCopyView.as_view(), name="telemeta-item-copy"),
     url(r'^archives/items_add/$', ItemAddView.as_view(), name="telemeta-item-add"),
     url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/player/(?P<width>[0-9]+)x(?P<height>[0-9]+)/$', ItemPlayerDefaultView.as_view(), name="telemeta-item-player"),
+    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/video-player/(?P<width>[0-9]+)x(?P<height>[0-9]+)/$', ItemVideoPlayerView.as_view(), name="telemeta-item-video-player"),
     url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/delete/$', item_view.item_delete, name="telemeta-item-delete"),
     url(r'^archives/items/(?P<item_public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)/view/$', item_view.related_media_item_stream, name="telemeta-item-related"),
     url(r'^archives/items/(?P<item_public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)/download/$', item_view.related_media_item_download, name="telemeta-item-related-download"),
@@ -93,14 +83,10 @@ urlpatterns = patterns('',
     url(r'^archives/markers/(?P<marker_id>[A-Za-z0-9]+)/$', item_view.item_detail, name="telemeta-item-detail-marker"),
 
     # Redirections to old URLs
-    url(r'^items/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(url='/archives/items/%(path)s/',
-                                                 permanent= True), name="telemeta-item-redir"),
-    url(r'^collections/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(url='/archives/collections/%(path)s/',
-                                                 permanent= True), name="telemeta-collection-redir"),
-    url(r'^corpus/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(url='/archives/corpus/%(path)s/',
-                                                 permanent= True), name="telemeta-corpus-redir"),
-    url(r'^fonds/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(url='/archives/fonds/%(path)s/',
-                                                 permanent= True), name="telemeta-fonds-redir"),
+    url(r'^items/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(url='/archives/items/%(path)s/', permanent= True), name="telemeta-item-redir"),
+    url(r'^collections/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(url='/archives/collections/%(path)s/', permanent= True), name="telemeta-collection-redir"),
+    url(r'^corpus/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(url='/archives/corpus/%(path)s/', permanent= True), name="telemeta-corpus-redir"),
+    url(r'^fonds/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(url='/archives/fonds/%(path)s/', permanent= True), name="telemeta-fonds-redir"),
 
     # collections
     url(r'^archives/collections/$', CollectionListView.as_view(), name="telemeta-collections"),
@@ -140,15 +126,17 @@ urlpatterns = patterns('',
 
     # search
     # url(r'^archives/$', home_view.search, name="telemeta-archives"),
-    url(r'^search/$', SearchView.as_view(), name="telemeta-search"),
-    url(r'^search_published/(?P<type>[A-Za-z0-9._-]+)/$', SearchViewPublished.as_view(), name="telemeta-search-published"),
-    url(r'^search_unpublished/(?P<type>[A-Za-z0-9._-]+)/$', SearchViewUnpublished.as_view(), name="telemeta-search-unpublished"),
-    url(r'^search_full/(?P<type>[A-Za-z0-9._-]+)/$', SearchViewFullAccess.as_view(), name="telemeta-search-full"),
-    url(r'^search_none/(?P<type>[A-Za-z0-9._-]+)/$', SearchViewRestrictedAccess.as_view(), name="telemeta-search-none"),
-    url(r'^search/(?P<type>[A-Za-z0-9._-]+)/$', SearchView.as_view(), name="telemeta-search-type"),
-    url(r'^search_criteria/$', home_view.edit_search, name="telemeta-search-criteria"),
+    url(r'^search/$', HaystackSearch(), name='haystack_search'),
+    url(r'^search/autocomplete/$', autocomplete),
+    url(r'^search/quick/(?P<type>[A-Za-z0-9._-]+)/$', HaystackSearch(), name='haystack_search_type'),
+    url(r'^search/advance/$', HaystackAdvanceSearch(form_class=HayAdvanceForm, template='search/advanceSearch.html'), name='haystack_advance_search'),
+    url(r'^search/advance/(?P<type>[A-Za-z0-9._-]+)/$', HaystackAdvanceSearch(form_class=HayAdvanceForm, template='search/advanceSearch.html'), name='haystack_advance_search_type'),
+    #url(r'^search/booleaninstru/$', boolean_view.get_boolean_query),
+
+    url(r'^search/playlist_add/(?P<type>[A-Za-z0-9._-]+)/$', NewPlaylistView().display, name='haystack_playlist'),
+    url(r'^search/playlist_confirmation/(?P<type>[A-Za-z0-9._-]+)/$',NewPlaylistView().addToPlaylist, name='add_confirmation'),
+
     url(r'^complete_location/$', home_view.complete_location, name="telemeta-complete-location"),
-    url(r'^haystack/', include('telemeta.haystack_urls')),
 
     # administration
     url(r'^admin/$', admin_view.admin_index, name="telemeta-admin"),
@@ -161,6 +149,10 @@ urlpatterns = patterns('',
     url(r'^admin/instruments/add/$', instrument_view.add_to_instrument, name="telemeta-instrument-add"),
     url(r'^admin/instruments/update/$', instrument_view.update_instrument, name="telemeta-instrument-update"),
     url(r'^admin/instruments/' + r'(?P<value_id>[0-9]+)/$', instrument_view.edit_instrument_value, name="telemeta-instrument-record-edit"),
+    url(r'^admin/instruments/' + r'(?P<value_id>[0-9]+)/'+'list-items-published/$', ItemInstrumentPublishedListView.as_view(),name="telemeta-items-instrument-published"),
+    url(r'^admin/instruments/' + r'(?P<value_id>[0-9]+)/'+'list-items-unpublished/$', ItemInstrumentUnpublishedListView.as_view(),name="telemeta-items-instrument-unpublished"),
+    url(r'^admin/instruments/' + r'(?P<value_id>[0-9]+)/'+'list-items-sound/$', ItemInstrumentSoundListView.as_view(),name="telemeta-items-instrument-sound"),
+    url(r'^admin/instruments/' + r'(?P<value_id>[0-9]+)/'+'list-items/$', ItemInstrumentListView.as_view(), name="telemeta-instrument-item-list"),
     url(r'^admin/instruments/' + r'(?P<value_id>[0-9]+)/update/$', instrument_view.update_instrument_value, name="telemeta-instrument-record-update"),
     url(r'^admin/instruments/' + r'(?P<value_id>[0-9]+)/replace/$', instrument_view.replace_instrument_value, name="telemeta-instrument-record-replace"),
 
@@ -171,6 +163,10 @@ urlpatterns = patterns('',
     url(r'^admin/instrument_aliases/' + r'(?P<value_id>[0-9]+)/$', instrument_alias_view.edit_instrument_value, name="telemeta-instrument-alias-record-edit"),
     url(r'^admin/instrument_aliases/' + r'(?P<value_id>[0-9]+)/update/$', instrument_alias_view.update_instrument_value, name="telemeta-instrument-alias-record-update"),
     url(r'^admin/instrument_aliases/' + r'(?P<value_id>[0-9]+)/replace/$', instrument_alias_view.replace_instrument_value, name="telemeta-instrument-alias-record-replace"),
+    url(r'^admin/instrument_aliases/' + r'(?P<value_id>[0-9]+)/'+'list-item-published/$', ItemAliasPublishedListView.as_view(),name="telemeta-items-alias-published"),
+    url(r'^admin/instrument_aliases/' + r'(?P<value_id>[0-9]+)/'+'list-item-unpublished/$', ItemAliasUnpublishedListView.as_view(),name="telemeta-items-alias-unpublished"),
+    url(r'^admin/instrument_aliases/' + r'(?P<value_id>[0-9]+)/'+'list-item-sound/$', ItemAliasSoundListView.as_view(),name="telemeta-items-alias-sound"),
+    url(r'^admin/instrument_aliases/' + r'(?P<value_id>[0-9]+)/'+'list-items/$', ItemAliasListView.as_view(), name="telemeta-alias-item-list"),
 
     # enumerations administration
     url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/$', admin_view.edit_enumeration , name="telemeta-enumeration-edit"),
@@ -204,7 +200,7 @@ urlpatterns = patterns('',
     url(r'^accounts/$', home_view.users, name="telemeta-users"),
 
     # Desk
-    url(r'^desk/lists/$', home_view.lists, name="telemeta-desk-lists"),
+    url(r'^desk/lists/(?:(?P<range_playlist>[0-9]+)/)?$', home_view.lists, name="telemeta-desk-lists"),
     url(r'^desk/profile/(?P<username>[A-Za-z0-9@+._-]+)/$', profile_view.profile_detail, name="telemeta-desk-profile"),
     url(r'^desk/home/$', home_view.home, name="telemeta-desk-home"),
 
@@ -227,8 +223,9 @@ urlpatterns = patterns('',
 
     # Playlists
     url(r'^playlists/(?P<public_id>[a-zA-Z0-9]+)/(?P<resource_type>[a-zA-Z0-9]+)/csv/$', playlist_view.playlist_csv_export, name="telemeta-playlist-csv-export"),
+    url(r'^playlists/playlist_add/$', NewPlaylistView().display, name='playlist'),
 
-    # RSS feeds
+                       # RSS feeds
     url(r'^rss/$', LastestRevisionsFeed(), name="telemeta-rss"),
 
     # Static media

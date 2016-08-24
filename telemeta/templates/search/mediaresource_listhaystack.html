@@ -1,0 +1,64 @@
+{% load telemeta_tags %}
+{% load i18n %}
+
+{% if page.object_list %}
+
+<table class="listing" id="searchtable">
+<thead>
+<tr>
+    {% if user.is_authenticated %}
+        <th class="highlight"><input id="selectAll" type="checkbox"/> select all </th>
+        <th>{% trans "title" %}</th>
+    {% else %}
+        <th class="highlight">{% trans "title" %}</th>
+    {% endif %}
+    <th>{% trans "Digitized" %}</th>
+    <th>{% trans "Description" %}</th>
+    <th>{% trans "Code" %}</th>
+</tr>
+</thead>
+{% if user.is_authenticated %}
+<tbody>
+    {% for result in page.object_list %}
+    <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
+        <td class="highlight"><input type="checkbox" class="check1" name="selected_items_list" value="{{ result.object.id }}"/></td>
+        <td>
+            <a href="{% url "telemeta-resource-detail" type result.object.public_id %}">{{ result.object.title }}</a>
+        </td>
+        <td>
+          {% if result.object.has_mediafile %}
+           <center><span class="glyphicon glyphicon-volume-up" style="font-size: 1.3em;"><p style="opacity:0;font-size:0">d</p></span></center>
+          {% endif %}
+        </td>
+
+        <td>{{ result.object.descriptions }}</td>
+        <td>
+            {{ result.object.code }}
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+{% else %}
+    {% for result in page.object_list %}
+    <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
+        <td class="highlight"><input type="checkbox" class="check1" name="selected_items_list" value="{{ result.object.id }}"/></td>
+        <td>
+            <a href="{% url "telemeta-resource-detail" type result.object.public_id %}">{{ result.object.title }}</a>
+        </td>
+        <td>
+          {% if result.object.has_mediafile %}
+           <center><span class="glyphicon glyphicon-volume-up" style="font-size: 1.3em;"><p style="opacity:0;font-size:0">d</p></span></center>
+          {% endif %}
+        </td>
+
+        <td>{{ result.object.descriptions }}</td>
+        <td>
+            {{ result.object.code }}
+        </td>
+    </tr>
+    {% endfor %}
+{% endif %}
+</table>
+{% else %}
+    <p>{% trans "No " %}{{ type }} </p>
+{% endif %}

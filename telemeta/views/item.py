@@ -3,34 +3,20 @@
 # Copyright (C) 2010-2015 Parisson SARL
 # Copyright (C) 2007-2010 Samalyse SARL
 
-# This software is a computer program whose purpose is to backup, analyse,
-# transcode and stream any audio content with its metadata over a web frontend.
+# This file is part of Telemeta.
 
-# This software is governed by the CeCILL  license under French law and
-# abiding by the rules of distribution of free software.  You can  use,
-# modify and/ or redistribute the software under the terms of the CeCILL
-# license as circulated by CEA, CNRS and INRIA at the following URL
-# "http://www.cecill.info".
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
 
-# As a counterpart to the access to the source code and  rights to copy,
-# modify and redistribute granted by the license, users are provided only
-# with a limited warranty  and the software's author,  the holder of the
-# economic rights,  and the successive licensors  have only  limited
-# liability.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
 
-# In this respect, the user's attention is drawn to the risks associated
-# with loading,  using,  modifying and/or developing or reproducing the
-# software by the user in light of its specific status of free software,
-# that may mean  that it is complicated to manipulate,  and  that  also
-# therefore means  that it is reserved for developers  and  experienced
-# professionals having in-depth computer knowledge. Users are therefore
-# encouraged to load and test the software's suitability as regards their
-# requirements in conditions enabling the security of their systems and/or
-# data to be ensured and,  more generally, to use and operate it in the
-# same conditions as regards security.
-
-# The fact that you are presently reading this means that you have had
-# knowledge of the CeCILL license and that you accept its terms.
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Authors: Olivier Guilyardi <olivier@samalyse.com>
 #          Guillaume Pellerin <yomguy@parisson.com>
@@ -39,6 +25,8 @@
 from telemeta.views.core import *
 from telemeta.views.marker import *
 import timeside.core
+import timeside.server as ts
+import sys
 
 
 class ItemBaseMixin(TelemetaBaseMixin):
@@ -54,14 +42,6 @@ class ItemBaseMixin(TelemetaBaseMixin):
     default_grapher_id = getattr(settings, 'TIMESIDE_DEFAULT_GRAPHER_ID', ('waveform_simple'))
     default_grapher_sizes = getattr(settings, 'TIMESIDE_DEFAULT_GRAPHER_SIZES', ['346x130', ])
     auto_zoom = getattr(settings, 'TIMESIDE_AUTO_ZOOM', False)
-
-    def get_export_formats(self):
-        formats = []
-        for encoder in self.encoders:
-            if encoder.file_extension() in self.export_formats:
-                formats.append({'name': encoder.format(),
-                                    'extension': encoder.file_extension()})
-        return formats
 
     def get_graphers(self):
         graphers = []
@@ -120,6 +100,10 @@ class ItemBaseMixin(TelemetaBaseMixin):
              previous = item.public_id
              next = item.public_id
         return previous, next
+
+    @jsonrpc_method('telemeta.get_item_export_url')
+    def get_item_file_url(request, public_id, extension):
+        return reverse('telemeta-item-export', kwargs={'public_id': public_id, 'extension': extension})
 
 
 class ItemView(ItemBaseMixin):
@@ -180,8 +164,6 @@ class ItemView(ItemBaseMixin):
         item = get_object_or_404(MediaItem, code=item_public_id)
         media = get_object_or_404(MediaItemRelated, item=item, id=media_id)
         if media.file:
-            response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
-            filename = media.file.path.split(os.sep)[-1]
             response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
         else:
             raise Http404
@@ -249,6 +231,23 @@ class ItemView(ItemBaseMixin):
 
         item = MediaItem.objects.get(public_id=public_id)
         mime_type = 'image/png'
+
+        source, source_type = item.get_source()
+        # if source:
+        #     ts_item, c = ts.models.Item.objects.get_or_create(**{source_type: source})
+        #     if c:
+        #         ts_item.title = item.title
+        #         ts_item.save()
+        #
+        # ts_grapher, c = ts.models.Processor.objects.get_or_create(pid=grapher_id)
+        # ts_preset, c = ts.models.Preset.objects.get_or_create(processor=ts_grapher,
+        #                                                       parameters={'width': width, 'height': height})
+        # ts_experience = ts_preset.get_single_experience()
+        # ts_selection = ts_item.get_single_selection()
+        # ts_task, c = ts.models.Task.objects.get_or_create(experience=ts_experience,
+        #                                            selection=ts_selection)
+        # ts_task.run()
+
         grapher = self.get_grapher(grapher_id)
 
         if grapher.id() != grapher_id:
@@ -263,7 +262,7 @@ class ItemView(ItemBaseMixin):
             image_file = old_image_file
 
         if not self.cache_data.exists(image_file):
-            source = item.get_source()
+            source, _ = item.get_source()
             if source:
                 path = self.cache_data.dir + os.sep + image_file
                 decoder = timeside.core.get_processor('file_decoder')(source)
@@ -273,6 +272,7 @@ class ItemView(ItemBaseMixin):
                 f = open(path, 'w')
                 graph.render(output=path)
                 f.close()
+                self.cache_data.add_file(image_file)
 
         response = StreamingHttpResponse(self.cache_data.read_stream_bin(image_file), content_type=mime_type)
         return response
@@ -324,7 +324,7 @@ class ItemView(ItemBaseMixin):
 
         mime_type = encoder.mime_type()
         file = public_id + '.' + encoder.file_extension()
-        source = item.get_source()
+        source, _ = item.get_source()
 
         flag = MediaItemTranscodingFlag.objects.filter(item=item, mime_type=mime_type)
         if not flag:
@@ -359,7 +359,7 @@ class ItemView(ItemBaseMixin):
                 if extension in mapping.unavailable_extensions:
                     metadata=None
                 proc.set_metadata(metadata)
-
+                self.cache_export.add_file(file)
                 response = StreamingHttpResponse(stream_from_processor(decoder, proc, flag), content_type=mime_type)
             else:
                 # cache > stream
@@ -409,12 +409,15 @@ class ItemListView(ListView):
 
     model = MediaItem
     template_name = "telemeta/mediaitem_list.html"
-    paginate_by = 20
     queryset = MediaItem.objects.enriched().order_by('code', 'old_code')
+
+    def get_paginate_by(self, queryset):
+        return self.request.GET.get('results_page', 20)
 
     def get_context_data(self, **kwargs):
         context = super(ItemListView, self).get_context_data(**kwargs)
         context['count'] = self.object_list.count()
+        context['results_page'] = int(self.request.GET.get('results_page', 20))
         return context
 
 class ItemListViewFullAccess(ListView):
@@ -444,6 +447,63 @@ class ItemSoundListView(ItemListView):
 
     queryset = MediaItem.objects.sound().order_by('code', 'old_code')
 
+class ItemInstrumentListView(ItemListView):
+
+    template_name = "telemeta/media_item_instrument_list.html"
+
+    def get_queryset(self):
+        return MediaItem.objects.filter(performances__instrument__id=self.kwargs['value_id'])
+
+    def get_context_data(self, **kwargs):
+        context = super(ItemInstrumentListView, self).get_context_data(**kwargs)
+
+        context['nom']=Instrument.objects.get(id=self.kwargs['value_id']).name
+        context['id']=self.kwargs['value_id']
+
+        return context
+
+class ItemInstrumentPublishedListView(ItemInstrumentListView):
+
+    def get_queryset(self):
+        return super(ItemInstrumentPublishedListView, self).get_queryset().filter(collection__code__contains='_E_').order_by('code', 'old_code')
+
+class ItemInstrumentUnpublishedListView(ItemInstrumentListView):
+
+    def get_queryset(self):
+        return super(ItemInstrumentUnpublishedListView, self).get_queryset().filter(collection__code__contains='_I_').order_by('code', 'old_code')
+
+class ItemInstrumentSoundListView(ItemInstrumentListView):
+     def get_queryset(self):
+        return super(ItemInstrumentSoundListView, self).get_queryset().sound().order_by('code', 'old_code')
+
+class ItemAliasListView(ItemListView):
+
+    template_name = "telemeta/media_item_alias_list.html"
+
+    def get_queryset(self):
+        return MediaItem.objects.filter(performances__alias__id=self.kwargs['value_id'])
+
+    def get_context_data(self, **kwargs):
+        context = super(ItemAliasListView, self).get_context_data(**kwargs)
+
+        context['nom']=InstrumentAlias.objects.get(id=self.kwargs['value_id']).name
+        context['id']=self.kwargs['value_id']
+
+        return context
+
+class ItemAliasPublishedListView(ItemAliasListView):
+
+    def get_queryset(self):
+        return super(ItemAliasPublishedListView, self).get_queryset().filter(collection__code__contains='_E_').order_by('code', 'old_code')
+
+class ItemAliasUnpublishedListView(ItemAliasListView):
+
+    def get_queryset(self):
+        return super(ItemAliasUnpublishedListView, self).get_queryset().filter(collection__code__contains='_I_').order_by('code', 'old_code')
+
+class ItemAliasSoundListView(ItemAliasListView):
+     def get_queryset(self):
+        return super(ItemAliasSoundListView, self).get_queryset().sound().order_by('code', 'old_code')
 
 class ItemViewMixin(ItemBaseMixin):
 
@@ -554,7 +614,9 @@ class ItemCopyView(ItemAddView):
     template_name = 'telemeta/mediaitem_edit.html'
 
     def get_initial(self):
-         return model_to_dict(self.get_object())
+        item = self.get_object()
+        item.code = auto_code(item.collection)
+        return model_to_dict(item)
 
     def forms_valid(self, form, inlines):
         messages.info(self.request, ugettext_lazy("You have successfully updated your item."))
@@ -620,9 +682,11 @@ class ItemDetailView(ItemViewMixin, DetailView):
             analyzers_sub = []
             graphers_sub = []
 
-            source = item.get_source()
+            source, _ = item.get_source()
+
             if source:
-                decoder  = timeside.core.get_processor('file_decoder')(source)
+
+                decoder = timeside.core.get_processor('file_decoder')(source)
                 pipe = decoder
 
                 for analyzer in self.value_analyzers:
@@ -709,6 +773,14 @@ class ItemDetailView(ItemViewMixin, DetailView):
 
         previous, next = self.item_previous_next(item)
 
+        # Corresponding TimeSide Item
+        source, source_type = item.get_source()
+        # if source:
+        #     ts_item, c = ts.models.Item.objects.get_or_create(**{source_type: source})
+        #     if c:
+        #         ts_item.title = item.title
+        #         ts_item.save()
+
         self.item_analyze(item)
 
         #FIXME: use mimetypes.guess_type
@@ -716,6 +788,13 @@ class ItemDetailView(ItemViewMixin, DetailView):
             self.mime_type = 'video/mp4'
 
         playlists = get_playlists_names(self.request)
+
+        rang = []
+        for i in range(len(playlists)):
+             for resource in playlists[i]['playlist'].resources.all():
+                  if int(resource.resource_id) == item.id:
+                      rang.append(i)
+                      break
         related_media = MediaItemRelated.objects.filter(item=item)
         check_related_media(related_media)
         revisions = Revision.objects.filter(element_type='item', element_id=item.id).order_by('-time')
@@ -745,6 +824,13 @@ class ItemDetailView(ItemViewMixin, DetailView):
         context['last_revision'] = last_revision
         context['format'] = item_format
         context['private_extra_types'] = private_extra_types.values()
+        context['site'] = 'http://' + Site.objects.all()[0].name
+        context['rang_item_playlist']=rang
+        # if ts_item:
+        #     context['ts_item_id'] = ts_item.pk
+        # else:
+        #     context['ts_item_id'] = None
+
         return context
 
 
@@ -842,3 +928,8 @@ class ItemPlayerDefaultView(ItemDetailView):
 class ItemDetailDCView(ItemDetailView):
 
     template_name = 'telemeta/mediaitem_detail_dc.html'
+
+
+class ItemVideoPlayerView(ItemDetailView):
+
+    template_name = 'telemeta/mediaitem_video_player.html'

@@ -47,7 +47,7 @@ setup(
   long_description = open('README.rst').read(),
   author = "Guillaume Pellerin",
   author_email = "yomguy@parisson.com",
-  version = '1.6',
+  version = '1.6.3',
   install_requires = [
         'django==1.8.4',
         'django-registration-redux',
@@ -57,7 +57,7 @@ setup(
         'django-debug-toolbar==1.3.2',
         'django-extra-views',
         'django-breadcrumbs',
-        'django-bootstrap3',
+        'django-bootstrap3==6.2.1',
         'django-bootstrap-pagination',
         'django-json-rpc',
         'django-suit',
@@ -71,9 +71,14 @@ setup(
         'pyyaml',
         'python-ebml',
         'zipstream',
-        'django-haystack',
         'elasticsearch==1.6.0',
+        'django-haystack',
         'ebooklib',
+        'django-environ',
+        'redis',
+        'Werkzeug',
+        'django-dirtyfields',
+        'sqlparse==0.1.19'
     ],
   tests_require=['pytest-django', 'pytest-cov', 'factory-boy'],
   # Provide a test command through django-setuptest

@@ -1,4 +1,4 @@
-{% load telemeta_utils %}
+{% load telemeta_tags %}
 {% load i18n %}
 
 <div id="accordeon" style="margin-bottom:20px">
@@ -9,7 +9,7 @@
                     {% if facets.fields.item_status %}
                         <td>{% trans "Item Status" %}</td>
                         {% for item_status in facets.fields.item_status %}
-                            <td><a href="{{ request.get_full_path }}&amp;selected_facets=item_status_exact:{{ item_status.0|urlencode }}">{{ item_status.0 }}</a> <span style="background-color:#6a0307" class="badge">{{ item_status.1 }}</span></td>
+                            <td><a href="{{ request.get_full_path }}&amp;selected_facets=item_status_exact:{{ item_status.0|urlencode }}">{% trans item_status.0 %}</a> <span style="background-color:#6a0307" class="badge">{{ item_status.1 }}</span></td>
                         {% endfor %}
                         {% if Published_count == 0 %}
                             <td> {% trans "Published" %} <span class="badge">0</span></td><td></td>

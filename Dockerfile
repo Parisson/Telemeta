@@ -14,19 +14,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# FROM parisson/timeside:latest-dev
-FROM parisson/timeside:latest-dev
+FROM parisson/timeside:latest
 
 MAINTAINER Guillaume Pellerin <yomguy@parisson.com>, Thomas fillon <thomas@parisson.com>
 
-# Clone app
-RUN mkdir /opt/Telemeta
-ADD . /opt/Telemeta
-WORKDIR /opt/Telemeta
-
-# Install deps
-RUN mkdir /opt/src
+RUN mkdir -p /srv/src/
+RUN mkdir /srv/src/telemeta
+COPY . /srv/src/telemeta
+WORKDIR /srv/src/telemeta
+RUN conda install lxml
 RUN pip install -r requirements.txt
-RUN pip install -r requirements-dev.txt --src /opt/src
+RUN pip install -r requirements-dev.txt --src /srv/src
 
+ENV PYTHON_EGG_CACHE=/srv/.python-eggs
+RUN mkdir -p $PYTHON_EGG_CACHE
+RUN chown www-data:www-data $PYTHON_EGG_CACHE
+
+WORKDIR /srv/app
 EXPOSE 8000

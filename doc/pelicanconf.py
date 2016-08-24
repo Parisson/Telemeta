@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*- #
 from __future__ import unicode_literals
 
-AUTHOR = u'Parisson Sarl'
+AUTHOR = u'Parisson SARL'
 SITENAME = u'Telemeta project'
 
 TIMEZONE = 'Europe/Paris'
@@ -45,7 +45,10 @@ SOCIAL = (('GitHub', 'https://github.com/Parisson/Telemeta'),
 #RELATIVE_URLS = True
 
 PLUGIN_PATHS = ['pelican-plugins']
-PLUGINS = ['pin_to_top']
+PLUGINS = ['pin_to_top', 'sitemap', 'gallery', 'render_math',
+            'liquid_tags.img', 'liquid_tags.video',
+           'liquid_tags.youtube', 'liquid_tags.vimeo',
+           'liquid_tags.include_code', ]
 
 STATIC_PATHS = ['images', 'css']
 CUSTOM_CSS = 'css/custom.css'
@@ -68,3 +71,18 @@ GITHUB_USER = 'Parisson'
 
 # Content licensing: CC-BY
 CC_LICENSE = "CC-BY"
+
+SITEMAP = {
+
+    'format': 'xml',
+    'priorities': {
+        'articles': 0.5,
+        'indexes': 0.5,
+        'pages': 0.5
+    },
+    'changefreqs': {
+        'articles': 'monthly',
+        'indexes': 'daily',
+        'pages': 'monthly'
+    }
+}

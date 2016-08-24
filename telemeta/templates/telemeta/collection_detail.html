@@ -1,6 +1,6 @@
 {% extends "telemeta/base.html" %}
 {% load i18n %}
-{% load telemeta_utils %}
+{% load telemeta_tags %}
 
 {% block head_title %}{% trans "Collection" %}{{collection|prepend:' : '}} - {{ block.super }}{% endblock %}
 
@@ -47,7 +47,7 @@
     </a>
     <a href="{% url "telemeta-collection-copy" collection.public_id %}">
       <button type="button" class="btn btn-default">
-        <span class="glyphicon glyphicon-new-window"></span> {% trans "Copy" %}
+        <span class="glyphicon glyphicon-copy"></span> {% trans "Copy" %}
       </button>
     </a>
     {% endif %}
@@ -98,9 +98,10 @@
                 {% dl_field collection "creator" placeholder %}
                 {% endif %}
                 <dt>{% trans "Document status" %}</dt>
-                <dd>{{ collection.document_status }}</dd>
+                <dd>{% trans collection.document_status %}</dd>
                 {% if collection.description %}
-                {% dl_field collection "description" %}
+                <dt>{% trans "Description" %}</dt>
+                <dd>{{ collection.description|html_line_break|safe }}</dd>
                 {% endif %}
                 {% dl_field collection "recording_context" %}
                 <dt>{% trans "Recording period" %}</dt>
@@ -269,4 +270,3 @@
 {% else %}
     <p>No such collection</p>
 {% endif %}
-

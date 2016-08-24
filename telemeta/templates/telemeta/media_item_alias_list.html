@@ -1,0 +1,6 @@
+{% extends "telemeta/media_item_instrument_list.html" %}
+
+{% block url_all %}{% url "telemeta-alias-item-list" id %}{% endblock %}
+{% block url_unpublished %}{% url "telemeta-items-alias-unpublished" id %}{% endblock %}
+{% block url_published %}{% url "telemeta-items-alias-published" id %}{% endblock %}
+{% block url_sound %}{% url "telemeta-items-alias-sound" id %}{% endblock %}

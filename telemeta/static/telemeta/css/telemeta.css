@@ -50,18 +50,6 @@ svg {
     height: 100%;
 }
 
-.rst-content h1 {
-    font-size: 1.3em;
-    font-weight: bold;
-    color: #353535;
-    margin-bottom: 1em;
-}
-
-.rst-content p {
-    font-size: 1em;
-    text-align: justify;
-}
-
 .nett {
     clear: both;
     height: 5px;
@@ -112,7 +100,7 @@ svg {
     color: #6a0307;
     font-weight: bold;
     display:  inline;
-    font-size: 120%;
+    font-size: 140%;
 }
 
 #content h2 {
@@ -473,6 +461,7 @@ form.login .submit {
     background-color: #6a0307 ;
     border-top: .25em solid #6a0307;
     padding-left:26px;
+    position:relative;
 }
 
 #menu a, #menu a:visited{
@@ -514,10 +503,18 @@ form.login .submit {
 /* Drop Down Menus */
 .clear {clear:both}
 
+#formlang{
+    display:inline-block;
+    position:absolute;
+    right:1%;
+    top:10%;
+}
+
 #nav {
     margin:0;
     padding:0;
     list-style:none;
+    display:inline-block;
 }
 
 /* make the LI display inline */
@@ -901,12 +898,34 @@ table td.error {
     margin-top: 0.8em;
 }
 
+
+img.align-left {
+    float: left;
+    padding-bottom: 1ex;
+    padding-right: 1ex;
+}
+
 .rst-content {
     padding-top: 5px;
 }
 
 .rst-content h1 {
+    font-size: 1.6em;
+    font-weight: bold;
     color: #6a0307;
+    margin-bottom: 1em;
+}
+
+.rst-content h2 {
+    font-size: 1em;
+    font-weight: bold;
+    color: #6a0307;
+    margin-bottom: 1em;
+}
+
+.rst-content p {
+    font-size: 1em;
+    text-align: justify;
 }
 
 .rst-content img.align-left {
@@ -923,15 +942,9 @@ table td.error {
     margin-bottom: 0.5ex;
 }
 
-img.align-left {
-    float: left;
-    padding-bottom: 1ex;
-    padding-right: 1ex;
-}
-
 #content .rst-content ul,  #content .rst-content ol {
     clear: none;
-    font-size: 0.8125em;
+    font-size: 1em;
     margin-left: 0.4em;
 }
 
@@ -1425,4 +1438,11 @@ a:focus,div:focus{
     -moz-border-radius: 8px 0px 8px 8px;
     -webkit-border-radius: 8px 0px 8px 8px;
     border-radius: 8px 0px 8px 8px;
+}
+
+#language-selector {
+    color: #6a0307;
+    height: 2.2em;
+    font-size: 0.9em;
+    margin-top: 0.1em;
 }

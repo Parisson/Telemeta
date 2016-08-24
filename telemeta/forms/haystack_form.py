@@ -1,45 +1,33 @@
 # -*- coding: utf-8 -*-
 # Copyright (C) 2015 Parisson SARL
 
-# This software is a computer program whose purpose is to backup, analyse,
-# transcode and stream any audio content with its metadata over a web frontend.
+# This file is part of Telemeta.
 
-# This software is governed by the CeCILL  license under French law and
-# abiding by the rules of distribution of free software.  You can  use,
-# modify and/ or redistribute the software under the terms of the CeCILL
-# license as circulated by CEA, CNRS and INRIA at the following URL
-# "http://www.cecill.info".
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
 
-# As a counterpart to the access to the source code and  rights to copy,
-# modify and redistribute granted by the license, users are provided only
-# with a limited warranty  and the software's author,  the holder of the
-# economic rights,  and the successive licensors  have only  limited
-# liability.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
 
-# In this respect, the user's attention is drawn to the risks associated
-# with loading,  using,  modifying and/or developing or reproducing the
-# software by the user in light of its specific status of free software,
-# that may mean  that it is complicated to manipulate,  and  that  also
-# therefore means  that it is reserved for developers  and  experienced
-# professionals having in-depth computer knowledge. Users are therefore
-# encouraged to load and test the software's suitability as regards their
-# requirements in conditions enabling the security of their systems and/or
-# data to be ensured and,  more generally, to use and operate it in the
-# same conditions as regards security.
-
-# The fact that you are presently reading this means that you have had
-# knowledge of the CeCILL license and that you accept its terms.
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-# Authors: Angy Fil-Aimé
+# Authors: Angy Fils-Aimé
 #          Killian Mary
+#          Novembre 2015 : Raouf Benmansour
 
 
 from telemeta.models import *
 from haystack.forms import *
-from haystack.query import SearchQuerySet
+from haystack.query import SearchQuerySet, SQ
 from datetime import date
 from django.utils.translation import ugettext_lazy as _
-
+import operator
+#from telemeta.views.boolean_search import *
 
 class HaySearchForm(FacetedSearchForm):
 
@@ -52,7 +40,11 @@ class HaySearchForm(FacetedSearchForm):
             return sqs
 
         if self.cleaned_data['q']:
-            sqs = sqs.filter(content__contains=self.cleaned_data['q']).facet('item_acces').facet('item_status').facet('digitized').facet('recording_context').facet('physical_format').facet('media_type')
+            #search input of a code, contains at least '_YYYY_'
+            #if not re.match('([a-zA-Z]*_?[EI])?_[0-9]{4}_([0-9]{3}_[0-9]{3})?', self.cleaned_data.get('q')):
+            sqs = sqs.filter(content__startswith=self.cleaned_data['q']).facet('item_acces').facet('item_status').facet('digitized').facet('recording_context').facet('physical_format').facet('media_type')
+            #else:
+            #    sqs = sqs.filter(code__contains=self.cleaned_data['q']).facet('item_acces').facet('item_status').facet('digitized').facet('recording_context').facet('physical_format').facet('media_type')
 
         for facet in self.selected_facets:
             if ":" not in facet:
@@ -94,18 +86,11 @@ class HayAdvanceForm(SearchForm):
         list_all_year = []
         list_collect = MediaCollection.objects.all()
         for collect in list_collect:
-            if collect.recorded_from_year != '0' and not collect.recorded_from_year in list_all_year:
+            if collect.recorded_from_year != 0 and not collect.recorded_from_year in list_all_year:
                 list_all_year.append(collect.recorded_from_year)
-            if collect.recorded_to_year != '0' and not collect.recorded_to_year in list_all_year:
+            if collect.recorded_to_year != 0 and not collect.recorded_to_year in list_all_year:
                 list_all_year.append(collect.recorded_to_year)
         list_all_year.sort()
-        if len(list_all_year) >= 2:
-            min_year = list_all_year[len(list_all_year) - 1]
-            for year in list_all_year:
-                if year != 0:
-                    if year < min_year:
-                        min_year = year
-            list_all_year = range(min_year, date.today().year + 1)
         list_year = []
         list_year.append(('', '----'))
         for year in list_all_year:
@@ -120,16 +105,9 @@ class HayAdvanceForm(SearchForm):
         list_all_year = []
         list_collect = MediaCollection.objects.all()
         for collect in list_collect:
-            if collect.year_published != '0' and not collect.year_published in list_all_year:
+            if collect.year_published != 0 and not collect.year_published in list_all_year:
                 list_all_year.append(collect.year_published)
         list_all_year.sort()
-        if len(list_all_year) >= 2:
-            min_year = list_all_year[len(list_all_year) - 1]
-            for year in list_all_year:
-                if year != 0:
-                    if year < min_year:
-                        min_year = year
-            list_all_year = range(min_year, date.today().year + 1)
         list_year = []
         list_year.append((0, '----'))
         for year in list_all_year:
@@ -178,6 +156,42 @@ class HayAdvanceForm(SearchForm):
     physical_format = forms.CharField(required=False, label=(_('physical format')), widget=forms.Select(attrs={'style': 'width:100%'}, choices=list_physical_format()))
     code = forms.CharField(required=False, label=(_('code')), widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'search'}))
 
+    #def filter_instru(self, query):
+    #    if isinstance(query, str) or isinstance(query, unicode):
+    #         try:
+    #             BooleanSearchView().is_correct_query(query)
+    #         except TelemetaError:
+    #             return SQ(instruments__startswith=query)
+    #    operateur = "ET"
+    #    if isinstance(query, list):
+    #        query_terms = query
+    #    else:
+    #        query_terms = query.split()
+    #    sqTab = []
+    #    valeur = ""
+    #    while len(query_terms) != 0:
+    #        term = query_terms.pop(0)
+    #        if term == "ET" or term == "OU":
+    #            if valeur != "":
+    #                sqTab.append(('instruments__startswith', valeur.strip()))
+    #                valeur = ""
+    #            if term != operateur:
+    #                sqTab = [SQ(filtre) for filtre in sqTab]
+    #                objet = reduce(operator.or_, sqTab) if operateur == "OU" else reduce(operator.and_, sqTab)
+    #                del sqTab[:]
+    #                sqTab.append(objet)
+    #                operateur = "OU" if operateur == "ET" else "ET"
+    #        elif term == "(":
+    #            indexCloseBracket = get_close_bracket(query_terms)
+    #            sqTab.append(self.filter_instru(query_terms[:indexCloseBracket]))
+    #            del query_terms[:indexCloseBracket + 1]
+    #        else:
+    #            valeur += term + " "
+    #    if valeur != "":
+    #        sqTab.append(('instruments__startswith', valeur.strip()))
+    #    sqTab = [SQ(filtre) for filtre in sqTab]
+    #    return SQ(reduce(operator.and_, sqTab) if operateur == "ET" else reduce(operator.or_, sqTab))
+
     def search(self):
         sqs = SearchQuerySet().load_all()
 
@@ -185,23 +199,24 @@ class HayAdvanceForm(SearchForm):
             return self.no_query_found()
 
         if self.cleaned_data.get('q'):
-            sqs = sqs.filter(title__contains=self.cleaned_data['q'])
+            sqs = sqs.filter(title__startswith=self.cleaned_data['q'])
 
         if self.cleaned_data.get('code'):
             sqs = sqs.filter(code__contains=self.cleaned_data['code'])
 
         if self.cleaned_data.get('location'):
-            sqs = sqs.filter(location_principal__contains=self.cleaned_data['location']).filter_or(location_relation__contains=self.cleaned_data['location'])
+            sqs = sqs.filter(Q(location_principal__startswith=self.cleaned_data['location'])|Q(location_relation__startswith=self.cleaned_data['location']))
 
         if self.cleaned_data['ethnic_group']:
             if self.cleaned_data.get('ethnic_group') != '':
                 sqs = sqs.filter(ethnic_group__contains=self.cleaned_data['ethnic_group'])
 
         if self.cleaned_data.get('instruments'):
-            sqs = sqs.filter(instruments__contains=self.cleaned_data['instruments'])
+            #sqs = sqs.filter(self.filter_instru(self.cleaned_data['instruments']))
+            sqs = sqs.filter(instruments__startswith=self.cleaned_data['instruments'])
 
         if self.cleaned_data.get('collectors'):
-            sqs = sqs.filter(collectors__contains=self.cleaned_data['collectors'])
+            sqs = sqs.filter(collectors__startswith=self.cleaned_data['collectors'])
 
         if self.cleaned_data['recorded_from_date']:
             sqs = sqs.filter(recorded_from_date__gte=self.cleaned_data['recorded_from_date'])
@@ -217,15 +232,15 @@ class HayAdvanceForm(SearchForm):
 
         if self.cleaned_data['viewable']:
             if self.cleaned_data.get('viewable') == '2':
-                sqs = sqs.filter(digitized=True).filter(Q(item_acces='full') | Q(item_acces='mixed'))
+                sqs = sqs.filter(digitized__exact=True).filter(Q(item_acces='full') | Q(item_acces='mixed'))
             if self.cleaned_data.get('viewable') == '3':
-                sqs = sqs.filter(digitized=True)
+                sqs = sqs.filter(digitized__exact=True)
 
         if self.cleaned_data['item_status']:
             if self.cleaned_data.get('item_status') == 'pub':
-                sqs = sqs.filter(item_status='Published')
+                sqs = sqs.filter(item_status__exact='Published')
             if self.cleaned_data.get('item_status') == 'unpub':
-                sqs = sqs.filter(item_status='Unpublished')
+                sqs = sqs.filter(item_status__exact='Unpublished')
 
         if self.cleaned_data['media_type']:
             if self.cleaned_data.get('media_type') != '1':
@@ -236,7 +251,7 @@ class HayAdvanceForm(SearchForm):
                 sqs = sqs.filter(recording_context=self.cleaned_data['recording_context'])
 
         if self.cleaned_data['physical_format']:
-            if self.cleaned_data.get('physical_formate') != '':
+            if self.cleaned_data.get('physical_format') != '':
                 sqs = sqs.filter(physical_format=self.cleaned_data['physical_format'])
 
         return sqs
