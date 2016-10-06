@@ -116,7 +116,7 @@ class MediaItem(MediaResource):
                     'summary', 'contributor', ]
     exclude.extend( ['ethnic_group', 'moda_execut', 'vernacular_style',
                     'generic_style', 'author', 'track', 'collector_selection',
-                    'collector_from_collection', ] )
+                    'collector_from_collection', 'external_references', ] )
 
     restricted = ['copied_from_item', 'mimetype',
                     'organization', 'depositor', 'rights',
