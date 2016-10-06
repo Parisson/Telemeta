@@ -69,3 +69,26 @@
             {% endif %}
         </div>
 {% endblock musical_data %}
+
+
+{% block archive_data %}
+        <div>
+            <h4><a href="#">{% trans "Archiving data" %}</a></h4>
+            <dl class="listing">
+                {% dl_field item "code" %}
+                {% dl_field item "old_code" %}
+                {% dl_field item "collector_selection" %}
+                {% dl_field item "creator_reference" %}
+                {% if item.external_references %}
+                 <dt>{% trans "Published references" %}</dt>
+                 <dd>{{ item.external_references|html_line_break|safe }}</dd>
+                {% endif %}
+                <dt>{% trans "Remarks" %}</dt>
+                <dd>{{ item.comment|html_line_break|safe }}</dd>
+                {% if last_revision %}
+                <dt>{% trans "Last modification" %}</dt>
+                <dd>{{ last_revision.time }} {% if user.is_authenticated %}(<a href="{% url "telemeta-profile-detail" last_revision.user.username %}">{{last_revision.user.username}}</a>){% endif %}</dd>
+                {% endif %}
+            </dl>
+        </div>
+{% endblock archive_data %}
