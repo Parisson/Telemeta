@@ -52,6 +52,7 @@ class MediaItem(MediaResource):
     alt_title             = CharField(_('original title / translation'))
     collector             = CharField(_('collector'), help_text=_('First name, Last name ; First name, Last name'))
     collection            = ForeignKey('MediaCollection', related_name="items", verbose_name=_('collection'))
+    informer              = CharField(_('informer'), help_text=_('First name, Last name ; First name, Last name'))
     recorded_from_date    = DateField(_('recording date (from)'), help_text=_('YYYY-MM-DD'))
     recorded_to_date      = DateField(_('recording date (until)'), help_text=_('YYYY-MM-DD'))
     public_access         = CharField(_('access type'), choices=ITEM_PUBLIC_ACCESS_CHOICES, max_length=16, default="metadata")

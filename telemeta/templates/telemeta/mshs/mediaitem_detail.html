@@ -1,0 +1,19 @@
+{% extends "telemeta/mediaitem_detail.html" %}
+{% load telemeta_tags %}
+{% load i18n %}
+
+  
+{% block general_info %}
+    <dl class="listing">
+        {% dl_field item "title" placeholder %}
+        {% dl_field item "alt_title" %}
+        {% dl_field item "collector" placeholder %}
+        {% dl_field item "informer" placeholder %}
+        <dt>{% field_label item "collection" %}</dt>
+        <dd><a href="{% url "telemeta-collection-detail" item.collection.public_id %}">{{ item.collection.title }}</a></dd>
+        <dt>{% trans "Recording date" %}</dt>
+        <dd>{% if item.recorded_from_date %}{{ item.recorded_from_date }}{% endif %}{% if item.recorded_from_date and item.recorded_to_date%} - {% endif %}{% if item.recorded_to_date %}{{ item.recorded_to_date}}{% endif %}</dd>
+        <dt>{% trans "Access type" %}</dt>
+        <dd>{% trans item.public_access %}</dd>
+    </dl>
+{% endblock general_info %}
