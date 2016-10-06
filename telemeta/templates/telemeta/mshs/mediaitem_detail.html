@@ -38,3 +38,39 @@
             </dl>
         </div>
 {% endblock geoethnic_data %}
+
+
+{% block musical_data %}
+        <div>
+            <h4><a href="#">{% trans "Musical informations" %}</a></h4>
+            <dl class="listing">
+                {% dl_field item "vernacular_style" %}
+                {% dl_field item "generic_style" %}
+                {% dl_field item "author" %}
+            </dl>
+            {% if item.performances %}
+            <div class="instruments">
+                <table class="instruments">
+                    <thead>
+                        <tr>
+                            <td>{% field_label "MediaItemPerformance" "instruments_num" %}</td>
+                            <td>{% field_label "MediaItemPerformance" "instrument" %}</td>
+                            <td>{% field_label "MediaItemPerformance" "alias" %}</td>
+                            <td>{% field_label "MediaItemPerformance" "musicians" %}</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for performance in item.performances.all %}
+                        <tr>
+                            <td>{{ performance.instruments_num }}</td>
+                            <td>{{ performance.instrument|default:"" }}</td>
+                            <td>{{ performance.alias|default:"" }}</td>
+                            <td>{{ performance.musicians }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+        </div>
+{% endblock musical_data %}
