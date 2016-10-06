@@ -18,3 +18,23 @@
         <dd>{% trans item.public_access %}</dd>
     </dl>
 {% endblock general_info %}
+
+{% block geoethnic_data %}
+        <div>
+            <h4><a href="#">{% trans "Geographic and cultural informations" %}</a></h4>
+            <dl class="listing">
+                <dt>{% trans "Location" %}</dt>
+                <dd>{% if item.location %}{{ item.location.name }}{% endif %}</dd>
+                {% dl_field item "location_comment" %}
+                {% dl_field item "cultural_area" %}
+                {% dl_field item "language" %}
+                {% if item.language_iso %}
+                <dt>{% trans "Language (ISO norm)" %}</dt>
+                <dd>{{ item.language_iso.name|to_utf8 }}</dd>
+                {% endif %}
+                <dt>{% trans "Ethnographic context" %}</dt>
+                <dd>{{ item.context_comment|html_line_break|safe }}</dd>
+                {% dl_field item "keywords" join with ", " %}
+            </dl>
+        </div>
+{% endblock geoethnic_data %}
