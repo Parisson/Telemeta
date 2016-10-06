@@ -115,7 +115,7 @@ class MediaItem(MediaResource):
                     'publishing_date', 'scientist', 'topic',
                     'summary', 'contributor', ]
     exclude.extend( ['ethnic_group', 'moda_execut', 'vernacular_style',
-                    ] )
+                    'generic_style',] )
 
     restricted = ['copied_from_item', 'mimetype',
                     'organization', 'depositor', 'rights',
