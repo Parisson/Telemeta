@@ -31,7 +31,7 @@ class HomeView(object):
     def home(self, request):
         """Render the index page"""
 
-        template = loader.get_template('telemeta/home.html')
+        template = loader.get_template('telemeta/mshs/home.html')
 
         N = 3   # max number of pub items
 

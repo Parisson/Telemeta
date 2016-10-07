@@ -30,6 +30,8 @@
 -->
 
 {{ block.super }}
+
+{% block partners %}
 <div id="module" class="module">
     <h3><img src="{{ STATIC_URL }}telemeta/images/module_playlist.png" style="vertical-align:middle" />
     {% trans "Partners" %}</h3><br />
@@ -44,6 +46,7 @@
     <a href="http://http://www.europeanasounds.eu/" target="_blank"><img class="logo" src="{{ STATIC_URL }}telemeta/images/Europeana_sounds_landscape_2.jpg" alt="Europeana sounds"></a>
     </div>
 </div>
+{% endblock %}
 
 {% endblock %}
 
