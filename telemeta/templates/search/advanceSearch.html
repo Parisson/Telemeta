@@ -32,11 +32,6 @@
                     {{form.location}}
                 </div>
                 <div class="fieldWrapper">
-                    {{form.ethnic_group.errors}}
-                    {% trans form.ethnic_group.label_tag %}</br>
-                    {{form.ethnic_group}}
-                </div>
-                <div class="fieldWrapper">
                     {{form.instruments.errors}}
                     {% trans form.instruments.label_tag %}
                     {{form.instruments}}
@@ -95,39 +90,11 @@
                 </div>
                 <div class="fieldWrapper">
                     {{form.item_status_errors}}
-                    <label>{% trans "Document status" %} : </label></br>
-                    <ul id="id_item_status" style="margin-left:-40px">
-                        {%ifequal query.item_status 'pub'%}
-                            <li><label for="id_item_status_0">{% trans "no preference" %}</label><input id="id_item_status_0" type="radio" value="1" name="item_status"></input></li>
-                            <li><label for="id_item_status_1">{% trans "Published" %}</label><input id="id_item_status_1" type="radio" value="pub" name="item_status" checked="checked"></input></li>
-                            <li><label for="id_item_status_2">{% trans "Unpublished" %}</label><input id="id_item_status_2" type="radio" value="unpub" name="item_status"></input></li>
-                        {%else%}
-                            {%ifequal query.item_status 'unpub'%}
-                                <li><label for="id_item_status_0">{% trans "no preference" %}</label><input id="id_item_status_0" type="radio" value="1" name="item_status"></input></li>
-                                <li><label for="id_item_status_1">{% trans "Published" %}</label><input id="id_item_status_1" type="radio" value="pub" name="item_status"></input></li>
-                                <li><label for="id_item_status_2">{% trans "Unpublished" %}</label><input id="id_item_status_2" type="radio" value="unpub" name="item_status" checked="checked"></input></li>
-                            {%else%}
-                                <li><label for="id_item_status_0">{% trans "no preference" %}</label><input id="id_item_status_0" type="radio" value="1" name="item_status" checked="checked"></input></li>
-                                <li><label for="id_item_status_1">{% trans "Published" %}</label><input id="id_item_status_1" type="radio" value="pub" name="item_status"></input></li>
-                                <li><label for="id_item_status_2">{% trans "Unpublished" %}</label><input id="id_item_status_2" type="radio" value="unpub" name="item_status"></input></li>
-                            {%endifequal%}
-                        {%endifequal%}
-                    </ul>
-                </div>
-                <div class="fieldWrapper">
-                    {{form.year_published_from.errors}} {{form.year_published_to.errors}}
-                    <label> {% trans "year published" %} :</label></br>
-                    {{form.year_published_from}} <span style="font-size:3em" aria-hidden="true">-</span> {{form.year_published_to}}
                 </div>
                 <div class="fieldWrapper">
                     {{form.recording_context.errors}}
                     {{ form.recording_context.label_tag }}</br>
                     {{form.recording_context}}
-                </div>
-                <div class="fieldWrapper">
-                    {{form.physical_format.errors}}
-                    {% trans form.physical_format.label_tag %}</br>
-                    {{form.physical_format}}
                 </div>
                 <div class="fieldWrapper">
                     {{form.code.errors}}
