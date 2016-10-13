@@ -458,7 +458,7 @@ def get_attr(obj, val):
 @register.simple_tag
 def logo_url():
     static_url = getattr(settings, 'STATIC_URL', '/static/')
-    return getattr(settings, 'TELEMETA_LOGO', static_url + '/telemeta/images/logo_telemeta_2.png')
+    return getattr(settings, 'TELEMETA_LOGO', static_url + '/telemeta/images/logo_universite_poitiers.jpg')
 
 @register.assignment_tag
 def get_googletools():
