@@ -1,4 +1,4 @@
-{% extends "telemeta/mediaitem_detail.html" %}
+{% extends "telemeta/mshs/mediaitem_detail.html" %}
 {% load i18n %}
 {% load telemeta_tags %}
 {% load bootstrap3 %}
@@ -85,6 +85,7 @@
 
     <ul class="nav nav-tabs" role="tablist">
       <li class="active"><a href="#general" role="tab" data-toggle="tab">{% trans "General" %}</a></li>
+      <li><a href="#analyze_data" role="tab" data-toggle="tab">Analyse</a></li>
       <li><a href="#keyword_relations" role="tab" data-toggle="tab">{% trans "Keywords" %}</a></li>
       <li><a href="#performances" role="tab" data-toggle="tab">{% trans "Performance" %}</a></li>
       <li><a href="#tabs_container" role="tab" data-toggle="tab">{% trans "Markers" %}</a></li>
@@ -108,7 +109,12 @@
         {% trans "Context access status" %} : {% trans access %}<br />
         </div>
       </div>
-
+       
+       <!--  Tab Analyze, for MSHS  --> 
+       <div class="tab-pane" id="analyze_data">
+           
+       </div>  
+      
       {% for formset in inlines %}
       <div class="tab-pane" id="{{ formset.prefix }}">
           {{ formset.management_form }}

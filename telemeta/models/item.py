@@ -375,8 +375,8 @@ class MediaItemPerformance(ModelCore):
     "Item performance"
     media_item      = ForeignKey('MediaItem', related_name="performances", verbose_name=_('item'))
     instrument      = WeakForeignKey('Instrument', related_name="performances", verbose_name=_('composition'))
-    alias           = WeakForeignKey('InstrumentAlias', related_name="performances", verbose_name=_('vernacular name'))
     instruments_num = CharField(_('number'))
+    alias           = WeakForeignKey('InstrumentAlias', related_name="performances", verbose_name=_('precisions'))
     musicians       = CharField(_('interprets'))
 
     class Meta(MetaCore):
