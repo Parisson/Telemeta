@@ -25,6 +25,10 @@
     <dl class="listing">
         <dt>Format</dt>
         <dd>{{ item.get_mshs_format_display }}</dd>
+        {% if item.mshs_format == "TE" %}
+            <!-- display fields for a song -->
+            {% dl_field item "mshs_ch_title" %}
+        {% endif %}
     </dl>
 </div>
 {% endblock analyze_data %}
