@@ -72,6 +72,14 @@ class MediaItem(MediaResource):
     vernacular_style      = WeakForeignKey('VernacularStyle', related_name="items", verbose_name=_('vernacular style'))
     generic_style         = WeakForeignKey('GenericStyle', related_name="items", verbose_name=_('generic style'))
     author                = CharField(_('author / compositor'), help_text=_('First name, Last name ; First name, Last name'))
+    FORMAT_MSHS = (
+        ('TE','Témoignage'),
+        ('CO','Conte'),
+        ('CH','Chanson'),
+        ('FB','Forme brève'),
+        ('MU','Musique instrumentale'),
+        )
+    mshs_format           = models.CharField(_('format'), max_length=2, choices=FORMAT_MSHS, default='TE')
 
     # Legal mentions
     organization          = WeakForeignKey('Organization', verbose_name=_('organization'))
@@ -122,7 +130,7 @@ class MediaItem(MediaResource):
                     'organization', 'depositor', 'rights',
                     'recordist', 'digitalist', 'digitization_date',
                     'publishing_date', 'scientist', 'topic',
-                    'summary', 'contributor', 'public_access']
+                    'summary', 'contributor', 'public_access',]
 
     def keywords(self):
         return ContextKeyword.objects.filter(item_relations__item = self)

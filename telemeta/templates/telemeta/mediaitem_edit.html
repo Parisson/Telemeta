@@ -104,7 +104,7 @@
         <script type="text/javascript" src="/static/admin/js/actions.min.js"></script>
         {{ form.media }}
         <div class="block-grey">
-        {% bootstrap_form form %}
+        {% bootstrap_form form exclude="mshs_format" %}
         {% trans "Collection access status" %} : {% trans item.collection.public_access %}<br />
         {% trans "Context access status" %} : {% trans access %}<br />
         </div>
@@ -112,7 +112,9 @@
        
        <!--  Tab Analyze, for MSHS  --> 
        <div class="tab-pane" id="analyze_data">
-           
+           <div class="block-grey">
+               {% bootstrap_field form.mshs_format %}
+           </div>
        </div>  
       
       {% for formset in inlines %}
