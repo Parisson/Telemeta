@@ -83,6 +83,7 @@ class MediaItem(MediaResource):
     mshs_ch_title         = CharField(_('Title'), help_text= _('title of the song'))
     mshs_ch_title_ref_coirault = CharField(_('Title ref. Coirault'))
     mshs_ch_title_ref_laforte = CharField(_('Title ref. Laforte'))
+    mshs_ch_code_coirault = CharField(_('code Coirault'))
 
     # Legal mentions
     organization          = WeakForeignKey('Organization', verbose_name=_('organization'))
