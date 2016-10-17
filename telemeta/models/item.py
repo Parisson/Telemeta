@@ -86,6 +86,7 @@ class MediaItem(MediaResource):
     mshs_ch_code_coirault = CharField(_('code Coirault'))
     mshs_ch_code_laforte  = CharField(_('code Laforte'))
     mshs_ch_alt_title     = CharField(_('alternate title'))
+    mshs_ch_details       = CharField(_('details'))
 
     # Legal mentions
     organization          = WeakForeignKey('Organization', verbose_name=_('organization'))
