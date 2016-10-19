@@ -283,4 +283,11 @@ class IdentifierType(Enumeration):
     class Meta(MetaEnumeration):
         db_table = 'identifier_type'
         verbose_name = _("identifier type")
+        
+class Coupe(Enumeration):
+    "Coupe"
+    
+    class Meta(MetaEnumeration):
+        db_table = 'coupe'
+        verbose_name = _("coupe")
 
