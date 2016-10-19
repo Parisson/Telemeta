@@ -90,6 +90,7 @@ class MediaItem(MediaResource):
     mshs_ch_incipit       = CharField(_('incipit'))
     mshs_ch_refrain       = CharField(_('refrain'))
     mshs_ch_coupe         = WeakForeignKey('Coupe', verbose_name=_('coupe'))
+    mshs_ch_timbre        = CharField(_('timbre'))
 
     # Legal mentions
     organization          = WeakForeignKey('Organization', verbose_name=_('organization'))
