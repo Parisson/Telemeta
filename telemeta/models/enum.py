@@ -291,3 +291,11 @@ class Coupe(Enumeration):
         db_table = 'coupe'
         verbose_name = _("coupe")
 
+        
+class KindOfSong(Enumeration):
+    "Kind of song"
+    
+    class Meta(MetaEnumeration):
+        db_table = 'knidofsong'
+        verbose_name = _("kind of song")
+
