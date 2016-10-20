@@ -155,6 +155,10 @@
                     {% bootstrap_field form.mshs_function %}
                     {% bootstrap_field form.mshs_co_kind %}
                {% endif %}
+               {% if item.mshs_format == "TE" %}
+                    <!-- display fields for a deposition-->
+                    {% bootstrap_field form.mshs_te_digest %}
+                {% endif %}
            </div>
        </div>  
       

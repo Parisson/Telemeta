@@ -108,6 +108,7 @@ class MediaItem(MediaResource):
     mshs_co_alt_title     = CharField(_('alternate title'))
     mshs_co_jingle        = CharField(_('jingle'))
     mshs_co_kind          = WeakForeignKey('KindOfTale', verbose_name=_('kind'))
+    mshs_te_digest        = TextField(_('digest'), help_text=_('Digest of the deposition'))
 
     # Legal mentions
     organization          = WeakForeignKey('Organization', verbose_name=_('organization'))

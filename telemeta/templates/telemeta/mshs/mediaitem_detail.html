@@ -64,6 +64,10 @@
             {% dl_field item "mshs_function" %}
             {% dl_field item "mshs_co_kind" %}
         {% endif %}
+        {% if item.mshs_format == "TE" %}
+            <!-- display fields for a deposition-->
+            {% dl_field item "mshs_te_digest" %}
+        {% endif %}
     </dl>
 </div>
 {% endblock analyze_data %}
