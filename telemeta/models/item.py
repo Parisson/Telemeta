@@ -102,6 +102,7 @@ class MediaItem(MediaResource):
     mshs_fb_kind          = WeakForeignKey('KindOfShortSong', verbose_name=_('kind'))
     mshs_co_title         = CharField(_('Title'))
     mshs_co_title_ref_Aare = CharField(_('Title ref. Aare-Thomson'))
+    mshs_co_title_ref_Dela = CharField(_('Title ref. Delarue-Teneze'))
 
     # Legal mentions
     organization          = WeakForeignKey('Organization', verbose_name=_('organization'))
