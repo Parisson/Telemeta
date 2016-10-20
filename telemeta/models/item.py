@@ -93,6 +93,7 @@ class MediaItem(MediaResource):
     mshs_ch_timbre        = CharField(_('timbre'))
     mshs_ch_kind          = WeakForeignKey('KindOfSong', verbose_name=_('kind'))
     mshs_fb_title         = CharField(_('Title'))
+    mshs_fb_alt_title     = CharField(_('alternate title'))
     mshs_fb_details       = CharField(_('details'))
     mshs_fb_incipit       = CharField(_('incipit'), help_text= _('incipit or text'))
     mshs_fb_refrain       = CharField(_('refrain'))
