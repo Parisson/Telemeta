@@ -113,6 +113,7 @@ class MediaItem(MediaResource):
     mshs_te_thematic      = CharField(_('thematic'))
     mshs_mu_title         = CharField(_('title'))
     mshs_mu_alt_title     = CharField(_('alternate title'))
+    mshs_mu_details       = CharField(_('details'))
 
     # Legal mentions
     organization          = WeakForeignKey('Organization', verbose_name=_('organization'))
