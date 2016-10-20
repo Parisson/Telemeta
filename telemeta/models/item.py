@@ -98,6 +98,7 @@ class MediaItem(MediaResource):
     mshs_fb_refrain       = CharField(_('refrain'))
     mshs_fb_timbre        = CharField(_('timbre'))
     mshs_function         = WeakForeignKey('FunctionMSHS', verbose_name=_('function'))
+    mshs_fb_kind          = WeakForeignKey('KindOfShortSong', verbose_name=_('kind'))
 
     # Legal mentions
     organization          = WeakForeignKey('Organization', verbose_name=_('organization'))
