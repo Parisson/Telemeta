@@ -135,6 +135,8 @@
                {% if item.mshs_format == "FB" %}
                     <!-- display fields for a "forme breve" -->
                     {% bootstrap_field  form.mshs_fb_title %}
+                    {% bootstrap_field  form.mshs_fb_details %}
+                    {% bootstrap_field  form.mshs_fb_incipit %}
                {% endif %}
            </div>
        </div>  
