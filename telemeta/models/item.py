@@ -97,6 +97,7 @@ class MediaItem(MediaResource):
     mshs_fb_details       = CharField(_('details'))
     mshs_fb_incipit       = CharField(_('incipit'), help_text= _('incipit or text'))
     mshs_fb_refrain       = CharField(_('refrain'))
+    mshs_fb_timbre        = CharField(_('timbre'))
 
     # Legal mentions
     organization          = WeakForeignKey('Organization', verbose_name=_('organization'))
