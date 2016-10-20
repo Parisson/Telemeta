@@ -143,6 +143,10 @@
                     {% bootstrap_field  form.mshs_function %}
                     {% bootstrap_field  form.mshs_fb_kind %}
                {% endif %}
+               {% if item.mshs_format == "CO" %}
+                    <!-- display fields for a tale-->
+                    {% bootstrap_field form.mshs_co_title %}
+               {% endif %}
            </div>
        </div>  
       

@@ -52,6 +52,10 @@
             {% dl_field item "mshs_function" %}
             {% dl_field item "mshs_fb_kind" %}
         {% endif %}
+        {% if item.mshs_format == "CO" %}
+            <!-- display fields for a tale-->
+            {% dl_field item "mshs_co_title" %}
+        {% endif %}
     </dl>
 </div>
 {% endblock analyze_data %}
