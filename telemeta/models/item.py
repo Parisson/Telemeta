@@ -107,6 +107,7 @@ class MediaItem(MediaResource):
     mshs_co_code_Dela     = CharField(_('code Delarue-Teneze'))
     mshs_co_alt_title     = CharField(_('alternate title'))
     mshs_co_jingle        = CharField(_('jingle'))
+    mshs_co_kind          = WeakForeignKey('KindOfTale', verbose_name=_('kind'))
 
     # Legal mentions
     organization          = WeakForeignKey('Organization', verbose_name=_('organization'))
