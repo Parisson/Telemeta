@@ -103,6 +103,7 @@ class MediaItem(MediaResource):
     mshs_co_title         = CharField(_('Title'))
     mshs_co_title_ref_Aare = CharField(_('Title ref. Aare-Thomson'))
     mshs_co_title_ref_Dela = CharField(_('Title ref. Delarue-Teneze'))
+    mshs_co_code_Aare     = CharField(_('code Aare-Thomson'))
 
     # Legal mentions
     organization          = WeakForeignKey('Organization', verbose_name=_('organization'))
