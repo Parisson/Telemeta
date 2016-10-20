@@ -131,6 +131,11 @@
                     {% bootstrap_field  form.mshs_ch_function %}
                     {% bootstrap_field  form.mshs_ch_kind %}
                {% endif %}
+               
+               {% if item.mshs_format == "FB" %}
+                    <!-- display fields for a "forme breve" -->
+                    {% bootstrap_field  form.mshs_fb_title %}
+               {% endif %}
            </div>
        </div>  
       

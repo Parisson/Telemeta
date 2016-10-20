@@ -41,6 +41,10 @@
             {% dl_field item "mshs_ch_function" %}
             {% dl_field item "mshs_ch_kind" %}
         {% endif %}
+        {% if item.mshs_format == "FB" %}
+            <!-- display fields for a "forme breve" -->
+            {% dl_field item "mshs_fb_title" %}
+        {% endif %}
     </dl>
 </div>
 {% endblock analyze_data %}
