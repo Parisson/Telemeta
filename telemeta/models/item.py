@@ -117,6 +117,7 @@ class MediaItem(MediaResource):
     mshs_mu_details_tune  = CharField(_('details on tune'))
     mshs_mu_gavotte       = CharField(_('lyrics of the gavotte'))
     mshs_mu_timbre        = CharField(_('timbre'))
+    mshs_mu_dance         = CharField(_('dance'))
 
     # Legal mentions
     organization          = WeakForeignKey('Organization', verbose_name=_('organization'))
