@@ -70,6 +70,10 @@
             {% dl_field item "mshs_te_details" %}
             {% dl_field item "mshs_te_thematic" %}
         {% endif %}
+        {% if item.mshs_format == "MU" %}
+            <!-- display fields for a music-->
+            {% dl_field item "mshs_mu_title" %}
+        {% endif %}
     </dl>
 </div>
 {% endblock analyze_data %}

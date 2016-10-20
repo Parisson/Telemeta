@@ -161,6 +161,10 @@
                     {% bootstrap_field form.mshs_te_details %}
                     {% bootstrap_field form.mshs_te_thematic %}
                 {% endif %}
+                {% if item.mshs_format == "MU" %}
+                    <!-- display fields for a music-->
+                    {% bootstrap_field form.mshs_mu_title %}
+                {% endif %}
            </div>
        </div>  
       
