@@ -299,3 +299,10 @@ class KindOfSong(Enumeration):
         db_table = 'knidofsong'
         verbose_name = _("kind of song")
 
+
+class FunctionMSHS(Enumeration):
+    "Function"
+    
+    class Meta(MetaEnumeration):
+        db_table = 'function'
+        verbose_name = _("function")

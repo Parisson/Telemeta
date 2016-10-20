@@ -91,13 +91,13 @@ class MediaItem(MediaResource):
     mshs_ch_refrain       = CharField(_('refrain'))
     mshs_ch_coupe         = WeakForeignKey('Coupe', verbose_name=_('coupe'))
     mshs_ch_timbre        = CharField(_('timbre'))
-    mshs_ch_function      = CharField(_('function'))
     mshs_ch_kind          = WeakForeignKey('KindOfSong', verbose_name=_('kind'))
     mshs_fb_title         = CharField(_('Title'))
     mshs_fb_details       = CharField(_('details'))
     mshs_fb_incipit       = CharField(_('incipit'), help_text= _('incipit or text'))
     mshs_fb_refrain       = CharField(_('refrain'))
     mshs_fb_timbre        = CharField(_('timbre'))
+    mshs_function         = WeakForeignKey('FunctionMSHS', verbose_name=_('function'))
 
     # Legal mentions
     organization          = WeakForeignKey('Organization', verbose_name=_('organization'))
