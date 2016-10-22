@@ -590,7 +590,7 @@ class ItemEditView(ItemViewMixin, UpdateWithInlinesView):
         exclu = exclu + ',mshs_co_jingle,mshs_co_kind'
         exclu = exclu + ',mshs_te_digest,mshs_te_details,mshs_te_thematic'
         exclu = exclu + ',mshs_mu_title,mshs_mu_alt_title,mshs_mu_details'
-        exclu = exclu + ',mshs_mu_details_tune,mshs_mu_gavotte,mshs_mu_timbre'
+        exclu = exclu + ',mshs_mu_details_tune,mshs_mu_gavotte, mshs_mu_gavotte_bool,mshs_mu_timbre'
         exclu = exclu + ',mshs_mu_dance,mshs_mu_details_dance'
         exclu = exclu + ',mshs_function'
         context['mshs_exclude']=exclu
