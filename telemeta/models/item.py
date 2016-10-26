@@ -113,6 +113,7 @@ class MediaItem(MediaResource):
     mshs_te_thematic      = CharField(_('thematic'))
     mshs_te_names         = CharField(_('names'), help_text=_('Name; name; ...'))
     mshs_te_places        = CharField(_('places'), help_text=_('Place named; place named; ...'))
+    mshs_te_periods       = CharField(_('periods'), help_text=_('Period recounted; period recounted; ...'))
     mshs_mu_title         = CharField(_('title'))
     mshs_mu_alt_title     = CharField(_('alternate title'))
     mshs_mu_details       = CharField(_('details on music'))
