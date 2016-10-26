@@ -111,6 +111,7 @@ class MediaItem(MediaResource):
     mshs_te_digest        = TextField(_('digest'), help_text=_('Digest of the deposition'))
     mshs_te_details       = CharField(_('details'))
     mshs_te_thematic      = CharField(_('thematic'))
+    mshs_te_names         = CharField(_('names'), help_text=_('Name; name; ...'))
     mshs_mu_title         = CharField(_('title'))
     mshs_mu_alt_title     = CharField(_('alternate title'))
     mshs_mu_details       = CharField(_('details on music'))
