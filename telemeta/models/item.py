@@ -95,6 +95,7 @@ class MediaItem(MediaResource):
     mshs_fb_title         = CharField(_('Title'))
     mshs_fb_alt_title     = CharField(_('alternate title'))
     mshs_fb_author        = CharField(_('author'))
+    mshs_fb_composer      = CharField(_('composer'))
     mshs_fb_details       = CharField(_('details'))
     mshs_fb_incipit       = CharField(_('incipit'), help_text= _('incipit or text'))
     mshs_fb_refrain       = CharField(_('refrain'))
