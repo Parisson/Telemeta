@@ -583,7 +583,7 @@ class ItemEditView(ItemViewMixin, UpdateWithInlinesView):
         exclu = exclu + ',mshs_ch_code_coirault,mshs_ch_code_laforte'
         exclu = exclu + ',mshs_ch_alt_title,mshs_ch_details,mshs_ch_incipit'
         exclu = exclu + ',mshs_ch_refrain,mshs_ch_coupe,mshs_ch_timbre,mshs_ch_kind'
-        exclu = exclu + ',mshs_fb_title,mshs_fb_alt_title,mshs_fb_details'
+        exclu = exclu + ',mshs_fb_title,mshs_fb_alt_title,mshs_fb_author,mshs_fb_details'
         exclu = exclu + ',mshs_fb_incipit,mshs_fb_refrain,mshs_fb_timbre,mshs_fb_kind'
         exclu = exclu + ',mshs_co_title,mshs_co_title_ref_Aare,mshs_co_title_ref_Dela'
         exclu = exclu + ',mshs_co_code_Aare,mshs_co_code_Dela,mshs_co_alt_title'
