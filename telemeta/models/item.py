@@ -171,7 +171,7 @@ class MediaItem(MediaResource):
                     'organization', 'depositor', 'rights',
                     'recordist', 'digitalist', 'digitization_date',
                     'publishing_date', 'scientist', 'topic',
-                    'summary', 'contributor', ]
+                    'summary', 'contributor','creator_reference', ]
     exclude.extend( ['ethnic_group', 'moda_execut', 'vernacular_style',
                     'generic_style', 'author', 'track', 'collector_selection',
                     'collector_from_collection', 'external_references', ] )
