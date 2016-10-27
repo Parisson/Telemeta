@@ -116,6 +116,7 @@ class MediaItem(MediaResource):
     mshs_te_periods       = CharField(_('periods'), help_text=_('Period recounted; period recounted; ...'))
     mshs_mu_title         = CharField(_('title'))
     mshs_mu_alt_title     = CharField(_('alternate title'))
+    mshs_mu_author        = CharField(_('author'))
     mshs_mu_details       = CharField(_('details on music'))
     mshs_mu_details_tune  = CharField(_('details on tune'))
     mshs_mu_gavotte_bool  = BooleanField(_('gavotte'))
