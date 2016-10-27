@@ -87,6 +87,7 @@ class MediaItem(MediaResource):
     mshs_ch_code_laforte  = CharField(_('code Laforte'))
     mshs_ch_alt_title     = CharField(_('alternate title'))
     mshs_ch_author        = CharField(_('author'))
+    mshs_ch_composer      = CharField(_('composer'))
     mshs_ch_details       = CharField(_('details'))
     mshs_ch_incipit       = CharField(_('incipit'))
     mshs_ch_refrain       = CharField(_('refrain'))
