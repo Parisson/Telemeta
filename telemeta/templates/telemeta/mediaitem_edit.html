@@ -85,7 +85,11 @@
 
     <ul class="nav nav-tabs" role="tablist">
       <li class="active"><a href="#general" role="tab" data-toggle="tab">{% trans "General" %}</a></li>
-      <li><a href="#analyze_data" role="tab" data-toggle="tab">Analyse</a></li>
+      <li><a href="#tab_deposit" role="tab" data-toggle="tab">Témoignage</a></li>
+      <li><a href="#tab_song" role="tab" data-toggle="tab">Chanson</a></li>
+      <li><a href="#tab_forme_breve" role="tab" data-toggle="tab">Forme brève</a></li>
+      <li><a href="#tab_music" role="tab" data-toggle="tab">Musique</a></li>
+      <li><a href="#tab_tale" role="tab" data-toggle="tab">Conte</a></li>
       <li><a href="#keyword_relations" role="tab" data-toggle="tab">{% trans "Keywords" %}</a></li>
       <li><a href="#performances" role="tab" data-toggle="tab">{% trans "Performance" %}</a></li>
       <li><a href="#tabs_container" role="tab" data-toggle="tab">{% trans "Markers" %}</a></li>
@@ -111,11 +115,8 @@
       </div>
        
        <!--  Tab Analyze, for MSHS  --> 
-       <div class="tab-pane" id="analyze_data">
+       <div class="tab-pane" id="tab_song">
            <div class="block-grey">
-               {% bootstrap_field form.mshs_format %}
-               
-               {% if item.mshs_format == "CH" %}
                     <!-- display fields for a song -->
                     {% bootstrap_field  form.mshs_ch_title %}
                     {% bootstrap_field  form.mshs_ch_title_ref_coirault %}
@@ -132,10 +133,10 @@
                     {% bootstrap_field  form.mshs_ch_timbre %}
                     {% bootstrap_field  form.mshs_function %}
                     {% bootstrap_field  form.mshs_ch_kind %}
-               {% endif %}
-               
-               {% if item.mshs_format == "FB" %}
-                    <!-- display fields for a "forme breve" -->
+            </div>
+        </div>
+        <div class="tab-pane" id="tab_forme_breve">
+           <div class="block-grey">
                     {% bootstrap_field  form.mshs_fb_title %}
                     {% bootstrap_field  form.mshs_fb_alt_title %}
                     {% bootstrap_field  form.mshs_fb_author %}
@@ -147,8 +148,10 @@
                     {% bootstrap_field  form.mshs_fb_timbre %}
                     {% bootstrap_field  form.mshs_function %}
                     {% bootstrap_field  form.mshs_fb_kind %}
-               {% endif %}
-               {% if item.mshs_format == "CO" %}
+            </div>
+        </div>
+        <div class="tab-pane" id="tab_tale">
+           <div class="block-grey">
                     <!-- display fields for a tale-->
                     {% bootstrap_field form.mshs_co_title %}
                     {% bootstrap_field form.mshs_co_title_ref_Aare %}
@@ -160,8 +163,10 @@
                     {% bootstrap_field form.mshs_co_jingle %}
                     {% bootstrap_field form.mshs_function %}
                     {% bootstrap_field form.mshs_co_kind %}
-               {% endif %}
-               {% if item.mshs_format == "TE" %}
+            </div>
+        </div>
+        <div class="tab-pane" id="tab_deposit">
+           <div class="block-grey">
                     <!-- display fields for a deposition-->
                     {% bootstrap_field form.mshs_te_digest %}
                     {% bootstrap_field form.mshs_te_details %}
@@ -169,8 +174,10 @@
                     {% bootstrap_field form.mshs_te_names %}
                     {% bootstrap_field form.mshs_te_places %}
                     {% bootstrap_field form.mshs_te_periods %}
-                {% endif %}
-                {% if item.mshs_format == "MU" %}
+            </div>
+        </div>
+        <div class="tab-pane" id="tab_music">
+           <div class="block-grey">
                     <!-- display fields for a music-->
                     {% bootstrap_field form.mshs_mu_title %}
                     {% bootstrap_field form.mshs_mu_alt_title %}
@@ -184,7 +191,6 @@
                     {% bootstrap_field form.mshs_function %}
                     {% bootstrap_field form.mshs_mu_dance %}
                     {% bootstrap_field form.mshs_mu_details_dance %}
-                {% endif %}
            </div>
        </div>  
       
