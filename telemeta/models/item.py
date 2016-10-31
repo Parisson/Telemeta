@@ -23,6 +23,7 @@
 
 from __future__ import division
 from django.utils.translation import ugettext_lazy as _
+from django.core.validators import RegexValidator
 from telemeta.models.core import *
 from telemeta.models.resource import *
 from telemeta.models.query import *
@@ -137,7 +138,14 @@ class MediaItem(MediaResource):
     rights                = WeakForeignKey('Rights', verbose_name=_('rights'))
 
     # Archiving data
-    code                  = CharField(_('code'), unique=True, blank=True, required=True, help_text=_('CollectionCode_ItemCode'))
+    code                  = CharField(_('code'), unique=True, blank=True, required=True, help_text=_('CollectionCode_ItemCode'),
+                            validators=[
+                                RegexValidator(
+                                    regex=r'^[A-Z]{4}_[A-Z]{3}_[A-Z0-9]{4}_[0-9]{4}_[0-9]{3}$',
+                                    message='Code must conform to XXXX_XXX_000X_0000_000',
+                                    code='invalid_code'
+                                ),
+                            ])
     old_code              = CharField(_('original code'), unique=False, blank=True)
     track                 = CharField(_('item number'))
     collector_selection   = CharField(_('collector selection'))
