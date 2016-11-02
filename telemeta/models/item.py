@@ -80,7 +80,7 @@ class MediaItem(MediaResource):
         ('FB','Forme brève'),
         ('MU','Musique instrumentale'),
         )
-    mshs_format           = models.CharField(_('format'), max_length=2, choices=FORMAT_MSHS, default='TE')
+    #mshs_format           = models.CharField(_('format'), max_length=2, choices=FORMAT_MSHS, default='TE')
     mshs_ch_title         = CharField(_('Title'), help_text= _('title of the song'))
     mshs_ch_title_ref_coirault = CharField(_('Title ref. Coirault'))
     mshs_ch_title_ref_laforte = CharField(_('Title ref. Laforte'))
