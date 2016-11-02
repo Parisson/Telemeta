@@ -21,11 +21,32 @@
 
 {% block analyze_data %}
 <div>
-    <h4><a href="#">Analyse</a></h4>
+    <h4><a href="#">Témoignage</a></h4>
     <dl class="listing">
-        <dt>Format</dt>
-        <dd>{{ item.get_mshs_format_display }}</dd>
-        {% if item.mshs_format == "CH" %}
+            <!-- display fields for a deposition-->
+            {% dl_field item "mshs_te_digest" %}
+            {% dl_field item "mshs_te_details" %}
+            {% dl_field item "mshs_te_thematic" %}
+            {% dl_field item "mshs_te_names" %}
+            {% dl_field item "mshs_te_places" %}
+            {% dl_field item "mshs_te_periods" %}
+    </dl>
+    <h4><a href="#">Conte</a></h4>
+    <dl class="listing">
+            <!-- display fields for a tale-->
+            {% dl_field item "mshs_co_title" %}
+            {% dl_field item "mshs_co_title_ref_Aare" %}
+            {% dl_field item "mshs_co_title_ref_Dela" %}
+            {% dl_field item "mshs_co_code_Aare" %}
+            {% dl_field item "mshs_co_code_Dela" %}
+            {% dl_field item "mshs_co_alt_title" %}
+            {% dl_field item "mshs_co_author" %}
+            {% dl_field item "mshs_co_jingle" %}
+            {% dl_field item "mshs_function" %}
+            {% dl_field item "mshs_co_kind" %}
+    </dl>
+    <h4><a href="#">Chanson</a></h4>
+    <dl class="listing">
             <!-- display fields for a song -->
             {% dl_field item "mshs_ch_title" %}
             {% dl_field item "mshs_ch_title_ref_coirault" %}
@@ -42,8 +63,9 @@
             {% dl_field item "mshs_ch_timbre" %}
             {% dl_field item "mshs_function" %}
             {% dl_field item "mshs_ch_kind" %}
-        {% endif %}
-        {% if item.mshs_format == "FB" %}
+    </dl>
+    <h4><a href="#">Forme brève</a></h4>
+    <dl class="listing">
             <!-- display fields for a "forme breve" -->
             {% dl_field item "mshs_fb_title" %}
             {% dl_field item "mshs_fb_alt_title" %}
@@ -56,30 +78,9 @@
             {% dl_field item "mshs_fb_timbre" %}
             {% dl_field item "mshs_function" %}
             {% dl_field item "mshs_fb_kind" %}
-        {% endif %}
-        {% if item.mshs_format == "CO" %}
-            <!-- display fields for a tale-->
-            {% dl_field item "mshs_co_title" %}
-            {% dl_field item "mshs_co_title_ref_Aare" %}
-            {% dl_field item "mshs_co_title_ref_Dela" %}
-            {% dl_field item "mshs_co_code_Aare" %}
-            {% dl_field item "mshs_co_code_Dela" %}
-            {% dl_field item "mshs_co_alt_title" %}
-            {% dl_field item "mshs_co_author" %}
-            {% dl_field item "mshs_co_jingle" %}
-            {% dl_field item "mshs_function" %}
-            {% dl_field item "mshs_co_kind" %}
-        {% endif %}
-        {% if item.mshs_format == "TE" %}
-            <!-- display fields for a deposition-->
-            {% dl_field item "mshs_te_digest" %}
-            {% dl_field item "mshs_te_details" %}
-            {% dl_field item "mshs_te_thematic" %}
-            {% dl_field item "mshs_te_names" %}
-            {% dl_field item "mshs_te_places" %}
-            {% dl_field item "mshs_te_periods" %}
-        {% endif %}
-        {% if item.mshs_format == "MU" %}
+    </dl>
+    <h4><a href="#">Musique instrumentale</a></h4>
+    <dl class="listing">
             <!-- display fields for a music-->
             {% dl_field item "mshs_mu_title" %}
             {% dl_field item "mshs_mu_alt_title" %}
@@ -93,8 +94,8 @@
             {% dl_field item "mshs_function" %}
             {% dl_field item "mshs_mu_dance" %}
             {% dl_field item "mshs_mu_details_dance" %}
-        {% endif %}
     </dl>
+       
 </div>
 {% endblock analyze_data %}
 
