@@ -578,22 +578,11 @@ class ItemEditView(ItemViewMixin, UpdateWithInlinesView):
         context['audio_export_enabled'] = self.export_enabled
         context['auto_zoom'] = True
         # Excluding fields from the display of the main form
-        exclu = 'mshs_format,mshs_ch_title'
-        exclu = exclu + ',mshs_ch_title_ref_coirault,mshs_ch_title_ref_laforte'
-        exclu = exclu + ',mshs_ch_code_coirault,mshs_ch_code_laforte'
-        exclu = exclu + ',mshs_ch_alt_title,mshs_ch_author,mshs_ch_composer,mshs_ch_details,mshs_ch_incipit'
-        exclu = exclu + ',mshs_ch_refrain,mshs_ch_coupe,mshs_ch_timbre,mshs_ch_kind'
-        exclu = exclu + ',mshs_fb_title,mshs_fb_alt_title,mshs_fb_author, mshs_fb_composer,mshs_fb_details'
-        exclu = exclu + ',mshs_fb_incipit,mshs_fb_refrain,mshs_fb_timbre,mshs_fb_kind'
-        exclu = exclu + ',mshs_co_title,mshs_co_title_ref_Aare,mshs_co_title_ref_Dela'
-        exclu = exclu + ',mshs_co_code_Aare,mshs_co_code_Dela,mshs_co_alt_title'
-        exclu = exclu + ',mshs_co_author, mshs_co_jingle,mshs_co_kind'
-        exclu = exclu + ',mshs_te_digest,mshs_te_details,mshs_te_thematic,'
-        exclu = exclu + ',mshs_te_names,mshs_te_places,mshs_te_periods,'
-        exclu = exclu + ',mshs_mu_title,mshs_mu_alt_title,mshs_mu_author,mshs_mu_composer,mshs_mu_details'
-        exclu = exclu + ',mshs_mu_details_tune,mshs_mu_gavotte, mshs_mu_gavotte_bool,mshs_mu_timbre'
-        exclu = exclu + ',mshs_mu_dance,mshs_mu_details_dance'
-        exclu = exclu + ',mshs_function'
+        exclu = ''
+        exclu = exclu + 'mshs_author,mshs_composer,mshs_timbre,mshs_timbre_ref,mshs_timbre_code'
+        exclu = exclu + ',mshs_alt_title,mshs_melody,mshs_domain_song'
+        exclu = exclu + ',mshs_domain_vocal,mshs_domain_music,mshs_domain_tale'
+        exclu = exclu + ',mshs_details,mshs_function,mshs_dance,mshs_dance_details'
         context['mshs_exclude']=exclu
         return context
 
