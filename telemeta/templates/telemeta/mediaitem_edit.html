@@ -85,11 +85,8 @@
 
     <ul class="nav nav-tabs" role="tablist">
       <li class="active"><a href="#general" role="tab" data-toggle="tab">{% trans "General" %}</a></li>
-      <li><a href="#tab_deposit" role="tab" data-toggle="tab">Témoignage</a></li>
-      <li><a href="#tab_song" role="tab" data-toggle="tab">Chanson</a></li>
-      <li><a href="#tab_forme_breve" role="tab" data-toggle="tab">Forme brève</a></li>
-      <li><a href="#tab_music" role="tab" data-toggle="tab">Musique</a></li>
-      <li><a href="#tab_tale" role="tab" data-toggle="tab">Conte</a></li>
+      <li><a href="#tab_desc" role="tab" data-toggle="tab">Description</a></li>
+      <li><a href="#tab_text" role="tab" data-toggle="tab">Texte</a></li>
       <li><a href="#keyword_relations" role="tab" data-toggle="tab">{% trans "Keywords" %}</a></li>
       <li><a href="#performances" role="tab" data-toggle="tab">{% trans "Performance" %}</a></li>
       <li><a href="#tabs_container" role="tab" data-toggle="tab">{% trans "Markers" %}</a></li>
@@ -115,84 +112,16 @@
       </div>
        
        <!--  Tab Analyze, for MSHS  --> 
-       <div class="tab-pane" id="tab_song">
+       <div class="tab-pane" id="tab_desc">
            <div class="block-grey">
-                    <!-- display fields for a song -->
-                    {% bootstrap_field  form.mshs_ch_title %}
-                    {% bootstrap_field  form.mshs_ch_title_ref_coirault %}
-                    {% bootstrap_field  form.mshs_ch_title_ref_laforte %}
-                    {% bootstrap_field  form.mshs_ch_code_coirault %}
-                    {% bootstrap_field  form.mshs_ch_code_laforte %}
-                    {% bootstrap_field  form.mshs_ch_alt_title %}
-                    {% bootstrap_field  form.mshs_ch_author %}
-                    {% bootstrap_field  form.mshs_ch_composer %}
-                    {% bootstrap_field  form.mshs_ch_details %}
-                    {% bootstrap_field  form.mshs_ch_incipit %}
-                    {% bootstrap_field  form.mshs_ch_refrain %}
-                    {% bootstrap_field  form.mshs_ch_coupe %}
-                    {% bootstrap_field  form.mshs_ch_timbre %}
-                    {% bootstrap_field  form.mshs_function %}
-                    {% bootstrap_field  form.mshs_ch_kind %}
+                    <!-- display fields for a description -->
             </div>
         </div>
-        <div class="tab-pane" id="tab_forme_breve">
+        <div class="tab-pane" id="tab_text">
            <div class="block-grey">
-                    {% bootstrap_field  form.mshs_fb_title %}
-                    {% bootstrap_field  form.mshs_fb_alt_title %}
-                    {% bootstrap_field  form.mshs_fb_author %}
-                    {% bootstrap_field  form.mshs_fb_composer %}
-                    {% bootstrap_field  form.mshs_fb_details %}
-                    {% bootstrap_field  form.mshs_fb_incipit %}
-                    {% bootstrap_field  form.mshs_fb_refrain %}
-                    {% bootstrap_field  form.mshs_ch_coupe %}
-                    {% bootstrap_field  form.mshs_fb_timbre %}
-                    {% bootstrap_field  form.mshs_function %}
-                    {% bootstrap_field  form.mshs_fb_kind %}
+               <!-- display fields for all textual information -->
             </div>
         </div>
-        <div class="tab-pane" id="tab_tale">
-           <div class="block-grey">
-                    <!-- display fields for a tale-->
-                    {% bootstrap_field form.mshs_co_title %}
-                    {% bootstrap_field form.mshs_co_title_ref_Aare %}
-                    {% bootstrap_field form.mshs_co_title_ref_Dela %}
-                    {% bootstrap_field form.mshs_co_code_Aare %}
-                    {% bootstrap_field form.mshs_co_code_Dela %}
-                    {% bootstrap_field form.mshs_co_alt_title %}
-                    {% bootstrap_field form.mshs_co_author %}
-                    {% bootstrap_field form.mshs_co_jingle %}
-                    {% bootstrap_field form.mshs_function %}
-                    {% bootstrap_field form.mshs_co_kind %}
-            </div>
-        </div>
-        <div class="tab-pane" id="tab_deposit">
-           <div class="block-grey">
-                    <!-- display fields for a deposition-->
-                    {% bootstrap_field form.mshs_te_digest %}
-                    {% bootstrap_field form.mshs_te_details %}
-                    {% bootstrap_field form.mshs_te_thematic %}
-                    {% bootstrap_field form.mshs_te_names %}
-                    {% bootstrap_field form.mshs_te_places %}
-                    {% bootstrap_field form.mshs_te_periods %}
-            </div>
-        </div>
-        <div class="tab-pane" id="tab_music">
-           <div class="block-grey">
-                    <!-- display fields for a music-->
-                    {% bootstrap_field form.mshs_mu_title %}
-                    {% bootstrap_field form.mshs_mu_alt_title %}
-                    {% bootstrap_field form.mshs_mu_author %}
-                    {% bootstrap_field form.mshs_mu_composer %}
-                    {% bootstrap_field form.mshs_mu_details %}
-                    {% bootstrap_field form.mshs_mu_details_tune %}
-                    {% bootstrap_field form.mshs_mu_gavotte_bool %}
-                    {% bootstrap_field form.mshs_mu_gavotte %}
-                    {% bootstrap_field form.mshs_mu_timbre %}
-                    {% bootstrap_field form.mshs_function %}
-                    {% bootstrap_field form.mshs_mu_dance %}
-                    {% bootstrap_field form.mshs_mu_details_dance %}
-           </div>
-       </div>  
       
       {% for formset in inlines %}
       <div class="tab-pane" id="{{ formset.prefix }}">
