@@ -354,4 +354,5 @@ BOWER_INSTALLED_APPS = (
     'tablesorter',
     'video.js',
     'sass-bootstrap-glyphicons',
+    'jquery-tokenize',
 )
