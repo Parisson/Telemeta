@@ -98,6 +98,10 @@
 {% block musical_data %}
         <div>
             <h4><a href="#">Informations sur l'élément sonore</a></h4>
+            <dl class="listing">
+                {% dl_field item "mshs_musical_organization" %}
+                {% dl_field item "mshs_group" %}
+            </dl>
             {% if item.performances %}
             <div class="instruments">
                 <table class="instruments">

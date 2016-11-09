@@ -590,6 +590,7 @@ class ItemEditView(ItemViewMixin, UpdateWithInlinesView):
         exclu = exclu + ',mshs_title_ref_laforte,mshs_code_laforte'
         exclu = exclu + ',mshs_title_ref_Dela,mshs_code_Dela'
         exclu = exclu + ',mshs_title_ref_Aare,mshs_code_Aare'
+        exclu = exclu + ',mshs_musical_organization,mshs_group'
         context['mshs_exclude']=exclu
         return context
 

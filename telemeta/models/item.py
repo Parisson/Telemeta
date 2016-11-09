@@ -108,6 +108,8 @@ class MediaItem(MediaResource):
     mshs_code_Dela        = CharField(_('code Delarue-Teneze'))
     mshs_title_ref_Aare   = CharField(_('Title ref. Aare-Thomson'))
     mshs_code_Aare        = CharField(_('code Aare-Thomson'))
+    mshs_musical_organization = CharField(_('Musical organization'))
+    mshs_group            = CharField(_('Group'))
 
 
     # Legal mentions
@@ -421,7 +423,7 @@ class MediaItemPerformance(ModelCore):
     instrument      = WeakForeignKey('Instrument', related_name="performances", verbose_name=_('composition'))
     instruments_num = CharField(_('number'))
     alias           = WeakForeignKey('InstrumentAlias', related_name="performances", verbose_name=_('precisions'))
-    musicians       = CharField(_('interprets'))
+    musicians       = CharField(_('informers'))
 
     class Meta(MetaCore):
         db_table = 'media_item_performances'

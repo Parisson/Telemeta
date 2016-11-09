@@ -167,6 +167,10 @@
       
       {% for formset in inlines %}
       <div class="tab-pane" id="{{ formset.prefix }}">
+          {% if formset.prefix == "performances" %}
+            {% bootstrap_field  form.mshs_musical_organization %}
+            {% bootstrap_field  form.mshs_group %}
+          {% endif %}
           {{ formset.management_form }}
           {% for form in formset %}
            <div class="block-grey">
