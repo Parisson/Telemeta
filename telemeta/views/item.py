@@ -586,6 +586,10 @@ class ItemEditView(ItemViewMixin, UpdateWithInlinesView):
         exclu = exclu + ',mshs_deposit_digest,mshs_deposit_thematic,mshs_deposit_names'
         exclu = exclu + ',mshs_deposit_places,mshs_deposit_periods'
         exclu = exclu + ',mshs_text_bool,mshs_text,mshs_incipit,mshs_refrain,mshs_jingle,mshs_coupe'
+        exclu = exclu + ',mshs_title_ref_coirault,mshs_code_coirault'
+        exclu = exclu + ',mshs_title_ref_laforte,mshs_code_laforte'
+        exclu = exclu + ',mshs_title_ref_Dela,mshs_code_Dela'
+        exclu = exclu + ',mshs_title_ref_Aare,mshs_code_Aare'
         context['mshs_exclude']=exclu
         return context
 

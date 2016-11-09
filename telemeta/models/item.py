@@ -100,6 +100,14 @@ class MediaItem(MediaResource):
     mshs_refrain          = CharField(_('refrain'))
     mshs_jingle           = CharField(_('jingle'))
     mshs_coupe            = WeakForeignKey('Coupe', verbose_name=_('coupe'))
+    mshs_title_ref_coirault = CharField(_('Title ref. Coirault'))
+    mshs_code_coirault    = CharField(_('code Coirault'))
+    mshs_title_ref_laforte = CharField(_('Title ref. Laforte'))
+    mshs_code_laforte     = CharField(_('code Laforte'))
+    mshs_title_ref_Dela   = CharField(_('Title ref. Delarue-Teneze'))
+    mshs_code_Dela        = CharField(_('code Delarue-Teneze'))
+    mshs_title_ref_Aare   = CharField(_('Title ref. Aare-Thomson'))
+    mshs_code_Aare        = CharField(_('code Aare-Thomson'))
 
 
     # Legal mentions
