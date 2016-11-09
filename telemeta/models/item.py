@@ -94,6 +94,12 @@ class MediaItem(MediaResource):
     mshs_deposit_names    = CharField(_('Names'), help_text=_('First name, Last name ; First name, Last name'))
     mshs_deposit_places   = CharField(_('places'), help_text=_('Place named; place named; ...'))
     mshs_deposit_periods  = CharField(_('periods'), help_text=_('Period recounted; period recounted; ...'))
+    mshs_text_bool        = BooleanField(_('Text ?'))
+    mshs_text             = TextField(_('Text'))
+    mshs_incipit          = CharField(_('incipit'))
+    mshs_refrain          = CharField(_('refrain'))
+    mshs_jingle           = CharField(_('jingle'))
+    mshs_coupe            = WeakForeignKey('Coupe', verbose_name=_('coupe'))
 
 
     # Legal mentions
