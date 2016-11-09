@@ -111,7 +111,7 @@
         </div>
       </div>
        
-       <!--  Tab Analyze, for MSHS  --> 
+       <!--  Tab Analyze, for MSHS  -->
        <div class="tab-pane" id="tab_desc">
            <div class="block-grey">
                     <!-- display fields for a description -->
@@ -130,6 +130,15 @@
                     {% bootstrap_field  form.mshs_function %}
                     {% bootstrap_field  form.mshs_dance %}
                     {% bootstrap_field  form.mshs_dance_details %}
+            </div>
+            <div class="block-grey">
+                    <h2>Témoignage</h2>
+                    <!-- display fields for a deposition -->
+                    {% bootstrap_field  form.mshs_deposit_digest %}
+                    {% bootstrap_field  form.mshs_deposit_thematic %}
+                    {% bootstrap_field  form.mshs_deposit_names %}
+                    {% bootstrap_field  form.mshs_deposit_places %}
+                    {% bootstrap_field  form.mshs_deposit_periods %}
             </div>
         </div>
         <div class="tab-pane" id="tab_text">
