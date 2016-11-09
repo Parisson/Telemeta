@@ -2,7 +2,7 @@
 {% load telemeta_tags %}
 {% load i18n %}
 
-  
+
 {% block general_info %}
     <dl class="listing">
         {% dl_field item "title" placeholder %}
@@ -40,7 +40,15 @@
             {% dl_field item "mshs_dance" %}
             {% dl_field item "mshs_dance_details" %}
     </dl>
-       
+    <h4><a href="#">Témoignage</a></h4>
+    <dl class="listing">
+      <!-- display fields for a deposition-->
+            {% dl_field item "mshs_deposit_digest" %}
+            {% dl_field item "mshs_deposit_thematic" %}
+            {% dl_field item "mshs_deposit_names" %}
+            {% dl_field item "mshs_deposit_places" %}
+            {% dl_field item "mshs_deposit_periods" %}
+    </dl>
 </div>
 {% endblock analyze_data %}
 

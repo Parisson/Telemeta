@@ -73,7 +73,7 @@ class MediaItem(MediaResource):
     vernacular_style      = WeakForeignKey('VernacularStyle', related_name="items", verbose_name=_('vernacular style'))
     generic_style         = WeakForeignKey('GenericStyle', related_name="items", verbose_name=_('generic style'))
     author                = CharField(_('author / compositor'), help_text=_('First name, Last name ; First name, Last name'))
-    
+
     mshs_author           = CharField(_('author'))
     mshs_composer         = CharField(_('composer'))
     mshs_timbre           = CharField(_('timbre'))
@@ -89,7 +89,12 @@ class MediaItem(MediaResource):
     mshs_function         = CharField(_('Function'))
     mshs_dance            = CharField(_('Dance'))
     mshs_dance_details    = TextField(_('Details on dance'))
-    
+    mshs_deposit_digest   = TextField(_('Digest'))
+    mshs_deposit_thematic = CharField(_('Thematic'))
+    mshs_deposit_names    = CharField(_('Names'), help_text=_('First name, Last name ; First name, Last name'))
+    mshs_deposit_places   = CharField(_('places'), help_text=_('Place named; place named; ...'))
+    mshs_deposit_periods  = CharField(_('periods'), help_text=_('Period recounted; period recounted; ...'))
+
 
     # Legal mentions
     organization          = WeakForeignKey('Organization', verbose_name=_('organization'))
