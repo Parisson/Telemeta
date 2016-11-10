@@ -214,9 +214,7 @@ def autocompletemshs(request):
     
     filtertable = attribut + '__' + search_type
     obj=MediaItem.objects.filter(**{ filtertable: search})
-    results = [ {
-                'value':getattr(x, attribut)
-            } for x in obj]
-
-    return HttpResponse( json.dumps( results ), content_type='application/json')
+    results = [ getattr(x, attribut) for x in obj]
+    result=list(set(results)) # remove doubles
+    return HttpResponse( json.dumps( result ), content_type='application/json')
     
