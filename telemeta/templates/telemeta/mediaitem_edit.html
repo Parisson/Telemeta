@@ -113,13 +113,16 @@
         {% trans "Context access status" %} : {% trans access %}<br />
         </div>
         <script>
-              $("#id_cultural_area").autocomplete({
-                source: "/search/autocompletemshs/?attr=cultural_area",
-                select: function (event, ui) {
-                    var selectedObj = ui.item;
-                },
-                minLength: 1,
-              });
+             function autocompletion(champ) {
+                $("#id_"+champ).autocomplete({
+                    source: "/search/autocompletemshs/?attr="+champ,
+                    select: function (event, ui) {
+                        var selectedObj = ui.item;
+                    },
+                    minLength: 1,
+                });
+              }
+            autocompletion ("cultural_area");
         </script>
       </div>
        
