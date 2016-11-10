@@ -265,6 +265,10 @@
         {% endblock general_info %}
     </div>
     <div class="extraInfos">
+        {% block analyze_data %}
+        {% endblock analyze_data %}
+    </div>
+    <div class="extraInfos">
         {% block geoethnic_data %}
         <div>
             <h4><a href="#">{% trans "Geographic and cultural informations" %}</a></h4>

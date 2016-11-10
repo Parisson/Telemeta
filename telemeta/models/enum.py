@@ -283,4 +283,42 @@ class IdentifierType(Enumeration):
     class Meta(MetaEnumeration):
         db_table = 'identifier_type'
         verbose_name = _("identifier type")
+        
+class Coupe(Enumeration):
+    "Coupe"
+    
+    class Meta(MetaEnumeration):
+        db_table = 'coupe'
+        verbose_name = _("coupe")
 
+        
+class KindOfSong(Enumeration):
+    "Kind of song"
+    
+    class Meta(MetaEnumeration):
+        db_table = 'knidofsong'
+        verbose_name = _("kind of song")
+
+        
+class KindOfShortSong(Enumeration):
+    "Kind of short song"
+    
+    class Meta(MetaEnumeration):
+        db_table = 'knidofshortsong'
+        verbose_name = _("kind of short song")
+
+
+class KindOfTale(Enumeration):
+    "Kind of tale"
+    
+    class Meta(MetaEnumeration):
+        db_table = 'knidoftale'
+        verbose_name = _("kind of tale")
+
+
+class FunctionMSHS(Enumeration):
+    "Function"
+    
+    class Meta(MetaEnumeration):
+        db_table = 'function'
+        verbose_name = _("function")

@@ -1,4 +1,4 @@
-{% extends "telemeta/mediaitem_detail.html" %}
+{% extends "telemeta/mshs/mediaitem_detail.html" %}
 {% load i18n %}
 {% load telemeta_tags %}
 {% load bootstrap3 %}
@@ -85,6 +85,8 @@
 
     <ul class="nav nav-tabs" role="tablist">
       <li class="active"><a href="#general" role="tab" data-toggle="tab">{% trans "General" %}</a></li>
+      <li><a href="#tab_desc" role="tab" data-toggle="tab">Description</a></li>
+      <li><a href="#tab_text" role="tab" data-toggle="tab">Texte</a></li>
       <li><a href="#keyword_relations" role="tab" data-toggle="tab">{% trans "Keywords" %}</a></li>
       <li><a href="#performances" role="tab" data-toggle="tab">{% trans "Performance" %}</a></li>
       <li><a href="#tabs_container" role="tab" data-toggle="tab">{% trans "Markers" %}</a></li>
@@ -103,14 +105,72 @@
         <script type="text/javascript" src="/static/admin/js/actions.min.js"></script>
         {{ form.media }}
         <div class="block-grey">
-        {% bootstrap_form form %}
+        {% bootstrap_form form exclude=mshs_exclude %}
         {% trans "Collection access status" %} : {% trans item.collection.public_access %}<br />
         {% trans "Context access status" %} : {% trans access %}<br />
         </div>
       </div>
-
+       
+       <!--  Tab Analyze, for MSHS  -->
+       <div class="tab-pane" id="tab_desc">
+           <div class="block-grey">
+                    <!-- display fields for a description -->
+                    {% bootstrap_field  form.mshs_author %}
+                    {% bootstrap_field  form.mshs_composer %}
+                    {% bootstrap_field  form.mshs_timbre %}
+                    {% bootstrap_field  form.mshs_timbre_ref %}
+                    {% bootstrap_field  form.mshs_timbre_code %}
+                    {% bootstrap_field  form.mshs_alt_title %}
+                    {% bootstrap_field  form.mshs_melody %}
+                    {% bootstrap_field  form.mshs_domain_song %}
+                    {% bootstrap_field  form.mshs_domain_vocal %}
+                    {% bootstrap_field  form.mshs_domain_music %}
+                    {% bootstrap_field  form.mshs_domain_tale %}
+                    {% bootstrap_field  form.mshs_details %}
+                    {% bootstrap_field  form.mshs_function %}
+                    {% bootstrap_field  form.mshs_dance %}
+                    {% bootstrap_field  form.mshs_dance_details %}
+            </div>
+            <div class="block-grey">
+                    <h2>Témoignage</h2>
+                    <!-- display fields for a deposition -->
+                    {% bootstrap_field  form.mshs_deposit_digest %}
+                    {% bootstrap_field  form.mshs_deposit_thematic %}
+                    {% bootstrap_field  form.mshs_deposit_names %}
+                    {% bootstrap_field  form.mshs_deposit_places %}
+                    {% bootstrap_field  form.mshs_deposit_periods %}
+            </div>
+        </div>
+        <div class="tab-pane" id="tab_text">
+           <div class="block-grey">
+               <!-- display fields for all textual information -->
+               {% bootstrap_field  form.mshs_text_bool %}
+               {% bootstrap_field  form.mshs_text %}
+               {% bootstrap_field  form.mshs_incipit %}
+               {% bootstrap_field  form.mshs_refrain %}
+               {% bootstrap_field  form.mshs_jingle %}
+               {% bootstrap_field  form.mshs_coupe %}
+            </div>
+            <div class="block-grey">
+                <h2>Références</h2>
+                <!-- display fields for a deposition -->
+                {% bootstrap_field  form.mshs_title_ref_coirault %}
+                {% bootstrap_field  form.mshs_code_coirault %}
+                {% bootstrap_field  form.mshs_title_ref_laforte %}
+                {% bootstrap_field  form.mshs_code_laforte %}
+                {% bootstrap_field  form.mshs_title_ref_Dela %}
+                {% bootstrap_field  form.mshs_code_Dela %}
+                {% bootstrap_field  form.mshs_title_ref_Aare %}
+                {% bootstrap_field  form.mshs_code_Aare %}
+            </div>
+        </div>
+      
       {% for formset in inlines %}
       <div class="tab-pane" id="{{ formset.prefix }}">
+          {% if formset.prefix == "performances" %}
+            {% bootstrap_field  form.mshs_musical_organization %}
+            {% bootstrap_field  form.mshs_group %}
+          {% endif %}
           {{ formset.management_form }}
           {% for form in formset %}
            <div class="block-grey">

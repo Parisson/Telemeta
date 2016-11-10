@@ -23,6 +23,7 @@
 
 from __future__ import division
 from django.utils.translation import ugettext_lazy as _
+from django.core.validators import RegexValidator
 from telemeta.models.core import *
 from telemeta.models.resource import *
 from telemeta.models.query import *
@@ -73,13 +74,58 @@ class MediaItem(MediaResource):
     generic_style         = WeakForeignKey('GenericStyle', related_name="items", verbose_name=_('generic style'))
     author                = CharField(_('author / compositor'), help_text=_('First name, Last name ; First name, Last name'))
 
+    mshs_author           = CharField(_('author'))
+    mshs_composer         = CharField(_('composer'))
+    mshs_timbre           = CharField(_('timbre'))
+    mshs_timbre_ref       = CharField(_('timbre referenced'))
+    mshs_timbre_code      = CharField(_('timbre code'))
+    mshs_alt_title        = CharField(_('alternate title'))
+    mshs_melody           = TextField(_('melody'), help_text=_('You can use ABC notation'))
+    mshs_domain_song      = CharField(_('kind of song'))
+    mshs_domain_vocal     = CharField(_('kind of vocal'))
+    mshs_domain_music     = CharField(_('kind of music'))
+    mshs_domain_tale      = CharField(_('kind of tale'))
+    mshs_details          = TextField(_('Details'))
+    mshs_function         = CharField(_('Function'))
+    mshs_dance            = CharField(_('Dance'))
+    mshs_dance_details    = TextField(_('Details on dance'))
+    mshs_deposit_digest   = TextField(_('Digest'))
+    mshs_deposit_thematic = CharField(_('Thematic'))
+    mshs_deposit_names    = CharField(_('Names'), help_text=_('First name, Last name ; First name, Last name'))
+    mshs_deposit_places   = CharField(_('places'), help_text=_('Place named; place named; ...'))
+    mshs_deposit_periods  = CharField(_('periods'), help_text=_('Period recounted; period recounted; ...'))
+    mshs_text_bool        = BooleanField(_('Text ?'))
+    mshs_text             = TextField(_('Text'))
+    mshs_incipit          = CharField(_('incipit'))
+    mshs_refrain          = CharField(_('refrain'))
+    mshs_jingle           = CharField(_('jingle'))
+    mshs_coupe            = WeakForeignKey('Coupe', verbose_name=_('coupe'))
+    mshs_title_ref_coirault = CharField(_('Title ref. Coirault'))
+    mshs_code_coirault    = CharField(_('code Coirault'))
+    mshs_title_ref_laforte = CharField(_('Title ref. Laforte'))
+    mshs_code_laforte     = CharField(_('code Laforte'))
+    mshs_title_ref_Dela   = CharField(_('Title ref. Delarue-Teneze'))
+    mshs_code_Dela        = CharField(_('code Delarue-Teneze'))
+    mshs_title_ref_Aare   = CharField(_('Title ref. Aare-Thomson'))
+    mshs_code_Aare        = CharField(_('code Aare-Thomson'))
+    mshs_musical_organization = CharField(_('Musical organization'))
+    mshs_group            = CharField(_('Group'))
+
+
     # Legal mentions
     organization          = WeakForeignKey('Organization', verbose_name=_('organization'))
     depositor             = CharField(_('depositor'))
     rights                = WeakForeignKey('Rights', verbose_name=_('rights'))
 
     # Archiving data
-    code                  = CharField(_('code'), unique=True, blank=True, required=True, help_text=_('CollectionCode_ItemCode'))
+    code                  = CharField(_('code'), unique=True, blank=True, required=True, help_text=_('CollectionCode_ItemCode'),
+                            validators=[
+                                RegexValidator(
+                                    regex=r'^[A-Z]{4}_[A-Z]{3}_[A-Z0-9]{4}_[0-9]{4}_[0-9]{3}$',
+                                    message='Code must conform to XXXX_XXX_000X_0000_000',
+                                    code='invalid_code'
+                                ),
+                            ])
     old_code              = CharField(_('original code'), unique=False, blank=True)
     track                 = CharField(_('item number'))
     collector_selection   = CharField(_('collector selection'))
@@ -113,7 +159,7 @@ class MediaItem(MediaResource):
                     'organization', 'depositor', 'rights',
                     'recordist', 'digitalist', 'digitization_date',
                     'publishing_date', 'scientist', 'topic',
-                    'summary', 'contributor', ]
+                    'summary', 'contributor','creator_reference', ]
     exclude.extend( ['ethnic_group', 'moda_execut', 'vernacular_style',
                     'generic_style', 'author', 'track', 'collector_selection',
                     'collector_from_collection', 'external_references', ] )
@@ -122,7 +168,7 @@ class MediaItem(MediaResource):
                     'organization', 'depositor', 'rights',
                     'recordist', 'digitalist', 'digitization_date',
                     'publishing_date', 'scientist', 'topic',
-                    'summary', 'contributor', 'public_access']
+                    'summary', 'contributor', 'public_access',]
 
     def keywords(self):
         return ContextKeyword.objects.filter(item_relations__item = self)
@@ -375,9 +421,9 @@ class MediaItemPerformance(ModelCore):
     "Item performance"
     media_item      = ForeignKey('MediaItem', related_name="performances", verbose_name=_('item'))
     instrument      = WeakForeignKey('Instrument', related_name="performances", verbose_name=_('composition'))
-    alias           = WeakForeignKey('InstrumentAlias', related_name="performances", verbose_name=_('vernacular name'))
     instruments_num = CharField(_('number'))
-    musicians       = CharField(_('interprets'))
+    alias           = WeakForeignKey('InstrumentAlias', related_name="performances", verbose_name=_('precisions'))
+    musicians       = CharField(_('informers'))
 
     class Meta(MetaCore):
         db_table = 'media_item_performances'

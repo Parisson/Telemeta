@@ -2,7 +2,7 @@
 {% load telemeta_tags %}
 {% load i18n %}
 
-  
+
 {% block general_info %}
     <dl class="listing">
         {% dl_field item "title" placeholder %}
@@ -18,6 +18,61 @@
         <dd>{% trans item.public_access %}</dd>
     </dl>
 {% endblock general_info %}
+
+{% block analyze_data %}
+<div>
+    <h4><a href="#">Description</a></h4>
+    <dl class="listing">
+            <!-- display fields for a deposition-->
+            {% dl_field item "mshs_author" %}
+            {% dl_field item "mshs_composer" %}
+            {% dl_field item "mshs_timbre" %}
+            {% dl_field item "mshs_timbre_ref" %}
+            {% dl_field item "mshs_timbre_code" %}
+            {% dl_field item "mshs_alt_title" %}
+            {% dl_field item "mshs_melody" %}
+            {% dl_field item "mshs_domain_song" %}
+            {% dl_field item "mshs_domain_vocal" %}
+            {% dl_field item "mshs_domain_music" %}
+            {% dl_field item "mshs_domain_tale" %}
+            {% dl_field item "mshs_details" %}
+            {% dl_field item "mshs_function" %}
+            {% dl_field item "mshs_dance" %}
+            {% dl_field item "mshs_dance_details" %}
+    </dl>
+    <h4><a href="#">Témoignage</a></h4>
+    <dl class="listing">
+      <!-- display fields for a deposition-->
+            {% dl_field item "mshs_deposit_digest" %}
+            {% dl_field item "mshs_deposit_thematic" %}
+            {% dl_field item "mshs_deposit_names" %}
+            {% dl_field item "mshs_deposit_places" %}
+            {% dl_field item "mshs_deposit_periods" %}
+    </dl>
+    <h4><a href="#">Texte</a></h4>
+    <dl class="listing">
+        <!-- display fields for a text -->
+        {% dl_field item "mshs_text_bool" %}
+        {% dl_field item "mshs_text" %}
+        {% dl_field item "mshs_incipit" %}
+        {% dl_field item "mshs_refrain" %}
+        {% dl_field item "mshs_jingle" %}
+        {% dl_field item "mshs_coupe" %}
+    </dl>
+    <h4><a href="#">Références</a></h4>
+    <dl class="listing">
+        {% dl_field item "mshs_title_ref_coirault" %}
+        {% dl_field item "mshs_code_coirault" %}
+        {% dl_field item "mshs_title_ref_laforte" %}
+        {% dl_field item "mshs_code_laforte" %}
+        {% dl_field item "mshs_title_ref_Dela" %}
+        {% dl_field item "mshs_code_Dela" %}
+        {% dl_field item "mshs_title_ref_Aare" %}
+        {% dl_field item "mshs_code_Aare" %}
+    </dl>
+</div>
+{% endblock analyze_data %}
+
 
 {% block geoethnic_data %}
         <div>
@@ -42,7 +97,11 @@
 
 {% block musical_data %}
         <div>
-            <h4><a href="#">{% trans "Musical informations" %}</a></h4>
+            <h4><a href="#">Informations sur l'élément sonore</a></h4>
+            <dl class="listing">
+                {% dl_field item "mshs_musical_organization" %}
+                {% dl_field item "mshs_group" %}
+            </dl>
             {% if item.performances %}
             <div class="instruments">
                 <table class="instruments">
