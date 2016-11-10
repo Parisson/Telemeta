@@ -205,3 +205,18 @@ def autocomplete(request):
 
 def escape_accent_and_lower(chaine):
     return unicodedata.normalize('NFD', chaine).encode('ascii', 'ignore').lower()
+    
+    
+def autocompletemshs(request):
+    attribut = request.GET.get('attr')
+    search = request.GET.get('term')
+    search_type = 'icontains'
+    
+    filtertable = attribut + '__' + search_type
+    obj=MediaItem.objects.filter(**{ filtertable: search})
+    results = [ {
+                'value':getattr(x, attribut)
+            } for x in obj]
+
+    return HttpResponse( json.dumps( results ), content_type='application/json')
+    

@@ -133,6 +133,7 @@ urlpatterns = patterns('',
     url(r'^search/advance/$', HaystackAdvanceSearch(form_class=HayAdvanceForm, template='search/advanceSearch.html'), name='haystack_advance_search'),
     url(r'^search/advance/(?P<type>[A-Za-z0-9._-]+)/$', HaystackAdvanceSearch(form_class=HayAdvanceForm, template='search/advanceSearch.html'), name='haystack_advance_search_type'),
     #url(r'^search/booleaninstru/$', boolean_view.get_boolean_query),
+    url(r'^search/autocompletemshs/$', autocompletemshs),
 
     url(r'^search/playlist_add/(?P<type>[A-Za-z0-9._-]+)/$', NewPlaylistView().display, name='haystack_playlist'),
     url(r'^search/playlist_confirmation/(?P<type>[A-Za-z0-9._-]+)/$',NewPlaylistView().addToPlaylist, name='add_confirmation'),

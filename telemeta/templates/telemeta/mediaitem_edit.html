@@ -3,6 +3,7 @@
 {% load telemeta_tags %}
 {% load bootstrap3 %}
 
+
 {% block title %}
 <img src="{{ STATIC_URL }}telemeta/images/item.png" style="vertical-align:middle" /> Item : {{ item }}
 {% endblock %}
@@ -100,6 +101,8 @@
     <div class="tab-content">
 
       <div class="tab-pane fade in active" id="general">
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}jquery-ui/themes/base/jquery-ui.css"/>
+        <script src="{{ STATIC_URL }}jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
         <script type="text/javascript" src="/static/admin/js/jquery.min.js"></script>
         <script type="text/javascript" src="/static/admin/js/jquery.init.js"></script>
         <script type="text/javascript" src="/static/admin/js/actions.min.js"></script>
@@ -109,6 +112,15 @@
         {% trans "Collection access status" %} : {% trans item.collection.public_access %}<br />
         {% trans "Context access status" %} : {% trans access %}<br />
         </div>
+        <script>
+              $("#id_cultural_area").autocomplete({
+                source: "/search/autocompletemshs/?attr=cultural_area",
+                select: function (event, ui) {
+                    var selectedObj = ui.item;
+                },
+                minLength: 1,
+              });
+        </script>
       </div>
        
        <!--  Tab Analyze, for MSHS  -->
