@@ -238,7 +238,7 @@ class ResourceSingleMixin(ResourceMixin):
         else:
             context['parents'] = []
         return context
-
+        
 
 class ResourceListView(ResourceMixin, ListView):
 
@@ -365,4 +365,3 @@ class ResourceEpubPasswordView(ResourceSingleMixin, FormView):
 class ResourceEpubListView(ResourceDetailView):
 
     template_name = 'telemeta/resource_epub_list.html'
-
