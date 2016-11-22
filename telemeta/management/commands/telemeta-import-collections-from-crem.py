@@ -198,7 +198,12 @@ class Command(BaseCommand):
 
                     if items:
                         item = items[0]
-                        msg = code + ' : ' + item.old_code + ' : Cas 1 ou 2 : id = ' + str(item.id)
+                        if item.code:
+                            msg = code + ' : ' + item.code + ' : Cas 1 ou 2 : id = ' + str(item.id)
+                        elif item.old_code:
+                            msg = code + ' : ' + item.old_code + ' : Cas 1 ou 2 : id = ' + str(item.id)
+                        else:
+                            msg = code + ' : ' + ' Cas 1 ou 2 : id = ' + str(item.id)
                         self.logger.info('item', msg)
                         item.code = code
                     else:
@@ -229,5 +234,3 @@ class Command(BaseCommand):
         for collection in collections:
             msg = 'http://'+self.domain+'/archives/collections/'+collection
             self.logger.info(collection, msg)
-
-
