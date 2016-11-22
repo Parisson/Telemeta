@@ -26,6 +26,7 @@ from django.utils.translation import ugettext_lazy as _
 from telemeta.models.core import *
 from telemeta.models.system import *
 
+
 class MediaResource(ModelCore):
     "Base class of all media objects"
 
@@ -126,5 +127,3 @@ class MediaRelated(MediaResource):
 
     class Meta:
         abstract = True
-
-
