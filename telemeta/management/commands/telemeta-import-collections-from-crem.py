@@ -77,6 +77,9 @@ class Command(BaseCommand):
           make_option('-p', '--pattern',
             dest='pattern',
             help='define the pattern'),
+          make_option('-m', '--domain',
+            dest='domain',
+            help='define site domain'),
     )
 
     def write_file(self, item, media):
@@ -112,8 +115,16 @@ class Command(BaseCommand):
         self.source_dir = os.path.abspath(kwargs.get('source_dir'))
         self.dry_run =  kwargs.get('dry-run')
         self.force = kwargs.get('force')
+        self.domain = kwargs.get('domain')
 
-        self.domain = Site.objects.all()[0].domain
+        site = Site.objects.all()[0]
+        if self.domain:
+            site.domain = self.domain
+            site.name = self.domain
+            site.save()
+        else:
+            self.domain = site.domain
+
         self.user = User.objects.filter(username='admin')[0]
         self.collections = os.listdir(self.source_dir)
 
@@ -198,7 +209,12 @@ class Command(BaseCommand):
 
                     if items:
                         item = items[0]
-                        msg = code + ' : ' + item.old_code + ' : Cas 1 ou 2 : id = ' + str(item.id)
+                        if item.code:
+                            msg = code + ' : ' + item.code + ' : Cas 1 ou 2 : id = ' + str(item.id)
+                        elif item.old_code:
+                            msg = code + ' : ' + item.old_code + ' : Cas 1 ou 2 : id = ' + str(item.id)
+                        else:
+                            msg = code + ' : ' + ' Cas 1 ou 2 : id = ' + str(item.id)
                         self.logger.info('item', msg)
                         item.code = code
                     else:
@@ -229,5 +245,3 @@ class Command(BaseCommand):
         for collection in collections:
             msg = 'http://'+self.domain+'/archives/collections/'+collection
             self.logger.info(collection, msg)
-
-
