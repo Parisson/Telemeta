@@ -35,5 +35,5 @@ if __name__ == '__main__':
                                 os.system('touch ' + local_flag)
 
                 print 'processing :	' + path
-                os.system('nice -n 19 ' + path)
+                os.system('nice -n 19 xvfb-run -a ' + path)
                 os.system('touch ' + flag)

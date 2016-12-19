@@ -25,8 +25,8 @@ class TelemetaTranscode(object):
                    'mp3' : '-vn -acodec libmp3lame -aq 6',
                    'ogg' : '-vn -acodec libvorbis -aq 6',
                    'mp4' : '-vcodec libx264 -threads ' + str(threads) + \
-                           ' -c:v libx264 -crf 17 -maxrate 1100k -bufsize 1835k -acodec libfaac -ab 96k',
-                   'png' : '',
+                           ' -c:v libx264 -crf 17 -maxrate 1100k -bufsize 1835k -acodec aac -strict -2 -ab 96k',
+                   'png' : '-ss 0:0:10',
                    'webm' : '-vcodec libvpx -threads ' + str(threads) + \
                            ' -c:v libvpx -crf 17 -b:v 1100k',
                   }
