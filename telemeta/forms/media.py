@@ -95,7 +95,7 @@ class PlaylistForm(ModelForm):
 
     class Meta:
         model = Playlist
-
+        fields = '__all__'
 
 class FondsRelatedInline(InlineFormSet):
 
