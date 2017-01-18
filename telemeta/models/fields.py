@@ -140,7 +140,7 @@ class DurationField(models.Field):
     def __init__(self, *args, **kwargs):
         super(DurationField, self).__init__(*args, **normalize_field(kwargs, '0'))
 
-    def db_type(self):
+    def db_type(self, connection):
         return 'int'
 
     def to_python(self, value):
