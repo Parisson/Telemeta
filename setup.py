@@ -49,7 +49,7 @@ setup(
   author_email = "yomguy@parisson.com",
   version = '1.6.3',
   install_requires = [
-        'django==1.8.4',
+        'django==1.8.17',
         'django-registration-redux',
         'django-extensions',
         'django-timezones',
@@ -65,7 +65,6 @@ setup(
         'django-ipauth',
         'django-celery',
         'timeside>=0.7',
-        'south',
         'docutils',
         'psutil',
         'pyyaml',

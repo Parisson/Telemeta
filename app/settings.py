@@ -356,4 +356,3 @@ BOWER_INSTALLED_APPS = (
     'video.js',
     'sass-bootstrap-glyphicons',
 )
-
