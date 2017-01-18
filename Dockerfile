@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM parisson/timeside:latest
+FROM parisson/timeside:latest-dev
 
 MAINTAINER Guillaume Pellerin <yomguy@parisson.com>, Thomas fillon <thomas@parisson.com>
 
@@ -22,6 +22,7 @@ RUN mkdir -p /srv/src/
 RUN mkdir /srv/src/telemeta
 COPY . /srv/src/telemeta
 WORKDIR /srv/src/telemeta
+
 RUN conda install lxml
 RUN pip install -r requirements.txt
 RUN pip install -r requirements-dev.txt --src /srv/src
