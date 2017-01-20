@@ -19,6 +19,7 @@ gid='www-data'
 
 # stating apps
 pip install -U django==1.8.17
+pip uninstall south
 
 # waiting for other network services
 sh $app/scripts/wait.sh
