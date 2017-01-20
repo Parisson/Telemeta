@@ -27,6 +27,7 @@ from extra_views.generic import GenericInlineFormSet
 from django.forms.widgets import HiddenInput
 from django.utils.translation import ugettext_lazy as _
 
+
 class MediaFondsForm(ModelForm):
 
     queryset = MediaCorpus.objects.all()
@@ -97,6 +98,7 @@ class PlaylistForm(ModelForm):
         model = Playlist
         fields = '__all__'
 
+
 class FondsRelatedInline(InlineFormSet):
 
     model = MediaFondsRelated
@@ -125,30 +127,36 @@ class CollectionIdentifierInline(InlineFormSet):
 
     model = MediaCollectionIdentifier
     max_num = 1
+    fields = '__all__'
 
 
 class ItemPerformanceInline(InlineFormSet):
 
     model = MediaItemPerformance
+    fields = '__all__'
 
 
 class ItemKeywordInline(InlineFormSet):
 
     model = MediaItemKeyword
+    fields = '__all__'
 
 
 class ItemFormatInline(InlineFormSet):
 
     model = Format
     max_num = 1
+    fields = '__all__'
 
 
 class ItemIdentifierInline(InlineFormSet):
 
     model = MediaItemIdentifier
     max_num = 1
+    fields = '__all__'
 
 
 class EpubPasswordForm(forms.Form):
 
     password = forms.CharField(label=_('password'))
+    fields = '__all__'
