@@ -159,7 +159,7 @@ INSTALLED_APPS = (
     'sorl.thumbnail',
     'timezones',
     'jqchat',
-    'ipauth',
+    # 'ipauth',
     'extra_views',
     'debug_toolbar',
     'bootstrap3',

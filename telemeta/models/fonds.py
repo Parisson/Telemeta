@@ -26,6 +26,7 @@ from django.utils.translation import ugettext_lazy as _
 from telemeta.models.core import *
 from telemeta.models.resource import *
 from telemeta.models.corpus import *
+from django.db import models
 
 
 class MediaFonds(MediaBaseResource):

@@ -58,11 +58,11 @@ class MediaResource(ModelCore):
 class MediaBaseResource(MediaResource):
     "Describe a media base resource"
 
-    title                 = CharField(_('title'), required=True)
-    description           = CharField(_('description_old'))
-    descriptions          = TextField(_('description'))
-    code                  = CharField(_('code'), unique=True, required=True)
-    public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES, max_length=16, default="metadata")
+    title                 = models.CharField(_('title'), max_length=250)
+    description           = models.CharField(_('description_old'), max_length=250, blank=True, null=True)
+    descriptions          = models.TextField(_('description'), blank=True)
+    code                  = models.CharField(_('code'), unique=True, max_length=250)
+    public_access         = models.CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES, max_length=16, default="metadata")
 
     def __unicode__(self):
         return self.code
