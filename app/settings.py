@@ -156,7 +156,6 @@ INSTALLED_APPS = (
     'timeside.player',
     'timeside.server',
     'jsonrpc',
-    #'south',
     'sorl.thumbnail',
     'timezones',
     'jqchat',

@@ -228,6 +228,12 @@ class CharField(models.CharField):
             kwargs['max_length'] = 250
         super(CharField, self).__init__(*args, **normalize_field(kwargs, ''))
 
+    def deconstruct(self):
+        name, path, args, kwargs = super(CharField, self).deconstruct()
+        print kwargs
+        del kwargs["max_length"]
+        return name, path, args, kwargs
+
 
 class IntegerField(models.IntegerField):
     """IntegerField normalized with normalize_field()"""

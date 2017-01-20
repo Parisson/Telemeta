@@ -22,6 +22,7 @@
 #          Guillaume Pellerin <yomguy@parisson.com>
 
 
+from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from telemeta.models.core import *
 from telemeta.models.system import *
@@ -86,7 +87,7 @@ class MediaRelated(MediaResource):
     element_type = 'media'
 
     title           = CharField(_('title'))
-    date            = DateTimeField(_('date'), auto_now=True)
+    date            = models.DateTimeField(_('date'), auto_now=True)
     description     = TextField(_('description'))
     mime_type       = CharField(_('mime_type'))
     url             = CharField(_('url'), max_length=500)
