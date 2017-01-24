@@ -20,13 +20,6 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-    {% block analytics %}
-        {% if 'googletools' in INSTALLED_APPS %}
-            {% site_verification_code %}
-            {% analytics_code %}
-        {% endif %}
-    {% endblock analytics %}
-
     <link rel="alternate" href="/rss" title="RSS 2.0" type="application/rss+xml"/>
     <link rel="icon" href="{{ STATIC_URL }}telemeta/images/favicon.ico"/>
 

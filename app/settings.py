@@ -164,7 +164,6 @@ INSTALLED_APPS = (
     'debug_toolbar',
     'bootstrap3',
     'bootstrap_pagination',
-    'googletools',
     'registration',
     'rest_framework',
     'djcelery',
