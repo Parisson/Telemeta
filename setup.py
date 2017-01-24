@@ -49,15 +49,15 @@ setup(
   author_email = "yomguy@parisson.com",
   version = '1.6.3',
   install_requires = [
-        'django==1.8.17',
+        'django==1.9.*',
         'django-registration-redux',
         'django-extensions',
         'django-timezones',
         'django-jqchat',
-        'django-debug-toolbar==1.3.2',
+        'django-debug-toolbar==1.6',
         'django-extra-views',
         'django-breadcrumbs',
-        'django-bootstrap3==6.2.1',
+        'django-bootstrap3==8.1.0',
         'django-bootstrap-pagination',
         'django-json-rpc',
         'django-suit',
@@ -77,7 +77,7 @@ setup(
         'redis',
         'Werkzeug',
         'django-dirtyfields',
-        'sqlparse==0.1.19'
+        'sqlparse==0.2.2'
     ],
   tests_require=['pytest-django', 'pytest-cov', 'factory-boy'],
   # Provide a test command through django-setuptest
