@@ -18,7 +18,7 @@ uid='www-data'
 gid='www-data'
 
 # stating apps
-pip install -U django==1.8.17
+pip install -U django==1.9.12
 pip uninstall -y south
 
 # waiting for other network services
