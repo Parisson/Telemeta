@@ -61,8 +61,6 @@ LANGUAGES = [ ('fr', 'French'),
               ('es', 'Spanish'),
 ]
 
-SITE_ID = 1
-
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
 USE_I18N = True
@@ -123,14 +121,13 @@ TEMPLATE_LOADERS = (
 
 MIDDLEWARE_CLASSES = (
     # Manage Django URLs for AngularJS with django-angular
-    'djng.middleware.AngularUrlMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
     # 'pagination.middleware.PaginationMiddleware',
 )
 
