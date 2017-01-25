@@ -117,12 +117,12 @@ SECRET_KEY = 'a8l7%06wr2k+3=%#*#@#rvop2mmzko)44%7k(zx%lls^ihm9^5'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DEBUG': DEBUG,
         'DIRS': [
             # insert your TEMPLATE_DIRS here
         ],
         'APP_DIRS': True,
         'OPTIONS': {
+            #'debug': DEBUG,
             'context_processors': [
                 # Insert your TEMPLATE_CONTEXT_PROCESSORS here or use this
                 # list if you haven't customized them:
