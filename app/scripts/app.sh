@@ -18,9 +18,11 @@ uid='www-data'
 gid='www-data'
 
 # stating apps
-pip install -U django==1.9.12
+#pip install -U django==1.9.12
+pip install -U django==1.8.17
 pip uninstall -y south
-
+pip install -e git+https://github.com/Parisson/django-jqchat.git@dj1.8
+pip install django-debug-toolbar==1.5
 # waiting for other network services
 sh $app/scripts/wait.sh
 python $manage wait-for-db

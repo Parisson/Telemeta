@@ -4,3 +4,4 @@
 -e git+https://github.com/Parisson/saved_searches.git#egg=saved_searches-2.0.0-beta
 -e git+https://github.com/django-haystack/django-haystack.git@v2.5.1#egg=django-haystack-2.5.1
 -e git+https://github.com/yomguy/django-ipauth.git#egg=django-ipauth-0.4.1-dev
+-e git+https://github.com/Parisson/django-jqchat.git@dj1.8
