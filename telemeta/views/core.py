@@ -92,9 +92,11 @@ class TelemetaBaseMixin(object):
 
 
 class FixedFileWrapper(FileWrapper):
+
     def __iter__(self):
         self.filelike.seek(0)
         return self
+
 
 def send_file(request, filename, content_type='image/jpeg'):
     """
@@ -107,6 +109,7 @@ def send_file(request, filename, content_type='image/jpeg'):
     response['Content-Length'] = os.path.getsize(filename)
     return response
 
+
 def nginx_media_accel(request, filename):
     """Send a protected medie file through nginx with X-Accel-Redirect"""
 
@@ -117,9 +120,11 @@ def nginx_media_accel(request, filename):
     response['X-Accel-Redirect'] = url
     return response
 
-def render(request, template, data = None, mimetype = None):
+
+def render(request, template, data=None, content_type=None):
     return render_to_response(template, data, context_instance=RequestContext(request),
-                              mimetype=mimetype)
+                              content_type=content_type)
+
 
 def stream_from_processor(decoder, encoder, flag):
     pipe = decoder | encoder
@@ -127,6 +132,7 @@ def stream_from_processor(decoder, encoder, flag):
         yield chunk
     flag.value = True
     flag.save()
+
 
 def stream_from_file(file):
     chunk_size = 0x100000
@@ -137,6 +143,7 @@ def stream_from_file(file):
             f.close()
             break
         yield chunk
+
 
 def get_item_access(item, user):
     # Item access rules according to this workflow:
@@ -149,7 +156,7 @@ def get_item_access(item, user):
         access = 'full'
 
     elif item.collection.public_access != 'mixed':
-        if user.is_authenticated() :
+        if user.is_authenticated():
             if item.collection.public_access == 'metadata' and item.collection.auto_period_access:
                 access = 'full'
             else:
@@ -158,7 +165,7 @@ def get_item_access(item, user):
             access = item.collection.public_access
 
     elif item.collection.public_access == 'mixed':
-        if user.is_authenticated() :
+        if user.is_authenticated():
             if item.public_access == 'metadata' and item.auto_period_access:
                 access = 'full'
             else:
@@ -185,6 +192,7 @@ def get_item_access(item, user):
 
     return access
 
+
 def get_revisions(nb, user=None):
     last_revisions = Revision.objects.order_by('-time')
     if user:
@@ -203,6 +211,7 @@ def get_revisions(nb, user=None):
             revisions.append({'revision': revision, 'element': element})
     return revisions
 
+
 def get_playlists(request, user=None):
     if not user:
         user = request.user
@@ -219,9 +228,9 @@ def get_playlists(request, user=None):
                             element = mods[type].objects.get(id=resource.resource_id)
                 except:
                     element = None
-                resources.append({'element': element, 'type': resource.resource_type, 'public_id': resource.public_id })
+                resources.append({'element': element, 'type': resource.resource_type, 'public_id': resource.public_id})
             playlists.append({'playlist': playlist, 'resources': resources})
-        #add by Killian Mary for sort playlist by title
+        # add by Killian Mary for sort playlist by title
         playlists.sort(key=lambda x: x['playlist'].title)
     return playlists
 
@@ -255,6 +264,7 @@ def check_related_media(medias):
             media.title = title.replace('\n', '').strip()
             media.save()
 
+
 def auto_code(collection):
     items = collection.items.all()
     suffixes = []
@@ -272,18 +282,18 @@ def auto_code(collection):
                 suffixes.append(suffix)
 
     if suffixes:
-        return collection.code + '_' + str(max(suffixes)+1)
+        return collection.code + '_' + str(max(suffixes) + 1)
     else:
         return collection.code + '_001'
 
 
 def get_room(content_type=None, id=None, name=None):
     rooms = jqchat.models.Room.objects.filter(content_type=content_type,
-                                                object_id=id)
+                                              object_id=id)
     if not rooms:
         room = jqchat.models.Room.objects.create(content_type=content_type,
-                                          object_id=id,
-                                          name=name[:254])
+                                                 object_id=id,
+                                                 name=name[:254])
     else:
         room = rooms[0]
     return room
