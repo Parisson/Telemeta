@@ -20,6 +20,7 @@
 # Authors: Olivier Guilyardi <olivier@samalyse.com>
 #          Guillaume Pellerin <yomguy@parisson.com>
 
+from django.apps import apps
 
 from telemeta.views.core import *
 
@@ -45,8 +46,7 @@ class AdminView(object):
         return render(request, 'telemeta/admin_users.html', {'users': users})
 
     def __get_enumerations_list(self):
-        from django.db.models import get_models
-        models = get_models(telemeta.models)
+        models = apps.get_models(telemeta.models)
 
         enumerations = []
         for model in models:
@@ -63,8 +63,7 @@ class AdminView(object):
         return {"enumerations": self.__get_enumerations_list()}
 
     def __get_enumeration(self, id):
-        from django.db.models import get_models
-        models = get_models(telemeta.models)
+        models = apps.get_models(telemeta.models)
         for model in models:
             if model._meta.model_name == id:
                 break
