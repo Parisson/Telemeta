@@ -20,10 +20,12 @@
 # Authors: Olivier Guilyardi <olivier@samalyse.com>
 #          Guillaume Pellerin <yomguy@parisson.com>
 
-from django.conf.urls import patterns, url, include
+from django.conf.urls import url, include
 from django.conf import settings
+from django.contrib.auth import views as auth_views
 from django.views.generic.base import RedirectView, TemplateView
 from django.views.generic.list import ListView
+from django.views.static import serve
 from telemeta.models import MediaItem, MediaCollection, MediaItemMarker, MediaCorpus, MediaFonds
 from telemeta.views import *
 from haystack.forms import *
@@ -51,7 +53,7 @@ resource_view = ResourceView()
 export_extensions = "|".join(item_view.list_export_extensions())
 
 
-urlpatterns = patterns('',
+urlpatterns = [
     url(r'^$', home_view.home, name="telemeta-home"),
     url(r'^test', TemplateView.as_view(template_name = "telemeta/hello_world.html")),
 
@@ -190,8 +192,8 @@ urlpatterns = patterns('',
     url(r'^oai/.*$', home_view.handle_oai_request, name="telemeta-oai"),
 
     # Authentication
-    url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'telemeta/login.html'}, name="telemeta-login"),
-    url(r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name': 'telemeta/login.html'}, name="telemeta-login"),
+    url(r'^login/$', auth_views.login, {'template_name': 'telemeta/login.html'}, name="telemeta-login"),
+    url(r'^accounts/login/$', auth_views.login, {'template_name': 'telemeta/login.html'}, name="telemeta-login"),
     #url(r'^login/$', 'ipauth.views.login', {'template_name': 'telemeta/login.html'},
     #    name="telemeta-login"),
     url(r'^logout/$', home_view.logout, name="telemeta-logout"),
@@ -211,12 +213,12 @@ urlpatterns = patterns('',
     url(r'^accounts/(?P<username>[A-Za-z0-9._-]+)/rss/$', UserRevisionsFeed(),  name="telemeta-user-rss"),
 
     # Registration
-    url(r'^accounts/password_change/$', 'django.contrib.auth.views.password_change', {'template_name': 'telemeta/registration/password_change_form.html'}, name="password_change"),
-    url(r'^accounts/password_change_done/$', 'django.contrib.auth.views.password_change_done', {'template_name': 'telemeta/registration/password_change_done.html'}, name="password_change_done"),
-    url(r'^accounts/password_reset/$', 'django.contrib.auth.views.password_reset', {'template_name': 'telemeta/registration/password_reset_form.html', 'email_template_name': 'registration/password_reset_email.html'}, name="password_reset"),
-    url(r'^accounts/password_reset_done/$', 'django.contrib.auth.views.password_reset_done', {'template_name': 'telemeta/registration/password_reset_done.html'}, name="password_reset_done"),
-    url(r'^accounts/password_reset_confirm/(?P<uidb64>[A-Za-z0-9._-]+)/(?P<token>[A-Za-z0-9._-]+)/$', 'django.contrib.auth.views.password_reset_confirm', {'template_name': 'telemeta/registration/password_reset_confirm.html'}, name="password_reset_confirm"),
-    url(r'^accounts/password_reset_complete/$', 'django.contrib.auth.views.password_reset_complete', {'template_name': 'telemeta/registration/password_reset_complete.html'}, name="password_reset_complete"),
+    url(r'^accounts/password_change/$', auth_views.password_change, {'template_name': 'telemeta/registration/password_change_form.html'}, name="password_change"),
+    url(r'^accounts/password_change_done/$', auth_views.password_change_done, {'template_name': 'telemeta/registration/password_change_done.html'}, name="password_change_done"),
+    url(r'^accounts/password_reset/$', auth_views.password_reset, {'template_name': 'telemeta/registration/password_reset_form.html', 'email_template_name': 'registration/password_reset_email.html'}, name="password_reset"),
+    url(r'^accounts/password_reset_done/$', auth_views.password_reset_done, {'template_name': 'telemeta/registration/password_reset_done.html'}, name="password_reset_done"),
+    url(r'^accounts/password_reset_confirm/(?P<uidb64>[A-Za-z0-9._-]+)/(?P<token>[A-Za-z0-9._-]+)/$', auth_views.password_reset_confirm, {'template_name': 'telemeta/registration/password_reset_confirm.html'}, name="password_reset_confirm"),
+    url(r'^accounts/password_reset_complete/$', auth_views.password_reset_complete, {'template_name': 'telemeta/registration/password_reset_complete.html'}, name="password_reset_complete"),
 
     # JSON RPC
     url(r'jsonrpc/$', jsonrpc_site.dispatch, name='jsonrpc_mountpoint'),
@@ -230,19 +232,20 @@ urlpatterns = patterns('',
 
     # Static media
     # FIXME:need to move export dir from the cache
-    url(r'^media/cache/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.TELEMETA_CACHE_DIR,}),
+    url(r'^media/cache/(?P<path>.*)$', serve, {'document_root': settings.TELEMETA_CACHE_DIR,}),
 
     url(r'^', include('jqchat.urls')),
 
     url(r'^timeside/', include('timeside.server.urls')),
 
-)
+]
 
 
 if settings.DEBUG and 'debug_toolbar' in settings.INSTALLED_APPS:
     import debug_toolbar
-    urlpatterns += patterns('',
-    url(r'^__debug__/', include(debug_toolbar.urls)),
-    # for the graphical browser/web console only, omissible
-    url(r'json/browse/', 'jsonrpc.views.browse', name="jsonrpc_browser"),
-    )
+    import jsonrpc.views
+    urlpatterns += [
+        url(r'^__debug__/', include(debug_toolbar.urls)),
+        # for the graphical browser/web console only, omissible
+        url(r'json/browse/', jsonrpc.views.browse, name="jsonrpc_browser"),
+    ]

@@ -46,7 +46,7 @@ from django.conf import settings
 from django.contrib import auth
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
-from django.core.context_processors import csrf
+from django.template.context_processors import csrf
 from django.forms.models import modelformset_factory, inlineformset_factory
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext
