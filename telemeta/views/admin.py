@@ -23,6 +23,7 @@
 
 from telemeta.views.core import *
 
+
 class AdminView(object):
     """Provide Admin web UI methods"""
 
@@ -52,7 +53,7 @@ class AdminView(object):
             if issubclass(model, Enumeration):
                 if not model.hidden:
                     enumerations.append({"name": model._meta.verbose_name,
-                                         "id": model._meta.module_name})
+                                         "id": model._meta.model_name})
 
         cmp = lambda obj1, obj2: unaccent_icmp(obj1['name'], obj2['name'])
         enumerations.sort(cmp)
@@ -65,10 +66,10 @@ class AdminView(object):
         from django.db.models import get_models
         models = get_models(telemeta.models)
         for model in models:
-            if model._meta.module_name == id:
+            if model._meta.model_name == id:
                 break
 
-        if model._meta.module_name != id:
+        if model._meta.model_name != id:
             return None
 
         return model
@@ -76,12 +77,12 @@ class AdminView(object):
     @method_decorator(permission_required('telemeta.change_keyword'))
     def edit_enumeration(self, request, enumeration_id):
 
-        enumeration  = self.__get_enumeration(enumeration_id)
+        enumeration = self.__get_enumeration(enumeration_id)
         if enumeration == None:
             raise Http404
 
         vars = self.__get_admin_context_vars()
-        vars["enumeration_id"] = enumeration._meta.module_name
+        vars["enumeration_id"] = enumeration._meta.model_name
         vars["enumeration_name"] = enumeration._meta.verbose_name
         vars["enumeration_values"] = enumeration.objects.all()
         return render(request, 'telemeta/enumeration_edit.html', vars)
@@ -89,7 +90,7 @@ class AdminView(object):
     @method_decorator(permission_required('telemeta.add_keyword'))
     def add_to_enumeration(self, request, enumeration_id):
 
-        enumeration  = self.__get_enumeration(enumeration_id)
+        enumeration = self.__get_enumeration(enumeration_id)
         if enumeration == None:
             raise Http404
 
@@ -102,7 +103,7 @@ class AdminView(object):
     @method_decorator(permission_required('telemeta.change_keyword'))
     def update_enumeration(self, request, enumeration_id):
 
-        enumeration  = self.__get_enumeration(enumeration_id)
+        enumeration = self.__get_enumeration(enumeration_id)
         if enumeration == None:
             raise Http404
 
@@ -114,7 +115,7 @@ class AdminView(object):
     @method_decorator(permission_required('telemeta.change_keyword'))
     def edit_enumeration_value(self, request, enumeration_id, value_id):
 
-        enumeration  = self.__get_enumeration(enumeration_id)
+        enumeration = self.__get_enumeration(enumeration_id)
         if enumeration == None:
             raise Http404
 
@@ -122,20 +123,20 @@ class AdminView(object):
         content_type = ContentType.objects.get(app_label="telemeta", model=enumeration_id)
 
         vars = self.__get_admin_context_vars()
-        vars["enumeration_id"] = enumeration._meta.module_name
+        vars["enumeration_id"] = enumeration._meta.model_name
         vars["enumeration_name"] = enumeration._meta.verbose_name
         vars["enumeration_record"] = record
         vars["enumeration_records"] = enumeration.objects.all()
         vars['room'] = get_room(content_type=content_type,
-                                   id=record.id,
-                                   name=record.value)
+                                id=record.id,
+                                name=record.value)
         return render(request, 'telemeta/enumeration_edit_value.html', vars)
 
     @method_decorator(permission_required('telemeta.change_keyword'))
     def update_enumeration_value(self, request, enumeration_id, value_id):
 
         if request.method == 'POST':
-            enumeration  = self.__get_enumeration(enumeration_id)
+            enumeration = self.__get_enumeration(enumeration_id)
             if enumeration == None:
                 raise Http404
 
@@ -179,4 +180,3 @@ class AdminView(object):
             from_record.delete()
 
         return self.edit_enumeration(request, enumeration_id)
-
