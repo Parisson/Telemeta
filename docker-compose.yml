@@ -27,6 +27,7 @@ data:
   volumes:
      - ./data/media/:/srv/media
      - ./data/backup/:/srv/backup
+     - ./data/log/uwsgi:/var/log/uwsgi
      - /srv/static
      - /srv/bower
   command: "true"
@@ -53,7 +54,6 @@ app:
     - ./app/:/srv/app
     - ./telemeta/:/srv/src/telemeta/telemeta
     - ./lib/TimeSide/:/srv/src/timeside
-    - /var/log/uwsgi
   volumes_from:
     - data
   env_file:
