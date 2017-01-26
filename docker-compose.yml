@@ -53,6 +53,7 @@ app:
     - ./app/:/srv/app
     - ./telemeta/:/srv/src/telemeta/telemeta
     - ./lib/TimeSide/:/srv/src/timeside
+    - /var/log/uwsgi
   volumes_from:
     - data
   env_file:
