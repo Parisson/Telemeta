@@ -55,12 +55,11 @@ class HomeView(object):
             sound_pub_item = sound_items[indexes[0]]
             sound_pub_items = [sound_items[indexes[i]] for i in range(1, N)]
 
-        context = RequestContext(request, {
-                    'page_content': pages.get_page_content(request,
-                    'home', ignore_slash_issue=True),
-                    'sound_pub_items': sound_pub_items,
-                    'sound_pub_item': sound_pub_item })
-        return HttpResponse(template.render(context))
+        context = {'page_content': pages.get_page_content(request,
+                   'home', ignore_slash_issue=True),
+                   'sound_pub_items': sound_pub_items,
+                   'sound_pub_item': sound_pub_item}
+        return HttpResponse(template.render(context, request))
 
     def lists(self, request, range_playlist):
         """Render the home page"""
