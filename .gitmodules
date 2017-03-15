@@ -10,3 +10,6 @@
 [submodule "lib/TimeSide"]
 	path = lib/TimeSide
 	url = https://github.com/Parisson/TimeSide.git
+[submodule "locale"]
+	path = locale
+	url = https://github.com/lluc/Telemeta-locales
