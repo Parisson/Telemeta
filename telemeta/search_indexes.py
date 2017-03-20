@@ -248,8 +248,10 @@ class LocationIndex(indexes.SearchIndex, indexes.Indexable):
         return Location
 
     def index_queryset(self, using=None):
-        return MediaItem.objects.all().locations()
-
+        loc = MediaItem.objects.values('location')
+        old = Location.objects.filter(current_location__in=loc).values('id')
+        anc = LocationRelation.objects.filter(location__in=loc).values('ancestor_location')
+        return Location.objects.filter(Q(pk__in=loc)|Q(pk__in=old)|Q(pk__in=anc))
 
 class LocationAliasIndex(indexes.SearchIndex, indexes.Indexable):
 

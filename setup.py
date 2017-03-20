@@ -49,8 +49,8 @@ setup(
   author_email = "yomguy@parisson.com",
   version = '1.6.3',
   install_requires = [
-        'django==1.6.11',
-        'django-registration==1.0',
+        'django==1.8.4',
+        'django-registration-redux',
         'django-extensions',
         'django-timezones',
         'django-jqchat',
@@ -77,7 +77,8 @@ setup(
         'django-environ',
         'redis',
         'Werkzeug',
-        'django-dirtyfields'
+        'django-dirtyfields',
+        'sqlparse==0.1.19'
     ],
   tests_require=['pytest-django', 'pytest-cov', 'factory-boy'],
   # Provide a test command through django-setuptest

@@ -156,7 +156,7 @@ INSTALLED_APPS = (
     'timeside.player',
     'timeside.server',
     'jsonrpc',
-    'south',
+    #'south',
     'sorl.thumbnail',
     'timezones',
     'jqchat',
@@ -330,8 +330,9 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
-HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
-# HAYSTACK_SIGNAL_PROCESSOR = 'telemeta.util.search_signals.RealTimeCustomSignal'
+HAYSTACK_ROUTERS = ['telemeta.util.search_router.AutoRouter', 'haystack.routers.DefaultRouter']
+# HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+HAYSTACK_SIGNAL_PROCESSOR = 'telemeta.util.search_signals.RealTimeCustomSignal'
 HAYSTACK_SEARCH_RESULTS_PER_PAGE = 50
 
 BOWER_COMPONENTS_ROOT = '/srv/bower/'
@@ -356,3 +357,4 @@ BOWER_INSTALLED_APPS = (
     'sass-bootstrap-glyphicons',
     'jquery-tokenize',
 )
+
