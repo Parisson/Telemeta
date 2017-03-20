@@ -461,9 +461,5 @@ def logo_url():
     return getattr(settings, 'TELEMETA_LOGO', static_url + '/telemeta/images/logo_universite_poitiers.jpg')
 
 @register.assignment_tag
-def get_googletools():
-    return 'googletools' in settings.INSTALLED_APPS
-
-@register.assignment_tag
 def settings_value(name):
     return getattr(settings, name, "")

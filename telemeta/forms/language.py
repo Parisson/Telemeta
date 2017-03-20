@@ -25,3 +25,4 @@ from telemeta.models import *
 class LanguageForm(ModelForm):
     class Meta:
         model = Language
+        fields = '__all__'

@@ -27,6 +27,7 @@ data:
   volumes:
      - ./data/media/:/srv/media
      - ./data/backup/:/srv/backup
+     - ./data/log/uwsgi:/var/log/uwsgi
      - /srv/static
      - /srv/bower
   command: "true"

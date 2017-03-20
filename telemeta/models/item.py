@@ -22,6 +22,7 @@
 #          Guillaume Pellerin <yomguy@parisson.com>
 
 from __future__ import division
+from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.core.validators import RegexValidator
 from telemeta.models.core import *
@@ -30,6 +31,7 @@ from telemeta.models.query import *
 from telemeta.models.identifier import *
 from telemeta.models.resource import *
 from telemeta.models.enum import *
+
 
 item_published_code_regex = getattr(settings, 'ITEM_PUBLISHED_CODE_REGEX', '[A-Za-z0-9._-]*')
 item_unpublished_code_regex = getattr(settings, 'ITEM_UNPUBLISHED_CODE_REGEX', '[A-Za-z0-9._-]*')
@@ -461,7 +463,7 @@ class MediaItemMarker(MediaResource):
     public_id       = CharField(_('public_id'), required=True)
     time            = FloatField(_('time (s)'))
     title           = CharField(_('title'))
-    date            = DateTimeField(_('date'), auto_now=True)
+    date            = models.DateTimeField(_('date'), auto_now=True)
     description     = TextField(_('description'))
     author          = ForeignKey(User, related_name="markers", verbose_name=_('author'),
                                  blank=True, null=True)
@@ -484,7 +486,7 @@ class MediaItemTranscoded(MediaResource):
 
     item            = models.ForeignKey('MediaItem', related_name="transcoded", verbose_name=_('item'))
     mimetype        = models.CharField(_('mime_type'), max_length=255, blank=True)
-    date_added      = DateTimeField(_('date'), auto_now_add=True)
+    date_added      = models.DateTimeField(_('date'), auto_now_add=True)
     status          = models.IntegerField(_('status'), choices=ITEM_TRANSODING_STATUS, default=1)
     file            = models.FileField(_('file'), upload_to='items/%Y/%m/%d', max_length=1024, blank=True)
 
@@ -518,7 +520,7 @@ class MediaItemTranscodingFlag(ModelCore):
 
     item            = ForeignKey('MediaItem', related_name="transcoding", verbose_name=_('item'))
     mime_type       = CharField(_('mime_type'), required=True)
-    date            = DateTimeField(_('date'), auto_now=True)
+    date            = models.DateTimeField(_('date'), auto_now=True)
     value           = BooleanField(_('transcoded'))
 
     class Meta(MetaCore):

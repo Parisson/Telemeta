@@ -40,16 +40,18 @@ collection_unpublished_code_regex = getattr(settings, 'COLLECTION_UNPUBLISHED_CO
 collection_code_regex = '(?:%s|%s)' % (collection_published_code_regex,
                                        collection_unpublished_code_regex)
 
+
+def is_valid_collection_code(value):
+    "Check if the collection code is well formed"
+    regex = '^' + collection_code_regex + '$'
+    if not re.match(regex, value):
+        raise ValidationError(u'%s is not a valid collection code' % value)
+
+
 class MediaCollection(MediaResource):
     "Describe a collection of items"
 
     element_type = 'collection'
-
-    def is_valid_collection_code(value):
-        "Check if the collection code is well formed"
-        regex = '^' + collection_code_regex + '$'
-        if not re.match(regex, value):
-            raise ValidationError(u'%s is not a valid collection code' % value)
 
     # General informations
     title                 = CharField(_('title'), required=True)

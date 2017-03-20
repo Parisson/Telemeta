@@ -24,6 +24,7 @@
 from telemeta.views.core import *
 from telemeta.views.epub import *
 
+
 class CollectionView(object):
     """Provide Collections web UI methods"""
 
@@ -383,4 +384,3 @@ class CollectionEpubView(BaseEpubMixin, View):
     # @method_decorator(permission_required('telemeta.can_download_collection_epub'))
     def dispatch(self, *args, **kwargs):
         return super(CollectionEpubView, self).dispatch(*args, **kwargs)
-

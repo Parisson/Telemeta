@@ -21,12 +21,13 @@
 #          David LIPSZYC <davidlipszyc@gmail.com>
 #          Guillaume Pellerin <yomguy@parisson.com>
 
+
+from django.db import models
 from django.contrib.auth.models import User
-from telemeta.models.core import *
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import ugettext_lazy as _
-import django.db.models as models
 from django.forms import ModelForm
+from telemeta.models.core import *
 
 
 class Revision(ModelCore):
@@ -38,7 +39,7 @@ class Revision(ModelCore):
     element_type         = CharField(_('element type'), choices=ELEMENT_TYPE_CHOICES, max_length=16, required=True)
     element_id           = IntegerField(_('element identifier'), required=True)
     change_type          = CharField(_('modification type'), choices=CHANGE_TYPE_CHOICES, max_length=16, required=True)
-    time                 = DateTimeField(_('time'), auto_now_add=True)
+    time                 = models.DateTimeField(_('time'), auto_now_add=True)
     user                 = ForeignKey(User, db_column='username', related_name="revisions", verbose_name=_('user'))
 
     @classmethod
@@ -99,9 +100,9 @@ class Search(ModelCore):
     element_type = 'search'
 
     username = ForeignKey(User, related_name="searches", db_column="username")
-    date = DateTimeField(_('date'), auto_now_add=True)
+    date = models.DateTimeField(_('date'), auto_now_add=True)
     description = CharField(_('Description'))
-    criteria = models.ManyToManyField(Criteria, related_name="search", verbose_name=_('criteria'), blank=True, null=True)
+    criteria = models.ManyToManyField(Criteria, related_name="search", verbose_name=_('criteria'), blank=True)
 
     class Meta(MetaCore):
         db_table = 'searches'
