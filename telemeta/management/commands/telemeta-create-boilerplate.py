@@ -25,8 +25,13 @@ class Command(BaseCommand):
             result.delete()
 
     def handle(self, *args, **options):
-        collection, c = MediaCollection.objects.get_or_create(title=self.code,
-                            code=self.code, public_access = 'full')
+        collections = MediaCollection.objects.filter(code=self.code)
+        if collections:
+            collection = collections[0]
+        else:
+            collection = MediaCollection(title=self.code, code=self.code, public_access='full')
+            collection.save()
+
         selection, c = Selection.objects.get_or_create(title='Tests')
 
         if c:
