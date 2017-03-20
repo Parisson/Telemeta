@@ -227,7 +227,7 @@ urlpatterns = patterns('',
     url(r'^playlists/(?P<public_id>[a-zA-Z0-9]+)/(?P<resource_type>[a-zA-Z0-9]+)/csv/$', playlist_view.playlist_csv_export, name="telemeta-playlist-csv-export"),
     url(r'^playlists/playlist_add/$', NewPlaylistView().display, name='playlist'),
 
-                       # RSS feeds
+    # RSS feeds
     url(r'^rss/$', LastestRevisionsFeed(), name="telemeta-rss"),
 
     # Static media
