@@ -304,14 +304,14 @@ class ItemView(ItemBaseMixin):
         if 'mp4' in extension:
             mime_type = 'video/mp4'
             video = item.file.path
-            response = StreamingHttpResponse(stream_from_file(video), mimetype = mime_type)
+            response = StreamingHttpResponse(stream_from_file(video), content_type = mime_type)
             response['Content-Disposition'] = 'attachment'
             return response
 
         if 'webm' in extension:
             mime_type = 'video/webm'
             video = item.file.path
-            response = StreamingHttpResponse(stream_from_file(video), mimetype = mime_type)
+            response = StreamingHttpResponse(stream_from_file(video), content_type = mime_type)
             response['Content-Disposition'] = 'attachment'
             return response
 
@@ -349,7 +349,7 @@ class ItemView(ItemBaseMixin):
                     proc.write_metadata()
                 except:
                     pass
-            response = StreamingHttpResponse(stream_from_file(source), mimetype = mime_type)
+            response = StreamingHttpResponse(stream_from_file(source), content_type = mime_type)
         else:
             media = self.cache_export.dir + os.sep + file
             if not self.cache_export.exists(file) or not flag.value:
