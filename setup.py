@@ -76,7 +76,8 @@ setup(
         'redis',
         'Werkzeug',
         'django-dirtyfields',
-        'sqlparse==0.2.2'
+        'sqlparse==0.2.2',
+        'django_select2',
     ],
   tests_require=['pytest-django', 'pytest-cov', 'factory-boy'],
   # Provide a test command through django-setuptest

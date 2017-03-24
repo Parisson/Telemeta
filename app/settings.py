@@ -182,6 +182,7 @@ INSTALLED_APPS = (
     'djangobower',
     'djng',
     'saved_searches',
+    'django_select2',
 )
 
 
@@ -357,4 +358,6 @@ BOWER_INSTALLED_APPS = (
     'video.js',
     'sass-bootstrap-glyphicons',
     'jquery-tokenize',
+    'select2',
+    'select2-bootstrap-theme',
 )
