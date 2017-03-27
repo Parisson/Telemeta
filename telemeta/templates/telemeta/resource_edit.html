@@ -4,7 +4,7 @@
 {% load bootstrap3 %}
 
 {% block title %}
-<img src="{{ STATIC_URL }}telemeta/images/{{ type }}.png" style="vertical-align:middle" /> {{ type }} : {{ resource }}
+<img src="{{ STATIC_URL }}telemeta/images/{{ type }}.png" style="vertical-align:middle" /> {% trans type %} : {{ resource }}
 {% endblock %}
 
 {% block title_buttons %}

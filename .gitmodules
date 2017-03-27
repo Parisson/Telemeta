@@ -4,6 +4,7 @@
 [submodule "telemeta/locale"]
 	path = telemeta/locale
 	url = https://github.com/lluc/Telemeta-locales.git
+	branch = mshs
 [submodule "doc/pelican-bootstrap3"]
 	path = doc/themes/pelican-bootstrap3
 	url = https://github.com/DandyDev/pelican-bootstrap3.git
