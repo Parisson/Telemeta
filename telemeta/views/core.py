@@ -57,7 +57,6 @@ from django.utils.translation import ugettext
 from django.contrib.auth.forms import UserChangeForm
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.syndication.views import Feed
-from django.core.servers.basehttp import FileWrapper
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib.contenttypes.models import ContentType
 from django.views.decorators.http import condition
@@ -94,25 +93,6 @@ class TelemetaBaseMixin(object):
     cache_data = TelemetaCache(getattr(settings, 'TELEMETA_DATA_CACHE_DIR', CACHE_DIR))
     cache_export = TelemetaCache(getattr(settings, 'TELEMETA_EXPORT_CACHE_DIR', os.path.join(CACHE_DIR, 'export')))
     cache_tmp = TelemetaCache(getattr(settings, 'FILE_UPLOAD_TEMP_DIR', os.path.join(MEDIA_ROOT, 'tmp')))
-
-
-class FixedFileWrapper(FileWrapper):
-
-    def __iter__(self):
-        self.filelike.seek(0)
-        return self
-
-
-def send_file(request, filename, content_type='image/jpeg'):
-    """
-    Send a file through Django without loading the whole file into
-    memory at once. The FileWrapper will turn the file object into an
-    iterator for chunks of 8KB.
-    """
-    wrapper = FixedFileWrapper(file(filename, 'rb'))
-    response = StreamingHttpResponse(wrapper, content_type=content_type)
-    response['Content-Length'] = os.path.getsize(filename)
-    return response
 
 
 def serve_media(filename, content_type="", buffering=True):
