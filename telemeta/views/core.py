@@ -96,24 +96,25 @@ class TelemetaBaseMixin(object):
 
 
 def serve_media(filename, content_type="", buffering=True):
-    if True:
+    if not settings.DEBUG:
         return nginx_media_accel(filename, content_type=content_type,
                                  buffering=buffering)
     else:
-        pass
-    # response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
-    # response['Content-Disposition'] = 'attachment; ' + 'filename=' + filename
+        response = StreamingHttpResponse(stream_from_file(filename), content_type=content_type)
+        response['Content-Disposition'] = 'attachment; ' + 'filename=' + filename
+        return response
 
 
 def nginx_media_accel(media_path, content_type="", buffering=True):
     """Send a protected media file through nginx with X-Accel-Redirect"""
 
     response = HttpResponse()
-    url = settings.MEDIA_URL + media_path
+    url = settings.MEDIA_URL + os.path.relpath(media_path, settings.MEDIA_ROOT)
     filename = os.path.basename(media_path)
     response['Content-Disposition'] = "attachment; filename=%s" % (filename)
     response['Content-Type'] = content_type
     response['X-Accel-Redirect'] = url
+
     if not buffering:
         response['X-Accel-Buffering'] = 'no'
 

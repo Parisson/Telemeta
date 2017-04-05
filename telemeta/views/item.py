@@ -354,24 +354,28 @@ class ItemView(ItemBaseMixin):
             response = serve_media(source, content_type=mime_type)
         else:
             media = self.cache_export.dir + os.sep + file
-            if not self.cache_export.exists(file) or not flag.value:
+            if not os.path.exists(media) or not flag.value:
                 # source > encoder > stream
-                decoder = timeside.core.get_processor('file_decoder')(source)
-                proc = encoder(media, streaming=False, overwrite=True)
                 if extension in mapping.unavailable_extensions:
                     metadata = None
-                proc.set_metadata(metadata)
-                self.cache_export.add_file(file)
-                pipe = decoder | proc
+
+                decoder = get_processor('file_decoder')(source)
+                processor = encoder(media, streaming=False,
+                                    overwrite=True)
+                if metadata:
+                    processor.set_metadata(metadata)
+                pipe = decoder | processor
                 pipe.run()
+
+                self.cache_export.add_file(file)
                 flag.value = True
                 flag.save()
-                return HttpResponse('Plop')
-                response = StreamingHttpResponse(stream_from_processor(decoder, proc, flag), content_type=mime_type)
+
+                response = serve_media(media, content_type=mime_type)  # , buffering=False)
+
             else:
                 # cache > stream
-
-                response = serve_media(media, content_type=mime_type, buffering=False)
+                response = serve_media(media, content_type=mime_type)
 
         return response
 
