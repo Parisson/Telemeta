@@ -22,6 +22,7 @@
 
 
 from telemeta.views.core import *
+from telemeta.views.core import serve_media
 from telemeta.views.epub import *
 
 class CollectionView(object):
@@ -37,7 +38,7 @@ class CollectionView(object):
             title = ugettext('Collection') + ' : ' + public_id + ' : ' + mess
             description = ugettext('Please login or contact the website administator to get a private access.')
             messages.error(request, title)
-            return render(request, 'telemeta/messages.html', {'description' : description})
+            return render(request, 'telemeta/messages.html', {'description': description})
 
         playlists = get_playlists_names(request)
 
@@ -52,8 +53,8 @@ class CollectionView(object):
             last_revision = None
 
         return render(request, template, {'collection': collection, 'playlists': playlists,
-                'items': items, 'related_media': related_media,
-                'parents': parents, 'last_revision': last_revision })
+                                          'items': items, 'related_media': related_media,
+                                          'parents': parents, 'last_revision': last_revision})
 
     @method_decorator(permission_required('telemeta.change_mediacollection'))
     def collection_edit(self, request, public_id, template='telemeta/collection_edit.html'):
@@ -70,7 +71,7 @@ class CollectionView(object):
         else:
             form = MediaCollectionForm(instance=collection)
 
-        return render(request, template, {'collection': collection, "form": form,})
+        return render(request, template, {'collection': collection, "form": form, })
 
     @method_decorator(permission_required('telemeta.add_mediacollection'))
     def collection_add(self, request, template='telemeta/collection_add.html'):
@@ -87,7 +88,7 @@ class CollectionView(object):
         else:
             form = MediaCollectionForm(instance=collection)
 
-        return render(request, template, {'collection': collection, "form": form,})
+        return render(request, template, {'collection': collection, "form": form, })
 
     @method_decorator(permission_required('telemeta.add_mediacollection'))
     def collection_copy(self, request, public_id, template='telemeta/collection_edit.html'):
@@ -105,7 +106,7 @@ class CollectionView(object):
             collection = MediaCollection.objects.get(public_id=public_id)
             form = MediaCollectionForm(instance=collection)
 
-        return render(request, template, {'collection': collection, "form": form,})
+        return render(request, template, {'collection': collection, "form": form, })
 
     def collection_playlist(self, request, public_id, template, mimetype):
         try:
@@ -130,16 +131,13 @@ class CollectionView(object):
     def related_media_collection_stream(self, request, public_id, media_id):
         collection = MediaCollection.objects.get(public_id=public_id)
         media = MediaCollectionRelated.objects.get(collection=collection, id=media_id)
-        response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
-#        response['Content-Disposition'] = 'attachment'
+        response = serve_media(media.file.path, content_type=media.mime_type)
         return response
 
     def related_media_collection_download(self, request, public_id, media_id):
         collection = MediaCollection.objects.get(public_id=public_id)
         media = MediaCollectionRelated.objects.get(collection=collection, id=media_id)
-        filename = media.file.path.split(os.sep)[-1]
-        response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
-        response['Content-Disposition'] = 'attachment; ' + 'filename=' + filename
+        response = serve_media(media.file.path, content_type=media.mime_type)
         return response
 
     @method_decorator(permission_required('telemeta.change_mediacollection'))
@@ -155,7 +153,7 @@ class CollectionView(object):
         else:
             formset = MediaCollectionRelatedFormSet(instance=collection)
 
-        return render(request, template, {'collection': collection, 'formset': formset,})
+        return render(request, template, {'collection': collection, 'formset': formset, })
 
 
 class CollectionZipView(View):
@@ -211,7 +209,7 @@ class CollectionZipView(View):
 
         response = StreamingHttpResponse(zip_file, content_type='application/zip')
         response['Content-Disposition'] = "attachment; filename=%s.%s" % \
-                                             (collection.code, 'zip')
+            (collection.code, 'zip')
         return response
 
     @method_decorator(login_required)
@@ -309,7 +307,7 @@ class CollectionEditView(CollectionViewMixin, UpdateWithInlinesView):
         return super(CollectionEditView, self).forms_valid(form, inlines)
 
     def get_success_url(self):
-        return reverse_lazy('telemeta-collection-detail', kwargs={'public_id':self.code})
+        return reverse_lazy('telemeta-collection-detail', kwargs={'public_id': self.code})
 
     def get_context_data(self, **kwargs):
         context = super(CollectionEditView, self).get_context_data(**kwargs)
@@ -334,7 +332,7 @@ class CollectionAddView(CollectionViewMixin, CreateWithInlinesView):
         return super(CollectionAddView, self).forms_valid(form, inlines)
 
     def get_success_url(self):
-        return reverse_lazy('telemeta-collection-detail', kwargs={'public_id':self.object.code})
+        return reverse_lazy('telemeta-collection-detail', kwargs={'public_id': self.object.code})
 
     @method_decorator(permission_required('telemeta.add_mediacollection'))
     def dispatch(self, *args, **kwargs):
@@ -357,7 +355,6 @@ class CollectionCopyView(CollectionAddView):
     @method_decorator(permission_required('telemeta.add_mediacollection'))
     def dispatch(self, *args, **kwargs):
         return super(CollectionCopyView, self).dispatch(*args, **kwargs)
-
 
 
 class CollectionEpubView(BaseEpubMixin, View):
