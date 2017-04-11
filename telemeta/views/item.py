@@ -267,9 +267,9 @@ class ItemView(ItemBaseMixin):
                 graph = grapher(width=width, height=height)
                 (decoder | graph).run()
                 graph.watermark('timeside', opacity=.6, margin=(5, 5))
-                f = open(path, 'w')
+                #f = open(path, 'w')
                 graph.render(output=path)
-                f.close()
+                #f.close()
                 self.cache_data.add_file(image_file)
 
         response = StreamingHttpResponse(self.cache_data.read_stream_bin(image_file), content_type=mime_type)
@@ -359,7 +359,7 @@ class ItemView(ItemBaseMixin):
                 if extension in mapping.unavailable_extensions:
                     metadata = None
 
-                decoder = get_processor('file_decoder')(source)
+                decoder = timeside.core.get_processor('file_decoder')(source)
                 processor = encoder(media, streaming=False,
                                     overwrite=True)
                 if metadata:
