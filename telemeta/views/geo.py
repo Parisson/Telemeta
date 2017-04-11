@@ -87,7 +87,7 @@ class GeoCountryCollectionView(ListView):
 class GeoCountryItemView(ListView):
 
     model = MediaItem
-    template_name = 'telemeta/geo_country_collections.html'
+    template_name = 'telemeta/geo_country_items.html'
     paginate_by = 20
 
     def get_queryset(self):
