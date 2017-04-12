@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from telemeta.forms.boolean_form import *
 from django.forms.formsets import formset_factory
 
+
 class BooleanSearchView(object):
     form = formset_factory(BooleanSearch)
 

@@ -32,7 +32,6 @@ import datetime, re
 from django import forms
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from south.modelsinspector import add_introspection_rules
 
 
 class Duration(object):
@@ -140,7 +139,7 @@ class DurationField(models.Field):
     def __init__(self, *args, **kwargs):
         super(DurationField, self).__init__(*args, **normalize_field(kwargs, '0'))
 
-    def db_type(self):
+    def db_type(self, connection):
         return 'int'
 
     def to_python(self, value):
@@ -290,19 +289,3 @@ class RequiredFieldError(Exception):
         self.model = model
         self.field = field
         super(Exception, self).__init__('%s.%s is required' % (model._meta.object_name, field.name))
-
-
-
-# South introspection rules
-add_introspection_rules([], ["^telemeta\.models\.fields\.CharField"])
-add_introspection_rules([], ["^telemeta\.models\.fields\.TextField"])
-add_introspection_rules([], ["^telemeta\.models\.fields\.FileField"])
-add_introspection_rules([], ["^telemeta\.models\.fields\.IntegerField"])
-add_introspection_rules([], ["^telemeta\.models\.fields\.BooleanField"])
-add_introspection_rules([], ["^telemeta\.models\.fields\.DateTimeField"])
-add_introspection_rules([], ["^telemeta\.models\.fields\.DateField"])
-add_introspection_rules([], ["^telemeta\.models\.fields\.FloatField"])
-add_introspection_rules([], ["^telemeta\.models\.fields\.DurationField"])
-add_introspection_rules([], ["^telemeta\.models\.fields\.ForeignKey"])
-add_introspection_rules([], ["^telemeta\.models\.fields\.WeakForeignKey"])
-

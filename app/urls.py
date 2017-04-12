@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
-from django.conf.urls import patterns, url, include
+from django.conf.urls import url, include
 from django.http import HttpResponse
+from django.views.i18n import javascript_catalog
+
 import os
+
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -14,7 +17,7 @@ js_info_dict = {
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 robots_rules = open(PROJECT_ROOT + os.sep + 'robots.txt', 'r').read()
 
-urlpatterns = patterns('',
+urlpatterns = [
     # Example:
     # (r'^sandbox/', include('sandbox.foo.urls')),
 
@@ -23,15 +26,14 @@ urlpatterns = patterns('',
     # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
-    (r'^admin/django/', include(admin.site.urls)),
+    url(r'^admin/django/', include(admin.site.urls)),
     #(r'^grappelli/', include('grappelli.urls')), # grappelli URLS
 
     # Telemeta
-    (r'^', include('telemeta.urls')),
+    url(r'^', include('telemeta.urls')),
 
     # Languages
-    (r'^i18n/', include('django.conf.urls.i18n')),
-    (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
-    (r'^robots\.txt$', lambda r: HttpResponse(robots_rules, mimetype="text/plain")),
-
-    )
+    url(r'^i18n/', include('django.conf.urls.i18n')),
+    url(r'^jsi18n/$', javascript_catalog, js_info_dict),
+    url(r'^robots\.txt$', lambda r: HttpResponse(robots_rules, mimetype="text/plain")),
+    ]

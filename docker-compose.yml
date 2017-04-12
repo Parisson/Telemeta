@@ -27,6 +27,7 @@ data:
   volumes:
      - /home/parisson/CREM/Telemeta/media/:/srv/media
      - /home/parisson/CREM/Telemeta/backup/:/srv/backup
+     - ./data/log/uwsgi:/var/log/uwsgi
      - /srv/static
      - /srv/bower
   command: "true"
