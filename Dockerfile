@@ -18,6 +18,7 @@ FROM parisson/timeside:latest
 MAINTAINER Guillaume Pellerin <yomguy@parisson.com>, Thomas fillon <thomas@parisson.com>
 
 RUN mkdir -p /srv/src/
+RUN mkdir -p /srv/app
 RUN mkdir -p /srv/src/telemeta
 
 ENV PYTHON_EGG_CACHE=/srv/.python-eggs
