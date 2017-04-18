@@ -21,6 +21,8 @@ RUN mkdir -p /srv/src/
 RUN mkdir -p /srv/app
 RUN mkdir -p /srv/src/telemeta
 
+RUN apt-get install -y --force-yes mysql-client
+
 ENV PYTHON_EGG_CACHE=/srv/.python-eggs
 RUN mkdir -p $PYTHON_EGG_CACHE
 RUN chown www-data:www-data $PYTHON_EGG_CACHE
@@ -30,6 +32,7 @@ WORKDIR /srv/src/telemeta
 
 RUN pip install -r requirements.txt
 RUN pip install -r requirements-dev.txt --src /srv/src
+RUN pip uninstall -y South 
 
 # Install Timeside and plugins from ./lib
 COPY ./app/scripts/setup_plugins.sh /srv/app/scripts/setup_plugins.sh
