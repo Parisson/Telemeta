@@ -35,6 +35,8 @@ if [ ! -f .init ]; then
     touch .init
 fi
 
+python $manage bower_install -- --allow-root
+
 if [ $REINDEX = "True" ]; then
     python $manage rebuild_index --noinput
 fi
