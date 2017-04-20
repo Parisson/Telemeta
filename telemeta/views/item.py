@@ -44,9 +44,18 @@ class ItemBaseMixin(TelemetaBaseMixin):
     default_grapher_sizes = getattr(settings, 'TIMESIDE_DEFAULT_GRAPHER_SIZES', ['346x130', ])
     auto_zoom = getattr(settings, 'TIMESIDE_AUTO_ZOOM', False)
 
+    public_graphers  = ['waveform_centroid' ,'waveform_simple',
+                        'spectrogram', 'spectrogram_log']
+    
     def get_graphers(self):
         graphers = []
+        user = self.request.user
+        graphers_access = False
+        if user.is_staff or user.is_superuser:
+            graphers_access = True
         for grapher in self.graphers:
+            if not graphers_access and grapher.id() not in self.public_graphers:
+                continue
             if grapher.id() == self.default_grapher_id:
                 graphers.insert(0, {'name': grapher.name(), 'id': grapher.id()})
             elif not hasattr(grapher, '_staging'):
