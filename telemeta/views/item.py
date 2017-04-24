@@ -51,11 +51,13 @@ class ItemBaseMixin(TelemetaBaseMixin):
     def get_graphers(self):
         graphers = []
         user = self.request.user
-        graphers_access = False
-        if user.is_staff or user.is_superuser:
-            graphers_access = True
+        graphers_access = (user.is_staff
+                           or user.is_superuser
+                           or user.has_perm('can_run_analysis'))
+           
         for grapher in self.graphers:
-            if not graphers_access and grapher.id() not in self.public_graphers:
+            if (not graphers_access
+                and grapher.id() not in self.public_graphers):
                 continue
             if grapher.id() == self.default_grapher_id:
                 graphers.insert(0, {'name': grapher.name(), 'id': grapher.id()})
