@@ -56,6 +56,7 @@ class MediaCollection(MediaResource):
     # General informations
     title                 = CharField(_('title'), required=True)
     alt_title             = CharField(_('original title / translation'))
+    numerotation          = CharField(_('number'))###
     creator               = CharField(_('depositor / contributor'), help_text=_('First name, Last name ; First name, Last name'))
     description           = TextField(_('description'))
     recording_context     = WeakForeignKey('RecordingContext', related_name="collections", verbose_name=_('recording context'))
@@ -66,9 +67,12 @@ class MediaCollection(MediaResource):
 
     # Geographic and cultural informations
     # See "countries" and "ethnic_groups" methods below
+    ###location                = CharField(_('location'))###
 
     # Legal notices
     collector             = CharField(_('recordist'), help_text=_('First name, Last name ; First name, Last name'))
+    ###informer              = CharField(_('informer'), help_text=_('First name, Last name ; First name, Last name'))###
+    ###informer_details      = CharField(_('informer details'))###
     publisher             = WeakForeignKey('Publisher', related_name="collections", verbose_name=_('publisher'))
     publisher_collection  = WeakForeignKey('PublisherCollection', related_name="collections", verbose_name=_('publisher collection'))
     publisher_serial      = CharField(_('publisher serial number'))
@@ -93,7 +97,6 @@ class MediaCollection(MediaResource):
     comment               = TextField(_('comment'))
     metadata_writer       = WeakForeignKey('MetadataWriter', related_name="collections", verbose_name=_('record writer'))
     archiver_notes        = TextField(_('archiver notes'))
-    items_done            = CharField(_('items finished'))
     collector_is_creator  = BooleanField(_('recordist identical to depositor'))
     is_published          = BooleanField(_('published'))
     conservation_site     = CharField(_('conservation site'))
@@ -102,6 +105,7 @@ class MediaCollection(MediaResource):
     media_type            = WeakForeignKey('MediaType', related_name="collections", verbose_name=_('media type'))
     approx_duration       = DurationField(_('estimated duration'), help_text='hh:mm:ss')
     physical_items_num    = IntegerField(_('number of components (medium / piece)'))
+    items_done            = CharField(_('items finished'))
     original_format       = WeakForeignKey('OriginalFormat', related_name="collections", verbose_name=_('original format'))
     physical_format       = WeakForeignKey('PhysicalFormat', related_name="collections", verbose_name=_('archive format'))
     ad_conversion         = WeakForeignKey('AdConversion', related_name='collections', verbose_name=_('digitization'))
