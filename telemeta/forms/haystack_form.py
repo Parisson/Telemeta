@@ -97,8 +97,8 @@ class HayAdvanceForm(SearchForm):
             list_year.append((str(year), year))
         return list_year
 
-    recorded_from_date = forms.IntegerField(required=False, label=(_('recording date (from)')), widget=forms.Select(attrs={'style': 'width:47%'}, choices=list_recorded_year()))
-    recorded_to_date = forms.IntegerField(required=False, label=(_('recording date (until')), widget=forms.Select(attrs={'style': 'width:47%'}, choices=list_recorded_year()))
+    recorded_from_date = forms.IntegerField(required=False, label=(_('recording date (from)')), widget=forms.Select(attrs={'style': 'width:47%'} )) # ,choices=list_recorded_year()))
+    recorded_to_date = forms.IntegerField(required=False, label=(_('recording date (until')), widget=forms.Select(attrs={'style': 'width:47%'} )) #, choices=list_recorded_year()))
 
     #to create a dynamic list of publishing years
     def list_publish_year():
@@ -114,8 +114,8 @@ class HayAdvanceForm(SearchForm):
             list_year.append((year, year))
         return list_year
 
-    year_published_from = forms.IntegerField(required=False, label=(_('year published from')), widget=forms.Select(attrs={'style': 'width:47%'}, choices=list_publish_year()))
-    year_published_to = forms.IntegerField(required=False, label=(_('year published to')), widget=forms.Select(attrs={'style': 'width:47%'}, choices=list_publish_year()))
+    year_published_from = forms.IntegerField(required=False, label=(_('year published from')), widget=forms.Select(attrs={'style': 'width:47%'} )) #, choices=list_publish_year()))
+    year_published_to = forms.IntegerField(required=False, label=(_('year published to')), widget=forms.Select(attrs={'style': 'width:47%'}  )) #, choices=list_publish_year()))
 
     viewable_choice = (('1', 'no preference'), ('2', 'online and public'), ('3', 'online (account required)'))
     viewable = forms.CharField(required=False, label=(_('viewable')), widget=forms.RadioSelect(choices=viewable_choice), initial=1)
