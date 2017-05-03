@@ -35,5 +35,5 @@ urlpatterns = [
     # Languages
     url(r'^i18n/', include('django.conf.urls.i18n')),
     url(r'^jsi18n/$', javascript_catalog, js_info_dict),
-    url(r'^robots\.txt$', lambda r: HttpResponse(robots_rules, mimetype="text/plain")),
+    url(r'^robots\.txt$', lambda r: HttpResponse(robots_rules, content_type="text/plain")),
     ]
