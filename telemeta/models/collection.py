@@ -56,23 +56,28 @@ class MediaCollection(MediaResource):
     # General informations
     title                 = CharField(_('title'), required=True)
     alt_title             = CharField(_('original title / translation'))
-    numerotation          = CharField(_('number'))###
+    numerotation          = CharField(_('numerotation'))###
     creator               = CharField(_('depositor / contributor'), help_text=_('First name, Last name ; First name, Last name'))
     description           = TextField(_('description'))
     recording_context     = WeakForeignKey('RecordingContext', related_name="collections", verbose_name=_('recording context'))
-    recorded_from_year    = IntegerField(_('recording year (from)'), help_text=_('YYYY'))
-    recorded_to_year      = IntegerField(_('recording year (until)'), help_text=_('YYYY'))
+    recorded_from_year    = IntegerField(_('recording date (from)'), help_text=_('YYYY/MM/DD'))
+    recorded_to_year      = IntegerField(_('recording date (until)'), help_text=_('YYYY/MM/DD'))
     year_published        = IntegerField(_('year published'), help_text=_('YYYY'))
     public_access         = CharField(_('access type'), choices=PUBLIC_ACCESS_CHOICES, max_length=16, default="metadata")
 
     # Geographic and cultural informations
     # See "countries" and "ethnic_groups" methods below
-    ###location                = CharField(_('location'))###
+    location              = CharField(_('location'))###
+    location_details      = TextField(_('location details'))
+    cultural_area         = CharField(_('cultural area'), help_text=_('Cultural area ; Cultural area'))
+    language_iso          = ForeignKey('Language', related_name="items", verbose_name=_('Language (ISO norm)'), blank=True, null=True, on_delete=models.SET_NULL)
+    language              = CharField(_('language'), help_text=_('Language ; language'))
+   
 
     # Legal notices
     collector             = CharField(_('recordist'), help_text=_('First name, Last name ; First name, Last name'))
-    ###informer              = CharField(_('informer'), help_text=_('First name, Last name ; First name, Last name'))###
-    ###informer_details      = CharField(_('informer details'))###
+    informer              = CharField(_('informer'), help_text=_('First name, Last name ; First name, Last name'))###
+    informer_details      = CharField(_('informer details'))###
     publisher             = WeakForeignKey('Publisher', related_name="collections", verbose_name=_('publisher'))
     publisher_collection  = WeakForeignKey('PublisherCollection', related_name="collections", verbose_name=_('publisher collection'))
     publisher_serial      = CharField(_('publisher serial number'))
@@ -295,3 +300,13 @@ class MediaCollectionIdentifier(Identifier):
         verbose_name = _('collection identifier')
         verbose_name_plural = _('collection identifiers')
         unique_together = ('identifier', 'collection')
+
+class MediaCollectionPerformance(MediaResource):
+    "Collection performance"
+    collection      = WeakForeignKey('MediaCollection', related_name="performances", verbose_name=_('collection'))
+    instrument      = WeakForeignKey('Instrument', related_name="performances", verbose_name=_('composition'))
+    alias           = WeakForeignKey('InstrumentAlias', related_name="performances", verbose_name=_('precisions'))
+    musician        = CharField(_('informer'))
+
+    class Meta(MetaCore):
+        db_table = 'media_collection_performances'

@@ -64,9 +64,8 @@ class MediaItem(MediaResource):
     # Geographic and cultural informations
     location              = WeakForeignKey('Location', verbose_name=_('location'))
     location_comment      = CharField(_('location details'))
-    cultural_area         = CharField(_('cultural area'))
     language              = CharField(_('language'))
-    language_iso          = ForeignKey('Language', related_name="items", verbose_name=_('Language (ISO norm)'), blank=True, null=True, on_delete=models.SET_NULL)
+    #language_iso          = CharField(_('Language (ISO norm)'), blank=True, null=True)
     ethnic_group          = WeakForeignKey('EthnicGroup', related_name="items", verbose_name=_('population / social group'))
     context_comment       = TextField(_('Ethnographic context'))
 
@@ -419,16 +418,7 @@ class MediaItemKeyword(ModelCore):
         unique_together = (('item', 'keyword'),)
 
 
-class MediaItemPerformance(ModelCore):
-    "Item performance"
-    media_item      = ForeignKey('MediaItem', related_name="performances", verbose_name=_('item'))
-    instrument      = WeakForeignKey('Instrument', related_name="performances", verbose_name=_('composition'))
-    instruments_num = CharField(_('number'))
-    alias           = WeakForeignKey('InstrumentAlias', related_name="performances", verbose_name=_('precisions'))
-    musicians       = CharField(_('informers'))
 
-    class Meta(MetaCore):
-        db_table = 'media_item_performances'
 
 
 class MediaItemAnalysis(ModelCore):

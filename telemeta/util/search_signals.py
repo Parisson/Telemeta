@@ -53,7 +53,7 @@ class RealTimeCustomSignal(signals.RealtimeSignalProcessor):
                      post_delete.send(sender=LocationAlias, instance=l, in_real_signal=True)
 
     def handle_save(self, sender, instance, **kwargs):
-        if sender == MediaItemPerformance or sender == MediaItem:
+        if sender == MediaItem:
             df = instance.get_dirty_fields(check_relationship=True)
             if df.has_key('instrument'):
                 self.update_instrument(instance, df.get('instrument'))
@@ -65,10 +65,7 @@ class RealTimeCustomSignal(signals.RealtimeSignalProcessor):
              super(RealTimeCustomSignal, self).handle_save(sender, instance, **kwargs)
 
     def handle_delete(self, sender, instance, **kwargs):
-        if sender == MediaItemPerformance:
-            self.update_instrument(instance=None, old_value=instance.instrument)
-            self.update_alias(instance=None, old_value=instance.alias)
-        elif sender == MediaItem:
+        if sender == MediaItem:
             self.update_location(instance=None, old_value=instance.location)
         elif sender == Location:
             l = Location.objects.filter(Q(past_names=instance)|Q(ancestor_relations__ancestor_location=instance)|Q(id=instance.id))

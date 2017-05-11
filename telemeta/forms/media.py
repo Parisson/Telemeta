@@ -130,9 +130,9 @@ class CollectionIdentifierInline(InlineFormSet):
     fields = '__all__'
 
 
-class ItemPerformanceInline(InlineFormSet):
+class CollectionPerformanceInline(InlineFormSet):
 
-    model = MediaItemPerformance
+    model = MediaCollectionPerformance
     fields = '__all__'
 
 

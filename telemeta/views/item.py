@@ -509,7 +509,7 @@ class ItemViewMixin(ItemBaseMixin):
 
     model = MediaItem
     form_class = MediaItemForm
-    inlines = [ItemPerformanceInline, ItemKeywordInline, ItemRelatedInline, ItemIdentifierInline]
+    inlines = [ItemKeywordInline, ItemRelatedInline, ItemIdentifierInline]
     # inlines = [ItemPerformanceInline, ItemKeywordInline, ItemRelatedInline,
     #             ItemFormatInline, ItemIdentifierInline]
 
