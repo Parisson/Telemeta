@@ -301,12 +301,14 @@ class MediaCollectionIdentifier(Identifier):
         verbose_name_plural = _('collection identifiers')
         unique_together = ('identifier', 'collection')
 
+
 class MediaCollectionPerformance(MediaResource):
     "Collection performance"
     collection      = WeakForeignKey('MediaCollection', related_name="performances", verbose_name=_('collection'))
     instrument      = WeakForeignKey('Instrument', related_name="performances", verbose_name=_('composition'))
     alias           = WeakForeignKey('InstrumentAlias', related_name="performances", verbose_name=_('precisions'))
-    musician        = CharField(_('informer'))
+    musician        = CharField(_('informer'), help_text=_('First name, Last name'))
 
     class Meta(MetaCore):
         db_table = 'media_collection_performances'
+

@@ -301,7 +301,7 @@ class CollectionDetailViewDC(CollectionDetailView):
 class CollectionEditView(CollectionViewMixin, UpdateWithInlinesView):
 
     template_name = 'telemeta/collection_edit.html'
-    inlines = [CollectionRelatedInline, CollectionIdentifierInline]
+    inlines = [CollectionRelatedInline, CollectionIdentifierInline,CollectionPerformanceInline]
 
     def forms_valid(self, form, inlines):
         messages.info(self.request, ugettext_lazy("You have successfully updated your collection."))
