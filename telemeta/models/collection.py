@@ -307,6 +307,7 @@ class MediaCollectionPerformance(MediaResource):
     collection      = WeakForeignKey('MediaCollection', related_name="performances", verbose_name=_('collection'))
     instrument      = WeakForeignKey('Instrument', related_name="performances", verbose_name=_('composition'))
     alias           = WeakForeignKey('InstrumentAlias', related_name="performances", verbose_name=_('precisions'))
+    hornbostel      = WeakForeignKey('HornbostelSachs', related_name="performances", verbose_name=_('Hornbostel-Sachs classification'))
     musician        = CharField(_('informer'), help_text=_('First name, Last name'))
 
     class Meta(MetaCore):

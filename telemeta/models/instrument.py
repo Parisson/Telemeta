@@ -80,3 +80,18 @@ class InstrumentAliasRelation(ModelCore):
         db_table = 'instrument_alias_relations'
         unique_together = (('alias', 'instrument'),)
 
+
+
+class HornbostelSachs(ModelCore):
+    "Hornbostel-Sachs classification"
+    
+    number = CharField(_('number'), required=True, unique=True)
+    name = TextField(_('name'))
+
+    def __unicode__(self):
+        return self.number+" : "+self.name
+
+    class Meta(MetaCore):
+        db_table='hornbostelsachs'
+        verbose_name = _("Hornbostel-Sachs classification")
+        ordering = ['number']

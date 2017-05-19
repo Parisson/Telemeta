@@ -132,6 +132,39 @@
         {% endblock geoethnic_data %}
         </div>
         <div class="extraInfos">
+            {% block musical_data %}
+            <div>
+                <h4><a href="#">{% trans "Musical informations" %}</a></h4>
+             {% if collection.performances %}
+                <div class="instruments">
+                    <table class="instruments">
+                        <thead>
+                            <tr>
+                                <td>{% field_label "MediaCollectionPerformance" "instrument" %}</td>
+                                <td>{% field_label "MediaCollectionPerformance" "alias" %}</td>
+                                <td>{% field_label "MediaCollectionPerformance" "Hornbostel-Sachs" %}</td>
+                                <td>{% field_label "MediaCollectionPerformance" "informer" %}</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for performance in collection.performances.all %}
+                            <tr>
+                                <td>{{ performance.instrument|default:"" }}</td>
+                                <td>{{ performance.alias|default:"" }}</td>
+                                <td>{{ performance.hornbostel }}</td>
+                                <td>{{ performance.musician }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% endif %}
+             </div>
+            {% endblock musical_data %}
+        </div>
+
+        
+        <div class="extraInfos">
         {% block legal_data %}
             <div>
                 <h4><a href="#">{% trans "Legal notices" %}</a></h4>
