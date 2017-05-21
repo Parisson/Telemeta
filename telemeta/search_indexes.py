@@ -157,6 +157,8 @@ class MediaCollectionIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_instruments(self, obj):
         instruments = []
+        # FIX MSHS
+        """
         items = obj.items.all()
         for item in items:
             materials = MediaItemPerformance.objects.all().filter(media_item__exact=item)
@@ -167,6 +169,9 @@ class MediaCollectionIndex(indexes.SearchIndex, indexes.Indexable):
                 if material.alias and not material.alias in instruments:
                     instruments.append(material.alias.name)
         return u"".join('|' + instru for instru in instruments)
+        """
+        return instruments
+        
 
     def prepare_recorded_from_date(self, obj):
         if obj.recorded_from_year != 0:
