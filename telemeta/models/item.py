@@ -56,7 +56,6 @@ class MediaItem(MediaResource):
     collector             = CharField(_('collector'), help_text=_('First name, Last name ; First name, Last name'))
     description           = TextField(_('description'), help_text=_('Describe the item'))
     collection            = ForeignKey('MediaCollection', related_name="items", verbose_name=_('collection'))
-    informer              = CharField(_('informer'), help_text=_('First name, Last name ; First name, Last name'))
     recorded_from_date    = DateField(_('recording date (from)'), help_text=_('YYYY-MM-DD'))
     recorded_to_date      = DateField(_('recording date (until)'), help_text=_('YYYY-MM-DD'))
     public_access         = CharField(_('access type'), choices=ITEM_PUBLIC_ACCESS_CHOICES, max_length=16, default="metadata")
@@ -77,6 +76,7 @@ class MediaItem(MediaResource):
 
     mshs_author           = CharField(_('author'))
     mshs_composer         = CharField(_('composer'))
+    mshs_informers        = models.ManyToManyField('MediaCollectionPerformance', verbose_name=_('informers'))
     mshs_timbre           = CharField(_('timbre'))
     mshs_timbre_ref       = CharField(_('timbre referenced'))
     mshs_timbre_code      = CharField(_('timbre code'))
@@ -174,6 +174,7 @@ class MediaItem(MediaResource):
     def keywords(self):
         return ContextKeyword.objects.filter(item_relations__item = self)
     keywords.verbose_name = _('keywords')
+    
 
     @property
     def public_id(self):
@@ -543,3 +544,14 @@ class MediaPart(MediaResource):
 
     def __unicode__(self):
         return self.title
+
+"""
+class MediaItemPerformance(ModelCore):
+    "Item performance"
+    item        = ForeignKey('MediaItem', verbose_name=_('item'), related_name="performance_relations")
+    performance = ForeignKey('MediaCollectionPerformance', verbose_name=_('performance'), related_name="item_relations")
+
+    class Meta(MetaCore):
+        db_table = 'media_item_performance'
+        unique_together = (('item', 'performance'),)
+"""

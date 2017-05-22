@@ -313,3 +313,5 @@ class MediaCollectionPerformance(MediaResource):
     class Meta(MetaCore):
         db_table = 'media_collection_performances'
 
+    def __unicode__(self):
+        return self.musician+"; "+self.instrument.name

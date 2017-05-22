@@ -9,7 +9,6 @@
         {% dl_field item "alt_title" %}
         {% dl_field item "description" placeholder %}
         {% dl_field item "collector" placeholder %}
-        {% dl_field item "informer" placeholder %}
         <dt>{% field_label item "collection" %}</dt>
         <dd><a href="{% url "telemeta-collection-detail" item.collection.public_id %}">{{ item.collection.title }}</a></dd>
         <dt>{% trans "Recording date" %}</dt>
@@ -102,24 +101,24 @@
                 {% dl_field item "mshs_musical_organization" %}
                 {% dl_field item "mshs_group" %}
             </dl>
-            {% if item.performances %}
+            {% if item.mshs_informers %}
             <div class="instruments">
                 <table class="instruments">
                     <thead>
                         <tr>
-                            <td>{% field_label "MediaItemPerformance" "instruments_num" %}</td>
-                            <td>{% field_label "MediaItemPerformance" "instrument" %}</td>
-                            <td>{% field_label "MediaItemPerformance" "alias" %}</td>
-                            <td>{% field_label "MediaItemPerformance" "musicians" %}</td>
+                            <td>{% field_label "MediaCollectionPerformance" "instrument" %}</td>
+                            <td>{% field_label "MediaCollectionPerformance" "alias" %}</td>
+                            <td>{% field_label "MediaCollectionPerformance" "Hornbostel-Sachs" %}</td>
+                            <td>{% field_label "MediaCollectionPerformance" "informer" %}</td>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for performance in item.performances.all %}
+                        {% for performance in item.mshs_informers.all %}
                         <tr>
-                            <td>{{ performance.instruments_num }}</td>
                             <td>{{ performance.instrument|default:"" }}</td>
                             <td>{{ performance.alias|default:"" }}</td>
-                            <td>{{ performance.musicians }}</td>
+                            <td>{{ performance.hornbostel }}</td>
+                            <td>{{ performance.musician }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>

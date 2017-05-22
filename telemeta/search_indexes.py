@@ -81,14 +81,17 @@ class MediaItemIndex(indexes.SearchIndex, indexes.Indexable):
         return u"".join('|' + local for local in location)
 
     def prepare_instruments(self, obj):
-        item = MediaItemPerformance.objects.all().filter(media_item__exact=obj)
+        #item = MediaItemPerformance.objects.all().filter(media_item__exact=obj)
         instruments = []
+        """
         for material in item:
             if material.instrument is not None:
                 instruments.append(material.instrument.name)
             if material.alias is not None:
                 instruments.append(material.alias.name)
         return u"".join('|' + instru for instru in instruments)
+        """
+        return instruments
 
     def prepare_collectors(self, obj):
         collectors = []

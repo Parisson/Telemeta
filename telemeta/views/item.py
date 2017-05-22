@@ -572,7 +572,7 @@ class ItemEditView(ItemViewMixin, UpdateWithInlinesView):
         # Excluding fields from the display of the main form
         exclu = ''
         exclu = exclu + 'mshs_author,mshs_composer,mshs_timbre,mshs_timbre_ref,mshs_timbre_code'
-        exclu = exclu + ',mshs_melody,mshs_domain_song'
+        exclu = exclu + ',mshs_melody,mshs_domain_song,mshs_informers'
         exclu = exclu + ',mshs_domain_vocal,mshs_domain_music,mshs_domain_tale'
         exclu = exclu + ',mshs_details,mshs_function,mshs_dance,mshs_dance_details'
         exclu = exclu + ',mshs_deposit_digest,mshs_deposit_thematic,mshs_deposit_names'

@@ -89,7 +89,7 @@
       <li><a href="#tab_desc" role="tab" data-toggle="tab">Description</a></li>
       <li><a href="#tab_text" role="tab" data-toggle="tab">Texte</a></li>
       <li><a href="#keyword_relations" role="tab" data-toggle="tab">{% trans "Keywords" %}</a></li>
-      <li><a href="#performances" role="tab" data-toggle="tab">{% trans "Performance" %}</a></li>
+      <li><a href="#tab_perf" role="tab" data-toggle="tab">Voix/Instruments</a></li>
       <li><a href="#tabs_container" role="tab" data-toggle="tab">{% trans "Markers" %}</a></li>
       <li><a href="#related" role="tab" data-toggle="tab">{% trans "Related media" %}</a></li>
       {% if perms.telemeta.change_mediaitemidentifier %}
@@ -178,13 +178,27 @@
                 {% bootstrap_field  form.mshs_code_Aare %}
             </div>
         </div>
+        <div class="tab-pane" id="tab_perf">
+           <div class="block-grey">
+               <!-- display fields for performances-->
+                {% bootstrap_field  form.mshs_musical_organization %}
+                {% bootstrap_field  form.mshs_group %}
+                <div class="form-group">
+                    <label class="control-label" for="id_mshs_informers">Informateurs</label>
+                    {{ form.mshs_informers }}
+                </div>
+                <script type="text/javascript">
+                    $(".select2-container").select2(
+                        {width:100%}
+                    );
+                </script>
+            </div>
+        </div>
       
       {% for formset in inlines %}
       <div class="tab-pane" id="{{ formset.prefix }}">
-          {% if formset.prefix == "performances" %}
-            {% bootstrap_field  form.mshs_musical_organization %}
-            {% bootstrap_field  form.mshs_group %}
-          {% endif %}
+          <!-- {% if formset.prefix == "performances" %}
+          {% endif %} -->
           {{ formset.management_form }}
           {% for form in formset %}
            <div class="block-grey">

@@ -27,6 +27,8 @@ from extra_views.generic import GenericInlineFormSet
 from django.forms.widgets import HiddenInput
 from django.utils.translation import ugettext_lazy as _
 
+from django_select2.forms import ( Select2MultipleWidget )
+
 
 class MediaFondsForm(ModelForm):
 
@@ -77,12 +79,29 @@ class MediaCollectionForm(ModelForm):
 
 class MediaItemForm(ModelForm):
 
+    mshs_informers = forms.ModelMultipleChoiceField(
+                queryset = MediaCollectionPerformance.objects.all(),
+                widget=Select2MultipleWidget(
+                    attrs={
+                        'title': 'Liste des informateurs',
+                        'data-width':'100%',
+                        }),
+                label="informers",
+            )
+    
+
     class Meta:
         model = MediaItem
         exclude = model.exclude
 
     def clean_code(self):
         return self.cleaned_data['code'] or None
+        
+    def __init__(self, *args, **kwargs):
+        super(MediaItemForm, self).__init__(*args, **kwargs)
+        if self.instance and self.instance.pk:
+            self.fields['mshs_informers'].queryset = MediaCollectionPerformance.objects.filter(
+                                               collection=self.instance.collection)
 
 
 class RestrictedMediaItemForm(MediaItemForm):
