@@ -30,6 +30,7 @@ import timeside.server as ts
 import sys
 import time
 
+
 class ItemBaseMixin(TelemetaBaseMixin):
 
     graphers = timeside.core.processor.processors(timeside.core.api.IGrapher)
@@ -68,6 +69,24 @@ class ItemBaseMixin(TelemetaBaseMixin):
                 formats.append({'name': encoder.format(),
                                 'extension': encoder.file_extension()})
         return formats
+
+    def get_is_transcoded_flag(self, item, mime_type):
+        try:
+            is_transcoded_flag, c = MediaItemTranscodingFlag.objects.get_or_create(
+                item=item,
+                mime_type=mime_type,
+                defaults={'value': False})
+        except MediaItemTranscodingFlag.MultipleObjectsReturned:
+            flags = MediaItemTranscodingFlag.objects.filter(
+                item=item,
+                mime_type=mime_type)
+            value = all([f.value for f in flags])
+            is_transcoded_flag = flags[0]
+            is_transcoded_flag.value = value
+            is_transcoded_flag.save()
+            for f in flags[1:]:
+                f.delete()
+        return is_transcoded_flag
 
     def item_previous_next(self, item):
         """Get previous and next items inside the collection of the item"""
@@ -269,7 +288,7 @@ class ItemView(ItemBaseMixin):
                 graph.watermark('timeside', opacity=.6, margin=(5, 5))
                 #f = open(path, 'w')
                 graph.render(output=path)
-                #f.close()
+                # f.close()
                 self.cache_data.add_file(image_file)
 
         response = StreamingHttpResponse(self.cache_data.read_stream_bin(image_file), content_type=mime_type)
@@ -295,22 +314,8 @@ class ItemView(ItemBaseMixin):
         mime_type = encoder.mime_type()
         file = item.public_id + '.' + encoder.file_extension()
         source, source_type = item.get_source()
-        try:
-            is_transcoded_flag, c = MediaItemTranscodingFlag.objects.get_or_create(
-                item=item,
-                mime_type=mime_type,
-                defaults={'value':False})
-        except MediaItemTranscodingFlag.MultipleObjectsReturned:
-            flags = MediaItemTranscodingFlag.objects.filter(
-                item=item,
-                mime_type=mime_type)
-            value = all([f.value for f in flags])
-            is_transcoded_flag = flags[0]
-            is_transcoded_flag.value = value
-            is_transcoded_flag.save()
-            for f in flags[1:]:
-                f.delete()
 
+        is_transcoded_flag = self.get_is_transcoded_flag(item=item, mime_type=mime_type)
 
         format = item.mime_type
         dc_metadata = dublincore.express_item(item).to_list()
@@ -346,19 +351,19 @@ class ItemView(ItemBaseMixin):
                     else:
                         # wait for the transcode to begin
                         time.sleep(1)
-                        return (None, None) #self.item_transcode(item, extension)
+                        return (None, None)  # self.item_transcode(item, extension)
 
                 except MediaItemTranscodingFlag.DoesNotExist:
                     pass
                 # source > encoder > stream
                 from telemeta.tasks import task_transcode
                 # Sent the transcoding task synchronously to the worker
-                task_transcode.apply_async(kwargs={'source':source,
-                                      'media':media,
-                                      'encoder_id':encoder.id(),
-                                      'item_public_id':item.public_id,
-                                      'mime_type':mime_type,
-                                      'metadata':metadata})
+                task_transcode.apply_async(kwargs={'source': source,
+                                                   'media': media,
+                                                   'encoder_id': encoder.id(),
+                                                   'item_public_id': item.public_id,
+                                                   'mime_type': mime_type,
+                                                   'metadata': metadata})
 
                 self.cache_export.add_file(file)
                 if not os.path.exists(media):
@@ -370,8 +375,8 @@ class ItemView(ItemBaseMixin):
                     is_transcoded_flag.save()
                     return self.item_transcode(item, extension)
 
-        return (media, mime_type)    
-   
+        return (media, mime_type)
+
     def item_export(self, request, public_id, extension, return_availability=False):
         """Export a given media item in the specified format (OGG, FLAC, ...)"""
 
@@ -395,7 +400,8 @@ class ItemView(ItemBaseMixin):
             # TF : I don't know why empty attachment was set
             # TODO: remove if useless
             if return_availability:
-                return True
+                data = json.dumps({'available': True})
+                return HttpResponse(data, content_type='application/json')
             return response
 
         if 'webm' in extension:
@@ -406,23 +412,23 @@ class ItemView(ItemBaseMixin):
             # TF : I don't know why empty attachment was set,
             # TODO: remove if useless
             if return_availability:
-                data = json.dumps({'available':True})
+                data = json.dumps({'available': True})
                 return HttpResponse(data, content_type='application/json')
             return response
-        
+
         (media, mime_type) = self.item_transcode(item, extension)
         #media  = None
         if media:
             if return_availability:
-                data = json.dumps({'available':True})
+                data = json.dumps({'available': True})
                 return HttpResponse(data, content_type='application/json')
             response = serve_media(media, content_type=mime_type)
             return response
         else:
             if return_availability:
-                data = json.dumps({'available':False})
+                data = json.dumps({'available': False})
                 return HttpResponse(data, content_type='application/json')
-            
+
             mess = ugettext('Transcoding in progress')
             title = ugettext('Item') + ' : ' + public_id + ' : ' + mess
             description = ugettext('The media transcoding is in progress. '
@@ -435,7 +441,6 @@ class ItemView(ItemBaseMixin):
 
     def item_export_available(self, request, public_id, extension):
         return self.item_export(request, public_id, extension, return_availability=True)
-        
 
     def item_playlist(self, request, public_id, template, mimetype):
         try:
@@ -745,7 +750,7 @@ class ItemDetailView(ItemViewMixin, DetailView):
 
     def item_analyze(self, item):
         analyses = item.analysis.all()
-        encoders_id = ['mp3_encoder']#, 'vorbis_encoder']
+        encoders_id = ['mp3_encoder']  # , 'vorbis_encoder']
         mime_type = ''
 
         if analyses:
@@ -795,7 +800,6 @@ class ItemDetailView(ItemViewMixin, DetailView):
                     encoder = encoder_cls(output=media, overwrite=True)
                     encoders_sub.append(encoder)
                     pipe |= encoder
-                    
 
                 pipe.run()
 
@@ -842,7 +846,10 @@ class ItemDetailView(ItemViewMixin, DetailView):
                         analysis.save()
 
                 for encoder in encoders_sub:
-                    pass        
+                    is_transcoded_flag = self.get_is_transcoded_flag(item=item, mime_type=mime_type)
+                    is_transcoded_flag.value = True
+                    is_transcoded_flag.save()
+
 #                FIXME: parse tags on first load
 #                tags = decoder.tags
 
