@@ -117,6 +117,7 @@ def nginx_media_accel(media_path, content_type="", buffering=True):
 
     if not buffering:
         response['X-Accel-Buffering'] = 'no'
+        response['X-Accel-Limit-Rate'] = 524288
 
     return response
 
@@ -126,14 +127,12 @@ def render(request, template, data=None, mimetype=None):
                               mimetype=mimetype)
 
 
-def stream_from_processor(decoder, encoder, flag):
+def stream_from_processor(decoder, encoder):
     pipe = decoder | encoder
     for chunk in pipe.stream():
         yield chunk
-    flag.value = True
-    flag.save()
 
-
+        
 def stream_from_file(file):
     chunk_size = 0x100000
     f = open(file, 'r')
