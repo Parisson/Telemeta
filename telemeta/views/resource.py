@@ -269,6 +269,7 @@ class ResourceDetailDCView(ResourceDetailView):
 class ResourceAddView(ResourceMixin, CreateView):
 
     template_name = 'telemeta/resource_add.html'
+    fields = '__all__'
 
     def get_queryset(self):
         self.type = self.kwargs['type']
