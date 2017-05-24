@@ -6,8 +6,13 @@ manage=$app'/manage.py'
 wsgi=$app'/wsgi.py'
 
 # stating apps
-# pip install django-environ redis
+pip install -U django==1.8.18
 pip uninstall -y south
+# pip install django-environ redis
+pip install -e git+https://github.com/Parisson/django-jqchat.git@dj1.8#egg=django-jqchat
+pip install django-debug-toolbar==1.6
+pip install -e git+https://github.com/Parisson/saved_searches.git@dj1.8#egg=saved_searches-2.0.0-beta
+
 
 # waiting for other services
 bash $app/scripts/wait.sh
