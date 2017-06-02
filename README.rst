@@ -126,7 +126,7 @@ Install
 
 Thanks to Docker, Telemeta is now fully available as a docker composition ready to work. The docker based composition bundles some powerfull applications and modern frameworks out-of-the-box like: Python, Conda, Numpy, Jupyter, Gstreamer, Django, Celery, Haystack, ElasticSearch, MySQL, Redis, uWSGI, Nginx and many more.
 
-* on **Linux**, first install `Git <http://git-scm.com/downloads>`_, `Docker engine <https://docs.docker.com/installation/>`_ and `docker-compose <https://docs.docker.com/compose/install/>`_ and open a terminal.
+* on **Linux**, first install `Git <http://git-scm.com/downloads>`_, `Docker engine <https://docs.docker.com/installation/>`_ (>=1.9) and `docker-compose <https://docs.docker.com/compose/install/>`_ (>=1.8) and open a terminal.
 * on **MacOSX** or **Windows** install the `Docker Toolbox <https://www.docker.com/products/docker-toolbox>`_ and open a **Docker Quickstart Terminal**.
 
 Then clone Telemeta::
@@ -140,7 +140,7 @@ Start it up
 
 For a production environment setup, first read / edit `env/prod.env`, then::
 
-     docker-compose up
+    docker-compose up
 
 Then browse the app at http://localhost:8000/ (replacing 'localhost' by the IP given by the docker terminal on OSX or Windows)
 

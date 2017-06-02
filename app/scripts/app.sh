@@ -39,16 +39,11 @@ if [ $REINDEX = "True" ]; then
 fi
 
 # fix media access rights
-chown www-data:www-data $media
-for dir in $(ls $media); do
-    if [ ! $(stat -c %U $media/$dir) = 'www-data' ]; then
-        chown www-data:www-data $media/$dir
-    fi
-done
+chown www-data:www-data $media/*
 
 # choose dev or prod mode
 if [ "$1" = "--runserver" ]; then
-    python $manage runserver_plus 0.0.0.0:8000
+    python $manage runserver 0.0.0.0:8000
 else
     # static files auto update
     watchmedo shell-command --patterns="$patterns" --recursive \
