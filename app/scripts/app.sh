@@ -39,7 +39,7 @@ if [ $REINDEX = "True" ]; then
 fi
 
 # fix media access rights
-chown -R www-data:www-data !(import) $media
+find $media -type d -path -not -path $media/import -exec chown www-data:www-data {} \;
 
 # choose dev or prod mode
 if [ "$1" = "--runserver" ]; then
