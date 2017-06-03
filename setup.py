@@ -47,9 +47,9 @@ setup(
   long_description = open('README.rst').read(),
   author = "Guillaume Pellerin",
   author_email = "yomguy@parisson.com",
-  version = '1.6.3',
+  version = '1.7.0',
   install_requires = [
-        'django==1.9.*',
+        'django==1.8.*',
         'django-registration-redux',
         'django-extensions',
         'django-timezones',
@@ -78,6 +78,7 @@ setup(
         'django-dirtyfields',
         'sqlparse==0.2.2',
         'django_select2',
+        'lxml'
     ],
   tests_require=['pytest-django', 'pytest-cov', 'factory-boy'],
   # Provide a test command through django-setuptest

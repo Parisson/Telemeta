@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2015 Parisson SARL
+# Copyright (C) 2015-2017 Parisson SARL
 
 # This file is part of Telemeta.
 
@@ -19,12 +19,14 @@
 # Authors: Guillaume Pellerin <yomguy@parisson.com>
 
 
-from telemeta.views.core import *
-from telemeta.models import *
+from telemeta.views.core import TelemetaBaseMixin
+from telemeta.models import Site
 from collections import OrderedDict
 from ebooklib import epub
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
+
+import os
 
 
 class BaseEpubMixin(TelemetaBaseMixin):
@@ -84,7 +86,7 @@ class BaseEpubMixin(TelemetaBaseMixin):
             else:
                 chap_num = self.collection.code.split('_')[-1]
             context = {'title': 'chapitre ' + chap_num,
-                        'mode_single': mode_single}
+                       'mode_single': mode_single}
         else:
             self.collections = self.corpus.children.all()
             mode_single = False
@@ -121,7 +123,7 @@ class BaseEpubMixin(TelemetaBaseMixin):
                     id = item.old_code
                 for c in id:
                     if c.isalpha():
-                        id = id.replace(c, '.' + str(ord(c)-96))
+                        id = id.replace(c, '.' + str(ord(c) - 96))
                 items[item] = float(id)
             items = OrderedDict(sorted(items.items(), key=lambda t: t[1]))
 
@@ -143,7 +145,7 @@ class BaseEpubMixin(TelemetaBaseMixin):
                     image = open(self.default_image, 'r')
                     default_image_relative_path = 'images' + os.sep + os.path.split(self.default_image)[-1]
                     epub_item = epub.EpubItem(file_name=default_image_relative_path,
-                                        content=image.read())
+                                              content=image.read())
                     self.book.add_item(epub_item)
                     self.default_image_added = True
 
@@ -167,8 +169,8 @@ class BaseEpubMixin(TelemetaBaseMixin):
                 last_collection = True
 
             context = {'collection': collection, 'title': title, 'subtitle': subtitle, 'mode_single': mode_single,
-                        'site': self.site, 'items': items, 'default_image': default_image_relative_path,
-                        'default_image_end': default_image_end_relative_path, 'last_collection': last_collection}
+                       'site': self.site, 'items': items, 'default_image': default_image_relative_path,
+                       'default_image_end': default_image_end_relative_path, 'last_collection': last_collection}
             c = epub.EpubHtml(title=chapter_title, file_name=collection.code + '.xhtml', lang='fr')
             c.content = render_to_string(self.template, context)
             self.book.add_item(c)
@@ -179,7 +181,7 @@ class BaseEpubMixin(TelemetaBaseMixin):
         # - add manual link
         # - add section
         # - add auto created links to chapters
-        self.book.toc = (( self.chapters ))
+        self.book.toc = ((self.chapters))
         self.book.spine = self.chapters
 
         # add navigation files
@@ -188,7 +190,7 @@ class BaseEpubMixin(TelemetaBaseMixin):
         nav = epub.EpubNav()
         self.book.add_item(nav)
         if not mode_single:
-            self.book.spine.insert(0,'nav')
+            self.book.spine.insert(0, 'nav')
 
         # create spin, add cover page as first page
         cover = epub.EpubHtml(title=self.full_title, file_name='cover-bis' + '.xhtml')
@@ -204,6 +206,3 @@ class BaseEpubMixin(TelemetaBaseMixin):
 
         # write epub file
         epub.write_epub(self.path, self.book, {})
-
-
-

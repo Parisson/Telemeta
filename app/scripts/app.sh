@@ -18,8 +18,7 @@ uid='www-data'
 gid='www-data'
 
 # stating apps
-#pip install -U django==1.9.12
-pip install -U django==1.8.17
+pip install -U django==1.8.18
 pip uninstall -y south
 pip install -e git+https://github.com/Parisson/django-jqchat.git@dj1.8#egg=django-jqchat
 pip install django-debug-toolbar==1.6
@@ -36,17 +35,14 @@ if [ ! -f .init ]; then
     touch .init
 fi
 
+python $manage bower_install -- --allow-root
+
 if [ $REINDEX = "True" ]; then
     python $manage rebuild_index --noinput
 fi
 
 # fix media access rights
-chown www-data:www-data $media
-for dir in $(ls $media); do
-    if [ ! $(stat -c %U $media/$dir) = 'www-data' ]; then
-        chown www-data:www-data $media/$dir
-    fi
-done
+chown -R www-data:www-data $media
 
 # choose dev or prod mode
 if [ "$1" = "--runserver" ]; then
