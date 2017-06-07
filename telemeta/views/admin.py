@@ -22,6 +22,8 @@
 
 
 from telemeta.views.core import *
+import telemeta.models
+
 
 class AdminView(object):
     """Provide Admin web UI methods"""

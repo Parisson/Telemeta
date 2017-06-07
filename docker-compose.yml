@@ -26,9 +26,11 @@ data:
   image: debian:jessie
   volumes:
      - /home/parisson/CREM/Telemeta/media/:/srv/media
-     - ./static/:/srv/static
      - /home/parisson/CREM/Telemeta/backup/:/srv/backup
-     - /srv/bower
+     - ./data/static:/srv/static
+     - ./data/bower:/srv/bower
+     - ./data/log/nginx:/var/log/nginx
+     - ./data/log/uwsgi:/var/log/uwsgi
   command: "true"
 
 db:
@@ -46,8 +48,6 @@ broker:
 
 search:
   image: elasticsearch:1
-  volumes:
-    - ./etc/elasticsearch.yml:/etc/elasticsearch/elasticsearch.yml
 
 app:
   build: .

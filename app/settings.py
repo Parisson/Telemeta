@@ -154,7 +154,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'telemeta',
     'timeside.player',
-    'timeside.server',
+    #'timeside.server',
     'jsonrpc',
     'south',
     'sorl.thumbnail',
@@ -203,7 +203,7 @@ TELEMETA_CACHE_DIR = os.path.join(MEDIA_ROOT, 'cache')
 TELEMETA_EXPORT_CACHE_DIR = os.path.join(MEDIA_ROOT, 'export')
 TELEMETA_DATA_CACHE_DIR = os.path.join(TELEMETA_CACHE_DIR, 'data')
 FILE_UPLOAD_TEMP_DIR = os.path.join(MEDIA_ROOT, 'tmp')
-FILE_UPLOAD_PERMISSIONS = 0644
+FILE_UPLOAD_PERMISSIONS = 0o644
 
 TELEMETA_DOWNLOAD_ENABLED = False
 TELEMETA_STREAMING_FORMATS = ('mp3', 'ogg')
@@ -243,9 +243,11 @@ PAGINATION_SETTINGS = {
     'MARGIN_PAGES_DISPLAYED': 2,
 }
 
-#DEBUG_TOOLBAR_CONFIG = {
-#    'SHOW_TOOLBAR_CALLBACK': lambda x : True
-#}
+if DEBUG:
+    DEBUG_TOOLBAR_CONFIG = {
+        'SHOW_TOOLBAR_CALLBACK': lambda x : True
+    }
+
 DEBUG_TOOLBAR_PATCH_SETTINGS = False
 DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.versions.VersionsPanel',
@@ -331,8 +333,9 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
-HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
-# HAYSTACK_SIGNAL_PROCESSOR = 'telemeta.util.search_signals.RealTimeCustomSignal'
+HAYSTACK_ROUTERS = ['telemeta.util.search_router.AutoRouter', 'haystack.routers.DefaultRouter']
+# HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+HAYSTACK_SIGNAL_PROCESSOR = 'telemeta.util.search_signals.RealTimeCustomSignal'
 HAYSTACK_SEARCH_RESULTS_PER_PAGE = 50
 
 BOWER_COMPONENTS_ROOT = '/srv/bower/'
@@ -341,18 +344,19 @@ BOWER_INSTALLED_APPS = (
     'jquery#2.2.4',
     'jquery-migrate#~1.2.1',
     'underscore#1.8.3',
-    'bootstrap#3.3.6',
+    'bootstrap#3.3.7',
     'bootstrap-select#1.5.4',
     'font-awesome#4.4.0',
     'angular#1.2.26',
     'angular-bootstrap-select#0.0.5',
     'angular-resource#1.2.26',
-    'raphael#2.2.0',
+    'raphael#2.2.7',
     'soundmanager#V2.97a.20150601',
     'https://github.com/Parisson/loaders.git',
     'https://github.com/Parisson/ui.git',
-    'jquery-ui#1.11.4',
+    'jquery-ui#1.12.1',
     'tablesorter',
     'video.js',
     'sass-bootstrap-glyphicons',
+    
 )

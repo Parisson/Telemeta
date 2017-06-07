@@ -9,6 +9,7 @@
 {% endblock %}
 
 {% block extra_javascript %}
+<script> var static_url = {{ STATIC_URL }}</script>
 <script src="{{ STATIC_URL }}telemeta/js/popupdiv.js" type="text/javascript"></script>
 <script src="{{ STATIC_URL }}telemeta/js/playlist.js" type="text/javascript"></script>
 <script src="{{ STATIC_URL }}tablesorter/jquery.tablesorter.min.js" type="text/javascript"></script>
@@ -21,14 +22,11 @@
 
 </script>
 
-{% comment "added by Killian Mary" %}{% endcomment %}
-
 <script>
     $(document).ready(function() {
         var nouvellesIcones = {
             header : 'ui-icon-carat-1-e',
             activeHeader : 'ui-icon-carat-1-s',
-
         };
 
         $("#accordeon").accordion({
@@ -40,7 +38,6 @@
         {% else %}
             active: {{ last_playlist }}
         {% endif %}
-
         });
 
         $.tablesorter.defaults.sortList = [[2,0]];
@@ -53,11 +50,6 @@
 </script>
 {% endblock %}
 
-{% comment "added by Killian Mary end" %}{% endcomment %}
-<!--
- Added by Thomas Balastegui :
- modal popup display and use of addNewPlaylist() and editPlaylist()
--->
 {% block content %}
     {% block modal %}
     <div id="add" class="modal fade" role="dialog">
@@ -166,7 +158,6 @@
              </tr>
             {% endif %}
         </table>
-        {% comment "added by Killian Mary, for sort table" %}{% endcomment %}
         <table id="{{playlist.playlist.public_id}}tb" class="listing" width="100%">
             <thead>
             <tr>
@@ -184,9 +175,9 @@
             {% for resource in playlist.resources %}
             <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
                 <td align="center" style="vertical-align:middle;">
-                    {% comment %} {% if resource.element.file or resource.element.has_mediafile %}
-                    <a href="#" id="{% url 'telemeta-item-export' resource.element.public_id 'mp3' %}" onclick="playlistUtils.changeGlyph(this.id)" class="glyphicon glyphicon-play" style="font-size: 1.3em;text-decoration: none"><p style="opacity:0;font-size:0">d</p></a>
-                    {% endif %} {% endcomment %}
+                    {% if resource.element.file %}
+                    <a href="#" id="{{ resource.element.public_id }}" onclick="playlistUtils.changeGlyph(this.id)" class="glyphicon glyphicon-play" style="font-size: 1.3em;text-decoration: none"><p style="opacity:0;font-size:0">d</p></a>
+                    {% endif %}
                 </td>
                 <td style="max-width:200px">
                     {% if resource.type == "item" and not resource.element == None %}
