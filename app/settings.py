@@ -130,7 +130,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    #'debug_toolbar.middleware.DebugToolbarMiddleware',
     # 'pagination.middleware.PaginationMiddleware',
 )
 
@@ -210,7 +210,7 @@ TELEMETA_STREAMING_FORMATS = ('mp3', 'ogg')
 TELEMETA_DOWNLOAD_FORMATS = ('wav', 'mp3', 'ogg', 'flac')
 TELEMETA_PUBLIC_ACCESS_PERIOD = 51
 
-TELEMETA_STRICT_CODE = False
+TELEMETA_STRICT_CODE = True
 COLLECTION_PUBLISHED_CODE_REGEX = 'CNRSMH_E_[0-9]{4}(?:_[0-9]{3}){2}'
 COLLECTION_UNPUBLISHED_CODE_REGEX = 'CNRSMH_I_[0-9]{4}_[0-9]{3}'
 ITEM_PUBLISHED_CODE_REGEX = COLLECTION_PUBLISHED_CODE_REGEX + '(?:_[0-9]{2,3}){1,2}'
@@ -222,7 +222,7 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/desk/lists/'
 
-EMAIL_HOST = 'localhost'
+EMAIL_HOST = 'cchum-kvm-telemeta.in2p3.fr'
 DEFAULT_FROM_EMAIL = 'webmaster@parisson.com'
 
 TIMESIDE_DEFAULT_GRAPHER_ID = 'waveform_centroid'
@@ -243,9 +243,9 @@ PAGINATION_SETTINGS = {
     'MARGIN_PAGES_DISPLAYED': 2,
 }
 
-DEBUG_TOOLBAR_CONFIG = {
-    'SHOW_TOOLBAR_CALLBACK': lambda x : True
-}
+#DEBUG_TOOLBAR_CONFIG = {
+#    'SHOW_TOOLBAR_CALLBACK': lambda x : True
+#}
 DEBUG_TOOLBAR_PATCH_SETTINGS = False
 DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.versions.VersionsPanel',
