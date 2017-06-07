@@ -184,9 +184,9 @@
             {% for resource in playlist.resources %}
             <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
                 <td align="center" style="vertical-align:middle;">
-                    {% if resource.element.file or resource.element.has_mediafile %}
+                    {% comment %} {% if resource.element.file or resource.element.has_mediafile %}
                     <a href="#" id="{% url 'telemeta-item-export' resource.element.public_id 'mp3' %}" onclick="playlistUtils.changeGlyph(this.id)" class="glyphicon glyphicon-play" style="font-size: 1.3em;text-decoration: none"><p style="opacity:0;font-size:0">d</p></a>
-                    {% endif %}
+                    {% endif %} {% endcomment %}
                 </td>
                 <td style="max-width:200px">
                     {% if resource.type == "item" and not resource.element == None %}
