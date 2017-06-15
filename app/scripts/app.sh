@@ -18,8 +18,7 @@ uid='www-data'
 gid='www-data'
 
 # stating apps
-#pip install -U django==1.9.12
-pip install -U django==1.8.17
+pip install -U django==1.8.18
 pip uninstall -y south
 pip install -e git+https://github.com/Parisson/django-jqchat.git@dj1.8#egg=django-jqchat
 pip install django-debug-toolbar==1.6
@@ -42,7 +41,7 @@ if [ $REINDEX = "True" ]; then
 fi
 
 # fix media access rights
-chown -R www-data:www-data $media
+find $media -type d -not -path $media/import -exec chown www-data:www-data {} \;
 
 # choose dev or prod mode
 if [ "$1" = "--runserver" ]; then
