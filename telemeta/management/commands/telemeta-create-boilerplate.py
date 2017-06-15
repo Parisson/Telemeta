@@ -6,7 +6,6 @@ from django.template.defaultfilters import slugify
 
 import os
 import timeside.core
-from timeside.server.models import *
 from timeside.core.tools.test_samples import generateSamples
 from telemeta.models import *
 

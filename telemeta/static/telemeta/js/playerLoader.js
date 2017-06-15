@@ -491,7 +491,23 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                     });
                 };
                 //and finally, load the player:
-                Timeside.load(timesideConfig);
+                function checkSoundUrlAndLoad() {
+                    $J.get( soundUrl+"/isAvailable", function( data ) {
+                        //check if soundUrl is available
+                        if (!data['available']) {
+                            setTimeout(checkSoundUrlAndLoad, 2000);
+                        } else {
+                            // 
+                            Timeside.load(timesideConfig);
+                        }
+                    });
+                    
+                }
+                
+                checkSoundUrlAndLoad();
+                
+                
+                
 
             };
                 
