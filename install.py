@@ -17,7 +17,7 @@ import platform
 sysvinit_script = """#!/bin/sh
 
 ### BEGIN INIT INFO
-# Provides:	    %s
+# Provides:	    {project_name}
 # Required-Start:	docker
 # Required-Stop:	docker
 # Default-Start:	2 3 4 5
@@ -27,9 +27,8 @@ sysvinit_script = """#!/bin/sh
 
 set -e
 
-PROJECT_NAME=%s
-YAMLFILE=%s
-OPTS="-f $YAMLFILE -p $PROJECT_NAME"
+PROJECT_NAME={project_name}
+OPTS="{compose_opts}"
 UPOPTS="-d --no-recreate --no-build --no-deps"
 
 . /lib/lsb/init-functions
@@ -76,7 +75,7 @@ case "$1" in
         ;;
 
     *)
-        log_action_msg "Usage: /etc/init.d/$PROJECT_NAME {start|stop|reload|force-reload|restart|try-restart|status}" || true
+        log_action_msg "Usage: /etc/init.d/$PROJECT_NAME {{start|stop|reload|force-reload|restart|try-restart|status}}" || true
         exit 1
         ;;
 esac
@@ -86,14 +85,14 @@ exit 0
 
 systemd_service = """
 [Unit]
-Description=%s composition
+Description={project_name} composition
 Requires=docker.service
 After=docker.service
-ConditionPathExists=%s
+{ConditionPathExists}
 
 [Service]
-ExecStart=%s -f %s up -d
-ExecStop=%s -f %s stop
+ExecStart={docker_compose} {compose_opts} up -d
+ExecStop={docker_compose} {compose_opts} %s stop
 
 [Install]
 WantedBy=local.target
@@ -105,20 +104,22 @@ class DockerCompositionInstaller(object):
     docker = '/etc/init.d/docker'
     docker_compose = '/usr/local/bin/docker-compose'
 
-    def __init__(self, config='docker-compose.yml', init_type='sysvinit'):
+    def __init__(self, config='docker-compose.yml', init_type='sysvinit', dry_run=False):
         self.init_type = init_type
-        self.path = os.path.dirname(os.path.realpath(__file__))
-        self.config = config
-        self.config = os.path.abspath(self.get_root() + os.sep + self.config)
-        self.name = self.config.split(os.sep)[-2].lower()
-
-    def get_root(self):
-        path = self.path
-        while not self.config in os.listdir(path):
-            path = os.sep.join(path.split(os.sep)[:-1])
-            if not path:
-                raise ValueError('The YAML docker composition was not found, please type "install.py -h" for more infos.')
-        return path
+        self.dry_run = dry_run
+        self.path = os.getcwd()
+        self.config = [os.path.realpath(yml_file)
+                       for yml_file in config]
+        self.check_path()
+        self.name = self.config[0].split(os.sep)[-2].lower()
+        opts = ' '.join(['-f %s' % yml_file for yml_file in self.config])
+        opts += ' -p %s' % self.name
+        self.docker_compose_opts = opts
+        
+    def check_path(self):
+        for yml_file in self.config:
+            if not os.path.exists(yml_file):
+                raise ValueError('The YAML docker composition %s was not found, please type "install.py -h" for more infos.' % yml_file)
 
     def install_docker(self):
         if not os.path.exists(self.docker):
@@ -131,7 +132,11 @@ class DockerCompositionInstaller(object):
     def install_daemon_sysvinit(self):
         script = '/etc/init.d/' + self.name
         print 'Writing sysvinit script in ' + script
-        data = sysvinit_script % (self.name, self.name, self.config)
+        data = sysvinit_script.format(project_name=self.name,
+                                      compose_opts=self.docker_compose_opts)
+        if self.dry_run:
+            print data
+            return
         f = open(script, 'w')
         f.write(data)
         f.close()
@@ -141,8 +146,15 @@ class DockerCompositionInstaller(object):
     def install_daemon_systemd(self):
         service = '/lib/systemd/system/' + self.name + '.service'
         print 'Writing systemd service in ' +  service
-        data = systemd_service % (self.name, self.config, self.docker_compose,
-            self.config, self.docker_compose, self.config)
+        conditions = '\n'.join(['ConditionPathExists=%s' % yml_file
+                                for yml_file in self.config])
+        data = systemd_service.format(project_name=self.name,
+                                      ConditionPathExists=conditions,
+                                      docker_compose=self.docker_compose,
+                                      compose_opts=self.docker_compose_opts)
+        if self.dry_run:
+            print data
+            return
         f = open(service, 'w')
         f.write(data)
         f.close()
@@ -183,18 +195,22 @@ def main():
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument('--uninstall', help='uninstall the daemon', action='store_true')
     parser.add_argument('--systemd', help='use systemd', action='store_true')
-    parser.add_argument('composition_file', nargs='?', help='the path of the YAML composition file to use (optional)')
+    parser.add_argument('--dry-run', help='dry run, do not install the daemon but print the service file', action='store_true')
+    parser.add_argument('composition_file', nargs='*', help='the path of the YAML composition file to use (optional)')
 
-    config = 'docker-compose.yml'
+    config = ['docker-compose.yml']
     init_type = 'sysvinit'
+    dry_run = False
     args = vars(parser.parse_args())
 
     if args['systemd']:
         init_type = 'systemd'
     if args['composition_file']:
         config = args['composition_file']
+    if args['dry_run']:
+        dry_run = args['dry_run']
 
-    installer = DockerCompositionInstaller(config, init_type)
+    installer = DockerCompositionInstaller(config, init_type, dry_run=dry_run)
     if args['uninstall']:
         installer.uninstall()
     else:
