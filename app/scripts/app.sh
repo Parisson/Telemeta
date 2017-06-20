@@ -34,6 +34,9 @@ python $manage collectstatic --noinput
 python $manage telemeta-create-admin-user
 python $manage telemeta-create-boilerplate
 
+# Delete Timeside database if it exists
+cat /srv/src/telemeta/scripts/sql/drop_timeside.sql | python $manage dbshell
+
 if [ $REINDEX = "True" ]; then
     python $manage rebuild_index --noinput
 fi
