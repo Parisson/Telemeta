@@ -18,6 +18,7 @@ install:
   - docker-compose build
 
 script:
+  - docker-compose run app pytest /srv/src/telemeta
   - docker-compose up -d
   - sleep 60
   - curl --fail --retry 10 --retry-delay 5  -v $(docker-compose port nginx 80)
