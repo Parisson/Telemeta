@@ -21,8 +21,6 @@ RUN mkdir -p /srv/src/
 RUN mkdir -p /srv/app
 RUN mkdir -p /srv/src/telemeta
 
-RUN apt-get install -y --force-yes mysql-client
-
 ENV PYTHON_EGG_CACHE=/srv/.python-eggs
 RUN mkdir -p $PYTHON_EGG_CACHE
 RUN chown www-data:www-data $PYTHON_EGG_CACHE
