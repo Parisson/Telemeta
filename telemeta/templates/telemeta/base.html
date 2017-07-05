@@ -137,16 +137,10 @@
 
                             <li><a href="{% url "haystack_advance_search" %}"
                                    class="orange">{% trans "Advanced search" %}</a></li>
-                            {% if user.is_authenticated %}
-                                {% if user.is_staff or not perms.telemeta.can_not_view_users_and_profiles %}
-                                    <li><a href="{% url "telemeta-users" %}" class="red">{% trans "Users" %}</a></li>
-                                {% endif %}
-                            {% endif %}
+                              <li><a href="#vocabulary#" class="darkblue">{% trans "Vocabulary" %}</a>
                             {% if user.is_staff %}
-                                <li><a href="#admin#" class="violet">{% trans "Admin" %}</a>
+
                                     <ul>
-                                        <li><a href="{% url "telemeta-home" %}admin/django/"
-                                               target="_blank">{% trans "General" context "admin" %}</a></li>
                                         <li>
                                             <a href="{% url "telemeta-admin-enumerations" %}">{% trans "Enumerations" %}</a>
                                         </li>
@@ -156,6 +150,30 @@
                                             <a href="{% url "telemeta-instrument-alias-edit" %}">{% trans "Instrument aliases" %}</a>
                                         </li>
                                     </ul>
+                                </li>
+
+                            {% else %}
+
+                                    <ul>
+                                        <li>
+                                            <a href="{% url "telemeta-enumerations" %}">{% trans "Enumerations" %}</a>
+                                        </li>
+                                        <li><a href="{% url "telemeta-instruments" %}">{% trans "Instruments" %}</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url "telemeta-instrument-alias" %}">{% trans "Instrument aliases" %}</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            {% endif %}
+
+                            {% if user.is_authenticated %}
+                                {% if user.is_staff or not perms.telemeta.can_not_view_users_and_profiles %}
+                                    <li><a href="{% url "telemeta-users" %}" class="red">{% trans "Users" %}</a></li>
+                                {% endif %}
+                            {% endif %}
+                            {% if user.is_staff %}
+                                <li><a href="{% url "telemeta-home" %}admin/django/" class="violet">{% trans "Admin" %}</a>
                                 </li>
                             {% endif %}
                         </ul>

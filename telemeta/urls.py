@@ -31,6 +31,7 @@ from haystack.forms import *
 from jsonrpc import jsonrpc_site
 import os.path
 import telemeta.config
+from telemeta.views.enum import EnumView
 
 telemeta.config.check()
 
@@ -45,6 +46,7 @@ playlist_view = PlaylistView()
 profile_view = ProfileView()
 geo_view = GeoView()
 resource_view = ResourceView()
+enumeration_view = EnumView()
 #boolean_view = BooleanSearchView()
 
 # ID's regular expressions
@@ -53,7 +55,6 @@ export_extensions = "|".join(item_view.list_export_extensions())
 
 urlpatterns = patterns('',
                        url(r'^$', home_view.home, name="telemeta-home"),
-                       url(r'^test', TemplateView.as_view(template_name = "telemeta/hello_world.html")),
 
                        # items
                        url(r'^archives/items/$', ItemListView.as_view(), name="telemeta-items"),
@@ -146,6 +147,10 @@ urlpatterns = patterns('',
                        url(r'^admin/enumerations/$', admin_view.admin_enumerations, name="telemeta-admin-enumerations"),
                        url(r'^admin/users/$', admin_view.admin_users, name="telemeta-admin-users"),
 
+                       # instruments
+                       url(r'^instruments/$', instrument_view.instrument_list, name="telemeta-instruments"),
+
+
                        # instruments administration
                        url(r'^admin/instruments/$', instrument_view.edit_instrument , name="telemeta-instrument-edit"),
                        url(r'^admin/instruments/add/$', instrument_view.add_to_instrument, name="telemeta-instrument-add"),
@@ -158,6 +163,9 @@ urlpatterns = patterns('',
                        url(r'^admin/instruments/' + r'(?P<value_id>[0-9]+)/update/$', instrument_view.update_instrument_value, name="telemeta-instrument-record-update"),
                        url(r'^admin/instruments/' + r'(?P<value_id>[0-9]+)/replace/$', instrument_view.replace_instrument_value, name="telemeta-instrument-record-replace"),
 
+                       # instruments aliases
+                       url(r'^instruments_alias/$', instrument_alias_view.instrument_list, name="telemeta-instrument-alias"),
+
                        # instruments aliases administration
                        url(r'^admin/instrument_aliases/$', instrument_alias_view.edit_instrument, name="telemeta-instrument-alias-edit"),
                        url(r'^admin/instrument_aliases/add/$', instrument_alias_view.add_to_instrument, name="telemeta-instrument-alias-add"),
@@ -169,7 +177,9 @@ urlpatterns = patterns('',
                        url(r'^admin/instrument_aliases/' + r'(?P<value_id>[0-9]+)/'+'list-item-unpublished/$', ItemAliasUnpublishedListView.as_view(),name="telemeta-items-alias-unpublished"),
                        url(r'^admin/instrument_aliases/' + r'(?P<value_id>[0-9]+)/'+'list-item-sound/$', ItemAliasSoundListView.as_view(),name="telemeta-items-alias-sound"),
                        url(r'^admin/instrument_aliases/' + r'(?P<value_id>[0-9]+)/'+'list-items/$', ItemAliasListView.as_view(), name="telemeta-alias-item-list"),
-
+                       # enumeration
+                       url(r'^enumerations/$',enumeration_view.enumerations,name="telemeta-enumerations"),
+                       url(r'^enumerations/(?P<enumeration_id>[0-9a-z]+)/$', enumeration_view.enumeration, name="telemeta-enumeration"),
                        # enumerations administration
                        url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/$',admin_view.edit_enumeration,name="telemeta-enumeration-edit"),
                        url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/add/$',admin_view.add_to_enumeration,name="telemeta-enumeration-add"),

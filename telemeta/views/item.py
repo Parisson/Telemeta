@@ -33,6 +33,7 @@ import time
 
 
 class ItemBaseMixin(TelemetaBaseMixin):
+
     graphers = timeside.core.processor.processors(timeside.core.api.IGrapher)
     decoders = timeside.core.processor.processors(timeside.core.api.IDecoder)
     encoders = timeside.core.processor.processors(timeside.core.api.IEncoder)
@@ -45,16 +46,16 @@ class ItemBaseMixin(TelemetaBaseMixin):
     default_grapher_sizes = getattr(settings, 'TIMESIDE_DEFAULT_GRAPHER_SIZES', ['346x130', ])
     auto_zoom = getattr(settings, 'TIMESIDE_AUTO_ZOOM', False)
 
-    public_graphers = ['waveform_centroid', 'waveform_simple',
-                       'spectrogram', 'spectrogram_log']
-
+    public_graphers  = ['waveform_centroid' ,'waveform_simple',
+                        'spectrogram', 'spectrogram_log']
+    
     def get_graphers(self):
         graphers = []
         user = self.request.user
         graphers_access = (user.is_staff
                            or user.is_superuser
                            or user.has_perm('can_run_analysis'))
-
+           
         for grapher in self.graphers:
             if (not graphers_access
                 and grapher.id() not in self.public_graphers):
@@ -297,7 +298,7 @@ class ItemView(ItemBaseMixin):
                 graph = grapher(width=width, height=height)
                 (decoder | graph).run()
                 graph.watermark('timeside', opacity=.6, margin=(5, 5))
-                # f = open(path, 'w')
+                #f = open(path, 'w')
                 graph.render(output=path)
                 # f.close()
                 self.cache_data.add_file(image_file)
@@ -408,7 +409,7 @@ class ItemView(ItemBaseMixin):
             video = item.file.path
             response = serve_media(video, content_type=mime_type)
             # response['Content-Disposition'] = 'attachment'
-            #  TF : I don't know why empty attachment was set
+            # TF : I don't know why empty attachment was set
             # TODO: remove if useless
             if return_availability:
                 data = json.dumps({'available': True})
@@ -420,7 +421,7 @@ class ItemView(ItemBaseMixin):
             video = item.file.path
             response = serve_media(video, content_type=mime_type)
             # response['Content-Disposition'] = 'attachment'
-            #  TF : I don't know why empty attachment was set,
+            # TF : I don't know why empty attachment was set,
             # TODO: remove if useless
             if return_availability:
                 data = json.dumps({'available': True})
@@ -428,7 +429,7 @@ class ItemView(ItemBaseMixin):
             return response
 
         (media, mime_type) = self.item_transcode(item, extension)
-        # media  = None
+        #media  = None
         if media:
             if return_availability:
                 data = json.dumps({'available': True})
@@ -447,7 +448,7 @@ class ItemView(ItemBaseMixin):
             messages.info(request, title)
             response = render(request, 'telemeta/messages.html', {'description': description})
             from django.utils.cache import patch_cache_control
-            # patch_cache_control(response, no_cache=True, no_store=True, must_revalidate=True)
+            #patch_cache_control(response, no_cache=True, no_store=True, must_revalidate=True)
             return response
 
     def item_export_available(self, request, public_id, extension):
@@ -491,6 +492,7 @@ class ItemView(ItemBaseMixin):
 
 
 class ItemListView(ListView):
+
     model = MediaItem
     template_name = "telemeta/mediaitem_list.html"
     queryset = MediaItem.objects.enriched().order_by('code', 'old_code')
@@ -506,12 +508,11 @@ class ItemListView(ListView):
 
 
 class ItemListViewFullAccess(ListView):
+
     model = MediaItem
     template_name = "telemeta/mediaitem_list.html"
     paginate_by = 20
-    queryset = MediaItem.objects.enriched().filter(
-        Q(collection__public_access="full") | Q(public_access="full")).sound().exclude(
-        collection__public_access="none").order_by('code', 'old_code')
+    queryset = MediaItem.objects.enriched().filter(Q(collection__public_access="full") | Q(public_access="full")).sound().exclude(collection__public_access="none").order_by('code', 'old_code')
 
     def get_context_data(self, **kwargs):
         context = super(ItemListViewFullAccess, self).get_context_data(**kwargs)
@@ -520,18 +521,22 @@ class ItemListViewFullAccess(ListView):
 
 
 class ItemUnpublishedListView(ItemListView):
+
     queryset = MediaItem.objects.filter(collection__code__contains='_I_').order_by('code', 'old_code')
 
 
 class ItemPublishedListView(ItemListView):
+
     queryset = MediaItem.objects.filter(collection__code__contains='_E_').order_by('code', 'old_code')
 
 
 class ItemSoundListView(ItemListView):
+
     queryset = MediaItem.objects.sound().order_by('code', 'old_code')
 
 
 class ItemInstrumentListView(ItemListView):
+
     template_name = "telemeta/media_item_instrument_list.html"
 
     def get_queryset(self):
@@ -547,23 +552,25 @@ class ItemInstrumentListView(ItemListView):
 
 
 class ItemInstrumentPublishedListView(ItemInstrumentListView):
+
     def get_queryset(self):
-        return super(ItemInstrumentPublishedListView, self).get_queryset().filter(
-            collection__code__contains='_E_').order_by('code', 'old_code')
+        return super(ItemInstrumentPublishedListView, self).get_queryset().filter(collection__code__contains='_E_').order_by('code', 'old_code')
 
 
 class ItemInstrumentUnpublishedListView(ItemInstrumentListView):
+
     def get_queryset(self):
-        return super(ItemInstrumentUnpublishedListView, self).get_queryset().filter(
-            collection__code__contains='_I_').order_by('code', 'old_code')
+        return super(ItemInstrumentUnpublishedListView, self).get_queryset().filter(collection__code__contains='_I_').order_by('code', 'old_code')
 
 
 class ItemInstrumentSoundListView(ItemInstrumentListView):
+
     def get_queryset(self):
         return super(ItemInstrumentSoundListView, self).get_queryset().sound().order_by('code', 'old_code')
 
 
 class ItemAliasListView(ItemListView):
+
     template_name = "telemeta/media_item_alias_list.html"
 
     def get_queryset(self):
@@ -579,27 +586,28 @@ class ItemAliasListView(ItemListView):
 
 
 class ItemAliasPublishedListView(ItemAliasListView):
+
     def get_queryset(self):
-        return super(ItemAliasPublishedListView, self).get_queryset().filter(collection__code__contains='_E_').order_by(
-            'code', 'old_code')
+        return super(ItemAliasPublishedListView, self).get_queryset().filter(collection__code__contains='_E_').order_by('code', 'old_code')
 
 
 class ItemAliasUnpublishedListView(ItemAliasListView):
+
     def get_queryset(self):
-        return super(ItemAliasUnpublishedListView, self).get_queryset().filter(
-            collection__code__contains='_I_').order_by('code', 'old_code')
+        return super(ItemAliasUnpublishedListView, self).get_queryset().filter(collection__code__contains='_I_').order_by('code', 'old_code')
 
 
 class ItemAliasSoundListView(ItemAliasListView):
+
     def get_queryset(self):
         return super(ItemAliasSoundListView, self).get_queryset().sound().order_by('code', 'old_code')
 
 
 class ItemViewMixin(ItemBaseMixin):
+
     model = MediaItem
     form_class = MediaItemForm
     inlines = [ItemPerformanceInline, ItemKeywordInline, ItemRelatedInline, ItemIdentifierInline]
-
     # inlines = [ItemPerformanceInline, ItemKeywordInline, ItemRelatedInline,
     #             ItemFormatInline, ItemIdentifierInline]
 
@@ -619,6 +627,7 @@ class ItemViewMixin(ItemBaseMixin):
 
 
 class ItemEditView(ItemViewMixin, UpdateWithInlinesView):
+
     template_name = 'telemeta/mediaitem_edit.html'
 
     def get_form_class(self):
@@ -666,6 +675,7 @@ class ItemEditView(ItemViewMixin, UpdateWithInlinesView):
 
 
 class ItemAddView(ItemViewMixin, CreateWithInlinesView):
+
     form_class = MediaItemForm
     template_name = 'telemeta/mediaitem_add.html'
 
@@ -697,6 +707,7 @@ class ItemAddView(ItemViewMixin, CreateWithInlinesView):
 
 
 class ItemCopyView(ItemAddView):
+
     form_class = MediaItemForm
     template_name = 'telemeta/mediaitem_edit.html'
 
@@ -746,6 +757,7 @@ class ItemCopyView(ItemAddView):
 
 
 class ItemDetailView(ItemViewMixin, DetailView):
+
     template_name = 'telemeta/mediaitem_detail.html'
 
     def item_analyze(self, item):
@@ -850,8 +862,8 @@ class ItemDetailView(ItemViewMixin, DetailView):
                     is_transcoded_flag.value = True
                     is_transcoded_flag.save()
 
-                    #                FIXME: parse tags on first load
-                    #                tags = decoder.tags
+#                FIXME: parse tags on first load
+#                tags = decoder.tags
 
         self.mime_type = mime_type
 
@@ -952,28 +964,28 @@ class DublinCoreToFormatMetadata(object):
             'relation': 'TALB',  # album
             'type': 'TCON',  # genre
             'publisher': 'TPUB',  # publisher
-            'date': 'TDRC',  # year
+                         'date': 'TDRC',  # year
             #                         'coverage': 'COMM',  #comment
         },
         'ogg': {
             'creator': 'artist',
             'relation': 'album',
-            'all': 'all',
+                        'all': 'all',
         },
         'flac': {
             'creator': 'artist',
             'relation': 'album',
-            'all': 'all',
+                        'all': 'all',
         },
         'wav': {
             'creator': 'artist',
             'relation': 'album',
-            'all': 'all',
+                        'all': 'all',
         },
         'webm': {
             'creator': 'artist',
             'relation': 'album',
-            'all': 'all',
+                        'all': 'all',
         },
     }
 
@@ -1004,6 +1016,7 @@ class DublinCoreToFormatMetadata(object):
 
 
 class ItemMarkerJsonView(View):
+
     model = MediaItem
 
     def get(self, request, *args, **kwargs):
@@ -1017,21 +1030,23 @@ class ItemMarkerJsonView(View):
             data = ''
         response = HttpResponse(data, content_type='application/json')
         response['Content-Disposition'] = "attachment; filename=%s.%s" % \
-                                          (item.code, 'json')
+            (item.code, 'json')
         return response
 
 
 class ItemPlayerDefaultView(ItemDetailView):
+
     template_name = 'telemeta/mediaitem_player.html'
 
 
 class ItemDetailDCView(ItemDetailView):
+
     template_name = 'telemeta/mediaitem_detail_dc.html'
 
 
 class ItemVideoPlayerView(ItemDetailView):
-    template_name = 'telemeta/mediaitem_video_player.html'
 
+    template_name = 'telemeta/mediaitem_video_player.html'
 
 class ItemEnumListView(ItemListView):
     template_name = 'telemeta/media_item_enum_list.html'
@@ -1043,13 +1058,10 @@ class ItemEnumListView(ItemListView):
         context['count'] = self.object_list.count()
         context['keyword'] = False
         context['enum_name'] = ItemEnumListView().get_enumeration(self.request.path.split('/')[3])._meta.verbose_name
-        context['enum_value'] = ItemEnumListView().get_enumeration(self.request.path.split('/')[3]).objects.get(
-            id__exact=self.request.path.split('/')[4])
+        context['enum_value'] = ItemEnumListView().get_enumeration(self.request.path.split('/')[3]).objects.get(id__exact=self.request.path.split('/')[4])
         context['url_all'] = "/admin/enumerations/" + context['enum'] + "/" + context['id'] + "/item/list"
-        context['url_unpublished'] = "/admin/enumerations/" + context['enum'] + "/" + context[
-            'id'] + "/item_unpublished/list/"
-        context['url_published'] = "/admin/enumerations/" + context['enum'] + "/" + context[
-            'id'] + "/item_published/list/"
+        context['url_unpublished'] = "/admin/enumerations/" + context['enum'] + "/" + context['id'] + "/item_unpublished/list/"
+        context['url_published'] = "/admin/enumerations/" + context['enum'] +"/"+context['id'] + "/item_published/list/"
         context['url_sound'] = "/admin/enumerations/" + context['enum'] + "/" + context['id'] + "/item_sound/list/"
         return context
 
@@ -1078,11 +1090,10 @@ class ItemEnumListView(ItemListView):
             return None
         return model
 
-
 class ItemPublishedEnumListView(ItemEnumListView):
     def get_queryset(self):
         c = ItemEnumListView()
-        # id of value of enumeration
+        #id of value of enumeration
         i = self.request.path.split('/')[4]
         enumeration = c.get_enumeration(self.request.path.split('/')[3])
         queryset = self.get_item(enumeration.objects.filter(id=i).get(), c)
@@ -1095,8 +1106,8 @@ class ItemPublishedEnumListView(ItemEnumListView):
 class ItemUnpublishedEnumListView(ItemEnumListView):
     def get_queryset(self):
         c = ItemEnumListView()
-        # id of value of enumeration
-        i = self.request.path.split('/')[4]
+        #id of value of enumeration
+        i= self.request.path.split('/')[4]
         enumeration = c.get_enumeration(self.request.path.split('/')[3])
         queryset = self.get_item(enumeration.objects.filter(id=i).get(), c)
         return queryset
@@ -1108,8 +1119,8 @@ class ItemUnpublishedEnumListView(ItemEnumListView):
 class ItemSoundEnumListView(ItemEnumListView):
     def get_queryset(self):
         c = ItemEnumListView()
-        # id of value of enumeration
-        i = self.request.path.split('/')[4]
+        #id of value of enumeration
+        i= self.request.path.split('/')[4]
         enumeration = c.get_enumeration(self.request.path.split('/')[3])
         queryset = self.get_item(enumeration.objects.filter(id=i).get(), c)
         return queryset
@@ -1119,6 +1130,8 @@ class ItemSoundEnumListView(ItemEnumListView):
 
 
 class ItemKeywordListView(ItemListView):
+    template_name = 'telemeta/media_item_enum_list.html'
+
 
     def get_context_data(self, **kwargs):
         context = super(ItemListView, self).get_context_data(**kwargs)
@@ -1127,15 +1140,11 @@ class ItemKeywordListView(ItemListView):
         context['count'] = self.object_list.count()
         context['keyword'] = True
         context['enum_name'] = ItemEnumListView().get_enumeration(self.request.path.split('/')[3])._meta.verbose_name
-        context['enum_value'] = ItemEnumListView().get_enumeration(self.request.path.split('/')[3]).objects.get(
-            id__exact=self.request.path.split('/')[4])
-        context['url_all'] = "/admin/enumerations/" + context['enum'] + "/" + context['id'] + "/keyword_item/list"
-        context['url_unpublished'] = "/admin/enumerations/" + context['enum'] + "/" + context[
-            'id'] + "/keyword_item_unpublished/list/"
-        context['url_published'] = "/admin/enumerations/" + context['enum'] + "/" + context[
-            'id'] + "/keyword_item_published/list/"
-        context['url_sound'] = "/admin/enumerations/" + context['enum'] + "/" + context[
-            'id'] + "/keyword_item_published/list/"
+        context['enum_value'] = ItemEnumListView().get_enumeration(self.request.path.split('/')[3]).objects.get(id__exact=self.request.path.split('/')[4])
+        context['url_all'] = "/admin/enumerations/"+context['enum']+"/"+context['id']+"/keyword_item/list"
+        context['url_unpublished'] = "/admin/enumerations/"+context['enum']+"/"+context['id']+"/keyword_item_unpublished/list/"
+        context['url_published'] = "/admin/enumerations/"+context['enum']+"/"+context['id']+"/keyword_item_published/list/"
+        context['url_sound'] = "/admin/enumerations/"+context['enum']+"/"+context['id']+"/keyword_item_published/list/"
 
         context['argument'] = [context['enum'], context['id']]
 
@@ -1147,9 +1156,10 @@ class ItemKeywordListView(ItemListView):
 
     def get_item(self, id):
         c = []
-        for m in MediaItemKeyword.objects.filter(keyword_id=id):
+        for m  in MediaItemKeyword.objects.filter(keyword_id=id):
             c.append(m.__getattribute__("item_id"))
-        return MediaItem.objects.filter(id__in=c)
+        return  MediaItem.objects.filter(id__in=c)
+
 
     def get_enumeration(self, id):
         from django.db.models import get_models
@@ -1161,28 +1171,28 @@ class ItemKeywordListView(ItemListView):
             return None
         return model
 
-
 class ItemKeywordPublishedListView(ItemKeywordListView):
+
     def get_queryset(self):
-        c = ItemKeywordListView()
-        queryset = self.get_item(self.request.path.split('/')[4], c)
+        c=ItemKeywordListView()
+        queryset = self.get_item(self.request.path.split('/')[4],c)
         return queryset
 
-    def get_item(self, id, c):
+    def get_item(self, id,c):
         return c.get_item(id).filter(code__contains='_E_')
 
-
 class ItemKeywordUnpublishedListView(ItemKeywordListView):
+
     def get_queryset(self):
-        c = ItemKeywordListView()
-        queryset = self.get_item(self.request.path.split('/')[4], c)
+        c=ItemKeywordListView()
+        queryset = self.get_item(self.request.path.split('/')[4],c)
         return queryset
 
-    def get_item(self, id, c):
+    def get_item(self, id,c):
         return c.get_item(id).filter(code__contains='_I_')
 
-
 class ItemKeywordSoundListView(ItemKeywordListView):
+
     def get_queryset(self):
         c = ItemKeywordListView()
         queryset = self.get_item(self.request.path.split('/')[4], c)
