@@ -20,7 +20,7 @@
 #          David LIPSZYC <davidlipszyc@gmail.com>
 
 from django.contrib.auth.models import User
-from django.test import TestCase
+
 
 from telemeta.models import LocationType, Location, EthnicGroup
 from telemeta.models.enum import Publisher, PublisherCollection
@@ -33,7 +33,7 @@ import pytest
 pytestmark = pytest.mark.django_db
 
 @pytest.mark.django_db
-class CollectionItemTestCase(TestCase):
+class CollectionItemTestCase:
     pytestmark = pytest.mark.django_db
 
     def setUp(self):
@@ -320,7 +320,7 @@ class CollectionItemTestCase(TestCase):
 pytestmark = pytest.mark.django_db
 
 @pytest.mark.django_db
-class RelatedDeleteTestCase(TestCase):
+class RelatedDeleteTestCase:
     pytestmark = pytest.mark.django_db
 
     def setUp(self):
