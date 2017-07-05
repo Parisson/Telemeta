@@ -36,12 +36,15 @@ fi
 
 python $manage bower_install -- --allow-root
 
+# Delete Timeside database if it exists
+cat /srv/src/telemeta/scripts/sql/drop_timeside.sql | python $manage dbshell
+
 if [ $REINDEX = "True" ]; then
     python $manage rebuild_index --noinput
 fi
 
 # fix media access rights
-find $media -type d -not -path $media/import -exec chown www-data:www-data {} \;
+find $media -path ${media}import -prune -o -type d -not -user www-data -exec chown www-data:www-data {} \;
 
 # choose dev or prod mode
 if [ "$1" = "--runserver" ]; then

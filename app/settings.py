@@ -36,7 +36,7 @@ DATABASES = {
         'PASSWORD': env('MYSQL_PASSWORD'),  # Not used with sqlite3.
         'NAME': env('MYSQL_DATABASE'),
         'HOST': 'db',      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '3306',      # Set to empty string for default. Not used with sqlite3.
+        'PORT': '3306',   # Set to empty string for default. Not used with sqlite3.
     }
 }
 
