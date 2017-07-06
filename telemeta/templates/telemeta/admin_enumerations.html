@@ -3,25 +3,44 @@
 {% load i18n %}
 
 {% block title %}
-<h1><img src="{{ STATIC_URL }}telemeta/images/admin_red.png" style="vertical-align:middle" /> {% trans "Administration" %} > {% trans "Enumerations" %}</h1>
+    <h1><img src="{{ STATIC_URL }}telemeta/images/admin_red.png" style="vertical-align:middle" /> {% trans "Administration" %} > {% trans "Enumerations" %}</h1>
 {% endblock %}
 
 {% block tabcontents %}
-{% if enumerations %}
-  <table class="listing">
-   <thead>
-    <tr><th>{% trans "Title"%}</th></tr>
-   </thead><tbody>
-    {% for enum in enumerations %}
-    <tr><td>
-      <a href="{% url "telemeta-enumeration-edit" enum.id %}">{% trans enum.name|capfirst %}</a>
-    </td></tr>
-    {% endfor %}
-   </tbody>
-  </table>
-  {% else %}
-    <p class="help">{% trans "No enumerations" %}</p>
- {% endif %}
+    {% if enumerations %}
+        <form id="_updateenum" method="POST" action="{% url "telemeta-admin-enumerations-update"  %}">{% csrf_token %}
+        <table class="listing">
+            <thead>
+            <tr><th class="sel">&nbsp;</th>
+
+                <th>{% trans "Title"%}</th>
+            </thead><tbody>
+        {% for enum in enumerations %}
+            <tr>
+                {% if perms.telemeta.change_keyword %}
+                    <td><input type="checkbox" name="sel" value="{{enum.id}}"{% if enum.admin %} checked {% endif %} /></td>
+                {% else %}
+                    <td></td>
+                {% endif %}
+                <td>
+                    <a href="{% url "telemeta-enumeration-edit" enum.id %}">{% trans enum.name|capfirst %}</a>
+                </td>
+                <td></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+        <div class="buttons">
+            <br />
+            {% if perms.telemeta.change_keyword %}
+                <a href="#" class="component_icon button icon_cancel"
+                   onclick="document.getElementById('_updateenum').submit(); return false;">{% trans "Hide selected items" %}</a>
+            {% endif %}
+        </div>
+        </form>
+    {% else %}
+        <p class="help">{% trans "No enumerations" %}</p>
+    {% endif %}
 {% endblock %}
 
 

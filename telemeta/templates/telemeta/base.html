@@ -137,8 +137,8 @@
 
                             <li><a href="{% url "haystack_advance_search" %}"
                                    class="orange">{% trans "Advanced search" %}</a></li>
-                              <li><a href="#vocabulary#" class="darkblue">{% trans "Vocabulary" %}</a>
-                            {% if user.is_staff %}
+                            <li><a href="#vocabulary#" class="darkblue">{% trans "Vocabulary" %}</a>
+                                {% if user.is_staff %}
 
                                     <ul>
                                         <li>
@@ -147,25 +147,35 @@
                                         <li><a href="{% url "telemeta-instrument-edit" %}">{% trans "Instruments" %}</a>
                                         </li>
                                         <li>
-                                            <a href="{% url "telemeta-instrument-alias-edit" %}">{% trans "Instrument aliases" %}</a>
+                                            <a href="{% url "telemeta-instrument-alias-edit" %}">{% trans "Instrument (vernaculare)" %}</a>
                                         </li>
                                     </ul>
-                                </li>
+                                    </li>
 
-                            {% else %}
+                                {% else %}
 
                                     <ul>
                                         <li>
                                             <a href="{% url "telemeta-enumerations" %}">{% trans "Enumerations" %}</a>
                                         </li>
                                         <li><a href="{% url "telemeta-instruments" %}">{% trans "Instruments" %}</a>
-                                        </li>
                                         <li>
-                                            <a href="{% url "telemeta-instrument-alias" %}">{% trans "Instrument aliases" %}</a>
+                                            <a href="{% url "telemeta-instrument-alias-edit" %}">{% trans "Instruments (vernaculare)" %}</a>
                                         </li>
+                                        </li>
+                                        {% for enu in menu %}
+                                            <li>
+                                                <a href="{% url "telemeta-enumeration" enu.id %}">
+
+                                                    {{ enu.name |capfirst }}
+
+
+                                                </a>
+                                            </li>
+                                        {% endfor %}
                                     </ul>
-                                </li>
-                            {% endif %}
+                                    </li>
+                                {% endif %}
 
                             {% if user.is_authenticated %}
                                 {% if user.is_staff or not perms.telemeta.can_not_view_users_and_profiles %}

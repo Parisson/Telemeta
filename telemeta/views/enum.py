@@ -2,6 +2,10 @@ from telemeta.views.core import *
 import telemeta.models
 
 class EnumView(object):
+    enu = []
+
+    def __init__(self):
+        self.enu = self.__get_enumerations_list()
 
     def __get_admin_context_vars(self):
         return {"enumerations": self.__get_enumerations_list()}
@@ -13,7 +17,7 @@ class EnumView(object):
         atr = "";
         print enumeration_id
         enumeration = self.__get_enumeration(enumeration_id)
-        if enumeration == None:
+        if enumeration == None or enumeration.admin:
             raise Http404
         vars = self.__get_admin_context_vars()
         vars["enumeration_id"] = enumeration._meta.module_name
@@ -38,6 +42,15 @@ class EnumView(object):
 
         return render(request, 'telemeta/enumeration.html', vars)
 
+    @property
+    def get_enumerations_list(self):
+        test = {
+            "ceci",
+            "est",
+            "un",
+            "test"}
+        return test
+
     def __get_enumerations_list(self):
         from django.db.models import get_models
         models = get_models(telemeta.models)
@@ -45,12 +58,19 @@ class EnumView(object):
         enumerations = []
         for model in models:
             if issubclass(model, Enumeration):
-                if not model.hidden:
+
+                if not model.hidden and not model.admin:
                     enumerations.append({"name": model._meta.verbose_name,
-                                         "id": model._meta.module_name})
+                                           "id": model._meta.module_name
+                                         })
+                else:
+                    print model._meta.module_name + "____"
+                    print model.admin
 
         cmp = lambda obj1, obj2: unaccent_icmp(obj1['name'], obj2['name'])
         enumerations.sort(cmp)
+        print enumerations
+        self.enu = enumerations
         return enumerations
 
     def __get_enumeration(self, id):

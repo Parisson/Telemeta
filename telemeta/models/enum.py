@@ -29,6 +29,11 @@ class Enumeration(ModelCore):
     hidden = False
     value = CharField(_('value'), required=True, unique=True)
     notes = TextField(_('notes'))
+    admin = False
+
+    def _set_admin(self):
+        self.admin = not self.admin
+        print self.admin
 
     def __unicode__(self):
         return self.value
@@ -46,12 +51,14 @@ class PhysicalFormat(Enumeration):
         db_table = 'physical_formats'
         verbose_name = _("archive format")
 
+
 class PublishingStatus(Enumeration):
     "Collection publishing status"
 
     class Meta(MetaEnumeration):
         db_table = 'publishing_status'
         verbose_name = _("secondary edition")
+
 
 class AcquisitionMode(Enumeration):
     "Mode of acquisition of the collection"
@@ -60,12 +67,14 @@ class AcquisitionMode(Enumeration):
         db_table = 'acquisition_modes'
         verbose_name = _("mode of acquisition")
 
+
 class MetadataAuthor(Enumeration):
     "Collection metadata author"
 
     class Meta(MetaEnumeration):
         db_table = 'metadata_authors'
         verbose_name = _("record author")
+
 
 class MetadataWriter(Enumeration):
     "Collection metadata writer"
@@ -74,12 +83,14 @@ class MetadataWriter(Enumeration):
         db_table = 'metadata_writers'
         verbose_name = _("record writer")
 
+
 class LegalRight(Enumeration):
     "Collection legal rights"
 
     class Meta(MetaEnumeration):
         db_table = 'legal_rights'
         verbose_name = _("legal rights")
+
 
 class RecordingContext(Enumeration):
     "Collection recording context"

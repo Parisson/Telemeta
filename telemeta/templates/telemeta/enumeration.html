@@ -4,10 +4,11 @@
 {% block head_title %}{% trans "Enumeration" %} : {{ enumeration_name|capfirst }} - {{ block.super }}{% endblock %}
 
 {% block title %}
-    <h1><img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" />  <a href="{% url "telemeta-enumerations" %}">{% trans "Enumerations" %}</a></h1>
+    <h1><img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" />{{ enumeration_name|capfirst }}</h1>
 {% endblock %}
 
 {% block tabcontents %}
+
     {% if enumeration_values %}
         <table class="listing">
             <thead>
