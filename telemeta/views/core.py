@@ -117,6 +117,7 @@ def nginx_media_accel(media_path, content_type="", buffering=True):
 
     if not buffering:
         response['X-Accel-Buffering'] = 'no'
+        #response['X-Accel-Limit-Rate'] = 524288
 
     return response
 
@@ -127,13 +128,10 @@ def render(request, template, data=None, content_type=None):
 
 
 
-def stream_from_processor(decoder, encoder, flag):
+def stream_from_processor(decoder, encoder):
     pipe = decoder | encoder
     for chunk in pipe.stream():
         yield chunk
-    flag.value = True
-    flag.save()
-    
 
 def get_item_access(item, user):
     # Item access rules according to this workflow:
