@@ -15,7 +15,6 @@ class EnumView(object):
 
     def enumeration (self, request, enumeration_id):
         atr = "";
-        print enumeration_id
         enumeration = self.__get_enumeration(enumeration_id)
         if enumeration == None or enumeration.admin:
             raise Http404
@@ -42,14 +41,6 @@ class EnumView(object):
 
         return render(request, 'telemeta/enumeration.html', vars)
 
-    @property
-    def get_enumerations_list(self):
-        test = {
-            "ceci",
-            "est",
-            "un",
-            "test"}
-        return test
 
     def __get_enumerations_list(self):
         from django.db.models import get_models
@@ -61,15 +52,11 @@ class EnumView(object):
 
                 if not model.hidden and not model.admin:
                     enumerations.append({"name": model._meta.verbose_name,
-                                           "id": model._meta.module_name
+                                         "id": model._meta.module_name
                                          })
-                else:
-                    print model._meta.module_name + "____"
-                    print model.admin
 
         cmp = lambda obj1, obj2: unaccent_icmp(obj1['name'], obj2['name'])
         enumerations.sort(cmp)
-        print enumerations
         self.enu = enumerations
         return enumerations
 
@@ -116,3 +103,20 @@ class EnumView(object):
             c.append(MediaItemKeyword.objects.filter(**{lookup: enum.__getattribute__("id")}).count())
         c.reverse()
         return c
+
+    def set_enum_file(self):
+        from django.db.models import get_models
+        models = get_models(telemeta.models)
+
+
+        for model in models:
+            if issubclass(model, Enumeration):
+                for enu in settings.ENUMERATION_PUBLIC:
+                    if model._meta.module_name == enu["nom"]:
+                        if enu["admin"] == "True":
+                            model.admin = True
+                        else:
+                            model.admin = False
+
+
+

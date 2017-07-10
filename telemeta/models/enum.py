@@ -33,7 +33,6 @@ class Enumeration(ModelCore):
 
     def _set_admin(self):
         self.admin = not self.admin
-        print self.admin
 
     def __unicode__(self):
         return self.value
