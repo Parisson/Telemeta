@@ -15,6 +15,7 @@ class EnumView(object):
 
     def enumeration (self, request, enumeration_id):
         atr = "";
+
         enumeration = self.__get_enumeration(enumeration_id)
         if enumeration == None or enumeration.admin:
             raise Http404
@@ -42,6 +43,27 @@ class EnumView(object):
         return render(request, 'telemeta/enumeration.html', vars)
 
 
+    def set_enum_file(self,request):
+
+        from django.db.models import get_models
+        models = get_models(telemeta.models)
+
+        f = open("enumeration/enumeration.txt","r")
+        s = f.read()
+        print s
+        tab = s.split('\n')
+        tab2 = []
+        for a in range(0, len(tab) - 1, 2):
+            tab2.append({"nom": tab[a], "admin": tab[a + 1]})
+        for model in models:
+            if issubclass(model, Enumeration):
+                for enu in tab2:
+                    print enu
+                    if model._meta.module_name == enu["nom"]:
+                        model.admin = enu["admin"]
+                        print model.admin
+
+
     def __get_enumerations_list(self):
         from django.db.models import get_models
         models = get_models(telemeta.models)
@@ -49,15 +71,16 @@ class EnumView(object):
         enumerations = []
         for model in models:
             if issubclass(model, Enumeration):
-
-                if not model.hidden and not model.admin:
+                print model._meta.verbose_name
+                print model.admin
+                if not model.hidden and  model.admin == "False":
                     enumerations.append({"name": model._meta.verbose_name,
                                          "id": model._meta.module_name
                                          })
 
         cmp = lambda obj1, obj2: unaccent_icmp(obj1['name'], obj2['name'])
         enumerations.sort(cmp)
-        self.enu = enumerations
+
         return enumerations
 
     def __get_enumeration(self, id):
@@ -103,20 +126,3 @@ class EnumView(object):
             c.append(MediaItemKeyword.objects.filter(**{lookup: enum.__getattribute__("id")}).count())
         c.reverse()
         return c
-
-    def set_enum_file(self):
-        from django.db.models import get_models
-        models = get_models(telemeta.models)
-
-
-        for model in models:
-            if issubclass(model, Enumeration):
-                for enu in settings.ENUMERATION_PUBLIC:
-                    if model._meta.module_name == enu["nom"]:
-                        if enu["admin"] == "True":
-                            model.admin = True
-                        else:
-                            model.admin = False
-
-
-

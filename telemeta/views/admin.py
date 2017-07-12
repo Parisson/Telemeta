@@ -164,21 +164,23 @@ class AdminView(object):
     @method_decorator(permission_required('telemeta.change_keyword'))
     def set_admin_enumeration(self, request):
 
+        f = open("enumeration/enumeration.txt", "w")
+        f.close
+        f = open("enumeration/enumeration.txt", "a")
+        if request.method == 'POST':
+
             from django.db.models import get_models
             models = get_models(telemeta.models)
 
             for model in models:
                 if issubclass(model, Enumeration):
                     if model._meta.module_name in request.POST.getlist('sel'):
-                        model.admin = True
-                    else:
-                        model.admin = False
-                for enu in settings.ENUMERATION_PUBLIC:
-                    if model._meta.module_name == enu["nom"]:
-                        enu["admin"] = str(model.admin)
-
-            return self.admin_enumerations(request)
-
+                        model.admin = "True"
+                    else :
+                        model.admin = "False"
+                    f.write(model._meta.module_name + "\n" + str(model.admin) + "\n")
+        f.close()
+        return self.admin_enumerations(request)
 
     @method_decorator(permission_required('telemeta.change_keyword'))
     def edit_enumeration_value(self, request, enumeration_id, value_id):

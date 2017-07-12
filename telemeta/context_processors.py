@@ -1,6 +1,5 @@
-from django.conf import settings
-from telemeta.views.enum import *
 
+from telemeta.views.enum import *
 def menu(request):
-    EnumView().set_enum_file()
-    return {'menu': EnumView().enu}
+        EnumView().set_enum_file(request)
+        return {'menu': EnumView().enu}

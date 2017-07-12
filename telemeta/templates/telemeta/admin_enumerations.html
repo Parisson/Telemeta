@@ -17,8 +17,8 @@
             </thead><tbody>
         {% for enum in enumerations %}
             <tr>
-                {% if perms.telemeta.change_keyword %}
-                    <td><input type="checkbox" name="sel" value="{{enum.id}}"{% if enum.admin %} checked {% endif %} /></td>
+                {% if perms.is_superuser %}
+                    <td><input type="checkbox" name="sel" value="{{enum.id}}"{% if enum.admin == "True" %} checked {% endif %} /></td>
                 {% else %}
                     <td></td>
                 {% endif %}
