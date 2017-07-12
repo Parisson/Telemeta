@@ -3,7 +3,7 @@ True
 publishingstatus
 True
 acquisitionmode
-True
+False
 metadataauthor
 True
 metadatawriter
@@ -19,7 +19,7 @@ True
 genericstyle
 True
 contextkeyword
-True
+False
 publisher
 False
 ethnicgroup

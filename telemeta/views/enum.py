@@ -17,7 +17,7 @@ class EnumView(object):
         atr = "";
 
         enumeration = self.__get_enumeration(enumeration_id)
-        if enumeration == None or enumeration.admin:
+        if enumeration == None or enumeration.admin == "True":
             raise Http404
         vars = self.__get_admin_context_vars()
         vars["enumeration_id"] = enumeration._meta.module_name
@@ -50,7 +50,6 @@ class EnumView(object):
 
         f = open("enumeration/enumeration.txt","r")
         s = f.read()
-        print s
         tab = s.split('\n')
         tab2 = []
         for a in range(0, len(tab) - 1, 2):
@@ -58,10 +57,9 @@ class EnumView(object):
         for model in models:
             if issubclass(model, Enumeration):
                 for enu in tab2:
-                    print enu
                     if model._meta.module_name == enu["nom"]:
                         model.admin = enu["admin"]
-                        print model.admin
+
 
 
     def __get_enumerations_list(self):
@@ -71,8 +69,6 @@ class EnumView(object):
         enumerations = []
         for model in models:
             if issubclass(model, Enumeration):
-                print model._meta.verbose_name
-                print model.admin
                 if not model.hidden and  model.admin == "False":
                     enumerations.append({"name": model._meta.verbose_name,
                                          "id": model._meta.module_name
