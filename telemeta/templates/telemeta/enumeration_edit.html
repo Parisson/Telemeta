@@ -4,7 +4,7 @@
 {% block head_title %}{% trans "Enumeration" %} : {{ enumeration_name|capfirst }} - {{ block.super }}{% endblock %}
 
 {% block title %}
-    {% if perms.telemeta.change_keyword %}
+    {% if perms.telemeta.change_physicalformat %}
         <h1><img src="{{ STATIC_URL }}telemeta/images/admin_red.png" style="vertical-align:middle" /> <a href="{% url "telemeta-admin-general" %}">{% trans "Administration" %}</a> > <a href="{% url "telemeta-admin-enumerations" %}">{% trans "Enumerations" %}</a></h1>
     {% else %}
             <h1><img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" /> <a href="{% url "telemeta-admin-enumerations" %}">{% trans "Enumerations" %}</a></h1>
@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block tabcontents %}
-    {% if perms.telemeta.change_keyword %}
+    {% if perms.telemeta.change_physicalformat %}
         <h4>{{ enumeration_name|capfirst }}</h4>
         <form class="addnew" id="_addenum" method="POST"
               action="{% url "telemeta-enumeration-add" enumeration_id %}">{% csrf_token %}
@@ -40,7 +40,7 @@
                 </thead><tbody>
             {% for record in enumeration_values %}
                 <tr>
-                    {% if perms.telemeta.change_keyword %}
+                    {% if perms.telemeta.change_physicalformat %}
                         <td><input type="checkbox" name="sel" value="{{record.id}}" /></td>
                     {% else %}
                         <td></td>
@@ -66,7 +66,7 @@
             </table>
             <div class="buttons">
                 <br />
-                {% if perms.telemeta.change_keyword %}
+                {% if perms.telemeta.change_physicalformat %}
                     <a href="#" class="component_icon button icon_cancel"
                        onclick="document.getElementById('_updateenum').submit(); return false;">{% trans "Remove selected items" %}</a>
                 {% endif %}

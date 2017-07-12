@@ -32,7 +32,7 @@
         </table>
         <div class="buttons">
             <br />
-            {% if perms.telemeta.change_keyword %}
+            {% if perms.telemeta.is_superuser %}
                 <a href="#" class="component_icon button icon_cancel"
                    onclick="document.getElementById('_updateenum').submit(); return false;">{% trans "Hide selected items" %}</a>
             {% endif %}

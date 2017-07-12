@@ -36,7 +36,7 @@ class AdminView(object):
     def admin_general(self, request):
         return render(request, 'telemeta/admin_general.html', self.__get_admin_context_vars())
 
-    @method_decorator(permission_required('is_superuser'))
+    @method_decorator(permission_required('telemeta.change_physicalformat'))
     def admin_enumerations(self, request):
         return render(request, 'telemeta/admin_enumerations.html', self.__get_admin_context_vars())
 
@@ -76,7 +76,7 @@ class AdminView(object):
 
         return model
 
-    @method_decorator(permission_required('telemeta.change_keyword'))
+    @method_decorator(permission_required('telemeta.change_physicalformat'))
     def edit_enumeration(self, request, enumeration_id):
         atr = "";
         enumeration = self.__get_enumeration(enumeration_id)
@@ -136,7 +136,7 @@ class AdminView(object):
         return c
 
 
-    @method_decorator(permission_required('telemeta.add_keyword'))
+    @method_decorator(permission_required('telemeta.add_physicalformat'))
     def add_to_enumeration(self, request, enumeration_id):
 
         enumeration  = self.__get_enumeration(enumeration_id)
@@ -149,7 +149,7 @@ class AdminView(object):
 
         return self.edit_enumeration(request, enumeration_id)
 
-    @method_decorator(permission_required('telemeta.change_keyword'))
+    @method_decorator(permission_required('telemeta.change_physicalformat'))
     def update_enumeration(self, request, enumeration_id):
 
         enumeration  = self.__get_enumeration(enumeration_id)
@@ -161,7 +161,7 @@ class AdminView(object):
 
         return self.edit_enumeration(request, enumeration_id)
 
-    @method_decorator(permission_required('telemeta.change_keyword'))
+    @method_decorator(permission_required('telemeta.change_physicalformat'))
     def set_admin_enumeration(self, request):
 
         f = open("enumeration/enumeration.txt", "w")
@@ -182,7 +182,7 @@ class AdminView(object):
         f.close()
         return self.admin_enumerations(request)
 
-    @method_decorator(permission_required('telemeta.change_keyword'))
+    @method_decorator(permission_required('telemeta.change_physicalformat'))
     def edit_enumeration_value(self, request, enumeration_id, value_id):
 
         enumeration  = self.__get_enumeration(enumeration_id)
@@ -202,7 +202,7 @@ class AdminView(object):
                                 name=record.value)
         return render(request, 'telemeta/enumeration_edit_value.html', vars)
 
-    @method_decorator(permission_required('telemeta.change_keyword'))
+    @method_decorator(permission_required('telemeta.change_physicalformat'))
     def update_enumeration_value(self, request, enumeration_id, value_id):
 
         if request.method == 'POST':
@@ -217,7 +217,7 @@ class AdminView(object):
 
         return self.edit_enumeration(request, enumeration_id)
 
-    @method_decorator(permission_required('telemeta.change_keyword'))
+    @method_decorator(permission_required('telemeta.change_physicalformat'))
     def replace_enumeration_value(self, request, enumeration_id, value_id):
         if request.method == 'POST':
             enumeration = self.__get_enumeration(enumeration_id)
