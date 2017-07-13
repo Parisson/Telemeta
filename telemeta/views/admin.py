@@ -76,7 +76,7 @@ class AdminView(object):
 
         return model
 
-    @method_decorator(permission_required('telemeta.change_physicalformat'))
+
     def edit_enumeration(self, request, enumeration_id):
         atr = "";
         enumeration = self.__get_enumeration(enumeration_id)

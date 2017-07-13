@@ -138,7 +138,7 @@
                             <li><a href="{% url "haystack_advance_search" %}"
                                    class="orange">{% trans "Advanced search" %}</a></li>
                             <li><a href="#vocabulary#" class="darkblue">{% trans "Terminology" %}</a>
-                                {% if user.is_staff %}
+                                {% if perms.telemeta.change_physicalformat %}
 
                                     <ul>
                                         <li>
