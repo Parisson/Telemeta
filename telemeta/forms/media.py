@@ -38,7 +38,7 @@ class MediaFondsForm(ModelForm):
 
     class Meta:
         model = MediaFonds
-        exclude = ['description', 'public_access']
+        exclude = ['description']
 
     class Media:
         css = {'all': ['/static/admin/css/widgets.css',],}

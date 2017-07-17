@@ -36,7 +36,7 @@ DATABASES = {
         'PASSWORD': env('MYSQL_PASSWORD'),  # Not used with sqlite3.
         'NAME': env('MYSQL_DATABASE'),
         'HOST': 'db',      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '3306',      # Set to empty string for default. Not used with sqlite3.
+        'PORT': '3306',   # Set to empty string for default. Not used with sqlite3.
     }
 }
 
@@ -165,7 +165,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'telemeta',
     'timeside.player',
-    'timeside.server',
+    #'timeside.server',
     'jsonrpc',
     'sorl.thumbnail',
     'timezones',
@@ -192,6 +192,7 @@ AUTHENTICATION_BACKENDS = (
 )
 
 SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 TELEMETA_ORGANIZATION = 'Telemeta'
 TELEMETA_SUBJECTS = ('Telemeta', 'web', 'platform', 'audio', 'semantics')
@@ -218,7 +219,7 @@ ITEM_PUBLISHED_CODE_REGEX = COLLECTION_PUBLISHED_CODE_REGEX + ''
 ITEM_UNPUBLISHED_CODE_REGEX = COLLECTION_UNPUBLISHED_CODE_REGEX + ''
 
 AUTH_PROFILE_MODULE = 'telemeta.userprofile'
-SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/desk/lists/'
@@ -343,21 +344,25 @@ BOWER_INSTALLED_APPS = (
     'jquery#2.2.4',
     'jquery-migrate#~1.2.1',
     'underscore#1.8.3',
-    'bootstrap#3.3.6',
+    'bootstrap#3.3.7',
     'bootstrap-select#1.5.4',
     'font-awesome#4.4.0',
     'angular#1.2.26',
     'angular-bootstrap-select#0.0.5',
     'angular-resource#1.2.26',
-    'raphael#2.2.0',
+    'raphael#2.2.7',
     'soundmanager#V2.97a.20150601',
     'https://github.com/Parisson/loaders.git',
     'https://github.com/Parisson/ui.git',
-    'jquery-ui#1.11.4',
+    'jquery-ui#1.12.1',
     'tablesorter',
     'video.js',
     'sass-bootstrap-glyphicons',
     'jquery-tokenize',
+<<<<<<< HEAD
     'select2',
     'select2-bootstrap-theme',
+=======
+
+>>>>>>> e9299bcb7c78331925665a245fb24a9bb9bad5d2
 )
