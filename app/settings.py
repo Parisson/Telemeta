@@ -359,10 +359,6 @@ BOWER_INSTALLED_APPS = (
     'video.js',
     'sass-bootstrap-glyphicons',
     'jquery-tokenize',
-<<<<<<< HEAD
     'select2',
     'select2-bootstrap-theme',
-=======
-
->>>>>>> e9299bcb7c78331925665a245fb24a9bb9bad5d2
 )
