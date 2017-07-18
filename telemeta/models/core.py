@@ -114,7 +114,7 @@ class ModelCore(models.Model, DirtyFieldsMixin):
         fields = self.to_dict()
         for name, value in fields.iteritems():
             element = doc.createElement(self.get_dom_field_name(name))
-            if isinstance(value, EnhancedModel):
+            if isinstance(value, ModelCore):
                 element.setAttribute('key', str(value.pk))
             value = unicode(value)
             element.appendChild(doc.createTextNode(value))
