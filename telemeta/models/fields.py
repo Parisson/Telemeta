@@ -198,6 +198,26 @@ class ForeignKey(models.ForeignKey):
         super(ForeignKey, self).__init__(to, **normalize_field(kwargs, 0))
 
 
+class WeakForeignKey(ForeignKey):
+    """A weak foreign key is the same as foreign key but without cascading
+    delete. Instead the reference is set to null when the referenced record
+    get deleted. This emulates the ON DELETE SET NULL sql behaviour.
+
+    This field is automatically allowed to be null, there's no need to pass
+    null=True.
+
+    The constructor arguments are normalized with normalize_field() by the
+    parent ForeignKey
+
+    Warning: must be used in conjunction with EnhancedQuerySet, EnhancedManager,
+    and EnhancedModel
+    """
+    def __init__(self, to, **kwargs):
+        kwargs['null'] = True
+        super(WeakForeignKey, self).__init__(to, **kwargs)
+
+
+
 class CharField(models.CharField):
     """This is a CharField with a default max_length of 250.
 
