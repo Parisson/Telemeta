@@ -267,7 +267,7 @@ class MediaCollectionQuerySet(CoreQuerySet):
         keys = fields.keys()
         q = self.by_fuzzy_collector_q(pattern)
         for field in keys:
-            field_str = str(mod._meta.get_field(field))
+            field_str = repr(MediaCollection._meta.get_field(field))
             if 'CharField' in field_str or 'TextField' in field_str:
                 q = q | word_search_q(field, pattern)
         return self.filter(q)
