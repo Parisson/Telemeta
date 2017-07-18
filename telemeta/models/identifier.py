@@ -32,7 +32,7 @@ class Identifier(ModelCore):
     """Resource identifier"""
 
     identifier = models.CharField(_('identifier'), max_length=255, blank=True, unique=True)
-    type = WeakForeignKey('IdentifierType', verbose_name=_('type'))
+    type = ForeignKey('IdentifierType', verbose_name=_('type'), blank=True, null=True, on_delete=models.SET_NULL)
     date_add = models.DateTimeField(_('date added'), auto_now_add=True)
     date_first = models.DateTimeField(_('date of first attribution'))
     date_last = models.DateTimeField(_('date of last attribution'))
