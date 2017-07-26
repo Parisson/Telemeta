@@ -165,6 +165,8 @@ class DescriptionListFieldNode(template.Node):
                 value = getattr(model, member)
             except AttributeError:
                 value = '<ERROR: no such field>'
+            except :
+                value= ''
         except template.VariableDoesNotExist:
             label = unicode(self.model) + '.' + self.member
             value = '<ERROR: can\'t find variable>'

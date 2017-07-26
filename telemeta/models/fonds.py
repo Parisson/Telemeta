@@ -26,6 +26,7 @@ from django.utils.translation import ugettext_lazy as _
 from telemeta.models.core import *
 from telemeta.models.resource import *
 from telemeta.models.corpus import *
+from telemeta.models.institution import *
 from django.db import models
 
 
@@ -39,6 +40,9 @@ class MediaFonds(MediaBaseResource):
                                       verbose_name=_('corpus'), blank=True)
 
     objects = MediaFondsManager()
+    institution = ForeignKey('Institution', related_name="fonds",
+                                   verbose_name=_('institution'),
+                                   blank=True, null=True )
 
     @property
     def public_id(self):
