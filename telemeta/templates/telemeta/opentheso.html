@@ -1,0 +1,71 @@
+
+{% extends "telemeta/base.html" %}
+{% load telemeta_tags %}
+{% load i18n %}
+{% load bootstrap_pagination %}
+{% block content  %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    {% if not opentheso %}
+        <h1>recherche par nom</h1>
+        <form method="GET" action="{% url "telemeta-opentheso" %} ">
+            <input id="search" type="text" name="name"/><br/>
+            <input type="submit" value="rechercher">
+        </form>
+        <h1>recherche par id</h1>
+        <form method="GET" action="{% url "telemeta-opentheso" %} ">
+            <input id="search" type="text" name="id"/><br/>
+
+            <input type="submit" value="rechercher">
+        </form>
+    {% else %}
+        {% if  recherche_by_id %}
+            <h1>{{ terme|capfirst  }}</h1><br/><br/>
+            <h1>Terme(s) générique(s)</h1>
+            {% for t in termeGen %}
+                <br/>
+                <a target="_blank" href='{{ t.link }}'>{{ t.valeur }}</a>
+            {% endfor %}
+            <br/>
+            <h1>Terme(s) spécifique(s)</h1>
+            {% for t in termeSpe %}
+                <br/>
+                <a target="_blank" href='{{ t.link }}'>{{ t.valeur }}</a>
+            {% endfor %}
+            <br/>
+            <h1>Terme(s) associé(s)</h1>
+            {% for t in termeAsso %}
+                <br/>
+                <a target="_blank" href='{{ t.link }}'>{{ t.valeur }}</a>
+            {% endfor %}
+            <br/>
+            <h1>Synonyme</h1>
+            {% for t in termeSyn %}
+                <br/>
+                {{ t }}
+            {% endfor %}
+            <br/>
+            <h1>Alignement</h1>
+            {% for t in align%}
+                <br/>
+                {% if  t != "aucun alignement" %}
+                    <a href={{ t }}>{{ t }}</a>
+                {% else %}
+                    {{ t }}
+                {% endif %}
+            {% endfor %}
+            <br/>
+        {% endif %}
+        {% if not recherche_by_id %}
+            <h1>resultat de la recherche par nom</h1>
+            {% for t in result%}
+                <br/>
+                {% if  t != "erreur recherche" %}
+                    <a href={{ t.id }}>{{ t.value }}</a>
+                {% else %}
+                    {{ t }}
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endif %}
+
+{% endblock %}

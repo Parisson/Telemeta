@@ -31,6 +31,8 @@ from haystack.forms import *
 from jsonrpc import jsonrpc_site
 import os.path
 import telemeta.config
+from telemeta.views.export import ExportView
+from telemeta.views.opentheso import OpenthesoView
 
 telemeta.config.check()
 
@@ -45,6 +47,7 @@ playlist_view = PlaylistView()
 profile_view = ProfileView()
 geo_view = GeoView()
 resource_view = ResourceView()
+opentheso_view = OpenthesoView()
 #boolean_view = BooleanSearchView()
 
 # ID's regular expressions
@@ -236,6 +239,8 @@ urlpatterns = patterns('',
 
     url(r'^', include('jqchat.urls')),
 
+    url(r'^opentheso/$',opentheso_view.opentheso,name='telemeta-opentheso'),
+    url(r'^export_instrument/$',ExportView().export_instrument,name="telemeta-instrument-export")
     # Timeside
     #url(r'^timeside/', include('timeside.server.urls')),
 
