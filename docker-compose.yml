@@ -52,10 +52,10 @@ search:
 app:
   build: .
   volumes:
-    - ./app/:/srv/app
-    - ./telemeta/:/srv/src/telemeta/telemeta
-    - ./lib/TimeSide/:/srv/src/timeside
-    - ./lib/plugins:/srv/src/plugins
+    - ./app:/srv/app
+    - ./telemeta:/srv/src/telemeta/telemeta
+    # - ./lib/TimeSide:/srv/src/timeside
+    # - ./lib/plugins:/srv/src/plugins
   volumes_from:
     - data
   env_file:
