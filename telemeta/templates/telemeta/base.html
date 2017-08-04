@@ -62,9 +62,22 @@
     {% endblock %}
 
     {% block extra_javascript %}{% endblock %}
+
+    <!-- Pundit embedding -->
+    <link rel="stylesheet" href="http://dev.thepund.it/download/client/last-beta/pundit2.css" type="text/css">
+    <script src="http://conf.thepund.it/V2/clients/crem/crem.js" type="text/javascript"></script>
+    <script src="http://dev.thepund.it/download/client/last-beta/libs.js" type="text/javascript"></script>
+    <script src="http://dev.thepund.it/download/client/last-beta/pundit2.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="http://conf.thepund.it/V2/clients/crem/crem.css" type="text/css">
+    <!-- END // Pundit embedding -->
 </head>
 
 <body>
+
+<!-- Pundit code injection -->
+<div data-ng-app="Pundit2" class="pnd-wrp ng-scope"></div>
+<!-- END // Pundit code injection -->
+
 {% block layout %}
     <div id="layout">
         {% block header %}
