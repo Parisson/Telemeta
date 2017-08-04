@@ -339,8 +339,7 @@ class Migration(SchemaMigration):
         # Changing field 'MediaItem.comment'
         db.alter_column('media_items', 'comment', self.gf('telemeta.models.fields.TextField')())
 
-        # Changing field 'MediaItem.code'
-        db.alter_column('media_items', 'code', self.gf('telemeta.models.fields.CharField')(unique=True, max_length=250))
+
 
         # Changing field 'MediaItem.location_comment'
         db.alter_column('media_items', 'location_comment', self.gf('telemeta.models.fields.CharField')(max_length=250))
