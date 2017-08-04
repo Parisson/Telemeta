@@ -111,7 +111,7 @@
 
                 <div id="menu">
                     {% block menu %}
-                        {% include "telemeta/inc/tabs.html" %}
+                        {% include "telemeta/inc/nav.html"}
                         <form id="formlang" action="/i18n/setlang/" method="post" style="display:inline-block; {% if LANGUAGE_BIDI %}float: left;{% endif %}" onchange='this.submit();'>
                             {% csrf_token %}
                             <input name="next" type="hidden" value="{{ request.path }}"/>
