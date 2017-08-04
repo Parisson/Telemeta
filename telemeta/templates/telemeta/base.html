@@ -59,6 +59,8 @@
         {% else %}
             <script type='text/javascript'>var CURRENT_USER_NAME = undefined;</script>
         {% endif %}
+
+        <script> var static_url = {{ STATIC_URL }}</script>
     {% endblock %}
 
     {% block extra_javascript %}{% endblock %}
