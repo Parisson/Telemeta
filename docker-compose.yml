@@ -73,6 +73,7 @@ worker:
   env_file:
     - env/prod.env
   command: /bin/bash scripts/worker.sh
+  command: /bin/bash scripts/enumeration.sh
   links:
     - broker
     - db
