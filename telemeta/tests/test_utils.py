@@ -18,10 +18,10 @@
 #
 # Authors: Olivier Guilyardi <olivier@samalyse.com>
 
-import unittest
+from django.test import TestCase
 from telemeta.util.unaccent import unaccent_icmp
 
-class UnaccentTestCase(unittest.TestCase):
+class UnaccentTestCase(TestCase):
     def testSorting(self):
         strings = [u'Métro', u'évasion', u'àccent', u'È', u'île', u'arrivée', u'elle']
         strings.sort(unaccent_icmp)

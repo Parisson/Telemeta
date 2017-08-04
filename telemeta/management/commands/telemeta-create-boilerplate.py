@@ -6,7 +6,6 @@ from django.template.defaultfilters import slugify
 
 import os
 import timeside.core
-from timeside.server.models import *
 from timeside.core.tools.test_samples import generateSamples
 from telemeta.models import *
 
@@ -25,23 +24,31 @@ class Command(BaseCommand):
             result.delete()
 
     def handle(self, *args, **options):
-        collection, c = MediaCollection.objects.get_or_create(title=self.code,
-                            code=self.code, public_access = 'full')
-        selection, c = Selection.objects.get_or_create(title='Tests')
+        collections = MediaCollection.objects.filter(code=self.code)
+        if collections:
+            collection = collections[0]
+            created = False
+        else:
+            collection = MediaCollection(title=self.code, code=self.code, public_access='full')
+            created = True
+            collection.save()
 
-        if c:
-            presets = []
-            blacklist =['decoder', 'live', 'gain', 'vamp']
-            processors = timeside.core.processor.processors(timeside.core.api.IProcessor)
-            for proc in processors:
-                trig = True
-                for black in blacklist:
-                    if black in proc.id():
-                        trig = False
-                if trig:
-                    processor, c = Processor.objects.get_or_create(pid=proc.id())
-                    preset, c = Preset.objects.get_or_create(processor=processor, parameters='{}')
-                    presets.append(preset)
+        #TS# selection, created = Selection.objects.get_or_create(title='Tests')
+        
+
+        if created:
+            #TS#presets = []
+            #TS#blacklist =['decoder', 'live', 'gain', 'vamp']
+            #TS#processors = timeside.core.processor.processors(timeside.core.api.IProcessor)
+            #TS#for proc in processors:
+            #TS#    trig = True
+            #TS#    for black in blacklist:
+            #TS#        if black in proc.id():
+            #TS#            trig = False
+            #TS#    if trig:
+            #TS#        processor, c = Processor.objects.get_or_create(pid=proc.id())
+            #TS#        preset, c = Preset.objects.get_or_create(processor=processor, parameters='{}')
+            #TS#        presets.append(preset)
 
             media_dir = 'items' + os.sep + 'tests'
             samples_dir = settings.MEDIA_ROOT + media_dir
@@ -51,20 +58,20 @@ class Command(BaseCommand):
                 filename, path = sample
                 title = os.path.splitext(filename)[0]
                 path = media_dir + os.sep + filename
-                item, c = Item.objects.get_or_create(title=title, file=path)
-                if not item in selection.items.all():
-                    selection.items.add(item)
-                if self.cleanup:
-                    for result in item.results.all():
-                        result.delete()
+                #TS#item, c = Item.objects.get_or_create(title=title, file=path)
+                #TS#if not item in selection.items.all():
+                #TS#    selection.items.add(item)
+                #TS#if self.cleanup:
+                #TS#    for result in item.results.all():
+                #TS#        result.delete()
                 mediaitem, c = MediaItem.objects.get_or_create(title=title,
                                     code=self.code + '-' + slugify(filename),
                                     file=path, collection=collection, public_access = 'full')
-
-            experience, c = Experience.objects.get_or_create(title='All')
-            for preset in presets:
-                if not preset in experience.presets.all():
-                    experience.presets.add(preset)
-
-            task = Task(experience=experience, selection=selection)
-            task.save()
+            #TS# 
+            #TS# experience, c = Experience.objects.get_or_create(title='All')
+            #TS# for preset in presets:
+            #TS#     if not preset in experience.presets.all():
+            #TS#         experience.presets.add(preset)
+            #TS# 
+            #TS# task = Task(experience=experience, selection=selection)
+            #TS#  task.save()

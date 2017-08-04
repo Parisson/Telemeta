@@ -3,6 +3,7 @@
 {% load telemeta_tags %}
 {% load bootstrap3 %}
 {% settings_value 'INSTALLED_APPS' as INSTALLED_APPS %}
+{% settings_value 'DEBUG' as DEBUG %}
 {% if 'googletools' in INSTALLED_APPS %}
     {% load googletools %}
 {% endif %}
@@ -171,8 +172,9 @@
                                 </li>
                             {% endif %}
                         </ul>
-                        <form id="formlang" action="/i18n/setlang/" method="post" style="display:inline-block;" onchange='this.submit();'>
+                        <form id="formlang" action="/i18n/setlang/" method="post" style="display:inline-block; {% if LANGUAGE_BIDI %}float: left;{% endif %}" onchange='this.submit();'>
                             {% csrf_token %}
+                            <input name="next" type="hidden" value="{{ request.path }}"/>
                             <select name="language" class="form-control" id="language-selector">
                                 {% for lang in LANGUAGES %}
                                     <option value="{{ lang.0 }}" {% if lang.0|slice:"2" == LANGUAGE_CODE|slice:"2" %}selected="selected"{% endif %}>{{ lang.1 }}</option>

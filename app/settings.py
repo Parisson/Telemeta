@@ -35,7 +35,7 @@ DATABASES = {
         'PASSWORD': env('MYSQL_PASSWORD'),  # Not used with sqlite3.
         'NAME': env('MYSQL_DATABASE'),
         'HOST': 'db',      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '3306',      # Set to empty string for default. Not used with sqlite3.
+        'PORT': '3306',   # Set to empty string for default. Not used with sqlite3.
     }
 }
 
@@ -58,6 +58,7 @@ LANGUAGES = [ ('fr', 'French'),
               ('zh_CN', 'Simplified Chinese'),
               ('ar_TN', 'Arabic'),
               ('pt_BR', 'Portuguese'),
+              ('es', 'Spanish'),
 ]
 
 SITE_ID = 1
@@ -129,6 +130,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     # 'pagination.middleware.PaginationMiddleware',
 )
 
@@ -152,7 +154,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'telemeta',
     'timeside.player',
-    'timeside.server',
+    #'timeside.server',
     'jsonrpc',
     'south',
     'sorl.thumbnail',
@@ -201,7 +203,7 @@ TELEMETA_CACHE_DIR = os.path.join(MEDIA_ROOT, 'cache')
 TELEMETA_EXPORT_CACHE_DIR = os.path.join(MEDIA_ROOT, 'export')
 TELEMETA_DATA_CACHE_DIR = os.path.join(TELEMETA_CACHE_DIR, 'data')
 FILE_UPLOAD_TEMP_DIR = os.path.join(MEDIA_ROOT, 'tmp')
-FILE_UPLOAD_PERMISSIONS = 0644
+FILE_UPLOAD_PERMISSIONS = 0o644
 
 TELEMETA_DOWNLOAD_ENABLED = False
 TELEMETA_STREAMING_FORMATS = ('mp3', 'ogg')
@@ -240,7 +242,10 @@ PAGINATION_SETTINGS = {
     'PAGE_RANGE_DISPLAYED': 10,
     'MARGIN_PAGES_DISPLAYED': 2,
 }
-
+if DEBUG:
+    DEBUG_TOOLBAR_CONFIG = {
+        'SHOW_TOOLBAR_CALLBACK': lambda x : True
+    }
 DEBUG_TOOLBAR_PATCH_SETTINGS = False
 DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.versions.VersionsPanel',
@@ -326,28 +331,30 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
-#HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+HAYSTACK_ROUTERS = ['telemeta.util.search_router.AutoRouter', 'haystack.routers.DefaultRouter']
+# HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 HAYSTACK_SIGNAL_PROCESSOR = 'telemeta.util.search_signals.RealTimeCustomSignal'
 HAYSTACK_SEARCH_RESULTS_PER_PAGE = 50
 
 BOWER_COMPONENTS_ROOT = '/srv/bower/'
 BOWER_PATH = '/usr/local/bin/bower'
 BOWER_INSTALLED_APPS = (
-    'jquery',
+    'jquery#2.2.4',
     'jquery-migrate#~1.2.1',
-    'underscore',
-    'bootstrap',
+    'underscore#1.8.3',
+    'bootstrap#3.3.7',
     'bootstrap-select#1.5.4',
     'font-awesome#4.4.0',
     'angular#1.2.26',
-    'angular-bootstrap-select',
+    'angular-bootstrap-select#0.0.5',
     'angular-resource#1.2.26',
-    'raphael',
+    'raphael#2.2.7',
     'soundmanager#V2.97a.20150601',
     'https://github.com/Parisson/loaders.git',
     'https://github.com/Parisson/ui.git',
-    'jquery-ui',
+    'jquery-ui#1.12.1',
     'tablesorter',
     'video.js',
     'sass-bootstrap-glyphicons',
+    
 )

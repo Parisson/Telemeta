@@ -34,21 +34,19 @@ python $manage collectstatic --noinput
 python $manage telemeta-create-admin-user
 python $manage telemeta-create-boilerplate
 
+# Delete Timeside database if it exists
+cat /srv/src/telemeta/scripts/sql/drop_timeside.sql | python $manage dbshell
+
 if [ $REINDEX = "True" ]; then
     python $manage rebuild_index --noinput
 fi
 
 # fix media access rights
-chown www-data:www-data $media
-for dir in $(ls $media); do
-    if [ ! $(stat -c %U $media/$dir) = 'www-data' ]; then
-        chown www-data:www-data $media/$dir
-    fi
-done
+find $media -path ${media}import -prune -o -type d -not -user www-data -exec chown www-data:www-data {} \;
 
 # choose dev or prod mode
 if [ "$1" = "--runserver" ]; then
-    python $manage runserver_plus 0.0.0.0:8000
+    python $manage runserver 0.0.0.0:8000
 else
     # static files auto update
     watchmedo shell-command --patterns="$patterns" --recursive \

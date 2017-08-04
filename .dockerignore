@@ -1,11 +1,7 @@
 .git
 *.pyc
 *.egg-info
-app/
 build/
 dist/
-media/
-static/
-var/
-backup/
+data/
 tmp/
