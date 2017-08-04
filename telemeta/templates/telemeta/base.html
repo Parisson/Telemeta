@@ -111,54 +111,7 @@
 
                 <div id="menu">
                     {% block menu %}
-
-                        {# spaces between li and a elements breaks layout #}
-
-                        <ul id="nav">
-                            {% if user.is_authenticated %}
-                                <li><a href="{% url "telemeta-desk-lists" %}" class="blue">{% trans "Desk" %}</a></li>
-                            {% else %}
-                                <li><a href="{% url "telemeta-home" %}" class="blue">{% trans "Home" %}</a></li>
-                            {% endif %}
-
-                            <li><a href="#archives#" class="green">{% trans "Archives" %}</a>
-                                <ul>
-                                    <li><a href="{% url "telemeta-resource-list" "fonds" %}">{% trans "Fonds" %}</a>
-                                    </li>
-                                    <li><a href="{% url "telemeta-resource-list" "corpus" %}">{% trans "Corpus" %}</a>
-                                    </li>
-                                    <li><a href="{% url "telemeta-collections" %}">{% trans "Collections" %}</a></li>
-                                    <li><a href="{% url "telemeta-items" %}">{% trans "Items" %}</a></li>
-                                </ul>
-                            </li>
-
-                            <li><a href="{% url "telemeta-geo-continents" %}"
-                                   class="yellow">{% trans "Geo Navigator" %}</a></li>
-
-                            <li><a href="{% url "haystack_advance_search" %}"
-                                   class="orange">{% trans "Advanced search" %}</a></li>
-                            {% if user.is_authenticated %}
-                                {% if user.is_staff or not perms.telemeta.can_not_view_users_and_profiles %}
-                                    <li><a href="{% url "telemeta-users" %}" class="red">{% trans "Users" %}</a></li>
-                                {% endif %}
-                            {% endif %}
-                            {% if user.is_staff %}
-                                <li><a href="#admin#" class="violet">{% trans "Admin" %}</a>
-                                    <ul>
-                                        <li><a href="{% url "telemeta-home" %}admin/django/"
-                                               target="_blank">{% trans "General" context "admin" %}</a></li>
-                                        <li>
-                                            <a href="{% url "telemeta-admin-enumerations" %}">{% trans "Enumerations" %}</a>
-                                        </li>
-                                        <li><a href="{% url "telemeta-instrument-edit" %}">{% trans "Instruments" %}</a>
-                                        </li>
-                                        <li>
-                                            <a href="{% url "telemeta-instrument-alias-edit" %}">{% trans "Instrument aliases" %}</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            {% endif %}
-                        </ul>
+                        {% include "telemeta/inc/nav.html"}
                         <form id="formlang" action="/i18n/setlang/" method="post" style="display:inline-block; {% if LANGUAGE_BIDI %}float: left;{% endif %}" onchange='this.submit();'>
                             {% csrf_token %}
                             <input name="next" type="hidden" value="{{ request.path }}"/>
