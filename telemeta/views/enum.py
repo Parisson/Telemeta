@@ -43,7 +43,7 @@ class EnumView(object):
         return render(request, 'telemeta/enumeration.html', vars)
 
 
-    def set_enum_file(self,request):
+    def set_enum_file(self, request):
 
         from django.db.models import get_models
         models = get_models(telemeta.models)
@@ -69,7 +69,7 @@ class EnumView(object):
         enumerations = []
         for model in models:
             if issubclass(model, Enumeration):
-                if not model.hidden and  model.admin == "False":
+                if not model.is_hidden and  model.is_admin == False:
                     enumerations.append({"name": model._meta.verbose_name,
                                          "id": model._meta.module_name
                                          })

@@ -52,10 +52,10 @@ class AdminView(object):
         enumerations = []
         for model in models:
             if issubclass(model, Enumeration):
-                if not model.hidden :
+                if not model.is_hidden :
                     enumerations.append({"name": model._meta.verbose_name,
                                          "id": model._meta.module_name,
-                                         "admin": model.admin})
+                                         "admin": model.is_admin})
 
         cmp = lambda obj1, obj2: unaccent_icmp(obj1['name'], obj2['name'])
         enumerations.sort(cmp)
@@ -70,12 +70,9 @@ class AdminView(object):
         for model in models:
             if model._meta.module_name == id:
                 break
-
         if model._meta.module_name != id:
             return None
-
         return model
-
 
     def edit_enumeration(self, request, enumeration_id):
         atr = "";
@@ -135,7 +132,6 @@ class AdminView(object):
         c.reverse()
         return c
 
-
     @method_decorator(permission_required('telemeta.add_physicalformat'))
     def add_to_enumeration(self, request, enumeration_id):
 
@@ -163,23 +159,16 @@ class AdminView(object):
 
     @method_decorator(permission_required('telemeta.change_physicalformat'))
     def set_admin_enumeration(self, request):
-
-        f = open("enumeration/enumeration.txt", "w")
-        f.close
-        f = open("enumeration/enumeration.txt", "a")
         if request.method == 'POST':
-
             from django.db.models import get_models
             models = get_models(telemeta.models)
-
             for model in models:
                 if issubclass(model, Enumeration):
                     if model._meta.module_name in request.POST.getlist('sel'):
-                        model.admin = "True"
+                        model.is_admin = True
                     else :
-                        model.admin = "False"
-                    f.write(model._meta.module_name + "\n" + str(model.admin) + "\n")
-        f.close()
+                        model.is_admin = False
+                    model.save()
         return self.admin_enumerations(request)
 
     @method_decorator(permission_required('telemeta.change_physicalformat'))
@@ -250,4 +239,3 @@ class AdminView(object):
             from_record.delete()
 
         return self.edit_enumeration(request, enumeration_id)
-
