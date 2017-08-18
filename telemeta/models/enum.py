@@ -28,8 +28,6 @@ class Enumeration(ModelCore):
 
     value = CharField(_('value'), required=True, unique=True)
     notes = TextField(_('notes'))
-    is_hidden = BooleanField(_('is hidden'), default=True)
-    is_admin = BooleanField(_('is admin'), default=True)
 
     def __unicode__(self):
         return self.value
@@ -37,8 +35,21 @@ class Enumeration(ModelCore):
     class Meta(MetaCore):
         abstract = True
 
+
 class MetaEnumeration(MetaCore):
     ordering = ['value']
+
+
+class EnumerationProperty(models.Model):
+
+    enumeration_name = models.CharField(_('enumeration name'))
+    is_hidden = BooleanField(_('is hidden'), default=False)
+    is_admin = BooleanField(_('is admin'), default=True)
+
+    class Meta:
+        verbose_name = _("enumeration property")
+        verbose_name_plural = _("enumeration properties")
+
 
 class PhysicalFormat(Enumeration):
     "Collection physical format"
