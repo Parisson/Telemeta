@@ -52,7 +52,8 @@
     <dl class="listing">
         <!-- display fields for a text -->
         {% dl_field item "mshs_text_bool" %}
-        {% dl_field item "mshs_text" %}
+        <dt>{% trans "Text" %}</dt>
+        <dd>{{ item.mshs_text|html_line_break|safe }}</dd>
         {% dl_field item "mshs_incipit" %}
         {% dl_field item "mshs_refrain" %}
         {% dl_field item "mshs_jingle" %}

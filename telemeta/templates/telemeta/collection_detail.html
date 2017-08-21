@@ -34,7 +34,7 @@
 
 {% block title %}
     <img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" />
-    Collection : {{ collection.title }}
+    {% trans "Collection" %} : {{ collection.title }}
 {% endblock %}
 
 {% block title_buttons %}

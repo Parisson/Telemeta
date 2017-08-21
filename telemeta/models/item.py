@@ -169,7 +169,7 @@ class MediaItem(MediaResource):
                     'organization', 'depositor', 'rights',
                     'recordist', 'digitalist', 'digitization_date',
                     'publishing_date', 'scientist', 'topic',
-                    'summary', 'contributor', 'public_access',]
+                    'summary', 'contributor',]
 
     def keywords(self):
         return ContextKeyword.objects.filter(item_relations__item = self)

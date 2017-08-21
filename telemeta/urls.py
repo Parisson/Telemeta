@@ -26,8 +26,9 @@ from django.contrib.auth import views as auth_views
 from django.views.generic.base import RedirectView, TemplateView
 from django.views.generic.list import ListView
 from django.views.static import serve
-from telemeta.models import MediaItem, MediaCollection, MediaItemMarker, MediaCorpus, MediaFonds
+from telemeta.models import MediaItem, MediaCollection, MediaItemMarker, MediaCorpus, MediaFonds, Institution
 from telemeta.views import *
+from telemeta.views.institution import *
 from telemeta.mshs.views import *
 from haystack.forms import *
 
@@ -50,6 +51,7 @@ geo_view = GeoView()
 resource_view = ResourceView()
 #boolean_view = BooleanSearchView()
 
+
 # ID's regular expressions
 export_extensions = "|".join(item_view.list_export_extensions())
 
@@ -57,6 +59,10 @@ export_extensions = "|".join(item_view.list_export_extensions())
 urlpatterns = [
     url(r'^$', home_view.home, name="telemeta-home"),
     url(r'^test', TemplateView.as_view(template_name="telemeta/hello_world.html")),
+    
+    # institutions
+    url(r'^institutions/$', InstitutionListView.as_view(), name="telemeta-institutions"),
+    url(r'^institutions/(?P<public_id>[A-Za-z0-9._-]+)/$', InstitutionDetailView.as_view(), name="telemeta-institutions-detail"),
 
     # items
     url(r'^archives/items/$', ItemListView.as_view(), name="telemeta-items"),
@@ -69,6 +75,8 @@ urlpatterns = [
     url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/dc/$', ItemDetailDCView.as_view(), name="telemeta-item-dublincore"),
     url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/dc/xml/$', item_view.item_detail, {'format': 'dublin_core_xml'}, name="telemeta-item-dublincore-xml"),
     url(r'^archives/items/download/(?P<public_id>[A-Za-z0-9._-]+)\.(?P<extension>' + export_extensions + ')$', item_view.item_export, name="telemeta-item-export"),
+    url(r'^archives/items/download/(?P<public_id>[A-Za-z0-9._-]+)\.(?P<extension>' + export_extensions + ')/isAvailable$', item_view.item_export_available, name="telemeta-item-export-available"),
+                       
     url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/visualize/(?P<grapher_id>[0-9a-z_]+)/(?P<width>[0-9A-Z]+)x(?P<height>[0-9A-Z]+)/$', item_view.item_visualize, name="telemeta-item-visualize"),
     url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/analyze/xml/$', item_view.item_analyze_xml, name="telemeta-item-analyze-xml"),
     url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/item_xspf.xml$', item_view.item_playlist, dict(template="telemeta/mediaitem_xspf.xml", mimetype="application/xspf+xml"), name="telemeta-item-xspf"),
