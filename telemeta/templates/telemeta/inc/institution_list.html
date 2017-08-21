@@ -1,0 +1,24 @@
+{% load telemeta_tags %}
+{% load i18n %}
+
+{% if institutions %}
+
+<table class="listing">
+<tr>
+    <th class="highlight">{% trans "name" %}</th>
+    <th>{% trans "notes" %}</th>
+</tr>
+{% for institution in institutions %}
+<tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
+    <td class="highlight">
+        <a href="{% url "telemeta-institutions-detail" institution.id %}">
+          {{ institution.name }}</a>
+    </td>
+    <td>{{ institution.notes }}</td>
+</tr>
+{% endfor %}
+</table>
+{% else %}
+    <p>{% trans "No institution" %}</p>
+{% endif %}
+

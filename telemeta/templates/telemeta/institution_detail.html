@@ -1,0 +1,52 @@
+{% extends "telemeta/base.html" %}
+{% load i18n %}
+{% load telemeta_tags %}
+
+{% block head_title %}{% trans "Institution" %}{{institution|prepend:' : '}} - {{ block.super }}{% endblock %}
+
+{% block extra_javascript %}
+<script src="{{ STATIC_URL }}telemeta/js/swfobject.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}telemeta/js/popupdiv.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}telemeta/js/playlist.js" type="text/javascript"></script>
+{% endblock %}
+
+{% if institution %}
+
+{% block title %}
+    <img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" />
+    {% trans "Institution" %} : {{ institution.name }}
+{% endblock %}
+
+{% block title_buttons %}
+  <div>
+   </div>
+{% endblock %}
+
+{% block content %}
+   {{institution.notes}}
+
+        <h2>{% trans "Fonds" %}</h2>
+        <div class="with-rightcol">
+            <table class="listing">
+                <thead>
+                    <tr>
+                        <th class="highlight">{% trans "Title" %}</th>
+                        <th >{% trans "Code" %}</th>
+                        <th >{% trans "Description" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for fond in institution.fonds.all %}
+                    <td><a href="{% url "telemeta-resource-detail" fond.element_type fond.public_id %}">{{ fond.title }}</a></td>
+                    <td>{{fond.public_id}}</td>
+                    <td>{{fond.descriptions}}</td>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+{% endblock content %}
+
+{% else %}
+    <p>No such collection</p>
+{% endif %}
