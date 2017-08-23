@@ -9,7 +9,7 @@ class NewPlaylistView(object):
 
         self.type=type
 
-        template_name = loader.get_template('search/addplaylist.html')
+        template_name = loader.get_template('telemeta/search/addplaylist.html')
 
         idlist = request.POST.getlist('selected_items_list')
         itemlist = []
@@ -31,7 +31,7 @@ class NewPlaylistView(object):
     def addToPlaylist(self, request, type=None):
         self.type=type
 
-        template_name = loader.get_template('search/confirmation_add_playslist.html')
+        template_name = loader.get_template('telemeta/search/confirmation_add_playslist.html')
 
         idlist = request.POST.getlist('item_id')
         selected_playlist_id = request.POST.get('playlist_id')
@@ -58,5 +58,3 @@ class NewPlaylistView(object):
                 'type':self.type,
                 'lastquerypath': request.POST.get('lastquerypath')})
         return HttpResponse(template_name.render(context))
-
-
