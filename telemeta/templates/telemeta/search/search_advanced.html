@@ -3,15 +3,33 @@
 {% load i18n %}
 {% load bootstrap_pagination %}
 
-
 {% block title %}
 {% trans "Search" %}
 {% endblock %}
+
 {% block extra_stylesheets %}
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/css/jquery-ui.css" />
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/css/search.css" />
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/css/lists_sorttable.css" media="print, projection, screen"/>
 {% endblock %}
+
+{% block extra_javascript %}
+    <script src="{{ STATIC_URL }}jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}tablesorter/jquery.tablesorter.min.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}telemeta/js/advanceSearch.js" type="text/javascript"></script>
+    <script>
+        $(function(){
+            $("#results-per-page").selectmenu({
+                icons : {button: "ui-icon-carat-2-n-s"},
+                change : function(){
+                    window.location = '?q={{request.GET.q}}&location={{request.GET.location}}&ethnic_group={{request.GET.ethnic_group}}&instruments={{request.GET.instruments}}&year_published_from={{request.GET.year_published_from}}&year_published_to={{request.GET.year_published_to}}&media_type={{request.GET.media_type}}&viewable={{request.GET.viewable}}&collectors={{request.GET.collectors}}&recorded_from_date={{request.GET.recorded_from_date}}&recorded_to_date={{request.GET.recorded_to_date}}&item_status={{request.GET.item_status}}&recording_context={{request.GET.recording_context}}&physical_format={{request.GET.physical_format}}&code={{ request.GET.code }}&page=1&results_page='+$(this).val();
+                }
+            }).selectmenu("menuWidget").addClass("overflow");
+
+        });
+    </script>
+{% endblock %}
+
 {% block content %}
     <form method="get" action=".">
         <div class="row">
@@ -135,8 +153,8 @@
                         {% endifequal %}
                     {% endifequal %}
                  </div>
-                 <div class="col-md-4 col-md-offset-4" >
-                    <div class="pull-right"">
+                 <div class="col-md-4 col-md-offset-4">
+                    <div class="pull-right">
                         <label style="display:inline-block;vertical-align:middle">{% trans "results per page"%}:</label>
                         <div style="display:inline-block;vertical-align:middle">
                             <select id="results-per-page" name="results_page">
@@ -156,16 +174,16 @@
              {% with object_list as items %}
                 <div class="fullpage" style="display:none">
                     {% ifequal type 'item' %}
-                        {% include "search/mediaitem_listhaystack.html" %}
+                        {% include "telemeta/search/mediaitem_listhaystack.html" %}
                     {% else %}
                         {% ifequal type 'corpus' %}
-                            {% include "search/mediaresource_listhaystack.html" %}
+                            {% include "telemeta/search/mediaresource_listhaystack.html" %}
                         {% else %}
                             {% ifequal type 'fonds' %}
-                                {% include "search/mediaresource_listhaystack.html" %}
+                                {% include "telemeta/search/mediaresource_listhaystack.html" %}
                             {% else %}
                                 {% ifequal type 'collection' %}
-                                    {% include "search/mediacollection_listhaystack.html" %}
+                                    {% include "telemeta/search/mediacollection_listhaystack.html" %}
                                 {%endifequal%}
                             {%endifequal%}
                         {%endifequal%}
@@ -174,16 +192,16 @@
                 <noscript>
                     <div class="fullpage">
                         {% ifequal type 'item' %}
-                            {% include "search/mediaitem_listhaystack.html" %}
+                            {% include "telemeta/search/mediaitem_listhaystack.html" %}
                         {% else %}
                             {% ifequal type 'corpus' %}
-                                {% include "search/mediaresource_listhaystack.html" %}
+                                {% include "telemeta/search/mediaresource_listhaystack.html" %}
                             {% else %}
                                 {% ifequal type 'fonds' %}
-                                    {% include "search/mediaresource_listhaystack.html" %}
+                                    {% include "telemeta/search/mediaresource_listhaystack.html" %}
                                 {% else %}
                                     {% ifequal type 'collection' %}
-                                        {% include "search/mediacollection_listhaystack.html" %}
+                                        {% include "telemeta/search/mediacollection_listhaystack.html" %}
                                     {%endifequal%}
                                 {%endifequal%}
                             {%endifequal%}
@@ -237,22 +255,4 @@
 
         {% endcomment %}
 
-{% endblock %}
-{% block extra_javascript %}
-    <script src="{{ STATIC_URL }}jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
-    <script src="{{ STATIC_URL }}tablesorter/jquery.tablesorter.min.js" type="text/javascript"></script>
-    <script src="{{ STATIC_URL }}telemeta/js/advanceSearch.js" type="text/javascript"></script>
-
-    <script>
-        $(function(){
-            $("#results-per-page").selectmenu({
-                icons : {button: "ui-icon-carat-2-n-s"},
-                change : function(){
-                    window.location = '?q={{request.GET.q}}&location={{request.GET.location}}&ethnic_group={{request.GET.ethnic_group}}&instruments={{request.GET.instruments}}&year_published_from={{request.GET.year_published_from}}&year_published_to={{request.GET.year_published_to}}&media_type={{request.GET.media_type}}&viewable={{request.GET.viewable}}&collectors={{request.GET.collectors}}&recorded_from_date={{request.GET.recorded_from_date}}&recorded_to_date={{request.GET.recorded_to_date}}&item_status={{request.GET.item_status}}&recording_context={{request.GET.recording_context}}&physical_format={{request.GET.physical_format}}&code={{ request.GET.code }}&page=1&results_page='+$(this).val();
-                }
-            }).selectmenu("menuWidget").addClass("overflow");
-
-        });
-
-</script>
 {% endblock %}

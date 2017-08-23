@@ -354,7 +354,7 @@ BOWER_INSTALLED_APPS = (
     'soundmanager#V2.97a.20150601',
     'https://github.com/Parisson/loaders.git',
     'https://github.com/Parisson/ui.git',
-    'jquery-ui#1.12.1',
+    'jquery-ui#1.11.4',
     'tablesorter',
     'video.js',
     'sass-bootstrap-glyphicons',
