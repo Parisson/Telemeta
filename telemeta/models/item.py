@@ -61,17 +61,22 @@ class MediaItem(MediaResource):
     public_access         = CharField(_('access type'), choices=ITEM_PUBLIC_ACCESS_CHOICES, max_length=16, default="metadata")
 
     # Geographic and cultural informations
-    location              = WeakForeignKey('Location', verbose_name=_('location'))
+    location              = ForeignKey('Location', verbose_name=_('location'), blank=True, null=True, on_delete=models.SET_NULL)
     location_comment      = CharField(_('location details'))
     language              = CharField(_('language'))
+<<<<<<< HEAD
     #language_iso          = CharField(_('Language (ISO norm)'), blank=True, null=True)
     ethnic_group          = WeakForeignKey('EthnicGroup', related_name="items", verbose_name=_('population / social group'))
+=======
+    language_iso          = ForeignKey('Language', related_name="items", verbose_name=_('Language (ISO norm)'), blank=True, null=True, on_delete=models.SET_NULL)
+    ethnic_group          = ForeignKey('EthnicGroup', related_name="items", verbose_name=_('population / social group'), blank=True, null=True, on_delete=models.SET_NULL)
+>>>>>>> 0eceba1995f7289246f91c2156f8d08bb49fc2b0
     context_comment       = TextField(_('Ethnographic context'))
 
     # Musical informations
     moda_execut           = CharField(_('implementing rules'))
-    vernacular_style      = WeakForeignKey('VernacularStyle', related_name="items", verbose_name=_('vernacular style'))
-    generic_style         = WeakForeignKey('GenericStyle', related_name="items", verbose_name=_('generic style'))
+    vernacular_style      = ForeignKey('VernacularStyle', related_name="items", verbose_name=_('vernacular style'), blank=True, null=True, on_delete=models.SET_NULL)
+    generic_style         = ForeignKey('GenericStyle', related_name="items", verbose_name=_('generic style'), blank=True, null=True, on_delete=models.SET_NULL)
     author                = CharField(_('author / compositor'), help_text=_('First name, Last name ; First name, Last name'))
 
     mshs_author           = CharField(_('author'))
@@ -114,9 +119,9 @@ class MediaItem(MediaResource):
 
 
     # Legal mentions
-    organization          = WeakForeignKey('Organization', verbose_name=_('organization'))
+    organization          = ForeignKey('Organization', verbose_name=_('organization'), blank=True, null=True, on_delete=models.SET_NULL)
     depositor             = CharField(_('depositor'))
-    rights                = WeakForeignKey('Rights', verbose_name=_('rights'))
+    rights                = ForeignKey('Rights', verbose_name=_('rights'), blank=True, null=True, on_delete=models.SET_NULL)
 
     # Archiving data
     code                  = CharField(_('code'), unique=True, blank=True, required=True, help_text=_('CollectionCode_ItemCode'),
@@ -137,7 +142,7 @@ class MediaItem(MediaResource):
     comment               = TextField(_('remarks'))
 
     # Technical data
-    media_type            = WeakForeignKey('MediaType', related_name="items", verbose_name=_('media type'))
+    media_type            = ForeignKey('MediaType', related_name="items", verbose_name=_('media type'), blank=True, null=True, on_delete=models.SET_NULL)
     approx_duration       = DurationField(_('approximative duration'), blank=True, help_text=_('hh:mm:ss'))
     mimetype              = CharField(_('mime type'), max_length=255, blank=True)
     file                  = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename", max_length=1024)
@@ -149,7 +154,7 @@ class MediaItem(MediaResource):
     digitization_date     = DateField(_('digitization date'))
     publishing_date       = DateField(_('publishing date'))
     scientist             = CharField(_('scientist'), help_text=_('First name, Last name ; First name, Last name'))
-    topic                 = WeakForeignKey('Topic', verbose_name=_('topic'))
+    topic                 = ForeignKey('Topic', verbose_name=_('topic'), blank=True, null=True, on_delete=models.SET_NULL)
     summary               = TextField(_('summary'))
     contributor           = CharField(_('contributor'))
 
@@ -420,6 +425,16 @@ class MediaItemKeyword(ModelCore):
         unique_together = (('item', 'keyword'),)
 
 
+<<<<<<< HEAD
+=======
+class MediaItemPerformance(ModelCore):
+    "Item performance"
+    media_item      = ForeignKey('MediaItem', related_name="performances", verbose_name=_('item'))
+    instrument      = ForeignKey('Instrument', related_name="performances", verbose_name=_('composition'), blank=True, null=True, on_delete=models.SET_NULL)
+    alias           = ForeignKey('InstrumentAlias', related_name="performances", verbose_name=_('vernacular name'), blank=True, null=True, on_delete=models.SET_NULL)
+    instruments_num = CharField(_('number'))
+    musicians       = CharField(_('interprets'))
+>>>>>>> 0eceba1995f7289246f91c2156f8d08bb49fc2b0
 
 
 

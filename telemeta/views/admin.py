@@ -163,7 +163,7 @@ class AdminView(object):
         from_record = enumeration.objects.get(id__exact=value_id)
         to_record = enumeration.objects.get(id__exact=to_value_id)
         links = [rel.get_accessor_name() for rel in from_record._meta.get_all_related_objects()]
-        field_type = WeakForeignKey
+        field_type = ForeignKey
 
         for link in links:
             objects = getattr(from_record, link).all()
