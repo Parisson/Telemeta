@@ -59,7 +59,7 @@ class MediaCollection(MediaResource):
     numerotation          = CharField(_('numerotation'))###
     creator               = CharField(_('depositor / contributor'), help_text=_('First name, Last name ; First name, Last name'))
     description           = TextField(_('description'))
-    recording_context     = WeakForeignKey('RecordingContext', related_name="collections", verbose_name=_('recording context'), blank=True, null=True, on_delete=models.SET_NULL))
+    recording_context     = ForeignKey('RecordingContext', related_name="collections", verbose_name=_('recording context'), blank=True, null=True, on_delete=models.SET_NULL)
     recorded_from_year    = IntegerField(_('recording date (from)'), help_text=_('YYYY/MM/DD'))
     recorded_to_year      = IntegerField(_('recording date (until)'), help_text=_('YYYY/MM/DD'))
     year_published        = IntegerField(_('year published'), help_text=_('YYYY'))
@@ -304,10 +304,10 @@ class MediaCollectionIdentifier(Identifier):
 
 class MediaCollectionPerformance(MediaResource):
     "Collection performance"
-    collection      = WeakForeignKey('MediaCollection', related_name="performances", verbose_name=_('collection'))
-    instrument      = WeakForeignKey('Instrument', related_name="performances", verbose_name=_('composition'))
-    alias           = WeakForeignKey('InstrumentAlias', related_name="performances", verbose_name=_('precisions'))
-    hornbostel      = WeakForeignKey('HornbostelSachs', related_name="performances", verbose_name=_('Hornbostel-Sachs classification'))
+    collection      = ForeignKey('MediaCollection', related_name="performances", verbose_name=_('collection'), blank=True, null=True, on_delete=models.SET_NULL)
+    instrument      = ForeignKey('Instrument', related_name="performances", verbose_name=_('composition'), blank=True, null=True, on_delete=models.SET_NULL)
+    alias           = ForeignKey('InstrumentAlias', related_name="performances", verbose_name=_('precisions'), blank=True, null=True, on_delete=models.SET_NULL)
+    hornbostel      = ForeignKey('HornbostelSachs', related_name="performances", verbose_name=_('Hornbostel-Sachs classification'), blank=True, null=True, on_delete=models.SET_NULL)
     musician        = CharField(_('informer'), help_text=_('First name, Last name'))
 
     class Meta(MetaCore):

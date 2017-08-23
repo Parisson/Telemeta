@@ -64,13 +64,8 @@ class MediaItem(MediaResource):
     location              = ForeignKey('Location', verbose_name=_('location'), blank=True, null=True, on_delete=models.SET_NULL)
     location_comment      = CharField(_('location details'))
     language              = CharField(_('language'))
-<<<<<<< HEAD
-    #language_iso          = CharField(_('Language (ISO norm)'), blank=True, null=True)
-    ethnic_group          = WeakForeignKey('EthnicGroup', related_name="items", verbose_name=_('population / social group'))
-=======
-    language_iso          = ForeignKey('Language', related_name="items", verbose_name=_('Language (ISO norm)'), blank=True, null=True, on_delete=models.SET_NULL)
+    #language_iso          = ForeignKey('Language', related_name="items", verbose_name=_('Language (ISO norm)'), blank=True, null=True, on_delete=models.SET_NULL)
     ethnic_group          = ForeignKey('EthnicGroup', related_name="items", verbose_name=_('population / social group'), blank=True, null=True, on_delete=models.SET_NULL)
->>>>>>> 0eceba1995f7289246f91c2156f8d08bb49fc2b0
     context_comment       = TextField(_('Ethnographic context'))
 
     # Musical informations
@@ -425,17 +420,19 @@ class MediaItemKeyword(ModelCore):
         unique_together = (('item', 'keyword'),)
 
 
-<<<<<<< HEAD
-=======
 class MediaItemPerformance(ModelCore):
     "Item performance"
-    media_item      = ForeignKey('MediaItem', related_name="performances", verbose_name=_('item'))
-    instrument      = ForeignKey('Instrument', related_name="performances", verbose_name=_('composition'), blank=True, null=True, on_delete=models.SET_NULL)
-    alias           = ForeignKey('InstrumentAlias', related_name="performances", verbose_name=_('vernacular name'), blank=True, null=True, on_delete=models.SET_NULL)
+    media_item      = ForeignKey('MediaItem', related_name="performancesItem", verbose_name=_('item'))
+    instrument      = ForeignKey('Instrument', related_name="performancesItem", verbose_name=_('composition'), blank=True, null=True, on_delete=models.SET_NULL)
+    alias           = ForeignKey('InstrumentAlias', related_name="performancesItem", verbose_name=_('vernacular name'), blank=True, null=True, on_delete=models.SET_NULL)
     instruments_num = CharField(_('number'))
     musicians       = CharField(_('interprets'))
->>>>>>> 0eceba1995f7289246f91c2156f8d08bb49fc2b0
+    
+    class Meta(MetaCore):
+        db_table = 'media_item_performances'
 
+    def __unicode__(self):
+        return self.musicians+"; "+self.instrument.name
 
 
 class MediaItemAnalysis(ModelCore):

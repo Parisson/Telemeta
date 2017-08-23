@@ -444,14 +444,13 @@ class Migration(migrations.Migration):
                 ('conservation_site', telemeta.models.fields.CharField(default=b'', max_length=250, verbose_name='conservation site', blank=True)),
                 ('approx_duration', telemeta.models.fields.DurationField(default=b'0', help_text=b'hh:mm:ss', verbose_name='estimated duration', blank=True)),
                 ('physical_items_num', telemeta.models.fields.IntegerField(default=0, verbose_name='number of components (medium / piece)', blank=True)),
-                ('items_done', telemeta.models.fields.CharField(default=b'', max_length=250, verbose_name='items finished', blank=True)),
                 ('alt_ids', telemeta.models.fields.CharField(default=b'', max_length=250, verbose_name='copies (obsolete field)', blank=True)),
                 ('travail', telemeta.models.fields.CharField(default=b'', max_length=250, verbose_name='archiver notes (obsolete field)', blank=True)),
-                ('acquisition_mode', telemeta.models.fields.WeakForeignKey(related_name='collections', default=None, blank=True, to='telemeta.AcquisitionMode', null=True, verbose_name='mode of acquisition')),
-                ('ad_conversion', telemeta.models.fields.WeakForeignKey(related_name='collections', default=None, blank=True, to='telemeta.AdConversion', null=True, verbose_name='digitization')),
-                ('copy_type', telemeta.models.fields.WeakForeignKey(related_name='collections', default=None, blank=True, to='telemeta.CopyType', null=True, verbose_name='copy type')),
+                ('acquisition_mode', telemeta.models.fields.ForeignKey(related_name='collections', on_delete=django.db.models.deletion.SET_NULL, default=None, blank=True, to='telemeta.AcquisitionMode', null=True, verbose_name='mode of acquisition')),
+                ('ad_conversion', telemeta.models.fields.ForeignKey(related_name='collections', on_delete=django.db.models.deletion.SET_NULL, default=None, blank=True, to='telemeta.AdConversion', null=True, verbose_name='digitization')),
+                ('copy_type', telemeta.models.fields.ForeignKey(related_name='collections', on_delete=django.db.models.deletion.SET_NULL, default=None, blank=True, to='telemeta.CopyType', null=True, verbose_name='copy type')),
                 ('language_iso', telemeta.models.fields.ForeignKey(related_name='items', on_delete=django.db.models.deletion.SET_NULL, default=None, blank=True, to='telemeta.Language', null=True, verbose_name='Language (ISO norm)')),
-                ('legal_rights', telemeta.models.fields.WeakForeignKey(related_name='collections', default=None, blank=True, to='telemeta.LegalRight', null=True, verbose_name='legal rights')),
+                ('legal_rights', telemeta.models.fields.ForeignKey(related_name='collections', on_delete=django.db.models.deletion.SET_NULL, default=None, blank=True, to='telemeta.LegalRight', null=True, verbose_name='legal rights')),
             ],
             options={
                 'ordering': ['code'],
@@ -471,7 +470,7 @@ class Migration(migrations.Migration):
                 ('date_modified', models.DateTimeField(auto_now=True, verbose_name='date modified')),
                 ('notes', models.TextField(null=True, verbose_name='notes')),
                 ('collection', telemeta.models.fields.ForeignKey(related_name='identifiers', verbose_name='collection', to='telemeta.MediaCollection')),
-                ('type', telemeta.models.fields.WeakForeignKey(default=None, blank=True, to='telemeta.IdentifierType', null=True, verbose_name='type')),
+                ('type', telemeta.models.fields.ForeignKey(on_delete=django.db.models.deletion.SET_NULL, default=None, blank=True, to='telemeta.IdentifierType', null=True, verbose_name='type')),
             ],
             options={
                 'db_table': 'media_collection_identifier',
@@ -485,10 +484,10 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('musician', telemeta.models.fields.CharField(default=b'', help_text='First name, Last name', max_length=250, verbose_name='informer', blank=True)),
-                ('alias', telemeta.models.fields.WeakForeignKey(related_name='performances', default=None, blank=True, to='telemeta.InstrumentAlias', null=True, verbose_name='precisions')),
-                ('collection', telemeta.models.fields.WeakForeignKey(related_name='performances', default=None, blank=True, to='telemeta.MediaCollection', null=True, verbose_name='collection')),
-                ('hornbostel', telemeta.models.fields.WeakForeignKey(related_name='performances', default=None, blank=True, to='telemeta.HornbostelSachs', null=True, verbose_name='Hornbostel-Sachs classification')),
-                ('instrument', telemeta.models.fields.WeakForeignKey(related_name='performances', default=None, blank=True, to='telemeta.Instrument', null=True, verbose_name='composition')),
+                ('alias', telemeta.models.fields.ForeignKey(related_name='performances', on_delete=django.db.models.deletion.SET_NULL, default=None, blank=True, to='telemeta.InstrumentAlias', null=True, verbose_name='precisions')),
+                ('collection', telemeta.models.fields.ForeignKey(related_name='performances', on_delete=django.db.models.deletion.SET_NULL, default=None, blank=True, to='telemeta.MediaCollection', null=True, verbose_name='collection')),
+                ('hornbostel', telemeta.models.fields.ForeignKey(related_name='performances', on_delete=django.db.models.deletion.SET_NULL, default=None, blank=True, to='telemeta.HornbostelSachs', null=True, verbose_name='Hornbostel-Sachs classification')),
+                ('instrument', telemeta.models.fields.ForeignKey(related_name='performances', on_delete=django.db.models.deletion.SET_NULL, default=None, blank=True, to='telemeta.Instrument', null=True, verbose_name='composition')),
             ],
             options={
                 'db_table': 'media_collection_performances',
@@ -669,9 +668,9 @@ class Migration(migrations.Migration):
                 ('summary', telemeta.models.fields.TextField(default=b'', verbose_name='summary', blank=True)),
                 ('contributor', telemeta.models.fields.CharField(default=b'', max_length=250, verbose_name='contributor', blank=True)),
                 ('collection', telemeta.models.fields.ForeignKey(related_name='items', verbose_name='collection', to='telemeta.MediaCollection')),
-                ('ethnic_group', telemeta.models.fields.WeakForeignKey(related_name='items', default=None, blank=True, to='telemeta.EthnicGroup', null=True, verbose_name='population / social group')),
-                ('generic_style', telemeta.models.fields.WeakForeignKey(related_name='items', default=None, blank=True, to='telemeta.GenericStyle', null=True, verbose_name='generic style')),
-                ('location', telemeta.models.fields.WeakForeignKey(default=None, blank=True, to='telemeta.Location', null=True, verbose_name='location')),
+                ('ethnic_group', telemeta.models.fields.ForeignKey(related_name='items', on_delete=django.db.models.deletion.SET_NULL, default=None, blank=True, to='telemeta.EthnicGroup', null=True, verbose_name='population / social group')),
+                ('generic_style', telemeta.models.fields.ForeignKey(related_name='items', on_delete=django.db.models.deletion.SET_NULL, default=None, blank=True, to='telemeta.GenericStyle', null=True, verbose_name='generic style')),
+                ('location', telemeta.models.fields.ForeignKey(on_delete=django.db.models.deletion.SET_NULL, default=None, blank=True, to='telemeta.Location', null=True, verbose_name='location')),
             ],
             options={
                 'db_table': 'media_items',
@@ -707,7 +706,7 @@ class Migration(migrations.Migration):
                 ('date_modified', models.DateTimeField(auto_now=True, verbose_name='date modified')),
                 ('notes', models.TextField(null=True, verbose_name='notes')),
                 ('item', telemeta.models.fields.ForeignKey(related_name='identifiers', verbose_name='item', to='telemeta.MediaItem')),
-                ('type', telemeta.models.fields.WeakForeignKey(default=None, blank=True, to='telemeta.IdentifierType', null=True, verbose_name='type')),
+                ('type', telemeta.models.fields.ForeignKey(on_delete=django.db.models.deletion.SET_NULL, default=None, blank=True, to='telemeta.IdentifierType', null=True, verbose_name='type')),
             ],
             options={
                 'db_table': 'media_item_identifier',
@@ -743,6 +742,21 @@ class Migration(migrations.Migration):
             options={
                 'ordering': ['time'],
                 'db_table': 'media_markers',
+            },
+            bases=(models.Model, dirtyfields.dirtyfields.DirtyFieldsMixin),
+        ),
+        migrations.CreateModel(
+            name='MediaItemPerformance',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('instruments_num', telemeta.models.fields.CharField(default=b'', max_length=250, verbose_name='number', blank=True)),
+                ('musicians', telemeta.models.fields.CharField(default=b'', max_length=250, verbose_name='interprets', blank=True)),
+                ('alias', telemeta.models.fields.ForeignKey(related_name='performancesItem', on_delete=django.db.models.deletion.SET_NULL, default=None, blank=True, to='telemeta.InstrumentAlias', null=True, verbose_name='vernacular name')),
+                ('instrument', telemeta.models.fields.ForeignKey(related_name='performancesItem', on_delete=django.db.models.deletion.SET_NULL, default=None, blank=True, to='telemeta.Instrument', null=True, verbose_name='composition')),
+                ('media_item', telemeta.models.fields.ForeignKey(related_name='performancesItem', verbose_name='item', to='telemeta.MediaItem')),
+            ],
+            options={
+                'db_table': 'media_item_performances',
             },
             bases=(models.Model, dirtyfields.dirtyfields.DirtyFieldsMixin),
         ),
@@ -1169,7 +1183,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='mediaitem',
             name='media_type',
-            field=telemeta.models.fields.WeakForeignKey(related_name='items', default=None, blank=True, to='telemeta.MediaType', null=True, verbose_name='media type'),
+            field=telemeta.models.fields.ForeignKey(related_name='items', on_delete=django.db.models.deletion.SET_NULL, default=None, blank=True, to='telemeta.MediaType', null=True, verbose_name='media type'),
         ),
         migrations.AddField(
             model_name='mediaitem',
@@ -1184,72 +1198,72 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='mediaitem',
             name='organization',
-            field=telemeta.models.fields.WeakForeignKey(default=None, blank=True, to='telemeta.Organization', null=True, verbose_name='organization'),
+            field=telemeta.models.fields.ForeignKey(on_delete=django.db.models.deletion.SET_NULL, default=None, blank=True, to='telemeta.Organization', null=True, verbose_name='organization'),
         ),
         migrations.AddField(
             model_name='mediaitem',
             name='rights',
-            field=telemeta.models.fields.WeakForeignKey(default=None, blank=True, to='telemeta.Rights', null=True, verbose_name='rights'),
+            field=telemeta.models.fields.ForeignKey(on_delete=django.db.models.deletion.SET_NULL, default=None, blank=True, to='telemeta.Rights', null=True, verbose_name='rights'),
         ),
         migrations.AddField(
             model_name='mediaitem',
             name='topic',
-            field=telemeta.models.fields.WeakForeignKey(default=None, blank=True, to='telemeta.Topic', null=True, verbose_name='topic'),
+            field=telemeta.models.fields.ForeignKey(on_delete=django.db.models.deletion.SET_NULL, default=None, blank=True, to='telemeta.Topic', null=True, verbose_name='topic'),
         ),
         migrations.AddField(
             model_name='mediaitem',
             name='vernacular_style',
-            field=telemeta.models.fields.WeakForeignKey(related_name='items', default=None, blank=True, to='telemeta.VernacularStyle', null=True, verbose_name='vernacular style'),
+            field=telemeta.models.fields.ForeignKey(related_name='items', on_delete=django.db.models.deletion.SET_NULL, default=None, blank=True, to='telemeta.VernacularStyle', null=True, verbose_name='vernacular style'),
         ),
         migrations.AddField(
             model_name='mediacollection',
             name='media_type',
-            field=telemeta.models.fields.WeakForeignKey(related_name='collections', default=None, blank=True, to='telemeta.MediaType', null=True, verbose_name='media type'),
+            field=telemeta.models.fields.ForeignKey(related_name='collections', on_delete=django.db.models.deletion.SET_NULL, default=None, blank=True, to='telemeta.MediaType', null=True, verbose_name='media type'),
         ),
         migrations.AddField(
             model_name='mediacollection',
             name='metadata_author',
-            field=telemeta.models.fields.WeakForeignKey(related_name='collections', default=None, blank=True, to='telemeta.MetadataAuthor', null=True, verbose_name='record author'),
+            field=telemeta.models.fields.ForeignKey(related_name='collections', on_delete=django.db.models.deletion.SET_NULL, default=None, blank=True, to='telemeta.MetadataAuthor', null=True, verbose_name='record author'),
         ),
         migrations.AddField(
             model_name='mediacollection',
             name='metadata_writer',
-            field=telemeta.models.fields.WeakForeignKey(related_name='collections', default=None, blank=True, to='telemeta.MetadataWriter', null=True, verbose_name='record writer'),
+            field=telemeta.models.fields.ForeignKey(related_name='collections', on_delete=django.db.models.deletion.SET_NULL, default=None, blank=True, to='telemeta.MetadataWriter', null=True, verbose_name='record writer'),
         ),
         migrations.AddField(
             model_name='mediacollection',
             name='original_format',
-            field=telemeta.models.fields.WeakForeignKey(related_name='collections', default=None, blank=True, to='telemeta.OriginalFormat', null=True, verbose_name='original format'),
+            field=telemeta.models.fields.ForeignKey(related_name='collections', on_delete=django.db.models.deletion.SET_NULL, default=None, blank=True, to='telemeta.OriginalFormat', null=True, verbose_name='original format'),
         ),
         migrations.AddField(
             model_name='mediacollection',
             name='physical_format',
-            field=telemeta.models.fields.WeakForeignKey(related_name='collections', default=None, blank=True, to='telemeta.PhysicalFormat', null=True, verbose_name='archive format'),
+            field=telemeta.models.fields.ForeignKey(related_name='collections', on_delete=django.db.models.deletion.SET_NULL, default=None, blank=True, to='telemeta.PhysicalFormat', null=True, verbose_name='archive format'),
         ),
         migrations.AddField(
             model_name='mediacollection',
             name='publisher',
-            field=telemeta.models.fields.WeakForeignKey(related_name='collections', default=None, blank=True, to='telemeta.Publisher', null=True, verbose_name='publisher'),
+            field=telemeta.models.fields.WeakForeignKey(related_name='collections', on_delete=django.db.models.deletion.SET_NULL, default=None, blank=True, to='telemeta.Publisher', null=True, verbose_name='publisher'),
         ),
         migrations.AddField(
             model_name='mediacollection',
             name='publisher_collection',
-            field=telemeta.models.fields.WeakForeignKey(related_name='collections', default=None, blank=True, to='telemeta.PublisherCollection', null=True, verbose_name='publisher collection'),
+            field=telemeta.models.fields.WeakForeignKey(related_name='collections', on_delete=django.db.models.deletion.SET_NULL, default=None, blank=True, to='telemeta.PublisherCollection', null=True, verbose_name='publisher collection'),
         ),
         migrations.AddField(
             model_name='mediacollection',
             name='publishing_status',
-            field=telemeta.models.fields.WeakForeignKey(related_name='collections', default=None, blank=True, to='telemeta.PublishingStatus', null=True, verbose_name='secondary edition'),
+            field=telemeta.models.fields.ForeignKey(related_name='collections', on_delete=django.db.models.deletion.SET_NULL, default=None, blank=True, to='telemeta.PublishingStatus', null=True, verbose_name='secondary edition'),
         ),
         migrations.AddField(
             model_name='mediacollection',
             name='recording_context',
-            field=telemeta.models.fields.WeakForeignKey(related_name='collections', default=None, blank=True, to='telemeta.RecordingContext', null=True, verbose_name='recording context'),
+            field=telemeta.models.fields.ForeignKey(related_name='collections', on_delete=django.db.models.deletion.SET_NULL, default=None, blank=True, to='telemeta.RecordingContext', null=True, verbose_name='recording context'),
         ),
         migrations.AddField(
             model_name='mediacollection',
             name='status',
-            field=telemeta.models.fields.WeakForeignKey(related_name='collections', default=None, blank=True, to='telemeta.Status', null=True, verbose_name='collection status'),
+            field=telemeta.models.fields.ForeignKey(related_name='collections', on_delete=django.db.models.deletion.SET_NULL, default=None, blank=True, to='telemeta.Status', null=True, verbose_name='collection status'),
         ),
         migrations.AddField(
             model_name='location',
@@ -1259,7 +1273,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='location',
             name='current_location',
-            field=telemeta.models.fields.WeakForeignKey(related_name='past_names', default=None, blank=True, to='telemeta.Location', null=True, verbose_name='current location'),
+            field=telemeta.models.fields.ForeignKey(related_name='past_names', on_delete=django.db.models.deletion.SET_NULL, default=None, blank=True, to='telemeta.Location', null=True, verbose_name='current location'),
         ),
         migrations.AddField(
             model_name='format',
@@ -1269,7 +1283,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='format',
             name='original_channels',
-            field=telemeta.models.fields.WeakForeignKey(related_name='format', default=None, blank=True, to='telemeta.NumberOfChannels', null=True, verbose_name='number of channels'),
+            field=telemeta.models.fields.ForeignKey(related_name='format', on_delete=django.db.models.deletion.SET_NULL, default=None, blank=True, to='telemeta.NumberOfChannels', null=True, verbose_name='number of channels'),
         ),
         migrations.AddField(
             model_name='format',
@@ -1279,22 +1293,22 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='format',
             name='physical_format',
-            field=telemeta.models.fields.WeakForeignKey(related_name='format', default=None, blank=True, to='telemeta.PhysicalFormat', null=True, verbose_name='physical format'),
+            field=telemeta.models.fields.ForeignKey(related_name='format', on_delete=django.db.models.deletion.SET_NULL, default=None, blank=True, to='telemeta.PhysicalFormat', null=True, verbose_name='physical format'),
         ),
         migrations.AddField(
             model_name='format',
             name='tape_speed',
-            field=telemeta.models.fields.WeakForeignKey(related_name='format', default=None, blank=True, to='telemeta.TapeSpeed', null=True, verbose_name='tape speed (cm/s)'),
+            field=telemeta.models.fields.ForeignKey(related_name='format', on_delete=django.db.models.deletion.SET_NULL, default=None, blank=True, to='telemeta.TapeSpeed', null=True, verbose_name='tape speed (cm/s)'),
         ),
         migrations.AddField(
             model_name='format',
             name='tape_vendor',
-            field=telemeta.models.fields.WeakForeignKey(related_name='format', default=None, blank=True, to='telemeta.TapeVendor', null=True, verbose_name='tape vendor'),
+            field=telemeta.models.fields.ForeignKey(related_name='format', on_delete=django.db.models.deletion.SET_NULL, default=None, blank=True, to='telemeta.TapeVendor', null=True, verbose_name='tape vendor'),
         ),
         migrations.AddField(
             model_name='format',
             name='tape_wheel_diameter',
-            field=telemeta.models.fields.WeakForeignKey(related_name='format', default=None, blank=True, to='telemeta.TapeWheelDiameter', null=True, verbose_name='tape wheel diameter (cm)'),
+            field=telemeta.models.fields.ForeignKey(related_name='format', on_delete=django.db.models.deletion.SET_NULL, default=None, blank=True, to='telemeta.TapeWheelDiameter', null=True, verbose_name='tape wheel diameter (cm)'),
         ),
         migrations.AlterUniqueTogether(
             name='mediaitemkeyword',
