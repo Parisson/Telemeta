@@ -56,15 +56,15 @@ class MediaResource(ModelCore):
     class Meta:
         abstract = True
 
+def is_valid_resource_code(value):
+    "Check if the resource code is well formed"
+    regex = '^' + resource_code_regex + '$'
+    if not re.match(regex, value):
+        raise ValidationError(u'%s is not a valid resource code' % value)
+
 
 class MediaBaseResource(MediaResource):
     "Describe a media base resource"
-
-    def is_valid_resource_code(value):
-        "Check if the resource code is well formed"
-        regex = '^' + resource_code_regex + '$'
-        if not re.match(regex, value):
-            raise ValidationError(u'%s is not a valid resource code' % value)
 
     title                 = CharField(_('title'), required=True)
     description           = CharField(_('description_old'))
