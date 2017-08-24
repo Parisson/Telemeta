@@ -18,6 +18,7 @@ install:
   - docker-compose build
 
 script:
+  - docker-compose run app conda list
   - docker-compose run app pytest /srv/src/telemeta/telemeta
   - docker-compose up -d
   - sleep 60

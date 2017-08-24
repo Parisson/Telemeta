@@ -36,7 +36,7 @@ RUN pip install -r requirements-dev.txt --src /srv/src
 
 # Install Timeside and plugins from ./lib
 COPY ./app/scripts/setup_plugins.sh /srv/app/scripts/setup_plugins.sh
-COPY ./lib/plugins /srv/src/plugins/
+COPY ./lib/ /srv/src/plugins/
 RUN /bin/bash /srv/app/scripts/setup_plugins.sh
 
 WORKDIR /srv/app
