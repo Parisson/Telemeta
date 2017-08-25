@@ -35,6 +35,9 @@ COPY ./app/scripts/setup_plugins.sh /srv/app/scripts/setup_plugins.sh
 COPY ./lib/ /srv/src/plugins/
 RUN /bin/bash /srv/app/scripts/setup_plugins.sh
 
+# Install Vamp plugins
+RUN /bin/bash /srv/src/plugins/TimeSide/app/scripts/install_vamp_plugins.sh
+
 # Install Telemeta
 RUN pip install -r requirements.txt
 RUN pip install -r requirements-dev.txt --src /srv/src
