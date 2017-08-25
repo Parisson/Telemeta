@@ -183,6 +183,7 @@ INSTALLED_APPS = (
     'djng',
     'saved_searches',
     'django_select2',
+    'osm_field',
 )
 
 

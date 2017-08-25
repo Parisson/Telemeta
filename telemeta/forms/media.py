@@ -30,6 +30,7 @@ from django.utils.translation import ugettext_lazy as _
 from django_select2.forms import ( Select2MultipleWidget )
 
 
+
 class MediaFondsForm(ModelForm):
 
     queryset = MediaCorpus.objects.all()
@@ -70,6 +71,7 @@ class MediaCollectionForm(ModelForm):
             self.fields["reference"].widget = HiddenInput()
         if self.instance.computed_duration:
             self.fields["approx_duration"].widget = HiddenInput()
+
 
     class Meta:
         model = MediaCollection
