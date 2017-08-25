@@ -80,7 +80,8 @@ setup(
         'django-dirtyfields==1.2.1', # require for Django1.6 compatibility
         'sqlparse==0.1.19'
     ],
-  tests_require=['pytest-django', 'pytest-cov', 'factory-boy'],
+  tests_require=['pytest-django==2.9.1',  # require for Django1.6 compatibility
+                 'pytest-cov', 'factory-boy'],
   # Provide a test command through django-setuptest
   cmdclass={'test': PyTest},
   platforms=['OS Independent'],
