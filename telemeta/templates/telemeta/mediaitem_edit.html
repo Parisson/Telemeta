@@ -8,7 +8,6 @@
 <img src="{{ STATIC_URL }}telemeta/images/item.png" style="vertical-align:middle" /> Item : {{ item }}
 {% endblock %}
 
-
 {% block title_buttons %}
 <div class="fixedWidthAsPlayer">
     <img id="wait-img" style="display:none" style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />
@@ -99,12 +98,6 @@
  <!-- <li><a href="#format" role="tab" data-toggle="tab">{% trans "Format" %}</a></li> -->
     </ul>
 
-    --------------------------------
-    <!-- Select2 -->
-     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}select2/css/select2.min.css" />
-     <script src="{{ STATIC_URL }}select2/js/select2.full.min.js" type="text/javascript"></script>
-
-
     <div class="tab-content">
 
       <div class="tab-pane fade in active" id="general">
@@ -130,17 +123,8 @@
                 });
               }
         </script>
-        <script>
-            // Multi-values fields with separator
-            /*
-            $("#id_collector").select2({
-                tags: true,
-                tokenSeparators: [';',',']
-            })
-            */
-        </script>
       </div>
-
+       
        <!--  Tab Analyze, for MSHS  -->
        <div class="tab-pane" id="tab_desc">
            <div class="block-grey">
@@ -194,7 +178,6 @@
                 {% bootstrap_field  form.mshs_code_Aare %}
             </div>
         </div>
-
         <div class="tab-pane" id="tab_perf">
            <div class="block-grey">
                <!-- display fields for performances-->
@@ -284,7 +267,7 @@
 
    </form>
   </div>
-  {{ form.media.js }}
+
 {% endblock infos %}
 
 {% block related %}
