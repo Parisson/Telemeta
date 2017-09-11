@@ -39,7 +39,7 @@
                     {% for fond in institution.fonds.all %}
                     <td><a href="{% url "telemeta-resource-detail" fond.element_type fond.public_id %}">{{ fond.title }}</a></td>
                     <td>{{fond.public_id}}</td>
-                    <td>{{fond.descriptions}}</td>
+                    <td>{{fond.descriptions|html_line_break|safe}}</td>
                     {% endfor %}
                 </tbody>
             </table>
