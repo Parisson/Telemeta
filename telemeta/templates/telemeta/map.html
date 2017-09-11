@@ -1,0 +1,99 @@
+{% extends "telemeta/base.html" %}
+{% load telemeta_tags %}
+{% load leaflet_tags %}
+{% load geojson_tags %}
+{% load i18n %}
+
+{% block head_title %}{% trans "Geographic Navigator" %} - {{ block.super }}{% endblock %}
+
+
+{% block extra_javascript %}
+    {% leaflet_js %}
+    <script src="{{ STATIC_URL }}leaflet-search/dist/leaflet-search.min.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}leaflet.mousecoordinate/dist/leaflet.mousecoordinate.min.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}leaflet.markercluster/dist/leaflet.markercluster.js" type="text/javascript"></script>
+    <script>
+    function map_init_basic (map, options) {
+        bounds = L.bounds(
+            L.point( 50, -85 ),
+            L.point( 30, 0 )
+        );
+        map.setMaxZoom(18);
+        map.setMaxBounds( bounds );
+        map.fitBounds( [ [50, -85], [30, 0] ] );
+        
+        
+        // Add a search control on the map
+        map.addControl( new L.Control.Search({
+            url: 'http://nominatim.openstreetmap.org/search?format=json&q={s}',
+            jsonpParam: 'json_callback',
+            propertyName: 'display_name',
+            propertyLoc: ['lat','lon'],
+            marker: L.circleMarker([0,0],{radius:30}),
+            autoCollapse: true,
+            autoType: false,
+            minLength: 2,
+            zoom: 12,
+            position:'topleft',
+        }) );
+        
+        // Add a coordinates control on the map
+        L.control.mouseCoordinate({gps:true, position:'topright'}).addTo(map);
+        
+        var dataurl = '{% url "telemeta-geo-items" %}';
+        $.ajax({
+            url: dataurl,
+            processdata: false,
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) { 
+                  console.log(data);
+                  var markers = L.markerClusterGroup( {
+                      showCoverageOnHover: true,
+                      zoomToBoundsOnClick: true,
+                      removeOutsideVisibleBounds: true
+                    } );
+                  for( let d of data ) {
+                      var marker = L.marker([d.lat,d.lon]).bindPopup( '<a href="/archives/items/'+
+                      d.code+'">'+d.title+'</a><hr/>Enq. : <a href="/archives/collections/'+
+                      d.collec_id+'">'+d.collec+'</a>' );
+                      markers.addLayer(marker); 
+                  }
+                  map.addLayer(markers);
+                },
+            error: function (xhr, ajaxOptions, thrownError) {
+                },
+            complete: function (x, y) { 
+                }
+        });
+    }
+    </script>
+    {% leaflet_css %}
+     <style>
+
+        .leaflet-container {  /* all maps */
+            width:  100%;
+            height: 600px;
+        }
+
+        #specialbigmap {
+            height: 800px;
+        }
+
+    </style>
+    <link rel="stylesheet" href="{{ STATIC_URL }}leaflet-search/dist/leaflet-search.min.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}leaflet.mousecoordinate/dist/leaflet.mousecoordinate.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}leaflet.markercluster/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}leaflet.markercluster/dist/MarkerCluster.Default.css" />
+
+{% endblock %}
+ 
+    
+   
+{% block title %}
+ <img src="{{ STATIC_URL }}telemeta/images/world_red.png" alt="geo-navigator" style="vertical-align:middle" /> {% trans "Geographic Navigator" %}
+{% endblock %}
+
+
+{% block content %}
+    {% leaflet_map "mapItems"  callback="window.map_init_basic"  %}
+{% endblock %}

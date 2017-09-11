@@ -29,7 +29,7 @@ class GeoView(object):
 
     def list_continents(self, request):
         continents = MediaItem.objects.all().countries(group_by_continent=True)
-        return render(request, 'telemeta/geo_continents.html',
+        return render(request, 'telemeta/map.html',
                     {'continents': continents, 'gmap_key': settings.TELEMETA_GMAP_KEY })
 
     def country_info(self, request, id):
@@ -61,6 +61,23 @@ class GeoView(object):
         return list_detail.object_list(request, objects,
             template_name='telemeta/geo_country_items.html', paginate_by=20,
             extra_context={'country': country, 'continent': continent})
+            
+    def list_items_ajax(self,request):
+        #list_items = Location.objects.filter(latitude__isnull=False)
+        list_items = MediaItem.objects.filter(location__latitude__isnull=False).prefetch_related('location').prefetch_related('collection')
+        results = [ {
+                'code'  : x.code,
+                'title' : x.title,
+                'lat'   : x.location.latitude,
+                'lon'   : x.location.longitude,
+                'collec_id': x.collection.code,
+                'collec': x.collection.title
+            } for x in list_items ]
+
+        return HttpResponse( json.dumps(results), content_type="application/json" )
+
+        
+        
 
 
 class GeoCountryCollectionView(ListView):

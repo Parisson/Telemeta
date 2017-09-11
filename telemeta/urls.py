@@ -36,6 +36,8 @@ from jsonrpc import jsonrpc_site
 import os.path
 import telemeta.config
 
+from djgeojson.views import GeoJSONLayerView
+
 telemeta.config.check()
 
 # initialization
@@ -195,6 +197,7 @@ urlpatterns = [
     url(r'^geo/collections/(?P<continent>[a-z_]+)/(?P<country>[a-z_]+)/$', GeoCountryCollectionView.as_view(), name="telemeta-geo-country-collections"),
     url(r'^geo/items/(?P<continent>[a-z_]+)/(?P<country>[a-z_]+)/$', GeoCountryItemView.as_view(), name="telemeta-geo-country-items"),
     url(r'^geo/country_info/(?P<id>[0-9a-z]+)/$', geo_view.country_info, name="telemeta-country-info"),
+    url(r'^item.geojson$',geo_view.list_items_ajax , name='telemeta-geo-items'),
 
     # Flat pages
     url(r'^pages/(?P<path>.*)$', home_view.render_flatpage, name="telemeta-flatpage"),

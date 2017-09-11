@@ -78,7 +78,9 @@ setup(
         'django-dirtyfields',
         'sqlparse==0.2.2',
         'django_select2',
-        'lxml'
+        'lxml',
+        'django-leaflet',
+        'django-geojson',
     ],
   tests_require=['pytest-django', 'pytest-cov', 'factory-boy'],
   # Provide a test command through django-setuptest
