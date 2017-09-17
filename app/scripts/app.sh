@@ -28,7 +28,6 @@ python $manage wait-for-db
 python $manage syncdb --noinput
 python $manage migrate --noinput
 python $manage bower_install -- --allow-root
-python $manage collectstatic --noinput
 
 # telemeta setup
 python $manage telemeta-create-admin-user
@@ -49,8 +48,10 @@ if [ "$1" = "--runserver" ]; then
     python $manage runserver 0.0.0.0:8000
 else
     # static files auto update
-    watchmedo shell-command --patterns="$patterns" --recursive \
-        --command='python '$manage' collectstatic --noinput' $src &
+    # watchmedo shell-command --patterns="$patterns" --recursive \
+    #     --command='python '$manage' collectstatic --noinput' $src &
+
+    python $manage collectstatic --noinput
 
     # app start
     uwsgi --socket :$port --wsgi-file $wsgi --chdir $app --master \

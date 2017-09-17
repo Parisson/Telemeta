@@ -20,6 +20,7 @@
 
 # Authors: Olivier Guilyardi <olivier@samalyse.com>
 #          Guillaume Pellerin <yomguy@parisson.com>
+import telemeta
 
 from telemeta.views.core import *
 from telemeta.views.core import serve_media
@@ -47,14 +48,14 @@ class ItemBaseMixin(TelemetaBaseMixin):
 
     public_graphers  = ['waveform_centroid' ,'waveform_simple',
                         'spectrogram', 'spectrogram_log']
-    
+
     def get_graphers(self):
         graphers = []
         user = self.request.user
         graphers_access = (user.is_staff
                            or user.is_superuser
                            or user.has_perm('can_run_analysis'))
-           
+
         for grapher in self.graphers:
             if (not graphers_access
                 and grapher.id() not in self.public_graphers):
@@ -1046,3 +1047,157 @@ class ItemDetailDCView(ItemDetailView):
 class ItemVideoPlayerView(ItemDetailView):
 
     template_name = 'telemeta/mediaitem_video_player.html'
+
+
+class ItemEnumListView(ItemListView):
+    template_name = 'telemeta/media_item_enum_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ItemListView, self).get_context_data(**kwargs)
+        context['enum'] = self.request.path.split('/')[3]
+        context['id'] = self.request.path.split('/')[4]
+        context['count'] = self.object_list.count()
+        context['keyword'] = False
+        context['enum_name'] = ItemEnumListView().get_enumeration(self.request.path.split('/')[3])._meta.verbose_name
+        context['enum_value'] = ItemEnumListView().get_enumeration(self.request.path.split('/')[3]).objects.get(id__exact=self.request.path.split('/')[4])
+        context['url_all'] = "/admin/enumerations/" + context['enum'] + "/" + context['id'] + "/item/list"
+        context['url_unpublished'] = "/admin/enumerations/" + context['enum'] + "/" + context['id'] + "/item_unpublished/list/"
+        context['url_published'] = "/admin/enumerations/" + context['enum'] +"/"+context['id'] + "/item_published/list/"
+        context['url_sound'] = "/admin/enumerations/" + context['enum'] + "/" + context['id'] + "/item_sound/list/"
+        return context
+
+    def get_queryset(self):
+        enumeration = self.get_enumeration(self.request.path.split('/')[3])
+        queryset = self.get_item(enumeration.objects.filter(id=self.request.path.split('/')[4]).get())
+        print type(queryset)
+        return queryset
+
+    def get_item(self, enum):
+        f = MediaItem._meta.get_all_field_names()
+        for field in f:
+            if field in enum._meta.db_table.replace(" ", "_"):
+                atr = field;
+        atr = atr + "_id"
+        lookup = "%s__exact" % atr
+        return MediaItem.objects.filter(**{lookup: enum.__getattribute__("id")})
+
+    def get_enumeration(self, id):
+        from django.db.models import get_models
+        models = get_models(telemeta.models)
+        for model in models:
+            if model._meta.module_name == id:
+                break
+        if model._meta.module_name != id:
+            return None
+        return model
+
+class ItemPublishedEnumListView(ItemEnumListView):
+    def get_queryset(self):
+        c = ItemEnumListView()
+        #id of value of enumeration
+        i = self.request.path.split('/')[4]
+        enumeration = c.get_enumeration(self.request.path.split('/')[3])
+        queryset = self.get_item(enumeration.objects.filter(id=i).get(), c)
+        return queryset
+
+    def get_item(self, enum, c):
+        return c.get_item(enum).filter(code__contains='_E_')
+
+
+class ItemUnpublishedEnumListView(ItemEnumListView):
+    def get_queryset(self):
+        c = ItemEnumListView()
+        #id of value of enumeration
+        i= self.request.path.split('/')[4]
+        enumeration = c.get_enumeration(self.request.path.split('/')[3])
+        queryset = self.get_item(enumeration.objects.filter(id=i).get(), c)
+        return queryset
+
+    def get_item(self, enum, c):
+        return c.get_item(enum).filter(code__contains='_I_')
+
+
+class ItemSoundEnumListView(ItemEnumListView):
+    def get_queryset(self):
+        c = ItemEnumListView()
+        #id of value of enumeration
+        i= self.request.path.split('/')[4]
+        enumeration = c.get_enumeration(self.request.path.split('/')[3])
+        queryset = self.get_item(enumeration.objects.filter(id=i).get(), c)
+        return queryset
+
+    def get_item(self, enum, c):
+        return c.get_item(enum).sound().order_by('code', 'old_code')
+
+
+class ItemKeywordListView(ItemListView):
+    template_name = 'telemeta/media_item_enum_list.html'
+
+
+    def get_context_data(self, **kwargs):
+        context = super(ItemListView, self).get_context_data(**kwargs)
+        context['enum'] = self.request.path.split('/')[3]
+        context['id'] = self.request.path.split('/')[4]
+        context['count'] = self.object_list.count()
+        context['keyword'] = True
+        context['enum_name'] = ItemEnumListView().get_enumeration(self.request.path.split('/')[3])._meta.verbose_name
+        context['enum_value'] = ItemEnumListView().get_enumeration(self.request.path.split('/')[3]).objects.get(id__exact=self.request.path.split('/')[4])
+        context['url_all'] = "/admin/enumerations/"+context['enum']+"/"+context['id']+"/keyword_item/list"
+        context['url_unpublished'] = "/admin/enumerations/"+context['enum']+"/"+context['id']+"/keyword_item_unpublished/list/"
+        context['url_published'] = "/admin/enumerations/"+context['enum']+"/"+context['id']+"/keyword_item_published/list/"
+        context['url_sound'] = "/admin/enumerations/"+context['enum']+"/"+context['id']+"/keyword_item_published/list/"
+
+        context['argument'] = [context['enum'], context['id']]
+
+        return context
+
+    def get_queryset(self):
+        queryset = self.get_item(self.request.path.split('/')[4])
+        return queryset
+
+    def get_item(self, id):
+        c = []
+        for m  in MediaItemKeyword.objects.filter(keyword_id=id):
+            c.append(m.__getattribute__("item_id"))
+        return  MediaItem.objects.filter(id__in=c)
+
+
+    def get_enumeration(self, id):
+        from django.db.models import get_models
+        models = get_models(telemeta.models)
+        for model in models:
+            if model._meta.module_name == id:
+                break
+        if model._meta.module_name != id:
+            return None
+        return model
+
+class ItemKeywordPublishedListView(ItemKeywordListView):
+
+    def get_queryset(self):
+        c=ItemKeywordListView()
+        queryset = self.get_item(self.request.path.split('/')[4],c)
+        return queryset
+
+    def get_item(self, id,c):
+        return c.get_item(id).filter(code__contains='_E_')
+
+class ItemKeywordUnpublishedListView(ItemKeywordListView):
+
+    def get_queryset(self):
+        c=ItemKeywordListView()
+        queryset = self.get_item(self.request.path.split('/')[4],c)
+        return queryset
+
+    def get_item(self, id,c):
+        return c.get_item(id).filter(code__contains='_I_')
+
+class ItemKeywordSoundListView(ItemKeywordListView):
+
+    def get_queryset(self):
+        c = ItemKeywordListView()
+        queryset = self.get_item(self.request.path.split('/')[4], c)
+        return queryset
+
+    def get_item(self, id, c):
+        return c.get_item(id).sound().order_by('code', 'old_code')
