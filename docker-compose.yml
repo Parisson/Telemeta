@@ -27,7 +27,7 @@ data:
   volumes:
      - /home/parisson/CREM/Telemeta/media/:/srv/media
      - /home/parisson/CREM/Telemeta/backup/:/srv/backup
-     - ./data/static/:/srv/static
+     - ./data/static:/srv/static
      - ./data/bower:/srv/bower
      - ./data/log/nginx:/var/log/nginx
      - ./data/log/uwsgi:/var/log/uwsgi
