@@ -77,7 +77,7 @@ setup(
         'django-environ',
         'redis',
         'Werkzeug',
-        'django-dirtyfields==1.2.1',
+        'django-dirtyfields==1.2.1', # require for Django1.6 compatibility
         'sqlparse==0.1.19'
     ],
   tests_require=['pytest-django', 'pytest-cov', 'factory-boy'],
