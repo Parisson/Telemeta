@@ -52,10 +52,11 @@ class AdminView(object):
         enumerations = []
         for model in models:
             if issubclass(model, Enumeration):
-                if not model.is_hidden :
+                enumeration_property = EnumerationProperty.objects.get(enumeration_name=model._meta.module_name)
+                if not enumeration_property.is_hidden :
                     enumerations.append({"name": model._meta.verbose_name,
                                          "id": model._meta.module_name,
-                                         "admin": model.is_admin})
+                                         "admin": enumeration_property.is_admin})
 
         cmp = lambda obj1, obj2: unaccent_icmp(obj1['name'], obj2['name'])
         enumerations.sort(cmp)
@@ -99,7 +100,6 @@ class AdminView(object):
             else:
                 vars["enumeration_support"] = "Collection"
                 vars["enumeration_count"] = self.__getCountColl(vars["enumeration_values"],atr)
-
         return render(request, 'telemeta/enumeration_edit.html', vars)
 
     def __getCountColl(self, values, atr):
@@ -164,11 +164,12 @@ class AdminView(object):
             models = get_models(telemeta.models)
             for model in models:
                 if issubclass(model, Enumeration):
+                    enumeration_property = EnumerationProperty.objects.get(enumeration_name=model._meta.module_name)
                     if model._meta.module_name in request.POST.getlist('sel'):
-                        model.is_admin = True
-                    else :
-                        model.is_admin = False
-                    model.save()
+                        enumeration_property.is_hidden = True
+                    else:
+                        enumeration_property.is_hidden = False
+                    enumeration_property.save()
         return self.admin_enumerations(request)
 
     @method_decorator(permission_required('telemeta.change_physicalformat'))

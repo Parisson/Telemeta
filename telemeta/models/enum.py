@@ -40,15 +40,18 @@ class MetaEnumeration(MetaCore):
     ordering = ['value']
 
 
-class EnumerationProperty(models.Model):
+class EnumerationProperty(ModelCore):
 
-    enumeration_name = models.CharField(_('enumeration name'))
+    enumeration_name = models.CharField(_('enumeration name'), max_length=255)
     is_hidden = BooleanField(_('is hidden'), default=False)
     is_admin = BooleanField(_('is admin'), default=True)
 
-    class Meta:
+    class Meta(MetaCore):
         verbose_name = _("enumeration property")
         verbose_name_plural = _("enumeration properties")
+
+    def __unicode__(self):
+        return self.enumeration_name
 
 
 class PhysicalFormat(Enumeration):

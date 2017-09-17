@@ -48,14 +48,14 @@ class ItemBaseMixin(TelemetaBaseMixin):
 
     public_graphers  = ['waveform_centroid' ,'waveform_simple',
                         'spectrogram', 'spectrogram_log']
-    
+
     def get_graphers(self):
         graphers = []
         user = self.request.user
         graphers_access = (user.is_staff
                            or user.is_superuser
                            or user.has_perm('can_run_analysis'))
-           
+
         for grapher in self.graphers:
             if (not graphers_access
                 and grapher.id() not in self.public_graphers):
@@ -1047,6 +1047,7 @@ class ItemDetailDCView(ItemDetailView):
 class ItemVideoPlayerView(ItemDetailView):
 
     template_name = 'telemeta/mediaitem_video_player.html'
+
 
 class ItemEnumListView(ItemListView):
     template_name = 'telemeta/media_item_enum_list.html'

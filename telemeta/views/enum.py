@@ -1,6 +1,7 @@
 from telemeta.views.core import *
 import telemeta.models
 
+
 class EnumView(object):
     enu = []
 
@@ -44,10 +45,8 @@ class EnumView(object):
 
 
     def set_enum_file(self, request):
-
         from django.db.models import get_models
         models = get_models(telemeta.models)
-
         f = open("enumeration/enumeration.txt","r")
         s = f.read()
         tab = s.split('\n')
@@ -60,23 +59,20 @@ class EnumView(object):
                     if model._meta.module_name == enu["nom"]:
                         model.admin = enu["admin"]
 
-
-
     def __get_enumerations_list(self):
         from django.db.models import get_models
         models = get_models(telemeta.models)
-
         enumerations = []
         for model in models:
             if issubclass(model, Enumeration):
-                if not model.is_hidden and  model.is_admin == False:
+                enumeration_property = EnumerationProperty.objects.get(enumeration_name=model._meta.module_name)
+                if not enumeration_property.is_hidden and not enumeration_property.is_admin:
                     enumerations.append({"name": model._meta.verbose_name,
                                          "id": model._meta.module_name
                                          })
 
         cmp = lambda obj1, obj2: unaccent_icmp(obj1['name'], obj2['name'])
         enumerations.sort(cmp)
-
         return enumerations
 
     def __get_enumeration(self, id):
@@ -88,7 +84,6 @@ class EnumView(object):
 
         if model._meta.module_name != id:
             return None
-
         return model
 
     def __getCountColl(self, values, atr):
@@ -98,7 +93,6 @@ class EnumView(object):
             c.append(MediaCollection.objects.filter(**{lookup: enum.__getattribute__("id")}).count())
         c.reverse()
         return c
-
 
     def __getCountItem(self, enumeration, values):
         c = []
@@ -112,7 +106,6 @@ class EnumView(object):
             c.append(MediaItem.objects.filter(**{lookup: enum.__getattribute__("id")}).count())
         c.reverse()
         return c
-
 
     def __getCountKeyWord(self, values):
         c = []
