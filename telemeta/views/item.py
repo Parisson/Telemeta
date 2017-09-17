@@ -395,6 +395,9 @@ class ItemView(ItemBaseMixin):
         item = MediaItem.objects.get(public_id=public_id)
         public_access = get_item_access(item, request.user)
 
+        if not extension:
+            extension = item.file.path.split('.')[-1]
+
         if (not public_access == 'full' or not extension in settings.TELEMETA_STREAMING_FORMATS) and \
                 not (request.user.has_perm('telemeta.can_play_all_items') or request.user.is_superuser):
             mess = ugettext('Access not allowed')

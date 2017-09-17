@@ -32,6 +32,7 @@ python $manage bower_install -- --allow-root
 # telemeta setup
 python $manage telemeta-create-admin-user
 python $manage telemeta-create-boilerplate
+python $manage telemeta-setup-enumerations
 
 # Delete Timeside database if it exists
 cat /srv/src/telemeta/scripts/sql/drop_timeside.sql | python $manage dbshell
@@ -41,7 +42,7 @@ if [ $REINDEX = "True" ]; then
 fi
 
 # fix media access rights
-find $media -path ${media}import -prune -o -type d -not -user www-data -exec chown www-data:www-data {} \;
+# find $media -path ${media}import -prune -o -type d -not -user www-data -exec chown www-data:www-data {} \;
 
 # choose dev or prod mode
 if [ "$1" = "--runserver" ]; then
