@@ -31,6 +31,7 @@ from haystack.forms import *
 from jsonrpc import jsonrpc_site
 import os.path
 import telemeta.config
+from telemeta.views.enum import EnumView
 
 telemeta.config.check()
 
@@ -45,6 +46,7 @@ playlist_view = PlaylistView()
 profile_view = ProfileView()
 geo_view = GeoView()
 resource_view = ResourceView()
+enumeration_view = EnumView()
 #boolean_view = BooleanSearchView()
 
 # ID's regular expressions
@@ -67,7 +69,7 @@ urlpatterns = patterns('',
     url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/dc/xml/$', item_view.item_detail, {'format': 'dublin_core_xml'}, name="telemeta-item-dublincore-xml"),
     url(r'^archives/items/download/(?P<public_id>[A-Za-z0-9._-]+)\.(?P<extension>' + export_extensions + ')$', item_view.item_export, name="telemeta-item-export"),
     url(r'^archives/items/download/(?P<public_id>[A-Za-z0-9._-]+)\.(?P<extension>' + export_extensions + ')/isAvailable$', item_view.item_export_available, name="telemeta-item-export-available"),
-                       
+
     url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/visualize/(?P<grapher_id>[0-9a-z_]+)/(?P<width>[0-9A-Z]+)x(?P<height>[0-9A-Z]+)/$', item_view.item_visualize, name="telemeta-item-visualize"),
     url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/analyze/xml/$', item_view.item_analyze_xml, name="telemeta-item-analyze-xml"),
     url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/item_xspf.xml$', item_view.item_playlist, dict(template="telemeta/mediaitem_xspf.xml", mimetype="application/xspf+xml"), name="telemeta-item-xspf"),
@@ -131,8 +133,8 @@ urlpatterns = patterns('',
     url(r'^search/$', HaystackSearch(), name='haystack_search'),
     url(r'^search/autocomplete/$', autocomplete),
     url(r'^search/quick/(?P<type>[A-Za-z0-9._-]+)/$', HaystackSearch(), name='haystack_search_type'),
-    url(r'^search/advance/$', HaystackAdvanceSearch(form_class=HayAdvanceForm, template='search/advanceSearch.html'), name='haystack_advance_search'),
-    url(r'^search/advance/(?P<type>[A-Za-z0-9._-]+)/$', HaystackAdvanceSearch(form_class=HayAdvanceForm, template='search/advanceSearch.html'), name='haystack_advance_search_type'),
+    url(r'^search/advance/$', HaystackAdvanceSearch(form_class=HayAdvanceForm, template='telemeta/search/search_advanced.html'), name='haystack_advance_search'),
+    url(r'^search/advance/(?P<type>[A-Za-z0-9._-]+)/$', HaystackAdvanceSearch(form_class=HayAdvanceForm, template='telemeta/search/search_advanced.html'), name='haystack_advance_search_type'),
     #url(r'^search/booleaninstru/$', boolean_view.get_boolean_query),
 
     url(r'^search/playlist_add/(?P<type>[A-Za-z0-9._-]+)/$', NewPlaylistView().display, name='haystack_playlist'),
@@ -144,7 +146,12 @@ urlpatterns = patterns('',
     url(r'^admin/$', admin_view.admin_index, name="telemeta-admin"),
     url(r'^admin/general/$', admin_view.admin_general, name="telemeta-admin-general"),
     url(r'^admin/enumerations/$', admin_view.admin_enumerations, name="telemeta-admin-enumerations"),
+    url(r'^admin/enumerations/update/$', admin_view.set_admin_enumeration, name="telemeta-admin-enumerations-update"),
     url(r'^admin/users/$', admin_view.admin_users, name="telemeta-admin-users"),
+
+    # instruments
+    url(r'^instruments/$', instrument_view.instrument_list, name="telemeta-instruments"),
+
 
     # instruments administration
     url(r'^admin/instruments/$', instrument_view.edit_instrument , name="telemeta-instrument-edit"),
@@ -158,6 +165,9 @@ urlpatterns = patterns('',
     url(r'^admin/instruments/' + r'(?P<value_id>[0-9]+)/update/$', instrument_view.update_instrument_value, name="telemeta-instrument-record-update"),
     url(r'^admin/instruments/' + r'(?P<value_id>[0-9]+)/replace/$', instrument_view.replace_instrument_value, name="telemeta-instrument-record-replace"),
 
+    # instruments aliases
+    url(r'^instruments_alias/$', instrument_alias_view.instrument_list, name="telemeta-instrument-alias"),
+
     # instruments aliases administration
     url(r'^admin/instrument_aliases/$', instrument_alias_view.edit_instrument, name="telemeta-instrument-alias-edit"),
     url(r'^admin/instrument_aliases/add/$', instrument_alias_view.add_to_instrument, name="telemeta-instrument-alias-add"),
@@ -169,14 +179,34 @@ urlpatterns = patterns('',
     url(r'^admin/instrument_aliases/' + r'(?P<value_id>[0-9]+)/'+'list-item-unpublished/$', ItemAliasUnpublishedListView.as_view(),name="telemeta-items-alias-unpublished"),
     url(r'^admin/instrument_aliases/' + r'(?P<value_id>[0-9]+)/'+'list-item-sound/$', ItemAliasSoundListView.as_view(),name="telemeta-items-alias-sound"),
     url(r'^admin/instrument_aliases/' + r'(?P<value_id>[0-9]+)/'+'list-items/$', ItemAliasListView.as_view(), name="telemeta-alias-item-list"),
-
+    # enumeration
+    url(r'^enumerations/$',enumeration_view.enumerations,name="telemeta-enumerations"),
+    url(r'^enumerations/(?P<enumeration_id>[0-9a-z]+)/$', enumeration_view.enumeration, name="telemeta-enumeration"),
     # enumerations administration
-    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/$', admin_view.edit_enumeration , name="telemeta-enumeration-edit"),
-    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/add/$', admin_view.add_to_enumeration, name="telemeta-enumeration-add"),
-    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/update/$', admin_view.update_enumeration, name="telemeta-enumeration-update"),
-    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/' + r'(?P<value_id>[0-9]+)/$', admin_view.edit_enumeration_value, name="telemeta-enumeration-record-edit"),
-    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/' + r'(?P<value_id>[0-9]+)/update/$', admin_view.update_enumeration_value, name="telemeta-enumeration-record-update"),
-    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/' + r'(?P<value_id>[0-9]+)/replace/$', admin_view.replace_enumeration_value, name="telemeta-enumeration-replace"),
+    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/$',admin_view.edit_enumeration,name="telemeta-enumeration-edit"),
+    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/add/$',admin_view.add_to_enumeration,name="telemeta-enumeration-add"),
+    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/update/$', admin_view.update_enumeration,name="telemeta-enumeration-update"),
+    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/' + r'(?P<value_id>[0-9]+)/$',admin_view.edit_enumeration_value, name="telemeta-enumeration-record-edit"),
+    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/' + r'(?P<value_id>[0-9]+)/update/$',admin_view.update_enumeration_value, name="telemeta-enumeration-record-update"),
+    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/' + r'(?P<value_id>[0-9]+)/replace/$',admin_view.replace_enumeration_value, name="telemeta-enumeration-replace"),
+
+    # Enumeration list collection
+    url( r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/' + r'(?P<value_id>[0-9]+)/collection/list/$',CollectionEnumListView.as_view(), name="telemeta-enumeration-list-collection"),
+    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/' + r'(?P<value_id>[0-9]+)/collections_unpublished/list/$',CollectionUnpublishedEnumListView.as_view(),name="telemeta-enumeration-list-collections-unpublished"),
+    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/' + r'(?P<value_id>[0-9]+)/collections_published/list/$',CollectionPublishedEnumListView.as_view(),name="telemeta-enumeration-list-collections-published"),
+    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/' + r'(?P<value_id>[0-9]+)/collections_sound/list/$',CollectionSoundEnumListView.as_view(), name="telemeta-enumeration-list-collections-sound"),
+
+    # Enumeration list item
+    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/' + r'(?P<value_id>[0-9]+)/item/list/$',ItemEnumListView.as_view(), name="telemeta-enumeration-list-item"),
+    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/' + r'(?P<value_id>[0-9]+)/item_unpublished/list/$',ItemUnpublishedEnumListView.as_view(), name="telemeta-enumeration-list-item-unpublished"),
+    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/' + r'(?P<value_id>[0-9]+)/item_published/list/$',ItemPublishedEnumListView.as_view(), name="telemeta-enumeration-list-item-published"),
+    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/' + r'(?P<value_id>[0-9]+)/item_sound/list/$',ItemSoundEnumListView.as_view(), name="telemeta-enumeration-list-item-sound"),
+
+    # keyword list
+    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/' + r'(?P<value_id>[0-9]+)/keyword_item/list/$',ItemKeywordListView.as_view(), name="telemeta-keyword-list-item"),
+    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/' + r'(?P<value_id>[0-9]+)/keyword_item_unpublished/list/$',ItemKeywordPublishedListView.as_view(), name="telemeta-keyword-list-item-unpublished"),
+    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/' + r'(?P<value_id>[0-9]+)/keyword_item_published/list/$',ItemKeywordUnpublishedListView.as_view(), name="telemeta-keyword-list-item-published"),
+    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/' + r'(?P<value_id>[0-9]+)/keyword_item_sound/list/$',ItemKeywordSoundListView.as_view(), name="telemeta-keyword-list-item-sound"),
 
     # Geographic browsing
     url(r'^geo/$', geo_view.list_continents, name="telemeta-geo-continents"),
@@ -239,13 +269,13 @@ urlpatterns = patterns('',
     # Timeside
     #url(r'^timeside/', include('timeside.server.urls')),
 
-)
+    )
 
 
 if settings.DEBUG and 'debug_toolbar' in settings.INSTALLED_APPS:
     import debug_toolbar
     urlpatterns += patterns('',
-    url(r'^__debug__/', include(debug_toolbar.urls)),
-    # for the graphical browser/web console only, omissible
-    url(r'json/browse/', 'jsonrpc.views.browse', name="jsonrpc_browser"),
-    )
+                            url(r'^__debug__/', include(debug_toolbar.urls)),
+                            # for the graphical browser/web console only, omissible
+                            url(r'json/browse/', 'jsonrpc.views.browse', name="jsonrpc_browser"),
+                            )

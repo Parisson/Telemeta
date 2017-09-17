@@ -3,3 +3,7 @@
 setuptools
 wheel
 -e .
+# Tests
+pytest-django==2.9
+pytest-cov
+factory-boy
