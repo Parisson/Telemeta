@@ -26,27 +26,25 @@
                             <li><a href="{% url "haystack_advance_search" %}"
                                    class="orange">{% trans "Advanced search" %}</a></li>
 
-                            {% if user.is_authenticated and user.is_staff %}
-                                <li><a href="#vocabulary#" class="red">{% trans "Terminology" %}</a>
-                                    {% if perms.telemeta.change_physicalformat %}
-                                        <ul>
-                                            <li><a href="{% url "telemeta-admin-enumerations" %}">{% trans "Enumerations" %}</a></li>
-                                            <li><a href="{% url "telemeta-instrument-edit" %}">{% trans "Instruments" %}</a></li>
-                                            <li><a href="{% url "telemeta-instrument-alias-edit" %}">{% trans "Instrument (vernaculare)" %}</a></li>
-                                        </ul>
-                                    {% else %}
-                                        <ul>
-                                            <li><a href="{% url "telemeta-instruments" %}">{% trans "Instruments" %}</a>
-                                            <li><a href="{% url "telemeta-instrument-alias" %}">{% trans "Instruments (vernaculare)" %}</a></li>
-                                            {% for enu in menu %}
-                                                <li>
-                                                    <a href="{% url "telemeta-enumeration" enu.id %}">{{ enu.name |capfirst }}</a>
-                                                </li>
-                                            {% endfor %}
-                                        </ul>
-                                    {% endif %}
-                                </li>
-                            {% endif %}
+                            <li><a href="#vocabulary#" class="red">{% trans "Terminology" %}</a>
+                                {% if user.is_authenticated and user.is_staff %}
+                                    <ul>
+                                        <li><a href="{% url "telemeta-admin-enumerations" %}">{% trans "Enumerations" %}</a></li>
+                                        <li><a href="{% url "telemeta-instrument-edit" %}">{% trans "Instruments" %}</a></li>
+                                        <li><a href="{% url "telemeta-instrument-alias-edit" %}">{% trans "Instrument (vernaculare)" %}</a></li>
+                                    </ul>
+                                {% else %}
+                                    <ul>
+                                        <li><a href="{% url "telemeta-instruments" %}">{% trans "Instruments" %}</a>
+                                        <li><a href="{% url "telemeta-instrument-alias" %}">{% trans "Instruments (vernaculare)" %}</a></li>
+                                        {% for enu in menu %}
+                                            <li>
+                                                <a href="{% url "telemeta-enumeration" enu.id %}">{{ enu.name |capfirst }}</a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </li>
 
                             {% if user.is_authenticated and user.is_staff %}
                                 <li><a href="{% url "telemeta-home" %}admin/django/" class="violet">{% trans "Admin" %}</a>
