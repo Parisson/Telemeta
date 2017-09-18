@@ -43,10 +43,6 @@ The *Telemeta* name stands for *Tele* as "remote access" and *meta* for "metadat
    :target: https://pypi.python.org/pypi/Telemeta/
    :alt: Version
 
-.. |downloads| image:: https://img.shields.io/pypi/dm/telemeta.svg
-   :target: https://pypi.python.org/pypi/Telemeta/
-   :alt: Downloads
-
 .. |travis_master| image:: https://secure.travis-ci.org/Parisson/Telemeta.png?branch=master
    :target: https://travis-ci.org/Parisson/Telemeta/
    :alt: Travis
@@ -75,8 +71,12 @@ News
    * Minor bug fixes and improvments
    * Fix HTML5 audio compatibility (#173) for the web audio player. The SoundManager Flash player fallback should not be used in most modern web browser. Media files are now serves through Nginx (#155) which enables to stream music with byte range requests.
    * Add a User permission "can_run_analysis" to specify that a user or a group of users has the right to list and select advanced Timeside analysis to be displayed in the Timeside web audio player.
+   * Add enumeration management and statitics
+   * Improved media security allowing streaming through Nginx only from the application
+   * Add TimeSide as a submodule
+   * Add a validator for Corpus and Fonds
+   * Upgrade various dependencies
 
-  
 1.6
 ++++
 

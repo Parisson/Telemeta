@@ -8,7 +8,7 @@
       <source src="{{ MEDIA_URL }}{{ transcoded.file }}#t=0" type="{{ transcoded.mime_type }}" />
      {% endif %}
     {% endfor %}
-      <source src="{{ MEDIA_URL }}{{ item.file }}#t=0" type="{{ mime_type }}" />
+      <source src="{% url "telemeta-item-export" item.public_id 'webm' %}" type="{{ mime_type }}" />
 </video>
 </div>
 

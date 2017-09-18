@@ -19,7 +19,7 @@
 
 # Authors: Olivier Guilyardi <olivier@samalyse.com>
 #          Guillaume Pellerin <yomguy@parisson.com>
-
+import telemeta
 
 from telemeta.views.core import *
 from telemeta.views.core import serve_media
@@ -381,3 +381,84 @@ class CollectionEpubView(BaseEpubMixin, View):
     # @method_decorator(permission_required('telemeta.can_download_collection_epub'))
     def dispatch(self, *args, **kwargs):
         return super(CollectionEpubView, self).dispatch(*args, **kwargs)
+
+
+class CollectionEnumListView(CollectionListView):
+    template_name = "telemeta/collection_enum_list.html"
+
+
+    def get_context_data(self, **kwargs):
+        context = super(CollectionListView, self).get_context_data(**kwargs)
+        context['enum']=self.request.path[20:-6].split('/')[0]
+        context['id']=self.request.path[20:-6].split('/')[1]
+        context['count'] = self.object_list.count()
+        context['enum_name'] = CollectionEnumListView().get_enumeration(self.request.path.split('/')[3])._meta.verbose_name
+        context['enum_value'] = CollectionEnumListView().get_enumeration(self.request.path.split('/')[3]).objects.get(id__exact=self.request.path.split('/')[4])
+        return context
+
+    def get_queryset(self):
+        enumeration = self.get_enumeration(self.request.path[20:-6].split('/')[0])
+        queryset= self.get_coll(enumeration.objects.filter(id=self.request.path[20:-6].split('/')[1]).get())
+        return queryset
+
+    def get_coll(self, enum):
+        f = MediaCollection._meta.get_all_field_names()
+        for field in f:
+            if field in enum._meta.db_table.replace(" ", "_"):
+                atr = field;
+        atr = atr
+        lookup = "%s__exact" % atr
+        return MediaCollection.objects.filter(**{lookup: enum.__getattribute__("id")})
+
+    def get_enumeration(self,id):
+        from django.db.models import get_models
+        models = get_models(telemeta.models)
+        for model in models:
+            if model._meta.module_name == id:
+                break
+
+        if model._meta.module_name != id:
+            return None
+        return model
+
+
+class CollectionPublishedEnumListView(CollectionEnumListView):
+
+    def get_queryset(self):
+        c = CollectionEnumListView()
+        #id of value of enumeration
+        i= self.request.path.split('/')[4]
+        enumeration = c.get_enumeration(self.request.path.split('/')[3])
+        queryset = self.get_coll(enumeration.objects.filter(id=i).get(), c)
+        return queryset
+
+    def get_coll(self, enum,c):
+        return c.get_coll(enum).filter(code__contains='_E_')
+
+
+class CollectionUnpublishedEnumListView(CollectionEnumListView):
+
+    def get_queryset(self):
+        c = CollectionEnumListView()
+        #id of value of enumeration
+        i= self.request.path.split('/')[4]
+        enumeration = c.get_enumeration( self.request.path.split('/')[3])
+        queryset = self.get_coll(enumeration.objects.filter(id=i).get(), c)
+        return queryset
+
+    def get_coll(self, enum, c):
+        return c.get_coll(enum).filter(code__contains='_I_')
+
+
+class CollectionSoundEnumListView(CollectionEnumListView):
+    def get_queryset(self):
+        c = CollectionEnumListView()
+        #id of value of enumeration
+        i= self.request.path.split('/')[4]
+        enumeration = c.get_enumeration( self.request.path.split('/')[3])
+        queryset = self.get_coll(enumeration.objects.filter(id=i).get(), c)
+        return queryset
+
+    def get_coll(self, enum,c):
+        return c.get_coll(enum).sound().order_by('code', 'old_code')
+    

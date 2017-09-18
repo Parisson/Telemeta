@@ -27,14 +27,14 @@ pip install -e git+https://github.com/Parisson/saved_searches.git@dj1.8#egg=save
 # waiting for other network services
 sh $app/scripts/wait.sh
 python $manage wait-for-db
-
-# initial setup
-if [ ! -f .init ]; then
-    bash $app/scripts/init.sh
-    touch .init
-fi
-
+python $manage migrate --noinput
 python $manage bower_install -- --allow-root
+
+# telemeta setup
+python $manage telemeta-create-admin-user
+python $manage telemeta-create-boilerplate
+python $manage telemeta-setup-enumerations
+
 
 # Delete Timeside database if it exists
 cat /srv/src/telemeta/scripts/sql/drop_timeside.sql | python $manage dbshell
@@ -44,12 +44,15 @@ if [ $REINDEX = "True" ]; then
 fi
 
 # fix media access rights
-find $media -path ${media}import -prune -o -type d -not -user www-data -exec chown www-data:www-data {} \;
+# find $media -path ${media}import -prune -o -type d -not -user www-data -exec chown www-data:www-data {} \;
 
 # choose dev or prod mode
 if [ "$1" = "--runserver" ]; then
     python $manage runserver 0.0.0.0:8000
 else
+    # static files auto update
+    # watchmedo shell-command --patterns="$patterns" --recursive \
+    #     --command='python '$manage' collectstatic --noinput' $src &
     python $manage collectstatic --noinput
 
     # app start
