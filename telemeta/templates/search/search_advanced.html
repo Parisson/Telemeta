@@ -207,16 +207,16 @@
              {% with object_list as items %}
                 <div class="fullpage" style="display:none">
                     {% ifequal type 'item' %}
-                        {% include "telemeta/search/mediaitem_listhaystack.html" %}
+                        {% include "search/mediaitem_listhaystack.html" %}
                     {% else %}
                         {% ifequal type 'corpus' %}
-                            {% include "telemeta/search/mediaresource_listhaystack.html" %}
+                            {% include "search/mediaresource_listhaystack.html" %}
                         {% else %}
                             {% ifequal type 'fonds' %}
-                                {% include "telemeta/search/mediaresource_listhaystack.html" %}
+                                {% include "search/mediaresource_listhaystack.html" %}
                             {% else %}
                                 {% ifequal type 'collection' %}
-                                    {% include "telemeta/search/mediacollection_listhaystack.html" %}
+                                    {% include "search/mediacollection_listhaystack.html" %}
                                 {%endifequal%}
                             {%endifequal%}
                         {%endifequal%}
@@ -225,16 +225,16 @@
                 <noscript>
                     <div class="fullpage">
                         {% ifequal type 'item' %}
-                            {% include "telemeta/search/mediaitem_listhaystack.html" %}
+                            {% include "search/mediaitem_listhaystack.html" %}
                         {% else %}
                             {% ifequal type 'corpus' %}
-                                {% include "telemeta/search/mediaresource_listhaystack.html" %}
+                                {% include "search/mediaresource_listhaystack.html" %}
                             {% else %}
                                 {% ifequal type 'fonds' %}
-                                    {% include "telemeta/search/mediaresource_listhaystack.html" %}
+                                    {% include "search/mediaresource_listhaystack.html" %}
                                 {% else %}
                                     {% ifequal type 'collection' %}
-                                        {% include "telemeta/search/mediacollection_listhaystack.html" %}
+                                        {% include "search/mediacollection_listhaystack.html" %}
                                     {%endifequal%}
                                 {%endifequal%}
                             {%endifequal%}
