@@ -21,7 +21,7 @@ class EnumView(object):
         if enumeration == None or enumeration.admin == "True":
             raise Http404
         vars = self.__get_admin_context_vars()
-        vars["enumeration_id"] = enumeration._meta.module_name
+        vars["enumeration_id"] = enumeration._meta.model_name
         vars["enumeration_name"] = enumeration._meta.verbose_name
         vars["enumeration_values"] = enumeration.objects.all()
         vars["enumeration_support"] = ""
@@ -56,7 +56,7 @@ class EnumView(object):
         for model in models:
             if issubclass(model, Enumeration):
                 for enu in tab2:
-                    if model._meta.module_name == enu["nom"]:
+                    if model._meta.model_name == enu["nom"]:
                         model.admin = enu["admin"]
 
     def __get_enumerations_list(self):
@@ -65,10 +65,10 @@ class EnumView(object):
         enumerations = []
         for model in models:
             if issubclass(model, Enumeration):
-                enumeration_property = EnumerationProperty.objects.get(enumeration_name=model._meta.module_name)
+                enumeration_property = EnumerationProperty.objects.get(enumeration_name=model._meta.model_name)
                 if not enumeration_property.is_hidden and not enumeration_property.is_admin:
                     enumerations.append({"name": model._meta.verbose_name,
-                                         "id": model._meta.module_name
+                                         "id": model._meta.model_name
                                          })
 
         cmp = lambda obj1, obj2: unaccent_icmp(obj1['name'], obj2['name'])
@@ -79,10 +79,10 @@ class EnumView(object):
         from django.db.models import get_models
         models = get_models(telemeta.models)
         for model in models:
-            if model._meta.module_name == id:
+            if model._meta.model_name == id:
                 break
 
-        if model._meta.module_name != id:
+        if model._meta.model_name != id:
             return None
         return model
 

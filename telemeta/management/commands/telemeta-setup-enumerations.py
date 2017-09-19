@@ -14,9 +14,9 @@ class Command(BaseCommand):
         models = get_models(telemeta.models)
         for model in models:
             if issubclass(model, Enumeration):
-                enumeration_property = EnumerationProperty.objects.filter(enumeration_name=model._meta.module_name)
+                enumeration_property = EnumerationProperty.objects.filter(enumeration_name=model._meta.model_name)
                 if not enumeration_property:
-                    enumeration_property = EnumerationProperty(enumeration_name=model._meta.module_name)
+                    enumeration_property = EnumerationProperty(enumeration_name=model._meta.model_name)
                     enumeration_property.is_admin = True
                     enumeration_property.is_hidden = False
                     enumeration_property.save()
