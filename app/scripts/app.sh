@@ -42,7 +42,7 @@ if [ $REINDEX = "True" ]; then
 fi
 
 # fix media access rights
-# find $media -path ${media}import -prune -o -type d -not -user www-data -exec chown www-data:www-data {} \;
+find $media -path ${media}import -prune -o -type d -not -user www-data -exec chown www-data:www-data {} \;
 
 # choose dev or prod mode
 if [ "$1" = "--runserver" ]; then
