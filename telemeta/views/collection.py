@@ -414,10 +414,10 @@ class CollectionEnumListView(CollectionListView):
         from django.db.models import get_models
         models = get_models(telemeta.models)
         for model in models:
-            if model._meta.module_name == id:
+            if model._meta.model_name == id:
                 break
 
-        if model._meta.module_name != id:
+        if model._meta.model_name != id:
             return None
         return model
 

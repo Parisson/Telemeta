@@ -53,7 +53,7 @@ class AdminView(object):
         enumerations = []
         for model in models:
             if issubclass(model, Enumeration):
-                enumeration_property = EnumerationProperty.objects.get(enumeration_name=model._meta.module_name)
+                enumeration_property = EnumerationProperty.objects.get(enumeration_name=model._meta.model_name)
                 if not enumeration_property.is_hidden :
                     enumerations.append({"name": model._meta.verbose_name,
                                          "id": model._meta.model_name,
@@ -166,8 +166,8 @@ class AdminView(object):
             models = get_models(telemeta.models)
             for model in models:
                 if issubclass(model, Enumeration):
-                    enumeration_property = EnumerationProperty.objects.get(enumeration_name=model._meta.module_name)
-                    if model._meta.module_name in request.POST.getlist('sel'):
+                    enumeration_property = EnumerationProperty.objects.get(enumeration_name=model._meta.model_name)
+                    if model._meta.model_name in request.POST.getlist('sel'):
                         enumeration_property.is_hidden = True
                     else:
                         enumeration_property.is_hidden = False
