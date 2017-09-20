@@ -38,8 +38,9 @@ class Format(ModelCore):
 
     item                  = ForeignKey('MediaItem', related_name="format", verbose_name = _("item"),
                                        blank=True, null=True, on_delete=models.SET_NULL)
-    physical_format       = WeakForeignKey(PhysicalFormat, related_name="format",
-                                     verbose_name = _("physical format"))
+    physical_format       = ForeignKey(PhysicalFormat, related_name="format",
+                                       verbose_name = _("physical format"),
+                                       blank=True, null=True, on_delete=models.SET_NULL)
     original_code         = CharField(_('original code'))
     original_number       = CharField(_('original number'))
     original_status       = CharField(_('original status'))
@@ -48,19 +49,23 @@ class Format(ModelCore):
     original_location     = ForeignKey('Location', related_name="format",
                                        verbose_name = _("original location"),
                                        blank=True, null=True, on_delete=models.SET_NULL)
-    original_channels     = WeakForeignKey(NumberOfChannels, related_name="format",
-                                        verbose_name = _("number of channels"))
+    original_channels     = ForeignKey(NumberOfChannels, related_name="format",
+                                       verbose_name = _("number of channels"),
+                                       blank=True, null=True, on_delete=models.SET_NULL)
     original_audio_quality = TextField(_('audio quality'))
     recording_system      = CharField(_('recording system'))
 
     # Tapes
-    tape_wheel_diameter = WeakForeignKey(TapeWheelDiameter, related_name="format",
-                                        verbose_name = _("tape wheel diameter (cm)"))
+    tape_wheel_diameter = ForeignKey(TapeWheelDiameter, related_name="format",
+                                     verbose_name = _("tape wheel diameter (cm)"),
+                                     blank=True, null=True, on_delete=models.SET_NULL)
     tape_thickness      = CharField(_('tape thickness (um)'))
-    tape_speed          = WeakForeignKey(TapeSpeed, related_name="format",
-                                        verbose_name = _("tape speed (cm/s)"))
-    tape_vendor         = WeakForeignKey(TapeVendor, related_name="format",
-                                        verbose_name = _("tape vendor"))
+    tape_speed          = ForeignKey(TapeSpeed, related_name="format",
+                                     verbose_name = _("tape speed (cm/s)"),
+                                     blank=True, null=True, on_delete=models.SET_NULL)
+    tape_vendor         = ForeignKey(TapeVendor, related_name="format",
+                                     verbose_name = _("tape vendor"),
+                                     blank=True, null=True, on_delete=models.SET_NULL)
     tape_reference      = CharField(_('tape reference'))
     sticker_presence    = BooleanField(_('sticker presence'))
 
