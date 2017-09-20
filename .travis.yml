@@ -27,3 +27,4 @@ script:
 
 after_failure:
   - docker-compose logs
+  - docker-compose run app more /var/log/uwsgi/app.log
