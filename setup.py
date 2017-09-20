@@ -77,7 +77,9 @@ setup(
         'Werkzeug',
         'django-dirtyfields',
         'sqlparse==0.2.2',
-        'lxml'
+        'lxml',
+        # for MCM 
+        'django-filer'
     ],
   tests_require=['pytest-django', 'pytest-cov', 'factory-boy'],
   # Provide a test command through django-setuptest
