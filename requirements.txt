@@ -3,7 +3,7 @@
 setuptools
 wheel
 -e git+https://github.com/thomasfillon/django-skosxl.git#egg=django-skosxl
--e git+https://github.com/thomasfillon/django-rdf-io.git#egg=django-rddf-io
+-e git+https://github.com/thomasfillon/django-rdf-io.git#egg=django-rdf-io
 -e .
 # Tests
 pytest-django==3.1.2
