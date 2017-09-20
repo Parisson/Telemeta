@@ -43,9 +43,6 @@ if [ $REINDEX = "True" ]; then
     python $manage rebuild_index --noinput
 fi
 
-# fix media access rights
-# find $media -path ${media}import -prune -o -type d -not -user www-data -exec chown www-data:www-data {} \;
-
 # choose dev or prod mode
 if [ "$1" = "--runserver" ]; then
     python $manage runserver 0.0.0.0:8000
@@ -54,6 +51,9 @@ else
     # watchmedo shell-command --patterns="$patterns" --recursive \
     #     --command='python '$manage' collectstatic --noinput' $src &
     python $manage collectstatic --noinput
+
+    # fix media access rights
+    find $media -maxdepth 1 -path ${media}import -prune -o -type d -not -user www-data -exec chown www-data:www-data {} \;
 
     # app start
     uwsgi --socket :$port --wsgi-file $wsgi --chdir $app --master \
