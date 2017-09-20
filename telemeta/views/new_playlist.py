@@ -58,5 +58,3 @@ class NewPlaylistView(object):
                 'type':self.type,
                 'lastquerypath': request.POST.get('lastquerypath')})
         return HttpResponse(template_name.render(context))
-
-

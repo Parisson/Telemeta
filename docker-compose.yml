@@ -27,9 +27,10 @@ data:
   volumes:
      - ./data/media/:/srv/media
      - ./data/backup/:/srv/backup
+     - ./data/static:/srv/static
+     - ./data/bower:/srv/bower
+     - ./data/log/nginx:/var/log/nginx
      - ./data/log/uwsgi:/var/log/uwsgi
-     - /srv/static
-     - /srv/bower
   command: "true"
 
 db:
@@ -51,9 +52,9 @@ search:
 app:
   build: .
   volumes:
-    - ./app/:/srv/app
-    - ./telemeta/:/srv/src/telemeta/telemeta
-    - ./lib/TimeSide/:/srv/src/timeside
+    - ./app:/srv/app
+    - ./telemeta:/srv/src/telemeta/telemeta
+    - ./lib/TimeSide:/srv/src/timeside
   volumes_from:
     - data
   env_file:

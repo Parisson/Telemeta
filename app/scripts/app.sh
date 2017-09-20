@@ -18,8 +18,10 @@ uid='www-data'
 gid='www-data'
 
 # stating apps
+
 pip install -U django==1.9.*
 #pip install -U django==1.8.17
+
 pip uninstall -y south
 pip install -e git+https://github.com/Parisson/django-jqchat.git@dj1.8#egg=django-jqchat
 pip install django-debug-toolbar==1.6
@@ -28,30 +30,33 @@ pip install -e git+https://github.com/Parisson/saved_searches.git@dj1.8#egg=save
 # waiting for other network services
 sh $app/scripts/wait.sh
 python $manage wait-for-db
+python $manage migrate --noinput
+python $manage bower_install -- --allow-root
 
-# initial setup
-if [ ! -f .init ]; then
-    bash $app/scripts/init.sh
-    touch .init
-fi
+# telemeta setup
+python $manage telemeta-create-admin-user
+python $manage telemeta-create-boilerplate
+python $manage telemeta-setup-enumerations
+
+
+# Delete Timeside database if it exists
+cat /srv/src/telemeta/scripts/sql/drop_timeside.sql | python $manage dbshell
 
 if [ $REINDEX = "True" ]; then
     python $manage rebuild_index --noinput
 fi
 
-# fix media access rights
-chown www-data:www-data $media
-for dir in $(ls $media); do
-    if [ ! $(stat -c %U $media/$dir) = 'www-data' ]; then
-        chown www-data:www-data $media/$dir
-    fi
-done
-
 # choose dev or prod mode
 if [ "$1" = "--runserver" ]; then
     python $manage runserver 0.0.0.0:8000
 else
+    # static files auto update
+    # watchmedo shell-command --patterns="$patterns" --recursive \
+    #     --command='python '$manage' collectstatic --noinput' $src &
     python $manage collectstatic --noinput
+
+    # fix media access rights
+    find $media -maxdepth 1 -path ${media}import -prune -o -type d -not -user www-data -exec chown www-data:www-data {} \;
 
     # app start
     uwsgi --socket :$port --wsgi-file $wsgi --chdir $app --master \

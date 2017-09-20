@@ -31,8 +31,9 @@ from django.utils.translation import ugettext_lazy as _
 class MediaFondsForm(ModelForm):
 
     queryset = MediaCorpus.objects.all()
-    widget = FilteredSelectMultiple("Corpus", True,)
-    children = forms.ModelMultipleChoiceField(widget=widget, queryset=queryset, label='Corpus')
+    widget = FilteredSelectMultiple("Corpus", is_stacked=False)
+    children = forms.ModelMultipleChoiceField(widget=widget, queryset=queryset,
+        label='Corpus', required=False)
 
     class Meta:
         model = MediaFonds
@@ -46,8 +47,9 @@ class MediaFondsForm(ModelForm):
 class MediaCorpusForm(ModelForm):
 
     queryset = MediaCollection.objects.all()
-    widget = FilteredSelectMultiple('Collections', False)
-    children = forms.ModelMultipleChoiceField(widget=widget, queryset=queryset,label='Collections')
+    widget = FilteredSelectMultiple('Collections', is_stacked=False)
+    children = forms.ModelMultipleChoiceField(widget=widget, queryset=queryset,
+        label='Collections', required=False)
 
     class Meta:
         model = MediaCorpus
