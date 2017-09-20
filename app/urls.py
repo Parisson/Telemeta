@@ -32,6 +32,9 @@ urlpatterns = [
     # Telemeta
     url(r'^', include('telemeta.urls')),
 
+    # MCM
+    url(r'^skosxl/', include('skosxl.urls')),
+    
     # Languages
     url(r'^i18n/', include('django.conf.urls.i18n')),
     url(r'^jsi18n/$', javascript_catalog, js_info_dict),

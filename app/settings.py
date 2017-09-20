@@ -54,12 +54,12 @@ TIME_ZONE = 'Europe/Paris'
 #LANGUAGE_CODE = 'fr_FR'
 
 LANGUAGES = [('fr', 'French'),
-             ('en', 'English'),
-             ('de', 'German'),
-             ('zh_CN', 'Simplified Chinese'),
-             ('ar_TN', 'Arabic'),
-             ('pt_BR', 'Portuguese'),
-             ('es', 'Spanish'),
+             #('en', 'English'),
+             #('de', 'German'),
+             #('zh_CN', 'Simplified Chinese'),
+             #('ar_TN', 'Arabic'),
+             #('pt_BR', 'Portuguese'),
+             #('es', 'Spanish'),
              ]
 
 SITE_ID = 1
@@ -182,6 +182,13 @@ INSTALLED_APPS = (
     'djangobower',
     'djng',
     'saved_searches',
+    # MCM
+    'mcm.apps.McmConfig',
+    'skosxl',
+    'rdf_io',
+    'easy_thumbnails',
+    'filer',
+    'mptt',
 )
 
 AUTHENTICATION_BACKENDS = (
@@ -364,3 +371,5 @@ BOWER_INSTALLED_APPS = (
     # 'https://github.com/Parisson/loaders.git',
     # 'https://github.com/Parisson/ui.git',
 )
+# SKOSXL settings
+SKOSXL_DEFAULT_LANG = 'fr'
