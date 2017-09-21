@@ -183,7 +183,7 @@ INSTALLED_APPS = (
     'djng',
     'saved_searches',
     # MCM
-    'mcm.apps.McmConfig',
+    #'mcm.apps.McmConfig',
     'skosxl',
     'rdf_io',
     'easy_thumbnails',
