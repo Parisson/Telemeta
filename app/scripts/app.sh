@@ -53,8 +53,9 @@ else
     python $manage collectstatic --noinput
 
     # fix media access rights
-    find $media -maxdepth 1 -path ${media}import -prune -o -type d -not -user www-data -exec chown www-data:www-data {} \;
+    find $media -path ${media}import -prune -o -type d -not -user www-data -exec chown www-data:www-data {} \;
 
+    echo "Start UWSGI app"
     # app start
     uwsgi --socket :$port --wsgi-file $wsgi --chdir $app --master \
     --processes $processes --threads $threads \
