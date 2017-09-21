@@ -20,11 +20,13 @@ install:
 script:
   - docker-compose run app conda list
   - docker-compose run app pytest /srv/src/telemeta/telemeta
+  - docker-compose up -d db
+  - sleep 30
   - docker-compose up -d
   - sleep 60
   - curl --fail --retry 10 --retry-delay 5  -v $(docker-compose port nginx 80)
   - docker-compose stop
 
 after_failure:
-  - docker-compose logs
-  - docker-compose run app more /var/log/uwsgi/app.log
+  - docker-compose logs db
+  - docker-compose logs app
