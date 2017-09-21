@@ -102,7 +102,7 @@ class Document(models.Model):
     old_id = models.IntegerField(unique=True, blank=False)   # Record No
     old_doc_no = models.IntegerField(unique=True, null=True) # Doc no
     authors = models.ManyToManyField(Author, through='AuthorRole', verbose_name=_('author'))  # Auteur
-    title = models.CharField(_('title'), max_length=191)  # Titre
+    title = models.TextField(_('title'))  # TODO change to Charfield(_('title', max_length=191) after database cleanup # Titre
 
     keywords = models.ManyToManyField(Concept, verbose_name=_('keyword'))  # <Mots-cles>Toraja</Mots-cles>
     text = models.TextField(default='', verbose_name=_('text'))
