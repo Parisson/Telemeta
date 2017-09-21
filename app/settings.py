@@ -184,6 +184,7 @@ INSTALLED_APPS = (
     'saved_searches',
     # MCM
     #'mcm.apps.McmConfig',
+    'mcm',
     'skosxl',
     'rdf_io',
     'easy_thumbnails',
