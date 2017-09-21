@@ -37,6 +37,7 @@ DATABASES = {
         'NAME': env('MYSQL_DATABASE'),
         'HOST': 'db',      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '3306',   # Set to empty string for default. Not used with sqlite3.
+    'OPTIONS': {'charset': 'utf8mb4'},
     }
 }
 
@@ -184,12 +185,12 @@ INSTALLED_APPS = (
     'saved_searches',
     # MCM
     #'mcm.apps.McmConfig',
-    'mcm',
     'skosxl',
     'rdf_io',
     'easy_thumbnails',
     'filer',
     'mptt',
+    'mcm'
 )
 
 AUTHENTICATION_BACKENDS = (

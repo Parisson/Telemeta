@@ -11,7 +11,7 @@ from filer.fields.image import FilerImageField
 
 
 class HasName(models.Model):
-    name = models.CharField(max_length=100, blank=False,
+    name = models.CharField(max_length=191, blank=False,
                             verbose_name=_('name'))
 
     def __unicode__(self):
@@ -22,7 +22,7 @@ class HasName(models.Model):
 
 
 class Author(HasName):
-    alias = models.CharField(max_length=100, blank=True, default='')
+    alias = models.CharField(max_length=191, blank=True, default='')
     comment = models.TextField(default='', verbose_name=_('comment'))
     old_id = models.IntegerField(unique=True, blank=True, null=True)   # Record No
 
@@ -31,7 +31,7 @@ class Author(HasName):
 
 
 class Role(models.Model):
-    label = models.CharField(_('title'), blank=True, max_length=200)
+    label = models.CharField(_('title'), blank=True, max_length=191)
     text = models.TextField(default='', verbose_name=_('text'))
 
     def __unicode__(self):
@@ -98,11 +98,11 @@ DOCUMENT_TYPES = (
 
 class Document(models.Model):
 
-    code = models.CharField(_('code'), unique=False, blank=True, max_length=200)  # Cote
+    code = models.CharField(_('code'), unique=False, blank=True, max_length=191)  # Cote
     old_id = models.IntegerField(unique=True, blank=False)   # Record No
     old_doc_no = models.IntegerField(unique=True, null=True) # Doc no
     authors = models.ManyToManyField(Author, through='AuthorRole', verbose_name=_('author'))  # Auteur
-    title = models.CharField(_('title'), max_length=200)  # Titre
+    title = models.CharField(_('title'), max_length=191)  # Titre
 
     keywords = models.ManyToManyField(Concept, verbose_name=_('keyword'))  # <Mots-cles>Toraja</Mots-cles>
     text = models.TextField(default='', verbose_name=_('text'))
@@ -111,7 +111,7 @@ class Document(models.Model):
     doc_type = models.CharField(_('document type'), blank=True, choices= DOCUMENT_TYPES, max_length=32)
 
     references = models.ManyToManyField(Reference, verbose_name=_('reference'))  # <Reference>Le Chant du Monde</Reference>
-    copyright_text =  models.CharField(_('copyright'), default='', max_length=250)
+    copyright_text =  models.CharField(_('copyright'), default='', max_length=191)
     
     def __unicode__(self):
         return self.title
@@ -127,7 +127,7 @@ class Collection(HasName):
         
 
 class EditedDocument(Document):
-    edition_place = models.CharField(max_length=100, blank=False,
+    edition_place = models.CharField(max_length=191, blank=False,
                             verbose_name=_('edition_place'))
     language = models.ManyToManyField(Language, verbose_name=_('language'))
     collection = models.ManyToManyField(Collection, verbose_name=_('collection'))
@@ -151,9 +151,9 @@ class Notice(Document):
         verbose_name_plural = "A - Notices spectacle"
 
     release_date = models.DateField(_('release date'), null=True, blank=True)  # <Date_de_parution>1995</Date_de_parution>
-    release_date_text = models.CharField(_('release date'), blank=True, max_length=200)
+    release_date_text = models.CharField(_('release date'), blank=True, max_length=191)
     indexation_date = models.DateField(_('indexation date'), null=True, blank=True)  # <Date_de_parution>1995</Date_de_parution>
-    indexation_date_text = models.CharField(_('indexation date'), blank=True, max_length=200)
+    indexation_date_text = models.CharField(_('indexation date'), blank=True, max_length=191)
     geographic_classification = models.ForeignKey(GeographicalClassification, null=True, blank=True)  # <Classement_Geographique>P&#233;rou</Classement_Geographique>
     #<Support>Compact Disc Digital Audio</Support>
     #<Duree>69'14</Duree>
@@ -163,7 +163,7 @@ class Notice(Document):
 
     #<Doc_no>5604</Doc_no>
     #<aScript_Source_du_document>Le Chant du Monde ; Editions du CNRS, 1995</aScript_Source_du_document>
-    doc_source = models.CharField(_('document source'), blank=True, max_length=200)
+    doc_source = models.CharField(_('document source'), blank=True, max_length=191)
 
     #---  Event - Manifestion
     event_type = models.ForeignKey(EventType, blank=True, null=True)  # <Type_Manifestation>Danse</Type_Manifestation>
@@ -222,7 +222,7 @@ class Journal(Document):
 class Photo(Document):
     # Type : i-Photo
 
-    archive_dvd = models.CharField(_('DVD archive'), max_length=200)  # Cote DVD
+    archive_dvd = models.CharField(_('DVD archive'), max_length=191)  # Cote DVD
     class Meta:
         verbose_name = "I - Photo"
         verbose_name_plural = "I - Photos"
@@ -250,7 +250,7 @@ class Object(Document):
 class Image(models.Model):
     document = models.ForeignKey(Document, blank=False)
     archive_id = models.IntegerField(unique=True, blank=False)
-    name = models.CharField(max_length=100, blank=False,
+    name = models.CharField(max_length=191, blank=False,
                             verbose_name=_('name'))
     # 'Pa_Fr': 'file_path',
     screen_file = FilerImageField(null=True, blank=True,
@@ -265,7 +265,7 @@ class Image(models.Model):
     #'Ar_s_r': 'site_origin',
     #'ar': 'notes',
     description = models.TextField(default='', verbose_name=_('description'))
-    copyright = models.CharField(_('copyright'), max_length=200)
+    copyright = models.CharField(_('copyright'), max_length=191)
     creation_date = models.DateTimeField(_('creation date'))
     doc_type = models.CharField(_('document type'), max_length=16)
     image_width = models.IntegerField()
