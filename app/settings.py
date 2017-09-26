@@ -191,6 +191,8 @@ AUTHENTICATION_BACKENDS = (
 
 SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
 
+AUTH_USER_MODEL = 'auth.User'
+
 TELEMETA_ORGANIZATION = 'Telemeta'
 TELEMETA_SUBJECTS = ('Telemeta', 'web', 'platform', 'audio', 'semantics')
 TELEMETA_DESCRIPTION = "Open web audio platform with semantics"
