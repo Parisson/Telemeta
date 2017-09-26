@@ -29,8 +29,9 @@ from django.http import HttpResponse
 
 
 class HaystackSearch(FacetedSearchView, SavedSearchView):
-    search_key = 'quick'
 
+    search_key = 'quick'
+    
     def __call__(self, request, type=None):
         self.type = type
         self.form_class = HaySearchForm

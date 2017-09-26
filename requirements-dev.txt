@@ -5,3 +5,4 @@
 -e git+https://github.com/django-haystack/django-haystack.git@v2.5.1#egg=django-haystack-2.5.1
 -e git+https://github.com/yomguy/django-ipauth.git#egg=django-ipauth-0.4.1-dev
 -e git+https://github.com/Parisson/django-jqchat.git@dj1.8#egg=django-jqchat
+

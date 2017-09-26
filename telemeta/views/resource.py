@@ -22,7 +22,8 @@
 
 
 from telemeta.views.core import *
-from telemeta.views.epub import *
+from telemeta.views.core import serve_media
+from telemeta.views.epub import BaseEpubMixin
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -30,18 +31,18 @@ class ResourceView(object):
     """Provide Resource web UI methods"""
 
     types = {'corpus':
-                {'model': MediaCorpus,
-                'form' : MediaCorpusForm,
-                'related': MediaCorpusRelated,
-                'parent': MediaFonds,
-                },
-            'fonds':
-                {'model': MediaFonds,
-                'form' : MediaFondsForm,
-                'related': MediaFondsRelated,
-                'parent': None,
-                }
-            }
+             {'model': MediaCorpus,
+                 'form': MediaCorpusForm,
+                 'related': MediaCorpusRelated,
+                 'parent': MediaFonds,
+              },
+             'fonds':
+             {'model': MediaFonds,
+                 'form': MediaFondsForm,
+                 'related': MediaFondsRelated,
+                 'parent': None,
+              }
+             }
 
     def setup(self, type):
         self.model = self.types[type]['model']
@@ -69,8 +70,8 @@ class ResourceView(object):
             parents = []
 
         return render(request, template, {'resource': resource, 'type': type, 'children': children,
-                        'related_media': related_media, 'parents': parents, 'playlists': playlists,
-                        'last_revision': last_revision })
+                                          'related_media': related_media, 'parents': parents, 'playlists': playlists,
+                                          'last_revision': last_revision})
 
     def edit(self, request, type, public_id, template='telemeta/resource_edit.html'):
         self.setup(type)
@@ -86,7 +87,7 @@ class ResourceView(object):
                 return redirect('telemeta-resource-detail', self.type, code)
         else:
             form = self.form(instance=resource)
-        return render(request, template, {'resource': resource, 'type': type, 'form': form,})
+        return render(request, template, {'resource': resource, 'type': type, 'form': form, })
 
     def add(self, request, type, template='telemeta/resource_add.html'):
         self.setup(type)
@@ -102,7 +103,7 @@ class ResourceView(object):
                 return redirect('telemeta-resource-detail', self.type, code)
         else:
             form = self.form(instance=resource)
-        return render(request, template, {'resource': resource, 'type': type, 'form': form,})
+        return render(request, template, {'resource': resource, 'type': type, 'form': form, })
 
     def copy(self, request, type, public_id, template='telemeta/resource_edit.html'):
         self.setup(type)
@@ -119,7 +120,7 @@ class ResourceView(object):
         else:
             resource = self.model.objects.get(code=public_id)
             form = self.form(instance=resource)
-        return render(request, template, {'resource': resource, 'type': type, "form": form,})
+        return render(request, template, {'resource': resource, 'type': type, "form": form, })
 
     def playlist(self, request, type, public_id, template, mimetype):
         self.setup(type)
@@ -139,14 +140,14 @@ class ResourceView(object):
         for revision in revisions:
             revision.delete()
         resource.delete()
-        return HttpResponseRedirect('/archives/'+self.type+'/')
+        return HttpResponseRedirect('/archives/' + self.type + '/')
 
     def related_stream(self, request, type, public_id, media_id):
         self.setup(type)
         resource = self.model.objects.get(code=public_id)
         media = self.related.objects.get(resource=resource, id=media_id)
         if media.file:
-            response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
+            response = serve_media(media.file.path, content_type=media.mime_type)
         else:
             raise Http404
         return response
@@ -156,9 +157,7 @@ class ResourceView(object):
         resource = self.model.objects.get(code=public_id)
         media = self.related.objects.get(resource=resource, id=media_id)
         if media.file:
-            filename = media.file.path.split(os.sep)[-1]
-            response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
-            response['Content-Disposition'] = 'attachment; ' + 'filename=' + filename
+            response = serve_media(media.file.path, content_type=media.mime_type)
         else:
             raise Http404
         return response
@@ -167,20 +166,20 @@ class ResourceView(object):
 class ResourceMixin(View):
 
     types = {'corpus':
-                {'model': MediaCorpus,
-                'form' : MediaCorpusForm,
-                'related': MediaCorpusRelated,
-                'parent': MediaFonds,
-                'inlines': [CorpusRelatedInline,]
-                },
-            'fonds':
-                {'model': MediaFonds,
-                'form' : MediaFondsForm,
-                'related': MediaFondsRelated,
-                'parent': None,
-                'inlines': [FondsRelatedInline,]
-                }
-            }
+             {'model': MediaCorpus,
+              'form': MediaCorpusForm,
+              'related': MediaCorpusRelated,
+                 'parent': MediaFonds,
+              'inlines': [CorpusRelatedInline, ]
+              },
+             'fonds':
+             {'model': MediaFonds,
+              'form': MediaFondsForm,
+                 'related': MediaFondsRelated,
+                 'parent': None,
+                 'inlines': [FondsRelatedInline, ]
+              }
+             }
 
     def setup(self, type):
         self.model = self.types[type]['model']
@@ -238,7 +237,7 @@ class ResourceSingleMixin(ResourceMixin):
         else:
             context['parents'] = []
         return context
-        
+
 
 class ResourceListView(ResourceMixin, ListView):
 
@@ -269,6 +268,7 @@ class ResourceDetailDCView(ResourceDetailView):
 class ResourceAddView(ResourceMixin, CreateView):
 
     template_name = 'telemeta/resource_add.html'
+    fields = '__all__'
 
     def get_queryset(self):
         self.type = self.kwargs['type']
@@ -276,7 +276,7 @@ class ResourceAddView(ResourceMixin, CreateView):
         return self
 
     def get_success_url(self):
-        return reverse_lazy('telemeta-resource-list', kwargs={'type':self.kwargs['type']})
+        return reverse_lazy('telemeta-resource-list', kwargs={'type': self.kwargs['type']})
 
     @method_decorator(permission_required('telemeta.add_mediacorpus'))
     @method_decorator(permission_required('telemeta.add_mediafonds'))
@@ -292,7 +292,7 @@ class ResourceCopyView(ResourceSingleMixin, ResourceAddView):
         return model_to_dict(self.get_object())
 
     def get_success_url(self):
-        return reverse_lazy('telemeta-resource-list', kwargs={'type':self.kwargs['type']})
+        return reverse_lazy('telemeta-resource-list', kwargs={'type': self.kwargs['type']})
         # return reverse_lazy('telemeta-resource-detail', kwargs={'type':self.kwargs['type'], 'public_id':self.kwargs['public_id']})
 
     @method_decorator(permission_required('telemeta.add_mediacorpus'))
@@ -306,7 +306,7 @@ class ResourceDeleteView(ResourceSingleMixin, DeleteView):
     template_name = 'telemeta/resource_confirm_delete.html'
 
     def get_success_url(self):
-         return reverse_lazy('telemeta-resource-list', kwargs={'type':self.kwargs['type']})
+        return reverse_lazy('telemeta-resource-list', kwargs={'type': self.kwargs['type']})
 
     @method_decorator(permission_required('telemeta.delete_mediacorpus'))
     @method_decorator(permission_required('telemeta.delete_mediafonds'))
@@ -319,7 +319,7 @@ class ResourceEditView(ResourceSingleMixin, UpdateWithInlinesView):
     template_name = 'telemeta/resource_edit.html'
 
     def get_success_url(self):
-        return reverse_lazy('telemeta-resource-detail', kwargs={'type':self.kwargs['type'], 'public_id':self.kwargs['public_id']})
+        return reverse_lazy('telemeta-resource-detail', kwargs={'type': self.kwargs['type'], 'public_id': self.kwargs['public_id']})
 
     @method_decorator(permission_required('telemeta.change_mediacorpus'))
     @method_decorator(permission_required('telemeta.change_mediafonds'))

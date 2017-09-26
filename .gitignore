@@ -18,6 +18,10 @@ develop-eggs
 .installed.cfg
 *.directory
 app/.init
+tmp
+dist
+doc/output/
+doc/pelican-plugins/
 
 # Installer logs
 pip-log.txt

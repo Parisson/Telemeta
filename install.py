@@ -13,9 +13,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 import os
 import argparse
 import platform
+from pwd import getpwnam
+from grp import getgrnam
 
 sysvinit_script = """#!/bin/sh
-
 ### BEGIN INIT INFO
 # Provides:	    %s
 # Required-Start:	docker
@@ -30,7 +31,7 @@ set -e
 PROJECT_NAME=%s
 YAMLFILE=%s
 OPTS="-f $YAMLFILE -p $PROJECT_NAME"
-UPOPTS="-d --no-recreate --no-build --no-deps"
+UPOPTS="-d --no-build --no-deps"
 
 . /lib/lsb/init-functions
 
@@ -99,18 +100,20 @@ ExecStop=%s -f %s stop
 WantedBy=local.target
 """
 
-
 class DockerCompositionInstaller(object):
 
     docker = '/etc/init.d/docker'
     docker_compose = '/usr/local/bin/docker-compose'
+    cron_rule = "0 */6 * * * %s %s"
 
-    def __init__(self, config='docker-compose.yml', init_type='sysvinit'):
+    def __init__(self, config='docker-compose.yml', init_type='sysvinit', cron=False):
         self.init_type = init_type
         self.path = os.path.dirname(os.path.realpath(__file__))
         self.config = config
-        self.config = os.path.abspath(self.get_root() + os.sep + self.config)
+        self.root = self.get_root()
+        self.config = os.path.abspath(self.root + os.sep + self.config)
         self.name = self.config.split(os.sep)[-2].lower()
+        self.cron = cron
 
     def get_root(self):
         path = self.path
@@ -149,14 +152,16 @@ class DockerCompositionInstaller(object):
         os.system('systemctl enable ' + service)
         os.system('systemctl daemon-reload')
 
-    def install(self):
-        print 'Installing ' + self.name + ' composition as a daemon...'
-        self.install_docker()
-        if self.init_type == 'sysvinit':
-            self.install_daemon_sysvinit()
-        elif self.init_type == 'systemd':
-            self.install_daemon_systemd()
-        print 'Done'
+    def install_cron(self):
+        cron_path = os.sep.join([self.root, 'etc', 'cron.d', 'app'])
+        log_path = os.sep.join([self.root, 'var', 'log', 'cron'])
+        if not os.path.exists(log_path) :
+            os.makedirs(log_path, 0o755)
+        os.symlink(cron_path, '/etc/cron.d/' + self.name)
+        uid  = int(getpwnam('root').pw_uid)
+        guid = int(getgrnam('root').gr_gid)
+        fd_cron_path = os.open(cron_path, os.O_RDONLY)
+        os.fchown(fd_cron_path, 0, 0)
 
     def uninstall_daemon_sysvinit(self):
         script = '/etc/init.d/' + self.name
@@ -169,12 +174,28 @@ class DockerCompositionInstaller(object):
         os.system('systemctl daemon-reload')
         os.system('rm ' + service)
 
+    def uninstall_cron(self):
+        os.system('rm /etc/cron.d/' + self.name)
+
     def uninstall(self):
         print 'Uninstalling ' + self.name + ' composition as a daemon...'
         if self.init_type == 'sysvinit':
             self.uninstall_daemon_sysvinit()
         elif self.init_type == 'systemd':
             self.uninstall_daemon_systemd()
+        if self.cron:
+            self.uninstall_cron()
+        print 'Done'
+
+    def install(self):
+        print 'Installing ' + self.name + ' composition as a daemon...'
+        self.install_docker()
+        if self.init_type == 'sysvinit':
+            self.install_daemon_sysvinit()
+        elif self.init_type == 'systemd':
+            self.install_daemon_systemd()
+        if self.cron:
+            self.install_cron()
         print 'Done'
 
 
@@ -182,6 +203,7 @@ def main():
     description ="""Install this docker composition program as a daemon with boot init (sysvinit by default)."""
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument('--uninstall', help='uninstall the daemon', action='store_true')
+    parser.add_argument('--cron', help='install cron backup rule', action='store_true')
     parser.add_argument('--systemd', help='use systemd', action='store_true')
     parser.add_argument('composition_file', nargs='?', help='the path of the YAML composition file to use (optional)')
 
@@ -194,7 +216,7 @@ def main():
     if args['composition_file']:
         config = args['composition_file']
 
-    installer = DockerCompositionInstaller(config, init_type)
+    installer = DockerCompositionInstaller(config, init_type, args['cron'])
     if args['uninstall']:
         installer.uninstall()
     else:
