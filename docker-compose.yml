@@ -55,7 +55,7 @@ app:
   volumes:
     - ./app:/srv/app
     - ./telemeta:/srv/src/telemeta/telemeta
-    - ./lib/TimeSide:/srv/src/timeside
+    - ./lib/:/srv/src/plugins/ 
   volumes_from:
     - data
   env_file:
