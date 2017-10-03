@@ -12,3 +12,4 @@ factory-boy
 #doc
 pelican
 pdoc
+ghp-import
