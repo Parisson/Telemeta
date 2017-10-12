@@ -13,7 +13,7 @@ from ...models import Collection, Language
 
 from skosxl.models import Concept
 
-from ftfy import fix_text
+#from ftfy import fix_text
 
 # import lxml.etree.ElementTree as ET
 import xml.etree.ElementTree as ET
@@ -24,6 +24,7 @@ import tempfile
 import HTMLParser
 import datetime
 
+from .merge_authors import DOUBLONS as AUTHORS_DOUBLONS
 DEBUG = False
 IGNORED_FIELDS = ['auteurs_val',
                   'auteurs',
@@ -40,21 +41,28 @@ IGNORED_FIELDS = ['auteurs_val',
 
 tag_non_traites = []
 
+
 def add_author_role(doc, author_id=None, author_name=None, role=None):
+
     if role is not None:
         role_obj, c = Role.objects.get_or_create(label=role)
     else:
         role_obj = None
     if author_id is not None:
+        author_id = int(author_id)
+        if author_id in AUTHORS_DOUBLONS.keys():
+            print "Replace author_id %d by %d" % (author_id,
+                                                  AUTHORS_DOUBLONS[author_id])
+            author_id = AUTHORS_DOUBLONS[author_id]
         try:
             author_obj = Author.objects.get(old_id=author_id)
         except Author.DoesNotExist as e:
-            print "Does Not Exist ->%s<-" % author_id
+            print "Does Not Exist -> %s <-" % author_id
             raise e
     else:
         assert(author_name)
         try:
-            author_obj, created = Author.objects.get_or_create(name = author_name)
+            author_obj, created = Author.objects.get_or_create(name=author_name)
         except Author.MultipleObjectsReturned as e:
             print "Multiple author with name : %s" % author_name
             raise e
@@ -64,8 +72,8 @@ def add_author_role(doc, author_id=None, author_name=None, role=None):
         document=doc,
         role=role_obj)
     author_role.save()
-        
-    
+
+
 class Command(BaseCommand):
     help = 'Import items from XML'
 
@@ -121,7 +129,7 @@ class Command(BaseCommand):
             if created:
                 doc.save()
             for child in document:
-                #print child.tag, child.text
+                # print child.tag, child.text
                 if child.tag == 'record_no':
                     continue
                 elif child.tag in ['No_d_inventaire', 'Cote']:
@@ -164,13 +172,16 @@ class Command(BaseCommand):
                     event = child.text
                     event_obj, c = Event.objects.get_or_create(name=event)
                     edition = document.findtext('No_edition')
+                    if not edition:
+                        edition = None
                     try:
                         event_edition_obj, c = EventEdition.objects.get_or_create(
                             event=event_obj, edition=edition)
                     except ValueError:
                         print '----------------'
                         print 'Pb sur le document : Record num %s / Cote %s' % (doc.old_id, doc.code)
-                        print 'Pb Edition Event %s / Edition %s' % (event, edition)
+                        print 'Pb Edition %s' % edition
+                        # print 'Pb Edition Event %s' % event
                         print '----------------'
                         event_edition_obj, c = EventEdition.objects.get_or_create(
                             event=event_obj, edition=None)
@@ -192,13 +203,13 @@ class Command(BaseCommand):
 
                     try:
                         indexation_date = datetime.datetime.strptime(child.text,
-                                                                  '%d/%m/%y').date()
+                                                                     '%d/%m/%y').date()
                         doc.indexation_date = indexation_date
                     except ValueError:
                         pass
-                    
+
                 elif child.tag == 'aScript_auteurs3':
-                # Authors
+                    # Authors
                     doc_authors = child.text
                     if doc_authors is not None:
                         authors_roles = [auth.split('==')
@@ -229,28 +240,47 @@ class Command(BaseCommand):
                 elif child.tag == 'auteur_Photo':
                     author_name = child.text
                     role = 'Photographe'
-                    add_author_role(doc, author_name = author_name, role=role)
-                    
+                    add_author_role(doc, author_name=author_name, role=role)
+
                 elif child.tag == 'aut._Prog._-_Notice':
                     author_name = child.text
                     role = 'Rédacteur Notice'
-                    add_author_role(doc, author_name = author_name, role=role)
+                    add_author_role(doc, author_name=author_name, role=role)
                 elif child.tag == 'auteur_affiche_dessin':
                     author_name = child.text
                     role = 'Dessinateur'
-                    add_author_role(doc, author_name = author_name, role=role)
+                    add_author_role(doc, author_name=author_name, role=role)
                 elif child.tag == 'Copyright':
                     doc.copyright_text = child.text
                 elif child.tag == 'Collection':
                     collection = child.text
-                    collection_obj, created = Collection.objects.get_or_create(name=collection)
+                    if collection:
+                        collection_obj, created = Collection.objects.get_or_create(name=collection)
+                        doc.collection.add(collection)
                 elif child.tag == 'Language':
                     language = child.text
-                    collection_obj, created = Collection.objects.get_or_create(name=collection)
+                    if Language:
+                        language_obj, created = Language.objects.get_or_create(name=Langue)
+                        doc.language.add(language_obj)
                  # Tag non traité :
-                #    Nbre_No_de_page
-                #    Date_d_indexation
-                #    Doc_no
+                #['Nbre_No_de_page',
+                #'Support',
+                #'Duree',
+                #'Illustration',
+                #'Couleur',
+                #'Langue',
+                #'Type_Captation',
+                #'No_de_collection',
+                #'Format',
+                #'Lieu_d_edition',
+                #'Classement_Thematique',
+                #'Materiel_d_accompagnement',
+                #'Sujet_photographie',
+                #'Volume',
+                #'Contient_Contenu_dans',
+                #'No_revue',
+                #'Notes_ISBD']
+                
                 elif child.tag in IGNORED_FIELDS:
                     continue
                 else:

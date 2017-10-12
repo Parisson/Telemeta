@@ -79,6 +79,10 @@ class EventEdition(models.Model):
         else:
             return ' - '.join([self.event.name, self.edition.__str__()])
 
+class Support(HasName):
+
+    class Meta:
+        verbose_name = _('Support')
 
 DOCUMENT_TYPES = (
     ('a', 'Notice spectacle'),
@@ -95,6 +99,8 @@ DOCUMENT_TYPES = (
     ('l', 'Objet')
 )
 
+COLORS = (('C', 'Couleur'),
+          ('NB', 'Noir et Blanc'))
 
 class Document(models.Model):
 
@@ -107,11 +113,15 @@ class Document(models.Model):
     keywords = models.ManyToManyField(Concept, verbose_name=_('keyword'))  # <Mots-cles>Toraja</Mots-cles>
     text = models.TextField(default='', verbose_name=_('text'))
     related = models.ManyToManyField("self", verbose_name=_('see also'))  # see also / Voir aussi
+    contient_contenu_dans = models.ManyToManyField("self", verbose_name=_('Contient ou contenu dans')) 
+    parents = models.ManyToManyField("self", verbose_name=_('Contient ou contenu dans')) # A générer à partir de contient_contenu lorsque la hiérarchie est évidente
 
     doc_type = models.CharField(_('document type'), blank=True, choices= DOCUMENT_TYPES, max_length=32)
 
     references = models.ManyToManyField(Reference, verbose_name=_('reference'))  # <Reference>Le Chant du Monde</Reference>
     copyright_text =  models.CharField(_('copyright'), default='', max_length=191)
+    page_num = models.CharField(_('number of pages'), blank=True, max_length=50)
+    #<Classement_Thematique>Costume et accessoire</Classement_Thematique>
     
     def __unicode__(self):
         return self.title
@@ -125,12 +135,17 @@ class Collection(HasName):
     class Meta:
         verbose_name = _('collection')
         
+class Illustration(HasName):
+    class Meta:
+        verbose_name = _('illustration')
+        
 
 class EditedDocument(Document):
     edition_place = models.CharField(max_length=191, blank=False,
                             verbose_name=_('edition_place'))
     language = models.ManyToManyField(Language, verbose_name=_('language'))
-    collection = models.ManyToManyField(Collection, verbose_name=_('collection'))
+    collection = models.ForeignKey(Collection, verbose_name=_('collection'),
+                                   blank=True, null=True)
 
     
 class AuthorRole(models.Model):
@@ -174,6 +189,10 @@ class Notice(Document):
 class Disc(Document):
     # Type: b-Disque
 
+    support = models.ForeignKey(Support, verbose_name=_('support'),
+                                blank=True, null=True)
+    duration = models.CharField(_('duration'), blank=True, max_length=50)
+
     class Meta:
         verbose_name = "B - Disque"
         verbose_name_plural = "B - Disques"
@@ -181,6 +200,10 @@ class Disc(Document):
 
 class Video(Document):
     # Type : c-Vidéo DVD&VHS
+    support = models.ForeignKey(Support, verbose_name=_('support'),
+                                blank=True, null=True)
+    duration = models.CharField(_('duration'), blank=True, max_length=50)
+    color = models.CharField(_('color'), blank=True, choices= COLORS, max_length=2)
 
     class Meta:
         verbose_name = "C - Vidéo DVD&VHS"
@@ -189,6 +212,10 @@ class Video(Document):
 
 class VideoFile(Document):
     # Type : d-Vidéo en ligne
+    support = models.ForeignKey(Support, verbose_name=_('support'),
+                                blank=True, null=True)
+    duration = models.CharField(_('duration'), blank=True, max_length=50)
+    color = models.CharField(_('color'), blank=True, choices= COLORS, max_length=2)
 
     class Meta:
         verbose_name = "D - Vidéo en ligne"
@@ -197,6 +224,9 @@ class VideoFile(Document):
 
 class BookThesis(Document):
     # Type : f-Ouvrage & Thèse
+    illustration = models.ForeignKey(Illustration, verbose_name=_('illustration'),
+                                     blank=True, null=True)
+    color = models.CharField(_('color'), blank=True, choices= COLORS, max_length=2)
 
     class Meta:
         verbose_name = "F - Ouvrage & Thèse"
@@ -205,7 +235,8 @@ class BookThesis(Document):
 
 class Journal(Document):
     # Type : g-Revue
-
+    illustration = models.ForeignKey(Illustration, verbose_name=_('illustration'),
+                                     blank=True, null=True)
     class Meta:
         verbose_name = "G - Revue"
         verbose_name_plural = "G - Revues"
@@ -223,6 +254,10 @@ class Photo(Document):
     # Type : i-Photo
 
     archive_dvd = models.CharField(_('DVD archive'), max_length=191)  # Cote DVD
+    support = models.ForeignKey(Support, verbose_name=_('support'),
+                                blank=True, null=True)
+    color = models.CharField(_('color'), blank=True, choices= COLORS, max_length=2)
+
     class Meta:
         verbose_name = "I - Photo"
         verbose_name_plural = "I - Photos"
@@ -230,6 +265,9 @@ class Photo(Document):
 
 class PosterBooklet(Document):
     # Type : j-Affiche - Brochure
+    illustration = models.ForeignKey(Illustration, verbose_name=_('illustration'),
+                                   blank=True, null=True)
+    color = models.CharField(_('color'), blank=True, choices= COLORS, max_length=2)
 
     class Meta:
         verbose_name = "J - Affiche-Brochure"
@@ -241,8 +279,16 @@ class PosterBooklet(Document):
 
 class Object(Document):
     # Type : l-Objet
-    collection = models.ManyToManyField(Collection, verbose_name=_('collection'))
-
+    collection = models.ForeignKey(Collection, verbose_name=_('collection'),
+                                   blank=True, null=True)
+# Description_de_l_objet>Rectangle de tissu jaune resserr&#233; &#224; une extr&#233;mit&#233; avec du fil + un autre rectangle de tissu jaune.</Description_de_l_objet>
+# Matiere_et_technique>Tissu ; Fil</Matiere_et_technique>
+# Constat_d_etat>Bon &#233;tat ; Tissu d&#233;color&#233;</Constat_d_etat>
+# Collection>Maison des Cultures du Monde</Collection>
+# Nombre_de_partie>2</Nombre_de_partie>
+# Dimension_(HxLxP)>Pi&#232;ce 1 : 149x106 cmPi&#232;ce 2 : 158x238 cm</Dimension_(HxLxP)>
+# Localisation # Centre de Documentation sur les Spectacles du Monde, Vitr&#233;, France.
+    
     class Meta:
         verbose_name = "L - Objet"
         verbose_name_plural = "L-Objets"
