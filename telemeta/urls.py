@@ -26,9 +26,10 @@ from django.contrib.auth import views as auth_views
 from django.views.generic.base import RedirectView, TemplateView
 from django.views.generic.list import ListView
 from django.views.static import serve
-from telemeta.models import MediaItem, MediaCollection, MediaItemMarker, MediaCorpus, MediaFonds, Institution
+from telemeta.models import MediaItem, MediaCollection, MediaItemMarker, MediaCorpus, MediaFonds, Institution, Authority
 from telemeta.views import *
 from telemeta.views.institution import *
+from telemeta.views.authority import *
 from telemeta.mshs.views import *
 from haystack.forms import *
 
@@ -61,10 +62,14 @@ export_extensions = "|".join(item_view.list_export_extensions())
 urlpatterns = [
     url(r'^$', home_view.home, name="telemeta-home"),
     url(r'^test', TemplateView.as_view(template_name="telemeta/hello_world.html")),
-    
+
     # institutions
     url(r'^institutions/$', InstitutionListView.as_view(), name="telemeta-institutions"),
     url(r'^institutions/(?P<public_id>[A-Za-z0-9._-]+)/$', InstitutionDetailView.as_view(), name="telemeta-institutions-detail"),
+
+    # authorities
+    url(r'^authority/$', AuthorityListView.as_view(), name="telemeta-authorities"),
+    url(r'^authorities/(?P<public_id>[A-Za-z0-9._-]+)/$', InstitutionDetailView.as_view(), name="telemeta-authorities-detail"),
 
     # items
     url(r'^archives/items/$', ItemListView.as_view(), name="telemeta-items"),
