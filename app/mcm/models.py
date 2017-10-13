@@ -264,7 +264,7 @@ class BookThesis(Document, isEdited):
     illustration = models.ForeignKey(Illustration, verbose_name=_('illustration'),
                                      blank=True, null=True)
     color = models.CharField(_('color'), blank=True, choices=COLORS, max_length=2)
-    format = models.CharField(_('format'), blank=True, max_length=50)
+    format = models.TextField(_('format'), blank=True)
     edition_place = models.ForeignKey(EditionPlace, verbose_name=_('edition place'),
                                       blank=True, null=True)
 
@@ -306,7 +306,7 @@ class Photo(Document):
     captation = models.ForeignKey(Captation, verbose_name=_('captation'),
                                   blank=True, null=True)
     color = models.CharField(_('color'), blank=True, choices=COLORS, max_length=2)
-    format = models.CharField(_('format'), blank=True, max_length=50)
+    format = models.TextField(_('format'), blank=True)
     subject = models.CharField(_('sujet photographié'), blank=True, max_length=191)
 
     class Meta:
@@ -319,7 +319,7 @@ class PosterBooklet(Document):
     illustration = models.ForeignKey(Illustration, verbose_name=_('illustration'),
                                      blank=True, null=True)
     color = models.CharField(_('color'), blank=True, choices=COLORS, max_length=2)
-    format = models.CharField(_('format'), blank=True, max_length=50)
+    format = models.TextField(_('format'), blank=True)
 
     class Meta:
         verbose_name = "J - Affiche-Brochure"
