@@ -52,6 +52,16 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
+            name='isEdited',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('collection_num', models.CharField(max_length=50, verbose_name='collection number', blank=True)),
+                ('companion', models.CharField(max_length=50, verbose_name="mat\xe9riel d'accompagnement", blank=True)),
+                ('collection', models.ForeignKey(verbose_name='collection', blank=True, to='mcm.Collection', null=True)),
+                ('language', models.ManyToManyField(to='mcm.Language', verbose_name='language')),
+            ],
+        ),
+        migrations.CreateModel(
             name='Support',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
@@ -75,23 +85,8 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='bookthesis',
-            name='collection',
-            field=models.ForeignKey(verbose_name='collection', blank=True, to='mcm.Collection', null=True),
-        ),
-        migrations.AddField(
-            model_name='bookthesis',
-            name='collection_num',
-            field=models.CharField(max_length=50, verbose_name='collection number', blank=True),
-        ),
-        migrations.AddField(
-            model_name='bookthesis',
             name='color',
             field=models.CharField(blank=True, max_length=2, verbose_name='color', choices=[('C', 'Couleur'), ('NB', 'Noir et Blanc')]),
-        ),
-        migrations.AddField(
-            model_name='bookthesis',
-            name='companion',
-            field=models.CharField(max_length=50, verbose_name="mat\xe9riel d'accompagnement", blank=True),
         ),
         migrations.AddField(
             model_name='bookthesis',
@@ -99,34 +94,9 @@ class Migration(migrations.Migration):
             field=models.CharField(max_length=50, verbose_name='format', blank=True),
         ),
         migrations.AddField(
-            model_name='bookthesis',
-            name='language',
-            field=models.ManyToManyField(to='mcm.Language', verbose_name='language'),
-        ),
-        migrations.AddField(
-            model_name='disc',
-            name='collection',
-            field=models.ForeignKey(verbose_name='collection', blank=True, to='mcm.Collection', null=True),
-        ),
-        migrations.AddField(
-            model_name='disc',
-            name='collection_num',
-            field=models.CharField(max_length=50, verbose_name='collection number', blank=True),
-        ),
-        migrations.AddField(
-            model_name='disc',
-            name='companion',
-            field=models.CharField(max_length=50, verbose_name="mat\xe9riel d'accompagnement", blank=True),
-        ),
-        migrations.AddField(
             model_name='disc',
             name='duration',
             field=models.CharField(max_length=50, verbose_name='duration', blank=True),
-        ),
-        migrations.AddField(
-            model_name='disc',
-            name='language',
-            field=models.ManyToManyField(to='mcm.Language', verbose_name='language'),
         ),
         migrations.AddField(
             model_name='document',
@@ -145,28 +115,8 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='journal',
-            name='collection',
-            field=models.ForeignKey(verbose_name='collection', blank=True, to='mcm.Collection', null=True),
-        ),
-        migrations.AddField(
-            model_name='journal',
-            name='collection_num',
-            field=models.CharField(max_length=50, verbose_name='collection number', blank=True),
-        ),
-        migrations.AddField(
-            model_name='journal',
-            name='companion',
-            field=models.CharField(max_length=50, verbose_name="mat\xe9riel d'accompagnement", blank=True),
-        ),
-        migrations.AddField(
-            model_name='journal',
             name='format',
             field=models.CharField(max_length=50, verbose_name='format', blank=True),
-        ),
-        migrations.AddField(
-            model_name='journal',
-            name='language',
-            field=models.ManyToManyField(to='mcm.Language', verbose_name='language'),
         ),
         migrations.AddField(
             model_name='journal',
@@ -205,33 +155,13 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='video',
-            name='collection',
-            field=models.ForeignKey(verbose_name='collection', blank=True, to='mcm.Collection', null=True),
-        ),
-        migrations.AddField(
-            model_name='video',
-            name='collection_num',
-            field=models.CharField(max_length=50, verbose_name='collection number', blank=True),
-        ),
-        migrations.AddField(
-            model_name='video',
             name='color',
             field=models.CharField(blank=True, max_length=2, verbose_name='color', choices=[('C', 'Couleur'), ('NB', 'Noir et Blanc')]),
         ),
         migrations.AddField(
             model_name='video',
-            name='companion',
-            field=models.CharField(max_length=50, verbose_name="mat\xe9riel d'accompagnement", blank=True),
-        ),
-        migrations.AddField(
-            model_name='video',
             name='duration',
             field=models.CharField(max_length=50, verbose_name='duration', blank=True),
-        ),
-        migrations.AddField(
-            model_name='video',
-            name='language',
-            field=models.ManyToManyField(to='mcm.Language', verbose_name='language'),
         ),
         migrations.AddField(
             model_name='videofile',
