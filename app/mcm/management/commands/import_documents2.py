@@ -220,8 +220,11 @@ class Command(BaseCommand):
                             add_author_role(doc, author_id=author_id, role=role)
                 # Referencess
                 elif child.tag == 'Reference':
-                    ref_obj, ref_c = Reference.objects.get_or_create(
-                        name=child.text)
+                    try:
+                        ref_obj, ref_c = Reference.objects.get_or_create(
+                            name=child.text)
+                    except Reference.MultipleObjectsReturned as e:
+                        ref_obj = Reference.objects.filter(name=child.text)[0]
                     doc.references.add(ref_obj)
                 elif child.tag == 'Voir_aussi':
                     related_doc, created = Document.objects.get_or_create(old_id=child.text)

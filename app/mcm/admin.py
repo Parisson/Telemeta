@@ -8,6 +8,8 @@ from .models import GeographicalClassification
 from .models import Document
 from .models import Notice, Disc, Video, VideoFile, BookThesis, Journal
 from .models import Photo, PosterBooklet, Object
+from .models import Collection, Language
+from .models import Support, Captation, Illustration, EditionPlace, Classification
 
 
 class AuthorRoleInline(admin.TabularInline):
@@ -84,3 +86,12 @@ admin.site.register(Journal, DocumentAdmin)
 admin.site.register(Photo, DocumentAdmin)
 admin.site.register(PosterBooklet, DocumentAdmin)
 admin.site.register(Object, DocumentAdmin)
+
+
+admin.site.register(Collection)
+admin.site.register(Language)
+admin.site.register(Support)
+admin.site.register(Captation)
+admin.site.register(Illustration)
+admin.site.register(EditionPlace)
+admin.site.register(Classification)
