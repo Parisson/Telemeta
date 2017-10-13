@@ -238,7 +238,7 @@ class Video(Document, isEdited):
                                   blank=True, null=True)
     duration = models.CharField(_('duration'), blank=True, max_length=50)
     color = models.CharField(_('color'), blank=True, choices=COLORS, max_length=2)
-
+        
     class Meta:
         verbose_name = "C - Vidéo DVD&VHS"
         verbose_name_plural = "C - Vidéos DVD&VHS"
@@ -252,6 +252,7 @@ class VideoFile(Document):
                                   blank=True, null=True)
     duration = models.CharField(_('duration'), blank=True, max_length=50)
     color = models.CharField(_('color'), blank=True, choices=COLORS, max_length=2)
+    language = models.ManyToManyField(Language, verbose_name=_('language'))
 
     class Meta:
         verbose_name = "D - Vidéo en ligne"
