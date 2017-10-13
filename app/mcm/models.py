@@ -223,7 +223,7 @@ class Disc(Document, isEdited):
                                 blank=True, null=True)
     captation = models.ForeignKey(Captation, verbose_name=_('captation'),
                                   blank=True, null=True)
-    duration = models.CharField(_('duration'), blank=True, max_length=50)
+    duration = models.CharField(_('duration'), blank=True, max_length=100)
 
     class Meta:
         verbose_name = "B - Disque"
@@ -236,7 +236,7 @@ class Video(Document, isEdited):
                                 blank=True, null=True)
     captation = models.ForeignKey(Captation, verbose_name=_('captation'),
                                   blank=True, null=True)
-    duration = models.CharField(_('duration'), blank=True, max_length=50)
+    duration = models.CharField(_('duration'), blank=True, max_length=100)
     color = models.CharField(_('color'), blank=True, choices=COLORS, max_length=2)
         
     class Meta:
@@ -250,7 +250,7 @@ class VideoFile(Document):
                                 blank=True, null=True)
     captation = models.ForeignKey(Captation, verbose_name=_('captation'),
                                   blank=True, null=True)
-    duration = models.CharField(_('duration'), blank=True, max_length=50)
+    duration = models.CharField(_('duration'), blank=True, max_length=100)
     color = models.CharField(_('color'), blank=True, choices=COLORS, max_length=2)
     language = models.ManyToManyField(Language, verbose_name=_('language'))
 
