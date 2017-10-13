@@ -264,7 +264,7 @@ class BookThesis(Document, isEdited):
     illustration = models.ForeignKey(Illustration, verbose_name=_('illustration'),
                                      blank=True, null=True)
     color = models.CharField(_('color'), blank=True, choices=COLORS, max_length=2)
-    format = models.TextField(_('format'), blank=True)
+    format = models.TextField(_('format'), blank=True, null=True)
     edition_place = models.ForeignKey(EditionPlace, verbose_name=_('edition place'),
                                       blank=True, null=True)
 
@@ -280,7 +280,7 @@ class Journal(Document, isEdited):
     classification = models.ForeignKey(Classification,
                                        verbose_name=_('thematic classification'),
                                        blank=True, null=True)
-    format = models.TextField(_('format'), blank=True)
+    format = models.TextField(_('format'), blank=True, null=True)
     volume = models.CharField(_('volume'), blank=True, max_length=50)
     number = models.CharField(_('numéro de revue'), blank=True, max_length=50)
 
@@ -306,7 +306,7 @@ class Photo(Document):
     captation = models.ForeignKey(Captation, verbose_name=_('captation'),
                                   blank=True, null=True)
     color = models.CharField(_('color'), blank=True, choices=COLORS, max_length=2)
-    format = models.TextField(_('format'), blank=True)
+    format = models.TextField(_('format'), blank=True, null=True)
     subject = models.CharField(_('sujet photographié'), blank=True, max_length=191)
 
     class Meta:
@@ -319,7 +319,7 @@ class PosterBooklet(Document):
     illustration = models.ForeignKey(Illustration, verbose_name=_('illustration'),
                                      blank=True, null=True)
     color = models.CharField(_('color'), blank=True, choices=COLORS, max_length=2)
-    format = models.TextField(_('format'), blank=True)
+    format = models.TextField(_('format'), blank=True, null=True)
 
     class Meta:
         verbose_name = "J - Affiche-Brochure"
