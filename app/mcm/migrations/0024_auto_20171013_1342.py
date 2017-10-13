@@ -75,11 +75,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='bookthesis',
-            name='collection',
-            field=models.ForeignKey(verbose_name='collection', blank=True, to='mcm.Collection', null=True),
-        ),
-        migrations.AddField(
-            model_name='bookthesis',
             name='collection_num',
             field=models.CharField(max_length=50, verbose_name='collection number', blank=True),
         ),
@@ -99,16 +94,6 @@ class Migration(migrations.Migration):
             field=models.CharField(max_length=50, verbose_name='format', blank=True),
         ),
         migrations.AddField(
-            model_name='bookthesis',
-            name='language',
-            field=models.ManyToManyField(to='mcm.Language', verbose_name='language'),
-        ),
-        migrations.AddField(
-            model_name='disc',
-            name='collection',
-            field=models.ForeignKey(verbose_name='collection', blank=True, to='mcm.Collection', null=True),
-        ),
-        migrations.AddField(
             model_name='disc',
             name='collection_num',
             field=models.CharField(max_length=50, verbose_name='collection number', blank=True),
@@ -122,11 +107,6 @@ class Migration(migrations.Migration):
             model_name='disc',
             name='duration',
             field=models.CharField(max_length=50, verbose_name='duration', blank=True),
-        ),
-        migrations.AddField(
-            model_name='disc',
-            name='language',
-            field=models.ManyToManyField(to='mcm.Language', verbose_name='language'),
         ),
         migrations.AddField(
             model_name='document',
@@ -145,11 +125,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='journal',
-            name='collection',
-            field=models.ForeignKey(verbose_name='collection', blank=True, to='mcm.Collection', null=True),
-        ),
-        migrations.AddField(
-            model_name='journal',
             name='collection_num',
             field=models.CharField(max_length=50, verbose_name='collection number', blank=True),
         ),
@@ -162,11 +137,6 @@ class Migration(migrations.Migration):
             model_name='journal',
             name='format',
             field=models.CharField(max_length=50, verbose_name='format', blank=True),
-        ),
-        migrations.AddField(
-            model_name='journal',
-            name='language',
-            field=models.ManyToManyField(to='mcm.Language', verbose_name='language'),
         ),
         migrations.AddField(
             model_name='journal',
@@ -205,11 +175,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='video',
-            name='collection',
-            field=models.ForeignKey(verbose_name='collection', blank=True, to='mcm.Collection', null=True),
-        ),
-        migrations.AddField(
-            model_name='video',
             name='collection_num',
             field=models.CharField(max_length=50, verbose_name='collection number', blank=True),
         ),
@@ -227,11 +192,6 @@ class Migration(migrations.Migration):
             model_name='video',
             name='duration',
             field=models.CharField(max_length=50, verbose_name='duration', blank=True),
-        ),
-        migrations.AddField(
-            model_name='video',
-            name='language',
-            field=models.ManyToManyField(to='mcm.Language', verbose_name='language'),
         ),
         migrations.AddField(
             model_name='videofile',
