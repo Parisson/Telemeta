@@ -281,7 +281,7 @@ class Journal(Document, isEdited):
                                        verbose_name=_('thematic classification'),
                                        blank=True, null=True)
     format = models.CharField(_('format'), blank=True, max_length=50)
-    volume = models.CharField(_('volume'), blank=True, max_length=10)
+    volume = models.CharField(_('volume'), blank=True, max_length=50)
     number = models.CharField(_('numéro de revue'), blank=True, max_length=50)
 
     class Meta:
