@@ -280,7 +280,7 @@ class Journal(Document, isEdited):
     classification = models.ForeignKey(Classification,
                                        verbose_name=_('thematic classification'),
                                        blank=True, null=True)
-    format = models.CharField(_('format'), blank=True, max_length=50)
+    format = models.CharField(_('format'), blank=True, max_length=100)
     volume = models.CharField(_('volume'), blank=True, max_length=50)
     number = models.CharField(_('numéro de revue'), blank=True, max_length=50)
 
