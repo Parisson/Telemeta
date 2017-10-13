@@ -257,7 +257,11 @@ class Command(BaseCommand):
                 elif child.tag == 'Collection':
                     collection = child.text
                     if collection:
-                        collection_obj, created = Collection.objects.get_or_create(name=collection)
+                        try:
+                            collection_obj, created = Collection.objects.get_or_create(name=collection)
+                        except Collection.MultipleObjectsReturned as e:
+                            print collection
+                            raise e
                         doc.collection = collection_obj
                 elif child.tag == 'Langue':
                     language = child.text
