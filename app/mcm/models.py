@@ -166,9 +166,9 @@ class Classification(HasName):
 
 
 class isEdited(models.Model):
-    # language = models.ManyToManyField(Language, verbose_name=_('language'))
-    # collection = models.ForeignKey(Collection, verbose_name=_('collection'),
-    #                               blank = True, null = True)
+    language = models.ManyToManyField(Language, verbose_name=_('language'))
+    collection = models.ForeignKey(Collection, verbose_name=_('collection'),
+                                   blank=True, null=True)
     collection_num = models.CharField(_('collection number'),
                                       blank=True, max_length=50)
     companion = models.CharField(_('matériel d\'accompagnement'),
