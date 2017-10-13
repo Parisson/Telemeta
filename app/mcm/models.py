@@ -165,7 +165,7 @@ class Classification(HasName):
         verbose_name = _('classification thématique')
 
 
-class EditedDocument(Document):
+class isEdited(models.Model):
     language = models.ManyToManyField(Language, verbose_name=_('language'))
     collection = models.ForeignKey(Collection, verbose_name=_('collection'),
                                    blank=True, null=True)
@@ -216,7 +216,7 @@ class Notice(Document):
     event_edition = models.ForeignKey(EventEdition, blank=True, null=True)
 
 
-class Disc(EditedDocument):
+class Disc(Document, isEdited):
     # Type: b-Disque
 
     support = models.ForeignKey(Support, verbose_name=_('support'),
@@ -230,7 +230,7 @@ class Disc(EditedDocument):
         verbose_name_plural = "B - Disques"
 
 
-class Video(EditedDocument):
+class Video(Document, isEdited):
     # Type : c-Vidéo DVD&VHS
     support = models.ForeignKey(Support, verbose_name=_('support'),
                                 blank=True, null=True)
@@ -258,7 +258,7 @@ class VideoFile(Document):
         verbose_name_plural = "D - Vidéos en ligne"
 
 
-class BookThesis(EditedDocument):
+class BookThesis(Document, isEdited):
     # Type : f-Ouvrage & Thèse
     illustration = models.ForeignKey(Illustration, verbose_name=_('illustration'),
                                      blank=True, null=True)
@@ -272,7 +272,7 @@ class BookThesis(EditedDocument):
         verbose_name_plural = "F - Ouvrages & Thèses"
 
 
-class Journal(EditedDocument):
+class Journal(Document, isEdited):
     # Type : g-Revue
     illustration = models.ForeignKey(Illustration, verbose_name=_('illustration'),
                                      blank=True, null=True)
