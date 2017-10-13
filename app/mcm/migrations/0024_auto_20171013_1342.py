@@ -67,11 +67,11 @@ class Migration(migrations.Migration):
         ),
         migrations.RemoveField(
             model_name='editeddocument',
-            name='document_ptr',
+            name='language',
         ),
         migrations.RemoveField(
             model_name='editeddocument',
-            name='language',
+            name='document_ptr',
         ),
         migrations.AddField(
             model_name='bookthesis',
