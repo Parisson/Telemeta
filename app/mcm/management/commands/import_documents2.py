@@ -262,7 +262,7 @@ class Command(BaseCommand):
                 elif child.tag == 'Langue':
                     language = child.text
                     if Language:
-                        language_obj, created = Language.objects.get_or_create(name=Langue)
+                        language_obj, created = Language.objects.get_or_create(name=Language)
                         doc.language.add(language_obj)
                  
                 elif child.tag == 'Nbre_No_de_page':
