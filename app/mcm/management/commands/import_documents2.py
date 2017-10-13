@@ -274,7 +274,7 @@ class Command(BaseCommand):
                     doc.duration = child.text
                 elif child.tag == 'Illustration':
                     illustration_obj, c = Illustration.objects.get_or_create(name=child.text)
-                    doc.illustration = support_obj
+                    doc.illustration = illustration_obj
                 elif child.tag == 'Couleur':
                     if child.text == 'Couleur':
                         doc.color = 'C'
