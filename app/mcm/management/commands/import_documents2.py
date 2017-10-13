@@ -10,6 +10,7 @@ from ...models import Reference
 from ...models import Event, EventEdition, EventType, EventVenue
 from ...models import GeographicalClassification
 from ...models import Collection, Language
+from ...models import Support, Captation, Illustration, EditionPlace, Classification
 
 from skosxl.models import Concept
 
@@ -36,6 +37,7 @@ IGNORED_FIELDS = ['auteurs_val',
                   # Anciens Inutiles
                   'url_site_internet',
                   'ISBN_ISSN',
+                  'Notes_ISBD',
                   'Procede_image',
                   'Localisation']
 
@@ -257,30 +259,53 @@ class Command(BaseCommand):
                     if collection:
                         collection_obj, created = Collection.objects.get_or_create(name=collection)
                         doc.collection.add(collection)
-                elif child.tag == 'Language':
+                elif child.tag == 'Langue':
                     language = child.text
                     if Language:
                         language_obj, created = Language.objects.get_or_create(name=Langue)
                         doc.language.add(language_obj)
-                 # Tag non traité :
-                #['Nbre_No_de_page',
-                #'Support',
-                #'Duree',
-                #'Illustration',
-                #'Couleur',
-                #'Langue',
-                #'Type_Captation',
-                #'No_de_collection',
-                #'Format',
-                #'Lieu_d_edition',
-                #'Classement_Thematique',
-                #'Materiel_d_accompagnement',
-                #'Sujet_photographie',
-                #'Volume',
-                #'Contient_Contenu_dans',
-                #'No_revue',
-                #'Notes_ISBD']
+                 
+                elif child.tag == 'Nbre_No_de_page':
+                    doc.page_num = child.text
+                elif child.tag == 'Support':
+                    support_obj, c = Support.objects.get_or_create(name=child.text)
+                    doc.support = support_obj
+                elif child.tag == 'Duree':
+                    doc.duration = child.text
+                elif child.tag == 'Illustration':
+                    illustration_obj, c = Illustration.objects.get_or_create(name=child.text)
+                    doc.illustration = support_obj
+                elif child.tag == 'Couleur':
+                    if child.text == 'Couleur':
+                        doc.color = 'C'
+                    elif child.text == 'Noir et Blanc':
+                        doc.color = 'NB'
+                elif child.tag == 'Type_Captation':
+                    captation_obj, c = Captation.objects.get_or_create(name=child.text)
+                    doc.captation = captation_obj
+                elif child.tag == 'No_de_collection':
+                    doc.collection_num = child.text
+                elif child.tag == 'Format':
+                    doc.format = child.text
                 
+                elif child.tag == 'Lieu_d_edition':
+                    edition_obj, c = EditionPlace.objects.get_or_create(name=child.text)
+                    doc.edition_place = edition_obj
+                elif child.tag == 'Classement_Thematique':
+                    classif_obj, c = Classification.objects.get_or_create(name=child.text)
+                    doc.classification = classif_obj
+                elif child.tag == 'Materiel_d_accompagnement':
+                    doc.companion = child.text
+                    
+                elif child.tag == 'Sujet_photographie':
+                    doc.subject =  child.text
+                elif child.tag == 'Volume':
+                    doc.volume =  child.text
+                
+                elif child.tag == 'No_revue':
+                    doc.number =  child.text
+                # Tag non traité :
+                #'Contient_Contenu_dans', : traité à part
                 elif child.tag in IGNORED_FIELDS:
                     continue
                 else:

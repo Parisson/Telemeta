@@ -9,7 +9,6 @@ from skosxl.models import Concept
 from filer.fields.image import FilerImageField
 
 
-
 class HasName(models.Model):
     name = models.CharField(max_length=191, blank=False,
                             verbose_name=_('name'))
@@ -79,10 +78,12 @@ class EventEdition(models.Model):
         else:
             return ' - '.join([self.event.name, self.edition.__str__()])
 
+
 class Support(HasName):
 
     class Meta:
         verbose_name = _('Support')
+
 
 DOCUMENT_TYPES = (
     ('a', 'Notice spectacle'),
@@ -102,52 +103,81 @@ DOCUMENT_TYPES = (
 COLORS = (('C', 'Couleur'),
           ('NB', 'Noir et Blanc'))
 
+
 class Document(models.Model):
 
     code = models.CharField(_('code'), unique=False, blank=True, max_length=191)  # Cote
     old_id = models.IntegerField(unique=True, blank=False)   # Record No
-    old_doc_no = models.IntegerField(unique=True, null=True) # Doc no
+    old_doc_no = models.IntegerField(unique=True, null=True)  # Doc no
     authors = models.ManyToManyField(Author, through='AuthorRole', verbose_name=_('author'))  # Auteur
-    title = models.TextField(_('title'))  # TODO change to Charfield(_('title', max_length=191) after database cleanup # Titre
+    title = models.TextField(_('title'))  #  TODO change to Charfield(_('title', max_length=191) after database cleanup # Titre
 
     keywords = models.ManyToManyField(Concept, verbose_name=_('keyword'))  # <Mots-cles>Toraja</Mots-cles>
     text = models.TextField(default='', verbose_name=_('text'))
     related = models.ManyToManyField("self", verbose_name=_('see also'))  # see also / Voir aussi
-    contient_contenu_dans = models.ManyToManyField("self", verbose_name=_('Contient ou contenu dans')) 
-    parents = models.ManyToManyField("self", verbose_name=_('Contient ou contenu dans')) # A générer à partir de contient_contenu lorsque la hiérarchie est évidente
+    contient_contenu_dans = models.ManyToManyField("self", verbose_name=_('Contient ou contenu dans'))
+    parents = models.ManyToManyField("self", verbose_name=_('Contient ou contenu dans'))  # A générer à partir de contient_contenu lorsque la hiérarchie est évidente
 
-    doc_type = models.CharField(_('document type'), blank=True, choices= DOCUMENT_TYPES, max_length=32)
+    doc_type = models.CharField(_('document type'), blank=True, choices=DOCUMENT_TYPES, max_length=32)
 
     references = models.ManyToManyField(Reference, verbose_name=_('reference'))  # <Reference>Le Chant du Monde</Reference>
-    copyright_text =  models.CharField(_('copyright'), default='', max_length=191)
+    copyright_text = models.CharField(_('copyright'), default='', max_length=191)
     page_num = models.CharField(_('number of pages'), blank=True, max_length=50)
     #<Classement_Thematique>Costume et accessoire</Classement_Thematique>
-    
+
     def __unicode__(self):
         return self.title
 
+
 class Language(HasName):
+
     class Meta:
         verbose_name = _('language')
 
 
 class Collection(HasName):
+
     class Meta:
         verbose_name = _('collection')
-        
+
+
 class Illustration(HasName):
+
     class Meta:
         verbose_name = _('illustration')
-        
+
+
+class Captation(HasName):
+
+    class Meta:
+        verbose_name = _('type de captation')
+
+
+class EditionPlace(HasName):
+
+    class Meta:
+        verbose_name = _('lieu d\'édition')
+
+
+class Classification(HasName):
+
+    class Meta:
+        verbose_name = _('classification thématique')
+
 
 class EditedDocument(Document):
-    edition_place = models.CharField(max_length=191, blank=False,
-                            verbose_name=_('edition_place'))
     language = models.ManyToManyField(Language, verbose_name=_('language'))
     collection = models.ForeignKey(Collection, verbose_name=_('collection'),
                                    blank=True, null=True)
+    collection_num = models.CharField(_('collection number'),
+                                      blank=True, max_length=50)
+    companion = models.CharField(_('matériel d\'accompagnement'),
+                                 blank=True, max_length=50)
 
-    
+    class Meta:
+        abstract = True
+
+
 class AuthorRole(models.Model):
 
     author = models.ForeignKey(Author, blank=False, verbose_name=_('author'), on_delete=models.CASCADE)  # Auteur
@@ -186,11 +216,13 @@ class Notice(Document):
     event_edition = models.ForeignKey(EventEdition, blank=True, null=True)
 
 
-class Disc(Document):
+class Disc(EditedDocument):
     # Type: b-Disque
 
     support = models.ForeignKey(Support, verbose_name=_('support'),
                                 blank=True, null=True)
+    captation = models.ForeignKey(Captation, verbose_name=_('captation'),
+                                  blank=True, null=True)
     duration = models.CharField(_('duration'), blank=True, max_length=50)
 
     class Meta:
@@ -198,12 +230,14 @@ class Disc(Document):
         verbose_name_plural = "B - Disques"
 
 
-class Video(Document):
+class Video(EditedDocument):
     # Type : c-Vidéo DVD&VHS
     support = models.ForeignKey(Support, verbose_name=_('support'),
                                 blank=True, null=True)
+    captation = models.ForeignKey(Captation, verbose_name=_('captation'),
+                                  blank=True, null=True)
     duration = models.CharField(_('duration'), blank=True, max_length=50)
-    color = models.CharField(_('color'), blank=True, choices= COLORS, max_length=2)
+    color = models.CharField(_('color'), blank=True, choices=COLORS, max_length=2)
 
     class Meta:
         verbose_name = "C - Vidéo DVD&VHS"
@@ -214,35 +248,47 @@ class VideoFile(Document):
     # Type : d-Vidéo en ligne
     support = models.ForeignKey(Support, verbose_name=_('support'),
                                 blank=True, null=True)
+    captation = models.ForeignKey(Captation, verbose_name=_('captation'),
+                                  blank=True, null=True)
     duration = models.CharField(_('duration'), blank=True, max_length=50)
-    color = models.CharField(_('color'), blank=True, choices= COLORS, max_length=2)
+    color = models.CharField(_('color'), blank=True, choices=COLORS, max_length=2)
 
     class Meta:
         verbose_name = "D - Vidéo en ligne"
         verbose_name_plural = "D - Vidéos en ligne"
 
 
-class BookThesis(Document):
+class BookThesis(EditedDocument):
     # Type : f-Ouvrage & Thèse
     illustration = models.ForeignKey(Illustration, verbose_name=_('illustration'),
                                      blank=True, null=True)
-    color = models.CharField(_('color'), blank=True, choices= COLORS, max_length=2)
+    color = models.CharField(_('color'), blank=True, choices=COLORS, max_length=2)
+    format = models.CharField(_('format'), blank=True, max_length=50)
+    edition_place = models.ForeignKey(EditionPlace, verbose_name=_('edition place'),
+                                      blank=True, null=True)
 
     class Meta:
         verbose_name = "F - Ouvrage & Thèse"
         verbose_name_plural = "F - Ouvrages & Thèses"
 
 
-class Journal(Document):
+class Journal(EditedDocument):
     # Type : g-Revue
     illustration = models.ForeignKey(Illustration, verbose_name=_('illustration'),
                                      blank=True, null=True)
+    classification = models.ForeignKey(Classification,
+                                       verbose_name=_('thematic classification'),
+                                       blank=True, null=True)
+    format = models.CharField(_('format'), blank=True, max_length=50)
+    volume = models.CharField(_('volume'), blank=True, max_length=10)
+    number = models.CharField(_('numéro de revue'), blank=True, max_length=10)
+
     class Meta:
         verbose_name = "G - Revue"
         verbose_name_plural = "G - Revues"
 
 
-#class Article(Document):
+# class Article(Document):
 #    # Type : h-Article
 #
 #    class Meta:
@@ -256,7 +302,11 @@ class Photo(Document):
     archive_dvd = models.CharField(_('DVD archive'), max_length=191)  # Cote DVD
     support = models.ForeignKey(Support, verbose_name=_('support'),
                                 blank=True, null=True)
-    color = models.CharField(_('color'), blank=True, choices= COLORS, max_length=2)
+    captation = models.ForeignKey(Captation, verbose_name=_('captation'),
+                                  blank=True, null=True)
+    color = models.CharField(_('color'), blank=True, choices=COLORS, max_length=2)
+    format = models.CharField(_('format'), blank=True, max_length=50)
+    subject = models.CharField(_('sujet photographié'), blank=True, max_length=191)
 
     class Meta:
         verbose_name = "I - Photo"
@@ -266,8 +316,9 @@ class Photo(Document):
 class PosterBooklet(Document):
     # Type : j-Affiche - Brochure
     illustration = models.ForeignKey(Illustration, verbose_name=_('illustration'),
-                                   blank=True, null=True)
-    color = models.CharField(_('color'), blank=True, choices= COLORS, max_length=2)
+                                     blank=True, null=True)
+    color = models.CharField(_('color'), blank=True, choices=COLORS, max_length=2)
+    format = models.CharField(_('format'), blank=True, max_length=50)
 
     class Meta:
         verbose_name = "J - Affiche-Brochure"
@@ -276,6 +327,7 @@ class PosterBooklet(Document):
 # Type :k-Pédagogique
 # class Educational(Document):
 #    pass
+
 
 class Object(Document):
     # Type : l-Objet
@@ -288,10 +340,11 @@ class Object(Document):
 # Nombre_de_partie>2</Nombre_de_partie>
 # Dimension_(HxLxP)>Pi&#232;ce 1 : 149x106 cmPi&#232;ce 2 : 158x238 cm</Dimension_(HxLxP)>
 # Localisation # Centre de Documentation sur les Spectacles du Monde, Vitr&#233;, France.
-    
+
     class Meta:
         verbose_name = "L - Objet"
         verbose_name_plural = "L-Objets"
+
 
 class Image(models.Model):
     document = models.ForeignKey(Document, blank=False)
@@ -302,11 +355,11 @@ class Image(models.Model):
     screen_file = FilerImageField(null=True, blank=True,
                                   related_name="screen_image")
     original_file = FilerImageField(null=True, blank=True,
-                                  related_name="original_image")
+                                    related_name="original_image")
     #'Pa_Era': 'path_screen',
     #'Pa_Prv': 'path_preview',
     #'Pa_Or': 'path_original',
-    order =  models.IntegerField(blank=False)
+    order = models.IntegerField(blank=False)
     #'Orr' : 'order',
     #'Ar_s_r': 'site_origin',
     #'ar': 'notes',
@@ -318,7 +371,7 @@ class Image(models.Model):
     image_height = models.IntegerField()
     screen_image_width = models.IntegerField()
     screen_image_height = models.IntegerField()
-    
+
     #'D_réaur': 'date_creation',
     #'D_a': 'doc_size',
     #'D_': 'doc_type',
@@ -337,4 +390,3 @@ class Image(models.Model):
     #'DModA': 'modification_year',
     #'HCre': 'creation_time',
     #'HMod': 'modification_time'
-    
