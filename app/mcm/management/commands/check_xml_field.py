@@ -66,7 +66,7 @@ class Command(BaseCommand):
 
         list_doc = []
         list_values = []
-
+        
         for document in root.iter('Document'):
             doc_type = h.unescape(document.findtext('Type'))
             if doc_type in skip_document_types:
@@ -84,3 +84,5 @@ class Command(BaseCommand):
         
         print "Values : %s" % list_values
         print "Doc types : %s" % list_doc
+        max_length = max([len(val) for val in list_values])
+        print "Max Field length : %d" % max_length
