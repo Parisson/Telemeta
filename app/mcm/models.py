@@ -170,7 +170,7 @@ class isEdited(models.Model):
     collection = models.ForeignKey(Collection, verbose_name=_('collection'),
                                    blank=True, null=True)
     collection_num = models.CharField(_('collection number'),
-                                      blank=True, max_length=50)
+                                      blank=True, max_length=191)
     companion = models.CharField(_('matériel d\'accompagnement'),
                                  blank=True, max_length=50)
 
