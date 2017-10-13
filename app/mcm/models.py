@@ -282,7 +282,7 @@ class Journal(Document, isEdited):
                                        blank=True, null=True)
     format = models.CharField(_('format'), blank=True, max_length=50)
     volume = models.CharField(_('volume'), blank=True, max_length=10)
-    number = models.CharField(_('numéro de revue'), blank=True, max_length=10)
+    number = models.CharField(_('numéro de revue'), blank=True, max_length=50)
 
     class Meta:
         verbose_name = "G - Revue"
