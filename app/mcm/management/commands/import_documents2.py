@@ -258,7 +258,7 @@ class Command(BaseCommand):
                     collection = child.text
                     if collection:
                         collection_obj, created = Collection.objects.get_or_create(name=collection)
-                        doc.collection.add(collection)
+                        doc.collection = collection_obj
                 elif child.tag == 'Langue':
                     language = child.text
                     if Language:
