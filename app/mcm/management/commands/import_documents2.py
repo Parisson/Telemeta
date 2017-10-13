@@ -258,6 +258,8 @@ class Command(BaseCommand):
                     collection = child.text
                     if collection == 'INEDIT':
                         collection = u'Inédit'
+                    if collection == 'Unesco':
+                        collection = 'UNESCO'
                     if collection:
                         try:
                             collection_obj, created = Collection.objects.get_or_create(name=collection)
