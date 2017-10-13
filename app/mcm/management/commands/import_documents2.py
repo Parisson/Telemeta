@@ -256,6 +256,8 @@ class Command(BaseCommand):
                     doc.copyright_text = child.text
                 elif child.tag == 'Collection':
                     collection = child.text
+                    if collection == 'INEDIT':
+                        collection = u'Inédit'
                     if collection:
                         try:
                             collection_obj, created = Collection.objects.get_or_create(name=collection)
