@@ -72,7 +72,7 @@ class MediaCollection(MediaResource):
     cultural_area         = CharField(_('cultural area'), help_text=_('Cultural area ; Cultural area'))
     language_iso          = ForeignKey('Language', related_name="items", verbose_name=_('Language (ISO norm)'), blank=True, null=True, on_delete=models.SET_NULL)
     language              = CharField(_('language'), help_text=_('Language ; language'))
-   
+
 
     # Legal notices
     collector             = CharField(_('recordist'), help_text=_('First name, Last name ; First name, Last name'))
@@ -308,10 +308,11 @@ class MediaCollectionPerformance(MediaResource):
     instrument      = ForeignKey('Instrument', related_name="performances", verbose_name=_('composition'), blank=True, null=True, on_delete=models.SET_NULL)
     alias           = ForeignKey('InstrumentAlias', related_name="performances", verbose_name=_('precisions'), blank=True, null=True, on_delete=models.SET_NULL)
     hornbostel      = ForeignKey('HornbostelSachs', related_name="performances", verbose_name=_('Hornbostel-Sachs classification'), blank=True, null=True, on_delete=models.SET_NULL)
-    musician        = CharField(_('informer'), help_text=_('First name, Last name'))
+    musician        = ForeignKey('Authority', related_name="performances", verbose_name=_('informer'), blank=True, null=True, on_delete=models.SET_NULL )
+
 
     class Meta(MetaCore):
         db_table = 'media_collection_performances'
 
     def __unicode__(self):
-        return self.musician+"; "+self.instrument.name
+        return self.musician.last_name+","+self.musician.first_name+"; "+self.instrument.name

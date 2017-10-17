@@ -75,6 +75,7 @@ class MediaCollectionForm(ModelForm):
         model = MediaCollection
         exclude = model.exclude
 
+
     def clean_doctype_code(self):
         return self.cleaned_data['doctype_code'] or 0
 
@@ -90,7 +91,7 @@ class MediaItemForm(ModelForm):
                         }),
                 label="informers",
             )
-    
+
 
     class Meta:
         model = MediaItem
@@ -98,7 +99,7 @@ class MediaItemForm(ModelForm):
 
     def clean_code(self):
         return self.cleaned_data['code'] or None
-        
+
     def __init__(self, *args, **kwargs):
         super(MediaItemForm, self).__init__(*args, **kwargs)
         if self.instance and self.instance.pk:

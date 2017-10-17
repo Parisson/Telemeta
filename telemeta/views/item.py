@@ -47,14 +47,14 @@ class ItemBaseMixin(TelemetaBaseMixin):
 
     public_graphers  = ['waveform_centroid' ,'waveform_simple',
                         'spectrogram', 'spectrogram_log']
-    
+
     def get_graphers(self):
         graphers = []
         user = self.request.user
         graphers_access = (user.is_staff
                            or user.is_superuser
                            or user.has_perm('can_run_analysis'))
-           
+
         for grapher in self.graphers:
             if (not graphers_access
                 and grapher.id() not in self.public_graphers):
@@ -289,7 +289,7 @@ class ItemView(ItemBaseMixin):
         if 'waveform_centroid' in grapher_id and self.cache_data.exists(old_image_file):
             image_file = old_image_file
 
-        path = self.cache_data.dir + os.sep + image_file    
+        path = self.cache_data.dir + os.sep + image_file
         if not self.cache_data.exists(image_file):
             source, _ = item.get_source()
             if source:
