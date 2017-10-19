@@ -8,4 +8,6 @@ echo "Backuping: "$FILE
 
 mysqldump -hdb -uroot -p$MYSQL_ROOT_PASSWORD telemeta | gzip > $DIR$FILE
 
+rename 's/\:/\_/g' $DIR$FILE
+
 echo "Done!"
