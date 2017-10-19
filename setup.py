@@ -75,7 +75,7 @@ setup(
         'django-environ',
         'redis',
         'Werkzeug',
-        'django-dirtyfields',
+        'django-dirtyfields==1.2.1',
         'sqlparse==0.2.2',
         'lxml'
     ],
