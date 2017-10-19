@@ -3,7 +3,13 @@
 setuptools
 wheel
 -e .
+
 # Tests
 pytest-django==3.1.2
 pytest-cov
 factory-boy
+
+#doc
+pelican
+pdoc
+ghp-import
