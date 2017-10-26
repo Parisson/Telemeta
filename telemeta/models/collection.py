@@ -316,4 +316,4 @@ class MediaCollectionPerformance(MediaResource):
         db_table = 'media_collection_performances'
 
     def __unicode__(self):
-        return self.musician.last_name+","+self.musician.first_name+"; "+self.instrument.name
+        return self.musician.last_name+","+self.musician.first_name+"; "+self.instrument.name+";"+self.alias.name
