@@ -102,7 +102,7 @@ class UserProfileAdmin(UserAdmin):
 
 class PlaylistAdmin(admin.ModelAdmin):
     search_fields = ['title', 'public_id']
-    
+
 class HornbostelAdmin(admin.ModelAdmin):
     search_fields = ['number', 'name']
     ordering = ['number']
@@ -110,6 +110,10 @@ class HornbostelAdmin(admin.ModelAdmin):
 class InstitutionAdmin(admin.ModelAdmin):
     search_fields = ['name']
     ordering = ['name']
+
+class AuthorityAdmin(admin.ModelAdmin):
+    search_fields = ['last_name','first_name']
+    ordering = ['last_name','first_name']
 
 admin.site.register(MediaFonds, MediaFondsAdmin)
 admin.site.register(MediaCorpus, MediaCorpusAdmin)
@@ -140,4 +144,4 @@ admin.site.register(Playlist, PlaylistAdmin)
 
 admin.site.register(HornbostelSachs, HornbostelAdmin)
 admin.site.register(Institution, InstitutionAdmin)
-
+admin.site.register(Authority, AuthorityAdmin)

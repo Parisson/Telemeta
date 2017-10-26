@@ -10,7 +10,10 @@
                             {% else %}
                                 <li><a href="{% url "telemeta-home" %}" class="blue">{% trans "Home" %}</a></li>
                             {% endif %}
-
+                            
+                            <li><a href="{% url "telemeta-institutions" %}" class="green">{% trans "Institutions" %}</a>
+                            </li>
+                            
                             <li><a href="#archives#" class="green">{% trans "Archives" %}</a>
                                 <ul>
                                     <li><a href="{% url "telemeta-resource-list" "fonds" %}">{% trans "Fonds" %}</a></li>
@@ -18,9 +21,6 @@
                                     <li><a href="{% url "telemeta-collections" %}">{% trans "Collections" %}</a></li>
                                     <li><a href="{% url "telemeta-items" %}">{% trans "Items" %}</a></li>
                                 </ul>
-                            </li>
-
-                            <li><a href="{% url "telemeta-institutions" %}" class="green">{% trans "Institutions" %}</a>
                             </li>
                             
                             <li><a href="{% url "telemeta-geo-continents" %}"

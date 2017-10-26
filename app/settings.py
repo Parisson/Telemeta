@@ -118,6 +118,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
+            '/srv/src/telemeta/telemeta/templates/telemeta'
             # insert your TEMPLATE_DIRS here
         ],
         'APP_DIRS': True,

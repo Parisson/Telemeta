@@ -124,7 +124,7 @@
               }
         </script>
       </div>
-       
+
        <!--  Tab Analyze, for MSHS  -->
        <div class="tab-pane" id="tab_desc">
            <div class="block-grey">
@@ -185,16 +185,16 @@
                 {% bootstrap_field  form.mshs_group %}
                 <div class="form-group">
                     <label class="control-label" for="id_mshs_informers">Informateurs</label>
-                    {{ form.mshs_informers }}
+                    {{ form.mshs_informers}}
                 </div>
                 <script type="text/javascript">
                     $(".select2-container").select2(
-                        {width:100%}
+                        {width:'100%'}
                     );
                 </script>
             </div>
         </div>
-      
+
       {% for formset in inlines %}
       <div class="tab-pane" id="{{ formset.prefix }}">
           <!-- {% if formset.prefix == "performances" %}
