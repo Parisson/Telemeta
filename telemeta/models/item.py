@@ -174,7 +174,7 @@ class MediaItem(MediaResource):
     def keywords(self):
         return ContextKeyword.objects.filter(item_relations__item = self)
     keywords.verbose_name = _('keywords')
-    
+
 
     @property
     def public_id(self):
@@ -427,12 +427,12 @@ class MediaItemPerformance(ModelCore):
     alias           = ForeignKey('InstrumentAlias', related_name="performancesItem", verbose_name=_('vernacular name'), blank=True, null=True, on_delete=models.SET_NULL)
     instruments_num = CharField(_('number'))
     musicians       = CharField(_('interprets'))
-    
+
     class Meta(MetaCore):
         db_table = 'media_item_performances'
 
     def __unicode__(self):
-        return self.musicians+"; "+self.instrument.name
+        return self.musicians
 
 
 class MediaItemAnalysis(ModelCore):
