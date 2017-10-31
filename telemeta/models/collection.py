@@ -76,8 +76,7 @@ class MediaCollection(MediaResource):
 
     # Legal notices
     collector             = CharField(_('recordist'), help_text=_('First name, Last name ; First name, Last name'))
-    informer              = CharField(_('informer'), help_text=_('First name, Last name ; First name, Last name'))###
-    informer_details      = CharField(_('informer details'))###
+    informer              = models.ManyToManyField('Authority', related_name="informers", verbose_name=_('informer'), blank=True, null=True)
     publisher             = WeakForeignKey('Publisher', related_name="collections", verbose_name=_('publisher'), blank=True, null=True, on_delete=models.SET_NULL)
     publisher_collection  = WeakForeignKey('PublisherCollection', related_name="collections", verbose_name=_('publisher collection'), blank=True, null=True, on_delete=models.SET_NULL)
     publisher_serial      = CharField(_('publisher serial number'))
