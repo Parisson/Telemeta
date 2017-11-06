@@ -24,4 +24,4 @@
 app:
   ports:
     - "8888:8888"
-  command: "python manage.py shell_plus --notebook"
+  command: "/srv/app/scripts/notebook.sh"

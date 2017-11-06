@@ -367,11 +367,14 @@ BOWER_INSTALLED_APPS = (
     # 'https://github.com/Parisson/ui.git',
 )
 
+NOTEBOOK_DIR = MEDIA_ROOT + 'notebooks'
+if not os.path.exists(NOTEBOOK_DIR):
+    os.makedirs(NOTEBOOK_DIR)
 
 NOTEBOOK_ARGUMENTS = [
     '--ip=0.0.0.0', # reach notebooks from outside
     '--port=8888',  # std port
     '--no-browser', # don't start browser on start
     '--allow-root',
-    '--notebook-dir', '/srv/app'
+    '--notebook-dir', NOTEBOOK_DIR
 ]
