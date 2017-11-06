@@ -24,4 +24,4 @@
 app:
   ports:
     - "8888:8888"
-  command: sh -c "cd /srv/src/timeside/docs/ipynb; jupyter notebook --allow-root --no-browser --ip=0.0.0.0"
+  command: "python manage.py shell_plus --notebook"

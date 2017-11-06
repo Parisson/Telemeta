@@ -366,3 +366,12 @@ BOWER_INSTALLED_APPS = (
     # 'https://github.com/Parisson/loaders.git',
     # 'https://github.com/Parisson/ui.git',
 )
+
+
+NOTEBOOK_ARGUMENTS = [
+    '--ip=0.0.0.0', # reach notebooks from outside
+    '--port=8888',  # std port
+    '--no-browser', # don't start browser on start
+    '--allow-root',
+    '--notebook-dir', '/srv/app'
+]
