@@ -76,8 +76,7 @@ class MediaCollection(MediaResource):
 
     # Legal notices
     collector             = CharField(_('recordist'), help_text=_('First name, Last name ; First name, Last name'))
-    informer              = CharField(_('informer'), help_text=_('First name, Last name ; First name, Last name'))###
-    informer_details      = CharField(_('informer details'))###
+    informer              = models.ManyToManyField('Authority', related_name="informers", verbose_name=_('informer'), blank=True, null=True)
     publisher             = WeakForeignKey('Publisher', related_name="collections", verbose_name=_('publisher'), blank=True, null=True, on_delete=models.SET_NULL)
     publisher_collection  = WeakForeignKey('PublisherCollection', related_name="collections", verbose_name=_('publisher collection'), blank=True, null=True, on_delete=models.SET_NULL)
     publisher_serial      = CharField(_('publisher serial number'))
@@ -102,6 +101,7 @@ class MediaCollection(MediaResource):
     comment               = TextField(_('comment'))
     metadata_writer       = ForeignKey('MetadataWriter', related_name="collections", verbose_name=_('record writer'), blank=True, null=True, on_delete=models.SET_NULL)
     archiver_notes        = TextField(_('archiver notes'))
+    items_done            = CharField(_('items finished'))
     collector_is_creator  = BooleanField(_('recordist identical to depositor'))
     is_published          = BooleanField(_('published'))
     conservation_site     = CharField(_('conservation site'))
@@ -315,4 +315,4 @@ class MediaCollectionPerformance(MediaResource):
         db_table = 'media_collection_performances'
 
     def __unicode__(self):
-        return self.musician.last_name+","+self.musician.first_name+"; "+self.instrument.name
+        return self.musician.last_name+","+self.musician.first_name+"; "+self.instrument.name+";"+self.alias.name

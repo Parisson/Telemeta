@@ -66,6 +66,17 @@ class MediaCollectionForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(MediaCollectionForm, self).__init__(*args, **kwargs)
+        self.fields["informer"] = forms.ModelMultipleChoiceField(
+            queryset = Authority.objects.all(),
+            widget=Select2MultipleWidget(
+            attrs={
+                'title': 'Liste des informateurs',
+                'data-width':'100%',
+                }),
+            label="informers",
+            required=False
+        )
+
         if '_I_' in self.instance.code:
             self.fields["reference"].widget = HiddenInput()
         if self.instance.computed_duration:
