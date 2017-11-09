@@ -12,11 +12,13 @@ class Authority(ModelCore):
     "People who produced something."
 
     last_name = CharField(_('last name'), required=True)
-    first_name = CharField(_('first name'), required=True)
+    first_name = CharField(_('first name') )
+    civilite =  CharField(_('civilite') )
+    alias =  CharField( _('alias') )
     birth_date = DateField(null=True)
-    birth_location = CharField( _('location'), null=True, blank=True )
+    birth_location = ForeignKey('Location', related_name='birth_location', verbose_name=_('birth location'), blank=True, null=True, on_delete=models.SET_NULL)
     death_date = DateField( null=True )
-    death_location = CharField( _('location'), null=True, blank=True )
+    death_location = ForeignKey('Location',related_name='death_location', verbose_name=_('death location'), blank=True, null=True, on_delete=models.SET_NULL)
     biography = TextField( _('biography'), null=True, blank=True )
     uri = URLField(_('URI'), null=True, blank=True)
 
