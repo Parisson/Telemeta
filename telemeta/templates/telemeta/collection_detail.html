@@ -163,7 +163,7 @@
             {% endblock musical_data %}
         </div>
 
-        
+
         <div class="extraInfos">
         {% block legal_data %}
             <div>
@@ -175,7 +175,8 @@
                           <dt>{% trans "Recordist" %}</dt><dd>{{ collection.creator }}</dd>
                           {% endif%}
                         {% else %}
-                        {% dl_field collection "collector" %}
+                        <dt>Enquêteurs<dt>
+                            <dd> {% for collec in collection.collectors.all %}{{collec }},{% endfor %}<dd>
                         {% endif %}
                         {% if collection.publisher %}
                         {% dl_field collection "publisher" %}

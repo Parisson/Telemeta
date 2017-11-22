@@ -76,6 +76,16 @@ class MediaCollectionForm(ModelForm):
             label="informers",
             required=False
         )
+        self.fields["collectors"] = forms.ModelMultipleChoiceField(
+            queryset = Authority.objects.all(),
+            widget=Select2MultipleWidget(
+            attrs={
+                'title': 'Liste des enquêteurs',
+                'data-width':'100%',
+                }),
+            label="recordist",
+            required=False
+        )
 
         if '_I_' in self.instance.code:
             self.fields["reference"].widget = HiddenInput()
