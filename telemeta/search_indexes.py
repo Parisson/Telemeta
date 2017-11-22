@@ -118,7 +118,8 @@ class MediaCollectionIndex(indexes.SearchIndex, indexes.Indexable):
     location_relation = indexes.CharField()
     ethnic_group = indexes.CharField(default='')
     instruments = indexes.CharField(default='')
-    collectors = indexes.CharField(model_attr='collector', default='')
+    # FIX MSHS
+    #collectors = indexes.CharField(model_attr='collector', default='')
     recorded_from_date = indexes.DateField(model_attr='recorded_from_year', null=True)
     recorded_to_date = indexes.DateField(model_attr='recorded_to_year', null=True)
     year_published = indexes.IntegerField(model_attr='year_published', default='')
@@ -174,7 +175,7 @@ class MediaCollectionIndex(indexes.SearchIndex, indexes.Indexable):
         return u"".join('|' + instru for instru in instruments)
         """
         return instruments
-        
+
 
     def prepare_recorded_from_date(self, obj):
         if obj.recorded_from_year != 0:

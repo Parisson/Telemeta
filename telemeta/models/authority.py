@@ -29,4 +29,6 @@ class Authority(ModelCore):
         verbose_name_plural = _('authorities')
 
     def __unicode__(self):
+        if self.civilite :
+            return '%s %s %s' % (self.civilite,  self.first_name, self.last_name)
         return '%s %s' % (self.first_name, self.last_name)
