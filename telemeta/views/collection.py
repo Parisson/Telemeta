@@ -325,7 +325,7 @@ class CollectionEditView(CollectionViewMixin, UpdateWithInlinesView):
 class CollectionAddView(CollectionViewMixin, CreateWithInlinesView):
 
     template_name = 'telemeta/collection_add.html'
-    inlines = [CollectionRelatedInline, CollectionIdentifierInline]
+    inlines = [CollectionRelatedInline, CollectionIdentifierInline, CollectionPerformanceInline]
 
     def forms_valid(self, form, inlines):
         messages.info(self.request, ugettext_lazy("You have successfully added your collection."))
