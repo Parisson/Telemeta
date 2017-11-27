@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
 from telemeta.models import *
+from django.db import models
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin
+
+from markdownx.widgets import AdminMarkdownxWidget
+
 
 admin.site.unregister(User)
 
@@ -112,6 +116,9 @@ class InstitutionAdmin(admin.ModelAdmin):
     ordering = ['name']
 
 class AuthorityAdmin(admin.ModelAdmin):
+    formfield_overrides = {
+        models.TextField: {'widget': AdminMarkdownxWidget},
+    }
     search_fields = ['last_name','first_name']
     ordering = ['last_name','first_name']
 

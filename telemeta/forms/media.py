@@ -28,6 +28,7 @@ from django.forms.widgets import HiddenInput
 from django.utils.translation import ugettext_lazy as _
 
 from django_select2.forms import ( Select2MultipleWidget )
+from markdownx.fields import MarkdownxFormField
 
 
 class MediaFondsForm(ModelForm):
@@ -86,6 +87,10 @@ class MediaCollectionForm(ModelForm):
             label="recordist",
             required=False
         )
+        self.fields["description"] = MarkdownxFormField()
+        self.fields["location_details"] = MarkdownxFormField()
+        self.fields["booklet_description"] = MarkdownxFormField()
+
 
         if '_I_' in self.instance.code:
             self.fields["reference"].widget = HiddenInput()

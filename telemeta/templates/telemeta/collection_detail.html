@@ -101,7 +101,7 @@
                 <dd>{% trans collection.document_status %}</dd>
                 {% if collection.description %}
                 <dt>{% trans "Description" %}</dt>
-                <dd>{{ collection.description|html_line_break|safe }}</dd>
+                <dd>{{ collection.formatted_markdown|safe }}</dd>
                 {% endif %}
                 {% dl_field collection "recording_context" %}
                 <dt>{% trans "Recording period" %}</dt>

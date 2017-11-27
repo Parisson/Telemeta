@@ -29,6 +29,9 @@ from telemeta.models.query import *
 from telemeta.models.identifier import *
 from telemeta.models.resource import *
 
+from markdownx.models import MarkdownxField
+from markdownx.utils import markdownify
+
 # Special code regex of collections for the branch
 collection_published_code_regex = getattr(settings, 'COLLECTION_PUBLISHED_CODE_REGEX', '[A-Za-z0-9._-]*')
 collection_unpublished_code_regex = getattr(settings, 'COLLECTION_UNPUBLISHED_CODE_REGEX', '[A-Za-z0-9._-]*')
@@ -149,6 +152,14 @@ class MediaCollection(MediaResource):
             if item.file:
                 return True
         return False
+
+    @property
+    def description_markdown(self):
+        return markdownify(self.description)
+
+    @property
+    def booklet_description_markdown(self):
+        return markdownify(self.booklet_description)
 
     def __name_cmp(self, obj1, obj2):
         return unaccent_icmp(obj1.name, obj2.name)
