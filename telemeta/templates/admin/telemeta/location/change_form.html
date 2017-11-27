@@ -6,52 +6,59 @@
 
 {% block extrajs %}
     {{ block.super }}
-    
+
     {% leaflet_js %}
-    <script src="{{ STATIC_URL }}leaflet-search/dist/leaflet-search.min.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}leaflet-control-geocoder/dist/Control.Geocoder.js" type="text/javascript"></script>
+
     <script>
         function map_init_basic (map, options) {
-            bounds = L.bounds(
-                L.point( 50, -85 ),
-                L.point( 30, 0 )
-            );
-            map.setMaxZoom(18);
-            map.setMaxBounds( bounds );
-            map.fitBounds( [ [50, -85], [30, 0] ] );
-            
-            // Create a marker to identify the current location on the map
-            var markerLocation = L.marker( [ $("#id_latitude").val(), $("#id_longitude").val()],{ draggable:true } ).addTo(map);
-            markerLocation.on("drag", function(e) {
-                // When the marker is dragged ...
-                var marker = e.target;
-                var position = marker.getLatLng();
-                // ... refresh the coordinates's values (Lat, Lon )
-                $("#id_latitude").val( position.lat );
-                $("#id_longitude").val( position.lng );
-            });
-                        
-             // Add a search control on the map
-            var searchControl = new L.Control.Search({
-                url: 'http://nominatim.openstreetmap.org/search?format=json&q={s}',
-                jsonpParam: 'json_callback',
-                propertyName: 'display_name',
-                propertyLoc: ['lat','lon'],
-                marker: markerLocation, 
-                autoCollapse: true,
-                autoType: false,
-                minLength: 2,
-                zoom: 12,
-                position:'topleft',
-            });
-            
-            searchControl.on('search:locationfound', function(e) {
-                // Refresh the coordinates's values (Lat, Lon )
-                $("#id_latitude").val( e.latlng.lat );
-                $("#id_longitude").val( e.latlng.lng );
-            });
-            
-            map.addControl( searchControl );
-            
+
+            // Type of geocoder to use
+            geocoder = L.Control.Geocoder.nominatim({
+                geocodingQueryParams:{limit:10,},
+                });
+
+            // Create a search control
+            control = L.Control.geocoder({
+                collapsed:false,
+                placeholder:"Recherche ...",
+                showResultIcons:true,
+                geocoder: geocoder,
+
+            })
+            .on('markgeocode', function(e) {
+                // When a geocoding is performed
+                control._map.removeLayer(control._map.geocodeMarker);
+                //  a marker with the new geocoded data is updated
+                $("#id_latitude").val( e.geocode.center.lat );
+                $("#id_longitude").val( e.geocode.center.lng );
+                $("#id_name").val( e.geocode.properties.display_name );
+            })
+            .addTo(map);
+
+            // There is some data ...
+            if( $("#id_latitude").val()!=0 && $("#id_longitude").val()!=0 ) {
+                // Create a marker with current data
+                control._map.geocodeMarker = L.marker([$("#id_latitude").val(), $("#id_longitude").val()],{ draggable:true })
+                .setPopupContent('<p>'+$("#id_name").val()+'</p>')
+                .addTo(map)
+                .openPopup();
+
+                // Center the map on the current location
+                map.setView([$("#id_latitude").val(), $("#id_longitude").val()],14);
+            }
+            else {
+                // ... It's a new location
+                // Zoom the map to the bounds
+                bounds = L.bounds(
+                    L.point( 50, -85 ),
+                    L.point( 30, 0 )
+                );
+                map.setMaxZoom(18);
+                map.setMaxBounds( bounds );
+                map.fitBounds( [ [50, -85], [30, 0] ] );
+            }
+
         }
     </script>
 {% endblock %}
@@ -59,16 +66,16 @@
 
 {% block extrastyle %}
     {{ block.super }}
-    
+
     {% leaflet_css %}
     <style>
         .leaflet-container {  /* all maps */
             width:  100%;
-            height: 400px;
+            height: 600px;
         }
 
     </style>
-    <link rel="stylesheet" href="{{ STATIC_URL }}leaflet-search/dist/leaflet-search.min.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}leaflet-control-geocoder/dist/Control.Geocoder.css"/>
 {% endblock %}
 
 
@@ -83,9 +90,7 @@
                 {% leaflet_map "mapItems" callback="window.map_init_basic" %}
             </div>
         </div>
-        
+
 
     </div>
 {% endblock %}
-
-
