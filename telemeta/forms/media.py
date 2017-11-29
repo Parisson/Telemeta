@@ -119,6 +119,7 @@ class MediaItemForm(ModelForm):
             )
 
 
+
     class Meta:
         model = MediaItem
         exclude = model.exclude
@@ -131,6 +132,14 @@ class MediaItemForm(ModelForm):
         if self.instance and self.instance.pk:
             self.fields['mshs_informers'].queryset = MediaCollectionPerformance.objects.filter(
                                                collection=self.instance.collection)
+        self.fields["description"] = MarkdownxFormField(label=_('Description'))
+        self.fields["description"].required = False
+        self.fields["dance_details"] = MarkdownxFormField(label=_('Details on dance'))
+        self.fields["dance_details"].required = False
+        self.fields["mshs_deposit_digest"] = MarkdownxFormField( label=_('Digest'))
+        self.fields["mshs_deposit_digest"].required = False
+        self.fields["mshs_text"] = MarkdownxFormField(label=_('Text'))
+        self.fields["mshs_text"].required = False
 
 
 class RestrictedMediaItemForm(MediaItemForm):

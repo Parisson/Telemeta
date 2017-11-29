@@ -32,6 +32,8 @@ from telemeta.models.identifier import *
 from telemeta.models.resource import *
 from telemeta.models.enum import *
 
+from markdownx.models import MarkdownxField
+from markdownx.utils import markdownify
 
 item_published_code_regex = getattr(settings, 'ITEM_PUBLISHED_CODE_REGEX', '[A-Za-z0-9._-]*')
 item_unpublished_code_regex = getattr(settings, 'ITEM_UNPUBLISHED_CODE_REGEX', '[A-Za-z0-9._-]*')
@@ -384,6 +386,23 @@ class MediaItem(MediaResource):
             else:
                 row.append('')
         return row
+
+    @property
+    def description_markdown(self):
+        return markdownify(self.description)
+
+    @property
+    def dance_details_markdown(self):
+        return markdownify(self.dance_details)
+
+    @property
+    def mshs_deposit_digest_markdown(self):
+        return markdownify(self.mshs_deposit_digest)
+
+    @property
+    def mshs_text_markdown(self):
+        return markdownify(self.mshs_text)
+
 
 class MediaItemRelated(MediaRelated):
     "Item related media"
