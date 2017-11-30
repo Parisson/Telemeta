@@ -26,7 +26,6 @@ from telemeta.views.core import serve_media
 from telemeta.views.epub import BaseEpubMixin
 from django.utils.translation import ugettext_lazy as _
 
-
 class ResourceView(object):
     """Provide Resource web UI methods"""
 
