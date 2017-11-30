@@ -101,7 +101,7 @@
                 <dd>{% trans collection.document_status %}</dd>
                 {% if collection.description %}
                 <dt>{% trans "Description" %}</dt>
-                <dd>{{ collection.description|html_line_break|safe }}</dd>
+                <dd>{{ collection.description_markdown|safe }}</dd>
                 {% endif %}
                 {% dl_field collection "recording_context" %}
                 <dt>{% trans "Recording period" %}</dt>
@@ -211,7 +211,7 @@
                         {% dl_field collection "metadata_author" %}
                         {% if collection.booklet_description %}
                          <dt>{% trans "Related documentation" %}</dt>
-                         <dd>{{ collection.booklet_description|html_line_break|safe }}</dd>
+                         <dd>{{ collection.booklet_description_markdown|safe }}</dd>
                         {% endif %}
                         {% dl_field collection "publishing_status" %}
                         {% dl_field collection "status" %}

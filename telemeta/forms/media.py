@@ -28,6 +28,7 @@ from django.forms.widgets import HiddenInput
 from django.utils.translation import ugettext_lazy as _
 
 from django_select2.forms import ( Select2MultipleWidget )
+from markdownx.fields import MarkdownxFormField
 
 
 class MediaFondsForm(ModelForm):
@@ -86,6 +87,10 @@ class MediaCollectionForm(ModelForm):
             label="recordist",
             required=False
         )
+        self.fields["description"] = MarkdownxFormField()
+        self.fields["location_details"] = MarkdownxFormField()
+        self.fields["booklet_description"] = MarkdownxFormField()
+
 
         if '_I_' in self.instance.code:
             self.fields["reference"].widget = HiddenInput()
@@ -114,6 +119,7 @@ class MediaItemForm(ModelForm):
             )
 
 
+
     class Meta:
         model = MediaItem
         exclude = model.exclude
@@ -126,6 +132,14 @@ class MediaItemForm(ModelForm):
         if self.instance and self.instance.pk:
             self.fields['mshs_informers'].queryset = MediaCollectionPerformance.objects.filter(
                                                collection=self.instance.collection)
+        self.fields["description"] = MarkdownxFormField(label=_('Description'))
+        self.fields["description"].required = False
+        self.fields["dance_details"] = MarkdownxFormField(label=_('Details on dance'))
+        self.fields["dance_details"].required = False
+        self.fields["mshs_deposit_digest"] = MarkdownxFormField( label=_('Digest'))
+        self.fields["mshs_deposit_digest"].required = False
+        self.fields["mshs_text"] = MarkdownxFormField(label=_('Text'))
+        self.fields["mshs_text"].required = False
 
 
 class RestrictedMediaItemForm(MediaItemForm):

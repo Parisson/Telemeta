@@ -94,10 +94,13 @@ class MediaItemIndex(indexes.SearchIndex, indexes.Indexable):
         return instruments
 
     def prepare_collectors(self, obj):
+        """
         collectors = []
         collectors.append(obj.collection.collector)
         collectors.append(obj.collector)
         return u"".join('; ' + collector for collector in collectors)
+        """
+        return ""
 
 
 class MediaCollectionIndex(indexes.SearchIndex, indexes.Indexable):

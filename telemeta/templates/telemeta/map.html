@@ -9,7 +9,7 @@
 
 {% block extra_javascript %}
     {% leaflet_js %}
-    <script src="{{ STATIC_URL }}leaflet-search/dist/leaflet-search.min.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}leaflet-control-geocoder/dist/Control.Geocoder.js" type="text/javascript"></script>
     <script src="{{ STATIC_URL }}leaflet.mousecoordinate/dist/leaflet.mousecoordinate.min.js" type="text/javascript"></script>
     <script src="{{ STATIC_URL }}leaflet.markercluster/dist/leaflet.markercluster.js" type="text/javascript"></script>
     <script>
@@ -21,31 +21,34 @@
         map.setMaxZoom(18);
         map.setMaxBounds( bounds );
         map.fitBounds( [ [50, -85], [30, 0] ] );
-        
-        
+
+
         // Add a search control on the map
-        map.addControl( new L.Control.Search({
-            url: 'http://nominatim.openstreetmap.org/search?format=json&q={s}',
-            jsonpParam: 'json_callback',
-            propertyName: 'display_name',
-            propertyLoc: ['lat','lon'],
-            marker: L.circleMarker([0,0],{radius:30}),
-            autoCollapse: true,
-            autoType: false,
-            minLength: 2,
-            zoom: 12,
-            position:'topleft',
-        }) );
-        
+
+        // Type of geocoder to use
+        geocoder = L.Control.Geocoder.nominatim({
+            geocodingQueryParams:{limit:10,},
+            });
+
+        // Create a search control
+        control = L.Control.geocoder({
+            collapsed:false,
+            placeholder:"Recherche ...",
+            showResultIcons:true,
+            geocoder: geocoder,
+
+        })
+        .addTo(map);
+
         // Add a coordinates control on the map
         L.control.mouseCoordinate({gps:true, position:'topright'}).addTo(map);
-        
+
         var dataurl = '{% url "telemeta-geo-items" %}';
         $.ajax({
             url: dataurl,
             processdata: false,
             contentType: 'application/json; charset=utf-8',
-            success: function (data) { 
+            success: function (data) {
                   console.log(data);
                   var markers = L.markerClusterGroup( {
                       showCoverageOnHover: true,
@@ -56,13 +59,13 @@
                       var marker = L.marker([d.lat,d.lon]).bindPopup( '<a href="/archives/items/'+
                       d.code+'">'+d.title+'</a><hr/>Enq. : <a href="/archives/collections/'+
                       d.collec_id+'">'+d.collec+'</a>' );
-                      markers.addLayer(marker); 
+                      markers.addLayer(marker);
                   }
                   map.addLayer(markers);
                 },
             error: function (xhr, ajaxOptions, thrownError) {
                 },
-            complete: function (x, y) { 
+            complete: function (x, y) {
                 }
         });
     }
@@ -80,15 +83,15 @@
         }
 
     </style>
-    <link rel="stylesheet" href="{{ STATIC_URL }}leaflet-search/dist/leaflet-search.min.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}leaflet-control-geocoder/dist/Control.Geocoder.css"/>
     <link rel="stylesheet" href="{{ STATIC_URL }}leaflet.mousecoordinate/dist/leaflet.mousecoordinate.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}leaflet.markercluster/dist/MarkerCluster.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}leaflet.markercluster/dist/MarkerCluster.Default.css" />
 
 {% endblock %}
- 
-    
-   
+
+
+
 {% block title %}
  <img src="{{ STATIC_URL }}telemeta/images/world_red.png" alt="geo-navigator" style="vertical-align:middle" /> {% trans "Geographic Navigator" %}
 {% endblock %}

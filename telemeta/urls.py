@@ -38,6 +38,7 @@ import os.path
 import telemeta.config
 
 from djgeojson.views import GeoJSONLayerView
+from markdownx import urls as markdownx
 
 telemeta.config.check()
 
@@ -257,6 +258,10 @@ urlpatterns = [
 
     # Timeside
     #url(r'^timeside/', include('timeside.server.urls')),
+
+    # Markdown editor
+    url(r'^markdownx/', include(markdownx))
+
 
 ]
 

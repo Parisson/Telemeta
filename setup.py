@@ -77,10 +77,11 @@ setup(
         'Werkzeug',
         'django-dirtyfields',
         'sqlparse==0.2.2',
-        'django_select2',
+        'django_select2==5.11.1',
         'lxml',
         'django-leaflet',
         'django-geojson',
+        'django-markdownx',
     ],
   tests_require=['pytest-django', 'pytest-cov', 'factory-boy'],
   # Provide a test command through django-setuptest

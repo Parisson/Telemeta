@@ -185,7 +185,8 @@ INSTALLED_APPS = (
     'saved_searches',
     'django_select2',
     'leaflet',
-    'djgeojson'
+    'djgeojson',
+    'markdownx',
 )
 
 
@@ -364,7 +365,7 @@ BOWER_INSTALLED_APPS = (
     'jquery-tokenize',
     'select2',
     'select2-bootstrap-theme',
-    'leaflet-search#2.3.0',
     'leaflet.mouseCoordinate#1.3.0',
-    'leaflet.markercluster#1.1.0'
+    'leaflet.markercluster#1.1.0',
+    'leaflet-control-geocoder#1.5.5'
 )
