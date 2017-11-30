@@ -92,8 +92,11 @@ class MediaCollectionForm(ModelForm):
             required=False
         )
         self.fields["description"] = MarkdownxFormField()
+        self.fields["description"].required = False
         self.fields["location_details"] = MarkdownxFormField()
+        self.fields["location_details"].required = False
         self.fields["booklet_description"] = MarkdownxFormField()
+        self.fields["booklet_description"].required = False
 
 
         if '_I_' in self.instance.code:
