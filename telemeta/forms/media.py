@@ -38,6 +38,10 @@ class MediaFondsForm(ModelForm):
     children = forms.ModelMultipleChoiceField(widget=widget, queryset=queryset,
         label='Corpus', required=False)
 
+    def __init__(self, *args, **kwargs):
+        super(MediaFondsForm, self).__init__(*args, **kwargs)
+        self.fields["descriptions"] = MarkdownxFormField(label=_('Description'))
+
     class Meta:
         model = MediaFonds
         exclude = ['description']

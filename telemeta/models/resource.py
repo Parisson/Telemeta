@@ -27,6 +27,8 @@ from django.utils.translation import ugettext_lazy as _
 from telemeta.models.core import *
 from telemeta.models.system import *
 
+from markdownx.models import MarkdownxField
+from markdownx.utils import markdownify
 
 class MediaResource(ModelCore):
     "Base class of all media objects"
@@ -70,6 +72,10 @@ class MediaBaseResource(MediaResource):
     @property
     def public_id(self):
         return self.code
+
+    @property
+    def descriptions_markdown(self):
+        return markdownify(self.descriptions)
 
     def save(self, *args, **kwargs):
         super(MediaBaseResource, self).save(*args, **kwargs)
@@ -125,6 +131,10 @@ class MediaRelated(MediaResource):
             return unicode(self.url.split('/')[-1])
         else:
             return '_'
+
+    @property
+    def description_markdown(self):
+        return markdownify(self.description)
 
     class Meta:
         abstract = True
