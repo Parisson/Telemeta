@@ -78,6 +78,9 @@ jQuery(document).ready(function(){
               {% for field in resource.get_fields %}
                {% if "id" in field.name or "description" == field.name or "public_access" == field.name %}
                 {{ field.label_tag.as_hidden }}{{ field.as_hidden }}
+               {% elif "institution" == field.name and resource.institution_id %}
+                <dt>{% trans field.verbose_name|capitalize %}</dt>
+                <dd><a href="{% url "telemeta-institutions-detail" resource.institution_id %}">{{ resource|get_attr:field.name }}</a></dd>
                {% elif field.get_internal_type == 'TextField' %}
                  <dt>{% trans field.verbose_name|capitalize %}</dt>
                  <dd>{{ resource|get_attr:field.name|html_line_break|safe }}</dd>
