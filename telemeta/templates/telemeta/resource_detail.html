@@ -103,14 +103,29 @@ jQuery(document).ready(function(){
                     {% for collector in collectors %}
                         {{collector}},
                     {% endfor %}
-              <dd>
+              </dd>
               <!-- Informers -->
               <dt>{% trans "informers"|capitalize %}</dt>
               <dd>
                     {% for informer in informers %}
                         {{informer}},
                     {% endfor %}
+              </dd>
+
+              {% if type == 'fonds' %}
+              <!-- recorded from year -->
+              <dt>{% trans "recording year (from)"|capitalize %}</dt>
               <dd>
+                  {{from_year}}
+              </dd>
+              <!-- recorded to year -->
+              <dt>{% trans "recording year (until)"|capitalize %}</dt>
+              <dd>
+                  {% if until_year != 0 %}
+                    {{until_year}}
+                  {% endif %}
+              </dd>
+              {% endif %}
 
             </dl>
 
