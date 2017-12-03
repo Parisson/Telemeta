@@ -235,6 +235,28 @@ class ResourceSingleMixin(ResourceMixin):
             context['parents'] = self.parent.objects.filter(children=resource)
         else:
             context['parents'] = []
+
+        collectors = []
+        informers = []
+        if self.type=='fonds' or self.type=='corpus' :
+            if self.type=='fonds' :
+                corpus = resource.children.all()
+                for corps in corpus :
+                    collections = corps.children.all()
+            else :
+                collections = resource.children.all()
+
+            for collection in collections :
+                persons_collect= collection.collectors.prefetch_related('collectors')
+                for person in persons_collect :
+                    collectors.append(person)
+                persons_inform= collection.informer.prefetch_related('informers')
+                for person in persons_inform :
+                    informers.append(person)
+
+        context['collectors'] = collectors
+        context['informers'] = informers
+
         return context
 
 
