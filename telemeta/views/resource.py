@@ -247,16 +247,30 @@ class ResourceSingleMixin(ResourceMixin):
         # Collectors and informers
         collectors = []
         informers = []
+        # locations
+        locations = []
         for collection in collections :
+            # list of collectors
             persons_collect= collection.collectors.prefetch_related('collectors')
             for person in persons_collect :
                 collectors.append(person)
+            # list of informers
             persons_inform= collection.informer.prefetch_related('informers')
             for person in persons_inform :
                 informers.append(person)
+            # list of location
+            if collection.location!='' :
+                locations.append( collection.location )
 
+        # make unique and distinct
+        collectors = list(set(collectors))
+        informers = list(set(informers))
+        locations = list(set(locations))
+
+        # write in the context
         context['collectors'] = collectors
         context['informers'] = informers
+        context['locations'] = locations
 
         # Recording year ( collected from collections )
         from_year = 10000
