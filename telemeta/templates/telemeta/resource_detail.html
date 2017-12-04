@@ -81,10 +81,11 @@ jQuery(document).ready(function(){
                {% elif "institution" == field.name and resource.institution_id %}
                 <dt>{% trans field.verbose_name|capitalize %}</dt>
                 <dd><a href="{% url "telemeta-institutions-detail" resource.institution_id %}">{{ resource|get_attr:field.name }}</a></dd>
-               {% elif field.get_internal_type == 'TextField' and "comment" != field.name %}
+                {% elif "conservation_site" == field.name or "acquisition_mode" == field.name or "comment" == field.name or "documentation_extra" == field.name %}
+               {% elif field.get_internal_type == 'TextField' %}
                  <dt>{% trans field.verbose_name|capitalize %}</dt>
                  <dd>{{ resource|get_attr:field.name|html_line_break|safe }}</dd>
-               {% elif "conservation_site" == field.name or "acquisition_mode" == field.name or "comment" == field.name %}
+
 
                {% else %}
                 {% dl_field resource field.name %}
@@ -131,6 +132,13 @@ jQuery(document).ready(function(){
               <dd>
                   {{resource.comment_markdown | safe}}
               </dd>
+              {% endif %}
+
+              {% if type == 'corpus' %}
+                  <dt>{% trans "documentation extra"|capitalize %}</dt>
+                  <dd>
+                      {{resource.documentation_markdown | safe}}
+                  </dd>
               {% endif %}
 
 
