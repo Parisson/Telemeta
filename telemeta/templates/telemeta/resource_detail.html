@@ -81,9 +81,11 @@ jQuery(document).ready(function(){
                {% elif "institution" == field.name and resource.institution_id %}
                 <dt>{% trans field.verbose_name|capitalize %}</dt>
                 <dd><a href="{% url "telemeta-institutions-detail" resource.institution_id %}">{{ resource|get_attr:field.name }}</a></dd>
-               {% elif field.get_internal_type == 'TextField' %}
+               {% elif field.get_internal_type == 'TextField' and "comment" != field.name %}
                  <dt>{% trans field.verbose_name|capitalize %}</dt>
                  <dd>{{ resource|get_attr:field.name|html_line_break|safe }}</dd>
+               {% elif "conservation_site" == field.name or "acquisition_mode" == field.name or "comment" == field.name %}
+
                {% else %}
                 {% dl_field resource field.name %}
                {% endif %}
@@ -125,11 +127,30 @@ jQuery(document).ready(function(){
                     {{until_year}}
                   {% endif %}
               </dd>
+              <dt>{% trans "comment"|capitalize %}</dt>
+              <dd>
+                  {{resource.comment_markdown | safe}}
+              </dd>
               {% endif %}
+
 
             </dl>
 
         {% endblock general_info %}
+
+        {% if type == 'fonds' %}
+            <div class="extraInfos">
+            {% block archive_data %}
+                <h4><a href="#">{% trans "Archiving data" %}</a></h4>
+                <div>
+                    <dl class="listing">
+                        {% dl_field resource "acquisition_mode" %}
+                        {% dl_field resource "conservation_site" %}
+                    </dl>
+                </div>
+            {% endblock archive_data %}
+            </div>
+        {% endif %}
 
         {% if related_media %}
         <div class="extraInfos">
