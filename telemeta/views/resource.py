@@ -275,20 +275,20 @@ class ResourceSingleMixin(ResourceMixin):
         # Recording year ( collected from collections )
         from_year = 10000
         until_year = 0
-        if self.type=='fonds' :
-            for collection in collections :
-                f_y = collection.recorded_from_year
-                if f_y < from_year and f_y > 0 :
-                    from_year = f_y
-                u_y = collection.recorded_to_year
-                if u_y > until_year:
-                    until_year = u_y
-                else :
-                    if f_y > until_year :
-                        until_year = f_y
 
-            context['from_year'] = from_year
-            context['until_year'] = until_year
+        for collection in collections :
+            f_y = collection.recorded_from_year
+            if f_y < from_year and f_y > 0 :
+                from_year = f_y
+            u_y = collection.recorded_to_year
+            if u_y > until_year:
+                until_year = u_y
+            else :
+                if f_y > until_year :
+                    until_year = f_y
+
+        context['from_year'] = from_year
+        context['until_year'] = until_year
 
         return context
 

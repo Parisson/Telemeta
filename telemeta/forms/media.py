@@ -60,7 +60,7 @@ class MediaCorpusForm(ModelForm):
 
     class Meta:
         model = MediaCorpus
-        exclude = ['description', 'public_access']
+        exclude = ['description', 'public_access','recorded_from_year', 'recorded_to_year']
 
     class Media:
         css = {'all': ('/static/admin/css/widgets.css',),}
