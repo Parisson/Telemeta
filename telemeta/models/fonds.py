@@ -29,6 +29,8 @@ from telemeta.models.corpus import *
 from telemeta.models.institution import *
 from django.db import models
 
+from markdownx.models import MarkdownxField
+from markdownx.utils import markdownify
 
 class MediaFonds(MediaBaseResource):
     "Describe fonds"
@@ -43,6 +45,14 @@ class MediaFonds(MediaBaseResource):
     institution = ForeignKey('Institution', related_name="fonds",
                                    verbose_name=_('institution'),
                                    blank=True, null=True )
+    # Archiving data
+    acquisition_mode  = ForeignKey('AcquisitionMode', related_name="fonds",
+                                   verbose_name=_('mode of acquisition'), blank=True, null=True)
+    conservation_site = CharField(_('conservation site'))
+    comment           = MarkdownxField(_('comment'), blank=True)
+
+
+
 
     @property
     def public_id(self):
@@ -54,6 +64,11 @@ class MediaFonds(MediaBaseResource):
             if child.has_mediafile:
                 return True
         return False
+
+
+    @property
+    def comment_markdown(self):
+        return markdownify( self.comment )
 
     def computed_duration(self):
         duration = Duration()

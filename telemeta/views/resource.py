@@ -235,6 +235,47 @@ class ResourceSingleMixin(ResourceMixin):
             context['parents'] = self.parent.objects.filter(children=resource)
         else:
             context['parents'] = []
+
+        # Select the collections
+        if self.type=='fonds' :
+            corpus = resource.children.all()
+            for corps in corpus :
+                collections = corps.children.all()
+        else :
+            collections = resource.children.all()
+
+        # Collectors and informers
+        collectors = []
+        informers = []
+        for collection in collections :
+            persons_collect= collection.collectors.prefetch_related('collectors')
+            for person in persons_collect :
+                collectors.append(person)
+            persons_inform= collection.informer.prefetch_related('informers')
+            for person in persons_inform :
+                informers.append(person)
+
+        context['collectors'] = collectors
+        context['informers'] = informers
+
+        # Recording year ( collected from collections )
+        from_year = 10000
+        until_year = 0
+        if self.type=='fonds' :
+            for collection in collections :
+                f_y = collection.recorded_from_year
+                if f_y < from_year and f_y > 0 :
+                    from_year = f_y
+                u_y = collection.recorded_to_year
+                if u_y > until_year:
+                    until_year = u_y
+                else :
+                    if f_y > until_year :
+                        until_year = f_y
+
+            context['from_year'] = from_year
+            context['until_year'] = until_year
+
         return context
 
 
