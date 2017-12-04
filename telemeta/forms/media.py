@@ -41,6 +41,7 @@ class MediaFondsForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(MediaFondsForm, self).__init__(*args, **kwargs)
         self.fields["descriptions"] = MarkdownxFormField(label=_('Description'))
+        self.fields["descriptions"].required = False
 
     class Meta:
         model = MediaFonds
@@ -57,6 +58,11 @@ class MediaCorpusForm(ModelForm):
     widget = FilteredSelectMultiple('Collections', is_stacked=False)
     children = forms.ModelMultipleChoiceField(widget=widget, queryset=queryset,
         label='Collections', required=False)
+
+    def __init__(self, *args, **kwargs):
+        super(MediaCorpusForm, self).__init__(*args, **kwargs)
+        self.fields["descriptions"] = MarkdownxFormField(label=_('Description'))
+        self.fields["descriptions"].required = False
 
     class Meta:
         model = MediaCorpus

@@ -85,8 +85,6 @@ jQuery(document).ready(function(){
                {% elif field.get_internal_type == 'TextField' %}
                  <dt>{% trans field.verbose_name|capitalize %}</dt>
                  <dd>{{ resource|get_attr:field.name|html_line_break|safe }}</dd>
-
-
                {% else %}
                 {% dl_field resource field.name %}
                {% endif %}
@@ -100,7 +98,7 @@ jQuery(document).ready(function(){
                <dt>{% trans "Last modification" %}</dt>
                <dd>{{ last_revision.time }} {% if user.is_authenticated %}(<a href="{% url "telemeta-profile-detail" last_revision.user.username %}">{{last_revision.user.username}}</a>){% endif %}</dd>
               {% endif %}
-              
+
               <!-- recorded from year -->
               <dt>{% trans "recording year (from)"|capitalize %}</dt>
               <dd>
