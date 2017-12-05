@@ -70,20 +70,20 @@ class MediaCollection(MediaResource):
 
     # Geographic and cultural informations
     # See "countries" and "ethnic_groups" methods below
-    location              = CharField(_('location'))###
-    location_details      = TextField(_('location details'))
+    location              = models.ManyToManyField('Location', related_name="locations", verbose_name=_('location'), blank=True, null=True)
+    location_details      = MarkdownxField(_('location details'), blank=True)
     cultural_area         = CharField(_('cultural area'), help_text=_('Cultural area ; Cultural area'))
-    language_iso          = ForeignKey('Language', related_name="items", verbose_name=_('Language (ISO norm)'), blank=True, null=True, on_delete=models.SET_NULL)
+    language_iso          = models.ManyToManyField('Language', related_name="collections", verbose_name=_('Language (ISO norm)'), blank=True, null=True)
     language              = CharField(_('language'), help_text=_('Language ; language'))
 
 
     # Legal notices
-    collectors             = models.ManyToManyField('Authority', related_name="collectors", verbose_name=_('collector'), blank=True, null=True)
-    informer              = models.ManyToManyField('Authority', related_name="informers", verbose_name=_('informer'), blank=True, null=True)
-    publisher             = WeakForeignKey('Publisher', related_name="collections", verbose_name=_('publisher'), blank=True, null=True, on_delete=models.SET_NULL)
-    publisher_collection  = WeakForeignKey('PublisherCollection', related_name="collections", verbose_name=_('publisher collection'), blank=True, null=True, on_delete=models.SET_NULL)
+    collectors             = models.ManyToManyField('Authority', related_name="collectors", verbose_name=_('collectors'), blank=True, null=True)
+    informer              = models.ManyToManyField('Authority', related_name="informers", verbose_name=_('informers'), blank=True, null=True)
+    publisher             = models.ManyToManyField('Publisher', related_name="collections", verbose_name=_('publishers'), blank=True,null=True)
+    publisher_collection  = models.ManyToManyField('PublisherCollection', related_name="collections", verbose_name=_('publisher collection'), blank=True,null=True)
     publisher_serial      = CharField(_('publisher serial number'))
-    booklet_author        = CharField(_('booklet author'), blank=True)
+    booklet_author        = models.ManyToManyField('Authority', related_name="booklet_author", verbose_name=_('booklet_author'), blank=True, null=True)
     reference             = CharField(_('publisher reference'))
     external_references   = TextField(_('bibliographic references'))
 
@@ -125,7 +125,7 @@ class MediaCollection(MediaResource):
     # All
     objects               = MediaCollectionManager()
 
-    exclude = ['alt_ids', 'travail']
+    exclude = ['alt_ids', 'travail','acquisition_mode','cnrs_contributor','copy_type','status','alt_copies','archiver_notes','collector_is_creator','is_published','conservation_site']
 
     permissions = (("can_download_collection_epub", "Can download collection EPUB"),)
 

@@ -92,16 +92,23 @@
         <div class="infos">
         {% block general_info %}
             <dl class="listing">
+                {% for parent in parents %}
+                    <dt>{% trans parent.element_type|capitalize %}</dt>
+                    <dd><a href="{% url "telemeta-resource-detail" parent.element_type parent.public_id %}">{{ parent.title }}</a></dd>
+                {% endfor %}
                 {% dl_field collection "title"  %}
                 {% dl_field collection "alt_title" %}
-                {% if collection.creator %}
-                {% dl_field collection "creator" placeholder %}
-                {% endif %}
                 <dt>{% trans "Document status" %}</dt>
                 <dd>{% trans collection.document_status %}</dd>
+                <dt>Enquêteurs</dt>
+                <dd>
+                    {% for collec in collection.collectors.all %}
+                        {{collec }},
+                    {% endfor %}
+                </dd>
                 {% if collection.description %}
-                <dt>{% trans "Description" %}</dt>
-                <dd>{{ collection.description_markdown|safe }}</dd>
+                    <dt>{% trans "Description" %}</dt>
+                    <dd>{{ collection.description_markdown|safe }}</dd>
                 {% endif %}
                 {% dl_field collection "recording_context" %}
                 <dt>{% trans "Recording period" %}</dt>
@@ -111,10 +118,6 @@
                 {% endif %}
                 <dt>{% trans "Access type" %}</dt>
                 <dd>{% trans collection.public_access %}</dd>
-                {% for parent in parents %}
-                <dt>{% trans parent.element_type|capitalize %}</dt>
-                <dd><a href="{% url "telemeta-resource-detail" parent.element_type parent.public_id %}">{{ parent.title }}</a></dd>
-                {% endfor %}
             </dl>
         {% endblock general_info %}
         </div>
@@ -126,7 +129,14 @@
                     <dl class="listing">
                         {% dl_field collection "main_countries" join with ", " %}
                         {% dl_field collection "ethnic_groups" join with ", " placeholder %}
+                        <dt>{% trans "location" %}</dt>
+                        <dd>
+                            {% for loc in collection.location.all %}
+                                {{loc}}
+                            {% endfor %}
+                        </dd>
                     </dl>
+
                 </div>
             </div>
         {% endblock geoethnic_data %}
@@ -174,16 +184,28 @@
                           {% if collection.creator %}
                           <dt>{% trans "Recordist" %}</dt><dd>{{ collection.creator }}</dd>
                           {% endif%}
-                        {% else %}
-                        <dt>Enquêteurs<dt>
-                            <dd> {% for collec in collection.collectors.all %}{{collec }},{% endfor %}<dd>
                         {% endif %}
                         {% if collection.publisher %}
-                        {% dl_field collection "publisher" %}
+                         <dt>{% trans "publisher" %}</dt>
+                         <dd>
+                             {% for publi in collection.publisher.all %}
+                             {{ publi }},
+                             {% endfor %}
+                         </dd>
                         {% endif %}
-                        {% dl_field collection "publisher_collection" %}
+                        <dt>{% trans "publisher collection" %}</dt>
+                        <dd>
+                            {% for publi in collection.publisher_collection.all %}
+                            {{ publi }},
+                            {% endfor %}
+                        </dd>
                         {% dl_field collection "publisher_serial" %}
-                        {% dl_field collection "booklet_author" %}
+                        <dt>{% trans "booklet author" %}</dt>
+                        <dd>
+                            {% for author in collection.booklet_author.all %}
+                            {{ author }},
+                            {% endfor %}
+                        </dd>
                         {% if '_E_' in collection.public_id %}
                         {% dl_field collection "reference" %}
                         {% endif %}
