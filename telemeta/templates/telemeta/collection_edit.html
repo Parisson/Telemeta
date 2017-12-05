@@ -5,6 +5,12 @@
 
 {% block title %}
     <img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" /> Collection : {{ collection.title }}
+    <dl class="listing">
+    {% for parent in parents %}
+        <dt>{% trans parent.element_type|capitalize %}</dt>
+        <dd><a href="{% url "telemeta-resource-detail" parent.element_type parent.public_id %}">{{ parent.title }}</a></dd>
+    {% endfor %}
+    </dl>
 {% endblock %}
 
 {% block title_buttons %}
@@ -84,6 +90,20 @@
    </form>
    {{ form.media }}
   </div>
+
+  <script>
+        function autocompletion(champ) {
+             $("#id_"+champ).autocomplete({
+                 source: "/search/autocompletemshs/?attr="+champ,
+                 select: function (event, ui) {
+                     var selectedObj = ui.item;
+                 },
+                 minLength: 1,
+             });
+         };
+           autocompletion("cultural_area");
+           autocompletion("language");
+  </script>
 
 {% endblock infos%}
 

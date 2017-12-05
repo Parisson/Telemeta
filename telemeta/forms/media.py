@@ -77,6 +77,27 @@ class MediaCollectionForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(MediaCollectionForm, self).__init__(*args, **kwargs)
+
+        self.fields["location"] = forms.ModelMultipleChoiceField(
+            queryset = Location.objects.all(),
+            widget=Select2MultipleWidget(
+            attrs={
+                'title': 'Lieu',
+                'data-width':'100%',
+                }),
+            label=_("location"),
+            required=False
+        )
+        self.fields["language_iso"] = forms.ModelMultipleChoiceField(
+            queryset = Language.objects.all(),
+            widget=Select2MultipleWidget(
+            attrs={
+                'title': 'Editeurs',
+                'data-width':'100%',
+                }),
+            label=_("Language (ISO norm)"),
+            required=False
+        )
         self.fields["informer"] = forms.ModelMultipleChoiceField(
             queryset = Authority.objects.all(),
             widget=Select2MultipleWidget(
@@ -84,7 +105,7 @@ class MediaCollectionForm(ModelForm):
                 'title': 'Liste des informateurs',
                 'data-width':'100%',
                 }),
-            label="informers",
+            label=_("informers"),
             required=False
         )
         self.fields["collectors"] = forms.ModelMultipleChoiceField(
@@ -94,7 +115,27 @@ class MediaCollectionForm(ModelForm):
                 'title': 'Liste des enquêteurs',
                 'data-width':'100%',
                 }),
-            label="recordist",
+            label=_("recordist"),
+            required=False
+        )
+        self.fields["publisher"] = forms.ModelMultipleChoiceField(
+            queryset = Publisher.objects.all(),
+            widget=Select2MultipleWidget(
+            attrs={
+                'title': 'Editeurs',
+                'data-width':'100%',
+                }),
+            label="Editeur",
+            required=False
+        )
+        self.fields["booklet_author"] = forms.ModelMultipleChoiceField(
+            queryset = Authority.objects.all(),
+            widget=Select2MultipleWidget(
+            attrs={
+                'title': 'Editeurs',
+                'data-width':'100%',
+                }),
+            label=_("booklet author"),
             required=False
         )
         self.fields["description"] = MarkdownxFormField()

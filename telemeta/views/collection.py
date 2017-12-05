@@ -315,6 +315,7 @@ class CollectionEditView(CollectionViewMixin, UpdateWithInlinesView):
         context = super(CollectionEditView, self).get_context_data(**kwargs)
         collection = self.get_object()
         context['collection'] = collection
+        context['parents'] = MediaCorpus.objects.filter(children=collection)
         return context
 
     @method_decorator(permission_required('telemeta.change_mediacollection'))
