@@ -98,11 +98,15 @@
                 {% endfor %}
                 {% dl_field collection "title"  %}
                 {% dl_field collection "alt_title" %}
-                <dt>{% trans "Document status" %}</dt>
-                <dd>{% trans collection.document_status %}</dd>
                 <dt>Enquêteurs</dt>
                 <dd>
                     {% for collec in collection.collectors.all %}
+                        <a href="{% url "telemeta-authorities-detail" collec.id %}">{{ collec }}</a>,
+                    {% endfor %}
+                </dd>
+                <dt>Informateurs</dt>
+                <dd>
+                    {% for collec in collection.informer.all %}
                         <a href="{% url "telemeta-authorities-detail" collec.id %}">{{ collec }}</a>,
                     {% endfor %}
                 </dd>
@@ -127,20 +131,27 @@
                 <h4><a href="#">{% trans "Geographic and cultural informations" %}</a></h4>
                 <div>
                     <dl class="listing">
-                        {% dl_field collection "main_countries" join with ", " %}
-                        {% dl_field collection "ethnic_groups" join with ", " placeholder %}
                         <dt>{% trans "location" %}</dt>
                         <dd>
                             {% for loc in collection.location.all %}
-                                {{loc}}
+                                {{loc}},
                             {% endfor %}
                         </dd>
+                        {% dl_field collection "cultural_area" %}
+                        <dt>{% trans "Language (ISO norm)" %}</dt>
+                        <dd>
+                            {% for collec in collection.language_iso.all %}
+                                {{collec}},
+                            {% endfor %}
+                        </dd>
+                        {% dl_field collection "language" %}
                     </dl>
 
                 </div>
             </div>
         {% endblock geoethnic_data %}
         </div>
+
         <div class="extraInfos">
             {% block musical_data %}
             <div>
@@ -150,10 +161,10 @@
                     <table class="instruments">
                         <thead>
                             <tr>
-                                <td>{% field_label "MediaCollectionPerformance" "instrument" %}</td>
-                                <td>{% field_label "MediaCollectionPerformance" "alias" %}</td>
-                                <td>{% field_label "MediaCollectionPerformance" "Hornbostel-Sachs" %}</td>
-                                <td>{% field_label "MediaCollectionPerformance" "informer" %}</td>
+                                <td>{% trans "instrument" %}</td>
+                                <td>{% trans "alias" %}</td>
+                                <td>{% trans "Hornbostel-Sachs" %}</td>
+                                <td>{% trans "informer" %}</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -227,18 +238,10 @@
                     <dl class="listing">
                         {% dl_field collection "code" %}
                         {% dl_field collection "old_code" %}
-                        {% dl_field collection "acquisition_mode" %}
-                        {% dl_field collection "cnrs_contributor" %}
-                        {% dl_field collection "copy_type" %}
                         {% dl_field collection "metadata_author" %}
                         {% if collection.booklet_description %}
                          <dt>{% trans "Related documentation" %}</dt>
                          <dd>{{ collection.booklet_description_markdown|safe }}</dd>
-                        {% endif %}
-                        {% dl_field collection "publishing_status" %}
-                        {% dl_field collection "status" %}
-                        {% if collection.alt_copies %}
-                         {% dl_field collection "alt_copies" %}
                         {% endif %}
                         <dt>{% trans "Comments" %}</dt>
                         <dd>{{ collection.comment|html_line_break|safe }}</dd>
@@ -247,9 +250,6 @@
                         <dt>{% trans "Last modification" %}</dt>
                         <dd>{{ last_revision.time }} {% if user.is_authenticated %}(<a href="{% url "telemeta-profile-detail" last_revision.user.username %}">{{last_revision.user.username}}</a>){% endif %}</dd>
                         {% endif %}
-                        {% dl_field collection "archiver_notes" %}
-                        {% dl_field collection "items_done" %}
-                        {% dl_field collection "conservation_site" %}
                     </dl>
                 </div>
             </div>
@@ -272,11 +272,6 @@
                         <div class="wazing"></div>
                         <dt>{% trans "Number of items" %}</dt>
                             <dd>{{ collection.items.count }}</dd>
-                        {% dl_field collection "original_format" %}
-                        {% if collection.physical_format %}
-                        {% dl_field collection "physical_format" %}
-                        {% endif %}
-                        {% dl_field collection "ad_conversion" %}
                     </dl>
                 </div>
             </div>

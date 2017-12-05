@@ -125,7 +125,7 @@ class MediaCollection(MediaResource):
     # All
     objects               = MediaCollectionManager()
 
-    exclude = ['alt_ids', 'travail','acquisition_mode','cnrs_contributor','copy_type','status','alt_copies','archiver_notes','collector_is_creator','is_published','conservation_site']
+    exclude = ['alt_ids', 'travail','acquisition_mode','cnrs_contributor','copy_type','status','alt_copies','archiver_notes','collector_is_creator','is_published','conservation_site','publishing_status','original_format','physical_format','ad_conversion']
 
     permissions = (("can_download_collection_epub", "Can download collection EPUB"),)
 
