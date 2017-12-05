@@ -27,6 +27,8 @@ from telemeta.models.core import *
 from telemeta.models.resource import *
 from telemeta.models.collection import *
 
+from markdownx.models import MarkdownxField
+from markdownx.utils import markdownify
 
 class MediaCorpus(MediaBaseResource):
     "Describe a corpus"
@@ -36,13 +38,15 @@ class MediaCorpus(MediaBaseResource):
 
     children = models.ManyToManyField(MediaCollection, related_name="corpus",
                                       verbose_name=_('collections'),  blank=True)
-                                      
+
     recorded_from_year    = IntegerField(_('recording year (from)'), help_text=_('YYYY'))
     recorded_to_year      = IntegerField(_('recording year (until)'), help_text=_('YYYY'))
 
     objects = MediaCorpusManager()
 
     permissions = (("can_download_corpus_epub", "Can download corpus EPUB"),)
+    code_partner         =  CharField(_('code partner'), unique=False, required=False, default='' )
+    documentation_extra  = MarkdownxField(_('documentation extra'), blank=True)
 
     @property
     def public_id(self):
@@ -54,6 +58,10 @@ class MediaCorpus(MediaBaseResource):
             if child.has_mediafile:
                 return True
         return False
+
+    @property
+    def documentation_markdown(self):
+        return markdownify( self.documentation_extra )
 
     def computed_duration(self):
         duration = Duration()
