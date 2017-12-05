@@ -8,6 +8,9 @@
 from telemeta.models.core import *
 from django.utils.translation import ugettext_lazy as _
 
+from markdownx.models import MarkdownxField
+from markdownx.utils import markdownify
+
 class Authority(ModelCore):
     "People who produced something."
 
@@ -32,3 +35,7 @@ class Authority(ModelCore):
         if self.civilite :
             return '%s %s %s' % (self.civilite,  self.first_name, self.last_name)
         return '%s %s' % (self.first_name, self.last_name)
+
+    @property
+    def biography_markdown(self):
+        return markdownify(self.biography)

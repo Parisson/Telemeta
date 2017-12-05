@@ -70,7 +70,7 @@ urlpatterns = [
 
     # authorities
     url(r'^authority/$', AuthorityListView.as_view(), name="telemeta-authorities"),
-    url(r'^authorities/(?P<public_id>[A-Za-z0-9._-]+)/$', InstitutionDetailView.as_view(), name="telemeta-authorities-detail"),
+    url(r'^authorities/(?P<public_id>[A-Za-z0-9._-]+)/$', AuthorityDetailView.as_view(), name="telemeta-authorities-detail"),
 
     # items
     url(r'^archives/items/$', ItemListView.as_view(), name="telemeta-items"),
