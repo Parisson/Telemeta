@@ -42,6 +42,7 @@ class MediaFondsForm(ModelForm):
         super(MediaFondsForm, self).__init__(*args, **kwargs)
         self.fields["descriptions"] = MarkdownxFormField(label=_('Description'))
         self.fields["descriptions"].required = False
+        self.fields["code"] = forms.RegexField(regex='^\w+$')
 
     class Meta:
         model = MediaFonds
@@ -63,6 +64,7 @@ class MediaCorpusForm(ModelForm):
         super(MediaCorpusForm, self).__init__(*args, **kwargs)
         self.fields["descriptions"] = MarkdownxFormField(label=_('Description'))
         self.fields["descriptions"].required = False
+        self.fields["code"] = forms.RegexField(regex='^\w+$')
 
     class Meta:
         model = MediaCorpus
@@ -144,6 +146,7 @@ class MediaCollectionForm(ModelForm):
         self.fields["location_details"].required = False
         self.fields["booklet_description"] = MarkdownxFormField()
         self.fields["booklet_description"].required = False
+        self.fields["code"] = forms.RegexField(regex='^\w+$')
 
 
         if '_I_' in self.instance.code:
@@ -194,6 +197,7 @@ class MediaItemForm(ModelForm):
         self.fields["mshs_deposit_digest"].required = False
         self.fields["mshs_text"] = MarkdownxFormField(label=_('Text'))
         self.fields["mshs_text"].required = False
+        self.fields["code"] = forms.RegexField(regex='^\w+$')
 
 
 class RestrictedMediaItemForm(MediaItemForm):
