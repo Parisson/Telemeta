@@ -1,0 +1,64 @@
+{% extends "telemeta/base.html" %}
+{% load telemeta_tags %}
+{% load i18n %}
+{% load bootstrap_pagination %}
+
+{% block head_title %}
+    Personne - {{ block.super }}
+{% endblock %}
+
+
+{% block extra_javascript %}
+{% endblock %}
+
+{% if institution %}
+
+{% block title %}
+    <img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" />
+    Personne : {{ authority }}
+{% endblock %}
+
+{% block title_buttons %}
+  <div>
+   </div>
+{% endblock %}
+
+
+{% block content %}
+    <dl class="listing">
+        <dt>{% trans "first name" %}</dt>
+        <dd>{{ authority.first_name }}</dd>
+        <dt>{% trans "last name" %}</dt>
+        <dd>{{ authority.last_name }}</dd>
+        <dt>{% trans "civilite" %}</dt>
+        <dd>{{ authority.civilite }}</dd>
+        <dt>{% trans "alias" %}</dt>
+        <dd>{{ authority.alias }}</dd>
+    </dl>
+
+    <div>
+        <h4><a href="#">{% trans "Biography" %}</a></h4>
+        <div>
+            <dl class="listing">
+                <dt>{% trans "birth date" %}</dt>
+                <dd>{{ authority.birth_date }}</dd>
+                <dt>{% trans "birth location" %}</dt>
+                <dd>{{ authority.birth_location }}</dd>
+                <dt>{% trans "death date" %}</dt>
+                <dd>{{ authority.death_date }}</dd>
+                <dt>{% trans "death location" %}</dt>
+                <dd>{{ authority.death_location }}</dd>
+                <dt>{% trans "biography" %}</dt>
+                <dd>{{ authority.biography_markdown | safe }}</dd>
+                <dt>{% trans "URI" %}</dt>
+                <dd>{{ authority.uri }}</dd>
+            </dl>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% else %}
+    <p>Aucun individu ne correspond.</p>
+{% endif %}

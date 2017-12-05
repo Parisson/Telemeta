@@ -126,14 +126,14 @@ jQuery(document).ready(function(){
               <dt>{% trans "collectors"|capitalize %}</dt>
               <dd>
                     {% for collector in collectors %}
-                        {{collector}},
+                        <a href="{% url "telemeta-authorities-detail" collector.id %}">{{ collector }}</a>,
                     {% endfor %}
               </dd>
               <!-- Informers -->
               <dt>{% trans "informers"|capitalize %}</dt>
               <dd>
                     {% for informer in informers %}
-                        {{informer}},
+                        <a href="{% url "telemeta-authorities-detail" informer.id %}">{{ informer }}</a>,
                     {% endfor %}
               </dd>
 

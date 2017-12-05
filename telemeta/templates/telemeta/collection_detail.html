@@ -103,7 +103,7 @@
                 <dt>Enquêteurs</dt>
                 <dd>
                     {% for collec in collection.collectors.all %}
-                        {{collec }},
+                        <a href="{% url "telemeta-authorities-detail" collec.id %}">{{ collec }}</a>,
                     {% endfor %}
                 </dd>
                 {% if collection.description %}
