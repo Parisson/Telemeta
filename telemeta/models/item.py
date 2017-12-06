@@ -53,11 +53,12 @@ class MediaItem(MediaResource):
     element_type = 'item'
 
     # Main Informations
+    collection            = ForeignKey('MediaCollection', related_name="items", verbose_name=_('collection'))
     title                 = CharField(_('title'))
     alt_title             = CharField(_('original title / translation'))
+    mshs_alt_title        = CharField(_('alternate title'))
     collector             = CharField(_('collector'), help_text=_('First name, Last name ; First name, Last name'))
     description           = TextField(_('description'), help_text=_('Describe the item'))
-    collection            = ForeignKey('MediaCollection', related_name="items", verbose_name=_('collection'))
     recorded_from_date    = DateField(_('recording date (from)'), help_text=_('YYYY-MM-DD'))
     recorded_to_date      = DateField(_('recording date (until)'), help_text=_('YYYY-MM-DD'))
     public_access         = CharField(_('access type'), choices=ITEM_PUBLIC_ACCESS_CHOICES, max_length=16, default="metadata")
@@ -82,8 +83,15 @@ class MediaItem(MediaResource):
     mshs_timbre           = CharField(_('timbre'))
     mshs_timbre_ref       = CharField(_('timbre referenced'))
     mshs_timbre_code      = CharField(_('timbre code'))
-    mshs_alt_title        = CharField(_('alternate title'))
     mshs_melody           = TextField(_('melody'), help_text=_('You can use ABC notation'))
+    DOMAINS = (
+        ('T','Témoignage'),
+        ('C','Chanson'),
+        ('A','Autre expression vocale'),
+        ('I','Expression instrumentale'),
+        ('R','Conte ou récit légendaire')
+    )
+    mshs_domain           = CharField(_('Domain'),choices=DOMAINS)
     mshs_domain_song      = CharField(_('kind of song'))
     mshs_domain_vocal     = CharField(_('kind of vocal'))
     mshs_domain_music     = CharField(_('kind of music'))
@@ -163,9 +171,10 @@ class MediaItem(MediaResource):
                     'recordist', 'digitalist', 'digitization_date',
                     'publishing_date', 'scientist', 'topic',
                     'summary', 'contributor','creator_reference', ]
-    exclude.extend( ['ethnic_group', 'moda_execut', 'vernacular_style',
+    exclude.extend( ['recorded_from_date', 'recorded_to_date',
+                    'cultural_area',  'ethnic_group', 'moda_execut', 'vernacular_style',
                     'generic_style', 'author', 'track', 'collector_selection',
-                    'collector_from_collection', 'external_references', ] )
+                    'collector_from_collection', 'external_references',  ] )
 
     restricted = ['copied_from_item', 'mimetype',
                     'organization', 'depositor', 'rights',
@@ -198,6 +207,10 @@ class MediaItem(MediaResource):
                 return 'none'
         else:
             return _('none')
+
+        @property
+        def mshs_text_markdown(self):
+            return markdownify(self.mshs_text)
 
 
     class Meta(MetaCore):

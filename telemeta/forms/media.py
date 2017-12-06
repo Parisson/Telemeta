@@ -175,6 +175,10 @@ class MediaItemForm(ModelForm):
                 label="informers",
             )
 
+    domains = forms.MultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple,
+        choices=MediaItem._meta.get_field('mshs_domain').choices)
+
 
 
     class Meta:
@@ -189,6 +193,8 @@ class MediaItemForm(ModelForm):
         if self.instance and self.instance.pk:
             self.fields['mshs_informers'].queryset = MediaCollectionPerformance.objects.filter(
                                                collection=self.instance.collection)
+            self.fields['domains'].initial = self.instance.mshs_domain.split(',')
+
         self.fields["description"] = MarkdownxFormField(label=_('Description'))
         self.fields["description"].required = False
         self.fields["dance_details"] = MarkdownxFormField(label=_('Details on dance'))
@@ -197,7 +203,19 @@ class MediaItemForm(ModelForm):
         self.fields["mshs_deposit_digest"].required = False
         self.fields["mshs_text"] = MarkdownxFormField(label=_('Text'))
         self.fields["mshs_text"].required = False
+        self.fields["mshs_informers"].required = False
         self.fields["code"] = forms.RegexField(regex='^\w+$')
+
+        # if you want to do it to all of them
+        for field in self.fields.values():
+            field.error_messages = {'required':'Le champ {fieldname} est obligatoire'.format(fieldname=field.label)}
+
+    def save(self, commit=True):
+        item = super(MediaItemForm,self).save(commit=False)
+        item.mshs_domain = ','.join(self.cleaned_data['domains'])
+        if commit:
+            item.save()
+        return item
 
 
 class RestrictedMediaItemForm(MediaItemForm):
