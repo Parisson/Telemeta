@@ -258,9 +258,12 @@ class ResourceSingleMixin(ResourceMixin):
             persons_inform= collection.informer.prefetch_related('informers')
             for person in persons_inform :
                 informers.append(person)
-            # list of location
-            if collection.location!='' :
-                locations.append( collection.location )
+            # list of locations
+            locations_collection = collection.location.all()
+            if locations_collection :
+                for location in locations_collection :
+                    if location!='' :
+                        locations.append( location )
 
         # make unique and distinct
         collectors = list(set(collectors))

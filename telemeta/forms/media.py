@@ -58,7 +58,7 @@ class MediaCorpusForm(ModelForm):
     queryset = MediaCollection.objects.all()
     widget = FilteredSelectMultiple('Collections', is_stacked=False)
     children = forms.ModelMultipleChoiceField(widget=widget, queryset=queryset,
-        label='Collections', required=False)
+        label='Enquêtes', required=False)
 
     def __init__(self, *args, **kwargs):
         super(MediaCorpusForm, self).__init__(*args, **kwargs)

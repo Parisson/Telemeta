@@ -179,7 +179,7 @@ jQuery(document).ready(function(){
         {% endif %}
 
         <div class="extraInfos">
-        <h4><img src="{{ STATIC_URL }}telemeta/images/item_title.png" style="vertical-align:middle" />{{resource.children_type|capitalize }} </h4>
+        <h4><img src="{{ STATIC_URL }}telemeta/images/item_title.png" style="vertical-align:middle" />{% trans resource.children_type|capitalize %} </h4>
         {% with resource.children.all as children %}
             {% include "telemeta/inc/children_list.html" %}
         {% endwith %}

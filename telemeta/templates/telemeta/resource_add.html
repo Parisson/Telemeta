@@ -4,7 +4,7 @@
 {% load bootstrap3 %}
 
 {% block title %}
-<img src="{{ STATIC_URL }}telemeta/images/{{ type }}.png" style="vertical-align:middle" /> {{ type }} : {% trans "New" %}
+<img src="{{ STATIC_URL }}telemeta/images/{{ type }}.png" style="vertical-align:middle" /> {% trans type  %} : {% trans "New" %}
 {% endblock %}
 
     {% block cancel %}
