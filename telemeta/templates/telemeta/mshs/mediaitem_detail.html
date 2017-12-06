@@ -5,15 +5,14 @@
 
 {% block general_info %}
     <dl class="listing">
+        <dt>{% field_label item "collection" %}</dt>
+        <dd><a href="{% url "telemeta-collection-detail" item.collection.public_id %}">{{ item.collection.title }}</a></dd>
         {% dl_field item "title" placeholder %}
         {% dl_field item "alt_title" %}
         <dt>{% field_label item "description"%}</dt>
         <dd> {{ item.description_markdown | safe }}</dd>
         {% dl_field item "collector" placeholder %}
-        <dt>{% field_label item "collection" %}</dt>
-        <dd><a href="{% url "telemeta-collection-detail" item.collection.public_id %}">{{ item.collection.title }}</a></dd>
-        <dt>{% trans "Recording date" %}</dt>
-        <dd>{% if item.recorded_from_date %}{{ item.recorded_from_date }}{% endif %}{% if item.recorded_from_date and item.recorded_to_date%} - {% endif %}{% if item.recorded_to_date %}{{ item.recorded_to_date}}{% endif %}</dd>
+        <!-- FIXIT informers -->
         <dt>{% trans "Access type" %}</dt>
         <dd>{% trans item.public_access %}</dd>
     </dl>
@@ -31,6 +30,7 @@
             {% dl_field item "mshs_timbre_code" %}
             {% dl_field item "mshs_alt_title" %}
             {% dl_field item "mshs_melody" %}
+            {% dl_field item "domains" %}
             {% dl_field item "mshs_domain_song" %}
             {% dl_field item "mshs_domain_vocal" %}
             {% dl_field item "mshs_domain_music" %}
@@ -54,7 +54,7 @@
         <!-- display fields for a text -->
         {% dl_field item "mshs_text_bool" %}
         <dt>{% trans "Text" %}</dt>
-        <dd>{{ item.mshs_text|html_line_break|safe }}</dd>
+        <dd>{{ item.mshs_text_markdown|safe }}</dd>
         {% dl_field item "mshs_incipit" %}
         {% dl_field item "mshs_refrain" %}
         {% dl_field item "mshs_jingle" %}
@@ -82,7 +82,6 @@
                 <dt>{% trans "Location" %}</dt>
                 <dd>{% if item.location %}{{ item.location.name }}{% endif %}</dd>
                 {% dl_field item "location_comment" %}
-                {% dl_field item "cultural_area" %}
                 {% dl_field item "language" %}
                 {% if item.language_iso %}
                 <dt>{% trans "Language (ISO norm)" %}</dt>
@@ -108,10 +107,10 @@
                 <table class="instruments">
                     <thead>
                         <tr>
-                            <td>{% field_label "MediaCollectionPerformance" "instrument" %}</td>
-                            <td>{% field_label "MediaCollectionPerformance" "alias" %}</td>
-                            <td>{% field_label "MediaCollectionPerformance" "Hornbostel-Sachs" %}</td>
-                            <td>{% field_label "MediaCollectionPerformance" "informer" %}</td>
+                            <td>{% trans "instrument" %}</td>
+                            <td>{% trans "alias" %}</td>
+                            <td>{% trans "Hornbostel-Sachs" %}</td>
+                            <td>{% trans "informer" %}</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -137,7 +136,6 @@
             <dl class="listing">
                 {% dl_field item "code" %}
                 {% dl_field item "old_code" %}
-                {% dl_field item "creator_reference" %}
                 <dt>{% trans "Remarks" %}</dt>
                 <dd>{{ item.comment|html_line_break|safe }}</dd>
                 {% if last_revision %}
