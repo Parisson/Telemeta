@@ -153,39 +153,6 @@
         </div>
 
         <div class="extraInfos">
-            {% block musical_data %}
-            <div>
-                <h4><a href="#">{% trans "Musical informations" %}</a></h4>
-             {% if collection.performances %}
-                <div class="instruments">
-                    <table class="instruments">
-                        <thead>
-                            <tr>
-                                <td>{% trans "instrument" %}</td>
-                                <td>{% trans "alias" %}</td>
-                                <td>{% trans "Hornbostel-Sachs" %}</td>
-                                <td>{% trans "informer" %}</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for performance in collection.performances.all %}
-                            <tr>
-                                <td>{{ performance.instrument|default:"" }}</td>
-                                <td>{{ performance.alias|default:"" }}</td>
-                                <td>{{ performance.hornbostel }}</td>
-                                <td>{{ performance.musician }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-                {% endif %}
-             </div>
-            {% endblock musical_data %}
-        </div>
-
-
-        <div class="extraInfos">
         {% block legal_data %}
             <div>
                 <h4><a href="#">{% trans "Legal notices" %}</a></h4>
@@ -211,12 +178,6 @@
                             {% endfor %}
                         </dd>
                         {% dl_field collection "publisher_serial" %}
-                        <dt>{% trans "booklet author" %}</dt>
-                        <dd>
-                            {% for author in collection.booklet_author.all %}
-                            {{ author }},
-                            {% endfor %}
-                        </dd>
                         {% if '_E_' in collection.public_id %}
                         {% dl_field collection "reference" %}
                         {% endif %}
