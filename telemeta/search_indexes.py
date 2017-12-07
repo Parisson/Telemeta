@@ -182,13 +182,13 @@ class MediaCollectionIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_recorded_from_date(self, obj):
         if obj.recorded_from_year != 0:
-            return datetime.date(int(obj.recorded_from_year), 01, 01)
+            return obj.recorded_from_year
         else:
             return None
 
     def prepare_recorded_to_date(self, obj):
         if obj.recorded_to_year != 0:
-            return datetime.date(int(obj.recorded_to_year), 01, 01)
+            return obj.recorded_to_year
         else:
             return None
 

@@ -63,8 +63,8 @@ class MediaCollection(MediaResource):
     creator               = CharField(_('depositor / contributor'), help_text=_('First name, Last name ; First name, Last name'))
     description           = TextField(_('description'))
     recording_context     = ForeignKey('RecordingContext', related_name="collections", verbose_name=_('recording context'), blank=True, null=True, on_delete=models.SET_NULL)
-    recorded_from_year    = IntegerField(_('recording date (from)'), help_text=_('YYYY/MM/DD'))
-    recorded_to_year      = IntegerField(_('recording date (until)'), help_text=_('YYYY/MM/DD'))
+    recorded_from_year    = DateField(_('recording date (from)'), null=True, blank=True)
+    recorded_to_year      = DateField(_('recording date (until)'),null=True, blank=True)
     year_published        = IntegerField(_('year published'), help_text=_('YYYY'))
     public_access         = CharField(_('access type'), choices=PUBLIC_ACCESS_CHOICES, max_length=16, default="metadata")
 
@@ -125,7 +125,7 @@ class MediaCollection(MediaResource):
     # All
     objects               = MediaCollectionManager()
 
-    exclude = ['alt_ids', 'travail','acquisition_mode','cnrs_contributor','copy_type','status','alt_copies','archiver_notes','collector_is_creator','is_published','conservation_site','publishing_status','original_format','physical_format','ad_conversion']
+    exclude = ['alt_ids','numerotation','creator','reference','external_references', 'publisher_serial', 'metadata_writer', 'travail','acquisition_mode','cnrs_contributor','copy_type','status','alt_copies','archiver_notes','collector_is_creator','is_published','conservation_site','publishing_status','original_format','physical_format','ad_conversion']
 
     permissions = (("can_download_collection_epub", "Can download collection EPUB"),)
 
