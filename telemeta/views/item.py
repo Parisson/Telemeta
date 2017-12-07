@@ -610,6 +610,23 @@ class ItemViewMixin(ItemBaseMixin):
     # inlines = [ItemPerformanceInline, ItemKeywordInline, ItemRelatedInline,
     #             ItemFormatInline, ItemIdentifierInline]
 
+
+    # Excluding fields from the display of the main form
+    exclu = ''
+    exclu = exclu + 'mshs_author,mshs_composer,mshs_timbre,mshs_timbre_ref,mshs_timbre_code'
+    exclu = exclu + ',mshs_melody,mshs_domain_song,mshs_informers,mshs_domain,domains'
+    exclu = exclu + ',mshs_domain_vocal,mshs_domain_music,mshs_domain_tale'
+    exclu = exclu + ',mshs_details,mshs_function,mshs_dance,dance_details'
+    exclu = exclu + ',mshs_deposit_digest,mshs_deposit_thematic,mshs_deposit_names'
+    exclu = exclu + ',mshs_deposit_places,mshs_deposit_periods'
+    exclu = exclu + ',mshs_text_bool,mshs_text,mshs_incipit,mshs_refrain,mshs_jingle,mshs_coupe'
+    exclu = exclu + ',mshs_title_ref_coirault,mshs_code_coirault'
+    exclu = exclu + ',mshs_title_ref_laforte,mshs_code_laforte'
+    exclu = exclu + ',mshs_title_ref_Dela,mshs_code_Dela'
+    exclu = exclu + ',mshs_title_ref_Aare,mshs_code_Aare'
+    exclu = exclu + ',mshs_musical_organization,mshs_group'
+
+
     def get_object(self):
         obj = self.model.objects.filter(code=self.kwargs['public_id'])
         if not obj:
@@ -666,21 +683,8 @@ class ItemEditView(ItemViewMixin, UpdateWithInlinesView):
         context['visualizers'] = self.get_graphers()
         context['audio_export_enabled'] = self.export_enabled
         context['auto_zoom'] = True
-        # Excluding fields from the display of the main form
-        exclu = ''
-        exclu = exclu + 'mshs_author,mshs_composer,mshs_timbre,mshs_timbre_ref,mshs_timbre_code'
-        exclu = exclu + ',mshs_melody,mshs_domain_song,mshs_informers,mshs_domain,domains'
-        exclu = exclu + ',mshs_domain_vocal,mshs_domain_music,mshs_domain_tale'
-        exclu = exclu + ',mshs_details,mshs_function,mshs_dance,mshs_dance_details'
-        exclu = exclu + ',mshs_deposit_digest,mshs_deposit_thematic,mshs_deposit_names'
-        exclu = exclu + ',mshs_deposit_places,mshs_deposit_periods'
-        exclu = exclu + ',mshs_text_bool,mshs_text,mshs_incipit,mshs_refrain,mshs_jingle,mshs_coupe'
-        exclu = exclu + ',mshs_title_ref_coirault,mshs_code_coirault'
-        exclu = exclu + ',mshs_title_ref_laforte,mshs_code_laforte'
-        exclu = exclu + ',mshs_title_ref_Dela,mshs_code_Dela'
-        exclu = exclu + ',mshs_title_ref_Aare,mshs_code_Aare'
-        exclu = exclu + ',mshs_musical_organization,mshs_group'
-        context['mshs_exclude']=exclu
+
+        context['mshs_exclude'] = self.exclu
         return context
 
     @method_decorator(permission_required('telemeta.change_mediaitem'))
@@ -714,6 +718,11 @@ class ItemAddView(ItemViewMixin, CreateWithInlinesView):
 
     def get_success_url(self):
         return reverse_lazy('telemeta-item-detail', kwargs={'public_id': self.object.code})
+
+    def get_context_data(self, **kwargs):
+        context = super(ItemAddView, self).get_context_data(**kwargs)
+        context['mshs_exclude']= self.exclu
+        return context
 
     @method_decorator(permission_required('telemeta.add_mediaitem'))
     def dispatch(self, *args, **kwargs):

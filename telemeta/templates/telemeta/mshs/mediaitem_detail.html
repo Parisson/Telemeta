@@ -11,7 +11,7 @@
         {% dl_field item "alt_title" %}
         <dt>{% field_label item "description"%}</dt>
         <dd> {{ item.description_markdown | safe }}</dd>
-        {% dl_field item "collector" placeholder %}
+
         <!-- FIXIT informers -->
         <dt>{% trans "Access type" %}</dt>
         <dd>{% trans item.public_access %}</dd>
@@ -83,10 +83,7 @@
                 <dd>{% if item.location %}{{ item.location.name }}{% endif %}</dd>
                 {% dl_field item "location_comment" %}
                 {% dl_field item "language" %}
-                {% if item.language_iso %}
-                <dt>{% trans "Language (ISO norm)" %}</dt>
-                <dd>{{ item.language_iso.name|to_utf8 }}</dd>
-                {% endif %}
+                
                 <dt>{% trans "Ethnographic context" %}</dt>
                 <dd>{{ item.context_comment|html_line_break|safe }}</dd>
                 {% dl_field item "keywords" join with ", " %}

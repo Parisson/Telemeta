@@ -108,6 +108,9 @@
         <script type="text/javascript" src="/static/admin/js/actions.min.js"></script>
         {{ form.media }}
         <div class="block-grey">
+        {% block collection %}
+            <h4>{% trans "Collection" %} : <a href="{% url "telemeta-collection-detail" item.collection.code %}"> {{item.collection}}</a> </h4>
+        {% endblock %}
         {% bootstrap_form form exclude=mshs_exclude %}
         {% trans "Collection access status" %} : {% trans item.collection.public_access %}<br />
         {% trans "Context access status" %} : {% trans access %}<br />

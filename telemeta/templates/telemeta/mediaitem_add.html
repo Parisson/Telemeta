@@ -8,6 +8,9 @@
     <img src="{{ STATIC_URL }}telemeta/images/item.png" alt="item" style="vertical-align:middle" /> Item : {% trans "New" %}
 {% endblock %}
 
+{% block collection %}
+{% endblock %}
+
     {% block cancel %}
     <a id="cancel" href="{% url "telemeta-items" %}">
       <button type="button" class="btn btn-default">

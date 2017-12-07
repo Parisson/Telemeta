@@ -58,6 +58,8 @@ class MediaItem(MediaResource):
     alt_title             = CharField(_('original title / translation'))
     mshs_alt_title        = CharField(_('alternate title'))
     collector             = CharField(_('collector'), help_text=_('First name, Last name ; First name, Last name'))
+    collectors             = models.ManyToManyField('Authority', related_name="item_collectors", verbose_name=_('collectors'), blank=True, null=True)
+    informer              = models.ManyToManyField('Authority', related_name="item_informers", verbose_name=_('informers'), blank=True, null=True)
     description           = TextField(_('description'), help_text=_('Describe the item'))
     recorded_from_date    = DateField(_('recording date (from)'), help_text=_('YYYY-MM-DD'))
     recorded_to_date      = DateField(_('recording date (until)'), help_text=_('YYYY-MM-DD'))
@@ -66,6 +68,7 @@ class MediaItem(MediaResource):
     # Geographic and cultural informations
     location              = ForeignKey('Location', verbose_name=_('location'), blank=True, null=True, on_delete=models.SET_NULL)
     location_comment      = CharField(_('location details'))
+    language_iso          = models.ManyToManyField('Language', related_name="item_language", verbose_name=_('Language (ISO norm)'), blank=True, null=True)
     language              = CharField(_('language'))
     #language_iso          = ForeignKey('Language', related_name="items", verbose_name=_('Language (ISO norm)'), blank=True, null=True, on_delete=models.SET_NULL)
     ethnic_group          = ForeignKey('EthnicGroup', related_name="items", verbose_name=_('population / social group'), blank=True, null=True, on_delete=models.SET_NULL)
@@ -171,7 +174,7 @@ class MediaItem(MediaResource):
                     'recordist', 'digitalist', 'digitization_date',
                     'publishing_date', 'scientist', 'topic',
                     'summary', 'contributor','creator_reference', ]
-    exclude.extend( ['recorded_from_date', 'recorded_to_date',
+    exclude.extend( ['collection','recorded_from_date', 'recorded_to_date',
                     'cultural_area',  'ethnic_group', 'moda_execut', 'vernacular_style',
                     'generic_style', 'author', 'track', 'collector_selection',
                     'collector_from_collection', 'external_references',  ] )

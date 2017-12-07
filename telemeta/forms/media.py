@@ -195,6 +195,39 @@ class MediaItemForm(ModelForm):
                                                collection=self.instance.collection)
             self.fields['domains'].initial = self.instance.mshs_domain.split(',')
 
+        self.fields["collectors"] = forms.ModelMultipleChoiceField(
+            queryset = Authority.objects.all(),
+            widget=Select2MultipleWidget(
+            attrs={
+                'title': 'Liste des enquêteurs',
+                'data-width':'100%',
+                }),
+            label=_("recordist"),
+            required=False
+        )
+
+        self.fields["informer"] = forms.ModelMultipleChoiceField(
+            queryset = Authority.objects.all(),
+            widget=Select2MultipleWidget(
+            attrs={
+                'title': 'Liste des informateurs',
+                'data-width':'100%',
+                }),
+            label=_("informers"),
+            required=False
+        )
+
+        self.fields["language_iso"] = forms.ModelMultipleChoiceField(
+            queryset = Language.objects.all(),
+            widget=Select2MultipleWidget(
+            attrs={
+                'title': 'Editeurs',
+                'data-width':'100%',
+                }),
+            label=_("Language (ISO norm)"),
+            required=False
+        )
+
         self.fields["description"] = MarkdownxFormField(label=_('Description'))
         self.fields["description"].required = False
         self.fields["dance_details"] = MarkdownxFormField(label=_('Details on dance'))
