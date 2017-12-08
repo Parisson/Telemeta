@@ -12,8 +12,20 @@
         {% dl_field item "alt_title" %}
         <dt>{% field_label item "description"%}</dt>
         <dd> {{ item.description_markdown | safe }}</dd>
-
-        <!-- FIXIT informers -->
+        <dt>Enquêteur(s)</dt>
+        <dd>
+            {% for collec in item.collectors.all %}
+                <a href="{% url "telemeta-authorities-detail" collec.id %}">{{ collec }}</a>,
+            {% endfor %}
+        </dd>
+        <dt>Informateur(s)</dt>
+        <dd>
+            {% for inform in item.informer.all %}
+                <a href="{% url "telemeta-authorities-detail" inform.id %}">{{ inform }}</a>,
+            {% endfor %}
+        </dd>
+        {% dl_field item "recorded_from_date" placeholder %}
+        {% dl_field item "recorded_to_date" placeholder %}
         <dt>{% trans "Access type" %}</dt>
         <dd>{% trans item.public_access %}</dd>
     </dl>
