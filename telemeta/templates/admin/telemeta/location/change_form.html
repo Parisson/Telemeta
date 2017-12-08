@@ -28,7 +28,8 @@
             })
             .on('markgeocode', function(e) {
                 // When a geocoding is performed
-                control._map.removeLayer(control._map.geocodeMarker);
+                //control._map.removeLayer(control._map.geocodeMarker);
+
                 //  a marker with the new geocoded data is updated
                 $("#id_latitude").val( e.geocode.center.lat );
                 $("#id_longitude").val( e.geocode.center.lng );
