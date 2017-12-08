@@ -248,6 +248,7 @@ class MediaItemForm(ModelForm):
         item.mshs_domain = ','.join(self.cleaned_data['domains'])
         if commit:
             item.save()
+            self.save_m2m()
         return item
 
 
