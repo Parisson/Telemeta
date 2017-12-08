@@ -16,9 +16,10 @@ def label_domain(domains):
 
     # compose the string to return
     for domain in list_domain :
-        # subsitute whith the corresponding label
-        label = dico[domain]
-        res = res+label+', '
+        if dico.has_key(domain) :
+            # subsitute whith the corresponding label
+            label = dico[domain]
+            res = res+label+', '
 
     # remove the last comma
     res = res.rstrip(', ')
