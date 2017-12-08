@@ -227,6 +227,42 @@ class MediaItemForm(ModelForm):
             label=_("Language (ISO norm)"),
             required=False
         )
+        # Labels MSHS
+        translations = [
+            ["alt_title","Traduction titre"],
+            ["mshs_alt_title","Autre(s) titre(s)"],
+            ["collectors","Enquêteur(s)"],
+            ["informer","Informateur(s)"],
+            ["language_iso","Langue(s)(norme ISO)"],
+            ["language","Langues(s)"],
+            ["context_comment","Contexte d'enregistrement"],
+            ["code","Cote de l'item"],
+            ["mshs_author","Auteur(s)"],
+            ["mshs_composer","Compositeur(s)"],
+            ["mshs_timbre","Timbre(s) de l'air"],
+            ["mshs_timbre_ref","Timbre(s) référencés - Cote du timbre"],
+            ["mshs_melody","Mélodie (transcription alphabétique)"],
+            ["domains","Domaine(s)"],
+            ["mshs_domain_song","Genre(s) de la chanson"],
+            ["mshs_domain_vocal","Genre(s) de l'Autre expression vocale"],
+            ["mshs_domain_music","Genre(s) de l'expression instrumentale"],
+            ["mshs_domain_tale","Genre(s) du Conte"],
+            ["mshs_function","Fonctions(s)"],
+            ["mshs_dance","Danse(s)"],
+            ["mshs_dance_details","Précisions sur la danse"],
+            ["mshs_deposit_thematic","Thématique(s)"],
+            ["mshs_deposit_names","Nom(s) propre(s) cité(s) "],
+            ["mshs_deposit_places","Lieu(x) cité(s"],
+            ["mshs_deposit_periods","Période(s) citée(s)"],
+            ["mshs_title_ref_coirault","Titre(s) référencé(s) et cote(s) Coirault"],
+            ["mshs_title_ref_laforte","Titre(s) référencé(s) et cote(s) Laforte"],
+            ["mshs_title_ref_Dela","Titre(s) référencé(s) et cote(s) Delarue -Tenèze"],
+            ["mshs_title_ref_Aare","Titre(s) référencé(s) et cote(s) Aarne-Thompson"]
+        ]
+        for t in translations :
+            self.fields[t[0]].label=t[1]
+
+
 
         self.fields["description"] = MarkdownxFormField(label=_('Description'))
         self.fields["description"].required = False
