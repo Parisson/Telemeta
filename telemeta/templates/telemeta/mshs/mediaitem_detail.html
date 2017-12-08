@@ -1,5 +1,6 @@
 {% extends "telemeta/mediaitem_detail.html" %}
 {% load telemeta_tags %}
+{% load mshs_tags %}
 {% load i18n %}
 
 
@@ -30,7 +31,8 @@
             {% dl_field item "mshs_timbre_code" %}
             {% dl_field item "mshs_alt_title" %}
             {% dl_field item "mshs_melody" %}
-            {% dl_field item "domains" %}
+            <dt>Domaine(s)</dt>
+            <dd>{{ item.mshs_domain | label_domain }}</dd>
             {% dl_field item "mshs_domain_song" %}
             {% dl_field item "mshs_domain_vocal" %}
             {% dl_field item "mshs_domain_music" %}
@@ -83,7 +85,7 @@
                 <dd>{% if item.location %}{{ item.location.name }}{% endif %}</dd>
                 {% dl_field item "location_comment" %}
                 {% dl_field item "language" %}
-                
+
                 <dt>{% trans "Ethnographic context" %}</dt>
                 <dd>{{ item.context_comment|html_line_break|safe }}</dd>
                 {% dl_field item "keywords" join with ", " %}
