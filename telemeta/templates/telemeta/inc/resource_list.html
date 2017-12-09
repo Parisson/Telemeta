@@ -20,7 +20,7 @@
        <center><span class="glyphicon glyphicon-volume-up" style="font-size: 1.3em;"></span></center>
       {% endif %}
     </td>
-    <td>{{ resource.descriptions }}</td>
+    <td>{{ resource.descriptions_markdown|safe }}</td>
     <td>{{ resource.code }}</td>
 
 </tr>
@@ -30,4 +30,3 @@
 {% else %}
     <p>{% trans "No resource" %}</p>
 {% endif %}
-
