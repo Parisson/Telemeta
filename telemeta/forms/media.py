@@ -238,6 +238,7 @@ class MediaItemForm(ModelForm):
             ["mshs_alt_title","Autre(s) titre(s)"],
             ["collectors","Enquêteur(s)"],
             ["informer","Informateur(s)"],
+            ["description","Description de l'item"],
             ["language_iso","Langue(s)(norme ISO)"],
             ["language","Langues(s)"],
             ["context_comment","Contexte d'enregistrement"],
