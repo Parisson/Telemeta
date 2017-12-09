@@ -195,6 +195,10 @@ class MediaItemForm(ModelForm):
                                                collection=self.instance.collection)
             self.fields['domains'].initial = self.instance.mshs_domain.split(',')
 
+        # Hidden fields
+        self.fields['collection'].widget=forms.HiddenInput()
+
+
         self.fields["collectors"] = forms.ModelMultipleChoiceField(
             queryset = Authority.objects.all(),
             widget=Select2MultipleWidget(
