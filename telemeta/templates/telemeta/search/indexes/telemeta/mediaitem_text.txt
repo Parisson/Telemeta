@@ -16,7 +16,7 @@
 {{ object.comment }}
 {{ object.external_references }}
 {{ object.location_comment }}
-{{ object.cultural_area }}
+#{{ object.cultural_area }}
 {{ object.language }}
 {{ object.language_iso_id }}
 {{ object.ethnic_group_id }}
