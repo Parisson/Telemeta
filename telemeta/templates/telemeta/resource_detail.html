@@ -82,6 +82,9 @@ jQuery(document).ready(function(){
                 <dt>{% trans field.verbose_name|capitalize %}</dt>
                 <dd><a href="{% url "telemeta-institutions-detail" resource.institution_id %}">{{ resource|get_attr:field.name }}</a></dd>
                 {% elif "conservation_site" == field.name or "acquisition_mode" == field.name or "comment" == field.name or "documentation_extra" == field.name or "recorded_from_year" == field.name or "recorded_to_year" == field.name %}
+               {% elif "descriptions" == field.name %}
+                 <dt>{% trans field.verbose_name|capitalize %}</dt>
+                 <dd>{{ resource.descriptions_markdown|safe }}</dd>
                {% elif field.get_internal_type == 'TextField' %}
                  <dt>{% trans field.verbose_name|capitalize %}</dt>
                  <dd>{{ resource|get_attr:field.name|html_line_break|safe }}</dd>

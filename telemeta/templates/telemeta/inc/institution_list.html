@@ -14,11 +14,10 @@
         <a href="{% url "telemeta-institutions-detail" institution.id %}">
           {{ institution.name }}</a>
     </td>
-    <td>{{ institution.notes }}</td>
+    <td>{{ institution.notes_markdown|safe }}</td>
 </tr>
 {% endfor %}
 </table>
 {% else %}
     <p>{% trans "No institution" %}</p>
 {% endif %}
-

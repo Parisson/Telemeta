@@ -44,8 +44,8 @@ class InstitutionListView(ListView):
         context = super(InstitutionListView, self).get_context_data(**kwargs)
         context['count'] = self.object_list.count()
         return context
-        
-        
+
+
 class InstitutionDetailView(InstitutionViewMixin, DetailView):
 
     template_name = 'telemeta/institution_detail.html'

@@ -23,7 +23,7 @@
 {% endblock %}
 
 {% block content %}
-   {{institution.notes}}
+   {{institution.notes_markdown|safe}}
 
         <h2>{% trans "Fonds" %}</h2>
         <div class="with-rightcol">

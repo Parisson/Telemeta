@@ -133,7 +133,9 @@
             {% bootstrap_field form.auto_period_access %}
             {% bootstrap_field form.comment %}
             {% block last_modification_date %}
-                {% bootstrap_field form.last_modification_date %}
+                <!--
+                FIXME
+                -->
             {% endblock %}
         </div>
         {% trans "Collection access status" %} : {% trans item.collection.public_access %}<br />
