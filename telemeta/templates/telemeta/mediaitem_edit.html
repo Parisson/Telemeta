@@ -109,7 +109,7 @@
         {{ form.media }}
         <div class="block-grey">
             {% block collection %}
-                <h4>{% trans "Collection" %} : <a href="{% url "telemeta-collection-detail" item.collection.code %}"> {{item.collection}}</a> </h4>
+                <h4>{% trans "Collection" %} : {{item.collection}} <a href="{% url "telemeta-collection-detail" item.collection.code %}"> {{item.collection.title}}</a> </h4>
             {% endblock %}
             {% bootstrap_field form.title %}
             {% bootstrap_field form.alt_title %}
@@ -121,8 +121,18 @@
         </div>
         <div class="block-grey">
             <h2>Indications géographiques et culturelles</h2>
-            {% bootstrap_field form.location %}
-            {% bootstrap_field form.location_comment %}
+            <div class="form-group">
+                <label class="control-label">Lieu(x) :
+                <ul>
+                {% block  locations %}
+                {% for loc in item.collection.location.all %}
+                    <li>{{ loc }}<li>
+                {% endfor %}
+                {% endblock %}
+
+                </ul>
+            </div>
+
             {% bootstrap_field form.language_iso %}
             {% bootstrap_field form.context_comment %}
         </div>
