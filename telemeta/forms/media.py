@@ -197,6 +197,7 @@ class MediaItemForm(ModelForm):
 
         # Hidden fields
         self.fields['collection'].widget=forms.HiddenInput()
+        #self.fields['collector'].widget=forms.HiddenInput()
 
 
         self.fields["collectors"] = forms.ModelMultipleChoiceField(
