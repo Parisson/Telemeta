@@ -280,15 +280,17 @@ class ResourceSingleMixin(ResourceMixin):
         until_year = 0
 
         for collection in collections :
-            f_y = collection.recorded_from_year
-            if f_y < from_year and f_y > 0 :
-                from_year = f_y
-            u_y = collection.recorded_to_year
-            if u_y > until_year:
-                until_year = u_y
-            else :
-                if f_y > until_year :
-                    until_year = f_y
+            if collection.recorded_from_year :
+                f_y = collection.recorded_from_year.year
+                if f_y < from_year and f_y > 0 :
+                    from_year = f_y
+            if collection.recorded_to_year :
+                u_y = collection.recorded_to_year.year
+                if u_y > until_year:
+                    until_year = u_y
+                else :
+                    if f_y > until_year :
+                        until_year = f_y
 
         context['from_year'] = from_year
         context['until_year'] = until_year
