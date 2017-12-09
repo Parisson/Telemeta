@@ -108,13 +108,36 @@
         <script type="text/javascript" src="/static/admin/js/actions.min.js"></script>
         {{ form.media }}
         <div class="block-grey">
-        {% block collection %}
-            <h4>{% trans "Collection" %} : <a href="{% url "telemeta-collection-detail" item.collection.code %}"> {{item.collection}}</a> </h4>
-        {% endblock %}
-        {% bootstrap_form form exclude=mshs_exclude %}
+            {% block collection %}
+                <h4>{% trans "Collection" %} : <a href="{% url "telemeta-collection-detail" item.collection.code %}"> {{item.collection}}</a> </h4>
+            {% endblock %}
+            {% bootstrap_field form.title %}
+            {% bootstrap_field form.alt_title %}
+            {% bootstrap_field form.mshs_alt_title %}
+            {% bootstrap_field form.description %}
+            {% bootstrap_field form.collectors %}
+            {% bootstrap_field form.informer %}
+            {% bootstrap_field form.public_access %}
+        </div>
+        <div class="block-grey">
+            <h2>Indications géographiques et culturelles</h2>
+            {% bootstrap_field form.location %}
+            {% bootstrap_field form.location_comment %}
+            {% bootstrap_field form.language_iso %}
+            {% bootstrap_field form.context_comment %}
+        </div>
+        <div class="block-grey">
+            <h2>Données d'archivage</h2>
+            {% bootstrap_field form.code %}
+            {% bootstrap_field form.old_code %}
+            {% bootstrap_field form.auto_period_access %}
+            {% bootstrap_field form.comment %}
+            {% block last_modification_date %}
+                {% bootstrap_field form.last_modification_date %}
+            {% endblock %}
+        </div>
         {% trans "Collection access status" %} : {% trans item.collection.public_access %}<br />
         {% trans "Context access status" %} : {% trans access %}<br />
-        </div>
         <script>
              function autocompletion(champ) {
                 $("#id_"+champ).autocomplete({
@@ -131,6 +154,7 @@
        <!--  Tab Analyze, for MSHS  -->
        <div class="tab-pane" id="tab_desc">
            <div class="block-grey">
+                    <h2>Description</h2>
                     <!-- display fields for a description -->
                     {% bootstrap_field  form.mshs_author %}
                     {% bootstrap_field  form.mshs_composer %}

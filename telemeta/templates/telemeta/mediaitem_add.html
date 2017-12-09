@@ -12,6 +12,9 @@
     <h4>{% trans "Collection" %} : {{public_id}} </h4>
 {% endblock %}
 
+{% block last_modification_date %}
+{% endblock %}
+
     {% block cancel %}
     <a id="cancel" href="{% url "telemeta-items" %}">
       <button type="button" class="btn btn-default">
