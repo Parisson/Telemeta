@@ -35,7 +35,11 @@
             <h4><a href="#">{% trans "Geographic and cultural informations" %}</a></h4>
             <dl class="listing">
                 <dt>{% trans "Location" %}</dt>
-                <dd>{% if item.location %}{{ item.location.name }}{% endif %}</dd>
+                <dd>
+                    {% for loc in item.collection.location.all %}
+                        {{ loc }},
+                    {% endfor %}
+                </dd>
                 {% dl_field item "location_comment" %}
                 {% dl_field item "language" %}
 

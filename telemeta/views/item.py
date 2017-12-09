@@ -722,6 +722,14 @@ class ItemAddView(ItemViewMixin, CreateWithInlinesView):
     def get_context_data(self, **kwargs):
         context = super(ItemAddView, self).get_context_data(**kwargs)
         context['mshs_exclude']= self.exclu
+
+        if 'public_id' in self.kwargs:
+            public_id = self.kwargs['public_id']
+            collections = MediaCollection.objects.filter(code=public_id)
+            if collections:
+                collection = collections[0]
+                context['collection'] = collection
+
         return context
 
     @method_decorator(permission_required('telemeta.add_mediaitem'))

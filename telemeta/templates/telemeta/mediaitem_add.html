@@ -15,6 +15,12 @@
 {% block last_modification_date %}
 {% endblock %}
 
+{% block  locations %}
+{% for loc in collection.location.all %}
+    <li>{{ loc }}<li>
+{% endfor %}
+{% endblock %}
+
     {% block cancel %}
     <a id="cancel" href="{% url "telemeta-items" %}">
       <button type="button" class="btn btn-default">
