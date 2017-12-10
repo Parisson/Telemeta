@@ -55,9 +55,8 @@
                       removeOutsideVisibleBounds: true
                     } );
                   for( let d of data ) {
-                      var marker = L.marker([d.lat,d.lon]).bindPopup( '<a href="/archives/items/'+
-                      d.code+'">'+d.title+'</a><hr/>Enq. : <a href="/archives/collections/'+
-                      d.collec_id+'">'+d.collec+'</a>' );
+                      var marker = L.marker([d.lat,d.lon]).bindPopup( 'Enquête : <a href="/archives/collections/'+
+                      d.code+'">'+d.title+'</a><hr/><i>'+d.desc+'</i>' );
                       markers.addLayer(marker);
                   }
                   map.addLayer(markers);
