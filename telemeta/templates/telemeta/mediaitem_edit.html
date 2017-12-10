@@ -111,6 +111,22 @@
             {% block collection %}
                 <h4>{% trans "Collection" %} : {{item.collection}} <a href="{% url "telemeta-collection-detail" item.collection.code %}"> {{item.collection.title}}</a> </h4>
             {% endblock %}
+
+            ---------------------------------------
+            <h2>-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-</h2>
+            <h2>La saisie s'effectue plus bas ...</h2>
+            <h2>*</h2>
+            <h2>*</h2>
+            <h2>*</h2>
+
+            {% bootstrap_form form exclude=mshs_exclude %}
+
+            <h2>*</h2>
+            <h2>*</h2>
+            <h2>*</h2>
+            <h2>-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-</h2>
+            <h2> ... Saisir à partir d'ici</h2>
+
             {% bootstrap_field form.title %}
             {% bootstrap_field form.alt_title %}
             {% bootstrap_field form.mshs_alt_title %}

@@ -283,7 +283,7 @@ class MediaItemForm(ModelForm):
 
         # if you want to do it to all of them
         for field in self.fields.values():
-            field.error_messages = {'required':'Le champ {fieldname} est obligatoire'.format(fieldname=field.label)}
+            field.error_messages = {'required':'Le champ {fieldname} est obligatoire'.format(fieldname=field.label), 'blank':'Le champ {fieldname} est vide'.format(fieldname=field.label), 'null':'Le champ {fieldname} est de valeur null'.format(fieldname=field.label) }
 
     def save(self, commit=True):
         item = super(MediaItemForm,self).save(commit=False)
