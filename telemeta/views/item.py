@@ -613,7 +613,8 @@ class ItemViewMixin(ItemBaseMixin):
 
     # Excluding fields from the display of the main form
     exclu = ''
-    exclu = exclu + 'mshs_author,mshs_composer,mshs_timbre,mshs_timbre_ref,mshs_timbre_code'
+    exclu = exclu +'collector,language_iso,language,location,location_comment,context_comment,auto_period_access,media_type, approx_duration,url,comment,mshs_author,mshs_dance_details,code,old_code'
+    exclu = exclu + ',mshs_author,mshs_composer,mshs_timbre,mshs_timbre_ref,mshs_timbre_code'
     exclu = exclu + ',mshs_melody,mshs_domain_song,mshs_informers,mshs_domain,domains'
     exclu = exclu + ',mshs_domain_vocal,mshs_domain_music,mshs_domain_tale'
     exclu = exclu + ',mshs_details,mshs_function,mshs_dance,dance_details'
