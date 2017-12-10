@@ -105,7 +105,9 @@ jQuery(document).ready(function(){
               <!-- recorded from year -->
               <dt>{% trans "recording year (from)"|capitalize %}</dt>
               <dd>
-                  {{from_year}}
+                  {% if from_year != 10000 %}
+                    {{from_year}}
+                  {% endif %}
               </dd>
               <!-- recorded to year -->
               <dt>{% trans "recording year (until)"|capitalize %}</dt>

@@ -236,6 +236,7 @@ class ResourceSingleMixin(ResourceMixin):
         else:
             context['parents'] = []
 
+        collections = []
         # Select the collections
         if self.type=='fonds' :
             corpus = resource.children.all()
@@ -244,26 +245,29 @@ class ResourceSingleMixin(ResourceMixin):
         else :
             collections = resource.children.all()
 
-        # Collectors and informers
+        # Collectors
         collectors = []
+        # informers
         informers = []
         # locations
         locations = []
-        for collection in collections :
-            # list of collectors
-            persons_collect= collection.collectors.prefetch_related('collectors')
-            for person in persons_collect :
-                collectors.append(person)
-            # list of informers
-            persons_inform= collection.informer.prefetch_related('informers')
-            for person in persons_inform :
-                informers.append(person)
-            # list of locations
-            locations_collection = collection.location.all()
-            if locations_collection :
-                for location in locations_collection :
-                    if location!='' :
-                        locations.append( location )
+
+        if collections :
+            for collection in collections :
+                # list of collectors
+                persons_collect= collection.collectors.prefetch_related('collectors')
+                for person in persons_collect :
+                    collectors.append(person)
+                # list of informers
+                persons_inform= collection.informer.prefetch_related('informers')
+                for person in persons_inform :
+                    informers.append(person)
+                # list of locations
+                locations_collection = collection.location.all()
+                if locations_collection :
+                    for location in locations_collection :
+                        if location!='' :
+                            locations.append( location )
 
         # make unique and distinct
         collectors = list(set(collectors))
