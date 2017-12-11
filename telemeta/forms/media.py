@@ -36,7 +36,7 @@ class MediaFondsForm(ModelForm):
     queryset = MediaCorpus.objects.all()
     widget = FilteredSelectMultiple("Corpus", is_stacked=False)
     children = forms.ModelMultipleChoiceField(widget=widget, queryset=queryset,
-        label='Corpus', required=False)
+        label=_('corpus'), required=False)
 
     def __init__(self, *args, **kwargs):
         super(MediaFondsForm, self).__init__(*args, **kwargs)
