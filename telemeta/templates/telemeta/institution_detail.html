@@ -28,23 +28,20 @@
         <h2>{% trans "Fonds" %}</h2>
         <div class="with-rightcol">
             <table class="listing">
-                <thead>
-                    <tr>
-                        <th class="highlight">{% trans "Title" %}</th>
-                        <th >{% trans "Code" %}</th>
-                        <th >{% trans "Description" %}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for fond in institution.fonds.all %}
+                <tr>
+                    <th class="highlight">{% trans "Title" %}</th>
+                    <th >{% trans "Code" %}</th>
+                    <th >{% trans "Description" %}</th>
+                </tr>
+                {% for fond in institution.fonds.all %}
+                <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
                     <td><a href="{% url "telemeta-resource-detail" fond.element_type fond.public_id %}">{{ fond.title }}</a></td>
                     <td>{{fond.public_id}}</td>
-                    <td>{{fond.descriptions|html_line_break|safe}}</td>
+                    <td>{{fond.descriptions_markdown|safe}}</td>
                     {% endfor %}
-                </tbody>
+                </tr>
             </table>
         </div>
-
 {% endblock content %}
 
 {% else %}
