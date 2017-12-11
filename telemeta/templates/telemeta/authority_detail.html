@@ -37,17 +37,23 @@
     </dl>
 
     <div>
-        <h4><a href="#">{% trans "Biography" %}</a></h4>
+        <h4><a href="#">{% trans "biography" %}</a></h4>
         <div>
             <dl class="listing">
                 <dt>{% trans "birth date" %}</dt>
-                <dd>{{ authority.birth_date }}</dd>
+                <dd>{% if authority.birth_date %}
+                    {{ authority.birth_date}}
+                    {%endif%}
+                </dd>
                 <dt>{% trans "birth location" %}</dt>
-                <dd>{{ authority.birth_location }}</dd>
+                <dd>{{ authority.birth_location.name }}</dd>
                 <dt>{% trans "death date" %}</dt>
-                <dd>{{ authority.death_date }}</dd>
+                <dd>{% if authority.death_date %}
+                    {{ authority.death_date}}
+                    {%endif%}
+                </dd>
                 <dt>{% trans "death location" %}</dt>
-                <dd>{{ authority.death_location }}</dd>
+                <dd>{{ authority.death_location.name }}</dd>
                 <dt>{% trans "biography" %}</dt>
                 <dd>{{ authority.biography_markdown | safe }}</dd>
                 <dt>{% trans "URI" %}</dt>
