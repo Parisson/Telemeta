@@ -24,8 +24,8 @@
                 <a href="{% url "telemeta-authorities-detail" inform.id %}">{{ inform }}</a>,
             {% endfor %}
         </dd>
-        {% dl_field item "recorded_from_date" placeholder %}
-        {% dl_field item "recorded_to_date" placeholder %}
+        <dt>Date d'enregistrement</dt>
+        <dd>{{ item.collection.recorded_from_year }}</dd>
         <dt>{% trans "Access type" %}</dt>
         <dd>{% trans item.public_access %}</dd>
     </dl>
