@@ -140,12 +140,14 @@
                         <dt>{% trans "location details" %}</dt>
                         <dd>{{ collection.location_details_markdown|safe }}</dd>
                         {% dl_field collection "cultural_area" %}
+                        {% if collection.language_iso.all %}
                         <dt>{% trans "Language (ISO norm)" %}</dt>
                         <dd>
                             {% for collec in collection.language_iso.all %}
                                 {{collec}},
                             {% endfor %}
                         </dd>
+                        {% endif %}
                         {% dl_field collection "language" %}
                     </dl>
 
@@ -165,7 +167,7 @@
                           <dt>{% trans "Recordist" %}</dt><dd>{{ collection.creator }}</dd>
                           {% endif%}
                         {% endif %}
-                        {% if collection.publisher %}
+                        {% if collection.publisher.all %}
                          <dt>{% trans "publisher" %}</dt>
                          <dd>
                              {% for publi in collection.publisher.all %}
@@ -173,12 +175,14 @@
                              {% endfor %}
                          </dd>
                         {% endif %}
+                        {% if collection.publisher_collection.all %}
                         <dt>{% trans "publisher collection" %}</dt>
                         <dd>
                             {% for publi in collection.publisher_collection.all %}
                             {{ publi }},
                             {% endfor %}
                         </dd>
+                        {% endif %}
                         {% dl_field collection "publisher_serial" %}
                         {% if '_E_' in collection.public_id %}
                         {% dl_field collection "reference" %}
@@ -206,8 +210,10 @@
                          <dt>{% trans "Related documentation" %}</dt>
                          <dd>{{ collection.booklet_description_markdown|safe }}</dd>
                         {% endif %}
+                        {% if collection.comment %}
                         <dt>{% trans "Comments" %}</dt>
                         <dd>{{ collection.comment|html_line_break|safe }}</dd>
+                        {% endif %}
                         {% dl_field collection "metadata_writer" %}
                         {% if last_revision %}
                         <dt>{% trans "Last modification" %}</dt>
