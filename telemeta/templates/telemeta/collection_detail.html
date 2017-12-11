@@ -137,6 +137,8 @@
                                 {{loc}},
                             {% endfor %}
                         </dd>
+                        <dt>{% trans "location details" %}</dt>
+                        <dd>{{ collection.location_details_markdown|safe }}</dd>
                         {% dl_field collection "cultural_area" %}
                         <dt>{% trans "Language (ISO norm)" %}</dt>
                         <dd>

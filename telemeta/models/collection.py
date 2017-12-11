@@ -289,6 +289,9 @@ class MediaCollection(MediaResource):
                 row.append('')
         return row
 
+    @property
+    def location_details_markdown(self):
+        return markdownify(self.location_details)
 
 class MediaCollectionRelated(MediaRelated):
     "Collection related media"

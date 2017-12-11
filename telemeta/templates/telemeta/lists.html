@@ -165,7 +165,7 @@
                 <th class="highlight" style="max-width:200px;">{% trans "Title" %}</th>
                 <th>{% trans "Type" %}</th>
                 <th style="max-width:200px">{% trans "Code" %}</th>
-                <th>{% trans "Recordist" %}</th>
+                <th>Enquêteur(s)</th>
                 <th>{% trans "Recording period" %}</th>
                 <th>{% trans "Digitized" %}</th>
                 <th>{% trans "Action" %}</th>
@@ -198,11 +198,15 @@
                 <td style="max-width:200px">
                     {{ resource.element.public_id }}
                 </td>
-                <td>{{ resource.element.collector }}</td>
-
                 <td>
-                    {% if resource.element.recorded_from_date %}
-                    {{ resource.element.recorded_from_date.year }}
+                    {% if resource.element.collectors %}
+                        {% for col in resource.element.collectors.all %}
+                            {{ col }},
+                        {% endfor %}
+                    {% endif %}
+                <td>
+                    {% if resource.element.collection.recorded_from_year %}
+                    {{ resource.element.collection.recorded_from_year.year }}
                     {% if resource.element.recorded_to_date and not resource.element.recorded_to_date.year|equals:resource.element.recorded_from_date.year %}
                     - {{ resource.element.recorded_to_date.year }}
                     {% endif %}
