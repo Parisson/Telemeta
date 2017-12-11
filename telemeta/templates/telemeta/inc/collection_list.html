@@ -7,8 +7,7 @@
 <tr>
     <th class="highlight">{% trans "Title" %}</th>
     <th>{% trans "Digitized" %}</th>
-    <th>{% field_label "MediaCollection" "creator" %}</th>
-    <th>{% trans "Recordist" %}</th>
+    <th>{% trans "Collectors" %}</th>
     <th>{% trans "Recording period" %}</th>
     <th>{% trans "Code" %}</th>
 </tr>
@@ -22,9 +21,13 @@
        <center><span class="glyphicon glyphicon-volume-up" style="font-size: 1.3em;"></span></center>
       {% endif %}
     </td>
-
-    <td>{{ collection.creator }}</td>
-    <td>{{ collection.apparent_collector }}</td>
+    <td>
+        {% if collection.collectors %}
+            {% for col in collection.collectors.all %}
+                {{ col }},
+            {% endfor %}
+        {% endif %}
+    </td>
     <td>
     {% if collection.recorded_from_year %}
         {{ collection.recorded_from_year }}
@@ -42,4 +45,3 @@
 {% else %}
     <p>{% trans "No collection" %}</p>
 {% endif %}
-
