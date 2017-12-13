@@ -148,6 +148,13 @@ class MediaCollectionForm(ModelForm):
         self.fields["booklet_description"].required = False
         self.fields["code"] = forms.RegexField(regex='^\w+$')
 
+        # MSHS labels
+        self.fields["collectors"].label = u'Enquêteur(s)'
+        self.fields["location_details"].label = u'Précisions lieu'
+        self.fields["informer"].label = u"Informateurs(s)"
+        self.fields["booklet_description"].label = u"Documentation associée"
+        self.fields["code"].label = "Cote"
+
 
         if '_I_' in self.instance.code:
             self.fields["reference"].widget = HiddenInput()
