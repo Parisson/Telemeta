@@ -20,16 +20,16 @@
     <th></th>
     <th>{% trans "Title" %}</th>
     <th>{% trans "Digitized" %}</th>
-    <th>{% trans "Recordist" %}</th>
+    <th>Enquêteur(s)</th>
     {% if location_name %}
     <th>{% trans "Location" %}</th>
     {% else %}
-    <th>{% trans "Country/Continent" %}</th>
+    <th>Lieux</th>
     {% endif %}
     <th>{% trans "Year of recording" %}</th>
     <th>{% trans "Code" %}</th>
     {% if user.is_authenticated %}
-    <th class="highlight"><input id="selectAll" type="checkbox"/> select all </th>
+    <th class="highlight"><input id="selectAll" type="checkbox"/> Tout sélectionner </th>
     {% endif %}
 </tr>
 </thead>
@@ -51,17 +51,25 @@
         {% endif %}
     </td>
 
-    <td>{{ item.collector }}</td>
-    {% if location_name %}
-    <td>{{ item.location.name }}</td>
-    {% else %}
-    <td>{{ item.country_or_continent|default:'&nbsp;' }}</td>
-    {% endif %}
     <td>
-    {% if item.recorded_from_date %}
-        {{ item.recorded_from_date.year }}
-        {% if item.recorded_to_date and not item.recorded_to_date.year|equals:item.recorded_from_date.year %}
-            - {{ item.recorded_to_date.year }}
+        {% if item.collectors %}
+            {% for col in item.collectors.all %}
+                {{ col }},
+            {% endfor %}
+        {% endif %}
+    </td>
+    <td>
+        {% if item.collection.location.all %}
+            {% for loc in item.collection.location.all %}
+                {{ loc }},
+            {% endfor %}
+        {% endif %}
+    </td>
+    <td>
+    {% if item.collection.recorded_from_year %}
+        {{ item.collection.recorded_from_year.year }}
+        {% if item.collection.recorded_to_year and not item.collection.recorded_to_year.year|equals:item.collection.recorded_from_year.year %}
+            - {{ item.collection.recorded_to_year.year }}
         {% endif %}
     {% endif %}
     </td>

@@ -148,6 +148,13 @@ class MediaCollectionForm(ModelForm):
         self.fields["booklet_description"].required = False
         self.fields["code"] = forms.RegexField(regex='^\w+$')
 
+        # MSHS labels
+        self.fields["collectors"].label = u'Enquêteur(s)'
+        self.fields["location_details"].label = u'Précisions lieu'
+        self.fields["informer"].label = u"Informateurs(s)"
+        self.fields["booklet_description"].label = u"Documentation associée"
+        self.fields["code"].label = "Cote"
+
 
         if '_I_' in self.instance.code:
             self.fields["reference"].widget = HiddenInput()
@@ -239,8 +246,8 @@ class MediaItemForm(ModelForm):
             ["collectors","Enquêteur(s)"],
             ["informer","Informateur(s)"],
             ["description","Description de l'item"],
-            ["language_iso","Langue(s)(norme ISO)"],
-            ["language","Langues(s)"],
+            ["language_iso","Langue(s) (norme ISO)"],
+            ["language","Langue(s)"],
             ["context_comment","Contexte d'enregistrement"],
             ["code","Cote de l'item"],
             ["mshs_author","Auteur(s)"],
