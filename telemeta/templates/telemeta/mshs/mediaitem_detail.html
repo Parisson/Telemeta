@@ -97,6 +97,8 @@
 {% endblock general_info %}
 
 {% block analyze_data %}
+<div class="extraInfos">
+    <div>
     <h4><a href="#">Description</a></h4>
     <dl class="listing">
             {% dl_field item "keywords" join with ", " %}
@@ -117,7 +119,10 @@
             {% dl_field item "mshs_dance" %}
             {% dl_field item "mshs_dance_details" %}
     </dl>
-
+    </div>
+</div>
+<div class="extraInfos">
+    <div>
     <h4><a href="#">Témoignage</a></h4>
     <dl class="listing">
       <!-- display fields for a deposition-->
@@ -127,6 +132,10 @@
             {% dl_field item "mshs_deposit_places" %}
             {% dl_field item "mshs_deposit_periods" %}
     </dl>
+    </div>
+</div>
+<div class="extraInfos">
+    <div>
     <h4><a href="#">Texte</a></h4>
     <dl class="listing">
         <!-- display fields for a text -->
@@ -142,7 +151,8 @@
         {% dl_field item "mshs_title_ref_Dela" %}
         {% dl_field item "mshs_title_ref_Aare" %}
     </dl>
-
+    </div>
+</div>
 {% endblock analyze_data %}
 
 
