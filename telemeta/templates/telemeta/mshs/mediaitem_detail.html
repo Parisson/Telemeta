@@ -10,7 +10,8 @@
         <dd><a href="{% url "telemeta-collection-detail" item.collection.public_id %}">{{ item.collection.title }}</a></dd>
         {% dl_field item "title" placeholder %}
         {% dl_field item "alt_title" %}
-        <dt>{% field_label item "description"%}</dt>
+        {% dl_field item "mshs_alt_title" %}
+        <dt>Description de l'item</dt>
         <dd> {{ item.description_markdown | safe }}</dd>
         <dt>Enquêteur(s)</dt>
         <dd>
@@ -41,10 +42,23 @@
                     {% endfor %}
                 </dd>
                 {% dl_field item "location_comment" %}
-                {% dl_field item "language" %}
+                <dt>Langue(s) (norme ISO)</dt>
+                <dd>
+                    {% if item.language_iso.all %}
+                        {% for lang in item.language_iso.all %}
+                            {{ lang }},
+                        {% endfor %}
+                    {% endif %}
+                </dd>
+                <dt>Langue(s)</dt>
+                <dd>{{ item.language }}</dd>
 
                 <dt>Contexte d'enregistrement</dt>
-                <dd>{{ item.context_comment|html_line_break|safe }}</dd>
+                <dd>
+                    {% if item.collection.recording_context %}
+                        {{ item.collection.recording_context }}
+                    {% endif %}
+                </dd>
             </dl>
         </div>
     </div>
@@ -55,8 +69,6 @@
             <dl class="listing">
                 {% dl_field item "code" %}
                 {% dl_field item "old_code" %}
-                <dt>{% trans "Remarks" %}</dt>
-                <dd>{{ item.comment|html_line_break|safe }}</dd>
                 {% if last_revision %}
                 <dt>{% trans "Last modification" %}</dt>
                 <dd>{{ last_revision.time }} {% if user.is_authenticated %}(<a href="{% url "telemeta-profile-detail" last_revision.user.username %}">{{last_revision.user.username}}</a>){% endif %}</dd>
@@ -94,7 +106,6 @@
             {% dl_field item "mshs_timbre" %}
             {% dl_field item "mshs_timbre_ref" %}
             {% dl_field item "mshs_timbre_code" %}
-            {% dl_field item "mshs_alt_title" %}
             {% dl_field item "mshs_melody" %}
             <dt>Domaine(s)</dt>
             <dd>{{ item.mshs_domain | label_domain }}</dd>
@@ -126,14 +137,12 @@
         {% dl_field item "mshs_refrain" %}
         {% dl_field item "mshs_jingle" %}
         {% dl_field item "mshs_coupe" %}
-    </dl>
-    <h4><a href="#">Références</a></h4>
-    <dl class="listing">
         {% dl_field item "mshs_title_ref_coirault" %}
         {% dl_field item "mshs_title_ref_laforte" %}
         {% dl_field item "mshs_title_ref_Dela" %}
         {% dl_field item "mshs_title_ref_Aare" %}
     </dl>
+
 {% endblock analyze_data %}
 
 
