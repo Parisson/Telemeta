@@ -319,6 +319,7 @@ class MediaCollectionIdentifier(Identifier):
 class MediaCollectionPerformance(MediaResource):
     "Collection performance"
     collection      = ForeignKey('MediaCollection', related_name="performances", verbose_name=_('collection'), blank=True, null=True, on_delete=models.SET_NULL)
+    number          = IntegerField(_('number'), default=1)
     instrument      = ForeignKey('Instrument', related_name="performances", verbose_name=_('composition'), blank=True, null=True, on_delete=models.SET_NULL)
     alias           = ForeignKey('InstrumentAlias', related_name="performances", verbose_name=_('precisions'), blank=True, null=True, on_delete=models.SET_NULL)
     hornbostel      = ForeignKey('HornbostelSachs', related_name="performances", verbose_name=_('Hornbostel-Sachs classification'), blank=True, null=True, on_delete=models.SET_NULL)
@@ -329,4 +330,4 @@ class MediaCollectionPerformance(MediaResource):
         db_table = 'media_collection_performances'
 
     def __unicode__(self):
-        return self.musician.last_name+","+self.musician.first_name+"; "+self.instrument.name+";"+self.alias.name
+        return str(self.number)+";"+self.instrument.name+";"+self.alias.name+";"+self.musician.last_name+","+self.musician.first_name

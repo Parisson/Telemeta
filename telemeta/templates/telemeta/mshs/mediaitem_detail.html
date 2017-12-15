@@ -176,8 +176,9 @@
                 <table class="instruments">
                     <thead>
                         <tr>
+                            <td>{% trans "number" %}</td>
                             <td>{% trans "instrument" %}</td>
-                            <td>{% trans "alias" %}</td>
+                            <td>Nature</td>
                             <td>{% trans "Hornbostel-Sachs" %}</td>
                             <td>{% trans "informer" %}</td>
                         </tr>
@@ -185,6 +186,7 @@
                     <tbody>
                         {% for performance in item.mshs_informers.all %}
                         <tr>
+                            <td>{{ performance.number|default:"" }}</td>
                             <td>{{ performance.instrument|default:"" }}</td>
                             <td>{{ performance.alias|default:"" }}</td>
                             <td>{{ performance.hornbostel }}</td>
