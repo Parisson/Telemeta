@@ -126,7 +126,8 @@
     <h4><a href="#">Témoignage</a></h4>
     <dl class="listing">
       <!-- display fields for a deposition-->
-            {% dl_field item "mshs_deposit_digest" %}
+            <dt>Résumé</dt>
+            <dd>{{ item.mshs_deposit_digest_markdown|safe }}</dd>
             {% dl_field item "mshs_deposit_thematic" %}
             {% dl_field item "mshs_deposit_names" %}
             {% dl_field item "mshs_deposit_places" %}

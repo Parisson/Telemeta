@@ -419,6 +419,10 @@ class MediaItem(MediaResource):
     def mshs_text_markdown(self):
         return markdownify(self.mshs_text)
 
+    @property
+    def mshs_deposit_digest_markdown(self):
+        return markdownify(self.mshs_deposit_digest)
+
 
 class MediaItemRelated(MediaRelated):
     "Item related media"
