@@ -420,8 +420,8 @@ class MediaItem(MediaResource):
         return markdownify(self.mshs_text)
 
     @property
-    def mshs_deposit_digest_markdown(self):
-        return markdownify(self.mshs_deposit_digest)
+    def mshs_dance_details_markdown(self):
+        return markdownify(self.mshs_dance_details)
 
 
 class MediaItemRelated(MediaRelated):

@@ -279,10 +279,10 @@ class MediaItemForm(ModelForm):
 
         self.fields["description"] = MarkdownxFormField(label=_('Description'))
         self.fields["description"].required = False
-        self.fields["dance_details"] = MarkdownxFormField(label=_('Details on dance'))
-        self.fields["dance_details"].required = False
         self.fields["mshs_deposit_digest"] = MarkdownxFormField( label=_('Digest'))
         self.fields["mshs_deposit_digest"].required = False
+        self.fields["mshs_dance_details"] = MarkdownxFormField( label=('Précisions dur la danse'))
+        self.fields["mshs_dance_details"].required = False
         self.fields["mshs_text"] = MarkdownxFormField(label=_('Text'))
         self.fields["mshs_text"].required = False
         self.fields["mshs_informers"].required = False

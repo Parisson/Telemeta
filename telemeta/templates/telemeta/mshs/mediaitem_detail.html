@@ -117,7 +117,8 @@
             {% dl_field item "mshs_domain_tale" %}
             {% dl_field item "mshs_function" %}
             {% dl_field item "mshs_dance" %}
-            {% dl_field item "mshs_dance_details" %}
+            <dt>Précisions sur la danse</dt>
+            <dd>{{ item.mshs_dance_details_markdown|safe }}</dd>
     </dl>
     </div>
 </div>
