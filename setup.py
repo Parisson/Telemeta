@@ -47,7 +47,7 @@ setup(
   long_description = open('README.rst').read(),
   author = "Guillaume Pellerin",
   author_email = "yomguy@parisson.com",
-  version = '1.6.3',
+  version = '1.6.4',
   install_requires = [
         'django==1.6.11',
         'django-registration==1.0',
@@ -77,7 +77,7 @@ setup(
         'django-environ',
         'redis',
         'Werkzeug',
-        'django-dirtyfields',
+        'django-dirtyfields==1.2.1', # require for Django1.6 compatibility
         'sqlparse==0.1.19'
     ],
   tests_require=['pytest-django', 'pytest-cov', 'factory-boy'],

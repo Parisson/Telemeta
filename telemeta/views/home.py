@@ -23,7 +23,7 @@
 
 from telemeta.views.core import *
 from saved_searches.models import SavedSearch
-
+from telemeta.views.enum import *
 
 class HomeView(object):
     """Provide general web UI methods"""

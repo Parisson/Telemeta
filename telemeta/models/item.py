@@ -148,7 +148,8 @@ class MediaItem(MediaResource):
     class Meta(MetaCore):
         db_table = 'media_items'
         permissions = (("can_play_all_items", "Can play all media items"),
-                       ("can_download_all_items", "Can download all media items"), )
+                       ("can_download_all_items", "Can download all media items"),
+                       ("can_run_analysis", "Can run analysis"),)
         verbose_name = _('item')
 
     def is_valid_code(self, code):

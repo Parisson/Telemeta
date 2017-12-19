@@ -1,7 +1,6 @@
 .git
 *.pyc
 *.egg-info
-app/
 build/
 dist/
 data/

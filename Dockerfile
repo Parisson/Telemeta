@@ -1,6 +1,5 @@
 # Copyright 2013 Thatcher Peskens
-# Copyright 2014-2015 Guillaume Pellerin
-# Copyright 2014-2015 Thomas Fillon
+# Copyright 2014, 2017 Guillaume Pellerin, Thomas Fillon
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,16 +19,26 @@ MAINTAINER Guillaume Pellerin <yomguy@parisson.com>, Thomas fillon <thomas@paris
 
 RUN apt-get install libxml2-dev libxslt-dev
 RUN mkdir -p /srv/src/
-RUN mkdir /srv/src/telemeta
-COPY . /srv/src/telemeta
-WORKDIR /srv/src/telemeta
-RUN conda install lxml
-RUN pip install -r requirements.txt
-RUN pip install -r requirements-dev.txt --src /srv/src
+RUN mkdir -p /srv/app
+RUN mkdir -p /srv/src/telemeta
+
+RUN apt-get install -y --force-yes mysql-client
 
 ENV PYTHON_EGG_CACHE=/srv/.python-eggs
 RUN mkdir -p $PYTHON_EGG_CACHE
 RUN chown www-data:www-data $PYTHON_EGG_CACHE
+
+COPY . /srv/src/telemeta
+WORKDIR /srv/src/telemeta
+
+# Install Timeside and plugins from ./lib
+COPY ./app/scripts/setup_plugins.sh /srv/app/scripts/setup_plugins.sh
+COPY ./lib/ /srv/src/plugins/
+RUN /bin/bash /srv/app/scripts/setup_plugins.sh
+
+# Install Telemeta
+RUN pip install -r requirements.txt
+RUN pip install -r requirements-dev.txt --src /srv/src
 
 WORKDIR /srv/app
 EXPOSE 8000

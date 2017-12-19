@@ -28,8 +28,10 @@ data:
      - /home/parisson/CREM/Telemeta/media/:/srv/media
      - ./data/static/:/srv/static
      - ./data/backup/:/srv/backup
-     - /srv/static
-     - /srv/bower
+     - ./data/static:/srv/static
+     - ./data/bower:/srv/bower
+     - ./data/log/nginx:/var/log/nginx
+     - ./data/log/uwsgi:/var/log/uwsgi
   command: "true"
 
 db:
@@ -51,9 +53,9 @@ search:
 app:
   build: .
   volumes:
-    - ./app/:/srv/app
-    - ./telemeta/:/srv/src/telemeta/telemeta
-    - ./lib/TimeSide/:/srv/src/timeside
+    - ./app:/srv/app
+    - ./telemeta:/srv/src/telemeta/telemeta
+    - ./lib/:/srv/src/plugins/ 
   volumes_from:
     - data
   env_file:

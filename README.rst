@@ -43,10 +43,6 @@ The *Telemeta* name stands for *Tele* as "remote access" and *meta* for "metadat
    :target: https://pypi.python.org/pypi/Telemeta/
    :alt: Version
 
-.. |downloads| image:: https://img.shields.io/pypi/dm/telemeta.svg
-   :target: https://pypi.python.org/pypi/Telemeta/
-   :alt: Downloads
-
 .. |travis_master| image:: https://secure.travis-ci.org/Parisson/Telemeta.png?branch=master
    :target: https://travis-ci.org/Parisson/Telemeta/
    :alt: Travis
@@ -70,6 +66,16 @@ Thank you so much for your help!
 
 News
 =====
+1.6.4
++++++
+   * Minor bug fixes and improvments
+   * Fix HTML5 audio compatibility (#173) for the web audio player. The SoundManager Flash player fallback should not be used in most modern web browser. Media files are now serves through Nginx (#155) which enables to stream music with byte range requests.
+   * Add a User permission "can_run_analysis" to specify that a user or a group of users has the right to list and select advanced Timeside analysis to be displayed in the Timeside web audio player.
+   * Add enumeration management and statitics
+   * Improved media security allowing streaming through Nginx only from the application
+   * Add TimeSide as a submodule
+   * Add a validator for Corpus and Fonds
+   * Upgrade various dependencies
 
 1.6
 ++++
@@ -126,7 +132,7 @@ Install
 
 Thanks to Docker, Telemeta is now fully available as a docker composition ready to work. The docker based composition bundles some powerfull applications and modern frameworks out-of-the-box like: Python, Conda, Numpy, Jupyter, Gstreamer, Django, Celery, Haystack, ElasticSearch, MySQL, Redis, uWSGI, Nginx and many more.
 
-* on **Linux**, first install `Git <http://git-scm.com/downloads>`_, `Docker engine <https://docs.docker.com/installation/>`_ and `docker-compose <https://docs.docker.com/compose/install/>`_ and open a terminal.
+* on **Linux**, first install `Git <http://git-scm.com/downloads>`_, `Docker engine <https://docs.docker.com/installation/>`_ (>=1.9) and `docker-compose <https://docs.docker.com/compose/install/>`_ (>=1.8) and open a terminal.
 * on **MacOSX** or **Windows** install the `Docker Toolbox <https://www.docker.com/products/docker-toolbox>`_ and open a **Docker Quickstart Terminal**.
 
 Then clone Telemeta::
