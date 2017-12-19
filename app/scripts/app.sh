@@ -25,8 +25,8 @@ sh $app/scripts/wait.sh
 
 # django setup
 python $manage wait-for-db
-python $manage syncdb --noinput
-python $manage migrate --noinput
+#python $manage syncdb --noinput
+#python $manage migrate --noinput
 python $manage bower_install -- --allow-root
 
 # telemeta setup

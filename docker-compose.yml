@@ -25,7 +25,15 @@
 data:
   image: debian:jessie
   volumes:
-     - /home/parisson/CREM/Telemeta/media/:/srv/media
+
+     - /home/parisson/CREM/Telemeta/backup:/srv/backup
+     - /home/parisson/CREM/Telemeta/media/cache:/srv/media/cache
+     - /home/parisson/CREM/Telemeta/media/export:/srv/media/export
+     - /home/parisson/CREM/Telemeta/media/log:/srv/media/log
+     - /home/parisson/CREM/Telemeta/media/results:/srv/media/results
+     - /home/parisson/CREM/Telemeta/media/tmp:/srv/media/tmp
+     - /archive/CREM/media/items:/srv/media/items
+     - /archive/CREM/media/import:/srv/media/import
      - ./data/static/:/srv/static
      - ./data/backup/:/srv/backup
      - ./data/static:/srv/static

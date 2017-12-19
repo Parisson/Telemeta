@@ -17,7 +17,8 @@ FROM parisson/timeside-diadems:latest-dev
 
 MAINTAINER Guillaume Pellerin <yomguy@parisson.com>, Thomas fillon <thomas@parisson.com>
 
-RUN apt-get install libxml2-dev libxslt-dev
+RUN apt-get update
+RUN apt-get install -y --force-yes libxml2-dev libxslt-dev
 RUN mkdir -p /srv/src/
 RUN mkdir -p /srv/app
 RUN mkdir -p /srv/src/telemeta
@@ -27,6 +28,7 @@ RUN apt-get install -y --force-yes mysql-client
 ENV PYTHON_EGG_CACHE=/srv/.python-eggs
 RUN mkdir -p $PYTHON_EGG_CACHE
 RUN chown www-data:www-data $PYTHON_EGG_CACHE
+RUN mkdir /srv/media
 
 COPY . /srv/src/telemeta
 WORKDIR /srv/src/telemeta

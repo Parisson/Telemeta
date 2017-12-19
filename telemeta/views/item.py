@@ -31,7 +31,6 @@ import timeside.server as ts
 import sys
 import time
 
-from wsgiref.util import FileWrapper
 
 class ItemBaseMixin(TelemetaBaseMixin):
 
@@ -263,24 +262,48 @@ class ItemView(ItemBaseMixin):
         mime_type = 'image/png'
 
         source, source_type = item.get_source()
-        if source:
-            ts_item, c = ts.models.Item.objects.get_or_create(**{source_type: source})
-            if c:
-                ts_item.title = item.title
-                ts_item.save()
+        # if source:
+        #     ts_item, c = ts.models.Item.objects.get_or_create(**{source_type: source})
+        #     if c:
+        #         ts_item.title = item.title
+        #         ts_item.save()
+        #
+        # ts_grapher, c = ts.models.Processor.objects.get_or_create(pid=grapher_id)
+        # ts_preset, c = ts.models.Preset.objects.get_or_create(processor=ts_grapher,
+        #                                                       parameters={'width': width, 'height': height})
+        # ts_experience = ts_preset.get_single_experience()
+        # ts_selection = ts_item.get_single_selection()
+        # ts_task, c = ts.models.Task.objects.get_or_create(experience=ts_experience,
+        #                                            selection=ts_selection)
+        # ts_task.run()
 
-        ts_grapher, c = ts.models.Processor.objects.get_or_create(pid=grapher_id)
-        ts_preset, c = ts.models.Preset.objects.get_or_create(processor=ts_grapher,
-                                                              parameters={'width': width, 'height': height})
-        ts_experience = ts_preset.get_single_experience()
-        ts_selection = ts_item.get_single_selection()
-        ts_task, c = ts.models.Task.objects.get_or_create(experience=ts_experience,
-                                                          selection=ts_selection)
-        ts_task.run(wait=True)
+        grapher = self.get_grapher(grapher_id)
 
-        result = ts.models.Result.objects.get(preset=ts_preset, item=ts_item)
+        if grapher.id() != grapher_id:
+            raise Http404
 
-        response = StreamingHttpResponse(FileWrapper(open(result.file.name)), content_type=mime_type)
+        size = str(width) + '_' + str(height)
+        image_file = '.'.join([public_id, grapher_id, size, 'png'])
+
+        # FIX waveform grapher name change
+        old_image_file = '.'.join([public_id, 'waveform', size, 'png'])
+        if 'waveform_centroid' in grapher_id and self.cache_data.exists(old_image_file):
+            image_file = old_image_file
+
+        if not self.cache_data.exists(image_file):
+            source, _ = item.get_source()
+            if source:
+                path = self.cache_data.dir + os.sep + image_file
+                decoder = timeside.core.get_processor('file_decoder')(source)
+                graph = grapher(width=width, height=height)
+                (decoder | graph).run()
+                graph.watermark('timeside', opacity=.6, margin=(5, 5))
+                #f = open(path, 'w')
+                graph.render(output=path)
+                # f.close()
+                self.cache_data.add_file(image_file)
+
+        response = StreamingHttpResponse(self.cache_data.read_stream_bin(image_file), content_type=mime_type)
         return response
 
     def list_export_extensions(self):
