@@ -38,5 +38,7 @@ RUN pip install -r requirements.txt
 RUN pip install -r requirements-dev.txt --src /srv/src
 RUN pip uninstall -y South
 
+RUN mkdir -p /srv/media
+
 WORKDIR /srv/app
 EXPOSE 8000
