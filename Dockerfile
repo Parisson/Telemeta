@@ -39,5 +39,7 @@ RUN /bin/bash /srv/app/scripts/setup_plugins.sh
 RUN pip install -r requirements.txt
 RUN pip install -r requirements-dev.txt --src /srv/src
 
+RUN mkdir -p /srv/media
+
 WORKDIR /srv/app
 EXPOSE 8000
