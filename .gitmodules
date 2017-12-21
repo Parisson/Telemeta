@@ -10,3 +10,4 @@
 [submodule "lib/TimeSide"]
 	path = lib/TimeSide
 	url = https://github.com/Parisson/TimeSide.git
+        ignore = dirty
