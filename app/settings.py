@@ -185,7 +185,7 @@ INSTALLED_APPS = (
     'saved_searches',
     'django_select2',
     'leaflet',
-    'djgeojson',
+    #'djgeojson',
     'markdownx',
 )
 

@@ -190,14 +190,14 @@ def express_collection(collection):
 def express_item(item):
     "Express a media item as a Dublin Core resource"
 
-    if item.collector:
-        creator = (Element('creator', item.collector),
-                   Element('contributor', item.collection.creator))
-    elif item.collection.collector:
-        creator = (Element('creator', item.collection.collector),
-                   Element('contributor', item.collection.creator))
-    else:
-        creator = Element('creator', item.collection.creator)
+    # if item.collector:
+    #     creator = (Element('creator', item.collector),
+    #                Element('contributor', item.collection.creator))
+    # elif item.collection.collector:
+    #     creator = (Element('creator', item.collection.collector),
+    #                Element('contributor', item.collection.creator))
+    # else:
+    #     creator = Element('creator', item.collection.creator)
 
     dates = []
     if item.recorded_from_date:
@@ -230,7 +230,7 @@ def express_item(item):
         Element('identifier',       item.public_id, related=item),
         Element('type',             'Sound'),
         titles,
-        creator,
+        #creator,
         Element('contributor',      item.collection.metadata_author),
         Element.multiple('subject', settings.TELEMETA_SUBJECTS),
         Element.multiple('subject', item.keywords()),
@@ -309,4 +309,3 @@ def lookup_resource(media_id):
 
 class MalformedMediaIdentifier(Exception):
     pass
-
