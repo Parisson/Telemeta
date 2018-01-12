@@ -37,7 +37,7 @@ from jsonrpc import jsonrpc_site
 import os.path
 import telemeta.config
 
-from djgeojson.views import GeoJSONLayerView
+#from djgeojson.views import GeoJSONLayerView
 from markdownx import urls as markdownx
 
 telemeta.config.check()
