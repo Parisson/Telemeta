@@ -26,7 +26,7 @@ The CREM has been the major partner of the Telemeta project from the beginning i
 From 2011, a mean of 400 Go/year of audio data and metadata are imported in the instance.
 
 Related research projects
-==========================
+--------------------------
 
 * DIADEMS_ : Description, Indexation, Access to Sound and Ethnomusicological Documents, funded by the French Research Agency (ANR_ CONTINT 2012), involving IRIT_, CREM_, LAM_, LABRI_, LIMSI_, MNHN_, Parisson_
 * TimeSide-DIADEMS_ : a set of Timeside plugins for hich level music analysis developed during the DIADEMS_ project
