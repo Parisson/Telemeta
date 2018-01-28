@@ -709,6 +709,7 @@ class ItemAddView(ItemViewMixin, CreateWithInlinesView):
                 item.collection = collection
                 items = MediaItem.objects.filter(collection=collection)
                 item.code = auto_code(collection)
+                item.language = collection.language
         return model_to_dict(item)
 
     def forms_valid(self, form, inlines):
