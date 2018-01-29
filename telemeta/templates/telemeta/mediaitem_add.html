@@ -36,3 +36,15 @@
       </button>
      </a>
      {% endblock %}
+
+{% block infos %}
+    {{ block.super }}
+    <script>
+        PreRemplissageMultiple("id_collectors");
+
+        function PreRemplissageMultiple(champ){
+            $("#"+champ+"> option").prop("selected","selected");
+            $("#"+champ).trigger("change");
+        };
+    </script>
+ {% endblock infos %}

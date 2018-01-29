@@ -206,9 +206,11 @@ class MediaItemForm(ModelForm):
         self.fields['collection'].widget=forms.HiddenInput()
         #self.fields['collector'].widget=forms.HiddenInput()
 
+        # En mode "creation", recuperer la collection parente
+        collection = MediaCollection.objects.filter(id=kwargs["initial"]["collection"] )
 
         self.fields["collectors"] = forms.ModelMultipleChoiceField(
-            queryset = Authority.objects.all(),
+            queryset = collection[0].collectors.all(),
             widget=Select2MultipleWidget(
             attrs={
                 'title': 'Liste des enquêteurs',
