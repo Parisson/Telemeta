@@ -201,16 +201,19 @@ class MediaItemForm(ModelForm):
             self.fields['mshs_informers'].queryset = MediaCollectionPerformance.objects.filter(
                                                collection=self.instance.collection)
             self.fields['domains'].initial = self.instance.mshs_domain.split(',')
+            collection = self.instance.collection
 
         # Hidden fields
         self.fields['collection'].widget=forms.HiddenInput()
         #self.fields['collector'].widget=forms.HiddenInput()
 
         # En mode "creation", recuperer la collection parente
-        collection = MediaCollection.objects.filter(id=kwargs["initial"]["collection"] )
+        if kwargs["initial"] :
+            collections = MediaCollection.objects.filter(id=kwargs["initial"]["collection"] )
+            collection=collections[0]
 
         self.fields["collectors"] = forms.ModelMultipleChoiceField(
-            queryset = collection[0].collectors.all(),
+            queryset = collection.collectors.all(),
             widget=Select2MultipleWidget(
             attrs={
                 'title': 'Liste des enquêteurs',
@@ -221,7 +224,7 @@ class MediaItemForm(ModelForm):
         )
 
         self.fields["informer"] = forms.ModelMultipleChoiceField(
-            queryset = Authority.objects.all(),
+            queryset = collection.informer.all(),
             widget=Select2MultipleWidget(
             attrs={
                 'title': 'Liste des informateurs',
@@ -232,10 +235,10 @@ class MediaItemForm(ModelForm):
         )
 
         self.fields["language_iso"] = forms.ModelMultipleChoiceField(
-            queryset = Language.objects.all(),
+            queryset = collection.language_iso.all(),
             widget=Select2MultipleWidget(
             attrs={
-                'title': 'Editeurs',
+                'title': 'Langues',
                 'data-width':'100%',
                 }),
             label=_("Language (ISO norm)"),

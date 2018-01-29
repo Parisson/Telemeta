@@ -41,6 +41,8 @@
     {{ block.super }}
     <script>
         PreRemplissageMultiple("id_collectors");
+        PreRemplissageMultiple("id_informer");
+        PreRemplissageMultiple("id_language_iso");
 
         function PreRemplissageMultiple(champ){
             $("#"+champ+"> option").prop("selected","selected");
