@@ -141,7 +141,8 @@
     <h4><a href="#">Texte</a></h4>
     <dl class="listing">
         <!-- display fields for a text -->
-        {% dl_field item "mshs_text_bool" %}
+        <dt>Présence de texte</dt>
+        <dd>{{ item.mshs_text_bool| yesno:"Oui,Non,Ne sais pas"}}</dd>
         <dt>{% trans "Text" %}</dt>
         <dd>{{ item.mshs_text_markdown|safe }}</dd>
         {% dl_field item "mshs_incipit" %}
