@@ -1,0 +1,73 @@
+{% extends "telemeta/base.html" %}
+{% load telemeta_tags %}
+{% load i18n %}
+{% load bootstrap3 %}
+
+
+{% block head_title %}
+    Personne - {{ block.super }}
+{% endblock %}
+
+{% block title %}
+    <img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" /> Personne : {{ authority }}
+{% endblock %}
+
+
+{% block title_buttons %}
+<div class="fixedWidthAsPlayer">
+    <img id="wait-img" style="display:none" style="vertical-align:middle" alt="wait" src="{{ STATIC_URL }}telemeta/images/wait.gif" />
+    {% block cancel %}
+    <a id="cancel" href="{% url "telemeta-authorities-detail" authority.id %}">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-remove"></span> {% trans "Cancel" %}
+      </button>
+    </a>
+    {% endblock %}
+    {% if perms.telemeta.change_authority %}
+    <a id="save" href="#" onclick="var d=document; d.getElementById('wait-img').style.display='inline'; $('#_editForm').submit();">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-floppy-disk"></span> {% trans "Save" %}
+      </button>
+    </a>
+    {% endif %}
+</div>
+{% endblock %}
+
+
+{% block content %}
+  <div>
+  <form method="post" id="_editForm" action="" enctype="multipart/form-data" data-ajax="false">{% csrf_token %}
+
+    {% bootstrap_field form.last_name %}
+    {% bootstrap_field form.first_name %}
+    {% bootstrap_field form.civilite %}
+    {% bootstrap_field form.alias %}
+    <div class="block-grey">
+        <h2>Naissance</h2>
+        {% bootstrap_field form.birth_date %}
+        {% bootstrap_field form.birth_location %}
+    </div>
+    <div class="block-grey">
+        <h2>Décès</h2>
+        {% bootstrap_field form.death_date %}
+        {% bootstrap_field form.death_location %}
+    </div>
+    <div class="block-grey">
+        <h2>Précisions</h2>
+        {% bootstrap_field form.biography %}
+        {% bootstrap_field form.uri %}
+    </div>
+
+    {% if perms.telemeta.change_authority %}
+    <a id="save" href="#" onclick="var d=document; d.getElementById('wait-img').style.display='inline'; $('#_editForm').submit();">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-floppy-disk"></span> {% trans "Save" %}
+      </button>
+    </a>
+    {% endif %}
+   </form>
+   {{ form.media }}
+  </div>
+
+
+{% endblock %}

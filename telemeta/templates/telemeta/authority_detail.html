@@ -19,9 +19,18 @@
 {% endblock %}
 
 {% block title_buttons %}
-  <div>
-   </div>
-{% endblock %}
+
+<div>
+    {% if user.is_authenticated and perms.telemeta.change_authorities %}
+    <a href="{% url "telemeta-authorities-edit" authority.id %}">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-pencil"></span> {% trans "Edit" %}
+      </button>
+    </a>
+    {% endif %}
+</div>
+{% endblock title_buttons %}
+
 
 
 {% block content %}
@@ -68,3 +77,7 @@
 {% else %}
     <p>Aucun individu ne correspond.</p>
 {% endif %}
+
+{% block delete %}
+
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "telemeta/authority_edit.html" %}
+{% load i18n %}
+{% load telemeta_tags %}
+{% load bootstrap3 %}
+
+{% block title %}
+<img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" /> Personne : {% trans "New" %}
+{% endblock %}
+
+    {% block cancel %}
+    <a id="cancel" href="{% url "telemeta-authorities" %}">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-remove"></span> {% trans "Cancel" %}
+      </button>
+    </a>
+    {% endblock %}
+
+     {% block cancel2 %}
+     <a id="cancel" href="{% url "telemeta-authorities" %}">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-remove"></span> {% trans "Cancel" %}
+      </button>
+     </a>
+     {% endblock %}
