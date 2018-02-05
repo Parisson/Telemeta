@@ -1,0 +1,38 @@
+{% extends "telemeta/base.html" %}
+{% load telemeta_tags %}
+{% load i18n %}
+{% load bootstrap_pagination %}
+
+
+{% block head_title %}Personnes - {{ block.super }}{% endblock %}
+
+{% block title %}
+<div class='row'>
+    <div class="col-md-4">
+        <img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" /> Personnes ({{ page_obj.start_index }} - {{ page_obj.end_index }} / {{ count }})
+    </div>
+    <div class="col-md-8">
+        {% bootstrap_paginate page_obj range=10 show_first_last="True" %}
+    </div>
+    <div class="col-md-0">&nbsp;</div>
+</div>
+{% endblock title %}
+
+
+{% block title_buttons %}
+    {% if perms.telemeta.add_authority or user.is_superuser or user.is_staff %}
+    <a href="{% url "telemeta-authorities-add" %}">
+    <button type="button" class="btn btn-default">
+      <span class="glyphicon glyphicon-plus"></span> {% trans "Add" %}</span>
+    </button>
+    </a>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="fullpage">
+{% with object_list as authorities %}
+{% include "telemeta/inc/authority_list.html" %}
+{% endwith %}
+</div>
+{% endblock content %}

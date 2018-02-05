@@ -1,0 +1,26 @@
+{% load telemeta_tags %}
+{% load i18n %}
+
+{% if authorities %}
+
+<table class="listing">
+<tr>
+    <th class="highlight">Nom</th>
+    <th>Prénom</th>
+    <th>Alias</th>
+</tr>
+{% for authority in authorities %}
+<tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
+    <td class="highlight">
+        <a href="{% url "telemeta-authorities-detail" authority.id %}">
+          {{ authority.last_name }}</a>
+    </td>
+    <td>{{ authority.first_name }}</td>
+    <td>{{ authority.alias }}</td>
+</tr>
+{% endfor %}
+
+</table>
+{% else %}
+    <p>Aucune personne</p>
+{% endif %}

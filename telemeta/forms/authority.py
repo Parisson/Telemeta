@@ -7,11 +7,16 @@
 import django.forms as forms
 from django.forms import ModelForm
 from telemeta.models import Authority
+from django.utils.translation import ugettext_lazy as _
+
+from markdownx.fields import MarkdownxFormField
 
 class AuthorityForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(AuthorityForm, self).__init__(*args, **kwargs)
+        self.fields["biography"] = MarkdownxFormField(label="Biographie")
+        self.fields["biography"].required = False
 
     class Meta:
         model = Authority
