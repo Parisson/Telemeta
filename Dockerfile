@@ -43,5 +43,7 @@ RUN pip uninstall -y South
 
 RUN mkdir -p /srv/media
 
+RUN mkdir -p /srv/media
+
 WORKDIR /srv/app
 EXPOSE 8000

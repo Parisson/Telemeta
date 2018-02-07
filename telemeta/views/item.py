@@ -54,11 +54,10 @@ class ItemBaseMixin(TelemetaBaseMixin):
         user = self.request.user
         graphers_access = (user.is_staff
                            or user.is_superuser
-                           or user.has_perm('can_run_analysis'))
+                           or user.has_perm('telemeta.can_run_analysis'))
 
         for grapher in self.graphers:
-            if (not graphers_access
-                and grapher.id() not in self.public_graphers):
+            if (graphers_access or grapher.id() in self.public_graphers):
                 continue
             if grapher.id() == self.default_grapher_id:
                 graphers.insert(0, {'name': grapher.name(), 'id': grapher.id()})
