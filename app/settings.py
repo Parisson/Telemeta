@@ -19,7 +19,7 @@ sys.dont_write_bytecode = True
 ALLOWED_HOSTS = ['*']
 
 ADMINS = (
-    ('Guillaume Pellerin', 'yomguy@parisson.com'),
+    ('Guillaume Pellerin', 'webmaster@parisson.com'),
 )
 
 MANAGERS = ADMINS

@@ -10,6 +10,7 @@
 [submodule "lib/TimeSide"]
 	path = lib/TimeSide
 	url = https://github.com/Parisson/TimeSide.git
+        ignore = dirty
 [submodule "lib/timeside-diadems"]
 	path = lib/timeside-diadems
 	url = https://github.com/ANR-DIADEMS/timeside-diadems.git
