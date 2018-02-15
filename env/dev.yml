@@ -23,7 +23,7 @@
 
 
 app:
-  image: image: parisson/telemeta:latest-dev
+  image: parisson/telemeta:latest
   env_file:
     - env/debug.env
   command: /bin/bash scripts/app.sh --runserver
@@ -31,7 +31,7 @@ app:
     - 9000:8000
 
 worker:
-  image: image: parisson/telemeta:latest-dev
+  image: parisson/telemeta:latest
   env_file:
     - env/debug.env
 
