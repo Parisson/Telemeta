@@ -13,7 +13,6 @@ log='/var/log/uwsgi/app.log'
 port=8000
 processes=8
 threads=8
-autoreload=3
 uid='www-data'
 gid='www-data'
 
@@ -27,8 +26,12 @@ pip install -e git+https://github.com/Parisson/saved_searches.git@dj1.8#egg=save
 # waiting for other network services
 sh $app/scripts/wait.sh
 python $manage wait-for-db
-python $manage migrate --noinput
-python $manage bower_install -- --allow-root
+
+if [ ! -f .init ]; then
+    python $manage migrate --noinput
+    python $manage bower_install -- --allow-root
+    touch .init
+fi
 
 # telemeta setup
 python $manage telemeta-create-admin-user
@@ -57,7 +60,6 @@ else
 
     # app start
     uwsgi --socket :$port --wsgi-file $wsgi --chdir $app --master \
-    --processes $processes --threads $threads \
-    --uid $uid --gid $gid --logto $log --touch-reload $wsgi
-
+        --processes $processes --threads $threads \
+        --uid $uid --gid $gid
 fi

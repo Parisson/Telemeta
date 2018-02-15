@@ -50,7 +50,7 @@ search:
   image: elasticsearch:1
 
 app:
-  image: parisson/telemeta:latest
+  image: parisson/telemeta:1.6.x
   volumes:
     - ./app:/srv/app
     - ./telemeta:/srv/src/telemeta/telemeta
@@ -65,7 +65,7 @@ app:
     - search
 
 worker:
-  image: parisson/telemeta:latest
+  image: parisson/telemeta:1.6.x
   volumes_from:
     - app
     - data
