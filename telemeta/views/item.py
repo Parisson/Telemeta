@@ -55,16 +55,14 @@ class ItemBaseMixin(TelemetaBaseMixin):
         graphers_access = (user.is_staff
                            or user.is_superuser
                            or user.has_perm('telemeta.can_run_analysis'))
-
         for grapher in self.graphers:
             if (graphers_access or grapher.id() in self.public_graphers):
-                continue
-            if grapher.id() == self.default_grapher_id:
-                graphers.insert(0, {'name': grapher.name(), 'id': grapher.id()})
-            elif not hasattr(grapher, '_staging'):
-                graphers.append({'name': grapher.name(), 'id': grapher.id()})
-            elif not grapher._staging:
-                graphers.append({'name': grapher.name(), 'id': grapher.id()})
+                if grapher.id() == self.default_grapher_id:
+                    graphers.insert(0, {'name': grapher.name(), 'id': grapher.id()})
+                elif not hasattr(grapher, '_staging'):
+                    graphers.append({'name': grapher.name(), 'id': grapher.id()})
+                elif not grapher._staging:
+                    graphers.append({'name': grapher.name(), 'id': grapher.id()})
         return graphers
 
     def get_grapher(self, id):

@@ -50,11 +50,10 @@ search:
   image: elasticsearch:1
 
 app:
-  build: .
+  image: parisson/telemeta:1.6
   volumes:
     - ./app:/srv/app
     - ./telemeta:/srv/src/telemeta/telemeta
-    - ./lib/:/srv/src/plugins/ 
   volumes_from:
     - data
   env_file:
@@ -66,9 +65,10 @@ app:
     - search
 
 worker:
-  build: .
+  image: parisson/telemeta:1.6
   volumes_from:
     - app
+    - data
   env_file:
     - env/prod.env
   command: /bin/bash scripts/worker.sh
