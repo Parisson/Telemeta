@@ -1,7 +1,8 @@
 .git
 *.pyc
 *.egg-info
-build/
-dist/
-data/
-tmp/
+**/build
+**/dist
+data
+tmp
+var

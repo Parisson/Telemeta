@@ -12,7 +12,6 @@ src='/srv/src/'
 port=8000
 processes=8
 threads=8
-autoreload=3
 uid='www-data'
 gid='www-data'
 patterns='*.js;*.css;*.jpg;*.jpeg;*.gif;*.png;*.svg;*.ttf;*.eot;*.woff;*.woff2'
@@ -25,9 +24,13 @@ sh $app/scripts/wait.sh
 
 # django setup
 python $manage wait-for-db
-python $manage syncdb --noinput
-python $manage migrate --noinput
-python $manage bower_install -- --allow-root
+
+if [ ! -f .init ]; then
+    python $manage syncdb --noinput
+    python $manage migrate --noinput
+    python $manage bower_install -- --allow-root
+    touch .init
+fi
 
 # telemeta setup
 python $manage telemeta-create-admin-user
@@ -57,6 +60,5 @@ else
     # app start
     uwsgi --socket :$port --wsgi-file $wsgi --chdir $app --master \
         --processes $processes --threads $threads \
-        --uid $uid --gid $gid \
-        --py-autoreload $autoreload
+        --uid $uid --gid $gid
 fi
