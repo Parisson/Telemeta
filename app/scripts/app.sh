@@ -60,5 +60,5 @@ else
     # app start
     uwsgi --socket :$port --wsgi-file $wsgi --chdir $app --master \
         --processes $processes --threads $threads \
-        --uid $uid --gid $gid
+        --uid $uid --gid $gid --touch-reload $wsgi
 fi
