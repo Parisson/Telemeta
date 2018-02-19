@@ -25,12 +25,17 @@
 data:
   image: debian:jessie
   volumes:
-     - /home/parisson/CREM/Telemeta/media/:/srv/media
-     - /home/parisson/CREM/Telemeta/backup/:/srv/backup
-     - ./data/static:/srv/static
-     - ./data/bower:/srv/bower
-     - ./data/log/nginx:/var/log/nginx
-     - ./data/log/uwsgi:/var/log/uwsgi
+    - /home/parisson/CREM/Telemeta/media/cache:/srv/media/cache
+    - /home/parisson/CREM/Telemeta/media/export:/srv/media/export
+    - /home/parisson/CREM/Telemeta/media/log:/srv/media/log
+    - /home/parisson/CREM/Telemeta/media/results:/srv/media/results
+    - /archive/CREM/tmp:/srv/media/tmp
+    - /archive/CREM/media/items:/srv/media/items
+    - /archive/CREM/backup:/srv/backup
+    - ./data/static:/srv/static
+    - ./data/bower:/srv/bower
+    - ./data/log/nginx:/var/log/nginx
+    - ./data/log/uwsgi:/var/log/uwsgi
   command: "true"
 
 db:
