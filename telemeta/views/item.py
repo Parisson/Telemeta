@@ -142,6 +142,8 @@ class ItemView(ItemBaseMixin):
                     template='telemeta/mediaitem_detail.html'):
         """Show the details of a given item"""
 
+        self.request = request
+
         # get item with one of its given marker_id
         if not public_id and marker_id:
             marker = get_object_or_404(MediaItemMarker, public_id=marker_id)
@@ -1069,7 +1071,6 @@ class ItemEnumListView(ItemListView):
     def get_queryset(self):
         enumeration = self.get_enumeration(self.request.path.split('/')[3])
         queryset = self.get_item(enumeration.objects.filter(id=self.request.path.split('/')[4]).get())
-        print type(queryset)
         return queryset
 
     def get_item(self, enum):
