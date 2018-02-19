@@ -22,7 +22,7 @@ class URLMediaParser(object):
     		formats.append(f.capitalize())
     	return formats
 
-    def get_urls(self):    
+    def get_urls(self):
         data = urllib.urlopen(self.url).read()
         for line in data.split("\012"):
             s = re.compile('href=".*\.*"').search(line,1)
