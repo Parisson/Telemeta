@@ -15,12 +15,12 @@ U{http://telemeta.org}
 """
 
 __docformat__ = 'epytext en'
-__version__ = '1.6.4'
+__version__ = '1.6.5'
 __url__ = 'http://telemeta.org'
-__copyright__ = '(C) 2006-2017 Parisson SARL'
+__copyright__ = '(C) 2006-2018 Parisson SARL'
 __license__ = 'AGPLv3'
 __license_long__ = """
-Copyright (C) Parisson SARL (2006-2017)
+Copyright (C) Parisson SARL (2006-2018)
 
 This file is part of Telemeta.
 
