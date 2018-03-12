@@ -12,6 +12,7 @@ env = environ.Env(DEBUG=(bool, False),
 
 # Django settings for server project.
 DEBUG = env('DEBUG') # False if not in os.environ
+DEBUG=True
 TEMPLATE_DEBUG = DEBUG
 
 sys.dont_write_bytecode = True
@@ -155,7 +156,7 @@ INSTALLED_APPS = (
     'timeside.player',
     #'timeside.server',
     'jsonrpc',
-    'south',
+    # 'south',
     'sorl.thumbnail',
     'timezones',
     'jqchat',

@@ -7,17 +7,19 @@ wsgi=$app'/wsgi.py'
 static='/srv/static/'
 media='/srv/media/'
 src='/srv/src/'
+log='/var/log/uwsgi/app.log'
 
 # uwsgi params
 port=8000
-processes=8
-threads=8
+processes=2
+threads=2
 uid='www-data'
 gid='www-data'
 patterns='*.js;*.css;*.jpg;*.jpeg;*.gif;*.png;*.svg;*.ttf;*.eot;*.woff;*.woff2'
 
 # stating apps
 # pip install django-bootstrap3==6.2.1
+pip install south
 
 # waiting for other network services
 sh $app/scripts/wait.sh
@@ -60,5 +62,5 @@ else
     # app start
     uwsgi --socket :$port --wsgi-file $wsgi --chdir $app --master \
         --processes $processes --threads $threads \
-        --uid $uid --gid $gid --touch-reload $wsgi
+        --uid $uid --gid $gid --logto $log --touch-reload $wsgi
 fi
