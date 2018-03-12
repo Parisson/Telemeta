@@ -31,6 +31,7 @@ if [ ! -f .init ]; then
     python $manage syncdb --noinput
     python $manage migrate --noinput
     python $manage bower_install -- --allow-root
+    python $manage collectstatic --noinput
     touch .init
 fi
 
@@ -53,8 +54,6 @@ else
     # static files auto update
     # watchmedo shell-command --patterns="$patterns" --recursive \
     #     --command='python '$manage' collectstatic --noinput' $src &
-
-    python $manage collectstatic --noinput
 
     # fix media access rights
     find $media -maxdepth 1 -path ${media}import -prune -o -type d -not -user www-data -exec chown www-data:www-data {} \;
