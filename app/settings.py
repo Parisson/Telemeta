@@ -224,7 +224,7 @@ LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/desk/lists/'
 
 EMAIL_HOST = 'cchum-kvm-telemeta.in2p3.fr'
-DEFAULT_FROM_EMAIL = 'webmaster@parisson.com'
+DEFAULT_FROM_EMAIL = 'root@cchum-kvm-telemeta.in2p3.fr'
 
 TIMESIDE_DEFAULT_GRAPHER_ID = 'waveform_centroid'
 TIMESIDE_DEFAULT_WAVEFORM_SIZES = ['346x130', '640x130']
