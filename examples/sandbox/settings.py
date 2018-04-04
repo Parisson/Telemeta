@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse_lazy, reverse
 
 sys.dont_write_bytecode = True
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = ['*']
