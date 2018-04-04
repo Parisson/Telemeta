@@ -1,0 +1,26 @@
+{% load telemeta_tags %}
+{% load i18n %}
+
+<div class="video">
+<video width="{% if width %}{{ width }}{% else %}348{% endif %}" controls preload="none">
+    {% for transcoded in item.transcoded.all %}
+     {% if "video" in transcoded.mime_type %}
+      <source src="{{ MEDIA_URL }}{{ transcoded.file }}#t=0" type="{{ transcoded.mime_type }}" />
+     {% endif %}
+    {% endfor %}
+      <source src="{{ MEDIA_URL }}{{ item.file }}#t=0" type="{{ mime_type }}" />
+</video>
+</div>
+
+{% comment %}
+<div class="video">
+<video id="my_video_1" class="video-js vjs-default-skin" width="640" height="360" controls preload="none" {% if item.related.all %}{% for related in item.related.all %}{% if related.title == "preview" %}poster="{{ MEDIA_URL }}{{ related.file }}"{% endif %}{% endfor %}{% endif %} data-setup='{}'>
+  {% for transcoded in item.transcoded.all %}
+   {% if "video" in transcoded.mime_type %}
+    <source src="{{ MEDIA_URL }}{{ transcoded.file }}#t=0" type="{{ transcoded.mime_type }}" />
+   {% endif %}
+  {% endfor %}
+    <source src="{{ MEDIA_URL }}{{ item.file }}#t=0" type="{{ mime_type }}" />
+</video>
+</div>
+{% endcomment %}

@@ -1,6 +1,6 @@
 {% extends "telemeta/profile_detail.html" %}
 {% load i18n %}
-{% load telemeta_utils %}
+{% load telemeta_tags %}
 
 {% block title_buttons %}
  <a href="{% url "telemeta-profile-detail" usr.username %}" class="component_icon button icon_cancel">{% trans "Cancel" %}</a>

@@ -1,0 +1,4 @@
+
+-e git+https://github.com/mariocesar/sorl-thumbnail.git@v12.2#egg=sorl-thumbnail-12.2
+-e git+https://github.com/Parisson/ebooklib.git#egg=ebooklib-0.16
+-e git+https://github.com/Parisson/saved_searches.git#egg=saved_searches-2.0.0-beta

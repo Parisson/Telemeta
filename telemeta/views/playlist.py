@@ -1,34 +1,20 @@
 # -*- coding: utf-8 -*-
 # Copyright (C) 2010-2012 Parisson SARL
 
-# This software is a computer program whose purpose is to backup, analyse,
-# transcode and stream any audio content with its metadata over a web frontend.
+# This file is part of Telemeta.
 
-# This software is governed by the CeCILL  license under French law and
-# abiding by the rules of distribution of free software.  You can  use,
-# modify and/ or redistribute the software under the terms of the CeCILL
-# license as circulated by CEA, CNRS and INRIA at the following URL
-# "http://www.cecill.info".
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
 
-# As a counterpart to the access to the source code and  rights to copy,
-# modify and redistribute granted by the license, users are provided only
-# with a limited warranty  and the software's author,  the holder of the
-# economic rights,  and the successive licensors  have only  limited
-# liability.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
 
-# In this respect, the user's attention is drawn to the risks associated
-# with loading,  using,  modifying and/or developing or reproducing the
-# software by the user in light of its specific status of free software,
-# that may mean  that it is complicated to manipulate,  and  that  also
-# therefore means  that it is reserved for developers  and  experienced
-# professionals having in-depth computer knowledge. Users are therefore
-# encouraged to load and test the software's suitability as regards their
-# requirements in conditions enabling the security of their systems and/or
-# data to be ensured and,  more generally, to use and operate it in the
-# same conditions as regards security.
-
-# The fact that you are presently reading this means that you have had
-# knowledge of the CeCILL license and that you accept its terms.
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Authors: Guillaume Pellerin <yomguy@parisson.com>
 
@@ -85,14 +71,8 @@ class PlaylistView(object):
         m = PlaylistResource.objects.get(public_id=public_id)
         m.delete()
 
-
-    def playlist_csv_export(self, request, public_id, resource_type):
-        playlist = Playlist.objects.get(public_id=public_id, author=request.user)
+    def get_elements(self, playlist, resource_type):
         resources = PlaylistResource.objects.filter(playlist=playlist)
-        response = HttpResponse(content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename='+playlist.title+'_'+resource_type+'.csv'
-        writer = UnicodeWriter(response)
-
         elements = []
         for resource in resources:
             if resource_type == 'items':
@@ -108,35 +88,17 @@ class PlaylistView(object):
                     if items:
                         item = items[0]
                         elements.append(item)
-
             elif resource_type == 'collections':
                 if resource.resource_type == 'collection':
                     collection = MediaCollection.objects.get(id=resource.resource_id)
                     elements.append(collection)
+        return elements
 
-        if elements:
-            tags = []
-            element_dicts = [e.to_dict_with_more() for e in elements]
-            for e in element_dicts:
-                for key in e.keys():
-                    if not key in tags:
-                        tags.append(key)
-            # code and title on the two first column
-            tags.remove('code')
-            tags.remove('title')
-            tags.sort()
-            tags.insert(0, 'title')
-            tags.insert(0, 'code')
-            writer.writerow(tags)
-
-            for element in element_dicts:
-                data = []
-                for tag in tags:
-                    if tag in element.keys():
-                        data.append(element[tag])
-                    else:
-                        data.append('')
-                writer.writerow(data)
-
+    def playlist_csv_export(self, request, public_id, resource_type):
+        playlist = Playlist.objects.get(public_id=public_id)
+        elements = self.get_elements(playlist, resource_type)
+        pseudo_buffer = Echo()
+        writer = UnicodeCSVWriter(pseudo_buffer, elements)
+        response = StreamingHttpResponse(writer.output(), content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename='+playlist.title+'_'+resource_type+'.csv'
         return response
-
