@@ -34,7 +34,7 @@ data:
   command: "true"
 
 db:
-  image: mysql
+  image: mysql:5
   volumes:
     - ./scripts/:/srv/scripts
     - ./data/mysql/:/var/lib/mysql
@@ -79,7 +79,7 @@ worker:
 nginx:
   image: nginx
   ports:
-    - "8000:80"
+    - "8020:80"
   volumes:
     - ./etc/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
   volumes_from:
@@ -91,7 +91,7 @@ nginx:
 phpmyadmin:
     image: nazarpc/phpmyadmin
     ports:
-      - "1234:80"
+      - "1250:80"
     links:
       - db:mysql
     environment:
