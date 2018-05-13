@@ -289,7 +289,7 @@ class ItemView(ItemBaseMixin):
         if 'waveform_centroid' in grapher_id and self.cache_data.exists(old_image_file):
             image_file = old_image_file
 
-        path = self.cache_data.dir + os.sep + image_file    
+        path = self.cache_data.dir + os.sep + image_file
         if not self.cache_data.exists(image_file):
             source, _ = item.get_source()
             if source:
