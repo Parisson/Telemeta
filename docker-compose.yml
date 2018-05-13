@@ -25,12 +25,17 @@
 data:
   image: debian:jessie
   volumes:
-     - ./data/media/:/srv/media
-     - ./data/backup/:/srv/backup
-     - ./data/static:/srv/static
-     - ./data/bower:/srv/bower
-     - ./data/log/nginx:/var/log/nginx
-     - ./data/log/uwsgi:/var/log/uwsgi
+    - ./data/media/cache:/srv/media/cache
+    - ./data/media/export:/srv/media/export
+    - ./data/media/log:/srv/media/log
+    - ./data/media/results:/srv/media/results
+    - ./data/tmp:/srv/media/tmp
+    - /archive/CREM/media/items:/srv/media/items
+    - ./data/backup:/srv/backup
+    - ./data/static:/srv/static
+    - ./data/bower:/srv/bower
+    - ./data/log/nginx:/var/log/nginx
+    - ./data/log/uwsgi:/var/log/uwsgi
   command: "true"
 
 db:
