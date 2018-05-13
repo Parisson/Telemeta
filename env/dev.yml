@@ -28,7 +28,7 @@ app:
     - env/debug.env
   command: /bin/bash scripts/app.sh --runserver
   ports:
-    - 9000:8000
+    - 9100:8000
 
 worker:
   image: parisson/telemeta:latest
