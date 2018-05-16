@@ -34,7 +34,7 @@ data:
   command: "true"
 
 db:
-  image: mysql
+  image: mysql:5.7
   volumes:
     - ./scripts/:/srv/scripts
     - ./data/mysql/:/var/lib/mysql
@@ -93,6 +93,6 @@ phpmyadmin:
     ports:
       - "1234:80"
     links:
-      - db:mysql
+      - db:mysql:5.7
     environment:
       - ABSOLUTE_URI=http://localhost:8000/phpmyadmin/
