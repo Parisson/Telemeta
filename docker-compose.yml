@@ -39,7 +39,7 @@ data:
   command: "true"
 
 db:
-  image: mysql
+  image: mysql:5
   volumes:
     - ./scripts/:/srv/scripts
     - ./data/mysql/:/var/lib/mysql
