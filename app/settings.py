@@ -13,7 +13,7 @@ env = environ.Env(DEBUG=(bool, False),
 # Django settings for server project.
 DEBUG = env('DEBUG') # False if not in os.environ
 TEMPLATE_DEBUG = DEBUG
-DEBUG=True
+#DEBUG=True
 
 sys.dont_write_bytecode = True
 
