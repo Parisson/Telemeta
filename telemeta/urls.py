@@ -69,6 +69,7 @@ urlpatterns = patterns('',
     url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/dc/xml/$', item_view.item_detail, {'format': 'dublin_core_xml'}, name="telemeta-item-dublincore-xml"),
     url(r'^archives/items/download/(?P<public_id>[A-Za-z0-9._-]+)\.(?P<extension>' + export_extensions + ')$', item_view.item_export, name="telemeta-item-export"),
     url(r'^archives/items/download/(?P<public_id>[A-Za-z0-9._-]+)\.(?P<extension>' + export_extensions + ')/isAvailable$', item_view.item_export_available, name="telemeta-item-export-available"),
+    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/stream', item_view.item_export, name="telemeta-item-stream"),
 
     url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/visualize/(?P<grapher_id>[0-9a-z_]+)/(?P<width>[0-9A-Z]+)x(?P<height>[0-9A-Z]+)/$', item_view.item_visualize, name="telemeta-item-visualize"),
     url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/analyze/xml/$', item_view.item_analyze_xml, name="telemeta-item-analyze-xml"),
