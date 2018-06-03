@@ -95,23 +95,26 @@ class TelemetaBaseMixin(object):
     cache_tmp = TelemetaCache(getattr(settings, 'FILE_UPLOAD_TEMP_DIR', os.path.join(MEDIA_ROOT, 'tmp')))
 
 
-def serve_media(filename, content_type="", buffering=True):
+def serve_media(media_path, content_type="", buffering=True, streaming=False):
     if not settings.DEBUG:
-        return nginx_media_accel(filename, content_type=content_type,
-                                 buffering=buffering)
+        return nginx_media_accel(media_path, content_type=content_type,
+                                 buffering=buffering, streaming=streaming)
     else:
-        response = FileResponse(open(filename, 'rb'))
-        response['Content-Disposition'] = 'attachment; ' + 'filename=' + filename
+        response = FileResponse(open(media_path, 'rb'))
+        filename = os.path.basename(media_path)
+        if not streaming:
+            response['Content-Disposition'] = 'attachment; ' + 'filename=' + filename
         return response
 
 
-def nginx_media_accel(media_path, content_type="", buffering=True):
+def nginx_media_accel(media_path, content_type="", buffering=True, streaming=False):
     """Send a protected media file through nginx with X-Accel-Redirect"""
 
     response = HttpResponse()
     url = settings.MEDIA_URL + os.path.relpath(media_path, settings.MEDIA_ROOT)
     filename = os.path.basename(media_path)
-    response['Content-Disposition'] = "attachment; filename=%s" % (filename)
+    if not streaming:
+        response['Content-Disposition'] = "attachment; filename=%s" % (filename)
     response['Content-Type'] = content_type
     response['X-Accel-Redirect'] = url
 
