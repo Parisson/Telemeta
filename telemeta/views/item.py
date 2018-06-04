@@ -388,14 +388,16 @@ class ItemView(ItemBaseMixin):
 
         return (media, mime_type)
 
-    def item_export(self, request, public_id, extension, return_availability=False):
+    def item_export(self, request, public_id, extension=None, mime_type=None, return_availability=False):
         """Export a given media item in the specified format (OGG, FLAC, ...)"""
 
         item = MediaItem.objects.get(public_id=public_id)
         public_access = get_item_access(item, request.user)
+        raw = False
 
         if not extension:
             extension = item.file.path.split('.')[-1]
+            raw = True
 
         if (not public_access == 'full' or not extension in settings.TELEMETA_STREAMING_FORMATS) and \
                 not (request.user.has_perm('telemeta.can_play_all_items') or request.user.is_superuser):
@@ -405,33 +407,17 @@ class ItemView(ItemBaseMixin):
             messages.error(request, title)
             return render(request, 'telemeta/messages.html', {'description': description})
 
-        # FIXME: MP4 handling in TimeSide
-        if 'mp4' in extension:
-            mime_type = 'video/mp4'
-            video = item.file.path
-            response = serve_media(video, content_type=mime_type)
-            # response['Content-Disposition'] = 'attachment'
-            # TF : I don't know why empty attachment was set
-            # TODO: remove if useless
+        if raw:
+            media = item.file.path
+            response = serve_media(media, content_type=item.mimetype)
             if return_availability:
                 data = json.dumps({'available': True})
                 return HttpResponse(data, content_type='application/json')
             return response
 
-        if 'webm' in extension:
-            mime_type = 'video/webm'
-            video = item.file.path
-            response = serve_media(video, content_type=mime_type)
-            # response['Content-Disposition'] = 'attachment'
-            # TF : I don't know why empty attachment was set,
-            # TODO: remove if useless
-            if return_availability:
-                data = json.dumps({'available': True})
-                return HttpResponse(data, content_type='application/json')
-            return response
 
         (media, mime_type) = self.item_transcode(item, extension)
-        #media  = None
+        
         if media:
             if return_availability:
                 data = json.dumps({'available': True})
@@ -453,8 +439,8 @@ class ItemView(ItemBaseMixin):
             #patch_cache_control(response, no_cache=True, no_store=True, must_revalidate=True)
             return response
 
-    def item_export_available(self, request, public_id, extension):
-        return self.item_export(request, public_id, extension, return_availability=True)
+    def item_export_available(self, request, public_id, extension=None, mime_type=None):
+        return self.item_export(request, public_id, extension, mime_type, return_availability=True)
 
     def item_playlist(self, request, public_id, template, mimetype):
         try:

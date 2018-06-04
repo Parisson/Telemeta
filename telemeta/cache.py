@@ -55,8 +55,10 @@ class TelemetaCache(object):
     def delete_item_data(self, public_id):
         # public_id is the public_id of an item
         for file in self.files:
+            path = self.dir + os.sep + file
             if public_id in file:
-                os.remove(self.dir + os.sep + file)
+                if os.path.exists(path):
+                    os.remove(path)
 
     def write_bin(self, data, file):
         path = self.dir + os.sep + file

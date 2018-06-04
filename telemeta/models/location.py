@@ -189,10 +189,11 @@ class LocationRelation(ModelCore):
 
 
 class LocationForm(ModelForm):
+
     class Meta:
         model = Location
+        fields = ('__all__')
 
     def __init__(self, *args, **kwds):
         super(LocationForm, self).__init__(*args, **kwds)
 #        self.fields['name'].queryset = Location.objects.order_by('name')
-
