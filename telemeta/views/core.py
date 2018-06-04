@@ -103,7 +103,7 @@ def serve_media(media_path, content_type="", buffering=True, streaming=False):
         try:
             response = FileResponse(open(media_path, 'rb'))
         except:    
-            response = StreamingHttpResponse(stream_from_file(filename), content_type=content_type)
+            response = StreamingHttpResponse(stream_from_file(media_path), content_type=content_type)
         filename = os.path.basename(media_path)
         if not streaming:
             response['Content-Disposition'] = 'attachment; ' + 'filename=' + filename
