@@ -82,8 +82,10 @@
 </script>
 
 {% if "video" in mime_type %}
-<script src="{{ STATIC_URL }}video-js/video.min.js" ></script>
-<link href="{{ STATIC_URL }}video-js/video-js.min.css" rel="stylesheet">
+    {% comment %}
+        <script src="{{ STATIC_URL }}video-js/video.min.js" ></script>
+        <link href="{{ STATIC_URL }}video-js/video-js.min.css" rel="stylesheet">
+    {% endcomment %}
 {% endif %}
 
 {% endif %}
