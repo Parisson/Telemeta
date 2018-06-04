@@ -225,6 +225,7 @@ LOGIN_REDIRECT_URL = '/desk/lists/'
 
 EMAIL_HOST = 'cchum-kvm-telemeta.in2p3.fr'
 DEFAULT_FROM_EMAIL = 'root@cchum-kvm-telemeta.in2p3.fr'
+EMAIL_SUBJECT_PREFIX = 'Telemeta - CREM'
 
 TIMESIDE_DEFAULT_GRAPHER_ID = 'waveform_centroid'
 TIMESIDE_DEFAULT_WAVEFORM_SIZES = ['346x130', '640x130']
@@ -314,8 +315,8 @@ from worker import app
 
 HAYSTACK_CONNECTIONS = {
     'default': {
-        #'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-        'ENGINE': 'telemeta.util.backend.CustomElasticEngine',
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        #'ENGINE': 'telemeta.util.backend.CustomElasticEngine',
         'URL': env('HAYSTACK_URL'),
         'TIMEOUT': 60 * 5,
         'INDEX_NAME': env('HAYSTACK_INDEX_NAME'),
@@ -327,8 +328,8 @@ HAYSTACK_CONNECTIONS = {
                              ]
     },
     'autocomplete': {
-        # 'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-        'ENGINE': 'telemeta.util.backend.CustomElasticEngine',
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        #'ENGINE': 'telemeta.util.backend.CustomElasticEngine',
         'URL': env('HAYSTACK_URL'),
         'TIMEOUT': 60 * 5,
         'INDEX_NAME': env('HAYSTACK_INDEX_NAME_AUTOCOMPLETE'),
@@ -342,8 +343,8 @@ HAYSTACK_CONNECTIONS = {
 }
 
 HAYSTACK_ROUTERS = ['telemeta.util.search_router.AutoRouter', 'haystack.routers.DefaultRouter']
-# HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
-HAYSTACK_SIGNAL_PROCESSOR = 'telemeta.util.search_signals.RealTimeCustomSignal'
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+#HAYSTACK_SIGNAL_PROCESSOR = 'telemeta.util.search_signals.RealTimeCustomSignal'
 HAYSTACK_SEARCH_RESULTS_PER_PAGE = 50
 
 BOWER_COMPONENTS_ROOT = '/srv/bower/'
