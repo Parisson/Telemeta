@@ -100,7 +100,10 @@ def serve_media(media_path, content_type="", buffering=True, streaming=False):
         return nginx_media_accel(media_path, content_type=content_type,
                                  buffering=buffering, streaming=streaming)
     else:
-        response = FileResponse(open(media_path, 'rb'))
+        try:
+            response = FileResponse(open(media_path, 'rb'))
+        except:    
+            response = StreamingHttpResponse(stream_from_file(media_path), content_type=content_type)
         filename = os.path.basename(media_path)
         if not streaming:
             response['Content-Disposition'] = 'attachment; ' + 'filename=' + filename
