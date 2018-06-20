@@ -23,7 +23,7 @@
 
 
 phpmyadmin:
-    image: nazarpc/phpmyadmin
+    image: nazarpc/phpmyadmin:4.7.9_build-1
     ports:
       - "1234:80"
     links:
