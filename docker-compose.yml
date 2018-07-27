@@ -54,7 +54,7 @@ app:
   image: parisson/telemeta:1.6
   volumes:
     - ./app:/srv/app
-    - ./telemeta:/srv/src/telemeta/telemeta
+    - ./telemeta:/srv/lib/telemeta/telemeta
   volumes_from:
     - data
   env_file:

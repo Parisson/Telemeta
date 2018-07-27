@@ -3,6 +3,8 @@
 *.egg-info
 **/build
 **/dist
-data
-tmp
-var
+data/
+env/
+etc/
+tmp/
+var/

@@ -17,9 +17,10 @@ FROM parisson/timeside:latest-dev
 
 MAINTAINER Guillaume Pellerin <yomguy@parisson.com>, Thomas fillon <thomas@parisson.com>
 
-RUN mkdir -p /srv/src/
+RUN mkdir -p /srv/lib/
 RUN mkdir -p /srv/app
-RUN mkdir -p /srv/src/telemeta
+RUN mkdir -p /srv/media
+RUN mkdir -p /srv/lib/telemeta
 
 RUN apt-get update && apt-get install -y apt-transport-https
 RUN apt-get install -y --force-yes mysql-client
@@ -28,22 +29,18 @@ ENV PYTHON_EGG_CACHE=/srv/.python-eggs
 RUN mkdir -p $PYTHON_EGG_CACHE
 RUN chown www-data:www-data $PYTHON_EGG_CACHE
 
-COPY . /srv/src/telemeta
-WORKDIR /srv/src/telemeta
+COPY . /srv/lib/telemeta
+WORKDIR /srv/lib/telemeta
 
 # Install Timeside and plugins from ./lib
 COPY ./app/scripts/setup_plugins.sh /srv/app/scripts/setup_plugins.sh
-COPY ./lib/ /srv/src/plugins/
+COPY ./lib/ /srv/lib/plugins/
 RUN /bin/bash /srv/app/scripts/setup_plugins.sh
 
 # Install Telemeta
 RUN pip install -r requirements.txt
-RUN pip install -r requirements-dev.txt --src /srv/src
+RUN pip install -r requirements-dev.txt --src /srv/lib
 RUN pip uninstall -y South
-
-RUN mkdir -p /srv/media
-
-RUN mkdir -p /srv/media
 
 WORKDIR /srv/app
 EXPOSE 8000

@@ -6,7 +6,7 @@ manage=$app'/manage.py'
 wsgi=$app'/wsgi.py'
 static='/srv/static/'
 media='/srv/media/'
-src='/srv/src/'
+lib='/srv/lib/'
 log='/var/log/uwsgi/app.log'
 
 # uwsgi params
@@ -40,7 +40,7 @@ python $manage telemeta-setup-enumerations
 
 
 # Delete Timeside database if it exists
-cat /srv/src/telemeta/scripts/sql/drop_timeside.sql | python $manage dbshell
+cat /srv/lib/telemeta/scripts/sql/drop_timeside.sql | python $manage dbshell
 
 if [ $REINDEX = "True" ]; then
     python $manage rebuild_index --noinput
@@ -52,7 +52,7 @@ if [ "$1" = "--runserver" ]; then
 else
     # static files auto update
     # watchmedo shell-command --patterns="$patterns" --recursive \
-    #     --command='python '$manage' collectstatic --noinput' $src &
+    #     --command='python '$manage' collectstatic --noinput' $lib &
     python $manage collectstatic --noinput
 
     # fix media access rights
