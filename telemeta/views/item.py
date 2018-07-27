@@ -54,18 +54,15 @@ class ItemBaseMixin(TelemetaBaseMixin):
         user = self.request.user
         graphers_access = (user.is_staff
                            or user.is_superuser
-                           or user.has_perm('can_run_analysis'))
-
+                           or user.has_perm('telemeta.can_run_analysis'))
         for grapher in self.graphers:
-            if (not graphers_access
-                and grapher.id() not in self.public_graphers):
-                continue
-            if grapher.id() == self.default_grapher_id:
-                graphers.insert(0, {'name': grapher.name(), 'id': grapher.id()})
-            elif not hasattr(grapher, '_staging'):
-                graphers.append({'name': grapher.name(), 'id': grapher.id()})
-            elif not grapher._staging:
-                graphers.append({'name': grapher.name(), 'id': grapher.id()})
+            if (graphers_access or grapher.id() in self.public_graphers):
+                if grapher.id() == self.default_grapher_id:
+                    graphers.insert(0, {'name': grapher.name(), 'id': grapher.id()})
+                elif not hasattr(grapher, '_staging'):
+                    graphers.append({'name': grapher.name(), 'id': grapher.id()})
+                elif not grapher._staging:
+                    graphers.append({'name': grapher.name(), 'id': grapher.id()})
         return graphers
 
     def get_grapher(self, id):
@@ -144,6 +141,8 @@ class ItemView(ItemBaseMixin):
     def item_detail(self, request, public_id=None, marker_id=None, width=None, height=None,
                     template='telemeta/mediaitem_detail.html'):
         """Show the details of a given item"""
+
+        self.request = request
 
         # get item with one of its given marker_id
         if not public_id and marker_id:
@@ -290,7 +289,7 @@ class ItemView(ItemBaseMixin):
         if 'waveform_centroid' in grapher_id and self.cache_data.exists(old_image_file):
             image_file = old_image_file
 
-        path = self.cache_data.dir + os.sep + image_file    
+        path = self.cache_data.dir + os.sep + image_file
         if not self.cache_data.exists(image_file):
             source, _ = item.get_source()
             if source:
@@ -389,14 +388,16 @@ class ItemView(ItemBaseMixin):
 
         return (media, mime_type)
 
-    def item_export(self, request, public_id, extension, return_availability=False):
+    def item_export(self, request, public_id, extension=None, mime_type=None, return_availability=False):
         """Export a given media item in the specified format (OGG, FLAC, ...)"""
 
         item = MediaItem.objects.get(public_id=public_id)
         public_access = get_item_access(item, request.user)
+        raw = False
 
         if not extension:
             extension = item.file.path.split('.')[-1]
+            raw = True
 
         if (not public_access == 'full' or not extension in settings.TELEMETA_STREAMING_FORMATS) and \
                 not (request.user.has_perm('telemeta.can_play_all_items') or request.user.is_superuser):
@@ -406,33 +407,17 @@ class ItemView(ItemBaseMixin):
             messages.error(request, title)
             return render(request, 'telemeta/messages.html', {'description': description})
 
-        # FIXME: MP4 handling in TimeSide
-        if 'mp4' in extension:
-            mime_type = 'video/mp4'
-            video = item.file.path
-            response = serve_media(video, content_type=mime_type)
-            # response['Content-Disposition'] = 'attachment'
-            # TF : I don't know why empty attachment was set
-            # TODO: remove if useless
+        if raw:
+            media = item.file.path
+            response = serve_media(media, content_type=item.mimetype)
             if return_availability:
                 data = json.dumps({'available': True})
                 return HttpResponse(data, content_type='application/json')
             return response
 
-        if 'webm' in extension:
-            mime_type = 'video/webm'
-            video = item.file.path
-            response = serve_media(video, content_type=mime_type)
-            # response['Content-Disposition'] = 'attachment'
-            # TF : I don't know why empty attachment was set,
-            # TODO: remove if useless
-            if return_availability:
-                data = json.dumps({'available': True})
-                return HttpResponse(data, content_type='application/json')
-            return response
 
         (media, mime_type) = self.item_transcode(item, extension)
-        #media  = None
+        
         if media:
             if return_availability:
                 data = json.dumps({'available': True})
@@ -454,8 +439,8 @@ class ItemView(ItemBaseMixin):
             #patch_cache_control(response, no_cache=True, no_store=True, must_revalidate=True)
             return response
 
-    def item_export_available(self, request, public_id, extension):
-        return self.item_export(request, public_id, extension, return_availability=True)
+    def item_export_available(self, request, public_id, extension=None, mime_type=None):
+        return self.item_export(request, public_id, extension, mime_type, return_availability=True)
 
     def item_playlist(self, request, public_id, template, mimetype):
         try:
@@ -1072,7 +1057,6 @@ class ItemEnumListView(ItemListView):
     def get_queryset(self):
         enumeration = self.get_enumeration(self.request.path.split('/')[3])
         queryset = self.get_item(enumeration.objects.filter(id=self.request.path.split('/')[4]).get())
-        print type(queryset)
         return queryset
 
     def get_item(self, enum):

@@ -4,10 +4,10 @@
 [submodule "telemeta/locale"]
 	path = telemeta/locale
 	url = https://github.com/Parisson/Telemeta-locales.git
-[submodule "doc/pelican-bootstrap3"]
-	path = doc/themes/pelican-bootstrap3
-	url = https://github.com/DandyDev/pelican-bootstrap3.git
 [submodule "lib/TimeSide"]
 	path = lib/TimeSide
 	url = https://github.com/Parisson/TimeSide.git
-        ignore = dirty
+    ignore = dirty
+[submodule "doc/pelican-themes"]
+	path = doc/pelican-themes
+	url = https://github.com/getpelican/pelican-themes.git

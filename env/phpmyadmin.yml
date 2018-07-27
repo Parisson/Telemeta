@@ -22,19 +22,17 @@
 # Thomas Fillon <thomas@parisson.com>
 
 
-app:
-  image: parisson/telemeta:latest
-  env_file:
-    - env/debug.env
-  command: /bin/bash scripts/app.sh --runserver
-  ports:
-    - 9100:8000
+phpmyadmin:
+    image: nazarpc/phpmyadmin:4.7.9_build-1
+    ports:
+      - "1234:80"
+    links:
+      - db:mysql
+    environment:
+      - ABSOLUTE_URI=http://localhost:8000/
 
-worker:
-  image: parisson/telemeta:latest
-  env_file:
-    - env/debug.env
+nginx:
+  links:
+    - phpmyadmin
 
-db:
-  volumes:
-    - ./scripts/:/srv/scripts
+
