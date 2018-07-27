@@ -25,10 +25,6 @@ RUN mkdir -p /srv/lib/telemeta
 RUN apt-get update && apt-get install -y apt-transport-https
 RUN apt-get install -y --force-yes mysql-client
 
-ENV PYTHON_EGG_CACHE=/srv/.python-eggs
-RUN mkdir -p $PYTHON_EGG_CACHE
-RUN chown www-data:www-data $PYTHON_EGG_CACHE
-
 COPY . /srv/lib/telemeta
 WORKDIR /srv/lib/telemeta
 
