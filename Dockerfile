@@ -29,9 +29,9 @@ COPY . /srv/lib/telemeta
 WORKDIR /srv/lib/telemeta
 
 # Install Timeside and plugins from ./lib
-COPY ./app/scripts/setup_plugins.sh /srv/app/scripts/setup_plugins.sh
+COPY ./app/bin/setup_plugins.sh /srv/app/bin/setup_plugins.sh
 COPY ./lib/ /srv/lib/plugins/
-RUN /bin/bash /srv/app/scripts/setup_plugins.sh
+RUN /bin/bash /srv/app/bin/setup_plugins.sh
 
 # Install Telemeta
 RUN pip install -r requirements.txt
