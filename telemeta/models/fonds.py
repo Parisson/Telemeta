@@ -26,6 +26,7 @@ from django.utils.translation import ugettext_lazy as _
 from telemeta.models.core import *
 from telemeta.models.resource import *
 from telemeta.models.corpus import *
+from django.db import models
 
 
 class MediaFonds(MediaBaseResource):
@@ -35,7 +36,7 @@ class MediaFonds(MediaBaseResource):
     children_type = 'corpus'
 
     children = models.ManyToManyField(MediaCorpus, related_name="fonds",
-                                      verbose_name=_('corpus'), blank=True, null=True)
+                                      verbose_name=_('corpus'), blank=True)
 
     objects = MediaFondsManager()
 
@@ -73,5 +74,3 @@ class MediaFondsRelated(MediaRelated):
         db_table = 'media_fonds_related'
         verbose_name = _('fonds related media')
         verbose_name_plural = _('fonds related media')
-
-

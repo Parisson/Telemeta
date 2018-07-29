@@ -4,9 +4,7 @@
 {% load bootstrap3 %}
 {% settings_value 'INSTALLED_APPS' as INSTALLED_APPS %}
 {% settings_value 'DEBUG' as DEBUG %}
-{% if 'googletools' in INSTALLED_APPS %}
-    {% load googletools %}
-{% endif %}
+
 
 {% get_current_language as LANGUAGE_CODE %}
 {% get_available_languages as LANGUAGES %}
@@ -19,13 +17,6 @@
     <meta http-equiv="Content-type" content="text/html;charset=UTF-8"/>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-    {% block analytics %}
-        {% if 'googletools' in INSTALLED_APPS %}
-            {% site_verification_code %}
-            {% analytics_code %}
-        {% endif %}
-    {% endblock analytics %}
 
     <link rel="alternate" href="/rss" title="RSS 2.0" type="application/rss+xml"/>
     <link rel="icon" href="{{ STATIC_URL }}telemeta/images/favicon.ico"/>

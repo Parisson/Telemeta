@@ -98,7 +98,7 @@ class PlaylistForm(ModelForm):
 
     class Meta:
         model = Playlist
-        fields = ('__all__')
+        fields = '__all__'
 
 
 class FondsRelatedInline(InlineFormSet):
@@ -129,30 +129,36 @@ class CollectionIdentifierInline(InlineFormSet):
 
     model = MediaCollectionIdentifier
     max_num = 1
+    fields = '__all__'
 
 
 class ItemPerformanceInline(InlineFormSet):
 
     model = MediaItemPerformance
+    fields = '__all__'
 
 
 class ItemKeywordInline(InlineFormSet):
 
     model = MediaItemKeyword
+    fields = '__all__'
 
 
 class ItemFormatInline(InlineFormSet):
 
     model = Format
     max_num = 1
+    fields = '__all__'
 
 
 class ItemIdentifierInline(InlineFormSet):
 
     model = MediaItemIdentifier
     max_num = 1
+    fields = '__all__'
 
 
 class EpubPasswordForm(forms.Form):
 
     password = forms.CharField(label=_('password'))
+    fields = '__all__'

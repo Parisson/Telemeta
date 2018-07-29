@@ -25,6 +25,7 @@ from telemeta.views.core import *
 from telemeta.views.core import serve_media
 from telemeta.views.epub import *
 
+
 class CollectionView(object):
     """Provide Collections web UI methods"""
 
@@ -413,10 +414,10 @@ class CollectionEnumListView(CollectionListView):
         from django.db.models import get_models
         models = get_models(telemeta.models)
         for model in models:
-            if model._meta.module_name == id:
+            if model._meta.model_name == id:
                 break
 
-        if model._meta.module_name != id:
+        if model._meta.model_name != id:
             return None
         return model
 
@@ -460,3 +461,4 @@ class CollectionSoundEnumListView(CollectionEnumListView):
 
     def get_coll(self, enum,c):
         return c.get_coll(enum).sound().order_by('code', 'old_code')
+    

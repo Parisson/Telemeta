@@ -60,29 +60,29 @@ class EnumView(object):
                         model.admin = enu["admin"]
 
     def __get_enumerations_list(self):
-        from django.db.models import get_models
-        models = get_models(telemeta.models)
+        from django.apps import apps
+        app = apps.get_app_config('telemeta')
+        models = app.get_models()
         enumerations = []
         for model in models:
             if issubclass(model, Enumeration):
                 enumeration_property = EnumerationProperty.objects.get(enumeration_name=model._meta.model_name)
                 if not enumeration_property.is_hidden and not enumeration_property.is_admin:
                     enumerations.append({"name": model._meta.verbose_name,
-                                         "id": model._meta.model_name
-                                         })
-
+                                         "id": model._meta.model_name})
         cmp = lambda obj1, obj2: unaccent_icmp(obj1['name'], obj2['name'])
         enumerations.sort(cmp)
         return enumerations
 
     def __get_enumeration(self, id):
-        from django.db.models import get_models
-        models = get_models(telemeta.models)
-        for model in models:
-            if model._meta.model_name == id:
+        from django.apps import apps
+        app = apps.get_app_config('telemeta')
+        models = app.get_models()
+        enumerations = []
+        for model_name in models:
+            if model._meta.module_name == id:
                 break
-
-        if model._meta.model_name != id:
+        if model._meta.module_name != id:
             return None
         return model
 

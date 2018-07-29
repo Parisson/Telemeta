@@ -6,7 +6,7 @@ manage=$app'/manage.py'
 wsgi=$app'/wsgi.py'
 static='/srv/static/'
 media='/srv/media/'
-src='/srv/src/'
+lib='/srv/lib/'
 log='/var/log/uwsgi/app.log'
 
 # uwsgi params
@@ -15,20 +15,19 @@ processes=2
 threads=2
 uid='www-data'
 gid='www-data'
-patterns='*.js;*.css;*.jpg;*.jpeg;*.gif;*.png;*.svg;*.ttf;*.eot;*.woff;*.woff2'
 
 # stating apps
-# pip install django-bootstrap3==6.2.1
-pip install south
+# pip uninstall -y south
+# pip install -U django==1.8.18 django-registration-redux djangorestframework==3.6.4
+# pip install django-debug-toolbar==1.6
+# pip install -e git+https://github.com/Parisson/django-jqchat.git@dj1.8#egg=django-jqchat
+# pip install -e git+https://github.com/Parisson/saved_searches.git@dj1.8#egg=saved_searches-2.0.0-beta>>>>>>> dev:app/bin/app.sh
 
 # waiting for other network services
-sh $app/scripts/wait.sh
-
-# django setup
+sh $app/bin/wait.sh
 python $manage wait-for-db
 
 if [ ! -f .init ]; then
-    python $manage syncdb --noinput
     python $manage migrate --noinput
     python $manage bower_install -- --allow-root
     python $manage collectstatic --noinput
@@ -40,8 +39,9 @@ python $manage telemeta-create-admin-user
 python $manage telemeta-create-boilerplate
 python $manage telemeta-setup-enumerations
 
+
 # Delete Timeside database if it exists
-cat /srv/src/telemeta/scripts/sql/drop_timeside.sql | python $manage dbshell
+cat /srv/lib/telemeta/bin/sql/drop_timeside.sql | python $manage dbshell
 
 if [ $REINDEX = "True" ]; then
     python $manage rebuild_index --noinput
@@ -53,7 +53,8 @@ if [ "$1" = "--runserver" ]; then
 else
     # static files auto update
     # watchmedo shell-command --patterns="$patterns" --recursive \
-    #     --command='python '$manage' collectstatic --noinput' $src &
+    #     --command='python '$manage' collectstatic --noinput' $lib &
+    python $manage collectstatic --noinput
 
     # fix media access rights
     find $media -maxdepth 1 -path ${media}import -prune -o -type d -not -user www-data -exec chown www-data:www-data {} \;

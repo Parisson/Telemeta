@@ -56,9 +56,8 @@ class TelemetaCache(object):
         # public_id is the public_id of an item
         for file in self.files:
             path = self.dir + os.sep + file
-            if public_id in file:
-                if os.path.exists(path):
-                    os.remove(path)
+            if public_id in file and os.path.exists(path):
+                os.remove(path)
 
     def write_bin(self, data, file):
         path = self.dir + os.sep + file

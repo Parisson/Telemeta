@@ -41,8 +41,8 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth import authenticate, login
 from django.template import RequestContext, loader
 from django import template
-from django.http import HttpResponse, HttpResponseRedirect, StreamingHttpResponse
-# from django.http import FileResponse -> introduced in Django 1.7.4
+from django.http import HttpResponse, HttpResponseRedirect
+from django.http import FileResponse
 from django.http import Http404
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.views.generic import *
@@ -50,7 +50,7 @@ from django.conf import settings
 from django.contrib import auth
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
-from django.core.context_processors import csrf
+from django.template.context_processors import csrf
 from django.forms.models import modelformset_factory, inlineformset_factory
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext
@@ -128,27 +128,16 @@ def nginx_media_accel(media_path, content_type="", buffering=True, streaming=Fal
     return response
 
 
-def render(request, template, data=None, mimetype=None):
+def render(request, template, data=None, content_type=None):
     return render_to_response(template, data, context_instance=RequestContext(request),
-                              mimetype=mimetype)
+                              content_type=content_type)
+
 
 
 def stream_from_processor(decoder, encoder):
     pipe = decoder | encoder
     for chunk in pipe.stream():
         yield chunk
-
-        
-def stream_from_file(file):
-    chunk_size = 0x100000
-    f = open(file, 'r')
-    while True:
-        chunk = f.read(chunk_size)
-        if not len(chunk):
-            f.close()
-            break
-        yield chunk
-
 
 def get_item_access(item, user):
     # Item access rules according to this workflow:

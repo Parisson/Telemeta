@@ -20,10 +20,12 @@
 # Authors: Olivier Guilyardi <olivier@samalyse.com>
 #          Guillaume Pellerin <yomguy@parisson.com>
 
-from django.conf.urls import patterns, url, include
+from django.conf.urls import url, include
 from django.conf import settings
+from django.contrib.auth import views as auth_views
 from django.views.generic.base import RedirectView, TemplateView
 from django.views.generic.list import ListView
+from django.views.static import serve
 from telemeta.models import MediaItem, MediaCollection, MediaItemMarker, MediaCorpus, MediaFonds
 from telemeta.views import *
 from haystack.forms import *
@@ -53,9 +55,9 @@ enumeration_view = EnumView()
 export_extensions = "|".join(item_view.list_export_extensions())
 
 
-urlpatterns = patterns('',
+urlpatterns = [
     url(r'^$', home_view.home, name="telemeta-home"),
-    url(r'^test', TemplateView.as_view(template_name = "telemeta/hello_world.html")),
+    url(r'^test', TemplateView.as_view(template_name="telemeta/hello_world.html")),
 
     # items
     url(r'^archives/items/$', ItemListView.as_view(), name="telemeta-items"),
@@ -88,10 +90,10 @@ urlpatterns = patterns('',
     url(r'^archives/markers/(?P<marker_id>[A-Za-z0-9]+)/$', item_view.item_detail, name="telemeta-item-detail-marker"),
 
     # Redirections to old URLs
-    url(r'^items/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(url='/archives/items/%(path)s/', permanent= True), name="telemeta-item-redir"),
-    url(r'^collections/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(url='/archives/collections/%(path)s/', permanent= True), name="telemeta-collection-redir"),
-    url(r'^corpus/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(url='/archives/corpus/%(path)s/', permanent= True), name="telemeta-corpus-redir"),
-    url(r'^fonds/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(url='/archives/fonds/%(path)s/', permanent= True), name="telemeta-fonds-redir"),
+    url(r'^items/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(url='/archives/items/%(path)s/', permanent=True), name="telemeta-item-redir"),
+    url(r'^collections/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(url='/archives/collections/%(path)s/', permanent=True), name="telemeta-collection-redir"),
+    url(r'^corpus/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(url='/archives/corpus/%(path)s/', permanent=True), name="telemeta-corpus-redir"),
+    url(r'^fonds/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(url='/archives/fonds/%(path)s/', permanent=True), name="telemeta-fonds-redir"),
 
     # collections
     url(r'^archives/collections/$', CollectionListView.as_view(), name="telemeta-collections"),
@@ -111,7 +113,7 @@ urlpatterns = patterns('',
     url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)/download/$', collection_view.related_media_collection_download, name="telemeta-collection-related-download"),
 
     # FIXME: need all paths
-    url(r'^collections/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(), {'url': '/archives/collections/%(path)s/', 'permanent': False}, name="telemeta-collection-redir"),
+    url(r'^collections/(?P<path>[A-Za-z0-9._-s/]+)/$', RedirectView.as_view(url='/archives/collections/%(path)s/', permanent=False), name="telemeta-collection-redir"),
     url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/zip/$', CollectionZipView.as_view(), name="telemeta-collection-zip"),
     url(r'^archives/collections/(?P<public_id>[A-Za-z0-9._-]+)/epub/$', CollectionEpubView.as_view(), name="telemeta-collection-epub"),
 
@@ -139,7 +141,7 @@ urlpatterns = patterns('',
     #url(r'^search/booleaninstru/$', boolean_view.get_boolean_query),
 
     url(r'^search/playlist_add/(?P<type>[A-Za-z0-9._-]+)/$', NewPlaylistView().display, name='haystack_playlist'),
-    url(r'^search/playlist_confirmation/(?P<type>[A-Za-z0-9._-]+)/$',NewPlaylistView().addToPlaylist, name='add_confirmation'),
+    url(r'^search/playlist_confirmation/(?P<type>[A-Za-z0-9._-]+)/$', NewPlaylistView().addToPlaylist, name='add_confirmation'),
 
     url(r'^complete_location/$', home_view.complete_location, name="telemeta-complete-location"),
 
@@ -155,14 +157,14 @@ urlpatterns = patterns('',
 
 
     # instruments administration
-    url(r'^admin/instruments/$', instrument_view.edit_instrument , name="telemeta-instrument-edit"),
+    url(r'^admin/instruments/$', instrument_view.edit_instrument, name="telemeta-instrument-edit"),
     url(r'^admin/instruments/add/$', instrument_view.add_to_instrument, name="telemeta-instrument-add"),
     url(r'^admin/instruments/update/$', instrument_view.update_instrument, name="telemeta-instrument-update"),
     url(r'^admin/instruments/' + r'(?P<value_id>[0-9]+)/$', instrument_view.edit_instrument_value, name="telemeta-instrument-record-edit"),
-    url(r'^admin/instruments/' + r'(?P<value_id>[0-9]+)/'+'list-items-published/$', ItemInstrumentPublishedListView.as_view(),name="telemeta-items-instrument-published"),
-    url(r'^admin/instruments/' + r'(?P<value_id>[0-9]+)/'+'list-items-unpublished/$', ItemInstrumentUnpublishedListView.as_view(),name="telemeta-items-instrument-unpublished"),
-    url(r'^admin/instruments/' + r'(?P<value_id>[0-9]+)/'+'list-items-sound/$', ItemInstrumentSoundListView.as_view(),name="telemeta-items-instrument-sound"),
-    url(r'^admin/instruments/' + r'(?P<value_id>[0-9]+)/'+'list-items/$', ItemInstrumentListView.as_view(), name="telemeta-instrument-item-list"),
+    url(r'^admin/instruments/' + r'(?P<value_id>[0-9]+)/' + 'list-items-published/$', ItemInstrumentPublishedListView.as_view(), name="telemeta-items-instrument-published"),
+    url(r'^admin/instruments/' + r'(?P<value_id>[0-9]+)/' + 'list-items-unpublished/$', ItemInstrumentUnpublishedListView.as_view(), name="telemeta-items-instrument-unpublished"),
+    url(r'^admin/instruments/' + r'(?P<value_id>[0-9]+)/' + 'list-items-sound/$', ItemInstrumentSoundListView.as_view(), name="telemeta-items-instrument-sound"),
+    url(r'^admin/instruments/' + r'(?P<value_id>[0-9]+)/' + 'list-items/$', ItemInstrumentListView.as_view(), name="telemeta-instrument-item-list"),
     url(r'^admin/instruments/' + r'(?P<value_id>[0-9]+)/update/$', instrument_view.update_instrument_value, name="telemeta-instrument-record-update"),
     url(r'^admin/instruments/' + r'(?P<value_id>[0-9]+)/replace/$', instrument_view.replace_instrument_value, name="telemeta-instrument-record-replace"),
 
@@ -176,20 +178,22 @@ urlpatterns = patterns('',
     url(r'^admin/instrument_aliases/' + r'(?P<value_id>[0-9]+)/$', instrument_alias_view.edit_instrument_value, name="telemeta-instrument-alias-record-edit"),
     url(r'^admin/instrument_aliases/' + r'(?P<value_id>[0-9]+)/update/$', instrument_alias_view.update_instrument_value, name="telemeta-instrument-alias-record-update"),
     url(r'^admin/instrument_aliases/' + r'(?P<value_id>[0-9]+)/replace/$', instrument_alias_view.replace_instrument_value, name="telemeta-instrument-alias-record-replace"),
-    url(r'^admin/instrument_aliases/' + r'(?P<value_id>[0-9]+)/'+'list-item-published/$', ItemAliasPublishedListView.as_view(),name="telemeta-items-alias-published"),
-    url(r'^admin/instrument_aliases/' + r'(?P<value_id>[0-9]+)/'+'list-item-unpublished/$', ItemAliasUnpublishedListView.as_view(),name="telemeta-items-alias-unpublished"),
-    url(r'^admin/instrument_aliases/' + r'(?P<value_id>[0-9]+)/'+'list-item-sound/$', ItemAliasSoundListView.as_view(),name="telemeta-items-alias-sound"),
-    url(r'^admin/instrument_aliases/' + r'(?P<value_id>[0-9]+)/'+'list-items/$', ItemAliasListView.as_view(), name="telemeta-alias-item-list"),
+    url(r'^admin/instrument_aliases/' + r'(?P<value_id>[0-9]+)/' + 'list-item-published/$', ItemAliasPublishedListView.as_view(), name="telemeta-items-alias-published"),
+    url(r'^admin/instrument_aliases/' + r'(?P<value_id>[0-9]+)/' + 'list-item-unpublished/$', ItemAliasUnpublishedListView.as_view(), name="telemeta-items-alias-unpublished"),
+    url(r'^admin/instrument_aliases/' + r'(?P<value_id>[0-9]+)/' + 'list-item-sound/$', ItemAliasSoundListView.as_view(), name="telemeta-items-alias-sound"),
+    url(r'^admin/instrument_aliases/' + r'(?P<value_id>[0-9]+)/' + 'list-items/$', ItemAliasListView.as_view(), name="telemeta-alias-item-list"),
+
     # enumeration
     url(r'^enumerations/$',enumeration_view.enumerations,name="telemeta-enumerations"),
     url(r'^enumerations/(?P<enumeration_id>[0-9a-z]+)/$', enumeration_view.enumeration, name="telemeta-enumeration"),
+
     # enumerations administration
-    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/$',admin_view.edit_enumeration,name="telemeta-enumeration-edit"),
-    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/add/$',admin_view.add_to_enumeration,name="telemeta-enumeration-add"),
-    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/update/$', admin_view.update_enumeration,name="telemeta-enumeration-update"),
-    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/' + r'(?P<value_id>[0-9]+)/$',admin_view.edit_enumeration_value, name="telemeta-enumeration-record-edit"),
-    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/' + r'(?P<value_id>[0-9]+)/update/$',admin_view.update_enumeration_value, name="telemeta-enumeration-record-update"),
-    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/' + r'(?P<value_id>[0-9]+)/replace/$',admin_view.replace_enumeration_value, name="telemeta-enumeration-replace"),
+    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/$', admin_view.edit_enumeration, name="telemeta-enumeration-edit"),
+    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/add/$', admin_view.add_to_enumeration, name="telemeta-enumeration-add"),
+    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/update/$', admin_view.update_enumeration, name="telemeta-enumeration-update"),
+    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/' + r'(?P<value_id>[0-9]+)/$', admin_view.edit_enumeration_value, name="telemeta-enumeration-record-edit"),
+    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/' + r'(?P<value_id>[0-9]+)/update/$', admin_view.update_enumeration_value, name="telemeta-enumeration-record-update"),
+    url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/' + r'(?P<value_id>[0-9]+)/replace/$', admin_view.replace_enumeration_value, name="telemeta-enumeration-replace"),
 
     # Enumeration list collection
     url( r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/' + r'(?P<value_id>[0-9]+)/collection/list/$',CollectionEnumListView.as_view(), name="telemeta-enumeration-list-collection"),
@@ -209,11 +213,12 @@ urlpatterns = patterns('',
     url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/' + r'(?P<value_id>[0-9]+)/keyword_item_published/list/$',ItemKeywordUnpublishedListView.as_view(), name="telemeta-keyword-list-item-published"),
     url(r'^admin/enumerations/(?P<enumeration_id>[0-9a-z]+)/' + r'(?P<value_id>[0-9]+)/keyword_item_sound/list/$',ItemKeywordSoundListView.as_view(), name="telemeta-keyword-list-item-sound"),
 
+
     # Geographic browsing
     url(r'^geo/$', geo_view.list_continents, name="telemeta-geo-continents"),
     url(r'^geo/(?P<continent>[a-z_]+)/$', geo_view.list_countries, name="telemeta-geo-countries"),
     url(r'^geo/collections/(?P<continent>[a-z_]+)/(?P<country>[a-z_]+)/$', GeoCountryCollectionView.as_view(), name="telemeta-geo-country-collections"),
-    url(r'^geo/items/(?P<continent>[a-z_]+)/(?P<country>[a-z_]+)/$', GeoCountryItemView.as_view() , name="telemeta-geo-country-items"),
+    url(r'^geo/items/(?P<continent>[a-z_]+)/(?P<country>[a-z_]+)/$', GeoCountryItemView.as_view(), name="telemeta-geo-country-items"),
     url(r'^geo/country_info/(?P<id>[0-9a-z]+)/$', geo_view.country_info, name="telemeta-country-info"),
 
     # Flat pages
@@ -223,9 +228,9 @@ urlpatterns = patterns('',
     url(r'^oai/.*$', home_view.handle_oai_request, name="telemeta-oai"),
 
     # Authentication
-    url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'telemeta/login.html'}, name="telemeta-login"),
-    url(r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name': 'telemeta/login.html'}, name="telemeta-login"),
-    #url(r'^login/$', 'ipauth.views.login', {'template_name': 'telemeta/login.html'},
+    url(r'^login/$', auth_views.login, {'template_name': 'telemeta/login.html'}, name="telemeta-login"),
+    url(r'^accounts/login/$', auth_views.login, {'template_name': 'telemeta/login.html'}, name="telemeta-login"),
+    # url(r'^login/$', 'ipauth.views.login', {'template_name': 'telemeta/login.html'},
     #    name="telemeta-login"),
     url(r'^logout/$', home_view.logout, name="telemeta-logout"),
 
@@ -241,15 +246,15 @@ urlpatterns = patterns('',
     url(r'^accounts/(?P<username>[A-Za-z0-9._-]+)/profile/$', profile_view.profile_detail, name="telemeta-profile-detail"),
     url(r'^users/(?P<username>[A-Za-z0-9._-]+)/$', profile_view.profile_detail, name="telemeta-profile-detail-2"),
     url(r'^accounts/(?P<username>[A-Za-z0-9._-]+)/profile/edit/$', profile_view.profile_edit, name="telemeta-profile-edit"),
-    url(r'^accounts/(?P<username>[A-Za-z0-9._-]+)/rss/$', UserRevisionsFeed(),  name="telemeta-user-rss"),
+    url(r'^accounts/(?P<username>[A-Za-z0-9._-]+)/rss/$', UserRevisionsFeed(), name="telemeta-user-rss"),
 
     # Registration
-    url(r'^accounts/password_change/$', 'django.contrib.auth.views.password_change', {'template_name': 'telemeta/registration/password_change_form.html'}, name="password_change"),
-    url(r'^accounts/password_change_done/$', 'django.contrib.auth.views.password_change_done', {'template_name': 'telemeta/registration/password_change_done.html'}, name="password_change_done"),
-    url(r'^accounts/password_reset/$', 'django.contrib.auth.views.password_reset', {'template_name': 'telemeta/registration/password_reset_form.html', 'email_template_name': 'registration/password_reset_email.html'}, name="password_reset"),
-    url(r'^accounts/password_reset_done/$', 'django.contrib.auth.views.password_reset_done', {'template_name': 'telemeta/registration/password_reset_done.html'}, name="password_reset_done"),
-    url(r'^accounts/password_reset_confirm/(?P<uidb64>[A-Za-z0-9._-]+)/(?P<token>[A-Za-z0-9._-]+)/$', 'django.contrib.auth.views.password_reset_confirm', {'template_name': 'telemeta/registration/password_reset_confirm.html'}, name="password_reset_confirm"),
-    url(r'^accounts/password_reset_complete/$', 'django.contrib.auth.views.password_reset_complete', {'template_name': 'telemeta/registration/password_reset_complete.html'}, name="password_reset_complete"),
+    url(r'^accounts/password_change/$', auth_views.password_change, {'template_name': 'telemeta/registration/password_change_form.html'}, name="password_change"),
+    url(r'^accounts/password_change_done/$', auth_views.password_change_done, {'template_name': 'telemeta/registration/password_change_done.html'}, name="password_change_done"),
+    url(r'^accounts/password_reset/$', auth_views.password_reset, {'template_name': 'telemeta/registration/password_reset_form.html', 'email_template_name': 'registration/password_reset_email.html'}, name="password_reset"),
+    url(r'^accounts/password_reset_done/$', auth_views.password_reset_done, {'template_name': 'telemeta/registration/password_reset_done.html'}, name="password_reset_done"),
+    url(r'^accounts/password_reset_confirm/(?P<uidb64>[A-Za-z0-9._-]+)/(?P<token>[A-Za-z0-9._-]+)/$', auth_views.password_reset_confirm, {'template_name': 'telemeta/registration/password_reset_confirm.html'}, name="password_reset_confirm"),
+    url(r'^accounts/password_reset_complete/$', auth_views.password_reset_complete, {'template_name': 'telemeta/registration/password_reset_complete.html'}, name="password_reset_complete"),
 
     # JSON RPC
     url(r'jsonrpc/$', jsonrpc_site.dispatch, name='jsonrpc_mountpoint'),
@@ -263,20 +268,22 @@ urlpatterns = patterns('',
 
     # Static media
     # FIXME:need to move export dir from the cache
-    url(r'^media/cache/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.TELEMETA_CACHE_DIR,}),
+    url(r'^media/cache/(?P<path>.*)$', serve, {'document_root': settings.TELEMETA_CACHE_DIR, }),
 
     url(r'^', include('jqchat.urls')),
 
     # Timeside
-    #url(r'^timeside/', include('timeside.server.urls')),
+    # url(r'^timeside/', include('timeside.server.urls')),
 
-    )
+
+]
 
 
 if settings.DEBUG and 'debug_toolbar' in settings.INSTALLED_APPS:
     import debug_toolbar
-    urlpatterns += patterns('',
-                            url(r'^__debug__/', include(debug_toolbar.urls)),
-                            # for the graphical browser/web console only, omissible
-                            url(r'json/browse/', 'jsonrpc.views.browse', name="jsonrpc_browser"),
-                            )
+    import jsonrpc.views
+    urlpatterns += [
+        url(r'^__debug__/', include(debug_toolbar.urls)),
+        # for the graphical browser/web console only, omissible
+        url(r'json/browse/', jsonrpc.views.browse, name="jsonrpc_browser"),
+    ]

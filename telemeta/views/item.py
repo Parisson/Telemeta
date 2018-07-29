@@ -289,10 +289,10 @@ class ItemView(ItemBaseMixin):
         if 'waveform_centroid' in grapher_id and self.cache_data.exists(old_image_file):
             image_file = old_image_file
 
+        path = self.cache_data.dir + os.sep + image_file
         if not self.cache_data.exists(image_file):
             source, _ = item.get_source()
             if source:
-                path = self.cache_data.dir + os.sep + image_file
                 decoder = timeside.core.get_processor('file_decoder')(source)
                 graph = grapher(width=width, height=height)
                 (decoder | graph).run()
@@ -302,7 +302,7 @@ class ItemView(ItemBaseMixin):
                 # f.close()
                 self.cache_data.add_file(image_file)
 
-        response = StreamingHttpResponse(self.cache_data.read_stream_bin(image_file), content_type=mime_type)
+        response = serve_media(path, content_type=mime_type)
         return response
 
     def list_export_extensions(self):
@@ -1072,9 +1072,9 @@ class ItemEnumListView(ItemListView):
         from django.db.models import get_models
         models = get_models(telemeta.models)
         for model in models:
-            if model._meta.module_name == id:
+            if model._meta.model_name == id:
                 break
-        if model._meta.module_name != id:
+        if model._meta.model_name != id:
             return None
         return model
 
@@ -1153,9 +1153,9 @@ class ItemKeywordListView(ItemListView):
         from django.db.models import get_models
         models = get_models(telemeta.models)
         for model in models:
-            if model._meta.module_name == id:
+            if model._meta.model_name == id:
                 break
-        if model._meta.module_name != id:
+        if model._meta.model_name != id:
             return None
         return model
 

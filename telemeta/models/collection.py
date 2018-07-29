@@ -40,23 +40,25 @@ collection_unpublished_code_regex = getattr(settings, 'COLLECTION_UNPUBLISHED_CO
 collection_code_regex = '(?:%s|%s)' % (collection_published_code_regex,
                                        collection_unpublished_code_regex)
 
+
+def is_valid_collection_code(value):
+    "Check if the collection code is well formed"
+    regex = '^' + collection_code_regex + '$'
+    if not re.match(regex, value):
+        raise ValidationError(u'%s is not a valid collection code' % value)
+
+
 class MediaCollection(MediaResource):
     "Describe a collection of items"
 
     element_type = 'collection'
-
-    def is_valid_collection_code(value):
-        "Check if the collection code is well formed"
-        regex = '^' + collection_code_regex + '$'
-        if not re.match(regex, value):
-            raise ValidationError(u'%s is not a valid collection code' % value)
 
     # General informations
     title                 = CharField(_('title'), required=True)
     alt_title             = CharField(_('original title / translation'))
     creator               = CharField(_('depositor / contributor'), help_text=_('First name, Last name ; First name, Last name'))
     description           = TextField(_('description'))
-    recording_context     = WeakForeignKey('RecordingContext', related_name="collections", verbose_name=_('recording context'))
+    recording_context     = ForeignKey('RecordingContext', related_name="collections", verbose_name=_('recording context'), blank=True, null=True, on_delete=models.SET_NULL)
     recorded_from_year    = IntegerField(_('recording year (from)'), help_text=_('YYYY'))
     recorded_to_year      = IntegerField(_('recording year (until)'), help_text=_('YYYY'))
     year_published        = IntegerField(_('year published'), help_text=_('YYYY'))
@@ -67,29 +69,29 @@ class MediaCollection(MediaResource):
 
     # Legal notices
     collector             = CharField(_('recordist'), help_text=_('First name, Last name ; First name, Last name'))
-    publisher             = WeakForeignKey('Publisher', related_name="collections", verbose_name=_('publisher'))
-    publisher_collection  = WeakForeignKey('PublisherCollection', related_name="collections", verbose_name=_('publisher collection'))
+    publisher             = ForeignKey('Publisher', related_name="collections", verbose_name=_('publisher'), blank=True, null=True, on_delete=models.SET_NULL)
+    publisher_collection  = ForeignKey('PublisherCollection', related_name="collections", verbose_name=_('publisher collection'), blank=True, null=True, on_delete=models.SET_NULL)
     publisher_serial      = CharField(_('publisher serial number'))
     booklet_author        = CharField(_('booklet author'), blank=True)
     reference             = CharField(_('publisher reference'))
     external_references   = TextField(_('bibliographic references'))
 
     auto_period_access    = BooleanField(_('automatic access after a rolling period'), default=True)
-    legal_rights          = WeakForeignKey('LegalRight', related_name="collections", verbose_name=_('legal rights'))
+    legal_rights          = ForeignKey('LegalRight', related_name="collections", verbose_name=_('legal rights'), blank=True, null=True, on_delete=models.SET_NULL)
 
     # Archiving data
     code                  = CharField(_('code'), unique=True, required=True, validators=[is_valid_collection_code])
     old_code              = CharField(_('old code'), unique=False, null=True, blank=True)
-    acquisition_mode      = WeakForeignKey('AcquisitionMode', related_name="collections", verbose_name=_('mode of acquisition'))
+    acquisition_mode      = ForeignKey('AcquisitionMode', related_name="collections", verbose_name=_('mode of acquisition'), blank=True, null=True, on_delete=models.SET_NULL)
     cnrs_contributor      = CharField(_('CNRS depositor'))
-    copy_type             = WeakForeignKey('CopyType', related_name="collections", verbose_name=_('copy type'))
-    metadata_author       = WeakForeignKey('MetadataAuthor', related_name="collections", verbose_name=_('record author'))
+    copy_type             = ForeignKey('CopyType', related_name="collections", verbose_name=_('copy type'), blank=True, null=True, on_delete=models.SET_NULL)
+    metadata_author       = ForeignKey('MetadataAuthor', related_name="collections", verbose_name=_('record author'), blank=True, null=True, on_delete=models.SET_NULL)
     booklet_description   = TextField(_('related documentation'))
-    publishing_status     = WeakForeignKey('PublishingStatus', related_name="collections", verbose_name=_('secondary edition'))
-    status                = WeakForeignKey('Status', related_name="collections", verbose_name=_('collection status'))
+    publishing_status     = ForeignKey('PublishingStatus', related_name="collections", verbose_name=_('secondary edition'), blank=True, null=True, on_delete=models.SET_NULL)
+    status                = ForeignKey('Status', related_name="collections", verbose_name=_('collection status'), blank=True, null=True, on_delete=models.SET_NULL)
     alt_copies            = TextField(_('copies'))
     comment               = TextField(_('comment'))
-    metadata_writer       = WeakForeignKey('MetadataWriter', related_name="collections", verbose_name=_('record writer'))
+    metadata_writer       = ForeignKey('MetadataWriter', related_name="collections", verbose_name=_('record writer'), blank=True, null=True, on_delete=models.SET_NULL)
     archiver_notes        = TextField(_('archiver notes'))
     items_done            = CharField(_('items finished'))
     collector_is_creator  = BooleanField(_('recordist identical to depositor'))
@@ -97,12 +99,12 @@ class MediaCollection(MediaResource):
     conservation_site     = CharField(_('conservation site'))
 
     # Technical data
-    media_type            = WeakForeignKey('MediaType', related_name="collections", verbose_name=_('media type'))
+    media_type            = ForeignKey('MediaType', related_name="collections", verbose_name=_('media type'), blank=True, null=True, on_delete=models.SET_NULL)
     approx_duration       = DurationField(_('estimated duration'), help_text='hh:mm:ss')
     physical_items_num    = IntegerField(_('number of components (medium / piece)'))
-    original_format       = WeakForeignKey('OriginalFormat', related_name="collections", verbose_name=_('original format'))
-    physical_format       = WeakForeignKey('PhysicalFormat', related_name="collections", verbose_name=_('archive format'))
-    ad_conversion         = WeakForeignKey('AdConversion', related_name='collections', verbose_name=_('digitization'))
+    original_format       = ForeignKey('OriginalFormat', related_name="collections", verbose_name=_('original format'), blank=True, null=True, on_delete=models.SET_NULL)
+    physical_format       = ForeignKey('PhysicalFormat', related_name="collections", verbose_name=_('archive format'), blank=True, null=True, on_delete=models.SET_NULL)
+    ad_conversion         = ForeignKey('AdConversion', related_name='collections', verbose_name=_('digitization'), blank=True, null=True, on_delete=models.SET_NULL)
 
     # No more used old fields
     alt_ids               = CharField(_('copies (obsolete field)'))

@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 # Django settings for sandbox project.
 
-import os, sys
+import os
+import sys
 from django.core.urlresolvers import reverse_lazy, reverse
 
 import environ
@@ -11,9 +12,7 @@ env = environ.Env(DEBUG=(bool, False),
                   )
 
 # Django settings for server project.
-DEBUG = env('DEBUG') # False if not in os.environ
-DEBUG=True
-TEMPLATE_DEBUG = DEBUG
+DEBUG = env('DEBUG')  # False if not in os.environ
 
 sys.dont_write_bytecode = True
 
@@ -53,14 +52,14 @@ TIME_ZONE = 'Europe/Paris'
 # http://www.i18nguy.com/unicode/language-identifiers.html
 #LANGUAGE_CODE = 'fr_FR'
 
-LANGUAGES = [ ('fr', 'French'),
-              ('en', 'English'),
-              ('de', 'German'),
-              ('zh_CN', 'Simplified Chinese'),
-              ('ar_TN', 'Arabic'),
-              ('pt_BR', 'Portuguese'),
-              ('es', 'Spanish'),
-]
+LANGUAGES = [('fr', 'French'),
+             ('en', 'English'),
+             ('de', 'German'),
+             ('zh_CN', 'Simplified Chinese'),
+             ('ar_TN', 'Arabic'),
+             ('pt_BR', 'Portuguese'),
+             ('es', 'Spanish'),
+             ]
 
 SITE_ID = 1
 
@@ -98,33 +97,51 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-# Put strings here, like "/home/html/static" or "C:/www/django/static".
-# Always use forward slashes, even on Windows.
-# Don't forget to use absolute paths, not relative paths.
+    # Put strings here, like "/home/html/static" or "C:/www/django/static".
+    # Always use forward slashes, even on Windows.
+    # Don't forget to use absolute paths, not relative paths.
 )
 
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (
-'django.contrib.staticfiles.finders.FileSystemFinder',
-'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-'djangobower.finders.BowerFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'djangobower.finders.BowerFinder',
+    #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'a8l7%06wr2k+3=%#*#@#rvop2mmzko)44%7k(zx%lls^ihm9^5'
 
-# List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
-)
-
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            # insert your TEMPLATE_DIRS here
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            #'debug': DEBUG,
+            'context_processors': [
+                # Insert your TEMPLATE_CONTEXT_PROCESSORS here or use this
+                # list if you haven't customized them:
+                'django.core.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'telemeta.context_processors.menu',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
 
 MIDDLEWARE_CLASSES = (
     # Manage Django URLs for AngularJS with django-angular
-    'djng.middleware.AngularUrlMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -135,12 +152,6 @@ MIDDLEWARE_CLASSES = (
 )
 
 ROOT_URLCONF = 'urls'
-
-TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-)
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -154,17 +165,15 @@ INSTALLED_APPS = (
     'django_extensions',
     'telemeta',
     'timeside.player',
-    #'timeside.server',
+    # 'timeside.server',
     'jsonrpc',
-    # 'south',
     'sorl.thumbnail',
     'timezones',
     'jqchat',
-    'ipauth',
+    # 'ipauth',
     'extra_views',
     'bootstrap3',
     'bootstrap_pagination',
-    'googletools',
     'registration',
     'rest_framework',
     'djcelery',
@@ -174,22 +183,14 @@ INSTALLED_APPS = (
     'saved_searches',
 )
 
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.core.context_processors.request',
-    'django.contrib.auth.context_processors.auth',
-    "django.core.context_processors.i18n",
-    "django.core.context_processors.media",
-    'django.core.context_processors.static',
-    'telemeta.context_processors.menu',
-    'django.contrib.messages.context_processors.messages',
-)
-
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'ipauth.backend.RangeBackend',
 )
 
 SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
+
+AUTH_USER_MODEL = 'auth.User'
 
 TELEMETA_ORGANIZATION = 'Telemeta'
 TELEMETA_SUBJECTS = ('Telemeta', 'web', 'platform', 'audio', 'semantics')
@@ -247,7 +248,7 @@ if DEBUG:
     INSTALLED_APPS += ('debug_toolbar',)
     MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
     DEBUG_TOOLBAR_CONFIG = {
-        'SHOW_TOOLBAR_CALLBACK': lambda x : True
+        'SHOW_TOOLBAR_CALLBACK': lambda x: True
     }
     DEBUG_TOOLBAR_PATCH_SETTINGS = False
     DEBUG_TOOLBAR_PANELS = [
@@ -364,3 +365,15 @@ BOWER_INSTALLED_APPS = (
     # 'https://github.com/Parisson/loaders.git',
     # 'https://github.com/Parisson/ui.git',
 )
+
+NOTEBOOK_DIR = MEDIA_ROOT + 'notebooks'
+if not os.path.exists(NOTEBOOK_DIR):
+    os.makedirs(NOTEBOOK_DIR)
+
+NOTEBOOK_ARGUMENTS = [
+    '--ip=0.0.0.0', # reach notebooks from outside
+    '--port=8888',  # std port
+    '--no-browser', # don't start browser on start
+    '--allow-root',
+    '--notebook-dir', NOTEBOOK_DIR
+]

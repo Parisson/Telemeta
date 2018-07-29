@@ -22,6 +22,7 @@
 #          Guillaume Pellerin <yomguy@parisson.com>
 
 
+from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from telemeta.models.core import *
 from telemeta.models.system import *
@@ -66,11 +67,11 @@ def is_valid_resource_code(value):
 class MediaBaseResource(MediaResource):
     "Describe a media base resource"
 
-    title                 = CharField(_('title'), required=True)
-    description           = CharField(_('description_old'))
-    descriptions          = TextField(_('description'))
-    code                  = CharField(_('code'), unique=True, required=True, validators=[is_valid_resource_code])
-    public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES, max_length=16, default="metadata")
+    title                 = models.CharField(_('title'), max_length=250)
+    description           = models.CharField(_('description_old'), max_length=250, blank=True, null=True)
+    descriptions          = models.TextField(_('description'), blank=True)
+    code                  = models.CharField(_('code'), unique=True, max_length=250, validators=[is_valid_resource_code])
+    public_access         = models.CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES, max_length=16, default="metadata")
 
     def __unicode__(self):
         return self.code
@@ -95,7 +96,7 @@ class MediaRelated(MediaResource):
     element_type = 'media'
 
     title           = CharField(_('title'))
-    date            = DateTimeField(_('date'), auto_now=True)
+    date            = models.DateTimeField(_('date'), auto_now=True)
     description     = TextField(_('description'))
     mime_type       = CharField(_('mime_type'))
     url             = CharField(_('url'), max_length=500)

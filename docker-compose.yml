@@ -36,13 +36,14 @@ data:
 db:
   image: mysql:5
   volumes:
-    - ./scripts/:/srv/scripts
+    - ./bin/:/srv/bin
     - ./data/mysql/:/var/lib/mysql
   volumes_from:
     - data
   env_file:
     - env/prod.env
-
+  command: mysqld  --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+  
 broker:
   image: redis
 
@@ -50,28 +51,28 @@ search:
   image: elasticsearch:1
 
 app:
-  image: parisson/telemeta:1.6
+  image: parisson/telemeta:1.7
   volumes:
     - ./app:/srv/app
-    - ./telemeta:/srv/src/telemeta/telemeta
+    - ./telemeta:/srv/lib/telemeta/telemeta
   volumes_from:
     - data
   env_file:
     - env/prod.env
-  command: /bin/bash scripts/app.sh
+  command: /bin/bash bin/app.sh
   links:
     - broker
     - db
     - search
 
 worker:
-  image: parisson/telemeta:1.6
+  image: parisson/telemeta:1.7
   volumes_from:
     - app
     - data
   env_file:
     - env/prod.env
-  command: /bin/bash scripts/worker.sh
+  command: /bin/bash bin/worker.sh
   links:
     - broker
     - db
