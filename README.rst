@@ -68,7 +68,9 @@ UPGRADING::
   git submodule update --init --remote
   docker-compose run app /srv/app/bin/upgrade_from_1.6_to_1.7.sh
 
-**BE CAREFUL**: `scripts/` and `app/scripts/` directories has been renamed `bin/` and `app/bin/` respectively. So please adapt your management and maintenance personal script.
+WARNING:
+
+`scripts/` and `app/scripts/` directories has been renamed `bin/` and `app/bin/` respectively. So please adapt your management and maintenance personal script.
 
 1.6.5 > 1.6.7
 +++++++++++++
