@@ -51,9 +51,9 @@ setup(
   install_requires = [
         'django==1.8.*',
         'django-registration-redux',
+        'djangorestframework==3.6.4',
         'django-extensions',
         'django-timezones',
-        #'django-jqchat',
         'django-debug-toolbar==1.6',
         'django-extra-views',
         'django-breadcrumbs',
