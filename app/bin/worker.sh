@@ -14,7 +14,7 @@ concurrency=12
 # pip install -e git+https://github.com/Parisson/saved_searches.git@dj1.8#egg=saved_searches-2.0.0-beta
 
 # waiting for other services
-bash $app/scripts/wait.sh
+bash $app/bin/wait.sh
 
 # Starting celery worker with the --autoreload option will enable the worker to watch for file system changes
 # This is an experimental feature intended for use in development only

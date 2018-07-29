@@ -24,4 +24,4 @@
 app:
   ports:
     - "8888:8888"
-  command: "/srv/app/scripts/notebook.sh"
+  command: "/srv/app/bin/notebook.sh"

@@ -24,7 +24,7 @@ gid='www-data'
 # pip install -e git+https://github.com/Parisson/saved_searches.git@dj1.8#egg=saved_searches-2.0.0-beta
 
 # waiting for other network services
-sh $app/scripts/wait.sh
+sh $app/bin/wait.sh
 python $manage wait-for-db
 
 if [ ! -f .init ]; then
@@ -40,7 +40,7 @@ python $manage telemeta-setup-enumerations
 
 
 # Delete Timeside database if it exists
-cat /srv/lib/telemeta/scripts/sql/drop_timeside.sql | python $manage dbshell
+cat /srv/lib/telemeta/bin/sql/drop_timeside.sql | python $manage dbshell
 
 if [ $REINDEX = "True" ]; then
     python $manage rebuild_index --noinput

@@ -36,7 +36,7 @@ RUN /bin/bash /srv/app/scripts/setup_plugins.sh
 # Install Telemeta
 RUN pip install -r requirements.txt
 RUN pip install -r requirements-dev.txt --src /srv/lib
-RUN pip uninstall -y South
+RUN pip uninstall -y south
 
 WORKDIR /srv/app
 EXPOSE 8000

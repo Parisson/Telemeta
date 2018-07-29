@@ -26,7 +26,7 @@ app:
   image: parisson/telemeta:latest
   env_file:
     - env/debug.env
-  command: /bin/bash scripts/app.sh --runserver
+  command: /bin/bash bin/app.sh --runserver
   ports:
     - 9100:8000
 
@@ -37,4 +37,4 @@ worker:
 
 db:
   volumes:
-    - ./scripts/:/srv/scripts
+    - ./bin/:/srv/bin
