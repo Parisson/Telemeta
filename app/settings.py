@@ -180,7 +180,7 @@ INSTALLED_APPS = (
     'djcelery',
     'haystack',
     'djangobower',
-    'djng',
+    # 'djng',
     'saved_searches',
 )
 
