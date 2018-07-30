@@ -23,15 +23,15 @@
 
 
 app:
-  image: parisson/telemeta:latest
+  image: parisson/telemeta:latest-dev
   env_file:
     - env/debug.env
   command: /bin/bash bin/app.sh --runserver
   ports:
-    - 9100:8000
+    - 8000:8000
 
 worker:
-  image: parisson/telemeta:latest
+  image: parisson/telemeta:latest-dev
   env_file:
     - env/debug.env
 
