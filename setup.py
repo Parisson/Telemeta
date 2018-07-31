@@ -47,7 +47,7 @@ setup(
   long_description = open('README.rst').read(),
   author = "Guillaume Pellerin",
   author_email = "yomguy@parisson.com",
-  version = '1.7.0',
+  version = '1.7.1',
   install_requires = [
         'django==1.8.*',
         'django-registration-redux',
