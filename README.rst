@@ -213,7 +213,7 @@ To start the application in a development environment setup, first read / edit `
     git checkout dev
     docker-compose -f docker-compose.yml -f env/dev.yml up
 
-Then browse the app at http://localhost:8000/ (replacing 'localhost' by the IP given by the docker terminal on OSX or Windows). Note that the service will automatically be reloaded when any code of the app is modified.
+Then browse the app at http://localhost:9100/ (replacing 'localhost' by the IP given by the docker terminal on OSX or Windows). Note that the service will automatically be reloaded when any code of the app is modified.
 
 You are welcome to participate to the development by forking the Telemeta project on GitHub_, using it as if it were the original and submitting your changes through a Pull Request on the **dev branch ONLY**.
 
