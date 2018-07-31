@@ -30,7 +30,7 @@ WORKDIR /srv/lib/telemeta
 
 # Install Timeside and plugins from ./lib
 COPY ./app/bin/setup_plugins.sh /srv/app/bin/setup_plugins.sh
-COPY ./lib/ /srv/lib/plugins/
+COPY ./lib/plugins/ /srv/lib/plugins/
 RUN /bin/bash /srv/app/bin/setup_plugins.sh
 
 # Install Telemeta

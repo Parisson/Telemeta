@@ -23,17 +23,21 @@
 
 
 app:
-  image: parisson/telemeta:latest
+  image: parisson/telemeta:latest-dev
   env_file:
     - env/debug.env
   command: /bin/bash bin/app.sh --runserver
   ports:
     - 9100:8000
+  volumes:
+    - ./lib/TimeSide:/srv/lib/timeside
 
 worker:
-  image: parisson/telemeta:latest
+  image: parisson/telemeta:latest-dev
   env_file:
     - env/debug.env
+  volumes:
+    - ./lib/TimeSide:/srv/lib/timeside
 
 db:
   volumes:

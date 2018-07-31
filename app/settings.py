@@ -165,7 +165,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'telemeta',
     'timeside.player',
-    # 'timeside.server',
+    'timeside.server',
     'jsonrpc',
     'sorl.thumbnail',
     'timezones',
@@ -179,7 +179,6 @@ INSTALLED_APPS = (
     'djcelery',
     'haystack',
     'djangobower',
-    'djng',
     'saved_searches',
 )
 
