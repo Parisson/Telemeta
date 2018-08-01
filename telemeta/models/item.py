@@ -68,7 +68,7 @@ class MediaItem(MediaResource):
     context_comment       = TextField(_('Ethnographic context'))
 
     # Musical informations
-    moda_execut           = CharField(_('implementing rules'))
+    moda_execut           = CharField(_('perfomance modality'))
     vernacular_style      = ForeignKey('VernacularStyle', related_name="items", verbose_name=_('vernacular style'), blank=True, null=True, on_delete=models.SET_NULL)
     generic_style         = ForeignKey('GenericStyle', related_name="items", verbose_name=_('generic style'), blank=True, null=True, on_delete=models.SET_NULL)
     author                = CharField(_('author / compositor'), help_text=_('First name, Last name ; First name, Last name'))
