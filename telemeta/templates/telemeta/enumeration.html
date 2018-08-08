@@ -1,0 +1,49 @@
+{% extends "telemeta/admin.html" %}
+{% load i18n %}
+
+{% block head_title %}{% trans "Enumeration" %} : {{ enumeration_name|capfirst }} - {{ block.super }}{% endblock %}
+
+{% block title %}
+    <h1><img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" />{{ enumeration_name|capfirst }}</h1>
+{% endblock %}
+
+{% block tabcontents %}
+
+    {% if enumeration_values %}
+        <table class="listing">
+            <thead>
+            <tr><th class="sel">&nbsp;</th><th>{% trans "Value"%}</th>
+                <th>nb{{ enumeration_support }}</th>
+            </tr>
+            </thead><tbody>
+        {% for record in enumeration_values %}
+            <tr>
+
+                <td></td>
+
+                <td>
+                    {{record.value}}</td>
+                {% if enumeration_id == "contextkeyword" %}
+                    <td><a href="{% url "telemeta-keyword-list-item" enumeration_id record.id %}"> {{ enumeration_count.pop }}</a></td>
+                {% else %}
+
+                    {% if enumeration_support == "Collection" %}
+                        <td><a href="{% url "telemeta-enumeration-list-collection" enumeration_id record.id %}"> {{ enumeration_count.pop }}</a></td>
+                    {% else %}
+                        <td><a href="{% url "telemeta-enumeration-list-item" enumeration_id record.id %}"> {{ enumeration_count.pop }}</a></td>
+                    {% endif %}
+
+                {% endif %}
+
+            </tr>
+
+        {% endfor %}
+        </tbody>
+        </table>
+        </form>
+    {% else %}
+        <p class="help">{% trans "This enumeration is empty" %}</p>
+    {% endif %}
+
+    <br style="clear: right"/>
+{% endblock %}

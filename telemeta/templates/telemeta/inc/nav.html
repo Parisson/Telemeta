@@ -1,0 +1,54 @@
+{% load i18n %}
+{% load telemeta_tags %}
+{% load bootstrap3 %}
+
+                        {# spaces between li and a elements breaks layout #}
+
+                        <ul id="nav">
+                            {% if user.is_authenticated %}
+                                <li><a href="{% url "telemeta-desk-lists" %}" class="blue">{% trans "Desk" %}</a></li>
+                            {% else %}
+                                <li><a href="{% url "telemeta-home" %}" class="blue">{% trans "Home" %}</a></li>
+                            {% endif %}
+
+                            <li><a href="#archives#" class="green">{% trans "Archives" %}</a>
+                                <ul>
+                                    <li><a href="{% url "telemeta-resource-list" "fonds" %}">{% trans "Fonds" %}</a></li>
+                                    <li><a href="{% url "telemeta-resource-list" "corpus" %}">{% trans "Corpus" %}</a></li>
+                                    <li><a href="{% url "telemeta-collections" %}">{% trans "Collections" %}</a></li>
+                                    <li><a href="{% url "telemeta-items" %}">{% trans "Items" %}</a></li>
+                                </ul>
+                            </li>
+
+                            <li><a href="{% url "telemeta-geo-continents" %}"
+                                   class="yellow">{% trans "Geo Navigator" %}</a></li>
+
+                            <li><a href="{% url "haystack_advance_search" %}"
+                                   class="orange">{% trans "Advanced search" %}</a></li>
+
+                            <li><a href="#vocabulary#" class="red">{% trans "Terminology" %}</a>
+                                {% if user.is_authenticated and user.is_staff %}
+                                    <ul>
+                                        <li><a href="{% url "telemeta-admin-enumerations" %}">{% trans "Enumerations" %}</a></li>
+                                        <li><a href="{% url "telemeta-instrument-edit" %}">{% trans "Instruments" %}</a></li>
+                                        <li><a href="{% url "telemeta-instrument-alias-edit" %}">{% trans "Instrument (vernaculare)" %}</a></li>
+                                    </ul>
+                                {% else %}
+                                    <ul>
+                                        <li><a href="{% url "telemeta-instruments" %}">{% trans "Instruments" %}</a>
+                                        <li><a href="{% url "telemeta-instrument-alias" %}">{% trans "Instruments (vernaculare)" %}</a></li>
+                                        {% for enu in menu %}
+                                            <li>
+                                                <a href="{% url "telemeta-enumeration" enu.id %}">{{ enu.name |capfirst }}</a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </li>
+
+                            {% if user.is_authenticated and user.is_staff %}
+                                <li><a href="{% url "telemeta-home" %}admin/django/" class="violet">{% trans "Admin" %}</a>
+                                </li>
+                            {% endif %}
+
+                        </ul>

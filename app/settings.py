@@ -14,7 +14,6 @@ env = environ.Env(DEBUG=(bool, False),
 # Django settings for server project.
 DEBUG = env('DEBUG')  # False if not in os.environ
 
-
 sys.dont_write_bytecode = True
 
 ALLOWED_HOSTS = ['*']
@@ -36,7 +35,7 @@ DATABASES = {
         'PASSWORD': env('MYSQL_PASSWORD'),  # Not used with sqlite3.
         'NAME': env('MYSQL_DATABASE'),
         'HOST': 'db',      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '3306',      # Set to empty string for default. Not used with sqlite3.
+        'PORT': '3306',   # Set to empty string for default. Not used with sqlite3.
     }
 }
 
@@ -133,6 +132,7 @@ TEMPLATES = [
                 'django.template.context_processors.media',
                 'django.template.context_processors.static',
                 'django.template.context_processors.tz',
+                'telemeta.context_processors.menu',
                 'django.contrib.messages.context_processors.messages',
             ],
         },
@@ -165,14 +165,13 @@ INSTALLED_APPS = (
     'django_extensions',
     'telemeta',
     'timeside.player',
-    #'timeside.server',
+    'timeside.server',
     'jsonrpc',
     'sorl.thumbnail',
     'timezones',
     'jqchat',
     # 'ipauth',
     'extra_views',
-    'debug_toolbar',
     'bootstrap3',
     'bootstrap_pagination',
     'registration',
@@ -180,10 +179,8 @@ INSTALLED_APPS = (
     'djcelery',
     'haystack',
     'djangobower',
-    'djng',
     'saved_searches',
 )
-
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
@@ -191,6 +188,8 @@ AUTHENTICATION_BACKENDS = (
 )
 
 SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
+
+AUTH_USER_MODEL = 'auth.User'
 
 TELEMETA_ORGANIZATION = 'Telemeta'
 TELEMETA_SUBJECTS = ('Telemeta', 'web', 'platform', 'audio', 'semantics')
@@ -215,6 +214,7 @@ COLLECTION_PUBLISHED_CODE_REGEX = '[A-Za-z0-9._-]*'
 COLLECTION_UNPUBLISHED_CODE_REGEX = '[A-Za-z0-9._-]*'
 ITEM_PUBLISHED_CODE_REGEX = COLLECTION_PUBLISHED_CODE_REGEX + ''
 ITEM_UNPUBLISHED_CODE_REGEX = COLLECTION_UNPUBLISHED_CODE_REGEX + ''
+RESOURCE_CODE_REGEX = '[A-Za-z0-9._-]*'
 
 AUTH_PROFILE_MODULE = 'telemeta.userprofile'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
@@ -242,28 +242,35 @@ PAGINATION_SETTINGS = {
     'PAGE_RANGE_DISPLAYED': 10,
     'MARGIN_PAGES_DISPLAYED': 2,
 }
+
 if DEBUG:
+    INSTALLED_APPS += ('debug_toolbar',)
+    MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
     DEBUG_TOOLBAR_CONFIG = {
         'SHOW_TOOLBAR_CALLBACK': lambda x: True
     }
-DEBUG_TOOLBAR_PATCH_SETTINGS = False
-DEBUG_TOOLBAR_PANELS = [
-    'debug_toolbar.panels.versions.VersionsPanel',
-    'debug_toolbar.panels.timer.TimerPanel',
-    'debug_toolbar.panels.settings.SettingsPanel',
-    'debug_toolbar.panels.headers.HeadersPanel',
-    'debug_toolbar.panels.request.RequestPanel',
-    'debug_toolbar.panels.sql.SQLPanel',
-    'debug_toolbar.panels.staticfiles.StaticFilesPanel',
-    'debug_toolbar.panels.templates.TemplatesPanel',
-    'debug_toolbar.panels.cache.CachePanel',
-    'debug_toolbar.panels.signals.SignalsPanel',
-    'debug_toolbar.panels.logging.LoggingPanel',
-    'debug_toolbar.panels.redirects.RedirectsPanel',
-]
+    DEBUG_TOOLBAR_PATCH_SETTINGS = False
+    DEBUG_TOOLBAR_PANELS = [
+        'debug_toolbar.panels.versions.VersionsPanel',
+        'debug_toolbar.panels.timer.TimerPanel',
+        'debug_toolbar.panels.settings.SettingsPanel',
+        'debug_toolbar.panels.headers.HeadersPanel',
+        'debug_toolbar.panels.request.RequestPanel',
+        'debug_toolbar.panels.sql.SQLPanel',
+        'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+        'debug_toolbar.panels.templates.TemplatesPanel',
+        'debug_toolbar.panels.cache.CachePanel',
+        'debug_toolbar.panels.signals.SignalsPanel',
+        'debug_toolbar.panels.logging.LoggingPanel',
+        'debug_toolbar.panels.redirects.RedirectsPanel',
+    ]
+    DEBUG_TOOLBAR_CONFIG = {
+        'JQUERY_URL': '/static/jquery/dist/jquery.min.js',
+    }
+    INTERNAL_IPS = ['127.0.0.1', '0.0.0.0', '172.17.0.1']
 
 SUIT_CONFIG = {
-    'ADMIN_NAME': 'Telemeta Admin'
+        'ADMIN_NAME': 'Telemeta Admin'
 }
 
 # A sample logging configuration. The only tangible logging
@@ -342,18 +349,30 @@ BOWER_INSTALLED_APPS = (
     'jquery#2.2.4',
     'jquery-migrate#~1.2.1',
     'underscore#1.8.3',
-    'bootstrap#3.3.6',
+    'bootstrap#3.3.7',
     'bootstrap-select#1.5.4',
     'font-awesome#4.4.0',
     'angular#1.2.26',
     'angular-bootstrap-select#0.0.5',
     'angular-resource#1.2.26',
-    'raphael#2.2.0',
+    'raphael#2.2.7',
     'soundmanager#V2.97a.20150601',
-    'https://github.com/Parisson/loaders.git',
-    'https://github.com/Parisson/ui.git',
     'jquery-ui#1.11.4',
     'tablesorter',
     'video.js',
     'sass-bootstrap-glyphicons',
+    # 'https://github.com/Parisson/loaders.git',
+    # 'https://github.com/Parisson/ui.git',
 )
+
+NOTEBOOK_DIR = MEDIA_ROOT + 'notebooks'
+if not os.path.exists(NOTEBOOK_DIR):
+    os.makedirs(NOTEBOOK_DIR)
+
+NOTEBOOK_ARGUMENTS = [
+    '--ip=0.0.0.0', # reach notebooks from outside
+    '--port=8888',  # std port
+    '--no-browser', # don't start browser on start
+    '--allow-root',
+    '--notebook-dir', NOTEBOOK_DIR
+]

@@ -37,24 +37,6 @@ It is mostly written in Python, HTML5 and JavaScript.
 
 The *Telemeta* name stands for *Tele* as "remote access" and *meta* for "metadata".
 
-|version| |downloads| |travis_master| |coverage_master|
-
-.. |version| image:: https://img.shields.io/pypi/v/telemeta.svg
-   :target: https://pypi.python.org/pypi/Telemeta/
-   :alt: Version
-
-.. |downloads| image:: https://img.shields.io/pypi/dm/telemeta.svg
-   :target: https://pypi.python.org/pypi/Telemeta/
-   :alt: Downloads
-
-.. |travis_master| image:: https://secure.travis-ci.org/Parisson/Telemeta.png?branch=master
-   :target: https://travis-ci.org/Parisson/Telemeta/
-   :alt: Travis
-
-.. |coverage_master| image:: https://coveralls.io/repos/Parisson/Telemeta/badge.png?branch=master
-   :target: https://coveralls.io/r/Parisson/Telemeta?branch=master
-   :alt: Coverage
-
 
 Funding and support
 ===================
@@ -70,6 +52,46 @@ Thank you so much for your help!
 
 News
 =====
+
+1.7.0
++++++
+
+* Based on TimeSide 0.9
+* Use Django 1.8
+* Rename some directories
+* Better video streaming
+* Better logging
+
+UPGRADING::
+
+  git pull origin master
+  git submodule update --init --remote
+  docker-compose run app /srv/app/bin/upgrade_from_1.6_to_1.7.sh
+
+WARNING:
+
+`scripts/` and `app/scripts/` directories has been renamed `bin/` and `app/bin/` respectively. So please adapt your management and maintenance personal script.
+
+1.6.5 > 1.6.7
++++++++++++++
+
+ * Setting utf8 database by default
+ * Deactivate video.js for now
+ * Use mysql:5
+ * Fix phpmyadmin config
+ * Various bugfixes
+
+1.6.4
++++++
+
+   * Minor bug fixes and improvments
+   * Fix HTML5 audio compatibility (#173) for the web audio player. The SoundManager Flash player fallback should not be used in most modern web browser. Media files are now serves through Nginx (#155) which enables to stream music with byte range requests.
+   * Add a User permission "can_run_analysis" to specify that a user or a group of users has the right to list and select advanced Timeside analysis to be displayed in the Timeside web audio player.
+   * Add enumeration management and statitics
+   * Improved media security allowing streaming through Nginx only from the application
+   * Add TimeSide as a submodule
+   * Add a validator for Corpus and Fonds
+   * Upgrade various dependencies
 
 1.6
 ++++
@@ -126,13 +148,13 @@ Install
 
 Thanks to Docker, Telemeta is now fully available as a docker composition ready to work. The docker based composition bundles some powerfull applications and modern frameworks out-of-the-box like: Python, Conda, Numpy, Jupyter, Gstreamer, Django, Celery, Haystack, ElasticSearch, MySQL, Redis, uWSGI, Nginx and many more.
 
-* on **Linux**, first install `Git <http://git-scm.com/downloads>`_, `Docker engine <https://docs.docker.com/installation/>`_ (>=1.9) and `docker-compose <https://docs.docker.com/compose/install/>`_ (>=1.8) and open a terminal.
-* on **MacOSX** or **Windows** install the `Docker Toolbox <https://www.docker.com/products/docker-toolbox>`_ and open a **Docker Quickstart Terminal**.
+First, install `Docker <https://store.docker.com/search?offering=community&q=&type=edition>`_ and `docker-compose <https://docs.docker.com/compose/>`_
 
 Then clone Telemeta::
 
     git clone --recursive https://github.com/Parisson/Telemeta.git
     cd Telemeta
+    docker-compose build
 
 
 Start it up
@@ -184,17 +206,6 @@ API / Documentation
 Development
 ===========
 
-|travis_dev| |coverage_dev|
-
-.. |travis_dev| image:: https://secure.travis-ci.org/Parisson/Telemeta.png?branch=dev
-   :target: https://travis-ci.org/Parisson/Telemeta/
-   :alt: Travis
-
-.. |coverage_dev| image:: https://coveralls.io/repos/Parisson/Telemeta/badge.png?branch=dev
-   :target: https://coveralls.io/r/Parisson/Telemeta?branch=dev
-   :alt: Coverage
-
-
 To start the application in a development environment setup, first read / edit `env/debug.env`, then::
 
     cd Telemeta
@@ -202,7 +213,7 @@ To start the application in a development environment setup, first read / edit `
     git checkout dev
     docker-compose -f docker-compose.yml -f env/dev.yml up
 
-Then browse the app at http://localhost:9000/ (replacing 'localhost' by the IP given by the docker terminal on OSX or Windows). Note that the service will automatically be reloaded when any code of the app is modified.
+Then browse the app at http://localhost:9100/ (replacing 'localhost' by the IP given by the docker terminal on OSX or Windows). Note that the service will automatically be reloaded when any code of the app is modified.
 
 You are welcome to participate to the development by forking the Telemeta project on GitHub_, using it as if it were the original and submitting your changes through a Pull Request on the **dev branch ONLY**.
 

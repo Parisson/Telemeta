@@ -1,0 +1,27 @@
+{% extends "telemeta/admin.html" %}
+{% load telemeta_tags %}
+{% load i18n %}
+
+{% block title %}
+<h1><img src="{{ STATIC_URL }}telemeta/images/collections_red.png" style="vertical-align:middle" /> {% trans "Enumerations" %}</h1>
+{% endblock %}
+
+{% block tabcontents %}
+{% if enumerations %}
+  <table class="listing">
+   <thead>
+    <tr><th>{% trans "Title"%}</th></tr>
+   </thead><tbody>
+    {% for enum in enumerations %}
+    <tr><td>
+      <a href="{% url "telemeta-enumeration" enum.id %}">{% trans enum.name|capfirst %}</a>
+    </td></tr>
+    {% endfor %}
+   </tbody>
+  </table>
+  {% else %}
+    <p class="help">{% trans "No enumerations" %}</p>
+ {% endif %}
+{% endblock %}
+
+

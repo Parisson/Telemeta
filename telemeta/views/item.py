@@ -20,6 +20,7 @@
 
 # Authors: Olivier Guilyardi <olivier@samalyse.com>
 #          Guillaume Pellerin <yomguy@parisson.com>
+import telemeta
 
 from telemeta.views.core import *
 from telemeta.views.core import serve_media
@@ -28,6 +29,7 @@ from telemeta.views.marker import *
 import timeside.core
 import timeside.server as ts
 import sys
+import time
 
 
 class ItemBaseMixin(TelemetaBaseMixin):
@@ -46,22 +48,21 @@ class ItemBaseMixin(TelemetaBaseMixin):
 
     public_graphers  = ['waveform_centroid' ,'waveform_simple',
                         'spectrogram', 'spectrogram_log']
-    
+
     def get_graphers(self):
         graphers = []
         user = self.request.user
-        graphers_access = False
-        if user.is_staff or user.is_superuser:
-            graphers_access = True
+        graphers_access = (user.is_staff
+                           or user.is_superuser
+                           or user.has_perm('telemeta.can_run_analysis'))
         for grapher in self.graphers:
-            if not graphers_access and grapher.id() not in self.public_graphers:
-                continue
-            if grapher.id() == self.default_grapher_id:
-                graphers.insert(0, {'name': grapher.name(), 'id': grapher.id()})
-            elif not hasattr(grapher, '_staging'):
-                graphers.append({'name': grapher.name(), 'id': grapher.id()})
-            elif not grapher._staging:
-                graphers.append({'name': grapher.name(), 'id': grapher.id()})
+            if (graphers_access or grapher.id() in self.public_graphers):
+                if grapher.id() == self.default_grapher_id:
+                    graphers.insert(0, {'name': grapher.name(), 'id': grapher.id()})
+                elif not hasattr(grapher, '_staging'):
+                    graphers.append({'name': grapher.name(), 'id': grapher.id()})
+                elif not grapher._staging:
+                    graphers.append({'name': grapher.name(), 'id': grapher.id()})
         return graphers
 
     def get_grapher(self, id):
@@ -77,6 +78,24 @@ class ItemBaseMixin(TelemetaBaseMixin):
                 formats.append({'name': encoder.format(),
                                 'extension': encoder.file_extension()})
         return formats
+
+    def get_is_transcoded_flag(self, item, mime_type):
+        try:
+            is_transcoded_flag, c = MediaItemTranscodingFlag.objects.get_or_create(
+                item=item,
+                mime_type=mime_type,
+                defaults={'value': False})
+        except MediaItemTranscodingFlag.MultipleObjectsReturned:
+            flags = MediaItemTranscodingFlag.objects.filter(
+                item=item,
+                mime_type=mime_type)
+            value = all([f.value for f in flags])
+            is_transcoded_flag = flags[0]
+            is_transcoded_flag.value = value
+            is_transcoded_flag.save()
+            for f in flags[1:]:
+                f.delete()
+        return is_transcoded_flag
 
     def item_previous_next(self, item):
         """Get previous and next items inside the collection of the item"""
@@ -122,6 +141,8 @@ class ItemView(ItemBaseMixin):
     def item_detail(self, request, public_id=None, marker_id=None, width=None, height=None,
                     template='telemeta/mediaitem_detail.html'):
         """Show the details of a given item"""
+
+        self.request = request
 
         # get item with one of its given marker_id
         if not public_id and marker_id:
@@ -268,7 +289,7 @@ class ItemView(ItemBaseMixin):
         if 'waveform_centroid' in grapher_id and self.cache_data.exists(old_image_file):
             image_file = old_image_file
 
-        path = self.cache_data.dir + os.sep + image_file    
+        path = self.cache_data.dir + os.sep + image_file
         if not self.cache_data.exists(image_file):
             source, _ = item.get_source()
             if source:
@@ -278,7 +299,7 @@ class ItemView(ItemBaseMixin):
                 graph.watermark('timeside', opacity=.6, margin=(5, 5))
                 #f = open(path, 'w')
                 graph.render(output=path)
-                #f.close()
+                # f.close()
                 self.cache_data.add_file(image_file)
 
         response = serve_media(path, content_type=mime_type)
@@ -293,11 +314,90 @@ class ItemView(ItemBaseMixin):
         list.append('mp4')
         return list
 
-    def item_export(self, request, public_id, extension):
+    def item_transcode(self, item, extension):
+        for encoder in self.encoders:
+            if encoder.file_extension() == extension:
+                break
+
+        if encoder.file_extension() != extension:
+            raise Http404('Unknown export file extension: %s' % extension)
+
+        mime_type = encoder.mime_type()
+        file = item.public_id + '.' + encoder.file_extension()
+        source, source_type = item.get_source()
+
+        is_transcoded_flag = self.get_is_transcoded_flag(item=item, mime_type=mime_type)
+
+        format = item.mime_type
+        dc_metadata = dublincore.express_item(item).to_list()
+        mapping = DublinCoreToFormatMetadata(extension)
+        if not extension in mapping.unavailable_extensions:
+            metadata = mapping.get_metadata(dc_metadata)
+        else:
+            metadata = None
+
+        if mime_type in format and source_type == 'file':
+            # source > stream
+            if metadata:
+                proc = encoder(source, overwrite=True)
+                proc.set_metadata(metadata)
+                try:
+                    # FIXME: should test if metadata writer is available
+                    proc.write_metadata()
+                except:
+                    pass
+            return (source, mime_type)
+        else:
+            media = self.cache_export.dir + os.sep + file
+            if not is_transcoded_flag.value:
+                try:
+                    progress_flag = MediaItemTranscodingFlag.objects.get(
+                        item=item,
+                        mime_type=mime_type + '/transcoding')
+                    if progress_flag.value:
+                        # The media is being transcoded
+                        # return None
+                        return (None, None)
+
+                    else:
+                        # wait for the transcode to begin
+                        time.sleep(1)
+                        return (None, None)  # self.item_transcode(item, extension)
+
+                except MediaItemTranscodingFlag.DoesNotExist:
+                    pass
+                # source > encoder > stream
+                from telemeta.tasks import task_transcode
+                # Sent the transcoding task synchronously to the worker
+                task_transcode.apply_async(kwargs={'source': source,
+                                                   'media': media,
+                                                   'encoder_id': encoder.id(),
+                                                   'item_public_id': item.public_id,
+                                                   'mime_type': mime_type,
+                                                   'metadata': metadata})
+
+                self.cache_export.add_file(file)
+                if not os.path.exists(media):
+                    return (None, None)
+            else:
+                # cache > stream
+                if not os.path.exists(media):
+                    is_transcoded_flag.value = False
+                    is_transcoded_flag.save()
+                    return self.item_transcode(item, extension)
+
+        return (media, mime_type)
+
+    def item_export(self, request, public_id, extension=None, mime_type=None, return_availability=False):
         """Export a given media item in the specified format (OGG, FLAC, ...)"""
 
         item = MediaItem.objects.get(public_id=public_id)
         public_access = get_item_access(item, request.user)
+        raw = False
+
+        if not extension:
+            extension = item.file.path.split('.')[-1]
+            raw = True
 
         if (not public_access == 'full' or not extension in settings.TELEMETA_STREAMING_FORMATS) and \
                 not (request.user.has_perm('telemeta.can_play_all_items') or request.user.is_superuser):
@@ -307,86 +407,40 @@ class ItemView(ItemBaseMixin):
             messages.error(request, title)
             return render(request, 'telemeta/messages.html', {'description': description})
 
-        # FIXME: MP4 handling in TimeSide
-        if 'mp4' in extension:
-            mime_type = 'video/mp4'
-            video = item.file.path
-            response = serve_media(video, content_type=mime_type)
-            # response['Content-Disposition'] = 'attachment'
-            # TF : I don't know why empty attachment was set
-            # TODO: remove if useless
+        if raw:
+            media = item.file.path
+            response = serve_media(media, content_type=item.mimetype)
+            if return_availability:
+                data = json.dumps({'available': True})
+                return HttpResponse(data, content_type='application/json')
             return response
 
-        if 'webm' in extension:
-            mime_type = 'video/webm'
-            video = item.file.path
-            response = serve_media(video, content_type=mime_type)
-            # response['Content-Disposition'] = 'attachment'
-            # TF : I don't know why empty attachment was set,
-            # TODO: remove if useless
+
+        (media, mime_type) = self.item_transcode(item, extension)
+        
+        if media:
+            if return_availability:
+                data = json.dumps({'available': True})
+                return HttpResponse(data, content_type='application/json')
+            response = serve_media(media, content_type=mime_type)
+            return response
+        else:
+            if return_availability:
+                data = json.dumps({'available': False})
+                return HttpResponse(data, content_type='application/json')
+
+            mess = ugettext('Transcoding in progress')
+            title = ugettext('Item') + ' : ' + public_id + ' : ' + mess
+            description = ugettext('The media transcoding is in progress. '
+                                   'Please wait for the trancoding process to complete.')
+            messages.info(request, title)
+            response = render(request, 'telemeta/messages.html', {'description': description})
+            from django.utils.cache import patch_cache_control
+            #patch_cache_control(response, no_cache=True, no_store=True, must_revalidate=True)
             return response
 
-        for encoder in self.encoders:
-            if encoder.file_extension() == extension:
-                break
-
-        if encoder.file_extension() != extension:
-            raise Http404('Unknown export file extension: %s' % extension)
-
-        mime_type = encoder.mime_type()
-        file = public_id + '.' + encoder.file_extension()
-        source, source_type = item.get_source()
-
-        flag = MediaItemTranscodingFlag.objects.filter(item=item, mime_type=mime_type)
-        if not flag:
-            flag = MediaItemTranscodingFlag(item=item, mime_type=mime_type)
-            flag.value = False
-            flag.save()
-        else:
-            flag = flag[0]
-
-        format = item.mime_type
-        dc_metadata = dublincore.express_item(item).to_list()
-        mapping = DublinCoreToFormatMetadata(extension)
-        metadata = mapping.get_metadata(dc_metadata)
-
-        if mime_type in format and source_type == 'file':
-            # source > stream
-            if not extension in mapping.unavailable_extensions:
-                proc = encoder(source, overwrite=True)
-                proc.set_metadata(metadata)
-                try:
-                    # FIXME: should test if metadata writer is available
-                    proc.write_metadata()
-                except:
-                    pass
-            response = serve_media(source, content_type=mime_type)
-        else:
-            media = self.cache_export.dir + os.sep + file
-            if not os.path.exists(media) or not flag.value:
-                # source > encoder > stream
-                if extension in mapping.unavailable_extensions:
-                    metadata = None
-
-                decoder = timeside.core.get_processor('file_decoder')(source)
-                processor = encoder(media, streaming=False,
-                                    overwrite=True)
-                if metadata:
-                    processor.set_metadata(metadata)
-                pipe = decoder | processor
-                pipe.run()
-
-                self.cache_export.add_file(file)
-                flag.value = True
-                flag.save()
-
-                response = serve_media(media, content_type=mime_type)  # , buffering=False)
-
-            else:
-                # cache > stream
-                response = serve_media(media, content_type=mime_type)
-
-        return response
+    def item_export_available(self, request, public_id, extension=None, mime_type=None):
+        return self.item_export(request, public_id, extension, mime_type, return_availability=True)
 
     def item_playlist(self, request, public_id, template, mimetype):
         try:
@@ -696,6 +750,7 @@ class ItemDetailView(ItemViewMixin, DetailView):
 
     def item_analyze(self, item):
         analyses = item.analysis.all()
+        encoders_id = ['mp3_encoder']  # , 'vorbis_encoder']
         mime_type = ''
 
         if analyses:
@@ -713,8 +768,9 @@ class ItemDetailView(ItemViewMixin, DetailView):
             analyzers = []
             analyzers_sub = []
             graphers_sub = []
+            encoders_sub = []
 
-            source, _ = item.get_source()
+            source = item.get_source()[0]
 
             if source:
 
@@ -734,7 +790,16 @@ class ItemDetailView(ItemViewMixin, DetailView):
                     path = self.cache_data.dir + os.sep + image_file
                     graph = default_grapher(width=int(width), height=int(height))
                     graphers_sub.append({'graph': graph, 'path': path})
-                    pipe = pipe | graph
+                    pipe |= graph
+
+                for proc_id in encoders_id:
+                    encoder_cls = timeside.core.get_processor(proc_id)
+                    mime_type = encoder_cls.mime_type()
+                    cache_file = item.public_id + '.' + encoder_cls.file_extension()
+                    media = self.cache_export.dir + os.sep + cache_file
+                    encoder = encoder_cls(output=media, overwrite=True)
+                    encoders_sub.append(encoder)
+                    pipe |= encoder
 
                 pipe.run()
 
@@ -779,6 +844,11 @@ class ItemDetailView(ItemViewMixin, DetailView):
                         analysis = MediaItemAnalysis(item=item, name=result.name,
                                                      analyzer_id=result.id, unit=result.unit, value=unicode(value))
                         analysis.save()
+
+                for encoder in encoders_sub:
+                    is_transcoded_flag = self.get_is_transcoded_flag(item=item, mime_type=mime_type)
+                    is_transcoded_flag.value = True
+                    is_transcoded_flag.save()
 
 #                FIXME: parse tags on first load
 #                tags = decoder.tags
@@ -965,3 +1035,156 @@ class ItemDetailDCView(ItemDetailView):
 class ItemVideoPlayerView(ItemDetailView):
 
     template_name = 'telemeta/mediaitem_video_player.html'
+
+
+class ItemEnumListView(ItemListView):
+    template_name = 'telemeta/media_item_enum_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ItemListView, self).get_context_data(**kwargs)
+        context['enum'] = self.request.path.split('/')[3]
+        context['id'] = self.request.path.split('/')[4]
+        context['count'] = self.object_list.count()
+        context['keyword'] = False
+        context['enum_name'] = ItemEnumListView().get_enumeration(self.request.path.split('/')[3])._meta.verbose_name
+        context['enum_value'] = ItemEnumListView().get_enumeration(self.request.path.split('/')[3]).objects.get(id__exact=self.request.path.split('/')[4])
+        context['url_all'] = "/admin/enumerations/" + context['enum'] + "/" + context['id'] + "/item/list"
+        context['url_unpublished'] = "/admin/enumerations/" + context['enum'] + "/" + context['id'] + "/item_unpublished/list/"
+        context['url_published'] = "/admin/enumerations/" + context['enum'] +"/"+context['id'] + "/item_published/list/"
+        context['url_sound'] = "/admin/enumerations/" + context['enum'] + "/" + context['id'] + "/item_sound/list/"
+        return context
+
+    def get_queryset(self):
+        enumeration = self.get_enumeration(self.request.path.split('/')[3])
+        queryset = self.get_item(enumeration.objects.filter(id=self.request.path.split('/')[4]).get())
+        return queryset
+
+    def get_item(self, enum):
+        f = MediaItem._meta.get_all_field_names()
+        for field in f:
+            if field in enum._meta.db_table.replace(" ", "_"):
+                atr = field;
+        atr = atr + "_id"
+        lookup = "%s__exact" % atr
+        return MediaItem.objects.filter(**{lookup: enum.__getattribute__("id")})
+
+    def get_enumeration(self, id):
+        from django.db.models import get_models
+        models = get_models(telemeta.models)
+        for model in models:
+            if model._meta.model_name == id:
+                break
+        if model._meta.model_name != id:
+            return None
+        return model
+
+class ItemPublishedEnumListView(ItemEnumListView):
+    def get_queryset(self):
+        c = ItemEnumListView()
+        #id of value of enumeration
+        i = self.request.path.split('/')[4]
+        enumeration = c.get_enumeration(self.request.path.split('/')[3])
+        queryset = self.get_item(enumeration.objects.filter(id=i).get(), c)
+        return queryset
+
+    def get_item(self, enum, c):
+        return c.get_item(enum).filter(code__contains='_E_')
+
+
+class ItemUnpublishedEnumListView(ItemEnumListView):
+    def get_queryset(self):
+        c = ItemEnumListView()
+        #id of value of enumeration
+        i= self.request.path.split('/')[4]
+        enumeration = c.get_enumeration(self.request.path.split('/')[3])
+        queryset = self.get_item(enumeration.objects.filter(id=i).get(), c)
+        return queryset
+
+    def get_item(self, enum, c):
+        return c.get_item(enum).filter(code__contains='_I_')
+
+
+class ItemSoundEnumListView(ItemEnumListView):
+    def get_queryset(self):
+        c = ItemEnumListView()
+        #id of value of enumeration
+        i= self.request.path.split('/')[4]
+        enumeration = c.get_enumeration(self.request.path.split('/')[3])
+        queryset = self.get_item(enumeration.objects.filter(id=i).get(), c)
+        return queryset
+
+    def get_item(self, enum, c):
+        return c.get_item(enum).sound().order_by('code', 'old_code')
+
+
+class ItemKeywordListView(ItemListView):
+    template_name = 'telemeta/media_item_enum_list.html'
+
+
+    def get_context_data(self, **kwargs):
+        context = super(ItemListView, self).get_context_data(**kwargs)
+        context['enum'] = self.request.path.split('/')[3]
+        context['id'] = self.request.path.split('/')[4]
+        context['count'] = self.object_list.count()
+        context['keyword'] = True
+        context['enum_name'] = ItemEnumListView().get_enumeration(self.request.path.split('/')[3])._meta.verbose_name
+        context['enum_value'] = ItemEnumListView().get_enumeration(self.request.path.split('/')[3]).objects.get(id__exact=self.request.path.split('/')[4])
+        context['url_all'] = "/admin/enumerations/"+context['enum']+"/"+context['id']+"/keyword_item/list"
+        context['url_unpublished'] = "/admin/enumerations/"+context['enum']+"/"+context['id']+"/keyword_item_unpublished/list/"
+        context['url_published'] = "/admin/enumerations/"+context['enum']+"/"+context['id']+"/keyword_item_published/list/"
+        context['url_sound'] = "/admin/enumerations/"+context['enum']+"/"+context['id']+"/keyword_item_published/list/"
+
+        context['argument'] = [context['enum'], context['id']]
+
+        return context
+
+    def get_queryset(self):
+        queryset = self.get_item(self.request.path.split('/')[4])
+        return queryset
+
+    def get_item(self, id):
+        c = []
+        for m  in MediaItemKeyword.objects.filter(keyword_id=id):
+            c.append(m.__getattribute__("item_id"))
+        return  MediaItem.objects.filter(id__in=c)
+
+
+    def get_enumeration(self, id):
+        from django.db.models import get_models
+        models = get_models(telemeta.models)
+        for model in models:
+            if model._meta.model_name == id:
+                break
+        if model._meta.model_name != id:
+            return None
+        return model
+
+class ItemKeywordPublishedListView(ItemKeywordListView):
+
+    def get_queryset(self):
+        c=ItemKeywordListView()
+        queryset = self.get_item(self.request.path.split('/')[4],c)
+        return queryset
+
+    def get_item(self, id,c):
+        return c.get_item(id).filter(code__contains='_E_')
+
+class ItemKeywordUnpublishedListView(ItemKeywordListView):
+
+    def get_queryset(self):
+        c=ItemKeywordListView()
+        queryset = self.get_item(self.request.path.split('/')[4],c)
+        return queryset
+
+    def get_item(self, id,c):
+        return c.get_item(id).filter(code__contains='_I_')
+
+class ItemKeywordSoundListView(ItemKeywordListView):
+
+    def get_queryset(self):
+        c = ItemKeywordListView()
+        queryset = self.get_item(self.request.path.split('/')[4], c)
+        return queryset
+
+    def get_item(self, id, c):
+        return c.get_item(id).sound().order_by('code', 'old_code')

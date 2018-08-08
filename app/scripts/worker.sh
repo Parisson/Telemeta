@@ -7,7 +7,7 @@ wsgi=$app'/wsgi.py'
 
 # stating apps
 # pip install django-environ redis
-pip uninstall -y south
+pip install south
 
 # waiting for other services
 bash $app/scripts/wait.sh

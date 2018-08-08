@@ -28,6 +28,9 @@ from telemeta.models.core import *
 from telemeta.models.system import *
 
 
+resource_code_regex = getattr(settings, 'RESOURCE_CODE_REGEX', '[A-Za-z0-9._-]*')
+
+
 class MediaResource(ModelCore):
     "Base class of all media objects"
 
@@ -54,6 +57,12 @@ class MediaResource(ModelCore):
     class Meta:
         abstract = True
 
+def is_valid_resource_code(value):
+    "Check if the resource code is well formed"
+    regex = '^' + resource_code_regex + '$'
+    if not re.match(regex, value):
+        raise ValidationError(u'%s is not a valid resource code' % value)
+
 
 class MediaBaseResource(MediaResource):
     "Describe a media base resource"
@@ -61,7 +70,7 @@ class MediaBaseResource(MediaResource):
     title                 = models.CharField(_('title'), max_length=250)
     description           = models.CharField(_('description_old'), max_length=250, blank=True, null=True)
     descriptions          = models.TextField(_('description'), blank=True)
-    code                  = models.CharField(_('code'), unique=True, max_length=250)
+    code                  = models.CharField(_('code'), unique=True, max_length=250, validators=[is_valid_resource_code])
     public_access         = models.CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES, max_length=16, default="metadata")
 
     def __unicode__(self):

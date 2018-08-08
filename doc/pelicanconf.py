@@ -9,13 +9,13 @@ TIMEZONE = 'Europe/Paris'
 DEFAULT_LANG = u'en'
 DEFAULT_DATE = 'fs'
 
-SITEURL = 'http://parisson.github.io/Telemeta/'
+SITEURL = 'https://parisson.github.io/Telemeta/'
 RELATIVE_URLS = True
 
 PATH = 'content/'
 DELETE_OUTPUT_DIRECTORY = False
 
-THEME = 'themes/pelican-bootstrap3'
+THEME = 'pelican-themes/pelican-bootstrap3'
 BOOTSTRAP_THEME = 'united'
 
 SUMMARY_MAX_LENGTH = 127
@@ -46,9 +46,13 @@ SOCIAL = (('GitHub', 'https://github.com/Parisson/Telemeta'),
 
 PLUGIN_PATHS = ['pelican-plugins']
 PLUGINS = ['pin_to_top', 'sitemap', 'gallery', 'render_math',
-            'liquid_tags.img', 'liquid_tags.video',
+           'i18n_subsites', 'liquid_tags.img', 'liquid_tags.video',
            'liquid_tags.youtube', 'liquid_tags.vimeo',
            'liquid_tags.include_code', ]
+
+JINJA_ENVIRONMENT = {
+   'extensions': ['jinja2.ext.i18n'],
+}
 
 STATIC_PATHS = ['images', 'css']
 CUSTOM_CSS = 'css/custom.css'

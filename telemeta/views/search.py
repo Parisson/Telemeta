@@ -29,13 +29,13 @@ from django.http import HttpResponse
 
 
 class HaystackSearch(FacetedSearchView, SavedSearchView):
+
     search_key = 'quick'
 
     def __call__(self, request, type=None):
         self.type = type
         self.form_class = HaySearchForm
         self.selected_facet = self.selected_facet_list(request.GET.getlist('selected_facets', ['a']))
-        print(self.selected_facet)
         if request.GET.get('results_page'):
             self.results_per_page = int(request.GET.get('results_page'))
         else:

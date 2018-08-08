@@ -24,6 +24,7 @@ from telemeta.models import *
 
 
 class UserProfileForm(ModelForm):
+
     class Meta:
         model = UserProfile
         fields = '__all__'

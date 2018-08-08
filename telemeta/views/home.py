@@ -24,7 +24,7 @@ from django.views.generic.base import TemplateView
 
 from telemeta.views.core import *
 from saved_searches.models import SavedSearch
-
+from telemeta.views.enum import *
 
 class HomeIndexView(TemplateView):
     template_name = "telemeta/home.html"

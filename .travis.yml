@@ -18,9 +18,12 @@ install:
   - docker-compose build
 
 script:
+  - docker-compose run app conda list
+  - docker-compose run app pytest /srv/src/telemeta/telemeta
   - docker-compose up -d
   - sleep 60
   - curl --fail --retry 10 --retry-delay 5  -v $(docker-compose port nginx 80)
+  - curl --fail -v "$(docker-compose port nginx 80)/archives/items/Tests-c4_scalewav/"
   - docker-compose stop
 
 after_failure:
