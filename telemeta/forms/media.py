@@ -128,7 +128,7 @@ class ItemRelatedInline(InlineFormSet):
 class CollectionIdentifierInline(InlineFormSet):
 
     model = MediaCollectionIdentifier
-    max_num = 1
+    factory_kwargs = {'max_num': 1}
     fields = '__all__'
 
 
@@ -147,14 +147,14 @@ class ItemKeywordInline(InlineFormSet):
 class ItemFormatInline(InlineFormSet):
 
     model = Format
-    max_num = 1
+    factory_kwargs = {'max_num': 1}
     fields = '__all__'
 
 
 class ItemIdentifierInline(InlineFormSet):
 
     model = MediaItemIdentifier
-    max_num = 1
+    factory_kwargs = {'max_num': 1}
     fields = '__all__'
 
 

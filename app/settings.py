@@ -376,3 +376,5 @@ NOTEBOOK_ARGUMENTS = [
     '--allow-root',
     '--notebook-dir', NOTEBOOK_DIR
 ]
+
+SILENCED_SYSTEM_CHECKS = ['fields.W342',]

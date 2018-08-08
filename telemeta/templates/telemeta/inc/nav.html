@@ -31,12 +31,12 @@
                                     <ul>
                                         <li><a href="{% url "telemeta-admin-enumerations" %}">{% trans "Enumerations" %}</a></li>
                                         <li><a href="{% url "telemeta-instrument-edit" %}">{% trans "Instruments" %}</a></li>
-                                        <li><a href="{% url "telemeta-instrument-alias-edit" %}">{% trans "Instrument (vernaculare)" %}</a></li>
+                                        <li><a href="{% url "telemeta-instrument-alias-edit" %}">{% trans "Instruments (vernacular)" %}</a></li>
                                     </ul>
                                 {% else %}
                                     <ul>
                                         <li><a href="{% url "telemeta-instruments" %}">{% trans "Instruments" %}</a>
-                                        <li><a href="{% url "telemeta-instrument-alias" %}">{% trans "Instruments (vernaculare)" %}</a></li>
+                                        <li><a href="{% url "telemeta-instrument-alias" %}">{% trans "Instruments (vernacular)" %}</a></li>
                                         {% for enu in menu %}
                                             <li>
                                                 <a href="{% url "telemeta-enumeration" enu.id %}">{{ enu.name |capfirst }}</a>
