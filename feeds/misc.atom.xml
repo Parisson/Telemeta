@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Telemeta project - About</title><link href="https://parisson.github.io/Telemeta/" rel="alternate"></link><link href="https://parisson.github.io/Telemeta/feeds/about.atom.xml" rel="self"></link><id>https://parisson.github.io/Telemeta/</id><updated>2018-01-25T10:53:33+01:00</updated><entry><title>Telemeta : collaborative multimedia asset management system</title><link href="https://parisson.github.io/Telemeta/telemeta-collaborative-multimedia-asset-management-system.html" rel="alternate"></link><published>2018-01-25T10:53:33+01:00</published><updated>2018-01-25T10:53:33+01:00</updated><author><name>Parisson SARL</name></author><id>tag:parisson.github.io,2018-01-25:/Telemeta/telemeta-collaborative-multimedia-asset-management-system.html</id><summary type="html">&lt;img alt="Telemeta logo" src="https://raw.githubusercontent.com/Parisson/Telemeta/master/telemeta/static/telemeta/images/logo_telemeta_2.png" /&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Telemeta project - misc</title><link href="https://parisson.github.io/Telemeta/" rel="alternate"></link><link href="https://parisson.github.io/Telemeta/feeds/misc.atom.xml" rel="self"></link><id>https://parisson.github.io/Telemeta/</id><updated>2018-08-19T12:36:35+02:00</updated><entry><title>Telemeta : collaborative media asset management system for musicology</title><link href="https://parisson.github.io/Telemeta/telemeta-collaborative-media-asset-management-system-for-musicology.html" rel="alternate"></link><published>2018-08-19T12:36:35+02:00</published><updated>2018-08-19T12:36:35+02:00</updated><author><name>Parisson SARL</name></author><id>tag:parisson.github.io,2018-08-19:/Telemeta/telemeta-collaborative-media-asset-management-system-for-musicology.html</id><summary type="html">&lt;img alt="Telemeta logo" src="https://raw.githubusercontent.com/Parisson/Telemeta/master/telemeta/static/telemeta/images/logo_telemeta_2.png" /&gt;
 &lt;div class="section" id="overview"&gt;
 &lt;h2&gt;Overview&lt;/h2&gt;
 &lt;p&gt;Telemeta is a free and open source collaborative multimedia asset management system (MAM) which introduces fast and secure methods to archive, backup, transcode, analyse,  annotate and publish any digitalized video or audio file with extensive metadata. It is dedicated to collaborative media archiving projects, research laboratories and digital humanities - especially in ethno-musicological use cases - who need to easily organize and publish documented sound collections of audio files, CDs, digitalized vinyls and magnetic tapes over a strong database, through a smart and secure platform, in accordance with open web standards.&lt;/p&gt;
@@ -36,7 +36,6 @@
 &lt;p&gt;Telemeta has been developed since 2006 and is based exclusively on 100% open source modules.&lt;/p&gt;
 &lt;p&gt;It is mostly written in Python, HTML5 and JavaScript.&lt;/p&gt;
 &lt;p&gt;The &lt;em&gt;Telemeta&lt;/em&gt; name stands for &lt;em&gt;Tele&lt;/em&gt; as &amp;quot;remote access&amp;quot; and &lt;em&gt;meta&lt;/em&gt; for &amp;quot;metadata&amp;quot;.&lt;/p&gt;
-&lt;p&gt;&lt;a class="reference external" href="https://pypi.python.org/pypi/Telemeta/"&gt;&lt;object data="https://img.shields.io/pypi/v/telemeta.svg" type="image/svg+xml"&gt;Version&lt;/object&gt;&lt;/a&gt; &lt;a class="reference external" href="https://pypi.python.org/pypi/Telemeta/"&gt;&lt;object data="https://img.shields.io/pypi/dm/telemeta.svg" type="image/svg+xml"&gt;Downloads&lt;/object&gt;&lt;/a&gt; &lt;a class="reference external" href="https://travis-ci.org/Parisson/Telemeta/"&gt;&lt;img alt="Travis" src="https://secure.travis-ci.org/Parisson/Telemeta.png?branch=master" /&gt;&lt;/a&gt; &lt;a class="reference external" href="https://coveralls.io/r/Parisson/Telemeta?branch=master"&gt;&lt;img alt="Coverage" src="https://coveralls.io/repos/Parisson/Telemeta/badge.png?branch=master" /&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="section" id="funding-and-support"&gt;
 &lt;h2&gt;Funding and support&lt;/h2&gt;
@@ -51,6 +50,51 @@
 &lt;div class="section" id="news"&gt;
 &lt;h2&gt;News&lt;/h2&gt;
 &lt;div class="section" id="id1"&gt;
+&lt;h3&gt;1.7.0&lt;/h3&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Based on TimeSide 0.9&lt;/li&gt;
+&lt;li&gt;Use Django 1.8&lt;/li&gt;
+&lt;li&gt;Rename some directories&lt;/li&gt;
+&lt;li&gt;Better video streaming&lt;/li&gt;
+&lt;li&gt;Better logging&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;UPGRADING:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+git pull origin master
+git submodule update --init --remote
+docker-compose run app /srv/app/bin/upgrade_from_1.6_to_1.7.sh
+&lt;/pre&gt;
+&lt;p&gt;WARNING:&lt;/p&gt;
+&lt;p&gt;&lt;cite&gt;scripts/&lt;/cite&gt; and &lt;cite&gt;app/scripts/&lt;/cite&gt; directories has been renamed &lt;cite&gt;bin/&lt;/cite&gt; and &lt;cite&gt;app/bin/&lt;/cite&gt; respectively. So please adapt your management and maintenance personal script.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="id2"&gt;
+&lt;h3&gt;1.6.5 &amp;gt; 1.6.7&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Setting utf8 database by default&lt;/li&gt;
+&lt;li&gt;Deactivate video.js for now&lt;/li&gt;
+&lt;li&gt;Use mysql:5&lt;/li&gt;
+&lt;li&gt;Fix phpmyadmin config&lt;/li&gt;
+&lt;li&gt;Various bugfixes&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;/div&gt;
+&lt;div class="section" id="id3"&gt;
+&lt;h3&gt;1.6.4&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Minor bug fixes and improvments&lt;/li&gt;
+&lt;li&gt;Fix HTML5 audio compatibility (#173) for the web audio player. The SoundManager Flash player fallback should not be used in most modern web browser. Media files are now serves through Nginx (#155) which enables to stream music with byte range requests.&lt;/li&gt;
+&lt;li&gt;Add a User permission &amp;quot;can_run_analysis&amp;quot; to specify that a user or a group of users has the right to list and select advanced Timeside analysis to be displayed in the Timeside web audio player.&lt;/li&gt;
+&lt;li&gt;Add enumeration management and statitics&lt;/li&gt;
+&lt;li&gt;Improved media security allowing streaming through Nginx only from the application&lt;/li&gt;
+&lt;li&gt;Add TimeSide as a submodule&lt;/li&gt;
+&lt;li&gt;Add a validator for Corpus and Fonds&lt;/li&gt;
+&lt;li&gt;Upgrade various dependencies&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;/div&gt;
+&lt;div class="section" id="id4"&gt;
 &lt;h3&gt;1.6&lt;/h3&gt;
 &lt;p&gt;Telemeta is now usable on &lt;strong&gt;any OS&lt;/strong&gt;, ready for development and for production in 5 mn! B-)&lt;/p&gt;
 &lt;ul class="simple"&gt;
@@ -67,7 +111,7 @@ One month after the publication of docker-compose around march 2015, we had mana
 &lt;li&gt;Thanks to all partners for this &lt;strong&gt;huge&lt;/strong&gt; release!&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-&lt;div class="section" id="id2"&gt;
+&lt;div class="section" id="id5"&gt;
 &lt;h3&gt;1.5.1&lt;/h3&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;Fix geo-navigator lists and pagination&lt;/li&gt;
@@ -101,11 +145,10 @@ One month after the publication of docker-compose around march 2015, we had mana
 &lt;/ul&gt;
 &lt;/blockquote&gt;
 &lt;/div&gt;
-&lt;div class="section" id="install"&gt;
-&lt;h2&gt;Install&lt;/h2&gt;
+&lt;div class="section" id="get-it"&gt;
+&lt;h2&gt;Get it&lt;/h2&gt;
 &lt;p&gt;Thanks to Docker, Telemeta is now fully available as a docker composition ready to work. The docker based composition bundles some powerfull applications and modern frameworks out-of-the-box like: Python, Conda, Numpy, Jupyter, Gstreamer, Django, Celery, Haystack, ElasticSearch, MySQL, Redis, uWSGI, Nginx and many more.&lt;/p&gt;
-&lt;p&gt;On Linux, first install &lt;a class="reference external" href="http://git-scm.com/downloads"&gt;Git&lt;/a&gt;, &lt;a class="reference external" href="https://docs.docker.com/installation/"&gt;Docker engine&lt;/a&gt; and &lt;a class="reference external" href="https://docs.docker.com/compose/install/"&gt;docker-compose&lt;/a&gt; and open a terminal.&lt;/p&gt;
-&lt;p&gt;On MacOSX or Windows install the &lt;a class="reference external" href="https://www.docker.com/products/docker-toolbox"&gt;Docker Toolbox&lt;/a&gt; and open a Docker Quickstart Terminal.&lt;/p&gt;
+&lt;p&gt;First, install Git, &lt;a class="reference external" href="https://store.docker.com/search?offering=community&amp;amp;q=&amp;amp;type=edition"&gt;Docker&lt;/a&gt; and &lt;a class="reference external" href="https://docs.docker.com/compose/"&gt;docker-compose&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;Then clone Telemeta:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
 git clone --recursive https://github.com/Parisson/Telemeta.git
@@ -114,7 +157,7 @@ cd Telemeta
 &lt;/div&gt;
 &lt;div class="section" id="start-it-up"&gt;
 &lt;h2&gt;Start it up&lt;/h2&gt;
-&lt;p&gt;For a production environment setup:&lt;/p&gt;
+&lt;p&gt;For a production environment setup, first read / edit &lt;cite&gt;env/prod.env&lt;/cite&gt;, then:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
 docker-compose up
 &lt;/pre&gt;
@@ -130,15 +173,23 @@ docker-compose -f docker-compose.yml -f env/debug.yml up
 &lt;li&gt;Use a cron rule and the backup script to save your work periodically&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
+&lt;div class="section" id="daemonize"&gt;
+&lt;h2&gt;Daemonize&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Linux only&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;On a production server, Telemeta can be automatically started as a daemon so that it is started during booting. Just execute the install script:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+sudo ./install.py
+&lt;/pre&gt;
+&lt;/div&gt;
 &lt;div class="section" id="backup-restore"&gt;
 &lt;h2&gt;Backup / Restore&lt;/h2&gt;
 &lt;p&gt;To backup the database in the data/backup/ folder, run this in &lt;strong&gt;another&lt;/strong&gt; terminal (or a Docker Quickstart Terminal):&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
-docker-compose run db /srv/scripts/sql/backup_db.sh
+docker-compose run db /srv/bin/sql/backup_db.sh
 &lt;/pre&gt;
 &lt;p&gt;To restore the last backuped database from the data/backup/ folder, run this in &lt;strong&gt;another&lt;/strong&gt; terminal (or a Docker Quickstart Terminal):&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
-docker-compose run db /srv/scripts/sql/restore_db.sh
+docker-compose run db /srv/bin/sql/restore_db.sh
 &lt;/pre&gt;
 &lt;p&gt;If the app is broken after a restore script, restart the composition with:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
@@ -157,20 +208,15 @@ docker-compose restart
 &lt;/div&gt;
 &lt;div class="section" id="development"&gt;
 &lt;h2&gt;Development&lt;/h2&gt;
-&lt;p&gt;&lt;a class="reference external" href="https://travis-ci.org/Parisson/Telemeta/"&gt;&lt;img alt="Travis" src="https://secure.travis-ci.org/Parisson/Telemeta.png?branch=dev" /&gt;&lt;/a&gt; &lt;a class="reference external" href="https://coveralls.io/r/Parisson/Telemeta?branch=dev"&gt;&lt;img alt="Coverage" src="https://coveralls.io/repos/Parisson/Telemeta/badge.png?branch=dev" /&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;To start the application in a development environment setup:&lt;/p&gt;
+&lt;p&gt;To start the application in a development environment setup, first read / edit &lt;cite&gt;env/debug.env&lt;/cite&gt;, then:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
 cd Telemeta
 git pull
 git checkout dev
 docker-compose -f docker-compose.yml -f env/dev.yml up
 &lt;/pre&gt;
-&lt;p&gt;Then browse the app at &lt;a class="reference external" href="http://localhost:9000/"&gt;http://localhost:9000/&lt;/a&gt; (replacing 'localhost' by the IP given by the docker terminal on OSX or Windows). Note the service will automatically when code is modified.&lt;/p&gt;
-&lt;p&gt;To build your own composition (if dependency tree is changed):&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-docker-compose -f docker-compose.yml -f env/dev.yml -f env/build.yml build
-&lt;/pre&gt;
-&lt;p&gt;You are welcome to participate to the development by forking the Telemeta project on &lt;a class="reference external" href="https://github.com/Parisson/Telemeta/"&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Then browse the app at &lt;a class="reference external" href="http://localhost:9100/"&gt;http://localhost:9100/&lt;/a&gt; (replacing 'localhost' by the IP given by the docker terminal on OSX or Windows). Note that the service will automatically be reloaded when any code of the app is modified.&lt;/p&gt;
+&lt;p&gt;You are welcome to participate to the development by forking the Telemeta project on &lt;a class="reference external" href="https://github.com/Parisson/Telemeta/"&gt;GitHub&lt;/a&gt;, using it as if it were the original and submitting your changes through a Pull Request on the &lt;strong&gt;dev branch ONLY&lt;/strong&gt;.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="section" id="bugs-issues-ideas"&gt;
 &lt;h2&gt;Bugs, issues, ideas&lt;/h2&gt;

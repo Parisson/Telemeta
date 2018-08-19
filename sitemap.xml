@@ -5,35 +5,42 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://parisson.github.io/Telemeta/</loc>
-<lastmod>2018-08-19T12:28:12-00:00</lastmod>
+<lastmod>2018-08-19T12:36:54-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://parisson.github.io/Telemeta/archives.html</loc>
-<lastmod>2018-08-19T12:28:12-00:00</lastmod>
+<lastmod>2018-08-19T12:36:54-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://parisson.github.io/Telemeta/tags.html</loc>
-<lastmod>2018-08-19T12:28:12-00:00</lastmod>
+<lastmod>2018-08-19T12:36:54-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://parisson.github.io/Telemeta/categories.html</loc>
-<lastmod>2018-08-19T12:28:12-00:00</lastmod>
+<lastmod>2018-08-19T12:36:54-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
+<loc>https://parisson.github.io/Telemeta/telemeta-collaborative-media-asset-management-system-for-musicology.html</loc>
+<lastmod>2018-08-19T12:36:35+02:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
 <loc>https://parisson.github.io/Telemeta/telemeta-17-has-been-released.html</loc>
-<lastmod>2018-08-19T12:26:35+02:00</lastmod>
+<lastmod>2018-08-19T12:29:45+02:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -54,13 +61,6 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://parisson.github.io/Telemeta/telemeta-16-is-finally-out.html</loc>
-<lastmod>2018-01-25T10:53:33+01:00</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
-<loc>https://parisson.github.io/Telemeta/telemeta-collaborative-multimedia-asset-management-system.html</loc>
 <lastmod>2018-01-25T10:53:33+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
@@ -249,15 +249,15 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>https://parisson.github.io/Telemeta/category/about.html</loc>
-<lastmod>2018-01-25T10:53:33+00:09</lastmod>
+<loc>https://parisson.github.io/Telemeta/category/development.html</loc>
+<lastmod>2016-04-04T22:04:39+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://parisson.github.io/Telemeta/category/development.html</loc>
-<lastmod>2016-04-04T22:04:39+00:09</lastmod>
+<loc>https://parisson.github.io/Telemeta/category/misc.html</loc>
+<lastmod>2018-08-19T12:36:35+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -278,7 +278,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://parisson.github.io/Telemeta/category/releases.html</loc>
-<lastmod>2018-08-19T12:26:35+00:09</lastmod>
+<lastmod>2018-08-19T12:29:45+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -298,6 +298,41 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
+<loc>https://parisson.github.io/Telemeta/tag/folk.html</loc>
+<lastmod>2014-06-13T17:36:00+00:09</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://parisson.github.io/Telemeta/tag/analysis.html</loc>
+<lastmod>2014-06-13T17:36:00+00:09</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://parisson.github.io/Telemeta/tag/language.html</loc>
+<lastmod>2014-06-23T11:42:00+00:09</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://parisson.github.io/Telemeta/tag/ecology.html</loc>
+<lastmod>2014-06-13T17:40:00+00:09</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://parisson.github.io/Telemeta/tag/music.html</loc>
+<lastmod>2014-06-13T17:36:00+00:09</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
 <loc>https://parisson.github.io/Telemeta/tag/iso.html</loc>
 <lastmod>2014-06-23T11:42:00+00:09</lastmod>
 <changefreq>daily</changefreq>
@@ -312,15 +347,8 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>https://parisson.github.io/Telemeta/tag/git.html</loc>
-<lastmod>2014-10-10T10:53:00+00:09</lastmod>
-<changefreq>daily</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
-<loc>https://parisson.github.io/Telemeta/tag/ecology.html</loc>
-<lastmod>2014-06-13T17:40:00+00:09</lastmod>
+<loc>https://parisson.github.io/Telemeta/tag/authentification.html</loc>
+<lastmod>2014-10-23T10:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -333,22 +361,8 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>https://parisson.github.io/Telemeta/tag/analysis.html</loc>
-<lastmod>2014-06-13T17:36:00+00:09</lastmod>
-<changefreq>daily</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
-<loc>https://parisson.github.io/Telemeta/tag/music.html</loc>
-<lastmod>2014-06-13T17:36:00+00:09</lastmod>
-<changefreq>daily</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
-<loc>https://parisson.github.io/Telemeta/tag/folk.html</loc>
-<lastmod>2014-06-13T17:36:00+00:09</lastmod>
+<loc>https://parisson.github.io/Telemeta/tag/git.html</loc>
+<lastmod>2014-10-10T10:53:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -361,22 +375,8 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>https://parisson.github.io/Telemeta/tag/authentification.html</loc>
-<lastmod>2014-10-23T10:44:00+00:09</lastmod>
-<changefreq>daily</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
-<loc>https://parisson.github.io/Telemeta/tag/language.html</loc>
-<lastmod>2014-06-23T11:42:00+00:09</lastmod>
-<changefreq>daily</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
 <loc>https://parisson.github.io/Telemeta/author/parisson-sarl.html</loc>
-<lastmod>2018-08-19T12:26:35+00:09</lastmod>
+<lastmod>2018-08-19T12:36:35+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
