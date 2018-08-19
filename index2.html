@@ -45,7 +45,7 @@
 <body>
 
 <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-	<div class="container">
+    <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
                 <span class="sr-only">Toggle navigation</span>
@@ -86,11 +86,36 @@ Telemeta project            </a>
         <!-- /.navbar-collapse -->
     </div>
 </div> <!-- /.navbar -->
+
 <!-- Banner -->
 <!-- End Banner -->
+
+<!-- Content Container -->
 <div class="container">
     <div class="row">
         <div class="col-sm-9">
+            <article>
+                <h2><a href="./telemeta-146-is-out.html">Telemeta 1.4.6 is out!</a></h2>
+                <div class="summary"><p>Changelog:</p>
+<ul class="simple">
+<li>Drastically improve collection zip packaqe streaming thanks to zipstream (check NEW dependencies)</li>
+<li>Compatible with TimeSide &gt;= 0.5.2</li>
+<li>Add URL field to item so that a external sound can be indexed and streamed</li>
+<li>Add TIMESIDE_AUTO_ZOOM in settings to auto toggle the player in zooming mode</li>
+<li>Add TIMESIDE_DEFAULT_GRAPHER_ID in settings to select the default grapher in the player</li>
+<li>Add minor migrations</li>
+<li>Fix marker display bug</li>
+<li>This is a transitional, minor release because 1.5 will be released soon.</li>
+</ul>
+<p>Download</p>
+<ul class="simple">
+<li><a class="reference external" href="http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.4.6.tar.gz">http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.4.6.tar.gz</a></li>
+</ul>
+
+                    <a class="btn btn-default btn-xs" href="./telemeta-146-is-out.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
             <article>
                 <h2><a href="./ip-based-authorization.html">IP based authorization</a></h2>
                 <div class="summary"><p>It is possible to login automatically an IP range of machines to Telemeta thanks to the django-ipauth module:</p>
@@ -262,33 +287,6 @@ sudo pip install --upgrade telemeta
                 </div>
             </article>
             <hr/>
-            <article>
-                <h2><a href="./telemeta-143-has-been-released.html">Telemeta 1.4.3 has been released !</a></h2>
-                <div class="summary"><p>Changes:</p>
-<ul class="simple">
-<li>add solr-thumbnail for automatic thumbnail handling of all related media images (please install)</li>
-<li>add static media handling for solr and all various telemeta public files</li>
-<li>fix some wrong user properties</li>
-<li>SECURITY: you need to move your TELEMETA_EXPORT_CACHE_DIR from TELEMETA_CACHE_DIR cache (see example/sandbox_sqlite/settings.py)</li>
-<li>EXPERIMENTAL: WebM and MP4 video handling for items, NO transcode but decode, add a nice video.js player</li>
-<li>RECOMMEND: install django-extensions</li>
-<li>add user revisions to user profile</li>
-<li>move all edit buttons to main edit pages</li>
-<li>new Format object and various enumerations</li>
-<li>add last revision to item detail</li>
-<li>various bugfixes</li>
-<li>Fix a bug for related media title parsing</li>
-</ul>
-<p>Upgrade:</p>
-<pre class="literal-block">
-sudo pip install --upgrade telemeta
-</pre>
-<p>or <a class="reference external" href="​​http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.4.3.tar.gz">download</a> (MD5: ceec77f9b5e637cf1e2cb9b9fad21183)</p>
-<p>As usual, please first read README.rst and INSTALL.rst to get all informations …</p>
-                    <a class="btn btn-default btn-xs" href="./telemeta-143-has-been-released.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
 
         <ul class="pagination">
                 <li class="prev"><a href="./index.html">&laquo;</a>
@@ -299,6 +297,8 @@ sudo pip install --upgrade telemeta
                             href="./index2.html">2</a></li>
                     <li class=""><a
                             href="./index3.html">3</a></li>
+                    <li class=""><a
+                            href="./index4.html">4</a></li>
                 <li class="next"><a
                         href="./index3.html">&raquo;</a></li>
         </ul>
@@ -364,6 +364,8 @@ sudo pip install --upgrade telemeta
         </div>
     </div>
 </div>
+<!-- End Content Container -->
+
 <footer>
    <div class="container">
       <hr>

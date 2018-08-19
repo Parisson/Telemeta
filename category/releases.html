@@ -48,7 +48,7 @@
 <body>
 
 <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-	<div class="container">
+    <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
                 <span class="sr-only">Toggle navigation</span>
@@ -89,14 +89,55 @@ Telemeta project            </a>
         <!-- /.navbar-collapse -->
     </div>
 </div> <!-- /.navbar -->
+
 <!-- Banner -->
 <!-- End Banner -->
+
+<!-- Content Container -->
 <div class="container">
     <div class="row">
         <div class="col-sm-9">
             <article>
+                <h2><a href="../telemeta-17-has-been-released.html">Telemeta 1.7 has been released!</a></h2>
+                <div class="summary"><p>After months of hard development, I am very pleased to release Telemeta 1.7! It includes many transparent changes, mainly upgrading a lot of dependencies, especially those brought by the audio engine TimeSide which has also been released in its new version.</p>
+<blockquote>
+<ul class="simple">
+<li>Based on TimeSide 0.9</li>
+<li>Use Django 1.8</li>
+<li>Rename some directories</li>
+<li>Better video streaming</li>
+<li>Better logging</li>
+</ul>
+</blockquote>
+<p>More details:</p>
+<blockquote>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/Parisson/Telemeta/milestone/5?closed=1">https://github.com/Parisson/Telemeta/milestone/5?closed=1</a></li>
+<li><a class="reference external" href="https://github.com/Parisson/Telemeta/compare/master...v1.6">https://github.com/Parisson/Telemeta/compare/master...v1.6</a></li>
+</ul>
+</blockquote>
+<div class="section" id="upgrading">
+<h2>Upgrading</h2>
+<pre class="code bash literal-block">
+git pull origin master
+git submodule update --init --remote
+docker-compose run app /srv/app/bin/upgrade_from_1.6_to_1.7.sh
+</pre>
+</div>
+<div class="section" id="warning">
+<h2>WARNING</h2>
+<p><cite>scripts/</cite> and <cite>app/scripts/</cite> directories has been renamed <cite>bin/</cite> and <cite>app/bin/</cite> respectively. So please adapt your management and maintenance personal scripts.</p>
+</div>
+<div class="section" id="x">
+<h2>1.6.x</h2>
+<p>The 1 …</p></div>
+                    <a class="btn btn-default btn-xs" href="../telemeta-17-has-been-released.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
                 <h2><a href="../telemeta-164-is-out.html">Telemeta 1.6.4 is out!</a></h2>
-                <div class="summary"><p>ChangeLig:</p>
+                <div class="summary"><p>ChangeLog:</p>
 <blockquote>
 <ul class="simple">
 <li>Minor bug fixes and improvments</li>
@@ -288,26 +329,6 @@ sudo pip install --upgrade telemeta
                 </div>
             </article>
             <hr/>
-            <article>
-                <h2><a href="../telemeta-12-is-out.html">Telemeta 1.2 is out!</a></h2>
-                <div class="summary"><p>Changes:</p>
-<ul class="simple">
-<li>fix OAI repository names, coverages and headers in according with TGE Adonis specs</li>
-<li>replace home (index) playlist by 3 random nice embedded players (public items only)</li>
-<li>add &quot;Sound&quot; filter to the item list for easier access to sound items</li>
-<li>fix various bugs</li>
-<li>fix the whole setup</li>
-</ul>
-<p>Upgrade:</p>
-<pre class="literal-block">
-sudo pip install --upgrade telemeta
-</pre>
-<p>or <a class="reference external" href="​​http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.2.tar.gz">download</a> (MD5: 43cd98b492d39772a73164986ac0eefd)</p>
-
-                    <a class="btn btn-default btn-xs" href="../telemeta-12-is-out.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
 
         <ul class="pagination">
                 <li class="prev disabled"><a href="#">&laquo;</a></li>
@@ -380,6 +401,8 @@ sudo pip install --upgrade telemeta
         </div>
     </div>
 </div>
+<!-- End Content Container -->
+
 <footer>
    <div class="container">
       <hr>

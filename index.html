@@ -45,7 +45,7 @@
 <body>
 
 <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-	<div class="container">
+    <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
                 <span class="sr-only">Toggle navigation</span>
@@ -86,8 +86,11 @@ Telemeta project            </a>
         <!-- /.navbar-collapse -->
     </div>
 </div> <!-- /.navbar -->
+
 <!-- Banner -->
 <!-- End Banner -->
+
+<!-- Content Container -->
 <div class="container">
     <div class="row">
         <div class="col-sm-9">
@@ -108,22 +111,46 @@ Telemeta project            </a>
             </article>
             <hr/>
             <article>
-                <h2><a href="./archives-of-the-french-research-centre-of-ethnomusicology-crem.html">Archives of the French Research Centre of Ethnomusicology (CREM)</a></h2>
-                <div class="summary"><p>The audio archives of the CNRS – Musée de l’Homme gather commercial and unpublished recordings of music and oral traditions from around the world, from 1900 to the present. Consisting of diverse types of media (wax cylinders, 78 rpm, vinyl records, magnetic tapes, audio CDs, born digital records), these archives are among the most important in Europe in terms of quality, quantity and diversity.</p>
-<p><a class="reference external" href="http://archives.crem-cnrs.fr/">http://archives.crem-cnrs.fr/</a></p>
-<div class="section" id="contents">
-<h2>Contents</h2>
-<p>Managed by the Center for Research in Ethnomusicology (CREM), these archives index:</p>
+                <h2><a href="./telemeta-17-has-been-released.html">Telemeta 1.7 has been released!</a></h2>
+                <div class="summary"><p>After months of hard development, I am very pleased to release Telemeta 1.7! It includes many transparent changes, mainly upgrading a lot of dependencies, especially those brought by the audio engine TimeSide which has also been released in its new version.</p>
+<blockquote>
 <ul class="simple">
-<li>Over 42,000 unpublished sound documents, among which 32.000 are available for listening, spread though more that 1,000 collections, representing about 4,000 hours of recordings of unpublished fieldworks.</li>
-<li>Over 13,000 published materials, among which 4,600 are available for listening, in more …</li></ul></div>
-                    <a class="btn btn-default btn-xs" href="./archives-of-the-french-research-centre-of-ethnomusicology-crem.html">more ...</a>
+<li>Based on TimeSide 0.9</li>
+<li>Use Django 1.8</li>
+<li>Rename some directories</li>
+<li>Better video streaming</li>
+<li>Better logging</li>
+</ul>
+</blockquote>
+<p>More details:</p>
+<blockquote>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/Parisson/Telemeta/milestone/5?closed=1">https://github.com/Parisson/Telemeta/milestone/5?closed=1</a></li>
+<li><a class="reference external" href="https://github.com/Parisson/Telemeta/compare/master...v1.6">https://github.com/Parisson/Telemeta/compare/master...v1.6</a></li>
+</ul>
+</blockquote>
+<div class="section" id="upgrading">
+<h2>Upgrading</h2>
+<pre class="code bash literal-block">
+git pull origin master
+git submodule update --init --remote
+docker-compose run app /srv/app/bin/upgrade_from_1.6_to_1.7.sh
+</pre>
+</div>
+<div class="section" id="warning">
+<h2>WARNING</h2>
+<p><cite>scripts/</cite> and <cite>app/scripts/</cite> directories has been renamed <cite>bin/</cite> and <cite>app/bin/</cite> respectively. So please adapt your management and maintenance personal scripts.</p>
+</div>
+<div class="section" id="x">
+<h2>1.6.x</h2>
+<p>The 1 …</p></div>
+                    <a class="btn btn-default btn-xs" href="./telemeta-17-has-been-released.html">more ...</a>
                 </div>
             </article>
             <hr/>
             <article>
                 <h2><a href="./telemeta-164-is-out.html">Telemeta 1.6.4 is out!</a></h2>
-                <div class="summary"><p>ChangeLig:</p>
+                <div class="summary"><p>ChangeLog:</p>
 <blockquote>
 <ul class="simple">
 <li>Minor bug fixes and improvments</li>
@@ -135,6 +162,20 @@ Telemeta project            </a>
 <li>Add TimeSide as a submodule</li>
 <li>Add a validator for …</li></ul></blockquote>
                     <a class="btn btn-default btn-xs" href="./telemeta-164-is-out.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
+                <h2><a href="./archives-of-the-french-research-centre-of-ethnomusicology-crem.html">Archives of the French Research Centre of Ethnomusicology (CREM)</a></h2>
+                <div class="summary"><p>The audio archives of the CNRS – Musée de l’Homme gather commercial and unpublished recordings of music and oral traditions from around the world, from 1900 to the present. Consisting of diverse types of media (wax cylinders, 78 rpm, vinyl records, magnetic tapes, audio CDs, born digital records), these archives are among the most important in Europe in terms of quality, quantity and diversity.</p>
+<p><a class="reference external" href="http://archives.crem-cnrs.fr/">http://archives.crem-cnrs.fr/</a></p>
+<div class="section" id="contents">
+<h2>Contents</h2>
+<p>Managed by the Center for Research in Ethnomusicology (CREM), these archives index:</p>
+<ul class="simple">
+<li>Over 42,000 unpublished sound documents, among which 32.000 are available for listening, spread though more that 1,000 collections, representing about 4,000 hours of recordings of unpublished fieldworks.</li>
+<li>Over 13,000 published materials, among which 4,600 are available for listening, in more …</li></ul></div>
+                    <a class="btn btn-default btn-xs" href="./archives-of-the-french-research-centre-of-ethnomusicology-crem.html">more ...</a>
                 </div>
             </article>
             <hr/>
@@ -216,28 +257,6 @@ One month after the publication of docker-compose around march 2015, we had mana
                 </div>
             </article>
             <hr/>
-            <article>
-                <h2><a href="./telemeta-146-is-out.html">Telemeta 1.4.6 is out!</a></h2>
-                <div class="summary"><p>Changelog:</p>
-<ul class="simple">
-<li>Drastically improve collection zip packaqe streaming thanks to zipstream (check NEW dependencies)</li>
-<li>Compatible with TimeSide &gt;= 0.5.2</li>
-<li>Add URL field to item so that a external sound can be indexed and streamed</li>
-<li>Add TIMESIDE_AUTO_ZOOM in settings to auto toggle the player in zooming mode</li>
-<li>Add TIMESIDE_DEFAULT_GRAPHER_ID in settings to select the default grapher in the player</li>
-<li>Add minor migrations</li>
-<li>Fix marker display bug</li>
-<li>This is a transitional, minor release because 1.5 will be released soon.</li>
-</ul>
-<p>Download</p>
-<ul class="simple">
-<li><a class="reference external" href="http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.4.6.tar.gz">http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.4.6.tar.gz</a></li>
-</ul>
-
-                    <a class="btn btn-default btn-xs" href="./telemeta-146-is-out.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
 
         <ul class="pagination">
                 <li class="prev disabled"><a href="#">&laquo;</a></li>
@@ -247,6 +266,8 @@ One month after the publication of docker-compose around march 2015, we had mana
                             href="./index2.html">2</a></li>
                     <li class=""><a
                             href="./index3.html">3</a></li>
+                    <li class=""><a
+                            href="./index4.html">4</a></li>
                 <li class="next"><a
                         href="./index2.html">&raquo;</a></li>
         </ul>
@@ -312,6 +333,8 @@ One month after the publication of docker-compose around march 2015, we had mana
         </div>
     </div>
 </div>
+<!-- End Content Container -->
+
 <footer>
    <div class="container">
       <hr>
