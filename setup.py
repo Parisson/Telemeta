@@ -69,7 +69,7 @@ setup(
     'docutils==0.14',
     'ebooklib',
     'elasticsearch==1.6.0',
-    'lxml==4.2.3'
+    'lxml==4.2.3',
     'psutil==5.4.6',
     'pyyaml==3.12',
     'python-ebml==0.2.1',
