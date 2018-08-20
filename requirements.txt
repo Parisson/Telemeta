@@ -6,10 +6,10 @@ wheel
 
 # Tests
 pytest-django==3.1.2
-pytest-cov
-factory-boy
+pytest-cov==2.5.1
+factory-boy==2.11.1
 
 #doc
-pelican
-pdoc
-ghp-import
+pelican==3.7.1
+pdoc==0.3.2
+ghp-import==0.5.5
