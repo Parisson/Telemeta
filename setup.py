@@ -75,7 +75,7 @@ setup(
     'pyyaml==3.12',
     'redis==2.10.6',
     'south==1.0.2',
-    'sqlparse==0.1.19'
+    'sqlparse==0.1.19',
     'timeside>=0.7',
     'Werkzeug==0.14.1',
     'zipstream==1.1.4',
