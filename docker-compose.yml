@@ -25,10 +25,10 @@
 data:
   image: debian:jessie
   volumes:
-    - /home/parisson/CREM/Telemeta/media/cache:/srv/media/cache
-    - /home/parisson/CREM/Telemeta/media/export:/srv/media/export
-    - /home/parisson/CREM/Telemeta/media/log:/srv/media/log
-    - /home/parisson/CREM/Telemeta/media/results:/srv/media/results
+    - /home/crem/media/cache:/srv/media/cache
+    - /home/crem/media/export:/srv/media/export
+    - /home/crem/media/log:/srv/media/log
+    - /home/crem/media/results:/srv/media/results
     - /archive/CREM/tmp:/srv/media/tmp
     - /archive/CREM/media/items:/srv/media/items
     - /archive/CREM/backup:/srv/backup
@@ -39,7 +39,7 @@ data:
   command: "true"
 
 db:
-  image: mysql
+  image: mysql:5
   volumes:
     - ./scripts/:/srv/scripts
     - ./data/mysql/:/var/lib/mysql
@@ -55,7 +55,7 @@ search:
   image: elasticsearch:1
 
 app:
-  build: .
+  image: parisson/telemeta:1.6
   volumes:
     - ./app:/srv/app
     - ./telemeta:/srv/src/telemeta/telemeta
@@ -71,7 +71,7 @@ app:
     - search
 
 worker:
-  build: .
+  image: parisson/telemeta:1.6
   volumes_from:
     - app
   env_file:
