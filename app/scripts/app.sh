@@ -11,8 +11,8 @@ log='/var/log/uwsgi/app.log'
 
 # uwsgi params
 port=8000
-processes=2
-threads=2
+processes=8
+threads=8
 uid='www-data'
 gid='www-data'
 patterns='*.js;*.css;*.jpg;*.jpeg;*.gif;*.png;*.svg;*.ttf;*.eot;*.woff;*.woff2'
@@ -20,6 +20,7 @@ patterns='*.js;*.css;*.jpg;*.jpeg;*.gif;*.png;*.svg;*.ttf;*.eot;*.woff;*.woff2'
 # stating apps
 # pip install django-bootstrap3==6.2.1
 pip install south
+pip install django-extensions==1.6.7 django-extra-views==0.8.0
 
 # waiting for other network services
 sh $app/scripts/wait.sh

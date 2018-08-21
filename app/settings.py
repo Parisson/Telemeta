@@ -124,7 +124,6 @@ TEMPLATE_LOADERS = (
 
 MIDDLEWARE_CLASSES = (
     # Manage Django URLs for AngularJS with django-angular
-    'djng.middleware.AngularUrlMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -171,7 +170,6 @@ INSTALLED_APPS = (
     'djcelery',
     'haystack',
     'djangobower',
-    'djng',
     'saved_searches',
 )
 
@@ -357,9 +355,6 @@ BOWER_INSTALLED_APPS = (
     'bootstrap#3.3.7',
     'bootstrap-select#1.5.4',
     'font-awesome#4.4.0',
-    'angular#1.2.26',
-    'angular-bootstrap-select#0.0.5',
-    'angular-resource#1.2.26',
     'raphael#2.2.7',
     'soundmanager#V2.97a.20150601',
     'jquery-ui#1.11.4',
