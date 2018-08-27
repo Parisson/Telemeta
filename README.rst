@@ -1,6 +1,6 @@
-============================================================
-Telemeta : collaborative multimedia asset management system
-============================================================
+=====================================================================
+Telemeta : collaborative media asset management system for musicology
+=====================================================================
 
 .. image:: https://raw.githubusercontent.com/Parisson/Telemeta/master/telemeta/static/telemeta/images/logo_telemeta_2.png
     :alt: Telemeta logo
@@ -143,18 +143,17 @@ http://demo.telemeta.org
  * password: admin
 
 
-Install
-=======
+Get it
+======
 
 Thanks to Docker, Telemeta is now fully available as a docker composition ready to work. The docker based composition bundles some powerfull applications and modern frameworks out-of-the-box like: Python, Conda, Numpy, Jupyter, Gstreamer, Django, Celery, Haystack, ElasticSearch, MySQL, Redis, uWSGI, Nginx and many more.
 
-First, install `Docker <https://store.docker.com/search?offering=community&q=&type=edition>`_ and `docker-compose <https://docs.docker.com/compose/>`_
+First, install Git, `Docker <https://store.docker.com/search?offering=community&q=&type=edition>`_ and `docker-compose <https://docs.docker.com/compose/>`_
 
 Then clone Telemeta::
 
     git clone --recursive https://github.com/Parisson/Telemeta.git
     cd Telemeta
-    docker-compose build
 
 
 Start it up
@@ -177,16 +176,26 @@ Be **CAREFULL** in production:
 * Use a cron rule and the backup script to save your work periodically
 
 
+Daemonize
+=========
+
+**Linux only**
+
+On a production server, Telemeta can be automatically started as a daemon so that it is started during booting. Just execute the install script::
+
+  sudo ./install.py
+
+
 Backup / Restore
 ================
 
 To backup the database in the data/backup/ folder, run this in **another** terminal (or a Docker Quickstart Terminal)::
 
-    docker-compose run db /srv/scripts/sql/backup_db.sh
+    docker-compose run db /srv/bin/sql/backup_db.sh
 
 To restore the last backuped database from the data/backup/ folder, run this in **another** terminal (or a Docker Quickstart Terminal)::
 
-    docker-compose run db /srv/scripts/sql/restore_db.sh
+    docker-compose run db /srv/bin/sql/restore_db.sh
 
 If the app is broken after a restore script, restart the composition with::
 

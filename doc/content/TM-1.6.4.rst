@@ -3,7 +3,7 @@ Telemeta 1.6.4 is out!
 
 :category: Releases
 
-ChangeLig:
+ChangeLog:
 
    * Minor bug fixes and improvments
    * Fix HTML5 audio compatibility (#173) for the web audio player. The SoundManager Flash player fallback should not be used in most modern web browser. Media files are now serves through Nginx (#155) which enables to stream music with byte range requests.
