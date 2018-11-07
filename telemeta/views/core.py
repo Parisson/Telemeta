@@ -85,7 +85,7 @@ from telemeta.interop.oaidatasource import TelemetaOAIDataSource
 from telemeta.util.unaccent import unaccent
 from telemeta.util.unaccent import unaccent_icmp
 from telemeta.util.logger import Logger
-from telemeta.util.unicode import UnicodeWriter
+from telemeta.util.unicode import UnicodeCSVWriter, Echo
 from telemeta.cache import TelemetaCache
 import pages
 from telemeta.forms import *
@@ -98,8 +98,11 @@ mods = {'item': MediaItem, 'collection': MediaCollection,
 
 class TelemetaBaseMixin(object):
 
-    cache_data = TelemetaCache(settings.TELEMETA_DATA_CACHE_DIR)
-    cache_export = TelemetaCache(settings.TELEMETA_EXPORT_CACHE_DIR)
+    MEDIA_ROOT = getattr(settings, 'MEDIA_ROOT')
+    CACHE_DIR = os.path.join(MEDIA_ROOT, 'cache')
+    cache_data = TelemetaCache(getattr(settings, 'TELEMETA_DATA_CACHE_DIR', CACHE_DIR))
+    cache_export = TelemetaCache(getattr(settings, 'TELEMETA_EXPORT_CACHE_DIR', os.path.join(CACHE_DIR, 'export')))
+    cache_tmp = TelemetaCache(getattr(settings, 'FILE_UPLOAD_TEMP_DIR', os.path.join(MEDIA_ROOT, 'tmp')))
 
 
 class FixedFileWrapper(FileWrapper):

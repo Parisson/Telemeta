@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (c) 2015 Parisson SARL
+# Copyright (c) 2015-2016 Parisson SARL
 
 # This file is part of Telemeta.
 
@@ -9,7 +9,7 @@
 # the Free Software Foundation, either version 2 of the License, or
 # (at your option) any later version.
 
-# TimeSide is distributed in the hope that it will be useful,
+# Telemeta is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
@@ -22,86 +22,58 @@
 # Thomas Fillon <thomas@parisson.com>
 
 
-static:
-  image: debian:wheezy
+data:
+  image: debian:jessie
   volumes:
-    - /var/www/static
-  command: "true"
-
-log:
-  image: debian:wheezy
-  volumes:
-    - /var/log/nginx
-    - /var/log/postgres
-    - /var/log/mysql
-    - /var/log/uwsgi
-    - /var/log/elasticsearch
-  command: "true"
-
-lib:
-  image: debian:wheezy
-  volumes:
-    - /var/lib/rabbitmq
-    - /var/lib/postgres
-    - ./var/lib/mysql:/var/lib/mysql
-    - ./var/lib/elasticsearch:/var/lib/elasticsearch
-  command: "true"
-
-home:
-  image: debian:wheezy
-  volumes:
-    - ./examples/sandbox:/home/sandbox
+     - ./data/media/:/srv/media
+     - ./data/backup/:/srv/backup
+     - /srv/static
+     - /srv/bower
   command: "true"
 
 db:
-  image: mysql
+  image: mysql:5
+  volumes:
+    - ./data/var/lib/mysql/:/var/lib/mysql
+    - ./data/var/log/mysql/:/var/log/mysql
+    - ./scripts/:/srv/scripts
   volumes_from:
-    - lib
-    - log
-  environment:
-    - MYSQL_ROOT_PASSWORD=mysecretpassword
-    - MYSQL_DATABASE=sandbox
-    - MYSQL_USER=root
-    - MYSQL_PASSWORD=mysecretpassword
+    - data
+  env_file:
+    - app/sandbox/tm-docker-compose.env
 
-rabbitmq:
-  image: rabbitmq:3-management
-  ports:
-    - "15672:15672"
+broker:
+  image: redis
 
 search:
-  image: elasticsearch
-  volumes_from:
-    - lib
-    - log
+  image: elasticsearch:1
 
 app:
-  build: .
+  image: parisson/telemeta:1.6
   volumes:
-    - .:/opt/Telemeta
+    - ./app/:/srv/app
+    - ./telemeta/:/srv/src/telemeta/telemeta
   volumes_from:
-    - static
-    - home
-    - log
-  command: /bin/sh /opt/Telemeta/examples/deploy/start_app.sh
+    - data
+  env_file:
+    - app/sandbox/tm-docker-compose.env
+  command: /bin/sh deploy/start_app.sh
   ports:
-    - "9000:9000"
-  expose:
-    - "8000"
+    - "9001:9000"
   links:
-    - rabbitmq
+    - broker
     - db
     - search
 
 worker:
-  build: .
+  image: parisson/telemeta:1.6
   volumes_from:
     - app
-    - home
-    - log
-  command: /bin/sh /opt/Telemeta/examples/deploy/celery_app.sh
+  env_file:
+    - app/sandbox/tm-docker-compose.env
+  command: /bin/sh deploy/celery_app.sh
   links:
-    - rabbitmq
+    - broker
     - db
 
 nginx:
@@ -109,10 +81,19 @@ nginx:
   ports:
     - "8000:80"
   volumes:
-    - ./examples/deploy/nginx-app.conf:/etc/nginx/conf.d/default.conf
+    - ./app/deploy/nginx-app.conf:/etc/nginx/conf.d/default.conf
+    - ./var/log/nginx/:/var/log/nginx
   volumes_from:
-    - static
-    - home
-    - log
+    - data
   links:
     - app
+    - phpmyadmin
+
+phpmyadmin:
+    image: nazarpc/phpmyadmin
+    ports:
+      - "1234:80"
+    links:
+      - db:mysql
+    environment:
+      - ABSOLUTE_URI=http://localhost:8000/phpmyadmin/
