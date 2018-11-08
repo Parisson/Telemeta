@@ -27,11 +27,13 @@ from extra_views.generic import GenericInlineFormSet
 from django.forms.widgets import HiddenInput
 from django.utils.translation import ugettext_lazy as _
 
+
 class MediaFondsForm(ModelForm):
 
     queryset = MediaCorpus.objects.all()
-    widget = FilteredSelectMultiple("Corpus", True,)
-    children = forms.ModelMultipleChoiceField(widget=widget, queryset=queryset, label='Corpus')
+    widget = FilteredSelectMultiple("Corpus", is_stacked=False)
+    children = forms.ModelMultipleChoiceField(widget=widget, queryset=queryset,
+        label='Corpus', required=False)
 
     class Meta:
         model = MediaFonds
@@ -45,8 +47,9 @@ class MediaFondsForm(ModelForm):
 class MediaCorpusForm(ModelForm):
 
     queryset = MediaCollection.objects.all()
-    widget = FilteredSelectMultiple('Collections', False)
-    children = forms.ModelMultipleChoiceField(widget=widget, queryset=queryset,label='Collections')
+    widget = FilteredSelectMultiple('Collections', is_stacked=False)
+    children = forms.ModelMultipleChoiceField(widget=widget, queryset=queryset,
+        label='Collections', required=False)
 
     class Meta:
         model = MediaCorpus
@@ -101,6 +104,7 @@ class PlaylistForm(ModelForm):
 
     class Meta:
         model = Playlist
+        fields = '__all__'
 
 
 class FondsRelatedInline(InlineFormSet):
@@ -130,7 +134,8 @@ class ItemRelatedInline(InlineFormSet):
 class CollectionIdentifierInline(InlineFormSet):
 
     model = MediaCollectionIdentifier
-    max_num = 1
+    factory_kwargs = {'max_num': 1}
+    fields = '__all__'
 
 
 class ItemPerformanceInline(InlineFormSet):
@@ -142,20 +147,24 @@ class ItemPerformanceInline(InlineFormSet):
 class ItemKeywordInline(InlineFormSet):
 
     model = MediaItemKeyword
+    fields = '__all__'
 
 
 class ItemFormatInline(InlineFormSet):
 
     model = Format
-    max_num = 1
+    factory_kwargs = {'max_num': 1}
+    fields = '__all__'
 
 
 class ItemIdentifierInline(InlineFormSet):
 
     model = MediaItemIdentifier
-    max_num = 1
+    factory_kwargs = {'max_num': 1}
+    fields = '__all__'
 
 
 class EpubPasswordForm(forms.Form):
 
     password = forms.CharField(label=_('password'))
+    fields = '__all__'

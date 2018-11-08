@@ -48,29 +48,28 @@ class MediaItemQuerySet(CoreQuerySet):
         #     if 'CharField' in field_str or 'TextField' in field_str:
         #         q = q | word_search_q(field, pattern)
 
-        q = ( Q(code__contains=pattern) |
-            Q(old_code__contains=pattern) |
-            word_search_q('title', pattern) |
-            word_search_q('comment', pattern) |
-            self.by_fuzzy_collector_q(pattern) )
+        q = (Q(code__contains=pattern) |
+             Q(old_code__contains=pattern) |
+             word_search_q('title', pattern) |
+             word_search_q('comment', pattern) |
+             self.by_fuzzy_collector_q(pattern))
 
         return self.filter(q)
-
 
     def without_collection(self):
         "Find items which do not belong to any collection"
         return self.extra(
-            where = ["collection_id NOT IN (SELECT id FROM media_collections)"]);
+            where=["collection_id NOT IN (SELECT id FROM media_collections)"])
 
     def by_public_id(self, public_id):
         "Find items by public_id"
         return self.filter(public_id=public_id)
 
-    def by_recording_date(self, from_date, to_date = None):
+    def by_recording_date(self, from_date, to_date=None):
         "Find items by recording date"
         if to_date is None:
             return (self.filter(recorded_from_date__lte=from_date, recorded_to_date__gte=from_date))
-        else :
+        else:
             return (self.filter(Q(recorded_from_date__range=(from_date, to_date))
                                 | Q(recorded_to_date__range=(from_date, to_date))))
 
@@ -80,13 +79,13 @@ class MediaItemQuerySet(CoreQuerySet):
         return self.filter(word_search_q("title", pattern) |
                            (Q(title="") & word_search_q("collection__title", pattern)))
 
-    def by_publish_year(self, from_year, to_year = None):
+    def by_publish_year(self, from_year, to_year=None):
         "Find items by publishing year"
         if to_year is None:
             to_year = from_year
         return self.filter(collection__year_published__range=(from_year, to_year))
 
-    def by_change_time(self, from_time = None, until_time = None):
+    def by_change_time(self, from_time=None, until_time=None):
         "Find items by last change time"
         return self._by_change_time('item', from_time, until_time)
 
@@ -148,22 +147,22 @@ class MediaItemQuerySet(CoreQuerySet):
                 if not 'sqlite3' in engine and not 'postgresql_psycopg2' in engine:
                     related.append('collection')
                     qs = qs.extra(select={f:
-                        'IF(collector_from_collection, '
-                            'IF(media_collections.collector_is_creator, '
-                               'media_collections.creator, '
-                               'media_collections.collector),'
-                            'media_items.collector)'})
+                                          'IF(collector_from_collection, '
+                                          'IF(media_collections.collector_is_creator, '
+                                          'media_collections.creator, '
+                                          'media_collections.collector),'
+                                          'media_items.collector)'})
             elif f == 'country_or_continent':
                 related.append('location')
                 if not 'sqlite3' in engine and not 'postgresql_psycopg2' in engine:
                     qs = qs.extra(select={f:
-                        'IF(locations.type = ' + str(Location.COUNTRY) + ' '
-                        'OR locations.type = ' + str(Location.CONTINENT) + ','
-                        'locations.name, '
-                        '(SELECT l2.name FROM location_relations AS r INNER JOIN locations AS l2 '
-                        'ON r.ancestor_location_id = l2.id '
-                        'WHERE r.location_id = media_items.location_id AND l2.type = ' + str(Location.COUNTRY) + ' LIMIT 1))'
-                    })
+                                          'IF(locations.type = ' + str(Location.COUNTRY) + ' '
+                                          'OR locations.type = ' + str(Location.CONTINENT) + ','
+                                          'locations.name, '
+                                          '(SELECT l2.name FROM location_relations AS r INNER JOIN locations AS l2 '
+                                          'ON r.ancestor_location_id = l2.id '
+                                          'WHERE r.location_id = media_items.location_id AND l2.type = ' + str(Location.COUNTRY) + ' LIMIT 1))'
+                                          })
             else:
                 raise Exception("Unsupported virtual field: %s" % f)
 
@@ -173,7 +172,7 @@ class MediaItemQuerySet(CoreQuerySet):
         return qs
 
     def ethnic_groups(self):
-        ids = self.filter(ethnic_group__isnull=False).values('ethnic_group');
+        ids = self.filter(ethnic_group__isnull=False).values('ethnic_group')
         return EthnicGroup.objects.filter(pk__in=ids)
 
     @staticmethod
@@ -190,7 +189,7 @@ class MediaItemQuerySet(CoreQuerySet):
 
     def sound_public(self):
         return self.filter(Q(file__contains='/') | Q(url__contains='/'),
-                public_access='full', collection__public_access='full')
+                           public_access='full', collection__public_access='full')
 
     def by_instrument(self, name):
         "Find items by instrument"
@@ -204,55 +203,56 @@ class MediaItemQuerySet(CoreQuerySet):
             perf.append(performance)
         return self.filter(performances__in=perf).distinct()
 
+
 class MediaItemManager(CoreManager):
     "Manage media items queries"
 
-    def get_query_set(self):
+    def get_queryset(self):
         "Return media query sets"
         return MediaItemQuerySet(self.model)
 
     def enriched(self):
         "Query set with additional virtual fields such as apparent_collector and country_or_continent"
-        return self.get_query_set().virtual('apparent_collector', 'country_or_continent')
+        return self.get_queryset().virtual('apparent_collector', 'country_or_continent')
 
     def quick_search(self, *args, **kwargs):
-        return self.get_query_set().quick_search(*args, **kwargs)
+        return self.get_queryset().quick_search(*args, **kwargs)
     quick_search.__doc__ = MediaItemQuerySet.quick_search.__doc__
 
     def without_collection(self, *args, **kwargs):
-        return self.get_query_set().without_collection(*args, **kwargs)
+        return self.get_queryset().without_collection(*args, **kwargs)
     without_collection.__doc__ = MediaItemQuerySet.without_collection.__doc__
 
     def by_recording_date(self, *args, **kwargs):
-        return self.get_query_set().by_recording_date(*args, **kwargs)
+        return self.get_queryset().by_recording_date(*args, **kwargs)
     by_recording_date.__doc__ = MediaItemQuerySet.by_recording_date.__doc__
 
     def by_title(self, *args, **kwargs):
-        return self.get_query_set().by_title(*args, **kwargs)
+        return self.get_queryset().by_title(*args, **kwargs)
     by_title.__doc__ = MediaItemQuerySet.by_title.__doc__
 
     def by_publish_year(self, *args, **kwargs):
-        return self.get_query_set().by_publish_year(*args, **kwargs)
+        return self.get_queryset().by_publish_year(*args, **kwargs)
     by_publish_year.__doc__ = MediaItemQuerySet.by_publish_year.__doc__
 
     def by_change_time(self, *args, **kwargs):
-        return self.get_query_set().by_change_time(*args, **kwargs)
+        return self.get_queryset().by_change_time(*args, **kwargs)
     by_change_time.__doc__ = MediaItemQuerySet.by_change_time.__doc__
 
     def by_location(self, *args, **kwargs):
-        return self.get_query_set().by_location(*args, **kwargs)
+        return self.get_queryset().by_location(*args, **kwargs)
     by_location.__doc__ = MediaItemQuerySet.by_location.__doc__
 
     def sound(self, *args, **kwargs):
-        return self.get_query_set().sound(*args, **kwargs)
+        return self.get_queryset().sound(*args, **kwargs)
     sound.__doc__ = MediaItemQuerySet.sound.__doc__
 
     def sound_public(self, *args, **kwargs):
-        return self.get_query_set().sound_public(*args, **kwargs)
+        return self.get_queryset().sound_public(*args, **kwargs)
     sound_public.__doc__ = MediaItemQuerySet.sound_public.__doc__
 
     def by_instrument(self, *args, **kwargs):
-        return self.get_query_set().by_instrument(*args, **kwargs)
+        return self.get_queryset().by_instrument(*args, **kwargs)
     by_instrument.__doc__ = MediaItemQuerySet.by_instrument.__doc__
 
 
@@ -264,10 +264,10 @@ class MediaCollectionQuerySet(CoreQuerySet):
         pattern = pattern.strip()
         mod = MediaCollection()
         fields = mod.to_dict()
-        keys =  fields.keys()
+        keys = fields.keys()
         q = self.by_fuzzy_collector_q(pattern)
         for field in keys:
-            field_str = str(mod._meta.get_field(field))
+            field_str = repr(MediaCollection._meta.get_field(field))
             if 'CharField' in field_str or 'TextField' in field_str:
                 q = q | word_search_q(field, pattern)
         return self.filter(q)
@@ -282,7 +282,7 @@ class MediaCollectionQuerySet(CoreQuerySet):
             return (self.filter(recorded_from_year__lte=from_year, recorded_to_year__gte=from_year))
         else:
             return (self.filter(Q(recorded_from_year__range=(from_year, to_year)) |
-                    Q(recorded_to_year__range=(from_year, to_year))))
+                                Q(recorded_to_year__range=(from_year, to_year))))
 
     def by_publish_year(self, from_year, to_year=None):
         "Find collections by publishing year"
@@ -304,7 +304,7 @@ class MediaCollectionQuerySet(CoreQuerySet):
             if f == 'apparent_collector':
                 if not 'sqlite3' in engine and not 'postgresql_psycopg2' in engine:
                     qs = qs.extra(select={f: 'IF(media_collections.collector_is_creator, '
-                                         'media_collections.creator, media_collections.collector)'})
+                                          'media_collections.creator, media_collections.collector)'})
             else:
                 raise Exception("Unsupported virtual field: %s" % f)
 
@@ -312,11 +312,11 @@ class MediaCollectionQuerySet(CoreQuerySet):
 
     def recording_year_range(self):
         from_max = self.aggregate(Max('recorded_from_year'))['recorded_from_year__max']
-        to_max   = self.aggregate(Max('recorded_to_year'))['recorded_to_year__max']
+        to_max = self.aggregate(Max('recorded_to_year'))['recorded_to_year__max']
         year_max = max(from_max, to_max)
 
         from_min = self.filter(recorded_from_year__gt=0).aggregate(Min('recorded_from_year'))['recorded_from_year__min']
-        to_min   = self.filter(recorded_to_year__gt=0).aggregate(Min('recorded_to_year'))['recorded_to_year__min']
+        to_min = self.filter(recorded_to_year__gt=0).aggregate(Min('recorded_to_year'))['recorded_to_year__min']
         year_min = min(from_min, to_min)
 
         if not year_max:
@@ -358,36 +358,36 @@ class MediaCollectionQuerySet(CoreQuerySet):
 class MediaCollectionManager(CoreManager):
     "Manage collection queries"
 
-    def get_query_set(self):
+    def get_queryset(self):
         "Return the collection query"
         return MediaCollectionQuerySet(self.model)
 
     def enriched(self):
         "Query set with additional virtual fields such as apparent_collector"
-        return self.get_query_set().virtual('apparent_collector')
+        return self.get_queryset().virtual('apparent_collector')
 
     def quick_search(self, *args, **kwargs):
-        return self.get_query_set().quick_search(*args, **kwargs)
+        return self.get_queryset().quick_search(*args, **kwargs)
     quick_search.__doc__ = MediaCollectionQuerySet.quick_search.__doc__
 
     def by_location(self, *args, **kwargs):
-        return self.get_query_set().by_location(*args, **kwargs)
+        return self.get_queryset().by_location(*args, **kwargs)
     by_location.__doc__ = MediaCollectionQuerySet.by_location.__doc__
 
     def by_recording_year(self, *args, **kwargs):
-        return self.get_query_set().by_recording_year(*args, **kwargs)
+        return self.get_queryset().by_recording_year(*args, **kwargs)
     by_recording_year.__doc__ = MediaCollectionQuerySet.by_recording_year.__doc__
 
     def by_publish_year(self, *args, **kwargs):
-        return self.get_query_set().by_publish_year(*args, **kwargs)
+        return self.get_queryset().by_publish_year(*args, **kwargs)
     by_publish_year.__doc__ = MediaCollectionQuerySet.by_publish_year.__doc__
 
     def by_ethnic_group(self, *args, **kwargs):
-        return self.get_query_set().by_ethnic_group(*args, **kwargs)
+        return self.get_queryset().by_ethnic_group(*args, **kwargs)
     by_ethnic_group.__doc__ = MediaCollectionQuerySet.by_ethnic_group.__doc__
 
     def by_change_time(self, *args, **kwargs):
-        return self.get_query_set().by_change_time(*args, **kwargs)
+        return self.get_queryset().by_change_time(*args, **kwargs)
     by_change_time.__doc__ = MediaCollectionQuerySet.by_change_time.__doc__
 
     @staticmethod
@@ -395,11 +395,11 @@ class MediaCollectionManager(CoreManager):
         return unaccent_icmp(obj1.name, obj2.name)
 
     def sound(self, *args, **kwargs):
-        return self.get_query_set().sound(*args, **kwargs)
+        return self.get_queryset().sound(*args, **kwargs)
     sound.__doc__ = MediaCollectionQuerySet.sound.__doc__
 
     def by_instrument(self, *args, **kwargs):
-        return self.get_query_set().by_instrument(*args, **kwargs)
+        return self.get_queryset().by_instrument(*args, **kwargs)
     by_instrument.__doc__ = MediaCollectionQuerySet.by_instrument.__doc__
 
 
@@ -432,16 +432,16 @@ class LocationQuerySet(CoreQuerySet):
 
 class LocationManager(CoreManager):
 
-    def get_query_set(self):
+    def get_queryset(self):
         "Return location query set"
         return LocationQuerySet(self.model)
 
     def by_flatname(self, *args, **kwargs):
-        return self.get_query_set().by_flatname(*args, **kwargs)
+        return self.get_queryset().by_flatname(*args, **kwargs)
     by_flatname.__doc__ = LocationQuerySet.by_flatname.__doc__
 
     def flatname_map(self, *args, **kwargs):
-        return self.get_query_set().flatname_map(*args, **kwargs)
+        return self.get_queryset().flatname_map(*args, **kwargs)
     flatname_map.__doc__ = LocationQuerySet.flatname_map.__doc__
 
 
@@ -455,7 +455,7 @@ class MediaCorpusQuerySet(CoreQuerySet):
         pattern = pattern.strip()
         q = Q(code__contains=pattern)
         fields = mod.to_dict()
-        keys =  fields.keys()
+        keys = fields.keys()
 
         for field in keys:
             field_str = str(mod._meta.get_field(field))
@@ -468,12 +468,12 @@ class MediaCorpusQuerySet(CoreQuerySet):
 class MediaCorpusManager(CoreManager):
     "Manage media resource queries"
 
-    def get_query_set(self):
+    def get_queryset(self):
         "Return resource query sets"
         return MediaCorpusQuerySet(self.model)
 
     def quick_search(self, *args, **kwargs):
-        return self.get_query_set().quick_search(*args, **kwargs)
+        return self.get_queryset().quick_search(*args, **kwargs)
     quick_search.__doc__ = MediaCorpusQuerySet.quick_search.__doc__
 
 
@@ -487,7 +487,7 @@ class MediaFondsQuerySet(CoreQuerySet):
         pattern = pattern.strip()
         q = Q(code__contains=pattern)
         fields = mod.to_dict()
-        keys =  fields.keys()
+        keys = fields.keys()
         for field in keys:
             field_str = str(mod._meta.get_field(field))
             if 'CharField' in field_str or 'TextField' in field_str:
@@ -498,12 +498,12 @@ class MediaFondsQuerySet(CoreQuerySet):
 class MediaFondsManager(CoreManager):
     "Manage media resource queries"
 
-    def get_query_set(self):
+    def get_queryset(self):
         "Return resource query sets"
         return MediaFondsQuerySet(self.model)
 
     def quick_search(self, *args, **kwargs):
-        return self.get_query_set().quick_search(*args, **kwargs)
+        return self.get_queryset().quick_search(*args, **kwargs)
     quick_search.__doc__ = MediaFondsQuerySet.quick_search.__doc__
 
 
@@ -517,7 +517,7 @@ class InstrumentQuerySet(CoreQuerySet):
         pattern = pattern.strip()
         q = Q(code__contains=pattern)
         fields = mod.to_dict()
-        keys =  fields.keys()
+        keys = fields.keys()
         for field in keys:
             field_str = str(mod._meta.get_field(field))
             if 'CharField' in field_str or 'TextField' in field_str:
@@ -528,10 +528,10 @@ class InstrumentQuerySet(CoreQuerySet):
 class InstrumentManager(CoreManager):
     "Manage instrument queries"
 
-    def get_query_set(self):
+    def get_queryset(self):
         "Return instrument query sets"
         return InstrumentQuerySet(self.model)
 
     def quick_search(self, *args, **kwargs):
-        return self.get_query_set().quick_search(*args, **kwargs)
+        return self.get_queryset().quick_search(*args, **kwargs)
     quick_search.__doc__ = InstrumentQuerySet.quick_search.__doc__

@@ -26,7 +26,6 @@ from django.utils.translation import ugettext_lazy as _
 class Enumeration(ModelCore):
     "Abstract enumerations base class"
 
-    hidden = False
     value = CharField(_('value'), required=True, unique=True)
     notes = TextField(_('notes'))
 
@@ -36,8 +35,24 @@ class Enumeration(ModelCore):
     class Meta(MetaCore):
         abstract = True
 
+
 class MetaEnumeration(MetaCore):
     ordering = ['value']
+
+
+class EnumerationProperty(ModelCore):
+
+    enumeration_name = models.CharField(_('enumeration name'), max_length=255)
+    is_hidden = BooleanField(_('is hidden'), default=False)
+    is_admin = BooleanField(_('is admin'), default=True)
+
+    class Meta(MetaCore):
+        verbose_name = _("enumeration property")
+        verbose_name_plural = _("enumeration properties")
+
+    def __unicode__(self):
+        return self.enumeration_name
+
 
 class PhysicalFormat(Enumeration):
     "Collection physical format"
@@ -45,6 +60,7 @@ class PhysicalFormat(Enumeration):
     class Meta(MetaEnumeration):
         db_table = 'physical_formats'
         verbose_name = _("archive format")
+
 
 class PublishingStatus(Enumeration):
     "Collection publishing status"
@@ -55,12 +71,14 @@ class PublishingStatus(Enumeration):
         db_table = 'publishing_status'
         verbose_name = _("secondary edition")
 
+
 class AcquisitionMode(Enumeration):
     "Mode of acquisition of the collection"
 
     class Meta(MetaEnumeration):
         db_table = 'acquisition_modes'
         verbose_name = _("mode of acquisition")
+
 
 class MetadataAuthor(Enumeration):
     "Collection metadata author"
@@ -71,6 +89,7 @@ class MetadataAuthor(Enumeration):
         db_table = 'metadata_authors'
         verbose_name = _("record author")
 
+
 class MetadataWriter(Enumeration):
     "Collection metadata writer"
 
@@ -78,12 +97,14 @@ class MetadataWriter(Enumeration):
         db_table = 'metadata_writers'
         verbose_name = _("record writer")
 
+
 class LegalRight(Enumeration):
     "Collection legal rights"
 
     class Meta(MetaEnumeration):
         db_table = 'legal_rights'
         verbose_name = _("legal rights")
+
 
 class RecordingContext(Enumeration):
     "Collection recording context"
@@ -167,15 +188,12 @@ class EthnicGroupAlias(ModelCore):
 class TapeWheelDiameter(Enumeration):
     "Tape wheel diameter (cm)"
 
-
     class Meta(MetaEnumeration):
         db_table = 'tape_wheel_diameter'
         verbose_name = _("tape wheel diameter (cm)")
 
 class TapeLength(Enumeration):
     "Tape length (cm)"
-
-    hidden = True
 
     class Meta(MetaEnumeration):
         db_table = 'tape_length'
@@ -184,8 +202,6 @@ class TapeLength(Enumeration):
 class TapeWidth(Enumeration):
     "Tape width (inch)"
 
-    hidden = True
-
     class Meta(MetaEnumeration):
         db_table = 'tape_width'
         verbose_name = _("tape width (inch)")
@@ -193,15 +209,12 @@ class TapeWidth(Enumeration):
 class TapeSpeed(Enumeration):
     "Tape speed (cm/s)"
 
-    hidden = True
-
     class Meta(MetaEnumeration):
         db_table = 'tape_speed'
         verbose_name = _("tape speed (cm/s)")
 
 class TapeVendor(Enumeration):
     "Tape vendor"
-
 
     class Meta(MetaEnumeration):
         db_table = 'tape_vendor'
@@ -211,7 +224,6 @@ class TapeVendor(Enumeration):
 class NumberOfChannels(Enumeration):
     "Number of channels"
 
-
     class Meta(MetaEnumeration):
         db_table = 'original_channel_number'
         verbose_name = _("number of channels")
@@ -220,7 +232,6 @@ class NumberOfChannels(Enumeration):
 class Organization(Enumeration):
     "Organization"
 
-
     class Meta(MetaEnumeration):
         db_table = 'organization'
         verbose_name = _("Organization")
@@ -228,8 +239,6 @@ class Organization(Enumeration):
 
 class Rights(Enumeration):
     "Archive rights"
-
-    hidden = True
 
     class Meta(MetaEnumeration):
         db_table = 'rights'
@@ -288,6 +297,7 @@ class IdentifierType(Enumeration):
     class Meta(MetaEnumeration):
         db_table = 'identifier_type'
         verbose_name = _("identifier type")
+
 
 class ConservationSite(Enumeration):
     "Conservation site"

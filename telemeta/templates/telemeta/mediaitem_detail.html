@@ -33,9 +33,9 @@
         soundManager.flashVersion = 9;
         soundManager.url = "{{ STATIC_URL }}SoundManager2/swf/";
         soundManager.debugMode = false;
-        soundManager.allowPolling = true;
-        soundManager.useHTML5Audio = false;
+        soundManager.useHTML5Audio = true;
         soundManager.preferFlash = false;
+        soundManager.html5PollingInterval = 50;
 
         //initializing the visualizers to be passed to the player
         {% block graphers %}
@@ -61,23 +61,31 @@
     //playlists:
     {% if user.is_authenticated %}
         {% for playlist in playlists %}
-            playlistUtils.addPlaylist('{{ playlist.playlist.title }}','{{playlist.playlist.public_id}}');
+        	{% if forloop.counter0 in rang_item_playlist %}
+                	    playlistUtils.addPlaylist('{{ playlist.playlist.title }}'+ gettrans('(playlisted)'),'{{playlist.playlist.public_id}}');
+        	{% else %}
+        	            playlistUtils.addPlaylist('{{ playlist.playlist.title }}','{{playlist.playlist.public_id}}');
+        	{% endif %}
         {% endfor %}
             jQuery(window).ready(function(){
                 var anchor = jQuery('#_add_to_playlist');
                 if(anchor.length){
                     anchor.unbind('click').click(function(){
                         playlistUtils.showAddResourceToPlaylist(anchor,'item','{{item.id}}',gettrans('item added to the selected playlist'));
+                        //playlistUtils.showAddResourceToPlaylist(anchor,'item','{{item.id}}');
                         return false;
                     });
                 }
+                playlistUtils.messageOk();
             });
     {% endif %}
 </script>
 
 {% if "video" in mime_type %}
-<script src="{{ STATIC_URL }}video.js/dist/video.min.js" ></script>
-<link href="{{ STATIC_URL }}video.js/dist/video-js.min.css" rel="stylesheet">
+    {% comment %}
+        <script src="{{ STATIC_URL }}video-js/video.min.js" ></script>
+        <link href="{{ STATIC_URL }}video-js/video-js.min.css" rel="stylesheet">
+    {% endcomment %}
 {% endif %}
 
 {% endif %}
@@ -94,6 +102,7 @@
 {% endblock %}
 
 {% block title_buttons %}
+
 <div>
     <a href="{% url "telemeta-item-detail" previous %}">
       <button type="button" class="btn btn-default">

@@ -19,10 +19,12 @@
 
 # Authors: Olivier Guilyardi <olivier@samalyse.com>
 #          Guillaume Pellerin <yomguy@parisson.com>
-
+import telemeta
 
 from telemeta.views.core import *
+from telemeta.views.core import serve_media
 from telemeta.views.epub import *
+
 
 class CollectionView(object):
     """Provide Collections web UI methods"""
@@ -37,7 +39,7 @@ class CollectionView(object):
             title = ugettext('Collection') + ' : ' + public_id + ' : ' + mess
             description = ugettext('Please login or contact the website administator to get a private access.')
             messages.error(request, title)
-            return render(request, 'telemeta/messages.html', {'description' : description})
+            return render(request, 'telemeta/messages.html', {'description': description})
 
         playlists = get_playlists_names(request)
 
@@ -52,8 +54,8 @@ class CollectionView(object):
             last_revision = None
 
         return render(request, template, {'collection': collection, 'playlists': playlists,
-                'items': items, 'related_media': related_media,
-                'parents': parents, 'last_revision': last_revision })
+                                          'items': items, 'related_media': related_media,
+                                          'parents': parents, 'last_revision': last_revision})
 
     @method_decorator(permission_required('telemeta.change_mediacollection'))
     def collection_edit(self, request, public_id, template='telemeta/collection_edit.html'):
@@ -70,7 +72,7 @@ class CollectionView(object):
         else:
             form = MediaCollectionForm(instance=collection)
 
-        return render(request, template, {'collection': collection, "form": form,})
+        return render(request, template, {'collection': collection, "form": form, })
 
     @method_decorator(permission_required('telemeta.add_mediacollection'))
     def collection_add(self, request, template='telemeta/collection_add.html'):
@@ -87,7 +89,7 @@ class CollectionView(object):
         else:
             form = MediaCollectionForm(instance=collection)
 
-        return render(request, template, {'collection': collection, "form": form,})
+        return render(request, template, {'collection': collection, "form": form, })
 
     @method_decorator(permission_required('telemeta.add_mediacollection'))
     def collection_copy(self, request, public_id, template='telemeta/collection_edit.html'):
@@ -105,7 +107,7 @@ class CollectionView(object):
             collection = MediaCollection.objects.get(public_id=public_id)
             form = MediaCollectionForm(instance=collection)
 
-        return render(request, template, {'collection': collection, "form": form,})
+        return render(request, template, {'collection': collection, "form": form, })
 
     def collection_playlist(self, request, public_id, template, mimetype):
         try:
@@ -130,16 +132,13 @@ class CollectionView(object):
     def related_media_collection_stream(self, request, public_id, media_id):
         collection = MediaCollection.objects.get(public_id=public_id)
         media = MediaCollectionRelated.objects.get(collection=collection, id=media_id)
-        response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
-#        response['Content-Disposition'] = 'attachment'
+        response = serve_media(media.file.path, content_type=media.mime_type)
         return response
 
     def related_media_collection_download(self, request, public_id, media_id):
         collection = MediaCollection.objects.get(public_id=public_id)
         media = MediaCollectionRelated.objects.get(collection=collection, id=media_id)
-        filename = media.file.path.split(os.sep)[-1]
-        response = StreamingHttpResponse(stream_from_file(media.file.path), content_type=media.mime_type)
-        response['Content-Disposition'] = 'attachment; ' + 'filename=' + filename
+        response = serve_media(media.file.path, content_type=media.mime_type)
         return response
 
     @method_decorator(permission_required('telemeta.change_mediacollection'))
@@ -155,7 +154,7 @@ class CollectionView(object):
         else:
             formset = MediaCollectionRelatedFormSet(instance=collection)
 
-        return render(request, template, {'collection': collection, 'formset': formset,})
+        return render(request, template, {'collection': collection, 'formset': formset, })
 
 
 class CollectionZipView(View):
@@ -211,7 +210,7 @@ class CollectionZipView(View):
 
         response = StreamingHttpResponse(zip_file, content_type='application/zip')
         response['Content-Disposition'] = "attachment; filename=%s.%s" % \
-                                             (collection.code, 'zip')
+            (collection.code, 'zip')
         return response
 
     @method_decorator(login_required)
@@ -305,10 +304,11 @@ class CollectionEditView(CollectionViewMixin, UpdateWithInlinesView):
         messages.info(self.request, ugettext_lazy("You have successfully updated your collection."))
         obj = form.save()
         obj.set_revision(self.request.user)
+        self.code = obj.code
         return super(CollectionEditView, self).forms_valid(form, inlines)
 
     def get_success_url(self):
-        return reverse_lazy('telemeta-collection-detail', kwargs={'public_id':self.kwargs['public_id']})
+        return reverse_lazy('telemeta-collection-detail', kwargs={'public_id': self.code})
 
     def get_context_data(self, **kwargs):
         context = super(CollectionEditView, self).get_context_data(**kwargs)
@@ -333,7 +333,7 @@ class CollectionAddView(CollectionViewMixin, CreateWithInlinesView):
         return super(CollectionAddView, self).forms_valid(form, inlines)
 
     def get_success_url(self):
-        return reverse_lazy('telemeta-collection-detail', kwargs={'public_id':self.object.code})
+        return reverse_lazy('telemeta-collection-detail', kwargs={'public_id': self.object.code})
 
     @method_decorator(permission_required('telemeta.add_mediacollection'))
     def dispatch(self, *args, **kwargs):
@@ -356,7 +356,6 @@ class CollectionCopyView(CollectionAddView):
     @method_decorator(permission_required('telemeta.add_mediacollection'))
     def dispatch(self, *args, **kwargs):
         return super(CollectionCopyView, self).dispatch(*args, **kwargs)
-
 
 
 class CollectionEpubView(BaseEpubMixin, View):
@@ -383,3 +382,83 @@ class CollectionEpubView(BaseEpubMixin, View):
     def dispatch(self, *args, **kwargs):
         return super(CollectionEpubView, self).dispatch(*args, **kwargs)
 
+
+class CollectionEnumListView(CollectionListView):
+    template_name = "telemeta/collection_enum_list.html"
+
+
+    def get_context_data(self, **kwargs):
+        context = super(CollectionListView, self).get_context_data(**kwargs)
+        context['enum']=self.request.path[20:-6].split('/')[0]
+        context['id']=self.request.path[20:-6].split('/')[1]
+        context['count'] = self.object_list.count()
+        context['enum_name'] = CollectionEnumListView().get_enumeration(self.request.path.split('/')[3])._meta.verbose_name
+        context['enum_value'] = CollectionEnumListView().get_enumeration(self.request.path.split('/')[3]).objects.get(id__exact=self.request.path.split('/')[4])
+        return context
+
+    def get_queryset(self):
+        enumeration = self.get_enumeration(self.request.path[20:-6].split('/')[0])
+        queryset= self.get_coll(enumeration.objects.filter(id=self.request.path[20:-6].split('/')[1]).get())
+        return queryset
+
+    def get_coll(self, enum):
+        f = MediaCollection._meta.get_all_field_names()
+        for field in f:
+            if field in enum._meta.db_table.replace(" ", "_"):
+                atr = field;
+        atr = atr
+        lookup = "%s__exact" % atr
+        return MediaCollection.objects.filter(**{lookup: enum.__getattribute__("id")})
+
+    def get_enumeration(self,id):
+        from django.db.models import get_models
+        models = get_models(telemeta.models)
+        for model in models:
+            if model._meta.model_name == id:
+                break
+
+        if model._meta.model_name != id:
+            return None
+        return model
+
+
+class CollectionPublishedEnumListView(CollectionEnumListView):
+
+    def get_queryset(self):
+        c = CollectionEnumListView()
+        #id of value of enumeration
+        i= self.request.path.split('/')[4]
+        enumeration = c.get_enumeration(self.request.path.split('/')[3])
+        queryset = self.get_coll(enumeration.objects.filter(id=i).get(), c)
+        return queryset
+
+    def get_coll(self, enum,c):
+        return c.get_coll(enum).filter(code__contains='_E_')
+
+
+class CollectionUnpublishedEnumListView(CollectionEnumListView):
+
+    def get_queryset(self):
+        c = CollectionEnumListView()
+        #id of value of enumeration
+        i= self.request.path.split('/')[4]
+        enumeration = c.get_enumeration( self.request.path.split('/')[3])
+        queryset = self.get_coll(enumeration.objects.filter(id=i).get(), c)
+        return queryset
+
+    def get_coll(self, enum, c):
+        return c.get_coll(enum).filter(code__contains='_I_')
+
+
+class CollectionSoundEnumListView(CollectionEnumListView):
+    def get_queryset(self):
+        c = CollectionEnumListView()
+        #id of value of enumeration
+        i= self.request.path.split('/')[4]
+        enumeration = c.get_enumeration( self.request.path.split('/')[3])
+        queryset = self.get_coll(enumeration.objects.filter(id=i).get(), c)
+        return queryset
+
+    def get_coll(self, enum,c):
+        return c.get_coll(enum).sound().order_by('code', 'old_code')
+    

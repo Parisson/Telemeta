@@ -20,9 +20,44 @@
 # Authors: Olivier Guilyardi <olivier@samalyse.com>
 #          Guillaume Pellerin <yomguy@parisson.com>
 
+from django.views.generic.base import TemplateView
 
 from telemeta.views.core import *
 from saved_searches.models import SavedSearch
+from telemeta.views.enum import *
+
+class HomeIndexView(TemplateView):
+    template_name = "telemeta/home.html"
+
+    def get_context_data(self, **kwargs):
+        N = 3   # max number of pub items
+
+        sound_items = MediaItem.objects.sound_public()
+        count = sound_items.count()
+
+        if count == 0:
+            sound_pub_item = None
+            sound_pub_items = None
+
+        elif count == 1:
+            sound_pub_item = sound_items[0]
+            sound_pub_items = [sound_items[0], sound_items[0]]
+
+        elif count == 2:
+            sound_pub_item = sound_items[0]
+            sound_pub_items = [sound_items[0], sound_items[1]]
+
+        elif count > 2:
+            indexes = random.sample(range(count - 1), N)
+            sound_pub_item = sound_items[indexes[0]]
+            sound_pub_items = [sound_items[indexes[i]] for i in range(1, N)]
+
+        context = {'page_content': pages.get_page_content(self.request,
+                                                          'home', ignore_slash_issue=True),
+                   'sound_pub_items': sound_pub_items,
+                   'sound_pub_item': sound_pub_item}
+
+        return context
 
 
 class HomeView(object):
@@ -51,45 +86,46 @@ class HomeView(object):
             sound_pub_items = [sound_items[0], sound_items[1]]
 
         elif count > 2:
-            indexes = random.sample(range(count-1), N)
+            indexes = random.sample(range(count - 1), N)
             sound_pub_item = sound_items[indexes[0]]
             sound_pub_items = [sound_items[indexes[i]] for i in range(1, N)]
 
-        context = RequestContext(request, {
-                    'page_content': pages.get_page_content(request,
-                    'home', ignore_slash_issue=True),
-                    'sound_pub_items': sound_pub_items,
-                    'sound_pub_item': sound_pub_item })
-        return HttpResponse(template.render(context))
+        context = {'page_content': pages.get_page_content(request,
+                                                          'home', ignore_slash_issue=True),
+                   'sound_pub_items': sound_pub_items,
+                   'sound_pub_item': sound_pub_item}
+        return HttpResponse(template.render(context, request))
 
-    def lists(self, request):
+    def lists(self, request, range_playlist):
         """Render the home page"""
 
         if request.user.is_authenticated():
-            template='telemeta/lists.html'
+            template = 'telemeta/lists.html'
             playlists = get_playlists(request)
             revisions = get_revisions(100)
             user_revisions = get_revisions(25, request.user)
+            # if range_playlist is None:
+            #    range_playlist = 0
             return render(request, template, {'playlists': playlists,
-                                              'revisions': revisions, 'user_revisions': user_revisions })
+                                              'revisions': revisions, 'user_revisions': user_revisions, 'last_playlist': range_playlist})
         else:
             template = 'telemeta/messages.html'
             mess = ugettext('Access not allowed')
             title = ugettext('Lists') + ' : ' + mess
             description = ugettext('Please login or contact the website administator to get a private access.')
             messages.error(request, title)
-            return render(request, template, {'description' : description})
+            return render(request, template, {'description': description})
 
     def handle_oai_request(self, request):
         host = request.META['HTTP_HOST']
-        datasource  = TelemetaOAIDataSource()
+        datasource = TelemetaOAIDataSource()
         repository_name = settings.TELEMETA_ORGANIZATION
-        url         = 'http://' + host + request.path
-        admin       = settings.ADMINS[0][1]
-        provider    = oai.DataProvider(datasource, repository_name, url, admin)
-        args        = request.GET.copy()
+        url = 'http://' + host + request.path
+        admin = settings.ADMINS[0][1]
+        provider = oai.DataProvider(datasource, repository_name, url, admin)
+        args = request.GET.copy()
         args.update(request.POST)
-        return HttpResponse(provider.handle(args), mimetype='text/xml')
+        return HttpResponse(provider.handle(args), content_type='text/xml')
 
     def render_flatpage(self, request, path):
         try:
@@ -100,7 +136,7 @@ class HomeView(object):
         if isinstance(content, pages.PageAttachment):
             return HttpResponse(content, content.mimetype())
         else:
-            return render(request, 'telemeta/flatpage.html', {'page_content': content })
+            return render(request, 'telemeta/flatpage.html', {'page_content': content})
 
     def logout(self, request):
         auth.logout(request)

@@ -44,7 +44,7 @@ from telemeta.models.fields import *
 from telemeta.util.kdenlive_session import *
 from telemeta.util.unaccent import unaccent_icmp
 from xml.dom.minidom import getDOMImplementation
-
+from dirtyfields import DirtyFieldsMixin
 
 PUBLIC_ACCESS_CHOICES = (('none', _('none')), ('metadata', _('metadata')),
                          ('mixed', _('mixed')), ('full', _('full')))
@@ -72,52 +72,7 @@ app_name = 'telemeta'
 strict_code = getattr(settings, 'TELEMETA_STRICT_CODE', False)
 
 
-class EnhancedQuerySet(models.query.QuerySet):
-    """QuerySet with added functionalities such as WeakForeignKey handling"""
-
-    def delete(self):
-        CHUNK=1024
-        objects = self.model._meta.get_all_related_objects()
-        ii = self.count()
-        values = self.values_list('pk')
-        for related in objects:
-            i = 0
-            while i < ii:
-                ids = [v[0] for v in values[i:i + CHUNK]]
-                filter = {related.field.name + '__pk__in': ids}
-                q = related.model.objects.filter(**filter)
-                if isinstance(related.field, WeakForeignKey):
-                    update = {related.field.name: None}
-                    q.update(**update)
-                else:
-                    q.delete()
-
-                i += CHUNK
-
-        super(EnhancedQuerySet, self).delete()
-
-
-class EnhancedManager(models.Manager):
-    """Manager which is bound to EnhancedQuerySet"""
-    def get_query_set(self):
-        return EnhancedQuerySet(self.model)
-
-
-class EnhancedModel(models.Model):
-    """Base model class with added functionality. See EnhancedQuerySet"""
-
-    objects = EnhancedManager()
-
-    def delete(self):
-        if not self.pk:
-            raise Exception("Can't delete without a primary key")
-        self.__class__.objects.filter(pk=self.pk).delete()
-
-    class Meta:
-        abstract = True
-
-
-class ModelCore(EnhancedModel):
+class ModelCore(models.Model, DirtyFieldsMixin):
 
     @classmethod
     def required_fields(cls):
@@ -159,7 +114,7 @@ class ModelCore(EnhancedModel):
         fields = self.to_dict()
         for name, value in fields.iteritems():
             element = doc.createElement(self.get_dom_field_name(name))
-            if isinstance(value, EnhancedModel):
+            if isinstance(value, ModelCore):
                 element.setAttribute('key', str(value.pk))
             value = unicode(value)
             element.appendChild(doc.createTextNode(value))
@@ -202,7 +157,7 @@ class MetaCore:
 
 
 
-class CoreQuerySet(EnhancedQuerySet):
+class CoreQuerySet(models.query.QuerySet):
     "Base class for all query sets"
 
     def none(self): # redundant with none() in recent Django svn
@@ -229,7 +184,7 @@ class CoreQuerySet(EnhancedQuerySet):
         return qs
 
 
-class CoreManager(EnhancedManager):
+class CoreManager(models.Manager):
     "Base class for all models managers"
 
     def none(self, *args, **kwargs):

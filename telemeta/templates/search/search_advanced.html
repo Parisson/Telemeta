@@ -3,14 +3,33 @@
 {% load i18n %}
 {% load bootstrap_pagination %}
 
-
 {% block title %}
 {% trans "Search" %}
 {% endblock %}
+
 {% block extra_stylesheets %}
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/css/jquery-ui.css" />
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/css/search.css" />
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}telemeta/css/lists_sorttable.css" media="print, projection, screen"/>
 {% endblock %}
+
+{% block extra_javascript %}
+    <script src="{{ STATIC_URL }}jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}tablesorter/jquery.tablesorter.min.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}telemeta/js/advanceSearch.js" type="text/javascript"></script>
+    <script>
+        $(function(){
+            $("#results-per-page").selectmenu({
+                icons : {button: "ui-icon-carat-2-n-s"},
+                change : function(){
+                    window.location = '?q={{request.GET.q}}&location={{request.GET.location}}&ethnic_group={{request.GET.ethnic_group}}&instruments={{request.GET.instruments}}&year_published_from={{request.GET.year_published_from}}&year_published_to={{request.GET.year_published_to}}&media_type={{request.GET.media_type}}&viewable={{request.GET.viewable}}&collectors={{request.GET.collectors}}&recorded_from_date={{request.GET.recorded_from_date}}&recorded_to_date={{request.GET.recorded_to_date}}&item_status={{request.GET.item_status}}&recording_context={{request.GET.recording_context}}&physical_format={{request.GET.physical_format}}&code={{ request.GET.code }}&page=1&results_page='+$(this).val();
+                }
+            }).selectmenu("menuWidget").addClass("overflow");
+
+        });
+    </script>
+{% endblock %}
+
 {% block content %}
     <form method="get" action=".">
         <div class="row">
@@ -37,8 +56,9 @@
                 </div>
                 <div class="fieldWrapper">
                     {{form.instruments.errors}}
-                    {% trans form.instruments.label_tag %}</br>
+                    {% trans form.instruments.label_tag %}
                     {{form.instruments}}
+                    {% comment %}<a href="#" id="btn" class="col-md-5 btn btn-default" style="width: 100%; margin-top: 1%">{% trans "Instruments : Boolean Search" %}</a>{% endcomment %}
                 </div>
 
                 <div class="fieldWrapper">
@@ -151,23 +171,23 @@
             <div class="row" style="margin-left:-15px">
                 <div class="col-md-4">
                     {% ifequal type 'item' %}
-                         <p><b>Items ({{item_count}}) | <a href="{% url "haystack_advance_search_type" "collection" %}?{{request.GET.urlencode}}">Collections ({{collection_count}})</a> | <a href="{% url "haystack_advance_search_type" "corpus" %}?{{request.GET.urlencode}}">Corpus ({{corpus_count}})</a> | <a href="{% url "haystack_advance_search_type" "fonds" %}?{{request.GET.urlencode}}">Fonds ({{fonds_count}})</a></b></p>
+                         <p><b>Items ({{item_count}}) | <a href="{% url "haystack_advance_search_type" "collection" %}?{{request_url}}">Collections ({{collection_count}})</a> | <a href="{% url "haystack_advance_search_type" "corpus" %}?{{request_url}}">Corpus ({{corpus_count}})</a> | <a href="{% url "haystack_advance_search_type" "fonds" %}?{{request_url}}">Fonds ({{fonds_count}})</a></b></p>
                     {% else %}
                         {% ifequal type 'corpus' %}
-                            <p><b><a href="{% url "haystack_advance_search_type" "item" %}?{{request.GET.urlencode}}">Items ({{item_count}}) </a>| <a href="{% url "haystack_advance_search_type" "collection" %}?{{request.GET.urlencode}}">Collections ({{collection_count}})</a> | Corpus ({{corpus_count}})</a> | <a href="{% url "haystack_advance_search_type" "fonds" %}?{{request.GET.urlencode}}">Fonds ({{fonds_count}})</a></b></p>
+                            <p><b><a href="{% url "haystack_advance_search_type" "item" %}?{{request_url}}">Items ({{item_count}}) </a>| <a href="{% url "haystack_advance_search_type" "collection" %}?{{request_url}}">Collections ({{collection_count}})</a> | Corpus ({{corpus_count}})</a> | <a href="{% url "haystack_advance_search_type" "fonds" %}?{{request_url}}">Fonds ({{fonds_count}})</a></b></p>
                         {% else %}
                             {% ifequal type 'fonds' %}
-                                <p><b><a href="{% url "haystack_advance_search_type" "item" %}?{{request.GET.urlencode}}">Items ({{item_count}}) </a>| <a href="{% url "haystack_advance_search_type" "collection" %}?{{request.GET.urlencode}}">Collections ({{collection_count}})</a> | <a href="{% url "haystack_advance_search_type" "corpus" %}?{{request.GET.urlencode}}">Corpus ({{corpus_count}})</a> | Fonds ({{fonds_count}})</b></p>
+                                <p><b><a href="{% url "haystack_advance_search_type" "item" %}?{{request_url}}">Items ({{item_count}}) </a>| <a href="{% url "haystack_advance_search_type" "collection" %}?{{request_url}}">Collections ({{collection_count}})</a> | <a href="{% url "haystack_advance_search_type" "corpus" %}?{{request_url}}">Corpus ({{corpus_count}})</a> | Fonds ({{fonds_count}})</b></p>
                             {% else %}
                                 {% ifequal type 'collection'%}
-                                    <p><b><a href="{% url "haystack_advance_search_type" "item" %}?{{request.GET.urlencode}}">Items ({{item_count}}) </a>| Collections ({{collection_count}}) | <a href="{% url "haystack_advance_search_type" "corpus" %}?{{request.GET.urlencode}}">Corpus ({{corpus_count}})</a> | <a href="{% url "haystack_advance_search_type" "fonds" %}?{{request.GET.urlencode}}">Fonds ({{fonds_count}})</a></b></p>
+                                    <p><b><a href="{% url "haystack_advance_search_type" "item" %}?{{request_url}}">Items ({{item_count}}) </a>| Collections ({{collection_count}}) | <a href="{% url "haystack_advance_search_type" "corpus" %}?{{request_url}}">Corpus ({{corpus_count}})</a> | <a href="{% url "haystack_advance_search_type" "fonds" %}?{{request_url}}">Fonds ({{fonds_count}})</a></b></p>
                                 {% endifequal %}
                             {% endifequal %}
                         {% endifequal %}
                     {% endifequal %}
                  </div>
-                 <div class="col-md-4 col-md-offset-4" >
-                    <div class="pull-right"">
+                 <div class="col-md-4 col-md-offset-4">
+                    <div class="pull-right">
                         <label style="display:inline-block;vertical-align:middle">{% trans "results per page"%}:</label>
                         <div style="display:inline-block;vertical-align:middle">
                             <select id="results-per-page" name="results_page">
@@ -233,19 +253,39 @@
             <div id="results"></div>{# Show some example queries to run, maybe query syntax, something else? #}
         {% endif %}
 
-{% endblock %}
-{% block extra_javascript %}
-    <script src="{{ STATIC_URL }}jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
-    <script src="{{ STATIC_URL }}telemeta/js/advanceSearch.js" type="text/javascript"></script>
-    <script>
-        $(function(){
-            $("#results-per-page").selectmenu({
-                icons : {button: "ui-icon-carat-2-n-s"},
-                change : function(){
-                    window.location = '?q={{request.GET.q}}&location={{request.GET.location}}&ethnic_group={{request.GET.ethnic_group}}&instruments={{request.GET.instruments}}&year_published_from={{request.GET.year_published_from}}&year_published_to={{request.GET.year_published_to}}&media_type={{request.GET.media_type}}&viewable={{request.GET.viewable}}&collectors={{request.GET.collectors}}&recorded_from_date={{request.GET.recorded_from_date}}&recorded_to_date={{request.GET.recorded_to_date}}&item_status={{request.GET.item_status}}&recording_context={{request.GET.recording_context}}&physical_format={{request.GET.physical_format}}&code={{ request.GET.code }}&page=1&results_page='+$(this).val();
-                }
-            }).selectmenu("menuWidget").addClass("overflow");
+    {% comment %}
 
-        });
-    </script>
+        <div id="dialog" title="{% trans "Instruments : Boolean Search" %}">
+
+            <form>
+
+                {{ booleanForm.management_form}}
+                {% for form in booleanForm %}
+                    {% if forloop.counter0 == 0 %}
+                        <span style="margin-left: 13.5%">{{ form.start_bracket }}</span>
+                        {{ form.text_field }}
+                        {{ form.end_bracket }}
+                    {% else %}
+                        {% if forloop.counter0 == 1 %}
+                        <div id="copy">
+                        {% endif %}
+                            {{ form.as_p }}
+                        {% if forloop.counter0 == 1 %}
+                        </div>
+                        {% endif %}
+                    {% endif %}
+
+                {% endfor %}
+                <a class="btn btn-default" id="add" href="#">{% trans "Add field" %}</a>
+                <br/><input type="submit" value="{% trans "Validate the query" %}">
+
+
+            </form>
+
+        <p id="res"></p>
+
+        </div>
+
+        {% endcomment %}
+
 {% endblock %}

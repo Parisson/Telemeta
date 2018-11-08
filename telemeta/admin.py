@@ -21,7 +21,7 @@ class MediaCollectionRelatedInline(admin.StackedInline):
 
 class MediaCollectionIdentifierInline(admin.StackedInline):
     model = MediaCollectionIdentifier
-    max_num = 1
+    factory_kwargs = {'max_num': 1}
 
 class MediaCollectionAdmin(admin.ModelAdmin):
     search_fields = ['title', 'code']
@@ -40,7 +40,7 @@ class MediaItemTranscodedInline(admin.StackedInline):
 
 class MediaItemIdentifierInline(admin.StackedInline):
     model = MediaItemIdentifier
-    max_num = 1
+    factory_kwargs = {'max_num': 1}
 
 class MediaItemAdmin(admin.ModelAdmin):
     search_fields = ['title', 'code']
@@ -103,6 +103,10 @@ class UserProfileAdmin(UserAdmin):
 class PlaylistAdmin(admin.ModelAdmin):
     search_fields = ['title', 'public_id']
 
+class EnumerationPropertyAdmin(admin.ModelAdmin):
+    list_display = ['enumeration_name', 'is_admin', 'is_hidden']
+
+
 admin.site.register(MediaFonds, MediaFondsAdmin)
 admin.site.register(MediaCorpus, MediaCorpusAdmin)
 admin.site.register(MediaCollection, MediaCollectionAdmin)
@@ -129,3 +133,5 @@ admin.site.register(User, UserProfileAdmin)
 
 admin.site.register(PublisherCollection)
 admin.site.register(Playlist, PlaylistAdmin)
+
+admin.site.register(EnumerationProperty, EnumerationPropertyAdmin)

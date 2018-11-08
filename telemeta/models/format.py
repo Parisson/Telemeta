@@ -46,15 +46,15 @@ class Format(ModelCore):
     #original_location     = ForeignKey('Location', related_name="format",
     #                                   verbose_name = _("original location"),
     #                                   blank=True, null=True, on_delete=models.SET_NULL)
-    original_location     = WeakForeignKey(ConservationSite, related_name="format", verbose_name=_('conservation site'))
-    physical_format       = WeakForeignKey(PhysicalFormat, related_name="format",
+    original_location     = ForeignKey(ConservationSite, related_name="format", verbose_name=_('conservation site'))
+    physical_format       = ForeignKey(PhysicalFormat, related_name="format",
                                      verbose_name = _("physical format"))
-    tape_vendor         = WeakForeignKey(TapeVendor, related_name="format",
+    tape_vendor         = ForeignKey(TapeVendor, related_name="format",
                                         verbose_name = _("tape vendor"))
     tape_reference      = CharField(_('tape reference'))
     sticker_presence    = BooleanField(_('sticker presence'))
     tape_thickness      = CharField(_('tape thickness (um)'))
-    tape_wheel_diameter = WeakForeignKey(TapeWheelDiameter, related_name="format",
+    tape_wheel_diameter = ForeignKey(TapeWheelDiameter, related_name="format",
                                         verbose_name = _("tape wheel diameter (cm)"))
     original_state        = TextField(_('technical properties / conservation state'))
     recording_system      = CharField(_('recording system'))
@@ -63,12 +63,28 @@ class Format(ModelCore):
 
     original_number       = CharField(_('original number'))
     original_comments     = TextField(_('comments / notes'))
-    original_channels     = WeakForeignKey(NumberOfChannels, related_name="format",
-                                        verbose_name = _("number of channels"))
+    original_location     = ForeignKey('Location', related_name="format",
+                                       verbose_name = _("original location"),
+                                       blank=True, null=True, on_delete=models.SET_NULL)
+    original_channels     = ForeignKey(NumberOfChannels, related_name="format",
+                                       verbose_name = _("number of channels"),
+                                       blank=True, null=True, on_delete=models.SET_NULL)
+    original_audio_quality = TextField(_('audio quality'))
+    recording_system      = CharField(_('recording system'))
 
     # Tapes
-    tape_speed          = WeakForeignKey(TapeSpeed, related_name="format",
-                                        verbose_name = _("tape speed (cm/s)"))
+    tape_wheel_diameter = ForeignKey(TapeWheelDiameter, related_name="format",
+                                     verbose_name = _("tape wheel diameter (cm)"),
+                                     blank=True, null=True, on_delete=models.SET_NULL)
+    tape_thickness      = CharField(_('tape thickness (um)'))
+    tape_speed          = ForeignKey(TapeSpeed, related_name="format",
+                                     verbose_name = _("tape speed (cm/s)"),
+                                     blank=True, null=True, on_delete=models.SET_NULL)
+    tape_vendor         = ForeignKey(TapeVendor, related_name="format",
+                                     verbose_name = _("tape vendor"),
+                                     blank=True, null=True, on_delete=models.SET_NULL)
+    tape_reference      = CharField(_('tape reference'))
+    sticker_presence    = BooleanField(_('sticker presence'))
 
     class Meta(MetaCore):
         db_table = 'media_formats'

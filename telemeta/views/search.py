@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright (C) 2015 Angy Fils-Aimé, Killian Mary
 
 # This file is part of Telemeta.
@@ -19,10 +18,14 @@
 
 
 from haystack.views import *
-from haystack.query import SearchQuerySet
+from haystack.query import SearchQuerySet, SQ
 from telemeta.models import *
 from telemeta.forms.haystack_form import *
 from saved_searches.views import SavedSearchView
+import re
+import unicodedata
+import simplejson as json
+from django.http import HttpResponse
 
 
 class HaystackSearch(FacetedSearchView, SavedSearchView):
@@ -33,7 +36,6 @@ class HaystackSearch(FacetedSearchView, SavedSearchView):
         self.type = type
         self.form_class = HaySearchForm
         self.selected_facet = self.selected_facet_list(request.GET.getlist('selected_facets', ['a']))
-        print(self.selected_facet)
         if request.GET.get('results_page'):
             self.results_per_page = int(request.GET.get('results_page'))
         else:
@@ -44,11 +46,11 @@ class HaystackSearch(FacetedSearchView, SavedSearchView):
         return super(HaystackSearch, self).get_query()
 
     def get_results(self):
-        if(self.type == 'item'):
+        if (self.type == 'item'):
             return super(HaystackSearch, self).get_results().models(MediaItem)
-        elif(self.type == 'corpus'):
+        elif (self.type == 'corpus'):
             return super(HaystackSearch, self).get_results().models(MediaCorpus)
-        elif(self.type == 'fonds'):
+        elif (self.type == 'fonds'):
             return super(HaystackSearch, self).get_results().models(MediaFonds)
         else:
             return super(HaystackSearch, self).get_results().models(MediaCollection)
@@ -86,7 +88,8 @@ class HaystackSearch(FacetedSearchView, SavedSearchView):
 
             extra['Published_count'] = self.get_results().narrow('item_status:Published').count()
             extra['Unpublished_count'] = self.get_results().narrow('item_status:Unpublished').count()
-            extra['viewable_count'] = self.get_results().narrow('item_acces:full OR item_acces:mixed').narrow('digitized:T').count()
+            extra['viewable_count'] = self.get_results().narrow('item_acces:full OR item_acces:mixed').narrow(
+                'digitized:T').count()
             extra['digitized_count'] = self.get_results().narrow('digitized:T').count()
             extra['CDR_count'] = self.get_results().narrow('physical_format:CDR').count()
             extra['Disque_count'] = self.get_results().narrow('physical_format:Disque').count()
@@ -111,13 +114,8 @@ class HaystackSearch(FacetedSearchView, SavedSearchView):
         extra['results_page'] = self.results_per_page
         return extra
 
-    #def auto_complete(request):
-        #content = SearchQuerySet().autocomplete(content_auto=request.POST.get('seatch_text', ''))
-        #return render_to_response('', {'content' : content])
-
 
 class HaystackAdvanceSearch(SavedSearchView):
-
     search_key = 'advanced'
 
     def __call__(self, request, type=None):
@@ -126,20 +124,21 @@ class HaystackAdvanceSearch(SavedSearchView):
             self.results_per_page = int(request.GET.get('results_page'))
         else:
             self.results_per_page = 20
+        self.requestURL = re.sub('&page=\d+', '&page=1', request.GET.urlencode())
         return super(HaystackAdvanceSearch, self).__call__(request)
 
     def get_query(self):
-        #overwrite the get_query for begin search with any form
+        # overwrite the get_query for begin search with any form
         if self.form.is_valid():
             return self.form.cleaned_data
         return ''
 
     def get_results(self):
-        if(self.type == 'item'):
+        if (self.type == 'item'):
             return self.form.search().models(MediaItem)
-        elif(self.type == 'fonds'):
+        elif (self.type == 'fonds'):
             return self.form.search().models(MediaFonds)
-        elif(self.type == 'corpus'):
+        elif (self.type == 'corpus'):
             return self.form.search().models(MediaCorpus)
         else:
             return self.form.search().models(MediaCollection)
@@ -153,12 +152,56 @@ class HaystackAdvanceSearch(SavedSearchView):
 
         if self.type == 'item':
             extra['type'] = 'item'
-        elif  self.type == 'fonds':
+        elif self.type == 'fonds':
             extra['type'] = 'fonds'
-        elif(self.type == 'corpus'):
+        elif (self.type == 'corpus'):
             extra['type'] = 'corpus'
         else:
             extra['type'] = 'collection'
 
         extra['results_page'] = self.results_per_page
+        #extra['booleanForm'] = formset_factory(BooleanSearch, extra=2)
+        extra['request_url'] = self.requestURL
         return extra
+
+
+def autocomplete(request):
+    attribut = request.GET.get('attr', '')
+    sqs = SearchQuerySet().load_all()
+    if attribut == "code":
+        sqs = sqs.filter(code__contains=request.GET.get('q', ''))
+        suggestions = [result.code for result in sqs]
+
+    elif attribut == "collectors":
+        sqs = sqs.filter(collectors__startswith=request.GET.get('q', ''))
+        collecteurs = [result.collectors for result in sqs]
+        suggestions = []
+        for chaine in collecteurs:
+            for word in chaine.split('; '):
+                if word != "" and escape_accent_and_lower(request.GET.get('q', '')) in escape_accent_and_lower(word):
+                    suggestions.append(word)
+    elif attribut == "location" or attribut == "instruments":
+        sqs = SearchQuerySet().using('autocomplete')
+
+        if attribut == "location":
+            sqs = sqs.models(Location, LocationAlias)
+        else:
+            sqs = sqs.models(Instrument, InstrumentAlias)
+        sqs = sqs.filter(content__startswith=request.GET.get('q', ''))
+        suggestions = [obj.text for obj in sqs]
+    else:
+        suggestions = []
+
+    if request.GET.get('attr', '') != 'code':
+        suggestions = list(set([word.strip().lower().title() for word in suggestions]))
+    else:
+        suggestions = list(set(suggestions))
+    suggestions.sort()
+
+    the_data = json.dumps({
+        'results': suggestions
+    })
+    return HttpResponse(the_data, content_type='application/json')
+
+def escape_accent_and_lower(chaine):
+    return unicodedata.normalize('NFD', chaine).encode('ascii', 'ignore').lower()

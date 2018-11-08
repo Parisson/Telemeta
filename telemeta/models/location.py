@@ -38,8 +38,8 @@ class Location(ModelCore):
     name             = CharField(_('name'), unique=True, max_length=150, required=True)
     type             = IntegerField(_('type'), choices=TYPE_CHOICES, default=OTHER_TYPE, db_index=True)
     complete_type    = ForeignKey('LocationType', related_name="locations", verbose_name=_('complete type'))
-    current_location = WeakForeignKey('self', related_name="past_names",
-                                      verbose_name=_('current location'))
+    current_location = ForeignKey('self', related_name="past_names",
+                                  verbose_name=_('current location'), blank=True, null=True, on_delete=models.SET_NULL)
     latitude         = FloatField(null=True)
     longitude        = FloatField(null=True)
     is_authoritative = BooleanField(_('authoritative'))
@@ -191,6 +191,7 @@ class LocationRelation(ModelCore):
 class LocationForm(ModelForm):
     class Meta:
         model = Location
+        fields = '__all__'
 
     def __init__(self, *args, **kwds):
         super(LocationForm, self).__init__(*args, **kwds)

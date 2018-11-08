@@ -14,6 +14,9 @@ var localeStrings = {
     'delete the collection permanently?' : gettext('delete the collection permanently?'),
     'delete the playlist permanently?' : gettext('delete the playlist permanently?'),
     'delete the resource from the playlist permanently?' : gettext('delete the resource from the playlist permanently?'),
+    'delete field' : gettext('delete field'),
+    'final query' : gettext('final query'),
+    '(playlisted)' : gettext('(playlisted)'),
 };
 
 function gettrans(str){

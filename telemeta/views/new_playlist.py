@@ -5,7 +5,7 @@ import uuid
 
 class NewPlaylistView(object):
 
-    def display(self, request, type=None):
+    def display(self, request, type="item"):
 
         self.type=type
 
@@ -58,5 +58,3 @@ class NewPlaylistView(object):
                 'type':self.type,
                 'lastquerypath': request.POST.get('lastquerypath')})
         return HttpResponse(template_name.render(context))
-
-

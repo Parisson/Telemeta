@@ -17,7 +17,16 @@
 {{ object.archiver_notes }}
 {{ object.items_done }}
 {{ object.conservation_site }}
-{{ object.location }}
+{% for item in object.items.all %}
+{{ item.location }}
+{{ item.location.current_location }}
+{% for anc in item.location.ancestor_relations.all %}
+{{ anc.ancestor_location }}
+{% endfor %}
+{% for alias in item.location.aliases.all %}
+{{ alias }}
+{% endfor %}
+{% endfor %}
 {{ object.code }}
 {{ object.countries }}
 {{ object.ethnic_groups }}

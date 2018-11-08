@@ -1,10 +1,10 @@
 {% extends "telemeta/admin.html" %}
 {% load i18n %}
 
-{% block head_title %}{% trans "Instrument aliases" %} - {{ block.super }}{% endblock %}
+{% block head_title %}{% trans "Instruments (vernacular)" %} - {{ block.super }}{% endblock %}
 
 {% block title %}
-<h1><img src="{{ STATIC_URL }}telemeta/images/admin_red.png" style="vertical-align:middle" /> {% trans "Administration" %} > {% trans "Instrument aliases" %}</h1>
+<h1><img src="{{ STATIC_URL }}telemeta/images/admin_red.png" style="vertical-align:middle" /> {% trans "Administration" %} > {% trans "Instruments (vernacular)" %}</h1>
 {% endblock %}
 
 {% block tabcontents %}
@@ -27,13 +27,14 @@
  <form id="_updateinstru" method="POST" action="{% url "telemeta-instrument-alias-update" %}">{% csrf_token %}
   <table class="listing">
    <thead>
-    <tr><th class="sel">&nbsp;</th><th>{% trans "Name"%}</th></tr>
+    <tr><th class="sel">&nbsp;</th><th>{% trans "Name"%}</th><th>{% trans "Associated items" %}</th></tr>
    </thead><tbody>
     {% for record in instruments %}
     <tr>
      <td><input type="checkbox" name="sel" value="{{record.id}}" /></td>
      <td><a href="{% url "telemeta-instrument-alias-record-edit" record.id %}">
         {{record.name}}</a></td>
+     <td><a href="{% url "telemeta-alias-item-list" record.id %}">{{ record.num_items }}</a></td>
     </tr>
     {% endfor %}
     </tbody>

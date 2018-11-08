@@ -3,7 +3,8 @@
 
 {% if page.object_list %}
 
-<table class="listing">
+<table class="listing" id="searchtable">
+<thead>
 <tr>
     {% if user.is_authenticated %}
         <th class="highlight"><input id="selectAll" type="checkbox"/> select all </th>
@@ -17,7 +18,9 @@
     <th>{% trans "Recording period" %}</th>
     <th>{% trans "Code" %}</th>
 </tr>
+</thead>
 {% if user.is_authenticated %}
+<tbody>
     {% for result in page.object_list %}
     <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
         <td class="highlight"><input type="checkbox" class="check1" name="selected_items_list" value="{{ result.object.id }}"/></td>
@@ -26,12 +29,12 @@
         </td>
         <td>
           {% if result.object.has_mediafile %}
-           <center><span class="glyphicon glyphicon-volume-up" style="font-size: 1.3em;"></span></center>
+           <center><span class="glyphicon glyphicon-volume-up" style="font-size: 1.3em;"><p style="opacity:0;font-size:0">d</p></span></center>
           {% endif %}
         </td>
 
         <td>{{ result.object.creator }}</td>
-        <td>{{ result.object.apparent_collector }}</td>
+        <td>{{ result.object.collector }}</td>
         <td>
         {% if result.object.recorded_from_year %}
             {{ result.object.recorded_from_year }}
@@ -45,6 +48,7 @@
         </td>
     </tr>
     {% endfor %}
+    </tbody>
 {% else %}
     {% for result in page.object_list %}
     <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
@@ -53,7 +57,7 @@
         </td>
         <td>
           {% if result.object.has_mediafile %}
-           <center><span class="glyphicon glyphicon-volume-up" style="font-size: 1.3em;"></span></center>
+           <center><span class="glyphicon glyphicon-volume-up" style="font-size: 1.3em;"><p style="opacity:0;font-size:0">d</p></span></center>
           {% endif %}
         </td>
 

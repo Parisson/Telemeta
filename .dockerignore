@@ -1,11 +1,10 @@
 .git
 *.pyc
 *.egg-info
-app/
-build/
-dist/
-media/
-static/
-var/
-backup/
+**/build
+**/dist
+data/
+env/
+etc/
 tmp/
+var/

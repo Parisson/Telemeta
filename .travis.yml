@@ -7,28 +7,23 @@ sudo: required
 services:
   - docker
 
-env:
-  global:
-    - DOCKER_COMPOSE_VERSION: 1.5.2
-
 before_install:
-  - docker-compose --version
-  - sudo rm /usr/local/bin/docker-compose
-  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
-  - chmod +x docker-compose
-  - sudo mv docker-compose /usr/local/bin
   - docker-compose --version
   - docker version
 
 
 # Install Telemeta
 install:
-  - docker-compose -f docker-compose.yml build
+  - docker-compose pull
+  - docker-compose build
 
 script:
+  - docker-compose run app conda list
+  - docker-compose run app pytest /srv/src/telemeta/telemeta
   - docker-compose up -d
   - sleep 60
-  - curl --fail --retry 10 --retry-delay 5  -v http://localhost:8000/
+  - curl --fail --retry 10 --retry-delay 5  -v $(docker-compose port nginx 80)
+  - curl --fail -v "$(docker-compose port nginx 80)/archives/items/Tests-c4_scalewav/"
   - docker-compose stop
 
 after_failure:

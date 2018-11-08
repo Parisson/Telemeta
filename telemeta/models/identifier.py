@@ -22,21 +22,22 @@
 #          Guillaume Pellerin <yomguy@parisson.com>
 
 
+from django.db import models
+from django.utils.translation import ugettext_lazy as _
 from telemeta.models.core import *
 from telemeta.models.fields import *
-from django.utils.translation import ugettext_lazy as _
 
 
 class Identifier(ModelCore):
     """Resource identifier"""
 
-    identifier = CharField(_('identifier'), max_length=255, blank=True, unique=True)
-    type = WeakForeignKey('IdentifierType', verbose_name=_('type'))
-    date_add = DateTimeField(_('date added'), auto_now_add=True)
-    date_first = DateTimeField(_('date of first attribution'))
-    date_last = DateTimeField(_('date of last attribution'))
-    date_modified = DateTimeField(_('date modified'), auto_now=True)
-    notes = TextField(_('notes'))
+    identifier = models.CharField(_('identifier'), max_length=255, blank=True, unique=True)
+    type = ForeignKey('IdentifierType', verbose_name=_('type'), blank=True, null=True, on_delete=models.SET_NULL)
+    date_add = models.DateTimeField(_('date added'), auto_now_add=True)
+    date_first = models.DateTimeField(_('date of first attribution'))
+    date_last = models.DateTimeField(_('date of last attribution'))
+    date_modified = models.DateTimeField(_('date modified'), auto_now=True)
+    notes = models.TextField(_('notes'), null=True)
 
     class Meta(MetaCore):
         abstract = True

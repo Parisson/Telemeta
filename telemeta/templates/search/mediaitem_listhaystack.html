@@ -3,7 +3,8 @@
 
 {% if page.object_list %}
 
-<table class="listing">
+<table class="listing" id="searchtable">
+<thead>
 <tr>
     {% if user.is_authenticated %}
         <th class="highlight"><input id="selectAll" type="checkbox"/> select all </th>
@@ -21,7 +22,9 @@
     <th>{% trans "Year of recording" %}</th>
     <th>{% trans "Code" %}</th>
 </tr>
+</thead>
 {% if user.is_authenticated %}
+<tbody>
     {% for result in page.object_list %}
     {% if result.object %}
     <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
@@ -32,7 +35,7 @@
         <td align="center">
             {% if result.object.file %}
              <a href="{% url "telemeta-item-detail" result.object.public_id %}">
-              <center><span class="glyphicon glyphicon-volume-up" style="font-size: 1.3em;"></span></center>
+              <center><span class="glyphicon glyphicon-volume-up" style="font-size: 1.3em;"><p style="opacity:0;font-size:0">d</p></span></center>
             {% endif %}
         </td>
 
@@ -52,6 +55,7 @@
     </tr>
     {% endif %}
     {% endfor %}
+    </tbody>
 {% else %}
     {% for result in page.object_list %}
     <tr {% if not forloop.counter0|divisibleby:"2" %}class="odd"{% endif %}>
@@ -61,7 +65,7 @@
         <td align="center">
             {% if result.object.file %}
              <a href="{% url "telemeta-item-detail" result.object.public_id %}">
-              <center><span class="glyphicon glyphicon-volume-up" style="font-size: 1.3em;"></span></center>
+              <center><span class="glyphicon glyphicon-volume-up" style="font-size: 1.3em;"><p style="opacity:0;font-size:0">d</p></span></center>
             {% endif %}
         </td>
 

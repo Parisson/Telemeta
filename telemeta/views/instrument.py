@@ -22,15 +22,21 @@
 
 
 from telemeta.views.core import *
-
+from django.db.models import Count
 
 class InstrumentView(object):
     """Provide Instrument web UI methods"""
+    def instrument_list(self,request):
+
+        instruments = Instrument.objects.annotate(num_items=Count('performances')).order_by('name')
+        if instruments == None:
+            raise Http404
+        return render(request, 'telemeta/instruments.html', {'instruments': instruments})
 
     @method_decorator(permission_required('telemeta.change_instrument'))
     def edit_instrument(self, request):
 
-        instruments = Instrument.objects.all().order_by('name')
+        instruments = Instrument.objects.annotate(num_items=Count('performances')).order_by('name')
         if instruments == None:
             raise Http404
         return render(request, 'telemeta/instrument_edit.html', {'instruments': instruments})
@@ -109,11 +115,16 @@ class InstrumentView(object):
 
 class InstrumentAliasView(object):
     """Provide Instrument alias web UI methods"""
+    def instrument_list(self,request):
+        instruments = InstrumentAlias.objects.annotate(num_items=Count('performances')).order_by('name')
+        if instruments == None:
+            raise Http404
+        return render(request, 'telemeta/instrument_alias.html', {'instruments': instruments})
 
     @method_decorator(permission_required('telemeta.change_instrumentalias'))
     def edit_instrument(self, request):
 
-        instruments = InstrumentAlias.objects.all().order_by('name')
+        instruments = InstrumentAlias.objects.annotate(num_items=Count('performances')).order_by('name')
         if instruments == None:
             raise Http404
         return render(request, 'telemeta/instrument_alias_edit.html', {'instruments': instruments})

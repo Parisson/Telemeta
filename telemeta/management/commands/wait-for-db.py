@@ -10,7 +10,7 @@ class Command(BaseCommand):
     help = "wait for default DB connection"
 
     db_name = 'default'
-    N = 10
+    N = 20
 
     def handle(self, *args, **options):
         i = 0

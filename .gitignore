@@ -17,7 +17,12 @@ sdist
 develop-eggs
 .installed.cfg
 *.directory
-.init
+app/.init
+tmp
+dist
+doc/output/
+doc/pelican-plugins/
+doc/api/telemeta
 
 # Installer logs
 pip-log.txt
@@ -31,3 +36,6 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+
+.idea/
+data/

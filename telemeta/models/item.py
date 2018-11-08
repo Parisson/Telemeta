@@ -22,6 +22,7 @@
 #          Guillaume Pellerin <yomguy@parisson.com>
 
 from __future__ import division
+from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from telemeta.models.core import *
 from telemeta.models.resource import *
@@ -60,7 +61,10 @@ class MediaItem(MediaResource):
     comment               = TextField(_('remarks'))
     recorded_from_date    = DateField(_('recording date (from)'), help_text=_('YYYY-MM-DD'))
     recorded_to_date      = DateField(_('recording date (until)'), help_text=_('YYYY-MM-DD'))
-    location              = WeakForeignKey('Location', verbose_name=_('location'))
+    public_access         = CharField(_('access type'), choices=ITEM_PUBLIC_ACCESS_CHOICES, max_length=16, default="metadata")
+
+    # Geographic and cultural informations
+    location              = ForeignKey('Location', verbose_name=_('location'), blank=True, null=True, on_delete=models.SET_NULL)
     location_comment      = CharField(_('location details'))
     publishing_date       = DateField(_('publishing date'))
     language_iso          = ForeignKey('Language', related_name="items", verbose_name=_('Language (ISO norm)'), blank=True, null=True, on_delete=models.SET_NULL)
@@ -80,25 +84,46 @@ class MediaItem(MediaResource):
 
     cultural_area         = CharField(_('cultural area'))
     language              = CharField(_('language'))
-    ethnic_group          = WeakForeignKey('EthnicGroup', related_name="items", verbose_name=_('population / social group'))
+
+    ethnic_group          = ForeignKey('EthnicGroup', related_name="items", verbose_name=_('population / social group'), blank=True, null=True, on_delete=models.SET_NULL)
     context_comment       = TextField(_('Ethnographic context'))
     moda_execut           = CharField(_('implementing rules'))
     #vernacular_style      = WeakForeignKey('VernacularStyle', related_name="items", verbose_name=_('vernacular style'))
-    generic_style         = WeakForeignKey('GenericStyle', related_name="items", verbose_name=_('generic style'))
+    generic_style         = ForeignKey('GenericStyle', related_name="items", verbose_name=_('generic style'))
+    language_iso          = ForeignKey('Language', related_name="items", verbose_name=_('Language (ISO norm)'), blank=True, null=True, on_delete=models.SET_NULL)
+
+    # Musical informations
+    moda_execut           = CharField(_('perfomance modality'))
+    vernacular_style      = ForeignKey('VernacularStyle', related_name="items", verbose_name=_('vernacular style'), blank=True, null=True, on_delete=models.SET_NULL)
+    generic_style         = ForeignKey('GenericStyle', related_name="items", verbose_name=_('generic style'), blank=True, null=True, on_delete=models.SET_NULL)
+    author                = CharField(_('author / compositor'), help_text=_('First name, Last name ; First name, Last name'))
+
+    # Legal mentions
+    organization          = ForeignKey('Organization', verbose_name=_('organization'), blank=True, null=True, on_delete=models.SET_NULL)
+    depositor             = CharField(_('depositor'))
+    rights                = ForeignKey('Rights', verbose_name=_('rights'), blank=True, null=True, on_delete=models.SET_NULL)
+
+    # Archiving data
+    code                  = CharField(_('code'), unique=True, blank=True, required=True, help_text=_('CollectionCode_ItemCode'))
     old_code              = CharField(_('original code'), unique=False, blank=True)
 
     track                 = CharField(_('item number'))
     creator_reference     = CharField(_('creator reference'))
     external_references   = TextField(_('published references'))
 
-    media_type            = WeakForeignKey('MediaType', related_name="items", verbose_name=_('media type'))
-
+    # Technical data
+    media_type            = ForeignKey('MediaType', related_name="items", verbose_name=_('media type'), blank=True, null=True, on_delete=models.SET_NULL)
     approx_duration       = DurationField(_('approximative duration'), blank=True, help_text=_('hh:mm:ss'))
     mimetype              = CharField(_('mime type'), max_length=255, blank=True)
     url                   = URLField(_('URL'), max_length=512, blank=True)
 
     digitalist            = CharField(_('digitalist'))
     digitization_date     = DateField(_('digitization date'))
+    publishing_date       = DateField(_('publishing date'))
+    scientist             = CharField(_('scientist'), help_text=_('First name, Last name ; First name, Last name'))
+    topic                 = ForeignKey('Topic', verbose_name=_('topic'), blank=True, null=True, on_delete=models.SET_NULL)
+    summary               = TextField(_('summary'))
+    contributor           = CharField(_('contributor'))
 
     objects               = MediaItemManager()
 
@@ -135,7 +160,8 @@ class MediaItem(MediaResource):
     class Meta(MetaCore):
         db_table = 'media_items'
         permissions = (("can_play_all_items", "Can play all media items"),
-                       ("can_download_all_items", "Can download all media items"), )
+                       ("can_download_all_items", "Can download all media items"),
+                       ("can_run_analysis", "Can run analysis"),)
         verbose_name = _('item')
 
     def is_valid_code(self, code):
@@ -356,8 +382,8 @@ class MediaItemKeyword(ModelCore):
 class MediaItemPerformance(ModelCore):
     "Item performance"
     media_item      = ForeignKey('MediaItem', related_name="performances", verbose_name=_('item'))
-    instrument      = WeakForeignKey('Instrument', related_name="performances", verbose_name=_('composition'))
-    alias           = WeakForeignKey('InstrumentAlias', related_name="performances", verbose_name=_('vernacular name'))
+    instrument      = ForeignKey('Instrument', related_name="performances", verbose_name=_('composition'), blank=True, null=True, on_delete=models.SET_NULL)
+    alias           = ForeignKey('InstrumentAlias', related_name="performances", verbose_name=_('vernacular name'), blank=True, null=True, on_delete=models.SET_NULL)
     instruments_num = CharField(_('number'))
     musicians       = CharField(_('interprets'))
 
@@ -397,7 +423,7 @@ class MediaItemMarker(MediaResource):
     public_id       = CharField(_('public_id'), required=True)
     time            = FloatField(_('time (s)'))
     title           = CharField(_('title'))
-    date            = DateTimeField(_('date'), auto_now=True)
+    date            = models.DateTimeField(_('date'), auto_now=True)
     description     = TextField(_('description'))
     author          = ForeignKey(User, related_name="markers", verbose_name=_('author'),
                                  blank=True, null=True)
@@ -420,7 +446,7 @@ class MediaItemTranscoded(MediaResource):
 
     item            = models.ForeignKey('MediaItem', related_name="transcoded", verbose_name=_('item'))
     mimetype        = models.CharField(_('mime_type'), max_length=255, blank=True)
-    date_added      = DateTimeField(_('date'), auto_now_add=True)
+    date_added      = models.DateTimeField(_('date'), auto_now_add=True)
     status          = models.IntegerField(_('status'), choices=ITEM_TRANSODING_STATUS, default=1)
     file            = models.FileField(_('file'), upload_to='items/%Y/%m/%d', max_length=1024, blank=True)
 
@@ -454,7 +480,7 @@ class MediaItemTranscodingFlag(ModelCore):
 
     item            = ForeignKey('MediaItem', related_name="transcoding", verbose_name=_('item'))
     mime_type       = CharField(_('mime_type'), required=True)
-    date            = DateTimeField(_('date'), auto_now=True)
+    date            = models.DateTimeField(_('date'), auto_now=True)
     value           = BooleanField(_('transcoded'))
 
     class Meta(MetaCore):
