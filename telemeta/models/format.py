@@ -41,7 +41,8 @@ class Format(ModelCore):
                                        blank=True, null=True, on_delete=models.SET_NULL)
 
     original_status       = CharField(_('original status'), choices=ITEM_ORIGINAL_STATUS_CHOICES, max_length=20, default="None")
-    original_location     = ForeignKey(ConservationSite, related_name="format", verbose_name=_('conservation site'))
+    original_location     = ForeignKey(ConservationSite, related_name="format", verbose_name=_('conservation site'),
+                                        blank=True, null=True, on_delete=models.SET_NULL)
 
     physical_format       = ForeignKey(PhysicalFormat, related_name="format",
                                        verbose_name = _("physical format"),
