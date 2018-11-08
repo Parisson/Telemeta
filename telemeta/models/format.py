@@ -39,33 +39,17 @@ class Format(ModelCore):
 
     item                  = ForeignKey('MediaItem', related_name="format", verbose_name = _("item"),
                                        blank=True, null=True, on_delete=models.SET_NULL)
-    original_code         = CharField(_('original code'))
-    #original_status       = CharField(_('original status'))
+
     original_status       = CharField(_('original status'), choices=ITEM_ORIGINAL_STATUS_CHOICES, max_length=20, default="None")
-    #original_location     = ForeignKey('Organization', related_name="format",
-    #original_location     = ForeignKey('Location', related_name="format",
-    #                                   verbose_name = _("original location"),
-    #                                   blank=True, null=True, on_delete=models.SET_NULL)
     original_location     = ForeignKey(ConservationSite, related_name="format", verbose_name=_('conservation site'))
+
     physical_format       = ForeignKey(PhysicalFormat, related_name="format",
-                                     verbose_name = _("physical format"))
-    tape_vendor         = ForeignKey(TapeVendor, related_name="format",
-                                        verbose_name = _("tape vendor"))
-    tape_reference      = CharField(_('tape reference'))
-    sticker_presence    = BooleanField(_('sticker presence'))
-    tape_thickness      = CharField(_('tape thickness (um)'))
-    tape_wheel_diameter = ForeignKey(TapeWheelDiameter, related_name="format",
-                                        verbose_name = _("tape wheel diameter (cm)"))
-    original_state        = TextField(_('technical properties / conservation state'))
-    recording_system      = CharField(_('recording system'))
-    original_audio_quality = TextField(_('audio quality'))
-
-
-    original_number       = CharField(_('original number'))
-    original_comments     = TextField(_('comments / notes'))
-    original_location     = ForeignKey('Location', related_name="format",
-                                       verbose_name = _("original location"),
+                                       verbose_name = _("physical format"),
                                        blank=True, null=True, on_delete=models.SET_NULL)
+    original_code         = CharField(_('original code'))
+    original_number       = CharField(_('original number'))
+    original_state        = TextField(_('technical properties / conservation state'))
+    original_comments     = TextField(_('comments / notes'))
     original_channels     = ForeignKey(NumberOfChannels, related_name="format",
                                        verbose_name = _("number of channels"),
                                        blank=True, null=True, on_delete=models.SET_NULL)
