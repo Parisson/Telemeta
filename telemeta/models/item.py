@@ -2,34 +2,20 @@
 # Copyright (C) 2010 Samalyse SARL
 # Copyright (C) 2010-2014 Parisson SARL
 
-# This software is a computer program whose purpose is to backup, analyse,
-# transcode and stream any audio content with its metadata over a web frontend.
+# This file is part of Telemeta.
 
-# This software is governed by the CeCILL  license under French law and
-# abiding by the rules of distribution of free software.  You can  use,
-# modify and/ or redistribute the software under the terms of the CeCILL
-# license as circulated by CEA, CNRS and INRIA at the following URL
-# "http://www.cecill.info".
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
 
-# As a counterpart to the access to the source code and  rights to copy,
-# modify and redistribute granted by the license, users are provided only
-# with a limited warranty  and the software's author,  the holder of the
-# economic rights,  and the successive licensors  have only  limited
-# liability.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
 
-# In this respect, the user's attention is drawn to the risks associated
-# with loading,  using,  modifying and/or developing or reproducing the
-# software by the user in light of its specific status of free software,
-# that may mean  that it is complicated to manipulate,  and  that  also
-# therefore means  that it is reserved for developers  and  experienced
-# professionals having in-depth computer knowledge. Users are therefore
-# encouraged to load and test the software's suitability as regards their
-# requirements in conditions enabling the security of their systems and/or
-# data to be ensured and,  more generally, to use and operate it in the
-# same conditions as regards security.
-
-# The fact that you are presently reading this means that you have had
-# knowledge of the CeCILL license and that you accept its terms.
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 # Authors: Olivier Guilyardi <olivier@samalyse.com>
 #          David LIPSZYC <davidlipszyc@gmail.com>
@@ -79,30 +65,31 @@ class MediaItem(MediaResource):
     publishing_date       = DateField(_('publishing date'))
     language_iso          = ForeignKey('Language', related_name="items", verbose_name=_('Language (ISO norm)'), blank=True, null=True, on_delete=models.SET_NULL)
     file                  = FileField(_('file'), upload_to='items/%Y/%m/%d', db_column="filename", max_length=1024)
-    organization          = WeakForeignKey('Organization', verbose_name=_('organization'))
+    organization          = WeakForeignKey('Organization', verbose_name=_('Organization'))
     scientist             = CharField(_('scientist'), help_text=_('First name, Last name ; First name, Last name'))
+    associated_researchers             = CharField(_('associated researchers'), help_text=_('First name, Last name ; First name, Last name'))
     collector_selection   = CharField(_('collector selection'))
     collector_from_collection = BooleanField(_('collector as in collection'))
     depositor             = CharField(_('depositor'))
     contributor           = CharField(_('contributor'))
     author                = CharField(_('author / compositor'), help_text=_('First name, Last name ; First name, Last name'))
-    recordist             = CharField(_('recordist'))
-    rights                = WeakForeignKey('Rights', verbose_name=_('rights'))
+    recordist             = CharField(_('Recordist'))
+    rights                = WeakForeignKey('Rights', verbose_name=_('Rights'))
     public_access         = CharField(_('access type'), choices=ITEM_PUBLIC_ACCESS_CHOICES, max_length=16, default="metadata")
+    auto_period_access    = BooleanField(_('automatic access after a rolling period'), default=True)
 
     cultural_area         = CharField(_('cultural area'))
     language              = CharField(_('language'))
     ethnic_group          = WeakForeignKey('EthnicGroup', related_name="items", verbose_name=_('population / social group'))
     context_comment       = TextField(_('Ethnographic context'))
     moda_execut           = CharField(_('implementing rules'))
-    vernacular_style      = WeakForeignKey('VernacularStyle', related_name="items", verbose_name=_('vernacular style'))
+    #vernacular_style      = WeakForeignKey('VernacularStyle', related_name="items", verbose_name=_('vernacular style'))
     generic_style         = WeakForeignKey('GenericStyle', related_name="items", verbose_name=_('generic style'))
     old_code              = CharField(_('original code'), unique=False, blank=True)
 
     track                 = CharField(_('item number'))
     creator_reference     = CharField(_('creator reference'))
     external_references   = TextField(_('published references'))
-    auto_period_access    = BooleanField(_('automatic access after a rolling period'), default=True)
 
     media_type            = WeakForeignKey('MediaType', related_name="items", verbose_name=_('media type'))
 
@@ -115,7 +102,7 @@ class MediaItem(MediaResource):
 
     objects               = MediaItemManager()
 
-    exclude = ['collector', 'cultural_area', 'old_code', 'language','ethnic_group', 'moda_execut', 'vernacular_style', 'generic_style', 'url', 'creator_reference', 'media_type', 'copied_from_item', 'mimetype', 'context_comment', 'collector_selection', 'collector_from_collection']
+    exclude = ['collector', 'cultural_area', 'old_code', 'language','ethnic_group', 'moda_execut', 'generic_style', 'url', 'creator_reference', 'media_type', 'copied_from_item', 'mimetype', 'context_comment', 'collector_selection', 'collector_from_collection', 'track', 'comment', 'approx_duration']
 
     restricted = ['copied_from_item', 'mimetype', 'public_access']
 
@@ -189,11 +176,14 @@ class MediaItem(MediaResource):
 
     def get_source(self):
         source = None
+        source_type = None
         if self.file and os.path.exists(self.file.path):
             source = self.file.path
+            source_type = 'file'
         elif self.url:
             source = self.url
-        return source
+            source_type = 'url'
+        return source, source_type
 
     @property
     def instruments(self):

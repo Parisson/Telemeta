@@ -1,4 +1,4 @@
-{% load telemeta_utils %}
+{% load telemeta_tags %}
 {% load i18n %}
 
 {% if collections %}
@@ -7,7 +7,7 @@
 <tr>
     <th class="highlight">{% trans "Title" %}</th>
     <th>{% trans "Digitized" %}</th>
-    <th>{% field_label "MediaCollection" "creator" %}</th>
+    <!--<th>{% field_label "MediaCollection" "creator" %}</th>-->
     <th>{% trans "Recordist" %}</th>
     <th>{% trans "Recording period" %}</th>
     <th>{% trans "Code" %}</th>
@@ -23,7 +23,7 @@
       {% endif %}
     </td>
 
-    <td>{{ collection.creator }}</td>
+    <!--<td>{{ collection.creator }}</td>-->
     <td>{{ collection.apparent_collector }}</td>
     <td>
     {% if collection.recorded_from_year %}

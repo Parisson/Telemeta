@@ -22,6 +22,7 @@ RUN mkdir -p /srv/src/
 RUN mkdir /srv/src/telemeta
 COPY . /srv/src/telemeta
 WORKDIR /srv/src/telemeta
+RUN conda install lxml
 RUN pip install -r requirements.txt
 RUN pip install -r requirements-dev.txt --src /srv/src
 

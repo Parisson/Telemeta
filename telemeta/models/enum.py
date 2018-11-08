@@ -1,34 +1,20 @@
 # -*- coding: utf-8 -*-
 # Copyright (C) 2007-2010 Samalyse SARL
 
-# This software is a computer program whose purpose is to backup, analyse,
-# transcode and stream any audio content with its metadata over a web frontend.
+# This file is part of Telemeta.
 
-# This software is governed by the CeCILL  license under French law and
-# abiding by the rules of distribution of free software.  You can  use,
-# modify and/ or redistribute the software under the terms of the CeCILL
-# license as circulated by CEA, CNRS and INRIA at the following URL
-# "http://www.cecill.info".
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
 
-# As a counterpart to the access to the source code and  rights to copy,
-# modify and redistribute granted by the license, users are provided only
-# with a limited warranty  and the software's author,  the holder of the
-# economic rights,  and the successive licensors  have only  limited
-# liability.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
 
-# In this respect, the user's attention is drawn to the risks associated
-# with loading,  using,  modifying and/or developing or reproducing the
-# software by the user in light of its specific status of free software,
-# that may mean  that it is complicated to manipulate,  and  that  also
-# therefore means  that it is reserved for developers  and  experienced
-# professionals having in-depth computer knowledge. Users are therefore
-# encouraged to load and test the software's suitability as regards their
-# requirements in conditions enabling the security of their systems and/or
-# data to be ensured and,  more generally, to use and operate it in the
-# same conditions as regards security.
-
-# The fact that you are presently reading this means that you have had
-# knowledge of the CeCILL license and that you accept its terms.
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 # Authors: Olivier Guilyardi <olivier@samalyse.com>
 #          David LIPSZYC <davidlipszyc@gmail.com>
@@ -63,6 +49,8 @@ class PhysicalFormat(Enumeration):
 class PublishingStatus(Enumeration):
     "Collection publishing status"
 
+    hidden = True
+
     class Meta(MetaEnumeration):
         db_table = 'publishing_status'
         verbose_name = _("secondary edition")
@@ -76,6 +64,8 @@ class AcquisitionMode(Enumeration):
 
 class MetadataAuthor(Enumeration):
     "Collection metadata author"
+
+    hidden = True
 
     class Meta(MetaEnumeration):
         db_table = 'metadata_authors'
@@ -105,19 +95,16 @@ class RecordingContext(Enumeration):
 class AdConversion(Enumeration):
     "Collection digital to analog conversion status"
 
+    hidden = True
+
     class Meta(MetaEnumeration):
         db_table = 'ad_conversions'
         verbose_name = _("A/D conversion")
 
-class VernacularStyle(Enumeration):
-    "Item vernacular style"
-
-    class Meta(MetaEnumeration):
-        db_table = 'vernacular_styles'
-        verbose_name = _("vernacular style")
-
 class GenericStyle(Enumeration):
     "Item generic style"
+
+    hidden = True
 
     class Meta(MetaEnumeration):
         db_table = 'generic_styles'
@@ -132,6 +119,8 @@ class ContextKeyword(Enumeration):
 
 class Publisher(Enumeration):
     "Collection publisher"
+
+    hidden = True
 
     class Meta(MetaEnumeration):
         db_table = 'publishers'
@@ -155,6 +144,8 @@ class PublisherCollection(ModelCore):
 class EthnicGroup(Enumeration):
     "Item ethnic group"
 
+    hidden = True
+
     class Meta(MetaEnumeration):
         db_table = 'ethnic_groups'
         verbose_name = _('population / social group')
@@ -176,7 +167,6 @@ class EthnicGroupAlias(ModelCore):
 class TapeWheelDiameter(Enumeration):
     "Tape wheel diameter (cm)"
 
-    hidden = True
 
     class Meta(MetaEnumeration):
         db_table = 'tape_wheel_diameter'
@@ -212,7 +202,6 @@ class TapeSpeed(Enumeration):
 class TapeVendor(Enumeration):
     "Tape vendor"
 
-    hidden = True
 
     class Meta(MetaEnumeration):
         db_table = 'tape_vendor'
@@ -222,7 +211,6 @@ class TapeVendor(Enumeration):
 class NumberOfChannels(Enumeration):
     "Number of channels"
 
-    hidden = True
 
     class Meta(MetaEnumeration):
         db_table = 'original_channel_number'
@@ -232,11 +220,10 @@ class NumberOfChannels(Enumeration):
 class Organization(Enumeration):
     "Organization"
 
-    hidden = True
 
     class Meta(MetaEnumeration):
         db_table = 'organization'
-        verbose_name = _("organization")
+        verbose_name = _("Organization")
 
 
 class Rights(Enumeration):
@@ -251,8 +238,6 @@ class Rights(Enumeration):
 
 class Topic(Enumeration):
     "Topic, subject of the study, research, etc.."
-
-    hidden = True
 
     class Meta(MetaEnumeration):
         db_table = 'topic'
@@ -272,11 +257,13 @@ class MediaType(Enumeration):
 
     class Meta(MetaEnumeration):
         db_table = 'media_type'
-        verbose_name = _("media type")
+        verbose_name = _("Media type")
 
 
 class OriginalFormat(Enumeration):
     "Original format"
+
+    hidden = True
 
     class Meta(MetaEnumeration):
         db_table = 'original_format'
@@ -286,6 +273,8 @@ class OriginalFormat(Enumeration):
 class Status(Enumeration):
     "Resource status"
 
+    hidden = True
+
     class Meta(MetaEnumeration):
         db_table = 'media_status'
         verbose_name = _("collection status")
@@ -294,7 +283,15 @@ class Status(Enumeration):
 class IdentifierType(Enumeration):
     "Identifier type"
 
+    hidden = True
+
     class Meta(MetaEnumeration):
         db_table = 'identifier_type'
         verbose_name = _("identifier type")
 
+class ConservationSite(Enumeration):
+    "Conservation site"
+
+    class Meta(MetaEnumeration):
+        db_table = 'conservation_sites'
+        verbose_name = _("conservation site")

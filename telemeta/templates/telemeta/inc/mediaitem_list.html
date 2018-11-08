@@ -1,4 +1,4 @@
-{% load telemeta_utils %}
+{% load telemeta_tags %}
 {% load i18n %}
 
 {% if items %}
@@ -8,11 +8,11 @@
     <th class="highlight">{% trans "Title" %}</th>
     <th>{% trans "Digitized" %}</th>
     <th>{% trans "Recordist" %}</th>
-    {% if location_name %}
+    <!--{% if location_name %}
     <th>{% trans "Location" %}</th>
     {% else %}
     <th>{% trans "Country/Continent" %}</th>
-    {% endif %}
+    {% endif %}-->
     <th>{% trans "Year of recording" %}</th>
     <th>{% trans "Code" %}</th>
 </tr>
@@ -29,11 +29,11 @@
     </td>
 
     <td>{{ item.collector }}</td>
-    {% if location_name %}
+    <!--{% if location_name %}
     <td>{{ item.location.name }}</td>
     {% else %}
     <td>{{ item.country_or_continent|default:'&nbsp;' }}</td>
-    {% endif %}
+    {% endif %}-->
     <td>
     {% if item.recorded_from_date %}
         {{ item.recorded_from_date.year }}
