@@ -70,6 +70,8 @@ app:
     - broker
     - db
     - search
+  ports:
+    - '8000:8000'
 
 worker:
   image: parisson/telemeta:1.7
@@ -82,15 +84,4 @@ worker:
   links:
     - broker
     - db
-
-nginx:
-  image: nginx
-  ports:
-    - "80:80"
-  volumes:
-    - ./etc/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
-  volumes_from:
-    - data
-  links:
-    - app
 
