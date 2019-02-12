@@ -31,7 +31,7 @@ data:
     - /home/crem/media/results:/srv/media/results
     - /archive/CREM/tmp:/srv/media/tmp
     - /archive/CREM/media/items:/srv/media/items
-    - /archive/CREM/backup:/srv/backup
+    - ./data/backup:/srv/backup
     - ./data/static:/srv/static
     - ./data/bower:/srv/bower
     - ./data/log/nginx:/var/log/nginx
@@ -55,11 +55,12 @@ search:
   image: elasticsearch:1
 
 app:
-  image: parisson/telemeta:1.6
+  build: .
+  #image: parisson/telemeta:1.6
   volumes:
     - ./app:/srv/app
     - ./telemeta:/srv/src/telemeta/telemeta
-    - ./lib/:/srv/src/plugins/ 
+    #- ./lib/:/srv/src/plugins/ 
   volumes_from:
     - data
   env_file:
@@ -71,7 +72,8 @@ app:
     - search
 
 worker:
-  image: parisson/telemeta:1.6
+  build: .
+  #image: parisson/telemeta:1.6
   volumes_from:
     - app
   env_file:

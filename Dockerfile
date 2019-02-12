@@ -13,7 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM parisson/timeside-diadems:latest-dev
+#FROM parisson/timeside-diadems:latest-dev
+FROM parisson/telemeta:1.6 
 
 MAINTAINER Guillaume Pellerin <yomguy@parisson.com>, Thomas fillon <thomas@parisson.com>
 
@@ -28,7 +29,7 @@ RUN apt-get install -y --force-yes mysql-client
 ENV PYTHON_EGG_CACHE=/srv/.python-eggs
 RUN mkdir -p $PYTHON_EGG_CACHE
 RUN chown www-data:www-data $PYTHON_EGG_CACHE
-RUN mkdir /srv/media
+#RUN mkdir /srv/media
 
 COPY . /srv/src/telemeta
 WORKDIR /srv/src/telemeta
