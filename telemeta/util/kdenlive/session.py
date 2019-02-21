@@ -65,7 +65,8 @@ class KDEnLiveSession(object):
         return sorted(self.entries(), key=lambda k: int(k['in']), reverse=False)
 
     def entries_video_seconds(self):
-        fps = float(self.profile()['frame_rate_num'])
+        fps = float(self.profile()['frame_rate_num'])/1000
+        #fps= 25
         list = []
         entries = self.video_entries()
         for i in range(0,len(entries)):
@@ -123,30 +124,28 @@ class KDEnLiveSession(object):
         entries = self.entries_video_seconds()
 
         for attr in self.session['children']:
-            if 'kdenlivedoc' in attr['name']:
-
+            if 'playlist' in attr['name']:
                 for att in attr['children']:
-                    if 'markers' in att['name'] and 'children' in att.keys():
+                    marker = {}
+                    if 'name' in att['attributes']:
+                        name = att['attributes']['name']
+                        if 'marker' in name:
+                            marker_time = float(name.split(':')[-1].replace(',','.').replace(' ', ''))
+                            id = name.split(':')[-2].split('.')[-1]
+                            rel_time = 0
 
-                        for at in att['children']:
-                            if 'marker' in at['name']:
+                            for entry in entries:
+                                if marker_time >= entry['in'] and marker_time <= entry['out'] and id == entry['id']:
+                                    if i == 0 and from_first_marker:
+                                        abs_time = entry['t']
+                                    rel_time = entry['t'] + (marker_time - entry['in']) - abs_time + offset
+                                    break
 
-                                marker_time = float(at['attributes']['time'].replace(',','.'))
-                                id = at['attributes']['id']
-                                rel_time = 0
+                            marker['time'] = rel_time
+                            marker['session_timecode'] = time.strftime('%H:%M:%S', time.gmtime(rel_time))
+                            marker['comment'] = self.fix_text(att['cdata'])
+                            markers.append(marker)
 
-                                for entry in entries:
-                                    if marker_time >= entry['in'] and marker_time <= entry['out'] and id == entry['id']:
-                                        if i == 0 and from_first_marker:
-                                            abs_time = entry['t']
-                                        rel_time = entry['t'] + (marker_time - entry['in']) - abs_time + offset
-                                        break
-
-                                at['attributes']['time'] = rel_time
-                                at['attributes']['session_timecode'] = time.strftime('%H:%M:%S', time.gmtime(rel_time))
-                                at['attributes']['comment'] = self.fix_text(at['attributes']['comment'])
-                                markers.append(at['attributes'])
-
-                            i += 1
+                        i += 1
         return markers
 
