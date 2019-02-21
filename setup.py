@@ -59,7 +59,7 @@ setup(
     'django-extensions==2.1.0',
     'django-extra-views==0.11.0',
     'django-debug-toolbar==1.6',
-    'django-haystack',
+    'django-haystack==2.4.1',
     'django-ipauth',
     'django-json-rpc==0.7.2',
     'django-registration-redux==2.4',
