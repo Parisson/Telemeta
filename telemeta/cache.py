@@ -29,7 +29,7 @@ class TelemetaCache(object):
     def __init__(self, dir, params=None):
         self.dir = dir
         self.params = params
-        self.files = self.get_files()
+        # self.files = self.get_files()
         if not os.path.exists(dir):
             try:
                 os.makedirs(dir)
@@ -44,13 +44,13 @@ class TelemetaCache(object):
         return list
 
     def add_file(self, file):
-        self.files.append(file)
-
+        # self.files.append(file)
+        pass
 
     def exists(self, file):
         #if not file in self.files:
         #    self.files = self.get_files()
-        return file in self.files
+        return os.path.exists(self.dir + os.sep + file)
 
     def delete_item_data(self, public_id):
         # public_id is the public_id of an item

@@ -300,7 +300,7 @@ class ItemView(ItemBaseMixin):
                 #f = open(path, 'w')
                 graph.render(output=path)
                 # f.close()
-                self.cache_data.add_file(image_file)
+                # self.cache_data.add_file(image_file)
 
         response = serve_media(path, content_type=mime_type)
         return response
@@ -376,7 +376,7 @@ class ItemView(ItemBaseMixin):
                                                    'mime_type': mime_type,
                                                    'metadata': metadata})
 
-                self.cache_export.add_file(file)
+                # self.cache_export.add_file(file)
                 if not os.path.exists(media):
                     return (None, None)
             else:
@@ -417,7 +417,7 @@ class ItemView(ItemBaseMixin):
 
 
         (media, mime_type) = self.item_transcode(item, extension)
-        
+
         if media:
             if return_availability:
                 data = json.dumps({'available': True})
