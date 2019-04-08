@@ -142,7 +142,6 @@ TEMPLATES = [
 
 MIDDLEWARE_CLASSES = (
     # Manage Django URLs for AngularJS with django-angular
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
