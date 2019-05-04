@@ -14,6 +14,9 @@ for dir in $(ls $plugins); do
         packs=$(egrep -v "^\s*(#|$)" $req)
         apt-get install -y --force-yes $packs
     fi
+    if [ -f $plugins/$dir/requirements.txt ]; then
+        pip install -r $plugins/$dir/requirements.txt
+    fi
     if [ -f $plugins/$dir/setup.py ]; then
         pip install -e $plugins/$dir/.
     fi
