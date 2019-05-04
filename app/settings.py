@@ -142,7 +142,6 @@ TEMPLATES = [
 
 MIDDLEWARE_CLASSES = (
     # Manage Django URLs for AngularJS with django-angular
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -166,7 +165,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'telemeta',
     'timeside.player',
-    # 'timeside.server',
+    'timeside.server',
     'jsonrpc',
     'sorl.thumbnail',
     'timezones',
@@ -180,7 +179,6 @@ INSTALLED_APPS = (
     'djcelery',
     'haystack',
     'djangobower',
-    'djng',
     'saved_searches',
 )
 
@@ -378,3 +376,5 @@ NOTEBOOK_ARGUMENTS = [
     '--allow-root',
     '--notebook-dir', NOTEBOOK_DIR
 ]
+
+SILENCED_SYSTEM_CHECKS = ['fields.W342',]

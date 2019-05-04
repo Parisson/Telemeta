@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+    # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2015-2016 Parisson SARL
 
@@ -21,7 +21,18 @@
 # Guillaume Pellerin <yomguy@parisson.com>
 # Thomas Fillon <thomas@parisson.com>
 
-app:
-  ports:
-    - "8888:8888"
-  command: "/srv/app/bin/notebook.sh"
+
+phpmyadmin:
+    image: nazarpc/phpmyadmin:4.7.9_build-1
+    ports:
+      - "1234:80"
+    links:
+      - db:mysql
+    environment:
+      - ABSOLUTE_URI=http://localhost:8000/
+
+nginx:
+  links:
+    - phpmyadmin
+
+

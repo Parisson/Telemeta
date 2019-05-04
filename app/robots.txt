@@ -1,4 +1,2 @@
 User-agent: *
-Disallow: *.mp3$
-Disallow: */WIDTHxHEIGHT/
-Disallow: */xml/
+Disallow: /media/
