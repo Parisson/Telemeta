@@ -77,15 +77,3 @@ worker:
     - broker
     - db
 
-nginx:
-  image: nginx
-  ports:
-    - "8000:80"
-  volumes:
-    - ./etc/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
-  volumes_from:
-    - data
-  links:
-    - app
-
-
