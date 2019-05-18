@@ -218,6 +218,7 @@ RESOURCE_CODE_REGEX = '[A-Za-z0-9._-]*'
 
 AUTH_PROFILE_MODULE = 'telemeta.userprofile'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+AUTH_USER_MODEL = 'auth.User'
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/desk/lists/'

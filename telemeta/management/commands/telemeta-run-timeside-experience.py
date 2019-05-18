@@ -74,10 +74,10 @@ class Command(BaseCommand):
 
         self.selection, c = Selection.objects.get_or_create(title=selection_title)
         items = self.selection.items.all()
-
+        print(items)
         for tm_item in tm_items:
             if tm_item.file:
-                path = os.sep.join([self.media_root, tm_item.file])
+                path = tm_item.file.path
                 item, c = Item.objects.get_or_create(title=tm_item.title,
                                                      source_file=path)
                 if not item in items:

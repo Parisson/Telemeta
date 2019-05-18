@@ -22,6 +22,7 @@ gid='www-data'
 # pip install django-debug-toolbar==1.6
 # pip install -e git+https://github.com/Parisson/django-jqchat.git@dj1.8#egg=django-jqchat
 # pip install -e git+https://github.com/Parisson/saved_searches.git@dj1.8#egg=saved_searches-2.0.0-beta
+pip install youtube-dl
 
 # waiting for other network services
 sh $app/bin/wait.sh
