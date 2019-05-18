@@ -9,7 +9,6 @@
 build
 eggs
 parts
-bin
 var
 data/media
 data/var
