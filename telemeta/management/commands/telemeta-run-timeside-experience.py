@@ -54,12 +54,12 @@ class Command(BaseCommand):
                             dest='test',
                             help='test mode')
 
-        parser.add_argument('--pid',
+        parser.add_argument('-p', '--pid',
                             nargs='+',
                             type=str,
                             help='Processor ID')
 
-        parser.add_argument('--collection_code',
+        parser.add_argument('-cc', '--collection_code',
                             dest='collection_code',
                             help='define the telemeta collection code')
 
@@ -89,6 +89,7 @@ class Command(BaseCommand):
 
     def create_experience(self):
         presets = []
+        print(self.pid)
         processors = timeside.core.processor.processors(timeside.core.api.IProcessor)
         for proc in processors:
             trig = True

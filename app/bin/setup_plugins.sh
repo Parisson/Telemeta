@@ -2,24 +2,30 @@
 
 plugins=/srv/lib/plugins
 
-apt-get update
 
 for dir in $(ls $plugins); do
     env=$plugins/$dir/conda-environment.yml
     if [ -f $env ]; then
         conda env update --name root --file $env
     fi
-    req=$plugins/$dir/debian-requirements.txt
+
+		req=$plugins/$dir/debian-requirements.txt
     if [ -f $req ]; then
+			  apt-get update
         packs=$(egrep -v "^\s*(#|$)" $req)
         apt-get install -y --force-yes $packs
-    fi
-    if [ -f $plugins/$dir/requirements.txt ]; then
+        apt-get clean
+		fi
+
+		if [ -f $plugins/$dir/requirements.txt ]; then
+        echo $dir
         pip install -r $plugins/$dir/requirements.txt
     fi
-    if [ -f $plugins/$dir/setup.py ]; then
+
+		if [ -f $plugins/$dir/setup.py ]; then
+        echo $dir
         pip install -e $plugins/$dir/.
     fi
 done
 
-apt-get clean
+
