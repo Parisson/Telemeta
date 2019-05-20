@@ -28,7 +28,7 @@ data:
     - ./data/media/cache:/srv/media/cache
     - ./data/media/export:/srv/media/export
     - ./data/media/log:/srv/media/log
-    - ./data/media/results:/srv/media/results
+    - /archive/NYU/media/results:/srv/media/results
     - ./data/tmp:/srv/media/tmp
     - /archive/CREM/media/items:/srv/media/items
     - ./data/backup:/srv/backup
