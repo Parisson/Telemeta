@@ -64,6 +64,9 @@ class Command(BaseCommand):
                             help='define the telemeta collection code')
 
     def create_selection(self):
+        if not self.selection_title and self.collection_code:
+            self.selection_title = self.collection_code
+
         if self.collection_code:
             selection_title = self.collection_code
             collection = MediaCollection.objects.get(code=self.collection_code)
@@ -106,7 +109,11 @@ class Command(BaseCommand):
                     except Preset.MultipleObjectsReturned:
                         print(Preset.objects.filter(processor=processor, parameters='{}'))
 
-        self.experience, c = Experience.objects.get_or_create(title=self.experience_title)
+        if self.experience_title:
+            self.experience, c = Experience.objects.get_or_create(title=self.experience_title)
+        else:
+            self.experience = Experience()
+            self.experience.save()
         for preset in presets:
             if not preset in self.experience.presets.all():
                 self.experience.presets.add(preset)

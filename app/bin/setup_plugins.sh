@@ -18,12 +18,9 @@ for dir in $(ls $plugins); do
 		fi
 
 		if [ -f $plugins/$dir/requirements.txt ]; then
-        echo $dir
+				cd $plugins/$dir
         pip install -r $plugins/$dir/requirements.txt
-    fi
-
-		if [ -f $plugins/$dir/setup.py ]; then
-        echo $dir
+		elif [ -f $plugins/$dir/setup.py ]; then
         pip install -e $plugins/$dir/.
     fi
 done
