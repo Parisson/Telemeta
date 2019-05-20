@@ -60,6 +60,8 @@ app:
   volumes:
     - ./app:/srv/app
     - ./telemeta:/srv/lib/telemeta/telemeta
+    - ./lib/TimeSide:/srv/lib/timeside
+    - ./lib/plugins:/srv/lib/plugins
   volumes_from:
     - data
   env_file:
@@ -81,15 +83,4 @@ worker:
   links:
     - broker
     - db
-
-nginx:
-  image: nginx
-  ports:
-    - "8020:80"
-  volumes:
-    - ./etc/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
-  volumes_from:
-    - data
-  links:
-    - app
 

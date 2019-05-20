@@ -23,9 +23,6 @@ RUN mkdir -p /srv/app
 RUN mkdir -p /srv/media
 RUN mkdir -p /srv/lib/telemeta
 
-#RUN apt-get update && apt-get install -y apt-transport-https
-#RUN apt-get install -y --force-yes mysql-client
-
 COPY . /srv/lib/telemeta
 WORKDIR /srv/lib/telemeta
 
