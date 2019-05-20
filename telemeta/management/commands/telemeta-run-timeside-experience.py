@@ -10,7 +10,7 @@ import os
 from telemeta.models import MediaItem, MediaCollection
 
 import timeside.core
-from timeside.server.models import Selection, Item, Processor, Preset, Experience, Task, Analysis, SubProcessor
+from timeside.server.models import *
 from timeside.server.models import _PENDING, _DONE
 from timeside.core.tools.test_samples import generateSamples
 import simplejson as json
@@ -64,11 +64,11 @@ class Command(BaseCommand):
                             help='define the telemeta collection code')
 
     def create_selection(self):
-        if not self.selection_title and self.collection_code:
-            self.selection_title = self.collection_code
-
         if self.collection_code:
-            selection_title = self.collection_code
+            if not self.selection_title:
+                selection_title = self.collection_code
+            else:
+                selection_title = self.selection_title
             collection = MediaCollection.objects.get(code=self.collection_code)
             tm_items = collection.items.all()
         else:
@@ -77,12 +77,17 @@ class Command(BaseCommand):
 
         self.selection, c = Selection.objects.get_or_create(title=selection_title)
         items = self.selection.items.all()
-        print(items)
+
+        provider, c  = Provider.objects.get_or_create(pid='telemeta_crem')
+
         for tm_item in tm_items:
             if tm_item.file:
                 path = tm_item.file.path
                 item, c = Item.objects.get_or_create(title=tm_item.title,
-                                                     source_file=path)
+                                                     source_file=path,
+                                                     external_id=tm_item.code,
+                                                     external_uri=tm_item.get_url(),
+                                                     provider=provider)
                 if not item in items:
                     self.selection.items.add(item)
 
@@ -92,7 +97,7 @@ class Command(BaseCommand):
 
     def create_experience(self):
         presets = []
-        print(self.pid)
+
         processors = timeside.core.processor.processors(timeside.core.api.IProcessor)
         for proc in processors:
             trig = True
@@ -129,7 +134,10 @@ class Command(BaseCommand):
         self.collection_code = options.get('collection_code')
 
         self.create_selection()
+        print('number of items: ', self.selection.items.all().count())
+
         self.create_experience()
+        print('processors: ', self.pid)
 
         task, c = Task.objects.get_or_create(experience=self.experience, selection=self.selection)
         if c or task.status != _DONE or self.force:
