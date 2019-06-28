@@ -27,8 +27,8 @@ data:
   volumes:
     - /home/crem/media/cache:/srv/media/cache
     - /home/crem/media/export:/srv/media/export
-    - /home/crem/media/log:/srv/media/log
     - /home/crem/media/results:/srv/media/results
+    - /archive/CREM/media/log:/srv/media/log
     - /archive/CREM/tmp:/srv/media/tmp
     - /archive/CREM/media/items:/srv/media/items
     - /archive/CREM/backup:/srv/backup
