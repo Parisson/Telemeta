@@ -62,14 +62,14 @@ class FixCheckMedia(object):
 
 
     def fix_webm(self, path):
-        try:
+        try: 
             tmp_file = self.tmp_dir + 'out.webm'
             command = '/usr/local/bin/ffmpeg -loglevel 0 -i "' + path + '" -vcodec copy -acodec copy -f webm -y "' + tmp_file + '" > /dev/null'
             print command
             os.system(command)
-            ebml_obj = EBMLData(tmp_file)
-            offset = ebml_obj.get_first_cluster_seconds()
-            command = '/usr/local/bin/ffmpeg -loglevel 0 -ss ' + str(offset) + ' -i "' + tmp_file + '" -vcodec copy -acodec copy -f webm -y "' + path + '" > /dev/null'
+            #ebml_obj = EBMLData(tmp_file)
+            #offset = ebml_obj.get_first_cluster_seconds()
+            command = '/usr/local/bin/ffmpeg -loglevel 0 -i "' + tmp_file + '" -vcodec copy -acodec copy -f webm -y "' + path + '" > /dev/null'
             print command
             os.system(command)
         except:
