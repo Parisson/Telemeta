@@ -130,7 +130,9 @@ class KDEnLiveSession(object):
                     if 'name' in att['attributes']:
                         name = att['attributes']['name']
                         if 'marker' in name:
-                            marker_time = float(name.split(':')[-1].replace(',','.').replace(' ', ''))
+                            name = name.encode('utf8')
+                            print(name)
+                            marker_time = float(name.split(':')[-1].replace(',','.').replace(' ', ''))
                             id = name.split(':')[-2].split('.')[-1]
                             rel_time = 0
 
