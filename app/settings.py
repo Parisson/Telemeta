@@ -56,10 +56,10 @@ TIME_ZONE = 'Europe/Paris'
 LANGUAGES = [('fr', 'French'),
              ('en', 'English'),
              ('de', 'German'),
-             ('zh_CN', 'Simplified Chinese'),
-             ('ar_TN', 'Arabic'),
-             ('pt_BR', 'Portuguese'),
-             ('es', 'Spanish'),
+             #('zh_CN', 'Simplified Chinese'),
+             ('ar', 'Arabic'),
+             #('pt_BR', 'Portuguese'),
+             #('es', 'Spanish'),
              ]
 
 SITE_ID = 1
@@ -195,7 +195,8 @@ AUTH_USER_MODEL = 'auth.User'
 TELEMETA_ORGANIZATION = 'Telemeta'
 TELEMETA_SUBJECTS = ('Telemeta', 'web', 'platform', 'audio', 'semantics')
 TELEMETA_DESCRIPTION = "Open web audio platform with semantics"
-TELEMETA_LOGO = STATIC_URL + 'telemeta/images/logo_telemeta_2.png'
+#TELEMETA_LOGO = STATIC_URL + 'telemeta/images/logo_telemeta_2.png'
+TELEMETA_LOGO = STATIC_URL + 'telemeta/images/logo_fr_cmam.png'
 
 TELEMETA_GMAP_KEY = 'ABQIAAAArg7eSfnfTkBRma8glnGrlxRVbMrhnNNvToCbZQtWdaMbZTA_3RRGObu5PDoiBImgalVnnLU2yN4RMA'
 
