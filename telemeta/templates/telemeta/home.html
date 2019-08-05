@@ -54,6 +54,7 @@
 {{ page_content|render_flatpage }}
 </div>
 
+{% comment %}
 {% if sound_pub_items %}
 <div style="margin-top: 1ex;font-size: 90%; width: 66%;">
 <div>
@@ -66,6 +67,7 @@
 {% endfor %}
 </div>
 {% endif %}
+{% endcomment %}
 
 </div>
 {% endblock %}

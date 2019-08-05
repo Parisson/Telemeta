@@ -25,7 +25,8 @@
 data:
   image: debian:jessie
   volumes:
-     - ./data/media/:/srv/media
+     - /DATA/media:/srv/media
+       #- ./data/media/:/srv/media
      - ./data/backup/:/srv/backup
      - ./data/static:/srv/static
      - ./data/bower:/srv/bower
