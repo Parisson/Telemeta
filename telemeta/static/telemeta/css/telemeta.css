@@ -506,7 +506,7 @@ form.login .submit {
 #formlang{
     display:inline-block;
     position:absolute;
-    right:1%;
+   /* right:1%; */
     top:10%;
 }
 
