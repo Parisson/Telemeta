@@ -53,7 +53,7 @@ Thank you so much for your help!
 News
 =====
 
-1.7.0
+1.7.x
 +++++
 
 * Based on TimeSide 0.9
