@@ -31,13 +31,13 @@ data:
      - ./data/bower:/srv/bower
      - ./data/log/nginx:/var/log/nginx
      - ./data/log/uwsgi:/var/log/uwsgi
+     - ./bin/:/srv/bin
   command: "true"
 
 db:
   image: mysql:5
   volumes:
-    - ./bin/:/srv/bin
-    - ./data/mysql/:/var/lib/mysql
+     - ./data/mysql/:/var/lib/mysql
   volumes_from:
     - data
   env_file:
