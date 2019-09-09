@@ -170,6 +170,7 @@ class CollectionZipView(View):
         without loading the whole file into memory.
         Based on ZipStream
         """
+        from django.http import HttpResponse, StreamingHttpResponse
         from telemeta.views import MarkerView
         from telemeta.backup import CollectionSerializer
         import zipstream
@@ -461,4 +462,4 @@ class CollectionSoundEnumListView(CollectionEnumListView):
 
     def get_coll(self, enum,c):
         return c.get_coll(enum).sound().order_by('code', 'old_code')
-    
+
