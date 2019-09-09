@@ -125,7 +125,8 @@ class ModelCore(models.Model, DirtyFieldsMixin):
         "Return model fields as a dict of name/value pairs"
         fields_dict = {}
         for field in self._meta.fields:
-            fields_dict[field.name] = getattr(self, field.name)
+            data = unicode(getattr(self, field.name))
+            fields_dict[field.name] = data
         return fields_dict
 
     def to_list(self):

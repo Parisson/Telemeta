@@ -28,6 +28,7 @@ from telemeta.models.core import *
 from telemeta.models.query import *
 from telemeta.models.identifier import *
 from telemeta.models.resource import *
+from telemeta.models.enum import *
 
 # Special code regex of collections for the branch
 collection_published_code_regex = getattr(settings, 'COLLECTION_PUBLISHED_CODE_REGEX', '[A-Za-z0-9._-]*')
@@ -257,7 +258,8 @@ class MediaCollection(MediaResource):
 
     def get_json(self):
         import json
-        return json.dumps(self.to_dict_with_more())
+        data = self.to_dict_with_more()
+        return json.dumps(data)
 
     def to_row(self, tags):
         row = []
