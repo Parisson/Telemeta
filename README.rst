@@ -53,7 +53,7 @@ Thank you so much for your help!
 News
 =====
 
-1.7.0
+1.7.x
 +++++
 
 * Based on TimeSide 0.9
@@ -62,15 +62,20 @@ News
 * Better video streaming
 * Better logging
 
-UPGRADING::
+UPGRADING
+---------
+
+.. code:: bash
 
   git pull origin master
   git submodule update --init --remote
   docker-compose run app /srv/app/bin/upgrade_from_1.6_to_1.7.sh
 
-WARNING:
+WARNING
+-------
 
-`scripts/` and `app/scripts/` directories has been renamed `bin/` and `app/bin/` respectively. So please adapt your management and maintenance personal script.
+:code:`scripts/` and :code:`app/scripts/` directories has been renamed :code:`bin/` and :code:`app/bin/` respectively.
+So please adapt your management and maintenance personal script.
 
 1.6.5 > 1.6.7
 +++++++++++++

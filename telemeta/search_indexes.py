@@ -21,8 +21,10 @@ from haystack import indexes
 from telemeta.models import *
 from haystack.query import SearchQuerySet
 
+
 class KeywordField(indexes.CharField):
     field_type = 'keyword'
+
 
 class MediaItemIndex(indexes.SearchIndex, indexes.Indexable):
 

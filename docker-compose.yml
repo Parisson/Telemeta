@@ -42,25 +42,26 @@ data:
 db:
   image: mysql:5
   volumes:
-    - ./bin/:/srv/bin
-    - ./data/mysql/:/var/lib/mysql
+     - ./data/mysql/:/var/lib/mysql
   volumes_from:
     - data
   env_file:
     - env/prod.env
   command: mysqld  --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-  
+
 broker:
-  image: redis
+  image: redis:5
 
 search:
-  image: elasticsearch:1
+  image: elasticsearch:1.7
 
 app:
   image: parisson/telemeta:1.7
   volumes:
     - ./app:/srv/app
     - ./telemeta:/srv/lib/telemeta/telemeta
+    - ./lib/TimeSide:/srv/lib/timeside
+    - ./lib/plugins:/srv/lib/plugins
   volumes_from:
     - data
   env_file:
@@ -83,6 +84,7 @@ worker:
     - broker
     - db
 
+<<<<<<< HEAD
 nginx:
   image: nginx
   ports:
@@ -94,3 +96,5 @@ nginx:
   links:
     - app
 
+=======
+>>>>>>> dev
