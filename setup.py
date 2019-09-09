@@ -47,7 +47,7 @@ setup(
   long_description = open('README.rst').read(),
   author = "Guillaume Pellerin",
   author_email = "yomguy@parisson.com",
-  version = '1.7.1',
+  version = '1.7.3',
   install_requires = [
     'django==1.8.*',
     'django-bootstrap-pagination==1.6.4',
@@ -59,7 +59,7 @@ setup(
     'django-extensions==2.1.0',
     'django-extra-views==0.11.0',
     'django-debug-toolbar==1.6',
-    'django-haystack',
+    'django-haystack==2.4.1',
     'django-ipauth',
     'django-json-rpc==0.7.2',
     'django-registration-redux==2.4',
