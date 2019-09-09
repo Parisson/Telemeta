@@ -17,7 +17,7 @@
                         {% for media in related_media %}
                         <tr>
                             <td style="font-size: 1em;">
-                            <dl class="listing">
+                              <dl class="listing">
                                 <dt>{% trans "Title" %}</dt>
                                 <dd>
                                     {% if media.url %}
@@ -42,38 +42,38 @@
                                 <dd>{{ media.credits }}</dd>
                                 {% dl_field media "mime_type" %}
                                 {% if media.file %}
-                                <dt>{% trans "Download" %}</dt>
-                                <dd>
-                                    <a href="{% url "telemeta-collection-related-download" collection.public_id media.id %}">
-                                     {{ media.file|get_filename }}
-                                    </a>
-                                </dd>
+                                    <dt>{% trans "Download" %}</dt>
+                                    <dd>
+                                        <a href="{% url "telemeta-collection-related-download" collection.public_id media.id %}">
+                                        {{ media.file|get_filename }}
+                                        </a>
+                                    </dd>
                                 {% endif %}
                                 </dd>
-                            </dl>
+                              </dl>
                             </td>
 
                             <td style="padding-bottom: 1em;">
                                 {% if media.is_image %}
-                                {% if media.file %}
-                                <a href="{% url "telemeta-collection-related" collection.public_id media.id %}">
-                                {% thumbnail media.file "x200" as im %}
-                                <img src="{{ im.url }}" style="max-width: 420px; max-height: 200px;" />
-                                {% endthumbnail %}
-                                </a>
+                                    {% if media.file %}
+                                        <a href="{% url "telemeta-collection-related" collection.public_id media.id %}">
+                                        {% thumbnail media.file "x200" as im %}
+                                        <img src="{{ im.url }}" style="max-width: 420px; max-height: 200px;" />
+                                        {% endthumbnail %}
+                                        </a>
+                                    {% else %}
+                                        <a href="{{ media.url }}">
+                                        {% thumbnail media.url "x200" as im %}
+                                        <img src="{{ im.url }}" style="max-width: 420px; max-height: 200px;" />
+                                        {% endthumbnail %}
+                                        </a>
+                                    {% endif %}
                                 {% else %}
-                                <a href="{{ media.url }}">
-                                {% thumbnail media.url "x200" as im %}
-                                <img src="{{ im.url }}" style="max-width: 420px; max-height: 200px;" />
-                                {% endthumbnail %}
-                                </a>
-                                {% endif %}
-                                {% else %}
-                                {% if media.url %}
-                                 {% if "youtu" in media.url %}
-                                 <iframe width="251" height="200" src="{{ media.url|get_youtube }}" frameborder="0" allowfullscreen></iframe>
-                                 {% endif %}
-                                {% endif %}
+                                    {% if media.url %}
+                                        {% if "youtu" in media.url %}
+                                            <iframe width="251" height="200" src="{{ media.url|get_youtube }}" frameborder="0" allowfullscreen></iframe>
+                                        {% endif %}
+                                    {% endif %}
                                 {% endif %}
                             </td>
                         </tr>
