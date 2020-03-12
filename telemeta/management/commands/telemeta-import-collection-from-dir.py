@@ -5,6 +5,7 @@ from django.core.files.base import ContentFile
 from django.contrib.auth.models import User
 from telemeta.models import *
 from telemeta.util.unaccent import unaccent
+from django.template.defaultfilters import slugify
 import os
 
 
@@ -93,7 +94,7 @@ class Command(BaseCommand):
         if users:
             self.user = users[0]
 
-        collection, c = MediaCollection.objects.get_or_create(code=self.collection_code, title=self.collection_code)
+        collection, c = MediaCollection.objects.get_or_create(code=self.collection_code, title=self.collection_code, public_access='full')
         if c:
             collection.public_access = 'full'
             collection.save()
@@ -105,8 +106,8 @@ class Command(BaseCommand):
             for filename in files:
                 path = root + os.sep + filename
                 filename_pre, ext = os.path.splitext(filename)
-                item_code = collection.code + '_' + filename_pre
-                item, c = MediaItem.objects.get_or_create(collection=collection, code=item_code)
+                item_code = slugify(collection.code + '_' + filename_pre)
+                item, c = MediaItem.objects.get_or_create(collection=collection, code=item_code, public_access='full')
                 if c:
                     item.title = filename_pre
                     item.public_access = 'full'
