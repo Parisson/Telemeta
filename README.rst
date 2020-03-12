@@ -53,7 +53,7 @@ Thank you so much for your help!
 News
 =====
 
-1.7.0
+1.7.x
 +++++
 
 * Based on TimeSide 0.9
@@ -62,15 +62,20 @@ News
 * Better video streaming
 * Better logging
 
-UPGRADING::
+UPGRADING
+---------
+
+.. code:: bash
 
   git pull origin master
   git submodule update --init --remote
   docker-compose run app /srv/app/bin/upgrade_from_1.6_to_1.7.sh
 
-WARNING:
+WARNING
+-------
 
-`scripts/` and `app/scripts/` directories has been renamed `bin/` and `app/bin/` respectively. So please adapt your management and maintenance personal script.
+:code:`scripts/` and :code:`app/scripts/` directories has been renamed :code:`bin/` and :code:`app/bin/` respectively.
+So please adapt your management and maintenance personal script.
 
 1.6.5 > 1.6.7
 +++++++++++++
@@ -159,15 +164,23 @@ Then clone Telemeta::
 Start it up
 ===========
 
-For a production environment setup, first read / edit `env/prod.env`, then::
+To start the application ONLY for testing or developing purposes::
 
     docker-compose up
 
 Then browse the app at http://localhost:8000/ (replacing 'localhost' by the IP given by the docker terminal on OSX or Windows)
 
-To start the application in DEBUG mode::
+Note that the service will automatically be reloaded when any code of the app is modified.
 
-    docker-compose -f docker-compose.yml -f env/debug.yml up
+For a production environment setup, first read / edit `env/prod.env`, then::
+
+    docker-compose -f docker-compose.yml -f env/prod.yml up
+
+This will provide the uwsgi port 8000 for which you should setup an exernal Nginx server using uwsgi_pass.
+
+You can also use the nginx container like this::
+
+    docker-compose -f docker-compose.yml -f env/prod.yml -f env/nginx.yml up
 
 Be **CAREFULL** in production:
 
@@ -214,15 +227,6 @@ API / Documentation
 
 Development
 ===========
-
-To start the application in a development environment setup, first read / edit `env/debug.env`, then::
-
-    cd Telemeta
-    git pull
-    git checkout dev
-    docker-compose -f docker-compose.yml -f env/dev.yml up
-
-Then browse the app at http://localhost:9100/ (replacing 'localhost' by the IP given by the docker terminal on OSX or Windows). Note that the service will automatically be reloaded when any code of the app is modified.
 
 You are welcome to participate to the development by forking the Telemeta project on GitHub_, using it as if it were the original and submitting your changes through a Pull Request on the **dev branch ONLY**.
 

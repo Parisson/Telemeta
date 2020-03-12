@@ -31,39 +31,43 @@ data:
      - ./data/bower:/srv/bower
      - ./data/log/nginx:/var/log/nginx
      - ./data/log/uwsgi:/var/log/uwsgi
+     - ./bin/:/srv/bin
   command: "true"
 
 db:
   image: mysql:5
   volumes:
-    - ./bin/:/srv/bin
-    - ./data/mysql/:/var/lib/mysql
+     - ./data/mysql/:/var/lib/mysql
   volumes_from:
     - data
   env_file:
     - env/prod.env
   command: mysqld  --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-  
+
 broker:
-  image: redis
+  image: redis:5
 
 search:
-  image: elasticsearch:1
+  image: elasticsearch:1.7
 
 app:
   image: parisson/telemeta:1.7
   volumes:
     - ./app:/srv/app
     - ./telemeta:/srv/lib/telemeta/telemeta
+    - ./lib/TimeSide:/srv/lib/timeside
+    - ./lib/plugins:/srv/lib/plugins
   volumes_from:
     - data
   env_file:
-    - env/prod.env
-  command: /bin/bash bin/app.sh
+    - env/debug.env
+  command: /bin/bash bin/app.sh --runserver
   links:
     - broker
     - db
     - search
+  ports:
+    - "8000:8000"
 
 worker:
   image: parisson/telemeta:1.7
@@ -76,16 +80,4 @@ worker:
   links:
     - broker
     - db
-
-nginx:
-  image: nginx
-  ports:
-    - "8000:80"
-  volumes:
-    - ./etc/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
-  volumes_from:
-    - data
-  links:
-    - app
-
 

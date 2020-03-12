@@ -72,7 +72,7 @@ class ProfileView(object):
         else:
             user_form = UserChangeForm(instance=user, prefix='user')
             profile_form = UserProfileForm(instance=profile, prefix='profile')
-            forms = [user_form, profile_form]
+        forms = [user_form, profile_form]
         return render(request, template, {'forms': forms, 'usr': user,
                                 'user_hidden_fields': user_hidden_fields})
 
