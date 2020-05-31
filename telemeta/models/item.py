@@ -30,7 +30,7 @@ from telemeta.models.query import *
 from telemeta.models.identifier import *
 from telemeta.models.resource import *
 from telemeta.models.enum import *
-
+from telemeta.models.responsability import *
 
 item_published_code_regex = getattr(settings, 'ITEM_PUBLISHED_CODE_REGEX', '[A-Za-z0-9._-]*')
 item_unpublished_code_regex = getattr(settings, 'ITEM_UNPUBLISHED_CODE_REGEX', '[A-Za-z0-9._-]*')
