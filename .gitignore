@@ -22,6 +22,7 @@ tmp
 dist
 doc/output/
 doc/pelican-plugins/
+doc/pelican-themes/
 doc/api/telemeta
 
 # Installer logs
