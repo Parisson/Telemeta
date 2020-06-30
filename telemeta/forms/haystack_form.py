@@ -26,7 +26,6 @@ from haystack.forms import *
 from haystack.query import SearchQuerySet, SQ
 from datetime import date
 from django.utils.translation import ugettext_lazy as _
-from settings import FIRST_YEAR
 import operator
 
 # from telemeta.views.boolean_search import *
