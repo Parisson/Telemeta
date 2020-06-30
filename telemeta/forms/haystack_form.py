@@ -27,6 +27,9 @@ from haystack.query import SearchQuerySet, SQ
 from datetime import date
 from django.utils.translation import ugettext_lazy as _
 import operator
+from django.conf import settings
+
+FIRST_YEAR_PUBLISHED = getattr(settings, 'FIRST_YEAR_PUBLISHED', 1857)
 
 # from telemeta.views.boolean_search import *
 
@@ -96,7 +99,7 @@ class HayAdvanceForm(SearchForm):
         last_year = date.today().year
         list_year = []
         list_year.append(('', '----'))
-        year=getattr(settings, 'FIRST_YEAR', '[A-Za-z0-9._-]*')
+        year=FIRST_YEAR_PUBLISHED
         while(year<=last_year):
             list_year.append((str(year),year))
             year+=1
@@ -122,7 +125,7 @@ class HayAdvanceForm(SearchForm):
     	last_year = date.today().year
         list_year = []
         list_year.append(('', '----'))
-        year=getattr(settings, 'FIRST_YEAR', '[A-Za-z0-9._-]*')
+        year=FIRST_YEAR_PUBLISHED
         while(year<=last_year):
             list_year.append((str(year),year))
             year+=1
