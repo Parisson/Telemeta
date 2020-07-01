@@ -65,14 +65,14 @@ app:
   volumes_from:
     - data
   env_file:
-    - env/prod.env
-  command: /bin/bash bin/app.sh
+    - env/debug.env
+  command: /bin/bash bin/app.sh --runserver
   links:
     - broker
     - db
     - search
   ports:
-    - '8000:8000'
+    - "8000:8000"
 
 worker:
   image: parisson/telemeta:1.7

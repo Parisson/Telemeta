@@ -27,6 +27,10 @@ from haystack.query import SearchQuerySet, SQ
 from datetime import date
 from django.utils.translation import ugettext_lazy as _
 import operator
+from django.conf import settings
+
+FIRST_YEAR_PUBLISHED = getattr(settings, 'FIRST_YEAR_PUBLISHED', 1857)
+
 # from telemeta.views.boolean_search import *
 
 
@@ -87,20 +91,18 @@ class HayAdvanceForm(SearchForm):
     instruments = forms.CharField(required=False, label=(_('instruments')), widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'search'}))
     collectors = forms.CharField(required=False, label=(_('recordist')), widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'search'}))
 
+    # @cached_property
+    
+
     # to create a dynamic list of publishing years
     def list_recorded_year():
-        list_all_year = []
-        list_collect = MediaCollection.objects.all()
-        for collect in list_collect:
-            if collect.recorded_from_year != 0 and not collect.recorded_from_year in list_all_year:
-                list_all_year.append(collect.recorded_from_year)
-            if collect.recorded_to_year != 0 and not collect.recorded_to_year in list_all_year:
-                list_all_year.append(collect.recorded_to_year)
-        list_all_year.sort()
+        last_year = date.today().year
         list_year = []
         list_year.append(('', '----'))
-        for year in list_all_year:
-            list_year.append((str(year), year))
+        year=FIRST_YEAR_PUBLISHED
+        while(year<=last_year):
+            list_year.append((str(year),year))
+            year+=1
         return list_year
 
     recorded_from_date = forms.TypedChoiceField(
@@ -120,16 +122,13 @@ class HayAdvanceForm(SearchForm):
 
     # to create a dynamic list of publishing years
     def list_publish_year():
-        list_all_year = []
-        list_collect = MediaCollection.objects.all()
-        for collect in list_collect:
-            if collect.year_published != 0 and not collect.year_published in list_all_year:
-                list_all_year.append(collect.year_published)
-        list_all_year.sort()
+    	last_year = date.today().year
         list_year = []
-        list_year.append((0, '----'))
-        for year in list_all_year:
-            list_year.append((year, year))
+        list_year.append(('', '----'))
+        year=FIRST_YEAR_PUBLISHED
+        while(year<=last_year):
+            list_year.append((str(year),year))
+            year+=1
         return list_year
 
     year_published_from = forms.TypedChoiceField(

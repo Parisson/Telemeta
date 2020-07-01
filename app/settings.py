@@ -378,3 +378,5 @@ NOTEBOOK_ARGUMENTS = [
 ]
 
 SILENCED_SYSTEM_CHECKS = ['fields.W342',]
+
+FIRST_YEAR_PUBLISHED = 1857 # Year of patent filing of the 1st sound recorder by Édouard-Léon Scott de Martinville
