@@ -334,6 +334,7 @@ class MediaItem(MediaResource):
                 row.append('')
         return row
 
+
 class MediaItemRelated(MediaRelated):
     "Item related media"
 
