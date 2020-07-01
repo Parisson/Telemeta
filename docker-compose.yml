@@ -28,8 +28,8 @@ data:
 
     - /home/crem/media/cache:/srv/media/cache
     - /home/crem/media/export:/srv/media/export
-    - /home/crem/Telemeta/media/log:/srv/media/log
     - /home/crem/media/results:/srv/media/results
+    - /archive/CREM/media/log:/srv/media/log
     - /archive/CREM/tmp:/srv/media/tmp
     - /archive/CREM/media/items:/srv/media/items
     - /archive/CREM/backup:/srv/backup
@@ -53,7 +53,7 @@ broker:
   image: redis:5
 
 search:
-  image: elasticsearch:1.7
+  image: elasticsearch:2
 
 app:
   image: parisson/telemeta:1.7

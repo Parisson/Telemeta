@@ -13,6 +13,7 @@ env = environ.Env(DEBUG=(bool, False),
 
 # Django settings for server project.
 DEBUG = env('DEBUG')  # False if not in os.environ
+DEBUG = True
 
 sys.dont_write_bytecode = True
 
@@ -267,7 +268,7 @@ if DEBUG:
     DEBUG_TOOLBAR_CONFIG = {
         'JQUERY_URL': '/static/jquery/dist/jquery.min.js',
     }
-    INTERNAL_IPS = ['127.0.0.1', '0.0.0.0', '172.17.0.1']
+    INTERNAL_IPS = ['127.0.0.1', '0.0.0.0', '172.17.0.1', '129.102.192.110']
 
 SUIT_CONFIG = {
         'ADMIN_NAME': 'Telemeta Admin'
@@ -313,8 +314,8 @@ from worker import app
 
 HAYSTACK_CONNECTIONS = {
     'default': {
-        #'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-        'ENGINE': 'telemeta.util.backend.CustomElasticEngine',
+        'ENGINE': 'haystack.backends.elasticsearch2_backend.Elasticsearch2SearchEngine',
+        #'ENGINE': 'telemeta.util.backend.CustomElasticEngine',
         'URL': env('HAYSTACK_URL'),
         'INDEX_NAME': env('HAYSTACK_INDEX_NAME'),
         'INLUDE_SPELLING': True,
@@ -325,8 +326,8 @@ HAYSTACK_CONNECTIONS = {
                              ]
     },
     'autocomplete': {
-        # 'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-        'ENGINE': 'telemeta.util.backend.CustomElasticEngine',
+        'ENGINE': 'haystack.backends.elasticsearch2_backend.Elasticsearch2SearchEngine',
+        #'ENGINE': 'telemeta.util.backend.CustomElasticEngine',
         'URL': env('HAYSTACK_URL'),
         'INDEX_NAME': env('HAYSTACK_INDEX_NAME_AUTOCOMPLETE'),
         'INLUDE_SPELLING': True,
@@ -378,3 +379,4 @@ NOTEBOOK_ARGUMENTS = [
 ]
 
 SILENCED_SYSTEM_CHECKS = ['fields.W342',]
+

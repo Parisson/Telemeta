@@ -187,7 +187,7 @@ class Command(BaseCommand):
 
             audio_files = []
             for file in collection_files:
-                ext = ['WAV', 'wav']
+                ext = ['WAV', 'wav', 'WEBM', 'webm']
                 if file.split('.')[-1] in ext and file[0] != '.':
                     audio_files.append(file)
 

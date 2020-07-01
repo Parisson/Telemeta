@@ -11,8 +11,8 @@ log='/var/log/uwsgi/app.log'
 
 # uwsgi params
 port=8000
-processes=2
-threads=2
+processes=4
+threads=4
 uid='www-data'
 gid='www-data'
 
@@ -22,10 +22,13 @@ gid='www-data'
 # pip install django-debug-toolbar==1.6
 # pip install -e git+https://github.com/Parisson/django-jqchat.git@dj1.8#egg=django-jqchat
 # pip install -e git+https://github.com/Parisson/saved_searches.git@dj1.8#egg=saved_searches-2.0.0-beta
-pip install -U youtube-dl librosa
+# pip install -e git+https://github.com/Parisson/saved_searches.git@dj1.8#egg=saved_searches-2.0.0-beta>>>>>>> dev:app/bin/app
+pip install elasticsearch==2.4.1 django-haystack==2.7.0 django==1.8.19 django-debug-toolbar==1.9.1 librosa==0.6.3
+pip install -U youtube-dl
 
 # install plugins
 /srv/app/bin/setup_plugins.sh
+
 
 # waiting for other network services
 sh $app/bin/wait.sh
