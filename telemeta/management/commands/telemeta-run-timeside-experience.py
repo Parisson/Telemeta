@@ -97,8 +97,8 @@ class Command(BaseCommand):
 
     def create_experience(self):
         presets = []
-
         processors = timeside.core.processor.processors(timeside.core.api.IProcessor)
+
         for proc in processors:
             trig = True
             # print(proc.id())
@@ -119,6 +119,7 @@ class Command(BaseCommand):
         else:
             self.experience = Experience()
             self.experience.save()
+
         for preset in presets:
             if not preset in self.experience.presets.all():
                 self.experience.presets.add(preset)

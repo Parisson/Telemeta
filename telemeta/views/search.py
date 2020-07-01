@@ -25,6 +25,7 @@ from saved_searches.views import SavedSearchView
 import re
 import unicodedata
 import simplejson as json
+import datetime
 from django.http import HttpResponse
 
 
@@ -46,6 +47,7 @@ class HaystackSearch(FacetedSearchView, SavedSearchView):
         return super(HaystackSearch, self).get_query()
 
     def get_results(self):
+
         if (self.type == 'item'):
             return super(HaystackSearch, self).get_results().models(MediaItem)
         elif (self.type == 'corpus'):
