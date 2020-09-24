@@ -51,7 +51,8 @@ search:
   image: elasticsearch:1.7
 
 app:
-  image: parisson/telemeta:1.7
+  # image: parisson/telemeta:1.7
+  build: .
   volumes:
     - ./app:/srv/app
     - ./telemeta:/srv/lib/telemeta/telemeta
@@ -70,7 +71,8 @@ app:
     - "8000:8000"
 
 worker:
-  image: parisson/telemeta:1.7
+  # image: parisson/telemeta:1.7
+  build: .
   volumes_from:
     - app
     - data
