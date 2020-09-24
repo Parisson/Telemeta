@@ -65,7 +65,7 @@ setup(
     'django-registration-redux==2.4',
     'django-suit==0.2.26',
     'django-timezones==0.2',
-    'djangorestframework==3.6.4',
+    'djangorestframework==3.9.1',
     'docutils==0.14',
     'ebooklib',
     'elasticsearch==1.6.0',
