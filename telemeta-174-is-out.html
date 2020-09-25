@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" prefix="og: http://ogp.me/ns# fb: https://www.facebook.com/2008/fbml">
 <head>
-    <title>Telemeta project now uses Git for development - Telemeta project</title>
+    <title>Telemeta 1.7.4 is out! - Telemeta project</title>
     <!-- Using the latest rendering mode for IE -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="utf-8">
@@ -10,20 +10,18 @@
 
     <link href="./images/favicon.ico" rel="icon">
 
-<link rel="canonical" href="./telemeta-project-now-uses-git-for-development.html">
+<link rel="canonical" href="./telemeta-174-is-out.html">
 
         <meta name="author" content="Parisson SARL" />
-        <meta name="keywords" content="git" />
-        <meta name="description" content="Ten months ago, I started to look at other version control systems because I was fed up with the Subversion centralized model. It tested Git, Mercurial, Bazaar, etc.. Bazaar was the good choice because it allowed the dev teams to make branches easily in a decentralized environment, to push commits to the old subversion repository, to keep an easy syntax, etc... Now there are few reasons to switch back to Git: we want to checkout and test branches faster without managing dozens of repositories, we do not want to upload 500 ko of data for a 1 line commit, we want to push the generic Telemeta to GitHub. Sorry Bzr folks, I like your stuff, but Git is more appropriate now for this project. Developers, please ​`update …" />
+        <meta name="description" content="Changelog: Fix collection ZIP serializer Improve advanced search engine performance (thanks to @fpasquier93) Get it! https://github.com/Parisson/Telemeta#install Thanks to all partners! Guillaume" />
 
         <meta property="og:site_name" content="Telemeta project" />
         <meta property="og:type" content="article"/>
-        <meta property="og:title" content="Telemeta project now uses Git for development"/>
-        <meta property="og:url" content="./telemeta-project-now-uses-git-for-development.html"/>
-        <meta property="og:description" content="Ten months ago, I started to look at other version control systems because I was fed up with the Subversion centralized model. It tested Git, Mercurial, Bazaar, etc.. Bazaar was the good choice because it allowed the dev teams to make branches easily in a decentralized environment, to push commits to the old subversion repository, to keep an easy syntax, etc... Now there are few reasons to switch back to Git: we want to checkout and test branches faster without managing dozens of repositories, we do not want to upload 500 ko of data for a 1 line commit, we want to push the generic Telemeta to GitHub. Sorry Bzr folks, I like your stuff, but Git is more appropriate now for this project. Developers, please ​`update …"/>
-        <meta property="article:published_time" content="2011-10-26" />
-            <meta property="article:section" content="Development" />
-            <meta property="article:tag" content="git" />
+        <meta property="og:title" content="Telemeta 1.7.4 is out!"/>
+        <meta property="og:url" content="./telemeta-174-is-out.html"/>
+        <meta property="og:description" content="Changelog: Fix collection ZIP serializer Improve advanced search engine performance (thanks to @fpasquier93) Get it! https://github.com/Parisson/Telemeta#install Thanks to all partners! Guillaume"/>
+        <meta property="article:published_time" content="2020-09-24" />
+            <meta property="article:section" content="Releases" />
             <meta property="article:author" content="Parisson SARL" />
 
     <meta name="twitter:dnt" content="on">
@@ -45,7 +43,7 @@
               title="Telemeta project ATOM Feed"/>
 
         <link href="./feeds/%s.atom.xml" type="application/atom+xml" rel="alternate"
-              title="Telemeta project Development ATOM Feed"/>
+              title="Telemeta project Releases ATOM Feed"/>
 </head>
 <body>
 
@@ -63,7 +61,7 @@ Telemeta project            </a>
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
-                        <li class="active">
+                        <li >
                             <a href="./category/development.html">Development</a>
                         </li>
                         <li >
@@ -75,7 +73,7 @@ Telemeta project            </a>
                         <li >
                             <a href="./category/projects.html">Projects</a>
                         </li>
-                        <li >
+                        <li class="active">
                             <a href="./category/releases.html">Releases</a>
                         </li>
                         <li >
@@ -103,10 +101,10 @@ Telemeta project            </a>
         <article>
             <header class="page-header">
                 <h1>
-                    <a href="./telemeta-project-now-uses-git-for-development.html"
+                    <a href="./telemeta-174-is-out.html"
                        rel="bookmark"
-                       title="Permalink to Telemeta project now uses Git for development">
-                        Telemeta project now uses Git for development
+                       title="Permalink to Telemeta 1.7.4 is out!">
+                        Telemeta 1.7.4 is out!
                     </a>
                 </h1>
             </header>
@@ -116,44 +114,29 @@ Telemeta project            </a>
 <footer class="post-info">
     <span class="label label-default">Date</span>
     <span class="published">
-        <i class="fa fa-calendar"></i><time datetime="2011-10-26T06:53:00+02:00"> Wed 26 October 2011</time>
+        <i class="fa fa-calendar"></i><time datetime="2020-09-24T17:42:46.494526+02:00"> Thu 24 September 2020</time>
     </span>
 
 
 
 
 
-<span class="label label-default">Tags</span>
-	<a href="./tag/git.html">git</a>
     
 </footer><!-- /.post-info -->                    </div>
                 </div>
-                <p>Ten months ago, I started to look at other version control systems because I was fed up with the Subversion centralized model. It tested Git, Mercurial, Bazaar, etc.. Bazaar was the good choice because it allowed the dev teams to make branches easily in a decentralized environment, to push commits to the old subversion repository, to keep an easy syntax, etc...</p>
-<p>Now there are few reasons to switch back to Git:</p>
-<p>we want to checkout and test branches faster without managing dozens of repositories,
-we do not want to upload 500 ko of data for a 1 line commit,
-we want to push the generic Telemeta to GitHub.
-Sorry Bzr folks, I like your stuff, but Git is more appropriate now for this project.</p>
-<p>Developers, please ​`update your skills &lt;<a class="reference external" href="http://schacon.github.com/git/gittutorial.html">http://schacon.github.com/git/gittutorial.html</a>&gt;`_ :)</p>
-<p>What you need to do with the new repository:</p>
-<ul>
-<li><p class="first">Get the lastest development version to try the lastest useful features</p>
-<pre class="literal-block">
-git clone http://vcs.parisson.com/git/telemeta.git
-</pre>
-</li>
-<li><p class="first">To get the CREM's branch:</p>
-<pre class="literal-block">
-git clone http://vcs.parisson.com/git/telemeta.git
-git checkout crem
-</pre>
-</li>
-<li><p class="first">You can also ​follow / fork the <a class="reference external" href="https://github.com/yomguy/Telemeta">project on GitHub</a> !</p>
-</li>
-<li><p class="first">To get write access to the main repository (i.e. ​git+ssh://vcs.parisson.com/var/git/telemeta.git), please contact us by email.</p>
-</li>
+                <p>Changelog:</p>
+<blockquote>
+<ul class="simple">
+<li>Fix collection ZIP serializer</li>
+<li>Improve advanced search engine performance (thanks to &#64;fpasquier93)</li>
 </ul>
-<p>NB : ​This is the good method to convert a Bzr repo.</p>
+</blockquote>
+<div class="section" id="get-it">
+<h2>Get it!</h2>
+<p><a class="reference external" href="https://github.com/Parisson/Telemeta#install">https://github.com/Parisson/Telemeta#install</a></p>
+<p>Thanks to all partners!</p>
+<p>Guillaume</p>
+</div>
 
             </div>
             <!-- /.entry-content -->
@@ -169,8 +152,8 @@ git checkout crem
             var disqus_config = function () {
                 this.language = "en";
 
-                        this.page.identifier = '2011-10-26-telemeta-project-now-uses-git-for-development';
-                        this.page.url = './telemeta-project-now-uses-git-for-development.html';
+                        this.page.identifier = '2020-09-24-telemeta-174-is-out';
+                        this.page.url = './telemeta-174-is-out.html';
             };
 
             /* * * DON'T EDIT BELOW THIS LINE * * */

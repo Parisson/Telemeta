@@ -39,11 +39,8 @@
         <link href="../feeds/all.atom.xml" type="application/atom+xml" rel="alternate"
               title="Telemeta project ATOM Feed"/>
 
-
-
-        <link href="../feeds/releases.atom.xml" type="application/atom+xml" rel="alternate"
+        <link href="../feeds/%s.atom.xml" type="application/atom+xml" rel="alternate"
               title="Telemeta project Releases ATOM Feed"/>
-
 </head>
 <body>
 
@@ -98,6 +95,43 @@ Telemeta project            </a>
     <div class="row">
         <div class="col-sm-9">
             <article>
+                <h2><a href="../telemeta-174-is-out.html">Telemeta 1.7.4 is out!</a></h2>
+                <div class="summary"><p>Changelog:</p>
+<blockquote>
+<ul class="simple">
+<li>Fix collection ZIP serializer</li>
+<li>Improve advanced search engine performance (thanks to &#64;fpasquier93)</li>
+</ul>
+</blockquote>
+<div class="section" id="get-it">
+<h2>Get it!</h2>
+<p><a class="reference external" href="https://github.com/Parisson/Telemeta#install">https://github.com/Parisson/Telemeta#install</a></p>
+<p>Thanks to all partners!</p>
+<p>Guillaume</p>
+</div>
+
+                    <a class="btn btn-default btn-xs" href="../telemeta-174-is-out.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
+                <h2><a href="../telemeta-164-is-out.html">Telemeta 1.6.4 is out!</a></h2>
+                <div class="summary"><p>ChangeLog:</p>
+<blockquote>
+<ul class="simple">
+<li>Minor bug fixes and improvments</li>
+<li>Fix HTML5 audio compatibility (#173) for the web audio player. The SoundManager Flash player fallback should not be used in most modern web browser. Media files are now serves through Nginx (#155) which enables to stream music with byte range requests.</li>
+<li>Add a User permission &quot;can_run_analysis&quot; to specify that a user or a group of users has the right to list and select advanced Timeside analysis to be displayed in the Timeside web audio player.</li>
+<li>Temporarily remove Timeside server from INSTALLED_APPS until the development of this application is more advanced and is really used by Telemeta.</li>
+<li>Add enumeration management and statitics</li>
+<li>Improved media security allowing streaming through Nginx only from the application</li>
+<li>Add TimeSide as a submodule</li>
+<li>Add a validator for …</li></ul></blockquote>
+                    <a class="btn btn-default btn-xs" href="../telemeta-164-is-out.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
                 <h2><a href="../telemeta-17-has-been-released.html">Telemeta 1.7 has been released!</a></h2>
                 <div class="summary"><p>After months of hard development, I am very pleased to release Telemeta 1.7! It includes many transparent changes, mainly upgrading a lot of dependencies, especially those brought by the audio engine TimeSide which has also been released in its new version.</p>
 <blockquote>
@@ -132,23 +166,6 @@ docker-compose run app /srv/app/bin/upgrade_from_1.6_to_1.7.sh
 <h2>1.6.x</h2>
 <p>The 1 …</p></div>
                     <a class="btn btn-default btn-xs" href="../telemeta-17-has-been-released.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
-            <article>
-                <h2><a href="../telemeta-164-is-out.html">Telemeta 1.6.4 is out!</a></h2>
-                <div class="summary"><p>ChangeLog:</p>
-<blockquote>
-<ul class="simple">
-<li>Minor bug fixes and improvments</li>
-<li>Fix HTML5 audio compatibility (#173) for the web audio player. The SoundManager Flash player fallback should not be used in most modern web browser. Media files are now serves through Nginx (#155) which enables to stream music with byte range requests.</li>
-<li>Add a User permission &quot;can_run_analysis&quot; to specify that a user or a group of users has the right to list and select advanced Timeside analysis to be displayed in the Timeside web audio player.</li>
-<li>Temporarily remove Timeside server from INSTALLED_APPS until the development of this application is more advanced and is really used by Telemeta.</li>
-<li>Add enumeration management and statitics</li>
-<li>Improved media security allowing streaming through Nginx only from the application</li>
-<li>Add TimeSide as a submodule</li>
-<li>Add a validator for …</li></ul></blockquote>
-                    <a class="btn btn-default btn-xs" href="../telemeta-164-is-out.html">more ...</a>
                 </div>
             </article>
             <hr/>
@@ -307,28 +324,6 @@ sudo pip install --upgrade telemeta
                 </div>
             </article>
             <hr/>
-            <article>
-                <h2><a href="../telemeta-13-has-been-released.html">Telemeta 1.3 has been released !</a></h2>
-                <div class="summary"><p>Changes:</p>
-<ul class="simple">
-<li>add related media objects to collections and items (mime type detection, image preview, URL only capable, YouTube? URL detection and preview)</li>
-<li>add &quot;Sound&quot; filters to collection lists and search results</li>
-<li>add a scrollbar to marker lists</li>
-<li>add dependencies to setup.py</li>
-<li>various bugfixes</li>
-<li>developers now use Git</li>
-</ul>
-<p>Upgrade:</p>
-<pre class="literal-block">
-sudo pip install --upgrade telemeta
-</pre>
-<p>or <a class="reference external" href="​​http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.3.tar.gz">download</a> (MD5: 1ff126714ca9f38201b77efa06040671)</p>
-<p>You can upgrade from 1.2 safely. Tell me if anything goes wrong.</p>
-
-                    <a class="btn btn-default btn-xs" href="../telemeta-13-has-been-released.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
 
         <ul class="pagination">
                 <li class="prev disabled"><a href="#">&laquo;</a></li>
@@ -407,7 +402,7 @@ sudo pip install --upgrade telemeta
    <div class="container">
       <hr>
       <div class="row">
-         <div class="col-xs-10">&copy; 2018 Parisson SARL
+         <div class="col-xs-10">&copy; 2020 Parisson SARL
             &middot; Powered by <a href="https://github.com/getpelican/pelican-themes/tree/master/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
             <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
             <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>                <p><small>  <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.en"><img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by/4.0/80x15.png" /></a>

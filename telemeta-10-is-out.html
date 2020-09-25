@@ -42,11 +42,8 @@
         <link href="./feeds/all.atom.xml" type="application/atom+xml" rel="alternate"
               title="Telemeta project ATOM Feed"/>
 
-
-
-        <link href="./feeds/releases.atom.xml" type="application/atom+xml" rel="alternate"
+        <link href="./feeds/%s.atom.xml" type="application/atom+xml" rel="alternate"
               title="Telemeta project Releases ATOM Feed"/>
-
 </head>
 <body>
 
@@ -117,7 +114,7 @@ Telemeta project            </a>
 <footer class="post-info">
     <span class="label label-default">Date</span>
     <span class="published">
-        <i class="fa fa-calendar"></i><time datetime="2011-06-27T10:00:00+02:00"> lun. 27 juin 2011</time>
+        <i class="fa fa-calendar"></i><time datetime="2011-06-27T10:00:00+02:00"> Mon 27 June 2011</time>
     </span>
 
 
@@ -189,11 +186,11 @@ Telemeta project            </a>
             /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
             var disqus_shortname = 'telemeta'; // required: replace example with your forum shortname
 
-                    var disqus_identifier = 'telemeta-10-is-out';
-                var disqus_url = './telemeta-10-is-out.html';
-
             var disqus_config = function () {
                 this.language = "en";
+
+                        this.page.identifier = '2011-06-27-telemeta-10-is-out';
+                        this.page.url = './telemeta-10-is-out.html';
             };
 
             /* * * DON'T EDIT BELOW THIS LINE * * */
@@ -281,7 +278,7 @@ Telemeta project            </a>
    <div class="container">
       <hr>
       <div class="row">
-         <div class="col-xs-10">&copy; 2018 Parisson SARL
+         <div class="col-xs-10">&copy; 2020 Parisson SARL
             &middot; Powered by <a href="https://github.com/getpelican/pelican-themes/tree/master/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
             <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
             <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>                <p><small>  <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.en"><img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by/4.0/80x15.png" /></a>

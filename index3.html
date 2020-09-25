@@ -39,8 +39,6 @@
               title="Telemeta project ATOM Feed"/>
 
 
-
-
 </head>
 <body>
 
@@ -94,6 +92,28 @@ Telemeta project            </a>
 <div class="container">
     <div class="row">
         <div class="col-sm-9">
+            <article>
+                <h2><a href="./telemeta-144-is-out.html">Telemeta 1.4.4 is out !</a></h2>
+                <div class="summary"><p>Changes:</p>
+<ul class="simple">
+<li>no new fancy functions</li>
+<li>full using of static files which are now in static/ (htdocs/ is now deprecated)</li>
+<li>IMPORTANT : upgrade TimeSide to 0.4.1, add 'timeside' to INSTALLED_APPS and do: ./manage.py collectstatic</li>
+<li>add various buttons, various bugfixes</li>
+<li>after upgrading, always do: ./manage.py migrate</li>
+</ul>
+<p>Upgrade:</p>
+<pre class="literal-block">
+sudo pip install --upgrade telemeta
+</pre>
+<p>Please first read README.rst and INSTALL.rst to get all informations about the news. Apply new rules, dependencies, modules and settings from your old version to the new one.</p>
+<p>or <a class="reference external" href="​​http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.4.4.tar.gz">download</a> (MD5: 47b8d7a6fa8340388ff72be58aaff59c)</p>
+<p>Enjoy ;)</p>
+
+                    <a class="btn btn-default btn-xs" href="./telemeta-144-is-out.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
             <article>
                 <h2><a href="./telemeta-143-has-been-released.html">Telemeta 1.4.3 has been released !</a></h2>
                 <div class="summary"><p>Changes:</p>
@@ -248,39 +268,6 @@ Sorry Bzr folks, I like your stuff, but Git is more appropriate now for this pro
                 </div>
             </article>
             <hr/>
-            <article>
-                <h2><a href="./telemeta-10-is-out.html">Telemeta 1.0 is out!</a></h2>
-                <div class="summary"><p>After weeks of hard work, we are so pleased to release ​Telemeta 1.0 &quot;Bell&quot; which includes some significant improvements since 0.9.4 in overall performance, access right management and audio player functions.</p>
-<div class="section" id="new-functions">
-<h2>New functions</h2>
-<ul class="simple">
-<li>Embedable resizable audio player with an iframe HTML object</li>
-<li>Text popup windows following time markers during playing</li>
-<li>2 new user permissions to allow full download and audio play</li>
-<li>Delete buttons on each collection and item page</li>
-<li>Audio analyses are now recorded in the database</li>
-<li>Transcoding of the whole files is now checked</li>
-<li>New &quot;Users&quot; tab</li>
-</ul>
-</div>
-<div class="section" id="improvements">
-<h2>Improvements</h2>
-<ul class="simple">
-<li>Better and faster TimeSide player loading</li>
-<li>Sorting of all enumerations and lists</li>
-<li>Full english &gt; french translation</li>
-<li>Reorganize django views (faster page loading)</li>
-<li>More revisions and details in the main RSS feed</li>
-</ul>
-</div>
-<div class="section" id="bugfixes">
-<h2>Bugfixes</h2>
-<ul class="simple">
-<li>Fix some field …</li></ul></div>
-                    <a class="btn btn-default btn-xs" href="./telemeta-10-is-out.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
 
         <ul class="pagination">
                 <li class="prev"><a href="./index2.html">&laquo;</a>
@@ -364,7 +351,7 @@ Sorry Bzr folks, I like your stuff, but Git is more appropriate now for this pro
    <div class="container">
       <hr>
       <div class="row">
-         <div class="col-xs-10">&copy; 2018 Parisson SARL
+         <div class="col-xs-10">&copy; 2020 Parisson SARL
             &middot; Powered by <a href="https://github.com/getpelican/pelican-themes/tree/master/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
             <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
             <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>                <p><small>  <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.en"><img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by/4.0/80x15.png" /></a>

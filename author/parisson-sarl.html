@@ -39,8 +39,6 @@
               title="Telemeta project ATOM Feed"/>
 
 
-
-
 </head>
 <body>
 
@@ -95,18 +93,53 @@ Telemeta project            </a>
     <div class="row">
         <div class="col-sm-9">
             <article>
-                <h2><a href="../telemeta-collaborative-media-asset-management-system-for-musicology.html">Telemeta : collaborative media asset management system for musicology</a></h2>
-                <div class="summary"><img alt="Telemeta logo" src="https://raw.githubusercontent.com/Parisson/Telemeta/master/telemeta/static/telemeta/images/logo_telemeta_2.png" />
-<div class="section" id="overview">
-<h2>Overview</h2>
-<p>Telemeta is a free and open source collaborative multimedia asset management system (MAM) which introduces fast and secure methods to archive, backup, transcode, analyse,  annotate and publish any digitalized video or audio file with extensive metadata. It is dedicated to collaborative media archiving projects, research laboratories and digital humanities - especially in ethno-musicological use cases - who need to easily organize and publish documented sound collections of audio files, CDs, digitalized vinyls and magnetic tapes over a strong database, through a smart and secure platform, in accordance with open web standards.</p>
-<p>Key features:</p>
+                <h2><a href="../telemeta-174-is-out.html">Telemeta 1.7.4 is out!</a></h2>
+                <div class="summary"><p>Changelog:</p>
+<blockquote>
 <ul class="simple">
-<li>Secure archiving, editing and publishing of audio files over internet.</li>
-<li>Pure HTML web user interface including dynamical forms and smart workflows</li>
-<li>&quot;On the fly&quot; audio analyzing and transcoding thanks to <a class="reference external" href="https://github.com/Parisson/TimeSide/">TimeSide</a></li>
-<li>Smart dynamical and skinnable …</li></ul></div>
-                    <a class="btn btn-default btn-xs" href="../telemeta-collaborative-media-asset-management-system-for-musicology.html">more ...</a>
+<li>Fix collection ZIP serializer</li>
+<li>Improve advanced search engine performance (thanks to &#64;fpasquier93)</li>
+</ul>
+</blockquote>
+<div class="section" id="get-it">
+<h2>Get it!</h2>
+<p><a class="reference external" href="https://github.com/Parisson/Telemeta#install">https://github.com/Parisson/Telemeta#install</a></p>
+<p>Thanks to all partners!</p>
+<p>Guillaume</p>
+</div>
+
+                    <a class="btn btn-default btn-xs" href="../telemeta-174-is-out.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
+                <h2><a href="../archives-of-the-french-research-centre-of-ethnomusicology-crem.html">Archives of the French Research Centre of Ethnomusicology (CREM)</a></h2>
+                <div class="summary"><p>The audio archives of the CNRS – Musée de l’Homme gather commercial and unpublished recordings of music and oral traditions from around the world, from 1900 to the present. Consisting of diverse types of media (wax cylinders, 78 rpm, vinyl records, magnetic tapes, audio CDs, born digital records), these archives are among the most important in Europe in terms of quality, quantity and diversity.</p>
+<p><a class="reference external" href="http://archives.crem-cnrs.fr/">http://archives.crem-cnrs.fr/</a></p>
+<div class="section" id="contents">
+<h2>Contents</h2>
+<p>Managed by the Center for Research in Ethnomusicology (CREM), these archives index:</p>
+<ul class="simple">
+<li>Over 42,000 unpublished sound documents, among which 32.000 are available for listening, spread though more that 1,000 collections, representing about 4,000 hours of recordings of unpublished fieldworks.</li>
+<li>Over 13,000 published materials, among which 4,600 are available for listening, in more …</li></ul></div>
+                    <a class="btn btn-default btn-xs" href="../archives-of-the-french-research-centre-of-ethnomusicology-crem.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
+                <h2><a href="../telemeta-164-is-out.html">Telemeta 1.6.4 is out!</a></h2>
+                <div class="summary"><p>ChangeLog:</p>
+<blockquote>
+<ul class="simple">
+<li>Minor bug fixes and improvments</li>
+<li>Fix HTML5 audio compatibility (#173) for the web audio player. The SoundManager Flash player fallback should not be used in most modern web browser. Media files are now serves through Nginx (#155) which enables to stream music with byte range requests.</li>
+<li>Add a User permission &quot;can_run_analysis&quot; to specify that a user or a group of users has the right to list and select advanced Timeside analysis to be displayed in the Timeside web audio player.</li>
+<li>Temporarily remove Timeside server from INSTALLED_APPS until the development of this application is more advanced and is really used by Telemeta.</li>
+<li>Add enumeration management and statitics</li>
+<li>Improved media security allowing streaming through Nginx only from the application</li>
+<li>Add TimeSide as a submodule</li>
+<li>Add a validator for …</li></ul></blockquote>
+                    <a class="btn btn-default btn-xs" href="../telemeta-164-is-out.html">more ...</a>
                 </div>
             </article>
             <hr/>
@@ -149,33 +182,18 @@ docker-compose run app /srv/app/bin/upgrade_from_1.6_to_1.7.sh
             </article>
             <hr/>
             <article>
-                <h2><a href="../telemeta-164-is-out.html">Telemeta 1.6.4 is out!</a></h2>
-                <div class="summary"><p>ChangeLog:</p>
-<blockquote>
+                <h2><a href="../telemeta-collaborative-media-asset-management-system-for-musicology.html">Telemeta : collaborative media asset management system for musicology</a></h2>
+                <div class="summary"><img alt="Telemeta logo" src="https://raw.githubusercontent.com/Parisson/Telemeta/master/telemeta/static/telemeta/images/logo_telemeta_2.png" />
+<div class="section" id="overview">
+<h2>Overview</h2>
+<p>Telemeta is a free and open source collaborative multimedia asset management system (MAM) which introduces fast and secure methods to archive, backup, transcode, analyse,  annotate and publish any digitalized video or audio file with extensive metadata. It is dedicated to collaborative media archiving projects, research laboratories and digital humanities - especially in ethno-musicological use cases - who need to easily organize and publish documented sound collections of audio files, CDs, digitalized vinyls and magnetic tapes over a strong database, through a smart and secure platform, in accordance with open web standards.</p>
+<p>Key features:</p>
 <ul class="simple">
-<li>Minor bug fixes and improvments</li>
-<li>Fix HTML5 audio compatibility (#173) for the web audio player. The SoundManager Flash player fallback should not be used in most modern web browser. Media files are now serves through Nginx (#155) which enables to stream music with byte range requests.</li>
-<li>Add a User permission &quot;can_run_analysis&quot; to specify that a user or a group of users has the right to list and select advanced Timeside analysis to be displayed in the Timeside web audio player.</li>
-<li>Temporarily remove Timeside server from INSTALLED_APPS until the development of this application is more advanced and is really used by Telemeta.</li>
-<li>Add enumeration management and statitics</li>
-<li>Improved media security allowing streaming through Nginx only from the application</li>
-<li>Add TimeSide as a submodule</li>
-<li>Add a validator for …</li></ul></blockquote>
-                    <a class="btn btn-default btn-xs" href="../telemeta-164-is-out.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
-            <article>
-                <h2><a href="../archives-of-the-french-research-centre-of-ethnomusicology-crem.html">Archives of the French Research Centre of Ethnomusicology (CREM)</a></h2>
-                <div class="summary"><p>The audio archives of the CNRS – Musée de l’Homme gather commercial and unpublished recordings of music and oral traditions from around the world, from 1900 to the present. Consisting of diverse types of media (wax cylinders, 78 rpm, vinyl records, magnetic tapes, audio CDs, born digital records), these archives are among the most important in Europe in terms of quality, quantity and diversity.</p>
-<p><a class="reference external" href="http://archives.crem-cnrs.fr/">http://archives.crem-cnrs.fr/</a></p>
-<div class="section" id="contents">
-<h2>Contents</h2>
-<p>Managed by the Center for Research in Ethnomusicology (CREM), these archives index:</p>
-<ul class="simple">
-<li>Over 42,000 unpublished sound documents, among which 32.000 are available for listening, spread though more that 1,000 collections, representing about 4,000 hours of recordings of unpublished fieldworks.</li>
-<li>Over 13,000 published materials, among which 4,600 are available for listening, in more …</li></ul></div>
-                    <a class="btn btn-default btn-xs" href="../archives-of-the-french-research-centre-of-ethnomusicology-crem.html">more ...</a>
+<li>Secure archiving, editing and publishing of audio files over internet.</li>
+<li>Pure HTML web user interface including dynamical forms and smart workflows</li>
+<li>&quot;On the fly&quot; audio analyzing and transcoding thanks to <a class="reference external" href="https://github.com/Parisson/TimeSide/">TimeSide</a></li>
+<li>Smart dynamical and skinnable …</li></ul></div>
+                    <a class="btn btn-default btn-xs" href="../telemeta-collaborative-media-asset-management-system-for-musicology.html">more ...</a>
                 </div>
             </article>
             <hr/>
@@ -233,27 +251,6 @@ One month after the publication of docker-compose around march 2015, we had mana
 <p>NB: we need so more tweaks and tests on OSX, please ping us if you need to try the DevBox on this platform.</p>
 
                     <a class="btn btn-default btn-xs" href="../telemeta-has-been-dockerized.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
-            <article>
-                <h2><a href="../telemeta-15-is-out.html">Telemeta 1.5 is out!</a></h2>
-                <div class="summary"><p>After months of hard work we are pleased to release a big update to Telemeta communities. It represents a huge milestone that makes Telemeta now compatible with more modern web technologies.</p>
-<p>Changelog:</p>
-<ul class="simple">
-<li>Django 1.6.x compatibility</li>
-<li>TimeSide 0.7.x compatibility</li>
-<li>Huge refactoring of all forms, detail and edit views based on class based views</li>
-<li>Main styles (buttons, tabs) are now based Bootstrap 3 and JQuery 2.1</li>
-<li>Update of models and views as needed by the CREM</li>
-<li>WARNING! Be careful to the new dependencies before updating</li>
-</ul>
-<p>Download</p>
-<ul class="simple">
-<li><a class="reference external" href="http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.5.1.tar.gz">http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.5.1.tar.gz</a></li>
-</ul>
-
-                    <a class="btn btn-default btn-xs" href="../telemeta-15-is-out.html">more ...</a>
                 </div>
             </article>
             <hr/>
@@ -339,7 +336,7 @@ One month after the publication of docker-compose around march 2015, we had mana
    <div class="container">
       <hr>
       <div class="row">
-         <div class="col-xs-10">&copy; 2018 Parisson SARL
+         <div class="col-xs-10">&copy; 2020 Parisson SARL
             &middot; Powered by <a href="https://github.com/getpelican/pelican-themes/tree/master/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
             <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
             <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>                <p><small>  <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.en"><img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by/4.0/80x15.png" /></a>

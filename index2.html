@@ -39,8 +39,6 @@
               title="Telemeta project ATOM Feed"/>
 
 
-
-
 </head>
 <body>
 
@@ -94,6 +92,27 @@ Telemeta project            </a>
 <div class="container">
     <div class="row">
         <div class="col-sm-9">
+            <article>
+                <h2><a href="./telemeta-15-is-out.html">Telemeta 1.5 is out!</a></h2>
+                <div class="summary"><p>After months of hard work we are pleased to release a big update to Telemeta communities. It represents a huge milestone that makes Telemeta now compatible with more modern web technologies.</p>
+<p>Changelog:</p>
+<ul class="simple">
+<li>Django 1.6.x compatibility</li>
+<li>TimeSide 0.7.x compatibility</li>
+<li>Huge refactoring of all forms, detail and edit views based on class based views</li>
+<li>Main styles (buttons, tabs) are now based Bootstrap 3 and JQuery 2.1</li>
+<li>Update of models and views as needed by the CREM</li>
+<li>WARNING! Be careful to the new dependencies before updating</li>
+</ul>
+<p>Download</p>
+<ul class="simple">
+<li><a class="reference external" href="http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.5.1.tar.gz">http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.5.1.tar.gz</a></li>
+</ul>
+
+                    <a class="btn btn-default btn-xs" href="./telemeta-15-is-out.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
             <article>
                 <h2><a href="./telemeta-146-is-out.html">Telemeta 1.4.6 is out!</a></h2>
                 <div class="summary"><p>Changelog:</p>
@@ -265,28 +284,6 @@ ALTER TABLE 'media_items' ADD CONSTRAINT 'language_iso_id_refs_id_80b221' FOREIG
                 </div>
             </article>
             <hr/>
-            <article>
-                <h2><a href="./telemeta-144-is-out.html">Telemeta 1.4.4 is out !</a></h2>
-                <div class="summary"><p>Changes:</p>
-<ul class="simple">
-<li>no new fancy functions</li>
-<li>full using of static files which are now in static/ (htdocs/ is now deprecated)</li>
-<li>IMPORTANT : upgrade TimeSide to 0.4.1, add 'timeside' to INSTALLED_APPS and do: ./manage.py collectstatic</li>
-<li>add various buttons, various bugfixes</li>
-<li>after upgrading, always do: ./manage.py migrate</li>
-</ul>
-<p>Upgrade:</p>
-<pre class="literal-block">
-sudo pip install --upgrade telemeta
-</pre>
-<p>Please first read README.rst and INSTALL.rst to get all informations about the news. Apply new rules, dependencies, modules and settings from your old version to the new one.</p>
-<p>or <a class="reference external" href="​​http://pypi.python.org/packages/source/T/Telemeta/Telemeta-1.4.4.tar.gz">download</a> (MD5: 47b8d7a6fa8340388ff72be58aaff59c)</p>
-<p>Enjoy ;)</p>
-
-                    <a class="btn btn-default btn-xs" href="./telemeta-144-is-out.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
 
         <ul class="pagination">
                 <li class="prev"><a href="./index.html">&laquo;</a>
@@ -370,7 +367,7 @@ sudo pip install --upgrade telemeta
    <div class="container">
       <hr>
       <div class="row">
-         <div class="col-xs-10">&copy; 2018 Parisson SARL
+         <div class="col-xs-10">&copy; 2020 Parisson SARL
             &middot; Powered by <a href="https://github.com/getpelican/pelican-themes/tree/master/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
             <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
             <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>                <p><small>  <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.en"><img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by/4.0/80x15.png" /></a>
