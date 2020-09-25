@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>Telemeta project - Parisson SARL</title><link>https://parisson.github.io/Telemeta/</link><description></description><lastBuildDate>Thu, 24 Sep 2020 17:42:46 +0200</lastBuildDate><item><title>Telemeta 1.7.4 is out!</title><link>https://parisson.github.io/Telemeta/telemeta-174-is-out.html</link><description>&lt;p&gt;Changelog:&lt;/p&gt;
+<rss version="2.0"><channel><title>Telemeta project - Parisson SARL</title><link>https://parisson.github.io/Telemeta/</link><description></description><lastBuildDate>Fri, 25 Sep 2020 08:21:12 +0200</lastBuildDate><item><title></title><link>https://parisson.github.io/Telemeta/.html</link><description>&lt;p&gt;Pin: true&lt;/p&gt;
+&lt;div class="section" id="telemeta-collaborative-media-asset-management-system-for-musicology"&gt;
+&lt;h2&gt;Telemeta : collaborative media asset management system for musicology&lt;/h2&gt;
+&lt;img alt="Telemeta logo" src="https://raw.githubusercontent.com/Parisson/Telemeta/master/telemeta/static/telemeta/images/logo_telemeta_2.png" /&gt;
+&lt;div class="section" id="overview"&gt;
+&lt;h3&gt;Overview&lt;/h3&gt;
+&lt;p&gt;Telemeta is a free and open source collaborative multimedia asset management system (MAM) which introduces fast and secure methods to archive, backup, transcode, analyse,  annotate and publish any digitalized video or audio file with extensive metadata. It is dedicated to collaborative media archiving projects, research laboratories and digital humanities - especially in ethno-musicological use cases - who need to easily organize and publish documented sound collections of audio files, CDs, digitalized vinyls and magnetic tapes over a strong database, through a smart and secure platform, in accordance with open web standards.&lt;/p&gt;
+&lt;p&gt;Key features:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Secure archiving, editing and publishing of audio files over internet.&lt;/li&gt;
+&lt;li&gt;Pure HTML web user interface including dynamical forms and smart workflows&lt;/li&gt;
+&lt;li&gt;&amp;quot;On the fly&amp;quot; audio …&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Parisson SARL</dc:creator><pubDate>Fri, 25 Sep 2020 08:21:12 +0200</pubDate><guid isPermaLink="false">tag:parisson.github.io,2020-09-25:/Telemeta/.html</guid></item><item><title>Telemeta 1.7.4 is out!</title><link>https://parisson.github.io/Telemeta/telemeta-174-is-out.html</link><description>&lt;p&gt;Changelog:&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;Fix collection ZIP serializer&lt;/li&gt;
@@ -60,16 +71,7 @@ docker-compose run app /srv/app/bin/upgrade_from_1.6_to_1.7.sh
 &lt;/div&gt;
 &lt;div class="section" id="x"&gt;
 &lt;h2&gt;1.6.x&lt;/h2&gt;
-&lt;p&gt;The 1 …&lt;/p&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Parisson SARL</dc:creator><pubDate>Tue, 09 Jun 2020 13:40:47 +0200</pubDate><guid isPermaLink="false">tag:parisson.github.io,2020-06-09:/Telemeta/telemeta-17-has-been-released.html</guid></item><item><title>Telemeta : collaborative media asset management system for musicology</title><link>https://parisson.github.io/Telemeta/telemeta-collaborative-media-asset-management-system-for-musicology.html</link><description>&lt;img alt="Telemeta logo" src="https://raw.githubusercontent.com/Parisson/Telemeta/master/telemeta/static/telemeta/images/logo_telemeta_2.png" /&gt;
-&lt;div class="section" id="overview"&gt;
-&lt;h2&gt;Overview&lt;/h2&gt;
-&lt;p&gt;Telemeta is a free and open source collaborative multimedia asset management system (MAM) which introduces fast and secure methods to archive, backup, transcode, analyse,  annotate and publish any digitalized video or audio file with extensive metadata. It is dedicated to collaborative media archiving projects, research laboratories and digital humanities - especially in ethno-musicological use cases - who need to easily organize and publish documented sound collections of audio files, CDs, digitalized vinyls and magnetic tapes over a strong database, through a smart and secure platform, in accordance with open web standards.&lt;/p&gt;
-&lt;p&gt;Key features:&lt;/p&gt;
-&lt;ul class="simple"&gt;
-&lt;li&gt;Secure archiving, editing and publishing of audio files over internet.&lt;/li&gt;
-&lt;li&gt;Pure HTML web user interface including dynamical forms and smart workflows&lt;/li&gt;
-&lt;li&gt;&amp;quot;On the fly&amp;quot; audio analyzing and transcoding thanks to &lt;a class="reference external" href="https://github.com/Parisson/TimeSide/"&gt;TimeSide&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Smart dynamical and skinnable …&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Parisson SARL</dc:creator><pubDate>Tue, 09 Jun 2020 13:40:47 +0200</pubDate><guid isPermaLink="false">tag:parisson.github.io,2020-06-09:/Telemeta/telemeta-collaborative-media-asset-management-system-for-musicology.html</guid></item><item><title>Telemeta 1.6 is finally out!</title><link>https://parisson.github.io/Telemeta/telemeta-16-is-finally-out.html</link><description>&lt;p&gt;Telemeta is now usable on &lt;strong&gt;any OS&lt;/strong&gt;, ready for development and for production in 5 mn! B-)&lt;/p&gt;
+&lt;p&gt;The 1 …&lt;/p&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Parisson SARL</dc:creator><pubDate>Tue, 09 Jun 2020 13:40:47 +0200</pubDate><guid isPermaLink="false">tag:parisson.github.io,2020-06-09:/Telemeta/telemeta-17-has-been-released.html</guid></item><item><title>Telemeta 1.6 is finally out!</title><link>https://parisson.github.io/Telemeta/telemeta-16-is-finally-out.html</link><description>&lt;p&gt;Telemeta is now usable on &lt;strong&gt;any OS&lt;/strong&gt;, ready for development and for production in 5 mn! B-)&lt;/p&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;Provide a docker image and composition for the full Telemeta application bundle.
 One month after the publication of docker-compose around march 2015, we had managed to build a prototyped composition which bundled all the dependencies of Telemeta and TimeSide. It took almost one year to deeply investigate all the capabilities of Docker and various images to finally release a propoer composition which bundles all the necessary applications and modules.&lt;/li&gt;

@@ -5,29 +5,36 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://parisson.github.io/Telemeta/</loc>
-<lastmod>2020-09-25T08:17:34-00:00</lastmod>
+<lastmod>2020-09-25T08:21:17-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://parisson.github.io/Telemeta/archives.html</loc>
-<lastmod>2020-09-25T08:17:34-00:00</lastmod>
+<lastmod>2020-09-25T08:21:17-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://parisson.github.io/Telemeta/tags.html</loc>
-<lastmod>2020-09-25T08:17:34-00:00</lastmod>
+<lastmod>2020-09-25T08:21:17-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://parisson.github.io/Telemeta/categories.html</loc>
-<lastmod>2020-09-25T08:17:34-00:00</lastmod>
+<lastmod>2020-09-25T08:21:17-00:00</lastmod>
 <changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://parisson.github.io/Telemeta/.html</loc>
+<lastmod>2020-09-25T08:21:12+02:00</lastmod>
+<changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
@@ -54,13 +61,6 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://parisson.github.io/Telemeta/telemeta-17-has-been-released.html</loc>
-<lastmod>2020-06-09T13:40:47+02:00</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
-<loc>https://parisson.github.io/Telemeta/telemeta-collaborative-media-asset-management-system-for-musicology.html</loc>
 <lastmod>2020-06-09T13:40:47+02:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
@@ -264,7 +264,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://parisson.github.io/Telemeta/category/misc.html</loc>
-<lastmod>2020-06-09T13:40:47+00:09</lastmod>
+<lastmod>2020-09-25T08:21:12+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -383,7 +383,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://parisson.github.io/Telemeta/author/parisson-sarl.html</loc>
-<lastmod>2020-09-24T17:42:46+00:09</lastmod>
+<lastmod>2020-09-25T08:21:12+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
