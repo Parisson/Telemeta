@@ -1,21 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Telemeta project - Parisson SARL</title><link href="https://parisson.github.io/Telemeta/" rel="alternate"></link><link href="https://parisson.github.io/Telemeta/feeds/parisson-sarl.atom.xml" rel="self"></link><id>https://parisson.github.io/Telemeta/</id><updated>2020-09-25T08:21:12+02:00</updated><entry><title></title><link href="https://parisson.github.io/Telemeta/.html" rel="alternate"></link><published>2020-09-25T08:21:12+02:00</published><updated>2020-09-25T08:21:12+02:00</updated><author><name>Parisson SARL</name></author><id>tag:parisson.github.io,2020-09-25:/Telemeta/.html</id><summary type="html">&lt;p&gt;Pin: true&lt;/p&gt;
-&lt;div class="section" id="telemeta-collaborative-media-asset-management-system-for-musicology"&gt;
-&lt;h2&gt;Telemeta : collaborative media asset management system for musicology&lt;/h2&gt;
-&lt;img alt="Telemeta logo" src="https://raw.githubusercontent.com/Parisson/Telemeta/master/telemeta/static/telemeta/images/logo_telemeta_2.png" /&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Telemeta project - Parisson SARL</title><link href="https://parisson.github.io/Telemeta/" rel="alternate"></link><link href="https://parisson.github.io/Telemeta/feeds/parisson-sarl.atom.xml" rel="self"></link><id>https://parisson.github.io/Telemeta/</id><updated>2020-09-25T08:23:17+02:00</updated><entry><title>Telemeta : collaborative media asset management system for musicology</title><link href="https://parisson.github.io/Telemeta/telemeta-collaborative-media-asset-management-system-for-musicology.html" rel="alternate"></link><published>2020-09-25T08:23:17+02:00</published><updated>2020-09-25T08:23:17+02:00</updated><author><name>Parisson SARL</name></author><id>tag:parisson.github.io,2020-09-25:/Telemeta/telemeta-collaborative-media-asset-management-system-for-musicology.html</id><summary type="html">&lt;img alt="Telemeta logo" src="https://raw.githubusercontent.com/Parisson/Telemeta/master/telemeta/static/telemeta/images/logo_telemeta_2.png" /&gt;
 &lt;div class="section" id="overview"&gt;
-&lt;h3&gt;Overview&lt;/h3&gt;
+&lt;h2&gt;Overview&lt;/h2&gt;
 &lt;p&gt;Telemeta is a free and open source collaborative multimedia asset management system (MAM) which introduces fast and secure methods to archive, backup, transcode, analyse,  annotate and publish any digitalized video or audio file with extensive metadata. It is dedicated to collaborative media archiving projects, research laboratories and digital humanities - especially in ethno-musicological use cases - who need to easily organize and publish documented sound collections of audio files, CDs, digitalized vinyls and magnetic tapes over a strong database, through a smart and secure platform, in accordance with open web standards.&lt;/p&gt;
 &lt;p&gt;Key features:&lt;/p&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;Secure archiving, editing and publishing of audio files over internet.&lt;/li&gt;
 &lt;li&gt;Pure HTML web user interface including dynamical forms and smart workflows&lt;/li&gt;
-&lt;li&gt;&amp;quot;On the fly&amp;quot; audio …&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;Pin: true&lt;/p&gt;
-&lt;div class="section" id="telemeta-collaborative-media-asset-management-system-for-musicology"&gt;
-&lt;h2&gt;Telemeta : collaborative media asset management system for musicology&lt;/h2&gt;
-&lt;img alt="Telemeta logo" src="https://raw.githubusercontent.com/Parisson/Telemeta/master/telemeta/static/telemeta/images/logo_telemeta_2.png" /&gt;
+&lt;li&gt;&amp;quot;On the fly&amp;quot; audio analyzing and transcoding thanks to &lt;a class="reference external" href="https://github.com/Parisson/TimeSide/"&gt;TimeSide&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Smart dynamical and skinnable …&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;</summary><content type="html">&lt;img alt="Telemeta logo" src="https://raw.githubusercontent.com/Parisson/Telemeta/master/telemeta/static/telemeta/images/logo_telemeta_2.png" /&gt;
 &lt;div class="section" id="overview"&gt;
-&lt;h3&gt;Overview&lt;/h3&gt;
+&lt;h2&gt;Overview&lt;/h2&gt;
 &lt;p&gt;Telemeta is a free and open source collaborative multimedia asset management system (MAM) which introduces fast and secure methods to archive, backup, transcode, analyse,  annotate and publish any digitalized video or audio file with extensive metadata. It is dedicated to collaborative media archiving projects, research laboratories and digital humanities - especially in ethno-musicological use cases - who need to easily organize and publish documented sound collections of audio files, CDs, digitalized vinyls and magnetic tapes over a strong database, through a smart and secure platform, in accordance with open web standards.&lt;/p&gt;
 &lt;p&gt;Key features:&lt;/p&gt;
 &lt;ul class="simple"&gt;
@@ -43,7 +38,7 @@
 &lt;p&gt;The &lt;em&gt;Telemeta&lt;/em&gt; name stands for &lt;em&gt;Tele&lt;/em&gt; as &amp;quot;remote access&amp;quot; and &lt;em&gt;meta&lt;/em&gt; for &amp;quot;metadata&amp;quot;.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="section" id="funding-and-support"&gt;
-&lt;h3&gt;Funding and support&lt;/h3&gt;
+&lt;h2&gt;Funding and support&lt;/h2&gt;
 &lt;p&gt;To fund this long time libre and open source project, we need your explicit support. So if you use Telemeta in production or even in a development or experimental setup, please let us know by:&lt;/p&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;staring or forking the project on &lt;a class="reference external" href="https://github.com/Parisson/Telemeta/"&gt;GitHub&lt;/a&gt;&lt;/li&gt;
@@ -53,9 +48,9 @@
 &lt;p&gt;Thank you so much for your help!&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="section" id="news"&gt;
-&lt;h3&gt;News&lt;/h3&gt;
+&lt;h2&gt;News&lt;/h2&gt;
 &lt;div class="section" id="id1"&gt;
-&lt;h4&gt;1.7.0&lt;/h4&gt;
+&lt;h3&gt;1.7.0&lt;/h3&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;Based on TimeSide 0.9&lt;/li&gt;
 &lt;li&gt;Use Django 1.8&lt;/li&gt;
@@ -73,7 +68,7 @@ docker-compose run app /srv/app/bin/upgrade_from_1.6_to_1.7.sh
 &lt;p&gt;&lt;cite&gt;scripts/&lt;/cite&gt; and &lt;cite&gt;app/scripts/&lt;/cite&gt; directories has been renamed &lt;cite&gt;bin/&lt;/cite&gt; and &lt;cite&gt;app/bin/&lt;/cite&gt; respectively. So please adapt your management and maintenance personal script.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="section" id="id2"&gt;
-&lt;h4&gt;1.6.5 &amp;gt; 1.6.7&lt;/h4&gt;
+&lt;h3&gt;1.6.5 &amp;gt; 1.6.7&lt;/h3&gt;
 &lt;blockquote&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;Setting utf8 database by default&lt;/li&gt;
@@ -85,7 +80,7 @@ docker-compose run app /srv/app/bin/upgrade_from_1.6_to_1.7.sh
 &lt;/blockquote&gt;
 &lt;/div&gt;
 &lt;div class="section" id="id3"&gt;
-&lt;h4&gt;1.6.4&lt;/h4&gt;
+&lt;h3&gt;1.6.4&lt;/h3&gt;
 &lt;blockquote&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;Minor bug fixes and improvments&lt;/li&gt;
@@ -100,7 +95,7 @@ docker-compose run app /srv/app/bin/upgrade_from_1.6_to_1.7.sh
 &lt;/blockquote&gt;
 &lt;/div&gt;
 &lt;div class="section" id="id4"&gt;
-&lt;h4&gt;1.6&lt;/h4&gt;
+&lt;h3&gt;1.6&lt;/h3&gt;
 &lt;p&gt;Telemeta is now usable on &lt;strong&gt;any OS&lt;/strong&gt;, ready for development and for production in 5 mn! B-)&lt;/p&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;Provide a docker image and composition for the full Telemeta application bundle.
@@ -117,7 +112,7 @@ One month after the publication of docker-compose around march 2015, we had mana
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;div class="section" id="id5"&gt;
-&lt;h4&gt;1.5.1&lt;/h4&gt;
+&lt;h3&gt;1.5.1&lt;/h3&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;Fix geo-navigator lists and pagination&lt;/li&gt;
 &lt;li&gt;Fix item analyses cleanup after file edit&lt;/li&gt;
@@ -132,7 +127,7 @@ One month after the publication of docker-compose around march 2015, we had mana
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class="section" id="examples"&gt;
-&lt;h3&gt;Examples&lt;/h3&gt;
+&lt;h2&gt;Examples&lt;/h2&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;&lt;a class="reference external" href="http://archives.crem-cnrs.fr"&gt;CREM Sound archives&lt;/a&gt; of the &lt;a class="reference external" href="http://www.crem-cnrs.fr"&gt;CREM&lt;/a&gt; - &lt;a class="reference external" href="http://www.cnrs.fr"&gt;CNRS&lt;/a&gt;  and &lt;a class="reference external" href="http://www.museedelhomme.fr/"&gt;MdH&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="reference external" href="http://telemeta.lam.jussieu.fr"&gt;LAM Sound archives&lt;/a&gt; of the &lt;a class="reference external" href="http://www.lam.jussieu.fr"&gt;LAM&lt;/a&gt; of the &lt;a class="reference external" href="http://www.dalembert.upmc.fr/ijlrda/"&gt;IJLRDA&lt;/a&gt; at Université Pierre et Maris Curie (&lt;a class="reference external" href="http://www.upmc.fr"&gt;UPMC&lt;/a&gt;)&lt;/li&gt;
@@ -141,7 +136,7 @@ One month after the publication of docker-compose around march 2015, we had mana
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;div class="section" id="demo"&gt;
-&lt;h3&gt;Demo&lt;/h3&gt;
+&lt;h2&gt;Demo&lt;/h2&gt;
 &lt;p&gt;&lt;a class="reference external" href="http://demo.telemeta.org"&gt;http://demo.telemeta.org&lt;/a&gt;&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;ul class="simple"&gt;
@@ -151,7 +146,7 @@ One month after the publication of docker-compose around march 2015, we had mana
 &lt;/blockquote&gt;
 &lt;/div&gt;
 &lt;div class="section" id="get-it"&gt;
-&lt;h3&gt;Get it&lt;/h3&gt;
+&lt;h2&gt;Get it&lt;/h2&gt;
 &lt;p&gt;Thanks to Docker, Telemeta is now fully available as a docker composition ready to work. The docker based composition bundles some powerfull applications and modern frameworks out-of-the-box like: Python, Conda, Numpy, Jupyter, Gstreamer, Django, Celery, Haystack, ElasticSearch, MySQL, Redis, uWSGI, Nginx and many more.&lt;/p&gt;
 &lt;p&gt;First, install Git, &lt;a class="reference external" href="https://store.docker.com/search?offering=community&amp;amp;q=&amp;amp;type=edition"&gt;Docker&lt;/a&gt; and &lt;a class="reference external" href="https://docs.docker.com/compose/"&gt;docker-compose&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;Then clone Telemeta:&lt;/p&gt;
@@ -161,7 +156,7 @@ cd Telemeta
 &lt;/pre&gt;
 &lt;/div&gt;
 &lt;div class="section" id="start-it-up"&gt;
-&lt;h3&gt;Start it up&lt;/h3&gt;
+&lt;h2&gt;Start it up&lt;/h2&gt;
 &lt;p&gt;For a production environment setup, first read / edit &lt;cite&gt;env/prod.env&lt;/cite&gt;, then:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
 docker-compose up
@@ -179,7 +174,7 @@ docker-compose -f docker-compose.yml -f env/debug.yml up
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;div class="section" id="daemonize"&gt;
-&lt;h3&gt;Daemonize&lt;/h3&gt;
+&lt;h2&gt;Daemonize&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;Linux only&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;On a production server, Telemeta can be automatically started as a daemon so that it is started during booting. Just execute the install script:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
@@ -187,7 +182,7 @@ sudo ./install.py
 &lt;/pre&gt;
 &lt;/div&gt;
 &lt;div class="section" id="backup-restore"&gt;
-&lt;h3&gt;Backup / Restore&lt;/h3&gt;
+&lt;h2&gt;Backup / Restore&lt;/h2&gt;
 &lt;p&gt;To backup the database in the data/backup/ folder, run this in &lt;strong&gt;another&lt;/strong&gt; terminal (or a Docker Quickstart Terminal):&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
 docker-compose run db /srv/bin/sql/backup_db.sh
@@ -202,7 +197,7 @@ docker-compose restart
 &lt;/pre&gt;
 &lt;/div&gt;
 &lt;div class="section" id="api-documentation"&gt;
-&lt;h3&gt;API / Documentation&lt;/h3&gt;
+&lt;h2&gt;API / Documentation&lt;/h2&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;Official website: &lt;a class="reference external" href="http://telemeta.org"&gt;http://telemeta.org&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;Publications : &lt;a class="reference external" href="https://github.com/Parisson/Telemeta-doc"&gt;https://github.com/Parisson/Telemeta-doc&lt;/a&gt;&lt;/li&gt;
@@ -212,7 +207,7 @@ docker-compose restart
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;div class="section" id="development"&gt;
-&lt;h3&gt;Development&lt;/h3&gt;
+&lt;h2&gt;Development&lt;/h2&gt;
 &lt;p&gt;To start the application in a development environment setup, first read / edit &lt;cite&gt;env/debug.env&lt;/cite&gt;, then:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
 cd Telemeta
@@ -224,18 +219,18 @@ docker-compose -f docker-compose.yml -f env/dev.yml up
 &lt;p&gt;You are welcome to participate to the development by forking the Telemeta project on &lt;a class="reference external" href="https://github.com/Parisson/Telemeta/"&gt;GitHub&lt;/a&gt;, using it as if it were the original and submitting your changes through a Pull Request on the &lt;strong&gt;dev branch ONLY&lt;/strong&gt;.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="section" id="bugs-issues-ideas"&gt;
-&lt;h3&gt;Bugs, issues, ideas&lt;/h3&gt;
+&lt;h2&gt;Bugs, issues, ideas&lt;/h2&gt;
 &lt;p&gt;If you find some bugs or have good ideas for enhancement, please &lt;a class="reference external" href="https://github.com/Parisson/Telemeta/issues/new"&gt;leave a issue on GitHub&lt;/a&gt; with the right label or tweet it &lt;a class="reference external" href="https://twitter.com/telemeta"&gt;&amp;#64;telemeta&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;And remember: even if Telemeta suits you, please give us some feedback. We &lt;strong&gt;need&lt;/strong&gt; your support!&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="section" id="license"&gt;
-&lt;h3&gt;License&lt;/h3&gt;
+&lt;h2&gt;License&lt;/h2&gt;
 &lt;p&gt;This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.&lt;/p&gt;
 &lt;p&gt;This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more details.&lt;/p&gt;
 &lt;p&gt;You should have received a copy of the GNU Affero General Public License along with this program. If not, see &amp;lt;&lt;a class="reference external" href="http://www.gnu.org/licenses/"&gt;http://www.gnu.org/licenses/&lt;/a&gt;&amp;gt;.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="section" id="sponsors-and-partners"&gt;
-&lt;h3&gt;Sponsors and partners&lt;/h3&gt;
+&lt;h2&gt;Sponsors and partners&lt;/h2&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;&lt;a class="reference external" href="http://www.cnrs.fr"&gt;CNRS&lt;/a&gt; : Centre National de la Recherche Scientifique (French Natianal Research and Scientific Center)&lt;/li&gt;
 &lt;li&gt;&lt;a class="reference external" href="http://www.culturecommunication.gouv.fr"&gt;MCC&lt;/a&gt; : Ministère de la Culture et de la Communication (the french Ministry of the Culture and Communication)&lt;/li&gt;
@@ -258,7 +253,7 @@ docker-compose -f docker-compose.yml -f env/dev.yml up
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;div class="section" id="related-research-projects"&gt;
-&lt;h3&gt;Related research projects&lt;/h3&gt;
+&lt;h2&gt;Related research projects&lt;/h2&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;&lt;a class="reference external" href="http://www.irit.fr/recherches/SAMOVA/DIADEMS/fr/welcome/&amp;amp;cultureKey=en"&gt;DIADEMS&lt;/a&gt; : Description, Indexation, Access to Sound and Ethnomusicological Documents, funded by the French Research Agency (&lt;a class="reference external" href="http://www.agence-nationale-recherche.fr/"&gt;ANR&lt;/a&gt; CONTINT 2012), involving &lt;a class="reference external" href="http://www.irit.fr"&gt;IRIT&lt;/a&gt;, &lt;a class="reference external" href="http://www.crem-cnrs.fr"&gt;CREM&lt;/a&gt;, &lt;a class="reference external" href="http://www.lam.jussieu.fr"&gt;LAM&lt;/a&gt;, &lt;a class="reference external" href="http://www.labri.fr"&gt;LABRI&lt;/a&gt;, &lt;a class="reference external" href="http://www.limsi.fr/index.en.html"&gt;LIMSI&lt;/a&gt;, &lt;a class="reference external" href="http://www.mnhn.fr"&gt;MNHN&lt;/a&gt;, &lt;a class="reference external" href="http://parisson.com"&gt;Parisson&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="reference external" href="https://github.com/ANR-DIADEMS/timeside-diadems"&gt;TimeSide-DIADEMS&lt;/a&gt; : a set of Timeside plugins for hich level music analysis developed during the &lt;a class="reference external" href="http://www.irit.fr/recherches/SAMOVA/DIADEMS/fr/welcome/&amp;amp;cultureKey=en"&gt;DIADEMS&lt;/a&gt; project&lt;/li&gt;
@@ -267,7 +262,6 @@ docker-compose -f docker-compose.yml -f env/dev.yml up
 &lt;li&gt;&lt;a class="reference external" href="http://www.agence-nationale-recherche.fr/?Projet=ANR-15-CE38-0003"&gt;Kamoulox&lt;/a&gt; : Démixage en ligne de larges archives sonores (&lt;a class="reference external" href="http://www.agence-nationale-recherche.fr/"&gt;ANR&lt;/a&gt; Jeune Chercheur 2015)&lt;/li&gt;
 &lt;li&gt;WASABI : Web Audio Semantic Aggregated in the Browser for Indexation (&lt;a class="reference external" href="http://www.agence-nationale-recherche.fr/"&gt;ANR&lt;/a&gt; 2016, currently being submitted)&lt;/li&gt;
 &lt;/ul&gt;
-&lt;/div&gt;
 &lt;/div&gt;
 </content></entry><entry><title>Telemeta 1.7.4 is out!</title><link href="https://parisson.github.io/Telemeta/telemeta-174-is-out.html" rel="alternate"></link><published>2020-09-24T17:42:46+02:00</published><updated>2020-09-24T17:42:46+02:00</updated><author><name>Parisson SARL</name></author><id>tag:parisson.github.io,2020-09-24:/Telemeta/telemeta-174-is-out.html</id><summary type="html">&lt;p&gt;Changelog:&lt;/p&gt;
 &lt;blockquote&gt;
