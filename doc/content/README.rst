@@ -2,6 +2,9 @@
 Telemeta : collaborative media asset management system for musicology
 =====================================================================
 
+:category: ReadMe
+:pin: true
+
 .. image:: https://raw.githubusercontent.com/Parisson/Telemeta/master/telemeta/static/telemeta/images/logo_telemeta_2.png
     :alt: Telemeta logo
 

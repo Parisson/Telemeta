@@ -1,0 +1,29 @@
+Telemeta project presented at sound archive communities of middle and south America
+####################################################################################
+
+:date: 2020-09-25 17:00
+:category: Events
+
+Thanks to Perla Olivia Rodrigues from IIBI / UNAM University from Mexico, Dr. Guillaume Pellerin and Eng. Joséphine Simonnot have been able to present the Telemeta project and its open source strategies to a large community of professionals of middle and south America. The session has been streamed online thanks to IIBI.
+
+Title: El uso del open source en la preservación digital de contenidos sonoros: Telemeta
+
+Languages: english, french and spanish
+
+Participants:
+
+- Dr. Guillaume Pellerin, IRCAM, France
+- Pável Granados, Dir. Gral. Fonoteca Nacional
+- Eng. Josephine Simmonot, CNRS Francia
+- Mtra. Sibylle Hayem, Fonoteca Nacional
+- Modera: Dra. Perla Olivia Rodríguez, IIBI/ UNAM
+
+
+.. raw:: html
+
+    <br>
+    <center>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/ag-EdkxlbTE" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <br><br>
+    <img src="https://github.com/Parisson/Telemeta-doc/blob/287c0a42fb2e684f90df43b3c797349b030e40ff/Common/img/2020CARTELDIGITAL-2.png?raw=true">
+    </center>

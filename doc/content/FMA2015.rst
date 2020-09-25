@@ -1,7 +1,8 @@
 Telemeta at the 5th Folk Music Analysis international workshop
 ###############################################################
 
-:category: Research
+:date: 2015-06-13 17:36
+:category: Events
 
 Telemeta, Parisson and the DIADEMS team participate to the `5th Folk Music Analysis international workshop <http://fma2015.sciencesconf.org/>`_ (FMA) at the University Pierre et Marie Curie in Paris from the 10th to the 12th june 2015.
 

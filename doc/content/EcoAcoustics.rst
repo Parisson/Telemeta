@@ -1,7 +1,7 @@
 Telemeta at the 1st Symposium: "Ecology and acoustics"
 #######################################################
 
-:category: Research
+:category: Events
 :date: 2014-06-13 17:40
 :tags: ecology, acoustics
 
