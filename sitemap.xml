@@ -5,35 +5,42 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://parisson.github.io/Telemeta/</loc>
-<lastmod>2020-09-25T08:23:27-00:00</lastmod>
+<lastmod>2020-09-25T16:31:59-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://parisson.github.io/Telemeta/archives.html</loc>
-<lastmod>2020-09-25T08:23:27-00:00</lastmod>
+<lastmod>2020-09-25T16:31:59-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://parisson.github.io/Telemeta/tags.html</loc>
-<lastmod>2020-09-25T08:23:27-00:00</lastmod>
+<lastmod>2020-09-25T16:31:59-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://parisson.github.io/Telemeta/categories.html</loc>
-<lastmod>2020-09-25T08:23:27-00:00</lastmod>
+<lastmod>2020-09-25T16:31:59-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
+<loc>https://parisson.github.io/Telemeta/telemeta-project-presented-at-sound-archive-communities-of-middle-and-south-america.html</loc>
+<lastmod>2020-09-25T17:00:00+02:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
 <loc>https://parisson.github.io/Telemeta/telemeta-collaborative-media-asset-management-system-for-musicology.html</loc>
-<lastmod>2020-09-25T08:23:17+02:00</lastmod>
+<lastmod>2020-09-25T08:26:21+02:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -75,21 +82,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://parisson.github.io/Telemeta/telemeta-at-the-21st-symposium-of-the-ictm-study-group-on-historical-sources-of-traditional-music.html</loc>
-<lastmod>2018-01-25T09:53:33+01:00</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
-<loc>https://parisson.github.io/Telemeta/telemeta-at-the-iasa-46th-annual-conference.html</loc>
-<lastmod>2016-05-20T15:17:12+02:00</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
-<loc>https://parisson.github.io/Telemeta/telemeta-at-the-5th-folk-music-analysis-international-workshop.html</loc>
-<lastmod>2016-04-04T20:04:39+02:00</lastmod>
+<lastmod>2016-09-13T17:36:00+02:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -97,6 +90,20 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>https://parisson.github.io/Telemeta/telemeta-has-been-dockerized.html</loc>
 <lastmod>2016-04-04T20:04:39+02:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://parisson.github.io/Telemeta/telemeta-at-the-iasa-46th-annual-conference.html</loc>
+<lastmod>2015-07-13T17:36:00+02:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://parisson.github.io/Telemeta/telemeta-at-the-5th-folk-music-analysis-international-workshop.html</loc>
+<lastmod>2015-06-13T17:36:00+02:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -263,8 +270,8 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>https://parisson.github.io/Telemeta/category/misc.html</loc>
-<lastmod>2020-09-25T08:23:17+00:09</lastmod>
+<loc>https://parisson.github.io/Telemeta/category/events.html</loc>
+<lastmod>2020-09-25T17:00:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -284,15 +291,15 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>https://parisson.github.io/Telemeta/category/releases.html</loc>
-<lastmod>2020-09-24T17:42:46+00:09</lastmod>
+<loc>https://parisson.github.io/Telemeta/category/readme.html</loc>
+<lastmod>2020-09-25T08:26:21+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://parisson.github.io/Telemeta/category/research.html</loc>
-<lastmod>2018-01-25T09:53:33+00:09</lastmod>
+<loc>https://parisson.github.io/Telemeta/category/releases.html</loc>
+<lastmod>2020-09-24T17:42:46+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -306,14 +313,14 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://parisson.github.io/Telemeta/tag/conference.html</loc>
-<lastmod>2016-05-20T15:17:12+00:09</lastmod>
+<lastmod>2015-07-13T17:36:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://parisson.github.io/Telemeta/tag/archives.html</loc>
-<lastmod>2016-05-20T15:17:12+00:09</lastmod>
+<lastmod>2015-07-13T17:36:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -383,7 +390,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://parisson.github.io/Telemeta/author/parisson-sarl.html</loc>
-<lastmod>2020-09-25T08:23:17+00:09</lastmod>
+<lastmod>2020-09-25T17:00:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
