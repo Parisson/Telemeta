@@ -5,28 +5,28 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://parisson.github.io/Telemeta/</loc>
-<lastmod>2020-09-25T19:14:23-00:00</lastmod>
+<lastmod>2020-09-28T16:23:12-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://parisson.github.io/Telemeta/archives.html</loc>
-<lastmod>2020-09-25T19:14:23-00:00</lastmod>
+<lastmod>2020-09-28T16:23:12-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://parisson.github.io/Telemeta/tags.html</loc>
-<lastmod>2020-09-25T19:14:23-00:00</lastmod>
+<lastmod>2020-09-28T16:23:12-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://parisson.github.io/Telemeta/categories.html</loc>
-<lastmod>2020-09-25T19:14:23-00:00</lastmod>
+<lastmod>2020-09-28T16:23:12-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -389,7 +389,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>https://parisson.github.io/Telemeta/author/parisson-sarl.html</loc>
+<loc>https://parisson.github.io/Telemeta/author/telemeta-project.html</loc>
 <lastmod>2020-09-25T17:00:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
