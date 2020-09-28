@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*- #
 from __future__ import unicode_literals
 
-AUTHOR = u'Parisson SARL'
+AUTHOR = u'Telemeta project'
 SITENAME = u'Telemeta project'
 
 TIMEZONE = 'Europe/Paris'
@@ -31,14 +31,12 @@ TRANSLATION_FEED_ATOM = None
 LINKS =  (('Python', 'http://python.org/'),
           ('Django', 'https://www.djangoproject.com/'),
           ('TimeSide', 'https://github.com/Parisson/TimeSide'),
-          ('Docker', 'https://www.docker.com/')
+          ('IRCAM', 'https://www.ircam.fr')
           )
 
 # Social widget
 SOCIAL = (('GitHub', 'https://github.com/Parisson/Telemeta'),
           ('Twitter', 'https://twitter.com/telemeta/'),
-          ('Google+', 'https://plus.google.com/+Parisson'),
-          ('LinkedIn', 'https://www.linkedin.com/company/parisson'),
           )
 
 # Uncomment following line if you want document-relative URLs when developing

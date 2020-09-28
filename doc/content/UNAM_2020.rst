@@ -1,5 +1,5 @@
-Telemeta project presented at sound archive communities of middle and south America
-####################################################################################
+Telemeta project presented at middle and south America sound archive communities
+################################################################################
 
 :date: 2020-09-25 17:00
 :category: Events
