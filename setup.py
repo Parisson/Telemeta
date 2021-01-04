@@ -76,7 +76,7 @@ setup(
     'redis==2.10.6',
     'sqlparse==0.2.2',
     'timeside==0.9.6',
-    'Werkzeug==0.14.1',
+    'Werkzeug==0.15.3',
     'zipstream==1.1.4',
     ],
   tests_require=['pytest-django', 'pytest-cov', 'factory-boy'],
