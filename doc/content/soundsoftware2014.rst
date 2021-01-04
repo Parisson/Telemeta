@@ -1,7 +1,7 @@
 Telemeta at QMUL
 ################
 
-:category: Research
+:category: Events
 :date: 2014-07-8 01:42
 
 We presented TimeSide, the open web audio processing framework, at the Queen Mary University of London (ArtsOne Lecture Theatre) for the `third Workshop on Software and Data for Audio and Music Research <http://soundsoftware.ac.uk/soundsoftware2014>`_.

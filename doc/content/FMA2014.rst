@@ -1,7 +1,7 @@
 Telemeta at the 4th international workshop of Folk Music Analysis 2014
 #######################################################################
 
-:category: Research
+:category: Events
 :date: 2014-06-13 17:36
 :tags: folk, music, analysis
 
