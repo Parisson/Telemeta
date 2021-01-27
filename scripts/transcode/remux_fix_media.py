@@ -24,7 +24,7 @@ class FixCheckMedia(object):
                 name = os.path.splitext(filename)[0]
                 ext = os.path.splitext(filename)[1][1:]
 
-                if ext == 'webm' and os.path.getsize(source):
+                if (ext == 'webm' or ext == 'mp4') and os.path.getsize(source):
                     dir_files = os.listdir(root)
 
                     if not webm_fixed_log in dir_files:
