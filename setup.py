@@ -71,7 +71,7 @@ setup(
     'elasticsearch==1.6.0',
     'lxml==4.2.3',
     'psutil==5.4.6',
-    'pyyaml==3.12',
+    'pyyaml==5.4',
     'python-ebml==0.2.1',
     'redis==2.10.6',
     'sqlparse==0.2.2',
