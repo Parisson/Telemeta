@@ -121,7 +121,7 @@ svg {
     padding: 0em;
 /*     background: url("../images/waves.png") 100% 0% no-repeat; */
 }
-
+    width: 100px;
 #content_header, #header{
     margin-bottom: .8em;
 }
@@ -1008,7 +1008,7 @@ a.image-link {
     -moz-border-radius: 0px 0px 0px 0px;
     -webkit-border-radius: 0px 0px 0px 0px;
     border-radius: 0px 0px 0px 0px;
-
+    width: 100px;
 }
 
 .map-thumbnail {

@@ -47,7 +47,7 @@ setup(
   long_description = open('README.rst').read(),
   author = "Guillaume Pellerin",
   author_email = "yomguy@parisson.com",
-  version = '1.7.3',
+  version = '1.7.4',
   install_requires = [
     'django==1.8.*',
     'django-bootstrap-pagination==1.6.4',
@@ -75,7 +75,7 @@ setup(
     'python-ebml==0.2.1',
     'redis==2.10.6',
     'sqlparse==0.2.2',
-    'timeside>=0.7',
+    'timeside==0.9.6',
     'Werkzeug==0.14.1',
     'zipstream==1.1.4',
     ],

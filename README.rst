@@ -270,7 +270,7 @@ Sponsors and partners
 * HumaNum_ : TGIR des humanités numériques (Paris, France)
 * CMAM_ : Centre des Musiques Arabes et Méditerranéennes (Tunis, Tunisia)
 * IRCAM_ : Institut de Recherche et de Coordination Acoustique / Musique (Paris, France)
-
+* UNAM_ : Universidad Nacional Autónoma de México (México)
 
 Related research projects
 ==========================
@@ -321,3 +321,5 @@ Related research projects
 .. _SoundSoftware : http://soundsoftware.ac.uk/
 .. _C4DM: http://c4dm.eecs.qmul.ac.uk/
 .. _CMAM: http://www.cmam.nat.tn/
+.. _UNAM: https://www.unam.mx/
+

@@ -31,6 +31,7 @@ app:
     - 8000:8000
   volumes:
     - ./lib/TimeSide:/srv/lib/timeside
+    - ./:/srv/lib/telemeta
 
 worker:
   image: parisson/telemeta:latest-dev
