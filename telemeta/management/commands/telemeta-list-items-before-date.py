@@ -34,7 +34,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         log_file = open(kwargs['log_file'], 'w')
         limit_date = datetime.datetime(int(kwargs.get('year')), int(kwargs.get('month')), int(kwargs.get('day')))
-        revisions = Revision.objects.filter(element_type='item', time__gte=limit_date, change_type='creation')
+        revisions = Revision.objects.filter(element_type='item', time__lte=limit_date, change_type='creation')
         for revision in revisions:
             item = MediaItem.objects.get(id=revision.element_id)
             log_file.write(item.code)
