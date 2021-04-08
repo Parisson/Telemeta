@@ -28,7 +28,7 @@ class Command(BaseCommand):
     year = 2019
     month = 11
     day = 11
-    username = nyuad
+    username = 'nyuad'
 
 
     def process(self, item, log):
