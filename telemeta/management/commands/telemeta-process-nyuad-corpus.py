@@ -29,32 +29,51 @@ class Command(BaseCommand):
     month = 11
     day = 11
     username = 'nyuad'
+    items = []
 
-
-    def process(self, item, log):
-        log.write(item.collection.code + '/' + item.code + '\n')
+    def process(self, item):
+        if item.file and item.code:
+            print(item.id)
+            self.log.write(item.collection.code + '/' + item.code + '\n')
 
     def handle(self, *args, **kwargs):
-        log = open(kwargs['log_file'], 'w')
-        limit_date = datetime.datetime(self.year-51, self.month, self.day)
+        self.log = open(kwargs['log_file'], 'w')
+        current_date = datetime.datetime(self.year, self.month, self.day)
+        pub_date = datetime.date(self.year-51, self.month, self.day)
 
-        pub_items = MediaItem.objects.filter(recorded_from_date__lte=limit_date).select_related('collection')
+        self.pub_items = MediaItem.objects.filter(
+            recorded_from_date__lte=pub_date, 
+            file__isnull=False, code__isnull=False)
 
-        for item in pub_items:
-            self.process(item, log)
+        revisions = Revision.objects.filter(element_type='item', time__lte=current_date)
+        revisions_ids = [revision.element_id for revision in revisions]
+ 
+        for item in self.pub_items:
+            if item.id in revisions_ids:
+                self.items.append(item)
 
         user = User.objects.get(username=self.username)
-        playlists = playlists.objects.filter(user=user)
+        playlists = Playlist.objects.filter(author=user)
 
         for playlist in playlists:
             for resource in playlist.resources.all():
                 if resource.resource_type == 'item':
                     item = MediaItem.objects.get(id=resource.resource_id)
-                    self.process(item, log)
+                    if item.recorded_from_date:
+                        if item.recorded_from_date <= pub_date:
+                            if not item in self.items:
+                                self.items.append(item)
                 elif resource.resource_type == 'collection':
                     collection = MediaCollection.objects.get(id=resource.resource_id)
                     for item in collection.items.all():
-                        self.process(item, log)
+                        if item.recorded_from_date:
+                            if item.recorded_from_date <= pub_date:
+                                if not item in self.items:
+                                    self.items.append(item)
 
-        log.close()
+	for item in self.items:
+            self.process(item)
+        
+        print(len(self.items))
+        self.log.close()
 
