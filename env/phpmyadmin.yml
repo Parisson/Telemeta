@@ -31,8 +31,4 @@ phpmyadmin:
     environment:
       - ABSOLUTE_URI=http://localhost:8000/
 
-nginx:
-  links:
-    - phpmyadmin
-
 

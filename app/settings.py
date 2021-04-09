@@ -223,7 +223,7 @@ LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/desk/lists/'
 
 EMAIL_HOST = 'cchum-kvm-telemeta.in2p3.fr'
-DEFAULT_FROM_EMAIL = 'root@cchum-kvm-telemeta.in2p3.fr'
+DEFAULT_FROM_EMAIL = 'telemeta@cchum-kvm-telemeta.in2p3.fr'
 EMAIL_SUBJECT_PREFIX = 'Telemeta - CREM'
 
 TIMESIDE_DEFAULT_GRAPHER_ID = 'waveform_centroid'
