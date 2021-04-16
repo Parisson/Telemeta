@@ -58,7 +58,7 @@ setup(
     'django-environ==0.4.5',
     'django-extensions==2.1.0',
     'django-extra-views==0.11.0',
-    'django-debug-toolbar==1.6',
+    'django-debug-toolbar==1.11.1',
     'django-haystack==2.4.1',
     'django-ipauth',
     'django-json-rpc==0.7.2',
