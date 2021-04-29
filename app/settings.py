@@ -13,7 +13,7 @@ env = environ.Env(DEBUG=(bool, False),
 
 # Django settings for server project.
 DEBUG = env('DEBUG')  # False if not in os.environ
-DEBUG = True
+#DEBUG = True
 
 sys.dont_write_bytecode = True
 
@@ -314,7 +314,7 @@ from worker import app
 
 HAYSTACK_CONNECTIONS = {
     'default': {
-        'ENGINE': 'haystack.backends.elasticsearch2_backend.Elasticsearch2SearchEngine',
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
         #'ENGINE': 'telemeta.util.backend.CustomElasticEngine',
         'URL': env('HAYSTACK_URL'),
         'INDEX_NAME': env('HAYSTACK_INDEX_NAME'),
@@ -326,7 +326,7 @@ HAYSTACK_CONNECTIONS = {
                              ]
     },
     'autocomplete': {
-        'ENGINE': 'haystack.backends.elasticsearch2_backend.Elasticsearch2SearchEngine',
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
         #'ENGINE': 'telemeta.util.backend.CustomElasticEngine',
         'URL': env('HAYSTACK_URL'),
         'INDEX_NAME': env('HAYSTACK_INDEX_NAME_AUTOCOMPLETE'),

@@ -30,7 +30,6 @@ gid='www-data'
 # install plugins
 /srv/app/bin/setup_plugins.sh
 
-
 # waiting for other network services
 sh $app/bin/wait.sh
 python $manage wait-for-db
