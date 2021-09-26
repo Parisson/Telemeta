@@ -42,6 +42,9 @@ class MediaItemIdentifierInline(admin.StackedInline):
     model = MediaItemIdentifier
     factory_kwargs = {'max_num': 1}
 
+class ResponsabilityInline(admin.StackedInline):
+	model = Responsability
+
 class MediaItemAdmin(admin.ModelAdmin):
     search_fields = ['title', 'code']
     ordering = ['code']
@@ -49,7 +52,9 @@ class MediaItemAdmin(admin.ModelAdmin):
     inlines = [MediaItemIdentifierInline,
                 MediaItemRelatedInline,
                 MediaItemTranscodedInline,
-                MediaItemMarkerInline]
+                MediaItemMarkerInline,
+                ResponsabilityInline
+                ]
 
 class MediaPartAdmin(admin.ModelAdmin):
     search_fields = ['title', 'item__code']
@@ -106,6 +111,8 @@ class PlaylistAdmin(admin.ModelAdmin):
 class EnumerationPropertyAdmin(admin.ModelAdmin):
     list_display = ['enumeration_name', 'is_admin', 'is_hidden']
 
+#class AuthorityAdmin(admin.ModelAdmin):
+#	model = Authority
 
 admin.site.register(MediaFonds, MediaFondsAdmin)
 admin.site.register(MediaCorpus, MediaCorpusAdmin)
@@ -135,3 +142,6 @@ admin.site.register(PublisherCollection)
 admin.site.register(Playlist, PlaylistAdmin)
 
 admin.site.register(EnumerationProperty, EnumerationPropertyAdmin)
+
+admin.site.register(Responsability)
+admin.site.register(Authority)
