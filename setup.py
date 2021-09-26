@@ -70,7 +70,7 @@ setup(
     'ebooklib',
     'elasticsearch==1.6.0',
     'lxml==4.2.3',
-    'psutil==5.4.6',
+    'psutil==5.6.6',
     'pyyaml==3.12',
     'python-ebml==0.2.1',
     'redis==2.10.6',
