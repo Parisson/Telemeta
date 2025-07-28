@@ -21,70 +21,70 @@
 # Guillaume Pellerin <yomguy@parisson.com>
 # Thomas Fillon <thomas@parisson.com>
 
+services:
+  data:
+    image: debian:jessie
+    volumes:
 
-data:
-  image: debian:jessie
-  volumes:
+      - /home/crem/media/cache:/srv/media/cache
+      - /home/crem/media/export:/srv/media/export
+      - /home/crem/media/results:/srv/media/results
+      - /archive/CREM/media/log:/srv/media/log
+      - /archive/CREM/tmp:/srv/media/tmp
+      - /archive/CREM/media/items:/srv/media/items
+      - /archive/CREM/backup:/srv/backup
+      - ./data/static:/srv/static
+      - ./data/bower:/srv/bower
+      - ./data/log/nginx:/var/log/nginx
+      - ./data/log/uwsgi:/var/log/uwsgi
+    command: "true"
 
-    - /home/crem/media/cache:/srv/media/cache
-    - /home/crem/media/export:/srv/media/export
-    - /home/crem/media/results:/srv/media/results
-    - /archive/CREM/media/log:/srv/media/log
-    - /archive/CREM/tmp:/srv/media/tmp
-    - /archive/CREM/media/items:/srv/media/items
-    - /archive/CREM/backup:/srv/backup
-    - ./data/static:/srv/static
-    - ./data/bower:/srv/bower
-    - ./data/log/nginx:/var/log/nginx
-    - ./data/log/uwsgi:/var/log/uwsgi
-  command: "true"
+  db:
+    image: mysql:5
+    volumes:
+       - ./data/mysql/:/var/lib/mysql
+    volumes_from:
+      - data
+    env_file:
+      - env/prod.env
+    command: mysqld  --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
 
-db:
-  image: mysql:5
-  volumes:
-     - ./data/mysql/:/var/lib/mysql
-  volumes_from:
-    - data
-  env_file:
-    - env/prod.env
-  command: mysqld  --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+  broker:
+    image: redis:5
 
-broker:
-  image: redis:5
+  search:
+    image: elasticsearch:2
 
-search:
-  image: elasticsearch:2
+  app:
+    # image: parisson/telemeta:1.7
+    build: .
+    volumes:
+      - ./app:/srv/app
+      - ./telemeta:/srv/lib/telemeta/telemeta
+      - ./lib/TimeSide:/srv/lib/timeside
+      - ./lib/plugins:/srv/lib/plugins
+    volumes_from:
+      - data
+    env_file:
+      - env/debug.env
+    command: /bin/bash bin/app.sh --runserver
+    links:
+      - broker
+      - db
+      - search
+    ports:
+      - "8000:8000"
 
-app:
-  # image: parisson/telemeta:1.7
-  build: .
-  volumes:
-    - ./app:/srv/app
-    - ./telemeta:/srv/lib/telemeta/telemeta
-    - ./lib/TimeSide:/srv/lib/timeside
-    - ./lib/plugins:/srv/lib/plugins
-  volumes_from:
-    - data
-  env_file:
-    - env/debug.env
-  command: /bin/bash bin/app.sh --runserver
-  links:
-    - broker
-    - db
-    - search
-  ports:
-    - "8000:8000"
-
-worker:
-  # image: parisson/telemeta:1.7
-  build: .
-  volumes_from:
-    - app
-    - data
-  env_file:
-    - env/prod.env
-  command: /bin/bash bin/worker.sh
-  links:
-    - broker
-    - db
+  worker:
+    # image: parisson/telemeta:1.7
+    build: .
+    volumes_from:
+      - app
+      - data
+    env_file:
+      - env/prod.env
+    command: /bin/bash bin/worker.sh
+    links:
+      - broker
+      - db
 
